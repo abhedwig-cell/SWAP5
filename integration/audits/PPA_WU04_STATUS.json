@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.ppa_wu04.status.v1",
+  "work_unit": "PPA-WU04",
+  "title": "Stateful ET/interception scientific review",
+  "branch": "audit/ppa-wu04-stateful-et-interception-review",
+  "reconcile_base": "8d78c305d12939bb061bbcb248b8a33730494f34",
+  "status": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED",
+  "scope": {
+    "SWINTER": [
+      1,
+      2
+    ],
+    "SWREDU": [
+      1,
+      2
+    ],
+    "production_source_mutation": false
+  },
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "prior_source_trace": "F-PM06",
+    "b1_11_et_semantics_delta": false
+  },
+  "frozen_contract": {
+    "SWINTER_1_2": {
+      "persistent_physical_state": [],
+      "accepted_process_aggregate": [
+        "aintc"
+      ],
+      "restart_owner": "forcing/runtime provenance plus accepted aggregate progress",
+      "retry_rule": "Never reinterpret a smaller hydraulic retry as a new nonlinear interception source window."
+    },
+    "SWREDU_1": {
+      "persistent_state": [
+        "ldwet"
+      ],
+      "restart": "exact accepted-boundary scalar",
+      "retry_rule": "candidate only; recompute retry from committed LDWET"
+    },
+    "SWREDU_2": {
+      "persistent_state": [
+        "spev",
+        "saev"
+      ],
+      "restart": "exact accepted-boundary atomic pair",
+      "retry_rule": "candidate pair only; recompute retry from committed pair"
+    }
+  },
+  "migration_slices": [
+    "PPA-WU04-A SWREDU=1 Black",
+    "PPA-WU04-B SWREDU=2 Boesten-Stroosnijder",
+    "PPA-WU04-C SWINTER=1 VonHHBraden source-window aggregate",
+    "PPA-WU04-D SWINTER=2 Gash source-window aggregate"
+  ],
+  "qualification": {
+    "state": "PASS",
+    "workflow": "PPA-WU04 stateful ET interception scientific review",
+    "run_id": 35377826442,
+    "authority_job": 105706628104,
+    "authority_conclusion": "success",
+    "independent_job": 105706684721,
+    "independent_conclusion": "success",
+    "checks": [
+      "B1.11 authority binding",
+      "F-PM06 source trace reconciliation",
+      "zero production src delta",
+      "SWINTER=1/2 aggregate ownership",
+      "SWREDU state minimality",
+      "restart/rollback contract",
+      "mass owner separation",
+      "migration slicing"
+    ]
+  },
+  "production_admission": "NONE_REVIEW_ONLY",
+  "verdict": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_IMPLEMENTATION_HELD",
+  "next_action": "PPA-WU04 is closed as a review-only authority unit. Any production implementation must occur in a separate bounded slice PPA-WU04-A..D with its own source oracle, qualification and canonical admission."
+}
