@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC49",
+  "title": "Generic groundwater application orchestration",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_DESIGN",
+  "state": "DESIGN_ONLY_BLOCKED_ON_FGC48_CANONICAL_ADMISSION",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "8875e46b28cf2462948ca1952ed283cb2c7483eb"
+  },
+  "source": {
+    "branch": "work/f-gc49-generic-application-orchestration-design",
+    "base": "8875e46b28cf2462948ca1952ed283cb2c7483eb"
+  },
+  "prerequisite": {
+    "capability": "F-GC48",
+    "required_state": "CLOSED_CANONICAL_ADMITTED",
+    "current_qualification_head": "883314cf645e5f5a5b36f73c4135ae90722bcf4f",
+    "current_blocker": "repository-wide GitHub Actions runner queue; exact-head owner and F-VQ120 reruns queued"
+  },
+  "reconcile_findings": [
+    "F-GC39 defines the internal prepared-solve coupling-service ownership contract but intentionally has production_delta NONE and no production language/location decision.",
+    "F-GC42 composes F-GC39 convergence with F-GC41 publication but remains qualification support only.",
+    "F-GC44-F-GC47 prove real SWAP plus live MODFLOW application compositions through qualification-only C bridges.",
+    "modflow6_prepared_solve_session.py is a production MODFLOW/XMI backend and explicitly does not own predictor/corrector science.",
+    "mod_groundwater_multiswap_coupler is production Fortran but targets groundwater_preparable_exchange_service_t, not the live MODFLOW prepared-solve session.",
+    "The existing abstract groundwater exchange service and live xmipy prepared-solve backend are separate execution worlds; no canonical generic application service currently bridges them.",
+    "F-GC48 is intended to become the generic topology authority and must be canonical before F-GC49 production code consumes it."
+  ],
+  "design_decisions": [
+    "Place generic coupling-window orchestration in an internal SWAP5-MODFLOW application service below iMOD Coupler.",
+    "Keep modflow6_prepared_solve_session.py as the only owner of XMI pointers and MODFLOW prepare_solve/solve/finalize_solve/finalize_time_step mechanics.",
+    "Keep real SWAP state/trial/rollback/commit ownership in Fortran FMR/kernel participants; expose only a narrow production participant bridge to the application service.",
+    "Do not reimplement F-GC40 affine tile-to-cell reduction or F-GC34 API mapping in Python. Materialize cell terms and routing through Fortran production contracts.",
+    "Consume one immutable F-GC48 topology snapshot for the full coupling window.",
+    "Run one prepared MODFLOW solve per window, iterating all topology cells together.",
+    "For every coupling iteration route each MODFLOW cell head only to the SWAP tiles owned by that cell; nonfinal SWAP candidates are discarded while MODFLOW X evolves and XOLD remains fixed.",
+    "Coupled convergence is conjunctive across MODFLOW and every active cell-level interface residual.",
+    "After finalize_solve, preflight every final SWAP candidate, every prepared ledger and MODFLOW timestep readiness before the first irreversible publication.",
+    "Publication order remains one MODFLOW finalize_time_step, then deterministic SWAP commits, then deterministic ledger commits; failures after the first publication point are durability/restart class, not rollback-safe retry."
+  ],
+  "proposed_components": [
+    {
+      "name": "groundwater_application_plan",
+      "language": "Fortran",
+      "responsibility": "Consume admitted F-GC48 topology plus tile predictor responses and materialize canonical per-cell F-GC40 responses, F-GC33 linear terms, F-GC34 API bindings and tile-to-cell routing without mutation."
+    },
+    {
+      "name": "production_fmr_groundwater_participant_bridge",
+      "language": "Fortran C ABI plus thin Python client",
+      "responsibility": "Expose capture-origin, predictor-response, corrector-from-origin, discard, publication-ready and commit over production FMR participants without exposing kernel internals."
+    },
+    {
+      "name": "modflow6_groundwater_application_service",
+      "language": "Python internal service",
+      "responsibility": "Own only generic coupling-window orchestration; consume application plan, production SWAP participant client and Modflow6PreparedSolveSession. Own no XMI arrays directly and no SWAP state."
+    },
+    {
+      "name": "modflow6_prepared_solve_session",
+      "language": "Python existing production adapter",
+      "responsibility": "Remain sole live MODFLOW/XMI prepared-solve backend."
+    }
+  ],
+  "exclusions": [
+    "production implementation before F-GC48 canonical admission",
+    "new groundwater physics",
+    "new timestep controller",
+    "second SWAP transaction owner",
+    "iMOD Coupler predictor/corrector ownership",
+    "Python reimplementation of F-GC40 or F-GC34",
+    "heterogeneous N:1 transferability policy",
+    "physics-envelope expansion"
+  ],
+  "admission_shape": [
+    "generic service reproduces F-GC44 1:1, F-GC45 N:1, F-GC46 multi-cell and F-GC47 mixed topology through one production orchestration path",
+    "same-origin SWAP candidate identity retained through final publication",
+    "fixed accepted MODFLOW XOLD across all coupling iterations",
+    "all topology cells converge conjunctively",
+    "all participant/ledger/timestep preflights precede publication",
+    "no topology-specific branches in application service",
+    "independent verifier proves F-GC40/F-GC34 authority is not duplicated"
+  ],
+  "next_permitted_action": "Wait only for F-GC48 canonical admission. Then rebase/reconcile this design against the admitted topology API, implement the Fortran application-plan materializer first, qualify it, then add the narrow production participant bridge and generic Python application service."
+}
