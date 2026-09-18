@@ -15,6 +15,8 @@ on:
       - 'tests/fci/run_fci99_fgc40_multiswap_cell_response_admission.sh'
       - '.github/workflows/f-ci99-fgc40-multiswap-cell-response-admission.yml'
       - 'integration/f-ci/F-CI99_STATUS.json'
+      - 'integration/f-gc/F-GC40_CANONICAL_ADMISSION.json'
+      - 'integration/f-gc/F-GC40_CLOSEOUT.json'
   workflow_dispatch:
 
 permissions:

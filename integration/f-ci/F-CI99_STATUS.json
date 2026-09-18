@@ -4,8 +4,8 @@
   "capability": "F-GC40",
   "title": "MultiSWAP MODFLOW6 Cell Response Canonical Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
@@ -45,7 +45,7 @@
     "irrigation",
     "historical provisional F-GC31 MultiSWAP identity"
   ],
-  "next_permitted_action": "Qualify this exact F-CI99 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "next_permitted_action": "Qualify the metadata-only F-GC40 admission/closeout head with F-CI99. If green, record final closeout-gate evidence, rerun exact final status head, then non-force fast-forward canonical to the closed state.",
   "admission_gate": {
     "qualified_head": "9ccdb287fa29fb1ed697ad255fda56cd153c99f0",
     "workflow_run": 35292387556,
@@ -62,5 +62,12 @@
       "FCI99_OWNER_REPLAY",
       "FCI99_INDEPENDENT_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35292445486,
+    "exact_status_head_job": 105437990087,
+    "exact_status_head_conclusion": "success"
   }
 }
