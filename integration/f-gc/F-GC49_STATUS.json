@@ -4,8 +4,8 @@
   "stage": "C",
   "title": "Generic groundwater application orchestration — live application service",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT_C",
-  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE_C",
+  "state": "CLOSED_CANONICAL_ADMITTED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "stage_c_merge_base": "01e133b3da79468618e6c89a74533efff1ccdaaf",
@@ -35,7 +35,7 @@
     "physics-envelope expansion",
     "heterogeneous N:1 scientific policy"
   ],
-  "next_permitted_action": "Mark PR #267 ready for review and merge with expected head after this qualification-evidence checkpoint. Then verify canonical postimage and close Stage C on canonical. After closure inspect whether a generic production FMR cross-language ABI exists; if absent, open F-GC49D as the separately bounded next capability.",
+  "next_permitted_action": "Stage C is closed. Inspect canonical for a generic production FMR cross-language ABI that exposes admitted F-GC49A application plans and F-GC49B participant handles to the F-GC49C generic service without transferring SWAP state, groundwater mathematics, ledger ownership or predictor/corrector ownership into Python. If absent, open F-GC49D as a separate bounded capability.",
   "production_mutations": [
     "src/adapter/modflow6_groundwater_application_service.py"
   ],
@@ -83,15 +83,16 @@
     "PR mergeable",
     "production delta limited to generic application service"
   ],
-  "verdict": "QUALIFIED_READY_FOR_ADMISSION",
+  "verdict": "ADMITTED_CANONICAL_CLOSED",
   "canonical_admission": {
-    "base": "050947affbb00fc7f00dcfba0e93c6359be2d443",
-    "qualified_head": "08b4ce3b024836ad65b153f99386f1331146bb05",
-    "reconciled_head": "23be669cfbef91f32b229b61c6f540bd69e6564f",
-    "canonical_preimage": "9279e0eb4dfc3cbbea205044cd6f43a424b256ed",
-    "merge_head": "4ac6c3f306ee83d1f3948165ffb3cb5348cf4081",
-    "pr": 261,
-    "merge_method": "merge"
+    "stage": "C",
+    "canonical_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+    "qualification_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
+    "reconciled_head": "4f0626c9490fbd04ef3336e0ae4d7233df8e9960",
+    "pr": 267,
+    "merge_method": "merge",
+    "merge_sha": "d913f10ce0aa3053e26eb02722db9b7b37c7fe70",
+    "merged_at": "2026-09-18T13:31:47Z"
   },
   "qualification": {
     "owner_run": 35349527435,
@@ -178,15 +179,17 @@
     "F-GC44-F-GC47 C bridges remain qualification-only and must not become production architecture.",
     "Therefore Stage C admits generic application-service control flow and a narrow runtime protocol; a separate Stage D is required if a generic production FMR C ABI remains absent after Stage C."
   ],
-  "current_branch_head": "af480333c7a6c2b2fcde1677a6d318f26609de26",
+  "current_branch_head": "4f0626c9490fbd04ef3336e0ae4d7233df8e9960",
   "qualification_surface_head": "4b8ba2a2143ffde24b8bdf61cc17a9be317d40a6",
   "external_execution_state": {
-    "current_head_owner_push_run": 35349959517,
-    "current_head_owner_pr_run": 35349966232,
-    "current_head_independent_push_run": 35349959558,
-    "current_head_independent_pr_run": 35349966453,
-    "observed_state": "queued",
-    "disposition": "Redundant preservation-head reruns are runner-congested. They do not invalidate the completed qualification-surface evidence because no production/test/workflow dependency changed."
+    "redundant_preservation_head_runs": [
+      35349959517,
+      35349966232,
+      35349959558,
+      35349966453
+    ],
+    "observed_state_at_admission": "queued",
+    "disposition": "Non-authoritative redundant reruns only. Canonical admission uses completed qualification-surface owner/live/F-VQ123 evidence plus zero-overlap evidence reuse."
   },
   "preservation_after_qualification_surface": [
     "docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md line-break normalization only",
@@ -202,5 +205,40 @@
     ],
     "production_test_workflow_overlap": [],
     "disposition": "Reuse admitted by the existing Stage-C status authority because post-qualification changes are documentation/status preservation only."
-  }
+  },
+  "dependency_reconciliation": {
+    "canonical_preimage": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+    "canonical_delta_from_stage_c_merge_base": [
+      "integration/f-ross/F-ROSS24_STATUS.json",
+      "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_PREREGISTRATION.json",
+      "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json"
+    ],
+    "fgc49c_dependency_overlap": [],
+    "preservation_delta_after_qualification": [
+      "docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md",
+      "integration/f-gc/F-GC49_STATUS.json"
+    ],
+    "production_test_workflow_overlap_after_qualification": [],
+    "disposition": "Qualification evidence reused without rerun because both canonical drift and post-qualification preservation have zero F-GC49C production/test/workflow dependency overlap."
+  },
+  "exact_admitted_capability": [
+    "one topology-agnostic production Python coupling-window service",
+    "Modflow6PreparedSolveSession remains the sole live MODFLOW/XMI backend",
+    "one prepared solve per window across all groundwater cells",
+    "cell-specific head routing through the narrow SWAP runtime port",
+    "cell-level realized-groundwater flux evaluation and reanchoring remain runtime-owned",
+    "conjunctive convergence requires MODFLOW nonlinear convergence and every individual cell residual within tolerance",
+    "opposite residuals across cells cannot cancel",
+    "all reversible preflights precede publication",
+    "publication order is MODFLOW finalize_time_step, then SWAP commits, then ledger commits",
+    "post-MODFLOW-publication failures are hard durability/restart invariants"
+  ],
+  "evidence_boundary": [
+    "F-GC47 mixed-topology C bridge is qualification-only and is not a production FMR ABI",
+    "F-GC49C does not move SWAP/FMR state or physics into Python",
+    "F-GC49C does not duplicate F-GC40 aggregation, F-GC33 HCOF/RHS algebra or F-GC34 bindings",
+    "predictor/corrector ownership remains under iMOD Coupler",
+    "no generic distributed atomicity claim is made",
+    "N:1 technical support is not evidence of hydrological transferability"
+  ]
 }
