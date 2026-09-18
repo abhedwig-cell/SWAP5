@@ -1,0 +1,22 @@
+name: F-GC48 generic groundwater topology
+on:
+  push:
+    branches: [work/f-gc48-generic-groundwater-topology]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'tests/fgc/test_fgc48_generic_groundwater_topology.f90'
+      - 'tests/fgc/run_fgc48_generic_groundwater_topology.sh'
+      - 'docs/integration/F-GC48_GENERIC_GROUNDWATER_TOPOLOGY.md'
+      - 'integration/f-gc/F-GC48_STATUS.json'
+      - '.github/workflows/f-gc48-generic-groundwater-topology.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fgc/run_fgc48_generic_groundwater_topology.sh
