@@ -113,14 +113,21 @@ def main():
               all(sample_invariants[k] for k in ("all_exact_one_advance","all_zero_internal_retries","all_mass_within_gate")))
 
     comparisons=[]
-    if not missing and not malformed:
-        for m in MATERIALS:
-            for c in CASES:
-                comparisons.append(compare_pair(points,nodes,m,c,0.0016,0.0008))
-                comparisons.append(compare_pair(points,nodes,m,c,0.0008,0.0004))
+    missing_comparisons=[]
+    pair_specs=((0.0016,0.0008,8),(0.0008,0.0004,16))
+    for m in MATERIALS:
+        for c in CASES:
+            for coarse,fine,expected_common_count in pair_specs:
+                ck=(m,c,round(coarse,10)); fk=(m,c,round(fine,10))
+                if ck in passes and fk in passes:
+                    item=compare_pair(points,nodes,m,c,coarse,fine)
+                    item["expected_common_time_count"]=expected_common_count
+                    comparisons.append(item)
+                else:
+                    missing_comparisons.append([m,c,coarse,fine])
 
-    expected_common={(0.0016,0.0008):8,(0.0008,0.0004):16}
-    comparison_coverage=all(x["common_time_count"]==expected_common[(x["coarse_dt_day"],x["fine_dt_day"])] for x in comparisons)
+    comparison_coverage=(len(comparisons)==8 and not missing_comparisons and
+                         all(x["common_time_count"]==x["expected_common_time_count"] for x in comparisons))
     if complete and comparison_coverage:
         decision="REFERENCE_FLOOR_SAMPLE_CAPABILITY_QUALIFIED"
     elif fails:
@@ -143,6 +150,8 @@ def main():
         "repeat_output_bitwise_identity":repeat_identity,
         "sample_invariants":sample_invariants,
         "comparison_coverage_complete":comparison_coverage,
+        "available_cross_resolution_comparison_count":len(comparisons),
+        "missing_cross_resolution_comparisons":missing_comparisons,
         "cross_resolution_comparisons":comparisons,
         "max_cross_resolution_difference":maxima,
         "temporal_accuracy_claim":False,
