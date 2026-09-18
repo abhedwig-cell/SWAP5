@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC39",
+  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_QUALIFY",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_CONTRACT_REQUALIFICATION",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
+    "historical_owner_head": "65e96260386a1887b28e878e001e8a29ee76676e"
+  },
+  "canonical_dependencies": {
+    "f_gc40": "CLOSED_CANONICAL_ADMITTED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
+    "f_gc33": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
+    "f_gc34": "CLOSED_CANONICAL_ADMITTED_TYPED_API_BINDING",
+    "f_gc35": "CLOSED_CANONICAL_ADMITTED_XMI_PACKAGE_ADAPTER",
+    "f_gc36": "CLOSED_CANONICAL_ADMITTED_LIVE_MODFLOW6_BRIDGE",
+    "f_gc38": "CLOSED_CANONICAL_ADMITTED_PREPARED_SOLVE_BACKEND"
+  },
+  "ownership": {
+    "imod_coupler": "coarse orchestration only; no predictor/corrector iteration ownership",
+    "internal_service": [
+      "immutable SWAP origin",
+      "predictor/tangent construction",
+      "SWAP corrector iterations",
+      "flux residual and coupling convergence",
+      "bounded retry outcome",
+      "prepared-solve session coordination"
+    ],
+    "modflow_backend": "one prepared solve with fixed XOLD and evolving X; no per-iteration rollback"
+  },
+  "contract": [
+    "one immutable SWAP origin for predictor and every corrector",
+    "one prepared groundwater solve session per coupling window",
+    "fixed tangent slope in first contract; H_ref and q_ref may update",
+    "coupled convergence requires both MODFLOW convergence and interface flux convergence",
+    "only non-final SWAP candidates are discarded",
+    "groundwater X remains continuous across external coupling iterations",
+    "successful coupling finalizes MODFLOW solve exactly once and retains final SWAP candidate",
+    "failure invalidates the prepared solve and returns retry without publication",
+    "service owns no XMI pointers and no finalize_time_step"
+  ],
+  "artifacts": {
+    "production_delta": "NONE",
+    "harness_path": "tests/fgc/support/fgc39_prepared_solve_service_harness.py",
+    "harness_blob": "0ab5cd1d5b701389972ddfcdf7f4ebc7dc198aec",
+    "test_blob": "165b640b3183f6b28f1b2fb154ac32a33a86dbaa",
+    "note": "qualification support only; no production language/location decision"
+  },
+  "historical_evidence": {
+    "owner_head": "65e96260386a1887b28e878e001e8a29ee76676e",
+    "owner_run": 35291870453,
+    "owner_conclusion": "success",
+    "note": "Current-canonical replay required because dependency authority changed."
+  },
+  "exclusions": [
+    "whole-window MODFLOW reconstruction/retry implementation",
+    "final multi-participant timestep publication",
+    "real SWAP5 plus live MODFLOW end-to-end service",
+    "multi-cell live production scaling",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head current-canonical F-GC39 contract qualification. If green, persist owner qualification and run independent F-VQ112 with zero production delta."
+}
