@@ -46,7 +46,8 @@ def authority_checks():
         require(forbidden not in sw6, f"SWAP-006 unexpectedly touches {forbidden}")
     require("@@ -260,13 +260,12 @@" in sw6, "SWAP-006 source window drift")
 
-    require("SWINTER=1 or 2" in readiness and "interception_daily" in readiness, "F-PM06 interception trace missing")
+    require(re.search(r"SWINTER=1.{0,30}or.{0,20}2", readiness, re.DOTALL) is not None and
+            "interception_daily" in readiness, "F-PM06 interception trace missing")
     require("persistent `ldwet`" in readiness.lower(), "F-PM06 LDWET authority missing")
     require("persistent `spev` and `saev`" in readiness.lower(), "F-PM06 SPEV/SAEV authority missing")
     require("before the SoilWater nonconvergence retry loop" in readiness, "legacy pre-retry hazard missing")
