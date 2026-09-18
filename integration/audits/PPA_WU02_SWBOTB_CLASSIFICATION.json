@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.ppa_wu02.swbotb_classification.v1",
+  "work_unit": "PPA-WU02",
+  "canonical_reconciled": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "b1_11": {
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "lower_boundary_change_from_b1_10": false,
+    "reason": "B1.11 differs from B1.10 only by SWAP-011 in MOD_MvG_functions.f90, WC_K_models_04_11.f90, and MOD_RIA.f90"
+  },
+  "native_qbot_sign": "positive_into_soil_profile_negative_out_of_soil_profile",
+  "selectors": [
+    {
+      "selector": "1",
+      "meaning": "prescribed_groundwater_level",
+      "time": "table_DATE1_GWLEVEL",
+      "typed_contract": "no_legacy_mode_contract",
+      "application": "not_migrated",
+      "groundwater_relation": "direct_gwl_state_semantics",
+      "classification": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE",
+      "risk": "high_state_machine"
+    },
+    {
+      "selector": "2",
+      "meaning": "prescribed_native_qbot",
+      "time": "SW2_sinus_or_DATE2_QBOT2_table",
+      "typed_contract": "production_admitted",
+      "application": "normal_application_gap_at_reconcile",
+      "groundwater_relation": "none_intrinsic",
+      "classification": "PRODUCTION_ADMITTED_KERNEL_RUNTIME_NORMAL_APPLICATION_GAP",
+      "risk": "low_for_typed_direct_slice_high_for_full_legacy_adapter"
+    },
+    {
+      "selector": "3",
+      "meaning": "cauchy_deep_groundwater_exchange",
+      "time": "aquifer_head_sinus_or_table_plus_optional_extra_qbot_table",
+      "typed_contract": "not_admitted",
+      "application": "not_migrated",
+      "groundwater_relation": "deep_aquifer_head_and_resistance",
+      "classification": "PRESERVED_NOT_TYPED",
+      "risk": "high_nonlinear_and_timing"
+    },
+    {
+      "selector": "4",
+      "meaning": "q_of_profile_groundwater_level",
+      "time": "state_dependent_boundbottom_evaluation",
+      "typed_contract": "no_application_law_contract",
+      "application": "not_migrated",
+      "groundwater_relation": "profile_gwl_dependency",
+      "classification": "PHYSICS_ROW_REUSABLE_APPLICATION_LAW_NOT_MIGRATED",
+      "risk": "medium_timing_semantics"
+    },
+    {
+      "selector": "5",
+      "meaning": "prescribed_lower_face_pressure_head",
+      "time": "DATE5_HBOT5_table_in_legacy",
+      "typed_contract": "admitted",
+      "application": "restricted_groundwater_profile",
+      "groundwater_relation": "used_by_F_GC_head_coupling_but_not_identical_to_legacy_DATE5_adapter",
+      "classification": "RESTRICTED_PRODUCTION",
+      "risk": "low_existing_restricted_route"
+    },
+    {
+      "selector": "6",
+      "meaning": "zero_bottom_flux",
+      "time": "constant",
+      "typed_contract": "via_mode2_zero_qbot",
+      "application": "F_APP02_F_CI95_restricted_legacy_mapping",
+      "groundwater_relation": "none",
+      "classification": "RESTRICTED_PRODUCTION",
+      "risk": "low_closed"
+    },
+    {
+      "selector": "7",
+      "meaning": "free_drainage",
+      "time": "state_dependent_K_bottom",
+      "typed_contract": "admitted",
+      "application": "PPA_WU01_normal_standalone",
+      "groundwater_relation": "none",
+      "classification": "PRODUCTION_ADMITTED",
+      "risk": "low_closed"
+    },
+    {
+      "selector": "8",
+      "meaning": "lysimeter_plate_active_set",
+      "time": "candidate_state_dependent",
+      "typed_contract": "not_admitted",
+      "application": "not_migrated",
+      "groundwater_relation": "none",
+      "classification": "PRESERVED_NOT_TYPED",
+      "risk": "high_active_set_continuation"
+    },
+    {
+      "selector": "-2",
+      "meaning": "mode2_oven_dry_free_drainage_continuation",
+      "time": "state_triggered_internal",
+      "typed_contract": "solver_admitted_as_free_drainage",
+      "application": "not_normal_selector",
+      "groundwater_relation": "none",
+      "classification": "INTERNAL_CONTINUATION_PRESERVED",
+      "risk": "medium_full_legacy_mode2_only"
+    },
+    {
+      "selector": "9",
+      "meaning": "extended_head_internal_path",
+      "time": "special_internal",
+      "typed_contract": "not_admitted",
+      "application": "not_normal_parser_selector",
+      "groundwater_relation": "head_continuation",
+      "classification": "INTERNAL_SPECIAL_PRESERVED_NOT_TYPED",
+      "risk": "high_internal_semantics"
+    }
+  ],
+  "direct_slice": {
+    "id": "PPA-WU02-A",
+    "title": "typed prescribed-qbot normal application admission",
+    "allowed": true,
+    "production_delta": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "excludes": [
+      "legacy SW2 parser",
+      "sinus/table forcing adapter",
+      "2_to_-2 oven-dry fallback",
+      "groundwater coupling changes",
+      "new physics",
+      "new numerical policy",
+      "mixed bottom-mode profiles"
+    ]
+  }
+}
