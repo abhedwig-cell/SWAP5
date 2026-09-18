@@ -12,7 +12,7 @@ fail(){ echo "PPA_LOW02_GATE_FAIL $*" >&2; exit 1; }
 
 CANONICAL="781c829943c9e5880e5ab83281112e66f439ecf2"
 changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
-expected_src=$'src/adapter/mod_b110_legacy_swbotb2_application_control.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
+expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
 [[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
 
 for locked in \
@@ -32,7 +32,6 @@ grep -Fq '"status": "CANONICAL_ADMITTED_CLOSED"' integration/audits/PPA_WU02_STA
 python3 - <<'PY'
 from pathlib import Path
 
-adapter = Path("src/adapter/mod_b110_legacy_swbotb2_application_control.f90").read_text().lower()
 backend = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text().lower()
 test = Path("tests/fapp/test_ppa_low02_time_application_admission.f90").read_text().lower()
 
@@ -45,10 +44,10 @@ for token in [
     "effective_bottom_mode = 2",
     "calendar_year_start_t1900",
 ]:
-    assert token in adapter, token
+    assert token in backend, token
 
 for forbidden in ["open(", "read(", "readswap", "swap_main", "ttutil"]:
-    assert forbidden not in adapter, forbidden
+    assert forbidden not in backend, forbidden
 
 assert "legacy_swbotb2_control" in backend
 assert "physical_control%pressure_head(physical_control%active_nodes)" in backend
@@ -129,7 +128,6 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_table_provider.f90
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
-  src/adapter/mod_b110_legacy_swbotb2_application_control.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_groundwater_coupling_contract.f90
@@ -178,7 +176,6 @@ diff -u "$BUILD/o0/stable.txt" "$BUILD/o2/stable.txt"
 cat "$BUILD/o0/output.txt"
 
 git diff --check -- \
-  src/adapter/mod_b110_legacy_swbotb2_application_control.f90 \
   src/runtime/mod_fmr_serialized_reference_backend.f90 \
   tests/fapp/test_ppa_low02_time_application_admission.f90 \
   tests/fapp/run_ppa_low02_time_application_admission.sh
