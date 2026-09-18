@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.rom1ar1d2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D2",
+  "title": "D08 local integrated-invariant allowance diagnostic",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "predecessor": {
+    "work_unit": "ROM-1A-R1-D1",
+    "decision": "ROM1AR1D1_RETRY_LOCAL_BALANCE"
+  },
+  "independent_method_authority": {
+    "source": "PUB-P2E19/P2E20/P2E21",
+    "P2E21_result": "docs/publication/P2E21_REF_HIGH_REPRESENTATION_BOUND_RESULT.json",
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "compartment_rate_formula": "1.6e-15 / dt_day",
+    "role_here": "diagnostic comparison only",
+    "failed_D08_residual_used_to_choose_allowance": false,
+    "empirical_safety_factor": "none",
+    "population_admission_imported": false
+  },
+  "case": {
+    "material": "B01",
+    "history": "D08",
+    "failed_step": 34,
+    "symbol": "BOTTOM_HEAD_RISE",
+    "bottom_mode": 5,
+    "dt_day": 0.0008,
+    "expected_failure_class": "RETRY_LOCAL_BALANCE",
+    "expected_local_balance_flag_count": 1,
+    "expected_head_flag_count": 0
+  },
+  "diagnostic": {
+    "rebuild_exact_predecessor_under_existing_qualified_authorities": true,
+    "run_strict_failed_step_with_original_controls": true,
+    "policy_applied_to_solver": false,
+    "record": [
+      "max_abs_local_residual_cm_per_day",
+      "max_abs_local_residual_integrated_cm",
+      "prior_compartment_integrated_allowance_cm",
+      "local_residual_over_prior_allowance",
+      "local_residual_within_prior_allowance",
+      "total_integrated_residual_cm",
+      "total_representation_bound_cm"
+    ]
+  },
+  "positive_decision": "ROM1AR1D2_LOCAL_RESIDUAL_WITHIN_PRIOR_INTEGRATED_ALLOWANCE",
+  "negative_decision": "ROM1AR1D2_LOCAL_RESIDUAL_EXCEEDS_PRIOR_INTEGRATED_ALLOWANCE",
+  "firewalls": [
+    "NO_COMPARTMENT_TOLERANCE_CHANGE",
+    "NO_TOTAL_TOLERANCE_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_FALLBACK_ON_STEP34",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_HELDOUT_INSPECTION",
+    "NO_B14_INSPECTION",
+    "NO_REDUCED_STATE_WORK"
+  ],
+  "policy_qualification_authorized_by_preregistration": false,
+  "rom1b_authorized": false
+}
