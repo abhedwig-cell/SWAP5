@@ -137,7 +137,7 @@ if git merge-base --is-ancestor "$FROM1A_I0_ADMISSION" HEAD; then
     fail 'F-ROM1A successor lost admitted F-SI39 default-MvG provider'
   test "$(git rev-parse HEAD:$BACKEND)" = "$FROM1A_BACKEND" || \
     fail 'admitted F-ROM1A-I0 serialized backend successor drift'
-  bash tests/rom/run_f_rom1a_i0_reference_observation_seam.sh
+  F_ROM1A_I0_POST_ADMISSION_REPLAY=1 bash tests/rom/run_f_rom1a_i0_reference_observation_seam.sh
   echo 'FCI_CANONICAL_FROM1A_OBSERVATION_SEAM_SUCCESSOR=PASS'
   echo 'FCI_CANONICAL_FROM1A_BACKEND_SUCCESSOR=PASS'
 elif git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
