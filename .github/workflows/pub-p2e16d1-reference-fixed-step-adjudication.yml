@@ -1,0 +1,26 @@
+name: PUB-P2E16D1 Reference fixed-step adjudication
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16-admissibility-boundary-primary
+    paths:
+      - 'docs/publication/P2E16D1_REFERENCE_FIXED_STEP_ADJUDICATION_PREREGISTRATION.json'
+      - 'docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_RESULT.json'
+      - 'tests/publication/test_pub_p2e16d1_reference_fixed_step_adjudication.f90'
+      - 'tests/publication/run_pub_p2e16d1_reference_fixed_step_adjudication.sh'
+      - '.github/workflows/pub-p2e16d1-reference-fixed-step-adjudication.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-fixed-step-adjudication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute frozen Reference-only diagnosis
+        run: bash tests/publication/run_pub_p2e16d1_reference_fixed_step_adjudication.sh
