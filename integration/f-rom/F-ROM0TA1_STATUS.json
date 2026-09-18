@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.f-rom0ta1.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA1",
+  "title": "Reference-Richards temporal authority",
+  "phase": "MEASUREMENT_QUALIFIED_SCIENTIFIC_BUDGET_AUTHORITY_REQUIRED",
+  "branch": "work/f-rom0-close-expand-accepted-domain",
+  "authority_binding": "docs/science/F-ROM0TA1_REFERENCE_TEMPORAL_AUTHORITY_BINDING.md",
+  "preregistration": "integration/f-rom/F-ROM0TA1_PREREGISTRATION.json",
+  "result": "integration/f-rom/F-ROM0TA1_RESULT.json",
+  "adjudication": "docs/science/F-ROM0TA1_TEMPORAL_AUTHORITY_ADJUDICATION.md",
+  "execution": {
+    "workflow_run": 35365703235,
+    "workflow_job": 105667526406,
+    "artifact_id": 10556023143,
+    "artifact_digest": "sha256:74e9a7b0d1f5c6509c288a2bce1c40d214539032505201e5e5c275ba35461b95"
+  },
+  "measurement_decision": "CERTIFICATE_EMPIRICALLY_CONSERVATIVE_LOCAL",
+  "matrix": {
+    "rows": 8,
+    "empirically_conservative_rows": 8,
+    "empirically_underestimating_rows": 0,
+    "max_actual_head_difference_cm": 8.157577067180455e-06,
+    "max_B_inf_cm": 0.001128095552403025,
+    "B_inf_to_actual_ratio_range": [138.28806557544843, 3619.5196515225134]
+  },
+  "capability_state": {
+    "existing_certificate_mechanism_usable": true,
+    "existing_certificate_locally_conservative": true,
+    "existing_certificate_calibrated_to_refinement_error": false,
+    "scientific_head_budget_authority_exists": false,
+    "accepted_transient_reference_authority_qualified": false,
+    "authoritative_reference_floor_measured": false,
+    "rom1a_authorized": false
+  },
+  "natural_boundary": "SCIENTIFIC_GOVERNANCE_CHOICE_REQUIRED",
+  "required_choice": "Define an independently justified ROM Reference pressure-head temporal acceptance budget in cm, with scientific/application scope, before any model-certificate accepted-trajectory qualification.",
+  "forbidden_shortcuts": [
+    "DO_NOT_REUSE_FMR44R_2_5E_11_CM",
+    "DO_NOT_SET_BUDGET_FROM_OBSERVED_B_INF",
+    "DO_NOT_SET_BUDGET_FROM_OBSERVED_FULL_HALF_ERROR",
+    "DO_NOT_REUSE_NONLINEAR_SOLVER_TOLERANCE",
+    "DO_NOT_RETUNE_PERTURBATION_OR_RETRY_CONTROLS"
+  ],
+  "production_source_mutation": "NONE",
+  "reference_source_mutation": "NONE"
+}
