@@ -33,7 +33,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1D` common material state domain | PUB-SQ | supporting/domain construction | COMPLETE | P2E13 Reference-only scan across all 36 materials found nine complete tested Se levels, 0.65 through 0.96; frozen rule selected 0.65, 0.85 and 0.96 as future anchors. |
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
-| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | P2E16 candidate-blind Reference calibration covered all 324 inside/boundary/outside cases; P2E17 then found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed on the tested upper top-flux boundary. |
+| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
 | `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | READY_FOR_REFERENCE_CONSTRUCTION | E1/E2 scientific domain evidence is now available. Next freeze a reduced representative case subset plus a candidate-blind `REF-HIGH` refinement/stability protocol before any timing or equal-error comparison. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
@@ -190,6 +190,20 @@ Examples:
 - fail-closed hygiene: 108/108 OUTSIDE rejected cleanly, 0 dirty rejection, 0 unexpected RossFast acceptance, 0 Reference invalid; rejected cases published no candidate state and no typed integrated mass result;
 - supported scope is only the tested **upper request-side top-flux boundary** at 0.001 x K0 resolution within the established common state domain. Lower top-flux, bottom-flux, transaction-level, trajectory, heterogeneous-profile, root-sink, groundwater and performance claims remain open;
 - next permitted action: PUB-SQ-E3 Reference construction. Freeze a representative case subset and a candidate-blind REF-HIGH stability rule before any equal-error cost or timing execution.
+
+
+### 2026-09-18 — PUB-SQ full-flux boundary extension reconciled
+
+- central governance alias: `PUB-SQ-E2X`; historical branch-local files retain `P2E16A/P2E16B/P2E16D1` identifiers because a parallel upper-top P2E16/P2E17 line had already allocated those numbers;
+- chronology matters: prior P2E17 upper-top candidate exposure started at 2026-09-18T00:25:53Z, while the broader boundary preregistration was committed at 2026-09-18T00:33:45Z;
+- therefore the 324 TOP cases at rho={-1.05,-1.0,-0.95}, equivalent on this common state domain to request top flux/K0={0.011,0.010,0.009}, are supporting replication only and are not counted as a new holdout;
+- prospectively unobserved extension surface: 972 cases covering TOP rho={0.95,1.0,1.05} and both sides of the BOTTOM boundary;
+- Reference-only Stage A: 972/972 Reference-valid; unchanged P2E14 thresholds transferred to 951/972 cases and failed on 21 retained cases;
+- candidate Stage B on the new surface: 648/648 inside-or-boundary route-valid, 324/324 outside fail-closed, 0 route mismatches and 0 fallback;
+- among 635 Stage-A-authorized route-valid pairs, 633 had a valid fixed-step Reference and all 633 were admissible with 0 discrepancy failures; cases 1220 and 1257 remained Reference-unresolved;
+- P2E16D1 diagnosed all five fixed-step Reference-invalid cases as nonconvergence on `legacy-reference-retry`, not state-domain, flux-identity or mass-gate failures;
+- controlling checkpoint: `docs/publications/manifests/PUB-SQ-FULL-FLUX-BOUNDARY-EXTENSION-CHECKPOINT_2026-09-18.json`;
+- next permitted action: `PUB-SQ-E3` candidate-blind REF-HIGH construction. No further fixed-flux boundary holdout is required before that step.
 
 ## Register update rule
 
