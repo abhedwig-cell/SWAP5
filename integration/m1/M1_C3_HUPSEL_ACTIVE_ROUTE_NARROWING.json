@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_ROUTE_DISCOVERY",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "subject_head_before_checkpoint": "24c4fe71521e582e53d3b88f5bf46ec3bb3b468c",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b3be8d4c44cd50f9cd0c42cb6c471815ca41bf21",
+    "relevant_delta": "F-DOC35 documentation-only; no scientific/numerical/reference/test semantic change"
+  },
+  "exact_distribution": {
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "gnu_reference_execution": {
+    "compiler": "GNU Fortran 14.2.0",
+    "ttutil_objects": 153,
+    "scope": "disposable exact-B0 source copy; Intel conditional directives translated mechanically for GNU preprocessing; SWCSV=0 portability setting as already qualified",
+    "normal_completion": true,
+    "instrumentation_boundary": "post SoilWater(3), pre TimeControl(3)",
+    "instrumentation_only": true,
+    "accepted_interval_rows": 32518,
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "matches_qualified_B1_11_uninstrumented_baseline": true,
+    "full_trace_sha256": "e02044106b8cfb924f4f69c2c5e51362d88dfff123f13aadb2c2406210785767",
+    "claim_limit": "This disposable B0 trace is route-discovery/supporting evidence only. It does not replace the preregistered exact-B1.11 observation campaign."
+  },
+  "frozen_interval_route_observations": [
+    {"date":"2002-01-05","swinter":0,"swcf":0,"icrop":1,"net_rain_cm_d":0.0,"ptra_cm_d":5.8493145150634915e-25,"qbot_cm_d":0.0,"noddrz":0},
+    {"date":"2002-07-15","swinter":1,"swcf":1,"icrop":1,"net_rain_cm_d":0.0,"ptra_cm_d":0.49163602522958971,"qbot_cm_d":0.0,"noddrz":24},
+    {"date":"2003-05-15","swinter":1,"swcf":1,"icrop":2,"net_rain_cm_d":0.25,"ptra_cm_d":1.8403879127174786e-24,"qbot_cm_d":0.0,"noddrz":0},
+    {"date":"2003-08-15","swinter":3,"swcf":2,"icrop":2,"net_rain_cm_d":0.0,"ptra_cm_d":0.36989155956560815,"qbot_cm_d":0.0,"noddrz":13},
+    {"date":"2004-01-15","swinter":3,"swcf":2,"icrop":3,"gross_rain_cm_d":0.56,"interception_cm_d":0.010184502512019959,"net_rain_cm_d":0.54981549748798,"ptra_cm_d":0.0047014973566050335,"qbot_cm_d":0.0,"noddrz":12},
+    {"date":"2004-10-15","swinter":3,"swcf":2,"icrop":3,"gross_rain_cm_d":0.47,"interception_cm_d":0.05235784373500879,"net_rain_cm_d":0.41764215626499124,"ptra_cm_d":0.03749398442638522,"qbot_cm_d":0.0,"noddrz":14}
+  ],
+  "route_classification": {
+    "inactive_canopy": "observed",
+    "F_APP04_SWETR0_SWDIVIDE1_SWINTER1_SWCF1": "observed and already admitted",
+    "SWINTER3_SWCF2": "observed and not admitted",
+    "bottom_boundary_SWBOTB6": "observed qbot=0 and already admitted",
+    "conclusion": "Whole-Hupsel M1-C3 cannot close on F-APP04 alone. The remaining atmospheric/canopy surface is specifically the active stateful Rutter SWINTER=3 route together with legacy SWCF=2 canopy materialization."
+  },
+  "verdict": "QUALIFIED_ROUTE_NARROWING_UNCOVERED_SWINTER3_SWCF2",
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "mutations": {"production":"NONE","reference":"NONE","physics":"NONE","solver":"NONE","timestep":"NONE","tolerances":"NONE","qualification_evidence_only":true},
+  "next_permitted_action": "Open one serial application capability for the exact active SWINTER=3/SWCF=2 Hupsel envelope. Preregister stateful Rutter interception plus SWCF=2 legacy-canopy materialization, qualify against exact legacy observations, then return to exact-B1.11 M1-C3 trace and adapter closure."
+}
