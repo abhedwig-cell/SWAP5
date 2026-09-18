@@ -3,8 +3,8 @@
   "capability": "F-GC38",
   "title": "MODFLOW6 Prepared-Solve Iterative Backend",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_LIVE_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
   "baseline": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f",
@@ -68,5 +68,55 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head current-canonical F-GC38 live prepared-solve qualification. If green, checkpoint owner qualification and run an independent live verifier before admission."
+  "next_permitted_action": "Qualify this exact owner checkpoint head. If green, run independent F-VQ111 with production delta NONE, no owner-test reuse, and a distinct multi-slot prepared-solve fixture before canonical admission.",
+  "qualification": {
+    "qualified_head": "b95eff92f618746e6f7d2103ee27e849ac9e4ef5",
+    "workflow_run": 35296284947,
+    "workflow_job": 105449371086,
+    "conclusion": "success",
+    "production_blob": "d26a11b292c114083d4de15c32f0a56fc45db833",
+    "current_canonical_dependencies": [
+      "F-GC34",
+      "F-GC35",
+      "F-GC36"
+    ],
+    "measured": {
+      "iterative_final_head_m": [
+        0.9,
+        0.6072738889883155,
+        0.2
+      ],
+      "clean_final_head_m": [
+        0.9,
+        0.6072738893643476,
+        0.2
+      ],
+      "max_path_difference_m": 3.7603209435133067e-10,
+      "path_equivalence_tolerance_m": 1.4901161193847656e-8,
+      "solve_counts": {
+        "iterative": 13,
+        "clean": 9
+      },
+      "stabilization_delta_iterative_m": 4.592992652874273e-13,
+      "stabilization_delta_clean_m": 1.680877659282487e-13
+    },
+    "pass_markers": [
+      "FGC38_BACKEND_BELOW_COUPLING_SERVICE",
+      "FGC38_NO_SWAP_OR_IMOD_COUPLING_OWNERSHIP",
+      "FGC38_NO_TIMESTEP_ACCEPTANCE_OWNERSHIP",
+      "FGC38_MODFLOW680_ASSET_SHA256",
+      "FGC38_REAL_FGC34_BRIDGE_BUILD",
+      "FGC38_MXITER_OVERRUN_BLOCKED_BEFORE_SOLVE",
+      "FGC38_OFFICIAL_MODFLOW680_LOADED",
+      "FGC38_ONE_PREPARE_SOLVE_PER_WINDOW",
+      "FGC38_XOLD_ACCEPTED_ORIGIN_FIXED",
+      "FGC38_X_EVOLVES_WITHIN_PREPARED_SOLVE",
+      "FGC38_LIVE_FGC34_REPUBLISH_BETWEEN_SOLVES",
+      "FGC38_FINAL_RESPONSE_CONVERGED",
+      "FGC38_CLEAN_ORIGIN_EQUIVALENCE",
+      "FGC38_FINALIZE_SOLVE_EXACTLY_ONCE",
+      "FGC38_BACKEND_DOES_NOT_FINALIZE_TIMESTEP",
+      "FGC38_PREPARED_SOLVE_ITERATIVE_BACKEND_GATE"
+    ]
+  }
 }
