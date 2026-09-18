@@ -3,8 +3,8 @@
   "capability": "F-GC34",
   "title": "MODFLOW6 Typed API Binding",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_IMPLEMENT",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_TYPED_API_BINDING",
   "authority_reconciliation": {
     "canonical_f_gc40": "MultiSWAP MODFLOW6 Cell Response — closed canonical",
     "canonical_f_gc33": "MODFLOW6 Linear Response Backend — closed canonical",
@@ -53,5 +53,27 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head current-canonical F-GC34 qualification. If green, checkpoint owner qualification and perform independent qualification before admission."
+  "next_permitted_action": "Qualify this exact owner status head. If green, run independent F-VQ108 with production delta NONE and no owner-test reuse before canonical admission.",
+  "qualification": {
+    "qualified_head": "d3a5b77d6d90c50a91123a2c73cf4dc430ae5f24",
+    "workflow_run": 35293462444,
+    "workflow_job": 105441064973,
+    "conclusion": "success",
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "current_canonical_dependency": "F-GC33",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FGC34_TYPED_PACKAGE_BINDING",
+      "FGC34_NO_XMI_SOLVE_OR_COMMIT",
+      "FGC34_EXPLICIT_IDENTITY_MAPPING",
+      "FGC34_HCOF_RHS_PUBLICATION",
+      "FGC34_NBOUND_ACTIVE_PREFIX",
+      "FGC34_ORDER_INDEPENDENCE",
+      "FGC34_N_TO_1_NODE_PRESERVATION",
+      "FGC34_UNMAPPED_TAIL_PRESERVED",
+      "FGC34_ATOMIC_FAIL_CLOSED",
+      "FGC34_TYPED_API_BINDING_GATE",
+      "FGC34_O0_O2_OUTPUT_IDENTITY"
+    ]
+  }
 }
