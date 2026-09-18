@@ -3,8 +3,8 @@
   "work_unit": "F-GC47",
   "title": "Mixed-topology real SWAP live MODFLOW6 application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_MIXED_TOPOLOGY_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "06e585cc16710da00267deed878567ca1936fe7e"
@@ -44,5 +44,23 @@
     "runtime finite-difference tangent fallback"
   ],
   "production_delta": "NONE",
-  "next_permitted_action": "Implement qualification-only mixed-topology bridge, live MODFLOW gate and independent verifier; admit only if exact-head owner/independent evidence is green and canonical remains non-conflicting."
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ119 evidence, repair only scoped failures, then reconcile canonical and admit/close if all criteria pass.",
+  "implemented": [
+    "three-participant qualification-only real FMR/SWAP bridge",
+    "cell 7001 F-GC40 two-tile N:1 response with 0.35/0.65 fractions",
+    "cell 7002 F-GC40 single-tile-equivalent response",
+    "F-GC34 two-slot/two-node live MODFLOW mapping",
+    "cell-specific corrector routing with common head only inside the N:1 cell",
+    "three prepared interface ledgers and all-participant preflight before publication",
+    "live MODFLOW6 6.8.0 mixed-topology owner workflow",
+    "F-VQ119 independent architecture/order verifier"
+  ],
+  "admission_criteria": [
+    "exact-head mixed-topology live owner qualification green",
+    "exact-head F-VQ119 independent qualification green",
+    "canonical delta remains non-conflicting",
+    "production source delta remains NONE",
+    "PR mergeable and scope remains homogeneous N:1 plus 1:1 composition only"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
 }
