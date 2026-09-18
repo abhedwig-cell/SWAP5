@@ -9,6 +9,7 @@ FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
+FSI39_PRODUCTION=20d34024cfe4b981b6c00d5042bdf366f8aae830
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
@@ -30,6 +31,8 @@ ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
 BACKEND_FROSS12=19d07cac9285142d14a6e9c53706fb73d016d5ad
 BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
 BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
+FSI39_PROVIDER=90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
+FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -52,7 +55,6 @@ dependency_surface=(
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
-  src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
@@ -115,16 +117,27 @@ done
 test "$(git rev-parse HEAD:$SW)" = "$SW_P2E05" || fail 'typed solver contract is not the qualified P2E05 blob'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Reference adapter is not the qualified P2E05 blob'
 
-# Preserve the F-ROSS12 selection authority. The serialized Reference backend
-# has one later independently qualified canonical successor from F-GC31/F-CI98.
+# Preserve the F-ROSS12 selection authority. The default-MvG provider and
+# serialized Reference backend have one later exact semantic successor from
+# F-SI39. F-SI39 was independently qualified (F-VQ127), is an ancestor of
+# current canonical, keeps its new KSATEXM path opt-in by default, and its
+# production postimages are pinned exactly here.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$FGC44_PRODUCTION" HEAD; then
+if git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" ||     fail 'admitted F-SI39 default-MvG provider successor drift'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$FSI39_BACKEND" ||     fail 'admitted F-SI39 serialized backend successor drift'
+  echo 'FCI_CANONICAL_FSI39_PROVIDER_SUCCESSOR=PASS'
+  echo 'FCI_CANONICAL_FSI39_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$FGC44_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" =     "$(git rev-parse "$AUTH:src/solver/mod_b110_default_mvg_provider.f90")" ||     fail 'pre-F-SI39 default-MvG provider drift'
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC44" || fail 'admitted F-GC44 serialized backend successor drift'
   echo 'FCI_CANONICAL_FGC44_BACKEND_SUCCESSOR=PASS'
 elif git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" =     "$(git rev-parse "$AUTH:src/solver/mod_b110_default_mvg_provider.f90")" ||     fail 'pre-F-SI39 default-MvG provider drift'
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC31" || fail 'admitted F-GC31 serialized backend successor drift'
   echo 'FCI_CANONICAL_FGC31_BACKEND_SUCCESSOR=PASS'
 else
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" =     "$(git rev-parse "$AUTH:src/solver/mod_b110_default_mvg_provider.f90")" ||     fail 'pre-F-SI39 default-MvG provider drift'
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FROSS12" || fail 'admitted F-ROSS12 serialized backend drift'
 fi
 if [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$ROSS_ADAPTER)" == "$FROSS22_TIERED_SOLVER" ]]; then
@@ -178,5 +191,8 @@ echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'
 echo 'FCI64_MOVING_ENERGY_LEDGER_OWNED_RECEIPT_PRESERVATION=PASS'
 echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
 echo 'FCI96_MOVING_FROSS12_SUCCESSOR_PRESERVATION=PASS'
+if git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
+  echo 'FCI_CANONICAL_FSI39_EXACT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS'
+fi
 echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
 echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
