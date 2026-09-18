@@ -1,0 +1,49 @@
+name: F-ROM1A I0 Reference observation seam
+
+on:
+  push:
+    branches:
+      - work/f-rom1a-bootstrap
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'integration/f-rom/F-ROM1A_I0_*'
+      - 'docs/science/F-ROM1A_I0_*'
+      - 'tests/rom/test_f_rom1a_i0_reference_observation_seam.f90'
+      - 'tests/rom/analyze_f_rom1a_i0_reference_observation_seam.py'
+      - 'tests/rom/run_f_rom1a_i0_reference_observation_seam.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - 'tests/rom/materialize_f_rom0_headcalc_stubs.py'
+      - '.github/workflows/f-rom1a-i0-reference-observation-seam.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom1a-i0-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify current-canonical research Reference observation seam
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM1A-I0-EVIDENCE
+          F_ROM1A_I0_EVIDENCE_DIR="$PWD/F-ROM1A-I0-EVIDENCE"             bash tests/rom/run_f_rom1a_i0_reference_observation_seam.sh | tee F-ROM1A-I0-EVIDENCE/gate.txt
+      - name: Preserve I0 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom1a-i0-${{ github.run_id }}
+          path: F-ROM1A-I0-EVIDENCE
+          if-no-files-found: warn
