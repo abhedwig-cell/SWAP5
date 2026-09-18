@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "authority_reconciliation": {
+    "canonical_f_gc31": "Restricted Active-Drainage Lagged Tangent",
+    "canonical_f_gc40": "MultiSWAP MODFLOW6 Cell Response",
+    "historical_f_gc33_dependency": "provisional F-GC31 MultiSWAP cell response",
+    "corrected_dependency": "F-GC40",
+    "production_formula_change": "NONE"
+  },
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "f_gc40_closeout_head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "historical_owner_head": "1eccdf9d7d365bc2449d7070e3beefb5ac419b82"
+  },
+  "production": {
+    "path": "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "donor_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "rematerialized_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "byte_identical": true
+  },
+  "scientific_decision": {
+    "source_form": "q_u(H)=q_ref+s*(H-H_ref)",
+    "volume_form": "Q(H)=A*86400*q_u(H)",
+    "modflow_form": "Q(H)=HCOF*H-RHS",
+    "hcof": "A*86400*s",
+    "rhs": "HCOF*H_ref-A*86400*q_ref",
+    "sign": "positive outward from SWAP maps to positive infiltration into MODFLOW6 without sign inversion",
+    "identity_boundary": "groundwater_cell_id is a coupling-domain identity and is not a MODFLOW NODELIST index"
+  },
+  "historical_evidence": {
+    "donor_owner_head": "1eccdf9d7d365bc2449d7070e3beefb5ac419b82",
+    "donor_green_run": 35287200861,
+    "donor_conclusion": "success",
+    "note": "Reusable only because the production blob is byte-identical; current-canonical replay is still required."
+  },
+  "qualification_plan": [
+    "pure linear backend / no XMI NODELIST commit dependencies",
+    "exact HCOF/RHS transform",
+    "reference-head and second-head closure against canonical F-GC40",
+    "reference representation invariance",
+    "area scaling",
+    "sign preservation",
+    "coupling identity not reinterpreted as node index",
+    "fail-closed invalid/nonfinite inputs",
+    "O0/O2 output identity"
+  ],
+  "exclusions": [
+    "MODFLOW6/XMI pointer access",
+    "API package mutation",
+    "NODELIST mapping",
+    "predictor/corrector orchestration",
+    "groundwater execution-service redesign",
+    "Ribasim",
+    "irrigation",
+    "active-drainage envelope expansion",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head F-GC33 current-canonical qualification. If green, checkpoint owner qualification and proceed to independent qualification before admission."
+}
