@@ -31,16 +31,14 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | Methods E1–E7 | READY; E7 executed to preregistered component-domain stop |
 | Results E1–E7 | READY |
 | Discussion / conclusions | READY through E7 and evidence-bounded |
-| Figures F1–F6 | BUILT_AND_LINKED |
-| Figure F7 | BUILT_AND_LINKED |
-| Tables T1–T5 | BUILT_AND_LINKED |
-| Table T6 | BUILT_AND_LINKED |
+| Figures F1–F7 | BUILT_AND_LINKED |
+| Tables T1–T6 | BUILT_AND_LINKED |
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
 | notation / units glossary | READY: `PUB_GC_NOTATION_AND_UNITS.md` |
-| supplementary methods/evidence package | READY_THROUGH_E6: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` |
-| machine-readable reproducibility manifest | READY_THROUGH_E6: `PUB_GC_REPRODUCIBILITY_MANIFEST.json` |
+| supplementary methods/evidence package | READY_THROUGH_E7: `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` |
+| machine-readable reproducibility manifest | READY_THROUGH_E7: `PUB_GC_REPRODUCIBILITY_MANIFEST.json` |
 
 ## What remains scientific
 
@@ -49,6 +47,16 @@ No preregistered primary experiment remains open for the current bounded manuscr
 E7 closes RQ5 negatively but validly: the prospectively selected Hupsel days require active drainage, whereas the current production prescribed-head owner rejects active drainage before owner-state allocation. The study therefore reports a realistic component-domain limit rather than inventing a looser Hupsel process profile.
 
 E8 remains deferred and is not required for the current central claims. A future prescribed-head capability that admits active drainage could support a separate prospective follow-up, but it must not retroactively replace E7.
+
+## Journal positioning
+
+Primary target: **Geoscientific Model Development (GMD)** as a **Development and technical paper**.
+
+Secondary target: **Environmental Modelling & Software**.
+
+The target-journal rationale and GMD-specific submission gates are frozen in `PUB_GC_JOURNAL_POSITIONING.md`. Journal positioning does not broaden the E1–E7 claim set.
+
+The main remaining submission blocker is archival rather than scientific: GMD requires a persistent public archive with a unique identifier for the exact SWAP5 version described in the paper. The live GitHub repository remains the development location but is not sufficient by itself for that requirement.
 
 ## What remains editorial / submission-specific
 

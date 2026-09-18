@@ -44,21 +44,20 @@ Do not add another synthetic strong-feedback search merely because E6 is negativ
 
 ## Claim audit
 
-`PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md` checks every governed GC-C01–GC-C14 claim against the consolidated manuscript. Current verdict: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED`.
+`PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md` checks every governed GC-C01–GC-C15 claim against the consolidated manuscript. Current verdict: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED`.
 
-The claim audit is rerun after any substantive E7 insertion or journal-positioning rewrite.
+E7 is closed. Rerun the claim audit only after a substantive journal-positioning or manuscript-claim rewrite.
 
 
 ## Figure and literature package
 
-- F1–F6: **BUILT_AND_LINKED** as SVG;
+- F1–F7: **BUILT_AND_LINKED** as SVG;
 - F3–F6: standard-library regeneration script persisted;
 - figure evidence manifest: persisted;
 - external reference audit: `PUB_GC_REFERENCE_AUDIT.md`;
 - current references normalized against publisher/standard metadata;
 - current hydrologic modularity prior art (Trim et al. 2025) incorporated without broadening novelty claims.
 
-F7 is **BUILT_AND_LINKED** from the closed E7 component-domain result.
 
 
 ## Table and submission-readiness package

@@ -69,6 +69,12 @@ Claim-evidence ledger:
 
 `PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md`
 
+Journal positioning:
+
+- primary target: **Geoscientific Model Development (GMD)**, Development and technical paper;
+- secondary target: **Environmental Modelling & Software**;
+- submission route and archive requirements: `PUB_GC_JOURNAL_POSITIONING.md`.
+
 Current evidence state:
 
 - E1-E5 are closed with restricted claims;

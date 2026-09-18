@@ -34,7 +34,7 @@ The cleanup does not weaken these central distinctions:
 - prescribed-flux predictor map versus prescribed-head corrector map;
 - valid component-domain failure versus outer coupling failure;
 - fixed numerical interface criterion versus hydrological materiality;
-- bounded E1–E6 evidence versus still-open E7 transferability.
+- bounded E1–E7 evidence, including the closed realistic component-domain result and its explicit distinction from successful regional validation.
 
 ## Deliberately retained technical terms
 
@@ -45,3 +45,8 @@ The cleanup does not weaken these central distinctions:
 **NO SCIENTIFIC CLAIM CHANGE.**
 
 The main manuscript is now journal-facing while the repository evidence layer remains fully traceable.
+
+
+## E7 closure addendum
+
+The later E7 insertion preserves the same journal-facing prose rule: the realistic Hupsel result is reported as a component-domain limit, not as an executed loose/strong Hupsel–MODFLOW comparison. No manuscript sentence may imply that the fallback MODFLOW fixture was run for E7.
