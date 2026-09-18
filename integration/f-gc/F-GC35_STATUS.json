@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC35",
+  "title": "MODFLOW6 XMI Package Adapter",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE_IMPLEMENT",
+  "verdict": "READY_FOR_CURRENT_CANONICAL_REQUALIFICATION",
+  "authority_reconciliation": {
+    "canonical_f_gc34": "MODFLOW6 Typed API Binding — closed canonical",
+    "canonical_f_gc33": "MODFLOW6 Linear Response Backend — closed canonical",
+    "production_change": "NONE"
+  },
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df",
+    "historical_owner_head": "56237c94272fa110072e06c4bba54ad1eb05d061"
+  },
+  "production": {
+    "path": "src/adapter/modflow6_xmi_package_adapter.py",
+    "donor_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "rematerialized_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "byte_identical": true
+  },
+  "external_semantics_evidence": {
+    "imod_coupler": "Deltares/imod_coupler@3ddeec26ba1a0f1fcb4cf681b3f3202b4a6de6b7",
+    "xmipy": "Deltares/xmipy@9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "contract": "resolve NODELIST/HCOF/RHS/MAXBOUND/NBOUND addresses, acquire live pointers, reacquire after host prepare_time_step, keep host ownership of MODFLOW execution"
+  },
+  "qualified_contract_candidate": [
+    "exact XMI address acquisition for NODELIST/HCOF/RHS/MAXBOUND/NBOUND",
+    "initial acquisition after initialize does not open publication",
+    "all five live views are reacquired after each host prepare_time_step",
+    "post-prepare pointer validation checks positive MAXBOUND, scalar MAXBOUND/NBOUND, array capacity and compatible exposed dtypes",
+    "pre-prepare stale/dummy NODELIST cannot be forwarded after refresh",
+    "bindings and F-GC33 terms pass unchanged to the injected canonical F-GC34 publisher",
+    "live NODELIST/HCOF/RHS/NBOUND views are forwarded by identity without copying",
+    "one successful F-GC34 publication is required for the current generation before close_before_prepare_solve succeeds",
+    "previous-generation publication cannot satisfy a later timestep",
+    "nonzero F-GC34 status does not satisfy the solve-boundary guard",
+    "adapter does not call MODFLOW initialize/prepare/solve/finalize methods"
+  ],
+  "historical_evidence": {
+    "exact_head": "56237c94272fa110072e06c4bba54ad1eb05d061",
+    "exact_head_run": 35288150266,
+    "conclusion": "success",
+    "note": "Historical evidence supports byte-identical semantics; current-canonical replay is required."
+  },
+  "evidence_boundary": {
+    "qualified_candidate": "mock-XMI API shape, pointer refresh and publication-window contract",
+    "excluded": [
+      "real libmf6 shared-library execution",
+      "actual xmipy NumPy pointer views in a live MODFLOW model",
+      "concrete cross-language F-GC34 callable bridge",
+      "end-to-end MODFLOW solve with SWAP5 terms"
+    ]
+  },
+  "exclusions": [
+    "MODFLOW execution ownership",
+    "head exchange",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation",
+    "canonical admission"
+  ],
+  "next_permitted_action": "Run exact-head current-canonical F-GC35 qualification. If green, checkpoint owner qualification and perform independent qualification before admission."
+}
