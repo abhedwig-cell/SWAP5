@@ -2,12 +2,44 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS18",
   "title": "RossFast temporal substep matrix",
-  "phase": "RECONCILE",
-  "status": "PREREGISTERED_RESEARCH_ONLY",
+  "phase": "QUALIFY",
+  "status": "IMPLEMENTED_PENDING_EXECUTION",
   "branch": "work/f-ross18-temporal-substep-matrix",
   "source_head": "405ad30e823ea44deedf73edc67c68e01564c617",
   "production_or_reference_mutation": false,
-  "variants": ["K8","K4","K2"],
-  "verdict": "READY_FOR_RESEARCH_MATRIX",
-  "next_permitted_action": "Run temporary-build science and performance matrix; do not mutate src/** or reference/**."
+  "variants": {
+    "K8": {
+      "component_substeps": 8,
+      "total_candidate_steps": 24,
+      "expected_linear_solves": 24,
+      "role": "F-ROSS17 authority"
+    },
+    "K4": {
+      "component_substeps": 4,
+      "total_candidate_steps": 12,
+      "expected_linear_solves": 12,
+      "role": "research-only"
+    },
+    "K2": {
+      "component_substeps": 2,
+      "total_candidate_steps": 6,
+      "expected_linear_solves": 6,
+      "role": "research-only"
+    }
+  },
+  "qualification": {
+    "science_matrix": "pending",
+    "temporal_acceptance_threshold": "indicator <= 1.0",
+    "performance_vs_reference": "pending"
+  },
+  "implementation": {
+    "science_harness": "tests/ross/test_ross18_substep_matrix.f90",
+    "timing_harness": "tests/ross/test_ross18_route_timing.f90",
+    "science_summarizer": "tools/performance/f_ross18_matrix_summary.py",
+    "paired_screen": "tools/performance/f_ross18_paired_screen.py",
+    "runner": "tests/ross/run_ross18_temporal_substep_matrix.sh",
+    "workflow": ".github/workflows/f-ross18-temporal-substep-matrix.yml"
+  },
+  "verdict": "READY_FOR_RESEARCH_MATRIX_EXECUTION",
+  "next_permitted_action": "Execute exact-head K8/K4/K2 matrix; do not mutate production source in F-ROSS18."
 }
