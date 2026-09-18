@@ -1,114 +1,97 @@
-# ROM-0 close-gate reconciliation after F-ROM0TA3
+# ROM-0 close-gate reconciliation through R3D4
 
 ## Purpose
 
-This reconciliation binds the live ROM-0 evidence to the original close gates and prevents successful sub-capabilities from being mistaken for ROM-0 closure.
+This document binds the live ROM-0 evidence to the original preregistered close gates. Earlier intermediate results remain preserved, but the strongest non-conflicting authority governs each gate.
 
-## Current gate state
-
-### Ownership
+## Ownership
 
 **PASS_WITH_RESEARCH_SCOPE.**
 
-F-ROM0TA3 uses the separate F-KT Reference-floor sample/candidate/commit path. Research does not directly publish arbitrary solver candidates. Lineage, revision and committed time remain kernel-owned.
+F-ROM0TA3 introduced the separate F-KT Reference-floor sample/candidate/commit path. Research code cannot directly publish an arbitrary solver candidate. R3D4 uses that same path for both the strict first attempt and the conditional accepted fallback. Failed attempts leave lineage, revision, committed time and physical state unchanged.
 
-### Reproducibility
+## Reproducibility
 
 **PASS.**
 
-F-ROM0TA4 qualified the retained 0.0008 d candidate under exact restart/replay:
-- run 35372014491;
-- executed head 0037635443454ce6b7e6d4fe56534874451f8a92;
-- 4/4 B01/B14 TOP_PLUS/TOP_MINUS cases;
-- all 32 post-restart replay points bit-identical;
-- wrong-parameter restore fails closed;
-- no worker/solver scratch persistence required.
+F-ROM0TA4 qualified the retained 0.0008-day fixed-resolution candidate under exact restart/replay. All four B01/B14 TOP_PLUS/TOP_MINUS cases replayed bit-identically after restart, wrong-parameter restore failed closed, and no solver scratch continuation was required.
 
-### Conservation
+## Conservation
 
-**PASS for all retained Reference-floor samples.**
+**PASS for retained Reference-floor trajectories.**
 
-TA3, TA4, TA5, R3 diagnostics and the R3R1 candidate-policy experiment preserve the independent hard transaction mass gate. The R3R1 candidate full-horizon matrix reached a maximum absolute transaction mass residual of only 8.673617379884035e-19 cm.
+TA3/TA4/TA5 and the R3 diagnostic/qualification chain preserve the independent hard transaction mass gate of 1e-12 cm. R3D4's maximum absolute committed transaction mass residual is 8.673617379884035e-19 cm.
 
-### Prescribed-head sample binding
+## Prescribed-head sample binding
 
 **PASS.**
 
 F-ROM0TA5 qualified mode-5 prescribed-head Reference-floor sampling for B01 and B14 without changing the kernel sample core, canonical interval runtime or Reference solver.
 
-### Bidirectional reachability
+## Bidirectional lower-boundary reachability
 
-**NOT CLOSED.**
+**PASS under the qualified ROM research Reference policy; original fixed-total R3 remains a recorded no-go.**
 
-The original frozen R3 matrix remains PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO.
+The original frozen R3 control at 0.0008 d, 16 iterations and fixed 1e-12 cm/day total-balance rate criterion remains:
+- B14 rise/fall: full-horizon PASS with directional separation;
+- B01 rise: retry at step 11;
+- B01 fall: retry at step 10.
 
-Under the original 0.0008 d / 16-iteration / 1e-12 convergence controls:
-- B14 rise and fall both complete and show the preregistered directional separation;
-- B01 rise requests legacy-reference-retry at perturbation step 11;
-- B01 fall requests legacy-reference-retry at perturbation step 10.
+R3D1 proved both B01 failures are RETRY_TOTAL_ONLY: zero local-balance flags, zero head flags, and only the signed total-column residual slightly exceeds the fixed total criterion.
 
-R3D1 classified both B01 failures as **RETRY_TOTAL_ONLY**:
-- zero local compartment-balance flags;
-- zero head-convergence flags;
-- max absolute local residuals remain below 1e-12 cm/day;
-- only the signed total residual exceeds the fixed 1e-12 cm/day criterion.
+R3D2 proved before any remedy that both integrated residuals lie inside the independently derived PUB-P2E21 prospective representation bound:
+- bound = 8.881784197001252e-15 cm;
+- rise residual = 8.4821039081362e-16 cm = 0.0955 of bound;
+- fall residual = 1.2569500995596178e-15 cm = 0.14152 of bound.
 
-R3D2 then showed, without changing any solver control, that both integrated total residuals lie inside the independently derived prospective representation bound:
-- representation bound: 8.881784197001252e-15 cm;
-- B01 rise integrated residual: 8.4821039081362e-16 cm (0.0955 of bound);
-- B01 fall integrated residual: 1.2569500995596178e-15 cm (0.14152 of bound).
+R3D3 tested an always-on representation-bounded total criterion. It completed all four trajectories but failed the preregistered bit-level overlap-neutrality gate because it changed Newton stopping points before the original control failed. That policy is NO-GO.
 
-This explains the R3 no-go numerically but does not reclassify it.
+R3D4 then qualified the stricter fail-closed policy:
+1. compute the prospective representation bound from the accepted pre-solve state;
+2. attempt the exact original R3 criterion first;
+3. if it succeeds, commit the original candidate unchanged and forbid fallback;
+4. only after an immutable failed attempt, independently classify the failure;
+5. fallback is permitted only for RETRY_TOTAL_ONLY with integrated residual inside the pre-solve representation bound;
+6. reattempt the same interval once on a fresh backend with only total_balance_tolerance=max(1e-12, B_rep/dt);
+7. retain the unchanged hard 1e-12 cm transaction mass gate.
 
-### Candidate representation-bounded Reference policy
+Observed R3D4 qualification:
+- 51/51 original accepted overlap steps bit-identical;
+- B01: exactly two fallbacks, one per direction;
+- B14: zero fallbacks;
+- 4/4 full trajectories complete;
+- directional lower-storage and bottom-exchange ordering PASS for B01 and B14;
+- O0/O2 bit identity PASS;
+- no production/reference source mutation.
 
-**NO-GO: ENDPOINT NEUTRALITY.**
+Decision: **R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED** for this frozen ROM research Reference domain.
 
-R3R1 preregistered a separate research candidate policy:
-total_balance_rate_tolerance = max(1e-12, representation_bound_cm / dt_day).
+### Reconciliation of R3Q1/R3Q2
 
-The candidate:
-- completed all 64 perturbation intervals in all four B01/B14 rise/fall cases;
-- reproduced the original B01 failure locations in the control trajectory;
-- preserved the hard mass gate;
-- was O0/O2 and repeat bitwise deterministic;
-- produced the required directional response for both materials.
+R3Q1/R3Q2 remain useful supporting evidence, but they use a weaker P2E budget-based endpoint-neutrality definition for an always-active representation policy. R3D4 preserves every original accepted overlap endpoint bit-for-bit and is therefore the stronger, governing ROM-0 lower-boundary authority. R3Q1/R3Q2 must not be used to relax R3D4's exact-overlap rule.
 
-However, the preregistered endpoint-neutrality gate failed:
-- 51 original-control accepted endpoints required comparison;
-- only 8 remained bit-identical;
-- 43 changed under the candidate policy.
+## Reference floor
 
-Decision: CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO.
+**PARTIAL; vertical-resolution measurement is the only remaining scientific gate.**
 
-The bit-identity gate may not be relaxed after observing this result.
+The temporal fixed-resolution component is available and the 0.0008-day trajectory is restart/replay qualified.
 
-### Reference floor
+The original ROM-0 preregistration still requires:
+- B01:E1_NOMINAL_FLUX, 16x10 cm versus 32x5 cm;
+- B14:E2_DRYING_FLUX, 16x10 cm versus 32x5 cm;
+- same 160-cm physical profile;
+- measure only, with no post-result accuracy threshold selection.
 
-**PARTIAL / BLOCKED BY PRESCRIBED-HEAD REFERENCE POLICY.**
+The vertical diagnostic is now authorized to preregister and execute.
 
-The temporal fixed-resolution component exists (0.0016 versus 0.0008 d) and restart/replay is qualified. The planned 16x10 cm versus 32x5 cm vertical-resolution diagnostic remains unexecuted.
-
-It must not be run as if the prescribed-head R3 domain were already admitted. The lower-boundary reachability gate is still open.
-
-### Production semantic mutation
+## Production semantic mutation
 
 **PASS_WITH_SCOPE.**
 
-TA5 only widened the research sample admission guard from bottom mode 2 to already-supported bottom mode 5. R3D1, R3D2 and R3R1 are test/evidence work only and mutate no production or Reference source.
+TA5 only widened the research sample admission guard from bottom mode 2 to already-supported bottom mode 5. R3D1-D4 are test/evidence work only. No production Reference default or general fallback policy is admitted.
 
-## Current bounded-execution stop
+## Current bounded-execution state
 
-ROM-0 cannot proceed to ROM-1A.
+ROM-1A remains blocked until the vertical 16x10 versus 32x5 Reference-floor diagnostic is measured reproducibly and the six original ROM-0 close gates are re-adjudicated.
 
-The remaining blocker is now sharply identified as a **Reference numerical-policy governance choice**, not unknown physics or a generic solver instability.
-
-Without new authority, the following are forbidden:
-- relaxing the R3R1 bit-identity neutrality gate;
-- adopting the failed always-on representation-bounded candidate;
-- introducing a conditional second-solve/retry policy;
-- changing dt, iteration limits, tolerances or perturbation amplitudes;
-- treating the vertical-resolution diagnostic as sufficient to bypass R3;
-- proceeding to ROM-1A.
-
-A future continuation therefore requires explicit authority for a new prescribed-head Reference-floor policy, or an explicit decision that the original R3 no-go closes ROM-0 negatively.
+No threshold may be selected or retuned from the vertical result inside ROM-0.
