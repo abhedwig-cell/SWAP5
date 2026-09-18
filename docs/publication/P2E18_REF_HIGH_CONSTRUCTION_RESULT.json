@@ -1,69 +1,72 @@
 {
-  "schema": "swap5.publication.p2e18-ref-high-construction-result.v1",
+  "schema": "swap5.publication.p2e18-ref-high-construction-result.v2",
   "workunit": "PUB-P2E18",
   "publication_owner": "PUB-SQ",
-  "phase": "BLOCKED_REFERENCE_REFINEMENT_ROUTE",
-  "executed_head": "7299e7dc541967990ddefd29546d5e13aa3cad49",
-  "execution": {
+  "phase": "INVALID_EXECUTION_IMPLEMENTATION_DID_NOT_MATCH_STRENGTHENED_PREREGISTRATION",
+  "strengthened_preregistration": {
+    "blob": "8886758ff46878a682a0ab9f57fd58a347b1f49e",
+    "refinement_levels": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "ref_high_candidate_substeps": 32,
+    "required_fine_comparisons": [
+      "8_vs_16",
+      "16_vs_32"
+    ],
+    "rule": "Both fine comparisons plus all-level Reference route validity are required."
+  },
+  "invalid_execution": {
     "workflow_run": 35291755593,
     "job": 105435893920,
-    "conclusion": "PASS_HARNESS",
-    "O0_O2_identical": true,
-    "output_sha256": "f37afd8862f0236bb829a1ce7e4745d42821c59c48f4d04e31e0a84a381f55cb"
-  },
-  "preregistered_matrix": {
-    "cases": 36,
-    "materials": [
-      "B01",
-      "B12",
-      "O01",
-      "O05",
-      "O14",
-      "O18"
-    ],
-    "Se": [
-      0.65,
-      0.85,
-      0.96
-    ],
-    "forcing": [
-      "DRYING",
-      "NOMINAL"
-    ],
-    "total_horizon_day": 0.0016,
-    "equal_substeps": [
+    "head": "7299e7dc541967990ddefd29546d5e13aa3cad49",
+    "implemented_refinement_levels": [
       1,
       2,
       4,
       8,
       16
-    ]
-  },
-  "observed": {
-    "stable_count": 0,
-    "unresolved_count": 36,
-    "scientific_outcome": "BLOCKED_REF_HIGH_UNRESOLVED_CASES",
-    "common_failure_stage": "REFINEMENT_ROUTE_INVALID",
-    "pattern": "Every case became route-invalid before the intended 8-versus-16 stability comparison. The first invalid level varied by case, but the finest 8- and 16-substep levels were invalid for all 36 cases."
-  },
-  "adjudication": {
-    "verdict": "BLOCKED_NON_INVARIANT_REFERENCE_CONVERGENCE_SCALING",
-    "basis": [
-      "The explicit Reference solver returns RETRY_ADVISED when HeadCalc requests timestep reduction; P2E18 treated that as route invalid.",
-      "HeadCalc applies CritDevBalCp and CritDevBalTot to residual rates. The residual includes storage change divided by dt, so the convergence quantities are in depth/time.",
-      "P2E18 held the rate tolerances fixed at 1e-12 cm/day while decreasing substep duration from 0.0016 to 0.0001 day.",
-      "Therefore the implied integrated balance convergence scale dt*CritDevBal shrank from 1.6e-15 cm to 1.0e-16 cm across the ladder, approaching floating-point summation resolution.",
-      "Because the intended 8-versus-16 endpoint comparison was never reached, 0/36 must not be interpreted as a failed REF-HIGH stability result."
     ],
-    "fldtmin_contamination_supported": false,
-    "note": "The test stub initializes global fldtmin false; the explicit adapter resets worker attempt control, and the observed failures arise as solve-level retry advice rather than a prerequest legacy-min-dt rejection."
+    "implemented_ref_high_candidate_substeps": 16,
+    "implemented_fine_comparison": "8_vs_16_only",
+    "harness_conclusion": "PASS",
+    "output_sha256": "f37afd8862f0236bb829a1ce7e4745d42821c59c48f4d04e31e0a84a381f55cb",
+    "authority_status": "NONAUTHORITATIVE_FOR_P2E18",
+    "reason": "The executed test/runner did not implement the already-strengthened preregistered 32-substep endpoint and second 16-vs-32 stability comparison."
   },
+  "diagnostic_observation_from_invalid_execution": {
+    "allowed_use": "debugging only, not REF-HIGH scientific evidence",
+    "observation": "Many Reference refinement levels returned route-invalid before the old 8-vs-16 comparison; this motivates gate-reason telemetry.",
+    "prohibited_interpretation": "Do not report 0/36 stable as a REF-HIGH result and do not infer failed numerical convergence from this invalid execution."
+  },
+  "subsequent_attempts": [
+    {
+      "workflow_run": 35291763308,
+      "head": "b9884c1641d5599602ddf6408740226f6bfb03e0",
+      "status": "PRE_SCIENTIFIC_RUNNER_AUTHORITY_MISMATCH"
+    },
+    {
+      "workflow_run": 35291784350,
+      "head": "7c47da0698949478fffa718b9d482c429ebbe49e",
+      "status": "PRE_SCIENTIFIC_BUILD_FAILURE"
+    },
+    {
+      "workflow_run": 35291889208,
+      "head": "d38d430c1325fc948ee2e497b165f3cd876c4cd4",
+      "status": "PRE_SCIENTIFIC_BUILD_FAILURE"
+    }
+  ],
   "candidate_firewall": {
     "rossfast_executed": false,
     "timing_executed": false,
     "equal_error_claim_made": false,
-    "p2e14_tolerances_retuned": false,
-    "cases_removed": false
+    "cases_removed": false,
+    "stability_budget_changed_after_scientific_execution": false
   },
-  "next_permitted_action": "Run a separate Reference-only diagnostic with a preregistered timestep-invariant integrated-balance convergence scale. Do not modify P2E18 post hoc and do not start RossFast timing."
+  "verdict": "P2E18_NOT_YET_EXECUTED_UNDER_ITS_FINAL_PREREGISTERED_DESIGN",
+  "next_permitted_action": "Repair only the Reference-only build/diagnostic harness, preserving the 36 cases, six-level refinement ladder, 32-substep endpoint, two fine comparisons and frozen stability budgets. Execute P2E18 only on a head that contains all of those authorities."
 }
