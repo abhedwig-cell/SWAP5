@@ -290,6 +290,76 @@ def test_live_outer_iteration(
                 kernel.finalize()
 
 
+
+def test_live_nonconvergence_fail_closed(
+    libmf6: Path,
+    publisher: Fgc34CtypesPublisher,
+) -> None:
+    with tempfile.TemporaryDirectory(prefix="fgc37-fail-closed-") as tmp:
+        workdir = Path(tmp)
+        build_live_model(workdir)
+
+        wrapped = XmiWrapper(lib_path=libmf6, working_directory=workdir)
+        kernel = CountingXmi(wrapped)
+        initialized = False
+        try:
+            kernel.initialize()
+            initialized = True
+
+            adapter = Modflow6XmiPackageAdapter(kernel, "GWF_1", "API_SWAP")
+            status = adapter.acquire_after_initialize()
+            require(
+                status == Modflow6XmiAdapterStatus.OK,
+                f"fail-closed F-GC35 acquisition failed: {adapter.last_error}",
+            )
+
+            host = Modflow6OuterIterationHost(
+                kernel,
+                adapter,
+                publisher,
+                "GWF_1",
+                monitored_head_indices=[1],
+                head_tolerance_m=0.0,
+                max_iterations=1,
+            )
+
+            result = host.solve_candidate(NonlinearQuasiNewtonProvider())
+            require(
+                result.status == Modflow6OuterIterationHostStatus.NOT_CONVERGED,
+                f"expected bounded nonconvergence, got {result.status}: {result.message}",
+            )
+            require(not result.candidate_ready and not result.committed, "failed solve published a candidate")
+            require(result.requires_reinitialize, "failed prepared solve did not require reinitialization")
+            require(host.requires_reinitialize, "host did not retain reinitialization requirement")
+            require(kernel.prepare_solve_count == 1, "fail-closed prepare_solve count mismatch")
+            require(kernel.solve_count == 1, "fail-closed solve count mismatch")
+            require(kernel.finalize_solve_count == 0, "nonconverged solve called finalize_solve")
+            require(
+                kernel.finalize_time_step_count == 0,
+                "nonconverged solve called finalize_time_step",
+            )
+
+            commit = host.commit_candidate()
+            require(
+                commit.status == Modflow6OuterIterationHostStatus.REINITIALIZATION_REQUIRED,
+                "failed prepared solve was still committable",
+            )
+            require(
+                kernel.finalize_time_step_count == 0,
+                "rejected commit finalized the failed timestep",
+            )
+
+            kernel.finalize()
+            initialized = False
+
+            print("FGC37_NONCONVERGENCE_FAIL_CLOSED=PASS")
+            print("FGC37_FAILED_PREPARED_SOLVE_REQUIRES_REINITIALIZATION=PASS")
+            print("FGC37_FAILED_SOLVE_NO_TIMESTEP_PUBLICATION=PASS")
+        finally:
+            if initialized:
+                kernel.finalize()
+
+
 def main() -> None:
     libmf6 = Path(os.environ["LIBMF6"]).resolve()
     bridge_library = Path(os.environ["FGC34_BRIDGE_LIB"]).resolve()
@@ -298,6 +368,7 @@ def main() -> None:
 
     publisher = Fgc34CtypesPublisher(bridge_library)
     test_live_outer_iteration(libmf6, publisher)
+    test_live_nonconvergence_fail_closed(libmf6, publisher)
 
 
 if __name__ == "__main__":
