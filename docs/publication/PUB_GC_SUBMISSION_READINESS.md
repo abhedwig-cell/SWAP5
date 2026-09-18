@@ -56,17 +56,17 @@ Secondary target: **Environmental Modelling & Software**.
 
 The target-journal rationale and GMD-specific submission gates are frozen in `PUB_GC_JOURNAL_POSITIONING.md`. Journal positioning does not broaden the E1–E7 claim set.
 
-The main remaining submission blocker is archival rather than scientific: GMD requires a persistent public archive with a unique identifier for the exact SWAP5 version described in the paper. The live GitHub repository remains the development location but is not sufficient by itself for that requirement.
+The remaining submission blockers are archival/governance rather than scientific. They are frozen in `PUB_GC_GMD_ARCHIVAL_GATE.md`: (A1) a governed SWAP5 publication version/release identifier, (A2) explicit software-licence and redistribution authority, and then (A3) a persistent exact-version archive with DOI or equivalent unique identifier. The live GitHub repository remains the development location but is not sufficient by itself for the GMD archive requirement.
 
 ## What remains editorial / submission-specific
 
 These items do not require new science:
 
-- select target journal and adapt title, abstract length, section style and bibliography format;
+- convert the already selected GMD route to final title/version, section, template and bibliography format;
 - insert final author list, affiliations, corresponding-author details and contribution statement;
 - add acknowledgements, funding and conflict/data/code availability declarations required by the journal;
 - freeze an archival repository release/DOI and replace development-revision language with the archived identifier;
-- final language/notation consistency pass after E7 or after an explicit decision to submit the bounded E1–E6 paper without E7;
+- final language/notation consistency pass on the closed E1–E7 manuscript;
 - prepare journal-resolution raster/PDF exports if the journal does not accept SVG.
 
 ## Decision boundary
@@ -102,3 +102,23 @@ This is an editorial cleanup only and does not change the claim/evidence state.
 Selection result: `PUB_GC_E7_STANDALONE_SELECTION_RESULT.md` / `.json`.
 
 Frozen dates: median-dynamics `2003-06-17`; high-dynamics `2003-05-20`. Groundwater fallback is the uncalibrated qualified F-GC44 conceptual fixture. No coupled output was observed before this freeze.
+
+
+## Archival/release gate
+
+Current state: **BLOCKED_GOVERNANCE_METADATA_NOT_SCIENCE**.
+
+Controlling records:
+
+- `PUB_GC_GMD_ARCHIVAL_GATE.md`;
+- `PUB_GC_GMD_ARCHIVAL_GATE.json`.
+
+Open blockers:
+
+- A1 — SWAP5 publication release/version identifier: governance decision required;
+- A2 — software licence / redistribution authority: governance or legal decision required;
+- A3 — persistent exact-version archive and DOI: external archive action after A1/A2;
+- A4 — final version-bound GMD title: depends on A1;
+- A5 — final Code and data availability statement: depends on A2/A3.
+
+No additional hydrological experiment is required to close these blockers.
