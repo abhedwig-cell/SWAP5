@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI100",
+  "capability": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "dependency_authority": "F-GC40 canonically admitted MultiSWAP cell response"
+  },
+  "owner": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend-reconciled",
+    "checkpoint_head": "3d01e4301ef0613b8e5440b1f74b0b9b62123f3d",
+    "exact_head_run": 35292855536,
+    "exact_head_job": 105439233696,
+    "conclusion": "success",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "status_blob": "88224657ab2152dfab29453a2c30325a16a84664"
+  },
+  "independent": {
+    "work_unit": "F-VQ107",
+    "status_head": "6e3b1c74e271aaab6dbfa2d130343f054ffd7c38",
+    "exact_head_run": 35292999311,
+    "exact_head_job": 105439666458,
+    "conclusion": "success",
+    "status_blob": "80ebce83f6d6d11b0033dc6547d5ab7ac6e6c935",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/runtime/mod_modflow6_linear_response_backend.f90"
+    ],
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "admitted_scope_candidate": [
+    "pure typed F-GC40 areal-affine to MODFLOW6 HCOF/RHS volume-flux transform",
+    "m/s to m3/day area/time conversion",
+    "sign-preserving positive SWAP-outward to MODFLOW infiltration convention",
+    "coupling cell identity retained without NODELIST interpretation"
+  ],
+  "exclusions": [
+    "XMI pointer access",
+    "API package mutation",
+    "NODELIST mapping",
+    "predictor/corrector orchestration",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Run F-CI100 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify status head, reconcile live canonical and non-force fast-forward."
+}
