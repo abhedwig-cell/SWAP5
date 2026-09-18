@@ -1,0 +1,35 @@
+name: F-CI98P F-GC31 postimage preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci98p-fgc31-postimage-preservation
+    paths:
+      - '.github/workflows/fci71-f-si37-moving-preservation.yml'
+      - '.github/workflows/fci72-eb-i23-moving-preservation.yml'
+      - '.github/workflows/fci74-eb-i24-moving-preservation.yml'
+      - '.github/workflows/fci79-eb-i25-moving-preservation.yml'
+      - '.github/workflows/fci98p-fgc31-postimage-preservation.yml'
+      - 'integration/f-ci/F-CI98P_STATUS.json'
+      - 'tests/fci/run_fci96_fross13_semantic_successor_preservation.sh'
+      - 'tests/fci/run_fci98p_fgc31_postimage_preservation.sh'
+      - 'tests/ross/run_ross12_serialized_production_wiring.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact preservation head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify F-GC31 postimage preservation
+        run: bash tests/fci/run_fci98p_fgc31_postimage_preservation.sh
