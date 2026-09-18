@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-BUILD="\${RUNNER_TEMP:-\${TMPDIR:-/tmp}}/swap5-pub-me-d1-\${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-me-d1-${GITHUB_RUN_ID:-local}-$$"
 PATCH="$ROOT/tests/publication/mutants/d1_rejected_candidate_write_through.patch"
 TEST="$ROOT/tests/publication/test_pub_me_d1_rejected_state_leakage.f90"
 P1E02_TEST="$ROOT/tests/publication/test_pub_p1e02_postsolver_rollback.f90"
@@ -110,17 +110,17 @@ build_and_run() {
 
   local objects=()
   local source obj
-  for source in "\${module_src[@]}"; do
+  for source in "${module_src[@]}"; do
     [[ -f "$source" ]] || fail "missing compile source $source"
-    obj="$out/$(basename "\${source%.*}")-$(echo "$source" | tr '/.' '__').o"
+    obj="$out/$(basename "${source%.*}")-$(echo "$source" | tr '/.' '__').o"
     local extra=()
     [[ "$source" == "src/solver/mod_soil_water_solver_contract.f90" ]] && extra=(-Wno-error=unused-dummy-argument)
-    gfortran "\${COMMON[@]}" "\${extra[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
+    gfortran "${COMMON[@]}" "${extra[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj"
     objects+=("$obj")
   done
 
-  gfortran "\${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$TEST" -o "$out/d1-test.o"
-  gfortran -fopenmp -O"$opt" "\${objects[@]}" "$out/d1-test.o" -o "$out/d1-test"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$TEST" -o "$out/d1-test.o"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$out/d1-test.o" -o "$out/d1-test"
   "$out/d1-test" > "$out/d1-output.txt" 2>&1 || {
     cat "$out/d1-output.txt" >&2
     fail "$mode D1 direct probe O$opt"
@@ -131,8 +131,8 @@ build_and_run() {
   }
 
   if [[ "$mode" == "mutant" ]]; then
-    gfortran "\${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$P1E02_TEST" -o "$out/p1e02-test.o"
-    gfortran -fopenmp -O"$opt" "\${objects[@]}" "$out/p1e02-test.o" -o "$out/p1e02-test"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$P1E02_TEST" -o "$out/p1e02-test.o"
+    gfortran -fopenmp -O"$opt" "${objects[@]}" "$out/p1e02-test.o" -o "$out/p1e02-test"
     "$out/p1e02-test" > "$out/p1e02-output.txt" 2>&1 || {
       cat "$out/p1e02-output.txt" >&2
       fail "mutant full-stack containment O$opt"
