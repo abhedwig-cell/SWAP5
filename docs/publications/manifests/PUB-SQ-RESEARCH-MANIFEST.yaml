@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: COMMON_MATERIAL_STATE_DOMAIN_QUALIFIED_THRESHOLD_FREEZE_NEXT
+  status: MATERIAL_AXIS_PRIMARY_SUPPORTED_BOUNDARY_EXPERIMENT_NEXT
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: remaining_thirty_F_ROSS13_materials
+    next_confirmatory_surface: admissibility_boundary_inside_boundary_outside
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -40,6 +40,20 @@ manifest:
       common_Se_levels: [0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.92, 0.94, 0.96]
       prospectively_selected_future_anchors: [0.65, 0.85, 0.96]
       next_permitted_action: Reference-only threshold freeze across all 36 materials and both retained forcing classes at the three selected anchors. RossFast extension execution remains forbidden.
+    P2E14_reference_threshold_freeze:
+      branch: work/pub-p2e14-reference-common-material-threshold-freeze
+      head: e680334ba1e8352db8d980fa8723ac31a279f636
+      result_blob: f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351
+      verdict: QUALIFIED_REFERENCE_ONLY_36_MATERIAL_THRESHOLD_SURFACE
+      finding: All 216 Reference pairs were valid at Se={0.65,0.85,0.96}; fifteen Se-stratified thresholds were frozen before new RossFast extension execution.
+    P2E15_material_extension_primary:
+      branch: work/pub-p2e15-material-extension-primary
+      head: fe5e34652e5da69c6e97977ca64c82db571e7441
+      result_blob: 2b3a911e6117e8e3af24c633a106e58fa7358a19
+      verdict: PRIMARY_MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_FROZEN_COMMON_DOMAIN_180_OF_180
+      finding: All 180 previously unobserved material-axis cases were paired-valid and admissible under the frozen P2E14 thresholds; no route invalidity or discrepancy failure occurred.
+      boundary_observation: D_storage reached exactly 1.0 times its inclusive frozen machine-scale envelope in at least one case; other worst metric fractions were below 0.285.
+      next_permitted_action: Preregister the separate admissibility-boundary experiment. Do not extend this result to WETTING, Se=0.98, transaction-level equivalence, heterogeneous profiles, root sinks, groundwater coupling or performance.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
