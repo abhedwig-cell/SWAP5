@@ -1,0 +1,57 @@
+name: F-ROM0TA4 refined Reference restart replay
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0TA4_*'
+      - 'docs/science/F-ROM0TA4_*'
+      - 'tests/rom/test_f_rom0ta4_restart_replay.f90'
+      - 'tests/rom/analyze_f_rom0ta4_restart_replay.py'
+      - 'tests/rom/run_f_rom0ta4_restart_replay.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - 'tests/rom/materialize_f_rom0_headcalc_stubs.py'
+      - '.github/workflows/f-rom0ta4-restart-replay.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROM0TA4_*'
+      - 'docs/science/F-ROM0TA4_*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0ta4-restart-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0ta4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  restart-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered restart replay qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0TA4_EVIDENCE
+          F_ROM0TA4_EVIDENCE_DIR="$PWD/F-ROM0TA4_EVIDENCE" \
+            bash tests/rom/run_f_rom0ta4_restart_replay.sh | tee F-ROM0TA4_EVIDENCE/gate.txt
+      - name: Preserve TA4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0ta4-${{ github.run_id }}
+          path: F-ROM0TA4_EVIDENCE
+          if-no-files-found: warn
