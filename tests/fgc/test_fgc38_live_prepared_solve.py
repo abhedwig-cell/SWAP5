@@ -192,7 +192,7 @@ def run_case(
             require(status == PreparedSolveStatus.OK, session.last_error)
 
             require(kernel.prepare_solve_calls == 1, "prepare_solve count mismatch")
-            require(session.max_solve_iterations == 300, "MXITER acquisition mismatch")
+            require(session.max_solve_iterations == 100, "MXITER acquisition mismatch")
             accepted_xold = session.accepted_xold.copy()
             heads: list[np.ndarray] = []
 
