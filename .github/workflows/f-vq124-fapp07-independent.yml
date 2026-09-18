@@ -1,0 +1,30 @@
+name: F-VQ124 F-APP07 independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq124-fapp07-hupsel-irrigation-independent
+    paths:
+      - 'tests/fvq/test_fvq124_fapp07_tcs1_dcs2_independent.f90'
+      - 'tests/fvq/test_fvq124_fapp07_composition_independent.f90'
+      - 'tests/fvq/run_fvq124_fapp07_tcs1_dcs2_independent.sh'
+      - 'tests/f-app07/fixtures/hupsel_irrigation_active_intervals_b111.csv.gz'
+      - '.github/workflows/f-vq124-fapp07-independent.yml'
+      - 'integration/f-vq/F-VQ124_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Independent F-APP07 qualification
+        run: bash tests/fvq/run_fvq124_fapp07_tcs1_dcs2_independent.sh
