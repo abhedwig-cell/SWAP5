@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-rom1a.successor-closeout.v1",
+  "workstream": "F-ROM",
+  "capability": "ROM-1A_REACHABLE_STATE_LIBRARY",
+  "phase": "CLOSED_SUCCESSOR_AUTHORITY",
+  "chronology": [
+    {"unit":"F-ROM1A","event":"parent preregistration frozen 12-history B01 design"},
+    {"unit":"F-ROM1A first execution","event":"failed D01 step21 under strict fixed-total Reference; no parent result issued"},
+    {"unit":"ROM1AD1","decision":"ROM1AD1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND"},
+    {"unit":"ROM1AD2","decision":"ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED"},
+    {"unit":"ROM1AR1","event":"successor run reached D08 step34 and correctly failed closed on non-total-only mode5 retry"},
+    {"unit":"ROM1AR1D1","decision":"ROM1AR1D1_RETRY_LOCAL_BALANCE"},
+    {"unit":"ROM1AR1D2","decision":"ROM1AR1D2_LOCAL_RESIDUAL_WITHIN_PRIOR_INTEGRATED_ALLOWANCE"},
+    {"unit":"ROM1AR1D3","decision":"ROM1AR1D3_DISCOVERY_LOCAL_PLUS_TOTAL_FALLBACK_QUALIFIED"},
+    {"unit":"ROM1AR2","decision":"ROM1AR2_REACHABLE_STATE_LIBRARY_QUALIFIED"}
+  ],
+  "final_library_authority": {
+    "result": "integration/f-rom/ROM1AR2_RESULT.json",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "material": "B01",
+    "states": 768,
+    "discovery": 512,
+    "held_out": 256
+  },
+  "reference_policy": {
+    "scope": "research Reference only",
+    "original_strict_attempt_always_first": true,
+    "total_only_fallback": "representation-bounded total criterion",
+    "local_balance_fallback": "only when zero head flags and failed local integrated residual is within the independent 1.6e-15 cm allowance; total residual must also be within pre-solve total representation bound",
+    "production_default_changed": false
+  },
+  "final_gates": {
+    "ownership_and_commit_authority": "PASS",
+    "deterministic_reproducibility": "PASS",
+    "mass_conservation": "PASS",
+    "library_split_integrity": "PASS",
+    "heldout_firewall": "PASS_NO_POLICY_RETUNING",
+    "B14_material_transfer_firewall": "PASS_NOT_EXPOSED",
+    "reduced_state_firewall": "PASS_NO_COORDINATE_OR_CLOSURE_WORK_IN_ROM1A"
+  },
+  "decision": "PROCEED_TO_ROM1B",
+  "rom1b_authorized": true,
+  "production_rom_authorized": false
+}
