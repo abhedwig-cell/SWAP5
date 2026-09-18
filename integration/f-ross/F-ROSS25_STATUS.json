@@ -2,59 +2,42 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS25",
   "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
-  "phase": "REPAIR",
-  "status": "PRIOR_INTERPRETATION_INVALIDATED_MECHANICAL_PREFLIGHT_SIGN_BUG_PENDING_REPLAY",
-  "branch": "integration/f-ross25-serial-hydrologic-validation-close",
-  "original_measurement_branch": "work/f-ross25-serial-hydrologic-validation",
-  "canonical_source_at_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
-  "canonical_reconciliation_head": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "phase": "QUALIFY",
+  "status": "CORRECTED_REPLAY_PR_TRIGGERED",
+  "branch": "work/f-ross25-serial-hydrologic-validation",
+  "canonical_source": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
   "production_or_reference_mutation": false,
-  "dependency_reconciliation": {
-    "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
-    "solver": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
-    "model_binding": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
-    "provider": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
-    "relevant_drift_since_preregistration": false,
-    "disposition": "Reuse measurement evidence. Later canonical changes are unrelated to the frozen RossFast/Reference dependency closure."
+  "verdict": "PENDING_CORRECTED_216_TRAJECTORY_REPLAY",
+  "next_permitted_action": "Execute the exact frozen 216-trajectory replay. Classify envelope loss, Reference failure and RossFast route failure separately; do not retune.",
+  "implementation": {
+    "harness": "tests/ross/test_ross25_serial_hydrologic_validation.f90",
+    "summary": "tools/performance/f_ross25_serial_validation_summary.py",
+    "wrapper": "tests/ross/run_ross25_serial_hydrologic_validation.sh",
+    "workflow": ".github/workflows/f-ross25-serial-hydrologic-validation.yml",
+    "production_or_reference_mutation": false
   },
-  "measurement": {
-    "workflow_run": 35350469193,
-    "job": 105617121612,
-    "artifact_id": 10549829161,
-    "artifact_digest": "sha256:0a91babdcb3e2ed1eb46b333e92d958e890cd3f5fd46a7eaa918ad9832fb8b48",
-    "execution_result": "PASS",
-    "scientific_result": "INVALIDATED_PENDING_CORRECTED_REPLAY"
-  },
-  "result": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_RESULT.json",
-  "key_findings": {
-    "trajectories": 216,
-    "rossfast_valid_all": 173,
-    "reference_valid_all": 210,
-    "paired_complete": 167,
-    "rossfast_failures": 43,
-    "rossfast_failure_first_interval": 2,
-    "rossfast_failure_policy": "NOMINAL_SHARED",
-    "zero_shared_rossfast_valid": "108/108",
-    "nominal_shared_rossfast_valid": "65/108",
-    "envelope_loss": 0
-  },
-  "authority_id_collision": {
-    "detected": true,
-    "earlier_authority": "F-ROSS25 serial hydrologic validation",
-    "later_colliding_branch": "work/f-ross25-tiered-wetting-seam-qualification",
-    "disposition": "F-ROSS25 remains assigned to the earlier preregistered and measured serial validation. The later WETTING seam qualification must continue as F-ROSS26."
-  },
-  "verdict": "INITIAL_NEGATIVE_INTERPRETATION_WITHDRAWN_MECHANICAL_PREFLIGHT_SIGN_BUG",
-  "next_permitted_action": "Replay the exact frozen 216-trajectory preregistration with only the public/top-flux envelope-preflight sign repair. Reclassify solver failure versus envelope loss; do not retune production or the experiment.",
+  "latest_head": "9230f3c5417cf76a937c0016e71f5b9ebdce425e",
+  "workflow_run": 35350469193,
+  "workflow_state": "QUEUED_NO_SCIENTIFIC_EVIDENCE_YET",
   "correction": {
-    "defect": "Serial harness evaluated public soil-water qtop against +0.01*K, while the production RossFast adapter maps internal_top=-public_top before its frozen +0.01*K state-local envelope check. The equivalent public-space envelope centre is -0.01*K.",
-    "consequence": "The reported 43 interval-2 NOMINAL_SHARED STATUS_NOT_CONVERGED cases were not established as solver failures because the harness preflight could label forcing envelope-valid when the production binding would reject it.",
-    "production_change": false,
-    "preregistration_change": false,
+    "authority": "integration/f-ross/F-ROSS25_SERIAL_ENVELOPE_PREFLIGHT_CORRECTION.json",
+    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
+    "defect": "public-space top-envelope reference sign only",
+    "production_mutation": false,
     "forcing_change": false,
     "tolerance_change": false,
     "tier_change": false,
-    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
-    "corrected_replay": "PENDING"
+    "domain_change": false
+  },
+  "execution_plumbing": {
+    "moving_canonical_runner": true,
+    "pull_request_workflow_exposed": true
+  },
+  "execution_surface": {
+    "canonical_infrastructure_commit": "addfb931ffe902cb2d15db3f5c4f07353adca256",
+    "corrected_test_blob": "ce59d660b8beb170dc3a504a62bc03724831b007",
+    "moving_runner_blob": "c6706001b97e9926014003305e5f7d2ae745a683",
+    "summary_blob": "f8d080e1e683bc3b747ff01e1734246523d7698b",
+    "workflow_blob": "5583c4813ea609b6d8c6ee9d1ed463ef70335c15"
   }
 }
