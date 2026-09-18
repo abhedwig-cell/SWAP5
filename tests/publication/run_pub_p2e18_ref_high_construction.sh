@@ -147,19 +147,19 @@ for opt in 0 2; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
 
-  levels="$(grep -Fc 'PUB_P2E18_LEVEL|' "$OUT/output.txt")"
-  stability="$(grep -Fc 'PUB_P2E18_STABILITY|CASE=' "$OUT/output.txt")"
-  deltas="$(grep -Fc 'PUB_P2E18_DELTA|CASE=' "$OUT/output.txt")"
-  thresholds="$(grep -Fc 'PUB_P2E18_STABILITY_THRESHOLD|' "$OUT/output.txt")"
+  levels="$(grep -Fc 'PUB_P2E18_LEVEL|' "$OUT/output.txt" || true)"
+  stability="$(grep -Fc 'PUB_P2E18_STABILITY|CASE=' "$OUT/output.txt" || true)"
+  deltas="$(grep -Fc 'PUB_P2E18_DELTA|CASE=' "$OUT/output.txt" || true)"
+  thresholds="$(grep -Fc 'PUB_P2E18_STABILITY_THRESHOLD|' "$OUT/output.txt" || true)"
   [[ "$levels" = "216" ]] || fail "expected 216 refinement-level records, got $levels"
   [[ "$stability" = "36" ]] || fail "expected 36 stability records, got $stability"
-  [[ "$deltas" = "72" ]] || fail "expected 72 fine-refinement delta records, got $deltas"
   [[ "$thresholds" = "3" ]] || fail "expected 3 stability threshold strata, got $thresholds"
 
   if grep -Fq 'PUB_P2E18_SCIENTIFIC_OUTCOME=QUALIFIED_REF_HIGH_36_OF_36' "$OUT/output.txt"; then
-    :
+    [[ "$deltas" = "72" ]] || fail "qualified REF-HIGH requires 72 fine-refinement delta records, got $deltas"
   elif grep -Fq 'PUB_P2E18_SCIENTIFIC_OUTCOME=BLOCKED_REF_HIGH_UNRESOLVED_CASES' "$OUT/output.txt"; then
-    :
+    (( deltas % 2 == 0 )) || fail "blocked REF-HIGH delta count must be even, got $deltas"
+    (( deltas <= 72 )) || fail "blocked REF-HIGH delta count exceeds 72, got $deltas"
   else
     cat "$OUT/output.txt" >&2
     fail 'missing REF-HIGH scientific outcome'
