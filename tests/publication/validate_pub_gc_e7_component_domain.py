@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 selection = json.loads((ROOT / "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json").read_text())
 wu01 = json.loads((ROOT / "integration/audits/PPA_WU01_STATUS.json").read_text())
+wu02 = json.loads((ROOT / "integration/audits/PPA_WU02_STATUS.json").read_text())
 wu03 = json.loads((ROOT / "integration/audits/PPA_WU03_STATUS.json").read_text())
 m1 = json.loads((ROOT / "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json").read_text())
 e6 = json.loads((ROOT / "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json").read_text())
@@ -54,8 +55,19 @@ require("tile%parameters%root_extraction_active" in validate,
         "root-extraction fail-closed guard missing")
 require(validate.index("tile%parameters%drainage_response_active") < validate.index("valid = .true."),
         "drainage-response guard occurs after admission")
-require("tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in validate,
-        "WU01 lower-boundary restriction changed")
+require("prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2" in init,
+        "PPA-WU02 prescribed-qbot profile missing")
+require("tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and." in validate and
+        "tile%parameters%bottom_mode /= 2" in validate,
+        "current lower-boundary profile catalogue unexpected")
+require(wu02["status"] == "CANONICAL_ADMITTED_CLOSED", "PPA-WU02 not closed")
+require(wu02["first_slice"]["semantic_delta"] ==
+        "Admit homogeneous bottom_mode=2 in the existing normal production application bootstrap.",
+        "PPA-WU02 semantic delta changed")
+require("groundwater coupling" in " ".join(wu02["first_slice"]["explicitly_not_admitted"]).lower() or
+        "ordinary prescribed-head mode5 application adapter outside groundwater ownership" ==
+        wu02["migration_slices"][2]["scope"],
+        "PPA-WU02 unexpectedly widened groundwater semantics")
 
 profiles = wu01["admitted_restricted_profiles"]
 require("bottom_mode=5" in profiles["groundwater"], "WU01 groundwater profile changed")
@@ -81,5 +93,6 @@ print("PUB_GC_E7_HUPSEL_DRAINAGE_REQUIRED_ON_HIGH_DAY=PASS")
 print("PUB_GC_E7_PRESCRIBED_HEAD_OWNER_BOTTOM_MODE5=PASS")
 print("PUB_GC_E7_ACTIVE_DRAINAGE_PROFILE_FAILS_BEFORE_OWNER_ALLOCATION=PASS")
 print("PUB_GC_E7_E6_PRECEDENT_PRETRANSACTION_NOT_ADMITTED=PASS")
+print("PUB_GC_E7_NO_WU02_GW_PROCESS_WIDENING=PASS")
 print("PUB_GC_E7_NO_WU03_PROFILE_WIDENING=PASS")
 print("PUB_GC_E7_OUTCOME=REALISTIC_COMPONENT_DOMAIN_LIMIT")
