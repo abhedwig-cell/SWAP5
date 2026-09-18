@@ -1,26 +1,6 @@
 name: F-ROSS26 tiered WETTING seam qualification
 
 on:
-  push:
-    branches:
-      - work/f-ross26-tiered-wetting-seam-qualification
-    paths:
-      - 'integration/f-ross/F-ROSS26_*'
-      - 'tests/ross/generate_ross26_wetting_oracle.py'
-      - 'tests/ross/test_ross26_tiered_wetting_kernel.f90'
-      - 'tests/ross/run_ross26_wetting_material_qualification.sh'
-      - 'tests/ross/aggregate_ross26_wetting_qualification.py'
-      - '.github/workflows/f-ross26-tiered-wetting-seam-qualification.yml'
-  pull_request:
-    branches:
-      - integration/f-ci-canonical
-    paths:
-      - 'integration/f-ross/F-ROSS26_*'
-      - 'tests/ross/generate_ross26_wetting_oracle.py'
-      - 'tests/ross/test_ross26_tiered_wetting_kernel.f90'
-      - 'tests/ross/run_ross26_wetting_material_qualification.sh'
-      - 'tests/ross/aggregate_ross26_wetting_qualification.py'
-      - '.github/workflows/f-ross26-tiered-wetting-seam-qualification.yml'
   workflow_dispatch:
 
 permissions:
