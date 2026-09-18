@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 
-Status: `TRIAGE_AUTHORITY_FREEZE_PENDING_QUALIFICATION`
+Status: `DEPENDENCY_GRAPH_AUTHORITY_FROZEN_CLOSED / IMPLEMENTATION_HELD`
 
 ## Purpose
 
@@ -206,6 +206,25 @@ WU05 closes only when an independent repository gate confirms:
 - macropore-first means review authority, not production admission;
 - narrative and machine-readable graph agree.
 
-## Verdict target
+## Qualification and closeout
 
-`ADVANCED_WATER_TRIAGE_AUTHORITY_FROZEN_FIRST_TARGET_MACROPORE_SOURCE_STATE_MASS_TRANSACTION_REVIEW`
+The repository qualification completed successfully:
+
+- PPA-WU05 authority workflow run `35379607616`, job `105712393295`: PASS;
+- Documentation run `35379607553`: PASS;
+- F-CI canonical qualification run `35379607550`: PASS;
+- production `src/` delta: none;
+- corrected-reference `reference/` delta: none.
+
+The parallel PR #336 was closed without merge after reconciliation showed that it used
+historical labels that could not be recovered as current canonical files or searchable
+repository commits. Those labels remain auditable on the branch but are not decision authority.
+PR #337 is the authoritative WU05 closeout route.
+
+## Verdict
+
+`DEPENDENCY_GRAPH_FROZEN_FIRST_TARGET_MACROPORE_SOURCE_STATE_MASS_TRANSACTION_AUTHORITY`
+
+PPA-WU05 is closed as a review/triage workunit. It admits no advanced-water production
+physics. PPA-WU05-A may start without reopening the broad triage, but it must recover the
+exact B1.11 macropore/macrorate lifecycle before freezing any internal state field list.
