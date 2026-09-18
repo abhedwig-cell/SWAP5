@@ -1,6 +1,6 @@
 program test_pub_gc_macro_window_response
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_value, ieee_quiet_nan
   use MOD_grid, only: numnod, z, dz, disnod
   use MOD_swap_base, only: swmacro
   use MOD_snow, only: legacy_melt => melt
