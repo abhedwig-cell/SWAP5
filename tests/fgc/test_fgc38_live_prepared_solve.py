@@ -307,7 +307,17 @@ def run_case(
                 "XOLD changed before finalize_time_step",
             )
 
-            raw_kernel.finalize_time_step()
+            require(session.timestep_ready_for_finalize(), "F-GC41 timestep readiness failed")
+            require(kernel.finalize_time_step_calls == 0, "readiness mutated timestep")
+            status = session.finalize_time_step_once()
+            require(status == PreparedSolveStatus.OK, session.last_error)
+            require(kernel.finalize_time_step_calls == 1, "F-GC41 timestep finalization count mismatch")
+            require(not session.timestep_ready_for_finalize(), "finalized timestep remained ready")
+            require(
+                session.finalize_time_step_once() == PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,
+                "second timestep finalization was not blocked",
+            )
+            require(kernel.finalize_time_step_calls == 1, "second finalize_time_step reached kernel")
             timestep_prepared = False
             raw_kernel.finalize()
             initialized = False
@@ -444,6 +454,8 @@ def main() -> None:
     print("FGC38_FINALIZE_SOLVE_EXACTLY_ONCE=PASS")
     print("FGC38_BACKEND_DOES_NOT_FINALIZE_TIMESTEP=PASS")
     print("FGC38_PREPARED_SOLVE_ITERATIVE_BACKEND_GATE=PASS")
+    print("FGC41_LIVE_MODFLOW_TIMESTEP_READINESS_NONMUTATING=PASS")
+    print("FGC41_LIVE_MODFLOW_FINALIZE_TIMESTEP_EXACTLY_ONCE=PASS")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,17 @@
+name: F-GC42 live whole-window service
+on:
+  push:
+    branches: [work/f-gc42-live-whole-window-service]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install pytest
+      - run: bash tests/fgc/run_fgc42_live_whole_window_service.sh

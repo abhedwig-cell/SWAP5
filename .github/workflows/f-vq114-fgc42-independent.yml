@@ -1,0 +1,20 @@
+name: F-VQ114 F-GC42 independent qualification
+on:
+  push:
+    branches: [work/f-gc42-live-whole-window-service]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/fgc42_live_whole_window_service_harness.py'
+      - 'tests/fgc/test_fgc42_live_whole_window_service.py'
+      - 'docs/integration/F-GC42_WHOLE_WINDOW_SERVICE_COMPOSITION.md'
+      - 'tests/fvq/test_fvq114_fgc42_independent.py'
+      - 'tests/fvq/run_fvq114_fgc42_independent.sh'
+      - '.github/workflows/f-vq114-fgc42-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq114_fgc42_independent.sh
