@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.f-rom0.qualification-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "title": "Accepted full-order trajectory laboratory qualification",
+  "phase": "CLOSED_EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
+  "authority": {
+    "canonical_research_authority": "47430b68ed46a24ca05b29b46de2dd4f7e29762b",
+    "failed_laboratory_branch": "work/f-rom0-accepted-reference-laboratory",
+    "failed_laboratory_head": "14374d1be123c0f522bd63f63afd987a2375736f",
+    "draft_pr": 289,
+    "workflow_run": 35363165748,
+    "workflow_job": 105659136683,
+    "artifact_id": 10554912310,
+    "artifact_digest": "sha256:c023e4b52e70c8699fb6784904afbfd1c4be47279c6832db7993fc1bcc820a18"
+  },
+  "independent_runtime_control": {
+    "fixture": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+    "result": "PASS",
+    "marker": "F_ROM0_ACCEPTED_RUNTIME_CONTROL=PASS",
+    "interpretation": "The canonical serialized Reference-Richards accepted lifecycle can commit an independently admitted fixture. The ROM-0 failure is therefore not evidence that the accepted runtime seam is generally non-functional."
+  },
+  "preregistered_matrix": {
+    "case_count": 18,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "initial_effective_saturation": 0.85,
+    "base_geometry": "16x10cm",
+    "refinement_geometry": "32x5cm",
+    "base_observation_interval_day": 0.0016,
+    "refined_observation_interval_day": 0.0008,
+    "accepted_case_count": 0,
+    "failed_case_count": 18,
+    "first_failure_location": "FIRST_REQUESTED_OBSERVATION_INTERVAL_IN_EVERY_CASE",
+    "exact_replay": "NOT_RUN_PREREGISTERED_SOURCE_CASE_NEVER_ACCEPTED"
+  },
+  "common_failure_signature": {
+    "canonical_status": 2,
+    "canonical_status_name": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "completed": false,
+    "attempts_per_failed_interval": 9,
+    "retries_per_failed_interval": 8,
+    "mass_rejections_observed": 0,
+    "last_solver_status": 2,
+    "last_solver_status_name": "SW_SOLVE_RETRY_ADVISED",
+    "last_solver_route": "legacy-reference-retry",
+    "last_nonlinear_iterations": 16,
+    "last_internal_retries": 1,
+    "interpretation": "The frozen transaction exhausted its retry budget after nonlinear Reference attempts repeatedly requested retry. Some cases also recorded temporal rejections before later solver rejections. No case failed because of the external hard mass gate."
+  },
+  "direct_solver_seam_contrast": {
+    "authority": "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json",
+    "measurement_head": "a75bb520272edc3a2547794f76e36c2a336f07b5",
+    "statement": "F-ROSS24 found Reference route validity for B01 and B14 at Se=0.85 under both NOMINAL and DRYING fixed-flux E0 requests using the same 16x10cm geometry, 0.0016-day solve duration, and corresponding flux factors.",
+    "implication": "The observed ROM-0 failure is specific to constructing an accepted multi-attempt transactional trajectory from the frozen starting/forcing contract. It must not be generalized to direct Reference solver inability on B01/B14."
+  },
+  "diagnosis": {
+    "established": [
+      "The build and external HeadCalc link were repaired before the qualifying execution.",
+      "The independent accepted-runtime control passes.",
+      "All 18 frozen ROM-0 cases fail before producing an accepted state.",
+      "The failure signature is nonlinear retry exhaustion, not mass rejection.",
+      "No numerical Reference floor can be measured because the required trajectories do not exist under this preregistration."
+    ],
+    "physically_motivated_inference": [
+      "The frozen ROM-0 initial profile uses uniform pressure head. Under gravity this is not a zero-flux hydrostatic state.",
+      "E0_HOLD imposed zero top and bottom flux on that non-equilibrium profile. By contrast, the existing FMR44R accepted equilibrium fixture uses a uniform-head profile with top and bottom flux equal to -K(h), which is consistent with gravity-driven steady flow.",
+      "This inference motivates a successor accepted-domain construction but is not retroactively used to change the failed preregistration."
+    ],
+    "not_claimed": [
+      "No reduced-state sufficiency or insufficiency conclusion.",
+      "No predictive-ambiguity result.",
+      "No numerical Reference floor.",
+      "No evidence that B01 or B14 are generally outside Reference Richards capability.",
+      "No evidence that changing tolerances, retry counts or forcing would be scientifically justified within the failed preregistration."
+    ]
+  },
+  "gates": {
+    "ownership": "CONTROL_PASS_MATRIX_NO_ACCEPTED_RECORDS",
+    "reproducibility": "NOT_REACHED",
+    "conservation": "NO_ACCEPTED_MATRIX_RECORDS_MASS_REJECTIONS_ZERO",
+    "bidirectional_reachability": "NOT_REACHED",
+    "reference_floor": "NOT_MEASURED",
+    "non_mutation": "PASS"
+  },
+  "decision": "EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
+  "rom1a_authorized": false,
+  "production_solver_authorized": false,
+  "next_work_unit": "ROM-0R",
+  "next_action": "Construct and preregister accepted-domain seed trajectories from analytically consistent steady/hydrostatic baselines before re-attempting a numerical Reference-floor laboratory.",
+  "production_source_mutation": "NONE"
+}
