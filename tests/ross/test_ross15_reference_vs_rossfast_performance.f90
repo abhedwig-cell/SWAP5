@@ -244,19 +244,19 @@ contains
       call cpu_time(t0)
       do rep=1,inner_repetitions
         call reference_solver%solve(request,reference_workspace,reference_result)
-        checksum_accum=checksum_accum+reference_result%candidate_state%pressure_head(1)+ &
-             reference_result%candidate_state%water_content(n)
       end do
       call cpu_time(t1)
+      checksum_accum=checksum_accum+reference_result%candidate_state%pressure_head(1)+ &
+           reference_result%candidate_state%water_content(n)
       call require(reference_route_valid(reference_result,request,material),'timed Reference route remains valid')
     case('ROSSFAST')
       call cpu_time(t0)
       do rep=1,inner_repetitions
         call alternative_solver%solve(request,alternative_workspace,alternative_result)
-        checksum_accum=checksum_accum+alternative_result%candidate_state%pressure_head(1)+ &
-             alternative_result%candidate_state%water_content(n)
       end do
       call cpu_time(t1)
+      checksum_accum=checksum_accum+alternative_result%candidate_state%pressure_head(1)+ &
+           alternative_result%candidate_state%water_content(n)
       call require(rossfast_route_valid(alternative_result,request,material),'timed RossFast route remains valid')
     case default
       call require(.false.,'unknown selected timing route')
