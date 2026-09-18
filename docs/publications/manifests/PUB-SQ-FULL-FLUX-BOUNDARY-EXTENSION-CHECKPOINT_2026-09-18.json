@@ -1,0 +1,85 @@
+{
+  "checkpoint_id": "PUB-SQ-E2X-FULL-FLUX-BOUNDARY-EXTENSION-2026-09-18",
+  "capability": "PUB-SQ E2X lower request-side top-flux and bidirectional bottom-flux boundary extension",
+  "phase": "CLOSE",
+  "governance_branch": "research/phd-five-paper-manifests-20260918",
+  "governance_head_before_checkpoint": "ee9937011d15fe4f0841510735e0dbfcadbf64eb",
+  "source_branch": "work/pub-p2e16-admissibility-boundary-primary",
+  "concurrency_reconciliation": {
+    "head": "b6865e518a28fa38a80c117f55da14734e9609f9",
+    "path": "docs/publication/P2E16X_CONCURRENT_BOUNDARY_EVIDENCE_RECONCILIATION.json",
+    "historical_branch_local_ids": ["PUB-P2E16A","PUB-P2E16B","PUB-P2E16D1"],
+    "governance_alias": "PUB-SQ-E2X",
+    "reason": "A parallel upper-top P2E16/P2E17 study had already exposed candidate outcomes before the broader branch-local P2E16 preregistration. Historical evidence names are preserved, but the overlapping upper-top surface is not counted as a new holdout."
+  },
+  "chronology": {
+    "prior_upper_top_candidate_exposure_started_utc": "2026-09-18T00:25:53Z",
+    "prior_upper_top_workflow_run": 35291155719,
+    "broader_extension_preregistered_utc": "2026-09-18T00:33:45Z",
+    "broader_extension_preregistration_commit": "50f41a43f7d19fc36be439cb9ed680f53ad55967"
+  },
+  "overlap_supporting_only": {
+    "surface": "TOP rho={-1.05,-1.0,-0.95}, equivalent to request top flux/K0={0.011,0.010,0.009}",
+    "case_count": 324,
+    "epistemic_class": "SUPPORTING_REPLICATION_NOT_INDEPENDENT_PRIMARY"
+  },
+  "prospective_extension_surface": {
+    "lower_request_side_top_boundary": {
+      "rho": [0.95,1.0,1.05],
+      "request_top_flux_over_K0": [-0.029,-0.030,-0.031],
+      "case_count": 324
+    },
+    "bottom_boundary_both_sides": {
+      "rho": [-1.05,-1.0,-0.95,0.95,1.0,1.05],
+      "case_count": 648
+    },
+    "total_case_count": 972,
+    "materials": 36,
+    "Se": [0.65,0.85,0.96]
+  },
+  "reference_only_stage": {
+    "result_commit": "409b1047764d8ae4a04b13d55b490af3225e7067",
+    "result_blob": "2c9b856e2d18d5d8e42c098f12b6405e5e15ff58",
+    "all_972_reference_valid": true,
+    "p2e14_threshold_transfer_valid": 951,
+    "p2e14_threshold_transfer_failed": 21,
+    "thresholds_changed": false
+  },
+  "candidate_stage": {
+    "result_commit": "511d4f5250ab9966518abeae99c6bc2cae3f082d",
+    "result_blob": "faff8f4c961522ebe9ad11902c5cc0d2313734ff",
+    "route_valid_inside_or_boundary": 648,
+    "route_fail_closed_outside": 324,
+    "route_mismatch": 0,
+    "fallback": 0,
+    "stage_A_authorized_route_valid_pair_count": 635,
+    "reference_interpretable_authorized": 633,
+    "authorized_admissible": 633,
+    "authorized_discrepancy_fail": 0,
+    "authorized_reference_unresolved": [1220,1257],
+    "stage_A_unauthorized_but_route_valid": 13
+  },
+  "reference_diagnosis": {
+    "result_commit": "e484a53f4b207a0a80b793523bf5517aac20552f",
+    "result_blob": "77ab61192e0996a898add9cc57e78380fbc63a6a",
+    "finding": "All five fixed-step Reference invalids fail first at nonconvergence on route legacy-reference-retry. State-domain and flux-identity gates remain valid; the two authorized cases 1220 and 1257 remain Reference-unresolved."
+  },
+  "verdict": "PROSPECTIVE_FLUX_BOUNDARY_EXTENSION_SUPPORTED_ZERO_ROUTE_MISMATCH_633_OF_633_INTERPRETABLE_AUTHORIZED_ADMISSIBLE_TWO_REFERENCE_UNRESOLVED",
+  "admitted_scope": [
+    "lower request-side top-flux boundary at contract-normalized rho={0.95,1.0,1.05}",
+    "both sides of bottom-flux production boundary at rho={-1.05,-1.0,-0.95,0.95,1.0,1.05}",
+    "36 D3R materials",
+    "Se={0.65,0.85,0.96}",
+    "0.0016-day fixed solver-seam request"
+  ],
+  "exclusions": [
+    "overlapping upper request-side top-flux surface is supporting replication only",
+    "two authorized pairwise cases remain Reference-unresolved",
+    "no transaction-level equivalence",
+    "no trajectory equivalence",
+    "no heterogeneous profiles, root sinks or groundwater coupling",
+    "no performance or speedup",
+    "no universal RossFast equivalence"
+  ],
+  "next_permitted_action": "PUB-SQ-E3 only: freeze a representative candidate-blind REF-HIGH refinement/stability design before any equal-error cost or timing comparison. Do not spend another confirmatory slot on the already sharp fixed-flux route boundary."
+}
