@@ -2,8 +2,8 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS24",
   "title": "Admitted tiered RossFast production characterization",
-  "phase": "DESIGN",
-  "status": "PREREGISTERED_READY_TO_MEASURE",
+  "phase": "MEASURE",
+  "status": "HARNESS_IMPLEMENTED_PENDING_MEASUREMENT",
   "branch": "work/f-ross24-tiered-production-characterization",
   "canonical_source": "86969f502015ae259a536a57cc7125c38a3e42e6",
   "production_or_reference_mutation": false,
@@ -22,5 +22,12 @@
     "NO_MATERIAL_ENVELOPE_CHANGE",
     "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
   ],
-  "next_permitted_action": "MEASURE_ONLY_FROZEN_ADMITTED_TIERED_CHARACTERIZATION"
+  "next_permitted_action": "EXECUTE_PREREGISTERED_SHARED_HOST_MEASUREMENT_AND_ANALYSE_REGIMES",
+  "implementation": {
+    "harness": "tests/ross/test_ross24_tiered_production_characterization.f90",
+    "runner": "tools/performance/f_ross24_paired_screen.py",
+    "wrapper": "tests/ross/run_ross24_tiered_production_characterization.sh",
+    "workflow": ".github/workflows/f-ross24-tiered-production-characterization.yml",
+    "production_or_reference_mutation": false
+  }
 }
