@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.f-ross21.tiered-k2-k4-k8-certificate.v1",
+  "workunit": "F-ROSS21",
+  "phase": "PREREGISTERED_RESEARCH_ONLY",
+  "branch": "work/f-ross21-tiered-k2-k4-k8-certificate",
+  "source_head": "094c113f77fe18df049af51629976a05bccc02ee",
+  "purpose": "Test a three-tier RossFast temporal certificate ladder K2 -> K4 -> K8 across the full 36-material production-relevant matrix without mutating production source.",
+  "parent_evidence": {
+    "f_ross19": "K2-first/K4-fallback passed 36/36 paired science and screened 1.260x faster than Reference on the anchor domain.",
+    "f_ross20_run": 35313953706,
+    "f_ross20_blocked_result_commit": "5479dbe478c398344dd1cebce9e047072b2c056a",
+    "f_ross20_observation": "On 216 all-material cases, K2->K4 was route/mass/work/retry valid 216/216 but temporal-valid 214/216; only B05 Se=0.98 DRYING/NOMINAL remained above indicator 1 after K4."
+  },
+  "production_mutation_allowed": false,
+  "algorithm": {
+    "tier_1": {
+      "component_substeps": 2,
+      "total_candidate_steps": 6,
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "tier_2": {
+      "component_substeps": 4,
+      "total_candidate_steps": 12,
+      "trigger": "K2 indicator > 1.0",
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "tier_3": {
+      "component_substeps": 8,
+      "total_candidate_steps": 24,
+      "trigger": "K4 indicator > 1.0",
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "restart_rule": "Every tier recomputes coarse+half+half independently from the same original request base state.",
+    "trajectory_reuse": false,
+    "total_linear_solves_by_final_tier": {
+      "K2": 6,
+      "K4": 18,
+      "K8": 42
+    },
+    "further_fallback": "forbidden"
+  },
+  "frozen_expectation_from_f_ross20": {
+    "all_material_cases": 216,
+    "K2_final": 212,
+    "K4_final": 2,
+    "K8_final": 2,
+    "K4_material": "O01",
+    "K8_material": "B05",
+    "escalation_effective_saturation": 0.98,
+    "escalations_per_material": {
+      "O01": 2,
+      "B05": 2
+    },
+    "expected_mean_linear_solves": 6.444444444444445
+  },
+  "science_gates": {
+    "all_material": [
+      "216/216 RossFast route valid",
+      "216/216 final temporal indicator <= 1.0",
+      "216/216 hard mass tolerance",
+      "216/216 linear solves in {6,18,42} with tier-consistent count",
+      "zero internal retries and alternative solver calls",
+      "exact tier distribution 212 K2, 2 K4, 2 K8"
+    ],
+    "anchor": [
+      "36/36 PUB-P2E10 paired-valid admissible",
+      "36/36 final temporal indicator <= 1.0",
+      "34 K2 final, 2 K4 final, 0 K8 final"
+    ]
+  },
+  "performance": {
+    "anchor_domain_only": true,
+    "compiler": "GNU Fortran -O2",
+    "warmups": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_case": 200,
+    "paired_against": "Reference Richards",
+    "formal_performance_claim": false
+  },
+  "promotion_boundary": "F-ROSS21 is research-only. Even if all science gates pass and hosted screening remains faster, production requires a separate promotion workunit.",
+  "negative_result_policy": "No threshold tuning, no state reuse, no extra K16 tier, and no material-specific exceptions after seeing results.",
+  "next_permitted_action": "Implement test-only K2->K4->K8 modules and execute 216-case all-material science plus 36-case anchor/performance qualification."
+}
