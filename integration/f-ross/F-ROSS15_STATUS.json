@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS15",
+  "title": "Reference Richards versus RossFast solver-seam performance",
+  "phase": "QUALIFY_DESIGN",
+  "status": "PREREGISTERED_PENDING_IMPLEMENTATION",
+  "branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+  "checkpoint_head_before_status": "0271f4e943e43559823c483ab7813ca5413a5142",
+  "reconcile": {
+    "p2e10_direct_solver_dependencies_still_exact": true,
+    "post_p2e10_relevant_changes": [
+      "accepted-step directional and MODFLOW/runtime surfaces changed",
+      "direct P2E10 solver contract, Reference legacy binding and RossFast solver/model/policy/provider blobs remain exact"
+    ],
+    "f_ross14_ownership_collision_avoided": true
+  },
+  "evidence_reused": [
+    "PUB-P2E10 36 paired-valid E0 cases",
+    "F-ROSS13 admitted 36-material production envelope",
+    "MP-6/MP-7 measurement-resolution discipline",
+    "MP isolated-runner readiness: INFRASTRUCTURE_PENDING"
+  ],
+  "mutations": [
+    "integration/f-ross/F-ROSS15_PERFORMANCE_PREREGISTRATION.json",
+    "integration/f-ross/F-ROSS15_STATUS.json"
+  ],
+  "production_or_reference_mutation": false,
+  "verdict": "READY_TO_IMPLEMENT_FROZEN_SCREENING_HARNESS",
+  "next_permitted_action": "Implement benchmark harness, runner and workflow without changing preregistered cases, pair count, repetitions, solver dependencies or claim boundary.",
+  "exclusions": [
+    "NO_SOLVER_OPTIMIZATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_PRODUCTION_OR_REFERENCE_SOURCE_CHANGE",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_UNADMITTED_GITHUB_HOST",
+    "NO_WETTING_CASES",
+    "NO_TRANSACTION_LEVEL_PERFORMANCE_CLAIM"
+  ]
+}
