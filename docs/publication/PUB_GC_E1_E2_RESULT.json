@@ -1,0 +1,52 @@
+{
+  "schema": "pub-gc-e1-e2-result-v1",
+  "date": "2026-09-18",
+  "canonical_baseline": "c42db098cc246e3da06472a34979bdf24cfa81cb",
+  "evidence_head": "0022e854000afe5a050303d9a0709f72b7dae518",
+  "workflow_run": 35342313248,
+  "first_failed_sign_hypothesis_run": 35342179045,
+  "status": "PASS_RESTRICTED",
+  "envelope": {
+    "swap_columns": 1,
+    "modflow_cells": 1,
+    "modflow_version": "6.8.0",
+    "window_day": 0.0001,
+    "window_seconds": 8.64,
+    "near_equilibrium": true
+  },
+  "predictor": {
+    "q_bot_cm_per_day": 0.000001,
+    "q_u_cm_per_day": -9.658852120479678e-7,
+    "u": 0.00003402936037279093,
+    "storage_start_native": 1.0430631535459627,
+    "storage_end_native": 1.0430631535459627,
+    "storage_change_native": 0,
+    "total_in_native": 1e-10,
+    "total_out_native": 1e-10,
+    "mass_residual_native": 0
+  },
+  "coupled": {
+    "iterations": 2,
+    "final_head_m": -0.7149999677331765,
+    "final_q_swap_m_per_s": -1.2708557527755854e-13,
+    "final_q_gw_m_per_s": -1.2708580747683645e-13,
+    "final_flux_residual_m_per_s": 2.3219927791065243e-19,
+    "final_bottom_outward_exchange_cm": -1.0980193703981059e-10,
+    "committed_ledger_exchange_m": -1.098019370398106e-12,
+    "public_rate_integrated_amount_m": -1.0980193703981057e-12
+  },
+  "deterministic_failure_injection_tests": 7,
+  "markers": [
+    "PUB_GC_E1_INTERFACE_IDENTITY",
+    "PUB_GC_E2_REJECTED_TRIAL_ZERO_AUTHORITY",
+    "PUB_GC_E2_PREPUBLICATION_ABORT_ZERO_AUTHORITY",
+    "PUB_GC_E2_EXACTLY_ONCE_PUBLICATION",
+    "PUB_GC_E2_PUBLICATION_ORDER"
+  ],
+  "sign_adjudication": {
+    "initial_hypothesis": "q_swap_public * DeltaT_s + ledger_exchange_m = 0",
+    "initial_result": "FALSIFIED",
+    "corrected_identity": "q_swap_public * DeltaT_s - ledger_exchange_m = 0",
+    "production_code_changed": false
+  }
+}
