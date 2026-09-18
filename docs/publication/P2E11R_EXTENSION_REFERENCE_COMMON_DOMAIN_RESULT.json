@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.publication.p2e11r-extension-reference-common-domain-result.v1",
+  "workunit": "PUB-P2E11R",
+  "phase": "REFERENCE_ONLY_COMMON_DOMAIN_RECOVERY_COMPLETE_BLOCKED",
+  "parent_result_commit": "7fc3d6c64f44fd07d6271d71b7d270fbd708977d",
+  "executed_head": "9f7a13e527cadd6d1459e763b00680fd57131fe1",
+  "preregistration_blob": "85f6fb13386bd95b37c8ffb95f2a4bf1247ac162",
+  "test_blob": "85a7ecb6229e7a78782587232e9fc80e976f5b9c",
+  "runner_blob": "05ded2740768b47e26461440e24b8cd0bdc25017",
+  "workflow_blob": "f370d40f92a4229bd4266aac8c9489ec5bd5c540",
+  "execution": {
+    "workflow_run": 35289315712,
+    "job": 105428503866,
+    "conclusion": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identical": true,
+    "o0_o2_sha256": "e36ce0b3bb44ae070bbeb7c93fd6e01d02be0fa005de5d04a5935904eaf08f34"
+  },
+  "temporal_feasibility": [
+    {
+      "coarse_dt_day": 0.0016,
+      "half_dt_day": 0.0008,
+      "valid": 136,
+      "invalid": 44
+    },
+    {
+      "coarse_dt_day": 0.0032,
+      "half_dt_day": 0.0016,
+      "valid": 173,
+      "invalid": 7
+    },
+    {
+      "coarse_dt_day": 0.0064,
+      "half_dt_day": 0.0032,
+      "valid": 176,
+      "invalid": 4
+    },
+    {
+      "coarse_dt_day": 0.0128,
+      "half_dt_day": 0.0064,
+      "valid": 172,
+      "invalid": 8
+    },
+    {
+      "coarse_dt_day": 0.0256,
+      "half_dt_day": 0.0128,
+      "valid": 158,
+      "invalid": 22
+    }
+  ],
+  "common_domain": {
+    "complete_level_found": false,
+    "best_tested_level": {
+      "coarse_dt_day": 0.0064,
+      "valid": 176,
+      "invalid": 4
+    },
+    "temporal_validity_nonmonotone": true,
+    "persistent_failure_all_five_levels": {
+      "case": 24,
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "observed_failure_stages": [
+        "HALF2_REFERENCE_GATE",
+        "COARSE_REFERENCE_GATE"
+      ]
+    }
+  },
+  "failure_structure": {
+    "all_invalid_counts_by_Se": {
+      "0.65": 2,
+      "0.85": 11,
+      "0.98": 72
+    },
+    "note": "Across all five levels, failures concentrate strongly at Se=0.98; the finest level also introduces Se=0.65 and Se=0.85 failures.",
+    "candidate_independence_preserved": true,
+    "rossfast_executed": false
+  },
+  "reconciliation_with_prior_reference_evidence": {
+    "P2E07": "Prior Reference-only evidence showed many strict local-balance rate failures can lie at or below a diagnosed finite-representation/cancellation floor even when integrated residual depth is about 1e-16 to 1e-15 cm.",
+    "P2E08": "Six anchor materials had one complete common Reference level at coarse dt 0.0064 day; the 30-material extension does not.",
+    "implication": "The current boolean Reference validity gate is insufficient to classify the persistent extension failures as physical/nonlinear failure versus numerically indistinguishable local-balance-rate failure. Failure-reason diagnostics are required before narrowing the material domain."
+  },
+  "firewalls": {
+    "physical_case_removed": false,
+    "temporal_level_removed_or_reordered": false,
+    "reference_tolerance_changed": false,
+    "production_or_reference_source_changed": false,
+    "rossfast_extension_discrepancy_inspected": false,
+    "threshold_file_created": false
+  },
+  "verdict": "BLOCKED_NO_COMPLETE_REFERENCE_COMMON_DOMAIN_IN_PREREGISTERED_FIVE_LEVEL_LADDER",
+  "next_permitted_action": "Run a separate Reference-only diagnostic that classifies the exact failed validity predicate and residual scale for all P2E11R invalid states, with special attention to persistent B05 Se=0.98 NOMINAL. Do not change Reference tolerances, remove cases, or execute RossFast."
+}
