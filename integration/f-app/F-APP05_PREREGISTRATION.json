@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.capability_preregistration.v1",
+  "workunit": "F-APP05",
+  "capability": "Restricted Hupsel SWETR=0/SWDIVIDE=1 stateful Rutter SWINTER=3 plus SWCF=2 legacy-canopy typed envelope",
+  "base": {"branch":"integration/f-ci-canonical","sha":"b3be8d4c44cd50f9cd0c42cb6c471815ca41bf21"},
+  "owner": "application composition",
+  "problem": "M1-C3 exact Hupsel route discovery shows admitted F-APP04 covers SWINTER=1/SWCF=1 intervals, while active 2003/2004 Hupsel intervals also use SWINTER=3 and SWCF=2. F-APP04 explicitly excluded both.",
+  "scientific_authority": {
+    "legacy_distribution_sha256":"2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "legacy_source_family":"qualified B1.11 derivation from exact B0",
+    "pmdirect_owner_blob":"fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+    "F_APP04_admission_merge":"d223b7ab4ed297194c209f85d6b51bef86b79959",
+    "route_narrowing_checkpoint":"integration/m1/M1_C3_HUPSEL_ACTIVE_ROUTE_NARROWING.json"
+  },
+  "scope": {
+    "included":[
+      "SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0 only",
+      "legacy SWCF=2 crop-height/canopy parameter materialization into the existing PMdirect canopy contract",
+      "stateful SWINTER=3 Rutter canopy-reservoir interval evolution",
+      "identity binding of resulting net rain and potential transpiration through the already admitted F-APP04 bindings",
+      "fail-closed selector and numeric-domain validation"
+    ],
+    "excluded":[
+      "SWINTER=2/Gash",
+      "SWDIVIDE=0",
+      "SWETR=1",
+      "new application runtime",
+      "solver/transaction/timestep/retry/tolerance changes",
+      "changes to F-APP04 admitted SWINTER=1/SWCF=1 semantics",
+      "whole-Hupsel or M1-C3 closure before exact legacy-file adapter qualification"
+    ]
+  },
+  "state_contract": {
+    "Rutter_is_stateful": true,
+    "accepted_state":"canopy storage sicact",
+    "trial_inputs":["gross precipitation rate","surface irrigation contribution where applicable","vegetation cover","canopy storage capacity siccap","interception evaporation capacity","interval dt"],
+    "trial_outputs":["reservoir inflow crsflx_in","reservoir outflow crsflx_out","wet canopy fraction","net rain","potential transpiration","candidate canopy storage","event-limited maximum timestep"],
+    "ownership":"candidate Rutter state must not mutate accepted state before transaction acceptance"
+  },
+  "legacy_equations_to_preserve": [
+    "rpd = graidt + gird for surface irrigation route, otherwise graidt",
+    "flux_in = rpd * vcover",
+    "flux_out = eintc",
+    "reservoir fill/empty event time follows legacy siccap/sicact branching",
+    "aintcdt = crsflx_in",
+    "nraidt follows existing legacy precipitation/interception split",
+    "ptra = wfrac*ptra_wet + (1-wfrac)*ptra_dry"
+  ],
+  "qualification": {
+    "owner_tests":[
+      "state transition branch coverage: dry/empty, filling, full, draining, semi-wet empty",
+      "exact legacy formula identity sweeps",
+      "nonfinite/negative/invalid selector fail-closed gates",
+      "accepted-state immutability on rejected trial",
+      "O0/O2 identity"
+    ],
+    "legacy_observation_required":true,
+    "required_Hupsel_observations":[
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "tolerance":"1e-12 absolute for process-ready cm/day scalars unless exact-bit identity is naturally available",
+    "independent_qualification_before_admission":true
+  },
+  "admission_criteria":[
+    "no production delta outside the smallest process/adapter/test surface required by this capability",
+    "F-APP04 protected blobs unchanged",
+    "owner qualification PASS",
+    "independent qualification PASS",
+    "legacy Hupsel SWINTER=3/SWCF=2 observations reproduced within preregistered tolerance",
+    "no claim beyond the restricted Hupsel envelope"
+  ],
+  "status":"PREREGISTERED_READY_FOR_IMPLEMENTATION"
+}
