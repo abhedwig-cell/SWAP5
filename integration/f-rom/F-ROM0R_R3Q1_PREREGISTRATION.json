@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.f-rom0r.r3q1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3Q1",
+  "title": "Prescribed-head representation-bounded total policy qualification",
+  "phase": "PREREGISTERED_BEFORE_POLICY_EXECUTION",
+  "predecessor": {
+    "r3_decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "r3d1_decision": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+    "r3d2_decision": "B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND"
+  },
+  "purpose": "Prospectively qualify, on the complete frozen R3 four-case prescribed-head matrix, a research Reference total-balance policy derived from the independently established PUB-P2E21 representation formula. This workunit does not retroactively change the original R3 verdict.",
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "effective_saturation_seed": 0.85,
+    "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "perturbation_intervals": 16,
+    "perturbation_dt_day": 0.0008,
+    "bottom_head": {
+      "BOTTOM_HEAD_RISE": "0.75*h0",
+      "BOTTOM_HEAD_FALL": "1.25*h0"
+    }
+  },
+  "candidate_policy": {
+    "policy_id": "R3Q1_REPRESENTATION_BOUNDED_TOTAL",
+    "local_compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "total_integrated_bound_formula_cm": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+    "total_rate_tolerance_formula_cm_per_day": "total_integrated_bound_cm / dt_day",
+    "formula_inputs": ["material theta_s","current accepted base-state theta","dz","real64 spacing","current prescribed dt"],
+    "forbidden_formula_inputs": ["failed residual magnitude","failed residual ratio","candidate endpoint","post-solve theta","case-specific empirical factor"],
+    "empirical_safety_factor": "none"
+  },
+  "paired_control": {
+    "total_balance_rate_tolerance_cm_per_day": 1e-12,
+    "all_other_controls_identical_to_candidate": true,
+    "evaluated_from_same_base_state_before_candidate_commit": true,
+    "if_control_converges": "candidate/control endpoint neutrality must pass every frozen metric",
+    "if_control_retries": "only RETRY_TOTAL_ONLY with integrated total residual <= pre-solve candidate bound may be rescued",
+    "other_control_retry_class": "POLICY_QUALIFICATION_FAIL"
+  },
+  "endpoint_neutrality_budgets": {
+    "authority": "PUB-P2E21/P2E18 frozen Se=0.85 numerical-reference budgets",
+    "D_h_inf_cm": 0.005684414280500505,
+    "D_h_rms_cm": 0.002309047189054667,
+    "D_theta_inf": 0.00002439358876414888,
+    "D_theta_rms": 0.000008095278187597767,
+    "D_storage_abs_cm": 2.842170943040401e-14,
+    "all_metrics_must_pass": true,
+    "weighted_compensation": false
+  },
+  "hard_validity": {
+    "candidate_route": "legacy-reference-bound",
+    "candidate_integrated_mass_abs_limit_cm": 1e-12,
+    "finite_endpoint_required": true,
+    "one_prescribed_physical_advance_per_step": true,
+    "automatic_retry_or_subdivision": false,
+    "representation_bound_runtime_check": "spacing(theta_base_i) <= spacing(theta_s_material) for all nodes"
+  },
+  "final_directional_gate": {
+    "per_material": [
+      "head-rise final lower-band storage > head-fall final lower-band storage",
+      "head-rise cumulative bottom outward exchange < head-fall cumulative bottom outward exchange"
+    ],
+    "absolute_flux_sign_reversal_required": false
+  },
+  "qualification_decision": "PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED",
+  "failure_decision": "PRESCRIBED_HEAD_REPRESENTATION_POLICY_NOT_QUALIFIED",
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_DT_CHANGE",
+    "NO_AMPLITUDE_CHANGE",
+    "NO_LOCAL_OR_HEAD_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_FAILED_RESIDUAL_FITTING",
+    "NO_ORIGINAL_R3_RECLASSIFICATION",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "NO_ROM1_WORK"
+  ],
+  "if_qualified": "A separate research Reference-floor trajectory workunit may be preregistered using this policy. Original R3 remains a documented no-go under its frozen fixed-rate total-balance control.",
+  "rom1a_authorized": false
+}
