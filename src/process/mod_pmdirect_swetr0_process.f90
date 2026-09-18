@@ -43,8 +43,6 @@ module mod_pmdirect_swetr0_process
 
   type, public :: pmdirect_swetr0_canopy_t
     logical :: crop_emerged = .false.
-    logical :: use_crop_height_for_aerodynamics = .false.
-    real(real64) :: crop_height_cm = 0.0_real64
     real(real64) :: lai = 0.0_real64
     real(real64) :: vegetation_cover_fraction = 0.0_real64
     real(real64) :: cofab_cm = 0.0_real64
@@ -52,6 +50,8 @@ module mod_pmdirect_swetr0_process
     real(real64) :: dry_canopy_resistance_s_m = 0.0_real64
     real(real64) :: wet_canopy_resistance_s_m = 0.0_real64
     real(real64) :: co2_transpiration_factor = 1.0_real64
+    logical :: use_crop_height_for_aerodynamics = .false.
+    real(real64) :: crop_height_cm = 0.0_real64
   end type pmdirect_swetr0_canopy_t
 
   type, public :: pmdirect_swetr0_daily_result_t
