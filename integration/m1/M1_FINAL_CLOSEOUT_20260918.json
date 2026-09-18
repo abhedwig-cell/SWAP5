@@ -1,7 +1,7 @@
 {
   "schema": "swap5.bounded_execution_closeout.v2",
   "capability": "M1 - Typed External Boundary",
-  "phase": "CLOSE_CANDIDATE",
+  "phase": "CLOSE",
   "protocol": [
     "RECONCILE",
     "QUALIFY",
@@ -95,9 +95,9 @@
     "M1 closure does not add new physics, parser authority, solver policy, tolerance tuning or automatic fallback.",
     "PPA-WU01 and groundwater product integration remain separate capabilities."
   ],
-  "overall_verdict": "M1_CLOSE_CANDIDATE_ALL_FIVE_CRITERIA_PASS",
-  "formal_exit": false,
-  "close_gate": "PASS_CANDIDATE_READY_FOR_CANONICAL_CLOSE",
+  "overall_verdict": "M1_CLOSED_CURRENT_CANONICAL_ALL_FIVE_EXIT_CRITERIA_PASS",
+  "formal_exit": true,
+  "close_gate": "PASS_CANONICAL_ADMITTED_CLOSED",
   "close_gate_qualification": {
     "workflow": "M1 final closeout",
     "run_id": 35370892637,
@@ -116,5 +116,18 @@
   "incidental_workflow_repair": {
     "finding": "The M1-C3 owner/independent workflows used tests/m1/** and therefore re-triggered on the unrelated final M1 closeout test.",
     "disposition": "Narrow path filters to the three M1-C3-specific test surfaces. No qualification criterion or production source changed."
+  },
+  "canonical_admission": {
+    "pr": 316,
+    "merge_commit": "9f43865cfb465d623f5b54e0cdecc97246683813",
+    "canonical_branch": "integration/f-ci-canonical",
+    "admitted_closeout_head": "2232ffc23b9d280f447c4b51a8c7eccd6b81a10c",
+    "disposition": "The governance-only M1 closeout candidate was merged after its final closeout gate passed. No production source was changed by the closeout admission."
+  },
+  "post_admission_reconciliation": {
+    "canonical_head": "9f43865cfb465d623f5b54e0cdecc97246683813",
+    "production_delta_after_m1_c3": "NONE_FROM_M1_CLOSEOUT",
+    "criterion_reopen_required": false,
+    "disposition": "All five M1 criteria remain satisfied on the admitted canonical postimage."
   }
 }
