@@ -73,6 +73,15 @@ program test_pub_me_d1_rejected_state_leakage
 
   call execute_reference_interval(model, committed, 0.0_real64, duration, accept_policy, accepted)
 
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_STATUS=', accepted%status
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_SOLVER_REJECTIONS=', accepted%solver_rejections
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_MASS_REJECTIONS=', accepted%mass_rejections
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_TEMPORAL_REJECTIONS=', accepted%temporal_rejections
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_HEADCALC_CALLS=', accepted%headcalc_calls
+  write(*,'(A,ES26.17E3)') 'PUB_ME_D1_CONTINUATION_FULL_MASS_RESIDUAL_CM=', accepted%full_mass_residual
+  write(*,'(A,ES26.17E3)') 'PUB_ME_D1_CONTINUATION_HALF_MASS_RESIDUAL_CM=', accepted%half_mass_residual
+  write(*,'(A,ES26.17E3)') 'PUB_ME_D1_CONTINUATION_TEMPORAL_ERROR=', accepted%temporal_error
+
   call require(accepted%status == TX_STATUS_ACCEPTED, 'bounded continuation accepted')
   call require(accepted%commits == 1, 'bounded continuation commits exactly once')
   call require(accepted%accepted_mass_complete, 'bounded continuation mass accounting complete')
@@ -80,7 +89,7 @@ program test_pub_me_d1_rejected_state_leakage
 
   call committed%clone(final_state)
 
-  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_STATUS=', accepted%status
+  write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_STATUS_CONFIRMED=', accepted%status
   write(*,'(A,I0)') 'PUB_ME_D1_CONTINUATION_COMMITS=', accepted%commits
   write(*,'(A,L1)') 'PUB_ME_D1_CONTINUATION_MASS_COMPLETE=', accepted%accepted_mass_complete
   write(*,'(A,ES26.17E3)') 'PUB_ME_D1_CONTINUATION_MASS_RESIDUAL_CM=', accepted%accepted_mass_residual
