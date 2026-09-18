@@ -43,6 +43,7 @@ def main() -> int:
     ap.add_argument("--root", default=".")
     ap.add_argument("--stub", required=True)
     ap.add_argument("--target", required=True)
+    ap.add_argument("--external-source", action="append", default=[])
     ap.add_argument("--build", required=True)
     ap.add_argument("--opt", default="2")
     args=ap.parse_args()
@@ -50,6 +51,7 @@ def main() -> int:
     root=pathlib.Path(args.root).resolve()
     stub=(root/args.stub).resolve()
     target=(root/args.target).resolve()
+    external_sources=[(root/p).resolve() for p in args.external_source]
     build=pathlib.Path(args.build).resolve()
     build.mkdir(parents=True, exist_ok=True)
 
@@ -92,6 +94,14 @@ def main() -> int:
         order.append(path)
 
     order:list[pathlib.Path]=[]
+    # External procedures such as the legacy HeadCalc entry point are not
+    # discoverable from USE statements. Seed those sources explicitly, while
+    # still resolving all of their module dependencies transitively.
+    for path in external_sources:
+        if not path.is_file():
+            raise SystemExit(f"missing external source: {path}")
+        add_file(path)
+
     # Resolve dependencies needed by the test itself.
     for mod in used_modules(target):
         if mod in stub_mods:
@@ -128,7 +138,7 @@ def main() -> int:
     exe=build/"rom0_test"
     run(["gfortran","-fopenmp",f"-O{args.opt}",*[str(x) for x in objects],"-o",str(exe)])
 
-    print(f"F_ROM0_BUILD_MODULE_COUNT={len(order)}")
+    print(f"F_ROM0_BUILD_SOURCE_COUNT={len(order)}")
     print(f"F_ROM0_BUILD_EXECUTABLE={exe}")
     return 0
 
