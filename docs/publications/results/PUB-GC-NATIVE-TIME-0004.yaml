@@ -1,0 +1,129 @@
+study:
+  study_id: PUB-GC-NATIVE-TIME-0004
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_NATIVE_INTEGRATION_ADEQUACY
+  primary_h2_h3_inference_eligible: false
+  result: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+
+chronology:
+  native_time_0003_result_commit: b88bc28d4930e9f820bf7e7ca3def5846d01371c
+  bounded_refinement_decision_commit: f581b112add1ae2c7bf6dcce37557eaa22cf21a7
+  macro_512_qualification_receipt_commit: 74511e42a9fb42633bf544bba0eeadd3fceef240
+  frozen_manifest_commit: 6f28b6b9646ebfa856634356f1794e182bc73a9f
+  frozen_manifest_blob: b8458f0fda4b7598fc05024d22d5b0e756e1b5c7
+  frozen_before_implementation_and_execution: true
+
+authority:
+  research_branch: research/pub-gc-native-time-0004
+  research_head: cfd650167440dd170747fa803b707d025e07221b
+  base_512_qualified_head: b0f72c6c740ded2e331bb9dfce678a36bedac731
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  production_src_modified: false
+  macro_component_modified: false
+  test_blob: aa95b7b3fec8089d60763df534ff00a4eae0e290
+  runner_blob: f149d02e6bcc06ab113b2ee090d34ddab59dce4e
+  workflow_blob: a5055c3d9317dfd76422bad41666020501f62111
+
+invalid_predecessor_attempt:
+  github_actions_run: 35293318186
+  github_actions_job: 105440623994
+  research_head: 51b21ca2dafd296b54a346a4c9f4bff2b1bb5d2d
+  classification: INVALID_EXECUTION_WORKFLOW_PATH
+  scientific_execution_reached: false
+  reason: workflow referenced native_time_0003 directory for the 0004 runner
+  permitted_repair: change workflow path only
+  scientific_fixture_or_criterion_changed: false
+
+execution:
+  github_actions_run: 35293369996
+  github_actions_job: 105440785877
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 1c73e28243baa1ec35b01af7cfd52cb4cd8cb81a70c5d79f7c890234eb44343c
+  artifact:
+    id: 10527138351
+    digest: sha256:1125c2055d531161898b2f20558911e04ced7c76150b6b1309594cc537941308
+    expires_at: 2026-12-17T00:57:58Z
+
+frozen_design:
+  cases_unchanged: [NT-C0, NT-W3, NT-D05, NT-R3, NT-H60]
+  ladder:
+    N0: {native_dt_day: 0.01, interval_count: 4}
+    N1: {native_dt_day: 0.005, interval_count: 8}
+    N2: {native_dt_day: 0.0025, interval_count: 16}
+    N3: {native_dt_day: 0.00125, interval_count: 32}
+    N4: {native_dt_day: 0.000625, interval_count: 64}
+    N5: {native_dt_day: 0.0003125, interval_count: 128}
+    N6: {native_dt_day: 0.00015625, interval_count: 256}
+    N7: {native_dt_day: 0.000078125, interval_count: 512}
+  fine_guard: N6_vs_N7
+  tolerances:
+    dQ_cm: 1.0e-4
+    dh_cm: 1.0e-2
+    dtheta: 1.0e-5
+    dStorage_cm: 1.0e-4
+
+results:
+  all_trajectories_valid: true
+  fine_level_guard: false
+  policy_selection: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+  terminal_surrogate_mismatch_used_for_selection: false
+  fine_guard_by_case:
+    NT-C0:
+      pass: true
+      dQ_cm: 1.21430643318376497e-17
+      dh_cm: 0.0
+      dtheta: 0.0
+      dStorage_cm: 0.0
+    NT-W3:
+      pass: true
+      dQ_cm: 6.39630426842001387e-7
+      dh_cm: 3.69137590695345352e-4
+      dtheta: 3.43992936580050923e-7
+      dStorage_cm: 6.39630426846338196e-7
+    NT-D05:
+      pass: true
+      dQ_cm: 4.04461774308750854e-7
+      dh_cm: 2.48006807936462792e-4
+      dtheta: 2.29596606948767601e-7
+      dStorage_cm: 4.04461774294873067e-7
+    NT-R3:
+      pass: true
+      dQ_cm: 7.50269805839878789e-7
+      dh_cm: 3.78775419505927857e-4
+      dtheta: 3.51557930988732892e-7
+      dStorage_cm: 7.50269805838144066e-7
+    NT-H60:
+      pass: false
+      dQ_cm: 3.45331076161137229e-5
+      dh_cm: 1.86509538189056912e-2
+      dtheta: 1.92328959484067141e-5
+      dStorage_cm: 3.45331076161414785e-5
+
+interpretation:
+  admitted:
+    - All N0-N7 trajectories completed for all five frozen cases.
+    - Four cases pass the N6-to-N7 fine-level guard.
+    - For NT-H60, cumulative exchange and endpoint storage now pass the frozen criteria.
+    - NT-H60 still fails the endpoint pressure-head and water-content criteria, so no native integration policy is selected.
+    - The frozen automatic-refinement allowance is exhausted.
+  descriptive_context:
+    - >-
+      NT-H60 discrepancies continue to contract regularly under dyadic refinement,
+      but this observation does not authorize N8/N9 or extrapolated acceptance.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no practical coupling-window threshold
+    - no universal SWAP timestep recommendation
+    - no production admission
+    - no PUB-SQ solver-performance inference
+
+next_permitted_action:
+  - stop automatic dyadic refinement
+  - freeze a separate convergence/reference adjudication before any further native-time experiment
+  - examine whether the supporting numerical reference should be defined by a demonstrated convergence-order/error-estimation method rather than adjacent-level identity
+  - do not relax cases or adequacy thresholds retrospectively
