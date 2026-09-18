@@ -367,3 +367,21 @@ The register should describe readiness, not rewrite past chronology.
 - admitted scope: research-only relative-elapsed scheduling with exact external `macro_t1` closure and explicit actual-duration telemetry;
 - H2/H3 remain untested;
 - next permitted action: freeze `PUB-GC-NATIVE-TIME-0002` with the **unchanged** N0-N3 ladder, five cases, tolerances and coarsest-passing rule from NATIVE-TIME-0001; only the macro-component dependency may change.
+
+
+### 2026-09-18T00:44:26Z — PUB-GC native-time 0002 validly found fine-level instability
+
+- frozen manifest: `PUB-GC-NATIVE-TIME-0002`, commit `26d289ba285a0d202459c2ec4629a3c8d8dd0241`, blob `beeff3f6368daad4126151a09ef3946e386ccbdd`;
+- exact same test oracle as NATIVE-TIME-0001: blob `2a36de6c1b8b67b280a860e27df620fee4f9b4d8`;
+- only changed scientific dependency: requalified macro-time component blob `0a9461368f536381ca23390b255f8c369cb1e474`;
+- execution: `research/pub-gc-native-time-0002@f1723eda83fd1d11c55f1cad253e3d4ab1e8fa97`, GitHub Actions run `35292409218`, job `105437879775`, conclusion `success`;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `016b417774ace91bb7c2399b172bae593319a729795b39dc330c96d4aa336074`;
+- artifact `10527141691`, digest `sha256:f55f8d29397234aba5428dc282d7b8bfe3c83ce6c41eeacd5773f0861909ede4`;
+- all N0/N1/N2/N3 trajectories are valid in all five frozen cases;
+- N2→N3 stability PASS for NT-C0, NT-W3, NT-D05 and NT-R3;
+- NT-H60 fails all four frozen N2→N3 criteria: `|Delta Q|=5.32096144055138609e-4 cm`, max pressure-head difference `2.88737144844631644e-1 cm`, max water-content difference `2.96980035731753134e-4`, storage difference `5.32096144055138609e-4 cm`;
+- mechanical outcome: `NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE`; no threshold, case or selection rule was changed;
+- result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0002.yaml`, commit `ec36883372c0870319ade7574e206459671a23bc`;
+- scientific consequence: the earlier time-coordinate defect is resolved, but the strongest frozen prescribed-head transition still shows unresolved native integration refinement; N3 is not admitted as converged;
+- H2/H3 remain untested;
+- next permitted action: freeze a new refinement decision retaining NT-H60 and all existing adequacy tolerances; qualify the macro response for the finer contribution counts before executing a new native-time refinement study.
