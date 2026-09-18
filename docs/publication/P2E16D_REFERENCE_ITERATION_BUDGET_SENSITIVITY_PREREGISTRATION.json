@@ -1,0 +1,43 @@
+{
+  "schema":"swap5.publication.p2e16d-reference-iteration-budget-sensitivity.v1",
+  "workunit":"PUB-P2E16D",
+  "phase":"PREREGISTERED_BEFORE_REFERENCE_CONTROL_SENSITIVITY_EXECUTION",
+  "publication_owner":"PUB-SQ",
+  "parent_adjudication":{"commit":"7751ad0c37857dd4bbe8f79b0113bd3da6c87c9f","path":"docs/publication/P2E16C_REFERENCE_FIXED_STEP_ADJUDICATION_RESULT.json"},
+  "purpose":"Test whether the five P2E16B fixed-step Reference retry cases are recoverable by increasing only the nonlinear iteration budget, with physics, dt, tolerances and backtracking unchanged.",
+  "cases":[576,612,1220,1248,1257],
+  "fixed_step_duration_day":0.0016,
+  "max_iterations":[16,24,32,48,64],
+  "max_backtracking":8,
+  "fixed_controls":{
+    "conductivity_implicit_mode":0,
+    "conductivity_mean_method":1,
+    "min_step_duration_day":1e-8,
+    "compartment_balance_tolerance_cm_per_day":1e-12,
+    "total_balance_tolerance_cm_per_day":1e-12,
+    "head_abs_tolerance":1e-12,
+    "head_rel_tolerance":1e-12,
+    "ponding_tolerance":1e-12
+  },
+  "candidate_execution_allowed":false,
+  "case_count":25,
+  "primary_endpoint":"first max_iterations value producing a valid Reference solve for each case, if any",
+  "supporting_observables":["status","retry_advised","route","nonlinear_iterations","jacobian_builds","backtracking_attempts","integrated_mass_residual","candidate_state_validity"],
+  "interpretation_rules":{
+    "recovered":"A case is recovered if a budget >16 yields a valid Reference solve under otherwise identical controls.",
+    "not_recovered":"No tested budget through 64 yields a valid solve.",
+    "primary_counts":"P2E16B counts remain unchanged regardless of outcome."
+  },
+  "firewall":{
+    "no_src_or_reference_mutation":true,
+    "no_threshold_change":true,
+    "no_backtracking_change":true,
+    "no_dt_change":true,
+    "no_candidate_execution":true,
+    "no_retroactive_primary_upgrade":true,
+    "performance_claim_authorized":false
+  },
+  "negative_result_policy":{"execute_all_25":true,"diagnostic_result_is_not_ci_failure":true},
+  "verdict":"PREREGISTERED_REFERENCE_ITERATION_BUDGET_SENSITIVITY_READY",
+  "next_permitted_action":"Implement and execute the frozen 25-solve Reference-only iteration-budget matrix."
+}
