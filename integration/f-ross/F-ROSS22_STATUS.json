@@ -2,20 +2,29 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS22",
   "title": "Production K2 K4 K8 RossFast certificate",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "ADMIT",
+  "status": "QUALIFIED_PENDING_STACKED_PRODUCTION_ADMISSION",
   "branch": "work/f-ross22-production-tiered-certificate",
-  "source_head": "e0248de1b85574774b1ee5459dda933daaa63664",
-  "production_mutation": {
-    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
-    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
-  },
+  "qualified_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
   "qualification": {
-    "provider_preservation": "pending",
-    "all_material_216_case": "pending",
-    "production_research_identity_216": "pending",
-    "shared_host_anchor_performance": "pending"
+    "workflow_run": 35315107030,
+    "artifact_id": 10533894447,
+    "provider_preservation": "PASS",
+    "all_material": "PASS_216_OF_216",
+    "temporal_acceptance": "PASS_216_OF_216",
+    "tier_distribution": "212_K2__2_K4__2_K8",
+    "production_research_identity": "EXACT_216_OF_216",
+    "shared_host_solver_cpu_delta": -0.192428800287,
+    "shared_host_reference_over_rossfast_speedup": 1.23942820282,
+    "formal_performance_claim": false
   },
-  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
-  "next_permitted_action": "Execute F-ROSS22 qualification; do not change frozen tier thresholds or production scope."
+  "verdict": "QUALIFIED_FOR_PRODUCTION_ADMISSION_REVIEW",
+  "next_permitted_action": "Create/refresh stacked admission PR against F-ROSS21; inspect admission checks. Do not mutate semantics to satisfy unrelated canonical guards.",
+  "exclusions": [
+    "NO_THRESHOLD_RETUNING",
+    "NO_TRAJECTORY_REUSE",
+    "NO_K16_FALLBACK",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST",
+    "NO_UNRELATED_FCI96_REPAIR_IN_F_ROSS22"
+  ]
 }
