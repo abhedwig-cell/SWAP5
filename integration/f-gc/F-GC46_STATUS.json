@@ -3,8 +3,8 @@
   "work_unit": "F-GC46",
   "title": "Real multi-cell live MODFLOW6 application qualification",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_REAL_MULTICELL_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "c42db098cc246e3da06472a34979bdf24cfa81cb"
@@ -40,5 +40,23 @@
     "irrigation",
     "runtime finite-difference tangent fallback"
   ],
-  "next_permitted_action": "Implement qualification-only two-interface bridge and live MODFLOW6 multi-slot harness; qualify exact cell-to-slot/node mapping, same-origin correctors, conjunctive two-cell convergence and whole-timestep publication ordering."
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ118 evidence, repair only scoped failures, then reconcile canonical and admit/close if all criteria pass.",
+  "production_delta": "NONE",
+  "implemented": [
+    "two-interface qualification-only Fortran bridge over admitted real FMR/SWAP production participants",
+    "F-GC40 single-tile-equivalent cell response per interface",
+    "F-GC34 two-slot/two-node live MODFLOW API mapping",
+    "two cell-specific real SWAP correctors in one prepared solve",
+    "two independent interface ledgers with all-interface preflight before publication",
+    "live MODFLOW6 6.8.0 owner qualification workflow",
+    "F-VQ118 independent architecture/order verifier"
+  ],
+  "admission_criteria": [
+    "exact-head live multi-cell owner qualification green",
+    "exact-head F-VQ118 independent qualification green",
+    "no relevant canonical overlap/drift",
+    "production source delta remains NONE",
+    "PR mergeable and scope remains two 1:1 cells without N:1 or physics expansion"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
 }
