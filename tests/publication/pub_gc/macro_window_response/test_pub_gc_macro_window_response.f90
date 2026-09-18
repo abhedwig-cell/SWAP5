@@ -57,6 +57,7 @@ program test_pub_gc_macro_window_response
   call test_q2_aggregate_terminal_selectivity()
   call test_q3_same_origin_aba()
   call test_q5_seeded_temporal_history()
+  call test_q8_temporal_coordinate()
   call test_failure_controls()
 
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q0=PASS'
@@ -64,6 +65,7 @@ program test_pub_gc_macro_window_response
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q2=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q3=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q5=PASS'
+  write(*,'(a)') 'PUB_GC_MACRO_QUAL_Q8=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_QUAL_FAILURE_CONTROLS=PASS'
   write(*,'(a)') 'PUB_GC_MACRO_PRIMARY_H2_H3_ELIGIBLE=false'
   write(*,'(a)') 'PUB_GC_MACRO_QUALIFICATION=PASS'
@@ -221,6 +223,64 @@ contains
          'Q5 first native Q same-origin identity')
     write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q5_FIRST_Q_CM=',macro%q_contribution_cm(1)
   end subroutine test_q5_seeded_temporal_history
+
+  subroutine test_q8_temporal_coordinate()
+    type(pub_gc_macro_window_response_t) :: q8a, q8b, q8c
+    type(fmr_b110_physical_forcing_t), allocatable :: forcings16(:), forcings32(:)
+    type(kernel_committed_state_t) :: shifted_origin
+    real(real64) :: dt16(16), dt32(32), factors16(16), factors32(32)
+    real(real64) :: shifted_time, shifted_predecessor(numnod)
+    logical :: shifted_ok
+    integer :: status
+
+    dt16=0.0025_real64
+    dt32=0.00125_real64
+    factors16=-1.0_real64
+    factors32=-1.0_real64
+    call build_forcings(factors16,conductivity_reference,forcings16)
+    call build_forcings(factors32,conductivity_reference,forcings32)
+
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,origin,forcings16,dt16, &
+         initial_time_day,initial_time_day+0.04_real64,-80.0_real64,950001_int64,q8a,status)
+    call require(status==PUB_GC_MACRO_OK .and. q8a%completed,'Q8A 16 contribution complete')
+    call require(q8a%native_contribution_count==16,'Q8A count')
+    call require(size(q8a%actual_native_dt_day)==16,'Q8A actual duration telemetry')
+    call require(all(ieee_is_finite(q8a%actual_native_dt_day)) .and. all(q8a%actual_native_dt_day>0.0_real64), &
+         'Q8A actual durations finite positive')
+    call require(same_bits(q8a%disposable_final_time,initial_time_day+0.04_real64),'Q8A exact final macro time')
+    call require(q8a%authoritative_revision_before==q8a%authoritative_revision_after,'Q8A origin revision isolation')
+    call require(same_bits(q8a%authoritative_time_before,q8a%authoritative_time_after),'Q8A origin time isolation')
+
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,origin,forcings32,dt32, &
+         initial_time_day,initial_time_day+0.04_real64,-80.0_real64,950002_int64,q8b,status)
+    call require(status==PUB_GC_MACRO_OK .and. q8b%completed,'Q8B 32 contribution complete')
+    call require(q8b%native_contribution_count==32,'Q8B count')
+    call require(size(q8b%actual_native_dt_day)==32,'Q8B actual duration telemetry')
+    call require(all(ieee_is_finite(q8b%actual_native_dt_day)) .and. all(q8b%actual_native_dt_day>0.0_real64), &
+         'Q8B actual durations finite positive')
+    call require(same_bits(q8b%disposable_final_time,initial_time_day+0.04_real64),'Q8B exact final macro time')
+    call require(q8b%authoritative_revision_before==q8b%authoritative_revision_after,'Q8B origin revision isolation')
+    call require(same_bits(q8b%authoritative_time_before,q8b%authoritative_time_after),'Q8B origin time isolation')
+
+    shifted_time=initial_time_day+10000.0_real64
+    shifted_predecessor=0.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(shifted_origin,950003_int64,initial_state,shifted_time, &
+         shifted_ok,shifted_predecessor)
+    call require(shifted_ok .and. shifted_origin%ready(),'Q8C shifted origin init')
+    call pub_gc_run_macro_window_response(column,template,parameters,backend,config,shifted_origin,forcings32,dt32, &
+         shifted_time,shifted_time+0.04_real64,-80.0_real64,950004_int64,q8c,status)
+    call require(status==PUB_GC_MACRO_OK .and. q8c%completed,'Q8C shifted 32 contribution complete')
+    call require(q8c%native_contribution_count==32,'Q8C count')
+    call require(all(ieee_is_finite(q8c%actual_native_dt_day)) .and. all(q8c%actual_native_dt_day>0.0_real64), &
+         'Q8C actual durations finite positive')
+    call require(same_bits(q8c%disposable_final_time,shifted_time+0.04_real64),'Q8C exact final macro time')
+    call require(q8c%authoritative_revision_before==q8c%authoritative_revision_after,'Q8C origin revision isolation')
+    call require(same_bits(q8c%authoritative_time_before,q8c%authoritative_time_after),'Q8C origin time isolation')
+
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q8A_MAX_DT_REP_ERROR_DAY=',q8a%max_abs_native_dt_representation_error_day
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q8B_MAX_DT_REP_ERROR_DAY=',q8b%max_abs_native_dt_representation_error_day
+    write(*,'(a,es26.17e3)') 'PUB_GC_MACRO_Q8C_MAX_DT_REP_ERROR_DAY=',q8c%max_abs_native_dt_representation_error_day
+  end subroutine test_q8_temporal_coordinate
 
   subroutine test_failure_controls()
     type(pub_gc_macro_window_response_t) :: response
