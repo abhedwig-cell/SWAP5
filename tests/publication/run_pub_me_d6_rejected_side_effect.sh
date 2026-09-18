@@ -16,44 +16,39 @@ git diff --quiet "$BASE"..HEAD -- src || fail 'production source changed'
 git diff --quiet "$BASE"..HEAD -- reference || fail 'reference source changed'
 echo 'PUB_ME_D6_PRODUCTION_REFERENCE_UNCHANGED=PASS'
 
+# The qualification-only state carrier may replace only the unrelated heavy
+# serialized backend at compile time. Bind its public hydraulic surface to the
+# exact current production declaration so type drift fails closed.
+PROD_STATE=src/runtime/mod_fmr_serialized_reference_backend.f90
+grep -Fq 'type, extends(canonical_state_t), public :: fmr_b110_physical_state_t' "$PROD_STATE" || fail 'production FMR hydraulic state type declaration drift'
+for field in \
+  'integer :: active_nodes = 0' \
+  'real(real64), allocatable :: pressure_head(:)' \
+  'real(real64), allocatable :: water_content(:)' \
+  'real(real64) :: ponding_depth = 0.0_real64' \
+  'real(real64) :: groundwater_level = 0.0_real64'; do
+  grep -Fq "$field" "$PROD_STATE" || fail "production FMR hydraulic state field drift: $field"
+done
+grep -Fq 'procedure :: clone => fmr_b110_state_clone' "$PROD_STATE" || fail 'production FMR hydraulic clone contract drift'
+echo 'PUB_ME_D6_MINIMAL_STATE_FIXTURE_BOUND_TO_PRODUCTION_SURFACE=PASS'
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
-  tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/transaction/mod_accepted_trajectory_directional_publication.f90
-  src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
-  src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
-  src/runtime/mod_fmr_runtime_core.f90
-  src/runtime/mod_fmr_checkpoint_orchestrator.f90
+  tests/publication/pub_me_d6_fmr_state_stub.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
-  src/process/mod_soil_temperature_contract.f90
-  src/process/mod_restricted_soil_temperature.f90
-  src/solver/mod_reference_richards_workspace.f90
-  src/solver/mod_reference_richards_state_binding.f90
-  src/solver/mod_reference_linear_solver.f90
-  src/solver/mod_b110_default_mvg_provider.f90
-  src/solver/mod_b110_source_sink_provider.f90
-  src/solver/mod_fixed_flux_top_boundary_provider.f90
-  src/solver/mod_reference_richards_temporal_indicator.f90
-  src/legacy/b1_10_port/headcalc.f90
-  src/adapter/mod_reference_richards_legacy_binding.f90
-  src/adapter/mod_b110_serialized_context_binding.f90
-  src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
-  src/process/mod_restricted_fixed_weir_surface_water.f90
-  tests/fpm/mod_fpm08d7_optional_state_compat.f90
-  src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_fmr_process_hydraulic_view_binding.f90
   src/process/mod_reference_et_demand_process.f90
   src/runtime/mod_fmr_reference_et_demand_binding.f90
   src/solver/mod_surface_evaporation_capacity_contract.f90
   src/process/mod_restricted_surface_evaporation.f90
+  src/runtime/mod_fmr_process_hydraulic_view_binding.f90
   src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90
