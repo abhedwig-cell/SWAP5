@@ -1,0 +1,19 @@
+name: F-VQ123 F-GC49C independent qualification
+on:
+  push:
+    branches: [work/f-gc49c-generic-live-application-service]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/adapter/modflow6_groundwater_application_service.py'
+      - 'tests/fvq/test_fvq123_fgc49c_independent.py'
+      - 'tests/fvq/run_fvq123_fgc49c_independent.sh'
+      - '.github/workflows/f-vq123-fgc49c-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install numpy
+      - run: bash tests/fvq/run_fvq123_fgc49c_independent.sh
