@@ -3,8 +3,8 @@
   "work_unit": "F-GC41",
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY",
-  "state": "FAILED_LIVE_GUARD_RECONCILED_RERUN_AND_INDEPENDENT_QUEUED",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_WHOLE_WINDOW_ACCEPTANCE_RETRY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,7 +53,7 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "Inspect owner and F-VQ113 exact-head results. If both owner jobs and independent verifier pass, create admission gate/checkpoint and reconcile canonical delta before non-force admission.",
+  "next_permitted_action": "Open the next separately bounded live whole-window service materialization only if already authorized by groundwater-coupling governance; preserve F-GC41 publication ordering and F-GC39 predictor/corrector ownership.",
   "modflow_semantics": {
     "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
     "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
@@ -91,7 +91,7 @@
     "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
   ],
   "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
-  "verdict": "QUALIFICATION_RERUN_PENDING",
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
   "mutations": "metadata only",
   "production_delta": [
     "src/adapter/modflow6_prepared_solve_session.py: non-mutating timestep_ready_for_finalize()",
@@ -162,5 +162,32 @@
       "job": 105572895070,
       "status": "queued"
     }
+  },
+  "canonical_admission": {
+    "preimage": "b3be8d4c44cd50f9cd0c42cb6c471815ca41bf21",
+    "head": "0daa00ed2002e74aa5d0e75dd421a11b484e408f",
+    "pr": 229,
+    "merge_method": "merge",
+    "canonical_compare_after_merge": "identical"
+  },
+  "qualification": {
+    "owner_run": 35336641796,
+    "deterministic_job": 105572894840,
+    "live_modflow_job": 105572895084,
+    "owner_conclusion": "success",
+    "independent_run": 35336641845,
+    "independent_job": 105572895070,
+    "independent_conclusion": "success",
+    "live_oracles": [
+      "FGC41_LIVE_MODFLOW_TIMESTEP_READINESS_NONMUTATING=PASS",
+      "FGC41_LIVE_MODFLOW_FINALIZE_TIMESTEP_EXACTLY_ONCE=PASS"
+    ],
+    "independent_oracles": [
+      "FVQ113_READINESS_NONMUTATING_SOURCE_ORACLE=PASS",
+      "FVQ113_FINALIZE_TIMESTEP_ONE_SHOT_SOURCE_ORACLE=PASS",
+      "FVQ113_PUBLICATION_ORDER_CONTRACT_PRESENT=PASS",
+      "FVQ113_POST_PUBLICATION_NOT_ROLLBACK_SAFE=PASS",
+      "FVQ113_FRESH_RETRY_IDENTITY_ORACLE_PRESENT=PASS"
+    ]
   }
 }
