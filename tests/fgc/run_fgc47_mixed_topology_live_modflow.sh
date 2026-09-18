@@ -111,5 +111,5 @@ for marker in   'FGC47_THREE_REAL_SWAP_LINEAGES=PASS'   'FGC47_CELL1_FGC40_N1_RE
   grep -Fq "$marker" "$BUILD/e2e.txt" || fail "missing marker $marker"
 done
 
-git diff --check -- tests/fgc/support/mod_fgc47_mixed_topology_c_bridge.f90   tests/fgc/support/fgc46_real_multicell_ctypes.py   tests/fgc/test_fgc47_mixed_topology_live_modflow.py
+git diff --check -- tests/fgc/support/mod_fgc47_mixed_topology_c_bridge.f90   tests/fgc/support/fgc47_mixed_topology_ctypes.py   tests/fgc/test_fgc47_mixed_topology_live_modflow.py
 echo 'F-GC47 REAL MIXED-TOPOLOGY + MODFLOW6 END-TO-END GATE PASS'
