@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "6b0106d5d1cd0be24acbdf2b5f52e901f93c1442"
+      "blob": "c92251c4b4538b9240cc8fbae9a68b071c758b2b"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -228,15 +228,28 @@
       "docs/publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
       "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
       "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
-      "tools/publication/check_pub_gc_gmd_submission.py"
+      "tools/publication/check_pub_gc_gmd_submission.py",
+      "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_RESULT.json",
+      "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_RESULT.md",
+      "tools/publication/export_pub_gc_gmd_figures.py",
+      ".github/workflows/pub-gc-gmd-figure-export.yml"
     ],
     "unresolved": [
       "governed successor publication release identifier",
       "authorized SWAP5 publication-archive licence/redistribution statement",
       "persistent exact-version archive DOI/PID",
-      "final author/affiliation/contribution/funding/interest metadata",
-      "final figure export binaries"
+      "final author/affiliation/contribution/funding/interest metadata"
     ],
-    "scientific_experiment_required": false
+    "scientific_experiment_required": false,
+    "figure_export": {
+      "state": "VALIDATED_CANDIDATE_READY",
+      "workflow_run": 35405142243,
+      "workflow_job": 105793234099,
+      "artifact_id": 10571902714,
+      "artifact_digest": "sha256:c15ab068d7d6885533cf022640ae95090492333ca9044c0f9ed089122f6130e7",
+      "flat_submission_zip_sha256": "37ef7daf52ad2892b78b4f926f89983f64c097eba32839e20fce47211e5d43fb",
+      "figures": 7,
+      "final_action": "regenerate/bind the same transforms at the exact governed publication release"
+    }
   }
 }
