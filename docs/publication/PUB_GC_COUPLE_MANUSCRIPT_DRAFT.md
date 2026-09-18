@@ -6,9 +6,9 @@
 
 ## Repository manuscript status
 
-**Consolidated through E1–E6; E7 prospectively specified but not yet executed, 2026-09-18.**
+**Consolidated through E1–E7; E7 closed as a preregistered realistic component-domain limit, 2026-09-18.**
 
-The scientific text below is written as a manuscript rather than as a workplan. Statements that still depend on E7 are explicitly bounded. Repository evidence pointers and readiness notes are retained after the references and are not intended for journal submission.
+The scientific text below is written as a manuscript rather than as a workplan. E7 is reported as a bounded negative realistic-transferability result rather than as an unexecuted future experiment. Repository evidence pointers and readiness notes are retained after the references and are not intended for journal submission.
 
 ---
 
@@ -18,7 +18,7 @@ Coupling a process-based vadose-zone model to a groundwater model requires more 
 
 In a controlled real SWAP–MODFLOW6 end-to-end case, native lower-boundary flux and groundwater-facing exchange were demonstrably distinct, rejected trials changed neither committed SWAP state nor interface mass, and the accepted whole-window transfer was published exactly once. Iterative coupling reduced interface residuals below the fixed interface criterion in two to five outer iterations, but the largest loose-to-iterative groundwater-head correction in the controlled low-flux experiments was only 5.55×10^-9 m. A stronger-flux refinement remained similarly weak before the SWAP predictor or prescribed-head corrector envelope became limiting. Independent response experiments identified the supplied SWAP coefficient as a finite-window flux-driven predictor response, u_A ≈ ΔT(∂H_end/∂q_bot)^-1, rather than a universal head-to-exchange Jacobian. In one baseline the actual head-driven response magnitude was 8.1% larger. A zero-cost exact local derivative then saved only one SWAP evaluation in 16 of 18 comparable cases relative to a cold black-box secant method and did not enlarge its convergence domain.
 
-Two preregistered attempts to construct a stronger synthetic hydrological-feedback case subsequently reached component-admission boundaries before a positive live-coupling case was available. These results show that component admissibility, interface semantics, coupled convergence and hydrological relevance are distinct parts of the coupling problem. The contribution is therefore a conservative hydrological coupling contract, not a new nonlinear solver. A realistic Hupselbrook application is reserved as the next external-validity test and is not used to broaden the present evidence prematurely.
+Two preregistered attempts to construct a stronger synthetic hydrological-feedback case subsequently reached component-admission boundaries before a positive live-coupling case was available. A prospectively selected three-year Hupselbrook application then reached the same class of boundary under authentic forcing and process composition: both frozen test days had active drainage, whereas the current production prescribed-head groundwater owner rejects profiles with active drainage before owner state is allocated. E7 therefore closed as a `REALISTIC_COMPONENT_DOMAIN_LIMIT` with no loose or strong coupled window executed and no numerical or physical policy relaxed. These results show that component admissibility, interface semantics, coupled convergence and hydrological relevance are distinct parts of the coupling problem. The contribution is therefore a conservative hydrological coupling contract, not a new nonlinear solver.
 
 ---
 # 1. Introduction
@@ -88,7 +88,7 @@ Fourth, we distinguish the response of the flux-driven SWAP predictor map from t
 
 Fifth, we evaluate the contract with falsifiable negative controls. The experiments explicitly allow weak feedback, component-domain failure and lack of derivative advantage as valid outcomes. This prevents numerical convergence, local sensitivity or software capability from being promoted automatically into hydrological importance.
 
-The current evidence supports these contributions inside bounded synthetic and controlled envelopes. Realistic Hupselbrook application evidence remains the next external-validity test; regional scaling and physical aggregation validity are not claimed from the present results.
+The evidence supports these contributions across bounded controlled experiments and one prospectively selected realistic application. The Hupselbrook result is negative in a precise sense: authentic process composition reaches the current prescribed-head participant boundary before loose-versus-strong convergence can be evaluated. Regional scaling and physical aggregation validity are not claimed from this result.
 ## 1.6 Research questions
 
 The central research question is:
@@ -112,7 +112,7 @@ Can stronger hydrological states or processes create a materially stronger valid
 **RQ5 — Realistic transferability.**  
 Does the same coupling contract remain usable and interpretable in an independently authoritative real application with authentic forcing and process composition?
 
-RQ1–RQ4 are addressed by E1–E6. RQ5 is reserved for the prospectively selected Hupselbrook E7 case. Multi-column execution is an implementation/scaling question; the physical validity of spatial aggregation is outside this manuscript and belongs to the separate SCALE research line.
+RQ1–RQ4 are addressed by E1–E6. RQ5 is addressed by E7 in a bounded negative form: under authentic Hupsel forcing and drainage composition, the current production prescribed-head participant cannot be instantiated without dropping an active process, so component admission becomes limiting before loose-versus-strong convergence can be assessed. Multi-column execution is an implementation/scaling question; the physical validity of spatial aggregation is outside this manuscript and belongs to the separate SCALE research line.
 
 ---
 # 2. Coupling method
@@ -651,9 +651,13 @@ Every predictor-ready case was probed symmetrically at `±1e-6`, `±1e-5`, `±1e
 
 ## 3.7 E7: prospectively selected realistic application
 
-Hupselbrook was selected as the realistic E7 application before any E7 coupling result. The case has independent SWAP 4.3.1 forcing and application provenance and a large existing typed-application reproduction record. E7 execution is conditioned on closure of the final whole-Hupsel file-driven adapter gate; historical output alone is not treated as proof that the complete application is available through the coupled SWAP participant.
+Hupselbrook was selected as the realistic E7 application before any E7 coupling result. After canonical closure of the exact whole-Hupsel typed-adapter gate, all 1,096 complete civil days in the 2002–2004 standalone record were scored using precipitation plus irrigation, actual evapotranspiration, drainage outflow and absolute storage change. No undocumented spin-up period was removed.
 
-After that prerequisite closes, episode selection will use standalone Hupsel dynamics only. Coupled loose-versus-strong results are explicitly excluded from the selection metric. The frozen selection and execution rules are recorded in `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`.
+The frozen median-dynamics control is 2003-06-17 (`Phi=0.5067351598`); the frozen high-dynamics day is 2003-05-20 (`Phi=0.8831050228`). Both dates were persisted before any coupled output. The preregistered groundwater fallback was also frozen before coupling as the qualified uncalibrated 1×1×3 conceptual MODFLOW6 fixture.
+
+Before constructing loose or strong coupled windows, E7 checked whether the authentic Hupsel process composition could be represented by the production prescribed-head SWAP participant. This is part of the preregistered component-domain stop rule. Both selected days have positive Hupsel drainage outflow. The production groundwater owner requires `bottom_mode=5` and rejects `drainage_response_active` during configuration validation before owner-state allocation. The later common-forcing application adapter does not broaden this process envelope.
+
+Disabling drainage, replacing the dates, merging event windows, recalibrating groundwater or relaxing numerical tolerances was prohibited. Therefore E7 stops at the production component boundary and is classified `REALISTIC_COMPONENT_DOMAIN_LIMIT`; no loose or strong E7 coupled window is executed.
 
 ## 3.8 Multi-column composition and scaling scope
 
@@ -668,7 +672,7 @@ Existing multi-participant tests demonstrate that the coupling contract can comp
 | E4 | compare `u_A`, independent `u_FD`, `J_S`, `J_R` | centred perturbations only; no extrapolation through failed side | `u_A` is a flux-driven predictor response, not universal `J_R` |
 | E5 | fixed point, Aitken, cold secant, supplied `u_A`, free `J_R` oracle | standalone ACCELERATE continues only after a reproducible ≥2-evaluation or convergence-domain advantage | derivative information has modest incremental value; continuation gate failed |
 | E6 | active-drainage route and 20-case state/flux screen | no production tolerance, retry or physics relaxation; deterministic E6-B rule | negative stress extension; zero E6-B candidates |
-| E7 | prospectively selected realistic Hupsel application | M1-C3 prerequisite; standalone-only day selection; no post-hoc date/window rescue | preregistered but externally blocked |
+| E7 | standalone-selected realistic Hupsel application | frozen dates/groundwater fixture; preserve authentic process composition; no post-hoc date/window rescue | REALISTIC_COMPONENT_DOMAIN_LIMIT before coupled owner allocation |
 
 ---
 # 4. Results
@@ -961,14 +965,32 @@ The negative result is important for interpreting the earlier convergence experi
 
 **Figure 6. Component-admission boundaries encountered by the E6 stress extensions.** The active-drainage predictor is valid and mass-complete but outside the prescribed-head corrector profile. In the independent state/flux screen, eight predictors are valid, while higher-flux cases fail before an E6-B candidate with the preregistered symmetric head neighbourhood is available.
 
-## 4.7 Realistic and regional behaviour
+## 4.7 Realistic Hupsel transferability is limited by the production component domain
 
+The exact whole-Hupsel typed application is now canonical authority. The three-year historical run contains 32,518 accepted intervals with no accepted-interval fallback, and 16,507 intervals have non-zero drainage. Standalone daily scoring selected 2003-06-17 as the median-dynamics control and 2003-05-20 as the high-dynamics day before any coupled output was generated.
 
-Hupselbrook is the preferred E7 application because it has independent historical forcing and unusually strong SWAP 4.3.1 reference evidence. The SWAP5 typed-application work has reproduced all active Hupsel application routes across 32,518 accepted historical intervals, including drainage and lower-boundary behaviour. One prerequisite remains before Hupsel can be used as a publication coupling case: the final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution.
+Both selected days require the authentic Hupsel drainage process. Daily drainage outflow is 0.0225869 cm on the median-dynamics day and 0.906969 cm on the high-dynamics day. The current production prescribed-head groundwater owner, however, is deliberately narrower than the standalone Hupsel application: it admits an all-`bottom_mode=5` profile only when `drainage_response_active` and the other process families outside the restricted owner are false. This validation occurs before the owner allocates committed state or participant/ledger storage.
 
-That gate is currently blocked by execution-environment access to the exact distribution bytes, not by an unresolved hydrological design question. Multiple exact-size copies are catalogued, but the raw-byte materialization path is unavailable in the present execution context. E7 therefore does not yet calculate any coupled Hupsel result or select a publication period from coupled output.
+This is the same structural boundary encountered independently in E6. There, an admitted active-drainage prescribed-`q_bot` predictor was mass-complete, but the prescribed-head corrector returned `KERNEL_STATUS_NOT_ADMITTED` with zero transaction calls. E7 shows that the boundary is reached by a prospectively selected authentic application rather than only by a synthetic stress fixture.
 
-Once the existing M1-C3 whole-Hupsel gate passes, the E7 period must be selected prospectively from standalone SWAP dynamics before inspecting MODFLOW coupling results. The intended comparison remains loose/sequential versus strongly converged coupling from identical accepted states, with head, storage, interface exchange, component work and whole-system mass closure reported. Existing multi-participant tests already demonstrate multi-column runtime composition, but they are not substitutes for this realistic hydrological evidence and do not establish heterogeneous spatial aggregation validity.
+The E7 qualification therefore terminates before a loose/sequential or production-strong coupled Hupsel window can be completed. No MODFLOW6 E7 window is run because even the mandatory SWAP prescribed-head corrector cannot be instantiated while preserving the selected application's drainage physics. Under the preregistered classification this is `REALISTIC_COMPONENT_DOMAIN_LIMIT`, not outer-coupling divergence, Richards failure or MODFLOW failure.
+
+![Figure F7 — realistic Hupsel component-domain limit](figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg)
+
+**Figure 7. Realistic Hupsel transferability reaches the production component boundary.** The two dates were frozen from standalone dynamics before coupled output. Both require active Hupsel drainage. The production prescribed-head groundwater owner requires the restricted mode-5 profile and rejects active drainage before owner-state allocation, so E7 closes at the component domain without changing process physics, dates, windows, groundwater parameters or numerical tolerances.
+
+**Table 6. E7 realistic Hupsel outcome.**
+
+| frozen case | standalone Phi | drainage outflow | prescribed-head production participant | completed loose windows | completed strong windows | E7 outcome |
+| --- | ---: | ---: | --- | ---: | ---: | --- |
+| median dynamics, 2003-06-17 | 0.5067351598 | 0.0225869 cm | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
+| high dynamics, 2003-05-20 | 0.8831050228 | 0.906969 cm | NOT_ADMITTED with authentic active drainage | 0 | 0 | REALISTIC_COMPONENT_DOMAIN_LIMIT |
+
+The result answers the realistic-transferability question in a bounded negative form. The coupling contract remains scientifically interpretable because it exposes the exact point at which the authentic application exceeds the admitted participant domain, but the current production coupling cannot yet execute the complete Hupsel process composition under prescribed-head groundwater trials. Existing multi-participant tests remain architecture evidence only and do not establish regional runtime scaling or heterogeneous spatial aggregation validity.
+
+---
+
+# 5. Discussion
 
 ---
 
@@ -1036,22 +1058,30 @@ The E6 active-drainage route makes this distinction especially clear. A valid, m
 
 Component admissibility should therefore be treated as an explicit domain of a coupled model, alongside the usual convergence domain of the outer algorithm. This has a practical consequence for model development: difficult coupled cases should first be classified into component-domain failure versus valid-component coupling failure before changing relaxation, Jacobians or convergence tolerances.
 
+The E7 Hupsel result extends this conclusion beyond deliberately constructed stress cases. The selected realistic days were frozen from standalone dynamics, and both contain authentic drainage. The production groundwater owner rejects active drainage before participant state is created. Consequently no amount of outer relaxation, Jacobian information or MODFLOW nonlinear iteration is relevant at that point. The missing capability is a component-domain composition, not a coupling-algorithm tuning problem.
+
+This distinction is scientifically useful even though E7 yields no paired loose/strong trajectory. A model-coupling study that silently disables drainage to obtain a runnable prescribed-head participant would change the hydrological question. The fail-closed result instead makes the application envelope part of the reported method.
+
 ## 5.8 Limitations and transferability
 
-The strongest current limitation is hydrological breadth. E1–E6 provide real SWAP and live-MODFLOW evidence, but most direct coupling experiments use deliberately small controlled fixtures. E6 shows why synthetic escalation alone is not an adequate substitute for a realistic application. Hupselbrook is therefore reserved as a prospectively selected external-validity case rather than being invoked retrospectively to strengthen the present conclusions.
+The strongest remaining limitation is not the absence of a realistic test but the breadth of the production participant envelope. E7 applies prospectively selected authentic Hupsel forcing and process composition and shows that active drainage lies outside the current prescribed-head groundwater-owner profile. It therefore does not provide paired realistic loose-versus-strong head or exchange corrections.
 
-The study also does not establish that strong coupling is generally necessary. In the tested live-MODFLOW control, iterative coupling improves strict interface closure but changes groundwater head only at nanometre scale. A realistic application may show a larger effect, a similarly weak effect, or additional component-domain limitations; all three outcomes are scientifically admissible.
+The study consequently does not establish that strong coupling is generally necessary in realistic applications. In the controlled live-MODFLOW case, iteration improves strict interface closure while changing groundwater head only at nanometre scale; in realistic Hupsel, component admission becomes limiting before that comparison can be made.
 
-The scalar E5 information-value experiment isolates response information from MODFLOW's own nonlinear solver. It is therefore a mechanism experiment rather than a direct performance benchmark for a regional model. Likewise, existing multi-participant tests demonstrate composition but not regional runtime scaling or physical validity of spatial aggregation.
+The scalar E5 information-value experiment isolates response information from MODFLOW's own nonlinear solver and remains a mechanism experiment rather than a regional performance benchmark. Existing multi-participant tests demonstrate composition but not regional runtime scaling or physical validity of spatial aggregation.
 
-Transferability beyond SWAP5–MODFLOW6 rests on principles rather than identical implementation details: immutable accepted origins for replayed component trials, explicit physical interface quantities, separation of candidate calculation from state acceptance, exactly-once mass publication and explicit component-admission domains. Whether these principles provide the same benefits in another model pair remains an empirical question.
+Transferability beyond SWAP5–MODFLOW6 rests on principles rather than identical implementation details: immutable accepted origins for replayed component trials, explicit physical interface quantities, separation of candidate calculation from state acceptance, exactly-once mass publication and explicit component-admission domains. E7 adds an important boundary condition to that claim: realistic transferability requires the component participant to preserve the application's active physics under the coupling boundary condition. A future active-drainage prescribed-head capability would be a new admitted capability and should be evaluated prospectively rather than used to rewrite the present E7 result.
+
+---
+
+# 6. Conclusions
 
 ---
 # 6. Conclusions
 
 We developed and tested a solver-autonomous finite-window coupling contract in which SWAP5 and MODFLOW6 retain their own numerical solvers while sharing an explicit hydrological interface and one coupled acceptance decision.
 
-Five conclusions follow from the current evidence.
+Six conclusions follow from the current evidence.
 
 First, numerical calculation, state acceptance and water-balance authority must be separated. Real SWAP predictor and corrector trials can compute physically meaningful exchange without changing committed state or authoritative mass. In the qualified transaction, the accepted transfer becomes model history only after coupled acceptance and ordered, exactly-once publication.
 
@@ -1063,18 +1093,20 @@ Fourth, finite-window response information must be identified by the map it diff
 
 Fifth, component admissibility can limit a coupled experiment before outer coupling convergence becomes the relevant problem. Two preregistered E6 stress routes reached distinct component-domain boundaries before yielding a stronger valid live-MODFLOW feedback case. Those negative outcomes are part of the coupling result, not failures to be hidden by relaxed tolerances.
 
+Sixth, the same limitation can arise under authentic application forcing and process composition. The prospectively selected Hupsel E7 cases both require active drainage, but the current production prescribed-head groundwater owner rejects that process before allocating participant state. E7 therefore closes as a realistic component-domain limit with zero coupled windows rather than changing the selected application to obtain a positive trajectory.
+
 Together, these findings support a coupling philosophy in which solver autonomy is paired with stronger external semantics rather than weaker scientific control. The coupler should know exactly what is exchanged, which state is authoritative, which finite-window map a response belongs to, and whether each participant can return a valid candidate for the requested trial.
 
-The present conclusions remain bounded by the controlled application envelope. Hupselbrook has been prospectively selected as the next realistic test and will determine how much of the contract's behaviour transfers to authentic forcing and process composition. Until that evidence is available, regional hydrological validity and scaling performance are not claimed.
+The conclusions remain bounded by the admitted component envelope. E7 establishes that authentic Hupsel process composition presently exceeds the production prescribed-head participant domain; it does not establish regional Hupsel groundwater validation or realistic loose-versus-strong correction magnitudes. Regional hydrological validity, scaling performance and heterogeneous aggregation validity therefore remain outside the present claims.
 # 7. Code, evidence and reproducibility
 
-The coupling implementation, coupling contracts, preregistrations and machine-readable publication evidence are version controlled in the public `abhedwig-cell/SWAP5` repository. Publication-specific evidence for E1–E6 is retained under `docs/publication/` and `docs/publication/evidence/`, including the raw perturbation records used for the response-identity and E6 state-domain analyses.
+The coupling implementation, coupling contracts, preregistrations and machine-readable publication evidence are version controlled in the public `abhedwig-cell/SWAP5` repository. Publication-specific evidence for E1–E7 is retained under `docs/publication/` and `docs/publication/evidence/`, including the raw perturbation records used for the response-identity and E6 state-domain analyses and the governed E7 standalone-selection/component-domain result.
 
 Each reported experiment is tied to a frozen repository state and, where applicable, a recorded GitHub Actions run. Diagnostic publication experiments do not alter production physics or numerical tolerances. Exact repository revision, archival release and long-term DOI should be fixed at manuscript submission.
 
 MODFLOW6 version 6.8.0 is used in the live groundwater experiments described here. The historical Hupselbrook SWAP 4.3.1 distribution is governed as an external reference asset and is not redistributed through this manuscript repository.
 
-A journal-neutral supplementary package freezes notation, workflow provenance, machine-readable evidence bindings and the open E7 slot. The controlling repository assets are `PUB_GC_NOTATION_AND_UNITS.md`, `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` and `PUB_GC_REPRODUCIBILITY_MANIFEST.json`. At journal submission these repository paths can be mapped to formal supplementary files and an archived release without changing the scientific content.
+A journal-neutral supplementary package freezes notation, workflow provenance and machine-readable evidence bindings through the closed E7 component-domain result. The controlling repository assets are `PUB_GC_NOTATION_AND_UNITS.md`, `PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md` and `PUB_GC_REPRODUCIBILITY_MANIFEST.json`. At journal submission these repository paths can be mapped to formal supplementary files and an archived release without changing the scientific content.
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**JOURNAL_NEUTRAL_SUPPLEMENT READY THROUGH E7 STANDALONE SELECTION — COUPLED SLOT OPEN**
+**JOURNAL_NEUTRAL_SUPPLEMENT READY THROUGH CLOSED E7 REALISTIC COMPONENT-DOMAIN RESULT**
 
 Date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This package collects the reproducibility information that is too detailed for t
 | E5 | incremental value of supplied response information | source `41e68a89a52f1f0fac00c8cfe920152ffd4e3fda` | run/job `35351467531 / 105620375280`; artifact `10550095859` | SUPPORTED_RESTRICTED_STOP_INDEPENDENT_ACCELERATE |
 | E6 active drainage | test stronger response through admitted drainage predictor | source `191f1d8ac0ab0b84eff438023f1d32e00c09b925` | run/job `35360873209 / 105651690323`; artifact `10554144629` | SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE |
 | E6 state/flux screen | test stronger response through accepted-state geometry | source `97dba8764ca85c7499cbb2402cf5309447621a66` | run/job `35360999577 / 105651945363`; artifact `10554314676` | PREDICTOR_ONLY_OR_NO_USEFUL_EXPANSION |
-| E7 | realistic Hupsel transferability | M1/M1-C3 closed; standalone selection frozen before coupled output | coupled loose/strong run not yet executed | READY_FOR_COUPLED_EXECUTION |
+| E7 | realistic Hupsel transferability | M1/M1-C3 closed; standalone selection frozen before coupled output | run `35375181814` / job `105698080443` | CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT |
 
 ## S2. Important execution qualifications
 
@@ -60,13 +60,13 @@ No numerical tolerance, retry budget or physical parameter was changed to conver
 | E5 | `PUB_GC_E5_INFORMATION_VALUE_RESULT.json` and comparison CSV |
 | E6 active drainage | `PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json` |
 | E6 state/flux | `PUB_GC_E6A_STATE_SCREEN_RESULT.json` and summary CSV |
-| E7 | `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md` + `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json` until coupled execution |
+| E7 | `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json` + `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json` |
 
 Raw E4 and E6 records are retained under `docs/publication/evidence/` where applicable.
 
 ## S4. Figures and tables
 
-Figures F1–F6 are version-controlled SVG assets. F3–F6 are regenerated from governed numerical evidence with:
+Figures F1–F7 are version-controlled SVG assets. F3–F6 are regenerated from governed numerical evidence with:
 
 ```text
 python docs/publication/figures/generate_pub_gc_numeric_figures.py
@@ -76,11 +76,11 @@ The figure-to-evidence binding is frozen in:
 
 `docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json`
 
-Tables T1–T5 and their evidence notes are frozen in:
+Tables T1–T6 and their evidence notes are frozen in:
 
 `docs/publication/PUB_GC_MANUSCRIPT_TABLES.md`
 
-F7 and T6 remain intentionally absent until E7 executes.
+F7 and T6 are present and encode the zero-window preregistered component-domain outcome explicitly.
 
 ## S5. Reproducibility boundaries
 
@@ -116,19 +116,34 @@ scored-days SHA-256:
 016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e
 ```
 
-## S6. E7 open supplement slot
+## S6. E7 closed realistic component-domain evidence
 
-The M1-C3 gate has passed and the standalone selection is frozen. When the coupled E7 run completes, the supplement must add, without changing the selected dates or preregistered comparison:
+The two frozen Hupsel dates remain:
 
-- frozen selected dates and standalone metrics from `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`;
-- groundwater model provenance and the already-frozen uncalibrated F-GC44 fallback;
-- per-window loose/strong results;
-- daily aggregate head, storage, exchange and work;
-- whole-system interface mass cancellation;
-- component-domain failures, if any;
-- exact source heads, workflow runs and artifact digests.
+- 2003-06-17 — median-dynamics control, `Phi=0.5067351598`, daily drainage outflow 0.0225869 cm;
+- 2003-05-20 — high-dynamics day, `Phi=0.8831050228`, daily drainage outflow 0.906969 cm.
 
-No coupled E7 result is inferred in advance. The frozen selected dates are 2003-06-17 and 2003-05-20 and may not be replaced.
+The current production groundwater owner requires the all-`bottom_mode=5` PPA-WU01 profile and rejects `drainage_response_active` during `tile_config_valid` before owner-state allocation. PPA-WU03 does not widen that process profile.
+
+The publication qualification therefore terminates E7 under its preregistered component-domain stop rule:
+
+```text
+workflow run: 35375181814
+job:          105698080443
+result:       REALISTIC_COMPONENT_DOMAIN_LIMIT
+```
+
+No E7 MODFLOW window is executed. Loose and strong completed-window counts are both zero because the required SWAP prescribed-head participant cannot be instantiated while preserving authentic Hupsel drainage.
+
+This is not treated as missing data. It is the E7 result.
+
+No selected date was replaced, no drainage process was disabled, no event interval was merged/shortened, no groundwater parameter was calibrated and no solver/coupling tolerance was changed.
+
+Persistent result files:
+
+- `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md`;
+- `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json`;
+- `figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg`.
 
 ## S7. Claim and literature controls
 

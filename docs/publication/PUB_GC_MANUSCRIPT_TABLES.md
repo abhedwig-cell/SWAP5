@@ -2,7 +2,7 @@
 
 ## Status
 
-**T1–T5 BUILT FROM GOVERNED CONTRACTS / ADMITTED EVIDENCE**
+**T1–T6 BUILT FROM GOVERNED CONTRACTS / ADMITTED EVIDENCE**
 
 Date: 2026-09-18.
 
@@ -30,7 +30,7 @@ Source authority: coupling contracts F-GC30/F-GC39–F-GC44, E1/E2, and E4.
 | E4 | what response map is exposed by SWAP? | compare `u_A`, independent `u_FD`, `J_S`, `J_R` | centred perturbations only; no extrapolation through failed side | `u_A` is flux-driven predictor response, not universal `J_R` |
 | E5 | how much is supplied response information worth? | FP, Aitken, cold secant, supplied `u_A`, zero-cost `J_R` oracle | separate ACCELERATE continuation only for reproducible ≥2-evaluation or convergence-domain advantage | modest derivative value; standalone ACCELERATE gate failed |
 | E6 | can a stronger valid synthetic hydrological feedback regime be constructed? | active drainage route plus 20-case state/flux screen | no production tolerance/retry/physics relaxation; deterministic E6-B candidate rule | `CLOSED_NEGATIVE_WITH_BOUNDARIES`; no E6-B candidate |
-| E7 | does the contract transfer to an authoritative realistic application? | frozen Hupsel dates 2003-06-17 and 2003-05-20; loose versus strong | standalone-only selection completed before coupled output; no post-hoc date/window/tolerance rescue | `STANDALONE_SELECTION_FROZEN / COUPLED_EXECUTION_PENDING` |
+| E7 | does the contract transfer to an authoritative realistic application? | frozen Hupsel dates 2003-06-17 and 2003-05-20; preserve authentic process composition | standalone-only selection completed before coupled output; no post-hoc process/date/window/tolerance rescue | `REALISTIC_COMPONENT_DOMAIN_LIMIT` before coupled owner allocation |
 
 ## T3 — E4 response identity
 
@@ -67,6 +67,13 @@ Source: `PUB_GC_E5_INFORMATION_VALUE_RESULT.json`. The oracle derivative acquisi
 
 Source: `PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json` and `PUB_GC_E6A_STATE_SCREEN_RESULT.json`.
 
-## Open T6
+## T6 — E7 realistic Hupsel outcome
 
-T6 is reserved for the E7 loose-versus-strong coupled results. The standalone selection portion is now frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`; the M1-C3 prerequisite has passed. T6 remains open only until the coupled execution for the two frozen dates completes.
+| Frozen case | Standalone `Phi` | Drainage outflow | Production prescribed-head participant | Loose windows | Strong windows | Outcome |
+| --- | ---: | ---: | --- | ---: | ---: | --- |
+| median dynamics, 2003-06-17 | 0.5067351598 | 0.0225869 cm | not admitted with authentic active drainage | 0 | 0 | `REALISTIC_COMPONENT_DOMAIN_LIMIT` |
+| high dynamics, 2003-05-20 | 0.8831050228 | 0.906969 cm | not admitted with authentic active drainage | 0 | 0 | `REALISTIC_COMPONENT_DOMAIN_LIMIT` |
+
+Sources: `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json` and `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json`.
+
+The zero coupled-window counts are a preregistered component-domain result, not missing data. The production mode-5 groundwater owner rejects `drainage_response_active` before owner-state allocation. E7 therefore does not disable Hupsel drainage merely to create a runnable loose/strong pair.

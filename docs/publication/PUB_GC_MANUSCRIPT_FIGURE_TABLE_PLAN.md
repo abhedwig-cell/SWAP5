@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This plan maps each proposed publication visual to an already admitted evidence source or to the explicitly open E7 slot. It prevents figures from silently becoming new claims.
+This plan maps each publication visual to governed evidence. It prevents figures from silently becoming new claims.
 
 ## Core figures
 
@@ -14,9 +14,9 @@ This plan maps each proposed publication visual to an already admitted evidence 
 | F4 | Finite-window response identity | `u_A≈u_FD`, B3 separates `|J_R|`, B5 loses symmetric `J_R` | E4 full derivative evidence | BUILT_AND_LINKED |
 | F5 | Information value of response | Aitken/secant beat FP; oracle adds little over cold secant | E5 comparison | BUILT_AND_LINKED |
 | F6 | Component-admission envelope | E6 stronger-response routes terminate at predictor/corrector capability boundaries | E6 active-drainage + 20-case state screen | BUILT_AND_LINKED |
-| F7 | Realistic Hupsel result | standalone-selected control/high-dynamics days, loose versus strong | E7 | BLOCKED_M1_C3 |
+| F7 | Realistic Hupsel component-domain result | authentic selected days reach the prescribed-head participant boundary before coupled execution | E7 | BUILT_AND_LINKED |
 
-F1–F6 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2 are conceptual schematics whose SVG source is version controlled. F7 remains blocked on E7/M1-C3. If E7 remains blocked at submission decision time, the manuscript must be framed as a bounded coupling-method/qualification paper rather than implying realistic validation.
+F1–F7 are now built as version-controlled SVG files under `docs/publication/figures/` and linked from the manuscript. F3–F6 are regenerated from admitted numerical evidence by `figures/generate_pub_gc_numeric_figures.py`; F1/F2/F7 are evidence-bound schematics whose SVG source is version controlled. F7 does not imply a completed loose-versus-strong trajectory: it visualizes the preregistered realistic component-domain limit.
 
 ## Recommended figure construction
 
@@ -49,11 +49,11 @@ Panel A: active-drainage predictor succeeds but prescribed-head profile is `NOT_
 | ID | Table | Status |
 | --- | --- | --- |
 | T1 | Coupling quantities, units, sign, temporal support and authority | BUILT_AND_LINKED |
-| T2 | E1–E7 experiment design and preregistered decision rules | BUILT_AND_LINKED; E7 outcome intentionally open |
+| T2 | E1–E7 experiment design and preregistered decision rules | BUILT_AND_LINKED |
 | T3 | E4 response identity values B1–B5 | BUILT_AND_LINKED |
 | T4 | E5 oracle/secant information-value summary | BUILT_AND_LINKED |
 | T5 | E6 negative stress-extension summary | BUILT_AND_LINKED |
-| T6 | E7 realistic-day metrics and loose/strong results | BLOCKED_M1_C3 |
+| T6 | E7 realistic-day metrics and component-domain result | BUILT_AND_LINKED |
 
 ## Evidence files
 
@@ -71,6 +71,7 @@ Panel A: active-drainage predictor succeeds but prescribed-head profile is `NOT_
 - F4: `figures/PUB_GC_F4_RESPONSE_IDENTITY.svg`
 - F5: `figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg`
 - F6: `figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg`
+- F7: `figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg`
 
 Evidence binding is frozen in `figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json`.
 
@@ -83,6 +84,4 @@ python docs/publication/figures/generate_pub_gc_numeric_figures.py
 
 ## Built table evidence package
 
-Tables T1–T5 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`.
-
-T6 remains reserved for E7 and must stay absent until the M1-C3 prerequisite closes and the prospectively selected Hupsel experiment executes.
+Tables T1–T6 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`. T6 records the zero-window E7 result explicitly rather than treating the preregistered component-domain stop as missing data.
