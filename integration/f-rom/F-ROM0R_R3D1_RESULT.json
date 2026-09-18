@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.f-rom0r.r3d1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D1",
+  "title": "B01 prescribed-head retry cause decomposition",
+  "execution": {
+    "workflow_run": 35373123415,
+    "workflow_job": 105691534581,
+    "executed_head": "c39cb469789c3c796138869878786c0e7fc267c4",
+    "artifact_id": 10558089797,
+    "artifact_digest": "sha256:213593aa67fed83a254aa3d2bb56338e1774a6590754e9f7966486843b1d035b",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "rows": [
+    {
+      "case": "BOTTOM_HEAD_RISE",
+      "classification": "RETRY_TOTAL_ONLY",
+      "local_balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_local_residual_cm_per_day": 8.242295734817162e-13,
+      "total_residual_cm_per_day": -1.0602629885170245e-12,
+      "max_residual_node": 14,
+      "compartment_tolerance_cm_per_day": 1e-12,
+      "total_tolerance_cm_per_day": 1e-12,
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 29,
+      "fmr_backtracking_attempts": 29
+    },
+    {
+      "case": "BOTTOM_HEAD_FALL",
+      "classification": "RETRY_TOTAL_ONLY",
+      "local_balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_local_residual_cm_per_day": 5.488942633746774e-13,
+      "total_residual_cm_per_day": 1.5711876244495215e-12,
+      "max_residual_node": 9,
+      "compartment_tolerance_cm_per_day": 1e-12,
+      "total_tolerance_cm_per_day": 1e-12,
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 42,
+      "fmr_backtracking_attempts": 42
+    }
+  ],
+  "invariants": {
+    "accepted_predecessors_built_through_reference_floor_commit": true,
+    "direct_diagnostic_candidate_commit_allowed": false,
+    "direct_diagnostic_committed_state_bit_immutable": true,
+    "fmr_failure_reproduced_same_interval": true,
+    "fmr_and_direct_backtracking_identity": true,
+    "controls_changed": false,
+    "production_or_reference_source_mutated": false,
+    "p2e21_policy_imported": false
+  },
+  "decision": "B01_RETRY_TOTAL_ONLY_CLASSIFIED",
+  "interpretation": "Both B01 R3 failures exhaust the frozen 16-iteration solve with no node exceeding the local compartment-balance criterion and no node exceeding the pressure-head criterion. Retry is caused solely by the signed total residual exceeding the frozen 1e-12 cm/day total-balance rate tolerance.",
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}
