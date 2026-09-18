@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.ppa_wu05.status.v1",
+  "work_unit": "PPA-WU05",
+  "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
+  "branch": "audit/ppa-wu05-advanced-water-process-triage",
+  "reconcile_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
+  "status": "TRIAGE_IMPLEMENTED_QUALIFICATION_PENDING",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "source_authority": {
+    "reference": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "corrected_macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "corrected_oxygenstress_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+  },
+  "findings": {
+    "macropore": "Real committed/history state plus substantial worker scratch; historical prior evidence supports active-sized ownership but does not constitute current production admission.",
+    "frost": "Legacy migration target is a temperature-derived hydraulic/drainage/bottom modifier. Explicit latent heat / phase-change is not established as legacy migration authority.",
+    "advanced_root": "Must be decomposed by subfamily. Existing admitted root sink remains the single water-mass owner; oxygen/MICRO include unresolved persistent-state questions, salinity/frost/macropore routes are dependency-blocked."
+  },
+  "selected_first_target": {
+    "id": "PPA-WU05-A",
+    "title": "Macropore committed-state and transaction foundation",
+    "full_macropore_production": false,
+    "rationale": "High structured-soil relevance, strongest prior ownership evidence, largest dependency-unblocking value, and a bounded state/restart/rollback slice can proceed without changing physics equations."
+  },
+  "qualification": {
+    "state": "PENDING"
+  },
+  "production_admission": "NONE_TRIAGE_ONLY",
+  "verdict": "DEPENDENCY_GRAPH_FROZEN_FIRST_TARGET_MACROPORE_STATE_TRANSACTION_FOUNDATION",
+  "next_action": "Run authority and independent triage validation, repair review artifacts only, update the production-envelope register, reconcile live canonical and close without production admission."
+}
