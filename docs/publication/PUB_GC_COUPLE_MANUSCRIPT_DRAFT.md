@@ -538,17 +538,18 @@ The present end-to-end application evidence is intentionally restricted.
 
 Current canonical qualification includes:
 
-- one real SWAP/FMR soil column;
-- one live MODFLOW6 6.8.0 cell;
+- one real SWAP/FMR soil column coupled 1:1 to one live MODFLOW6 6.8.0 cell (F-GC44);
+- two independently transactional real SWAP columns composed N:1 to one live MODFLOW cell, using identical physical parameterization to isolate runtime composition (F-GC45);
+- two independently transactional real SWAP interfaces coupled 1:1 to two distinct cells in one live MODFLOW model and one prepared solve (F-GC46);
 - the internal predictor/corrector coupling lifecycle;
 - prescribed groundwater-head SWAP correctors;
 - an admitted analytic accepted-trajectory response;
-- one whole-window publication boundary;
+- whole-window publication boundaries;
 - exactly-once SWAP and ledger publication.
 
-The first end-to-end envelope is near equilibrium and excludes, among other processes:
+The first scientific E1/E2 evidence envelope remains the one-column/one-cell near-equilibrium F-GC44 configuration. Current runtime qualification still excludes, among other claims/processes:
 
-- N:1 regional scaling;
+- heterogeneous N:1 aggregation science;
 - active drainage;
 - root extraction;
 - macropores;
@@ -803,7 +804,7 @@ This result determines whether ACCELERATE remains only a section of this manuscr
 
 ## 4.6 Realistic and regional behaviour
 
-**Evidence status:** to be assembled. F-GC45 already qualifies a two-real-SWAP-column to one-live-MODFLOW-cell runtime composition, but it deliberately uses identical physical columns and is not evidence for heterogeneous spatial aggregation.
+**Evidence status:** runtime composition has progressed, while realistic hydrological application evidence remains to be assembled. F-GC45 qualifies a two-real-SWAP-column to one-live-MODFLOW-cell N:1 runtime composition using identical physical columns. F-GC46 additionally qualifies two real SWAP interfaces coupled 1:1 to two distinct live MODFLOW6 cells within one groundwater model and prepared solve. These results demonstrate composition capability but are not evidence for heterogeneous spatial aggregation or regional hydrological validity.
 
 ---
 
