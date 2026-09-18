@@ -1,0 +1,38 @@
+name: F-ROSS17 RossFast transform-cache qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross17-rossfast-transform-cache
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-ross/F-ROSS17_*'
+      - 'tests/ross/test_ross17_state_dump.f90'
+      - 'tests/ross/run_ross17_transform_cache_qualification.sh'
+      - 'tools/performance/f_ross17_scientific_compare.py'
+      - 'tools/performance/f_ross17_paired_screen.py'
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - '.github/workflows/f-ross17-transform-cache.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS17 qualification
+        run: bash tests/ross/run_ross17_transform_cache_qualification.sh
+      - name: Preserve F-ROSS17 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross17-transform-cache-${{ github.run_id }}
+          path: F-ROSS17_EVIDENCE
+          if-no-files-found: warn
