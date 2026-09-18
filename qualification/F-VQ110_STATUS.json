@@ -5,7 +5,7 @@
   "title": "Independent Live MODFLOW6 F-GC34 Bridge Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_LIVE_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc36-live-modflow6-fgc34-bridge-reconciled",
     "checkpoint_head": "8d6f723d4de9b3cc47bb5012b67237aa7fc8febb",
@@ -27,5 +27,26 @@
     "xmipy": "9769f8cd4bc6153c71bcc360f602a931b102d902",
     "flopy": "1a783da6582f8203190a8d6b1d7a60659022afdb"
   },
-  "next_permitted_action": "Run exact-head independent live verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-CI103."
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI103 admission postimage from current canonical plus immutable F-GC36/F-VQ110 evidence.",
+  "verifier_evidence": {
+    "qualified_head": "09dcd7d80c1febbc626492a71577fdcd30e7c80f",
+    "workflow_run": 35295293805,
+    "workflow_job": 105446486913,
+    "conclusion": "success",
+    "pass_markers": [
+      "FVQ110_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ110_OWNER_BRIDGE_BLOBS_LOCKED",
+      "FVQ110_OWNER_TEST_NOT_REUSED",
+      "FVQ110_DISTINCT_TWO_SLOT_ORACLE",
+      "FVQ110_MODFLOW680_ASSET_SHA256",
+      "FVQ110_REAL_FGC34_BRIDGE_BUILD",
+      "FVQ110_OFFICIAL_MODFLOW680_LOADED",
+      "FVQ110_TWO_SLOT_LIVE_PUBLICATION",
+      "FVQ110_SHUFFLED_IDENTITY_MAPPING",
+      "FVQ110_LIVE_MODFLOW_SOLVE_CONVERGED",
+      "FVQ110_TWO_BY_TWO_ANALYTICAL_HEAD_CLOSURE",
+      "FVQ110_TWO_SLOT_LIVE_FLUX_SIGN",
+      "FVQ110_INDEPENDENT_LIVE_BRIDGE_GATE"
+    ]
+  }
 }
