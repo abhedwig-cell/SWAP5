@@ -1,0 +1,133 @@
+{
+  "schema": "swap5.publication.p2e19-reference-balance-scaling-diagnostic-result.v1",
+  "workunit": "PUB-P2E19",
+  "publication_owner": "PUB-SQ",
+  "phase": "REFERENCE_ONLY_CAUSAL_DIAGNOSTIC_COMPLETE",
+  "branch": "work/pub-p2e19-reference-balance-scaling-diagnostic",
+  "parent_authority": {
+    "branch": "work/pub-p2e18-ref-high-construction",
+    "head": "12b8b0294153c88b733b9eccfa8b3c98a14ebf23",
+    "result_blob": "10df8636afc05a46342921f50c2c8b543cf3168e"
+  },
+  "authorities": {
+    "preregistration_blob": "797ee1c4d0fb1642a314958eedd5c9f0f28e022c",
+    "test_blob": "79b5b0a3616b73cb9a2ac895824a67617ab1f39f",
+    "runner_blob": "7472fcb8fd3e1f60a3557161a5bddd8d9c966c8d",
+    "workflow_blob": "d5c1437acf0873671bc4a4ae40d953d5fc45793d"
+  },
+  "execution": {
+    "head": "842305693d91c85e56c7de646f1f3e8ba50c14f9",
+    "workflow_run": 35293169718,
+    "job": 105440179074,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "208be3ae10b1a464d44cc348c6b0e666bd06412f31aab09a24e48e05eb7e406e"
+  },
+  "fixed_rate_reproduction": {
+    "valid_by_substeps": {"1":36,"2":29,"4":7,"8":0,"16":0,"32":0},
+    "matches_P2E18": true
+  },
+  "integrated_invariant_policy": {
+    "integrated_balance_allowance_cm_per_substep": 1.6e-15,
+    "rate_tolerance_cm_per_day_by_substeps": {
+      "1":1e-12,
+      "2":2e-12,
+      "4":4e-12,
+      "8":8e-12,
+      "16":1.6e-11,
+      "32":3.2e-11
+    },
+    "valid_by_substeps": {"1":36,"2":35,"4":35,"8":36,"16":35,"32":34},
+    "maximum_abs_typed_integrated_mass_residual_cm_among_valid_scaled_steps": {
+      "value": 1.599853236000648e-15,
+      "case": 34,
+      "material": "O18",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "substeps": 4,
+      "hard_scientific_mass_limit_cm": 1e-12
+    },
+    "remaining_invalid_level_records": [
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING","substeps":4,"failed_substep":1},
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING","substeps":16,"failed_substep":16},
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING","substeps":32,"failed_substep":7},
+      {"case":2,"material":"B01","Se":0.65,"forcing":"NOMINAL","substeps":32,"failed_substep":2},
+      {"case":35,"material":"O18","Se":0.96,"forcing":"DRYING","substeps":2,"failed_substep":2}
+    ],
+    "interpretation": "Integrated-invariant balance scaling removes the systematic fine-level collapse seen under the fixed-rate policy, but does not make Reference route validity fully monotonic or universal across the six-level ladder."
+  },
+  "policy_endpoint_neutrality": {
+    "comparison_count": 72,
+    "pass_count": 72,
+    "fail_count": 0,
+    "worst_fraction_of_frozen_budget": {
+      "D_h_inf": 2.930419334954772e-8,
+      "D_h_rms": 1.94818071172979e-8,
+      "D_theta_inf": 6.199549832696793e-11,
+      "D_theta_rms": 7.893146822046351e-11,
+      "D_storage": 1.0
+    },
+    "interpretation": "Where FIXED_RATE and INTEGRATED_INVARIANT both converge at the same refinement level, changing only the balance-convergence scaling does not materially change the accepted endpoint under the preregistered P2E18 stability budgets."
+  },
+  "scaled_fine_stability": {
+    "fine_levels": [8,16,32],
+    "fine_available_count": 34,
+    "stable_count": 33,
+    "unstable_count": 1,
+    "route_unresolved_for_fine_comparison": [
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING","reason":"16 and 32-substep scaled routes invalid"},
+      {"case":2,"material":"B01","Se":0.65,"forcing":"NOMINAL","reason":"32-substep scaled route invalid"}
+    ],
+    "stability_unresolved": [
+      {
+        "case":36,
+        "material":"O18",
+        "Se":0.96,
+        "forcing":"NOMINAL",
+        "reason":"8-vs-16 storage endpoint delta exceeds the frozen machine-scale storage budget",
+        "D_storage_cm":4.263256414560601e-14,
+        "storage_budget_cm":2.842170943040401e-14,
+        "fraction":1.5,
+        "head_theta_note":"All head and theta stability metrics pass; 16-vs-32 storage also passes."
+      }
+    ],
+    "worst_head_theta_fraction_of_frozen_stability_budget": {
+      "D_h_inf":0.06707268207923572,
+      "D_h_rms":0.09424837698559044,
+      "D_theta_inf":0.0648973900446896,
+      "D_theta_rms":0.07411717377900535
+    }
+  },
+  "hypothesis_adjudication": {
+    "H_scaling_causal": "STRONGLY_SUPPORTED_BUT_NOT_UNIVERSAL",
+    "H_endpoint_neutrality": "SUPPORTED_72_OF_72_OVERLAPPING_ENDPOINTS",
+    "H_ref_high_feasibility": "SUPPORTED_FOR_NONEMPTY_AND_BROAD_CASE_SET_33_OF_36_FINE_STABLE"
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "The P2E18 refinement collapse is largely caused by applying one fixed rate-unit balance criterion across decreasing dt rather than preserving an integrated per-step balance scale.",
+      "A dimensionally integrated-invariant policy recovers fine Reference routes for nearly the complete 36-case matrix while preserving endpoints wherever a fixed-rate comparison exists.",
+      "A candidate-blind REF-HIGH construction is feasible on at least 33 of the 36 frozen performance/reference cases using the scaled policy and the already frozen 8-vs-16 and 16-vs-32 stability budgets."
+    ],
+    "not_supported": [
+      "Universal Reference-route validity under integrated-invariant scaling.",
+      "Monotonic route validity at every intermediate refinement level.",
+      "A production Reference tolerance-policy change.",
+      "REF-HIGH authority itself, because P2E19 is diagnostic by preregistration.",
+      "Any RossFast performance or equal-error claim."
+    ]
+  },
+  "firewall_verification": {
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "production_tolerance_changed": false,
+    "reference_source_changed": false,
+    "P2E18_reclassified": false,
+    "case_removed_or_replaced": false,
+    "integrated_allowance_retuned": false
+  },
+  "verdict": "INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36",
+  "next_permitted_action": "Preregister a separate REF-HIGH construction using the frozen integrated-invariant balance policy and the 8/16/32 fine refinement levels. Execute all 36 cases, retain unresolved cases, and admit REF-HIGH casewise only where all three fine routes are valid and both endpoint comparisons meet the frozen P2E18 stability budgets. RossFast timing remains forbidden until that construction is persisted."
+}
