@@ -27,7 +27,8 @@
   },
   "work_branch": {
     "branch": "work/f-gc37-coupled-predictor-corrector-host",
-    "previous_checkpoint": "b93e503a6a4627bbdb8e41e0b36a9ecd9a3d3072"
+    "previous_checkpoint": "b93e503a6a4627bbdb8e41e0b36a9ecd9a3d3072",
+    "ownership_correction_commit": "dfc573502e70eb88a6ebee995df7bd2ffa9dbc03"
   },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
@@ -67,5 +68,9 @@
     "second SWAP transaction lifecycle",
     "canonical admission"
   ],
-  "next_permitted_action": "Qualify a MODFLOW6 transactional-origin backend below the internal coupling-service boundary. Do not move predictor/corrector iteration into iMOD Coupler."
+  "next_permitted_action": "Qualify a MODFLOW6 transactional-origin backend below the internal coupling-service boundary. Do not move predictor/corrector iteration into iMOD Coupler.",
+  "requalification": {
+    "state": "PENDING_AFTER_OWNERSHIP_CORRECTION",
+    "reason": "Re-run retained F-GC37 contract evidence after moving the Python implementation out of src/adapter into test-only qualification support."
+  }
 }
