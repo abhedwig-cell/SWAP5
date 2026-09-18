@@ -4,7 +4,7 @@
 
 F-GC44 closes the application-level evidence gap left by F-GC42 and F-GC43. It qualifies one restricted real FMR/SWAP soil column, one live MODFLOW6 6.8.0 cell, the admitted internal predictor/corrector lifecycle, and the F-GC41 publication boundary in one process.
 
-The qualified first envelope is deliberately narrow: one SWAP column mapped to one MODFLOW cell; serialized-reference Richards/FMR backend; prescribed groundwater-head lower boundary (bottom_mode=5) for correctors; drainage, root extraction, macropores, snow and soil temperature off; analytic accepted-trajectory tangent only; no runtime finite-difference fallback; no N:1 scaling.
+The qualified first envelope is deliberately narrow and near-equilibrium, using the short F-GC30 production qualification window: one SWAP column mapped to one MODFLOW cell; serialized-reference Richards/FMR backend with the admitted Richards temporal-history/model-certificate route; prescribed groundwater-head lower boundary (bottom_mode=5) for correctors; drainage, root extraction, macropores, snow and soil temperature off; analytic accepted-trajectory tangent only; no runtime finite-difference fallback; no N:1 scaling.
 
 ## Production ownership
 
@@ -27,3 +27,6 @@ The test requires one MODFLOW prepared solve per coupling window; fixed accepted
 This is an application qualification, not a scaling claim. It does not qualify heterogeneous N:1 aggregation, multiple coupled cells, Ribasim, irrigation, active drainage, root uptake, macropores, snow, or soil temperature.
 
 The support C bridge exists only to exercise the already admitted real Fortran SWAP application and live xmipy/MODFLOW backend in one qualification process. Predictor/corrector ownership remains in the internal SWAP5-MODFLOW service below iMOD Coupler.
+
+
+The qualification does not assert that arbitrary prescribed-head jumps are admissible within one SWAP coupling window. A deliberately larger head perturbation was observed to exhaust transaction retries in the real FMR route; expansion of that numerical envelope requires a separate qualification rather than relaxed tolerances here.
