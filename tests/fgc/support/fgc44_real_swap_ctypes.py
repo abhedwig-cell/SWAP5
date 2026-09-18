@@ -41,6 +41,27 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*14),
             *([ctypes.POINTER(ctypes.c_double)]*3),
         ]
+        self.lib.fgc44_e4_flux_point_c.restype=ctypes.c_int
+        self.lib.fgc44_e4_flux_point_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_double),
+        ]
+        self.lib.fgc44_e4_head_trial_c.restype=ctypes.c_int
+        self.lib.fgc44_e4_head_trial_c.argtypes=[
+            ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_int),
+            *([ctypes.POINTER(ctypes.c_double)]*6),
+        ]
+        self.lib.fgc44_predictor_run_diagnostics_c.restype=ctypes.c_int
+        self.lib.fgc44_predictor_run_diagnostics_c.argtypes=[
+            *([ctypes.POINTER(ctypes.c_int)]*14),
+            *([ctypes.POINTER(ctypes.c_double)]*3),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -140,6 +161,59 @@ class Fgc44RealSwap:
         ]
         result={k:v.value for k,v in zip(keys,values)}
         result["mass_complete"]=bool(mass_complete.value)
+        return result
+
+    def e4_flux_point(
+        self,
+        duration_day: float,
+        top_flux_cm_per_day: float,
+        bottom_flux_cm_per_day: float,
+    ) -> dict[str,float|bool|int]:
+        h_end=ctypes.c_double()
+        dhdq=ctypes.c_double()
+        u_point=ctypes.c_double()
+        mass_complete=ctypes.c_int()
+        mass_residual=ctypes.c_double()
+        status=self.lib.fgc44_e4_flux_point_c(
+            float(duration_day),float(top_flux_cm_per_day),float(bottom_flux_cm_per_day),
+            ctypes.byref(h_end),ctypes.byref(dhdq),ctypes.byref(u_point),
+            ctypes.byref(mass_complete),ctypes.byref(mass_residual),
+        )
+        return {
+            "status":int(status),
+            "ready":status==0,
+            "h_end_m":h_end.value,
+            "dh_end_cm_per_qbot_cm_per_day":dhdq.value,
+            "u_A_point":u_point.value,
+            "mass_complete":bool(mass_complete.value),
+            "mass_residual_native":mass_residual.value,
+        }
+
+    def e4_head_trial(self, head_m: float) -> dict[str,float|bool|int]:
+        q=ctypes.c_double()
+        exchange=ctypes.c_double()
+        terminal=ctypes.c_double()
+        complete=ctypes.c_int()
+        values=[ctypes.c_double() for _ in range(6)]
+        status=self.lib.fgc44_e4_head_trial_c(
+            float(head_m),
+            ctypes.byref(q),ctypes.byref(exchange),ctypes.byref(terminal),
+            ctypes.byref(complete),
+            *[ctypes.byref(v) for v in values],
+        )
+        keys=[
+            "storage_start_native","storage_end_native","storage_change_native",
+            "total_in_native","total_out_native","mass_residual_native",
+        ]
+        result={k:v.value for k,v in zip(keys,values)}
+        result.update({
+            "status":int(status),
+            "valid":status==0,
+            "q_swap_m_per_s":q.value,
+            "bottom_outward_exchange_cm":exchange.value,
+            "terminal_bottom_outward_flux_native":terminal.value,
+            "mass_complete":bool(complete.value),
+        })
         return result
 
     def last_trial_diagnostics(self) -> tuple[float,float]:
