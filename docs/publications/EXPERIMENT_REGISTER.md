@@ -400,3 +400,18 @@ The register should describe readiness, not rewrite past chronology.
 - first run `35292701637` is retained as `INVALID_QUALIFICATION_RUNNER_BASE`; no scientific oracle was reached and no criterion changed;
 - result receipt: `docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0003.yaml`, commit `c60a91c6749c00300f75a6f21d8a95c17d2c970f`;
 - next permitted action: preregister and execute NATIVE-TIME-0003 with unchanged cases/tolerances, extended dyadic ladder N0-N5, N4→N5 fine guard and mechanical coarsest-passing selection.
+
+
+### 2026-09-18T00:51:49Z — PUB-GC native-time 0003 remains fine-level unstable
+
+- frozen manifest: `PUB-GC-NATIVE-TIME-0003`, commit `c464a9dcc09ae4cc190ce52b90da9d3f3e91f9f5`, blob `49f5552ffff1b8de685d417d1130b1f64fe52769`;
+- execution: `research/pub-gc-native-time-0003@0ffc09b42fcb6176c655f820d7bf84f298ed628d`, GitHub Actions run `35292912248`, job `105439411444`, conclusion `success`;
+- exact O0/O2 scientific-output identity: PASS; output SHA-256 `c86fe73b5cd233f8e167336a808328d2d12757fbdcb720edbb9cdbb3a7c084f7`;
+- artifact `10527012936`, digest `sha256:734914361e2713943f1b189db4ff677155fad5f8682b0ef4e3b383b0271c3d62`;
+- all N0-N5 trajectories are valid in all five unchanged cases;
+- N4→N5 fine-level stability PASS for NT-C0, NT-W3, NT-D05 and NT-R3;
+- NT-H60 still fails all four unchanged N4→N5 criteria: `|Delta Q|=1.36858420453418728e-4 cm`, max pressure-head difference `7.40176679464923382e-2 cm`, max water-content difference `7.62873197245328427e-5`, storage difference `1.36858420453522811e-4 cm`;
+- mechanical outcome: `NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE`; no case, threshold or selection rule was changed;
+- result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0003.yaml`, commit `b88bc28d4930e9f820bf7e7ca3def5846d01371c`;
+- H2/H3 remain untested;
+- next permitted action: freeze a separate scientific adjudication before any further refinement; do not infer adequacy by extrapolation and do not relax the frozen thresholds.
