@@ -2,7 +2,7 @@
 
 ## Status
 
-**SCIENTIFIC CORE READY THROUGH RQ4 — RQ5 / E7 REMAINS THE ONLY INTENDED PRIMARY SCIENTIFIC GAP**
+**E7 STANDALONE SELECTION FROZEN — COUPLED EXECUTION IS THE ONLY INTENDED PRIMARY SCIENTIFIC GAP**
 
 Audit date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | RQ2 coupled convergence and hydrological relevance | E3/E3-R | `SUPPORTED_RESTRICTED` | ready; explicitly a weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | `SUPPORTED_RESTRICTED` | ready; no universal-Jacobian or standalone-ACCELERATE claim |
 | RQ4 component-envelope interaction | E3-D2/E6 | `SUPPORTED_RESTRICTED` / negative stress extension | ready; component-domain failure kept distinct from coupling divergence |
-| RQ5 realistic transferability | E7 Hupsel | `PREREGISTERED / BLOCKED_EXTERNAL_PREREQUISITE` | principal remaining scientific gap |
+| RQ5 realistic transferability | E7 Hupsel | `STANDALONE_SELECTION_FROZEN / READY_FOR_COUPLED_EXECUTION` | coupled loose/strong result remains the principal scientific gap |
 | regional scaling | E8 | deferred | not a submission prerequisite unless journal positioning later makes quantitative scaling central |
 | physical N:1 aggregation validity | PUB-SG / SCALE | separate paper | excluded from PUB-GC |
 
@@ -44,7 +44,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 
 ## What remains scientific
 
-The only planned primary scientific addition is E7. It requires the existing M1-C3 final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution. Until that prerequisite closes, no coupled Hupsel output, F7 or T6 may be fabricated or inferred.
+The M1-C3 whole-Hupsel prerequisite is now canonically closed. E7 standalone selection has been executed prospectively and frozen before any coupled output. The remaining primary scientific addition is the preregistered loose/sequential versus production-strong coupling result for 2003-06-17 and 2003-05-20.
 
 If E7 eventually returns weak feedback or a component-domain limit, that remains a valid E7 outcome under the frozen preregistration. A positive strong-feedback result is not required for acceptance of the evidence.
 
@@ -63,9 +63,9 @@ These items do not require new science:
 
 For the intended broader hydrological-method framing, E7 materially strengthens external validity and remains the preferred next scientific step.
 
-If the M1-C3 external asset gate remains unavailable at the submission decision, the existing E1–E6 manuscript is still internally coherent, but it must be framed explicitly as a **bounded coupling-method and qualification study** rather than a realistic-application validation paper. No claim may imply that RQ5 was answered.
+If E7 coupling cannot be completed for a genuine new technical reason, the existing E1–E6 manuscript remains internally coherent but must be framed as a **bounded coupling-method and qualification study**. The former raw-asset/M1-C3 blocker is no longer a valid reason to omit E7.
 
-E8 should not be started merely to compensate for a blocked E7.
+E8 should not be started merely to delay or compensate for E7; the next scientific action is the already-frozen E7 coupled execution.
 
 
 ## Journal-facing prose state
@@ -75,3 +75,10 @@ The scientific body has completed a repository-jargon cleanup. Internal F-GC/FMR
 Audit: `PUB_GC_SUBMISSION_PROSE_AUDIT.md`.
 
 This is an editorial cleanup only and does not change the claim/evidence state.
+
+
+## E7 standalone-selection closure
+
+Selection result: `PUB_GC_E7_STANDALONE_SELECTION_RESULT.md` / `.json`.
+
+Frozen dates: median-dynamics `2003-06-17`; high-dynamics `2003-05-20`. Groundwater fallback is the uncalibrated qualified F-GC44 conceptual fixture. No coupled output was observed before this freeze.

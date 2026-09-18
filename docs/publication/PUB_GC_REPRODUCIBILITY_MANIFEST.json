@@ -1,8 +1,8 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
-  "scientific_scope": "E1-E6 closed/bounded; E7 preregistered and blocked on M1-C3",
+  "canonical_basis": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "scientific_scope": "E1-E6 closed/bounded; M1/M1-C3 closed; E7 standalone selection frozen before coupled output; coupled execution pending",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
@@ -114,26 +114,35 @@
     }
   },
   "E7": {
-    "status": "PREREGISTERED_BLOCKED_EXTERNAL_PREREQUISITE",
+    "status": "STANDALONE_SELECTION_FROZEN_COUPLED_EXECUTION_PENDING",
     "preregistration": {
       "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
       "blob": "27b73be6988d3308ddafc58a44fb628863d6bd77"
     },
-    "blocker": {
-      "path": "integration/m1/M1_C3_CURRENT_CANONICAL_EXTERNAL_ASSET_BLOCKER_20260918.json",
-      "blob": "974ff9609d2858ff4a1be575944e8cfb7737b724"
+    "prerequisite_closure": {
+      "m1_c3_admission_pr": 313,
+      "m1_closeout_pr": 316,
+      "m1_verdict": "M1_CLOSED_CURRENT_CANONICAL",
+      "qualification_path": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+      "accepted_intervals": 32518
     },
-    "required_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "required_distribution_size_bytes": 8959314,
-    "remaining_gate": "ONE_FINAL_WHOLE_HUPSEL_FILE_DRIVEN_ADAPTER_EXECUTION",
-    "workaround_policy": "fail closed; no synthetic adapter/parser/physics/tolerance workaround"
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_distribution_size_bytes": 8959314,
+    "selection": {
+      "result_path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "selected_days_path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
+      "median_dynamics_control": "2003-06-17",
+      "high_dynamics_day": "2003-05-20",
+      "daily_metrics_sha256": "d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3",
+      "scored_days_sha256": "016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e",
+      "coupled_output_observed_before_freeze": false
+    },
+    "groundwater_fallback": {
+      "model": "qualified F-GC44 1x1x3 conceptual MODFLOW6 fixture",
+      "calibrated_to_e7": false,
+      "interpretation": "real-forcing hydrological demonstration, not regional Hupsel groundwater validation"
+    },
+    "next_permitted_action": "Execute preregistered loose/sequential and production-strong E7 coupling for only the two frozen dates."
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task.",
-  "canonical_reconcile": {
-    "delta": "PPA-WU01 restricted production application bootstrap admitted after supplement branch creation",
-    "relevance": "Does not close M1-C3 whole-Hupsel file-driven adapter gate or provide complete legacy-file/weather ingestion",
-    "e7_disposition": "UNCHANGED_BLOCKED_EXTERNAL_PREREQUISITE",
-    "ppa_wu01_workflow_run": 35365440351,
-    "ppa_wu01_qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7"
-  }
+  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task."
 }

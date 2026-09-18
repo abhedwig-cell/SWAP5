@@ -1,0 +1,114 @@
+{
+  "schema": "pub-gc-e7-standalone-selection-v1",
+  "date": "2026-09-18",
+  "status": "FROZEN_BEFORE_COUPLED_OUTPUT",
+  "coupled_output_observed": false,
+  "canonical_basis": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "prerequisite_authority": {
+    "m1_c3_admission_pr": 313,
+    "m1_closeout_pr": 316,
+    "m1_overall_verdict": "M1_CLOSED_CURRENT_CANONICAL",
+    "qualification_file": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+    "accepted_intervals": 32518,
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "standalone_authority": {
+    "period_start": "2002-01-01",
+    "period_end": "2004-12-31",
+    "population_days": 1096,
+    "documented_spinup_found": false,
+    "spinup_removed": false,
+    "compiler": "GNU Fortran 14.2.0",
+    "qualification_method": "official SWAP 4.3.1 source rebuilt with the already-admitted standalone GNU preprocessing method; disposable case copy changes SWCSV only to 0 for optional CSV compatibility",
+    "non_interference": {
+      "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "matches_m1_c3_authority": true
+    },
+    "daily_metrics_sha256": "d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3",
+    "scored_days_sha256": "016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e",
+    "selection_source_sha256": "96c3ec2dca3f73116fc62ce8313eb0a4b2ec21947f29e273e58208e037a9fc2b",
+    "metric_definition": {
+      "I": "precipitation + irrigation input, daily integrated cm",
+      "E": "actual root uptake + soil evaporation + pond evaporation + interception evaporation, daily integrated cm",
+      "D": "positive drainage outflow magnitude, daily integrated cm",
+      "S": "absolute change of profile water storage including ponding, cm"
+    },
+    "percentile_definition": "mean zero-based rank divided by (N-1), ties receive mean rank",
+    "score": "Phi = 0.25*(R_I + R_E + R_D + R_S)",
+    "median_phi": 0.5067922374429223
+  },
+  "selected_days": {
+    "median_dynamics_control": {
+      "date": "2003-06-17",
+      "input_cm": 0.20000000000000007,
+      "actual_et_cm": 0.17917240345831503,
+      "drainage_out_cm": 0.022586870162615704,
+      "storage_start_cm": 74.76125276379895,
+      "storage_end_cm": 74.75949349617052,
+      "storage_change_abs_cm": 0.001759267628429484,
+      "R_input": 0.7374429223744292,
+      "R_actual_et": 0.6831050228310502,
+      "R_drainage_out": 0.6018264840182649,
+      "R_storage_change_abs": 0.0045662100456621,
+      "Phi": 0.5067351598173516
+    },
+    "high_dynamics_day": {
+      "date": "2003-05-20",
+      "input_cm": 2.2300000000000177,
+      "actual_et_cm": 0.11468910769777912,
+      "drainage_out_cm": 0.9069694038599311,
+      "storage_start_cm": 77.6141771197134,
+      "storage_end_cm": 78.82251847717113,
+      "storage_change_abs_cm": 1.2083413574577264,
+      "R_input": 0.9917808219178083,
+      "R_actual_et": 0.5762557077625571,
+      "R_drainage_out": 0.9954337899543378,
+      "R_storage_change_abs": 0.9689497716894977,
+      "Phi": 0.8831050228310502
+    }
+  },
+  "groundwater_model_freeze": {
+    "authoritative_hupsel_groundwater_model_found_in_canonical": false,
+    "disposition": "USE_PREREGISTERED_FGC44_CONCEPTUAL_FALLBACK",
+    "interpretation_label": "real-forcing hydrological demonstration, not regional Hupsel groundwater validation",
+    "geometry": {
+      "nlay": 1,
+      "nrow": 1,
+      "ncol": 3,
+      "delr_m": 1,
+      "delc_m": 1,
+      "top_m": 0,
+      "botm_m": -2,
+      "coupled_cell": "(0,0,1)",
+      "constant_head_cells": [
+        "(0,0,0)",
+        "(0,0,2)"
+      ]
+    },
+    "hydraulic_parameters": {
+      "icelltype": 1,
+      "k_m_per_day": 1,
+      "ss_per_m": 0.02,
+      "sy": 0.15
+    },
+    "boundary_and_initialization": {
+      "strt": "H_ref for each coupling window",
+      "left_chd": "H_ref + 0.002 m",
+      "right_chd": "H_ref - 0.002 m",
+      "area_m2": 1
+    },
+    "solver_policy": {
+      "newton": true,
+      "ims_complexity": "MODERATE",
+      "outer_dvclose": 1e-11,
+      "inner_dvclose": 1e-12,
+      "outer_maximum": 100,
+      "inner_maximum": 100
+    },
+    "source_authority": "tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py and tests/publication/test_pub_gc_e3_case.py",
+    "calibration_against_e7_results": false
+  },
+  "next_permitted_action": "Execute E7 loose/sequential and production-strong coupling for these two frozen dates using exact event-aligned Hupsel application intervals and the frozen conceptual MODFLOW fallback. Do not replace dates, merge/shorten windows, retune tolerances or calibrate groundwater parameters after observing coupled output."
+}

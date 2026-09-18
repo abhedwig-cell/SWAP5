@@ -164,7 +164,7 @@ However:
 4. **E4 CLOSED — SUPPORTED_RESTRICTED.** The component-supplied `u_A` is identified as a finite-window flux-driven predictor response: it agrees with independent pure-bottom `u_FD`, is not universally interchangeable with head-driven `J_R`, and remains available in B5 where no symmetric local `J_R` is admitted.
 5. **E5 CLOSED — SUPPORTED_RESTRICTED.** Acceleration clearly outperforms plain fixed point near/above the fixed-point stability boundary, but the zero-cost J_R oracle provides only modest incremental value over cold secant and no observed convergence-domain extension. The quantitative gate for a warm-history E5b / standalone ACCELERATE continuation was not passed.
 6. **E6 CLOSED_NEGATIVE_WITH_BOUNDARIES.** Two preregistered stress routes were exhausted without a valid positive live-coupling case. The F-GC31 active-drainage predictor is valid but its smooth qbot projection is not an admitted prescribed-head corrector profile. The separate 20-case accepted-state/flux screen produced eight predictor-ready cases but zero cases with the required symmetric ±1e-4 m corrector domain; no E6-B candidate was admitted.
-7. **E7 PREREGISTERED / BLOCKED_EXTERNAL_PREREQUISITE.** Hupselbrook is the preferred realistic application and its standalone-only day-selection, coupling-window, groundwater-model priority, loose/strong comparison and stop rules are now frozen in `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`. M1-C3 still requires one final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution. No coupled E7 output may be interpreted before that gate passes.
+7. **E7 STANDALONE_SELECTION_FROZEN / COUPLED_EXECUTION_PENDING.** M1-C3 and M1 are canonically closed. The preregistered standalone-only metric selected 2003-06-17 as the median-dynamics control and 2003-05-20 as the high-dynamics day before any coupled output. The uncalibrated F-GC44 conceptual MODFLOW fallback is frozen. Execute only the preregistered loose/strong comparison for these dates.
 8. E8 remains deferred until E7 supplies the realistic scientific core.
 
 ## First publication evidence record
@@ -355,7 +355,7 @@ Prospective execution preregistration:
 
 `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`
 
-The E7 preregistration freezes episode selection on standalone Hupsel water-balance dynamics before any coupled result. It does not clear the M1-C3 whole-Hupsel prerequisite and does not authorize a synthetic realistic-case substitute.
+The E7 preregistration froze episode selection on standalone Hupsel water-balance dynamics before any coupled result. M1-C3 is now closed and the selected dates are durably frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`. The remaining E7 evidence is the coupled loose/strong execution only.
 
 ## Manuscript consolidation
 
@@ -370,3 +370,12 @@ Figure/table evidence map:
 Consolidation/readiness state:
 
 `PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md`
+
+
+Standalone selection result:
+
+`PUB_GC_E7_STANDALONE_SELECTION_RESULT.md`
+
+Machine-readable selection:
+
+`PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`
