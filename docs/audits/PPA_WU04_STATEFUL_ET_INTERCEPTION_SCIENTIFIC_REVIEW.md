@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 
-Status: `SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN / IMPLEMENTATION_HELD`
+Status: `SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_CLOSED / IMPLEMENTATION_HELD`
 
 Canonical reconcile base: `integration/f-ci-canonical@8d78c305d12939bb061bbcb248b8a33730494f34`.
 
@@ -321,3 +321,18 @@ The scientific ambiguity that blocked implementation is removed:
 
 No production claim follows from this review. The next production unit may start
 with PPA-WU04-A without reopening the broad ET source/state audit.
+
+
+## Qualification and closeout
+
+PPA-WU04 review qualification completed successfully:
+
+- workflow run `35377826442`;
+- authority job `105706628104`: PASS;
+- independent contract job `105706684721`: PASS;
+- production `src/` delta: none.
+
+The workunit is therefore closed as scientific/transaction authority. Closure
+does not admit SWINTER=1/2 or SWREDU=1/2 production code. The only permitted
+implementation route is through the frozen PPA-WU04-A..D slices with their own
+independent source-equation and runtime qualification.
