@@ -1,0 +1,179 @@
+{
+  "schema": "swap5.publication.p2e13-reference-common-material-state-domain-result.v1",
+  "workunit": "PUB-P2E13",
+  "phase": "REFERENCE_ONLY_COMMON_MATERIAL_STATE_DOMAIN_CONSTRUCTED",
+  "parent_diagnosis": {
+    "head": "f66d496799b52aee4c19fe0da5e4005160c60824",
+    "result_blob": "1be7d63e82eac9d1f846c9715fabf80a5700bdf8"
+  },
+  "executed_head": "fb56ccc594d471542c8e06439da31a9c2c43ac1f",
+  "authorities": {
+    "preregistration_blob": "30942641f4125c2e7dad7a15821329910527d5a8",
+    "test_blob": "22beca4858d0e67651b1f0e202a5abb32ef1e388",
+    "runner_blob": "922b28ca348c54f45577963c0b40f26feb475ddf",
+    "workflow_blob": "aa8e1200d4b8ca92740f73e1d39fe0eab9cc8d68"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35289914937,
+      "job": 105430301076,
+      "conclusion": "FAIL_PROVENANCE_LOCK_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "incorrect material-domain binding blob literal in runner",
+      "scientific_result_generated": false,
+      "research_design_changed_after_failure": false
+    },
+    "qualified_attempt": {
+      "workflow_run": 35289924640,
+      "job": 105430331989,
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "6e842ee99ec722678aeaf99143e80eb7340488dc393ab8dae0b31f31ab9b1bce"
+    }
+  },
+  "matrix": {
+    "material_count": 36,
+    "Se_levels": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.92,
+      0.94,
+      0.96,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 936,
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032
+  },
+  "validity_by_Se": [
+    {
+      "Se": 0.5,
+      "valid": 62,
+      "invalid": 10,
+      "complete": false
+    },
+    {
+      "Se": 0.55,
+      "valid": 66,
+      "invalid": 6,
+      "complete": false
+    },
+    {
+      "Se": 0.6,
+      "valid": 68,
+      "invalid": 4,
+      "complete": false
+    },
+    {
+      "Se": 0.65,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.7,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.75,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.8,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.85,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.9,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.92,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.94,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.96,
+      "valid": 72,
+      "invalid": 0,
+      "complete": true
+    },
+    {
+      "Se": 0.98,
+      "valid": 68,
+      "invalid": 4,
+      "complete": false
+    }
+  ],
+  "common_state_domain": {
+    "complete_levels": [
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.92,
+      0.94,
+      0.96
+    ],
+    "complete_level_count": 9,
+    "tested_lower_boundary_note": "Se 0.60 is not complete under the fixed schedule; therefore the tested common domain starts above it.",
+    "tested_upper_boundary_note": "Se 0.98 is not complete; Se 0.96 is the highest complete tested level.",
+    "topology": "one contiguous complete tested interval from Se=0.65 through Se=0.96 on the preregistered grid"
+  },
+  "rule_selected_future_anchors": {
+    "dry": 0.65,
+    "intermediate": 0.85,
+    "wet": 0.96,
+    "selection_rule_applied_exactly": true
+  },
+  "scientific_interpretation": {
+    "primary": "A material-independent shared E0 state domain exists across all 36 D3R materials under both frozen forcing classes at the fixed Reference schedule, but it is bounded on both the dry and near-saturated ends of the tested Se grid.",
+    "relation_to_P2E11D1": "The near-wet transfer failure at Se=0.98 is preserved rather than repaired; the Reference-only construction identifies Se=0.96 as the highest complete tested common level.",
+    "candidate_independence": "No RossFast numerical solver was executed and no new RossFast discrepancy was inspected.",
+    "nonclaim": "P2E13 constructs the shared state domain. It does not establish RossFast admissibility at Se=0.96 and does not freeze scientific discrepancy thresholds."
+  },
+  "firewalls": {
+    "rossfast_executed": false,
+    "threshold_frozen": false,
+    "material_removed": false,
+    "post_execution_Se_grid_changed": false,
+    "production_or_reference_source_changed": false,
+    "reference_tolerance_changed": false
+  },
+  "verdict": "QUALIFIED_REFERENCE_COMMON_MATERIAL_STATE_DOMAIN_SE_0P65_TO_0P96_TESTED_GRID",
+  "next_permitted_action": "Preregister a separate Reference-only calibration/threshold freeze for Se={0.65,0.85,0.96} across the full 36-material x two-forcing design. Only after that threshold authority is frozen may new RossFast extension-material discrepancies be executed."
+}
