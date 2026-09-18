@@ -4,7 +4,7 @@ program test_pub_me_d1_rejected_state_leakage
        execute_reference_interval, TX_STATUS_ACCEPTED, TX_STATUS_RETRY_EXHAUSTED, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_interval_t, canonical_numerical_config_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
-       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t
+       fmr_b110_physical_state_t, fmr_serialized_reference_model_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use MOD_grid, only: numnod, z, dz, disnod
   implicit none
@@ -14,7 +14,7 @@ program test_pub_me_d1_rejected_state_leakage
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
   real(real64), parameter :: permissive_temporal_tolerance = 1.0e6_real64
 
-  type(fmr_serialized_reference_backend_t) :: backend
+  type(fmr_serialized_reference_model_t) :: model
   type(fmr_b110_physical_parameters_t) :: parameters
   type(fmr_b110_physical_forcing_t) :: forcing
   type(fmr_b110_physical_state_t) :: physical
@@ -25,7 +25,8 @@ program test_pub_me_d1_rejected_state_leakage
   type(transaction_result_t) :: rejected, accepted
   class(transaction_state_t), allocatable :: committed, before_reject, after_reject, final_state
   real(real64) :: reject_head_diff, reject_theta_diff, reject_ponding_diff, reject_groundwater_diff
-  logical :: reject_changed
+  logical :: reject_changed, selection_ok
+  integer :: selection_status
 
   call initialize_parameters(parameters)
   call initialize_forcing(forcing)
@@ -39,11 +40,13 @@ program test_pub_me_d1_rejected_state_leakage
   call initialize_config(reject_config, 0.0_real64)
   reject_policy = reject_config%transaction
 
-  call backend%initialize(top)
-  call backend%configure_parameters(parameters)
-  call backend%prepare_interval(forcing, interval, reject_config)
+  call model%soil_water_selection%configure('', selection_ok, selection_status)
+  call require(selection_ok, 'Reference soil-water selection configured')
+  model%top_boundary => top
+  call model%configure_parameters(parameters)
+  call model%prepare_interval(forcing, interval, reject_config)
 
-  call execute_reference_interval(backend, committed, 0.0_real64, duration, reject_policy, rejected)
+  call execute_reference_interval(model, committed, 0.0_real64, duration, reject_policy, rejected)
 
   call require(rejected%status == TX_STATUS_RETRY_EXHAUSTED, 'first transaction rejected after bounded physical work')
   call require(rejected%headcalc_calls >= 3, 'real Reference full and two-half HeadCalc work executed')
@@ -66,9 +69,9 @@ program test_pub_me_d1_rejected_state_leakage
 
   call initialize_config(accept_config, permissive_temporal_tolerance)
   accept_policy = accept_config%transaction
-  call backend%prepare_interval(forcing, interval, accept_config)
+  call model%prepare_interval(forcing, interval, accept_config)
 
-  call execute_reference_interval(backend, committed, 0.0_real64, duration, accept_policy, accepted)
+  call execute_reference_interval(model, committed, 0.0_real64, duration, accept_policy, accepted)
 
   call require(accepted%status == TX_STATUS_ACCEPTED, 'bounded continuation accepted')
   call require(accepted%commits == 1, 'bounded continuation commits exactly once')
