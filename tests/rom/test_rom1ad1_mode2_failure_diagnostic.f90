@@ -82,7 +82,7 @@ program test_rom1ad1_mode2_failure_diagnostic
 
   call require(state%current_revision()==int(seed_intervals+prefix_steps,int64),'ROM1AD1 predecessor revision')
   call state%current_time(time_before,time_ok)
-  call require(time_ok.and.same_bits(time_before,0.0192_real64),'ROM1AD1 predecessor time')
+  call require(time_ok.and.same_bits(time_before,t0),'ROM1AD1 predecessor time')
   write(*,'(*(g0))') 'ROM1AD1_PREFIX|PASS_STEPS=',prefix_steps,'|REV=',state%current_revision(),'|T=',time_before
 
   call prospective_bound(state,p,rep_bound,bound_ok)
