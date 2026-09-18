@@ -5,7 +5,7 @@
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract Admission",
   "protocol": "Bounded Execution Protocol",
   "phase": "ADMIT",
-  "verdict": "PENDING_ADMISSION_GATE",
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "15883938da5777f90f097c8f6938458840ccb75a",
@@ -58,5 +58,23 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Run F-CI105 exact admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify exact status head, reconcile live canonical and non-force fast-forward."
+  "next_permitted_action": "Qualify this exact F-CI105 status head. If green and canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this contract-only admission head.",
+  "admission_gate": {
+    "qualified_head": "b3ba307539322cd2433252694d33bb59556e07d6",
+    "workflow_run": 35316231973,
+    "workflow_job": 105508359135,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI105_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI105_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI105_ZERO_PRODUCTION_CODE_DELTA",
+      "FCI105_IMMUTABLE_CONTRACT_AND_EVIDENCE_BLOBS",
+      "FCI105_OWNER_STATUS_AUTHORITY",
+      "FCI105_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI105_IMOD_OWNERSHIP_BOUNDARY",
+      "FCI105_CANONICAL_PREPARED_SOLVE_STACK",
+      "FCI105_OWNER_REPLAY",
+      "FCI105_INDEPENDENT_REPLAY"
+    ]
+  }
 }
