@@ -1,0 +1,26 @@
+name: F-VQ122 F-APP08 independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq122-fapp08-rutter-output-independent
+    paths:
+      - 'tests/fvq/test_fvq122_fapp08_independent.f90'
+      - 'tests/fvq/run_fvq122_fapp08_independent.sh'
+      - '.github/workflows/f-vq122-fapp08-independent.yml'
+      - 'integration/f-vq/F-VQ122_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq122_fapp08_independent.sh
