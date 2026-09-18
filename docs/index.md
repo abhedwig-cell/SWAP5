@@ -85,6 +85,8 @@ The repository also preserves research-design and publication-governance materia
 Start with:
 
 - [SWAP5 publication programme](publication/PUBLICATION_PROGRAMME.md)
+- [PUB-GC / COUPLE living manuscript](publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md)
+- [PUB-GC / COUPLE claim-evidence ledger](publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md)
 - [Paper 1: model evolution research design](publication/PAPER1_MODEL_EVOLUTION_RESEARCH_DESIGN.md)
 - [Paper 2: solver admissibility research design](publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)
 - [PUB-RC / ACCELERATE research design](publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md)
