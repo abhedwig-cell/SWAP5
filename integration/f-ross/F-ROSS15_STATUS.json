@@ -2,52 +2,60 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS15",
   "title": "Reference Richards versus RossFast solver-seam performance",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "ADMIT",
+  "status": "QUALIFIED_SCREENING_RESULT_PENDING_CANONICAL_ADMISSION",
   "branch": "work/f-ross15-reference-vs-rossfast-performance",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
-  "checkpoint_head_before_status": "0271f4e943e43559823c483ab7813ca5413a5142",
+  "canonical_head_at_result_review": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
   "reconcile": {
+    "branch_base": "59503d621d74c06d6df956f8e3a752c365cab2a1",
     "p2e10_direct_solver_dependencies_still_exact": true,
-    "post_p2e10_relevant_changes": [
-      "accepted-step directional and MODFLOW/runtime surfaces changed",
-      "direct P2E10 solver contract, Reference legacy binding and RossFast solver/model/policy/provider blobs remain exact"
-    ],
-    "f_ross14_ownership_collision_avoided": true,
-    "live_canonical_after_branch_creation": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
-    "delta_from_branch_base": "2 commits; no src/**, reference/** or RossFast-relevant files"
+    "canonical_delta_since_branch_base": "two commits; no src/**, reference/**, RossFast, P2E10 or performance dependency change",
+    "f_ross14_identifier_collision_avoided": true,
+    "duplicate_parallel_runner_removed": true
   },
-  "evidence_reused": [
-    "PUB-P2E10 36 paired-valid E0 cases",
-    "F-ROSS13 admitted 36-material production envelope",
-    "MP-6/MP-7 measurement-resolution discipline",
-    "MP isolated-runner readiness: INFRASTRUCTURE_PENDING"
-  ],
-  "mutations": [
-    "integration/f-ross/F-ROSS15_PERFORMANCE_PREREGISTRATION.json",
-    "integration/f-ross/F-ROSS15_STATUS.json"
-  ],
+  "qualification": {
+    "primary_result_head": "2ef6b8843061ea816d3b2492d71563e5dcab1193",
+    "primary_workflow_run": 35292973486,
+    "primary_job": 105439594531,
+    "primary_artifact_id": 10526848201,
+    "primary_artifact_digest": "sha256:8994dd5ed81cc6c5c2067f8082b584b6c5d20019edc3c3c0c3180fed557b6855",
+    "primary_outcome": "SCREENING_REFERENCE_FASTER",
+    "primary_rossfast_over_reference_cpu_ratio_mean": 2.9962146695714627,
+    "primary_mde": 0.007667329937940216,
+    "primary_target_resolution": 0.05,
+    "effect_resolved": true,
+    "exact_cleanup_head": "93eaa955754af5980229082d3a7adf7fb65f8ed0",
+    "exact_cleanup_replay_run": 35293070576,
+    "exact_cleanup_replay_job": 105439875175,
+    "exact_cleanup_outcome": "SCREENING_REFERENCE_FASTER",
+    "exact_cleanup_rossfast_over_reference_cpu_ratio_mean": 2.91123166733,
+    "exact_cleanup_mde": 0.0121432589884
+  },
+  "evidence": {
+    "preregistration": "integration/f-ross/F-ROSS15_PERFORMANCE_PREREGISTRATION.json",
+    "result": "integration/f-ross/F-ROSS15_PERFORMANCE_RESULT.json",
+    "workflow": ".github/workflows/f-ross15-reference-vs-rossfast-performance.yml",
+    "harness": "tests/ross/test_ross15_reference_vs_rossfast_performance.f90",
+    "runner": "tools/performance/f_ross15_paired_screen.py",
+    "wrapper": "tests/ross/run_ross15_reference_vs_rossfast_performance.sh"
+  },
+  "scientific_interpretation": {
+    "supported": "Within the exact 36-case PUB-P2E10 paired-valid E0 solver-seam domain, Reference Richards is substantially faster than the current RossFast D3R implementation on the preregistered solver CPU metric.",
+    "rossfast_faster_hypothesis_supported": false,
+    "whole_model_runtime_claim": false,
+    "formal_production_performance_claim": false,
+    "formal_claim_blocker": "MP-admitted isolated performance host not yet available"
+  },
   "production_or_reference_mutation": false,
-  "verdict": "IMPLEMENTED_READY_FOR_EXACT_HEAD_SCREENING",
-  "next_permitted_action": "Execute the preregistered F-ROSS15 workflow on the exact head; if harness execution fails, correct only implementation defects without changing cases, repetitions, pair count, resolution rule or host claim boundary.",
+  "verdict": "QUALIFIED_SCREENING_REFERENCE_FASTER",
+  "next_permitted_action": "Admit this screening evidence only. Then investigate RossFast cost composition in a separate workunit before considering optimization; formal performance qualification requires an MP-admitted isolated host.",
   "exclusions": [
     "NO_SOLVER_OPTIMIZATION",
     "NO_TOLERANCE_CHANGE",
     "NO_PRODUCTION_OR_REFERENCE_SOURCE_CHANGE",
-    "NO_FORMAL_SPEEDUP_CLAIM_FROM_UNADMITTED_GITHUB_HOST",
+    "NO_FORMAL_SPEEDUP_OR_SLOWNESS_CLAIM_FROM_UNADMITTED_SHARED_HOST",
     "NO_WETTING_CASES",
-    "NO_TRANSACTION_LEVEL_PERFORMANCE_CLAIM"
-  ],
-  "implementation": {
-    "harness_head": "58f6ed4e945375cbfd9291ac39cf6a2fc6d879e6",
-    "files": [
-      "tests/ross/test_ross15_reference_vs_rossfast_performance.f90",
-      "tools/performance/f_ross15_paired_screen.py",
-      "tests/ross/run_ross15_reference_vs_rossfast_performance.sh",
-      ".github/workflows/f-ross15-reference-vs-rossfast-performance.yml"
-    ],
-    "source_or_reference_mutation": false,
-    "benchmark_contract_changed_after_preregistration": false
-  }
+    "NO_TRANSACTION_LEVEL_OR_WHOLE_MODEL_PERFORMANCE_CLAIM"
+  ]
 }
