@@ -35,7 +35,7 @@ fail() { echo "FCI107_ROSSFAST_CACHE_ADMISSION_FAIL $*" >&2; exit 1; }
 git merge-base --is-ancestor "$STATUS_A_AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD || fail 'F-ROSS13 production authority not ancestor'
-git merge-base --is-ancestor "$SOURCE" HEAD || fail 'F-CI105 canonical source not ancestor'
+git merge-base --is-ancestor "$SOURCE" HEAD || fail 'F-CI107 canonical source not ancestor'
 
 test "$(git rev-parse "$SOURCE:$KERNEL")" = "$BASELINE_KERNEL" || fail 'canonical source is not the exact F-ROSS17 baseline kernel'
 test "$(git rev-parse "HEAD:$KERNEL")" = "$CACHE_KERNEL" || fail 'candidate kernel is not exact F-ROSS17 cache postimage'
