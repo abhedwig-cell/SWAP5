@@ -36,6 +36,15 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_e4_head_trial_c.restype=ctypes.c_int
+        self.lib.fgc44_e4_head_trial_c.argtypes=[
+            ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_int),
+            *([ctypes.POINTER(ctypes.c_double)]*6),
+        ]
         self.lib.fgc44_predictor_run_diagnostics_c.restype=ctypes.c_int
         self.lib.fgc44_predictor_run_diagnostics_c.argtypes=[
             *([ctypes.POINTER(ctypes.c_int)]*14),
@@ -140,6 +149,33 @@ class Fgc44RealSwap:
         ]
         result={k:v.value for k,v in zip(keys,values)}
         result["mass_complete"]=bool(mass_complete.value)
+        return result
+
+    def e4_head_trial(self, head_m: float) -> dict[str,float|bool|int]:
+        q=ctypes.c_double()
+        exchange=ctypes.c_double()
+        terminal=ctypes.c_double()
+        complete=ctypes.c_int()
+        values=[ctypes.c_double() for _ in range(6)]
+        status=self.lib.fgc44_e4_head_trial_c(
+            float(head_m),
+            ctypes.byref(q),ctypes.byref(exchange),ctypes.byref(terminal),
+            ctypes.byref(complete),
+            *[ctypes.byref(v) for v in values],
+        )
+        keys=[
+            "storage_start_native","storage_end_native","storage_change_native",
+            "total_in_native","total_out_native","mass_residual_native",
+        ]
+        result={k:v.value for k,v in zip(keys,values)}
+        result.update({
+            "status":int(status),
+            "valid":status==0,
+            "q_swap_m_per_s":q.value,
+            "bottom_outward_exchange_cm":exchange.value,
+            "terminal_bottom_outward_flux_native":terminal.value,
+            "mass_complete":bool(complete.value),
+        })
         return result
 
     def last_trial_diagnostics(self) -> tuple[float,float]:
