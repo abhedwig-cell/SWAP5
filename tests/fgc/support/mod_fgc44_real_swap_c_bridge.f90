@@ -4,7 +4,7 @@ module mod_fgc44_real_swap_c_bridge
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
@@ -15,6 +15,7 @@ module mod_fgc44_real_swap_c_bridge
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
+  use mod_groundwater_swap_forcing_adapter, only: GW_SWAP_FORCING_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
        groundwater_interface_state_t, groundwater_interface_lineage_t, &
        swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s, pair_groundwater_flux_from_swap, GW_INTERFACE_OK
@@ -73,6 +74,7 @@ module mod_fgc44_real_swap_c_bridge
   type(fixed_flux_top_boundary_provider_t), target, save :: top
   logical, save :: initialized=.false.
   logical, save :: ledger_prepared=.false.
+  integer, save :: e3_init_stage=0
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
@@ -99,6 +101,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: pub_gc_e3_set_duration_c, pub_gc_e3_begin_next_window_c, pub_gc_e3_committed_storage_c
+  public :: pub_gc_e3_init_stage_c, pub_gc_e3_diagnostic_trial_c
 
 contains
 
@@ -137,15 +140,17 @@ contains
     logical :: ok
 
     fgc44_swap_initialize_c=1_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
-    initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
+    initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.; e3_init_stage=1
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
+    e3_init_stage=10
     qeq=PREDICTOR_QBOT
     call initialize_forcing(base_forcing,qeq)
     call initialize_column_template(column,template)
     call initialize_configs(predictor_config,corrector_config)
     call initialize_committed_state(committed,predictor_parameters,ok)
     if(.not.ok)return
+    e3_init_stage=20
 
     datum%available=.true.; datum%datum_id=540044_int64; datum%bottom_boundary_elevation_m=0.0_real64
     window%t0=0.0_real64; window%t1=active_duration_day
@@ -158,8 +163,10 @@ contains
     call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
          window%t0,window%t1,checkpoint,result,candidate,diagnostics)
     if(.not.result%completed)return
+    e3_init_stage=30
     if(.not.candidate%ready())return
     if(.not.result%accepted_trajectory_direction%available)return
+    e3_init_stage=40
 
     call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
     call bind_b110_default_mvg_provider(constitutive,hp,active_duration_day)
@@ -167,8 +174,10 @@ contains
     call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
          result%accepted_trajectory_direction,qeq,datum,.false.,.false.,.false.,.false.,endpoint,status)
     if(status/=MODFLOW6_TANGENT_ENDPOINT_OK .or. .not.endpoint%authoritative)return
+    e3_init_stage=50
     call materialize_origin_face(predictor_parameters,hp,qeq,start_face,status)
     if(status/=MODFLOW6_BOTTOM_FACE_OK .or. .not.start_face%valid)return
+    e3_init_stage=60
 
     predictor_lineage%coupling_id=COUPLING_ID
     predictor_lineage%swap_lineage_id=COLUMN_ID
@@ -186,6 +195,7 @@ contains
     if(status/=MODFLOW6_PREDICTOR_ORIGIN_OK)return
     call assemble_modflow6_swap_predictor_response(origin,window,candidate,result,endpoint,response(1),status)
     if(status/=MODFLOW6_PREDICTOR_ASSEMBLER_OK .or. .not.response(1)%valid)return
+    e3_init_stage=70
 
     e1_q_bot_predictor_cm_per_day=response(1)%q_bot_predictor_cm_per_day
     e1_q_u_cm_per_day=response(1)%q_u_cm_per_day
@@ -208,12 +218,13 @@ contains
     if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)return
     call compose_modflow6_linear_boundary_term(cell,AREA_M2,term,status)
     if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)return
+    e3_init_stage=80
     hcof=term%hcof_m2_per_day; rhs=term%rhs_m3_per_day; reference_head=term%reference_head_m
 
     call predictor_backend%discard_trial_candidate(candidate,diagnostics)
     call participant%capture_origin(committed,status); if(status/=GW_SWAP_PARTICIPANT_OK)return
     call ledger%bind_identity(LEDGER_ID,status); if(status/=GW_MASS_LEDGER_OK)return
-    initialized=.true.; fgc44_swap_initialize_c=0_c_int
+    initialized=.true.; e3_init_stage=90; fgc44_swap_initialize_c=0_c_int
   end function fgc44_swap_initialize_c
 
   integer(c_int) function fgc44_swap_trial_c(head_m,q_swap_m_per_s) bind(C,name="fgc44_swap_trial_c")
@@ -311,6 +322,54 @@ contains
     time_day=t; ledger_count=int(snap%committed_exchange_count,c_int); ledger_exchange_m=snap%committed_swap_outward_exchange_m
     fgc44_state_c=0_c_int
   end function fgc44_state_c
+
+  integer(c_int) function pub_gc_e3_init_stage_c(stage) bind(C,name="pub_gc_e3_init_stage_c")
+    integer(c_int), intent(out) :: stage
+    stage=int(e3_init_stage,c_int)
+    pub_gc_e3_init_stage_c=0_c_int
+  end function pub_gc_e3_init_stage_c
+
+  integer(c_int) function pub_gc_e3_diagnostic_trial_c(head_m,kernel_status,completed,retries,solver_rejections, &
+       temporal_rejections,mass_rejections,accepted_substeps,bottom_exchange_cm) &
+       bind(C,name="pub_gc_e3_diagnostic_trial_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: kernel_status,completed,retries,solver_rejections
+    integer(c_int), intent(out) :: temporal_rejections,mass_rejections,accepted_substeps
+    real(c_double), intent(out) :: bottom_exchange_cm
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    class(canonical_forcing_t), allocatable :: forcing
+    logical :: ok
+    integer :: forcing_status
+
+    pub_gc_e3_diagnostic_trial_c=1_c_int
+    kernel_status=-999_c_int; completed=0_c_int; retries=0_c_int; solver_rejections=0_c_int
+    temporal_rejections=0_c_int; mass_rejections=0_c_int; accepted_substeps=0_c_int
+    bottom_exchange_cm=0.0_c_double
+    if(.not.initialized)return
+    call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)return
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=GW_SWAP_FORCING_OK .or. .not.allocated(forcing))return
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      return
+    end select
+    kernel_status=int(result%status,c_int)
+    if(result%completed)completed=1_c_int
+    retries=int(diagnostics%retries,c_int)
+    solver_rejections=int(diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(diagnostics%temporal_rejections,c_int)
+    mass_rejections=int(diagnostics%mass_rejections,c_int)
+    accepted_substeps=int(diagnostics%accepted_substeps,c_int)
+    if(result%bottom_interface_exchange_available)bottom_exchange_cm=result%bottom_outward_exchange_native
+    if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    pub_gc_e3_diagnostic_trial_c=0_c_int
+  end function pub_gc_e3_diagnostic_trial_c
 
   integer(c_int) function pub_gc_e3_begin_next_window_c(duration_day) bind(C,name="pub_gc_e3_begin_next_window_c")
     real(c_double), value, intent(in) :: duration_day
