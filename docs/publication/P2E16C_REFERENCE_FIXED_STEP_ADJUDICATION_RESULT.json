@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.publication.p2e16c-reference-fixed-step-adjudication-result.v1",
+  "workunit": "PUB-P2E16C",
+  "phase": "REFERENCE_FIXED_STEP_ADJUDICATION_COMPLETE",
+  "branch": "work/pub-p2e16c-reference-fixed-step-adjudication",
+  "parent_primary": {
+    "p2e16b_result_commit": "5bbd6d9c6d2849550d7121098413fa3f135c2f1e",
+    "p2e16b_result_blob": "8c12656871d2ed2af50d352b07cba7bf59e0cefe",
+    "primary_counts_changed": false,
+    "retroactive_upgrade_permitted": false
+  },
+  "preregistration": {
+    "commit": "8b7eff38fc96e601431c6d3a8b3e34d5450c7352",
+    "blob": "2aff99a80e463b59d9223a47dfc9c5487dfae363"
+  },
+  "executed_head": "1afe6749882e23ca4332bbc3a1ae4011326d249b",
+  "authorities": {
+    "test_blob": "67807798c1a5b480c785e56834fa642d3dc154e4",
+    "runner_blob": "1d75a5bab0afd9694e1696f49d6c49fb7f30afad",
+    "workflow_blob": "9205f83a2b22aec071eac3f3fbcae838274f8f60",
+    "headcalc_blob": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
+  },
+  "execution": {
+    "workflow_run": 35292820391,
+    "job": 105439129866,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "e3c37660d6ca357ec7b5e4f15031f8b186e1c822f35efae1417bcbcf0636a81d",
+    "diagnostic_result_was_ci_pass_condition": false
+  },
+  "single_step_ladder": {
+    "solve_count": 35,
+    "valid_count": 11,
+    "retry_count": 24,
+    "hard_failed_count": 0,
+    "p2e16b_dt_0_0016_invalid_reproduced_count": 5,
+    "valid_at_0_0064_and_0_0032_but_invalid_at_0_0016_count": 5,
+    "case_patterns": [
+      {
+        "case": 576,
+        "material": "B16",
+        "Se": 0.96,
+        "rho": 1.05,
+        "valid_dt_day": [0.0064,0.0032],
+        "retry_dt_day": [0.0016,0.0008,0.0004,0.0002,0.0001]
+      },
+      {
+        "case": 612,
+        "material": "B17",
+        "Se": 0.96,
+        "rho": 1.05,
+        "valid_dt_day": [0.0064,0.0032],
+        "retry_dt_day": [0.0016,0.0008,0.0004,0.0002,0.0001]
+      },
+      {
+        "case": 1220,
+        "material": "O16",
+        "Se": 0.96,
+        "rho": -1.0,
+        "valid_dt_day": [0.0064,0.0032],
+        "retry_dt_day": [0.0016,0.0008,0.0004,0.0002,0.0001]
+      },
+      {
+        "case": 1248,
+        "material": "O17",
+        "Se": 0.85,
+        "rho": 1.05,
+        "valid_dt_day": [0.0064,0.0032],
+        "retry_dt_day": [0.0016,0.0008,0.0004,0.0002,0.0001]
+      },
+      {
+        "case": 1257,
+        "material": "O17",
+        "Se": 0.96,
+        "rho": -0.95,
+        "valid_dt_day": [0.0064,0.0032,0.0008],
+        "retry_dt_day": [0.0016,0.0004,0.0002,0.0001],
+        "non_monotone_dt_behavior": true
+      }
+    ]
+  },
+  "same_horizon_substepping": {
+    "target_horizon_day": 0.0016,
+    "sequence_count": 25,
+    "valid_sequence_count": 0,
+    "invalid_sequence_count": 25,
+    "recovered_with_substeps_count": 0,
+    "case_1257_special_pattern": "The first 0.0008-day substep is valid but the second 0.0008-day substep requests retry; therefore even the one case with an independently valid 0.0008 single step does not traverse the complete 0.0016-day horizon under the frozen forcing and controls."
+  },
+  "failure_mechanism": {
+    "observed_status_on_every_invalid_single_step": "SW_SOLVE_RETRY_ADVISED",
+    "observed_route_on_every_invalid_single_step": "legacy-reference-retry",
+    "observed_nonlinear_iterations_on_every_invalid_single_step": 16,
+    "observed_jacobian_builds_on_every_invalid_single_step": 16,
+    "alternative_solver_calls_on_invalid_cases": 0,
+    "candidate_state_remained_finite_and_inside_shared_bounds": true,
+    "published_flux_identity_remained_consistent": true,
+    "mass_diagnostic_on_retry": "not published, by design",
+    "headcalc_control_flow": "After normal exhaustion of MaxIt1 when fldtmin is false, HeadCalc restores the base soil state, sets fldecdt=.TRUE. and request_dt_reduction=.TRUE., increments internal_retries, and returns. The typed Reference binding maps this path to SW_SOLVE_RETRY_ADVISED / legacy-reference-retry.",
+    "interpretation": "The five P2E16B Reference-invalid cases are nonlinear iteration-exhaustion/retry limitations of the fixed Reference solve, not hard physical-domain rejections and not RossFast-caused failures."
+  },
+  "step_size_interpretation": {
+    "ordinary_large_step_instability_supported": false,
+    "reason": "All five cases are valid at the larger 0.0064 and 0.0032-day steps and invalid at 0.0016 day; four remain invalid at every smaller tested step. Case 1257 is explicitly non-monotone because 0.0008 day converges while both 0.0016 and 0.0004 day do not.",
+    "simple_smaller_dt_recovery_supported": false,
+    "same_horizon_substep_recovery_supported": false,
+    "physical_request_invalidity_supported": false
+  },
+  "near_saturation_capacity_regularization_check": {
+    "direct_initial_head_trigger_supported": false,
+    "initial_head_examples_cm": {
+      "B16_Se0.96": -13.791722573640198,
+      "B17_Se0.96": -23.649381918538,
+      "O16_Se0.96": -27.524482221718767,
+      "O17_Se0.85": -92.96005274076562,
+      "O17_Se0.96": -24.627160963018273
+    },
+    "note": "The B1.10 provider has a step-duration-dependent moisture-capacity floor only for head > -1 cm. The initial states are well outside that direct trigger. This does not exclude a later Newton-iterate interaction, but it is not sufficient as the primary explanation."
+  },
+  "adjudication_answers": {
+    "Q1": "The five cases are numerical Reference retry limitations, not demonstrated physical-domain failures.",
+    "Q2": "Yes. The dt-validity relation is non-monotone, most clearly for case 1257.",
+    "Q3": "No. Under frozen physics and numerical controls, reducing the 0.0016-day horizon into 2, 4, 8 or 16 substeps does not produce a fully valid Reference sequence for any of the five cases."
+  },
+  "effect_on_p2e16b": {
+    "authorized_pairwise_primary_count": 850,
+    "interpretable_pairwise_primary_count": 848,
+    "admissible_pairwise_primary_count": 848,
+    "outside_primary_count": 432,
+    "matched_reference_interpretable_outside_count": 429,
+    "rossfast_outside_rejected_count": 432,
+    "counts_unchanged": true,
+    "reason": "P2E16C is post-primary adjudication only."
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "The P2E16B Reference-invalid cases are reproducible and belong to a Reference nonlinear-retry limitation class.",
+      "The limitation is not removed monotonically by reducing dt.",
+      "The Reference comparator itself has a bounded numerical-validity domain that must be treated separately from the candidate solver domain."
+    ],
+    "not_supported": [
+      "A claim that the five cases can be rescued by ordinary timestep refinement.",
+      "A claim that RossFast is scientifically superior in those five cases solely because it may return a candidate where Reference retries.",
+      "Any retroactive increase of P2E16B primary pairwise counts.",
+      "Any widening of P2E14 thresholds or RossFast production admission."
+    ]
+  },
+  "verdict": "REFERENCE_FIXED_STEP_FAILURES_ADJUDICATED_AS_NON_MONOTONE_MAX_ITERATION_RETRY_LIMITATIONS_PRIMARY_COUNTS_UNCHANGED",
+  "next_permitted_action": "If scientifically useful for REF-HIGH construction, preregister a separate Reference-only numerical-control sensitivity study that varies iteration budget or solver controls prospectively. Such work is exploratory/adjudicative and cannot change P2E16B primary evidence."
+}
