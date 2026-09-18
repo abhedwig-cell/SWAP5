@@ -2,12 +2,12 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS26",
   "title": "Current tiered RossFast WETTING seam-crossing qualification",
-  "phase": "QUALIFY",
-  "status": "MEASUREMENT_QUEUED_EXTERNAL_ACTIONS_CAPACITY_FROSS14D1_CANONICALLY_CLOSED",
+  "phase": "ADMIT",
+  "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
   "branch": "work/f-ross26-tiered-wetting-seam-qualification-reconciled",
   "pull_request": 287,
   "canonical_source_at_original_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
-  "live_canonical_last_reconciled": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
+  "live_canonical_last_reconciled": "f8f0fed1a405572685e3d058caa8368739b6e858",
   "authority_collision_reconciliation": {
     "canonical_authority": "integration/f-ross/F-ROSS25_STATUS.json",
     "disposition": "F-ROSS25 remains assigned to serial hydrologic validation; WETTING seam qualification continues as F-ROSS26.",
@@ -19,59 +19,70 @@
     "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
     "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
     "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
     "relevant_production_drift_since_preregistration": false
   },
-  "superseded_prequalification": {
-    "workunit_label": "F-ROSS25_COLLIDING_LATER_WORK",
-    "workflow_run": 35351630329,
-    "authoritative_for_f_ross26": false,
-    "completed_materials_observed": 8,
-    "completed_materials_passed": 8,
-    "notable_cases": {
-      "B01_Se098": {
-        "tier": "K2",
-        "temporal_indicator": 0.7231231554752261,
-        "theta_span_normalized_error": 0.0000025480340540717586,
-        "state_change_relative_error": 0.0004183216626548081
-      },
-      "B04_Se098": {
-        "tier": "K2",
-        "temporal_indicator": 0.25331379407061816,
-        "theta_span_normalized_error": 9.374343068171662e-7,
-        "state_change_relative_error": 0.00027300063027736434
-      },
-      "B05_Se098": {
-        "tier": "K8",
-        "temporal_indicator": 0.3480081715296841,
-        "theta_span_normalized_error": 0.0000011236645486159552,
-        "state_change_relative_error": 0.00007569957933255145
+  "f_ross14d1_dependency": {
+    "status": "CANONICALLY_CLOSED",
+    "merge_commit": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
+    "result": "integration/f-ross/F-ROSS14D1_PIECEWISE_FAILURE_DIAGNOSTIC_RESULT.json",
+    "historical_transition_routes": 343,
+    "historical_f_r1_inadmissible_routes": 146,
+    "production_or_reference_mutation": false
+  },
+  "material_measurement": {
+    "workflow_run": 35353629747,
+    "qualified_head": "41623fa15d5897bedd5893f42aa03281beb32944",
+    "event": "push",
+    "material_jobs": 36,
+    "material_jobs_passed": 36,
+    "material_artifacts": 36,
+    "material_failures": 0,
+    "qualification_surface_byte_identical_to_reconciled_pr": true,
+    "original_aggregate_conclusion": "FAIL_HARNESS_ONLY",
+    "original_aggregate_failure": "B01: expected 3 cases got 6"
+  },
+  "aggregation_repair": {
+    "defect": "Material runner prints each of the three Se case records under both O0 and O2; the stale aggregator expected only three parsed rows.",
+    "scientific_effect": "none",
+    "authorized_repair_commit": "f8af1933e0207058a85244adcea579a4f0da28b7",
+    "restored_live_repair_commit": "4fea6c31ce229f1454ecdff4a104e576151c9e67",
+    "repaired_aggregator_blob": "c6fdad06eaa60c1f31b2b6d43b188b2a8223d31f",
+    "repair": "Require six parsed rows, require exact O0/O2 pair identity for each Se, then reduce to three unique cases.",
+    "aggregate_replay_workflow_restore": "0e87802b2a65dd04145ebeb485be48cab5a21e43",
+    "aggregate_replay_trigger_commit": "73e1849581af156d9511cb1b604343f929077b5a"
+  },
+  "qualification_evidence": {
+    "aggregate_replay_run": 35360842044,
+    "aggregate_replay_job": 105651421446,
+    "aggregate_replay_artifact_id": 10553939278,
+    "aggregate_replay_artifact_digest": "sha256:5fec912fa654417920b7265a87da06522811c187d07dceab59acc40c605f4ee8",
+    "result_sha256": "220f0279ed9249b0085f8368b2ac2e418da4adf50206c200fa87e8df107f34e7",
+    "result": "integration/f-ross/F-ROSS26_TIERED_WETTING_SEAM_QUALIFICATION_RESULT.json",
+    "attempted_cases": 108,
+    "material_count": 36,
+    "tier_distribution": {
+      "K2": 106,
+      "K4": 1,
+      "K8": 1
+    },
+    "maxima": {
+      "temporal_indicator": 0.8786631138376514,
+      "theta_span_normalized_error": 0.000003347041045855608,
+      "state_change_relative_error": 0.0007009366742213624,
+      "abs_mass_residual_cm": 3.96429863457439e-15,
+      "exact_internal_node_endpoint_count": 0
+    },
+    "selected_tier_seam_characterization": {
+      "transition_route_count": 136,
+      "historical_f_r1_inadmissible_route_count": 90,
+      "transition_routes_by_selected_tier": {
+        "K2": 101,
+        "K4": 11,
+        "K8": 24
       }
     },
-    "interpretation": "Useful prequalification only. Authoritative F-ROSS26 measurement must use the renumbered frozen contract."
-  },
-  "measurement_candidates": [
-    {
-      "workflow_run": 35353641857,
-      "head": "41623fa15d5897bedd5893f42aa03281beb32944",
-      "source": "superseded PR 278",
-      "qualification_blobs_identical_to_reconciled_branch": true,
-      "status_last_observed": "QUEUED"
-    },
-    {
-      "workflow_run": 35353657313,
-      "head": "8b5acd0647005bb889df16ef2642888b66d18374",
-      "source": "PR 287 reconciled measurement head",
-      "qualification_blobs_identical_to_pr278": true,
-      "status_last_observed": "QUEUED"
-    }
-  ],
-  "aggregation_repair": {
-    "defect": "Material runner prints the three case records once under O0 and once under O2; the original aggregator incorrectly expected only three parsed rows.",
-    "scientific_effect": "none",
-    "repair": "Require six parsed rows, require exact O0/O2 pair identity for each Se, then reduce to three unique cases.",
-    "repair_commit": "f8af1933e0207058a85244adcea579a4f0da28b7",
-    "matrix_workflow_frozen_manual_only_commit": "eb3dcb1c1494b6e996e199254ce00d5cf840e5af",
-    "artifact_only_aggregate_replay_prepared_commit": "75e2d4a93b9b377182e5f3d9c1dfe5d8d233dc6e"
+    "verdict": "QUALIFIED_RESEARCH_EVIDENCE_CURRENT_TIERED_ROSSFAST_WETTING_STATE_SOLVER_VALID_WITH_SEAM_CROSSINGS"
   },
   "qualification_firewall": [
     "NO_MODEL_BINDING_WIDENING",
@@ -85,22 +96,8 @@
     "NO_ARCHITECTURE_CHANGE",
     "NO_PERFORMANCE_CLAIM"
   ],
-  "next_permitted_action": "When either byte-identical F-ROSS26 measurement run has all 36 material artifacts, write that run id to F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt, execute the prepared artifact-only aggregate replay, persist result plus artifact authority, reconcile current canonical, then ADMIT/CLOSE or classify a hard scientific gate failure.",
-  "f_ross14d1_dependency": {
-    "status": "CANONICALLY_CLOSED",
-    "merge_commit": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
-    "result": "integration/f-ross/F-ROSS14D1_PIECEWISE_FAILURE_DIAGNOSTIC_RESULT.json",
-    "production_or_reference_mutation": false,
-    "relevant_production_dependency_drift": false
-  },
-  "external_blocker": {
-    "class": "GITHUB_ACTIONS_RUNNER_CAPACITY",
-    "f_ross26_runs": [
-      35353641857,
-      35353657313
-    ],
-    "last_observed_completed_material_jobs": 0,
-    "f_ross25_corrected_serial_replay_run": 35353877855,
-    "disposition": "Do not alter scientific contract, thresholds, tier ladder, production source or reference. Resume from first completed byte-identical F-ROSS26 run."
-  }
+  "production_admission_effect": "NONE",
+  "tangent_nonclaim": "No unique cross-node derivative or seam-crossing interface sensitivity is qualified.",
+  "external_blocker": null,
+  "next_permitted_action": "Reconcile PR #287 against the current canonical. If the production postimages and frozen qualification dependencies remain unchanged and the PR is mergeable, mark it ready and merge it to canonical. Then persist the canonical admission/closure record. A separate governed workunit may later evaluate one-sided WETTING model-binding admission."
 }
