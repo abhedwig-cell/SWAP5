@@ -359,3 +359,20 @@ Established: 2026-09-17. Expanded with coupling-related candidate lines PUB-GC, 
 PUB-RC is currently conditional, not an assumed standalone paper. Its default disposition is integration into PUB-GC unless the dedicated novelty gates pass.
 
 This programme is documentation and research governance only. It does not change production code, physics, numerical semantics, qualification tolerances or existing canonical evidence.
+
+
+### PUB-GC E3 — coupling-window and feedback characterization
+
+Status: **initial 48-case matrix complete; predictor-envelope diagnostic active**.
+
+Persistent evidence:
+
+- `PUB_GC_E3_PREREGISTRATION.md`
+- `PUB_GC_E3_RESULT.md`
+- `PUB_GC_E3_RESULT.json`
+- `PUB_GC_E3_INITIAL_RESULT.md`
+- `PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.md`
+- `PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.md`
+- `PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.md`
+
+E3 is closed as **SUPPORTED_RESTRICTED**. The main matrix and stronger-flux refinement establish a weak-feedback control in which iterative coupling restores strict interface closure but changes groundwater head only at nanometre scale. Predictor and long-window corrector failures were localized to the bounded SWAP transaction/retry envelope rather than the outer coupling algorithm. A materially strong positive-feedback case remains future evidence and must come from a different admitted hydrological state or groundwater-response geometry rather than relaxed tolerances.
