@@ -77,7 +77,12 @@ program test_fgc44_real_fmr_participant
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
        origin_head_m+1.0e-4_real64,trial2,status)
-  if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial2%valid) write(*,'(A,I0,A,L1)') 'FGC44_SECOND_TRIAL_DIAG status=',status,' valid=',trial2%valid
+  if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial2%valid) then
+    write(*,'(A,I0,A,L1,A,I0,A,L1,A,I0,A,I0,A,I0)') 'FGC44_SECOND_TRIAL_DIAG status=',status, &
+         ' valid=',trial2%valid,' kernel=',participant%last_kernel_status(),' completed=',participant%last_completed(), &
+         ' retries=',participant%last_retries(),' temporal=',participant%last_temporal_rejections(), &
+         ' solver=',participant%last_solver_rejections()
+  end if
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
   call require(participant%publication_ready(committed,window),'real FMR candidate publication ready')
