@@ -1,0 +1,128 @@
+{
+  "schema": "swap5.publication.p2e12-extension-common-domain-threshold-freeze.v1",
+  "workunit": "PUB-P2E12",
+  "phase": "PREREGISTERED_REFERENCE_ONLY_COMMON_DOMAIN_THRESHOLD_FREEZE",
+  "parent_diagnosis_commit": "2b2c31b505f00df444df67d0f439476ec931f3ca",
+  "purpose": "Freeze the material-extension E0 state/storage admissibility thresholds from Reference-only self-disagreement at the already preselected 0.0064-day schedule, after applying the unchanged common-domain endpoint predicate and retaining all exclusions explicitly.",
+  "schedule": {
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "selection_provenance": "Selected before extension execution by the six-anchor P2E08 common-domain experiment and already fixed in P2E11. It is not selected from extension RossFast results."
+  },
+  "physical_domain": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "total_cases": 180,
+    "expected_in_common_domain": 176,
+    "expected_common_domain_exclusions": 4
+  },
+  "common_domain_predicate": {
+    "reference_solver_status": "SW_SOLVE_CONVERGED",
+    "reference_route": "legacy-reference-bound",
+    "integrated_mass_abs_limit_cm": 1e-12,
+    "endpoint_head_lower_cm": -10000,
+    "endpoint_head_upper_cm": -1,
+    "endpoint_theta_rule": "theta_r < theta < theta_s",
+    "apply_to": "coarse, half1 and half2 Reference endpoints"
+  },
+  "exclusion_rule": {
+    "rule": "A physical case remains in the reported domain map but contributes no threshold statistic when any of its Reference coarse/half endpoints violates the frozen common-domain predicate.",
+    "expected_exclusions": [
+      {
+        "material": "B02",
+        "Se": 0.98,
+        "forcing": "DRYING",
+        "stage": "HALF2_REFERENCE_GATE"
+      },
+      {
+        "material": "B02",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "stage": "HALF2_REFERENCE_GATE"
+      },
+      {
+        "material": "B05",
+        "Se": 0.98,
+        "forcing": "DRYING",
+        "stage": "COARSE_REFERENCE_GATE"
+      },
+      {
+        "material": "B05",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "stage": "COARSE_REFERENCE_GATE"
+      }
+    ],
+    "note": "These exclusions were diagnosed before P2E12 as converged Reference trajectories leaving the pre-existing RossFast E0 head envelope. They are domain-boundary evidence, not discarded unfavorable observations."
+  },
+  "threshold_rule": {
+    "stratify_by": "effective_saturation only",
+    "metrics": [
+      "U_h_inf_cm",
+      "U_h_rms_cm",
+      "U_theta_inf",
+      "U_theta_rms",
+      "U_storage_cm"
+    ],
+    "statistic": "empirical maximum over every in-common-domain Reference self-disagreement in the exact Se stratum",
+    "reference_factor": 1,
+    "application_resolution_floor": 0,
+    "expected_counts_by_Se": {
+      "0.65": 60,
+      "0.85": 60,
+      "0.98": 56
+    },
+    "no_weighted_compensation": true
+  },
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_extension_discrepancy_inspection_allowed": false,
+    "threshold_rule_change_after_execution_allowed": false,
+    "endpoint_predicate_change_after_execution_allowed": false,
+    "case_removal_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "performance_metrics_in_threshold_selection_allowed": false
+  },
+  "next_if_qualified": "Persist all 15 thresholds and the four explicit domain exclusions. Only then preregister the paired extension RossFast-versus-Reference matrix using the exact same domain classifier and frozen thresholds.",
+  "verdict": "PREREGISTERED_EXTENSION_COMMON_DOMAIN_THRESHOLD_FREEZE_READY"
+}
