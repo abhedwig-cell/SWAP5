@@ -1,0 +1,198 @@
+name: F-ROSS14 WETTING 36-material transient qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross14-wetting-top-boundary-envelope
+    paths:
+      - 'integration/f-ross/F-ROSS14_WETTING_TOP_BOUNDARY_QUALIFICATION_CONTRACT.json'
+      - 'tests/ross/run_ross14_wetting_material_qualification.py'
+      - 'tests/ross/aggregate_ross14_wetting_qualification.py'
+      - '.github/workflows/ross14-wetting-36-material-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ross14-wetting-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RESEARCH_HEAD: 04807fdcf45453a59b7f6c99fe97f1286c172833
+  F14_CONTRACT: integration/f-ross/F-ROSS14_WETTING_TOP_BOUNDARY_QUALIFICATION_CONTRACT.json
+  F13_CONTRACT: integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
+  FINGERPRINT_AUTHORITY: integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout F-ROSS14 candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen authority and production preimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object "$F14_CONTRACT")" = c39b12edb452a24ef8bd1084645b72c93128cba8
+          test "$(git hash-object "$F13_CONTRACT")" = 382a9f9d153669377e8eba05461594a37d132e4b
+          test "$(git hash-object integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json)" = 4be26de45d9fe75825bb482580ce6a9b098dedf0
+          test "$(git hash-object "$FINGERPRINT_AUTHORITY")" = 01fa631a245f3011b1007b2888b0528b111ee17f
+          test "$(git hash-object docs/publication/P2E10_E0_BROAD_PAIRED_MATRIX_RESULT.json)" = 83864f6379279725fa97d24d57936f590d3c2174
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_model_binding.f90)" = 5442fd7e7a2f392c9b796cd17c76b17977259f22
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_kernel.f90)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_table_provider.f90)" = ac997bf06c56a37080d1c8db69b6d4208f4b75ca
+          test "$(git rev-parse HEAD:src/solver/mod_rossfast_d3r_soil_water_solver.f90)" = dbb441f3529be179d64fb57f9c44336d3d20c540
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_execution_policy.f90)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_rossfast_solver_selection_binding.f90)" = cca61af52bde3eed12b756547277cc2776589648
+          test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          git cat-file -e "$RESEARCH_HEAD^{commit}"
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" "$RESEARCH_HEAD"
+          root="$RUNNER_TEMP/f-ross01-research"
+          test "$(git -C "$root" hash-object experiments/ross/run_ross01_gate_f_timestep_convergence.py)" = bafda0fb4ed6da606c3a1837208200dbcdb05c65
+          test "$(git -C "$root" hash-object experiments/ross/run_ross01_gate_f_r1_piecewise_timestep_route.py)" = 29b006e051492b7540f0c5c17ca469cfabc6f2c5
+
+  anchors:
+    needs: authority
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize pinned historical research authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" "$RESEARCH_HEAD"
+      - name: Install historical qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Replay unchanged F-ROSS13 historical anchor
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python3 tests/ross/run_ross13_transient_material_qualification.py \
+            --research-root "$RUNNER_TEMP/f-ross01-research" \
+            --contract "$F13_CONTRACT" \
+            --fingerprint-authority "$FINGERPRINT_AUTHORITY" \
+            --mode anchor \
+            --material "${{ matrix.material }}" \
+            --output "out/F-ROSS14_ANCHOR_${{ matrix.material }}_RESULT.json"
+      - name: Upload anchor evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross14-anchor-${{ matrix.material }}-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
+
+  anchor_gate:
+    needs: anchors
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ross14-anchor-*-${{ github.run_id }}
+          path: anchor-shards
+          merge-multiple: true
+      - name: Enforce unchanged six-anchor semantic replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python3 tests/ross/aggregate_ross13_transient_qualification.py \
+            --contract "$F13_CONTRACT" \
+            --input-dir anchor-shards \
+            --stage anchors \
+            --output out/F-ROSS14_HISTORICAL_ANCHOR_REPLAY_RESULT.json
+      - name: Upload anchor gate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross14-anchor-gate-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
+
+  wetting:
+    needs: anchor_gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B12, B13, B14, B15, B16, B17, B18, O01, O02, O03, O04, O05, O06, O07, O08, O09, O10, O11, O12, O13, O14, O15, O16, O17, O18]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize pinned historical research authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" "$RESEARCH_HEAD"
+      - name: Install historical qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Qualify exact WETTING forcing on fixed production geometry
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python3 tests/ross/run_ross14_wetting_material_qualification.py \
+            --research-root "$RUNNER_TEMP/f-ross01-research" \
+            --contract "$F14_CONTRACT" \
+            --fingerprint-authority "$FINGERPRINT_AUTHORITY" \
+            --material "${{ matrix.material }}" \
+            --output "out/F-ROSS14_WETTING_${{ matrix.material }}_RESULT.json"
+      - name: Upload WETTING evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross14-wetting-${{ matrix.material }}-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
+
+  aggregate:
+    needs: [anchor_gate, wetting]
+    if: ${{ always() && needs.anchor_gate.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ross14-wetting-*-${{ github.run_id }}
+          path: all-shards
+          merge-multiple: true
+      - name: Aggregate fail-closed 36-material WETTING result
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python3 tests/ross/aggregate_ross14_wetting_qualification.py \
+            --contract "$F14_CONTRACT" \
+            --input-dir all-shards \
+            --output out/F-ROSS14_WETTING_36_MATERIAL_QUALIFICATION_RESULT.json
+      - name: Upload aggregate result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross14-wetting-36-material-qualification-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
