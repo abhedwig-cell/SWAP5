@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05",
+  "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> DEPENDENCY TRACE -> STATE/MASS/RESTART CLASSIFICATION -> RISK/USE PRIORITIZATION -> FREEZE ACCEPTANCE CRITERIA -> CLOSE",
+  "branch": "audit/ppa-wu05-advanced-water-process-triage",
+  "canonical_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
+  "scope": [
+    "legacy macropore flow and macrorate execution",
+    "frost hydraulic restriction / temperature interaction",
+    "advanced root-water-uptake stress and uptake routes beyond admitted drought-only Feddes"
+  ],
+  "source_authority": {
+    "reference": "SWAP 4.3.1 corrected B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore": {
+      "b0_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+      "corrected_b1_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+      "correction": "SWAP-001 array-shape defect only, no physics change"
+    },
+    "oxygenstress": {
+      "b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+      "corrected_b1_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+      "correction": "SWAP-007 Newton overflow guard only, no normal-path physics change"
+    },
+    "unchanged_b1_11_from_b0": {
+      "SWAP/macrorate.f90": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+      "SWAP/macroporeoutput.f90": "39a0497cfff82540a7323cecceafc3a17d389eb4708014bbf99f6256b65a8b0a",
+      "SWAP/rootextraction.f90": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "SWAP/RWU_micro.f90": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+      "SWAP/solute.f90": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+      "SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+      "SWAP/temperature.f90": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+    }
+  },
+  "current_authority": [
+    "src/process/mod_root_water_uptake_process.f90",
+    "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "integration/f-ci/F-CI31_STATUS.json",
+    "src/process/mod_soil_temperature_contract.f90",
+    "src/process/mod_restricted_soil_temperature.f90",
+    "integration/f-ci/F-CI43_STATUS.json",
+    "integration/f-ci/F-CI45P_STATUS.json",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "historical F-PM05 readiness/candidate branches",
+    "historical F-PE15/F-PE16 macropore ownership evidence",
+    "historical F-PM07 soil-temperature readiness"
+  ],
+  "no_production_mutation": true,
+  "required_decisions": [
+    "Separate advanced root-stress modifiers from stateful alternative uptake models and from external-owner dependencies.",
+    "Separate macropore committed physical/history state from worker scratch, result/reporting state and legacy globals.",
+    "Keep frost distinct from sensible soil-temperature ownership and from latent-heat/phase-change claims.",
+    "Identify mass and restart owners for every candidate family.",
+    "Choose one first high-use bounded advanced-water migration target using usage relevance, dependency unblocking, scientific risk, architecture maturity, reference evidence and qualification cost."
+  ],
+  "pass_conditions": [
+    "B1.11 corrected source lineage is explicit for macropore and oxygen stress.",
+    "No advanced family is treated as one monolithic process when source/current ownership differs.",
+    "Current admitted drought root owner remains the single root-extraction mass owner unless a future authority explicitly changes it.",
+    "Current sensible-temperature route is not broadened into frost/latent-heat authority.",
+    "Macropore prior ownership evidence is classified as prior design/evidence, not production admission.",
+    "A ranked migration graph and acceptance criteria are frozen.",
+    "No src/ or reference/ mutation."
+  ],
+  "exclusions": [
+    "physics migration",
+    "new numerical solver",
+    "new tolerance policy",
+    "legacy patch porting",
+    "frost/latent-heat implementation",
+    "macropore production admission",
+    "advanced root-stress production admission",
+    "ROM"
+  ]
+}
