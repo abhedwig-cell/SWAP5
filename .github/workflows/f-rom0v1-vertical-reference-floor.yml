@@ -1,0 +1,46 @@
+name: F-ROM0V1 vertical Reference floor
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0V1_*'
+      - 'integration/f-rom/F-ROM0_R3_POLICY_AUTHORITY_RECONCILIATION.json'
+      - 'integration/f-rom/F-ROM0R_R3Q2_STATUS.json'
+      - 'docs/science/F-ROM0V1_*'
+      - 'tests/rom/test_f_rom0v1_vertical_reference_floor.f90'
+      - 'tests/rom/analyze_f_rom0v1_vertical_reference_floor.py'
+      - 'tests/rom/run_f_rom0v1_vertical_reference_floor.sh'
+      - '.github/workflows/f-rom0v1-vertical-reference-floor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute required vertical Reference-floor diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0V1_EVIDENCE
+          F_ROM0V1_EVIDENCE_DIR="$PWD/F-ROM0V1_EVIDENCE"             bash tests/rom/run_f_rom0v1_vertical_reference_floor.sh | tee F-ROM0V1_EVIDENCE/gate.txt
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0v1-${{ github.run_id }}
+          path: F-ROM0V1_EVIDENCE
+          if-no-files-found: warn
