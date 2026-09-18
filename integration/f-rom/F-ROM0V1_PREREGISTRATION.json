@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.f-rom0v1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0V1",
+  "title": "Required vertical-resolution Reference-floor diagnostic",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "original_ROM0": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
+    "required_dimension": "VERTICAL_RESOLUTION",
+    "required_compare": "16x10 cm vs 32x5 cm over same 160 cm profile",
+    "required_cases": ["B01:E1_NOMINAL_FLUX","B14:E2_DRYING_FLUX"],
+    "R3_policy_reconciliation": "integration/f-rom/F-ROM0_R3_POLICY_AUTHORITY_RECONCILIATION.json",
+    "research_reference_policy": "ROM-0R-R3Q1 PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED",
+    "fkt_ownership": "ROM-0R-R3Q2 FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
+    "fixed_flux_representation_method": "PUB-P2E21 prospective representation-bounded total Reference policy",
+    "sample_authority": "F-ROM0TA3 F-KT Reference-floor sample/candidate/commit"
+  },
+  "cases": [
+    {
+      "id": "B01_E1_NOMINAL_FLUX",
+      "material": "B01",
+      "top_flux_expression": "0.01*K0",
+      "bottom_mode": 2,
+      "bottom_flux_expression": "-0.004*K0",
+      "source": "original ROM-0 E1_NOMINAL_FLUX"
+    },
+    {
+      "id": "B14_E2_DRYING_FLUX",
+      "material": "B14",
+      "top_flux_expression": "-0.005*K0",
+      "bottom_mode": 2,
+      "bottom_flux_expression": "-0.019*K0",
+      "source": "original ROM-0 E2_DRYING_FLUX"
+    }
+  ],
+  "initial_state": {
+    "effective_saturation": 0.85,
+    "pressure_profile": "UNIFORM_HEAD_FROM_MVG_EFFECTIVE_SATURATION",
+    "sources_sinks": "ZERO",
+    "ponding_cm": 0.0
+  },
+  "geometries": [
+    {"id":"G16","nodes":16,"dz_cm":10,"depth_cm":160},
+    {"id":"G32","nodes":32,"dz_cm":5,"depth_cm":160}
+  ],
+  "temporal_control": {
+    "dt_day": 0.0008,
+    "common_horizon_day": 0.0512,
+    "steps": 64,
+    "authority": "original ROM-0 refined observation interval preserving E1/E2 physical horizon",
+    "dt_retuning_allowed": false,
+    "automatic_temporal_subdivision_allowed": false
+  },
+  "research_reference_policy": {
+    "local_compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "total_integrated_bound_formula_cm": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+    "total_rate_tolerance_formula_cm_per_day": "total_integrated_bound_cm / dt_day",
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "failed_residual_used_in_policy": false,
+    "empirical_factor": "none"
+  },
+  "cross_grid_mapping": {
+    "pressure_head": "For coarse cell i, compare h16_i with 0.5*(h32_(2i-1)+h32_(2i)); this is linear interpolation to the 10-cm cell centre for uniform 5-cm fine cells.",
+    "water_content": "For coarse cell i, compare theta16_i with 0.5*(theta32_(2i-1)+theta32_(2i)); equal fine dz makes this exactly storage-conservative within each coarse 10-cm layer.",
+    "fixed_upper_band": "0-40 cm",
+    "fixed_lower_band": "40-160 cm",
+    "comparison_times": "all 64 common committed endpoints"
+  },
+  "measured_outputs": [
+    "max_over_time_D_h_inf_cm",
+    "max_over_time_D_h_rms_cm",
+    "max_over_time_D_theta_inf",
+    "max_over_time_D_theta_rms",
+    "max_over_time_abs_total_storage_difference_cm",
+    "max_over_time_abs_upper_0_40cm_storage_difference_cm",
+    "max_over_time_abs_lower_40_160cm_storage_difference_cm",
+    "max_over_time_abs_cumulative_bottom_outward_exchange_difference_cm",
+    "max_over_time_abs_terminal_bottom_flux_difference_cm_per_day",
+    "final_time_all_above_differences",
+    "max_abs_step_mass_residual_each_geometry",
+    "representation_bound_range_each_geometry",
+    "solver_work_range_each_geometry"
+  ],
+  "top_exchange": {
+    "status": "PRESCRIBED_FIXED_FLUX_INPUT",
+    "per_step_expression": "top_flux*dt",
+    "expected_cross_grid_difference": 0.0,
+    "not_used_as_solver-derived_discrepancy": true
+  },
+  "qualification": [
+    "BOTH_REQUIRED_CASES_COMPLETE_64_STEPS_ON_BOTH_GEOMETRIES",
+    "EVERY_SAMPLE_ONE_PHYSICAL_ADVANCE",
+    "ZERO_INTERNAL_OR_KERNEL_RETRIES",
+    "HARD_MASS_GATE_EVERY_STEP",
+    "REPRESENTATION_BOUND_FINITE_POSITIVE_PRE_SOLVE",
+    "COMMITTED_REVISION_AND_TIME_PROGRESS_EXACTLY",
+    "ALL_CROSS_GRID_METRICS_FINITE",
+    "O0_O2_STDOUT_BITWISE_IDENTITY_PER_GEOMETRY"
+  ],
+  "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD",
+  "positive_decision": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+  "negative_decision": "VERTICAL_REFERENCE_FLOOR_NOT_MEASURABLE",
+  "if_positive": "Reevaluate complete ROM-0 Q0.1-Q0.6 close gate. Do not authorize ROM-1A before that reconciliation.",
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_CASE_SUBSTITUTION",
+    "NO_DT_RETUNING",
+    "NO_POLICY_RETUNING",
+    "NO_THRESHOLD_DERIVATION_FROM_OBSERVED_DIFFERENCES",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "NO_ROM1_WORK"
+  ],
+  "rom1a_authorized": false
+}
