@@ -13,34 +13,73 @@
   "production_or_reference_mutation": false,
   "all_material": {
     "case_count": 216,
-    "route_valid": 216,
-    "temporal_accepted": 216,
-    "K2_final": 212,
-    "K4_final": 2,
-    "K8_final": 2,
+    "route_valid_count": 216,
+    "temporal_accepted_count": 216,
+    "mass_pass_count": 216,
+    "work_contract_pass_count": 216,
+    "retry_contract_pass_count": 216,
+    "K2_final_count": 212,
+    "K4_final_count": 2,
+    "K8_final_count": 2,
     "mean_linear_solves": 6.444444444444445,
-    "expected_tier_distribution": true,
-    "science_gate": "PASS"
+    "escalation_by_material": {
+      "B05": 2,
+      "O01": 2
+    },
+    "escalation_by_effective_saturation_index": {
+      "3": 4
+    },
+    "escalation_by_forcing": {
+      "DRYING": 2,
+      "NOMINAL": 2
+    },
+    "worst": {
+      "temporal_indicator": 0.8535759368211358,
+      "mass_residual_abs_cm": 4.8269770215183063e-14
+    },
+    "failed_cases": {
+      "route": [],
+      "temporal": [],
+      "mass": [],
+      "work": [],
+      "retry": [],
+      "tier_distribution": []
+    },
+    "gate": "PASS"
   },
-  "anchor": {
+  "anchor_identity_to_f_ross19": {
     "case_count": 36,
-    "identity_to_f_ross19_adaptive": "EXACT",
-    "implication": "36/36 paired science and temporal acceptance are unchanged from the qualified F-ROSS19 authority; no K8 tier is entered on the anchor domain."
+    "all_cases_exact": true,
+    "max_head_inf": 0,
+    "max_theta_inf": 0,
+    "max_temporal_indicator_abs_delta": 0,
+    "max_mass_residual_abs_delta_cm": 0,
+    "gate": "PASS"
   },
   "performance": {
     "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
     "pair_count": 12,
-    "rossfast_over_reference_relative_delta_mean": -0.19038094455,
-    "rossfast_over_reference_cpu_ratio_mean": 0.80961905545,
-    "mean_reference_over_rossfast_speedup": 1.23519497713,
-    "mde": 0.00298264314356,
+    "rossfast_over_reference_relative_delta": {
+      "mean": -0.1903809445498,
+      "median": -0.18998011858120428,
+      "min": -0.20197005248183564,
+      "max": -0.17985161503309743,
+      "stdev": 0.0051660894654957865,
+      "mde": 0.002982643143561682,
+      "target_resolution_qualified": true
+    },
+    "rossfast_over_reference_cpu_ratio_mean": 0.8096190554502,
+    "mean_reference_over_rossfast_speedup": 1.2351949771287558,
+    "whole_child_cpu_relative_delta_mean": -0.04741113937869873,
+    "wall_elapsed_relative_delta_mean": -0.04718015405762915,
     "outcome": "SCREENING_ROSSFAST_FASTER",
     "formal_performance_claim": false
   },
   "adjudication": {
-    "research_promotion_candidate": true,
+    "frozen_research_promotion_rule_pass": true,
     "production_admitted": false,
-    "interpretation": "The tiered K2->K4->K8 ladder resolves the two B05 temporal failures that blocked F-ROSS20 while preserving exact F-ROSS19 behavior on the paired anchor domain. It remains faster than Reference in hosted solver-only screening."
+    "formal_speedup_claim": false,
+    "interpretation": "K2->K4->K8 closes the two B05 temporal failures exposed by F-ROSS20 while preserving the exact F-ROSS19 behavior on the original anchor domain. It is scientifically admissible on all 216 production-relevant material/state/forcing cases and remains faster than Reference Richards in the shared-host solver-only screen."
   },
-  "next_permitted_action": "Open a separate production-candidate workunit promoting the exact frozen K2->K4->K8 ladder and requalify provider preservation, 216-case all-material science, research identity and hosted performance."
+  "next_permitted_action": "Open a separate production-promotion workunit implementing the exact frozen K2->K4->K8 ladder and requalify independently; do not modify F-ROSS21."
 }
