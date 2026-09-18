@@ -24,7 +24,7 @@ The strongest current production envelope is:
 - serialized and restricted parallel real-physics MultiSWAP;
 - a generic typed groundwater application service through F-GC49D, including live MODFLOW6 qualification in bounded topologies.
 
-At audit closure, the principal application-level limitation was not the Richards kernel but the absence of a production config-to-owned-FMR bootstrap. **Post-audit PPA-WU01 closes that absence for two explicitly restricted existing profiles:** an already-qualified serialized Reference standalone profile and an all-`bottom_mode=5` groundwater-owner profile that can materialize F-GC49D. Broad normal-input/application composition remains open, and the qualification fixture remains qualification-only.
+At audit closure, the principal application-level limitation was not the Richards kernel but the absence of a production config-to-owned-FMR bootstrap. **Post-audit PPA-WU01 closes that absence for two explicitly restricted existing profiles:** an already-qualified serialized Reference standalone profile and an all-`bottom_mode=5` groundwater-owner profile that can materialize F-GC49D. **Post-audit PPA-WU03 subsequently closes one bounded common normal-input slice** for precipitation, SWETR=1 reference ET, explicit canopy view and already-resolved surface irrigation under SWINTER=0. Broader meteorological preprocessing/file-calendar ingestion remains open, and the qualification fixture remains qualification-only.
 
 No production source was changed by this audit.
 
@@ -129,9 +129,9 @@ Evidence and exact restrictions are in `docs/audits/PPA_WU01_PRODUCTION_APPLICAT
 
 ### 2. Complete atmospheric/input composition
 
-The runtime can consume explicit typed effective forcing. Restricted reference ET, PMdirect, Rutter and irrigation bindings exist. The missing piece is the complete outer application route that turns ordinary forcing/configuration into those typed values while keeping file I/O, calendars and cursors outside the physics kernel.
+The runtime can consume explicit typed effective forcing. Restricted reference ET, PMdirect, Rutter and irrigation bindings exist. Post-audit PPA-WU03 now provides a canonical bounded outer application route for generic-time precipitation, SWETR=1 reference ET, explicit canopy view and already-resolved surface irrigation under SWINTER=0. It remains stateless and keeps file I/O, calendars and cursors outside the physics kernel.
 
-This is primarily an application-semantics and ownership gap, not a reason to redesign the solver.
+The **complete** atmospheric/input envelope is still open. Legacy weather-file/calendar preprocessing, PMdirect normal-input derivation, Rutter state ownership, SWINTER=1/2, irrigation scheduling and snow/runon ingestion are not implied by PPA-WU03. The remaining work is application-semantics breadth and state ownership, not a reason to redesign the solver.
 
 ### 3. Stateful ET and advanced stress physics
 
@@ -171,7 +171,7 @@ The **canonical result serializer** is already admitted and state-free. Wiring i
 
 PPA-WU01 has now closed the absence of any production bootstrap for the restricted admitted profiles, with Fortran/FMR ownership and no new physics.
 
-The highest remaining application-completeness value is the **outer forcing/config adapter** for common normal applications. This should translate ordinary forcing/configuration to existing typed ET/interception/top-boundary inputs while preserving the current kernel I/O separation.
+PPA-WU03 has closed the first **bounded common outer forcing/config adapter** slice while preserving kernel I/O separation. The remaining application-completeness work is to broaden ingestion only through separate evidenced slices, especially legacy file/calendar preprocessing, PMdirect normal-input derivation and stateful interception/management routes.
 
 In parallel, the **lower-boundary application map** remains high value. Recover the exact B1.11 mode catalogue first, then migrate common modes as small independent slices.
 
@@ -223,7 +223,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 **PPA-WU02, Source-bound lower-boundary application-envelope inventory.** Recover the exact B1.11 SWBOTB mode catalogue and classify every mode against current typed runtime authority. Exit when common lower-boundary modes no longer sit under H authority ambiguity and later migration slices have frozen scientific authorities.
 
-**PPA-WU03, Atmospheric forcing and normal-input adapter boundary.** Define the outer application ingestion route from normal precipitation/reference-ET/canopy inputs to the existing typed processes. Keep calendar/file/cursor ownership outside the kernel. Exit with one common forcing profile driving PPA-WU01 end-to-end without new physics.
+**PPA-WU03, Atmospheric forcing and normal-input adapter boundary. CLOSED / CANONICAL ADMITTED.** PR #323 merged at `97c4471155001e12133109be5eb6bd95f799eb00`. The admitted slice covers generic-time precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0, with only pure-flux dynamic-top handoff to PPA-WU01. File/calendar grammar, PMdirect ingestion, Rutter state ownership and broader management ingestion remain outside the workunit.
 
 **PPA-WU04, Stateful ET/interception scientific review.** Re-derive SWINTER=1/2 and SWREDU=1/2 state, event, restart and rollback semantics from B1.11. This should be a review/authority unit, not an implementation unit.
 
@@ -246,4 +246,19 @@ Qualified source head: `92181c96486c7d49ac1d6cd19a7236f1dcf204b7`
 Qualification workflow run: `35365440351`  
 Qualification job: `105666642389`
 
-The workunit closes the former **absence of any production config-to-owned-FMR owner** for its restricted typed profiles. It does not close the broader normal-application envelope. PPA-WU03 remains required for ordinary atmospheric/input ingestion, while PPA-WU02 remains the authority-recovery route for the broader lower-boundary catalogue.
+The workunit closes the former **absence of any production config-to-owned-FMR owner** for its restricted typed profiles. It does not close the broader normal-application envelope. PPA-WU03 has since closed one bounded common atmospheric/input slice; broader meteorological preprocessing remains open. PPA-WU02 remains the authority-recovery route for the broader lower-boundary catalogue.
+
+
+## Post-audit update: PPA-WU03
+
+PPA-WU03 is canonically admitted and closed through PR #323 at merge commit `97c4471155001e12133109be5eb6bd95f799eb00`.
+
+Qualified production subject: `74b3bcbfffc6efe7125e39e1c6052dd130e2a42d`  
+Qualification workflow run: `35374130545`  
+Owner job: `105694706631` PASS  
+Independent job: `105694706401` PASS, 54 cases  
+Preservation job: `105694706721` PASS
+
+The admitted capability is intentionally narrower than the complete legacy meteorological route. A stateless outer adapter maps generic real-valued interval input for precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0 into existing typed contracts. A read-only forcing seam lets the existing PPA-WU01 owner execute changing interval forcing without transferring FMR, committed-state, transaction, timestep or retry ownership.
+
+The canonical nonclaims remain: no legacy weather-file grammar or calendar/date ingestion, no PMdirect normal-input derivation, no Rutter canopy-state ownership, no SWINTER=1/2, no irrigation scheduling/management parser, no snow/runon ingestion, and no dynamic-top head/ponding/runoff pre-resolution into the PPA-WU01 fixed-flux route.
