@@ -276,6 +276,17 @@ This distinction is required for consistent mass accounting across retries and a
 
 **Figure 2. Typed hydrological interface at the fixed SWAP lower boundary.** Native lower-boundary flux, groundwater-facing exchange, hydraulic head, storage and whole-window authoritative transfer are represented as distinct quantities with explicit sign, datum and time support.
 
+**Table 1. Hydrological quantities in the finite-window coupling contract.** A trial value can be physically meaningful without being authoritative model history.
+
+| Quantity | Hydrological role | Representation / time support | Authority |
+| --- | --- | --- | --- |
+| `H_interface` | hydraulic head at the fixed SWAP lower plane | public head in metres after explicit datum/unit transformation; candidate or accepted end-of-window value | trial head is not committed state |
+| `q_bot` | native SWAP hydraulic flux across the fixed lower boundary | native flux, commonly reported here in cm d⁻¹; evaluated within a finite window | computed trial flux is not authoritative mass |
+| `q_u` | groundwater-facing effective exchange | sign/unit-normalized finite-window exchange; distinct from `q_bot` | tentative until coupled acceptance |
+| `u_A` | response of the prescribed-flux predictor map | `u_A ≈ ΔT(dH_end/dq_bot)⁻¹`; local to one accepted origin and window | optional response information, not a transferred mass and not universally `J_R` |
+| `J_R` | prescribed-head whole-window exchange derivative | `dV_u/dH` where a symmetric local response is admitted | unavailable outside the admitted head-response neighbourhood |
+| `V_u` | integrated accepted interface transfer | complete coupling-window water amount after sign/unit normalization | authoritative only after ordered publication and ledger commit |
+
 ## 2.5 Accepted origin and SWAP trial semantics
 
 At the beginning of a coupling window, the coupling service captures one immutable accepted SWAP origin.
@@ -648,6 +659,17 @@ After that prerequisite closes, episode selection will use standalone Hupsel dyn
 
 Existing F-GC45 and F-GC46 qualification demonstrates that the coupling contract can compose multiple real SWAP participants with live MODFLOW cells. These tests are treated as architecture evidence. Quantitative regional scaling is deferred until the realistic E7 scientific core is available, and no physical validity of heterogeneous N:1 aggregation is inferred from software composition alone.
 
+**Table 2. Publication experiment sequence and frozen interpretation guards.**
+
+| Block | Primary question / intervention | Preregistered guard | Current outcome |
+| --- | --- | --- | --- |
+| E1/E2 | real interface identity, state authority and exactly-once mass | rejected and preflight-aborted trials must leave authority unchanged | supported in the restricted F-GC44 envelope |
+| E3/E3-D/E3-R | window/flux/groundwater response; loose versus iterative coupling | component failure is not coupling divergence; tolerances unchanged | strict closure improves, but head correction remains tiny before component limits |
+| E4 | compare `u_A`, independent `u_FD`, `J_S`, `J_R` | centred perturbations only; no extrapolation through failed side | `u_A` is a flux-driven predictor response, not universal `J_R` |
+| E5 | fixed point, Aitken, cold secant, supplied `u_A`, free `J_R` oracle | standalone ACCELERATE continues only after a reproducible ≥2-evaluation or convergence-domain advantage | derivative information has modest incremental value; continuation gate failed |
+| E6 | active-drainage route and 20-case state/flux screen | no production tolerance, retry or physics relaxation; deterministic E6-B rule | negative stress extension; zero E6-B candidates |
+| E7 | prospectively selected realistic Hupsel application | M1-C3 prerequisite; standalone-only day selection; no post-hoc date/window rescue | preregistered but externally blocked |
+
 ---
 # 4. Results
 
@@ -794,6 +816,8 @@ u_A ~= DeltaT (dH_end/dq_bot)^(-1).
 
 The corresponding head-driven response was not universally identical.
 
+**Table 3. Finite-window response identity across the five E4 baselines.** B5 reports unavailable head-driven derivatives rather than replacing a failed symmetric response with a one-sided estimate.
+
 | case | window | q_bot | u_A | u_FD | J_S | J_R |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | B1 | 1e-4 d | 1e-6 cm/d | 3.40294e-5 | 3.40295e-5 | 3.40283e-5 | -3.40283e-5 |
@@ -899,6 +923,18 @@ The experiment therefore supports a narrower conclusion:
 
 Accordingly, ACCELERATE is retained as a result of the central coupling paper rather than progressed as a presumptive independent manuscript.
 
+**Table 4. Incremental information value of a free exact local interface derivative relative to cold secant learning.**
+
+| Comparison | Result |
+| --- | ---: |
+| comparable cold-secant / oracle converged cases | 18 |
+| oracle saves exactly one full-window SWAP evaluation | 16 / 18 |
+| oracle saves two evaluations | 1 / 18 |
+| oracle saves zero evaluations | 1 / 18 |
+| oracle enlarges convergence domain over cold secant | 0 / 18 |
+| supplied `u_A` and oracle have identical work count in comparable converged cases | 18 / 18 |
+| B3 tested coupling strengths with common first-trial SWAP-domain failure | 6 / 6 |
+
 ![Figure F5 — information value of supplied response](figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg)
 
 **Figure 5. Computational value of supplied response information.** Full-window SWAP evaluations are shown across controlled coupling strength for the three baselines with comparable response domains. Aitken and cold secant strongly improve on plain fixed point; the supplied response and zero-cost exact local derivative generally save only one additional SWAP evaluation over cold secant.
@@ -916,6 +952,13 @@ The second route retained the prescribed-head-compatible E3 process profile and 
 For the eight predictor-ready cases, E6 then probed the symmetric prescribed-head response domain. Four cases admitted a `±10^-6 m` pair, only one admitted `±10^-5 m`, and none admitted the preregistered `±10^-4 m` pair required for progression to live E6-B coupling. The deterministic candidate count was therefore zero.
 
 The negative result is important for interpreting the earlier convergence experiments. Increasing wetness can increase the predictor response coefficient substantially, but a larger local response does not automatically produce a stronger **valid coupled problem**. In the present synthetic profile, predictor and corrector admissibility become limiting before a materially stronger live groundwater-feedback case is reached. No solver tolerance, retry budget or production physics was changed to manufacture a positive E6 result.
+
+**Table 5. Disposition of the two preregistered E6 stress-extension routes.**
+
+| Route | Valid evidence before stop | Limiting condition | Continuation |
+| --- | --- | --- | --- |
+| active drainage | `q_bot=0.002 cm d⁻¹`; `u_A=5.76044×10⁻4`; mass residual `1.74×10⁻16` | prescribed-head reference corrector is `KERNEL_STATUS_NOT_ADMITTED` before any transaction call | live-MODFLOW matrix skipped by preregistered stop rule |
+| accepted-state / flux screen | 20 cases; 8 predictor-ready; wetter low-flux states increase `u_A` | 12 higher-flux predictors fail; symmetric corrector pairs: 4 at ±10⁻6 m, 1 at ±10⁻5 m, 0 at ±10⁻4 m and ±10⁻3 m | deterministic E6-B candidate count = 0 |
 
 ![Figure F6 — component-admission envelope](figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg)
 
