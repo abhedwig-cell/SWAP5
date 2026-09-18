@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC45",
+  "title": "Real MultiSWAP N:1 live MODFLOW6 application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "RECONCILE",
+  "state": "OPEN_REAL_MULTISWAP_N1_BOUNDARY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f"
+  },
+  "source": {
+    "branch": "work/f-gc45-real-multiswap-n1-live-modflow",
+    "base": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f"
+  },
+  "predecessors": [
+    "F-GC40 typed deterministic N:1 affine cell response",
+    "F-GC41 whole-window publication",
+    "F-GC44 real one-column one-cell SWAP+MODFLOW6 application"
+  ],
+  "goal": "Qualify two independent real FMR/SWAP columns coupled to one live MODFLOW6 cell through the admitted F-GC40 cell-response reduction, same-origin corrector iteration, and fail-before-publication whole-window boundary.",
+  "decisions": [
+    "No production physics change: this workunit is a composition/qualification layer over already-admitted production modules.",
+    "Use two independent real FMR committed lineages and participants, not cloned post-trial state.",
+    "Use distinct real soil hydraulic conductivities so the N:1 response is nontrivial while keeping the short F-GC44 numerical envelope.",
+    "Use exact area fractions that close to one and F-GC40 as the authoritative predictor aggregation.",
+    "All real SWAP correctors receive the same MODFLOW cell head and originate from each tile's immutable accepted checkpoint.",
+    "Convergence uses the area-weighted real SWAP corrector exchange against realized MODFLOW API exchange.",
+    "All tile and ledger preflights complete before MODFLOW finalize_time_step; then tile commits and ledgers publish in deterministic tile order."
+  ],
+  "invariants": [
+    "unique SWAP lineage per tile",
+    "one common coupling id, groundwater service/lineage/revision and window",
+    "area fractions sum to one",
+    "F-GC40 slope/intercept is the only N:1 predictor reduction",
+    "no runtime FD tangent fallback",
+    "predictor/corrector ownership remains below iMOD Coupler",
+    "no larger prescribed-head numerical envelope than F-GC44",
+    "no active drainage, root uptake, macropores, snow, soil temperature, Ribasim or irrigation"
+  ],
+  "next_permitted_action": "Implement a qualification-only two-tile same-process bridge using real FMR participants, F-GC40 predictor aggregation and live MODFLOW6 6.8.0; qualify aggregation, repeated same-origin correctors and publication ordering before any admission."
+}
