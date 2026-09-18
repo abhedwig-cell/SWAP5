@@ -18,7 +18,7 @@ Date: 2026-09-19.
 | exact code/data persistent archive | BLOCKED_AFTER_R1_L1 | deposit exact release and obtain PID/DOI |
 | software licence stated | BLOCKED_L1 | obtain authorized SWAP5 archive statement |
 | run-control/postprocessing/evidence material | READY_AT_REPOSITORY_LEVEL | include exact repository revision in archive |
-| figure exports | PLAN_READY | export F1–F7 and validate |
+| figure exports | VALIDATED_CANDIDATE_READY | regenerate/bind same F1–F7 PDFs at final governed release |
 | supplement | READY_THROUGH_E7 | format only |
 | funding / interests / acknowledgements | BLOCKED_AUTHOR_METADATA | provide statements |
 
