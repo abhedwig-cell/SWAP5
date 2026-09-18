@@ -41,6 +41,16 @@
         "PUB_GC_E6A_STATE_SCREEN_SUMMARY.csv",
         "PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json"
       ]
+    },
+    "F7": {
+      "file": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN.svg",
+      "sources": [
+        "docs/publication/PUB_GC_E7_RESULT.json",
+        "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+        "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "interpretation": "Realistic Hupsel transferability reaches a process-composition admission boundary before F-GC49D/MODFLOW coupled execution; no numeric loose/strong result is implied."
     }
   },
   "source_blob_sha": {
@@ -51,5 +61,5 @@
     "e6_state": "ef74c956a13157fe9f982456224e344887580b26",
     "e6_drainage": "8f420fab688f19b80332850198b4c1ddb1903e4c"
   },
-  "interpretation_guard": "Figures visualize already admitted publication evidence. They do not expand the scientific claim envelope."
+  "interpretation_guard": "Figures visualize governed publication evidence. F7 is a preregistered component-domain result and must not be redrawn as if a Hupsel loose/strong MODFLOW comparison executed."
 }
