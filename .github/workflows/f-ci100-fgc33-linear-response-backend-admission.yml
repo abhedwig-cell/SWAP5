@@ -1,0 +1,35 @@
+name: F-CI100 F-GC33 linear-response backend admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci100-fgc33-linear-response-backend-admission
+    paths:
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'integration/f-gc/F-GC33_STATUS.json'
+      - 'qualification/F-VQ107_STATUS.json'
+      - 'tests/fgc/test_fgc33_modflow6_linear_response_backend.f90'
+      - 'tests/fgc/run_fgc33_modflow6_linear_response_backend.sh'
+      - 'tests/fvq/test_fvq107_fgc33_independent.f90'
+      - 'tests/fvq/run_fvq107_fgc33_independent.sh'
+      - 'tests/fci/run_fci100_fgc33_linear_response_backend_admission.sh'
+      - '.github/workflows/f-ci100-fgc33-linear-response-backend-admission.yml'
+      - 'integration/f-ci/F-CI100_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI100 exact-source admission qualification
+        run: bash tests/fci/run_fci100_fgc33_linear_response_backend_admission.sh

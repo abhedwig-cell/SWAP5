@@ -1,0 +1,28 @@
+name: F-GC33 MODFLOW6 linear response backend
+
+on:
+  push:
+    branches:
+      - work/f-gc33-modflow6-linear-response-backend-reconciled
+    paths:
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'src/runtime/mod_modflow6_multiswap_cell_response.f90'
+      - 'tests/fgc/test_fgc33_modflow6_linear_response_backend.f90'
+      - 'tests/fgc/run_fgc33_modflow6_linear_response_backend.sh'
+      - 'docs/integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md'
+      - 'integration/f-gc/F-GC33_STATUS.json'
+      - '.github/workflows/f-gc33-modflow6-linear-response-backend.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-GC33 linear backend gate
+        run: bash tests/fgc/run_fgc33_modflow6_linear_response_backend.sh

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC40",
+  "title": "MultiSWAP MODFLOW6 Cell Response — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
+  "canonical_admission": {
+    "production_admission_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+    "preimage": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "historical MultiSWAP F-GC31 identity collided with canonical F-GC31 active-drainage authority; capability reidentified as F-GC40 without production formula change"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "7993c143eaa1cf8d6580fdd7bde0ae05b07b5b4d",
+      "exact_head_run": 35291954717,
+      "result": "current-canonical O0/O2 owner qualification passed with byte-identical production blob"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ106",
+      "final_status_head": "29829ebb674bd02019c643cc3b2ad21e1c8cfe03",
+      "exact_head_run": 35292192331,
+      "result": "independent three-tile direct-sum, multihead, six-permutation, slope and provenance oracles passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI99",
+      "production_admission_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+      "initial_gate_run": 35292387556,
+      "exact_status_head_run": 35292445486,
+      "result": "exact one-production-file postimage replayed owner and independent qualification and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "typed deterministic N:1 MultiSWAP affine cell response",
+    "explicit common-reference-head reconciliation",
+    "area-weighted coupling storage coefficient and head slope",
+    "canonical tile provenance and fail-closed topology/origin validation"
+  ],
+  "preserved_limits": [
+    "no MODFLOW6/XMI execution backend",
+    "no predictor/corrector orchestration",
+    "no timestep publication semantics",
+    "no Ribasim or irrigation",
+    "historical provisional MultiSWAP F-GC31 identity remains superseded"
+  ],
+  "next_permitted_action": "Proceed serially to current-canonical materialization of the next MODFLOW integration dependency. Preserve F-GC40 production blob 288a274612f6c0be0b3ced149028066a066908ca and do not add backend/orchestration semantics to this capability.",
+  "closeout_qualification": {
+    "metadata_head": "64bb145b8f55dcf56b3d90f692430ef6fa75e5ad",
+    "workflow_run": 35292572819,
+    "workflow_job": 105438369676,
+    "conclusion": "success"
+  }
+}
