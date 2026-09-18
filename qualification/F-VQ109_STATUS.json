@@ -5,7 +5,7 @@
   "title": "Independent MODFLOW6 XMI Package Adapter Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc35-modflow6-xmi-package-adapter-reconciled",
     "checkpoint_head": "7d64f9e1fd48b512f3dee2c0ea3d645804310812",
@@ -20,5 +20,23 @@
     "owner_test_reused": false,
     "oracle": "independent lifecycle state-machine with different mock kernel/buffers; generation isolation; current live pointer identity; exact address reuse; failed publisher state; invalid refreshed pointer fail-closed"
   },
-  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC35 admission postimage."
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI102 current-canonical admission postimage from immutable F-GC35/F-VQ109 evidence.",
+  "verifier_evidence": {
+    "qualified_head": "bc675fe99235b8587e77215b3dc6dfa9def0cf20",
+    "workflow_run": 35294486967,
+    "workflow_job": 105444099347,
+    "conclusion": "success",
+    "pass_markers": [
+      "FVQ109_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ109_OWNER_PRODUCTION_BLOB_LOCK",
+      "FVQ109_OWNER_TEST_NOT_REUSED",
+      "FVQ109_INDEPENDENT_ORACLE_STRUCTURE",
+      "FVQ109_GENERATION_ISOLATION_ORACLE",
+      "FVQ109_LIVE_POINTER_IDENTITY_ORACLE",
+      "FVQ109_EXACT_ADDRESS_REUSE_ORACLE",
+      "FVQ109_FAILED_PUBLICATION_STATE_ORACLE",
+      "FVQ109_INVALID_REFRESH_FAIL_CLOSED",
+      "FVQ109_INDEPENDENT_XMI_ADAPTER_GATE"
+    ]
+  }
 }
