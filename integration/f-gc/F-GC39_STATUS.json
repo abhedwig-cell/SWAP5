@@ -3,8 +3,8 @@
   "capability": "F-GC39",
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_QUALIFY",
-  "verdict": "READY_FOR_CURRENT_CANONICAL_CONTRACT_REQUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
   "baseline": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
@@ -63,5 +63,35 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Run exact-head current-canonical F-GC39 contract qualification. If green, persist owner qualification and run independent F-VQ112 with zero production delta."
+  "next_permitted_action": "Qualify this exact owner status head. If green, run independent F-VQ112 with zero production delta and no reuse of the owner test before canonical contract admission.",
+  "qualification": {
+    "qualified_head": "7c68f54fceba17906df9b2c4c871c41a2c8c5655",
+    "workflow_run": 35315628111,
+    "workflow_job": 105506536123,
+    "conclusion": "success",
+    "production_delta": "NONE",
+    "harness_blob": "0ab5cd1d5b701389972ddfcdf7f4ebc7dc198aec",
+    "current_canonical_dependency_stack": [
+      "F-GC40",
+      "F-GC33",
+      "F-GC34",
+      "F-GC35",
+      "F-GC36",
+      "F-GC38"
+    ],
+    "pass_markers": [
+      "FGC39_INTERNAL_SERVICE_BELOW_IMOD",
+      "FGC39_NO_GROUNDWATER_PER_ITERATION_ROLLBACK",
+      "FGC39_NO_DIRECT_XMI_OR_TIMESTEP_OWNERSHIP",
+      "FGC39_ONE_PREPARED_GROUNDWATER_SESSION",
+      "FGC39_SAME_SWAP_ORIGIN",
+      "FGC39_FIXED_TANGENT",
+      "FGC39_CONJUNCTIVE_MODFLOW_AND_FLUX_CONVERGENCE",
+      "FGC39_ONLY_SWAP_CANDIDATES_DISCARDED",
+      "FGC39_FINAL_SOLVE_FINALIZED_ONCE",
+      "FGC39_COUPLING_BUDGET_FAIL_CLOSED",
+      "FGC39_BACKEND_ITERATION_LIMIT_FAIL_CLOSED",
+      "FGC39_PREPARED_SOLVE_COUPLING_SERVICE_GATE"
+    ]
+  }
 }
