@@ -14,7 +14,7 @@ confirmatory research. They do not replace the scientific contracts or existing 
 | Paper | Role | Manifest status | Primary confirmatory decision |
 | --- | --- | --- | --- |
 | PUB-ME | PRESERVE | causal design frozen; implementation pending | Does explicit scientific-state authority prevent or localize prospectively defined contamination faults beyond a matched conventional architecture? |
-| PUB-SQ | REPLACE | extension confirmatory freeze active | Does candidate-independent admission transfer from six anchor materials to the remaining thirty production-qualified materials before any candidate-dependent retuning? |
+| PUB-SQ | REPLACE | extension Reference domain blocked and diagnosed | Does candidate-independent solver admission remain coherent when the shared physical applicability domain itself changes across materials? |
 | PUB-GC | COUPLE | E1 primary complete; GC-REF-A qualified; next case freeze pending | Does the finite-window contract conserve and converge on new transient stress cases without dependence on candidate history or internal step partition? |
 | PUB-RC | ACCELERATE | conditional | Does hydrologic response information beat strong generic black-box acceleration at matched coupled error after response cost is counted? |
 | PUB-SG | SCALE | conditional | Does a frozen equivalent column lose cross-regime transferability in a reproducible, mechanistically interpretable part of the domain? |
