@@ -14,6 +14,11 @@ class Fgc44RealSwap:
             ctypes.c_double, ctypes.c_double,
             ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_swap_initialize_state_configured_c.restype = ctypes.c_int
+        self.lib.fgc44_swap_initialize_state_configured_c.argtypes = [
+            ctypes.c_double, ctypes.c_double, ctypes.c_double,
+            ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double)
+        ]
         self.lib.fgc44_swap_trial_c.restype = ctypes.c_int
         self.lib.fgc44_swap_trial_c.argtypes = [ctypes.c_double, ctypes.POINTER(ctypes.c_double)]
         for name in [
@@ -47,6 +52,32 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_swap_initialize_c(ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href))
         if status: raise RuntimeError(f"SWAP initialize failed: {status}")
         return hcof.value,rhs.value,href.value
+
+    def try_initialize_state_configured(
+        self,
+        duration_day: float,
+        predictor_qbot_cm_per_day: float,
+        initial_h0_cm: float,
+    ) -> tuple[int,float,float,float]:
+        hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
+        status=self.lib.fgc44_swap_initialize_state_configured_c(
+            float(duration_day),float(predictor_qbot_cm_per_day),float(initial_h0_cm),
+            ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
+        )
+        return int(status),hcof.value,rhs.value,href.value
+
+    def initialize_state_configured(
+        self,
+        duration_day: float,
+        predictor_qbot_cm_per_day: float,
+        initial_h0_cm: float,
+    ) -> tuple[float,float,float]:
+        status,hcof,rhs,href=self.try_initialize_state_configured(
+            duration_day,predictor_qbot_cm_per_day,initial_h0_cm
+        )
+        if status:
+            raise RuntimeError(f"state-configured initialize failed: {status}")
+        return hcof,rhs,href
 
     def try_initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[int,float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
