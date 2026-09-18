@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.f-rom0r.r1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R1",
+  "title": "Gravity-consistent accepted-domain seed",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "predecessor_decision": "EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "geometry": {
+    "nodes": 16,
+    "dz_cm": 10,
+    "depth_cm": 160
+  },
+  "initial_state": {
+    "effective_saturation": 0.85,
+    "pressure_head_profile": "UNIFORM_MVG_HEAD_AT_SE_0_85"
+  },
+  "boundary": {
+    "top_mode": "EXPLICIT_FLUX",
+    "bottom_mode": 2,
+    "top_flux_expression": "-K(h0)",
+    "bottom_flux_expression": "-K(h0)",
+    "physical_interpretation": "gravity-driven steady flow for a uniform pressure-head profile"
+  },
+  "requested_observation_interval_day": 0.0016,
+  "requested_intervals": 8,
+  "process_scope": {
+    "root_extraction": false,
+    "macropore": false,
+    "snow": false,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "frost": false,
+    "soil_temperature": false,
+    "drainage_response": false
+  },
+  "numerical_controls_authority": "integration/f-rom/F-ROM0_NUMERICAL_CONTROLS_SUPPLEMENT.json",
+  "independent_control": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+  "acceptance": [
+    "ALL_8_INTERVALS_COMMITTED",
+    "COMPLETE_MASS_ACCOUNTING",
+    "HARD_MASS_GATE",
+    "FINITE_STATE",
+    "ONE_EXTERNAL_REVISION_PER_INTERVAL",
+    "STEADY_STORAGE_DIAGNOSTIC_RECORDED"
+  ],
+  "forbidden": [
+    "NO_POST_RESULT_FLUX_TUNING",
+    "NO_TOLERANCE_CHANGE",
+    "NO_RETRY_BUDGET_CHANGE",
+    "NO_MATERIAL_SUBSTITUTION",
+    "NO_PRODUCTION_SOURCE_MUTATION",
+    "NO_ROM_STATE_CLAIM"
+  ],
+  "r2_authorized_by_preregistration": false,
+  "threshold_retuning_after_execution_allowed": false
+}
