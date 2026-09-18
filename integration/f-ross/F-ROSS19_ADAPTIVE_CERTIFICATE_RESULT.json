@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.f-ross19.adaptive-certificate-result.v1",
+  "workunit": "F-ROSS19",
+  "phase": "QUALIFIED_RESEARCH_ONLY",
+  "branch": "work/f-ross19-adaptive-k2-k4-certificate",
+  "qualified_head": "2134916f0e66f4161133a9bd52ab999a7b1d8279",
+  "workflow_run": 35313345168,
+  "job": 105499698194,
+  "artifact": {
+    "id": 10533992286,
+    "digest": "sha256:86411f110766db52b022c1df8a001859d761d1c90fb363bea61329edfd3bcd34"
+  },
+  "production_or_reference_mutation": false,
+  "science": {
+    "case_count": 36,
+    "paired_valid_admissible": 36,
+    "route_valid": 36,
+    "temporal_indicator_le_1": 36,
+    "fast_accept_count": 34,
+    "fallback_count": 2,
+    "fallback_cases": [
+      17,
+      18
+    ],
+    "mean_linear_solves": 6.666666666666667,
+    "work_count_contract_pass": true,
+    "retry_contract_pass": true,
+    "fallback_matches_standalone_k4": true,
+    "fallback_k4_max_head_inf": 0,
+    "fallback_k4_max_theta_inf": 0,
+    "fallback_k4_max_temporal_indicator_relative": 0,
+    "worst": {
+      "temporal_indicator": 0.8535759368211358,
+      "head_inf_vs_reference": 0.2071755995143878,
+      "theta_inf_vs_reference": 0.0001900729719168659,
+      "mass_residual_abs_cm": 4.3947365955783815e-14
+    },
+    "scientific_gate": "PASS"
+  },
+  "performance": {
+    "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
+    "pair_count": 12,
+    "rossfast_over_reference_relative_delta": {
+      "mean": -0.20645408558680842,
+      "median": -0.20837100230707145,
+      "min": -0.2184121573096115,
+      "max": -0.19289205322109637,
+      "stdev": 0.008919687867852043,
+      "mde": 0.005149784191591816,
+      "target_resolution_qualified": true
+    },
+    "rossfast_over_reference_cpu_ratio_mean": 0.7935459144131916,
+    "mean_reference_over_rossfast_speedup": 1.26031215933,
+    "wall_elapsed_relative_delta_mean": -0.04944974157232054,
+    "outcome": "SCREENING_ROSSFAST_FASTER",
+    "formal_performance_claim": false
+  },
+  "adjudication": {
+    "frozen_research_promotion_rule_pass": true,
+    "production_admitted": false,
+    "formal_speedup_claim": false,
+    "interpretation": "Adaptive K2-first/K4-fallback closes the temporal-certification gap observed for fixed K2 while preserving 36/36 P2E10 admissibility. On the shared hosted runner it uses about 20.65% less solver CPU than Reference Richards. This is sufficient to open a separate production-candidate workunit, not to admit production directly."
+  },
+  "next_permitted_action": "Open a separate production-candidate workunit implementing the exact frozen K2->K4 rule in production source and requalify independently across the production envelope."
+}
