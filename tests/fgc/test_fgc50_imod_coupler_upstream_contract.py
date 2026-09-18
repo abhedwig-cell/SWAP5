@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import os
 from pathlib import Path
 
@@ -128,5 +129,28 @@ fixture_text = fixture.read_text(encoding="utf-8")
 require("fgc49d_fixture_initialize_c" in fixture_text, "fixture initializer changed")
 require("tests/fgc/support" in fixture.as_posix(), "fixture unexpectedly left qualification tree")
 print("FGC50_FGC49D_FIXTURE_REMAINS_QUALIFICATION_ONLY=PASS")
+
+ppa_status_path = repo_root / "integration" / "audits" / "PPA_WU01_STATUS.json"
+ppa_source_path = repo_root / "src" / "runtime" / "mod_fmr_production_application_bootstrap.f90"
+require(ppa_status_path.is_file(), "PPA-WU01 canonical status missing")
+require(ppa_source_path.is_file(), "PPA-WU01 production bootstrap source missing")
+ppa_status = json.loads(ppa_status_path.read_text(encoding="utf-8"))
+ppa_source = ppa_source_path.read_text(encoding="utf-8")
+require(ppa_status.get("phase") == "CANONICAL_ADMITTED_CLOSED", "PPA-WU01 is not canonically closed")
+require(
+    ppa_status.get("verdict") == "CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED",
+    "PPA-WU01 canonical verdict changed",
+)
+groundwater_profile = ppa_status.get("admitted_restricted_profiles", {}).get("groundwater", "")
+require("bottom_mode=5" in groundwater_profile, "PPA-WU01 groundwater profile is not the admitted mode-5 participant profile")
+for required in (
+    "materialize_groundwater_context",
+    "register_fmr_groundwater_application_context",
+    "active_context_handle",
+):
+    require(required in ppa_source, f"PPA-WU01 production context ownership changed: {required}")
+require("tests/fgc/support" not in ppa_source, "PPA-WU01 production bootstrap depends on qualification fixture")
+require("python" not in ppa_source.lower(), "PPA-WU01 production owner unexpectedly embeds Python ownership")
+print("FGC50_PPA_WU01_PRODUCTION_BOOTSTRAP_RESOLVES_B2=PASS")
 
 print("F-GC50 IMOD COUPLER PRODUCT INTEGRATION RECONCILE GATE PASS")
