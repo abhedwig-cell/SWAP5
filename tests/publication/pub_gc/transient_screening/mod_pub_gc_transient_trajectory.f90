@@ -373,6 +373,7 @@ contains
     if (.not. active_context_ready()) return
 
     forcing = active_forcing_template
+    forcing%top_flux = current_top_flux()
     forcing%bottom_head = base_head_cm + 100.0_real64*solution%h_star_m
     call poison_legacy_bottom_context()
     call active_backend%run_trial(active_column, active_template, active_parameters, active_origin, forcing, active_config, &
