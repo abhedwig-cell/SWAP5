@@ -86,3 +86,14 @@ python docs/publication/figures/generate_pub_gc_numeric_figures.py
 Tables T1–T5 are now linked into `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`. Their journal-neutral evidence map is retained in `PUB_GC_MANUSCRIPT_TABLES.md`.
 
 T6 remains reserved for E7 and must stay absent until the M1-C3 prerequisite closes and the prospectively selected Hupsel experiment executes.
+
+
+## Table evidence binding
+
+T1–T5 are now embedded in `PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`.
+
+Evidence and anti-drift rules are frozen in:
+
+`PUB_GC_TABLE_EVIDENCE_MAP.md`
+
+T6 remains blocked because it is the result table for the preregistered E7 realistic application.
