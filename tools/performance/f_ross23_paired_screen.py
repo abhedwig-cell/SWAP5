@@ -19,7 +19,12 @@ RESOLUTION_MULTIPLIER = 2.0
 ROUTES = ("REFERENCE", "ROSSFAST")
 
 CASE_PATTERN = re.compile(
-    r"^F_ROSS23_CASE\|ID=(?P<id>\d+)\|MATERIAL=(?P<material>[^|]+)\|SE=(?P<se>[^|]+)\|FORCING=(?P<forcing>[^|]+)\|CLASS=(?P<classification>[^|]+)\|METRICS=(?P<metrics>[^|]+)\|D_H_INF=(?P<dh_inf>[^|]+)\|D_H_RMS=(?P<dh_rms>[^|]+)\|D_THETA_INF=(?P<dtheta_inf>[^|]+)\|D_THETA_RMS=(?P<dtheta_rms>[^|]+)\|D_STORAGE=(?P<dstorage>[^|]+)\|REF_REASON=(?P<ref_reason>[^|]+)\|ROSS_REASON=(?P<ross_reason>[^|]+)$",
+    r"^F_ROSS23_CASE\|ID=(?P<id>\d+)\|MATERIAL=(?P<material>[^|]+)\|SE=(?P<se>[^|]+)\|FORCING=(?P<forcing>[^|]+)\|CLASS=(?P<classification>[^|]+)\|METRICS=(?P<metrics>[^|]+)\|D_H_INF=(?P<dh_inf>[^|]+)\|D_H_RMS=(?P<dh_rms>[^|]+)\|D_THETA_INF=(?P<dtheta_inf>[^|]+)\|D_THETA_RMS=(?P<dtheta_rms>[^|]+)\|D_STORAGE=(?P<dstorage>[^|]+)$",
+    re.MULTILINE,
+)
+
+REASON_PATTERN = re.compile(
+    r"^F_ROSS23_ROUTE_REASON\|ID=(?P<id>\d+)\|REF_REASON=(?P<ref_reason>[^|]+)\|ROSS_REASON=(?P<ross_reason>[^|]+)$",
     re.MULTILINE,
 )
 
