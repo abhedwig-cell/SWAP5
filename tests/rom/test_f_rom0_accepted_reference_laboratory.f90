@@ -1,6 +1,7 @@
 program test_f_rom0_accepted_reference_laboratory
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use MOD_grid, only: numnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
@@ -50,6 +51,7 @@ program test_f_rom0_accepted_reference_laboratory
   call get_command_argument(1, material_id)
   call get_command_argument(2, arg); read(arg,*,iostat=ios) n
   call require(ios == 0 .and. n > 0, 'node-count argument')
+  call require(n == numnod, 'runtime geometry matches compiled legacy-grid authority')
   call get_command_argument(3, arg); read(arg,*,iostat=ios) dz_cm
   call require(ios == 0 .and. dz_cm > 0.0_real64, 'dz argument')
   call get_command_argument(4, arg); read(arg,*,iostat=ios) dt_day
