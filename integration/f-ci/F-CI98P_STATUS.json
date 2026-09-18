@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI98P",
+  "capability": "F-GC31",
+  "title": "F-GC31 moving-current postimage preservation reconciliation",
+  "phase": "QUALIFY",
+  "branch": "integration/f-ci98p-fgc31-postimage-preservation",
+  "canonical_base": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+  "reason": "F-GC31 canonically admitted qualified semantic successors for the serialized Reference backend and F-SI37 accepted-step directional contract/service. Five moving-preservation gates still pinned historical exact blobs and therefore rejected the qualified successor postimage without demonstrating a scientific regression.",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "preservation_surfaces": [
+    "F-CI71 F-SI37 moving preservation",
+    "F-CI72 EB-I23 moving preservation",
+    "F-CI74 EB-I24 moving preservation",
+    "F-CI79 EB-I25 moving preservation",
+    "F-CI96 RossFast semantic-successor preservation"
+  ],
+  "reconciliation_contract": [
+    "historical F-SI37/F-VQ89 evidence remains immutable and replayable on its own authority head",
+    "current F-SI37 contract/service successors are accepted only at the exact F-GC31 admitted blobs",
+    "EB-I23/I24/I25 scientific/runtime authorities remain byte-identical; only their serialized backend dependency guard advances to the exact F-GC31 backend successor",
+    "RossFast production authorities remain byte-identical except that the serialized backend is the exact F-GC31 successor",
+    "F-VQ105 and F-CI98 evidence are required by every updated successor guard",
+    "Ross12 serialized production replay is compiled with the two additive F-GC31 module dependencies",
+    "no preservation guard broadens F-GC31 scientific scope"
+  ],
+  "fgc31_authority": {
+    "canonical_admission_head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "fvq105_status_blob": "f559a713cbb347bda3dc4f2a296927ce98bca527",
+    "backend_blob": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+    "direction_contract_blob": "b5a0276d2f1b2c8ffe581e68dffecdaf55a32768",
+    "direction_service_blob": "8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7"
+  },
+  "initial_canonical_failures": {
+    "fci71_run": 35289782662,
+    "fci72_run": 35289782721,
+    "fci74_run": 35289782638,
+    "fci79_run": 35289782671,
+    "fci96_run": 35289782697,
+    "classification": "STALE_EXACT_BLOB_SUCCESSOR_GUARDS",
+    "scientific_or_numerical_regression_observed": false
+  },
+  "planned_qualification": [
+    "zero src/** delta from F-GC31 canonical admission",
+    "exact governance/test-only delta",
+    "historical F-VQ89 immutable replay",
+    "current EB-I23/I24/I25 owner replays",
+    "current F-ROSS13/F-ROSS12 semantic-successor replay with F-GC31 backend",
+    "static exact successor guard audit"
+  ],
+  "verdict": "IMPLEMENTED_AWAITING_QUALIFICATION",
+  "next_permitted_action": "Run the dedicated F-CI98P gate. If green, reconcile onto the then-live canonical without force, promote, and require all previously failing moving-preservation workflows plus the general canonical qualification to pass."
+}
