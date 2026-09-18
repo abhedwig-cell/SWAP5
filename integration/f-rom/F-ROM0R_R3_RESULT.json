@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.f-rom0r.r3-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3",
+  "title": "Prescribed-head lower-boundary reachability from accepted steady seed",
+  "execution": {
+    "workflow_run": 35372347484,
+    "workflow_job": 105689021837,
+    "executed_head": "3ba1c211badef70426e46aa498f025bde044f198",
+    "artifact_id": 10558789782,
+    "artifact_digest": "sha256:81f5377dc599745f2cb75054190116d1cb0918bd436c93e24bfe0b2e1ad03fb9",
+    "conclusion": "success"
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "dt_day": 0.0008,
+    "perturbation_intervals": 16,
+    "attempted_cases": 4,
+    "case_pass_count": 2,
+    "case_fail_count": 2,
+    "step_record_count": 51,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "failed_cases": [
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_RISE",
+      "failed_perturbation_step": 11,
+      "t0_day": 0.0112,
+      "t1_day": 0.0120,
+      "solver_status": 2,
+      "solver_route": "legacy-reference-retry",
+      "nonlinear_iterations": 16,
+      "internal_retries": 1,
+      "backtracking_attempts": 29
+    },
+    {
+      "material": "B01",
+      "case": "BOTTOM_HEAD_FALL",
+      "failed_perturbation_step": 10,
+      "t0_day": 0.0104,
+      "t1_day": 0.0112,
+      "solver_status": 2,
+      "solver_route": "legacy-reference-retry",
+      "nonlinear_iterations": 16,
+      "internal_retries": 1,
+      "backtracking_attempts": 42
+    }
+  ],
+  "passing_cases": {
+    "B14_BOTTOM_HEAD_RISE": {
+      "final_storage_cm": 56.923685646682216,
+      "upper_storage_0_40_cm": 14.230315999999998,
+      "lower_storage_40_160_cm": 42.69336964668223,
+      "cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "terminal_bottom_flux_cm_day": -0.1678211213567957,
+      "final_bottom_node_head_cm": -186.36422873118926,
+      "max_abs_mass_residual_cm": 2.710505431213761e-20
+    },
+    "B14_BOTTOM_HEAD_FALL": {
+      "final_storage_cm": 56.91885975248656,
+      "upper_storage_0_40_cm": 14.230315999999998,
+      "lower_storage_40_160_cm": 42.68854375248657,
+      "cumulative_bottom_outward_exchange_cm": 0.0026646469341646247,
+      "terminal_bottom_flux_cm_day": 0.2058213810124688,
+      "final_bottom_node_head_cm": -188.07507470429246,
+      "max_abs_mass_residual_cm": 2.710505431213761e-20,
+      "directional_separation_relative_to_rise": {
+        "rise_lower_storage_greater_than_fall": true,
+        "rise_bottom_exchange_shifted_toward_inflow": true
+      }
+    }
+  },
+  "source_and_governance": {
+    "source_freeze": "PASS",
+    "preregistration_and_dependencies": "PASS",
+    "ta4_restart_replay_dependency": "QUALIFIED",
+    "ta5_prescribed_head_sample_binding_dependency": "QUALIFIED",
+    "post_result_retuning_allowed": false,
+    "production_or_reference_source_mutation": false,
+    "application_budget_used": false
+  },
+  "decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+  "interpretation": "The prescribed-head sample binding itself is valid and B14 demonstrates the expected directional response, but B01 cannot complete either frozen full-horizon fixed-resolution prescribed-head trajectory at the retained 0.0008-day Reference-floor resolution. The failures are genuine Reference retry-advised outcomes, not mass failures or wrapper rejection.",
+  "vertical_reference_floor_authorized_next": false,
+  "rom1a_authorized": false
+}
