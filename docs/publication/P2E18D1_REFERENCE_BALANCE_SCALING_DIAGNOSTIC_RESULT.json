@@ -1,0 +1,142 @@
+{
+  "schema": "swap5.publication.p2e18d1-reference-balance-scaling-diagnostic-result.v1",
+  "workunit": "PUB-P2E18D1",
+  "publication_owner": "PUB-SQ",
+  "phase": "COMPLETE_DIAGNOSTIC_PARTIAL_SUPPORT_NOT_SUFFICIENT",
+  "preregistration": {
+    "blob": "73c35bf9454ca7beffbbfcedea0d46b5e791f54d",
+    "design": "36 Reference-only cases; substeps {1,2,4,8,16}; invariant integrated balance scale 1.6e-15 cm",
+    "note": "D1 was preregistered and first executed before P2E18 provenance was finalized to the six-level {1,2,4,8,16,32} design. D1 is therefore retained as a five-level mechanistic diagnostic, not rewritten post hoc."
+  },
+  "reference_baseline_for_comparison": {
+    "final_P2E18_head": "12b8b0294153c88b733b9eccfa8b3c98a14ebf23",
+    "final_P2E18_result_blob": "10df8636afc05a46342921f50c2c8b543cf3168e",
+    "matching_first_five_level_validity": {
+      "1": 36,
+      "2": 29,
+      "4": 7,
+      "8": 0,
+      "16": 0
+    },
+    "note": "The physical case set and first five refinement levels match. P2E18 used fixed balance-rate tolerances; D1 changes only CritDevBalCp/Tot according to 1.6e-15/dt."
+  },
+  "executions": {
+    "first_exposure": {
+      "workflow_run": 35292174006,
+      "job": 105437167828,
+      "head": "cd8ccfe2f931d44c10e7995d451e995b51e22b09",
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "dce359bf905fff11fed6dc938029918f680dab2360706adff5e21e4f399c27fe"
+    },
+    "exact_reproduction": {
+      "workflow_run": 35292929742,
+      "job": 105439463971,
+      "head": "2a1c3376d23e4074f50020649c6c0769460e447a",
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "dce359bf905fff11fed6dc938029918f680dab2360706adff5e21e4f399c27fe",
+      "note": "Workflow-only trigger comment; scientific authorities unchanged."
+    }
+  },
+  "invariant_integrated_policy": {
+    "integrated_balance_scale_cm": 1.6e-15,
+    "formula": "CritDevBalCp(dt) = CritDevBalTot(dt) = 1.6e-15 / dt",
+    "rate_tolerance_cm_per_day": {
+      "1": 1e-12,
+      "2": 2e-12,
+      "4": 4e-12,
+      "8": 8e-12,
+      "16": 1.6e-11
+    },
+    "all_other_numerical_and_physical_controls_unchanged": true
+  },
+  "outcome": {
+    "scaled_policy_validity": {
+      "1": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "2": {
+        "valid": 35,
+        "invalid": 1
+      },
+      "4": {
+        "valid": 35,
+        "invalid": 1
+      },
+      "8": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "16": {
+        "valid": 35,
+        "invalid": 1
+      }
+    },
+    "improvement_over_fixed_rate_P2E18": {
+      "1": 0,
+      "2": 6,
+      "4": 28,
+      "8": 36,
+      "16": 35
+    },
+    "remaining_retry_events": [
+      {
+        "case": 1,
+        "material": "B01",
+        "Se": 0.65,
+        "forcing": "DRYING",
+        "nsub": 4,
+        "failing_substep": 1,
+        "status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "backtracking_attempts": 16
+      },
+      {
+        "case": 1,
+        "material": "B01",
+        "Se": 0.65,
+        "forcing": "DRYING",
+        "nsub": 16,
+        "failing_substep": 16,
+        "status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "backtracking_attempts": 16
+      },
+      {
+        "case": 35,
+        "material": "O18",
+        "Se": 0.96,
+        "forcing": "DRYING",
+        "nsub": 2,
+        "failing_substep": 2,
+        "status": 2,
+        "route": "legacy-reference-retry",
+        "nonlinear_iterations": 16,
+        "backtracking_attempts": 51
+      }
+    ],
+    "preregistered_outcome": "SCALING_HYPOTHESIS_NOT_SUFFICIENT_FOR_REQUIRED_FINE_LEVELS"
+  },
+  "interpretation": {
+    "supported": "Fixed rate tolerances are a major contributor to the P2E18 refinement-route collapse: the invariant-integrated policy restores all 36 cases at 8 substeps and 35 of 36 at 16 substeps.",
+    "rejected": "The fixed-rate scaling alone is not sufficient to make the required fine Reference route universally valid, because B01/Se=0.65/DRYING still retries at substep 16 under the scaled policy.",
+    "caution": "D1 did not include 32 substeps and does not qualify REF-HIGH stability. The 16-substep failure already falsifies sufficiency under its preregistered criterion, so 32 is not retroactively appended to D1."
+  },
+  "firewalls": {
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "ref_high_stability_qualified": false,
+    "production_source_mutated": false,
+    "case_membership_changed": false
+  },
+  "verdict": "INVARIANT_BALANCE_SCALING_MATERIALLY_RESTORES_REFERENCE_REFINEMENT_BUT_IS_NOT_SUFFICIENT",
+  "next_permitted_action": "Run a separate Reference-only causal diagnostic on the remaining scaled-policy retry events, exposing whether the final nonconvergence is balance-gate, head-change-gate, or both. Do not loosen tolerances and do not begin RossFast timing."
+}
