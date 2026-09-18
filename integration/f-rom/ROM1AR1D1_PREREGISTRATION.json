@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.rom1ar1d1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A-R1-D1",
+  "title": "D08 step34 mode-5 successor-library failure classification",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "parent_failure": "ROM1AR1_D08_STEP34_MODE5_UNAUTHORIZED_FAILURE",
+  "purpose": "Rebuild the exact accepted D08 predecessor through the already qualified mode-2/mode-5 strict-first research Reference authorities, reproduce the original strict step34 failure without fallback, classify the final Reference convergence criterion and measure the pre-solve representation bound without changing any physical or numerical control.",
+  "case": {
+    "material": "B01",
+    "history": "D08",
+    "history_prefix": [
+      ["BOTTOM_HEAD_FALL",16],
+      ["TOP_PLUS",16],
+      ["BOTTOM_HEAD_RISE",1]
+    ],
+    "accepted_predecessor_steps": 33,
+    "failed_step": 34,
+    "failed_symbol": "BOTTOM_HEAD_RISE",
+    "bottom_mode": 5,
+    "step_dt_day": 0.0008,
+    "predecessor_time_day": 0.0296,
+    "failed_interval_day": [0.0296,0.0304]
+  },
+  "predecessor_authority": {
+    "mode2": "ROM1AD2_MODE2_FAIL_CLOSED_FALLBACK_QUALIFIED",
+    "mode5": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "rule": "Qualified fallback may be used only while rebuilding already accepted predecessor steps 1-33. It is forbidden on diagnostic step34."
+  },
+  "classification_method": {
+    "authority": "PUB-P2E11D classification semantics",
+    "RETRY_MIXED": "local_balance_flags > 0 and head_flags > 0",
+    "RETRY_LOCAL_BALANCE": "local_balance_flags > 0 and head_flags == 0",
+    "RETRY_HEAD": "local_balance_flags == 0 and head_flags > 0",
+    "RETRY_TOTAL_ONLY": "no local/head flags, max_abs_local_residual <= 1e-12 and abs(total_residual) > 1e-12",
+    "RETRY_OTHER": "retry-advised not captured above"
+  },
+  "representation_diagnostic": {
+    "formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "computed_from": "accepted step33 predecessor before strict step34",
+    "observed_failed_residual_used_in_formula": false,
+    "policy_applied_to_failed_step": false
+  },
+  "frozen_controls": {
+    "dt_day": 0.0008,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_cm_per_day": 1e-12,
+    "total_balance_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "required_evidence": [
+    "D08_STEPS_1_TO_33_REBUILT_UNDER_EXISTING_QUALIFIED_AUTHORITIES",
+    "EXACT_PREDECESSOR_REVISION_35_AND_TIME",
+    "STRICT_STEP34_FAILURE_REPRODUCED",
+    "FAILED_STEP34_LEAVES_COMMITTED_STATE_BIT_IDENTICAL",
+    "DIRECT_DIAGNOSTIC_REPRODUCES_SOLVER_STATUS_AND_WORK",
+    "LOCAL_BALANCE_FLAG_COUNT",
+    "HEAD_FLAG_COUNT",
+    "MAX_ABS_LOCAL_RESIDUAL",
+    "TOTAL_RESIDUAL",
+    "PRE_SOLVE_REPRESENTATION_BOUND",
+    "NO_STEP34_FALLBACK_APPLIED",
+    "O0_O2_OR_REPEAT_DETERMINISM"
+  ],
+  "decisions": [
+    "ROM1AR1D1_RETRY_TOTAL_ONLY_WITHIN_REPRESENTATION_BOUND",
+    "ROM1AR1D1_RETRY_TOTAL_ONLY_EXCEEDS_REPRESENTATION_BOUND",
+    "ROM1AR1D1_RETRY_LOCAL_BALANCE",
+    "ROM1AR1D1_RETRY_HEAD",
+    "ROM1AR1D1_RETRY_MIXED",
+    "ROM1AR1D1_RETRY_OTHER",
+    "ROM1AR1D1_DIAGNOSTIC_BLOCKED"
+  ],
+  "firewalls": [
+    "NO_HISTORY_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_STEP34_FALLBACK",
+    "NO_B14_INSPECTION",
+    "NO_HELDOUT_INSPECTION",
+    "NO_REDUCED_STATE_WORK"
+  ]
+}
