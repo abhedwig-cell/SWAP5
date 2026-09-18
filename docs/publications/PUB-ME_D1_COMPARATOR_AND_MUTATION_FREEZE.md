@@ -125,3 +125,37 @@ If the mutant breaks physical solver execution before the intended rejection bou
 If clean and mutant later accepted endpoints are identical, do not manufacture a downstream consequence; report immediate contamination only.
 
 No production source, physical equation, forcing or constitutive parameter may be altered to force a positive result.
+
+
+## 8. Pre-execution harness correction: model visibility only
+
+Before the first scientifically valid D1 execution, CI attempts 1–4 failed before running the mutation/clean probe:
+
+1. Bash array expansion was escaped literally;
+2. two current serialized-backend compile dependencies were absent;
+3. those dependencies were initially in the wrong compile order;
+4. the direct harness attempted to use the public orchestration backend where the preregistered D1-A design requires the underlying transaction model.
+
+No clean or mutant D1 physical trial executed in those failed attempts.
+
+The underlying real Reference transaction model already exists as `fmr_serialized_reference_model_t`, but the type is module-private because production code reaches it through the FMR backend.
+
+For the publication test build only, the frozen instrumentation patch:
+
+`tests/publication/instrumentation/d1_public_reference_model_visibility.patch`
+
+changes only its Fortran accessibility from module-private to `public`.
+
+This access-only patch:
+
+- changes no component value;
+- changes no state ownership;
+- changes no clone operation;
+- changes no solver, forcing, mass or temporal semantics;
+- adds no callable behavior;
+- is applied only to the temporary compile copy;
+- is identical for the clean and D1-mutant builds.
+
+The direct probe initializes the already-existing model fields required by the same Reference route (fixed-flux top provider and Reference soil-water selection) and then calls the existing `configure_parameters`, `prepare_interval` and `execute_reference_interval` methods.
+
+The D1 scientific mutation remains exactly the previously frozen `d1_rejected_candidate_write_through.patch`.
