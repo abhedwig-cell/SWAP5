@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.f-rom01.reference-history-pilot-v1-adjudication.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM01",
+  "experiment": "REFERENCE_HISTORY_PILOT_V1",
+  "contract": "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json",
+  "contract_phase": "PREREGISTERED_BEFORE_REFERENCE_HISTORY_EXECUTION",
+  "scientific_execution_commit": "e9c6ed719c8a5dbb50ece6a49c08542f1b3fa257",
+  "workflow_run": 35348281124,
+  "workflow_job": 105609977820,
+  "artifact_id": 10547439979,
+  "artifact_digest": "sha256:f33d167cb003a9bbcce360b485f75808c11d5ce1ee3430bef4288661bee5724e",
+  "production_reference_delta": "NONE",
+  "preregistration_lock": "PASS",
+  "source_locks": "PASS",
+  "execution_result": "FAIL_REFERENCE_ATTEMPT_RETRY_REQUIRED",
+  "first_failure": {
+    "phase": "A_DRY",
+    "status": 2,
+    "retry_advised": true,
+    "route": "legacy-reference-retry",
+    "nonlinear_iterations": 16,
+    "jacobian_builds": 16,
+    "linear_solves": 16,
+    "backtracking_attempts": 16,
+    "internal_retries": 1,
+    "integrated_mass_balance_residual_available": false
+  },
+  "interpretation": {
+    "scientific_collision_test_reached": false,
+    "minimum_state_conclusion_allowed": false,
+    "reason": "The direct fixed-duration Reference Richards attempt at the wet-to-dry regime reversal requested a retry before the collision state was constructed.",
+    "classification": "REFERENCE_EXECUTION_POLICY_MISSING_FROM_RESEARCH_HARNESS",
+    "not_classified_as": [
+      "low-order representation failure",
+      "Richards physics failure",
+      "mass-conservation failure",
+      "production-code defect"
+    ]
+  },
+  "decision": "RETAIN_V1_AS_FAILED_PILOT_AND_PREREGISTER_V2_WITH_BOUNDED_RETRY_SUBDIVISION",
+  "constraints_for_v2": [
+    "Do not mutate the V1 contract.",
+    "Keep the same B01 material, geometry, initial state, forcing magnitudes, forcing order, outer interval duration, phase duration and continuation design.",
+    "Treat a retry-advised attempt as rejected and never commit its candidate state.",
+    "Complete the same outer interval by deterministic bounded subdivision under unchanged forcing.",
+    "Record accepted substep counts and retry counts.",
+    "Do not introduce a ROM sufficiency threshold."
+  ]
+}
