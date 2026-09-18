@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.rom1b2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B2",
+  "title": "Frozen collision-pair future-probe predictive ambiguity adjudication",
+  "phase": "PREREGISTERED_BEFORE_FUTURE_PROBE_EXECUTION",
+  "predecessor": {
+    "work_unit": "ROM-1B1",
+    "decision": "ROM1B1_COLLISION_CENSUS_COMPLETE",
+    "result": "integration/f-rom/ROM1B1_RESULT.json",
+    "pair_manifest": "integration/f-rom/ROM1B1_PAIR_MANIFEST.json",
+    "pair_manifest_blob": "225fdaff18ae0119d3995f6ca950d4453d67fc75",
+    "workflow_run": 35379652400
+  },
+  "purpose": "Test whether discovery states that are indistinguishable at the preregistered candidate-coordinate collision scale produce distinguishable future storage responses under identical frozen probes, without changing collision pairs, probes, horizons, coordinate definitions, or Reference policy after outcomes are observed.",
+  "coordinate_population": [
+    "Z1",
+    "Z2",
+    "Z4",
+    "Z8"
+  ],
+  "full_state_control": {
+    "id": "Z16",
+    "B1_collision_count": 0,
+    "role": "state-separating discovery control only; no collision-pair future probes because no frozen Z16 collision manifest exists",
+    "reduced_candidate": false
+  },
+  "pair_authority": {
+    "pairs_per_coordinate": 8,
+    "total_coordinate_pair_entries": 32,
+    "pair_reuse_allowed": true,
+    "selection": "EXACT_ROM1B1_PAIR_MANIFEST",
+    "reranking_after_probe_outcomes": false
+  },
+  "starting_state_reconstruction": {
+    "material": "B01",
+    "source_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "state_identity": "exact history and accepted step from frozen B1 manifest",
+    "reconstruction_policy": "ROM1AR2 frozen strict-first discovery-qualified research Reference policy",
+    "probe_lineage": "new committed lineage rebased to t=0 from the reconstructed accepted physical state",
+    "solver_worker_scratch_transferred": false,
+    "reason": "future-probe comparison is conditional on the accepted physical starting state, not prior nonlinear solver scratch"
+  },
+  "future_probes": {
+    "probes": [
+      "HOLD",
+      "TOP_PLUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL"
+    ],
+    "horizons_steps": [
+      4,
+      16,
+      64
+    ],
+    "horizons_day": [
+      0.0032,
+      0.0128,
+      0.0512
+    ],
+    "step_day": 0.0008,
+    "definitions": "EXACT_F_ROM1A_PREREGISTRATION",
+    "probe_change_after_B1": false,
+    "candidate_pair_receives_identical_probe": true
+  },
+  "reference_policy": {
+    "authority": "ROM1AR2 frozen policy",
+    "original_attempt_always_first": true,
+    "total_only_fallback": "pre-solve representation-bounded total criterion",
+    "local_balance_fallback": "only zero-head-flag RETRY_LOCAL_BALANCE within independently frozen 1.6e-15 cm integrated local allowance and pre-solve total representation bound",
+    "other_failure_classes": "FAIL_CLOSED",
+    "dt_subdivision": false,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "production_reference_policy_changed": false
+  },
+  "predictive_response_definition": {
+    "storage_response": "Y(t)-Y(0) for each trajectory",
+    "pair_response_difference": "abs((Y_a(t)-Y_a(0))-(Y_b(t)-Y_b(0)))",
+    "reason": "removes the small allowed initial candidate-coordinate difference from the future-response test and isolates hidden-state-dependent evolution"
+  },
+  "numerical_reference_scales": {
+    "source_rule": "maximum B01 value already measured before B2 across ROM-0T1Q1 temporal and ROM-0V1 vertical Reference-floor evidence",
+    "single_trajectory_scales": {
+      "total_storage_cm": 3.552713678800501e-14,
+      "upper_0_40cm_storage_cm": 0.0003748292968630551,
+      "lower_40_160cm_storage_cm": 0.00037482929685239696
+    },
+    "pairwise_response_separation_scales": {
+      "rule": "2 * single-trajectory Reference scale by triangle-inequality conservatism for two independent future trajectories",
+      "total_storage_cm": 7.105427357601002e-14,
+      "upper_0_40cm_storage_cm": 0.0007496585937261102,
+      "lower_40_160cm_storage_cm": 0.0007496585937047939
+    },
+    "threshold_selected_from_ROM1_library": false,
+    "threshold_selected_from_probe_outcomes": false
+  },
+  "formal_predictive_ambiguity": {
+    "record_is_ambiguous_if": "any of total, upper-0-40, or lower-40-160 pair response differences exceeds its frozen pairwise response separation scale",
+    "coordinate_has_discovery_ambiguity_if": "at least one of its 8 frozen pairs under any frozen discovery probe at any frozen horizon is ambiguous",
+    "full_head_or_theta_profile_difference_is_formal_success_metric": false
+  },
+  "exchange_outputs": {
+    "report": [
+      "cumulative_top_exchange_response_difference",
+      "cumulative_bottom_outward_exchange_response_difference",
+      "terminal_bottom_flux_difference"
+    ],
+    "formal_ambiguity_role": "DIAGNOSTIC_ONLY_IN_B2",
+    "reason": "the existing ROM-0 fixed-flux floor does not provide an independently informative state-dependent prescribed-head exchange floor",
+    "if_storage_survivor_exists": "a later separately preregistered exchange-floor/evaluation gate is required before any claim of complete predictive sufficiency"
+  },
+  "required_outputs": [
+    "unique_start_state_count",
+    "all_frozen_pair_probe_horizon_records",
+    "ambiguity_record_count_by_coordinate",
+    "ambiguous_pair_count_by_coordinate",
+    "maximum_storage_response_difference_and_ratio_by_coordinate",
+    "top_predictive_ambiguity_examples_by_coordinate",
+    "diagnostic_exchange_response_differences",
+    "probe_fallback_counts_and_classes",
+    "max_abs_committed_mass_residual",
+    "repeat_and_O0_O2_determinism"
+  ],
+  "decisions": [
+    "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+    "ROM1B2_REFERENCE_PROBE_UNRESOLVED",
+    "ROM1B2_EVIDENCE_BLOCKED"
+  ],
+  "next_rule": {
+    "if_all_Z1_Z2_Z4_Z8_have_storage_ambiguity": "close this nested water-content aggregation hierarchy as discovery-insufficient and preregister discovery-only coordinate enrichment; held-out histories remain sealed until a new candidate is frozen",
+    "if_any_reduced_coordinate_has_zero_storage_ambiguity": "freeze the survivor set before any held-out use; separately resolve exchange-output floor before a complete predictive-sufficiency claim"
+  },
+  "firewalls": [
+    "NO_PAIR_RESELECTION",
+    "NO_PROBE_OR_HORIZON_CHANGE",
+    "NO_THRESHOLD_CHANGE",
+    "NO_HELDOUT_HISTORY_OR_HELDOUT_PROBE_USE",
+    "NO_B14_USE",
+    "NO_POD_OR_MODAL_BASIS",
+    "NO_CLOSURE_FIT",
+    "NO_MEMORY_VARIABLE_SELECTION_IN_B2",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
