@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.ppa_wu05a.status.v1",
+  "work_unit": "PPA-WU05-A",
+  "title": "Macropore source/state/mass/transaction authority",
+  "branch": "audit/ppa-wu05a-macropore-authority",
+  "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+  "status": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+  "production_source_mutation": false,
+  "reference_source_mutation": false,
+  "exact_authority": {
+    "snapshot": "B1.11",
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "patch_authority": "SWAP-001 only"
+  },
+  "recovered_repository_evidence": {
+    "F_PE16": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
+    "F_PE15": "f475e0e050abdc885c016929c2d528fe1f8f0545",
+    "F_SI15": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
+  },
+  "frozen_findings": {
+    "committed_history_candidate_fields": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
+    "field_list_authority": "CORROBORATED_PRIOR_EVIDENCE_NOT_FINAL_B1_11_CENSUS",
+    "scratch_rule": "Recomputable macrorate/helper workspace is worker/job scratch, not checkpoint/restart state.",
+    "rollback_rule": "Every source-traced trial-mutable committed/history field must roll back atomically with the Richards interval.",
+    "mass_rule": "Internal matrix/macropore transfers cancel in whole-column mass; external water transfers have one accepted owner; rejected trials publish no accepted macropore mass receipt.",
+    "restart_rule": "Explicit optional macropore state layout required; scratch excluded; final schema held for exact source trace."
+  },
+  "blocker": {
+    "class": "EXACT_SOURCE_MATERIALIZATION_REQUIRED",
+    "description": "Current Git authority pins exact B1.11 identities but does not retain the complete macropore.f90/macrorate.f90 source bytes or original S12 patch payloads needed for a full cross-call mutable-field and mass-transfer census.",
+    "external_scientific_decision_required": false,
+    "production_implementation_permitted": false
+  },
+  "qualification": {
+    "state": "PENDING",
+    "required_checks": [
+      "no src/ delta",
+      "no reference/ delta",
+      "exact B1.11 identities pinned",
+      "historical evidence is labeled corroboration rather than source oracle",
+      "seven-field list remains non-final",
+      "mass/rollback/restart invariants present",
+      "production implementation held",
+      "follow-on A1..A5 serialized correctly"
+    ]
+  },
+  "production_admission": "NONE_REVIEW_ONLY",
+  "verdict": "PARTIAL_AUTHORITY_FROZEN_SOURCE_MATERIALIZATION_REQUIRED",
+  "next_action": "Close PPA-WU05-A as an authority-review checkpoint if validation passes. Resume as PPA-WU05-A1 only when byte-exact B0/B1.11 macropore and macrorate source bytes are materializable; do not implement macropore physics before that."
+}
