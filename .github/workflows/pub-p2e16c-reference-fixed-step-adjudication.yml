@@ -1,0 +1,25 @@
+name: PUB-P2E16C Reference fixed-step adjudication
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16c-reference-fixed-step-adjudication
+    paths:
+      - 'docs/publication/P2E16C_REFERENCE_FIXED_STEP_ADJUDICATION_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e16c_reference_fixed_step_adjudication.f90'
+      - 'tests/publication/run_pub_p2e16c_reference_fixed_step_adjudication.sh'
+      - '.github/workflows/pub-p2e16c-reference-fixed-step-adjudication.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-fixed-step-adjudication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered P2E16C Reference adjudication
+        run: bash tests/publication/run_pub_p2e16c_reference_fixed_step_adjudication.sh
