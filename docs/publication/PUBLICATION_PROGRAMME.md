@@ -119,7 +119,7 @@ A result does not become a separate paper merely because it can be plotted under
 
 ## Publication firewall
 
-The same code, test harness or reference dataset may support both studies. The same primary scientific inference may not.
+The same code, test harness or reference dataset may support multiple publication lines. The same primary scientific inference may not.
 
 A result is not made distinct merely by changing the figure style, subset of cases or wording.
 
@@ -177,6 +177,18 @@ Examples:
 - mechanism-specific solver divergence;
 - regime-specific solver-selection or exclusion rule.
 
+### `PUB_GC_RESULT`
+
+Evidence may support a primary result or conclusion in PUB-GC / COUPLE. Examples include qualified coupling quantities, conservative exchange semantics, coupling convergence correctness and the scientific SWAP5-MODFLOW6 interface contract.
+
+### `PUB_SG_RESULT`
+
+Evidence may support a primary result or conclusion in PUB-SG / SCALE. Examples include quantified aggregation error, transferability limits and mechanisms controlling the validity of equivalent unsaturated-zone columns.
+
+### `PUB_RC_RESULT`
+
+Evidence may support a primary result or conclusion in PUB-RC / ACCELERATE only after the RC novelty gates pass. Examples include a demonstrated net information-value regime for supplied finite-window response relative to a strong black-box multisecant comparator. F-GC30 response-coefficient mechanics alone do not qualify.
+
 ### `PUB_SHARED_INFRASTRUCTURE`
 
 The artifact enables both studies but is not itself a primary scientific result in either manuscript.
@@ -228,7 +240,7 @@ Reusing a small factual platform description is acceptable. Reusing a result and
 Publication-grade evidence should be recorded with at least:
 
 ```text
-publication_class: PUB_P1_RESULT | PUB_P2_RESULT | PUB_SHARED_INFRASTRUCTURE | PUB_CONTEXT_ONLY | PUB_NOT_CURRENT
+publication_class: PUB_P1_RESULT | PUB_P2_RESULT | PUB_GC_RESULT | PUB_SG_RESULT | PUB_RC_RESULT | PUB_SHARED_INFRASTRUCTURE | PUB_CONTEXT_ONLY | PUB_NOT_CURRENT
 capability_or_experiment:
 source_branch:
 source_head:
@@ -240,7 +252,7 @@ predeclared_tolerances:
 cases:
 result:
 limitations:
-primary_paper: P1 | P2 | NONE
+primary_paper: P1 | P2 | PUB-GC | PUB-SG | PUB-RC | NONE
 allowed_secondary_use:
 artifact_locations:
 ```
