@@ -25,6 +25,7 @@ u_A      current accepted-trajectory response coefficient
 u_FD     centred flux-to-terminal-head finite-difference response
 J_S      d(whole-window storage change) / dH
 J_R      d(whole-window accepted-sign interface transfer) / dH
+J_B      d(other whole-window net water balance) / dH
 ```
 
 and over what perturbation range are the head-driven derivatives reproducible?
@@ -58,6 +59,26 @@ J_S = d DeltaS / d H
 ```
 
 where `DeltaS` is converted from the canonical SWAP native column-depth carrier to metres before differentiation.
+
+Define the remaining net whole-window balance, excluding the bottom outward transfer, as
+
+```text
+B = total_in - total_out + V_u
+```
+
+after conversion to metres. Its derivative is
+
+```text
+J_B = dB / dH.
+```
+
+For mass-closed trials:
+
+```text
+J_S - J_B + J_R = 0
+```
+
+within numerical differentiation error.
 
 ### Current analytic/trajectory response
 
@@ -261,14 +282,16 @@ For every baseline report the plateau estimates, if available, and relative disc
 ```text
 E_AFD = |u_A - u_FD| / max(|u_A|, |u_FD|, eps)
 
-E_AS  = |u_A - J_S| / max(|u_A|, |J_S|, eps)
+E_AS+ = |u_A - J_S| / max(|u_A|, |J_S|, eps)
+
+E_AS- = |u_A + J_S| / max(|u_A|, |J_S|, eps)
 
 E_AR+ = |u_A - J_R| / max(|u_A|, |J_R|, eps)
 
 E_AR- = |u_A + J_R| / max(|u_A|, |J_R|, eps)
 ```
 
-Both `E_AR+` and `E_AR-` are retained because the sign relation between the storage-style response and the outward interface-transfer derivative is a scientific result, not a preregistered assumption.
+Both sign relations are retained for storage and outward-transfer response. No sign normalization is chosen after observing the result.
 
 ## Failure semantics
 
@@ -329,3 +352,8 @@ Only after E4 may E5 fairly compare:
 - practical supplied response.
 
 E5 is not started merely because a response quantity exists.
+
+
+## Pre-execution sign/balance clarification
+
+Added before the first authoritatively interpreted E4 run. Because the canonical balance uses an outward-positive bottom transfer, storage and bottom-transfer derivatives can have opposite signs. E4 therefore records `J_B`, the derivative closure `J_S - J_B + J_R`, and both signed comparisons for `J_S` and `J_R`. No baseline, perturbation scale, tolerance or stop/go rule is changed.
