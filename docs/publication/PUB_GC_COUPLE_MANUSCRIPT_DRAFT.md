@@ -821,15 +821,120 @@ The long-window, higher-flux cases reached a different boundary. At `10^-2 day, 
 
 Taken together, E3, E3-D, E3-D2 and E3-R provide a bounded answer to RQ3. Strong iteration demonstrably improves finite-window interface closure whenever valid component candidates remain available, but the physical groundwater-head correction is negligible in the current near-equilibrium fixture. Attempts to create a stronger response through longer windows and larger fluxes encounter the SWAP predictor/corrector execution envelope before they produce a materially large head response. A positive strong-feedback case therefore requires a different admitted hydrological state or groundwater-response geometry rather than looser numerical tolerances.
 
-## 4.4 Response interpretation
+## 4.4 Finite-window response identity
 
-**Evidence status:** concept and response infrastructure exist; publication-specific `u_FD` versus `J_S` versus `J_R` study required.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E4.
+
+E4 evaluated the current component-provided response against two independently constructed finite-window maps from identical accepted SWAP origins. The accepted-trajectory response `u_A` was compared with a centred finite difference of the prescribed-bottom-flux predictor map, `u_FD`, while prescribed-head corrector trials provided the storage derivative `J_S` and the accepted-sign whole-window exchange derivative `J_R`.
+
+The corrected flux experiment perturbed only the lower-boundary flux while holding atmospheric/top flux fixed. Across all five baselines, `u_A` agreed closely with this independent `u_FD`. Relative discrepancies ranged from approximately `8.1e-9` to `1.35e-5`. The present response is therefore well identified as a finite-window **flux-driven predictor response**:
+
+```text
+u_A ~= DeltaT (dH_end/dq_bot)^(-1).
+```
+
+The corresponding head-driven response was not universally identical.
+
+| case | window | q_bot | u_A | u_FD | J_S | J_R |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| B1 | 1e-4 d | 1e-6 cm/d | 3.40294e-5 | 3.40295e-5 | 3.40283e-5 | -3.40283e-5 |
+| B2 | 1e-3 d | 1e-6 cm/d | 2.68611e-4 | 2.68607e-4 | 2.68610e-4 | -2.68610e-4 |
+| B3 | 1e-3 d | 1e-4 cm/d | 2.66574e-4 | 2.66574e-4 | 2.88218e-4 | -2.88218e-4 |
+| B4 | 1e-2 d | 1e-6 cm/d | 1.19027e-3 | 1.19028e-3 | 1.19027e-3 | -1.19027e-3 |
+| B5 | 1e-2 d | 1e-4 cm/d | 1.12016e-3 | 1.12016e-3 | unavailable | unavailable |
+
+For B1, B2 and B4, the non-bottom balance derivative was numerically negligible and the differentiated mass balance gave:
+
+```text
+J_S ~= -J_R,
+```
+
+with both magnitudes essentially equal to `u_A`. This simple fixture therefore aliases storage response and signed interface response.
+
+B3 separates the two maps. The flux-driven estimates remain essentially identical:
+
+```text
+u_A  = 2.665743709e-4
+u_FD = 2.665743731e-4,
+```
+
+whereas the head-driven response is:
+
+```text
+J_R = -2.882176720e-4
+J_S = +2.882176720e-4.
+```
+
+Thus `|J_R|/u_A = 1.08119`: the actual prescribed-head whole-window response is about 8.1% larger than the predictor response.
+
+B5 provides an even stronger distinction. A stable flux-driven response remains measurable and `u_A` agrees with `u_FD` to approximately `8.4e-8` relative discrepancy, but no symmetric local prescribed-head derivative is available within the unchanged transaction envelope, even at the smallest tested head perturbations.
+
+The response quantity exposed by the current predictor should therefore not be called a universal head-to-exchange coupling Jacobian. It is a well-defined response of the flux-driven finite-window predictor map whose suitability as a corrector linearization is regime-dependent.
 
 ## 4.5 Response information and computational value
 
-**Evidence status:** not yet established.
+**Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E5a.
 
-This result determines whether ACCELERATE remains only a section of this manuscript or later supports a separate paper.
+E5 separated the value of strong coupling from the value of **component-supplied derivative information**. The SWAP side used the real E4 prescribed-head finite-window response, while an analytic linear groundwater response was used to vary the local coupled strength independently of MODFLOW's own nonlinear solver.
+
+The scan used:
+
+```text
+C = 0.1, 0.5, 0.9, 1.1, 1.5, 2.0
+```
+
+and compared:
+
+```text
+plain fixed point
+dynamic Aitken
+cold scalar secant / IQN analogue
+supplied u_A response
+zero-cost J_R oracle
+```
+
+at one common integrated interface tolerance.
+
+### 4.5.1 Acceleration matters relative to plain fixed point
+
+Plain fixed point reproduced the expected stability pattern. It converged in six SWAP evaluations at `C=0.1`, required 14–15 at `C=0.5`, did not meet the tolerance within 20 evaluations at `C=0.9`, and for several `C>1` cases its diverging iterates eventually left the admitted SWAP response domain.
+
+Aitken and cold secant remained convergent in the corresponding admissible B1, B2 and B4 cases, normally in three to five SWAP evaluations.
+
+Thus iterative acceleration is numerically valuable near and beyond the plain fixed-point stability boundary.
+
+### 4.5.2 A perfect supplied interface derivative adds little beyond black-box learning
+
+The stronger question was whether additional response information is worth exposing.
+
+The zero-cost `J_R` oracle was deliberately given its derivative for free. Across the 18 cases where both the oracle and cold secant converged:
+
+- the oracle saved one SWAP evaluation in 16 cases;
+- it saved two evaluations in one case (B2, `C=2`);
+- it saved no evaluations in one case (B4, `C=1.5`);
+- it never converged in a case where cold secant failed.
+
+The already-available `u_A` response had the same evaluation-count pattern as the oracle in every comparable converged case.
+
+The dominant one-evaluation difference is exactly the advantage expected in the local-linear control: a cold scalar secant method spends one additional black-box evaluation learning the slope that the response-informed method receives explicitly.
+
+### 4.5.3 Response-domain limitation
+
+B3 could not be used to rank the algorithms at the preregistered initial offset. Although E4 had identified a local `J_R` and an 8.1% difference between `|J_R|` and `u_A`, the first E5 prescribed-head trial at `H_ref + 1e-6 m` was outside the admitted SWAP response domain for every algorithm.
+
+This is a common component-domain failure, not an acceleration result. It reinforces the E4 conclusion that response-domain admissibility can become limiting before the quality of the outer coupling algorithm.
+
+### 4.5.4 Information-value conclusion
+
+E5 used a quantitative continuation rule fixed before numerical output. A separate warm-history E5b study would be justified only if the zero-cost oracle enlarged the convergence domain over cold secant or saved at least two SWAP evaluations reproducibly across multiple difficult baselines.
+
+That gate was not passed.
+
+The experiment therefore supports a narrower conclusion:
+
+> In the tested scalar finite-window coupling, strong black-box acceleration recovers almost all of the computational value of a perfect free local interface derivative. The current supplied `u_A` can still be a useful low-cost implementation response, but a more exact separately acquired `J_R` is not justified by the observed work reduction.
+
+Accordingly, ACCELERATE is retained as a result of the central coupling paper rather than progressed as a presumptive independent manuscript.
 
 ## 4.6 Realistic and regional behaviour
 
