@@ -693,31 +693,103 @@ Do not use this experiment to claim the physical validity of spatial aggregation
 
 ---
 
-# 4. Results — placeholders tied to evidence
+# 4. Results
 
-## 4.1 Interface conservation and quantity identity
+## 4.1 Interface identity and conservation in the first real coupled window
 
-**Evidence status:** partial architecture/qualification evidence exists; publication dataset still required.
+The first publication-specific experiment reused the restricted F-GC44 real-SWAP/live-MODFLOW6 configuration rather than expanding the hydrological envelope. One FMR/SWAP reference-Richards column was coupled to one MODFLOW6 6.8.0 cell over a `1.0e-4 day` (8.64 s) window under the near-equilibrium forcing used for end-to-end qualification.
 
-Required result form:
+The predictor response was internally consistent but demonstrated why the coupling quantities cannot be treated as aliases. The imposed native lower-boundary predictor flux was
 
-- numerical closure values;
-- explicit distinction between `q_bot` and `q_u`;
-- accepted whole-window transfer.
+```text
+q_bot = 1.0000000000000000e-6 cm/day
+```
 
-## 4.2 Rollback, retry and publication
+whereas the reconstructed groundwater-facing predictor exchange was
 
-**Evidence status:** strong restricted qualification evidence exists in F-GC41–F-GC44; publication-grade consolidated dataset still required.
+```text
+q_u = -9.6588521204796776e-7 cm/day
+```
 
-Required result form:
+with coupling response
 
-- no committed-state change for rejected candidates;
-- no ledger publication before acceptance;
-- exactly one revision/time advance and one interface transfer on success.
+```text
+u = 3.4029360372790930e-5.
+```
+
+Substitution into the F-GC30 relation
+
+```text
+q_u =
+  u (H_end-H_start) 100 / DeltaT_day
+  - q_bot
+```
+
+reproduced the reported `q_u` to representation precision.
+
+The same real predictor trial returned complete canonical mass accounting. Storage start and end were both `1.0430631535459627` in the native storage basis, interval inflow and outflow were both `1.0e-10`, and both storage change and the independently assembled canonical residual were zero in this equilibrium case. This is a deliberately easy balance case; its role is to verify accounting identity and interface semantics, not to establish broad hydrological accuracy.
+
+The live coupled solve converged in two outer iterations. The accepted values were
+
+```text
+H                 = -0.71499996773317653 m
+q_SWAP            = -1.2708557527755854e-13 m/s
+q_GW              = -1.2708580747683645e-13 m/s
+q_SWAP - q_GW     =  2.3219927791065243e-19 m/s.
+```
+
+The final accepted SWAP bottom amount was `-1.0980193703981059e-10 cm`, corresponding to `-1.0980193703981059e-12 m`. The committed interface ledger recorded exactly `-1.0980193703981059e-12 m`. Independently integrating the accepted public SWAP rate over 8.64 s gave `-1.0980193703981057e-12 m`, equal to the ledger amount to representation precision.
+
+An initially preregistered sign hypothesis expected the public rate and native accepted amount to have opposite signs and was falsified by the first execution. Code-trace adjudication showed two explicit sign transformations between the native SWAP bottom exchange and the public outward-from-SWAP rate, so the signs must in fact agree. The production coupling implementation was unchanged; the failed hypothesis and corrected algebra remain recorded as part of the evidence trail.
+
+These results support interface and accounting consistency only inside the restricted near-equilibrium envelope. They do not establish equivalence of `q_bot` and `q_u`, nor do they demonstrate conservation under all process combinations or stronger groundwater perturbations.
+
+## 4.2 Rejected trials have zero hydrological authority
+
+A second experiment used both deterministic failure injection and the real SWAP participant to test the distinction between trial computation and authoritative model history.
+
+The existing F-GC41 failure-injection suite comprised seven passing tests. SWAP, MODFLOW and ledger preflight failures all occurred before publication and resulted in no participant publication; invalid window identity touched no participant; MODFLOW publication readiness was non-mutating; and timestep finalization was one-shot. A failure after the first irreversible publication operation was explicitly not classified as a rollback-safe scientific retry.
+
+The real SWAP/live-MODFLOW route then tested the actual committed state and interface ledger. At the beginning of the window:
+
+```text
+SWAP revision          = 0
+SWAP committed time    = 0
+ledger commit count    = 0
+ledger committed mass  = 0.
+```
+
+This complete authority tuple remained unchanged after a real prescribed-head SWAP trial, after discarding that trial, after preparing a retained SWAP candidate plus its interface ledger, after aborting that prepared publication, and before and after discarding every non-final coupled corrector.
+
+After convergence, all publication preflights were likewise non-mutating. The observed publication sequence was:
+
+```text
+MODFLOW finalize_time_step:
+    SWAP revision = 0
+    ledger count  = 0
+
+SWAP commit:
+    SWAP revision = 1
+    SWAP time     = DeltaT
+    ledger count  = 0
+
+ledger commit:
+    SWAP revision = 1
+    ledger count  = 1
+    ledger mass   = accepted final interface transfer.
+```
+
+A second MODFLOW timestep finalization was rejected by the one-shot lifecycle.
+
+Within this envelope, a computed trial flux is therefore demonstrably not an authoritative hydrological transfer. Authority is acquired only after coupled acceptance and the ordered publication transaction.
+
+The experiment does not test recovery from a platform failure after the irreversible publication point; that remains a durability/restart question rather than a rollback-safe scientific retry.
 
 ## 4.3 Coupled convergence
 
-**Evidence status:** restricted end-to-end case exists; broad hydrological regime characterization required.
+**Evidence status:** the E1/E2 case demonstrates one bounded two-iteration convergence trace, but broad hydrological regime characterization is still required.
+
+The next experiment varies coupling-window duration and hydrological feedback strength and deliberately includes weak, materially iterative and difficult/non-convergent regimes. Until that experiment is complete, the present result must not be interpreted as evidence that two iterations are generally sufficient.
 
 ## 4.4 Response interpretation
 
@@ -731,7 +803,7 @@ This result determines whether ACCELERATE remains only a section of this manuscr
 
 ## 4.6 Realistic and regional behaviour
 
-**Evidence status:** to be assembled.
+**Evidence status:** to be assembled. F-GC45 already qualifies a two-real-SWAP-column to one-live-MODFLOW-cell runtime composition, but it deliberately uses identical physical columns and is not evidence for heterogeneous spatial aggregation.
 
 ---
 
