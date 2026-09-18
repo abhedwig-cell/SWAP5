@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.f-rom0ta1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA1",
+  "title": "Reference-Richards temporal-certificate measurement against direct refinement",
+  "phase": "PREREGISTERED_BEFORE_FIRST_EXECUTION",
+  "branch_head_before_preregistration": "d5b5bc3b7d6513a0647ccfdad5f80e9e01b927df",
+  "reconciled_current_canonical": "79bc0b03398d762112542791c967646a8dc2c37a",
+  "relevant_live_delta": "NONE_PUBLICATION_ONLY",
+  "predecessor_authority": {
+    "steady_seed": "integration/f-rom/F-ROM0R_R1_RESULT.json",
+    "failed_external_full_half_transient": "integration/f-rom/F-ROM0R_R2_PREREGISTRATION.json",
+    "temporal_indicator": "F-SI38",
+    "serialized_history_and_model_certificate": "FMR44R",
+    "independent_runtime_qualification": "F-VQ75",
+    "canonical_admission": ["F-CI62", "F-CI62P"]
+  },
+  "research_question": "For B01/B14 at the proven R1 steady seed, does the admitted Reference-Richards B_inf indicator track and conservatively cover the observed principal-full versus two-half-step pressure-head endpoint difference under the frozen R2 one-percent top-flux perturbation?",
+  "materials": ["B01", "B14"],
+  "geometry": {
+    "nodes": 16,
+    "dz_cm": 10,
+    "depth_cm": 160
+  },
+  "seed": {
+    "effective_saturation": 0.85,
+    "pressure_head_profile": "UNIFORM_MVG_HEAD_AT_SE_0_85",
+    "water_content_profile": "THETA_OF_UNIFORM_H0",
+    "qeq_expression": "-K(h0)",
+    "predecessor_right_derivative": "ZERO_FROM_R1_STATIONARY_ACCEPTED_STATE"
+  },
+  "perturbation": {
+    "epsilon_fraction_of_k0": 0.01,
+    "bottom_flux_expression": "qeq",
+    "cases": [
+      {"id": "TOP_PLUS", "top_flux_expression": "qeq + 0.01*K0"},
+      {"id": "TOP_MINUS", "top_flux_expression": "qeq - 0.01*K0"}
+    ]
+  },
+  "temporal_pairs": [
+    {"full_dt_day": 0.0016, "half_dt_day": 0.0008, "common_horizon_day": 0.0016},
+    {"full_dt_day": 0.0008, "half_dt_day": 0.0004, "common_horizon_day": 0.0008}
+  ],
+  "matrix_rows": 8,
+  "frozen_reference_controls": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "mass_tolerance": 1e-12,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12
+  },
+  "measurement_surface": {
+    "principal_full_step": "DIRECT_REFERENCE_RICHARDS_SOLVE",
+    "refined_step": "TWO_SEQUENTIAL_DIRECT_REFERENCE_RICHARDS_HALF_STEPS",
+    "certificate": "PRODUCTION_F_SI38_REFERENCE_RICHARDS_TEMPORAL_INDICATOR",
+    "head_budget_used": false,
+    "transaction_acceptance_used_as_authority": false
+  },
+  "required_metrics_per_row": [
+    "full_B_inf_cm",
+    "half1_B_inf_cm",
+    "half2_B_inf_cm",
+    "actual_max_abs_full_minus_two_half_head_cm",
+    "actual_max_abs_full_minus_two_half_theta",
+    "full_minus_two_half_storage_cm",
+    "terminal_top_flux_difference_cm_per_day",
+    "terminal_bottom_flux_difference_cm_per_day",
+    "full_mass_residual_cm",
+    "two_half_mass_residual_cm",
+    "full_nonlinear_iterations",
+    "two_half_nonlinear_iterations",
+    "full_backtracking_attempts",
+    "two_half_backtracking_attempts",
+    "full_linear_solves",
+    "two_half_linear_solves"
+  ],
+  "estimator_classification": {
+    "roundoff_guard": "65536*epsilon*max(1,abs(B_inf),abs(actual_head_difference))",
+    "empirically_conservative_row": "B_inf + roundoff_guard >= actual_head_difference",
+    "empirically_underestimating_row": "B_inf + roundoff_guard < actual_head_difference",
+    "scope": "FINITE_PREREGISTERED_MATRIX_ONLY",
+    "formal_bound_claim_allowed": false
+  },
+  "execution_gate": {
+    "all_direct_solves_must_converge": true,
+    "all_indicator_calls_must_be_available": true,
+    "hard_mass_gate_cm": 1e-12,
+    "finite_metrics_required": true,
+    "estimator_conservatism_is_measured_not_tuned": true
+  },
+  "forbidden": [
+    "NO_HEAD_BUDGET_SELECTION_FROM_RESULTS",
+    "NO_FMR44R_QUALIFICATION_BUDGET_REUSE",
+    "NO_PERTURBATION_RETUNING",
+    "NO_SOLVER_ITERATION_OR_RETRY_RELAXATION",
+    "NO_TEMPORAL_TOLERANCE_RETUNING",
+    "NO_PRODUCTION_OR_REFERENCE_SOURCE_MUTATION",
+    "NO_ROM_STATE_COMPRESSION",
+    "NO_STATE_DIMENSION_CLAIM"
+  ],
+  "post_measurement_decisions": [
+    "CERTIFICATE_EMPIRICALLY_CONSERVATIVE_LOCAL",
+    "CERTIFICATE_EMPIRICALLY_UNDERESTIMATES_LOCAL",
+    "CERTIFICATE_NONINFORMATIVE_OR_EXECUTION_INCOMPLETE"
+  ],
+  "rom1a_authorized": false,
+  "threshold_retuning_after_execution_allowed": false
+}
