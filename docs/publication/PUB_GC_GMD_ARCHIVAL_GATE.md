@@ -96,17 +96,29 @@ The publication workstream may not invent this value.
 
 ### A2 — software licence authority
 
-**BLOCKED_GOVERNANCE_OR_LEGAL_DECISION**
+**PARTIALLY RESOLVED — UPSTREAM SWAP 4 LICENCE VERIFIED / SWAP5 ARCHIVE DECLARATION STILL BLOCKED**
 
-A controlled authority must state which licence applies to the public SWAP5 submission archive and whether the archive may be redistributed under that licence.
+A2 is now split into two authority layers.
 
-The publication workstream may not infer a licence from the historical SWAP 4.3.1 distribution or from repository visibility.
+**A2a — upstream/historical SWAP 4 licence: VERIFIED.**
+
+The official SWAP project states that SWAP version 4 is distributed under the **LESSER GNU GENERAL PUBLIC LICENSE version 3**, with TTUTIL427.LIB under LGPL 2.1. The exact SWAP 4.3.1 distribution used by this repository contains the same licence statement in `license/License.txt`.
+
+Exact embedded licence identities are frozen in `PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md`.
+
+**A2b — SWAP5 publication archive licence/redistribution declaration: BLOCKED_GOVERNANCE_OR_LEGAL_DECISION.**
+
+The SWAP5 repository contains substantial modernized and new source and deliberately has no root licence declaration that independently assigns the complete publication archive to a licence. The current README also states that repository documentation does not create a separate licensing decision.
+
+An authorized WUR/WENR/SWAP-project authority must therefore confirm that the SWAP5 publication archive may be distributed under the upstream SWAP version-4 terms, or provide the alternative authorized statement.
+
+The publication workstream will not manufacture that legal declaration.
 
 ### A3 — persistent archive / DOI
 
 **BLOCKED_EXTERNAL_ARCHIVE_ACTION**
 
-After A1 and A2 are resolved, the exact submission revision must be archived in a persistent repository with a unique identifier/DOI.
+After A1 and A2b are resolved, the exact submission revision must be archived in a persistent repository with a unique identifier/DOI.
 
 GitHub remains the development repository but is not, by itself, the frozen archive required by current GMD policy.
 
@@ -124,7 +136,7 @@ Do not replace `X` until A1 is closed.
 
 ### A5 — final Code and data availability wording
 
-**BLOCKED_BY_A2_A3**
+**BLOCKED_BY_A2B_A3**
 
 The final section must cite:
 
@@ -184,7 +196,7 @@ It must **not**:
 This gate closes only when all of the following are true:
 
 1. a governed SWAP5 publication version/release identifier exists;
-2. the applicable software licence/redistribution authority is explicit;
+2. the SWAP5 publication-archive licence/redistribution authority (A2b) is explicit;
 3. the exact submission revision and required public assets are persistently archived;
 4. the archive has a unique persistent identifier/DOI;
 5. the manuscript title and Code/data availability section point to that exact archive;
@@ -202,3 +214,21 @@ The GMD journal-positioning merge `a0ee53c48a80dd443d46f60edf08044aeba98273` com
 - F-CI58P reconciliation/preservation run 35377931486 — SUCCESS.
 
 The archival gate therefore does not represent an unresolved scientific or canonical-qualification failure.
+
+
+## 9. Prearchive automation and inventory
+
+The non-governance part of the archive preparation is now frozen in:
+
+- `PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md`;
+- `PUB_GC_GMD_PREARCHIVE_INVENTORY.json`;
+- `PUB_GC_GMD_PRESUBMISSION_CHECKLIST.md`;
+- `tools/publication/check_pub_gc_gmd_submission.py`.
+
+The inventory binds the current manuscript, E1–E7 evidence and F1–F7 publication assets by repository blob identity. The checker distinguishes an integrity failure from an intentionally unresolved governance field.
+
+This reduces the remaining archival decision to:
+
+1. A1 release identifier;
+2. A2b explicit SWAP5 archive licence/redistribution statement;
+3. A3 external persistent archive/PID after 1–2.
