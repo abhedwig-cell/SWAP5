@@ -59,19 +59,25 @@
       2,
       4,
       8,
-      16
+      16,
+      32
     ],
     "corresponding_substep_dt_day": [
       0.0016,
       0.0008,
       0.0004,
       0.0002,
-      0.0001
+      0.0001,
+      0.00005
     ],
-    "ref_high_candidate": "16-substep endpoint",
-    "stability_comparison": "16-substep endpoint versus 8-substep endpoint",
+    "ref_high_candidate": "32-substep endpoint",
     "all_levels_executed_for_every_case": true,
-    "adaptive_post_result_level_selection": false
+    "adaptive_post_result_level_selection": false,
+    "stability_comparisons": [
+      "16-substep endpoint versus 8-substep endpoint",
+      "32-substep endpoint versus 16-substep endpoint"
+    ],
+    "stability_reason": "Two successive fine-grid endpoint comparisons are required so REF-HIGH is not declared stable from one possibly accidental small refinement delta."
   },
   "stability_rule": {
     "head_theta_factor_of_P2E14": 0.1,
@@ -86,7 +92,8 @@
     "storage_resolution_exception": "P2E14 storage envelopes are already at floating-point summation scale. Multiplying them by 0.10 would demand sub-resolution agreement, so the exact P2E14 storage envelope is retained as the preregistered numerical-resolution floor.",
     "hard_integrated_mass_abs_limit_cm_each_substep": 1e-12,
     "conjunction": true,
-    "weighted_compensation": false
+    "weighted_compensation": false,
+    "case_stable_if": "Every listed head/theta/storage metric satisfies its preregistered exact-Se budget for both 8-vs-16 and 16-vs-32, and every Reference substep at all six levels passes hard route validity."
   },
   "p2e14_thresholds": {
     "Se_0.65": {
@@ -122,7 +129,7 @@
     "stability_factor_change_after_execution_allowed": false
   },
   "outcome_policy": {
-    "if_all_36_stable": "Persist casewise REF-HIGH authority and permit a separately preregistered equal-error solver-control/timing experiment.",
+    "if_all_36_stable": "Persist the 32-substep casewise REF-HIGH authority and permit a separately preregistered equal-error solver-control/timing experiment.",
     "if_any_unstable_or_invalid": "Persist unresolved cases and restrict or block E3. Do not loosen stability criteria after observing the result."
   },
   "verdict": "PREREGISTERED_REF_HIGH_CONSTRUCTION_READY"
