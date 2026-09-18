@@ -1,16 +1,16 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "0d1798aafbf43417801d75a140e4f4f3cef74bd8",
+  "canonical_basis": "970bc631d78ce1f5db3821ce313d500b1c63b274",
   "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "1ada7e208cf970f971f53e12ba4d11d4ba3e77b2"
+      "blob": "7a6c662578b1ac1995e20ccc55dfb225abcbff50"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
-      "blob": "b341cd36288654a9b10a7a7dfe586d631b8c4227"
+      "blob": "361555d99d2b727b3038bb6eebd8d4f7261949b9"
     },
     "tables": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
@@ -18,7 +18,7 @@
     },
     "figure_manifest": {
       "path": "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
-      "blob": "1549e36780201202cbe2d309f4365eebe117329f"
+      "blob": "c8fd7b273c5b374c0762ec4e85e9b6d81399e542"
     },
     "figure_generator": {
       "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
@@ -38,7 +38,7 @@
     },
     "supplement": {
       "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
-      "blob": "79293b3c55f558345445e142da5f0264368ab493"
+      "blob": "b8f998b8f333e8987523b004fa51cd1680131806"
     },
     "claim_sentence_audit": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
@@ -46,7 +46,7 @@
     },
     "consolidation_status": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md",
-      "blob": "5f9acd64547b003eaac9f125c7026649f19c784a"
+      "blob": "963b23026d4410193127b73a99e44af87b022fa8"
     },
     "figure_table_plan": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md",
@@ -54,7 +54,7 @@
     },
     "publication_programme": {
       "path": "docs/publication/PUBLICATION_PROGRAMME.md",
-      "blob": "25eda070f7937db55f896c0a933ba30056cbc494"
+      "blob": "d6c12af66ed5876fa548fe244ec7187fa49f066a"
     },
     "e7_figure": {
       "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
@@ -165,20 +165,24 @@
     },
     "production_boundary": {
       "bootstrap_source_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
-      "bootstrap_source_blob": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+      "bootstrap_source_blob": "135803e056697a20aa3295721b02c77aba22367a",
       "ppa_wu01_status_path": "integration/audits/PPA_WU01_STATUS.json",
       "ppa_wu01_status_blob": "3034a68e8675b958cc15d4ef24a8aeffde7d8375",
       "ppa_wu03_status_path": "integration/audits/PPA_WU03_STATUS.json",
       "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
       "groundwater_profile": "all tiles bottom_mode=5",
       "limiting_guard": "drainage_response_active rejected by tile_config_valid before owner-state allocation",
-      "ppa_wu03_broadens_groundwater_process_profile": false
+      "ppa_wu03_broadens_groundwater_process_profile": false,
+      "ppa_wu02_status_path": "integration/audits/PPA_WU02_STATUS.json",
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "ppa_wu02_scope": "homogeneous bottom_mode=2 prescribed-qbot normal application only",
+      "ppa_wu02_broadens_groundwater_process_profile": false
     },
     "result": {
       "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "result_blob": "5e8b66f82f1f94fcaaf4214cdc57e5fc2706bf86",
+      "result_blob": "2e925e7b8cd2f14663ffac0c58bc58d8e5223c8c",
       "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
-      "narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
+      "narrative_blob": "3443174e6c7ea07191651270653b7f3547b17b0d",
       "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
       "loose_completed_windows": 0,
       "strong_completed_windows": 0,
@@ -186,13 +190,14 @@
     },
     "qualification": {
       "test_path": "tests/publication/validate_pub_gc_e7_component_domain.py",
-      "test_blob": "396973085161b87be0ecc7072c6ccacb15608068",
+      "test_blob": "f41439c7588c5c86ea3f909206f62f9326c05923",
       "workflow_path": ".github/workflows/pub-gc-e7-component-domain.yml",
-      "workflow_blob": "af5babdd67f158aaac8dec02d76f13b133c6057e",
-      "source_head": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
-      "run_id": 35375181814,
-      "job_id": 105698080443,
-      "conclusion": "success"
+      "workflow_blob": "b6179e8ffcb5f3095872c35ca97beabe1f3a4088",
+      "source_head": "9834b1d2518c83a8656c05bedfd742dad247e5f3",
+      "run_id": 35376148612,
+      "job_id": 105701181336,
+      "conclusion": "success",
+      "reconcile_marker": "PUB_GC_E7_NO_WU02_GW_PROCESS_WIDENING=PASS"
     },
     "safeguards": {
       "date_replacement": false,
@@ -205,5 +210,5 @@
     "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
     "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability."
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package. E7 is a closed preregistered realistic component-domain result; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package after PPA-WU02 reconcile. E7 remains closed as a preregistered realistic component-domain result; final archival release/DOI remains a later submission task."
 }
