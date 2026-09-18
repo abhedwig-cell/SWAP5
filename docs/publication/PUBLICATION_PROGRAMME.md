@@ -94,7 +94,7 @@ The technical ability to support N:1 coupling is infrastructure, not the intende
 
 ### PUB-RC - ACCELERATE
 
-Status: **high-priority experiment within PUB-GC; independent-paper status conditional**.
+Status: **E4/E5 experiment retained in PUB-GC; independent PUB-RC line currently NOT ADMITTED**.
 
 Current research question:
 
@@ -102,7 +102,7 @@ Current research question:
 
 Current disposition:
 
-> Develop the response/acceleration study as a major experiment inside the central PUB-GC manuscript. Split it into a separate PUB-RC manuscript only if the novelty gates demonstrate a reproducible, generalizable information-value regime beyond state-of-the-art black-box multisecant coupling.
+> E4/E5 are substantive results of the central PUB-GC manuscript. The current independent PUB-RC / ACCELERATE paper line is closed because the preregistered E5 information-value gate was not passed. It may be reopened only if later work produces qualitatively new, reproducible evidence beyond the tested scalar coupling problem.
 
 PUB-RC must not claim novelty from derivative-informed coupling, interface Jacobians, autonomous/multirate component integration, dynamic hydrological storage response, surrogate-assisted quasi-Newton coupling, or hydrological convergence-regime analysis by themselves.
 
@@ -374,5 +374,14 @@ Persistent evidence:
 - `PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.md`
 - `PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.md`
 - `PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md`
+- `PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json`
+- `PUB_GC_E4_RESPONSE_IDENTITY_TABLE.csv`
+- `PUB_GC_E5_INFORMATION_VALUE_PREREGISTRATION.md`
+- `PUB_GC_E5_LINEAR_CONTROL.md`
+- `PUB_GC_E5_INFORMATION_VALUE_RESULT.md`
+- `PUB_GC_E5_INFORMATION_VALUE_RESULT.json`
+- `PUB_GC_E5_INFORMATION_VALUE_COMPARISON.csv`
 
 E3 is closed as **SUPPORTED_RESTRICTED**. The main matrix and stronger-flux refinement establish a weak-feedback control in which iterative coupling restores strict interface closure but changes groundwater head only at nanometre scale. Predictor and long-window corrector failures were localized to the bounded SWAP transaction/retry envelope rather than the outer coupling algorithm. A materially strong positive-feedback case remains future evidence and must come from a different admitted hydrological state or groundwater-response geometry rather than relaxed tolerances.
