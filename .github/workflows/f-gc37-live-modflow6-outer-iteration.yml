@@ -1,0 +1,40 @@
+name: F-GC37 live MODFLOW6 outer iteration host
+
+on:
+  push:
+    branches:
+      - work/f-gc37-live-modflow6-outer-iteration-host
+    paths:
+      - 'src/adapter/modflow6_outer_iteration_host.py'
+      - 'src/adapter/modflow6_xmi_package_adapter.py'
+      - 'src/adapter/modflow6_fgc34_ctypes_publisher.py'
+      - 'src/adapter/mod_modflow6_fgc34_c_bridge.f90'
+      - 'src/runtime/mod_modflow6_api_binding.f90'
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'tests/fgc/test_fgc37_live_modflow6_outer_iteration.py'
+      - 'tests/fgc/run_fgc37_live_modflow6_outer_iteration.sh'
+      - 'docs/integration/F-GC37_LIVE_MODFLOW6_OUTER_ITERATION_HOST.md'
+      - 'integration/f-gc/F-GC37_STATUS.json'
+      - '.github/workflows/f-gc37-live-modflow6-outer-iteration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-outer-iteration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install \
+            git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 \
+            git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run live outer-iteration gate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/fgc/run_fgc37_live_modflow6_outer_iteration.sh
