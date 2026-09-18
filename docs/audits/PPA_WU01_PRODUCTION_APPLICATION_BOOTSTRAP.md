@@ -2,11 +2,12 @@
 
 ## Status
 
-**QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION**
+**CANONICAL_ADMITTED_RESTRICTED_PRODUCTION_CLOSED**
 
 Workunit: PPA-WU01  
 Branch: `work/ppa-wu01-production-application-bootstrap`  
-Qualified source head: `92181c96486c7d49ac1d6cd19a7236f1dcf204b7`
+Qualified source head: `92181c96486c7d49ac1d6cd19a7236f1dcf204b7`  
+Canonical admission: PR #306, merge `a95a14d3544ae6f7dc86d04694c9d466518f65b7`
 
 ## Purpose
 
@@ -125,3 +126,20 @@ The former statement that SWAP5 has no production config-to-owned-FMR bootstrap 
 The remaining application gap is broader composition around this restricted typed owner, especially normal atmospheric/input ingestion and broader application configuration. PPA-WU03 remains the planned workunit for that boundary.
 
 For F-GC50, the internal SWAP5 bootstrap prerequisite is satisfied only for the restricted WU01 production profiles. Actual iMOD Coupler product integration still requires an authorized upstream product-driver extension and an explicit mapping from product configuration into an admitted SWAP5 bootstrap profile.
+
+
+## Canonical closeout
+
+PPA-WU01 was canonically admitted through PR #306 at `a95a14d3544ae6f7dc86d04694c9d466518f65b7`.
+
+Final admission-head checks:
+
+- owner qualification run `35368123088`: PASS;
+- documentation run `35368123177`: PASS;
+- F-CI canonical qualification run `35368122940`: PASS.
+
+The pre-merge canonical advanced only through PUB-GC manuscript/submission-readiness documentation. That live delta had no overlap with WU01 source, tests, workflow, audit register or F-CI preservation authority.
+
+The moving-preservation prerequisite discovered during admission was closed separately by PR #308. Its canonical qualification run `35367229074` passed with no production mutation.
+
+PPA-WU01 is therefore **CLOSED**. Any broader atmospheric/input composition belongs to PPA-WU03; lower-boundary authority recovery belongs to PPA-WU02.
