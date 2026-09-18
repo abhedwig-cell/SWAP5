@@ -1,0 +1,242 @@
+{
+  "schema": "swap5.publication.p2e21-ref-high-representation-bound-result.v1",
+  "workunit": "PUB-P2E21",
+  "publication_owner": "PUB-SQ",
+  "phase": "REPRESENTATION_BOUNDED_REF_HIGH_QUALIFIED_36_OF_36",
+  "parent_ref_high_authority": {
+    "branch": "work/pub-p2e20-ref-high-scaled-construction",
+    "head": "a561ff1389af06d4521185b9d0d080785716bf3b",
+    "result_blob": "1657c73e631f4a5e6b9ee65d43669054a65e3008",
+    "prior_population": "33 of 36 casewise REF-HIGH qualified under the 1.6e-15 cm integrated-invariant control policy"
+  },
+  "causal_diagnostic_authority": {
+    "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+    "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+    "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+    "role": "Motivated a prospective representation-derived total-balance bound; observed D3 residual magnitudes and ratios were not inputs to the P2E21 formula."
+  },
+  "authorities": {
+    "preregistration_blob": "789909855e70c06d0f333e48d3e5ab5c1bdc2a97",
+    "test_blob": "ab0cfe911af87ccad0926b0ed51d05feaa97ed20",
+    "runner_blob": "ec36a873d37ea4b57a1da5b1ce412cc126697502",
+    "workflow_blob": "51d5b2b9f43efa90b627db8c8e2cdfc818ad07d5"
+  },
+  "execution": {
+    "head": "5b41d4da909bbf7958ceed75119b8ef08e520fd1",
+    "workflow_run": 35294112249,
+    "job": 105442963951,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "88273dc34f0a37af8aa2ada57c547f6c6e28cf40613891ec7b84a12db1061387",
+    "scientific_result_was_ci_pass_condition": false
+  },
+  "policy_definition": {
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "compartment_rate_formula": "1.6e-15 / dt",
+    "total_integrated_bound_formula": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+    "total_rate_formula": "total_integrated_bound_cm / dt",
+    "empirical_safety_factor": "none",
+    "current_failed_residual_used_in_formula": false,
+    "D3_exceedance_ratio_used_in_formula": false,
+    "production_tolerance_changed": false
+  },
+  "route_results": {
+    "control_policy": {
+      "substeps_8": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "substeps_16": {
+        "valid": 35,
+        "invalid": 1
+      },
+      "substeps_32": {
+        "valid": 34,
+        "invalid": 2
+      }
+    },
+    "representation_bounded_policy": {
+      "substeps_8": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "substeps_16": {
+        "valid": 36,
+        "invalid": 0
+      },
+      "substeps_32": {
+        "valid": 36,
+        "invalid": 0
+      }
+    },
+    "restored_fine_level_records": 3,
+    "representation_bound_violation_cases": 0
+  },
+  "policy_endpoint_neutrality": {
+    "overlapping_route_valid_comparisons": 105,
+    "pass_count": 105,
+    "fail_count": 0,
+    "maximum_fraction_of_frozen_budget": {
+      "D_h_inf": {
+        "fraction": 2.258864904027637e-9,
+        "value_cm": 2.1032064978498966e-12,
+        "case": 26,
+        "material": "O14",
+        "Se": 0.65,
+        "forcing": "NOMINAL",
+        "substeps": 32
+      },
+      "D_h_rms": {
+        "fraction": 1.6531963226645063e-9,
+        "value_cm": 7.049787174544498e-13,
+        "case": 26,
+        "material": "O14",
+        "Se": 0.65,
+        "forcing": "NOMINAL",
+        "substeps": 32
+      },
+      "D_theta_inf": {
+        "fraction": 2.479819933078717e-10,
+        "value": 4.440892098500626e-16,
+        "case": 26,
+        "material": "O14",
+        "Se": 0.65,
+        "forcing": "NOMINAL",
+        "substeps": 32
+      },
+      "D_theta_rms": {
+        "fraction": 2.2225301074187991e-10,
+        "value": 1.4621156719869436e-16,
+        "case": 26,
+        "material": "O14",
+        "Se": 0.65,
+        "forcing": "NOMINAL",
+        "substeps": 32
+      },
+      "D_storage_abs_cm": {
+        "fraction": 1,
+        "value_cm": 2.842170943040401e-14,
+        "case": 6,
+        "material": "B01",
+        "Se": 0.96,
+        "forcing": "NOMINAL",
+        "substeps": 32,
+        "note": "Exact inclusive contact with the frozen machine-scale storage budget; retained as boundary contact rather than numerical margin."
+      }
+    }
+  },
+  "temporal_ref_high_stability": {
+    "cases": 36,
+    "required_comparisons_per_case": [
+      "8_vs_16",
+      "16_vs_32"
+    ],
+    "comparison_count": 72,
+    "qualified_count": 36,
+    "route_unresolved_count": 0,
+    "policy_unresolved_count": 0,
+    "stability_unresolved_count": 0,
+    "maximum_fraction_of_frozen_budget": {
+      "D_h_inf": {
+        "fraction": 0.06707268207870665,
+        "value_cm": 0.004954228365043889,
+        "case": 18,
+        "material": "O01",
+        "Se": 0.96,
+        "forcing": "NOMINAL",
+        "pair": "8_VS_16"
+      },
+      "D_h_rms": {
+        "fraction": 0.09424837698726814,
+        "value_cm": 0.001802267506856776,
+        "case": 18,
+        "material": "O01",
+        "Se": 0.96,
+        "forcing": "NOMINAL",
+        "pair": "8_VS_16"
+      },
+      "D_theta_inf": {
+        "fraction": 0.0648973900446896,
+        "value": 1.1621904591474497e-7,
+        "case": 20,
+        "material": "O05",
+        "Se": 0.65,
+        "forcing": "NOMINAL",
+        "pair": "8_VS_16"
+      },
+      "D_theta_rms": {
+        "fraction": 0.07411717378062259,
+        "value": 0.00000264965924804303,
+        "case": 18,
+        "material": "O01",
+        "Se": 0.96,
+        "forcing": "NOMINAL",
+        "pair": "8_VS_16"
+      },
+      "D_storage_abs_cm": {
+        "fraction": 1,
+        "value_cm": 2.842170943040401e-14,
+        "case": 36,
+        "material": "O18",
+        "Se": 0.96,
+        "forcing": "NOMINAL",
+        "pair": "8_VS_16",
+        "note": "The P2E20 1.5x storage failure is removed, but the new 8-vs-16 result lands exactly on the inclusive frozen storage boundary. The 16-vs-32 storage result also lands exactly on that boundary."
+      }
+    }
+  },
+  "total_bound_and_mass": {
+    "minimum_observed_pre_solve_total_integrated_bound_cm": 6.661338147750939e-15,
+    "maximum_observed_pre_solve_total_integrated_bound_cm": 1.7763568394002505e-14,
+    "maximum_abs_typed_integrated_mass_residual_cm_on_representation_bounded_routes": {
+      "value": 5.688832564743063e-15,
+      "case": 35,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "substeps": 32
+    },
+    "hard_scientific_mass_limit_cm": 1e-12,
+    "note": "The research total-balance convergence bound remains at machine-representation scale and is far below the independent hard typed integrated-mass validity limit."
+  },
+  "epistemic_interpretation": {
+    "supported": [
+      "A pre-solve, formula-derived total-column representation bound restores the three fine Reference level records that remain invalid under the prior integrated-invariant control policy.",
+      "Where both policies converge, all 105 paired endpoints remain inside the already frozen P2E18 numerical-reference budgets.",
+      "All 36 frozen cases satisfy route validity plus both original 8-vs-16 and 16-vs-32 REF-HIGH stability comparisons under the representation-bounded policy."
+    ],
+    "important_boundary": [
+      "Storage qualification has no positive numerical margin in the worst cases: both policy-neutrality and temporal-stability surfaces touch their inclusive frozen machine-scale storage budgets.",
+      "P2E21 is a research Reference-policy qualification on already studied Reference cases, not independent confirmation of RossFast."
+    ],
+    "not_supported": [
+      "A production Reference tolerance-policy change.",
+      "A claim that the representation-bound formula is a universal floating-point error bound outside this model/state contract.",
+      "RossFast speedup or equal-error performance.",
+      "Transaction-level or long-horizon trajectory equivalence."
+    ]
+  },
+  "qualified_reference_authority": {
+    "population_definition": "All 36 frozen E3 cases.",
+    "endpoint": "32-substep Reference endpoint under REPRESENTATION_BOUNDED_TOTAL policy.",
+    "case_replacement_allowed": false,
+    "future_equal_error_population_size": 36,
+    "unresolved_cases": 0,
+    "timing_authorized_here": false
+  },
+  "firewalls": {
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "production_source_mutated": false,
+    "production_tolerance_changed": false,
+    "P2E20_reclassified": false,
+    "D3_residual_fitting_used": false,
+    "empirical_safety_factor_used": false,
+    "case_removed_or_replaced": false,
+    "stability_budget_changed": false
+  },
+  "verdict": "REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
+  "next_permitted_action": "Reconcile PUB-SQ governance, freeze this exact 36-case REF-HIGH authority and preregister the equal-error solver-control/work experiment. Timing remains forbidden until candidate-independent error matching, solver control levels, repetition/warm-up rules and cost statistics are frozen."
+}
