@@ -186,9 +186,9 @@ def main()->None:
                     <=64*np.finfo(float).eps*max(1.0,abs(ledger_exchange)),
                     "ledger exchange does not equal final accepted SWAP bottom amount")
             public_rate_amount=final_q_swap*WINDOW_DAY*DAY_TO_S
-            require(abs(public_rate_amount+ledger_exchange)
+            require(abs(public_rate_amount-ledger_exchange)
                     <=256*np.finfo(float).eps*max(1.0,abs(public_rate_amount),abs(ledger_exchange)),
-                    "public q_swap sign is inconsistent with native accepted bottom amount")
+                    "public q_swap rate and accepted outward ledger amount are inconsistent")
             require(not session.timestep_ready_for_finalize(),"MODFLOW timestep remained publishable")
             require(session.finalize_time_step_once()==PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,"second MODFLOW timestep finalization not blocked")
             raw.finalize(); initialized=False
