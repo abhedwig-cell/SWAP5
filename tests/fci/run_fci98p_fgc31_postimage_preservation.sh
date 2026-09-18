@@ -23,6 +23,7 @@ expected=(
   .github/workflows/fci98p-fgc31-postimage-preservation.yml
   integration/f-ci/F-CI98P_STATUS.json
   tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
+  tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
   tests/fci/run_fci98p_fgc31_postimage_preservation.sh
   tests/ross/run_ross12_serialized_production_wiring.sh
 )
@@ -90,6 +91,11 @@ checks={
  'FGC31_ADMISSION=7b864853ca22baa73141b2dec9ed2f3915ef520d',
  '4e5491c997ed0752a4db9abd09b5ad3daf394db2',
  'FCI96_FGC31_BACKEND_SUCCESSOR=PASS'
+],
+'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh':[
+ 'FGC31_ADMISSION=7b864853ca22baa73141b2dec9ed2f3915ef520d',
+ 'FGC31_BACKEND=4e5491c997ed0752a4db9abd09b5ad3daf394db2',
+ 'FCI_CANONICAL_FGC31_BACKEND_SUCCESSOR=PASS'
 ],
 'tests/ross/run_ross12_serialized_production_wiring.sh':[
  'src/solver/mod_b110_smooth_freatic_projection.f90',
