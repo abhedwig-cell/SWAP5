@@ -75,11 +75,14 @@ def require_allclose(
     tolerance: float,
     message: str,
 ) -> None:
+    max_abs_diff = float(np.max(np.abs(actual - expected)))
     if not np.all(np.isfinite(actual)) or not np.allclose(
         actual, expected, rtol=0.0, atol=tolerance
     ):
         raise AssertionError(
-            f"{message}: actual={actual!r}, expected={expected!r}, tol={tolerance}"
+            f"{message}: actual={np.array2string(actual, precision=17)}, "
+            f"expected={np.array2string(expected, precision=17)}, "
+            f"max_abs_diff={max_abs_diff:.17g}, tol={tolerance:.17g}"
         )
 
 
@@ -301,6 +304,16 @@ def main() -> None:
         clean_xold,
         0.0,
         "independent kernels did not start from same accepted XOLD",
+    )
+    print("FGC38_ITERATIVE_FINAL_HEAD=" + np.array2string(iterative_head, precision=17))
+    print("FGC38_CLEAN_FINAL_HEAD=" + np.array2string(clean_head, precision=17))
+    print(
+        "FGC38_FINAL_HEAD_MAX_ABS_DIFF="
+        f"{float(np.max(np.abs(iterative_head - clean_head))):.17g}"
+    )
+    print(
+        "FGC38_SOLVE_COUNTS="
+        f"iterative:{iterative_kernel.solve_calls},clean:{clean_kernel.solve_calls}"
     )
     require_allclose(
         iterative_head,
