@@ -1,0 +1,42 @@
+name: F-CI103 F-GC36 live MODFLOW6 bridge admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci103-fgc36-live-bridge-admission
+    paths:
+      - 'src/adapter/mod_modflow6_fgc34_c_bridge.f90'
+      - 'src/adapter/modflow6_fgc34_ctypes_publisher.py'
+      - 'integration/f-gc/F-GC36_STATUS.json'
+      - 'qualification/F-VQ110_STATUS.json'
+      - 'tests/fgc/test_fgc36_live_modflow6_bridge.py'
+      - 'tests/fgc/run_fgc36_live_modflow6_bridge.sh'
+      - 'tests/fvq/test_fvq110_fgc36_live_bridge_independent.py'
+      - 'tests/fvq/run_fvq110_fgc36_live_bridge_independent.sh'
+      - 'tests/fci/run_fci103_fgc36_live_bridge_admission.sh'
+      - '.github/workflows/f-ci103-fgc36-live-bridge-admission.yml'
+      - 'integration/f-ci/F-CI103_STATUS.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Install compiler and pinned Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install             git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902             git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: F-CI103 exact-source live admission qualification
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/fci/run_fci103_fgc36_live_bridge_admission.sh

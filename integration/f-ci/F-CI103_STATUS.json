@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI103",
+  "capability": "F-GC36",
+  "title": "Live MODFLOW6 F-GC34 Bridge Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "PENDING_ADMISSION_GATE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "aadde02fc35e7bdaddb1604c6f8a7284f43db813",
+    "dependencies": [
+      "F-GC34 closed canonical typed API binding",
+      "F-GC35 closed canonical XMI package adapter"
+    ]
+  },
+  "owner": {
+    "branch": "work/f-gc36-live-modflow6-fgc34-bridge-reconciled",
+    "checkpoint_head": "8d6f723d4de9b3cc47bb5012b67237aa7fc8febb",
+    "exact_head_run": 35295173564,
+    "exact_head_job": 105446133349,
+    "conclusion": "success",
+    "production_blobs": {
+      "src/adapter/mod_modflow6_fgc34_c_bridge.f90": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+      "src/adapter/modflow6_fgc34_ctypes_publisher.py": "ccf16f446ae9aaab34dae6f432082d70569faad9"
+    },
+    "status_blob": "2474775ee3d015ece5c7ccf0c01eac218cd0f3d1"
+  },
+  "independent": {
+    "work_unit": "F-VQ110",
+    "status_head": "ab2093ba1e2efe70e4bce17e74289f400d0ecfbd",
+    "exact_head_run": 35295373589,
+    "exact_head_job": 105446725154,
+    "conclusion": "success",
+    "status_blob": "04779fc2c96af5027e69f3507467a7a1ac402db4",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "external_dependencies": {
+    "modflow6": "6.8.0",
+    "modflow6_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "xmipy": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "flopy": "1a783da6582f8203190a8d6b1d7a60659022afdb"
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/adapter/mod_modflow6_fgc34_c_bridge.f90",
+      "src/adapter/modflow6_fgc34_ctypes_publisher.py"
+    ],
+    "owner_live_replay_required": true,
+    "independent_live_replay_required": true
+  },
+  "exclusions": [
+    "production MODFLOW solve driver",
+    "SWAP predictor/corrector orchestration",
+    "prepared-solve iterative coupling",
+    "production head exchange",
+    "Ribasim",
+    "irrigation",
+    "performance/scaling"
+  ],
+  "next_permitted_action": "Run F-CI103 exact live admission postimage. If green, persist QUALIFIED_FOR_CANONICAL_ADMISSION, requalify exact status head, reconcile live canonical, then non-force fast-forward."
+}
