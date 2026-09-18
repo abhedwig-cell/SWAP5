@@ -14,7 +14,7 @@ def require(x,m):
 
 require('interface_head_m_to_swap_bottom_pressure_head_cm' in materializer,'canonical head/pressure mapping not used')
 require('interface_head_m_to_swap_pressure_head_cm' not in materializer,'stale groundwater mapping symbol remains')
-require('checkpoint=self%origin_checkpoint' in participant,'real FMR correctors not rooted in captured origin')
+require('self%origin_checkpoint, self%trial_result' in participant,'real FMR correctors not rooted in captured origin')
 require('backend%run_trial' in participant,'concrete participant does not use FMR production trial path')
 require('backend%commit_trial_candidate' in participant,'concrete participant bypasses FMR kernel commit')
 require('backend%discard_trial_candidate' in participant,'concrete participant bypasses FMR rollback')
