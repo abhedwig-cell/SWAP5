@@ -40,7 +40,8 @@ assert "tile%parameters%drainage_response_active .or. tile%parameters%root_extra
 assert git_blob_sha("integration/audits/PPA_WU02_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU02"]["status_blob"]
 assert wu02["status"] == "CANONICAL_ADMITTED_CLOSED"
 assert "bottom_mode=2" in wu02["admission"]["scope"]
-assert "groundwater coupling changes" in wu02["first_slice"]["explicitly_not_admitted"]
+assert "PPA-WU01/F-GC mode5 groundwater" in wu02["first_slice"]["preserved_application_authority"]
+assert "mixed bottom-mode production profiles" in wu02["admission"]["nonclaims"]
 
 assert git_blob_sha("integration/audits/PPA_WU03_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU03"]["status_blob"]
 assert wu03["state"] == "CANONICAL_ADMITTED_CLOSED"
