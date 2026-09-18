@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#222"/></marker></defs>
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#111}.title{font-size:28px;font-weight:700}.head{font-size:20px;font-weight:700}.lab{font-size:17px}.small{font-size:14px}.box{fill:#f6f6f6;stroke:#222;stroke-width:2}.pass{fill:#e8e8e8;stroke:#222;stroke-width:2}.stop{fill:#d4d4d4;stroke:#111;stroke-width:3}.line{stroke:#222;stroke-width:2;fill:none;marker-end:url(#a)}.dash{stroke:#555;stroke-width:2;stroke-dasharray:8 6;fill:none}
+</style>
+<text x="40" y="45" class="title">F7. E7 realistic transferability closes at the production application-owner boundary</text>
+
+<rect x="60" y="100" width="250" height="145" rx="10" class="pass"/>
+<text x="185" y="135" class="head" text-anchor="middle">Exact Hupsel authority</text>
+<text x="185" y="170" class="lab" text-anchor="middle">whole typed run PASS</text>
+<text x="185" y="197" class="small" text-anchor="middle">32,518 accepted intervals</text>
+<text x="185" y="220" class="small" text-anchor="middle">exact BAL/BLC identity</text>
+
+<line x1="310" y1="172" x2="390" y2="172" class="line"/>
+
+<rect x="400" y="100" width="270" height="145" rx="10" class="pass"/>
+<text x="535" y="135" class="head" text-anchor="middle">Frozen E7 dates</text>
+<text x="535" y="170" class="lab" text-anchor="middle">2003-05-20 high dynamics</text>
+<text x="535" y="197" class="lab" text-anchor="middle">2003-06-17 median control</text>
+<text x="535" y="222" class="small" text-anchor="middle">selected before coupled output</text>
+
+<line x1="670" y1="172" x2="750" y2="172" class="line"/>
+
+<rect x="760" y="80" width="270" height="185" rx="10" class="box"/>
+<text x="895" y="115" class="head" text-anchor="middle">Authentic process composition</text>
+<text x="895" y="152" class="lab" text-anchor="middle">SWCROP=1, potato active</text>
+<text x="895" y="180" class="lab" text-anchor="middle">root-uptake pathway required</text>
+<text x="895" y="208" class="lab" text-anchor="middle">SWDRA=1</text>
+<text x="895" y="236" class="lab" text-anchor="middle">positive drainage on both days</text>
+
+<line x1="1030" y1="172" x2="1110" y2="172" class="line"/>
+
+<rect x="1120" y="80" width="230" height="185" rx="10" class="stop"/>
+<text x="1235" y="115" class="head" text-anchor="middle">PPA-WU01 mode 5</text>
+<text x="1235" y="148" class="lab" text-anchor="middle">production GW owner</text>
+<text x="1235" y="185" class="lab" text-anchor="middle">root active → NOT ADMITTED</text>
+<text x="1235" y="215" class="lab" text-anchor="middle">drainage active → NOT ADMITTED</text>
+<text x="1235" y="243" class="small" text-anchor="middle">O0/O2 dynamic gate PASS</text>
+
+<line x1="1235" y1="265" x2="1235" y2="345" class="line"/>
+
+<rect x="930" y="355" width="420" height="145" rx="10" class="stop"/>
+<text x="1140" y="392" class="head" text-anchor="middle">Preregistered stop</text>
+<text x="1140" y="427" class="lab" text-anchor="middle">REALISTIC_COMPONENT_DOMAIN_LIMIT</text>
+<text x="1140" y="455" class="small" text-anchor="middle">no process-complete participant → no coupled iteration</text>
+<text x="1140" y="480" class="small" text-anchor="middle">no physics/tolerance/date/window rescue</text>
+
+<path d="M930 428 H690" class="dash"/>
+<rect x="390" y="350" width="300" height="155" rx="10" class="box"/>
+<text x="540" y="387" class="head" text-anchor="middle">Not executed by stop rule</text>
+<text x="540" y="424" class="lab" text-anchor="middle">F-GC49D context</text>
+<text x="540" y="452" class="lab" text-anchor="middle">MODFLOW6 timestep</text>
+<text x="540" y="480" class="lab" text-anchor="middle">loose / strong comparison</text>
+
+<rect x="60" y="350" width="260" height="155" rx="10" class="pass"/>
+<text x="190" y="387" class="head" text-anchor="middle">Authority preserved</text>
+<text x="190" y="424" class="lab" text-anchor="middle">no SWAP prescribed-head trial</text>
+<text x="190" y="452" class="lab" text-anchor="middle">no MODFLOW state advance</text>
+<text x="190" y="480" class="lab" text-anchor="middle">no interface-mass publication</text>
+
+<line x1="930" y1="545" x2="320" y2="545" class="dash"/>
+<text x="685" y="580" class="head" text-anchor="middle">Scientific interpretation</text>
+<text x="685" y="617" class="lab" text-anchor="middle">Realistic transferability is bounded by application-owner capability composition before outer coupling is reached.</text>
+<text x="685" y="650" class="small" text-anchor="middle">This is a component-domain result, not coupling divergence and not regional Hupsel groundwater validation.</text>
+<text x="685" y="700" class="small" text-anchor="middle">Evidence: E7 static gate run 35375158694; PPA-WU01 O0/O2 run 35375158471.</text>
+</svg>
