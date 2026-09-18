@@ -421,7 +421,8 @@
         ]
       },
       "swap5_implementation_authority": [
-        "src/crop/mod_wofost81_*",
+        "src/crop/mod_wofost81_crop_owner_state.f90",
+        "src/crop/mod_wofost81_one_day_candidate.f90",
         "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
         "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90",
         "integration/f-ci/F-CI89_STATUS.json"
@@ -727,7 +728,12 @@
       },
       "swap5_implementation_authority": [
         "src/process/mod_drainage_process.f90",
-        "src/process/mod_drainage_*",
+        "src/process/mod_drainage_spatial_distribution.f90",
+        "src/process/mod_drainage_tabulated_response.f90",
+        "src/process/mod_drainage_hooghoudt_ipos1_response.f90",
+        "src/process/mod_drainage_ernst_ipos45_response.f90",
+        "src/process/mod_drainage_empirical_interflow_response.f90",
+        "src/process/mod_drainage_multilevel_aggregation.f90",
         "src/runtime/mod_fmr_drainage_response_binding.f90",
         "docs/science/drainage.md"
       ],
@@ -1427,7 +1433,7 @@
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_groundwater_application_context.f90",
         "src/runtime/mod_groundwater_application_plan.f90",
-        "src/runtime/mod_groundwater_participant_registry.f90",
+        "src/runtime/mod_fmr_groundwater_participant_registry.f90",
         "src/adapter/mod_fmr_groundwater_application_c_api.f90",
         "src/adapter/fmr_groundwater_application_runtime.py",
         "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
