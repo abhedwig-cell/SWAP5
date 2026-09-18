@@ -1,0 +1,25 @@
+name: PUB-P2E12 Reference common material domain
+
+on:
+  push:
+    branches:
+      - research/pub-p2e12-reference-common-material-domain
+    paths:
+      - 'docs/publication/P2E12_REFERENCE_COMMON_MATERIAL_DOMAIN_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e12_reference_common_material_domain.f90'
+      - 'tests/publication/run_pub_p2e12_reference_common_material_domain.sh'
+      - '.github/workflows/pub-p2e12-reference-common-material-domain.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-common-material-domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute frozen Reference-only common-material domain map
+        run: bash tests/publication/run_pub_p2e12_reference_common_material_domain.sh
