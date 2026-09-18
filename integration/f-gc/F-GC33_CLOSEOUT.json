@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "production_admission_head": "ae15d47dab2a31c5099ce1b4ff8ee01918153405",
+    "preimage": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "historical F-GC33 dependency on provisional MultiSWAP F-GC31 was corrected to canonical F-GC40; production blob remained byte-identical"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "3d01e4301ef0613b8e5440b1f74b0b9b62123f3d",
+      "exact_head_run": 35292855536,
+      "exact_head_job": 105439233696,
+      "result": "current-canonical F-GC40 owner replay passed under O0/O2 with output identity"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ107",
+      "final_status_head": "6e3b1c74e271aaab6dbfa2d130343f054ffd7c38",
+      "exact_head_run": 35292999311,
+      "exact_head_job": 105439666458,
+      "result": "independent direct coefficient, multihead volume-flux, reference-invariance, area/sign and negative-input oracles passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI100",
+      "production_admission_head": "ae15d47dab2a31c5099ce1b4ff8ee01918153405",
+      "initial_gate_run": 35293086626,
+      "exact_status_head_run": 35293208199,
+      "result": "exact one-production-file postimage replayed owner and independent qualification and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "pure typed F-GC40 areal-affine to MODFLOW6 HCOF/RHS volume-flux transform",
+    "cell-area and day-unit conversion",
+    "sign-preserving linear boundary terms",
+    "coupling identity retention without node-index reinterpretation"
+  ],
+  "preserved_limits": [
+    "no XMI pointer access",
+    "no API package mutation",
+    "no NODELIST mapping",
+    "no predictor/corrector orchestration",
+    "no Ribasim or irrigation"
+  ],
+  "next_permitted_action": "After closeout qualification, proceed to current-canonical materialization of F-GC34 typed MODFLOW6 API binding/publication. Do not reopen F-GC33 to add pointer/package ownership."
+}
