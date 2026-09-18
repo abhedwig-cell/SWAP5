@@ -1,37 +1,26 @@
-# PUB-GC / COUPLE — living manuscript draft
+# PUB-GC / COUPLE — manuscript draft
 
-## Working title
+## Title
 
-**Solver-autonomous finite-window coupling of vadose-zone and groundwater models: a conservative SWAP5–MODFLOW6 implementation**
+**Hydrologically accountable finite-window coupling of independently time-integrating vadose-zone and groundwater models: SWAP5–MODFLOW6**
 
-Alternative working title:
+## Repository manuscript status
 
-**Hydrologically accountable partitioned coupling of independently time-integrating vadose-zone and groundwater models**
+**Consolidated through E1–E6; E7 prospectively specified but not yet executed, 2026-09-18.**
 
-## Draft status
-
-**Living research manuscript — first substantive draft, 2026-09-18**
-
-This draft is intentionally result-conservative. It distinguishes:
-
-- method statements already supported by the current SWAP5 coupling architecture and qualification chain;
-- claims that still require publication-specific evidence;
-- hypotheses that may later strengthen or narrow the paper.
-
-The manuscript should evolve with the evidence. It must not promote a design intention into a scientific result.
+The scientific text below is written as a manuscript rather than as a workplan. Statements that still depend on E7 are explicitly bounded. Repository evidence pointers and readiness notes are retained after the references and are not intended for journal submission.
 
 ---
 
-## Abstract — working, result-neutral version
+## Abstract
 
-Coupling a detailed vadose-zone model to a regional groundwater model is not only a matter of exchanging recharge and groundwater head. The coupled system must reconcile different numerical time scales, preserve the physical meaning of exchange quantities, prevent rejected nonlinear iterations from contaminating model state, and ensure that water transfer is published exactly once after coupled convergence. Existing hydrological couplings, environmental modelling frameworks and generic co-simulation methods address important parts of this problem, but they make different assumptions about component ownership, temporal coordination and interface semantics.
+Coupling a process-based vadose-zone model to a groundwater model requires more than exchanging recharge and groundwater head. Repeated within-window coupling trials must preserve component state authority, exchanged quantities must retain unambiguous hydrological meaning, and only the accepted transfer may enter the water balance. We present a solver-autonomous finite-window coupling contract for SWAP5 and MODFLOW6 in which each component retains its own solver and internal time integration. SWAP5 predictor and corrector evaluations replay one coupling window from an immutable accepted origin, MODFLOW6 remains within one prepared nonlinear solve, and interface mass becomes authoritative only after coupled acceptance and ordered publication.
 
-We present a solver-autonomous finite-window coupling method for SWAP5 and MODFLOW6. Each component retains ownership of its internal numerical solution and state, while an internal coupling service coordinates repeated trials over a common coupling window. SWAP5 predictor and corrector evaluations start from one immutable accepted origin; MODFLOW6 remains within one prepared nonlinear solve; only the converged coupled state is allowed to cross the publication boundary. The interface distinguishes the SWAP lower-boundary flux, the MODFLOW-facing exchange flux, hydraulic head, storage/response information and the whole-window transferred water amount. This separation allows coupling convergence, state acceptance and mass publication to be treated as related but distinct operations.
+In a real SWAP–MODFLOW6 qualification case, native lower-boundary flux and groundwater-facing exchange were demonstrably distinct, rejected trials changed neither committed SWAP state nor interface mass, and the accepted whole-window transfer was published exactly once. Iterative coupling reduced interface residuals below the qualified criterion in two to five outer iterations, but the largest loose-to-iterative groundwater-head correction in the controlled low-flux experiments was only 5.55×10^-9 m. A stronger-flux refinement remained similarly weak before the SWAP predictor or prescribed-head corrector envelope became limiting. Independent response experiments identified the supplied SWAP coefficient as a finite-window flux-driven predictor response, u_A ≈ ΔT(∂H_end/∂q_bot)^-1, rather than a universal head-to-exchange Jacobian. In one baseline the actual head-driven response magnitude was 8.1% larger. A zero-cost exact local derivative then saved only one SWAP evaluation in 16 of 18 comparable cases relative to a cold black-box secant method and did not enlarge its convergence domain.
 
-The method is implemented through the MODFLOW6 application-programming interface and the SWAP5 transactional execution model. A restricted end-to-end qualification currently demonstrates one real SWAP column coupled to one live MODFLOW6 cell under a bounded near-equilibrium envelope. The broader research programme evaluates conservation, retry and restart behaviour, coupling-window sensitivity, hydrological response information, computational work relative to black-box multisecant coupling, and scalability. The intended contribution is not a new Newton or quasi-Newton algorithm, but a reproducible hydrological coupling contract that combines solver autonomy, finite-window iteration, typed physical exchange and exactly-once mass publication.
+Two preregistered attempts to construct a stronger synthetic hydrological-feedback case subsequently reached component-admission boundaries before a positive live-coupling case was available. These results show that component admissibility, interface semantics, coupled convergence and hydrological relevance are distinct parts of the coupling problem. The contribution is therefore a conservative hydrological coupling contract, not a new nonlinear solver. A realistic Hupselbrook application is reserved as the next external-validity test and is not used to broaden the present evidence prematurely.
 
 ---
-
 # 1. Introduction
 
 ## 1.1 Why vadose-zone–groundwater coupling remains difficult
@@ -50,16 +39,13 @@ These concerns become more important when independently developed models are cou
 
 ## 1.2 Existing coupling approaches provide important but incomplete precedents
 
-Vadose-zone and groundwater coupling has a substantial history. HYDRUS-based MODFLOW packages established bidirectional exchange between a Richards-equation vadose-zone model and MODFLOW, including repeated feedback between groundwater level and recharge. MetaSWAP/SIMGRO developed a tightly integrated shared-state approach in which groundwater level and a dynamic storage relation are used to couple unsaturated-zone and groundwater response. These studies demonstrate that iterative vadose-zone–groundwater feedback, dynamic response coefficients and differences in internal hydrological representation are not new in themselves.
+Bidirectional vadose-zone–groundwater coupling is well established. HYDRUS-based MODFLOW packages have used repeated feedback between groundwater head and Richards-equation vadose-zone flow (Twarakavi et al., 2008; Zeng et al., 2019). SIMGRO/MetaSWAP uses shared hydrological state and dynamic storage relations to couple unsaturated and saturated response (van Walsum & Veldhuizen, 2011). More recent integrated-model developments likewise demonstrate that cross-component hydrological coupling and large-scale composition are established modelling problems rather than new ideas in themselves (Bailey et al., 2025; Abbaszadeh et al., 2025; Yang et al., 2026).
 
-Environmental modelling frameworks address another part of the problem. OpenMI and later HydroCouple provide generic concepts for exchanging quantities among model components and for handling spatial and temporal mappings. The Basic Model Interface (BMI) similarly standardizes access to model state and execution. For MODFLOW6, the application-programming interface and XMI layer provide external control of model variables and nonlinear solution without requiring source-code fusion. These developments make modern, maintainable external coupling technically feasible.
+Generic modelling and interoperability frameworks address another part of the problem. OpenMI provides formal exchange and temporal/spatial mapping concepts for independently developed environmental models (Buahin & Horsburgh, 2018), while the MODFLOW6 application-programming interface permits external control of simulation state and nonlinear solution without source-code fusion (Hughes et al., 2022). FMI provides analogous component-state and co-simulation concepts at a general systems level.
 
-A third body of work comes from partitioned multiphysics and co-simulation. Fixed-point iteration, relaxation, Aitken acceleration, interface quasi-Newton methods, Anderson acceleration, waveform iteration and interface-Jacobian methods all address the convergence of independently implemented components. FMI and preCICE include component state save/restore or checkpoint semantics that support repeated execution of a coupling interval. Recent quasi-Newton waveform methods further show that accelerated partitioned coupling is compatible with components that use different and adaptive internal time grids.
+Partitioned multiphysics literature supplies a third set of precedents. Fixed-point iteration, Aitken relaxation, interface quasi-Newton methods, interface-Jacobian approaches and waveform iteration are established tools for accelerating coupled nonlinear systems (Degroote et al., 2010; Sicklinger et al., 2014; Rüth et al., 2021). Recent analysis of surface–subsurface iteration also shows that convergence behaviour depends on the response of both coupled subsystems and cannot be inferred from one model alone (Schüller et al., 2025).
 
-Taken together, this literature removes several broad novelty claims. Solver autonomy is not new. Rollback is not new. Iterative coupling is not new. Dynamic hydrological storage response is not new. Interface Jacobians and black-box quasi-Newton acceleration are not new. Multirate finite-window coupling is not new.
-
-The remaining scientific opportunity is therefore not to repackage these ingredients as individually novel. It is to determine whether they can be assembled into a hydrologically explicit coupling contract that preserves physical exchange meaning, model-state authority and mass accounting while retaining the independent numerical ownership of both hydrological models.
-
+These precedents remove several broad novelty claims. Solver autonomy, rollback, iterative coupling, dynamic storage response, interface derivatives and multirate finite-window iteration are not individually new. The scientific question addressed here is narrower: whether these ingredients can be assembled into a hydrologically explicit contract in which physical exchange meaning, finite-window component response, model-state authority and interface mass authority remain simultaneously testable while the two models retain numerical ownership.
 ## 1.3 The coupling gap addressed here
 
 Many legacy hydrological couplings are scientifically useful but tightly bound to the internal implementation of the participating models. This can create long-term maintenance problems when one component evolves independently. At the other extreme, generic coupling frameworks deliberately abstract away domain-specific meaning and therefore cannot by themselves decide whether two exchanged arrays represent the same physical quantity, whether a trial flux should enter a water balance, or whether a component-specific storage response is an admissible approximation to the actual interface response.
@@ -90,47 +76,45 @@ The coupling plane is the fixed lower boundary of the SWAP column. Hydraulic hea
 
 ## 1.5 Contributions of this study
 
-The contribution of this paper is methodological and hydrological rather than the invention of a new nonlinear solver.
+The contribution is methodological and hydrological rather than the invention of a new nonlinear algorithm.
 
-First, we formalize a coupling contract that separates **component numerical ownership** from **coupled-iteration ownership**. SWAP5 retains its internal timestep and candidate-state machinery; MODFLOW6 retains its prepared nonlinear solve; the coupling service coordinates only the interaction between them.
+First, we formalize a coupling contract that separates **component numerical ownership** from **coupled-iteration ownership**. SWAP5 retains its adaptive internal integration and candidate-state machinery; MODFLOW6 retains its prepared nonlinear solve; the coupling service owns only the finite-window interaction.
 
-Second, we define the interface in hydrological rather than purely numerical terms. Hydraulic head, SWAP lower-boundary flux, MODFLOW-facing exchange, storage/response information and accepted whole-window mass transfer are represented as distinct quantities with explicit time support and provenance.
+Second, we make the hydrological interface typed rather than implicit. Hydraulic head, the native SWAP lower-boundary flux, the groundwater-facing exchange, finite-window response information and the accepted integrated transfer are distinct quantities with explicit sign, datum, units, temporal support and provenance.
 
-Third, we extend rollback-safe partitioned coupling into an explicit hydrological state-authority and mass-authority rule: repeated predictor and corrector trajectories are tentative, whereas only a converged candidate may update committed model state and interface mass accounting.
+Third, we define **state authority** and **mass authority** as part of the scientific coupling contract. Repeated predictor and corrector trajectories are alternative trial histories from one accepted origin; rejected trajectories contribute neither committed SWAP state nor authoritative interface mass.
 
-Fourth, we treat response information as optional coupling information rather than as ownership of the internal solver. This allows the same coupling contract to support a black-box iteration and a response-informed iteration and permits a direct study of the computational value of exposing additional hydrological response information.
+Fourth, we distinguish the response of the flux-driven SWAP predictor map from the response of the head-driven coupled corrector map. This permits the value of extra response information to be measured rather than assumed.
 
-Fifth, we evaluate the method as a reproducible modelling capability, including conservative exchange, failure and retry behaviour, coupling-window sensitivity, coupled convergence, computational work and a path toward many-column regional coupling.
+Fifth, we evaluate the contract with falsifiable negative controls. The experiments explicitly allow weak feedback, component-domain failure and lack of derivative advantage as valid outcomes. This prevents numerical convergence, local sensitivity or software capability from being promoted automatically into hydrological importance.
 
-The paper therefore asks not whether any individual building block is unprecedented, but whether their integration produces a robust and transferable coupling method for independently time-integrating hydrological models.
-
+The current evidence supports these contributions inside bounded synthetic and qualification envelopes. Realistic Hupselbrook application evidence remains the next external-validity test; regional scaling and physical aggregation validity are not claimed from the present results.
 ## 1.6 Research questions
 
 The central research question is:
 
-> Can a vadose-zone model and a groundwater model be strongly coupled over finite windows while each retains ownership of its internal numerical solution, and while coupled state acceptance and interface mass publication remain physically explicit and conservative?
+> Can a vadose-zone model and a groundwater model be coupled over finite windows while each retains ownership of its internal numerical solution, and while interface meaning, trial-state authority and accepted mass publication remain hydrologically explicit?
 
-This is decomposed into five questions.
+Four evidence questions structure the present paper, followed by one external-validity question.
 
-**RQ1 — Interface correctness.**  
-Can the coupling distinguish and consistently transform the hydraulic head, native lower-boundary flux, groundwater-facing exchange, storage response and whole-window mass transfer required by the two models?
+**RQ1 — Interface and authority.**  
+Can hydraulic head, native lower-boundary flux, groundwater-facing exchange and whole-window transfer be distinguished consistently, while rejected trials leave committed state and interface mass unchanged?
 
-**RQ2 — State and mass authority.**  
-Can repeated predictor and corrector trials be executed from one accepted origin without rejected trajectories contaminating committed model state or authoritative interface water balance?
+**RQ2 — Coupled convergence and relevance.**  
+When valid component candidates exist, how much does within-window iterative coupling change algebraic interface closure, groundwater head and transferred water relative to a loose/sequential pass?
 
-**RQ3 — Coupled convergence.**  
-Under which hydrological and numerical conditions is iterative coupling required, and how do coupling-window length and feedback strength affect convergence and solution error?
+**RQ3 — Response identity and information value.**  
+What finite-window map is represented by the response exposed by SWAP, how does it differ from the actual head-to-exchange response, and how much computational value does supplied response add over black-box learning?
 
-**RQ4 — Response information.**  
-What does the finite-window response quantity exposed by SWAP represent relative to storage response and the actual head-to-exchange interface response, and when does supplied response information reduce total coupling work relative to black-box multisecant learning?
+**RQ4 — Component-envelope interaction.**  
+Can stronger hydrological states or processes create a materially stronger valid coupled problem without changing production tolerances or numerical policy, or does component admissibility become limiting first?
 
-**RQ5 — Scalability.**  
-Can the same coupling contract be composed across many SWAP columns and MODFLOW cells without changing the state-authority, mass-accounting or solver-ownership principles?
+**RQ5 — Realistic transferability.**  
+Does the same coupling contract remain usable and interpretable in an independently authoritative real application with authentic forcing and process composition?
 
-RQ5 concerns execution and mapping scalability. The separate physical question of when heterogeneous land units may be aggregated into an equivalent unsaturated-zone representation is outside this manuscript and belongs to the SCALE research line.
+RQ1–RQ4 are addressed by E1–E6. RQ5 is reserved for the prospectively selected Hupselbrook E7 case. Multi-column execution is an implementation/scaling question; the physical validity of spatial aggregation is outside this manuscript and belongs to the separate SCALE research line.
 
 ---
-
 # 2. Coupling method
 
 ## 2.1 Ownership model
@@ -235,26 +219,37 @@ because storage change represented inside the SWAP domain can contribute to the 
 
 The public sign convention is normalized explicitly. A positive `q_u` denotes transfer from SWAP toward groundwater; any native SWAP or MODFLOW sign convention is translated by the relevant adapter.
 
-### 2.4.3 Coupling/storage response
+### 2.4.3 Finite-window response information
 
-The initial response representation uses a local affine relation between groundwater head and exchange:
+The SWAP predictor can expose a local response quantity together with its reference state. The publication experiments identify this quantity as a response of the flux-driven finite-window predictor map rather than assuming that it is the derivative used by the head-driven corrector.
 
-```text
-q(H) = q_ref + s (H - H_ref)
-```
-
-where `s` is a local response slope.
-
-Historically and in the F-GC30 line, the response coefficient `u` is constructed or interpreted such that:
+Let
 
 ```text
-s ~= u / DeltaT
+H_end = P_W(q_bot)
 ```
 
-within its qualified envelope.
+denote the terminal head produced by a complete SWAP predictor over window W under prescribed bottom flux. The accepted-trajectory response is denoted `u_A`. E4 independently tests the relation
 
-The publication study will explicitly test whether this quantity behaves as a storage response, as the actual finite-window interface derivative, or as a bounded approximation whose meaning depends on active process composition.
+```text
+u_A ~= DeltaT * (dH_end/dq_bot)^(-1).
+```
 
+For local groundwater coupling, the response may be represented in affine form around a reference head,
+
+```text
+q(H) = q_ref + s (H - H_ref),
+```
+
+with the slope constructed from the currently admitted response contract and its explicit sign/unit transforms.
+
+A different object is the head-driven whole-window exchange derivative,
+
+```text
+J_R = dV_u/dH.
+```
+
+No equality between `u_A` and `J_R` is assumed by the method. Their relation is an empirical question because the two derivatives belong to different finite-window boundary-value maps.
 ### 2.4.4 Whole-window transfer
 
 The authoritative interface transfer is the accepted amount integrated over the complete coupling window:
@@ -313,35 +308,19 @@ Only the final accepted candidate may mutate committed SWAP state.
 
 ## 2.6 Predictor response
 
-The predictor constructs the initial SWAP response for the active window from the accepted origin.
+At the start of a coupling window, SWAP executes a predictor from the accepted origin and exposes a reference terminal head, groundwater-facing exchange and finite-window response. The response used in the current production route is an accepted-trajectory analytic quantity with provenance tied to the accepted origin and exact window.
 
-The original finite-difference form evaluates prescribed bottom fluxes around an initial predictor:
-
-```text
-q_1 = q_0 - delta_q
-q_2 = q_0 + delta_q
-```
-
-and observes the resulting terminal hydraulic heads `H_1` and `H_2`.
-
-The response coefficient is:
+For independent qualification, E4 also constructs a centred prescribed-flux finite difference,
 
 ```text
-u_FD = ((q_2 - q_1) * DeltaT) / (H_2 - H_1)
+u_FD =
+    ((q_2 - q_1) * DeltaT) /
+    (H_2 - H_1),
 ```
 
-subject to a governed perturbation policy.
+where `q_1` and `q_2` are symmetric bottom-flux perturbations and `H_1` and `H_2` are the corresponding terminal heads. A governed perturbation sequence is used to identify a stable local plateau rather than accepting one arbitrary finite-difference step.
 
-Current canonical development also supports an admitted accepted-trajectory analytic response within a restricted process envelope. The manuscript must distinguish response-construction method from coupling semantics: finite-difference and analytic response estimates may be alternative implementations of the same bounded interface-response contract, but they require independent qualification.
-
-The response used by the groundwater backend is represented locally as:
-
-```text
-q(H) = q_ref + s (H - H_ref)
-```
-
-with explicit provenance linking the response to the accepted SWAP origin and coupling window.
-
+The predictor response is therefore exposed as optional component information, not as access to the internal Richards Jacobian, Newton iterations or SWAP timestep controller. The coupling service may use this response, ignore it and learn a secant response from black-box evaluations, or compare the two under one common convergence criterion.
 ## 2.7 MODFLOW6 prepared-solve lifecycle
 
 The MODFLOW6 participant uses one prepared nonlinear solve per coupling window.
@@ -534,166 +513,134 @@ The acceleration experiment compares the net value of supplied response informat
 
 ## 2.15 Current qualified envelope
 
-The present end-to-end application evidence is intentionally restricted.
+The coupling evidence is deliberately bounded by capability profile rather than by a blanket statement that a process is either present or absent from SWAP5.
 
-Current canonical qualification includes:
+Current canonical coupling qualification includes:
 
-- one real SWAP/FMR soil column coupled 1:1 to one live MODFLOW6 6.8.0 cell (F-GC44);
-- two independently transactional real SWAP columns composed N:1 to one live MODFLOW cell, using identical physical parameterization to isolate runtime composition (F-GC45);
-- two independently transactional real SWAP interfaces coupled 1:1 to two distinct cells in one live MODFLOW model and one prepared solve (F-GC46);
-- the internal predictor/corrector coupling lifecycle;
-- prescribed groundwater-head SWAP correctors;
-- an admitted analytic accepted-trajectory response;
-- whole-window publication boundaries;
-- exactly-once SWAP and ledger publication.
+- one real SWAP/FMR Reference-Richards column coupled 1:1 to one live MODFLOW6 6.8.0 cell (F-GC44);
+- two independently transactional real SWAP columns composed N:1 to one live MODFLOW cell with identical physical parameterization to isolate runtime composition (F-GC45);
+- two independently transactional real SWAP interfaces coupled 1:1 to distinct cells in one live MODFLOW model and prepared solve (F-GC46);
+- immutable-origin predictor/corrector replay;
+- the production prescribed-head corrector profile used by the F-GC44-derived experiments;
+- accepted-trajectory finite-window response exposure;
+- whole-window publication preflight and exactly-once SWAP/interface-ledger publication.
 
-The first scientific E1/E2 evidence envelope remains the one-column/one-cell near-equilibrium F-GC44 configuration. Current runtime qualification still excludes, among other claims/processes:
+Other production capabilities can exist without belonging to that same corrector profile. E6 provides the clearest example: the F-GC31 smooth active-drainage tangent is independently admitted for a prescribed-`q_bot`, `bottom_mode=2` capability, while the production groundwater-head forcing adapter admits `bottom_mode=5`. The two capabilities must not be silently combined into one assumed profile.
 
-- heterogeneous N:1 aggregation science;
-- active drainage;
-- root extraction;
-- macropores;
-- snow;
-- soil temperature;
-- Ribasim coupling;
-- irrigation allocation.
+Accordingly, process coverage in this manuscript is stated per executed coupling profile. Root extraction, drainage variants, macropores, snow, soil temperature, irrigation allocation and other application processes are not claimed as coupled simply because they exist elsewhere in the production model.
 
-A larger prescribed-head perturbation has already exposed a boundedness issue by exhausting transaction retries in the real SWAP route. This is treated as evidence that the scientific/numerical envelope must be expanded through explicit qualification rather than by relaxing convergence rules.
+A larger head perturbation or stronger flux can also exhaust the unchanged transaction/retry envelope. Such outcomes are treated as component-domain evidence. The scientific envelope is expanded only through explicit qualification, not by weakening solver, temporal, mass or coupled-convergence requirements.
 
-The manuscript will therefore distinguish **method architecture**, **current qualified implementation**, and **future experimental envelope** throughout.
+The manuscript therefore distinguishes **method architecture**, **qualified coupling profiles** and **realistic application evidence** throughout.
+
 
 ---
 
-# 3. Experimental design — manuscript skeleton
+# 3. Experimental design
 
-## 3.1 E1 Interface identity and conservation
+## 3.1 Common experimental rules
 
-Purpose:
+E1–E6 were executed as publication-specific qualification experiments against frozen repository states. Production physics, Richards tolerances, transaction tolerances, retry budgets and the coupled flux criterion were not relaxed after observing results. Diagnostic runs were non-publishing unless publication authority itself was the quantity under test.
 
-- verify `q_bot`, `q_u`, head transformation and whole-window transfer;
-- demonstrate differentiated and integrated water-balance closure;
-- quantify numerical tolerance.
+A bounded component failure was retained as data when it occurred through a structured status contract. Such a case was not reclassified as coupling divergence unless both components continued to return valid candidates. All experiments retained machine-readable outputs and preregistered interpretation or stop rules.
 
-Planned outputs:
+The controlled E1–E6 system used the admitted SWAP5 Reference/Richards participant. Where live groundwater solution was required, MODFLOW6 6.8.0 was controlled through its API. The baseline F-GC44 geometry consisted of one SWAP column coupled to the central cell of a three-cell groundwater fixture bounded by constant-head cells.
 
-- schematic of coupling plane and exchanged quantities;
-- table of sign/unit/datum transformations;
-- mass-closure figure over accepted and rejected trials.
+## 3.2 E1 and E2: interface identity, conservation and authority
 
-## 3.2 E2 Transaction and exactly-once publication
+E1/E2 reused the admitted F-GC44 one-column/one-cell envelope without expanding its hydrology. The coupling window was `1e-4 day`. E1 recorded unrounded predictor `q_bot`, groundwater-facing `q_u`, response `u`, start/end storage, interval inflow/outflow, mass residual and the final accepted integrated lower-boundary exchange.
 
-Directed tests:
+Algebraic identities were checked at representation-scale tolerances. The existing coupled residual criterion remained `1e-15 m/s`.
 
-- reject predictor;
-- reject corrector;
-- exhaust iteration budget;
-- fail publication preflight;
-- retry a smaller window;
-- restart at an accepted boundary.
-
-Primary claim:
-
-> rejected coupling calculations cannot contaminate committed hydrological state or authoritative interface mass.
-
-## 3.3 E3 Coupling-window and feedback experiment
-
-Use a controlled one-column/one-cell system in which feedback strength and coupling-window duration can be varied.
-
-Compare:
-
-- sequential/loose exchange;
-- converged iterative exchange;
-- short-window reference;
-- longer-window alternatives.
-
-Measure:
-
-- accepted head;
-- exchange;
-- storage;
-- residual;
-- component work;
-- convergence/failure.
-
-## 3.4 E4 Response identity
-
-From one accepted SWAP state and forcing window determine:
+E2 tested authority directly. The tuple
 
 ```text
-u_FD
-J_S = dDeltaS/dH
-J_R = dV_u/dH
+SWAP revision,
+SWAP committed time,
+ledger commit count,
+ledger committed exchange
 ```
 
-over qualified perturbation sequences.
+was recorded before and after real corrector trials, candidate discard, prepared-but-aborted publication and non-final coupled iterations. The existing deterministic F-GC41 failure suite additionally injected SWAP, MODFLOW and ledger preflight failure, invalid window identity and one-shot finalization checks. The predeclared publication order was MODFLOW timestep finalization, SWAP candidate commit and interface-ledger commit.
 
-Determine:
+## 3.3 E3: coupling-window and feedback characterization
 
-- numerical derivative plateau;
-- local linearity radius;
-- response drift between accepted windows;
-- path dependence when head trajectories share endpoints.
-
-## 3.5 E5 ACCELERATE oracle and black-box comparison
-
-Minimum methods:
-
-- fixed point;
-- Aitken;
-- IQN/Anderson with cold history;
-- IQN/Anderson with admissible warm-history reuse;
-- zero-cost oracle response;
-- practical supplied-response method.
-
-Primary metric:
+E3 crossed three coupling-window durations,
 
 ```text
-total equivalent component work
+DeltaT = 1e-4, 1e-3, 1e-2 day,
 ```
 
-rather than iteration count alone.
+four predictor fluxes,
 
-The zero-cost oracle test is an early falsification gate: if high-quality free response information gives no material advantage over the black-box multisecant baseline, an expensive practical response cannot justify an acceleration claim.
+```text
+q_bot = 1e-6, 1e-3, 1e-2, 1e-1 cm/day,
+```
 
-## 3.6 E6 Hydrological stress regimes
+and four MODFLOW horizontal conductivities,
 
-Candidate stress dimensions:
+```text
+K = 0.01, 0.1, 1, 10 m/day,
+```
 
-- groundwater proximity;
-- recharge pulse;
-- strong evaporation/transpiration regime;
-- coarse versus fine hydraulic response;
-- coupling-window duration;
-- process/boundary switching where admitted.
+for 48 prespecified cases. Each case compared a loose/sequential diagnostic with a fresh iterative coupled solve from the same SWAP and groundwater origins. Coupled numerical acceptance required MODFLOW convergence and `|q_SWAP - q_GW| <= 1e-15 m/s`. The outer-iteration limit was 40. No E3 candidate was committed.
 
-Include a weak-coupling negative control.
+Because higher-flux cases failed before groundwater feedback could be interpreted, E3-D separately screened the predictor envelope. E3-D2 classified the transaction failure mechanism from existing solver, temporal and mass-rejection diagnostics. E3-R then used only predictor fluxes already demonstrated admissible and removed the background groundwater gradient by setting both fixed-head boundary cells to the predictor reference head. Its 24 cases retained the same loose-versus-iterative definitions and unchanged numerical policy.
 
-## 3.7 E7 Realistic application
+## 3.4 E4: finite-window response identity
 
-A representative application should demonstrate that the method remains usable outside the synthetic qualification system.
+E4 compared three response objects from identical accepted SWAP origins:
 
-Its role is:
+```text
+u_A  accepted-trajectory flux-driven predictor response,
+u_FD centred finite-difference inverse predictor response,
+J_S  = d(DeltaS)/dH,
+J_R  = dV_u/dH.
+```
 
-- hydrological relevance;
-- external validity;
-- operational cost characterization.
+Five baselines crossed `1e-4`, `1e-3` and `1e-2 day` windows with low and higher admitted predictor fluxes. Head perturbations ranged from `1e-10` to `3e-5 m` and relative bottom-flux perturbations from `1e-4` to `1e-1`. A derivative plateau required at least three consecutive valid centred levels with at most 1% relative spread around their median. One-sided trials were not substituted when one side of a centred pair failed.
 
-It does not need to carry every novelty claim.
+Mass balance was differentiated as an additional check, including the non-bottom balance derivative `J_B`. This allowed the structural low-flux relation `J_S - J_B + J_R = 0` to be distinguished from a general identity between response objects.
 
-## 3.8 E8 Regional execution and scaling
+## 3.5 E5: value of supplied response information
 
-If included in the paper, quantify:
+E5 isolated interface-information value by retaining real SWAP prescribed-head evaluations while replacing the groundwater component by a controlled scalar linear map. Four E4 baselines with an identified `J_R` were tested at dimensionless local coupling strengths
 
-- number of SWAP columns;
-- mapping to MODFLOW cells;
-- deterministic reduction;
-- mass closure;
-- runtime scaling.
+```text
+C = 0.1, 0.5, 0.9, 1.1, 1.5, 2.0.
+```
 
-Do not use this experiment to claim the physical validity of spatial aggregation without the separate SCALE analysis.
+All methods began at `H_ref + 1e-6 m` and used the same integrated form of the `1e-15 m/s` interface tolerance. The comparison included plain fixed point, dynamic Aitken relaxation, a cold scalar secant/IQN analogue, the supplied `u_A` response and a zero-cost oracle using the independently measured `J_R`. Work was measured as the number of real full-window SWAP prescribed-head evaluations after common setup.
+
+A separate warm-history continuation was preregistered only if the zero-cost oracle either enlarged the convergence domain or saved at least two full-window SWAP evaluations in reproducible difficult cases spanning at least two baselines.
+
+## 3.6 E6: preregistered hydrological stress extensions
+
+E6 deliberately sought a stronger valid hydrological-feedback case without changing production tolerances.
+
+The first route reused the independently admitted F-GC31 active-drainage state, including its smooth prescribed-`q_bot` drainage response. Before any live-MODFLOW matrix could be interpreted, the production participant had to reproduce a valid prescribed-head corrector at the predictor reference head. Failure of this parity gate was a preregistered component-envelope stop.
+
+The second route changed only accepted initial pressure-state wetness and predictor through-flow within the prescribed-head-compatible E3 process profile. Twenty combinations were screened:
+
+```text
+H0 = -150, -75, -25, -10 cm
+q_bot = 1e-6, 1e-4, 1e-2, 1e-1, 1 cm/day
+DeltaT = 1e-3 day.
+```
+
+Every predictor-ready case was probed symmetrically at `±1e-6`, `±1e-5`, `±1e-4` and `±1e-3 m` around its reference head. Progression to E6-B required a mass-complete predictor, zero authority mutation after discarded probes and a valid symmetric `±1e-4 m` corrector pair. Among qualifying cases the largest flux, then wettest state, would have been selected before any MODFLOW result was observed.
+
+## 3.7 E7: prospectively selected realistic application
+
+Hupselbrook was selected as the realistic E7 application before any E7 coupling result. The case has independent SWAP 4.3.1 forcing and application provenance and a large existing typed-application qualification record. E7 execution is conditioned on closure of the final whole-Hupsel file-driven adapter gate; historical output alone is not treated as proof that the complete application is available through the production participant.
+
+After that prerequisite closes, episode selection will use standalone Hupsel dynamics only. Coupled loose-versus-strong results are explicitly excluded from the selection metric. The frozen selection and execution rules are recorded in `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`.
+
+## 3.8 Multi-column composition and scaling scope
+
+Existing F-GC45 and F-GC46 qualification demonstrates that the coupling contract can compose multiple real SWAP participants with live MODFLOW cells. These tests are treated as architecture evidence. Quantitative regional scaling is deferred until the realistic E7 scientific core is available, and no physical validity of heterogeneous N:1 aggregation is inferred from software composition alone.
 
 ---
-
 # 4. Results
 
 ## 4.1 Interface identity and conservation in the first real coupled window
@@ -1008,31 +955,65 @@ E6 then tested whether a materially stronger synthetic coupling case could be ob
 
 This narrows the claim that can be made from the synthetic experiments. E3 establishes a genuine weak-feedback control, but the present study does not establish a positive strong-feedback synthetic regime. The appropriate next test is a realistic already admitted hydrological application in which the required process and boundary semantics are native to the application, rather than further tolerance or parameter escalation of the restricted qualification fixture.
 
-## 5.6 How much response information should be exposed?
+## 5.6 Supplied response information is useful, but exact derivatives have modest incremental value
 
-The current evidence is not yet sufficient to decide whether component-provided response information is computationally preferable to black-box learning. E3 establishes two prerequisites for that later comparison. First, the low-flux control shows that sophisticated acceleration would have little scientific value in a regime where the coupled state correction itself is negligible. Second, E3-D shows that response information has its own qualification envelope and changes with window duration.
+E4 resolves the identity question left open by the architecture. The exposed `u_A` is not an arbitrary tuning factor: it closely reproduces an independent inverse sensitivity of the flux-driven predictor map. That result supports exposing it as low-cost component information without exposing SWAP's internal Richards Jacobian or timestep sequence.
 
-E4 therefore first determines what the supplied response actually represents. Only after that identity is established should E5 compare supplied response against IQN/Anderson-style learned interface information. If a strong black-box method performs as well at lower information cost, the simpler interface should be preferred. Conversely, a reproducible advantage of fresh response information after state or regime change would justify the additional response contract.
+The same experiment also shows why response objects must be typed by boundary-value map. The prescribed-flux predictor and prescribed-head corrector are not generally inverse descriptions of one scalar constitutive relation. B3 provides a direct counterexample: `u_A` and `u_FD` agree while `|J_R|` is 8.1% larger. B5 retains a stable flux-driven response even though no symmetric local `J_R` is admitted. Calling `u_A` a universal interface Jacobian would therefore hide a scientifically relevant boundary-condition distinction.
 
-A negative ACCELERATE result would still strengthen the central coupling paper because it would place an empirical upper bound on how much internal response information this class of coupling needs.
+E5 then places a practical upper bound on the value of a more exact derivative. Relative to plain fixed-point iteration, acceleration is clearly beneficial near and beyond the fixed-point stability boundary. Relative to a competent cold secant method, however, even a free exact local `J_R` usually saves only the one evaluation needed by the secant method to learn a slope. It did not enlarge the observed convergence domain.
+
+This result argues for a deliberately modest interface. A cheap response already available from normal component execution can be useful, but a coupling architecture should not demand expensive or intrusive derivative exposure unless a demonstrated regime justifies it. Black-box learning remains a strong default when component ownership and maintainability are priorities.
+
+## 5.7 Component admissibility is part of the coupled problem
+
+E3 and E6 reveal a limitation that is easy to misclassify. A coupled algorithm can be numerically sophisticated while one participant simply cannot return a valid finite-window candidate for the requested boundary state. Such a case is not evidence that the outer iteration diverged.
+
+The E6 active-drainage route makes this distinction especially clear. A valid, mass-complete active-drainage predictor and its accepted response do not imply that the same process configuration is admitted under a prescribed-head corrector. The current production contracts intentionally assign those capabilities to different lower-boundary profiles. The separate state/flux screen reaches the same broader conclusion through another mechanism: wetter states increase local response, but higher fluxes consume the transaction envelope and the surviving predictors have too narrow a corrector neighbourhood for the preregistered stronger-feedback test.
+
+Component admissibility should therefore be treated as an explicit domain of a coupled model, alongside the usual convergence domain of the outer algorithm. This has a practical consequence for model development: difficult coupled cases should first be classified into component-domain failure versus valid-component coupling failure before changing relaxation, Jacobians or convergence tolerances.
+
+## 5.8 Limitations and transferability
+
+The strongest current limitation is hydrological breadth. E1–E6 provide real SWAP and live-MODFLOW evidence, but most direct coupling experiments use deliberately small qualification fixtures. E6 shows why synthetic escalation alone is not an adequate substitute for a realistic application. Hupselbrook is therefore reserved as a prospectively selected external-validity case rather than being invoked retrospectively to strengthen the present conclusions.
+
+The study also does not establish that strong coupling is generally necessary. In the tested live-MODFLOW control, iterative coupling improves strict interface closure but changes groundwater head only at nanometre scale. A realistic application may show a larger effect, a similarly weak effect, or additional component-domain limitations; all three outcomes are scientifically admissible.
+
+The scalar E5 information-value experiment isolates response information from MODFLOW's own nonlinear solver. It is therefore a mechanism experiment rather than a direct performance benchmark for a regional model. Likewise, F-GC45/F-GC46 demonstrate multi-participant composition but not regional runtime scaling or physical validity of spatial aggregation.
+
+Transferability beyond SWAP5–MODFLOW6 rests on principles rather than identical implementation details: immutable accepted origins for replayed component trials, explicit physical interface quantities, separation of candidate calculation from state acceptance, exactly-once mass publication and explicit component-admission domains. Whether these principles provide the same benefits in another model pair remains an empirical question.
+
+---
+# 6. Conclusions
+
+We developed and tested a solver-autonomous finite-window coupling contract in which SWAP5 and MODFLOW6 retain their own numerical solvers while sharing an explicit hydrological interface and one coupled acceptance decision.
+
+Five conclusions follow from the current evidence.
+
+First, numerical calculation, state acceptance and water-balance authority must be separated. Real SWAP predictor and corrector trials can compute physically meaningful exchange without changing committed state or authoritative mass. In the qualified transaction, the accepted transfer becomes model history only after coupled acceptance and ordered, exactly-once publication.
+
+Second, the exchanged hydrological quantities cannot be treated as interchangeable implementation variables. Native lower-boundary flux, groundwater-facing exchange, hydraulic head and whole-window transfer have different roles and temporal support. The first real coupled experiment directly demonstrated that `q_bot` and `q_u` are not aliases.
+
+Third, strict interface convergence is not equivalent to hydrological importance. Iteration reduced the controlled E3 interface residual below the qualified criterion in every valid case, yet loose-to-iterative groundwater-head corrections remained extremely small. The tested qualification fixture is therefore a weak-feedback control, not evidence that strong coupling is universally necessary.
+
+Fourth, finite-window response information must be identified by the map it differentiates. The SWAP response `u_A` is reproducibly a flux-driven predictor response, but it is not universally equal to the head-driven exchange derivative `J_R`. A perfect free `J_R` produced only modest additional work reduction over a cold black-box secant method in the controlled information-value experiment.
+
+Fifth, component admissibility can limit a coupled experiment before outer coupling convergence becomes the relevant problem. Two preregistered E6 stress routes reached distinct component-domain boundaries before yielding a stronger valid live-MODFLOW feedback case. Those negative outcomes are part of the coupling result, not failures to be hidden by relaxed tolerances.
+
+Together, these findings support a coupling philosophy in which solver autonomy is paired with stronger external semantics rather than weaker scientific control. The coupler should know exactly what is exchanged, which state is authoritative, which finite-window map a response belongs to, and whether each participant is admitted for the requested trial.
+
+The present conclusions remain bounded by the controlled application envelope. Hupselbrook has been prospectively selected as the next realistic test and will determine how much of the contract's behaviour transfers to authentic forcing and process composition. Until that evidence is available, regional hydrological validity and scaling performance are not claimed.
+# 7. Code, evidence and reproducibility
+
+The coupling implementation, qualification contracts, preregistrations and machine-readable publication evidence are version controlled in the public `abhedwig-cell/SWAP5` repository. Publication-specific evidence for E1–E6 is retained under `docs/publication/` and `docs/publication/evidence/`, including the raw perturbation records used for the response-identity and E6 state-domain analyses.
+
+Each reported experiment is tied to a frozen repository state and, where applicable, a recorded GitHub Actions run. Diagnostic publication experiments do not alter production physics or numerical tolerances. Exact repository revision, archival release and long-term DOI should be fixed at manuscript submission.
+
+MODFLOW6 version 6.8.0 is used in the live groundwater qualification experiments described here. The historical Hupselbrook SWAP 4.3.1 distribution is governed as an external reference asset and is not redistributed through this manuscript repository.
 
 ---
 
-# 6. Conclusions — placeholder
-
-The final conclusion should be written only after E1–E8 evidence is assembled.
-
-It should distinguish:
-
-1. what the coupling method demonstrably guarantees;
-2. the qualified hydrological and numerical envelope;
-3. what response information contributes;
-4. which limitations remain;
-5. what aspects generalize beyond SWAP5–MODFLOW6.
-
----
-
-# Working references
+# References
 
 - Abbaszadeh, P. et al. (2025). Coupling the ParFlow Integrated Hydrology Model within the NASA Land Information System: a case study over the Upper Colorado River Basin. *Hydrology and Earth System Sciences*, 29, 5429–5452. https://doi.org/10.5194/hess-29-5429-2025
 - Bailey, R. T., Abbas, S., Arnold, J. G., & White, M. J. (2025). SWAT+MODFLOW: a new hydrologic model for simulating surface–subsurface flow in managed watersheds. *Geoscientific Model Development*, 18, 5681–5697. https://doi.org/10.5194/gmd-18-5681-2025

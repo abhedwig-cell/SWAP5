@@ -164,7 +164,7 @@ However:
 4. **E4 CLOSED — SUPPORTED_RESTRICTED.** The component-supplied `u_A` is identified as a finite-window flux-driven predictor response: it agrees with independent pure-bottom `u_FD`, is not universally interchangeable with head-driven `J_R`, and remains available in B5 where no symmetric local `J_R` is admitted.
 5. **E5 CLOSED — SUPPORTED_RESTRICTED.** Acceleration clearly outperforms plain fixed point near/above the fixed-point stability boundary, but the zero-cost J_R oracle provides only modest incremental value over cold secant and no observed convergence-domain extension. The quantitative gate for a warm-history E5b / standalone ACCELERATE continuation was not passed.
 6. **E6 CLOSED_NEGATIVE_WITH_BOUNDARIES.** Two preregistered stress routes were exhausted without a valid positive live-coupling case. The F-GC31 active-drainage predictor is valid but its smooth qbot projection is not an admitted prescribed-head corrector profile. The separate 20-case accepted-state/flux screen produced eight predictor-ready cases but zero cases with the required symmetric ±1e-4 m corrector domain; no E6-B candidate was admitted.
-7. **E7 CASE_SELECTED / BLOCKED_EXTERNAL_PREREQUISITE.** Hupselbrook is the preferred realistic application. All active application routes are admitted, but M1-C3 still requires one final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution. The exact-size asset is catalogued but its raw bytes are not materializable in the current execution context. No coupled E7 output may be interpreted before that gate passes.
+7. **E7 PREREGISTERED / BLOCKED_EXTERNAL_PREREQUISITE.** Hupselbrook is the preferred realistic application and its standalone-only day-selection, coupling-window, groundwater-model priority, loose/strong comparison and stop rules are now frozen in `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`. M1-C3 still requires one final whole-Hupsel file-driven adapter execution against the exact authorized SWAP 4.3.1 distribution. No coupled E7 output may be interpreted before that gate passes.
 8. E8 remains deferred until E7 supplies the realistic scientific core.
 
 ## First publication evidence record
@@ -344,3 +344,29 @@ Consolidated E6 result:
 `PUB_GC_E6_RESULT.md`
 
 E6 closes negatively rather than supplying the previously sought positive strong-feedback synthetic case. This does not make component failure a coupling result; it records that both preregistered routes reached component-admission boundaries before a stronger valid live-coupling experiment was available.
+
+## E7 publication evidence
+
+Realistic-case readiness and blocker:
+
+`PUB_GC_E7_CASE_SELECTION.md`
+
+Prospective execution preregistration:
+
+`PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`
+
+The E7 preregistration freezes episode selection on standalone Hupsel water-balance dynamics before any coupled result. It does not clear the M1-C3 whole-Hupsel prerequisite and does not authorize a synthetic realistic-case substitute.
+
+## Manuscript consolidation
+
+Current manuscript:
+
+`PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md`
+
+Figure/table evidence map:
+
+`PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md`
+
+Consolidation/readiness state:
+
+`PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md`
