@@ -1,0 +1,26 @@
+name: PUB-P2E16B Candidate boundary primary
+
+on:
+  push:
+    branches:
+      - work/pub-p2e16-admissibility-boundary-primary
+    paths:
+      - 'docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_PREREGISTRATION.json'
+      - 'docs/publication/P2E16A_REFERENCE_BOUNDARY_THRESHOLD_TRANSFER_RESULT.json'
+      - 'tests/publication/test_pub_p2e16b_candidate_boundary_primary.f90'
+      - 'tests/publication/run_pub_p2e16b_candidate_boundary_primary.sh'
+      - '.github/workflows/pub-p2e16b-candidate-boundary-primary.yml'
+  workflow_dispatch:
+
+jobs:
+  candidate-boundary-primary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered P2E16B candidate boundary matrix
+        run: bash tests/publication/run_pub_p2e16b_candidate_boundary_primary.sh
