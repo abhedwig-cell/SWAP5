@@ -4,7 +4,7 @@
   "title": "Oxygen-stress source/state/owner decomposition",
   "branch": "audit/ppa-wu05c-oxygen-authority",
   "reconcile_base": "781c829943c9e5880e5ab83281112e66f439ecf2",
-  "status": "QUALIFIED_REVIEW_AUTHORITY_READY_FOR_CANONICAL_ADMISSION",
+  "status": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED",
   "scope": {
     "production_source_mutation": false,
     "reference_mutation": false,
@@ -53,6 +53,18 @@
     ]
   },
   "production_admission": "NONE_REVIEW_ONLY",
-  "verdict": "OXYGEN_FAMILY_BOUNDARIES_QUALIFIED_C1_DEFINED_C2_C3_SOURCE_HELD",
-  "next_action": "Reconcile live canonical. If drift is disjoint and final authority/documentation/canonical checks remain green, admit this review-only authority. Production remains forbidden except through a separately preregistered PPA-WU05-C1 implementation slice."
+  "verdict": "CANONICAL_REVIEW_AUTHORITY_CLOSED_C1_DEFINED_C2_C3_SOURCE_HELD",
+  "next_action": "PPA-WU05-C is closed. Production remains outside this workunit. Next permitted oxygen implementation is a separately preregistered PPA-WU05-C1. WU05-B frost authority may proceed independently under its own review workunit.",
+  "canonical_admission": {
+    "pr": 354,
+    "merge_commit": "821ac0305d4cb49d1c7c3fe9a2a936e5d4b53bae",
+    "final_head": "3e227210f6244782edfa85c87adac3f843a29378",
+    "qualification": {
+      "workflow_run": 35406217234,
+      "authority_job": 105796408743,
+      "independent_job": 105796408869,
+      "documentation_run": 35406217184,
+      "canonical_qualification_run": 35406217224
+    }
+  }
 }
