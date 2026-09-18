@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.publication.p2e15-30-material-e0-holdout.v1",
+  "workunit": "PUB-P2E15",
+  "phase": "PREREGISTERED_BEFORE_NEW_EXTENSION_ROSSFAST_DISCREPANCY_EXECUTION",
+  "publication_owner": "PUB-SQ",
+  "parent_authority": {
+    "branch": "work/pub-p2e14-reference-common-material-threshold-freeze",
+    "head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+    "result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "verdict": "QUALIFIED_REFERENCE_ONLY_36_MATERIAL_THRESHOLD_SURFACE"
+  },
+  "purpose": "Execute the first new E0 Reference-versus-RossFast discrepancy holdout on the thirty F-ROSS13 extension materials after candidate-independent construction of a common 36-material state domain and Reference-only threshold surface.",
+  "holdout_interpretation": {
+    "statement": "These thirty materials have prior RossFast production-qualification evidence, but no prior RossFast discrepancy observations under this P2E15 E0 paired protocol at the frozen {0.65,0.85,0.96} state anchors were used to construct P2E13 or P2E14.",
+    "not_claimed": "The materials are not globally unseen to RossFast; holdout status is specific to the confirmatory E0 discrepancy/admission experiment."
+  },
+  "matrix": {
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "material_count": 30,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_count": 180,
+    "case_order": "material major, then effective_saturation, then forcing",
+    "grid": "16 homogeneous cells x 10 cm",
+    "step_duration_day": 0.0016,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "source_sink": "zero",
+    "ponding_initial_cm": 0
+  },
+  "common_request_rule": {
+    "same_material_parameters": true,
+    "same_initial_pressure_head_and_water_content": true,
+    "same_prescribed_top_and_bottom_flux": true,
+    "same_grid_and_step_duration": true,
+    "reference_route": "legacy-reference-bound",
+    "rossfast_route": "rossfast-d3r",
+    "fallback_allowed": false,
+    "transaction_layer": "EXCLUDED",
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM"
+  },
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "D_h_inf_cm": 0.009310899886486368,
+      "D_h_rms_cm": 0.004264337561059986,
+      "D_theta_inf": 0.000017908123244203544,
+      "D_theta_rms": 0.000006578609068585418,
+      "D_storage_abs_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "D_h_inf_cm": 0.05684414280500505,
+      "D_h_rms_cm": 0.02309047189054667,
+      "D_theta_inf": 0.00024393588764148877,
+      "D_theta_rms": 0.00008095278187597767,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "D_h_inf_cm": 0.7386357920248865,
+      "D_h_rms_cm": 0.19122530959872563,
+      "D_theta_inf": 0.0012274135237608785,
+      "D_theta_rms": 0.00035749599085978164,
+      "D_storage_abs_cm": 2.842170943040401e-14
+    }
+  },
+  "route_validity": {
+    "both_routes_must_converge_for_pairwise_metrics": true,
+    "state_must_be_finite_and_inside_frozen_common_E0_domain": true,
+    "typed_integrated_mass_abs_limit_cm_each_route": 1e-12,
+    "reference_native_rate_must_be_available_and_finite": true,
+    "rossfast_native_rate_must_remain_unavailable": true,
+    "prescribed_flux_identity_must_match_request": true,
+    "automatic_fallback_allowed": false
+  },
+  "admissibility": {
+    "rule": "A route-valid pair is admissible only if all five discrepancies are <= the frozen P2E14 threshold for the exact Se stratum.",
+    "no_weighted_compensation": true,
+    "mass_failure_compensation": false,
+    "performance_compensation": false
+  },
+  "classifications": [
+    "PAIRED_VALID_ADMISSIBLE",
+    "PAIRED_VALID_DISCREPANCY_FAIL",
+    "REFERENCE_ROUTE_INVALID",
+    "ROSSFAST_ROUTE_INVALID",
+    "BOTH_ROUTES_INVALID"
+  ],
+  "negative_result_policy": {
+    "execute_all_180_cases_after_scientific_failure": true,
+    "retain_every_failure": true,
+    "no_case_removal_or_replacement": true,
+    "no_threshold_retuning": true,
+    "no_state_anchor_change": true,
+    "scientific_outcome_is_not_ci_pass_condition": true
+  },
+  "firewall": {
+    "production_or_reference_source_change_allowed": false,
+    "solver_api_change_allowed": false,
+    "transaction_or_retry_policy_change_allowed": false,
+    "performance_optimization_allowed": false,
+    "performance_claim_allowed": false,
+    "new_physics_allowed": false,
+    "wetting_forcing_added_allowed": false
+  },
+  "authorities": {
+    "p2e14_result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+    "p2e13_result_blob": "a8658b710b5b96b1bea0ee8c61dae80a002efa76",
+    "p2e10_result_blob": "83864f6379279725fa97d24d57936f590d3c2174",
+    "solver_contract_blob": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "rossfast_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "rossfast_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22"
+  },
+  "verdict": "PREREGISTERED_30_MATERIAL_E0_HOLDOUT_READY_FOR_IMPLEMENTATION"
+}
