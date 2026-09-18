@@ -1339,8 +1339,8 @@
         "integration/audits/PPA_WU01_STATUS.json",
         "F-GC49D preservation"
       ],
-      "production_admission": "PPA-WU01 qualified for restricted production admission; canonical admission is PR #306 closure.",
-      "production_reachable": "YES_RESTRICTED_TYPED_BOOTSTRAP",
+      "production_admission": "CANONICAL_ADMITTED via PR #306 at a95a14d3544ae6f7dc86d04694c9d466518f65b7.",
+      "production_reachable": "YES_RESTRICTED_TYPED_BOOTSTRAP_CANONICAL",
       "restrictions": [
         "Standalone WU01 profile is the already-qualified serialized Reference bottom_mode=7 route",
         "Groundwater bootstrap profile is all-bottom_mode=5 with valid typed datum and existing F-GC49D topology/predictor/cell-area inputs",
@@ -1590,8 +1590,9 @@
       {
         "capability_id": "PPA-APP-BOOT",
         "workunit": "PPA-WU01",
-        "disposition": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
-        "evidence": "Workflow run 35365440351 / job 105666642389; O0/O2 stable owner gate."
+        "disposition": "CANONICAL_ADMITTED_CLOSED",
+        "evidence": "PPA-WU01 final owner run 35368123088 PASS; docs 35368123177 PASS; F-CI 35368122940 PASS.",
+        "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7"
       }
     ]
   },
@@ -1616,10 +1617,12 @@
       "id": "PPA-WU01",
       "title": "Production application bootstrap for admitted normal-run profile",
       "goal": "From explicit typed application config create/own an FMR context and bind only already-admitted physics. No legacy parser expansion and no new physics.",
-      "exit": "MET for restricted typed ownership: the existing serialized Reference bottom_mode=7 profile reaches canonical runtime without fixtures, and the existing all-bottom_mode=5 groundwater profile materializes F-GC49D from the same production bootstrap type. Broad legacy/user-input composition remains outside WU01.",
-      "status": "QUALIFIED_RESTRICTED_PRODUCTION_READY_FOR_CANONICAL_ADMISSION",
+      "exit": "MET and canonically admitted for restricted typed ownership. Standalone bottom_mode=7 and all-bottom_mode=5 groundwater-owner profiles remain the complete WU01 admission envelope.",
+      "status": "CANONICAL_ADMITTED_CLOSED",
       "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
-      "qualification": "PPA-WU01 workflow run 35365440351 / job 105666642389; O0 and O2 PASS with output identity."
+      "qualification": "PPA-WU01 workflow run 35365440351 / job 105666642389; O0 and O2 PASS with output identity.",
+      "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+      "final_qualification": "Owner run 35368123088 PASS; Documentation 35368123177 PASS; F-CI canonical qualification 35368122940 PASS."
     },
     {
       "id": "PPA-WU02",
@@ -1653,6 +1656,12 @@
       "branch": "work/ppa-wu01-production-application-bootstrap",
       "qualified_head": "92181c96486c7d49ac1d6cd19a7236f1dcf204b7",
       "effect": "Closes absence of any production config-to-owned-FMR bootstrap for two explicitly restricted existing profiles. Broad normal-input/application composition remains open."
+    },
+    {
+      "workunit": "PPA-WU01",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "canonical_merge_commit": "a95a14d3544ae6f7dc86d04694c9d466518f65b7",
+      "effect": "Restricted production config-to-owned-FMR bootstrap is now canonical. Broader normal-input/application composition remains open under PPA-WU03."
     }
   ]
 }
