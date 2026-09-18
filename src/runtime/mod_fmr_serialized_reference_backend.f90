@@ -67,8 +67,15 @@ module mod_fmr_serialized_reference_backend
        fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
+  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
+  use mod_groundwater_swap_forcing_adapter, only: groundwater_swap_forcing_materializer_t, GW_SWAP_FORCING_OK
+  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_transaction_participant_t, &
+       groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
   implicit none
   private
+
+  integer, parameter, public :: FMR_GW_PARTICIPANT_INVALID_CONTEXT = 1001
+  integer, parameter, public :: FMR_GW_PARTICIPANT_PROFILE_NOT_ADMITTED = 1002
 
   type, public :: fmr_snow_runtime_state_t
     type(snow_state_t) :: process
@@ -335,6 +342,10 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: top_sensible_boundary_snapshot => fmr_serialized_backend_top_sensible_boundary_snapshot
     procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
     procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
+    procedure, public :: groundwater_capture_origin => fmr_serialized_groundwater_capture_origin
+    procedure, public :: groundwater_trial_from_origin => fmr_serialized_groundwater_trial_from_origin
+    procedure, public :: groundwater_discard_candidate => fmr_serialized_groundwater_discard_candidate
+    procedure, public :: groundwater_commit_candidate => fmr_serialized_groundwater_commit_candidate
   end type fmr_serialized_reference_backend_t
 
   public :: fmr_new_b110_committed_state
@@ -782,6 +793,115 @@ contains
     if (.not. duration_admitted) return
     ok = .true.
   end function fmr_serialized_rossfast_preflight
+
+  subroutine fmr_serialized_groundwater_capture_origin(self, participant, committed, status)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(groundwater_swap_transaction_participant_t), intent(inout) :: participant
+    type(kernel_committed_state_t), intent(in) :: committed
+    integer, intent(out) :: status
+
+    status = FMR_GW_PARTICIPANT_INVALID_CONTEXT
+    if (.not. self%initialized) return
+    call participant%capture_origin(committed, status)
+  end subroutine fmr_serialized_groundwater_capture_origin
+
+  subroutine fmr_serialized_groundwater_trial_from_origin(self, column, template, parameters, committed, &
+       materializer, config, datum, window, prescribed_head_m, participant, trial, status)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: template
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed
+    class(groundwater_swap_forcing_materializer_t), intent(in) :: materializer
+    type(canonical_numerical_config_t), intent(in) :: config
+    type(groundwater_head_datum_t), intent(in) :: datum
+    type(groundwater_coupling_window_t), intent(in) :: window
+    real(real64), intent(in) :: prescribed_head_m
+    type(groundwater_swap_transaction_participant_t), intent(inout) :: participant
+    type(groundwater_swap_trial_t), intent(out) :: trial
+    integer, intent(out) :: status
+
+    class(canonical_forcing_t), allocatable :: preview
+    integer :: forcing_status
+
+    trial = groundwater_swap_trial_t()
+    status = FMR_GW_PARTICIPANT_INVALID_CONTEXT
+
+    ! F-GC44 is deliberately a restricted first real application envelope.
+    ! Preserve the full FMR backend as owner of its private kernel/model and
+    ! refuse optional physics that has not yet been composed with this path.
+    if (.not. self%initialized) return
+    if (column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
+    if (template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
+    if (column%template_id /= template%template_id .or. column%column_id <= 0_int64) return
+    if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+    if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+    if (self%model%fixed_weir_surface_water_active) return
+    if (self%bottom_thermal_requested .or. self%top_sensible_boundary_requested) return
+    if (parameters%bottom_mode /= 5) return
+    if (parameters%snow_active .or. parameters%soil_temperature_active .or. &
+        parameters%drainage_response_active .or. parameters%root_extraction_active .or. &
+        parameters%macropore_active) return
+    if (config%accepted_trajectory_direction%requested) return
+    if (.not. materializer%profile_admitted(parameters)) then
+      status = FMR_GW_PARTICIPANT_PROFILE_NOT_ADMITTED
+      return
+    end if
+
+    call materializer%materialize(prescribed_head_m, datum, preview, forcing_status)
+    if (forcing_status /= GW_SWAP_FORCING_OK .or. .not. allocated(preview)) then
+      status = FMR_GW_PARTICIPANT_PROFILE_NOT_ADMITTED
+      return
+    end if
+
+    call self%bottom_thermal_candidate%clear()
+    call self%model%bottom_thermal_carrier%clear()
+    self%model%bottom_thermal_carrier_active = .false.
+    self%model%bottom_thermal_carrier_valid = .true.
+    call self%top_sensible_boundary_candidate%clear()
+    call self%model%top_sensible_boundary_carrier%clear()
+    self%model%top_sensible_boundary_carrier_active = .false.
+    self%model%top_sensible_boundary_carrier_valid = .true.
+    self%model%temporal_indicator_history_enabled = .false.
+    self%model%temporal_indicator_budget_supplied = .false.
+    self%model%temporal_indicator_budget_valid = .false.
+    self%model%temporal_indicator_budget = 0.0_real64
+    self%model%trajectory_worker_id = int(column%column_id)
+    self%model%trajectory_provenance_valid = self%model%trajectory_worker_id > 0
+
+    select type (typed_preview => preview)
+    type is (fmr_b110_physical_forcing_t)
+      call prepare_snow_outer_event(self%model, parameters, committed, typed_preview, window%t0, window%t1)
+    class default
+      status = FMR_GW_PARTICIPANT_PROFILE_NOT_ADMITTED
+      return
+    end select
+    if (.not. self%model%state_profile_admitted) return
+
+    call participant%trial_from_origin(self%kernel, parameters, committed, materializer, config, datum, window, &
+         prescribed_head_m, trial, status)
+  end subroutine fmr_serialized_groundwater_trial_from_origin
+
+  subroutine fmr_serialized_groundwater_discard_candidate(self, participant)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(groundwater_swap_transaction_participant_t), intent(inout) :: participant
+    if (.not. self%initialized) return
+    call participant%discard_candidate(self%kernel)
+  end subroutine fmr_serialized_groundwater_discard_candidate
+
+  subroutine fmr_serialized_groundwater_commit_candidate(self, participant, committed, window, did_commit, status)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(groundwater_swap_transaction_participant_t), intent(inout) :: participant
+    type(kernel_committed_state_t), intent(inout) :: committed
+    type(groundwater_coupling_window_t), intent(in) :: window
+    logical, intent(out) :: did_commit
+    integer, intent(out) :: status
+
+    did_commit = .false.
+    status = FMR_GW_PARTICIPANT_INVALID_CONTEXT
+    if (.not. self%initialized) return
+    call participant%commit_candidate(self%kernel, committed, window, did_commit, status)
+  end subroutine fmr_serialized_groundwater_commit_candidate
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)
