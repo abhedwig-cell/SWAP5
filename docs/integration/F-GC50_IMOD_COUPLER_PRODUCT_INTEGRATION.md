@@ -47,20 +47,17 @@ The GitHub connection available to this workunit has read/pull permission but no
 
 A local imitation of `get_driver`, a monkeypatch, or a SWAP5-only duplicate product loop is explicitly forbidden as evidence of product integration.
 
-## Reconciled blocker 2 — F-GC49D deliberately has no Python bootstrap
+## Resolved prerequisite 2 — production bootstrap now exists
 
-F-GC49D exposes an **existing registered Fortran application context** through an opaque handle. The production Python adapter constructor requires:
+F-GC49D still deliberately exposes an **existing registered Fortran application context** through an opaque handle. The production Python adapter continues to require a positive existing handle; it does not become owner of SWAP/FMR state.
 
-- the SWAP5 shared-library path;
-- a positive existing context handle.
+That ownership gap is now resolved by canonically admitted **PPA-WU01**. Its production module `src/runtime/mod_fmr_production_application_bootstrap.f90` creates and owns the persistent Fortran/FMR runtime for the restricted admitted groundwater profile and can materialize a per-window F-GC49D application context. The admitted groundwater profile is Reference Richards with `bottom_mode=5`, a typed groundwater datum, participant registry, participant handles and separate interface mass ledgers.
 
-The C ABI exposes plan/tile views and delegated lifecycle operations for an existing handle. It does not expose a production `create_context_from_config` or equivalent bootstrap call.
+PPA-WU01 therefore resolves former blocker FGC50-B2 without promoting the F-GC49D qualification fixture and without introducing Python-owned SWAP state.
 
-This is deliberate ownership preservation. The production context is composed from externally owned FMR participants, typed application plan and ledgers on the Fortran side.
+The boundary remains intentionally narrow. PPA-WU01 does not parse iMOD Coupler product configuration and does not register a SWAP5 driver in upstream iMOD Coupler. Mapping product configuration into the admitted bootstrap profile belongs to F-GC50 once an authorized upstream product mutation route exists.
 
-F-GC50 must therefore consume an admitted application/bootstrap owner when one exists. It may not promote the F-GC49D test fixture, and it may not invent a parallel Python-owned SWAP state/configuration system.
-
-The active M1-C3 / F-APP line is the relevant existing authority for legacy-file-to-typed application composition. F-GC50 may reuse an admitted bootstrap from that line, or another separately admitted typed application bootstrap, but must not pre-empt it.
+M1 is now canonically and formally closed and is not a remaining F-GC50 prerequisite.
 
 ## Product integration target after blockers clear
 
@@ -92,11 +89,8 @@ F-GC50 does not authorize:
 
 ## Current disposition
 
-F-GC50 is **reconciled but externally blocked before implementation**.
+F-GC50 is **reconciled with one remaining external blocker**.
 
-The blockers are concrete and independently inspectable:
+The former internal bootstrap blocker is resolved by canonical PPA-WU01 admission. The remaining blocker is upstream product mutation authority: at pinned iMOD Coupler commit `8907fb13f8301ba1e0f32dd90a64ea475d4896d6`, the product registry is still hard-coded, no external plugin route exists, and the connected repository permission remains read/pull only.
 
-1. upstream iMOD Coupler must provide or accept a real SWAP5 driver registration/integration route;
-2. SWAP5 must have an admitted production application bootstrap capable of supplying the F-GC49D context without using qualification fixtures.
-
-Until both exist, any claim of actual product integration would be stronger than the evidence.
+Therefore actual product integration is still not admitted. When an authorized upstream mutation route becomes available, F-GC50 may implement the real SWAP5 driver registration and map product configuration into the admitted PPA-WU01 groundwater profile. Until then, a local `get_driver` imitation, monkeypatch or duplicate coupling loop remains ineligible as evidence.
