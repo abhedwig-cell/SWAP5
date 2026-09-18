@@ -94,11 +94,18 @@ module mod_fgc44_real_swap_c_bridge
   real(real64), save :: e1_total_out=0.0_real64
   real(real64), save :: e1_mass_residual=0.0_real64
 
+  ! PUB-GC E3-D2: retain the real predictor kernel result/diagnostics even
+  ! when configured initialization fails before response construction.
+  logical, save :: e3d2_predictor_diagnostics_ready=.false.
+  type(kernel_result_t), save :: e3d2_predictor_result
+  type(kernel_diagnostics_t), save :: e3d2_predictor_diagnostics
+
   public :: fgc44_swap_initialize_c, fgc44_swap_initialize_configured_c, fgc44_swap_trial_c, fgc44_swap_discard_c
   public :: fgc44_swap_preflight_c, fgc44_ledger_prepare_c, fgc44_ledger_preflight_c
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
+  public :: fgc44_predictor_run_diagnostics_c
 
 contains
 
@@ -143,6 +150,9 @@ contains
 
     c_status=101_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
     initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
+    e3d2_predictor_diagnostics_ready=.false.
+    e3d2_predictor_result=kernel_result_t()
+    e3d2_predictor_diagnostics=kernel_diagnostics_t()
     if(.not.ieee_is_finite(duration_day) .or. duration_day<=0.0_real64)return
     if(.not.ieee_is_finite(predictor_qbot))return
     active_duration_day=duration_day
@@ -170,6 +180,9 @@ contains
     c_status=104_c_int
     call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
          window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    e3d2_predictor_result=result
+    e3d2_predictor_diagnostics=diagnostics
+    e3d2_predictor_diagnostics_ready=.true.
     if(.not.result%completed)return
     c_status=105_c_int
     if(.not.candidate%ready())return
@@ -336,6 +349,43 @@ contains
     time_day=t; ledger_count=int(snap%committed_exchange_count,c_int); ledger_exchange_m=snap%committed_swap_outward_exchange_m
     fgc44_state_c=0_c_int
   end function fgc44_state_c
+
+  integer(c_int) function fgc44_predictor_run_diagnostics_c(available,result_status,completed,direction_available, &
+       transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &
+       temporal_unavailable_rejections,mass_rejections,internal_retries,max_temporal_indicator,min_substep,max_substep) &
+       bind(C,name="fgc44_predictor_run_diagnostics_c")
+    integer(c_int), intent(out) :: available,result_status,completed,direction_available
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: max_temporal_indicator,min_substep,max_substep
+
+    fgc44_predictor_run_diagnostics_c=0_c_int
+    available=0_c_int; result_status=-1_c_int; completed=0_c_int; direction_available=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    max_temporal_indicator=0.0_c_double; min_substep=0.0_c_double; max_substep=0.0_c_double
+
+    if(.not.e3d2_predictor_diagnostics_ready)return
+    available=1_c_int
+    result_status=int(e3d2_predictor_result%status,c_int)
+    if(e3d2_predictor_result%completed)completed=1_c_int
+    if(e3d2_predictor_result%accepted_trajectory_direction%available)direction_available=1_c_int
+    transaction_calls=int(e3d2_predictor_diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(e3d2_predictor_diagnostics%accepted_substeps,c_int)
+    attempts=int(e3d2_predictor_diagnostics%attempts,c_int)
+    retries=int(e3d2_predictor_diagnostics%retries,c_int)
+    trial_rollbacks=int(e3d2_predictor_diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(e3d2_predictor_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(e3d2_predictor_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(e3d2_predictor_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(e3d2_predictor_diagnostics%mass_rejections,c_int)
+    internal_retries=int(e3d2_predictor_diagnostics%internal_retries,c_int)
+    max_temporal_indicator=e3d2_predictor_diagnostics%max_temporal_indicator
+    min_substep=e3d2_predictor_diagnostics%min_accepted_substep_duration
+    max_substep=e3d2_predictor_diagnostics%max_accepted_substep_duration
+  end function fgc44_predictor_run_diagnostics_c
 
   integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
        bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &
