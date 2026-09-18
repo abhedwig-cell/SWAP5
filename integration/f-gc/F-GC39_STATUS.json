@@ -3,8 +3,8 @@
   "capability": "F-GC39",
   "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_PREPARED_SOLVE_SERVICE_CONTRACT_QUALIFICATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
   "source_branch": {
     "branch": "work/f-gc38-modflow6-prepared-solve-session",
     "head": "077876c30177d05096d30d8465155b4dd7e86480",
@@ -44,5 +44,67 @@
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement a test-only coupling-service harness and qualify same-SWAP-origin correctors against one continuous prepared groundwater solve session."
+  "next_permitted_action": "Open a separately bounded whole-window acceptance/retry workunit. Define atomic publication across the retained SWAP candidate, finalized MODFLOW solve/timestep state and exchange ledger, and qualify a reconstruction path for smaller-window retry after an abandoned prepared solve.",
+  "work_branch": {
+    "branch": "work/f-gc39-prepared-solve-coupling-service-contract",
+    "design_commit": "50f6244ce39a5f649f9e6e425aa3f0d65f3bb943",
+    "implementation_commit": "1bd6754841b52494e04d58da9031bb929e1995e6",
+    "qualified_head": "26e145dddcae78931124b2d6c9b72b41e28da253"
+  },
+  "qualified_contract": [
+    "predictor/corrector ownership remains inside the internal SWAP5-MODFLOW coupling service below iMOD Coupler",
+    "one immutable SWAP origin is used by predictor and every SWAP corrector",
+    "one prepared groundwater solve session is opened for the coupling window",
+    "groundwater X is not rolled back or discarded between outer coupling iterations",
+    "only nonconverged SWAP candidates are discarded",
+    "affine tangent slope stays fixed in the first F-GC39 contract while reference head and flux update",
+    "coupled convergence requires both MODFLOW convergence and interface flux-residual convergence",
+    "successful coupling retains one final SWAP candidate and finalizes the groundwater solve exactly once",
+    "coupling budget exhaustion invalidates the prepared solve and returns retry without publication",
+    "backend iteration-limit failure invalidates the prepared solve before any SWAP corrector is run for the failed groundwater iterate",
+    "service harness owns no XMI pointers, MODFLOW solve calls or finalize_time_step"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC39 prepared-solve coupling service contract",
+    "green_run": 35291803801,
+    "green_job": 105436039695,
+    "green_head": "26e145dddcae78931124b2d6c9b72b41e28da253",
+    "conclusion": "success",
+    "pass_markers": [
+      "FGC39_INTERNAL_SERVICE_BELOW_IMOD",
+      "FGC39_NO_GROUNDWATER_PER_ITERATION_ROLLBACK",
+      "FGC39_NO_DIRECT_XMI_OR_TIMESTEP_OWNERSHIP",
+      "FGC39_ONE_PREPARED_GROUNDWATER_SESSION",
+      "FGC39_SAME_SWAP_ORIGIN",
+      "FGC39_FIXED_TANGENT",
+      "FGC39_CONJUNCTIVE_MODFLOW_AND_FLUX_CONVERGENCE",
+      "FGC39_ONLY_SWAP_CANDIDATES_DISCARDED",
+      "FGC39_FINAL_SOLVE_FINALIZED_ONCE",
+      "FGC39_COUPLING_BUDGET_FAIL_CLOSED",
+      "FGC39_BACKEND_ITERATION_LIMIT_FAIL_CLOSED",
+      "FGC39_PREPARED_SOLVE_COUPLING_SERVICE_GATE"
+    ],
+    "failed_iteration": {
+      "run": 35291767896,
+      "head": "1bd6754841b52494e04d58da9031bb929e1995e6",
+      "disposition": "Static raw substring ownership check matched finalize_converged_solve(). Replaced with AST call inspection; coupling-service semantics unchanged."
+    }
+  },
+  "evidence_boundary": {
+    "qualified": [
+      "prepared-solve coupled nonlinear iteration contract",
+      "conjunctive MODFLOW plus interface convergence",
+      "same-origin SWAP correctors",
+      "continuous groundwater nonlinear iterate",
+      "bounded fail-closed service behavior"
+    ],
+    "not_yet_qualified": [
+      "whole-window MODFLOW reconstruction after abandoned solve",
+      "smaller-window retry implementation",
+      "final multi-participant timestep publication",
+      "real SWAP5 plus live MODFLOW end-to-end service",
+      "multi-cell N:1 live coupled execution",
+      "Ribasim or irrigation"
+    ]
+  }
 }
