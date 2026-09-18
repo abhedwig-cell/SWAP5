@@ -1,0 +1,109 @@
+{
+  "schema": "swap5.f-ross18.temporal-substep-matrix-result.v1",
+  "workunit": "F-ROSS18",
+  "phase": "QUALIFIED_RESEARCH_MATRIX",
+  "branch": "work/f-ross18-temporal-substep-matrix",
+  "source_head": "405ad30e823ea44deedf73edc67c68e01564c617",
+  "workflow_run": 35295568813,
+  "job": 105447297009,
+  "artifact": {
+    "id": 10528171294,
+    "digest": "sha256:0b92054ea0d1e59286506014ae93d45c8f536f4fdebe274e1b65a4246d459806"
+  },
+  "production_or_reference_mutation": false,
+  "domain": {
+    "case_count": 36,
+    "authority": "PUB-P2E10 paired-valid E0 domain",
+    "temporal_acceptance_rule": "model certificate indicator <= 1.0"
+  },
+  "variants": {
+    "K8": {
+      "component_substeps": 8,
+      "total_candidate_steps": 24,
+      "science": {
+        "paired_valid": 36,
+        "route_valid": 36,
+        "temporal_accepted": 36,
+        "production_candidate_under_research_rule": true,
+        "worst_temporal_indicator": 0.08409306465198431,
+        "worst_head_inf_vs_reference": 0.20686439338835783,
+        "worst_theta_inf_vs_reference": 0.00018918829296366013,
+        "worst_mass_residual_abs_cm": 3.6841938598182813e-14
+      },
+      "performance": {
+        "outcome": "SCREENING_REFERENCE_FASTER",
+        "rossfast_over_reference_relative_delta_mean": 1.2803519984764298,
+        "rossfast_over_reference_cpu_ratio_mean": 2.28035199847643,
+        "mean_reference_over_rossfast_speedup": 0.4386034964378073,
+        "mde": 0.01795231419624965
+      }
+    },
+    "K4": {
+      "component_substeps": 4,
+      "total_candidate_steps": 12,
+      "science": {
+        "paired_valid": 36,
+        "route_valid": 36,
+        "temporal_accepted": 36,
+        "production_candidate_under_research_rule": true,
+        "worst_temporal_indicator": 0.3654975096177975,
+        "worst_head_inf_vs_reference": 0.2071755995143878,
+        "worst_theta_inf_vs_reference": 0.00018935632764427446,
+        "worst_mass_residual_abs_cm": 3.6841938598182813e-14
+      },
+      "performance": {
+        "outcome": "SCREENING_REFERENCE_FASTER",
+        "rossfast_over_reference_relative_delta_mean": 0.26536156293241964,
+        "rossfast_over_reference_cpu_ratio_mean": 1.2653615629324195,
+        "mean_reference_over_rossfast_speedup": 0.79029699443428,
+        "mde": 0.002584671779081595
+      }
+    },
+    "K2": {
+      "component_substeps": 2,
+      "total_candidate_steps": 6,
+      "science": {
+        "paired_valid": 36,
+        "route_valid": 36,
+        "temporal_accepted": 34,
+        "production_candidate_under_research_rule": false,
+        "worst_temporal_indicator": 1.3975943710475995,
+        "worst_head_inf_vs_reference": 0.20854384350107935,
+        "worst_theta_inf_vs_reference": 0.00019040728377256455,
+        "worst_mass_residual_abs_cm": 4.3947365955783815e-14,
+        "temporal_failures": [
+          {
+            "case": 17,
+            "material": "O01",
+            "effective_saturation": 0.98,
+            "forcing": "DRYING",
+            "temporal_indicator": 1.3614216710681786
+          },
+          {
+            "case": 18,
+            "material": "O01",
+            "effective_saturation": 0.98,
+            "forcing": "NOMINAL",
+            "temporal_indicator": 1.3975943710475995
+          }
+        ]
+      },
+      "performance": {
+        "outcome": "SCREENING_ROSSFAST_FASTER",
+        "rossfast_over_reference_relative_delta_mean": -0.2528340445924754,
+        "rossfast_over_reference_cpu_ratio_mean": 0.7471659554075246,
+        "mean_reference_over_rossfast_speedup": 1.338399873769119,
+        "mde": 0.0011767984755947666
+      }
+    }
+  },
+  "adjudication": {
+    "K8": "qualified authority, slower than Reference",
+    "K4": "research production-candidate criteria pass, but still slower than Reference",
+    "K2": "faster than Reference in shared-host screening and P2E10-valid 36/36, but not temporally acceptable on 2/36 full-interval cases",
+    "formal_performance_claim": false,
+    "no_variant_production_admitted_by_f_ross18": true
+  },
+  "interpretation": "The performance/science frontier lies between K4 and K2. K2 crosses below Reference CPU cost but misses the model-certificate acceptance threshold only for O01 at Se=0.98 under both tested forcings. This makes an adaptive K2-first, K4-fallback certificate strategy the next bounded research question.",
+  "next_permitted_action": "Test a research-only adaptive K2-first, K4-fallback certificate route on the same 36 cases, preserving coarse+half+half topology per attempt and without mutating production source."
+}
