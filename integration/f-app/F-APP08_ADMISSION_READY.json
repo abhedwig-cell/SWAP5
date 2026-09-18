@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP08",
+  "phase": "ADMISSION_READY",
+  "branch": "work/f-app08-rutter-output-typed-composition",
+  "qualified_head": "4e320330928f6d9cab9149afa3c40a5b2529f9d4",
+  "production_delta": [
+    "src/runtime/mod_fmr_rutter_output_application_binding.f90"
+  ],
+  "owner_qualification": {
+    "run_id": 35346480862,
+    "job_id": 105604133526,
+    "conclusion": "success",
+    "output_sha256": "7895914455af07fb906b6ae6efadd9f420427b129d0120049abde56a8b858c56"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ122",
+    "run_id": 35346574098,
+    "job_id": 105604438820,
+    "conclusion": "success",
+    "output_sha256": "cec45889fb96c12268106d44a45d924878fb196a02a22356aa8a2466a932393b"
+  },
+  "semantic_scope": [
+    "Rutter net rain -> dynamic-top precipitation",
+    "Rutter net surface irrigation -> dynamic-top irrigation",
+    "Rutter potential transpiration -> canonical crop/root potential transpiration"
+  ],
+  "protections": [
+    "Rutter process physics unchanged",
+    "root geometry preserved",
+    "inactive crop canonical zero",
+    "no solver/transaction/timestep/retry/tolerance change"
+  ],
+  "verdict": "READY_FOR_CURRENT_CANONICAL_RECONCILIATION_AND_ADMISSION"
+}
