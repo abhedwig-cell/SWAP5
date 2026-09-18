@@ -73,7 +73,7 @@ def parse_output(text: str, expected_route: str) -> dict:
 
 def run_one(executable: Path, route: str, target_cpu: int, cycle: int, measured: bool) -> dict:
     env = os.environ.copy()
-    env["SWAP5_ROSS15_ROUTE"] = route
+    env["SWAP5_ROSS23_ROUTE"] = route
     env["OMP_NUM_THREADS"] = "1"
 
     def pin_child() -> None:
