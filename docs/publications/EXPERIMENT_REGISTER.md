@@ -34,7 +34,7 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
 | `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | Upper request-side top-flux boundary: P2E16/P2E17 found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed. E2X then prospectively extended the unobserved surface to the lower request-side top boundary and both bottom-boundary sides: 972 cases, 0 route mismatches, 633/633 interpretable Stage-A-authorized pairs admissible, with 2 authorized cases Reference-unresolved. Proceed to E3 REF-HIGH, not more fixed-flux boundary probing. |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | P2E18 final six-level candidate-blind REF-HIGH construction is blocked before endpoint stability: 0/36 cases remain Reference-route valid at 8/16/32 substeps, all invalid routes returning `legacy-reference-retry`. Next run a separate Reference-only timestep-invariant convergence-scaling diagnostic; RossFast timing remains forbidden. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | READY_FOR_PREREGISTRATION | P2E19 established the integrated-invariant Reference policy and P2E20 materialized casewise REF-HIGH for 33/36 frozen cases. Freeze those exact 33 cases plus solver-control, equal-error, work-accounting and timing rules before any RossFast performance execution. The 3 unresolved cases remain excluded. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -58,6 +58,19 @@ This register does not contain scientific results. It is an execution map betwee
 - no case reaches both preregistered fine endpoint comparisons, so this is not evidence that the 32-substep endpoint itself is temporally unstable;
 - RossFast, performance timing and equal-error comparison remain unexecuted;
 - next permitted action: separate Reference-only diagnostic of timestep-invariant integrated-balance convergence scaling. P2E18 itself is frozen and is not retuned.
+
+### 2026-09-18 — PUB-SQ Reference policy diagnosed and casewise REF-HIGH qualified
+
+- P2E16C independently reproduced the E2X fixed-step Reference limitation as nonlinear-iteration retry behavior with a non-monotone timestep response; smaller dt did not recover the 0.0016-day horizon;
+- P2E16D recovered only 2/5 such cases by raising the nonlinear iteration budget through 64, so REF-HIGH is not reducible to a larger Newton budget;
+- P2E18D1 showed that an invariant integrated balance allowance of 1.6e-15 cm per substep materially restores Reference refinement validity but is not universally sufficient;
+- P2E18D2 localized the remaining scaled-policy retry events to the total-balance gate on its outcome-informed mechanism set; no tolerance was changed from the D1 policy;
+- P2E19 then ran the full six-level, two-policy 36-case causal diagnostic. FIXED_RATE exactly reproduced P2E18 {36,29,7,0,0,0}; INTEGRATED_INVARIANT yielded {36,35,35,36,35,34};
+- P2E19 endpoint neutrality passed 72/72 overlapping fixed-versus-scaled comparisons. Fine 8/16/32 stability was available for 34 cases and passed for 33;
+- P2E20 separately materialized the casewise Reference authority: 33 `REF_HIGH_QUALIFIED`, 2 route-unresolved, 1 stability-unresolved. The qualified endpoint is the 32-substep Reference state under the frozen integrated-invariant policy;
+- RossFast and timing were not executed in P2E18 through P2E20;
+- next permitted action: preregister equal-error solver control and work/timing methodology on exactly the 33 qualified cases. No speedup inference is authorized before that freeze.
+
 
 ## Immediate executable tranche
 
