@@ -2,7 +2,7 @@ program test_f_rom01_reference_histories
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
+       soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
@@ -21,6 +21,8 @@ program test_f_rom01_reference_histories
   real(real64), parameter :: mass_tol_cm = 1.0e-12_real64
   real(real64), parameter :: collision_storage_tol_cm = 1.0e-8_real64
   real(real64), parameter :: distinct_theta_rms_min = 1.0e-10_real64
+  integer, parameter :: max_retry_depth = 8
+  real(real64), parameter :: min_internal_duration_day = dt_day / real(2**max_retry_depth, real64)
 
   ! F-ROM01 research fixture B01. Provenance is frozen in
   ! integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json.
@@ -58,7 +60,8 @@ program test_f_rom01_reference_histories
   real(real64) :: max_mass_a, max_mass_b
   real(real64) :: cont_s_a, cont_s_b, cont_root_a, cont_root_b
   real(real64) :: cont_theta_rms, cont_h_rms, cont_qbot_diff
-  integer :: i
+  real(real64) :: outer_qbot_a, outer_qbot_b
+  integer :: i, accepted_substeps_a, accepted_substeps_b, retry_attempts_a, retry_attempts_b
 
   call initialize_parameter_contract(parameters, cofgen)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen)
@@ -89,13 +92,21 @@ program test_f_rom01_reference_histories
   q_cont = continuation_top_factor * k0
   max_mass_a = 0.0_real64
   max_mass_b = 0.0_real64
+  accepted_substeps_a = 0
+  accepted_substeps_b = 0
+  retry_attempts_a = 0
+  retry_attempts_b = 0
 
   ! Deliberate Z1 collision construction. Both histories receive the same
   ! integrated external fluxes; only the order differs.
-  call run_phase('A_WET', phase_steps, q_wet, q_history_bottom, state_a, request_a, solver_a, workspace_a, max_mass_a)
-  call run_phase('A_DRY', phase_steps, q_dry, q_history_bottom, state_a, request_a, solver_a, workspace_a, max_mass_a)
-  call run_phase('B_DRY', phase_steps, q_dry, q_history_bottom, state_b, request_b, solver_b, workspace_b, max_mass_b)
-  call run_phase('B_WET', phase_steps, q_wet, q_history_bottom, state_b, request_b, solver_b, workspace_b, max_mass_b)
+  call run_phase('A_WET', phase_steps, q_wet, q_history_bottom, state_a, request_a, solver_a, workspace_a, &
+       max_mass_a, accepted_substeps_a, retry_attempts_a)
+  call run_phase('A_DRY', phase_steps, q_dry, q_history_bottom, state_a, request_a, solver_a, workspace_a, &
+       max_mass_a, accepted_substeps_a, retry_attempts_a)
+  call run_phase('B_DRY', phase_steps, q_dry, q_history_bottom, state_b, request_b, solver_b, workspace_b, &
+       max_mass_b, accepted_substeps_b, retry_attempts_b)
+  call run_phase('B_WET', phase_steps, q_wet, q_history_bottom, state_b, request_b, solver_b, workspace_b, &
+       max_mass_b, accepted_substeps_b, retry_attempts_b)
 
   collision_a = state_a
   collision_b = state_b
@@ -123,6 +134,10 @@ program test_f_rom01_reference_histories
        '|D_S_ROOT_CM=',collision_root_diff,'|M1_A_CM2=',moment_a,'|M1_B_CM2=',moment_b, &
        '|THETA_RMS=',collision_theta_rms,'|H_RMS_CM=',collision_h_rms
   write(*,'(*(g0))') 'F_ROM01_HISTORY_MASS|MAX_A_CM=',max_mass_a,'|MAX_B_CM=',max_mass_b
+  write(*,'(*(g0))') 'F_ROM01_HISTORY_EXECUTION|ACCEPTED_SUBSTEPS_A=',accepted_substeps_a, &
+       '|RETRY_ATTEMPTS_A=',retry_attempts_a,'|ACCEPTED_SUBSTEPS_B=',accepted_substeps_b, &
+       '|RETRY_ATTEMPTS_B=',retry_attempts_b,'|MAX_RETRY_DEPTH=',max_retry_depth, &
+       '|MIN_INTERNAL_DT_DAY=',min_internal_duration_day
 
   ! Identical continuation under a prescribed lower-boundary head. Unlike the
   ! history construction, qbot is now an output, so hidden-profile information
@@ -130,8 +145,10 @@ program test_f_rom01_reference_histories
   state_a = collision_a
   state_b = collision_b
   do i = 1, continuation_steps
-     call run_step('CONT_A', q_cont, 5, 0.0_real64, h0, state_a, request_a, solver_a, workspace_a, result_a, max_mass_a)
-     call run_step('CONT_B', q_cont, 5, 0.0_real64, h0, state_b, request_b, solver_b, workspace_b, result_b, max_mass_b)
+     call run_outer_interval('CONT_A', q_cont, 5, 0.0_real64, h0, state_a, request_a, solver_a, workspace_a, &
+          outer_qbot_a, max_mass_a, accepted_substeps_a, retry_attempts_a)
+     call run_outer_interval('CONT_B', q_cont, 5, 0.0_real64, h0, state_b, request_b, solver_b, workspace_b, &
+          outer_qbot_b, max_mass_b, accepted_substeps_b, retry_attempts_b)
 
      if (i == 1 .or. i == 8 .or. i == continuation_steps) then
         cont_s_a = total_storage(state_a, parameters)
@@ -140,9 +157,9 @@ program test_f_rom01_reference_histories
         cont_root_b = root_storage(state_b, parameters)
         cont_theta_rms = rms_difference(state_a%water_content, state_b%water_content)
         cont_h_rms = rms_difference(state_a%pressure_head, state_b%pressure_head)
-        cont_qbot_diff = abs(result_a%bottom_flux - result_b%bottom_flux)
-        write(*,'(*(g0))') 'F_ROM01_CONTINUATION|STEP=',i,'|QBOT_A=',result_a%bottom_flux, &
-             '|QBOT_B=',result_b%bottom_flux,'|D_QBOT=',cont_qbot_diff, &
+        cont_qbot_diff = abs(outer_qbot_a - outer_qbot_b)
+        write(*,'(*(g0))') 'F_ROM01_CONTINUATION|STEP=',i,'|QBOT_A=',outer_qbot_a, &
+             '|QBOT_B=',outer_qbot_b,'|D_QBOT=',cont_qbot_diff, &
              '|S_TOTAL_A_CM=',cont_s_a,'|S_TOTAL_B_CM=',cont_s_b,'|D_S_TOTAL_CM=',abs(cont_s_a-cont_s_b), &
              '|S_ROOT_A_CM=',cont_root_a,'|S_ROOT_B_CM=',cont_root_b,'|D_S_ROOT_CM=',abs(cont_root_a-cont_root_b), &
              '|THETA_RMS=',cont_theta_rms,'|H_RMS_CM=',cont_h_rms
@@ -150,6 +167,9 @@ program test_f_rom01_reference_histories
   end do
 
   write(*,'(*(g0))') 'F_ROM01_ALL_MASS|MAX_A_CM=',max_mass_a,'|MAX_B_CM=',max_mass_b
+  write(*,'(*(g0))') 'F_ROM01_ALL_EXECUTION|ACCEPTED_SUBSTEPS_A=',accepted_substeps_a, &
+       '|RETRY_ATTEMPTS_A=',retry_attempts_a,'|ACCEPTED_SUBSTEPS_B=',accepted_substeps_b, &
+       '|RETRY_ATTEMPTS_B=',retry_attempts_b
   write(*,'(A)') 'F_ROM01_PRODUCTION_SOURCE_MUTATION=NONE'
   write(*,'(A)') 'F_ROM01_SCIENTIFIC_SUFFICIENCY_VERDICT=NOT_SET_IN_PILOT'
   write(*,'(A)') 'F_ROM01_REFERENCE_HISTORY_PILOT=PASS'
@@ -237,7 +257,7 @@ contains
     req%evaluation%top_boundary => top_provider
   end subroutine initialize_request
 
-  subroutine run_phase(label, steps, qtop, qbot, state, req, solver, workspace, max_mass)
+  subroutine run_phase(label, steps, qtop, qbot, state, req, solver, workspace, max_mass, accepted_substeps, retry_attempts)
     character(len=*), intent(in) :: label
     integer, intent(in) :: steps
     real(real64), intent(in) :: qtop, qbot
@@ -246,15 +266,18 @@ contains
     type(reference_richards_legacy_solver_t), intent(inout) :: solver
     type(reference_richards_legacy_workspace_t), intent(inout) :: workspace
     real(real64), intent(inout) :: max_mass
-    type(soil_water_solve_result_t) :: result
+    integer, intent(inout) :: accepted_substeps, retry_attempts
+    real(real64) :: outer_qbot
     integer :: j
 
     do j = 1, steps
-       call run_step(label, qtop, 2, qbot, h0, state, req, solver, workspace, result, max_mass)
+       call run_outer_interval(label, qtop, 2, qbot, h0, state, req, solver, workspace, outer_qbot, &
+            max_mass, accepted_substeps, retry_attempts)
     end do
   end subroutine run_phase
 
-  subroutine run_step(label, qtop, bottom_mode, qbot, hbot, state, req, solver, workspace, result, max_mass)
+  subroutine run_outer_interval(label, qtop, bottom_mode, qbot, hbot, state, req, solver, workspace, &
+                                outer_qbot, max_mass, accepted_substeps, retry_attempts)
     character(len=*), intent(in) :: label
     real(real64), intent(in) :: qtop, qbot, hbot
     integer, intent(in) :: bottom_mode
@@ -262,8 +285,31 @@ contains
     type(soil_water_solve_request_t), intent(inout) :: req
     type(reference_richards_legacy_solver_t), intent(inout) :: solver
     type(reference_richards_legacy_workspace_t), intent(inout) :: workspace
-    type(soil_water_solve_result_t), intent(out) :: result
+    real(real64), intent(out) :: outer_qbot
     real(real64), intent(inout) :: max_mass
+    integer, intent(inout) :: accepted_substeps, retry_attempts
+    real(real64) :: integrated_qbot
+
+    integrated_qbot = 0.0_real64
+    call advance_segment(label, qtop, bottom_mode, qbot, hbot, dt_day, 0, state, req, solver, workspace, &
+         integrated_qbot, max_mass, accepted_substeps, retry_attempts)
+    outer_qbot = integrated_qbot / dt_day
+  end subroutine run_outer_interval
+
+  recursive subroutine advance_segment(label, qtop, bottom_mode, qbot, hbot, duration, depth, state, req, &
+                                       solver, workspace, integrated_qbot, max_mass, accepted_substeps, retry_attempts)
+    character(len=*), intent(in) :: label
+    real(real64), intent(in) :: qtop, qbot, hbot, duration
+    integer, intent(in) :: bottom_mode, depth
+    type(soil_water_physical_state_t), intent(inout) :: state
+    type(soil_water_solve_request_t), intent(inout) :: req
+    type(reference_richards_legacy_solver_t), intent(inout) :: solver
+    type(reference_richards_legacy_workspace_t), intent(inout) :: workspace
+    real(real64), intent(inout) :: integrated_qbot, max_mass
+    integer, intent(inout) :: accepted_substeps, retry_attempts
+
+    type(soil_water_solve_result_t) :: result
+    real(real64) :: half_duration
 
     req%base_state = state
     req%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -272,22 +318,38 @@ contains
     req%boundary%bottom_mode = bottom_mode
     req%boundary%bottom_flux = qbot
     req%boundary%bottom_head = hbot
+    req%step_duration = duration
 
     call solver%solve(req, workspace, result)
 
+    if (result%status == SW_SOLVE_RETRY_ADVISED) then
+       retry_attempts = retry_attempts + 1
+       write(*,'(*(g0))') 'F_ROM01_RETRY|LABEL=',trim(label),'|DEPTH=',depth,'|DT_DAY=',duration, &
+            '|ROUTE=',trim(result%diagnostics%route),'|NONLINEAR_ITERS=',result%diagnostics%nonlinear_iterations, &
+            '|LINEAR_SOLVES=',result%diagnostics%linear_solves,'|BACKTRACK=',result%diagnostics%backtracking_attempts
+       call require(result%retry_advised, trim(label)//' retry status carries retry flag')
+       call require(depth < max_retry_depth, trim(label)//' retry depth bounded')
+       half_duration = 0.5_real64 * duration
+       call require(half_duration >= min_internal_duration_day, trim(label)//' retry duration bounded')
+       call advance_segment(label, qtop, bottom_mode, qbot, hbot, half_duration, depth+1, state, req, solver, &
+            workspace, integrated_qbot, max_mass, accepted_substeps, retry_attempts)
+       call advance_segment(label, qtop, bottom_mode, qbot, hbot, half_duration, depth+1, state, req, solver, &
+            workspace, integrated_qbot, max_mass, accepted_substeps, retry_attempts)
+       return
+    end if
+
     if (result%status /= SW_SOLVE_CONVERGED) then
-       write(*,'(*(g0))') 'F_ROM01_SOLVER_FAILURE|LABEL=',trim(label), &
-            '|STATUS=',result%status,'|RETRY=',result%retry_advised, &
-            '|ROUTE=',trim(result%diagnostics%route), &
+       write(*,'(*(g0))') 'F_ROM01_SOLVER_FAILURE|LABEL=',trim(label),'|STATUS=',result%status, &
+            '|RETRY=',result%retry_advised,'|ROUTE=',trim(result%diagnostics%route), &
             '|NONLINEAR_ITERS=',result%diagnostics%nonlinear_iterations, &
             '|JACOBIAN_BUILDS=',result%diagnostics%jacobian_builds, &
             '|LINEAR_SOLVES=',result%diagnostics%linear_solves, &
             '|BACKTRACK=',result%diagnostics%backtracking_attempts, &
             '|INTERNAL_RETRIES=',result%diagnostics%internal_retries, &
             '|MASS_AVAILABLE=',result%integrated_mass_balance_residual_available
+       call require(.false., trim(label)//' converged or retry-advised')
     end if
 
-    call require(result%status == SW_SOLVE_CONVERGED, trim(label)//' converged')
     call require(trim(result%diagnostics%route) == 'legacy-reference-bound', trim(label)//' reference route')
     call require(result%integrated_mass_balance_residual_available, trim(label)//' mass diagnostic available')
     call require(ieee_is_finite(result%integrated_mass_balance_residual_cm), trim(label)//' mass residual finite')
@@ -302,8 +364,10 @@ contains
     call require(all(ieee_is_finite(result%candidate_state%water_content)), trim(label)//' candidate theta finite')
 
     max_mass = max(max_mass, abs(result%integrated_mass_balance_residual_cm))
+    integrated_qbot = integrated_qbot + duration * result%bottom_flux
+    accepted_substeps = accepted_substeps + 1
     state = result%candidate_state
-  end subroutine run_step
+  end subroutine advance_segment
 
   pure real(real64) function total_storage(state, parameter_set) result(storage)
     type(soil_water_physical_state_t), intent(in) :: state
