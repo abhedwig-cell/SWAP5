@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.rom1ar1d1.parent-failure.v1",
+  "workstream": "F-ROM",
+  "parent_work_unit": "ROM-1A-R1",
+  "parent_preregistration": "integration/f-rom/ROM1AR1_PREREGISTRATION.json",
+  "execution": {
+    "workflow_run": 35377940136,
+    "workflow_job": 105707000591,
+    "executed_head": "4eb42c2946b48bf5bb23ce38bc133dc8e2a3243a",
+    "artifact_id": 10560394653,
+    "artifact_digest": "sha256:d94f17e7a83b196ffa60455962815845faaa5c834633f887a6a80e5cb1938ce3",
+    "conclusion": "failure"
+  },
+  "observed_failure": {
+    "split": "DISCOVERY",
+    "history": "D08",
+    "failed_step": 34,
+    "symbol": "BOTTOM_HEAD_RISE",
+    "bottom_mode": 5,
+    "accepted_steps_before_failure": 33,
+    "accepted_predecessor_absolute_time_day": 0.029600000000000001,
+    "failed_requested_end_time_day": 0.030400000000000003,
+    "last_accepted_revision": 35,
+    "step33_total_storage_cm": 58.567433717803169,
+    "step33_upper_storage_cm": 14.654293747348589,
+    "step33_lower_storage_cm": 43.913139970454587,
+    "step33_bottom_outward_exchange_cm": -0.0022627442039897449,
+    "step33_terminal_bottom_flux_cm_per_day": -2.828430254987186,
+    "step33_mass_residual_cm": 0.0,
+    "step33_nonlinear_iterations": 3,
+    "step33_backtracking_attempts": 3,
+    "failure_marker": "ROM1AR1_FAIL ROM1A fallback exact total-only"
+  },
+  "meaning": "The original strict step34 failed, and the direct same-state diagnostic did not classify the failure as RETRY_TOTAL_ONLY. Therefore neither ROM1AD2 mode-2 nor ROM-0R-R3D4 mode-5 total-only fallback authority authorizes continuation.",
+  "history_retuning_allowed": false,
+  "dt_retuning_allowed": false,
+  "solver_control_retuning_allowed": false,
+  "fallback_widening_allowed": false,
+  "parent_result_reclassified": false
+}
