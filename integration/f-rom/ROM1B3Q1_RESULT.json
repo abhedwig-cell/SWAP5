@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.rom1b3q1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B3Q1",
+  "decision": "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+  "execution": {
+    "workflow_run": 35393534446,
+    "workflow_job": 105757081401,
+    "executed_head": "c651ad1ff35af0c17941c06b3571493ea343d10d",
+    "artifact_id": 10566791914,
+    "artifact_digest": "sha256:9c437ebcd9dc4953a59a823c5f46894bc1939b76e97a629113d294ca9ca72d41",
+    "conclusion": "success"
+  },
+  "theta_collision_floor": 0.0005420462931603476,
+  "discovery_state_count": 512,
+  "eligible_cross_history_pair_count": 114688,
+  "qualification_controls": {
+    "Z8_mask0_collision_count": 5617,
+    "Z8_matches_ROM1B1": true,
+    "full_mask255_collision_count": 0,
+    "full_mask_matches_Z16_zero_collision": true,
+    "full_mask_induced_distance_equals_cellwise_for_every_relevant_pair": true,
+    "maximum_full_mask_identity_abs_difference": 0,
+    "added_component_monotonicity": true
+  },
+  "selected_candidate": {
+    "id": "Z8_PLUS_G8",
+    "mask": 128,
+    "dimension": 9,
+    "added_components": [
+      "G8"
+    ],
+    "definition": {
+      "Z8": "eight contiguous 20-cm theta means",
+      "G8": "0.5*(theta_cell_15-theta_cell_16), depth 140-160 cm"
+    },
+    "collision_count": 0,
+    "minimum_induced_theta_linf_over_full_distinguishable_pairs": 0.0005426494193735976,
+    "minimum_separation_margin_over_theta_floor": 6.031262132499826e-7
+  },
+  "selection_facts": {
+    "zero_collision_candidate_count_at_added_count_1": 1,
+    "minimum_added_count": 1,
+    "B2_future_response_magnitude_used": false,
+    "heldout_used": false,
+    "B14_used": false
+  },
+  "ROM1B3_componentwise_result_reclassified": false,
+  "production_rom_authorized": false
+}
