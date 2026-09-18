@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.publication.p2e11d1-reference-extension-failure-adjudication-result.v1",
+  "workunit": "PUB-P2E11D1",
+  "phase": "COMPLETE_DIAGNOSTIC",
+  "parent_result_blob": "0d186a17c5b48f8287fde0d01c8a668aab064c1d",
+  "execution_head": "337f0e8072f8aa5615fa3c1cb0b8d217d22d00fe",
+  "workflow": {
+    "run": 35289551524,
+    "job": 105429216703,
+    "conclusion": "success"
+  },
+  "reproducibility": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "byte_identical_output": true,
+    "output_sha256": "136bcac21a8522276443b96d21e13f07a2ca6b21b0046ff67d2b44f35ec13e3d"
+  },
+  "fixed_domain": {
+    "pressure_head_cm": {
+      "min_exclusive": -10000,
+      "max_exclusive": -1
+    },
+    "source": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "schedule_unchanged": true,
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032
+  },
+  "cases": [
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "trajectory": "HALF2",
+      "solver_converged": true,
+      "route": "legacy-reference-bound",
+      "integrated_mass_residual_cm": 3.062528008968002e-15,
+      "mass_gate_pass": true,
+      "native_balance_rate_available": true,
+      "candidate_shape_valid": true,
+      "state_finite": true,
+      "head_domain_pass": false,
+      "theta_domain_pass": true,
+      "classified_reason": "HEAD_DOMAIN"
+    },
+    {
+      "material": "B02",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "trajectory": "HALF2",
+      "solver_converged": true,
+      "route": "legacy-reference-bound",
+      "integrated_mass_residual_cm": -8.254730232692964e-16,
+      "mass_gate_pass": true,
+      "native_balance_rate_available": true,
+      "candidate_shape_valid": true,
+      "state_finite": true,
+      "head_domain_pass": false,
+      "theta_domain_pass": true,
+      "classified_reason": "HEAD_DOMAIN"
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "DRYING",
+      "trajectory": "COARSE",
+      "solver_converged": true,
+      "route": "legacy-reference-bound",
+      "integrated_mass_residual_cm": 1.3535839116229909e-15,
+      "mass_gate_pass": true,
+      "native_balance_rate_available": true,
+      "candidate_shape_valid": true,
+      "state_finite": true,
+      "head_domain_pass": false,
+      "theta_domain_pass": false,
+      "classified_reason": "HEAD_DOMAIN_PRIMARY_WITH_THETA_DOMAIN_ALSO_FALSE"
+    },
+    {
+      "material": "B05",
+      "Se": 0.98,
+      "forcing": "NOMINAL",
+      "trajectory": "COARSE",
+      "solver_converged": true,
+      "route": "legacy-reference-bound",
+      "integrated_mass_residual_cm": -2.489031203367631e-15,
+      "mass_gate_pass": true,
+      "native_balance_rate_available": true,
+      "candidate_shape_valid": true,
+      "state_finite": true,
+      "head_domain_pass": false,
+      "theta_domain_pass": false,
+      "classified_reason": "HEAD_DOMAIN_PRIMARY_WITH_THETA_DOMAIN_ALSO_FALSE"
+    }
+  ],
+  "interpretation": {
+    "primary": "The P2E11 blocker is shared E0 state-domain transfer at Se=0.98, not Reference solver nonconvergence or mass failure.",
+    "material_pattern": "B02 leaves the pressure-head domain after the second half trajectory; B05 already leaves the domain on the coarse trajectory and also violates the strict theta bound.",
+    "forcing_pattern": "Both DRYING and NOMINAL fail for each affected material, so the observed blocker is not specific to one of the two frozen forcing classes.",
+    "consequence": "The six-material Reference calibration domain cannot be transferred unchanged to all thirty extension materials."
+  },
+  "firewall": {
+    "alternative_timestep_executed": false,
+    "case_removed": false,
+    "threshold_changed": false,
+    "rossfast_numerical_solver_executed": false,
+    "production_or_reference_source_changed": false,
+    "repair_attempted": false
+  },
+  "verdict": "DIAGNOSED_SHARED_STATE_DOMAIN_TRANSFER_FAILURE",
+  "next_permitted_action": "Design a new Reference-only common-material-domain study as a separate exploratory/domain-construction workunit. Do not reinterpret P2E11 as complete and do not execute the 30-material RossFast paired matrix."
+}
