@@ -6,7 +6,9 @@ on:
       - qualification/f-vq121-fapp06-swinter0-independent
     paths:
       - 'tests/fvq/test_fvq121_fapp06_swinter0_independent.f90'
+      - 'tests/fvq/test_fvq121_fapp06_exact_b111.f90'
       - 'tests/fvq/run_fvq121_fapp06_swinter0_independent.sh'
+      - 'tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz'
       - '.github/workflows/f-vq121-fapp06-independent.yml'
       - 'integration/f-vq/F-VQ121_*'
   workflow_dispatch:
