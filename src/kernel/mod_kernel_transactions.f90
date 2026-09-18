@@ -1,7 +1,10 @@
 module mod_kernel_transactions
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
-  use mod_transaction_reference, only: transaction_state_t, transaction_interface_sensitivity_t
+  use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
+       transaction_interface_sensitivity_t, TX_MASS_MISSING_NONE, TX_MASS_MISSING_STORAGE_START, &
+       TX_MASS_MISSING_STORAGE_END, TX_MASS_MISSING_EXTERNAL_FLUX, TX_MASS_MISSING_NONFINITE, &
+       TX_MASS_MISSING_UNSPECIFIED
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
@@ -29,6 +32,14 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PHYSICAL = 3
   integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_INVALID_TIME = 4
   integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED = 5
+
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_OK = 0
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_INVALID_REQUEST = 201
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_NOT_BOUND = 202
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED = 203
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_SOLVER_FAILED = 204
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_MASS_FAILED = 205
+  integer, parameter, public :: KERNEL_REFERENCE_FLOOR_STATUS_TIME_MISMATCH = 206
 
   public :: kernel_reconstruct_committed_state_trusted
 
@@ -100,6 +111,54 @@ module mod_kernel_transactions
     procedure, public :: origin_revision => kernel_candidate_origin_revision
     procedure, public :: origin_interval => kernel_candidate_origin_interval
   end type kernel_candidate_state_t
+
+  type, public :: kernel_reference_floor_mass_t
+    logical :: complete = .false.
+    integer(int64) :: missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    real(real64) :: storage_start = 0.0_real64
+    real(real64) :: storage_end = 0.0_real64
+    real(real64) :: storage_change = 0.0_real64
+    real(real64) :: total_in = 0.0_real64
+    real(real64) :: total_out = 0.0_real64
+    real(real64) :: residual = huge(0.0_real64)
+  end type kernel_reference_floor_mass_t
+
+  type, public :: kernel_reference_floor_result_t
+    integer :: status = KERNEL_REFERENCE_FLOOR_STATUS_INVALID_REQUEST
+    logical :: sample_valid = .false.
+    real(real64) :: requested_t0 = 0.0_real64
+    real(real64) :: requested_t1 = 0.0_real64
+    real(real64) :: accepted_dt = 0.0_real64
+    integer :: physical_advances = 0
+    integer :: nonlinear_iterations = 0
+    integer :: internal_retries = 0
+    integer :: headcalc_calls = 0
+    integer :: jacobian_builds = 0
+    integer :: linear_solves = 0
+    integer :: backtracking_attempts = 0
+    integer :: alternative_solver_calls = 0
+    type(kernel_reference_floor_mass_t) :: mass
+    logical :: bottom_interface_exchange_available = .false.
+    real(real64) :: bottom_outward_exchange_native = 0.0_real64
+    real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
+  end type kernel_reference_floor_result_t
+
+  type, public :: kernel_reference_floor_candidate_t
+    private
+    class(transaction_state_t), allocatable :: state
+    logical :: valid = .false.
+    real(real64) :: origin_t0 = 0.0_real64
+    real(real64) :: origin_t1 = 0.0_real64
+    integer(int64) :: origin_lineage_id_value = 0_int64
+    integer(int64) :: origin_revision_value = -1_int64
+    type(kernel_reference_floor_mass_t) :: mass
+  contains
+    procedure, public :: ready => kernel_reference_floor_candidate_ready
+    procedure, public :: snapshot => kernel_reference_floor_candidate_snapshot
+    procedure, public :: current_lineage_id => kernel_reference_floor_candidate_lineage_id
+    procedure, public :: origin_revision => kernel_reference_floor_candidate_origin_revision
+    procedure, public :: origin_interval => kernel_reference_floor_candidate_origin_interval
+  end type kernel_reference_floor_candidate_t
 
   type, public :: kernel_result_t
     integer :: status = CANONICAL_STATUS_INVALID_REQUEST
@@ -176,6 +235,9 @@ module mod_kernel_transactions
     procedure, public :: advance_interval => kernel_advance_interval
     procedure, public :: commit_candidate => kernel_commit_candidate
     procedure, public :: rollback_candidate => kernel_rollback_candidate
+    procedure, public :: sample_reference_floor_interval => kernel_sample_reference_floor_interval
+    procedure, public :: commit_reference_floor_candidate => kernel_commit_reference_floor_candidate
+    procedure, public :: discard_reference_floor_candidate => kernel_discard_reference_floor_candidate
   end type kernel_executor_t
 
   abstract interface
@@ -444,6 +506,47 @@ contains
     end if
   end subroutine kernel_candidate_origin_interval
 
+  logical function kernel_reference_floor_candidate_ready(self) result(is_ready)
+    class(kernel_reference_floor_candidate_t), intent(in) :: self
+    is_ready = self%valid .and. allocated(self%state) .and. &
+         self%origin_lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
+         ieee_is_finite(self%origin_t0) .and. ieee_is_finite(self%origin_t1) .and. self%origin_t1 > self%origin_t0 .and. &
+         self%mass%complete
+  end function kernel_reference_floor_candidate_ready
+
+  subroutine kernel_reference_floor_candidate_snapshot(self, copy, available)
+    class(kernel_reference_floor_candidate_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical, intent(out) :: available
+    available = self%ready()
+    if (.not. available) return
+    call self%state%clone(copy)
+  end subroutine kernel_reference_floor_candidate_snapshot
+
+  integer(int64) function kernel_reference_floor_candidate_lineage_id(self) result(value)
+    class(kernel_reference_floor_candidate_t), intent(in) :: self
+    value = self%origin_lineage_id_value
+  end function kernel_reference_floor_candidate_lineage_id
+
+  integer(int64) function kernel_reference_floor_candidate_origin_revision(self) result(value)
+    class(kernel_reference_floor_candidate_t), intent(in) :: self
+    value = self%origin_revision_value
+  end function kernel_reference_floor_candidate_origin_revision
+
+  subroutine kernel_reference_floor_candidate_origin_interval(self, t0, t1, available)
+    class(kernel_reference_floor_candidate_t), intent(in) :: self
+    real(real64), intent(out) :: t0, t1
+    logical, intent(out) :: available
+    available = self%ready()
+    if (available) then
+      t0 = self%origin_t0
+      t1 = self%origin_t1
+    else
+      t0 = 0.0_real64
+      t1 = 0.0_real64
+    end if
+  end subroutine kernel_reference_floor_candidate_origin_interval
+
   subroutine kernel_bind_model(self, model)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_model_t), target, intent(inout) :: model
@@ -552,6 +655,155 @@ contains
     end if
   end subroutine kernel_advance_interval
 
+  subroutine kernel_sample_reference_floor_interval(self, parameters, committed_state, forcing, t0, t1, &
+                                                     mass_tolerance, result, candidate_state, diagnostics)
+    class(kernel_executor_t), intent(inout) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed_state
+    class(canonical_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1, mass_tolerance
+    type(kernel_reference_floor_result_t), intent(out) :: result
+    type(kernel_reference_floor_candidate_t), intent(out) :: candidate_state
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+
+    class(transaction_state_t), allocatable :: start_state, working
+    class(transaction_attempt_context_t), allocatable :: checkpoint_context
+    type(trial_outcome_t) :: outcome
+    type(canonical_interval_t) :: interval
+    type(canonical_numerical_config_t) :: model_config
+    real(real64) :: storage0, storage1, mass_residual
+    logical :: storage_start_complete, storage_end_complete, mass_ok
+    integer(int64) :: start_missing_mask, end_missing_mask, missing_mask
+
+    result = kernel_reference_floor_result_t()
+    result%requested_t0 = t0
+    result%requested_t1 = t1
+    candidate_state = kernel_reference_floor_candidate_t()
+    diagnostics = kernel_diagnostics_t()
+
+    if (.not. committed_state%ready() .or. .not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. &
+        t1 <= t0 .or. .not. ieee_is_finite(mass_tolerance) .or. mass_tolerance <= 0.0_real64) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_INVALID_REQUEST
+      return
+    end if
+    if (committed_state%time_bound .and. .not. same_time_value(t0, committed_state%committed_time_value)) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_TIME_MISMATCH
+      diagnostics%time_origin_rejections = 1
+      return
+    end if
+    if (.not. associated(self%model)) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_BOUND
+      return
+    end if
+
+    model_config = canonical_numerical_config_t()
+    model_config%transaction%mass_tolerance = mass_tolerance
+    model_config%transaction%max_retries = 0
+    model_config%max_committed_substeps = 1
+    model_config%progress_tolerance = 0.0_real64
+    model_config%model_temporal_indicator_budget_available = .false.
+    model_config%model_temporal_indicator_budget = 0.0_real64
+    model_config%accepted_trajectory_direction%requested = .false.
+
+    if (.not. self%model%execution_admitted(parameters, model_config)) then
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+      diagnostics%admission_rejections = 1
+      return
+    end if
+
+    call self%model%configure_parameters(parameters)
+    interval%t0 = t0
+    interval%t1 = t1
+    call self%model%prepare_interval(forcing, interval, model_config)
+
+    call committed_state%physical_state%clone(start_state)
+    call committed_state%physical_state%clone(working)
+    storage0 = self%model%storage(start_state)
+    call self%model%storage_accounting_status(start_state, storage_start_complete, start_missing_mask)
+    call self%model%capture_attempt_context(checkpoint_context)
+
+    call self%model%advance(working, t0, t1, outcome)
+    result%physical_advances = 1
+    result%accepted_dt = t1-t0
+    result%nonlinear_iterations = outcome%nonlinear_iterations
+    result%internal_retries = outcome%internal_retries
+    result%headcalc_calls = outcome%headcalc_calls
+    result%jacobian_builds = outcome%jacobian_builds
+    result%linear_solves = outcome%linear_solves
+    result%backtracking_attempts = outcome%backtracking_attempts
+    result%alternative_solver_calls = outcome%alternative_solver_calls
+    diagnostics%nonlinear_iterations = outcome%nonlinear_iterations
+    diagnostics%internal_retries = outcome%internal_retries
+    diagnostics%headcalc_calls = outcome%headcalc_calls
+    diagnostics%jacobian_builds = outcome%jacobian_builds
+    diagnostics%linear_solves = outcome%linear_solves
+    diagnostics%backtracking_attempts = outcome%backtracking_attempts
+    diagnostics%alternative_solver_calls = outcome%alternative_solver_calls
+
+    if (.not. outcome%solver_ok) then
+      call self%model%restore_attempt_context(checkpoint_context)
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_SOLVER_FAILED
+      diagnostics%solver_rejections = 1
+      return
+    end if
+
+    storage1 = self%model%storage(working)
+    call self%model%storage_accounting_status(working, storage_end_complete, end_missing_mask)
+    mass_residual = storage1-storage0-(outcome%mass_in-outcome%mass_out)
+    missing_mask = ior(start_missing_mask,end_missing_mask)
+    missing_mask = ior(missing_mask,outcome%missing_mass_contribution_mask)
+    if (.not. storage_start_complete) missing_mask = ior(missing_mask,TX_MASS_MISSING_STORAGE_START)
+    if (.not. storage_end_complete) missing_mask = ior(missing_mask,TX_MASS_MISSING_STORAGE_END)
+    if (.not. outcome%mass_accounting_complete) missing_mask = ior(missing_mask,TX_MASS_MISSING_EXTERNAL_FLUX)
+    if (.not. ieee_is_finite(storage0) .or. .not. ieee_is_finite(storage1) .or. &
+        .not. ieee_is_finite(outcome%mass_in) .or. .not. ieee_is_finite(outcome%mass_out) .or. &
+        .not. ieee_is_finite(mass_residual)) missing_mask = ior(missing_mask,TX_MASS_MISSING_NONFINITE)
+
+    result%mass%storage_start = storage0
+    result%mass%storage_end = storage1
+    result%mass%storage_change = storage1-storage0
+    result%mass%total_in = outcome%mass_in
+    result%mass%total_out = outcome%mass_out
+    result%mass%residual = mass_residual
+    result%mass%missing_contribution_mask = missing_mask
+
+    mass_ok = storage_start_complete .and. storage_end_complete .and. outcome%mass_accounting_complete .and. &
+         missing_mask == TX_MASS_MISSING_NONE
+    if (mass_ok) mass_ok = abs(mass_residual) <= mass_tolerance
+    result%mass%complete = mass_ok
+    if (.not. mass_ok) then
+      call self%model%restore_attempt_context(checkpoint_context)
+      result%status = KERNEL_REFERENCE_FLOOR_STATUS_MASS_FAILED
+      diagnostics%mass_rejections = 1
+      if (ieee_is_finite(mass_residual)) diagnostics%max_abs_step_mass_residual = abs(mass_residual)
+      return
+    end if
+
+    result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
+    if (result%bottom_interface_exchange_available) then
+      result%bottom_outward_exchange_native = outcome%bottom_outward_exchange_native
+      result%terminal_bottom_outward_flux_native = outcome%terminal_bottom_outward_flux_native
+      if (.not. ieee_is_finite(result%bottom_outward_exchange_native) .or. &
+          .not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) then
+        result%bottom_interface_exchange_available = .false.
+        result%bottom_outward_exchange_native = 0.0_real64
+        result%terminal_bottom_outward_flux_native = 0.0_real64
+      end if
+    end if
+
+    call move_alloc(working,candidate_state%state)
+    candidate_state%valid = .true.
+    candidate_state%origin_t0 = t0
+    candidate_state%origin_t1 = t1
+    candidate_state%origin_lineage_id_value = committed_state%lineage_id
+    candidate_state%origin_revision_value = committed_state%revision
+    candidate_state%mass = result%mass
+    diagnostics%candidate_materializations = 1
+    diagnostics%max_abs_step_mass_residual = abs(mass_residual)
+    result%sample_valid = .true.
+    result%status = KERNEL_REFERENCE_FLOOR_STATUS_OK
+  end subroutine kernel_sample_reference_floor_interval
+
   logical function validate_checkpoint(checkpoint, committed_state, diagnostics) result(matches)
     type(kernel_checkpoint_t), intent(in) :: checkpoint
     type(kernel_committed_state_t), intent(in) :: committed_state
@@ -654,6 +906,83 @@ contains
     did_commit = .true.
     if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_COMMITTED
   end subroutine kernel_commit_candidate
+
+  subroutine kernel_commit_reference_floor_candidate(self, committed_state, candidate_state, diagnostics, &
+                                                       did_commit, commit_status, accepted_mass)
+    class(kernel_executor_t), intent(inout) :: self
+    type(kernel_committed_state_t), intent(inout) :: committed_state
+    type(kernel_reference_floor_candidate_t), intent(inout) :: candidate_state
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+    logical, intent(out) :: did_commit
+    integer, intent(out), optional :: commit_status
+    type(kernel_reference_floor_mass_t), intent(out), optional :: accepted_mass
+
+    did_commit = .false.
+    if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_INVALID_CANDIDATE
+    if (present(accepted_mass)) accepted_mass = kernel_reference_floor_mass_t()
+    if (.not. same_type_as(self,self)) error stop 'unreachable kernel executor type'
+
+    if (.not. candidate_state%ready()) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%invalid_candidate_rejections = diagnostics%invalid_candidate_rejections + 1
+      return
+    end if
+    if (.not. committed_state%ready()) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
+      return
+    end if
+    if (candidate_state%origin_lineage_id_value /= committed_state%lineage_id) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%lineage_mismatch_rejections = diagnostics%lineage_mismatch_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH
+      return
+    end if
+    if (candidate_state%origin_revision_value /= committed_state%revision) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%stale_revision_rejections = diagnostics%stale_revision_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_STALE_REVISION
+      return
+    end if
+    if (committed_state%time_bound .and. &
+        .not. same_time_value(candidate_state%origin_t0,committed_state%committed_time_value)) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%time_origin_rejections = diagnostics%time_origin_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_TIME_MISMATCH
+      return
+    end if
+
+    call move_alloc(candidate_state%state,committed_state%physical_state)
+    if (present(accepted_mass)) accepted_mass = candidate_state%mass
+    committed_state%revision = committed_state%revision + 1_int64
+    committed_state%committed_time_value = candidate_state%origin_t1
+    committed_state%time_bound = .true.
+    call clear_reference_floor_candidate(candidate_state)
+    diagnostics%committed_state_mutations = diagnostics%committed_state_mutations + 1
+    did_commit = .true.
+    if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_COMMITTED
+  end subroutine kernel_commit_reference_floor_candidate
+
+  subroutine kernel_discard_reference_floor_candidate(self,candidate_state,diagnostics)
+    class(kernel_executor_t), intent(inout) :: self
+    type(kernel_reference_floor_candidate_t), intent(inout) :: candidate_state
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+    if (.not. same_type_as(self,self)) error stop 'unreachable kernel executor type'
+    if (candidate_state%ready()) diagnostics%candidate_rollbacks = diagnostics%candidate_rollbacks + 1
+    call clear_reference_floor_candidate(candidate_state)
+  end subroutine kernel_discard_reference_floor_candidate
+
+  subroutine clear_reference_floor_candidate(candidate_state)
+    type(kernel_reference_floor_candidate_t), intent(inout) :: candidate_state
+    if (allocated(candidate_state%state)) deallocate(candidate_state%state)
+    candidate_state%valid = .false.
+    candidate_state%origin_t0 = 0.0_real64
+    candidate_state%origin_t1 = 0.0_real64
+    candidate_state%origin_lineage_id_value = 0_int64
+    candidate_state%origin_revision_value = -1_int64
+    candidate_state%mass = kernel_reference_floor_mass_t()
+  end subroutine clear_reference_floor_candidate
 
   subroutine kernel_rollback_candidate(self, candidate_state, diagnostics)
     class(kernel_executor_t), intent(inout) :: self
