@@ -69,7 +69,8 @@ contains
     if (.not. committed%ready()) return
 
     call committed%capture_checkpoint(self%origin_checkpoint, available)
-    if (.not. available .or. .not. self%origin_checkpoint%ready()) return
+    if (.not. available) return
+    if (.not. self%origin_checkpoint%ready()) return
     call self%origin_checkpoint%current_time(self%origin_time, available)
     if (.not. available .or. .not. ieee_is_finite(self%origin_time)) return
 
@@ -100,7 +101,8 @@ contains
 
     trial = groundwater_swap_trial_t()
     status = GW_SWAP_PARTICIPANT_INVALID_REQUEST
-    if (.not. self%origin_captured .or. .not. self%origin_checkpoint%ready()) return
+    if (.not. self%origin_captured) return
+    if (.not. self%origin_checkpoint%ready()) return
     if (self%live_candidate) then
       status = GW_SWAP_PARTICIPANT_CANDIDATE_BUSY
       return
@@ -164,7 +166,9 @@ contains
 
     ready = .false.
     if (.not. self%origin_captured .or. .not. self%live_candidate) return
-    if (.not. window%valid() .or. .not. committed%ready() .or. .not. self%candidate%ready()) return
+    if (.not. window%valid()) return
+    if (.not. committed%ready()) return
+    if (.not. self%candidate%ready()) return
     if (.not. origin_still_current(self, committed)) return
     call committed%current_time(committed_time, committed_time_available)
     if (.not. committed_time_available .or. .not. same_time(committed_time, window%t0)) return
@@ -213,7 +217,8 @@ contains
     logical :: time_available
 
     current = .false.
-    if (.not. self%origin_captured .or. .not. committed%ready()) return
+    if (.not. self%origin_captured) return
+    if (.not. committed%ready()) return
     if (committed%current_lineage_id() /= self%origin_lineage_id) return
     if (committed%current_revision() /= self%origin_revision) return
     call committed%current_time(committed_time, time_available)
@@ -230,7 +235,8 @@ contains
     logical :: interval_available
 
     valid = .false.
-    if (.not. result%completed .or. .not. candidate%ready()) return
+    if (.not. result%completed) return
+    if (.not. candidate%ready()) return
     if (.not. result%bottom_interface_exchange_available) return
     if (.not. ieee_is_finite(result%bottom_outward_exchange_native)) return
     if (.not. ieee_is_finite(result%terminal_bottom_outward_flux_native)) return
@@ -250,7 +256,9 @@ contains
 
   logical function swap_participant_has_live_candidate(self) result(value)
     class(groundwater_swap_transaction_participant_t), intent(in) :: self
-    value = self%live_candidate .and. self%candidate%ready()
+    value = .false.
+    if (.not. self%live_candidate) return
+    value = self%candidate%ready()
   end function swap_participant_has_live_candidate
 
   integer(int64) function swap_participant_lineage_id(self) result(value)
