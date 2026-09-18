@@ -1,0 +1,321 @@
+{
+  "schema": "swap5.f-ross14d1.recovered-historical-matrix.v1",
+  "workunit": "F-ROSS14D1",
+  "parent_workunit": "F-ROSS14",
+  "phase": "RECONCILE",
+  "status": "HISTORICAL_36_MATERIAL_MATRIX_RECOVERED",
+  "authority": {
+    "workflow_run": 35289689550,
+    "canonical_base_at_run": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+    "research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "artifact_count": 36
+  },
+  "exact_target_forcing": {
+    "top_internal_over_initial_K": -0.025,
+    "bottom_up_over_initial_K": 0.011,
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "candidate_step_counts": [
+      2,
+      4,
+      8,
+      16
+    ]
+  },
+  "science_gate": {
+    "materials_total": 36,
+    "pass_count": 19,
+    "fail_count": 17,
+    "pass_materials": [
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "B14",
+      "B16",
+      "B17",
+      "B18",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O14",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "fail_materials": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B13",
+      "B15",
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O18"
+    ],
+    "failed_metric_for_all_failures": "piecewise_route_policy",
+    "total_transition_routes": 343,
+    "total_inadmissible_transition_routes": 146,
+    "exact_node_endpoint_count": 0,
+    "candidate_domain_failure_count": 0,
+    "candidate_head_envelope_failure_count": 0,
+    "candidate_and_reference_nonfinite_count": 0,
+    "max_transitioning_components_per_trial": 4,
+    "max_abs_cell_displacement": 13,
+    "max_abs_step_mass_residual_cm": 3.821812658011403e-18,
+    "max_abs_horizon_mass_residual_cm": 2.3218758729917632e-14
+  },
+  "per_material": {
+    "B01": [
+      21,
+      11,
+      2,
+      3
+    ],
+    "B02": [
+      26,
+      12,
+      3,
+      4
+    ],
+    "B03": [
+      16,
+      3,
+      2,
+      2
+    ],
+    "B04": [
+      18,
+      11,
+      4,
+      2
+    ],
+    "B05": [
+      34,
+      25,
+      3,
+      13
+    ],
+    "B06": [
+      26,
+      15,
+      4,
+      4
+    ],
+    "B07": [
+      5,
+      3,
+      2,
+      1
+    ],
+    "B08": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B09": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B10": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B11": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B12": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B13": [
+      17,
+      9,
+      3,
+      2
+    ],
+    "B14": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "B15": [
+      24,
+      10,
+      3,
+      3
+    ],
+    "B16": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "B17": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "B18": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "O01": [
+      20,
+      5,
+      2,
+      3
+    ],
+    "O02": [
+      18,
+      8,
+      2,
+      2
+    ],
+    "O03": [
+      14,
+      6,
+      3,
+      2
+    ],
+    "O04": [
+      17,
+      8,
+      2,
+      2
+    ],
+    "O05": [
+      16,
+      6,
+      3,
+      2
+    ],
+    "O06": [
+      17,
+      8,
+      3,
+      2
+    ],
+    "O07": [
+      6,
+      2,
+      2,
+      1
+    ],
+    "O08": [
+      8,
+      0,
+      1,
+      1
+    ],
+    "O09": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "O10": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "O11": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "O12": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "O13": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "O14": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "O15": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "O16": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "O17": [
+      4,
+      0,
+      1,
+      1
+    ],
+    "O18": [
+      12,
+      4,
+      2,
+      1
+    ]
+  },
+  "per_material_tuple_definition": [
+    "transition_route_count",
+    "inadmissible_route_count",
+    "max_transitioning_components",
+    "max_abs_cell_displacement"
+  ],
+  "interpretation": [
+    "The exact WETTING target is not universally invalid: 19 of 36 materials satisfy the frozen science gate.",
+    "All 17 failing materials fail only the historical piecewise route policy; no constitutive-domain, head-envelope, nonfinite, exact-node-endpoint or meaningful mass-conservation failure was observed.",
+    "The remaining unresolved question is whether inadmissibility persists specifically on the 8-step and/or 16-step trajectories relevant to the D3R temporal certificate and which route-shape cause dominates."
+  ],
+  "production_mutation_allowed": false,
+  "unresolved": [
+    "inadmissible_by_effective_saturation",
+    "inadmissible_by_step_count",
+    "production_relevant_8_16_step_failure_surface",
+    "failure_cause_partition_MULTIPLE_COMPONENTS_vs_NON_ADJACENT_CELL_DISPLACEMENT"
+  ],
+  "next_permitted_action": "Complete F-ROSS14D1 diagnostic classification only. Do not mutate RossFast production binding, thresholds, kernel algebra, transaction semantics or forcing envelope."
+}
