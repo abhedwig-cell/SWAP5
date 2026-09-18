@@ -86,6 +86,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: ready => production_application_ready
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: run_standalone => production_application_run_standalone
+    procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
@@ -259,6 +260,20 @@ contains
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     integer, intent(out) :: status
 
+    if (allocated(results)) deallocate(results)
+    status = FMR_APP_BOOT_NOT_READY
+    if (.not. self%ready()) return
+
+    call self%run_standalone_with_forcing(t0, t1, self%base_forcing, results, status)
+  end subroutine production_application_run_standalone
+
+  subroutine production_application_run_standalone_with_forcing(self, t0, t1, effective_forcing, results, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    real(real64), intent(in) :: t0, t1
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    integer, intent(out) :: status
+
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
     type(fmr_serialized_batch_diagnostics_t) :: runtime
@@ -275,8 +290,12 @@ contains
       status = FMR_APP_BOOT_INVALID_CONFIG
       return
     end if
+    if (size(effective_forcing) /= size(self%columns)) then
+      status = FMR_APP_BOOT_INVALID_CONFIG
+      return
+    end if
 
-    call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, self%base_forcing, &
+    call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
          self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
          aggregate, dispatch_status, runtime)
 
@@ -287,7 +306,7 @@ contains
     if (.not. all(results%completed)) return
     if (.not. all(results%committed)) return
     status = FMR_APP_BOOT_OK
-  end subroutine production_application_run_standalone
+  end subroutine production_application_run_standalone_with_forcing
 
   subroutine production_application_materialize_groundwater_context(self, topology, predictors, cell_areas, &
        context_handle, status)
