@@ -1,0 +1,25 @@
+name: PUB-P2E23 observed-error Reference matching
+
+on:
+  push:
+    branches:
+      - work/pub-p2e23-observed-error-reference-matching
+    paths:
+      - 'docs/publication/P2E23_OBSERVED_ERROR_REFERENCE_MATCHING_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e23_observed_error_reference_matching.f90'
+      - 'tests/publication/run_pub_p2e23_observed_error_reference_matching.sh'
+      - '.github/workflows/pub-p2e23-observed-error-reference-matching.yml'
+  workflow_dispatch:
+
+jobs:
+  observed-error-reference-matching:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered P2E23 untimed matching matrix
+        run: bash tests/publication/run_pub_p2e23_observed_error_reference_matching.sh
