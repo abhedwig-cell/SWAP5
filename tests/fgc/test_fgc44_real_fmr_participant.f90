@@ -13,6 +13,8 @@ program test_fgc44_real_fmr_participant
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
+  use mod_modflow6_swap_prescribed_qbot_bottom_face, only: modflow6_prescribed_qbot_bottom_face_t, &
+       materialize_modflow6_prescribed_qbot_bottom_face, MODFLOW6_BOTTOM_FACE_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -41,7 +43,7 @@ program test_fgc44_real_fmr_participant
   class(transaction_state_t), allocatable :: snapshot
   logical :: ok, did_commit, available
   integer :: status
-  real(real64) :: qeq, committed_time
+  real(real64) :: qeq, committed_time, origin_head_m
 
   call initialize_parameters(parameters)
   qeq=predictor_qbot
@@ -58,6 +60,8 @@ program test_fgc44_real_fmr_participant
   datum%bottom_boundary_elevation_m=0.0_real64
   window%t0=0.0_real64
   window%t1=duration
+  call compute_origin_head(parameters,datum,origin_head_m,status)
+  call require(status==MODFLOW6_BOTTOM_FACE_OK,'materialize accepted bottom-face head')
 
   call participant%capture_origin(committed,status)
   call require(status==GW_SWAP_PARTICIPANT_OK,'capture FMR accepted origin')
@@ -65,14 +69,14 @@ program test_fgc44_real_fmr_participant
   call require(participant%captured_revision()==0_int64,'FMR revision retained')
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
-       -0.715_real64,trial1,status)
+       origin_head_m,trial1,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial1%valid,'first real FMR prescribed-head trial')
   call require(ieee_is_finite(trial1%q_swap_m_per_s),'first real FMR exchange finite')
   call require(committed%current_revision()==0_int64,'trial does not mutate real FMR committed state')
   call participant%discard_candidate(backend)
 
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
-       -0.7149_real64,trial2,status)
+       origin_head_m+1.0e-4_real64,trial2,status)
   if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. trial2%valid) write(*,'(A,I0,A,L1)') 'FGC44_SECOND_TRIAL_DIAG status=',status,' valid=',trial2%valid
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
@@ -187,6 +191,32 @@ contains
     call fmr_new_b110_temporal_indicator_committed_state(committed,column_id,state,0.0_real64,initialized, &
          accepted_predecessor_right_derivative)
   end subroutine initialize_committed
+
+  subroutine compute_origin_head(p,datum_value,head_m,status)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(groundwater_head_datum_t),intent(in)::datum_value
+    real(real64),intent(out)::head_m
+    integer,intent(out)::status
+    type(b110_default_mvg_parameters_t),target::hp
+    type(b110_default_mvg_provider_t)::provider
+    type(modflow6_prescribed_qbot_bottom_face_t)::face
+    real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+    integer::i
+    heads(1)=h0_cm
+    do i=2,numnod
+      heads(i)=heads(i-1)+p%node_distance(i)
+    end do
+    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+    call bind_b110_default_mvg_provider(provider,hp,duration)
+    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
+    call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod),conductivity(numnod),predictor_qbot, &
+         0.5_real64*p%dz(numnod),datum_value,face,status)
+    if(status==MODFLOW6_BOTTOM_FACE_OK)then
+      head_m=face%hydraulic_head_m
+    else
+      head_m=0.0_real64
+    end if
+  end subroutine compute_origin_head
 
   subroutine require(x,msg)
     logical,intent(in)::x
