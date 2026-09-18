@@ -2,9 +2,17 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-e2e-${GITHUB_RUN_ID:-local}-$$"
+if [[ -n "${FGC44_BUILD_DIR:-}" ]]; then
+  BUILD="$FGC44_BUILD_DIR"
+  CLEAN_BUILD=0
+else
+  BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-fgc44-e2e-${GITHUB_RUN_ID:-local}-$"
+  CLEAN_BUILD=1
+fi
 mkdir -p "$BUILD/modflow-bin" "$BUILD/downloads" "$BUILD/bridge"
-trap 'rm -rf "$BUILD"' EXIT
+if [[ "$CLEAN_BUILD" == "1" ]]; then
+  trap 'rm -rf "$BUILD"' EXIT
+fi
 fail(){ echo "FGC44_E2E_FAIL $*" >&2; exit 1; }
 
 python3 - <<PY
@@ -106,6 +114,13 @@ done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc44_swap.so" || fail "link F-GC44 shared library"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fail "missing SWAP C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_state_configured_c' || fail "missing E6 state-configured C ABI"
+
+if [[ "${FGC44_SKIP_E2E:-0}" == "1" ]]; then
+  echo "FGC44_BUILD_ONLY_LIBMF6=$BUILD/modflow-bin/libmf6.so"
+  echo "FGC44_BUILD_ONLY_SWAPLIB=$BUILD/bridge/libfgc44_swap.so"
+  exit 0
+fi
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py | tee "$BUILD/e2e.txt"
 
