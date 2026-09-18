@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.publication.p2e16d1-reference-fixed-step-adjudication-result.v1",
+  "workunit": "PUB-P2E16D1",
+  "phase": "REFERENCE_ONLY_DIAGNOSTIC_COMPLETE",
+  "branch": "work/pub-p2e16d1-reference-fixed-step-adjudication",
+  "parent_primary_result": {
+    "branch": "work/pub-p2e16b-candidate-boundary-primary",
+    "head": "5bbd6d9c6d2849550d7121098413fa3f135c2f1e",
+    "result_blob": "8c12656871d2ed2af50d352b07cba7bf59e0cefe"
+  },
+  "executed_head": "0a435529c3465100278956e6c61f5b041369d553",
+  "authorities": {
+    "preregistration_blob": "64c82f5bcfb8403704f616b43404e196f34a6497",
+    "test_blob": "c1214ac3d14cfef623e747a55e787401ff583c34",
+    "runner_blob": "4caddc85d630b653db27b5e477e32b0957cd1985",
+    "workflow_blob": "1a1ec373b55a1a00cd71c31e355996b738f0d73a"
+  },
+  "execution": {
+    "workflow_run": 35292662822,
+    "job": 105438642469,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "c527edc20c2dea986268716aa00ab6cd536ba93c58d9e187ab94ca8725f9ff77"
+  },
+  "direct_duration_ladder": {
+    "durations_day": [0.0064,0.0032,0.0016,0.0008,0.0004,0.0002,0.0001],
+    "record_count": 35,
+    "valid_count": 11,
+    "invalid_count": 24,
+    "valid_by_duration": {
+      "0.0064": 5,
+      "0.0032": 5,
+      "0.0016": 0,
+      "0.0008": 1,
+      "0.0004": 0,
+      "0.0002": 0,
+      "0.0001": 0
+    },
+    "invalid_route": "legacy-reference-retry",
+    "invalid_status": 2,
+    "common_invalid_pattern": "The failed direct steps exhaust the frozen 16 nonlinear iterations and advise retry; smaller requested duration does not monotonically improve convergence."
+  },
+  "same_horizon_refinement": {
+    "physical_horizon_day": 0.0016,
+    "substep_counts": [1,2,4,8,16],
+    "record_count": 25,
+    "complete_count": 0,
+    "incomplete_count": 25,
+    "interpretation": "No preregistered refinement level completes the full 0.0016-day horizon for any of the five diagnostic cases."
+  },
+  "case_results": [
+    {
+      "case": 576,
+      "material": "B16",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "direct_valid_durations_day": [0.0064,0.0032],
+      "direct_invalid_durations_day": [0.0016,0.0008,0.0004,0.0002,0.0001],
+      "same_horizon_complete_levels": [],
+      "classification": "NONMONOTONIC_DIRECT_STEP_CONVERGENCE_NO_REFINEMENT_RECOVERY"
+    },
+    {
+      "case": 612,
+      "material": "B17",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "direct_valid_durations_day": [0.0064,0.0032],
+      "direct_invalid_durations_day": [0.0016,0.0008,0.0004,0.0002,0.0001],
+      "same_horizon_complete_levels": [],
+      "classification": "NONMONOTONIC_DIRECT_STEP_CONVERGENCE_NO_REFINEMENT_RECOVERY"
+    },
+    {
+      "case": 1220,
+      "material": "O16",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": -1.0,
+      "direct_valid_durations_day": [0.0064,0.0032],
+      "direct_invalid_durations_day": [0.0016,0.0008,0.0004,0.0002,0.0001],
+      "same_horizon_complete_levels": [],
+      "classification": "NONMONOTONIC_DIRECT_STEP_CONVERGENCE_NO_REFINEMENT_RECOVERY"
+    },
+    {
+      "case": 1248,
+      "material": "O17",
+      "Se": 0.85,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "direct_valid_durations_day": [0.0064,0.0032],
+      "direct_invalid_durations_day": [0.0016,0.0008,0.0004,0.0002,0.0001],
+      "same_horizon_complete_levels": [],
+      "classification": "NONMONOTONIC_DIRECT_STEP_CONVERGENCE_NO_REFINEMENT_RECOVERY"
+    },
+    {
+      "case": 1257,
+      "material": "O17",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": -0.95,
+      "direct_valid_durations_day": [0.0064,0.0032,0.0008],
+      "direct_invalid_durations_day": [0.0016,0.0004,0.0002,0.0001],
+      "same_horizon_complete_levels": [],
+      "note": "A direct 0.0008-day solve is valid from the original state, but the second step of the 2 x 0.0008-day same-horizon sequence fails, so the 0.0016-day horizon is not recovered.",
+      "classification": "NONMONOTONIC_DIRECT_STEP_CONVERGENCE_ISOLATED_SMALL_STEP_SUCCESS_NO_HORIZON_RECOVERY"
+    }
+  ],
+  "scientific_interpretation": {
+    "supported": [
+      "The five P2E16B fixed-step Reference limitations are reproducible under the unchanged Reference solver controls.",
+      "They are not resolved by the preregistered smaller-step ladder.",
+      "The response to requested duration is non-monotonic: all five cases converge at 0.0064 and 0.0032 day but fail at 0.0016 day, and four then fail at every smaller tested duration.",
+      "The pattern is confined in this diagnostic set to the BOTTOM prescribed-flux boundary axis."
+    ],
+    "not_supported": [
+      "A claim that Reference convergence improves monotonically with timestep refinement in these cases.",
+      "A claim that the five cases are physically invalid, because valid Reference solutions exist at coarser requested durations and P2E16A produced valid Reference coarse-versus-refined trajectories for all 1296 physical cases.",
+      "A specific mechanistic diagnosis of why the legacy Reference nonlinear route exhibits this duration dependence.",
+      "Any retroactive upgrade of the P2E16B 848-of-850 matched scientific-admissibility result.",
+      "Any change to P2E14 thresholds or RossFast production limits."
+    ]
+  },
+  "primary_result_firewall": {
+    "rossfast_executed": false,
+    "p2e16b_primary_reclassified": false,
+    "p2e16b_primary_counts_changed": false,
+    "p2e14_threshold_changed": false,
+    "reference_tolerance_retuned": false,
+    "production_or_reference_source_changed": false
+  },
+  "verdict": "NONMONOTONIC_REFERENCE_STEP_RESPONSE_NO_REFINEMENT_RECOVERY_IN_FROZEN_LADDER",
+  "next_permitted_action": "Keep P2E16B primary counts unchanged. Reconcile the PUB-SQ governance with the completed boundary experiment and this Reference limitation. Before PUB-SQ equal-error performance, define a separate robust REF-HIGH construction that does not assume monotonic recovery of the legacy Reference route under smaller requested timestep."
+}
