@@ -1,0 +1,175 @@
+{
+  "schema": "swap5.publication.p2e20-ref-high-floor-policy-result.v1",
+  "workunit": "PUB-P2E20",
+  "publication_owner": "PUB-SQ",
+  "phase": "QUALIFIED_CASEWISE_REF_HIGH_36_OF_36",
+  "parent_authorities": {
+    "p2e18d3": {
+      "branch": "work/pub-p2e18d3-reference-total-balance-floor",
+      "head": "dfea35a171956895c2c67d287f3c1f49b3905264",
+      "result_blob": "c06193ca08031f24f9f40a1b6713287b2599926d",
+      "verdict": "TOTAL_BALANCE_RETRIES_NOT_NUMERICALLY_DISTINGUISHABLE_UNDER_PREREGISTERED_DOMAIN_SUMMED_FLOOR_MODEL"
+    },
+    "p2e19_supporting": {
+      "branch": "work/pub-p2e19-reference-balance-scaling-diagnostic",
+      "head": "f2d5cd8d0e69a35436573f6d32dd0916c344ca49",
+      "result_blob": "bbf6b235c81f30b517dee6e3346499f4823b597a",
+      "role": "supporting causal scaling evidence; not mutated or fitted inside P2E20"
+    }
+  },
+  "authorities": {
+    "preregistration_blob": "26d5ea8984c234e206ce30992b782fcde4789849",
+    "test_blob": "df0d5abc4025e62016837ee4b049343f9a78ce1d",
+    "runner_blob": "563d7768f3f859d88c6c5ede3f5c7aaa0ec8354d",
+    "workflow_blob": "8cfed6ddf2a59e1cba88cd671b8a4165c94d803b"
+  },
+  "execution": {
+    "first_attempt": {
+      "workflow_run": 35316315113,
+      "head": "52544ecb0f1498502ac505dc64f3d45bfaad0c4f",
+      "conclusion": "PRE_SCIENTIFIC_AUTHORITY_VARIABLE_FAILURE",
+      "scientific_result_generated": false,
+      "design_changed_after_failure": false
+    },
+    "authoritative_attempt": {
+      "workflow_run": 35316435386,
+      "job": 105508981491,
+      "head": "de9337a3327458689e063324d01544444a7495a1",
+      "conclusion": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_identical": true,
+      "output_sha256": "6e3fd619ad3bdd7d953b2f06cf924441fa141d79942e47c1326d81bff046bbfb"
+    }
+  },
+  "research_only_policy": {
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "total_integrated_representation_bound_formula": "sum_i(dz_i * spacing(theta_s_material))",
+    "total_integrated_allowance_formula": "max(1.6e-15 cm, representation_bound_cm)",
+    "safety_factor": 1,
+    "empirical_fit_to_retry_residuals": false,
+    "representation_floor_range_cm": [
+      8.881784197001252e-15,
+      1.7763568394002505e-14
+    ],
+    "production_tolerance_change": false
+  },
+  "case_matrix": {
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "cases": 36,
+    "fine_substeps": [
+      8,
+      16,
+      32
+    ],
+    "qualified_cases": 36,
+    "unresolved_cases": 0,
+    "qualified_by_Se": {
+      "0.65": "12/12",
+      "0.85": "12/12",
+      "0.96": "12/12"
+    }
+  },
+  "route_validity": {
+    "integrated_invariant": {
+      "n8": 36,
+      "n16": 35,
+      "n32": 34
+    },
+    "representation_floor": {
+      "n8": 36,
+      "n16": 36,
+      "n32": 36
+    }
+  },
+  "policy_neutrality": {
+    "comparisons": 105,
+    "pass": 105,
+    "fail": 0,
+    "worst_fraction_of_frozen_budget": {
+      "D_h_inf": 2.258864904027637e-9,
+      "D_h_rms": 1.6531963226645063e-9,
+      "D_theta_inf": 2.479819933078717e-10,
+      "D_theta_rms": 2.2225301074187991e-10,
+      "D_storage": 1
+    },
+    "storage_boundary_note": "The maximum policy-neutrality storage delta equals the existing inclusive floating-point storage budget and is retained as a boundary contact, not described as margin."
+  },
+  "ref_high_stability": {
+    "endpoint_substeps": 32,
+    "required_comparisons": [
+      "8_vs_16",
+      "16_vs_32"
+    ],
+    "all_36_cases_pass": true,
+    "worst_fraction_of_frozen_budget": {
+      "D_h_inf": 0.06707268207870665,
+      "D_h_rms": 0.09424837698726814,
+      "D_theta_inf": 0.0648973900446896,
+      "D_theta_rms": 0.07411717378062259,
+      "D_storage": 1
+    },
+    "worst_storage_case": {
+      "case": 36,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "NOMINAL",
+      "comparison": "8_vs_16",
+      "value_cm": 2.842170943040401e-14,
+      "threshold_cm": 2.842170943040401e-14,
+      "note": "Exact inclusive floating-point-resolution boundary contact."
+    }
+  },
+  "hard_mass": {
+    "hard_limit_cm": 1e-12,
+    "maximum_abs_integrated_mass_residual_cm": {
+      "value": 5.6888325647430626e-15,
+      "case": 35,
+      "material": "O18",
+      "Se": 0.96,
+      "forcing": "DRYING",
+      "substeps": 32
+    }
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "A candidate-blind high-accuracy numerical Reference can be constructed for all 36 frozen E3 cases when the Reference total-balance convergence discriminator is bounded prospectively by an IEEE/base-state representation scale while the compartment allowance and P2E18 endpoint-stability budgets remain unchanged.",
+      "The floor-aware policy restores valid 8/16/32 Reference routes for 36/36 cases.",
+      "Where direct comparison with the integrated-invariant policy is possible, the floor-aware accepted endpoints remain inside the original frozen stability budgets in 105/105 comparisons.",
+      "All 36 32-substep endpoints are qualified as REF-HIGH for the bounded E3 subset."
+    ],
+    "nonclaims": [
+      "No production Reference tolerance-policy change is proposed or admitted.",
+      "REF-HIGH is numerical reference, not physical or observational truth.",
+      "No RossFast timing, speedup or equal-error result is generated by P2E20.",
+      "No transaction-level, groundwater-coupled or long-horizon trajectory claim follows from this fixed solver-seam subset."
+    ]
+  },
+  "firewalls": {
+    "rossfast_executed": false,
+    "timing_executed": false,
+    "equal_error_claim_made": false,
+    "cases_removed_or_replaced": false,
+    "stability_budgets_changed": false,
+    "empirical_multiplier_from_D3_residuals_used": false,
+    "production_or_reference_source_mutated": false
+  },
+  "verdict": "QUALIFIED_REF_HIGH_36_OF_36_USING_PROSPECTIVE_REPRESENTATION_FLOOR_POLICY",
+  "next_permitted_action": "Reconcile existing equal-error/control-selection workunits. Any E3 timing experiment must use exactly this 36-case REF-HIGH authority or a prospectively declared subset of these already-qualified cases, freeze solver controls before timing, compare at matched realized scientific error, and keep performance unable to compensate for scientific inadmissibility."
+}
