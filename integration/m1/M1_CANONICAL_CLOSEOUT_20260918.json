@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.bounded_execution_closeout.v1",
+  "capability": "M1 - Typed External Boundary",
+  "phase": "CLOSE",
+  "protocol": [
+    "RECONCILE",
+    "QUALIFY",
+    "ADMIT",
+    "CLOSE"
+  ],
+  "branch": "work/m1-final-closeout-20260918",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "preimage": "d91c159c3685d8eedc7c94afc38edf827408c1de",
+    "m1_c3_merge_pr": 313,
+    "m1_c3_merge_commit": "d91c159c3685d8eedc7c94afc38edf827408c1de"
+  },
+  "normative_exit_gate": [
+    "a non-file in-memory invocation path reaches the computational boundary;",
+    "kernel-facing interfaces contain no path, file-unit or parser semantics;",
+    "legacy file runs still reproduce reference results through adapters;",
+    "output serialization does not mutate physical state;",
+    "non-midnight or non-day requests are not rejected merely because an adapter historically used daily files."
+  ],
+  "criteria": [
+    {
+      "number": 1,
+      "verdict": "PASS_CURRENT_CANONICAL",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee"
+      ],
+      "claim": "A non-file typed in-memory invocation reaches the admitted computational boundary."
+    },
+    {
+      "number": 2,
+      "verdict": "PASS_CURRENT_CANONICAL",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+        "M1-C3 owner and independent guards prove no file/parser semantics entered the solver-facing carrier."
+      ],
+      "claim": "Kernel-facing typed interfaces contain no path, file-unit or parser semantics.",
+      "scope_note": "This closes the M1 typed-boundary criterion; it does not claim removal of all legacy file-oriented source."
+    },
+    {
+      "number": 3,
+      "verdict": "PASS_CURRENT_CANONICAL_ADMITTED",
+      "evidence": [
+        "PR #313 merge d91c159c3685d8eedc7c94afc38edf827408c1de",
+        "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json blob 78fe01d7e6b735b84b9bd7501bcb99c51b1433eb",
+        "owner qualification run 35370317288 job 105682478792 success",
+        "independent qualification run 35370317279 job 105682470502 success",
+        "moving preservation run 35370311611 job 105682456048 success",
+        "F-CI75 current-canonical semantic-successor run 35370317195 job 105682468815 success",
+        "F-CI58P/F-SI35 preservation run 35370317291 job 105682470692 success"
+      ],
+      "exact_reference": {
+        "swap_4_3_1_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+        "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+        "accepted_intervals": 32518,
+        "typed_solver_attempts": 32552,
+        "retries": 34,
+        "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+        "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+        "result_bal_reference_identity": true,
+        "result_blc_reference_identity": true,
+        "accepted_interval_fallback": false
+      },
+      "claim": "The exact legacy B1.11 Hupsel file-driven run reproduces reference results through the admitted typed SoilWater adapter route."
+    },
+    {
+      "number": 4,
+      "verdict": "PASS_CURRENT_CANONICAL_ADMITTED",
+      "evidence": [
+        "integration/m1/M1_C4_CANONICAL_ADMISSION.json blob 38504b99fb8c99dc1c6fddf2a8384677d4c6ec16",
+        "src/adapter/mod_canonical_result_text_adapter.f90 blob 410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a",
+        "M1-C4 owner run 35079209619 job 104738857165",
+        "M1-C4 independent run 35091439497 job 104778442363",
+        "M1-C4 admission run 35091664485 job 104779179591"
+      ],
+      "claim": "Output serialization is admitted as a typed read-only adapter and does not mutate physical state."
+    },
+    {
+      "number": 5,
+      "verdict": "PASS_CURRENT_CANONICAL",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90 blob 3962c270a7579b7403764674302445fe15ef5f72",
+        "src/runtime/mod_canonical_interval_runtime.f90 blob 0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+        "F-KT21 current-canonical semantic-successor qualification in run 35370317195"
+      ],
+      "claim": "The typed runtime accepts generic positive real [t0,t1] intervals and does not reject non-midnight/non-day requests solely because historical adapters used daily files."
+    }
+  ],
+  "production_mutation_in_closeout": "NONE",
+  "reference_mutation_in_closeout": "NONE",
+  "scientific_semantics_changed_in_closeout": false,
+  "overall_verdict": "M1_CLOSED_CURRENT_CANONICAL_ALL_FIVE_EXIT_CRITERIA_PASS",
+  "formal_exit": true,
+  "nonclaims": [
+    "M1 closure is not a claim that every SWAP 4.3.1 application feature has been migrated.",
+    "M1 closure is not a broad stable Public API release.",
+    "M1 closure does not remove legacy file readers; they may remain as adapters.",
+    "M1 closure does not broaden the bounded B1.11 Hupsel application profile beyond admitted evidence.",
+    "M1 closure does not by itself admit iMOD Coupler product registration."
+  ],
+  "supersedes": [
+    "integration/m1/M1_C3_CURRENT_CANONICAL_EXTERNAL_ASSET_BLOCKER_20260918.json",
+    "historical work/m1-typed-external-boundary-reconciliation M1_CLOSEOUT.json NOT_CLOSED verdict",
+    "historical M1_CURRENT_CANONICAL_STATUS_AFTER_C3_PREREQUISITES.json NOT_CLOSED verdict"
+  ],
+  "next_permitted_action": "Treat M1 as closed unless a later canonical dependency mutation invalidates one of the five evidence chains. Continue application/product integration under its own authorities; do not reopen M1 merely because broader application-envelope capabilities remain."
+}
