@@ -4,10 +4,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-pub-me-d1-${GITHUB_RUN_ID:-local}-$$"
 PATCH="$ROOT/tests/publication/mutants/d1_rejected_candidate_write_through.patch"
+ACCESS_PATCH="$ROOT/tests/publication/instrumentation/d1_public_reference_model_visibility.patch"
 TEST="$ROOT/tests/publication/test_pub_me_d1_rejected_state_leakage.f90"
 P1E02_TEST="$ROOT/tests/publication/test_pub_p1e02_postsolver_rollback.f90"
 TRANS_SOURCE="$ROOT/src/transaction/mod_transaction_reference.f90"
+BACKEND_SOURCE="$ROOT/src/runtime/mod_fmr_serialized_reference_backend.f90"
 EXPECTED_TRANS_BLOB="d5a71a526efaebd82054580c3186f8e3545db331"
+EXPECTED_BACKEND_BLOB="4e5491c997ed0752a4db9abd09b5ad3daf394db2"
 
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
@@ -16,15 +19,21 @@ cd "$ROOT"
 fail() { echo "PUB_ME_D1_GATE_FAIL $*" >&2; exit 1; }
 
 [[ -f "$PATCH" ]] || fail "missing frozen D1 patch"
+[[ -f "$ACCESS_PATCH" ]] || fail "missing frozen D1 access instrumentation"
 [[ -f "$TEST" ]] || fail "missing D1 test"
 [[ "$(git hash-object "$TRANS_SOURCE")" == "$EXPECTED_TRANS_BLOB" ]] || fail "transaction source drift from D1 execution base"
+[[ "$(git hash-object "$BACKEND_SOURCE")" == "$EXPECTED_BACKEND_BLOB" ]] || fail "backend source drift from D1 execution base"
 git diff --check -- "$TEST" "$PATCH" tests/publication/run_pub_me_d1_rejected_state_leakage.sh || fail "diff check"
 [[ -z "$(git diff --name-only -- src reference)" ]] || fail "production/reference source dirty in D1 worktree"
 
 MUTROOT="$BUILD/mutant-source"
-mkdir -p "$MUTROOT/src/transaction"
+INSTRROOT="$BUILD/instrumented-source"
+mkdir -p "$MUTROOT/src/transaction" "$INSTRROOT/src/runtime"
 cp "$TRANS_SOURCE" "$MUTROOT/src/transaction/mod_transaction_reference.f90"
+cp "$BACKEND_SOURCE" "$INSTRROOT/src/runtime/mod_fmr_serialized_reference_backend.f90"
 patch --batch --forward -p1 -d "$MUTROOT" < "$PATCH" >/dev/null
+patch --batch --forward -p1 -d "$INSTRROOT" < "$ACCESS_PATCH" >/dev/null
+INSTRUMENTED_BACKEND="$INSTRROOT/src/runtime/mod_fmr_serialized_reference_backend.f90"
 
 grep -Fq "call model%advance(committed, t0, attempt_t1, full_outcome)" \
   "$MUTROOT/src/transaction/mod_transaction_reference.f90" || fail "frozen mutant not applied"
@@ -100,7 +109,7 @@ build_and_run() {
     src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
     src/runtime/mod_fmr_bottom_thermal_carrier.f90
     src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
-    src/runtime/mod_fmr_serialized_reference_backend.f90
+    "$INSTRUMENTED_BACKEND"
     src/runtime/mod_fmr_accepted_commit_receipt.f90
     src/runtime/mod_fmr_owned_commit_receipt.f90
     src/runtime/mod_fmr_bottom_external_thermal_binding.f90
