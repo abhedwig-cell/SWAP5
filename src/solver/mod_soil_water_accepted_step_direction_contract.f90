@@ -21,6 +21,12 @@ module mod_soil_water_accepted_step_direction_contract
      integer :: control_coordinate = SW_STEP_CONTROL_NONE
      real(real64), allocatable :: incoming_pressure_head(:)
      real(real64), allocatable :: incoming_water_content(:)
+     ! Optional directional source/sink scratch. Absence is exactly equivalent
+     ! to zero direction and preserves all pre-F-GC31 callers. These vectors
+     ! describe direct rate directions [cm/day] already evaluated by the process
+     ! owner at the accepted step origin; they do not own physical source/sink state.
+     real(real64), allocatable :: incoming_source_direction(:)
+     real(real64), allocatable :: incoming_sink_direction(:)
      real(real64) :: incoming_ponding_depth = 0.0_real64
      real(real64) :: direct_control_derivative = 0.0_real64
   end type soil_water_accepted_step_direction_request_t
@@ -37,6 +43,9 @@ module mod_soil_water_accepted_step_direction_contract
      real(real64) :: outgoing_ponding_depth = 0.0_real64
      real(real64) :: top_flux_derivative = 0.0_real64
      real(real64) :: bottom_flux_derivative = 0.0_real64
+     ! True only when this accepted-step tangent explicitly included the
+     ! direction of the active state-dependent source/sink owner(s).
+     logical :: source_sink_direction_covered = .false.
      integer :: additional_tridiagonal_backsolves = 0
      integer :: additional_jacobian_builds = 0
      integer :: additional_full_nonlinear_solves = 0

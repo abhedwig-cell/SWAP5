@@ -156,7 +156,8 @@ contains
     endpoint%coverage%root_uptake_active = root_uptake_active
     endpoint%coverage%root_uptake_covered = .false.
     endpoint%coverage%drainage_active = drainage_active
-    endpoint%coverage%drainage_covered = .false.
+    endpoint%coverage%drainage_covered = drainage_active .and. &
+         trajectory%source_sink_direction_coverage_complete
     endpoint%coverage%other_state_dependent_source_sink_active = other_state_dependent_source_sink_active
     endpoint%coverage%other_state_dependent_source_sink_covered = .false.
 
