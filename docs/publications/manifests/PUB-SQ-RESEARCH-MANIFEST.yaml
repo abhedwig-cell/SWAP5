@@ -4,9 +4,9 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: REF_HIGH_BLOCKED_REFERENCE_RETRY_DIAGNOSTIC_NEXT
+  status: REF_HIGH_QUALIFIED_33_OF_36_EQUAL_ERROR_DESIGN_NEXT
   source_branch: research/phd-five-paper-manifests-20260918
-  source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
+  source_parent_commit: 0a1756ce531b58c5fd0684779d3acd4c8766aa87
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
   experiment_matrix: docs/publications/PUB-SQ_EXPERIMENT_MATRIX.md
   confirmatory_extension_freeze: docs/publications/manifests/PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: ref_high_reference_retry_scaling_diagnostic
+    next_confirmatory_surface: equal_error_solver_control_and_work_preregistration_on_frozen_33_case_ref_high_population
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -122,6 +122,84 @@ manifest:
         Run a separate Reference-only diagnostic comparing the frozen fixed-rate convergence
         contract with a prospectively defined timestep-invariant integrated-balance scaling.
         Do not modify P2E18 post hoc and do not begin equal-error timing.
+    P2E16C_fixed_step_reference_adjudication:
+      branch: work/pub-p2e16c-reference-fixed-step-adjudication
+      head: 7751ad0c37857dd4bbe8f79b0113bd3da6c87c9f
+      result_blob: fd7f51df015c141e3eca488f391cd095e98a57a4
+      verdict: REFERENCE_FIXED_STEP_FAILURES_ADJUDICATED_AS_NON_MONOTONE_MAX_ITERATION_RETRY_LIMITATIONS_PRIMARY_COUNTS_UNCHANGED
+      finding: >-
+        The five E2X fixed-step Reference-invalid cases are reproducible nonlinear-iteration
+        retry limitations rather than hard physical-domain failures. All five are valid at
+        0.0064 and 0.0032 day but invalid at 0.0016 day; smaller dt does not recover the
+        0.0016-day horizon and one case is explicitly non-monotone in dt.
+      epistemic_role: supporting Reference-comparator diagnosis only; P2E16B/E2X primary counts remain unchanged.
+    P2E16D_reference_iteration_budget_sensitivity:
+      branch: work/pub-p2e16d-reference-iteration-budget-sensitivity
+      head: 0153c8d548c94f5701ac2d2d8afa9efca800d4cb
+      result_blob: 0f5bd4c0c84f11b1e28c3a02ba8dd381dd86537c
+      verdict: REFERENCE_ITERATION_BUDGET_RECOVERS_2_OF_5_THREE_CASES_REMAIN_UNRESOLVED_THROUGH_64_ITERATIONS
+      finding: >-
+        Raising only max_iterations from 16 to as high as 64 recovers two of the five
+        adjudication cases but leaves three on legacy-reference-retry. REF-HIGH therefore
+        cannot be defined merely as the baseline Reference route with a larger Newton budget.
+    P2E18D1_reference_balance_scaling:
+      branch: work/pub-p2e18d1-reference-balance-scaling-diagnostic
+      head: 2a1f0e23592573a520706758a37c031330a0d56d
+      result_blob: 5f6ebdcff315f23dd2c8c54666b8f413bc2dbcea
+      verdict: INVARIANT_BALANCE_SCALING_MATERIALLY_RESTORES_REFERENCE_REFINEMENT_BUT_IS_NOT_SUFFICIENT
+      finding: >-
+        Holding integrated balance allowance fixed at 1.6e-15 cm per substep restores
+        Reference validity from fixed-rate counts {36,29,7,0,0} to {36,35,35,36,35}
+        over substeps {1,2,4,8,16}, but one 16-substep case remains unresolved.
+      role: mechanistic precursor and supporting replication for the complete six-level P2E19 diagnostic.
+    P2E18D2_reference_retry_mechanism:
+      branch: work/pub-p2e18d2-reference-retry-mechanism
+      result_blob: 599ba330500bc52ac78a6064117cb60f0a7ac665
+      workflow_run: 35293209835
+      job: 105440295679
+      verdict: REMAINING_SCALED_REFERENCE_RETRIES_ARE_TOTAL_BALANCE_ONLY
+      finding: >-
+        On the outcome-informed four-case mechanism set, remaining scaled-policy retries have
+        compartment residuals below the local criterion and no head-change flags, while the
+        absolute domain-summed residual remains 1.044 to 1.382 times the scaled total-balance
+        tolerance. This diagnoses the remaining D1 retries as total-balance limited but does
+        not authorize a post-hoc tolerance change.
+    P2E19_reference_balance_scaling_causal_diagnostic:
+      branch: work/pub-p2e19-reference-balance-scaling-diagnostic
+      head: f2d5cd8d0e69a35436573f6d32dd0916c344ca49
+      result_blob: bbf6b235c81f30b517dee6e3346499f4823b597a
+      workflow_run: 35293169718
+      job: 105440179074
+      output_sha256: 208be3ae10b1a464d44cc348c6b0e666bd06412f31aab09a24e48e05eb7e406e
+      verdict: INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36
+      finding: >-
+        The fixed-rate arm exactly reproduces P2E18 {36,29,7,0,0,0}. The candidate-blind
+        integrated-invariant arm gives {36,35,35,36,35,34} valid cases at
+        {1,2,4,8,16,32} substeps. All 72 overlapping fixed-versus-scaled endpoints pass the
+        frozen neutrality budget. Fine 8/16/32 stability is available for 34 cases and
+        passes for 33; one case fails only the machine-scale 8-vs-16 storage budget.
+      interpretation: >-
+        Fixed rate-unit balance convergence across decreasing dt is a major causal source of
+        the P2E18 refinement collapse. The scaled policy is a qualified diagnostic/reference
+        construction policy, not a production tolerance-policy change.
+    P2E20_casewise_ref_high_construction:
+      branch: work/pub-p2e20-ref-high-scaled-construction
+      result_head: a561ff1389af06d4521185b9d0d080785716bf3b
+      workflow_run: 35293573725
+      job: 105441384692
+      output_sha256: 5f1e7bfa2fcfb10414f4bd90f0f1dfab0736d4c2ec941cde59a4a7871822dd30
+      verdict: REF_HIGH_QUALIFIED_CASEWISE_33_OF_36_EQUAL_ERROR_PERFORMANCE_POPULATION_AVAILABLE
+      finding: >-
+        The separately frozen construction exactly reproduces 33 REF_HIGH_QUALIFIED cases,
+        two route-unresolved B01/Se=0.65 cases and one O18/Se=0.96/NOMINAL
+        stability-unresolved case. Each qualified case uses the 32-substep endpoint under the
+        integrated-invariant Reference policy, after passing both 8-vs-16 and 16-vs-32
+        frozen stability comparisons.
+      candidate_firewall: RossFast and timing remained unexecuted; the three unresolved cases are excluded from equal-error performance.
+      next_permitted_action: >-
+        Freeze the exact 33-case REF-HIGH-qualified performance population and preregister
+        solver controls, equal-error matching, work accounting and timing hygiene before any
+        RossFast performance execution. No speedup claim is yet authorized.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
@@ -189,12 +267,21 @@ design:
 numerical_reference:
   id: REF-HIGH
   construction: >-
-    Qualified Reference route with stricter temporal controls, followed by at least one further
-    refinement. A case is reference-stable only when the second refinement changes every primary
-    metric by less than the predeclared reference-stability fraction.
+    P2E20 casewise authority: Reference-only integrated-invariant balance policy with a fixed
+    1.6e-15 cm integrated balance allowance per substep, evaluated at 8, 16 and 32 equal
+    substeps over the frozen 0.0016-day horizon. A case is REF_HIGH_QUALIFIED only when all
+    three routes are valid and both 8-vs-16 and 16-vs-32 endpoint comparisons satisfy the
+    unchanged P2E18 stability budgets. The qualified endpoint is the 32-substep result.
+  current_qualified_population: 33
+  current_unresolved_population: 3
+  unresolved_cases:
+    - B01 Se=0.65 DRYING: route unresolved
+    - B01 Se=0.65 NOMINAL: route unresolved
+    - O18 Se=0.96 NOMINAL: stability unresolved at 8-vs-16 machine-scale storage budget
   failure_rule: >-
-    If REF-HIGH cannot be stabilized, classify the case as reference-unresolved. Do not use a
-    production answer as truth.
+    Reference-unresolved cases remain excluded from equal-error performance unless a later
+    independent Reference authority is prospectively established. Do not use a production
+    answer as truth and do not retune the qualified policy to recover excluded cases.
 
 primary_endpoint:
   name: holdout_admissibility
