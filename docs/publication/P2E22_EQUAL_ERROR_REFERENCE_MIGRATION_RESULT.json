@@ -1,0 +1,184 @@
+{
+  "schema":"swap5.publication.p2e22-equal-error-reference-migration-result.v1",
+  "workunit":"PUB-P2E22",
+  "publication_owner":"PUB-SQ",
+  "phase":"FINAL_36_CASE_UNTIMED_CONTROL_MIGRATION_COMPLETE",
+  "branch":"work/pub-p2e22-equal-error-reference-migration",
+  "parent_control_authority":{
+    "branch":"work/pub-p2e21a-equal-error-control-selection",
+    "head":"44a569a55679e793a3657989b9dd895de84ab9ce",
+    "result_blob":"f274b2609263b619118b9313d61eb82bd0eba876",
+    "verdict":"UNTIMED_MATCHED_ACCURACY_CONTROLS_AVAILABLE_FOR_33_CASE_P2E20_REFERENCE"
+  },
+  "migrated_ref_high_authority":{
+    "branch":"work/pub-p2e21-ref-high-representation-bound",
+    "head":"dd09a1ef83ff4953cc4445c3116898c6fe118267",
+    "result_blob":"638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78",
+    "verdict":"REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE"
+  },
+  "authorities":{
+    "preregistration_blob":"401989d851b036863a636b8df01be9ef0f804268",
+    "test_blob":"7928745e0a174cb7d7c6e0d10283fb5a482e142a",
+    "runner_blob":"a42cecf2ad2fef00bc39397cdb37302d4a1b2961",
+    "workflow_blob":"b1fdd1f2b9ffaec4d4caee2742d567a929dc621f"
+  },
+  "execution":{
+    "head":"fe34a2183044870d559452160eaeb958d6b81901",
+    "workflow_run":35313942774,
+    "job":105501483969,
+    "conclusion":"PASS",
+    "O0":"PASS",
+    "O2":"PASS",
+    "O0_O2_identical":true,
+    "output_sha256":"a98041158b40c3ad75d1e74be13359fc4d1a2b5b893a2e0733ab1b5360e07c6f",
+    "timing_executed":false,
+    "scientific_result_was_ci_pass_condition":false
+  },
+  "matrix":{
+    "cases":36,
+    "solvers":["REF_PROD","ROSS"],
+    "outer_segmentation":[1,2,4,8,16,32],
+    "production_configurations":432,
+    "selection_records":216,
+    "ref_high_reconstructions":36
+  },
+  "route_validity":{
+    "REF_PROD":{
+      "valid_total":72,
+      "invalid_total":144,
+      "by_segments":{
+        "1":{"valid":36,"invalid":0},
+        "2":{"valid":29,"invalid":7},
+        "4":{"valid":7,"invalid":29},
+        "8":{"valid":0,"invalid":36},
+        "16":{"valid":0,"invalid":36},
+        "32":{"valid":0,"invalid":36}
+      }
+    },
+    "ROSS":{
+      "valid_total":129,
+      "invalid_total":87,
+      "by_segments":{
+        "1":{"valid":36,"invalid":0},
+        "2":{"valid":19,"invalid":17},
+        "4":{"valid":19,"invalid":17},
+        "8":{"valid":19,"invalid":17},
+        "16":{"valid":18,"invalid":18},
+        "32":{"valid":18,"invalid":18}
+      }
+    }
+  },
+  "matched_accuracy_selection":{
+    "targets":["A1_ADMISSION","A2_HALF","A3_QUARTER"],
+    "paired_cases_each_target":36,
+    "REF_PROD_selected":{"N1":36,"unresolved":0},
+    "ROSS_selected":{"N1":36,"unresolved":0},
+    "target_collapse":"All 216 solver-case-target selections collapse to the same N=1 outer configuration; the stricter A2 and A3 targets do not select additional refinement.",
+    "selected_error_norm_range":{
+      "REF_PROD":[8.574498811666153e-8,0.1290380921654268],
+      "ROSS":[7.356048973232967e-8,0.012719429422620384]
+    },
+    "selected_storage_fraction_max":{"REF_PROD":1.0,"ROSS":1.0}
+  },
+  "migration_from_P2E21A":{
+    "overlap_case_target_records":99,
+    "unchanged":93,
+    "changed":6,
+    "changed_cases":[
+      {
+        "case":4,
+        "material":"B01",
+        "Se":0.85,
+        "forcing":"NOMINAL",
+        "change":"REF_PROD N2 -> N1 for all three targets; ROSS remains N1"
+      },
+      {
+        "case":18,
+        "material":"O01",
+        "Se":0.96,
+        "forcing":"NOMINAL",
+        "change":"REF_PROD N2 -> N1 for all three targets; ROSS remains N1"
+      }
+    ],
+    "new_case_target_records":9,
+    "new_cases":[
+      {
+        "case":1,
+        "material":"B01",
+        "Se":0.65,
+        "forcing":"DRYING",
+        "REF_PROD_selected_N":1,
+        "ROSS_selected_N":1,
+        "REF_PROD_error_norm":0.018123778976726172,
+        "ROSS_error_norm":0.00032411491717534725
+      },
+      {
+        "case":2,
+        "material":"B01",
+        "Se":0.65,
+        "forcing":"NOMINAL",
+        "REF_PROD_selected_N":1,
+        "ROSS_selected_N":1,
+        "REF_PROD_error_norm":0.018399771502686464,
+        "ROSS_error_norm":0.00032294711727268686
+      },
+      {
+        "case":36,
+        "material":"O18",
+        "Se":0.96,
+        "forcing":"NOMINAL",
+        "REF_PROD_selected_N":1,
+        "ROSS_selected_N":1,
+        "REF_PROD_error_norm":0.039862543331595286,
+        "ROSS_error_norm":0.0007328986283969533
+      }
+    ]
+  },
+  "post_execution_equal_error_diagnostic":{
+    "role":"descriptive diagnostic only; not a preregistered primary endpoint",
+    "method":"For each case, inspect all route-valid configurations satisfying the unscaled storage gate and find the REF_PROD/ROSS pair minimizing max(E_ref,E_ross)/min(E_ref,E_ross), where E is the frozen four-metric head/theta normalized error.",
+    "cases_with_closest_ratio_le_1_25":0,
+    "cases_with_closest_ratio_le_1_5":0,
+    "cases_with_closest_ratio_le_2":1,
+    "best_case":{
+      "case":8,
+      "material":"B12",
+      "Se":0.65,
+      "forcing":"NOMINAL",
+      "REF_PROD_N":1,
+      "ROSS_N":8,
+      "REF_PROD_error_norm":9.084289262229402e-8,
+      "ROSS_error_norm":1.7484835365230146e-7,
+      "ratio":1.9247334447977646
+    },
+    "interpretation":"The threshold-matched N1/N1 population is not an observed equal-error population. Under the frozen production Reference policy, the discrete valid control surfaces almost never overlap at comparable observed error."
+  },
+  "scientific_interpretation":{
+    "supported":[
+      "The final 36-case P2E21 REF-HIGH authority can be used for all frozen E3 cases.",
+      "Both production solvers have a valid configuration meeting every preregistered A1/A2/A3 accuracy threshold in all 36 cases.",
+      "The final threshold-matched control selection is N=1 for both solvers in all 36 cases.",
+      "The three cases newly admitted by P2E21 also have complete paired control selections."
+    ],
+    "important_limit":[
+      "A common pass/fail accuracy threshold is not equivalent to matching the actually observed errors.",
+      "Because A1/A2/A3 all collapse to N=1, timing those selections would answer a threshold-satisfaction cost question, not a strict equal-observed-error question."
+    ],
+    "not_supported":[
+      "RossFast is faster.",
+      "Any speedup magnitude.",
+      "A claim of strict equal-error performance from the N1/N1 selected population.",
+      "Post-hoc replacement of the accuracy targets."
+    ]
+  },
+  "firewalls":{
+    "timing_executed":false,
+    "targets_changed":false,
+    "segmentation_ladder_changed":false,
+    "case_removed":false,
+    "production_source_mutated":false,
+    "composite_work_unit_created":false
+  },
+  "verdict":"FINAL_36_CASE_THRESHOLD_MATCHED_CONTROLS_FROZEN_BUT_STRICT_EQUAL_OBSERVED_ERROR_NOT_ACHIEVED",
+  "next_permitted_action":"Before timing, preregister a separate untimed work-precision matching study using the already qualified representation-bounded Reference refinement policy. Define a deterministic equal-or-better-error/bracketing rule prospectively and retain all 36 cases. Timing remains forbidden until the final matched-error configurations or explicit unresolved cases are frozen."
+}
