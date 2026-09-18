@@ -16,6 +16,10 @@ on:
       - '.github/workflows/pub-gc-e6-active-drainage-coupling.yml'
   workflow_dispatch:
 
+concurrency:
+  group: pub-gc-e6-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions: {contents: read}
 
 jobs:
