@@ -33,8 +33,8 @@ This register does not contain scientific results. It is an execution map betwee
 | `PUB-SQ-E1D` common material state domain | PUB-SQ | supporting/domain construction | COMPLETE | P2E13 Reference-only scan across all 36 materials found nine complete tested Se levels, 0.65 through 0.96; frozen rule selected 0.65, 0.85 and 0.96 as future anchors. |
 | `PUB-SQ-E1T` 36-material threshold freeze | PUB-SQ | prerequisite to new confirmatory extension | COMPLETE | P2E14 froze fifteen Reference-only thresholds over 216 valid cases at Se={0.65,0.85,0.96}; no RossFast extension discrepancy was inspected before the freeze. |
 | `PUB-SQ-E1P` material-axis confirmatory holdout | PUB-SQ | primary | COMPLETE | P2E15 executed 180 previously unobserved extension-material cases under P2E14 thresholds: 180/180 admissible, 0 route-invalid, 0 discrepancy-fail. Scope remains the fixed solver-seam common domain only. |
-| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | DESIGNED | P2E10 established WETTING as a clean known production-envelope exclusion; separate inside/boundary/outside probing still requires its own preregistration |
-| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | BLOCKED | accuracy thresholds + stable `REF-HIGH` required first |
+| `PUB-SQ-E2` admissibility boundary | PUB-SQ | primary | COMPLETE | P2E16 candidate-blind Reference calibration covered all 324 inside/boundary/outside cases; P2E17 then found 216/216 INSIDE+BOUNDARY admissible and 108/108 OUTSIDE clean fail-closed on the tested upper top-flux boundary. |
+| `PUB-SQ-E3` equal-error cost | PUB-SQ | primary | READY_FOR_REFERENCE_CONSTRUCTION | E1/E2 scientific domain evidence is now available. Next freeze a reduced representative case subset plus a candidate-blind `REF-HIGH` refinement/stability protocol before any timing or equal-error comparison. |
 | `PUB-SQ-E4` trajectory accumulation | PUB-SQ | primary | DESIGNED | choose common-domain forcing sequences after SQ-E1 screening |
 | `PUB-SQ-E5` expanded scientific domain | PUB-SQ | future | BLOCKED | requires separate RossFast domain qualification |
 | `PUB-GC-E0` interface conservation | PUB-GC | prerequisite/supporting | COMPLETE | `PUB-GC-E0-0002` completed under manifest control on the exact F-VQ87 postimage; do not add post-hoc E0 cases; proceed to GW-A and GC-E1 design |
@@ -179,6 +179,17 @@ Examples:
 - worst non-storage threshold fractions were 0.197 for D_h_inf, 0.219 for D_h_rms, 0.248 for D_theta_inf and 0.285 for D_theta_rms; D_storage touched exactly 1.0 times its inclusive frozen machine-scale envelope in one retained boundary observation;
 - admitted scope is only the fixed 0.0016-day solver-seam common domain. WETTING, Se=0.98, transaction-level equivalence, heterogeneous profiles, root sinks, groundwater coupling and performance remain outside this result;
 - next permitted action: preregister PUB-SQ-E2 admissibility-boundary probing. No retuning of E1 thresholds is permitted.
+
+### 2026-09-18 — PUB-SQ upper top-flux admissibility boundary qualified
+
+- P2E16 froze the upper-boundary experiment candidate-blind. Its exact request-side top-flux factors were 0.009 x K0 (INSIDE), 0.010 x K0 (BOUNDARY) and 0.011 x K0 (OUTSIDE), with bottom flux fixed at -0.004 x K0;
+- P2E16 workflow `35290915120`, job `105433341576`, execution head `ddf4a535743d3abdb1d1eeb8f787ecd843376984`, produced 324/324 valid Reference cases and O0/O2-identical output `sha256:385ed7ded30022d5fef98927bb9d325499af8d983b4057179503c9ba70d3a96d`;
+- P2E17 first candidate exposure established the primary route-boundary and inside/boundary discrepancy result. All 108 INSIDE and all 108 BOUNDARY cases were paired-valid admissible; all 108 OUTSIDE cases were RossFast-route invalid; no inside/boundary discrepancy threshold failed;
+- a harness correction was then made to enforce the preregistered epistemic rule that OUTSIDE cases are fail-closed probes only, never discrepancy/performance observations;
+- corrected hygiene run `35291213606`, job `105434242429`, exact head `00fd77bf9a335fb1b458d203e9ea2a868b5eafc0`, completed O0/O2-identically with `sha256:0c70a32f3743a407f7e9e503cf225ec1804b76ccf132afb05fc76980cbf39910`;
+- fail-closed hygiene: 108/108 OUTSIDE rejected cleanly, 0 dirty rejection, 0 unexpected RossFast acceptance, 0 Reference invalid; rejected cases published no candidate state and no typed integrated mass result;
+- supported scope is only the tested **upper request-side top-flux boundary** at 0.001 x K0 resolution within the established common state domain. Lower top-flux, bottom-flux, transaction-level, trajectory, heterogeneous-profile, root-sink, groundwater and performance claims remain open;
+- next permitted action: PUB-SQ-E3 Reference construction. Freeze a representative case subset and a candidate-blind REF-HIGH stability rule before any equal-error cost or timing execution.
 
 ## Register update rule
 
