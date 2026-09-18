@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.publication.p2e16d1-reference-fixed-step-adjudication-result.v1",
+  "workunit": "PUB-P2E16D1",
+  "phase": "POST_PRIMARY_REFERENCE_ONLY_DIAGNOSIS_COMPLETE",
+  "parent_preregistration": {
+    "path": "docs/publication/P2E16D1_REFERENCE_FIXED_STEP_ADJUDICATION_PREREGISTRATION.json",
+    "commit": "a0b28a3634963c0b69a49b1193b151b47fe72d6f",
+    "blob": "dbd77753b5d9a71f6bf45bcba4855d4e94b6898b"
+  },
+  "parent_primary_result": {
+    "path": "docs/publication/P2E16B_CANDIDATE_BOUNDARY_PRIMARY_RESULT.json",
+    "commit": "511d4f5250ab9966518abeae99c6bc2cae3f082d",
+    "blob": "faff8f4c961522ebe9ad11902c5cc0d2313734ff"
+  },
+  "executed_head": "e62187b3d89fc3981c183b32abaeaf1025237185",
+  "authorities": {
+    "test_blob": "6ea73d6552f05f72c0fc256f1b5b52dc66a55a53",
+    "runner_blob": "01c6e7f1ff31959302c999a90511c2e7d7e303dc",
+    "workflow_blob": "851a428a6018c3a5845d726134db344ff6baf92f"
+  },
+  "execution": {
+    "workflow_run": 35292446311,
+    "job": 105437992383,
+    "conclusion": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "933136d197486948bfc40e646ed38119f2ad28a94f87f2a086369b05f13ec15d"
+  },
+  "cases": [
+    {
+      "case": 576,
+      "material": "B16",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "first_failed_predicate": "STATUS_NOT_CONVERGED",
+      "state_finite": true,
+      "head_domain": true,
+      "theta_domain": true,
+      "flux_identity": true,
+      "integrated_mass_available": false,
+      "native_rate_available": false
+    },
+    {
+      "case": 612,
+      "material": "B17",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "first_failed_predicate": "STATUS_NOT_CONVERGED",
+      "state_finite": true,
+      "head_domain": true,
+      "theta_domain": true,
+      "flux_identity": true,
+      "integrated_mass_available": false,
+      "native_rate_available": false
+    },
+    {
+      "case": 1220,
+      "material": "O16",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": -1.0,
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "first_failed_predicate": "STATUS_NOT_CONVERGED",
+      "stage_A_pairwise_authorized": true,
+      "state_finite": true,
+      "head_domain": true,
+      "theta_domain": true,
+      "flux_identity": true,
+      "integrated_mass_available": false,
+      "native_rate_available": false
+    },
+    {
+      "case": 1248,
+      "material": "O17",
+      "Se": 0.85,
+      "axis": "BOTTOM",
+      "rho": 1.05,
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "first_failed_predicate": "STATUS_NOT_CONVERGED",
+      "state_finite": true,
+      "head_domain": true,
+      "theta_domain": true,
+      "flux_identity": true,
+      "integrated_mass_available": false,
+      "native_rate_available": false
+    },
+    {
+      "case": 1257,
+      "material": "O17",
+      "Se": 0.96,
+      "axis": "BOTTOM",
+      "rho": -0.95,
+      "status": 2,
+      "route": "legacy-reference-retry",
+      "first_failed_predicate": "STATUS_NOT_CONVERGED",
+      "stage_A_pairwise_authorized": true,
+      "state_finite": true,
+      "head_domain": true,
+      "theta_domain": true,
+      "flux_identity": true,
+      "integrated_mass_available": false,
+      "native_rate_available": false
+    }
+  ],
+  "diagnosis": {
+    "common_first_failed_predicate": "STATUS_NOT_CONVERGED",
+    "common_route": "legacy-reference-retry",
+    "state_domain_failure": false,
+    "flux_identity_failure": false,
+    "mass_gate_failure": false,
+    "interpretation": "All five P2E16B Reference-invalid cases are genuine fixed-step Reference nonconvergence/retry outcomes at dt=0.0016 day. The candidate state remains finite and within the shared state domain and the prescribed flux request is preserved, but no accepted Reference result or mass/rate diagnostic is published."
+  },
+  "effect_on_primary_result": {
+    "RossFast_route_boundary_changed": false,
+    "P2E14_thresholds_changed": false,
+    "P2E16B_case_classification_changed": false,
+    "authorized_pairwise_cases_now_resolved": 0,
+    "authorized_pairwise_reference_unresolved_remaining": [1220, 1257],
+    "interpretation": "The 848/848 interpretable authorized pairwise admissions remain unchanged. Cases 1220 and 1257 remain Reference-unresolved and cannot be counted as RossFast discrepancy passes or failures."
+  },
+  "candidate_firewall": {
+    "rossfast_executed": false,
+    "thresholds_changed": false,
+    "rho_changed": false,
+    "production_source_changed": false
+  },
+  "verdict": "FIVE_FIXED_STEP_REFERENCE_INVALIDS_DIAGNOSED_AS_REFERENCE_NONCONVERGENCE_TWO_AUTHORIZED_PAIRWISE_CASES_REMAIN_UNRESOLVED",
+  "next_permitted_action": "Close PUB-SQ-E2 with the route-boundary result fully supported on 1296 cases, pairwise scientific admission supported on 848/848 interpretable Stage-A-authorized cases, and two authorized cases explicitly Reference-unresolved. Do not force recovery inside E2. Any refined-reference recovery belongs to the later REF-HIGH/equal-error design."
+}
