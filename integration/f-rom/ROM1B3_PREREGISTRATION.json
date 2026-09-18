@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.rom1b3.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B3",
+  "title": "Discovery-only physically interpretable sub-band contrast enrichment census",
+  "phase": "PREREGISTERED_BEFORE_ENRICHMENT_CENSUS",
+  "predecessor": {
+    "B1": "ROM1B1_COLLISION_CENSUS_COMPLETE",
+    "B2": "ROM1B2_DISCOVERY_PREDICTIVE_AMBIGUITY_COMPLETE",
+    "B2_all_Z1_Z2_Z4_Z8_storage_ambiguous": true
+  },
+  "purpose": "Search a finite, physically interpretable enrichment family between Z8 and the full Z16 water-content state using discovery states only, then freeze exactly one state-separating candidate before any held-out exposure.",
+  "data_firewall": {
+    "discovery_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "heldout_used": false,
+    "heldout_probes_used": false,
+    "B14_used": false,
+    "B2_future_probe_outcomes_used_to_rank_subsets": false,
+    "source_of_enrichment_family": "predefined local within-20cm profile contrasts"
+  },
+  "base_coordinate": {
+    "id": "Z8",
+    "components": "eight contiguous 20-cm pair means of the 16-cell theta profile",
+    "dimension": 8,
+    "B1_collision_count": 5617,
+    "B2_predictive_ambiguity_established": true
+  },
+  "enrichment_components": [
+    {
+      "id": "G1",
+      "depth_cm": "0-20",
+      "definition": "0.5*(theta_cell_1-theta_cell_2)"
+    },
+    {
+      "id": "G2",
+      "depth_cm": "20-40",
+      "definition": "0.5*(theta_cell_3-theta_cell_4)"
+    },
+    {
+      "id": "G3",
+      "depth_cm": "40-60",
+      "definition": "0.5*(theta_cell_5-theta_cell_6)"
+    },
+    {
+      "id": "G4",
+      "depth_cm": "60-80",
+      "definition": "0.5*(theta_cell_7-theta_cell_8)"
+    },
+    {
+      "id": "G5",
+      "depth_cm": "80-100",
+      "definition": "0.5*(theta_cell_9-theta_cell_10)"
+    },
+    {
+      "id": "G6",
+      "depth_cm": "100-120",
+      "definition": "0.5*(theta_cell_11-theta_cell_12)"
+    },
+    {
+      "id": "G7",
+      "depth_cm": "120-140",
+      "definition": "0.5*(theta_cell_13-theta_cell_14)"
+    },
+    {
+      "id": "G8",
+      "depth_cm": "140-160",
+      "definition": "0.5*(theta_cell_15-theta_cell_16)"
+    }
+  ],
+  "numerical_scale": {
+    "theta_floor": 0.0005420462931603476,
+    "source": "ROM-0V1 B01_E1_NOMINAL_FLUX max D_theta_inf",
+    "same_scale_for_means_and_half_contrasts": true,
+    "justification": "both a pair mean and a pair half-contrast are linear combinations whose sum of absolute theta coefficients equals one"
+  },
+  "candidate_family": {
+    "form": "Z8 plus any subset of G1..G8",
+    "subset_count": 256,
+    "candidate_dimension": "8 + number_of_selected_G",
+    "full_subset_role": "exact invertible reparameterization of Z16 full theta state; not a reduced-state success"
+  },
+  "collision_rule": {
+    "candidate_distance": "L_inf over all selected Z8 means and selected half-contrast components",
+    "full_state_distance": "L_inf over 16-cell theta profile",
+    "cross_history_only": true,
+    "collision_if": "candidate_Linf <= theta_floor AND full_theta_Linf > theta_floor",
+    "same_history_pairs_excluded": true
+  },
+  "deterministic_selection": {
+    "primary": "minimum number of added half-contrast components among zero-collision candidates",
+    "secondary": "maximum minimum candidate_Linf among all cross-history pairs with full_theta_Linf > theta_floor",
+    "tertiary": "lexicographically smallest ordered G-index tuple",
+    "B2_future_response_magnitude_used": false
+  },
+  "decisions": [
+    "ROM1B3_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+    "ROM1B3_NO_REDUCED_STATE_SEPARATING_ENRICHMENT",
+    "ROM1B3_ENRICHMENT_CENSUS_BLOCKED"
+  ],
+  "interpretation": {
+    "if_selected_G_count_lt_8": "freeze selected coordinate before held-out exposure; next workunit is held-out state-separation and predictive evaluation",
+    "if_selected_G_count_eq_8": "water-content-only interpretable family requires full Z16 state at this floor; close reduced family as discovery no-go before considering a qualitatively new state class"
+  },
+  "required_outputs": [
+    "collision_count_for_all_256_subsets",
+    "minimum_collision_count_by_added_dimension",
+    "zero_collision_subset_count_by_added_dimension",
+    "selected_subset",
+    "selected_dimension",
+    "selected_minimum_separation_margin",
+    "full_G1_to_G8_equivalence_control",
+    "discovery_library_hash",
+    "repeat_stdout_identity"
+  ],
+  "firewalls": [
+    "NO_HELDOUT_USE",
+    "NO_B14_USE",
+    "NO_FUTURE_PROBE_OUTCOME_IN_SUBSET_SELECTION",
+    "NO_POD_OR_MODAL_BASIS",
+    "NO_CLOSURE_MODEL",
+    "NO_MEMORY_VARIABLE",
+    "NO_POST_RESULT_THETA_FLOOR_CHANGE",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
