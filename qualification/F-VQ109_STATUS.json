@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ109",
+  "capability": "F-GC35",
+  "title": "Independent MODFLOW6 XMI Package Adapter Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "owner": {
+    "branch": "work/f-gc35-modflow6-xmi-package-adapter-reconciled",
+    "checkpoint_head": "7d64f9e1fd48b512f3dee2c0ea3d645804310812",
+    "production_blob": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713",
+    "exact_head_run": 35294401118,
+    "exact_head_job": 105443849805,
+    "exact_head_conclusion": "success"
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq109-fgc35-xmi-adapter-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "independent lifecycle state-machine with different mock kernel/buffers; generation isolation; current live pointer identity; exact address reuse; failed publisher state; invalid refreshed pointer fail-closed"
+  },
+  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC35 admission postimage."
+}

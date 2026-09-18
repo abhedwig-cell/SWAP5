@@ -1,0 +1,25 @@
+name: F-VQ109 F-GC35 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq109-fgc35-xmi-adapter-independent
+    paths:
+      - 'tests/fvq/test_fvq109_fgc35_xmi_adapter_independent.py'
+      - 'tests/fvq/run_fvq109_fgc35_xmi_adapter_independent.sh'
+      - 'qualification/F-VQ109_STATUS.json'
+      - '.github/workflows/f-vq109-fgc35-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independent F-GC35 qualification
+        run: bash tests/fvq/run_fvq109_fgc35_xmi_adapter_independent.sh
