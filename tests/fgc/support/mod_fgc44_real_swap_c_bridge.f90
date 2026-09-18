@@ -472,6 +472,7 @@ contains
     active_duration_day=dt
     active_predictor_qbot=bottom_q
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
+    call initialize_column_template(column,template)
     call initialize_configs(predictor_config,corrector_config)
 
     fgc44_e4_flux_point_c=302_c_int
