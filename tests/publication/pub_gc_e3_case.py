@@ -80,7 +80,7 @@ def new_swap(swaplib:Path, window_day:float)->tuple[Fgc44RealSwap,float,float,fl
     return swap,hcof,rhs,href,diag
 
 def solve_fixed_boundary(
-    libmf6:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
+    libmf6:Path, swaplib:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
     diag:dict[str,Any], window_day:float, sy:float, mode:str
 )->dict[str,Any]:
     if mode=="constant":
@@ -169,7 +169,7 @@ def solve_fixed_boundary(
                 except Exception: pass
 
 def solve_strong(
-    libmf6:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
+    libmf6:Path, swaplib:Path, swap:Fgc44RealSwap, hcof:float, rhs:float, href:float,
     diag:dict[str,Any], window_day:float, sy:float
 )->dict[str,Any]:
     origin_state=swap.state()
@@ -304,27 +304,35 @@ def main()->None:
         "flux_tolerance_m_per_s":FLUX_TOL,
     }
     try:
-        swap,hcof,rhs,href,diag=new_swap(swaplib,window)
-        result["predictor_reference_head_m"]=href
-        result["predictor_hcof_m2_per_day"]=hcof
-        result["predictor_rhs_m3_per_day"]=rhs
-        result["predictor"]=diag
-
-        if treatment=="constant":
-            result["outcome"]=solve_fixed_boundary(
-                libmf6,swap,hcof,rhs,href,diag,window,sy,"constant"
-            )
-        elif treatment=="affine":
-            result["outcome"]=solve_fixed_boundary(
-                libmf6,swap,hcof,rhs,href,diag,window,sy,"affine"
-            )
-        elif treatment=="strong":
-            result["outcome"]=solve_strong(
-                libmf6,swap,hcof,rhs,href,diag,window,sy
-            )
+        try:
+            swap,hcof,rhs,href,diag=new_swap(swaplib,window)
+        except Exception as exc:
+            result["outcome"]={
+                "status":"SWAP_INITIALIZE_FAIL",
+                "message":f"{type(exc).__name__}:{exc}",
+            }
+            result["harness_status"]="OK"
         else:
-            raise ValueError(f"unknown treatment {treatment}")
-        result["harness_status"]="OK"
+            result["predictor_reference_head_m"]=href
+            result["predictor_hcof_m2_per_day"]=hcof
+            result["predictor_rhs_m3_per_day"]=rhs
+            result["predictor"]=diag
+
+            if treatment=="constant":
+                result["outcome"]=solve_fixed_boundary(
+                    libmf6,swaplib,swap,hcof,rhs,href,diag,window,sy,"constant"
+                )
+            elif treatment=="affine":
+                result["outcome"]=solve_fixed_boundary(
+                    libmf6,swaplib,swap,hcof,rhs,href,diag,window,sy,"affine"
+                )
+            elif treatment=="strong":
+                result["outcome"]=solve_strong(
+                    libmf6,swaplib,swap,hcof,rhs,href,diag,window,sy
+                )
+            else:
+                raise ValueError(f"unknown treatment {treatment}")
+            result["harness_status"]="OK"
     except Exception as exc:
         result["harness_status"]="ERROR"
         result["harness_error"]=f"{type(exc).__name__}:{exc}"
