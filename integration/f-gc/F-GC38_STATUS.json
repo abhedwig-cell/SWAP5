@@ -3,47 +3,82 @@
   "capability": "F-GC38",
   "title": "MODFLOW6 Prepared-Solve Iterative Backend",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_LIVE_PREPARED_SOLVE_QUALIFICATION",
-  "source_branch": {
-    "branch": "work/f-gc37-coupled-predictor-corrector-host",
-    "head": "8ba49f3c7fa01d5fd21a9c358418e26bfe50da57",
-    "f_gc37_verdict": "OWNER_QUALIFIED_INTERNAL_COUPLING_SERVICE_CONTRACT"
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
+  "branch": {
+    "branch": "work/f-gc38-modflow6-prepared-solve-session",
+    "qualified_head": "fc8f750fa900beb083849b0100db6e510e66e190"
   },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
     "head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
-    "note": "Current canonical includes later active-drainage tangent work; F-GC38 lifecycle qualification is orthogonal to tangent coverage."
-  },
-  "source_evidence": {
-    "modflow6_release": "6.8.0",
-    "mf6xmi": "XMI explicitly supports external nonlinear coupling by exchanging data between repeated solve calls inside one prepare_solve/finalize_solve pair.",
-    "gwf_ad": "Normal prepare_solve copies current X into XOLD once; repeated solve calls do not recopy XOLD.",
-    "storage": "STO uses XOLD as previous-time head and X as current iterate.",
-    "imod_coupler": "MetaSWAP-MODFLOW implementation calls mf6.prepare_solve once, repeatedly solves MetaSWAP/MODFLOW in one loop, and finalizes solve once."
+    "relevant_delta": "No canonical delta affecting the F-GC38 XMI lifecycle envelope was observed during qualification."
   },
   "architecture_decision": {
     "accepted_groundwater_origin": "prepared timestep state plus fixed XOLD",
-    "outer_groundwater_iterate": "current X within one prepared MODFLOW solve",
-    "per_iteration_rollback": "not required and not the intended XMI coupling model",
-    "whole_window_abort": "not yet externally restorable; separate restart concern"
+    "coupling_iterate": "current X inside one prepare_solve/finalize_solve pair",
+    "per_iteration_modflow_rollback": "not required by the XMI external-nonlinear-coupling lifecycle",
+    "iteration_budget": "live SLN_<solution_id>/MXITER is authoritative and MXITER+1 is blocked before solve",
+    "timestep_acceptance": "not owned by F-GC38",
+    "whole_window_abort_retry": "not qualified; separate restart/reconstruction concern"
   },
-  "planned_changes": [
-    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md",
+  "implementation": [
     "src/adapter/modflow6_prepared_solve_session.py",
     "tests/fgc/test_fgc38_live_prepared_solve.py",
     "tests/fgc/run_fgc38_live_prepared_solve.sh",
     ".github/workflows/f-gc38-live-prepared-solve.yml",
-    "integration/f-gc/F-GC38_STATUS.json"
+    "docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md"
+  ],
+  "live_evidence": {
+    "workflow_run": 35291325119,
+    "job": 105434578628,
+    "conclusion": "success",
+    "modflow6_release": "6.8.0",
+    "modflow6_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "xmipy_commit": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "flopy_commit": "1a783da6582f8203190a8d6b1d7a60659022afdb",
+    "iterative_final_head_m": [
+      0.9,
+      0.6072738889883155,
+      0.2
+    ],
+    "clean_final_head_m": [
+      0.9,
+      0.6072738893643476,
+      0.2
+    ],
+    "max_path_difference_m": 3.7603209435133067e-10,
+    "path_equivalence_tolerance_m": 1.4901161193847656e-8,
+    "iterative_solve_count": 13,
+    "clean_solve_count": 9,
+    "final_stabilization_delta_iterative_m": 4.592992652874273e-13,
+    "final_stabilization_delta_clean_m": 1.680877659282487e-13,
+    "pass_markers": [
+      "FGC38_MXITER_OVERRUN_BLOCKED_BEFORE_SOLVE=PASS",
+      "FGC38_ONE_PREPARE_SOLVE_PER_WINDOW=PASS",
+      "FGC38_XOLD_ACCEPTED_ORIGIN_FIXED=PASS",
+      "FGC38_X_EVOLVES_WITHIN_PREPARED_SOLVE=PASS",
+      "FGC38_LIVE_FGC34_REPUBLISH_BETWEEN_SOLVES=PASS",
+      "FGC38_FINAL_RESPONSE_CONVERGED=PASS",
+      "FGC38_CLEAN_ORIGIN_EQUIVALENCE=PASS",
+      "FGC38_FINALIZE_SOLVE_EXACTLY_ONCE=PASS",
+      "FGC38_BACKEND_DOES_NOT_FINALIZE_TIMESTEP=PASS",
+      "FGC38_PREPARED_SOLVE_ITERATIVE_BACKEND_GATE=PASS"
+    ]
+  },
+  "failed_iteration_disposition": [
+    "Initial clean-origin comparison used an unnecessarily tight absolute head tolerance and exposed only a 3.7603209435133067e-10 m numerical path difference.",
+    "Machine-scale IMS closure attempts were rejected after non-convergence; they are outside the admitted solver envelope.",
+    "An out-of-envelope repeated-solve attempt exposed the need for explicit live-MXITER guarding; production backend now fails closed before MXITER+1."
   ],
   "exclusions": [
-    "iMOD predictor/corrector ownership",
+    "iMOD Coupler predictor/corrector ownership",
     "SWAP scientific orchestration",
-    "whole-window MODFLOW rollback",
-    "MODFLOW ATS external retry API",
+    "whole-window MODFLOW rollback or restart",
+    "externalized MODFLOW ATS retry",
     "Ribasim",
     "irrigation",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement and live-qualify a prepared-solve session against official MODFLOW6 6.8.0, real xmipy pointers and the real F-GC34 bridge."
+  "next_permitted_action": "Independent/admission review of the exact F-GC38 prepared-solve envelope, then reconcile F-GC37 against this backend contract before materializing the real coupled service."
 }
