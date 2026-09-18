@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI108",
+  "title": "RossFast moving-preservation reconciliation",
+  "phase": "QUALIFY",
+  "status": "RECOMPOSED_ON_CURRENT_CANONICAL_PENDING_EXACT_HEAD_QUALIFICATION",
+  "branch": "work/f-ci108-fross17-moving-preservation-reconciliation",
+  "canonical_source": "160bc10f5ed697ee67897af603ddfbc574b1d4cf",
+  "reconciliation": {
+    "prior_canonical": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+    "live_delta": "F-ROM research-authority files only",
+    "rossfast_dependency_overlap": false
+  },
+  "problem": "Historical F-CI107/F-ROSS22 admission runners reasserted repository-global src/reference admission deltas on moving descendants, falsely rejecting unrelated independently admitted production capabilities.",
+  "repair": {
+    "files": [
+      "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "tests/fci/run_fci_fross22_tiered_successor_preservation.sh"
+    ],
+    "rule": "Preserve the complete RossFast owner surface and exact admitted dependency blobs. Do not require unrelated later src/reference capabilities to be absent.",
+    "production_mutation": "NONE",
+    "scientific_semantics_mutation": "NONE",
+    "tolerance_change": "NONE"
+  },
+  "reproduced_failure": {
+    "workflow_run": 35351630380,
+    "classification": "MOVING_PRESERVATION_SCOPE_STALE_NOT_SCIENTIFIC_REGRESSION"
+  },
+  "next_permitted_action": "Run F-CI96 and relevant canonical qualification on this exact head. If green, admit F-CI108 and close."
+}
