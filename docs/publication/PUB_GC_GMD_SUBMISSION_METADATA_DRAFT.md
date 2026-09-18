@@ -130,3 +130,17 @@ This metadata record becomes submission-ready only after:
 3. A3 persistent archive/PID closes;
 4. final author/affiliation/contribution metadata is supplied;
 5. final GMD formatting and submission-policy check is completed.
+
+
+## Prearchive governance state
+
+- A1 publication release identifier: **UNRESOLVED — no existing tag/release naming convention**.
+- A2a official SWAP version-4 licence authority: **VERIFIED**.
+- A2b explicit SWAP5 publication-archive licence/redistribution declaration: **UNRESOLVED GOVERNANCE/LEGAL**.
+- A3 persistent DOI/PID: **downstream of A1/A2b**.
+
+Automated gate:
+
+```text
+python tools/publication/check_pub_gc_gmd_submission.py
+```
