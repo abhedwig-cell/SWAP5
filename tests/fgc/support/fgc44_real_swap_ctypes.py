@@ -43,15 +43,19 @@ class Fgc44RealSwap:
         if status: raise RuntimeError(f"SWAP initialize failed: {status}")
         return hcof.value,rhs.value,href.value
 
-    def initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[float,float,float]:
+    def try_initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[int,float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
         status=self.lib.fgc44_swap_initialize_configured_c(
             float(duration_day),float(predictor_qbot_cm_per_day),
             ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
         )
+        return int(status),hcof.value,rhs.value,href.value
+
+    def initialize_configured(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[float,float,float]:
+        status,hcof,rhs,href=self.try_initialize_configured(duration_day,predictor_qbot_cm_per_day)
         if status:
             raise RuntimeError(f"configured SWAP initialize failed: {status}")
-        return hcof.value,rhs.value,href.value
+        return hcof,rhs,href
 
     def trial(self, head_m: float) -> float:
         q=ctypes.c_double()
