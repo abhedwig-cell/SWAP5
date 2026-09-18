@@ -48,7 +48,7 @@ def main():
     top_identity=True
     for case in cases:
         per=[]
-        for step in range(1,65):
+        for step in range(1,33):
             k=(case,step)
             if k not in s16 or k not in s32:
                 structural=False
@@ -87,7 +87,7 @@ def main():
             top_identity &= float(a16["CUM_TOP"])==float(a32["CUM_TOP"])
             all_finite &= all(math.isfinite(v) for v in row.values() if isinstance(v,float))
             per.append(row)
-        if len(per)!=64: structural=False
+        if len(per)!=32: structural=False
         names=[
           "D_h_inf_cm","D_h_rms_cm","D_theta_inf","D_theta_rms",
           "D_total_storage_abs_cm","D_upper_storage_abs_cm","D_lower_storage_abs_cm",
@@ -104,34 +104,26 @@ def main():
           "max_over_time":maxima,
           "final_time":per[-1] if per else None,
           "G16":{
-            "max_abs_step_mass_residual_cm":max(abs(float(s16[(case,i)]["MASS"])) for i in range(1,65)) if all((case,i) in s16 for i in range(1,65)) else None,
-            "representation_bound_cm_range":[
-              min(float(s16[(case,i)]["REP_BOUND_CM"]) for i in range(1,65)),
-              max(float(s16[(case,i)]["REP_BOUND_CM"]) for i in range(1,65))
-            ] if all((case,i) in s16 for i in range(1,65)) else None,
+            "max_abs_step_mass_residual_cm":max(abs(float(s16[(case,i)]["MASS"])) for i in range(1,33)) if all((case,i) in s16 for i in range(1,33)) else None,
             "nonlinear_iterations_range":[
-              min(int(s16[(case,i)]["NL"]) for i in range(1,65)),
-              max(int(s16[(case,i)]["NL"]) for i in range(1,65))
-            ] if all((case,i) in s16 for i in range(1,65)) else None,
+              min(int(s16[(case,i)]["NL"]) for i in range(1,33)),
+              max(int(s16[(case,i)]["NL"]) for i in range(1,33))
+            ] if all((case,i) in s16 for i in range(1,33)) else None,
             "backtracking_range":[
-              min(int(s16[(case,i)]["BACK"]) for i in range(1,65)),
-              max(int(s16[(case,i)]["BACK"]) for i in range(1,65))
-            ] if all((case,i) in s16 for i in range(1,65)) else None
+              min(int(s16[(case,i)]["BACK"]) for i in range(1,33)),
+              max(int(s16[(case,i)]["BACK"]) for i in range(1,33))
+            ] if all((case,i) in s16 for i in range(1,33)) else None
           },
           "G32":{
-            "max_abs_step_mass_residual_cm":max(abs(float(s32[(case,i)]["MASS"])) for i in range(1,65)) if all((case,i) in s32 for i in range(1,65)) else None,
-            "representation_bound_cm_range":[
-              min(float(s32[(case,i)]["REP_BOUND_CM"]) for i in range(1,65)),
-              max(float(s32[(case,i)]["REP_BOUND_CM"]) for i in range(1,65))
-            ] if all((case,i) in s32 for i in range(1,65)) else None,
+            "max_abs_step_mass_residual_cm":max(abs(float(s32[(case,i)]["MASS"])) for i in range(1,33)) if all((case,i) in s32 for i in range(1,33)) else None,
             "nonlinear_iterations_range":[
-              min(int(s32[(case,i)]["NL"]) for i in range(1,65)),
-              max(int(s32[(case,i)]["NL"]) for i in range(1,65))
-            ] if all((case,i) in s32 for i in range(1,65)) else None,
+              min(int(s32[(case,i)]["NL"]) for i in range(1,33)),
+              max(int(s32[(case,i)]["NL"]) for i in range(1,33))
+            ] if all((case,i) in s32 for i in range(1,33)) else None,
             "backtracking_range":[
-              min(int(s32[(case,i)]["BACK"]) for i in range(1,65)),
-              max(int(s32[(case,i)]["BACK"]) for i in range(1,65))
-            ] if all((case,i) in s32 for i in range(1,65)) else None
+              min(int(s32[(case,i)]["BACK"]) for i in range(1,33)),
+              max(int(s32[(case,i)]["BACK"]) for i in range(1,33))
+            ] if all((case,i) in s32 for i in range(1,33)) else None
           }
         }
     hard_mass=all(
@@ -143,11 +135,11 @@ def main():
     result={
       "schema":"swap5.f-rom0v1-result.v1",
       "work_unit":"ROM-0V1",
-      "decision":"VERTICAL_REFERENCE_FLOOR_MEASURED" if measured else "VERTICAL_REFERENCE_FLOOR_NOT_MEASURABLE",
+      "decision":"VERTICAL_REFERENCE_FLOOR_MEASURED" if measured else "VERTICAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
       "comparison":"16x10 cm vs 32x5 cm over 160 cm",
-      "dt_day":0.0008,
+      "dt_day":0.0016,
       "horizon_day":0.0512,
-      "common_endpoints_per_case":64,
+      "common_endpoints_per_case":32,
       "mapping":{
         "pressure_head":"pair-average fine heads = linear interpolation to coarse centre",
         "water_content":"pair-average fine theta = storage-conservative coarse-layer theta"
