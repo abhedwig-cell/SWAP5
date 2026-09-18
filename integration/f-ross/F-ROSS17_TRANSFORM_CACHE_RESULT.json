@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.f-ross17.transform-cache-result.v1",
+  "workunit": "F-ROSS17",
+  "phase": "QUALIFIED_SHARED_HOST_SCREENING",
+  "branch": "work/f-ross17-rossfast-transform-cache",
+  "production_mutation": {
+    "path": "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "baseline_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "candidate_blob": "2ad2a680e62744451d6763de48585f1bd45d3067"
+  },
+  "scientific_equivalence": {
+    "case_count": 36,
+    "all_cases_pass": true,
+    "max_head_inf_cm": 0.0,
+    "max_theta_inf": 0.0,
+    "max_storage_abs_cm": 0.0,
+    "max_temporal_indicator_relative": 0.0,
+    "interpretation": "Candidate and immutable baseline produced identical dumped states and temporal indicators across all 36 paired-valid E0 cases at the printed real64 precision; existing P2E10 Reference-vs-RossFast gates also remained PASS.",
+    "linear_solves_per_case": 24,
+    "internal_retries": 0,
+    "alternative_solver_calls": 0
+  },
+  "primary_chronological_run": {
+    "head": "18a4573440777c05c560356b7c54bd8b018d3771",
+    "workflow_run": 35295019847,
+    "job": 105445682566,
+    "artifact_id": 10528206066,
+    "artifact_digest": "sha256:a44bd792504cdb4c2aa3d4c98ac4489a81be80fc0bd6eeef09a6160ce2222e96",
+    "baseline_vs_candidate": {
+      "screening_outcome": "SCREENING_MATERIAL_IMPROVEMENT",
+      "candidate_over_baseline_relative_delta_mean": -0.2151998417332827,
+      "candidate_over_baseline_relative_delta_median": -0.21743408432851907,
+      "candidate_over_baseline_relative_delta_min": -0.2198163083780582,
+      "candidate_over_baseline_relative_delta_max": -0.19697475430871703,
+      "mde": 0.003560433900872866,
+      "mean_baseline_over_candidate_speedup": 1.2742806095757258
+    },
+    "candidate_vs_reference": {
+      "screening_outcome": "SCREENING_REFERENCE_FASTER",
+      "rossfast_over_reference_relative_delta_mean": 1.2781510267601641,
+      "rossfast_over_reference_cpu_ratio_mean": 2.278151026760164,
+      "mean_reference_over_rossfast_ratio": 0.43897108966843573,
+      "mde": 0.009001681719514595
+    }
+  },
+  "exact_status_head_replication": {
+    "head": "34d81e6d9125761eb06cb9da9816508af7dc14f9",
+    "workflow_run": 35295022624,
+    "job": 105445690024,
+    "artifact_id": 10528115543,
+    "artifact_digest": "sha256:576430e42d72096ea0cd8e0b9ed00308bf88db6935ecdcc0a9510cd3e089a675",
+    "scientific_verdict": "SCIENTIFIC_EQUIVALENCE_PASS",
+    "candidate_over_baseline_relative_delta_mean": -0.218830532479,
+    "candidate_over_baseline_mde": 0.00247735843635,
+    "mean_baseline_over_candidate_speedup": 1.2801674013,
+    "candidate_vs_reference_rossfast_over_reference_relative_delta_mean": 1.27342012972,
+    "candidate_vs_reference_rossfast_over_reference_cpu_ratio_mean": 2.27342012972,
+    "candidate_vs_reference_mde": 0.01356888621
+  },
+  "adjudication": {
+    "scientific_gate": "PASS",
+    "performance_screen": "MATERIAL_IMPROVEMENT_REPLICATED",
+    "formal_production_speedup_claim": false,
+    "reason_formal_claim_withheld": "Shared GitHub-hosted timing remains screening evidence under MP host policy.",
+    "algorithmic_scope_preserved": true,
+    "certificate_internal_substeps": 8,
+    "candidate_steps_per_solve": 24,
+    "coarse_plus_two_half_topology": "unchanged",
+    "current_candidate_still_faster_than_reference": false,
+    "current_candidate_still_slower_than_reference_by_factor_approx": 2.28
+  },
+  "interpretation": "Caching/fusing repeated RossFast node transformations is scientifically neutral on the qualified 36-case domain and reduces solver CPU by about 21-22%. The remaining performance gap to Reference Richards is still about 2.27-2.28x, so the fixed 24-step temporal-certificate workload is now the dominant optimization target.",
+  "production_or_reference_mutation": true,
+  "next_permitted_action": "Preserve F-ROSS17 as the low-risk production candidate. Investigate temporal-certificate workload reduction separately in a research-only successor without changing F-ROSS17."
+}
