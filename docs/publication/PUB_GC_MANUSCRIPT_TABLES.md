@@ -2,7 +2,7 @@
 
 ## Status
 
-**T1–T5 BUILT FROM GOVERNED CONTRACTS / ADMITTED EVIDENCE**
+**T1–T6 BUILT FROM GOVERNED CONTRACTS / ADMITTED EVIDENCE**
 
 Date: 2026-09-18.
 
@@ -30,7 +30,7 @@ Source authority: coupling contracts F-GC30/F-GC39–F-GC44, E1/E2, and E4.
 | E4 | what response map is exposed by SWAP? | compare `u_A`, independent `u_FD`, `J_S`, `J_R` | centred perturbations only; no extrapolation through failed side | `u_A` is flux-driven predictor response, not universal `J_R` |
 | E5 | how much is supplied response information worth? | FP, Aitken, cold secant, supplied `u_A`, zero-cost `J_R` oracle | separate ACCELERATE continuation only for reproducible ≥2-evaluation or convergence-domain advantage | modest derivative value; standalone ACCELERATE gate failed |
 | E6 | can a stronger valid synthetic hydrological feedback regime be constructed? | active drainage route plus 20-case state/flux screen | no production tolerance/retry/physics relaxation; deterministic E6-B candidate rule | `CLOSED_NEGATIVE_WITH_BOUNDARIES`; no E6-B candidate |
-| E7 | does the contract transfer to an authoritative realistic application? | frozen Hupsel dates 2003-06-17 and 2003-05-20; loose versus strong | standalone-only selection completed before coupled output; no post-hoc date/window/tolerance rescue | `STANDALONE_SELECTION_FROZEN / COUPLED_EXECUTION_PENDING` |
+| E7 | does the contract transfer to an authoritative realistic application? | frozen Hupsel dates 2003-06-17 and 2003-05-20; production prescribed-head participant gate before loose/strong | standalone-only selection completed before coupled output; no process freezing, post-hoc date/window rescue or tolerance relaxation | `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT`; process-complete production participant is not admitted |
 
 ## T3 — E4 response identity
 
@@ -67,6 +67,18 @@ Source: `PUB_GC_E5_INFORMATION_VALUE_RESULT.json`. The oracle derivative acquisi
 
 Source: `PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json` and `PUB_GC_E6A_STATE_SCREEN_RESULT.json`.
 
-## Open T6
+## T6 — E7 realistic application disposition
 
-T6 is reserved for the E7 loose-versus-strong coupled results. The standalone selection portion is now frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`; the M1-C3 prerequisite has passed. T6 remains open only until the coupled execution for the two frozen dates completes.
+| E7 item | Median-dynamics control | High-dynamics day | Production disposition |
+| --- | --- | --- | --- |
+| frozen date | 2003-06-17 | 2003-05-20 | immutable after PR #325 |
+| crop/application state | inside 2003 potato period; emerged-crop root-uptake pathway required | inside 2003 potato period; emerged-crop root-uptake pathway required | authentic application composition retained |
+| standalone drainage | 0.0225868702 cm | 0.9069694039 cm | `SWDRA=1`; active drainage cannot be frozen away |
+| prescribed-head groundwater owner | process-complete mode-5 owner required | process-complete mode-5 owner required | PPA-WU01 rejects `root_extraction_active` and `drainage_response_active` |
+| dynamic owner qualification | not separately date-dependent | not separately date-dependent | O0/O2 PASS; both active-process configurations fail closed with `FMR_APP_BOOT_PROFILE_NOT_ADMITTED` |
+| F-GC49D / MODFLOW execution | not started | not started | preregistered stop before context/timestep |
+| scientific outcome | colspan conceptually shared | colspan conceptually shared | **REALISTIC_COMPONENT_DOMAIN_LIMIT** |
+
+Source: `PUB_GC_E7_RESULT.json`, static publication gate run 35375158694 and PPA-WU01 production-owner run 35375158471.
+
+T6 intentionally contains no loose/strong head or exchange values: producing those values would require changing or freezing authentic Hupsel process composition outside the admitted production owner, which the E7 preregistration forbids.
