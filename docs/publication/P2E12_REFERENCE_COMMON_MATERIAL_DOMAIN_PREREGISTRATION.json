@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.publication.p2e12-reference-common-material-domain.v1",
+  "workunit": "PUB-P2E12",
+  "phase": "PREREGISTERED_SUPPORTING_DOMAIN_CONSTRUCTION_AFTER_P2E11_NEGATIVE_RESULT",
+  "publication_owner": "PUB-SQ",
+  "evidence_class": "PROSPECTIVE_SUPPORTING",
+  "parent_evidence": {
+    "P2E11_result_blob": "0d186a17c5b48f8287fde0d01c8a668aab064c1d",
+    "P2E11D1_result_blob": "1be7d63e82eac9d1f846c9715fabf80a5700bdf8"
+  },
+  "scientific_question": "Across the thirty F-ROSS13 extension materials, what is the highest preregistered wet-state level at which the fixed Reference coarse/refined trajectories remain inside the declared common E0 state domain for both DRYING and NOMINAL forcing?",
+  "scope": {
+    "solver": "Reference only",
+    "materials": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "O02",
+      "O03",
+      "O04",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13",
+      "O15",
+      "O16",
+      "O17"
+    ],
+    "effective_saturation_scan": [
+      0.9,
+      0.92,
+      0.94,
+      0.96,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "physical_case_count": 300,
+    "grid": "16 homogeneous cells x 10 cm",
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032,
+    "top_flux_over_initial_K0": {
+      "DRYING": -0.005,
+      "NOMINAL": 0.01
+    },
+    "bottom_flux_over_initial_K0": {
+      "DRYING": -0.019,
+      "NOMINAL": -0.004
+    },
+    "distributed_sources_and_sinks": "zero",
+    "pressure_head_domain_cm": {
+      "min_exclusive": -10000,
+      "max_exclusive": -1
+    }
+  },
+  "selection_rule": {
+    "global_common_level": "Highest preregistered Se for which all 60 material-by-forcing cases pass every fixed Reference/common-state validity predicate.",
+    "no_interpolation": "P2E12 does not infer a continuous boundary between scan levels.",
+    "no_material_specific_rescue": "The global common level is not replaced by material-specific levels for the main follow-up design."
+  },
+  "validity_predicates": [
+    "Reference solver converged on coarse, half1 and half2 trajectories",
+    "integrated mass residual available, finite and <=1e-12 cm for all three trajectories",
+    "native balance-rate residual available and finite",
+    "candidate arrays have the expected shape and finite values",
+    "pressure head remains strictly inside -10000 to -1 cm",
+    "water content remains strictly between material theta_r and theta_s"
+  ],
+  "firewall": {
+    "rossfast_numerical_solver_compilation_allowed": false,
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "threshold_freezing_allowed": false,
+    "candidate_admission_claim_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "timestep_search_allowed": false,
+    "post_run_scan_level_insertion_allowed": false
+  },
+  "interpretation": {
+    "role": "Domain construction only. P2E12 may define the common Reference/common-state design surface for a later candidate-blind threshold freeze and paired RossFast test.",
+    "nonclaim": "A Reference-valid scan level is not itself RossFast-admissible."
+  },
+  "next_if_complete": "Freeze a new extension comparison design using only a predeclared globally common Se surface, then construct Reference-only thresholds before any new RossFast extension execution."
+}
