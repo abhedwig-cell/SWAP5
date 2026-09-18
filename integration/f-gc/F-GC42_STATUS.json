@@ -3,8 +3,8 @@
   "work_unit": "F-GC42",
   "title": "Live whole-window SWAP5-MODFLOW6 service materialization",
   "protocol": "Bounded Execution Protocol",
-  "phase": "QUALIFY",
-  "state": "OWNER_GREEN_INDEPENDENT_QUEUED",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_SERVICE_COMPOSITION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "4d50ca2676cf9404e62b182767686ab677921511"
@@ -28,7 +28,7 @@
     "no N:1 scaling, Ribasim, irrigation, or new groundwater physics"
   ],
   "reconcile_verdict": "New composition surface: canonical has qualified F-GC39 and F-GC41 separately but no live end-to-end service composition authority.",
-  "next_permitted_action": "Obtain F-VQ114 exact-head independent evidence; if green, reconcile canonical delta and admit/close F-GC42. The next later capability is production SWAP participant binding plus a real end-to-end application case.",
+  "next_permitted_action": "Open a separately bounded production SWAP participant binding workunit. Bind the real transactional SWAP origin/corrector/candidate publication seams into the admitted F-GC39/F-GC41 composition, then qualify one real end-to-end SWAP+MODFLOW application case. Preserve F-GC39 predictor/corrector ownership and F-GC41 publication ordering.",
   "owner_qualification": {
     "head": "395af98768c7e2d5a756a7aa91b692ce9dd89649",
     "run": 35337095318,
@@ -40,5 +40,32 @@
     ]
   },
   "current_head": "57898d4476c8a6dadecc087f21a6d4aa97d26be0",
-  "evidence_boundary": "F-GC42 qualifies composition of admitted F-GC39 and F-GC41 contracts. It does not claim a real-SWAP plus real-MODFLOW production application run."
+  "evidence_boundary": "F-GC42 qualifies composition of admitted F-GC39 and F-GC41 contracts. It does not claim a real-SWAP plus real-MODFLOW production application run.",
+  "canonical_admission": {
+    "preimage": "4d50ca2676cf9404e62b182767686ab677921511",
+    "head": "6cc66b7880c377d5556f176b4dd19eee5a8f0c92",
+    "pr": 232,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner": {
+      "run": 35337528623,
+      "job": 105575730496,
+      "conclusion": "success"
+    },
+    "independent": {
+      "work_unit": "F-VQ114",
+      "run": 35337528589,
+      "job": 105575730348,
+      "conclusion": "success"
+    },
+    "independent_oracles": [
+      "FVQ114_FGC39_BEFORE_FGC41_COMPOSITION=PASS",
+      "FVQ114_RETAINED_CANDIDATE_HANDOFF=PASS",
+      "FVQ114_COUPLING_FAILURE_BLOCKS_PUBLICATION=PASS",
+      "FVQ114_PREFLIGHT_FAILURE_ZERO_PUBLICATION=PASS",
+      "FVQ114_OWNERSHIP_AND_EVIDENCE_BOUNDARY=PASS"
+    ]
+  },
+  "verdict": "CLOSED_CANONICAL_ADMITTED"
 }
