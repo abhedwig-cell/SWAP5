@@ -145,7 +145,22 @@ Therefore the current low-flux regime presents a useful distinction:
 
 > a loose solution can violate the strict interface-flux convergence condition by a large relative factor while still differing only minutely in groundwater head from the converged solution.
 
-This does not prove that iterative coupling is hydrologically unimportant in general. It shows that the current F-GC44 low-flux regime is not a suitable positive demonstration of a large physical feedback effect.
+The scale of the largest absolute loose residual makes this distinction concrete. At the `1e-2 day`, `K=10 m/day` case,
+
+```text
+|r_loose| = 2.8034239e-12 m/s
+DeltaT    = 864 s
+```
+
+so the unclosed interface amount over the whole window is only approximately
+
+```text
+2.42e-9 m water depth
+```
+
+or `2.42e-6 L` over the one-square-metre fixture. The fixed `1e-15 m/s` criterion is therefore a deliberately strict qualification criterion in this regime, not evidence that every violation of it is hydrologically material.
+
+This does not prove that iterative coupling is hydrologically unimportant in general. It shows that the current F-GC44 low-flux regime is not a suitable positive demonstration of a large physical feedback effect, and that later operational coupling criteria must be interpreted against state and mass impact rather than iteration count alone.
 
 ## Important caution about the K trend
 
