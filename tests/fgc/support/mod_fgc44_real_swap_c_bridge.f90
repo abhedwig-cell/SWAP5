@@ -73,10 +73,30 @@ module mod_fgc44_real_swap_c_bridge
   logical, save :: initialized=.false.
   logical, save :: ledger_prepared=.false.
 
+  ! PUB-GC E1 publication diagnostics. These values are captured from the same
+  ! real predictor trial used by F-GC44. They are test/qualification evidence,
+  ! not a production coupling API.
+  logical, save :: e1_ready=.false.
+  logical, save :: e1_mass_complete=.false.
+  real(real64), save :: e1_q_bot_predictor_cm_per_day=0.0_real64
+  real(real64), save :: e1_q_u_cm_per_day=0.0_real64
+  real(real64), save :: e1_u=0.0_real64
+  real(real64), save :: e1_h_start_m=0.0_real64
+  real(real64), save :: e1_h_end_m=0.0_real64
+  real(real64), save :: e1_bottom_outward_exchange_native=0.0_real64
+  real(real64), save :: e1_terminal_bottom_outward_flux_native=0.0_real64
+  real(real64), save :: e1_storage_start=0.0_real64
+  real(real64), save :: e1_storage_end=0.0_real64
+  real(real64), save :: e1_storage_change=0.0_real64
+  real(real64), save :: e1_total_in=0.0_real64
+  real(real64), save :: e1_total_out=0.0_real64
+  real(real64), save :: e1_mass_residual=0.0_real64
+
   public :: fgc44_swap_initialize_c, fgc44_swap_trial_c, fgc44_swap_discard_c
   public :: fgc44_swap_preflight_c, fgc44_ledger_prepare_c, fgc44_ledger_preflight_c
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
+  public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
 
 contains
 
@@ -105,7 +125,7 @@ contains
     logical :: ok
 
     fgc44_swap_initialize_c=1_c_int; hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
-    initialized=.false.; ledger_prepared=.false.
+    initialized=.false.; ledger_prepared=.false.; e1_ready=.false.; e1_mass_complete=.false.
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
     qeq=PREDICTOR_QBOT
@@ -154,6 +174,22 @@ contains
     if(status/=MODFLOW6_PREDICTOR_ORIGIN_OK)return
     call assemble_modflow6_swap_predictor_response(origin,window,candidate,result,endpoint,response(1),status)
     if(status/=MODFLOW6_PREDICTOR_ASSEMBLER_OK .or. .not.response(1)%valid)return
+
+    e1_q_bot_predictor_cm_per_day=response(1)%q_bot_predictor_cm_per_day
+    e1_q_u_cm_per_day=response(1)%q_u_cm_per_day
+    e1_u=response(1)%coupling_storage_coefficient_u
+    e1_h_start_m=response(1)%h_bot_start_m
+    e1_h_end_m=response(1)%h_bot_end_m
+    e1_bottom_outward_exchange_native=result%bottom_outward_exchange_native
+    e1_terminal_bottom_outward_flux_native=result%terminal_bottom_outward_flux_native
+    e1_mass_complete=result%mass%complete
+    e1_storage_start=result%mass%storage_start
+    e1_storage_end=result%mass%storage_end
+    e1_storage_change=result%mass%storage_change
+    e1_total_in=result%mass%total_in
+    e1_total_out=result%mass%total_out
+    e1_mass_residual=result%mass%residual
+    e1_ready=.true.
 
     binding(1)%groundwater_cell_id=GW_CELL_ID; binding(1)%tile_id=COLUMN_ID; binding(1)%area_fraction=1.0_real64
     call compose_modflow6_multiswap_cell_response(binding,response,response(1)%h_bot_end_m,cell,status)
@@ -263,6 +299,48 @@ contains
     time_day=t; ledger_count=int(snap%committed_exchange_count,c_int); ledger_exchange_m=snap%committed_swap_outward_exchange_m
     fgc44_state_c=0_c_int
   end function fgc44_state_c
+
+  integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
+       bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &
+       bind(C,name="fgc44_e1_diagnostics_c")
+    integer(c_int), intent(out) :: mass_complete
+    real(c_double), intent(out) :: q_bot,q_u,u,h_start,h_end,bottom_exchange,terminal_flux
+    real(c_double), intent(out) :: storage_start,storage_end,storage_change,total_in,total_out,residual
+    fgc44_e1_diagnostics_c=1_c_int
+    mass_complete=0_c_int
+    q_bot=0.0_c_double; q_u=0.0_c_double; u=0.0_c_double
+    h_start=0.0_c_double; h_end=0.0_c_double
+    bottom_exchange=0.0_c_double; terminal_flux=0.0_c_double
+    storage_start=0.0_c_double; storage_end=0.0_c_double; storage_change=0.0_c_double
+    total_in=0.0_c_double; total_out=0.0_c_double; residual=0.0_c_double
+    if(.not.initialized .or. .not.e1_ready)return
+    if(e1_mass_complete)mass_complete=1_c_int
+    q_bot=e1_q_bot_predictor_cm_per_day
+    q_u=e1_q_u_cm_per_day
+    u=e1_u
+    h_start=e1_h_start_m
+    h_end=e1_h_end_m
+    bottom_exchange=e1_bottom_outward_exchange_native
+    terminal_flux=e1_terminal_bottom_outward_flux_native
+    storage_start=e1_storage_start
+    storage_end=e1_storage_end
+    storage_change=e1_storage_change
+    total_in=e1_total_in
+    total_out=e1_total_out
+    residual=e1_mass_residual
+    fgc44_e1_diagnostics_c=0_c_int
+  end function fgc44_e1_diagnostics_c
+
+  integer(c_int) function fgc44_last_trial_diagnostics_c(q_swap_m_per_s,bottom_exchange_cm) &
+       bind(C,name="fgc44_last_trial_diagnostics_c")
+    real(c_double), intent(out) :: q_swap_m_per_s,bottom_exchange_cm
+    fgc44_last_trial_diagnostics_c=1_c_int
+    q_swap_m_per_s=0.0_c_double; bottom_exchange_cm=0.0_c_double
+    if(.not.initialized .or. .not.last_trial%valid)return
+    q_swap_m_per_s=last_trial%q_swap_m_per_s
+    bottom_exchange_cm=last_trial%bottom_outward_exchange_cm
+    fgc44_last_trial_diagnostics_c=0_c_int
+  end function fgc44_last_trial_diagnostics_c
 
   subroutine initialize_parameters(p,bottom_mode)
     type(fmr_b110_physical_parameters_t),intent(out)::p
