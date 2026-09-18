@@ -4,7 +4,7 @@
   "title": "Advanced water-process triage: macropore, frost and root-stress dependency graph",
   "branch": "audit/ppa-wu05-advanced-water-process-triage",
   "reconcile_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
-  "status": "TRIAGE_IMPLEMENTED_QUALIFICATION_PENDING",
+  "status": "DEPENDENCY_GRAPH_FROZEN_CLOSED",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "source_authority": {
@@ -25,9 +25,27 @@
     "rationale": "High structured-soil relevance, strongest prior ownership evidence, largest dependency-unblocking value, and a bounded state/restart/rollback slice can proceed without changing physics equations."
   },
   "qualification": {
-    "state": "PENDING"
+    "state": "PASS",
+    "workflow": "PPA-WU05 advanced water-process triage",
+    "run_id": 35379433308,
+    "authority_job": 105711822191,
+    "authority_conclusion": "success",
+    "independent_job": 105711886766,
+    "independent_conclusion": "success",
+    "checks": [
+      "corrected B1.11 macropore authority",
+      "corrected B1.11 oxygenstress authority",
+      "current root-scope hard holds",
+      "thermal/frost non-conflation",
+      "zero src/reference delta",
+      "macropore state/scratch separation",
+      "legacy frost modifier decomposition",
+      "advanced root dependency split",
+      "single root mass owner",
+      "first target selection"
+    ]
   },
   "production_admission": "NONE_TRIAGE_ONLY",
   "verdict": "DEPENDENCY_GRAPH_FROZEN_FIRST_TARGET_MACROPORE_STATE_TRANSACTION_FOUNDATION",
-  "next_action": "Run authority and independent triage validation, repair review artifacts only, update the production-envelope register, reconcile live canonical and close without production admission."
+  "next_action": "PPA-WU05 is closed as triage authority. PPA-WU05-A may start as a separate bounded state/transaction foundation workunit. Full macropore flow, frost and advanced root-stress production remain unadmitted."
 }
