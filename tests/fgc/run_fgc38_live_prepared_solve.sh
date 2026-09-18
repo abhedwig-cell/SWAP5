@@ -34,13 +34,17 @@ for forbidden in [
     "coupling_residual",
     "ribasim",
     "imod_coupler",
-    "finalize_time_step(",
 ]:
     assert forbidden not in source.lower(), forbidden
 
 print("FGC38_BACKEND_BELOW_COUPLING_SERVICE=PASS")
 print("FGC38_NO_SWAP_OR_IMOD_COUPLING_OWNERSHIP=PASS")
-print("FGC38_NO_TIMESTEP_ACCEPTANCE_OWNERSHIP=PASS")
+# F-GC41 admits a narrow one-shot timestep-publication seam here. The adapter
+# still does not own coupling acceptance: it only exposes readiness/finalize.
+assert "def timestep_ready_for_finalize" in source
+assert "def finalize_time_step_once" in source
+print("FGC38_NO_TIMESTEP_ACCEPTANCE_POLICY_OWNERSHIP=PASS")
+print("FGC41_NARROW_TIMESTEP_PUBLICATION_SEAM_PRESENT=PASS")
 PY
 
 python3 - <<PY
