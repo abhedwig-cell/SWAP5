@@ -1,0 +1,27 @@
+name: F-GC46 real multi-cell live MODFLOW
+on:
+  push:
+    branches: [work/f-gc46-real-multicell-live-modflow]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc46_real_multicell_c_bridge.f90'
+      - 'tests/fgc/support/fgc46_real_multicell_ctypes.py'
+      - 'tests/fgc/test_fgc46_real_multicell_live_modflow.py'
+      - 'tests/fgc/run_fgc46_real_multicell_live_modflow.sh'
+      - '.github/workflows/f-gc46-real-multicell-live-modflow.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  live-multicell:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run real multi-cell live MODFLOW6 qualification
+        run: bash tests/fgc/run_fgc46_real_multicell_live_modflow.sh

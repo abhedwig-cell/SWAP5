@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC46",
+  "title": "Real multi-cell live MODFLOW6 application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "c42db098cc246e3da06472a34979bdf24cfa81cb"
+  },
+  "source": {
+    "branch": "work/f-gc46-real-multicell-live-modflow",
+    "base": "c42db098cc246e3da06472a34979bdf24cfa81cb"
+  },
+  "predecessors": [
+    "F-GC44 real one-cell live application",
+    "F-GC45 real N:1 one-cell MultiSWAP application",
+    "F-GC34 multi-slot MODFLOW API binding",
+    "F-GC41 whole-window publication"
+  ],
+  "goal": "Qualify two independently transactional real FMR/SWAP interfaces coupled 1:1 to two distinct live MODFLOW6 cells in one model, one timestep and one prepared solve.",
+  "decisions": [
+    "Keep each groundwater cell 1:1 with one real SWAP column; do not combine multi-cell and N:1 in the same first capability.",
+    "Use two API package slots and two distinct MODFLOW node ids through the admitted F-GC34 multi-slot publisher.",
+    "Each interface has its own SWAP lineage, coupling id, groundwater lineage and ledger identity while sharing one MODFLOW service/timestep.",
+    "Each SWAP corrector uses the head of its own MODFLOW cell and its own immutable accepted checkpoint.",
+    "Coupled convergence requires MODFLOW convergence and both cell-wise flux residuals within tolerance.",
+    "All SWAP and ledger preflights for both cells complete before the single MODFLOW finalize_time_step; then SWAP and ledger publication is deterministic by cell id."
+  ],
+  "exclusions": [
+    "N:1 within a cell",
+    "heterogeneous aggregation science",
+    "active drainage",
+    "root uptake",
+    "macropores",
+    "snow",
+    "soil temperature",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ118 evidence, repair only scoped failures, then reconcile canonical and admit/close if all criteria pass.",
+  "production_delta": "NONE",
+  "implemented": [
+    "two-interface qualification-only Fortran bridge over admitted real FMR/SWAP production participants",
+    "F-GC40 single-tile-equivalent cell response per interface",
+    "F-GC34 two-slot/two-node live MODFLOW API mapping",
+    "two cell-specific real SWAP correctors in one prepared solve",
+    "two independent interface ledgers with all-interface preflight before publication",
+    "live MODFLOW6 6.8.0 owner qualification workflow",
+    "F-VQ118 independent architecture/order verifier"
+  ],
+  "admission_criteria": [
+    "exact-head live multi-cell owner qualification green",
+    "exact-head F-VQ118 independent qualification green",
+    "no relevant canonical overlap/drift",
+    "production source delta remains NONE",
+    "PR mergeable and scope remains two 1:1 cells without N:1 or physics expansion"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+}
