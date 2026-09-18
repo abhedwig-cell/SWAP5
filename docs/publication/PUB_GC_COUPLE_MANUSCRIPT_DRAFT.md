@@ -964,30 +964,55 @@ E6 then tested whether a materially stronger synthetic coupling case could be ob
 
 This narrows the claim that can be made from the synthetic experiments. E3 establishes a genuine weak-feedback control, but the present study does not establish a positive strong-feedback synthetic regime. The appropriate next test is a realistic already admitted hydrological application in which the required process and boundary semantics are native to the application, rather than further tolerance or parameter escalation of the restricted qualification fixture.
 
-## 5.6 How much response information should be exposed?
+## 5.6 Supplied response information is useful, but exact derivatives have modest incremental value
 
-The current evidence is not yet sufficient to decide whether component-provided response information is computationally preferable to black-box learning. E3 establishes two prerequisites for that later comparison. First, the low-flux control shows that sophisticated acceleration would have little scientific value in a regime where the coupled state correction itself is negligible. Second, E3-D shows that response information has its own qualification envelope and changes with window duration.
+E4 resolves the identity question left open by the architecture. The exposed `u_A` is not an arbitrary tuning factor: it closely reproduces an independent inverse sensitivity of the flux-driven predictor map. That result supports exposing it as low-cost component information without exposing SWAP's internal Richards Jacobian or timestep sequence.
 
-E4 therefore first determines what the supplied response actually represents. Only after that identity is established should E5 compare supplied response against IQN/Anderson-style learned interface information. If a strong black-box method performs as well at lower information cost, the simpler interface should be preferred. Conversely, a reproducible advantage of fresh response information after state or regime change would justify the additional response contract.
+The same experiment also shows why response objects must be typed by boundary-value map. The prescribed-flux predictor and prescribed-head corrector are not generally inverse descriptions of one scalar constitutive relation. B3 provides a direct counterexample: `u_A` and `u_FD` agree while `|J_R|` is 8.1% larger. B5 retains a stable flux-driven response even though no symmetric local `J_R` is admitted. Calling `u_A` a universal interface Jacobian would therefore hide a scientifically relevant boundary-condition distinction.
 
-A negative ACCELERATE result would still strengthen the central coupling paper because it would place an empirical upper bound on how much internal response information this class of coupling needs.
+E5 then places a practical upper bound on the value of a more exact derivative. Relative to plain fixed-point iteration, acceleration is clearly beneficial near and beyond the fixed-point stability boundary. Relative to a competent cold secant method, however, even a free exact local `J_R` usually saves only the one evaluation needed by the secant method to learn a slope. It did not enlarge the observed convergence domain.
+
+This result argues for a deliberately modest interface. A cheap response already available from normal component execution can be useful, but a coupling architecture should not demand expensive or intrusive derivative exposure unless a demonstrated regime justifies it. Black-box learning remains a strong default when component ownership and maintainability are priorities.
+
+## 5.7 Component admissibility is part of the coupled problem
+
+E3 and E6 reveal a limitation that is easy to misclassify. A coupled algorithm can be numerically sophisticated while one participant simply cannot return a valid finite-window candidate for the requested boundary state. Such a case is not evidence that the outer iteration diverged.
+
+The E6 active-drainage route makes this distinction especially clear. A valid, mass-complete active-drainage predictor and its accepted response do not imply that the same process configuration is admitted under a prescribed-head corrector. The current production contracts intentionally assign those capabilities to different lower-boundary profiles. The separate state/flux screen reaches the same broader conclusion through another mechanism: wetter states increase local response, but higher fluxes consume the transaction envelope and the surviving predictors have too narrow a corrector neighbourhood for the preregistered stronger-feedback test.
+
+Component admissibility should therefore be treated as an explicit domain of a coupled model, alongside the usual convergence domain of the outer algorithm. This has a practical consequence for model development: difficult coupled cases should first be classified into component-domain failure versus valid-component coupling failure before changing relaxation, Jacobians or convergence tolerances.
+
+## 5.8 Limitations and transferability
+
+The strongest current limitation is hydrological breadth. E1–E6 provide real SWAP and live-MODFLOW evidence, but most direct coupling experiments use deliberately small qualification fixtures. E6 shows why synthetic escalation alone is not an adequate substitute for a realistic application. Hupselbrook is therefore reserved as a prospectively selected external-validity case rather than being invoked retrospectively to strengthen the present conclusions.
+
+The study also does not establish that strong coupling is generally necessary. In the tested live-MODFLOW control, iterative coupling improves strict interface closure but changes groundwater head only at nanometre scale. A realistic application may show a larger effect, a similarly weak effect, or additional component-domain limitations; all three outcomes are scientifically admissible.
+
+The scalar E5 information-value experiment isolates response information from MODFLOW's own nonlinear solver. It is therefore a mechanism experiment rather than a direct performance benchmark for a regional model. Likewise, F-GC45/F-GC46 demonstrate multi-participant composition but not regional runtime scaling or physical validity of spatial aggregation.
+
+Transferability beyond SWAP5–MODFLOW6 rests on principles rather than identical implementation details: immutable accepted origins for replayed component trials, explicit physical interface quantities, separation of candidate calculation from state acceptance, exactly-once mass publication and explicit component-admission domains. Whether these principles provide the same benefits in another model pair remains an empirical question.
 
 ---
+# 6. Conclusions
 
-# 6. Conclusions — placeholder
+We developed and tested a solver-autonomous finite-window coupling contract in which SWAP5 and MODFLOW6 retain their own numerical solvers while sharing an explicit hydrological interface and one coupled acceptance decision.
 
-The final conclusion should be written only after E1–E8 evidence is assembled.
+Five conclusions follow from the current evidence.
 
-It should distinguish:
+First, numerical calculation, state acceptance and water-balance authority must be separated. Real SWAP predictor and corrector trials can compute physically meaningful exchange without changing committed state or authoritative mass. In the qualified transaction, the accepted transfer becomes model history only after coupled acceptance and ordered, exactly-once publication.
 
-1. what the coupling method demonstrably guarantees;
-2. the qualified hydrological and numerical envelope;
-3. what response information contributes;
-4. which limitations remain;
-5. what aspects generalize beyond SWAP5–MODFLOW6.
+Second, the exchanged hydrological quantities cannot be treated as interchangeable implementation variables. Native lower-boundary flux, groundwater-facing exchange, hydraulic head and whole-window transfer have different roles and temporal support. The first real coupled experiment directly demonstrated that `q_bot` and `q_u` are not aliases.
 
----
+Third, strict interface convergence is not equivalent to hydrological importance. Iteration reduced the controlled E3 interface residual below the qualified criterion in every valid case, yet loose-to-iterative groundwater-head corrections remained extremely small. The tested qualification fixture is therefore a weak-feedback control, not evidence that strong coupling is universally necessary.
 
+Fourth, finite-window response information must be identified by the map it differentiates. The SWAP response `u_A` is reproducibly a flux-driven predictor response, but it is not universally equal to the head-driven exchange derivative `J_R`. A perfect free `J_R` produced only modest additional work reduction over a cold black-box secant method in the controlled information-value experiment.
+
+Fifth, component admissibility can limit a coupled experiment before outer coupling convergence becomes the relevant problem. Two preregistered E6 stress routes reached distinct component-domain boundaries before yielding a stronger valid live-MODFLOW feedback case. Those negative outcomes are part of the coupling result, not failures to be hidden by relaxed tolerances.
+
+Together, these findings support a coupling philosophy in which solver autonomy is paired with stronger external semantics rather than weaker scientific control. The coupler should know exactly what is exchanged, which state is authoritative, which finite-window map a response belongs to, and whether each participant is admitted for the requested trial.
+
+The present conclusions remain bounded by the controlled application envelope. Hupselbrook has been prospectively selected as the next realistic test and will determine how much of the contract's behaviour transfers to authentic forcing and process composition. Until that evidence is available, regional hydrological validity and scaling performance are not claimed.
+# Working references
 # Working references
 
 - Abbaszadeh, P. et al. (2025). Coupling the ParFlow Integrated Hydrology Model within the NASA Land Information System: a case study over the Upper Colorado River Basin. *Hydrology and Earth System Sciences*, 29, 5429–5452. https://doi.org/10.5194/hess-29-5429-2025
