@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS22",
+  "title": "Tiered K2 K4 K8 RossFast canonical admission",
+  "phase": "QUALIFY",
+  "status": "RECOMPOSED_ON_ADMITTED_FCI107_CANONICAL_PENDING_FINAL_QUALIFICATION",
+  "branch": "integration/f-ross22-tiered-production-admission",
+  "parent_cache_admission_head": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "qualified_science_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+  "production_postimages": {
+    "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "mutation_surface": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+  ],
+  "production_or_reference_mutation": true,
+  "verdict": "QUALIFIED_FOR_STACKED_CANONICAL_ADMISSION",
+  "next_permitted_action": "Run exact-head F-ROSS22 owner and current moving-preservation gates on this canonical recompose; if green and canonical dependency delta remains compatible, admit to canonical.",
+  "qualified_admission_head": "7a897ebb097e96e4ace7ea820ad4b9073f35809a",
+  "qualification": {
+    "workflow_run": 35342943213,
+    "artifact_id": 10545781027,
+    "artifact_digest": "sha256:af2aab34b5c96632cb011e69d2bdddcfe217d7662a2c0bc3b9fefd6eb54350c9",
+    "result": "PASS",
+    "exact_two_file_production_delta": "PASS",
+    "immutable_f_ross22_qualification_authority": "PASS",
+    "provider_preservation": "PASS",
+    "all_material_216_case_science": "PASS",
+    "route_semantics": "PASS",
+    "serialized_production": "PASS",
+    "solver_seam_preservation": "PASS"
+  },
+  "parent_cache_admission_workunit": "F-CI107"
+}

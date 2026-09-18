@@ -20,7 +20,7 @@ module mod_rossfast_d3r_soil_water_solver
   private
 
   integer, parameter :: ROSSFAST_BOTTOM_MODE_PRESCRIBED_FLUX = 2
-  integer, parameter :: ROSSFAST_INTERNAL_SUBSTEPS = 8
+  integer, parameter :: ROSSFAST_INTERNAL_SUBSTEPS = 2
 
   type, extends(soil_water_solver_workspace_base_t), public :: rossfast_d3r_soil_water_workspace_t
   end type rossfast_d3r_soil_water_workspace_t
