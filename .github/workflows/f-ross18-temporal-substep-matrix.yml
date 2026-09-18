@@ -1,0 +1,38 @@
+name: F-ROSS18 temporal substep research matrix
+
+on:
+  push:
+    branches:
+      - work/f-ross18-temporal-substep-matrix
+  pull_request:
+    branches:
+      - work/f-ross17-rossfast-transform-cache
+    paths:
+      - 'integration/f-ross/F-ROSS18_*'
+      - 'tests/ross/test_ross18_substep_matrix.f90'
+      - 'tests/ross/test_ross18_route_timing.f90'
+      - 'tests/ross/run_ross18_temporal_substep_matrix.sh'
+      - 'tools/performance/f_ross18_matrix_summary.py'
+      - 'tools/performance/f_ross18_paired_screen.py'
+      - '.github/workflows/f-ross18-temporal-substep-matrix.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS18 matrix
+        run: bash tests/ross/run_ross18_temporal_substep_matrix.sh
+      - name: Preserve F-ROSS18 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross18-temporal-matrix-${{ github.run_id }}
+          path: F-ROSS18_EVIDENCE
+          if-no-files-found: warn
