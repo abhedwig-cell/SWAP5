@@ -3,8 +3,8 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC35",
   "title": "Documentation entry-point reconciliation",
-  "phase": "ACQUIRE",
-  "decision": "ENTRYPOINT_RECONCILIATION_SUPPORTED",
+  "phase": "VERIFY",
+  "decision": "DOCUMENTATION_READY_FOR_EXACT_HEAD_GATE",
   "branch": "work/f-doc35-entrypoint-reconciliation",
   "canonical_start": "62dfb5a52f665e490830dfb320167786cf67f63e",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
@@ -24,5 +24,23 @@
     "integration/f-doc/F-DOC35_STATUS.json"
   ],
   "production_reference_test_delta": false,
-  "next_permitted_action": "UPDATE_DOCUMENTATION_ENTRYPOINTS_ONLY"
+  "next_permitted_action": "OPEN_PR_AND_REQUIRE_DOCUMENTATION_GATE_ON_EXACT_HEAD_THEN_RECHECK_CANONICAL_AND_MERGEABILITY",
+  "content_postimage": "fedc3de92c89daa29f2076d122a47e2bf54a7272",
+  "scope_check": {
+    "changed_file_count": 5,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false
+  },
+  "verification": {
+    "pull_request": null,
+    "exact_head": null,
+    "documentation_workflow_run": null,
+    "documentation_job": null,
+    "repository_documentation_checks": "PENDING",
+    "strict_mkdocs_build": "PENDING",
+    "workflow_conclusion": "PENDING"
+  },
+  "verdict": "READY_FOR_VERIFY"
 }
