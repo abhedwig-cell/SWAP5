@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER",
+  "capability": "M1 - Typed External Boundary",
+  "criterion": "legacy file runs still reproduce reference results through adapters;",
+  "implementation_head": "204da1fdaf784ac09f5e17d7e385266dd844c889",
+  "canonical_preimage": "e7c5662a362455d34b0b43c3a1832bcda31777c2",
+  "exact_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "distribution_size_bytes": 8959314,
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_11_member_count": 63,
+    "b1_11_source_bytes": 1886519,
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "candidate_source_blobs": {
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "0406d3180262b06a5a393b605cc553a912a26aa0",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "8a59211335f44034a93d9ecd0d7a8920ee9baa39",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "42fb85a03e6835a839574bf6d4b4c01472a01236"
+  },
+  "external_exact_asset_execution": {
+    "compiler": "GNU Fortran 14.2.0",
+    "reference_run_normal_completion": true,
+    "candidate_run_normal_completion": true,
+    "typed_task2_attempts": 32552,
+    "typed_accepted_intervals": 32518,
+    "additional_retry_attempts": 34,
+    "accepted_interval_target": 32518,
+    "accepted_interval_identity": true,
+    "no_accepted_interval_fallback": true,
+    "stdout_sha256": "51d5adc368d7f742f5b857d6d2a756fdedb49bac3eb5c658a6aa86df23a5949f",
+    "result_bal_raw_candidate_sha256": "b72e021d7b656b7b3fbf8c001979c3b734b0aa8d2f070a4bd8d5ee0288f0ff25",
+    "result_blc_raw_candidate_sha256": "338b84db82850148448b3057131090cb994dc8644b22932c4bafe31388bab453",
+    "normalization": "remove only nondeterministic Generated at: line",
+    "result_bal_normalized_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "result_blc_normalized_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+    "result_bal_exact_reference_identity": true,
+    "result_blc_exact_reference_identity": true,
+    "signed_zero_difference_remaining": false
+  },
+  "inherited_exact_application_trace": {
+    "accepted_intervals": 32518,
+    "routes": {
+      "SWINTER0_SWCF0": 3505,
+      "SWINTER1_SWCF1": 14062,
+      "SWINTER3_SWCF2": 14951
+    },
+    "drainage_nonzero_intervals": 16507,
+    "irrigation_active_intervals": 110,
+    "bottom_flux_nonzero_intervals": 0,
+    "ssdi_active_intervals": 0,
+    "reason_for_inheritance": "Same exact B1.11 Hupsel file/application layer and exact normalized whole-run output identity; route census was already observed by instrumentation-only exact B1.11 authority and is not redefined by the typed SoilWater substitution."
+  },
+  "inherited_six_snapshot_replay": {
+    "cases": 6,
+    "pressure_head_max_abs_error_cm": 0,
+    "water_content_max_abs_error": 0,
+    "ponding_max_abs_error_cm": 0,
+    "top_flux_max_abs_error_cm_per_day": 0,
+    "bottom_flux_max_abs_error_cm_per_day": 0,
+    "authority": "integration/m1/M1_C3_B1_11_TRANSACTIONAL_SNAPSHOT_REPLAY_KSATEXM_DIAGNOSIS.json"
+  },
+  "repair_diagnosis": {
+    "prior_remaining_difference": "typed dynamic-top provider recomputed top-node conductivity from iterating head under SWKIMPL=0",
+    "exact_legacy_semantic": "SWKIMPL=0 keeps time-level-t top-node conductivity fixed during Newton iterations",
+    "repair": "opt-in fixed top-node conductivity carrier, supplied only by bounded M1 B1.11 legacy-application profile",
+    "classification": "MISSING_TRANSPARENT_LEGACY_ADAPTER_SEMANTIC",
+    "physics_change": "NONE",
+    "tolerance_change": "NONE",
+    "solver_policy_change": "NONE"
+  },
+  "owner_qualification": {
+    "run_id": 35368994365,
+    "job_id": 105678204773,
+    "conclusion": "success",
+    "checks": [
+      "bounded three-file production delta",
+      "opt-in carrier and no file/parser semantics in solver-facing carrier",
+      "fixed-top default and override O0/O2 identity",
+      "F-SI39 default-preservation O0/O2",
+      "immutable F-KT15/F-SI35 semantic replay O0/O2"
+    ]
+  },
+  "independent_qualification": {
+    "run_id": 35368994640,
+    "job_id": 105678205382,
+    "conclusion": "success",
+    "checks": [
+      "independent architecture boundary",
+      "default fail-closed composition",
+      "fixed-top O0/O2 qualification",
+      "exact reused F-SI39, F-APP02 and root-sink authority blobs"
+    ]
+  },
+  "mutations": {
+    "production": [
+      "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+    ],
+    "legacy_reference": "NONE",
+    "parser": "NONE",
+    "equations": "NONE_NEW",
+    "timestep": "NONE",
+    "retry_policy": "NONE",
+    "tolerances": "NONE"
+  },
+  "qualification_verdict": "PASS_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER",
+  "m1_c3_scientific_gate_pass": true,
+  "admission_pending": "MOVING_CANONICAL_SEMANTIC_SUCCESSOR_GATES"
+}
