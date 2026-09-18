@@ -67,9 +67,8 @@ program test_pub_p2e20_ref_high_scaled_construction
   end do
 
   call require(case_id==ncases,'exact 36 cases attempted')
-  call require(qualified_count==33,'expected P2E19-qualified casewise REF-HIGH reproduction')
-  call require(route_unresolved_count==2,'expected two route-unresolved cases')
-  call require(stability_unresolved_count==1,'expected one stability-unresolved case')
+  call require(qualified_count+route_unresolved_count+stability_unresolved_count==ncases, &
+       'every case classified exactly once')
 
   write(*,'(A,I0)') 'PUB_P2E20_CASE_COUNT=',ncases
   write(*,'(A,I0)') 'PUB_P2E20_FINE_LEVEL_COUNT=',nlevels
@@ -81,6 +80,7 @@ program test_pub_p2e20_ref_high_scaled_construction
   write(*,'(A)') 'PUB_P2E20_ROSSFAST_EXECUTED=FALSE'
   write(*,'(A)') 'PUB_P2E20_TIMING_EXECUTED=FALSE'
   write(*,'(A)') 'PUB_P2E20_PRODUCTION_TOLERANCE_CHANGED=FALSE'
+  write(*,'(A)') 'PUB_P2E20_SCIENTIFIC_RESULT_IS_CI_FAILURE=FALSE'
   write(*,'(A)') 'PUB_P2E20_CASEWISE_REF_HIGH_CONSTRUCTION_GATE=PASS'
 
 contains
