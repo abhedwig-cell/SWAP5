@@ -4,7 +4,7 @@ module mod_canonical_interval_runtime
   use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_policy_t, &
        transaction_interface_sensitivity_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
-       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -262,7 +262,8 @@ contains
            tx%temporal_indicator)
     end if
     if (tx%status == TX_STATUS_ACCEPTED) then
-      if (tx%temporal_acceptance_source == TX_TEMPORAL_MODEL_CERTIFICATE) then
+      if (tx%temporal_acceptance_source == TX_TEMPORAL_MODEL_CERTIFICATE .or. &
+          tx%temporal_acceptance_source == TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
         result%diagnostics%max_abs_step_mass_residual = max(result%diagnostics%max_abs_step_mass_residual, &
              abs(tx%accepted_mass_residual))
       else
