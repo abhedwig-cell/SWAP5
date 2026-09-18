@@ -8,21 +8,26 @@
   "qualified_head": "c01dd2406983a4814551a3754e644003bbfcd5af",
   "production_or_reference_mutation": false,
   "qualification": {
+    "workflow_run": 35314401030,
+    "artifact_id": 10533988580,
     "all_material": "PASS_216_OF_216",
-    "tier_distribution": "212_K2__2_K4__2_K8",
+    "temporal_acceptance": "PASS_216_OF_216",
+    "K2_final": 212,
+    "K4_final": 2,
+    "K8_final": 2,
     "mean_linear_solves": 6.444444444444445,
     "anchor_identity_to_f_ross19": "EXACT",
-    "shared_host_solver_cpu_delta": -0.19038094455,
-    "shared_host_reference_over_rossfast_speedup": 1.23519497713,
+    "shared_host_solver_cpu_delta": -0.1903809445498,
+    "shared_host_reference_over_rossfast_speedup": 1.2351949771287558,
     "formal_performance_claim": false
   },
-  "verdict": "PROMOTION_CANDIDATE__REQUIRES_SEPARATE_PRODUCTION_WORKUNIT",
-  "next_permitted_action": "Start F-ROSS22 production promotion of the exact tiered ladder.",
+  "verdict": "PROMOTION_CANDIDATE__REQUIRES_SEPARATE_PRODUCTION_IMPLEMENTATION_AND_REQUALIFICATION",
+  "next_permitted_action": "Start F-ROSS22 production promotion using the exact frozen K2->K4->K8 ladder.",
   "exclusions": [
     "NO_PRODUCTION_ADMISSION_FROM_F_ROSS21",
-    "NO_THRESHOLD_TUNING",
+    "NO_THRESHOLD_RETUNING",
     "NO_TRAJECTORY_REUSE",
-    "NO_K16_TIER",
+    "NO_K16_FALLBACK",
     "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST"
   ]
 }
