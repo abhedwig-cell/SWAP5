@@ -123,13 +123,13 @@ The two frozen Hupsel dates remain:
 - 2003-06-17 — median-dynamics control, `Phi=0.5067351598`, daily drainage outflow 0.0225869 cm;
 - 2003-05-20 — high-dynamics day, `Phi=0.8831050228`, daily drainage outflow 0.906969 cm.
 
-The current production groundwater owner requires the all-`bottom_mode=5` PPA-WU01 profile and rejects `drainage_response_active` during `tile_config_valid` before owner-state allocation. PPA-WU03 does not widen that process profile.
+The current production groundwater owner requires the all-`bottom_mode=5` PPA-WU01 profile and rejects `drainage_response_active` during `tile_config_valid` before owner-state allocation. PPA-WU02-A adds homogeneous `bottom_mode=2` prescribed-`q_bot` normal application reachability only and does not widen groundwater/process semantics. PPA-WU03 also does not widen that process profile.
 
 The publication qualification therefore terminates E7 under its preregistered component-domain stop rule:
 
 ```text
-workflow run: 35375181814
-job:          105698080443
+workflow run: 35376148612
+job:          105701181336
 result:       REALISTIC_COMPONENT_DOMAIN_LIMIT
 ```
 
