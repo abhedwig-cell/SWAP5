@@ -1,0 +1,45 @@
+name: F-CI105 RossFast transform cache admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci105-rossfast-transform-cache-admission
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
+      - 'tests/fci/run_fci105_fross17_cache_successor_preservation.sh'
+      - 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+      - '.github/workflows/fci96-fross12-postimage-preservation.yml'
+      - '.github/workflows/fci105-rossfast-transform-cache-admission.yml'
+      - 'integration/f-ci/F-CI105_*'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute F-CI105 cache successor qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-CI105_EVIDENCE
+          bash tests/fci/run_fci105_fross17_cache_successor_preservation.sh | tee F-CI105_EVIDENCE/cache-successor.txt
+          sha256sum F-CI105_EVIDENCE/cache-successor.txt | tee F-CI105_EVIDENCE/sha256.txt
+          echo 'FCI105_OWNER_QUALIFICATION_GATE=PASS'
+          echo 'FCI105_CANONICAL_MOVING_PRESERVATION_DELEGATED_TO_CANONICAL_PR_CHECKS=TRUE'
+      - name: Preserve F-CI105 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci105-rossfast-transform-cache-${{ github.run_id }}
+          path: F-CI105_EVIDENCE
+          if-no-files-found: warn

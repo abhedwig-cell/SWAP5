@@ -1,93 +1,44 @@
 {
-  "schema_version": 1,
-  "work_unit": "F-CI105",
-  "capability": "F-GC39",
-  "title": "Prepared-Solve Internal SWAP5-MODFLOW Coupling Service Contract Admission",
-  "protocol": "Bounded Execution Protocol",
-  "phase": "CLOSE",
-  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC39_CONTRACT",
-  "canonical": {
-    "branch": "integration/f-ci-canonical",
-    "pre_admission_head": "15883938da5777f90f097c8f6938458840ccb75a",
-    "dependency_stack": [
-      "F-GC40 closed canonical",
-      "F-GC33 closed canonical",
-      "F-GC34 closed canonical",
-      "F-GC35 closed canonical",
-      "F-GC36 closed canonical",
-      "F-GC38 closed canonical"
-    ]
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI105",
+  "title": "RossFast transform-cache canonical admission",
+  "phase": "QUALIFY",
+  "status": "RECOMPOSED_ON_F_CI106_CANONICAL_PENDING_EXACT_HEAD_QUALIFICATION",
+  "branch": "integration/f-ci105-rossfast-transform-cache-admission",
+  "canonical_source": "f135f45088aae2d710809957c8792944ab1cceee",
+  "candidate_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+  "verdict": "READY_FOR_EXACT_HEAD_REQUALIFICATION",
+  "next_permitted_action": "Execute exact-head F-CI105 owner qualification on current canonical. If PASS, persist evidence, refresh PR 241, inspect relevant canonical preservation checks, and admit cache-only postimage before F-ROSS22.",
+  "implementation": {
+    "production_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+    "successor_gate": "tests/fci/run_fci105_fross17_cache_successor_preservation.sh",
+    "fci96_routing": "UPDATED_EXACT_BLOB_ROUTE",
+    "canonical_moving_routing": "UPDATED_EXACT_BLOB_ROUTE",
+    "historical_fross13_default_semantics": "PRESERVED"
   },
-  "owner": {
-    "branch": "work/f-gc39-prepared-solve-coupling-service-reconciled",
-    "checkpoint_head": "d678b5953c64be3f3f2056c369fd8b8eb7deab82",
-    "exact_head_run": 35315802236,
-    "conclusion": "success",
-    "production_delta": "NONE",
-    "harness_blob": "0ab5cd1d5b701389972ddfcdf7f4ebc7dc198aec",
-    "status_blob": "9b335bf14909801c910556252c133c06a0bdedc9"
+  "reconciliation": {
+    "current_canonical": "f135f45088aae2d710809957c8792944ab1cceee",
+    "relevant_dependency_drift": false,
+    "fci106_backend_successor_preservation": "ADMITTED",
+    "production_delta": "exact F-ROSS17 cache kernel only"
   },
-  "independent": {
-    "work_unit": "F-VQ112",
-    "status_head": "087660e2ff9d890fb7c9bc860328f8e573f56bcc",
-    "exact_head_run": 35316040427,
-    "conclusion": "success",
-    "status_blob": "47a8ea46a56acd038903aeb4b832dca52c7e6eea",
-    "production_delta": "NONE",
-    "owner_test_reused": false
+  "canonical_reconcile_after_qualification": {
+    "qualification_source": "c5d26b3031f7093a58816465ae138d034000f1ce",
+    "current_canonical": "c42db098cc246e3da06472a34979bdf24cfa81cb",
+    "delta_commit_count": 17,
+    "delta_scope": "documentation/publication/mkdocs only",
+    "relevant_dependency_drift": false
   },
-  "postimage": {
-    "expected_src_delta": "NONE",
-    "owner_replay_required": true,
-    "independent_replay_required": true
-  },
-  "admitted_scope_candidate": [
-    "predictor/corrector ownership inside internal SWAP5-MODFLOW coupling service below iMOD Coupler",
-    "one immutable SWAP origin per coupling window",
-    "one prepared MODFLOW solve session with continuous X and fixed accepted XOLD",
-    "fixed tangent in first contract with H_ref/q_ref updates",
-    "coupled convergence requires both MODFLOW convergence and interface flux convergence",
-    "only rejected SWAP candidates are discarded between iterations",
-    "successful service finalizes solve once but does not finalize timestep",
-    "failure invalidates prepared solve and returns retry without publication"
-  ],
-  "exclusions": [
-    "whole-window MODFLOW reconstruction/retry implementation",
-    "final multi-participant timestep publication",
-    "real SWAP5 plus live MODFLOW end-to-end service implementation",
-    "Ribasim",
-    "irrigation"
-  ],
-  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical is still the admitted contract ancestor, non-force fast-forward canonical to this closed metadata state. Then open a separate bounded whole-window acceptance/retry workunit.",
-  "admission_gate": {
-    "qualified_head": "b3ba307539322cd2433252694d33bb59556e07d6",
-    "workflow_run": 35316231973,
-    "workflow_job": 105508359135,
-    "conclusion": "success",
-    "pass_markers": [
-      "FCI105_CLEAN_CURRENT_CANONICAL_ANCESTRY",
-      "FCI105_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
-      "FCI105_ZERO_PRODUCTION_CODE_DELTA",
-      "FCI105_IMMUTABLE_CONTRACT_AND_EVIDENCE_BLOBS",
-      "FCI105_OWNER_STATUS_AUTHORITY",
-      "FCI105_INDEPENDENT_STATUS_AUTHORITY",
-      "FCI105_IMOD_OWNERSHIP_BOUNDARY",
-      "FCI105_CANONICAL_PREPARED_SOLVE_STACK",
-      "FCI105_OWNER_REPLAY",
-      "FCI105_INDEPENDENT_REPLAY"
-    ]
-  },
-  "canonical_admission": {
-    "contract_admission_head": "b6211effc4840aec48ff2fe39336bd997df490c3",
-    "promoted_non_force_fast_forward": true,
-    "exact_status_head_run": 35316311432,
-    "exact_status_head_conclusion": "success",
-    "production_delta": "NONE"
-  },
-  "closeout_gate": {
-    "qualified_head": "de254fb742dfd224a590898cbd43fcb4808ac8c7",
-    "workflow_run": 35316573593,
-    "conclusion": "success",
-    "production_delta": "NONE"
+  "previous_qualification": {
+    "qualified_head": "1a68e9a72225cea3d689a123e55c470c23d2d62e",
+    "workflow_run": 35341994516,
+    "result": "PASS",
+    "artifact_id": 10544584632,
+    "artifact_digest": "sha256:ca228b2bb26b7e6282d0190988607db548ec17f4e38b295cfbfcc0d6186dfb8f",
+    "owner_gate": "PASS",
+    "fross17_scientific_neutrality": "PASS",
+    "fross13_provider_successor": "PASS",
+    "fross12_route_semantics": "PASS",
+    "p2e01_solver_seam_preservation": "PASS"
   }
 }

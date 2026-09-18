@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.f-ci105.rossfast-transform-cache-admission.v1",
+  "workunit": "F-CI105",
+  "phase": "PREREGISTERED_ADMISSION",
+  "branch": "integration/f-ci105-rossfast-transform-cache-admission",
+  "canonical_source": "f135f45088aae2d710809957c8792944ab1cceee",
+  "purpose": "Admit the exact F-ROSS17 RossFast node-transform cache onto the current canonical without changing solver semantics, material envelope, table assets, execution policy, transaction semantics or certificate workload.",
+  "production_delta": {
+    "allowed": [
+      "src/solver/mod_rossfast_d3r_table_kernel.f90"
+    ],
+    "baseline_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "candidate_blob": "2ad2a680e62744451d6763de48585f1bd45d3067"
+  },
+  "immutable_research_authority": {
+    "f_ross17_head": "405ad30e823ea44deedf73edc67c68e01564c617",
+    "result_blob": "60da54c9957a455723b7f12b833fc80a415533c7",
+    "workflow_run": 35295019847,
+    "artifact_id": 10528206066,
+    "artifact_digest": "sha256:a44bd792504cdb4c2aa3d4c98ac4489a81be80fc0bd6eeef09a6160ce2222e96",
+    "scientific_equivalence": "36/36 exact at dumped real64 precision; state/storage/temporal indicator deltas zero",
+    "performance_screen": "candidate about 21.5% lower solver CPU than baseline on shared host; formal claim withheld"
+  },
+  "dependency_closure": {
+    "solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "admission_gates": [
+    "exact one-file src/reference delta from canonical source",
+    "immutable F-ROSS17 result authority matches baseline/candidate blobs and PASS scientific equivalence",
+    "dependency closure byte-identical to F-ROSS17 qualification",
+    "F-ROSS13 36-material provider envelope replay PASS",
+    "F-ROSS13/F-ROSS12 semantic-successor replay PASS",
+    "serialized production wiring replay PASS",
+    "P2E01 solver-seam paired replay PASS",
+    "canonical moving preservation PASS"
+  ],
+  "exclusions": [
+    "NO_K2_K4_K8_TIERING",
+    "NO_SOLVER_BINDING_CHANGE",
+    "NO_MATERIAL_OR_TABLE_CHANGE",
+    "NO_TRANSACTION_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM"
+  ],
+  "next_permitted_action": "Run exact-head F-CI105 owner qualification on the F-CI106-reconciled canonical. On PASS persist evidence and admit cache-only postimage before F-ROSS22.",
+  "reconciliation": {
+    "previous_source": "c5d26b3031f7093a58816465ae138d034000f1ce",
+    "current_canonical": "f135f45088aae2d710809957c8792944ab1cceee",
+    "relevant_dependency_drift": false,
+    "authority_note": "Recomposed after canonical F-CI106 admission. RossFast baseline kernel, solver, model, provider and execution-policy dependency closure remain byte-identical.",
+    "fci106_backend_successor_preservation": "ADMITTED"
+  }
+}

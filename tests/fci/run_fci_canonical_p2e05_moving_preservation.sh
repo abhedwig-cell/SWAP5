@@ -20,6 +20,8 @@ FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
 FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
 FROSS13_MODEL_POSTIMAGE=5442fd7e7a2f392c9b796cd17c76b17977259f22
 FROSS13_PROVIDER_POSTIMAGE=ac997bf06c56a37080d1c8db69b6d4208f4b75ca
+FROSS17_KERNEL=src/solver/mod_rossfast_d3r_table_kernel.f90
+FROSS17_CACHE_KERNEL=2ad2a680e62744451d6763de48585f1bd45d3067
 SW_P2E05=40a1ddc05fb8e2c1822763de645fd07a094568a3
 REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
@@ -131,8 +133,13 @@ test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = "$ROSS_ADAPTER_P2E05" || fail 'Ross
 if git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD && \
    [[ "$(git rev-parse HEAD:$FROSS13_MODEL)" == "$FROSS13_MODEL_POSTIMAGE" ]] && \
    [[ "$(git rev-parse HEAD:$FROSS13_PROVIDER)" == "$FROSS13_PROVIDER_POSTIMAGE" ]]; then
-  bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
-  echo 'FCI_CANONICAL_FROSS13_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  if [[ "$(git rev-parse HEAD:$FROSS17_KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
+    bash tests/fci/run_fci105_fross17_cache_successor_preservation.sh
+    echo 'FCI_CANONICAL_FROSS17_CACHE_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  else
+    bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh
+    echo 'FCI_CANONICAL_FROSS13_SEMANTIC_SUCCESSOR_ROUTE=PASS'
+  fi
 else
   bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
 fi
