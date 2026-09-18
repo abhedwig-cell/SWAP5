@@ -202,9 +202,18 @@ deltaq / q0 =
 
 Each q-minus and q-plus predictor is executed in an independent process using the same initial physical state and window.
 
+**Implementation constraint fixed before execution:** the flux perturbation changes only the prescribed lower-boundary flux. The atmospheric/top flux remains fixed at the unperturbed baseline value `q0`. The generic F-GC44 configured initializer changes top and bottom flux together and is therefore not used for E4-B finite differences. E4-B uses a qualification-only predictor-point route with:
+
+```text
+q_top = q0
+q_bottom = q0 +/- deltaq
+```
+
+and otherwise identical parameters, initial state, numerical configuration and finite window.
+
 A centred `u_FD` is reported only if both predictors are READY and produce finite `H_end`.
 
-The scan also records the current `u_A` for each perturbed predictor, but the primary comparison uses the unperturbed baseline `u_A`.
+The scan also records the local accepted-trajectory tangent-derived `u_A(point)` for each perturbed bottom flux, but the primary comparison uses the unperturbed baseline `u_A`.
 
 ## Qualification-only mass observer
 
@@ -240,6 +249,8 @@ For a derivative sequence to be called a **plateau candidate**:
 This 1% criterion is a reporting rule, not a physical accuracy claim.
 
 If no such plateau exists, E4 reports that the derivative is not robustly identifiable over the tested perturbation range.
+
+If multiple three-point plateau candidates exist, the **smallest-perturbation qualifying triplet** is used as the primary local estimate. All qualifying triplets remain in the evidence record. This selection rule is fixed before execution.
 
 ## Identity assessment
 
