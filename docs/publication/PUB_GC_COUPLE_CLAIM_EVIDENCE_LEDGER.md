@@ -287,3 +287,15 @@ Algorithm comparison table:
 `PUB_GC_E5_INFORMATION_VALUE_COMPARISON.csv`
 
 E5 closes the current independent ACCELERATE continuation gate. This does not assert that response information is useless; it records that a perfect free local derivative did not show a sufficiently large or general advantage over a competent cold black-box scalar secant comparator to justify a separate acceleration line.
+
+
+### E4 durable raw evidence
+
+The complete E4 perturbation record is retained under `docs/publication/evidence/`:
+
+- `PUB_GC_E4_RAW_HEAD_SCANS.json` — 5 head scans with all perturbation trials and authority checks;
+- `PUB_GC_E4_RAW_FLUX_POINTS.json` — 70 pure-bottom flux points;
+- `PUB_GC_E4_FULL_RESULT.json` — full derivative sequences, plateau candidates and selected estimates;
+- `PUB_GC_E4_DERIVATIVES.csv` — machine-readable derived head and flux response rows.
+
+This closes the persistence gap left by the expiring Actions artifact and does not alter the E4 scientific conclusion or production semantics.

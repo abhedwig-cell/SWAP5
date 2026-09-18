@@ -294,3 +294,14 @@ The current response is real, reproducible and well identified as a flux-driven 
 The broader claim that this same quantity is automatically the head-driven coupling Jacobian is falsified by B3 and by the B5 response-domain failure.
 
 This narrows but strengthens the manuscript: SWAP5 exposes a well-defined response quantity, and the experiments now show exactly when its use as a corrector linearization is justified and when it is not.
+
+## Durable raw evidence
+
+The complete preregistered perturbation evidence is versioned in the repository rather than relying on the expiring Actions artifact:
+
+- `docs/publication/evidence/PUB_GC_E4_RAW_HEAD_SCANS.json` — all 5 head scans, including H0 parity, repeats, all prescribed-head perturbations and authority-state records;
+- `docs/publication/evidence/PUB_GC_E4_RAW_FLUX_POINTS.json` — all 70 pure-bottom predictor points;
+- `docs/publication/evidence/PUB_GC_E4_FULL_RESULT.json` — recomputed plateau candidates, selected estimates and full derivative sequences;
+- `docs/publication/evidence/PUB_GC_E4_DERIVATIVES.csv` — all centred head derivatives and flux-driven inverse-response estimates.
+
+These records were recovered from successful workflow run `35349233134`, job `105613077818`, source head `c85b1f1ad2a35ad12d917c54e682e8705c508c7e`. The original artifact digest is `sha256:f7d1304f321802492a299d50c4be3d02534c26242e7312b4c41996c9d398eef6`. Recomputed primary plateau estimates were required to match the already admitted summary before this persistence repair was committed.
