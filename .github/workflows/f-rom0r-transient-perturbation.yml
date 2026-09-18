@@ -1,0 +1,57 @@
+name: F-ROM0R transient perturbation
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/F-ROM0R_R2_*'
+      - 'tests/rom/test_f_rom0r_symmetric_flux_perturbation.f90'
+      - 'tests/rom/analyze_f_rom0r_symmetric_flux_perturbation.py'
+      - 'tests/rom/run_f_rom0r_symmetric_flux_perturbation.sh'
+      - 'tests/rom/compile_f_rom0_fortran_closure.py'
+      - 'tests/rom/materialize_f_rom0_headcalc_stubs.py'
+      - '.github/workflows/f-rom0r-transient-perturbation.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROM0R_R2_*'
+      - 'tests/rom/**'
+      - '.github/workflows/f-rom0r-transient-perturbation.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0r-r2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  r2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered R2 perturbations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0R_R2_EVIDENCE
+          F_ROM0R_R2_EVIDENCE_DIR="$PWD/F-ROM0R_R2_EVIDENCE" \
+            bash tests/rom/run_f_rom0r_symmetric_flux_perturbation.sh | tee F-ROM0R_R2_EVIDENCE/gate.txt
+      - name: Preserve R2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0r-r2-${{ github.run_id }}
+          path: F-ROM0R_R2_EVIDENCE
+          if-no-files-found: warn
