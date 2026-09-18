@@ -67,7 +67,7 @@ contains
     qbot=qbot_factor*k0
     call initialize_identity(column,template)
     call initialize_forcing(forcing,qtop,qbot,h0)
-    call fmr_new_b110_committed_state(committed,column_id+int(icase,int64),initial_state,0.0_real64,ok)
+    call fmr_new_b110_committed_state(committed,column%column_id,initial_state,0.0_real64,ok)
     call require(ok.and.committed%ready(),'T1D1 initial committed state')
 
     parameters%bottom_mode=2
