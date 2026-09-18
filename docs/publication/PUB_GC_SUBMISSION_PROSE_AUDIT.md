@@ -34,7 +34,7 @@ The cleanup does not weaken these central distinctions:
 - prescribed-flux predictor map versus prescribed-head corrector map;
 - valid component-domain failure versus outer coupling failure;
 - fixed numerical interface criterion versus hydrological materiality;
-- bounded E1–E6 evidence versus still-open E7 transferability.
+- bounded E1–E7 evidence, including the distinction between a realistic component-domain result and a successful coupled regional validation.
 
 ## Deliberately retained technical terms
 
@@ -45,3 +45,19 @@ The cleanup does not weaken these central distinctions:
 **NO SCIENTIFIC CLAIM CHANGE.**
 
 The main manuscript is now journal-facing while the repository evidence layer remains fully traceable.
+
+
+## E7 prose addendum
+
+The E7 insertion was checked for journal-facing claim discipline.
+
+Retained distinctions:
+
+- standalone Hupsel application fidelity versus process-complete groundwater-participant admission;
+- component/application-domain limit versus outer-coupling divergence;
+- realistic application provenance versus regional Hupsel groundwater validation;
+- absence of coupled values by preregistered stop rule versus missing postprocessing.
+
+The manuscript does not imply that MODFLOW was executed for the frozen Hupsel days and does not substitute a restricted fixture for the authentic process composition.
+
+Verdict remains **NO SCIENTIFIC CLAIM CHANGE BEYOND THE GOVERNED E7 RESULT**.
