@@ -118,3 +118,17 @@ This strengthens the paper's distinction among:
 Do not reopen E7 merely to obtain a positive trajectory.
 
 A future production capability that admits active drainage and the required Hupsel process composition under prescribed-head trials would be a new capability. It could motivate a later follow-up experiment, but it must not retroactively replace this preregistered E7 result.
+
+
+## Current-canonical reconciliation
+
+After the original E7 qualification, PPA-WU02-A canonically admitted homogeneous typed `bottom_mode=2` prescribed-`q_bot` normal application reachability.
+
+This does **not** alter the E7 outcome. On current canonical:
+
+- the groundwater application owner remains an all-`bottom_mode=5` prescribed-head profile;
+- `tile_config_valid` still rejects `drainage_response_active` and `root_extraction_active` before owner-state allocation;
+- PPA-WU02 explicitly does not admit mixed bottom-mode production profiles and does not widen process composition;
+- therefore authentic Hupsel drainage still prevents construction of the required prescribed-head participant.
+
+The E7 component-domain gate is rerun on the pull-request merge ref against this current canonical state.
