@@ -786,11 +786,25 @@ Within this envelope, a computed trial flux is therefore demonstrably not an aut
 
 The experiment does not test recovery from a platform failure after the irreversible publication point; that remains a durability/restart question rather than a rollback-safe scientific retry.
 
-## 4.3 Coupled convergence
+## 4.3 Coupling-window and feedback characterization
 
-**Evidence status:** the E1/E2 case demonstrates one bounded two-iteration convergence trace, but broad hydrological regime characterization is still required.
+The preregistered E3 experiment evaluated 48 combinations of three coupling-window durations (`10^-4`, `10^-3` and `10^-2` day), four native predictor/boundary-flux levels (`10^-6`, `10^-3`, `10^-2` and `10^-1 cm/day`) and four MODFLOW horizontal conductivities (0.01, 0.1, 1 and 10 m/day). Each valid case compared a loose/sequential pass with a fully iterative solve from the same accepted SWAP origin. No E3 calculation was published as authoritative model state or interface mass.
 
-The next experiment varies coupling-window duration and hydrological feedback strength and deliberately includes weak, materially iterative and difficult/non-convergent regimes. Until that experiment is complete, the present result must not be interpreted as evidence that two iterations are generally sufficient.
+Twelve of the 48 cases produced a valid real-SWAP predictor and converged coupled solution. These were exactly the twelve combinations using the original low predictor flux of `10^-6 cm/day`. All 36 higher-flux cases failed during SWAP predictor construction, before MODFLOW feedback was evaluated. The initial matrix therefore encountered the current predictor/component-response envelope before reaching the intended high-flux coupling regime. These failures cannot be interpreted as failure of the outer coupling iteration.
+
+Within the twelve valid cases, the loose interface mismatch increased with coupling-window duration and with the tested groundwater-fixture conductivity. The maximum relative loose flux mismatch was 1.77, and the largest absolute loose residual was `2.80e-12 m/s`, approximately 2800 times the fixed `10^-15 m/s` coupling residual tolerance. Iterative coupling reduced all twelve valid cases below the qualified flux criterion, requiring between two and five outer iterations.
+
+The corresponding change in groundwater head was nevertheless extremely small. The largest difference between the loose and iteratively converged head was only
+
+```text
+5.55e-9 m,
+```
+
+while the largest change in SWAP interface rate was `1.92e-14 m/s`. The current low-flux qualification regime therefore demonstrates a distinction between strict numerical interface consistency and hydrologically material state correction. Strong iteration is effective at enforcing the coupled interface equation, but this particular near-equilibrium fixture is not evidence that the resulting groundwater-head correction is practically important.
+
+The conductivity trend should not be generalized as a physical statement that larger aquifer conductivity implies stronger vadose-zone–groundwater coupling. Coupling strength depends on the product of the groundwater and vadose-zone response operators. The derivative structure is examined separately in the response-characterization work.
+
+A post-E3 predictor-envelope diagnosis is therefore required before selecting a stronger hydrological feedback case. The original 48-case outcome is retained unchanged; the diagnostic scan is a separate follow-up and does not retroactively redefine the preregistered matrix.
 
 ## 4.4 Response interpretation
 
