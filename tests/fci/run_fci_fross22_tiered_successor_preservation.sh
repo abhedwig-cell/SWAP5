@@ -39,14 +39,18 @@ test "$(git rev-parse "$CACHE_AUTH:$SOLVER")" = "$CACHE_SOLVER" || fail 'cache p
 test "$(git rev-parse "HEAD:$KERNEL")" = "$TIERED_KERNEL" || fail 'tiered kernel postimage mismatch'
 test "$(git rev-parse "HEAD:$SOLVER")" = "$TIERED_SOLVER" || fail 'tiered solver postimage mismatch'
 
-mapfile -t PROD_DIFF < <(git diff --name-only "$CACHE_AUTH" HEAD -- src reference)
-printf '%s\n' "${PROD_DIFF[@]}" | sort > "$BUILD/actual.txt"
+# The admission itself was an exact two-file RossFast mutation. For moving
+# descendants, later independently admitted non-RossFast production files are
+# allowed. Preserve the complete RossFast owner surface and exact postimages.
+mapfile -t ROSSFAST_OWNER_DIFF < <(git diff --name-only "$CACHE_AUTH" HEAD -- \
+  "$KERNEL" "$SOLVER" "$MODEL" "$PROVIDER" "$POLICY" "$CONTRACT" "$SELECTION" "$APP_HOST" assets/rossfast/d3r)
+printf '%s\n' "${ROSSFAST_OWNER_DIFF[@]}" | sort > "$BUILD/actual.txt"
 printf '%s\n' "$KERNEL" "$SOLVER" | sort > "$BUILD/expected.txt"
 cmp -s "$BUILD/actual.txt" "$BUILD/expected.txt" || {
   diff -u "$BUILD/expected.txt" "$BUILD/actual.txt" >&2 || true
-  fail 'production/reference delta is not exact two-file F-ROSS22 mutation'
+  fail 'RossFast owner surface is not the exact admitted two-file F-ROSS22 successor'
 }
-echo 'FROSS22_ADMISSION_EXACT_TWO_FILE_PRODUCTION_DELTA=PASS'
+echo 'FROSS22_ADMISSION_EXACT_TWO_FILE_ROSSFAST_OWNER_DELTA=PASS'
 
 for spec in "$MODEL:$MODEL_BLOB" "$PROVIDER:$PROVIDER_BLOB" "$POLICY:$POLICY_BLOB" "$CONTRACT:$CONTRACT_BLOB" "$SELECTION:$SELECTION_BLOB" "$APP_HOST:$APP_HOST_BLOB"; do
   path="${spec%%:*}"; blob="${spec##*:}"
