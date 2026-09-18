@@ -129,6 +129,9 @@ module mod_fmr_serialized_reference_backend
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
+    ! F-SI39: explicit opt-in to the exact B1.11 near-saturated KSATEXM
+    ! conductivity extension. Default false preserves all pre-F-SI39 routes.
+    logical :: ksatexm_extension_active = .false.
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
     logical :: soil_temperature_active = .false.
@@ -1078,7 +1081,8 @@ contains
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen)
+      call initialize_b110_default_mvg_parameters(self%hydraulic_parameters, parameters%cofgen, &
+           enable_ksatexm_extension=parameters%ksatexm_extension_active)
       self%bottom_mode = parameters%bottom_mode
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
