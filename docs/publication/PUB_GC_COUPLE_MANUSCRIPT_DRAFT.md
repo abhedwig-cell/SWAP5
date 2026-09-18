@@ -220,26 +220,37 @@ because storage change represented inside the SWAP domain can contribute to the 
 
 The public sign convention is normalized explicitly. A positive `q_u` denotes transfer from SWAP toward groundwater; any native SWAP or MODFLOW sign convention is translated by the relevant adapter.
 
-### 2.4.3 Coupling/storage response
+### 2.4.3 Finite-window response information
 
-The initial response representation uses a local affine relation between groundwater head and exchange:
+The SWAP predictor can expose a local response quantity together with its reference state. The publication experiments identify this quantity as a response of the flux-driven finite-window predictor map rather than assuming that it is the derivative used by the head-driven corrector.
 
-```text
-q(H) = q_ref + s (H - H_ref)
-```
-
-where `s` is a local response slope.
-
-Historically and in the F-GC30 line, the response coefficient `u` is constructed or interpreted such that:
+Let
 
 ```text
-s ~= u / DeltaT
+H_end = P_W(q_bot)
 ```
 
-within its qualified envelope.
+denote the terminal head produced by a complete SWAP predictor over window W under prescribed bottom flux. The accepted-trajectory response is denoted `u_A`. E4 independently tests the relation
 
-The publication study will explicitly test whether this quantity behaves as a storage response, as the actual finite-window interface derivative, or as a bounded approximation whose meaning depends on active process composition.
+```text
+u_A ~= DeltaT * (dH_end/dq_bot)^(-1).
+```
 
+For local groundwater coupling, the response may be represented in affine form around a reference head,
+
+```text
+q(H) = q_ref + s (H - H_ref),
+```
+
+with the slope constructed from the currently admitted response contract and its explicit sign/unit transforms.
+
+A different object is the head-driven whole-window exchange derivative,
+
+```text
+J_R = dV_u/dH.
+```
+
+No equality between `u_A` and `J_R` is assumed by the method. Their relation is an empirical question because the two derivatives belong to different finite-window boundary-value maps.
 ### 2.4.4 Whole-window transfer
 
 The authoritative interface transfer is the accepted amount integrated over the complete coupling window:
@@ -298,35 +309,19 @@ Only the final accepted candidate may mutate committed SWAP state.
 
 ## 2.6 Predictor response
 
-The predictor constructs the initial SWAP response for the active window from the accepted origin.
+At the start of a coupling window, SWAP executes a predictor from the accepted origin and exposes a reference terminal head, groundwater-facing exchange and finite-window response. The response used in the current production route is an accepted-trajectory analytic quantity with provenance tied to the accepted origin and exact window.
 
-The original finite-difference form evaluates prescribed bottom fluxes around an initial predictor:
-
-```text
-q_1 = q_0 - delta_q
-q_2 = q_0 + delta_q
-```
-
-and observes the resulting terminal hydraulic heads `H_1` and `H_2`.
-
-The response coefficient is:
+For independent qualification, E4 also constructs a centred prescribed-flux finite difference,
 
 ```text
-u_FD = ((q_2 - q_1) * DeltaT) / (H_2 - H_1)
+u_FD =
+    ((q_2 - q_1) * DeltaT) /
+    (H_2 - H_1),
 ```
 
-subject to a governed perturbation policy.
+where `q_1` and `q_2` are symmetric bottom-flux perturbations and `H_1` and `H_2` are the corresponding terminal heads. A governed perturbation sequence is used to identify a stable local plateau rather than accepting one arbitrary finite-difference step.
 
-Current canonical development also supports an admitted accepted-trajectory analytic response within a restricted process envelope. The manuscript must distinguish response-construction method from coupling semantics: finite-difference and analytic response estimates may be alternative implementations of the same bounded interface-response contract, but they require independent qualification.
-
-The response used by the groundwater backend is represented locally as:
-
-```text
-q(H) = q_ref + s (H - H_ref)
-```
-
-with explicit provenance linking the response to the accepted SWAP origin and coupling window.
-
+The predictor response is therefore exposed as optional component information, not as access to the internal Richards Jacobian, Newton iterations or SWAP timestep controller. The coupling service may use this response, ignore it and learn a secant response from black-box evaluations, or compare the two under one common convergence criterion.
 ## 2.7 MODFLOW6 prepared-solve lifecycle
 
 The MODFLOW6 participant uses one prepared nonlinear solve per coupling window.
@@ -549,136 +544,112 @@ The manuscript will therefore distinguish **method architecture**, **current qua
 
 ---
 
-# 3. Experimental design — manuscript skeleton
+# 3. Experimental design
 
-## 3.1 E1 Interface identity and conservation
+## 3.1 Common experimental rules
 
-Purpose:
+E1–E6 were executed as publication-specific qualification experiments against frozen repository states. Production physics, Richards tolerances, transaction tolerances, retry budgets and the coupled flux criterion were not relaxed after observing results. Diagnostic runs were non-publishing unless publication authority itself was the quantity under test.
 
-- verify `q_bot`, `q_u`, head transformation and whole-window transfer;
-- demonstrate differentiated and integrated water-balance closure;
-- quantify numerical tolerance.
+A bounded component failure was retained as data when it occurred through a structured status contract. Such a case was not reclassified as coupling divergence unless both components continued to return valid candidates. All experiments retained machine-readable outputs and preregistered interpretation or stop rules.
 
-Planned outputs:
+The controlled E1–E6 system used the admitted SWAP5 Reference/Richards participant. Where live groundwater solution was required, MODFLOW6 6.8.0 was controlled through its API. The baseline F-GC44 geometry consisted of one SWAP column coupled to the central cell of a three-cell groundwater fixture bounded by constant-head cells.
 
-- schematic of coupling plane and exchanged quantities;
-- table of sign/unit/datum transformations;
-- mass-closure figure over accepted and rejected trials.
+## 3.2 E1 and E2: interface identity, conservation and authority
 
-## 3.2 E2 Transaction and exactly-once publication
+E1/E2 reused the admitted F-GC44 one-column/one-cell envelope without expanding its hydrology. The coupling window was `1e-4 day`. E1 recorded unrounded predictor `q_bot`, groundwater-facing `q_u`, response `u`, start/end storage, interval inflow/outflow, mass residual and the final accepted integrated lower-boundary exchange.
 
-Directed tests:
+Algebraic identities were checked at representation-scale tolerances. The existing coupled residual criterion remained `1e-15 m/s`.
 
-- reject predictor;
-- reject corrector;
-- exhaust iteration budget;
-- fail publication preflight;
-- retry a smaller window;
-- restart at an accepted boundary.
-
-Primary claim:
-
-> rejected coupling calculations cannot contaminate committed hydrological state or authoritative interface mass.
-
-## 3.3 E3 Coupling-window and feedback experiment
-
-Use a controlled one-column/one-cell system in which feedback strength and coupling-window duration can be varied.
-
-Compare:
-
-- sequential/loose exchange;
-- converged iterative exchange;
-- short-window reference;
-- longer-window alternatives.
-
-Measure:
-
-- accepted head;
-- exchange;
-- storage;
-- residual;
-- component work;
-- convergence/failure.
-
-## 3.4 E4 Response identity
-
-From one accepted SWAP state and forcing window determine:
+E2 tested authority directly. The tuple
 
 ```text
-u_FD
-J_S = dDeltaS/dH
-J_R = dV_u/dH
+SWAP revision,
+SWAP committed time,
+ledger commit count,
+ledger committed exchange
 ```
 
-over qualified perturbation sequences.
+was recorded before and after real corrector trials, candidate discard, prepared-but-aborted publication and non-final coupled iterations. The existing deterministic F-GC41 failure suite additionally injected SWAP, MODFLOW and ledger preflight failure, invalid window identity and one-shot finalization checks. The predeclared publication order was MODFLOW timestep finalization, SWAP candidate commit and interface-ledger commit.
 
-Determine:
+## 3.3 E3: coupling-window and feedback characterization
 
-- numerical derivative plateau;
-- local linearity radius;
-- response drift between accepted windows;
-- path dependence when head trajectories share endpoints.
-
-## 3.5 E5 ACCELERATE oracle and black-box comparison
-
-Minimum methods:
-
-- fixed point;
-- Aitken;
-- IQN/Anderson with cold history;
-- IQN/Anderson with admissible warm-history reuse;
-- zero-cost oracle response;
-- practical supplied-response method.
-
-Primary metric:
+E3 crossed three coupling-window durations,
 
 ```text
-total equivalent component work
+DeltaT = 1e-4, 1e-3, 1e-2 day,
 ```
 
-rather than iteration count alone.
+four predictor fluxes,
 
-The zero-cost oracle test is an early falsification gate: if high-quality free response information gives no material advantage over the black-box multisecant baseline, an expensive practical response cannot justify an acceleration claim.
+```text
+q_bot = 1e-6, 1e-3, 1e-2, 1e-1 cm/day,
+```
 
-## 3.6 E6 Hydrological stress regimes
+and four MODFLOW horizontal conductivities,
 
-Candidate stress dimensions:
+```text
+K = 0.01, 0.1, 1, 10 m/day,
+```
 
-- groundwater proximity;
-- recharge pulse;
-- strong evaporation/transpiration regime;
-- coarse versus fine hydraulic response;
-- coupling-window duration;
-- process/boundary switching where admitted.
+for 48 prespecified cases. Each case compared a loose/sequential diagnostic with a fresh iterative coupled solve from the same SWAP and groundwater origins. Coupled numerical acceptance required MODFLOW convergence and `|q_SWAP - q_GW| <= 1e-15 m/s`. The outer-iteration limit was 40. No E3 candidate was committed.
 
-Include a weak-coupling negative control.
+Because higher-flux cases failed before groundwater feedback could be interpreted, E3-D separately screened the predictor envelope. E3-D2 classified the transaction failure mechanism from existing solver, temporal and mass-rejection diagnostics. E3-R then used only predictor fluxes already demonstrated admissible and removed the background groundwater gradient by setting both fixed-head boundary cells to the predictor reference head. Its 24 cases retained the same loose-versus-iterative definitions and unchanged numerical policy.
 
-## 3.7 E7 Realistic application
+## 3.4 E4: finite-window response identity
 
-A representative application should demonstrate that the method remains usable outside the synthetic qualification system.
+E4 compared three response objects from identical accepted SWAP origins:
 
-Its role is:
+```text
+u_A  accepted-trajectory flux-driven predictor response,
+u_FD centred finite-difference inverse predictor response,
+J_S  = d(DeltaS)/dH,
+J_R  = dV_u/dH.
+```
 
-- hydrological relevance;
-- external validity;
-- operational cost characterization.
+Five baselines crossed `1e-4`, `1e-3` and `1e-2 day` windows with low and higher admitted predictor fluxes. Head perturbations ranged from `1e-10` to `3e-5 m` and relative bottom-flux perturbations from `1e-4` to `1e-1`. A derivative plateau required at least three consecutive valid centred levels with at most 1% relative spread around their median. One-sided trials were not substituted when one side of a centred pair failed.
 
-It does not need to carry every novelty claim.
+Mass balance was differentiated as an additional check, including the non-bottom balance derivative `J_B`. This allowed the structural low-flux relation `J_S - J_B + J_R = 0` to be distinguished from a general identity between response objects.
 
-## 3.8 E8 Regional execution and scaling
+## 3.5 E5: value of supplied response information
 
-If included in the paper, quantify:
+E5 isolated interface-information value by retaining real SWAP prescribed-head evaluations while replacing the groundwater component by a controlled scalar linear map. Four E4 baselines with an identified `J_R` were tested at dimensionless local coupling strengths
 
-- number of SWAP columns;
-- mapping to MODFLOW cells;
-- deterministic reduction;
-- mass closure;
-- runtime scaling.
+```text
+C = 0.1, 0.5, 0.9, 1.1, 1.5, 2.0.
+```
 
-Do not use this experiment to claim the physical validity of spatial aggregation without the separate SCALE analysis.
+All methods began at `H_ref + 1e-6 m` and used the same integrated form of the `1e-15 m/s` interface tolerance. The comparison included plain fixed point, dynamic Aitken relaxation, a cold scalar secant/IQN analogue, the supplied `u_A` response and a zero-cost oracle using the independently measured `J_R`. Work was measured as the number of real full-window SWAP prescribed-head evaluations after common setup.
+
+A separate warm-history continuation was preregistered only if the zero-cost oracle either enlarged the convergence domain or saved at least two full-window SWAP evaluations in reproducible difficult cases spanning at least two baselines.
+
+## 3.6 E6: preregistered hydrological stress extensions
+
+E6 deliberately sought a stronger valid hydrological-feedback case without changing production tolerances.
+
+The first route reused the independently admitted F-GC31 active-drainage state, including its smooth prescribed-`q_bot` drainage response. Before any live-MODFLOW matrix could be interpreted, the production participant had to reproduce a valid prescribed-head corrector at the predictor reference head. Failure of this parity gate was a preregistered component-envelope stop.
+
+The second route changed only accepted initial pressure-state wetness and predictor through-flow within the prescribed-head-compatible E3 process profile. Twenty combinations were screened:
+
+```text
+H0 = -150, -75, -25, -10 cm
+q_bot = 1e-6, 1e-4, 1e-2, 1e-1, 1 cm/day
+DeltaT = 1e-3 day.
+```
+
+Every predictor-ready case was probed symmetrically at `±1e-6`, `±1e-5`, `±1e-4` and `±1e-3 m` around its reference head. Progression to E6-B required a mass-complete predictor, zero authority mutation after discarded probes and a valid symmetric `±1e-4 m` corrector pair. Among qualifying cases the largest flux, then wettest state, would have been selected before any MODFLOW result was observed.
+
+## 3.7 E7: prospectively selected realistic application
+
+Hupselbrook was selected as the realistic E7 application before any E7 coupling result. The case has independent SWAP 4.3.1 forcing and application provenance and a large existing typed-application qualification record. E7 execution is conditioned on closure of the final whole-Hupsel file-driven adapter gate; historical output alone is not treated as proof that the complete application is available through the production participant.
+
+After that prerequisite closes, episode selection will use standalone Hupsel dynamics only. Coupled loose-versus-strong results are explicitly excluded from the selection metric. The frozen selection and execution rules are recorded in `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`.
+
+## 3.8 Multi-column composition and scaling scope
+
+Existing F-GC45 and F-GC46 qualification demonstrates that the coupling contract can compose multiple real SWAP participants with live MODFLOW cells. These tests are treated as architecture evidence. Quantitative regional scaling is deferred until the realistic E7 scientific core is available, and no physical validity of heterogeneous N:1 aggregation is inferred from software composition alone.
 
 ---
-
+# 4. Results
 # 4. Results
 
 ## 4.1 Interface identity and conservation in the first real coupled window
