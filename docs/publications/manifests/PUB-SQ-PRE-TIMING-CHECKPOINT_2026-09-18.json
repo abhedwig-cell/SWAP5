@@ -1,0 +1,73 @@
+{
+  "checkpoint_id": "PUB-SQ-PRE-TIMING-CHECKPOINT-2026-09-18",
+  "capability": "PUB-SQ matched scientific-error performance evidence",
+  "phase": "CLOSE_PRE_TIMING_PREPARATION_BLOCK_ON_EXTERNAL_PERFORMANCE_INFRASTRUCTURE",
+  "governance_branch": "research/phd-five-paper-manifests-20260918",
+  "governance_head": "9a046e49d85211f29757f434e09cf3a79859c355",
+  "evidence": {
+    "P2E23": {
+      "branch": "work/pub-p2e23-observed-error-reference-matching",
+      "result_head": "d05ed330ad3bf033d9a8542fec78e37839233570",
+      "result_blob": "031894dd898581fe473224e02b81cc1129c8e8b6",
+      "matched_controls_head": "fff93e35c77e396a44499837e8f5fca681ef39fa",
+      "matched_controls_blob": "9f173b0431c775a8459930ab34f4989b8e098491",
+      "workflow_run": 35314767424,
+      "job": 105503952798,
+      "output_sha256": "1a8633e36e76875c454df32b1ca5725af6362c4216ecbefffa6ce136a08fca74",
+      "verdict": "REALIZED_ERROR_MATCHING_RESOLVED_36_OF_36_34_BRACKETED_2_LEFT_CENSORED_TIMING_CAN_BE_PREREGISTERED"
+    },
+    "P2E24": {
+      "branch": "work/pub-p2e24-realized-error-timing",
+      "protocol_head": "cc1dad6f3fd322044657d36361a8e9d74c3e4026",
+      "protocol_blob": "8d6378340f01cee6af856c40f80d762214306214",
+      "timing_executed": false,
+      "verdict": "PREREGISTERED_REALIZED_ERROR_TIMING_PROTOCOL_AND_BENCHMARK_FROZEN_EXECUTION_BLOCKED_ON_MP8_MP7_PERFORMANCE_INFRASTRUCTURE"
+    },
+    "P2E24A": {
+      "branch": "work/pub-p2e24a-benchmark-fingerprint",
+      "result_head": "d6dd6594af4f682672a4021985ff80e531bb14c0",
+      "result_blob": "033fa6c0fce0a74ba0c60822aaa52d8b74104333",
+      "benchmark_source_blob": "14979af1e2d9b4f716b66cf660bacbae5d6a82aa",
+      "workflow_run": 35316717285,
+      "job": 105509858009,
+      "fingerprint_set_sha256": "1e86b6da40eb61d17fa59bdc995b553bd3d0d447d6d13c2c46f2c715a95d95d3",
+      "configuration_count": 106,
+      "O0_O2_identical": true,
+      "timing_executed": false,
+      "verdict": "P2E24_BENCHMARK_WORKLOAD_QUALIFIED_106_OF_106_TIMING_REMAINS_INFRASTRUCTURE_BLOCKED"
+    }
+  },
+  "matched_error_population": {
+    "cases": 36,
+    "bracketed": 34,
+    "left_censored": 2,
+    "unresolved": 0,
+    "ross_control": "N=1",
+    "reference_primary_control": "casewise N_hi from P2E23",
+    "reference_bracket_sensitivity": "casewise N_lo for the 34 bracketed cases",
+    "reference_n_hi_range_bracketed": [
+      7,
+      24
+    ]
+  },
+  "performance_governance": {
+    "canonical_head": "15883938da5777f90f097c8f6938458840ccb75a",
+    "isolated_runner_readiness_blob": "44634b56c14022278938fc53b181b741e29c07aa",
+    "isolated_runner_status": "INFRASTRUCTURE_PENDING",
+    "isolated_runner_contract_blob": "05b1e7c26c2135bc34bc10ddf35a8c44da5b9218",
+    "host_admission_protocol_blob": "b4fba05be2d48ea4ef24e3727a44032ced09db30",
+    "cpu_baseline_established": false
+  },
+  "verdict": "PRE_TIMING_SCIENTIFIC_CONTROLS_AND_BENCHMARK_COMPLETE_MEASURED_PERFORMANCE_BLOCKED_ONLY_ON_ADMITTED_RUNNER",
+  "next_permitted_action": "Provision or identify a self-hosted linux x64 swap5-performance runner. On that same runner: reproduce the P2E24A 106-configuration fingerprint set untimed, pass MP-8 readiness, execute and pass full MP-7 host admission, then run P2E24 unchanged as the first primary timing exposure.",
+  "exclusions": [
+    "Do not time on ubuntu-latest or another shared unadmitted runner.",
+    "Do not use Fortran CPU_TIME or SYSTEM_CLOCK as the primary publication metric.",
+    "Do not change P2E23 N_hi/N_lo after timing exposure.",
+    "Do not selectively rerun noisy or unfavorable cases.",
+    "Do not extend pair counts post hoc.",
+    "Do not interpolate runtime to fabricate strict equal error.",
+    "Do not treat the two left-censored B12 cases as strict equal-error comparisons.",
+    "Do not infer speedup before P2E24 executes on an admitted host and passes its resolution rules."
+  ]
+}
