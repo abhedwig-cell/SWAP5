@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.f-rom0r.r1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R1",
+  "phase": "CLOSED_PROCEED_TO_R2_PERTURBATION_PREREGISTRATION",
+  "authority": {
+    "head": "7c984a0b97bdd27086746a6097c52b7ea2eb3656",
+    "workflow_run": 35363866245,
+    "workflow_job": 105661449595,
+    "artifact_id": 10554784923,
+    "artifact_digest": "sha256:0a354e4beba8bbcc301e8a9ac24d9df1cbbda9672cd9601463e6d7718eb6f3f8"
+  },
+  "runtime_control": "PASS",
+  "materials": {
+    "B01": {
+      "h0_cm": -29.793709016906497,
+      "k0_cm_per_day": 3.9239980890384993,
+      "qeq_cm_per_day": -3.9239980890384993,
+      "initial_storage_cm": 58.61918400000001,
+      "accepted_intervals": 8,
+      "final_revision": 8,
+      "final_time_day": 0.0128,
+      "max_abs_storage_drift_cm": 0,
+      "mass_residual_cm": 0,
+      "accepted_substeps_per_interval": 1,
+      "nonlinear_iterations_per_interval": 3,
+      "internal_retries_per_interval": 0
+    },
+    "B14": {
+      "h0_cm": -187.22174413362634,
+      "k0_cm_per_day": 0.020343704745825645,
+      "qeq_cm_per_day": -0.020343704745825645,
+      "initial_storage_cm": 56.92126399999998,
+      "accepted_intervals": 8,
+      "final_revision": 8,
+      "final_time_day": 0.0128,
+      "max_abs_storage_drift_cm": 0,
+      "mass_residual_cm": 0,
+      "accepted_substeps_per_interval": 1,
+      "nonlinear_iterations_per_interval": 3,
+      "internal_retries_per_interval": 0
+    }
+  },
+  "interpretation": [
+    "The analytically gravity-consistent uniform-head seed is accepted through the canonical transactional Reference lifecycle for both preregistered contrasting materials.",
+    "Both seeds preserve storage bit-for-bit over eight requested intervals in the observed execution.",
+    "The earlier ROM-0 failure was therefore not caused by B01/B14 material identity or the accepted runtime seam alone; experiment construction relative to the hydraulic state matters.",
+    "R1 establishes accepted steady seed states only. It does not establish transient accepted-domain coverage or a numerical Reference floor."
+  ],
+  "decision": "PROCEED_TO_ROM0R_R2_PERTURBATION_PREREGISTRATION",
+  "rom1a_authorized": false,
+  "production_solver_authorized": false,
+  "production_source_mutation": "NONE"
+}
