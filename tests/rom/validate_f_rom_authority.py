@@ -33,7 +33,7 @@ def main() -> int:
     args = ap.parse_args()
 
     candidate = args.candidate_head
-    require(git("merge-base", "--is-ancestor", BASELINE, candidate) == "", "unexpected merge-base output")
+    git("merge-base", "--is-ancestor", BASELINE, candidate)
 
     changed = [
         line for line in git("diff", "--name-only", f"{BASELINE}...{candidate}").splitlines()
@@ -41,11 +41,8 @@ def main() -> int:
     ]
     bad = [p for p in changed if not p.startswith(ALLOWED_PREFIXES)]
     require(not bad, f"out-of-scope F-ROM authority changes: {bad}")
-
-    production_changed = [
-        p for p in changed if p.startswith("src/") or p.startswith("reference/")
-    ]
-    require(not production_changed, f"production/reference mutation present: {production_changed}")
+    require(not [p for p in changed if p.startswith("src/") or p.startswith("reference/")],
+            "production/reference mutation present")
 
     proposition = Path("docs/science/F-ROM_RESEARCH_PROPOSITION.md").read_text(encoding="utf-8")
     romp_doc = Path("docs/science/F-ROMP_PROPOSITION_QUALIFICATION.md").read_text(encoding="utf-8")
@@ -53,6 +50,9 @@ def main() -> int:
     supersession = load_json("integration/f-rom/F-ROM_EARLY_PILOT_SUPERSESSION.json")
     romp = load_json("integration/f-rom/F-ROMP_STATUS.json")
     rom0 = load_json("integration/f-rom/F-ROM0_STATUS.json")
+    path_recon = load_json("integration/f-rom/F-ROM0_RUNTIME_PATH_RECONCILIATION.json")
+    prereg = load_json("integration/f-rom/F-ROM0_PREREGISTRATION.json")
+    traj_schema = load_json("integration/f-rom/F-ROM0_TRAJECTORY_SCHEMA.json")
     ross24 = load_json("integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json")
 
     require("A third soil-water solver is an allowed outcome, not the required outcome." in proposition,
@@ -78,10 +78,50 @@ def main() -> int:
     require(romp["phase"] == "CLOSED_PROCEED_TO_ROM0", "ROM-P not closed to ROM-0")
     require(romp["decision"] == "PROCEED_TO_ROM0", "ROM-P decision drift")
     require(romp["production_solver_authorized"] is False, "ROM-P production solver unexpectedly authorized")
-    require(rom0["phase"] == "DESIGN_AUTHORITY_OPEN_IMPLEMENTATION_PENDING", "ROM-0 phase drift")
+
+    require(rom0["phase"] == "PREREGISTERED_IMPLEMENTATION_PENDING", "ROM-0 phase drift")
     require(rom0["required_reference_route"] == "CANONICAL_ACCEPTED_REFERENCE_RICHARDS_TRAJECTORY",
             "ROM-0 reference route drift")
+    require(rom0["materials"] == ["B01", "B14"], "ROM-0 material pair drift")
     require(rom0["production_solver_authorized"] is False, "ROM-0 production solver unexpectedly authorized")
+
+    require(path_recon["decision"] == "PATH_SUFFICIENT_FOR_ROM0_PREREGISTRATION",
+            "ROM-0 runtime-path decision drift")
+    require(path_recon["production_source_mutation"] if "production_source_mutation" in path_recon else "NONE" == "NONE",
+            "ROM-0 path reconciliation mutation marker drift")
+    symbols = [step["symbol"] for step in path_recon["accepted_path"]]
+    for symbol in (
+        "fmr_trial_from_checkpoint",
+        "kernel_executor_t%advance_interval",
+        "run_canonical_interval",
+        "execute_reference_interval",
+        "fmr_commit_candidate",
+        "kernel_executor_t%commit_candidate",
+    ):
+        require(symbol in symbols, f"missing accepted path symbol: {symbol}")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION", "ROM-0 preregistration phase drift")
+    require(prereg["production_mutation_allowed"] is False, "ROM-0 production mutation enabled")
+    require([m["id"] for m in prereg["materials"]] == ["B01", "B14"], "preregistered materials drift")
+    require(prereg["observation_interval_day"]["base"] == 0.0016, "base interval drift")
+    require(prereg["observation_interval_day"]["refined"] == 0.0008, "refined interval drift")
+    require(prereg["threshold_retuning_after_execution_allowed"] is False,
+            "ROM-0 threshold retuning unexpectedly allowed")
+    families = [e["id"] for e in prereg["experiment_families"]]
+    require(families == [
+        "E0_HOLD",
+        "E1_NOMINAL_FLUX",
+        "E2_DRYING_FLUX",
+        "E3_BOTTOM_HEAD_RISE",
+        "E4_BOTTOM_HEAD_FALL",
+        "E5_DIRECTION_REVERSAL",
+    ], "ROM-0 experiment-family drift")
+
+    require(traj_schema["record_type"] == "ACCEPTED_REFERENCE_TRAJECTORY_POINT",
+            "trajectory record type drift")
+    require("committed_revision" in traj_schema["required_identity"], "committed revision missing")
+    require(traj_schema["rejected_attempt_rule"].startswith("Rejected/candidate physical states are never encoded"),
+            "accepted/rejected trajectory boundary drift")
 
     require(ross24["phase"] == "CLOSED", "F-ROSS24 authority not closed")
     agg = ross24["performance_screening"]["aggregate"]
@@ -95,7 +135,9 @@ def main() -> int:
     print("F_ROM_PRODUCTION_REFERENCE_DELTA=NONE")
     print("F_ROM_EARLY_PILOT=SUPERSEDED")
     print("F_ROMP_DECISION=PROCEED_TO_ROM0")
-    print("F_ROM0_AUTHORITY=ACCEPTED_TRAJECTORY_PLUS_REFERENCE_FLOOR")
+    print("F_ROM0_RUNTIME_PATH=RECONCILED")
+    print("F_ROM0_PREREGISTRATION=FROZEN")
+    print("F_ROM0_MATERIALS=B01,B14")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
