@@ -1,0 +1,36 @@
+name: PUB-GC native-time adequacy 0002
+
+on:
+  push:
+    branches:
+      - research/pub-gc-native-time-0002
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-time-0002:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record compiler
+        run: gfortran --version
+      - name: Run frozen native-time study 0002
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/PUB-GC-NATIVE-TIME-0002
+          bash tests/publication/pub_gc/native_time/run_pub_gc_native_time_0002.sh 2>&1 | tee artifacts/PUB-GC-NATIVE-TIME-0002/study.log
+      - name: Upload study receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-native-time-0002-${{ github.sha }}
+          path: artifacts/PUB-GC-NATIVE-TIME-0002/study.log
+          if-no-files-found: error
+          retention-days: 90
