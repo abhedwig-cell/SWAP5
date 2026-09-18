@@ -309,7 +309,7 @@ contains
     type(fmr_template_t),intent(out)::t
     t%template_id=540001_int64; t%physics_topology_id=540002_int64; t%vertical_layout_id=540003_int64
     t%state_layout_id=540004_int64; t%solver_interface_id=540005_int64; t%optional_state_layout_id=0_int64
-    t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE; t%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY; t%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     c%column_id=COLUMN_ID; c%template_id=t%template_id; c%parameter_ref=1_int64; c%state_handle=1_int64
     c%forcing_handle=1_int64; c%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine initialize_column_template
