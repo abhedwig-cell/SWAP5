@@ -8,6 +8,7 @@ AUTH=50346642bd565f79134ea17d5462e544b354998c
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
+FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
@@ -24,6 +25,7 @@ REF_ADAPTER_P2E05=4b545c6fb260e81cd6c8f4d2d65f2beee7281e53
 ROSS_ADAPTER_P2E05=dbb441f3529be179d64fb57f9c44336d3d20c540
 BACKEND_FROSS12=19d07cac9285142d14a6e9c53706fb73d016d5ad
 BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
+BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -112,7 +114,10 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Refere
 # Preserve the F-ROSS12 selection authority. The serialized Reference backend
 # has one later independently qualified canonical successor from F-GC31/F-CI98.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
+if git merge-base --is-ancestor "$FGC44_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC44" || fail 'admitted F-GC44 serialized backend successor drift'
+  echo 'FCI_CANONICAL_FGC44_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$FGC31_RECONCILED" HEAD; then
   test "$(git rev-parse HEAD:$BACKEND)" = "$BACKEND_FGC31" || fail 'admitted F-GC31 serialized backend successor drift'
   echo 'FCI_CANONICAL_FGC31_BACKEND_SUCCESSOR=PASS'
 else
