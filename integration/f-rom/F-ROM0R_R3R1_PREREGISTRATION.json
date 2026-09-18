@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.f-rom0r.r3r1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3R1",
+  "title": "Representation-bounded total-balance candidate policy qualification",
+  "phase": "PREREGISTERED_BEFORE_CANDIDATE_POLICY_EXECUTION",
+  "authority_chain": [
+    {"work_unit":"ROM-0R-R3","decision":"PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO"},
+    {"work_unit":"ROM-0R-R3D1","decision":"B01_RETRY_TOTAL_ONLY_CLASSIFIED"},
+    {"work_unit":"ROM-0R-R3D2","decision":"B01_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND"}
+  ],
+  "scope": "research Reference-floor numerical policy only",
+  "candidate_policy": {
+    "name": "ROM_REPRESENTATION_BOUNDED_TOTAL",
+    "compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "total_balance_rate_tolerance_formula": "max(1e-12, representation_bound_cm / dt_day)",
+    "representation_bound_cm_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "bound_inputs": ["accepted pre-solve water_content", "material theta_s", "dz", "dt"],
+    "failed_residual_used": false,
+    "empirical_safety_factor": "none",
+    "application": "mode-5 prescribed-head perturbation intervals only",
+    "seed_policy": "original fixed 1e-12 rate tolerance"
+  },
+  "frozen_R3_controls": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "perturbation_dt_day": 0.0008,
+    "perturbation_intervals": 16,
+    "bottom_head_rise_expression": "0.75*h0",
+    "bottom_head_fall_expression": "1.25*h0",
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "swkimpl": 0,
+    "swkmean": 1,
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "automatic_retry_or_subdivision": false
+  },
+  "neutrality_gate": {
+    "method": "parallel original-control and candidate-policy trajectories from the same seed",
+    "rule": "Whenever the original control accepts an interval, candidate must also accept and the committed physical state must be bit-identical at that endpoint.",
+    "required_original_accepted_prefixes": {
+      "B01_BOTTOM_HEAD_RISE": 10,
+      "B01_BOTTOM_HEAD_FALL": 9,
+      "B14_BOTTOM_HEAD_RISE": 16,
+      "B14_BOTTOM_HEAD_FALL": 16
+    },
+    "original_failure_reproduction_required": {
+      "B01_BOTTOM_HEAD_RISE": 11,
+      "B01_BOTTOM_HEAD_FALL": 10
+    }
+  },
+  "candidate_completion_gate": {
+    "all_four_cases_complete_16_perturbation_intervals": true,
+    "every_sample_one_physical_advance": true,
+    "zero_internal_retry": true,
+    "hard_transaction_mass_gate_pass": true,
+    "candidate_total_residual_must_satisfy_pre_solve_policy": true,
+    "directional_separation_required_for_each_material": {
+      "head_rise_lower_storage_gt_head_fall": true,
+      "head_rise_bottom_outward_exchange_lt_head_fall": true
+    },
+    "absolute_flux_sign_reversal_required": false
+  },
+  "determinism": {
+    "optimization_levels": [0,2],
+    "O0_O2_stdout_bitwise_identity": true,
+    "repeatability_required": true
+  },
+  "firewalls": [
+    "NO_PRODUCTION_OR_REFERENCE_SOURCE_MUTATION",
+    "NO_CHANGE_TO_COMPARTMENT_OR_HEAD_TOLERANCES",
+    "NO_DT_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_AMPLITUDE_CHANGE",
+    "NO_FAILED_RESIDUAL_FITTING",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "NO_RECLASSIFICATION_OF_ORIGINAL_R3",
+    "NO_ROM1_WORK"
+  ],
+  "positive_decision": "ROM_REFERENCE_REPRESENTATION_BOUNDED_TOTAL_POLICY_QUALIFIED_FOR_R3_DOMAIN",
+  "negative_decisions": [
+    "CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO",
+    "CANDIDATE_POLICY_TRAJECTORY_COMPLETION_NO_GO",
+    "CANDIDATE_POLICY_DIRECTIONAL_REACHABILITY_NO_GO",
+    "CANDIDATE_POLICY_MASS_OR_DETERMINISM_NO_GO"
+  ],
+  "vertical_reference_floor_authorized_if_positive": true,
+  "rom1a_authorized": false
+}
