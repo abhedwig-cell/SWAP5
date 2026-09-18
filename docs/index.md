@@ -78,6 +78,23 @@ The repository retains target architecture and migration documents because they 
 
 The normative rules that remain relevant across current and target material are recorded in the [core architecture invariants](architecture/invariants.md). Accepted design choices are recorded as [Architecture Decision Records](decisions/index.md).
 
+## Research and publication programme
+
+The repository also preserves research-design and publication-governance material separately from Status-A authority. These pages describe candidate scientific questions, novelty boundaries and planned evidence; they do **not** extend the admitted model scope.
+
+Start with:
+
+- [SWAP5 publication programme](publication/PUBLICATION_PROGRAMME.md)
+- [PUB-GC / COUPLE living manuscript](publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md)
+- [PUB-GC / COUPLE claim-evidence ledger](publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md)
+- [Paper 1: model evolution research design](publication/PAPER1_MODEL_EVOLUTION_RESEARCH_DESIGN.md)
+- [Paper 2: solver admissibility research design](publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)
+- [PUB-RC / ACCELERATE research design](publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md)
+- [PUB-RC / ACCELERATE literature and prior-art register](publication/PUB_RC_ACCELERATE_LITERATURE_REGISTER.md)
+- [PUB-GC/PUB-RC broader publishability review](publication/PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md)
+
+The publication programme records the current firewall between PUB-GC / COUPLE, PUB-SG / SCALE and the conditional PUB-RC / ACCELERATE line.
+
 ## Documentation maintenance
 
 Documentation is version controlled with the source. Material changes to scientific contracts, state ownership, runtime, restart, MultiSWAP, coupling, module boundaries or qualification authority should update the relevant current documentation and evidence links.
