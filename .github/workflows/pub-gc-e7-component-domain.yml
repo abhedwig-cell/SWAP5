@@ -1,0 +1,30 @@
+name: PUB-GC E7 realistic component-domain gate
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_E7_*'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
+      - 'tests/publication/validate_pub_gc_e7_component_domain.py'
+      - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
+      - 'integration/m1/M1_FINAL_CLOSEOUT_20260918.json'
+      - 'integration/f-app/F-APP04_TYPED_APPLICATION_COMPOSITION_QUALIFICATION.json'
+      - '.github/workflows/pub-gc-e7-component-domain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Qualify frozen E7 application/domain boundary
+        run: python tests/publication/validate_pub_gc_e7_component_domain.py
