@@ -1,0 +1,22 @@
+name: F-GC49A generic groundwater application plan
+on:
+  push:
+    branches: [work/f-gc49a-application-plan-materialization]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_application_plan.f90'
+      - 'tests/fgc/test_fgc49a_groundwater_application_plan.f90'
+      - 'tests/fgc/run_fgc49a_groundwater_application_plan.sh'
+      - 'docs/integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md'
+      - 'integration/f-gc/F-GC49_STATUS.json'
+      - '.github/workflows/f-gc49a-groundwater-application-plan.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fgc/run_fgc49a_groundwater_application_plan.sh
