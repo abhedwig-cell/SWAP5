@@ -150,7 +150,16 @@ The following do **not** block archival preparation:
 - GMD short summary candidate: prepared;
 - exact current repository/evidence provenance: machine-readable.
 
-## 6. Permitted work before governance resolution
+## 6. Prepared submission templates
+
+The work that does not depend on A1/A2 has been persisted:
+
+- `PUB_GC_GMD_SUBMISSION_METADATA_DRAFT.md` — title/version placeholder, 432-character short summary, key figure, keywords, author/contribution/funding placeholders and claim guard;
+- `PUB_GC_GMD_CODE_DATA_AVAILABILITY_TEMPLATE.md` — conservative Code and data availability wording with unresolved version, DOI, licence and historical-asset access fields.
+
+These templates deliberately expose unresolved authority rather than hiding it.
+
+## 7. Permitted work before governance resolution
 
 The publication workstream may continue with:
 
@@ -170,7 +179,7 @@ It must **not**:
 - redistribute the historical SWAP 4.3.1 asset;
 - change scientific evidence to compensate for archival blockers.
 
-## 7. Closure rule
+## 8. Closure rule
 
 This gate closes only when all of the following are true:
 
@@ -182,3 +191,14 @@ This gate closes only when all of the following are true:
 6. the final archive identity is recorded in the PUB-GC reproducibility manifest.
 
 Until then, the paper is **scientifically ready but not submission-compliant for GMD**.
+
+
+## Current-canonical preservation note
+
+The GMD journal-positioning merge `a0ee53c48a80dd443d46f60edf08044aeba98273` completed all post-merge preservation gates:
+
+- F-CI canonical qualification run 35377931629 — SUCCESS;
+- F-CI51P moving-current preservation run 35377931595 — SUCCESS;
+- F-CI58P reconciliation/preservation run 35377931486 — SUCCESS.
+
+The archival gate therefore does not represent an unresolved scientific or canonical-qualification failure.
