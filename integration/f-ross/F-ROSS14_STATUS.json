@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS14",
+  "phase": "QUALIFY",
+  "status": "BLOCKED_DECISIVE_PIECEWISE_ROUTE_FAILURE",
+  "branch": "work/f-ross14-top-wetting-forcing-envelope",
+  "checkpoint_head_before_status": "bda99a69a280cb95ea24bf965478e1f078ede360",
+  "canonical_at_preproduction_start": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
+  "qualification_contract": "integration/f-ross/F-ROSS14_TOP_WETTING_FORCING_ENVELOPE_CONTRACT.json",
+  "production_implementation": false,
+  "production_mutations": [],
+  "decisive_evidence": {
+    "workflow_run": 35289689550,
+    "preimage_boundary_proof": {
+      "result": "PASS",
+      "meaning": "Current binding admits all 108 DRYING and 108 NOMINAL material-state combinations and rejects all 108 exact target WETTING combinations before any production mutation."
+    },
+    "first_decisive_science_failure": {
+      "material": "B01",
+      "science_case_count": 3,
+      "effective_saturation": [0.65, 0.85, 0.98],
+      "state_mass_reference_order_gates": "PASS",
+      "reference_self_max": 7.218081643827084e-11,
+      "finest_theta_span_error_max": 1.5757375548595388e-7,
+      "finest_state_change_relative_error_max": 2.586955825033493e-5,
+      "minimum_observed_order": 1.9684018768179017,
+      "median_observed_order": 1.9841288212201984,
+      "max_abs_step_mass_residual_cm": 1.9244588561617704e-18,
+      "max_abs_horizon_mass_residual_cm": 6.942200720533309e-15,
+      "candidate_domain_failure_count": 0,
+      "candidate_envelope_failure_count": 0,
+      "candidate_nonfinite_count": 0,
+      "reference_nonfinite_count": 0,
+      "piecewise_transition_route_count": 21,
+      "inadmissible_transition_route_count": 11,
+      "max_transitioning_components_per_transition_trial": 2,
+      "max_abs_cell_displacement_on_transition_route": 3,
+      "exact_node_endpoint_count": 0,
+      "failed_metric": "piecewise_route_policy",
+      "verdict": "FAIL"
+    },
+    "additional_observed_science_failures_at_checkpoint": {
+      "B02": "piecewise_route_policy",
+      "B03": "piecewise_route_policy",
+      "B04": "piecewise_route_policy",
+      "B05": "piecewise_route_policy",
+      "B06": "piecewise_route_policy",
+      "B07": "piecewise_route_policy"
+    },
+    "observed_science_passes_at_checkpoint": ["B08", "B09", "B10", "B11", "B12"],
+    "science_pass_kernel_runner_issue": {
+      "classification": "HARNESS_COMPILE_CLOSURE_ONLY",
+      "affected_observed_examples": ["B08", "B09", "B10", "B11", "B12"],
+      "error": "mod_canonical_contracts compiled without mod_accepted_trajectory_directional_publication dependency closure",
+      "scientific_meaning": "none; these jobs passed the pinned research-science layer before the compile error",
+      "does_not_override_science_blocker": true
+    }
+  },
+  "decision": {
+    "preproduction_36_material_gate": "FAIL",
+    "one_sided_binding_extension_allowed": false,
+    "reason": "The preregistered F-ROSS14 contract requires every material to satisfy the unchanged historical Gate-F/R1 piecewise transition policy. B01 and multiple additional materials fail this gate under the exact target forcing. A single genuine science failure is sufficient to block production mutation.",
+    "criteria_retuned": false,
+    "material_removed": false,
+    "forcing_reduced": false,
+    "production_source_changed": false
+  },
+  "next_permitted_action": "CLASSIFY_PIECEWISE_ROUTE_FAILURES_ONLY: determine the failing Se levels, step counts, simultaneous-component transitions and cell displacements under the exact frozen target forcing. Do not widen the production binding in F-ROSS14. Any narrower forcing target, alternative temporal policy, or changed piecewise-transition rule requires a separate preregistered decision surface.",
+  "exclusions": [
+    "NO_PRODUCTION_BINDING_MUTATION",
+    "NO_THRESHOLD_OR_GATE_RELAXATION",
+    "NO_MATERIAL_EXCLUSION_TO_FORCE_PASS",
+    "NO_SILENT_FORCING_REDUCTION",
+    "NO_KERNEL_OR_TRANSACTION_REDESIGN"
+  ]
+}
