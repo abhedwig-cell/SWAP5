@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.f-rom0t1d1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1D1",
+  "title": "Exact T1 refined retry cause and representation-bound diagnostic",
+  "execution": {
+    "workflow_run": 35376511600,
+    "workflow_job": 105702326783,
+    "executed_head": "bcfcdd647d9e70d0035083de6f9beaf19edb05c2",
+    "artifact_id": 10559864204,
+    "artifact_digest": "sha256:1879aca2ed5d76fb94b020cd4ce838d23ed6e93789ca65c04a79330f267c3ee9",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "rows": [
+    {
+      "case": "B01_E1_NOMINAL_FLUX",
+      "classification": "RETRY_TOTAL_ONLY",
+      "local_balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_local_residual_cm_per_day": 8.069100942975638e-13,
+      "total_residual_cm_per_day": -2.392631232028819e-12,
+      "representation_bound_cm": 8.881784197001252e-15,
+      "representation_rate_bound_cm_per_day": 1.110223024625156e-11,
+      "abs_total_residual_integrated_cm": 1.914104985623056e-15,
+      "residual_over_representation_bound": 0.2155090625000001,
+      "within_representation_bound": true,
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 42
+    },
+    {
+      "case": "B01_E2_DRYING_FLUX",
+      "classification": "RETRY_TOTAL_ONLY",
+      "local_balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_local_residual_cm_per_day": 3.7836400679225335e-13,
+      "total_residual_cm_per_day": -1.6998624730035772e-12,
+      "representation_bound_cm": 8.881784197001252e-15,
+      "representation_rate_bound_cm_per_day": 1.1102230246251567e-11,
+      "abs_total_residual_integrated_cm": 1.3598899784028617e-15,
+      "residual_over_representation_bound": 0.15311,
+      "within_representation_bound": true,
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 40
+    },
+    {
+      "case": "B14_E2_DRYING_FLUX",
+      "classification": "RETRY_LOCAL_BALANCE",
+      "local_balance_flag_count": 1,
+      "head_flag_count": 0,
+      "max_abs_local_residual_cm_per_day": 1.0045506093625534e-12,
+      "total_residual_cm_per_day": -1.068017744555727e-14,
+      "total_residual_integrated_abs_cm": 8.544141956445816e-18,
+      "representation_bound_cm": 8.881784197001252e-15,
+      "total_residual_over_representation_bound": 0.0009619848632812499,
+      "nonlinear_iterations": 16,
+      "backtracking_attempts": 95
+    }
+  ],
+  "invariants": {
+    "accepted_predecessors_rebuilt_through_FKT_commit": true,
+    "direct_diagnostic_committed_state_immutable": true,
+    "FMR_failure_reproduced_same_interval_all_three": true,
+    "solver_tolerance_changed": false,
+    "failed_candidate_commit": false,
+    "production_or_reference_source_mutated": false
+  },
+  "decision": "T1_RETRY_CAUSE_NONUNIFORM",
+  "interpretation": "Both B01 refined failures are total-column-only stopping failures inside the independently established prospective representation bound. B14 E2 is instead a single-node local compartment-balance failure with no head failure; its maximum local residual exceeds the frozen 1e-12 cm/day rate criterion by only about 0.455 percent. The total-only R3D4 fallback is therefore not sufficient authority for T1.",
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}
