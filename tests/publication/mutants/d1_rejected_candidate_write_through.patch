@@ -1,0 +1,18 @@
+--- a/src/transaction/mod_transaction_reference.f90
++++ b/src/transaction/mod_transaction_reference.f90
+@@ -253,8 +253,13 @@
+       midpoint = t0 + 0.5_real64 * attempt_dt
+ 
+       call model%restore_attempt_context(checkpoint_context)
+-      call checkpoint%clone(full_state)
+-      call model%advance(full_state, t0, attempt_t1, full_outcome)
++      if (policy%temporal_tolerance == 0.0_real64) then
++        call model%advance(committed, t0, attempt_t1, full_outcome)
++        call committed%clone(full_state)
++      else
++        call checkpoint%clone(full_state)
++        call model%advance(full_state, t0, attempt_t1, full_outcome)
++      end if
+       result%full_trials = result%full_trials + 1
+       result%nonlinear_iterations = result%nonlinear_iterations + full_outcome%nonlinear_iterations
+       result%internal_retries = result%internal_retries + full_outcome%internal_retries
