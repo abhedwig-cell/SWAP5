@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -18,6 +19,9 @@ import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
+
+# Make Cairo PDF metadata reproducible across runs before the backend is used.
+os.environ.setdefault("SOURCE_DATE_EPOCH", "0")
 
 import cairosvg
 from PIL import Image, ImageChops
@@ -200,10 +204,17 @@ def main() -> int:
     manifest_path = out / "figure-export-manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
+    # Build the flat submission ZIP with fixed entry metadata so its bytes are
+    # reproducible as well. ZIP timestamps cannot predate 1980.
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-        for item in plan["figures"]:
-            zf.write(out / item["target"], arcname=item["target"])
-        zf.write(manifest_path, arcname=manifest_path.name)
+        for file_path, arcname in [
+            *[(out / item["target"], item["target"]) for item in plan["figures"]],
+            (manifest_path, manifest_path.name),
+        ]:
+            info = zipfile.ZipInfo(arcname, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o100644 << 16
+            zf.writestr(info, file_path.read_bytes())
 
     print("PUB_GC_GMD_FIGURE_EXPORT=PASS")
     print(f"PUB_GC_GMD_FIGURE_COUNT={len(records)}")
