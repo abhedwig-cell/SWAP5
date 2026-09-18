@@ -1,0 +1,41 @@
+name: PUB-GC GMD figure export
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.*'
+      - 'docs/publication/figures/PUB_GC_*.svg'
+      - 'tools/publication/export_pub_gc_gmd_figures.py'
+      - '.github/workflows/pub-gc-gmd-figure-export.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install PDF export and inspection dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          python -m pip install --disable-pip-version-check cairosvg pypdf pillow
+      - name: Export and validate GMD figures
+        run: python tools/publication/export_pub_gc_gmd_figures.py
+      - name: Upload validated figure package
+        uses: actions/upload-artifact@v4
+        with:
+          name: pub-gc-gmd-figure-package
+          path: |
+            build/gmd-figures/*.pdf
+            build/gmd-figures/figure-export-manifest.json
+            build/pub-gc-gmd-figure-package.zip
+          if-no-files-found: error
+          retention-days: 30
