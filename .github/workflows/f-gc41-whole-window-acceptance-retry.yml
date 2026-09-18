@@ -1,0 +1,14 @@
+name: F-GC41 whole-window acceptance retry
+on:
+  push:
+    branches: [work/f-gc41-whole-window-acceptance-retry]
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install pytest
+      - run: bash tests/fgc/run_fgc41_whole_window_acceptance_retry.sh
