@@ -7,7 +7,7 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_SI39_FAIL $*" >&2; exit 1; }
 
-BASE=0c7a76bafeab1b1e1c57f5615340178d45bec268
+BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
 expected=$'src/runtime/mod_fmr_serialized_reference_backend.f90\nsrc/solver/mod_b110_default_mvg_provider.f90'
 [[ "$(git diff --name-only "$BASE" -- src | sort)" == "$expected" ]] || { git diff --name-only "$BASE" -- src >&2; fail "unexpected production delta"; }
 
