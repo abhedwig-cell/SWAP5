@@ -1,44 +1,60 @@
 {
-  "schema": "swap5.f-rom0.status.v1",
+  "schema": "swap5.f-rom0.status.v2",
   "workstream": "F-ROM",
   "work_unit": "ROM-0",
   "title": "Accepted Full-Order Authority",
-  "phase": "CLOSED_NO_GO_REFERENCE_AUTHORITY",
+  "phase": "CLOSED_PROCEED_TO_ROM1A_UNDER_SUCCESSOR_RESEARCH_REFERENCE_AUTHORITY",
   "branch": "work/f-rom0-close-expand-accepted-domain",
   "authority": "docs/science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md",
-  "final_adjudication": "docs/science/F-ROM0_FINAL_AUTHORITY_ADJUDICATION.md",
-  "decision": "NO_GO_REFERENCE_AUTHORITY",
+  "historical_fixed_control_adjudication": "docs/science/F-ROM0_FINAL_AUTHORITY_ADJUDICATION.md",
+  "current_final_reconciliation": "docs/science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_V1.md",
+  "historical_closeout": "integration/f-rom/F-ROM0_CLOSEOUT.json",
+  "current_closeout": "integration/f-rom/F-ROM0_SUCCESSOR_CLOSEOUT.json",
+  "decision": "PROCEED_TO_ROM1A",
+  "historical_fixed_control_decision": "NO_GO_REFERENCE_AUTHORITY",
+  "historical_decision_reclassified": false,
   "gate_adjudication": {
     "Q0_1_ownership": "PASS",
-    "Q0_2_reproducibility": "PASS_RETAINED_0_0008_FLUX_DOMAIN",
-    "Q0_3_conservation": "PASS_RETAINED_ACCEPTED_SAMPLES",
-    "Q0_4_bidirectional_reachability": "FAIL_PREREGISTERED_TWO_MATERIAL_DOMAIN",
-    "Q0_5_reference_floor": "INCOMPLETE_NO_FURTHER_EXPANSION_AUTHORIZED_IN_ROM0",
-    "Q0_6_non_mutation": "PASS_WITH_RESEARCH_SAMPLE_SCOPE"
+    "Q0_2_reproducibility": "PASS",
+    "Q0_3_conservation": "PASS",
+    "Q0_4_bidirectional_reachability": "PASS_UNDER_QUALIFIED_RESEARCH_REFERENCE_AUTHORITY",
+    "Q0_5_reference_floor": "PASS_MEASURED_REQUIRED_TEMPORAL_AND_VERTICAL_MATRIX",
+    "Q0_6_non_mutation": "PASS_WITH_RESEARCH_REFERENCE_SCOPE"
   },
   "evidence": {
-    "initial_decision": "EXPAND_ACCEPTED_TRAJECTORY_DOMAIN",
-    "r1_seed": "PASS_B01_B14",
     "ta3_sample_capability": "QUALIFIED",
-    "ta3_complete_temporal_pair": "0.0016_VS_0.0008_DAY",
-    "ta3_0_0004_level": "0_OF_4_FULL_HORIZON_PASS_REFERENCE_RETRY",
-    "ta4_restart_replay": "QUALIFIED",
+    "ta3_temporal_floor_pair": "0.0016_VS_0.0008_DAY_MEASURED",
+    "ta3_0_0004_level": "RETAINED_FAILED_REFERENCE_RETRY_EVIDENCE",
+    "ta4_restart_replay": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
     "ta4_workflow_run": 35372014491,
-    "ta5_prescribed_head_binding": "QUALIFIED",
+    "ta5_prescribed_head_binding": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
     "ta5_workflow_run": 35370006629,
-    "r3_workflow_run": 35372347484,
-    "r3_B14": "RISE_AND_FALL_PASS_WITH_DIRECTIONAL_SEPARATION",
-    "r3_B01_rise": "FAIL_REFERENCE_RETRY_ADVISED_STEP_11",
-    "r3_B01_fall": "FAIL_REFERENCE_RETRY_ADVISED_STEP_10"
+    "original_r3": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+    "r3d4": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+    "r3d4_workflow_run": 35374485859,
+    "r3d4_overlap_neutrality": "PASS_51_OF_51",
+    "r3q2": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
+    "r3q2_workflow_run": 35374391172,
+    "v1_vertical_floor": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+    "v1_workflow_run": 35375404190
   },
-  "vertical_reference_floor": "NOT_EXECUTED_AFTER_R3_NO_GO",
-  "vertical_reference_floor_reason": "Cannot repair failed bidirectional reachability and is not an authorized route to ROM1A after the frozen R3 no-go.",
+  "reference_floor": {
+    "temporal": "MEASURED",
+    "vertical": "MEASURED",
+    "complete_for_ROM1_state_sufficiency_interpretation": true,
+    "threshold_rule": "MEASURE_ONLY"
+  },
+  "source_semantics": {
+    "production_richards_equations_changed_by_ROM": false,
+    "production_solver_selection_changed_by_ROM": false,
+    "canonical_transaction_ownership_changed_by_ROM": false,
+    "production_reference_fallback_admitted": false,
+    "research_reference_policy_only": true
+  },
   "post_result_retuning_allowed": false,
-  "rom1a_authorized": false,
+  "rom1a_authorized": true,
   "production_solver_authorized": false,
   "production_application_admission": false,
-  "future_reopen_rule": "NEW_REFERENCE_AUTHORITY_WORKSTREAM_WITH_NEW_PREREGISTRATION_REQUIRED",
-  "blockers": [
-    "FROZEN_B01_PRESCRIBED_HEAD_REFERENCE_TRAJECTORY_AUTHORITY_NOT_AVAILABLE"
-  ]
+  "next_action": "PREREGISTER_ROM1A_TRAJECTORY_LIBRARY_AND_DATA_SPLIT_BEFORE_GENERATING_REACHABLE_STATE_EVIDENCE",
+  "blockers": []
 }
