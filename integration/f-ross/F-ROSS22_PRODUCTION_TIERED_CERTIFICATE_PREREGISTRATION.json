@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.f-ross22.production-tiered-certificate.v1",
+  "workunit": "F-ROSS22",
+  "phase": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "branch": "work/f-ross22-production-tiered-certificate",
+  "source_head": "e0248de1b85574774b1ee5459dda933daaa63664",
+  "purpose": "Promote the exact F-ROSS21 K2->K4->K8 certificate ladder into production RossFast D3R without changing the qualified physical/material envelope, table assets, solver seam, transaction acceptance rule or fallback thresholds.",
+  "locked_authorities": {
+    "f_ross21_result_blob": "b78965094fcc32f7e0c0fbf905c64b80ddb6503e",
+    "f_ross21_status_blob": "cd99c23d95775e314b0d8b731f0819902296a0f6",
+    "research_kernel_blob": "62793c0dcc187cef7828621f55357d33505ce964",
+    "research_solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "baseline_production_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+    "baseline_production_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "allowed_production_mutation": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+  ],
+  "exact_algorithm": {
+    "tier_1": {
+      "component_internal_substeps": 2,
+      "total_candidate_steps": 6,
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "tier_2": {
+      "component_internal_substeps": 4,
+      "total_candidate_steps": 12,
+      "trigger": "K2 indicator > 1.0",
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "tier_3": {
+      "component_internal_substeps": 8,
+      "total_candidate_steps": 24,
+      "trigger": "K4 indicator > 1.0",
+      "accept_if": "temporal_indicator <= 1.0"
+    },
+    "restart_rule": "Every tier recomputes independently from the same original request base state.",
+    "trajectory_reuse": false,
+    "total_linear_solves_by_final_tier": {
+      "K2": 6,
+      "K4": 18,
+      "K8": 42
+    },
+    "further_fallback": "forbidden"
+  },
+  "forbidden_mutation": [
+    "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+    "src/solver/mod_rossfast_d3r_table_provider.f90",
+    "assets/rossfast/**",
+    "reference/**",
+    "solver tolerances",
+    "transaction temporal acceptance rule",
+    "material catalog or physical envelope",
+    "material-specific exceptions"
+  ],
+  "qualification": {
+    "provider_preservation": [
+      "F-ROSS13 36-material provider/catalog fail-closed envelope PASS",
+      "O0/O2 semantic preservation PASS"
+    ],
+    "all_material_production": {
+      "cases": 216,
+      "required": [
+        "216/216 route valid",
+        "216/216 final temporal indicator <= 1.0",
+        "216/216 hard mass tolerance",
+        "216/216 tier-consistent linear solves in {6,18,42}",
+        "zero retries and alternative solver calls",
+        "exact tier distribution 212 K2, 2 K4, 2 K8"
+      ]
+    },
+    "production_research_identity": {
+      "cases": 216,
+      "required": "Bitwise-equivalent dumped real64 pressure head, water content, temporal indicator, mass residual, tier/work-count markers and classifications versus F-ROSS21 research route."
+    },
+    "anchor_performance": {
+      "domain": "same 36 PUB-P2E10 anchor cases",
+      "protocol": "same F-ROSS19/F-ROSS21 12-pair solver-only screen",
+      "formal_performance_claim": false,
+      "admission_dependency": false
+    }
+  },
+  "fail_closed": "Any provider, 216-case science, exact research identity, unexpected production mutation or preservation failure blocks production admission. Shared-host performance is corroborating only.",
+  "next_permitted_action": "Transplant the exact F-ROSS21 tiered research implementation into the two allowed production files, then execute independent F-ROSS22 qualification."
+}
