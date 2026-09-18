@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-C",
+  "title": "Oxygen-stress source/state/owner authority",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> OWNER/STATE TRACE -> CLASSIFY -> CONTRACT -> QUALIFY -> CLOSE",
+  "branch": "audit/ppa-wu05c-oxygen-stress-authority",
+  "canonical_base": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+  "scope": [
+    "legacy SWOXYGEN physical Bartholomeus oxygen-stress route represented by B1.11 oxygenstress.f90",
+    "SWAP-007 corrected Newton overflow authority",
+    "oxygen reduction ownership relative to the existing SWAP5 root-water sink owner",
+    "classification of historical oxygenstress cached data as shared derived data versus transactional state",
+    "production prerequisites for a later typed oxygen-stress slice"
+  ],
+  "authorities": [
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/patches/SWAP-007/README.md",
+    "reference/swap-4.3.1/patches/SWAP-007/qualification.md",
+    "reference/swap-4.3.1/patches/SWAP-007/fix.patch",
+    "src/process/mod_root_water_uptake_process.f90",
+    "integration/f-ci/F-CI31_STATUS.json",
+    "integration/f-gc/F-GC30_CLOSEOUT.json",
+    "integration/audits/PPA_WU05_STATUS.json"
+  ],
+  "corroborating_nonoracle_evidence": [
+    "Library S11_cumulative_from_pristine.patch: explicit OxygenStressCache extraction and calc_ini_pars cache fields",
+    "Library S9_from_S8.patch: oxygen cache moved from transactional context snapshot into immutable-after-construction shared data",
+    "Library A23AP_ROOTEXTRACTION_OXYGEN_CONTRACT.md: later oxygen reproduction ownership precedent; not authority for SWOXYGENTYPE=1 Bartholomeus physics"
+  ],
+  "non_goals": [
+    "production oxygen-stress implementation",
+    "root sink redesign",
+    "salinity, frost, compensation, MICRO/Jong-van-Lier or macropore uptake migration",
+    "SWKIMPL=1 root-sink reevaluation policy",
+    "new Newton fallback physics",
+    "mass tolerance change",
+    "ROM"
+  ],
+  "pass_conditions": [
+    "B1.11 corrected oxygenstress identity and SWAP-007 scope are pinned exactly",
+    "existing root-extraction sink remains the single accepted root-water mass owner",
+    "oxygenstress cached soil/grid quantities are not classified as physical continuation state",
+    "no oxygen cache enters restart or rollback authority",
+    "full B1.11 callsite/integration ordering not present in current Git is explicitly held for source materialization before production",
+    "coupling derivative coverage remains fail-closed until oxygen-aware root response sensitivity is qualified",
+    "no src/ or reference/ mutation"
+  ]
+}
