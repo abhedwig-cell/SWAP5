@@ -49,8 +49,10 @@ for opt in 0 2; do
     cat "$EVIDENCE/o${opt}.txt" >&2
     fail "O${opt} execution"
   }
+  cat "$EVIDENCE/o${opt}.txt"
   grep -Fq 'F_ROM0T1_EXECUTION_COMPLETE=PASS' "$EVIDENCE/o${opt}.txt" || fail "completion marker O${opt}"
-  [[ "$(grep -c 'F_ROM0T1_CASE_PASS|' "$EVIDENCE/o${opt}.txt")" -eq 8 ]] || fail "eight trajectories O${opt}"
+  pass_count="$(grep -c 'F_ROM0T1_CASE_PASS|' "$EVIDENCE/o${opt}.txt" || true)"
+  [[ "$pass_count" -eq 8 ]] || fail "eight trajectories O${opt}; observed $pass_count"
 done
 cmp "$EVIDENCE/o0.txt" "$EVIDENCE/o2.txt" || fail "O0/O2 drift"
 "$BUILD/o2/rom0_test" > "$EVIDENCE/o2_repeat.txt" 2>&1 || fail "O2 repeat execution"
