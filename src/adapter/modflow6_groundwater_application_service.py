@@ -61,20 +61,27 @@ class GroundwaterApplicationPlanView:
             return False
         seen_slots: set[int] = set()
         seen_nodes: set[int] = set()
-        for index, (binding, cell_id) in enumerate(
-            zip(self.bindings, self.cell_ids, strict=True), start=1
+        for index, (binding, term, cell_id) in enumerate(
+            zip(self.bindings, self.terms, self.cell_ids, strict=True), start=1
         ):
             try:
                 binding_cell = int(binding.groundwater_cell_id)
+                term_cell = int(term.groundwater_cell_id)
                 package_slot = int(binding.package_slot)
                 node_id = int(binding.modflow_node_id)
+                hcof = float(term.hcof_m2_per_day)
+                rhs = float(term.rhs_m3_per_day)
             except Exception:
                 return False
-            if binding_cell != cell_id or cell_id <= 0:
+            if binding_cell != cell_id or term_cell != cell_id or cell_id <= 0:
                 return False
             if package_slot != index or package_slot in seen_slots:
                 return False
             if node_id <= 0 or node_id in seen_nodes:
+                return False
+            if not math.isfinite(hcof) or not math.isfinite(rhs):
+                return False
+            if hasattr(term, "valid") and not bool(term.valid):
                 return False
             seen_slots.add(package_slot)
             seen_nodes.add(node_id)
@@ -173,7 +180,9 @@ def run_groundwater_application_window(
     except Exception:
         origins_captured = False
     if not origins_captured:
-        return _fail(
+        return _abort_and_fail(
+            runtime,
+            groundwater,
             result,
             GroundwaterApplicationServiceStatus.ORIGIN_FAILED,
             True,
