@@ -26,6 +26,12 @@ MARKERS = {
     "solver_cpu": re.compile(r"^F_ROSS23_SOLVER_CPU_SECONDS=\s*([0-9.Ee+\-]+)$", re.MULTILINE),
     "checksum": re.compile(r"^F_ROSS23_CHECKSUM=\s*([0-9.Ee+\-]+)$", re.MULTILINE),
     "gate": re.compile(r"^F_ROSS23_GATE=PASS$", re.MULTILINE),
+    "paired_valid": re.compile(r"^F_ROSS23_PAIRED_VALID=(\d+)$", re.MULTILINE),
+    "admissible": re.compile(r"^F_ROSS23_PAIRED_VALID_ADMISSIBLE=(\d+)$", re.MULTILINE),
+    "discrepancy_fail": re.compile(r"^F_ROSS23_PAIRED_VALID_DISCREPANCY_FAIL=(\d+)$", re.MULTILINE),
+    "reference_invalid": re.compile(r"^F_ROSS23_REFERENCE_ROUTE_INVALID=(\d+)$", re.MULTILINE),
+    "rossfast_invalid": re.compile(r"^F_ROSS23_ROSSFAST_ROUTE_INVALID=(\d+)$", re.MULTILINE),
+    "both_invalid": re.compile(r"^F_ROSS23_BOTH_ROUTES_INVALID=(\d+)$", re.MULTILINE),
 }
 
 
@@ -56,8 +62,11 @@ def parse_output(text: str, expected_route: str) -> dict:
             values[name] = match.group(1)
     if values["route"] != expected_route:
         raise RuntimeError(f"route mismatch: expected {expected_route}, got {values['route']}")
-    if int(values["cases"]) != 216 or int(values["repetitions"]) != 200 or int(values["solve_count"]) != 43200:
-        raise RuntimeError("frozen benchmark dimensions drifted")
+    if int(values["cases"]) != 216 or int(values["repetitions"]) != 200:
+        raise RuntimeError("frozen characterization dimensions drifted")
+    paired_valid = int(values["paired_valid"])
+    if int(values["solve_count"]) != paired_valid * 200:
+        raise RuntimeError("timed solve count is not restricted to the paired-valid subset")
     solver_cpu = float(values["solver_cpu"])
     if not math.isfinite(solver_cpu) or solver_cpu <= 0:
         raise RuntimeError("solver CPU time must be finite and positive")
@@ -67,7 +76,15 @@ def parse_output(text: str, expected_route: str) -> dict:
         "checksum_text": str(values["checksum"]),
         "case_count": 216,
         "inner_repetitions": 200,
-        "timed_solve_count": 43200,
+        "timed_solve_count": int(values["solve_count"]),
+        "diagnostic_counts": {
+            "paired_valid": paired_valid,
+            "admissible_under_historical_six_material_thresholds": int(values["admissible"]),
+            "discrepancy_fail_against_historical_six_material_thresholds": int(values["discrepancy_fail"]),
+            "reference_invalid": int(values["reference_invalid"]),
+            "rossfast_invalid": int(values["rossfast_invalid"]),
+            "both_invalid": int(values["both_invalid"]),
+        },
     }
 
 
@@ -180,14 +197,16 @@ def main() -> int:
 
     result = {
         "schema": "swap5.f-ross23.performance-screening-result.v1",
-        "workunit": "F-ROSS15",
+        "workunit": "F-ROSS23",
         "phase": "MEASURED_SHARED_HOST_SCREENING",
         "measurement": {
             "warmups_per_variant": WARMUPS_PER_VARIANT,
             "pair_count": PAIRS,
             "inner_repetitions_per_case": 200,
-            "paired_valid_case_count": 216,
-            "timed_solves_per_sample": 43200,
+            "paired_valid_case_count": samples[0]["diagnostic_counts"]["paired_valid"],
+            "attempted_case_count": 216,
+            "timed_solves_per_sample": samples[0]["timed_solve_count"],
+            "timing_scope": "PAIRED_VALID_SUBSET_ONLY_AFTER_UNEXPECTED_ROUTE_INVALIDITY",
             "primary_metric": "solver_cpu_seconds",
             "target_cpu": target_cpu,
             "visible_affinity_cpus": visible,
