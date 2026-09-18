@@ -1,0 +1,25 @@
+name: PUB-P2E13 Reference common material state domain
+
+on:
+  push:
+    branches:
+      - work/pub-p2e13-reference-common-material-state-domain
+    paths:
+      - 'docs/publication/P2E13_REFERENCE_COMMON_MATERIAL_STATE_DOMAIN_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e13_reference_common_material_state_domain.f90'
+      - 'tests/publication/run_pub_p2e13_reference_common_material_state_domain.sh'
+      - '.github/workflows/pub-p2e13-reference-common-material-state-domain.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-common-material-state-domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered Reference-only state-domain construction
+        run: bash tests/publication/run_pub_p2e13_reference_common_material_state_domain.sh
