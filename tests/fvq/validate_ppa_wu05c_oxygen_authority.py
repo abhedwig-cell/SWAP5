@@ -18,6 +18,7 @@ def authority():
     contract = load_json("integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json")
     status = load_json("integration/audits/PPA_WU05C_STATUS.json")
     b111 = (ROOT / "reference/swap-4.3.1/snapshots/B1.11.yml").read_text()
+    b0_manifest = (ROOT / "reference/swap-4.3.1/b0/file-manifest.sha256").read_text()
     diff = (ROOT / "docs/verification/legacy-differences.md").read_text()
     root = (ROOT / "src/process/mod_root_water_uptake_process.f90").read_text()
     fci31 = (ROOT / "integration/f-ci/F-CI31_STATUS.json").read_text()
@@ -31,8 +32,9 @@ def authority():
     require(ids["SWAP/oxygenstress.f90"] == "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87", "oxygen hash drift")
     require(ids["SWAP/rootextraction.f90"] == "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5", "rootextraction hash drift")
     require(ids["SWAP/RWU_micro.f90"] == "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477", "RWU_micro hash drift")
-    for sha in ids.values():
-        require(sha in b111, f"B1.11 snapshot does not contain {sha}")
+    require(ids["SWAP/oxygenstress.f90"] in b111, "corrected oxygenstress identity missing from B1.11 snapshot")
+    for path in ("SWAP/rootextraction.f90", "SWAP/RWU_micro.f90", "SWAP/temperature.f90"):
+        require(ids[path] in b0_manifest, f"unchanged B0/B1.11 identity missing for {path}")
 
     require("SWAP-007" in diff and "oxygen-stress Newton quotient" in diff, "SWAP-007 ledger authority missing")
     require(contract["authority"]["admitted_correction"]["physics_change"] is False, "SWAP-007 misclassified")
