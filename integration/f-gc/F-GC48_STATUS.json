@@ -3,8 +3,8 @@
   "work_unit": "F-GC48",
   "title": "Generic groundwater topology composition",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE",
-  "state": "OPEN_GENERIC_TOPOLOGY_BOUNDARY",
+  "phase": "QUALIFY",
+  "state": "IMPLEMENTED_OWNER_AND_INDEPENDENT_QUALIFICATION_READY",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
@@ -47,5 +47,24 @@
     "physics-envelope expansion",
     "SCALE heterogeneous-transferability policy"
   ],
-  "next_permitted_action": "Implement typed topology contracts/materialization, qualify F-GC45/46/47-equivalent topologies plus fail-closed invalid cases, independently verify ownership/ordering boundaries, then admit/close if exact-head evidence is green."
+  "next_permitted_action": "Open draft PR, obtain exact-head owner and F-VQ120 evidence, repair only scoped failures, reconcile canonical, then admit/close if all criteria pass.",
+  "current_head": "0eee247f9a9271df89cde4ebb2a31305c4ee39ce",
+  "implemented": [
+    "production mod_groundwater_topology_composition with normalized tile and cell contracts",
+    "global uniqueness validation for tile ids, SWAP lineages, ledger ids, cell ids, coupling ids, groundwater lineages, package slots and MODFLOW nodes",
+    "per-cell fraction closure and orphan/missing-cell validation",
+    "canonical cell and cell/tile ordering independent of input permutation",
+    "materialization to admitted groundwater_direct_tile_binding_t for F-GC40",
+    "materialization to admitted modflow6_api_slot_binding_t for F-GC34",
+    "owner regressions for F-GC45 N:1, F-GC46 multi-cell and F-GC47 mixed topology",
+    "F-VQ120 independent executable downstream compatibility qualification"
+  ],
+  "admission_criteria": [
+    "exact-head F-GC48 owner O0/O2 qualification green",
+    "exact-head F-VQ120 downstream compatibility O0/O2 qualification green",
+    "canonical delta reconciled with no conflicting topology/runtime authority",
+    "PR mergeable",
+    "scope remains topology/ownership only and does not claim heterogeneous transferability"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
 }
