@@ -159,3 +159,41 @@ This access-only patch:
 The direct probe initializes the already-existing model fields required by the same Reference route (fixed-flux top provider and Reference soil-water selection) and then calls the existing `configure_parameters`, `prepare_interval` and `execute_reference_interval` methods.
 
 The D1 scientific mutation remains exactly the previously frozen `d1_rejected_candidate_write_through.patch`.
+
+## 9. Clean-control continuation correction before mutant execution
+
+The first scientifically valid **clean** D1-A run executed the intended rejected physical trial and established:
+
+- transaction status `RETRY_EXHAUSTED`;
+- three real HeadCalc calls;
+- zero accepted transfer publication;
+- bit-identical transaction-layer committed state after rejection.
+
+The mutant build had not yet executed because the runner processes the clean build first.
+
+That clean run also showed that the planned continuation did not accept for a purely temporal reason:
+
+- solver rejections: `0`;
+- mass rejections: `0`;
+- temporal rejections: `1`;
+- full and half mass residuals: `0`;
+- reported external full/half temporal error: `huge(real64)`.
+
+The Reference route's external temporal comparator uses this sentinel when the full and two-half physical states are not bit-identical. Therefore the originally coded `1e6` value was not a genuinely permissive continuation ceiling.
+
+Before any mutant execution, the continuation-only temporal tolerance is corrected to:
+
+`huge(0.0_real64)`
+
+This does **not** alter:
+
+- the zero-tolerance D1 rejection trial;
+- the frozen write-through mutation;
+- the physical fixture;
+- the mass tolerance;
+- solver tolerances;
+- forcing;
+- HeadCalc;
+- B2 rejection-boundary oracle.
+
+The continuation exists only to observe whether an already contaminated state propagates into a later transaction that the test harness permits to accept. Its permissive temporal ceiling must not be interpreted as a production acceptance policy or as evidence for temporal accuracy.
