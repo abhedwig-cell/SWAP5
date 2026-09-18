@@ -111,66 +111,23 @@ python3 "$SUMMARIZER" "$BUILD/work_counts.txt" "$BUILD/F-ROSS16_WORK_COUNTS.json
 grep -Fq 'F_ROSS16_WORK_COUNT_SUMMARY=PASS' "$BUILD/work_count_summary.txt" || fail "work-count summary failed"
 cat "$BUILD/work_count_summary.txt"
 
-# Stage 2a: production-like O2 gprof diagnostic.
-compile_exe "$BUILD/profile_o2" "$PROFILE_TEST" -O2 -pg
-rm -f gmon.out
-SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/profile_o2/test" > "$BUILD/profile_o2_run.txt"
-grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/profile_o2_run.txt" || fail "O2 profile harness failed"
-[[ -f gmon.out ]] || fail "O2 gmon.out missing"
-mv gmon.out "$BUILD/profile_o2/gmon.out"
-gprof -b -p "$BUILD/profile_o2/test" "$BUILD/profile_o2/gmon.out" > "$BUILD/F-ROSS16_GPROF_O2.txt"
-
-# Stage 2b: structural no-inline profile. This is explicitly not a production timing ratio.
-compile_exe "$BUILD/profile_noinline" "$PROFILE_TEST" -O2 -pg -fno-inline -fno-inline-functions -fno-inline-small-functions
-rm -f gmon.out
-SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/profile_noinline/test" > "$BUILD/profile_noinline_run.txt"
-grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/profile_noinline_run.txt" || fail "no-inline profile harness failed"
-[[ -f gmon.out ]] || fail "no-inline gmon.out missing"
-mv gmon.out "$BUILD/profile_noinline/gmon.out"
-gprof -b -p "$BUILD/profile_noinline/test" "$BUILD/profile_noinline/gmon.out" > "$BUILD/F-ROSS16_GPROF_NOINLINE.txt"
-
-
-# F-ROSS16D1 successor: optimized line attribution.
-compile_exe "$BUILD/d1_o2_line" "$PROFILE_TEST" -O2 -g -pg
-rm -f gmon.out
-SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/d1_o2_line/test" > "$BUILD/d1_o2_line_run.txt"
-grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/d1_o2_line_run.txt" || fail "D1 O2 line profile harness failed"
-[[ -f gmon.out ]] || fail "D1 O2 line gmon.out missing"
-mv gmon.out "$BUILD/d1_o2_line/gmon.out"
-gprof -b -p -l "$BUILD/d1_o2_line/test" "$BUILD/d1_o2_line/gmon.out" > "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt"
-
-# F-ROSS16D1 successor: unoptimized structural exposure.
-compile_exe "$BUILD/d1_o0" "$PROFILE_TEST" -O0 -g -pg
-rm -f gmon.out
-SWAP5_ROSS16_PROFILE_ROUTE=ROSSFAST OMP_NUM_THREADS=1 "$BUILD/d1_o0/test" > "$BUILD/d1_o0_run.txt"
-grep -Fq 'F_ROSS16_PROFILE_GATE=PASS' "$BUILD/d1_o0_run.txt" || fail "D1 O0 structural profile harness failed"
-[[ -f gmon.out ]] || fail "D1 O0 gmon.out missing"
-mv gmon.out "$BUILD/d1_o0/gmon.out"
-gprof -b -p "$BUILD/d1_o0/test" "$BUILD/d1_o0/gmon.out" > "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt"
-
-echo '--- F-ROSS16D1 O2 line candidate-step regions ---'
-grep -Ei 'candidate_step|inverse_capacity|table_face_linearization|factor_and_solve|head_from_water_content|valid_state|mod_rossfast_d3r_table_kernel' "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt" || true
-echo '--- F-ROSS16D1 O0 structural buckets ---'
-grep -Ei 'candidate_step|inverse_capacity|table_face_linearization|factor_and_solve|head_from_water_content|valid_state' "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt" || true
-
-echo '--- F-ROSS16 O2 RossFast profile symbols ---'
-grep -Ei 'rossfast|candidate_step|table_face|factor_and_solve|run_window|head_from_water|inverse_capacity' "$BUILD/F-ROSS16_GPROF_O2.txt" || true
-echo '--- F-ROSS16 no-inline RossFast profile symbols ---'
-grep -Ei 'rossfast|candidate_step|table_face|factor_and_solve|run_window|head_from_water|inverse_capacity' "$BUILD/F-ROSS16_GPROF_NOINLINE.txt" || true
+# Historical gprof stages are intentionally not replayed here.
+# Their helper-level attribution was rejected after semantic call-count
+# inconsistency and has been superseded by qualified F-ROSS16D1 Callgrind
+# evidence. Admission authority is the exact solver-published work-count audit
+# plus the separately qualified deterministic D1 result.
+D1_RESULT=integration/f-ross/F-ROSS16D1_CALLGRIND_RESULT.json
+[[ -f "$D1_RESULT" ]] || fail "qualified F-ROSS16D1 result missing"
+grep -Fq '"phase": "QUALIFIED_DETERMINISTIC_INSTRUCTION_ATTRIBUTION"' "$D1_RESULT" || fail "D1 qualification drift"
+grep -Fq '"call_counts_match_exact_production_topology": true' "$D1_RESULT" || fail "D1 topology authority drift"
+grep -Fq '"candidate_step_fraction_of_solver_solve": 0.9554209675818706' "$D1_RESULT" || fail "D1 optimized attribution drift"
 
 OUTDIR="${GITHUB_WORKSPACE:-$ROOT}/F-ROSS16_EVIDENCE"
 rm -rf "$OUTDIR"
 mkdir -p "$OUTDIR"
 cp "$BUILD/F-ROSS16_WORK_COUNTS.json" "$OUTDIR/"
 cp "$BUILD/work_counts.txt" "$OUTDIR/"
-cp "$BUILD/F-ROSS16_GPROF_O2.txt" "$OUTDIR/"
-cp "$BUILD/F-ROSS16_GPROF_NOINLINE.txt" "$OUTDIR/"
-cp "$BUILD/profile_o2_run.txt" "$OUTDIR/"
-cp "$BUILD/profile_noinline_run.txt" "$OUTDIR/"
-cp "$BUILD/F-ROSS16D1_GPROF_O2_LINE.txt" "$OUTDIR/"
-cp "$BUILD/F-ROSS16D1_GPROF_O0_STRUCTURAL.txt" "$OUTDIR/"
-cp "$BUILD/d1_o2_line_run.txt" "$OUTDIR/"
-cp "$BUILD/d1_o0_run.txt" "$OUTDIR/"
+cp "$D1_RESULT" "$OUTDIR/"
 
-echo 'F_ROSS16D1_CANDIDATE_STEP_DECOMPOSITION_GATE=PASS'
+echo 'F_ROSS16_PROFILE_AUTHORITY=REJECTED_GPROF_SUPERSEDED_BY_F_ROSS16D1'
 echo 'F_ROSS16_COST_ATTRIBUTION_GATE=PASS'
