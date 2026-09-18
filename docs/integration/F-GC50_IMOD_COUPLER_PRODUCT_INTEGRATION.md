@@ -47,20 +47,13 @@ The GitHub connection available to this workunit has read/pull permission but no
 
 A local imitation of `get_driver`, a monkeypatch, or a SWAP5-only duplicate product loop is explicitly forbidden as evidence of product integration.
 
-## Reconciled blocker 2 — F-GC49D deliberately has no Python bootstrap
+## Resolved internal prerequisite B2 — admitted production bootstrap now exists
 
-F-GC49D exposes an **existing registered Fortran application context** through an opaque handle. The production Python adapter constructor requires:
+F-GC49D still correctly exposes an **existing registered Fortran application context** through an opaque handle. The production Python adapter continues to require the SWAP5 shared-library path and a positive existing context handle. No Python-owned SWAP state and no production `create_context_from_config` C ABI have been introduced.
 
-- the SWAP5 shared-library path;
-- a positive existing context handle.
+The missing owner is now supplied by canonically admitted **PPA-WU01**. Its production module `mod_fmr_production_application_bootstrap.f90` owns the persistent Fortran/FMR application state and, for the restricted groundwater profile, the participant registry, participant handles, interface mass ledgers and the lifecycle of a per-window F-GC49D application context. It registers that context through the existing F-GC49D C-API registry and exposes only the resulting opaque handle to orchestration clients.
 
-The C ABI exposes plan/tile views and delegated lifecycle operations for an existing handle. It does not expose a production `create_context_from_config` or equivalent bootstrap call.
-
-This is deliberate ownership preservation. The production context is composed from externally owned FMR participants, typed application plan and ledgers on the Fortran side.
-
-F-GC50 must therefore consume an admitted application/bootstrap owner when one exists. It may not promote the F-GC49D test fixture, and it may not invent a parallel Python-owned SWAP state/configuration system.
-
-The active M1-C3 / F-APP line is the relevant existing authority for legacy-file-to-typed application composition. F-GC50 may reuse an admitted bootstrap from that line, or another separately admitted typed application bootstrap, but must not pre-empt it.
+Therefore historical blocker **FGC50-B2 is resolved** for the restricted PPA-WU01 groundwater profile. This does not broaden the admitted physics envelope. It also does not mean that iMOD Coupler configuration mapping already exists: that mapping is ordinary F-GC50 implementation work to perform after the upstream product can actually register a SWAP5 driver.
 
 ## Product integration target after blockers clear
 
@@ -92,11 +85,12 @@ F-GC50 does not authorize:
 
 ## Current disposition
 
-F-GC50 is **reconciled but externally blocked before implementation**.
+F-GC50 is **internally ready for its restricted admitted profile but externally blocked before product implementation**.
 
-The blockers are concrete and independently inspectable:
+The remaining blocker is concrete and independently inspectable:
 
-1. upstream iMOD Coupler must provide or accept a real SWAP5 driver registration/integration route;
-2. SWAP5 must have an admitted production application bootstrap capable of supplying the F-GC49D context without using qualification fixtures.
+1. upstream iMOD Coupler must provide or accept a real SWAP5 driver registration/integration route.
 
-Until both exist, any claim of actual product integration would be stronger than the evidence.
+The internal bootstrap prerequisite is no longer blocking: PPA-WU01 is canonically admitted for the restricted groundwater production profile and can materialize the required F-GC49D context from a Fortran/FMR-owned application state.
+
+Actual product integration is still **not admitted** because the inspected upstream product has no external driver plugin route and the connected GitHub authority remains read/pull only. A SWAP5-local imitation of the product registry or coupled timestep loop remains ineligible as evidence.
