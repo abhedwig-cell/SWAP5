@@ -7,6 +7,7 @@ cd "$ROOT"
 BASE=47430b68ed46a24ca05b29b46de2dd4f7e29762b
 TEST=tests/rom/test_f_rom0_accepted_reference_laboratory.f90
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
+MATERIALIZER=tests/rom/materialize_f_rom0_headcalc_stubs.py
 ANALYZER=tests/rom/analyze_f_rom0_accepted_reference_laboratory.py
 PREREG=integration/f-rom/F-ROM0_PREREGISTRATION.json
 SUPPLEMENT=integration/f-rom/F-ROM0_NUMERICAL_CONTROLS_SUPPLEMENT.json
@@ -54,15 +55,27 @@ assert c["post_execution_retuning_allowed"] is False
 print("F_ROM0_PREREGISTRATION_LOCK=PASS")
 PY
 
+python3 "$MATERIALIZER" --source tests/fsi/fsi04_real_headcalc_stubs.f90 \
+  --output "$BUILD/rom0_stubs_n16.f90" --nodes 16 --dz-cm 10
+python3 "$MATERIALIZER" --source tests/fsi/fsi04_real_headcalc_stubs.f90 \
+  --output "$BUILD/rom0_stubs_n32.f90" --nodes 32 --dz-cm 5
+
 python3 "$COMPILER" \
   --root "$ROOT" \
-  --stub tests/fsi/fsi04_real_headcalc_stubs.f90 \
+  --stub "$BUILD/rom0_stubs_n16.f90" \
   --target "$TEST" \
-  --build "$BUILD/o2" \
+  --build "$BUILD/o2_n16" \
+  --opt 2
+python3 "$COMPILER" \
+  --root "$ROOT" \
+  --stub "$BUILD/rom0_stubs_n32.f90" \
+  --target "$TEST" \
+  --build "$BUILD/o2_n32" \
   --opt 2
 
-EXE="$BUILD/o2/rom0_test"
-[[ -x "$EXE" ]] || fail "missing ROM-0 executable"
+EXE16="$BUILD/o2_n16/rom0_test"
+EXE32="$BUILD/o2_n32/rom0_test"
+[[ -x "$EXE16" && -x "$EXE32" ]] || fail "missing geometry-bound ROM-0 executable"
 
 cases=(
   'B01|16|10|0.0016|E0_HOLD'
@@ -91,7 +104,14 @@ for spec in "${cases[@]}"; do
   tag="${material}_${experiment}_n${nodes}_dz${dz}_dt${dt}"
   out="$EVIDENCE/cases/${tag}.txt"
   echo "F_ROM0_RUN_CASE=$tag"
-  if ! "$EXE" "$material" "$nodes" "$dz" "$dt" "$experiment" >"$out" 2>&1; then
+  if [[ "$nodes" == "16" ]]; then
+    exe="$EXE16"
+  elif [[ "$nodes" == "32" ]]; then
+    exe="$EXE32"
+  else
+    fail "unregistered geometry nodes=$nodes"
+  fi
+  if ! "$exe" "$material" "$nodes" "$dz" "$dt" "$experiment" >"$out" 2>&1; then
     cat "$out" >&2
     failures=$((failures+1))
   else
@@ -99,7 +119,7 @@ for spec in "${cases[@]}"; do
   fi
 done
 
-"$EXE" B01 16 10 0.0016 E1_NOMINAL_FLUX >"$BUILD/replay.txt" 2>&1 || fail "reproducibility replay runtime"
+"$EXE16" B01 16 10 0.0016 E1_NOMINAL_FLUX >"$BUILD/replay.txt" 2>&1 || fail "reproducibility replay runtime"
 cmp -s "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" || {
   diff -u "$EVIDENCE/cases/B01_E1_NOMINAL_FLUX_n16_dz10_dt0.0016.txt" "$BUILD/replay.txt" >&2 || true
   fail "accepted trajectory exact replay drift"
