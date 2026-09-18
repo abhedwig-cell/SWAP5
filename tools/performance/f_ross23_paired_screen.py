@@ -112,6 +112,8 @@ def run_one(executable: Path, route: str, target_cpu: int, cycle: int, measured:
     if completed.returncode != 0:
         raise RuntimeError(f"{route} benchmark failed with {completed.returncode}\n{completed.stdout}")
     parsed = parse_output(completed.stdout, route)
+    case_lines = [line for line in completed.stdout.splitlines() if line.startswith("F_ROSS23_CASE|")]
+    parsed["case_matrix"] = case_lines
     parsed.update({
         "cycle": cycle,
         "measured": measured,
@@ -235,7 +237,9 @@ def main() -> int:
         "screening_outcome": screening,
         "qualified_speedup_claim": False,
         "claim_boundary": "Shared GitHub-hosted result is screening evidence only. Formal speedup requires replay on an MP-admitted isolated performance host.",
-        "samples": samples,
+        "diagnostic_counts": samples[0]["diagnostic_counts"],
+        "case_matrix": samples[0]["case_matrix"],
+        "samples": [{k:v for k,v in row.items() if k != "case_matrix"} for row in samples],
     }
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2, sort_keys=True))
