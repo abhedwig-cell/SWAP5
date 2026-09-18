@@ -425,8 +425,8 @@ contains
     status = FMR_GW_REGISTRY_POST_PUBLICATION
     if (self%entries(index)%swap_committed) return
     status = FMR_GW_REGISTRY_NOT_READY
-    if (.not. self%registry_swap_publication_ready(handle)) return
-    if (.not. self%registry_ledger_publication_ready(handle)) return
+    if (.not. self%swap_publication_ready(handle)) return
+    if (.not. self%ledger_publication_ready(handle)) return
 
     call self%entries(index)%participant%commit_candidate(self%entries(index)%corrector_backend, &
          self%entries(index)%committed, self%entries(index)%window, did_commit, participant_status)
@@ -569,9 +569,7 @@ contains
     entry%tile_id = 0_int64
     entry%swap_lineage_id = 0_int64
     entry%ledger_id = 0_int64
-    entry%participant = fmr_groundwater_swap_participant_t()
     entry%last_trial = groundwater_swap_trial_t()
-    entry%prepared_ledger = groundwater_interface_mass_prepared_t()
     entry%window = groundwater_coupling_window_t()
     entry%datum = groundwater_head_datum_t()
     entry%predictor_lineage = modflow6_swap_predictor_lineage_t()
