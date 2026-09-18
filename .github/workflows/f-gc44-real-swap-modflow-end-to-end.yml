@@ -1,0 +1,30 @@
+name: F-GC44 real SWAP MODFLOW6 end-to-end
+on:
+  push:
+    branches: [work/f-gc44-real-swap-modflow-end-to-end]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py'
+      - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
+      - '.github/workflows/f-gc44-real-swap-modflow-end-to-end.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  live-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run real SWAP plus live MODFLOW6 end-to-end gate
+        run: bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh

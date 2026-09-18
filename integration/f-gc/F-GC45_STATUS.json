@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC45",
+  "title": "Real MultiSWAP N:1 + live MODFLOW6 end-to-end application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_REAL_MULTISWAP_N1_APPLICATION",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f"
+  },
+  "source": {
+    "branch": "work/f-gc45-real-multiswap-modflow6-end-to-end",
+    "base": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f"
+  },
+  "predecessors": [
+    "F-GC40 typed deterministic N:1 MultiSWAP affine cell response",
+    "F-GC41 whole-window publication boundary",
+    "F-GC44 real one-column/one-cell SWAP + live MODFLOW6 application"
+  ],
+  "goal": "Qualify one real N:1 runtime composition in which two independently transactional real FMR/SWAP columns contribute area-weighted exchange to one live MODFLOW6 6.8.0 cell through the admitted F-GC40 affine cell response and F-GC41 publication ordering.",
+  "reconcile_findings": [
+    "F-GC40 already canonically owns the deterministic N:1 affine reduction at a common groundwater-cell reference head.",
+    "F-GC25 already provides architectural precedent for all-tile preflight before sequential SWAP/ledger publication, but its groundwater participant predates the F-GC38/F-GC41 live MODFLOW prepared-solve lifecycle.",
+    "F-GC44 provides the real FMR participant, real accepted-trajectory predictor, live MODFLOW prepared solve and single-participant publication evidence.",
+    "No new soil-water or groundwater physics is required for a two-column N:1 application qualification.",
+    "The new decision surface is composition and publication across multiple independently transactional real SWAP participants sharing one irreversible MODFLOW timestep publication."
+  ],
+  "design_decisions": [
+    "Start with two real FMR columns and one live MODFLOW cell; use distinct SWAP lineage ids and explicit area fractions summing to one.",
+    "Build one admitted F-GC30 predictor response per real SWAP column and reduce them with F-GC40 at one explicit common groundwater reference head.",
+    "At each corrector iteration run both real SWAP columns from their own immutable accepted checkpoints at the same MODFLOW cell head; compare MODFLOW realized flux with the area-weighted SWAP flux.",
+    "Discard every nonfinal candidate for every tile before the next coupling iteration.",
+    "Before the first irreversible publication operation, require non-mutating readiness for every retained SWAP candidate, every prepared tile ledger and the live MODFLOW timestep.",
+    "Publication order remains F-GC41: finalize MODFLOW timestep once, then commit all preflighted SWAP candidates in canonical tile order, then commit all prepared ledgers.",
+    "A post-publication SWAP/ledger failure is a durability/invariant failure, not rollback-safe retry, matching the existing F-GC25/F-GC41 boundary.",
+    "Qualification is runtime/composition evidence only; it makes no scientific claim that heterogeneous unsaturated-zone columns may be replaced by one equivalent column."
+  ],
+  "initial_envelope": {
+    "topology": "two real SWAP columns -> one MODFLOW cell",
+    "numerical_route": "same short near-equilibrium F-GC44/F-GC30 route",
+    "physics": [
+      "drainage off",
+      "root extraction off",
+      "macropore off",
+      "snow off",
+      "soil temperature off"
+    ],
+    "modflow": "live MODFLOW6 6.8.0 prepared solve",
+    "tangent": "one analytic accepted-trajectory response per tile; F-GC40 aggregate slope",
+    "publication": "all-tile preflight before MODFLOW finalize_time_step; canonical tile-order SWAP commits then ledger commits"
+  },
+  "exclusions": [
+    "scientific equivalence of heterogeneous columns",
+    "more than one live MODFLOW groundwater cell",
+    "active drainage",
+    "root uptake",
+    "macropores",
+    "snow",
+    "soil temperature",
+    "Ribasim",
+    "irrigation",
+    "runtime finite-difference tangent fallback",
+    "arbitrary large prescribed-head jumps"
+  ],
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "mutations": "Qualification, workflow, documentation and status only; production source delta NONE.",
+  "next_permitted_action": "Do not silently turn F-GC45 into a heterogeneous-aggregation claim. If software coverage is the goal, open a separate multi-cell live MODFLOW workunit. If heterogeneous N:1 physical transferability is the goal, keep it in the SCALE scientific workstream with explicitly designed experiments and hypotheses.",
+  "canonical_admission": {
+    "preimage": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f",
+    "qualification_head": "a2c7a208fc4484dee69055287dd4c7126584d056",
+    "merge_head": "6349969aeb6d0d8c22e5eb835b420cda6d20d4ff",
+    "pr": 239,
+    "merge_method": "merge",
+    "production_delta": "NONE"
+  },
+  "qualification": {
+    "live_n1": {
+      "run": 35341574070,
+      "job": 105588435093,
+      "conclusion": "success",
+      "modflow_version": "6.8.0",
+      "iterations": 2,
+      "final_head_m": -0.7149999677331765,
+      "final_q1_m_per_s": -1.2708557527755854e-13,
+      "final_q2_m_per_s": -1.2708557527755854e-13,
+      "final_weighted_q_m_per_s": -1.2708557527755854e-13,
+      "final_q_gw_m_per_s": -1.2708580747683645e-13,
+      "final_flux_residual_m_per_s": 2.3219927791065243e-19,
+      "ledger1_m": -3.8430677963933704e-13,
+      "ledger2_m": -7.137125907587689e-13,
+      "oracles": [
+        "FGC45_TWO_REAL_SWAP_LINEAGES=PASS",
+        "FGC45_FGC40_N1_AFFINE_RESPONSE=PASS",
+        "FGC45_AREA_WEIGHTED_REAL_CORRECTORS=PASS",
+        "FGC45_LIVE_MODFLOW680_PREPARED_SOLVE=PASS",
+        "FGC45_CONJUNCTIVE_N1_CONVERGENCE=PASS",
+        "FGC45_ALL_TILE_PREFLIGHTS_BEFORE_PUBLICATION=PASS",
+        "FGC45_MODFLOW_THEN_ALL_SWAP_THEN_ALL_LEDGER_PUBLICATION=PASS",
+        "FGC45_REAL_MULTISWAP_MODFLOW_END_TO_END=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ117",
+      "run": 35341574087,
+      "job": 105588435192,
+      "conclusion": "success",
+      "oracles": [
+        "FVQ117_TWO_DISTINCT_REAL_SWAP_LINEAGES=PASS",
+        "FVQ117_FGC40_N1_COMPOSER_REUSED=PASS",
+        "FVQ117_AREA_WEIGHTED_CORRECTOR_ORACLE=PASS",
+        "FVQ117_ALL_TILE_PREFLIGHT_BEFORE_PUBLICATION=PASS",
+        "FVQ117_MODFLOW_SWAP_LEDGER_PUBLICATION_ORDER=PASS",
+        "FVQ117_LIVE_MODFLOW_BINDING=PASS",
+        "FVQ117_RUNTIME_NOT_SCIENTIFIC_AGGREGATION_CLAIM=PASS",
+        "FVQ117_PRODUCTION_DELTA_NONE=PASS"
+      ]
+    }
+  },
+  "admitted_capability": [
+    "two independently transactional real FMR/SWAP lineages coupled N:1 to one live MODFLOW6 cell",
+    "F-GC40 common-reference-head affine aggregation used in the live coupling path",
+    "area-weighted real corrector flux closure",
+    "all-tile SWAP and ledger readiness before the irreversible MODFLOW timestep publication point",
+    "MODFLOW timestep then all SWAP candidates then all prepared ledgers publication ordering"
+  ],
+  "evidence_boundary": {
+    "statement": "Runtime/composition qualification only.",
+    "homogeneous_first_envelope": "Both real SWAP columns use the same physical parameterization; lineages and ledgers are distinct.",
+    "not_claimed": [
+      "physical validity of replacing heterogeneous columns by an equivalent column",
+      "heterogeneous forcing/soil aggregation",
+      "parameter upscaling",
+      "multiple live MODFLOW cells"
+    ]
+  }
+}
