@@ -1,0 +1,153 @@
+{
+  "schema":"swap5.publication.p2e23-reference-error-bracketing.v1",
+  "workunit":"PUB-P2E23",
+  "publication_owner":"PUB-SQ",
+  "phase":"PREREGISTERED_BEFORE_UNTIMED_STRICT_ERROR_BRACKETING",
+  "role":"UNTIMED_MATCHED_OBSERVED_ERROR_CONSTRUCTION",
+  "branch":"work/pub-p2e23-reference-error-bracketing",
+  "parent_threshold_control_authority":{
+    "branch":"work/pub-p2e22-equal-error-reference-migration",
+    "head":"dac6e7b7896f44baa8467eb0b34ba119f5bd2631",
+    "result_path":"docs/publication/P2E22_EQUAL_ERROR_REFERENCE_MIGRATION_RESULT.json",
+    "result_blob":"60b08f4b953e1f5330d7db9fc2a5729f924de12e",
+    "verdict":"FINAL_36_CASE_THRESHOLD_MATCHED_CONTROLS_FROZEN_BUT_STRICT_EQUAL_OBSERVED_ERROR_NOT_ACHIEVED"
+  },
+  "final_ref_high_authority":{
+    "branch":"work/pub-p2e21-ref-high-representation-bound",
+    "head":"dd09a1ef83ff4953cc4445c3116898c6fe118267",
+    "result_path":"docs/publication/P2E21_REF_HIGH_REPRESENTATION_BOUND_RESULT.json",
+    "result_blob":"638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78",
+    "endpoint":"32-substep REPRESENTATION_BOUNDED_TOTAL Reference endpoint"
+  },
+  "purpose":"Construct a strict observed-error timing basis without using timing. The already frozen Ross N=1 production configuration defines a case-specific observed error target against final REF-HIGH. A dense, prospectively fixed Reference work-precision ladder is then used to find a local error bracket around that target.",
+  "epistemic_status":{
+    "ross_accuracy_outcomes_already_observed":true,
+    "reference_dense_ladder_outcomes_observed_before_preregistration":false,
+    "timing_observed":false,
+    "classification":"performance-matching construction, not untouched solver-accuracy confirmation"
+  },
+  "case_population":{
+    "cases":36,
+    "materials":["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation":[0.65,0.85,0.96],
+    "forcing":["DRYING","NOMINAL"],
+    "case_replacement_allowed":false,
+    "all_cases_retained":true
+  },
+  "physical_problem":{
+    "total_horizon_day":0.0016,
+    "grid":"16 homogeneous cells x 10 cm",
+    "source_sink":"zero",
+    "ponding_initial_cm":0.0,
+    "top_flux_over_initial_K0":{"DRYING":-0.005,"NOMINAL":0.010},
+    "bottom_flux_over_initial_K0":{"DRYING":-0.019,"NOMINAL":-0.004}
+  },
+  "ref_high_reconstruction":{
+    "segments":32,
+    "segment_duration_day":0.00005,
+    "compartment_integrated_allowance_cm":1.6e-15,
+    "compartment_rate_formula":"1.6e-15 / dt",
+    "total_integrated_bound_formula":"max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material)+spacing(theta_base_i))*dz_i))",
+    "total_rate_formula":"total_integrated_bound_cm / dt",
+    "representation_bound_check_required":true,
+    "hard_typed_mass_abs_limit_cm":1e-12,
+    "timed":false
+  },
+  "ross_target":{
+    "configuration":"P2E22 final selected ROSS N=1 outer segment for every case",
+    "outer_segments":1,
+    "private_internal_substeps":8,
+    "route":"rossfast-d3r",
+    "reference_fallback_allowed":false,
+    "target_error":"E_ross_case computed against reconstructed final REF-HIGH",
+    "target_reconstruction_rule":"Re-execute only the frozen Ross N=1 configuration untimed on each case. It must remain route-valid, pass hard mass/flux/state gates, and satisfy the unscaled storage gate. No Ross control search is allowed in P2E23."
+  },
+  "reference_work_precision_ladder":{
+    "route":"legacy-reference-bound",
+    "policy":"same P2E21 REPRESENTATION_BOUNDED_TOTAL research convergence policy",
+    "candidate_outer_segments":"every integer N from 1 through 31 inclusive",
+    "segment_duration_formula":"0.0016 / N day",
+    "configuration_count":1116,
+    "reason":"A dense fixed integer ladder gives substantially finer error resolution than the prior powers-of-two ladder without adapting N after seeing results. N=32 is reserved exclusively for REF-HIGH and is not an equal-error timing candidate.",
+    "max_iterations":16,
+    "max_backtracking":8,
+    "head_abs_tolerance_cm":1e-12,
+    "head_rel_tolerance":1e-12,
+    "ponding_tolerance_cm":1e-12,
+    "on_invalid_segment":"Stop that N configuration at first invalid segment and retain it as route-invalid. Do not substitute another policy."
+  },
+  "error_definition":{
+    "reference":"same casewise P2E21 REF-HIGH endpoint",
+    "component_metrics":[
+      "D_h_inf / P2E14_h_inf_exact_Se",
+      "D_h_rms / P2E14_h_rms_exact_Se",
+      "D_theta_inf / P2E14_theta_inf_exact_Se",
+      "D_theta_rms / P2E14_theta_rms_exact_Se"
+    ],
+    "scalar_error":"E = maximum of the four normalized head/theta component metrics",
+    "storage":"hard conjunctive gate only: D_storage_abs <= unscaled exact-Se P2E14 storage envelope",
+    "mass":"hard conjunctive gate only: absolute typed integrated mass residual <=1e-12 cm on every accepted segment",
+    "transfer":"fixed prescribed top/bottom transfer identity is a hard consistency gate",
+    "weighted_compensation":false
+  },
+  "bracket_rule":{
+    "candidate_reference_levels":"N=1..31 only",
+    "exact_match":"If a valid Reference candidate has E_ref equal to E_ross within 64 machine epsilons on max(1,E_ref,E_ross), classify EXACT_MATCH and freeze that N.",
+    "local_bracket":"For every adjacent integer pair (N,N+1) with both candidates route-valid and passing storage/mass/transfer gates, the pair is a bracket when (E_N-E_ross)*(E_Nplus1-E_ross) <= 0 and neither candidate is the N=32 REF-HIGH endpoint.",
+    "multiple_brackets":"Choose the bracket minimizing abs(log(E_high/E_low)) where E_low=min(E_N,E_Nplus1) and E_high=max(...), requiring both positive. Tie-break by smaller max(N,N+1), then smaller min(N,N+1).",
+    "selected_bracket_output":"Freeze both actual Reference N values and their actual errors. Do not interpolate cost or timing in P2E23.",
+    "non_monotonicity":"Allowed and reported. The algorithm searches every adjacent pair and does not assume temporal error is globally monotonic."
+  },
+  "unresolved_classification":{
+    "REF_COARSEST_ALREADY_MORE_ACCURATE":"All valid N=1..31 Reference candidates have E_ref < E_ross, so no observed-error bracket exists above the Ross target.",
+    "REF_NEVER_REACHES_ROSS_BEFORE_REF_HIGH":"All valid N=1..31 Reference candidates have E_ref > E_ross; N=32 truth is deliberately not used as a timing candidate.",
+    "INVALID_GAP_PREVENTS_LOCAL_BRACKET":"Valid Reference candidates exist on both error sides of E_ross but no adjacent valid pair straddles the target.",
+    "NO_VALID_REFERENCE_WORK_PRECISION_CANDIDATE":"No N=1..31 candidate passes the hard gates.",
+    "rule":"Unresolved cases are retained and excluded from strict matched-error timing. They may still be described in work-precision figures."
+  },
+  "secondary_diagnostics":{
+    "closest_reference_candidate":"For every case, report the valid N=1..31 candidate minimizing abs(log(E_ref/E_ross)); no cutoff is used to alter primary bracket classification.",
+    "threshold_matched_context":"Retain the P2E22 N=1/N=1 threshold-matched controls as a separate descriptive comparison, never relabelled as strict equal-error.",
+    "work_counters":"Report algorithm-specific vectors only; do not create a weighted composite work unit."
+  },
+  "future_timing_boundary":{
+    "timing_authorized_now":false,
+    "strict_timing_population":"EXACT_MATCH and BRACKETED cases only",
+    "future_measurements":"Ross N=1 plus the frozen one Reference exact configuration or two Reference bracket configurations",
+    "future_interpolation":"If a bracket is timed, any interpolation to the Ross error target must be separately preregistered before timing. P2E23 does not choose a timing interpolation formula.",
+    "unresolved_cases":"must not contribute to a strict matched-error speedup statistic"
+  },
+  "negative_result_policy":{
+    "execute_all_36_cases":true,
+    "execute_all_31_reference_candidates_per_case":true,
+    "reference_candidate_configuration_count":1116,
+    "ross_target_configuration_count":36,
+    "do_not_stop_after_unfavorable_case":true,
+    "no_case_replacement":true,
+    "no_reference_N_adaptation":true,
+    "no_error_metric_change":true,
+    "no_timing":true,
+    "scientific_outcome_is_not_ci_failure":true
+  },
+  "qualification":{
+    "required":[
+      "36 final REF-HIGH reconstructions",
+      "36 frozen Ross N=1 target reconstructions",
+      "1116 Reference N=1..31 work-precision configurations attempted",
+      "36 primary match classifications emitted",
+      "no src/** or reference/** mutation",
+      "no timing call in harness",
+      "O0/O2 byte-identical scientific output",
+      "scientific unresolved classifications do not fail CI"
+    ]
+  },
+  "claim_firewall":{
+    "speedup_claim_allowed":false,
+    "runtime_claim_allowed":false,
+    "production_reference_policy_change_allowed":false,
+    "strict_equal_error_claim_allowed_before_brackets_are_persisted":false,
+    "P2E22_threshold_matched_result_reclassification_allowed":false
+  },
+  "verdict":"PREREGISTERED_UNTIMED_STRICT_OBSERVED_ERROR_BRACKETING_READY",
+  "next_permitted_action":"Implement and execute only the untimed 36-case Ross-target plus dense Reference work-precision/bracketing matrix. Persist exact brackets and unresolved classes. Do not time."
+}
