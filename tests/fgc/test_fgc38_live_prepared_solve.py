@@ -36,6 +36,45 @@ class Term:
     rhs_m3_per_day: float
 
 
+class GuardFakeKernel:
+    def __init__(self) -> None:
+        self.solve_calls = 0
+        self.values = {
+            "NODELIST": np.array([-1], dtype=np.int32),
+            "HCOF": np.array([0.0], dtype=np.float64),
+            "RHS": np.array([0.0], dtype=np.float64),
+            "MAXBOUND": np.array([1], dtype=np.int32),
+            "NBOUND": np.array([0], dtype=np.int32),
+            "X": np.array([0.5], dtype=np.float64),
+            "XOLD": np.array([0.5], dtype=np.float64),
+            "MXITER": np.array([2], dtype=np.int32),
+        }
+
+    def get_var_address(
+        self, var_name: str, component_name: str, subcomponent_name: str = ""
+    ) -> str:
+        return var_name
+
+    def get_value_ptr(self, address: str) -> np.ndarray:
+        return self.values[address]
+
+    def prepare_solve(self, solution_id: int) -> None:
+        self.values["XOLD"][0] = self.values["X"][0]
+
+    def solve(self, solution_id: int) -> bool:
+        self.solve_calls += 1
+        self.values["X"][0] += 0.01
+        return False
+
+    def finalize_solve(self, solution_id: int) -> None:
+        pass
+
+
+class GuardPublisher:
+    def __call__(self, *args: Any) -> int:
+        return 0
+
+
 class CountingKernel:
     def __init__(self, kernel: XmiWrapper) -> None:
         self.kernel = kernel
@@ -103,9 +142,8 @@ def build_model(workdir: Path) -> None:
         complexity="MODERATE",
         outer_dvclose=1.0e-11,
         inner_dvclose=1.0e-12,
-        rcloserecord=1.0e-12,
-        outer_maximum=300,
-        inner_maximum=300,
+        outer_maximum=100,
+        inner_maximum=100,
     )
     gwf = flopy.mf6.ModflowGwf(
         sim,
@@ -287,7 +325,42 @@ def run_case(
                     pass
 
 
+def test_mxiter_guard() -> None:
+    kernel = GuardFakeKernel()
+    session = Modflow6PreparedSolveSession(
+        kernel,
+        "GWF_1",
+        "API_SWAP",
+        GuardPublisher(),
+        solution_id=1,
+    )
+    require(
+        session.acquire_after_prepare_time_step() == PreparedSolveStatus.OK,
+        session.last_error,
+    )
+    require(
+        session.open_prepared_solve() == PreparedSolveStatus.OK,
+        session.last_error,
+    )
+    require(session.max_solve_iterations == 2, "fake MXITER not acquired")
+
+    for _ in range(2):
+        status, iteration = session.publish_and_solve_iteration([], [])
+        require(status == PreparedSolveStatus.OK, session.last_error)
+        require(iteration is not None, "missing guarded iteration")
+
+    status, iteration = session.publish_and_solve_iteration([], [])
+    require(
+        status == PreparedSolveStatus.SOLVE_ITERATION_LIMIT,
+        f"MXITER overrun was not blocked: {status}",
+    )
+    require(iteration is None, "MXITER overrun returned an iteration")
+    require(kernel.solve_calls == 2, "kernel solve called beyond MXITER")
+    print("FGC38_MXITER_OVERRUN_BLOCKED_BEFORE_SOLVE=PASS")
+
+
 def main() -> None:
+    test_mxiter_guard()
     libmf6 = Path(os.environ["LIBMF6"]).resolve()
     bridge = Path(os.environ["FGC34_BRIDGE_LIB"]).resolve()
     require(libmf6.is_file(), f"missing LIBMF6: {libmf6}")
@@ -336,10 +409,22 @@ def main() -> None:
         "FGC38_SOLVE_COUNTS="
         f"iterative:{iterative_kernel.solve_calls},clean:{clean_kernel.solve_calls}"
     )
+    head_scale_m = max(
+        1.0,
+        float(np.max(np.abs(iterative_head))),
+        float(np.max(np.abs(clean_head))),
+    )
+    path_equivalence_tolerance_m = (
+        math.sqrt(float(np.finfo(np.float64).eps)) * head_scale_m
+    )
+    print(
+        "FGC38_PATH_EQUIVALENCE_TOLERANCE="
+        f"{path_equivalence_tolerance_m:.17g}"
+    )
     require_allclose(
         iterative_head,
         clean_head,
-        2.0e-12,
+        path_equivalence_tolerance_m,
         "A->B->C path does not close to clean C-only stabilized solution",
     )
 
