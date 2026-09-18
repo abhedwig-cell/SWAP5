@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.f-ross16.rossfast-cost-attribution.v1",
+  "workunit": "F-ROSS16",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "branch": "work/f-ross16-rossfast-cost-attribution",
+  "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+  "purpose": "Explain the F-ROSS15 Reference-faster screening result by attributing numerical work and profile cost without modifying either solver.",
+  "authority": {
+    "f_ross15_result_blob": "8c0224960999ce523fb04c592ddc999c35697862",
+    "f_ross15_harness_blob": "d9e2cb15317f0c8e19ea4a029c6c6a19d98d03b5",
+    "reference_binding_blob": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "rossfast_solver_blob": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+    "rossfast_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "rossfast_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22"
+  },
+  "domain": {
+    "case_authority": "same 36 PUB-P2E10 paired-valid E0 cases used by F-ROSS15",
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation": [0.65,0.85,0.98],
+    "forcing": ["DRYING","NOMINAL"],
+    "step_duration_day": 0.0016,
+    "grid": "16 homogeneous cells x 10 cm"
+  },
+  "diagnostic_stage_1_work_counts": {
+    "execution": "one untimed solve per route per case after normal initialization",
+    "reference_metrics": [
+      "nonlinear_iterations",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "internal_retries",
+      "alternative_solver_calls"
+    ],
+    "rossfast_metrics": [
+      "linear_solves",
+      "internal_retries",
+      "alternative_solver_calls"
+    ],
+    "expected_structural_rossfast_linear_solves_per_successful_solve": 24,
+    "reason": "production kernel executes 8-step coarse + 8-step first half + 8-step second half for the temporal certificate"
+  },
+  "diagnostic_stage_2_profile": {
+    "tool": "GNU gprof instrumentation",
+    "optimization": "O2",
+    "selected_route": "ROSSFAST",
+    "profile_repetitions_per_case": 5000,
+    "case_count": 36,
+    "profiled_selected_route_calls": 180000,
+    "production_source_mutation": false,
+    "profile_variants": [
+      {
+        "id": "O2_PROFILE",
+        "flags": ["-O2","-pg"],
+        "interpretation": "closest available function-level profile to F-ROSS15 build, subject to profiler instrumentation and compiler inlining"
+      },
+      {
+        "id": "O2_NOINLINE_STRUCTURAL_PROFILE",
+        "flags": ["-O2","-pg","-fno-inline","-fno-inline-functions","-fno-inline-small-functions"],
+        "interpretation": "structural attribution only; not a production timing ratio"
+      }
+    ],
+    "required_symbols_or_buckets": [
+      "rossfast_d3r_table_kernel_solve",
+      "run_window",
+      "candidate_step",
+      "table_face_linearization",
+      "factor_and_solve"
+    ],
+    "claim_rule": "Use work-count evidence as exact structural evidence. Treat gprof percentages as diagnostic attribution, not as formal production performance shares."
+  },
+  "hypotheses_pre_execution": [
+    "H1: RossFast successful solves execute exactly 24 linear solves because temporal certification evaluates coarse plus two half trajectories.",
+    "H2: Reference requires materially fewer linear solves on this E0 domain.",
+    "H3: RossFast cost is dominated by repeated candidate-step work rather than the 16x16 tridiagonal factor-and-solve itself.",
+    "H4: table interpolation and repeated constitutive/state inversion may account for a substantial share of candidate-step cost."
+  ],
+  "negative_result_policy": {
+    "retain_all_36_cases": true,
+    "do_not_change_profile_repetitions_after_observing_results": true,
+    "do_not_delete_profile_buckets": true,
+    "if_gprof_sampling_is_unresolved": "record PROFILE_UNRESOLVED and rely only on exact work-count attribution",
+    "no_post_hoc_optimization": true
+  },
+  "firewall": {
+    "src_mutation_allowed": false,
+    "reference_mutation_allowed": false,
+    "solver_tolerance_change_allowed": false,
+    "algorithm_change_allowed": false,
+    "performance_optimization_allowed": false,
+    "formal_speedup_claim_allowed": false
+  },
+  "next_permitted_action": "Implement qualification-only work-count and profiling harnesses exactly as preregistered and execute them."
+}
