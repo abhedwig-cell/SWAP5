@@ -111,3 +111,34 @@ Next permitted action:
 - re-read only PR #220 head and these two in-progress workflows;
 - if the D1-B gate completes, capture its raw classification markers before consulting downstream interpretation;
 - persist the result before any D2 work.
+
+
+## D1-B failure checkpoint — run 35291383247
+
+PR #220 experiment workflow completed **FAILURE** at job `105434762847`.
+
+Classification: **INVALID_EXPERIMENT_SETUP / TOOLING_BINDING_ERROR**
+
+The failure occurs during compilation before clean/mutant scientific execution.
+
+Observed errors:
+
+- `fmr_serialized_reference_backend_t` does not expose `configure_parameters`;
+- it does not expose `prepare_interval`;
+- it is not directly a `transaction_model_t` accepted by `execute_reference_interval`.
+
+Therefore:
+
+- no D1 mutant executed;
+- no B1/B2 comparison executed;
+- no D1-B scientific classification is authorized;
+- the preregistered hypothesis remains untouched.
+
+This is a fixture-composition error in the qualification-only test.
+
+Next permitted action:
+
+1. read only the current canonical `tests/publication/test_pub_p1e02_postsolver_rollback.f90` and its immediate transaction-model wrapper dependency;
+2. bind D1-B to that already-qualified production composition instead of inventing a direct backend interface;
+3. do not change D1 semantics, comparator definitions or mutation intent;
+4. persist the corrected binding design before rerunning.
