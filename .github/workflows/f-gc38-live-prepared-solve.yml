@@ -1,0 +1,36 @@
+name: F-GC38 live MODFLOW6 prepared-solve backend
+
+on:
+  push:
+    branches:
+      - work/f-gc38-modflow6-prepared-solve-session
+    paths:
+      - 'src/adapter/modflow6_prepared_solve_session.py'
+      - 'src/adapter/modflow6_fgc34_ctypes_publisher.py'
+      - 'src/adapter/mod_modflow6_fgc34_c_bridge.f90'
+      - 'src/runtime/mod_modflow6_api_binding.f90'
+      - 'tests/fgc/test_fgc38_live_prepared_solve.py'
+      - 'tests/fgc/run_fgc38_live_prepared_solve.sh'
+      - 'docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md'
+      - 'integration/f-gc/F-GC38_STATUS.json'
+      - '.github/workflows/f-gc38-live-prepared-solve.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install \
+            git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 \
+            git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run F-GC38 live prepared-solve gate
+        run: bash tests/fgc/run_fgc38_live_prepared_solve.sh
