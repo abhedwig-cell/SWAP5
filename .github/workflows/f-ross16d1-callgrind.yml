@@ -1,0 +1,42 @@
+name: F-ROSS16D1 Callgrind candidate-step attribution
+
+on:
+  push:
+    branches:
+      - work/f-ross16-rossfast-cost-attribution
+    paths:
+      - 'integration/f-ross/F-ROSS16D1_*'
+      - 'tests/ross/test_ross16d1_callgrind.f90'
+      - 'tests/ross/run_ross16d1_callgrind.sh'
+      - '.github/workflows/f-ross16d1-callgrind.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-ross/F-ROSS16D1_*'
+      - 'tests/ross/test_ross16d1_callgrind.f90'
+      - 'tests/ross/run_ross16d1_callgrind.sh'
+      - '.github/workflows/f-ross16d1-callgrind.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  callgrind-attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran and Valgrind
+        run: sudo apt-get update && sudo apt-get install -y gfortran valgrind
+      - name: Execute deterministic instruction attribution
+        run: bash tests/ross/run_ross16d1_callgrind.sh
+      - name: Preserve Callgrind evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross16d1-callgrind-${{ github.run_id }}
+          path: F-ROSS16D1_EVIDENCE
+          if-no-files-found: warn
