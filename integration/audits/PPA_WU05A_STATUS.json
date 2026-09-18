@@ -4,7 +4,7 @@
   "title": "Macropore source/state/mass/transaction authority",
   "branch": "audit/ppa-wu05a-macropore-authority",
   "reconcile_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
-  "status": "CANONICAL_RECONCILED_PARTIAL_AUTHORITY_FINAL_QUALIFICATION_PENDING",
+  "status": "CANONICAL_ADMITTED_PARTIAL_AUTHORITY_CLOSED_SOURCE_MATERIALIZATION_REQUIRED",
   "production_source_mutation": false,
   "reference_source_mutation": false,
   "exact_authority": {
@@ -64,8 +64,8 @@
     ]
   },
   "production_admission": "NONE_REVIEW_ONLY",
-  "verdict": "QUALIFIED_PARTIAL_AUTHORITY_FREEZE_SOURCE_MATERIALIZATION_REQUIRED",
-  "next_action": "Require final PPA-WU05-A authority review, Documentation and broad F-CI qualification on the reconciled exact head. If green, canonically admit this review-only partial-authority checkpoint. Production macropore remains blocked until PPA-WU05-A1 byte-exact source materialization and census closes.",
+  "verdict": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_SOURCE_MATERIALIZATION_REQUIRED",
+  "next_action": "PPA-WU05-A is closed as canonically admitted review authority. Production macropore remains forbidden. Continue only with PPA-WU05-A1 byte-exact B1.11 macropore/macrorate source materialization and complete mutable-field/mass-transfer census.",
   "canonical_reconciliation": {
     "prior_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
     "governance_repair_pr": 345,
@@ -74,5 +74,36 @@
     "content_delta_after_prior_qualified_head": "NONE_FOR_WU05A_SEVEN_FILE_REVIEW_SURFACE",
     "production_overlap": "NONE",
     "reference_overlap": "NONE"
+  },
+  "canonical_admission": {
+    "pr": 343,
+    "merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999",
+    "canonical_branch": "integration/f-ci-canonical",
+    "final_admission_head": "e54416203fc366e1005e4a09b22320102342adbc",
+    "final_checks": {
+      "authority_review": {
+        "run_id": 35399987601,
+        "conclusion": "success"
+      },
+      "parent_wu05_preservation": {
+        "run_id": 35399987594,
+        "conclusion": "success"
+      },
+      "documentation": {
+        "run_id": 35399987514,
+        "conclusion": "success"
+      },
+      "canonical_qualification": {
+        "run_id": 35399987540,
+        "conclusion": "success"
+      }
+    },
+    "prerequisite_governance_repair": {
+      "pr": 345,
+      "merge_commit": "48de5d6b6515fc77ffe639768eaaf56aec392ac3",
+      "scope": "lineage-aware current-successor preservation, WU05 parent scope ownership, closed F-CI51 trigger hygiene",
+      "production_mutation": "NONE",
+      "reference_mutation": "NONE"
+    }
   }
 }
