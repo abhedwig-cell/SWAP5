@@ -56,7 +56,7 @@ Secondary target: **Environmental Modelling & Software**.
 
 The target-journal rationale and GMD-specific submission gates are frozen in `PUB_GC_JOURNAL_POSITIONING.md`. Journal positioning does not broaden the E1–E7 claim set.
 
-The remaining submission blockers are archival/governance rather than scientific. They are frozen in `PUB_GC_GMD_ARCHIVAL_GATE.md`: (A1) a governed SWAP5 publication version/release identifier, (A2) explicit software-licence and redistribution authority, and then (A3) a persistent exact-version archive with DOI or equivalent unique identifier. The live GitHub repository remains the development location but is not sufficient by itself for the GMD archive requirement.
+The remaining submission blockers are archival/governance rather than scientific. Upstream SWAP-4 licence authority is now independently verified; the open licence decision is specifically the explicit redistribution/licence declaration for the complete SWAP5 publication archive. They are frozen in `PUB_GC_GMD_ARCHIVAL_GATE.md`: (A1) a governed SWAP5 publication version/release identifier, (A2) explicit software-licence and redistribution authority, and then (A3) a persistent exact-version archive with DOI or equivalent unique identifier. The live GitHub repository remains the development location but is not sufficient by itself for the GMD archive requirement.
 
 ## What remains editorial / submission-specific
 
@@ -122,3 +122,17 @@ Open blockers:
 - A5 — final Code and data availability statement: depends on A2/A3.
 
 No additional hydrological experiment is required to close these blockers.
+
+
+## Prearchive closure state
+
+Prepared on 2026-09-18:
+
+- release/licence authority audit;
+- exact prearchive publication inventory;
+- automated prearchive/submission gate;
+- current GMD presubmission checklist.
+
+A2 is no longer treated as one undifferentiated unknown: upstream SWAP version-4 licence authority is verified, while the explicit SWAP5 archive declaration remains governance-bound.
+
+No existing release or tag naming convention was found, so A1 remains a genuine release-governance decision.
