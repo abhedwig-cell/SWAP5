@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 
-Status: `SOURCE_INVENTORY_COMPLETE / FIRST_BOUNDED_SLICE_PREREGISTERED`
+Status: `SOURCE_INVENTORY_COMPLETE / FIRST_BOUNDED_SLICE_IMPLEMENTED_AND_INDEPENDENTLY_QUALIFIED / CANONICAL_ADMISSION_PENDING`
 
 Canonical authority at reconcile: `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`.
 
@@ -15,6 +15,19 @@ B1.11 differs from B1.10 only through SWAP-011 in
 The lower-boundary implementation is therefore unchanged from B1.10 to B1.11.
 In particular, exact `SWAP/headcalc.f90` remains
 `db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5`.
+
+The B1.11 replay also pins the unchanged lower-boundary source members:
+`boundbottom.f90=5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e`,
+`calcgwl.f90=d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb`,
+`soilwater.f90=027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8`,
+`fluxes.f90=b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550`,
+and `integral.f90=bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174`.
+B1.11 `readswap.f90` is
+`e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c`;
+its admitted SWAP-013 change concerns PDI hydraulic-input validation and does not
+alter the lower-boundary selector block. The B1.11 lower-boundary grammar is
+therefore source-identical to the B0/B1.10 lineage except for that unrelated
+`readswap` mutation.
 
 For modes 2 and 5, the repository already contains independent exact-source
 oracles reconstructed from the frozen 4.3.1 archive. F-SI27 binds mode 2 to
@@ -89,3 +102,34 @@ Priority is by independent semantic ownership, not selector number.
    authority explicitly requires exposure.
 
 No broad “all SWBOTB migrated” claim follows from this work unit.
+
+
+## PPA-WU02-A qualification
+
+The preregistered application-only slice was implemented with one production
+mutation: `src/runtime/mod_fmr_production_application_bootstrap.f90` now admits
+a homogeneous `bottom_mode=2` profile alongside the pre-existing homogeneous
+mode-7 standalone and mode-5 groundwater profiles. The bootstrap copies the
+already-resolved typed forcing unchanged and creates no groundwater registry or
+ledger for mode 2.
+
+Exact-head qualification on `785d9466a082f5a8b0ce1b79fa803e2f8ff4de0b`:
+
+- PPA-WU02 workflow run `35374222568`;
+- owner job `105695000702`: PASS;
+- independent job `105695282455`: PASS;
+- PPA-WU01 preservation run `35374222321`: PASS;
+- Documentation validation/build run `35374222234`: PASS.
+
+The owner gate proves nonzero prescribed qbot reaches the production bootstrap,
+executes and commits through Reference Richards, preserves hard mass closure,
+advances committed revision, reaches the exact arbitrary endpoint
+`4100.6875`, and is output-identical at O0/O2. The independent gate locks the
+lower-level production science blobs to canonical, inherits the independent
+F-VQ75 sign/rollback/temporal/fail-closed oracle and F-CI62P canonical
+admission, replays PPA-WU01 mode-7 and mode-5 application preservation, and
+confirms the SWBOTB=6 zero-flux adapter is byte-unchanged.
+
+This admission is deliberately narrower than legacy SWBOTB=2. It does not add
+the SW2 sine/table generator, DATE2/QBOT2 parser, oven-dry `2 -> -2`
+continuation, file I/O or any new groundwater semantics.
