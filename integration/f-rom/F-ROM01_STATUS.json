@@ -3,19 +3,20 @@
   "workstream": "F-ROM",
   "work_unit": "F-ROM01",
   "title": "Minimal Prognostic Representation",
-  "phase": "DESIGN_PERSISTED_IMPLEMENTATION_PENDING",
+  "phase": "REFERENCE_HISTORY_PILOT_PERSISTED_TEST_PENDING",
   "branch": "work/f-rom01-minimal-prognostic-representation",
   "canonical_baseline": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
-  "last_reconciled_head": "5636c3e626b9ee1a61c769ea4746b877e5da88e2",
+  "last_reconciled_head": "c9080982887a844aa75af565fa9bdce990311e99",
   "last_reconciled_upstream": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
-  "checkpoint_commit": "5636c3e626b9ee1a61c769ea4746b877e5da88e2",
-  "implemented": "DESIGN_ONLY",
+  "checkpoint_commit": "c9080982887a844aa75af565fa9bdce990311e99",
+  "implemented": "REFERENCE_HISTORY_PILOT_HARNESS_AND_GATE",
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_source_mutation": "NONE",
   "authority_paths": [
     "docs/science/F-ROM01_MINIMAL_PROGNOSTIC_REPRESENTATION.md",
+    "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json",
     "docs/status-a/CURRENT_STATUS.md",
     "docs/status-a/CURRENT_ARCHITECTURE.md",
     "docs/status-a/TRACEABILITY.md",
@@ -29,13 +30,21 @@
     "src/solver/mod_reference_richards_workspace.f90",
     "src/solver/mod_b110_default_mvg_provider.f90",
     "src/solver/mod_b110_source_sink_provider.f90",
-    "src/solver/mod_fixed_flux_top_boundary_provider.f90"
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+    "tests/rom/test_f_rom01_reference_histories.f90",
+    "tests/rom/analyze_f_rom01_reference_histories.py",
+    "tests/rom/run_f_rom01_reference_histories.sh",
+    ".github/workflows/f-rom01-reference-history-pilot.yml"
   ],
   "test_paths": [
-    "tests/rom/"
+    "tests/rom/test_f_rom01_reference_histories.f90",
+    "tests/rom/analyze_f_rom01_reference_histories.py",
+    "tests/rom/run_f_rom01_reference_histories.sh",
+    ".github/workflows/f-rom01-reference-history-pilot.yml"
   ],
   "evidence_paths": [
-    "integration/f-rom/"
+    "integration/f-rom/F-ROM01_REFERENCE_HISTORY_PILOT_CONTRACT.json",
+    "F-ROM01_EVIDENCE/ (workflow artifact, not committed until adjudicated)"
   ],
   "dependency_surface": [
     "src/solver/mod_soil_water_solver_contract.f90",
@@ -47,7 +56,7 @@
     "src/solver/mod_fixed_flux_top_boundary_provider.f90",
     "src/legacy/b1_10_port/headcalc.f90"
   ],
-  "next_action": "Freeze the first reference-history pilot contract, then implement and execute the research-only typed Reference Richards harness without src/ or reference/ mutation.",
-  "recovery_point": "Resume from the persisted design note at checkpoint_commit; reconcile only canonical delta intersecting dependency_surface.",
+  "next_action": "Execute the preregistered O0/O2 Reference Richards history pilot; inspect any failure within the research harness only, then persist evidence and adjudication.",
+  "recovery_point": "Resume from checkpoint_commit. No src/ or reference/ path has been changed. Re-run only the F-ROM01 pilot gate unless canonical changes intersect dependency_surface.",
   "blockers": []
 }
