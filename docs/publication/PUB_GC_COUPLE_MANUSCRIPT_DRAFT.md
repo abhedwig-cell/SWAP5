@@ -984,13 +984,76 @@ This distinction is important. A failed coupled experiment cannot be interpreted
 
 The response coefficient also varied strongly with window duration in the E3-D ready cases. That observation is consistent with treating `u` as a finite-window response quantity rather than as a static soil property. Its exact relationship to storage response and to the actual prescribed-head interface derivative remains an E4 question.
 
-## 5.6 How much response information should be exposed?
+## 5.6 The supplied response is real, but its incremental algorithmic value is modest
 
-The current evidence is not yet sufficient to decide whether component-provided response information is computationally preferable to black-box learning. E3 establishes two prerequisites for that later comparison. First, the low-flux control shows that sophisticated acceleration would have little scientific value in a regime where the coupled state correction itself is negligible. Second, E3-D shows that response information has its own qualification envelope and changes with window duration.
+E4 resolves the scientific identity of the response quantity exposed by the current SWAP predictor. Across five finite-window baselines, the accepted-trajectory response `u_A` agrees closely with an independent centred bottom-flux finite difference:
 
-E4 therefore first determines what the supplied response actually represents. Only after that identity is established should E5 compare supplied response against IQN/Anderson-style learned interface information. If a strong black-box method performs as well at lower information cost, the simpler interface should be preferred. Conversely, a reproducible advantage of fresh response information after state or regime change would justify the additional response contract.
+```text
+u_A ~= DeltaT * (dH_end / dq_bot)^(-1).
+```
 
-A negative ACCELERATE result would still strengthen the central coupling paper because it would place an empirical upper bound on how much internal response information this class of coupling needs.
+It is therefore a reproducible finite-window **flux-driven predictor response**. This confirms that `u_A` is not an arbitrary tuning coefficient.
+
+The same experiment also falsifies a stronger interpretation. The predictor response is not universally identical to the head-driven coupling derivative:
+
+```text
+J_R = dV_u / dH.
+```
+
+In the low-flux control cases, the storage and interface responses are nearly balance-aliased:
+
+```text
+J_S ~= -J_R
+```
+
+and their magnitudes are close to `u_A`. In the stronger B3 baseline, however, the measured head-driven response magnitude is approximately 8.1% larger than `u_A`. In B5 the flux-driven predictor response remains reproducible while no symmetric local head-driven `J_R` can be identified inside the admitted corrector domain.
+
+This distinction can be understood in terms of two different finite-window maps. The predictor probes a Neumann-like mapping from prescribed bottom flux to terminal head, whereas the coupled corrector uses a Dirichlet-like mapping from prescribed interface head to whole-window exchange. In a dynamic vadose-zone model with storage and other head-sensitive fluxes, the two local response objects need not be exact inverses over the operational perturbation range.
+
+E5 then asks whether exposing the additional component response is computationally valuable. The controlled scalar comparison uses real SWAP finite-window head trials and compares plain fixed point, dynamic Aitken, a cold secant/IQN analogue, the supplied `u_A`, and a zero-cost oracle based on the independently measured `J_R`.
+
+The main result is asymmetric.
+
+Relative to plain fixed-point iteration, acceleration is highly valuable. Near the fixed-point stability boundary and beyond it, Aitken and secant acceleration reduce the required real SWAP evaluations substantially and recover convergence in cases where the plain iteration becomes impractical or divergent.
+
+Relative to a strong black-box secant method, however, perfect derivative information adds little. Across the 18 cases in which both the cold secant and the zero-cost `J_R` oracle converge, the oracle saves one SWAP evaluation in 16 cases, two evaluations in one case, and none in one case. No extension of the convergence domain over the cold secant baseline is observed. The supplied `u_A` produces essentially the same evaluation-count pattern as the oracle in the comparable admitted cases.
+
+This negative information-value result is scientifically useful. It indicates that the coupling interface does not need to expose progressively more of the internal Richards solution merely because derivative information can be computed. For the tested scalar problem, black-box interface history recovers nearly all of the available acceleration value.
+
+The result also narrows the role of the response contract in the central method. A compact supplied response remains useful as:
+
+- an explicitly typed hydrological response quantity;
+- an initialization or local-linearization aid;
+- a diagnostic of finite-window component behaviour;
+- a possible input to groundwater-side nonlinear solution.
+
+It is not, on the present evidence, a sufficient basis for claiming a separate acceleration methodology.
+
+Accordingly, the independent ACCELERATE publication line is not admitted on the current scalar evidence. Reopening that question would require qualitatively different information geometry, for example a higher-dimensional interface, a regime transition that invalidates reusable black-box history, or a convergence-domain advantage that cannot be reproduced by a strong multisecant method.
+
+For the present paper, E4 and E5 support a simpler design principle:
+
+> expose hydrologically meaningful response information when it is cheap and useful, but keep coupling correctness independent of that information and do not assume that more internal derivative information is automatically more valuable.
+
+## 5.7 Realistic application remains a separate validation question
+
+The controlled experiments deliberately isolate coupling semantics and response geometry. They do not by themselves demonstrate that the same contract remains useful under a realistic multi-process application.
+
+Hupselbrook is the preferred E7 candidate because the repository already contains independently qualified authority for the legacy distribution, PMdirect forcing, interception, irrigation and related application composition. Whole-Hupsel production composition must nevertheless be closed before the case can be represented as a fully realistic SWAP5–MODFLOW6 validation. The realistic application will therefore be selected and preregistered separately from the controlled E6 stress experiment.
+
+This separation prevents two different questions from being conflated:
+
+```text
+E6:
+    can an admitted hydrological process/state create
+    a non-trivial coupling-feedback regime?
+
+E7:
+    does the coupling contract remain scientifically
+    usable under authentic application forcing?
+```
+
+A realistic case does not need to maximize coupling strength to be valuable, and a deliberately strong process-level stress case is not a substitute for realistic application validation.
 
 ---
 
