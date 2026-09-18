@@ -53,7 +53,11 @@
     "commit_rule": "Only SW_SOLVE_CONVERGED candidate states become the research trajectory state.",
     "forcing_during_subdivision": "UNCHANGED_WITHIN_OUTER_INTERVAL",
     "accounting": "Every accepted internal substep must expose finite integrated mass residual within 1e-12 cm.",
-    "failure_rule": "If depth 8 is exhausted, V2 fails. Do not retune the bound inside V2."
+    "failure_rule": "If depth 8 is exhausted, V2 fails. Do not retune the bound inside V2.",
+    "accepted_substep_mass_residual_abs_max_cm": 1e-12,
+    "expected_history_outer_intervals_per_history": 96,
+    "expected_continuation_outer_intervals_per_history": 24,
+    "expected_total_outer_intervals_per_history": 120
   },
   "evidence_required": [
     "production/reference source delta NONE",
