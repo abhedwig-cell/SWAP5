@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.publication.p2e24a-benchmark-fingerprint.v1",
+  "workunit": "PUB-P2E24A",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_UNTIMED_BENCHMARK_WORKLOAD_QUALIFICATION",
+  "role": "UNTIMED_TIMING_WORKLOAD_AND_SCIENTIFIC_FINGERPRINT_QUALIFICATION",
+  "branch": "work/pub-p2e24a-benchmark-fingerprint",
+  "parent_timing_protocol": {
+    "branch": "work/pub-p2e24-realized-error-timing",
+    "head": "637e0fd5455d68f1a292e200619ceb7e5e5fa526",
+    "path": "docs/publication/P2E24_REALIZED_ERROR_TIMING_PREREGISTRATION.json"
+  },
+  "matched_controls": {
+    "branch": "work/pub-p2e23-observed-error-reference-matching",
+    "head": "fff93e35c77e396a44499837e8f5fca681ef39fa",
+    "path": "docs/publication/P2E23_MATCHED_CONTROLS.json",
+    "blob": "9f173b0431c775a8459930ab34f4989b8e098491"
+  },
+  "purpose": "Qualify, without observing timing, the exact executable workload surface that P2E24 will later measure on an admitted isolated runner.",
+  "interface": {
+    "invocation": "p2e24_benchmark CASE_ID VARIANT REPETITIONS",
+    "case_id": "1..36",
+    "variants": {
+      "ROSS": "RossFast N=1 for every case",
+      "REF_HI": "casewise P2E23 Reference N_hi",
+      "REF_LO": "casewise P2E23 Reference N_lo; absent for left-censored cases 7 and 8"
+    },
+    "repetitions": "positive integer; every repetition restarts from the same frozen initial state and executes one independent 0.0016-day horizon",
+    "initialization": "case/material and solver setup occurs once per process before the repetitions loop, matching P2E24 full-process amortized timing semantics"
+  },
+  "configuration_count": {
+    "ross": 36,
+    "ref_hi": 36,
+    "ref_lo": 34,
+    "total": 106
+  },
+  "fingerprint": {
+    "generated_after_all_repetitions": "final repetition endpoint only; repetitions do not alter the scientific endpoint because every horizon restarts from the frozen initial state",
+    "fields": [
+      "case",
+      "variant",
+      "N",
+      "pressure_head[16]",
+      "water_content[16]",
+      "ponding_depth",
+      "storage_cm",
+      "top_transfer_cm",
+      "bottom_transfer_cm",
+      "max_abs_integrated_mass_residual_cm"
+    ],
+    "dynamic_timing_fields_forbidden": true,
+    "work_counters_in_fingerprint": false
+  },
+  "qualification": {
+    "ordinary_ci_allowed": true,
+    "measured_timing_allowed": false,
+    "compilers": [
+      "gfortran -O0",
+      "gfortran -O2"
+    ],
+    "requirements": [
+      "all 106 frozen configurations execute successfully at repetitions=1",
+      "O0 and O2 fingerprint records are byte-identical",
+      "all routes, state, mass and transfer gates pass",
+      "RossFast only appears in ROSS variants",
+      "Reference uses exact representation-bounded P2E21 policy",
+      "casewise N_hi/N_lo exactly match P2E23_MATCHED_CONTROLS.json",
+      "no timing intrinsic or external timing endpoint is used",
+      "no src/** or reference/** mutation"
+    ]
+  },
+  "output": {
+    "per_configuration_record": "PUB_P2E24A_FINGERPRINT|...",
+    "aggregate_record": "PUB_P2E24A_FINGERPRINT_SET_SHA256",
+    "fingerprint_manifest_next": "Persist the 106 configuration hashes and aggregate hash after a successful O0/O2-identical run."
+  },
+  "firewalls": {
+    "timing_execution": false,
+    "performance_claim": false,
+    "controls_changed": false,
+    "case_population_changed": false,
+    "solver_retuning": false,
+    "runtime_interpolation": false
+  },
+  "verdict": "PREREGISTERED_UNTIMED_BENCHMARK_FINGERPRINT_QUALIFICATION_READY",
+  "next_permitted_action": "Implement the benchmark executable and run the 106-configuration O0/O2 fingerprint qualification on ordinary CI. Do not time it."
+}
