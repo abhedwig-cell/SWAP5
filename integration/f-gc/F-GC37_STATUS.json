@@ -3,44 +3,82 @@
   "capability": "F-GC37",
   "title": "Coupled Predictor-Corrector Host Contract",
   "protocol": "Bounded Execution Protocol",
-  "phase": "RECONCILE_DESIGN",
-  "verdict": "READY_FOR_TRANSACTIONAL_HOST_CONTRACT_IMPLEMENTATION",
+  "phase": "QUALIFY",
+  "verdict": "OWNER_QUALIFIED_TRANSACTIONAL_COUPLED_HOST_CONTRACT",
   "source_branch": {
     "branch": "work/f-gc36-live-modflow6-fgc34-bridge",
     "head": "b07d2eb72336e41dc92ed6fc1d0ae072cf9f23b8",
     "f_gc36_verdict": "OWNER_QUALIFIED_LIVE_MODFLOW6_FGC34_BRIDGE"
+  },
+  "work_branch": {
+    "branch": "work/f-gc37-coupled-predictor-corrector-host",
+    "design_commit": "0e7b04006879a440985520f729df04b62840e9d6",
+    "implementation_commit": "e113a124d0f028eda24e05f4d55c0b07039e0117",
+    "qualified_head": "759aa0a989992104c3277d8f8c737e662580021f"
   },
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
     "head": "f2d472cb0e4d935ef39f002d6f21c8d90acf4dd8",
     "delta_from_f_gc36_reconciliation": "9 commits, only PUB-P2E10 publication workflow, documentation and publication tests; no F-GC30 through F-GC36 dependency source changed."
   },
-  "reused_authority": [
-    "existing SWAP immutable accepted-origin trial semantics",
-    "existing groundwater prepare/commit/abort publication pattern",
-    "F-GC30 predictor tangent",
-    "F-GC31 N:1 cell response",
-    "F-GC33 linear MODFLOW response",
-    "F-GC34 typed publication",
-    "F-GC35 XMI lifecycle guard",
-    "F-GC36 live MODFLOW consumption"
-  ],
   "blocking_discovery": {
     "fact": "xmipy/MODFLOW6 exposes forward solve lifecycle but no native checkpoint/rollback/restore equivalent to the SWAP transaction contract.",
-    "decision": "F-GC37 qualifies host orchestration against transaction-capable participant contracts. It does not pretend an in-place live MODFLOW kernel can generate same-origin trials until a separate backend qualifies origin restoration."
+    "consequence": "A live in-place MODFLOW kernel cannot yet be claimed to generate repeated same-origin candidates.",
+    "decision": "F-GC37 qualifies only the transaction-capable host contract. Live MODFLOW origin restoration is a separate backend workunit."
   },
-  "scientific_iteration": {
-    "fixed_within_window": "dq_u/dH slope from predictor response",
-    "updated_each_outer_iteration": [
+  "qualified_iteration_contract": {
+    "predictor": "built exactly once from accepted SWAP origin",
+    "fixed_within_window": "dq_u/dH",
+    "updated_each_iteration": [
       "H_ref <- solved groundwater head",
-      "q_ref <- SWAP corrector q_u at that head"
+      "q_ref <- SWAP corrector q_u"
     ],
     "residual": "q_swap - q_groundwater_boundary",
     "convergence": "absolute governed flux tolerance",
-    "candidate_rule": "all non-converged candidates discarded before the next iteration",
-    "max_iterations": "bounded and fail-closed"
+    "candidate_rule": "both non-converged candidates discarded before the next iteration",
+    "bounded_failure": "max iterations -> NOT_CONVERGED, request smaller window, no commit"
   },
-  "planned_changes": [
+  "publication_contract": [
+    "stage accepted exchange ledger",
+    "prepare groundwater candidate",
+    "prepare ledger",
+    "preflight SWAP candidate plus prepared groundwater plus prepared ledger",
+    "commit SWAP candidate",
+    "commit prepared groundwater",
+    "commit prepared ledger"
+  ],
+  "tests_evidence": {
+    "workflow": "F-GC37 coupled predictor-corrector host",
+    "green_run": 35289458914,
+    "green_job": 105428938373,
+    "green_head": "759aa0a989992104c3277d8f8c737e662580021f",
+    "conclusion": "success",
+    "pass_markers": [
+      "FGC37_TRANSACTIONAL_PARTICIPANTS_ONLY",
+      "FGC37_NO_XMI_OR_MODFLOW_EXECUTION_OWNERSHIP",
+      "FGC37_SAME_ACCEPTED_ORIGINS",
+      "FGC37_FIXED_TANGENT_WITHIN_WINDOW",
+      "FGC37_MULTITERATION_FLUX_CONVERGENCE",
+      "FGC37_NONCONVERGED_CANDIDATES_DISCARDED",
+      "FGC37_EXISTING_PUBLICATION_ORDER_PRESERVED",
+      "FGC37_EXACTLY_ONCE_FINAL_COMMIT",
+      "FGC37_BOUNDED_NOT_CONVERGED_FAIL_CLOSED",
+      "FGC37_PREPARE_FAILURE_ABORTS_ALL",
+      "FGC37_COUPLED_HOST_CONTRACT_GATE"
+    ],
+    "deterministic_fixture": {
+      "outer_iterations_to_tolerance": 9,
+      "flux_tolerance_m_per_s": 1e-6,
+      "final_head_m": 0.695681025257381,
+      "final_flux_residual_m_per_s": 2.348958041964444e-7
+    },
+    "failed_iteration": {
+      "run": 35289415701,
+      "head": "e113a124d0f028eda24e05f4d55c0b07039e0117",
+      "disposition": "Static test used a raw substring ban and rejected a docstring mentioning xmipy. The ownership gate was changed to syntax-aware import/call inspection only. Production host code and orchestration logic were unchanged."
+    }
+  },
+  "changes": [
     "docs/integration/F-GC37_COUPLED_PREDICTOR_CORRECTOR_HOST.md",
     "src/adapter/coupled_predictor_corrector_host.py",
     "tests/fgc/test_fgc37_coupled_predictor_corrector_host.py",
@@ -48,6 +86,22 @@
     ".github/workflows/f-gc37-coupled-predictor-corrector-host.yml",
     "integration/f-gc/F-GC37_STATUS.json"
   ],
+  "evidence_boundary": {
+    "qualified": [
+      "same-origin participant orchestration contract",
+      "fixed-tangent quasi-Newton reference updates",
+      "flux-residual convergence loop",
+      "candidate disposal and bounded failure",
+      "existing SWAP5 publication order",
+      "exactly-once final commit intent"
+    ],
+    "not_yet_qualified": [
+      "live MODFLOW accepted-origin restoration",
+      "live repeated MODFLOW candidates from one groundwater origin",
+      "real SWAP5 plus live MODFLOW end-to-end outer iteration",
+      "Ribasim or irrigation integration"
+    ]
+  },
   "exclusions": [
     "live MODFLOW origin restoration",
     "production MODFLOW solve ownership",
@@ -57,5 +111,5 @@
     "active-drainage envelope expansion",
     "canonical admission"
   ],
-  "next_permitted_action": "Implement and qualify the pure transaction-capable coupled-host contract with deterministic participant doubles. Stop before claiming live MODFLOW same-origin trial capability."
+  "next_permitted_action": "Open a separately bounded MODFLOW6 transactional-origin backend workunit. Prove repeated live candidate solves start from the same accepted groundwater origin before connecting that backend to the qualified F-GC37 host."
 }
