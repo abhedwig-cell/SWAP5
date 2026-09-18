@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.f-rom0r.r3-status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3",
+  "phase": "CLOSED_PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+  "decision": "PRESSURE_BOUNDARY_REFERENCE_SAMPLE_NO_GO",
+  "execution": {
+    "workflow_run": 35372347484,
+    "workflow_job": 105689021837,
+    "artifact_id": 10558789782,
+    "artifact_digest": "sha256:81f5377dc599745f2cb75054190116d1cb0918bd436c93e24bfe0b2e1ad03fb9"
+  },
+  "B01": {
+    "BOTTOM_HEAD_RISE": "FAIL_REFERENCE_RETRY_ADVISED_STEP_11",
+    "BOTTOM_HEAD_FALL": "FAIL_REFERENCE_RETRY_ADVISED_STEP_10"
+  },
+  "B14": {
+    "BOTTOM_HEAD_RISE": "PASS_FULL_HORIZON",
+    "BOTTOM_HEAD_FALL": "PASS_FULL_HORIZON",
+    "directional_separation": "PASS"
+  },
+  "post_result_amplitude_retuning_allowed": false,
+  "post_result_dt_retuning_allowed": false,
+  "vertical_reference_floor_next": "BLOCKED_PENDING_REFERENCE_AUTHORITY_RECONCILIATION",
+  "rom0_close_decision": "NOT_YET_REEVALUATED",
+  "rom1a_authorized": false,
+  "production_application_admission": false
+}
