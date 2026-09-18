@@ -1,0 +1,38 @@
+name: M1-C3 final legacy-file typed adapter
+
+on:
+  push:
+    branches:
+      - work/m1-c3-final-legacy-file-typed-adapter-v2
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/m1/**'
+      - 'integration/m1/M1_C3_FINAL_*'
+      - 'docs/integration/M1_C3_FINAL_*'
+      - '.github/workflows/m1-c3-final-legacy-file-typed-adapter.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/adapter/mod_b110_production_soil_water_task2.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/m1/**'
+      - 'integration/m1/M1_C3_FINAL_*'
+      - 'docs/integration/M1_C3_FINAL_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify M1-C3 bounded adapter
+        run: bash tests/m1/run_m1_c3_final_owner_qualification.sh
