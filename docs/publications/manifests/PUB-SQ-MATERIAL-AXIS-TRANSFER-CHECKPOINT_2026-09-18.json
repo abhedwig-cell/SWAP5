@@ -1,0 +1,95 @@
+{
+  "checkpoint_id": "PUB-SQ-MATERIAL-AXIS-TRANSFER-2026-09-18",
+  "capability": "PUB-SQ candidate-independent material-axis solver admission",
+  "phase": "CLOSE",
+  "governance_branch": "research/phd-five-paper-manifests-20260918",
+  "governance_head_before_checkpoint": "a7460fd266e15d50e15a630e3cd1d68475aeb4ae",
+  "canonical_observed_during_work": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+  "source_evidence": [
+    {
+      "workunit": "PUB-P2E11",
+      "role": "original frozen extension Reference calibration",
+      "result": "176/180 valid; B02/B05 at Se=0.98 invalid",
+      "branch": "work/pub-p2e11-reference-material-extension-calibration",
+      "head": "e8cd1f363798e5c0a0df586a5f509cd5667bf956"
+    },
+    {
+      "workunit": "PUB-P2E11R",
+      "role": "preregistered temporal common-domain recovery",
+      "result": "no complete 180/180 domain across five frozen temporal levels",
+      "branch": "work/pub-p2e11r-extension-reference-common-domain",
+      "head": "b6cc68a8bf4ca89d53da17557deec2cb08a16683"
+    },
+    {
+      "workunit": "PUB-P2E11D1",
+      "role": "Reference-only blocker diagnosis",
+      "result": "shared state-domain transfer failure, not convergence or hard mass failure",
+      "branch": "work/pub-p2e11d1-reference-extension-failure-adjudication",
+      "head": "f66d496799b52aee4c19fe0da5e4005160c60824"
+    },
+    {
+      "workunit": "PUB-P2E13",
+      "role": "exploratory/supporting common material state-domain construction",
+      "branch": "work/pub-p2e13-reference-common-material-state-domain",
+      "result_head": "95158d1f362b943c18e193d6d7b638300ebb684e",
+      "result": "complete tested common Se levels 0.65 through 0.96; prospectively selected anchors 0.65,0.85,0.96"
+    },
+    {
+      "workunit": "PUB-P2E14",
+      "role": "candidate-independent Reference threshold freeze",
+      "branch": "work/pub-p2e14-reference-common-material-threshold-freeze",
+      "result_head": "e680334ba1e8352db8d980fa8723ac31a279f636",
+      "result_blob": "f9f49ce5f0f239d1c1cdd4575a4da65cd84c0351",
+      "result": "216/216 Reference pairs valid; fifteen exact-Se thresholds frozen before new RossFast extension execution"
+    },
+    {
+      "workunit": "PUB-P2E15",
+      "role": "primary previously-unobserved 30-material holdout",
+      "branch": "work/pub-p2e15-material-extension-primary",
+      "result_head": "fe5e34652e5da69c6e97977ca64c82db571e7441",
+      "result_blob": "2b3a911e6117e8e3af24c633a106e58fa7358a19",
+      "workflow_run": 35290525541,
+      "job": 105432153537,
+      "result": "180/180 paired-valid admissible; zero discrepancy failures and zero route invalidity"
+    }
+  ],
+  "tests_and_reproducibility": {
+    "P2E13_O0_O2_sha256": "6e842ee99ec722678aeaf99143e80eb7340488dc393ab8dae0b31f31ab9b1bce",
+    "P2E14_O0_O2_sha256": "6bbef0ef88b97624f798d8d4da2d14417783465f125f4983830cd6adbacc4d94",
+    "P2E15_O0_O2_sha256": "db02085fed1c85504de16fb285a396f52cb163589e91f8b578ad17997ae8f8c8"
+  },
+  "verdict": "MATERIAL_AXIS_TRANSFER_SUPPORTED_WITHIN_SEPARATELY_CONSTRUCTED_COMMON_FIXED_REQUEST_DOMAIN",
+  "supported_scope": {
+    "materials": "30 previously unobserved F-ROSS13 extension materials",
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "layer": "A_FIXED_INTERVAL_SOLVER_SEAM",
+    "step_duration_day": 0.0016,
+    "geometry": "16 homogeneous cells x 10 cm",
+    "sources_sinks": "zero"
+  },
+  "exclusions": [
+    "Se=0.98 remains outside the shared 36-material Reference domain and is not rescued by P2E15",
+    "WETTING remains outside the current RossFast production forcing envelope",
+    "No transaction-level controller equivalence claim",
+    "No heterogeneous-profile claim",
+    "No root-sink claim",
+    "No groundwater-coupling claim",
+    "No speedup or equal-error performance claim",
+    "No universal RossFast equivalence claim",
+    "The D_storage threshold boundary contact is retained and not described as numerical margin"
+  ],
+  "mutations": [
+    "Research-only publication preregistration, tests, runners, workflows and evidence receipts added on work branches",
+    "No src/** or reference/** scientific production mutation in P2E13-P2E15",
+    "Central PUB-SQ manifest and experiment register reconciled"
+  ],
+  "next_permitted_action": "PUB-SQ-E2: preregister a separate inside/boundary/outside admissibility-boundary experiment. Keep E1 thresholds immutable and do not use performance or transaction-level outcomes to compensate for boundary failures."
+}
