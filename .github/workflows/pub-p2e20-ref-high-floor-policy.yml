@@ -1,0 +1,25 @@
+name: PUB-P2E20 floor-aware casewise REF-HIGH
+
+on:
+  push:
+    branches:
+      - work/pub-p2e20-ref-high-floor-policy
+    paths:
+      - 'docs/publication/P2E20_REF_HIGH_FLOOR_POLICY_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e20_ref_high_floor_policy.f90'
+      - 'tests/publication/run_pub_p2e20_ref_high_floor_policy.sh'
+      - '.github/workflows/pub-p2e20-ref-high-floor-policy.yml'
+  workflow_dispatch:
+
+jobs:
+  ref-high-floor-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered floor-aware REF-HIGH construction
+        run: bash tests/publication/run_pub_p2e20_ref_high_floor_policy.sh
