@@ -1,0 +1,116 @@
+{
+  "schema": "pub-gc-e7-result-v1",
+  "date": "2026-09-18",
+  "status": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+  "classification": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+  "scientific_question": "Does the solver-autonomous coupling contract remain usable and interpretable in an independently authoritative Hupsel application with authentic forcing and process composition?",
+  "answer": "The contract remains interpretable, but the current production application-owner cannot materialize the process-complete selected Hupsel windows as prescribed-head groundwater participants. Component application admission therefore limits E7 before loose/strong coupled iteration can be meaningfully executed.",
+  "preregistration": {
+    "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
+    "permitted_outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "stop_rule": "If the production participant cannot expose a prescribed-head coupling trial on an authoritative interval, record component-domain failure; do not tune tolerances, retry policy or event boundaries."
+  },
+  "frozen_selection": {
+    "admission_pr": 325,
+    "merge_commit": "080c24be1fd352d390647c832d215833e1ae3df2",
+    "selection_result": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+    "coupled_output_observed_before_freeze": false,
+    "median_dynamics_control": "2003-06-17",
+    "high_dynamics_day": "2003-05-20",
+    "population_days": 1096
+  },
+  "exact_hupsel_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "whole_hupsel_typed_adapter": "PASS_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER",
+    "accepted_intervals": 32518,
+    "crop_configuration": {
+      "SWCROP": 1,
+      "SWETR": 0,
+      "SWDRA": 1,
+      "selected_dates_crop": "potato",
+      "crop_start": "2003-05-10",
+      "crop_end": "2003-09-29",
+      "crop_type": 2
+    },
+    "selected_day_drainage_cm": {
+      "2003-05-20": 0.9069694038599311,
+      "2003-06-17": 0.022586870162615704
+    }
+  },
+  "application_composition_requirement": {
+    "emerged_crop_root_mapping": "PMdirect potential transpiration is bound into crop root-uptake input for emerged crop",
+    "active_drainage": "SWDRA=1 and both frozen days have positive standalone drainage",
+    "required_groundwater_boundary_profile": "bottom_mode=5 prescribed-head participant"
+  },
+  "production_owner_boundary": {
+    "owner": "PPA-WU01 production application bootstrap",
+    "source": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "source_blob_before_test_only_e7_delta": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+    "behavior": [
+      "groundwater application ownership is admitted for bottom_mode=5 only inside the restricted no-new-physics owner profile",
+      "root_extraction_active causes profile rejection",
+      "drainage_response_active causes profile rejection"
+    ],
+    "broader_process_complete_groundwater_owner_found": false,
+    "ppa_wu03_found": false
+  },
+  "qualification": {
+    "branch_head": "da530325e1eef51fe29471a4904c85eabfe5b313",
+    "pull_request": 327,
+    "publication_static_gate": {
+      "workflow": "PUB-GC E7 realistic component-domain gate",
+      "run_id": 35375158694,
+      "job_id": 105698010382,
+      "conclusion": "success",
+      "markers": [
+        "PUB_GC_E7_SELECTION_FROZEN_BEFORE_COUPLING=PASS",
+        "PUB_GC_E7_M1_WHOLE_HUPSEL_AUTHORITY=PASS",
+        "PUB_GC_E7_SELECTED_DAYS_INSIDE_ACTIVE_CROP_PERIOD=PASS",
+        "PUB_GC_E7_SELECTED_DAYS_POSITIVE_DRAINAGE=PASS",
+        "PUB_GC_E7_ROOT_UPTAKE_TYPED_APPLICATION_REQUIREMENT=PASS",
+        "PUB_GC_E7_PPA_WU01_ACTIVE_PROCESS_GUARD=PASS",
+        "PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_LIMIT_STATIC_GATE=PASS"
+      ]
+    },
+    "ppa_dynamic_gate": {
+      "workflow": "PPA-WU01 production application bootstrap",
+      "run_id": 35375158471,
+      "job_id": 105698009081,
+      "conclusion": "success",
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "output_identity": "PASS",
+      "markers": [
+        "PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS",
+        "PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS",
+        "PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS",
+        "PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS",
+        "PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS"
+      ]
+    }
+  },
+  "stop_point": {
+    "process_complete_groundwater_owner_initialized": false,
+    "fgc49d_context_materialized": false,
+    "swap_prescribed_head_trial_executed": false,
+    "modflow6_timestep_executed": false,
+    "loose_coupling_result_generated": false,
+    "strong_coupling_result_generated": false,
+    "interface_mass_published": false,
+    "committed_state_mutated": false,
+    "reason": "The authentic selected application requires process composition outside the admitted production groundwater-owner profile. Continuing would require disabling/freezing active application processes or widening production authority, both forbidden by the preregistration."
+  },
+  "interpretation": {
+    "outer_coupling_failure": false,
+    "regional_hupsel_validation": false,
+    "synthetic_substitute_used": false,
+    "tolerances_changed": false,
+    "physics_changed": false,
+    "dates_replaced": false,
+    "conclusion": "Realistic transferability is presently bounded by application-owner capability composition before the numerical outer coupling is reached."
+  },
+  "next_scientific_boundary": "A future process-complete production groundwater application owner may reopen a new realistic loose/strong experiment, but E7 itself is closed under its frozen preregistered outcome and must not be rewritten post hoc."
+}
