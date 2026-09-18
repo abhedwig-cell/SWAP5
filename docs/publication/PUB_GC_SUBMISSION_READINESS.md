@@ -62,12 +62,12 @@ The remaining submission blockers are archival/governance rather than scientific
 
 These items do not require new science:
 
-- convert the already selected GMD route to final title/version, section, template and bibliography format;
+- final title/version binding remains blocked by A1; the GMD manuscript section structure and exact `Code and data availability` heading are prepared;
 - insert final author list, affiliations, corresponding-author details and contribution statement;
-- add acknowledgements, funding and conflict/data/code availability declarations required by the journal;
+- add acknowledgements, funding, competing-interests and final AI-tool disclosure statements as applicable;
 - freeze an archival repository release/DOI and replace development-revision language with the archived identifier;
 - final language/notation consistency pass on the closed E1–E7 manuscript;
-- prepare journal-resolution raster/PDF exports if the journal does not accept SVG.
+- export F1–F7 to the already frozen numbered PDF upload plan and verify GMD file-size limits.
 
 ## Decision boundary
 
@@ -122,3 +122,17 @@ Open blockers:
 - A5 — final Code and data availability statement: depends on A2/A3.
 
 No additional hydrological experiment is required to close these blockers.
+
+
+## GMD pre-submission package
+
+Prepared on current publication state:
+
+- `PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md`;
+- `PUB_GC_GMD_FIGURE_EXPORT_PLAN.md` / `.json`;
+- `PUB_GC_GMD_EDITOR_LETTER_DRAFT.md`;
+- `PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md`.
+
+Static gate: `tests/publication/validate_pub_gc_gmd_pre_submission.py`.
+
+This reduces the remaining work to governed metadata/archive decisions, author metadata/declarations, and mechanical final exports. No new science is implied.
