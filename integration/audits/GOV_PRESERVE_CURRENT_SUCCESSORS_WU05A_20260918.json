@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.governance_reconciliation.v1",
+  "workunit": "GOV-PRESERVE-CURRENT-SUCCESSORS-WU05A",
+  "date": "2026-09-18",
+  "branch": "work/governance-preserve-current-successors-wu05a",
+  "canonical_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+  "purpose": "Repair stale CI/governance boundaries exposed by review-only PPA-WU05-A without changing production or reference source.",
+  "findings": [
+    {
+      "gate": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "failure": "src/kernel/mod_kernel_transactions.f90 compared to pre-successor Status-A blob",
+      "authority": {
+        "admitted_successor_commit": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+        "qualification_head": "2493c3cd5a7b933593690f13535cc0361d534898",
+        "qualification_run": 35380688867,
+        "qualification_job": 105715867943,
+        "qualification_conclusion": "success",
+        "qualified_kernel_blob": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11",
+        "qualified_backend_blob": "5d63f91b37443952b4a96292925f645aae0b22d1",
+        "canonical_kernel_blob": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11",
+        "canonical_backend_blob": "5d63f91b37443952b4a96292925f645aae0b22d1"
+      },
+      "repair": "Accept only the exact two qualified postimages when the admitted successor commit is in lineage; retain pre-successor byte locks otherwise."
+    },
+    {
+      "gate": "tests/fvq/validate_ppa_wu05_advanced_water_process_triage.py",
+      "failure": "Closed parent WU05 rejected its explicitly frozen review-only child WU05-A evidence files as unexpected delta.",
+      "repair": "Allow only named PPA_WU05A review/evidence/workflow prefixes while retaining absolute no-src and no-reference assertions."
+    },
+    {
+      "gate": ".github/workflows/fci51-wof43a-current-canonical-admission.yml",
+      "failure": "Closed F-CI51 workflow was triggered by unrelated tests/fvq files through broad tests/fvq/** path filter.",
+      "repair": "Narrow PR trigger to the exact F-VQ37/F-WOF43A test files. Additionally make the frozen historical F-CI51 gate lineage-aware: after the separately closed F-CI51P moving authority is an ancestor, preserve only the exact admitted provider/dependency blobs and do not reinterpret later canonical deltas as the original recomposition.",
+      "supporting_gate": "tests/fci/run_fci51_wof43a_current_canonical_gate.sh",
+      "moving_authority_base": "afe253164ddff55ce3a362277a43878d733057d3"
+    }
+  ],
+  "prohibited_changes": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "transaction_semantics": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_tolerance": "NONE"
+  },
+  "admission_condition": "Require broad canonical qualification, PPA-WU05 parent preservation and documentation checks green before merge."
+}

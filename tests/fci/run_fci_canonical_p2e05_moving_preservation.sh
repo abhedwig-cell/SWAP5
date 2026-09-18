@@ -10,6 +10,7 @@ FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
 FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 FSI39_PRODUCTION=20d34024cfe4b981b6c00d5042bdf366f8aae830
+F_ROM1A_PRODUCTION=5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
@@ -33,6 +34,8 @@ BACKEND_FGC31=4e5491c997ed0752a4db9abd09b5ad3daf394db2
 BACKEND_FGC44=4597c833e7f45beaef04ffcc592ca6a4fcbd0395
 FSI39_PROVIDER=90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
 FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
+F_ROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
+F_ROM1A_BACKEND=5d63f91b37443952b4a96292925f645aae0b22d1
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -49,7 +52,6 @@ dependency_surface=(
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
-  src/kernel/mod_kernel_transactions.f90
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
@@ -113,6 +115,18 @@ for path in "${dependency_surface[@]}"; do
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || fail "admitted dependency drift: $path"
 done
 
+# The current canonical has one later, explicitly qualified two-file research
+# observation successor. It is not a wildcard exception: only the exact
+# admitted F-ROM1A production postimage is accepted when that admission is in
+# the lineage. Before that admission, kernel_transactions remains byte-equal
+# to the Status-A authority.
+if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = "$F_ROM1A_KERNEL" ||     fail 'admitted F-ROM1A kernel transaction successor drift'
+  echo 'FCI_CANONICAL_F_ROM1A_KERNEL_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" =     "$(git rev-parse "$AUTH:src/kernel/mod_kernel_transactions.f90")" ||     fail 'pre-F-ROM1A kernel transaction drift'
+fi
+
 # P2E05 typed-diagnostic successors are exact, not wildcard exceptions.
 test "$(git rev-parse HEAD:$SW)" = "$SW_P2E05" || fail 'typed solver contract is not the qualified P2E05 blob'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Reference adapter is not the qualified P2E05 blob'
@@ -123,7 +137,12 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Refere
 # current canonical, keeps its new KSATEXM path opt-in by default, and its
 # production postimages are pinned exactly here.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
+if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" ||     fail 'admitted F-SI39 default-MvG provider successor drift under F-ROM1A'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$F_ROM1A_BACKEND" ||     fail 'admitted F-ROM1A serialized backend successor drift'
+  echo 'FCI_CANONICAL_FSI39_PROVIDER_SUCCESSOR=PASS'
+  echo 'FCI_CANONICAL_F_ROM1A_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" ||     fail 'admitted F-SI39 default-MvG provider successor drift'
   test "$(git rev-parse HEAD:$BACKEND)" = "$FSI39_BACKEND" ||     fail 'admitted F-SI39 serialized backend successor drift'
   echo 'FCI_CANONICAL_FSI39_PROVIDER_SUCCESSOR=PASS'
@@ -193,6 +212,9 @@ echo 'FCI65_MOVING_FGC24_COUPLED_RESTART_PRESERVATION=PASS'
 echo 'FCI96_MOVING_FROSS12_SUCCESSOR_PRESERVATION=PASS'
 if git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
   echo 'FCI_CANONICAL_FSI39_EXACT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS'
+fi
+if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+  echo 'FCI_CANONICAL_F_ROM1A_EXACT_TWO_FILE_SUCCESSOR_PRESERVATION=PASS'
 fi
 echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
 echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
