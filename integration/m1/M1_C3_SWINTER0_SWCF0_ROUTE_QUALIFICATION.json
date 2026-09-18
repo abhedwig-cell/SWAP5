@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "QUALIFY_SWINTER0_SWCF0_ROUTE",
+  "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+  "subject_head_before_checkpoint": "87917375b637c7803d6b19b42fc86f34af5f0370",
+  "authority": {
+    "exact_B1_11_trace": "integration/m1/M1_C3_B1_11_APPLICATION_TRACE_QUALIFICATION.json",
+    "whole_run_accepted_intervals": 32518,
+    "selected_route": "SWINTER=0 / SWCF=0",
+    "route_intervals": 3505
+  },
+  "exact_identity_oracle": {
+    "aintc_nonzero_intervals": 0,
+    "aintcdt_nonzero_intervals": 0,
+    "wfrac_nonzero_intervals": 0,
+    "max_abs_nraidt_minus_graidt": 0,
+    "max_abs_nird_minus_gird": 0,
+    "max_abs_ptra_minus_ptra_dry": 0,
+    "gross_rain_nonzero_intervals": 1777,
+    "gross_irrigation_nonzero_intervals": 18,
+    "crop_emerged_true_intervals": 0,
+    "rooted_intervals": 0
+  },
+  "legacy_semantics": [
+    "interception_daily sets aintc=0 when SWINTER=0",
+    "ProcessMeteoDT therefore carries aintcdt=0",
+    "net rain equals gross rain exactly",
+    "net sprinkling/surface irrigation equals gross irrigation exactly",
+    "wet canopy fraction remains zero",
+    "potential transpiration equals dry-canopy potential transpiration exactly"
+  ],
+  "scope_boundary": {
+    "new_physics": false,
+    "stateful_process": false,
+    "expected_target": "small stateless PMdirect interval identity route plus existing F-APP04-style typed bindings",
+    "irrigation_note": "18 SWINTER0 intervals overlap the fixed Hupsel surface-irrigation event. The no-interception route may preserve net irrigation by identity but must not claim fixed-event selection/file composition."
+  },
+  "verdict": "PASS_EXACT_B1_11_SWINTER0_SWCF0_IDENTITY_ROUTE",
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "mutations": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "timestep": "NONE",
+    "tolerances": "NONE",
+    "qualification_evidence_only": true
+  },
+  "next_permitted_action": "After serial F-APP05 admission, implement one bounded stateless SWINTER0/SWCF0 PMdirect interval route with exact identities aintc=0, net_rain=gross_rain, net_irrigation=gross_irrigation, wet_fraction=0 and ptra=ptra_dry; qualify against all 3505 exact B1.11 route records before admission."
+}
