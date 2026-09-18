@@ -1,0 +1,20 @@
+name: F-VQ117 F-GC45 independent qualification
+on:
+  push:
+    branches: [work/f-gc45-real-multiswap-n1-live-modflow]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90'
+      - 'tests/fgc/test_fgc45_real_multiswap_n1_live_modflow.py'
+      - 'docs/integration/F-GC45_REAL_MULTISWAP_N1_LIVE_MODFLOW.md'
+      - 'tests/fvq/test_fvq117_fgc45_independent.py'
+      - 'tests/fvq/run_fvq117_fgc45_independent.sh'
+      - '.github/workflows/f-vq117-fgc45-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq117_fgc45_independent.sh
