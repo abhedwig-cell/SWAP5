@@ -1,0 +1,120 @@
+{
+  "schema":"swap5.publication.p2e20-ref-high-scaled-construction-result.v1",
+  "workunit":"PUB-P2E20",
+  "publication_owner":"PUB-SQ",
+  "phase":"CASEWISE_REF_HIGH_CONSTRUCTION_COMPLETE",
+  "branch":"work/pub-p2e20-ref-high-scaled-construction",
+  "parent_diagnostic":{
+    "branch":"work/pub-p2e19-reference-balance-scaling-diagnostic",
+    "head":"f2d5cd8d0e69a35436573f6d32dd0916c344ca49",
+    "result_blob":"bbf6b235c81f30b517dee6e3346499f4823b597a",
+    "verdict":"INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36"
+  },
+  "authorities":{
+    "preregistration_blob":"9b98b4d5151103371d00ad61cd8e3c040f4124f9",
+    "test_blob":"c88b7e68785271762561831935c3018ed35920e2",
+    "runner_blob":"36447e8b27bae95db327196c87d3bd487e34c212",
+    "workflow_blob":"6f622e825c1cb166e71ce80e83d23d4b7e2c8666"
+  },
+  "execution":{
+    "head":"b3605ba180ebbc1882cf09dd26bd334914053d90",
+    "workflow_run":35293573725,
+    "job":105441384692,
+    "conclusion":"PASS",
+    "O0":"PASS",
+    "O2":"PASS",
+    "O0_O2_identical":true,
+    "output_sha256":"5f1e7bfa2fcfb10414f4bd90f0f1dfab0736d4c2ec941cde59a4a7871822dd30",
+    "scientific_result_was_ci_pass_condition":false
+  },
+  "construction":{
+    "case_count":36,
+    "fine_levels":[8,16,32],
+    "ref_high_endpoint_substeps":32,
+    "integrated_balance_allowance_cm_per_substep":1.6e-15,
+    "qualified_count":33,
+    "route_unresolved_count":2,
+    "stability_unresolved_count":1
+  },
+  "route_unresolved_cases":[
+    {
+      "case":1,
+      "material":"B01",
+      "Se":0.65,
+      "forcing":"DRYING",
+      "observed_failed_fine_routes":[
+        {"substeps":16,"failed_substep":16,"status":2,"route":"legacy-reference-retry"},
+        {"substeps":32,"failed_substep":7,"status":2,"route":"legacy-reference-retry"}
+      ]
+    },
+    {
+      "case":2,
+      "material":"B01",
+      "Se":0.65,
+      "forcing":"NOMINAL",
+      "observed_failed_fine_routes":[
+        {"substeps":32,"failed_substep":2,"status":2,"route":"legacy-reference-retry"}
+      ]
+    }
+  ],
+  "stability_unresolved_cases":[
+    {
+      "case":36,
+      "material":"O18",
+      "Se":0.96,
+      "forcing":"NOMINAL",
+      "eight_vs_sixteen":{
+        "D_h_inf_cm":0.0013085240725025926,
+        "D_h_rms_cm":0.000529817315445591,
+        "D_theta_inf":0.0000016102410823615187,
+        "D_theta_rms":0.0000006528642967330315,
+        "D_storage_cm":4.263256414560601e-14,
+        "storage_budget_cm":2.842170943040401e-14,
+        "storage_fraction":1.5,
+        "head_theta_all_pass":true,
+        "overall_pass":false
+      },
+      "sixteen_vs_thirtytwo":{
+        "D_h_inf_cm":0.0006589768402172069,
+        "D_h_rms_cm":0.00026727292635624376,
+        "D_theta_inf":8.109199000072564e-7,
+        "D_theta_rms":3.293459059553508e-7,
+        "D_storage_cm":1.4210854715202004e-14,
+        "storage_budget_cm":2.842170943040401e-14,
+        "overall_pass":true
+      }
+    }
+  ],
+  "qualified_reference_authority":{
+    "population_definition":"Exactly the 33 cases labelled REF_HIGH_QUALIFIED in this frozen 36-case construction.",
+    "endpoint":"32-substep Reference endpoint under the integrated-invariant balance policy.",
+    "case_replacement_allowed":false,
+    "unresolved_cases_authorized_for_equal_error_performance":false,
+    "future_timing_note":"REF-HIGH itself need not be timed; the same frozen 32-substep policy may be recomputed outside timed regions to provide the scientific reference."
+  },
+  "epistemic_interpretation":{
+    "supported":[
+      "A casewise candidate-blind REF-HIGH authority is now materialized for 33 of the 36 frozen solver-performance/reference cases.",
+      "The P2E19 integrated-invariant convergence policy reproduces exactly the expected 33 qualified, 2 route-unresolved and 1 stability-unresolved classification.",
+      "The three unresolved cases remain explicit exclusions from an equal-error solver-performance claim."
+    ],
+    "not_supported":[
+      "Universal REF-HIGH qualification over all 36 cases.",
+      "A claim that the integrated-invariant convergence policy is a production tolerance change.",
+      "RossFast speedup or equal-error performance.",
+      "Retroactive reclassification of P2E18."
+    ]
+  },
+  "firewall_verification":{
+    "rossfast_executed":false,
+    "timing_executed":false,
+    "production_tolerance_changed":false,
+    "reference_source_changed":false,
+    "integrated_allowance_retuned":false,
+    "fine_levels_changed":false,
+    "stability_budget_changed":false,
+    "case_removed_or_replaced":false
+  },
+  "verdict":"REF_HIGH_QUALIFIED_CASEWISE_33_OF_36_EQUAL_ERROR_PERFORMANCE_POPULATION_AVAILABLE",
+  "next_permitted_action":"Return to PUB-SQ governance. Freeze the exact 33-case performance population and preregister an equal-error solver-control/work experiment. Do not time or include the three unresolved cases, and do not infer speedup before candidate-independent error matching is defined."
+}
