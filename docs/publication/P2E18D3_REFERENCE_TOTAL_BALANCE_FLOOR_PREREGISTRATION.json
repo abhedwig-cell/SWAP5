@@ -93,5 +93,11 @@
     "No use as untouched primary solver-admission evidence"
   ],
   "next_action_rule": "Persist the total-balance floor result. Only a later preregistered workunit may propose a research-only REF-HIGH convergence policy, and that policy must be formula-derived rather than fitted to D3 exceedance ratios.",
-  "verdict": "PREREGISTERED_REFERENCE_TOTAL_BALANCE_FLOOR_DIAGNOSTIC_READY"
+  "verdict": "PREREGISTERED_REFERENCE_TOTAL_BALANCE_FLOOR_DIAGNOSTIC_READY",
+  "numerical_policy": {
+    "inherited_from": "PUB-P2E18D1/PUB-P2E18D2",
+    "invariant_integrated_balance_scale_cm": 1.6e-15,
+    "formula": "CritDevBalCp(dt) = CritDevBalTot(dt) = 1.6e-15 / dt",
+    "tolerance_changes_inside_D3": false
+  }
 }
