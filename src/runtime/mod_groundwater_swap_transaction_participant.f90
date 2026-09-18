@@ -107,7 +107,9 @@ contains
       status = GW_SWAP_PARTICIPANT_CANDIDATE_BUSY
       return
     end if
-    if (.not. window%valid() .or. .not. datum%valid() .or. .not. ieee_is_finite(prescribed_head_m)) return
+    if (.not. window%valid()) return
+    if (.not. datum%valid()) return
+    if (.not. ieee_is_finite(prescribed_head_m)) return
     if (.not. same_time(window%t0, self%origin_time)) then
       status = GW_SWAP_PARTICIPANT_ORIGIN_DRIFT
       return
