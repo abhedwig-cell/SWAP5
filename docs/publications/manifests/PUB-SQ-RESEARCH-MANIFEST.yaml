@@ -4,9 +4,9 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: REF_HIGH_QUALIFIED_33_OF_36_EQUAL_ERROR_DESIGN_NEXT
+  status: REF_HIGH_36_OF_36_THRESHOLD_MATCHED_CONTROLS_FROZEN_STRICT_EQUAL_ERROR_MATCHING_NEXT
   source_branch: research/phd-five-paper-manifests-20260918
-  source_parent_commit: 0a1756ce531b58c5fd0684779d3acd4c8766aa87
+  source_parent_commit: 9c1d87222b9ca7dc60fb75490b54ddc5a0230847
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
   experiment_matrix: docs/publications/PUB-SQ_EXPERIMENT_MATRIX.md
   confirmatory_extension_freeze: docs/publications/manifests/PUB-SQ-MATERIAL-EXTENSION-FREEZE-v1.yaml
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: equal_error_solver_control_and_work_preregistration_on_frozen_33_case_ref_high_population
+    next_confirmatory_surface: untimed_representation_bounded_reference_work_precision_matching_on_final_36_case_population
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -200,6 +200,62 @@ manifest:
         Freeze the exact 33-case REF-HIGH-qualified performance population and preregister
         solver controls, equal-error matching, work accounting and timing hygiene before any
         RossFast performance execution. No speedup claim is yet authorized.
+    P2E21_representation_bounded_ref_high:
+      branch: work/pub-p2e21-ref-high-representation-bound
+      head: dd09a1ef83ff4953cc4445c3116898c6fe118267
+      result_blob: 638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78
+      workflow_run: 35294112249
+      job: 105442963951
+      output_sha256: 88273dc34f0a37af8aa2ada57c547f6c6e28cf40613891ec7b84a12db1061387
+      verdict: REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE
+      finding: >-
+        A prospective total-column representation bound derived only from floating-point
+        representation scale restored the three remaining fine Reference records. All 36
+        cases are valid at 8, 16 and 32 substeps and pass both frozen temporal-stability
+        comparisons. The 32-substep REPRESENTATION_BOUNDED_TOTAL endpoint is the final
+        casewise REF-HIGH authority for E3.
+      caution: >-
+        Storage touches the inclusive machine-scale frozen budget in worst cases. P2E21 is a
+        research Reference-policy qualification, not a production tolerance-policy change.
+    P2E21A_untimed_threshold_control_selection:
+      branch: work/pub-p2e21a-equal-error-control-selection
+      head: 44a569a55679e793a3657989b9dd895de84ab9ce
+      result_blob: f274b2609263b619118b9313d61eb82bd0eba876
+      workflow_run: 35294176980
+      job: 105443164926
+      output_sha256: 5c43b70d8fe51d5a7cd231ad4f01d946bc0c001715b4a8b2bf53e6fdb94537b6
+      verdict: UNTIMED_MATCHED_ACCURACY_CONTROLS_AVAILABLE_FOR_33_CASE_P2E20_REFERENCE
+      finding: >-
+        On the earlier 33-case reference population, both solvers satisfied all three frozen
+        threshold targets in every case. The three targets collapsed to identical controls:
+        REF_PROD selected N=1 for 31 cases and N=2 for two; Ross selected N=1 for all 33.
+        No timing was observed.
+      epistemic_role: >-
+        Control-selection design evidence only; the final performance reference was later
+        migrated to P2E21.
+    P2E22_final_36_case_threshold_control_migration:
+      branch: work/pub-p2e22-equal-error-reference-migration
+      head: dac6e7b7896f44baa8467eb0b34ba119f5bd2631
+      workflow_run: 35313942774
+      job: 105501483969
+      output_sha256: a98041158b40c3ad75d1e74be13359fc4d1a2b5b893a2e0733ab1b5360e07c6f
+      verdict: FINAL_36_CASE_THRESHOLD_MATCHED_CONTROLS_FROZEN_BUT_STRICT_EQUAL_OBSERVED_ERROR_NOT_ACHIEVED
+      finding: >-
+        The frozen P2E21A segmentation and target rules migrated to all 36 final REF-HIGH
+        cases. Both REF_PROD and Ross select N=1 in all 36 cases for A1, A2 and A3, with
+        36/36 paired availability at each target. Six overlapping case-target records change
+        because cases 4 and 18 move from REF_PROD N=2 to N=1 under the final reference.
+      equal_error_limit: >-
+        Threshold matching is not strict observed-error matching. A post-execution diagnostic
+        over the full valid control surfaces finds only 1 of 36 cases with any REF_PROD/Ross
+        configuration pair within a factor two in the frozen head/theta normalized error.
+        Therefore timing the N=1/N=1 controls would answer a common-threshold cost question,
+        not H3's strict matched-scientific-error question.
+      next_permitted_action: >-
+        Before timing, preregister a separate untimed work-precision study using the already
+        qualified representation-bounded Reference refinement policy and a deterministic
+        equal-or-better-error or bracketing rule. Retain all 36 cases and explicit unresolved
+        outcomes. Timing remains forbidden.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
@@ -267,21 +323,20 @@ design:
 numerical_reference:
   id: REF-HIGH
   construction: >-
-    P2E20 casewise authority: Reference-only integrated-invariant balance policy with a fixed
-    1.6e-15 cm integrated balance allowance per substep, evaluated at 8, 16 and 32 equal
-    substeps over the frozen 0.0016-day horizon. A case is REF_HIGH_QUALIFIED only when all
-    three routes are valid and both 8-vs-16 and 16-vs-32 endpoint comparisons satisfy the
-    unchanged P2E18 stability budgets. The qualified endpoint is the 32-substep result.
-  current_qualified_population: 33
-  current_unresolved_population: 3
-  unresolved_cases:
-    - B01 Se=0.65 DRYING: route unresolved
-    - B01 Se=0.65 NOMINAL: route unresolved
-    - O18 Se=0.96 NOMINAL: stability unresolved at 8-vs-16 machine-scale storage budget
+    P2E21 final authority: Reference-only REPRESENTATION_BOUNDED_TOTAL policy. Compartment
+    balance retains the 1.6e-15 cm integrated allowance per substep. The total-column
+    convergence bound is computed before each solve as max(1.6e-15 cm,
+    0.5 * sum_i((spacing(theta_s_material)+spacing(theta_base_i))*dz_i)), without an empirical
+    safety factor. All 36 frozen cases are valid at 8, 16 and 32 equal substeps and pass both
+    unchanged P2E18 stability comparisons. The qualified endpoint is the 32-substep result.
+  current_qualified_population: 36
+  current_unresolved_population: 0
+  performance_reference_population: all 36 frozen E3 cases
   failure_rule: >-
-    Reference-unresolved cases remain excluded from equal-error performance unless a later
-    independent Reference authority is prospectively established. Do not use a production
-    answer as truth and do not retune the qualified policy to recover excluded cases.
+    The representation-bounded policy is research Reference infrastructure only and must not
+    be silently promoted into the production Reference tolerance policy. Future performance
+    work must retain all 36 frozen cases and may classify a matched-error case as unresolved
+    rather than retuning the reference or dropping the case.
 
 primary_endpoint:
   name: holdout_admissibility
