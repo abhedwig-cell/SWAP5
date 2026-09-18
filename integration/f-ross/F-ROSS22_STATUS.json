@@ -1,0 +1,15 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS22",
+  "title": "Production K2 K4 K8 RossFast certificate",
+  "phase": "RECONCILE",
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_MUTATION",
+  "branch": "work/f-ross22-production-tiered-certificate",
+  "source_head": "e0248de1b85574774b1ee5459dda933daaa63664",
+  "production_scope": [
+    "src/solver/mod_rossfast_d3r_table_kernel.f90",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+  ],
+  "verdict": "READY_TO_IMPLEMENT_EXACT_F_ROSS21_PROMOTION",
+  "next_permitted_action": "Promote exact F-ROSS21 tiered semantics into production files only, then qualify fail-closed."
+}
