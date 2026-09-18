@@ -4,7 +4,7 @@
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "state": "EXACT_HEAD_DETERMINISTIC_AND_LIVE_MODFLOW_CI_QUEUED",
+  "state": "LOCAL_CI_FAILURE_REPAIRED_INDEPENDENT_GREEN_LIVE_RERUN_QUEUED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,7 +53,7 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "Wait for exact-head F-GC41 deterministic and live-MODFLOW jobs. On green, add independent verifier/admission gate; on red, inspect only failing F-GC41 job and repair surgically.",
+  "next_permitted_action": "Consume F-GC41 owner rerun and F-VQ113 final result. If both green, create admission authority/gate and promote only after current canonical reconciliation. If owner live job fails, inspect and repair only that job.",
   "modflow_semantics": {
     "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
     "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
@@ -91,7 +91,7 @@
     "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
   ],
   "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
-  "verdict": "IMPLEMENTED_AWAIT_EXACT_HEAD_CI",
+  "verdict": "QUALIFICATION_IN_PROGRESS_AFTER_SURGICAL_GUARD_REPAIR",
   "mutations": "metadata only",
   "production_delta": [
     "src/adapter/modflow6_prepared_solve_session.py: non-mutating timestep_ready_for_finalize()",
@@ -116,5 +116,29 @@
     },
     "status": "queued"
   },
-  "live_modflow_delta": "F-GC38 official MODFLOW6 fixture now calls F-GC41 non-mutating readiness and one-shot finalize_time_step seam, checks zero mutation before publication and blocks a second finalization."
+  "live_modflow_delta": "F-GC38 official MODFLOW6 fixture now calls F-GC41 non-mutating readiness and one-shot finalize_time_step seam, checks zero mutation before publication and blocks a second finalization.",
+  "repair": {
+    "failed_run": 35335417012,
+    "failed_job": 105569008669,
+    "cause": "legacy F-GC38 source guard forbade any finalize_time_step call in prepared-solve adapter; F-GC41 intentionally introduces a narrow publication seam",
+    "fix_head": "a686b1f78504a6fc117a6f8503e1eebfd9d05f0e",
+    "scope": "guard reconciled to forbid timestep acceptance policy ownership while explicitly permitting readiness/finalize seam"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ113",
+    "head": "7630334265837115cb083251c50b7a5124b03cbe",
+    "run": 35336476132,
+    "job": 105572368025,
+    "oracle_step": "success",
+    "final_run_state_at_checkpoint": "in_progress cleanup"
+  },
+  "exact_head_owner_rerun": {
+    "head": "7630334265837115cb083251c50b7a5124b03cbe",
+    "run": 35336476225,
+    "jobs": {
+      "live_modflow": 105572368387,
+      "deterministic": 105572368622
+    },
+    "state": "queued"
+  }
 }
