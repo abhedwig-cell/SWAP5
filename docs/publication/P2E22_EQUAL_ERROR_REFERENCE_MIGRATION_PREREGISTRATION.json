@@ -1,0 +1,171 @@
+{
+  "schema": "swap5.publication.p2e22-equal-error-reference-migration.v1",
+  "workunit": "PUB-P2E22",
+  "publication_owner": "PUB-SQ",
+  "phase": "PREREGISTERED_BEFORE_36_CASE_UNTIMED_CONTROL_MIGRATION",
+  "role": "FINAL_UNTIMED_MATCHED_ACCURACY_CONTROL_FREEZE_AGAINST_P2E21_REF_HIGH",
+  "parent_control_authority": {
+    "branch": "work/pub-p2e21a-equal-error-control-selection",
+    "head": "44a569a55679e793a3657989b9dd895de84ab9ce",
+    "result_path": "docs/publication/P2E21A_EQUAL_ERROR_CONTROL_SELECTION_RESULT.json",
+    "result_blob": "__LOCK_AFTER_CREATE__",
+    "verdict": "UNTIMED_MATCHED_ACCURACY_CONTROLS_AVAILABLE_FOR_33_CASE_P2E20_REFERENCE",
+    "frozen_rules_reused": [
+      "outer segmentation ladder {1,2,4,8,16,32}",
+      "targets alpha={1.0,0.5,0.25}",
+      "storage threshold unscaled",
+      "least-refined valid configuration meeting target",
+      "no timing in control selection",
+      "no composite work unit"
+    ]
+  },
+  "migrated_ref_high_authority": {
+    "branch": "work/pub-p2e21-ref-high-representation-bound",
+    "head": "dd09a1ef83ff4953cc4445c3116898c6fe118267",
+    "result_path": "docs/publication/P2E21_REF_HIGH_REPRESENTATION_BOUND_RESULT.json",
+    "result_blob": "638e2ea4db5a7dcc3c940a9312b660b7ac4e5b78",
+    "verdict": "REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE"
+  },
+  "purpose": "Apply the already frozen P2E21A work-precision/control-selection rules unchanged to the final 36-case P2E21 REF-HIGH authority, producing the final matched-accuracy configurations before any timing.",
+  "epistemic_status": {
+    "overlapping_33_cases": "Candidate work-precision outcomes were already exposed in P2E21A. Their rerun is a reference-authority migration, not untouched confirmation.",
+    "added_cases": [
+      {
+        "case": 1,
+        "material": "B01",
+        "Se": 0.65,
+        "forcing": "DRYING"
+      },
+      {
+        "case": 2,
+        "material": "B01",
+        "Se": 0.65,
+        "forcing": "NOMINAL"
+      },
+      {
+        "case": 36,
+        "material": "O18",
+        "Se": 0.96,
+        "forcing": "NOMINAL"
+      }
+    ],
+    "timing_status": "No timing has yet been observed for any matched-accuracy configuration; timing remains the future primary computational endpoint."
+  },
+  "population": {
+    "cases": 36,
+    "materials": [
+      "B01",
+      "B12",
+      "O01",
+      "O05",
+      "O14",
+      "O18"
+    ],
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "case_replacement_allowed": false
+  },
+  "ref_high_reconstruction": {
+    "policy": "P2E21 REPRESENTATION_BOUNDED_TOTAL",
+    "substeps": 32,
+    "substep_duration_day": 0.00005,
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "compartment_rate_formula": "1.6e-15/dt",
+    "total_integrated_bound_formula": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material)+spacing(theta_base_i))*dz_i))",
+    "total_rate_formula": "total_integrated_bound_cm/dt",
+    "empirical_factor": "none",
+    "representation_bound_check_required": true,
+    "hard_typed_mass_abs_limit_cm": 1e-12,
+    "timed": false
+  },
+  "production_solvers": {
+    "REF_PROD": {
+      "route": "legacy-reference-bound",
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "max_iterations": 16,
+      "max_backtracking": 8
+    },
+    "ROSS": {
+      "route": "rossfast-d3r",
+      "asset_root": "assets/rossfast/d3r",
+      "internal_substeps_per_outer_call": 8,
+      "private_accuracy_retuning_allowed": false,
+      "automatic_reference_fallback_allowed": false
+    }
+  },
+  "common_outer_segmentation_ladder": {
+    "segments": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "horizon_day": 0.0016,
+    "rule": "Same P2E21A solver-independent outer-segmentation ladder. Candidate state from each valid segment becomes next segment base state; stop a configuration at first invalid segment."
+  },
+  "matched_accuracy_targets": {
+    "head_theta_target_fractions_of_P2E14": [
+      1,
+      0.5,
+      0.25
+    ],
+    "labels": [
+      "A1_ADMISSION",
+      "A2_HALF",
+      "A3_QUARTER"
+    ],
+    "storage_rule": "unscaled exact-Se P2E14 storage envelope",
+    "weighted_compensation": false,
+    "target_change_allowed": false
+  },
+  "selection_rule": {
+    "per_solver_case_target": "least-refined valid N in {1,2,4,8,16,32} meeting all target metrics",
+    "if_none": "UNRESOLVED_AT_TARGET",
+    "timing_used": false,
+    "work_counter_used": false,
+    "extrapolation_beyond_32": false
+  },
+  "migration_endpoints": [
+    "paired availability by target over 36 cases",
+    "selected N by solver/case/target",
+    "whether the 33 overlapping P2E21A selections change after REF-HIGH migration",
+    "selected scientific error and storage fraction",
+    "untimed algorithm-specific work-counter vectors",
+    "route/retry structure for the three newly admitted REF-HIGH cases"
+  ],
+  "timing_firewall": {
+    "timing_calls_allowed": false,
+    "speedup_claim_authorized": false,
+    "future_timing_population": "Only final P2E22 paired selected configurations may enter timing.",
+    "duplicate_target_controls": "If multiple targets select the identical solver-case configuration, future timing should measure that unique configuration once per repetition and reuse the measurement across target labels."
+  },
+  "qualification": {
+    "production_configuration_count": 432,
+    "selection_record_count": 216,
+    "ref_high_reconstruction_count": 36,
+    "scientific_outcome_is_not_ci_failure": true,
+    "no_src_or_reference_mutation": true,
+    "O0_O2_byte_identical": true
+  },
+  "forbidden": [
+    "No change to P2E21A target fractions",
+    "No change to segmentation ladder",
+    "No target-specific solver retuning",
+    "No wall-clock or CPU timing",
+    "No dropping of cases whose selection changes",
+    "No post-hoc relaxation of storage criterion",
+    "No performance conclusion from work counters alone"
+  ],
+  "verdict": "PREREGISTERED_FINAL_36_CASE_UNTIMED_CONTROL_MIGRATION_READY",
+  "next_permitted_action": "Implement and execute the 432-configuration untimed migration. Persist final selections. Only after that may timing order, warmup, repetition and statistics be preregistered."
+}
