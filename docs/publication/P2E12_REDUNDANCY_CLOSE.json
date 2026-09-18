@@ -1,0 +1,19 @@
+{
+  "workunit": "PUB-P2E12",
+  "status": "CLOSED_REDUNDANT_NONAUTHORITATIVE",
+  "reason": "A separate preregistered P2E11R workunit already executed the same five-level Reference-only common-domain recovery across the exact 180-case extension matrix before PUB-P2E12 could produce scientific evidence.",
+  "authoritative_successor": {
+    "branch": "work/pub-p2e11r-extension-reference-common-domain",
+    "head": "b6cc68a8bf4ca89d53da17557deec2cb08a16683",
+    "result_blob": "c0228096a6fb8a65ec7f9f234baa2b866bf2691e",
+    "verdict": "BLOCKED_NO_COMPLETE_REFERENCE_COMMON_DOMAIN_IN_PREREGISTERED_FIVE_LEVEL_LADDER"
+  },
+  "adjudication_successor": {
+    "branch": "work/pub-p2e11d1-reference-extension-failure-adjudication",
+    "head": "f66d496799b52aee4c19fe0da5e4005160c60824",
+    "result_blob": "1be7d63e82eac9d1f846c9715fabf80a5700bdf8",
+    "verdict": "DIAGNOSED_SHARED_STATE_DOMAIN_TRANSFER_FAILURE"
+  },
+  "evidence_rule": "Any PUB-P2E12 workflow output is non-authoritative and must not be combined with P2E11R as an independent replicate or additional sample.",
+  "next_permitted_action": "Design a new Reference-only common-material-domain exploratory/domain-construction workunit from the P2E11D1 diagnosis. RossFast extension execution remains forbidden."
+}
