@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-ross16.cost-attribution-result.v1",
   "workunit": "F-ROSS16",
-  "phase": "PRIMARY_DIAGNOSTIC_QUALIFIED",
+  "phase": "QUALIFIED_WORK_COUNTS_PROFILE_ATTRIBUTION_REJECTED",
   "branch": "work/f-ross16-rossfast-cost-attribution",
   "executed_head": "776a34a1091c94d07ae68f397db12918ca9359fc",
   "workflow_run": 35293681582,
@@ -26,7 +26,7 @@
     },
     "rossfast": {
       "linear_solves_total": 864,
-      "linear_solves_mean_per_case": 24.0,
+      "linear_solves_mean_per_case": 24,
       "linear_solves_min_per_case": 24,
       "linear_solves_max_per_case": 24,
       "internal_retries_total": 0,
@@ -48,33 +48,39 @@
       "inverse_capacity_evaluations": 384,
       "table_face_linearizations": 360,
       "tridiagonal_factor_and_solves": 24,
-      "head_from_water_content_evaluations": 384
+      "head_from_water_content_evaluations": 384,
+      "lower_bound_general_real_power_operations_inside_candidate_steps": 1920,
+      "log10_operations_inside_table_faces": 720,
+      "exp_operations_inside_table_faces": 360
     }
   },
   "gprof_o2": {
     "total_sampled_seconds": 4.77,
-    "candidate_step_percent": 88.47,
-    "candidate_step_seconds": 4.22,
-    "candidate_step_calls_reported": 540108,
-    "derived_expected_profiled_candidate_steps_for_selected_repetitions": 4320000,
-    "note": "gprof call counts are not treated as exact algorithmic counts under optimization; exact work-count authority is the production diagnostic plus source structure.",
-    "derived_type_finalization_percent": 8.60,
-    "rossfast_solver_wrapper_percent": 1.26,
-    "rossfast_model_advance_percent": 0.63,
-    "kernel_solve_percent": 0.21
+    "reported_candidate_step_percent": 88.47,
+    "reported_candidate_step_seconds": 4.22,
+    "reported_candidate_step_calls": 540108,
+    "profiled_rossfast_solver_calls": 180036,
+    "exact_expected_candidate_step_calls": 4320864,
+    "call_count_consistent": false,
+    "status": "FUNCTION_LABEL_ATTRIBUTION_NOT_ADMISSIBLE",
+    "note": "The reported candidate_step call count equals three calls per RossFast kernel solve, not the exact 24 candidate steps per solve. Therefore the 88.47% bucket cannot be treated as a trustworthy function-level cost share."
   },
   "gprof_noinline": {
-    "status": "ATTRIBUTION_UNRELIABLE_FOR_SUBFUNCTION_PERCENTAGES",
-    "observation": "Compiler/profile attribution moved dominant samples to request_contract_is_admitted and same_material and did not expose a trustworthy candidate-step subfunction decomposition.",
-    "policy": "Do not use the no-inline percentages as production cost shares."
+    "status": "FUNCTION_LEVEL_ATTRIBUTION_REJECTED",
+    "reported_request_contract_percent": 66.37,
+    "reported_request_contract_calls": 720144,
+    "exact_expected_request_contract_calls": 180036,
+    "request_contract_call_count_consistent": false,
+    "reported_same_material_percent": 24.69,
+    "observation": "Known semantic call counts conflict with gprof labels under the diagnostic build. Percentages are retained only as negative profiler evidence."
   },
   "hypothesis_adjudication": {
-    "H1_exact_24_linear_solves": "SUPPORTED",
-    "H2_reference_materially_fewer_linear_solves": "SUPPORTED",
-    "H3_candidate_step_dominates_o2_profile": "SUPPORTED",
-    "H4_table_interpolation_and_state_inversion_subshare": "NOT_YET_RESOLVED"
+    "H1_exact_24_linear_solves": "SUPPORTED_EXACTLY",
+    "H2_reference_materially_fewer_linear_solves": "SUPPORTED_ALL_36_CASES",
+    "H3_candidate_step_dominates_o2_profile": "NOT_ADMITTED_DUE_TO_GPROF_CALL_COUNT_INCONSISTENCY",
+    "H4_table_interpolation_and_state_inversion_subshare": "UNRESOLVED"
   },
-  "interpretation": "The F-ROSS15 slowdown is structurally consistent with RossFast doing a fixed 24 candidate steps per accepted solve to obtain its temporal certificate, versus 2-12 Reference Newton/linear solves and 3.89 on average in this domain. O2 profiling places most RossFast sampled time inside candidate_step, but does not yet separate interpolation, constitutive inversion and tridiagonal solve cost reliably.",
+  "interpretation": "The slowdown is structurally consistent with RossFast doing a fixed 24 candidate steps/linear solves per accepted solve for its temporal certificate, versus 2-12 Reference Newton/linear solves and 3.89 on average. This is exact and gives RossFast 6.17 times as many linear solves over the 36-case domain. The attempted gprof inner-function attribution is rejected because reported call counts conflict with known production topology, so it cannot yet identify the dominant arithmetic inside candidate_step.",
   "production_or_reference_mutation": false,
-  "next_permitted_action": "Run a separately preregistered F-ROSS16D1 line-level/function-preservation diagnostic to decompose candidate_step without changing production semantics."
+  "next_permitted_action": "Run the already identified separately preregistered F-ROSS16D1 deterministic instruction-attribution diagnostic. Do not use rejected gprof helper percentages as evidence."
 }
