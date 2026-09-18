@@ -2,16 +2,16 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS16",
   "title": "RossFast cost attribution",
-  "phase": "QUALIFY",
-  "status": "F_ROSS16_WORK_COUNTS_QUALIFIED__F_ROSS16D1_CALLGRIND_PENDING",
+  "phase": "CLOSE",
+  "status": "QUALIFIED_COST_ATTRIBUTION_WITH_CALLGRIND_SUCCESSOR",
   "branch": "work/f-ross16-rossfast-cost-attribution",
   "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
   "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
   "canonical_at_start": "0372b44157747dc90fa690810f57e373e670373b",
   "dependency_note": "F-ROSS16 is diagnostic successor evidence to F-ROSS15; it does not assume canonical performance admission.",
   "production_or_reference_mutation": false,
-  "verdict": "PRIMARY_STRUCTURAL_EXPLANATION_QUALIFIED__INNER_ARITHMETIC_ATTRIBUTION_PENDING",
-  "next_permitted_action": "Complete F-ROSS16D1 Callgrind call-count validation and only then interpret inner instruction shares.",
+  "verdict": "CLOSED_DIAGNOSTICALLY__STRUCTURAL_SLOWDOWN_MECHANISM_IDENTIFIED",
+  "next_permitted_action": "Open a separate optimization-study workunit. First test semantics-preserving reductions of duplicate temporal-certificate work and repeated capacity/head/table transformations. Any production optimization must be independently qualified against F-ROSS13/PUB-P2E10/F-ROSS15 scientific and performance boundaries.",
   "implementation": {
     "work_count_harness": "tests/ross/test_ross16_work_counts.f90",
     "profile_harness": "tests/ross/test_ross16_profile.f90",
@@ -35,5 +35,30 @@
     "runner": "tests/ross/run_ross16d1_callgrind.sh",
     "workflow": ".github/workflows/f-ross16d1-callgrind.yml",
     "status": "PENDING_EXECUTION"
+  },
+  "f_ross16d1": {
+    "result": "integration/f-ross/F-ROSS16D1_CALLGRIND_RESULT.json",
+    "primary_run": 35294001306,
+    "status_head_replay": 35294027207,
+    "call_topology_consistent": true,
+    "optimized_candidate_step_fraction_of_solver_instructions": 0.9554209675818706,
+    "structural_candidate_step_breakdown": {
+      "inverse_capacity": 0.3193591533855895,
+      "table_face_linearization": 0.29792687179683375,
+      "head_from_water_content": 0.21833046155023314,
+      "tridiagonal_factor_and_solve": 0.05805759555974756,
+      "direct_candidate_body": 0.06742309090186742,
+      "valid_state_inside_candidate": 0.03890282680572866
+    },
+    "combined_capacity_table_head_fraction": 0.8356164867326554,
+    "production_or_reference_mutation": false
+  },
+  "scientific_interpretation": {
+    "primary": "RossFast's current performance disadvantage is structurally driven by its fixed 24-step coarse+half+half temporal-certificate path and the repeated constitutive/table transformations inside those steps.",
+    "reference_linear_solves_mean": 3.888888888888889,
+    "rossfast_linear_solves_per_call": 24,
+    "rossfast_over_reference_total_linear_solve_ratio": 6.171428571428572,
+    "tridiagonal_solver_is_primary_cost_driver": false,
+    "formal_production_timing_claim": false
   }
 }
