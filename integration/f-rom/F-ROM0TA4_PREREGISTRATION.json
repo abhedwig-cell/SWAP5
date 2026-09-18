@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.f-rom0ta4.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA4",
+  "title": "Refined fixed-resolution Reference candidate restart and replay",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "predecessor": "F-ROM0TA3",
+  "predecessor_decision": "REFERENCE_FIXED_RESOLUTION_TRAJECTORY_NO_GO_FOR_PREREGISTERED_THREE_LEVEL_LADDER",
+  "refined_candidate": {
+    "dt_day": 0.0008,
+    "selection_authority_precedes_TA3_results": true,
+    "authority": [
+      "integration/f-rom/F-ROM0_PREREGISTRATION.json observation_interval.refined",
+      "integration/f-rom/F-ROM0R_R2_PREREGISTRATION.json perturbation.refined_interval_day"
+    ],
+    "not_selected_to_avoid_0_0004_failure": true
+  },
+  "domain": {
+    "materials": ["B01","B14"],
+    "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+    "seed": "ROM0R_R1_GRAVITY_STEADY_SE_0_85",
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "perturbation": {
+      "cases": ["TOP_PLUS","TOP_MINUS"],
+      "epsilon_fraction_of_k0": 0.01,
+      "bottom_flux": "qeq"
+    },
+    "perturbation_intervals": 16,
+    "perturbation_dt_day": 0.0008,
+    "perturbation_horizon_day": 0.0128,
+    "restart_split_after_perturbation_intervals": 8
+  },
+  "continuous_reference": "One uninterrupted TA3 reference-floor sample trajectory over seed plus all 16 perturbation intervals.",
+  "restart_reference": {
+    "pre_split": "Fresh trajectory from identical seed through perturbation step 8.",
+    "export": "fmr_export_committed_restart",
+    "restore": "fmr_restore_committed_restart into an uninitialized committed-state registry",
+    "post_split_backend": "Fresh fmr_serialized_reference_backend_t instance; no worker/solver scratch transferred",
+    "continuation": "Perturbation steps 9 through 16 via the same TA3 reference-floor sample path."
+  },
+  "required_identity": [
+    "LINEAGE_IDENTITY",
+    "REVISION_IDENTITY",
+    "COMMITTED_TIME_BIT_IDENTITY",
+    "PRESSURE_HEAD_PROFILE_BIT_IDENTITY_AT_EVERY_REPLAYED_PERTURBATION_ENDPOINT",
+    "WATER_CONTENT_PROFILE_BIT_IDENTITY_AT_EVERY_REPLAYED_PERTURBATION_ENDPOINT",
+    "PONDING_BIT_IDENTITY",
+    "GROUNDWATER_LEVEL_BIT_IDENTITY",
+    "MASS_RESIDUAL_BIT_IDENTITY",
+    "SAMPLE_STATUS_IDENTITY",
+    "EXACTLY_ONE_COMMIT_PER_SUCCESSFUL_SAMPLE",
+    "ZERO_INTERNAL_RETRIES",
+    "HARD_MASS_GATE"
+  ],
+  "negative_restore_control": {
+    "wrong_parameter_set_identity_must_fail_closed": true,
+    "target_registry_must_remain_uninitialized": true
+  },
+  "execution_reproducibility": "Run complete four-case harness twice and require byte-identical stdout.",
+  "source_policy": {
+    "production_or_reference_source_mutation_allowed": false,
+    "solver_control_change_allowed": false,
+    "iteration_budget_change_allowed": false,
+    "mass_tolerance_change_allowed": false,
+    "perturbation_change_allowed": false,
+    "resolution_change_allowed": false
+  },
+  "close_decisions": [
+    "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+    "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_BLOCKED",
+    "REFINED_REFERENCE_CANDIDATE_NO_GO"
+  ],
+  "rom1a_authorized": false,
+  "production_application_admission": false
+}
