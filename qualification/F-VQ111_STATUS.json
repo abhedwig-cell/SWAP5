@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ111",
+  "capability": "F-GC38",
+  "title": "Independent MODFLOW6 Prepared-Solve Iterative Backend Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "owner": {
+    "branch": "work/f-gc38-modflow6-prepared-solve-session-reconciled",
+    "checkpoint_head": "9f903a2febb905316fab3d6b577c0d4a6f904a7c",
+    "production_blob": "d26a11b292c114083d4de15c32f0a56fc45db833",
+    "exact_head_run": 35296389291,
+    "exact_head_conclusion": "success"
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq111-fgc38-prepared-solve-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "official MODFLOW6 6.8.0 transient convertible 1x4 model with two API slots, shuffled explicit bindings, A->B->C republishing inside one prepared solve, fixed XOLD and clean C-only kernel path-equivalence"
+  },
+  "exclusions": [
+    "coupling convergence policy",
+    "SWAP predictor/corrector science",
+    "iMOD Coupler orchestration",
+    "finalize_time_step ownership",
+    "whole-window rollback/reconstruction"
+  ],
+  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW and proceed to F-GC38 admission postimage."
+}
