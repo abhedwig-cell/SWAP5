@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.f-rom0.r3-policy-authority-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "PARALLEL_POLICY_AUTHORITY_RECONCILED",
+  "chronology": [
+    {"time":"2026-09-18T17:10:06Z","commit":"461df48230b40bbfdd5cb8b0d79d59a061e4b940","event":"Original fixed-control ROM-0 closeout persisted as NO_GO_REFERENCE_AUTHORITY"},
+    {"time":"2026-09-18T17:19:24Z","commit":"a4a1db296582680af7f68f1a096fcdb9c742cac8","event":"R3R1 bit-identity candidate-policy gate preregistered"},
+    {"time":"2026-09-18T17:20:02Z","commit":"53d54afdcf49a2547872bec0d4db6a8853a2afa0","event":"R3Q1 P2E21-budget-neutral candidate-policy gate independently preregistered before either policy result"},
+    {"time":"2026-09-18T17:23:36Z","commit":"f595bde0e203c92d3884c421771d7f6f003512d5","event":"R3R1 result: CANDIDATE_POLICY_ENDPOINT_NEUTRALITY_NO_GO under bit-identity proposition"},
+    {"time":"2026-09-18T17:24:09Z","commit":"124fed9f333a5283e2f97dfc118067a6e27ee645","event":"R3Q1 result: PRESCRIBED_HEAD_REPRESENTATION_POLICY_QUALIFIED under frozen P2E21/P2E18 numerical-reference budgets"},
+    {"time":"2026-09-18T17:28:22Z","commit":"97da2c5ea4e443278b2820650cf44e2e32f74505","event":"R3Q2 result: FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED"}
+  ],
+  "governing_authorities": {
+    "F_ROM0_ACCEPTED_FULL_ORDER_AUTHORITY": {
+      "reference_floor_rule": "controlled numerical refinement is measured per output and horizon",
+      "bit_identity_between_distinct_numerical_policies_required": false
+    },
+    "F_ROM0_PREREGISTRATION": {
+      "threshold_rule": "MEASURE_ONLY",
+      "required_vertical_floor_cases": ["B01:E1_NOMINAL_FLUX","B14:E2_DRYING_FLUX"],
+      "post_result_retuning_allowed": false
+    },
+    "PUB_P2E21_P2E18": {
+      "role": "pre-existing numerical-reference endpoint-neutrality budgets and prospective representation-bound method",
+      "selected_after_R3R1_result": false
+    },
+    "review_authority_rule": "Historical decisions remain immutable evidence but may be superseded for current status by later explicitly qualified capability authority; history is not rewritten."
+  },
+  "classification": {
+    "original_R3": "IMMUTABLE_NO_GO_UNDER_FIXED_1E_12_TOTAL_RATE_CONTROL",
+    "R3R1": "VALID_NO_GO_FOR_SEPARATE_BIT_IDENTITY_POLICY_PROPOSITION",
+    "R3D3": "VALID_NO_GO_FOR_ALWAYS_ON_POLICY_UNDER_BIT_IDENTITY_GATE",
+    "R3Q1": "CURRENT_QUALIFIED_RESEARCH_REFERENCE_NUMERICAL_POLICY_AUTHORITY",
+    "R3Q2": "CURRENT_QUALIFIED_FKT_OWNERSHIP_TRAJECTORY_AUTHORITY_UNDER_R3Q1_POLICY",
+    "F_ROM0_17_10_CLOSEOUT": "HISTORICAL_NEGATIVE_FIXED_CONTROL_CLOSEOUT_SUPERSEDED_ONLY_FOR_RESEARCH_POLICY_CONTINUATION_BY_R3Q1_R3Q2"
+  },
+  "why_Q1_is_not_posthoc_gate_relaxation": [
+    "R3Q1 was preregistered at 17:20:02Z, before the R3R1 result at 17:23:36Z.",
+    "Its neutrality budgets and representation formula were imported from pre-existing PUB-P2E21/P2E18 authority, not chosen from R3R1 outcome.",
+    "R3Q1 does not reclassify the original R3 no-go; it qualifies a distinct research numerical policy."
+  ],
+  "current_decision": "R3Q2_SUCCESSOR_AUTHORITY_CONTROLS_NEXT_ROM0_STEP",
+  "vertical_reference_floor_authorized": true,
+  "vertical_reference_floor_cases": ["B01:E1_NOMINAL_FLUX","B14:E2_DRYING_FLUX"],
+  "rom1a_authorized": false,
+  "production_application_admission": false,
+  "forbidden": [
+    "REWRITE_ORIGINAL_R3_OR_R3R1_HISTORY",
+    "CLAIM_PRODUCTION_REFERENCE_POLICY_CHANGE",
+    "SKIP_REQUIRED_VERTICAL_REFERENCE_FLOOR",
+    "PROCEED_TO_ROM1A_BEFORE_VERTICAL_FLOOR_AND_FINAL_GATE_REEVALUATION"
+  ]
+}
