@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.publication.p2e14-reference-common-material-threshold-freeze-result.v1",
+  "workunit": "PUB-P2E14",
+  "phase": "QUALIFIED_REFERENCE_ONLY_THRESHOLD_FREEZE",
+  "parent_authority": {
+    "head": "95158d1f362b943c18e193d6d7b638300ebb684e",
+    "p2e13_result_blob": "a8658b710b5b96b1bea0ee8c61dae80a002efa76"
+  },
+  "executed_head": "88d689a34ca0d156c93a698f1bcffd5a585f5104",
+  "authorities": {
+    "preregistration_blob": "2c41869d928b3a3ec031758a1d988000ebfcc4c2",
+    "test_blob": "2f9aec9e26ddcc533224ad1f5ce8ecc02739150c",
+    "runner_blob": "a6d14764d5b490fccf70841dd38f4782b06626e0",
+    "workflow_blob": "752691b20a27d1143a92e7dfc6c6fa0a73935c5b"
+  },
+  "execution": {
+    "workflow_run": 35290229184,
+    "job": 105431262138,
+    "conclusion": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identical": true,
+    "output_sha256": "6bbef0ef88b97624f798d8d4da2d14417783465f125f4983830cd6adbacc4d94"
+  },
+  "reference_matrix": {
+    "physical_case_count": 216,
+    "material_count": 36,
+    "forcing_count": 2,
+    "cases_per_Se": 72,
+    "Se": [
+      0.65,
+      0.85,
+      0.96
+    ],
+    "valid_by_Se": {
+      "0.65": 72,
+      "0.85": 72,
+      "0.96": 72
+    },
+    "coarse_dt_day": 0.0064,
+    "half_dt_day": 0.0032
+  },
+  "frozen_threshold_design": {
+    "statistic": "maximum Reference coarse-versus-two-half self-disagreement over all 72 cases in exact Se stratum",
+    "factor": 1,
+    "application_resolution_floor": 0,
+    "material_stratification": false,
+    "forcing_stratification": false,
+    "weighted_compensation": false
+  },
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "U_h_inf_cm": 0.009310899886486368,
+      "U_h_rms_cm": 0.004264337561059986,
+      "U_theta_inf": 0.000017908123244203544,
+      "U_theta_rms": 0.000006578609068585418,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "U_h_inf_cm": 0.05684414280500505,
+      "U_h_rms_cm": 0.02309047189054667,
+      "U_theta_inf": 0.00024393588764148877,
+      "U_theta_rms": 0.00008095278187597767,
+      "U_storage_cm": 2.842170943040401e-14
+    },
+    "Se_0.96": {
+      "U_h_inf_cm": 0.7386357920248865,
+      "U_h_rms_cm": 0.19122530959872563,
+      "U_theta_inf": 0.0012274135237608785,
+      "U_theta_rms": 0.00035749599085978164,
+      "U_storage_cm": 2.842170943040401e-14
+    }
+  },
+  "interpretation": {
+    "meaning": "Each frozen threshold is the empirical upper envelope of Reference temporal self-disagreement across all 36 materials and both retained forcing classes at the exact selected Se anchor.",
+    "not_true_error_bound": true,
+    "not_universal_SWAP_accuracy_requirement": true,
+    "not_production_tolerance": true,
+    "wet_state_note": "The Se=0.96 head thresholds are materially larger than the drier strata and must be interpreted as Reference numerical self-disagreement in this bounded experiment, not as a statement that sub-centimetre head differences are universally negligible."
+  },
+  "firewall": {
+    "rossfast_executed": false,
+    "rossfast_extension_discrepancy_inspected": false,
+    "threshold_rule_changed_after_execution": false,
+    "case_removed": false,
+    "production_or_reference_source_changed": false
+  },
+  "future_admissibility_rule": {
+    "pairwise_discrepancy": "D_metric <= frozen T_metric(Se) for all five metrics",
+    "route_validity_separate_hard_gate": true,
+    "hard_integrated_mass_abs_limit_cm_each_route": 1e-12,
+    "fallback_allowed": false,
+    "performance_cannot_compensate": true
+  },
+  "verdict": "QUALIFIED_REFERENCE_ONLY_36_MATERIAL_THRESHOLD_SURFACE",
+  "next_permitted_action": "Preregister and execute the new RossFast-versus-Reference extension holdout over the thirty previously unobserved extension materials at Se={0.65,0.85,0.96}, DRYING/NOMINAL, using the P2E10 common paired request protocol and these frozen thresholds. The six historical anchor materials remain continuity/supporting evidence rather than untouched holdout."
+}
