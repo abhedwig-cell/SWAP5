@@ -1,0 +1,164 @@
+{
+  "schema":"swap5.publication.p2e21a-equal-error-control-selection.v1",
+  "workunit":"PUB-P2E21A",
+  "publication_owner":"PUB-SQ",
+  "phase":"PREREGISTERED_BEFORE_PRODUCTION_SOLVER_WORK_PRECISION_EXECUTION",
+  "role":"UNTIMED_MATCHED_ACCURACY_TARGET_CONTROL_SELECTION",
+  "branch":"work/pub-p2e21a-equal-error-control-selection",
+  "parent_ref_high":{
+    "branch":"work/pub-p2e20-ref-high-scaled-construction",
+    "head":"a561ff1389af06d4521185b9d0d080785716bf3b",
+    "result_path":"docs/publication/P2E20_REF_HIGH_SCALED_CONSTRUCTION_RESULT.json",
+    "result_blob":"1657c73e631f4a5e6b9ee65d43669054a65e3008",
+    "verdict":"REF_HIGH_QUALIFIED_CASEWISE_33_OF_36_EQUAL_ERROR_PERFORMANCE_POPULATION_AVAILABLE"
+  },
+  "purpose":"Select production-solver temporal controls against the same candidate-blind REF-HIGH accuracy targets before any performance timing. Timing is deliberately excluded so measured speed cannot influence accuracy matching or control selection.",
+  "performance_population":{
+    "source":"exact P2E20 REF_HIGH_QUALIFIED population",
+    "p2e20_case_ids":"3 through 35 inclusive",
+    "case_count":33,
+    "excluded_p2e20_cases":[
+      {"case":1,"material":"B01","Se":0.65,"forcing":"DRYING","reason":"REF_HIGH_ROUTE_UNRESOLVED"},
+      {"case":2,"material":"B01","Se":0.65,"forcing":"NOMINAL","reason":"REF_HIGH_ROUTE_UNRESOLVED"},
+      {"case":36,"material":"O18","Se":0.96,"forcing":"NOMINAL","reason":"REF_HIGH_STABILITY_UNRESOLVED"}
+    ],
+    "case_replacement_allowed":false
+  },
+  "physical_matrix":{
+    "materials":["B01","B12","O01","O05","O14","O18"],
+    "effective_saturation":[0.65,0.85,0.96],
+    "forcing":["DRYING","NOMINAL"],
+    "total_horizon_day":0.0016,
+    "grid":"16 homogeneous cells x 10 cm",
+    "source_sink":"zero",
+    "ponding_initial_cm":0.0,
+    "top_flux_over_initial_K0":{"DRYING":-0.005,"NOMINAL":0.010},
+    "bottom_flux_over_initial_K0":{"DRYING":-0.019,"NOMINAL":-0.004}
+  },
+  "ref_high_reconstruction":{
+    "policy":"P2E20 frozen integrated-invariant Reference policy",
+    "substeps":32,
+    "substep_duration_day":0.00005,
+    "integrated_balance_allowance_cm_per_substep":1.6e-15,
+    "balance_rate_tolerance_formula":"1.6e-15 / dt_day",
+    "max_iterations":16,
+    "max_backtracking":8,
+    "endpoint_role":"scientific reference only",
+    "timed":false,
+    "rule":"Every P2E21A case must reproduce a valid 32-substep REF-HIGH endpoint before production configurations are interpreted. A reconstruction mismatch is provenance/reference failure, not a production-solver result."
+  },
+  "production_solvers":{
+    "REF_PROD":{
+      "route":"legacy-reference-bound",
+      "balance_policy":"fixed production-style rate tolerance",
+      "compartment_balance_tolerance_cm_per_day":1e-12,
+      "total_balance_tolerance_cm_per_day":1e-12,
+      "max_iterations":16,
+      "max_backtracking":8,
+      "head_abs_tolerance_cm":1e-12,
+      "head_rel_tolerance":1e-12,
+      "ponding_tolerance_cm":1e-12
+    },
+    "ROSS":{
+      "route":"rossfast-d3r",
+      "asset_root":"assets/rossfast/d3r",
+      "internal_substeps_per_outer_call":8,
+      "private_accuracy_retuning_allowed":false,
+      "automatic_reference_fallback_allowed":false
+    }
+  },
+  "common_outer_segmentation_ladder":{
+    "segments":[1,2,4,8,16,32],
+    "segment_duration_day":[0.0016,0.0008,0.0004,0.0002,0.0001,0.00005],
+    "definition":"Each production configuration traverses the same 0.0016-day physical horizon as N equal accepted outer solver calls. Boundary forcing remains fixed at the initial-state-defined flux for the entire horizon. Candidate state from a valid segment becomes the next segment base state.",
+    "reason":"Outer segmentation is a solver-independent temporal-control axis already representable by both routes. RossFast retains its frozen eight internal substeps inside each outer call; Reference retains its frozen production nonlinear controls.",
+    "on_invalid_segment":"Stop that configuration at the first invalid segment, retain it as route-invalid, and do not substitute another control."
+  },
+  "accuracy_metrics":{
+    "against":"same casewise REF-HIGH 32-substep endpoint",
+    "state_metrics":[
+      "D_h_inf_cm",
+      "D_h_rms_cm",
+      "D_theta_inf",
+      "D_theta_rms"
+    ],
+    "storage_metric":"D_storage_abs_cm",
+    "transfer_metrics":"Integrated top and bottom transfer identity over the complete horizon; under fixed prescribed flux these are hard consistency gates rather than a discriminating error axis.",
+    "hard_mass_gate":"absolute typed integrated mass residual <= 1e-12 cm on every accepted production segment"
+  },
+  "matched_accuracy_targets":{
+    "head_theta_target_fractions_of_P2E14":[1.0,0.5,0.25],
+    "labels":["A1_ADMISSION","A2_HALF","A3_QUARTER"],
+    "storage_rule":"Storage is NOT scaled with the target fraction. It must remain <= the full exact-Se P2E14 storage envelope at every target because that envelope is already at machine-scale summation resolution.",
+    "definition":"A production configuration meets target alpha only when all four head/theta discrepancies are <= alpha times their exact-Se P2E14 thresholds, storage discrepancy is <= the unscaled exact-Se P2E14 storage threshold, all route/mass/flux gates pass, and the complete horizon is traversed.",
+    "scientific_meaning":"alpha=1.0 is the frozen scientific admission envelope. alpha=0.5 and 0.25 are stricter work-precision analysis targets, not new scientific acceptance thresholds.",
+    "weighted_compensation":false
+  },
+  "control_selection_rule":{
+    "per_solver_case_target":"Choose the least-refined valid outer segmentation, i.e. the smallest N segments in the frozen ladder, that meets the target.",
+    "timing_used_for_selection":false,
+    "work_counter_used_for_selection":false,
+    "reason":"Selection is based only on satisfying a common scientific accuracy target. This prevents favorable runtime or algorithm-specific work accounting from influencing the matched-accuracy configuration.",
+    "if_no_configuration_meets_target":"Mark solver-case-target UNRESOLVED_AT_TARGET. Do not extrapolate beyond 32 segments and do not drop the case.",
+    "paired_timing_population_future":"A case-target enters P2E21B only if both REF_PROD and ROSS have a frozen selected configuration at that same target."
+  },
+  "untimed_work_telemetry":{
+    "timing_calls_allowed":false,
+    "reported_without_single_composite_unit":[
+      "outer_solver_calls",
+      "completed_outer_segments",
+      "nonlinear_iterations",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "internal_retries",
+      "alternative_solver_calls"
+    ],
+    "interpretation":"Algorithm-specific counters are reported as a vector. No arbitrary weighted conversion into one universal work unit is allowed."
+  },
+  "primary_endpoints":{
+    "E1":"work-precision surface: scientific error versus outer segmentation for each solver and case",
+    "E2":"selected least-refined configuration for each solver x case x matched-accuracy target",
+    "E3":"paired availability count at each target",
+    "E4":"route/retry failure structure across the common temporal-control ladder"
+  },
+  "secondary_endpoints":[
+    "solver-specific work-counter vectors at every configuration",
+    "accuracy overshoot below the target for each selected configuration",
+    "REF_PROD versus ROSS error relative to REF-HIGH, never Ross-minus-Reference alone"
+  ],
+  "future_P2E21B_timing_firewall":{
+    "authorized_now":false,
+    "future_rule":"Only configurations selected and persisted by P2E21A may be timed as matched-accuracy pairs.",
+    "timing_order":"must be separately preregistered with balanced/randomized order, warmup policy, repetition count and reporting statistic",
+    "speedup_claim_authorized_now":false
+  },
+  "negative_result_policy":{
+    "run_all_33_cases_all_6_segment_levels_both_solvers":true,
+    "production_configuration_count":396,
+    "do_not_stop_after_unfavorable_case":true,
+    "no_case_replacement":true,
+    "no_accuracy_target_change":true,
+    "no_solver_control_retuning_after_outcome":true,
+    "no_timing_inspection":true,
+    "scientific_outcome_is_not_ci_failure":true
+  },
+  "qualification":{
+    "required":[
+      "exactly 33 P2E20-qualified cases retained",
+      "exactly 6 outer segmentation levels for each of 2 production solvers",
+      "valid REF-HIGH reconstruction for every included case",
+      "P2E14 thresholds reproduced unchanged",
+      "P2E20 Reference policy reproduced unchanged",
+      "no src/** or reference/** mutation",
+      "no wall-clock or CPU timing used or emitted as an endpoint",
+      "O0/O2 byte-identical scientific output",
+      "all scientific failures retained rather than asserted as CI failures"
+    ]
+  },
+  "hypothesis_mapping":{
+    "SQ_H3":"P2E21A does not test speed directly. It freezes matched-accuracy controls and determines whether a non-empty paired population exists on which computational advantage can be tested without accuracy confounding."
+  },
+  "verdict":"PREREGISTERED_UNTIMED_EQUAL_ERROR_CONTROL_SELECTION_READY",
+  "next_permitted_action":"Implement and execute the full untimed 396-configuration P2E21A matrix plus REF-HIGH reconstruction. Do not time either production solver."
+}
