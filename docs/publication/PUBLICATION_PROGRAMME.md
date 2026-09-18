@@ -73,6 +73,10 @@ Latest response-identity evidence:
 
 `PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md`
 
+Latest information-value evidence:
+
+`PUB_GC_E5_INFORMATION_VALUE_RESULT.md`
+
 First publication evidence block (E1/E2):
 
 - `PUB_GC_E1_E2_PREREGISTRATION.md`
@@ -98,7 +102,7 @@ The technical ability to support N:1 coupling is infrastructure, not the intende
 
 ### PUB-RC - ACCELERATE
 
-Status: **high-priority experiment within PUB-GC; independent-paper status conditional**.
+Status: **E4/E5 experiment retained in PUB-GC; independent PUB-RC line currently NOT ADMITTED**.
 
 Current research question:
 
@@ -106,7 +110,7 @@ Current research question:
 
 Current disposition:
 
-> Develop the response/acceleration study as a major experiment inside the central PUB-GC manuscript. Split it into a separate PUB-RC manuscript only if the novelty gates demonstrate a reproducible, generalizable information-value regime beyond state-of-the-art black-box multisecant coupling.
+> E4/E5 are substantive results of the central PUB-GC manuscript. The current independent PUB-RC / ACCELERATE paper line is closed because the preregistered E5 information-value gate was not passed. It may be reopened only if later work produces qualitatively new, reproducible evidence beyond the tested scalar coupling problem.
 
 PUB-RC must not claim novelty from derivative-informed coupling, interface Jacobians, autonomous/multirate component integration, dynamic hydrological storage response, surrogate-assisted quasi-Newton coupling, or hydrological convergence-regime analysis by themselves.
 
