@@ -1,0 +1,46 @@
+name: ROM1B3Q1 induced theta norm reconciliation
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B3_RESULT.json'
+      - 'integration/f-rom/ROM1B3_STATUS.json'
+      - 'integration/f-rom/ROM1B3Q1_*'
+      - 'docs/science/ROM1B3Q1_*'
+      - 'tests/rom/analyze_rom1b3q1_induced_theta_norm.py'
+      - 'tests/rom/run_rom1b3q1_induced_theta_norm.sh'
+      - '.github/workflows/rom1b3q1-induced-theta-norm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1b3q1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute induced-theta norm reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1B3Q1_EVIDENCE
+          ROM1B3Q1_EVIDENCE_DIR="$PWD/ROM1B3Q1_EVIDENCE" \
+            bash tests/rom/run_rom1b3q1_induced_theta_norm.sh | tee ROM1B3Q1_EVIDENCE/gate.txt
+      - name: Preserve B3Q1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1b3q1-${{ github.run_id }}
+          path: ROM1B3Q1_EVIDENCE
+          if-no-files-found: warn
