@@ -2,7 +2,7 @@
 
 ## Status
 
-**E7 STANDALONE SELECTION FROZEN — COUPLED EXECUTION IS THE ONLY INTENDED PRIMARY SCIENTIFIC GAP**
+**SCIENTIFIC CORE READY THROUGH RQ5 — E7 CLOSED AS REALISTIC_COMPONENT_DOMAIN_LIMIT**
 
 Audit date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | RQ2 coupled convergence and hydrological relevance | E3/E3-R | `SUPPORTED_RESTRICTED` | ready; explicitly a weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | `SUPPORTED_RESTRICTED` | ready; no universal-Jacobian or standalone-ACCELERATE claim |
 | RQ4 component-envelope interaction | E3-D2/E6 | `SUPPORTED_RESTRICTED` / negative stress extension | ready; component-domain failure kept distinct from coupling divergence |
-| RQ5 realistic transferability | E7 Hupsel | `STANDALONE_SELECTION_FROZEN / READY_FOR_COUPLED_EXECUTION` | coupled loose/strong result remains the principal scientific gap |
+| RQ5 realistic transferability | E7 Hupsel | `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT` | bounded negative result; authentic drainage exceeds current prescribed-head participant envelope before coupled execution |
 | regional scaling | E8 | deferred | not a submission prerequisite unless journal positioning later makes quantitative scaling central |
 | physical N:1 aggregation validity | PUB-SG / SCALE | separate paper | excluded from PUB-GC |
 
@@ -26,15 +26,15 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 
 | Asset | State |
 | --- | --- |
-| result-bearing abstract | READY through E6; must be updated after E7 if executed |
+| result-bearing abstract | READY through E7 |
 | Introduction / novelty boundary | READY; external prior-art audit completed |
-| Methods E1–E7 | READY; E7 explicitly prospective |
-| Results E1–E6 | READY |
-| Discussion / conclusions | READY through E6 and evidence-bounded |
+| Methods E1–E7 | READY; E7 executed to preregistered component-domain stop |
+| Results E1–E7 | READY |
+| Discussion / conclusions | READY through E7 and evidence-bounded |
 | Figures F1–F6 | BUILT_AND_LINKED |
-| Figure F7 | BLOCKED_E7 |
+| Figure F7 | BUILT_AND_LINKED |
 | Tables T1–T5 | BUILT_AND_LINKED |
-| Table T6 | BLOCKED_E7 |
+| Table T6 | BUILT_AND_LINKED |
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
@@ -44,9 +44,11 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 
 ## What remains scientific
 
-The M1-C3 whole-Hupsel prerequisite is now canonically closed. E7 standalone selection has been executed prospectively and frozen before any coupled output. The remaining primary scientific addition is the preregistered loose/sequential versus production-strong coupling result for 2003-06-17 and 2003-05-20.
+No preregistered primary experiment remains open for the current bounded manuscript.
 
-If E7 eventually returns weak feedback or a component-domain limit, that remains a valid E7 outcome under the frozen preregistration. A positive strong-feedback result is not required for acceptance of the evidence.
+E7 closes RQ5 negatively but validly: the prospectively selected Hupsel days require active drainage, whereas the current production prescribed-head owner rejects active drainage before owner-state allocation. The study therefore reports a realistic component-domain limit rather than inventing a looser Hupsel process profile.
+
+E8 remains deferred and is not required for the current central claims. A future prescribed-head capability that admits active drainage could support a separate prospective follow-up, but it must not retroactively replace E7.
 
 ## What remains editorial / submission-specific
 
@@ -61,12 +63,22 @@ These items do not require new science:
 
 ## Decision boundary
 
-For the intended broader hydrological-method framing, E7 materially strengthens external validity and remains the preferred next scientific step.
+The intended broader coupling-method framing now has a complete E1–E7 scientific core, but the external-validity result is a **component-domain boundary**, not a successful realistic loose-versus-strong comparison.
 
-If E7 coupling cannot be completed for a genuine new technical reason, the existing E1–E6 manuscript remains internally coherent but must be framed as a **bounded coupling-method and qualification study**. The former raw-asset/M1-C3 blocker is no longer a valid reason to omit E7.
+Accordingly the manuscript may claim that:
 
-E8 should not be started merely to delay or compensate for E7; the next scientific action is the already-frozen E7 coupled execution.
+- the coupling contract is hydrologically and transactionally explicit in the qualified controlled envelope;
+- a realistic prospectively selected Hupsel application exposes a concrete production participant boundary;
+- component admissibility is part of the coupled-model domain.
 
+It may not claim that:
+
+- realistic Hupsel loose/strong corrections were quantified;
+- active-drainage Hupsel is currently production-coupled to MODFLOW6 under prescribed-head trials;
+- regional Hupsel groundwater behaviour was validated;
+- E7 demonstrates that strong coupling is or is not hydrologically important in realistic Hupsel.
+
+This bounded framing is scientifically complete enough for journal selection and submission preparation without manufacturing a positive E7 trajectory.
 
 ## Journal-facing prose state
 

@@ -1,24 +1,24 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
-  "canonical_basis": "12beef3e91f90f88b101c13af72cd216bccc63e3",
-  "scientific_scope": "E1-E6 closed/bounded; M1/M1-C3 closed; E7 standalone selection frozen before coupled output; coupled execution pending",
+  "canonical_basis": "970bc631d78ce1f5db3821ce313d500b1c63b274",
+  "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "640cf6a9aaf939b1180dee29388a9ae005d5932b"
+      "blob": "1ada7e208cf970f971f53e12ba4d11d4ba3e77b2"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
-      "blob": "f8f8092f370594fed14a863fd8989817d61b89e1"
+      "blob": "b341cd36288654a9b10a7a7dfe586d631b8c4227"
     },
     "tables": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
-      "blob": "1aa40d72f925617f263569461bba29ea7386dbfb"
+      "blob": "4636972d1e73f44c4547bdeb6c99c867043e06a3"
     },
     "figure_manifest": {
       "path": "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
-      "blob": "7a062218977dc4a39a5028f287daf610f6156b8a"
+      "blob": "1549e36780201202cbe2d309f4365eebe117329f"
     },
     "figure_generator": {
       "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "568e0c5d34366708bac0f19a9f2e0cfaaf4c2d14"
+      "blob": "20356125109d45667034e8d06fd61737ff1d9f74"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -38,7 +38,27 @@
     },
     "supplement": {
       "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
-      "blob": "1cc4e895b93fca00c95507db01ad6b21eda84c41"
+      "blob": "79293b3c55f558345445e142da5f0264368ab493"
+    },
+    "claim_sentence_audit": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
+      "blob": "b6834d10f846ec091b4d9d90145ef560d0a36ae4"
+    },
+    "consolidation_status": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md",
+      "blob": "5f9acd64547b003eaac9f125c7026649f19c784a"
+    },
+    "figure_table_plan": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md",
+      "blob": "d16ec9caaa17166d183c54341389e37a177abb93"
+    },
+    "publication_programme": {
+      "path": "docs/publication/PUBLICATION_PROGRAMME.md",
+      "blob": "25eda070f7937db55f896c0a933ba30056cbc494"
+    },
+    "e7_figure": {
+      "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "blob": "b1c78a79feb817527e015a500a35478d6c6ab5a5"
     }
   },
   "evidence": {
@@ -114,7 +134,7 @@
     }
   },
   "E7": {
-    "status": "STANDALONE_SELECTION_FROZEN_COUPLED_EXECUTION_PENDING",
+    "status": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "preregistration": {
       "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
       "blob": "27b73be6988d3308ddafc58a44fb628863d6bd77"
@@ -124,25 +144,72 @@
       "m1_closeout_pr": 316,
       "m1_verdict": "M1_CLOSED_CURRENT_CANONICAL",
       "qualification_path": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
-      "accepted_intervals": 32518
+      "qualification_blob": "78fe01d7e6b735b84b9bd7501bcb99c51b1433eb",
+      "accepted_intervals": 32518,
+      "drainage_nonzero_intervals": 16507
     },
     "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "exact_distribution_size_bytes": 8959314,
     "selection": {
       "result_path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "result_blob": "e4534f6f71b534e39c73ac3c52f31545af1b6159",
       "selected_days_path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
+      "selected_days_blob": "cfc65cfbd680e89d393a8697e09fa056f54f32d2",
       "median_dynamics_control": "2003-06-17",
       "high_dynamics_day": "2003-05-20",
+      "median_drainage_out_cm": 0.022586870162615704,
+      "high_drainage_out_cm": 0.9069694038599311,
       "daily_metrics_sha256": "d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3",
       "scored_days_sha256": "016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e",
       "coupled_output_observed_before_freeze": false
     },
-    "groundwater_fallback": {
-      "model": "qualified F-GC44 1x1x3 conceptual MODFLOW6 fixture",
-      "calibrated_to_e7": false,
-      "interpretation": "real-forcing hydrological demonstration, not regional Hupsel groundwater validation"
+    "production_boundary": {
+      "bootstrap_source_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "bootstrap_source_blob": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+      "ppa_wu01_status_path": "integration/audits/PPA_WU01_STATUS.json",
+      "ppa_wu01_status_blob": "3034a68e8675b958cc15d4ef24a8aeffde7d8375",
+      "ppa_wu03_status_path": "integration/audits/PPA_WU03_STATUS.json",
+      "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+      "groundwater_profile": "all tiles bottom_mode=5",
+      "limiting_guard": "drainage_response_active rejected by tile_config_valid before owner-state allocation",
+      "ppa_wu03_broadens_groundwater_process_profile": false
     },
-    "next_permitted_action": "Execute preregistered loose/sequential and production-strong E7 coupling for only the two frozen dates."
+    "result": {
+      "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+      "result_blob": "5e8b66f82f1f94fcaaf4214cdc57e5fc2706bf86",
+      "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
+      "narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
+      "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+      "loose_completed_windows": 0,
+      "strong_completed_windows": 0,
+      "modflow_e7_windows_executed": 0
+    },
+    "qualification": {
+      "test_path": "tests/publication/validate_pub_gc_e7_component_domain.py",
+      "test_blob": "396973085161b87be0ecc7072c6ccacb15608068",
+      "workflow_path": ".github/workflows/pub-gc-e7-component-domain.yml",
+      "workflow_blob": "af5babdd67f158aaac8dec02d76f13b133c6057e",
+      "source_head": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
+      "run_id": 35375181814,
+      "job_id": 105698080443,
+      "conclusion": "success"
+    },
+    "safeguards": {
+      "date_replacement": false,
+      "drainage_disabled": false,
+      "window_merging_or_shortening": false,
+      "solver_or_coupling_tolerance_change": false,
+      "production_physics_change": false,
+      "groundwater_calibration": false
+    },
+    "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
+    "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability.",
+    "current_canonical_reconciliation": {
+      "production_bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "ppa_wu02_scope": "homogeneous typed bottom_mode=2 prescribed-qbot application only",
+      "e7_effect": "NONE; prescribed-head groundwater owner remains mode 5 and active drainage/root extraction remain fail-closed"
+    }
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package. E7 is a closed preregistered realistic component-domain result; final archival release/DOI remains a later submission task."
 }

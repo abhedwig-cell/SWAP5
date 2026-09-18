@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#111}.title{font-size:28px;font-weight:700}.panel{font-size:21px;font-weight:700}.label{font-size:18px}.small{font-size:15px}.tiny{font-size:13px}.box{fill:#fff;stroke:#222;stroke-width:2}.soft{fill:#f2f2f2;stroke:#333;stroke-width:1.5}.dark{fill:#d9d9d9;stroke:#222;stroke-width:1.5}.line{stroke:#222;stroke-width:2;fill:none}.dash{stroke:#555;stroke-width:2;stroke-dasharray:7 5;fill:none}
+</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#222"/></marker></defs>
+<text x="40" y="42" class="title">F7. Realistic Hupsel transferability reaches the production component boundary</text>
+
+<text x="60" y="95" class="panel">A  Frozen standalone cases</text>
+<rect x="60" y="120" width="560" height="170" rx="10" class="soft"/>
+<text x="90" y="160" class="label">Median-dynamics control — 2003-06-17</text>
+<text x="90" y="190" class="small">Phi = 0.506735</text>
+<text x="90" y="218" class="small">daily drainage outflow = 0.0225869 cm</text>
+<text x="90" y="250" class="label">High-dynamics day — 2003-05-20</text>
+<text x="90" y="278" class="small">Phi = 0.883105; drainage outflow = 0.906969 cm</text>
+
+<text x="760" y="95" class="panel">B  Authentic process requirement</text>
+<rect x="760" y="120" width="560" height="170" rx="10" class="soft"/>
+<text x="1040" y="160" text-anchor="middle" class="label">Whole-Hupsel typed authority</text>
+<text x="1040" y="195" text-anchor="middle" class="small">32,518 accepted intervals</text>
+<text x="1040" y="225" text-anchor="middle" class="small">16,507 intervals with non-zero drainage</text>
+<text x="1040" y="258" text-anchor="middle" class="small">active drainage must remain part of application physics</text>
+
+<line x1="620" y1="205" x2="750" y2="205" class="line" marker-end="url(#arrow)"/>
+
+<text x="60" y="355" class="panel">C  Production prescribed-head groundwater owner</text>
+<rect x="60" y="380" width="1260" height="180" rx="10" class="dark"/>
+<text x="120" y="425" class="label">PPA-WU01 groundwater profile</text>
+<text x="120" y="460" class="small">requires all tiles: bottom_mode = 5</text>
+<text x="120" y="492" class="small">tile_config_valid rejects drainage_response_active = true</text>
+<text x="120" y="524" class="small">validation runs before owner-state allocation</text>
+<text x="800" y="425" class="label">E6 precedent</text>
+<text x="800" y="460" class="small">active drainage predictor valid under prescribed-q_bot route</text>
+<text x="800" y="492" class="small">prescribed-head corrector: KERNEL_STATUS_NOT_ADMITTED</text>
+<text x="800" y="524" class="small">transaction calls = 0</text>
+
+<line x1="690" y1="290" x2="690" y2="370" class="line" marker-end="url(#arrow)"/>
+
+<text x="60" y="625" class="panel">D  Preregistered E7 outcome</text>
+<rect x="60" y="650" width="1260" height="115" rx="10" class="box"/>
+<text x="690" y="690" text-anchor="middle" class="label">REALISTIC_COMPONENT_DOMAIN_LIMIT</text>
+<text x="690" y="720" text-anchor="middle" class="small">0 loose windows • 0 strong windows • 0 E7 MODFLOW windows</text>
+<text x="690" y="748" text-anchor="middle" class="small">No process disabling, tolerance change, date replacement, groundwater calibration or post-hoc window rescue</text>
+</svg>

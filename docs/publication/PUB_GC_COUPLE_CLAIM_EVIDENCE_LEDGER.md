@@ -43,6 +43,7 @@ EXCLUDED_NOVELTY
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
+| GC-C15 | A prospectively selected authentic Hupsel application can reach the production participant domain before loose/strong coupling convergence is assessable. | Component-envelope limitations are not unique to SWAP5; novelty lies only in the explicit evidence-bound hydrological classification. | E7 frozen Hupsel selection, M1 whole-Hupsel authority, PPA-WU01 mode-5 production owner, E6 active-drainage precedent, E7 qualification run 35375181814 | No further evidence required for the bounded claim; do not reinterpret as outer-coupling divergence or realistic strong-coupling magnitude. | SUPPORTED_RESTRICTED |
 
 ## Explicit non-novelty guard
 
@@ -139,11 +140,11 @@ practical supplied response
 
 using total equivalent SWAP work and failure/convergence domain.
 
-### Figure F7 — regional/scaling result
+### Figure F7 — realistic Hupsel component-domain result
 
-Supports: GC-C12, C13.
+Supports: GC-C15 and the bounded interpretation of GC-C14.
 
-Only include if the execution evidence is ready. Do not let this figure imply physical aggregation validity.
+Show the two frozen standalone dates, their positive drainage evidence, the production mode-5 prescribed-head profile boundary and the preregistered zero-window `REALISTIC_COMPONENT_DOMAIN_LIMIT`. Do not imply that realistic loose/strong corrections or regional groundwater validation were obtained.
 
 ## Manuscript stop rules
 
@@ -164,8 +165,8 @@ However:
 4. **E4 CLOSED — SUPPORTED_RESTRICTED.** The component-supplied `u_A` is identified as a finite-window flux-driven predictor response: it agrees with independent pure-bottom `u_FD`, is not universally interchangeable with head-driven `J_R`, and remains available in B5 where no symmetric local `J_R` is admitted.
 5. **E5 CLOSED — SUPPORTED_RESTRICTED.** Acceleration clearly outperforms plain fixed point near/above the fixed-point stability boundary, but the zero-cost J_R oracle provides only modest incremental value over cold secant and no observed convergence-domain extension. The quantitative gate for a warm-history E5b / standalone ACCELERATE continuation was not passed.
 6. **E6 CLOSED_NEGATIVE_WITH_BOUNDARIES.** Two preregistered stress routes were exhausted without a valid positive live-coupling case. The F-GC31 active-drainage predictor is valid but its smooth qbot projection is not an admitted prescribed-head corrector profile. The separate 20-case accepted-state/flux screen produced eight predictor-ready cases but zero cases with the required symmetric ±1e-4 m corrector domain; no E6-B candidate was admitted.
-7. **E7 STANDALONE_SELECTION_FROZEN / COUPLED_EXECUTION_PENDING.** M1-C3 and M1 are canonically closed. The preregistered standalone-only metric selected 2003-06-17 as the median-dynamics control and 2003-05-20 as the high-dynamics day before any coupled output. The uncalibrated F-GC44 conceptual MODFLOW fallback is frozen. Execute only the preregistered loose/strong comparison for these dates.
-8. E8 remains deferred until E7 supplies the realistic scientific core.
+7. **E7 CLOSED — REALISTIC_COMPONENT_DOMAIN_LIMIT.** The frozen dates remain 2003-06-17 and 2003-05-20. Both require authentic Hupsel drainage, while the current production prescribed-head groundwater owner rejects `drainage_response_active` before owner-state allocation. Qualification run 35375181814 passes the preregistered component-domain classification; zero loose/strong E7 windows are completed and no physics/tolerance/date/window rescue is permitted.
+8. E8 remains deferred and is not required for the current bounded coupling-contract manuscript.
 
 ## First publication evidence record
 
@@ -347,15 +348,24 @@ E6 closes negatively rather than supplying the previously sought positive strong
 
 ## E7 publication evidence
 
-Realistic-case readiness and blocker:
-
-`PUB_GC_E7_CASE_SELECTION.md`
-
 Prospective execution preregistration:
 
 `PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md`
 
-The E7 preregistration froze episode selection on standalone Hupsel water-balance dynamics before any coupled result. M1-C3 is now closed and the selected dates are durably frozen in `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`. The remaining E7 evidence is the coupled loose/strong execution only.
+Standalone selection frozen before coupled output:
+
+- `PUB_GC_E7_STANDALONE_SELECTION_RESULT.md`;
+- `PUB_GC_E7_STANDALONE_SELECTION_RESULT.json`;
+- `PUB_GC_E7_SELECTED_DAYS.csv`.
+
+Closed realistic result:
+
+- `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md`;
+- `PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json`;
+- qualification run `35375181814`, job `105698080443`;
+- Figure F7: `figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg`.
+
+E7 closes under its preregistered `REALISTIC_COMPONENT_DOMAIN_LIMIT` outcome. The selected authentic Hupsel days have positive drainage, but the production prescribed-head owner rejects active drainage before owner allocation. This is a component-domain result, not a completed loose/strong trajectory.
 
 ## Manuscript consolidation
 
