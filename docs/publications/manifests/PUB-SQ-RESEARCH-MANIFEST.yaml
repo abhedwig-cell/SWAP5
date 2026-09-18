@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: BOUNDARY_PRIMARY_SUPPORTED_EQUAL_ERROR_REFERENCE_NEXT
+  status: REF_HIGH_BLOCKED_REFERENCE_RETRY_DIAGNOSTIC_NEXT
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -14,7 +14,7 @@ manifest:
     P2E09_threshold_freeze_head: f0ec6434762dda7e91ae894df79c5c8b7d1a6ccf
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
-    next_confirmatory_surface: equal_error_cost_reference_construction
+    next_confirmatory_surface: ref_high_reference_retry_scaling_diagnostic
     P2E11_reference_extension:
       branch: work/pub-p2e11-reference-material-extension-calibration
       head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
@@ -100,6 +100,28 @@ manifest:
         Proceed to PUB-SQ-E3 candidate-blind REF-HIGH construction. Do not spend another
         confirmatory slot on the already sharp fixed-flux route boundary and do not count
         the overlapping upper-top surface as an independent holdout.
+    P2E18_ref_high_construction:
+      branch: work/pub-p2e18-ref-high-construction
+      result_head: 12b8b0294153c88b733b9eccfa8b3c98a14ebf23
+      result_blob: 10df8636afc05a46342921f50c2c8b543cf3168e
+      workflow_run: 35292703945
+      job: 105438767487
+      output_sha256: fabc9978a010ae242d94a933d14ad87da1039166f5fa7cf9701bfa878f5842b1
+      verdict: REF_HIGH_BLOCKED_BEFORE_ENDPOINT_STABILITY_BY_REFERENCE_RETRY_SCALING
+      finding: >-
+        Under the final preregistered six-level Reference-only design, 36/36 cases were valid
+        at one substep, 29/36 at two, 7/36 at four and 0/36 at eight, sixteen and thirty-two.
+        Every invalid route returned STATUS_NOT_CONVERGED on legacy-reference-retry before the
+        two required fine endpoint comparisons could be formed.
+      interpretation: >-
+        This is not a failed REF-HIGH temporal-stability result because no case reached the
+        8-vs-16 and 16-vs-32 endpoint tests. It is a failure of the currently frozen Reference
+        convergence contract to remain usable across the refinement ladder.
+      candidate_firewall: RossFast and timing remained unexecuted.
+      next_permitted_action: >-
+        Run a separate Reference-only diagnostic comparing the frozen fixed-rate convergence
+        contract with a prospectively defined timestep-invariant integrated-balance scaling.
+        Do not modify P2E18 post hoc and do not begin equal-error timing.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
