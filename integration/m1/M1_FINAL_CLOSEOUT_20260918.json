@@ -1,14 +1,14 @@
 {
   "schema": "swap5.bounded_execution_closeout.v2",
   "capability": "M1 - Typed External Boundary",
-  "phase": "CLOSE_CANDIDATE",
+  "phase": "CLOSE",
   "protocol": [
     "RECONCILE",
     "QUALIFY",
     "ADMIT",
     "CLOSE"
   ],
-  "branch": "work/m1-final-close-20260918",
+  "branch": "work/m1-canonical-close-record-20260918",
   "canonical_preimage": {
     "branch": "integration/f-ci-canonical",
     "head": "d91c159c3685d8eedc7c94afc38edf827408c1de",
@@ -95,9 +95,9 @@
     "M1 closure does not add new physics, parser authority, solver policy, tolerance tuning or automatic fallback.",
     "PPA-WU01 and groundwater product integration remain separate capabilities."
   ],
-  "overall_verdict": "M1_CLOSE_CANDIDATE_ALL_FIVE_CRITERIA_PASS",
-  "formal_exit": false,
-  "close_gate": "PASS_CANDIDATE_READY_FOR_CANONICAL_CLOSE",
+  "overall_verdict": "M1_CLOSED_CURRENT_CANONICAL",
+  "formal_exit": true,
+  "close_gate": "PASS_CANONICALLY_ADMITTED",
   "close_gate_qualification": {
     "workflow": "M1 final closeout",
     "run_id": 35370892637,
@@ -116,5 +116,16 @@
   "incidental_workflow_repair": {
     "finding": "The M1-C3 owner/independent workflows used tests/m1/** and therefore re-triggered on the unrelated final M1 closeout test.",
     "disposition": "Narrow path filters to the three M1-C3-specific test surfaces. No qualification criterion or production source changed."
-  }
+  },
+  "canonical_close_authority": {
+    "closeout_admission_pr": 316,
+    "closeout_admission_merge_commit": "9f43865cfb465d623f5b54e0cdecc97246683813",
+    "canonical_branch": "integration/f-ci-canonical",
+    "admitted_closeout_gate_run": 35370892637,
+    "admitted_closeout_gate_job": 105684323491,
+    "admitted_closeout_gate_conclusion": "success",
+    "production_mutation": "NONE"
+  },
+  "status_update_only": true,
+  "next_permitted_action": "M1 is closed. Do not reopen it without concrete dependency drift against one of the five exit criteria. Continue broader production application-envelope and product-integration work under their own governed workunits."
 }
