@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.f-ross16d1.callgrind-result.v1",
+  "workunit": "F-ROSS16D1",
+  "phase": "QUALIFIED_DETERMINISTIC_INSTRUCTION_ATTRIBUTION",
+  "branch": "work/f-ross16-rossfast-cost-attribution",
+  "primary_run": {
+    "head": "8579c5c7657c521a552bcce878c6bf1a3df0f33f",
+    "workflow_run": 35294001306,
+    "job": 105442627694,
+    "artifact_id": 10527029878,
+    "artifact_digest": "sha256:d4606d14a3e190e4a69f430f6afc2368bac367f52f4b6a26ac3f09a1dd999cca"
+  },
+  "status_head_replay": {
+    "head": "d1473101cf683ef1e3419f7def090f88a2ec16d6",
+    "workflow_run": 35294027207,
+    "result": "PASS",
+    "artifact_id": 10526504347,
+    "artifact_digest": "sha256:bcfee0eeadda165e44d7231cb75a3cac3dcb93c56a1cea7c0659d567545e74aa"
+  },
+  "profile_domain": {
+    "case_count": 36,
+    "selected_route_repetitions_per_case": 20,
+    "selected_route_calls": 720,
+    "preflight_rossfast_calls": 36,
+    "total_rossfast_solver_calls": 756,
+    "expected_candidate_steps": 18144
+  },
+  "optimized_o2_call_topology": {
+    "rossfast_solver_calls": 756,
+    "kernel_solve_calls": 756,
+    "run_window_calls": 2268,
+    "candidate_step_calls": 18144,
+    "valid_state_calls": 39312,
+    "call_counts_match_exact_production_topology": true
+  },
+  "optimized_o2_instruction_counts": {
+    "rossfast_solver_solve_inclusive_Ir": 425754732,
+    "kernel_solve_inclusive_Ir": 411511235,
+    "run_window_inclusive_Ir": 409369173,
+    "candidate_step_inclusive_Ir": 406774998,
+    "candidate_step_fraction_of_solver_solve": 0.9554209675818706,
+    "kernel_fraction_of_solver_solve": 0.9665452996069108,
+    "interpretation": "In the optimized diagnostic binary, about 95.5% of RossFast solve instructions are inside the repeated candidate-step path."
+  },
+  "noinline_structural_crosscheck": {
+    "call_counts_match_exact_topology": true,
+    "candidate_step_calls": 18144,
+    "inverse_capacity_calls": 290304,
+    "table_face_linearization_calls": 272160,
+    "factor_and_solve_calls": 18144,
+    "head_from_water_content_calls": 290304,
+    "candidate_step_inclusive_Ir": 428148630,
+    "component_instruction_attribution": {
+      "inverse_capacity": {
+        "inclusive_Ir": 136733184,
+        "fraction_of_candidate_step": 0.3193591533855895
+      },
+      "table_face_linearization": {
+        "inclusive_Ir": 127556982,
+        "fraction_of_candidate_step": 0.29792687179683375
+      },
+      "head_from_water_content": {
+        "inclusive_Ir": 93477888,
+        "fraction_of_candidate_step": 0.21833046155023314
+      },
+      "factor_and_solve_16x16_tridiagonal": {
+        "inclusive_Ir": 24857280,
+        "fraction_of_candidate_step": 0.05805759555974756
+      },
+      "candidate_step_direct_body": {
+        "self_Ir": 28867104,
+        "fraction_of_candidate_step": 0.06742309090186742
+      },
+      "valid_state_calls_inside_candidate_step": {
+        "inclusive_Ir": 16656192,
+        "fraction_of_candidate_step": 0.03890282680572866
+      }
+    },
+    "combined_capacity_table_and_head_transform_fraction": 0.8356164867326554,
+    "interpretation_boundary": "This no-inline build is a structural instruction decomposition, not a production CPU-time percentage. Its dynamic call counts exactly reproduce the known algorithmic topology, so it is valid for locating work, not for claiming wall-time shares."
+  },
+  "one_time_initialization_observation": {
+    "optimized_o2_initialize_calls": 36,
+    "optimized_o2_initialize_inclusive_Ir": 4798580277,
+    "fraction_of_whole_profile_program": 0.9169,
+    "claim_boundary": "RossFast table/provider initialization was intentionally outside the F-ROSS15 timed solver region. This large one-time cost must not be folded into the solver-seam slowdown ratio; its application-level importance depends on reuse/amortization."
+  },
+  "hypothesis_adjudication": {
+    "H1_fixed_24_linear_solves": "SUPPORTED_EXACTLY_BY_F_ROSS16",
+    "H2_reference_fewer_linear_solves": "SUPPORTED_EXACTLY_BY_F_ROSS16",
+    "H3_candidate_step_dominates_kernel_cost": "SUPPORTED_BY_O2_CALLGRIND_WITH_EXACT_CALL_TOPOLOGY",
+    "H4_table_and_state_transformations_are_substantial": "SUPPORTED_BY_NOINLINE_STRUCTURAL_CROSSCHECK",
+    "tridiagonal_solve_is_primary_cost_driver": "NOT_SUPPORTED"
+  },
+  "scientific_interpretation": "The current RossFast slowdown is not caused primarily by the small 16x16 tridiagonal linear solve. RossFast pays for 24 candidate steps per solver call to construct its coarse-plus-two-half temporal certificate. In the optimized binary those candidate steps account for about 95.5% of solve-path instructions. The structural no-inline decomposition places about 31.9% of candidate-step instructions in inverse-capacity evaluation, 29.8% in table-face linearization, 21.8% in water-content-to-head inversion, and only 5.8% in the tridiagonal factor-and-solve. The first three transformation categories together account for about 83.6% of candidate-step instructions in that structural diagnostic.",
+  "production_or_reference_mutation": false,
+  "formal_performance_claim": false,
+  "next_permitted_action": "Use these diagnostics to design a separate optimization study. The highest-value questions are whether the temporal certificate can avoid recomputing three full 8-step trajectories and whether repeated capacity/head/table transforms can be cached or algebraically reduced without changing qualified semantics. No such optimization is admitted by F-ROSS16D1."
+}
