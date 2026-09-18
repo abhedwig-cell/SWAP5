@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS26",
+  "title": "Current tiered RossFast WETTING seam-crossing qualification",
+  "phase": "QUALIFY",
+  "status": "MEASUREMENT_QUEUED_EXTERNAL_ACTIONS_CAPACITY",
+  "branch": "work/f-ross26-tiered-wetting-seam-qualification-reconciled",
+  "pull_request": 287,
+  "canonical_source_at_original_preregistration": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+  "live_canonical_last_reconciled": "addfb931ffe902cb2d15db3f5c4f07353adca256",
+  "authority_collision_reconciliation": {
+    "canonical_authority": "integration/f-ross/F-ROSS25_STATUS.json",
+    "disposition": "F-ROSS25 remains assigned to serial hydrologic validation; WETTING seam qualification continues as F-ROSS26.",
+    "scientific_contract_changed_by_renumbering": false
+  },
+  "production_dependency_closure": {
+    "f_ross22_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "relevant_production_drift_since_preregistration": false
+  },
+  "superseded_prequalification": {
+    "workunit_label": "F-ROSS25_COLLIDING_LATER_WORK",
+    "workflow_run": 35351630329,
+    "authoritative_for_f_ross26": false,
+    "completed_materials_observed": 8,
+    "completed_materials_passed": 8,
+    "notable_cases": {
+      "B01_Se098": {"tier": "K2", "temporal_indicator": 0.7231231554752261, "theta_span_normalized_error": 2.5480340540717586e-6, "state_change_relative_error": 4.183216626548081e-4},
+      "B04_Se098": {"tier": "K2", "temporal_indicator": 0.25331379407061816, "theta_span_normalized_error": 9.374343068171662e-7, "state_change_relative_error": 2.7300063027736434e-4},
+      "B05_Se098": {"tier": "K8", "temporal_indicator": 0.3480081715296841, "theta_span_normalized_error": 1.1236645486159552e-6, "state_change_relative_error": 7.569957933255145e-5}
+    },
+    "interpretation": "Useful prequalification only. Authoritative F-ROSS26 measurement must use the renumbered frozen contract."
+  },
+  "measurement_candidates": [
+    {
+      "workflow_run": 35353641857,
+      "head": "41623fa15d5897bedd5893f42aa03281beb32944",
+      "source": "superseded PR 278",
+      "qualification_blobs_identical_to_reconciled_branch": true,
+      "status_last_observed": "QUEUED"
+    },
+    {
+      "workflow_run": 35353657313,
+      "head": "8b5acd0647005bb889df16ef2642888b66d18374",
+      "source": "PR 287 reconciled measurement head",
+      "qualification_blobs_identical_to_pr278": true,
+      "status_last_observed": "QUEUED"
+    }
+  ],
+  "aggregation_repair": {
+    "defect": "Material runner prints the three case records once under O0 and once under O2; the original aggregator incorrectly expected only three parsed rows.",
+    "scientific_effect": "none",
+    "repair": "Require six parsed rows, require exact O0/O2 pair identity for each Se, then reduce to three unique cases.",
+    "repair_commit": "f8af1933e0207058a85244adcea579a4f0da28b7",
+    "matrix_workflow_frozen_manual_only_commit": "eb3dcb1c1494b6e996e199254ce00d5cf840e5af",
+    "artifact_only_aggregate_replay_prepared_commit": "75e2d4a93b9b377182e5f3d9c1dfe5d8d233dc6e"
+  },
+  "qualification_firewall": [
+    "NO_MODEL_BINDING_WIDENING",
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_REFERENCE_MUTATION",
+    "NO_TABLE_ASSET_CHANGE",
+    "NO_TEMPORAL_THRESHOLD_CHANGE",
+    "NO_TIER_SELECTION_CHANGE",
+    "NO_TOLERANCE_RETUNING",
+    "NO_MATERIAL_EXCLUSION",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_PERFORMANCE_CLAIM"
+  ],
+  "next_permitted_action": "When either byte-identical F-ROSS26 measurement run has all 36 material artifacts, write that run id to F-ROSS26_AGGREGATE_REPLAY_TRIGGER.txt, execute the prepared artifact-only aggregate replay, persist result plus artifact authority, reconcile current canonical, then ADMIT/CLOSE or classify a hard scientific gate failure."
+}
