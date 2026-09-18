@@ -1,0 +1,19 @@
+{
+  "workunit": "PUB-P2E15-DUPLICATE",
+  "status": "CLOSED_REDUNDANT_NONAUTHORITATIVE",
+  "branch": "work/pub-p2e15-material-extension-primary",
+  "reason": "A parallel preregistered P2E15 workunit, work/pub-p2e15-30-material-e0-holdout, defines the same 30-material x 3-state x 2-forcing confirmatory question more precisely and has completed the authoritative scientific execution.",
+  "this_branch_execution": {
+    "workflow_run": 35290429228,
+    "conclusion": "FAIL_PROVENANCE_WRAPPER_BEFORE_SCIENTIFIC_EXECUTION",
+    "scientific_candidate_result_generated": false
+  },
+  "authoritative_successor": {
+    "branch": "work/pub-p2e15-30-material-e0-holdout",
+    "execution_head": "e18956764207d4b060290ed37270f243dd878452",
+    "result_commit": "8a9de180a2803fd7fe3f5fa42b54b0327792b730",
+    "result_path": "docs/publication/P2E15_30_MATERIAL_E0_HOLDOUT_RESULT.json",
+    "verdict": "QUALIFIED_30_MATERIAL_E0_HOLDOUT_ALL_180_ADMISSIBLE"
+  },
+  "evidence_rule": "Do not treat this duplicate branch as an independent replicate, additional sample or supporting scientific execution."
+}
