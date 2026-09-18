@@ -4,7 +4,7 @@ manifest:
   publication_owner: PUB-SQ
   doctoral_rq: RQ2
   role: REPLACE
-  status: E0_PRIMARY_OBSERVED_EXTENSION_CONFIRMATORY_FREEZE_ACTIVE
+  status: MATERIAL_EXTENSION_REFERENCE_DOMAIN_BLOCKED_DIAGNOSED
   source_branch: research/phd-five-paper-manifests-20260918
   source_parent_commit: 4384a047e10f78f2b30a713577119a4fd75cbb97
   governing_contract: docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md
@@ -15,6 +15,17 @@ manifest:
     P2E10_broad_matrix_head: 50c28f16801a0f725e11d70cf7fb1f666e1fcef7
     P2E10_status: ALREADY_OBSERVED_PRIMARY_EVIDENCE
     next_confirmatory_surface: remaining_thirty_F_ROSS13_materials
+    P2E11_reference_extension:
+      branch: work/pub-p2e11-reference-material-extension-calibration
+      head: e8cd1f363798e5c0a0df586a5f509cd5667bf956
+      result_blob: 0d186a17c5b48f8287fde0d01c8a668aab064c1d
+      verdict: BLOCKED_EXTENSION_REFERENCE_DOMAIN_176_OF_180_VALID
+    P2E11D1_diagnosis:
+      branch: work/pub-p2e11d1-reference-extension-failure-adjudication
+      head: f66d496799b52aee4c19fe0da5e4005160c60824
+      result_blob: 1be7d63e82eac9d1f846c9715fabf80a5700bdf8
+      verdict: DIAGNOSED_SHARED_STATE_DOMAIN_TRANSFER_FAILURE
+      finding: B02 and B05 at Se=0.98 leave the declared shared E0 state domain despite Reference convergence and hard mass closure.
   current_foundational_authorities:
     - integration/f-ross/F-ROSS13_STATUS.json
     - integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_CONTRACT.json
