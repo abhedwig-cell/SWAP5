@@ -260,3 +260,18 @@ No production defect was identified.
 One research-hypothesis sign error was identified, documented and corrected before rerun.
 
 The evidence is sufficient to proceed to E3 controlled coupling-window/feedback characterization while retaining a targeted E1 extension for non-zero storage-change conditions.
+
+
+## CI scope-guard context
+
+The current PUB-GC evidence, F-GC44, F-VQ116, F-GC42 and Documentation workflows are green on the evidence head.
+
+Some historical F-GC25 admission/scope workflows are red on the pull request. Inspection of their logs shows a stale scope-guard rejection such as:
+
+```text
+FCI73_EXACT_BASE_COMPOSITION=PASS
+FCI73_SCOPE_FAIL unexpected path: .github/workflows/docs.yml
+```
+
+The rejected path is part of the already merged canonical documentation programme and is not introduced by the E1/E2 numerical evidence changes. The failing guard therefore does not report an F-GC25 numerical regression or an E1/E2 scientific failure. It is recorded here so red repository checks are not silently ignored or misrepresented as green.
+
