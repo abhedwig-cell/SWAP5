@@ -213,9 +213,9 @@ Canonical E7 closure and publication assets are admitted. Current manuscript/cla
 
 ### Archival gate
 
-**NOT YET CLOSED.**
+**NOT YET CLOSED — GOVERNANCE METADATA REQUIRED FIRST.**
 
-A persistent archive/DOI for the exact SWAP5 submission revision is still required.
+The exact blockers are governed by `PUB_GC_GMD_ARCHIVAL_GATE.md`: a publication release/version identifier (A1) and explicit software-licence/redistribution authority (A2) must precede the persistent archive/DOI action (A3). No value may be invented by this publication workstream.
 
 ### Editorial gate
 
@@ -226,12 +226,13 @@ Author metadata, final versioned title, GMD formatting, code/data availability w
 ## 6. Submission sequence
 
 1. preserve the current E1–E7 scientific denominator;
-2. freeze the SWAP5 submission release;
-3. archive code/evidence/scripts persistently and obtain DOI;
-4. bind the final SWAP5 version identifier into title and Code/Data Availability;
-5. convert manuscript and figures to GMD format;
-6. run final claim, reference, notation and archive-identity audits;
-7. prepare cover letter and submission metadata;
-8. submit as a **Development and technical paper**.
+2. resolve A1 publication release/version authority and A2 software-licence/redistribution authority;
+3. freeze the governed SWAP5 submission release;
+4. archive code/evidence/scripts persistently and obtain DOI;
+5. bind the final SWAP5 version identifier into title and Code/Data Availability;
+6. convert manuscript and figures to GMD format;
+7. run final claim, reference, notation and archive-identity audits;
+8. prepare cover letter and submission metadata;
+9. submit as a **Development and technical paper**.
 
 If GMD is not pursued, Environmental Modelling & Software is the preferred second route. Re-targeting to EMS should change framing and formatting only, not manufacture additional scientific evidence.
