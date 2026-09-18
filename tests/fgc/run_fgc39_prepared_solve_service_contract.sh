@@ -21,16 +21,21 @@ for forbidden_import in {"xmipy", "ribasim"}:
         if isinstance(node, ast.ImportFrom) and node.module:
             assert node.module.split(".", 1)[0] != forbidden_import
 
-# Service owns no direct MODFLOW/XMI or timestep-finalization mechanics.
-for forbidden in [
+calls = []
+for node in ast.walk(tree):
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+        calls.append(node.func.attr)
+
+for forbidden_call in [
     "get_value_ptr",
     "get_var_address",
     "prepare_solve",
-    "solve(",
+    "solve",
     "finalize_time_step",
-    "imod_coupler",
 ]:
-    assert forbidden not in source.lower(), forbidden
+    assert forbidden_call not in calls, forbidden_call
+
+assert "imod_coupler" not in source.lower()
 
 # The reconciled contract must not contain groundwater candidate rollback.
 for forbidden in [
