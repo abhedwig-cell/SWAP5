@@ -103,8 +103,8 @@ for source in "${MODULE_SRC[@]}"; do
   gfortran "${COMMON[@]}" -O2 -J "$BUILD/bridge" -I "$BUILD/bridge" -c "$source" -o "$obj" || fail "compile $source"
   objects+=("$obj")
 done
-gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc45_swap.so" || fail "link F-GC44 shared library"
-nm -D "$BUILD/bridge/libfgc45_swap.so" | grep -q 'fgc45_swap_initialize_c' || fail "missing SWAP C ABI"
+gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc45_swap.so" || fail "link F-GC45 shared library"
+nm -D "$BUILD/bridge/libfgc45_swap.so" | grep -q 'fgc45_multiswap_initialize_c' || fail "missing SWAP C ABI"
 nm -D "$BUILD/bridge/libfgc45_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_SWAP_LIB="$BUILD/bridge/libfgc45_swap.so" python3 tests/fgc/test_fgc45_real_multiswap_n1_live_modflow.py | tee "$BUILD/e2e.txt"
@@ -112,4 +112,4 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_SWAP_LIB="$BUILD/bridge/libfgc45_swa
 for marker in   'FGC45_REAL_TILE_HETEROGENEITY=PASS'   'FGC45_FGC40_REAL_AFFINE_CLOSURE=PASS'   'FGC45_REAL_MULTISWAP_SAME_ORIGIN_CORRECTORS=PASS'   'FGC45_LIVE_MODFLOW680_PREPARED_SOLVE=PASS'   'FGC45_N1_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS'   'FGC45_ALL_TILE_PREFLIGHTS_BEFORE_PUBLICATION=PASS'   'FGC45_MODFLOW_THEN_ALL_SWAP_THEN_ALL_LEDGER_PUBLICATION=PASS'   'FGC45_AREA_WEIGHTED_LEDGER_CLOSURE=PASS'   'FGC45_REAL_MULTISWAP_N1_END_TO_END=PASS'; do
   grep -Fq "$marker" "$BUILD/e2e.txt" || fail "missing marker $marker"
 done
-echo 'F-GC44 REAL SWAP + MODFLOW6 END-TO-END GATE PASS'
+echo 'F-GC45 REAL MULTISWAP N:1 + MODFLOW6 END-TO-END GATE PASS'
