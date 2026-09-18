@@ -3,8 +3,8 @@
   "work_unit": "F-GC41",
   "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
   "protocol": "Bounded Execution Protocol",
-  "phase": "IMPLEMENT",
-  "state": "COORDINATOR_AND_MODFLOW_READINESS_SEAM_IMPLEMENTED_QUALIFICATION_PENDING",
+  "phase": "QUALIFY",
+  "state": "EXACT_HEAD_DETERMINISTIC_AND_LIVE_MODFLOW_CI_QUEUED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
@@ -53,7 +53,7 @@
     "runtime finite-difference tangent fallback"
   ],
   "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
-  "next_permitted_action": "Obtain exact-head CI evidence. If F-GC41 tests pass, extend qualification to a live MODFLOW6 timestep finalization fixture and an independent verifier before admission. Do not merge while exact-head evidence is absent.",
+  "next_permitted_action": "Wait for exact-head F-GC41 deterministic and live-MODFLOW jobs. On green, add independent verifier/admission gate; on red, inspect only failing F-GC41 job and repair surgically.",
   "modflow_semantics": {
     "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
     "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
@@ -106,5 +106,15 @@
     "retry identities are fresh while accepted SWAP origin is retained",
     "MODFLOW readiness check is non-mutating and timestep finalization is one-shot"
   ],
-  "canonical_delta": "branch is 10 ahead / 0 behind canonical 62dfb5a52f665e490830dfb320167786cf67f63e"
+  "canonical_delta": "branch is 10 ahead / 0 behind canonical 62dfb5a52f665e490830dfb320167786cf67f63e",
+  "qualification_head": "1cd9bf2d9c0480240682e478b58ad1e05912d431",
+  "qualification_run": {
+    "id": 35335417012,
+    "jobs": {
+      "live_modflow": 105569008669,
+      "deterministic": 105569008889
+    },
+    "status": "queued"
+  },
+  "live_modflow_delta": "F-GC38 official MODFLOW6 fixture now calls F-GC41 non-mutating readiness and one-shot finalize_time_step seam, checks zero mutation before publication and blocks a second finalization."
 }
