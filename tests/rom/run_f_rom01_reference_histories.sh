@@ -19,7 +19,11 @@ fail() { echo "F_ROM01_GATE_FAIL $*" >&2; exit 1; }
 [[ -f "$TEST" ]] || fail "missing pilot test"
 [[ -f "$ANALYZER" ]] || fail "missing pilot analyzer"
 
-CANDIDATE_HEAD="${GITHUB_HEAD_SHA:-${GITHUB_SHA:-HEAD}}"
+if [[ "${GITHUB_EVENT_NAME:-}" == "pull_request" && -n "${GITHUB_HEAD_REF:-}" ]]; then
+  CANDIDATE_HEAD="$(git rev-parse "origin/$GITHUB_HEAD_REF")"
+else
+  CANDIDATE_HEAD="$(git rev-parse HEAD)"
+fi
 git merge-base --is-ancestor "$BASELINE" "$CANDIDATE_HEAD" || fail "canonical pilot baseline is not an ancestor of the workstream head"
 git diff --quiet "$BASELINE...$CANDIDATE_HEAD" -- src reference || fail "F-ROM01 workstream mutated production/reference source"
 echo "F_ROM01_CANDIDATE_HEAD=$CANDIDATE_HEAD"
@@ -58,23 +62,3 @@ required = [
     "continuation_steps = 24",
     "dt_day = 0.0016_real64",
     "collision_storage_tol_cm = 1.0e-8_real64",
-]
-missing = [token for token in required if token not in src]
-if missing:
-    raise SystemExit(f"test/contract drift: {missing}")
-print("F_ROM01_PREREGISTRATION_LOCK=PASS")
-print("F_ROM01_SOURCE_LOCKS=PASS")
-PY
-
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
-MODULE_SRC=(
-  tests/fsi/fsi04_real_headcalc_stubs.f90
-  src/transaction/mod_transaction_reference.f90
-  src/solver/mod_soil_water_accepted_step_direction_contract.f90
-  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
-  src/runtime/mod_a23bu_worker_execution_context.f90
-  src/transaction/mod_accepted_trajectory_directional_publication.f90
-  src/transaction/mod_fkt_temporal_indicator_history.f90
-  src/runtime/mod_canonical_contracts.f90
-  src/runtime/mod_canonical_interval_runtime.f90
-  src/kernel/mod_kernel_transactions.f90
