@@ -10,7 +10,7 @@ module mod_fmr_serialized_reference_backend
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        KERNEL_STATUS_NOT_ADMITTED
-  use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint
+  use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
@@ -335,6 +335,8 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: top_sensible_boundary_snapshot => fmr_serialized_backend_top_sensible_boundary_snapshot
     procedure, public :: configure_fixed_weir_surface_water => fmr_serialized_backend_configure_fixed_weir_surface_water
     procedure, public :: clear_fixed_weir_surface_water => fmr_serialized_backend_clear_fixed_weir_surface_water
+    procedure, public :: commit_trial_candidate => fmr_serialized_backend_commit_trial_candidate
+    procedure, public :: discard_trial_candidate => fmr_serialized_backend_discard_trial_candidate
   end type fmr_serialized_reference_backend_t
 
   public :: fmr_new_b110_committed_state
@@ -782,6 +784,29 @@ contains
     if (.not. duration_admitted) return
     ok = .true.
   end function fmr_serialized_rossfast_preflight
+
+  subroutine fmr_serialized_backend_commit_trial_candidate(self, committed, candidate, diagnostics, did_commit, status)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(kernel_committed_state_t), intent(inout) :: committed
+    type(kernel_candidate_state_t), intent(inout) :: candidate
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+    logical, intent(out) :: did_commit
+    integer, intent(out) :: status
+
+    did_commit = .false.
+    status = KERNEL_STATUS_NOT_ADMITTED
+    if (.not. self%initialized) return
+    call fmr_commit_candidate(self%kernel, committed, candidate, diagnostics, did_commit, status)
+  end subroutine fmr_serialized_backend_commit_trial_candidate
+
+  subroutine fmr_serialized_backend_discard_trial_candidate(self, candidate, diagnostics)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(kernel_candidate_state_t), intent(inout) :: candidate
+    type(kernel_diagnostics_t), intent(inout) :: diagnostics
+
+    if (.not. self%initialized) return
+    call fmr_discard_candidate(self%kernel, candidate, diagnostics)
+  end subroutine fmr_serialized_backend_discard_trial_candidate
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics)

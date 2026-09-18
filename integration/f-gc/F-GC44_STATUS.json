@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC44",
+  "title": "Real SWAP + live MODFLOW6 end-to-end application qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "REAL_FMR_AND_LIVE_END_TO_END_EXACT_HEAD_CI_PENDING",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "14171f529cbe7e738b2235fa91f67664f6398286"
+  },
+  "source": {
+    "branch": "work/f-gc44-real-swap-modflow-end-to-end",
+    "base": "14171f529cbe7e738b2235fa91f67664f6398286"
+  },
+  "predecessors": [
+    "F-GC30 production predictor/tangent",
+    "F-GC38 live MODFLOW6 prepared solve",
+    "F-GC39 internal coupling service",
+    "F-GC41 whole-window publication",
+    "F-GC42 service composition",
+    "F-GC43 production SWAP participant"
+  ],
+  "goal": "Qualify one drainage-free single-column real FMR/SWAP application coupled end-to-end to live MODFLOW6 6.8.0 through the admitted predictor/corrector and publication lifecycle.",
+  "reconcile_findings": [
+    "The real FMR groundwater-head forcing materializer is already admitted and restricted to bottom_mode=5.",
+    "F-GC30 already qualified a real FMR accepted-trajectory predictor/tangent path from a committed SWAP origin.",
+    "F-GC43 now supplies real kernel checkpoint/candidate/rollback/commit participant semantics.",
+    "The live MODFLOW6 prepared-solve/timestep backend is already qualified by F-GC38/F-GC41.",
+    "The remaining composition gap is executable same-process binding: fmr_serialized_reference_backend_t owns its kernel_executor_t privately, so F-GC43 cannot yet drive that exact bound production model through the backend without a narrow delegation seam.",
+    "No existing general SWAP/FMR C bridge was found; the only current C-bridge pattern is the MODFLOW-facing F-GC34 bridge."
+  ],
+  "design_decision": [
+    "Do not expose the FMR backend's private kernel/model.",
+    "Add only narrow FMR backend delegation methods that prepare the restricted plain-water application context and invoke the admitted F-GC43 participant with the backend-owned kernel.",
+    "For the end-to-end fixture, use a narrow test-only/adapter C ABI around one qualified FMR application column so Python can drive real SWAP and live xmipy/MODFLOW in one process.",
+    "Use the admitted F-GC30 analytic predictor response; no runtime finite-difference fallback.",
+    "Keep the first F-GC44 envelope drainage-free, root-uptake-off, macropore-off, optional-state-off, single SWAP column to one MODFLOW cell."
+  ],
+  "invariants": [
+    "Predictor/corrector ownership remains in the internal coupling service below iMOD Coupler.",
+    "Every prescribed-head SWAP corrector starts from one captured accepted checkpoint.",
+    "MODFLOW XOLD remains the accepted previous-time head throughout the prepared solve.",
+    "Coupled convergence requires both MODFLOW convergence and SWAP/MODFLOW interface-flux convergence.",
+    "All publication preflights pass before finalize_time_step.",
+    "Kernel commit remains the sole SWAP committed-state mutation.",
+    "No N:1 scaling expansion, Ribasim, irrigation or new groundwater physics."
+  ],
+  "next_permitted_action": "Run/inspect exact-head real-FMR, live end-to-end and F-VQ116 workflows. Repair only scoped failures. On all-green, reconcile canonical and admit/close F-GC44.",
+  "current_head": "ff43c65fb881b5f1328e81da2917089bbf1b4d45",
+  "implemented": [
+    "encapsulation-safe FMR backend candidate commit/discard delegation",
+    "concrete fmr_groundwater_swap_participant_t over real FMR run_trial and captured kernel checkpoint",
+    "canonical groundwater-head to lower-face pressure-head materializer binding repaired",
+    "real FMR mode-5 participant O0/O2 gate",
+    "same-process qualification-only real SWAP C bridge",
+    "live xmipy/MODFLOW6 6.8.0 end-to-end coupling gate",
+    "F-VQ116 independent architecture/order verifier"
+  ],
+  "recovered_failures": [
+    {
+      "run": 35338819129,
+      "classification": "qualification dependency closure",
+      "cause": "real FMR runner omitted smooth-freatic/drainage-direction module dependencies",
+      "repair": "added existing production dependencies; no semantic change"
+    },
+    {
+      "run": 35338915493,
+      "classification": "latent production integration symbol defect",
+      "cause": "FMR groundwater-head adapter called nonexistent interface_head_m_to_swap_pressure_head_cm while canonical contract exports interface_head_m_to_swap_bottom_pressure_head_cm",
+      "repair": "bound adapter to canonical lower-face pressure-head conversion; mapping physics unchanged"
+    },
+    {
+      "run": 35339006272,
+      "classification": "partial symbol repair",
+      "cause": "first repair changed import but not call site",
+      "repair": "replaced stale symbol at both import and call sites"
+    }
+  ],
+  "admission_criteria": [
+    "exact-head real FMR participant qualification green at O0 and O2",
+    "exact-head live real-SWAP + MODFLOW6 6.8.0 end-to-end qualification green",
+    "exact-head F-VQ116 independent qualification green",
+    "canonical delta reconciled with no conflicting production ownership change",
+    "PR mergeable and admission remains inside restricted one-column/one-cell envelope"
+  ],
+  "verdict": "NOT_ADMITTED_QUALIFICATION_PENDING"
+}
