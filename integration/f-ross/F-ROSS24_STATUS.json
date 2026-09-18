@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS24",
+  "title": "Admitted tiered RossFast production characterization",
+  "phase": "DESIGN",
+  "status": "PREREGISTERED_READY_TO_MEASURE",
+  "branch": "work/f-ross24-tiered-production-characterization",
+  "canonical_source": "86969f502015ae259a536a57cc7125c38a3e42e6",
+  "production_or_reference_mutation": false,
+  "admitted_postimage": {
+    "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "verdict": "DESIGN_LOCKED__216_CASE_TIERED_MEASUREMENT_REQUIRED",
+  "exclusions": [
+    "NO_PRODUCTION_OPTIMIZATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_ADAPTIVE_SELECTION_CHANGE",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_MATERIAL_ENVELOPE_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
+  ],
+  "next_permitted_action": "MEASURE_ONLY_FROZEN_ADMITTED_TIERED_CHARACTERIZATION"
+}
