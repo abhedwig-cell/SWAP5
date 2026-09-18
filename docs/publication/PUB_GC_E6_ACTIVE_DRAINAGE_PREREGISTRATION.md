@@ -188,3 +188,32 @@ A positive E6 hydrological-feedback result requires a clear order-of-magnitude i
 If exchange magnitude increases but the loose-to-strong correction remains of the same nanoscale order as E3, E6 is classified as a **process-active but still weak-coupling result**.
 
 This adjudication text is fixed before numerical E6 output is interpreted.
+
+
+### Numerical E3-R comparison gate
+
+To remove post-hoc ambiguity from "order-of-magnitude increase", E6 uses the largest already admitted E3-R loose-to-strong corrections as the conservative weak-feedback reference:
+
+```text
+max_E3R |DeltaH_coupling| =
+    1.8311455685093847e-9 m
+
+max_E3R |Deltaq_SWAP,coupling| =
+    6.1084368016444556e-15 m/s
+```
+
+A preregistered **stronger-feedback positive** therefore requires at least one E6 case with:
+
+```text
+|DeltaH_coupling| >= 1.8311455685093847e-8 m
+
+OR
+
+|Deltaq_SWAP,coupling| >= 6.1084368016444556e-14 m/s
+```
+
+while the strong solve satisfies the unchanged `1e-15 m/s` interface criterion and the production participant remains within its admitted transaction domain.
+
+The integrated whole-window transfer difference is still reported, but it is not used for the order-of-magnitude gate because E6 uses a 0.01-day window and the strongest converged E3-R case used a shorter window. The rate-based gate avoids classifying a case as stronger merely because the integration interval is longer.
+
+This numerical gate is fixed before any E6 active-drainage workflow output is interpreted.
