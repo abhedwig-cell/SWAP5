@@ -5,7 +5,7 @@
   "title": "Independent MultiSWAP MODFLOW6 Cell Response Qualification",
   "protocol": "Bounded Execution Protocol",
   "phase": "QUALIFY",
-  "verdict": "PENDING_INDEPENDENT_QUALIFICATION",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
   "owner": {
     "branch": "work/f-gc40-multiswap-modflow6-cell-response",
     "checkpoint_head": "7993c143eaa1cf8d6580fdd7bde0ae05b07b5b4d",
@@ -17,5 +17,25 @@
     "owner_test_reused": false,
     "oracle": "three-tile direct affine sum over multiple heads; six permutations; centered-head slope; negative provenance"
   },
-  "next_permitted_action": "Run exact-head verifier. If green, persist INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW."
+  "next_permitted_action": "Create a separate current-canonical admission gate for the exact F-GC40 production blob. Preserve owner and F-VQ106 evidence immutably.",
+  "verifier_evidence": {
+    "qualified_head": "c6a0ff4ec6b9b9199465a9a719c5cd66840480fa",
+    "workflow_run": 35292116106,
+    "workflow_job": 105436993733,
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FVQ106_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ106_OWNER_PRODUCTION_BLOB_LOCK",
+      "FVQ106_OWNER_TEST_NOT_REUSED",
+      "FVQ106_INDEPENDENT_ORACLE_STRUCTURE",
+      "FVQ106_THREE_TILE_DIRECT_SUM_ORACLE",
+      "FVQ106_MULTIHEAD_AFFINE_ORACLE",
+      "FVQ106_ALL_SIX_PERMUTATIONS",
+      "FVQ106_CENTERED_HEAD_SLOPE_ORACLE",
+      "FVQ106_PROVENANCE_NEGATIVE_ORACLE",
+      "FVQ106_INDEPENDENT_CELL_RESPONSE_GATE",
+      "FVQ106_INDEPENDENT_O0_O2_IDENTITY"
+    ]
+  }
 }
