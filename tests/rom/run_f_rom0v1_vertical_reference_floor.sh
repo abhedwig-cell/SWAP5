@@ -7,7 +7,6 @@ PREREG_COMMIT=5cd9f92effb391b828775adc17fc5e6ba37b6af8
 TA5_SOURCE_HEAD=a388a4f14002fafd1cd8e3471675222672d01eb7
 PREREG=integration/f-rom/F-ROM0V1_PREREGISTRATION.json
 POLICY_RECON=integration/f-rom/F-ROM0_R3_POLICY_AUTHORITY_RECONCILIATION.json
-Q2_STATUS=integration/f-rom/F-ROM0R_R3Q2_STATUS.json
 TEST=tests/rom/test_f_rom0v1_vertical_reference_floor.f90
 ANALYZER=tests/rom/analyze_f_rom0v1_vertical_reference_floor.py
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
@@ -22,9 +21,9 @@ git merge-base --is-ancestor "$PREREG_COMMIT" HEAD || fail "ROM0V1 preregistrati
 git diff --quiet "$TA5_SOURCE_HEAD"...HEAD -- src reference || fail "ROM0V1 changed production/reference source"
 echo "F_ROM0V1_SOURCE_FREEZE=PASS"
 
-python3 - "$PREREG" "$POLICY_RECON" "$Q2_STATUS" <<'PY'
+python3 - "$PREREG" "$POLICY_RECON" <<'PY'
 import json,sys
-p=json.load(open(sys.argv[1])); r=json.load(open(sys.argv[2])); q=json.load(open(sys.argv[3]))
+p=json.load(open(sys.argv[1])); r=json.load(open(sys.argv[2]))
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
 assert p["cases"][0]["id"]=="B01_E1_NOMINAL_FLUX"
 assert p["cases"][1]["id"]=="B14_E2_DRYING_FLUX"
@@ -32,10 +31,10 @@ assert p["temporal_control"]["dt_day"]==0.0008
 assert p["temporal_control"]["steps"]==64
 assert p["temporal_control"]["common_horizon_day"]==0.0512
 assert p["threshold_rule"]=="MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD"
-assert r["current_decision"]=="R3Q2_SUCCESSOR_AUTHORITY_CONTROLS_NEXT_ROM0_STEP"
+assert r["current_decision"]=="R3D4_STRICT_SUCCESSOR_AUTHORITY_CONTROLS_NEXT_ROM0_STEP"
 assert r["vertical_reference_floor_authorized"] is True
-assert q["decision"]=="FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED"
-assert q["vertical_reference_floor_authorized"] is True
+assert p["authority"]["fixed_flux_representation_policy_authority"].startswith("PUB-P2E21 ")
+assert p["authority"]["sample_authority"].startswith("F-ROM0TA3 ")
 assert p["rom1a_authorized"] is False
 print("F_ROM0V1_AUTHORITY_LOCK=PASS")
 PY
