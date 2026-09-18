@@ -257,9 +257,11 @@ contains
     result%diagnostics%backtracking_attempts = result%diagnostics%backtracking_attempts + tx%backtracking_attempts
     result%diagnostics%alternative_solver_calls = result%diagnostics%alternative_solver_calls + &
          tx%alternative_solver_calls
-    if (ieee_is_finite(tx%temporal_indicator) .and. tx%temporal_indicator >= 0.0_real64) then
-      result%diagnostics%max_temporal_indicator = max(result%diagnostics%max_temporal_indicator, &
-           tx%temporal_indicator)
+    if (tx%temporal_acceptance_source /= TX_TEMPORAL_REFERENCE_FLOOR_FIXED_RESOLUTION) then
+      if (ieee_is_finite(tx%temporal_indicator) .and. tx%temporal_indicator >= 0.0_real64) then
+        result%diagnostics%max_temporal_indicator = max(result%diagnostics%max_temporal_indicator, &
+             tx%temporal_indicator)
+      end if
     end if
     if (tx%status == TX_STATUS_ACCEPTED) then
       if (tx%temporal_acceptance_source == TX_TEMPORAL_MODEL_CERTIFICATE .or. &
