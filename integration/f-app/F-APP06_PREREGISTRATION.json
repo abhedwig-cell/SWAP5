@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-APP06",
+  "title": "Restricted Hupsel SWINTER0/SWCF0 PMdirect identity interval route",
+  "base": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "evidence": "integration/m1/M1_C3_SWINTER0_SWCF0_ROUTE_QUALIFICATION.json",
+  "exact_B1_11_route": {
+    "accepted_intervals": 3505,
+    "rain_nonzero": 1777,
+    "surface_irrigation_nonzero": 18,
+    "crop_emerged_true": 0,
+    "rooted_intervals": 0
+  },
+  "identities": [
+    "interception=0",
+    "net_rain=gross_rain",
+    "net_surface_irrigation=gross_surface_irrigation",
+    "wet_canopy_fraction=0",
+    "potential_transpiration=potential_transpiration_dry"
+  ],
+  "scope": {
+    "selectors": [
+      "SWETR=0",
+      "SWINTER=0",
+      "SWCF=0"
+    ],
+    "reuse": [
+      "F-APP03 PMdirect daily result",
+      "F-APP04 root and surface-demand bindings",
+      "existing dynamic-top request/provider"
+    ],
+    "new_files": [
+      "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90"
+    ],
+    "modified_files": [
+      "src/process/mod_pmdirect_swetr0_process.f90"
+    ],
+    "no_new_physics": true
+  },
+  "exclusions": [
+    "SWINTER=1",
+    "SWINTER=3",
+    "Rutter state",
+    "irrigation selection/file composition",
+    "solver",
+    "transaction",
+    "timestep",
+    "retry",
+    "tolerances"
+  ],
+  "pass_conditions": [
+    "strict O0/O2 identity",
+    "identity route values exact",
+    "negative/nonfinite irrigation fails closed",
+    "all non-precipitation/non-irrigation dynamic-top fields preserved bitwise",
+    "F-APP03/F-APP05 regressions remain green"
+  ],
+  "m1_c3_closed": false
+}

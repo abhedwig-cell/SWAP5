@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP06",
+  "phase": "QUALIFY_OWNER",
+  "branch": "work/f-app06-hupsel-swinter0-identity",
+  "qualified_head": "7c69ec2f06c557eaa8d9ffc0f6bd347806b94000",
+  "production_delta": [
+    {
+      "path": "src/process/mod_pmdirect_swetr0_process.f90",
+      "blob": "3eb23d075a56ba1158f4758f75a8d94c94e09b39"
+    },
+    {
+      "path": "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90",
+      "blob": "7d76af48cac085d6f4b5653987d75bfc54fb7692"
+    }
+  ],
+  "qualification": {
+    "run_id": 35352478460,
+    "job_id": 105623678274,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2": "PASS",
+    "generic_output_sha256": "70922226b573c59295d175ad3562cff9018883e62f551799731cb54f6f909bbc",
+    "exact_B1_11_records": 3505,
+    "max_error": 0,
+    "exact_output_sha256": "78e2ce660225149f02f915fc253b03158cbf97c54bf1d74ce0facdc133831ca1",
+    "F_APP03_regression": "PASS",
+    "F_APP05_regression": "PASS",
+    "fail_closed": "PASS",
+    "dynamic_top_non_surface_preservation": "PASS"
+  },
+  "verdict": "PASS_F_APP06_OWNER_EXHAUSTIVE_B1_11"
+}
