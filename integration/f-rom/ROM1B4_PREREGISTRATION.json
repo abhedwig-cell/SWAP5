@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.rom1b4.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B4",
+  "title": "Held-out state-separation evaluation of frozen Z8+G8 coordinate",
+  "phase": "PREREGISTERED_BEFORE_HELDOUT_COORDINATE_EVALUATION",
+  "predecessor": {
+    "work_unit": "ROM-1B3Q1",
+    "decision": "ROM1B3Q1_DISCOVERY_ENRICHED_COORDINATE_FROZEN",
+    "frozen_candidate": "Z8_PLUS_G8",
+    "dimension": 9
+  },
+  "purpose": "Evaluate the already frozen discovery-selected coordinate on H01-H04 without changing the coordinate, induced norm, theta floor, histories, or Reference policy.",
+  "frozen_coordinate": {
+    "components": [
+      "Z8: eight contiguous 20-cm theta means",
+      "G8: 0.5*(theta_cell_15-theta_cell_16) at 140-160 cm"
+    ],
+    "induced_norm": "maximum over bands of abs(delta_mean), except 140-160 cm uses max(abs(delta_theta15),abs(delta_theta16))",
+    "theta_floor": 0.0005420462931603476,
+    "discovery_collision_count": 0,
+    "discovery_minimum_separation_margin": 6.031262132499826e-7
+  },
+  "library_authority": {
+    "generator": "tests/rom/test_rom1ar2_reachable_state_library.f90",
+    "reference_policy": "ROM1AR2 frozen strict-first research Reference policy",
+    "material": "B01",
+    "discovery_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "heldout_histories": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "states_per_history": 64,
+    "expected_states": 768,
+    "B14_generated": false
+  },
+  "evaluation_population": {
+    "cross_history_only": true,
+    "pair_included_if": "at least one member is H01-H04",
+    "discovery_discovery_pairs_excluded": "already qualified by ROM1B3Q1",
+    "same_history_pairs_excluded": true,
+    "full_state_distinguishable_if": "full_theta_Linf > theta_floor"
+  },
+  "collision_rule": {
+    "collision_if": "frozen_Z8_plus_G8_induced_theta_Linf <= theta_floor AND full_theta_Linf > theta_floor",
+    "coordinate_change_allowed": false,
+    "floor_change_allowed": false
+  },
+  "deterministic_failure_manifest": {
+    "if_collisions_exist": "persist first 8 ordered by candidate induced distance ascending, full theta distance descending, then history/step lexical order",
+    "future_probe_outcomes_used": false,
+    "purpose": "freeze diagnostic pairs for a later separately preregistered held-out probe workunit; no probe is executed in B4"
+  },
+  "decisions": [
+    "ROM1B4_HELDOUT_STATE_SEPARATION_QUALIFIED",
+    "ROM1B4_HELDOUT_STATE_SEPARATION_NO_GO",
+    "ROM1B4_EVIDENCE_BLOCKED"
+  ],
+  "next_rule": {
+    "if_zero_collisions": "freeze within-material B01 state-sufficiency evidence and proceed to the separately declared B14 material-transfer challenge",
+    "if_any_collision": "reject Z8+G8 on held-out state separation; do not enrich from H01-H04; a new candidate would require a new uncontaminated evaluation design"
+  },
+  "qualification": [
+    "EXACT_768_STATE_LIBRARY",
+    "512_DISCOVERY_256_HELDOUT",
+    "HELDOUT_INCLUSIVE_PAIR_COUNT_REPORTED",
+    "FULL_THETA_AND_COORDINATE_FINITE",
+    "FROZEN_COORDINATE_ONLY",
+    "REPEAT_AND_O0_O2_IDENTITY",
+    "NO_B14",
+    "NO_FUTURE_PROBES",
+    "NO_SRC_REFERENCE_MUTATION"
+  ],
+  "firewalls": [
+    "NO_HELDOUT_DRIVEN_ENRICHMENT",
+    "NO_COORDINATE_CHANGE",
+    "NO_FLOOR_CHANGE",
+    "NO_B14",
+    "NO_FUTURE_PROBE_OUTCOMES",
+    "NO_POD_MEMORY_OR_CLOSURE_FIT",
+    "NO_PRODUCTION_ROM_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
