@@ -1,0 +1,37 @@
+name: F-ROSS22 production tiered certificate qualification
+
+on:
+  push:
+    branches:
+      - work/f-ross22-production-tiered-certificate
+  pull_request:
+    branches:
+      - work/f-ross21-tiered-k2-k4-k8-certificate
+    paths:
+      - 'integration/f-ross/F-ROSS22_*'
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/run_ross22_production_tiered_qualification.sh'
+      - 'tools/performance/f_ross22_research_identity.py'
+      - '.github/workflows/f-ross22-production-tiered.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute F-ROSS22 production qualification
+        run: bash tests/ross/run_ross22_production_tiered_qualification.sh
+      - name: Preserve F-ROSS22 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross22-production-tiered-${{ github.run_id }}
+          path: F-ROSS22_EVIDENCE
+          if-no-files-found: warn
