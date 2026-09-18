@@ -1,4 +1,4 @@
-# PUB-GC / COUPLE — manuscript draft
+# COUPLE — manuscript draft
 
 ## Title
 
@@ -284,7 +284,7 @@ This distinction is required for consistent mass accounting across retries and a
 | `q_bot` | native SWAP hydraulic flux across the fixed lower boundary | native flux, commonly reported here in cm d⁻¹; evaluated within a finite window | computed trial flux is not authoritative mass |
 | `q_u` | groundwater-facing effective exchange | sign/unit-normalized finite-window exchange; distinct from `q_bot` | tentative until coupled acceptance |
 | `u_A` | response of the prescribed-flux predictor map | `u_A ≈ ΔT(dH_end/dq_bot)⁻¹`; local to one accepted origin and window | optional response information, not a transferred mass and not universally `J_R` |
-| `J_R` | prescribed-head whole-window exchange derivative | `dV_u/dH` where a symmetric local response is admitted | unavailable outside a valid symmetric head-response neighbourhood |
+| `J_R` | prescribed-head whole-window exchange derivative | `dV_u/dH` where a symmetric local response is available | unavailable outside a valid symmetric head-response neighbourhood |
 | `V_u` | integrated accepted interface transfer | complete coupling-window water amount after sign/unit normalization | authoritative only after ordered publication and ledger commit |
 
 ## 2.5 Accepted origin and SWAP trial semantics
@@ -675,7 +675,7 @@ Existing multi-participant tests demonstrate that the coupling contract can comp
 
 ## 4.1 Interface identity and conservation in the first real coupled window
 
-The first publication-specific experiment reused the restricted one-column/one-cell real-SWAP/live-MODFLOW6 configuration rather than expanding the hydrological envelope. One SWAP reference-Richards column was coupled to one MODFLOW6 6.8.0 cell over a `1.0e-4 day` (8.64 s) window under the near-equilibrium forcing used for end-to-end qualification.
+The first publication-specific experiment reused the restricted one-column/one-cell real-SWAP/live-MODFLOW6 configuration rather than expanding the hydrological envelope. One SWAP reference-Richards column was coupled to one MODFLOW6 6.8.0 cell over a `1.0e-4 day` (8.64 s) window under the near-equilibrium forcing used for the end-to-end control case.
 
 The predictor response was internally consistent but demonstrated why the coupling quantities cannot be treated as aliases. The imposed native lower-boundary predictor flux was
 
@@ -946,7 +946,7 @@ The first route reused the independently tested active-drainage state. Its presc
 
 The second route retained the prescribed-head-compatible E3 process profile and varied only accepted initial wetness and predictor bottom flux. Twenty preregistered combinations were evaluated at `H0=-150,-75,-25,-10 cm` and `q_bot=10^-6,10^-4,10^-2,10^-1,1 cm/day`. Eight low-flux cases produced valid predictors. All twelve cases at `q_bot >= 10^-2 cm/day` exhausted the unchanged transaction retry sequence through solver and temporal rejections before an accepted whole-window predictor was available.
 
-For the eight predictor-ready cases, E6 then probed the symmetric prescribed-head response domain. Four cases admitted a `±10^-6 m` pair, only one admitted `±10^-5 m`, and none admitted the preregistered `±10^-4 m` pair required for progression to live E6-B coupling. The deterministic candidate count was therefore zero.
+For the eight predictor-ready cases, E6 then probed the symmetric prescribed-head response domain. Four cases returned a valid `±10^-6 m` pair, only one returned a valid `±10^-5 m` pair, and none returned the preregistered `±10^-4 m` pair required for progression to live E6-B coupling. The deterministic candidate count was therefore zero.
 
 The negative result is important for interpreting the earlier convergence experiments. Increasing wetness can increase the predictor response coefficient substantially, but a larger local response does not automatically produce a stronger **valid coupled problem**. In the present synthetic profile, predictor and corrector admissibility become limiting before a materially stronger live groundwater-feedback case is reached. No solver tolerance, retry budget or process physics was changed to manufacture a positive E6 result.
 
@@ -998,13 +998,13 @@ The first E3 matrix provides an important negative control. Across the twelve va
 
 The resulting physical correction was nevertheless extremely small. The maximum loose-to-iterative groundwater-head difference was only `5.55e-9 m`, and the largest exchange-rate correction was `1.92e-14 m/s`. Integrated over the longest tested window, the largest loose residual represents only approximately `2.42e-9 m` of water depth.
 
-This result matters for both coupling design and performance assessment. An absolute interface tolerance can be useful as a qualification rule because it gives a reproducible algebraic acceptance condition. It should not automatically be interpreted as a hydrological-error threshold. Likewise, iteration count by itself does not establish that a coupling problem is scientifically difficult. Later convergence policies should therefore be evaluated against state and mass impact in addition to algebraic residual reduction.
+This result matters for both coupling design and performance assessment. An absolute interface tolerance can be useful as a reproducible acceptance rule because it gives a reproducible algebraic acceptance condition. It should not automatically be interpreted as a hydrological-error threshold. Likewise, iteration count by itself does not establish that a coupling problem is scientifically difficult. Later convergence policies should therefore be evaluated against state and mass impact in addition to algebraic residual reduction.
 
 The result also prevents a misleading positive claim: the near-equilibrium one-column/one-cell fixture is a weak-feedback control, not evidence that strong coupling is always hydrologically necessary.
 
 The E3-R refinement strengthens that negative control. Increasing the valid predictor flux by 30–100 times raises the absolute interface mismatch and the work required for coupled closure, yet the largest loose-to-iterative groundwater-head correction remains only `1.83e-9 m` in the zero-background-gradient fixture. At the longest window and highest demonstrated predictor flux, the prescribed-head SWAP corrector becomes unavailable for head perturbations of only order `10^-8` to `10^-7 m`. The limiting phenomenon is therefore currently component admissibility, not an outer iteration that remains unconverged despite valid component responses.
 
-This distinction is methodologically important. A coupling algorithm should not be judged by cases in which one participant cannot produce a valid candidate over the requested window. Conversely, successful reduction of a strict interface residual does not by itself establish hydrological importance. The present evidence therefore supports retaining both an algebraic convergence criterion for reproducible qualification and separate state/mass-impact metrics for scientific interpretation.
+This distinction is methodologically important. A coupling algorithm should not be judged by cases in which one participant cannot produce a valid candidate over the requested window. Conversely, successful reduction of a strict interface residual does not by itself establish hydrological importance. The present evidence therefore supports retaining both an algebraic convergence criterion for reproducible testing and separate state/mass-impact metrics for scientific interpretation.
 
 ## 5.5 The component admissibility envelope constrains the coupled experiment
 
@@ -1016,13 +1016,13 @@ The response coefficient also varied strongly with window duration in the E3-D r
 
 E6 then tested whether a materially stronger synthetic coupling case could be obtained without changing production semantics. The result was negative by two different mechanisms. The active-drainage tangent belongs to a prescribed-qbot capability envelope and is not part of the prescribed-head corrector profile. In the separate state/flux screen, wetter accepted states increased `u_A`, but higher fluxes exhausted the predictor transaction envelope and the remaining predictor-ready cases did not retain the preregistered symmetric head-corrector domain. These failures occurred before a stronger live-MODFLOW convergence comparison could be interpreted.
 
-This narrows the claim that can be made from the synthetic experiments. E3 establishes a genuine weak-feedback control, but the present study does not establish a positive strong-feedback synthetic regime. The appropriate next test is a realistic hydrological application with independently established process coverage in which the required process and boundary semantics are native to the application, rather than further tolerance or parameter escalation of the restricted qualification fixture.
+This narrows the claim that can be made from the synthetic experiments. E3 establishes a genuine weak-feedback control, but the present study does not establish a positive strong-feedback synthetic regime. The appropriate next test is a realistic hydrological application with independently established process coverage in which the required process and boundary semantics are native to the application, rather than further tolerance or parameter escalation of the restricted control fixture.
 
 ## 5.6 Supplied response information is useful, but exact derivatives have modest incremental value
 
 E4 resolves the identity question left open by the architecture. The exposed `u_A` is not an arbitrary tuning factor: it closely reproduces an independent inverse sensitivity of the flux-driven predictor map. That result supports exposing it as low-cost component information without exposing SWAP's internal Richards Jacobian or timestep sequence.
 
-The same experiment also shows why response objects must be typed by boundary-value map. The prescribed-flux predictor and prescribed-head corrector are not generally inverse descriptions of one scalar constitutive relation. B3 provides a direct counterexample: `u_A` and `u_FD` agree while `|J_R|` is 8.1% larger. B5 retains a stable flux-driven response even though no symmetric local `J_R` is admitted. Calling `u_A` a universal interface Jacobian would therefore hide a scientifically relevant boundary-condition distinction.
+The same experiment also shows why response objects must be typed by boundary-value map. The prescribed-flux predictor and prescribed-head corrector are not generally inverse descriptions of one scalar constitutive relation. B3 provides a direct counterexample: `u_A` and `u_FD` agree while `|J_R|` is 8.1% larger. B5 retains a stable flux-driven response even though no symmetric local `J_R` is available. Calling `u_A` a universal interface Jacobian would therefore hide a scientifically relevant boundary-condition distinction.
 
 E5 then places a practical upper bound on the value of a more exact derivative. Relative to plain fixed-point iteration, acceleration is clearly beneficial near and beyond the fixed-point stability boundary. Relative to a competent cold secant method, however, even a free exact local `J_R` usually saves only the one evaluation needed by the secant method to learn a slope. It did not enlarge the observed convergence domain.
 
@@ -1032,13 +1032,13 @@ This result argues for a deliberately modest interface. A cheap response already
 
 E3 and E6 reveal a limitation that is easy to misclassify. A coupled algorithm can be numerically sophisticated while one participant simply cannot return a valid finite-window candidate for the requested boundary state. Such a case is not evidence that the outer iteration diverged.
 
-The E6 active-drainage route makes this distinction especially clear. A valid, mass-complete active-drainage predictor and its accepted response do not imply that the same process configuration is admitted under a prescribed-head corrector. The current production contracts intentionally assign those capabilities to different lower-boundary profiles. The separate state/flux screen reaches the same broader conclusion through another mechanism: wetter states increase local response, but higher fluxes consume the transaction envelope and the surviving predictors have too narrow a corrector neighbourhood for the preregistered stronger-feedback test.
+The E6 active-drainage route makes this distinction especially clear. A valid, mass-complete active-drainage predictor and its accepted response do not imply that the same process configuration is valid under a prescribed-head corrector. The implemented coupling contracts assign those capabilities to different lower-boundary profiles. The separate state/flux screen reaches the same broader conclusion through another mechanism: wetter states increase local response, but higher fluxes consume the transaction envelope and the surviving predictors have too narrow a corrector neighbourhood for the preregistered stronger-feedback test.
 
 Component admissibility should therefore be treated as an explicit domain of a coupled model, alongside the usual convergence domain of the outer algorithm. This has a practical consequence for model development: difficult coupled cases should first be classified into component-domain failure versus valid-component coupling failure before changing relaxation, Jacobians or convergence tolerances.
 
 ## 5.8 Limitations and transferability
 
-The strongest current limitation is hydrological breadth. E1–E6 provide real SWAP and live-MODFLOW evidence, but most direct coupling experiments use deliberately small qualification fixtures. E6 shows why synthetic escalation alone is not an adequate substitute for a realistic application. Hupselbrook is therefore reserved as a prospectively selected external-validity case rather than being invoked retrospectively to strengthen the present conclusions.
+The strongest current limitation is hydrological breadth. E1–E6 provide real SWAP and live-MODFLOW evidence, but most direct coupling experiments use deliberately small controlled fixtures. E6 shows why synthetic escalation alone is not an adequate substitute for a realistic application. Hupselbrook is therefore reserved as a prospectively selected external-validity case rather than being invoked retrospectively to strengthen the present conclusions.
 
 The study also does not establish that strong coupling is generally necessary. In the tested live-MODFLOW control, iterative coupling improves strict interface closure but changes groundwater head only at nanometre scale. A realistic application may show a larger effect, a similarly weak effect, or additional component-domain limitations; all three outcomes are scientifically admissible.
 
