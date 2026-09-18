@@ -28,7 +28,7 @@ HEADCALC_BLOB=3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55
 
 test "$(git rev-parse HEAD:$PREREG)" = "$PREREG_BLOB" || fail 'P2E20 preregistration drift'
 test "$(git rev-parse HEAD:$TEST)" = "$TEST_BLOB" || fail 'P2E20 test drift'
-test "$(git rev-parse HEAD:docs/publication/P2E18_REF_HIGH_CONSTRUCTION_RESULT.json)" = "$P2E18_RESULT_BLOB" || fail 'P2E18 result drift'
+test "$(git rev-parse HEAD:docs/publication/P2E18D3_REFERENCE_TOTAL_BALANCE_FLOOR_RESULT.json)" = "$P2E18D3_RESULT_BLOB" || fail 'P2E18D3 authority drift'
 
 grep -Fq '"phase": "PREREGISTERED_BEFORE_FLOOR_AWARE_REF_HIGH_EXECUTION"' "$PREREG" || fail 'phase drift'
 grep -Fq '"safety_factor": 1' "$PREREG" || fail 'representation-floor safety factor drift'
