@@ -1,0 +1,44 @@
+name: F-ROM0TA5 prescribed-head Reference-floor sample
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'integration/f-rom/F-ROM0TA5_*'
+      - 'tests/rom/test_f_rom0ta5_prescribed_head_sample.f90'
+      - 'tests/rom/run_f_rom0ta5_prescribed_head_sample.sh'
+      - '.github/workflows/f-rom0ta5-prescribed-head-sample.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-rom0ta5-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify prescribed-head Reference-floor binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROM0TA5_EVIDENCE
+          F_ROM0TA5_EVIDENCE_DIR="$PWD/F-ROM0TA5_EVIDENCE"             bash tests/rom/run_f_rom0ta5_prescribed_head_sample.sh | tee F-ROM0TA5_EVIDENCE/gate.txt
+      - name: Preserve TA5 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-rom0ta5-${{ github.run_id }}
+          path: F-ROM0TA5_EVIDENCE
+          if-no-files-found: warn
