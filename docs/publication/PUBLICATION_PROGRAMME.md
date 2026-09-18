@@ -1,10 +1,10 @@
-# SWAP5 two-paper publication programme
+# SWAP5 publication programme
 
 ## Purpose
 
-This document separates two publication lines that share the SWAP5 codebase and some qualification infrastructure but must not share the same primary scientific result.
+This document governs the SWAP5 publication lines that share the codebase, qualification infrastructure and some scientific cases but must not silently share the same primary scientific result.
 
-The separation is intentional from the start to prevent duplicate publication, retrospective claim splitting and accidental reuse of one novelty claim in two manuscripts.
+P1 and P2 are established research lines. PUB-GC, PUB-SG and PUB-RC are additional coupling-related candidate lines under active novelty review. Their separation is intentional to prevent duplicate publication, retrospective claim splitting and accidental reuse of one novelty claim in multiple manuscripts.
 
 ## Publication lines
 
@@ -43,6 +43,80 @@ Research design:
 
 `PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md`
 
+## Coupling-related candidate publication lines
+
+### PUB-GC - COUPLE
+
+Status: **active candidate line**.
+
+Primary ownership:
+
+- scientific correctness of SWAP5-MODFLOW6 coupling;
+- fixed coupling-plane and hydraulic-head semantics;
+- q_bot versus q_u;
+- conservative whole-window exchange;
+- component state ownership and accepted/trial/committed coupling semantics;
+- coupling transaction, retry, rollback and publication;
+- scalable SWAP5-MODFLOW6 coupling architecture.
+
+PUB-GC owns the scientific interpretation and qualification of the F-GC30 response/storage quantity `u`. The existence of `u` or of a tangent contract is not by itself a PUB-RC result.
+
+### PUB-SG - SCALE
+
+Status: **active candidate line under separate literature review**.
+
+Current research question:
+
+> Under which combinations of heterogeneous atmospheric forcing, soil properties and groundwater dynamics does an equivalent unsaturated-zone column remain transferable when multiple land-surface units are coupled to groundwater at a coarser spatial scale?
+
+Primary ownership:
+
+- physical validity and failure of spatial aggregation;
+- transferability of equivalent unsaturated-zone columns;
+- consequences of heterogeneous forcing, soil properties and groundwater dynamics;
+- prediction of aggregation error.
+
+The technical ability to support N:1 coupling is infrastructure, not the intended novelty.
+
+### PUB-RC - ACCELERATE
+
+Status: **conditional publication candidate**.
+
+Current research question:
+
+> Under which hydrological and numerical conditions does explicitly provided finite-window response information reduce the total cost or enlarge the convergence domain of partitioned coupling beyond what can be achieved from black-box interface histories alone, while each component retains independent time integration?
+
+Current default disposition:
+
+> Integrate the relevant response/acceleration results into PUB-GC unless the PUB-RC novelty gates demonstrate a reproducible information-value regime beyond state-of-the-art black-box multisecant coupling.
+
+PUB-RC must not claim novelty from derivative-informed coupling, interface Jacobians, autonomous/multirate component integration, dynamic hydrological storage response, surrogate-assisted quasi-Newton coupling, or hydrological convergence-regime analysis by themselves.
+
+Research design:
+
+`PUB_RC_ACCELERATE_RESEARCH_DESIGN.md`
+
+Prior-art register:
+
+`PUB_RC_ACCELERATE_LITERATURE_REGISTER.md`
+
+### Coupling-paper firewall
+
+The three coupling-related lines answer different questions:
+
+```text
+PUB-GC / COUPLE
+    Is the coupled hydrological system physically, numerically and transactionally correct?
+
+PUB-SG / SCALE
+    When is spatial aggregation of heterogeneous unsaturated-zone response physically transferable?
+
+PUB-RC / ACCELERATE
+    When does extra component-provided response information have net value over black-box learned interface information?
+```
+
+A result does not become a separate paper merely because it can be plotted under more than one of these headings.
+
 ## Publication firewall
 
 The same code, test harness or reference dataset may support both studies. The same primary scientific inference may not.
@@ -69,7 +143,11 @@ A result is not made distinct merely by changing the figure style, subset of cas
 | solver-admissibility domain | excluded | primary novelty | P2_RESULT |
 | solver exclusion/fail-closed scientific criteria | excluded | primary novelty | P2_RESULT |
 | MultiSWAP scaling architecture | possible architectural consequence only | possible experimental context | SHARED_INFRASTRUCTURE unless separately studied |
-| MODFLOW coupling architecture | possible architectural consequence only | outside current P2 scope | NOT_CURRENT_RESULT |
+| MODFLOW coupling architecture | possible architectural consequence only | outside current P2 scope | PUB-GC primary result candidate |
+| F-GC30 q_bot/q_u/u scientific interpretation | infrastructure/context only | outside current P2 scope | PUB-GC primary result candidate; PUB-RC may use only as qualified input |
+| finite-window supplied response versus learned black-box interface history | outside scope | outside scope | PUB-RC only if RC novelty gates pass |
+| spatial aggregation / equivalent unsaturated-zone column transferability | outside scope | outside scope | PUB-SG primary result candidate |
+| technical N:1 SWAP-to-groundwater mapping capability | architectural consequence only | outside scope | shared infrastructure; not PUB-SG novelty by itself |
 
 ## Evidence tags
 
@@ -227,19 +305,27 @@ This ordering is a publication clarity preference, not a requirement to stop P2 
 
 ## Literature watch
 
-Because both topics are active, maintain a periodic literature watch for:
+Because all publication topics are active, maintain a periodic literature watch for:
 
 - scientific-model legacy modernization;
 - transactional or rollback-safe scientific simulation;
 - hydrological component architectures;
 - alternative Richards-equation solvers;
 - dual-solver or adaptive-solver vadose-zone models;
-- regime-dependent numerical model selection.
+- regime-dependent numerical model selection;
+- partitioned and segregated multiphysics coupling;
+- interface quasi-Newton, Anderson and IQN history-reuse methods;
+- derivative/tangent-informed co-simulation and FMI developments;
+- vadose-zone/groundwater and MODFLOW coupling architectures;
+- hydrological convergence analysis;
+- spatial aggregation and effective unsaturated-zone representations.
 
 Any new paper that overlaps a primary novelty claim should trigger a review of the relevant research design before manuscript drafting.
 
 ## Status
 
-Established: 2026-09-17.
+Established: 2026-09-17. Expanded with coupling-related candidate lines PUB-GC, PUB-SG and PUB-RC on 2026-09-18.
+
+PUB-RC is currently conditional, not an assumed standalone paper. Its default disposition is integration into PUB-GC unless the dedicated novelty gates pass.
 
 This programme is documentation and research governance only. It does not change production code, physics, numerical semantics, qualification tolerances or existing canonical evidence.
