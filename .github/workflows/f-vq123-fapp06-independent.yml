@@ -1,0 +1,28 @@
+name: F-VQ123 F-APP06 independent
+
+on:
+  push:
+    branches:
+      - qualification/f-vq123-fapp06-swinter0-independent
+    paths:
+      - 'tests/fvq/test_fvq123_fapp06_swinter0_independent.f90'
+      - 'tests/fvq/test_fvq123_fapp06_exact_b111.f90'
+      - 'tests/fvq/run_fvq123_fapp06_swinter0_independent.sh'
+      - 'tests/f-app06/fixtures/hupsel_swinter0_b111_exact.csv.gz'
+      - '.github/workflows/f-vq123-fapp06-independent.yml'
+      - 'integration/f-vq/F-VQ123_*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fvq/run_fvq123_fapp06_swinter0_independent.sh
