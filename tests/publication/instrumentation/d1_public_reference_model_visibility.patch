@@ -1,0 +1,10 @@
+--- a/src/runtime/mod_fmr_serialized_reference_backend.f90
++++ b/src/runtime/mod_fmr_serialized_reference_backend.f90
+@@ -226,7 +226,7 @@
+   end type fmr_serialized_attempt_context_t
+ 
+-  type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
++  type, extends(kernel_model_t), public :: fmr_serialized_reference_model_t
+     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
+     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
+     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
