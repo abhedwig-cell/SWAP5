@@ -3,8 +3,8 @@
   "workstream": "F-DOC",
   "work_unit": "F-DOC35",
   "title": "Documentation entry-point reconciliation",
-  "phase": "VERIFY",
-  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "phase": "CLOSE",
+  "decision": "DOCUMENTATION_ADMITTED_AND_CLOSED",
   "branch": "work/f-doc35-entrypoint-reconciliation",
   "canonical_start": "62dfb5a52f665e490830dfb320167786cf67f63e",
   "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
@@ -24,7 +24,7 @@
     "integration/f-doc/F-DOC35_STATUS.json"
   ],
   "production_reference_test_delta": false,
-  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_PR_MERGEABILITY",
+  "next_permitted_action": "NONE_F_DOC35_CLOSED",
   "content_postimage": "fedc3de92c89daa29f2076d122a47e2bf54a7272",
   "scope_check": {
     "changed_file_count": 5,
@@ -41,12 +41,13 @@
     "content_repository_documentation_checks": "PASS",
     "content_strict_mkdocs_build": "PASS",
     "content_workflow_conclusion": "success",
-    "status_only_exact_head": null,
-    "status_only_workflow_run": null,
-    "status_only_workflow_job": null,
-    "status_only_repository_documentation_checks": "PENDING",
-    "status_only_strict_mkdocs_build": "PENDING",
-    "status_only_workflow_conclusion": "PENDING"
+    "status_only_exact_head": "899f0992e99e44c0bb0ce31d480cbfefea9d58ad",
+    "status_only_workflow_run": 35335826294,
+    "status_only_workflow_job": 105570315548,
+    "status_only_repository_documentation_checks": "PASS",
+    "status_only_strict_mkdocs_build": "PASS",
+    "status_only_workflow_conclusion": "success"
   },
-  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE"
+  "verdict": "CLOSED_ADMITTED_DOCUMENTATION_ONLY",
+  "admitted_canonical": "b3be8d4c44cd50f9cd0c42cb6c471815ca41bf21"
 }
