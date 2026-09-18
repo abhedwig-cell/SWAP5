@@ -1,0 +1,46 @@
+name: ROM1B4 heldout state separation
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B3Q1_RESULT.json'
+      - 'integration/f-rom/ROM1B3Q1_STATUS.json'
+      - 'integration/f-rom/ROM1B4_*'
+      - 'docs/science/ROM1B4_*'
+      - 'tests/rom/analyze_rom1b4_heldout_state_separation.py'
+      - 'tests/rom/run_rom1b4_heldout_state_separation.sh'
+      - '.github/workflows/rom1b4-heldout-state-separation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1b4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute heldout state-separation evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1B4_EVIDENCE
+          ROM1B4_EVIDENCE_DIR="$PWD/ROM1B4_EVIDENCE" \
+            bash tests/rom/run_rom1b4_heldout_state_separation.sh | tee ROM1B4_EVIDENCE/gate.txt
+      - name: Preserve B4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1b4-${{ github.run_id }}
+          path: ROM1B4_EVIDENCE
+          if-no-files-found: warn
