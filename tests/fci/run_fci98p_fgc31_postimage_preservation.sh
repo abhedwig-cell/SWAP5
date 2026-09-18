@@ -112,11 +112,22 @@ git worktree add --detach "$WT" "$VQ89" >/dev/null
 grep -Fq 'FVQ89_QUALIFICATION PASS' fci98p-vq89.txt || fail 'historical VQ89 replay'
 echo 'FCI98P_HISTORICAL_FSI37_REPLAY=PASS'
 
-# Current EB authorities remain physically qualified; these gates must not need
-# production modifications from F-CI98P.
-bash tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh > fci98p-i23.txt
-bash tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh > fci98p-i24.txt
-bash tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh > fci98p-i25.txt
+# Historical EB owner authorities remain replayable on their immutable heads.
+# Current successor compatibility is guarded separately by exact unchanged EB
+# blobs plus the exact F-GC31 backend/evidence locks in the moving workflows.
+I23_OWNER=94832bb80534c2edb324c1c9e0cbb54df3678246
+I24_OWNER=479fafcbbb02d1e9f9f6cba48384fb4280051a38
+I25_OWNER=08be50f248f3e169a3f1aeebd263cfe95b0dccd0
+for spec in \
+  "i23:$I23_OWNER:tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh" \
+  "i24:$I24_OWNER:tests/eb/run_eb_i24_top_liquid_sensible_inflow_gate.sh" \
+  "i25:$I25_OWNER:tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh"; do
+  IFS=: read -r tag head script <<<"$spec"
+  EWT="${RUNNER_TEMP:-/tmp}/fci98p-${tag}-${GITHUB_RUN_ID:-local}"
+  git worktree add --detach "$EWT" "$head" >/dev/null
+  (cd "$EWT" && bash "$script") > "fci98p-${tag}.txt"
+  git worktree remove --force "$EWT" >/dev/null
+done
 echo 'FCI98P_EB_I23_OWNER_REPLAY=PASS'
 echo 'FCI98P_EB_I24_OWNER_REPLAY=PASS'
 echo 'FCI98P_EB_I25_OWNER_REPLAY=PASS'
