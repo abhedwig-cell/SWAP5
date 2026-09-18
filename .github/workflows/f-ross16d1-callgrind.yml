@@ -5,7 +5,7 @@ on:
     branches:
       - work/f-ross16-rossfast-cost-attribution
     paths:
-      - 'integration/f-ross/F-ROSS16D1_*'
+      - 'integration/f-ross/F-ROSS16D1_CALLGRIND_PREREGISTRATION.json'
       - 'tests/ross/test_ross16d1_callgrind.f90'
       - 'tests/ross/run_ross16d1_callgrind.sh'
       - '.github/workflows/f-ross16d1-callgrind.yml'
@@ -13,7 +13,7 @@ on:
     branches:
       - integration/f-ci-canonical
     paths:
-      - 'integration/f-ross/F-ROSS16D1_*'
+      - 'integration/f-ross/F-ROSS16D1_CALLGRIND_PREREGISTRATION.json'
       - 'tests/ross/test_ross16d1_callgrind.f90'
       - 'tests/ross/run_ross16d1_callgrind.sh'
       - '.github/workflows/f-ross16d1-callgrind.yml'
