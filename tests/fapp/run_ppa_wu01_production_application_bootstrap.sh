@@ -38,7 +38,8 @@ for forbidden in [
 ]:
     assert forbidden not in src, forbidden
 
-assert "bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
+assert "tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
+assert "tile%parameters%bottom_mode /= 2" in src
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
