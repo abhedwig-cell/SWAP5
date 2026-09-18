@@ -537,9 +537,6 @@ The manuscript therefore distinguishes **method architecture**, **qualified coup
 ---
 
 # 3. Experimental design
----
-
-# 3. Experimental design
 
 ## 3.1 Common experimental rules
 
