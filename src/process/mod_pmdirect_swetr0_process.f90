@@ -81,6 +81,7 @@ module mod_pmdirect_swetr0_process
 
   public :: evaluate_pmdirect_swetr0_daily
   public :: apply_swinter1_daily_interval
+  public :: apply_swinter0_no_interception_interval
 
 contains
 
@@ -303,6 +304,44 @@ contains
     end if
     diagnostics%interval_result_produced = .true.
   end subroutine apply_swinter1_daily_interval
+
+  pure subroutine apply_swinter0_no_interception_interval(weather, daily_result, interval_result, diagnostics)
+    type(pmdirect_swetr0_weather_t), intent(in) :: weather
+    type(pmdirect_swetr0_daily_result_t), intent(in) :: daily_result
+    type(pmdirect_swetr0_interval_result_t), intent(out) :: interval_result
+    type(pmdirect_swetr0_diagnostics_t), intent(inout) :: diagnostics
+
+    interval_result = pmdirect_swetr0_interval_result_t()
+    diagnostics%interval_result_produced = .false.
+
+    if (diagnostics%status /= PMDIRECT_SWETR0_OK .or. .not. diagnostics%daily_result_produced) return
+    if (.not. valid_weather(weather)) then
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_WEATHER
+      return
+    end if
+    if (.not. valid_daily_result(daily_result)) then
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_RESULT
+      return
+    end if
+
+    ! Exact legacy SWINTER=0 interval semantics: interception is disabled.
+    ! Therefore gross rain remains net rain, the canopy is dry for the
+    ! transpiration blend, and potential transpiration is the dry-canopy
+    ! daily demand. Surface irrigation is owned by the irrigation/application
+    ! composition and is deliberately not handled in this process result.
+    interval_result%interception_rate_cm_per_day = 0.0_real64
+    interval_result%net_rain_cm_per_day = weather%gross_rain_cm_d
+    interval_result%wet_canopy_fraction = 0.0_real64
+    interval_result%potential_transpiration_cm_per_day = &
+      daily_result%potential_transpiration_dry_cm_per_day
+
+    if (.not. valid_interval_result(interval_result)) then
+      interval_result = pmdirect_swetr0_interval_result_t()
+      diagnostics%status = PMDIRECT_SWETR0_INVALID_RESULT
+      return
+    end if
+    diagnostics%interval_result_produced = .true.
+  end subroutine apply_swinter0_no_interception_interval
 
   pure real(real64) function aerodynamic_resistance(ch, ud, zm, zh) result(raero)
     real(real64), intent(in) :: ch, ud, zm, zh
