@@ -415,3 +415,21 @@ The register should describe readiness, not rewrite past chronology.
 - result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0003.yaml`, commit `b88bc28d4930e9f820bf7e7ca3def5846d01371c`;
 - H2/H3 remain untested;
 - next permitted action: freeze a separate scientific adjudication before any further refinement; do not infer adequacy by extrapolation and do not relax the frozen thresholds.
+
+
+### 2026-09-18T00:58:28Z — PUB-GC native-time 0004 exhausts automatic dyadic refinement
+
+- frozen bounded-refinement decision: `PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0003.md`, commit `f581b112add1ae2c7bf6dcce37557eaa22cf21a7`;
+- 512-contribution macro envelope qualification PASS: receipt commit `74511e42a9fb42633bf544bba0eeadd3fceef240`;
+- frozen NATIVE-TIME-0004 manifest: commit `6f28b6b9646ebfa856634356f1794e182bc73a9f`, blob `b8458f0fda4b7598fc05024d22d5b0e756e1b5c7`;
+- first execution run `35293318186` is `INVALID_EXECUTION_WORKFLOW_PATH`; scientific oracle was not reached and only the workflow path was repaired;
+- controlling execution: `research/pub-gc-native-time-0004@cfd650167440dd170747fa803b707d025e07221b`, run `35293369996`, job `105440785877`, conclusion `success`;
+- exact O0/O2 scientific-output identity PASS; output SHA-256 `1c73e28243baa1ec35b01af7cfd52cb4cd8cb81a70c5d79f7c890234eb44343c`;
+- artifact `10527138351`, digest `sha256:1125c2055d531161898b2f20558911e04ced7c76150b6b1309594cc537941308`;
+- all N0-N7 trajectories valid in all five frozen cases;
+- N6→N7 stability PASS for NT-C0, NT-W3, NT-D05 and NT-R3;
+- NT-H60 N6→N7: `|Delta Q|=3.45331076161137229e-5 cm` PASS, storage `3.45331076161414785e-5 cm` PASS, max head `1.86509538189056912e-2 cm` FAIL, max water-content `1.92328959484067141e-5` FAIL;
+- mechanical outcome: `NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE`;
+- result receipt: `docs/publications/results/PUB-GC-NATIVE-TIME-0004.yaml`, commit `470784f92f3d38d71116285550a63050d30fc7a9`;
+- automatic dyadic extension is now prohibited by the frozen decision; H2/H3 remain untested;
+- next permitted action: a separate convergence/reference adjudication. No threshold relaxation and no N8/N9 without a new prospective scientific decision.
