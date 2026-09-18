@@ -8,6 +8,7 @@ STATUS_A_AUTH=50346642bd565f79134ea17d5462e544b354998c
 FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
 P2E05_QUALIFIED_HEAD=ff89a93bf5b49795db5cb04be0c7325c7b060f5c
 FROSS13_PRODUCTION=0fdba1a603ffd54eff7ee92a3cd7001f2b802678
+FGC31_ADMISSION=7b864853ca22baa73141b2dec9ed2f3915ef520d
 
 SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
@@ -25,13 +26,14 @@ git merge-base --is-ancestor "$STATUS_A_AUTH" HEAD || fail 'Status-A authority n
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 git merge-base --is-ancestor "$P2E05_QUALIFIED_HEAD" HEAD || fail 'qualified P2E05 successor not ancestor'
 git merge-base --is-ancestor "$FROSS13_PRODUCTION" HEAD || fail 'qualified F-ROSS13 production commit not ancestor'
+git merge-base --is-ancestor "$FGC31_ADMISSION" HEAD || fail 'qualified F-GC31 admission not ancestor'
 
 # Preserve all solver/runtime authorities outside the explicitly qualified
 # F-ROSS13 model-catalog/provider widening.
 test "$(git rev-parse HEAD:$SW)" = 40a1ddc05fb8e2c1822763de645fd07a094568a3 || fail 'typed solver-contract drift'
 test "$(git rev-parse HEAD:$REF_ADAPTER)" = 4b545c6fb260e81cd6c8f4d2d65f2beee7281e53 || fail 'typed Reference adapter drift'
 test "$(git rev-parse HEAD:$ROSS_ADAPTER)" = dbb441f3529be179d64fb57f9c44336d3d20c540 || fail 'RossFast adapter drift'
-test "$(git rev-parse HEAD:$BACKEND)" = 19d07cac9285142d14a6e9c53706fb73d016d5ad || fail 'serialized backend drift'
+test "$(git rev-parse HEAD:$BACKEND)" = 4e5491c997ed0752a4db9abd09b5ad3daf394db2 || fail 'serialized backend is not qualified F-GC31 successor'
 test "$(git rev-parse HEAD:$SELECTION)" = cca61af52bde3eed12b756547277cc2776589648 || fail 'solver selection binding drift'
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9 || fail 'RossFast execution policy drift'
 test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc || fail 'RossFast table kernel drift'
@@ -70,6 +72,11 @@ cat "$BUILD/p2e01.txt"
 
 cat "$BUILD/ross13-provider.txt" "$BUILD/ross12-successor.txt" "$BUILD/serialized.txt" "$BUILD/p2e01.txt" > "$BUILD/combined.txt"
 echo "FCI96_FROSS13_SEMANTIC_SUCCESSOR_SHA256=$(sha256sum "$BUILD/combined.txt" | awk '{print $1}')"
+python3 -m json.tool qualification/F-VQ105_STATUS.json >/dev/null
+python3 -m json.tool integration/f-ci/F-CI98_STATUS.json >/dev/null
+grep -Fq '"verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW"' qualification/F-VQ105_STATUS.json || fail 'F-VQ105 evidence missing'
+grep -Fq '"verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION"' integration/f-ci/F-CI98_STATUS.json || fail 'F-CI98 evidence missing'
+echo 'FCI96_FGC31_BACKEND_SUCCESSOR=PASS'
 echo 'FCI96_FROSS12_HISTORICAL_AUTHORITY_PRESERVED=TRUE'
 echo 'FCI96_P2E05_TYPED_RESIDUAL_SUCCESSOR=PASS'
 echo 'FCI96_FROSS13_36_MATERIAL_SUCCESSOR=PASS'
