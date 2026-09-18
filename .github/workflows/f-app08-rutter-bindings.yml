@@ -1,0 +1,32 @@
+name: F-APP08 Rutter typed application bindings
+
+on:
+  push:
+    branches:
+      - work/f-app08-rutter-typed-application-bindings
+    paths:
+      - 'src/runtime/mod_fmr_rutter_application_binding.f90'
+      - 'tests/f-app08/**'
+      - 'integration/f-app/F-APP08_*'
+      - '.github/workflows/f-app08-rutter-bindings.yml'
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_rutter_application_binding.f90'
+      - 'tests/f-app08/**'
+      - 'integration/f-app/F-APP08_*'
+      - '.github/workflows/f-app08-rutter-bindings.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/f-app08/run_fapp08_rutter_bindings.sh
