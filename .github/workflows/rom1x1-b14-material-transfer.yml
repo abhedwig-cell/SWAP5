@@ -1,0 +1,47 @@
+name: ROM1X1 B14 material transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom0-close-expand-accepted-domain
+    paths:
+      - 'integration/f-rom/ROM1B4_RESULT.json'
+      - 'integration/f-rom/ROM1B4_STATUS.json'
+      - 'integration/f-rom/ROM1X1_*'
+      - 'docs/science/ROM1X1_*'
+      - 'tests/rom/test_rom1x1_b14_material_transfer.f90'
+      - 'tests/rom/analyze_rom1x1_b14_material_transfer.py'
+      - 'tests/rom/run_rom1x1_b14_material_transfer.sh'
+      - '.github/workflows/rom1x1-b14-material-transfer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rom1x1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  transfer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Execute frozen-coordinate B14 transfer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ROM1X1_EVIDENCE
+          ROM1X1_EVIDENCE_DIR="$PWD/ROM1X1_EVIDENCE" \
+            bash tests/rom/run_rom1x1_b14_material_transfer.sh | tee ROM1X1_EVIDENCE/gate.txt
+      - name: Preserve X1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rom1x1-${{ github.run_id }}
+          path: ROM1X1_EVIDENCE
+          if-no-files-found: warn
