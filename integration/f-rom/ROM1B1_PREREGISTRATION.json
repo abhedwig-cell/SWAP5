@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.rom1b1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1B1",
+  "title": "Discovery-only nested aggregation collision census",
+  "phase": "PREREGISTERED_BEFORE_COLLISION_CENSUS",
+  "predecessor": {
+    "capability": "ROM-1A",
+    "decision": "PROCEED_TO_ROM1B",
+    "closeout": "integration/f-rom/F-ROM1A_SUCCESSOR_CLOSEOUT.json",
+    "library_result": "integration/f-rom/ROM1AR2_RESULT.json"
+  },
+  "purpose": "Identify discovery-state projection collisions for a basis-free nested hierarchy of physically interpretable water-content coordinates before generating any future-probe outcomes.",
+  "data_firewall": {
+    "coordinate_proposal_population": ["D01","D02","D03","D04","D05","D06","D07","D08"],
+    "held_out_histories_used": false,
+    "held_out_probes_generated": false,
+    "B14_used": false,
+    "future_probe_outcomes_generated_in_B1": false
+  },
+  "coordinate_hierarchy": [
+    {
+      "id": "Z1",
+      "dimension": 1,
+      "components": ["mean_theta_0_160cm"]
+    },
+    {
+      "id": "Z2",
+      "dimension": 2,
+      "components": ["mean_theta_0_40cm","mean_theta_40_160cm"]
+    },
+    {
+      "id": "Z4",
+      "dimension": 4,
+      "components": ["mean_theta_0_40cm","mean_theta_40_80cm","mean_theta_80_120cm","mean_theta_120_160cm"]
+    },
+    {
+      "id": "Z8",
+      "dimension": 8,
+      "components": ["eight contiguous 20-cm mean-theta bands"]
+    },
+    {
+      "id": "Z16",
+      "dimension": 16,
+      "components": ["theta in each 10-cm cell"],
+      "role": "full-water-content-state control; not a reduced production proposal"
+    }
+  ],
+  "distance": {
+    "coordinate_metric": "L_inf over candidate mean-theta components",
+    "full_state_metric": "L_inf over the 16-cell theta profile",
+    "cross_history_pairs_only": true,
+    "same_history_pairs_excluded": true
+  },
+  "collision_authority": {
+    "theta_floor": 0.0005420462931603476,
+    "source": "ROM-0V1 B01_E1_NOMINAL_FLUX max D_theta_inf for 16x10 vs 32x5 cm",
+    "collision_if": "coordinate_Linf <= theta_floor AND full_theta_Linf > theta_floor",
+    "reason": "The candidate coordinate regards the pair as numerically indistinguishable at the measured B01 vertical Reference floor while the resolved 16-cell water-content states remain distinguishable beyond that floor."
+  },
+  "pair_manifest": {
+    "rank_per_coordinate": "ascending coordinate_Linf, then descending full_theta_Linf, then lexicographic history/step identifiers",
+    "retain_top_pairs": 8,
+    "pair_reuse_across_coordinates": true,
+    "pair_reuse_within_coordinate": true,
+    "no_future_outcome_used_for_ranking": true
+  },
+  "required_outputs": [
+    "eligible_cross_history_pair_count",
+    "collision_count_by_coordinate",
+    "minimum_coordinate_distance_by_coordinate",
+    "maximum_hidden_full_theta_distance_among_collisions",
+    "top_8_collision_pair_manifest_by_coordinate",
+    "first_coordinate_with_zero_discovery_collisions_if_any",
+    "discovery_library_hash"
+  ],
+  "interpretation_rule": {
+    "zero_collision": "state-separating at the preregistered B01 vertical theta floor on discovery data; predictive sufficiency still requires later held-out/probe gates",
+    "nonzero_collision": "candidate requires predictive probe adjudication; collision alone does not prove future-output ambiguity"
+  },
+  "next_if_complete": "Preregister ROM-1B2 future-probe execution on the frozen collision-pair manifests using only the already frozen discovery probes and horizons. No pair or probe may be changed after probe outcomes are seen.",
+  "firewalls": [
+    "NO_POD_OR_MODAL_BASIS",
+    "NO_CLOSURE_MODEL",
+    "NO_MEMORY_VARIABLE",
+    "NO_HELDOUT_USE_FOR_COORDINATE_PROPOSAL",
+    "NO_B14_USE",
+    "NO_FUTURE_PROBE_OUTCOME_IN_PAIR_SELECTION",
+    "NO_POST_CENSUS_COLLISION_THRESHOLD_CHANGE"
+  ],
+  "production_rom_authorized": false
+}
