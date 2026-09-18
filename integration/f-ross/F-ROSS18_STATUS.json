@@ -2,44 +2,23 @@
   "schema": "swap5.bounded_execution_checkpoint.v1",
   "workunit": "F-ROSS18",
   "title": "RossFast temporal substep matrix",
-  "phase": "QUALIFY",
-  "status": "IMPLEMENTED_PENDING_EXECUTION",
+  "phase": "CLOSE",
+  "status": "QUALIFIED_RESEARCH_MATRIX",
   "branch": "work/f-ross18-temporal-substep-matrix",
   "source_head": "405ad30e823ea44deedf73edc67c68e01564c617",
   "production_or_reference_mutation": false,
-  "variants": {
-    "K8": {
-      "component_substeps": 8,
-      "total_candidate_steps": 24,
-      "expected_linear_solves": 24,
-      "role": "F-ROSS17 authority"
-    },
-    "K4": {
-      "component_substeps": 4,
-      "total_candidate_steps": 12,
-      "expected_linear_solves": 12,
-      "role": "research-only"
-    },
-    "K2": {
-      "component_substeps": 2,
-      "total_candidate_steps": 6,
-      "expected_linear_solves": 6,
-      "role": "research-only"
-    }
-  },
   "qualification": {
-    "science_matrix": "pending",
-    "temporal_acceptance_threshold": "indicator <= 1.0",
-    "performance_vs_reference": "pending"
+    "workflow_run": 35295568813,
+    "artifact_id": 10528171294,
+    "K8": "36/36 paired-valid; 36/36 temporal; ~2.280x Reference CPU",
+    "K4": "36/36 paired-valid; 36/36 temporal; ~1.265x Reference CPU",
+    "K2": "36/36 paired-valid; 34/36 temporal; ~0.747x Reference CPU, i.e. ~1.338x faster"
   },
-  "implementation": {
-    "science_harness": "tests/ross/test_ross18_substep_matrix.f90",
-    "timing_harness": "tests/ross/test_ross18_route_timing.f90",
-    "science_summarizer": "tools/performance/f_ross18_matrix_summary.py",
-    "paired_screen": "tools/performance/f_ross18_paired_screen.py",
-    "runner": "tests/ross/run_ross18_temporal_substep_matrix.sh",
-    "workflow": ".github/workflows/f-ross18-temporal-substep-matrix.yml"
-  },
-  "verdict": "READY_FOR_RESEARCH_MATRIX_EXECUTION",
-  "next_permitted_action": "Execute exact-head K8/K4/K2 matrix; do not mutate production source in F-ROSS18."
+  "verdict": "FRONTIER_IDENTIFIED__K2_FAST_BUT_TWO_TEMPORAL_REJECTIONS__K4_SAFE_BUT_SLOWER",
+  "next_permitted_action": "Open research-only adaptive K2-first/K4-fallback successor. Do not alter F-ROSS17 production candidate in place.",
+  "exclusions": [
+    "NO_PRODUCTION_ADMISSION",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST"
+  ]
 }
