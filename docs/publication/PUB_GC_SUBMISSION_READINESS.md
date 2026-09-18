@@ -2,7 +2,7 @@
 
 ## Status
 
-**E7 STANDALONE SELECTION FROZEN — COUPLED EXECUTION IS THE ONLY INTENDED PRIMARY SCIENTIFIC GAP**
+**SCIENTIFIC PACKAGE CLOSED THROUGH E7 — REALISTIC TRANSFERABILITY BOUNDED BY COMPONENT DOMAIN**
 
 Audit date: 2026-09-18.
 
@@ -18,7 +18,7 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | RQ2 coupled convergence and hydrological relevance | E3/E3-R | `SUPPORTED_RESTRICTED` | ready; explicitly a weak-feedback control |
 | RQ3 response identity and information value | E4/E5 | `SUPPORTED_RESTRICTED` | ready; no universal-Jacobian or standalone-ACCELERATE claim |
 | RQ4 component-envelope interaction | E3-D2/E6 | `SUPPORTED_RESTRICTED` / negative stress extension | ready; component-domain failure kept distinct from coupling divergence |
-| RQ5 realistic transferability | E7 Hupsel | `STANDALONE_SELECTION_FROZEN / READY_FOR_COUPLED_EXECUTION` | coupled loose/strong result remains the principal scientific gap |
+| RQ5 realistic transferability | E7 Hupsel | `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT` | ready for a bounded negative transferability claim; no regional Hupsel validation |
 | regional scaling | E8 | deferred | not a submission prerequisite unless journal positioning later makes quantitative scaling central |
 | physical N:1 aggregation validity | PUB-SG / SCALE | separate paper | excluded from PUB-GC |
 
@@ -32,9 +32,9 @@ This is a journal-neutral readiness audit. It does not select a journal and does
 | Results E1–E6 | READY |
 | Discussion / conclusions | READY through E6 and evidence-bounded |
 | Figures F1–F6 | BUILT_AND_LINKED |
-| Figure F7 | BLOCKED_E7 |
+| Figure F7 | BUILT_AND_LINKED as realistic component-domain result |
 | Tables T1–T5 | BUILT_AND_LINKED |
-| Table T6 | BLOCKED_E7 |
+| Table T6 | BUILT_AND_LINKED as E7 application-domain disposition |
 | reference metadata | externally audited / normalized |
 | claim-to-sentence audit | PASS: `NO_CURRENT_CLAIM_LEDGER_OVERRUN DETECTED` |
 | code/evidence reproducibility section | READY at repository level; archival DOI/release not yet frozen |
@@ -82,3 +82,13 @@ This is an editorial cleanup only and does not change the claim/evidence state.
 Selection result: `PUB_GC_E7_STANDALONE_SELECTION_RESULT.md` / `.json`.
 
 Frozen dates: median-dynamics `2003-06-17`; high-dynamics `2003-05-20`. Groundwater fallback is the uncalibrated qualified F-GC44 conceptual fixture. No coupled output was observed before this freeze.
+
+
+## E7 closure evidence
+
+- result: `PUB_GC_E7_RESULT.json`;
+- selected-day freeze: PR #325 / merge `080c24be1fd352d390647c832d215833e1ae3df2`;
+- E7 static application/domain gate: run 35375158694 / job 105698010382 — SUCCESS;
+- PPA-WU01 O0/O2 dynamic owner gate: run 35375158471 / job 105698009081 — SUCCESS;
+- F7/T6: built;
+- coupled Hupsel head/exchange curves: intentionally absent by preregistered stop rule.
