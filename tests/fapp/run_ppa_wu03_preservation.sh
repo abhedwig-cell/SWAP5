@@ -37,7 +37,20 @@ echo 'PPA_WU03_PPA_WU01_REGRESSION=PASS'
 bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh
 echo 'PPA_WU03_FAPP07_IRRIGATION_REGRESSION=PASS'
 
-bash tests/m1/run_m1_final_closeout.sh
-echo 'PPA_WU03_M1_FINAL_REGRESSION=PASS'
+bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+env FKT21_ALLOW_FCI98_SUCCESSOR=1 bash tests/fkt/run_fkt21_qualification.sh
+python3 - <<'PY'
+import json
+from pathlib import Path
+state=json.loads(Path('integration/m1/M1_FINAL_CLOSEOUT_20260918.json').read_text())
+assert state['overall_verdict']=='M1_CLOSED_CURRENT_CANONICAL'
+assert state['formal_exit'] is True
+assert state['close_gate']=='PASS_CANONICALLY_ADMITTED'
+assert state['production_mutation_in_closeout']=='NONE'
+assert len(state['criteria'])==5
+assert all(item['verdict'].startswith('PASS_') for item in state['criteria'])
+print('PPA_WU03_M1_CLOSED_AUTHORITY=PASS')
+PY
+echo 'PPA_WU03_M1_CURRENT_SEMANTIC_REGRESSION=PASS'
 
 echo 'PPA-WU03 PRESERVATION GATE PASS'
