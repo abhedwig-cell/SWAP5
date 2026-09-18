@@ -1,0 +1,36 @@
+name: PUB-GC E7 source bundle
+
+on:
+  push:
+    branches:
+      - work/pub-gc-e7-source-bundle
+    paths:
+      - '.github/workflows/pub-gc-e7-source-bundle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact source identity
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > /tmp/SWAP5_E7_SOURCE_HEAD.txt
+      - name: Bundle exact worktree
+        run: |
+          set -euo pipefail
+          tar --exclude=.git -czf /tmp/SWAP5-pub-gc-e7-source.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swap5-pub-gc-e7-source
+          path: |
+            /tmp/SWAP5-pub-gc-e7-source.tar.gz
+            /tmp/SWAP5_E7_SOURCE_HEAD.txt
+          if-no-files-found: error
+          retention-days: 1
