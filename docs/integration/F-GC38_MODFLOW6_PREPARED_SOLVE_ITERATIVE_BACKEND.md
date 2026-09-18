@@ -232,16 +232,89 @@ F-GC38 does not:
 - implement irrigation;
 - admit to canonical.
 
-## 10. Next bounded step
+## 10. Qualified live evidence
 
-If the live prepared-solve envelope qualifies, reconcile F-GC37's groundwater-participant abstraction:
+The owner qualification uses the official MODFLOW6 6.8.0 Linux release, pinned xmipy and FloPy, and the real F-GC34 C bridge.
 
-- replace per-iteration rollback-able groundwater candidates with one prepared MODFLOW solve session;
-- retain fixed accepted-time origin through `XOLD`;
-- keep SWAP correctors transactional from one SWAP accepted origin;
-- keep whole-window failure/retry as a separate backend restart concern.
+Green workflow evidence:
 
-Only then materialize the real internal SWAP5–MODFLOW coupling service.
+```text
+run 35291325119
+job 105434578628
+head fc8f750fa900beb083849b0100db6e510e66e190
+conclusion success
+```
+
+The live transient NPF+STO+API envelope demonstrated:
+
+- exactly one `prepare_solve` for the coupled window;
+- a fixed `XOLD` through all external nonlinear iterations;
+- evolving current `X`;
+- real F-GC34 HCOF/RHS republishing between successive `solve` calls;
+- MODFLOW convergence under the final external response;
+- exactly one `finalize_solve`;
+- zero backend calls to `finalize_time_step`;
+- explicit fail-closed enforcement of the live IMS `MXITER` value before another XMI `solve` call.
+
+The A→B→C path and an independent fresh C-only kernel started from identical accepted `XOLD` and converged to:
+
+```text
+iterative: [0.9, 0.6072738889883155, 0.2]
+clean:     [0.9, 0.6072738893643476, 0.2]
+max |dH| = 3.7603209435133067e-10 m
+```
+
+Both final-response paths were additionally continued until their successive head changes were below approximately `5e-13 m`.
+
+For comparison of two independent nonlinear iteration paths, the qualified numerical equivalence tolerance is:
+
+```text
+sqrt(machine_epsilon_float64) * max(1 m, head scale)
+= 1.4901161193847656e-08 m for this case
+```
+
+The measured path spread is about forty times smaller than this threshold.
+
+This tolerance is a numerical-equivalence criterion for independently converged nonlinear paths; it is not a hydrological accuracy tolerance.
+
+## 11. Qualification history and rejected alternatives
+
+The qualification retained the following failed experiments as evidence:
+
+1. An initial overly tight direct path-equality threshold exposed the measurable `3.76e-10 m` nonlinear-path spread.
+2. Continuing both final-response paths beyond MODFLOW's first convergence flag showed stabilization below `5e-13 m`, while the same `3.76e-10 m` inter-path spread remained.
+3. Extremely strict IMS head/residual criteria caused an out-of-envelope repeated-XMI-solve route and exposed that external callers must respect MODFLOW `MXITER`.
+4. After adding the live `MXITER` guard, the same overly strict criteria failed normally instead of overrunning the solver.
+5. An isolated `rclose=1e-12` experiment proved unsuitable for this live case because a fresh C-only kernel did not report convergence inside the allowed outer-iteration budget.
+
+These rejected variants are not production requirements.
+
+The admitted envelope uses the normal convergent IMS settings from the live reference case plus the explicit `MXITER` guard.
+
+## 12. Remaining failure/retry boundary
+
+F-GC38 does not prove whole-window rollback after an abandoned prepared solve.
+
+If coupling fails before accepted timestep publication:
+
+- the prepared-solve session is invalid;
+- it must not be reused as accepted groundwater state;
+- a retry with a smaller whole coupling window requires a separately qualified reconstruction/restart route.
+
+This does not affect repeated nonlinear coupling iterations inside a successful prepared solve; those are the intended MODFLOW XMI usage and are now qualified.
+
+## 13. Next bounded step
+
+Reconcile F-GC37's groundwater-participant abstraction against this qualified backend:
+
+- replace the per-outer-iteration rollback-able groundwater-candidate model with one prepared MODFLOW solve session;
+- treat fixed `XOLD` as the accepted previous-time groundwater origin;
+- treat `X` as the evolving groundwater nonlinear iterate;
+- retain transactional same-origin SWAP correctors;
+- retain whole-window failure/retry as a separate restart concern;
+- keep predictor/corrector ownership entirely below iMOD Coupler.
+
+Only after that reconciliation should the real internal SWAP5–MODFLOW coupling service be materialized.
 
 
 ## 11. Qualified live evidence
