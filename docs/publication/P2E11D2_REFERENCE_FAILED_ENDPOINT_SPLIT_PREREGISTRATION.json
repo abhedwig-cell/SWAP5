@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.publication.p2e11d2-reference-failed-endpoint-split.v1",
+  "workunit": "PUB-P2E11D2",
+  "phase": "PREREGISTERED_REFERENCE_ONLY_FAILED_ENDPOINT_SPLIT",
+  "parent_diagnostic_result_commit": "cefbd79c0c1515458de7457e62c4214993b06632",
+  "purpose": "Split every P2E11D FAILED_OR_ENDPOINT_INVALID observation into raw Reference solver/status failure, native residual-gate failure, or exact common-domain endpoint predicate failure, without changing the solver, tolerance, cases or candidate firewall.",
+  "matrix_identity": "Exactly the P2E11D 30-material x 3 Se x 2 forcing x 5 temporal-level Reference-only replay.",
+  "endpoint_predicates": [
+    "candidate state shape/availability",
+    "finite pressure head and water content",
+    "pressure head strictly inside frozen RossFast E0 head envelope",
+    "water content strictly between material theta_r and theta_s"
+  ],
+  "raw_solver_checks": [
+    "soil_water_solve_result status",
+    "diagnostic route",
+    "retry flag",
+    "native balance-rate availability/value",
+    "integrated balance residual availability/value"
+  ],
+  "decision_rule": {
+    "common_endpoint_case": "If the central 0.0064 failures are converged Reference solutions rejected only by a frozen common-domain endpoint predicate, classify the extension block as a common-domain boundary rather than a Reference nonlinear failure.",
+    "reference_solver_case": "If they are raw Reference failures or residual-gate failures, retain the Reference-validity interpretation and do not widen the solver domain.",
+    "no_automatic_domain_widening": true
+  },
+  "firewall": {
+    "rossfast_solver_execution_allowed": false,
+    "rossfast_extension_discrepancy_inspection_allowed": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "endpoint_predicate_change_allowed": false,
+    "case_removal_allowed": false
+  },
+  "verdict": "PREREGISTERED_FAILED_ENDPOINT_SPLIT_READY"
+}
