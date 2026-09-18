@@ -2,23 +2,23 @@
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-18",
   "canonical_basis": "12beef3e91f90f88b101c13af72cd216bccc63e3",
-  "scientific_scope": "E1-E6 closed/bounded; M1/M1-C3 closed; E7 standalone selection frozen before coupled output; coupled execution pending",
+  "scientific_scope": "E1-E7 closed/bounded; E7 closes as REALISTIC_COMPONENT_DOMAIN_LIMIT before process-complete groundwater coupling",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
-      "blob": "640cf6a9aaf939b1180dee29388a9ae005d5932b"
+      "blob": "ef6e698ffc8c9331377a707a3b2e6213eaae7d6e"
     },
     "claim_ledger": {
       "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
-      "blob": "f8f8092f370594fed14a863fd8989817d61b89e1"
+      "blob": "98bbbcb2b74b64aeac0cc86cba15825659ee5ee4"
     },
     "tables": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
-      "blob": "1aa40d72f925617f263569461bba29ea7386dbfb"
+      "blob": "15e99970f8b335cac5c373f48459ce07e77923bb"
     },
     "figure_manifest": {
       "path": "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
-      "blob": "7a062218977dc4a39a5028f287daf610f6156b8a"
+      "blob": "2b48f61edb235c50aeff1c1f8c8935372d0855a1"
     },
     "figure_generator": {
       "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "568e0c5d34366708bac0f19a9f2e0cfaaf4c2d14"
+      "blob": "8a3bb9596b207ed227726c762e5c57fe2112268b"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -38,7 +38,19 @@
     },
     "supplement": {
       "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
-      "blob": "1cc4e895b93fca00c95507db01ad6b21eda84c41"
+      "blob": "275d1202c7460e3c0cf25e409cba292e4c07088a"
+    },
+    "e7_case_selection": {
+      "path": "docs/publication/PUB_GC_E7_CASE_SELECTION.md",
+      "blob": "59192a322de901ca29beda7439e250fce5b57639"
+    },
+    "e7_result": {
+      "path": "docs/publication/PUB_GC_E7_RESULT.json",
+      "blob": "9d29dae81045740426156314976e51038a0cd20a"
+    },
+    "e7_application_requirements": {
+      "path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+      "blob": "c83599866d8fce324bb9b8a3b2719e264419082f"
     }
   },
   "evidence": {
@@ -114,7 +126,7 @@
     }
   },
   "E7": {
-    "status": "STANDALONE_SELECTION_FROZEN_COUPLED_EXECUTION_PENDING",
+    "status": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "preregistration": {
       "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
       "blob": "27b73be6988d3308ddafc58a44fb628863d6bd77"
@@ -129,6 +141,8 @@
     "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "exact_distribution_size_bytes": 8959314,
     "selection": {
+      "admission_pr": 325,
+      "merge_commit": "080c24be1fd352d390647c832d215833e1ae3df2",
       "result_path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
       "selected_days_path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
       "median_dynamics_control": "2003-06-17",
@@ -137,12 +151,36 @@
       "scored_days_sha256": "016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e",
       "coupled_output_observed_before_freeze": false
     },
-    "groundwater_fallback": {
-      "model": "qualified F-GC44 1x1x3 conceptual MODFLOW6 fixture",
-      "calibrated_to_e7": false,
-      "interpretation": "real-forcing hydrological demonstration, not regional Hupsel groundwater validation"
+    "result": {
+      "path": "docs/publication/PUB_GC_E7_RESULT.json",
+      "blob": "9d29dae81045740426156314976e51038a0cd20a",
+      "classification": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+      "process_complete_groundwater_owner_initialized": false,
+      "fgc49d_context_materialized": false,
+      "modflow6_timestep_executed": false,
+      "loose_coupling_result_generated": false,
+      "strong_coupling_result_generated": false,
+      "interface_mass_published": false
     },
-    "next_permitted_action": "Execute preregistered loose/sequential and production-strong E7 coupling for only the two frozen dates."
+    "qualification": {
+      "static_gate": {
+        "workflow_run": 35375158694,
+        "job": 105698010382,
+        "conclusion": "success"
+      },
+      "production_owner_gate": {
+        "workflow_run": 35375158471,
+        "job": 105698009081,
+        "conclusion": "success",
+        "optimization": [
+          "O0",
+          "O2"
+        ],
+        "output_identity": "PASS"
+      }
+    },
+    "interpretation": "Authentic selected Hupsel crop/root and drainage composition is outside the admitted production prescribed-head groundwater-owner profile. This is component/application-domain evidence, not outer-coupling divergence or regional Hupsel groundwater validation.",
+    "future_boundary": "A future independently admitted process-complete groundwater owner would create new evidence; it does not reopen the closed E7 experiment."
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E6 package on this branch; final archival release/DOI remains a later submission task."
+  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package. E7 is closed by a preregistered component-domain outcome; final archival release/DOI remains a later submission task."
 }
