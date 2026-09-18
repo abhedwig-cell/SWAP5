@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "M1-C3",
+  "phase": "ACQUIRE_EXACT_MATERIALIZATION",
+  "verdict": "PASS_EXACT_DISTRIBUTION_RECOVERED",
+  "authority": {
+    "filename_is_nonsemantic": true,
+    "observed_uploaded_filename": "SWAP_4.3.1(5).zip",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "hupsel_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+  },
+  "decision": "The prior filename-specific recovery blocker is superseded. Numeric suffixes such as (5) or (6) are duplicate-upload names only; byte identity is authoritative.",
+  "reused_evidence": ["F-PE19 exact B0-to-B1.11 full replay PASS","M1_C3_B1_11_IDENTITY_BASELINE_ACQUIRE_PASS.json","M1_C3_B1_11_APPLICATION_TRACE_PREREGISTRATION.json"],
+  "mutations": {"production_source":"NONE","reference_source":"NONE","physics":"NONE","solver_policy":"NONE","timestep_policy":"NONE","tolerances":"NONE","legacy_semantics":"NONE","qualification_infrastructure_only":true},
+  "m1_c3_closed": false,
+  "m1_overall_closed": false,
+  "next_permitted_action": "Reconstruct exact B1.11 from the recovered admitted distribution and execute the six frozen observation intervals; require normalized result.bal/result.blc noninterference before narrowing uncovered routes."
+}
