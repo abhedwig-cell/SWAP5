@@ -36,8 +36,8 @@ EXCLUDED_NOVELTY
 | GC-C05 | q_bot, q_u and accepted whole-window transfer are physically distinct quantities that must not be silently aliased. | MetaSWAP/HYDRUS-MODFLOW provide strong hydrological prior art; distinction itself must be physically demonstrated for SWAP. | F-GC30/F-GC44 plus PUB-GC E1: q_bot=1e-6 cm/day, q_u=-9.65885e-7 cm/day; accepted rate/ledger amount identity closes in the restricted real case | Repeat under contrasting non-equilibrium states and active-process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C06 | Rejected predictor/corrector calculations contribute zero authoritative interface mass. | Rollback exists generically; explicit hydrological mass-authority semantics are candidate contribution. | F-GC41 deterministic failure injection plus PUB-GC E2 real trial/discard/prepublication-abort probes | Add restart/durability evidence and broader process envelopes. | SUPPORTED_RESTRICTED |
 | GC-C07 | Accepted interface mass is published exactly once after all preflights pass. | Exactly-once scientific exchange is not a new generic transaction concept; hydrological application requires evidence. | F-GC41–F-GC44 plus PUB-GC E2 publication-order trace and accepted ledger identity | Add restart/durability evidence and combined-system closure in broader cases. | SUPPORTED_RESTRICTED |
-| GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 | Compare finite-difference, analytic and black-box response variants on the same accepted origins. | SUPPORTED_ARCHITECTURE |
-| GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | Response infrastructure exists | Direct u_FD vs J_S vs J_R characterization; derivative plateau, linearity radius and balance closure. | HYPOTHESIS |
+| GC-C08 | A finite-window SWAP response can be exposed without exposing the internal Richards Jacobian or timestep controller. | Interface Jacobian/derivative exposure is established in FMI and co-simulation. | F-GC30/F-GC33/F-GC39/F-GC44 plus PUB-GC E4: u_A agrees with an independent pure-bottom finite-difference response without exposing the internal Richards Jacobian or timestep sequence. | Black-box learned response is compared separately in E5. | SUPPORTED_RESTRICTED |
+| GC-C09 | F-GC30/F-GC44 response information has a clear physical relation to storage response J_S and actual exchange response J_R. | Dynamic storage response is established in MetaSWAP and transient-specific-yield literature. | PUB-GC E4: u_A matches pure-bottom u_FD; low-flux J_S≈-J_R≈u_A in magnitude; B3 head-driven response is 8.1% stronger; B5 has no symmetric J_R domain. | Treat u_A as a finite-window flux-driven predictor response, not a universal head-to-exchange Jacobian. A later J_B!=0 case may further separate storage and interface interpretations. | SUPPORTED_RESTRICTED |
 | GC-C10 | Supplied finite-window response can reduce total coupling work beyond strong black-box multisecant learning in identifiable regimes. | IQN/Anderson, history reuse and surrogate-assisted QN are strong prior art. | No decisive publication result yet | Oracle vs IQN cold/warm, acquisition-cost accounting, regime/generalization tests. | HYPOTHESIS |
 | GC-C11 | A weak-coupling regime exists in which sophisticated acceleration is unnecessary for materially changing groundwater head, even when strict interface closure benefits from iteration. | Schüller et al. 2025 makes this a serious null hypothesis, not novelty. | PUB-GC E3 plus E3-R: low-flux and 30–100x higher admitted-flux cases achieve strict closure in 2–5 iterations while loose-to-iterative head corrections remain at most 5.55e-9 m in the original fixture and 1.83e-9 m in the zero-gradient refinement. | Generalize beyond the current near-equilibrium state; the next positive case must change admitted hydrological state or groundwater-response geometry rather than relax coupling tolerances. | SUPPORTED_RESTRICTED |
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
@@ -241,3 +241,24 @@ E3-R stronger-feedback result:
 E3-R machine-readable result summary:
 
 `PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.json`
+
+
+## E4 publication evidence
+
+Preregistration:
+
+`PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md`
+
+Result narrative:
+
+`PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md`
+
+Machine-readable result:
+
+`PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json`
+
+Publication table:
+
+`PUB_GC_E4_RESPONSE_IDENTITY_TABLE.csv`
+
+E4 resolves `u_A` as a flux-driven finite-window predictor response and explicitly falsifies the broader assumption that it is automatically identical to the head-driven interface Jacobian `J_R`.
