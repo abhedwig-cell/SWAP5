@@ -89,13 +89,15 @@ Start with:
 - [PUB-GC / COUPLE claim-evidence ledger](publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md)
 - [PUB-GC E1/E2 preregistration](publication/PUB_GC_E1_E2_PREREGISTRATION.md)
 - [PUB-GC E1/E2 results](publication/PUB_GC_E1_E2_RESULT.md)
+- [PUB-GC E4 response identity](publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md)
+- [PUB-GC E5 information value](publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.md)
 - [Paper 1: model evolution research design](publication/PAPER1_MODEL_EVOLUTION_RESEARCH_DESIGN.md)
 - [Paper 2: solver admissibility research design](publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md)
 - [PUB-RC / ACCELERATE research design](publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md)
 - [PUB-RC / ACCELERATE literature and prior-art register](publication/PUB_RC_ACCELERATE_LITERATURE_REGISTER.md)
 - [PUB-GC/PUB-RC broader publishability review](publication/PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md)
 
-The publication programme records the current firewall between PUB-GC / COUPLE, PUB-SG / SCALE and the conditional PUB-RC / ACCELERATE line.
+The publication programme records the current firewall between PUB-GC / COUPLE and PUB-SG / SCALE. The E4/E5 ACCELERATE experiment is retained inside PUB-GC; the current independent PUB-RC line is not admitted.
 
 ## Documentation maintenance
 
