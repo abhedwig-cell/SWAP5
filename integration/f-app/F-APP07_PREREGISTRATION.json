@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "F-APP07",
+  "title": "Restricted Hupsel TCS1+DCS2 sprinkling irrigation typed process and composition",
+  "protocol": "RECONCILE -> IMPLEMENT -> QUALIFY -> ADMIT -> CLOSE",
+  "branch": "work/f-app07-hupsel-tcs1-dcs2-irrigation",
+  "base": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
+  "trigger": "M1-C3 exact B1.11 whole-run trace identified 110 active irrigation intervals and exact daily source instrumentation identified one fixed surface event plus three scheduled TCS1/DCS2 sprinkling events.",
+  "authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "irrigation_f90_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "potato_crop_file": "potato.crp",
+    "legacy_source_lines": {
+      "outer_gate": "irrigation.f90:437-455",
+      "tcs1": "irrigation.f90:472-484",
+      "tcsfix": "irrigation.f90:551-562",
+      "dcs2": "irrigation.f90:577-581",
+      "rate": "irrigation.f90:596-625"
+    }
+  },
+  "admitted_candidate_envelope": {
+    "scheduled_selector": "TCS=1, DCS=2, TCSFIX=1, ISUAS=0",
+    "TREL": "explicit finite 2..7-knot AFGEN table; Hupsel is [0,0.85],[2,0.85]",
+    "Tred": "1-(iqreddry_day+iqredsol_day)/iptra_day when iptra_day>1e-10, else 1",
+    "trigger": "Tred < AFGEN(TREL,DVS)",
+    "interval_gate": "legacy dayfix >= IRGDAYFIX; accepted trigger resets dayfix=1; suppressed opportunities increment while below the minimum",
+    "DCS2": "depth_cm = 0.1*AFGEN(FID_mm,DVS), translated to cm at the typed boundary",
+    "Hupsel_depth_cm": 2,
+    "Hupsel_rate_cm_per_day": 36,
+    "event_duration_day": 0.05555555555555555,
+    "application": "sprinkling/surface gross rate, not SSDI"
+  },
+  "frozen_Hupsel_events": [
+    {
+      "date": "2003-08-07",
+      "dvs": 1.3505714285714288,
+      "iptra": 0.5471354589029818,
+      "iqreddry": 0.2123937335777891,
+      "Tred": 0.6118077705955248
+    },
+    {
+      "date": "2003-08-14",
+      "dvs": 1.4235476190476193,
+      "iptra": 0.40396776352969294,
+      "iqreddry": 0.14829717147207683,
+      "Tred": 0.6328985011667236
+    },
+    {
+      "date": "2003-08-26",
+      "dvs": 1.5060476190476193,
+      "iptra": 0.31534971046284993,
+      "iqreddry": 0.11551480616973946,
+      "Tred": 0.633693000700098
+    }
+  ],
+  "frozen_suppressed_gate": {
+    "date": "2003-08-13",
+    "pre_dayfix": 6,
+    "post_dayfix": 7,
+    "dvs": 1.4145952380952382,
+    "Tred": 0.6795233425677962,
+    "raw_stress_trigger": true,
+    "applied": false
+  },
+  "fixed_event_dependency": "Reuse F-PM03/F-VQ18 fixed-event process science; do not reimplement fixed-event selection in this candidate.",
+  "planned_composition_after_F_APP05": "Feed admitted gross scheduled/fixed surface irrigation to F-APP05 Rutter when SWINTER=3 and bind Rutter net_surface_irrigation to the existing dynamic-top irrigation field; use identity gross->net for SWINTER=0. No parallel solver/runtime.",
+  "exclusions": [
+    "TCS2-TCS4",
+    "TCS6-TCS8",
+    "DCS1",
+    "multi-node SSDI",
+    "surface scheduled variants outside ISUAS=0",
+    "rainfall reduction for DCS1",
+    "DCSLIM",
+    "solute over-irrigation",
+    "zero-rate fallback",
+    ">1 day rate adaptation",
+    "MultiSWAP task=4 scaling",
+    "legacy file parser migration in the process module"
+  ],
+  "m1_c3_closed": false
+}
