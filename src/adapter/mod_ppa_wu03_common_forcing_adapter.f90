@@ -105,10 +105,10 @@ contains
     if (input%forcing_t0 > input%interval%t0 .or. input%forcing_t1 < input%interval%t1) return
     diagnostics%forcing_covers_interval = .true.
 
-    if (.not. ieee_is_finite(input%precipitation_rate_cm_per_day) .or. &
-        input%precipitation_rate_cm_per_day < 0.0_real64) return
-    if (.not. ieee_is_finite(input%surface_irrigation_rate_cm_per_day) .or. &
-        input%surface_irrigation_rate_cm_per_day < 0.0_real64) return
+    if (.not. ieee_is_finite(input%precipitation_rate_cm_per_day)) return
+    if (input%precipitation_rate_cm_per_day < 0.0_real64) return
+    if (.not. ieee_is_finite(input%surface_irrigation_rate_cm_per_day)) return
+    if (input%surface_irrigation_rate_cm_per_day < 0.0_real64) return
     if (config%irrigation_mode == PPA_WU03_IRRIGATION_NONE .and. &
         input%surface_irrigation_rate_cm_per_day /= 0.0_real64) then
       diagnostics%status = PPA_WU03_UNSUPPORTED_IRRIGATION
@@ -117,8 +117,8 @@ contains
 
     ! Snowmelt and runon are separate ingestion slices.  They are never
     ! silently inherited from the caller's base request in this WU03 slice.
-    if (.not. ieee_is_finite(base_top_request%snowmelt_rate_cm_per_day) .or. &
-        .not. ieee_is_finite(base_top_request%runon_rate_cm_per_day)) return
+    if (.not. ieee_is_finite(base_top_request%snowmelt_rate_cm_per_day)) return
+    if (.not. ieee_is_finite(base_top_request%runon_rate_cm_per_day)) return
     if (base_top_request%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
         base_top_request%runon_rate_cm_per_day /= 0.0_real64) return
 
@@ -163,6 +163,8 @@ contains
     if (top_result%status /= B110_DYN_TOP_AVAILABLE) return
     if (top_result%regime /= B110_DYN_TOP_REGIME_FLUX) return
     if (.not. ieee_is_finite(top_result%actual_top_flux_cm_per_day)) return
+    if (.not. ieee_is_finite(top_result%candidate_ponding_depth_cm)) return
+    if (.not. ieee_is_finite(top_result%runoff_depth_cm)) return
     if (top_result%runoff_potential) return
     if (top_result%candidate_ponding_depth_cm /= 0.0_real64) return
     if (top_result%runoff_depth_cm /= 0.0_real64) return
