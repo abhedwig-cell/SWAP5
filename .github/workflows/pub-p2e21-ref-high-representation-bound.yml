@@ -1,0 +1,25 @@
+name: PUB-P2E21 representation-bounded REF-HIGH
+
+on:
+  push:
+    branches:
+      - work/pub-p2e21-ref-high-representation-bound
+    paths:
+      - 'docs/publication/P2E21_REF_HIGH_REPRESENTATION_BOUND_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e21_ref_high_representation_bound.f90'
+      - 'tests/publication/run_pub_p2e21_ref_high_representation_bound.sh'
+      - '.github/workflows/pub-p2e21-ref-high-representation-bound.yml'
+  workflow_dispatch:
+
+jobs:
+  representation-bounded-ref-high:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Execute preregistered representation-bounded REF-HIGH qualification
+        run: bash tests/publication/run_pub_p2e21_ref_high_representation_bound.sh
