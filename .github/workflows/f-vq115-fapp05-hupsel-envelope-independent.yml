@@ -1,0 +1,28 @@
+name: F-VQ115 F-APP05 Hupsel envelope independent
+on:
+  push:
+    branches: [qualification/f-vq115-fapp05-hupsel-envelope-independent]
+  pull_request:
+    paths:
+      - 'tests/fvq/test_fvq115_fapp05_hupsel_envelope_independent.f90'
+      - '.github/workflows/f-vq115-fapp05-hupsel-envelope-independent.yml'
+      - 'src/process/mod_pmdirect_swetr0_process.f90'
+      - 'src/process/mod_rutter_interception_process.f90'
+jobs:
+  independent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Frozen exact-legacy observation qualification O0
+        run: |
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O0 \
+            src/process/mod_pmdirect_swetr0_process.f90 src/process/mod_rutter_interception_process.f90 \
+            tests/fvq/test_fvq115_fapp05_hupsel_envelope_independent.f90 -o fvq115_o0
+          ./fvq115_o0 | tee o0.txt
+      - name: Frozen exact-legacy observation qualification O2
+        run: |
+          gfortran -std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -O2 \
+            src/process/mod_pmdirect_swetr0_process.f90 src/process/mod_rutter_interception_process.f90 \
+            tests/fvq/test_fvq115_fapp05_hupsel_envelope_independent.f90 -o fvq115_o2
+          ./fvq115_o2 | tee o2.txt
+      - run: cmp o0.txt o2.txt
