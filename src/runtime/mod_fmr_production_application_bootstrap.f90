@@ -41,10 +41,10 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_CONTEXT_FAILED = 9
   integer, parameter, public :: FMR_APP_BOOT_RUNTIME_FAILED = 10
 
-  ! WU01 intentionally admits one narrow bootstrap profile only:
-  ! Reference Richards + serialized FMR + explicit typed forcing + prescribed
-  ! groundwater head at the bottom. Atmospheric/file/calendar composition is
-  ! explicitly deferred to WU03.
+  ! WU01 intentionally admits only existing serialized Reference profiles:
+  ! bottom_mode=7 for the already-qualified standalone runtime and bottom_mode=5
+  ! for the already-admitted prescribed-groundwater-head participant route.
+  ! Atmospheric/file/calendar composition is explicitly deferred to WU03.
   type, public :: fmr_production_application_tile_config_t
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
@@ -263,6 +263,9 @@ contains
     status = FMR_APP_BOOT_NOT_READY
     if (.not. self%ready()) return
 
+    status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if (any(self%parameters%bottom_mode /= 5)) return
+
     if (associated(self%active_context)) then
       call retire_active_context(self, local_status)
       if (local_status /= FMR_APP_BOOT_OK) then
@@ -424,7 +427,7 @@ contains
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
-    if (tile%parameters%bottom_mode /= 5) return
+    if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7) return
 
     ! WU01 is intentionally a no-new-physics owner. Broader already-admitted
     ! process composition is layered later, rather than silently widening this
