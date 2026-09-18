@@ -63,3 +63,12 @@ For the intended broader hydrological-method framing, E7 materially strengthens 
 If the M1-C3 external asset gate remains unavailable at the submission decision, the existing E1–E6 manuscript is still internally coherent, but it must be framed explicitly as a **bounded coupling-method and qualification study** rather than a realistic-application validation paper. No claim may imply that RQ5 was answered.
 
 E8 should not be started merely to compensate for a blocked E7.
+
+
+## Journal-facing prose state
+
+The scientific body has completed a repository-jargon cleanup. Internal F-GC/FMR/PUB-GC identifiers are no longer required to follow the journal-facing argument; exact identifiers remain in the evidence layer after the References section.
+
+Audit: `PUB_GC_SUBMISSION_PROSE_AUDIT.md`.
+
+This is an editorial cleanup only and does not change the claim/evidence state.
