@@ -4,8 +4,8 @@
   "capability": "F-GC34",
   "title": "MODFLOW6 Typed API Binding Canonical Admission",
   "protocol": "Bounded Execution Protocol",
-  "phase": "ADMIT",
-  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "phase": "CLOSE",
+  "verdict": "CANONICALLY_ADMITTED_PENDING_CLOSEOUT_QUALIFICATION",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "pre_admission_head": "0372b44157747dc90fa690810f57e373e670373b",
@@ -53,7 +53,7 @@
     "Ribasim",
     "irrigation"
   ],
-  "next_permitted_action": "Qualify this exact F-CI101 status head. If green and integration/f-ci-canonical remains at the recorded pre-admission head, non-force fast-forward canonical to this status head. If canonical moved, reconcile only the relevant delta before promotion.",
+  "next_permitted_action": "Qualify this metadata-only F-GC34 admission/closeout head with F-CI101. If green, persist final closeout-gate evidence, requalify the final status head, then non-force fast-forward canonical to the closed metadata state.",
   "admission_gate": {
     "qualified_head": "9dcbcc284e823f00421c2858223ee57511d472e6",
     "workflow_run": 35293855850,
@@ -70,5 +70,12 @@
       "FCI101_OWNER_REPLAY",
       "FCI101_INDEPENDENT_REPLAY"
     ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35293917435,
+    "exact_status_head_job": 105442385771,
+    "exact_status_head_conclusion": "success"
   }
 }

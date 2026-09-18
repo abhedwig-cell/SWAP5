@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_MODFLOW6_TYPED_API_BINDING",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "0372b44157747dc90fa690810f57e373e670373b"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI101",
+    "gate_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "initial_gate_head": "9dcbcc284e823f00421c2858223ee57511d472e6",
+    "initial_gate_run": 35293855850,
+    "initial_gate_job": 105442212609,
+    "status_head_run": 35293917435,
+    "status_head_job": 105442385771,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ108",
+    "status_head": "db4d82d28c5e954ff35f396724d751d1d6f00e8e",
+    "final_green_run": 35293720666,
+    "final_green_job": 105441814157,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "dependency_authority": {
+    "upstream": "F-GC33",
+    "upstream_verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_LINEAR_RESPONSE_BACKEND"
+  },
+  "admitted_production_blobs": {
+    "src/runtime/mod_modflow6_api_binding.f90": "780ed4bf3a8bdf067db40f4aedd800832144eca6"
+  },
+  "admitted_contract": [
+    "groundwater_cell_id, package_slot and modflow_node_id are explicit independent identities",
+    "bindings publish canonical F-GC33 HCOF/RHS terms into NODELIST/HCOF/RHS active package slots and then NBOUND",
+    "matching is by groundwater_cell_id, not caller order",
+    "validation is complete before first write and all failures are no-write",
+    "distinct coupling cells may explicitly share a MODFLOW node without coefficient collapsing",
+    "inactive package tail remains untouched"
+  ],
+  "exclusions": [
+    "XMI address discovery or pointer acquisition",
+    "MODFLOW6 initialize/prepare/solve/finalize",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Close F-GC34 metadata-only, then proceed to the separately bounded XMI pointer/timing adapter from current canonical."
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "PENDING_METADATA_CLOSEOUT_QUALIFICATION",
+  "canonical_admission": {
+    "production_admission_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "preimage": "0372b44157747dc90fa690810f57e373e670373b",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "historical F-GC34 was rematerialized on closed canonical F-GC33; production blob remained byte-identical and provisional MultiSWAP F-GC31 references were superseded by canonical F-GC40/F-GC33 authority"
+    },
+    "QUALIFY": {
+      "owner_checkpoint": "2bc4ccb1cbedde8af60cd8390799373ed4310cb1",
+      "exact_head_run": 35293513488,
+      "exact_head_job": 105441215673,
+      "result": "current-canonical owner gate passed under O0/O2 with output identity"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ108",
+      "final_status_head": "db4d82d28c5e954ff35f396724d751d1d6f00e8e",
+      "exact_head_run": 35293720666,
+      "exact_head_job": 105441814157,
+      "result": "independent three-binding permutation/shadow, identity, N:1 node, tail and atomic-rejection oracles passed; production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI101",
+      "production_admission_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+      "initial_gate_run": 35293855850,
+      "exact_status_head_run": 35293917435,
+      "result": "exact one-production-file postimage replayed owner and independent qualification and was non-force fast-forwarded to canonical"
+    }
+  },
+  "admitted_capability": [
+    "typed explicit coupling-cell/package-slot/MODFLOW-node mapping",
+    "atomic NODELIST/HCOF/RHS/NBOUND publication",
+    "order-independent term matching",
+    "N:1 node preservation without coefficient collapse",
+    "fail-closed package-memory mutation"
+  ],
+  "preserved_limits": [
+    "no XMI pointer acquisition",
+    "no MODFLOW solve lifecycle ownership",
+    "no predictor/corrector orchestration",
+    "no SWAP commit ownership",
+    "no Ribasim or irrigation"
+  ],
+  "next_permitted_action": "After closeout qualification, proceed to a separate current-canonical XMI pointer/timing adapter workunit. Do not reopen F-GC34 to take MODFLOW solve orchestration ownership."
+}
