@@ -39,11 +39,11 @@ These concerns become more important when independently developed models are cou
 
 ## 1.2 Existing coupling approaches provide important but incomplete precedents
 
-Bidirectional vadose-zone–groundwater coupling is well established. HYDRUS-based MODFLOW packages have used repeated feedback between groundwater head and Richards-equation vadose-zone flow (Twarakavi et al., 2008; Zeng et al., 2019). SIMGRO/MetaSWAP uses shared hydrological state and dynamic storage relations to couple unsaturated and saturated response (van Walsum & Veldhuizen, 2011). More recent integrated-model developments likewise demonstrate that cross-component hydrological coupling and large-scale composition are established modelling problems rather than new ideas in themselves (Bailey et al., 2025; Abbaszadeh et al., 2025; Yang et al., 2026).
+Bidirectional vadose-zone–groundwater coupling is well established. HYDRUS-based MODFLOW packages have used repeated feedback between groundwater head and Richards-equation vadose-zone flow (Twarakavi et al., 2008; Zeng et al., 2019). SIMGRO/MetaSWAP uses shared hydrological state and dynamic storage relations to couple unsaturated and saturated response (van Walsum & Veldhuizen, 2011), while transient shallow-water-table specific yield is itself time- and depth-dependent hydrological behaviour (Nachabe, 2002). More recent integrated-model developments likewise demonstrate that cross-component hydrological coupling and large-scale composition are established modelling problems rather than new ideas in themselves (Bailey et al., 2025; Abbaszadeh et al., 2025; Yang et al., 2026).
 
-Generic modelling and interoperability frameworks address another part of the problem. OpenMI provides formal exchange and temporal/spatial mapping concepts for independently developed environmental models (Buahin & Horsburgh, 2018), while the MODFLOW6 application-programming interface permits external control of simulation state and nonlinear solution without source-code fusion (Hughes et al., 2022). FMI provides analogous component-state and co-simulation concepts at a general systems level.
+Generic modelling and interoperability frameworks address another part of the problem. OpenMI provides formal exchange and temporal/spatial mapping concepts for independently developed environmental models (Buahin & Horsburgh, 2018), while the MODFLOW6 application-programming interface permits external control of simulation state and nonlinear solution without source-code fusion (Hughes et al., 2022). Recent SUMMA refactoring work likewise frames fine-grained initialize–update–finalize modularity as a route to hydrologic component reuse and interoperability (Trim et al., 2025). FMI provides analogous component-state and co-simulation concepts at a general systems level (Modelica Association Project FMI, 2024).
 
-Partitioned multiphysics literature supplies a third set of precedents. Fixed-point iteration, Aitken relaxation, interface quasi-Newton methods, interface-Jacobian approaches and waveform iteration are established tools for accelerating coupled nonlinear systems (Degroote et al., 2010; Sicklinger et al., 2014; Rüth et al., 2021). Recent analysis of surface–subsurface iteration also shows that convergence behaviour depends on the response of both coupled subsystems and cannot be inferred from one model alone (Schüller et al., 2025).
+Partitioned multiphysics literature supplies a third set of precedents. Fixed-point iteration, Aitken relaxation, interface quasi-Newton methods, interface-Jacobian approaches and waveform iteration are established tools for accelerating coupled nonlinear systems (Degroote et al., 2010; Sicklinger et al., 2014; Rüth et al., 2021). Surrogate or previously available response information has likewise been used to initialize or accelerate black-box quasi-Newton coupling (Delaissé et al., 2022). Recent analysis of surface–subsurface iteration also shows that convergence behaviour depends on the response of both coupled subsystems and cannot be inferred from one model alone (Schüller et al., 2025).
 
 These precedents remove several broad novelty claims. Solver autonomy, rollback, iterative coupling, dynamic storage response, interface derivatives and multirate finite-window iteration are not individually new. The scientific question addressed here is narrower: whether these ingredients can be assembled into a hydrologically explicit contract in which physical exchange meaning, finite-window component response, model-state authority and interface mass authority remain simultaneously testable while the two models retain numerical ownership.
 ## 1.3 The coupling gap addressed here
@@ -161,6 +161,10 @@ The coupling service owns:
 
 This separation is a design requirement. The coupler is not allowed to reimplement SWAP-specific timestep, retry or Richards-solver logic.
 
+![Figure F1 — solver ownership, trial authority and publication boundary](figures/PUB_GC_F1_OWNERSHIP_AUTHORITY.svg)
+
+**Figure 1. Solver ownership, trial authority and publication boundary.** SWAP5 and MODFLOW6 retain component state and solver ownership. Replayed SWAP trials originate from one accepted state, while only the retained converged candidate crosses the ordered publication boundary.
+
 ## 2.2 Coupling window
 
 Coupling is defined over a finite interval
@@ -267,6 +271,10 @@ Q_u,mean = V_u / DeltaT
 but a terminal instantaneous flux is not silently substituted for the whole-window amount.
 
 This distinction is required for consistent mass accounting across retries and accepted publication.
+
+![Figure F2 — typed hydrological interface](figures/PUB_GC_F2_TYPED_HYDROLOGICAL_INTERFACE.svg)
+
+**Figure 2. Typed hydrological interface at the fixed SWAP lower boundary.** Native lower-boundary flux, groundwater-facing exchange, hydraulic head, storage and whole-window authoritative transfer are represented as distinct quantities with explicit sign, datum and time support.
 
 ## 2.5 Accepted origin and SWAP trial semantics
 
@@ -768,6 +776,10 @@ The long-window, higher-flux cases reached a different boundary. At `10^-2 day, 
 
 Taken together, E3, E3-D, E3-D2 and E3-R provide a bounded answer to RQ3. Strong iteration demonstrably improves finite-window interface closure whenever valid component candidates remain available, but the physical groundwater-head correction is negligible in the current near-equilibrium fixture. Attempts to create a stronger response through longer windows and larger fluxes encounter the SWAP predictor/corrector execution envelope before they produce a materially large head response. A positive strong-feedback case therefore requires a different admitted hydrological state or groundwater-response geometry rather than looser numerical tolerances.
 
+![Figure F3 — numerical closure versus groundwater-head correction](figures/PUB_GC_F3_CLOSURE_VS_HEAD_CORRECTION.svg)
+
+**Figure 3. Numerical interface mismatch versus physical groundwater-head correction in E3.** Valid loose-coupling cases can exceed the qualified flux-residual criterion by orders of magnitude while the strong-coupling head correction remains extremely small. Higher-flux component failures are retained as part of the evidence rather than removed from interpretation.
+
 ## 4.4 Finite-window response identity
 
 **Evidence status:** SUPPORTED_RESTRICTED by PUB-GC E4.
@@ -817,6 +829,10 @@ Thus `|J_R|/u_A = 1.08119`: the actual prescribed-head whole-window response is 
 B5 provides an even stronger distinction. A stable flux-driven response remains measurable and `u_A` agrees with `u_FD` to approximately `8.4e-8` relative discrepancy, but no symmetric local prescribed-head derivative is available within the unchanged transaction envelope, even at the smallest tested head perturbations.
 
 The response quantity exposed by the current predictor should therefore not be called a universal head-to-exchange coupling Jacobian. It is a well-defined response of the flux-driven finite-window predictor map whose suitability as a corrector linearization is regime-dependent.
+
+![Figure F4 — finite-window response identity](figures/PUB_GC_F4_RESPONSE_IDENTITY.svg)
+
+**Figure 4. Finite-window response identity.** Responses are normalized by the accepted-trajectory predictor response \(u_A\). B1, B2 and B4 nearly alias the flux-driven and head-driven magnitudes; B3 separates them by 8.1%; B5 retains \(u_A\approx u_{FD}\) but has no symmetric head-driven derivative.
 
 ## 4.5 Response information and computational value
 
@@ -883,6 +899,10 @@ The experiment therefore supports a narrower conclusion:
 
 Accordingly, ACCELERATE is retained as a result of the central coupling paper rather than progressed as a presumptive independent manuscript.
 
+![Figure F5 — information value of supplied response](figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg)
+
+**Figure 5. Computational value of supplied response information.** Full-window SWAP evaluations are shown across controlled coupling strength for the three baselines with comparable response domains. Aitken and cold secant strongly improve on plain fixed point; the supplied response and zero-cost exact local derivative generally save only one additional SWAP evaluation over cold secant.
+
 ## 4.6 Hydrological stress extension
 
 **Evidence status:** CLOSED_NEGATIVE_WITH_BOUNDARIES by PUB-GC E6.
@@ -896,6 +916,10 @@ The second route retained the prescribed-head-compatible E3 process profile and 
 For the eight predictor-ready cases, E6 then probed the symmetric prescribed-head response domain. Four cases admitted a `±10^-6 m` pair, only one admitted `±10^-5 m`, and none admitted the preregistered `±10^-4 m` pair required for progression to live E6-B coupling. The deterministic candidate count was therefore zero.
 
 The negative result is important for interpreting the earlier convergence experiments. Increasing wetness can increase the predictor response coefficient substantially, but a larger local response does not automatically produce a stronger **valid coupled problem**. In the present synthetic profile, predictor and corrector admissibility become limiting before a materially stronger live groundwater-feedback case is reached. No solver tolerance, retry budget or production physics was changed to manufacture a positive E6 result.
+
+![Figure F6 — component-admission envelope](figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg)
+
+**Figure 6. Component-admission boundaries encountered by the E6 stress extensions.** The active-drainage predictor is valid and mass-complete but not admitted under the production prescribed-head corrector profile. In the independent state/flux screen, eight predictors are valid, while higher-flux cases fail before an E6-B candidate with the preregistered symmetric head neighbourhood is available.
 
 ## 4.7 Realistic and regional behaviour
 
@@ -1015,20 +1039,21 @@ MODFLOW6 version 6.8.0 is used in the live groundwater qualification experiments
 
 # References
 
-- Abbaszadeh, P. et al. (2025). Coupling the ParFlow Integrated Hydrology Model within the NASA Land Information System: a case study over the Upper Colorado River Basin. *Hydrology and Earth System Sciences*, 29, 5429–5452. https://doi.org/10.5194/hess-29-5429-2025
+- Abbaszadeh, P., Maina, F. Z., Yang, C., Rosen, D., Kumar, S., Rodell, M., & Maxwell, R. (2025). Coupling the ParFlow Integrated Hydrology Model within the NASA Land Information System: a case study over the Upper Colorado River Basin. *Hydrology and Earth System Sciences*, 29, 5429–5452. https://doi.org/10.5194/hess-29-5429-2025
 - Bailey, R. T., Abbas, S., Arnold, J. G., & White, M. J. (2025). SWAT+MODFLOW: a new hydrologic model for simulating surface–subsurface flow in managed watersheds. *Geoscientific Model Development*, 18, 5681–5697. https://doi.org/10.5194/gmd-18-5681-2025
 - Buahin, C. A., & Horsburgh, J. S. (2018). Advancing the Open Modeling Interface (OpenMI) for integrated water resources modeling. *Environmental Modelling & Software*, 108, 133–153. https://doi.org/10.1016/j.envsoft.2018.07.015
 - Degroote, J., Haelterman, R., Annerel, S., Bruggeman, P., & Vierendeels, J. (2010). Performance of partitioned procedures in fluid–structure interaction. *Computers & Structures*, 88, 446–457. https://doi.org/10.1016/j.compstruc.2009.12.006
 - Delaissé, N., Demeester, T., Fauconnier, D., & Degroote, J. (2022). Surrogate-based acceleration of quasi-Newton techniques for fluid–structure interaction simulations. *Computers & Structures*, 260, 106720. https://doi.org/10.1016/j.compstruc.2021.106720
-- Hughes, J. D. et al. (2022). The MODFLOW Application Programming Interface for simulation control and software interoperability. *Environmental Modelling & Software*, 148, 105257. https://doi.org/10.1016/j.envsoft.2021.105257
-- Modelica Association Project FMI. *Functional Mock-up Interface Specification 3.0.2*. https://fmi-standard.org/docs/3.0.2/
+- Hughes, J. D., Russcher, M. J., Langevin, C. D., Morway, E. D., & McDonald, R. R. (2022). The MODFLOW Application Programming Interface for simulation control and software interoperability. *Environmental Modelling & Software*, 148, 105257. https://doi.org/10.1016/j.envsoft.2021.105257
+- Modelica Association Project FMI. (2024). *Functional Mock-up Interface Specification 3.0.2*. https://fmi-standard.org/docs/3.0.2/
 - Nachabe, M. H. (2002). Analytical expressions for transient specific yield and shallow water table drainage. *Water Resources Research*, 38(10), 1193. https://doi.org/10.1029/2001WR001071
 - Rüth, B., Uekermann, B., Mehl, M., Birken, P., Monge, A., & Bungartz, H.-J. (2021). Quasi-Newton waveform iteration for partitioned surface-coupled multiphysics applications. *International Journal for Numerical Methods in Engineering*, 122, 5236–5257. https://doi.org/10.1002/nme.6443
 - Schüller, V., Birken, P., & Dedner, A. (2025). Convergence properties of iteratively coupled surface-subsurface models. *GEM - International Journal on Geomathematics*, 16, 9. https://doi.org/10.1007/s13137-025-00265-4
-- Sicklinger, S. et al. (2014). Interface Jacobian-based Co-Simulation. *International Journal for Numerical Methods in Engineering*, 98, 418–444. https://doi.org/10.1002/nme.4637
-- Twarakavi, N. K. C., Simunek, J., & Seo, S. (2008). Evaluating interactions between groundwater and vadose zone using the HYDRUS-based flow package for MODFLOW. *Vadose Zone Journal*. https://doi.org/10.2136/vzj2007.0082
+- Sicklinger, S., Belsky, V., Engelmann, B., Elmqvist, H., Olsson, H., Wüchner, R., & Bletzinger, K.-U. (2014). Interface Jacobian-based Co-Simulation. *International Journal for Numerical Methods in Engineering*, 98, 418–444. https://doi.org/10.1002/nme.4637
+- Trim, S. J., Clark, M. P., Van Beusekom, A. E., Klenk, K., Knoben, W. J. M., & Spiteri, R. J. (2025). Enhancing the modularity and interoperability of hydrologic models: a demonstration with the Structure for Unifying Multiple Modeling Alternatives (SUMMA). *Environmental Modelling & Software*, 194, 106668. https://doi.org/10.1016/j.envsoft.2025.106668
+- Twarakavi, N. K. C., Šimůnek, J., & Seo, S. (2008). Evaluating interactions between groundwater and vadose zone using the HYDRUS-based flow package for MODFLOW. *Vadose Zone Journal*, 7, 757–768. https://doi.org/10.2136/vzj2007.0082
 - van Walsum, P. E. V., & Veldhuizen, A. A. (2011). Integration of models using shared state variables: implementation in the regional hydrologic modelling system SIMGRO. *Journal of Hydrology*, 409, 363–370. https://doi.org/10.1016/j.jhydrol.2011.08.036
-- Yang, C. et al. (2026). 20 years of trials and insights: bridging legacy and next generation in ParFlow and Land Surface Model Coupling. *Geoscientific Model Development*, 19, 1849–1866. https://doi.org/10.5194/gmd-19-1849-2026
+- Yang, C., Sun, A., Zhang, S., Dai, Y., Kollet, S., & Maxwell, R. (2026). 20 years of trials and insights: bridging legacy and next generation in ParFlow and Land Surface Model Coupling. *Geoscientific Model Development*, 19, 1849–1866. https://doi.org/10.5194/gmd-19-1849-2026
 - Zeng, J., Yang, J., Zha, Y., & Shi, L. (2019). Capturing soil-water and groundwater interactions with an iterative feedback coupling scheme: new HYDRUS package for MODFLOW. *Hydrology and Earth System Sciences*, 23, 637–655. https://doi.org/10.5194/hess-23-637-2019
 
 ---
