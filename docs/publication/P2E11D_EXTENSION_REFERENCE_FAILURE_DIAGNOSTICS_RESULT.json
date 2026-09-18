@@ -1,0 +1,146 @@
+{
+  "schema": "swap5.publication.p2e11d-extension-reference-failure-diagnostics-result.v1",
+  "workunit": "PUB-P2E11D",
+  "phase": "REFERENCE_ONLY_FAILURE_CLASSIFICATION_COMPLETE",
+  "parent_common_domain_result_commit": "b6cc68a8bf4ca89d53da17557deec2cb08a16683",
+  "executed_head": "3572388b63e75c4ea5c8fe077b833c8a89534e9a",
+  "authorities": {
+    "preregistration_blob": "5ecdb32f377509dd27fd03034679307831fadc3d",
+    "test_blob": "9b65410af58264751a8ffe00fdea4b53e764080b",
+    "runner_blob": "ab6e8f6098e88b98ac16af3e11085bbe993e01e1",
+    "workflow_blob": "0d78c1bd080e7ca2df1b8f5670973b89ca2e0f54"
+  },
+  "execution": {
+    "workflow_run": 35289691763,
+    "job": 105429622948,
+    "conclusion": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identical": true,
+    "o0_o2_sha256": "38dd5c19dd35893e60ad1b3186b23c6bb483a1932c8c0e23a0134f66f013fc7a"
+  },
+  "classification": {
+    "total_pairs": 900,
+    "accepted": 815,
+    "retry_total_only": 32,
+    "retry_local_balance": 17,
+    "retry_head": 0,
+    "retry_mixed": 0,
+    "retry_other": 0,
+    "failed_or_endpoint_invalid": 36,
+    "by_dt": [
+      {
+        "dt_day": 0.0016,
+        "accepted": 136,
+        "total_only": 27,
+        "local_balance": 17,
+        "head": 0,
+        "mixed": 0,
+        "retry_other": 0,
+        "failed_or_endpoint_invalid": 0
+      },
+      {
+        "dt_day": 0.0032,
+        "accepted": 173,
+        "total_only": 5,
+        "local_balance": 0,
+        "head": 0,
+        "mixed": 0,
+        "retry_other": 0,
+        "failed_or_endpoint_invalid": 2
+      },
+      {
+        "dt_day": 0.0064,
+        "accepted": 176,
+        "total_only": 0,
+        "local_balance": 0,
+        "head": 0,
+        "mixed": 0,
+        "retry_other": 0,
+        "failed_or_endpoint_invalid": 4
+      },
+      {
+        "dt_day": 0.0128,
+        "accepted": 172,
+        "total_only": 0,
+        "local_balance": 0,
+        "head": 0,
+        "mixed": 0,
+        "retry_other": 0,
+        "failed_or_endpoint_invalid": 8
+      },
+      {
+        "dt_day": 0.0256,
+        "accepted": 158,
+        "total_only": 0,
+        "local_balance": 0,
+        "head": 0,
+        "mixed": 0,
+        "retry_other": 0,
+        "failed_or_endpoint_invalid": 22
+      }
+    ]
+  },
+  "local_balance_floor": {
+    "case_count": 17,
+    "reconstruction_supported": 17,
+    "estimated_floor_at_or_above_1e_12_rate_tolerance": 14,
+    "residual_at_or_below_estimated_floor": 11,
+    "residual_above_estimated_floor": 6,
+    "minimum_residual_over_floor": 0.793104375,
+    "maximum_residual_over_floor": 1.54304,
+    "dt_times_floor_cm_range": [
+      5.551115123125783e-16,
+      1.1102230246251565e-15
+    ],
+    "interpretation": "The fine-end local-balance failures partly reproduce the P2E07 representation-floor phenomenon, but they do not explain the central 0.0064-day extension block."
+  },
+  "central_block_at_0p0064": {
+    "invalid_count": 4,
+    "classes": {
+      "failed_or_endpoint_invalid": 4,
+      "total_only": 0,
+      "local_balance": 0,
+      "head": 0,
+      "mixed": 0,
+      "retry_other": 0
+    },
+    "cases": [
+      {
+        "material": "B02",
+        "Se": 0.98,
+        "forcing": "DRYING",
+        "stage": "HALF2"
+      },
+      {
+        "material": "B02",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "stage": "HALF2"
+      },
+      {
+        "material": "B05",
+        "Se": 0.98,
+        "forcing": "DRYING",
+        "stage": "COARSE"
+      },
+      {
+        "material": "B05",
+        "Se": 0.98,
+        "forcing": "NOMINAL",
+        "stage": "COARSE"
+      }
+    ],
+    "implication": "The already-qualified P2E07 local-balance floor cannot be used to dismiss or reinterpret the four cases that prevent a complete common Reference domain at the anchor-selected 0.0064-day level."
+  },
+  "firewalls": {
+    "rossfast_solver_executed": false,
+    "rossfast_extension_discrepancy_inspected": false,
+    "reference_tolerance_changed": false,
+    "production_or_reference_source_changed": false,
+    "case_removed": false,
+    "admission_rule_changed": false
+  },
+  "verdict": "CENTRAL_EXTENSION_BLOCK_NOT_EXPLAINED_BY_LOCAL_BALANCE_FLOOR_FAILED_OR_ENDPOINT_INVALID_SPLIT_REQUIRED",
+  "next_permitted_action": "Preregister a Reference-only split diagnostic for the 36 FAILED_OR_ENDPOINT_INVALID observations. Record raw solver status/route and, for converged results, the exact endpoint validity predicate. Do not run RossFast or alter tolerances/case membership."
+}
