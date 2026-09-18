@@ -1,6 +1,6 @@
 # PPA-WU03 atmospheric forcing and normal-input adapter boundary
 
-**State:** PREREGISTERED  
+**State:** QUALIFIED_READY_FOR_CANONICAL_ADMISSION  
 **Canonical basis:** `integration/f-ci-canonical@12beef3e91f90f88b101c13af72cd216bccc63e3`  
 **Workunit:** PPA-WU03  
 **Production owner:** PPA-WU01 / `mod_fmr_production_application_bootstrap`
@@ -79,6 +79,16 @@ This seam is required so a normal forcing adapter can supply a new interval with
 8. **O0/O2 preservation.** Owner qualification passes at O0 and O2 with stable output identity.
 9. **Regression.** Existing PPA-WU01 owner qualification and affected F-APP/M1 preservation gates remain green.
 10. **Independent qualification.** A separate test harness re-derives the expected typed mapping over a forcing/canopy/subdaily matrix and verifies fail-closed behavior without using the owner test oracle.
+
+## Qualification evidence
+
+The preregistered matrix Q1-Q10 is green on PR #323 subject head `74b3bcbfffc6efe7125e39e1c6052dd130e2a42d`.
+
+- Workflow run `35374130545`, owner job `105694706631`: O0 and O2 PASS with stable output identity; common input materialization, generic subdaily time, direct-typed physics identity, PPA-WU01 ownership, A-B-A stateless input replay, fail-closed cases and hard-mass gate all PASS.
+- Workflow run `35374130545`, independent job `105694706401`: 54 independently rederived forcing/canopy/time cases PASS at O0/O2, including reference-ET equation oracle, transport identity and fail-closed cases.
+- Workflow run `35374130545`, preservation job `105694706721`: protected F-APP/M1 production blobs unchanged; PPA-WU01, F-APP07 and current M1 semantic preservation PASS.
+
+The qualified production delta is limited to the stateless outer adapter and the read-only `run_standalone_with_forcing` handoff on the existing PPA-WU01 owner. No new state owner or physics owner was introduced.
 
 ## Exit
 
