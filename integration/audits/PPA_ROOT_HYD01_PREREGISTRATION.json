@@ -10,7 +10,7 @@
     "decisive_run": 35427908820,
     "classification": "CLOSED_BLOCKED_NET_ROOT_EXTRACTION_HYDRAULIC_EXECUTION"
   },
-  "phase": "D1_SINK_EQUIVALENCE_AND_WINDOW_SCALE",
+  "phase": "D2_TEMPORAL_ACCEPTANCE_AUTHORITY",
   "production_mutation_allowed": false,
   "reference_mutation_allowed": false,
   "purpose": "Determine whether CAP01 failure is root-specific or a broader transient sink/window-scale limitation before considering any repair.",
@@ -68,5 +68,39 @@
     "D2 direct HeadCalc/retry-owner localization",
     "D3 exact corrected B1.11 reference execution using the pinned source archive authority",
     "REPAIR only after authority identifies a local defect"
-  ]
+  ],
+  "d1_result": {
+    "run_id": 35428100983,
+    "conclusion": "COMMON_TRANSIENT_SINK_ACCEPTANCE_GAP_NOT_ROOT_SPECIFIC",
+    "key_finding": "ROOT and GENERIC sink routes had identical accept/reject counts at all five durations."
+  },
+  "d2": {
+    "authority_findings": [
+      "fmr_serialized_temporal_identity returns 0 only for exact full-step/two-half state identity and HUGE otherwise.",
+      "The Reference-Richards model temporal indicator explicitly returns route root-sink-envelope-deferred when request%evaluation%root_sink is associated.",
+      "The same indicator admits b110_source_sink_provider_t for ordinary source/sink forcing.",
+      "Therefore the current root-active state-changing Reference-Richards route has neither a meaningful external full-half error metric nor an admitted model-certificate indicator."
+    ],
+    "test": {
+      "duration_day": 0.1,
+      "reason": "D1 showed zero solver rejections at 0.1 day for both ROOT and GENERIC routes.",
+      "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+      "temporal_head_budget": 0.00001,
+      "previous_right_derivative": "zero vector in RICHARDS_TEMPORAL_HISTORY committed state",
+      "max_retries": 0,
+      "paired_routes": [
+        "ROOT",
+        "GENERIC"
+      ],
+      "expected_diagnostic_not_outcome": [
+        "ROOT: converged hydraulic solve followed by temporal-indicator route root-sink-envelope-deferred / unavailable certificate.",
+        "GENERIC: temporal indicator is not rejected for root-sink policy; record whether certificate is available and its normalized indicator."
+      ]
+    },
+    "interpretation_rules": [
+      "If ROOT reports root-sink-envelope-deferred while GENERIC reaches an available Reference-Richards temporal indicator, classify the missing authority as root-sink temporal-certificate coverage.",
+      "If both indicators are unavailable for the same non-root reason, do not make a root-specific temporal-certification claim.",
+      "D2 does not change indicator equations, budgets, tolerances or retry policy."
+    ]
+  }
 }
