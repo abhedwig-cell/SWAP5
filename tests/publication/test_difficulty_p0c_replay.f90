@@ -80,8 +80,10 @@ contains
     do i=1,n; ps%z(i)=-(real(i,real64)-0.5_real64)*ROSSFAST_D3R_DZ_CM; end do
     cf=0.0_real64
     do i=1,n
-      cf(1,i)=m%theta_r; cf(2,i)=m%theta_s; cf(3,i)=m%alpha_per_cm; cf(4,i)=m%n; cf(5,i)=vgm
-      cf(6,i)=m%ks_cm_per_day; cf(7,i)=m%l; cf(8,i)=m%h_air_entry_cm
+      cf(1,i)=m%theta_r; cf(2,i)=m%theta_s; cf(3,i)=m%ksatfit_cm_per_day; cf(4,i)=m%alpha_per_cm
+      cf(5,i)=m%lambda; cf(6,i)=m%n; cf(7,i)=vgm; cf(8,i)=m%alpha_per_cm
+      cf(9,i)=m%h_enpr_cm; cf(10,i)=m%ksatfit_cm_per_day; cf(11,i)=0.999_real64
+      cf(12,i)=0.99_real64*m%ksatfit_cm_per_day; cf(22,i)=-1.0e6_real64; cf(23,i)=1.0e-12_real64
     end do
   end subroutine
   subroutine init_request(q,ps,ch,sp,tp,th,k0)
@@ -94,11 +96,13 @@ contains
     q%parameters=>ps; q%evaluation%constitutive=>ch; q%evaluation%source_sink=>sp; q%evaluation%top_boundary=>tp
     q%base_state%active_nodes=n; allocate(q%base_state%pressure_head(n),q%base_state%water_content(n))
     q%base_state%pressure_head=-101.0_real64; q%base_state%water_content=th; q%base_state%ponding_depth=0.0_real64
-    q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX; q%boundary%top_flux=0.0_real64; q%boundary%bottom_mode=2; q%boundary%bottom_flux=0.0_real64
+    q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX; q%boundary%top_flux=0.01_real64*k0; q%boundary%bottom_mode=2; q%boundary%bottom_flux=-0.004_real64*k0
     q%step_duration=ROSSFAST_D3R_OUTER_HORIZON_DAY
-    q%numerical%max_iterations=50; q%numerical%max_backtracking=10; q%numerical%head_abs_tolerance=1e-6_real64
-    q%numerical%head_rel_tolerance=1e-8_real64; q%numerical%compartment_balance_tolerance=1e-8_real64
-    q%numerical%total_balance_tolerance=1e-8_real64
+    q%numerical%max_iterations=16; q%numerical%max_backtracking=8; q%numerical%conductivity_implicit_mode=0
+    q%numerical%conductivity_mean_method=1; q%numerical%min_step_duration=1e-8_real64
+    q%numerical%head_abs_tolerance=1e-12_real64; q%numerical%head_rel_tolerance=1e-12_real64
+    q%numerical%compartment_balance_tolerance=1e-12_real64; q%numerical%total_balance_tolerance=1e-12_real64
+    q%numerical%ponding_tolerance=1e-12_real64
     tp%prescribed_flux=0.0_real64; tp%surface_conductivity=max(k0,tiny(1.0_real64))
   end subroutine
   subroutine require(x,label)
