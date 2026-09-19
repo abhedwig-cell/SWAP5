@@ -80,9 +80,10 @@
       "continuation_variable": "prescribed_lower_boundary_head",
       "coupled_groundwater": false,
       "primary_inference": [
-        "STRESS_BEFORE_EVENT",
-        "STRESS_AFTER_EVENT"
-      ]
+        "NET_DRAINAGE",
+        "CAPILLARY_SUPPORT"
+      ],
+      "manifest_reconciliation": "Corrects initial machine under-specification to match the original prose protocol before B execution; stress/recovery remains deferred with Feddes-profile blocker."
     },
     {
       "id": "C",
@@ -314,6 +315,70 @@
       "outer_controls_must_retain_inference": true,
       "posthoc_case_relocation_allowed": false,
       "posthoc_floor_substitution_allowed": false
+    }
+  },
+  "p0b": {
+    "status": "B0_PREREGISTERED_BEFORE_EXECUTION",
+    "mechanism": "LOWER_BOUNDARY_EXCHANGE_REVERSAL",
+    "relation_to_original_protocol": "Net bottom exchange upward/downward was already listed in the prose Experiment B primary inferences; this binds the previously under-specified machine manifest before B execution.",
+    "numerical_treatment": "N0_ONLY_LOCATOR",
+    "material": "B01",
+    "initial_effective_saturation": 0.85,
+    "grid": {
+      "cells": 16,
+      "dz_cm": 10,
+      "total_depth_cm": 160,
+      "surface_to_first_node_cm": 5,
+      "bottom_face_distance_cm": 5
+    },
+    "top_boundary": "EXPLICIT_FIXED_FLUX",
+    "bottom_boundary": {
+      "mode": 5,
+      "type": "PRESCRIBED_HEAD"
+    },
+    "forcing": {
+      "block_dt_day": 0.0064,
+      "wet_blocks": 8,
+      "wet_qtop_factor_of_initial_K": 0.025,
+      "dry_blocks": 24,
+      "dry_qtop_factor_of_initial_K": -0.005,
+      "authority": "PUB-P2E08 forcing factors"
+    },
+    "continuation": {
+      "coordinate": "hbot = h0 + dz/2 + delta_h",
+      "search_offsets_cm": [
+        -100,
+        -50,
+        -25,
+        0,
+        25
+      ],
+      "expansion_allowed": false,
+      "bisection_max": 12,
+      "stop_scaled_width": 0.001,
+      "frozen_minus_offset_cm": -10,
+      "frozen_plus_offset_cm": 10,
+      "posthoc_offset_widening_allowed": false
+    },
+    "inference": {
+      "quantity": "Q_dry = sum blocks 9..32 qbot*dt",
+      "positive": "CAPILLARY_SUPPORT",
+      "negative": "NET_DRAINAGE",
+      "representation_zero_rule": "abs(Q_dry) <= 1024*epsilon(1)*max(1,abs(Q_dry))"
+    },
+    "admissibility": {
+      "exact_dt_required": true,
+      "internal_retry_allowed": false,
+      "alternative_linear_solver_allowed": false,
+      "finite_state_required": true,
+      "water_content_in_material_range": true,
+      "bookkeeping_residual_abs_max_cm": 1e-12,
+      "independent_typed_integrated_mass_residual_available": false,
+      "limitation": "Mode 5 materializes qbot from accepted storage and boundary balance; bookkeeping closure is not an independent solver-residual gate."
+    },
+    "data_firewall": {
+      "N1_execution_allowed_in_B0": false,
+      "freeze_before_B1": true
     }
   }
 }
