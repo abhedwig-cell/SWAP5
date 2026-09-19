@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0C_C0_REPAIR_RERUN_REQUIRED",
+  "status": "P0C_C1_PREREGISTERED_N1_AUTHORIZED",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,8 +32,8 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Rerun the exact N0-only C0 locator after P0C-R01 geometry correction. Do not use the superseded first freeze and do not execute N1.",
-  "recovery_point": "P0C-R01 persisted before N1: dynamic surface distance corrected to half-cell; prior C0 result explicitly superseded.",
+  "next_action": "Implement C1 exactly as preregistered: run N0 and N1 only for frozen C-/C0/C+, compare common forcing-block endpoints, classify with C- baseline floor and fixed amplification rules.",
+  "recovery_point": "Corrected C0-R1 frozen, R02 spatial outer-bracket gate passed, C1 analysis frozen before first N1 execution.",
   "blockers": [
     "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
     "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
@@ -42,6 +42,8 @@
   "evidence": {
     "p0c_locator_workflow_run_id": 35427546986,
     "p0c_locator_output_sha256": "2c417762601c0e22758f749428ea5274485f21e4c0191145cbcf57155dd2579c",
-    "p0c_result_path": "integration/num-unc/NUM_UNC_P0C_C0_RESULT.json"
+    "p0c_result_path": "integration/num-unc/NUM_UNC_P0C_C0_RESULT.json",
+    "spatial_workflow_run_id": 35427721868,
+    "spatial_output_sha256": "e58e0b3838271a9f9edbb3665ec638dd0bd162b6fc46f730884420b9aaba2ea1"
   }
 }
