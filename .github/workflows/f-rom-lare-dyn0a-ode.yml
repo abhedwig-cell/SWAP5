@@ -1,0 +1,59 @@
+name: F-ROM-LARE DYN0A ODE reference
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_variable_grid_stubs.py'
+      - 'tests/rom/test_lare_variable_grid_materializer.py'
+      - 'tests/rom/run_lare_dyn0a_ode.py'
+      - '.github/workflows/f-rom-lare-dyn0a-ode.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ode-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Qualify variable-grid materializer
+        run: python3 tests/rom/test_lare_variable_grid_materializer.py
+
+      - name: Generate DYN0A ODE reference and Heun numerical floor
+        run: |
+          mkdir -p LARE_DYN0A_ODE_EVIDENCE
+          python3 tests/rom/run_lare_dyn0a_ode.py             --output LARE_DYN0A_ODE_EVIDENCE/LARE_DYN0A_ODE_REFERENCE.json
+
+      - name: Validate structural invariants
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_ODE_EVIDENCE/LARE_DYN0A_ODE_REFERENCE.json'))
+          assert p['decision']=='LARE_DYN0A_ODE_REFERENCE_GENERATED'
+          assert p['case_count']==48
+          assert p['fine_or_coarse_richards_executed'] is False
+          assert p['production_rom_authorized'] is False
+          assert p['max_abs_water_ledger_cm'] <= 1e-9
+          assert p['max_abs_equilibrium_total_storage_change_cm'] <= 1e-9
+          for case in p['cases'].values():
+              lo,hi=case['high_accuracy']['theta_range']
+              assert lo > 0.02 and hi < 0.427494
+              for n in case['heun_max_corrector_iterations'].values():
+                  assert n <= 50
+          print('LARE_DYN0A_ODE_STRUCTURAL_GATE=PASS')
+          PY
+
+      - name: Upload DYN0A ODE evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-ode-reference
+          path: LARE_DYN0A_ODE_EVIDENCE/
