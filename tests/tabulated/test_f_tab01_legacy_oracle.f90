@@ -9,6 +9,15 @@ program f_tab01_legacy_oracle_characterization
   integer, parameter :: n_query = 4000
   integer :: sizes(n_cases)
   integer :: icase, n, failures
+  real(real64), parameter :: THETA_R = 0.05_real64
+  real(real64), parameter :: THETA_S = 0.43_real64
+  real(real64), parameter :: KSAT    = 50.0_real64
+  real(real64), parameter :: ALPHA   = 0.02_real64
+  real(real64), parameter :: NPAR    = 1.6_real64
+  real(real64), parameter :: MPAR    = 1.0_real64 - 1.0_real64/NPAR
+  real(real64), parameter :: LAMBDA  = 0.5_real64
+  real(real64), parameter :: H_CRIT  = -1.0e-2_real64
+
   real(real64), allocatable :: sptab(:,:,:)
   integer, allocatable :: ientrytab(:,:)
 
@@ -247,14 +256,5 @@ contains
     end if
     k = min(k,KSAT)
   end function k_reference
-
-  real(real64), parameter :: THETA_R = 0.05_real64
-  real(real64), parameter :: THETA_S = 0.43_real64
-  real(real64), parameter :: KSAT    = 50.0_real64
-  real(real64), parameter :: ALPHA   = 0.02_real64
-  real(real64), parameter :: NPAR    = 1.6_real64
-  real(real64), parameter :: MPAR    = 1.0_real64 - 1.0_real64/NPAR
-  real(real64), parameter :: LAMBDA  = 0.5_real64
-  real(real64), parameter :: H_CRIT  = -1.0e-2_real64
 
 end program f_tab01_legacy_oracle_characterization
