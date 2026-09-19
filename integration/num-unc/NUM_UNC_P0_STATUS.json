@@ -4,10 +4,10 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0C_LOCATOR_PREREGISTERED",
-  "implemented": false,
+  "status": "P0C_C0_FREEZE_CLOSED",
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "relevant_paths": [
     "integration/num-unc/",
@@ -32,11 +32,16 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Implement and structurally validate the C0 N0-only surface-transition locator. C0 must not compile or execute N1 comparison logic. Persist the frozen C-/C0/C+ multipliers before opening C1.",
-  "recovery_point": "P0 protocol plus C0 locator design frozen on research/num-unc-p0; N1 primary comparison not yet authorized.",
+  "next_action": "Run a prospectively amended spatial-control gate on frozen C- and C+ before authorizing C1. Do not treat C0 itself as spatially invariant because it is intentionally transition-near. N1 remains unauthorized.",
+  "recovery_point": "C0 frozen: transition multiplier 1.05908203125; C-=0.9531738281250001; C0=1.05908203125; C+=1.164990234375. N1 not executed.",
   "blockers": [
     "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
     "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
     "Spatial-control grid stability remains required before C1 inference claims."
-  ]
+  ],
+  "evidence": {
+    "p0c_locator_workflow_run_id": 35427546986,
+    "p0c_locator_output_sha256": "2c417762601c0e22758f749428ea5274485f21e4c0191145cbcf57155dd2579c",
+    "p0c_result_path": "integration/num-unc/NUM_UNC_P0C_C0_RESULT.json"
+  }
 }
