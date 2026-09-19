@@ -37,8 +37,6 @@ program test_hydro_memory_cap01_root_active_response
   real(real64), parameter :: H0_CM = -75.0_real64
   real(real64), parameter :: DURATION_DAY = 1.0e-4_real64
   real(real64), parameter :: MASS_TOL = 1.0e-12_real64
-  real(real64), parameter :: HEAD_BUDGET = 1.0e-5_real64
-  real(real64), parameter :: QBOT0 = 1.0e-6_real64
   real(real64), parameter :: FD_EPS = 1.0e-4_real64
   real(real64), parameter :: HEAD_EPS_M = 1.0e-6_real64
   real(real64), parameter :: SLOPE_REL_TOL = 5.0e-2_real64
@@ -78,17 +76,18 @@ program test_hydro_memory_cap01_root_active_response
   class(canonical_forcing_t), allocatable :: materialized
   real(real64) :: fd_derivative, derivative_scale
   real(real64) :: corrector_slope, slope_scale, slope_rel_error
-  real(real64) :: reference_error, reference_scale
+  real(real64) :: reference_error, reference_scale, qbot_ref
   integer(int64) :: revision_before, revision_after
   integer :: status
   logical :: available
 
   call initialize_parameters(predictor_parameters, SW_STEP_CONTROL_BOTTOM_FLUX)
   call initialize_parameters(corrector_parameters, 5)
-  call initialize_forcing(base_forcing, QBOT0)
   call initialize_column_template(column, template)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, predictor_parameters%cofgen)
   call bind_b110_default_mvg_provider(constitutive, hydraulic_parameters, DURATION_DAY)
+  call derive_equilibrium_flux(qbot_ref)
+  call initialize_forcing(base_forcing, qbot_ref)
   call initialize_committed_state(committed, predictor_parameters)
 
   datum%available = .true.
@@ -97,7 +96,7 @@ program test_hydro_memory_cap01_root_active_response
   window%t0 = 0.0_real64
   window%t1 = DURATION_DAY
 
-  call run_root_candidate(QBOT0, .false., nominal_result, nominal_candidate, nominal_diagnostics)
+  call run_root_candidate(qbot_ref, .false., nominal_result, nominal_candidate, nominal_diagnostics)
   write(*,'(a,i0,a,l1,a,es14.6,a,i0,a,i0,a,i0,a,i0,a,i0)') 'HMCAP01_NOMINAL_DIAG status=', &
        nominal_result%status, ' completed=', nominal_result%completed, ' completed_t=', nominal_result%completed_t, &
        ' retries=', nominal_diagnostics%retries, ' solver_rejections=', nominal_diagnostics%solver_rejections, &
@@ -112,23 +111,23 @@ program test_hydro_memory_cap01_root_active_response
   write(*,'(a)') 'HMCAP01_ROOT_ACTIVE_REAL_TRIAL=PASS'
   write(*,'(a)') 'HMCAP01_ROOT_ACTIVE_HARD_MASS=PASS'
 
-  call run_root_candidate(QBOT0, .true., direction_result, direction_candidate, direction_diagnostics)
+  call run_root_candidate(qbot_ref, .true., direction_result, direction_candidate, direction_diagnostics)
   call require(direction_result%completed, 'root-active trajectory-requested candidate did not complete')
   call require(direction_result%accepted_trajectory_direction%requested, 'root-active trajectory was not requested')
   call require(.not. direction_result%accepted_trajectory_direction%available, &
        'root-active analytic trajectory unexpectedly became authoritative')
   call materialize_solver_view(direction_candidate, nominal_state, solver_parameters)
   call build_modflow6_swap_predictor_tangent_endpoint(nominal_state, solver_parameters, constitutive, &
-       direction_result%accepted_trajectory_direction, QBOT0, datum, .false., .true., .false., .false., &
+       direction_result%accepted_trajectory_direction, qbot_ref, datum, .false., .true., .false., .false., &
        blocked_endpoint, status)
   call require(status == MODFLOW6_TANGENT_ENDPOINT_UNAVAILABLE .or. &
        status == MODFLOW6_TANGENT_ENDPOINT_INCOMPLETE_COVERAGE, 'root-active analytic tangent did not fail closed')
   call require(.not. blocked_endpoint%authoritative, 'root-active analytic endpoint became authoritative')
   write(*,'(a)') 'HMCAP01_ANALYTIC_ROOT_TANGENT_FAIL_CLOSED=PASS'
 
-  call materialize_candidate_face(nominal_candidate, QBOT0, nominal_face)
-  call run_endpoint_value(QBOT0 + FD_EPS, plus_face)
-  call run_endpoint_value(QBOT0 - FD_EPS, minus_face)
+  call materialize_candidate_face(nominal_candidate, qbot_ref, nominal_face)
+  call run_endpoint_value(qbot_ref + FD_EPS, plus_face)
+  call run_endpoint_value(qbot_ref - FD_EPS, minus_face)
   fd_derivative = (plus_face%pressure_head_cm - minus_face%pressure_head_cm) / (2.0_real64 * FD_EPS)
   derivative_scale = max(1.0_real64, abs(fd_derivative))
   call require(ieee_is_finite(fd_derivative), 'root-active centered-FD derivative nonfinite')
@@ -136,7 +135,7 @@ program test_hydro_memory_cap01_root_active_response
        'root-active centered-FD derivative ill-conditioned')
   write(*,'(a)') 'HMCAP01_ROOT_ACTIVE_CENTERED_FD=PASS'
 
-  call materialize_origin_face(QBOT0, origin_face)
+  call materialize_origin_face(qbot_ref, origin_face)
   lineage%coupling_id = COUPLING_ID
   lineage%swap_lineage_id = COLUMN_ID
   lineage%swap_origin_revision = 0_int64
@@ -150,7 +149,7 @@ program test_hydro_memory_cap01_root_active_response
   coverage%root_uptake_active = .true.
   coverage%root_uptake_covered = .false.
 
-  call compose_modflow6_swap_predictor_response(window, lineage, QBOT0, origin_face%hydraulic_head_m, &
+  call compose_modflow6_swap_predictor_response(window, lineage, qbot_ref, origin_face%hydraulic_head_m, &
        nominal_face%hydraulic_head_m, fd_derivative, MODFLOW6_DERIVATIVE_CENTERED_FD, coverage, &
        'centered-finite-difference', 'root-active-full-trajectory-centered-fd', response(1), status)
   call require(status == MODFLOW6_PREDICTOR_OK .and. response(1)%valid, &
@@ -221,6 +220,17 @@ program test_hydro_memory_cap01_root_active_response
 
 contains
 
+  subroutine derive_equilibrium_flux(qref)
+    real(real64), intent(out) :: qref
+    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+
+    heads = H0_CM
+    call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
+    qref = -conductivity(1)
+    call require(ieee_is_finite(qref) .and. abs(qref) > 0.0_real64, 'equilibrium reference flux')
+    write(*,'(a,es24.16)') 'HMCAP01_EQUILIBRIUM_QBOT=', qref
+  end subroutine derive_equilibrium_flux
+
   subroutine initialize_parameters(p, bottom_mode)
     type(fmr_b110_physical_parameters_t), intent(out) :: p
     integer, intent(in) :: bottom_mode
@@ -277,7 +287,7 @@ contains
     real(real64), intent(in) :: bottom_flux
     integer :: rooted
 
-    f%top_flux = QBOT0
+    f%top_flux = bottom_flux
     f%top_head = H0_CM
     f%bottom_flux = bottom_flux
     f%bottom_head = H0_CM
@@ -331,10 +341,7 @@ contains
     logical :: ok
     integer :: i
 
-    heads(1) = H0_CM
-    do i = 2, numnod
-      heads(i) = heads(i-1) + p%node_distance(i)
-    end do
+    heads = H0_CM
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
     physical%active_nodes = numnod
     allocate(physical%pressure_head(numnod), physical%water_content(numnod))
@@ -431,10 +438,7 @@ contains
     type(modflow6_prescribed_qbot_bottom_face_t), intent(out) :: face
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
     integer :: face_status, i
-    heads(1) = H0_CM
-    do i = 2, numnod
-      heads(i) = heads(i-1) + predictor_parameters%node_distance(i)
-    end do
+    heads = H0_CM
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
     call materialize_modflow6_prescribed_qbot_bottom_face(heads(numnod), conductivity(numnod), qbot, &
          0.5_real64*predictor_parameters%dz(numnod), datum, face, face_status)
