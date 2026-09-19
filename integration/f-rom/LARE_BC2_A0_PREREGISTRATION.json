@@ -84,7 +84,7 @@
     "moving layer thickness and storage continuity at H=h",
     "exact product-form ledger residual",
     "literal printed-form ledger defect evaluated on the same state path",
-    "theoretical identity defect PRINTED minus PRODUCT = theta_bar*dHdt",
+    "theoretical residual identity R_LITERAL-R_PRODUCT = -theta_bar*dHdt and its magnitude theta_bar*abs(dHdt)",
     "maximum and time-integrated absolute defect by material and regime",
     "zero-thickness behavior as H approaches 0",
     "finite/bounded theta_bar and constitutive state"
@@ -112,5 +112,14 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_residual_sign_clarification": {
+    "before_first_BC2_A0_execution": true,
+    "residual_definition": "R = left_hand_side_of_candidate_equation - (q_in-q_out-Q_sink)",
+    "product_residual": "R_PRODUCT = d[(H-a)*theta_bar]/dt - theta_s*dHdt - q_net",
+    "literal_residual": "R_LITERAL = (H-a)*dtheta_bar/dt - theta_s*dHdt - q_net",
+    "algebraic_relation_on_same_state_path": "R_LITERAL - R_PRODUCT = -theta_bar*dHdt",
+    "magnitude_relation": "abs(R_LITERAL-R_PRODUCT)=theta_bar*abs(dHdt) for positive theta_bar",
+    "scientific_effect": "Sign convention clarification only; candidate forms, path and gates unchanged."
+  }
 }
