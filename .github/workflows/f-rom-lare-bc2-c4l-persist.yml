@@ -28,10 +28,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/c4l
-          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591503680/zip" > /tmp/c4l.zip
-          echo "fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa  /tmp/c4l.zip" | sha256sum -c -
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10592180556/zip" > /tmp/c4l.zip
+          echo "44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16  /tmp/c4l.zip" | sha256sum -c -
           unzip -q /tmp/c4l.zip -d /tmp/c4l
-          echo "4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20  /tmp/c4l/LARE_BC2_C4L_RESULT.json" | sha256sum -c -
+          echo "f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8  /tmp/c4l/LARE_BC2_C4L_RESULT.json" | sha256sum -c -
 
       - name: Validate C4L
         run: |
@@ -43,6 +43,8 @@ jobs:
           assert len(r['supported_cases'])==3
           assert len(r['unsupported_cases'])==3
           assert r['hard_checks']['maximum_qH_candidate_vs_B9_identity_cm_per_day']==0.0
+          assert r['hard_checks']['maximum_hydrostatic_abs_u'] <= 1e-9
+          assert r['hard_checks']['maximum_hydrostatic_abs_v'] <= 1e-9
           assert r['propagated_dynamics_authorized'] is False
           assert r['production_rom_authorized'] is False
           print('LARE_BC2_C4L_VALIDATION=PASS')
@@ -60,11 +62,17 @@ jobs:
             'status':'CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION',
             'decision':r['decision'],
             'authority':{
+              'workflow_run':35467786671,
+              'execution_head':'c0381a606ac7245fcfeabddf8a8fdffb276dd285',
+              'artifact_id':10592180556,
+              'artifact_digest':'sha256:44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16',
+              'result_sha256':'f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8'
+            },
+            'superseded_authority':{
               'workflow_run':35467705083,
               'execution_head':'f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93',
               'artifact_id':10591503680,
-              'artifact_digest':'sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa',
-              'result_sha256':'4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20'
+              'reason':'Pre-repair C4L execution used clipping inside quadrature and did not enforce the preregistered hydrostatic u/v gates. Its scientific pattern is not used as authority.'
             },
             'supported_cases':r['supported_cases'],
             'unsupported_cases':r['unsupported_cases'],
@@ -100,7 +108,9 @@ jobs:
 
           C4L fixed the lower-boundary slope exactly to the already-supported B7/B9 terminal slope and solved only two curvature coefficients from Wt and Wb. No response fitting, extra state, clipping or direction switch was used.
 
-          All numerical hard gates passed. The maximum 64-vs-128 qi difference is about 2.64e-9 cm/d, storage residuals remain below 8e-13 cm, and qH is exactly identical to B9.
+          The authoritative execution is workflow 35467786671 at head c0381a606ac7245fcfeabddf8a8fdffb276dd285. It supersedes the earlier pre-repair execution, which used clipping inside quadrature and omitted the preregistered hydrostatic u/v gates.
+
+          All numerical hard gates passed. The maximum 64-vs-128 qi difference is about 2.64e-9 cm/d, storage residuals remain below 4.88e-13 cm, qH is exactly identical to B9, and the manufactured hydrostatic reconstruction recovers u=v=0.
 
           The internal flux result is mixed. At 2.5 cm, RISE RMS improves from about 0.361 to 0.343 cm/d and FALL from 0.294 to 0.282. At 5 cm, FALL improves from about 0.492 to 0.439, but RISE worsens from about 0.630 to 0.854 cm/d. HOLD is also damaged: cubic qi becomes about 0.0046 cm/d at 2.5 cm and 0.0169 cm/d at 5 cm while B9 remains near numerical zero.
 
