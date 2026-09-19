@@ -1,0 +1,190 @@
+{
+  "schema": "swap5.f-romv2-d13.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D13",
+  "title": "Literature-faithful FMC groundwater-front B01 development comparator",
+  "phase": "PREREGISTERED_BEFORE_FULL_ALGORITHM_PREFLIGHT",
+  "canonical_base": "5c31a25b0e8d3f62a57aa87323703df611fa75f2",
+  "purpose": "Test the published finite-water-content groundwater-front branch, including capillary relaxation and explicit finite-volume groundwater exchange, against current-canonical R16 and admitted R2 before exercising infiltration/falling-slug branches.",
+  "authority": {
+    "D11": "FMC/SMVE selected as next literature-bound comparator",
+    "D12": "Equation preflight passed with 200 moisture bins and 10 s maximum explicit substep frozen before SWAP trajectories",
+    "primary_sources": [
+      {
+        "doi": "10.1002/2015WR017126",
+        "role": "groundwater-front Eq.21, capillary relaxation, finite-volume mass accounting, explicit integration"
+      },
+      {
+        "doi": "10.1002/2014WR016454",
+        "role": "moving/fixed-water-table validation authority"
+      },
+      {
+        "doi": "10.1002/2017MS000931",
+        "role": "SMVE derivation context"
+      }
+    ]
+  },
+  "scientific_role": {
+    "class": "DEVELOPMENT_GROUNDWATER_FRONT_BRANCH_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "candidate": {
+    "id": "FMC_GW200",
+    "process_scope": [
+      "capillary groundwater fronts",
+      "capillary relaxation",
+      "finite-volume groundwater exchange"
+    ],
+    "process_scope_excluded": [
+      "surface infiltration fronts",
+      "falling slugs",
+      "ET",
+      "root uptake",
+      "ponding/runoff"
+    ],
+    "moisture_bins": 200,
+    "training_required": false,
+    "calibration_required": false,
+    "nonlinear_Richards_solve_required": false,
+    "full_order_fallback": false,
+    "clipping_allowed": false,
+    "hidden_mass_correction": false
+  },
+  "constitutive_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "coordinate": "z positive downward; H_j positive upward from fixed water table",
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "constitutive_sample": "right edge of each moisture bin, saturation edge excluded"
+  },
+  "groundwater_front": {
+    "baseline_theta": "theta_i = theta_r + 0.15*(theta_s-theta_r), identical to the D12 groundwater-equilibrium preflight baseline",
+    "active_bins": "j=31..199, i=30 on a 200-bin full-range grid",
+    "equation": "dH_j/dt = [K(theta_j)-K(theta_i)]/[theta_j-theta_i] * [abs(psi(theta_j))/H_j - 1]",
+    "equilibrium": "H_j=abs(psi(theta_j))",
+    "physical_bounds": "0 < H_j <= column_depth_cm",
+    "capillary_relaxation": "after every explicit substep sort H_j from largest to smallest with increasing j; sorting must preserve sum(H_j) to the frozen finite-volume tolerance",
+    "storage_cm": "S = theta_i*160 + dtheta*sum_j H_j",
+    "bottom_outward_exchange_cm": "-(S_new-S_old) because top exchange is identically zero",
+    "terminal_bottom_outward_flux_cm_per_day": "-dtheta*sum_j(dH_j/dt) evaluated on the accepted relaxed state"
+  },
+  "initial_states": {
+    "rule": "H_j(0)=lambda*min(abs(psi(theta_j)),160 cm)",
+    "lambda_histories": [
+      {
+        "id": "G25",
+        "lambda": 0.25,
+        "role": "capillary-fringe rise toward hydrostatic equilibrium"
+      },
+      {
+        "id": "G50",
+        "lambda": 0.5,
+        "role": "capillary-fringe rise toward hydrostatic equilibrium"
+      },
+      {
+        "id": "G75",
+        "lambda": 0.75,
+        "role": "capillary-fringe rise toward hydrostatic equilibrium"
+      },
+      {
+        "id": "G125",
+        "lambda": 1.25,
+        "role": "capillary-fringe retreat toward hydrostatic equilibrium, with H capped at 160 cm before scaling prohibited; only bins whose lambda*psi remain <=160 are admitted"
+      }
+    ],
+    "G125_admission_rule": "If any active bin gives lambda*abs(psi)>160 cm, that bin/history preflight is fail-closed rather than clipped. No alternate lambda is selected after preflight."
+  },
+  "matched_SWAP_state": {
+    "reconstruction": "At height y above the lower boundary, theta(y)=theta_i+dtheta*count(H_j>=y).",
+    "cell_average": "For every R16 or R2 cell, initialize theta to the exact vertical cell-average of the reconstructed finite-water-content profile, then invert B01 retention for pressure head.",
+    "invariant": "Initial total storage must match the FMC finite-volume storage to <=1e-12 cm for both R16 and R2.",
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head at column lower boundary",
+    "root_sink": false,
+    "ET": false
+  },
+  "time_integration": {
+    "observation_interval_day": 0.001,
+    "observation_steps": 64,
+    "internal_substep_max_seconds": 10,
+    "internal_substep_rule": "ceil(observation_interval_seconds/10); equal fixed substeps within every observation interval",
+    "front_integrator": "explicit forward Euler as supported by the primary method",
+    "relaxation_after_each_substep": true,
+    "no_SWAP_outcome_tuning": true
+  },
+  "full_algorithm_preflight": {
+    "trajectory_data_consumed": false,
+    "cases": [
+      "G25",
+      "G50",
+      "G75",
+      "G125"
+    ],
+    "checks": [
+      "all initial front heights finite, positive and <=160 cm without clipping",
+      "front vector monotone after relaxation",
+      "each one-substep state moves total L1 front-height distance toward hydrostatic equilibrium",
+      "capillary relaxation preserves dtheta*sum(H) within 1e-14 cm",
+      "finite-volume mass ledger closes within 1e-12 cm",
+      "terminal bottom exchange direction is negative for G25/G50/G75 and positive for G125"
+    ],
+    "failure_rule": "Any failure closes D13 before R16/R2 trajectories are generated. No lambda, bin count, equation or substep retuning is allowed inside D13."
+  },
+  "comparators": {
+    "R16": "current-canonical Reference route using the integrated-water-depth research numerical authority already admitted in D4/D10",
+    "R2": "same route with 2x80 cm geometry",
+    "metrics": [
+      "total storage error",
+      "cumulative bottom exchange error",
+      "terminal bottom flux magnitude error",
+      "bottom flux sign errors",
+      "profile/cell water-content error for R16",
+      "equilibration direction and monotonicity",
+      "hard transaction mass residual"
+    ]
+  },
+  "decision_logic": {
+    "positive": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+    "negative": "FMC_GW200_GROUNDWATER_BRANCH_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "full-algorithm preflight passes before SWAP evidence",
+      "all four matched R16/R2 development histories complete",
+      "FMC_GW200 integrity passes",
+      "and FMC beats or equals R2 on both total-storage RMSE and cumulative-bottom-exchange RMSE",
+      "or FMC beats or equals R2 on terminal bottom-flux RMSE with no more bottom-flux sign errors"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Only then authorize a separate FMC infiltration/falling-slug branch experiment or a broader water-table-coupling comparator.",
+    "if_negative": "Close FMC as a general hydraulic accelerator candidate for the current B01 route; revisit only under a separately justified application-specific proposition.",
+    "if_preflight_fails": "Close before SWAP exposure and do not modify the frozen 200-bin/substep/equation identity."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_ARBITRARY_NONZERO_SWAP_BOTTOM_HEAD",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_SURFACE_INFILTRATION_OR_FALLING_SLUG_BRANCH_IN_D13",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_POST_PREFLIGHT_LAMBDA_RETUNING",
+    "NO_CLIPPING",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_EXTERNAL_SOURCE_CODE_COPIED_INTO_SWAP5",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
