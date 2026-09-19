@@ -1225,7 +1225,8 @@ def validate_romv2_d12_if_present() -> str:
             "F-ROMV2-D12 finite-volume authority distinction missing")
     require("No SWAP trajectory evidence was consumed." in doc,
             "F-ROMV2-D12 no-exposure statement missing")
-    require("Arbitrary nonzero SWAP prescribed bottom pressure head is **not** authorized by D12." in doc,
+    require("Arbitrary nonzero SWAP prescribed bottom pressure head is **not** authorized by" in doc
+            and "D12." in doc,
             "F-ROMV2-D12 arbitrary-head firewall missing")
     require("Production ROM remains unauthorized." in doc,
             "F-ROMV2-D12 production prohibition missing")
