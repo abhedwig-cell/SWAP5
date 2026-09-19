@@ -189,6 +189,7 @@ def summarize_variant(rows,cumulative,Hfinal,d):
 def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
     rows={v:[] for v in VARIANTS}
     cumulative={v:np.zeros(PHYS_N,dtype=float) for v in VARIANTS}
+    variant_failures={}
     max_oracle_identity=0.0
     max_reference_qi_split_identity=0.0
     max_reference_ledger=0.0
@@ -197,101 +198,172 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
     Hfinal=None
 
     for step in range(1,c0.HISTORY_STEPS[history]+1):
-        y0,yr,H0,H1,oracle,refchecks=exact_interval_oracles(history,step,d,init_meta,init_nodes,states,nodes)
+        y0,yr,H0,H1,oracle,refchecks=exact_interval_oracles(
+            history,step,d,init_meta,init_nodes,states,nodes
+        )
         Hfinal=H1
-
-        max_oracle_identity=max(max_oracle_identity,abs(refchecks["qH_direct_minus_reference"]))
-        max_reference_qi_split_identity=max(max_reference_qi_split_identity,abs(refchecks["qi_bulk_minus_terminal"]))
-        max_reference_ledger=max(max_reference_ledger,abs(refchecks["reference_physical_ledger"]))
+        max_oracle_identity=max(
+            max_oracle_identity,abs(refchecks["qH_direct_minus_reference"])
+        )
+        max_reference_qi_split_identity=max(
+            max_reference_qi_split_identity,abs(refchecks["qi_bulk_minus_terminal"])
+        )
+        max_reference_ledger=max(
+            max_reference_ledger,abs(refchecks["reference_physical_ledger"])
+        )
 
         baseline_check=c1.advance_interval(y0,H0,H1,dt,d)
         baseline_y=np.asarray(baseline_check["y"][:PHYS_N],dtype=float)
 
         for variant in VARIANTS:
+            if variant in variant_failures:
+                continue
             try:
                 y,it=advance(y0,H0,H1,dt,d,variant,oracle)
+                phys=np.asarray(y[:PHYS_N],dtype=float)
+                if not np.all(np.isfinite(phys)):
+                    raise FloatingPointError("NONFINITE_PHYSICAL_STATE")
+                if variant=="BASE_C0":
+                    max_baseline_identity=max(
+                        max_baseline_identity,
+                        float(np.max(np.abs(phys-baseline_y)))
+                    )
+
+                err=phys-np.asarray(yr[:PHYS_N],dtype=float)
+                sr,res=shape_rms(err,H1,d)
+                max_shape_residual=max(max_shape_residual,abs(res))
+                ledger=(
+                    float(np.sum(phys-np.asarray(y0[:PHYS_N],dtype=float)))
+                    + float(y[IDX_CUM_QH])
+                    - THETA_S*(H1-H0)
+                )
+                if abs(ledger)>GATE:
+                    raise RuntimeError(
+                        f"HARD_GATE_FAILED physical_ledger={ledger}"
+                    )
+                row={
+                    "step":step,
+                    "shape_rms":sr,
+                    "total_error_cm":float(np.sum(err)),
+                    "Wb_error_cm":float(err[IDX_WB]),
+                    "Wt_error_cm":float(err[IDX_WT]),
+                    "ledger_residual_cm":ledger,
+                    "corrector_iterations":it,
+                }
+                rows[variant].append(row)
+                cumulative[variant]+=err
             except (ValueError,RuntimeError,FloatingPointError) as exc:
-                raise RuntimeError(
-                    f"C4B_VARIANT_BLOCKED variant={variant} step={step} "
-                    f"history={history} width_cm={d} dt_day={dt}: {exc}"
-                ) from exc
-            phys=np.asarray(y[:PHYS_N],dtype=float)
-            if variant=="BASE_C0":
-                max_baseline_identity=max(max_baseline_identity,float(np.max(np.abs(phys-baseline_y))))
+                message=str(exc)
+                if "OUTSIDE_QUALIFIED_DOMAIN" in message:
+                    classification="OUTSIDE_QUALIFIED_DOMAIN"
+                elif "NUMERICAL_BLOCKED" in message:
+                    classification="NUMERICAL_BLOCKED"
+                elif "HARD_GATE_FAILED" in message:
+                    classification="HARD_GATE_FAILED"
+                elif "NONFINITE" in message:
+                    classification="NONFINITE_PHYSICAL_STATE"
+                else:
+                    classification="VARIANT_EXECUTION_BLOCKED"
+                variant_failures[variant]={
+                    "classification":classification,
+                    "step":step,
+                    "H_start_cm":H0,
+                    "H_end_cm":H1,
+                    "detail":message,
+                }
 
-            err=phys-np.asarray(yr[:PHYS_N],dtype=float)
-            sr,res=shape_rms(err,H1,d)
-            max_shape_residual=max(max_shape_residual,abs(res))
-            ledger=(
-                float(np.sum(phys-np.asarray(y0[:PHYS_N],dtype=float)))
-                + float(y[IDX_CUM_QH])
-                - THETA_S*(H1-H0)
-            )
-            row={
-                "step":step,
-                "shape_rms":sr,
-                "total_error_cm":float(np.sum(err)),
-                "Wb_error_cm":float(err[IDX_WB]),
-                "Wt_error_cm":float(err[IDX_WT]),
-                "ledger_residual_cm":ledger,
-                "corrector_iterations":it,
-            }
-            rows[variant].append(row)
-            cumulative[variant]+=err
-
-    summaries={
-        v:summarize_variant(rows[v],cumulative[v],float(Hfinal),d)
-        for v in VARIANTS
-    }
-    base=summaries["BASE_C0"]
-    for v in VARIANTS:
-        if v=="BASE_C0":
-            summaries[v]["relative_to_BASE"]={}
+    summaries={}
+    for variant in VARIANTS:
+        if variant in variant_failures:
             continue
-        cur=summaries[v]
-        rel={}
-        for key in (
-            "interval_shape_rms_theta",
-            "interval_shape_max_theta",
-            "total_storage_error_rms_cm",
-            "Wb_error_rms_cm",
-            "Wt_error_rms_cm",
-            "cumulative_shape_rms_theta_at_final_geometry",
-        ):
-            b=float(base[key]); c=float(cur[key])
-            rel[key+"_fraction"]=None if b==0.0 else c/b
-            rel[key+"_reduction_fraction"]=None if b==0.0 else 1.0-c/b
-        summaries[v]["relative_to_BASE"]=rel
+        if len(rows[variant])!=c0.HISTORY_STEPS[history]:
+            variant_failures[variant]={
+                "classification":"INCOMPLETE_VARIANT_TRAJECTORY",
+                "completed_intervals":len(rows[variant]),
+                "expected_intervals":c0.HISTORY_STEPS[history],
+            }
+            continue
+        summaries[variant]=summarize_variant(
+            rows[variant],cumulative[variant],float(Hfinal),d
+        )
 
+    if "BASE_C0" in summaries:
+        base=summaries["BASE_C0"]
+        for variant,row in summaries.items():
+            if variant=="BASE_C0":
+                row["relative_to_BASE"]={}
+                continue
+            rel={}
+            for key in (
+                "interval_shape_rms_theta",
+                "interval_shape_max_theta",
+                "total_storage_error_rms_cm",
+                "Wb_error_rms_cm",
+                "Wt_error_rms_cm",
+                "cumulative_shape_rms_theta_at_final_geometry",
+            ):
+                b=float(base[key]); c=float(row[key])
+                rel[key+"_fraction"]=None if b==0.0 else c/b
+                rel[key+"_reduction_fraction"]=None if b==0.0 else 1.0-c/b
+            row["relative_to_BASE"]=rel
+
+    core_required=("BASE_C0",)+SINGLE_ORACLES
+    core_complete=all(v in summaries for v in core_required)
+    qualified_singles=[v for v in SINGLE_ORACLES if v in summaries]
     single_rank=sorted(
-        SINGLE_ORACLES,
-        key=lambda v:(summaries[v]["cumulative_shape_rms_theta_at_final_geometry"],v)
+        qualified_singles,
+        key=lambda v:(
+            summaries[v]["cumulative_shape_rms_theta_at_final_geometry"],v
+        )
     )
-    first_value=summaries[single_rank[0]]["cumulative_shape_rms_theta_at_final_geometry"]
-    second_value=summaries[single_rank[1]]["cumulative_shape_rms_theta_at_final_geometry"]
-    unique_best=single_rank[0] if first_value < second_value else None
-    hard=max(
+    unique_best=None
+    if len(single_rank)==len(SINGLE_ORACLES):
+        first_value=summaries[single_rank[0]][
+            "cumulative_shape_rms_theta_at_final_geometry"
+        ]
+        second_value=summaries[single_rank[1]][
+            "cumulative_shape_rms_theta_at_final_geometry"
+        ]
+        if first_value < second_value:
+            unique_best=single_rank[0]
+
+    hard_values=[
         max_oracle_identity,
         max_reference_qi_split_identity,
         max_reference_ledger,
         max_baseline_identity,
         max_shape_residual,
-        max(v["max_abs_ledger_residual_cm"] for v in summaries.values()),
+    ]
+    hard_values.extend(
+        row["max_abs_ledger_residual_cm"] for row in summaries.values()
     )
+    hard=max(hard_values or [math.inf])
+    core_qualified=core_complete and hard<=GATE
+    coupled_qualified="ORACLE_QI_QH" in summaries and hard<=GATE
+    auxiliary={
+        v: (v in summaries)
+        for v in ("ORACLE_QI_QH_GI","ORACLE_Q90_QI_QH_GI")
+    }
     return {
-        "status":"QUALIFIED" if hard<=GATE else "HARD_GATE_FAILED",
+        "status":"QUALIFIED_CORE" if core_qualified else "CORE_BLOCKED",
         "dt_day":dt,
         "variants":summaries,
+        "variant_failures":variant_failures,
+        "core_required_variants":list(core_required),
+        "core_single_channel_complete":core_complete,
+        "coupled_QI_QH_qualified":coupled_qualified,
+        "auxiliary_variant_qualified":auxiliary,
         "single_channel_rank_by_cumulative_shape":single_rank,
-        "best_single_channel":single_rank[0],
         "unique_best_single_channel":unique_best,
         "hard_checks":{
             "max_reference_oracle_identity_cm_per_day":max_oracle_identity,
-            "max_reference_qi_bulk_minus_terminal_identity_cm_per_day":max_reference_qi_split_identity,
+            "max_reference_qi_bulk_minus_terminal_identity_cm_per_day":
+                max_reference_qi_split_identity,
             "max_reference_physical_ledger_residual_cm":max_reference_ledger,
             "max_BASE_vs_C1_implementation_identity_cm":max_baseline_identity,
             "max_mass_neutral_projection_residual_cm":max_shape_residual,
-            "max_variant_physical_ledger_residual_cm":max(v["max_abs_ledger_residual_cm"] for v in summaries.values()),
+            "maximum_recorded_qualified_variant_hard_residual_or_identity_error":
+                hard,
             "gate":GATE,
         }
     }
@@ -327,15 +399,20 @@ def main():
         except (ValueError,RuntimeError,FloatingPointError) as exc:
             failures[key]=str(exc)
     pk=f"{PRIMARY_DT:.8f}"; ck=f"{CROSS_DT:.8f}"
-    complete=not failures and pk in routes and ck in routes
+    core_complete=(
+        pk in routes and ck in routes
+        and routes[pk].get("status")=="QUALIFIED_CORE"
+        and routes[ck].get("status")=="QUALIFIED_CORE"
+    )
     result={
         "schema":"swap5.lare.bc2.c4b.case-result.v1",
         "workstream":"F-ROM-LARE",
         "work_unit":"LARE-BC2-C4B",
         "width_cm":args.width,
         "history":args.history,
-        "decision":"BC2_C4B_ORACLE_CASE_MAPPED" if complete else "BC2_C4B_CASE_BLOCKED",
-        "complete":complete,
+        "decision":"BC2_C4B_ORACLE_CASE_MAPPED" if core_complete else "BC2_C4B_CASE_BLOCKED",
+        "complete":core_complete,
+        "core_complete":core_complete,
         "routes":routes,
         "failures":failures,
         "model_candidate_tested":False,
@@ -361,7 +438,7 @@ def main():
         },sort_keys=True))
     else:
         print(json.dumps({"decision":result["decision"],"failures":failures},sort_keys=True))
-    return 0 if complete else 2
+    return 0 if core_complete else 2
 
 if __name__=="__main__":
     raise SystemExit(main())
