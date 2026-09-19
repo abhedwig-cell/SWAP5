@@ -173,6 +173,6 @@ The repository now contains a staged finalization gate that preserves the govern
 - archive-ready: additionally requires exact checked-out publication commit plus persistent DOI/PID;
 - submission-ready: additionally rejects unresolved journal/author placeholders.
 
-The publication-critical prearchive set was rechecked on canonical `187e30153c890151768e929170d14bb22af1d86d`; all 24 frozen blobs match exactly.
+The publication-critical prearchive set was rechecked on canonical `6e212f9315606fac3e3922a9aa02c11d51a96bc2`; all 24 frozen blobs match exactly.
 
 This does not change the current blocker classification: R1/L1/A3 and author metadata remain external/governance tasks, not scientific work.
