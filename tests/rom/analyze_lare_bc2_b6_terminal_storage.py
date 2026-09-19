@@ -257,3 +257,108 @@ def main():
     support = {}
     supported = []
     for d in WIDTHS:
+        name = f"TERMINAL_{str(d).replace('.', '_')}CM"
+        moving = {}
+        for g in ("WATER_TABLE_RISING", "WATER_TABLE_FALLING"):
+            cand = report["by_direction"][g][name]
+            std = report["by_direction"][g]["MOVING_LAYER_AVERAGE"]
+            lin = report["by_direction"][g]["LINEAR_STORAGE"]
+            moving[g] = better_than(cand, std) and better_than(cand, lin)
+        hold = noninferior(
+            report["by_direction"]["HOLD"][name],
+            report["by_direction"]["HOLD"]["LINEAR_STORAGE"],
+        )
+        support[name] = {
+            "WATER_TABLE_RISING": moving["WATER_TABLE_RISING"],
+            "WATER_TABLE_FALLING": moving["WATER_TABLE_FALLING"],
+            "HOLD_NONINFERIOR_TO_B5": hold,
+        }
+        if all(moving.values()) and hold:
+            supported.append(name)
+
+    preferred = []
+    for name in supported:
+        ok = True
+        for g in ("HOLD", "WATER_TABLE_RISING", "WATER_TABLE_FALLING"):
+            pool = [report["by_direction"][g][n] for n in supported]
+            cur = report["by_direction"][g][name]
+            min_rms = min(x["rms"] for x in pool)
+            min_mae = min(x["mae"] for x in pool)
+            ok &= cur["rms"] <= min_rms + 1.0e-12 and cur["mae"] <= min_mae + 1.0e-12
+        if ok:
+            preferred.append(name)
+
+    direction_dependent = any(
+        support[n]["WATER_TABLE_RISING"] != support[n]["WATER_TABLE_FALLING"]
+        for n in support
+    )
+
+    if not hard_ok:
+        decision = "BC2_B6_TERMINAL_STORAGE_DIAGNOSTIC_BLOCKED"
+    elif supported and preferred:
+        decision = "BC2_B6_TERMINAL_STORAGE_STATE_SUPPORTED"
+    elif supported:
+        decision = "BC2_B6_TERMINAL_STORAGE_STATE_SUPPORTED_WIDTH_UNRESOLVED"
+    elif direction_dependent:
+        decision = "BC2_B6_TERMINAL_STORAGE_DIRECTION_DEPENDENT"
+    else:
+        decision = "BC2_B6_TERMINAL_STORAGE_NOT_SUPPORTED"
+
+    gap = {}
+    for d in WIDTHS:
+        name = f"TERMINAL_{str(d).replace('.', '_')}CM"
+        gap[name] = {}
+        for g in ("HOLD", "WATER_TABLE_RISING", "WATER_TABLE_FALLING"):
+            c = report["by_direction"][g][name]
+            p = report["by_direction"][g]["POINT_2_5CM"]
+            gap[name][g] = {
+                "rms_excess_over_point_cm_per_day": c["rms"] - p["rms"],
+                "mae_excess_over_point_cm_per_day": c["mae"] - p["mae"],
+                "sign_mismatch_excess_over_point": c["sign_mismatch"] - p["sign_mismatch"],
+            }
+
+    result = {
+        "schema": "swap5.lare.bc2.b6.result.v1",
+        "workstream": "F-ROM-LARE",
+        "work_unit": "LARE-BC2-B6",
+        "decision": decision,
+        "complete": complete,
+        "hard_checks": {
+            "max_abs_Wb_plus_Wt_minus_Wm_cm": max_projection_closure,
+            "projection_storage_closure_gate_cm": STORAGE_GATE,
+            "max_abs_terminal_storage_64_vs_128_cm": max_storage_cross,
+            "quadrature_crosscheck_gate_cm": STORAGE_GATE,
+            "failure_count": len(failures),
+        },
+        "support": support,
+        "supported_terminal_states": supported,
+        "preferred_terminal_state": preferred,
+        "terminal_state_ranges": {str(d): terminal_ranges[d] for d in WIDTHS},
+        "local_information_gap": gap,
+        "failures": failures[:20],
+        **report,
+        "interpretation": [
+            "Each terminal candidate adds exactly one conservative moving storage state; no point pressure head enters the candidate closure.",
+            "The candidate qH is the standard LARE water-table face formula applied to the terminal-band average water content.",
+            "POINT_2_5CM remains a full-order diagnostic context only.",
+            "This is state/operator evidence only. The moving internal boundary H-d has not yet been given a prognostic conservation law.",
+        ],
+        "added_state_dimension": 1,
+        "propagated_dynamics_authorized": False,
+        "application_acceptance_adjudicated": False,
+        "production_rom_authorized": False,
+    }
+    args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    print(json.dumps({
+        "decision": decision,
+        "hard_checks": result["hard_checks"],
+        "support": support,
+        "supported_terminal_states": supported,
+        "preferred_terminal_state": preferred,
+        "by_direction": report["by_direction"],
+    }, sort_keys=True))
+    return 0 if hard_ok else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
