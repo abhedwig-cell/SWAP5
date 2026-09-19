@@ -1,9 +1,13 @@
 # Tabulated hydraulics characterization
 
-This directory is an evidence-only research harness. It does not change SWAP5 production physics.
+This directory is an evidence-only research harness. It does not change SWAP5 production physics or claim admission of tabulated hydraulics.
 
-The first check reproduces the near-saturation indexing path in the current public SWAP tabulated-hydraulics implementation at pinned upstream commit `c22bd832ddf3e53e330a552f5e31e74f183362d1`.
+## Correction of the first probe
 
-The current reader preprocessing sets `ientrytab(lay,1)=0`. For pressure heads in the small negative range where the fast lookup clamps to `k=1`, `EvalTabulatedFunction` assigns `klo=0` and indexes `sptab(...,klo)`, although the third dimension of `sptab` starts at 1.
+The first near-saturation probe on this branch was incomplete: it reproduced the explicit assignment `ientrytab(lay,1)=0` but omitted the immediately following descending fill of empty lookup bins. That made the initial out-of-bounds result artificial. That probe is superseded and must not be cited as a defect in the real initialized table route.
 
-The workflow compiles with `-fcheck=all` and treats a bounds-check failure as successful defect reproduction. A later qualification step should add constitutive accuracy tests for theta(h), C(h), K(h), and dK/dh after this indexing defect is bounded or repaired.
+The current harness reproduces the complete lookup-table preprocessing sequence before calling the actual `EvalTabulatedFunction` from the pinned public SWAP implementation at commit `c22bd832ddf3e53e330a552f5e31e74f183362d1`.
+
+It constructs a monotone Mualem-van Genuchten table, applies the current log transforms, lookup-bin construction and backward fill, runs the actual TSPACK preprocessing, and evaluates theta(h), K(h), C(h), and dK/dh on a dense pressure-head grid down to the near-saturation range. The workflow uses `-fcheck=all` so indexing and other runtime violations fail the characterization.
+
+This is a characterization of the current public table numerics, not yet proof that the SWAP5 production application can select this route. SWAP5 canonical currently admits only the analytical `SWSOPHY=0` provider.
