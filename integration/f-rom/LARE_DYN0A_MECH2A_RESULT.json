@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.lare.dyn0a.mech2a.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH2A",
+  "decision": "B01_DIFFUSION_LENGTH_PATTERN_REPRODUCED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH2A_PREREGISTRATION.json",
+    "workflow_run": 35448269748,
+    "artifact_id": 10585897129,
+    "artifact_digest": "sha256:a3a685bf72baee6887f219672570154c42c3c5732e0c6a0a4a42c9498b331400",
+    "executed_head": "e92b936ec4270e88a4d7435cd9be6c7698eff75d",
+    "conclusion": "success"
+  },
+  "frozen_B01_pulse_peak_cases": [
+    {
+      "case": "S1_B1_F2",
+      "se0": 0.65,
+      "forcing": "WET",
+      "L_cm": 20,
+      "lambda_pulse": 2.4847959001132987,
+      "rms_flux_error_cm_per_day": 0.02145371536683556
+    },
+    {
+      "case": "S1_B1_F3",
+      "se0": 0.65,
+      "forcing": "DRY",
+      "L_cm": 20,
+      "lambda_pulse": 2.4847959001132987,
+      "rms_flux_error_cm_per_day": 0.021605871562542747
+    },
+    {
+      "case": "S2_B1_F2",
+      "se0": 0.85,
+      "forcing": "WET",
+      "L_cm": 50,
+      "lambda_pulse": 2.909957936516445,
+      "rms_flux_error_cm_per_day": 0.1732956341504076
+    },
+    {
+      "case": "S2_B1_F3",
+      "se0": 0.85,
+      "forcing": "DRY",
+      "L_cm": 40,
+      "lambda_pulse": 2.327966349213156,
+      "rms_flux_error_cm_per_day": 0.19104638887163733
+    },
+    {
+      "case": "S3_B1_F3",
+      "se0": 0.95,
+      "forcing": "DRY",
+      "L_cm": 80,
+      "lambda_pulse": 2.582183526876651,
+      "rms_flux_error_cm_per_day": 0.4274786000417044
+    }
+  ],
+  "observed_lambda_band": [
+    2.327966349213156,
+    2.909957936516445
+  ],
+  "mean_lambda": 2.55793992256657,
+  "interpretation": [
+    "The preregistered exposed-B01 pattern is exactly reproduced by the repository workflow.",
+    "B01 is not an independent validation dataset because the pattern was observed before formalization.",
+    "The result authorizes only a blind cross-material falsification of the frozen scaling hypothesis.",
+    "No universal LARE layer-size criterion is claimed from MECH2A."
+  ],
+  "cross_material_generalization_claimed": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
