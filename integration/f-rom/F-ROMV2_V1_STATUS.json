@@ -2,7 +2,7 @@
   "schema": "swap5.f-romv2-v1.status.v1",
   "workstream": "F-ROM",
   "work_unit": "F-ROMV2-V1",
-  "phase": "PREREGISTERED_WAITING_PROPOSITION_CANONICAL_ADMISSION",
+  "phase": "PREREGISTERED_READY_TO_EXECUTE_BLIND_VALIDATION",
   "decision": null,
   "preregistration_blob": "91069b15c64fafedbced5b5f1c02d24468490022",
   "frozen_candidate": "C2",
@@ -16,7 +16,14 @@
   "old_exposed_histories_reused": false,
   "trajectory_generation_executed": false,
   "blind_validation_executed": false,
-  "execution_authorized": false,
-  "blocker": "F-ROMV2 proposition PR #415 must be canonically admitted before generation of V01-V04.",
-  "production_rom_authorized": false
+  "execution_authorized": true,
+  "blocker": null,
+  "production_rom_authorized": false,
+  "proposition_admission": {
+    "pull_request": 415,
+    "canonical_merge": "560fae8dcf9b2d9d6b55b31fbfbc07cbef2679b8",
+    "admitted": true
+  },
+  "execution_canonical_base": "560fae8dcf9b2d9d6b55b31fbfbc07cbef2679b8",
+  "next": "EXECUTE_IMMUTABLE_V01_V04_TRAJECTORY_AND_C2_BLIND_GATE_ON_CURRENT_CANONICAL"
 }
