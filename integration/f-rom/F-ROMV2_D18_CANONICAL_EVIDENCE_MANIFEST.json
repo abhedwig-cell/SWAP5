@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.f-romv2-d18.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D18",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d18-fmc-contact-merge",
+    "pull_request": 451,
+    "pull_request_merged": false,
+    "head": "1b3c4157bbae4b33d7b37b9ea82134fc6ca50144",
+    "workflow_run": 35458926533,
+    "workflow_job": 105939131681,
+    "artifact_id": 10589491335,
+    "artifact_digest": "sha256:2094394dbd0a4c2a262dba12757968b5fbd5770cb4a70fce752deac4b6261ffd",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preflight_result_sha256": "1a735dd21040de81cbf0b887848c9453a5679fdd4f8b4bf10dd3d944cdf721bb",
+    "preflight_stdout_sha256": "dd1f630f6cca5544bb5e049d1357f9c9cd843e1d1a666267aeba9b90e56c3d43"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D18_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D18_RESULT.json",
+    "integration/f-rom/F-ROMV2_D18_STATUS.json",
+    "integration/f-rom/F-ROMV2_D18_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D18_MERGE_EVENT_PREFLIGHT_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d18_fmc_contact_merge.py",
+    ".github/workflows/f-romv2-d18-contact-merge.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "D18_horizon_forcing_or_state_retuned_after_result": false,
+  "SWAP_trajectory_evidence_consumed": false,
+  "production_rom_authorized": false
+}
