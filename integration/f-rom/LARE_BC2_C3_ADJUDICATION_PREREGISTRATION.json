@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.lare.bc2.c3.adjudication-preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C3A",
+  "phase": "PREREGISTERED_AFTER_HOLD_CONTROL_EXPOSURE_BEFORE_DYNAMIC_C3_RESULT_EXPOSURE",
+  "exposure_firewall": {
+    "observed_before_rule": [
+      "2.5:WT_HOLD",
+      "5.0:WT_HOLD"
+    ],
+    "dynamic_cases_observed_before_rule": false,
+    "hold_role": "control only; HOLD cannot select a dynamic correction family"
+  },
+  "predecessor": {
+    "c3_preregistration": "integration/f-rom/LARE_BC2_C3_PREREGISTRATION.json",
+    "c2_closeout": "integration/f-rom/LARE_BC2_C2_CLOSEOUT.json",
+    "required_c2_decision": "BIAS_ACCUMULATION_DOMINANT"
+  },
+  "dynamic_case_set": [
+    "2.5:WT_RISE",
+    "2.5:WT_FALL",
+    "2.5:WT_CYCLE",
+    "5.0:WT_RISE",
+    "5.0:WT_FALL",
+    "5.0:WT_CYCLE"
+  ],
+  "ranking_metric": "cumulative_injection_shape_rms_theta_at_final_geometry",
+  "decision_rule": {
+    "GLOBAL_SINGLE_FAMILY_SUPPORTED": [
+      "all eight C3 cases complete and pass hard gates",
+      "the same family is rank-1 on the primary route in all six dynamic cases",
+      "the same family is rank-1 on the cross route in all six dynamic cases",
+      "no dynamic case has a primary/cross rank-1 mismatch"
+    ],
+    "REGIME_DEPENDENT_BIAS_INJECTION": [
+      "all C3 cases complete and pass hard gates",
+      "GLOBAL_SINGLE_FAMILY_SUPPORTED conditions are not all satisfied"
+    ],
+    "NUMERICAL_DIAGNOSTIC_BLOCKED": [
+      "any C3 case incomplete",
+      "any hard conservation/identity gate fails"
+    ]
+  },
+  "c4_authority": {
+    "global_case": "Only the unanimously selected dynamic top family may be tested in a global surgical teacher-forced C4 counterfactual. All other closures/states remain unchanged.",
+    "regime_dependent_case": "No global closure change is authorized. A new preregistration must define regime partitions without fitted magnitude thresholds before any counterfactual.",
+    "blocked_case": "No model change."
+  },
+  "interpretation_constraints": [
+    "Rank-1 is based on cumulative mass-neutral shape injection, not raw flux RMS.",
+    "HOLD may corroborate or contradict mechanism interpretation but cannot rescue failed dynamic unanimity.",
+    "No minimum effect-size threshold is introduced.",
+    "C4 tests causal removal/replacement of one bias channel under teacher forcing; it is not a free-trajectory production model."
+  ],
+  "firewalls": [
+    "NO_DYNAMIC_RESULT_USED_TO_SET_THIS_RULE",
+    "NO_TOP_K_OR_MAJORITY_SUBSTITUTE_FOR_UNANIMITY",
+    "NO_CLOSURE_CHANGE_IN_C3A",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
