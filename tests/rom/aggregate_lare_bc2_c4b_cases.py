@@ -66,7 +66,12 @@ def main():
         best(cases[(w,"WT_CYCLE")],r)=="ORACLE_QH"
         for w in WIDTHS for r in ROUTES
     )
-    coupled_qi_qh=complete and all(
+    coupled_qi_qh_evaluable=complete and all(
+        cases[(w,h)]["routes"][r].get("coupled_QI_QH_qualified",False)
+        and "ORACLE_QI_QH" in cases[(w,h)]["routes"][r].get("variants",{})
+        for w in WIDTHS for h in DYNAMIC for r in ROUTES
+    )
+    coupled_qi_qh=coupled_qi_qh_evaluable and all(
         shape(cases[(w,h)],r,"ORACLE_QI_QH") < shape(cases[(w,h)],r,"ORACLE_QI")
         and shape(cases[(w,h)],r,"ORACLE_QI_QH") < shape(cases[(w,h)],r,"ORACLE_QH")
         for w in WIDTHS for h in DYNAMIC for r in ROUTES
@@ -106,6 +111,10 @@ def main():
                     "cross_rank":p["routes"][CROSS]["single_channel_rank_by_cumulative_shape"],
                     "primary_shapes":{v:shape(p,PRIMARY,v) for v in p["routes"][PRIMARY]["variants"]},
                     "cross_shapes":{v:shape(p,CROSS,v) for v in p["routes"][CROSS]["variants"]},
+                    "primary_variant_failures":p["routes"][PRIMARY].get("variant_failures",{}),
+                    "cross_variant_failures":p["routes"][CROSS].get("variant_failures",{}),
+                    "primary_coupled_QI_QH_qualified":p["routes"][PRIMARY].get("coupled_QI_QH_qualified",False),
+                    "cross_coupled_QI_QH_qualified":p["routes"][CROSS].get("coupled_QI_QH_qualified",False),
                 }
 
     result={
@@ -124,6 +133,7 @@ def main():
             "HOLD_Q90_CAUSAL":hold_q90,
             "QI_CAUSAL_IN_MONOTONE_H_MOTION":monotone_qi,
             "QH_CAUSAL_IN_CYCLE_CUMULATIVE_SHAPE":cycle_qh,
+            "COUPLED_QI_QH_EVALUABLE":coupled_qi_qh_evaluable,
             "COUPLED_QI_QH_STRICTLY_BETTER_IN_ALL_DYNAMIC_CASES":coupled_qi_qh,
         },
         "case_summary":case_summary,
@@ -132,7 +142,8 @@ def main():
             "C4B substitutes exact Reference interval-average channel values only as causal oracles; no deployable closure is tested.",
             "All cases start every interval from exact Reference-projected reduced state, so the comparison isolates within-interval causal error injection.",
             "Single-channel causal hypotheses require unanimity across the preregistered regime cases and both numerical routes.",
-            "The qi+qH combined oracle is reported separately as an interaction diagnostic and cannot rescue a failed single-channel hypothesis.",
+            "The qi+qH combined oracle is evaluated only where it independently qualifies; a blocked coupled oracle cannot invalidate or rescue the core single-channel causal adjudication.",
+            "The larger multi-oracle variants are auxiliary interaction diagnostics and fail closed individually without erasing qualified core single-channel evidence.",
             "No global closure correction is authorized by a regime-dependent outcome."
         ],
         "model_candidate_tested":False,
