@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.lare.bc2.b9.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B9",
+  "phase": "PREREGISTERED_BEFORE_ENRICHED_STATE_INTERNAL_FLUX_CLOSURE_DIAGNOSTIC",
+  "purpose": "Determine whether the enriched moving state (Wb,Wt,H) admits a no-fit physically interpretable closure for the internal flux qi at z=H-d, while retaining the supported BC2-B7 terminal qH reconstruction.",
+  "predecessors": {
+    "B7": "integration/f-rom/LARE_BC2_B7_RESULT.json",
+    "required_B7_decision": "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED",
+    "B8": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+    "required_B8_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+  },
+  "widths_cm": [
+    2.5,
+    5
+  ],
+  "reference_qi": {
+    "authority": "BC2-B8 split moving-control-volume identity",
+    "reconstruction": "mean of qi_from_bulk and qi_from_terminal after their <=1e-10 cm/day identity gate",
+    "no_new_reference_solve": true
+  },
+  "state": {
+    "B": "H-90-d",
+    "Wb": "integral_90^{H-d} theta dz",
+    "Wt": "integral_{H-d}^{H} theta dz",
+    "H": "water-table depth",
+    "dimension_increment_relative_to_B5": 1
+  },
+  "frozen_candidates": {
+    "STANDARD_SPLIT_LARE": {
+      "description": "Published first-order layer-average interface closure applied to bulk and terminal storage averages.",
+      "theta_b": "Wb/B",
+      "theta_t": "Wt/d",
+      "psi_b": "psi(theta_b)",
+      "psi_t": "psi(theta_t)",
+      "Kb": "K(theta_b)",
+      "Kt": "K(theta_t)",
+      "Kint": "[d*Kb + B*Kt]/[B+d]",
+      "qi": "Kint * [1 + 2*(psi_t-psi_b)/(B+d)]",
+      "added_parameter": false
+    },
+    "TERMINAL_SIDE_LINEAR": {
+      "description": "Use the BC2-B7 mass-consistent terminal slope as the one-sided local interface gradient.",
+      "slope": "a_t solves Wt=integral_0^d theta(a_t*x) dx",
+      "psi_i": "a_t*d",
+      "Ki": "K(theta(psi_i))",
+      "qi": "Ki*(1-a_t)",
+      "added_parameter": false
+    },
+    "BULK_SIDE_LINEAR": {
+      "description": "Use both Wt and Wb to reconstruct a mass-consistent one-sided bulk slope anchored to the terminal-derived interface suction.",
+      "terminal_interface_suction": "psi_i=a_t*d from TERMINAL_SIDE_LINEAR",
+      "coordinate": "y=(H-d)-z, y=0 at internal interface and y=B at 90 cm",
+      "profile": "psi_b(y)=psi_i+b*y",
+      "mass_constraint": "Wb=integral_0^B theta(psi_i+b*y) dy",
+      "admissible_slope_domain": "b >= -psi_i/B so reconstructed suction is nonnegative throughout the bulk",
+      "Ki": "same interface K(theta(psi_i))",
+      "qi": "Ki*(1-b)",
+      "added_parameter": false
+    }
+  },
+  "consistency_diagnostic": {
+    "one_sided_flux_mismatch": "q_i_terminal_side - q_i_bulk_side",
+    "interpretation": "If the two mass-consistent one-sided slopes imply materially different qi, the enriched state does not define a unique local gradient under this piecewise-linear reconstruction.",
+    "no_blending_or_averaging_selected": true
+  },
+  "hydrostatic_invariants": {
+    "exact_state": "For hydrostatic storage at any qualified H, a_t=1, psi_i=d, b=1.",
+    "consequence": "Both TERMINAL_SIDE_LINEAR and BULK_SIDE_LINEAR give qi=0.",
+    "gate": 1e-10
+  },
+  "time_alignment": "Candidate endpoint qi values are trapezoid-averaged over each 0.0008-day Reference interval and compared with interval-average BC2-B8 qi.",
+  "strata": [
+    "HOLD",
+    "WATER_TABLE_RISING",
+    "WATER_TABLE_FALLING",
+    "each frozen history"
+  ],
+  "metrics": [
+    "bias",
+    "mean absolute qi error",
+    "RMS qi error",
+    "maximum absolute qi error",
+    "qi sign mismatch count",
+    "Pearson correlation",
+    "candidate domain-exit count",
+    "one-sided flux mismatch RMS/max",
+    "slope a_t and b ranges"
+  ],
+  "adjudication": {
+    "candidate_support_rule": "A candidate receives qi-operator support only if it is defined on all accepted Reference states, has lower RMS and mean-absolute qi error than STANDARD_SPLIT_LARE and no greater sign-mismatch count in both WATER_TABLE_RISING and WATER_TABLE_FALLING, while being noninferior in HOLD.",
+    "preferred_operator_rule": "A unique preferred operator is declared only if one supported candidate is component-wise minimum or tied minimum for RMS and mean-absolute error and has minimum sign mismatches in all three direction strata.",
+    "width_rule": "No preferred d is declared unless the same width is supported by BC2-B7 qH and the B9 preferred qi operator is component-wise minimum/tied minimum across both widths in all three direction strata. Otherwise width remains unresolved.",
+    "one_sided_consistency_rule": "The terminal-vs-bulk one-sided mismatch is diagnostic and cannot be repaired by an empirical blend in B9.",
+    "valid_outcomes": [
+      "BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED",
+      "BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED_OPERATOR_OR_WIDTH_UNRESOLVED",
+      "BC2_B9_ENRICHED_STATE_QI_DIRECTION_DEPENDENT",
+      "BC2_B9_ENRICHED_STATE_QI_NOT_SUPPORTED",
+      "BC2_B9_ENRICHED_STATE_QI_DIAGNOSTIC_BLOCKED"
+    ],
+    "propagated_dynamics_authorized": false
+  },
+  "next_if_supported": "A later BC2-C dynamics work unit may propagate (Wb,Wt,H) using the B8 conservation laws, the supported B7 qH closure and the supported B9 qi closure. That requires its own preregistration and restart/domain tests.",
+  "firewalls": [
+    "NO_EMPIRICAL_BLEND_OF_ONE_SIDED_FLUXES",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_POST_RESPONSE_WIDTH_OR_OPERATOR_CREATION",
+    "NO_FITTED_SLOPE_COEFFICIENT",
+    "NO_PROPAGATED_REDUCED_DYNAMICS_IN_B9",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
