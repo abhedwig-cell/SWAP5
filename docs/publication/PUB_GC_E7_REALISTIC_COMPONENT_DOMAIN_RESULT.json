@@ -83,7 +83,7 @@
       "effect_on_e7": "NONE; black evaporation is separately rejected for bottom_mode=5 and root/drainage guards remain unchanged"
     },
     "ppa_wu04b": {
-      "canonical_merge": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
       "status_path": "integration/audits/PPA_WU04B_STATUS.json",
       "status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
       "scope": "SWREDU=2 Boesten-Stroosnijder evaporation reduction bounded production slice",
@@ -152,6 +152,16 @@
     "effect_on_e7": "NONE",
     "reason": "Current canonical still requires homogeneous bottom_mode=5 for the production groundwater owner and tile_config_valid rejects drainage_response_active/root_extraction_active before owner-state allocation. PPA-WU02/WU03, PPA-ROOT-HYD01/HYD02 and PPA-WU04-A/B do not admit the authentic Hupsel root+drainage mode-5 process composition.",
     "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
-    "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a"
+    "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
+    "post_wu04b_live_delta": {
+      "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "head": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+      "classification": "NO_E7_AUTHORITY_EFFECT",
+      "paths": [
+        "integration/f-doc/F-DOC23_STATUS.json",
+        "integration/trace/**"
+      ],
+      "reason": "No production runtime, coupling, PUB-GC publication asset, Hupsel authority, or application-owner source changed."
+    }
   }
 }
