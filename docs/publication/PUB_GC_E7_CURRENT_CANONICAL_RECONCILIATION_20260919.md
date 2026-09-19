@@ -5,7 +5,7 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical basis inspected: `integration/f-ci-canonical@3bc160ad6b73f8f491b07671ec747cf2b2bc3074`.
+Canonical basis inspected: `integration/f-ci-canonical@6ec1c53c1ed051beae6e750a36cbf279a88a87a1`.
 
 E7 was canonically admitted through PR #330 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`. PR #327 is historical/superseded and must not be rebased or merged as a second authority path.
 
