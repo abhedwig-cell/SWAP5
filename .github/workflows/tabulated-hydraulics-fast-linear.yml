@@ -7,36 +7,37 @@ on:
       - research/tabulated-hydraulics-characterization
     paths:
       - '.github/workflows/tabulated-hydraulics-fast-linear.yml'
+      - 'research/tabulated_hydraulics/patch_fast_linear.py'
 
 jobs:
-  fast-linear:
+  fast_linear:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout SWAP5 research branch
+      - name: Checkout research branch
         uses: actions/checkout@v4
 
-      - name: Checkout pre-strangler SWAP runtime
+      - name: Checkout SWAP runtime
         uses: actions/checkout@v4
         with:
           repository: SWAP-model/SWAP
           ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
           path: swap-src
 
-      - name: Materialize toml-f dependency
+      - name: Checkout toml-f
         uses: actions/checkout@v4
         with:
           repository: toml-f/toml-f
           ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
           path: swap-src/subprojects/toml-f
 
-      - name: Materialize ttutil dependency
+      - name: Checkout ttutil
         uses: actions/checkout@v4
         with:
           repository: SWAP-model/ttutil
           ref: v4.2.7
           path: swap-src/subprojects/ttutil
 
-      - name: Checkout pinned Hupsel case
+      - name: Checkout Hupsel case
         uses: actions/checkout@v4
         with:
           repository: SWAP-model/swap-testcases
@@ -52,219 +53,102 @@ jobs:
           meson compile -C swap-src/build-tspack
           cp swap-src/build-tspack/swap swap-tspack
 
-      - name: Patch forward table evaluation to transformed-coordinate linear interpolation
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path("swap-src/src/soil/sptabulated.f90")
-          s=p.read_text()
-          needle="""         if (use_TSPACK) then
-             x(1:2)   = sptab(ind1,node,klo:khi)"""
-          inject="""         ! TAB-HYD research-only fast linear interpolation in transformed x.
-         ! theta is linear in x; log(K) is linear in x.
-         f1 = sptab(ind2,node,klo)
-         f2 = sptab(ind2,node,khi)
-         delta = (f2-f1)/(x2-x1)
-         xx = xe_local-x1
-         if (iWhat <= 2) then
-            ye = f1 + xx*delta
-            if (do_ln_trans .and. iWhat == 2) ye = dexp(ye)
-         else if (iWhat == 3) then
-            dyedxe = delta
-            if (do_ln_trans) dyedxe = dyedxe/(-xe+1.0d0)
-         else if (iWhat == 4) then
-            ye = f1 + xx*delta
-            if (do_ln_trans) then
-               ye = dexp(ye)
-               dyedxe = delta*ye/(-xe+1.0d0)
-            else
-               dyedxe = delta
-            end if
-         end if
-         return
-
-         if (use_TSPACK) then
-             x(1:2)   = sptab(ind1,node,klo:khi)"""
-          if s.count(needle) != 1:
-              raise SystemExit(f"expected one EvalTabulatedFunction insertion point, found {s.count(needle)}")
-          p.write_text(s.replace(needle,inject,1))
-          print("FAST_LINEAR_PATCH_APPLIED")
-          PY
-
       - name: Build fast-linear variant
         shell: bash
         run: |
           set -euo pipefail
+          python3 research/tabulated_hydraulics/patch_fast_linear.py swap-src/src/soil/sptabulated.f90
           meson setup swap-src/build-linear swap-src -Denable_pfunit=false
           meson compile -C swap-src/build-linear
           cp swap-src/build-linear/swap swap-linear
 
-      - name: Prepare analytical, TSPACK and fast-linear cases
+      - name: Prepare cases
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/tab-hyd-linear
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py swap-testcases/cases/hupselbrook/legacy build/tab-hyd-linear/prepared
+          cp -a build/tab-hyd-linear/prepared/analytic_k0 build/tab-hyd-linear/analytic
+          cp -a build/tab-hyd-linear/prepared/table_k0 build/tab-hyd-linear/tspack
+          cp -a build/tab-hyd-linear/prepared/table_k0 build/tab-hyd-linear/linear
+          rm -rf build/tab-hyd-linear/prepared
           python3 - <<'PY'
           from pathlib import Path
-          import importlib.util
           import re
-          import shutil
-
-          spec=importlib.util.spec_from_file_location(
-              "prep","research/tabulated_hydraulics/prepare_hupsel_e2e.py"
-          )
-          prep=importlib.util.module_from_spec(spec)
-          spec.loader.exec_module(prep)
-
-          src=Path("swap-testcases/cases/hupselbrook/legacy")
-          root=Path("build/tab-hyd-linear")
-
-          analytic=root/"analytic"
-          shutil.copytree(src,analytic)
-          prep.edit_case(analytic,table=False,swkimpl=0)
-
-          for name,n in (("tspack_dense",900),("linear_dense",900),("linear_100",100),("linear_075",75)):
-              dst=root/name
-              shutil.copytree(src,dst)
-              prep.NCANDIDATE=n
-              counts=prep.edit_case(dst,table=True,swkimpl=0)
-              (dst/"table_counts.txt").write_text(
-                  f"candidate_points={n}\ntop_rows={counts[0]}\nsub_rows={counts[1]}\n"
-              )
-
-          for d in root.iterdir():
-              if not d.is_dir():
-                  continue
-              p=d/"swap.swp"
+          for name in ("analytic","tspack","linear"):
+              p=Path("build/tab-hyd-linear")/name/"swap.swp"
               s=p.read_text()
-              s,k=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
-              if k != 1:
-                  raise RuntimeError(f"SWMONTH edit failed for {d.name}")
+              s,n=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
+              if n != 1:
+                  raise RuntimeError(name)
               p.write_text(s)
           PY
 
-      - name: Run full-period qualification
+      - name: Qualify full period
         shell: bash
         run: |
           set -euo pipefail
-          printf 'variant\tbinary\treturn_code\truntime_seconds\n' > build/tab-hyd-linear/status.tsv
-
           run_case () {
-            variant="$1"
-            binary="$2"
-            work="$GITHUB_WORKSPACE/build/tab-hyd-linear/$variant"
+            name="$1"
+            bin="$2"
+            work="$GITHUB_WORKSPACE/build/tab-hyd-linear/$name"
             pushd "$work" >/dev/null
             set +e
-            /usr/bin/time -f '%e' -o qualification_runtime.txt timeout 90 "$binary" > qualification.log 2>&1
+            /usr/bin/time -f '%e' -o qualification_runtime.txt timeout 90 "$bin" > qualification.log 2>&1
             rc=$?
             set -e
             popd >/dev/null
-            runtime=$(tail -1 "$work/qualification_runtime.txt")
-            printf '%s\t%s\t%s\t%s\n' "$variant" "$(basename "$binary")" "$rc" "$runtime" \
-              | tee -a build/tab-hyd-linear/status.tsv
+            echo "$name rc=$rc runtime=$(cat "$work/qualification_runtime.txt")"
             test "$rc" -eq 100
           }
-
           run_case analytic "$GITHUB_WORKSPACE/swap-tspack"
-          run_case tspack_dense "$GITHUB_WORKSPACE/swap-tspack"
-          run_case linear_dense "$GITHUB_WORKSPACE/swap-linear"
-          run_case linear_100 "$GITHUB_WORKSPACE/swap-linear"
-          run_case linear_075 "$GITHUB_WORKSPACE/swap-linear"
+          run_case tspack "$GITHUB_WORKSPACE/swap-tspack"
+          run_case linear "$GITHUB_WORKSPACE/swap-linear"
 
-          for variant in tspack_dense linear_dense linear_100 linear_075; do
-            python research/tabulated_hydraulics/compare_hupsel_e2e.py \
-              build/tab-hyd-linear/analytic "build/tab-hyd-linear/$variant" \
-              "build/tab-hyd-linear/$variant-comparison.json" \
-              --label "$variant-vs-analytic" \
-              | tee "build/tab-hyd-linear/$variant-comparison.txt"
-          done
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py build/tab-hyd-linear/analytic build/tab-hyd-linear/tspack build/tab-hyd-linear/tspack-comparison.json --label tspack-vs-analytic | tee build/tab-hyd-linear/tspack-comparison.txt
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py build/tab-hyd-linear/analytic build/tab-hyd-linear/linear build/tab-hyd-linear/linear-comparison.json --label linear-vs-analytic | tee build/tab-hyd-linear/linear-comparison.txt
 
-      - name: Repeated runtime benchmark
+      - name: Benchmark
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import csv
-          import statistics
-          import subprocess
-          import time
+          import statistics, subprocess, time
 
           root=Path("build/tab-hyd-linear").resolve()
           routes={
               "analytic":(Path("swap-tspack").resolve(),root/"analytic"),
-              "tspack_dense":(Path("swap-tspack").resolve(),root/"tspack_dense"),
-              "linear_dense":(Path("swap-linear").resolve(),root/"linear_dense"),
-              "linear_100":(Path("swap-linear").resolve(),root/"linear_100"),
-              "linear_075":(Path("swap-linear").resolve(),root/"linear_075"),
+              "tspack":(Path("swap-tspack").resolve(),root/"tspack"),
+              "linear":(Path("swap-linear").resolve(),root/"linear"),
           }
-
-          def one(label):
+          def run(label):
               binary,work=routes[label]
               for fn in ("result_output.csv","swap.log"):
                   p=work/fn
-                  if p.exists():
-                      p.unlink()
-              t0=time.perf_counter()
-              p=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,
-                               stderr=subprocess.DEVNULL,timeout=30)
-              dt=time.perf_counter()-t0
-              if p.returncode != 100:
-                  raise RuntimeError(f"{label}: rc={p.returncode}")
+                  if p.exists(): p.unlink()
+              t=time.perf_counter()
+              p=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30)
+              dt=time.perf_counter()-t
+              if p.returncode != 100: raise RuntimeError((label,p.returncode))
               return dt
-
-          for label in routes:
-              one(label)
-
-          labels=list(routes)
-          rows=[]
-          for r in range(10):
-              order=labels[r%len(labels):]+labels[:r%len(labels)]
-              if r%2:
-                  order=list(reversed(order))
-              for label in order:
-                  rows.append((r,label,one(label)))
-
-          with (root/"benchmark.csv").open("w",newline="") as fh:
-              w=csv.writer(fh)
-              w.writerow(["round","route","seconds"])
-              w.writerows(rows)
-
+          for label in routes: run(label)
           vals={k:[] for k in routes}
-          for _,k,v in rows:
-              vals[k].append(v)
+          orders=[("analytic","tspack","linear"),("linear","analytic","tspack"),("tspack","linear","analytic")]
+          for i in range(12):
+              for label in orders[i%3]:
+                  vals[label].append(run(label))
           med={k:statistics.median(v) for k,v in vals.items()}
-
-          with (root/"benchmark-summary.txt").open("w") as fh:
-              for k in labels:
-                  fh.write(f"{k}_median_s={med[k]:.9g}\n")
-              for k in labels[1:]:
-                  fh.write(f"{k}_over_analytic={med[k]/med['analytic']:.9g}\n")
-          print((root/"benchmark-summary.txt").read_text(),end="")
-          PY
-
-      - name: Build compact fidelity summary
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import json
-
-          root=Path("build/tab-hyd-linear")
-          for label in ("tspack_dense","linear_dense","linear_100","linear_075"):
-              d=json.loads((root/f"{label}-comparison.json").read_text())
-              m=d["metrics"]
-              print(
-                  label,
-                  f"GWL_max={m['GWL']['max_abs']:.12g}",
-                  f"GWL_rmse={m['GWL']['rmse']:.12g}",
-                  f"DSTOR_max={m['DSTOR']['max_abs']:.12g}",
-                  f"DRAINAGE_max={m['DRAINAGE']['max_abs']:.12g}",
-                  f"TACT_max={m['TACT']['max_abs']:.12g}",
-              )
+          lines=[
+              f"analytic_median_s={med['analytic']:.9g}",
+              f"tspack_median_s={med['tspack']:.9g}",
+              f"linear_median_s={med['linear']:.9g}",
+              f"tspack_over_analytic={med['tspack']/med['analytic']:.9g}",
+              f"linear_over_analytic={med['linear']/med['analytic']:.9g}",
+              f"linear_over_tspack={med['linear']/med['tspack']:.9g}",
+          ]
+          Path("build/tab-hyd-linear/benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
           PY
 
       - name: Upload evidence
@@ -273,9 +157,6 @@ jobs:
         with:
           name: tab-hyd-fast-linear-evidence
           path: |
-            build/tab-hyd-linear/status.tsv
             build/tab-hyd-linear/*comparison*
-            build/tab-hyd-linear/benchmark.csv
             build/tab-hyd-linear/benchmark-summary.txt
-            build/tab-hyd-linear/*/table_counts.txt
             build/tab-hyd-linear/*/qualification_runtime.txt
