@@ -1,0 +1,67 @@
+name: F-ROM-LARE BC1 R16 time-level attribution
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC1_STAGE_D_PREREGISTRATION.json'
+      - 'tests/rom/run_lare_bc1_stage_d.py'
+      - '.github/workflows/f-rom-lare-bc1-stage-d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover qualified RS1-GW Stage-A Reference trajectories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc1-d
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585316225/zip" > /tmp/lare-bc1-d/stage-a.zip
+          echo "a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0  /tmp/lare-bc1-d/stage-a.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc1-d/stage-a.zip -d /tmp/lare-bc1-d/stage-a
+          echo "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345  /tmp/lare-bc1-d/stage-a/o0.txt" | sha256sum -c -
+
+      - name: Execute R16 lower-face time-level attribution
+        run: |
+          python3 tests/rom/run_lare_bc1_stage_d.py \
+            --reference /tmp/lare-bc1-d/stage-a/o0.txt \
+            --prereg integration/f-rom/LARE_BC1_STAGE_D_PREREGISTRATION.json \
+            --output /tmp/lare-bc1-d/LARE_BC1_STAGE_D_RESULT.json \
+            | tee /tmp/lare-bc1-d/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc1-d/LARE_BC1_STAGE_D_RESULT.json'))
+          assert r['decision'] in {
+              'BC1_R16_BOUNDARY_TIME_LEVEL_DOMINANT',
+              'BC1_R16_BOUNDARY_TIME_LEVEL_PARTIAL',
+              'BC1_R16_BOUNDARY_TIME_LEVEL_NOT_DOMINANT',
+              'BC1_R16_ATTRIBUTION_BLOCKED',
+          }
+          assert r['physical_closure_selected']=='CURRENT_LAYER_FACE'
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC1_STAGE_D_FIREWALL=PASS')
+          PY
+          sha256sum /tmp/lare-bc1-d/LARE_BC1_STAGE_D_RESULT.json /tmp/lare-bc1-d/analyzer.txt > /tmp/lare-bc1-d/sha256.txt
+
+      - name: Upload BC1-D evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc1-stage-d
+          path: /tmp/lare-bc1-d/
+          if-no-files-found: warn
