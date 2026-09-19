@@ -2,7 +2,7 @@ program f_tab01_legacy_oracle_characterization
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use swap_array_dimensions, only: MACP, MATAB, MATABENTRIES
-  use doTSPACK, only: IER
+  use doTSPACK, only: IER, ICFLG
   implicit none
 
   integer, parameter :: n_cases = 5
@@ -60,7 +60,7 @@ contains
     real(real64) :: theta_self_max_rel, k_self_max_rel
     real(real64) :: hp, hm, tp, tm, kp, km, c_fd, dk_fd, eps
     real(real64) :: denom
-    integer :: i, q, j, node
+    integer :: i, q, j, node, theta_iter, k_iter, theta_invalid, k_invalid
 
     node = 1
     sptab = 0.0_real64
@@ -84,7 +84,9 @@ contains
     end do
 
     call PreProcTabulatedFunction(1, n, xtab, ytab, dydx, sigma)
-    if (IER /= 0) then
+    theta_iter = IER
+    theta_invalid = count(ICFLG(1:n-1) /= 0)
+    if (IER < 0) then
        write(*,'(A,I0,A,I0)') 'F_TAB01_PREPROC_THETA_ERROR n=',n,' IER=',IER
        failures = failures + 1
        return
@@ -101,7 +103,9 @@ contains
        ytab(i) = sptab(3,node,i)
     end do
     call PreProcTabulatedFunction(2, n, xtab, ytab, dydx, sigma)
-    if (IER /= 0) then
+    k_iter = IER
+    k_invalid = count(ICFLG(1:n-1) /= 0)
+    if (IER < 0) then
        write(*,'(A,I0,A,I0)') 'F_TAB01_PREPROC_K_ERROR n=',n,' IER=',IER
        failures = failures + 1
        return
@@ -165,6 +169,9 @@ contains
        k_self_max_rel = max(k_self_max_rel,abs(dkdh_q-dk_fd)/denom)
     end do
 
+    write(*,'(A,I0,A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_PREPROC n=',n, &
+      ' theta_iterations=',theta_iter,' theta_invalid_constraints=',theta_invalid, &
+      ' K_iterations=',k_iter,' K_invalid_constraints=',k_invalid
     write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
       'F_TAB01_METRICS n=',n, &
       ' theta_max_abs=',theta_max_abs, &
