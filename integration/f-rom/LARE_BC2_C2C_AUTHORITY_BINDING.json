@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.lare.bc2.c2c.authority-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2C",
+  "required_C2A_decision": "BC2_C2A_ACTUAL_DRIFT_GAIN_MAPPED",
+  "C2A_result_path": "integration/f-rom/LARE_BC2_C2A_RESULT.json",
+  "C2A_result_blob_sha": "52544c38328730d691186776105ff86605d7d8ce",
+  "C2A_result_sha256": "288099d209bff2b0d5898ad647dcd649934291b97ca8d2646488b2bcc3d0bc27",
+  "required_C2B_decision": "BC2_C2B_BLIND_TANGENT_PANEL_MAPPED",
+  "C2B_result_path": "integration/f-rom/LARE_BC2_C2B_RESULT.json",
+  "C2B_result_blob_sha": "63821f3728bbed2b370f16aae1d7530f71382e50",
+  "C2B_result_sha256": "c19e2f341b7c7c36595788b9cb9bf06254b8ff421f6ad0eb3c493641ed383f3f",
+  "C2B_source_run": 35458438223,
+  "C2B_artifact_id": 10589660634,
+  "C2B_artifact_digest": "sha256:a254bfcf4154ca626ff87fe8ae644bc670ed910b1ab979ebbf5ba9b9ab359c0c",
+  "C2_preregistration_path": "integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json",
+  "C2_preregistration_blob_sha": "8f82d1203c9ca2cf284a2b1a66191818a4fce695",
+  "C2C_execution_authorized": true,
+  "expected_from_frozen_case_rules": {
+    "actual_case_amplifying_count": 0,
+    "tangent_case_amplifying_count": 0,
+    "expected_global_decision_if_persisted_results_match": "BIAS_ACCUMULATION_DOMINANT"
+  },
+  "authorization_scope": "Pure adjudication of frozen C2A and C2B diagnostics under preregistered case and global classification rules. No dynamics execution.",
+  "firewalls": [
+    "NO_MODEL_CHANGE",
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_NEW_STATE",
+    "NO_CLOSURE_CHANGE",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ]
+}
