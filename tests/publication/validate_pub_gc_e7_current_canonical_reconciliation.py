@@ -32,6 +32,10 @@ root_hyd02 = load("integration/audits/PPA_ROOT_HYD02_RESULT.json")
 wu05c = load("integration/audits/PPA_WU05C_STATUS.json")
 wu04a = load("integration/audits/PPA_WU04A_STATUS.json")
 wu04b = load("integration/audits/PPA_WU04B_STATUS.json")
+acc02_f1 = load("integration/research/HYDRO_MEMORY_ACC02_F1_RESULT.json")
+acc02_f1_pre = load("integration/research/HYDRO_MEMORY_ACC02_F1_PREREGISTRATION.json")
+acc02_bridge_path = "tests/research/support/mod_hydro_memory_acc02_f1_bridge.f90"
+acc02_bridge = read(acc02_bridge_path).decode("utf-8")
 src_path = "src/runtime/mod_fmr_production_application_bootstrap.f90"
 backend_path = "src/runtime/mod_fmr_serialized_reference_backend.f90"
 temporal_path = "src/solver/mod_reference_richards_temporal_indicator.f90"
@@ -118,6 +122,19 @@ assert rec["later_canonical_workunits"]["PPA_WU04B"]["root_or_drainage_owner_bro
 assert "tile%parameters%boesten_evaporation_active" in src
 assert "if (tile%parameters%bottom_mode == 5) return" in src
 
+assert git_blob_sha("integration/research/HYDRO_MEMORY_ACC02_F1_RESULT.json") == rec["later_research_authority"]["HYDRO_MEMORY_ACC02_F1"]["result_blob"]
+assert git_blob_sha("integration/research/HYDRO_MEMORY_ACC02_F1_PREREGISTRATION.json") == rec["later_research_authority"]["HYDRO_MEMORY_ACC02_F1"]["preregistration_blob"]
+assert git_blob_sha(acc02_bridge_path) == rec["later_research_authority"]["HYDRO_MEMORY_ACC02_F1"]["support_bridge_blob"]
+assert acc02_f1["decision"] == "ACC02_F1_PASS_LIVE_ROOT_ACTIVE_SINGLE_WINDOW"
+assert acc02_f1["stage0_authorized"] is False
+assert acc02_f1_pre["production_source_change"] is False
+assert acc02_f1_pre["reference_source_change"] is False
+assert 'p%root_extraction_active=.true.' in acc02_bridge
+assert 'p%soil_temperature_active=.false.; p%drainage_response_active=.false.' in acc02_bridge
+assert rec["later_research_authority"]["HYDRO_MEMORY_ACC02_F1"]["mode5_production_owner_widened"] is False
+assert req["current_canonical_authority"]["HYDRO_MEMORY_ACC02_F1"]["production_application_owner_widened"] is False
+assert req["current_canonical_authority"]["HYDRO_MEMORY_ACC02_F1"]["drainage_response_active"] is False
+
 assert e7["canonical_reconciliation"]["production_bootstrap_blob"] == rec["current_production_boundary"]["bootstrap_blob"]
 assert e7["canonical_reconciliation"]["ppa_root_hyd02_result_blob"] == rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["result_blob"]
 assert e7["canonical_reconciliation"]["ppa_wu04a_status_blob"] == rec["later_canonical_workunits"]["PPA_WU04A"]["status_blob"]
@@ -186,6 +203,7 @@ print("PUB_GC_E7_PPA_WU05C_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_ROOT_HYD02_TANGENT_ONLY_NO_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04A_NO_MODE5_PROCESS_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04B_NO_MODE5_PROCESS_WIDENING=PASS")
+print("PUB_GC_E7_ACC02_F1_RESEARCH_ONLY_NO_MODE5_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_APPLICATION_REQUIREMENTS_CURRENT_PROVENANCE=PASS")
 print("PUB_GC_E7_REPRODUCIBILITY_MANIFEST_BOUND=PASS")
 print("PUB_GC_E7_CURRENT_STATE_ANTI_DRIFT=PASS")
