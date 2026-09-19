@@ -1,0 +1,187 @@
+{
+  "schema": "swap5.lare.bc2.c4d.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4D",
+  "phase": "PREREGISTERED_AFTER_C3_CLOSEOUT_BEFORE_PHASE_RESOLVED_BIAS_EXECUTION",
+  "predecessor": {
+    "c3_closeout": "integration/f-rom/LARE_BC2_C3_CLOSEOUT.json",
+    "c3a_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+    "required_decision": "REGIME_DEPENDENT_BIAS_INJECTION"
+  },
+  "question": "Why does QI dominate monotone RISE/FALL histories while QH dominates the final cumulative shape injection of WT_CYCLE: signed QI cancellation across monotone phases, a reversal-local QH mechanism, or a genuinely QH-dominant monotone phase?",
+  "model_policy": {
+    "model": "unchanged C0 enriched prescribed-H reduced geometry",
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "history": "WT_CYCLE",
+    "primary_internal_dt_day": 0.00005,
+    "cross_internal_dt_day": 0.000025,
+    "reference": "immutable qualified BC2-A2 Reference geometry",
+    "no_model_change": true
+  },
+  "phase_authority": {
+    "source": "BC2-A2 accepted H(t) strict interior zero-pressure crossing",
+    "partition_rule": "maximal contiguous nonzero sign runs of dH = H_step - H_previous; no magnitude threshold",
+    "verified_direction_change_count": 2,
+    "phases": [
+      {
+        "id": "RISE_1",
+        "steps": [
+          1,
+          256
+        ],
+        "dH_sign": "negative",
+        "physical_meaning": "water-table depth H decreases; water table rises"
+      },
+      {
+        "id": "FALL",
+        "steps": [
+          257,
+          512
+        ],
+        "dH_sign": "positive",
+        "physical_meaning": "water-table depth H increases; water table falls"
+      },
+      {
+        "id": "RISE_2",
+        "steps": [
+          513,
+          768
+        ],
+        "dH_sign": "negative",
+        "physical_meaning": "water-table depth H decreases; water table rises"
+      }
+    ],
+    "exact_reversal_intervals": [
+      {
+        "step": 257,
+        "from_dH_sign": "negative",
+        "to_dH_sign": "positive"
+      },
+      {
+        "step": 513,
+        "from_dH_sign": "positive",
+        "to_dH_sign": "negative"
+      }
+    ],
+    "non_reversal_tails": [
+      {
+        "id": "FALL_TAIL",
+        "steps": [
+          258,
+          512
+        ]
+      },
+      {
+        "id": "RISE_2_TAIL",
+        "steps": [
+          514,
+          768
+        ]
+      }
+    ],
+    "response_used_to_define_partition": false
+  },
+  "bias_ledger": {
+    "inherited_exactly_from": "LARE-BC2-C3",
+    "elementary_channels": [
+      "Q10",
+      "Q20",
+      "Q30",
+      "Q40",
+      "Q50",
+      "Q60",
+      "Q70",
+      "Q80",
+      "Q90",
+      "QI",
+      "QH",
+      "GEOMETRY_GI"
+    ],
+    "families": {
+      "FIXED_INTERIOR_Q": [
+        "Q10",
+        "Q20",
+        "Q30",
+        "Q40",
+        "Q50",
+        "Q60",
+        "Q70",
+        "Q80"
+      ],
+      "Q90": [
+        "Q90"
+      ],
+      "QI": [
+        "QI"
+      ],
+      "QH": [
+        "QH"
+      ],
+      "GEOMETRY_GI": [
+        "GEOMETRY_GI"
+      ]
+    },
+    "primary_rank_metric": "phase-local cumulative mass-neutral theta-shape injection RMS evaluated at that phase end geometry",
+    "accumulator_policy": {
+      "phase_local": "reset family storage-injection accumulator to zero at each phase start",
+      "cycle_running": "also retain the unreset accumulator from cycle start and report it at steps 256, 512 and 768",
+      "reversal_singletons": "report one-interval shape injection and signed flux bias for steps 257 and 513",
+      "tail_analysis": "recompute phase-local ranks for FALL_TAIL and RISE_2_TAIL to distinguish a switch impulse from sustained phase bias"
+    }
+  },
+  "metrics": [
+    "signed_integrated_bias_cm per family and phase",
+    "absolute_integrated_bias_cm per family and phase",
+    "coherence abs(signed)/absolute per family and phase",
+    "phase-local cumulative shape RMS per family",
+    "cycle-running cumulative shape RMS at phase boundaries",
+    "family rank per phase and tail",
+    "exact reversal-interval one-step shape injection",
+    "QI directional cancellation ratio = 1 - abs(sum phase signed QI bias)/sum(abs(phase signed QI bias))",
+    "QH directional cancellation ratio defined identically",
+    "primary/cross route rank agreement",
+    "C3 hard additivity and physical-ledger residuals"
+  ],
+  "hypotheses": {
+    "H_CANCELLATION": {
+      "statement": "QI is rank-1 in each monotone phase and tail on both widths/routes, but its signed phase contributions change sign and cancel enough that whole-cycle QH becomes rank-1.",
+      "interpretation_if_supported": "Whole-cycle QH dominance is primarily an aggregation/cancellation effect; it does not establish QH as the dominant local dynamic closure defect."
+    },
+    "H_REVERSAL_LOCAL": {
+      "statement": "QI dominates non-reversal tails, but QH dominates one or both exact reversal intervals consistently across widths/routes.",
+      "interpretation_if_supported": "A distinct reversal-local qH mechanism exists in addition to monotone QI bias."
+    },
+    "H_QH_PHASE": {
+      "statement": "QH is rank-1 in at least one sustained full phase or non-reversal tail on both numerical routes.",
+      "interpretation_if_supported": "QH dominance cannot be explained only by cycle aggregation; a sustained regime-specific qH defect exists."
+    }
+  },
+  "adjudication_policy": {
+    "route_consistency_required_for_strong_mechanism_claim": true,
+    "width_consistency_required_for_width_general_mechanism_claim": true,
+    "no_effect_size_threshold": true,
+    "no_majority_vote": true,
+    "multiple_hypotheses_may_be_supported_if_their_conditions_are_independently_met": true,
+    "note": "C4D maps mechanism only. It cannot authorize a closure correction."
+  },
+  "progression": [
+    "If H_CANCELLATION is supported without H_QH_PHASE, preregister teacher-forced QI oracle tests on monotone phases before designing any deployable closure.",
+    "If H_REVERSAL_LOCAL is supported, isolate the reversal interval physics in a separate counterfactual; do not add memory state unless response ambiguity requires it.",
+    "If H_QH_PHASE is supported, diagnose the common terminal shape/gradient reconstruction shared by qi and qH before treating the channels as independent parameters.",
+    "If width or numerical-route dependence dominates, stop closure intervention and refine numerical/reference qualification."
+  ],
+  "firewalls": [
+    "NO_MODEL_CHANGE",
+    "NO_EMPIRICAL_THRESHOLD",
+    "NO_POST_RESULT_PHASE_RETUNING",
+    "NO_NEW_MEMORY_STATE",
+    "NO_STABILIZER",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
