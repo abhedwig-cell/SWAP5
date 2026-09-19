@@ -117,6 +117,15 @@ def main():
 
     im,inodes,states,nodes=b3.load_reference(args.reference)
     rows=[]; failures=[]; max_qiid=0.0; max_qhid=0.0; min_k=float("inf")
+
+    max_hydro=0.0
+    for Htest in (105.0,120.0,138.0):
+        Ltest=Htest-b3.ANCHOR
+        Btest=Ltest-args.width
+        if Btest<=0.0:
+            raise RuntimeError("invalid manufactured central geometry")
+        sh=(args.width*1.0+Btest*1.0)/(Btest+args.width)
+        max_hydro=max(max_hydro,abs(sh-1.0))
     try:
         e0=endpoint(inodes[args.history],im[args.history]["total"],args.width)
     except Exception as exc:
@@ -171,7 +180,7 @@ def main():
             e0=e1
 
     complete=not failures and len(rows)==b3.HISTORY_STEPS[args.history]
-    hard=complete and max_qiid<=1e-10 and max_qhid<=1e-12 and min_k>0.0
+    hard=complete and max_qiid<=1e-10 and max_qhid<=1e-12 and min_k>0.0 and max_hydro<=1e-12
 
     if rows:
         qref=[r["qi_ref"] for r in rows]
@@ -225,7 +234,8 @@ def main():
       "schema":"swap5.lare.bc2.c4m.case-result.v1","work_unit":"LARE-BC2-C4M",
       "width_cm":args.width,"history":args.history,"decision":decision,"complete":complete,
       "hard_checks":{"max_B8_qi_identity_cm_per_day":max_qiid,"max_qH_central_vs_B9_identity_cm_per_day":max_qhid,
-                     "minimum_interface_K_cm_per_day":min_k,"C4L_cubic_metrics_reproduced":c4l_reproduced,"failure_count":len(failures)},
+                     "minimum_interface_K_cm_per_day":min_k,"central_hydrostatic_abs_slope_minus_1":max_hydro,
+                     "C4L_cubic_metrics_reproduced":c4l_reproduced,"failure_count":len(failures)},
       "qi":qi,"slope_error":slope,"correction_geometry":correction,"endpoint_slope_diagnostics":endpoint,
       "failures":failures[:20],"propagated_dynamics_authorized":False,"production_rom_authorized":False
     }
