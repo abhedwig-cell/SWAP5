@@ -10,7 +10,7 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail(){ echo "PPA_LOW02_GATE_FAIL $*" >&2; exit 1; }
 
-CANONICAL="781c829943c9e5880e5ab83281112e66f439ecf2"
+CANONICAL="e473afc2d378a2567a59cc0db1577b4c724feeb2"
 changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
 expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
 [[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
