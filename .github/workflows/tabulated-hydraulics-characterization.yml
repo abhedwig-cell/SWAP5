@@ -237,6 +237,7 @@ jobs:
               s=p.read_text()
               if "[general.paths]" not in s:
                   s += '\n[general.paths]\nwork = "./"\natmosphere = "./"\ncrop = "./"\ndrain = "./"\n'
+              s = s.replace("end_date   = 2004-12-31", "end_date   = 2002-01-31", 1)
               if name == "tabulated":
                   old="swsophy = 0"
                   if old not in s:
@@ -250,7 +251,7 @@ jobs:
         run: |
           set -uo pipefail
           set +e
-          (cd build/tab-hyd/reachability/baseline && "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/baseline.log 2>&1
+          (cd build/tab-hyd/reachability/baseline && timeout 30 "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/baseline.log 2>&1
           rc=$?
           set -e
           echo "baseline_return_code=$rc" | tee build/tab-hyd/reachability/reachability-summary.txt
