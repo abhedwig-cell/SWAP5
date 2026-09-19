@@ -1,0 +1,654 @@
+{
+  "application_acceptance_adjudicated": false,
+  "by_direction": {
+    "HOLD": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 0.33670447443556706,
+          "moving_tendency_mean_abs_error_cm_per_day": 0.3367044744355671,
+          "moving_tendency_rms_error_cm_per_day": 0.336704474435567,
+          "moving_tendency_signed_mean_error_cm_per_day": -0.3367044744355671,
+          "rms_q90_over_rms_qH": 0.12346863112526921,
+          "signed_error_covariance": 0.0
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.03700365048080925,
+          "mean_abs_error_cm_per_day": 0.03700365048080924,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.037003650480809246,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -0.03700365048080924
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.29970082395475783,
+          "mean_abs_error_cm_per_day": 0.29970082395475783,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.2997008239547579,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.29970082395475783
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 0.33670447443556706,
+          "moving_tendency_mean_abs_error_cm_per_day": 0.3367044744355671,
+          "moving_tendency_rms_error_cm_per_day": 0.336704474435567,
+          "moving_tendency_signed_mean_error_cm_per_day": -0.3367044744355671,
+          "rms_q90_over_rms_qH": 0.12346863112526921,
+          "signed_error_covariance": 0.0
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.03700365048080925,
+          "mean_abs_error_cm_per_day": 0.03700365048080924,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.037003650480809246,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -0.03700365048080924
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.29970082395475783,
+          "mean_abs_error_cm_per_day": 0.29970082395475783,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.2997008239547579,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.29970082395475783
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_rms_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_signed_mean_error_cm_per_day": 2.27398630335739,
+          "rms_q90_over_rms_qH": 0.10868160271169307,
+          "signed_error_covariance": 4.930380657631324e-32
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.22291384234107023,
+          "mean_abs_error_cm_per_day": 0.22291384234107028,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.22291384234107023,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.22291384234107028
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 2.05107246101632,
+          "mean_abs_error_cm_per_day": 2.051072461016319,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 2.05107246101632,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -2.051072461016319
+        }
+      }
+    },
+    "WATER_TABLE_FALLING": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 494.07502068582244,
+          "moving_tendency_mean_abs_error_cm_per_day": 9.457090408782816,
+          "moving_tendency_rms_error_cm_per_day": 24.239205476904754,
+          "moving_tendency_signed_mean_error_cm_per_day": -9.457090408782816,
+          "rms_q90_over_rms_qH": 0.77254768780635,
+          "signed_error_covariance": 7040.966637975321
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 1496.7470117840112,
+          "mean_abs_error_cm_per_day": 12.685531957287578,
+          "pearson_correlation": -0.46470555752945075,
+          "rms_error_cm_per_day": 75.45079128314273,
+          "sign_mismatch_count": 15,
+          "signed_mean_error_cm_per_day": 12.685531957287578
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 1755.2283465124333,
+          "mean_abs_error_cm_per_day": 22.142622366070395,
+          "pearson_correlation": 0.48050284270226196,
+          "rms_error_cm_per_day": 97.66489819856344,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 22.142622366070395
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 14.15018737893878,
+          "moving_tendency_mean_abs_error_cm_per_day": 3.6553349430123667,
+          "moving_tendency_rms_error_cm_per_day": 3.7794595637298745,
+          "moving_tendency_signed_mean_error_cm_per_day": -3.4888393703041274,
+          "rms_q90_over_rms_qH": 0.13482096718698175,
+          "signed_error_covariance": -0.042623174696728085
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 2.268632794909273,
+          "mean_abs_error_cm_per_day": 0.35720355815691346,
+          "pearson_correlation": 0.6665526034799263,
+          "rms_error_cm_per_day": 0.5498670297494064,
+          "sign_mismatch_count": 13,
+          "signed_mean_error_cm_per_day": 0.355988679107418
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 13.544411458284586,
+          "mean_abs_error_cm_per_day": 3.96238612130273,
+          "pearson_correlation": 0.8981601877598026,
+          "rms_error_cm_per_day": 4.078497886658844,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 3.844828049411546
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 17.726838372204163,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.5236204093207024,
+          "moving_tendency_rms_error_cm_per_day": 2.721750437581068,
+          "moving_tendency_signed_mean_error_cm_per_day": -2.1621535930301317,
+          "rms_q90_over_rms_qH": 0.20874173126407633,
+          "signed_error_covariance": -0.17627232126994916
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 2.543818919483836,
+          "mean_abs_error_cm_per_day": 0.42920792442126937,
+          "pearson_correlation": 0.6191701391470641,
+          "rms_error_cm_per_day": 0.6224697336664898,
+          "sign_mismatch_count": 13,
+          "signed_mean_error_cm_per_day": 0.42920792442126937
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 16.5936482258833,
+          "mean_abs_error_cm_per_day": 2.821298823585332,
+          "pearson_correlation": 0.8742275693676286,
+          "rms_error_cm_per_day": 2.9820090592187904,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 2.5913615174514004
+        }
+      }
+    },
+    "WATER_TABLE_RISING": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 586.5464331926374,
+          "moving_tendency_mean_abs_error_cm_per_day": 3.5608468003490077,
+          "moving_tendency_rms_error_cm_per_day": 20.48277526717014,
+          "moving_tendency_signed_mean_error_cm_per_day": 3.238851257550171,
+          "rms_q90_over_rms_qH": 0.6494966298196021,
+          "signed_error_covariance": 1895.1445235225679
+        },
+        "q90": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 810.4536248820638,
+          "mean_abs_error_cm_per_day": 9.57026371342015,
+          "pearson_correlation": -0.16691294038807333,
+          "rms_error_cm_per_day": 36.3558920031812,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -9.57026371342015
+        },
+        "qH": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 1397.0000580747012,
+          "mean_abs_error_cm_per_day": 12.809114970970324,
+          "pearson_correlation": 0.48388915044301,
+          "rms_error_cm_per_day": 55.97548983938386,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -12.809114970970324
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 19.943301548490215,
+          "moving_tendency_mean_abs_error_cm_per_day": 1.3686154665563834,
+          "moving_tendency_rms_error_cm_per_day": 2.273340594705972,
+          "moving_tendency_signed_mean_error_cm_per_day": -0.007938642180961353,
+          "rms_q90_over_rms_qH": 0.11914665136069943,
+          "signed_error_covariance": 0.1140887741612816
+        },
+        "q90": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 0.6983038192107198,
+          "mean_abs_error_cm_per_day": 0.22830915705492516,
+          "pearson_correlation": 0.9950845888572294,
+          "rms_error_cm_per_day": 0.2773715160605195,
+          "sign_mismatch_count": 45,
+          "signed_mean_error_cm_per_day": -0.22782381654150308
+        },
+        "qH": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 20.062547424840762,
+          "mean_abs_error_cm_per_day": 1.3639690699006275,
+          "pearson_correlation": 0.7048913386233641,
+          "rms_error_cm_per_day": 2.327984151403609,
+          "sign_mismatch_count": 19,
+          "signed_mean_error_cm_per_day": -0.21988517436054172
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 18.521975881748272,
+          "moving_tendency_mean_abs_error_cm_per_day": 3.884001730592928,
+          "moving_tendency_rms_error_cm_per_day": 4.250732104720488,
+          "moving_tendency_signed_mean_error_cm_per_day": 3.3870745949987073,
+          "rms_q90_over_rms_qH": 0.09412166626327235,
+          "signed_error_covariance": -0.09734268588328683
+        },
+        "q90": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 0.49205764642415284,
+          "mean_abs_error_cm_per_day": 0.3365189639405277,
+          "pearson_correlation": 0.9939110795342265,
+          "rms_error_cm_per_day": 0.3778932162912309,
+          "sign_mismatch_count": 8,
+          "signed_mean_error_cm_per_day": 0.25745278453938564
+        },
+        "qH": {
+          "count": 1024,
+          "max_abs_error_cm_per_day": 18.720931565537697,
+          "mean_abs_error_cm_per_day": 3.622476670080443,
+          "pearson_correlation": 0.6779779683114473,
+          "rms_error_cm_per_day": 4.014943968737306,
+          "sign_mismatch_count": 9,
+          "signed_mean_error_cm_per_day": -3.129621810459322
+        }
+      }
+    }
+  },
+  "by_history": {
+    "WT_CYCLE": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 586.5464331926374,
+          "moving_tendency_mean_abs_error_cm_per_day": 7.786596264631306,
+          "moving_tendency_rms_error_cm_per_day": 27.14078988684049,
+          "moving_tendency_signed_mean_error_cm_per_day": -1.48392957548025,
+          "rms_q90_over_rms_qH": 0.7549461793924419,
+          "signed_error_covariance": 6999.768433682058
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 1496.7470117840112,
+          "mean_abs_error_cm_per_day": 16.22037821244636,
+          "pearson_correlation": -0.028364730091575568,
+          "rms_error_cm_per_day": 73.1434844991553,
+          "sign_mismatch_count": 271,
+          "signed_mean_error_cm_per_day": 0.1931022805735599
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 1755.2283465124333,
+          "mean_abs_error_cm_per_day": 24.006245178893483,
+          "pearson_correlation": 0.49933507449712333,
+          "rms_error_cm_per_day": 96.88569396830248,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 1.6770318560538122
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 19.943301548490215,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.4148517552587854,
+          "moving_tendency_rms_error_cm_per_day": 3.385083278311669,
+          "moving_tendency_signed_mean_error_cm_per_day": -1.4228350508184315,
+          "rms_q90_over_rms_qH": 0.15280742870871872,
+          "signed_error_covariance": 0.8987646503854593
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 2.268632794909273,
+          "mean_abs_error_cm_per_day": 0.3937308002604348,
+          "pearson_correlation": 0.9603330126873078,
+          "rms_error_cm_per_day": 0.5528484114481541,
+          "sign_mismatch_count": 58,
+          "signed_mean_error_cm_per_day": 0.047218500091146476
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 20.062547424840762,
+          "mean_abs_error_cm_per_day": 2.5914963206330146,
+          "pearson_correlation": 0.9321781417517442,
+          "rms_error_cm_per_day": 3.617941981747451,
+          "sign_mismatch_count": 19,
+          "signed_mean_error_cm_per_day": 1.4700535509095782
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 18.521975881748272,
+          "moving_tendency_mean_abs_error_cm_per_day": 3.483940835369021,
+          "moving_tendency_rms_error_cm_per_day": 3.972774485220124,
+          "moving_tendency_signed_mean_error_cm_per_day": 1.0922303655097532,
+          "rms_q90_over_rms_qH": 0.1518898176981969,
+          "signed_error_covariance": 0.4536539207364383
+        },
+        "q90": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 2.543818919483836,
+          "mean_abs_error_cm_per_day": 0.41749031575325984,
+          "pearson_correlation": 0.9559410688975514,
+          "rms_error_cm_per_day": 0.6041377657005618,
+          "sign_mismatch_count": 17,
+          "signed_mean_error_cm_per_day": 0.3322008795092199
+        },
+        "qH": {
+          "count": 768,
+          "max_abs_error_cm_per_day": 18.720931565537697,
+          "mean_abs_error_cm_per_day": 3.556508994279324,
+          "pearson_correlation": 0.9231652939661946,
+          "rms_error_cm_per_day": 3.9774737691829722,
+          "sign_mismatch_count": 9,
+          "signed_mean_error_cm_per_day": -0.7600294860005334
+        }
+      }
+    },
+    "WT_FALL": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 494.07502068582244,
+          "moving_tendency_mean_abs_error_cm_per_day": 7.233288206728693,
+          "moving_tendency_rms_error_cm_per_day": 23.516601561283377,
+          "moving_tendency_signed_mean_error_cm_per_day": -7.233288206728693,
+          "rms_q90_over_rms_qH": 0.6854939555714622,
+          "signed_error_covariance": 3644.248754104254
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 1108.615666651404,
+          "mean_abs_error_cm_per_day": 6.718187566166426,
+          "pearson_correlation": -0.3405242128835135,
+          "rms_error_cm_per_day": 50.662868618467115,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 6.718187566166426
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 1602.6906873372263,
+          "mean_abs_error_cm_per_day": 13.951475772895117,
+          "pearson_correlation": 0.4156578662526866,
+          "rms_error_cm_per_day": 73.90709751223409,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 13.951475772895117
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 8.936750950038196,
+          "moving_tendency_mean_abs_error_cm_per_day": 3.390741811791794,
+          "moving_tendency_rms_error_cm_per_day": 3.457477253379589,
+          "moving_tendency_signed_mean_error_cm_per_day": -3.2683466850145435,
+          "rms_q90_over_rms_qH": 0.0826632982925526,
+          "signed_error_covariance": -0.02515292681964824
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 0.7228608945655906,
+          "mean_abs_error_cm_per_day": 0.20557870248510626,
+          "pearson_correlation": 0.3432114848542974,
+          "rms_error_cm_per_day": 0.3006533254088751,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 0.2037563839108631
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 8.809389588608969,
+          "mean_abs_error_cm_per_day": 3.5735324600980527,
+          "pearson_correlation": 0.8613242368081718,
+          "rms_error_cm_per_day": 3.637083586295297,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 3.472103068925407
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 11.301837512162091,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.2988240394959822,
+          "moving_tendency_rms_error_cm_per_day": 2.403081962809435,
+          "moving_tendency_signed_mean_error_cm_per_day": -2.042631657690536,
+          "rms_q90_over_rms_qH": 0.13631091133998735,
+          "signed_error_covariance": -0.0688713323900617
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 0.8170516207622349,
+          "mean_abs_error_cm_per_day": 0.2658829084963079,
+          "pearson_correlation": 0.2492201900912163,
+          "rms_error_cm_per_day": 0.353868648826554,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 0.2658829084963079
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 10.961113728027119,
+          "mean_abs_error_cm_per_day": 2.5068620361744753,
+          "pearson_correlation": 0.8309421658046867,
+          "rms_error_cm_per_day": 2.596040517577739,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": 2.308514566186844
+        }
+      }
+    },
+    "WT_HOLD": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 0.33670447443556706,
+          "moving_tendency_mean_abs_error_cm_per_day": 0.3367044744355671,
+          "moving_tendency_rms_error_cm_per_day": 0.336704474435567,
+          "moving_tendency_signed_mean_error_cm_per_day": -0.3367044744355671,
+          "rms_q90_over_rms_qH": 0.12346863112526921,
+          "signed_error_covariance": 0.0
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.03700365048080925,
+          "mean_abs_error_cm_per_day": 0.03700365048080924,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.037003650480809246,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -0.03700365048080924
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.29970082395475783,
+          "mean_abs_error_cm_per_day": 0.29970082395475783,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.2997008239547579,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.29970082395475783
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 0.33670447443556706,
+          "moving_tendency_mean_abs_error_cm_per_day": 0.3367044744355671,
+          "moving_tendency_rms_error_cm_per_day": 0.336704474435567,
+          "moving_tendency_signed_mean_error_cm_per_day": -0.3367044744355671,
+          "rms_q90_over_rms_qH": 0.12346863112526921,
+          "signed_error_covariance": 0.0
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.03700365048080925,
+          "mean_abs_error_cm_per_day": 0.03700365048080924,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.037003650480809246,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -0.03700365048080924
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.29970082395475783,
+          "mean_abs_error_cm_per_day": 0.29970082395475783,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.2997008239547579,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.29970082395475783
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_rms_error_cm_per_day": 2.27398630335739,
+          "moving_tendency_signed_mean_error_cm_per_day": 2.27398630335739,
+          "rms_q90_over_rms_qH": 0.10868160271169307,
+          "signed_error_covariance": 4.930380657631324e-32
+        },
+        "q90": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 0.22291384234107023,
+          "mean_abs_error_cm_per_day": 0.22291384234107028,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 0.22291384234107023,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": 0.22291384234107028
+        },
+        "qH": {
+          "count": 256,
+          "max_abs_error_cm_per_day": 2.05107246101632,
+          "mean_abs_error_cm_per_day": 2.051072461016319,
+          "pearson_correlation": null,
+          "rms_error_cm_per_day": 2.05107246101632,
+          "sign_mismatch_count": 256,
+          "signed_mean_error_cm_per_day": -2.051072461016319
+        }
+      }
+    },
+    "WT_RISE": {
+      "PATH_PRESERVING_B1": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 149.47150685898822,
+          "moving_tendency_mean_abs_error_cm_per_day": 2.3941466101965885,
+          "moving_tendency_rms_error_cm_per_day": 7.901425567808499,
+          "moving_tendency_signed_mean_error_cm_per_day": 1.7512494718751856,
+          "rms_q90_over_rms_qH": 0.7569179908158171,
+          "signed_error_covariance": 716.9684189044856
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 438.2434400516847,
+          "mean_abs_error_cm_per_day": 7.120070477935703,
+          "pearson_correlation": -0.4356633877374098,
+          "rms_error_cm_per_day": 24.31161000228454,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -7.120070477935703
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 587.7149469106729,
+          "mean_abs_error_cm_per_day": 8.87131994981089,
+          "pearson_correlation": 0.6312609474496393,
+          "rms_error_cm_per_day": 32.11921277770282,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -8.87131994981089
+        }
+      },
+      "RESIDUAL_ONLY_B2": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 11.155897149430011,
+          "moving_tendency_mean_abs_error_cm_per_day": 1.2072139029513451,
+          "moving_tendency_rms_error_cm_per_day": 1.618732420934618,
+          "moving_tendency_signed_mean_error_cm_per_day": 0.15346292142407703,
+          "rms_q90_over_rms_qH": 0.14141408279838857,
+          "signed_error_covariance": 0.11429755580086037
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 0.6983038192107198,
+          "mean_abs_error_cm_per_day": 0.19624874846946191,
+          "pearson_correlation": 0.9887851900116228,
+          "rms_error_cm_per_day": 0.24196295235229262,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -0.19624874846946191
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 11.050081915677806,
+          "mean_abs_error_cm_per_day": 1.210740380707776,
+          "pearson_correlation": 0.8765603508841601,
+          "rms_error_cm_per_day": 1.7110244437058981,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -0.34971166989353886
+        }
+      },
+      "STANDARD_B0": {
+        "joint": {
+          "moving_tendency_max_abs_error_cm_per_day": 8.449690310367812,
+          "moving_tendency_mean_abs_error_cm_per_day": 4.028698782617396,
+          "moving_tendency_rms_error_cm_per_day": 4.219019605703196,
+          "moving_tendency_signed_mean_error_cm_per_day": 3.9352049098781237,
+          "rms_q90_over_rms_qH": 0.11334960675216899,
+          "signed_error_covariance": 0.14802800196729105
+        },
+        "q90": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 0.49205764642415284,
+          "mean_abs_error_cm_per_day": 0.4247314323867619,
+          "pearson_correlation": 0.9702898581057061,
+          "rms_error_cm_per_day": 0.4405822730129717,
+          "sign_mismatch_count": 4,
+          "signed_mean_error_cm_per_day": 0.39453322795053763
+        },
+        "qH": {
+          "count": 512,
+          "max_abs_error_cm_per_day": 8.625855866141297,
+          "mean_abs_error_cm_per_day": 3.635276047945423,
+          "pearson_correlation": 0.8642403786461617,
+          "rms_error_cm_per_day": 3.886932523517917,
+          "sign_mismatch_count": 0,
+          "signed_mean_error_cm_per_day": -3.540671681927586
+        }
+      }
+    }
+  },
+  "decision": "BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR",
+  "hard_checks": {
+    "all_fluxes_finite": true,
+    "max_reference_q90_identity_residual_cm_per_day": 1.191580167869688e-11,
+    "quadrature_64_vs_128_max_storage_difference_cm": 7.668177204323001e-11,
+    "quadrature_gate_cm": 1e-10,
+    "reference_balance_gate_cm_per_day": 1e-10
+  },
+  "interpretation": [
+    "All candidate fluxes are evaluated on accepted Reference-projected states; no reduced dynamics is propagated.",
+    "q90 Reference flux is reconstructed independently from both fixed-column storage change and moving-layer conservation; their agreement is a hard authority check.",
+    "Direction-dependent ordering means that a single equilibrium correction cannot be justified as a universally improving moving-water-table closure from this experiment.",
+    "No new closure, blending factor or direction-dependent switch is selected here."
+  ],
+  "next_model_change_authorized": false,
+  "operator_ordering_relative_to_STANDARD_B0": {
+    "PATH_PRESERVING_B1": {
+      "q90": {
+        "WATER_TABLE_FALLING": "WORSE_OR_MIXED",
+        "WATER_TABLE_RISING": "WORSE_OR_MIXED"
+      },
+      "qH": {
+        "WATER_TABLE_FALLING": "WORSE_OR_MIXED",
+        "WATER_TABLE_RISING": "WORSE_OR_MIXED"
+      }
+    },
+    "RESIDUAL_ONLY_B2": {
+      "q90": {
+        "WATER_TABLE_FALLING": "BETTER",
+        "WATER_TABLE_RISING": "BETTER"
+      },
+      "qH": {
+        "WATER_TABLE_FALLING": "WORSE_OR_MIXED",
+        "WATER_TABLE_RISING": "BETTER"
+      }
+    }
+  },
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.b3.result.v1",
+  "standard_face_consistency": {
+    "q90_consistently_larger_error": false,
+    "qH_consistently_larger_error": true
+  },
+  "work_unit": "LARE-BC2-B3",
+  "workstream": "F-ROM-LARE"
+}
