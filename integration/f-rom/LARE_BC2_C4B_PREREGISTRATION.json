@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.lare.bc2.c4b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4B",
+  "phase": "PREREGISTERED_AFTER_C3A_BEFORE_ORACLE_INTERVENTION_RESPONSE",
+  "predecessor": {
+    "required_C3_decision": "BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED",
+    "C3_result": "integration/f-rom/LARE_BC2_C3_RESULT.json",
+    "required_C3A_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+    "C3A_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+    "blocked_global_counterfactual": "integration/f-rom/LARE_BC2_C4A_CLOSEOUT.json"
+  },
+  "purpose": "Causally separate q90, qi, qH and moving-boundary geometric-transfer contributions to one-observation-interval teacher error by surgical Reference-oracle substitution, without proposing a deployable closure.",
+  "regime_partition": {
+    "source": "categorical prescribed-H histories frozen before C4B response",
+    "HOLD": [
+      "WT_HOLD"
+    ],
+    "MONOTONE": [
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "CYCLE": [
+      "WT_CYCLE"
+    ],
+    "note": "No magnitude threshold or state-error statistic defines the regime partition."
+  },
+  "model_policy": {
+    "base_model": "unchanged BC2-C0 enriched prescribed-H map",
+    "start_state": "exact A2 Reference-projected reduced state at every observation interval",
+    "prescribed_H": "exact A2 H(t) over the interval",
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ],
+    "observation_interval_day": 0.0008,
+    "internal_dt_day": [
+      0.00005,
+      0.000025
+    ],
+    "top_and_fixed_interior_closures": "unchanged"
+  },
+  "reference_interval_oracles": {
+    "q90_ref": "exact interval-average q90 recursively diagnosed from Reference fixed-layer storage change with zero top flux",
+    "qi_ref": "exact interval-average qi from the split moving-control-volume Reference ledger",
+    "qH_ref": "exact interval-average lower-boundary flux from Reference bottom exchange",
+    "Gi_ref": "exact interval-average moving-boundary internal transfer, dWb_ref/dt - q90_ref + qi_ref",
+    "use": "When a channel is oracle-selected, its instantaneous C0 contribution is replaced throughout the substeps by the constant exact Reference interval-average value. This is diagnostic and not a candidate closure."
+  },
+  "variants": [
+    "BASE_C0",
+    "ORACLE_Q90",
+    "ORACLE_QI",
+    "ORACLE_QH",
+    "ORACLE_GI",
+    "ORACLE_QI_QH",
+    "ORACLE_QI_QH_GI",
+    "ORACLE_Q90_QI_QH_GI"
+  ],
+  "intervention_algebra": {
+    "q90": "replace q90 in the last-fixed/Wb conservative transfer pair only",
+    "qi": "replace qi in the Wb/Wt conservative transfer pair only",
+    "qH": "replace qH in Wt and cumulative bottom exchange consistently",
+    "Gi": "replace theta_i*Hdot by Gi_ref in the Wb/Wt moving-boundary transfer pair while retaining total theta_s*Hdot geometry exactly",
+    "conservation": "Internal q90, qi and Gi oracle substitutions are pairwise conservative. qH remains the only oracle that changes total unsaturated storage."
+  },
+  "metrics_per_variant_case_route": [
+    "RMS and max mass-neutral physical-state shape error at interval end",
+    "RMS and max total unsaturated-storage error",
+    "RMS Wb error and Wt error",
+    "cumulative vector sum of one-interval physical-state errors over the history",
+    "mass-neutral shape norm of that cumulative vector at final geometry",
+    "maximum hard physical-ledger residual",
+    "relative reduction of each error component versus BASE_C0, reported but not thresholded"
+  ],
+  "frozen_causal_hypotheses": {
+    "HOLD_Q90": {
+      "rule": "ORACLE_Q90 must be the unique best single-channel oracle by cumulative mass-neutral shape norm at both widths and both internal-dt routes to support Q90_CAUSAL_IN_HOLD."
+    },
+    "MONOTONE_QI": {
+      "rule": "ORACLE_QI must be the unique best single-channel oracle among Q90, QI, QH and GI in all four width × {RISE,FALL} cases on both routes to support QI_CAUSAL_IN_MONOTONE_H_MOTION."
+    },
+    "CYCLE_QH": {
+      "rule": "ORACLE_QH must be the unique best single-channel oracle in both width × CYCLE cases on both routes to support QH_CAUSAL_IN_CYCLE_CUMULATIVE_SHAPE."
+    },
+    "COUPLED_QI_QH": {
+      "rule": "ORACLE_QI_QH is reported as coupled diagnostic. It may establish COUPLED_LOWER_INTERFACE_CAUSALITY only if it is strictly better than both ORACLE_QI and ORACLE_QH in every dynamic case on both routes. It cannot rescue a failed single-channel hypothesis."
+    }
+  },
+  "adjudication": [
+    "Report every case/route ranking; no majority fallback replaces the frozen unanimity rules.",
+    "If monotone and cycle causal families differ, close as REGIME_DEPENDENT_COUPLED_LOWER_BOUNDARY_CAUSALITY and do not create a global correction.",
+    "If no frozen causal hypothesis passes, close as MULTI_CHANNEL_OR_SUBINTERVAL_DYNAMICS_REQUIRED.",
+    "HOLD is an equilibrium control and cannot select a dynamic correction."
+  ],
+  "hard_gates": {
+    "physical_ledger_cm": 1e-10,
+    "finite_physical_state": true,
+    "exact_oracle_reference_flux_identity_cm_per_day": 1e-10,
+    "no_clipping_or_fallback": true
+  },
+  "next_step_rule": "Any candidate physical closure change after C4B requires a new preregistration and must target only the causally supported regime/channel structure. Oracle values themselves may never enter a deployable model.",
+  "firewalls": [
+    "ORACLE_DIAGNOSTIC_ONLY",
+    "NO_EMPIRICAL_FIT",
+    "NO_REFERENCE_VALUE_IN_CANDIDATE_MODEL",
+    "NO_NEW_STATE",
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
