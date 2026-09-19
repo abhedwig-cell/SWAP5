@@ -77,5 +77,16 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_reuse_clarification": {
+    "before_first_C1R_result_exposure": true,
+    "scientific_semantics_unchanged": true,
+    "recovered_primary_source": "integration/f-rom/LARE_BC2_C1_RESULT.json -> cases['2.5']['WT_CYCLE']['0.00005000']",
+    "recovered_primary_status_required": "QUALIFIED",
+    "reuse_rule": "The already-executed, persisted and hard-gated 0.00005-day C1 cross route is the C1R recovered-primary route. An execution-equivalent C1R may reuse it byte-for-value and compute only the new 0.000025-day cross route.",
+    "new_computation_only": "2.5 cm WT_CYCLE at internal dt 0.000025 day",
+    "comparison_rule": "Apply the unchanged C1R classification and numerical-floor comparison between persisted 0.00005 and newly computed 0.000025 routes.",
+    "original_run_status": "Any earlier redundant C1R run that recomputes both routes remains valid as an independent replay if it completes; it is not required for authority if the reuse route passes.",
+    "reason": "Avoid duplicate sequential recomputation of an already qualified route while preserving every scientific and numerical gate."
+  }
 }
