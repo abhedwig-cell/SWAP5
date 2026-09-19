@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.lare.bc2.c4e.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4E",
+  "phase": "PREREGISTERED_AFTER_C3B_C4D_BEFORE_LOCAL_QI_CAUSAL_COUNTERFACTUAL",
+  "question": "Does the QI local-closure bias identified by C3/C4D causally dominate monotone-phase teacher-forced state-shape error when removed as an exact conservative local error contribution, without free-running oracle substitution?",
+  "predecessors": {
+    "C3B": {
+      "result": "integration/f-rom/LARE_BC2_C3B_RESULT.json",
+      "required_decision": "DIRECTION_PARTITION_EXPLAINS_CYCLE_RANK_SHIFT"
+    },
+    "C4D": {
+      "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
+      "required_decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
+      "required_mechanism": "H_CANCELLATION",
+      "required_supported": true
+    },
+    "C4B": {
+      "result": "integration/f-rom/LARE_BC2_C4B_CLOSEOUT.json",
+      "required_status": "CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED",
+      "firewall": "C4E must not repeat free-running flux substitution, clip Se, or reinterpret C4B domain exit as a pass."
+    }
+  },
+  "authority": {
+    "reference": "same immutable A2 Reference artifact used by C3/C3B/C4D",
+    "reference_workflow_run": 35455789046,
+    "reference_artifact_id": 10587360597,
+    "reference_artifact_zip_sha256": "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278",
+    "local_map": "unchanged C3 teacher-forced local map",
+    "contribution_identity": "unchanged C3 exact additive storage-error contribution vectors"
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "internal_dt_day": [
+      0.00005,
+      0.000025
+    ],
+    "interval_policy": "all qualified intervals in each monotone history; no response-driven interval selection"
+  },
+  "counterfactual_definition": {
+    "base_local_error": "e = y_teacher_end - y_reference_end on the physical reduced state at the same Reference-projected start and prescribed H interval",
+    "family_contributions": "c_F are the exact C3 additive storage-error vectors satisfying sum_F c_F = e to the frozen hard gate",
+    "single_family_counterfactual": "e_minus_F = e - c_F",
+    "endpoint_state": "y_minus_F = y_reference_end + e_minus_F",
+    "variants": [
+      "BASE",
+      "REMOVE_QI",
+      "REMOVE_QH",
+      "REMOVE_GEOMETRY_GI",
+      "REMOVE_Q90",
+      "REMOVE_FIXED_INTERIOR_Q"
+    ],
+    "intervention_semantics": "diagnostic endpoint counterfactual only; no modified flux is inserted into Heun substeps and no counterfactual state is propagated to the next interval",
+    "conservation": "QI, GEOMETRY_GI, Q90 and FIXED_INTERIOR_Q contributions are mass-neutral redistribution terms by construction; QH retains its exact boundary-exchange contribution semantics",
+    "physical_admissibility": "Every counterfactual endpoint is checked against the unchanged reduced hydraulic-state domain. No clipping, projection repair or fallback is allowed."
+  },
+  "metrics": {
+    "primary": [
+      "pooled_rms_shape_error_theta over intervals",
+      "mean_shape_error_theta",
+      "max_shape_error_theta"
+    ],
+    "secondary": [
+      "RMS Wb endpoint error cm",
+      "RMS Wt endpoint error cm",
+      "RMS total physical storage endpoint error cm",
+      "fraction of intervals with lower shape error than BASE",
+      "count of physically inadmissible counterfactual endpoints"
+    ],
+    "shape_definition": "same C3 thickness-weighted mass-removed shape RMS at each interval end geometry"
+  },
+  "hard_gates": {
+    "additive_identity_cm": 1e-10,
+    "teacher_physical_ledger_cm": 1e-10,
+    "reference_physical_ledger_cm": 1e-10,
+    "QI_counterfactual_must_remain_physical_all_intervals": true,
+    "primary_cross_route_rank_consistency_required": true
+  },
+  "decision_tree": {
+    "QI_LOCAL_CAUSAL_SUPPORT": "For every width, history and dt route, REMOVE_QI is physically admissible, strictly lowers pooled RMS shape error relative to BASE, and has the uniquely lowest pooled RMS shape error among all single-family removals; the best-family identity must agree between the two dt routes.",
+    "QI_LOCAL_CAUSAL_MIXED": "REMOVE_QI is physically admissible and improves BASE in every case, but is not uniquely best in every width/history/route or route ranking disagrees.",
+    "QI_LOCAL_CAUSAL_NOT_SUPPORTED": "At least one qualified case has no strict QI improvement while remaining numerically interpretable.",
+    "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED": "QI counterfactual leaves the qualified physical domain, additive/ledger hard gates fail, or the baseline teacher-forced case is not qualified."
+  },
+  "interpretation_firewall": [
+    "C4E tests one-interval local causal attribution only.",
+    "C4E does not show that an oracle-QI free-running model is stable.",
+    "C4E does not authorize a fitted QI correction, direction switch, extra memory state or production closure.",
+    "If QI support is positive, the next work unit must derive a physically admissible QI reconstruction hypothesis from state/geometry variables before any free propagation."
+  ],
+  "model_changed": false,
+  "groundwater_feedback_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
