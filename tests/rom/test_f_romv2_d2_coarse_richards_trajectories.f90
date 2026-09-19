@@ -191,6 +191,13 @@ contains
       fallback_p%compartment_balance_tolerance=p%compartment_balance_tolerance
     case('RETRY_LOCAL_BALANCE')
       call require(bal_flags>0.and.head_flags==0,'F-ROMV2 D2D3 local-only flag contract')
+      if (.not.ieee_is_finite(local_integrated) .or. local_integrated>1.6e-15_real64) then
+        write(*,'(*(g0))') 'F_ROMV2_D2_POLICY_REJECT|CLASS=RETRY_LOCAL_BALANCE|T0=',t0,'|T1=',t1, &
+             '|BOTTOM_MODE=',p%bottom_mode,'|BAL_FLAGS=',bal_flags,'|HEAD_FLAGS=',head_flags, &
+             '|RMAX=',rmax,'|RSUM=',rsum,'|LOCAL_INTEGRATED_CM=',local_integrated, &
+             '|ALLOWED_LOCAL_INTEGRATED_CM=',1.6e-15_real64,'|REP_BOUND_CM=',rep_bound, &
+             '|ABS_TOTAL_RESIDUAL_CM=',abs_integrated,'|FAILED_NL=',failed_nl,'|FAILED_BACKTRACK=',failed_back
+      end if
       call require(ieee_is_finite(local_integrated).and.local_integrated<=1.6e-15_real64, &
            'F-ROMV2 D2D3 local residual within prior integrated allowance')
       local_fallback_tol=max(p%compartment_balance_tolerance,1.6e-15_real64/(t1-t0))
