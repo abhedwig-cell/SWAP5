@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trace.case.v0.1",
+  "title": "TRACE discrepancy episode",
+  "type": "object",
+  "required": [
+    "trace_id","model","status","discovery","eligibility","scientific_element",
+    "representations","conflict","detection","scientific_consequence",
+    "regression_counterfactual","resolution","reproducibility"
+  ],
+  "properties": {
+    "trace_id": {"type":"string","pattern":"^TRACE-(SWAP|ANIMO)-[0-9]{4}$"},
+    "model": {"enum":["SWAP","ANIMO"]},
+    "status": {"enum":["CANDIDATE","CONFIRMED","EXCLUDED","CLOSED","UNRESOLVED"]},
+    "discovery": {
+      "type":"object",
+      "required":["first_observed_date","registered_date","observer","inspection_trigger"],
+      "properties":{
+        "first_observed_date":{"type":"string"},
+        "registered_date":{"type":"string"},
+        "observer":{"type":"string"},
+        "work_unit":{"type":["string","null"]},
+        "inspection_trigger":{"enum":["SCHEDULED_SYSTEMATIC_RECONCILIATION","SCIENTIFIC_QUALIFICATION","MIGRATION_IMPLEMENTATION","TEST_FAILURE","DOCUMENTATION_WORK","PERFORMANCE_WORK","USER_APPLICATION_PROBLEM","INCIDENTAL_CODE_READING","HISTORICAL_SOURCE_RECONSTRUCTION","OTHER"]},
+        "planned_or_opportunistic":{"enum":["PLANNED","OPPORTUNISTIC"]}
+      }
+    },
+    "eligibility": {
+      "type":"object",
+      "required":["known_before_registration","disposition_known_before_registration","prospective_eligible"],
+      "properties":{
+        "known_before_registration":{"type":"boolean"},
+        "disposition_known_before_registration":{"type":"boolean"},
+        "prospective_eligible":{"type":"boolean"},
+        "decision_reason":{"type":"string"}
+      }
+    },
+    "scientific_element":{"type":"object"},
+    "representations":{"type":"array","items":{"type":"object"}},
+    "conflict": {
+      "type":"object",
+      "properties":{
+        "relation_classes":{"type":"array","items":{"enum":["THEORY_DOCUMENTATION","THEORY_IMPLEMENTATION","DOCUMENTATION_IMPLEMENTATION","INTENDED_EQUATION_EXECUTABLE","REGRESSION_ORACLE_INDEPENDENT_EVIDENCE","DUPLICATE_IMPLEMENTATION","HISTORICAL_CONVENTION_CURRENT_INTERPRETATION","CALIBRATED_LEGACY_INDEPENDENT_EVIDENCE","MULTIPLE_RELATION_CONFLICT"]}},
+        "initial_statement":{"type":"string"},
+        "application_envelope":{"type":"string"},
+        "discovery_uncertainty":{"type":"string"}
+      }
+    },
+    "detection":{"type":"object"},
+    "scientific_consequence": {
+      "type":"object",
+      "properties":{
+        "potential":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
+        "demonstrated":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
+        "evidence":{"type":"string"}
+      }
+    },
+    "regression_counterfactual": {
+      "type":"object",
+      "properties":{
+        "preexisting_suite_ref":{"type":["string","null"]},
+        "affected_route_within_scope":{"type":["boolean","null"]},
+        "outcome":{"enum":["REGRESSION_DETECTED","REGRESSION_MISSED","REGRESSION_NOT_APPLICABLE","COUNTERFACTUAL_NOT_RECONSTRUCTABLE"]},
+        "evidence":{"type":"string"}
+      }
+    },
+    "resolution": {
+      "type":"object",
+      "properties":{
+        "candidate_authorities":{"type":"array","items":{"type":"object"}},
+        "final_authority":{"type":["string","null"]},
+        "disposition":{"enum":["IMPLEMENTATION_CORRECTED","DOCUMENTATION_CORRECTED","THEORY_CLARIFIED","REGRESSION_ORACLE_CORRECTED","LEGACY_BEHAVIOUR_PRESERVED","BEHAVIOUR_VERSIONED","RECALIBRATION_REQUIRED","EQUIVALENCE_DEMONSTRATED","APPLICATION_ENVELOPE_NARROWED","UNRESOLVED_INSUFFICIENT_AUTHORITY","REJECTED_NON_DISCREPANCY"]},
+        "code_changed":{"type":["boolean","null"]},
+        "documentation_changed":{"type":["boolean","null"]},
+        "tests_changed":{"type":["boolean","null"]}
+      }
+    },
+    "reproducibility":{"type":"object"}
+  }
+}
