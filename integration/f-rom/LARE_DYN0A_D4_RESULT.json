@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.lare.dyn0a.d4.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-D4",
+  "decision": "RESOLUTION_BENEFIT_CLEAR",
+  "workflow": {
+    "run": 35447635711,
+    "artifact_id": 10585776538,
+    "artifact_digest": "sha256:9c0ffa0510fc500b2f9fcf964c183c5130001ad572c59283782d8c32d1395cfc",
+    "head": "bee3a31f9466ccb1afdfba78dad97f03d909e3c3",
+    "conclusion": "success"
+  },
+  "authority": "integration/f-rom/LARE_DYN0A_D4_PREREGISTRATION.json",
+  "comparison": {
+    "common_dynamic_case_count": 7,
+    "D3_boundaries_cm": [
+      0,
+      140,
+      150,
+      160
+    ],
+    "D4_boundaries_cm": [
+      0,
+      130,
+      140,
+      150,
+      160
+    ],
+    "common_bands_cm": [
+      [
+        0,
+        140
+      ],
+      [
+        140,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ],
+    "D3_maximum_dynamic_common_band_error_cm": 2.452332276685631,
+    "D4_maximum_dynamic_common_band_error_cm": 0.6877291124718212,
+    "D3_mean_of_case_mean_dynamic_error_cm": 0.08475512683398308,
+    "D4_mean_of_case_mean_dynamic_error_cm": 0.028522924401973855,
+    "all_dynamic_noninferior_on_max_and_mean": true,
+    "at_least_one_high_state_case_strictly_better_on_max_and_mean": true
+  },
+  "critical_wet_dry_regime": {
+    "case": "Se0=0.95, DRY",
+    "D3_max_abs_common_band_storage_error_cm": 2.452332276685631,
+    "D3_max_abs_common_band_storage_error_mm": 24.52332276685631,
+    "D4_max_abs_common_band_storage_error_cm": 0.6877291124718212,
+    "D4_max_abs_common_band_storage_error_mm": 6.877291124718212,
+    "reduction_fraction": 0.7195612034266013,
+    "interpretation": "One additional 10-cm state immediately above 140 cm removes most, but not all, of the wet-to-dry redistribution error without changing the published LARE interface closure."
+  },
+  "numerical": {
+    "D4_qualified_cases": 10,
+    "D4_outside_qualified_domain_cases": 2,
+    "D4_numerical_blocked_cases": 0,
+    "max_abs_water_ledger_cm": 4.580780199603396e-13
+  },
+  "scientific_interpretation": [
+    "The large D3 wet-dry error is not purely an invariant or mass-conservation failure.",
+    "Vertical resolution near the lower active zone materially controls standard-LARE redistribution fidelity.",
+    "D4 does not establish application acceptance; its remaining worst-case common-band error is about 6.88 mm.",
+    "P1 state-separation saturation beyond D4 does not imply propagation fidelity saturation: a representation can add little collision separation yet materially improve a nonlinear closure by localizing the state used at an interface.",
+    "The next diagnostic must separate mean-state constitutive averaging from interface-gradient reconstruction before adding more state dimensions."
+  ],
+  "coarse_richards": {
+    "dynamic_equal_dimension_comparison": "UNAVAILABLE_UNDER_CURRENT_REFERENCE_NUMERICAL_AUTHORITY",
+    "reason": "D3 and D2 coarse Richards dynamic cases remain blocked through the preregistered temporal qualification ladder; only equilibrium cases qualify.",
+    "further_posthoc_timestep_or_tolerance_retuning_authorized": false
+  },
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
