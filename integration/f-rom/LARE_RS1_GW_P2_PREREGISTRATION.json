@@ -1,0 +1,198 @@
+{
+  "schema": "swap5.lare.rs1.gw.p2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW-P2",
+  "phase": "PREREGISTERED_BEFORE_FORMAL_P1_PAIR_FUTURE_RESPONSE_EXECUTION",
+  "purpose": "Measure purpose-dependent future-response ambiguity of response-blind P1 storage representations and decide whether any representation is worth carrying into LARE/coarse-Richards dynamics experiments.",
+  "prior_exposure": {
+    "supplemental_two_layer_pilot_seen": true,
+    "source": "integration/f-rom/LARE_RS1_GW_PILOT_FUTURE_RESPONSE_RESULT.json",
+    "firewall": "Pilot magnitudes may not set P2 representation selection, horizons, metric weights, deadbands, numerical tolerances, or acceptance thresholds."
+  },
+  "formal_predecessor": {
+    "preregistration": "integration/f-rom/LARE_RS1_GW_P1_PREREGISTRATION.json",
+    "required_decision": "LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN",
+    "requirement": "P2 execution is blocked until the formal P1 result and its frozen pair manifests exist."
+  },
+  "representation_selection_rule": {
+    "D_AGGRESSIVE": "one dimension below the smallest P1 selected dimension with zero collisions at the 1x diagnostic scale; minimum dimension is 2",
+    "D_STATE_SEPARATING": "smallest P1 selected dimension with zero collisions at the 1x diagnostic scale",
+    "D_ROBUST_PLATEAU": "smallest P1 selected dimension attaining the global minimum P1 collision count at the widest 4x diagnostic scale",
+    "controls": [
+      "U4",
+      "U8_Z8",
+      "B01_B14_PILOT_R4",
+      "Z8_PLUS_G8_INFORMATION_EQUIVALENT"
+    ],
+    "deduplication": "If rules select the same end-index partition more than once, execute it once and retain all role labels.",
+    "response_used_for_selection": false
+  },
+  "purpose_classes": {
+    "GW_D": {
+      "name": "dynamic shallow-groundwater hydraulic response",
+      "primary_horizons_steps": [
+        4,
+        64,
+        256
+      ],
+      "primary_horizons_day": [
+        0.0032,
+        0.0512,
+        0.2048
+      ],
+      "metrics": [
+        "cumulative_bottom_outward_exchange",
+        "terminal_bottom_flux",
+        "terminal_bottom_flux_sign",
+        "first_and_subsequent_reversal_timing",
+        "total_storage",
+        "lower_40_160cm_storage"
+      ],
+      "interpretation": "No single scalar score. Flux direction and reversal sequence are reported separately from magnitude errors."
+    },
+    "GW_R": {
+      "name": "regional groundwater exchange at approximately daily coupling scale",
+      "primary_horizon_steps": [
+        1250
+      ],
+      "primary_horizon_day": [
+        1
+      ],
+      "metrics": [
+        "one_day_cumulative_bottom_outward_exchange",
+        "one_day_total_storage_response",
+        "signed_exchange_bias_over_probe",
+        "end_of_day_terminal_bottom_flux_as_diagnostic"
+      ],
+      "interpretation": "Sub-hourly reversal timing is diagnostic unless the declared downstream coupling or decision consumes it."
+    }
+  },
+  "future_probes": {
+    "observation_step_day": 0.0008,
+    "maximum_steps": 1250,
+    "definitions": [
+      {
+        "id": "HOLD",
+        "segments": [
+          [
+            "HOLD",
+            1250
+          ]
+        ]
+      },
+      {
+        "id": "TOP_PLUS",
+        "segments": [
+          [
+            "TOP_PLUS",
+            1250
+          ]
+        ]
+      },
+      {
+        "id": "TOP_MINUS",
+        "segments": [
+          [
+            "TOP_MINUS",
+            1250
+          ]
+        ]
+      },
+      {
+        "id": "BOTTOM_HEAD_RISE",
+        "segments": [
+          [
+            "BOTTOM_HEAD_RISE",
+            1250
+          ]
+        ]
+      },
+      {
+        "id": "BOTTOM_HEAD_FALL",
+        "segments": [
+          [
+            "BOTTOM_HEAD_FALL",
+            1250
+          ]
+        ]
+      },
+      {
+        "id": "BOTTOM_HEAD_RISE_THEN_FALL",
+        "segments": [
+          [
+            "BOTTOM_HEAD_RISE",
+            625
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            625
+          ]
+        ]
+      },
+      {
+        "id": "BOTTOM_HEAD_FALL_THEN_RISE",
+        "segments": [
+          [
+            "BOTTOM_HEAD_FALL",
+            625
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            625
+          ]
+        ]
+      }
+    ],
+    "identical_future_forcing_for_pair_members": true,
+    "pair_source": "exact eight frozen adversarial pairs from formal P1 for each selected representation/control; no pair reselection"
+  },
+  "acceptance_envelope": {
+    "structural_hard_gates": [
+      "mass residual within the existing 1e-12 cm research Reference gate for every accepted branch step",
+      "finite physical Reference state",
+      "deterministic O0/O2 replay",
+      "exact reconstruction identity of every frozen P1 start state"
+    ],
+    "relative_state_information_gate": {
+      "label": "PROMISING_RELATIVE_TO_CONVENTIONAL_STATE_COARSENING",
+      "rule": "A selected nonuniform representation is promising for further reduced-dynamics work only if its purpose-vector ambiguity is Pareto non-inferior to the preregistered uniform controls at comparable or larger state dimension and is strictly better in at least one primary purpose component.",
+      "no_scalar_weighting": true,
+      "note": "This is a research-progression gate, not application acceptance."
+    },
+    "application_acceptance": {
+      "status": "PARAMETRIC_NOT_NUMERIC",
+      "rule": "Absolute ACCEPT_FOR_PURPOSE requires external application authority. P2 reports the critical application tolerances required by each representation instead of fitting tolerances to the observed errors.",
+      "GW_R_critical_quantities": [
+        "critical allowable one-day recharge/exchange ambiguity in mm",
+        "local storage-equivalent head ambiguity E_Q/Sy reported as a function of declared specific yield Sy; diagnostic only, not a substitute for a coupled groundwater response calculation"
+      ],
+      "GW_D_critical_quantities": [
+        "critical terminal flux-magnitude tolerance",
+        "critical reversal-time tolerance",
+        "whether any nonzero flux-sign disagreement occurs outside an externally declared near-zero deadband"
+      ],
+      "accepted_only_if": "A later declared application parameter set or downstream coupled-response authority lies outside all critical-error requirements.",
+      "fallback_decision": "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE"
+    }
+  },
+  "literature_basis": {
+    "Clark_et_al_2021": "Performance metrics must be interpreted with sampling uncertainty and in the context of the model's specific purpose; purpose-specific benchmarks are preferable to arbitrary universal thresholds.",
+    "benchmarking_principle": "Use explicit lower/reference comparators rather than a free-standing efficiency threshold.",
+    "role": "Conceptual evaluation authority only; literature does not supply a universal SWAP-ROM tolerance."
+  },
+  "decisions": [
+    "STATE_INFORMATION_PROMISING_FOR_DYNAMICS",
+    "STATE_INFORMATION_NOT_BETTER_THAN_COARSE_CONTROL",
+    "MORE_STATE_INFORMATION_REQUIRED",
+    "REFERENCE_OR_APPLICATION_ENVELOPE_NOT_YET_AUTHORITATIVE"
+  ],
+  "firewalls": [
+    "NO_PILOT_MAGNITUDE_USED_AS_THRESHOLD",
+    "NO_PAIR_RESELECTION_AFTER_RESPONSE",
+    "NO_POST_RESPONSE_HORIZON_RETUNING",
+    "NO_SCALAR_KGE_NSE_STYLE_OVERALL_SCORE",
+    "NO_LARE_CLOSURE_FIT_IN_P2",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
