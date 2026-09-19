@@ -14,7 +14,7 @@ program tabulated_hydraulics_wrapper_characterization
   real(real64), parameter :: lexp=0.50_real64, ksat=50.0_real64
   real(real64) :: head_raw(n), x(n), theta_tab(n), logk_tab(n), dydx(n), sigma(n)
   real(real64) :: heads(nh), h, theta, cap, kval, dkdh
-  real(real64) :: frac, exponent, dummy
+  real(real64) :: frac, exponent, dummy, se, bracket
   integer :: i,j
   character(len=32) :: mode
 
@@ -29,8 +29,10 @@ program tabulated_hydraulics_wrapper_characterization
     frac=real(i-1,real64)/real(n-2,real64)
     exponent=7.0_real64-12.0_real64*frac
     head_raw(i)=-10.0_real64**exponent
-    theta_tab(i)=vg_theta(head_raw(i))
-    logk_tab(i)=log(vg_k(head_raw(i)))
+    se=(1.0_real64+(alpha*abs(head_raw(i)))**nvg)**(-mvg)
+    theta_tab(i)=theta_r+(theta_s-theta_r)*se
+    bracket=1.0_real64-(1.0_real64-se**(1.0_real64/mvg))**mvg
+    logk_tab(i)=log(ksat*se**lexp*bracket**2)
   end do
   head_raw(n)=0.0_real64
   theta_tab(n)=theta_s
