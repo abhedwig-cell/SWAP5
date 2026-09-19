@@ -86,5 +86,15 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalisation": {
+    "before_first_C4J_execution": true,
+    "metric_tolerance": 1e-12,
+    "strict_improvement": "candidate RMS < baseline RMS - 1e-12 AND candidate MAE < baseline MAE - 1e-12",
+    "strict_worsening": "candidate RMS > baseline RMS + 1e-12 AND candidate MAE > baseline MAE + 1e-12",
+    "hold_failure_of_noninferiority": "At least one of the two slope targets has RMS or MAE greater than baseline by more than 1e-12.",
+    "cross_quadrature_root_matching": "Require equal distinct-cluster counts; greedily match each 64-point cluster to the unused 128-point cluster with minimum Euclidean distance in (a,b), then apply the preregistered flux crosscheck gate to matched q_i and q_H.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
