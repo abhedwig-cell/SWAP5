@@ -1,0 +1,1255 @@
+{
+  "application_acceptance_adjudicated": false,
+  "cases": {
+    "2.5:WT_FALL": {
+      "complete": true,
+      "counterfactual_propagated": false,
+      "decision": "BC2_C4E_LOCAL_CAUSAL_CASE_MAPPED",
+      "failures": {},
+      "groundwater_feedback_authorized": false,
+      "history": "WT_FALL",
+      "model_changed": false,
+      "primary_cross_removal_rank_match": true,
+      "production_rom_authorized": false,
+      "routes": {
+        "0.00002500": {
+          "QI_strictly_improves_BASE": false,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 2.5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 2.128782176577526e-14,
+            "max_reference_physical_ledger_residual_cm": 1.2476131239225197e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 9.992007221626409e-12,
+            "max_teacher_physical_ledger_residual_cm": 2.2433227150897572e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 1.1052270210143433e-11
+          },
+          "history": "WT_FALL",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 8.483968215474378e-05,
+              "mean_shape_error_theta": 3.363209150573133e-05,
+              "pooled_rms_shape_error_theta": 3.828520534183411e-05,
+              "rms_Wb_endpoint_error_cm": 0.0024774363868694305,
+              "rms_Wt_endpoint_error_cm": 0.00022225000129214525,
+              "rms_total_physical_storage_endpoint_error_cm": 0.002010599681528679
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.798828125,
+              "max_shape_error_theta": 8.484592860389735e-05,
+              "mean_shape_error_theta": 3.3632684489977095e-05,
+              "pooled_rms_shape_error_theta": 3.8286944236172066e-05,
+              "rms_Wb_endpoint_error_cm": 0.0024774363868694305,
+              "rms_Wt_endpoint_error_cm": 0.00022225000129214525,
+              "rms_total_physical_storage_endpoint_error_cm": 0.002010599681528679
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0016554487195033]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00010564226203130673,
+              "mean_shape_error_theta": 3.4432141730524125e-05,
+              "pooled_rms_shape_error_theta": 3.9817275745384766e-05,
+              "rms_Wb_endpoint_error_cm": 0.002494397026593289,
+              "rms_Wt_endpoint_error_cm": 0.00023695867064747565,
+              "rms_total_physical_storage_endpoint_error_cm": 0.002012161918564429
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 8.07435984382338e-05,
+              "mean_shape_error_theta": 3.192627546145045e-05,
+              "pooled_rms_shape_error_theta": 3.598410297683094e-05,
+              "rms_Wb_endpoint_error_cm": 0.0022320717443909933,
+              "rms_Wt_endpoint_error_cm": 0.00022225000129214525,
+              "rms_total_physical_storage_endpoint_error_cm": 0.002010599681528679
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0006263413146212]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.0006577281440960317,
+              "mean_shape_error_theta": 0.00024040473511613783,
+              "pooled_rms_shape_error_theta": 0.0002701111170685237,
+              "rms_Wb_endpoint_error_cm": 0.0024796096381558648,
+              "rms_Wt_endpoint_error_cm": 0.0022338201601250934,
+              "rms_total_physical_storage_endpoint_error_cm": 7.599353192300737e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0046926555823072]",
+                  "step": 2
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0047260537703004]",
+                  "step": 3
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0046889935362204]",
+                  "step": 4
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.004619254996969]",
+                  "step": 5
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0045406732100253]",
+                  "step": 6
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.004463940665472]",
+                  "step": 7
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.004389140932237]",
+                  "step": 8
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0043163431694109]",
+                  "step": 9
+                }
+              ],
+              "blocked_interval_count": 499,
+              "evaluated_interval_count": 13,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00034491987644205967,
+              "mean_shape_error_theta": 0.00012323629242946832,
+              "pooled_rms_shape_error_theta": 0.0001388625095589152,
+              "rms_Wb_endpoint_error_cm": 0.000599491071908915,
+              "rms_Wt_endpoint_error_cm": 0.0011636699343461434,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0008851148898413568
+            }
+          },
+          "width_cm": 2.5
+        },
+        "0.00005000": {
+          "QI_strictly_improves_BASE": false,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 1.853812242602615e-14,
+            "max_reference_physical_ledger_residual_cm": 1.2476131239225197e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 9.992007221626409e-12,
+            "max_teacher_physical_ledger_residual_cm": 1.369954497065784e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 8.365530490550555e-12
+          },
+          "history": "WT_FALL",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 8.482024536132326e-05,
+              "mean_shape_error_theta": 3.363336098634492e-05,
+              "pooled_rms_shape_error_theta": 3.828458855700043e-05,
+              "rms_Wb_endpoint_error_cm": 0.002476339365858738,
+              "rms_Wt_endpoint_error_cm": 0.0002223191258432298,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00200944420774932
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.798828125,
+              "max_shape_error_theta": 8.482649336950884e-05,
+              "mean_shape_error_theta": 3.3633954008343855e-05,
+              "pooled_rms_shape_error_theta": 3.828632742468153e-05,
+              "rms_Wb_endpoint_error_cm": 0.002476339365858738,
+              "rms_Wt_endpoint_error_cm": 0.0002223191258432298,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00200944420774932
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0016571814992525]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00010560872240764073,
+              "mean_shape_error_theta": 3.443306040163008e-05,
+              "pooled_rms_shape_error_theta": 3.9816050493054555e-05,
+              "rms_Wb_endpoint_error_cm": 0.0024932800744416023,
+              "rms_Wt_endpoint_error_cm": 0.00023702071022888748,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00201099147574088
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 8.072486348563242e-05,
+              "mean_shape_error_theta": 3.192815544386877e-05,
+              "pooled_rms_shape_error_theta": 3.59843324432062e-05,
+              "rms_Wb_endpoint_error_cm": 0.002230985410233149,
+              "rms_Wt_endpoint_error_cm": 0.0002223191258432298,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00200944420774932
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0006413184851]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.000657245414331378,
+              "mean_shape_error_theta": 0.00024030868045315598,
+              "pooled_rms_shape_error_theta": 0.00026997811578047064,
+              "rms_Wb_endpoint_error_cm": 0.002478501786281104,
+              "rms_Wt_endpoint_error_cm": 0.0022327191293917514,
+              "rms_total_physical_storage_endpoint_error_cm": 6.210497419537656e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0046879424525859]",
+                  "step": 2
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0047217738529455]",
+                  "step": 3
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0046848745811097]",
+                  "step": 4
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.004615166892683]",
+                  "step": 5
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0045365890209783]",
+                  "step": 6
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0044598767963158]",
+                  "step": 7
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0043851083759878]",
+                  "step": 8
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.004312349416917]",
+                  "step": 9
+                }
+              ],
+              "blocked_interval_count": 499,
+              "evaluated_interval_count": 13,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00034692537450683303,
+              "mean_shape_error_theta": 0.00012336429883034986,
+              "pooled_rms_shape_error_theta": 0.00013922652308351864,
+              "rms_Wb_endpoint_error_cm": 0.00059997916057212,
+              "rms_Wt_endpoint_error_cm": 0.0011667209323239158,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0008861087364951497
+            }
+          },
+          "width_cm": 2.5
+        }
+      },
+      "schema": "swap5.lare.bc2.c4e.case-result.v1",
+      "width_cm": 2.5,
+      "work_unit": "LARE-BC2-C4E",
+      "workstream": "F-ROM-LARE"
+    },
+    "2.5:WT_RISE": {
+      "complete": true,
+      "counterfactual_propagated": false,
+      "decision": "BC2_C4E_LOCAL_CAUSAL_CASE_MAPPED",
+      "failures": {},
+      "groundwater_feedback_authorized": false,
+      "history": "WT_RISE",
+      "model_changed": false,
+      "primary_cross_removal_rank_match": true,
+      "production_rom_authorized": false,
+      "routes": {
+        "0.00002500": {
+          "QI_strictly_improves_BASE": false,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 2.5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 1.8896451244032608e-14,
+            "max_reference_physical_ledger_residual_cm": 1.5307199952019346e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 8.881784197001252e-12,
+            "max_teacher_physical_ledger_residual_cm": 1.0314665788158095e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 1.4786838420377535e-11
+          },
+          "history": "WT_RISE",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_Q90",
+            "REMOVE_QI"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 0.00012573373329088688,
+              "mean_shape_error_theta": 5.342712155626392e-05,
+              "pooled_rms_shape_error_theta": 5.6913028296376244e-05,
+              "rms_Wb_endpoint_error_cm": 0.00214254874637732,
+              "rms_Wt_endpoint_error_cm": 0.00029577564703053215,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018719774961434652
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.728515625,
+              "max_shape_error_theta": 0.00012573393595043713,
+              "mean_shape_error_theta": 5.3427114676518676e-05,
+              "pooled_rms_shape_error_theta": 5.691323941059288e-05,
+              "rms_Wb_endpoint_error_cm": 0.00214254874637732,
+              "rms_Wt_endpoint_error_cm": 0.00029577564703053215,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018719774961434652
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 0.00011414578978513745,
+              "mean_shape_error_theta": 5.2451029647776316e-05,
+              "pooled_rms_shape_error_theta": 5.544139984107791e-05,
+              "rms_Wb_endpoint_error_cm": 0.002126648890006848,
+              "rms_Wt_endpoint_error_cm": 0.00027992420991601857,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018719774961434652
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.115234375,
+              "max_shape_error_theta": 0.00012481053242786654,
+              "mean_shape_error_theta": 5.417035048857486e-05,
+              "pooled_rms_shape_error_theta": 5.745349655314508e-05,
+              "rms_Wb_endpoint_error_cm": 0.002163718411805068,
+              "rms_Wt_endpoint_error_cm": 0.00029577564703053215,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018719774961434652
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0027162362124908]",
+                  "step": 2
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0025611949632933]",
+                  "step": 3
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0025200752171106]",
+                  "step": 4
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024122588450735]",
+                  "step": 5
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0018612554932453]",
+                  "step": 6
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0002829143788903]",
+                  "step": 7
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024579298240883]",
+                  "step": 8
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024586965463738]",
+                  "step": 9
+                }
+              ],
+              "blocked_interval_count": 428,
+              "evaluated_interval_count": 84,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00014424781564793005,
+              "mean_shape_error_theta": 0.00013468261728327214,
+              "pooled_rms_shape_error_theta": 0.00013500542706390271,
+              "rms_Wb_endpoint_error_cm": 0.0010736859187950936,
+              "rms_Wt_endpoint_error_cm": 0.0010935832912474035,
+              "rms_total_physical_storage_endpoint_error_cm": 4.6573316194435336e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00044099764875335913,
+              "mean_shape_error_theta": 0.00020125172202519636,
+              "pooled_rms_shape_error_theta": 0.0002194227628000178,
+              "rms_Wb_endpoint_error_cm": 0.00010749939630328546,
+              "rms_Wt_endpoint_error_cm": 0.0018571872053026962,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018719774961434652
+            }
+          },
+          "width_cm": 2.5
+        },
+        "0.00005000": {
+          "QI_strictly_improves_BASE": false,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 1.7385290256022312e-14,
+            "max_reference_physical_ledger_residual_cm": 1.5307199952019346e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 8.881784197001252e-12,
+            "max_teacher_physical_ledger_residual_cm": 5.547645676173829e-15,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 7.886136188517412e-12
+          },
+          "history": "WT_RISE",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_Q90",
+            "REMOVE_QI"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 0.00012577996395127556,
+              "mean_shape_error_theta": 5.3436243904633355e-05,
+              "pooled_rms_shape_error_theta": 5.6924280416260544e-05,
+              "rms_Wb_endpoint_error_cm": 0.0021427606077982723,
+              "rms_Wt_endpoint_error_cm": 0.0002958821756325054,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018720826796971295
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.728515625,
+              "max_shape_error_theta": 0.00012578016651072584,
+              "mean_shape_error_theta": 5.343623712042526e-05,
+              "pooled_rms_shape_error_theta": 5.692449162294633e-05,
+              "rms_Wb_endpoint_error_cm": 0.0021427606077982723,
+              "rms_Wt_endpoint_error_cm": 0.0002958821756325054,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018720826796971295
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 0.00011419216875518137,
+              "mean_shape_error_theta": 5.2459924139059704e-05,
+              "pooled_rms_shape_error_theta": 5.5452295308743825e-05,
+              "rms_Wb_endpoint_error_cm": 0.002126865063398885,
+              "rms_Wt_endpoint_error_cm": 0.0002800271379444382,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018720826796971295
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.115234375,
+              "max_shape_error_theta": 0.00012485685554293867,
+              "mean_shape_error_theta": 5.417949424855526e-05,
+              "pooled_rms_shape_error_theta": 5.746470357866205e-05,
+              "rms_Wb_endpoint_error_cm": 0.002163929653525643,
+              "rms_Wt_endpoint_error_cm": 0.0002958821756325054,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018720826796971295
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0027171119524305]",
+                  "step": 2
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0025618818387088]",
+                  "step": 3
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.002520517371596]",
+                  "step": 4
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024124942905341]",
+                  "step": 5
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.00186134926693]",
+                  "step": 6
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0002829098513795]",
+                  "step": 7
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.002459505798913]",
+                  "step": 8
+                },
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024602402572622]",
+                  "step": 9
+                }
+              ],
+              "blocked_interval_count": 428,
+              "evaluated_interval_count": 84,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00014424426808648058,
+              "mean_shape_error_theta": 0.00013466901491537023,
+              "pooled_rms_shape_error_theta": 0.0001349968147229059,
+              "rms_Wb_endpoint_error_cm": 0.001073603185898105,
+              "rms_Wt_endpoint_error_cm": 0.0010935125695605977,
+              "rms_total_physical_storage_endpoint_error_cm": 3.923996476422454e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00044107122491653946,
+              "mean_shape_error_theta": 0.0002012572534767846,
+              "pooled_rms_shape_error_theta": 0.00021943574857850168,
+              "rms_Wb_endpoint_error_cm": 0.00010748494407425688,
+              "rms_Wt_endpoint_error_cm": 0.0018572968522883489,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0018720826796971295
+            }
+          },
+          "width_cm": 2.5
+        }
+      },
+      "schema": "swap5.lare.bc2.c4e.case-result.v1",
+      "width_cm": 2.5,
+      "work_unit": "LARE-BC2-C4E",
+      "workstream": "F-ROM-LARE"
+    },
+    "5.0:WT_FALL": {
+      "complete": true,
+      "counterfactual_propagated": false,
+      "decision": "BC2_C4E_LOCAL_CAUSAL_CASE_MAPPED",
+      "failures": {},
+      "groundwater_feedback_authorized": false,
+      "history": "WT_FALL",
+      "model_changed": false,
+      "primary_cross_removal_rank_match": true,
+      "production_rom_authorized": false,
+      "routes": {
+        "0.00002500": {
+          "QI_strictly_improves_BASE": true,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 2.5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 2.099210562322984e-14,
+            "max_reference_physical_ledger_residual_cm": 1.1843390851362656e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 9.992007221626409e-12,
+            "max_teacher_physical_ledger_residual_cm": 1.8061073470132527e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 1.0949907647272994e-11
+          },
+          "history": "WT_FALL",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 9.458376168278851e-05,
+              "mean_shape_error_theta": 4.697388286812733e-05,
+              "pooled_rms_shape_error_theta": 5.137084509693619e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013985987684977208,
+              "rms_Wt_endpoint_error_cm": 0.0008116416060632337,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003773983139147563
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.81640625,
+              "max_shape_error_theta": 9.459118139378736e-05,
+              "mean_shape_error_theta": 4.697420013324178e-05,
+              "pooled_rms_shape_error_theta": 5.137174207660565e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013985987684977208,
+              "rms_Wt_endpoint_error_cm": 0.0008116416060632337,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003773983139147563
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024144305384388]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 9.990889940668917e-05,
+              "mean_shape_error_theta": 4.7516669495139615e-05,
+              "pooled_rms_shape_error_theta": 5.228797397435498e-05,
+              "rms_Wb_endpoint_error_cm": 0.0014150820497069046,
+              "rms_Wt_endpoint_error_cm": 0.0008268248406581742,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003758127998136524
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 9.204901737764499e-05,
+              "mean_shape_error_theta": 4.631769053663009e-05,
+              "pooled_rms_shape_error_theta": 5.047038130617689e-05,
+              "rms_Wb_endpoint_error_cm": 0.0011781075595481676,
+              "rms_Wt_endpoint_error_cm": 0.0008116416060632337,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003773983139147563
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00015488466708583632,
+              "mean_shape_error_theta": 6.619669897029291e-05,
+              "pooled_rms_shape_error_theta": 7.21854171159962e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013985987684977208,
+              "rms_Wt_endpoint_error_cm": 0.0011781075595477767,
+              "rms_total_physical_storage_endpoint_error_cm": 7.642819661858474e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 0.00041860636570785383,
+              "mean_shape_error_theta": 2.2134504987464116e-05,
+              "pooled_rms_shape_error_theta": 3.0705104529200635e-05,
+              "rms_Wb_endpoint_error_cm": 0.00035102496831343103,
+              "rms_Wt_endpoint_error_cm": 0.000500055335021406,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003773983139147563
+            }
+          },
+          "width_cm": 5.0
+        },
+        "0.00005000": {
+          "QI_strictly_improves_BASE": true,
+          "QI_unique_best_single_family_removal": false,
+          "all_single_family_controls_admissible": false,
+          "decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "dt_day": 5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 2.0296698349797637e-14,
+            "max_reference_physical_ledger_residual_cm": 1.1843390851362656e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 9.992007221626409e-12,
+            "max_teacher_physical_ledger_residual_cm": 1.4306698187249722e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 8.082645663876065e-12
+          },
+          "history": "WT_FALL",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 9.458519594463471e-05,
+              "mean_shape_error_theta": 4.6976589295711775e-05,
+              "pooled_rms_shape_error_theta": 5.137354416797694e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013983514318857818,
+              "rms_Wt_endpoint_error_cm": 0.0008117061319925767,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00037710967097267216
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.81640625,
+              "max_shape_error_theta": 9.459261549980942e-05,
+              "mean_shape_error_theta": 4.697690653538552e-05,
+              "pooled_rms_shape_error_theta": 5.137444106052042e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013983514318857818,
+              "rms_Wt_endpoint_error_cm": 0.0008117061319925767,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00037710967097267216
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": false,
+              "blocked_examples": [
+                {
+                  "reason": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.0024156464371046]",
+                  "step": 1
+                }
+              ],
+              "blocked_interval_count": 1,
+              "evaluated_interval_count": 511,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 9.990862566340621e-05,
+              "mean_shape_error_theta": 4.751892598876269e-05,
+              "pooled_rms_shape_error_theta": 5.228996505031119e-05,
+              "rms_Wb_endpoint_error_cm": 0.0014148052752043128,
+              "rms_Wt_endpoint_error_cm": 0.000826879205297851,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0003754917401388022
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 9.205092582887972e-05,
+              "mean_shape_error_theta": 4.6320536271852016e-05,
+              "pooled_rms_shape_error_theta": 5.047328627711209e-05,
+              "rms_Wb_endpoint_error_cm": 0.001177869983627535,
+              "rms_Wt_endpoint_error_cm": 0.0008117061319925767,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00037710967097267216
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.0,
+              "max_shape_error_theta": 0.00015484147379667343,
+              "mean_shape_error_theta": 6.618433396131887e-05,
+              "pooled_rms_shape_error_theta": 7.217104972581606e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013983514318857818,
+              "rms_Wt_endpoint_error_cm": 0.0011778699836274345,
+              "rms_total_physical_storage_endpoint_error_cm": 6.392375145098332e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.998046875,
+              "max_shape_error_theta": 0.0004190162105046381,
+              "mean_shape_error_theta": 2.2119709831359655e-05,
+              "pooled_rms_shape_error_theta": 3.070147905393429e-05,
+              "rms_Wb_endpoint_error_cm": 0.0003510398668994935,
+              "rms_Wt_endpoint_error_cm": 0.0004999879525227914,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00037710967097267216
+            }
+          },
+          "width_cm": 5.0
+        }
+      },
+      "schema": "swap5.lare.bc2.c4e.case-result.v1",
+      "width_cm": 5.0,
+      "work_unit": "LARE-BC2-C4E",
+      "workstream": "F-ROM-LARE"
+    },
+    "5.0:WT_RISE": {
+      "complete": true,
+      "counterfactual_propagated": false,
+      "decision": "BC2_C4E_LOCAL_CAUSAL_CASE_MAPPED",
+      "failures": {},
+      "groundwater_feedback_authorized": false,
+      "history": "WT_RISE",
+      "model_changed": false,
+      "primary_cross_removal_rank_match": true,
+      "production_rom_authorized": false,
+      "routes": {
+        "0.00002500": {
+          "QI_strictly_improves_BASE": true,
+          "QI_unique_best_single_family_removal": true,
+          "all_single_family_controls_admissible": true,
+          "decision": "CASE_QI_UNIQUE_BEST",
+          "dt_day": 2.5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 2.09352934293916e-14,
+            "max_reference_physical_ledger_residual_cm": 1.6639467581569534e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 8.881784197001252e-12,
+            "max_teacher_physical_ledger_residual_cm": 1.0810796702287462e-14,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 2.5616397891781162e-11
+          },
+          "history": "WT_RISE",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 0.0002478451540353331,
+              "mean_shape_error_theta": 7.05243436446398e-05,
+              "pooled_rms_shape_error_theta": 7.48208248114065e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013613074940507092,
+              "rms_Wt_endpoint_error_cm": 0.0010906247823775032,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00025227715425107694
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.25390625,
+              "max_shape_error_theta": 0.0002478451932697529,
+              "mean_shape_error_theta": 7.05375986451048e-05,
+              "pooled_rms_shape_error_theta": 7.483029126147693e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013613074940507092,
+              "rms_Wt_endpoint_error_cm": 0.0010906247823775032,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00025227715425107694
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.994140625,
+              "max_shape_error_theta": 0.00015904917368820466,
+              "mean_shape_error_theta": 6.952777881777512e-05,
+              "pooled_rms_shape_error_theta": 7.311938462487874e-05,
+              "rms_Wb_endpoint_error_cm": 0.001344335267943533,
+              "rms_Wt_endpoint_error_cm": 0.0010602621395043063,
+              "rms_total_physical_storage_endpoint_error_cm": 0.000252277154251077
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.99609375,
+              "max_shape_error_theta": 0.00024776671150794963,
+              "mean_shape_error_theta": 6.61157784568531e-05,
+              "pooled_rms_shape_error_theta": 7.151342361014382e-05,
+              "rms_Wb_endpoint_error_cm": 0.0011596642168160206,
+              "rms_Wt_endpoint_error_cm": 0.0010906247823775032,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00025227715425107694
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.21484375,
+              "max_shape_error_theta": 0.0001489267201548825,
+              "mean_shape_error_theta": 7.449963388530946e-05,
+              "pooled_rms_shape_error_theta": 7.846485776832573e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013613074940507092,
+              "rms_Wt_endpoint_error_cm": 0.0011596642168157174,
+              "rms_total_physical_storage_endpoint_error_cm": 4.977366848059409e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.98828125,
+              "max_shape_error_theta": 0.00027749708217396086,
+              "mean_shape_error_theta": 1.6305097517906375e-05,
+              "pooled_rms_shape_error_theta": 2.2235583350070455e-05,
+              "rms_Wb_endpoint_error_cm": 0.00030119030820327286,
+              "rms_Wt_endpoint_error_cm": 0.0003229690622807512,
+              "rms_total_physical_storage_endpoint_error_cm": 0.00025227715425107694
+            }
+          },
+          "width_cm": 5.0
+        },
+        "0.00005000": {
+          "QI_strictly_improves_BASE": true,
+          "QI_unique_best_single_family_removal": true,
+          "all_single_family_controls_admissible": true,
+          "decision": "CASE_QI_UNIQUE_BEST",
+          "dt_day": 5e-05,
+          "hard_checks": {
+            "gate": 1e-10,
+            "max_FIXED_INTERIOR_Q_mass_neutral_residual_cm": 0.0,
+            "max_GEOMETRY_GI_mass_neutral_residual_cm": 0.0,
+            "max_Q90_mass_neutral_residual_cm": 0.0,
+            "max_QI_mass_neutral_residual_cm": 0.0,
+            "max_family_state_additivity_residual_cm": 1.669367769019381e-14,
+            "max_reference_physical_ledger_residual_cm": 1.6639467581569534e-14,
+            "max_reference_q90_reconstruction_identity_cm_per_day": 8.881784197001252e-12,
+            "max_teacher_physical_ledger_residual_cm": 6.8833827526759706e-15,
+            "max_teacher_q90_reconstruction_identity_cm_per_day": 2.6483260029408484e-11
+          },
+          "history": "WT_RISE",
+          "interval_count": 512,
+          "single_family_removal_rank_by_pooled_shape_error": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ],
+          "status": "QUALIFIED",
+          "variants": {
+            "BASE": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": null,
+              "max_shape_error_theta": 0.000247829173252223,
+              "mean_shape_error_theta": 7.052802740077714e-05,
+              "pooled_rms_shape_error_theta": 7.482528846235494e-05,
+              "rms_Wb_endpoint_error_cm": 0.001361188846162812,
+              "rms_Wt_endpoint_error_cm": 0.0010907423944417091,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0002522201270652254
+            },
+            "REMOVE_FIXED_INTERIOR_Q": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.25390625,
+              "max_shape_error_theta": 0.0002478292124576567,
+              "mean_shape_error_theta": 7.054128081553272e-05,
+              "pooled_rms_shape_error_theta": 7.483475340561221e-05,
+              "rms_Wb_endpoint_error_cm": 0.001361188846162812,
+              "rms_Wt_endpoint_error_cm": 0.0010907423944417091,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0002522201270652254
+            },
+            "REMOVE_GEOMETRY_GI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.994140625,
+              "max_shape_error_theta": 0.00015906866363243777,
+              "mean_shape_error_theta": 6.953154193454835e-05,
+              "pooled_rms_shape_error_theta": 7.312408663448534e-05,
+              "rms_Wb_endpoint_error_cm": 0.0013442225456019306,
+              "rms_Wt_endpoint_error_cm": 0.001060384641903969,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0002522201270652254
+            },
+            "REMOVE_Q90": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.99609375,
+              "max_shape_error_theta": 0.0002477507709062017,
+              "mean_shape_error_theta": 6.612012728026333e-05,
+              "pooled_rms_shape_error_theta": 7.151848057648879e-05,
+              "rms_Wb_endpoint_error_cm": 0.0011595519945902136,
+              "rms_Wt_endpoint_error_cm": 0.0010907423944417091,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0002522201270652254
+            },
+            "REMOVE_QH": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.21484375,
+              "max_shape_error_theta": 0.0001488837365702671,
+              "mean_shape_error_theta": 7.449232501765822e-05,
+              "pooled_rms_shape_error_theta": 7.845744457675567e-05,
+              "rms_Wb_endpoint_error_cm": 0.001361188846162812,
+              "rms_Wt_endpoint_error_cm": 0.0011595519945900932,
+              "rms_total_physical_storage_endpoint_error_cm": 4.071586688970427e-15
+            },
+            "REMOVE_QI": {
+              "admissible_all_intervals": true,
+              "blocked_examples": [],
+              "blocked_interval_count": 0,
+              "evaluated_interval_count": 512,
+              "fraction_intervals_lower_shape_error_than_BASE": 0.98828125,
+              "max_shape_error_theta": 0.0002775591328424016,
+              "mean_shape_error_theta": 1.6301352215874453e-05,
+              "pooled_rms_shape_error_theta": 2.223506536777237e-05,
+              "rms_Wb_endpoint_error_cm": 0.00030119491170356433,
+              "rms_Wt_endpoint_error_cm": 0.0003229588939802595,
+              "rms_total_physical_storage_endpoint_error_cm": 0.0002522201270652254
+            }
+          },
+          "width_cm": 5.0
+        }
+      },
+      "schema": "swap5.lare.bc2.c4e.case-result.v1",
+      "width_cm": 5.0,
+      "work_unit": "LARE-BC2-C4E",
+      "workstream": "F-ROM-LARE"
+    }
+  },
+  "complete": true,
+  "counterfactual_propagated": false,
+  "decision": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "all_QI_counterfactuals_strictly_improve_BASE": false,
+    "all_QI_counterfactuals_unique_best": false,
+    "all_cases_complete": true,
+    "all_primary_cross_removal_rank_match": true,
+    "any_counterfactual_comparison_blocked": true,
+    "gate": 1e-10,
+    "maximum_recorded_hard_residual_or_identity_error": 2.6483260029408484e-11
+  },
+  "interpretation": [
+    "C4E is a one-interval teacher-forced endpoint counterfactual. No counterfactual state is propagated.",
+    "A positive result means QI local bias is the uniquely strongest single-family causal contributor to monotone-phase endpoint shape error under the frozen additive C3 decomposition.",
+    "A positive result does not prove that direct QI flux substitution is stable or physically admissible in a free-running reduced model.",
+    "C4B remains authoritative evidence that direct free-running oracle substitution may leave the qualified domain.",
+    "Any next model hypothesis must alter a physically admissible terminal-profile/QI reconstruction rather than inject an arbitrary corrective flux."
+  ],
+  "model_changed": false,
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4e.result.v1",
+  "summary": {
+    "2.5": {
+      "WT_FALL": {
+        "0.00002500": {
+          "BASE_pooled_rms_shape_error_theta": 3.828520534183411e-05,
+          "QI_fraction_intervals_improved": 0.0,
+          "QI_shape_error_ratio_to_BASE": 3.6270540622432192,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 0.0001388625095589152,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q"
+          ]
+        },
+        "0.00005000": {
+          "BASE_pooled_rms_shape_error_theta": 3.828458855700043e-05,
+          "QI_fraction_intervals_improved": 0.0,
+          "QI_shape_error_ratio_to_BASE": 3.6366205915006686,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 0.00013922652308351864,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q"
+          ]
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "BASE_pooled_rms_shape_error_theta": 5.6913028296376244e-05,
+          "QI_fraction_intervals_improved": 0.0,
+          "QI_shape_error_ratio_to_BASE": 3.8554048056864487,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 0.0002194227628000178,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_Q90",
+            "REMOVE_QI"
+          ]
+        },
+        "0.00005000": {
+          "BASE_pooled_rms_shape_error_theta": 5.6924280416260544e-05,
+          "QI_fraction_intervals_improved": 0.0,
+          "QI_shape_error_ratio_to_BASE": 3.8548708384870403,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 0.00021943574857850168,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_Q90",
+            "REMOVE_QI"
+          ]
+        }
+      }
+    },
+    "5.0": {
+      "WT_FALL": {
+        "0.00002500": {
+          "BASE_pooled_rms_shape_error_theta": 5.137084509693619e-05,
+          "QI_fraction_intervals_improved": 0.998046875,
+          "QI_shape_error_ratio_to_BASE": 0.597714607794761,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 3.0705104529200635e-05,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ]
+        },
+        "0.00005000": {
+          "BASE_pooled_rms_shape_error_theta": 5.137354416797694e-05,
+          "QI_fraction_intervals_improved": 0.998046875,
+          "QI_shape_error_ratio_to_BASE": 0.5976126341127866,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 3.070147905393429e-05,
+          "all_single_family_controls_admissible": false,
+          "case_decision": "CASE_DIAGNOSTIC_BLOCKED",
+          "rank": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ]
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "BASE_pooled_rms_shape_error_theta": 7.48208248114065e-05,
+          "QI_fraction_intervals_improved": 0.98828125,
+          "QI_shape_error_ratio_to_BASE": 0.29718441899187165,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 2.2235583350070455e-05,
+          "all_single_family_controls_admissible": true,
+          "case_decision": "CASE_QI_UNIQUE_BEST",
+          "rank": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ]
+        },
+        "0.00005000": {
+          "BASE_pooled_rms_shape_error_theta": 7.482528846235494e-05,
+          "QI_fraction_intervals_improved": 0.98828125,
+          "QI_shape_error_ratio_to_BASE": 0.2971597681037871,
+          "REMOVE_QI_pooled_rms_shape_error_theta": 2.223506536777237e-05,
+          "all_single_family_controls_admissible": true,
+          "case_decision": "CASE_QI_UNIQUE_BEST",
+          "rank": [
+            "REMOVE_QI",
+            "REMOVE_Q90",
+            "REMOVE_GEOMETRY_GI",
+            "REMOVE_FIXED_INTERIOR_Q",
+            "REMOVE_QH"
+          ]
+        }
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-C4E",
+  "workstream": "F-ROM-LARE"
+}
