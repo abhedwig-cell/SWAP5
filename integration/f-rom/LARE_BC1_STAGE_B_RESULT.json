@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.lare.bc1.stage-b.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-B",
+  "decision": "BC1_CURRENT_LAYER_RELATIVE_SUPPORT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC1_STAGE_B_PREREGISTRATION.json",
+    "boundary_authority": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "corrected_reference_semantics": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "workflow_run": 35450497790,
+    "artifact_id": 10586945126,
+    "artifact_digest": "sha256:ba449e345e710c4c3e5504de290c2bca3f9d083317743efd194e05623bb94350",
+    "executed_head": "67d0be50a04f42c1d9a9060c0ca4fe751cc409e4",
+    "reference_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "domain_coverage": {
+    "CURRENT_LAYER_FACE": {
+      "qualified": 7,
+      "outside_qualified_domain": 1,
+      "numerical_blocked": 0
+    },
+    "BOUNDARY_FACE": {
+      "qualified": 7,
+      "outside_qualified_domain": 1,
+      "numerical_blocked": 0
+    },
+    "common_case_count": 7,
+    "common_cases": [
+      "D3_G00",
+      "D3_G04",
+      "D3_G05",
+      "D4_G00",
+      "D4_G03",
+      "D4_G04",
+      "D4_G05"
+    ],
+    "excluded_case": "D3_G03 is OUTSIDE_QUALIFIED_DOMAIN for both closures"
+  },
+  "common_cohort": {
+    "CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.6236860099746337,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.04264705497079856,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.15748269481028898,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 1.504110202479879,
+      "bottom_flux_sign_mismatch_count": 3,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 1
+    },
+    "BOUNDARY_FACE": {
+      "max_abs_layer_storage_error_cm": 0.9609018857714702,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.06267447889969342,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.1822693642416101,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 10.763841461672577,
+      "bottom_flux_sign_mismatch_count": 20,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 9
+    }
+  },
+  "reversal_control": {
+    "case": "D3_G00",
+    "reference_reversal_steps": [
+      25,
+      57
+    ],
+    "CURRENT_LAYER_FACE_reversal_steps": [
+      25,
+      57
+    ],
+    "BOUNDARY_FACE_reversal_steps": [
+      25,
+      48
+    ],
+    "interpretation": "CURRENT_LAYER_FACE preserves the historically decisive second reversal exactly in the D3 G00 control; BOUNDARY_FACE advances it by nine observation steps."
+  },
+  "D3_D4_closure_resolution": {
+    "CURRENT_LAYER_FACE": {
+      "G00": {
+        "D3_max_layer_error_cm": 0.6236860099746337,
+        "D4_max_layer_error_cm": 0.1298169418115549,
+        "D3_max_cum_bottom_error_cm": 0.0013961797398494014,
+        "D4_max_cum_bottom_error_cm": 0.001118541797504688
+      },
+      "G04": {
+        "D3_max_layer_error_cm": 0.2130159493607806,
+        "D4_max_layer_error_cm": 0.07633510094115792,
+        "D3_max_cum_bottom_error_cm": 0.15748269481028898,
+        "D4_max_cum_bottom_error_cm": 0.060847799321523954
+      },
+      "G05": {
+        "D3_max_layer_error_cm": 0.0764860040130344,
+        "D4_max_layer_error_cm": 0.030240198562033527,
+        "D3_max_cum_bottom_error_cm": 0.03282640654575664,
+        "D4_max_cum_bottom_error_cm": 0.0020513520990576017
+      }
+    },
+    "interpretation": "D4 improves storage and bottom-exchange fidelity for every common CURRENT_LAYER_FACE D3/D4 history. This remains closure-resolution evidence, not new state-information evidence."
+  },
+  "numerical_quality": {
+    "CURRENT_LAYER_FACE_max_water_ledger_cm": 4.1255887595070817e-13,
+    "BOUNDARY_FACE_max_water_ledger_cm": 5.662137425588298e-13,
+    "hard_gate_cm": 1e-10
+  },
+  "scientific_interpretation": [
+    "CURRENT_LAYER_FACE has equal domain coverage and is noninferior on every preregistered common-cohort primary component, with strict improvement on multiple components.",
+    "Using K at the prescribed unsaturated boundary face performs materially worse than using K of the current reduced bottom layer in this fixed-domain mode-5 laboratory.",
+    "The result qualifies a no-fit fixed-domain prescribed-head reduced boundary closure; it does not qualify moving-water-table geometry.",
+    "D4 again improves dynamics relative to D3 without corresponding new RS1 state-information value, reinforcing closure-resolution rather than missing-state interpretation.",
+    "No absolute GW-D or GW-R application acceptance is adjudicated."
+  ],
+  "next_primary_authority": "LARE-BC2_MOVING_WATER_TABLE_GEOMETRY",
+  "application_acceptance_adjudicated": false,
+  "moving_water_table_authorized": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
