@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.lare.bc2.c1r.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C1R",
+  "phase": "PREREGISTERED_AFTER_C1_PRIMARY_ROUTE_DOMAIN_EXIT_BEFORE_RECOVERY_EXECUTION",
+  "purpose": "Numerically qualify the single BC2-C1 case whose preregistered primary internal step exits the strict constitutive domain, without changing any physical state, closure, forcing, geometry, width, history, decomposition identity, or classification rule.",
+  "trigger_evidence": {
+    "source_run": 35455937057,
+    "executed_head": "b6e069e7fd43db5be98f83dbe4cc1101654df613",
+    "case_artifact_id": 10587783770,
+    "case_artifact_digest": "sha256:d3b711027acb7d761b2159028fccae4a523f10a93d7fb47b2b26df8db3bb3acb",
+    "blocked_case": {
+      "width_cm": 2.5,
+      "history": "WT_CYCLE"
+    },
+    "failed_original_primary_dt_day": 0.0001,
+    "failure": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465153356722,1.0000110667249589]",
+    "original_cross_dt_day": 0.00005,
+    "original_cross_status": "QUALIFIED",
+    "original_C1_disposition": "C1 original hard gate remains failed; C1R does not retroactively change it."
+  },
+  "unchanged_model": {
+    "fixed_geometry_anchor_cm": 90,
+    "terminal_width_cm": 2.5,
+    "history": "WT_CYCLE",
+    "q90": "same source-aligned standard closure as C0/C1",
+    "qi": "BC2-B9 TERMINAL_SIDE_LINEAR",
+    "qH": "BC2-B7 terminal linear shape",
+    "H_input": "same prescribed qualified BC2-A2 Reference H(t)",
+    "teacher_free_decomposition": "identical C1 decompose function",
+    "no_fit": true,
+    "no_new_state": true,
+    "no_new_closure": true,
+    "no_width_change": true,
+    "no_forcing_change": true,
+    "no_H_feedback": true
+  },
+  "numerical_recovery": {
+    "recovered_primary_dt_day": 0.00005,
+    "reason": "This is the already preregistered and already qualified C1 cross route, not a newly selected response-fit timestep.",
+    "new_cross_dt_day": 0.000025,
+    "qualification_rule": "Both recovery routes must complete inside the strict constitutive domain and satisfy all inherited C1 additive and moving-ledger hard gates.",
+    "convergence_rule": "Per-channel dominance classification at 0.00005 and 0.000025 must be identical. Quantitative RMS differences are reported without a post-hoc threshold.",
+    "forbidden": [
+      "no clipping",
+      "no tolerance relaxation",
+      "no state or closure modification",
+      "no width change",
+      "no omission of WT_CYCLE response segments"
+    ]
+  },
+  "inherited_hard_gates": {
+    "physical_moving_ledger_cm": 1e-10,
+    "additive_decomposition_identity_cm": 1e-10,
+    "additive_flux_identity_cm_per_day": 1e-10,
+    "all_reference_projections_finite": true
+  },
+  "classification": {
+    "channels": [
+      "state_shape",
+      "q90",
+      "qi",
+      "qH"
+    ],
+    "rule": {
+      "STATE_DRIFT_DOMINANT": "RMS |free-teacher| > RMS |teacher-reference|",
+      "LOCAL_CLOSURE_DOMINANT": "RMS |teacher-reference| >= RMS |free-teacher|"
+    },
+    "no_scalar_overall_vote": true
+  },
+  "use_in_final_C1_adjudication": "If C1R passes, the blocked 2.5-cm WT_CYCLE channel classifications may be supplied by C1R while the original C1 primary-route failure remains explicitly reported. This is numerical qualification recovery, not a claim that original C1 passed unchanged.",
+  "firewalls": [
+    "ORIGINAL_C1_FAILURE_RETAINED",
+    "NO_RESPONSE_BASED_MODEL_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
