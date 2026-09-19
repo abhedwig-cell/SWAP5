@@ -1,0 +1,461 @@
+{
+  "application_acceptance_adjudicated": false,
+  "decision": "BC2_C0_ENRICHED_DYNAMICS_MIXED_RESPONSE",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "all_numerical_floors_available": false,
+    "all_primary_histories_qualified": true,
+    "ledger_gate_cm": 1e-10,
+    "max_abs_physical_moving_ledger_residual_cm": 7.530844086431898e-14
+  },
+  "interpretation": [
+    "C0 changes only the lower moving-domain representation and q_i/q_H closures relative to B0; q90 remains the source-aligned standard closure.",
+    "H(t) remains externally prescribed from qualified A2 Reference geometry, so C0 does not test groundwater feedback.",
+    "The physical moving-volume ledger remains a hard structural gate; response improvement is adjudicated only relative to the frozen B0 baseline.",
+    "No application-level tolerance or speed claim is introduced."
+  ],
+  "preferred_width_cm": [],
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c0.result.v1",
+  "support_vs_B0": {
+    "2.5": {
+      "WT_CYCLE": {
+        "qualified": false
+      },
+      "WT_FALL": {
+        "qualified": false
+      },
+      "WT_HOLD": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": true,
+          "interval_qH": true,
+          "sign": true,
+          "total": true
+        },
+        "progression_pass": true,
+        "qualified": true,
+        "strict_magnitude_improvement": true
+      },
+      "WT_RISE": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": false,
+          "interval_qH": true,
+          "sign": true,
+          "total": false
+        },
+        "progression_pass": false,
+        "qualified": true,
+        "strict_magnitude_improvement": true
+      }
+    },
+    "5.0": {
+      "WT_CYCLE": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": false,
+          "interval_qH": false,
+          "sign": true,
+          "total": false
+        },
+        "progression_pass": false,
+        "qualified": true,
+        "strict_magnitude_improvement": false
+      },
+      "WT_FALL": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": false,
+          "interval_qH": true,
+          "sign": true,
+          "total": false
+        },
+        "progression_pass": false,
+        "qualified": true,
+        "strict_magnitude_improvement": true
+      },
+      "WT_HOLD": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": true,
+          "interval_qH": true,
+          "sign": true,
+          "total": true
+        },
+        "progression_pass": true,
+        "qualified": true,
+        "strict_magnitude_improvement": true
+      },
+      "WT_RISE": {
+        "component_noninferiority_vs_B0": {
+          "cum_qH": false,
+          "interval_qH": true,
+          "sign": true,
+          "total": false
+        },
+        "progression_pass": false,
+        "qualified": true,
+        "strict_magnitude_improvement": true
+      }
+    }
+  },
+  "supported_widths_cm": [],
+  "widths": {
+    "2.5": {
+      "WT_CYCLE": {
+        "failures": {
+          "0.0002000": "OUTSIDE_QUALIFIED_DOMAIN: OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465151830234,1.000844716349367]"
+        },
+        "numerical_floor": null,
+        "primary": {
+          "a_t_range": [
+            0.43387127202004194,
+            4.143744875647826
+          ],
+          "candidate_reversal_steps": [
+            257,
+            513
+          ],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": -0.08502357867800284,
+          "max_abs_Wb_error_cm": 0.7403317970679932,
+          "max_abs_Wt_error_cm": 0.009829483859341792,
+          "max_abs_cumulative_qH_error_cm": 0.9632085189559506,
+          "max_abs_fixed_layer_storage_error_cm": 0.29507422592429666,
+          "max_abs_interval_qH_error_cm_per_day": 34.52172425923041,
+          "max_abs_interval_qi_error_cm_per_day": 19.142321701060208,
+          "max_abs_physical_moving_ledger_residual_cm": 5.950795411990839e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 0.9632085189559199,
+          "max_corrector_iterations": 40,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [
+            257,
+            513
+          ],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.3792279007590055,
+            0.41206849035098625
+          ],
+          "theta_t_mean_range": [
+            0.4229186280789414,
+            0.42739984793308716
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_FALL": {
+        "failures": {
+          "0.0002000": "OUTSIDE_QUALIFIED_DOMAIN: OUTSIDE_QUALIFIED_DOMAIN Se=[0.472546515188015,1.000570290580602]"
+        },
+        "numerical_floor": null,
+        "primary": {
+          "a_t_range": [
+            0.4729884876869619,
+            0.9996094682719558
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": -1.398973130049542,
+          "max_abs_Wb_error_cm": 1.2370808403270814,
+          "max_abs_Wt_error_cm": 0.0004704895595730729,
+          "max_abs_cumulative_qH_error_cm": 1.398973130049542,
+          "max_abs_fixed_layer_storage_error_cm": 0.10088514945762928,
+          "max_abs_interval_qH_error_cm_per_day": 8.902536602954799,
+          "max_abs_interval_qi_error_cm_per_day": 9.219391253978744,
+          "max_abs_physical_moving_ledger_residual_cm": 4.884981308350689e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 1.398973130049555,
+          "max_corrector_iterations": 35,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.404942447642013,
+            0.41333465480112214
+          ],
+          "theta_t_mean_range": [
+            0.427094328745231,
+            0.4273846499396018
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_HOLD": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 1.5635936989610855e-09,
+          "max_abs_Wt_cm_difference": 9.992007221626409e-15,
+          "max_abs_cumulative_qH_cm_difference": 4.543837858363986e-14,
+          "max_abs_interval_qH_cm_per_day_difference": 5.679797322954982e-11,
+          "max_abs_interval_qi_cm_per_day_difference": 4.416399624728095e-11,
+          "max_abs_total_unsaturated_storage_cm_difference": 1.0658141036401503e-13
+        },
+        "primary": {
+          "a_t_range": [
+            1.0,
+            1.0
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": 4.543837858363986e-14,
+          "max_abs_Wb_error_cm": 0.014003312005863577,
+          "max_abs_Wt_error_cm": 1.021405182655144e-14,
+          "max_abs_cumulative_qH_error_cm": 4.543837858363986e-14,
+          "max_abs_fixed_layer_storage_error_cm": 0.00796377653477176,
+          "max_abs_interval_qH_error_cm_per_day": 5.679797322954982e-11,
+          "max_abs_interval_qi_error_cm_per_day": 4.416399624728095e-11,
+          "max_abs_physical_moving_ledger_residual_cm": 4.543837858363986e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 5.684341886080802e-14,
+          "max_corrector_iterations": 3,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 1,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.400629994943322,
+            0.40113477107174417
+          ],
+          "theta_t_mean_range": [
+            0.42709405858164606,
+            0.42709405858164606
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_RISE": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 0.00015081357677892981,
+          "max_abs_Wt_cm_difference": 6.76981446390279e-06,
+          "max_abs_cumulative_qH_cm_difference": 0.00015555231207131648,
+          "max_abs_interval_qH_cm_per_day_difference": 0.12774711190461296,
+          "max_abs_interval_qi_cm_per_day_difference": 0.10571880182246396,
+          "max_abs_total_unsaturated_storage_cm_difference": 0.00015555231208352893
+        },
+        "primary": {
+          "a_t_range": [
+            1.0009733189363033,
+            1.6469836256001145
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": 1.4490779048879547,
+          "max_abs_Wb_error_cm": 0.4785887362922745,
+          "max_abs_Wt_error_cm": 0.0008575508040420399,
+          "max_abs_cumulative_qH_error_cm": 1.4490779048879547,
+          "max_abs_fixed_layer_storage_error_cm": 0.4239210401077491,
+          "max_abs_interval_qH_error_cm_per_day": 8.563122249055574,
+          "max_abs_interval_qi_error_cm_per_day": 8.38548541833068,
+          "max_abs_physical_moving_ledger_residual_cm": 4.440892098500626e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 1.4490779048879325,
+          "max_corrector_iterations": 14,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.37526347644513897,
+            0.39876594618344446
+          ],
+          "theta_t_mean_range": [
+            0.42654720944767377,
+            0.42709338492223203
+          ]
+        },
+        "status": "QUALIFIED"
+      }
+    },
+    "5.0": {
+      "WT_CYCLE": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 0.0018976900983584954,
+          "max_abs_Wt_cm_difference": 0.0008231239298455151,
+          "max_abs_cumulative_qH_cm_difference": 0.0018500192980464014,
+          "max_abs_interval_qH_cm_per_day_difference": 0.9136228336703454,
+          "max_abs_interval_qi_cm_per_day_difference": 0.29457736000824575,
+          "max_abs_total_unsaturated_storage_cm_difference": 0.001850019298153427
+        },
+        "primary": {
+          "a_t_range": [
+            0.31027948242262937,
+            3.3983968894026475
+          ],
+          "candidate_reversal_steps": [
+            257,
+            513
+          ],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": -0.20966831691733437,
+          "max_abs_Wb_error_cm": 0.7580184150208336,
+          "max_abs_Wt_error_cm": 0.041226518223572484,
+          "max_abs_cumulative_qH_error_cm": 0.8705151430176347,
+          "max_abs_fixed_layer_storage_error_cm": 0.29096334524484524,
+          "max_abs_interval_qH_error_cm_per_day": 57.96239332885203,
+          "max_abs_interval_qi_error_cm_per_day": 17.400444971932444,
+          "max_abs_physical_moving_ledger_residual_cm": 6.52811138479592e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 0.8705151430176592,
+          "max_corrector_iterations": 18,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [
+            257,
+            513
+          ],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.3763037763369146,
+            0.4116923359577228
+          ],
+          "theta_t_mean_range": [
+            0.4171285288571962,
+            0.42731893317455827
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_FALL": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 0.00032387376739251295,
+          "max_abs_Wt_cm_difference": 3.470798676108444e-05,
+          "max_abs_cumulative_qH_cm_difference": 0.00032804729901191737,
+          "max_abs_interval_qH_cm_per_day_difference": 0.17290662999027262,
+          "max_abs_interval_qi_cm_per_day_difference": 0.20195457021939944,
+          "max_abs_total_unsaturated_storage_cm_difference": 0.00032804729901414476
+        },
+        "primary": {
+          "a_t_range": [
+            0.35402640313259326,
+            0.9991929556708783
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": -1.3253021389723805,
+          "max_abs_Wb_error_cm": 1.1615034827767623,
+          "max_abs_Wt_error_cm": 0.0027190501243916643,
+          "max_abs_cumulative_qH_error_cm": 1.3253021389723805,
+          "max_abs_fixed_layer_storage_error_cm": 0.1020653301916763,
+          "max_abs_interval_qH_error_cm_per_day": 7.0313079207476665,
+          "max_abs_interval_qi_error_cm_per_day": 10.134929972284471,
+          "max_abs_physical_moving_ledger_residual_cm": 3.8191672047105385e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 1.3253021389723756,
+          "max_corrector_iterations": 16,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.4031393090227083,
+            0.4109147128782645
+          ],
+          "theta_t_mean_range": [
+            0.4261732187413986,
+            0.42727399155862944
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_HOLD": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 1.0747278622602607e-09,
+          "max_abs_Wt_cm_difference": 3.9968028886505635e-15,
+          "max_abs_cumulative_qH_cm_difference": 1.1359594645909965e-14,
+          "max_abs_interval_qH_cm_per_day_difference": 1.4199493307387455e-11,
+          "max_abs_interval_qi_cm_per_day_difference": 9.154371546341788e-12,
+          "max_abs_total_unsaturated_storage_cm_difference": 9.947598300641403e-14
+        },
+        "primary": {
+          "a_t_range": [
+            1.0,
+            1.0
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": 1.1359594645909965e-14,
+          "max_abs_Wb_error_cm": 0.008328772401345219,
+          "max_abs_Wt_error_cm": 3.9968028886505635e-15,
+          "max_abs_cumulative_qH_error_cm": 1.1359594645909965e-14,
+          "max_abs_fixed_layer_storage_error_cm": 0.004699576148491591,
+          "max_abs_interval_qH_error_cm_per_day": 1.4199493307387455e-11,
+          "max_abs_interval_qi_error_cm_per_day": 9.154371546341788e-12,
+          "max_abs_physical_moving_ledger_residual_cm": 7.530844086431898e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 6.394884621840902e-14,
+          "max_corrector_iterations": 3,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 1,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.3981663124291321,
+            0.39849639557594657
+          ],
+          "theta_t_mean_range": [
+            0.42617138438478086,
+            0.42617138438478086
+          ]
+        },
+        "status": "QUALIFIED"
+      },
+      "WT_RISE": {
+        "failures": {},
+        "numerical_floor": {
+          "max_abs_Wb_cm_difference": 2.6770861130565038e-05,
+          "max_abs_Wt_cm_difference": 5.797450587152753e-06,
+          "max_abs_cumulative_qH_cm_difference": 2.8517743622336056e-05,
+          "max_abs_interval_qH_cm_per_day_difference": 0.009179649952733016,
+          "max_abs_interval_qi_cm_per_day_difference": 0.02527832831385801,
+          "max_abs_total_unsaturated_storage_cm_difference": 2.8517743619005387e-05
+        },
+        "primary": {
+          "a_t_range": [
+            1.0020137034880463,
+            1.6700310945889214
+          ],
+          "candidate_reversal_steps": [],
+          "dt_day": 0.0001,
+          "final_signed_cumulative_qH_error_cm": 1.345806380997809,
+          "max_abs_Wb_error_cm": 0.3901164996742432,
+          "max_abs_Wt_error_cm": 0.004737402697636561,
+          "max_abs_cumulative_qH_error_cm": 1.345806380997809,
+          "max_abs_fixed_layer_storage_error_cm": 0.42256340364825684,
+          "max_abs_interval_qH_error_cm_per_day": 7.028476653999325,
+          "max_abs_interval_qi_error_cm_per_day": 6.5350385948853456,
+          "max_abs_physical_moving_ledger_residual_cm": 3.4638958368304884e-14,
+          "max_abs_total_unsaturated_storage_error_cm": 1.3458063809978391,
+          "max_corrector_iterations": 7,
+          "max_reversal_step_difference": 0,
+          "max_reversal_time_difference_minutes": 0.0,
+          "qH_sign_mismatch_count": 0,
+          "reference_reversal_steps": [],
+          "reversal_sequence_length_match": true,
+          "status": "QUALIFIED",
+          "theta_b_range": [
+            0.37207981761088343,
+            0.3961279499461155
+          ],
+          "theta_t_mean_range": [
+            0.42431557518331997,
+            0.42616680283337927
+          ]
+        },
+        "status": "QUALIFIED"
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-C0",
+  "workstream": "F-ROM-LARE"
+}
