@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
   "branch": "work/f-rom-lare-rs1",
-  "checkpoint_live_head_observed": "1088b99837f0910f45499c1a7bc34dbe972c1ebd",
+  "checkpoint_live_head_observed": "02f45833db6f0d91447f61851e7864b3b06da9c7",
   "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
   "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
   "durable_scientific_authority": [
@@ -88,5 +88,18 @@
     "Never rerun a qualified predecessor solely because chat/session context was lost."
   ],
   "next_state_boundary": "Close/persist C3B and C4D independently. C4B is durable CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED and must not be rerun as a prerequisite.",
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "partial_case_authority": [
+    {
+      "unit": "BC2-C4D",
+      "case": "5.0",
+      "workflow_run": 35459704156,
+      "artifact_id": 10588852667,
+      "artifact_digest": "sha256:f321061521889c647a8cea7fd118bf65ea9991c626528a10e3ce6b12245acd90",
+      "decision": "BC2_C4D_PHASE_RESOLVED_CYCLE_MAPPED",
+      "complete": true,
+      "key_observation": "QI rank-1 in RISE_1/FALL/RISE_2 and non-reversal tails on both dt routes; exact reversals rank GEOMETRY_GI; QI directional cancellation ratio about 0.93. Await 2.5-cm width before width-general mechanism adjudication.",
+      "rerun_policy": "Do not rerun this width if the artifact remains available and digest-valid."
+    }
+  ]
 }
