@@ -1,0 +1,92 @@
+name: F-ROM-LARE BC2-C4Q matched D13 representation discriminator
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4Q_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4q_matched_d13.py'
+      - '.github/workflows/f-rom-lare-bc2-c4q.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4q-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  discriminate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numpy
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable D13 comparator authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4q/d13
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587057124/zip" > /tmp/c4q/d13.zip
+          echo "03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408  /tmp/c4q/d13.zip" | sha256sum -c -
+          unzip -q /tmp/c4q/d13.zip -d /tmp/c4q/d13
+          echo "498d2c46828055c288524fc8176cf46f5339ea8db0649b450b955b3eb3c86747  /tmp/c4q/d13/R16_o0.txt" | sha256sum -c -
+          echo "8188300a660b2f203b28080399b4a747b6693d617de669f23395876ddaf8c6ec  /tmp/c4q/d13/R2_o0.txt" | sha256sum -c -
+          echo "28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c  /tmp/c4q/d13/F-ROMV2_D13_RESULT.json" | sha256sum -c -
+          cmp /tmp/c4q/d13/R16_o0.txt /tmp/c4q/d13/R16_o2.txt
+          cmp /tmp/c4q/d13/R2_o0.txt /tmp/c4q/d13/R2_o2.txt
+
+      - name: Validate frozen authorities
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C4Q_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/LARE_BC1_CLOSEOUT.json'))
+          r=json.load(open('integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json'))
+          d=json.load(open('/tmp/c4q/d13/F-ROMV2_D13_RESULT.json'))
+          assert p['phase']=='PREREGISTERED_AFTER_C4P_BEFORE_MATCHED_D13_REPRESENTATION_DISCRIMINATOR'
+          assert p['pre_execution_domain_policy']['before_first_C4Q_execution'] is True
+          assert b['decision']=='FIXED_DOMAIN_PRESCRIBED_HEAD_CLOSURE_QUALIFIED_WITH_RESOLUTION_DEPENDENCE'
+          assert r['frozen_lare_scientific_basis']=='9bb73821bb78a04c759b763746b50a3f777cd416'
+          assert r['external_later_canonical_authority']['scientific_basis_rebased'] is False
+          assert d['decision']=='FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY'
+          assert d['production_rom_authorized'] is False
+          print('LARE_BC2_C4Q_AUTHORITY=PASS')
+          PY
+
+      - name: Execute matched representation discriminator
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4Q_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4q_matched_d13.py             --r16 /tmp/c4q/d13/R16_o0.txt             --r2 /tmp/c4q/d13/R2_o0.txt             --d13-result /tmp/c4q/d13/F-ROMV2_D13_RESULT.json             --prereg integration/f-rom/LARE_BC2_C4Q_PREREGISTRATION.json             --bc1-closeout integration/f-rom/LARE_BC1_CLOSEOUT.json             --representation-reconciliation integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json             --output LARE_BC2_C4Q_EVIDENCE/LARE_BC2_C4Q_RESULT.json             | tee LARE_BC2_C4Q_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4Q_EVIDENCE/LARE_BC2_C4Q_RESULT.json'))
+          assert r['decision'] in (
+            'LARE_REDUCED_FRONTIER_CROSSES_FMC',
+            'LARE_REDUCED_FRONTIER_CROSSES_R2_NOT_FMC',
+            'LARE_REDUCED_FRONTIER_DOES_NOT_CROSS_R2',
+            'LARE_REDUCED_DOMAIN_NO_GO',
+            'C4Q_DIAGNOSTIC_BLOCKED'
+          )
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4Q_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4Q_EVIDENCE/* > LARE_BC2_C4Q_EVIDENCE/sha256.txt
+
+      - name: Upload C4Q evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4q
+          path: LARE_BC2_C4Q_EVIDENCE/
+          if-no-files-found: error
