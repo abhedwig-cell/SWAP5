@@ -178,19 +178,28 @@ def run_case(history,d,init_meta,init_nodes,states,nodes):
                     "max_directional_shape_gain":max(gains),
                 })
 
-    by_state={}
-    for row in records:
-        key=str(row["start_step"])
-        s=by_state.setdefault(key,{
-            "start_step":row["start_step"],
+    by_state={
+        str(step):{
+            "start_step":step,
             "max_directional_shape_gain":0.0,
             "dominant_adjacent_mode":None,
             "record_count":0,
-        })
-        s["record_count"]+=1
-        if row["max_directional_shape_gain"]>s["max_directional_shape_gain"]:
-            s["max_directional_shape_gain"]=row["max_directional_shape_gain"]
-            s["dominant_adjacent_mode"]=row["adjacent_mode"]
+            "amplifying_both_eps":False,
+            "amplifying_adjacent_modes":[],
+        }
+        for step in boundaries
+    }
+    for row in records:
+        key=str(row["start_step"])
+        state=by_state[key]
+        state["record_count"]+=1
+        if row["max_directional_shape_gain"]>state["max_directional_shape_gain"]:
+            state["max_directional_shape_gain"]=row["max_directional_shape_gain"]
+            state["dominant_adjacent_mode"]=row["adjacent_mode"]
+        amps=list(row["amplitudes"].values())
+        if len(amps)==2 and all(float(v["directional_shape_gain"])>1.0 for v in amps):
+            state["amplifying_both_eps"]=True
+            state["amplifying_adjacent_modes"].append(row["adjacent_mode"])
 
     return {
         "status":"QUALIFIED" if not runtime_failures and max_ledger<=GATE and max_mass_neutral<=GATE else "NUMERICAL_DIAGNOSTIC_BLOCKED",
@@ -201,7 +210,7 @@ def run_case(history,d,init_meta,init_nodes,states,nodes):
         "records":records,
         "skipped_constitutive_directions":skips,
         "runtime_failures":runtime_failures,
-        "state_summaries":list(by_state.values()),
+        "state_summaries":[by_state[k] for k in sorted(by_state,key=lambda x:int(x))],
         "max_abs_branch_ledger_residual_cm":max_ledger,
         "max_abs_mass_neutral_projection_residual_cm":max_mass_neutral,
     }
