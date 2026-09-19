@@ -9,7 +9,8 @@ MANIFEST=integration/num-unc/NUM_UNC_P0_MANIFEST.json
 BASE=187e30153c890151768e929170d14bb22af1d86d
 git merge-base --is-ancestor "$BASE" HEAD || fail 'baseline not ancestor'
 git diff --quiet "$BASE" HEAD -- src reference || fail 'production/reference source mutation'
-grep -Fq '"status": "PREREGISTERED_BEFORE_EXECUTION"' "$MANIFEST" || fail 'spatial gate not preregistered'
+grep -Fq '"result_path": "integration/num-unc/NUM_UNC_P0C_SPATIAL_RESULT.json"' "$MANIFEST" || \
+  grep -Fq '"status": "PREREGISTERED_BEFORE_EXECUTION"' "$MANIFEST" || fail 'spatial gate authority missing'
 grep -Fq '"posthoc_offset_widening_allowed": false' "$MANIFEST" || fail 'offset firewall missing'
 if grep -Fq '0.0032' "$TEST"; then fail 'N1 timestep entered spatial control'; fi
 
