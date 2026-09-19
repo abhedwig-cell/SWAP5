@@ -15,8 +15,32 @@ LOW02_ADMISSION="6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
 LOW02_BACKEND_BLOB="80c7ca618ea228e31ac43ae493f16dd6eccc5991"
 ROOT_HYD01_ADMISSION="308a619c91d2cc3dae7f7aa143cfbe97c780c635"
 ROOT_HYD01_TEMPORAL_BLOB="2068215a57edb1d2a59c36d6b32f519ebdc09ebd"
+PPA_WU04A_ADMISSION="50e7d1dece5b75d0103459d5c118d03a2665eea3"
+PPA_WU04A_QUALIFIED="f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938"
+PPA_WU04A_BACKEND_BLOB="b1ba0549ef9149c4261b8a595c8782be01726c43"
+PPA_WU04A_BOOTSTRAP_BLOB="9ae38276a353bd08f5d971d6368eed41967086b6"
+PPA_WU04B_ADMISSION="4d40b8d4b6a1df06ff97fab55497542778431290"
+PPA_WU04B_QUALIFIED="eb0e635975b77ec92084e1416038b1bc1f8232bc"
+PPA_WU04B_BACKEND_BLOB="9bd344a83afd5e10b96178933362dbb7eeea4f30"
+PPA_WU04B_BOOTSTRAP_BLOB="356b3825a8ba13af1fed385ab17ffdb330b1058f"
 
-if git merge-base --is-ancestor "$LOW02_ADMISSION" HEAD; then
+if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
+    fail 'PPA-WU04-B qualified head is not contained by canonical admission'
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$PPA_WU04B_BACKEND_BLOB" ]] || \
+    fail 'admitted PPA-WU04-B backend successor drift'
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == "$PPA_WU04B_BOOTSTRAP_BLOB" ]] || \
+    fail 'admitted PPA-WU04-B bootstrap successor drift'
+  echo 'PPA_LOW02_WU04B_BACKEND_BOOTSTRAP_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
+    fail 'PPA-WU04-A qualified head is not contained by canonical admission'
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$PPA_WU04A_BACKEND_BLOB" ]] || \
+    fail 'admitted PPA-WU04-A backend successor drift'
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == "$PPA_WU04A_BOOTSTRAP_BLOB" ]] || \
+    fail 'admitted PPA-WU04-A bootstrap successor drift'
+  echo 'PPA_LOW02_WU04A_BACKEND_BOOTSTRAP_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$LOW02_ADMISSION" HEAD; then
   [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$LOW02_BACKEND_BLOB" ]] || \
     fail 'admitted PPA-LOW02 backend successor drift'
   echo 'PPA_LOW02_CURRENT_BACKEND_SUCCESSOR=PASS'
@@ -30,10 +54,15 @@ for locked in \
   src/adapter/mod_b110_serialized_context_binding.f90 \
   src/solver/mod_soil_water_solver_contract.f90 \
   src/legacy/b1_10_port/headcalc.f90 \
-  src/runtime/mod_fmr_production_application_bootstrap.f90 \
   src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90; do
   [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$CANONICAL:$locked")" ]] || fail "inherited authority drift: $locked"
 done
+
+if ! git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == \
+     "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_production_application_bootstrap.f90")" ]] || \
+    fail 'pre-PPA-WU04 bootstrap drift'
+fi
 
 if git merge-base --is-ancestor "$ROOT_HYD01_ADMISSION" HEAD; then
   [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == "$ROOT_HYD01_TEMPORAL_BLOB" ]] || \

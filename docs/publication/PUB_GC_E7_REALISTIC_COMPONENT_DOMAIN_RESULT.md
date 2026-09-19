@@ -122,13 +122,19 @@ A future production capability that admits active drainage and the required Hups
 
 ## Current-canonical reconciliation
 
-After the original E7 qualification, PPA-WU02-A canonically admitted homogeneous typed `bottom_mode=2` prescribed-`q_bot` normal application reachability.
+Current canonical basis for this closeout: `integration/f-ci-canonical@ab8d52a3b3ab39470a989a46dc19e3bd24a01906`.
 
-This does **not** alter the E7 outcome. On current canonical:
+The decisive production boundary is unchanged:
 
-- the groundwater application owner remains an all-`bottom_mode=5` prescribed-head profile;
-- `tile_config_valid` still rejects `drainage_response_active` and `root_extraction_active` before owner-state allocation;
-- PPA-WU02 explicitly does not admit mixed bottom-mode production profiles and does not widen process composition;
-- therefore authentic Hupsel drainage still prevents construction of the required prescribed-head participant.
+- the groundwater application owner remains a homogeneous `bottom_mode=5` prescribed-head profile;
+- `tile_config_valid` still rejects both `root_extraction_active` and `drainage_response_active` before owner-state allocation;
+- PPA-WU02 and PPA-LOW02-TIME broaden `bottom_mode=2` prescribed-`q_bot` application semantics only;
+- PPA-WU03 supplies bounded stateless common forcing and does not widen mode-5 process ownership;
+- PPA-ROOT-HYD01 and PPA-ROOT-HYD02 add restricted prescribed-root temporal/tangent evidence, but explicitly do not admit a root-active live-MODFLOW production application owner;
+- PPA-WU04-A admits the bounded SWREDU=1 Black evaporation slice, but does not admit Black evaporation under mode 5 and does not alter the root/drainage guards.
+- PPA-WU04-B admits the bounded SWREDU=2 Boesten-Stroosnijder evaporation slice, but likewise rejects mode-5 Boesten composition and leaves the root/drainage guards unchanged.
+- HYDRO-MEMORY ACC02-F1 demonstrates one live MODFLOW6 root-active single-window coupling case through a `tests/research/support` bridge. It changes no production/reference source, keeps drainage response inactive, is not Stage-0 authorized, and does not widen the mode-5 production application owner.
 
-The E7 component-domain gate is rerun on the pull-request merge ref against this current canonical state.
+The current production-bootstrap blob is `356b3825a8ba13af1fed385ab17ffdb330b1058f`. Canonical work after PPA-WU04-B through the inspected head is confined to evidence-only F-ROMV2/TRACE/F-DOC work and ROM tests; the relevant production postimages are unchanged. Therefore the authentic Hupsel root/drainage composition is still outside the admitted prescribed-head participant domain.
+
+E7 remains `REALISTIC_COMPONENT_DOMAIN_LIMIT`. A future process-complete prescribed-head owner would define a new prospective experiment; it does not turn the closed E7 result into unfinished work.

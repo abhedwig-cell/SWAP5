@@ -15,6 +15,10 @@ PPA_LOW02_ADMISSION=6c63b8d0e340669d9722bc5e3d947d42d2b467a5
 PPA_LOW02_QUALIFIED=8d238bb46c9d4d77e38802e75458d99f59794d11
 PPA_ROOT_HYD01_ADMISSION=308a619c91d2cc3dae7f7aa143cfbe97c780c635
 PPA_ROOT_HYD01_QUALIFIED=b7803c1cf0818677651a0eecaed4bd84ffb3059a
+PPA_WU04A_ADMISSION=50e7d1dece5b75d0103459d5c118d03a2665eea3
+PPA_WU04A_QUALIFIED=f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938
+PPA_WU04B_ADMISSION=4d40b8d4b6a1df06ff97fab55497542778431290
+PPA_WU04B_QUALIFIED=eb0e635975b77ec92084e1416038b1bc1f8232bc
 TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
 PPA_ROOT_HYD01_TEMPORAL_INDICATOR=2068215a57edb1d2a59c36d6b32f519ebdc09ebd
 TX=src/transaction/mod_transaction_reference.f90
@@ -23,6 +27,9 @@ SW=src/solver/mod_soil_water_solver_contract.f90
 REF_ADAPTER=src/adapter/mod_reference_richards_legacy_binding.f90
 ROSS_ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
 BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
+RUNTIME_CORE=src/runtime/mod_fmr_runtime_core.f90
+RESTART_STATE=src/runtime/mod_fmr_restart_state_contract.f90
+SURFACE_EVAP=src/process/mod_restricted_surface_evaporation.f90
 SELECTION=src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
 FROSS13_MODEL=src/runtime/mod_rossfast_d3r_model_binding.f90
 FROSS13_PROVIDER=src/solver/mod_rossfast_d3r_table_provider.f90
@@ -43,6 +50,14 @@ FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
 F_ROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
 F_ROM1A_BACKEND=5d63f91b37443952b4a96292925f645aae0b22d1
 PPA_LOW02_BACKEND=80c7ca618ea228e31ac43ae493f16dd6eccc5991
+PPA_WU04A_RUNTIME_CORE=29cff34a37c13143ce069486251bc0b858cadf48
+PPA_WU04A_RESTART_STATE=665d90cb82485dec485be68694f77e0fcd03145c
+PPA_WU04A_SURFACE_EVAP=a7b9f5271ac0582420e883a62c6e13672dc190e9
+PPA_WU04A_BACKEND=b1ba0549ef9149c4261b8a595c8782be01726c43
+PPA_WU04B_RUNTIME_CORE=dc1dbffab96542ee09be5f923cea65628864d87b
+PPA_WU04B_RESTART_STATE=ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a
+PPA_WU04B_SURFACE_EVAP=1f795f0baaa3ed86272a1feabc3f1a6463b3ce77
+PPA_WU04B_BACKEND=9bd344a83afd5e10b96178933362dbb7eeea4f30
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -59,7 +74,6 @@ dependency_surface=(
   src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
-  src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/solver/mod_reference_richards_workspace.f90
@@ -86,7 +100,6 @@ dependency_surface=(
   src/runtime/mod_fmr_parallel_worker_pool.f90
   src/runtime/mod_fmr_parallel_root_uptake_pool.f90
   src/runtime/mod_fmr_committed_restart.f90
-  src/runtime/mod_fmr_restart_state_contract.f90
   src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_spatial_distribution.f90
@@ -103,7 +116,6 @@ dependency_surface=(
   src/runtime/mod_fmr_divdra_runtime_binding.f90
   src/runtime/mod_fmr_divdra_serialized_composition.f90
   src/runtime/mod_fmr_divdra_serialized_runtime.f90
-  src/process/mod_restricted_surface_evaporation.f90
   src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90
   src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90
   src/runtime/mod_fmr_process_hydraulic_view_binding.f90
@@ -120,6 +132,38 @@ dependency_surface=(
 for path in "${dependency_surface[@]}"; do
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || fail "admitted dependency drift: $path"
 done
+
+# PPA-WU04-A/B are later, independently qualified exact successors for
+# stateful evaporation continuation. Keep them lineage-aware and exact rather
+# than weakening the moving gate with wildcard drift allowances.
+if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
+    fail 'PPA-WU04-B qualified head is not contained by canonical admission'
+  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$PPA_WU04B_RUNTIME_CORE" || \
+    fail 'admitted PPA-WU04-B runtime-core successor drift'
+  test "$(git rev-parse "HEAD:$RESTART_STATE")" = "$PPA_WU04B_RESTART_STATE" || \
+    fail 'admitted PPA-WU04-B restart-state successor drift'
+  test "$(git rev-parse "HEAD:$SURFACE_EVAP")" = "$PPA_WU04B_SURFACE_EVAP" || \
+    fail 'admitted PPA-WU04-B surface-evaporation successor drift'
+  echo 'FCI_CANONICAL_PPA_WU04B_STATEFUL_EVAPORATION_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
+    fail 'PPA-WU04-A qualified head is not contained by canonical admission'
+  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$PPA_WU04A_RUNTIME_CORE" || \
+    fail 'admitted PPA-WU04-A runtime-core successor drift'
+  test "$(git rev-parse "HEAD:$RESTART_STATE")" = "$PPA_WU04A_RESTART_STATE" || \
+    fail 'admitted PPA-WU04-A restart-state successor drift'
+  test "$(git rev-parse "HEAD:$SURFACE_EVAP")" = "$PPA_WU04A_SURFACE_EVAP" || \
+    fail 'admitted PPA-WU04-A surface-evaporation successor drift'
+  echo 'FCI_CANONICAL_PPA_WU04A_STATEFUL_EVAPORATION_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse "HEAD:$RUNTIME_CORE")" = "$(git rev-parse "$AUTH:$RUNTIME_CORE")" || \
+    fail 'pre-PPA-WU04 runtime-core drift'
+  test "$(git rev-parse "HEAD:$RESTART_STATE")" = "$(git rev-parse "$AUTH:$RESTART_STATE")" || \
+    fail 'pre-PPA-WU04 restart-state drift'
+  test "$(git rev-parse "HEAD:$SURFACE_EVAP")" = "$(git rev-parse "$AUTH:$SURFACE_EVAP")" || \
+    fail 'pre-PPA-WU04 surface-evaporation drift'
+fi
 
 # PPA-ROOT-HYD01 is a later, independently qualified exact successor of the
 # Reference Richards temporal-indicator provider. Keep the historical Status-A
@@ -158,7 +202,23 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Refere
 # current canonical, keeps its new KSATEXM path opt-in by default, and its
 # production postimages are pinned exactly here.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$PPA_LOW02_ADMISSION" HEAD; then
+if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
+    fail 'PPA-WU04-B qualified head is not contained by canonical admission'
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" || \
+    fail 'PPA-WU04-B successor lost admitted F-SI39 default-MvG provider'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$PPA_WU04B_BACKEND" || \
+    fail 'admitted PPA-WU04-B serialized-backend successor drift'
+  echo 'FCI_CANONICAL_PPA_WU04B_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
+    fail 'PPA-WU04-A qualified head is not contained by canonical admission'
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" || \
+    fail 'PPA-WU04-A successor lost admitted F-SI39 default-MvG provider'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$PPA_WU04A_BACKEND" || \
+    fail 'admitted PPA-WU04-A serialized-backend successor drift'
+  echo 'FCI_CANONICAL_PPA_WU04A_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$PPA_LOW02_ADMISSION" HEAD; then
   # PPA-LOW02-TIME is a later, independently qualified serialized-backend
   # successor layered on top of the admitted F-ROM1A observation seam.
   # Accept only its exact canonical admission and exact qualified backend blob.
