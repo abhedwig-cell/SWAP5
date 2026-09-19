@@ -1,0 +1,135 @@
+name: F-ROM-LARE persist C4N face-gradient closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4n-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4N authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4n
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591714207/zip" > /tmp/c4n.zip
+          echo "013a2706b42dcafc9930d835eccfb00a4f6d2ddfa95975627d880478a2c7fda1  /tmp/c4n.zip" | sha256sum -c -
+          unzip -q /tmp/c4n.zip -d /tmp/c4n
+          echo "2445bf0812b429411b4de552d4304f9b5321afcaee6c0ff88811f408f5843753  /tmp/c4n/LARE_BC2_C4N_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4N
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4n/LARE_BC2_C4N_RESULT.json'))
+          assert r['decision']=='FACE_INTERPOLATED_GRADIENT_MIXED'
+          assert r['blocked_cases']==[]
+          assert r['supported_cases']==[
+              {'history':'WT_FALL','width_cm':'2.5'},
+              {'history':'WT_FALL','width_cm':'5.0'}
+          ]
+          assert len(r['unsupported_cases'])==4
+          h=r['hard_checks']
+          assert h['maximum_qH_candidate_vs_B9_identity_cm_per_day']==0.0
+          assert h['maximum_hydrostatic_abs_slope_minus_1']==0.0
+          assert h['maximum_B8_qi_identity_cm_per_day']<=1e-10
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4N_VALIDATION=PASS')
+          PY
+
+      - name: Build C4N closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4n/LARE_BC2_C4N_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4n.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4N',
+            'status':'CLOSED_FACE_INTERPOLATED_GRADIENT_MIXED_NO_PROPAGATION',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35468468963,
+              'execution_head':'ddb9ecc7306d61c9de904259ebdc178aff878ce5',
+              'aggregate_artifact_id':10591714207,
+              'aggregate_artifact_digest':'sha256:013a2706b42dcafc9930d835eccfb00a4f6d2ddfa95975627d880478a2c7fda1',
+              'result_sha256':'2445bf0812b429411b4de552d4304f9b5321afcaee6c0ff88811f408f5843753'
+            },
+            'case_artifacts':{
+              '2.5:WT_HOLD':{'id':10591624522,'digest':'sha256:5182620010b13d02e448131ee86bad99a0dcdcc5bbf0dba61644e19437799491'},
+              '2.5:WT_RISE':{'id':10591459830,'digest':'sha256:0ae922d5dc4172789080e2c7acebe43292ed59183656ccf4277ad5122ccd6ca0'},
+              '2.5:WT_FALL':{'id':10592380153,'digest':'sha256:23eeb7e7b42a548e8d033f4e8e2e79dee7b26bd7b801733d4317a80860cb3339'},
+              '5.0:WT_HOLD':{'id':10592161299,'digest':'sha256:08dd804530b7adddc90e8a448552c7d407133e44ea6164f9f09accbb544cfd84'},
+              '5.0:WT_RISE':{'id':10591996486,'digest':'sha256:4abb188652a1b7fd2502fe22256fc7ed0117dc4f3b7022d8bba3b008080a7f75'},
+              '5.0:WT_FALL':{'id':10591584711,'digest':'sha256:fa89c70007b8a3828dbc91f4a91fa0398b9182714e8bdfd2e02dca39a1200724'}
+            },
+            'hard_checks':r['hard_checks'],
+            'supported_cases':r['supported_cases'],
+            'unsupported_cases':r['unsupported_cases'],
+            'key_results':{
+              '2.5_FALL':{'base_rms':r['summary']['2.5']['WT_FALL']['qi']['BASE']['rms'],'face_rms':r['summary']['2.5']['WT_FALL']['qi']['FACE']['rms'],'same_sign_fraction':r['summary']['2.5']['WT_FALL']['correction_geometry']['fraction_same_sign']},
+              '5_FALL':{'base_rms':r['summary']['5.0']['WT_FALL']['qi']['BASE']['rms'],'face_rms':r['summary']['5.0']['WT_FALL']['qi']['FACE']['rms'],'same_sign_fraction':r['summary']['5.0']['WT_FALL']['correction_geometry']['fraction_same_sign']},
+              '2.5_RISE':{'base_rms':r['summary']['2.5']['WT_RISE']['qi']['BASE']['rms'],'face_rms':r['summary']['2.5']['WT_RISE']['qi']['FACE']['rms'],'same_sign_fraction':r['summary']['2.5']['WT_RISE']['correction_geometry']['fraction_same_sign']},
+              '5_RISE':{'base_rms':r['summary']['5.0']['WT_RISE']['qi']['BASE']['rms'],'face_rms':r['summary']['5.0']['WT_RISE']['qi']['FACE']['rms'],'same_sign_fraction':r['summary']['5.0']['WT_RISE']['correction_geometry']['fraction_same_sign']},
+              '2.5_HOLD':{'base_rms':r['summary']['2.5']['WT_HOLD']['qi']['BASE']['rms'],'face_rms':r['summary']['2.5']['WT_HOLD']['qi']['FACE']['rms']},
+              '5_HOLD':{'base_rms':r['summary']['5.0']['WT_HOLD']['qi']['BASE']['rms'],'face_rms':r['summary']['5.0']['WT_HOLD']['qi']['FACE']['rms']}
+            },
+            'scientific_interpretation':[
+              'The response-blind face-interpolated slope improves qi in both FALL cases but is not transferable to RISE or HOLD.',
+              'At 2.5 cm FALL RMS improves from about 0.294 to 0.232 cm/day; at 5 cm FALL from about 0.492 to 0.331 cm/day.',
+              'At 2.5 cm RISE RMS worsens from about 0.361 to 0.373 cm/day, and at 5 cm RISE from about 0.630 to 1.035 cm/day. HOLD acquires artificial internal flux.',
+              'Therefore simple geometry-only amplitude damping is insufficient. The next diagnostic must map required correction against the existing current-state coordinates without fitting a direction switch or new memory state.'
+            ],
+            'next_authority':'PREREGISTER_EXISTING_STATE_CONDITIONED_CORRECTION_MAP',
+            'model_changed':False,
+            'propagated_dynamics_authorized':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4N_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4N closeout
+
+          Formal decision: FACE_INTERPOLATED_GRADIENT_MIXED.
+
+          C4N tested a parameter-free face interpolation of the B9 terminal and bulk slope proxies, with frozen correction delta_s = d/(B+d)*(b_bulk-a_t). Interface K and qH remained B9 and all hard gates passed.
+
+          The candidate helps both FALL cases. At 2.5 cm, qi RMS decreases from about 0.294 to 0.232 cm/d. At 5 cm, it decreases from about 0.492 to 0.331 cm/d. The correction has the same sign as the Reference-required correction for about 84.4% and 96.5% of intervals respectively.
+
+          It is not transferable to RISE. At 2.5 cm RISE RMS increases from about 0.361 to 0.373 cm/d. At 5 cm RISE it increases from about 0.630 to 1.035 cm/d, and the correction sign matches Reference on only 18.8% of intervals. HOLD is also damaged, producing artificial qi of about 0.0223 and 0.0439 cm/d at 2.5 and 5 cm.
+
+          Thus neither direct central weighting nor opposite-distance face weighting provides a universal memoryless gradient correction. No direction switch or propagation is authorized. C4K already showed that RISE and FALL occupy different regions of the existing H/Wb/Wt state space, so the next bounded diagnostic maps the Reference-required correction against those existing state coordinates before proposing another closure.
+          MD
+
+      - name: Persist C4N authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4n/LARE_BC2_C4N_RESULT.json integration/f-rom/LARE_BC2_C4N_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4N_RESULT.json integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4N_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close mixed C4N face-gradient test"
+          git push origin HEAD:work/f-rom-lare-rs1
