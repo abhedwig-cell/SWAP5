@@ -116,5 +116,12 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_numerical_clarification": {
+    "before_C2_execution": true,
+    "actual_drift_gain_denominator_floor_theta_rms": 1e-12,
+    "role": "Numerical zero/noise guard only; intervals below this start-error norm are INELIGIBLE_FOR_GAIN rather than assigned zero or infinite gain.",
+    "application_acceptance_role": "NONE",
+    "response_based": false
+  }
 }
