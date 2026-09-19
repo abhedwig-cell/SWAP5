@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.hydro_memory.acc02.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC02",
+  "decision": "ACC02_GOVERNANCE_QUALIFIED",
+  "authority": {
+    "parent_acc01_head": "2a1ac9b221305ebdc191cf444b8561d2c068fee2",
+    "branch": "research/hydro-memory-acc02",
+    "qualified_head": "341a0ba57005a1b08f8bfbde6518207bdebd7bd0",
+    "workflow_run": 35430654294
+  },
+  "governed_values": {
+    "h_app_m": 0.004,
+    "temporal_fraction": 0.25,
+    "temporal_budget_m": 0.001,
+    "interface_fraction": 0.25,
+    "interface_tolerance_m": 0.001,
+    "unallocated_fraction": 0.5
+  },
+  "provenance": {
+    "application": 590201,
+    "temporal": 590202,
+    "interface_binding": 590203,
+    "policy_id": 590210,
+    "policy_version": 1,
+    "governance_source_blob": "62841616e83ae9209cd33566929866a7e54d87d6"
+  },
+  "evidence": {
+    "governance_source_lock": "PASS",
+    "frozen_allocation": "PASS",
+    "typed_interface_binding": "PASS",
+    "boundary_policy": "PASS",
+    "o0_o2_identity": "PASS",
+    "production_source_mutation": false,
+    "reference_source_mutation": false
+  },
+  "stage0_authorized": false,
+  "next": "ACC02-F1 root-active coupled predictor/corrector feasibility under the governed 0.001 m interface policy"
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.hydro_memory.acc02_f1.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC02-F1",
+  "title": "Live MODFLOW6 root-active single-window coupling feasibility under governed accuracy",
+  "canonical_base": "7ea315285904783225741b350be292974afeec92",
+  "authorities": {
+    "acc01_result": "ACC01_F1_PASS_GOVERNED_TEMPORAL_ROUTE",
+    "acc02_result": "ACC02_GOVERNANCE_QUALIFIED",
+    "prescribed_root_tangent": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+    "live_coupling_baseline": "F-GC44 real single-column SWAP + live MODFLOW6 end-to-end"
+  },
+  "production_source_change": false,
+  "reference_source_change": false,
+  "frozen_fixture": {
+    "modflow_version": "6.8.0",
+    "swap_runtime": "real FMR/B1.10 Reference Richards through F-GC44 support bridge",
+    "columns": 1,
+    "groundwater_cells": 1,
+    "duration_day": 0.0001,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "root_total_cm_per_day": 0.02,
+    "root_distribution": "equal over first min(4,numnod) compartments",
+    "root_sink_semantics": "prescribed b110_root_sink_provider_t, nonzero and state-independent within trial",
+    "h_app_cm": 0.4,
+    "temporal_allocation_fraction": 0.25,
+    "temporal_budget_cm": 0.1,
+    "interface_allocation_fraction": 0.25,
+    "interface_head_tolerance_m": 0.001,
+    "hard_mass_tolerance_cm": 1e-12,
+    "fixed_point_max_iterations": 6,
+    "existing_fgc44_flux_iteration_tolerance_m_per_s": 1e-15,
+    "modflow_ims_outer_dvclose": 1e-10,
+    "modflow_ims_inner_dvclose": 1e-10
+  },
+  "canonical_interface_residual": {
+    "definition": "h_swap_m - h_groundwater_m",
+    "h_swap": "MODFLOW head supplied to the SWAP corrector trial",
+    "h_groundwater": "live MODFLOW head returned after applying the resulting SWAP boundary response and resolving the same coupling iteration",
+    "acceptance": "absolute residual <= 0.001 m through the governed F-GC22 groundwater head policy"
+  },
+  "pass_gates": [
+    "exact ACC01 and ACC02 governance blobs preserved",
+    "no src/reference mutation relative to canonical base",
+    "predictor uses root_extraction_active=true with nonzero prescribed 0.02 cm/day sink",
+    "accepted-trajectory root coverage is complete and MODFLOW tangent endpoint authoritative",
+    "predictor temporal certificate remains available and accepted indicators <=1 under 0.1 cm budget",
+    "live MODFLOW6 6.8.0 solve is used, not a synthetic groundwater service",
+    "fixed-point iteration converges within six iterations without changing tolerances",
+    "canonical interface head residual is accepted by the governed 0.001 m F-GC22 policy",
+    "interface flux pairing closes exactly under the canonical sign convention",
+    "SWAP hard mass is complete and absolute residual <=1e-12 cm",
+    "publication preflights pass before commit",
+    "SWAP state and interface mass ledger commit exactly once",
+    "committed SWAP time equals 1e-4 day",
+    "O0/O2 bridge behavior is identical where compiler optimization is applicable"
+  ],
+  "failure_decisions": [
+    "ACC02_F1_BLOCKED_ROOT_TANGENT_RUNTIME",
+    "ACC02_F1_BLOCKED_TEMPORAL_BUDGET",
+    "ACC02_F1_BLOCKED_INTERFACE_HEAD_RESIDUAL",
+    "ACC02_F1_BLOCKED_LIVE_MODFLOW_CONVERGENCE",
+    "ACC02_F1_BLOCKED_HARD_MASS_OR_PUBLICATION"
+  ],
+  "forbidden_after_execution": [
+    "increase temporal budget above 0.1 cm",
+    "increase interface tolerance above 0.001 m",
+    "decrease root sink from 0.02 cm/day",
+    "increase fixed-point iteration count above six to obtain a pass",
+    "change MODFLOW convergence tolerances to obtain a pass",
+    "introduce runtime finite-difference tangent fallback",
+    "change production physics or solver tolerances"
+  ],
+  "nonclaims": [
+    "not yet a multiple-window drought/recovery experiment",
+    "not dynamic Feddes stress-dependent root uptake",
+    "not 90-day Stage 0 authorization",
+    "not scientific HYDRO-MEMORY evidence"
+  ],
+  "downstream_if_pass": "ACC02-F2 multiple consecutive live root-active coupling windows under the same frozen accuracy contract before 90-day Stage 0."
+}
