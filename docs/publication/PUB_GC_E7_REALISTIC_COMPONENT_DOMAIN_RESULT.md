@@ -122,13 +122,17 @@ A future production capability that admits active drainage and the required Hups
 
 ## Current-canonical reconciliation
 
-After the original E7 qualification, PPA-WU02-A canonically admitted homogeneous typed `bottom_mode=2` prescribed-`q_bot` normal application reachability.
+Current canonical basis for this closeout: `integration/f-ci-canonical@50e7d1dece5b75d0103459d5c118d03a2665eea3`.
 
-This does **not** alter the E7 outcome. On current canonical:
+The decisive production boundary is unchanged:
 
-- the groundwater application owner remains an all-`bottom_mode=5` prescribed-head profile;
-- `tile_config_valid` still rejects `drainage_response_active` and `root_extraction_active` before owner-state allocation;
-- PPA-WU02 explicitly does not admit mixed bottom-mode production profiles and does not widen process composition;
-- therefore authentic Hupsel drainage still prevents construction of the required prescribed-head participant.
+- the groundwater application owner remains a homogeneous `bottom_mode=5` prescribed-head profile;
+- `tile_config_valid` still rejects both `root_extraction_active` and `drainage_response_active` before owner-state allocation;
+- PPA-WU02 and PPA-LOW02-TIME broaden `bottom_mode=2` prescribed-`q_bot` application semantics only;
+- PPA-WU03 supplies bounded stateless common forcing and does not widen mode-5 process ownership;
+- PPA-ROOT-HYD01 and PPA-ROOT-HYD02 add restricted prescribed-root temporal/tangent evidence, but explicitly do not admit a root-active live-MODFLOW production application owner;
+- PPA-WU04-A admits the bounded SWREDU=1 Black evaporation slice, but does not admit Black evaporation under mode 5 and does not alter the root/drainage guards.
 
-The E7 component-domain gate is rerun on the pull-request merge ref against this current canonical state.
+The current production-bootstrap blob is `9ae38276a353bd08f5d971d6368eed41967086b6`. Therefore the authentic Hupsel root/drainage composition is still outside the admitted prescribed-head participant domain.
+
+E7 remains `REALISTIC_COMPONENT_DOMAIN_LIMIT`. A future process-complete prescribed-head owner would define a new prospective experiment; it does not turn the closed E7 result into unfinished work.
