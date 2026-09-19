@@ -1,7 +1,7 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+  "canonical_head_at_reconcile": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
@@ -28,7 +28,11 @@
       "soil_temperature_active",
       "tabulated_hydraulics_active"
     ],
-    "e7_decisive_guard": "drainage_response_active and root_extraction_active remain rejected before owner-state allocation"
+    "e7_decisive_guard": "drainage_response_active and root_extraction_active remain rejected before owner-state allocation",
+    "serialized_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "serialized_backend_blob": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+    "temporal_indicator_path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "temporal_indicator_blob": "2068215a57edb1d2a59c36d6b32f519ebdc09ebd"
   },
   "later_canonical_workunits": {
     "PPA_WU02": {
@@ -67,9 +71,39 @@
       "production_source_mutation": false,
       "production_admission": "NONE_REVIEW_ONLY",
       "e7_effect": "NONE"
+    },
+    "PPA_LOW02_TIME": {
+      "status_path": "integration/audits/PPA_LOW02_TIME_STATUS.json",
+      "status_blob": "296aa4ebf130f47d10948603594969ec46860a92",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "production_scope": "legacy SWBOTB=2 sine/table time law and dry -2 continuation on homogeneous typed bottom_mode=2 prescribed-qbot application",
+      "production_delta": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "e7_effect": "NONE; explicitly adds no new groundwater-coupling semantics and does not alter the bottom_mode=5 owner guard"
+    },
+    "PPA_ROOT_HYD01": {
+      "result_path": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+      "result_blob": "76c7753eae184e5ab226b65ab351d510eea0c5bc",
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+      "production_delta": [
+        "src/solver/mod_reference_richards_temporal_indicator.f90"
+      ],
+      "admitted_scope": "temporal-certificate coverage for a concrete bound prescribed root-sink provider only",
+      "groundwater_owner_broadened": false,
+      "application_owner_broadened": false,
+      "e7_effect": "NONE; temporal-indicator coverage does not admit root_extraction_active in the production prescribed-head application owner"
+    },
+    "PPA_WU05C": {
+      "status_path": "integration/audits/PPA_WU05C_STATUS.json",
+      "status_blob": "a73842aa8c744651e55c1f05cf4678663622cf68",
+      "state": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED",
+      "production_source_mutation": false,
+      "production_admission": "NONE_REVIEW_ONLY",
+      "e7_effect": "NONE; oxygen/root authority review creates no production groundwater-owner composition"
     }
   },
   "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
-  "interpretation": "All canonical work admitted after the E7 closure either preserves the same production groundwater-owner guard or is review-only. No later workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
+  "interpretation": "All canonical work admitted after the E7 closure preserves the decisive production groundwater-owner guard. PPA-WU02/PPA-LOW02-TIME broaden bottom_mode=2 prescribed-qbot application semantics only; PPA-WU03 adds bounded stateless forcing only; PPA-ROOT-HYD01 broadens temporal-certificate coverage for a prescribed root-sink carrier without changing application ownership; PPA-WU04/WU05/WU05A/WU05C are review/authority work with no relevant production owner widening. No current workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
   "reopen_rule": "Reopen only as a new prospective experiment if a future canonically admitted production capability actually composes the required active Hupsel processes with prescribed-head groundwater ownership. Review-only authority or unrelated forcing/bottom-mode reachability does not reopen E7."
 }
