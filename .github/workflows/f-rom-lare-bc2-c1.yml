@@ -90,12 +90,24 @@ jobs:
           path: /tmp/lare-bc2-c1-cases
           merge-multiple: true
 
+      - name: Recover immutable A2 Reference for independent finiteness scan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1-aggregate/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c1-aggregate/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c1-aggregate/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c1-aggregate/a2.zip -d /tmp/lare-bc2-c1-aggregate/a2
+          cmp /tmp/lare-bc2-c1-aggregate/a2/o0.txt /tmp/lare-bc2-c1-aggregate/a2/o2.txt
+
       - name: Aggregate and hard-gate C1
         run: |
           set -euo pipefail
           mkdir -p LARE_BC2_C1_EVIDENCE
           python3 tests/rom/aggregate_lare_bc2_c1_cases.py \
             --cases-dir /tmp/lare-bc2-c1-cases \
+            --reference /tmp/lare-bc2-c1-aggregate/a2/o0.txt \
             --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json \
             --c0-result integration/f-rom/LARE_BC2_C0_RESULT.json \
             --output LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json \
