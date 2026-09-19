@@ -138,5 +138,29 @@
     "NO_APPLICATION_ACCEPTANCE",
     "NO_PRODUCTION_SOURCE_CHANGE"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_harness_reconciliation": {
+    "date": "2026-09-19",
+    "before_first_valid_CQ_result": true,
+    "invalid_prior_run": {
+      "workflow_run": 35447356271,
+      "artifact_id": 10585625621,
+      "artifact_digest": "sha256:17630543e439d5228085474cc5fbfb9c1686ea809e8808db8163de9ad603fa3f",
+      "observation": "The temporal-substep harness recomputed subinterval start times independently. Even exact EQ D3/D2, known to complete 1024 observations in the frozen Reference artifact, failed after a few steps with 'pre-attempt committed time'.",
+      "diagnosis": "Floating-point time-coordinate construction caused bitwise mismatch with the committed transaction time. This is a harness defect, not a Richards numerical qualification result.",
+      "disposition": "INVALID_TECHNICAL_PREFLIGHT_NOT_SCIENTIFIC_EVIDENCE"
+    },
+    "repair": {
+      "rule": "Use the actually committed interval start as sub_t0. Intermediate substeps advance sequentially, and the final substep of every observation interval is snapped to the original preregistered observation boundary seed_time + step*0.0008 day.",
+      "baseline_requirement": "For substeps=1, all previously qualified EQ cases must reproduce the frozen 1024-step Reference behavior before any substeps>1 result is interpreted.",
+      "unchanged": [
+        "spatial grid",
+        "forcing amplitudes and change indices",
+        "material and constitutive functions",
+        "solver tolerances",
+        "fallback classes",
+        "mass gate"
+      ]
+    }
+  }
 }
