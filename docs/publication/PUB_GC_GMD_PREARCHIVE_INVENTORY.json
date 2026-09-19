@@ -182,13 +182,17 @@
     "overall_non_supplement_max_mb": 30
   },
   "figure_export_qualification": {
-    "state": "PASS_REPRODUCIBLE_EXPORT_PIPELINE",
-    "workflow_run": 35425367690,
-    "job": 105850258985,
-    "artifact_id": 10578549141,
-    "artifact_digest": "sha256:390701f774e94d40eec03de54f71b722467a9c5be0491b000914bccf413fb468",
-    "submission_zip_sha256": "ae2e998d307f0cd78821d6ed9420649667b3289ddf7c46e7597f0764b3cfccb4",
-    "total_pdf_bytes": 164666,
-    "final_release_bound_regeneration_required": true
+    "state": "PASS_REPRODUCIBLE_TRANSFORM_SEMANTICS",
+    "first_successful_run": 35425367690,
+    "latest_confirmation_run": 35425488276,
+    "latest_confirmation_job": 105850571113,
+    "latest_artifact_id": 10578682866,
+    "latest_artifact_digest": "sha256:c64439b533ac482c8f493a7074c687d95e211b2c2847cb299476ccf3b9dff8a6",
+    "latest_run_specific_submission_zip_sha256": "4dab31c587644d37542f0cf223c8e30a2ea623c224c326d9ad29814869eeabee",
+    "latest_total_pdf_bytes": 164661,
+    "pdf_byte_identity_across_runs": false,
+    "reason": "PDF/archive metadata is not timestamp/document-ID normalized; governed SVG sources and structural qualification gates are authoritative before final release.",
+    "final_release_bound_regeneration_required": true,
+    "final_release_visual_upload_review_required": true
   }
 }
