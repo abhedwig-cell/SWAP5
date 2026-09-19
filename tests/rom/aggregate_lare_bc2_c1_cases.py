@@ -13,6 +13,7 @@ c0=c1.c0
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--cases-dir",required=True,type=pathlib.Path)
+    ap.add_argument("--reference",required=True,type=pathlib.Path)
     ap.add_argument("--prereg",required=True,type=pathlib.Path)
     ap.add_argument("--c0-result",required=True,type=pathlib.Path)
     ap.add_argument("--output",required=True,type=pathlib.Path)
@@ -21,6 +22,32 @@ def main():
     c0res=json.loads(a.c0_result.read_text())
     assert pre["phase"]=="PREREGISTERED_BEFORE_TEACHER_FORCED_DRIFT_DECOMPOSITION"
     assert c0res["decision"]==pre["predecessor"]["required_decision"]
+
+    # Reference finiteness is an independent authority check. Do not conflate a
+    # reduced-route domain exit with a non-finite accepted Reference projection.
+    init_meta,init_nodes,states,nodes=c0.b0.load_reference(a.reference)
+    reference_finite=True
+    reference_failure=None
+    try:
+        for d in c1.WIDTHS:
+            for h,nsteps in c0.HISTORY_STEPS.items():
+                for step in range(0,nsteps+1):
+                    y,p,U=c1.exact_reference_state(
+                        h,step,d,init_meta,init_nodes,states,nodes
+                    )
+                    vals=list(y[:c1.PHYS_N])+[float(p["H"]),float(U)]
+                    if not all(math.isfinite(float(v)) for v in vals):
+                        raise RuntimeError(f"NONFINITE_REFERENCE_PROJECTION {d} {h} {step}")
+                    if step>0:
+                        y0,p0,U0=c1.exact_reference_state(
+                            h,step-1,d,init_meta,init_nodes,states,nodes
+                        )
+                        refs=c1.reference_fluxes(h,step,p0,p,states)
+                        if not all(math.isfinite(float(refs[k])) for k in ("q90","qi","qH")):
+                            raise RuntimeError(f"NONFINITE_REFERENCE_FLUX {d} {h} {step}")
+    except Exception as exc:
+        reference_finite=False
+        reference_failure=str(exc)
 
     primary_key=f"{c1.PRIMARY_DT:.8f}"
     cross_key=f"{c1.CROSS_DT:.8f}"
@@ -87,7 +114,7 @@ def main():
                 }
 
     max_hard=max(hard_vals or [math.inf])
-    complete=all_routes and not failures and max_hard<=c1.IDENTITY_GATE
+    complete=all_routes and not failures and reference_finite and max_hard<=c1.IDENTITY_GATE
     counts=Counter()
     for drow in classifications.values():
         for hrow in drow.values():
@@ -104,7 +131,8 @@ def main():
         "hard_checks":{
             "all_primary_and_cross_routes_qualified":all_routes and not failures,
             "all_primary_and_cross_routes_hard_gated":True,
-            "all_reference_projections_finite":len(failures)==0,
+            "all_reference_projections_finite":reference_finite,
+            "reference_projection_failure":reference_failure,
             "failure_count":len(failures),
             "max_additive_or_ledger_residual_across_primary_and_cross":max_hard,
             "gate":c1.IDENTITY_GATE,
