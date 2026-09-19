@@ -10,7 +10,8 @@
     "c4q_development_closeout": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
     "corichards_q1_closeout": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
     "purpose_framework": "docs/science/F-ROM_LARE_PURPOSE_DEPENDENT_ACCEPTANCE.md",
-    "f_romv2_acceptance_framework": "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json"
+    "f_romv2_acceptance_framework": "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json",
+    "representation_reconciliation_v2": "integration/f-rom/LARE_REPRESENTATION_SELECTION_RECONCILIATION_V2.json"
   },
   "reference_authority": {
     "current_canonical_at_preregistration": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
@@ -254,7 +255,7 @@
     "No cost, speedup, amortization or production claim is evaluated in C4R.",
     "Failure of exact development minimum-dimension replication does not automatically negate the representation family; the complete vector and dimension curve must be reported."
   ],
-  "next_if_positive": "PREREGISTER_COST_FIDELITY_VALUE_SCREEN_WITH_CURRENT_DIRECT_ROUTE_ONLY_AFTER_C4R_CLOSEOUT",
+  "next_if_positive": "PREREGISTER_C4S_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION_BEFORE_ANY_COST_FIDELITY_VALUE_SCREEN",
   "next_if_negative": "RETURN_TO_REPRESENTATION_SELECTION_WITHOUT_POST_HOC_RETUNING",
   "model_changed": false,
   "application_acceptance_adjudicated": false,
@@ -270,6 +271,21 @@
     "d13_execution_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
     "allowed_new_code": "history materialization, current-canonical execution plumbing, blind metric aggregation only",
     "response_based": false,
+    "scientific_effect": "NONE"
+  },
+  "pre_reference_generation_governance_reconciliation": {
+    "before_any_C4R_reference_generation": true,
+    "response_consumed": false,
+    "rationale": "REPSEL-2 was already live before C4R preregistration and requires D13 same-partition CoRichards qualification before any cost/value discriminator. This amendment changes successor ordering only, not C4R histories, equations, representations, metrics, thresholds, frontiers or decisions.",
+    "successor_sequence_if_C4R_positive": [
+      "CLOSE_C4R_BLIND_FIDELITY_VALIDATION",
+      "PREREGISTER_C4S_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION",
+      "ONLY_IF_C4S_PROVIDES_RELEVANT_COMPARATOR_AUTHORITY_PREREGISTER_COST_FIDELITY_VALUE_SCREEN"
+    ],
+    "successor_sequence_if_C4R_negative": [
+      "CLOSE_C4R_WITHOUT_POST_HOC_RETUNING",
+      "RETURN_TO_REPRESENTATION_SELECTION"
+    ],
     "scientific_effect": "NONE"
   }
 }
