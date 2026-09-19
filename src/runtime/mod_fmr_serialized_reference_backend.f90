@@ -1183,7 +1183,8 @@ contains
       return
     end if
     if (parameters%black_evaporation_active) then
-      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
+      if (parameters%boesten_evaporation_active .or. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
           parameters%snow_active .or. parameters%soil_temperature_active .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
@@ -1193,7 +1194,19 @@ contains
         diagnostics%admission_rejections = 1
         return
       end if
-    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) then
+    else if (parameters%boesten_evaporation_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -1357,15 +1370,26 @@ contains
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
       end if
       if (parameters%black_evaporation_active) then
-        ok = ok .and. self%black_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
+        ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
+             .not. self%boesten_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
+             .not. allocated(parameters%boesten_evaporation) .and. self%soil_water_selection%uses_reference() .and. &
+             .not. parameters%snow_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. self%fixed_weir_surface_water_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%root_extraction_active .and. parameters%bottom_mode /= 5
+        if (ok) ok = ieee_is_finite(parameters%black_evaporation%cofred) .and. &
+             parameters%black_evaporation%cofred >= 0.0_real64
+      else if (parameters%boesten_evaporation_active) then
+        ok = ok .and. .not. self%black_evaporation_active .and. self%boesten_evaporation_active .and. &
+             .not. allocated(parameters%black_evaporation) .and. allocated(parameters%boesten_evaporation) .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
              .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
              parameters%bottom_mode /= 5
-        if (ok) ok = ieee_is_finite(parameters%black_evaporation%cofred) .and. &
-             parameters%black_evaporation%cofred >= 0.0_real64
+        if (ok) ok = ieee_is_finite(parameters%boesten_evaporation%cofred) .and. &
+             parameters%boesten_evaporation%cofred > 0.0_real64 .and. parameters%boesten_evaporation%cofred <= 1.0_real64
       else
-        ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active
+        ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active .and. &
+             .not. allocated(parameters%boesten_evaporation) .and. .not. self%boesten_evaporation_active
       end if
       if (parameters%drainage_response_active) then
         ok = ok .and. allocated(parameters%drainage_response_levels) .and. &
@@ -1425,6 +1449,11 @@ contains
       if (parameters%black_evaporation_active .and. allocated(parameters%black_evaporation)) then
         self%black_evaporation_parameters = parameters%black_evaporation
       end if
+      self%boesten_evaporation_active = parameters%boesten_evaporation_active
+      self%boesten_evaporation_parameters = boesten_evaporation_parameters_t()
+      if (parameters%boesten_evaporation_active .and. allocated(parameters%boesten_evaporation)) then
+        self%boesten_evaporation_parameters = parameters%boesten_evaporation
+      end if
       self%drainage_response_active = parameters%drainage_response_active
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
@@ -1448,7 +1477,7 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
-    real(real64) :: black_values(9)
+    real(real64) :: black_values(9), boesten_values(9)
     self%forcing_admitted = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
@@ -1459,6 +1488,7 @@ contains
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
+    self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
     self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
     self%trajectory_requested_t0 = interval%t0
@@ -1557,6 +1587,29 @@ contains
         self%black_evaporation_forcing = forcing%black_evaporation
       else
         if (allocated(forcing%black_evaporation)) return
+      end if
+
+      self%boesten_evaporation_forcing = fmr_boesten_evaporation_runtime_forcing_t()
+      if (self%boesten_evaporation_active) then
+        if (.not. allocated(forcing%boesten_evaporation)) return
+        if (allocated(forcing%black_evaporation)) return
+        if (forcing%top_flux /= 0.0_real64) return
+        boesten_values = [forcing%boesten_evaporation%precipitation_rate_cm_per_day, &
+             forcing%boesten_evaporation%irrigation_rate_cm_per_day, &
+             forcing%boesten_evaporation%snowmelt_rate_cm_per_day, &
+             forcing%boesten_evaporation%runon_rate_cm_per_day, &
+             forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day, &
+             forcing%boesten_evaporation%potential_pond_evaporation_cm_per_day, &
+             forcing%boesten_evaporation%ponding_max_cm, forcing%boesten_evaporation%runoff_resistance_day, &
+             forcing%boesten_evaporation%runoff_exponent]
+        if (.not. all(ieee_is_finite(boesten_values))) return
+        if (any(boesten_values(1:8) < 0.0_real64)) return
+        if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) return
+        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%boesten_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        self%boesten_evaporation_forcing = forcing%boesten_evaporation
+      else
+        if (allocated(forcing%boesten_evaporation)) return
       end if
 
       if (associated(self%qdra)) deallocate(self%qdra)
