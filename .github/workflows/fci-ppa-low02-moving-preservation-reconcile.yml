@@ -6,6 +6,9 @@ on:
       - integration/f-ci-canonical
     paths:
       - 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+      - 'tests/ross/run_ross12_serialized_production_wiring.sh'
+      - 'tests/publication/run_pub_p2e01_e0_paired_pilot.sh'
+      - 'integration/audits/PPA_ROOT_HYD01_R1_RESULT.json'
       - 'integration/f-ci/FCI_PPA_LOW02_MOVING_PRESERVATION_RECONCILIATION.json'
       - '.github/workflows/fci-ppa-low02-moving-preservation-reconcile.yml'
   workflow_dispatch:
@@ -37,6 +40,12 @@ jobs:
           fi
       - name: Replay moving F-CI preservation
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+      - name: Replay PPA-ROOT-HYD01 temporal preservation
+        run: bash tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh
+      - name: Replay RossFast serialized compile/runtime preservation
+        run: bash tests/ross/run_ross12_serialized_production_wiring.sh
+      - name: Replay publication solver-seam preservation
+        run: bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh
       - name: Replay PPA-LOW02 owner qualification
         run: bash tests/fapp/run_ppa_low02_time_application_admission.sh
       - name: Replay PPA-LOW02 independent qualification
