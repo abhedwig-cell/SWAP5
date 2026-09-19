@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.f-romv2-d15.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D15",
+  "title": "Literature-bound FMC full surface-accounting preflight",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "2f405dc9a3aff24d2616e377d841e832630ab469",
+  "purpose": "Qualify conservative atmospheric-side FMC state transitions and water accounting before any SWAP infiltration trajectory comparator is allowed.",
+  "scientific_role": {
+    "class": "LITERATURE_BOUND_SURFACE_ACCOUNTING_PREFLIGHT",
+    "SWAP_trajectory_evidence_consumed": false,
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D12": "FMC/SMVE equation preflight passed; B01 200-bin discretization and maximum 10 s process step frozen.",
+    "D13": "Groundwater-front branch retained bounded research candidacy.",
+    "D14": "Eq.18 infiltration-front and Eq.19 falling-slug kinematics plus conservative capillary relaxation passed.",
+    "implication": "D15 changes no D12-D14 kinematics. It adds only finite-volume allocation and state-transition accounting needed to close the atmospheric-side ledger."
+  },
+  "primary_authority": [
+    {
+      "citation": "Talbot and Ogden (2008), A method for computing infiltration and redistribution in a discretized moisture content domain",
+      "doi": "10.1029/2008WR006815",
+      "retained_rules": [
+        "surface input volume equals prescribed flux times dt",
+        "water is introduced sequentially from lower-water-content left bins toward right bins",
+        "existing wetting fronts consume water according to calculated front advance",
+        "dry-bin initiation uses a Green-Ampt successive-approximation depth with 0.0005 cm depth convergence",
+        "residual surface water after the rightmost bin is ponding or runoff according to boundary condition"
+      ],
+      "superseded_rule": "D15 does not use the 2008 capillary-weighted redistribution operator; Ogden et al. 2015 supersedes that process with capillary relaxation."
+    },
+    {
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method",
+      "doi": "10.1002/2015WR017126",
+      "retained_rules": [
+        "Eq.18 improved infiltration-front kinematics",
+        "falling slugs are created when rainfall/snowmelt/ponding is insufficient to support calculated connected-front advance",
+        "Eq.19 translates falling slugs under gravity",
+        "falling slugs merge with deeper groundwater fronts on contact",
+        "capillary relaxation is zero-dimensional finite-volume reorganization and must conserve mass exactly"
+      ]
+    }
+  ],
+  "frozen_B01_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "effective_capillary_drive_HcM_cm": 14.085215420920257
+  },
+  "discretization": {
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_surface_bins": "j=101..199",
+    "rightmost_wet_bin_d": 199,
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "maximum_explicit_substep_seconds": 10,
+    "accounting_substep_seconds": 10,
+    "bin_count_or_substep_tuning_from_D15": false
+  },
+  "accounting_primitives": {
+    "surface_input_cm": "rainfall_rate_cm_per_day * dt_day",
+    "existing_front_demand_cm": "dtheta * max(z_raw_new-z_old,0)",
+    "allocation_order": "left-to-right j=101..199",
+    "partial_existing_front_rule": "if remaining supply is smaller than demand, advance only by remaining_supply/dtheta and exhaust surface supply",
+    "dry_bin_activation": {
+      "one_bin_Green_Ampt_equation": "F = K*dt + A*ln(1+F/A), A=G_eff*dtheta",
+      "solved_quantity": "F_cm then z_dry=F/dtheta",
+      "root_method": "bisection",
+      "root_interval_cm": "[K*dt, K*dt + A + 10*K*dt]",
+      "root_iterations_max": 100,
+      "floating_stagnation_stop": true,
+      "depth_convergence_reference_cm": 0.0005,
+      "activation_rule": "activate only when remaining surface supply >= dtheta*z_dry; subtract exactly dtheta*z_dry"
+    },
+    "overflow": {
+      "no_ponding_case": "all residual after rightmost-bin capacity becomes runoff",
+      "finite_surface_store_case": "surface store cap = Ksat*dt; fill store first and send excess to runoff",
+      "hidden_surface_correction": false
+    },
+    "hiatus_detachment": "a surface-connected wetted interval [0,z] becomes a falling slug [0,z] with unchanged finite-volume water before Eq.19 translation",
+    "slug_translation": "D14 Eq.19; top and bottom translate by identical distance within each bin",
+    "slug_groundwater_merge": "on exact contact or overlap with same-bin groundwater water, replace disjoint/overlapping intervals by their finite-volume union; any geometric overlap is counted once before and after merge",
+    "capillary_relaxation": "D14/Ogden-2015 conservative ordering operation; no water source/sink",
+    "ledger": "initial column water + surface input + initial surface store = final column water + final surface store + runoff"
+  },
+  "synthetic_tests": [
+    {
+      "id": "A1_SUPPLY_LIMITED_EXISTING_FRONTS",
+      "state": "D14 I_MID front geometry; all bins surface-connected",
+      "rainfall_rate_cm_per_day": "0.25*Ksat",
+      "requirement": "sequential allocation exhausts finite supply without negative remaining water; column storage increment equals infiltrated surface withdrawal to <=1e-14 cm"
+    },
+    {
+      "id": "A2_DRY_BIN_ACTIVATION",
+      "state": "bin 101 dry at surface; bins 102..199 ignored for this isolated initiation test",
+      "rainfall_rate_cm_per_day": "4*Ksat",
+      "requirement": "Green-Ampt dry-bin root is finite; activation depth satisfies root residual <=1e-12 cm; debited water equals dtheta*z_dry; ledger residual <=1e-14 cm"
+    },
+    {
+      "id": "A3_OVERFLOW_RUNOFF_AND_SURFACE_STORE",
+      "state": "all active bins filled from surface to D=160 cm",
+      "rainfall_rate_cm_per_day": "2*sum_j K(theta_j)",
+      "requirement": "test no-ponding and finite-store branches; infiltration plus final store plus runoff equals supplied water to <=1e-14 cm"
+    },
+    {
+      "id": "A4_HIATUS_DETACHMENT_AND_TRANSLATION",
+      "state": "three selected surface-connected bin intervals with frozen depths 15, 30 and 45 cm",
+      "rainfall_rate_cm_per_day": 0,
+      "requirement": "detachment changes no water; one Eq.19 step preserves every slug length and total finite-volume water to <=1e-14 cm"
+    },
+    {
+      "id": "A5_SLUG_GROUNDWATER_MERGE",
+      "state": "synthetic same-bin falling slug contacts a same-bin groundwater-filled interval",
+      "requirement": "finite-volume union is non-overlapping, physical and preserves the unique occupied water length to <=1e-14 cm"
+    },
+    {
+      "id": "A6_COMPOSITE_CAPILLARY_RELAXATION",
+      "state": "synthetic multi-bin connected fronts plus falling slugs with deliberately non-monotone front ordering",
+      "requirement": "relaxation restores monotone connected-front ordering and leaves total column finite-volume water unchanged to <=1e-14 cm"
+    },
+    {
+      "id": "A7_END_TO_END_SURFACE_LEDGER",
+      "state": "synthetic 10 s sequence combining finite supply, one dry-bin activation opportunity, partial final-bin advance, hiatus detachment, slug translation and finite surface store",
+      "requirement": "global water ledger closes to <=1e-14 cm without clipping, hidden correction or full-order fallback"
+    }
+  ],
+  "D16_gate": {
+    "positive": "D15_FMC_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS",
+    "negative": "D15_FMC_SURFACE_ACCOUNTING_NO_GO",
+    "if_positive": "Authorize D16 only to preregister an exposed homogeneous-B01 surface-infiltration/hiatus development comparator against R16 and R2, using D12-D15 frozen bins, substep, kinematics and accounting.",
+    "if_negative": "Close atmospheric-side FMC comparator route without retuning bin count, substep, Green-Ampt activation rule, accounting order, or synthetic cases."
+  },
+  "explicitly_not_tested": [
+    "SWAP infiltration trajectories",
+    "joint surface forcing plus moving/fixed groundwater branch trajectories",
+    "arbitrary nonzero SWAP bottom pressure head",
+    "ET/root uptake",
+    "seasonal water balance",
+    "live groundwater coupling",
+    "same-runtime formal performance"
+  ],
+  "firewalls": [
+    "NO_SWAP_TRAJECTORY_EVIDENCE_IN_D15",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_POST_RESULT_GREEN_AMPT_RETUNING",
+    "NO_POST_RESULT_ALLOCATION_ORDER_RETUNING",
+    "NO_2008_CAPILLARY_WEIGHTED_REDISTRIBUTION",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_EXTERNAL_SOURCE_CODE_COPIED_INTO_SWAP5",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
