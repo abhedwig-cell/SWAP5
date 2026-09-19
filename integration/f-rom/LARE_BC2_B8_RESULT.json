@@ -1,0 +1,598 @@
+{
+  "application_acceptance_adjudicated": false,
+  "complete": true,
+  "decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED",
+  "failures": [],
+  "hard_checks": {
+    "all_terms_finite": true,
+    "failure_count": 0,
+    "max_abs_Wb_plus_Wt_minus_Wm_cm": 3.552713678800501e-15,
+    "max_abs_qi_bulk_minus_terminal_cm_per_day": 1.3131717935266352e-11,
+    "max_abs_terminal_storage_64_vs_128_cm": 2.993161274389422e-13,
+    "max_abs_total_moving_ledger_residual_cm_per_day": 1.191580167869688e-11,
+    "qi_identity_gate_cm_per_day": 1e-10,
+    "quadrature_gate_cm": 1e-10,
+    "storage_gate_cm": 1e-10
+  },
+  "interface_flux_closure_authorized": false,
+  "interpretation": [
+    "The terminal and bulk balances independently reconstruct the same internal moving-interface flux qi up to the already-qualified total moving-volume ledger residual.",
+    "The reference theta_i enters only the geometry-transfer diagnostic Gi; no qi closure is proposed in B8.",
+    "Both B7-supported widths are evaluated identically and conservation is not used to choose between them.",
+    "Qualification authorizes only a later response-blind qi-closure diagnostic, not propagated reduced dynamics."
+  ],
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "qualified_widths_cm": [
+    2.5,
+    5.0
+  ],
+  "schema": "swap5.lare.bc2.b8.result.v1",
+  "width_to_width_qi_difference": {
+    "max_abs_cm_per_day": 11.469051800413808,
+    "mean_abs_cm_per_day": 0.1363340087356964,
+    "rms_cm_per_day": 0.48137717240019273
+  },
+  "widths": {
+    "2.5": {
+      "by_direction": {
+        "HOLD": {
+          "Gi_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "H_cm": {
+            "count": 256,
+            "max": 120.0,
+            "mean": 120.0,
+            "min": 120.0,
+            "rms": 120.0
+          },
+          "Hdot_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 0.0,
+          "qi": {
+            "count": 256,
+            "max_cm_per_day": 0.0,
+            "mean_cm_per_day": 0.0,
+            "min_cm_per_day": 0.0,
+            "rms_cm_per_day": 0.0,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 256,
+            "max": 0.4264021766536354,
+            "mean": 0.4264021766536353,
+            "min": 0.4264021766536354,
+            "rms": 0.4264021766536354
+          }
+        },
+        "WATER_TABLE_FALLING": {
+          "Gi_cm_per_day": {
+            "count": 768,
+            "max": 3621.653081983574,
+            "mean": 34.95090937291621,
+            "min": 1.0599143890448446,
+            "rms": 193.9205708954901
+          },
+          "H_cm": {
+            "count": 768,
+            "max": 138.79618325255618,
+            "mean": 135.85689056018805,
+            "min": 112.28135251247764,
+            "rms": 135.90341909654683
+          },
+          "Hdot_cm_per_day": {
+            "count": 768,
+            "max": 8487.621810854353,
+            "mean": 81.86101521550712,
+            "min": 2.485037300665738,
+            "rms": 454.3290140183399
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.2818190953112207e-11,
+          "qi": {
+            "count": 768,
+            "max_cm_per_day": 16.333451171284366,
+            "mean_cm_per_day": 4.767275750891826,
+            "min_cm_per_day": 1.6885555669933656,
+            "rms_cm_per_day": 5.599006618643609,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 768,
+            "max": 0.42727311118767275,
+            "mean": 0.4267156154063407,
+            "min": 0.4265185028654882,
+            "rms": 0.42671565032790953
+          }
+        },
+        "WATER_TABLE_RISING": {
+          "Gi_cm_per_day": {
+            "count": 1024,
+            "max": -2.186210808099722,
+            "mean": -24.65761579514508,
+            "min": -2593.721544300634,
+            "rms": 106.79368537471554
+          },
+          "H_cm": {
+            "count": 1024,
+            "max": 132.1219708471353,
+            "mean": 110.91006972220372,
+            "min": 103.48952360402006,
+            "rms": 111.14438012983359
+          },
+          "Hdot_cm_per_day": {
+            "count": 1024,
+            "max": -5.127515704970165,
+            "mean": -57.8989818743473,
+            "min": -6085.6358906378455,
+            "rms": 250.6846257090978
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.2515322111994465e-11,
+          "qi": {
+            "count": 1024,
+            "max_cm_per_day": -0.44046983312901755,
+            "mean_cm_per_day": -3.5935762915487066,
+            "min_cm_per_day": -10.910015820629852,
+            "rms_cm_per_day": 4.151666594437654,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 1024,
+            "max": 0.4263684274980573,
+            "mean": 0.4260934106150985,
+            "min": 0.42536735182037044,
+            "rms": 0.42609345501064244
+          }
+        }
+      },
+      "by_history": {
+        "WT_CYCLE": {
+          "Gi_cm_per_day": {
+            "count": 768,
+            "max": 3621.653081983574,
+            "mean": 0.45857677050618406,
+            "min": -2593.721544300634,
+            "rms": 191.66006459585282
+          },
+          "H_cm": {
+            "count": 768,
+            "max": 136.99047955964556,
+            "mean": 121.39533875296377,
+            "min": 105.49125506379416,
+            "rms": 121.86383594640515
+          },
+          "Hdot_cm_per_day": {
+            "count": 768,
+            "max": 8487.621810854353,
+            "mean": 0.9421467128353432,
+            "min": -6085.6358906378455,
+            "rms": 449.2892963479386
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.2515322111994465e-11,
+          "qi": {
+            "count": 768,
+            "max_cm_per_day": 16.333451171284366,
+            "mean_cm_per_day": 0.0524241461893068,
+            "min_cm_per_day": -10.910015820629852,
+            "rms_cm_per_day": 5.64149362918066,
+            "sign_change_count": 2
+          },
+          "theta_i": {
+            "count": 768,
+            "max": 0.42727311118767275,
+            "mean": 0.42635604666871935,
+            "min": 0.42536735182037044,
+            "rms": 0.4263562439165564
+          }
+        },
+        "WT_FALL": {
+          "Gi_cm_per_day": {
+            "count": 512,
+            "max": 3089.472999537617,
+            "mean": 19.587984128589042,
+            "min": 1.0599143890448446,
+            "rms": 141.73102707545115
+          },
+          "H_cm": {
+            "count": 512,
+            "max": 138.79618325255618,
+            "mean": 137.13924977724747,
+            "min": 125.79151755964044,
+            "rms": 137.15577886552427
+          },
+          "Hdot_cm_per_day": {
+            "count": 512,
+            "max": 7239.396949550549,
+            "mean": 45.88911926893597,
+            "min": 2.485037300665738,
+            "rms": 332.095807363712
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.2818190953112207e-11,
+          "qi": {
+            "count": 512,
+            "max_cm_per_day": 12.141547691473647,
+            "mean_cm_per_day": 3.573097120842106,
+            "min_cm_per_day": 1.6885555669933656,
+            "rms_cm_per_day": 4.128109483521484,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 512,
+            "max": 0.42710010326526016,
+            "mean": 0.4266414855678958,
+            "min": 0.4265185028654882,
+            "rms": 0.4266415060309572
+          }
+        },
+        "WT_HOLD": {
+          "Gi_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "H_cm": {
+            "count": 256,
+            "max": 120.0,
+            "mean": 120.0,
+            "min": 120.0,
+            "rms": 120.0
+          },
+          "Hdot_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 0.0,
+          "qi": {
+            "count": 256,
+            "max_cm_per_day": 0.0,
+            "mean_cm_per_day": 0.0,
+            "min_cm_per_day": 0.0,
+            "rms_cm_per_day": 0.0,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 256,
+            "max": 0.4264021766536354,
+            "mean": 0.4264021766536353,
+            "min": 0.4264021766536354,
+            "rms": 0.4264021766536354
+          }
+        },
+        "WT_RISE": {
+          "Gi_cm_per_day": {
+            "count": 512,
+            "max": -2.6362343371572994,
+            "mean": -17.164716815264157,
+            "min": -1165.2496391844172,
+            "rms": 63.47841853169234
+          },
+          "H_cm": {
+            "count": 512,
+            "max": 117.81099873659025,
+            "mean": 106.37321737799635,
+            "min": 103.48952360402006,
+            "rms": 106.40890944145725
+          },
+          "Hdot_cm_per_day": {
+            "count": 512,
+            "max": -6.184835101450403,
+            "mean": -40.308780263622886,
+            "min": -2736.2515792621875,
+            "rms": 149.09362700780255
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.1361578344804002e-11,
+          "qi": {
+            "count": 512,
+            "max_cm_per_day": -1.9021790375714043,
+            "mean_cm_per_day": -3.687972296885741,
+            "min_cm_per_day": -10.910015820629852,
+            "rms_cm_per_day": 4.088400694170342,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 512,
+            "max": 0.42624165299719585,
+            "mean": 0.4260846887687332,
+            "min": 0.425372053632217,
+            "rms": 0.4260847209178645
+          }
+        }
+      }
+    },
+    "5.0": {
+      "by_direction": {
+        "HOLD": {
+          "Gi_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "H_cm": {
+            "count": 256,
+            "max": 120.0,
+            "mean": 120.0,
+            "min": 120.0,
+            "rms": 120.0
+          },
+          "Hdot_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 0.0,
+          "qi": {
+            "count": 256,
+            "max_cm_per_day": 0.0,
+            "mean_cm_per_day": 0.0,
+            "min_cm_per_day": 0.0,
+            "rms_cm_per_day": 0.0,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 256,
+            "max": 0.42389780737995114,
+            "mean": 0.4238978073799513,
+            "min": 0.42389780737995114,
+            "rms": 0.4238978073799512
+          }
+        },
+        "WATER_TABLE_FALLING": {
+          "Gi_cm_per_day": {
+            "count": 768,
+            "max": 3606.0571643626695,
+            "mean": 34.851097699778855,
+            "min": 1.0544642030974265,
+            "rms": 193.2283175138555
+          },
+          "H_cm": {
+            "count": 768,
+            "max": 138.79618325255618,
+            "mean": 135.85689056018805,
+            "min": 112.28135251247764,
+            "rms": 135.90341909654683
+          },
+          "Hdot_cm_per_day": {
+            "count": 768,
+            "max": 8487.621810854353,
+            "mean": 81.86101521550712,
+            "min": 2.485037300665738,
+            "rms": 454.3290140183399
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.1376677377938904e-11,
+          "qi": {
+            "count": 768,
+            "max_cm_per_day": 15.341420838077624,
+            "mean_cm_per_day": 4.673274822289446,
+            "min_cm_per_day": 0.9595606645225416,
+            "rms_cm_per_day": 5.456356796230147,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 768,
+            "max": 0.4267722454346502,
+            "mean": 0.4249888973117644,
+            "min": 0.4243253020044959,
+            "rms": 0.42498924552511974
+          }
+        },
+        "WATER_TABLE_RISING": {
+          "Gi_cm_per_day": {
+            "count": 1024,
+            "max": -2.172978745498027,
+            "mean": -24.450639626432523,
+            "min": -2576.1607660376244,
+            "rms": 106.00478914549616
+          },
+          "H_cm": {
+            "count": 1024,
+            "max": 132.1219708471353,
+            "mean": 110.91006972220372,
+            "min": 103.48952360402006,
+            "rms": 111.14438012983359
+          },
+          "Hdot_cm_per_day": {
+            "count": 1024,
+            "max": -5.127515704970165,
+            "mean": -57.8989818743473,
+            "min": -6085.6358906378455,
+            "rms": 250.6846257090978
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.3131717935266352e-11,
+          "qi": {
+            "count": 1024,
+            "max_cm_per_day": 4.772097446367525,
+            "mean_cm_per_day": -3.391408970529099,
+            "min_cm_per_day": -8.209960716135356,
+            "rms_cm_per_day": 3.859468541566995,
+            "sign_change_count": 2
+          },
+          "theta_i": {
+            "count": 1024,
+            "max": 0.4237878283613508,
+            "mean": 0.4228453943237548,
+            "min": 0.42055707153335076,
+            "rms": 0.4228458607118482
+          }
+        }
+      },
+      "by_history": {
+        "WT_CYCLE": {
+          "Gi_cm_per_day": {
+            "count": 768,
+            "max": 3606.0571643626695,
+            "mean": 0.5807179441351925,
+            "min": -2576.1607660376244,
+            "rms": 190.7514322903216
+          },
+          "H_cm": {
+            "count": 768,
+            "max": 136.99047955964556,
+            "mean": 121.39533875296377,
+            "min": 105.49125506379416,
+            "rms": 121.86383594640515
+          },
+          "Hdot_cm_per_day": {
+            "count": 768,
+            "max": 8487.621810854353,
+            "mean": 0.9421467128353432,
+            "min": -6085.6358906378455,
+            "rms": 449.2892963479386
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.3131717935266352e-11,
+          "qi": {
+            "count": 768,
+            "max_cm_per_day": 15.341420838077624,
+            "mean_cm_per_day": 0.17428561286400243,
+            "min_cm_per_day": -8.209960716135356,
+            "rms_cm_per_day": 5.374838962206126,
+            "sign_change_count": 2
+          },
+          "theta_i": {
+            "count": 768,
+            "max": 0.4267722454346502,
+            "mean": 0.42373627362788,
+            "min": 0.42055707153335076,
+            "rms": 0.4237384948314269
+          }
+        },
+        "WT_FALL": {
+          "Gi_cm_per_day": {
+            "count": 512,
+            "max": 3077.365521809437,
+            "mean": 19.521867154794972,
+            "min": 1.0544642030974265,
+            "rms": 141.1906110982854
+          },
+          "H_cm": {
+            "count": 512,
+            "max": 138.79618325255618,
+            "mean": 137.13924977724747,
+            "min": 125.79151755964044,
+            "rms": 137.15577886552427
+          },
+          "Hdot_cm_per_day": {
+            "count": 512,
+            "max": 7239.396949550549,
+            "mean": 45.88911926893597,
+            "min": 2.485037300665738,
+            "rms": 332.095807363712
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.1376677377938904e-11,
+          "qi": {
+            "count": 512,
+            "max_cm_per_day": 11.265293059482985,
+            "mean_cm_per_day": 3.5084980276552624,
+            "min_cm_per_day": 0.9595606645225416,
+            "rms_cm_per_day": 4.0265103242032305,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 512,
+            "max": 0.4262348583832593,
+            "mean": 0.4247558720095187,
+            "min": 0.4243253020044959,
+            "rms": 0.42475607563450135
+          }
+        },
+        "WT_HOLD": {
+          "Gi_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "H_cm": {
+            "count": 256,
+            "max": 120.0,
+            "mean": 120.0,
+            "min": 120.0,
+            "rms": 120.0
+          },
+          "Hdot_cm_per_day": {
+            "count": 256,
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "rms": 0.0
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 0.0,
+          "qi": {
+            "count": 256,
+            "max_cm_per_day": 0.0,
+            "mean_cm_per_day": 0.0,
+            "min_cm_per_day": 0.0,
+            "rms_cm_per_day": 0.0,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 256,
+            "max": 0.42389780737995114,
+            "mean": 0.4238978073799513,
+            "min": 0.42389780737995114,
+            "rms": 0.4238978073799512
+          }
+        },
+        "WT_RISE": {
+          "Gi_cm_per_day": {
+            "count": 512,
+            "max": -2.6185066011831704,
+            "mean": -17.017576774194517,
+            "min": -1157.003990355692,
+            "rms": 62.97501594993266
+          },
+          "H_cm": {
+            "count": 512,
+            "max": 117.81099873659025,
+            "mean": 106.37321737799635,
+            "min": 103.48952360402006,
+            "rms": 106.40890944145725
+          },
+          "Hdot_cm_per_day": {
+            "count": 512,
+            "max": -6.184835101450403,
+            "mean": -40.308780263622886,
+            "min": -2736.2515792621875,
+            "rms": 149.09362700780255
+          },
+          "max_abs_qi_identity_residual_cm_per_day": 1.3027801060161437e-11,
+          "qi": {
+            "count": 512,
+            "max_cm_per_day": -1.8826879936845367,
+            "mean_cm_per_day": -3.542832154575296,
+            "min_cm_per_day": -8.209960716135356,
+            "rms_cm_per_day": 3.8603902500851075,
+            "sign_change_count": 0
+          },
+          "theta_i": {
+            "count": 512,
+            "max": 0.4233753298562649,
+            "mean": 0.4228138521638175,
+            "min": 0.42061901668235935,
+            "rms": 0.42281419118671526
+          }
+        }
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-B8",
+  "workstream": "F-ROM-LARE"
+}
