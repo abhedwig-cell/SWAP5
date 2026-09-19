@@ -1,0 +1,36 @@
+name: F-ROMV2 D18 FMC contact-merge preflight
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'integration/f-rom/F-ROMV2_D18_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d18_fmc_contact_merge.py'
+      - '.github/workflows/f-romv2-d18-contact-merge.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  event-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute frozen D18 FMC-only event preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE"
+          python3 tests/rom/preflight_f_romv2_d18_fmc_contact_merge.py \
+            --prereg integration/f-rom/F-ROMV2_D18_PREREGISTRATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE/F-ROMV2_D18_PREFLIGHT_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE/F-ROMV2_D18_PREFLIGHT_RESULT.json" \
+            "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE/preflight.txt" \
+            > "${{ runner.temp }}/F-ROMV2-D18-EVIDENCE/sha256.txt"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d18-preflight-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D18-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
