@@ -1,17 +1,17 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+  "canonical_head_at_reconcile": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "8d7bb10c34523a034b96581499a253dab33648ab",
+    "result_blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794",
     "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-    "application_requirements_blob": "efb7ecf4409c209a698a0a42ac6ca1c218973730"
+    "application_requirements_blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -139,11 +139,11 @@
     }
   },
   "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
-  "interpretation": "Current canonical still rejects active drainage and active root extraction in the homogeneous bottom_mode=5 production groundwater owner before owner-state allocation. HYDRO-MEMORY ACC02-F1 is not a counterexample: it is a research-only support-bridge qualification with prescribed root extraction active, drainage response inactive, no production/reference source change and no Stage-0 authorization. No admitted workunit materializes authentic Hupsel active root plus drainage under prescribed-head mode 5. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
+  "interpretation": "Current canonical still rejects active drainage and active root extraction in the homogeneous bottom_mode=5 production groundwater owner before owner-state allocation. HYDRO-MEMORY ACC02-F1/F2 and DYN01 are not counterexamples: they are research-only qualifications without production/reference source change; F1/F2 keep drainage inactive and DYN01 has no live MODFLOW. No admitted workunit materializes authentic Hupsel active root plus drainage under prescribed-head mode 5. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
   "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
   "post_relevant_production_live_delta": {
     "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-    "head": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+    "head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
     "changed_scope": [
       "docs/science/F-ROMV2_*",
       "integration/f-rom/**",
@@ -162,7 +162,7 @@
       "restart_state": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
       "restricted_surface_evaporation": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
     },
-    "reason": "HYDRO-MEMORY ACC02-F1 adds live prescribed-root research coupling evidence without production/reference mutation. Its support bridge has root extraction active and drainage response inactive; the production bootstrap remains unchanged and rejects active root extraction and drainage before owner-state allocation."
+    "reason": "HYDRO-MEMORY ACC02-F1/F2 and DYN01 add research evidence without production/reference mutation. F1/F2 keep drainage response inactive; DYN01 is standalone forcing/Feddes composition with no live MODFLOW. The production bootstrap remains unchanged and rejects active root extraction and drainage before owner-state allocation."
   },
   "later_research_authority": {
     "HYDRO_MEMORY_ACC02_F1": {
@@ -178,6 +178,37 @@
       "root_extraction_active": true,
       "drainage_response_active": false,
       "stage0_authorized": false,
+      "mode5_production_owner_widened": false,
+      "e7_effect": "NONE"
+    },
+    "HYDRO_MEMORY_ACC02_F2": {
+      "canonical_merge": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+      "result_path": "integration/research/HYDRO_MEMORY_ACC02_F2_RESULT.json",
+      "result_blob": "757760b6d89c0c48583b9b92a10ea5eb07520772",
+      "preregistration_path": "integration/research/HYDRO_MEMORY_ACC02_F2_PREREGISTRATION.json",
+      "preregistration_blob": "c513fa4c4af275b214c5b7ba97c3d5fff2206dae",
+      "support_bridge": "tests/research/support/mod_hydro_memory_acc02_f2_bridge.f90",
+      "support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c",
+      "decision": "ACC02_F2_PASS_FOUR_CONSECUTIVE_LIVE_ROOT_ACTIVE_WINDOWS",
+      "production_source_change": false,
+      "reference_source_change": false,
+      "root_extraction_active": true,
+      "drainage_response_active": false,
+      "stage0_authorized": false,
+      "mode5_production_owner_widened": false,
+      "e7_effect": "NONE"
+    },
+    "HYDRO_MEMORY_DYN01": {
+      "canonical_head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+      "result_path": "integration/research/HYDRO_MEMORY_DYN01_RESULT.json",
+      "result_blob": "9b67737a416fb1b7806695a18fc57fb06ea2adaa",
+      "preregistration_path": "integration/research/HYDRO_MEMORY_DYN01_PREREGISTRATION.json",
+      "preregistration_blob": "387a7ef6f2303aaf80a69fe10e3f4904811e83df",
+      "decision": "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION",
+      "production_source_change": false,
+      "reference_source_change": false,
+      "live_modflow": false,
+      "stage0_scientific_result": false,
       "mode5_production_owner_widened": false,
       "e7_effect": "NONE"
     }
