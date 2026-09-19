@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.num_unc.p0b0.locator_result.v1",
+  "work_unit": "NUM-UNC-P0B0",
+  "date": "2026-09-19",
+  "workflow_run_id": 35428092861,
+  "output_sha256": "b3e3383f102e5601e03587be3004af143bf72e33d8fa6703d4be50a1eeb2d470",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "N1_executed": false,
+  "h0_cm": -29.793709016906497,
+  "neutral_hbot_cm": -24.793709016906497,
+  "dt_day": 0.0064,
+  "search": [
+    {
+      "delta_h_cm": -100,
+      "hbot_cm": -124.79370901690649,
+      "class": "NET_DRAINAGE",
+      "Q_dry_cm": -1.0398477100863366,
+      "valid": true
+    },
+    {
+      "delta_h_cm": -50,
+      "hbot_cm": -74.79370901690649,
+      "class": "NET_DRAINAGE",
+      "Q_dry_cm": -0.9289573901444276,
+      "valid": true
+    },
+    {
+      "delta_h_cm": -25,
+      "hbot_cm": -49.7937090169065,
+      "class": "NET_DRAINAGE",
+      "Q_dry_cm": -0.8003877279805656,
+      "valid": true
+    },
+    {
+      "delta_h_cm": 0,
+      "hbot_cm": -24.793709016906497,
+      "class": "NET_DRAINAGE",
+      "Q_dry_cm": -0.5304465614375239,
+      "valid": true
+    },
+    {
+      "delta_h_cm": 25,
+      "hbot_cm": 0.2062909830935027,
+      "class": "NET_DRAINAGE",
+      "Q_dry_cm": -0.014528618516765611,
+      "valid": true
+    }
+  ],
+  "max_bookkeeping_balance_residual_cm": 0,
+  "status": "NO_TRANSITION_IN_DECLARED_ENVELOPE",
+  "B1_authorized": false,
+  "envelope_expanded": false,
+  "interpretation": "The preregistered B01 forcing and prescribed-head envelope did not cross from net drainage to net capillary support during the dry phase. Per preregistration the head envelope is not expanded, so no N0-N1 inference test is performed for this construction.",
+  "claim_ceiling": "Negative locator result only."
+}
