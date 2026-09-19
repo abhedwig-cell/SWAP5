@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.lare.bc2.b5.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B5",
+  "phase": "PREREGISTERED_BEFORE_MASS_CONSISTENT_LINEAR_PROFILE_QH_DIAGNOSTIC",
+  "purpose": "Test whether the near-water-table gradient information identified by BC2-B4 can be recovered from the existing single moving-layer storage state and geometry, without adding a state variable or fitting a boundary coefficient.",
+  "predecessors": {
+    "B3": "integration/f-rom/LARE_BC2_B3_RESULT.json",
+    "required_B3_decision": "BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR",
+    "B4": "integration/f-rom/LARE_BC2_B4_RESULT.json",
+    "required_B4_decision": "BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED"
+  },
+  "hypothesis": "The main qH defect is nonlinear averaging: psi(theta_bar) is not the boundary-relevant gradient. A one-parameter linear suction profile whose integral water storage exactly equals Wm may recover a physically meaningful boundary gradient from Wm and L alone.",
+  "state_information": {
+    "added_state_dimension": 0,
+    "inputs": [
+      "moving unsaturated storage Wm",
+      "moving layer thickness L=H-90",
+      "frozen Mualem-Van Genuchten constitutive parameters"
+    ],
+    "no_local_full_order_head_used_by_candidate": true
+  },
+  "profile_reconstruction": {
+    "coordinate": "x=H-z, x=0 at water table and x=L at the 90-cm anchor",
+    "suction_profile": "psi(x)=a*x with a>=0",
+    "storage_constraint": "Wm = integral_0^L theta[psi=a*x] dx",
+    "slope_solution": "unique monotone root for a, solved by deterministic bisection with expanding nonnegative upper bracket",
+    "boundary_flux": "qH_LINEAR_STORAGE = Ks*(1-a)",
+    "hydrostatic_property": "For exact hydrostatic storage Wm=integral theta(x) dx, a=1 and qH=0 exactly up to quadrature/root tolerance.",
+    "no_fit": true
+  },
+  "numerical_authority": {
+    "primary_storage_quadrature": "64-point Gauss-Legendre",
+    "crosscheck_quadrature": "128-point Gauss-Legendre",
+    "root_storage_residual_gate_cm": 1e-10,
+    "hydrostatic_slope_residual_gate": 1e-10,
+    "primary_vs_crosscheck_qH_gate_cm_per_day": 1e-8,
+    "no_clipping": true,
+    "outside_domain_if_no_nonnegative_root": true
+  },
+  "reference_evaluation": {
+    "source": "qualified BC2-A2 accepted projected Wm,H states",
+    "time_alignment": "trapezoidal average of endpoint candidate qH versus interval-average accepted Reference qH",
+    "strata": [
+      "HOLD",
+      "WATER_TABLE_RISING",
+      "WATER_TABLE_FALLING",
+      "each frozen history"
+    ],
+    "comparators": [
+      "MOVING_LAYER_AVERAGE standard qH closure",
+      "POINT_2_5CM full-order local-information diagnostic from BC2-B4, reported only as diagnostic context"
+    ]
+  },
+  "metrics": [
+    "bias",
+    "mean absolute error",
+    "RMS error",
+    "maximum absolute error",
+    "sign mismatch count",
+    "Pearson correlation",
+    "reconstructed slope a distribution",
+    "qH numerical quadrature/root floor"
+  ],
+  "adjudication": {
+    "support_rule": "The storage-consistent linear-profile closure receives operator support only if RMS and mean-absolute qH error are both lower than MOVING_LAYER_AVERAGE and sign-mismatch count is no greater in both WATER_TABLE_RISING and WATER_TABLE_FALLING strata, while HOLD is noninferior.",
+    "local_information_gap_rule": "Report how much error remains relative to the frozen POINT_2_5CM diagnostic; no requirement to match it is imposed.",
+    "valid_outcomes": [
+      "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_SUPPORTED",
+      "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_DIRECTION_DEPENDENT",
+      "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_NOT_SUPPORTED",
+      "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_BLOCKED"
+    ],
+    "propagated_dynamics_authorized": false
+  },
+  "firewalls": [
+    "NO_ADDED_STATE",
+    "NO_FITTED_PARAMETER",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_POST_RESPONSE_PROFILE_SHAPE_CHANGE",
+    "NO_CONDUCTIVITY_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
