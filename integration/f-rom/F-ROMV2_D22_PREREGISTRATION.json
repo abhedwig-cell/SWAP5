@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.f-romv2-d22.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D22",
+  "title": "Native rainfall-ponding-runoff threshold-response frontier",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "435fee071f4045cea217b1cc0cef07c4d8c20427",
+  "purpose": "Quantify the D21 native surface-threshold displacement over the already frozen rainfall ladder and determine whether FMC is competitive with the existing R2 physical-reduction comparator on fast surface-boundary response, without retuning thresholds or requiring matched regime labels.",
+  "scientific_role": {
+    "class": "DEVELOPMENT_NATIVE_SURFACE_THRESHOLD_RESPONSE_COMPARATOR",
+    "Richards_trajectory_test": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D21_decision": "D21_MATCHED_RAIN_PONDING_RUNOFF_BOUNDARY_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+    "D21_threshold_mismatch": "At 2 Ksat SWAP R16 dynamic-top is ponded without runoff while full FMC one-step accounting already produces positive runoff.",
+    "D21_retuning_authorized": false,
+    "D20_FMC_candidacy_reclassified": false
+  },
+  "common_context": {
+    "material": "B01",
+    "initial_profile": "D16 D14_I_DEEP exact finite-volume state",
+    "process_step_seconds": 10,
+    "rainfall_factor_ladder_Ksat": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "ponding_max_cm": 0.0036140064814814818,
+    "runoff_resistance_day": 0.001,
+    "runoff_exponent": 1,
+    "potential_evaporation_cm_per_day": 0,
+    "irrigation_snowmelt_runon_cm_per_day": 0,
+    "bottom_boundary": "not evaluated; this is a top-boundary response function, not a Richards trajectory",
+    "root_ET_drainage_groundwater": "absent"
+  },
+  "candidates": {
+    "R16": {
+      "class": "fuller-grid surface-boundary reference",
+      "geometry": "16 x 10 cm",
+      "top_state": "exact 0-10 cm average of D16 I_DEEP profile",
+      "boundary_model": "current-canonical evaluate_b110_dynamic_top_boundary"
+    },
+    "R2": {
+      "class": "existing physical-reduction comparator",
+      "geometry": "2 x 80 cm",
+      "top_state": "exact 0-80 cm average of the same D16 I_DEEP profile",
+      "boundary_model": "same current-canonical evaluate_b110_dynamic_top_boundary"
+    },
+    "FMC": {
+      "class": "finite-moisture-content candidate",
+      "state": "D16 I_DEEP connected fronts; zero initial surface store; no slugs or groundwater front",
+      "infiltration": "D14/D16 Eq.18 connected-front kinematics with h_p=committed initial surface store=0",
+      "allocation": "D15 left-to-right finite-volume allocation over existing fronts",
+      "relaxation": "D14 conservative relaxation",
+      "residual_surface_water": "D21 frozen linear surface-reservoir law"
+    }
+  },
+  "response_outputs_per_factor": [
+    "native regime class: FLUX_NO_PONDING / PONDED_NO_RUNOFF / ACTIVE_RUNOFF",
+    "infiltration depth over 10 s",
+    "surface-store depth",
+    "runoff depth"
+  ],
+  "threshold_metrics": {
+    "ponding_onset_factor": "lowest frozen ladder factor with surface store > 0",
+    "runoff_onset_factor": "lowest frozen ladder factor with runoff > 0",
+    "onset_distance_to_R16": "absolute log2(candidate onset factor / R16 onset factor)",
+    "regime_mismatch_count": "number of seven ladder factors whose native regime differs from R16"
+  },
+  "curve_metrics": {
+    "factors": "all seven frozen factors with equal weight",
+    "infiltration_RMSE_cm": "candidate minus R16",
+    "surface_store_RMSE_cm": "candidate minus R16",
+    "runoff_RMSE_cm": "candidate minus R16"
+  },
+  "decision_logic": {
+    "positive": "FMC_NATIVE_SURFACE_THRESHOLD_RESPONSE_COMPETITIVE_WITH_R2",
+    "negative": "FMC_NATIVE_SURFACE_THRESHOLD_RESPONSE_NOT_COMPETITIVE_WITH_R2",
+    "all_required": [
+      "FMC ponding-onset log2 distance to R16 <= R2 distance",
+      "FMC runoff-onset log2 distance to R16 <= R2 distance",
+      "FMC regime-mismatch count <= R2",
+      "FMC infiltration-depth RMSE <= R2",
+      "FMC surface-store RMSE <= R2",
+      "FMC runoff-depth RMSE <= R2"
+    ],
+    "no_weighted_score": true,
+    "no_percentage_thresholds": true,
+    "no_application_acceptance": true
+  },
+  "interpretation_boundary": {
+    "if_positive": "Fast surface-threshold research candidacy may be retained and a separately preregistered short accepted-trajectory experiment may be considered.",
+    "if_negative": "Fast rainfall/ponding/runoff threshold candidacy is not retained relative to R2. Do not retune the surface model; preserve FMC candidacy only for already supported non-threshold purposes.",
+    "neither_outcome": "Neither outcome authorizes production ROM, application acceptance, formal runtime claims, ET/root physics or groundwater coupling."
+  },
+  "firewalls": [
+    "NO_RAINFALL_LADDER_RETUNING",
+    "NO_PONDING_MAX_RETUNING",
+    "NO_RUNOFF_RESISTANCE_RETUNING",
+    "NO_FMC_EQ18_RETUNING",
+    "NO_BIN_OR_PROCESS_STEP_RETUNING",
+    "NO_MATCHED_LABEL_SEARCH",
+    "NO_RICHARDS_TRAJECTORY_GENERATION",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
