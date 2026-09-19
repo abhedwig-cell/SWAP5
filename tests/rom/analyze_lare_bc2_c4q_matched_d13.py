@@ -15,6 +15,7 @@ HERE=pathlib.Path(__file__).resolve().parent
 def load_module(name,filename):
     spec=importlib.util.spec_from_file_location(name,HERE/filename)
     mod=importlib.util.module_from_spec(spec)
+    sys.modules[name]=mod
     spec.loader.exec_module(mod)
     return mod
 
