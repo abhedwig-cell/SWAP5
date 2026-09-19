@@ -145,7 +145,7 @@ contains
     type(fmr_template_t) :: template, bad_template
     type(fmr_b110_physical_parameters_t) :: parameters
     type(kernel_committed_state_t) :: committed, direct_committed
-    type(kernel_committed_state_t), allocatable :: states(:), restored_states(:)
+    type(kernel_committed_state_t), allocatable :: states(:), restored_states(:), mismatch_states(:)
     type(kernel_checkpoint_t) :: checkpoint, direct_checkpoint
     type(kernel_candidate_state_t) :: full_candidate, retry_candidate, direct_candidate
     type(kernel_result_t) :: full_result, retry_result, direct_result
@@ -216,7 +216,7 @@ contains
     call snapshot_ldwet_committed(committed, ldwet_committed)
     call require(same_bits(ldwet_committed, ldwet_retry), 'accepted candidate LDWET committed')
 
-    allocate(columns(1), templates(1), states(1), restored_states(1), bad_templates(1))
+    allocate(columns(1), templates(1), states(1), restored_states(1), mismatch_states(1), bad_templates(1))
     columns(1) = column
     templates(1) = template
     states(1) = committed
@@ -232,8 +232,7 @@ contains
 
     bad_templates = templates
     bad_templates(1)%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_BASE
-    restored_states = kernel_committed_state_t()
-    call fmr_restore_committed_restart(bundle, PARAMETER_SET_IDENTITY, columns, bad_templates, restored_states, restored, &
+    call fmr_restore_committed_restart(bundle, PARAMETER_SET_IDENTITY, columns, bad_templates, mismatch_states, restored, &
          restart_status)
     call require(.not. restored .and. restart_status == FMR_RESTART_TEMPLATE_MISMATCH, &
          'Black to BASE restart layout mismatch rejected')
