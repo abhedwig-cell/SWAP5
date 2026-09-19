@@ -1,0 +1,180 @@
+{
+  "schema": "swap5.lare.dyn0a.mech3a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH3A",
+  "phase": "PREREGISTERED_BEFORE_NONLINEAR_PENETRATION_SCALE_COMPARISON",
+  "purpose": "Discovery comparison of physically motivated nonlinear hydraulic penetration scales after blind MECH2B falsified a universal initial-state D0=K0/C0 scaling.",
+  "authority": {
+    "mech1_result": "integration/f-rom/LARE_DYN0A_MECH1_RESULT.json",
+    "mech2a_result": "integration/f-rom/LARE_DYN0A_MECH2A_RESULT.json",
+    "mech2b_result": "integration/f-rom/LARE_DYN0A_MECH2B_RESULT.json",
+    "mech2b_decision": "SCALING_TRANSFER_PARTIAL",
+    "literature": [
+      {
+        "citation": "Parlange (1975), sorptivity expressed through nonlinear soil-water diffusivity",
+        "role": "physical basis for a path-integrated diffusivity scale"
+      },
+      {
+        "citation": "Vrugt & Gao (2022), Vadose Zone Journal, DOI 10.1002/vzj2.20167",
+        "role": "sorptivity as a hydraulic super-parameter dependent on constitutive functions and initial moisture"
+      },
+      {
+        "citation": "Moret-Fernandez et al. (2023), HESS 27, 895-915",
+        "role": "diffusivity-form sorptivity S_D(theta0,theta1) with D(theta)=K(theta) dh/dtheta"
+      }
+    ]
+  },
+  "discovery_only": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "warning": "Both materials and all peak locations have already been exposed. MECH3A can select a candidate mechanism but cannot establish cross-material generality.",
+    "observed_cases": [
+      {
+        "material": "B01",
+        "se0": 0.65,
+        "forcing": "WET",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B01",
+        "se0": 0.65,
+        "forcing": "DRY",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B01",
+        "se0": 0.85,
+        "forcing": "WET",
+        "peak_L_cm": 50
+      },
+      {
+        "material": "B01",
+        "se0": 0.85,
+        "forcing": "DRY",
+        "peak_L_cm": 40
+      },
+      {
+        "material": "B01",
+        "se0": 0.95,
+        "forcing": "DRY",
+        "peak_L_cm": 80
+      },
+      {
+        "material": "B14",
+        "se0": 0.65,
+        "forcing": "WET",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B14",
+        "se0": 0.65,
+        "forcing": "DRY",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B14",
+        "se0": 0.85,
+        "forcing": "WET",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B14",
+        "se0": 0.85,
+        "forcing": "DRY",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B14",
+        "se0": 0.95,
+        "forcing": "WET",
+        "peak_L_cm": 20
+      },
+      {
+        "material": "B14",
+        "se0": 0.95,
+        "forcing": "DRY",
+        "peak_L_cm": 20
+      }
+    ]
+  },
+  "constitutive_authority": {
+    "model": "Mualem-van Genuchten with m=1-1/n and material-specific pore-connectivity lambda",
+    "B01": {
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "Ksat_cm_per_day": 31.225016,
+      "lambda": 0.98087
+    },
+    "B14": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "lambda": -0.334926
+    },
+    "hydraulic_diffusivity": "D(theta)=K(theta)*dh/dtheta, positive on the unsaturated branch"
+  },
+  "pulse": {
+    "duration_day": 0.2048,
+    "wet_flux_multiplier": 1.5,
+    "dry_flux_multiplier": 0.5,
+    "target_state_rule": "For each case solve the monotone unsaturated MvG relation K(theta_f)=r*K(theta_0), with r=1.5 for WET and r=0.5 for DRY. This is a forcing-equivalent unit-gradient state used only to define a constitutive path; it is not asserted to be the actual boundary water content."
+  },
+  "candidate_scales": [
+    {
+      "id": "LOCAL_D0",
+      "formula": "ell=sqrt(D(theta0)*T)",
+      "role": "falsified MECH2A/2B baseline"
+    },
+    {
+      "id": "PATH_ARITHMETIC_D",
+      "formula": "D_A = |integral_theta0^thetaf D(theta)dtheta|/|thetaf-theta0|; ell=sqrt(D_A*T)",
+      "role": "matric-flux-potential / arithmetic path diffusivity scale"
+    },
+    {
+      "id": "PATH_GEOMETRIC_D",
+      "formula": "D_G = exp(|integral_theta0^thetaf ln(D(theta))dtheta|/|thetaf-theta0|); ell=sqrt(D_G*T)",
+      "role": "path scale less dominated by the largest diffusivity"
+    },
+    {
+      "id": "PARLANGE_SD",
+      "formula": "S_D^2 = |integral_theta0^thetaf (thetaf+theta-2*theta0) D(theta)dtheta|; ell=S_D*sqrt(T)/|thetaf-theta0|",
+      "role": "sorptivity/desorptivity-like nonlinear path scale using the published Parlange diffusivity weighting"
+    }
+  ],
+  "evaluation": {
+    "per_case": "lambda_candidate=observed_peak_L_cm/ell_candidate",
+    "global_constant_allowed": "For scale comparison only, each candidate may have one global multiplicative constant c equal to the geometric mean of lambda over all 11 discovery cases. No material-, saturation-, or forcing-specific constants are allowed.",
+    "metrics": [
+      "pooled standard deviation of ln(lambda)",
+      "maximum absolute centered ln(lambda) residual",
+      "max/min lambda ratio",
+      "absolute difference between B01 and B14 mean ln(lambda)",
+      "absolute difference between WET and DRY mean ln(lambda)"
+    ],
+    "selection_rule": "Among finite candidates, rank lexicographically by pooled ln(lambda) standard deviation, then material mean-log shift, then maximum absolute centered log residual.",
+    "eligibility_for_blind_MECH3B": "The selected nonlocal candidate must improve on LOCAL_D0 in both pooled log dispersion and absolute B01-vs-B14 mean-log shift. Otherwise close NO_SIMPLE_NONLINEAR_SCALE and do not promote a scale to blind validation."
+  },
+  "blind_validation_firewall": {
+    "next_materials": "Not chosen from MECH3A outcomes. A separate MECH3B preregistration must freeze external materials and the selected formula before any new peak-location trajectory is generated.",
+    "no_B01_or_B14_refit": true,
+    "no_parameter_added_to_selected_scale": true
+  },
+  "firewalls": [
+    "NO_NEW_RICHARDS_TRAJECTORY_IN_MECH3A",
+    "NO_B01_B14_GENERALITY_CLAIM",
+    "NO_CASE_EXCLUSION_AFTER_SCALE_VALUES_ARE_SEEN",
+    "NO_MATERIAL_SPECIFIC_MULTIPLIER",
+    "NO_SATURATION_SPECIFIC_MULTIPLIER",
+    "NO_FORCING_SPECIFIC_MULTIPLIER",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_LARE_CLOSURE_CHANGE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
