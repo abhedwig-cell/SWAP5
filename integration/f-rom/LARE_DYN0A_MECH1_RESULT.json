@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.lare.dyn0a.mech1.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH1",
+  "decision": "GRADIENT_RECONSTRUCTION_DOMINANT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH1_PREREGISTRATION.json",
+    "source_authority": "integration/f-rom/LARE_DYN0A_C1_SOURCE_AUTHORITY.json",
+    "workflow_run": 35447941251,
+    "artifact_id": 10586186598,
+    "artifact_digest": "sha256:6f4dab5e415e38a2209ad9c123ac49479b5e992a785c3a152c7957138c1575df",
+    "executed_head": "32f9478d7426621aad7c94511521583fc0afd1fb",
+    "conclusion": "success"
+  },
+  "high_state_dynamic_pooled": {
+    "D3": {
+      "rms_total_flux_error_cm_per_day": 0.4523278014489869,
+      "max_abs_total_flux_error_cm_per_day": 2.9219646195368796,
+      "component_rms_cm_per_day": {
+        "constitutive_averaging": 0.0033731144080649082,
+        "K_localization": 0.112185765025855,
+        "gradient_reconstruction": 0.3384748956260475
+      }
+    },
+    "D4": {
+      "rms_total_flux_error_cm_per_day": 0.16860927158981345,
+      "max_abs_total_flux_error_cm_per_day": 1.4147938305151513,
+      "component_rms_cm_per_day": {
+        "constitutive_averaging": 0.0027832565015254006,
+        "K_localization": 0.040601584249314995,
+        "gradient_reconstruction": 0.1267133568099127
+      }
+    }
+  },
+  "critical_case": {
+    "id": "S3_B1_F3",
+    "se0": 0.95,
+    "forcing": "DRY",
+    "D3_interface_140_cm": {
+      "rms_total_flux_error_cm_per_day": 1.2768395726582615,
+      "component_rms_cm_per_day": {
+        "constitutive_averaging": 0.009492821995688353,
+        "K_localization": 0.31672603855904635,
+        "gradient_reconstruction": 0.955370110335938
+      },
+      "max_abs_total_flux_error_cm_per_day": 2.9219646195368796
+    },
+    "D4_interface_130_cm": {
+      "rms_total_flux_error_cm_per_day": 0.5763908764574022,
+      "component_rms_cm_per_day": {
+        "constitutive_averaging": 0.009582882637177624,
+        "K_localization": 0.13883551016213497,
+        "gradient_reconstruction": 0.4329665049755705
+      },
+      "max_abs_total_flux_error_cm_per_day": 1.4147938305151513
+    },
+    "D4_shared_interfaces_140_150": "projected closure error at roundoff because both sides coincide with the 10-cm fine cells under the homogeneous B01/swkmean=1 diagnostic"
+  },
+  "interpretation": [
+    "The principal standard-LARE operator error is hydraulic-gradient reconstruction from layer means, not nonlinear constitutive averaging.",
+    "Conductivity localization is secondary but non-negligible in the high-state cohort.",
+    "D4 improves D3 by moving the coarse-to-local interface from 140 cm to 130 cm; the dominant gradient error moves with that interface.",
+    "This identifies adjacency of a long storage layer to an active hydraulic interface as the mechanistic target.",
+    "No closure repair is authorized by MECH1 itself."
+  ],
+  "next_authority": "Preregister a nested lower-interface resolution ladder before designing a new closure, to measure how quickly standard-LARE fidelity improves as the long-layer interface is moved upward and how many states are required.",
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
