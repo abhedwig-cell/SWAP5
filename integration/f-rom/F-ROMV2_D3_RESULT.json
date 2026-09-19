@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.f-romv2-d3.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D3",
+  "decision": "REPRESENTATION_AWARE_PROSPECTIVE_POLICY_NO_GO",
+  "adjudication": "NUMERICAL_POLICY_NO_GO_NOT_HYDROLOGICAL_INVALIDITY",
+  "execution": {
+    "workflow_run": 35444680718,
+    "workflow_job": 105901462241,
+    "executed_head": "53713dcb3ccafc78ee0e4ae771e17d0b2555f885",
+    "execution_pull_request": 420,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10584293128,
+    "artifact_digest": "sha256:71350b5e2066f5cf8cf1efc7ac191c998648483b7224ae484efc0ba2181d3c44",
+    "workflow_conclusion": "failure",
+    "failure_stage": "POST_CENSUS_ASSERTION_AFTER_ALL_GEOMETRIES_CLASSIFIED_POLICY_NO_GO",
+    "geometry_status_sha256": "1d0374d4d91315f7fd9533dfbfe10f31133ff41a06615d65e0ef2ec987390367"
+  },
+  "frozen_policy": {
+    "id": "STRICT_FIRST_PROSPECTIVE_REPRESENTATION_AWARE_REATTEMPT",
+    "source": "integration/f-rom/F-ROMV2_D3_PREREGISTRATION.json",
+    "preregistration_blob": "76b1e90c915ebca6c703bd4745922c7c30e7a3a8",
+    "local_integrated_bound": "max over cells of 0.5*(spacing(theta_s)+spacing(theta_base_i))*dz_i",
+    "total_integrated_bound": "sum over cells of the same prospective cell representation bound",
+    "D2_residual_fitting_used": false,
+    "post_result_retuning_used": false,
+    "production_reference_policy_changed": false
+  },
+  "geometry_outcomes": {
+    "R16": {
+      "status": "REPRESENTATION_AWARE_POLICY_NO_GO",
+      "first_terminal_reject": {
+        "t0_day": 0.0296,
+        "t1_day": 0.0304,
+        "bottom_mode": 5,
+        "classification": "RETRY_LOCAL_BALANCE",
+        "balance_flags": 1,
+        "head_flags": 0,
+        "max_local_residual_rate_cm_per_day": 1.0320633236915455e-12,
+        "local_integrated_residual_cm": 8.256506589532386e-16,
+        "prospective_local_rep_bound_cm": 5.551115123125783e-16,
+        "prospective_total_rep_bound_cm": 8.881784197001252e-15,
+        "absolute_total_residual_cm": 2.4350299554498697e-15,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking_attempts": 88
+      }
+    },
+    "R8": {
+      "status": "REPRESENTATION_AWARE_POLICY_NO_GO",
+      "first_terminal_reject": {
+        "t0_day": 0.02,
+        "t1_day": 0.0208,
+        "bottom_mode": 2,
+        "classification": "RETRY_LOCAL_BALANCE",
+        "balance_flags": 4,
+        "head_flags": 0,
+        "max_local_residual_rate_cm_per_day": 1.5374368445009168e-12,
+        "local_integrated_residual_cm": 1.2299494756007313e-15,
+        "prospective_local_rep_bound_cm": 1.1102230246251565e-15,
+        "prospective_total_rep_bound_cm": 8.881784197001252e-15,
+        "absolute_total_residual_cm": 1.6051160400820635e-15,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking_attempts": 98
+      }
+    },
+    "R4": {
+      "status": "REPRESENTATION_AWARE_POLICY_NO_GO",
+      "first_terminal_reject": {
+        "t0_day": 0.0328,
+        "t1_day": 0.0336,
+        "bottom_mode": 2,
+        "classification": "RETRY_LOCAL_BALANCE",
+        "balance_flags": 2,
+        "head_flags": 0,
+        "max_local_residual_rate_cm_per_day": 3.4732217102373397e-12,
+        "local_integrated_residual_cm": 2.778577368189855e-15,
+        "prospective_local_rep_bound_cm": 2.220446049250313e-15,
+        "prospective_total_rep_bound_cm": 8.881784197001252e-15,
+        "absolute_total_residual_cm": 6.14974737800363e-16,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking_attempts": 104
+      }
+    },
+    "R2": {
+      "status": "REPRESENTATION_AWARE_POLICY_NO_GO",
+      "first_terminal_reject": {
+        "t0_day": 0.0304,
+        "t1_day": 0.0312,
+        "bottom_mode": 2,
+        "classification": "RETRY_LOCAL_BALANCE",
+        "balance_flags": 2,
+        "head_flags": 0,
+        "max_local_residual_rate_cm_per_day": 5.781597423037965e-12,
+        "local_integrated_residual_cm": 4.6252779384303645e-15,
+        "prospective_local_rep_bound_cm": 4.440892098500626e-15,
+        "prospective_total_rep_bound_cm": 8.881784197001252e-15,
+        "absolute_total_residual_cm": 2.835776058418555e-15,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking_attempts": 114
+      }
+    }
+  },
+  "scientific_interpretation": {
+    "key_result": "The preregistered prospective floating-representation bound is not a usable general reduced-model numerical authority because it rejects even R16.",
+    "hydrological_invalidity_established": false,
+    "R8_D2_hydrological_evidence_reclassified": false,
+    "R4_R2_hydrological_evidence_established": false,
+    "hard_mass_context": "All terminal total integrated residuals are orders of magnitude below the separately frozen 1e-12 cm accepted-transaction mass gate.",
+    "next_policy_constraint": "Any successor numerical-integrity policy must be independently preregistered and may not widen D3 post hoc."
+  },
+  "next": [
+    "CLOSE_D3_AS_NUMERICAL_POLICY_NO_GO",
+    "PREREGISTER_A_SEPARATE_INTEGRATED_WATER_DEPTH_RESIDUAL_POLICY_ANCHORED_TO_EXISTING_HARD_MASS_GATE",
+    "DO_NOT_RETUNE_D3_PROSPECTIVE_REPRESENTATION_BOUNDS",
+    "CONTINUE_LAYERED_OR_QUASI_STEADY_PHYSICAL_REDUCTION_RESEARCH_IN_PARALLEL_ONLY_UNDER_SEPARATE_AUTHORITY"
+  ],
+  "application_acceptance": false,
+  "performance_claim": false,
+  "production_rom_authorized": false
+}
