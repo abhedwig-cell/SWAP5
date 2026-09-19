@@ -423,9 +423,10 @@
       "qualification_evidence": [
         "F-PM06 source-bound readiness",
         "PPA-WU04 workflow 35377826442 authority/independent PASS",
-        "PPA-WU04-A workflow 35438366101 job 105884808295 PASS at O0/O2"
+        "PPA-WU04-A workflow 35438366101 job 105884808295 PASS at O0/O2",
+        "PPA-WU04-A canonical merge 50e7d1dece5b75d0103459d5c118d03a2665eea3"
       ],
-      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "production_admission": "CANONICAL_ADMITTED_RESTRICTED",
       "production_reachable": "YES_RESTRICTED",
       "restrictions": [
         "Reference/serialized production route only; no RossFast composition claim",
@@ -449,7 +450,7 @@
       "id": "PPA-ET-REDU2",
       "subsystem": "surface evaporation",
       "capability": "SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
-      "classification": "E_PRESERVED_BUT_NOT_TYPED",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -461,33 +462,43 @@
       "swap5_implementation_authority": [
         "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
         "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
-        "integration/audits/PPA_WU04_STATUS.json"
+        "integration/audits/PPA_WU04B_PREREGISTRATION.json",
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/adapter/mod_ppa_wu04b_boesten_forcing_adapter.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/audits/PPA_WU04B_STATUS.json",
+        "docs/audits/PPA_WU04B_BOESTEN_EVAPORATION_ADMISSION.md"
       ],
-      "typed_input_config_authority": "Scientific/transaction contract frozen by PPA-WU04; no typed production state/config route exists yet.",
-      "state_ownership": "SWREDU=2 owns exactly the atomic SPEV/SAEV pair. The pair is option-specific accepted continuation state and may not be reconstructed from the hydraulic profile.",
-      "transaction_status": "Review authority frozen: SPEV/SAEV updates must be trial-local and atomic; rejected hydraulic trials leave both committed scalars unchanged; retries recompute from the same committed checkpoint.",
+      "typed_input_config_authority": "Restricted PPA-WU03 common-forcing result plus Boesten parameter COFRED, option-discriminated initial SPEV/SAEV pair, and the existing dynamic top-boundary hydraulic request.",
+      "state_ownership": "SWREDU=2 owns exactly the atomic SPEV/SAEV committed process continuation pair. Neither scalar is hydraulic storage or reconstructible from the instantaneous pressure-head profile.",
+      "transaction_status": "Qualified transactional composition: SPEV/SAEV are derived atomically from the same committed checkpoint at the actual trial dt; rejected/discarded candidates do not mutate the committed pair; accepted pair commits atomically with hydraulic state.",
       "qualification_evidence": [
         "F-PM06 source-bound readiness",
-        "PPA-WU04 workflow 35377826442 authority/independent PASS"
+        "PPA-WU04 workflow 35377826442 authority/independent PASS",
+        "PPA-WU04-B workflow 35439112147 job 105886744366 PASS at O0/O2"
       ],
-      "production_admission": "NONE_REVIEW_ONLY",
-      "production_reachable": "NO",
+      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "production_reachable": "YES_RESTRICTED",
       "restrictions": [
-        "SWREDU=2 equation not implemented in production",
-        "SPEV/SAEV must commit as one atomic pair with the accepted outer physical transaction",
-        "EMPREVA remains demand, not authoritative water-mass removal",
-        "Runtime option switching is not admitted by PPA-WU04"
+        "Reference/serialized production route only; no RossFast composition claim",
+        "COFRED must satisfy 0 < COFRED <= 1; legacy zero case is excluded because the exact inverse branch can divide by zero",
+        "No groundwater bottom_mode=5 Boesten composition",
+        "Snowmelt and runon are outside this first Boesten forcing slice",
+        "EMPREVA remains demand; accepted actual evaporation is owned by the hydraulic dynamic-top boundary",
+        "Runtime option switching is not admitted"
       ],
-      "scientific_risk": "MEDIUM equation/oracle qualification remains; state/restart/rollback architecture risk is bounded",
+      "scientific_risk": "LOW within the bounded COFRED>0 production envelope after exact equation, rollback, restart and mass-owner qualification",
       "use_relevance": "HIGH",
       "dependencies": [
-        "PPA-WU04-B implementation slice",
         "PPA-WU01 transaction owner",
         "PPA-WU03 forcing boundary",
+        "PPA-WU04-A admitted dynamic-top/reduction composition seam",
         "surface hydraulic evaporation owner",
-        "restart schema"
+        "generic committed restart"
       ],
-      "priority_band": "P2"
+      "priority_band": "P1"
     },
     {
       "id": "PPA-EVAP-ACT",
@@ -1985,6 +1996,24 @@
         "job": 105884808295
       },
       "effect": "Adds restricted typed SWREDU=1 Black production reachability with transactional LDWET, exact restart, retry-local recomputation and unchanged hydraulic ownership of actual evaporation. SWREDU=2 and SWINTER=1/2 remain open."
+    },
+    {
+      "workunit": "PPA-WU04-A",
+      "state": "CANONICAL_ADMITTED_RESTRICTED",
+      "pull_request": 395,
+      "canonical_merge_commit": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+      "effect": "SWREDU=1 Black is canonically available in the restricted production envelope."
+    },
+    {
+      "workunit": "PPA-WU04-B",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "pull_request": 404,
+      "qualified_head": "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+      "qualification": {
+        "run": 35439112147,
+        "job": 105886744366
+      },
+      "effect": "Adds restricted typed SWREDU=2 Boesten-Stroosnijder production reachability for 0<COFRED<=1 with atomic transactional SPEV/SAEV and unchanged hydraulic ownership of actual evaporation."
     }
   ]
 }
