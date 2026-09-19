@@ -206,5 +206,20 @@
       "D4": "U4"
     },
     "scientific_effect": "None on candidate selection, frozen pair selection, probes or thresholds; no formal P2 future response has been executed."
+  },
+  "formal_p1_authority_binding": {
+    "bound_before_first_formal_P2_response_execution": true,
+    "result_path": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+    "result_blob_sha": "24ba05a72c1d188c148102f51af7c759c1743f3b",
+    "result_commit": "d0aece4e4e0cb255e6c191f1e9255ca3fa29903f",
+    "decision": "LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN",
+    "exact_fast_workflow_run": 35445455039,
+    "exact_fast_artifact_id": 10585158155,
+    "exact_fast_artifact_digest": "sha256:809e801495404cb817c3256ad4eaa8db23e8424d248cfe455d848ba1666ea0c7",
+    "independent_crosscheck_workflow_run": 35445244523,
+    "independent_crosscheck_artifact_id": 10585372587,
+    "independent_crosscheck_artifact_digest": "sha256:05400ea99b02ac704b02486f394a70cd3d9552c4d422cd9e3a54ab1fe26ca114",
+    "reconciliation": "formal selected partitions and all collision-count vectors match the independent exact KD-tree implementation",
+    "scientific_effect": "Provenance binding only. Candidate rules, probes, horizons, metrics and acceptance semantics are unchanged."
   }
 }
