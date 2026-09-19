@@ -1,56 +1,140 @@
 {
-  "schema": "swap5.lare.rs1.status.v1",
+  "schema": "swap5.lare.rs1.status.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-RS1",
   "branch": "work/f-rom-lare-rs1",
-  "head": "23d2210c112716d5a26bcd98429ba0897592bb73",
-  "canonical_start": "9bb73821bb78a04c759b763746b50a3f777cd416",
-  "state": "RS1_PILOT_AND_OBSERVATION_TOOLING_QUALIFIED_HUPSEL_DAILY_LIBRARY_NOT_YET_EXECUTED",
-  "completed": {
-    "purpose_dependent_preregistration": true,
-    "historical_B01_B14_artifact_recovery": true,
-    "exhaustive_contiguous_partition_screen": true,
-    "partition_screen_replay_qualified": true,
-    "hupsel_candidate_grids_frozen_before_new_profile_response": true,
-    "hupsel_daily_output_preparation_tool": true,
-    "hupsel_conservative_vap_projector": true,
-    "hupsel_observation_tool_test": true,
-    "science_reconciliation_documented": true
-  },
-  "qualification": {
-    "partition_replay": {
-      "workflow_run": 35443794334,
-      "conclusion": "success"
+  "live_reconciliation": {
+    "date": "2026-09-19",
+    "observed_branch_head_before_status_repair": "1088b99837f0910f45499c1a7bc34dbe972c1ebd",
+    "observed_current_canonical": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+    "canonical_start_authority": "9bb73821bb78a04c759b763746b50a3f777cd416",
+    "merge_base_with_current_canonical": "9bb73821bb78a04c759b763746b50a3f777cd416",
+    "relation_to_current_canonical_before_repair": {
+      "status": "diverged",
+      "branch_ahead_by": 413,
+      "branch_behind_by": 169
     },
-    "observation_tools": {
-      "workflow_run": 35443933613,
-      "conclusion": "success"
+    "authority_rule": "Research evidence remains bound to the frozen canonical start unless a separate explicit requalification changes that authority. The current canonical is recorded for reconciliation only and does not silently replace the research basis."
+  },
+  "state": "RS1_GW_STATE_INFORMATION_CLOSED_P2C_RECONCILED_DYN0A_CLOSED_DOWNSTREAM_LARE_RESEARCH_CONTINUES",
+  "formal_gw_state_evidence": {
+    "p1": {
+      "result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+      "blob_sha": "24ba05a72c1d188c148102f51af7c759c1743f3b",
+      "decision": "LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN"
+    },
+    "p2": {
+      "result": "integration/f-rom/LARE_RS1_GW_P2_RESULT.json",
+      "blob_sha": "84c7b4a6b830859e950ae84d6c86afd1c7089a9d",
+      "decision": "LARE_RS1_GW_P2_PURPOSE_AMBIGUITY_MAPPED"
+    },
+    "p2c": {
+      "preregistration": "integration/f-rom/LARE_RS1_GW_P2C_PREREGISTRATION.json",
+      "analyzer": "tests/rom/analyze_lare_rs1_gw_p2c_common_cohort.py",
+      "workflow": ".github/workflows/f-rom-lare-rs1-gw-p2c.yml",
+      "result": "integration/f-rom/LARE_RS1_GW_P2C_RESULT.json",
+      "result_blob_sha": "4ac87662c4df69cf09ce6d620a6312739dd9e3ab",
+      "workflow_run": 35446071978,
+      "workflow_head": "6d0e79cc2515f7f3cf46479a43dac24f4fcb2714",
+      "artifact_id": 10584319433,
+      "artifact_digest": "sha256:7a274847f7a1af22d19d4b6f2b998679937a9e2a840934f4b833ba35c0eeb442",
+      "decision": "LARE_RS1_GW_P2C_COMMON_COHORT_AMBIGUITY_MAPPED",
+      "reproducibility_reconciliation": {
+        "preregistration_blob_unchanged_since_run": true,
+        "analyzer_blob_unchanged_since_run": true,
+        "workflow_blob_unchanged_since_run": true,
+        "p2_selection_blob_unchanged_since_run": true,
+        "p1_result_blob_unchanged_since_run": true,
+        "new_reference_solves_required": false
+      }
     }
   },
-  "key_result": {
-    "minimum_B01_zero_collision_dimension": 3,
-    "minimum_B14_zero_collision_dimension": 4,
-    "minimum_cross_material_zero_collision_dimension": 4,
-    "minimum_cross_material_partition_cm": [[0,10],[10,140],[140,150],[150,160]],
-    "interpretation": "retrospective pilot state-information result only; not predictive or application-level LARE qualification"
+  "p2c_common_cohort": {
+    "unique_states": 41,
+    "cross_history_pairs": 480,
+    "full_state_diagnostic_pairs": 477,
+    "full_state_near_identical_pairs": 3,
+    "population_probability_claim_authorized": false,
+    "absolute_application_acceptance_adjudicated": false,
+    "radius_1x_alias_pairs": {
+      "D2": 45,
+      "D3": 0,
+      "D4": 0,
+      "CONTROL_U4": 137,
+      "CONTROL_U8_Z8": 71,
+      "CONTROL_B01_B14_PILOT_R4": 0,
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": 0
+    },
+    "radius_2x": {
+      "D3": {
+        "alias_pairs": 58,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436
+      },
+      "D4": {
+        "alias_pairs": 58,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436
+      },
+      "CONTROL_U4": {
+        "alias_pairs": 201,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.04034696594209142,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 1.9646941384543481,
+        "terminal_flux_sign_mismatch_count": 56,
+        "reversal_sequence_mismatch_count": 104,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.044516999819508296
+      },
+      "CONTROL_U8_Z8": {
+        "alias_pairs": 139,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.021214725702876025,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 1.506414198368942,
+        "terminal_flux_sign_mismatch_count": 4,
+        "reversal_sequence_mismatch_count": 64,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.02257024008610431
+      }
+    }
   },
-  "hupsel_authority": {
-    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "exact_distribution_size_bytes": 8959314,
-    "period": "2002-01-01 through 2004-12-31",
+  "state_adjudication": {
+    "authority": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
+    "primary_minimum_state": "D3",
+    "D3_partition_cm": [[0, 140], [140, 150], [150, 160]],
+    "D4_role": "CLOSURE_RESOLUTION_CONTROL",
+    "D2_role": "AGGRESSIVE_PURPOSE_DEPENDENT_CHALLENGE",
+    "uniform_U4_U8_role": "STATE_PLACEMENT_CONTROLS_NOT_PRIMARY_SURVIVORS",
+    "interpretation": "D3 is the smallest demonstrated state-information survivor in the bounded B01 groundwater laboratory. D4 has no demonstrated predictive-state advantage there. This does not establish application acceptance or transferability to Hupsel."
+  },
+  "dynamics_follow_on": {
+    "preregistered_after_state_adjudication": true,
+    "closeout": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "status": "CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION",
+    "decision": "STANDARD_LARE_PHYSICALLY_COHERENT_AND_RESOLUTION_CONVERGENT_BUT_LOW_DIMENSION_NOT_BROADLY_QUALIFIED",
+    "scientific_boundary": "The state-information result and the closure/dynamics result answer different questions. D3 can retain sufficient bounded state information while standard LARE at D3 resolution still propagates that information poorly in some dynamic regimes.",
+    "application_acceptance_adjudicated": false,
+    "speed_claim_authorized": false
+  },
+  "historical_hupsel_checkpoint": {
     "profile_depth_cm": 200,
     "material_boundary_cm": 30,
     "drain_depth_cm": 80,
     "bottom_boundary": "ZERO_FLUX",
-    "exact_daily_profile_execution": "NOT_YET_EXECUTED",
-    "runtime_constraint": "The exact distribution is known to exist in the user's Library but raw-byte materialization is not authorized in this Project runtime; the official public 4.3.1 download requires registration. No non-authoritative substitute is used."
+    "note": "The earlier Hupsel checkpoint is retained as a distinct authority line. No B01/B14 or RS1-GW partition is transferred to Hupsel by this status reconciliation."
   },
-  "next_actions": [
-    "Execute the output-only daily Hupsel profile run against the exact distribution and require unchanged normalized result.bal/result.blc hashes.",
-    "Build the conservative H4/H6/H8/H10 profile library.",
-    "Perform prospective purpose-dependent collision selection and future-response probing.",
-    "Build RS1-GW separately because Hupsel zero-flux bottom is not a bottom-recharge authority.",
-    "Only then authorize comparison of standard LARE, EQ-LARE and coarse Richards on surviving fixed partitions."
+  "firewalls": [
+    "STATE_FIRST",
+    "PURPOSE_BEFORE_EQUIVALENCE",
+    "NO_UNIVERSAL_TOLERANCE",
+    "NO_CANDIDATE_SPECIFIC_P2_RANKING",
+    "NO_CLAIM_BEYOND_TESTED_APPLICATION_ENVELOPE",
+    "NO_PRODUCTION_ROM",
+    "NO_REFERENCE_RICHARDS_CHANGE",
+    "NO_ROSSFAST_CHANGE",
+    "NO_SPEED_CLAIM_BEFORE_FIDELITY"
   ],
   "production_source_changed": false,
   "production_rom_authorized": false
