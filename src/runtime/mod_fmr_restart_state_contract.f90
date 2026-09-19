@@ -5,9 +5,10 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
-       fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t
+       fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
+       fmr_b110_boesten_evaporation_state_t
   implicit none
   private
 
@@ -43,6 +44,18 @@ contains
         if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
         select type (state)
         type is (fmr_b110_black_evaporation_state_t)
+          matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) then
+        ! PPA-WU04-B persists SPEV/SAEV as one option-discriminated pair.
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_boesten_evaporation_state_t)
           matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
         class default
           matches = .false.

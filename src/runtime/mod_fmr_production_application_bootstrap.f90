@@ -6,11 +6,12 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
-       FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
-       fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state
-  use mod_restricted_surface_evaporation, only: black_evaporation_state_t
+       fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
+       fmr_new_b110_boesten_evaporation_committed_state
+  use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -54,6 +55,8 @@ module mod_fmr_production_application_bootstrap
     type(fmr_b110_physical_forcing_t) :: base_forcing
     type(fmr_b110_physical_state_t) :: initial_state
     real(real64) :: initial_black_ldwet = 0.0_real64
+    real(real64) :: initial_boesten_spev = 0.0_real64
+    real(real64) :: initial_boesten_saev = 0.0_real64
     type(groundwater_head_datum_t) :: groundwater_datum
     real(real64), allocatable :: initial_right_derivative(:)
   end type fmr_production_application_tile_config_t
@@ -104,6 +107,7 @@ contains
     integer :: i, local_status, n
     logical :: ok, groundwater_profile, standalone_profile, prescribed_qbot_profile
     type(black_evaporation_state_t) :: initial_black_state
+    type(boesten_evaporation_state_t) :: initial_boesten_state
 
     status = FMR_APP_BOOT_INVALID_CONFIG
     if (self%initialized) return
@@ -184,6 +188,11 @@ contains
           initial_black_state%ldwet = config%tiles(i)%initial_black_ldwet
           call fmr_new_b110_black_evaporation_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, initial_black_state, config%initial_time, ok)
+        else if (self%templates(i)%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) then
+          initial_boesten_state%spev = config%tiles(i)%initial_boesten_spev
+          initial_boesten_state%saev = config%tiles(i)%initial_boesten_saev
+          call fmr_new_b110_boesten_evaporation_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+               config%tiles(i)%initial_state, initial_boesten_state, config%initial_time, ok)
         else
           call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, config%initial_time, ok)
@@ -497,7 +506,8 @@ contains
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
-        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) return
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
@@ -515,17 +525,31 @@ contains
         tile%parameters%tabulated_hydraulics_active) return
 
     if (tile%parameters%black_evaporation_active) then
+      if (tile%parameters%boesten_evaporation_active) return
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
-      if (.not. allocated(tile%parameters%black_evaporation)) return
+      if (.not. allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (.not. ieee_is_finite(tile%parameters%black_evaporation%cofred) .or. &
           tile%parameters%black_evaporation%cofred < 0.0_real64) return
       if (.not. ieee_is_finite(tile%initial_black_ldwet) .or. tile%initial_black_ldwet < 0.0_real64) return
+      if (tile%initial_boesten_spev /= 0.0_real64 .or. tile%initial_boesten_saev /= 0.0_real64) return
+      if (tile%parameters%bottom_mode == 5) return
+    else if (tile%parameters%boesten_evaporation_active) then
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
+      if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+      if (allocated(tile%parameters%black_evaporation) .or. .not. allocated(tile%parameters%boesten_evaporation)) return
+      if (.not. ieee_is_finite(tile%parameters%boesten_evaporation%cofred) .or. &
+          tile%parameters%boesten_evaporation%cofred <= 0.0_real64 .or. &
+          tile%parameters%boesten_evaporation%cofred > 1.0_real64) return
+      if (.not. ieee_is_finite(tile%initial_boesten_spev) .or. tile%initial_boesten_spev < 0.0_real64) return
+      if (.not. ieee_is_finite(tile%initial_boesten_saev) .or. tile%initial_boesten_saev < 0.0_real64) return
+      if (tile%initial_black_ldwet /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
-      if (allocated(tile%parameters%black_evaporation)) return
-      if (tile%initial_black_ldwet /= 0.0_real64) return
+      if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
+      if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
+          tile%initial_boesten_saev /= 0.0_real64) return
     end if
 
     if (.not. allocated(tile%parameters%z) .or. .not. allocated(tile%parameters%dz) .or. &

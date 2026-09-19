@@ -12,6 +12,33 @@ module mod_restricted_surface_evaporation
   integer, parameter, public :: BLACK_EVAP_AVAILABLE = 1
   integer, parameter, public :: BLACK_EVAP_INVALID_INPUT = 2
   real(real64), parameter, public :: BLACK_EVAP_PONDING_CLASSIFICATION_CM = 1.0e-10_real64
+  integer, parameter, public :: BOESTEN_EVAP_NOT_RUN = 0
+  integer, parameter, public :: BOESTEN_EVAP_AVAILABLE = 1
+  integer, parameter, public :: BOESTEN_EVAP_INVALID_INPUT = 2
+  real(real64), parameter, public :: BOESTEN_EVAP_PONDING_CLASSIFICATION_CM = 1.0e-10_real64
+
+  type, public :: boesten_evaporation_parameters_t
+    real(real64) :: cofred = 0.0_real64
+  end type boesten_evaporation_parameters_t
+
+  type, public :: boesten_evaporation_state_t
+    real(real64) :: spev = 0.0_real64
+    real(real64) :: saev = 0.0_real64
+  end type boesten_evaporation_state_t
+
+  type, public :: boesten_evaporation_forcing_t
+    real(real64) :: potential_bare_soil_evaporation = 0.0_real64
+    real(real64) :: wetting_rate = 0.0_real64
+    logical :: surface_is_ponded = .false.
+  end type boesten_evaporation_forcing_t
+
+  type, public :: boesten_evaporation_result_t
+    integer :: status = BOESTEN_EVAP_NOT_RUN
+    real(real64) :: empirical_bare_soil_evaporation_demand = 0.0_real64
+    type(boesten_evaporation_state_t) :: candidate_state
+    logical :: ponding_reset_applied = .false.
+    character(len=32) :: route = 'not-run'
+  end type boesten_evaporation_result_t
 
   type, public :: black_evaporation_parameters_t
     real(real64) :: cofred = 0.0_real64
@@ -55,8 +82,94 @@ module mod_restricted_surface_evaporation
 
   public :: evaluate_restricted_surface_evaporation
   public :: evaluate_black_evaporation_reduction
+  public :: evaluate_boesten_evaporation_reduction
 
 contains
+
+  pure subroutine evaluate_boesten_evaporation_reduction(parameters, committed_state, forcing, step_duration, result)
+    type(boesten_evaporation_parameters_t), intent(in) :: parameters
+    type(boesten_evaporation_state_t), intent(in) :: committed_state
+    type(boesten_evaporation_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: step_duration
+    type(boesten_evaporation_result_t), intent(out) :: result
+
+    real(real64) :: saev_previous, threshold_squared
+
+    result = boesten_evaporation_result_t()
+    if (.not. ieee_is_finite(parameters%cofred) .or. parameters%cofred <= 0.0_real64 .or. &
+        parameters%cofred > 1.0_real64) then
+      result%status = BOESTEN_EVAP_INVALID_INPUT
+      result%route = 'invalid-cofred'
+      return
+    end if
+    if (.not. ieee_is_finite(committed_state%spev) .or. committed_state%spev < 0.0_real64 .or. &
+        .not. ieee_is_finite(committed_state%saev) .or. committed_state%saev < 0.0_real64) then
+      result%status = BOESTEN_EVAP_INVALID_INPUT
+      result%route = 'invalid-state'
+      return
+    end if
+    if (.not. ieee_is_finite(forcing%potential_bare_soil_evaporation) .or. &
+        forcing%potential_bare_soil_evaporation < 0.0_real64 .or. &
+        .not. ieee_is_finite(forcing%wetting_rate) .or. forcing%wetting_rate < 0.0_real64) then
+      result%status = BOESTEN_EVAP_INVALID_INPUT
+      result%route = 'invalid-forcing'
+      return
+    end if
+    if (.not. ieee_is_finite(step_duration) .or. step_duration <= 0.0_real64) then
+      result%status = BOESTEN_EVAP_INVALID_INPUT
+      result%route = 'invalid-duration'
+      return
+    end if
+
+    if (forcing%surface_is_ponded) then
+      result%empirical_bare_soil_evaporation_demand = forcing%potential_bare_soil_evaporation
+      result%candidate_state%spev = 0.0_real64
+      result%candidate_state%saev = 0.0_real64
+      result%ponding_reset_applied = .true.
+      result%route = 'ponded-reset'
+      result%status = BOESTEN_EVAP_AVAILABLE
+      return
+    end if
+
+    threshold_squared = parameters%cofred**2
+    result%candidate_state = committed_state
+    if (forcing%wetting_rate < forcing%potential_bare_soil_evaporation) then
+      result%candidate_state%spev = committed_state%spev + &
+           (forcing%potential_bare_soil_evaporation - forcing%wetting_rate) * step_duration
+      saev_previous = committed_state%saev
+      if (result%candidate_state%spev < threshold_squared) then
+        result%candidate_state%saev = result%candidate_state%spev
+      else
+        result%candidate_state%saev = parameters%cofred * sqrt(result%candidate_state%spev)
+      end if
+      result%empirical_bare_soil_evaporation_demand = forcing%wetting_rate + &
+           (result%candidate_state%saev - saev_previous) / step_duration
+      result%route = 'drying-boesten'
+    else
+      result%empirical_bare_soil_evaporation_demand = forcing%potential_bare_soil_evaporation
+      result%candidate_state%saev = max(0.0_real64, committed_state%saev - &
+           (forcing%wetting_rate - forcing%potential_bare_soil_evaporation) * step_duration)
+      if (result%candidate_state%saev < threshold_squared) then
+        result%candidate_state%spev = result%candidate_state%saev
+      else
+        result%candidate_state%spev = (result%candidate_state%saev / parameters%cofred)**2
+      end if
+      result%route = 'rewetting-boesten'
+    end if
+
+    if (.not. ieee_is_finite(result%candidate_state%spev) .or. &
+        .not. ieee_is_finite(result%candidate_state%saev) .or. &
+        .not. ieee_is_finite(result%empirical_bare_soil_evaporation_demand) .or. &
+        result%candidate_state%spev < 0.0_real64 .or. result%candidate_state%saev < 0.0_real64 .or. &
+        result%empirical_bare_soil_evaporation_demand < 0.0_real64) then
+      result = boesten_evaporation_result_t()
+      result%status = BOESTEN_EVAP_INVALID_INPUT
+      result%route = 'nonfinite-result'
+      return
+    end if
+    result%status = BOESTEN_EVAP_AVAILABLE
+  end subroutine evaluate_boesten_evaporation_reduction
+
 
   pure subroutine evaluate_black_evaporation_reduction(parameters, committed_state, forcing, step_duration, result)
     type(black_evaporation_parameters_t), intent(in) :: parameters

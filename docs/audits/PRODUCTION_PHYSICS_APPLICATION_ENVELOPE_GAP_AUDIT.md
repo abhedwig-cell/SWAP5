@@ -135,9 +135,11 @@ The **complete** atmospheric/input envelope is still open. Legacy weather-file/c
 
 ### 3. Stateful ET and advanced stress physics
 
-PPA-WU04-A has now qualified the first bounded stateful ET slice: SWREDU=1 Black. LDWET is an option-discriminated committed process state, rejected candidates cannot mutate it, changed-dt retries re-evaluate from the same checkpoint, restart preserves it exactly, and accepted actual evaporation remains owned by the hydraulic dynamic-top boundary.
+PPA-WU04-A is canonically admitted for SWREDU=1 Black. LDWET is an option-discriminated committed process state, rejected candidates cannot mutate it, changed-dt retries re-evaluate from the same checkpoint, restart preserves it exactly, and accepted actual evaporation remains owned by the hydraulic dynamic-top boundary.
 
-SWREDU=2 remains open. Its atomic SPEV/SAEV continuation pair is source-bound by PPA-WU04 but still needs its own equation oracle and production qualification. SWINTER=1/2 likewise remain open because their source-window aggregate/progress semantics are distinct from Black reduction.
+PPA-WU04-B has now qualified SWREDU=2 Boesten-Stroosnijder for the bounded production profile `0 < COFRED <= 1`. SPEV/SAEV form one atomic committed/restart pair, retries recompute from the same checkpoint, and the exact drying, rewetting and ponding branches are source-qualified. The legacy `COFRED=0` edge remains outside the admitted envelope because the exact inverse branch can divide by zero.
+
+SWINTER=1/2 remain open because their source-window aggregate/progress semantics are distinct from both evaporation-reduction methods.
 
 Advanced root stress is a larger scientific block. Oxygen, salinity, frost, compensated uptake, MICRO/Jong-van-Lier and macropore uptake interact with distinct state owners and, for coupled groundwater response, derivative coverage.
 
@@ -181,7 +183,7 @@ Fourth is **accepted-result/output composition**. Full legacy output compatibili
 
 ### Important routes requiring scientific review first
 
-- SWREDU=1/2 because of persistent empirical state and legacy retry-control mutation;
+- SWINTER=1/2 because their nonlinear source-window aggregate provenance and mid-window restart semantics still require dedicated qualification;
 - advanced root stress because multiple stateful stress mechanisms and coupling derivatives intersect;
 - macropore flow because state topology, mass, restart and parallelism all change;
 - frost because phase change couples hydraulic and thermal state and acceptance semantics;
@@ -227,7 +229,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 **PPA-WU03, Atmospheric forcing and normal-input adapter boundary. CLOSED / CANONICAL ADMITTED.** PR #323 merged at `97c4471155001e12133109be5eb6bd95f799eb00`. The admitted slice covers generic-time precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0, with only pure-flux dynamic-top handoff to PPA-WU01. File/calendar grammar, PMdirect ingestion, Rutter state ownership and broader management ingestion remain outside the workunit.
 
-**PPA-WU04, Stateful ET/interception scientific review. CLOSED / AUTHORITY FROZEN.** The parent review froze SWINTER=1/2 and SWREDU=1/2 state, event, restart and rollback semantics from B1.11. **PPA-WU04-A, SWREDU=1 Black production slice: QUALIFIED / READY FOR CANONICAL ADMISSION.** Workflow 35438366101 passed the exact equation oracle, transactional LDWET, changed-dt retry, exact restart, hard mass and PPA-WU01/WU03 behavioral-preservation gates. PPA-WU04-B/C/D remain separate bounded slices.
+**PPA-WU04, Stateful ET/interception scientific review. CLOSED / AUTHORITY FROZEN.** The parent review froze SWINTER=1/2 and SWREDU=1/2 state, event, restart and rollback semantics from B1.11. **PPA-WU04-A, SWREDU=1 Black: CANONICAL ADMITTED RESTRICTED PRODUCTION.** PR #395 merged as `50e7d1dece5b75d0103459d5c118d03a2665eea3`. **PPA-WU04-B, SWREDU=2 Boesten-Stroosnijder: QUALIFIED / READY FOR CANONICAL ADMISSION.** Workflow 35439112147 passed exact equations, atomic SPEV/SAEV rollback/restart, changed-dt retry, hard mass and predecessor-preservation gates. PPA-WU04-C/D remain the open interception slices.
 
 **PPA-WU05, Advanced water-process triage.** Build the dependency graph and acceptance criteria for macropore, frost and advanced root-stress migration, then select the first high-use bounded target. No production physics should be migrated inside the triage unit.
 
@@ -283,3 +285,15 @@ Qualification job: `105884808295` PASS
 The slice introduces no new water-mass owner. `EMPREVA` remains a demand, while the existing dynamic hydraulic top boundary determines and accounts accepted actual evaporation. The only new persistent process state is `LDWET`, carried in an option-discriminated transaction/restart family.
 
 The workunit does not admit SWREDU=2, SWINTER=1/2, legacy weather/calendar parsing, snowmelt/runon Black composition, groundwater mode-5 Black composition or RossFast Black composition.
+
+
+## Post-audit update: PPA-WU04-B
+
+PPA-WU04-B qualifies the restricted SWREDU=2 Boesten-Stroosnijder production path on source head `eb0e635975b77ec92084e1416038b1bc1f8232bc`.
+
+Qualification workflow run: `35439112147`  
+Qualification job: `105886744366` PASS
+
+The admitted process continuation is the atomic SPEV/SAEV pair. Accepted actual evaporation remains owned and mass-accounted by the existing dynamic hydraulic top boundary. The production envelope deliberately requires `0 < COFRED <= 1`; the legacy zero case is not reinterpreted.
+
+With WU04-A and WU04-B complete, the remaining PPA-WU04 implementation work is the source-window interception pair WU04-C/D.
