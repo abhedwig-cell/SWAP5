@@ -1,0 +1,163 @@
+{
+  "schema": "swap5.f-romv2-d16.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D16",
+  "decision": "FMC_SURFACE_REDISTRIBUTION_RETAINS_RESEARCH_CANDIDACY",
+  "adjudication": "BOUNDED_SURFACE_PULSE_HIATUS_FMC_BEATS_R2_ON_ALL_PREREGISTERED_REDISTRIBUTION_VIEWS",
+  "execution": {
+    "primary_workflow_run": 35456435820,
+    "primary_workflow_job": 105932432291,
+    "executed_head": "a223fcd5ea9b4ff642caabf60592bd491a1fe0ca",
+    "execution_pull_request": 445,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10588253110,
+    "artifact_digest": "sha256:52bf33f88f63d70999620ac3a57a02b4137fb9651ef0536a8d9799a20ce1d301",
+    "workflow_conclusion": "success",
+    "R16_o0_o2_sha256": "cb3912a007f5cab68b8147f30090595c5b9254fd7effd8f86832c4661faeee76",
+    "R2_o0_o2_sha256": "90acda8fc4f5d863a7da054392b432fe791e718d4e4b57c701053c63faf6573f",
+    "preflight_result_sha256": "08dfcb84cb98d9d8ff5207baac7c434c2fe525eaa3ebc7da3fe12438faf746c1",
+    "hydrological_result_sha256": "9a4e0b2f3de6d4bc48e0955d652f18d76e9b2f0200431f646f63f57bfb4f8fda",
+    "preflight_stdout_sha256": "c84bb501dbc9bb9a66c55e41123a3cf80e55ad351bba85ca7e5566857504b492",
+    "analyzer_stdout_sha256": "c4f5fdc3b48d92c398cdbf4609de4a123febf05fdb7002998f5afdbaed5c8452",
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true
+  },
+  "staged_preflight": {
+    "first_attempt": {
+      "workflow_run": 35456224602,
+      "workflow_job": 105931854715,
+      "artifact_id": 10588207854,
+      "artifact_digest": "sha256:486fab916a2a70358b8d2c266b074b606f6e7b0375969c64a74acb42f3432ae3",
+      "decision": "D16_FMC_SURFACE_REDISTRIBUTION_INTERNAL_PREFLIGHT_NO_GO",
+      "SWAP_trajectory_evidence_consumed": false,
+      "failure": "floating endpoint-subtraction produced max inferred slug-length drift 1.4210854715202004e-14 cm after repeated identical Eq.19 translations",
+      "scientific_parameters_changed": false
+    },
+    "technical_repair": {
+      "change": "Represent Eq.19 falling slug as (top, invariant length) and derive bottom=top+length instead of independently accumulating both endpoints.",
+      "hydrological_equations_changed": false,
+      "pulse_factors_changed": false,
+      "pulse_or_hiatus_duration_changed": false,
+      "bins_or_substep_changed": false,
+      "decision_gates_changed": false,
+      "classification": "TECHNICAL_STATE_REPRESENTATION_REPAIR_BEFORE_SWAP_TRAJECTORY_EXPOSURE"
+    },
+    "admitted_preflight": {
+      "workflow_run": 35456288437,
+      "workflow_job": 105932028141,
+      "artifact_id": 10588092943,
+      "artifact_digest": "sha256:090610969f79996be6cec453006656a4ec95a30ac5d612e228c2e109dc695d83",
+      "decision": "D16_FMC_SURFACE_REDISTRIBUTION_INTERNAL_PREFLIGHT_PASS",
+      "SWAP_trajectory_evidence_consumed": false,
+      "all_histories_pass": true,
+      "minimum_bottom_clearance_cm": 39.75179921952595,
+      "max_abs_global_ledger_residual_cm": 7.105427357601002e-15,
+      "max_abs_slug_length_drift_cm": 0
+    }
+  },
+  "envelope": {
+    "material": "B01",
+    "initial_profile": "D14_I_DEEP",
+    "histories": {
+      "S10": {
+        "factor_Ksat": 0.1,
+        "pulse_steps": 16,
+        "hiatus_steps": 48,
+        "prescribed_infiltration_cm": 0.0057824103703703715
+      },
+      "S25": {
+        "factor_Ksat": 0.25,
+        "pulse_steps": 16,
+        "hiatus_steps": 48,
+        "prescribed_infiltration_cm": 0.014456025925925929
+      },
+      "S50": {
+        "factor_Ksat": 0.5,
+        "pulse_steps": 16,
+        "hiatus_steps": 48,
+        "prescribed_infiltration_cm": 0.028912051851851858
+      },
+      "S75": {
+        "factor_Ksat": 0.75,
+        "pulse_steps": 16,
+        "hiatus_steps": 48,
+        "prescribed_infiltration_cm": 0.04336807777777777
+      }
+    },
+    "observation_step_seconds": 10,
+    "FMC_bins": 200,
+    "bottom_boundary": "prescribed zero flux",
+    "runoff_or_ponding": false,
+    "dry_bin_activation": false,
+    "ET_or_root_uptake": false,
+    "groundwater_front": false,
+    "full_order_FMC_fallback": false
+  },
+  "integrity": {
+    "pass": true,
+    "FMC_max_abs_mass_residual_cm": 6.359279422496478e-15,
+    "R2_max_abs_mass_residual_cm": 1.4210854715202004e-14,
+    "R16_max_abs_mass_residual_cm": 2.1316282072803006e-14,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "research_numerical_route": {
+    "R16_total_steps": 256,
+    "R16_reattempt_count": 256,
+    "R2_total_steps": 256,
+    "R2_reattempt_count": 251,
+    "interpretation": "Valid hydrological comparison under admitted D4 research numerical authority; these reattempt rates make this workload unsuitable for any production-runtime inference."
+  },
+  "pooled_fidelity": {
+    "FMC": {
+      "upper_storage_RMSE_cm": 0.00895312151814769,
+      "lower_storage_RMSE_cm": 0.008953121518158356,
+      "total_storage_RMSE_cm": 1.3433239820285591e-14,
+      "mapped_R16_cell_theta_RMSE": 0.0011397486883339687,
+      "hiatus_upper_storage_RMSE_cm": 0.009505974432860746,
+      "hiatus_lower_storage_RMSE_cm": 0.009505974432873328,
+      "hiatus_mapped_R16_cell_theta_RMSE": 0.0012752808354798298
+    },
+    "R2": {
+      "upper_storage_RMSE_cm": 0.009860319847556752,
+      "lower_storage_RMSE_cm": 0.009860319847597469,
+      "total_storage_RMSE_cm": 4.7173897587844854e-14,
+      "mapped_R16_cell_theta_RMSE": 0.03244835786912266,
+      "hiatus_upper_storage_RMSE_cm": 0.011289677739915125,
+      "hiatus_lower_storage_RMSE_cm": 0.011289677739959723,
+      "hiatus_mapped_R16_cell_theta_RMSE": 0.0323212251339127
+    }
+  },
+  "comparative_interpretation": {
+    "all_step_upper_storage_gate": true,
+    "all_step_profile_gate": true,
+    "hiatus_upper_storage_gate": true,
+    "hiatus_profile_gate": true,
+    "FMC_upper_storage_RMSE_ratio_to_R2": 0.9079950403805762,
+    "FMC_hiatus_upper_storage_RMSE_ratio_to_R2": 0.8420058261939557,
+    "FMC_profile_RMSE_ratio_to_R2": 0.03512500364212685,
+    "FMC_hiatus_profile_RMSE_ratio_to_R2": 0.03945645099144942,
+    "statement": "FMC improves the vertical storage partition modestly and the resolved 10-cm profile very strongly relative to R2. Because total storage is fixed by matched prescribed top input and zero bottom flux, total-storage near-identity is diagnostic only and not evidence of model skill."
+  },
+  "physical_diagnosis": {
+    "surface_branch": "FMC's explicit moving fronts and falling-slug memory preserve vertical redistribution structure substantially better than a two-cell Richards representation on this bounded no-runoff/no-groundwater-front envelope.",
+    "relation_to_D13": "D13 independently retained FMC on a bounded groundwater-front branch; D16 now independently retains the surface infiltration/hiatus branch.",
+    "remaining_gap": "The two positive branches have not yet been exercised simultaneously in one column. Surface-groundwater interaction, front/slug merge with groundwater during forcing, arbitrary SWAP bottom heads, ET/root uptake and seasonal accumulation remain unqualified."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_YET_QUALIFIED; D16 is only a 640 s surface/redistribution experiment.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED; no ET/root uptake or drought horizon.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_YET_QUALIFIED; D13 groundwater and D16 surface branches are positive separately but not yet combined.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED; no rainfall-runoff/ponding threshold comparison.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED."
+  },
+  "next": [
+    "ADMIT_D16_AS_BOUNDED_SURFACE_BRANCH_RESEARCH_CANDIDACY",
+    "PREREGISTER_A_COMBINED_SURFACE_PLUS_FIXED_WATER_TABLE_FMC_DEVELOPMENT_EXPERIMENT_BEFORE_ANY_BRANCH_INTEGRATION_CLAIM",
+    "KEEP_R2_AS_PHYSICAL_REDUCTION_COMPARATOR",
+    "DO_NOT_USE_D16_FOR_FORMAL_RUNTIME_BECAUSE_REFERENCE_REATTEMPT_FREQUENCY_IS_ARTIFICIAL",
+    "DEFER_ET_ROOT_UPTAKE_AND_SEASONAL_BALANCE"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}
