@@ -1,7 +1,7 @@
 {
   "trace_id": "TRACE-SWAP-0002",
   "model": "SWAP",
-  "status": "CONFIRMED",
+  "status": "CLOSED",
   "discovery": {
     "first_observed_date": "2026-09-19",
     "registered_date": "2026-09-19",
@@ -97,10 +97,17 @@
       }
     ],
     "final_authority": "F-DOC23 work-branch closeout status at 4cb2425147624a33cc01e767b2f5eaa0ae062712 plus merged PR #170 / canonical merge 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
-    "disposition": "UNRESOLVED_INSUFFICIENT_AUTHORITY",
+    "disposition": "DOCUMENTATION_CORRECTED",
     "code_changed": false,
-    "documentation_changed": null,
-    "tests_changed": null
+    "documentation_changed": true,
+    "tests_changed": false,
+    "repair": {
+      "status_path": "integration/f-doc/F-DOC23_STATUS.json",
+      "source_closeout_ref": "4cb2425147624a33cc01e767b2f5eaa0ae062712",
+      "source_closeout_blob": "5c1891fcc8671d2ad050e7ba8e790e38afac2678",
+      "repair_head": "bbdb3b8e56d13a16a2a6fd7f22d4681e2ad8286f",
+      "change": "Propagate the already-authored post-merge F-DOC23 CLOSE/ADMITTED_AND_CLOSED status onto current canonical lineage without changing reviewer content, Snow process semantics or production source."
+    }
   },
   "reproducibility": {
     "pre_resolution_ref": "52d5e1092b00a77d59b81f54db953b040fe9347e",
@@ -112,6 +119,14 @@
       "pr": 170,
       "merge_commit": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
       "post_merge_closeout_head": "4cb2425147624a33cc01e767b2f5eaa0ae062712"
+    },
+    "repair_postimage_ref": "bbdb3b8e56d13a16a2a6fd7f22d4681e2ad8286f",
+    "repair_qualification": {
+      "trace_workflow_run": 35439141518,
+      "trace_conclusion": "success",
+      "broad_preservation_workflow": "F-GC42 live whole-window service",
+      "broad_preservation_run": 35439141610,
+      "broad_preservation_conclusion": "success"
     }
   }
 }
