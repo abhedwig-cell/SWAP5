@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse,json,math,pathlib
+import argparse,ctypes,json,math,pathlib
 
 TR=0.02; TS=0.427494; ALPHA=0.021659; N=1.734737; M=1.0-1.0/N
 KS=31.225016; ELL=0.98087; SE0=0.85; DEPTH=160.0; HALF=80.0; NINT=1024; DT=0.0008
@@ -31,7 +31,23 @@ def k_h(h):
     if not(math.isfinite(k) and k>0): raise ValueError("K-domain")
     return k
 
+_C_PROFILE=None
+
+def bind_c_profile(path):
+    global _C_PROFILE
+    lib=ctypes.CDLL(str(path))
+    fn=lib.qs1_integrate
+    fn.argtypes=[ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double)]
+    fn.restype=ctypes.c_int
+    _C_PROFILE=fn
+
 def integrate(hb,q):
+    if _C_PROFILE is not None:
+        out=(ctypes.c_double*4)()
+        rc=_C_PROFILE(float(hb),float(q),out)
+        if rc!=0:
+            raise ValueError(f"profile-domain-{rc}")
+        return float(out[0]),float(out[1]),float(out[2])
     dy=DEPTH/NINT; h=hb; s=0.; slo=0.; shi=0.
     for j in range(NINT):
         def fh(x): return q/k_h(x)-1.0
@@ -45,7 +61,6 @@ def integrate(hb,q):
         if j < NINT//2: slo+=ds
         else: shi+=ds
         if not(math.isfinite(h) and h<0): raise ValueError("profile-domain")
-    # y integrates bottom->top: first half is lower 80 cm, second half upper 80 cm
     return s,shi,slo
 
 def eval_q(q,hb,target):
@@ -164,7 +179,10 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--reference",required=True); ap.add_argument("--prereg",required=True)
     ap.add_argument("--preflight",required=True); ap.add_argument("--output",required=True)
+    ap.add_argument("--profile-lib")
     a=ap.parse_args()
+    if a.profile_lib:
+        bind_c_profile(a.profile_lib)
     p=json.loads(pathlib.Path(a.prereg).read_text())
     pre=json.loads(pathlib.Path(a.preflight).read_text())
     assert pre["decision"]=="D7_ADMISSIBLE_ROOT_SEARCH_PREFLIGHT_PASS"
