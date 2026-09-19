@@ -8,6 +8,7 @@ PREREG_BLOB=b5338c41c74272c674b3bdd171fc867cd651491b
 PREFLIGHT=tests/rom/preflight_f_romv2_d7_admissible_manifold.py
 REFTEST=tests/rom/test_f_romv2_d7_r16_reference.f90
 ANALYZER=tests/rom/analyze_f_romv2_d7_qs1_trajectories.py
+PROFILE_C=tests/rom/f_romv2_d7_qs1_profile.c
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
 MATERIALIZER=tests/rom/materialize_f_rom0_headcalc_stubs.py
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-romv2-d7-${GITHUB_RUN_ID:-local}-$$"
@@ -36,8 +37,10 @@ for opt in 0 2; do
 done
 cmp "$EVIDENCE/R16_o0.txt" "$EVIDENCE/R16_o2.txt" || fail "R16 O0/O2 drift"
 
+cc -O2 -fPIC -shared "$PROFILE_C" -o "$BUILD/libqs1.so" -lm
 python3 "$ANALYZER" --reference "$EVIDENCE/R16_o2.txt" --prereg "$PREREG" \
   --preflight "$EVIDENCE/F-ROMV2_D7_PREFLIGHT_RESULT.json" \
+  --profile-lib "$BUILD/libqs1.so" \
   --output "$EVIDENCE/F-ROMV2_D7_RESULT.json" | tee "$EVIDENCE/analyzer.txt"
 
 sha256sum "$EVIDENCE"/* > "$EVIDENCE/sha256.txt"
