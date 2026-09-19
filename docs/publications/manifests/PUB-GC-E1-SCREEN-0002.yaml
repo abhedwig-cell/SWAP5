@@ -1,0 +1,238 @@
+experiment:
+  experiment_id: PUB-GC-E1-SCREEN-0002
+  run_family_id: PUB-GC-E1
+  title: Disjoint real-SWAP transient history-sensitivity screening
+  evidence_class: PROSPECTIVE_SUPPORTING
+  screening_only: true
+  eligible_for_primary_h1_inference: false
+  supersedes_before_execution: PUB-GC-E1-SCREEN-0001
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  origin_harness_specification_commit: 2d0a9ea26dbb6048e60e67dcf6882a1b03664d61
+  origin_harness_specification_blob: 554ebf5841b533b38f19dce533b2efb978348971
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  origin_harness_qualified_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  qualified_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  previous_screen_manifest_not_executed: PUB-GC-E1-SCREEN-0001
+  reason_for_supersession: >
+    SCREEN-0001 included the already observed qualification pair B=-70 cm and
+    dt=0.02 d. SCREEN-0002 removes all qualification numeric points before any
+    screening execution so stress-regime selection is prospectively disjoint.
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  screening_code_commit: FREEZE_BEFORE_EXECUTION
+
+question:
+  hypothesis_id: H1
+  screening_question: >
+    Which predeclared duration and interface-head perturbation class yields an
+    admitted, measurable history-contamination diagnostic in real SWAP while
+    correct same-origin replay remains exactly reproducible?
+  primary_claim_if_supported: null
+  null_rule: >
+    If no eligible noncontrol row separates history-diagnostic and same-origin
+    responses above exact/reproducibility noise, record SCREENING_NULL. Do not
+    add grid points after viewing the result and do not manufacture a primary
+    practical-effect case.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  research_base_commit: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  prescribed_head_route: serialized_reference_B1.10_mode5
+  temporal_route: TX_TEMPORAL_MODEL_CERTIFICATE
+  continuation_layout: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  top_boundary_provider: fixed_flux_top_boundary_provider_t
+  compiler: gfortran-on-github-hosted-ubuntu
+  build_mode: O2
+  platform: github-hosted-ubuntu-24.04
+  gw_a_authority: 8a090fc9228574525e599817771aadb8ae176047
+  gw_a_used_in_this_screening: false
+
+case:
+  case_id: PUB-GC-E1-SCREEN-UNIFORM-MVG-V2
+  initial_pressure_head_cm: -75.0
+  prescribed_head_a_cm: -75.0
+  top_forcing: stationary_reference_flux_at_initial_head
+  soil_hydraulics: B1.10 default MVG fixture used by qualified E1 harness
+  bottom_mode: 5
+  initial_predecessor_right_derivative: exact_zero_stationary_origin
+  root_extraction_active: false
+  macropore_active: false
+  snow_active: false
+  drainage_response_active: false
+  mass_tolerance_cm: 1.0e-10
+  temporal_certificate_budget_cm: 100.0
+  temporal_certificate_budget_note: >
+    Harness/screening acceptance budget only. It is not a coupling tolerance,
+    publication accuracy criterion or recommended timestep tolerance.
+
+screening_grid:
+  durations:
+    - class: short
+      duration_days: 0.0025
+      class_bounds_days: [0.001, 0.005]
+    - class: intermediate
+      duration_days: 0.01
+      class_bounds_days: [0.005, 0.02]
+    - class: long
+      duration_days: 0.04
+      class_bounds_days: [0.02, 0.06]
+  candidate_b_heads:
+    - class: control
+      head_cm: -75.0
+      delta_from_A_cm: 0.0
+      selection_eligible: false
+    - class: mild
+      sign: drying_side
+      head_cm: -77.5
+      delta_from_A_cm: -2.5
+      selection_eligible: true
+    - class: mild
+      sign: wetting_side
+      head_cm: -72.5
+      delta_from_A_cm: 2.5
+      selection_eligible: true
+    - class: intermediate
+      sign: drying_side
+      head_cm: -85.0
+      delta_from_A_cm: -10.0
+      selection_eligible: true
+    - class: intermediate
+      sign: wetting_side
+      head_cm: -65.0
+      delta_from_A_cm: 10.0
+      selection_eligible: true
+    - class: strong
+      sign: drying_side
+      head_cm: -100.0
+      delta_from_A_cm: -25.0
+      selection_eligible: true
+    - class: strong
+      sign: wetting_side
+      head_cm: -50.0
+      delta_from_A_cm: 25.0
+      selection_eligible: true
+  cartesian_rows: 21
+  excluded_seen_qualification_values:
+    B_head_cm: -70.0
+    duration_days: 0.02
+    pair_reuse_forbidden: true
+
+method:
+  same_origin_policy: GC-ORIGIN-SAME
+  diagnostic_policy: GC-ORIGIN-HISTORY-DIAG
+  per_row_sequence:
+    - A1_from_accepted_origin
+    - B_from_same_accepted_origin
+    - A2_from_same_accepted_origin
+    - A_history_from_synthetic_B_endpoint_at_nominal_t0
+  same_origin_oracle: A1_and_A2_must_be_exactly_identical
+  history_diagnostic_is_production_valid: false
+  production_commit_allowed_in_history_diagnostic: false
+
+required_row_telemetry:
+  - duration_class
+  - duration_days
+  - perturbation_class
+  - perturbation_sign
+  - B_head_cm
+  - B_delta_head_cm
+  - row_status
+  - A_same_whole_window_exchange
+  - B_same_whole_window_exchange
+  - A_history_whole_window_exchange
+  - A_same_terminal_bottom_flux
+  - A_history_terminal_bottom_flux
+  - abs_delta_Q_A_history_minus_same
+  - max_abs_endpoint_head_delta_A_history_minus_same
+  - max_abs_endpoint_water_content_delta_A_history_minus_same
+  - A_same_mass_residual
+  - B_same_mass_residual
+  - A_history_mass_residual
+  - A_same_retries
+  - B_same_retries
+  - A_history_retries
+  - same_origin_A_replay_identity
+  - accepted_origin_unchanged
+  - synthetic_origin
+  - history_diagnostic_no_commit
+
+validity:
+  eligible_row_requires:
+    - all_four_trials_complete
+    - whole_window_exchange_available_for_all_compared_trials
+    - finite_complete_mass_accounting
+    - same_origin_A_replay_exact
+    - accepted_origin_unchanged
+    - history_diagnostic_no_commit
+    - B_endpoint_differs_from_origin
+  invalid_or_rejected_rows:
+    retain_in_output: true
+    selection_eligible: false
+
+selection:
+  eligible_population: valid_noncontrol_rows_only
+  primary_key: max_abs_endpoint_head_delta_A_history_minus_same
+  secondary_key: abs_delta_Q_A_history_minus_same
+  tie_breakers:
+    - smaller_absolute_B_delta_head
+    - shorter_duration_days
+    - lower_numeric_B_head_cm
+  output_of_selection: broad_duration_class_plus_perturbation_class_plus_sign
+  exact_screening_row_may_be_reused_as_primary: false
+  screening_numeric_points_may_be_reused_as_primary: false
+  qualification_numeric_points_may_be_reused_as_primary: false
+
+primary_holdout:
+  exact_primary_heads: FREEZE_AFTER_SCREENING
+  exact_primary_windows: FREEZE_AFTER_SCREENING
+  exact_primary_sequences: FREEZE_AFTER_SCREENING
+  required_primary_sequence_family: >
+    At least S1=A,B,A,C and S2=A,C,A,B, or equivalent frozen permutations with
+    three distinct candidate heads and a repeated candidate after different
+    predecessors.
+  primary_thresholds: FREEZE_AFTER_SCREENING_BEFORE_PRIMARY_EXECUTION
+
+execution:
+  branch: research/pub-gc-e1-screening
+  workflow_trigger: workflow_dispatch_only
+  workflow_path: .github/workflows/pub-gc-e1-screening.yml
+  complete_grid_required: true
+  repeat_count: 1
+  stopping_rule: >
+    Execute exactly the 21 frozen rows once. Do not add, delete or substitute
+    rows after any screening result is visible.
+  expected_mutations:
+    - tests/publication/pub_gc/e1_screening/**
+    - .github/workflows/pub-gc-e1-screening.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/gw_a/**
+  code_head_lock: FREEZE_BEFORE_EXECUTION
+
+artifacts:
+  screening_log: artifacts/PUB-GC-E1-SCREEN-0002/screening.log
+  screening_tsv: artifacts/PUB-GC-E1-SCREEN-0002/screening.tsv
+  selection_receipt: docs/publications/results/PUB-GC-E1-SCREEN-0002.yaml
+
+nonclaims:
+  - no H1 confirmation or falsification
+  - no coupled GW-A scientific result
+  - no practical relevance conclusion
+  - no coupling comparator superiority
+  - no coupling-window convergence result
+  - no MODFLOW6 transfer result
+  - no production validity of the history diagnostic
+  - no scientific tolerance claim from the 100 cm certificate budget
+
+result:
+  status: NOT_RUN
+  conclusion: null

@@ -1,0 +1,41 @@
+screening_execution_deviation:
+  deviation_id: PUB-GC-E1-SCREEN-0001-TRIGGER
+  status: FROZEN_BEFORE_EXECUTION
+  affects_scientific_design: false
+
+reason:
+  connector_limitation: >
+    The active GitHub connector exposes workflow read/re-run operations but no
+    workflow_dispatch action. The preregistered dispatch-only workflow therefore
+    cannot be started directly from this research session.
+  permitted_operational_change: >
+    Add a push trigger restricted to this workflow file itself. No screening
+    source, runner, manifest, production source, qualified origin-harness file,
+    GW-A file, grid, metric, selection rule or stopping rule may change.
+
+frozen_before_trigger_commit:
+  preregistration_manifest_commit: 5c5d30273437bfc5082d2c91a75d25681cc8d15d
+  execution_lock_commit: df134d0da4528964fad4470dcc2a013a26aadb4d
+  locked_screening_head_before_trigger_patch: 2fe8e6f0b08160ad88a0a080a7cb4feb50aae14d
+  screen_case_blob: d992e665c98817c26511631b504616983589c2c2
+  runner_blob: 8389384f549ad3a67d09d6482c45a2bcbea8a03c
+  dispatch_only_workflow_blob: 951c03901c439338997a512653675385163de2f1
+  expected_trigger_enabled_workflow_blob: e87bdb5cb44f7b301db4e2e13d58eae549e71d17
+
+allowed_branch_delta:
+  - .github/workflows/pub-gc-e1-screening.yml
+
+forbidden_changes:
+  - src/**
+  - tests/publication/pub_gc/e1_screening/pub_gc_e1_screen_case.f90
+  - tests/publication/pub_gc/e1_screening/run_pub_gc_e1_screening.sh
+  - tests/publication/pub_gc/e1_origin/**
+  - tests/publication/pub_gc/gw_a/**
+  - docs/publications/manifests/PUB-GC-E1-SCREEN-0001.yaml
+  - screening grid, metrics, selection rule or stopping rule
+
+execution_rule:
+  - the trigger-enabled workflow blob must exactly equal e87bdb5cb44f7b301db4e2e13d58eae549e71d17
+  - its push path must match only .github/workflows/pub-gc-e1-screening.yml on research/pub-gc-e1-screening
+  - the resulting automatic run is the single permitted execution of PUB-GC-E1-SCREEN-0001
+  - any mismatch invalidates the execution before scientific screening interpretation

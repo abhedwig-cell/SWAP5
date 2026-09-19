@@ -1,0 +1,129 @@
+experiment:
+  experiment_id: PUB-GC-GC-REF-A-SCREEN-0001
+  publication_owner: PUB-GC
+  experiment_family: PUB-GC-E2_E3_REFERENCE_CONSTRUCTION
+  evidence_role: PROSPECTIVE_SUPPORTING_REFERENCE_SCREENING
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  GC_REF_A_spec_commit: c95d67c70dc16126797c6613affe641537e3655e
+  GC_REF_A_qualification_manifest_commit: abb9d7b5a397abef1987ed8b6872064a13788c9b
+  GC_REF_A_qualification_receipt_commit: 4d028af031bc506b33db9513552070a297ea4409
+  accuracy_adjudication_commit: 2cf85d4236e970fb9cb9556ce2489219b9b6acef
+  screening_precedes_primary_case_freeze: true
+
+research_branch:
+  name: research/pub-gc-reference-screening
+  base: 4fc8f6e2a7569503594d0ecf91b651431c607df2
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/reference_screening/**
+    - .github/workflows/pub-gc-reference-screening.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+    - tests/publication/pub_gc/gc_ref/**
+
+case:
+  case_id: GC-REF-S0-CONSTANT-FORCING
+  purpose: >
+    Exercise full accepted-state reference trajectory construction with real
+    B1.10 SWAP physics and qualified GW-A before selecting transient H2/H3
+    screening cases. This is a reference-construction screening case, not a
+    primary method comparison.
+  initial_time_day: 4200.125
+  total_duration_day: 0.12
+  initial_pressure_head_cm: -80.0
+  initial_groundwater_head_m: 0.0
+  GW_A:
+    area_m2: 1.0
+    specific_yield: 0.2
+    external_source_m_per_s: 0.0
+  top_forcing_rule: >
+    constant explicit top flux equal to minus the initial uniform-state
+    hydraulic conductivity, identical to the frozen E1-family equilibrium
+    setup
+  bottom_mode: 5
+
+reference_ladder:
+  L0:
+    coupling_window_day: 0.04
+    number_of_windows: 3
+  L1:
+    coupling_window_day: 0.02
+    number_of_windows: 6
+  L2:
+    coupling_window_day: 0.01
+    number_of_windows: 12
+  same_physical_start_end_interval: true
+  same_forcing_chronology: true
+
+per_window_root:
+  method: GC-REF-A deterministic bisection
+  relative_interface_head_bracket_m: [0.0, 0.10]
+  equivalent_initial_absolute_pressure_head_bracket_cm: [-80.0, -70.0]
+  tau_R_h_m: 1.0e-8
+  tau_bracket_h_m: 1.0e-6
+  tau_Q_cm: 1.0e-8
+  max_evaluations: 64
+  bracket_failure_rule: >
+    Do not move or enlarge the bracket after observing a failed window. A
+    different bracket requires a new screening manifest.
+
+accepted_publication:
+  SWAP: fmr_commit_candidate_with_receipt
+  groundwater: groundwater_prepare_candidate then groundwater_commit_prepared
+  rule: >
+    Root-search candidates are discarded. Only the reconstructed candidate at
+    h_star may be prepared/published. If SWAP publication rejects before GW
+    publication, abort the prepared GW candidate and classify the window as
+    failed.
+
+reference_stability:
+  compare: L1 versus L2 at common physical times
+  max_groundwater_head_difference_m: 1.0e-4
+  cumulative_exchange_difference_cm: 1.0e-4
+  final_max_pressure_head_difference_cm: 1.0e-2
+  final_max_water_content_difference: 1.0e-5
+  final_total_water_storage_difference_cm: 1.0e-4
+  action_reaction_required: true
+  interpretation:
+    stable: >
+      This controlled case has a numerically stable L2 screening reference
+      under the frozen criteria.
+    unstable: >
+      Valid negative screening result. L2 is not admitted as a reference and
+      any further refinement requires a new prospective reference-construction
+      manifest.
+
+required_telemetry:
+  - per-window accepted h_star
+  - per-window reconstructed residual
+  - per-window whole-window Q
+  - per-window bisection evaluation count
+  - accepted SWAP lineage/revision/time
+  - accepted GW revision/time/head
+  - cumulative whole-window Q per level
+  - matched-time L1/L2 groundwater-head difference
+  - final pressure-head profile difference
+  - final water-content profile difference
+  - final total-water-storage difference
+  - O0/O2 scientific-output identity
+
+nonclaims:
+  - H2 is not tested
+  - H3 is not tested as a primary publication hypothesis
+  - no terminal-flux comparator is evaluated
+  - no practical adequacy threshold is established
+  - no MODFLOW6 transferability is established
+  - this case may not be promoted to held-out primary evidence
+
+next_permitted_action:
+  - implement the reference-screening trajectory harness without modifying qualified dependencies
+  - execute this frozen case under O0 and O2
+  - persist the outcome whether stable or unstable
+  - only after a valid screening result design transient H2/H3 screening cases

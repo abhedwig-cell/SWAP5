@@ -1,0 +1,195 @@
+result:
+  result_id: PUB-GC-TRANSIENT-SCREEN-0001
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_SCREENING
+  status: COMPLETE
+  execution_valid: true
+  selection_authority: true
+  primary_h2_h3_inference_eligible: false
+
+chronology:
+  preregistration_manifest_commit: 6096c24e91d6d9ab8ee8b812b0090123878a6cef
+  preregistration_manifest_blob: 7aa93be2f6698ad6e655e70bf1024758e7516da4
+  stable_reference_base: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  invalid_predecessor_receipt: PUB-GC-TRANSIENT-SCREEN-0001-ATTEMPT-0001
+  invalid_predecessor_execution: 35290254007
+  surgical_repair_commit: 4a79ecc202d80f408eca1013b90270e40c316ec8
+  repair_scope: reapply frozen current_top_flux during accepted-root reconstruction
+  frozen_case_values_changed_after_invalid_attempt: false
+  frozen_thresholds_changed_after_invalid_attempt: false
+  frozen_selection_rule_changed_after_invalid_attempt: false
+  workflow_started_utc: 2026-09-18T00:15:46Z
+  workflow_completed_utc: 2026-09-18T00:16:18Z
+
+execution:
+  branch: research/pub-gc-transient-screening
+  head: 4a79ecc202d80f408eca1013b90270e40c316ec8
+  github_actions_run_id: 35290434715
+  github_actions_job_id: 105431877460
+  workflow_conclusion: success
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  trajectory_blob: 56e65b0996c3f22fcc02356981007ade4ae42686
+  test_blob: 83fb7bf3b99d64016eb0d7691a9d061722361ca2
+  runner_blob: 9f5227d409ce74806964bfd7dc753ecf45af1172
+  scientific_output_sha256: 3cf22738a31c64d4eade47a6d97f4a229e8a094adabc8b45dbda32f985b20be4
+  o0_o2_identity: PASS
+  artifact:
+    id: 10525269748
+    name: pub-gc-transient-screening-4a79ecc202d80f408eca1013b90270e40c316ec8
+    sha256: d2b5985f35f7d8e322dec2cc5ffc776b93de46543f81399bb511cc94bdc342a3
+    expires_at: 2026-12-17T00:15:46Z
+
+common_validity:
+  all_six_cases_adjudicated: PASS
+  production_src_unchanged: PASS
+  qualified_dependencies_unchanged: PASS
+  accepted_publication_policy: PASS
+  derivative_acceleration_absent: PASS
+  primary_h2_h3_eligibility: false
+
+cases:
+  TS-WET-5:
+    class: VALID_UNSTABLE
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 3.42358615321947330e-5
+      cumulative_exchange_difference_cm: 5.14654067076264488e-5
+      final_max_pressure_head_difference_cm: 2.91955050649903569e-2
+      final_max_water_content_difference: 2.71787405343726363e-5
+      final_storage_difference_cm: 5.14654067076403265e-5
+    failed_stability_components:
+      - final_max_pressure_head_difference_cm
+      - final_max_water_content_difference
+
+  TS-DRY-1:
+    class: VALID_UNSTABLE
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 2.30462766520167343e-5
+      cumulative_exchange_difference_cm: 3.07728763966359092e-5
+      final_max_pressure_head_difference_cm: 1.73024979880125329e-2
+      final_max_water_content_difference: 1.60645713830342984e-5
+      final_storage_difference_cm: 3.07728763966341745e-5
+    failed_stability_components:
+      - final_max_pressure_head_difference_cm
+      - final_max_water_content_difference
+
+  TS-REV:
+    class: VALID_UNSTABLE
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 5.66602319389650395e-5
+      cumulative_exchange_difference_cm: 1.38438063226324626e-4
+      final_max_pressure_head_difference_cm: 7.77237219685105174e-2
+      final_max_water_content_difference: 7.21178178743064890e-5
+      final_storage_difference_cm: 1.38438063226331565e-4
+    failed_stability_components:
+      - cumulative_exchange_difference_cm
+      - final_max_pressure_head_difference_cm
+      - final_max_water_content_difference
+      - final_storage_difference_cm
+
+  TS-GW-UP:
+    class: VALID_STABLE_UNRESOLVED
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 3.74660252626321522e-5
+      cumulative_exchange_difference_cm: 2.14901454520521895e-6
+      final_max_pressure_head_difference_cm: 1.07169979611398958e-3
+      final_max_water_content_difference: 1.02737289187082581e-6
+      final_storage_difference_cm: 2.14901454520521895e-6
+    failed_stability_components: []
+
+  TS-GW-DOWN:
+    class: VALID_STABLE_UNRESOLVED
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 2.53779349054170100e-5
+      cumulative_exchange_difference_cm: 5.96835464653638903e-6
+      final_max_pressure_head_difference_cm: 3.63226360271085014e-3
+      final_max_water_content_difference: 3.27148412204714134e-6
+      final_storage_difference_cm: 5.96835464650169456e-6
+    failed_stability_components: []
+
+  TS-LOW-SY-WET:
+    class: VALID_UNSTABLE
+    L0_status: 0
+    L1_status: 0
+    L2_status: 0
+    L2_max_abs_terminal_surrogate_mismatch_cm: 0.0
+    L1_to_L2:
+      max_matched_GW_head_difference_m: 1.30751035930920479e-4
+      cumulative_exchange_difference_cm: 4.56049409906927883e-5
+      final_max_pressure_head_difference_cm: 2.66212281780440208e-2
+      final_max_water_content_difference: 2.49485714420849547e-5
+      final_storage_difference_cm: 4.56049409907066661e-5
+    failed_stability_components:
+      - max_matched_GW_head_difference_m
+      - final_max_pressure_head_difference_cm
+      - final_max_water_content_difference
+
+promotion_rule_application:
+  eligible_families: []
+  eligible_count: 0
+  required_for_direct_promotion: up_to_three_VALID_STABLE_RESOLVED
+  heldout_candidates_promoted: []
+  posthoc_amplitude_tuning_permitted: false
+  required_next_step: >
+    Because fewer than three families are eligible, freeze a separate scientific
+    design decision before adding or reformulating any stress family.
+  interpretation: >
+    The preregistered transient screen produced no VALID_STABLE_RESOLVED family.
+    Therefore no held-out H2/H3 primary case may be promoted from this screen.
+
+terminal_surrogate_observation:
+  all_levels_all_cases_max_abs_mismatch_cm: 0.0
+  classification: STRUCTURAL_ZERO_REQUIRES_SEMANTIC_ADJUDICATION
+  source_semantics_checked_after_run:
+    serialized_reference_step_exchange: >
+      bottom_outward_exchange_native = -bottom_flux * step_duration
+    serialized_reference_terminal_flux: >
+      terminal_bottom_outward_flux_native = -bottom_flux
+    implication: >
+      For an accepted coupling window represented by one accepted full SWAP
+      step, q_terminal * window_duration equals the reported whole-window
+      exchange by construction. A nonzero H2 discriminant therefore requires a
+      window composed of multiple accepted internal exchange contributions (or
+      another independently justified time integration of interface flux);
+      simply adding stronger one-step stress amplitudes would not solve this
+      identifiability problem.
+
+scientific_interpretation:
+  - The screen is valid supporting evidence about reference refinement and E2 identifiability under the frozen one-step-per-window design.
+  - Four forcing-transition families require finer reference construction before they can satisfy the frozen L1-to-L2 stability thresholds.
+  - The two groundwater-only families are stable at the frozen ladder but cannot resolve whole-window versus terminal exchange because the one-step representation makes the two quantities identical.
+  - No H2 or H3 primary inference follows from this screening.
+  - The absence of an eligible family is a design result and must not be bypassed by selecting a visually interesting invalid or unresolved case.
+
+nonclaims:
+  - no H2 support or falsification
+  - no H3 support or falsification
+  - no practical-materiality estimate
+  - no MODFLOW6 transferability
+  - no statement that terminal flux is generally equivalent to whole-window exchange
+  - no permission to reuse these screening cases as held-out primary cases
+
+next_permitted_action:
+  - freeze a separate scientific design decision responding to zero promotion-eligible families
+  - distinguish reference-refinement needs from the structural one-step H2 identifiability issue
+  - do not change frozen amplitudes or promote screening values
+  - define any multi-contribution coupling-window experiment prospectively before implementation

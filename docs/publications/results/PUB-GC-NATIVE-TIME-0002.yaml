@@ -1,0 +1,73 @@
+result:
+  result_id: PUB-GC-NATIVE-TIME-0002
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_NATIVE_INTEGRATION_ADEQUACY
+  primary_h2_h3_inference_eligible: false
+  execution_status: VALID_EXECUTION
+  all_trajectories_valid: true
+  fine_level_guard: false
+  policy_selection: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+
+chronology:
+  spec_commit: 9d8528af50bfa8450e5ec731bfdd47f7cd6c83d1
+  manifest_commit: 26d289ba285a0d202459c2ec4629a3c8d8dd0241
+  manifest_blob: beeff3f6368daad4126151a09ef3946e386ccbdd
+  native_time_0001_result_commit: a7c89350305efc6019b469896782f4f91b5ba7e6
+  macro_time_requalification_receipt_commit: fff5e8740e64d3664df32e1176ffefe2f9168a0a
+  post_0001_scientific_design_changes: none
+
+authority:
+  research_head: f1723eda83fd1d11c55f1cad253e3d4ab1e8fa97
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  test_oracle_blob: 2a36de6c1b8b67b280a860e27df620fee4f9b4d8
+  test_oracle_byte_identical_to_0001: true
+  runner_blob: 7ba1386ec5ceb5ed87d2d0a9941980a73453af2d
+  workflow_blob: 032ae32c5be337c9b817ee4935b106e6f519705a
+
+execution:
+  github_actions_run: 35292409218
+  github_actions_job: 105437879775
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 016b417774ace91bb7c2399b172bae593319a729795b39dc330c96d4aa336074
+  artifact_id: 10527141691
+  artifact_digest: sha256:f55f8d29397234aba5428dc282d7b8bfe3c83ce6c41eeacd5773f0861909ede4
+
+frozen_ladder:
+  N0: {native_dt_day: 0.01, interval_count: 4}
+  N1: {native_dt_day: 0.005, interval_count: 8}
+  N2: {native_dt_day: 0.0025, interval_count: 16}
+  N3: {native_dt_day: 0.00125, interval_count: 32}
+
+fine_level_N2_vs_N3:
+  NT-C0: {dQ_cm: 4.33680868994201774e-18, dh_cm: 0.0, dtheta: 0.0, dStorage_cm: 0.0, pass: true}
+  NT-W3: {dQ_cm: 8.56860080399816232e-6, dh_cm: 5.68287148391277697e-3, dtheta: 5.29606642829527630e-6, dStorage_cm: 8.56860080400423385e-6, pass: true}
+  NT-D05: {dQ_cm: 5.18223950130101280e-6, dh_cm: 3.81757658362857910e-3, dtheta: 3.53405429154296513e-6, dStorage_cm: 5.18223950130014543e-6, pass: true}
+  NT-R3: {dQ_cm: 1.16430552321526021e-5, dh_cm: 6.17877638273967023e-3, dtheta: 5.73513436397110610e-6, dStorage_cm: 1.16430552321578062e-5, pass: true}
+  NT-H60: {dQ_cm: 5.32096144055138609e-4, dh_cm: 2.88737144844631644e-1, dtheta: 2.96980035731753134e-4, dStorage_cm: 5.32096144055138609e-4, pass: false}
+
+frozen_tolerances:
+  dQ_cm: 1.0e-4
+  dh_cm: 1.0e-2
+  dtheta: 1.0e-5
+  dStorage_cm: 1.0e-4
+
+interpretation:
+  admitted:
+    - all N0-N3 trajectories execute after the macro-time correction
+    - four of five cases pass the N2-to-N3 stability guard
+    - NT-H60 fails all four frozen criteria
+    - no native integration policy can yet be selected
+  nonclaims:
+    - no H2 or H3 inference
+    - N3 is not converged
+    - no universal SWAP timestep recommendation
+
+next_permitted_action:
+  - freeze a new refinement decision
+  - retain NT-H60 and all frozen adequacy tolerances
+  - extend the dyadic native-time ladder to finer intervals
+  - do not use terminal-surrogate mismatch for selection

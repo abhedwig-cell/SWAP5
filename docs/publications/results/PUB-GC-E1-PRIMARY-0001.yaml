@@ -1,0 +1,162 @@
+publication_evidence:
+  evidence_id: PUB-GC-E1-PRIMARY-0001
+  publication_owner: PUB-GC
+  doctoral_question: RQ3
+  hypothesis_id: H1
+  evidence_class: PROSPECTIVE_PRIMARY
+  primary_h1_inference_eligible: true
+  verdict: SUPPORTS_H1_OPERATOR_DEFINITION_IN_HELDOUT_CASE
+
+chronology:
+  scientific_primary_manifest_commit: c3114e455029ee5dee0d92dbc4814c3fc0923ef6
+  scientific_primary_manifest_blob: abf45b4a83f528eda69024e3d75a38edc4ce713f
+  engine_qualification_manifest_commit: bf62fc34ed603bf2fd551e8ea352310a1e823066
+  engine_qualification_receipt_commit: 0bcbcad0dece1d4eada59f847bb0eb3908b56563
+  primary_execution_authority_commit: a2fab00d6076933972cee924d7d392ec6bc5024c
+  pretrigger_head: 13753ee92c77f1492852500f5586f7fd7ae66773
+  sentinel_execution_head: 936312659522fe4cacfd349b146d173caa07e5ab
+  hypothesis_precedes_run: true
+  design_precedes_run: true
+  engine_qualification_precedes_primary_run: true
+  heldout_values_executed_before_primary_run: false
+  primary_invocations: 1
+  reruns: 0
+
+execution:
+  branch: research/pub-gc-e1-primary-run
+  github_actions_run: 35287247968
+  job: 105422209812
+  workflow_conclusion: success
+  compiler: GNU_Fortran_13.3.0
+  optimization: O2
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  engine_blob: 7214117cc64591bd4ced071561a19e37aab0de1b
+  runner_blob: 8db588c83381fbbf656f5d3bc21336d2d15505e7
+  workflow_blob: 2d75dec75d3568b87c52a003de99f46dd9d4bab5
+  raw_output_sha256: 514ccd628d4f4e8aff6de32022587c5018bc5d23a039e74b5fd0ca8e9d25ae4a
+  artifact:
+    id: 10524847570
+    name: pub-gc-e1-primary-936312659522fe4cacfd349b146d173caa07e5ab
+    sha256: 0370c5a17033d789e60576a4a0253a8edf3c50dba1b4ab4244a468fa05ccfab6
+    expires_at: 2026-12-16T23:31:51Z
+
+held_out_design:
+  A_head_cm: -80.0
+  B_head_cm: -102.5
+  C_head_cm: -98.75
+  duration_days: 0.03
+  sequence_S1: [A, B, A, C]
+  sequence_S2: [A, C, A, B]
+  origin_policies: [GC-ORIGIN-SAME, GC-ORIGIN-HISTORY-DIAG]
+
+validity_oracles:
+  execution_authority_lock: PASS
+  primary_manifest_lock: PASS
+  pretrigger_head_lock: PASS
+  sentinel_only_trigger_delta: PASS
+  production_source_tree_lock: PASS
+  qualified_engine_blob_lock: PASS
+  qualified_origin_harness_lock: PASS
+  qualified_GW_A_lock: PASS
+  same_origin_identity: PASS
+  accepted_origin_unchanged: PASS
+  GW_A_same_checkpoint_no_commit: PASS
+  history_diagnostic_production_valid: false
+  generic_engine_oracle: PASS
+  heldout_invocation_completed: PASS
+  candidate_rows: 16
+  groundwater_rows: 16
+  all_candidates_discarded: true
+  all_mass_residuals_cm: 0.0
+  all_transaction_retries: 0
+
+same_origin_reference_responses:
+  A:
+    whole_window_bottom_outward_exchange_cm: 4.28769659820966379e-3
+    terminal_bottom_outward_flux_cm_per_day: 1.42923219941535340e-1
+    exact_across_all_occurrences: true
+  B:
+    whole_window_bottom_outward_exchange_cm: 4.13068016868983270e-2
+    terminal_bottom_outward_flux_cm_per_day: 1.37689338957496554
+    exact_across_S1_and_S2: true
+  C:
+    whole_window_bottom_outward_exchange_cm: 3.53176673595546123e-2
+    terminal_bottom_outward_flux_cm_per_day: 1.17725557866181374
+    exact_across_S1_and_S2: true
+
+history_diagnostic_repeated_A:
+  after_B:
+    whole_window_bottom_outward_exchange_cm: -1.73880006955250896e-2
+    terminal_bottom_outward_flux_cm_per_day: -5.79600023189089653e-1
+    GW_A_candidate_head_m: -8.69400034776254458e-4
+  after_C:
+    whole_window_bottom_outward_exchange_cm: -1.43084077087295911e-2
+    terminal_bottom_outward_flux_cm_per_day: -4.76946923628368324e-1
+    GW_A_candidate_head_m: -7.15420385436479531e-4
+
+frozen_primary_discriminants:
+  delta_Q_A_after_B_vs_C_cm:
+    value: 3.07959298679549853e-3
+    frozen_floor: 1.0e-9
+    exceeds_floor: true
+  delta_endpoint_head_A_after_B_vs_C_cm:
+    value: 1.31893680771767663
+    frozen_floor: 1.0e-8
+    exceeds_floor: true
+  delta_endpoint_water_A_after_B_vs_C:
+    value: 1.17146923073618847e-3
+    role: supporting_state_separation
+  delta_GW_A_candidate_head_for_repeated_A_m:
+    value: 1.53979649339774927e-4
+    role: analytic_groundwater_consequence_only
+  delta_GW_A_residual_for_repeated_A_m:
+    value: 1.53979649339774927e-4
+    role: analytic_groundwater_consequence_only
+
+predeclared_interpretation:
+  result: >
+    Both frozen primary history discriminants exceed their frozen numerical
+    discrimination floors while all validity checks pass. Under the
+    preregistered rule, the held-out experiment supports H1 at the
+    operator-definition level: candidate response is reproducible when
+    evaluated from the same accepted origin, whereas the deliberately
+    history-contaminated diagnostic produces order-dependent response.
+  scope: >
+    This is evidence for the need to define subsystem candidate response from
+    a common accepted origin in this controlled real-SWAP/GW-A held-out case.
+  practical_materiality: NOT_ESTABLISHED
+  generality_beyond_this_case: NOT_ESTABLISHED
+  production_validity_of_history_diagnostic: false
+  MODFLOW6_transferability: NOT_ESTABLISHED
+  whole_window_vs_terminal_flux_inference: NOT_TESTED_BY_E1
+  coupling_window_convergence_inference: NOT_TESTED_BY_E1
+
+nonclaims:
+  - no claim that generic checkpoint/rollback is novel
+  - no claim that the observed magnitude is practically hydrologically important
+  - no claim of broad MODFLOW6 coupling validity
+  - no response/tangent acceleration claim
+  - no RossFast-versus-reference claim
+  - no N_to_1 heterogeneity-value claim
+
+publication_use:
+  primary_claim: >
+    For the frozen controlled case, same-origin replay defines an
+    order-independent SWAP window-response operator, while deliberate reuse of
+    prior candidate endpoint state makes the repeated candidate response
+    depend on candidate history.
+  candidate_figure_table:
+    - PUB-GC-F01
+  reusable_by:
+    - THESIS-SYNTHESIS
+  excluded_primary_claims:
+    - PUB-ME
+    - PUB-SQ
+    - PUB-RC
+    - PUB-SG
+
+next_permitted_action:
+  - mark PUB-GC-E1 primary family COMPLETE
+  - preserve this one-shot result without rerun or post-hoc retuning
+  - continue to PUB-GC-E2 comparator design and PUB-GC-E3 reference construction
+  - treat practical materiality and cross-backend generality as separate future questions

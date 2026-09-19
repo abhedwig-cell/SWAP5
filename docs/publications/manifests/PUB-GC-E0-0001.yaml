@@ -1,0 +1,115 @@
+experiment:
+  experiment_id: PUB-GC-E0-0001
+  run_family_id: PUB-GC-E0
+  title: Accepted-window interface conservation and fail-closed publication screening
+  evidence_class: PROSPECTIVE_SUPPORTING
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  thesis_synthesis_relevance: [TS1, TS3]
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  contract_commit: f49182c940d2aa161dd2f1ab3beb0344fa547fcf
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  created_utc: 2026-09-17T18:20:29Z
+
+question:
+  hypothesis_id: [H1, H2]
+  primary_claim_if_supported: Accepted coupled windows preserve exact action/reaction and ledger closure under the admitted interface contract, while rejected groundwater trials leave SWAP, groundwater and committed interface ledgers unchanged.
+  null_or_falsifying_result: Any accepted window with nonzero interface conservation residual, or any rejected candidate that advances committed SWAP, groundwater or ledger state, falsifies the screening claim.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  code_commit: 74051e113fcef19e021d69854f3ab99066eb30cb
+  reference_commit: null
+  capability_authorities:
+    - F-GC25@74051e113fcef19e021d69854f3ab99066eb30cb
+    - Groundwater-Coupling-v1@74051e113fcef19e021d69854f3ab99066eb30cb
+  compiler: gfortran-on-github-hosted-ubuntu
+  build_mode: [O0, O2]
+  platform: github-hosted-ubuntu-latest
+
+case:
+  case_id: PUB-GC-E0-FGC25-TWO-TILE-V1
+  input_digest: DERIVED_FROM_PINNED_FGC25_FIXTURE_AND_TEST_BLOBS
+  forcing_digest: null
+  initial_state_digest: DERIVED_FROM_tests/fgc/mod_fgc25_multiswap_fixture.f90
+  geometry_digest: DERIVED_FROM_FGC25_TILE_BINDINGS
+  soil_materials: [fixture-defined]
+  boundary_configuration: admitted_restricted_direct_groundwater_multiswap_fixture
+
+factors:
+  outcome_path: [accepted_two_tile_window, predictor_groundwater_failure]
+  optimization: [O0, O2]
+  tile_count: 2
+  area_weighting: unequal
+
+method:
+  candidate_method: GC-M2_RESTRICTED_REPLAY_PC1_WITH_WHOLE_WINDOW_EXCHANGE
+  comparator: exact_interface_action_reaction_and_unchanged_rejected_origin_invariants
+  numerical_reference: NOT_REQUIRED_FOR_INTERFACE_SEMANTICS_SCREENING
+  acceptance_tolerances: exact_zero_for_flux_and_ledger_conservation_residuals; fixture-specific 1e-15/1e-16 exchange assertions
+
+outcomes:
+  primary_metrics:
+    - accepted_cell_exchange_m
+    - committed_ledger_increment_m
+    - flux_residual_m_per_s
+    - per_tile_conservation_residual_m
+    - swap_revision_before_after
+    - groundwater_revision_before_after
+    - committed_exchange_count_before_after
+  secondary_metrics:
+    - tile_weighted_exchange_m
+    - swap_trial_count
+    - groundwater_trial_count
+    - groundwater_commit_count
+    - requested_smaller_window
+    - O0_O2_gate_status
+  failure_metrics:
+    - nonzero_action_reaction_residual
+    - nonzero_committed_ledger_residual
+    - state_or_ledger_mutation_after_rejected_groundwater_trial
+    - area_weighted_exchange_mismatch
+
+analysis:
+  predeclared_transform: none
+  aggregation_rule: exact_invariant_assertions_plus_fixture_tolerances
+  repeat_count: 1
+  exclusion_rule: none; runner failure invalidates this screening execution
+  stopping_rule: execute the pinned F-GC25 gate once under its built-in O0/O2 matrix; do not add cases after inspecting results
+
+execution:
+  runner: tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh
+  runner_blob_sha: fa520fb448c13f0fc82d52e4429fc0e0874ce5bf
+  focal_test: tests/fgc/test_fgc25_multiswap_commit.f90
+  focal_test_blob_sha: dacb7e9d20ebc37002cd4ef9f0b2ddd35b4d0c08
+  expected_scope:
+    - two-tile accepted commit
+    - exact action/reaction residual
+    - exact per-tile mass-ledger closure
+    - area-weighted exchange consistency
+    - predictor groundwater failure with no committed mutation
+    - additional F-GC25 deterministic aggregation and isolation checks executed by the gate
+  explicit_noncoverage:
+    - coupling-window accuracy versus GC-REF
+    - same-origin versus history-contaminated numerical comparison
+    - terminal-flux comparator
+    - MODFLOW 6 transfer
+    - hydrologic value of N:1 heterogeneity
+
+artifacts:
+  raw_output: artifacts/PUB-GC-E0-0001/fgc25-gate.log
+  telemetry: artifacts/PUB-GC-E0-0001/runner-receipt.txt
+  logs: artifacts/PUB-GC-E0-0001/fgc25-gate.log
+  derived_table: null
+  candidate_figure: null
+
+result:
+  status: NOT_RUN
+  conclusion: null
+  deviations_from_plan: null

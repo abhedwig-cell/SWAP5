@@ -1,0 +1,62 @@
+result:
+  experiment_id: PUB-GC-E0-0001
+  run_family_id: PUB-GC-E0
+  evidence_class: PROSPECTIVE_SUPPORTING
+  status: INVALID_EXECUTION
+
+chronology:
+  manifest_commit: 9bdd605ad2d6189f431e513e955bbb53ce01f28a
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  first_execution_utc: 2026-09-17T18:23:59Z
+
+scientific_interpretation:
+  hypothesis_status: UNRESOLVED
+  scientific_conclusion: NONE
+  scientific_metrics_admitted: false
+  reason: Both attempts failed in harness/build prerequisites before the preregistered interface-conservation oracle was executed. These attempts are therefore neither supporting nor negative scientific evidence.
+
+attempts:
+  - attempt: 1
+    github_run_id: 35258575560
+    github_job_id: 105328277534
+    workflow_control_commit: 4ccfebc7d5146759b4e6ddbf4760bf6e2e32f4d7
+    intended_code_commit: 74051e113fcef19e021d69854f3ab99066eb30cb
+    artifact_id: 10513464490
+    artifact_digest: sha256:9978d3cf053c17aa83980a1b68da7a6b2fe5223828c0efbf8bb69fe6f8b6446f
+    classification: INVALID_HARNESS_PROVENANCE
+    failure: Historical F-GC21 owner commit 1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f was unavailable in the shallow nested checkout.
+    scientific_oracle_reached: false
+    correction_allowed: workflow-only fetch-depth change; no science or production source changed
+
+  - attempt: 2
+    github_run_id: 35258740840
+    github_job_id: 105328827726
+    workflow_control_commit: 7ea7d4d3a257d7c16b12943ff685e5a3d75e71d0
+    intended_code_commit: 74051e113fcef19e021d69854f3ab99066eb30cb
+    artifact_id: 10513334796
+    artifact_digest: sha256:8b224dd7f95d188b222390e5ef92ac75bb99697dad490e22eb861df15808c355
+    classification: INVALID_BUILD_HARNESS_DRIFT
+    prechecks_reached:
+      FGC25_FGC21_OWNER_FIXTURE: PASS
+      FGC25_NO_MODFLOW_OR_IO_DEPENDENCY: PASS
+      FGC25_TILE_LINEAGE_LEDGER_PUBLICATION: PASS
+      FGC25_CELL_PUBLICATION_PREFLIGHT: PASS
+      FGC25_CANONICAL_TILE_ORDER: PASS
+    failure: The historical F-GC25 runner hard-coded a source list that no longer supplied the newer mod_accepted_trajectory_directional_publication dependency imported by current-canonical mod_canonical_contracts.
+    scientific_oracle_reached: false
+    scientific_assertions_executed: false
+
+replacement_policy:
+  same_experiment_id_may_not_be_reused: true
+  next_experiment_id: PUB-GC-E0-0002
+  reason: The execution route must change after the invalid attempts. A new prospective manifest is required before any replacement run.
+  permitted_replacement: Bind a new supporting experiment to the exact independently qualified F-VQ87 F-GC25 postimage and run its unchanged independent oracle.
+
+conclusion:
+  decision: INVALID_EXECUTION_NO_SCIENTIFIC_CONCLUSION
+  text: PUB-GC-E0-0001 produced useful harness/provenance findings but no admissible scientific result about interface conservation or rollback semantics.
+
+deviations_from_plan:
+  - Initial nested authority checkout was shallow.
+  - After correcting only Git history availability, current-canonical dependency drift exposed that the old owner runner was no longer a valid build harness for that moving head.

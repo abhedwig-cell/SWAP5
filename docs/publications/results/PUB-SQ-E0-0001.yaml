@@ -1,0 +1,52 @@
+result:
+  experiment_id: PUB-SQ-E0-0001
+  run_family_id: PUB-SQ-E0
+  evidence_class: PROSPECTIVE_SUPPORTING
+  status: SUPPORTED_WITHIN_PREREGISTERED_SCOPE
+
+chronology:
+  manifest_commit: 892a7d13631dd226850a6c5f6869e1d7567bf909
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  first_execution_utc: 2026-09-17T18:23:59Z
+
+scope:
+  supported_claim: Explicit RossFast production selection preserves solver identity and fails closed for unsupported or unusable RossFast requests rather than silently falling back to the Reference Richards solver.
+  not_supported_by_this_experiment:
+    - numerical equivalence between Reference Richards and RossFast
+    - equal-error runtime advantage
+    - full-model mass-ledger equivalence
+    - RossFast validity outside the admitted production-selection domain
+
+primary_execution:
+  github_run_id: 35258575560
+  github_job_id: 105328277321
+  workflow_control_commit: 4ccfebc7d5146759b4e6ddbf4760bf6e2e32f4d7
+  code_commit: 93d50e349528551ff74bce3944e984e582a21b84
+  conclusion: SUCCESS
+  artifact_id: 10512984586
+  artifact_digest: sha256:9ad92c4e15530af7efa5fb9a93fd53ac4db26664fc7d429a2d027b86591529f5
+  gate_markers:
+    ROSS12_SOLVER_SELECTION_BINDING: PASS
+    F_ROSS12_SOLVER_SELECTION_BINDING: PASS
+    O0_O2_SHA256: 062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c
+
+reproducibility_execution:
+  github_run_id: 35258740840
+  workflow_control_commit: 7ea7d4d3a257d7c16b12943ff685e5a3d75e71d0
+  code_commit: 93d50e349528551ff74bce3944e984e582a21b84
+  conclusion: SUCCESS
+  artifact_id: 10513359663
+  artifact_digest: sha256:92a164c434448196520eca379417b5eea0ac182e6b743a48fec71bc948a51d1f
+  interpretation: Repeated the unchanged scientific gate after a workflow-only full-history fix made for the separate GC job. The SQ result remained successful.
+
+observations:
+  compiler_warnings_present: true
+  warning_classification: NON_FATAL_CONTEXT
+  note: Warnings included exact real comparisons and unused dummy arguments. They did not change the predeclared gate result and are not interpreted as solver-accuracy evidence.
+
+conclusion:
+  decision: SUPPORTS_H2_H3_CONTRACT_SCREENING_ONLY
+  text: The preregistered contract-identity/fail-closed screening passed under both O0 and O2 with identical gate output. This establishes supporting evidence for explicit selection semantics only; it does not establish scientific equivalence, accuracy or performance of RossFast.
+
+deviations_from_plan: none affecting scientific interpretation

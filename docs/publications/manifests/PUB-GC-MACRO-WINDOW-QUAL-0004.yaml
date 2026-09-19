@@ -1,0 +1,77 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0004
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_ENVELOPE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  native_time_0003_result_commit: b88bc28d4930e9f820bf7e7ca3def5846d01371c
+  refinement_decision_commit: f581b112add1ae2c7bf6dcce37557eaa22cf21a7
+  refinement_decision_blob: fb86dc34d092f04942253ed0a6bc2732ba30159a
+  macro_512_spec_commit: 0879d0038efb0931774744bb26f2be6eea0e29d4
+  macro_512_spec_blob: 29ed1643be0d24fab234938e65316d714d052a27
+  previous_macro_qualification_receipt_commit: c60a91c6749c00300f75a6f21d8a95c17d2c970f
+  frozen_before_execution: true
+
+authority:
+  research_branch: research/pub-gc-macro-512-envelope
+  base: 2189109de15df92d6712b5a3f5b27c1a922edd42
+  qualified_macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  macro_module_must_remain_unchanged: true
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/macro_window_response/**
+    - .github/workflows/pub-gc-macro-512-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/macro_window_response/mod_pub_gc_macro_window_response.f90
+    - all_other_previously_qualified_publication_components
+
+qualification:
+  rerun_Q0_through_Q9_unchanged: true
+  Q10A:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_interval_count: 256
+    native_dt_day: 0.00015625
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q10B:
+    macro_t0_day: 4200.125
+    macro_duration_day: 0.04
+    native_interval_count: 512
+    native_dt_day: 0.000078125
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q10C:
+    macro_t0_day: 14200.125
+    macro_duration_day: 0.04
+    native_interval_count: 512
+    native_dt_day: 0.000078125
+    prescribed_bottom_head_cm: -80.0
+    top_flux_factor_relative_to_K0: -1.0
+  Q10_required:
+    - completed
+    - exact_contribution_count
+    - finite_positive_actual_intervals
+    - exact_final_macro_t1
+    - authoritative_origin_unchanged
+    - finite_duration_representation_telemetry
+
+optimization:
+  modes: [O0, O2]
+  require_exact_scientific_output_identity: true
+
+nonclaims:
+  - no H2 or H3 inference
+  - no native integration policy
+  - no universal SWAP timestep recommendation
+  - no production admission
+
+next_permitted_action:
+  - create research/pub-gc-macro-512-envelope from the 128-contribution qualified head
+  - keep the macro module byte-identical
+  - extend only the qualification oracle to Q10A-Q10C
+  - execute Q0-Q10 under O0/O2
+  - only after PASS preregister NATIVE-TIME-0004

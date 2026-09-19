@@ -1,0 +1,73 @@
+result:
+  result_id: PUB-GC-GW-A-QUAL-0001
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_COMPONENT_QUALIFICATION
+  status: PASS
+
+chronology:
+  specification_commit: b6800d1337c2101b39d1c07e45ee808a35711926
+  fixture_reuse_decision_commit: 9ab529a7d905f73b27513320dfdac537339b90e8
+  research_branch_base: 154315df6906e6e1b3979290a1cfda82c9f3d1da
+  research_head: 8a090fc9228574525e599817771aadb8ae176047
+  workflow_created_utc: 2026-09-17T21:06:19Z
+  workflow_completed_utc: 2026-09-17T21:06:31Z
+  qualification_precedes_pub_gc_e1_execution: true
+
+implementation:
+  branch: research/pub-gc-gw-a
+  module_path: tests/publication/pub_gc/gw_a/mod_pub_gc_gw_a.f90
+  module_blob: ac725a64ffa96f4f08998e9aac7537af5ca76ba0
+  oracle_path: tests/publication/pub_gc/gw_a/test_pub_gc_gw_a.f90
+  oracle_blob: 58711bc7eeab069ca937fd60e6e82e739bd5f156
+  runner_path: tests/publication/pub_gc/gw_a/run_pub_gc_gw_a_qualification.sh
+  runner_blob: 48dab546bd6118e021f5ad2bfb1ed43f23a2ac97
+  workflow_path: .github/workflows/pub-gc-gw-a-qualification.yml
+  scope: RESEARCH_ONLY
+  production_src_modified: false
+
+execution:
+  github_actions_run_id: 35274770691
+  github_actions_job_id: 105382568910
+  workflow_name: PUB-GC GW-A qualification
+  runner_os: Ubuntu 24.04.5 LTS
+  compiler: GNU Fortran 13.3.0
+  optimization_modes:
+    - O0
+    - O2
+  artifact_id: 10520610298
+  artifact_name: pub-gc-gw-a-qualification-8a090fc9228574525e599817771aadb8ae176047
+  artifact_zip_sha256: 978b5dfb1f31a779c07187d79c5742c683037008d5ed75a39fba83057e9540ca
+
+qualified_oracles:
+  research_only_scope: PASS
+  zero_exchange_head_invariance: PASS
+  outward_groundwater_exchange_lowers_head_analytically: PASS
+  inward_groundwater_exchange_raises_head_analytically: PASS
+  exact_action_reaction_assignment: PASS
+  repeated_trial_same_checkpoint_repeatability: PASS
+  prepare_abort_nonpublication: PASS
+  prepared_commit_exact_publication: PASS
+  stale_checkpoint_fail_closed: PASS
+  o0_o2_scientific_oracle_identity: PASS
+  component_oracle: PASS
+
+admitted_scope:
+  - GW-A implements the frozen linear-storage finite-window head update on the research branch.
+  - A captured checkpoint contains the groundwater state/configuration required to reconstruct a trial from one accepted origin.
+  - Trials and prepare/abort do not publish accepted groundwater state.
+  - Prepared commit publishes head, time and revision once.
+  - Stale checkpoint reuse is rejected fail-closed in the qualified oracle cases.
+  - O0 and O2 produce identical scientific-oracle output for the qualification harness.
+
+nonclaims:
+  - This is not a PUB-GC-E1 result and does not establish H1.
+  - It does not establish whole-window superiority, coupling-window convergence or robustness.
+  - It does not qualify a MODFLOW 6 backend.
+  - It does not admit GW-A as SWAP5 production groundwater science.
+  - It does not establish a PUB-ME, PUB-SQ, PUB-RC or PUB-SG primary claim.
+  - It does not freeze the E1 SWAP case, candidate-head sequence or diagnostic origin-policy harness.
+
+next_permitted_action:
+  - implement and qualify the research-only SWAP origin-policy harness for GC-ORIGIN-SAME and GC-ORIGIN-HISTORY-DIAG
+  - perform separately labelled screening only if needed to select a transient E1 stress case
+  - freeze the SWAP authority, case, candidate sequence, permutation, metrics and null interpretation before any primary PUB-GC-E1 execution

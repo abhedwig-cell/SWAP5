@@ -1,0 +1,117 @@
+study:
+  study_id: PUB-GC-NATIVE-TIME-0003
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_NATIVE_INTEGRATION_ADEQUACY
+  primary_h2_h3_inference_eligible: false
+  result: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+
+chronology:
+  native_time_0002_result_commit: ec36883372c0870319ade7574e206459671a23bc
+  refinement_decision_commit: f55b87322a04977b342e00057b3bd47375580233
+  macro_high_count_qualification_receipt_commit: c60a91c6749c00300f75a6f21d8a95c17d2c970f
+  frozen_manifest_commit: c464a9dcc09ae4cc190ce52b90da9d3f3e91f9f5
+  frozen_manifest_blob: 49f5552ffff1b8de685d417d1130b1f64fe52769
+  frozen_before_implementation_and_execution: true
+
+authority:
+  research_branch: research/pub-gc-native-time-0003
+  research_head: 0ffc09b42fcb6176c655f820d7bf84f298ed628d
+  base_high_count_qualified_head: 2189109de15df92d6712b5a3f5b27c1a922edd42
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  production_src_modified: false
+  macro_component_modified: false
+  test_blob: 9a0a86d7453b422cfa6606cc9c3dfcc5bc8ddd45
+  runner_blob: c84d2d9fab2b87825ab8566efaa6cef21bb62d5a
+  workflow_blob: 69a4147b50a246dff0649b152f3d7e4058b9d79e
+
+execution:
+  github_actions_run: 35292912248
+  github_actions_job: 105439411444
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: c86fe73b5cd233f8e167336a808328d2d12757fbdcb720edbb9cdbb3a7c084f7
+  artifact:
+    id: 10527012936
+    digest: sha256:734914361e2713943f1b189db4ff677155fad5f8682b0ef4e3b383b0271c3d62
+    expires_at: 2026-12-17T00:51:16Z
+
+frozen_design:
+  cases_unchanged: [NT-C0, NT-W3, NT-D05, NT-R3, NT-H60]
+  ladder:
+    N0: {native_dt_day: 0.01, interval_count: 4}
+    N1: {native_dt_day: 0.005, interval_count: 8}
+    N2: {native_dt_day: 0.0025, interval_count: 16}
+    N3: {native_dt_day: 0.00125, interval_count: 32}
+    N4: {native_dt_day: 0.000625, interval_count: 64}
+    N5: {native_dt_day: 0.0003125, interval_count: 128}
+  fine_guard: N4_vs_N5
+  tolerances:
+    dQ_cm: 1.0e-4
+    dh_cm: 1.0e-2
+    dtheta: 1.0e-5
+    dStorage_cm: 1.0e-4
+
+results:
+  all_trajectories_valid: true
+  fine_level_guard: false
+  policy_selection: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+  terminal_surrogate_mismatch_used_for_selection: false
+  fine_guard_by_case:
+    NT-C0:
+      pass: true
+      dQ_cm: 7.80625564189563192e-18
+      dh_cm: 0.0
+      dtheta: 0.0
+      dStorage_cm: 0.0
+    NT-W3:
+      pass: true
+      dQ_cm: 2.47190301381431526e-6
+      dh_cm: 1.46193350569490121e-3
+      dtheta: 1.36236608494488820e-6
+      dStorage_cm: 2.47190301383426458e-6
+    NT-D05:
+      pass: true
+      dQ_cm: 1.55054403671358448e-6
+      dh_cm: 9.82500939286978792e-4
+      dtheta: 9.09560306516787875e-7
+      dStorage_cm: 1.55054403672139074e-6
+    NT-R3:
+      pass: true
+      dQ_cm: 2.99102964261034610e-6
+      dh_cm: 1.53043942970043645e-3
+      dtheta: 1.42048421269969083e-6
+      dStorage_cm: 2.99102964262942805e-6
+    NT-H60:
+      pass: false
+      dQ_cm: 1.36858420453418728e-4
+      dh_cm: 7.40176679464923382e-2
+      dtheta: 7.62873197245328427e-5
+      dStorage_cm: 1.36858420453522811e-4
+
+interpretation:
+  admitted:
+    - All six frozen native-time trajectories completed for all five cases.
+    - Four cases satisfy the prospectively frozen N4-to-N5 fine-level guard.
+    - NT-H60 remains unresolved at N4-to-N5 and fails all four unchanged adequacy criteria.
+    - No native integration policy is selected.
+  numerical_pattern_context:
+    - >-
+      Relative to the earlier N2-to-N3 NT-H60 comparison, all four discrepancy
+      magnitudes are smaller at N4-to-N5. This is descriptive convergence
+      evidence only; it does not license extrapolated acceptance or threshold
+      relaxation.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no practical coupling-window threshold
+    - no universal SWAP timestep recommendation
+    - no production admission
+    - no PUB-SQ solver-performance inference
+
+next_permitted_action:
+  - freeze a separate scientific adjudication before any further native-time refinement
+  - retain NT-H60 and all existing adequacy tolerances unless a separately justified design change is prospectively documented
+  - do not execute H2/H3 primary experiments from this unresolved native-time boundary

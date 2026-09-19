@@ -1,0 +1,123 @@
+qualification:
+  qualification_id: PUB-GC-GC-REF-A-QUAL-0001
+  publication_owner: PUB-GC
+  reference_method: GC-REF-A
+  evidence_role: RESEARCH_NUMERICAL_REFERENCE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  reference_spec_commit: c95d67c70dc16126797c6613affe641537e3655e
+  E2_comparator_qualification_receipt_commit: d2ed6bd028a253e17e8bf48837647189922fd7ed
+  qualification_precedes_E2_primary: true
+  qualification_precedes_E3_primary: true
+
+research_branch:
+  name: research/pub-gc-gc-ref-a
+  base: 188c863f560d8adacf255edb4f6f83edcac798f3
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  allowed_mutations:
+    - tests/publication/pub_gc/gc_ref/**
+    - .github/workflows/pub-gc-gc-ref-a-qualification.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/gw_a/**
+    - tests/publication/pub_gc/e1_origin/**
+    - tests/publication/pub_gc/e1_primary_engine/**
+    - tests/publication/pub_gc/e2_terminal_comparator/**
+
+qualified_dependencies:
+  GW_A:
+    authority_head: 8a090fc9228574525e599817771aadb8ae176047
+    module_blob: ac725a64ffa96f4f08998e9aac7537af5ca76ba0
+  E1_origin_harness:
+    blob: 687525b578eb0a28692dd666a87ddefe18b37c96
+  E1_primary_engine:
+    blob: 7214117cc64591bd4ced071561a19e37aab0de1b
+  E2_comparator:
+    module_blob: 3d397f0e629fff6f28849daba9dcb0fd9b396a0b
+
+algorithm:
+  root_method: deterministic_bisection
+  tangent_or_response_acceleration_allowed: false
+  candidate_origin_policy: same_accepted_origin
+  exchange_quantity: whole_window_bottom_outward_exchange
+  final_candidate_rule: rerun_from_original_origins_at_h_star
+  fail_closed_on_iteration_limit: true
+
+synthetic_root_fixture:
+  function: R(h)=h-0.25
+  bracket_m: [0.0, 1.0]
+  expected_root_m: 0.25
+  tau_R_h_m: 1.0e-12
+  tau_bracket_h_m: 1.0e-10
+  max_evaluations: 64
+
+synthetic_invalid_bracket_fixture:
+  function: R(h)=h*h+1
+  bracket_m: [-1.0, 1.0]
+  expected_status: REF_BRACKET_INVALID
+
+real_SWAP_GW_A_fixture:
+  case_family: frozen_E1_primary_physics
+  initial_SWAPPrescribedHead_cm: -80.0
+  window_t0_day: 4200.125
+  duration_days: 0.03
+  bracket_prescribed_head_cm: [-80.0, -70.0]
+  tau_R_h_m: 1.0e-8
+  tau_bracket_h_m: 1.0e-6
+  tau_Q_cm: 1.0e-8
+  max_evaluations: 64
+  bracket_failure_rule: >
+    If the frozen bracket does not contain a sign-changing residual, this
+    qualification attempt is invalid for the real fixture. Do not expand or
+    move the bracket without a new manifest.
+  primary_effect_estimation_allowed: false
+
+trajectory_stability_fixture:
+  role: bookkeeping_and_adjudicator_only
+  levels_days: [0.04, 0.02, 0.01]
+  stable_example:
+    terminal_head_m: [0.1000, 0.1004, 0.10045]
+    cumulative_exchange_cm: [1.0000, 1.0040, 1.0045]
+    swap_state_norm: [2.0000, 2.0020, 2.0022]
+  unstable_example:
+    terminal_head_m: [0.1000, 0.1100, 0.1200]
+    cumulative_exchange_cm: [1.0000, 1.1000, 1.2000]
+    swap_state_norm: [2.0000, 2.1000, 2.2000]
+  tolerances:
+    terminal_head_m: 1.0e-4
+    cumulative_exchange_cm: 1.0e-3
+    swap_state_norm: 5.0e-4
+
+qualification_oracles:
+  - synthetic_known_root_recovered
+  - invalid_bracket_fails_closed
+  - repeated_same_head_same_origin_is_identical
+  - bisection_candidates_do_not_mutate_accepted_origins
+  - real_fixture_frozen_bracket_contains_root
+  - real_fixture_uses_whole_window_exchange
+  - final_reconstruction_from_original_origins_matches_search_oracle
+  - action_reaction_closes_for_reconstructed_pair
+  - stable_three_level_fixture_is_admitted
+  - under_refined_fixture_is_rejected
+  - O0_O2_scientific_output_identity
+  - production_and_qualified_dependency_bytes_unchanged
+
+interpretation:
+  pass_means: >
+    GC-REF-A can construct a deterministic derivative-free same-origin
+    numerical coupling oracle and can reject an unstable temporal refinement
+    sequence under the frozen qualification fixtures.
+  pass_does_not_mean:
+    - H2 is supported
+    - H3 is supported
+    - any practical coupling-window threshold is established
+    - the qualification fixture is a primary hydrologic result
+    - MODFLOW6 transferability is established
+
+next_permitted_action_on_pass:
+  - persist immutable GC-REF-A qualification receipt
+  - freeze publication accuracy thresholds
+  - run separately labelled E2/E3 screening/reference-construction cases
+  - freeze held-out primary E2/E3 matrices only after case-specific reference stability criteria exist
