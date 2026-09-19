@@ -1,0 +1,83 @@
+name: F-ROM-LARE persist BC2-C2A result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C2A_PERSIST_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Read immutable result binding
+        id: binding
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C2A_PERSIST_BINDING.json'))
+          assert p['schema']=='swap5.lare.bc2.c2a.persist-binding.v1'
+          assert p['required_decision']=='BC2_C2A_ACTUAL_DRIFT_GAIN_MAPPED'
+          assert p['artifact_id'] > 0
+          assert p['artifact_zip_sha256']
+          assert p['result_sha256']
+          print(f"artifact_id={p['artifact_id']}")
+          print(f"artifact_zip_sha256={p['artifact_zip_sha256']}")
+          print(f"result_sha256={p['result_sha256']}")
+          PY
+
+      - name: Recover exact result artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.binding.outputs.artifact_id }}
+          ARTIFACT_SHA: ${{ steps.binding.outputs.artifact_zip_sha256 }}
+          RESULT_SHA: ${{ steps.binding.outputs.result_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-c2-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > /tmp/lare-c2-persist/result.zip
+          echo "${ARTIFACT_SHA}  /tmp/lare-c2-persist/result.zip" | sha256sum -c -
+          unzip -q /tmp/lare-c2-persist/result.zip -d /tmp/lare-c2-persist
+          echo "${RESULT_SHA}  /tmp/lare-c2-persist/LARE_BC2_C2A_RESULT.json" | sha256sum -c -
+
+      - name: Validate result firewalls
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-c2-persist/LARE_BC2_C2A_RESULT.json'))
+          assert r['decision']=='BC2_C2A_ACTUAL_DRIFT_GAIN_MAPPED'
+          assert r['complete'] is True
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_C2_PERSIST_VALIDATION=PASS')
+          PY
+
+      - name: Persist byte-identical result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-c2-persist/LARE_BC2_C2A_RESULT.json /tmp/LARE_BC2_C2A_RESULT.json.validated
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin work/f-rom-lare-rs1
+          git reset --hard origin/work/f-rom-lare-rs1
+          cp /tmp/LARE_BC2_C2A_RESULT.json.validated integration/f-rom/LARE_BC2_C2A_RESULT.json
+          git add integration/f-rom/LARE_BC2_C2A_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-C2A actual drift-gain result"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:work/f-rom-lare-rs1; then exit 0; fi
+            git fetch origin work/f-rom-lare-rs1
+            git rebase origin/work/f-rom-lare-rs1
+          done
+          exit 1
