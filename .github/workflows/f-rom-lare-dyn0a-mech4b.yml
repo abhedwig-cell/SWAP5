@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install analysis dependency
-        run: python3 -m pip install --disable-pip-version-check numpy
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
 
       - name: Lock blind ranking authority
         run: |
