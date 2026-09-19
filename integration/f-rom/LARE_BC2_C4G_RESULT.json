@@ -1,0 +1,250 @@
+{
+  "C4F_unweighted_metrics_reproduced": true,
+  "WT_RISE_width_effect_robust": true,
+  "application_acceptance_adjudicated": false,
+  "complete": true,
+  "decision": "WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "additive_gate_cm": 1e-10,
+    "maximum_additive_residual_cm": 2.128868912751325e-14,
+    "maximum_squared_norm_identity_residual_theta2": 2.117582368135751e-22,
+    "squared_norm_gate_theta2": 1e-12
+  },
+  "historical_primary_metric_unchanged": true,
+  "interpretation": [
+    "C4G is a secondary metric-sensitivity analysis. It does not replace or revise the preregistered unweighted C2/C3/C4E shape metric.",
+    "The depth-weighted norm reduces the leverage of a thin terminal coordinate relative to the historical equal-coordinate norm.",
+    "If the 2.5-versus-5 cm WT_RISE removal direction survives this reweighting, the width dependence cannot be dismissed as an equal-coordinate RMS artifact.",
+    "For 2.5 cm WT_FALL, algebraic weighted metrics over all intervals are diagnostic only because C4F showed that the QI-removal counterfactual is physically inadmissible on 499 intervals."
+  ],
+  "next_authority": "PHYSICALLY_ADMISSIBLE_TERMINAL_RECONSTRUCTION_HYPOTHESIS_MAY_BE_PREREGISTERED",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4g.result.v1",
+  "speed_claim_authorized": false,
+  "summary": {
+    "2.5": {
+      "WT_FALL": {
+        "0.00002500": {
+          "C4F_QI_hydraulic_blocked_interval_count": 499,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9758642033843183,
+            "median_cosine_qi_remainder": -0.9771426094416829,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 3.2545125621313076e-05,
+            "pooled_qi_rms": 0.00012625526921772982,
+            "pooled_remainder_rms": 0.00010988335110176327,
+            "remainder_to_local_ratio": 3.376338207458112
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9968306848674287,
+            "median_cosine_qi_remainder": -0.9970387517010904,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 3.8285205341832734e-05,
+            "pooled_qi_rms": 0.0002718771019686656,
+            "pooled_remainder_rms": 0.0002408873600381924,
+            "remainder_to_local_ratio": 6.29191767126254
+          }
+        },
+        "0.00005000": {
+          "C4F_QI_hydraulic_blocked_interval_count": 499,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9758603445733169,
+            "median_cosine_qi_remainder": -0.9771405934139445,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 3.2535224263105624e-05,
+            "pooled_qi_rms": 0.00012619513331864194,
+            "pooled_remainder_rms": 0.00010982221690430735,
+            "remainder_to_local_ratio": 3.3754867037705907
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9968300532752883,
+            "median_cosine_qi_remainder": -0.997038438765103,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 3.828458855699957e-05,
+            "pooled_qi_rms": 0.0002717485512058758,
+            "pooled_remainder_rms": 0.00024075355361930675,
+            "remainder_to_local_ratio": 6.288523990818487
+          }
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9335840540041852,
+            "median_cosine_qi_remainder": -0.9316685858641104,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 5.206968268443306e-05,
+            "pooled_qi_rms": 0.00014045778238129742,
+            "pooled_remainder_rms": 0.00011145907513193932,
+            "remainder_to_local_ratio": 2.1405752711694848
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9851922695204461,
+            "median_cosine_qi_remainder": -0.9847375099660279,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 5.6913028296376244e-05,
+            "pooled_qi_rms": 0.0002625222803642949,
+            "pooled_remainder_rms": 0.0002194227628000178,
+            "remainder_to_local_ratio": 3.8554048056864487
+          }
+        },
+        "0.00005000": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.93358576240571,
+            "median_cosine_qi_remainder": -0.9316695420711746,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 5.20757409684456e-05,
+            "pooled_qi_rms": 0.00014047116510783916,
+            "pooled_remainder_rms": 0.00011146533605308902,
+            "remainder_to_local_ratio": 2.1404464723916172
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.0,
+            "fraction_removal_worsens": 1.0,
+            "mean_cosine_qi_remainder": -0.9851926132590131,
+            "median_cosine_qi_remainder": -0.9847377136990316,
+            "pooled_direction": "WORSENS",
+            "pooled_local_rms": 5.6924280416260544e-05,
+            "pooled_qi_rms": 0.0002625483712965367,
+            "pooled_remainder_rms": 0.00021943574857850168,
+            "remainder_to_local_ratio": 3.8548708384870403
+          }
+        }
+      }
+    },
+    "5.0": {
+      "WT_FALL": {
+        "0.00002500": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.998046875,
+            "fraction_removal_worsens": 0.001953125,
+            "mean_cosine_qi_remainder": -0.8512479948212817,
+            "median_cosine_qi_remainder": -0.8934174173788583,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 3.70286589161375e-05,
+            "pooled_qi_rms": 5.103008990852234e-05,
+            "pooled_remainder_rms": 2.1078152617217994e-05,
+            "remainder_to_local_ratio": 0.5692388877748933
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.998046875,
+            "fraction_removal_worsens": 0.001953125,
+            "mean_cosine_qi_remainder": -0.9435682134890298,
+            "median_cosine_qi_remainder": -0.9655783025283367,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 5.137084509693619e-05,
+            "pooled_qi_rms": 7.565755125686678e-05,
+            "pooled_remainder_rms": 3.0705104529200635e-05,
+            "remainder_to_local_ratio": 0.597714607794761
+          }
+        },
+        "0.00005000": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.998046875,
+            "fraction_removal_worsens": 0.001953125,
+            "mean_cosine_qi_remainder": -0.8511113320629123,
+            "median_cosine_qi_remainder": -0.8933499348185683,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 3.702920664674509e-05,
+            "pooled_qi_rms": 5.10246165731807e-05,
+            "pooled_remainder_rms": 2.1076554318469407e-05,
+            "remainder_to_local_ratio": 0.5691873044847441
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.0,
+          "unweighted": {
+            "fraction_removal_improves": 0.998046875,
+            "fraction_removal_worsens": 0.001953125,
+            "mean_cosine_qi_remainder": -0.9434958380853888,
+            "median_cosine_qi_remainder": -0.9655512752437407,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 5.137354416797694e-05,
+            "pooled_qi_rms": 7.564877527609645e-05,
+            "pooled_remainder_rms": 3.070147905393429e-05,
+            "remainder_to_local_ratio": 0.5976126341127866
+          }
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.990234375,
+            "fraction_removal_worsens": 0.009765625,
+            "mean_cosine_qi_remainder": 0.1062114625849805,
+            "median_cosine_qi_remainder": 0.295838216534168,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 6.059885469324171e-05,
+            "pooled_qi_rms": 5.795445336777517e-05,
+            "pooled_remainder_rms": 1.7847441109446384e-05,
+            "remainder_to_local_ratio": 0.29451779575360226
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.001953125,
+          "unweighted": {
+            "fraction_removal_improves": 0.98828125,
+            "fraction_removal_worsens": 0.01171875,
+            "mean_cosine_qi_remainder": -0.022675128334505856,
+            "median_cosine_qi_remainder": 0.15858535963471504,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 7.48208248114067e-05,
+            "pooled_qi_rms": 7.420237456478382e-05,
+            "pooled_remainder_rms": 2.22355833500705e-05,
+            "remainder_to_local_ratio": 0.2971844189918715
+          }
+        },
+        "0.00005000": {
+          "C4F_QI_hydraulic_blocked_interval_count": 0,
+          "depth_weighted": {
+            "fraction_removal_improves": 0.990234375,
+            "fraction_removal_worsens": 0.009765625,
+            "mean_cosine_qi_remainder": 0.10667066102793356,
+            "median_cosine_qi_remainder": 0.29643534883881906,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 6.0600682751000493e-05,
+            "pooled_qi_rms": 5.794897962095987e-05,
+            "pooled_remainder_rms": 1.7846962624928775e-05,
+            "remainder_to_local_ratio": 0.2945010157436573
+          },
+          "fraction_interval_direction_changes_between_metrics": 0.001953125,
+          "unweighted": {
+            "fraction_removal_improves": 0.98828125,
+            "fraction_removal_worsens": 0.01171875,
+            "mean_cosine_qi_remainder": -0.02206685087042269,
+            "median_cosine_qi_remainder": 0.15909577575555445,
+            "pooled_direction": "IMPROVES",
+            "pooled_local_rms": 7.482528846235433e-05,
+            "pooled_qi_rms": 7.419541171086531e-05,
+            "pooled_remainder_rms": 2.223506536777323e-05,
+            "remainder_to_local_ratio": 0.297159768103801
+          }
+        }
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-C4G",
+  "workstream": "F-ROM-LARE"
+}

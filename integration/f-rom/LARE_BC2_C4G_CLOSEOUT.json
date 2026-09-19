@@ -1,0 +1,70 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:5707cd644bb6b8eca5f7f612bd727425e59c2bfef9651ed17bcbd1ba113b764d",
+    "aggregate_artifact_id": 10590137166,
+    "case_artifacts": {
+      "2.5:WT_FALL": {
+        "digest": "sha256:4c72636026228b2570eef8eec48dea2a105600828adfb60fd0e636787e4dae92",
+        "id": 10590256990
+      },
+      "2.5:WT_RISE": {
+        "digest": "sha256:1c39b117b6756eb679fd9bf37fa9fc1b4969c6412ea83eec10d455606ce7c06c",
+        "id": 10590695861
+      },
+      "5.0:WT_FALL": {
+        "digest": "sha256:2f5eccd46aa7018f33250b486c5e305b4f984a6a748b9223dfae70eb79d3aaaa",
+        "id": 10590860661
+      },
+      "5.0:WT_RISE": {
+        "digest": "sha256:abc0ee1ffc48b3f804a8fc5fa989987fc5cc378cac4baa33c70bee34083c6a14",
+        "id": 10589927275
+      }
+    },
+    "execution_head": "eb394481c077325b03e5ee1f439c88ef9002d7b0",
+    "result_sha256": "9f5f0e3c29f425e3a628b9588e56cc27734aff6e1ed77d7d7fa4a334ad7dce8b",
+    "workflow_run": 35462670948
+  },
+  "decision": "WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING",
+  "groundwater_feedback_authorized": false,
+  "key_results": {
+    "2.5_WT_FALL": {
+      "depth_weighted_ratio_approx": 3.376,
+      "direction": "WORSENS",
+      "hydrological_interpretation": "algebraic only on blocked QI intervals",
+      "unweighted_ratio_approx": 6.29
+    },
+    "2.5_WT_RISE": {
+      "depth_weighted_ratio_approx": 2.141,
+      "direction": "WORSENS",
+      "interval_direction_changes": 0,
+      "unweighted_ratio_approx": 3.855
+    },
+    "5.0_WT_FALL": {
+      "depth_weighted_ratio_approx": 0.5692,
+      "direction": "IMPROVES",
+      "unweighted_ratio_approx": 0.5977
+    },
+    "5.0_WT_RISE": {
+      "depth_weighted_ratio_approx": 0.2945,
+      "direction": "IMPROVES",
+      "interval_direction_changes_fraction": 0.001953125,
+      "unweighted_ratio_approx": 0.2972
+    }
+  },
+  "model_changed": false,
+  "next_authority": "PHYSICALLY_ADMISSIBLE_TERMINAL_RECONSTRUCTION_HYPOTHESIS_MAY_BE_PREREGISTERED",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4g.closeout.v1",
+  "scientific_interpretation": [
+    "Depth weighting materially reduces the magnitude of the thin-terminal QI effect but does not reverse it.",
+    "The 2.5-versus-5 cm WT_RISE causal-direction contrast is therefore not an artifact of equal-coordinate RMS weighting.",
+    "Historical C2/C3/C4E metric authority remains unchanged.",
+    "A physically admissible terminal reconstruction hypothesis may now be preregistered, but no closure change is yet authorized."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_WIDTH_EFFECT_METRIC_ROBUST_NO_MODEL_CHANGE",
+  "work_unit": "LARE-BC2-C4G",
+  "workstream": "F-ROM-LARE"
+}
