@@ -125,3 +125,46 @@ It does not:
 - relax hard mass conservation;
 - admit a production SWAP-MODFLOW application;
 - authorize HYDRO-MEMORY Stage 0 until the numerical capability gates are also passed.
+
+
+## 8. ACC02 groundwater-interface allocation, claim HM-ACC-IFACE-001
+
+Before any HYDRO-MEMORY groundwater-coupling feasibility result is inspected, a separate **25%** of the Stage 0 groundwater-head numerical error allowance is assigned to the accepted SWAP-groundwater interface head residual.
+
+The allocation is deliberately symmetric with the already governed temporal share:
+
+- temporal discretisation allocation: 25%;
+- groundwater-interface convergence allocation: 25%;
+- remaining unallocated numerical guard band: 50%.
+
+The unallocated 50% is intentionally not reassigned here. It remains reserved for other numerical contributions that may later require separate qualification, including spatial discretisation and solver/coupling components not already covered by the two governed shares.
+
+Therefore:
+
+[
+A_{interface}=0.25
+]
+
+and, with (H_{app}=0.4) cm,
+
+[
+H_{interface}=H_{app}A_{interface}
+             =0.4\times0.25
+             =0.1\;\mathrm{cm}
+             =0.001\;\mathrm{m}.
+]
+
+Thus the governed groundwater interface head-residual tolerance is:
+
+[
+\boxed{H_{interface}=0.001\;\mathrm{m}}
+]
+
+This is an explicit numerical coupling-accuracy allocation. It is not inferred from a predictor/corrector residual, an observed groundwater response, a coupling timestep, a convergence history, or a physical groundwater threshold.
+
+If the coupled runtime cannot satisfy this tolerance, the capability test fails or the numerical coupling method/window schedule must improve. This value may not be relaxed after inspecting coupling behaviour.
+
+- Interface claim ID: **HM-ACC-IFACE-001**
+- Interface binding provenance ID: **590203**
+- Interface policy ID: **590210**
+- Interface policy version: **1**
