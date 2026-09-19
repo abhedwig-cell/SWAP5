@@ -1942,6 +1942,96 @@ def validate_romv2_d20_if_present() -> str:
     return "CLOSED_ONE_HOUR_FIXED_WATER_TABLE_PERSISTENCE_CANDIDACY_RETAINED"
 
 
+def validate_romv2_d21_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D21_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json") == "234ba54bbdde1e1bac22893743efa318ad8cffd6",
+            "F-ROMV2-D21 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json") == "9a68c5580c0636878c11c2ce4c004d6e92caea52",
+            "F-ROMV2-D21 Stage-2 authority blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D21_RESULT.json") == "84e6db2330da1274a9e936bb1624aada70d76b02",
+            "F-ROMV2-D21 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D21_STATUS.json") == "dfec321b3484b49f9b4590ac1d9b96a0646dd5f1",
+            "F-ROMV2-D21 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D21_CANONICAL_EVIDENCE_MANIFEST.json") == "5de01f4579451f42a454d9c95da95e53570ad05b",
+            "F-ROMV2-D21 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json")
+    auth=load_json("integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D21_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D21_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D21_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc=Path("docs/science/F-ROMV2_D21_RAIN_PONDING_RUNOFF_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_BOUNDARY_PREFLIGHT"
+            and prereg["scientific_role"]["R16_R2_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D21 preregistration phase/evidence firewall drift")
+    require(prereg["boundary_parameters"]["rainfall_factor_ladder_of_Ksat"]==[0.25,0.5,1,2,4,8,16]
+            and prereg["boundary_parameters"]["runoff_resistance_day"]==0.001
+            and prereg["boundary_parameters"]["runoff_exponent"]==1,
+            "F-ROMV2-D21 frozen boundary ladder drift")
+    require("NO_RAINFALL_LADDER_RETUNING" in prereg["firewalls"]
+            and "NO_PONDING_MAX_RETUNING" in prereg["firewalls"]
+            and "NO_RUNOFF_RESISTANCE_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D21 anti-retuning firewalls drift")
+
+    require(auth["stage"]=="STAGE2_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_AUTHORIZED"
+            and auth["original_preregistration_blob"]=="234ba54bbdde1e1bac22893743efa318ad8cffd6"
+            and auth["stage1_execution"]["decision"]=="D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_PASS"
+            and auth["stage1_execution"]["R16_R2_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D21 staged authority drift")
+    require(auth["frozen_thresholds"]["flux_factor_Ksat"]==0.25
+            and auth["frozen_thresholds"]["pond_factor_Ksat"]==2.0
+            and auth["frozen_thresholds"]["runoff_factor_Ksat"]==4.0,
+            "F-ROMV2-D21 selected threshold factors drift")
+
+    require(result["decision"]=="D21_MATCHED_RAIN_PONDING_RUNOFF_BOUNDARY_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+            "F-ROMV2-D21 decision drift")
+    require(result["adjudication"]=="NATIVE_SURFACE_THRESHOLD_MISMATCH_AT_FROZEN_2KSAT_CASE",
+            "F-ROMV2-D21 adjudication drift")
+    require(result["stage1"]["decision"]=="D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_PASS",
+            "F-ROMV2-D21 Stage-1 result drift")
+    require(result["stage2"]["decision"]=="D21_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_NO_GO"
+            and result["stage2"]["preflight_pass"] is False
+            and result["stage2"]["stage3_R16_R2_trajectory_authorized"] is False,
+            "F-ROMV2-D21 Stage-2 no-go drift")
+    require(result["stage2"]["one_step_micro_histories"]["M_POND"]["regime_label_match"] is False
+            and result["stage2"]["one_step_micro_histories"]["M_POND"]["runoff_cm"] > 0.0,
+            "F-ROMV2-D21 2Ksat threshold mismatch lost")
+    require(result["interpretation"]["threshold_mismatch_established"] is True
+            and result["interpretation"]["general_FMC_hydrological_no_go"] is False
+            and result["interpretation"]["prior_D13_D20_positive_evidence_reclassified"] is False,
+            "F-ROMV2-D21 scientific boundary drift")
+    require(result["firewalls"]["R16_R2_threshold_trajectories_generated"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D21 trajectory/production firewall drift")
+
+    require(status["phase"]=="CLOSED_MATCHED_BOUNDARY_THRESHOLD_NO_GO_BEFORE_TRAJECTORY_EXPOSURE"
+            and status["stage1_boundary_preflight_pass"] is True
+            and status["stage2_FMC_micro_preflight_pass"] is False
+            and status["stage3_R16_R2_trajectory_authorized"] is False
+            and status["R16_R2_trajectory_evidence_consumed"] is False
+            and status["prior_FMC_candidacy_reclassified"] is False,
+            "F-ROMV2-D21 terminal status drift")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["stage1"]["pull_request_merged"] is False
+            and manifest["stage2"]["pull_request_merged"] is False
+            and manifest["execution_surfaces_imported"] is False
+            and manifest["R16_R2_threshold_trajectories_generated"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D21 provenance drift")
+
+    require("The mismatch itself is the evidence." in doc,
+            "F-ROMV2-D21 non-retuning scientific statement missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D21 production prohibition missing")
+    return "CLOSED_MATCHED_BOUNDARY_THRESHOLD_NO_GO_BEFORE_TRAJECTORY_EXPOSURE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1988,6 +2078,7 @@ def main() -> int:
     romv2_d18_phase = validate_romv2_d18_if_present()
     romv2_d19_phase = validate_romv2_d19_if_present()
     romv2_d20_phase = validate_romv2_d20_if_present()
+    romv2_d21_phase = validate_romv2_d21_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2018,6 +2109,7 @@ def main() -> int:
     print(f"F_ROMV2_D18_PHASE={romv2_d18_phase}")
     print(f"F_ROMV2_D19_PHASE={romv2_d19_phase}")
     print(f"F_ROMV2_D20_PHASE={romv2_d20_phase}")
+    print(f"F_ROMV2_D21_PHASE={romv2_d21_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
