@@ -1,0 +1,76 @@
+name: F-ROM-LARE DYN0A MECH4A Taylor gradient mechanism
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH4A_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_dyn0a_mech4a.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech4a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  mechanism:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Recover frozen B01, B14 and Carsel fine-Reference evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-mech4a/b01 /tmp/lare-mech4a/b14 /tmp/lare-mech4a/carsel
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/lare-mech4a/b01.zip
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585857746/zip" > /tmp/lare-mech4a/b14.zip
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586248675/zip" > /tmp/lare-mech4a/carsel.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/lare-mech4a/b01.zip" | sha256sum -c -
+          echo "f67b65702e8dbab10ab29c3bc15755cf607bb15b555fe06380a1910c020864f7  /tmp/lare-mech4a/b14.zip" | sha256sum -c -
+          echo "81a86b10cfcca1570c44071611b823555eedbb9439869ff16fa3f2153b9fa46f  /tmp/lare-mech4a/carsel.zip" | sha256sum -c -
+          unzip -q /tmp/lare-mech4a/b01.zip -d /tmp/lare-mech4a/b01
+          unzip -q /tmp/lare-mech4a/b14.zip -d /tmp/lare-mech4a/b14
+          unzip -q /tmp/lare-mech4a/carsel.zip -d /tmp/lare-mech4a/carsel
+
+      - name: Execute preregistered Taylor mechanism analysis
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_DYN0A_MECH4A_EVIDENCE
+          python3 tests/rom/analyze_lare_dyn0a_mech4a.py \
+            --b01-dir /tmp/lare-mech4a/b01 \
+            --b01-status /tmp/lare-mech4a/b01/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --b14-dir /tmp/lare-mech4a/b14 \
+            --b14-status /tmp/lare-mech4a/b14/LARE_DYN0A_MECH2B_B14_REFERENCE_STATUS.json \
+            --carsel-dir /tmp/lare-mech4a/carsel \
+            --carsel-status /tmp/lare-mech4a/carsel/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json \
+            --prereg integration/f-rom/LARE_DYN0A_MECH4A_PREREGISTRATION.json \
+            --output LARE_DYN0A_MECH4A_EVIDENCE/LARE_DYN0A_MECH4A_RESULT.json \
+            | tee LARE_DYN0A_MECH4A_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_DYN0A_MECH4A_EVIDENCE/LARE_DYN0A_MECH4A_RESULT.json'))
+          assert r['decision'] in {
+            'CURVATURE_RANKING_SUPPORTED_AND_TAYLOR3_IMPROVES',
+            'CURVATURE_RANKING_SUPPORTED_LOCAL_EXPANSION_INCOMPLETE',
+            'LOCAL_TAYLOR_STRUCTURE_SUPPORTED_WITHOUT_RANKING_GAIN',
+            'TAYLOR_CURVATURE_STRUCTURE_NOT_SUPPORTED'
+          }
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH4A_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_MECH4A_EVIDENCE/* > LARE_DYN0A_MECH4A_EVIDENCE/sha256.txt
+
+      - name: Upload MECH4A evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech4a
+          path: LARE_DYN0A_MECH4A_EVIDENCE/
