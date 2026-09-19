@@ -1,14 +1,54 @@
 {
   "application_acceptance_adjudicated": false,
   "authority": {
-    "artifact_digest": "sha256:44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16",
-    "artifact_id": 10592180556,
+    "aggregate_artifact_digest": "sha256:44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16",
+    "aggregate_artifact_id": 10592180556,
     "execution_head": "c0381a606ac7245fcfeabddf8a8fdffb276dd285",
+    "governance_repairs": [
+      "54c513f56cab8065391d9562e2bc217bc7b65a1b",
+      "c0381a606ac7245fcfeabddf8a8fdffb276dd285"
+    ],
     "result_sha256": "f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8",
     "workflow_run": 35467786671
   },
+  "case_artifacts": {
+    "2.5:WT_FALL": {
+      "digest": "sha256:c131021d690294c502732f523493b0a51b8657c4bcf7485900e882f3a593a4f4",
+      "id": 10591264019
+    },
+    "2.5:WT_HOLD": {
+      "digest": "sha256:af4827fe21b247bb127fa1929c28907a131980bf6dc9d5edf1b85ef137725e1a",
+      "id": 10591244041
+    },
+    "2.5:WT_RISE": {
+      "digest": "sha256:d40f674da1f7c320aa76fe6e34cd799befa02f94578cd9e93a41c9c468fce096",
+      "id": 10591184259
+    },
+    "5.0:WT_FALL": {
+      "digest": "sha256:9527c0b7fba88646e97190cc44c6daaf569c247893ab8ecc143e4c14033796c5",
+      "id": 10591318951
+    },
+    "5.0:WT_HOLD": {
+      "digest": "sha256:4ea5f1d0f55f5da11f0465dbc38e9c01ce3d4919424d7e1067d71f782a191374",
+      "id": 10592275295
+    },
+    "5.0:WT_RISE": {
+      "digest": "sha256:f28359edc7da62f619f60374e0935e1cf91288d77c62a95829babee493746888",
+      "id": 10592035747
+    }
+  },
   "decision": "QH_PRESERVING_CUBIC_MIXED",
   "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "maximum_B8_qi_identity_cm_per_day": 1.3027801060161437e-11,
+    "maximum_hydrostatic_abs_u": 0.0,
+    "maximum_hydrostatic_abs_v": 0.0,
+    "maximum_qH_candidate_vs_B9_identity_cm_per_day": 0.0,
+    "maximum_qi_64_vs_128_cm_per_day": 2.6444819667403863e-09,
+    "maximum_storage_residual_cm": 4.876099524153688e-13,
+    "minimum_profile_psi_cm": 0.0,
+    "minimum_valid_multistart_roots": 2
+  },
   "key_results": {
     "2.5_FALL": {
       "base_rms": 0.2940717072874931,
@@ -39,49 +79,25 @@
   "next_authority": "PREREGISTER_INTERNAL_SLOPE_CORRECTION_MECHANISM_REVIEW",
   "next_model_change_authorized": false,
   "production_rom_authorized": false,
-  "schema": "swap5.lare.bc2.c4l.closeout.v1",
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.c4l.closeout.v2",
   "scientific_interpretation": [
-    "The qH-preserving cubic is numerically well-defined and conservative but is not a transferable qi closure across width and regime.",
-    "It improves both moving directions at 2.5 cm and improves 5 cm FALL, but worsens 5 cm RISE and introduces nonzero qi under HOLD where the B9 baseline is essentially hydrostatic.",
-    "Because qH is identical to B9, the mixed result is attributable to the internal gradient reconstruction itself, not a lower-boundary tradeoff.",
-    "No propagated cubic dynamics are authorized."
+    "The qH-preserving cubic is conservative, physically admissible, cross-quadrature stable and exactly hydrostatic in the manufactured test, yet it is not a transferable qi closure across width and regime.",
+    "It improves both moving directions at 2.5 cm and 5 cm FALL, but worsens 5 cm RISE and introduces nonzero qi in HOLD.",
+    "Because qH is exactly identical to B9, the mixed result is attributable to internal gradient reconstruction rather than a lower-boundary tradeoff.",
+    "No cubic propagation is authorized."
   ],
   "speed_claim_authorized": false,
   "status": "CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION",
-  "superseded_authority": {
-    "artifact_id": 10591503680,
+  "superseded_pre_repair_authority": {
+    "aggregate_artifact_digest": "sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa",
+    "aggregate_artifact_id": 10591503680,
     "execution_head": "f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93",
-    "reason": "Pre-repair C4L execution used clipping inside quadrature and did not enforce the preregistered hydrostatic u/v gates. Its scientific pattern is not used as authority.",
+    "reason": "The first execution did not fully enforce the preregistered no-clipping and manufactured-hydrostatic gates. Its qualitative result is not used as C4L execution authority.",
+    "stale_persistence_commit": "b2db900b1b57e9758471a7a679314a3b06dee273",
+    "stale_persistence_run": 35467810381,
     "workflow_run": 35467705083
   },
-  "supported_cases": [
-    {
-      "history": "WT_FALL",
-      "width_cm": "2.5"
-    },
-    {
-      "history": "WT_RISE",
-      "width_cm": "2.5"
-    },
-    {
-      "history": "WT_FALL",
-      "width_cm": "5.0"
-    }
-  ],
-  "unsupported_cases": [
-    {
-      "history": "WT_HOLD",
-      "width_cm": "2.5"
-    },
-    {
-      "history": "WT_HOLD",
-      "width_cm": "5.0"
-    },
-    {
-      "history": "WT_RISE",
-      "width_cm": "5.0"
-    }
-  ],
   "work_unit": "LARE-BC2-C4L",
   "workstream": "F-ROM-LARE"
 }
