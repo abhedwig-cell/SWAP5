@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.lare.dyn0a.mech4a.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH4A",
+  "decision": "CURVATURE_RANKING_SUPPORTED_LOCAL_EXPANSION_INCOMPLETE",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH4A_PREREGISTRATION.json",
+    "workflow_run": 35449866587,
+    "artifact_id": 10586164322,
+    "artifact_digest": "sha256:b056b96c2348bad1988159ae74b3a4255ec31d300a2cdbc59cf90958b176b614",
+    "executed_head": "14cde7affbf1ab9b27d42c0ef666ba705077906c",
+    "exact_result_sha256": "b312c140b6eb834b885353df62d08f55503f4f67ab1d563a1c1c30ad5c409444"
+  },
+  "cohort": {
+    "qualified_case_count": 23,
+    "by_material": {
+      "B01": 5,
+      "B14": 6,
+      "SAND": 1,
+      "LOAM": 5,
+      "CLAY": 6
+    },
+    "pulse_steps": 256,
+    "tested_long_layer_L_cm": [
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "lower_adjacent_layer_cm": 10
+  },
+  "ranking": {
+    "LENGTH_ONLY": {
+      "median_spearman": -1,
+      "median_abs_peak_error_cm": 120,
+      "exact_peak_hits": 1
+    },
+    "TAYLOR2_RMS": {
+      "median_spearman": 0.9780219780219779,
+      "median_abs_peak_error_cm": 0,
+      "exact_peak_hits": 17
+    },
+    "TAYLOR3_RMS": {
+      "median_spearman": 0.9861680751917863,
+      "median_abs_peak_error_cm": 0,
+      "exact_peak_hits": 20
+    },
+    "best": "TAYLOR3_RMS",
+    "curvature_dominates_length_only": true
+  },
+  "signed_prediction": {
+    "actual_gradient_error_rms": 0.012988055472826162,
+    "taylor2_residual_rms": 0.036966567372448536,
+    "taylor3_residual_rms": 0.2867943968477952,
+    "taylor2_sign_agreement_fraction": 0.678328804347826,
+    "taylor3_sign_agreement_fraction": 0.6860498536789298,
+    "required_residual_chain_holds": false
+  },
+  "scientific_interpretation": [
+    "The unequal-layer Taylor curvature structure is a very strong indicator of where standard-LARE gradient reconstruction becomes most vulnerable.",
+    "The third-order indicator identifies 20 of 23 observed peak locations exactly and has median Spearman correlation about 0.986 across layer length.",
+    "The literal local Taylor terms are not a usable signed correction: their pooled residual RMS exceeds the zero-prediction baseline, especially for TAYLOR3.",
+    "Therefore MECH4A authorizes no gradient correction coefficient or repaired closure.",
+    "The defensible next claim to test is a blind grid-risk ranking based on curvature structure, not a flux-correction formula."
+  ],
+  "next_authority": "Blindly test the frozen TAYLOR3_RMS risk ranking on previously unused Carsel-Parrish textures before considering it a transferable grid-design diagnostic.",
+  "application_acceptance_adjudicated": false,
+  "closure_repair_authorized": false,
+  "production_rom_authorized": false
+}
