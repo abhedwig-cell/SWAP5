@@ -1,0 +1,32 @@
+name: F-ROMV2 D16 FMC surface comparator
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'integration/f-rom/F-ROMV2_D16_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d16_fmc_surface.py'
+      - 'tests/rom/test_f_romv2_d16_surface_comparators.f90'
+      - 'tests/rom/analyze_f_romv2_d16_fmc_surface.py'
+      - 'tests/rom/run_f_romv2_d16_fmc_surface.sh'
+      - '.github/workflows/f-romv2-d16-fmc-surface.yml'
+permissions: {contents: read}
+jobs:
+  comparator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute frozen D16 preflight and matched comparator
+        env:
+          F_ROMV2_D16_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D16-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d16_fmc_surface.sh
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d16-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D16-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
