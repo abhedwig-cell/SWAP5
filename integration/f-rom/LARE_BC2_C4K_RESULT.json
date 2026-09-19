@@ -1,0 +1,1333 @@
+{
+  "application_acceptance_adjudicated": false,
+  "complete": true,
+  "decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT",
+  "groundwater_feedback_authorized": false,
+  "interpretation": [
+    "Pair selection and distance matching use only the physically normalized reduced state (H, theta_b, theta_t); hidden Reference profile geometry is exposed only after pairs are frozen.",
+    "The local geometry uses B4-supported full-order point-head diagnostics at d and 2d above the water table.",
+    "A positive result means opposite water-table motion direction carries additional information about local lower-profile geometry beyond closeness in the current reduced state in this A2 laboratory.",
+    "This diagnostic does not decide whether the additional information should be represented by Hdot, a curvature state, another storage partition or a different closure family."
+  ],
+  "next_authority": "MEMORYLESS_STATE_SUFFICIENCY_NOT_REJECTED_IN_THIS_TEST",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4k.result.v1",
+  "speed_claim_authorized": false,
+  "widths": {
+    "2.5": {
+      "closest_32_cross_pairs": [
+        {
+          "curvature_proxy_control_abs_difference": 0.033465963631024276,
+          "curvature_proxy_cross_abs_difference": 0.3477442107828692,
+          "fall_step": 1,
+          "matched_control_distance": 0.052191272087917816,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            20,
+            291
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.21390118617754172,
+          "s_bulk_adjacent_cross_abs_difference": 0.6045189969455573,
+          "s_terminal_control_abs_difference": 0.247367149808566,
+          "s_terminal_cross_abs_difference": 0.9522632077284265,
+          "state_distance": 0.05219045529620042
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.04308590088513786,
+          "curvature_proxy_cross_abs_difference": 0.27934047478723323,
+          "fall_step": 1,
+          "matched_control_distance": 0.05517029568830269,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            13,
+            230
+          ],
+          "rise_step": 2,
+          "s_bulk_adjacent_control_abs_difference": 0.21307772743337772,
+          "s_bulk_adjacent_cross_abs_difference": 0.6230523782458843,
+          "s_terminal_control_abs_difference": 0.2561636283185156,
+          "s_terminal_cross_abs_difference": 0.9023928530331176,
+          "state_distance": 0.05517129039279726
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.04053955693197686,
+          "curvature_proxy_cross_abs_difference": 0.34003896750465823,
+          "fall_step": 2,
+          "matched_control_distance": 0.056244089342257074,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            13,
+            244
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2194327273765332,
+          "s_bulk_adjacent_cross_abs_difference": 0.5888157956157427,
+          "s_terminal_control_abs_difference": 0.25997228430851005,
+          "s_terminal_cross_abs_difference": 0.9288547631204009,
+          "state_distance": 0.05624386075548519
+        },
+        {
+          "curvature_proxy_control_abs_difference": 1.9984014443252818e-15,
+          "curvature_proxy_cross_abs_difference": 0.14783217316860675,
+          "fall_step": 1,
+          "matched_control_distance": 0.05824776420714833,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            30,
+            304
+          ],
+          "rise_step": 3,
+          "s_bulk_adjacent_control_abs_difference": 0.19594503898839477,
+          "s_bulk_adjacent_cross_abs_difference": 0.6887532556743408,
+          "s_terminal_control_abs_difference": 0.19594503898839277,
+          "s_terminal_cross_abs_difference": 0.8365854288429475,
+          "state_distance": 0.05824797976956647
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.07577947929305529,
+          "curvature_proxy_cross_abs_difference": 0.33453272895441,
+          "fall_step": 3,
+          "matched_control_distance": 0.05973201580195406,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            6,
+            141
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.15165943292477868,
+          "s_bulk_adjacent_cross_abs_difference": 0.5779602023816779,
+          "s_terminal_control_abs_difference": 0.22743891221783397,
+          "s_terminal_cross_abs_difference": 0.9124929313360879,
+          "state_distance": 0.059731824210598805
+        },
+        {
+          "curvature_proxy_control_abs_difference": 1.3322676295501878e-15,
+          "curvature_proxy_cross_abs_difference": 0.05491785051933684,
+          "fall_step": 1,
+          "matched_control_distance": 0.061440039272249496,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            29,
+            342
+          ],
+          "rise_step": 4,
+          "s_bulk_adjacent_control_abs_difference": 0.21148784363930972,
+          "s_bulk_adjacent_cross_abs_difference": 0.749886256789412,
+          "s_terminal_control_abs_difference": 0.2114878436393084,
+          "s_terminal_cross_abs_difference": 0.8048041073087489,
+          "state_distance": 0.061440059402466135
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.02447230186911742,
+          "curvature_proxy_cross_abs_difference": 0.3300513122879901,
+          "fall_step": 4,
+          "matched_control_distance": 0.06280329756865037,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            14,
+            378
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.25805410525515493,
+          "s_bulk_adjacent_cross_abs_difference": 0.5698257746041255,
+          "s_terminal_control_abs_difference": 0.28252640712427235,
+          "s_terminal_cross_abs_difference": 0.8998770868921157,
+          "state_distance": 0.06280297332605655
+        },
+        {
+          "curvature_proxy_control_abs_difference": 4.884981308350689e-15,
+          "curvature_proxy_cross_abs_difference": 0.00172050235783483,
+          "fall_step": 1,
+          "matched_control_distance": 0.06480806722979798,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            33,
+            464
+          ],
+          "rise_step": 5,
+          "s_bulk_adjacent_control_abs_difference": 0.22174420497200642,
+          "s_bulk_adjacent_cross_abs_difference": 0.8075463080196221,
+          "s_terminal_control_abs_difference": 0.22174420497200154,
+          "s_terminal_cross_abs_difference": 0.8058258056617873,
+          "state_distance": 0.06480848962276944
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.005982523359017167,
+          "curvature_proxy_cross_abs_difference": 0.3374062423411953,
+          "fall_step": 5,
+          "matched_control_distance": 0.06554152661218562,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            16,
+            268
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2526352893593067,
+          "s_bulk_adjacent_cross_abs_difference": 0.5575225245249983,
+          "s_terminal_control_abs_difference": 0.25861781271832385,
+          "s_terminal_cross_abs_difference": 0.8949287668661936,
+          "state_distance": 0.0655394455765542
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.016699487535277724,
+          "curvature_proxy_cross_abs_difference": 0.34301501780168386,
+          "fall_step": 6,
+          "matched_control_distance": 0.06800032210248433,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            9,
+            231
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.28760313437897556,
+          "s_bulk_adjacent_cross_abs_difference": 0.5470558067164929,
+          "s_terminal_control_abs_difference": 0.3043026219142533,
+          "s_terminal_cross_abs_difference": 0.8900708245181768,
+          "state_distance": 0.06800005683411464
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.016826011258741946,
+          "curvature_proxy_cross_abs_difference": 0.022180832451085264,
+          "fall_step": 1,
+          "matched_control_distance": 0.06864981467616893,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            13,
+            501
+          ],
+          "rise_step": 6,
+          "s_bulk_adjacent_control_abs_difference": 0.2841164418596246,
+          "s_bulk_adjacent_cross_abs_difference": 0.8668457633563937,
+          "s_terminal_control_abs_difference": 0.30094245311836654,
+          "s_terminal_cross_abs_difference": 0.8446649309053085,
+          "state_distance": 0.06864986236684414
+        },
+        {
+          "curvature_proxy_control_abs_difference": 4.6629367034256575e-15,
+          "curvature_proxy_cross_abs_difference": 0.3478225340905323,
+          "fall_step": 7,
+          "matched_control_distance": 0.07022872960570163,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            26,
+            486
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.25339078577459007,
+          "s_bulk_adjacent_cross_abs_difference": 0.53752748862929,
+          "s_terminal_control_abs_difference": 0.25339078577459473,
+          "s_terminal_cross_abs_difference": 0.8853500227198223,
+          "state_distance": 0.07022959028819602
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0,
+          "curvature_proxy_cross_abs_difference": 0.3523304312605594,
+          "fall_step": 8,
+          "matched_control_distance": 0.07226352792504616,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            22,
+            464
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.26981688702923345,
+          "s_bulk_adjacent_cross_abs_difference": 0.5284532697273255,
+          "s_terminal_control_abs_difference": 0.26981688702923345,
+          "s_terminal_cross_abs_difference": 0.8807837009878849,
+          "state_distance": 0.07226313322295595
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.039416919993147115,
+          "curvature_proxy_cross_abs_difference": 0.01935030689154882,
+          "fall_step": 1,
+          "matched_control_distance": 0.0736382063962797,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            5,
+            218
+          ],
+          "rise_step": 7,
+          "s_bulk_adjacent_control_abs_difference": 0.15937365564978134,
+          "s_bulk_adjacent_cross_abs_difference": 0.945032177692728,
+          "s_terminal_control_abs_difference": 0.19879057564292846,
+          "s_terminal_cross_abs_difference": 0.9256818708011791,
+          "state_distance": 0.07363915458281284
+        },
+        {
+          "curvature_proxy_control_abs_difference": 4.440892098500626e-15,
+          "curvature_proxy_cross_abs_difference": 0.3568020792307647,
+          "fall_step": 9,
+          "matched_control_distance": 0.07413151633988849,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            13,
+            352
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.30521795930308215,
+          "s_bulk_adjacent_cross_abs_difference": 0.5195736332849774,
+          "s_terminal_control_abs_difference": 0.3052179593030866,
+          "s_terminal_cross_abs_difference": 0.8763757125157421,
+          "state_distance": 0.07412870356320116
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.009404009556284065,
+          "curvature_proxy_cross_abs_difference": 0.019350306891550373,
+          "fall_step": 1,
+          "matched_control_distance": 0.07448652308118765,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            3,
+            236
+          ],
+          "rise_step": 8,
+          "s_bulk_adjacent_control_abs_difference": 0.3006834018243425,
+          "s_bulk_adjacent_cross_abs_difference": 0.9367692476697314,
+          "s_terminal_control_abs_difference": 0.31008741138062657,
+          "s_terminal_cross_abs_difference": 0.917418940778181,
+          "state_distance": 0.07448837901120194
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.42662957493529685,
+          "curvature_proxy_cross_abs_difference": 0.01935030689155104,
+          "fall_step": 1,
+          "matched_control_distance": 0.0752694323787735,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            1,
+            159
+          ],
+          "rise_step": 9,
+          "s_bulk_adjacent_control_abs_difference": 0.09128357226607697,
+          "s_bulk_adjacent_cross_abs_difference": 0.927626191114352,
+          "s_terminal_control_abs_difference": 0.3353460026692199,
+          "s_terminal_cross_abs_difference": 0.9082758842228009,
+          "state_distance": 0.07527032106720709
+        },
+        {
+          "curvature_proxy_control_abs_difference": 2.886579864025407e-15,
+          "curvature_proxy_cross_abs_difference": 0.3613692702505339,
+          "fall_step": 10,
+          "matched_control_distance": 0.07584936892070714,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            16,
+            437
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.3016590389078959,
+          "s_bulk_adjacent_cross_abs_difference": 0.5107541101299399,
+          "s_terminal_control_abs_difference": 0.30165903890789303,
+          "s_terminal_cross_abs_difference": 0.8721233803804738,
+          "state_distance": 0.07584900623363283
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.031259817804881074,
+          "curvature_proxy_cross_abs_difference": 0.019350306891550595,
+          "fall_step": 1,
+          "matched_control_distance": 0.07603903117706814,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            5,
+            240
+          ],
+          "rise_step": 10,
+          "s_bulk_adjacent_control_abs_difference": 0.17279936160108256,
+          "s_bulk_adjacent_cross_abs_difference": 0.9188199439910181,
+          "s_terminal_control_abs_difference": 0.20405917940596363,
+          "s_terminal_cross_abs_difference": 0.8994696370994675,
+          "state_distance": 0.07603900648331449
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0048026294124707825,
+          "curvature_proxy_cross_abs_difference": 0.01935030689155126,
+          "fall_step": 1,
+          "matched_control_distance": 0.07679327687502314,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            5,
+            373
+          ],
+          "rise_step": 11,
+          "s_bulk_adjacent_control_abs_difference": 0.3249795093974426,
+          "s_bulk_adjacent_cross_abs_difference": 0.9103418131050072,
+          "s_terminal_control_abs_difference": 0.3201768799849718,
+          "s_terminal_cross_abs_difference": 0.8909915062134559,
+          "state_distance": 0.07679376822725797
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.4148042792284867,
+          "curvature_proxy_cross_abs_difference": 0.3660903002149669,
+          "fall_step": 11,
+          "matched_control_distance": 0.0774420245741306,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            1,
+            173
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.078042911684437,
+          "s_bulk_adjacent_cross_abs_difference": 0.5019305626313335,
+          "s_terminal_control_abs_difference": 0.33676136754404973,
+          "s_terminal_cross_abs_difference": 0.8680208628463004,
+          "state_distance": 0.07744266842346972
+        },
+        {
+          "curvature_proxy_control_abs_difference": 8.881784197001252e-16,
+          "curvature_proxy_cross_abs_difference": 0.019350306891553037,
+          "fall_step": 1,
+          "matched_control_distance": 0.0775345270523907,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            8,
+            334
+          ],
+          "rise_step": 12,
+          "s_bulk_adjacent_control_abs_difference": 0.3427982707030197,
+          "s_bulk_adjacent_cross_abs_difference": 0.9021829326783992,
+          "s_terminal_control_abs_difference": 0.3427982707030188,
+          "s_terminal_cross_abs_difference": 0.8828326257868462,
+          "state_distance": 0.07753402386628379
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.005646580258932277,
+          "curvature_proxy_cross_abs_difference": 0.01935030689154904,
+          "fall_step": 1,
+          "matched_control_distance": 0.07825941565577647,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            6,
+            469
+          ],
+          "rise_step": 13,
+          "s_bulk_adjacent_control_abs_difference": 0.333143813082005,
+          "s_bulk_adjacent_cross_abs_difference": 0.8943342716139475,
+          "s_terminal_control_abs_difference": 0.32749723282307275,
+          "s_terminal_cross_abs_difference": 0.8749839647223985,
+          "state_distance": 0.07825927757595719
+        },
+        {
+          "curvature_proxy_control_abs_difference": 1.7763568394002505e-15,
+          "curvature_proxy_cross_abs_difference": 0.36709451767441936,
+          "fall_step": 12,
+          "matched_control_distance": 0.07892479792913529,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            15,
+            494
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.31787222889738165,
+          "s_bulk_adjacent_cross_abs_difference": 0.496966367653656,
+          "s_terminal_control_abs_difference": 0.3178722288973834,
+          "s_terminal_cross_abs_difference": 0.8640608853280753,
+          "state_distance": 0.07892513561225178
+        },
+        {
+          "curvature_proxy_control_abs_difference": 2.886579864025407e-15,
+          "curvature_proxy_cross_abs_difference": 0.019350306891553037,
+          "fall_step": 1,
+          "matched_control_distance": 0.07897317015966383,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            13,
+            451
+          ],
+          "rise_step": 14,
+          "s_bulk_adjacent_control_abs_difference": 0.32588258604170917,
+          "s_bulk_adjacent_cross_abs_difference": 0.8867866454521012,
+          "s_terminal_control_abs_difference": 0.32588258604171205,
+          "s_terminal_cross_abs_difference": 0.8674363385605481,
+          "state_distance": 0.07896912121018075
+        },
+        {
+          "curvature_proxy_control_abs_difference": 1.9984014443252818e-15,
+          "curvature_proxy_cross_abs_difference": 0.01935030689154993,
+          "fall_step": 1,
+          "matched_control_distance": 0.07966204703342454,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            14,
+            491
+          ],
+          "rise_step": 15,
+          "s_bulk_adjacent_control_abs_difference": 0.324686045018284,
+          "s_bulk_adjacent_cross_abs_difference": 0.8795307325827149,
+          "s_terminal_control_abs_difference": 0.324686045018282,
+          "s_terminal_cross_abs_difference": 0.8601804256911649,
+          "state_distance": 0.07966323441384618
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.025300958602757495,
+          "curvature_proxy_cross_abs_difference": 0.367094517674422,
+          "fall_step": 13,
+          "matched_control_distance": 0.08030499568271078,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            1,
+            222
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.3205832613618309,
+          "s_bulk_adjacent_cross_abs_difference": 0.4931411457664038,
+          "s_terminal_control_abs_difference": 0.3458842199645884,
+          "s_terminal_cross_abs_difference": 0.8602356634408258,
+          "state_distance": 0.0803093361733858
+        },
+        {
+          "curvature_proxy_control_abs_difference": 3.1086244689504383e-15,
+          "curvature_proxy_cross_abs_difference": 0.01935030689155348,
+          "fall_step": 1,
+          "matched_control_distance": 0.08034223127466542,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            10,
+            421
+          ],
+          "rise_step": 16,
+          "s_bulk_adjacent_control_abs_difference": 0.3449632921311492,
+          "s_bulk_adjacent_cross_abs_difference": 0.8725570942291001,
+          "s_terminal_control_abs_difference": 0.3449632921311523,
+          "s_terminal_cross_abs_difference": 0.8532067873375466,
+          "state_distance": 0.08034138378062294
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0028305255595335588,
+          "curvature_proxy_cross_abs_difference": 0.019350306891552815,
+          "fall_step": 1,
+          "matched_control_distance": 0.08100375207810986,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            6,
+            330
+          ],
+          "rise_step": 17,
+          "s_bulk_adjacent_control_abs_difference": 0.27173106513291856,
+          "s_bulk_adjacent_cross_abs_difference": 0.8658561976837928,
+          "s_terminal_control_abs_difference": 0.268900539573385,
+          "s_terminal_cross_abs_difference": 0.84650589079224,
+          "state_distance": 0.08100342107965229
+        },
+        {
+          "curvature_proxy_control_abs_difference": 2.220446049250313e-16,
+          "curvature_proxy_cross_abs_difference": 0.3670945176744205,
+          "fall_step": 14,
+          "matched_control_distance": 0.08161234379538716,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            11,
+            473
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.3454924044453651,
+          "s_bulk_adjacent_cross_abs_difference": 0.4894428835070783,
+          "s_terminal_control_abs_difference": 0.34549240444536533,
+          "s_terminal_cross_abs_difference": 0.8565374011814988,
+          "state_distance": 0.08160618317162265
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.013322209022509024,
+          "curvature_proxy_cross_abs_difference": 0.01935030689155215,
+          "fall_step": 1,
+          "matched_control_distance": 0.08164923823319396,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            5,
+            511
+          ],
+          "rise_step": 18,
+          "s_bulk_adjacent_control_abs_difference": 0.34991953957055577,
+          "s_bulk_adjacent_cross_abs_difference": 0.8594184422448015,
+          "s_terminal_control_abs_difference": 0.33659733054804675,
+          "s_terminal_cross_abs_difference": 0.8400681353532493,
+          "state_distance": 0.08164928059548403
+        },
+        {
+          "curvature_proxy_control_abs_difference": 2.220446049250313e-15,
+          "curvature_proxy_cross_abs_difference": 0.019350306891551483,
+          "fall_step": 1,
+          "matched_control_distance": 0.08228203273777465,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            8,
+            423
+          ],
+          "rise_step": 19,
+          "s_bulk_adjacent_control_abs_difference": 0.36329247884926463,
+          "s_bulk_adjacent_cross_abs_difference": 0.8532341872799392,
+          "s_terminal_control_abs_difference": 0.3632924788492624,
+          "s_terminal_cross_abs_difference": 0.8338838803883877,
+          "state_distance": 0.08227897564471126
+        }
+      ],
+      "control_pair_count": 261632,
+      "cross_direction_pair_count": 1023,
+      "curvature_by_direction": {
+        "WT_FALL": {
+          "count": 512,
+          "max": 4.107825191113079e-15,
+          "mean": -0.027049272432263946,
+          "median": -0.02677759659777834,
+          "min": -0.05014320372363812,
+          "p90": -0.0017261186828792026
+        },
+        "WT_FALL_fraction_positive": 0.046875,
+        "WT_RISE": {
+          "count": 512,
+          "max": 0.08378775331851607,
+          "mean": 0.015556259914628905,
+          "median": 2.886579864025407e-15,
+          "min": -0.3670945176744209,
+          "p90": 0.06533366275384725
+        },
+        "WT_RISE_fraction_positive": 0.69921875
+      },
+      "direction_history_information_supported": false,
+      "hidden_geometry": {
+        "curvature_proxy": {
+          "cross": {
+            "count": 1023,
+            "max": 0.367094517674425,
+            "mean": 0.18894159626244583,
+            "median": 0.3169513139507828,
+            "min": 0.00172050235783483,
+            "p90": 0.34948198051449836
+          },
+          "fraction_cross_gt_matched_control": 0.0801564027370479,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.42662957493529685,
+            "mean": 0.3435680050197653,
+            "median": 0.3670945176744189,
+            "min": 0.0,
+            "p90": 0.3670945176744189
+          },
+          "median_cross_minus_control": -0.05014320372363612,
+          "p90_cross_minus_control": -0.01761253715992056
+        },
+        "s_bulk_adjacent": {
+          "cross": {
+            "count": 1023,
+            "max": 0.945032177692728,
+            "mean": 0.470477103848489,
+            "median": 0.5595124937930325,
+            "min": 0.20746338644305817,
+            "p90": 0.7273042658736382
+          },
+          "fraction_cross_gt_matched_control": 1.0,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.3962110581547821,
+            "mean": 0.06111035431660682,
+            "median": 0.045423271787336406,
+            "min": 0.0110535712332267,
+            "p90": 0.045423271787336406
+          },
+          "median_cross_minus_control": 0.5140892220056961,
+          "p90_cross_minus_control": 0.6818809940863018
+        },
+        "s_terminal": {
+          "cross": {
+            "count": 1023,
+            "max": 0.9522632077284265,
+            "mean": 0.6228556562907539,
+            "median": 0.5972097293751354,
+            "min": 0.5397454182666712,
+            "p90": 0.7453430361089071
+          },
+          "fraction_cross_gt_matched_control": 1.0,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.4125177894617553,
+            "mean": 0.40415972565874203,
+            "median": 0.4125177894617553,
+            "min": 0.19594503898839277,
+            "p90": 0.4125177894617553
+          },
+          "median_cross_minus_control": 0.18469193991338007,
+          "p90_cross_minus_control": 0.33282524664715174
+        }
+      },
+      "state_distance": {
+        "cross": {
+          "count": 1023,
+          "max": 0.14325771524652492,
+          "mean": 0.12302012047272909,
+          "median": 0.12778952884335132,
+          "min": 0.05219045529620042,
+          "p90": 0.13922839606906373
+        },
+        "matched_control": {
+          "count": 1023,
+          "max": 0.10173301216773599,
+          "mean": 0.10016610119308555,
+          "median": 0.10173301216773599,
+          "min": 0.052191272087917816,
+          "p90": 0.10173301216773599
+        },
+        "median_absolute_matching_error": 0.02605651667561533
+      },
+      "status": "COMPLETE"
+    },
+    "5.0": {
+      "closest_32_cross_pairs": [
+        {
+          "curvature_proxy_control_abs_difference": 0.017834453904943648,
+          "curvature_proxy_cross_abs_difference": 0.2260264522683827,
+          "fall_step": 1,
+          "matched_control_distance": 0.05310555083547239,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            20,
+            292
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.24874237130427324,
+          "s_bulk_adjacent_cross_abs_difference": 0.5523646500686092,
+          "s_terminal_control_abs_difference": 0.2309079173993296,
+          "s_terminal_cross_abs_difference": 0.7783911023369919,
+          "state_distance": 0.053105105196412
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.07674658030518633,
+          "curvature_proxy_cross_abs_difference": 0.1396702373936164,
+          "fall_step": 1,
+          "matched_control_distance": 0.056112468332648324,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            34,
+            279
+          ],
+          "rise_step": 2,
+          "s_bulk_adjacent_control_abs_difference": 0.24848652553098916,
+          "s_bulk_adjacent_cross_abs_difference": 0.6230523782458846,
+          "s_terminal_control_abs_difference": 0.17173994522580283,
+          "s_terminal_cross_abs_difference": 0.762722615639501,
+          "state_distance": 0.056112144522919745
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.10647239750984583,
+          "curvature_proxy_cross_abs_difference": 0.22217383062927742,
+          "fall_step": 2,
+          "matched_control_distance": 0.057142873352015386,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            52,
+            471
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.27821476839305737,
+          "s_bulk_adjacent_cross_abs_difference": 0.5366614487387944,
+          "s_terminal_control_abs_difference": 0.17174237088321154,
+          "s_terminal_cross_abs_difference": 0.7588352793680718,
+          "state_distance": 0.05714353273635157
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.08779536801184284,
+          "curvature_proxy_cross_abs_difference": 0.07391608658430371,
+          "fall_step": 1,
+          "matched_control_distance": 0.059227525562315024,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            40,
+            378
+          ],
+          "rise_step": 3,
+          "s_bulk_adjacent_control_abs_difference": 0.27091553030060944,
+          "s_bulk_adjacent_cross_abs_difference": 0.6887532556743403,
+          "s_terminal_control_abs_difference": 0.1831201622887666,
+          "s_terminal_cross_abs_difference": 0.762669342258644,
+          "state_distance": 0.059227519624469815
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.09099973878405199,
+          "curvature_proxy_cross_abs_difference": 0.2194207113541533,
+          "fall_step": 3,
+          "matched_control_distance": 0.060615088021381436,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            43,
+            442
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2788130918775311,
+          "s_bulk_adjacent_cross_abs_difference": 0.5258058555047296,
+          "s_terminal_control_abs_difference": 0.18781335309347913,
+          "s_terminal_cross_abs_difference": 0.7452265668588829,
+          "state_distance": 0.06061512955510504
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.07666255951300593,
+          "curvature_proxy_cross_abs_difference": 0.027458925259667644,
+          "fall_step": 1,
+          "matched_control_distance": 0.06246873862711266,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            38,
+            420
+          ],
+          "rise_step": 4,
+          "s_bulk_adjacent_control_abs_difference": 0.2743720664048903,
+          "s_bulk_adjacent_cross_abs_difference": 0.7498862567894129,
+          "s_terminal_control_abs_difference": 0.19770950689188438,
+          "s_terminal_cross_abs_difference": 0.7773451820490805,
+          "state_distance": 0.062470074194682604
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0618101940136071,
+          "curvature_proxy_cross_abs_difference": 0.21679560921477004,
+          "fall_step": 4,
+          "matched_control_distance": 0.06366915487592278,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            34,
+            395
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.26728526692211485,
+          "s_bulk_adjacent_cross_abs_difference": 0.5180558215333506,
+          "s_terminal_control_abs_difference": 0.20547507290850775,
+          "s_terminal_cross_abs_difference": 0.7348514307481206,
+          "state_distance": 0.06366915402704791
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0410686543915586,
+          "curvature_proxy_cross_abs_difference": 0.0008602511789178591,
+          "fall_step": 1,
+          "matched_control_distance": 0.06590176642311067,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            30,
+            389
+          ],
+          "rise_step": 5,
+          "s_bulk_adjacent_control_abs_difference": 0.2599305468403239,
+          "s_bulk_adjacent_cross_abs_difference": 0.8075463080196226,
+          "s_terminal_control_abs_difference": 0.2188618924487653,
+          "s_terminal_cross_abs_difference": 0.8066860568407047,
+          "state_distance": 0.06590307562144547
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.05323668663998249,
+          "curvature_proxy_cross_abs_difference": 0.21388161558446217,
+          "fall_step": 5,
+          "matched_control_distance": 0.06638896029788055,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            33,
+            440
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.27090697404987174,
+          "s_bulk_adjacent_cross_abs_difference": 0.5123440301111338,
+          "s_terminal_control_abs_difference": 0.21767028740988925,
+          "s_terminal_cross_abs_difference": 0.726225645695596,
+          "state_distance": 0.06638807704565249
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0007401667874078477,
+          "curvature_proxy_cross_abs_difference": 0.21055203950002754,
+          "fall_step": 6,
+          "matched_control_distance": 0.06883083561886924,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            23,
+            355
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.24175001244588423,
+          "s_bulk_adjacent_cross_abs_difference": 0.5080112761173073,
+          "s_terminal_control_abs_difference": 0.24249017923329208,
+          "s_terminal_cross_abs_difference": 0.7185633156173349,
+          "state_distance": 0.06883095736924587
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.005390578985186578,
+          "curvature_proxy_cross_abs_difference": 0.011090416225543298,
+          "fall_step": 1,
+          "matched_control_distance": 0.06983608628805968,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            8,
+            335
+          ],
+          "rise_step": 6,
+          "s_bulk_adjacent_control_abs_difference": 0.2984866667958834,
+          "s_bulk_adjacent_cross_abs_difference": 0.8668457633563944,
+          "s_terminal_control_abs_difference": 0.29309608781069685,
+          "s_terminal_cross_abs_difference": 0.8557553471308511,
+          "state_distance": 0.06983719086157958
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.021839919079993608,
+          "curvature_proxy_cross_abs_difference": 0.20680378174381653,
+          "fall_step": 7,
+          "matched_control_distance": 0.0710409545410083,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            20,
+            355
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.23710439944389727,
+          "s_bulk_adjacent_cross_abs_difference": 0.5046349739307396,
+          "s_terminal_control_abs_difference": 0.2589443185238909,
+          "s_terminal_cross_abs_difference": 0.7114387556745562,
+          "state_distance": 0.07104274831724074
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.008076988653342498,
+          "curvature_proxy_cross_abs_difference": 0.20268357893938194,
+          "fall_step": 8,
+          "matched_control_distance": 0.0730588005381865,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            4,
+            250
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.291849510034598,
+          "s_bulk_adjacent_cross_abs_difference": 0.5019349064182232,
+          "s_terminal_control_abs_difference": 0.2999264986879405,
+          "s_terminal_cross_abs_difference": 0.7046184853576052,
+          "state_distance": 0.07305866058402923
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.04314271239347023,
+          "curvature_proxy_cross_abs_difference": 0.1982546223656636,
+          "fall_step": 9,
+          "matched_control_distance": 0.07490688568177815,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            7,
+            262
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2826734881444395,
+          "s_bulk_adjacent_cross_abs_difference": 0.49972005053469615,
+          "s_terminal_control_abs_difference": 0.3258162005379097,
+          "s_terminal_cross_abs_difference": 0.6979746729003597,
+          "state_distance": 0.07490679969625373
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.26689354767707174,
+          "curvature_proxy_cross_abs_difference": 0.02976267888924633,
+          "fall_step": 1,
+          "matched_control_distance": 0.07498383218137518,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            1,
+            156
+          ],
+          "rise_step": 7,
+          "s_bulk_adjacent_control_abs_difference": 0.14647170323608183,
+          "s_bulk_adjacent_cross_abs_difference": 0.9055943453577073,
+          "s_terminal_control_abs_difference": 0.12042184444098991,
+          "s_terminal_cross_abs_difference": 0.9353570242469537,
+          "state_distance": 0.07498534910500186
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.006776399095926866,
+          "curvature_proxy_cross_abs_difference": 0.036144526393228404,
+          "fall_step": 1,
+          "matched_control_distance": 0.07581105016198851,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            8,
+            477
+          ],
+          "rise_step": 8,
+          "s_bulk_adjacent_control_abs_difference": 0.32421383017240424,
+          "s_bulk_adjacent_cross_abs_difference": 0.8909495678307278,
+          "s_terminal_control_abs_difference": 0.31743743107647737,
+          "s_terminal_cross_abs_difference": 0.9270940942239562,
+          "state_distance": 0.07581036124247267
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.010927516914807756,
+          "curvature_proxy_cross_abs_difference": 0.03979382366116779,
+          "fall_step": 1,
+          "matched_control_distance": 0.07656392069594499,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            3,
+            262
+          ],
+          "rise_step": 9,
+          "s_bulk_adjacent_control_abs_difference": 0.30330327782842226,
+          "s_bulk_adjacent_cross_abs_difference": 0.8781572140074088,
+          "s_terminal_control_abs_difference": 0.31423079474323,
+          "s_terminal_cross_abs_difference": 0.9179510376685766,
+          "state_distance": 0.07656575720847168
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.048290637023280514,
+          "curvature_proxy_cross_abs_difference": 0.1935814885685112,
+          "fall_step": 10,
+          "matched_control_distance": 0.0766107519710728,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            17,
+            417
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.24294014601636293,
+          "s_bulk_adjacent_cross_abs_difference": 0.49785725668669556,
+          "s_terminal_control_abs_difference": 0.29123078303964345,
+          "s_terminal_cross_abs_difference": 0.6914387452552068,
+          "state_distance": 0.07660993161778684
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0329021151117832,
+          "curvature_proxy_cross_abs_difference": 0.04163784335633991,
+          "fall_step": 1,
+          "matched_control_distance": 0.0773057581698094,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            20,
+            489
+          ],
+          "rise_step": 10,
+          "s_bulk_adjacent_control_abs_difference": 0.2519938622449387,
+          "s_bulk_adjacent_cross_abs_difference": 0.8675069471889028,
+          "s_terminal_control_abs_difference": 0.2848959773567219,
+          "s_terminal_cross_abs_difference": 0.9091447905452427,
+          "state_distance": 0.0773080747530548
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0504802626250791,
+          "curvature_proxy_cross_abs_difference": 0.04188305878919352,
+          "fall_step": 1,
+          "matched_control_distance": 0.07803630292423792,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            17,
+            449
+          ],
+          "rise_step": 11,
+          "s_bulk_adjacent_control_abs_difference": 0.24658244967007503,
+          "s_bulk_adjacent_cross_abs_difference": 0.858783600870038,
+          "s_terminal_control_abs_difference": 0.29706271229515413,
+          "s_terminal_cross_abs_difference": 0.9006666596592315,
+          "state_distance": 0.07803660349795141
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.005469997137273808,
+          "curvature_proxy_cross_abs_difference": 0.188723674328235,
+          "fall_step": 11,
+          "matched_control_distance": 0.07818588805371131,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            5,
+            390
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.32025482334789324,
+          "s_bulk_adjacent_cross_abs_difference": 0.49625203841058196,
+          "s_terminal_control_abs_difference": 0.32572482048516704,
+          "s_terminal_cross_abs_difference": 0.684975712738817,
+          "state_distance": 0.07818672515625616
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.06466584503108064,
+          "curvature_proxy_cross_abs_difference": 0.040724532213950115,
+          "fall_step": 1,
+          "matched_control_distance": 0.07875056020365073,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            13,
+            394
+          ],
+          "rise_step": 12,
+          "s_bulk_adjacent_control_abs_difference": 0.2503741099910952,
+          "s_bulk_adjacent_cross_abs_difference": 0.8517832470186726,
+          "s_terminal_control_abs_difference": 0.31503995502217585,
+          "s_terminal_cross_abs_difference": 0.8925077792326227,
+          "state_distance": 0.07875072240873457
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.09406590128908321,
+          "curvature_proxy_cross_abs_difference": 0.038345665251848016,
+          "fall_step": 1,
+          "matched_control_distance": 0.07945030360972247,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            3,
+            220
+          ],
+          "rise_step": 13,
+          "s_bulk_adjacent_control_abs_difference": 0.04187803899160647,
+          "s_bulk_adjacent_cross_abs_difference": 0.846313452916325,
+          "s_terminal_control_abs_difference": 0.13594394028068968,
+          "s_terminal_cross_abs_difference": 0.884659118168173,
+          "state_distance": 0.0794499020632108
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0005490635471445682,
+          "curvature_proxy_cross_abs_difference": 0.18762127355799307,
+          "fall_step": 12,
+          "matched_control_distance": 0.07965246092936266,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            6,
+            289
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2568568702463834,
+          "s_bulk_adjacent_cross_abs_difference": 0.4928923529328726,
+          "s_terminal_control_abs_difference": 0.2563078066992388,
+          "s_terminal_cross_abs_difference": 0.6805136264908657,
+          "state_distance": 0.0796526443850687
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.011692183139305978,
+          "curvature_proxy_cross_abs_difference": 0.03491801957860596,
+          "fall_step": 1,
+          "matched_control_distance": 0.08013636352978414,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            5,
+            269
+          ],
+          "rise_step": 14,
+          "s_bulk_adjacent_control_abs_difference": 0.1881161924757866,
+          "s_bulk_adjacent_cross_abs_difference": 0.8421934724277187,
+          "s_terminal_control_abs_difference": 0.19980837561509257,
+          "s_terminal_cross_abs_difference": 0.8771114920063247,
+          "state_distance": 0.08013370590884829
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.06596035095548425,
+          "curvature_proxy_cross_abs_difference": 0.03060121596193166,
+          "fall_step": 1,
+          "matched_control_distance": 0.08080393999455267,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            14,
+            457
+          ],
+          "rise_step": 15,
+          "s_bulk_adjacent_control_abs_difference": 0.25338524468561086,
+          "s_bulk_adjacent_cross_abs_difference": 0.8392543631750082,
+          "s_terminal_control_abs_difference": 0.3193455956410951,
+          "s_terminal_cross_abs_difference": 0.8698555791369399,
+          "state_distance": 0.08080179048703737
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0585490985102477,
+          "curvature_proxy_cross_abs_difference": 0.18760101149757757,
+          "fall_step": 13,
+          "matched_control_distance": 0.08101676039288555,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            16,
+            505
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.2539334855712261,
+          "s_bulk_adjacent_cross_abs_difference": 0.4890873931060372,
+          "s_terminal_control_abs_difference": 0.3124825840814738,
+          "s_terminal_cross_abs_difference": 0.6766884046036148,
+          "state_distance": 0.08102061617964684
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.0018799162120948232,
+          "curvature_proxy_cross_abs_difference": 0.02554291698703859,
+          "fall_step": 1,
+          "matched_control_distance": 0.08145388488754099,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            6,
+            312
+          ],
+          "rise_step": 16,
+          "s_bulk_adjacent_control_abs_difference": 0.2629354037608187,
+          "s_bulk_adjacent_cross_abs_difference": 0.8373390237962848,
+          "s_terminal_control_abs_difference": 0.2648153199729135,
+          "s_terminal_cross_abs_difference": 0.8628819407833234,
+          "state_distance": 0.08145390462472656
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.06993528929881232,
+          "curvature_proxy_cross_abs_difference": 0.019878896080791297,
+          "fall_step": 1,
+          "matched_control_distance": 0.08208841160369278,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            13,
+            468
+          ],
+          "rise_step": 17,
+          "s_bulk_adjacent_control_abs_difference": 0.25875532143807267,
+          "s_bulk_adjacent_cross_abs_difference": 0.8363021481572253,
+          "s_terminal_control_abs_difference": 0.328690610736885,
+          "s_terminal_cross_abs_difference": 0.8561810442380166,
+          "state_distance": 0.08208988761707288
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.011166495145208843,
+          "curvature_proxy_cross_abs_difference": 0.187679114055608,
+          "fall_step": 14,
+          "matched_control_distance": 0.0822981223013267,
+          "matched_control_history": "WT_FALL",
+          "matched_control_steps": [
+            3,
+            371
+          ],
+          "rise_step": 1,
+          "s_bulk_adjacent_control_abs_difference": 0.33002824381696205,
+          "s_bulk_adjacent_cross_abs_difference": 0.48531102828868056,
+          "s_terminal_control_abs_difference": 0.3411947389621709,
+          "s_terminal_cross_abs_difference": 0.6729901423442886,
+          "state_distance": 0.08230156295674126
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.06161226668824593,
+          "curvature_proxy_cross_abs_difference": 0.013733192820025608,
+          "fall_step": 1,
+          "matched_control_distance": 0.08271046542015997,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            8,
+            386
+          ],
+          "rise_step": 18,
+          "s_bulk_adjacent_control_abs_difference": 0.29413106204044026,
+          "s_bulk_adjacent_cross_abs_difference": 0.8360100959789998,
+          "s_terminal_control_abs_difference": 0.3557433287286862,
+          "s_terminal_cross_abs_difference": 0.8497432887990254,
+          "state_distance": 0.08270966644722914
+        },
+        {
+          "curvature_proxy_control_abs_difference": 0.08806351485318786,
+          "curvature_proxy_cross_abs_difference": 0.007218352066210243,
+          "fall_step": 1,
+          "matched_control_distance": 0.0833131812215737,
+          "matched_control_history": "WT_RISE",
+          "matched_control_steps": [
+            3,
+            256
+          ],
+          "rise_step": 19,
+          "s_bulk_adjacent_control_abs_difference": 0.06274340349551633,
+          "s_bulk_adjacent_cross_abs_difference": 0.8363406817679531,
+          "s_terminal_control_abs_difference": 0.1508069183487042,
+          "s_terminal_cross_abs_difference": 0.8435590338341633,
+          "state_distance": 0.08331325211041636
+        }
+      ],
+      "control_pair_count": 261632,
+      "cross_direction_pair_count": 1023,
+      "curvature_by_direction": {
+        "WT_FALL": {
+          "count": 512,
+          "max": -0.00023283898874149056,
+          "mean": -0.024258022713303948,
+          "median": -0.026520043584814135,
+          "min": -0.048100594216581194,
+          "p90": -0.013199650961566615
+        },
+        "WT_FALL_fraction_positive": 0.0,
+        "WT_RISE": {
+          "count": 512,
+          "max": 0.1352037966035866,
+          "mean": 0.02790826431633131,
+          "median": 0.018934175392348762,
+          "min": -0.23570160571415877,
+          "p90": 0.088237798246163
+        },
+        "WT_RISE_fraction_positive": 0.9609375
+      },
+      "direction_history_information_supported": false,
+      "hidden_geometry": {
+        "curvature_proxy": {
+          "cross": {
+            "count": 1023,
+            "max": 0.23546876672541728,
+            "mean": 0.12611063760511387,
+            "median": 0.18760101149757757,
+            "min": 0.00043574227605869265,
+            "p90": 0.21529293574541974
+          },
+          "fraction_cross_gt_matched_control": 0.06060606060606061,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.26689354767707174,
+            "mean": 0.24275856774665136,
+            "median": 0.25923824589618616,
+            "min": 0.0005490635471445682,
+            "p90": 0.25923824589618616
+          },
+          "median_cross_minus_control": -0.07163723439860858,
+          "p90_cross_minus_control": -0.043945310150766415
+        },
+        "s_bulk_adjacent": {
+          "cross": {
+            "count": 1023,
+            "max": 0.9055943453577073,
+            "mean": 0.45987226653103846,
+            "median": 0.5523646500686092,
+            "min": 0.17288241757185152,
+            "p90": 0.7610658342963752
+          },
+          "fraction_cross_gt_matched_control": 1.0,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.3785508877656647,
+            "mean": 0.04552525373358485,
+            "median": 0.030267715271640405,
+            "min": 0.01945094159442906,
+            "p90": 0.03350321774568112
+          },
+          "median_cross_minus_control": 0.5220969347969688,
+          "p90_cross_minus_control": 0.7275626165506941
+        },
+        "s_terminal": {
+          "cross": {
+            "count": 1023,
+            "max": 0.9353570242469537,
+            "mean": 0.5466663800696213,
+            "median": 0.5596224327199685,
+            "min": 0.38285009903391076,
+            "p90": 0.6925849288967857
+          },
+          "fraction_cross_gt_matched_control": 1.0,
+          "matched_control": {
+            "count": 1023,
+            "max": 0.39471339483775225,
+            "mean": 0.23101511148553816,
+            "median": 0.22897053062454575,
+            "min": 0.12042184444098991,
+            "p90": 0.22897053062454575
+          },
+          "median_cross_minus_control": 0.3306519020954227,
+          "p90_cross_minus_control": 0.46361439827223994
+        }
+      },
+      "state_distance": {
+        "cross": {
+          "count": 1023,
+          "max": 0.14319974321007273,
+          "mean": 0.12295914444739743,
+          "median": 0.12757560826246622,
+          "min": 0.053105105196412,
+          "p90": 0.1391317504206545
+        },
+        "matched_control": {
+          "count": 1023,
+          "max": 0.10271605204001748,
+          "mean": 0.10110706384372,
+          "median": 0.10271605204001748,
+          "min": 0.05310555083547239,
+          "p90": 0.10271605204001748
+        },
+        "median_absolute_matching_error": 0.024859556222448745
+      },
+      "status": "COMPLETE"
+    }
+  },
+  "work_unit": "LARE-BC2-C4K",
+  "workstream": "F-ROM-LARE"
+}

@@ -1,0 +1,47 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:26bc3bdddcea3ef4cf9212b9c8f16a10ddcef0bba47574bc94224a2fca678024",
+    "artifact_id": 10591891373,
+    "execution_head": "70da35878e51dd9a99334339fbec3984c739c11e",
+    "result_sha256": "4fa0c2d9dcce88909412613dbd0f6b2d11f36c4d6e5c42b6de0ae6cc8d6346b8",
+    "workflow_run": 35467454296
+  },
+  "decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT",
+  "groundwater_feedback_authorized": false,
+  "key_results": {
+    "2.5": {
+      "cross_pair_count": 1023,
+      "curvature_control_median": 0.3670945176744189,
+      "curvature_cross_median": 0.3169513139507828,
+      "curvature_fraction_cross_gt_control": 0.0801564027370479,
+      "median_cross_state_distance": 0.12778952884335132,
+      "median_matched_control_distance": 0.10173301216773599,
+      "s_terminal_fraction_cross_gt_control": 1.0
+    },
+    "5.0": {
+      "cross_pair_count": 1023,
+      "curvature_control_median": 0.25923824589618616,
+      "curvature_cross_median": 0.18760101149757757,
+      "curvature_fraction_cross_gt_control": 0.06060606060606061,
+      "median_cross_state_distance": 0.12757560826246622,
+      "median_matched_control_distance": 0.10271605204001748,
+      "s_terminal_fraction_cross_gt_control": 1.0
+    }
+  },
+  "model_changed": false,
+  "next_authority": "PREREGISTER_QH_PRESERVING_MEMORYLESS_CURVATURE_RECONSTRUCTION_USING_EXISTING_STATE",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4k.closeout.v1",
+  "scientific_interpretation": [
+    "C4K does not support the claim that current (H,Wb,Wt) state is insufficient because of direction/history ambiguity in this A2 laboratory.",
+    "RISE and FALL occupy substantially separated regions of reduced-state space; the current state already carries regime information rather than presenting widespread near-collisions.",
+    "Cross-direction terminal and adjacent secant slopes differ strongly, but the preregistered curvature ambiguity criterion fails for both widths. Curvature differences are smaller than matched within-direction controls for most pairs.",
+    "This is not proof of universal memoryless sufficiency. It only removes the present evidence basis for adding a memory state before another existing-state gradient representation is tested."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_MEMORYLESS_STATE_SUFFICIENCY_NOT_REJECTED",
+  "work_unit": "LARE-BC2-C4K",
+  "workstream": "F-ROM-LARE"
+}
