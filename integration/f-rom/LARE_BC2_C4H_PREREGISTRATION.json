@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.lare.bc2.c4h.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4H",
+  "phase": "PREREGISTERED_AFTER_C4G_BEFORE_TERMINAL_QI_FACTORISATION",
+  "question": "Which part of the remaining TERMINAL_SIDE_LINEAR internal-flux error is associated with reconstructed interface conductivity and which part with the effective hydraulic gradient, and does that attribution remain consistent across 2.5 and 5 cm terminal widths and monotone water-table directions?",
+  "predecessors": {
+    "C4G": {
+      "closeout": "integration/f-rom/LARE_BC2_C4G_CLOSEOUT.json",
+      "required_status": "CLOSED_WIDTH_EFFECT_METRIC_ROBUST_NO_MODEL_CHANGE",
+      "required_decision": "WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_decision": "BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED_OPERATOR_OR_WIDTH_UNRESOLVED",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "authority_semantics": {
+    "reference_qi": "Use the B8 split moving-control-volume ledger exactly as in B9.",
+    "predicted_qi": "Use B9 TERMINAL_SIDE_LINEAR, trapezoidal endpoint average exactly as in B9.",
+    "reference_interface_conductivity": "Evaluate frozen constitutive K(theta) at the exact Reference projected moving-interface theta_i for both interval endpoints and average the two endpoint K values.",
+    "predicted_interface_conductivity": "Use the B9 terminal-storage reconstruction at both endpoints and average the reconstructed endpoint Ki values.",
+    "effective_reference_gradient_factor": "g_ref = qi_ref / K_ref_bar.",
+    "effective_predicted_gradient_factor": "g_pred = qi_pred / K_pred_bar.",
+    "note": "The effective gradient factors are interval-level diagnostics chosen so each Kbar*g identity is exact. They are not claimed to be pointwise Richards gradients."
+  },
+  "exact_symmetric_factorisation": {
+    "flux_form": "q = K g",
+    "conductivity_term": "E_K = (K_pred-K_ref) * (g_pred+g_ref)/2",
+    "gradient_term": "E_G = (g_pred-g_ref) * (K_pred+K_ref)/2",
+    "identity": "q_pred-q_ref = E_K + E_G",
+    "reason": "Symmetric midpoint product-difference decomposition avoids privileging an arbitrary update order."
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_RISE",
+      "WT_FALL"
+    ]
+  },
+  "outputs": [
+    "qi prediction error bias, MAE, RMS and max_abs",
+    "E_K and E_G signed mean, MAE, RMS and max_abs",
+    "fraction intervals |E_G|>|E_K| and |E_K|>|E_G|",
+    "cosine/correlation of E_K and E_G over the history",
+    "cancellation ratio |sum(E_K+E_G)| / sum(|E_K|+|E_G|)",
+    "predicted versus Reference interface K statistics",
+    "g_pred versus g_ref statistics",
+    "difference between g_pred and the simple average of endpoint (1-a_t), reported as temporal-product diagnostic",
+    "exact factorisation residual"
+  ],
+  "case_classification": {
+    "GRADIENT_COMPONENT_DOMINANT": "In both the B9 trapezoidal route and the exact symmetric decomposition, E_G has strictly larger RMS and MAE than E_K.",
+    "CONDUCTIVITY_COMPONENT_DOMINANT": "E_K has strictly larger RMS and MAE than E_G.",
+    "MIXED_COMPONENTS": "RMS and MAE do not identify the same larger component."
+  },
+  "global_decision": {
+    "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED": "All four width/history cases classify GRADIENT_COMPONENT_DOMINANT.",
+    "TERMINAL_QI_CONDUCTIVITY_RECONSTRUCTION_TARGET_SUPPORTED": "All four classify CONDUCTIVITY_COMPONENT_DOMINANT.",
+    "TERMINAL_QI_FACTORISATION_MIXED": "Any complete non-unanimous combination.",
+    "C4H_DIAGNOSTIC_BLOCKED": "Hard identity, predecessor authority or state reconstruction fails."
+  },
+  "hard_gates": {
+    "b8_qi_identity_cm_per_day": 1e-10,
+    "factorisation_residual_cm_per_day": 1e-12,
+    "finite_positive_interface_conductivity": true
+  },
+  "firewalls": [
+    "NO_NEW_CLOSURE",
+    "NO_PARAMETER_FIT",
+    "NO_EXTRA_STATE",
+    "NO_FREE_PROPAGATION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
