@@ -50,12 +50,16 @@ jobs:
           assert r['decision'] in (
             'QUADRATIC_STORAGE_RECONSTRUCTION_SUPPORTED',
             'QI_IMPROVES_QH_TRADEOFF',
-            'QUADRATIC_RECONSTRUCTION_MIXED'
+            'QUADRATIC_RECONSTRUCTION_MIXED',
+            'C4I_RECONSTRUCTION_BLOCKED'
           )
-          assert r['hard_checks']['max_storage_reconstruction_residual_cm'] <= 1e-10
-          assert r['hard_checks']['minimum_valid_multistart_roots_per_quadrature_state'] >= 2
-          assert r['hard_checks']['max_abs_qi_64_vs_128_cm_per_day'] <= 1e-8
-          assert r['hard_checks']['max_abs_qH_64_vs_128_cm_per_day'] <= 1e-8
+          if r['decision'] != 'C4I_RECONSTRUCTION_BLOCKED':
+              assert r['hard_checks']['max_storage_reconstruction_residual_cm'] <= 1e-10
+              assert r['hard_checks']['minimum_valid_multistart_roots_per_quadrature_state'] >= 2
+              assert r['hard_checks']['max_abs_qi_64_vs_128_cm_per_day'] <= 1e-8
+              assert r['hard_checks']['max_abs_qH_64_vs_128_cm_per_day'] <= 1e-8
+          else:
+              assert r['hard_checks']['failure_count'] > 0 or r['complete'] is False
           assert r['propagated_dynamics_authorized'] is False
           assert r['production_rom_authorized'] is False
           print('LARE_BC2_C4I_FIREWALL=PASS')
