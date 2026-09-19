@@ -747,6 +747,94 @@ def validate_romv2_d6_if_present() -> str:
     return "CLOSED_PREFLIGHT_ROOT_SEARCH_DESIGN_NO_GO"
 
 
+def validate_romv2_d7_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D7_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D7_PREREGISTRATION.json")
+            == "b5338c41c74272c674b3bdd171fc867cd651491b",
+            "F-ROMV2-D7 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D7_RESULT.json")
+            == "a9c5f5085797e111d2f7dc1d2375635e12e7e75c",
+            "F-ROMV2-D7 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D7_STATUS.json")
+            == "8526bda418d04dadbc35de7755db54152f5cdeff",
+            "F-ROMV2-D7 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D7_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "dde8651b2f1e8c7216167582682e2ba369eb3da9",
+            "F-ROMV2-D7 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D7_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D7_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D7_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D7_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D7_QS1_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_PREFLIGHT",
+            "F-ROMV2-D7 preregistration phase drift")
+    require(prereg["candidate"]["id"] == "QS1"
+            and prereg["candidate"]["dynamic_state_dimension"] == 1,
+            "F-ROMV2-D7 candidate identity drift")
+    require(prereg["predecessor"]["D6_trajectory_evidence_consumed"] is False
+            and prereg["predecessor"]["D6_manifold_hydrology_adjudicated"] is False,
+            "F-ROMV2-D7 D6 boundary drift")
+    require(prereg["root_search"]["no_D6_residual_or_endpoint_magnitude_used_to_set_new_limits"] is True,
+            "F-ROMV2-D7 search anti-tuning drift")
+    require("NO_POST_RESULT_EQUATION_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D7 equation-retuning firewall missing")
+
+    require(result["decision"] == "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+            "F-ROMV2-D7 decision drift")
+    require(result["adjudication"] == "ONE_STATE_QUASI_STEADY_MANIFOLD_INTEGRITY_PASS_BUT_DOMINATED_BY_R2",
+            "F-ROMV2-D7 adjudication drift")
+    require(result["preflight"]["decision"] == "D7_ADMISSIBLE_ROOT_SEARCH_PREFLIGHT_PASS",
+            "F-ROMV2-D7 preflight result drift")
+    require(result["integrity"]["pass"] is True,
+            "F-ROMV2-D7 integrity drift")
+    require(result["comparative_interpretation"]["QS1_improves_over_R2_balance"] is False
+            and result["comparative_interpretation"]["QS1_improves_over_R2_transient"] is False
+            and result["comparative_interpretation"]["retained"] is False,
+            "F-ROMV2-D7 comparative frontier drift")
+    require(result["physical_diagnosis"]["implication"].startswith("The next distinct reduction requires explicit dynamic profile memory"),
+            "F-ROMV2-D7 dynamic-memory diagnosis drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D7 overclaims authority")
+
+    require(status["phase"] == "CLOSED_ONE_STATE_QUASI_STEADY_MANIFOLD_NO_GO",
+            "F-ROMV2-D7 terminal phase drift")
+    require(status["QS1_tabulation_authorized"] is False
+            and status["post_result_root_retuning_authorized"] is False
+            and status["post_result_equation_retuning_authorized"] is False,
+            "F-ROMV2-D7 status permits post-result escalation")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D7 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D7 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D7 execution PR unexpectedly treated as canonical")
+    require(manifest["source_execution"]["primary_implementation"] == "PURE_PYTHON_RK4",
+            "F-ROMV2-D7 primary implementation provenance drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["post_result_QS1_retuning"] is False,
+            "F-ROMV2-D7 evidence mutation/retuning drift")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D7 manifest authorizes production ROM")
+
+    require("D7 closes the **one-state quasi-steady manifold**." in doc,
+            "F-ROMV2-D7 architecture closure missing")
+    require("dynamic profile memory" in doc,
+            "F-ROMV2-D7 dynamic-memory consequence missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D7 production prohibition missing")
+
+    return "CLOSED_ONE_STATE_QUASI_STEADY_MANIFOLD_NO_GO"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -779,6 +867,7 @@ def main() -> int:
     romv2_d4_phase = validate_romv2_d4_if_present()
     romv2_d5_phase = validate_romv2_d5_if_present()
     romv2_d6_phase = validate_romv2_d6_if_present()
+    romv2_d7_phase = validate_romv2_d7_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -795,6 +884,7 @@ def main() -> int:
     print(f"F_ROMV2_D4_PHASE={romv2_d4_phase}")
     print(f"F_ROMV2_D5_PHASE={romv2_d5_phase}")
     print(f"F_ROMV2_D6_PHASE={romv2_d6_phase}")
+    print(f"F_ROMV2_D7_PHASE={romv2_d7_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 

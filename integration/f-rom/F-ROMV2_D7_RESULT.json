@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.f-romv2-d7.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D7",
+  "decision": "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+  "adjudication": "ONE_STATE_QUASI_STEADY_MANIFOLD_INTEGRITY_PASS_BUT_DOMINATED_BY_R2",
+  "execution": {
+    "primary_workflow_run": 35446746283,
+    "primary_workflow_job": 105906874545,
+    "executed_head": "7944bea0872526ba8f9419e8b5a0bc71abf78296",
+    "execution_pull_request": 429,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10586330711,
+    "artifact_digest": "sha256:1937706f05d151f462e75b3c01d562d4401c597cdbc67c3d7ced365f2e0aafe4",
+    "workflow_conclusion": "success",
+    "implementation": "PURE_PYTHON_FROZEN_RK4_WITH_ROOT_EVALUATION_CACHE_AND_FP_STAGNATION_STOP",
+    "preflight_result_sha256": "6c1f5d429ff50d68caffe59d219722c8cfe6b896983ca356fe8a79c0990daf5b",
+    "result_sha256": "e3cd1bc80cb522ee2ac396f9306bf5bb21cc47323af4c4cebda50b031a37815c",
+    "R16_o0_sha256": "b0f7a8ba9716c19d000cd16be68695695afee58170c75ecc2634f3f768ab1662",
+    "R16_o2_sha256": "b0f7a8ba9716c19d000cd16be68695695afee58170c75ecc2634f3f768ab1662",
+    "analyzer_sha256": "f0d65dc91b55805dd09af366663b26d87aeda689cab17363d012cf82786f14a9",
+    "preflight_stdout_sha256": "a3d2b313b325f7f2d554940c5717af6f724b4a53d2c572123d26775507e85fcb",
+    "R16_O0_O2_identity": true,
+    "later_compiled_profile_work": "NON_PRIMARY_EXECUTION_OPTIMIZATION_NOT_REQUIRED_FOR_SCIENTIFIC_RESULT"
+  },
+  "preflight": {
+    "decision": "D7_ADMISSIBLE_ROOT_SEARCH_PREFLIGHT_PASS",
+    "trajectory_evidence_consumed": false,
+    "initial_storage_cm": 58.619184,
+    "synthetic_scale_dt_times_Ksat_cm": 0.0249800128,
+    "targets": [
+      "S0-dt*Ksat",
+      "S0",
+      "S0+dt*Ksat"
+    ],
+    "prescribed_head_q_roots_all_finite": true,
+    "prescribed_flux_h_roots_all_finite": true,
+    "post_preflight_search_retuning_authorized": false
+  },
+  "candidate": {
+    "id": "QS1",
+    "dynamic_state_dimension": 1,
+    "dynamic_state": [
+      "total_storage_cm"
+    ],
+    "profile_state": "quasi-steady reconstructed profile",
+    "training_required": false,
+    "calibration_required": false,
+    "full_order_fallback": false,
+    "clipping_used": false,
+    "adaptive_dynamic_substeps_used": false,
+    "hidden_mass_correction": false
+  },
+  "integrity": {
+    "pass": true,
+    "failure": null,
+    "max_abs_transaction_mass_residual_cm": 3.5110803153770576e-15,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "pooled": {
+    "total_storage_rmse_cm": 0.04733753360033441,
+    "cumulative_bottom_exchange_rmse_cm": 0.04733753360033365,
+    "terminal_bottom_flux_rmse_cm_per_day": 3.344448287196304,
+    "bottom_flux_sign_error_count": 136,
+    "history_reversal_sequence_mismatch_count": 8,
+    "upper_storage_rmse_cm": 0.1295333163461985,
+    "lower_storage_rmse_cm": 0.10993798827842273
+  },
+  "comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8
+    },
+    "D5_L2_IMC": {
+      "total_storage_rmse_cm": 0.05164492935964347,
+      "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8
+    }
+  },
+  "comparative_interpretation": {
+    "QS1_improves_over_D5_balance": true,
+    "QS1_improves_over_D5_bottom_flux_magnitude": true,
+    "QS1_improves_over_R2_balance": false,
+    "QS1_improves_over_R2_transient": false,
+    "balance_view_pass": false,
+    "transient_view_pass": false,
+    "retained": false,
+    "statement": "Quasi-steady profile reconstruction recovers part of the D5 error but not enough to beat the already admitted two-cell Richards comparator."
+  },
+  "history_findings": {
+    "pure_prescribed_flux_histories": [
+      "D01",
+      "D02",
+      "D05"
+    ],
+    "pure_prescribed_flux_balance_and_bottom_flux_near_exact": true,
+    "D03_relative_final_cumulative_bottom_exchange_error": 3.977815765004379,
+    "D06_terminal_bottom_flux_rmse_cm_per_day": 5.2917417743136195,
+    "V01_relative_final_cumulative_bottom_exchange_error": -0.04911477219765282,
+    "V02_relative_final_cumulative_bottom_exchange_error": 0.2671241664265667,
+    "V03_relative_final_cumulative_bottom_exchange_error": -0.028446199446978935,
+    "V04_relative_final_cumulative_bottom_exchange_error": -0.08783054204571696
+  },
+  "physical_diagnosis": {
+    "D5_failure_mode": "instantaneous two-layer head/gradient representation lost lower-zone nonlocal profile information",
+    "D7_failure_mode": "one scalar total storage plus instantaneous quasi-steady reconstruction removes dynamic partition/profile memory; upper/lower storage partition and groundwater-flux transients remain poorly represented",
+    "implication": "The next distinct reduction requires explicit dynamic profile memory. Further QS1 root-search or table refinement cannot repair a state-information deficit."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_RETAINED_AGAINST_R2_DEVELOPMENT_FRONTIER; still closer to intended use than fast-event applications, but no application acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_QUALIFIED; flux sign/reversal and magnitude remain weaker than R2",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "next": [
+    "CLOSE_QS1_WITHOUT_ROOT_OR_EQUATION_RETUNING",
+    "DO_NOT_TABULATE_QS1_FOR_PERFORMANCE",
+    "PREREGISTER_A_DYNAMIC_MEMORY_REDUCTION_WITH_AT_LEAST_ONE_INDEPENDENT_PROFILE_PARTITION_OR_LAG_STATE",
+    "RETAIN_R2_R4_R8_AS_PHYSICAL_REDUCTION_COMPARATORS",
+    "PRESERVE_PURPOSE_DEPENDENT_ACCEPTANCE_AND_COST_FIDELITY_FRONTIER"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

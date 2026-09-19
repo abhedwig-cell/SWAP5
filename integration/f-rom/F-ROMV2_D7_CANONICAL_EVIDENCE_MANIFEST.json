@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-romv2-d7.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D7",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d7-admissible-manifold-search",
+    "pull_request": 429,
+    "pull_request_merged": false,
+    "primary_head": "7944bea0872526ba8f9419e8b5a0bc71abf78296",
+    "workflow_run": 35446746283,
+    "workflow_job": 105906874545,
+    "artifact_id": 10586330711,
+    "artifact_digest": "sha256:1937706f05d151f462e75b3c01d562d4401c597cdbc67c3d7ced365f2e0aafe4",
+    "workflow_conclusion": "success",
+    "primary_implementation": "PURE_PYTHON_RK4",
+    "later_execution_branch_commits": "PERFORMANCE_ONLY_NOT_PRIMARY_SCIENTIFIC_EVIDENCE"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "b5338c41c74272c674b3bdd171fc867cd651491b",
+    "preflight_result_sha256": "6c1f5d429ff50d68caffe59d219722c8cfe6b896983ca356fe8a79c0990daf5b",
+    "hydrological_result_sha256": "e3cd1bc80cb522ee2ac396f9306bf5bb21cc47323af4c4cebda50b031a37815c",
+    "R16_stdout_sha256": "b0f7a8ba9716c19d000cd16be68695695afee58170c75ecc2634f3f768ab1662",
+    "analyzer_sha256": "f0d65dc91b55805dd09af366663b26d87aeda689cab17363d012cf82786f14a9"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D7_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D7_RESULT.json",
+    "integration/f-rom/F-ROMV2_D7_STATUS.json",
+    "integration/f-rom/F-ROMV2_D7_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D7_QS1_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "preflight/evaluator scripts",
+    "R16 reference harness",
+    "compiled profile kernel",
+    "execution workflow",
+    "raw artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_QS1_retuning": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}

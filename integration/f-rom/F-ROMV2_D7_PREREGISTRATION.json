@@ -1,0 +1,149 @@
+{
+  "schema": "swap5.f-romv2-d7.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D7",
+  "title": "Physically admissible QS1 manifold root-search and hydrological discriminator",
+  "phase": "PREREGISTERED_BEFORE_PREFLIGHT",
+  "canonical_base": "38559be9288e2fe5a7f0d9b202e9611c3d33de33",
+  "purpose": "Re-test the unchanged QS1 quasi-steady manifold with a root-search construction that approaches physical-domain boundaries from valid interior seeds rather than requiring invalid fixed endpoints.",
+  "predecessor": {
+    "D6_decision": "D6_FIXED_ENDPOINT_BRACKET_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+    "D6_trajectory_evidence_consumed": false,
+    "D6_manifold_hydrology_adjudicated": false,
+    "retained_QS1_equations": true,
+    "retained_RK4_subintervals": 1024
+  },
+  "candidate": {
+    "id": "QS1",
+    "dynamic_state": [
+      "total_storage_cm"
+    ],
+    "dynamic_state_dimension": 1,
+    "training_required": false,
+    "calibration_required": false,
+    "full_order_fallback": false,
+    "clipping_allowed": false,
+    "adaptive_dynamic_substepping": false,
+    "hidden_mass_correction": false
+  },
+  "constitutive_and_profile_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "steady_ODE": "dh/dy=q/K(h)-1; dStorage/dy=theta(h)",
+    "profile_depth_cm": 160,
+    "RK4_subintervals": 1024
+  },
+  "root_search": {
+    "prescribed_bottom_head": {
+      "unknown": "q_downward",
+      "open_physical_domain": "(-Ksat,+Ksat)",
+      "seed_order": [
+        "previous accepted q for this history/stage when available",
+        "K(theta_mean_from_requested_storage)",
+        "0"
+      ],
+      "boundary_search": "From each finite seed, approach each open domain boundary by repeated midpoint halving; invalid evaluations define a physical boundary and are never accepted as bracket endpoints.",
+      "sign_rule": "First pair of finite evaluations with opposite storage-residual signs brackets the root.",
+      "bisection_iterations": 100,
+      "invalid_midpoint": "fail closed; do not jump across an invalid manifold interval"
+    },
+    "prescribed_bottom_flux": {
+      "unknown": "h_bottom",
+      "transformed_variable": "z=log(-h_bottom)",
+      "open_search_domain_cm": "h in (-1e6,-1e-8)",
+      "seed_order": [
+        "previous accepted h_bottom for this history/stage when available",
+        "h(theta_mean_from_requested_storage)",
+        "initial equilibrium h"
+      ],
+      "boundary_search": "Approach the fixed open z-domain boundaries by repeated midpoint halving from finite seeds; invalid evaluations define a physical boundary.",
+      "sign_rule": "First pair of finite evaluations with opposite storage-residual signs brackets the root.",
+      "bisection_iterations": 100
+    },
+    "no_fixed_endpoint_finiteness_requirement": true,
+    "no_D6_residual_or_endpoint_magnitude_used_to_set_new_limits": true
+  },
+  "preflight": {
+    "trajectory_data_consumed": false,
+    "initial_equilibrium": "Se=0.85",
+    "synthetic_storage_targets": [
+      "S0",
+      "S0 - dt*Ksat",
+      "S0 + dt*Ksat"
+    ],
+    "dt_day": 0.0008,
+    "checks": [
+      "prescribed-head q-root finite for all three targets at h_bottom=h0",
+      "prescribed-flux h-root finite for all three targets at q_bottom=K(theta0)",
+      "reconstructed profiles remain in open physical domain",
+      "equilibrium root reproduces expected q/h branch without fixed-endpoint evaluation"
+    ],
+    "failure_rule": "If preflight fails, close D7 before any D01-D08 or V01-V04 trajectory evaluation."
+  },
+  "trajectory_gate": {
+    "execute_only_after_preflight_pass": true,
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "scalar_update": "single Heun predictor-corrector identical to D6",
+    "hard_mass_gate_cm": 1e-12
+  },
+  "comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "D5_L2_IMC": {
+      "total_storage_rmse_cm": 0.05164492935964347,
+      "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933
+    }
+  },
+  "decision_logic": {
+    "positive": "QS1_HYDROLOGICALLY_WORTH_TABULATING",
+    "negative": "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+    "positive_rule": [
+      "all 12 histories complete with integrity",
+      "and balance view beats/equal R2 on total-storage and cumulative-bottom-exchange RMSE",
+      "or transient view beats/equal R2 on bottom-flux RMSE and sign-error count"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true
+  },
+  "firewalls": [
+    "NO_POST_PREFLIGHT_SEARCH_RETUNING",
+    "NO_POST_RESULT_EQUATION_RETUNING",
+    "NO_RK4_REFINEMENT_AFTER_RESULT",
+    "NO_TRAJECTORY_TRAINING",
+    "NO_CLIPPING",
+    "NO_ADAPTIVE_DYNAMIC_SUBSTEPS",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
