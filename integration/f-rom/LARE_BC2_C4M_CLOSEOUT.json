@@ -1,0 +1,46 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:e018228b6127a9dd097f740f93c9c8e89c87a9296f4e86eae596f4f181589dc9",
+    "aggregate_artifact_id": 10591881707,
+    "execution_head": "47a99351a92365a7d927c50961f71fa9df2b686c",
+    "result_sha256": "aab38baa6119630688e71569d220031cf89d5cd071e7952a375128ef1be22731",
+    "workflow_run": 35468238818
+  },
+  "bounded_interpretable_result": {
+    "central_not_supported_cases": 5,
+    "central_supported_cases": 0,
+    "five_cases_with_C4L_reproduction": 5,
+    "note": "These five cases do not override the formal aggregate BLOCKED decision."
+  },
+  "decision": "C4M_DIAGNOSTIC_BLOCKED",
+  "formal_blocker": {
+    "case": "5.0:WT_HOLD",
+    "frozen_reproduction_gate_cm_per_day": 1e-10,
+    "mae_abs_difference_cm_per_day": 1.9194670158872995e-10,
+    "reason": "Recomputed C4L cubic summary misses the preregistered 1e-10 cm/day reproduction gate.",
+    "rms_abs_difference_cm_per_day": 1.9194669464983605e-10,
+    "source_blobs_bit_identical_to_C4L_execution_authority": true
+  },
+  "groundwater_feedback_authorized": false,
+  "model_changed": false,
+  "next_authority": "PREREGISTER_RESPONSE_BLIND_FACE_INTERPOLATED_GRADIENT_AMPLITUDE_TEST",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.c4m.closeout.v1",
+  "scientific_interpretation": [
+    "C4M is formally blocked by the frozen cubic-reproduction gate in 5 cm HOLD; the gate is not relaxed post response.",
+    "The C4L, B9, B8 and B7 source blobs are bit-identical to the C4L authority, so the miss is classified as run-to-run numerical reproducibility rather than provenance drift.",
+    "In every one of the five otherwise interpretable cases, the parameter-free central interface gradient is not supported relative to B9.",
+    "The central slope generally over-applies the available terminal-to-bulk slope contrast. This motivates an independent response-blind amplitude-geometry test, not a fitted blend."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_DIAGNOSTIC_BLOCKED_CENTRAL_NOT_SUPPORTED_WHERE_INTERPRETABLE",
+  "superseded_runs": {
+    "name_shadowing_blocked_run": 35468138955,
+    "pre_interval_semantics_run": 35468029171
+  },
+  "work_unit": "LARE-BC2-C4M",
+  "workstream": "F-ROM-LARE"
+}

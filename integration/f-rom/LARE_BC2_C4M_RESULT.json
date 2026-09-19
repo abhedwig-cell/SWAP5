@@ -1,0 +1,885 @@
+{
+  "application_acceptance_adjudicated": false,
+  "blocked_cases": [
+    {
+      "history": "WT_HOLD",
+      "width_cm": "5.0"
+    }
+  ],
+  "complete": true,
+  "decision": "C4M_DIAGNOSTIC_BLOCKED",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "all_C4L_cubic_metrics_reproduced": false,
+    "maximum_B8_qi_identity_cm_per_day": 1.3027801060161437e-11,
+    "maximum_central_hydrostatic_abs_slope_minus_1": 0.0,
+    "maximum_qH_central_vs_B9_identity_cm_per_day": 0.0,
+    "minimum_interface_K_cm_per_day": 17.084499643853746
+  },
+  "interpretation": [
+    "C4M compares the parameter-free central piecewise-linear interface gradient with the B9 terminal baseline and the C4L cubic on identical Reference-projected states.",
+    "All primary slope comparisons use the preregistered exact interval-effective q=Kbar*(1-s) identity; arithmetic endpoint slopes are secondary only.",
+    "The central candidate changes only qi. Its interface K and qH remain those of B9.",
+    "Cubic response is recomputed only as a mechanism comparator and must reproduce the persisted post-repair C4L authority before interpretation.",
+    "No static result authorizes propagated dynamics."
+  ],
+  "next_authority": "MECHANISM_REVIEW_BEFORE_ANY_PROPAGATION",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.c4m.result.v1",
+  "speed_claim_authorized": false,
+  "summary": {
+    "2.5": {
+      "WT_FALL": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.84375,
+          "central_slope_closer_than_baseline_fraction": 0.001953125,
+          "central_slope_closer_than_cubic_fraction": 0.001953125,
+          "central_vs_required_correlation": 0.22949330062366458,
+          "central_vs_required_cosine": 0.6610928401851508,
+          "cubic_same_sign_fraction": 0.84375,
+          "cubic_vs_required_correlation": 0.10652500783665327,
+          "cubic_vs_required_cosine": 0.6162645780642894,
+          "delta_central": {
+            "count": 512,
+            "max": 0.18092210552995924,
+            "mean": -0.10587205008358155,
+            "median": -0.11621059042888632,
+            "min": -0.13530519649074557,
+            "rms": 0.1138575885997218
+          },
+          "delta_cubic": {
+            "count": 512,
+            "max": 0.0022954177535383646,
+            "mean": -0.000793404274979688,
+            "median": -0.0008684849753201607,
+            "min": -0.0010433126860250885,
+            "rms": 0.0008743492169634865
+          },
+          "delta_ref": {
+            "count": 512,
+            "max": 0.017070877034681464,
+            "mean": -0.007459386721456029,
+            "median": -0.008328729869937768,
+            "min": -0.09725270321580759,
+            "rms": 0.011631924005338877
+          }
+        },
+        "decision": "C4M_CASE_NOT_SUPPORTED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 512,
+            "max": 0.9368619610904716,
+            "mean": 0.8656643021730304,
+            "median": 0.8979360503726639,
+            "min": 0.5642279862659052,
+            "rms": 0.8694698214718247
+          },
+          "bulk": {
+            "count": 512,
+            "max": 0.8791200055816093,
+            "mean": 0.7539500465629567,
+            "median": 0.764870788039618,
+            "min": 0.6498226688615327,
+            "rms": 0.7560412511780052
+          },
+          "central": {
+            "count": 512,
+            "max": 0.8720126763370768,
+            "mean": 0.7597824242308489,
+            "median": 0.7718244759929513,
+            "min": 0.6517877122636874,
+            "rms": 0.7619047587248148
+          },
+          "cubic": {
+            "count": 512,
+            "max": 0.9361264641295037,
+            "mean": 0.864870748418875,
+            "median": 0.8969885730277015,
+            "min": 0.566522518070147,
+            "rms": 0.8686567061342988
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": true,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 1.2818190953112207e-11,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 24.58665817257173
+        },
+        "qi": {
+          "BASE": {
+            "bias": -0.18655339275245592,
+            "corr": 0.9947852857140027,
+            "count": 512,
+            "mae": 0.25619288511181915,
+            "max_abs": 2.485710039945973,
+            "rms": 0.29407170728749293,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": 2.4412912517922924,
+            "corr": 0.8771014153284195,
+            "count": 512,
+            "mae": 2.5975653250098345,
+            "max_abs": 5.367866666489135,
+            "rms": 2.6515339905134834,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.1668005864947275,
+            "corr": 0.9946927956319772,
+            "count": 512,
+            "mae": 0.23987442360850975,
+            "max_abs": 2.5184958998137326,
+            "rms": 0.28158484430778125,
+            "sign_mismatch": 0
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": 0.007459386721456029,
+            "corr": 0.9944750730016386,
+            "count": 512,
+            "mae": 0.010190694268290463,
+            "max_abs": 0.09725270321580759,
+            "rms": 0.011631924005338877,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.09841266336212551,
+            "corr": 0.8644685194325117,
+            "count": 512,
+            "mae": 0.1043564634233159,
+            "max_abs": 0.20101309431798597,
+            "rms": 0.1065259223874211,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": 0.006665982446476341,
+            "corr": 0.9943878441917106,
+            "count": 512,
+            "mae": 0.00953250420067814,
+            "max_abs": 0.09853061711647992,
+            "rms": 0.011114444335964218,
+            "sign_mismatch": 0
+          }
+        }
+      },
+      "WT_HOLD": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.0,
+          "central_slope_closer_than_baseline_fraction": 0.0,
+          "central_slope_closer_than_cubic_fraction": 0.0,
+          "central_vs_required_correlation": null,
+          "central_vs_required_cosine": -0.9999999999999998,
+          "cubic_same_sign_fraction": 0.0,
+          "cubic_vs_required_correlation": null,
+          "cubic_vs_required_cosine": -1.0,
+          "delta_central": {
+            "count": 256,
+            "max": -0.010109837746667627,
+            "mean": -0.010109837746667627,
+            "median": -0.010109837746667627,
+            "min": -0.010109837746667627,
+            "rms": 0.010109837746667629
+          },
+          "delta_cubic": {
+            "count": 256,
+            "max": -0.0001900665121090661,
+            "mean": -0.0001900665121090661,
+            "median": -0.0001900665121090661,
+            "min": -0.0001900665121090661,
+            "rms": 0.0001900665121090661
+          },
+          "delta_ref": {
+            "count": 256,
+            "max": 2.9103830456733704e-11,
+            "mean": 2.9103830456733704e-11,
+            "median": 2.9103830456733704e-11,
+            "min": 2.9103830456733704e-11,
+            "rms": 2.9103830456733704e-11
+          }
+        },
+        "decision": "C4M_CASE_NOT_SUPPORTED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 256,
+            "max": 0.9999999999708962,
+            "mean": 0.9999999999708962,
+            "median": 0.9999999999708962,
+            "min": 0.9999999999708962,
+            "rms": 0.9999999999708962
+          },
+          "bulk": {
+            "count": 256,
+            "max": 0.9889710860654406,
+            "mean": 0.9889710860654405,
+            "median": 0.9889710860654406,
+            "min": 0.9889710860654406,
+            "rms": 0.9889710860654407
+          },
+          "central": {
+            "count": 256,
+            "max": 0.9898901622242285,
+            "mean": 0.9898901622242282,
+            "median": 0.9898901622242285,
+            "min": 0.9898901622242285,
+            "rms": 0.9898901622242285
+          },
+          "cubic": {
+            "count": 256,
+            "max": 0.9998099334587871,
+            "mean": 0.9998099334587868,
+            "median": 0.9998099334587871,
+            "min": 0.9998099334587871,
+            "rms": 0.9998099334587872
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": true,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 0.0,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 24.279413701330647
+        },
+        "qi": {
+          "BASE": {
+            "bias": 7.06623939956495e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 7.06623939956495e-10,
+            "max_abs": 7.066239399564952e-10,
+            "rms": 7.066239399564952e-10,
+            "sign_mismatch": 256
+          },
+          "CENTRAL": {
+            "bias": 0.2454609338127098,
+            "corr": null,
+            "count": 256,
+            "mae": 0.2454609338127098,
+            "max_abs": 0.24546093381270975,
+            "rms": 0.24546093381270978,
+            "sign_mismatch": 256
+          },
+          "CUBIC": {
+            "bias": 0.004614730016289731,
+            "corr": null,
+            "count": 256,
+            "mae": 0.004614730016289731,
+            "max_abs": 0.004614730016289731,
+            "rms": 0.004614730016289731,
+            "sign_mismatch": 256
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": -2.9103830456733704e-11,
+            "corr": null,
+            "count": 256,
+            "mae": 2.9103830456733704e-11,
+            "max_abs": 2.9103830456733704e-11,
+            "rms": 2.9103830456733704e-11,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.010109837775771457,
+            "corr": null,
+            "count": 256,
+            "mae": 0.010109837775771457,
+            "max_abs": 0.010109837775771457,
+            "rms": 0.010109837775771456,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.00019006654121289657,
+            "corr": null,
+            "count": 256,
+            "mae": 0.00019006654121289657,
+            "max_abs": 0.00019006654121289657,
+            "rms": 0.00019006654121289657,
+            "sign_mismatch": 0
+          }
+        }
+      },
+      "WT_RISE": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.8203125,
+          "central_slope_closer_than_baseline_fraction": 0.15234375,
+          "central_slope_closer_than_cubic_fraction": 0.146484375,
+          "central_vs_required_correlation": 0.4362149973771656,
+          "central_vs_required_cosine": 0.26287668341454845,
+          "cubic_same_sign_fraction": 0.8203125,
+          "cubic_vs_required_correlation": 0.5835676878572225,
+          "cubic_vs_required_cosine": 0.3096810544948305,
+          "delta_central": {
+            "count": 512,
+            "max": 0.053530656676124666,
+            "mean": -0.03514307993204849,
+            "median": -0.06085699244624354,
+            "min": -0.37990423853875277,
+            "rms": 0.060559514717593355
+          },
+          "delta_cubic": {
+            "count": 512,
+            "max": 0.00221294227381863,
+            "mean": -0.0027887874182803514,
+            "median": -0.004288963565958759,
+            "min": -0.008591084911885538,
+            "rms": 0.004017988635545577
+          },
+          "delta_ref": {
+            "count": 512,
+            "max": 0.17345470374538952,
+            "mean": 0.002369752277630854,
+            "median": -0.0035654997953399326,
+            "min": -0.06336096932098911,
+            "rms": 0.015583764811145732
+          }
+        },
+        "decision": "C4M_CASE_NOT_SUPPORTED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 512,
+            "max": 1.4800305078388192,
+            "mean": 1.1553948826711746,
+            "median": 1.135745746170869,
+            "min": 1.0826975334784947,
+            "rms": 1.1579297203620145
+          },
+          "bulk": {
+            "count": 512,
+            "max": 1.3499039171059204,
+            "mean": 1.1129993872744257,
+            "median": 1.0654283583293223,
+            "min": 1.00804628905024,
+            "rms": 1.1180196842994439
+          },
+          "central": {
+            "count": 512,
+            "max": 1.3470472198858692,
+            "mean": 1.120232190274709,
+            "median": 1.0772525778634523,
+            "min": 1.0218787936153904,
+            "rms": 1.1246121072498902
+          },
+          "cubic": {
+            "count": 512,
+            "max": 1.4714378359479374,
+            "mean": 1.1526055916281366,
+            "median": 1.131681202304084,
+            "min": 1.0770624413843755,
+            "rms": 1.1552544647648864
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": true,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 1.1361578344804002e-11,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 22.142996212733454
+        },
+        "qi": {
+          "BASE": {
+            "bias": 0.054156135011842604,
+            "corr": 0.979452690655582,
+            "count": 512,
+            "mae": 0.2529303063634454,
+            "max_abs": 4.020667926429853,
+            "rms": 0.3611379908408743,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": 0.8856424813404126,
+            "corr": 0.898218114561722,
+            "count": 512,
+            "mae": 1.1127703800718916,
+            "max_abs": 8.693865690596189,
+            "rms": 1.3605839942137958,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": 0.12019592506923106,
+            "corr": 0.9832514164113987,
+            "count": 512,
+            "mae": 0.20141185043667087,
+            "max_abs": 4.121923277366191,
+            "rms": 0.3433615233520122,
+            "sign_mismatch": 0
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": -0.002369752277630854,
+            "corr": 0.9808271019981046,
+            "count": 512,
+            "mae": 0.010847169990157883,
+            "max_abs": 0.17345470374538952,
+            "rms": 0.015583764811145732,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.03751283220967934,
+            "corr": 0.8979581810667073,
+            "count": 512,
+            "mae": 0.04733904667851022,
+            "max_abs": 0.3917149435053029,
+            "rms": 0.058430568319038444,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.005158539695911206,
+            "corr": 0.9843514142749413,
+            "count": 512,
+            "mae": 0.008681328765345284,
+            "max_abs": 0.17785143902081169,
+            "rms": 0.01483968862255832,
+            "sign_mismatch": 0
+          }
+        }
+      }
+    },
+    "5.0": {
+      "WT_FALL": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.96484375,
+          "central_slope_closer_than_baseline_fraction": 0.033203125,
+          "central_slope_closer_than_cubic_fraction": 0.033203125,
+          "central_vs_required_correlation": -0.04342215566467675,
+          "central_vs_required_cosine": 0.8027628171109453,
+          "cubic_same_sign_fraction": 0.96484375,
+          "cubic_vs_required_correlation": 0.0003571856608440089,
+          "cubic_vs_required_cosine": 0.7850185662740573,
+          "delta_central": {
+            "count": 512,
+            "max": 0.20830361640072825,
+            "mean": -0.10167092799669583,
+            "median": -0.11374544119868202,
+            "min": -0.1231693610620167,
+            "rms": 0.10976041720378996
+          },
+          "delta_cubic": {
+            "count": 512,
+            "max": 0.010794252986068953,
+            "mean": -0.0030808353473235957,
+            "median": -0.003453511992061953,
+            "min": -0.0038014607897260966,
+            "rms": 0.0034350124800930095
+          },
+          "delta_ref": {
+            "count": 512,
+            "max": 0.20698229256316047,
+            "mean": -0.01965824517494406,
+            "median": -0.019652728030824906,
+            "min": -0.042296504999768225,
+            "rms": 0.02246194035056704
+          }
+        },
+        "decision": "C4M_CASE_NOT_SUPPORTED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 512,
+            "max": 0.9343516208027722,
+            "mean": 0.8572737641874184,
+            "median": 0.8882003319413343,
+            "min": 0.5491614118654979,
+            "rms": 0.8611116171240714
+          },
+          "bulk": {
+            "count": 512,
+            "max": 0.8958642076557967,
+            "mean": 0.743746913511512,
+            "median": 0.7533243081882081,
+            "min": 0.6449167959082595,
+            "rms": 0.7457533210511036
+          },
+          "central": {
+            "count": 512,
+            "max": 0.8783606598834253,
+            "mean": 0.755582241033137,
+            "median": 0.7667729039923116,
+            "min": 0.6502521466197643,
+            "rms": 0.7576563352552435
+          },
+          "cubic": {
+            "count": 512,
+            "max": 0.9313118343305298,
+            "mean": 0.8541916558183436,
+            "median": 0.884500089379362,
+            "min": 0.5599497447917322,
+            "rms": 0.8579478096490842
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": true,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 1.1376677377938904e-11,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 20.61438473167957
+        },
+        "qi": {
+          "BASE": {
+            "bias": -0.4264839764229032,
+            "corr": 0.992854212570847,
+            "count": 512,
+            "mae": 0.4442848671525587,
+            "max_abs": 4.5570280267918095,
+            "rms": 0.49159977307542096,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": 1.7093962266344391,
+            "corr": 0.9028159225101829,
+            "count": 512,
+            "mae": 1.898332457761883,
+            "max_abs": 5.488302605747502,
+            "rms": 1.957231080645627,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.3613876270626456,
+            "corr": 0.9930363807167584,
+            "count": 512,
+            "mae": 0.3786437314728505,
+            "max_abs": 4.417562729012465,
+            "rms": 0.4386758463318256,
+            "sign_mismatch": 0
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": 0.01965824517494406,
+            "corr": 0.9919602740624843,
+            "count": 512,
+            "mae": 0.020466769755268906,
+            "max_abs": 0.20698229256316047,
+            "rms": 0.02246194035056704,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.08201268282175178,
+            "corr": 0.8857588475383902,
+            "count": 512,
+            "mae": 0.09007584242329292,
+            "max_abs": 0.22931728188205713,
+            "rms": 0.09270153053431573,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": 0.016577409827620463,
+            "corr": 0.9921976757770646,
+            "count": 512,
+            "mae": 0.017361539501309645,
+            "max_abs": 0.20073719646443022,
+            "rms": 0.01987960383624331,
+            "sign_mismatch": 0
+          }
+        }
+      },
+      "WT_HOLD": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.0,
+          "central_slope_closer_than_baseline_fraction": 0.0,
+          "central_slope_closer_than_cubic_fraction": 0.0,
+          "central_vs_required_correlation": null,
+          "central_vs_required_cosine": -1.0,
+          "cubic_same_sign_fraction": 0.0,
+          "cubic_vs_required_correlation": null,
+          "cubic_vs_required_cosine": -1.0,
+          "delta_central": {
+            "count": 256,
+            "max": -0.010900186263887446,
+            "mean": -0.010900186263887446,
+            "median": -0.010900186263887446,
+            "min": -0.010900186263887446,
+            "rms": 0.010900186263887444
+          },
+          "delta_cubic": {
+            "count": 256,
+            "max": -0.0008395759357423538,
+            "mean": -0.0008395759357423538,
+            "median": -0.0008395759357423538,
+            "min": -0.0008395759357423538,
+            "rms": 0.0008395759357423538
+          },
+          "delta_ref": {
+            "count": 256,
+            "max": 7.275957614183426e-12,
+            "mean": 7.275957614183426e-12,
+            "median": 7.275957614183426e-12,
+            "min": 7.275957614183426e-12,
+            "rms": 7.275957614183426e-12
+          }
+        },
+        "decision": "C4M_CASE_BLOCKED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 256,
+            "max": 0.999999999992724,
+            "mean": 0.999999999992724,
+            "median": 0.999999999992724,
+            "min": 0.999999999992724,
+            "rms": 0.999999999992724
+          },
+          "bulk": {
+            "count": 256,
+            "max": 0.9869197764760591,
+            "mean": 0.986919776476059,
+            "median": 0.9869197764760591,
+            "min": 0.9869197764760591,
+            "rms": 0.986919776476059
+          },
+          "central": {
+            "count": 256,
+            "max": 0.9890998137288366,
+            "mean": 0.9890998137288366,
+            "median": 0.9890998137288366,
+            "min": 0.9890998137288366,
+            "rms": 0.9890998137288367
+          },
+          "cubic": {
+            "count": 256,
+            "max": 0.9991604240569817,
+            "mean": 0.9991604240569815,
+            "median": 0.9991604240569817,
+            "min": 0.9991604240569817,
+            "rms": 0.9991604240569816
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": false,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 0.0,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 20.130675920316314
+        },
+        "qi": {
+          "BASE": {
+            "bias": 1.4646994474146865e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 1.4646994474146865e-10,
+            "max_abs": 1.464699447414686e-10,
+            "rms": 1.4646994474146863e-10,
+            "sign_mismatch": 256
+          },
+          "CENTRAL": {
+            "bias": 0.21942811729644707,
+            "corr": null,
+            "count": 256,
+            "mae": 0.21942811729644707,
+            "max_abs": 0.21942811729644712,
+            "rms": 0.21942811729644712,
+            "sign_mismatch": 256
+          },
+          "CUBIC": {
+            "bias": 0.016901993398207776,
+            "corr": null,
+            "count": 256,
+            "mae": 0.016901993398207776,
+            "max_abs": 0.016901993398207776,
+            "rms": 0.016901993398207776,
+            "sign_mismatch": 256
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": -7.275957614183426e-12,
+            "corr": null,
+            "count": 256,
+            "mae": 7.275957614183426e-12,
+            "max_abs": 7.275957614183426e-12,
+            "rms": 7.275957614183426e-12,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.010900186271163403,
+            "corr": null,
+            "count": 256,
+            "mae": 0.010900186271163403,
+            "max_abs": 0.010900186271163403,
+            "rms": 0.010900186271163402,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.0008395759430183114,
+            "corr": null,
+            "count": 256,
+            "mae": 0.0008395759430183114,
+            "max_abs": 0.0008395759430183114,
+            "rms": 0.0008395759430183113,
+            "sign_mismatch": 0
+          }
+        }
+      },
+      "WT_RISE": {
+        "correction_geometry": {
+          "central_same_sign_fraction": 0.1875,
+          "central_slope_closer_than_baseline_fraction": 0.1875,
+          "central_slope_closer_than_cubic_fraction": 0.1875,
+          "central_vs_required_correlation": 0.7160126166481517,
+          "central_vs_required_cosine": -0.27858880928236773,
+          "cubic_same_sign_fraction": 0.1875,
+          "cubic_vs_required_correlation": 0.8424971314048395,
+          "cubic_vs_required_cosine": -0.3152055542979156,
+          "delta_central": {
+            "count": 512,
+            "max": 0.060438054335026026,
+            "mean": -0.049862081120001345,
+            "median": -0.074735009181787,
+            "min": -0.2968998948621484,
+            "rms": 0.07034097171277591
+          },
+          "delta_cubic": {
+            "count": 512,
+            "max": 0.010370649502720708,
+            "mean": -0.01621977917618339,
+            "median": -0.02300407855053599,
+            "min": -0.0293127984476651,
+            "rms": 0.02094662459074138
+          },
+          "delta_ref": {
+            "count": 512,
+            "max": 0.15109990259526507,
+            "mean": 0.027773666362633374,
+            "median": 0.016608776282949878,
+            "min": -0.13645421845483052,
+            "rms": 0.034271066046597486
+          }
+        },
+        "decision": "C4M_CASE_NOT_SUPPORTED",
+        "endpoint_slope_diagnostics": {
+          "base": {
+            "count": 512,
+            "max": 1.4644332831230713,
+            "mean": 1.1611821454116082,
+            "median": 1.142514580173156,
+            "min": 1.0826975334566669,
+            "rms": 1.1636145851301452
+          },
+          "bulk": {
+            "count": 512,
+            "max": 1.3610856619471332,
+            "mean": 1.085823791356638,
+            "median": 1.0263844223738032,
+            "min": 0.9639731173036051,
+            "rms": 1.0929682032634902
+          },
+          "central": {
+            "count": 512,
+            "max": 1.3496545151164026,
+            "mean": 1.1112964712303453,
+            "median": 1.0642426308496789,
+            "min": 1.0079712067609106,
+            "rms": 1.116259034067524
+          },
+          "cubic": {
+            "count": 512,
+            "max": 1.4433125443475463,
+            "mean": 1.1449598804893535,
+            "median": 1.119609884501049,
+            "min": 1.0533847353524988,
+            "rms": 1.1481157812859601
+          }
+        },
+        "hard_checks": {
+          "C4L_cubic_metrics_reproduced": true,
+          "central_hydrostatic_abs_slope_minus_1": 0.0,
+          "failure_count": 0,
+          "max_B8_qi_identity_cm_per_day": 1.3027801060161437e-11,
+          "max_qH_central_vs_B9_identity_cm_per_day": 0.0,
+          "minimum_interface_K_cm_per_day": 17.084499643853746
+        },
+        "qi": {
+          "BASE": {
+            "bias": 0.5161959604033738,
+            "corr": 0.9818041087410796,
+            "count": 512,
+            "mae": 0.5254214330076118,
+            "max_abs": 2.9329775094968027,
+            "rms": 0.6302082750086809,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": 1.474171003310456,
+            "corr": 0.9359217805282528,
+            "count": 512,
+            "mae": 1.474171003310456,
+            "max_abs": 6.734834699165193,
+            "rms": 1.6383075062885706,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": 0.8277751773441107,
+            "corr": 0.9909364490940921,
+            "count": 512,
+            "mae": 0.8357152032029886,
+            "max_abs": 3.2006303282800954,
+            "rms": 0.8535351139074127,
+            "sign_mismatch": 0
+          }
+        },
+        "slope_error": {
+          "BASE": {
+            "bias": -0.027773666362633374,
+            "corr": 0.98290675898894,
+            "count": 512,
+            "mae": 0.028306690653472556,
+            "max_abs": 0.15109990259526507,
+            "rms": 0.034271066046597486,
+            "sign_mismatch": 0
+          },
+          "CENTRAL": {
+            "bias": -0.07763574748263473,
+            "corr": 0.937667133425017,
+            "count": 512,
+            "mae": 0.07763574748263473,
+            "max_abs": 0.37050192824416306,
+            "rms": 0.08640326449913067,
+            "sign_mismatch": 0
+          },
+          "CUBIC": {
+            "bias": -0.04399344553881677,
+            "corr": 0.9920953648496312,
+            "count": 512,
+            "mae": 0.04445056025399641,
+            "max_abs": 0.16546406788068424,
+            "rms": 0.04545124813418103,
+            "sign_mismatch": 0
+          }
+        }
+      }
+    }
+  },
+  "supported_cases": [],
+  "unsupported_cases": [
+    {
+      "history": "WT_FALL",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_HOLD",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_RISE",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_FALL",
+      "width_cm": "5.0"
+    },
+    {
+      "history": "WT_RISE",
+      "width_cm": "5.0"
+    }
+  ],
+  "work_unit": "LARE-BC2-C4M",
+  "workstream": "F-ROM-LARE"
+}
