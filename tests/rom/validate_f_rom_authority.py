@@ -1328,6 +1328,91 @@ def validate_romv2_d13_if_present() -> str:
     return "CLOSED_BOUNDED_GROUNDWATER_BRANCH_CANDIDACY_RETAINED"
 
 
+def validate_romv2_d14_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D14_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D14_PREREGISTRATION.json")
+            == "9f626764bace4e9b877fe91cb363ef0bb6ba20fd",
+            "F-ROMV2-D14 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D14_RESULT.json")
+            == "2a2fc347e44724a271030c395f3537912e2762b3",
+            "F-ROMV2-D14 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D14_STATUS.json")
+            == "b8a97eb5910f741e50e5ce0bd1714788df1e9de2",
+            "F-ROMV2-D14 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D14_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "3c9a0de74215f20ab311c211cafab7abb6f21561",
+            "F-ROMV2-D14 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D14_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D14_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D14_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D14_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D14_FMC_SURFACE_KINEMATICS_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D14 preregistration phase drift")
+    require(prereg["scientific_role"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D14 unexpectedly consumes SWAP trajectories")
+    require(prereg["discretization"]["moisture_bins"] == 200
+            and prereg["discretization"]["maximum_explicit_substep_seconds"] == 10,
+            "F-ROMV2-D14 frozen discretization drift")
+    require("NO_BIN_COUNT_TUNING" in prereg["firewalls"]
+            and "NO_SUBSTEP_TUNING" in prereg["firewalls"],
+            "F-ROMV2-D14 anti-tuning firewall drift")
+
+    require(result["decision"] == "D14_FMC_SURFACE_KINEMATICS_PREFLIGHT_PASS",
+            "F-ROMV2-D14 decision drift")
+    require(result["adjudication"]
+            == "SURFACE_FRONT_AND_FALLING_SLUG_KINEMATICS_PASS_BEFORE_FULL_SURFACE_ACCOUNTING",
+            "F-ROMV2-D14 adjudication drift")
+    require(all(result["tests"].values()),
+            "F-ROMV2-D14 one or more kinematic tests no longer pass")
+    require(result["infiltration_front"]["I_RELAX_raw_inversion_count"] > 0
+            and result["infiltration_front"]["capillary_relaxation_restores_monotonicity"] is True,
+            "F-ROMV2-D14 relaxation stress evidence drift")
+    require(float(result["infiltration_front"]["max_abs_capillary_relaxation_storage_difference_cm"]) == 0.0,
+            "F-ROMV2-D14 capillary relaxation water-volume drift")
+    require(float(result["falling_slug"]["total_finite_volume_slug_water_difference_cm"]) == 0.0,
+            "F-ROMV2-D14 slug-water identity drift")
+    require(result["D15_full_surface_accounting_authorized"] is True,
+            "F-ROMV2-D14 D15 authority drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D14 overclaims authority")
+
+    require(status["phase"] == "CLOSED_SURFACE_KINEMATICS_PREFLIGHT_PASS",
+            "F-ROMV2-D14 status phase drift")
+    require(status["full_surface_accounting_qualified"] is False
+            and status["SWAP_surface_comparator_authorized"] is False,
+            "F-ROMV2-D14 status prematurely qualifies surface model")
+    require(status["D15_full_surface_accounting_authorized"] is True,
+            "F-ROMV2-D14 status does not authorize D15 accounting preflight")
+    require(status["post_result_bin_substep_profile_retuning_authorized"] is False,
+            "F-ROMV2-D14 status permits post-result retuning")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D14 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D14 execution PR unexpectedly treated as canonical")
+    require(manifest["SWAP_trajectory_evidence_consumed"] is False
+            and manifest["bin_or_substep_retuned_after_result"] is False,
+            "F-ROMV2-D14 provenance/anti-tuning drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D14 evidence import claims production/reference mutation")
+
+    require("D14 provides **kinematic authority**, not application acceptance." in doc,
+            "F-ROMV2-D14 bounded interpretation missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D14 production prohibition missing")
+
+    return "CLOSED_SURFACE_KINEMATICS_PREFLIGHT_PASS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1367,6 +1452,7 @@ def main() -> int:
     romv2_d11_phase = validate_romv2_d11_if_present()
     romv2_d12_phase = validate_romv2_d12_if_present()
     romv2_d13_phase = validate_romv2_d13_if_present()
+    romv2_d14_phase = validate_romv2_d14_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1390,6 +1476,7 @@ def main() -> int:
     print(f"F_ROMV2_D11_PHASE={romv2_d11_phase}")
     print(f"F_ROMV2_D12_PHASE={romv2_d12_phase}")
     print(f"F_ROMV2_D13_PHASE={romv2_d13_phase}")
+    print(f"F_ROMV2_D14_PHASE={romv2_d14_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
