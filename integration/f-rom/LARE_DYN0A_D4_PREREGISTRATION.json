@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.lare.dyn0a.d4.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-D4",
+  "phase": "PREREGISTERED_BEFORE_D4_RESPONSE_EXECUTION",
+  "trigger_authority": {
+    "result_path": "integration/f-rom/LARE_DYN0A_FX_FINE_ONLY_RESULT.json",
+    "decision": "STANDARD_LARE_D3_REGIME_DEPENDENT_CLOSURE_ERROR_CONFIRMED",
+    "reason": "The previously frozen D4 role was a closure-resolution control if D3 left an unresolved resolution/closure question. D3 now shows large regime-dependent redistribution error while preserving equilibrium and the water ledger."
+  },
+  "scientific_question": "Does adding one fixed storage degree of freedom at 130-140 cm materially reduce the standard-LARE D3 redistribution error, or is the dominant error structural to the published layer-averaged closure?",
+  "models": {
+    "D3": {
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "role": "frozen primary state from RS1-GW closeout"
+    },
+    "D4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "nested closure-resolution control only"
+    }
+  },
+  "unchanged": [
+    "B01 Mualem-Van Genuchten constitutive parameters",
+    "HE2021 Eq.24 adjacent fixed-layer closure",
+    "fixed-flux bottom boundary",
+    "Se0 anchors 0.65, 0.85, 0.95",
+    "EQ, WET, DRY and WET_DRY top forcing sequences",
+    "1024 observations at 0.0008 d",
+    "iterative-Heun numerical authority and refinement ladder",
+    "strict 0<Se<1 qualified domain",
+    "fine 16x10 cm Reference Richards authority"
+  ],
+  "comparison_basis": {
+    "common_physical_bands_cm": [
+      [
+        0,
+        140
+      ],
+      [
+        140,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ],
+    "D4_to_D3_projection": "sum D4 storage in 0-130 and 130-140 before comparison; preserve the two lower 10-cm layers unchanged",
+    "common_case_rule": "Compare D4 against D3 only on cases qualified for fine Reference, D3 LARE and D4 LARE. Exclusions are allowed only for frozen domain/numerical status, never because of error magnitude.",
+    "metrics": [
+      "max absolute storage error on common D3 bands",
+      "mean absolute storage error on common D3 bands",
+      "max absolute 140-150 cm storage error",
+      "max absolute 150-160 cm storage error",
+      "final signed storage error on common D3 bands"
+    ]
+  },
+  "adjudication": {
+    "RESOLUTION_BENEFIT_CLEAR": "D4 is non-inferior to D3 on both max and mean common-band storage error for every common dynamic case and strictly improves both metrics for at least one Se0>=0.85 dynamic case.",
+    "RESOLUTION_EFFECT_MIXED": "D4 improves some common dynamic cases or metrics but worsens others.",
+    "CLOSURE_LIMIT_DOMINANT": "D4 provides no strict improvement in max or mean common-band storage error on any Se0>=0.85 common dynamic case.",
+    "note": "These are closure-resolution research outcomes, not application acceptance thresholds."
+  },
+  "next_logic": {
+    "if_RESOLUTION_BENEFIT_CLEAR": "D4 may be retained as a higher-state LARE challenger, but D3 remains the minimum-state authority and coarse-Richards comparison is still required.",
+    "if_RESOLUTION_EFFECT_MIXED": "Do not add further state automatically; inspect where the error is generated before changing state or closure.",
+    "if_CLOSURE_LIMIT_DOMINANT": "Do not escalate state dimension under standard closure; proceed to closure analysis such as equilibrium-aware or other physically justified correction."
+  },
+  "firewalls": [
+    "NO_POST_RESULT_LAYER_BOUNDARY_RETUNING",
+    "NO_CHANGE_TO_LARE_INTERFACE_CLOSURE",
+    "NO_APPLICATION_THRESHOLD_DERIVED_FROM_D4",
+    "NO_PRODUCTION_ROM",
+    "NO_SPEED_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
