@@ -1795,7 +1795,9 @@ contains
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(black_evaporation_forcing_t) :: black_process_forcing
     type(black_evaporation_result_t) :: black_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider
+    type(boesten_evaporation_forcing_t) :: boesten_process_forcing
+    type(boesten_evaporation_result_t) :: boesten_result
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
@@ -1815,8 +1817,10 @@ contains
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
+    self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
     black_result = black_evaporation_result_t()
+    boesten_result = boesten_evaporation_result_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
     self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
@@ -1852,7 +1856,8 @@ contains
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
                                                            self%fixed_weir_surface_water_active, &
-                                                           self%black_evaporation_active)) return
+                                                           self%black_evaporation_active, &
+                                                           self%boesten_evaporation_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     effective_bottom_mode = self%bottom_mode
@@ -1873,7 +1878,7 @@ contains
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active) then
+    if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -1953,6 +1958,44 @@ contains
         end select
       end if
 
+      if (self%boesten_evaporation_active) then
+        select type (boesten_physical => state)
+        type is (fmr_b110_boesten_evaporation_state_t)
+          boesten_process_forcing = boesten_evaporation_forcing_t()
+          boesten_process_forcing%potential_bare_soil_evaporation = &
+               self%boesten_evaporation_forcing%potential_bare_soil_evaporation_cm_per_day
+          boesten_process_forcing%wetting_rate = self%boesten_evaporation_forcing%precipitation_rate_cm_per_day + &
+               self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
+          boesten_process_forcing%surface_is_ponded = &
+               boesten_physical%ponding_depth > BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
+          call evaluate_boesten_evaporation_reduction(self%boesten_evaporation_parameters, &
+               boesten_physical%boesten_evaporation, boesten_process_forcing, step_duration, boesten_result)
+          self%last_observation%boesten_evaporation_evaluated = boesten_result%status == BOESTEN_EVAP_AVAILABLE
+          self%last_observation%boesten_ponding_reset_applied = boesten_result%ponding_reset_applied
+          self%last_observation%boesten_empirical_demand = boesten_result%empirical_bare_soil_evaporation_demand
+          self%last_observation%boesten_candidate_spev = boesten_result%candidate_state%spev
+          self%last_observation%boesten_candidate_saev = boesten_result%candidate_state%saev
+          if (boesten_result%status /= BOESTEN_EVAP_AVAILABLE) return
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters, 1, &
+               boesten_physical%pressure_head(1), fixed_top_conductivity, fixed_top_conductivity_ok)
+          if (.not. fixed_top_conductivity_ok) return
+          call bind_b110_dynamic_top_boundary_solver_provider(boesten_top_provider, self%soil_parameters, &
+               self%hydraulic_parameters, self%swkmean, boesten_physical%ponding_depth, step_duration, &
+               self%boesten_evaporation_forcing%precipitation_rate_cm_per_day, &
+               self%boesten_evaporation_forcing%irrigation_rate_cm_per_day, &
+               self%boesten_evaporation_forcing%snowmelt_rate_cm_per_day, &
+               self%boesten_evaporation_forcing%runon_rate_cm_per_day, &
+               boesten_result%empirical_bare_soil_evaporation_demand, &
+               self%boesten_evaporation_forcing%potential_pond_evaporation_cm_per_day, &
+               self%boesten_evaporation_forcing%ponding_max_cm, &
+               self%boesten_evaporation_forcing%runoff_resistance_day, &
+               self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          request%evaluation%dynamic_top_boundary => boesten_top_provider
+        class default
+          return
+        end select
+      end if
+
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
@@ -2005,7 +2048,8 @@ contains
     request%evaluation%constitutive => self%constitutive
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
-    if (.not. self%black_evaporation_active) request%evaluation%top_boundary => self%top_boundary
+    if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
+         request%evaluation%top_boundary => self%top_boundary
 
     if (self%soil_water_selection%uses_rossfast()) then
       context_ok = .true.
@@ -2116,6 +2160,16 @@ contains
       type is (fmr_b110_black_evaporation_state_t)
         if (black_result%status /= BLACK_EVAP_AVAILABLE) return
         black_physical%black_evaporation = black_result%candidate_state
+      class default
+        return
+      end select
+    end if
+
+    if (self%boesten_evaporation_active) then
+      select type (boesten_physical => state)
+      type is (fmr_b110_boesten_evaporation_state_t)
+        if (boesten_result%status /= BOESTEN_EVAP_AVAILABLE) return
+        boesten_physical%boesten_evaporation = boesten_result%candidate_state
       class default
         return
       end select
