@@ -1,17 +1,17 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+  "canonical_head_at_reconcile": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "7c9bfbfb950920cb8ba3be90643f935b87bd04be",
+    "result_blob": "a8f739d8258513798b9ac30269abefed7d66a6ba",
     "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-    "application_requirements_blob": "da1f3f5caf893c8aba363d98c1f3004b015405b6"
+    "application_requirements_blob": "1d8be60965757307f37bb82d6c4b1a80a8d7d8e3"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -143,12 +143,22 @@
   "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
   "post_relevant_production_live_delta": {
     "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-    "head": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+    "head": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
     "changed_scope": [
-      "integration/f-doc/F-DOC23_STATUS.json",
-      "integration/trace/**"
+      "docs/science/F-ROMV2_*",
+      "integration/f-rom/**",
+      "integration/f-doc/F-DOC33_STATUS.json",
+      "integration/trace/**",
+      "tests/rom/**"
     ],
     "classification": "NO_E7_AUTHORITY_EFFECT",
-    "reason": "No production runtime, coupling, PUB-GC publication asset, Hupsel authority, or application-owner source changed."
+    "exact_preserved_postimages": {
+      "bootstrap": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "serialized_backend": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+      "runtime_core": "dc1dbffab96542ee09be5f923cea65628864d87b",
+      "restart_state": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
+      "restricted_surface_evaporation": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    "reason": "No later canonical commit changed the E7-relevant production owner or participant-domain semantics."
   }
 }
