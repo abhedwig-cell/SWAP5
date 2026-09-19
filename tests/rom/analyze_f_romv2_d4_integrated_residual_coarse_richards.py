@@ -189,7 +189,7 @@ def main():
                    "structural_transient_nodes_q_sign":transient_frontier,
                    "solverwork_balance_nonlinear_iterations_storage_bottom":solverwork_balance_frontier,
                    "retained_coarse_candidates":surviving},
-      "interpretation_rule":"Integrated water-depth numerical admissibility plus multi-objective development frontier only; no weighted score and no application threshold is inferred from D3.",
+      "interpretation_rule":"Integrated water-depth numerical admissibility plus multi-objective development frontier only; no weighted score and no application threshold is inferred from D4.",
       "production_rom_authorized":False
     }
     pathlib.Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
