@@ -1,0 +1,148 @@
+{
+  "schema": "swap5.f-romv2-d19.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D19",
+  "decision": "FMC_EXACT_CONTACT_MERGE_RETAINS_RESEARCH_CANDIDACY",
+  "adjudication": "EXACT_CONTACT_MERGE_AND_POST_MERGE_FMC_BEATS_R2_ON_ALL_PREREGISTERED_FULL_AND_EARLY_VIEWS",
+  "execution": {
+    "stage1_preflight": {
+      "pull_request": 455,
+      "workflow_run": 35459320729,
+      "workflow_job": 105940197024,
+      "executed_head": "09ed8ab34c1d8edec87e87083e5c46360f6b2333",
+      "artifact_id": 10589417168,
+      "artifact_digest": "sha256:7406d7faf80e451a9b24845fb053126c9da8df25ff46ff31d627cba350b5af6a",
+      "decision": "D19_FMC_EXACT_CONTACT_MERGE_PREFLIGHT_PASS"
+    },
+    "stage2": {
+      "pull_request": 458,
+      "workflow_run": 35459595130,
+      "workflow_job": 105940937202,
+      "executed_head": "4db9ddd59dd23d01e693b40d919c40c192d4eaf5",
+      "artifact_id": 10588638242,
+      "artifact_digest": "sha256:37177c235c65e6e65041d2e7355fe22b29a7f014866f0e93846a9293b7a6d31a",
+      "result_sha256": "15ed2980501673172204b3600801eaff6236dc42022e62d9ab479091fee3b004",
+      "preflight_result_sha256": "0fada65ecedd94d8f47e866bf910b69e6a6efd173f973474c886ed385c15362d",
+      "analyzer_stdout_sha256": "1f59022b93a9c035c1d0acfdaca8df35bb223aa217d49fe3e6ddbe3c8299f7e1",
+      "preflight_stdout_sha256": "84c9e2a9efceb9fcf4c1a91500a0cca7813f1916dcfa93297a2b5ead8dcf39cc",
+      "R16_o0_o2_sha256": "42290146366c67ee26159abfdee83bc01c6788c1618c66f1c3ebd978dda09159",
+      "R2_o0_o2_sha256": "64d8f5dbb713cef2906e713d5cac3966b506a1b97e36790aebb52347047ee67b",
+      "workflow_conclusion": "success"
+    }
+  },
+  "authority": {
+    "canonical_stage2_base": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+    "original_preregistration_blob": "6dcce48d78ad4ff66c3d8453b08acdb7bc0f4640",
+    "stage2_authorization_blob": "6f01743e3a42b1149334ef0f05ff840988b5ddfe",
+    "stage1_SWAp_trajectory_evidence_consumed": false,
+    "parameter_or_equation_retuning_after_preflight": false
+  },
+  "envelope": {
+    "material": "B01",
+    "histories": [
+      "X25",
+      "X50",
+      "X75",
+      "X125"
+    ],
+    "groundwater_lambdas": [
+      0.25,
+      0.5,
+      0.75,
+      1.25
+    ],
+    "exact_contact_slug_length_cm": 5,
+    "moisture_bins": 200,
+    "process_step_seconds": 10,
+    "post_merge_steps": 64,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "fixed zero pressure head",
+    "ET_or_root_uptake": false,
+    "ponding_or_runoff": false
+  },
+  "integrity": {
+    "pass": true,
+    "merge_count_per_history": 99,
+    "max_abs_merge_storage_residual_cm": 0,
+    "max_abs_FMC_step_mass_residual_cm": 0,
+    "hard_mass_gate_cm": 1e-12,
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "pooled_64_step": {
+    "FMC": {
+      "total_storage_RMSE_cm": 0.020838300398528218,
+      "cumulative_bottom_exchange_RMSE_cm": 0.02083830039851421,
+      "mapped_R16_cell_theta_RMSE": 0.000705070716263729,
+      "upper_storage_RMSE_cm": 0.00038644568441479195,
+      "lower_storage_RMSE_cm": 0.021041677622867336,
+      "terminal_bottom_flux_RMSE_cm_per_day": 5.018918238174941,
+      "bottom_flux_sign_error_count": 0
+    },
+    "R2": {
+      "total_storage_RMSE_cm": 0.02988241162216529,
+      "cumulative_bottom_exchange_RMSE_cm": 0.02988241162215336,
+      "mapped_R16_cell_theta_RMSE": 0.04576985343796134,
+      "upper_storage_RMSE_cm": 0.0010466456409877988,
+      "lower_storage_RMSE_cm": 0.030244927850839768,
+      "terminal_bottom_flux_RMSE_cm_per_day": 7.100448999595984,
+      "bottom_flux_sign_error_count": 64
+    },
+    "FMC_to_R2_RMSE_ratios": {
+      "total_storage": 0.6973433289792247,
+      "cumulative_bottom_exchange": 0.6973433289790343,
+      "mapped_theta": 0.015404696832149916,
+      "terminal_bottom_flux": 0.7068451922491829
+    }
+  },
+  "early_post_merge_steps_1_8": {
+    "FMC": {
+      "total_storage_RMSE_cm": 0.0023692086290939274,
+      "cumulative_bottom_exchange_RMSE_cm": 0.002369208629077363,
+      "mapped_R16_cell_theta_RMSE": 0.00013386562018164702,
+      "upper_storage_RMSE_cm": 0.000052184944479563346,
+      "lower_storage_RMSE_cm": 0.002387434357004612,
+      "terminal_bottom_flux_RMSE_cm_per_day": 4.120248729632366,
+      "bottom_flux_sign_error_count": 0
+    },
+    "R2": {
+      "total_storage_RMSE_cm": 0.003544948767438295,
+      "cumulative_bottom_exchange_RMSE_cm": 0.003544948767425657,
+      "mapped_R16_cell_theta_RMSE": 0.045807785816030656,
+      "upper_storage_RMSE_cm": 0.00014155471237955504,
+      "lower_storage_RMSE_cm": 0.0036055664932370664,
+      "terminal_bottom_flux_RMSE_cm_per_day": 6.134768823692402,
+      "bottom_flux_sign_error_count": 8
+    },
+    "FMC_to_R2_RMSE_ratios": {
+      "total_storage": 0.6683336726488155,
+      "cumulative_bottom_exchange": 0.6683336726465254,
+      "mapped_theta": 0.0029223333500393747,
+      "terminal_bottom_flux": 0.6716224927205108
+    }
+  },
+  "frontier": {
+    "all_total_storage": true,
+    "all_cumulative_bottom_exchange": true,
+    "all_mapped_theta": true,
+    "all_bottom_flux_magnitude": true,
+    "all_bottom_flux_sign": true,
+    "early_total_storage": true,
+    "early_cumulative_bottom_exchange": true,
+    "early_mapped_theta": true,
+    "early_bottom_flux_magnitude": true,
+    "all_views_required": true,
+    "retained": true
+  },
+  "scientific_conclusion": "Within the exact-contact bounded transition envelope, the primary-source FMC slug-to-groundwater representation merge is conservative and the post-merge FMC dynamics outperform R2 on every preregistered full-horizon and early-transition view. This closes the contact/merge gap left by D17/D18 without implying general rainfall, ET, seasonal, moving-water-table or application qualification.",
+  "next": [
+    "ADMIT_D19_AS_BOUNDED_EXACT_CONTACT_MERGE_RESEARCH_CANDIDACY",
+    "MOVE_NEXT_TO_LONGER_PURPOSE_SPECIFIC_HYDRAULIC_VALIDATION_OR_RAINFALL_PONDING_THRESHOLD_EVIDENCE",
+    "DEFER_FORMAL_RUNTIME_UNTIL_A_LONGER_HYDROLOGICAL_HORIZON_IS_RETAINED",
+    "PRESERVE_R2_AS_PHYSICAL_REDUCTION_COMPARATOR"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}
