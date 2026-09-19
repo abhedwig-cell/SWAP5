@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.lare.bc1.stage-a.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-A",
+  "status": "INVALIDATED_OBSERVABLE_TIME_LEVEL_ASSUMPTION",
+  "workflow_run": 35450069347,
+  "artifact_id": 10586424195,
+  "observed_result": {
+    "decision": "BC1_OPERATOR_AUDIT_BLOCKED",
+    "mode5_state_count": 2112,
+    "constitutive_roundtrip_max_abs_head_error_cm": 4.973799150320701e-14,
+    "REFERENCE_OPERATOR_REPLAY": {
+      "max_abs_error_cm_per_day": 0.5797888120571457,
+      "rms_error_cm_per_day": 0.031939446780032195,
+      "sign_mismatch_count": 0
+    },
+    "BC1_SWAPFACE": {
+      "max_abs_error_cm_per_day": 0.5797888120571137,
+      "rms_error_cm_per_day": 0.031939446780031716,
+      "sign_mismatch_count": 0
+    },
+    "BC1_SOURCEFACE": {
+      "max_abs_error_cm_per_day": 10.856639784527701,
+      "rms_error_cm_per_day": 1.1225794361901853,
+      "sign_mismatch_count": 0
+    }
+  },
+  "diagnosis": {
+    "bottom_flux_observable": "For mode 5, solve_result.bottom_flux is materialized after HeadCalc from exact legacy watstor()+fluxes() interval water-balance arithmetic; it is not an independently exposed instantaneous terminal Darcy-face operator.",
+    "conductivity_time_level": "Under the frozen Stage-A SWKIMPL=0 configuration, HeadCalc resets K and Kmean before nonlinear iteration and does not update K/Kmean after each head update. The accepted mode-5 residual therefore uses lagged start-of-step last-node conductivity with the accepted/current head gradient.",
+    "consequence": "The original audit compared an end-state current-K Darcy operator against an interval-balance qbot produced by a lagged-K solve. Failure of the identity gates cannot be attributed to the LARE boundary closure.",
+    "evidence_paths": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90"
+    ]
+  },
+  "scientific_disposition": [
+    "No BC1 candidate is accepted or rejected from Stage A.",
+    "BC1_SOURCEFACE remains a no-fit sensitivity candidate; its larger Stage-A difference is not used to tune any coefficient.",
+    "A2 will verify exact Reference boundary semantics using start-of-step K and accepted end-state gradient, while keeping interval-balance qbot distinct from instantaneous operator semantics.",
+    "Reduced-dynamics qualification must compare integrated exchange and storage over identical forcing histories, not relabel interval qbot as an instantaneous Darcy flux."
+  ],
+  "stage_B_authorized": false,
+  "production_rom_authorized": false
+}
