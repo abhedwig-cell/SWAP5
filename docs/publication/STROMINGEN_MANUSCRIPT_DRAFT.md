@@ -2,7 +2,7 @@
 
 ## Werkstatus
 
-Ruwe eerste volledige artikeltekst. Niet voor indiening. Feiten over de actuele NHI-softwarecontext zijn gecontroleerd op 19 september 2026. De tekst volgt de firewall in STROMINGEN_OVERVIEW_ARTICLE_PLAN.md.
+Ruwe eerste volledige artikeltekst, red-team gereviseerd tegen de huidige publicatie-firewall. Niet voor indiening. Feiten over de actuele NHI-softwarecontext zijn gecontroleerd op 19 september 2026. De tekst volgt de firewall in STROMINGEN_OVERVIEW_ARTICLE_PLAN.md.
 
 # Van SWAP naar een modulair hydrologisch instrumentarium
 
@@ -30,11 +30,11 @@ Die ontwikkeling staat niet los van de Nederlandse praktijk. MetaSWAP is juist o
 
 SWAP5 is in de eerste plaats een modernisering van de SWAP-modelbasis. Daarbij staat niet de introductie van één nieuw hydrologisch proces centraal. Het doel is de bestaande procesmatige modelinhoud zo te organiseren dat de rekenkern beter afzonderlijk kan worden getest, aangestuurd en gekoppeld.
 
-Op hoofdlijnen betekent dit dat verschillende verantwoordelijkheden die in historische wetenschappelijke software gemakkelijk met elkaar verweven raken, explicieter uit elkaar worden gehaald. De hydrologische toestand van het systeem moet eenduidig beschikbaar zijn voor de berekening. Invoer en uitvoer mogen niet bepalen hoe de fysische rekenkern intern moet functioneren. Tijdsturing en modeluitvoering moeten controleerbaar zijn. En een externe modelcomponent moet via een duidelijk omschreven interface informatie kunnen uitwisselen zonder daarvoor de interne implementatie van SWAP te hoeven kennen.
+Op hoofdlijnen betekent dit dat verantwoordelijkheden die in historische wetenschappelijke software gemakkelijk met elkaar verweven raken, duidelijker van elkaar worden gescheiden. De wetenschappelijke rekenkern, gegevensinvoer en -uitvoer, modeluitvoering en koppeling met andere componenten krijgen ieder een herkenbaardere plaats. Daardoor wordt het eenvoudiger om onderdelen afzonderlijk te onderhouden, te testen en in verschillende modelomgevingen toe te passen.
 
 Dat klinkt als een softwaretechnische exercitie, maar voor hydrologische toepassingen is het verschil inhoudelijk relevant. Wanneer een berekening onderdeel wordt van een gekoppeld systeem, moet duidelijk zijn welke grootheden aan de grens tussen twee modelcomponenten worden uitgewisseld, op welk moment dat gebeurt en welke modeltoestand bij die uitwisseling hoort. Ook moet achteraf kunnen worden vastgesteld met welke softwareversie, modelconfiguratie en invoer een resultaat is verkregen.
 
-SWAP5 wordt daarom stapsgewijs opgebouwd en gekwalificeerd. Daarbij wordt gebruikgemaakt van bestaande modeldocumentatie, referentieberekeningen, geautomatiseerde tests en controles op onder meer waterbalansen en reproduceerbaarheid. Het feit dat functionaliteit technisch is geïmplementeerd, betekent in deze werkwijze niet automatisch dat zij al als gekwalificeerde productiefunctionaliteit wordt beschouwd. Dat onderscheid is belangrijk bij een model waarvan de bestaande toepassing en wetenschappelijke documentatie tientallen jaren beslaan.
+SWAP5 wordt daarom stapsgewijs opgebouwd en gekwalificeerd. Daarbij worden bestaande modelkennis, referentiecases en geautomatiseerde controles gebruikt om nieuwe of gemigreerde functionaliteit te toetsen. Het feit dat iets technisch is geïmplementeerd, betekent in deze werkwijze niet automatisch dat het al als gekwalificeerde productiefunctionaliteit wordt beschouwd.
 
 De details van deze moderniseringsmethodiek vallen buiten dit overzichtsartikel. Voor de gebruiker is vooral van belang dat de nieuwe opzet de procesmatige SWAP-rekenbasis losser maakt van één specifieke uitvoeringsvorm. Daardoor kan dezelfde modelbasis zowel in zelfstandige berekeningen als, na afzonderlijke kwalificatie, als component in een gekoppelde modelomgeving worden gebruikt.
 
@@ -44,7 +44,7 @@ De koppeling tussen onverzadigde zone en grondwater is hydrologisch vanzelfsprek
 
 De modernisering van SWAP maakt het mogelijk deze uitwisseling explicieter te organiseren. Conceptueel kan een grondwatercomponent informatie over de onderrand van de onverzadigde zone leveren, waarna SWAP de reactie van bodem en vegetatie berekent en relevante fluxinformatie teruggeeft. Welke variabelen daarbij precies leidend zijn, hoe een koppelingsinterval wordt afgehandeld en welke numerieke strategie het meest geschikt is, zijn onderwerpen die afzonderlijke wetenschappelijke kwalificatie vereisen. Dit artikel loopt niet op die resultaten vooruit.
 
-Hetzelfde onderscheid geldt voor de schaal waarop wordt gerekend. Een verticale bodemkolom, een grondwatercel en een oppervlaktewaternetwerk hoeven niet dezelfde ruimtelijke representatie te hebben. Dat een softwarekoppeling technisch meerdere landoppervlakte-eenheden aan een grondwaterrepresentatie kan verbinden, bewijst nog niet dat zo'n aggregatie onder alle hydrologische omstandigheden verantwoord is. De koppeling zelf en de fysische representativiteit van de gekozen schaal zijn verschillende vragen.
+Hetzelfde onderscheid geldt voor de schaal waarop wordt gerekend. Een verticale bodemkolom, een grondwatermodel en een oppervlaktewaternetwerk hoeven niet dezelfde ruimtelijke en temporele representatie te hebben. Een technische koppeling zegt daarom nog niet vanzelf hoe representatief een gekozen schematisatie voor een bepaalde toepassing is. De koppeling zelf en de geschiktheid van de gekozen schaal zijn verschillende vragen.
 
 Dit onderscheid is belangrijk voor NHI-achtige toepassingen. Een modulair instrumentarium maakt het gemakkelijker om componenten afzonderlijk te ontwikkelen en te testen, maar verplaatst een deel van de wetenschappelijke aandacht naar de interfaces tussen die componenten. Niet alleen de afzonderlijke waterbalansen tellen, ook de betekenis en consistentie van de uitgewisselde toestanden en fluxen moeten duidelijk zijn.
 
@@ -66,25 +66,22 @@ Een modulair instrumentarium maakt het mogelijk om verschillende hydrologische c
 
 Bij een gekoppelde toepassing moet daarom steeds worden onderscheiden tussen twee vragen. De eerste is technisch: kunnen componenten informatie met elkaar uitwisselen? De tweede is hydrologisch: vertegenwoordigt die uitwisseling het systeem op de gekozen ruimtelijke en temporele schaal voldoende goed voor het doel van de berekening? Vooral voor regionale toepassingen kan die tweede vraag belangrijker zijn dan de eerste.
 
-Dat betekent ook dat schaalbaarheid niet alleen een rekentechnisch probleem is. Een snellere berekening of een grovere ruimtelijke koppeling is pas bruikbaar wanneer duidelijk is welke hydrologische informatie daarbij behouden blijft en voor welke toepassing. De moderne modelarchitectuur maakt zulke vragen beter onderzoekbaar, maar dit overzichtsartikel doet geen uitspraak over de omstandigheden waaronder een specifieke aggregatie wel of niet verantwoord is.
+Dat betekent ook dat schaalbaarheid niet alleen een rekentechnisch onderwerp is. De gekozen ruimtelijke representatie moet passen bij het doel van de berekening en bij de processen die voor die toepassing relevant zijn. De moderne modelarchitectuur maakt het mogelijk zulke keuzes explicieter te onderzoeken, zonder dat dit overzichtsartikel vooruitloopt op de uitkomsten daarvan.
 
 ## 7. Implementeren is niet hetzelfde als kwalificeren
 
-Bij de ontwikkeling van nieuwe modelsoftware ligt de aandacht gemakkelijk op functionaliteit: kan een proces worden doorgerekend, kan een invoerbestand worden gelezen, kan een koppeling technisch worden uitgevoerd? Voor een wetenschappelijk model is dat niet voldoende. Een nieuwe implementatie moet ook aantoonbaar aansluiten bij de bedoelde modelinhoud.
+Bij wetenschappelijke modelsoftware is het niet voldoende dat nieuwe functionaliteit technisch kan worden uitgevoerd. Voor gebruik in een modeltoepassing moet ook duidelijk zijn dat de betreffende functionaliteit voldoende is gecontroleerd voor het doel waarvoor zij wordt ingezet.
 
-Daarvoor zijn verschillende soorten informatie nodig. Modeldocumentatie legt vast welke processen en vergelijkingen zijn bedoeld. Historische referentieberekeningen laten zien welk gedrag in bestaande toepassingen is opgebouwd. Geautomatiseerde tests kunnen specifieke onderdelen controleren. Waterbalansen en andere conserveringscontroles geven informatie over de interne consistentie van een berekening. Vergelijkingen tussen oude en nieuwe uitvoeringen kunnen vervolgens helpen om veranderingen te lokaliseren.
+Daarom worden in de ontwikkeling van SWAP5 verschillende vormen van kwaliteitscontrole gecombineerd, bijvoorbeeld geautomatiseerde tests, referentiecases, controles op waterbalansen en vergelijking met gedocumenteerd modelgedrag. Welke controles nodig zijn, hangt af van het onderdeel en van de toepassing.
 
-Geen van deze bronnen hoeft op zichzelf doorslaggevend te zijn. Juist bij een model met een lange ontwikkelgeschiedenis kan blijken dat documentatie, implementatie en historisch gedrag niet zonder nadere interpretatie op elkaar passen. In zo'n geval is het onwenselijk om een verschil automatisch als fout in de nieuwe code te behandelen, maar ook onwenselijk om historisch gedrag zonder meer tot norm te verheffen. De afwijking moet eerst worden begrepen.
-
-Om die reden wordt binnen SWAP5 onderscheid gemaakt tussen functionaliteit die technisch aanwezig is en functionaliteit die voldoende is gekwalificeerd voor de beoogde toepassing. Dat maakt de ontwikkeling soms minder spectaculair dan een lijst met nieuwe mogelijkheden doet vermoeden, maar het voorkomt dat softwaregereedheid en wetenschappelijke gereedheid door elkaar gaan lopen.
-
+Het praktische onderscheid is eenvoudig maar belangrijk: 'aanwezig in de code' is niet hetzelfde als 'gekwalificeerd voor gebruik'. In dit artikel gebruiken we die termen daarom bewust verschillend. Een actuele statusbeschrijving moet steeds aangeven of functionaliteit alleen is geïmplementeerd, nog in kwalificatie is, of voor een omschreven toepassing daadwerkelijk als gekwalificeerd wordt beschouwd.
 ## 8. Rekentijd en detailniveau
 
 Voor regionale en landelijke toepassingen speelt naast modelinhoud ook rekentijd een rol. Een procesgebaseerde beschrijving van de onverzadigde zone kan veel detail bieden, maar moet in grote modelopzetten mogelijk zeer vaak worden uitgevoerd. De publieke NHI-communicatie over de opvolging van MetaSWAP benoemt dit spanningsveld expliciet: SWAP vormt de inhoudelijke basis, terwijl voor grootschalige toepassingen ook snellere rekenroutes nodig kunnen zijn [5].
 
-Dat levert geen eenvoudige keuze op tussen 'nauwkeurig' en 'snel'. Een snellere numerieke route is alleen bruikbaar wanneer duidelijk is voor welke toestanden, processen en toepassingen zij voldoende overeenkomt met de gekozen referentie. Omgekeerd is de meest gedetailleerde route niet automatisch de beste keuze wanneer de vereiste rekentijd een toepassing praktisch onmogelijk maakt.
+Dat levert geen eenvoudige keuze op tussen 'nauwkeurig' en 'snel'. Een snellere rekenroute moet voor het beoogde gebruik afzonderlijk worden gevalideerd, terwijl een zeer gedetailleerde route in grote toepassingen praktisch te kostbaar kan zijn. Rekentijd en modeldetail moeten daarom steeds in samenhang met het toepassingsdoel worden beoordeeld.
 
-De modernisering probeert daarom ruimte te bieden voor verschillende rekenstrategieën zonder de hydrologische procesbeschrijving en de keuze van de numerieke uitvoering onnodig met elkaar te vermengen. De wetenschappelijke beoordeling van zulke alternatieven is een afzonderlijk vraagstuk. Resultaten over onderlinge verschillen, geldigheidsgebieden of rekentijd worden hier bewust niet besproken.
+De modernisering biedt daarom ruimte voor verschillende rekenstrategieën, zonder dat dit overzichtsartikel een uitspraak doet over hun onderlinge prestaties of geschiktheid. Zulke vergelijkingen vragen om afzonderlijke analyse en kwalificatie.
 
 ## 9. Wat verandert er voor gebruikers en modelbouwers?
 
@@ -106,14 +103,13 @@ Voor de bredere Nederlandse context is wel al publiek zichtbaar dat de overgang 
 
 ## 11. Vooruitblik
 
-De overgang naar een modulair hydrologisch instrumentarium opent nieuwe mogelijkheden, maar legt ook nieuwe wetenschappelijke vragen bloot. Hoe koppel je componenten met verschillende tijdschalen zonder relevante dynamiek te verliezen? Wanneer is ruimtelijke aggregatie verantwoord? Welke numerieke vereenvoudigingen zijn toelaatbaar voor een bepaalde toepassing? Hoe beïnvloeden grondwater, wortelzone en vegetatie elkaar tijdens droogte en herstel? En hoe maak je zichtbaar welke onzekerheid uit het hydrologische systeem komt en welke uit numerieke keuzes?
+De overgang naar een modulair hydrologisch instrumentarium maakt een bredere onderzoeksagenda mogelijk. Daarbij gaat het onder meer om de kwaliteit van koppelingen tussen modelcomponenten, de gevolgen van verschillende ruimtelijke en temporele representaties, numerieke robuustheid en rekentijd, en toepassingen waarin bodem, vegetatie, grondwater en oppervlaktewater sterk op elkaar terugwerken.
 
-Dat zijn geen vragen die door een softwarearchitectuur alleen worden beantwoord. De waarde van de nieuwe opzet zit juist in de mogelijkheid om ze systematischer en reproduceerbaarder te onderzoeken. Daarbij moet steeds worden voorkomen dat technische mogelijkheid wordt verward met hydrologische geldigheid.
+Dat zijn geen vragen die door een softwarearchitectuur alleen worden beantwoord. De waarde van de nieuwe opzet zit juist in de mogelijkheid om zulke onderwerpen systematischer en reproduceerbaarder te onderzoeken. Daarbij moet steeds worden voorkomen dat technische mogelijkheid wordt verward met hydrologische geldigheid.
 
-Voor de Nederlandse hydrologische praktijk is daarom misschien niet de belangrijkste verandering dat er nieuwe modelnamen bijkomen. Belangrijker is dat de verschillende delen van het instrumentarium explicieter als afzonderlijke, toetsbare componenten worden behandeld. Daardoor wordt duidelijker waar een modelkeuze wordt gemaakt, welke informatie tussen componenten wordt uitgewisseld en welke aannames bij een toepassing horen.
+Voor de Nederlandse hydrologische praktijk is daarom misschien niet de belangrijkste verandering dat er nieuwe modelnamen bijkomen. Belangrijker is dat de verschillende delen van het instrumentarium explicieter als afzonderlijke, toetsbare componenten worden behandeld. Daardoor wordt duidelijker waar modelkeuzes worden gemaakt, welke informatie tussen componenten wordt uitgewisseld en welke aannames bij een toepassing horen.
 
-SWAP5 moet in dat verband niet worden gezien als een losstaand softwareproject. Het is onderdeel van een bredere beweging waarin bestaande hydrologische kennis geschikt wordt gemaakt voor een moderne, gekoppelde en beter reproduceerbare modelomgeving. Of die ontwikkeling slaagt, zal uiteindelijk niet alleen blijken uit het feit dat de componenten met elkaar kunnen rekenen, maar uit de mate waarin hun gezamenlijke gedrag wetenschappelijk te volgen en voor de toepassing voldoende te onderbouwen is.
-
+SWAP5 moet in dat verband niet worden gezien als een losstaand softwareproject. Het is onderdeel van een bredere beweging waarin bestaande hydrologische kennis geschikt wordt gemaakt voor een moderne, gekoppelde en beter reproduceerbare modelomgeving. Of die ontwikkeling slaagt, zal uiteindelijk niet alleen blijken uit het feit dat componenten met elkaar kunnen rekenen, maar uit de mate waarin hun gezamenlijke gedrag voor de beoogde toepassingen voldoende kan worden onderbouwd.
 ## Bronnen voor deze werkversie
 
 [1] NHI, Nieuwe releases voor modelsoftware, 10 juni 2026. https://nhi.nu/nieuwsoverzicht/nieuwe-releases-voor-modelsoftware/
