@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.ppa_root_hyd01.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD01",
+  "title": "Net root-extraction hydraulic execution authority and solver diagnosis",
+  "canonical_base": "1dc12a3f47935a3639ef3fb38dc0d6338a0f44c0",
+  "cap01_evidence": {
+    "branch": "research/hydro-memory-cap01",
+    "result_head": "979113fb5776b45a0c7d8d0923e486c0d522a8be",
+    "decisive_run": 35427908820,
+    "classification": "CLOSED_BLOCKED_NET_ROOT_EXTRACTION_HYDRAULIC_EXECUTION"
+  },
+  "phase": "D1_SINK_EQUIVALENCE_AND_WINDOW_SCALE",
+  "production_mutation_allowed": false,
+  "reference_mutation_allowed": false,
+  "purpose": "Determine whether CAP01 failure is root-specific or a broader transient sink/window-scale limitation before considering any repair.",
+  "frozen_fixture": {
+    "pressure_head_cm": -75,
+    "top_bottom_reference_flux": "-K(-75 cm) from canonical constitutive provider",
+    "total_sink_cm_per_day": 0.02,
+    "sink_distribution": "equal over first min(4,numnod) compartments",
+    "subsurface_source_cm_per_day": 0,
+    "bottom_mode": 2,
+    "top_boundary": "fixed flux",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "temporal_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 0.000001,
+    "mass_tolerance_cm": 1e-12,
+    "parameter_solver_controls": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "min_step_duration_day": 1e-8,
+      "head_abs_tolerance": 1e-12,
+      "head_rel_tolerance": 1e-12
+    }
+  },
+  "duration_sweep_day": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1
+  ],
+  "paired_routes": [
+    {
+      "id": "ROOT",
+      "root_extraction_active": true,
+      "root_sink": "frozen sink distribution",
+      "drainage_sink": 0
+    },
+    {
+      "id": "GENERIC",
+      "root_extraction_active": false,
+      "root_sink": 0,
+      "drainage_sink": "same frozen sink distribution in one drainage level"
+    }
+  ],
+  "interpretation_rules": [
+    "If ROOT and GENERIC have the same accept/reject pattern across all durations, do not classify the failure as root-specific.",
+    "If GENERIC succeeds at a duration where ROOT fails, classify a root-specific execution discrepancy and trace provider/binding/HeadCalc semantics.",
+    "If both routes fail only at short durations but succeed at longer durations, classify CAP01 primarily as a coupling-window numerical-envelope problem.",
+    "If both routes fail at all durations through solver rejection, investigate common transient sink/Newton execution before any root-specific repair.",
+    "If both routes succeed at the same duration, compare accepted storage/head response and mass accounting; material divergence is a semantic discrepancy.",
+    "No duration, sink magnitude, solver tolerance or retry limit may be changed after observing this D1 sweep."
+  ],
+  "next_if_needed": [
+    "D2 direct HeadCalc/retry-owner localization",
+    "D3 exact corrected B1.11 reference execution using the pinned source archive authority",
+    "REPAIR only after authority identifies a local defect"
+  ]
+}
