@@ -17,7 +17,13 @@ on:
       - 'integration/audits/PPA_WU05A_STATUS.json'
       - 'integration/audits/PPA_LOW02_TIME_STATUS.json'
       - 'integration/audits/PPA_ROOT_HYD01_R1_RESULT.json'
+      - 'integration/audits/PPA_ROOT_HYD02_RESULT.json'
       - 'integration/audits/PPA_WU05C_STATUS.json'
+      - 'integration/audits/PPA_WU04A_STATUS.json'
+      - 'integration/audits/PPA_WU04B_STATUS.json'
+      - 'docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json'
+      - 'docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json'
+      - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/solver/mod_reference_richards_temporal_indicator.f90'
   workflow_dispatch:
