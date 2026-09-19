@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.lare.dyn0a.c1.source-authority.v1",
+  "work_unit": "LARE-DYN0A-C1",
+  "decision": "FINE_FACE_REFERENCE_SEMANTICS_BOUND",
+  "current_source": {
+    "file": "src/legacy/b1_10_port/headcalc.f90",
+    "internal_head_gradient": "head_gradient(i) = (h(i-1)-h(i))/grid_disnod(i) + 1",
+    "residual_flux_factor": "state%kmean(i) * head_gradient(i)",
+    "active_DYN0A_numerical_config": {
+      "swkimpl": 0,
+      "swkmean": 1
+    }
+  },
+  "independent_documentation": {
+    "source": "SWAP version 4, Theory description and user manual, Wageningen Environmental Research report 2780",
+    "statement": "SWKMEAN=1 is the unweighted arithmetic mean of hydraulic conductivity.",
+    "url": "https://www.swap.alterra.nl/Documents/Kroes_etal_2017_SWAP_version_4_ESG_Report_2780.pdf"
+  },
+  "derivative_crosscheck": {
+    "source": "src/legacy/b1_10_port/headcalc.f90::dkmean",
+    "observation": "For swkmean==1, derivative with respect to either conductivity is 0.5, consistent with an unweighted arithmetic mean.",
+    "role": "crosscheck only, not sole authority"
+  },
+  "bound_face_flux": {
+    "sign": "positive downward for the C1 normalized diagnostic",
+    "formula": "q_face = 0.5*(K_upper + K_lower) * (1 + (h_upper - h_lower)/distance)",
+    "geometry": "fine Reference uses adjacent 10-cm cells, so distance=10 cm at the interior faces used by C1",
+    "pressure_head": "SWAP conventional pressure head h; equivalent to the CA1 positive capillary-head form after h=-psi sign normalization"
+  },
+  "limitations": [
+    "Bound only for the DYN0A homogeneous B01, swkmean=1, swkimpl=0 fine-Reference diagnostic.",
+    "Does not authorize a general alternative SWAP face-flux implementation.",
+    "C1 may use this only as an oracle diagnostic; it is not a reduced-model closure."
+  ],
+  "production_change_authorized": false
+}
