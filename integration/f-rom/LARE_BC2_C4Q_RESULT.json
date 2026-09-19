@@ -1,0 +1,2322 @@
+{
+  "application_acceptance_adjudicated": false,
+  "comparators": {
+    "FMC_GW200": {
+      "pooled": {
+        "bottom_flux_sign_error_count": 1,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.6144316249185238,
+          "mean": 0.15169912860222784,
+          "mean_abs": 0.16962027860121925,
+          "p95_abs": 0.5208859500806753,
+          "rmse": 0.2287373082322814
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.04165803120329936,
+          "mean": -0.0009481195537639503,
+          "mean_abs": 0.0011528278106264756,
+          "p95_abs": 0.004721698339992975,
+          "rmse": 0.004113528053164359
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 11.293252811728049,
+          "mean": 4.157127303980321,
+          "mean_abs": 4.7216533705463375,
+          "p95_abs": 11.035643055382373,
+          "rmse": 5.885538112034192
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.6144316249185309,
+          "mean": -0.15169912860221185,
+          "mean_abs": 0.16962027860121992,
+          "p95_abs": 0.5208859500806824,
+          "rmse": 0.2287373082322805
+        }
+      },
+      "source_decision": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY"
+    },
+    "R2": {
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 1,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.08506071221661671,
+            "mean": -0.04394914517715953,
+            "mean_abs": 0.044028731832146284,
+            "p95_abs": 0.08160900125165184,
+            "rmse": 0.05124285109913507
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.08506071221661671,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.10745539756402067,
+            "mean": 0.05537107303452038,
+            "mean_abs": 0.05540215886993738,
+            "p95_abs": 0.10291539878584394,
+            "rmse": 0.06435749950217708
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.06748329799029851,
+            "mean": 0.0002746821573573388,
+            "mean_abs": 0.027978963164041974,
+            "p95_abs": 0.0672756282967927,
+            "rmse": 0.03429362241048453
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 1.7550081859027973,
+            "mean": -1.329073628384636,
+            "mean_abs": 1.3624015193407502,
+            "p95_abs": 1.7393944682922307,
+            "rmse": 1.39241759734832
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.08506071221663092,
+            "mean": 0.04394914517717374,
+            "mean_abs": 0.04402873183215916,
+            "p95_abs": 0.08160900125166605,
+            "rmse": 0.05124285109914726
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.022394685347403964,
+            "mean": -0.011421927857346026,
+            "mean_abs": 0.011421927857346026,
+            "p95_abs": 0.021306397534171316,
+            "rmse": 0.013123534656367165
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 1.1160107219081326,
+            "mean": 0.6155375809160515,
+            "mean_abs": 0.6155375809160515,
+            "p95_abs": 1.0744515837822723,
+            "rmse": 0.6949048338998344
+          },
+          "final_cumulative_bottom_exchange_error_cm": 1.1160107219081326,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.114527605070812,
+            "mean": -0.6147842082272547,
+            "mean_abs": 0.6147842082272547,
+            "p95_abs": 1.0730414005678466,
+            "rmse": 0.6940393439735261
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.16206623363554817,
+            "mean": -0.0038471098807254175,
+            "mean_abs": 0.02462362423315323,
+            "p95_abs": 0.1465718804597494,
+            "rmse": 0.04635717549740704
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 21.064623099924518,
+            "mean": 17.437667529814572,
+            "mean_abs": 17.437667529814572,
+            "p95_abs": 21.045952237296106,
+            "rmse": 17.638521271693868
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.1160107219081468,
+            "mean": -0.6155375809160657,
+            "mean_abs": 0.6155375809160657,
+            "p95_abs": 1.0744515837822866,
+            "rmse": 0.694904833899847
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0014831168373348191,
+            "mean": -0.0007533726888120928,
+            "mean_abs": 0.0007533726888120928,
+            "p95_abs": 0.0014101832144460145,
+            "rmse": 0.0008665004408367636
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.5517183631195053,
+            "mean": 0.32206840748358,
+            "mean_abs": 0.32206840748358,
+            "p95_abs": 0.5330129561610885,
+            "rmse": 0.3564210726061418
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.5517183631195053,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.5479262842970343,
+            "mean": -0.32014201552085747,
+            "mean_abs": 0.32014201552085747,
+            "p95_abs": 0.5294073190130232,
+            "rmse": 0.35421449625378676
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.13624326460122838,
+            "mean": -0.0020129275467722406,
+            "mean_abs": 0.031405585871627395,
+            "p95_abs": 0.13371061593451294,
+            "rmse": 0.051001023637186435
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 15.28458078671946,
+            "mean": 8.62059942374227,
+            "mean_abs": 8.62059942374227,
+            "p95_abs": 13.686787483628391,
+            "rmse": 8.954172167628585
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.551718363119484,
+            "mean": -0.3220684074835587,
+            "mean_abs": 0.3220684074835587,
+            "p95_abs": 0.5330129561610671,
+            "rmse": 0.3564210726061226
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0037920788224461432,
+            "mean": -0.0019263919627007797,
+            "mean_abs": 0.0019263919627007797,
+            "p95_abs": 0.0036056371480494673,
+            "rmse": 0.002215617434932547
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.22880879346048033,
+            "mean": 0.13779243421975296,
+            "mean_abs": 0.13779243421975296,
+            "p95_abs": 0.22147036188016997,
+            "rmse": 0.15081538102316508
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.22880879346048033,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.21979520305243483,
+            "mean": -0.13323227999044196,
+            "mean_abs": 0.13323227999044196,
+            "p95_abs": 0.2129050273189282,
+            "rmse": 0.14560171241542605
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.10728337826040074,
+            "mean": -0.0008612027138732718,
+            "mean_abs": 0.029214280490720373,
+            "p95_abs": 0.1068020400555843,
+            "rmse": 0.04683343895473358
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 8.52542497523956,
+            "mean": 3.5751373978200047,
+            "mean_abs": 3.5751373978200047,
+            "p95_abs": 6.536385538545628,
+            "rmse": 3.824877075093961
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.2288087934604519,
+            "mean": -0.13779243421972454,
+            "mean_abs": 0.13779243421972454,
+            "p95_abs": 0.22147036188014155,
+            "rmse": 0.1508153810231391
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.009013590408006422,
+            "mean": -0.004560154229281632,
+            "mean_abs": 0.004560154229281632,
+            "p95_abs": 0.008565334561216886,
+            "rmse": 0.005250471490466495
+          }
+        }
+      },
+      "pooled": {
+        "bottom_flux_sign_error_count": 1,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 1.1160107219081326,
+          "mean": 0.25786231936055626,
+          "mean_abs": 0.27985678861288266,
+          "p95_abs": 0.9405697185261843,
+          "rmse": 0.39852848647148165
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 1.114527605070812,
+          "mean": -0.2531968576760084,
+          "mean_abs": 0.2808901656521229,
+          "p95_abs": 0.9393818493679831,
+          "rmse": 0.3976494268636645
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.16206623363554817,
+          "mean": -0.0016116394960033979,
+          "mean_abs": 0.028305613439885743,
+          "p95_abs": 0.10104390315782714,
+          "rmse": 0.04505417759347597
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 21.064623099924518,
+          "mean": 7.076082680748053,
+          "mean_abs": 7.7489514676794,
+          "p95_abs": 20.42426905580364,
+          "rmse": 10.097810941789762
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 1.1160107219081468,
+          "mean": -0.2578623193605438,
+          "mean_abs": 0.279856788612877,
+          "p95_abs": 0.9405697185261985,
+          "rmse": 0.39852848647148076
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.022394685347403964,
+          "mean": -0.004665461684535133,
+          "mean_abs": 0.004665461684535133,
+          "p95_abs": 0.017980788196682695,
+          "rmse": 0.007166840244853706
+        }
+      }
+    }
+  },
+  "decision": "LARE_REDUCED_FRONTIER_CROSSES_FMC",
+  "frontier": {
+    "lowest_dimension_crossing_FMC": 12,
+    "lowest_dimension_crossing_R2": 4,
+    "reduced_members_crossing_FMC": [
+      "R12"
+    ],
+    "reduced_members_crossing_R2": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ]
+  },
+  "integrity": {
+    "R16_operator_control_status": "QUALIFIED",
+    "all_members_attempted": true,
+    "fail_open_count": 0,
+    "maximum_qualified_water_ledger_cm": 9.778289289386066e-14,
+    "pass": true,
+    "qualified_member_count": 7,
+    "qualified_reduced_member_count": 6
+  },
+  "interpretation": [
+    "C4Q is an exposed matched-workload representation discriminator, not blind confirmation.",
+    "Every frozen LARE resolution is attempted; fail-closed domain loss is reported rather than hidden.",
+    "R16 LARE is an operator control and is excluded from reduced-frontier crossing.",
+    "No single scalar score or application-acceptance threshold is used."
+  ],
+  "lare_members": [
+    {
+      "boundaries_cm": [
+        0.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.06699664585373499,
+            "mean": 0.02584007187069423,
+            "mean_abs": 0.02589334458634973,
+            "p95_abs": 0.062016919464882796,
+            "rmse": 0.03324367055516689
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.06699664585373499,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 3.39629194353515,
+            "mean": -3.365919324035878,
+            "mean_abs": 3.365919324035878,
+            "p95_abs": 3.3909077748040892,
+            "rmse": 3.3659442664543104
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.10819421864949541,
+            "mean": -0.00016150044919174432,
+            "mean_abs": 0.04218349484581975,
+            "p95_abs": 0.1063510819375099,
+            "rmse": 0.05165362231855861
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 1.5895242023789014,
+            "mean": 1.0831366001935803,
+            "mean_abs": 1.0831366001935803,
+            "p95_abs": 1.5635615947704173,
+            "rmse": 1.1531511455171908
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.06699664585365639,
+            "mean": -0.025840071870678605,
+            "mean_abs": 0.025893344586333633,
+            "p95_abs": 0.06201691946481311,
+            "rmse": 0.03324367055514019
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 3.3967676062051027,
+            "mean": 3.3400792521651983,
+            "mean_abs": 3.3400792521651983,
+            "p95_abs": 3.3910599133270476,
+            "rmse": 3.3402432070788364
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.04261399988475412,
+            "mean": 0.0028307281473874493,
+            "mean_abs": 0.010258261048354957,
+            "p95_abs": 0.033943986069282,
+            "rmse": 0.014275743007894673
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.04261399988475412,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.09434733039748977,
+            "mean": -0.05357432919378363,
+            "mean_abs": 0.05357432919378363,
+            "p95_abs": 0.08511718257979978,
+            "rmse": 0.055382680088013704
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.031357649709601754,
+            "mean": -1.7692050921053974e-05,
+            "mean_abs": 0.0021602638221705343,
+            "p95_abs": 0.013840826299300358,
+            "rmse": 0.005305514022560495
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 2.960676170305687,
+            "mean": 0.7557413046040116,
+            "mean_abs": 0.9922705269824509,
+            "p95_abs": 2.661130862865185,
+            "rmse": 1.302797383387922
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0426139998846935,
+            "mean": -0.0028307281473679557,
+            "mean_abs": 0.010258261048344708,
+            "p95_abs": 0.03394398606922769,
+            "rmse": 0.014275743007874334
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.05201809901629062,
+            "mean": 0.0507436010464149,
+            "mean_abs": 0.0507436010464149,
+            "p95_abs": 0.05186603567061247,
+            "rmse": 0.05074798066874145
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.12306033376949094,
+            "mean": 0.03697865107961244,
+            "mean_abs": 0.0377390615578749,
+            "p95_abs": 0.11079556672330704,
+            "rmse": 0.053655769058095396
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.12306033376949094,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.0321570621095795,
+            "mean": -0.9404290872852362,
+            "mean_abs": 0.9404290872852362,
+            "p95_abs": 1.0188591604028696,
+            "rmse": 0.9413186466312861
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.09706243974537729,
+            "mean": -0.00023111656924735115,
+            "mean_abs": 0.01672408323152842,
+            "p95_abs": 0.08175130475636291,
+            "rmse": 0.026053378089741126
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 3.9660886263977897,
+            "mean": 2.034402862961519,
+            "mean_abs": 2.061118948680751,
+            "p95_abs": 3.8639641337713506,
+            "rmse": 2.425258426165402
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.12306033376943049,
+            "mean": -0.03697865107957565,
+            "mean_abs": 0.037739061557836684,
+            "p95_abs": 0.11079556672323425,
+            "rmse": 0.053655769058055136
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.9090967283401454,
+            "mean": 0.9034504362056603,
+            "mean_abs": 0.9034504362056603,
+            "p95_abs": 0.9080635936796213,
+            "rmse": 0.903453027395784
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 7,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.11090243742451844,
+            "mean": 0.03960788332096257,
+            "mean_abs": 0.039806314538811734,
+            "p95_abs": 0.10218997494802336,
+            "rmse": 0.053069335517281484
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.11090243742451844,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.1970523879726755,
+            "mean": -2.136468105395867,
+            "mean_abs": 2.136468105395867,
+            "p95_abs": 2.1892857161914088,
+            "rmse": 2.1366628872145235
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.11338480903375409,
+            "mean": -0.0002475492707557799,
+            "mean_abs": 0.03019471952631275,
+            "p95_abs": 0.10713590660929923,
+            "rmse": 0.03996332982989437
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 2.7836500679849814,
+            "mean": 1.810467009375662,
+            "mean_abs": 1.8132333575161341,
+            "p95_abs": 2.7646765058726266,
+            "rmse": 2.0031180596038625
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.11090243742444983,
+            "mean": -0.03960788332092535,
+            "mean_abs": 0.039806314538772924,
+            "p95_abs": 0.10218997494796189,
+            "rmse": 0.053069335517242223
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.109498355194038,
+            "mean": 2.096860222074942,
+            "mean_abs": 2.096860222074942,
+            "p95_abs": 2.108014169561193,
+            "rmse": 2.0968712229667696
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": false,
+      "dimension": 3,
+      "failure": null,
+      "failure_class": null,
+      "id": "R3",
+      "max_abs_water_ledger_cm": 9.778289289386066e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 7,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.12306033376949094,
+          "mean": 0.026314333604664175,
+          "mean_abs": 0.02842424543284783,
+          "p95_abs": 0.09649353077289397,
+          "rmse": 0.04184565209155363
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 3.39629194353515,
+          "mean": -1.6240977114776909,
+          "mean_abs": 1.6240977114776909,
+          "p95_abs": 3.3780826731036937,
+          "rmse": 2.048417507139721
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.11338480903375409,
+          "mean": -0.00016446458502898233,
+          "mean_abs": 0.022815640356457865,
+          "p95_abs": 0.08579620293869525,
+          "rmse": 0.035256529248678926
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 3.9660886263977897,
+          "mean": 1.4209369442836932,
+          "mean_abs": 1.4874398583432291,
+          "p95_abs": 3.4330260088670332,
+          "rmse": 1.7973173746564246
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.12306033376943049,
+          "mean": -0.02631433360463689,
+          "mean_abs": 0.028424245432821987,
+          "p95_abs": 0.09649353077283074,
+          "rmse": 0.04184565209152123
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 3.3967676062051027,
+          "mean": 1.597783377873054,
+          "mean_abs": 1.597783377873054,
+          "p95_abs": 3.3736913188840747,
+          "rmse": 2.023171788207506
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.01432966958711887,
+            "mean": 0.004757093844904454,
+            "mean_abs": 0.00483694935235554,
+            "p95_abs": 0.012993003681536061,
+            "rmse": 0.006519503533161168
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.01432966958711887,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.7307650900095695,
+            "mean": -2.701478298796628,
+            "mean_abs": 2.701478298796628,
+            "p95_abs": 2.7273395087204846,
+            "rmse": 2.7015246527072763
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.09518809760432989,
+            "mean": -2.9731836530595923e-05,
+            "mean_abs": 0.034205799297684844,
+            "p95_abs": 0.09341137726835011,
+            "rmse": 0.04362956936943571
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.4278400546507892,
+            "mean": 0.2511355591135037,
+            "mean_abs": 0.2511355591135037,
+            "p95_abs": 0.41229098053275054,
+            "rmse": 0.274811318264659
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.014329669587127114,
+            "mean": -0.0047570938448960876,
+            "mean_abs": 0.004836949352350239,
+            "p95_abs": 0.012993003681553003,
+            "rmse": 0.00651950353316035
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.731245525304182,
+            "mean": 2.696721204951733,
+            "mean_abs": 2.696721204951733,
+            "p95_abs": 2.72774891632388,
+            "rmse": 2.696796207965339
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.012558694154094052,
+            "mean": -0.009829784653602706,
+            "mean_abs": 0.009829784653602706,
+            "p95_abs": 0.012553145503808016,
+            "rmse": 0.010417256978213706
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012450881270494651,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.011103785767591745,
+            "mean": 0.008870879815232768,
+            "mean_abs": 0.008870879815232768,
+            "p95_abs": 0.011098705933116548,
+            "rmse": 0.009368323198430896
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0018156848206213327,
+            "mean": 6.143615408495028e-05,
+            "mean_abs": 0.0001742614041185809,
+            "p95_abs": 0.0008121471931533477,
+            "rmse": 0.0003378986483225039
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874312904248,
+            "mean": -0.12729171537157258,
+            "mean_abs": 0.17071081151043976,
+            "p95_abs": 0.5456416493151506,
+            "rmse": 0.24863165968824363
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012558694154080285,
+            "mean": 0.009829784653594409,
+            "mean_abs": 0.009829784653594409,
+            "p95_abs": 0.012553145503809659,
+            "rmse": 0.01041725697820612
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0015619132522566304,
+            "mean": 0.0009589048383594756,
+            "mean_abs": 0.0009589048383594756,
+            "p95_abs": 0.001542954481674741,
+            "rmse": 0.001067018412333068
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.004329254862138421,
+            "mean": -0.0013757773372128413,
+            "mean_abs": 0.002330273317276399,
+            "p95_abs": 0.0032774072539196704,
+            "rmse": 0.002547624047259439
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.004329254862138421,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.41612228930265616,
+            "mean": -0.4124458424118943,
+            "mean_abs": 0.4124458424118943,
+            "p95_abs": 0.415432404125592,
+            "rmse": 0.41244820911960656
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.049820020142022525,
+            "mean": 8.59860835771719e-06,
+            "mean_abs": 0.007542287565858232,
+            "p95_abs": 0.04496225246066123,
+            "rmse": 0.012912962072679633
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.4014086031030386,
+            "mean": 0.1513565900554527,
+            "mean_abs": 0.18275097805594065,
+            "p95_abs": 0.37288591777447466,
+            "rmse": 0.20985629633251543
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.004329254862085463,
+            "mean": 0.0013757773372352622,
+            "mean_abs": 0.0023302733172739787,
+            "p95_abs": 0.0032774072539258014,
+            "rmse": 0.0025476240472563604
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.41618125627989144,
+            "mean": 0.4138216197491294,
+            "mean_abs": 0.4138216197491294,
+            "p95_abs": 0.4159326609784923,
+            "rmse": 0.41382371416488883
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.01408073348197672,
+            "mean": 0.003124398409924872,
+            "mean_abs": 0.0037932130592750607,
+            "p95_abs": 0.012244886848348372,
+            "rmse": 0.005532131873575973
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.01408073348197672,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.4584642343805783,
+            "mean": -1.454230411410589,
+            "mean_abs": 1.454230411410589,
+            "p95_abs": 1.457399008182214,
+            "rmse": 1.4542314757822659
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0836764379028429,
+            "mean": -1.9527490062159775e-05,
+            "mean_abs": 0.020293231875956125,
+            "p95_abs": 0.08041480243123514,
+            "rmse": 0.028215164436800826
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.6112327546847944,
+            "mean": 0.28066546917978746,
+            "mean_abs": 0.28369439990789874,
+            "p95_abs": 0.572499937671705,
+            "rmse": 0.32658184471575563
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.014080733481982577,
+            "mean": -0.003124398409946605,
+            "mean_abs": 0.00379321305928626,
+            "p95_abs": 0.012244886848356626,
+            "rmse": 0.005532131873587831
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.4590552796068543,
+            "mean": 1.451106013000644,
+            "mean_abs": 1.451106013000644,
+            "p95_abs": 1.4582185216916979,
+            "rmse": 1.451113028378326
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "dimension": 4,
+      "failure": null,
+      "failure_class": null,
+      "id": "R4",
+      "max_abs_water_ledger_cm": 6.250555628639631e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.01432966958711887,
+          "mean": -0.0008310174339965551,
+          "mean_abs": 0.0051975550956274265,
+          "p95_abs": 0.012547931198121198,
+          "rmse": 0.006857806511958705
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 2.7307650900095695,
+          "mean": -1.13982091820097,
+          "mean_abs": 1.1442563581085863,
+          "p95_abs": 2.717653471869223,
+          "rmse": 1.5478392943896466
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.09518809760432989,
+          "mean": 5.193858962477944e-06,
+          "mean_abs": 0.015553895035904444,
+          "p95_abs": 0.0531577447326845,
+          "rmse": 0.026769822527171867
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.6112327546847944,
+          "mean": 0.13896647574429283,
+          "mean_abs": 0.22207293714694573,
+          "p95_abs": 0.5193804366810726,
+          "rmse": 0.2683441490204494
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.014329669587127114,
+          "mean": 0.0008310174339967447,
+          "mean_abs": 0.005197555095626222,
+          "p95_abs": 0.012547931198115592,
+          "rmse": 0.006857806511957735
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 2.731245525304182,
+          "mean": 1.1406519356349665,
+          "mean_abs": 1.1406519356349665,
+          "p95_abs": 2.717137131444588,
+          "rmse": 1.5451286365024002
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.002597527359672891,
+            "mean": 0.0007714559797910058,
+            "mean_abs": 0.0008540148843268294,
+            "p95_abs": 0.0022961741105640004,
+            "rmse": 0.0011129411444122195
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.002597527359672891,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.096385891052435,
+            "mean": -2.0764559132005345,
+            "mean_abs": 2.0764559132005345,
+            "p95_abs": 2.094311292435818,
+            "rmse": 2.076488218946052
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.08156348332261198,
+            "mean": -4.821599873844676e-06,
+            "mean_abs": 0.027323065560571895,
+            "p95_abs": 0.08054981339161763,
+            "rmse": 0.036145220834101176
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.35458025384194536,
+            "mean": 0.06521535178041538,
+            "mean_abs": 0.06521535178041538,
+            "p95_abs": 0.24117419831698356,
+            "rmse": 0.10090997073510725
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.002597527359682772,
+            "mean": -0.0007714559798154275,
+            "mean_abs": 0.0008540148843513284,
+            "p95_abs": 0.002296174110576032,
+            "rmse": 0.0011129411444294995
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.096866355833427,
+            "mean": 2.075684457220719,
+            "mean_abs": 2.075684457220719,
+            "p95_abs": 2.0947276400019934,
+            "rmse": 2.075721232697868
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728450823835002,
+            "mean": -0.0098797519173042,
+            "mean_abs": 0.0098797519173042,
+            "p95_abs": 0.012726382837322348,
+            "rmse": 0.010477160882789256
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012723905984729278,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.010640817047029572,
+            "mean": 0.008572991719712042,
+            "mean_abs": 0.008572991719712042,
+            "p95_abs": 0.010633878499550952,
+            "rmse": 0.009033407744783582
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0007746010041969065,
+            "mean": 6.174844948326214e-05,
+            "mean_abs": 0.00010680028357036486,
+            "p95_abs": 0.0005790314004258844,
+            "rmse": 0.00020592565757742115
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874296201165,
+            "mean": -0.1317133674791992,
+            "mean_abs": 0.16687627088002527,
+            "p95_abs": 0.5456418016233082,
+            "rmse": 0.24780047925038862
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728450823836113,
+            "mean": 0.00987975191732271,
+            "mean_abs": 0.00987975191732271,
+            "p95_abs": 0.01272638283733265,
+            "rmse": 0.010477160882808784
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0025604016721523237,
+            "mean": 0.0013067601976098353,
+            "mean_abs": 0.0013067601976098353,
+            "p95_abs": 0.002436791556152684,
+            "rmse": 0.001501499410753022
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035345564338533086,
+            "mean": -0.0032583603604433298,
+            "mean_abs": 0.0032583603604433298,
+            "p95_abs": 0.0035328374120341816,
+            "rmse": 0.003298951050958609
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0032562555358566225,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.1207660319061965,
+            "mean": -0.11746411733393425,
+            "mean_abs": 0.11746411733393425,
+            "p95_abs": 0.11918650558915846,
+            "rmse": 0.11746712613794968
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.01837127207892833,
+            "mean": 2.036475225290505e-05,
+            "mean_abs": 0.0021839288700587853,
+            "p95_abs": 0.016662644555692066,
+            "rmse": 0.004517167415681948
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.37346094084310266,
+            "mean": 0.0300035255180557,
+            "mean_abs": 0.061458605947877956,
+            "p95_abs": 0.11153337858948857,
+            "rmse": 0.08231763672664741
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035345564338911117,
+            "mean": 0.003258360360465451,
+            "mean_abs": 0.003258360360465451,
+            "p95_abs": 0.0035328374120851434,
+            "rmse": 0.0032989510509817102
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.12146053120044442,
+            "mean": 0.1207224776943992,
+            "mean_abs": 0.1207224776943992,
+            "p95_abs": 0.12139297126290316,
+            "rmse": 0.12072332801723494
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769747478398695,
+            "mean": -0.0008131528867356328,
+            "mean_abs": 0.0008180170891127438,
+            "p95_abs": 0.0013284885117425813,
+            "rmse": 0.0008950627167150215
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.00010694231301877632,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.9264032273808382,
+            "mean": -0.9212716167268628,
+            "mean_abs": 0.9212716167268628,
+            "p95_abs": 0.9251599590761401,
+            "rmse": 0.9212750983123034
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.058377429322803986,
+            "mean": 5.0822055421890664e-06,
+            "mean_abs": 0.012597061358423043,
+            "p95_abs": 0.0570657667809962,
+            "rmse": 0.018664006044403325
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.18968442422542875,
+            "mean": 0.058065645215520906,
+            "mean_abs": 0.06109538266189521,
+            "p95_abs": 0.16606377195687128,
+            "rmse": 0.07389238053450826
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769747478420413,
+            "mean": 0.0008131528867493243,
+            "mean_abs": 0.0008180170891253224,
+            "p95_abs": 0.0013284885117506916,
+            "rmse": 0.0008950627167264981
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.9269942791380998,
+            "mean": 0.9220847696136132,
+            "mean_abs": 0.9220847696136132,
+            "p95_abs": 0.9264996759072744,
+            "rmse": 0.9220892179529878
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "dimension": 5,
+      "failure": null,
+      "failure_class": null,
+      "id": "R5",
+      "max_abs_water_ledger_cm": 5.4067861299245124e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728450823835002,
+          "mean": -0.003294952296173039,
+          "mean_abs": 0.003702536062796776,
+          "p95_abs": 0.012633715463036793,
+          "rmse": 0.0055383606206676605
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 2.096385891052435,
+          "mean": -0.7766546638854048,
+          "mean_abs": 0.7809411597452609,
+          "p95_abs": 2.0884164778134355,
+          "rmse": 1.1373688120362149
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.08156348332261198,
+          "mean": 2.0593451851127895e-05,
+          "mean_abs": 0.010552714018156021,
+          "p95_abs": 0.04344285361497655,
+          "rmse": 0.020465026982691797
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.5791874296201165,
+          "mean": 0.005392788758698194,
+          "mean_abs": 0.08866140281755344,
+          "p95_abs": 0.37083997524147083,
+          "rmse": 0.14476202620835976
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728450823836113,
+          "mean": 0.0032949522961805144,
+          "mean_abs": 0.003702536062816203,
+          "p95_abs": 0.012633715463064021,
+          "rmse": 0.0055383606206816675
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 2.096866355833427,
+          "mean": 0.7799496161815853,
+          "mean_abs": 0.7799496161815853,
+          "p95_abs": 2.0882283526606713,
+          "rmse": 1.1372602536541434
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006127189232302536,
+            "mean": 0.00019629651710663978,
+            "mean_abs": 0.00027890331211207896,
+            "p95_abs": 0.000466589810168199,
+            "rmse": 0.000301196938590761
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.00046858045886938315,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.5033414905510796,
+            "mean": -1.4910146693944708,
+            "mean_abs": 1.4910146693944708,
+            "p95_abs": 1.502094787021673,
+            "rmse": 1.4910330914124932
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.06851308912719295,
+            "mean": -1.2268532320385212e-06,
+            "mean_abs": 0.021231823878556252,
+            "p95_abs": 0.0679794855471493,
+            "rmse": 0.02934138104978867
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3545529059478454,
+            "mean": 0.03128070731291557,
+            "mean_abs": 0.03487445886626758,
+            "p95_abs": 0.2410298861138718,
+            "rmse": 0.08998711755326852
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006127189232216779,
+            "mean": -0.00019629651712627094,
+            "mean_abs": 0.0002789033121308737,
+            "p95_abs": 0.00046658981019227487,
+            "rmse": 0.0003011969386079882
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.503821955414839,
+            "mean": 1.490818372877345,
+            "mean_abs": 1.490818372877345,
+            "p95_abs": 1.5025112194220218,
+            "rmse": 1.490837711180921
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.01272849672869758,
+            "mean": -0.009879760538277431,
+            "mean_abs": 0.009879760538277431,
+            "p95_abs": 0.012726438026414332,
+            "rmse": 0.010477171305134939
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012723969437608451,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.01096399236237744,
+            "mean": 0.008802353343702107,
+            "mean_abs": 0.008802353343702107,
+            "p95_abs": 0.010958110295777423,
+            "rmse": 0.00928510755002422
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0007745934888452877,
+            "mean": 6.17485033640833e-05,
+            "mean_abs": 0.0001054544386677317,
+            "p95_abs": 0.0005753627351755857,
+            "rmse": 0.00020550726741214344
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874296201165,
+            "mean": -0.13171441178207896,
+            "mean_abs": 0.16687526698965052,
+            "p95_abs": 0.545641801623466,
+            "rmse": 0.24780027181012892
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496728669825,
+            "mean": 0.009879760538254123,
+            "mean_abs": 0.009879760538254123,
+            "p95_abs": 0.01272643802638953,
+            "rmse": 0.010477171305110543
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0021225082458613542,
+            "mean": 0.0010774071945516273,
+            "mean_abs": 0.0010774071945516273,
+            "p95_abs": 0.002017937984401996,
+            "rmse": 0.0012394249395362006
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.003565395345986655,
+            "mean": -0.0033050917489286244,
+            "mean_abs": 0.0033050917489286244,
+            "p95_abs": 0.0035642634108468156,
+            "rmse": 0.0033475562871507266
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0034877265500877774,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0023936473525338897,
+            "mean": -0.00015706627164124853,
+            "mean_abs": 0.00021016640172377699,
+            "p95_abs": 0.0009222571099872551,
+            "rmse": 0.00045762651162919917
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0016175888011634998,
+            "mean": 2.06568234307366e-05,
+            "mean_abs": 0.0001643815982018223,
+            "p95_abs": 0.0009636973362025789,
+            "rmse": 0.0003513595873801008
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3734609427041704,
+            "mean": 0.026272247057846684,
+            "mean_abs": 0.05772748808995941,
+            "p95_abs": 0.11152659295063269,
+            "rmse": 0.0806595181278298
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035653953459799936,
+            "mean": 0.003305091748917688,
+            "mean_abs": 0.003305091748917688,
+            "p95_abs": 0.0035642634108310036,
+            "rmse": 0.0033475562871399865
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0038018500063508043,
+            "mean": 0.003462158020559103,
+            "mean_abs": 0.003462158020559103,
+            "p95_abs": 0.003771239174579577,
+            "rmse": 0.003468493574198869
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769944688944574,
+            "mean": -0.001041440239657047,
+            "mean_abs": 0.001041440239657047,
+            "p95_abs": 0.0013285224800965465,
+            "rmse": 0.0010491372996426268
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0009027503574786377,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.513431319309646,
+            "mean": -0.50983668344878,
+            "mean_abs": 0.50983668344878,
+            "p95_abs": 0.512371244714885,
+            "rmse": 0.5098397676012073
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.03767066169543962,
+            "mean": 6.509001498008994e-06,
+            "mean_abs": 0.006690252997751472,
+            "p95_abs": 0.03707083465825111,
+            "rmse": 0.01113074652699213
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.1896458939141752,
+            "mean": 0.041864928628711266,
+            "mean_abs": 0.04489466709252881,
+            "p95_abs": 0.1660401362184622,
+            "rmse": 0.06614729159509976
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769944689059344,
+            "mean": 0.00104144023968189,
+            "mean_abs": 0.00104144023968189,
+            "p95_abs": 0.0013285224801009574,
+            "rmse": 0.001049137299666248
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.5140223710735796,
+            "mean": 0.5108781236884614,
+            "mean_abs": 0.5108781236884614,
+            "p95_abs": 0.5137109701016456,
+            "rmse": 0.5108814822808764
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "dimension": 6,
+      "failure": null,
+      "failure_class": null,
+      "id": "R6",
+      "max_abs_water_ledger_cm": 4.6879167214797235e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.01272849672869758,
+          "mean": -0.0035074990024391156,
+          "mean_abs": 0.0036262989597437953,
+          "p95_abs": 0.012633729469731458,
+          "rmse": 0.005526496637158643
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 1.5033414905510796,
+          "mean": -0.49805151644279744,
+          "mean_abs": 0.5024659681471692,
+          "p95_abs": 1.4987010750484338,
+          "rmse": 0.7879090510583993
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.06851308912719295,
+          "mean": 2.1921868765197594e-05,
+          "mean_abs": 0.00704797822829432,
+          "p95_abs": 0.03619244186139007,
+          "rmse": 0.015692162430283853
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.5791874296201165,
+          "mean": -0.008074132195651357,
+          "mean_abs": 0.07609297025960157,
+          "p95_abs": 0.3708399759730101,
+          "rmse": 0.14176043002606578
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496728669825,
+          "mean": 0.0035074990024318575,
+          "mean_abs": 0.0036262989597461437,
+          "p95_abs": 0.012633729469701649,
+          "rmse": 0.0055264966371468115
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 1.503821955414839,
+          "mean": 0.5015590154452292,
+          "mean_abs": 0.5015590154452292,
+          "p95_abs": 1.4985266944705735,
+          "rmse": 0.7879737522022113
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.00061271893022664,
+            "mean": 0.00014414164850876012,
+            "mean_abs": 0.00022674889157919597,
+            "p95_abs": 0.00041643293615401054,
+            "rmse": 0.00024416114041161675
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.000225109281840552,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.4540166735992024,
+            "mean": -0.44977213647356873,
+            "mean_abs": 0.44977213647356873,
+            "p95_abs": 0.45358832573014973,
+            "rmse": 0.44978036097266255
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.04546291124897431,
+            "mean": -9.008853034412007e-07,
+            "mean_abs": 0.011834959769513213,
+            "p95_abs": 0.04533094650782806,
+            "rmse": 0.01796561573811859
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.35455276247038126,
+            "mean": 0.027367533678822144,
+            "mean_abs": 0.03601866081619771,
+            "p95_abs": 0.2410285845604389,
+            "rmse": 0.09002931224850674
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006127189302134184,
+            "mean": -0.00014414164855103273,
+            "mean_abs": 0.00022674889161766743,
+            "p95_abs": 0.00041643293613589016,
+            "rmse": 0.0002441611404446726
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.4544971384630685,
+            "mean": 0.44962799482501764,
+            "mean_abs": 0.44962799482501764,
+            "p95_abs": 0.4540047586662862,
+            "rmse": 0.4496369563453371
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.01272849672051568,
+            "mean": -0.00987976053677838,
+            "mean_abs": 0.00987976053677838,
+            "p95_abs": 0.012726438016029563,
+            "rmse": 0.010477171303321575
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012723969426242432,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.011947809455101321,
+            "mean": 0.009439167853533936,
+            "mean_abs": 0.009439167853533936,
+            "p95_abs": 0.011943616664885503,
+            "rmse": 0.00998821537138124
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0007745934901347562,
+            "mean": 6.174850335488266e-05,
+            "mean_abs": 0.00010445953056703372,
+            "p95_abs": 0.0005702665113874063,
+            "rmse": 0.0002048714146724504
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874296201165,
+            "mean": -0.1317144115949268,
+            "mean_abs": 0.16687526717120182,
+            "p95_abs": 0.545641801623466,
+            "rmse": 0.24780027184782447
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0127284967205199,
+            "mean": 0.009879760536782634,
+            "mean_abs": 0.009879760536782634,
+            "p95_abs": 0.012726438016034791,
+            "rmse": 0.010477171303327476
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0008696224883379955,
+            "mean": 0.000440592683247476,
+            "mean_abs": 0.000440592683247476,
+            "p95_abs": 0.000826536383004317,
+            "rmse": 0.0005070903428921052
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.003565677011068469,
+            "mean": -0.003305532428095021,
+            "mean_abs": 0.003305532428095021,
+            "p95_abs": 0.0035645012396743115,
+            "rmse": 0.0033480197948443026
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0034903576335446607,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0031290545531845737,
+            "mean": 0.00286541854207617,
+            "mean_abs": 0.00286541854207617,
+            "p95_abs": 0.0031248351888283564,
+            "rmse": 0.0028969443360868014
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0006613943278106493,
+            "mean": 2.0659577675411622e-05,
+            "mean_abs": 6.32946614415027e-05,
+            "p95_abs": 0.00022688462540237367,
+            "rmse": 0.00011790599349728192
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3734609427045079,
+            "mean": 0.026229462250520905,
+            "mean_abs": 0.057684703430129866,
+            "p95_abs": 0.11152657762496805,
+            "rmse": 0.08064321840371444
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035656770110321645,
+            "mean": 0.0033055324280656384,
+            "mean_abs": 0.0033055324280656384,
+            "p95_abs": 0.003564501239644713,
+            "rmse": 0.003348019794814258
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0008680024301206402,
+            "mean": 0.0004401138859899678,
+            "mean_abs": 0.0004401138859899678,
+            "p95_abs": 0.0008251120696927571,
+            "rmse": 0.0005064511140284608
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212340207,
+            "mean": -0.001049184470882329,
+            "mean_abs": 0.001049184470882329,
+            "p95_abs": 0.001328522615008845,
+            "rmse": 0.0010561744077509617
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0009446020768126284,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.04358650038067324,
+            "mean": -0.041425268253966474,
+            "mean_abs": 0.041425268253966474,
+            "p95_abs": 0.042672257626489164,
+            "rmse": 0.04143606580627891
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.005349232918191921,
+            "mean": 6.557402943060264e-06,
+            "mean_abs": 0.0006191964508716632,
+            "p95_abs": 0.004614962341524998,
+            "rmse": 0.0013005603523544573
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.18964574361312447,
+            "mean": 0.04118777108660031,
+            "mean_abs": 0.04421750955105873,
+            "p95_abs": 0.16604002981362564,
+            "rmse": 0.0659937217353868
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212374068,
+            "mean": 0.0010491844708896414,
+            "mean_abs": 0.0010491844708896414,
+            "p95_abs": 0.001328522615023786,
+            "rmse": 0.0010561744077582347
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.04417755214461394,
+            "mean": 0.04247445272485634,
+            "mean_abs": 0.04247445272485634,
+            "p95_abs": 0.044011983032912025,
+            "rmse": 0.042486534157962885
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "dimension": 8,
+      "failure": null,
+      "failure_class": null,
+      "id": "R8",
+      "max_abs_water_ledger_cm": 6.929179452441758e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.01272849672051568,
+          "mean": -0.0035225839468117416,
+          "mean_abs": 0.0036153065818337305,
+          "p95_abs": 0.012633729467360882,
+          "rmse": 0.005526198379263307
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.4540166735992024,
+          "mean": -0.11972320458298127,
+          "mean_abs": 0.12587549778078633,
+          "p95_abs": 0.4526837724192676,
+          "rmse": 0.22590234471945636
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.04546291124897431,
+          "mean": 2.2016149667478335e-05,
+          "mean_abs": 0.0031554776030983532,
+          "p95_abs": 0.02277747523863493,
+          "rmse": 0.009007089987888751
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.5791874296201165,
+          "mean": -0.00923241114474586,
+          "mean_abs": 0.07619903524214702,
+          "p95_abs": 0.3708399759730945,
+          "rmse": 0.14174691511175092
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.0127284967205199,
+          "mean": 0.00352258394679672,
+          "mean_abs": 0.003615306581838895,
+          "p95_abs": 0.01263372946736041,
+          "rmse": 0.005526198379262266
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.4544971384630685,
+          "mean": 0.12324578852977786,
+          "mean_abs": 0.12324578852977786,
+          "p95_abs": 0.45250968897222243,
+          "rmse": 0.2258201783109744
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.00061271893022664,
+            "mean": 0.0001440428004067167,
+            "mean_abs": 0.00022665004348657215,
+            "p95_abs": 0.0004164329361584535,
+            "rmse": 0.00024406932724513748
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.00022446279593893448,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006126491714653071,
+            "mean": -0.00014508767971077585,
+            "mean_abs": 0.00022766433687260168,
+            "p95_abs": 0.00041628795424273257,
+            "rmse": 0.0002449802007305417
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.011034692058036755,
+            "mean": -9.002675026216923e-07,
+            "mean_abs": 0.0014888950671851993,
+            "p95_abs": 0.01097698066113386,
+            "rmse": 0.0032365487343654956
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3545527624701075,
+            "mean": 0.027356973955425294,
+            "mean_abs": 0.03602921918875292,
+            "p95_abs": 0.24102858453838488,
+            "rmse": 0.09002990637665566
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006127189302276292,
+            "mean": -0.00014404280041802053,
+            "mean_abs": 0.0002266500434979779,
+            "p95_abs": 0.0004164329361593381,
+            "rmse": 0.00024406932725575995
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.7422271554323743e-06,
+            "mean": 1.0448792913675398e-06,
+            "mean_abs": 1.0448792913675398e-06,
+            "p95_abs": 1.7292665942747475e-06,
+            "rmse": 1.1749048116393942e-06
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496720511906,
+            "mean": -0.009879760536777887,
+            "mean_abs": 0.009879760536777887,
+            "p95_abs": 0.012726438016024832,
+            "rmse": 0.010477171303320976
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012723969426237325,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496598231942,
+            "mean": 0.009879760509466706,
+            "mean_abs": 0.009879760509466706,
+            "p95_abs": 0.012726437870915142,
+            "rmse": 0.01047717127045847
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0007745934901349227,
+            "mean": 6.174850335479814e-05,
+            "mean_abs": 0.00010008848147764006,
+            "p95_abs": 0.0005380959076163252,
+            "rmse": 0.00020205795745031934
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874296201165,
+            "mean": -0.1317144115948543,
+            "mean_abs": 0.16687526717127432,
+            "p95_abs": 0.545641801623466,
+            "rmse": 0.2478002718478406
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496720505689,
+            "mean": 0.0098797605367692,
+            "mean_abs": 0.0098797605367692,
+            "p95_abs": 0.01272643801602058,
+            "rmse": 0.010477171303311732
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.5494094895984745e-10,
+            "mean": 2.7301383376254762e-11,
+            "mean_abs": 2.7301383376254762e-11,
+            "p95_abs": 1.2083649636451804e-10,
+            "rmse": 4.898886331356952e-11
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.003565677011068469,
+            "mean": -0.0033055324280976657,
+            "mean_abs": 0.0033055324280976657,
+            "p95_abs": 0.003564501239674353,
+            "rmse": 0.0033480197948470756
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.003490357633571972,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.003565683329970426,
+            "mean": 0.0033055376924435165,
+            "mean_abs": 0.0033055376924435165,
+            "p95_abs": 0.0035645070861090034,
+            "rmse": 0.003348025333343179
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0005926598100671754,
+            "mean": 2.0659577675499253e-05,
+            "mean_abs": 5.8923628651335095e-05,
+            "p95_abs": 0.00022355185903541184,
+            "rmse": 0.0001129324508772299
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3734609427045079,
+            "mean": 0.026229462250076302,
+            "mean_abs": 0.05768470342968526,
+            "p95_abs": 0.11152657762496805,
+            "rmse": 0.0806432184035565
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035656770110463754,
+            "mean": 0.0033055324280801823,
+            "mean_abs": 0.0033055324280801823,
+            "p95_abs": 0.0035645012396539498,
+            "rmse": 0.003348019794829185
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.7300465060543502e-08,
+            "mean": -5.264363500678826e-09,
+            "mean_abs": 5.264363500678826e-09,
+            "p95_abs": 1.531449367320192e-08,
+            "rmse": 7.3520790876842855e-09
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212340207,
+            "mean": -0.0010491863609204152,
+            "mean_abs": 0.0010491863609204152,
+            "p95_abs": 0.0013285226150092843,
+            "rmse": 0.0010561761293848414
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0009446159461715398,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013772758581573896,
+            "mean": 0.0010508424483204326,
+            "mean_abs": 0.0010508424483204326,
+            "p95_abs": 0.0013287814186933031,
+            "rmse": 0.0010577607569665396
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0005926598353731549,
+            "mean": 6.557414755770308e-06,
+            "mean_abs": 4.5157389562672554e-05,
+            "p95_abs": 0.00015335840998651615,
+            "rmse": 9.97970315248056e-05
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.1896457436128971,
+            "mean": 0.041187542885096906,
+            "mean_abs": 0.044217281349555326,
+            "p95_abs": 0.16604002981313537,
+            "rmse": 0.0659936769629673
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212303014,
+            "mean": 0.0010491863609226604,
+            "mean_abs": 0.0010491863609226604,
+            "p95_abs": 0.0013285226150046012,
+            "rmse": 0.0010561761293870452
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 3.0877256200767533e-06,
+            "mean": -1.6560873966620093e-06,
+            "mean_abs": 1.6560873966620093e-06,
+            "p95_abs": 2.959140946856564e-06,
+            "rmse": 1.8790672389519205e-06
+          }
+        }
+      },
+      "crosses_FMC": true,
+      "crosses_R2": true,
+      "dimension": 12,
+      "failure": null,
+      "failure_class": null,
+      "id": "R12",
+      "max_abs_water_ledger_cm": 2.886579864025407e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496720511906,
+          "mean": -0.0035226091313473127,
+          "mean_abs": 0.003615282342320635,
+          "p95_abs": 0.012633729467360855,
+          "rmse": 0.005526197447581037
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496598231942,
+          "mean": 0.00352276324262997,
+          "mean_abs": 0.0036159512467758143,
+          "p95_abs": 0.01263372941559382,
+          "rmse": 0.005526284117310575
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.011034692058036755,
+          "mean": 2.2016307070861503e-05,
+          "mean_abs": 0.0004232661417192118,
+          "p95_abs": 0.003773352631124695,
+          "rmse": 0.0016231749993495916
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.5791874296201165,
+          "mean": -0.00923510812606395,
+          "mean_abs": 0.07620161778481696,
+          "p95_abs": 0.3708399759730945,
+          "rmse": 0.14174700423962167
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496720505689,
+          "mean": 0.0035226091313385055,
+          "mean_abs": 0.003615282342317505,
+          "p95_abs": 0.012633729467339094,
+          "rmse": 0.005526197447574168
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 3.0877256200767533e-06,
+          "mean": -1.5411129185294303e-07,
+          "mean_abs": 6.76564588228401e-07,
+          "p95_abs": 2.553825853013336e-06,
+          "rmse": 1.1080781854615014e-06
+        }
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "by_history": {
+        "G125": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.00061271893022664,
+            "mean": 0.0001440428004008438,
+            "mean_abs": 0.00022665004348069925,
+            "p95_abs": 0.0004164329361584535,
+            "rmse": 0.00024406932723970224
+          },
+          "final_cumulative_bottom_exchange_error_cm": 0.00022446279587121087,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006126491706694992,
+            "mean": -0.00014523417653378168,
+            "mean_abs": 0.00022781082657785667,
+            "p95_abs": 0.00041628793897956407,
+            "rmse": 0.0002451167404135274
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 9.827983717908273e-05,
+            "mean": -9.00267502544985e-07,
+            "mean_abs": 2.6057291674866237e-06,
+            "p95_abs": 1.3741899712663147e-05,
+            "rmse": 7.826869199677502e-06
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3545527624701075,
+            "mean": 0.02735697395428114,
+            "mean_abs": 0.03602921918989708,
+            "p95_abs": 0.24102858453838488,
+            "rmse": 0.09002990637671739
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0006127189302205238,
+            "mean": -0.0001440428004069183,
+            "mean_abs": 0.00022665004348643158,
+            "p95_abs": 0.00041643293616040386,
+            "rmse": 0.00024406932724462126
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 2.4249277750243436e-06,
+            "mean": 1.1913761264747968e-06,
+            "mean_abs": 1.1913761264747968e-06,
+            "p95_abs": 2.292615620547167e-06,
+            "rmse": 1.3811924286700427e-06
+          }
+        },
+        "G25": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496720511906,
+            "mean": -0.009879760536777887,
+            "mean_abs": 0.009879760536777887,
+            "p95_abs": 0.012726438016024832,
+            "rmse": 0.010477171303320976
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.012723969426237325,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496721898352,
+            "mean": 0.009879760537085336,
+            "mean_abs": 0.009879760537085336,
+            "p95_abs": 0.012726438017679165,
+            "rmse": 0.010477171303693368
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0007745934901349227,
+            "mean": 6.174850335487078e-05,
+            "mean_abs": 6.190377113712896e-05,
+            "p95_abs": 0.00047983041742059233,
+            "rmse": 0.00017677429775831593
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.5791874296201165,
+            "mean": -0.1317144115948543,
+            "mean_abs": 0.16687526717127432,
+            "p95_abs": 0.545641801623466,
+            "rmse": 0.2478002718478406
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.012728496720527005,
+            "mean": 0.009879760536780857,
+            "mean_abs": 0.009879760536780857,
+            "p95_abs": 0.012726438016040831,
+            "rmse": 0.010477171303325287
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.758593271006248e-12,
+            "mean": -3.0619951019161817e-13,
+            "mean_abs": 3.0886404545071855e-13,
+            "p95_abs": 1.3619327887681713e-12,
+            "rmse": 5.519169572171632e-13
+          }
+        },
+        "G50": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.003565677011068469,
+            "mean": -0.0033055324280976657,
+            "mean_abs": 0.0033055324280976657,
+            "p95_abs": 0.003564501239674353,
+            "rmse": 0.0033480197948470756
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.003490357633571972,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0035656833494961404,
+            "mean": 0.0033055377200569835,
+            "mean_abs": 0.0033055377200569835,
+            "p95_abs": 0.0035645071028307385,
+            "rmse": 0.0033480253623978883
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.00023272967789389476,
+            "mean": 2.065957767547727e-05,
+            "mean_abs": 2.073891829924512e-05,
+            "p95_abs": 0.00016854373525489178,
+            "rmse": 5.635133219270225e-05
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.3734609427045079,
+            "mean": 0.026229462250076302,
+            "mean_abs": 0.05768470342968526,
+            "p95_abs": 0.11152657762496805,
+            "rmse": 0.0806432184035565
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.00356567701103927,
+            "mean": 0.0033055324280767406,
+            "mean_abs": 0.0033055324280767406,
+            "p95_abs": 0.0035645012396468443,
+            "rmse": 0.003348019794825519
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 1.745718236634275e-08,
+            "mean": -5.2919805204609816e-09,
+            "mean_abs": 5.2919805204609816e-09,
+            "p95_abs": 1.5436706846116974e-08,
+            "rmse": 7.399232154043014e-09
+          }
+        },
+        "G75": {
+          "bottom_flux_sign_error_count": 0,
+          "cumulative_bottom_exchange_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212340207,
+            "mean": -0.0010491863609204152,
+            "mean_abs": 0.0010491863609204152,
+            "p95_abs": 0.0013285226150092843,
+            "rmse": 0.0010561761293848414
+          },
+          "final_cumulative_bottom_exchange_error_cm": -0.0009446159461715398,
+          "lower_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013772758581573896,
+            "mean": 0.001050842476203906,
+            "mean_abs": 0.001050842476203906,
+            "p95_abs": 0.0013287814186938361,
+            "rmse": 0.0010577607825496087
+          },
+          "mapped_R16_cell_theta_error": {
+            "count": 1024,
+            "max_abs": 0.0001320192691090516,
+            "mean": 6.557414755871979e-06,
+            "mean_abs": 6.972678094799658e-06,
+            "p95_abs": 5.008286185281539e-05,
+            "rmse": 1.9523653555697695e-05
+          },
+          "terminal_bottom_flux_error_cm_per_day": {
+            "count": 64,
+            "max_abs": 0.1896457436128971,
+            "mean": 0.041187542885096906,
+            "mean_abs": 0.044217281349555326,
+            "p95_abs": 0.16604002981313537,
+            "rmse": 0.0659936769629673
+          },
+          "total_storage_error_cm": {
+            "count": 64,
+            "max_abs": 0.0013769945212374068,
+            "mean": 0.0010491863609393137,
+            "mean_abs": 0.0010491863609393137,
+            "p95_abs": 0.0013285226150177463,
+            "rmse": 0.0010561761294031488
+          },
+          "upper_storage_error_cm": {
+            "count": 64,
+            "max_abs": 3.0878839289982807e-06,
+            "mean": -1.65611526387055e-06,
+            "mean_abs": 1.65611526387055e-06,
+            "p95_abs": 2.959264370261394e-06,
+            "rmse": 1.8791075310240414e-06
+          }
+        }
+      },
+      "crosses_FMC": false,
+      "crosses_R2": false,
+      "dimension": 16,
+      "failure": null,
+      "failure_class": null,
+      "id": "R16",
+      "max_abs_water_ledger_cm": 3.2585045772748344e-14,
+      "max_corrector_iterations": 6,
+      "pooled": {
+        "bottom_flux_sign_error_count": 0,
+        "cumulative_bottom_exchange_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496720511906,
+          "mean": -0.003522609131348781,
+          "mean_abs": 0.0036152823423191665,
+          "p95_abs": 0.012633729467360855,
+          "rmse": 0.005526197447580977
+        },
+        "lower_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496721898352,
+          "mean": 0.003522726639203111,
+          "mean_abs": 0.0036159878899810205,
+          "p95_abs": 0.012633729467943944,
+          "rmse": 0.005526285652310379
+        },
+        "mapped_R16_cell_theta_error": {
+          "count": 4096,
+          "max_abs": 0.0007745934901349227,
+          "mean": 2.2016307070918762e-05,
+          "mean_abs": 2.305527417466509e-05,
+          "p95_abs": 0.00014779121184443217,
+          "rmse": 9.336361432253705e-05
+        },
+        "terminal_bottom_flux_error_cm_per_day": {
+          "count": 256,
+          "max_abs": 0.5791874296201165,
+          "mean": -0.009235108126349992,
+          "mean_abs": 0.07620161778510298,
+          "p95_abs": 0.3708399759730945,
+          "rmse": 0.14174700423963146
+        },
+        "total_storage_error_cm": {
+          "count": 256,
+          "max_abs": 0.012728496720527005,
+          "mean": 0.0035226091313474983,
+          "mean_abs": 0.003615282342320836,
+          "p95_abs": 0.012633729467367516,
+          "rmse": 0.005526197447580684
+        },
+        "upper_storage_error_cm": {
+          "count": 256,
+          "max_abs": 3.0878839289982807e-06,
+          "mean": -1.175078560289311e-07,
+          "mean_abs": 7.131959199324633e-07,
+          "p95_abs": 2.5538786676548852e-06,
+          "rmse": 1.1660609318131165e-06
+        }
+      },
+      "status": "QUALIFIED"
+    }
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4q.result.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C4Q",
+  "workstream": "F-ROM-LARE"
+}

@@ -1,0 +1,131 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:74b669ccf05d2dee4b0f831c2dedf987f39c0c671033eb9c5404a1dc2beb5b29",
+    "aggregate_artifact_id": 10593455706,
+    "execution_head": "9fb2c28a6b495e36c7b9e091059e3612c4e7f464",
+    "result_sha256": "067be546d4236ce8205b5cd21aef19548aeae232407f23b3ca1812b21c9bafc8",
+    "superseded_reason": "Dynamic Python loader failed before hydrological execution; fixed by module registration only.",
+    "superseded_technical_run": 35472171483,
+    "workflow_run": 35472283735
+  },
+  "comparators": {
+    "FMC_GW200": {
+      "bottom_flux_sign_errors": 1,
+      "cumulative_bottom_exchange_RMSE_cm": 0.2287373082322814,
+      "mapped_R16_theta_RMSE": 0.004113528053164359,
+      "terminal_bottom_flux_RMSE_cm_per_day": 5.885538112034192,
+      "total_storage_RMSE_cm": 0.2287373082322805
+    },
+    "R2": {
+      "bottom_flux_sign_errors": 1,
+      "cumulative_bottom_exchange_RMSE_cm": 0.39852848647148165,
+      "mapped_R16_theta_RMSE": 0.04505417759347597,
+      "terminal_bottom_flux_RMSE_cm_per_day": 10.097810941789762,
+      "total_storage_RMSE_cm": 0.39852848647148076
+    }
+  },
+  "decision": "LARE_REDUCED_FRONTIER_CROSSES_FMC",
+  "external_D13_authority": {
+    "artifact_digest": "sha256:03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408",
+    "artifact_id": 10587057124,
+    "scientific_basis_rebased": false
+  },
+  "frontier": {
+    "lowest_dimension_crossing_FMC": 12,
+    "lowest_dimension_crossing_R2": 4,
+    "reduced_members_crossing_FMC": [
+      "R12"
+    ],
+    "reduced_members_crossing_R2": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ]
+  },
+  "frozen_lare_scientific_basis": "9bb73821bb78a04c759b763746b50a3f777cd416",
+  "lare_key_members": {
+    "R12": {
+      "bottom_flux_sign_errors": 0,
+      "crosses_FMC": true,
+      "crosses_R2": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.005526197447581037,
+      "dimension": 12,
+      "lower_80_160_storage_RMSE_cm": 0.005526284117310575,
+      "mapped_R16_theta_RMSE": 0.0016231749993495916,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.14174700423962167,
+      "total_storage_RMSE_cm": 0.005526197447574168,
+      "upper_0_80_storage_RMSE_cm": 1.1080781854615014e-06
+    },
+    "R16": {
+      "bottom_flux_sign_errors": 0,
+      "crosses_FMC": false,
+      "crosses_R2": false,
+      "cumulative_bottom_exchange_RMSE_cm": 0.005526197447580977,
+      "dimension": 16,
+      "lower_80_160_storage_RMSE_cm": 0.005526285652310379,
+      "mapped_R16_theta_RMSE": 9.336361432253705e-05,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.14174700423963146,
+      "total_storage_RMSE_cm": 0.005526197447580684,
+      "upper_0_80_storage_RMSE_cm": 1.1660609318131165e-06
+    },
+    "R3": {
+      "bottom_flux_sign_errors": 7,
+      "crosses_FMC": false,
+      "crosses_R2": false,
+      "cumulative_bottom_exchange_RMSE_cm": 0.04184565209155363,
+      "dimension": 3,
+      "lower_80_160_storage_RMSE_cm": 2.048417507139721,
+      "mapped_R16_theta_RMSE": 0.035256529248678926,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 1.7973173746564246,
+      "total_storage_RMSE_cm": 0.04184565209152123,
+      "upper_0_80_storage_RMSE_cm": 2.023171788207506
+    },
+    "R4": {
+      "bottom_flux_sign_errors": 0,
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.006857806511958705,
+      "dimension": 4,
+      "lower_80_160_storage_RMSE_cm": 1.5478392943896466,
+      "mapped_R16_theta_RMSE": 0.026769822527171867,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.2683441490204494,
+      "total_storage_RMSE_cm": 0.006857806511957735,
+      "upper_0_80_storage_RMSE_cm": 1.5451286365024002
+    },
+    "R8": {
+      "bottom_flux_sign_errors": 0,
+      "crosses_FMC": false,
+      "crosses_R2": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.005526198379263307,
+      "dimension": 8,
+      "lower_80_160_storage_RMSE_cm": 0.22590234471945636,
+      "mapped_R16_theta_RMSE": 0.009007089987888751,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.14174691511175092,
+      "total_storage_RMSE_cm": 0.005526198379262266,
+      "upper_0_80_storage_RMSE_cm": 0.2258201783109744
+    }
+  },
+  "model_changed": false,
+  "next_authority": "RECONCILE_CORICHARDS_Q1_THEN_PREREGISTER_COST_FIDELITY_VALUE_DISCRIMINATOR_IF_NUMERICAL_COMPARATOR_AUTHORITY_ALLOWS",
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4q.closeout.v1",
+  "scientific_interpretation": [
+    "R4 is the minimum frozen reduced LARE member that crosses the D13 R2 comparator on all five preregistered fidelity views.",
+    "R12 is the only reduced LARE member that crosses FMC_GW200 on all five views; R8 remains behind FMC because its mapped 10-cm profile error is larger even though its balance and bottom-flux errors are much smaller.",
+    "The D13 groundwater-relaxation result therefore supports LARE as a high-resolution reduced representation, but not aggressive low-dimensional LARE for this purpose.",
+    "R12 retains 12 of the 16 spatial water states, so hydrological frontier success does not establish computational value. Cost/value must be tested separately against R16 Reference, same-partition CoRichards and FMC.",
+    "No application acceptance, general LARE superiority, production speedup or production ROM is authorized."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_LARE_R12_CROSSES_FMC_ON_MATCHED_D13_NO_VALUE_CLAIM",
+  "work_unit": "LARE-BC2-C4Q",
+  "workstream": "F-ROM-LARE"
+}
