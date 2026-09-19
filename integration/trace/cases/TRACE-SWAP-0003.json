@@ -1,0 +1,126 @@
+{
+  "trace_id": "TRACE-SWAP-0003",
+  "model": "SWAP",
+  "status": "CLOSED",
+  "discovery": {
+    "first_observed_date": "2026-09-19",
+    "registered_date": "2026-09-19",
+    "observer": "TRACE_PRIMARY_RECONCILIATION",
+    "work_unit": "TRACE-B03-SWAP-E03",
+    "inspection_trigger": "SCHEDULED_SYSTEMATIC_RECONCILIATION",
+    "planned_or_opportunistic": "PLANNED"
+  },
+  "eligibility": {
+    "known_before_registration": false,
+    "disposition_known_before_registration": false,
+    "prospective_eligible": true,
+    "decision_reason": "The current-canonical F-DOC33 VERIFY state was first observed during preregistered Batch-03 parameter-provenance inspection and frozen before PR #200 or work-branch chronology was read."
+  },
+  "scientific_element": {
+    "scientific_element_id": "TRACE-ELEM-SWAP-B03-003",
+    "subsystem": "soil_hydraulic_parameters",
+    "description": "Soil-hydraulic parameter provenance and its F-DOC33 documentation authority state."
+  },
+  "representations": [
+    {
+      "kind": "reviewer_documentation",
+      "path": "docs/science/soil-hydraulic-parameter-provenance.md",
+      "pre_resolution_blob": "da0494bc1a9ad9cbd83313345c4336e4f16e21eb",
+      "claim": "Current canonical page records bounded exact internal aliases/activation rules while retaining unresolved parser keyword and unit cells."
+    },
+    {
+      "kind": "canonical_documentation_status",
+      "path": "integration/f-doc/F-DOC33_STATUS.json",
+      "pre_resolution_blob": "8ce9310cd97457f84d72bfbc35ab2ac0c5702816",
+      "claim": "phase=VERIFY; exact-head rerun PENDING; future canonical recheck/merge action remains."
+    },
+    {
+      "kind": "work_branch_closeout_status",
+      "path": "integration/f-doc/F-DOC33_STATUS.json",
+      "ref": "9f133284cd3bfe43a8be7e686988209c195d516c",
+      "blob": "a50cbeacb43597434b19e7befd6aeb18e9b1cdc6",
+      "claim": "phase=CLOSE; DOCUMENTATION_ADMITTED_AND_CLOSED; PR #200 admitted at canonical d0a41c39d7ff95db99bcf8360ac9b474fdf164d7."
+    }
+  ],
+  "conflict": {
+    "relation_classes": [
+      "DOCUMENTATION_IMPLEMENTATION"
+    ],
+    "initial_statement": "Current canonical contains the F-DOC33 provenance page but its status artifact still represents a pre-admission verification state after PR #200 has already merged and a post-merge closeout exists.",
+    "application_envelope": "Interpretation of current authority for soil-hydraulic parameter provenance documentation. The bounded provenance claims themselves are not disputed.",
+    "discovery_uncertainty": "Before post-freeze chronology reconstruction it was unknown whether the VERIFY state was intentionally frozen provenance or stale current metadata."
+  },
+  "detection": {
+    "first_exposing_evidence": "Comparison of current parameter-provenance reviewer page with F-DOC33_STATUS during planned Batch-03 inspection.",
+    "method": "Prospective scheduled reconciliation followed, after evidence freeze, by PR #200, exact-head workflow and post-merge branch chronology reconstruction.",
+    "modernization_specific": true,
+    "mechanism_code": "POST_MERGE_CLOSEOUT_STATUS_NOT_PROPAGATED_TO_CANONICAL"
+  },
+  "scientific_consequence": {
+    "potential": [
+      "INTERPRETATIVE",
+      "STRUCTURAL"
+    ],
+    "demonstrated": [
+      "INTERPRETATIVE"
+    ],
+    "evidence": "A reviewer can conclude that F-DOC33 still awaits its exact-head gate or canonical admission although PR #200 merged and the owner branch records documentation admitted and closed. No parameter mapping, constitutive equation, parser behaviour or numerical result is shown to be wrong."
+  },
+  "regression_counterfactual": {
+    "preexisting_suite_ref": "F-DOC33 Documentation workflow run 35282447627 on exact head eb5dc693b98c9bf7025c1fd478eb3ac679bedd52",
+    "affected_route_within_scope": false,
+    "outcome": "REGRESSION_NOT_APPLICABLE",
+    "evidence": "The Documentation workflow ran before merge on the exact admission head. The discrepancy arose when the later post-merge status-only closeout was not propagated to canonical; no post-merge status-synchronization oracle was identified."
+  },
+  "resolution": {
+    "candidate_authorities": [
+      {
+        "authority": "F-DOC33 PR #200",
+        "ref": "merge d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+        "role": "Establishes completed documentation admission."
+      },
+      {
+        "authority": "F-DOC33 exact-head Documentation gate",
+        "ref": "run 35282447627 on eb5dc693b98c9bf7025c1fd478eb3ac679bedd52",
+        "role": "Establishes exact admission-head qualification."
+      },
+      {
+        "authority": "F-DOC33 work-branch closeout status",
+        "ref": "9f133284cd3bfe43a8be7e686988209c195d516c",
+        "role": "Records DOCUMENTATION_ADMITTED_AND_CLOSED after merge."
+      }
+    ],
+    "final_authority": "F-DOC33 post-merge closeout status at 9f133284cd3bfe43a8be7e686988209c195d516c plus PR #200 merge d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+    "disposition": "DOCUMENTATION_CORRECTED",
+    "code_changed": false,
+    "documentation_changed": true,
+    "tests_changed": false,
+    "repair": {
+      "status_path": "integration/f-doc/F-DOC33_STATUS.json",
+      "source_closeout_ref": "9f133284cd3bfe43a8be7e686988209c195d516c",
+      "source_closeout_blob": "a50cbeacb43597434b19e7befd6aeb18e9b1cdc6",
+      "repair_head": "7910d1410e4639766304801143505e0ffd0d3926",
+      "change": "Propagate the already-authored post-merge F-DOC33 CLOSE/DOCUMENTATION_ADMITTED_AND_CLOSED status onto the current canonical lineage without changing provenance content or scientific semantics."
+    }
+  },
+  "reproducibility": {
+    "pre_resolution_ref": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+    "evidence_manifest": "integration/trace/evidence/TRACE-SWAP-0003/manifest.json",
+    "chronology": {
+      "content_head": "d5672c166ce920387988047b516bd86f290cd38e",
+      "exact_head": "eb5dc693b98c9bf7025c1fd478eb3ac679bedd52",
+      "exact_head_run": 35282447627,
+      "pr": 200,
+      "merge_commit": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+      "post_merge_closeout_head": "9f133284cd3bfe43a8be7e686988209c195d516c"
+    },
+    "repair_postimage_ref": "7910d1410e4639766304801143505e0ffd0d3926",
+    "repair_qualification": {
+      "trace_workflow_run": 35439595539,
+      "trace_conclusion": "success",
+      "broad_preservation_workflow": "F-GC42 live whole-window service",
+      "broad_preservation_run": 35439595565,
+      "broad_preservation_conclusion": "success"
+    }
+  }
+}
