@@ -1,0 +1,51 @@
+# PPA-ROOT-HYD01 preregistration
+
+## Question
+
+CAP01 established that the frozen groundwater-derived production trial completes for a root-active zero sink and for an exactly compensated root sink, but solver-rejects every tested nonzero unbalanced root sink.
+
+PPA-ROOT-HYD01 separates a root-specific defect from a broader transient sink/window-scale problem before any repair is permitted.
+
+## D1: sink equivalence and window scale
+
+The HeadCalc residual contains both the ordinary matrix sink and `root_sink_term` additively with the same sign. D1 therefore compares two mathematically equivalent prescribed sink distributions:
+
+- **ROOT:** `root_extraction_active=true`, sink carried by the root-sink provider;
+- **GENERIC:** root inactive, exactly the same sink carried through one ordinary drainage/source-sink level.
+
+Both use zero compensating subsurface source.
+
+The total sink is frozen at **0.02 cm d-1**, distributed equally over the first four compartments. The hydraulic starting state is the CAP01 A3 equilibrium state: constant (h=-75\) cm with top and bottom reference flux (-K(-75\,\mathrm{cm})).
+
+The exact duration sweep is:
+
+[
+10^{-4},;10^{-3},;10^{-2},;10^{-1},;1 \mathrm{day}.
+]
+
+No intermediate duration may be added after seeing the results.
+
+## Numerical configuration
+
+D1 preserves the CAP01 production-trial controls:
+
+- `SWKIMPL=0`;
+- external full-half temporal acceptance;
+- temporal tolerance (10^{-6});
+- hard mass tolerance (10^{-12}) cm;
+- max nonlinear iterations 16;
+- max backtracking 8;
+- minimum substep (10^{-8}) day;
+- head tolerances (10^{-12}).
+
+No source, solver or reference mutation is permitted in D1.
+
+## Interpretation
+
+- Same ROOT and GENERIC pass/fail pattern: evidence against a root-specific defect.
+- GENERIC succeeds where ROOT fails: root-specific provider/binding/HeadCalc discrepancy.
+- Both fail only for short windows and succeed for longer windows: coupling-window numerical-envelope problem.
+- Both fail across the full sweep: diagnose common transient sink/Newton execution next.
+- When both succeed, accepted hydraulic state and mass response must be compared. A meaningful divergence is itself a semantic discrepancy.
+
+D1 is diagnostic. It cannot authorize HYDRO-MEMORY Stage 0 and it cannot justify a repair by itself.
