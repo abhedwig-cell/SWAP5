@@ -1,0 +1,109 @@
+name: TAB-HYD Hupsel end-to-end characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - 'research/tabulated_hydraulics/prepare_hupsel_e2e.py'
+      - 'research/tabulated_hydraulics/compare_hupsel_e2e.py'
+      - '.github/workflows/tabulated-hydraulics-e2e.yml'
+
+jobs:
+  hupsel-analytical-vs-table:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime with identical table engine
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Checkout public SWAP testcase inputs
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: main
+          path: swap-testcases
+
+      - name: Build executable runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user meson ninja
+          export PATH="$HOME/.local/bin:$PATH"
+          cd legacy-runtime
+          meson setup builddir -Denable_pfunit=false
+          meson compile -C builddir
+          test -x builddir/swap
+
+      - name: Prepare paired Hupsel cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-e2e
+          grep -q '^PREPARE_E2E_COMPLETED$' <(python3 research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-e2e)
+          printf '%s\n' \
+            'runtime_source=SWAP-model/SWAP@2a5ace1c06be7a257b64e9ac1896b489533f16e9' \
+            'table_engine_blob=62a4df82de75f1231fe066351473d140cf2ac31c' \
+            'wrapper_blob=493b9997615c967dcb5555691e447bcfe7b11e1f' \
+            > build/tab-hyd-e2e/provenance.txt
+
+      - name: Execute analytical and table pairs
+        shell: bash
+        run: |
+          set -uo pipefail
+          exe="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
+          : > build/tab-hyd-e2e/run-status.txt
+          for name in analytic_k0 table_k0 analytic_k1 table_k1; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-e2e/$name"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt "$exe" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            echo "$name return_code=$rc runtime_seconds=$(cat "$work/runtime_seconds.txt" 2>/dev/null || echo NA)" | tee -a build/tab-hyd-e2e/run-status.txt
+          done
+          echo "E2E_EXECUTION_COMPLETED" | tee -a build/tab-hyd-e2e/run-status.txt
+
+      - name: Compare successful paired outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for k in 0 1; do
+            a="build/tab-hyd-e2e/analytic_k$k"
+            t="build/tab-hyd-e2e/table_k$k"
+            if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+                "$a" "$t" "build/tab-hyd-e2e/comparison_k$k.json" --label "SWKIMPL=$k" \
+                | tee "build/tab-hyd-e2e/comparison_k$k.txt"
+            else
+              echo "PAIR SWKIMPL=$k incomplete: result_output.csv missing" \
+                | tee "build/tab-hyd-e2e/comparison_k$k.txt"
+            fi
+          done
+          echo "E2E_COMPARISON_COMPLETED"
+
+      - name: Upload Hupsel end-to-end evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-hupsel-e2e-evidence
+          path: |
+            build/tab-hyd-e2e/provenance.txt
+            build/tab-hyd-e2e/run-status.txt
+            build/tab-hyd-e2e/comparison_k*.json
+            build/tab-hyd-e2e/comparison_k*.txt
+            build/tab-hyd-e2e/*/run.log
+            build/tab-hyd-e2e/*/runtime_seconds.txt
+            build/tab-hyd-e2e/*/result_output.csv
+            build/tab-hyd-e2e/table_k0/topsoil_sand_b2.csv
+            build/tab-hyd-e2e/table_k0/subsoil_sand_o2.csv
