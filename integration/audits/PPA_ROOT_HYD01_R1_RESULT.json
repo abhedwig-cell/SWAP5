@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.ppa_root_hyd01.r1_result.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD01",
+  "phase": "R1_RESTRICTED_ROOT_TEMPORAL_CERTIFICATE_EXTENSION",
+  "branch": "work/ppa-root-hyd01-net-root-extraction",
+  "canonical_base": "1dc12a3f47935a3639ef3fb38dc0d6338a0f44c0",
+  "production_delta": [
+    "src/solver/mod_reference_richards_temporal_indicator.f90"
+  ],
+  "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+  "scope": {
+    "admitted": "Concrete b110_root_sink_provider_t carrying a bound finite prescribed root-extraction vector with matching node count.",
+    "still_deferred": [
+      "any other root_sink_provider_t implementation",
+      "state-dependent or dynamically reevaluated root uptake outside the prescribed b110 provider",
+      "macropore envelope",
+      "HYDRO-MEMORY application accuracy budget"
+    ]
+  },
+  "source_semantics": {
+    "indicator_equations_changed": false,
+    "defect_operator_changed": false,
+    "normalization_changed": false,
+    "headcalc_changed": false,
+    "richards_solver_changed": false,
+    "transaction_core_changed": false,
+    "tolerance_changed": false,
+    "fail_closed_default_preserved": true
+  },
+  "qualification": {
+    "run_id": 35429605183,
+    "head": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+    "r1_job_id": 105861705670,
+    "preservation_job_id": 105861705758,
+    "root_indicator_route": "reference-richards-raw-bound",
+    "generic_indicator_route": "reference-richards-raw-bound",
+    "root_normalized_indicator": 85206.49771868433,
+    "generic_normalized_indicator": 85206.49771868433,
+    "equivalence": "PASS at 64*epsilon scaled criterion",
+    "optimization_identity": "O0/O2 PASS",
+    "preservation": [
+      "F-SI38 prescribed-qbot temporal certificate PASS",
+      "F-SI25 reference indicator production seam PASS",
+      "F-SI25 bounded cost EXTRA_NONLINEAR=0 EXTRA_TRIDAG=1 preserved"
+    ]
+  },
+  "implication_for_hydro_memory": {
+    "root_temporal_coverage_blocker_closed": true,
+    "stage0_authorized": false,
+    "remaining_blocker": "HYDRO-MEMORY application-owned temporal accuracy requirement/budget must be externally justified and preregistered; the diagnostic 1e-5 cm budget is not admissible as a research default."
+  }
+}

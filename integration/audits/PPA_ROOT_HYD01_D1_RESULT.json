@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.ppa_root_hyd01.d1_result.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD01",
+  "phase": "D1_SINK_EQUIVALENCE_AND_WINDOW_SCALE",
+  "run": {
+    "id": 35428100983,
+    "job": 105857510236,
+    "head": "120ae9af0bd0e36c9cb353e73ac3f4d949a488ca",
+    "conclusion": "success"
+  },
+  "conclusion": "COMMON_TRANSIENT_SINK_ACCEPTANCE_GAP_NOT_ROOT_SPECIFIC",
+  "results": [
+    {
+      "duration_day": 0.0001,
+      "root": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 9,
+        "temporal_rejections": 0,
+        "mass_rejections": 0
+      },
+      "generic": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 9,
+        "temporal_rejections": 0,
+        "mass_rejections": 0
+      }
+    },
+    {
+      "duration_day": 0.001,
+      "root": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 5,
+        "temporal_rejections": 4,
+        "mass_rejections": 0
+      },
+      "generic": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 5,
+        "temporal_rejections": 4,
+        "mass_rejections": 0
+      }
+    },
+    {
+      "duration_day": 0.01,
+      "root": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 2,
+        "temporal_rejections": 7,
+        "mass_rejections": 0
+      },
+      "generic": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 2,
+        "temporal_rejections": 7,
+        "mass_rejections": 0
+      }
+    },
+    {
+      "duration_day": 0.1,
+      "root": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 0,
+        "temporal_rejections": 9,
+        "mass_rejections": 0
+      },
+      "generic": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 0,
+        "temporal_rejections": 9,
+        "mass_rejections": 0
+      }
+    },
+    {
+      "duration_day": 1,
+      "root": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 0,
+        "temporal_rejections": 9,
+        "mass_rejections": 0
+      },
+      "generic": {
+        "completed": false,
+        "retries": 8,
+        "solver_rejections": 0,
+        "temporal_rejections": 9,
+        "mass_rejections": 0
+      }
+    }
+  ],
+  "interpretation": [
+    "ROOT and mathematically equivalent GENERIC sink routes have identical rejection counts at every preregistered duration.",
+    "CAP01 failure is therefore not attributable to the root-sink provider as such.",
+    "Short windows are solver-limited, long windows are temporal-acceptance-limited, with a crossover between them.",
+    "No tested duration satisfies the combined transaction envelope.",
+    "No post-solve mass rejection occurs in the sweep."
+  ],
+  "next_phase": "D2_DIRECT_SOLVER_AND_TEMPORAL_ENVELOPE_SEPARATION"
+}
