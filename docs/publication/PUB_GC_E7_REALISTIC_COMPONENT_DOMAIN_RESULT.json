@@ -47,7 +47,9 @@
     ],
     "failure_stage": "tile_config_valid before owner-state allocation",
     "failure_status": "FMR_APP_BOOT_PROFILE_NOT_ADMITTED",
-    "source_blob_current_canonical": "135803e056697a20aa3295721b02c77aba22367a"
+    "source_blob_current_canonical": "9ae38276a353bd08f5d971d6368eed41967086b6",
+    "current_canonical_basis": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+    "current_guard_status": "PRESERVED_ACTIVE_ROOT_AND_DRAINAGE_FAIL_CLOSED"
   },
   "later_application_composition": {
     "ppa_wu03_status": "CANONICAL_ADMITTED_CLOSED",
@@ -61,6 +63,24 @@
       "source_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
       "scope": "homogeneous typed bottom_mode=2 prescribed-qbot normal application only",
       "broadens_groundwater_process_profile": false
+    },
+    "ppa_root_hyd01": {
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+      "application_owner_broadened": false,
+      "groundwater_owner_broadened": false,
+      "effect_on_e7": "NONE"
+    },
+    "ppa_root_hyd02": {
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+      "application_owner_broadened": false,
+      "groundwater_owner_broadened": false,
+      "effect_on_e7": "NONE; tangent coverage does not make root_extraction_active admissible in the mode-5 production owner"
+    },
+    "ppa_wu04a": {
+      "state": "CANONICAL_ADMITTED",
+      "scope": "SWREDU=1 Black evaporation reduction bounded production slice",
+      "mode5_black_composition_admitted": false,
+      "effect_on_e7": "NONE; black evaporation is separately rejected for bottom_mode=5 and root/drainage guards remain unchanged"
     }
   },
   "active_drainage_precedent": {
@@ -115,11 +135,13 @@
   ],
   "disposition": "Close E7 as the preregistered realistic component-domain outcome. Do not widen production physics, disable drainage, replace dates, retune tolerances or launch another synthetic search merely to obtain a positive loose-versus-strong trajectory.",
   "canonical_reconciliation": {
-    "current_canonical": "970bc631d78ce1f5db3821ce313d500b1c63b274",
-    "change": "PPA-WU02-A canonically admitted homogeneous typed bottom_mode=2 prescribed-qbot application reachability",
-    "production_bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+    "current_canonical": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+    "production_bootstrap_blob": "9ae38276a353bd08f5d971d6368eed41967086b6",
     "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+    "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+    "ppa_root_hyd02_result_blob": "5ac799921574082731180356a23f7e983585800b",
+    "ppa_wu04a_status_blob": "75674d84b5eb4d17ae92d7e25696957630fe7fd0",
     "effect_on_e7": "NONE",
-    "reason": "PPA-WU02-A adds mode 2 prescribed-qbot reachability only. The groundwater owner remains bottom_mode=5 and tile_config_valid still rejects drainage_response_active/root_extraction_active before owner-state allocation."
+    "reason": "Current canonical still requires homogeneous bottom_mode=5 for the production groundwater owner and tile_config_valid rejects drainage_response_active/root_extraction_active before owner-state allocation. PPA-WU02/WU03, PPA-ROOT-HYD01/HYD02 and PPA-WU04-A do not admit the authentic Hupsel root+drainage mode-5 process composition."
   }
 }
