@@ -9,13 +9,13 @@ program f_tab01_legacy_oracle_characterization
   integer, parameter :: n_query = 4000
   integer :: sizes(n_cases)
   integer :: icase, n, failures, grid_mode
-  real(real64), parameter :: THETA_R = 0.05_real64
-  real(real64), parameter :: THETA_S = 0.43_real64
-  real(real64), parameter :: KSAT    = 50.0_real64
-  real(real64), parameter :: ALPHA   = 0.02_real64
-  real(real64), parameter :: NPAR    = 1.6_real64
+  real(real64), parameter :: THETA_R = 0.032_real64
+  real(real64), parameter :: THETA_S = 0.423_real64
+  real(real64), parameter :: KSAT    = 4.75_real64
+  real(real64), parameter :: ALPHA   = 0.0135_real64
+  real(real64), parameter :: NPAR    = 1.455_real64
   real(real64), parameter :: MPAR    = 1.0_real64 - 1.0_real64/NPAR
-  real(real64), parameter :: LAMBDA  = 0.5_real64
+  real(real64), parameter :: LAMBDA  = 0.365_real64
   real(real64), parameter :: H_CRIT  = -1.0e-2_real64
 
   real(real64), allocatable :: sptab(:,:,:)
@@ -29,6 +29,7 @@ program f_tab01_legacy_oracle_characterization
 
   write(*,'(A)') 'F-TAB01 legacy TSPACK oracle characterization'
   write(*,'(A)') 'Source lineage: SWAP-model/SWAP c22bd832, blob 62a4df82'
+  write(*,'(A)') 'Hydraulic vector: current SWAP5 F-SI24 qualified default-MvG fixture.'
   write(*,'(A)') 'K is interpolated in log(K).'
   write(*,'(A)') 'grid=1: uniform transformed x=-log(1-h)'
   write(*,'(A)') 'grid=2: segmented refinement with explicit Hcrit knot and dense near-saturation branch'
