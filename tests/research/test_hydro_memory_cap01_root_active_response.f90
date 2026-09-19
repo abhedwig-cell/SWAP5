@@ -96,6 +96,9 @@ program test_hydro_memory_cap01_root_active_response
   window%t0 = 0.0_real64
   window%t1 = DURATION_DAY
 
+  call characterize_net_root_execution()
+  call set_root_case(ROOT_TOTAL, .false.)
+
   call run_root_candidate(qbot_ref, .false., nominal_result, nominal_candidate, nominal_diagnostics)
   write(*,'(a,i0,a,l1,a,es14.6,a,i0,a,i0,a,i0,a,i0,a,i0)') 'HMCAP01_NOMINAL_DIAG status=', &
        nominal_result%status, ' completed=', nominal_result%completed, ' completed_t=', nominal_result%completed_t, &
@@ -219,6 +222,55 @@ program test_hydro_memory_cap01_root_active_response
   write(*,'(a)') 'HYDRO_MEMORY_CAP01_A_PASS_CENTERED_FD_ROUTE'
 
 contains
+
+  subroutine set_root_case(total_root, balanced)
+    real(real64), intent(in) :: total_root
+    logical, intent(in) :: balanced
+    integer :: rooted
+    real(real64) :: per_node
+
+    call require(allocated(base_forcing%root_extraction_sink), 'characterization root sink allocated')
+    call require(allocated(base_forcing%subsurface_irrigation_source), 'characterization source allocated')
+    base_forcing%root_extraction_sink = 0.0_real64
+    base_forcing%subsurface_irrigation_source = 0.0_real64
+    rooted = min(4, numnod)
+    call require(rooted > 0, 'characterization rooted nodes')
+    per_node = total_root / real(rooted, real64)
+    base_forcing%root_extraction_sink(1:rooted) = per_node
+    if (balanced) base_forcing%subsurface_irrigation_source = base_forcing%root_extraction_sink
+  end subroutine set_root_case
+
+  subroutine run_characterization_case(label, total_root, balanced, must_complete)
+    character(len=*), intent(in) :: label
+    real(real64), intent(in) :: total_root
+    logical, intent(in) :: balanced, must_complete
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+
+    call set_root_case(total_root, balanced)
+    call run_root_candidate(qbot_ref, .false., result, candidate, diagnostics)
+    write(*,'(a,a,a,es14.6,a,l1,a,i0,a,i0,a,i0,a,i0,a,es14.6)') &
+         'HMCAP01_A4_CASE=', trim(label), ' root_total=', total_root, ' completed=', result%completed, &
+         ' status=', result%status, ' retries=', diagnostics%retries, ' solver_rejections=', diagnostics%solver_rejections, &
+         ' temporal_rejections=', diagnostics%temporal_rejections, ' mass_residual=', result%mass%residual
+    if (must_complete) then
+      call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, &
+           'CAP01 A4 required control did not complete: '//trim(label))
+      call require(candidate%ready(), 'CAP01 A4 required control candidate not ready: '//trim(label))
+      call require(result%mass%complete, 'CAP01 A4 required control mass incomplete: '//trim(label))
+      call require(abs(result%mass%residual) <= MASS_TOL, 'CAP01 A4 required control hard mass: '//trim(label))
+    end if
+  end subroutine run_characterization_case
+
+  subroutine characterize_net_root_execution()
+    call run_characterization_case('Z', 0.0_real64, .false., .true.)
+    call run_characterization_case('B', 2.0e-2_real64, .true., .true.)
+    call run_characterization_case('U1', 2.0e-4_real64, .false., .false.)
+    call run_characterization_case('U2', 2.0e-3_real64, .false., .false.)
+    call run_characterization_case('U3', 2.0e-2_real64, .false., .false.)
+    write(*,'(a)') 'HMCAP01_A4_DIAGNOSTIC_MATRIX_COMPLETE=PASS'
+  end subroutine characterize_net_root_execution
 
   subroutine derive_equilibrium_flux(qref)
     real(real64), intent(out) :: qref
