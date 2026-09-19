@@ -1,0 +1,1911 @@
+{
+  "application_acceptance_adjudicated": false,
+  "cases": {
+    "2.5": {
+      "WT_CYCLE": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 4,
+            "qH": 7,
+            "qi": 257,
+            "state_shape": 3,
+            "total_storage": 3
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9778645833333334,
+              "local_closure": {
+                "max_abs": 2.2355650174454893,
+                "rms": 0.5169831155443442
+              },
+              "state_induced": {
+                "max_abs": 2.9116515344274956,
+                "rms": 1.8373163349407131
+              },
+              "total_free": {
+                "max_abs": 3.0729355538309493,
+                "rms": 1.7484956804593605
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0026041666666666665,
+              "local_closure": {
+                "max_abs": 30.08351868753877,
+                "rms": 3.442327783286597
+              },
+              "state_induced": {
+                "max_abs": 34.96845792390775,
+                "rms": 2.2778138154618115
+              },
+              "total_free": {
+                "max_abs": 34.52117227326779,
+                "rms": 5.414428774568913
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0026041666666666665,
+              "local_closure": {
+                "max_abs": 17.1664779651581,
+                "rms": 3.729849909444264
+              },
+              "state_induced": {
+                "max_abs": 18.162540929378817,
+                "rms": 1.624608395586322
+              },
+              "total_free": {
+                "max_abs": 19.199122923305676,
+                "rms": 5.22683259093532
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 7.105427357601002e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 7.904787935331115e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.9954524144161212e-14,
+          "max_corrector_iterations": 20,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8927556818181818,
+            "local_closure": {
+              "max_abs": 0.03331816232512175,
+              "rms": 0.0010614771074449513
+            },
+            "state_induced": {
+              "max_abs": 0.7417560142797424,
+              "rms": 0.12957859552756726
+            },
+            "total_free": {
+              "max_abs": 0.740495772789787,
+              "rms": 0.12983577099472648
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.99609375,
+            "local_closure": {
+              "max_abs": 0.024066814950039372,
+              "rms": 0.0027538622266296106
+            },
+            "state_induced": {
+              "max_abs": 0.963599832522327,
+              "rms": 0.44856049562712597
+            },
+            "total_free": {
+              "max_abs": 0.963169577253705,
+              "rms": 0.44851498840250154
+            }
+          }
+        }
+      },
+      "WT_FALL": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 68,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 3
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.869140625,
+              "local_closure": {
+                "max_abs": 0.7470314590388838,
+                "rms": 0.3225599828619202
+              },
+              "state_induced": {
+                "max_abs": 0.7274652303438706,
+                "rms": 0.6461600950013694
+              },
+              "total_free": {
+                "max_abs": 0.5870289029254157,
+                "rms": 0.49809244652120227
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 6.263188194792085,
+                "rms": 2.5118052596863687
+              },
+              "state_induced": {
+                "max_abs": 2.878722315269589,
+                "rms": 1.352356973394529
+              },
+              "total_free": {
+                "max_abs": 8.902517471239099,
+                "rms": 3.852754148424995
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 7.036053759250194,
+                "rms": 2.811505720595169
+              },
+              "state_induced": {
+                "max_abs": 2.3606757827981215,
+                "rms": 1.082008704639012
+              },
+              "total_free": {
+                "max_abs": 9.219243720362245,
+                "rms": 3.882213126319294
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 6.838973831690964e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.9928286451587063e-14,
+          "max_corrector_iterations": 17,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8803267045454546,
+            "local_closure": {
+              "max_abs": 0.005803711579837056,
+              "rms": 0.0007536652711603506
+            },
+            "state_induced": {
+              "max_abs": 1.2361573748547805,
+              "rms": 0.26998683283051833
+            },
+            "total_free": {
+              "max_abs": 1.2371502400326904,
+              "rms": 0.2704698813742271
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.99609375,
+            "local_closure": {
+              "max_abs": 0.005010550555837767,
+              "rms": 0.0020094442077497124
+            },
+            "state_induced": {
+              "max_abs": 1.3981927650026122,
+              "rms": 0.9620376794205399
+            },
+            "total_free": {
+              "max_abs": 1.39906762448431,
+              "rms": 0.9633388499997482
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 68,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 3
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.869140625,
+              "local_closure": {
+                "max_abs": 0.7470393241741496,
+                "rms": 0.3225628485430466
+              },
+              "state_induced": {
+                "max_abs": 0.7274050170446769,
+                "rms": 0.646106209935192
+              },
+              "total_free": {
+                "max_abs": 0.5869909341681971,
+                "rms": 0.4980638499116076
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 6.242220540944334,
+                "rms": 2.506082040182986
+              },
+              "state_induced": {
+                "max_abs": 2.897660503810079,
+                "rms": 1.3581419557473953
+              },
+              "total_free": {
+                "max_abs": 8.902536602954804,
+                "rms": 3.8527079006294853
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 7.015203643645072,
+                "rms": 2.806254667992184
+              },
+              "state_induced": {
+                "max_abs": 2.3794045789770255,
+                "rms": 1.0875105199974542
+              },
+              "total_free": {
+                "max_abs": 9.219391253978753,
+                "rms": 3.882271315109692
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 4.884981308350689e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.9812276819131114e-14,
+          "max_corrector_iterations": 35,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8828125,
+            "local_closure": {
+              "max_abs": 0.005788010215606931,
+              "rms": 0.00075237470560138
+            },
+            "state_induced": {
+              "max_abs": 1.2360887886992487,
+              "rms": 0.26996591362523054
+            },
+            "total_free": {
+              "max_abs": 1.2370808403270814,
+              "rms": 0.27044840441108897
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.99609375,
+            "local_closure": {
+              "max_abs": 0.004993776432762331,
+              "rms": 0.002004865632146488
+            },
+            "state_induced": {
+              "max_abs": 1.3980992201348954,
+              "rms": 0.9619526577456866
+            },
+            "total_free": {
+              "max_abs": 1.398973130049555,
+              "rms": 0.9632518788209414
+            }
+          }
+        }
+      },
+      "WT_HOLD": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": null,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 46
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 0.15246057057690882,
+                "rms": 0.15246057057690882
+              },
+              "state_induced": {
+                "max_abs": 0.12037579763977985,
+                "rms": 0.08996988880161416
+              },
+              "total_free": {
+                "max_abs": 0.15246057057690882,
+                "rms": 0.0754950651885949
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 2.839898661477491e-11,
+                "rms": 2.8398986614774916e-11
+              },
+              "state_induced": {
+                "max_abs": 2.839898661477491e-11,
+                "rms": 2.8343465571221174e-11
+              },
+              "total_free": {
+                "max_abs": 2.839898661477491e-11,
+                "rms": 1.7749366634234318e-12
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 2.2081998123640476e-11,
+                "rms": 2.2081998123640476e-11
+              },
+              "state_induced": {
+                "max_abs": 2.2081998123640476e-11,
+                "rms": 2.2038827020523072e-11
+              },
+              "total_free": {
+                "max_abs": 2.2081998123640476e-11,
+                "rms": 1.3801248827275297e-12
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 6.938893903907228e-18,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 6.535175343742595e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 5.702520138584078e-15,
+          "max_corrector_iterations": 3,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8430397727272727,
+            "local_closure": {
+              "max_abs": 0.00012196845644218968,
+              "rms": 5.192064665805488e-05
+            },
+            "state_induced": {
+              "max_abs": 0.013881343394254841,
+              "rms": 0.0035211208136166684
+            },
+            "total_free": {
+              "max_abs": 0.014003311850697031,
+              "rms": 0.003567016486761584
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8046875,
+            "local_closure": {
+              "max_abs": 2.842170943040401e-14,
+              "rms": 2.842170943040401e-14
+            },
+            "state_induced": {
+              "max_abs": 7.105427357601002e-14,
+              "rms": 4.467237261421039e-14
+            },
+            "total_free": {
+              "max_abs": 4.263256414560601e-14,
+              "rms": 2.1163075838337618e-14
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": null,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": null
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 0.1524605928623672,
+                "rms": 0.15246059286236718
+              },
+              "state_induced": {
+                "max_abs": 0.12037582089069246,
+                "rms": 0.08996991045715645
+              },
+              "total_free": {
+                "max_abs": 0.1524605928623672,
+                "rms": 0.07549506770517579
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 5.679797322954982e-11,
+                "rms": 5.679797322954983e-11
+              },
+              "state_induced": {
+                "max_abs": 5.679797322954982e-11,
+                "rms": 5.668693114244235e-11
+              },
+              "total_free": {
+                "max_abs": 5.679797322954982e-11,
+                "rms": 3.5498733268468637e-12
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 4.416399624728095e-11,
+                "rms": 4.416399624728095e-11
+              },
+              "state_induced": {
+                "max_abs": 4.416399624728095e-11,
+                "rms": 4.4077654041046144e-11
+              },
+              "total_free": {
+                "max_abs": 4.416399624728095e-11,
+                "rms": 2.7602497654550595e-12
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 6.938893903907228e-18,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 4.543837858363986e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 4.2996129195671535e-15,
+          "max_corrector_iterations": 3,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8490767045454546,
+            "local_closure": {
+              "max_abs": 0.00012196847425549606,
+              "rms": 5.19206583336412e-05
+            },
+            "state_induced": {
+              "max_abs": 0.013881343531608081,
+              "rms": 0.0035211209188258743
+            },
+            "total_free": {
+              "max_abs": 0.014003312005863577,
+              "rms": 0.0035670166009806868
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "LOCAL_CLOSURE_DOMINANT",
+            "fraction_abs_state_gt_local": 0.0,
+            "local_closure": {
+              "max_abs": 4.973799150320701e-14,
+              "rms": 4.973799150320701e-14
+            },
+            "state_induced": {
+              "max_abs": 4.973799150320701e-14,
+              "rms": 3.160218198178412e-14
+            },
+            "total_free": {
+              "max_abs": 5.684341886080802e-14,
+              "rms": 2.738990180459182e-14
+            }
+          }
+        }
+      },
+      "WT_RISE": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 4,
+            "qH": 7,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 3
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.994140625,
+              "local_closure": {
+                "max_abs": 0.2997297988369557,
+                "rms": 0.1115096320860098
+              },
+              "state_induced": {
+                "max_abs": 2.911651534427495,
+                "rms": 2.4107865823355086
+              },
+              "total_free": {
+                "max_abs": 3.0729355538309497,
+                "rms": 2.4785308625612688
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.001953125,
+              "local_closure": {
+                "max_abs": 4.995124372988858,
+                "rms": 2.340103349621273
+              },
+              "state_induced": {
+                "max_abs": 4.071775476963168,
+                "rms": 1.5476639258761196
+              },
+              "total_free": {
+                "max_abs": 8.561330752431878,
+                "rms": 3.8682705445278986
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 5.548769756346408,
+                "rms": 2.685669275113556
+              },
+              "state_induced": {
+                "max_abs": 2.9928967724796887,
+                "rms": 1.1696982228223483
+              },
+              "total_free": {
+                "max_abs": 8.384109571669722,
+                "rms": 3.8419149022270207
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 9.947598300641403e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.2377252001094519e-14,
+          "max_corrector_iterations": 10,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.884765625,
+            "local_closure": {
+              "max_abs": 0.004651179834199937,
+              "rms": 0.0006527494889629876
+            },
+            "state_induced": {
+              "max_abs": 0.47730796293151645,
+              "rms": 0.1671193419508414
+            },
+            "total_free": {
+              "max_abs": 0.4785719122366965,
+              "rms": 0.16751508666747048
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.99609375,
+            "local_closure": {
+              "max_abs": 0.003996099498387196,
+              "rms": 0.001872082679697259
+            },
+            "state_induced": {
+              "max_abs": 1.448146957782086,
+              "rms": 0.9760673709816573
+            },
+            "total_free": {
+              "max_abs": 1.449038963000504,
+              "rms": 0.9773329334534325
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 4,
+            "qH": 7,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 3
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.994140625,
+              "local_closure": {
+                "max_abs": 0.2996959552725478,
+                "rms": 0.11152143825545523
+              },
+              "state_induced": {
+                "max_abs": 2.911688750218982,
+                "rms": 2.4108098927973334
+              },
+              "total_free": {
+                "max_abs": 3.0730068766615823,
+                "rms": 2.478582152462541
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.001953125,
+              "local_closure": {
+                "max_abs": 4.9981745309882735,
+                "rms": 2.3406392796569406
+              },
+              "state_induced": {
+                "max_abs": 4.067156276827621,
+                "rms": 1.5471083837462938
+              },
+              "total_free": {
+                "max_abs": 8.563122249055578,
+                "rms": 3.868323087837133
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 5.55335740933574,
+                "rms": 2.6867569852232402
+              },
+              "state_induced": {
+                "max_abs": 2.9863138551824604,
+                "rms": 1.1686081202958645
+              },
+              "total_free": {
+                "max_abs": 8.385485418330674,
+                "rms": 3.8419728258713373
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 8.881784197001252e-16,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 4.263256414560601e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.0981666964671177e-14,
+          "max_corrector_iterations": 15,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8849431818181818,
+            "local_closure": {
+              "max_abs": 0.004654760387511558,
+              "rms": 0.0006530229008899762
+            },
+            "state_induced": {
+              "max_abs": 0.4773247717649758,
+              "rms": 0.1671259867744859
+            },
+            "total_free": {
+              "max_abs": 0.4785887362922754,
+              "rms": 0.16752179886132745
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.99609375,
+            "local_closure": {
+              "max_abs": 0.003998539624788577,
+              "rms": 0.0018725114237254092
+            },
+            "state_induced": {
+              "max_abs": 1.4481862623921415,
+              "rms": 0.9761030610970234
+            },
+            "total_free": {
+              "max_abs": 1.449077904887936,
+              "rms": 0.9773684980201507
+            }
+          }
+        }
+      }
+    },
+    "5.0": {
+      "WT_CYCLE": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 3,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9661458333333334,
+              "local_closure": {
+                "max_abs": 1.9877687803342128,
+                "rms": 0.4858809269611937
+              },
+              "state_induced": {
+                "max_abs": 3.2814590397321157,
+                "rms": 1.998611753091209
+              },
+              "total_free": {
+                "max_abs": 3.071156907280336,
+                "rms": 1.7976927927532576
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9895833333333334,
+              "local_closure": {
+                "max_abs": 10.89191883328861,
+                "rms": 0.7702337702026782
+              },
+              "state_induced": {
+                "max_abs": 55.37897350268427,
+                "rms": 4.828864371746852
+              },
+              "total_free": {
+                "max_abs": 57.73918818839395,
+                "rms": 5.311408284490755
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9817708333333334,
+              "local_closure": {
+                "max_abs": 14.993322302089366,
+                "rms": 1.993860424936571
+              },
+              "state_induced": {
+                "max_abs": 13.44438917111301,
+                "rms": 2.852799798081222
+              },
+              "total_free": {
+                "max_abs": 17.403684907530575,
+                "rms": 4.7549371239290545
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 1.199040866595169e-13,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.902124291408569e-14,
+          "max_corrector_iterations": 12,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8918087121212122,
+            "local_closure": {
+              "max_abs": 0.04110713754079143,
+              "rms": 0.000877828472377415
+            },
+            "state_induced": {
+              "max_abs": 0.7582694169830759,
+              "rms": 0.12723449085448849
+            },
+            "total_free": {
+              "max_abs": 0.7575604057929475,
+              "rms": 0.12739857930909188
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.9947916666666666,
+            "local_closure": {
+              "max_abs": 0.008713535066640077,
+              "rms": 0.0006161870161623956
+            },
+            "state_induced": {
+              "max_abs": 0.8716045786223674,
+              "rms": 0.42937445568903587
+            },
+            "total_free": {
+              "max_abs": 0.8705079919100349,
+              "rms": 0.42924667378277376
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 3,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9661458333333334,
+              "local_closure": {
+                "max_abs": 1.9877538939478252,
+                "rms": 0.48587552462017286
+              },
+              "state_induced": {
+                "max_abs": 3.2814403005840553,
+                "rms": 1.998802303081683
+              },
+              "total_free": {
+                "max_abs": 3.0711705718577456,
+                "rms": 1.7979572405062818
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9895833333333334,
+              "local_closure": {
+                "max_abs": 11.042430516967318,
+                "rms": 0.7710973654870071
+              },
+              "state_induced": {
+                "max_abs": 55.60456232548106,
+                "rms": 4.835788465676517
+              },
+              "total_free": {
+                "max_abs": 57.962393328852016,
+                "rms": 5.317030662210926
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9817708333333334,
+              "local_closure": {
+                "max_abs": 14.99714689328685,
+                "rms": 1.9926164278113139
+              },
+              "state_induced": {
+                "max_abs": 13.463573262932279,
+                "rms": 2.8547351660998865
+              },
+              "total_free": {
+                "max_abs": 17.400444971932437,
+                "rms": 4.755243792058327
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 6.550315845288424e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.754846268298138e-14,
+          "max_corrector_iterations": 18,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8919270833333334,
+            "local_closure": {
+              "max_abs": 0.04140368784061366,
+              "rms": 0.0008799964468606476
+            },
+            "state_induced": {
+              "max_abs": 0.7587267662834325,
+              "rms": 0.1272693761214575
+            },
+            "total_free": {
+              "max_abs": 0.7580184150208336,
+              "rms": 0.12743350758364955
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.9947916666666666,
+            "local_closure": {
+              "max_abs": 0.008833944413574102,
+              "rms": 0.0006168778923894986
+            },
+            "state_induced": {
+              "max_abs": 0.8716011236359549,
+              "rms": 0.4294909683898554
+            },
+            "total_free": {
+              "max_abs": 0.8705151430176556,
+              "rms": 0.42936380116441275
+            }
+          }
+        }
+      },
+      "WT_FALL": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 67,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.87109375,
+              "local_closure": {
+                "max_abs": 0.6854237907174694,
+                "rms": 0.29572755812359997
+              },
+              "state_induced": {
+                "max_abs": 0.7107267771361483,
+                "rms": 0.630628277057564
+              },
+              "total_free": {
+                "max_abs": 0.5900811307740785,
+                "rms": 0.4988468177654733
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.998046875,
+              "local_closure": {
+                "max_abs": 1.4424851276217812,
+                "rms": 0.47138708871575813
+              },
+              "state_induced": {
+                "max_abs": 5.90917759941043,
+                "rms": 3.1316854111809107
+              },
+              "total_free": {
+                "max_abs": 7.03129453825059,
+                "rms": 3.575936717122708
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.994140625,
+              "local_closure": {
+                "max_abs": 10.088007985910453,
+                "rms": 1.555177135560794
+              },
+              "state_induced": {
+                "max_abs": 4.289396253978132,
+                "rms": 2.1636640243472858
+              },
+              "total_free": {
+                "max_abs": 10.088007985910453,
+                "rms": 3.663379644491602
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 8.881784197001252e-16,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 1.5543122344752192e-13,
+          "max_abs_teacher_interval_ledger_residual_cm": 2.3635607360183997e-14,
+          "max_corrector_iterations": 11,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8797940340909091,
+            "local_closure": {
+              "max_abs": 0.0029616622079533528,
+              "rms": 0.0004926849691606392
+            },
+            "state_induced": {
+              "max_abs": 1.1609585880331679,
+              "rms": 0.2506320724479595
+            },
+            "total_free": {
+              "max_abs": 1.1615605595588647,
+              "rms": 0.25091135308454515
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.998046875,
+            "local_closure": {
+              "max_abs": 0.0011539881021036535,
+              "rms": 0.0003771096709725029
+            },
+            "state_induced": {
+              "max_abs": 1.325171784560517,
+              "rms": 0.8995572507472583
+            },
+            "total_free": {
+              "max_abs": 1.3253805435892403,
+              "rms": 0.8998108478778235
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 67,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.87109375,
+              "local_closure": {
+                "max_abs": 0.6854216099951062,
+                "rms": 0.2957268721533084
+              },
+              "state_induced": {
+                "max_abs": 0.7106763685527544,
+                "rms": 0.6305821974376584
+              },
+              "total_free": {
+                "max_abs": 0.5900498940218939,
+                "rms": 0.4988226348397045
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.998046875,
+              "local_closure": {
+                "max_abs": 1.438452332168655,
+                "rms": 0.4699504479101785
+              },
+              "state_induced": {
+                "max_abs": 5.912839354492503,
+                "rms": 3.133355712128342
+              },
+              "total_free": {
+                "max_abs": 7.0313079207476505,
+                "rms": 3.5759767765625754
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.994140625,
+              "local_closure": {
+                "max_abs": 10.134929972284471,
+                "rms": 1.5544619112412268
+              },
+              "state_induced": {
+                "max_abs": 4.292838019069832,
+                "rms": 2.165098848059001
+              },
+              "total_free": {
+                "max_abs": 10.134929972284471,
+                "rms": 3.6635981525910957
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 8.881784197001252e-16,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 3.907985046680551e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 2.0412057460950095e-14,
+          "max_corrector_iterations": 16,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8824573863636364,
+            "local_closure": {
+              "max_abs": 0.0029588440260877036,
+              "rms": 0.0004924691087745917
+            },
+            "state_induced": {
+              "max_abs": 1.1609018411063552,
+              "rms": 0.25061471550418146
+            },
+            "total_free": {
+              "max_abs": 1.1615034827767623,
+              "rms": 0.2508938096264983
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.998046875,
+            "local_closure": {
+              "max_abs": 0.0011507618657446983,
+              "rms": 0.0003759603583283884
+            },
+            "state_induced": {
+              "max_abs": 1.3250938502260965,
+              "rms": 0.8994864055090841
+            },
+            "total_free": {
+              "max_abs": 1.3253021389723756,
+              "rms": 0.8997392484415822
+            }
+          }
+        }
+      },
+      "WT_HOLD": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": null,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 5
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 0.09586714795319884,
+                "rms": 0.09586714795319884
+              },
+              "state_induced": {
+                "max_abs": 0.07792451786120289,
+                "rms": 0.058910283014380484
+              },
+              "total_free": {
+                "max_abs": 0.09586714795319884,
+                "rms": 0.045577733748166045
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 7.099746653693727e-12,
+                "rms": 7.099746653693729e-12
+              },
+              "state_induced": {
+                "max_abs": 7.099746653693727e-12,
+                "rms": 7.085866392805294e-12
+              },
+              "total_free": {
+                "max_abs": 7.099746653693727e-12,
+                "rms": 4.4373416585585796e-13
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 4.577185773170894e-12,
+                "rms": 4.577185773170895e-12
+              },
+              "state_induced": {
+                "max_abs": 4.577185773170894e-12,
+                "rms": 4.5682372098255546e-12
+              },
+              "total_free": {
+                "max_abs": 4.577185773170894e-12,
+                "rms": 2.8607411082318086e-13
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 6.938893903907228e-18,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 1.40682917117374e-13,
+          "max_abs_teacher_interval_ledger_residual_cm": 5.6797973229549824e-15,
+          "max_corrector_iterations": 3,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8387784090909091,
+            "local_closure": {
+              "max_abs": 7.669371835739014e-05,
+              "rms": 3.2647673122348504e-05
+            },
+            "state_induced": {
+              "max_abs": 0.008252078586268752,
+              "rms": 0.002116357161185966
+            },
+            "total_free": {
+              "max_abs": 0.008328772304626142,
+              "rms": 0.002145289742209652
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.9375,
+            "local_closure": {
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "state_induced": {
+              "max_abs": 1.3500311979441904e-13,
+              "rms": 7.306853362792912e-14
+            },
+            "total_free": {
+              "max_abs": 1.3500311979441904e-13,
+              "rms": 7.306853362792912e-14
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": null,
+            "qH": null,
+            "qi": null,
+            "state_shape": 3,
+            "total_storage": 12
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 0.09586716373888077,
+                "rms": 0.09586716373888077
+              },
+              "state_induced": {
+                "max_abs": 0.07792453429566058,
+                "rms": 0.058910298420624764
+              },
+              "total_free": {
+                "max_abs": 0.09586716373888077,
+                "rms": 0.04557773553621973
+              }
+            },
+            "qH": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 1.4199493307387455e-11,
+                "rms": 1.4199493307387458e-11
+              },
+              "state_induced": {
+                "max_abs": 1.4199493307387455e-11,
+                "rms": 1.4171732785610587e-11
+              },
+              "total_free": {
+                "max_abs": 1.4199493307387455e-11,
+                "rms": 8.874683317117159e-13
+              }
+            },
+            "qi": {
+              "dominance": "LOCAL_CLOSURE_DOMINANT",
+              "fraction_abs_state_gt_local": 0.0,
+              "local_closure": {
+                "max_abs": 9.154371546341788e-12,
+                "rms": 9.15437154634179e-12
+              },
+              "state_induced": {
+                "max_abs": 9.154371546341788e-12,
+                "rms": 9.136474419651109e-12
+              },
+              "total_free": {
+                "max_abs": 9.154371546341788e-12,
+                "rms": 5.721482216463617e-13
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 6.938893903907228e-18,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 7.530844086431898e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 4.254167288308963e-15,
+          "max_corrector_iterations": 3,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8448153409090909,
+            "local_closure": {
+              "max_abs": 7.669373098373455e-05,
+              "rms": 3.264768114311542e-05
+            },
+            "state_induced": {
+              "max_abs": 0.008252078670361485,
+              "rms": 0.002116357229777651
+            },
+            "total_free": {
+              "max_abs": 0.008328772401345219,
+              "rms": 0.0021452898170686912
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.953125,
+            "local_closure": {
+              "max_abs": 7.105427357601002e-15,
+              "rms": 7.105427357601002e-15
+            },
+            "state_induced": {
+              "max_abs": 7.105427357601002e-14,
+              "rms": 3.847463435365213e-14
+            },
+            "total_free": {
+              "max_abs": 6.394884621840902e-14,
+              "rms": 3.220182696545368e-14
+            }
+          }
+        }
+      },
+      "WT_RISE": {
+        "0.00005000": {
+          "dt_day": 5e-05,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 3,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.97265625,
+              "local_closure": {
+                "max_abs": 0.4374904841202736,
+                "rms": 0.32937791640354086
+              },
+              "state_induced": {
+                "max_abs": 3.2814590397321157,
+                "rms": 2.7696705507473007
+              },
+              "total_free": {
+                "max_abs": 3.071156907280336,
+                "rms": 2.476874459429788
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9921875,
+              "local_closure": {
+                "max_abs": 2.774826289781103,
+                "rms": 0.31527515883154517
+              },
+              "state_induced": {
+                "max_abs": 7.951136670027097,
+                "rms": 3.491558433330533
+              },
+              "total_free": {
+                "max_abs": 7.028291962851214,
+                "rms": 3.5759848312362132
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.986328125,
+              "local_closure": {
+                "max_abs": 2.4149089446002345,
+                "rms": 1.4268385225554556
+              },
+              "state_induced": {
+                "max_abs": 4.448538269858076,
+                "rms": 2.1028731163106418
+              },
+              "total_free": {
+                "max_abs": 6.534924454857579,
+                "rms": 3.5052110106658665
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 8.881784197001252e-16,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 6.128431095930864e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.1645198694232306e-14,
+          "max_corrector_iterations": 6,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8817471590909091,
+            "local_closure": {
+              "max_abs": 0.004131436290482959,
+              "rms": 0.0005317577498115465
+            },
+            "state_induced": {
+              "max_abs": 0.42290674986769394,
+              "rms": 0.14870897271283667
+            },
+            "total_free": {
+              "max_abs": 0.42256119481535137,
+              "rms": 0.1489177019806111
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.994140625,
+            "local_closure": {
+              "max_abs": 0.0022198610318255874,
+              "rms": 0.00025222012706546237
+            },
+            "state_induced": {
+              "max_abs": 1.3457242210262699,
+              "rms": 0.8915193792133885
+            },
+            "total_free": {
+              "max_abs": 1.3457992294322203,
+              "rms": 0.8915771518768113
+            }
+          }
+        },
+        "0.00010000": {
+          "dt_day": 0.0001,
+          "first_interval_state_component_exceeds_local": {
+            "q90": 3,
+            "qH": 2,
+            "qi": 2,
+            "state_shape": 2,
+            "total_storage": 2
+          },
+          "fluxes": {
+            "q90": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.97265625,
+              "local_closure": {
+                "max_abs": 0.43746478017351453,
+                "rms": 0.3293522683649452
+              },
+              "state_induced": {
+                "max_abs": 3.2814403005840553,
+                "rms": 2.7696537485645187
+              },
+              "total_free": {
+                "max_abs": 3.0711705718577456,
+                "rms": 2.47688445637942
+              }
+            },
+            "qH": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.9921875,
+              "local_closure": {
+                "max_abs": 2.7744943384568046,
+                "rms": 0.3149920570562105
+              },
+              "state_induced": {
+                "max_abs": 7.953762597091905,
+                "rms": 3.492717765979786
+              },
+              "total_free": {
+                "max_abs": 7.0284766539993235,
+                "rms": 3.576000955068955
+              }
+            },
+            "qi": {
+              "dominance": "STATE_DRIFT_DOMINANT",
+              "fraction_abs_state_gt_local": 0.986328125,
+              "local_closure": {
+                "max_abs": 2.4141848824432355,
+                "rms": 1.4263095294430368
+              },
+              "state_induced": {
+                "max_abs": 4.449453997281406,
+                "rms": 2.1034163276442928
+              },
+              "total_free": {
+                "max_abs": 6.535038594885347,
+                "rms": 3.5052206642694075
+              }
+            }
+          },
+          "max_abs_additive_flux_identity_residual_cm_per_day": 8.881784197001252e-16,
+          "max_abs_additive_state_identity_residual_cm": 0.0,
+          "max_abs_free_physical_ledger_residual_cm": 3.4638958368304884e-14,
+          "max_abs_teacher_interval_ledger_residual_cm": 1.1879386363489175e-14,
+          "max_corrector_iterations": 8,
+          "state_shape": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.8819247159090909,
+            "local_closure": {
+              "max_abs": 0.004130511721491814,
+              "rms": 0.0005317341407350755
+            },
+            "state_induced": {
+              "max_abs": 0.4229089397700485,
+              "rms": 0.1487102171554715
+            },
+            "total_free": {
+              "max_abs": 0.42256340364825684,
+              "rms": 0.14891886023736378
+            }
+          },
+          "status": "QUALIFIED",
+          "total_unsaturated_storage": {
+            "dominance": "STATE_DRIFT_DOMINANT",
+            "fraction_abs_state_gt_local": 0.994140625,
+            "local_closure": {
+              "max_abs": 0.0022195954707555643,
+              "rms": 0.00025199364564495525
+            },
+            "state_induced": {
+              "max_abs": 1.3457318862780063,
+              "rms": 0.8915265110808184
+            },
+            "total_free": {
+              "max_abs": 1.3458063809978391,
+              "rms": 0.8915836085999372
+            }
+          }
+        }
+      }
+    }
+  },
+  "classification_counts": {
+    "q90:LOCAL_CLOSURE_DOMINANT": 2,
+    "q90:STATE_DRIFT_DOMINANT": 5,
+    "qH:LOCAL_CLOSURE_DOMINANT": 4,
+    "qH:STATE_DRIFT_DOMINANT": 3,
+    "qi:LOCAL_CLOSURE_DOMINANT": 4,
+    "qi:STATE_DRIFT_DOMINANT": 3,
+    "state_shape:STATE_DRIFT_DOMINANT": 7
+  },
+  "classifications": {
+    "2.5": {
+      "WT_CYCLE": {
+        "status": "BLOCKED"
+      },
+      "WT_FALL": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": 68,
+          "qH": null,
+          "qi": null,
+          "state_shape": 3,
+          "total_storage": 3
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 6.838973831690964e-14,
+          "0.00010000": 4.884981308350689e-14
+        },
+        "q90": "STATE_DRIFT_DOMINANT",
+        "qH": "LOCAL_CLOSURE_DOMINANT",
+        "qi": "LOCAL_CLOSURE_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      },
+      "WT_HOLD": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": null,
+          "qH": null,
+          "qi": null,
+          "state_shape": 3,
+          "total_storage": null
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 6.535175343742595e-14,
+          "0.00010000": 4.543837858363986e-14
+        },
+        "q90": "LOCAL_CLOSURE_DOMINANT",
+        "qH": "LOCAL_CLOSURE_DOMINANT",
+        "qi": "LOCAL_CLOSURE_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      },
+      "WT_RISE": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": 4,
+          "qH": 7,
+          "qi": null,
+          "state_shape": 3,
+          "total_storage": 3
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 9.947598300641403e-14,
+          "0.00010000": 4.263256414560601e-14
+        },
+        "q90": "STATE_DRIFT_DOMINANT",
+        "qH": "LOCAL_CLOSURE_DOMINANT",
+        "qi": "LOCAL_CLOSURE_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      }
+    },
+    "5.0": {
+      "WT_CYCLE": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": 3,
+          "qH": 2,
+          "qi": 2,
+          "state_shape": 2,
+          "total_storage": 2
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 1.199040866595169e-13,
+          "0.00010000": 6.550315845288424e-14
+        },
+        "q90": "STATE_DRIFT_DOMINANT",
+        "qH": "STATE_DRIFT_DOMINANT",
+        "qi": "STATE_DRIFT_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      },
+      "WT_FALL": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": 67,
+          "qH": 2,
+          "qi": 2,
+          "state_shape": 2,
+          "total_storage": 2
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 1.5543122344752192e-13,
+          "0.00010000": 3.907985046680551e-14
+        },
+        "q90": "STATE_DRIFT_DOMINANT",
+        "qH": "STATE_DRIFT_DOMINANT",
+        "qi": "STATE_DRIFT_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      },
+      "WT_HOLD": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": null,
+          "qH": null,
+          "qi": null,
+          "state_shape": 3,
+          "total_storage": 12
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 1.40682917117374e-13,
+          "0.00010000": 7.530844086431898e-14
+        },
+        "q90": "LOCAL_CLOSURE_DOMINANT",
+        "qH": "LOCAL_CLOSURE_DOMINANT",
+        "qi": "LOCAL_CLOSURE_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      },
+      "WT_RISE": {
+        "first_interval_state_component_exceeds_local": {
+          "q90": 3,
+          "qH": 2,
+          "qi": 2,
+          "state_shape": 2,
+          "total_storage": 2
+        },
+        "max_hard_residual_by_route": {
+          "0.00005000": 6.128431095930864e-14,
+          "0.00010000": 3.4638958368304884e-14
+        },
+        "q90": "STATE_DRIFT_DOMINANT",
+        "qH": "STATE_DRIFT_DOMINANT",
+        "qi": "STATE_DRIFT_DOMINANT",
+        "state_shape": "STATE_DRIFT_DOMINANT"
+      }
+    }
+  },
+  "complete": false,
+  "decision": "BC2_C1_DIAGNOSTIC_BLOCKED",
+  "execution_topology": "SHARDED_WIDTH_X_HISTORY_EXACT_SAME_DECOMPOSE_FUNCTION",
+  "failures": {
+    "2.5:WT_CYCLE:0.00010000": "OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465153356722,1.0000110667249589]"
+  },
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "all_primary_and_cross_routes_hard_gated": true,
+    "all_primary_and_cross_routes_qualified": false,
+    "all_reference_projections_finite": true,
+    "failure_count": 1,
+    "gate": 1e-10,
+    "max_additive_or_ledger_residual_across_primary_and_cross": 1.5543122344752192e-13,
+    "reference_projection_failure": null
+  },
+  "interpretation": [
+    "Teacher-forced one-interval error evaluates the unchanged C0 closure from exact Reference-projected reduced state.",
+    "Free-minus-teacher isolates accumulated reduced-state drift under the same H(t), integrator and closures.",
+    "All decomposition identities are checked before norms are formed.",
+    "No new state, closure, fit, direction switch, groundwater feedback or application tolerance is introduced.",
+    "Sharding changes execution topology only; each case calls the same decompose function as the serial authority implementation."
+  ],
+  "next_model_change_authorized": false,
+  "numerical_floor": {
+    "2.5": {
+      "WT_FALL": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 2.865681126396069e-06,
+            "state_rms_difference": 5.3885066177428165e-05,
+            "total_rms_difference": 2.8596609594644384e-05
+          },
+          "qH": {
+            "local_rms_difference": 0.005723219503382726,
+            "state_rms_difference": 0.005784982352866175,
+            "total_rms_difference": 4.624779550965741e-05
+          },
+          "qi": {
+            "local_rms_difference": 0.0052510526029849736,
+            "state_rms_difference": 0.005501815358442075,
+            "total_rms_difference": 5.818879039809488e-05
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 1.290565558970569e-06,
+          "state_rms_difference": 2.0919205287794895e-05,
+          "total_rms_difference": 2.1476963138145067e-05
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 4.578575603224246e-06,
+          "state_rms_difference": 8.50216748532473e-05,
+          "total_rms_difference": 8.697117880673844e-05
+        }
+      },
+      "WT_HOLD": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 2.2285458367576894e-08,
+            "state_rms_difference": 2.1655542289944485e-08,
+            "total_rms_difference": 2.516580888123343e-09
+          },
+          "qH": {
+            "local_rms_difference": 2.8398986614774916e-11,
+            "state_rms_difference": 2.8343465571221174e-11,
+            "total_rms_difference": 1.7749366634234318e-12
+          },
+          "qi": {
+            "local_rms_difference": 2.2081998123640476e-11,
+            "state_rms_difference": 2.2038827020523072e-11,
+            "total_rms_difference": 1.3801248827275297e-12
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 1.1675586319699442e-11,
+          "state_rms_difference": 1.052092059306009e-10,
+          "total_rms_difference": 1.1421910292574999e-10
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 2.1316282072803006e-14,
+          "state_rms_difference": 1.3070190632426271e-14,
+          "total_rms_difference": 6.226825966254202e-15
+        }
+      },
+      "WT_RISE": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 1.1806169445433001e-05,
+            "state_rms_difference": 2.3310461824799233e-05,
+            "total_rms_difference": 5.128990127234445e-05
+          },
+          "qH": {
+            "local_rms_difference": 0.0005359300356677643,
+            "state_rms_difference": 0.0005555421298257812,
+            "total_rms_difference": 5.25433092342098e-05
+          },
+          "qi": {
+            "local_rms_difference": 0.0010877101096844477,
+            "state_rms_difference": 0.0010901025264837827,
+            "total_rms_difference": 5.792364431655983e-05
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 2.7341192698857476e-07,
+          "state_rms_difference": 6.644823644486042e-06,
+          "total_rms_difference": 6.712193856978077e-06
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 4.28744028150305e-07,
+          "state_rms_difference": 3.5690115366082686e-05,
+          "total_rms_difference": 3.556456671816033e-05
+        }
+      }
+    },
+    "5.0": {
+      "WT_CYCLE": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 5.402341020865897e-06,
+            "state_rms_difference": 0.00019054999047396493,
+            "total_rms_difference": 0.00026444775302425505
+          },
+          "qH": {
+            "local_rms_difference": 0.0008635952843288885,
+            "state_rms_difference": 0.006924093929664643,
+            "total_rms_difference": 0.005622377720171379
+          },
+          "qi": {
+            "local_rms_difference": 0.0012439971252571347,
+            "state_rms_difference": 0.0019353680186644517,
+            "total_rms_difference": 0.00030666812927204745
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 2.1679744832326818e-06,
+          "state_rms_difference": 3.488526696901473e-05,
+          "total_rms_difference": 3.492827455767178e-05
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 6.908762271030499e-07,
+          "state_rms_difference": 0.00011651270081952658,
+          "total_rms_difference": 0.00011712738163899283
+        }
+      },
+      "WT_FALL": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 6.85970291569582e-07,
+            "state_rms_difference": 4.6079619905547986e-05,
+            "total_rms_difference": 2.4182925768778674e-05
+          },
+          "qH": {
+            "local_rms_difference": 0.0014366408055796476,
+            "state_rms_difference": 0.001670300947431258,
+            "total_rms_difference": 4.005943986751248e-05
+          },
+          "qi": {
+            "local_rms_difference": 0.0007152243195671648,
+            "state_rms_difference": 0.0014348237117154383,
+            "total_rms_difference": 0.00021850809949386374
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 2.1586038604747958e-07,
+          "state_rms_difference": 1.7356943778024103e-05,
+          "total_rms_difference": 1.754345804683144e-05
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 1.1493126441145213e-06,
+          "state_rms_difference": 7.084523817424415e-05,
+          "total_rms_difference": 7.159943624135412e-05
+        }
+      },
+      "WT_HOLD": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 1.5785681928282003e-08,
+            "state_rms_difference": 1.5406244280313786e-08,
+            "total_rms_difference": 1.7880536842818096e-09
+          },
+          "qH": {
+            "local_rms_difference": 7.099746653693729e-12,
+            "state_rms_difference": 7.085866392805294e-12,
+            "total_rms_difference": 4.4373416585585796e-13
+          },
+          "qi": {
+            "local_rms_difference": 4.577185773170895e-12,
+            "state_rms_difference": 4.5682372098255546e-12,
+            "total_rms_difference": 2.8607411082318086e-13
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 8.0207669187469e-12,
+          "state_rms_difference": 6.859168484932288e-11,
+          "total_rms_difference": 7.4859039106423e-11
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 7.105427357601002e-15,
+          "state_rms_difference": 3.459389927427699e-14,
+          "total_rms_difference": 4.0866706662475436e-14
+        }
+      },
+      "WT_RISE": {
+        "classification_match": {
+          "q90": true,
+          "qH": true,
+          "qi": true,
+          "state_shape": true
+        },
+        "fluxes": {
+          "q90": {
+            "local_rms_difference": 2.564803859567144e-05,
+            "state_rms_difference": 1.680218278199419e-05,
+            "total_rms_difference": 9.996949632107288e-06
+          },
+          "qH": {
+            "local_rms_difference": 0.00028310177533469316,
+            "state_rms_difference": 0.001159332649252942,
+            "total_rms_difference": 1.612383274185447e-05
+          },
+          "qi": {
+            "local_rms_difference": 0.0005289931124188296,
+            "state_rms_difference": 0.0005432113336509836,
+            "total_rms_difference": 9.653603540993316e-06
+          }
+        },
+        "state_shape": {
+          "local_rms_difference": 2.360907647104473e-08,
+          "state_rms_difference": 1.244442634829035e-06,
+          "total_rms_difference": 1.1582567526757792e-06
+        },
+        "total_unsaturated_storage": {
+          "local_rms_difference": 2.26481420507118e-07,
+          "state_rms_difference": 7.13186742984373e-06,
+          "total_rms_difference": 6.456723125936037e-06
+        }
+      }
+    }
+  },
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c1.result.v1",
+  "work_unit": "LARE-BC2-C1",
+  "workstream": "F-ROM-LARE"
+}
