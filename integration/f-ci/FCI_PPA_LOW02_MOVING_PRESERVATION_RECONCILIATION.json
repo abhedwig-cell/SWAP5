@@ -1,8 +1,8 @@
 {
   "schema": "swap5.fci.ppa_low02_moving_preservation_reconciliation.v1",
   "date": "2026-09-19",
-  "state": "CURRENT_CANONICAL_RECONCILIATION",
-  "purpose": "Reconcile the canonical moving P2E05 preservation gate with the already-qualified and canonically admitted PPA-LOW02-TIME serialized-backend successor and the later PPA-ROOT-HYD01 temporal-indicator successor.",
+  "state": "CURRENT_CANONICAL_RECONCILIATION_EXTENDED_THROUGH_PPA_WU04B",
+  "purpose": "Reconcile the canonical moving P2E05 preservation gate with already-qualified/admitted PPA-LOW02-TIME, PPA-ROOT-HYD01 and the later exact PPA-WU04-A/B stateful-evaporation production successors, without production/reference mutation.",
   "observed_failure": {
     "canonical_heads": [
       "1720abc365a9d0a65ea8253df2f94c991f2b9fc1",
@@ -27,6 +27,29 @@
       "failing_workflow": "F-CI107 RossFast transform cache admission",
       "message": "mod_reference_richards_temporal_indicator requires admitted mod_b110_root_sink_provider module, but two preservation compile lists still ordered the root provider after the temporal indicator",
       "classification": "STALE_TEST_BUILD_DEPENDENCY_AFTER_PPA_ROOT_HYD01"
+    },
+    "pub_gc_e7_closeout_pr408": {
+      "workflow_run": 35439603572,
+      "failing_job": 105888251599,
+      "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/runtime/mod_fmr_runtime_core.f90",
+      "classification": "STALE_MOVING_PRESERVATION_LOCK_AFTER_CANONICAL_PPA_WU04B",
+      "note": "Frozen authority jobs passed; failure was in the moving-current successor gate."
+    },
+    "pub_gc_e7_closeout_pr408_root_hyd01_replay": {
+      "workflow_run": 35456091618,
+      "job": 105931501374,
+      "failed_step": "Replay PPA-ROOT-HYD01 temporal preservation",
+      "message": "PPA_ROOT_HYD01_PRESERVE_FAIL unexpected production source delta",
+      "classification": "STALE_ROOT_HYD01_PRESERVATION_SCOPE_AFTER_CANONICAL_ROOT_HYD02_AND_WU04A_B",
+      "note": "The moving F-CI preservation replay itself passed. The downstream root-temporal preservation script still assumed that temporal_indicator was the only src successor after its frozen base."
+    },
+    "pub_gc_e7_closeout_pr408_low02_owner_replay": {
+      "workflow_run": 35456302984,
+      "job": 105932067563,
+      "failed_step": "Replay PPA-LOW02 owner qualification",
+      "message": "PPA_LOW02_GATE_FAIL admitted PPA-LOW02 backend successor drift",
+      "classification": "STALE_LOW02_OWNER_LOCK_AFTER_CANONICAL_PPA_WU04A_B",
+      "note": "Moving F-CI, ROOT-HYD01, RossFast and publication seam preservation had already passed. The LOW02 owner gate still pinned the pre-WU04 stateful-evaporation backend/bootstrap postimages."
     }
   },
   "existing_authority": {
@@ -60,6 +83,22 @@
       "qualification_run": 35429605183,
       "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
       "new_physics_in_this_reconciliation": false
+    },
+    "ppa_wu04a": {
+      "qualified_head": "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+      "canonical_merge": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+      "runtime_core_blob": "29cff34a37c13143ce069486251bc0b858cadf48",
+      "restart_state_blob": "665d90cb82485dec485be68694f77e0fcd03145c",
+      "surface_evaporation_blob": "a7b9f5271ac0582420e883a62c6e13672dc190e9",
+      "serialized_backend_blob": "b1ba0549ef9149c4261b8a595c8782be01726c43"
+    },
+    "ppa_wu04b": {
+      "qualified_head": "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "runtime_core_blob": "dc1dbffab96542ee09be5f923cea65628864d87b",
+      "restart_state_blob": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
+      "surface_evaporation_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77",
+      "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30"
     }
   },
   "repair_contract": [
@@ -79,7 +118,17 @@
     "The targeted reconciliation workflow replays PPA-ROOT-HYD01 temporal preservation plus both dependent compile/runtime surfaces.",
     "The PPA-LOW02 owner runner is lineage-aware: before canonical LOW02 admission it preserves the historical exact one-file delta; after admission it pins the exact admitted backend blob instead of misclassifying its own canonical successor as an unexpected delta.",
     "After PPA-ROOT-HYD01 admission, the PPA-LOW02 owner replay pins the exact admitted temporal-indicator blob while preserving all other inherited authorities.",
-    "PPA-LOW02 owner and independent compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator."
+    "PPA-LOW02 owner and independent compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator.",
+    "PPA-WU04-A/B are recognized only when their exact canonical admission commits are ancestors of HEAD.",
+    "Their qualified heads must be contained by the corresponding canonical admission commits.",
+    "runtime_core, restart-state, restricted-surface-evaporation and serialized-backend postimages are pinned to exact WU04-A/B blobs; wildcard successor acceptance is forbidden.",
+    "Before PPA-WU04-A admission the historical Status-A equality rules remain in force for the three generic dependency paths.",
+    "No production/reference source is changed by this reconciliation.",
+    "PPA-ROOT-HYD01 temporal preservation recognizes PPA-ROOT-HYD02 only through its exact canonical admission, qualified-head containment and exact five-file tangent postimages.",
+    "PPA-ROOT-HYD01 temporal preservation recognizes PPA-WU04-A/B only through exact admission ancestry and exact adapter/process/bootstrap/restart/runtime/backend postimages.",
+    "The root-temporal preservation source-delta comparison remains fail-closed: observed src paths must equal the lineage-derived exact successor set.",
+    "PPA-LOW02 owner qualification recognizes the exact PPA-WU04-A/B serialized-backend and production-bootstrap successors only after canonical admission ancestry and qualified-head containment checks.",
+    "All other LOW02 inherited authority locks remain byte-exact against their original canonical base."
   ],
   "production_delta": [],
   "reference_delta": [],
@@ -89,7 +138,8 @@
     "tests/ross/run_fross22_admission_all_material.sh",
     "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
     "tests/fapp/run_ppa_low02_time_application_admission.sh",
-    "tests/fvq/run_ppa_low02_time_independent.sh"
+    "tests/fvq/run_ppa_low02_time_independent.sh",
+    "tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh"
   ],
-  "current_repair_note": "Current-state replay semantics were repaired without production/reference mutation; historical admission behavior remains fail-closed on its original lineage."
+  "current_repair_note": "Moving-current, ROOT-HYD01 and LOW02 owner preservation now recognize exact admitted ROOT-HYD02/PPA-WU04-A/B successors. All repairs are tests/governance only; no production/reference source or scientific claim changes."
 }
