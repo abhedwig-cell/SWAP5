@@ -1,0 +1,62 @@
+name: F-ROM-LARE DYN0A MECH2A hydraulic penetration scaling
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH2A_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_dyn0a_mech2a_scaling.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech2a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  mech2a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover frozen fine-Reference DYN0A evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-dyn0a-mech2a
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/lare-dyn0a-mech2a/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/lare-dyn0a-mech2a/ref.zip" | sha256sum -c -
+          unzip -q /tmp/lare-dyn0a-mech2a/ref.zip -d /tmp/lare-dyn0a-mech2a/ref
+
+      - name: Execute nested interface scaling map
+        run: |
+          mkdir -p LARE_DYN0A_MECH2A_EVIDENCE
+          python3 tests/rom/analyze_lare_dyn0a_mech2a_scaling.py \
+            --reference-dir /tmp/lare-dyn0a-mech2a/ref \
+            --status /tmp/lare-dyn0a-mech2a/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --prereg integration/f-rom/LARE_DYN0A_MECH2A_PREREGISTRATION.json \
+            --output LARE_DYN0A_MECH2A_EVIDENCE/LARE_DYN0A_MECH2A_RESULT.json \
+            | tee LARE_DYN0A_MECH2A_EVIDENCE/analyzer.txt
+
+      - name: Validate mechanism firewall
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_MECH2A_EVIDENCE/LARE_DYN0A_MECH2A_RESULT.json'))
+          assert p['decision'] in {'B01_DIFFUSION_LENGTH_PATTERN_REPRODUCED','B01_DIFFUSION_LENGTH_PATTERN_NOT_REPRODUCED'}
+          assert p['cross_material_generalization_claimed'] is False
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          assert len(p['pulse_peak_cases'])==5
+          print('LARE_DYN0A_MECH2A_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_MECH2A_EVIDENCE/* > LARE_DYN0A_MECH2A_EVIDENCE/sha256.txt
+
+      - name: Upload MECH2A evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech2a
+          path: LARE_DYN0A_MECH2A_EVIDENCE/
