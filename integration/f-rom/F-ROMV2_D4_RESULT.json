@@ -1,0 +1,153 @@
+{
+  "schema": "swap5.f-romv2-d4.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D4",
+  "decision": "STRONGLY_COARSE_RICHARDS_HYDROLOGICALLY_MEASURABLE_UNDER_INTEGRATED_MASS_POLICY",
+  "adjudication": "R8_R4_R2_RETAINED_AS_BALANCE_FIDELITY_COST_FRONTIER_CANDIDATES_EVENT_FIDELITY_WEAK",
+  "execution": {
+    "workflow_run": 35445149845,
+    "workflow_job": 105902697853,
+    "executed_head": "7ceb67d35712cd042f9eb7f88b41584a7220fac1",
+    "execution_pull_request": 422,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10585137684,
+    "artifact_digest": "sha256:812fb3f66ec0c959d0eba82d1fff567a01667a6a84e87b911ef0b3df2cd1636e",
+    "workflow_conclusion": "success",
+    "result_sha256": "58cc68b0a25df2d12899600b046875b25010b510973c3339957664e64ee926e8",
+    "geometry_status_sha256": "2ecdf8706081528e1934fea2ec2ff3cd7eed7a6911f30f495449308069e8090e",
+    "analyzer_sha256": "1a96cbb537dc70bff4fdbc7673012fab3377c100d7d1d402b704a29af77bf5bd",
+    "O0_O2_identity": {
+      "R16": true,
+      "R8": true,
+      "R4": true,
+      "R2": true
+    }
+  },
+  "numerical_integrity_policy": {
+    "id": "STRICT_FIRST_INTEGRATED_WATER_DEPTH_REATTEMPT",
+    "epsilon_depth_cm": 1e-12,
+    "local_integrated_gate": "epsilon_depth_cm / active_node_count",
+    "total_integrated_gate": "epsilon_depth_cm",
+    "production_reference_policy_changed": false,
+    "D2_or_D3_residual_fitting_used": false,
+    "post_result_retuning_used": false
+  },
+  "reference_R16": {
+    "nodes": 16,
+    "integrity_pass": true,
+    "integrated_policy_reattempt_count": 60,
+    "reattempt_fraction": 0.078125,
+    "total_nonlinear_iterations": 3180,
+    "total_backtracking_attempts": 4101
+  },
+  "candidates": {
+    "R8": {
+      "nodes": 8,
+      "integrity_pass": true,
+      "total_storage_rmse_cm": 0.01799222908987689,
+      "cumulative_bottom_exchange_rmse_cm": 0.017992229089875817,
+      "terminal_bottom_flux_rmse_cm_per_day": 1.6409216789331473,
+      "mapped_theta_rmse": 0.00031993227277229356,
+      "mapped_head_rmse_cm": 0.11772706786094547,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8,
+      "total_nonlinear_iterations": 2554,
+      "nonlinear_iteration_ratio_to_R16": 0.8031446540880504,
+      "total_backtracking_attempts": 2863,
+      "backtracking_ratio_to_R16": 0.6981224091684954,
+      "integrated_policy_reattempt_count": 499,
+      "reattempt_fraction": 0.6497395833333334,
+      "V_final_cumulative_bottom_exchange_relative_error": {
+        "V01": -0.03509509429892225,
+        "V02": 0.1474137215583728,
+        "V03": -0.01972683214736906,
+        "V04": -0.06373737836751535
+      }
+    },
+    "R4": {
+      "nodes": 4,
+      "integrity_pass": true,
+      "total_storage_rmse_cm": 0.032146095760015765,
+      "cumulative_bottom_exchange_rmse_cm": 0.0321460957600138,
+      "terminal_bottom_flux_rmse_cm_per_day": 2.5374217809769273,
+      "mapped_theta_rmse": 0.0004012914537461449,
+      "mapped_head_rmse_cm": 0.1475959760626917,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8,
+      "total_nonlinear_iterations": 2317,
+      "nonlinear_iteration_ratio_to_R16": 0.7286163522012579,
+      "total_backtracking_attempts": 2355,
+      "backtracking_ratio_to_R16": 0.5742501828822238,
+      "integrated_policy_reattempt_count": 684,
+      "reattempt_fraction": 0.890625,
+      "V_final_cumulative_bottom_exchange_relative_error": {
+        "V01": -0.04429259001446555,
+        "V02": 0.21685299695838056,
+        "V03": -0.024615431890298176,
+        "V04": -0.08115802928724324
+      }
+    },
+    "R2": {
+      "nodes": 2,
+      "integrity_pass": true,
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "mapped_theta_rmse": 0.00035943468872186383,
+      "mapped_head_rmse_cm": 0.1321793241824529,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8,
+      "total_nonlinear_iterations": 1913,
+      "nonlinear_iteration_ratio_to_R16": 0.6015723270440252,
+      "total_backtracking_attempts": 1914,
+      "backtracking_ratio_to_R16": 0.4667154352596928,
+      "integrated_policy_reattempt_count": 731,
+      "reattempt_fraction": 0.9518229166666666,
+      "V_final_cumulative_bottom_exchange_relative_error": {
+        "V01": -0.04608788906712396,
+        "V02": 0.2486877935412291,
+        "V03": -0.025556814214076195,
+        "V04": -0.08455431425225268
+      }
+    }
+  },
+  "development_frontiers": {
+    "balance_structural": [
+      "R16",
+      "R8",
+      "R4",
+      "R2"
+    ],
+    "balance_accepted_nonlinear_work": [
+      "R16",
+      "R8",
+      "R4",
+      "R2"
+    ],
+    "transient_structural": [
+      "R16",
+      "R8",
+      "R4",
+      "R2"
+    ],
+    "warning": "These are development proxy frontiers only. Failed strict attempts and reattempt orchestration are real computational cost and are not represented by accepted nonlinear-iteration counts alone."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "R8_R4_R2_REMAIN_CANDIDATES_NOT_QUALIFIED",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_QUALIFIED_BOTTOM_FLUX_DIRECTION_AND_REVERSAL_FIDELITY_WEAK",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "scientific_conclusion": "Strong vertical coarsening is hydrologically measurable under a preregistered integrated-mass numerical authority. Balance fidelity degrades smoothly with coarsening, but instantaneous lower-boundary dynamics remain weak and numerical reattempt frequency rises sharply. The next comparison must therefore include actual cost and a physical reduction that avoids repeated nonlinear Richards solves.",
+  "next": [
+    "RETAIN_R8_R4_R2_AS_DEVELOPMENT_BALANCE_FRONTIER_COMPARATORS",
+    "DESIGN_CLEAN_SHEET_LAYERED_OR_QUASI_STEADY_PHYSICAL_REDUCTION",
+    "DO_NOT_CLAIM_SPEEDUP_FROM_NODE_COUNT_OR_ACCEPTED_ITERATIONS",
+    "DO_NOT_ESCALATE_COARSE_RICHARDS_NUMERICAL_TOLERANCE_POLICY_FURTHER",
+    "DEFER_APPLICATION_THRESHOLDS_TO_SEPARATE_PURPOSE_SPECIFIC_PREREGISTRATION"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

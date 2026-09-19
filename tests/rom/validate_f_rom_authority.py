@@ -487,6 +487,92 @@ def validate_romv2_d3_if_present() -> str:
     return "CLOSED_NUMERICAL_POLICY_NO_GO"
 
 
+def validate_romv2_d4_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D4_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D4_PREREGISTRATION.json")
+            == "d47d62c11bc75edce78c28f749ac6e4575e87b17",
+            "F-ROMV2-D4 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D4_RESULT.json")
+            == "898a0be774d495a58821573543335b766a6e90a6",
+            "F-ROMV2-D4 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D4_STATUS.json")
+            == "538d46694929f0cb3245c558307255780f07fc3d",
+            "F-ROMV2-D4 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D4_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "574a6fa87524bcc59040ac00b7d14b9c622a2b6d",
+            "F-ROMV2-D4 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D4_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D4_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D4_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D4_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D4_INTEGRATED_MASS_COARSE_RICHARDS_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D4 preregistration phase drift")
+    require(prereg["research_numerical_policy"]["id"]
+            == "STRICT_FIRST_INTEGRATED_WATER_DEPTH_REATTEMPT",
+            "F-ROMV2-D4 policy identity drift")
+    require(prereg["research_numerical_policy"]["depth_budget"]["epsilon_depth_cm"] == 1e-12,
+            "F-ROMV2-D4 integrated depth budget drift")
+    require("NO_D2_OR_D3_RESIDUAL_MAGNITUDE_FITTING" in prereg["firewalls"]
+            and "NO_POST_RESULT_POLICY_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D4 anti-tuning firewall drift")
+
+    require(result["decision"]
+            == "STRONGLY_COARSE_RICHARDS_HYDROLOGICALLY_MEASURABLE_UNDER_INTEGRATED_MASS_POLICY",
+            "F-ROMV2-D4 decision drift")
+    require(result["adjudication"]
+            == "R8_R4_R2_RETAINED_AS_BALANCE_FIDELITY_COST_FRONTIER_CANDIDATES_EVENT_FIDELITY_WEAK",
+            "F-ROMV2-D4 adjudication drift")
+    require(all(result["candidates"][g]["integrity_pass"] for g in ("R8","R4","R2")),
+            "F-ROMV2-D4 coarse integrity drift")
+    require(result["candidates"]["R8"]["bottom_flux_sign_error_count"] == 136
+            and result["candidates"]["R4"]["bottom_flux_sign_error_count"] == 136
+            and result["candidates"]["R2"]["bottom_flux_sign_error_count"] == 136,
+            "F-ROMV2-D4 lower-boundary event evidence drift")
+    require(result["purpose_dependent_interpretation"]["LONG_TERM_REGIONAL_WATER_BALANCE"]
+            == "R8_R4_R2_REMAIN_CANDIDATES_NOT_QUALIFIED",
+            "F-ROMV2-D4 balance interpretation drift")
+    require(result["purpose_dependent_interpretation"]["FAST_EVENT_THRESHOLD"]
+            == "NOT_QUALIFIED",
+            "F-ROMV2-D4 event nonqualification drift")
+    require(result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D4 overclaims performance/production authority")
+
+    require(status["phase"] == "CLOSED_STRONGLY_COARSE_HYDROLOGICALLY_MEASURABLE",
+            "F-ROMV2-D4 status phase drift")
+    require(status["retained_development_candidates"] == ["R8","R4","R2"],
+            "F-ROMV2-D4 retained candidate set drift")
+    require(status["coarse_richards_numerical_policy_escalation_closed"] is True,
+            "F-ROMV2-D4 leaves numerical-policy escalation open")
+    require(status["production_reference_policy_changed"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D4 status mutates production authority")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D4 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D4 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["production_reference_policy_changed"] is False,
+            "F-ROMV2-D4 evidence import claims production/reference mutation")
+    require(manifest["post_result_policy_retuning"] is False,
+            "F-ROMV2-D4 policy retuned after execution")
+
+    require("D4 closes numerical-policy escalation for coarse Richards." in doc,
+            "F-ROMV2-D4 coarse-policy closure missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D4 production prohibition missing")
+
+    return "CLOSED_STRONGLY_COARSE_HYDROLOGICALLY_MEASURABLE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -516,6 +602,7 @@ def main() -> int:
     romv2_v1_phase = validate_romv2_v1_if_present()
     romv2_d2_phase = validate_romv2_d2_if_present()
     romv2_d3_phase = validate_romv2_d3_if_present()
+    romv2_d4_phase = validate_romv2_d4_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -529,6 +616,7 @@ def main() -> int:
     print(f"F_ROMV2_V1_PHASE={romv2_v1_phase}")
     print(f"F_ROMV2_D2_PHASE={romv2_d2_phase}")
     print(f"F_ROMV2_D3_PHASE={romv2_d3_phase}")
+    print(f"F_ROMV2_D4_PHASE={romv2_d4_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
