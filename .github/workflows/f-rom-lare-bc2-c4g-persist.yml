@@ -1,0 +1,129 @@
+name: F-ROM-LARE persist C4G metric sensitivity closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4g-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4G aggregate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4g
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10590137166/zip" > /tmp/c4g.zip
+          echo "5707cd644bb6b8eca5f7f612bd727425e59c2bfef9651ed17bcbd1ba113b764d  /tmp/c4g.zip" | sha256sum -c -
+          unzip -q /tmp/c4g.zip -d /tmp/c4g
+          echo "9f5f0e3c29f425e3a628b9588e56cc27734aff6e1ed77d7d7fa4a334ad7dce8b  /tmp/c4g/LARE_BC2_C4G_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4G
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4g/LARE_BC2_C4G_RESULT.json'))
+          assert r['decision']=='WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING'
+          assert r['complete'] is True
+          assert r['historical_primary_metric_unchanged'] is True
+          assert r['C4F_unweighted_metrics_reproduced'] is True
+          assert r['WT_RISE_width_effect_robust'] is True
+          assert r['hard_checks']['maximum_additive_residual_cm'] <= 1e-10
+          assert r['hard_checks']['maximum_squared_norm_identity_residual_theta2'] <= 1e-12
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4G_CLOSEOUT_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout and science reconciliation
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4g/LARE_BC2_C4G_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4g.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4G',
+            'status':'CLOSED_WIDTH_EFFECT_METRIC_ROBUST_NO_MODEL_CHANGE',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35462670948,
+              'execution_head':'eb394481c077325b03e5ee1f439c88ef9002d7b0',
+              'aggregate_artifact_id':10590137166,
+              'aggregate_artifact_digest':'sha256:5707cd644bb6b8eca5f7f612bd727425e59c2bfef9651ed17bcbd1ba113b764d',
+              'result_sha256':'9f5f0e3c29f425e3a628b9588e56cc27734aff6e1ed77d7d7fa4a334ad7dce8b',
+              'case_artifacts':{
+                '2.5:WT_RISE':{'id':10590695861,'digest':'sha256:1c39b117b6756eb679fd9bf37fa9fc1b4969c6412ea83eec10d455606ce7c06c'},
+                '2.5:WT_FALL':{'id':10590256990,'digest':'sha256:4c72636026228b2570eef8eec48dea2a105600828adfb60fd0e636787e4dae92'},
+                '5.0:WT_RISE':{'id':10589927275,'digest':'sha256:abc0ee1ffc48b3f804a8fc5fa989987fc5cc378cac4baa33c70bee34083c6a14'},
+                '5.0:WT_FALL':{'id':10590860661,'digest':'sha256:2f5eccd46aa7018f33250b486c5e305b4f984a6a748b9223dfae70eb79d3aaaa'}
+              }
+            },
+            'key_results':{
+              '2.5_WT_RISE':{'unweighted_ratio_approx':3.855,'depth_weighted_ratio_approx':2.141,'direction':'WORSENS','interval_direction_changes':0},
+              '5.0_WT_RISE':{'unweighted_ratio_approx':0.2972,'depth_weighted_ratio_approx':0.2945,'direction':'IMPROVES','interval_direction_changes_fraction':0.001953125},
+              '2.5_WT_FALL':{'unweighted_ratio_approx':6.29,'depth_weighted_ratio_approx':3.376,'direction':'WORSENS','hydrological_interpretation':'algebraic only on blocked QI intervals'},
+              '5.0_WT_FALL':{'unweighted_ratio_approx':0.5977,'depth_weighted_ratio_approx':0.5692,'direction':'IMPROVES'}
+            },
+            'scientific_interpretation':[
+              'Depth weighting materially reduces the magnitude of the thin-terminal QI effect but does not reverse it.',
+              'The 2.5-versus-5 cm WT_RISE causal-direction contrast is therefore not an artifact of equal-coordinate RMS weighting.',
+              'Historical C2/C3/C4E metric authority remains unchanged.',
+              'A physically admissible terminal reconstruction hypothesis may now be preregistered, but no closure change is yet authorized.'
+            ],
+            'next_authority':'PHYSICALLY_ADMISSIBLE_TERMINAL_RECONSTRUCTION_HYPOTHESIS_MAY_BE_PREREGISTERED',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4G_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4G_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4G closeout
+
+          C4G tested metric sensitivity only. It did not replace the historical unweighted mass-neutral theta RMS used by C2, C3 and C4E.
+
+          Formal decision: WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING.
+
+          The secondary metric weights each mass-neutral theta-shape component by its instantaneous physical thickness. This reduces the leverage of the thin terminal coordinate but keeps the 2.5-versus-5 cm response direction unchanged in both internal-dt routes.
+
+          For 2.5 cm WT_RISE, QI removal worsens pooled shape error under both metrics. The ratio falls from about 3.855 under the historical norm to about 2.141 under depth weighting, but all 512 intervals still worsen in both routes.
+
+          For 5 cm WT_RISE, QI removal improves pooled shape error under both metrics. The ratio changes only from about 0.2972 to about 0.2945; only one of 512 intervals changes removal direction under reweighting.
+
+          The FALL cases retain the same pooled direction as well: 2.5 cm worsens and 5 cm improves. The 2.5 cm full-history weighted FALL metric remains algebraic diagnostic evidence only because C4F established that the QI-removal state is physically inadmissible on 499 intervals.
+
+          Therefore the width-dependent QI behavior cannot be dismissed as an artifact of giving every reduced control volume equal weight. Together C4F and C4G point to the representation/closure geometry itself.
+
+          A new terminal reconstruction hypothesis may now be preregistered. It must remain physically admissible, conservative and diagnostic first. No free-running corrected LARE, groundwater-feedback test, application acceptance, speed claim or production ROM is authorized by C4G.
+          MD
+
+      - name: Persist exact C4G result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c4g/LARE_BC2_C4G_RESULT.json integration/f-rom/LARE_BC2_C4G_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4G_RESULT.json integration/f-rom/LARE_BC2_C4G_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4G_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4G metric sensitivity review"
+          git push origin HEAD:work/f-rom-lare-rs1
