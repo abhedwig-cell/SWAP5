@@ -78,7 +78,7 @@ program tabulated_hydraulics_wrapper_characterization
     write(*,'(A,ES24.16,A,ES24.16,A,ES24.16,A,ES24.16)') &
       'DRY_PROBE h=',h,' theta=',theta,' C=',cap,' K=',kval
     dkdh=dhconduc(1,h,theta,cap,1.0_real64)
-    write(*,'(A,ES24.16)') 'DRY_PROBE_UNEXPECTED_SUCCESS dKdh=',dkdh
+    write(*,'(A,ES24.16)') 'DRY_PROBE_SUCCESS dKdh=',dkdh
     stop
   end if
 
