@@ -393,9 +393,62 @@
       "priority_band": "P1"
     },
     {
-      "id": "PPA-ET-REDU",
+      "id": "PPA-ET-REDU1",
       "subsystem": "surface evaporation",
-      "capability": "SWREDU=1 Black and SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
+      "capability": "SWREDU=1 Black continuation-state evaporation reduction",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/swapoutput.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+        "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+        "integration/audits/PPA_WU04A_PREREGISTRATION.json",
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/adapter/mod_ppa_wu04a_black_forcing_adapter.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/audits/PPA_WU04A_STATUS.json",
+        "docs/audits/PPA_WU04A_BLACK_EVAPORATION_ADMISSION.md"
+      ],
+      "typed_input_config_authority": "Restricted PPA-WU03 common-forcing result plus explicit wetting-reset event, Black parameter COFRED and option-discriminated initial LDWET.",
+      "state_ownership": "SWREDU=1 owns exactly LDWET as committed process continuation state. LDWET is not hydraulic storage and is not reconstructed from the pressure-head profile.",
+      "transaction_status": "Qualified transactional composition: trial-local LDWET is derived from the committed checkpoint at the actual trial dt; rejected/discarded candidates do not mutate committed LDWET; accepted LDWET commits atomically with the hydraulic state.",
+      "qualification_evidence": [
+        "F-PM06 source-bound readiness",
+        "PPA-WU04 workflow 35377826442 authority/independent PASS",
+        "PPA-WU04-A workflow 35438366101 job 105884808295 PASS at O0/O2"
+      ],
+      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Reference/serialized production route only; no RossFast composition claim",
+        "No groundwater bottom_mode=5 Black composition",
+        "Snowmelt and runon are outside this first Black forcing slice",
+        "Wetting reset must arrive as an explicit span-boundary event; no hidden calendar inference",
+        "EMPREVA remains demand; accepted actual evaporation is owned by the hydraulic dynamic-top boundary",
+        "Runtime option switching is not admitted"
+      ],
+      "scientific_risk": "LOW after exact equation, rollback, restart and mass-owner qualification within the admitted envelope",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "PPA-WU01 transaction owner",
+        "PPA-WU03 forcing boundary",
+        "surface hydraulic evaporation owner",
+        "generic committed restart"
+      ],
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-ET-REDU2",
+      "subsystem": "surface evaporation",
+      "capability": "SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
       "classification": "E_PRESERVED_BUT_NOT_TYPED",
       "legacy_present": true,
       "legacy_authority": {
@@ -411,24 +464,24 @@
         "integration/audits/PPA_WU04_STATUS.json"
       ],
       "typed_input_config_authority": "Scientific/transaction contract frozen by PPA-WU04; no typed production state/config route exists yet.",
-      "state_ownership": "SWREDU=1 owns exactly LDWET. SWREDU=2 owns exactly the atomic SPEV/SAEV pair. State is option-specific accepted continuation state and may not be reconstructed from the hydraulic profile.",
-      "transaction_status": "Review authority frozen: all reduction-state updates are trial-local; rejected hydraulic trials leave committed reduction state unchanged; retries recompute from the same committed checkpoint. Legacy pre-retry mutation order is explicitly not target semantics.",
+      "state_ownership": "SWREDU=2 owns exactly the atomic SPEV/SAEV pair. The pair is option-specific accepted continuation state and may not be reconstructed from the hydraulic profile.",
+      "transaction_status": "Review authority frozen: SPEV/SAEV updates must be trial-local and atomic; rejected hydraulic trials leave both committed scalars unchanged; retries recompute from the same committed checkpoint.",
       "qualification_evidence": [
         "F-PM06 source-bound readiness",
-        "PPA-WU04 workflow 35377826442: authority job 105706628104 PASS; independent job 105706684721 PASS"
+        "PPA-WU04 workflow 35377826442 authority/independent PASS"
       ],
       "production_admission": "NONE_REVIEW_ONLY",
       "production_reachable": "NO",
       "restrictions": [
-        "SWREDU=1/2 equations not implemented in production",
-        "LDWET or SPEV/SAEV must commit only with the accepted outer physical transaction",
+        "SWREDU=2 equation not implemented in production",
+        "SPEV/SAEV must commit as one atomic pair with the accepted outer physical transaction",
         "EMPREVA remains demand, not authoritative water-mass removal",
         "Runtime option switching is not admitted by PPA-WU04"
       ],
-      "scientific_risk": "MEDIUM equation/oracle qualification remains; state/restart/rollback architecture risk is now bounded",
+      "scientific_risk": "MEDIUM equation/oracle qualification remains; state/restart/rollback architecture risk is bounded",
       "use_relevance": "HIGH",
       "dependencies": [
-        "PPA-WU04-A/B implementation slices",
+        "PPA-WU04-B implementation slice",
         "PPA-WU01 transaction owner",
         "PPA-WU03 forcing boundary",
         "surface hydraulic evaporation owner",
@@ -1921,6 +1974,17 @@
       "production_delta": "NONE",
       "reference_delta": "NONE",
       "effect": "Macropore owner-level source/state/mass/transaction review authority is canonical. Production macropore remains blocked until PPA-WU05-A1 exact source materialization and complete census."
+    },
+    {
+      "workunit": "PPA-WU04-A",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "pull_request": 395,
+      "qualified_head": "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+      "qualification": {
+        "run": 35438366101,
+        "job": 105884808295
+      },
+      "effect": "Adds restricted typed SWREDU=1 Black production reachability with transactional LDWET, exact restart, retry-local recomputation and unchanged hydraulic ownership of actual evaporation. SWREDU=2 and SWINTER=1/2 remain open."
     }
   ]
 }

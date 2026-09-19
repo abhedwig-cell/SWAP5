@@ -16,7 +16,8 @@ module mod_fmr_serialized_reference_backend
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
-  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -32,7 +33,7 @@ module mod_fmr_serialized_reference_backend
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t, &
        publish_accepted_trajectory_direction
   use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -43,7 +44,12 @@ module mod_fmr_serialized_reference_backend
   use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_RETRY_SCALE, ROSSFAST_D3R_MAX_FULL_INDEX, &
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
-       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
+       bind_b110_dynamic_top_boundary_solver_provider
+  use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
+       black_evaporation_forcing_t, black_evaporation_result_t, evaluate_black_evaporation_reduction, &
+       BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
@@ -134,6 +140,14 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_fixed_weir_surface_water_state_clone
   end type fmr_b110_fixed_weir_surface_water_state_t
 
+  ! PPA-WU04-A option-discriminated process continuation family. LDWET is
+  ! physical process continuation state, not a hydraulic field or worker scratch.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_black_evaporation_state_t
+    type(black_evaporation_state_t) :: black_evaporation
+  contains
+    procedure :: clone => fmr_b110_black_evaporation_state_clone
+  end type fmr_b110_black_evaporation_state_t
+
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
     integer :: active_nodes = 0
@@ -164,6 +178,8 @@ module mod_fmr_serialized_reference_backend
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
     logical :: soil_temperature_active = .false.
+    logical :: black_evaporation_active = .false.
+    type(black_evaporation_parameters_t), allocatable :: black_evaporation
     ! F-PM14 drainage response runtime composition. Immutable response and
     ! prepared geometry data belong to parameters, never to persistent state.
     logical :: drainage_response_active = .false.
@@ -175,6 +191,20 @@ module mod_fmr_serialized_reference_backend
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
   end type fmr_b110_physical_parameters_t
+
+  type, public :: fmr_black_evaporation_runtime_forcing_t
+    real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
+    real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+    logical :: wetting_reset_event = .false.
+    real(real64) :: wetting_event_time = 0.0_real64
+  end type fmr_black_evaporation_runtime_forcing_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
@@ -188,6 +218,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: root_extraction_sink(:)
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
+    type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -245,6 +276,12 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
     type(fmr_drainage_response_diagnostics_t) :: drainage_response
+    logical :: black_evaporation_active = .false.
+    logical :: black_evaporation_evaluated = .false.
+    logical :: black_wetting_reset_applied = .false.
+    logical :: black_ponding_reset_applied = .false.
+    real(real64) :: black_empirical_demand = 0.0_real64
+    real(real64) :: black_candidate_ldwet = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -319,6 +356,9 @@ module mod_fmr_serialized_reference_backend
     type(snow_flux_result_t) :: snow_fluxes
     type(snow_diagnostics_t) :: snow_diagnostics
     logical :: soil_temperature_active = .false.
+    logical :: black_evaporation_active = .false.
+    type(black_evaporation_parameters_t) :: black_evaporation_parameters
+    type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -379,6 +419,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
+  public :: fmr_new_b110_black_evaporation_committed_state
 
 contains
 
@@ -447,6 +488,17 @@ contains
       typed_copy%surface_water = self%surface_water
     end select
   end subroutine fmr_b110_fixed_weir_surface_water_state_clone
+
+  subroutine fmr_b110_black_evaporation_state_clone(self, copy)
+    class(fmr_b110_black_evaporation_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_black_evaporation_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_black_evaporation_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%black_evaporation = self%black_evaporation
+    end select
+  end subroutine fmr_b110_black_evaporation_state_clone
 
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
@@ -522,17 +574,40 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_fixed_weir_surface_water_committed_state
 
+  subroutine fmr_new_b110_black_evaporation_committed_state(committed, lineage_id, state, black_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(black_evaporation_state_t), intent(in) :: black_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. ieee_is_finite(black_state%ldwet) .or. black_state%ldwet < 0.0_real64) return
+    allocate(fmr_b110_black_evaporation_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_black_evaporation_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%black_evaporation = black_state
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_black_evaporation_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
-                                                               fixed_weir_surface_water_active) result(matches)
+                                                               fixed_weir_surface_water_active, &
+                                                               black_evaporation_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active, black_evaporation_active
     select type (state)
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active
+      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active
+      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. .not. black_evaporation_active
+    type is (fmr_b110_black_evaporation_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. black_evaporation_active
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
     class default
       matches = .false.
     end select
@@ -542,6 +617,7 @@ contains
     type(fmr_serialized_reference_model_t), intent(inout) :: model
     model%snow_active = .false.
     model%soil_temperature_active = .false.
+    model%black_evaporation_active = .false.
     model%snow_event_prepared = .false.
     model%state_profile_admitted = .false.
     model%snow_outer_t0 = 0.0_real64
@@ -563,13 +639,15 @@ contains
     call clear_snow_preparation(model)
     model%snow_active = parameters%snow_active
     model%soil_temperature_active = parameters%soil_temperature_active
+    model%black_evaporation_active = parameters%black_evaporation_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
     call committed%snapshot(snapshot, available)
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
-                                                           model%fixed_weir_surface_water_active)) return
+                                                           model%fixed_weir_surface_water_active, &
+                                                           model%black_evaporation_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -1020,7 +1098,25 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
-    if (parameters%soil_temperature_active) then
+    if (parameters%black_evaporation_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) then
+      result = kernel_result_t()
+      result%status = KERNEL_STATUS_NOT_ADMITTED
+      candidate = kernel_candidate_state_t()
+      diagnostics = kernel_diagnostics_t()
+      diagnostics%admission_rejections = 1
+      return
+    else if (parameters%soil_temperature_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .or. &
           parameters%snow_active) then
         result = kernel_result_t()
@@ -1176,6 +1272,17 @@ contains
       else
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
       end if
+      if (parameters%black_evaporation_active) then
+        ok = ok .and. self%black_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
+             self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
+             parameters%bottom_mode /= 5
+        if (ok) ok = ieee_is_finite(parameters%black_evaporation%cofred) .and. &
+             parameters%black_evaporation%cofred >= 0.0_real64
+      else
+        ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active
+      end if
       if (parameters%drainage_response_active) then
         ok = ok .and. allocated(parameters%drainage_response_levels) .and. &
              .not. self%fixed_weir_surface_water_active
@@ -1229,6 +1336,11 @@ contains
       self%root_extraction_active = parameters%root_extraction_active
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      self%black_evaporation_active = parameters%black_evaporation_active
+      self%black_evaporation_parameters = black_evaporation_parameters_t()
+      if (parameters%black_evaporation_active .and. allocated(parameters%black_evaporation)) then
+        self%black_evaporation_parameters = parameters%black_evaporation
+      end if
       self%drainage_response_active = parameters%drainage_response_active
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
@@ -1252,6 +1364,7 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
+    real(real64) :: black_values(9)
     self%forcing_admitted = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
@@ -1261,6 +1374,7 @@ contains
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
+    self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
     self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
     self%trajectory_requested_t0 = interval%t0
@@ -1334,6 +1448,33 @@ contains
       else
         if (allocated(forcing%soil_temperature)) return
       end if
+
+      self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
+      if (self%black_evaporation_active) then
+        if (.not. allocated(forcing%black_evaporation)) return
+        if (forcing%top_flux /= 0.0_real64) return
+        black_values = [forcing%black_evaporation%precipitation_rate_cm_per_day, &
+             forcing%black_evaporation%irrigation_rate_cm_per_day, &
+             forcing%black_evaporation%snowmelt_rate_cm_per_day, &
+             forcing%black_evaporation%runon_rate_cm_per_day, &
+             forcing%black_evaporation%potential_bare_soil_evaporation_cm_per_day, &
+             forcing%black_evaporation%potential_pond_evaporation_cm_per_day, &
+             forcing%black_evaporation%ponding_max_cm, forcing%black_evaporation%runoff_resistance_day, &
+             forcing%black_evaporation%runoff_exponent]
+        if (.not. all(ieee_is_finite(black_values))) return
+        if (any(black_values(1:8) < 0.0_real64)) return
+        if (forcing%black_evaporation%runoff_exponent /= 1.0_real64) return
+        if (forcing%black_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%black_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        if (forcing%black_evaporation%wetting_reset_event) then
+          if (.not. ieee_is_finite(forcing%black_evaporation%wetting_event_time)) return
+          if (.not. same_real_bits(forcing%black_evaporation%wetting_event_time, interval%t0)) return
+        end if
+        self%black_evaporation_forcing = forcing%black_evaporation
+      else
+        if (allocated(forcing%black_evaporation)) return
+      end if
+
       if (associated(self%qdra)) deallocate(self%qdra)
       if (associated(self%qssdi)) deallocate(self%qssdi)
       if (associated(self%qrot)) deallocate(self%qrot)
@@ -1515,14 +1656,18 @@ contains
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
+    type(black_evaporation_forcing_t) :: black_process_forcing
+    type(black_evaporation_result_t) :: black_result
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64), allocatable :: projection_zero_direction(:), drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
-    logical :: bottom_temperature_start_available
+    logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
@@ -1532,7 +1677,9 @@ contains
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
+    black_result = black_evaporation_result_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
     self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
@@ -1567,7 +1714,8 @@ contains
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
-                                                           self%fixed_weir_surface_water_active)) return
+                                                           self%fixed_weir_surface_water_active, &
+                                                           self%black_evaporation_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     effective_bottom_mode = self%bottom_mode
@@ -1588,9 +1736,13 @@ contains
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
+    if (self%black_evaporation_active) then
+      request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
+    else
+      request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
+      request%boundary%top_flux = self%top_flux
+    end if
     request%boundary%bottom_mode = effective_bottom_mode
-    request%boundary%top_flux = self%top_flux
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
@@ -1625,6 +1777,45 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
+
+      if (self%black_evaporation_active) then
+        select type (black_physical => state)
+        type is (fmr_b110_black_evaporation_state_t)
+          black_process_forcing = black_evaporation_forcing_t()
+          black_process_forcing%potential_bare_soil_evaporation = &
+               self%black_evaporation_forcing%potential_bare_soil_evaporation_cm_per_day
+          black_process_forcing%surface_is_ponded = &
+               black_physical%ponding_depth > BLACK_EVAP_PONDING_CLASSIFICATION_CM
+          black_process_forcing%wetting_reset_event = self%black_evaporation_forcing%wetting_reset_event .and. &
+               same_real_bits(t0, self%black_evaporation_forcing%wetting_event_time)
+          call evaluate_black_evaporation_reduction(self%black_evaporation_parameters, &
+               black_physical%black_evaporation, black_process_forcing, step_duration, black_result)
+          self%last_observation%black_evaporation_evaluated = black_result%status == BLACK_EVAP_AVAILABLE
+          self%last_observation%black_wetting_reset_applied = black_result%wetting_reset_applied
+          self%last_observation%black_ponding_reset_applied = black_result%ponding_reset_applied
+          self%last_observation%black_empirical_demand = black_result%empirical_bare_soil_evaporation_demand
+          self%last_observation%black_candidate_ldwet = black_result%candidate_state%ldwet
+          if (black_result%status /= BLACK_EVAP_AVAILABLE) return
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters, 1, &
+               black_physical%pressure_head(1), fixed_top_conductivity, fixed_top_conductivity_ok)
+          if (.not. fixed_top_conductivity_ok) return
+          call bind_b110_dynamic_top_boundary_solver_provider(black_top_provider, self%soil_parameters, &
+               self%hydraulic_parameters, self%swkmean, black_physical%ponding_depth, step_duration, &
+               self%black_evaporation_forcing%precipitation_rate_cm_per_day, &
+               self%black_evaporation_forcing%irrigation_rate_cm_per_day, &
+               self%black_evaporation_forcing%snowmelt_rate_cm_per_day, &
+               self%black_evaporation_forcing%runon_rate_cm_per_day, &
+               black_result%empirical_bare_soil_evaporation_demand, &
+               self%black_evaporation_forcing%potential_pond_evaporation_cm_per_day, &
+               self%black_evaporation_forcing%ponding_max_cm, &
+               self%black_evaporation_forcing%runoff_resistance_day, &
+               self%black_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          request%evaluation%dynamic_top_boundary => black_top_provider
+        class default
+          return
+        end select
+      end if
+
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
@@ -1677,7 +1868,7 @@ contains
     request%evaluation%constitutive => self%constitutive
     request%evaluation%source_sink => self%source_sink
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
-    request%evaluation%top_boundary => self%top_boundary
+    if (.not. self%black_evaporation_active) request%evaluation%top_boundary => self%top_boundary
 
     if (self%soil_water_selection%uses_rossfast()) then
       context_ok = .true.
@@ -1782,6 +1973,17 @@ contains
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
       if (.not. temporal_history_ok) return
     end if
+
+    if (self%black_evaporation_active) then
+      select type (black_physical => state)
+      type is (fmr_b110_black_evaporation_state_t)
+        if (black_result%status /= BLACK_EVAP_AVAILABLE) return
+        black_physical%black_evaporation = black_result%candidate_state
+      class default
+        return
+      end select
+    end if
+
     if (self%fixed_weir_surface_water_active) then
       select type (physical => state)
       type is (fmr_b110_fixed_weir_surface_water_state_t)
