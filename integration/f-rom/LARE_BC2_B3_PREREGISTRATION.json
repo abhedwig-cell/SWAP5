@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.lare.bc2.b3.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B3",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_PROJECTED_OPERATOR_ATTRIBUTION",
+  "purpose": "Attribute the direction-dependent BC2-B0/B2 response error to the fixed-to-moving interface closure versus the water-table boundary closure without propagating a reduced state or fitting a new closure.",
+  "predecessors": {
+    "A2": "integration/f-rom/LARE_BC2_A2_RESULT.json",
+    "required_A2_decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED",
+    "B0": "integration/f-rom/LARE_BC2_B0_RESULT.json",
+    "required_B0_decision": "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED_WITH_RESPONSE_CONFUNDING",
+    "B1": "integration/f-rom/LARE_BC2_B1_RESULT.json",
+    "required_B1_decision": "BC2_B1_EQSUB_CONTROL_MIXED_RESPONSE",
+    "B2": "integration/f-rom/LARE_BC2_B2_RESULT.json",
+    "required_B2_decision": "BC2_B2_RESIDUAL_ONLY_MIXED_RESPONSE"
+  },
+  "prior_exposure": {
+    "observed": "B2 improves WT_HOLD and WT_RISE storage/cumulative exchange relative to B0, but worsens WT_FALL and WT_CYCLE.",
+    "firewall": "This observation motivates face-level attribution only. No operator coefficient, sign-dependent switch, blending law or new closure is authorized or fitted."
+  },
+  "reference_projection": {
+    "geometry": "same 0-90 cm 9x10cm fixed layers plus moving 90..H(t) layer as BC2-B0/B1/B2",
+    "state_at_each_accepted_time": "exact fixed-cell Reference storages and exact moving unsaturated Reference storage from A2",
+    "H": "strict interior zero-pressure crossing from A2",
+    "Hdot": "constant interval slope (H_n-H_{n-1})/0.0008 day",
+    "qH_reference_interval_average": "accepted bottom outward exchange / 0.0008 day",
+    "q90_reference_interval_average": "(Wm_n-Wm_{n-1})/dt + qH_reference - theta_s*Hdot",
+    "q90_identity_role": "derived exactly from the conservative moving-layer balance; must independently close against the A2 moving-storage ledger."
+  },
+  "candidate_operators": {
+    "STANDARD_B0": {
+      "q90": "unchanged standard-LARE fixed-to-moving interface closure",
+      "qH": "unchanged standard-LARE zero-pressure water-table closure"
+    },
+    "RESIDUAL_ONLY_B2": {
+      "q90": "q90_standard(state,H)-q90_standard(equilibrium_state(H),H)",
+      "qH": "qH_standard(state,H)-qH_standard(equilibrium_state(H),H)"
+    },
+    "PATH_PRESERVING_B1": {
+      "q90": "B2 residual-only q90 + exact equilibrium-path q90_E(H,Hdot)",
+      "qH": "B2 residual-only qH + exact equilibrium-path qH_E(H,Hdot)",
+      "role": "diagnostic comparator only"
+    }
+  },
+  "time_alignment": {
+    "primary": "For each Reference observation interval, evaluate each candidate operator at the accepted start and end projected Reference states and compare the trapezoidal average to the interval-average Reference flux.",
+    "endpoint_diagnostic": "Also report end-state instantaneous candidate values, but do not use them for face attribution because Reference authority is interval-integrated exchange.",
+    "no_hidden_reference_state": "Only A2 accepted state endpoints and exact moving-storage balance are used."
+  },
+  "direction_strata": {
+    "HOLD": "|Hdot| <= 1e-12 cm/day",
+    "WATER_TABLE_RISING": "Hdot < -1e-12 cm/day",
+    "WATER_TABLE_FALLING": "Hdot > 1e-12 cm/day",
+    "histories_also_reported_separately": true
+  },
+  "metrics_per_face_operator_stratum": [
+    "sample count",
+    "signed mean flux error cm/day",
+    "mean absolute flux error cm/day",
+    "RMS flux error cm/day",
+    "maximum absolute flux error cm/day",
+    "flux sign mismatch count",
+    "Pearson correlation where variance is nonzero"
+  ],
+  "joint_metrics": [
+    "RMS q90 error divided by RMS qH error, reported only when denominator nonzero",
+    "signed error covariance between q90 and qH",
+    "moving-layer tendency error = (q90_candidate-qH_candidate) - (q90_reference-qH_reference)",
+    "direction-conditioned ranking of STANDARD_B0, RESIDUAL_ONLY_B2 and PATH_PRESERVING_B1 for q90, qH and moving-layer tendency"
+  ],
+  "hard_checks": {
+    "reference_moving_balance_residual_cm_per_day": 1e-10,
+    "hydrostatic_quadrature_crosscheck_cm": 1e-10,
+    "no_nonfinite_flux": true
+  },
+  "adjudication": {
+    "no_scalar_overall_score": true,
+    "no_ratio_threshold_for_dominance": true,
+    "supported_statement_rule": "A face may be called consistently larger-error only when both RMS and mean-absolute error are greater for that face in every nonempty moving direction stratum for the same operator.",
+    "direction_dependence_rule": "A correction is direction dependent when its component-wise ordering relative to STANDARD_B0 changes between WATER_TABLE_RISING and WATER_TABLE_FALLING on either q90 or qH.",
+    "valid_outcomes": [
+      "BC2_B3_WATER_TABLE_FACE_CONSISTENTLY_LARGER_ERROR",
+      "BC2_B3_FIXED_MOVING_INTERFACE_CONSISTENTLY_LARGER_ERROR",
+      "BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR",
+      "BC2_B3_OPERATOR_ERRORS_COMPARABLE_OR_MIXED",
+      "BC2_B3_REFERENCE_OPERATOR_ATTRIBUTION_BLOCKED"
+    ],
+    "next_model_change_authorized": false
+  },
+  "firewalls": [
+    "NO_PROPAGATED_REDUCED_DYNAMICS",
+    "NO_SIGN_DEPENDENT_CLOSURE_SWITCH",
+    "NO_BLEND_WEIGHT",
+    "NO_FITTED_COEFFICIENT",
+    "NO_POST_RESPONSE_METRIC_SELECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
