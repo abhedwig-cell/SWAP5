@@ -168,3 +168,102 @@ jobs:
             build/tab-hyd/wrapper-summary.txt
             build/tab-hyd/dry-probe.log
             build/tab-hyd/dry-probe-summary.txt
+
+  characterize-current-public-production-reachability:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned current public SWAP
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: current-swap
+
+      - name: Checkout Hupselbrook TOML case source
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: main
+          path: swap-testcases
+
+      - name: Install Meson build tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user 'meson==1.7.0' ninja
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Build current public SWAP production binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd current-swap
+          meson setup builddir -Denable_pfunit=false
+          meson compile -C builddir
+
+      - name: Stage baseline and tabulated-switch cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd/reachability/baseline build/tab-hyd/reachability/tabulated
+          cp -a swap-testcases/cases/hupselbrook/toml/. build/tab-hyd/reachability/baseline/
+          cp -a swap-testcases/cases/hupselbrook/toml/. build/tab-hyd/reachability/tabulated/
+          for d in baseline tabulated; do
+            if [ -f "build/tab-hyd/reachability/$d/swap_linux.swp.template" ]; then
+              cp "build/tab-hyd/reachability/$d/swap_linux.swp.template" "build/tab-hyd/reachability/$d/swap.swp"
+            fi
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("build/tab-hyd/reachability/tabulated/swap.toml")
+          s=p.read_text()
+          old="swsophy = 0"
+          if old not in s:
+              raise SystemExit("expected swsophy = 0 not found")
+          p.write_text(s.replace(old,"swsophy = 1",1))
+          PY
+
+      - name: Run analytical baseline
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          (cd build/tab-hyd/reachability/baseline && "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/baseline.log 2>&1
+          rc=$?
+          set -e
+          echo "baseline_return_code=$rc" | tee build/tab-hyd/reachability/reachability-summary.txt
+          tail -100 build/tab-hyd/reachability/baseline.log
+          if [ "$rc" -ne 100 ]; then
+            echo "BASELINE_FAILED" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+            exit 1
+          fi
+          echo "BASELINE_OK" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+
+      - name: Probe swsophy=1 through current production TOML path
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          (cd build/tab-hyd/reachability/tabulated && "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/tabulated.log 2>&1
+          rc=$?
+          set -e
+          echo "tabulated_return_code=$rc" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          tail -160 build/tab-hyd/reachability/tabulated.log
+          if [ "$rc" -eq 100 ]; then
+            echo "TABULATED_SWITCH_REACHED_NORMAL_COMPLETION" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+            exit 1
+          fi
+          echo "TABULATED_SWITCH_NOT_PRODUCTION_REACHABLE" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+
+      - name: Upload production reachability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-current-public-production-reachability
+          path: |
+            build/tab-hyd/reachability/reachability-summary.txt
+            build/tab-hyd/reachability/baseline.log
+            build/tab-hyd/reachability/tabulated.log
