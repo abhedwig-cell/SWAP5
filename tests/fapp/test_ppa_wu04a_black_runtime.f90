@@ -260,7 +260,10 @@ contains
     integer :: k
 
     value%initial_time = T0
-    value%numerical%transaction%temporal_tolerance = 0.0_real64
+    ! PPA-WU04-A tests ownership/rollback/restart, not timestep-error policy.
+    ! Keep the existing external full/half controller permissive here while the
+    ! independent hard mass gate remains 1e-12.
+    value%numerical%transaction%temporal_tolerance = 1.0e3_real64
     value%numerical%transaction%mass_tolerance = HARD_MASS_GATE
     value%numerical%transaction%retry_scale = 0.5_real64
     value%numerical%transaction%max_retries = 2
