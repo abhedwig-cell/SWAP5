@@ -75,10 +75,13 @@ else:
         'LAREDYN0R_FAIL LAREDYN0R prospective representation bound' in raw
         or max_h >= -0.01
     )
-    if not known_domain:
+    if known_domain:
+        print('OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION')
+    elif 'LAREDYN0R_FAIL ' in raw:
+        print('BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION')
+    else:
         tail='\n'.join(raw.splitlines()[-40:])
-        raise SystemExit('unexpected Reference failure\n'+tail)
-    print('OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION')
+        raise SystemExit('unexpected technical Reference failure\n'+tail)
 PY
 )" || fail "${geometry} ${case_id} O${opt} classification"
 
@@ -136,7 +139,11 @@ summary={
       for geom,cases in out.items()
   },
   'outside_domain_counts':{
-      geom:sum(v['status']!='QUALIFIED' for v in cases.values())
+      geom:sum(v['status']=='OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION' for v in cases.values())
+      for geom,cases in out.items()
+  },
+  'numerical_qualification_block_counts':{
+      geom:sum(v['status']=='BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION' for v in cases.values())
       for geom,cases in out.items()
   },
   'production_rom_authorized':False,
@@ -146,6 +153,7 @@ print(json.dumps({
   'decision':summary['decision'],
   'qualified_counts':summary['qualified_counts'],
   'outside_domain_counts':summary['outside_domain_counts'],
+  'numerical_qualification_block_counts':summary['numerical_qualification_block_counts'],
 },sort_keys=True))
 PY
 
