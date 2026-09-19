@@ -17,7 +17,7 @@ module mod_fmr_serialized_reference_backend
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -49,7 +49,10 @@ module mod_fmr_serialized_reference_backend
        bind_b110_dynamic_top_boundary_solver_provider
   use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
        black_evaporation_forcing_t, black_evaporation_result_t, evaluate_black_evaporation_reduction, &
-       BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM
+       BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM, &
+       boesten_evaporation_parameters_t, boesten_evaporation_state_t, boesten_evaporation_forcing_t, &
+       boesten_evaporation_result_t, evaluate_boesten_evaporation_reduction, BOESTEN_EVAP_AVAILABLE, &
+       BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
@@ -148,6 +151,14 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_black_evaporation_state_clone
   end type fmr_b110_black_evaporation_state_t
 
+  ! PPA-WU04-B keeps the Boesten-Stroosnijder continuation pair atomic and
+  ! option-discriminated from both BASE and SWREDU=1 Black.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_boesten_evaporation_state_t
+    type(boesten_evaporation_state_t) :: boesten_evaporation
+  contains
+    procedure :: clone => fmr_b110_boesten_evaporation_state_clone
+  end type fmr_b110_boesten_evaporation_state_t
+
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
     integer :: active_nodes = 0
@@ -180,6 +191,8 @@ module mod_fmr_serialized_reference_backend
     logical :: soil_temperature_active = .false.
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t), allocatable :: black_evaporation
+    logical :: boesten_evaporation_active = .false.
+    type(boesten_evaporation_parameters_t), allocatable :: boesten_evaporation
     ! F-PM14 drainage response runtime composition. Immutable response and
     ! prepared geometry data belong to parameters, never to persistent state.
     logical :: drainage_response_active = .false.
@@ -206,6 +219,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: wetting_event_time = 0.0_real64
   end type fmr_black_evaporation_runtime_forcing_t
 
+  type, public :: fmr_boesten_evaporation_runtime_forcing_t
+    real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
+    real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+  end type fmr_boesten_evaporation_runtime_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
@@ -219,6 +244,7 @@ module mod_fmr_serialized_reference_backend
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
+    type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -282,6 +308,12 @@ module mod_fmr_serialized_reference_backend
     logical :: black_ponding_reset_applied = .false.
     real(real64) :: black_empirical_demand = 0.0_real64
     real(real64) :: black_candidate_ldwet = 0.0_real64
+    logical :: boesten_evaporation_active = .false.
+    logical :: boesten_evaporation_evaluated = .false.
+    logical :: boesten_ponding_reset_applied = .false.
+    real(real64) :: boesten_empirical_demand = 0.0_real64
+    real(real64) :: boesten_candidate_spev = 0.0_real64
+    real(real64) :: boesten_candidate_saev = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -359,6 +391,9 @@ module mod_fmr_serialized_reference_backend
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t) :: black_evaporation_parameters
     type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
+    logical :: boesten_evaporation_active = .false.
+    type(boesten_evaporation_parameters_t) :: boesten_evaporation_parameters
+    type(fmr_boesten_evaporation_runtime_forcing_t) :: boesten_evaporation_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -420,6 +455,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
+  public :: fmr_new_b110_boesten_evaporation_committed_state
 
 contains
 
@@ -499,6 +535,17 @@ contains
       typed_copy%black_evaporation = self%black_evaporation
     end select
   end subroutine fmr_b110_black_evaporation_state_clone
+
+  subroutine fmr_b110_boesten_evaporation_state_clone(self, copy)
+    class(fmr_b110_boesten_evaporation_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_boesten_evaporation_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_boesten_evaporation_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%boesten_evaporation = self%boesten_evaporation
+    end select
+  end subroutine fmr_b110_boesten_evaporation_state_clone
 
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
@@ -594,20 +641,54 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_black_evaporation_committed_state
 
+  subroutine fmr_new_b110_boesten_evaporation_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(boesten_evaporation_state_t), intent(in) :: boesten_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. ieee_is_finite(boesten_state%spev) .or. boesten_state%spev < 0.0_real64 .or. &
+        .not. ieee_is_finite(boesten_state%saev) .or. boesten_state%saev < 0.0_real64) return
+    allocate(fmr_b110_boesten_evaporation_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_boesten_evaporation_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%boesten_evaporation = boesten_state
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_boesten_evaporation_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
                                                                fixed_weir_surface_water_active, &
-                                                               black_evaporation_active) result(matches)
+                                                               black_evaporation_active, &
+                                                               boesten_evaporation_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active, black_evaporation_active
+    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
+    if (black_evaporation_active .and. boesten_evaporation_active) then
+      matches = .false.
+      return
+    end if
     select type (state)
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
+      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. .not. black_evaporation_active
+      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active
     type is (fmr_b110_black_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. black_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           black_evaporation_active .and. .not. boesten_evaporation_active
+    type is (fmr_b110_boesten_evaporation_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. boesten_evaporation_active
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active
     class default
       matches = .false.
     end select
@@ -618,6 +699,7 @@ contains
     model%snow_active = .false.
     model%soil_temperature_active = .false.
     model%black_evaporation_active = .false.
+    model%boesten_evaporation_active = .false.
     model%snow_event_prepared = .false.
     model%state_profile_admitted = .false.
     model%snow_outer_t0 = 0.0_real64
@@ -640,6 +722,7 @@ contains
     model%snow_active = parameters%snow_active
     model%soil_temperature_active = parameters%soil_temperature_active
     model%black_evaporation_active = parameters%black_evaporation_active
+    model%boesten_evaporation_active = parameters%boesten_evaporation_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
@@ -647,7 +730,8 @@ contains
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
                                                            model%fixed_weir_surface_water_active, &
-                                                           model%black_evaporation_active)) return
+                                                           model%black_evaporation_active, &
+                                                           model%boesten_evaporation_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
