@@ -117,5 +117,18 @@
     "NO_APPLICATION_ACCEPTANCE",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_adjudication_clarification": {
+    "before_first_C4B_oracle_response": true,
+    "single_channel_ranking": "For each case/route, rank ORACLE_Q90, ORACLE_QI, ORACLE_QH and ORACLE_GI by ascending cumulative mass-neutral shape norm. UNIQUE_BEST means exactly one minimum; no effect-size tolerance is introduced.",
+    "decision_map": {
+      "REGIME_DEPENDENT_COUPLED_LOWER_BOUNDARY_CAUSALITY": "MONOTONE_QI and CYCLE_QH both pass their frozen unanimity rules; HOLD_Q90 is reported independently and is not required for this dynamic decision.",
+      "MONOTONE_QI_CAUSALITY_ONLY": "MONOTONE_QI passes and CYCLE_QH fails.",
+      "CYCLE_QH_CAUSALITY_ONLY": "CYCLE_QH passes and MONOTONE_QI fails.",
+      "MULTI_CHANNEL_OR_SUBINTERVAL_DYNAMICS_REQUIRED": "Both MONOTONE_QI and CYCLE_QH fail their frozen unanimity rules.",
+      "C4B_DIAGNOSTIC_BLOCKED": "Any required case/route is incomplete, nonfinite, outside constitutive domain, or violates a hard gate."
+    },
+    "coupled_QI_QH_role": "COUPLED_QI_QH is an independent supporting diagnostic. It does not change the single-channel decision map and cannot rescue a failed MONOTONE_QI or CYCLE_QH hypothesis.",
+    "scientific_effect": "Makes the preregistered decision tree exhaustive only. Regimes, variants, metrics, cases and causal hypotheses are unchanged."
+  }
 }
