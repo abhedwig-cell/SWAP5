@@ -114,7 +114,7 @@ contains
     end do
 
     write(*,'(*(g0))') 'F_ROMV2_D20_REF_HISTORY_PASS|SPLIT=DEVELOPMENT|HISTORY=',trim(history_label(ih)), &
-         '|TOP_FACTOR=',history_factor(ih),'|STATES=',NSTEPS,'|FALLBACKS=',history_fallbacks, &
+         '|STATES=',NSTEPS,'|FALLBACKS=',history_fallbacks, &
          '|MAX_ABS_MASS=',history_max_mass,'|FINAL_REV=',state%current_revision(),'|FINAL_T=',t0
   end subroutine run_history
 
