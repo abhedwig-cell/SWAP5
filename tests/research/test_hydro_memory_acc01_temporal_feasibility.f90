@@ -75,6 +75,16 @@ program test_hydro_memory_acc01_temporal_feasibility
 
   call require(root_obs%temporal_certificate_available, 'ROOT final temporal certificate unavailable')
   call require(generic_obs%temporal_certificate_available, 'GENERIC final temporal certificate unavailable')
+  write(*,'(a,a)') 'HYDRO_MEMORY_F1_ROOT_FINAL_ROUTE=', trim(root_obs%temporal_indicator_route)
+  write(*,'(a,a)') 'HYDRO_MEMORY_F1_GENERIC_FINAL_ROUTE=', trim(generic_obs%temporal_indicator_route)
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_FINAL_HEAD_INF_BOUND_CM=', root_obs%temporal_head_inf_bound
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_GENERIC_FINAL_HEAD_INF_BOUND_CM=', generic_obs%temporal_head_inf_bound
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_FINAL_NORMALIZED_INDICATOR=', root_obs%temporal_normalized_indicator
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_GENERIC_FINAL_NORMALIZED_INDICATOR=', generic_obs%temporal_normalized_indicator
+  write(*,'(a,i0)') 'HYDRO_MEMORY_F1_ROOT_ACCEPTED_SUBSTEPS=', root_diag%accepted_substeps
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MAX_TEMPORAL_INDICATOR=', root_diag%max_temporal_indicator
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MIN_ACCEPTED_DT_DAY=', root_diag%min_accepted_substep_duration
+  write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MAX_ACCEPTED_DT_DAY=', root_diag%max_accepted_substep_duration
   call require(trim(root_obs%temporal_indicator_route) == 'reference-richards-raw-bound', &
        'ROOT final temporal route drift')
   call require(trim(generic_obs%temporal_indicator_route) == 'reference-richards-raw-bound', &
