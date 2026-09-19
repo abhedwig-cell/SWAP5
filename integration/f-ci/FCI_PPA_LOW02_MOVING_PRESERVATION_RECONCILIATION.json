@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.fci.ppa_low02_moving_preservation_reconciliation.v1",
+  "date": "2026-09-19",
+  "state": "CURRENT_CANONICAL_RECONCILIATION",
+  "purpose": "Reconcile the canonical moving P2E05 preservation gate with the already-qualified and canonically admitted PPA-LOW02-TIME serialized-backend successor and the later PPA-ROOT-HYD01 temporal-indicator successor.",
+  "observed_failure": {
+    "canonical_heads": [
+      "1720abc365a9d0a65ea8253df2f94c991f2b9fc1",
+      "800eb65c1b5126a4814f27fc4acc0b06f76312b6"
+    ],
+    "workflow_runs": [
+      35427432128,
+      35427565217
+    ],
+    "failing_job": "current-restricted-canonical-preservation",
+    "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted F-ROM1A serialized backend successor drift",
+    "inherited_by_pub_gc_pr371": true,
+    "current_canonical_successor": {
+      "canonical_head": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "workflow_run": 35429748350,
+      "failing_job": 105862082311,
+      "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/solver/mod_reference_richards_temporal_indicator.f90",
+      "cause": "PPA-ROOT-HYD01 PR #387 is already canonically admitted; the moving preservation gate still expected the pre-admission Status-A blob."
+    },
+    "current_compile_successor": {
+      "workflow_run": 35429748346,
+      "failing_workflow": "F-CI107 RossFast transform cache admission",
+      "message": "mod_reference_richards_temporal_indicator requires admitted mod_b110_root_sink_provider module, but two preservation compile lists still ordered the root provider after the temporal indicator",
+      "classification": "STALE_TEST_BUILD_DEPENDENCY_AFTER_PPA_ROOT_HYD01"
+    }
+  },
+  "existing_authority": {
+    "f_rom1a_admission": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+    "f_rom1a_kernel_blob": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11",
+    "f_rom1a_backend_blob": "5d63f91b37443952b4a96292925f645aae0b22d1",
+    "ppa_low02": {
+      "qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+      "functional_admission_pr": 360,
+      "canonical_merge": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+      "closeout_pr": 362,
+      "status_path": "integration/audits/PPA_LOW02_TIME_STATUS.json",
+      "current_qualified_backend_blob": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+      "owner_independent_run": 35426047814,
+      "owner_job": 105852054740,
+      "independent_job": 105852181968,
+      "fross12_runtime_run": 35426047903,
+      "fci96_run": 35426047828,
+      "fgc44_runs": [
+        35426047827,
+        35426047766
+      ],
+      "fgc42_run": 35426047891
+    },
+    "ppa_root_hyd01": {
+      "qualified_head": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+      "functional_admission_pr": 387,
+      "canonical_merge": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "status_path": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+      "exact_temporal_indicator_blob": "2068215a57edb1d2a59c36d6b32f519ebdc09ebd",
+      "qualification_run": 35429605183,
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+      "new_physics_in_this_reconciliation": false
+    }
+  },
+  "repair_contract": [
+    "No production source or reference data may change.",
+    "The moving gate recognizes PPA-LOW02 only when canonical admission 6c63b8d... is an ancestor.",
+    "The PPA-LOW02 qualified head 8d238bb... must be contained by that canonical admission.",
+    "The serialized backend must equal exact qualified blob 80c7ca....",
+    "The F-SI39 default-MvG provider must remain exact.",
+    "The exact F-ROM1A kernel successor remains independently pinned.",
+    "Any later backend drift fails closed.",
+    "Owner and independent PPA-LOW02 qualification are replayed on the repair PR.",
+    "The generic historical dependency surface no longer rejects the already-admitted PPA-ROOT-HYD01 temporal-indicator successor.",
+    "PPA-ROOT-HYD01 is accepted only when canonical admission 308a619c... is an ancestor and qualified head b7803c1c... is contained by that admission.",
+    "The temporal-indicator provider must equal exact admitted blob 2068215a...; pre-admission lineage still requires the historical authority blob.",
+    "No PPA-ROOT-HYD01 equations, tolerances, solver behavior or application accuracy budget are changed.",
+    "Test-only RossFast serialized and PUB-P2E01 compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator, matching the admitted Fortran module dependency.",
+    "The targeted reconciliation workflow replays PPA-ROOT-HYD01 temporal preservation plus both dependent compile/runtime surfaces.",
+    "The PPA-LOW02 owner runner is lineage-aware: before canonical LOW02 admission it preserves the historical exact one-file delta; after admission it pins the exact admitted backend blob instead of misclassifying its own canonical successor as an unexpected delta.",
+    "After PPA-ROOT-HYD01 admission, the PPA-LOW02 owner replay pins the exact admitted temporal-indicator blob while preserving all other inherited authorities.",
+    "PPA-LOW02 owner and independent compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator."
+  ],
+  "production_delta": [],
+  "reference_delta": [],
+  "scientific_claim_change": false,
+  "test_only_compile_delta": [
+    "tests/ross/run_ross12_serialized_production_wiring.sh",
+    "tests/ross/run_fross22_admission_all_material.sh",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+    "tests/fapp/run_ppa_low02_time_application_admission.sh",
+    "tests/fvq/run_ppa_low02_time_independent.sh"
+  ],
+  "current_repair_note": "Current-state replay semantics were repaired without production/reference mutation; historical admission behavior remains fail-closed on its original lineage."
+}

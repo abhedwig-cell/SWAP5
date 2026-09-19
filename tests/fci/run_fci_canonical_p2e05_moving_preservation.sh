@@ -11,6 +11,12 @@ FGC31_RECONCILED=49a4685474a2d8df53c77c45e87a6c243316a97c
 FGC44_PRODUCTION=04e5db63356e48256997fad9daea9e77040c29e6
 FSI39_PRODUCTION=20d34024cfe4b981b6c00d5042bdf366f8aae830
 F_ROM1A_PRODUCTION=5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b
+PPA_LOW02_ADMISSION=6c63b8d0e340669d9722bc5e3d947d42d2b467a5
+PPA_LOW02_QUALIFIED=8d238bb46c9d4d77e38802e75458d99f59794d11
+PPA_ROOT_HYD01_ADMISSION=308a619c91d2cc3dae7f7aa143cfbe97c780c635
+PPA_ROOT_HYD01_QUALIFIED=b7803c1cf0818677651a0eecaed4bd84ffb3059a
+TEMPORAL_INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
+PPA_ROOT_HYD01_TEMPORAL_INDICATOR=2068215a57edb1d2a59c36d6b32f519ebdc09ebd
 TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 SW=src/solver/mod_soil_water_solver_contract.f90
@@ -36,6 +42,7 @@ FSI39_PROVIDER=90183cbe0f3f0b349e40fa6b0c65b2223ca8a739
 FSI39_BACKEND=556ed83dee4d5b159f1de7ae797af7106a0abe2e
 F_ROM1A_KERNEL=c28cb8246aaf087da92538e58b1aa2da5d1b5b11
 F_ROM1A_BACKEND=5d63f91b37443952b4a96292925f645aae0b22d1
+PPA_LOW02_BACKEND=80c7ca618ea228e31ac43ae493f16dd6eccc5991
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
@@ -61,7 +68,6 @@ dependency_surface=(
   src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_linear_solver.f90
-  src/solver/mod_reference_richards_temporal_indicator.f90
   src/solver/mod_surface_evaporation_capacity_contract.f90
   src/solver/mod_b110_surface_evaporation_capacity_provider.f90
   src/legacy/b1_10_port/headcalc.f90
@@ -115,6 +121,21 @@ for path in "${dependency_surface[@]}"; do
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || fail "admitted dependency drift: $path"
 done
 
+# PPA-ROOT-HYD01 is a later, independently qualified exact successor of the
+# Reference Richards temporal-indicator provider. Keep the historical Status-A
+# blob before its admission and accept only the exact admitted successor after
+# that point. This is canonical preservation authority, not new solver physics.
+if git merge-base --is-ancestor "$PPA_ROOT_HYD01_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_ROOT_HYD01_QUALIFIED" "$PPA_ROOT_HYD01_ADMISSION" || \
+    fail 'PPA-ROOT-HYD01 qualified head is not contained by canonical admission'
+  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$PPA_ROOT_HYD01_TEMPORAL_INDICATOR" || \
+    fail 'admitted PPA-ROOT-HYD01 temporal-indicator successor drift'
+  echo 'FCI_CANONICAL_PPA_ROOT_HYD01_TEMPORAL_INDICATOR_SUCCESSOR=PASS'
+else
+  test "$(git rev-parse "HEAD:$TEMPORAL_INDICATOR")" = "$(git rev-parse "$AUTH:$TEMPORAL_INDICATOR")" || \
+    fail 'pre-PPA-ROOT-HYD01 temporal-indicator drift'
+fi
+
 # The current canonical has one later, explicitly qualified two-file research
 # observation successor. It is not a wildcard exception: only the exact
 # admitted F-ROM1A production postimage is accepted when that admission is in
@@ -137,7 +158,19 @@ test "$(git rev-parse HEAD:$REF_ADAPTER)" = "$REF_ADAPTER_P2E05" || fail 'Refere
 # current canonical, keeps its new KSATEXM path opt-in by default, and its
 # production postimages are pinned exactly here.
 test "$(git rev-parse HEAD:$SELECTION)" = "$SELECTION_FROSS12" || fail 'admitted F-ROSS12 selection successor drift'
-if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+if git merge-base --is-ancestor "$PPA_LOW02_ADMISSION" HEAD; then
+  # PPA-LOW02-TIME is a later, independently qualified serialized-backend
+  # successor layered on top of the admitted F-ROM1A observation seam.
+  # Accept only its exact canonical admission and exact qualified backend blob.
+  git merge-base --is-ancestor "$PPA_LOW02_QUALIFIED" "$PPA_LOW02_ADMISSION" || \
+    fail 'PPA-LOW02 qualified head is not contained by canonical admission'
+  test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" || \
+    fail 'PPA-LOW02 successor lost admitted F-SI39 default-MvG provider'
+  test "$(git rev-parse HEAD:$BACKEND)" = "$PPA_LOW02_BACKEND" || \
+    fail 'admitted PPA-LOW02 serialized backend successor drift'
+  echo 'FCI_CANONICAL_FSI39_PROVIDER_SUCCESSOR=PASS'
+  echo 'FCI_CANONICAL_PPA_LOW02_BACKEND_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = "$FSI39_PROVIDER" ||     fail 'admitted F-SI39 default-MvG provider successor drift under F-ROM1A'
   test "$(git rev-parse HEAD:$BACKEND)" = "$F_ROM1A_BACKEND" ||     fail 'admitted F-ROM1A serialized backend successor drift'
   echo 'FCI_CANONICAL_FSI39_PROVIDER_SUCCESSOR=PASS'
@@ -213,8 +246,14 @@ echo 'FCI96_MOVING_FROSS12_SUCCESSOR_PRESERVATION=PASS'
 if git merge-base --is-ancestor "$FSI39_PRODUCTION" HEAD; then
   echo 'FCI_CANONICAL_FSI39_EXACT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS'
 fi
-if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+if git merge-base --is-ancestor "$PPA_LOW02_ADMISSION" HEAD; then
+  echo 'FCI_CANONICAL_PPA_LOW02_EXACT_BACKEND_SUCCESSOR_PRESERVATION=PASS'
+  echo 'FCI_CANONICAL_F_ROM1A_KERNEL_UNDER_PPA_LOW02_SUCCESSOR=PASS'
+elif git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
   echo 'FCI_CANONICAL_F_ROM1A_EXACT_TWO_FILE_SUCCESSOR_PRESERVATION=PASS'
+fi
+if git merge-base --is-ancestor "$PPA_ROOT_HYD01_ADMISSION" HEAD; then
+  echo 'FCI_CANONICAL_PPA_ROOT_HYD01_EXACT_TEMPORAL_INDICATOR_SUCCESSOR_PRESERVATION=PASS'
 fi
 echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
 echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'

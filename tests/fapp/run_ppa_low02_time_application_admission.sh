@@ -11,19 +11,39 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "PPA_LOW02_GATE_FAIL $*" >&2; exit 1; }
 
 CANONICAL="e473afc2d378a2567a59cc0db1577b4c724feeb2"
-changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
-expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
-[[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
+LOW02_ADMISSION="6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
+LOW02_BACKEND_BLOB="80c7ca618ea228e31ac43ae493f16dd6eccc5991"
+ROOT_HYD01_ADMISSION="308a619c91d2cc3dae7f7aa143cfbe97c780c635"
+ROOT_HYD01_TEMPORAL_BLOB="2068215a57edb1d2a59c36d6b32f519ebdc09ebd"
+
+if git merge-base --is-ancestor "$LOW02_ADMISSION" HEAD; then
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$LOW02_BACKEND_BLOB" ]] || \
+    fail 'admitted PPA-LOW02 backend successor drift'
+  echo 'PPA_LOW02_CURRENT_BACKEND_SUCCESSOR=PASS'
+else
+  changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
+  expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
+  [[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
+fi
 
 for locked in \
   src/adapter/mod_b110_serialized_context_binding.f90 \
-  src/solver/mod_reference_richards_temporal_indicator.f90 \
   src/solver/mod_soil_water_solver_contract.f90 \
   src/legacy/b1_10_port/headcalc.f90 \
   src/runtime/mod_fmr_production_application_bootstrap.f90 \
   src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90; do
   [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$CANONICAL:$locked")" ]] || fail "inherited authority drift: $locked"
 done
+
+if git merge-base --is-ancestor "$ROOT_HYD01_ADMISSION" HEAD; then
+  [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == "$ROOT_HYD01_TEMPORAL_BLOB" ]] || \
+    fail 'admitted PPA-ROOT-HYD01 temporal-indicator successor drift'
+  echo 'PPA_LOW02_ROOT_HYD01_TEMPORAL_SUCCESSOR=PASS'
+else
+  [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == \
+     "$(git rev-parse "$CANONICAL:src/solver/mod_reference_richards_temporal_indicator.f90")" ]] || \
+    fail 'pre-ROOT-HYD01 temporal-indicator drift'
+fi
 
 grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI62P_STATUS.json || fail 'F-CI62 prescribed-qbot canonical authority missing'
 grep -Fq '"decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW"' qualification/F-VQ75_STATUS.json || fail 'F-VQ75 independent qbot authority missing'
@@ -113,13 +133,13 @@ MODULE_SRC=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
