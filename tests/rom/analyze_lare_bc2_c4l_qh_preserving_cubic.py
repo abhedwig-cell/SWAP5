@@ -59,9 +59,9 @@ def integ(a,u,v,L,x0,x1,nq):
     half=0.5*(x1-x0)
     xx=x0+half*(xg+1.0)
     pp=psi(xx,a,u,v,L)
-    if np.min(pp)<-PSI_TOL:
+    if np.min(pp)<0.0:
         raise ValueError("cubic profile enters positive-pressure domain")
-    th=b3.theta_from_psi(np.maximum(pp,0.0))
+    th=b3.theta_from_psi(pp)
     return float(half*np.sum(wg*th))
 
 def residual(z,a,Wt,Wb,L,d,nq):
@@ -90,17 +90,14 @@ def starts(a,b_bulk,L,d):
         0.5*np.asarray([u3,v3]),
     ]
 
-def solve_endpoint(profile,total,d,nq):
-    p=b8.projected(profile,total,d)
-    H=float(p["H"]); L=H-b3.ANCHOR; B=L-d
-    base=b9.endpoint_candidates(profile,total,d)
-    a=float(base["a_t"]); bb=float(base["b_bulk"])
+def solve_storage(Wt,Wb,H,d,a,b_bulk,nq):
+    L=H-b3.ANCHOR
     roots=[]; diag=[]
-    for idx,st in enumerate(starts(a,bb,L,d)):
-        sol=least_squares(residual,st,args=(a,float(p["Wt64"]),float(p["Wb64"]),L,d,nq),
+    for idx,st in enumerate(starts(a,b_bulk,L,d)):
+        sol=least_squares(residual,st,args=(a,Wt,Wb,L,d,nq),
                           xtol=1e-13,ftol=1e-13,gtol=1e-13,max_nfev=400)
         u,v=map(float,sol.x)
-        rr=residual(sol.x,a,float(p["Wt64"]),float(p["Wb64"]),L,d,nq)
+        rr=residual(sol.x,a,Wt,Wb,L,d,nq)
         rmax=float(np.max(np.abs(rr)))
         mn=min_psi(a,u,v,L)
         valid=bool(sol.success and rmax<=ROOT_GATE and mn>=-PSI_TOL and math.isfinite(u) and math.isfinite(v))
@@ -113,21 +110,34 @@ def solve_endpoint(profile,total,d,nq):
     if not all(close_uv(roots[0],r) for r in roots[1:]):
         raise ValueError(f"AMBIGUOUS_CUBIC_RECONSTRUCTION nq={nq}")
     u=float(np.mean([r[0] for r in roots])); v=float(np.mean([r[1] for r in roots]))
-    rr=residual(np.asarray([u,v]),a,float(p["Wt64"]),float(p["Wb64"]),L,d,nq)
+    rr=residual(np.asarray([u,v]),a,Wt,Wb,L,d,nq)
     rmax=float(np.max(np.abs(rr))); mn=min_psi(a,u,v,L)
     if rmax>ROOT_GATE or mn<-PSI_TOL: raise ValueError("reconciled cubic failed hard gate")
+    # No clipping: the reconciled profile must be evaluable on its physical domain.
+    if mn<0.0: raise ValueError("reconciled cubic has negative pressure head within tolerance")
     psi_i=float(psi(d,a,u,v,L))
     theta_i=float(b3.theta_from_psi(psi_i))
     _,kk=b3.psi_k(np.asarray([theta_i]))
     Ki=float(kk[0])
     slope_i=a+2.0*u*d/L+3.0*v*d*d/(L*L)
     return {
-        "H":H,"L":L,"B":B,"a":a,"u":u,"v":v,"psi_i":psi_i,"theta_i":theta_i,"Ki":Ki,
+        "H":H,"L":L,"a":a,"u":u,"v":v,"psi_i":psi_i,"theta_i":theta_i,"Ki":Ki,
         "slope_i":slope_i,"qi":Ki*(1.0-slope_i),"qH":b3.KS*(1.0-a),
         "max_storage_residual_cm":rmax,"minimum_psi_cm":mn,"valid_root_count":len(roots),
-        "base_qi":float(base["TERMINAL_SIDE_LINEAR"]),"base_qH":b3.KS*(1.0-a),
         "diagnostics":diag
     }
+
+
+def solve_endpoint(profile,total,d,nq):
+    p=b8.projected(profile,total,d)
+    H=float(p["H"]); L=H-b3.ANCHOR; B=L-d
+    base=b9.endpoint_candidates(profile,total,d)
+    a=float(base["a_t"]); bb=float(base["b_bulk"])
+    out=solve_storage(float(p["Wt64"]),float(p["Wb64"]),H,d,a,bb,nq)
+    out["B"]=B
+    out["base_qi"]=float(base["TERMINAL_SIDE_LINEAR"])
+    out["base_qH"]=b3.KS*(1.0-a)
+    return out
 
 def metrics(rows,key,ref):
     r=np.asarray([x[ref] for x in rows]); p=np.asarray([x[key] for x in rows]); e=p-r
@@ -170,6 +180,18 @@ def main():
     im,inodes,states,nodes=b3.load_reference(args.reference)
     fail=[]; rows=[]; max_store=0.0; max_qx=0.0; max_qh_id=0.0; max_qi_id=0.0; minpsi=float("inf"); minroots=99
 
+    # Manufactured hydrostatic recovery for the current width. Storage is
+    # generated from psi=x; the cubic solver must recover u=v=0.
+    max_hydro_u=0.0; max_hydro_v=0.0
+    for Htest in (105.0,120.0,138.0):
+        Ltest=Htest-b3.ANCHOR
+        Wt_test=integ(1.0,0.0,0.0,Ltest,0.0,args.width,128)
+        Wb_test=integ(1.0,0.0,0.0,Ltest,args.width,Ltest,128)
+        for nq in NQS:
+            qtest=solve_storage(Wt_test,Wb_test,Htest,args.width,1.0,1.0,nq)
+            max_hydro_u=max(max_hydro_u,abs(float(qtest["u"])))
+            max_hydro_v=max(max_hydro_v,abs(float(qtest["v"])))
+
     try:
         e0={n:solve_endpoint(inodes[args.history],im[args.history]["total"],args.width,n) for n in NQS}
     except Exception as exc:
@@ -210,7 +232,7 @@ def main():
     qi_cub=metrics(rows,"CUBIC_qi","qi_ref") if rows else None
     qh_base=metrics(rows,"BASE_qH","qH_ref") if rows else None
     qh_cub=metrics(rows,"CUBIC_qH","qH_ref") if rows else None
-    hard=complete and max_store<=ROOT_GATE and minpsi>=-PSI_TOL and minroots>=2 and max_qx<=QX and max_qh_id<=QH_ID and max_qi_id<=QI_ID
+    hard=complete and max_store<=ROOT_GATE and minpsi>=-PSI_TOL and minroots>=2 and max_qx<=QX and max_qh_id<=QH_ID and max_qi_id<=QI_ID and max_hydro_u<=HYD and max_hydro_v<=HYD
 
     if not hard:
         decision="C4L_CASE_BLOCKED"
@@ -222,7 +244,9 @@ def main():
     result={"schema":"swap5.lare.bc2.c4l.case-result.v1","work_unit":"LARE-BC2-C4L","width_cm":args.width,"history":args.history,
             "decision":decision,"complete":complete,"hard_checks":{"max_storage_residual_cm":max_store,"minimum_psi_cm":minpsi,
             "minimum_valid_roots":minroots,"max_qi_64_vs_128_cm_per_day":max_qx,"max_qH_candidate_vs_baseline_cm_per_day":max_qh_id,
-            "max_B8_qi_identity_cm_per_day":max_qi_id,"failure_count":len(fail)},
+            "max_B8_qi_identity_cm_per_day":max_qi_id,
+            "max_hydrostatic_abs_u":max_hydro_u,"max_hydrostatic_abs_v":max_hydro_v,
+            "hydrostatic_gate":HYD,"failure_count":len(fail)},
             "qi":{"BASE":qi_base,"CUBIC":qi_cub},"qH":{"BASE":qh_base,"CUBIC":qh_cub},
             "shape":{"u_rms":float(np.sqrt(np.mean([r["u"]**2 for r in rows]))) if rows else None,
                      "v_rms":float(np.sqrt(np.mean([r["v"]**2 for r in rows]))) if rows else None},
