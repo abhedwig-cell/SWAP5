@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.ppa_low02_time.status.v1",
+  "work_unit": "PPA-LOW02-TIME",
+  "title": "Legacy SWBOTB=2 time law and dry-continuation application semantics",
+  "status": "CANONICAL_ADMITTED_CLOSED",
+  "authority": {
+    "reference": "SWAP 4.3.1 B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "boundbottom_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap_sha256": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c"
+  },
+  "admitted_semantics": {
+    "normal_selector": 2,
+    "sw2_sine": "B1.11 SINAVE/SINAMP/SINMAX law evaluated from legacy calendar-relative substep-start time",
+    "sw2_table": "B1.11 DATE2/QBOT2 AFGEN-equivalent linear interpolation with endpoint clamping evaluated at legacy t1900 substep end",
+    "dry_guard": "strict h_bottom < -1.0e7 cm",
+    "dry_effective_selector": "internal -2",
+    "dry_flux": "existing admitted free-drainage equation qbot=-K_bottom",
+    "reentry": "guard is re-evaluated from trial-start state; no persisted selector state",
+    "ownership": "existing F-KT/F-MR transaction, rollback, mass and commit ownership"
+  },
+  "production_scope": {
+    "route": "homogeneous typed bottom_mode=2 production application through serialized Reference backend",
+    "control_carrier": "fmr_b110_physical_forcing_t%legacy_swbotb2_control",
+    "production_source": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "backend_blob_sha": "80c7ca618ea228e31ac43ae493f16dd6eccc5991"
+  },
+  "qualification": {
+    "reconciled_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+    "qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+    "owner_and_independent_run": 35426047814,
+    "owner_job": 105852054740,
+    "owner_result": "PASS",
+    "independent_job": 105852181968,
+    "independent_result": "PASS",
+    "fross12_runtime_run": 35426047903,
+    "fross12_runtime_result": "PASS",
+    "fci96_fross12_postimage_run": 35426047828,
+    "fci96_fross12_postimage_job": 105852054865,
+    "fci96_fross12_postimage_result": "PASS",
+    "fgc44_participant_run": 35426047827,
+    "fgc44_participant_result": "PASS",
+    "fgc44_end_to_end_run": 35426047766,
+    "fgc44_end_to_end_result": "PASS",
+    "fvq116_run": 35426047859,
+    "fvq116_result": "PASS",
+    "fgc42_run": 35426047891,
+    "fgc42_result": "PASS",
+    "owner_assertions": [
+      "exact SW2=1 source-law oracle including calendar reset",
+      "exact SW2=2 AFGEN interpolation and endpoint clamping",
+      "strict dry threshold and stateless re-entry",
+      "table and sine production identity against directly admitted mode-2 forcing",
+      "dynamic -2 identity against admitted free drainage",
+      "hard mass closure",
+      "non-mode2 attachment fail closed",
+      "O0/O2 output identity"
+    ],
+    "independent_assertions": [
+      "B1.11 authority hashes locked",
+      "independent sine and table oracles",
+      "dry/re-entry oracle",
+      "A-B-A purity",
+      "calendar coverage and invalid-table fail closed",
+      "no selector mutation in production backend"
+    ]
+  },
+  "admission": {
+    "functional_pr": 360,
+    "canonical_merge_commit": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "state": "CANONICAL_ADMITTED"
+  },
+  "governance_notes": {
+    "superseded_development_pr": 355,
+    "dependency_locality_repair": "The initially separate SWBOTB2 control module was co-located with the serialized forcing/backend module because broad established source lists compile that backend directly; semantics and ownership did not change.",
+    "stale_historical_gates": [
+      "F-SI39 reports unexpected production delta because its historical gate freezes its own postimage scope.",
+      "F-CI72/F-CI74/F-CI79 moving-preservation gates freeze the pre-PPA F-ROSS12 backend blob and therefore report red after this intentional backend successor.",
+      "F-KT22 FMR compile/runtime currently omits pre-existing mod_b110_smooth_freatic_projection from its compile list; this is independent of PPA-LOW02-TIME."
+    ],
+    "disposition": "These red historical/blob-lock checks are not treated as scientific or runtime failures; direct PPA qualification, F-ROSS12, F-CI96, F-GC42 and F-GC44 successor-preservation evidence is green."
+  },
+  "explicit_nonclaims": [
+    "general SWAP .SWP/.BBC parser migration",
+    "raw DATE2 calendar-string ingestion",
+    "SWBOTB=1,3,4,5,8 migration",
+    "mode -2 as a normal user selector",
+    "mixed bottom-mode production profiles",
+    "new groundwater-coupling semantics",
+    "RossFast execution of the legacy SWBOTB2 application control",
+    "new solver physics or numerical policy",
+    "ROM"
+  ],
+  "remaining_lower_boundary_slices": [
+    "PPA-LOW05-APP ordinary non-groundwater-owned DATE5/HBOT5 application",
+    "PPA-LOW04 q(gwl) state/timing law",
+    "PPA-LOW01 prescribed-groundwater-level hybrid boundary/state machine",
+    "PPA-LOW03 deep-aquifer Cauchy explicit/implicit boundary",
+    "PPA-LOW08 lysimeter active-set continuation"
+  ],
+  "closeout_basis": "Functional admission is canonical; this closeout branch updates the machine inventory and gap register without production source changes."
+}
