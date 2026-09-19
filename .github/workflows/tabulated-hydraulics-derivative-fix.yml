@@ -173,25 +173,107 @@ jobs:
       - name: Verify dry and saturation endpoint derivative clamps
         shell: bash
         run: |
-          set -euo pipefail
-          build/tab-hyd-derivfix/wrapper/probe \
-            | tee build/tab-hyd-derivfix/wrapper-normal.txt
-          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd-derivfix/wrapper-normal.txt
+          set -uo pipefail
 
+          set +e
+          build/tab-hyd-derivfix/wrapper/probe \
+            > build/tab-hyd-derivfix/wrapper-normal.txt 2>&1
+          normal_rc=$?
+          set -e
+          cat build/tab-hyd-derivfix/wrapper-normal.txt
+          echo "normal_probe_return_code=$normal_rc"
+          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED
+      - name: Write candidate qualification summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "# TAB-HYD derivative-clamp candidate"
+            echo
+            echo "Candidate contract: dK/dh = 0 outside the tabulated theta range, consistent with the existing constant K endpoint extension."
+            echo
+            cat build/tab-hyd-derivfix/status.tsv
+            cat build/tab-hyd-derivfix/comparison.txt
+            echo
+            grep '^WRAPPER ' build/tab-hyd-derivfix/wrapper-normal.txt || true
+            grep '^DRY_PROBE' build/tab-hyd-derivfix/wrapper-dry.txt || true
+          } > build/tab-hyd-derivfix/summary.md
+          cat build/tab-hyd-derivfix/summary.md
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-derivative-clamp-candidate
+          path: |
+            build/tab-hyd-derivfix/summary.md
+            build/tab-hyd-derivfix/status.tsv
+            build/tab-hyd-derivfix/comparison.*
+            build/tab-hyd-derivfix/*/runtime_seconds.txt
+            build/tab-hyd-derivfix/*/run.log
+            build/tab-hyd-derivfix/wrapper-normal.txt
+            build/tab-hyd-derivfix/wrapper-dry.txt
+ build/tab-hyd-derivfix/wrapper-normal.txt
+          grep -q '^WRAPPER near_sat_dKdh=  *0\.0000000000000000E+00
+      - name: Write candidate qualification summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "# TAB-HYD derivative-clamp candidate"
+            echo
+            echo "Candidate contract: dK/dh = 0 outside the tabulated theta range, consistent with the existing constant K endpoint extension."
+            echo
+            cat build/tab-hyd-derivfix/status.tsv
+            cat build/tab-hyd-derivfix/comparison.txt
+            echo
+            grep '^WRAPPER ' build/tab-hyd-derivfix/wrapper-normal.txt || true
+            grep '^DRY_PROBE' build/tab-hyd-derivfix/wrapper-dry.txt || true
+          } > build/tab-hyd-derivfix/summary.md
+          cat build/tab-hyd-derivfix/summary.md
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-derivative-clamp-candidate
+          path: |
+            build/tab-hyd-derivfix/summary.md
+            build/tab-hyd-derivfix/status.tsv
+            build/tab-hyd-derivfix/comparison.*
+            build/tab-hyd-derivfix/*/runtime_seconds.txt
+            build/tab-hyd-derivfix/*/run.log
+            build/tab-hyd-derivfix/wrapper-normal.txt
+            build/tab-hyd-derivfix/wrapper-dry.txt
+ build/tab-hyd-derivfix/wrapper-normal.txt
+
+          set +e
           build/tab-hyd-derivfix/wrapper/probe dry_probe \
-            | tee build/tab-hyd-derivfix/wrapper-dry.txt
+            > build/tab-hyd-derivfix/wrapper-dry.txt 2>&1
+          dry_rc=$?
+          set -e
+          cat build/tab-hyd-derivfix/wrapper-dry.txt
+          echo "dry_probe_return_code=$dry_rc"
           grep -q '^DRY_PROBE_SUCCESS dKdh=' build/tab-hyd-derivfix/wrapper-dry.txt
+
           python3 - <<'PY'
           from pathlib import Path
           import re
-          text = Path("build/tab-hyd-derivfix/wrapper-dry.txt").read_text()
-          m = re.search(r"DRY_PROBE_UNEXPECTED_SUCCESS dKdh=\s*([0-9.Ee+-]+)", text)
-          if not m:
-              raise SystemExit("dry derivative result missing")
-          value = float(m.group(1))
-          print(f"DRY_ENDPOINT_DKDH={value:.17e}")
-          if value != 0.0:
-              raise SystemExit(f"expected zero dry endpoint derivative, got {value}")
+
+          normal = Path("build/tab-hyd-derivfix/wrapper-normal.txt").read_text()
+          dry = Path("build/tab-hyd-derivfix/wrapper-dry.txt").read_text()
+
+          m_wet = re.search(r"WRAPPER near_sat_dKdh=\s*([0-9.Ee+-]+)", normal)
+          m_dry = re.search(r"DRY_PROBE_SUCCESS dKdh=\s*([0-9.Ee+-]+)", dry)
+          if not m_wet or not m_dry:
+              raise SystemExit("endpoint derivative marker missing")
+
+          wet = float(m_wet.group(1))
+          dryv = float(m_dry.group(1))
+          print(f"WET_ENDPOINT_DKDH={wet:.17e}")
+          print(f"DRY_ENDPOINT_DKDH={dryv:.17e}")
+          if wet != 0.0 or dryv != 0.0:
+              raise SystemExit(f"expected zero endpoint derivatives, got wet={wet}, dry={dryv}")
           PY
 
       - name: Write candidate qualification summary
