@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.lare.rs1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1",
+  "title": "Purpose-dependent reduced-state sufficiency before LARE closure dynamics",
+  "phase": "PREREGISTERED_BEFORE_NEW_HUPSEL_PROFILE_OR_GROUNDWATER_RESPONSE_LIBRARY",
+  "canonical_basis": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "9bb73821bb78a04c759b763746b50a3f777cd416"
+  },
+  "research_question": "Which conservative vertical state information must be retained for declared hydrological purposes before any LARE flux closure is fitted or evaluated?",
+  "distinction": {
+    "alternative_numerical_solver": "targets essentially the same Richards solution and therefore remains subject to strict numerical and hydrological equivalence",
+    "reduced_hydrological_model": "may admit bounded departures from Richards when they remain inside a preregistered purpose-dependent hydrological acceptance envelope"
+  },
+  "state_first_rule": "Reduced-state sufficiency is adjudicated before LARE, EQ-LARE, learned, fitted, or other propagation dynamics are introduced.",
+  "retrospective_pilot_evidence": {
+    "role": "PILOT_ONLY_NOT_NEW_ACCEPTANCE",
+    "B01": {
+      "source_work_unit": "ROM-1A-R2",
+      "artifact_id": 10561841507,
+      "artifact_zip_sha256_local_replay": "2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+      "o0_state_library_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+      "state_count": 768,
+      "cell_count": 16,
+      "cell_thickness_cm": 10.0,
+      "theta_floor": 0.0005420462931603476
+    },
+    "B14": {
+      "source_work_unit": "ROM-1X1",
+      "artifact_id": 10566892886,
+      "artifact_zip_sha256": "12ebef87ead22cac3cda4ed832a4f7e230faf4238936cc760ce3a67e3b7202d9",
+      "o0_state_library_sha256": "37411b9a7e93fedbac14905e005f9554df1eee797146708c53727d119ebd8f50",
+      "state_count": 768,
+      "cell_count": 16,
+      "cell_thickness_cm": 10.0,
+      "theta_floor": 0.0000016414144244913942
+    },
+    "interpretation_firewall": "Numerical state separation in these short near-equilibrium libraries is not hydrological sufficiency and does not authorize a LARE solver."
+  },
+  "new_research_libraries": {
+    "RS1_GW": {
+      "purpose": "groundwater recharge, capillary rise, storage and flux-reversal fidelity",
+      "required_regimes": [
+        "free drainage",
+        "prescribed lower head",
+        "rising lower head",
+        "falling lower head",
+        "drainage-to-capillary reversal",
+        "capillary-to-drainage reversal",
+        "long dry redistribution",
+        "rain after dry state"
+      ],
+      "primary_outputs": [
+        "cumulative_bottom_exchange",
+        "instantaneous_bottom_flux",
+        "bottom_flux_sign",
+        "flux_reversal_time",
+        "total_storage",
+        "fixed_depth_band_storage"
+      ]
+    },
+    "RS1_HUPSEL": {
+      "purpose": "realistic agricultural water-balance, ET, drainage and root-zone state fidelity",
+      "authority": {
+        "period": "2002-01-01 through 2004-12-31",
+        "complete_days": 1096,
+        "accepted_application_intervals": 32518,
+        "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+        "existing_whole_run_identity": "M1-C3 exact normalized result.bal/result.blc identity"
+      },
+      "observation_rule": "Add profile observation only. Do not change physics, solver, timestep, retry, tolerance, forcing, process composition or accepted application intervals.",
+      "required_profile_fields": [
+        "compartment_top_cm",
+        "compartment_bottom_cm",
+        "water_content",
+        "pressure_head_cm",
+        "hydraulic_conductivity_cm_per_day",
+        "drainage_cm_per_day",
+        "root_extraction_cm_per_day",
+        "vertical_water_flux_cm_per_day"
+      ],
+      "application_outputs": [
+        "cumulative_and_mean_actual_ET",
+        "cumulative_drainage",
+        "root_zone_storage",
+        "total_storage",
+        "groundwater_level_where_defined",
+        "dry_spell_response",
+        "wetting_event_response"
+      ]
+    },
+    "RS1_EVENT": {
+      "purpose": "adversarial fast-event and regime-transition fidelity",
+      "required_regimes": [
+        "dry profile plus intense rainfall pulse",
+        "wet profile plus strong evaporation",
+        "wet-dry-wet sequence",
+        "fine-over-coarse material transition",
+        "coarse-over-fine material transition",
+        "shallow-water-table event"
+      ]
+    }
+  },
+  "candidate_representation_policy": {
+    "conservative_state": "layer water storage W_i = integral(theta dz)",
+    "fixed_layer_boundaries_initially": true,
+    "material_boundaries_must_be_layer_boundaries": true,
+    "candidate_families": [
+      "uniform fixed layers",
+      "surface-refined fixed layers",
+      "lower-boundary-or-freatic-zone-refined fixed layers",
+      "surface-plus-lower-active-zone-refined fixed layers",
+      "hydraulically-scaled fixed layers"
+    ],
+    "no_dynamic_remeshing_in_RS1": true,
+    "no_moment_or_front_state_until_storage_only_collision_is_hydrologically_relevant": true
+  },
+  "purpose_dependent_gate": {
+    "collision_definition": "Two accepted full-order states are close in the candidate reduced coordinate but distinguishable in full state under an independently frozen numerical floor.",
+    "failure_definition": "A collision becomes a reduced-state failure only when identical future forcing causes a difference in a preregistered purpose output larger than that purpose's acceptance envelope.",
+    "required_metrics": [
+      "long_term_water_balance",
+      "cumulative_and_mean_evapotranspiration",
+      "drainage_and_groundwater_recharge",
+      "soil_moisture_state",
+      "groundwater_level",
+      "fast_event_timing",
+      "extremes_and_drought",
+      "regime_transitions",
+      "systematic_bias",
+      "mass_conservation"
+    ]
+  },
+  "comparators_after_state_survival": [
+    "Reference Richards fine grid",
+    "coarse Richards on exactly the same candidate partitions",
+    "published LARE closure",
+    "equilibrium-subtracted LARE if standard LARE fails hydrostatic preservation"
+  ],
+  "firewalls": [
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_LARE_CLOSURE_FIT_BEFORE_STATE_GATE",
+    "NO_THRESHOLD_DERIVED_FROM_CANDIDATE_OUTCOMES",
+    "NO_HUPSEL_GRID_RETUNING_FROM_HELDOUT_RESPONSE",
+    "NO_B14_PILOT_RESULT_RELABELED_AS_GENERAL_TRANSFERABILITY",
+    "NO_FULL_STATE_EQUIVALENCE_REQUIRED_WHEN_PURPOSE_ENVELOPE_IS_DECLARED",
+    "NO_MASS_CORRECTION_FLUX_TO_HIDE_DRIFT",
+    "OUTSIDE_QUALIFIED_DOMAIN_IS_AN_ALLOWED_RESULT"
+  ],
+  "production_rom_authorized": false
+}
