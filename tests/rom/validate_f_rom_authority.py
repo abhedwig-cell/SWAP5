@@ -921,7 +921,7 @@ def validate_romv2_d8_if_present() -> str:
 
     require("The sequence D5 → D7 → D8 shows monotonic improvement" in doc,
             "F-ROMV2-D8 monotonic architecture evidence missing")
-    require("Further segmentation is plausible but should not be invented" in doc,
+    require("another custom segmentation should not be invented" in doc,
             "F-ROMV2-D8 literature-reconciliation boundary missing")
     require("Production ROM remains unauthorized." in doc,
             "F-ROMV2-D8 production prohibition missing")
