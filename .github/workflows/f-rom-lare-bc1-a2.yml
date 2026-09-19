@@ -1,0 +1,44 @@
+name: F-ROM-LARE BC1 corrected mode-5 face audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC1_A2_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc1_a2.py'
+      - '.github/workflows/f-rom-lare-bc1-a2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recover qualified Stage-A library
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc1-a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585316225/zip" > /tmp/lare-bc1-a2/stage-a.zip
+          echo "a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0  /tmp/lare-bc1-a2/stage-a.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc1-a2/stage-a.zip -d /tmp/lare-bc1-a2/stage-a
+          echo "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345  /tmp/lare-bc1-a2/stage-a/o0.txt" | sha256sum -c -
+      - name: Audit lagged mode-5 face semantics
+        run: |
+          python3 tests/rom/analyze_lare_bc1_a2.py \
+            --input /tmp/lare-bc1-a2/stage-a/o0.txt \
+            --prereg integration/f-rom/LARE_BC1_A2_PREREGISTRATION.json \
+            --output /tmp/lare-bc1-a2/LARE_BC1_A2_RESULT.json
+      - name: Upload A2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc1-a2
+          path: /tmp/lare-bc1-a2/LARE_BC1_A2_RESULT.json
+          if-no-files-found: warn
