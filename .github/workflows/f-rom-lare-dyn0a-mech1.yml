@@ -1,0 +1,67 @@
+name: F-ROM-LARE DYN0A MECH1 interface-flux decomposition
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH1_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_dyn0a_mech1.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  mech1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover frozen fine-Reference DYN0A evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-dyn0a-mech1
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/lare-dyn0a-mech1/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/lare-dyn0a-mech1/ref.zip" | sha256sum -c -
+          unzip -q /tmp/lare-dyn0a-mech1/ref.zip -d /tmp/lare-dyn0a-mech1/ref
+
+      - name: Execute frozen interface-flux decomposition
+        run: |
+          mkdir -p LARE_DYN0A_MECH1_EVIDENCE
+          python3 tests/rom/analyze_lare_dyn0a_mech1.py \
+            --reference-dir /tmp/lare-dyn0a-mech1/ref \
+            --status /tmp/lare-dyn0a-mech1/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --prereg integration/f-rom/LARE_DYN0A_MECH1_PREREGISTRATION.json \
+            --output LARE_DYN0A_MECH1_EVIDENCE/LARE_DYN0A_MECH1_RESULT.json \
+            | tee LARE_DYN0A_MECH1_EVIDENCE/analyzer.txt
+
+      - name: Validate decomposition firewalls
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_MECH1_EVIDENCE/LARE_DYN0A_MECH1_RESULT.json'))
+          assert p['decision'] in {
+            'GRADIENT_RECONSTRUCTION_DOMINANT',
+            'CONSTITUTIVE_AVERAGING_DOMINANT',
+            'INTERFACE_LOCALIZATION_DOMINANT',
+            'MIXED_CLOSURE_ERROR'
+          }
+          assert p['decomposition_identity_max_abs_residual_cm_per_day'] <= 1e-12
+          assert p['lare_state_propagated'] is False
+          assert p['closure_modified'] is False
+          assert p['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH1_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_MECH1_EVIDENCE/* > LARE_DYN0A_MECH1_EVIDENCE/sha256.txt
+
+      - name: Upload MECH1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech1
+          path: LARE_DYN0A_MECH1_EVIDENCE/
