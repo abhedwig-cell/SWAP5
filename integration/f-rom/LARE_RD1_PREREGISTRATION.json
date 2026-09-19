@@ -1,0 +1,222 @@
+{
+  "schema": "swap5.lare.rd1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RD1",
+  "title": "B01 groundwater reduced-dynamics closure qualification",
+  "phase": "PREREGISTERED_IMPLEMENTATION_HELD_PENDING_CA1",
+  "predecessor": {
+    "rs1_gw_closeout": "PROCEED_TO_LARE_CLOSURE_QUALIFICATION_B01_GW_LAB",
+    "primary_minimum_state": "D3",
+    "d3_boundaries_cm": [
+      0,
+      140,
+      150,
+      160
+    ],
+    "closure_resolution_control": "D4",
+    "d4_boundaries_cm": [
+      0,
+      130,
+      140,
+      150,
+      160
+    ],
+    "aggressive_information_loss_control": "D2",
+    "d2_boundaries_cm": [
+      0,
+      150,
+      160
+    ]
+  },
+  "implementation_prerequisite": {
+    "work_unit": "LARE-CA1",
+    "required_close_decision": [
+      "LARE_CLOSURE_AUTHORITY_COMPLETE",
+      "LARE_CLOSURE_AUTHORITY_COMPLETE_WITH_DECLARED_INTERPRETATION"
+    ],
+    "source_code_change_before_close": false
+  },
+  "primary_research_question": "Can the published multi-layer LARE closure propagate a reduced storage state that is already shown to be information-sufficient, without introducing hydrologically consequential closure error?",
+  "separation_of_errors": {
+    "state_information_error": "measured by RS1/P1/P2C before any reduced dynamics",
+    "closure_error": "difference introduced by published LARE propagation from the same projected state",
+    "coarse_richards_discretization_error": "difference introduced by conventional Richards discretization on the same fixed layer geometry",
+    "time_integration_error": "measured separately by temporal refinement of each reduced dynamics route"
+  },
+  "mandatory_routes": [
+    {
+      "id": "REF16",
+      "method": "current qualified fine Reference Richards",
+      "geometry_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "full-order scientific reference"
+    },
+    {
+      "id": "CR_D3",
+      "method": "conventional coarse Richards",
+      "geometry_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "role": "equal-prognostic-dimension numerical comparator"
+    },
+    {
+      "id": "LARE_D3",
+      "method": "published clean-sheet LARE closure",
+      "geometry_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "role": "primary reduced-dynamics candidate"
+    },
+    {
+      "id": "CR_D4",
+      "method": "conventional coarse Richards",
+      "geometry_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "nested coarse-discretization control"
+    },
+    {
+      "id": "LARE_D4",
+      "method": "published clean-sheet LARE closure",
+      "geometry_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "closure-resolution control with no demonstrated extra RS1 state-information value"
+    },
+    {
+      "id": "LARE_D2",
+      "method": "published clean-sheet LARE closure",
+      "geometry_cm": [
+        0,
+        150,
+        160
+      ],
+      "role": "aggressive information-loss negative/control route"
+    }
+  ],
+  "conditional_route": {
+    "id": "EQ_LARE",
+    "authorization_condition": "Standard published LARE first demonstrates a reproducible hydrostatic/equilibrium preservation defect that is attributable to the published closure rather than implementation error.",
+    "preregistration_required_before_execution": true,
+    "not_authorized_as_silent_repair": true
+  },
+  "stage_order": [
+    {
+      "stage": "RD1-A",
+      "purpose": "static and one-step closure identities",
+      "gates": [
+        "mass-conservative layer ledger to machine-scale accounting",
+        "finite and bounded state",
+        "zero-flux equilibrium check",
+        "gravity-consistent steady-state check",
+        "interface-flux sign convention check",
+        "D3/D4 exact projection storage identity"
+      ]
+    },
+    {
+      "stage": "RD1-B",
+      "purpose": "frozen Stage-A one-step flux-closure audit",
+      "input_states": "response-blind subset of existing Stage-A Reference states, selected before LARE response",
+      "outputs": [
+        "top flux",
+        "interlayer fluxes",
+        "bottom flux",
+        "layer storage tendencies"
+      ]
+    },
+    {
+      "stage": "RD1-C",
+      "purpose": "full-history propagation",
+      "histories": [
+        "G00",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05"
+      ],
+      "observation_step_day": 0.0008,
+      "maximum_history_steps": 1024
+    },
+    {
+      "stage": "RD1-D",
+      "purpose": "frozen future-probe propagation from P2C state cohort",
+      "cohort": "the same 41 response-blind P2 common-cohort states where route initialization is physically defined",
+      "probes": [
+        "HOLD",
+        "TOP_PLUS",
+        "TOP_MINUS",
+        "BOTTOM_HEAD_RISE",
+        "BOTTOM_HEAD_FALL",
+        "BOTTOM_HEAD_RISE_THEN_FALL",
+        "BOTTOM_HEAD_FALL_THEN_RISE"
+      ]
+    }
+  ],
+  "purpose_outputs": [
+    "layer and total storage",
+    "cumulative bottom exchange",
+    "terminal bottom flux",
+    "bottom-flux sign",
+    "reversal sequence and timing",
+    "systematic signed exchange bias",
+    "mass residual",
+    "fallback or outside-domain status",
+    "CPU and function-evaluation counts only after physical qualification"
+  ],
+  "adjudication_logic": {
+    "state_vs_closure": [
+      "If D3 state information is sufficient but LARE_D3 fails while CR_D3 succeeds, classify closure-method failure.",
+      "If both LARE_D3 and CR_D3 fail similarly, classify coarse vertical resolution as the likely limiting factor before attributing failure specifically to LARE.",
+      "If LARE_D4 materially improves over LARE_D3 while P2C shows D3 and D4 state-information equivalence, classify the gain as closure-resolution benefit rather than missing state information.",
+      "If LARE_D3 succeeds while CR_D3 is worse under the same purpose vector, this supports a scientific advantage of integrated layer averaging over conventional coarse Richards at equal prognostic dimension.",
+      "If D2 fails where D3 succeeds, preserve that as evidence for a minimum information requirement rather than tuning D2."
+    ],
+    "application_acceptance": "No absolute GW-D/GW-R ACCEPT_FOR_PURPOSE claim until an external application envelope or downstream coupling sensitivity authority exists.",
+    "computational_value": "No speedup claim until physical qualification passes; compare wall time and evaluation counts only for scientifically admissible routes."
+  },
+  "no_fit_rule": "No closure coefficient, empirical correction, learned term, clipping threshold or flux correction may be fitted to Reference response in RD1.",
+  "conservation_rule": "No correction flux may hide closure drift. Any numerical projection correction must be reported separately and cannot enter the water ledger as a physical flux.",
+  "state_publication_rule": "Any future SWAP solver integration must publish a valid full physical state through the existing solver contract, but RD1 may remain a research harness until the closure survives.",
+  "close_decisions": [
+    "LARE_D3_CLOSURE_PROMISING",
+    "LARE_D4_CLOSURE_RESOLUTION_REQUIRED",
+    "COARSE_RICHARDS_SUFFICIENT",
+    "LARE_CLOSURE_CLASS_NO_GO",
+    "MORE_STATE_INFORMATION_REQUIRED",
+    "BLOCKED_CLOSURE_AUTHORITY",
+    "OUTSIDE_QUALIFIED_DOMAIN"
+  ],
+  "production_rom_authorized": false
+}
