@@ -1,0 +1,27 @@
+name: PPA-ROOT-HYD01 net root extraction diagnosis
+
+on:
+  push:
+    branches:
+      - work/ppa-root-hyd01-net-root-extraction
+    paths:
+      - 'tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90'
+      - 'tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh'
+      - '.github/workflows/ppa-root-hyd01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run sink equivalence and duration sweep
+        run: bash tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh
