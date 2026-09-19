@@ -260,5 +260,16 @@
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_implementation_binding": {
+    "before_any_C4R_reference_generation": true,
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "c4q_matched_analyzer_blob": "b53356e673a7f9f9b6a71d269278bdf25f5fc6fc",
+    "d13_fortran_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "d13_fmc_analyzer_blob": "803867a2ccdb190142274e9c41aafc3d3ca8d76a",
+    "d13_execution_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "allowed_new_code": "history materialization, current-canonical execution plumbing, blind metric aggregation only",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
