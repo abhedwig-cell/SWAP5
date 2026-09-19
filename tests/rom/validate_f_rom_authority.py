@@ -199,6 +199,56 @@ def validate_rom1_if_present() -> str:
     return "CLOSED_MATERIAL_SPECIFIC_ONLY"
 
 
+def validate_romv2_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    predecessor_status = load_json("integration/f-rom/F-ROMV_STATUS.json")
+    predecessor_result = load_json("integration/f-rom/F-ROMV_MDE_STAGE1_RESULT.json")
+    status = load_json(str(status_path))
+    acceptance = load_json("integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json")
+    proposition = Path("docs/science/F-ROMV2_PURPOSE_DEPENDENT_FIDELITY_PROPOSITION.md").read_text(encoding="utf-8")
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV_STATUS.json")
+            == "4ba4b9f59af4a2469e5734efc63519e9ae9432d7",
+            "historical F-ROMV terminal status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV_MDE_STAGE1_RESULT.json")
+            == "340685ea0cfb782b7d5ecbcff8a64ee1991f7911",
+            "historical F-ROMV Stage-1 result blob drift")
+    require(predecessor_status["phase"] == "CLOSED_NO_GO_UNDER_CURRENT_PROPOSITION",
+            "F-ROMV predecessor no longer terminal no-go")
+    require(predecessor_result["decision"] == "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+            "F-ROMV Stage-1 negative result drift")
+
+    require(status["phase"] == "PROPOSITION_OPEN", "F-ROMV2 proposition phase drift")
+    require(status["predecessor"]["reclassified"] is False, "F-ROMV predecessor reclassified")
+    require(status["numerical_equivalence_to_reference_required"] is False,
+            "F-ROMV2 reduced-model equivalence rule drift")
+    require(status["exploratory_post_terminal_evidence"]["local_table_C2"]
+            == "FEASIBILITY_ONLY_NOT_CONFIRMATORY",
+            "post-terminal exploratory evidence promoted to qualification")
+    require(status["current_authority"]["production_rom_authorized"] is False,
+            "F-ROMV2 production ROM unexpectedly authorized")
+    require(status["current_authority"]["blind_validation_authorized"] is False,
+            "F-ROMV2 blind validation unexpectedly authorized at proposition stage")
+
+    require(acceptance["integrity_is_application_independent"] is True,
+            "F-ROMV2 integrity rule drift")
+    require(acceptance["threshold_policy"].startswith("No universal percentage tolerance"),
+            "F-ROMV2 threshold policy drift")
+    require(acceptance["stage_boundary"]["old_exposed_histories_may_be_blind_validation"] is False,
+            "F-ROMV2 attempts to reuse exposed H01-H04 as blind validation")
+    require(acceptance["stage_boundary"]["new_validation_must_be_generated_after_preregistration"] is True,
+            "F-ROMV2 validation-order firewall drift")
+    require("NOT A RECLASSIFICATION OF F-ROMV" in proposition,
+            "F-ROMV2 historical-result firewall missing")
+    require("computational-cost versus hydrological-fidelity frontier" in proposition,
+            "F-ROMV2 cost-fidelity objective missing")
+
+    return "PROPOSITION_OPEN"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -224,6 +274,7 @@ def main() -> int:
     validate_foundation()
     rom0_phase = validate_rom0_current()
     rom1_phase = validate_rom1_if_present()
+    romv2_phase = validate_romv2_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -233,6 +284,7 @@ def main() -> int:
     print("F_ROMP_DECISION=PROCEED_TO_ROM0")
     print(f"F_ROM0_PHASE={rom0_phase}")
     print(f"F_ROM1_PHASE={rom1_phase}")
+    print(f"F_ROMV2_PHASE={romv2_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
