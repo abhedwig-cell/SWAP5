@@ -1,0 +1,69 @@
+{
+  "schema_id": "SWAP5_PROJECT_ACCURACY_CONTRACT_EVIDENCE_V1",
+  "packet_id": "HYDRO-MEMORY-STAGE0-ACC-V1",
+  "packet_version": 1,
+  "project": {
+    "project_id": "HYDRO-MEMORY-STAGE0",
+    "name": "HYDRO-MEMORY Stage 0 drought-recovery experiment",
+    "jurisdiction": "HYDRO-MEMORY research project governance",
+    "decision_context": "Prospective numerical adequacy requirement for Stage 0 groundwater-head simulation before scientific hypothesis testing.",
+    "qoi_kind": "GROUNDWATER_HEAD",
+    "spatial_scope": "Synthetic one-dimensional root-zone-vadose-zone-groundwater column over prescribed groundwater-depth treatments 0.8 to 4.0 m.",
+    "time_horizon": "90-day Stage 0 experiment: 30-day drought followed by 60-day recovery."
+  },
+  "application_requirement": {
+    "available": true,
+    "externally_qualified": true,
+    "value_cm": 0.4,
+    "requirement_semantics": "MAX_ABSOLUTE_PREDICTION_ERROR",
+    "provenance": {
+      "provenance_id": 590201,
+      "claim_id": "HM-ACC-APP-001",
+      "issuer": "HYDRO-MEMORY research project governance",
+      "document_title": "HYDRO-MEMORY Stage 0 Numerical Accuracy Governance v1",
+      "document_version": "v1",
+      "clause": "4.1",
+      "locator": "docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md#41-application-prediction-error-requirement-claim-hm-acc-app-001",
+      "governance_status": "PROJECT_GOVERNANCE_APPROVED",
+      "claim_type": "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+      "evidence_basis_kind": "EXPLICIT_NUMERICAL_PREDICTION_ERROR_ACCEPTANCE_RULE",
+      "source_digest_sha256": "8ddbc0fefe801aea73155e2f519e1749bd16a934ade9ed1e08eb0d8ceb836924",
+      "external_to_swap_numerical_behavior": true
+    }
+  },
+  "temporal_policy": {
+    "available": true,
+    "externally_qualified": true,
+    "mode": "FRACTION_OF_APPLICATION_REQUIREMENT",
+    "allocation_fraction": 0.25,
+    "direct_budget_cm": null,
+    "provenance": {
+      "provenance_id": 590202,
+      "claim_id": "HM-ACC-TEMP-001",
+      "issuer": "HYDRO-MEMORY research project governance",
+      "document_title": "HYDRO-MEMORY Stage 0 Numerical Accuracy Governance v1",
+      "document_version": "v1",
+      "clause": "4.2",
+      "locator": "docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md#42-temporal-allocation-requirement-claim-hm-acc-temp-001",
+      "governance_status": "PROJECT_GOVERNANCE_APPROVED",
+      "claim_type": "TEMPORAL_ERROR_ALLOCATION_FRACTION",
+      "evidence_basis_kind": "EXPLICIT_TEMPORAL_ALLOCATION_RULE",
+      "source_digest_sha256": "8ddbc0fefe801aea73155e2f519e1749bd16a934ade9ed1e08eb0d8ceb836924",
+      "external_to_swap_numerical_behavior": true
+    }
+  },
+  "forbidden_substitution_attestations": {
+    "not_physical_impact_threshold_only": true,
+    "not_calibration_metric_only": true,
+    "not_model_generated_uncertainty_only": true,
+    "not_monitoring_trigger_only": true,
+    "not_swap_numerical_behavior": true,
+    "not_model_timestep_schedule": true
+  },
+  "canonical_mapping": {
+    "contract_id": 590200,
+    "contract_version": 1,
+    "application_provenance_id": 590201,
+    "temporal_allocation_provenance_id": 590202
+  }
+}
