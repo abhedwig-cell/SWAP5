@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.num_unc.p0a.spatial_control_result.v1",
+  "work_unit": "NUM-UNC-P0A-SPATIAL",
+  "date": "2026-09-19",
+  "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "workflow_run_id": 35430200093,
+  "workflow_conclusion": "success",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "output_sha256": "1ddb3f671aadaab1a8c102ddc3580934d33b97e438c2ad9c407c6806702dafa2",
+  "N1_executed": false,
+  "grid": {
+    "cells": 32,
+    "dz_cm": 5,
+    "total_depth_cm": 160,
+    "rooted_nodes": 12,
+    "root_depth_cm": 60
+  },
+  "cases": {
+    "A_minus": {
+      "Se0": 0.16270876169331827,
+      "class": "STRESS_BEFORE_RESCUE",
+      "first_stress_block": 12,
+      "first_stress_time_day": 0.0704,
+      "min_Ta_Tp": 0.9938152587913011,
+      "max_mass_cm": 4.89941680975603e-16
+    },
+    "A_plus": {
+      "Se0": 0.16770876169331828,
+      "class": "NOT_BEFORE_RESCUE",
+      "first_stress_block": 69,
+      "first_stress_time_day": 0.4352,
+      "min_Ta_Tp": 0.9972401956297355,
+      "max_mass_cm": 7.079337116522311e-16
+    }
+  },
+  "status": "PASS_OUTER_BRACKET_STABLE",
+  "claim_ceiling": "Qualitative bracket stability under one twofold vertical refinement only."
+}\n
