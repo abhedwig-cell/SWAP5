@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.lare.bc2.b0geo.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B0-GEO",
+  "phase": "PREREGISTERED_BEFORE_GEOMETRY_ONLY_REPLAY",
+  "purpose": "Separate moving-control-volume state algebra from the LARE water-table flux closure by replaying the qualified A2 H(t) and Reference q_H(t) trajectories exactly.",
+  "predecessor": {
+    "A0": "integration/f-rom/LARE_BC2_A0_RESULT.json",
+    "A1": "integration/f-rom/LARE_BC2_A1_RESULT.json",
+    "A2": "integration/f-rom/LARE_BC2_A2_RESULT.json",
+    "required_A2_decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED"
+  },
+  "source_semantics_block": {
+    "status": "EXECUTION_MAY_CHARACTERIZE_BOTH_FORMS_BUT_PHYSICAL_FORM_SELECTION_IS_BLOCKED_UNTIL_SOURCE_OUTPUT_ORACLE_IS_INSPECTED",
+    "official_oracle": "EPA DOI 10.23719/1524300, ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx",
+    "reason": "A0 confirmed literal printed average-state and conservative product forms are not control-volume equivalent. Source-output reproduction is required before inferring which form the published implementation used."
+  },
+  "geometry": {
+    "fixed_anchor_a_cm": 90,
+    "H_source": "A2 strict interior zero-pressure crossing",
+    "H_within_interval": "linear endpoint interpolation",
+    "dHdt": "(H_{n+1}-H_n)/dt",
+    "moving_thickness": "H-a",
+    "no_layer_birth_death": true
+  },
+  "forcing_replay": {
+    "q_top": "Reference top flux; zero in A2",
+    "q_H": "Reference water-table flux identified with accepted bottom outward exchange/dt after A2 saturated-zone audit",
+    "no_reduced_flux_closure": true,
+    "no_feedback_to_H": true
+  },
+  "variants": {
+    "CONSERVATIVE_REPLAY": {
+      "state": "W_m",
+      "equation": "dW_m/dt=q_interface-q_H+theta_s*dHdt",
+      "q_interface_role": "diagnosed exactly by residual from Reference moving-storage ledger for the moving volume; no LARE closure in B0-GEO",
+      "expected_if_geometry_authority_consistent": "reconstruct Reference moving storage to numerical ledger floor"
+    },
+    "PUBLISHED_THETA_REPLAY": {
+      "state": "theta_bar_m",
+      "equation": "(H-a)dtheta_bar_m/dt-theta_s*dHdt=q_interface-q_H",
+      "q_interface_role": "same Reference residual forcing as conservative replay",
+      "role": "measure consequence of literal printed state equation under exactly identical flux/geometry forcing"
+    }
+  },
+  "diagnostics": [
+    "maximum absolute moving-storage replay error",
+    "cumulative moving-storage replay error",
+    "maximum theta_bar error",
+    "difference between conservative and published replay",
+    "published-form implied water defect",
+    "stationary WT_HOLD identity"
+  ],
+  "adjudication": {
+    "no_fit": true,
+    "no_form_selected_by_swap_fit": true,
+    "valid_outcomes": [
+      "BC2_GEOMETRY_REPLAY_CONSERVATIVE_IDENTITY_CONFIRMED",
+      "BC2_GEOMETRY_REPLAY_BLOCKED",
+      "BC2_REFERENCE_GEOMETRY_INSUFFICIENT"
+    ],
+    "source_form_selection_deferred": true,
+    "application_acceptance": false
+  },
+  "relationship_to_existing_B0": {
+    "existing_file": "integration/f-rom/LARE_BC2_B0_PREREGISTRATION.json",
+    "clarification": "Existing B0 combines moving geometry with an independent LARE interface/water-table flux closure and is therefore geometry-plus-closure, not a pure geometry-isolation experiment.",
+    "execution_order": "B0-GEO and source-output oracle reconciliation precede scientific interpretation of existing B0."
+  },
+  "firewalls": [
+    "NO_LARE_QH_CLOSURE",
+    "NO_LARE_INTERNAL_INTERFACE_CLOSURE",
+    "NO_SOURCE_FORM_SELECTION_FROM_SWAP_REPLAY",
+    "NO_BOTTOM_HEAD_AS_H",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
