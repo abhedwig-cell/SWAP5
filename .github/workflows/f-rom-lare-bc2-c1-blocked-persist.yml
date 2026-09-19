@@ -92,12 +92,29 @@ jobs:
       - name: Persist blocked scientific result
         run: |
           set -euo pipefail
-          cp /tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json integration/f-rom/LARE_BC2_C1_RESULT.json
+          cp /tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json /tmp/LARE_BC2_C1_RESULT.validated.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # The branch is intentionally active while independent research gates run.
+          # Rebind to the latest remote head only after the scientific result has
+          # been reproduced and validated; then add the byte-identical result.
+          git fetch origin work/f-rom-lare-rs1
+          git reset --hard origin/work/f-rom-lare-rs1
+          cp /tmp/LARE_BC2_C1_RESULT.validated.json integration/f-rom/LARE_BC2_C1_RESULT.json
           git add integration/f-rom/LARE_BC2_C1_RESULT.json
           git diff --cached --check
           git commit -m "F-ROM-LARE: persist BC2-C1 hard-gated blocked decomposition"
+
+          # Tolerate a final benign branch race without recomputing or changing
+          # the evidence. A content conflict remains fail-closed.
+          for attempt in 1 2 3; do
+            if git push origin HEAD:work/f-rom-lare-rs1; then
+              exit 0
+            fi
+            git fetch origin work/f-rom-lare-rs1
+            git rebase origin/work/f-rom-lare-rs1
+          done
           git push origin HEAD:work/f-rom-lare-rs1
 
       - name: Upload blocked C1 evidence
