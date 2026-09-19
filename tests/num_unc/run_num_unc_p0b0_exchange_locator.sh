@@ -6,7 +6,7 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"; trap 'rm -rf "$BUILD"' EXIT; cd "$ROOT"
 fail(){ echo "NUM_UNC_P0B0_GATE_FAIL $*" >&2; exit 1; }
 TEST=tests/num_unc/test_num_unc_p0b0_exchange_locator.f90
 MANIFEST=integration/num-unc/NUM_UNC_P0_MANIFEST.json
-BASE=187e30153c890151768e929170d14bb22af1d86d
+BASE=308a619c91d2cc3dae7f7aa143cfbe97c780c635
 git merge-base --is-ancestor "$BASE" HEAD || fail 'baseline not ancestor'
 git diff --quiet "$BASE" HEAD -- src reference || fail 'production/reference source mutation'
 grep -Fq '"status": "B0_PREREGISTERED_BEFORE_EXECUTION"' "$MANIFEST" || fail 'B0 preregistration missing'
@@ -29,6 +29,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
