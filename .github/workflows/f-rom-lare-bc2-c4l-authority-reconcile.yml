@@ -1,0 +1,146 @@
+name: F-ROM-LARE reconcile authoritative C4L closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4l-authority-reconcile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover post-repair C4L aggregate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4l
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10592180556/zip" > /tmp/c4l.zip
+          echo "44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16  /tmp/c4l.zip" | sha256sum -c -
+          unzip -q /tmp/c4l.zip -d /tmp/c4l
+          echo "f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8  /tmp/c4l/LARE_BC2_C4L_RESULT.json" | sha256sum -c -
+
+      - name: Validate authoritative C4L
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4l/LARE_BC2_C4L_RESULT.json'))
+          assert r['decision']=='QH_PRESERVING_CUBIC_MIXED'
+          assert r['blocked_cases']==[]
+          assert len(r['supported_cases'])==3
+          assert len(r['unsupported_cases'])==3
+          h=r['hard_checks']
+          assert h['maximum_hydrostatic_abs_u']==0.0
+          assert h['maximum_hydrostatic_abs_v']==0.0
+          assert h['maximum_qH_candidate_vs_B9_identity_cm_per_day']==0.0
+          assert h['maximum_qi_64_vs_128_cm_per_day'] <= 1e-8
+          assert h['maximum_storage_residual_cm'] <= 1e-10
+          assert h['minimum_profile_psi_cm'] >= 0.0
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4L_POST_REPAIR_AUTHORITY=PASS')
+          PY
+
+      - name: Build authoritative closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4l/LARE_BC2_C4L_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4l.closeout.v2',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4L',
+            'status':'CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35467786671,
+              'execution_head':'c0381a606ac7245fcfeabddf8a8fdffb276dd285',
+              'aggregate_artifact_id':10592180556,
+              'aggregate_artifact_digest':'sha256:44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16',
+              'result_sha256':'f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8',
+              'governance_repairs':[
+                '54c513f56cab8065391d9562e2bc217bc7b65a1b',
+                'c0381a606ac7245fcfeabddf8a8fdffb276dd285'
+              ]
+            },
+            'superseded_pre_repair_authority':{
+              'workflow_run':35467705083,
+              'execution_head':'f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93',
+              'aggregate_artifact_id':10591503680,
+              'aggregate_artifact_digest':'sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa',
+              'stale_persistence_run':35467810381,
+              'stale_persistence_commit':'b2db900b1b57e9758471a7a679314a3b06dee273',
+              'reason':'The first execution did not fully enforce the preregistered no-clipping and manufactured-hydrostatic gates. Its qualitative result is not used as C4L execution authority.'
+            },
+            'case_artifacts':{
+              '2.5:WT_HOLD':{'id':10591244041,'digest':'sha256:af4827fe21b247bb127fa1929c28907a131980bf6dc9d5edf1b85ef137725e1a'},
+              '2.5:WT_RISE':{'id':10591184259,'digest':'sha256:d40f674da1f7c320aa76fe6e34cd799befa02f94578cd9e93a41c9c468fce096'},
+              '2.5:WT_FALL':{'id':10591264019,'digest':'sha256:c131021d690294c502732f523493b0a51b8657c4bcf7485900e882f3a593a4f4'},
+              '5.0:WT_HOLD':{'id':10592275295,'digest':'sha256:4ea5f1d0f55f5da11f0465dbc38e9c01ce3d4919424d7e1067d71f782a191374'},
+              '5.0:WT_RISE':{'id':10592035747,'digest':'sha256:f28359edc7da62f619f60374e0935e1cf91288d77c62a95829babee493746888'},
+              '5.0:WT_FALL':{'id':10591318951,'digest':'sha256:9527c0b7fba88646e97190cc44c6daaf569c247893ab8ecc143e4c14033796c5'}
+            },
+            'key_results':{
+              '2.5_RISE':{'base_rms':r['summary']['2.5']['WT_RISE']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_RISE']['qi_CUBIC']['rms']},
+              '2.5_FALL':{'base_rms':r['summary']['2.5']['WT_FALL']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_FALL']['qi_CUBIC']['rms']},
+              '5_RISE':{'base_rms':r['summary']['5.0']['WT_RISE']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_RISE']['qi_CUBIC']['rms']},
+              '5_FALL':{'base_rms':r['summary']['5.0']['WT_FALL']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_FALL']['qi_CUBIC']['rms']},
+              '2.5_HOLD':{'base_rms':r['summary']['2.5']['WT_HOLD']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_HOLD']['qi_CUBIC']['rms']},
+              '5_HOLD':{'base_rms':r['summary']['5.0']['WT_HOLD']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_HOLD']['qi_CUBIC']['rms']}
+            },
+            'hard_checks':r['hard_checks'],
+            'scientific_interpretation':[
+              'The qH-preserving cubic is conservative, physically admissible, cross-quadrature stable and exactly hydrostatic in the manufactured test, yet it is not a transferable qi closure across width and regime.',
+              'It improves both moving directions at 2.5 cm and 5 cm FALL, but worsens 5 cm RISE and introduces nonzero qi in HOLD.',
+              'Because qH is exactly identical to B9, the mixed result is attributable to internal gradient reconstruction rather than a lower-boundary tradeoff.',
+              'No cubic propagation is authorized.'
+            ],
+            'next_authority':'PREREGISTER_INTERNAL_SLOPE_CORRECTION_MECHANISM_REVIEW',
+            'model_changed':False,
+            'propagated_dynamics_authorized':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4L_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4L authoritative closeout
+
+          Formal decision: QH_PRESERVING_CUBIC_MIXED.
+
+          This closeout supersedes the pre-repair C4L persistence. The authoritative execution is workflow 35467786671 at head c0381a606ac7245fcfeabddf8a8fdffb276dd285, after explicit enforcement of the preregistered no-clipping and hydrostatic gates.
+
+          All hard gates pass. Manufactured hydrostatics recover u=v=0 exactly. The maximum 64-vs-128 qi difference is 2.64e-9 cm/d, storage residual is below 4.88e-13 cm, minimum profile psi is zero, and qH is exactly identical to B9.
+
+          The science result remains mixed. At 2.5 cm, RISE RMS improves from 0.3611 to 0.3434 cm/d and FALL from 0.2941 to 0.2816. At 5 cm, FALL improves from 0.4916 to 0.4387, but RISE worsens from 0.6302 to 0.8535. HOLD also worsens from numerical-zero qi to 0.00461 cm/d at 2.5 cm and 0.01690 cm/d at 5 cm.
+
+          Thus the cubic family is numerically valid but scientifically not transferable as a universal memoryless qi closure. No free propagation is authorized. The next step is an internal-slope correction mechanism review against the Reference-required slope, including the existing one-sided B9 slopes and a central finite-volume control.
+          MD
+
+      - name: Replace stale C4L persistence
+        run: |
+          set -euo pipefail
+          cp /tmp/c4l/LARE_BC2_C4L_RESULT.json integration/f-rom/LARE_BC2_C4L_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4L_RESULT.json integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4L_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: supersede C4L with post-repair authority"
+          git push origin HEAD:work/f-rom-lare-rs1
