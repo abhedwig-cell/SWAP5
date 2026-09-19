@@ -1,0 +1,119 @@
+name: F-ROM-LARE persist C4L cubic closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4l-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4L authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4l
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591503680/zip" > /tmp/c4l.zip
+          echo "fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa  /tmp/c4l.zip" | sha256sum -c -
+          unzip -q /tmp/c4l.zip -d /tmp/c4l
+          echo "4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20  /tmp/c4l/LARE_BC2_C4L_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4L
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4l/LARE_BC2_C4L_RESULT.json'))
+          assert r['decision']=='QH_PRESERVING_CUBIC_MIXED'
+          assert r['blocked_cases']==[]
+          assert len(r['supported_cases'])==3
+          assert len(r['unsupported_cases'])==3
+          assert r['hard_checks']['maximum_qH_candidate_vs_B9_identity_cm_per_day']==0.0
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4L_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4l/LARE_BC2_C4L_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4l.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4L',
+            'status':'CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35467705083,
+              'execution_head':'f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93',
+              'artifact_id':10591503680,
+              'artifact_digest':'sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa',
+              'result_sha256':'4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20'
+            },
+            'supported_cases':r['supported_cases'],
+            'unsupported_cases':r['unsupported_cases'],
+            'key_results':{
+              '2.5_RISE':{'base_rms':r['summary']['2.5']['WT_RISE']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_RISE']['qi_CUBIC']['rms']},
+              '2.5_FALL':{'base_rms':r['summary']['2.5']['WT_FALL']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_FALL']['qi_CUBIC']['rms']},
+              '5_RISE':{'base_rms':r['summary']['5.0']['WT_RISE']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_RISE']['qi_CUBIC']['rms']},
+              '5_FALL':{'base_rms':r['summary']['5.0']['WT_FALL']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_FALL']['qi_CUBIC']['rms']},
+              '2.5_HOLD':{'base_rms':r['summary']['2.5']['WT_HOLD']['qi_BASE']['rms'],'cubic_rms':r['summary']['2.5']['WT_HOLD']['qi_CUBIC']['rms']},
+              '5_HOLD':{'base_rms':r['summary']['5.0']['WT_HOLD']['qi_BASE']['rms'],'cubic_rms':r['summary']['5.0']['WT_HOLD']['qi_CUBIC']['rms']}
+            },
+            'scientific_interpretation':[
+              'The qH-preserving cubic is numerically well-defined and conservative but is not a transferable qi closure across width and regime.',
+              'It improves both moving directions at 2.5 cm and improves 5 cm FALL, but worsens 5 cm RISE and introduces nonzero qi under HOLD where the B9 baseline is essentially hydrostatic.',
+              'Because qH is identical to B9, the mixed result is attributable to the internal gradient reconstruction itself, not a lower-boundary tradeoff.',
+              'No propagated cubic dynamics are authorized.'
+            ],
+            'next_authority':'PREREGISTER_INTERNAL_SLOPE_CORRECTION_MECHANISM_REVIEW',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4L_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4L closeout
+
+          Formal decision: QH_PRESERVING_CUBIC_MIXED.
+
+          C4L fixed the lower-boundary slope exactly to the already-supported B7/B9 terminal slope and solved only two curvature coefficients from Wt and Wb. No response fitting, extra state, clipping or direction switch was used.
+
+          All numerical hard gates passed. The maximum 64-vs-128 qi difference is about 2.64e-9 cm/d, storage residuals remain below 8e-13 cm, and qH is exactly identical to B9.
+
+          The internal flux result is mixed. At 2.5 cm, RISE RMS improves from about 0.361 to 0.343 cm/d and FALL from 0.294 to 0.282. At 5 cm, FALL improves from about 0.492 to 0.439, but RISE worsens from about 0.630 to 0.854 cm/d. HOLD is also damaged: cubic qi becomes about 0.0046 cm/d at 2.5 cm and 0.0169 cm/d at 5 cm while B9 remains near numerical zero.
+
+          Therefore the cubic curvature family is not admitted for propagation. The next diagnostic must explain the sign and magnitude of the required interface-slope correction relative to the B9 terminal slope before another closure is proposed.
+          MD
+
+      - name: Persist C4L authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4l/LARE_BC2_C4L_RESULT.json integration/f-rom/LARE_BC2_C4L_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4L_RESULT.json integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4L_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close mixed C4L cubic reconstruction"
+          git push origin HEAD:work/f-rom-lare-rs1
