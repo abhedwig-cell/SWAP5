@@ -1,0 +1,25 @@
+name: PUB-GC GMD final authority handoff
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'release/pub-gc-gmd/PUB_GC_GMD_FINAL_AUTHORITY_INPUT.json'
+      - 'release/pub-gc-gmd/validate_final_authority_input.py'
+      - '.github/workflows/pub-gc-gmd-final-authority-handoff.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate PUB-GC GMD final authority handoff
+        run: python release/pub-gc-gmd/validate_final_authority_input.py
