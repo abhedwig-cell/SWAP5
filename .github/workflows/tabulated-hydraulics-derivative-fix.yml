@@ -176,16 +176,16 @@ jobs:
           set -uo pipefail
 
           set +e
-          build/tab-hyd-derivfix/wrapper/probe > build/tab-hyd-derivfix/wrapper-normal.txt 2>&1
-          normal_rc=$?
+          build/tab-hyd-derivfix/wrapper/probe 2>&1 | tee build/tab-hyd-derivfix/wrapper-normal.txt
+          normal_rc=${PIPESTATUS[0]}
           set -e
           cat build/tab-hyd-derivfix/wrapper-normal.txt
           echo "normal_probe_return_code=$normal_rc"
           grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd-derivfix/wrapper-normal.txt
 
           set +e
-          build/tab-hyd-derivfix/wrapper/probe dry_probe > build/tab-hyd-derivfix/wrapper-dry.txt 2>&1
-          dry_rc=$?
+          build/tab-hyd-derivfix/wrapper/probe dry_probe 2>&1 | tee build/tab-hyd-derivfix/wrapper-dry.txt
+          dry_rc=${PIPESTATUS[0]}
           set -e
           cat build/tab-hyd-derivfix/wrapper-dry.txt
           echo "dry_probe_return_code=$dry_rc"
