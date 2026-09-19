@@ -109,7 +109,7 @@ program test_hydro_memory_acc01_f1_temporal_feasibility
   write(*,'(a)') 'HYDRO_MEMORY_ACC01_F1_ROOT_STATE_CHANGING=PASS'
   write(*,'(a)') 'HYDRO_MEMORY_ACC01_F1_ROOT_GENERIC_EQUIVALENCE=PASS'
   write(*,'(a)') 'HYDRO_MEMORY_ACC01_F1_HARD_MASS=PASS'
-  write(*,'(a)') 'ACC01_F1_PASS_ONE_DAY_GOVERNED_TEMPORAL_ROUTE'
+  write(*,'(a)') 'ACC01_F1_PASS_GOVERNED_TEMPORAL_ROUTE'
 
 contains
 
