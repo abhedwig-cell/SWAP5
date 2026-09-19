@@ -46,7 +46,7 @@ import re,sys
 path,rc_raw=sys.argv[1:]
 rc=int(rc_raw)
 raw=open(path,errors='replace').read()
-hs=[float(x) for x in re.findall(r'\\|H=([^|\\n]+)',raw)]
+hs=[float(x) for x in re.findall(r'\|H=([^|\n]+)',raw)]
 max_h=max(hs) if hs else float('-inf')
 states=raw.count('LAREDYN0R_STATE|')
 nodes=raw.count('LAREDYN0R_NODE|')
@@ -63,7 +63,7 @@ else:
     elif 'LAREDYN0R_FAIL ' in raw:
         print('BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION')
     else:
-        tail='\\n'.join(raw.splitlines()[-40:])
+        tail='\n'.join(raw.splitlines()[-40:])
         raise SystemExit('unexpected technical MECH4B Reference failure\\n'+tail)
 PY
 )" || fail "$material $case_id O$opt classification"
@@ -97,8 +97,8 @@ for material in sorted({r[0] for r in rows}):
         assert len(vals)==2 and vals[0][3]==vals[1][3]
         status=vals[0][3]
         raw=(root/f'fine-{material}-{case}-o2.txt').read_text(errors='replace')
-        hs=[float(x) for x in re.findall(r'\\|H=([^|\\n]+)',raw)]
-        masses=[abs(float(x)) for x in re.findall(r'\\|MASS=([^|\\n]+)',raw)]
+        hs=[float(x) for x in re.findall(r'\|H=([^|\n]+)',raw)]
+        masses=[abs(float(x)) for x in re.findall(r'\|MASS=([^|\n]+)',raw)]
         cases[case]={
           'status':status,
           'state_count':raw.count('LAREDYN0R_STATE|'),
@@ -120,7 +120,7 @@ summary={
   'numerical_block_count':sum(v['status']=='BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION' for cases in out.values() for v in cases.values()),
   'production_rom_authorized':False,
 }
-(root/'LARE_DYN0A_MECH4B_REFERENCE_STATUS.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\\n')
+(root/'LARE_DYN0A_MECH4B_REFERENCE_STATUS.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
 print(json.dumps({k:summary[k] for k in ('decision','qualified_count','outside_domain_count','numerical_block_count')},sort_keys=True))
 PY
 
