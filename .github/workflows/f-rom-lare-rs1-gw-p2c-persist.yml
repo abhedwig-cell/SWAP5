@@ -1,0 +1,62 @@
+name: F-ROM-LARE persist formal P2C result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-rs1-gw-p2c-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover formal P2C artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-rs1-p2c-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10584319433/zip" > /tmp/lare-rs1-p2c-persist/p2c.zip
+          echo "7a274847f7a1af22d19d4b6f2b998679937a9e2a840934f4b833ba35c0eeb442  /tmp/lare-rs1-p2c-persist/p2c.zip" | sha256sum -c -
+          unzip -q /tmp/lare-rs1-p2c-persist/p2c.zip -d /tmp/lare-rs1-p2c-persist
+
+      - name: Validate P2C closure
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/lare-rs1-p2c-persist/LARE_RS1_GW_P2C_RESULT.json'))
+          assert p['decision']=='LARE_RS1_GW_P2C_COMMON_COHORT_AMBIGUITY_MAPPED'
+          assert p['cohort']['unique_state_count']==41
+          assert p['cohort']['cross_history_pair_count']==480
+          assert p['cohort']['full_state_diagnostic_pair_count']==477
+          assert p['cohort']['population_probability_claim_authorized'] is False
+          for cid in ('D3','D4','CONTROL_B01_B14_PILOT_R4','CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT'):
+              assert p['representations'][cid]['by_radius']['1.0']['status']=='NO_ALIAS_IN_COMMON_COHORT'
+          assert p['representations']['D2']['by_radius']['1.0']['pair_count']==45
+          assert p['representations']['CONTROL_U4']['by_radius']['1.0']['pair_count']==137
+          assert p['representations']['CONTROL_U8_Z8']['by_radius']['1.0']['pair_count']==71
+          assert p['absolute_application_acceptance_adjudicated'] is False
+          assert p['lare_dynamics_executed'] is False
+          print('LARE_RS1_GW_P2C_FORMAL_VALIDATION=PASS')
+          PY
+
+      - name: Persist formal P2C result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-rs1-p2c-persist/LARE_RS1_GW_P2C_RESULT.json integration/f-rom/LARE_RS1_GW_P2C_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_RS1_GW_P2C_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist common-cohort GW P2C evidence"
+          git push origin HEAD:work/f-rom-lare-rs1
