@@ -11,6 +11,10 @@ on:
       - '.github/workflows/f-rom-lare-bc2-c4b.yml'
   workflow_dispatch:
 
+concurrency:
+  group: f-rom-lare-bc2-c4b-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   actions: read
@@ -18,7 +22,7 @@ permissions:
 jobs:
   case:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -91,6 +95,7 @@ jobs:
     if: always()
     needs: case
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
