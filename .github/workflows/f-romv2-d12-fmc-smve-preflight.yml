@@ -1,0 +1,41 @@
+name: F-ROMV2 D12 FMC SMVE preflight
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D12_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d12_fmc_smve.py'
+      - '.github/workflows/f-romv2-d12-fmc-smve-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute frozen FMC SMVE authority preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE"
+          python3 tests/rom/preflight_f_romv2_d12_fmc_smve.py \
+            --prereg integration/f-rom/F-ROMV2_D12_PREREGISTRATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE/F-ROMV2_D12_PREFLIGHT_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE/F-ROMV2_D12_PREFLIGHT_RESULT.json" \
+            "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE/preflight.txt" \
+            > "${{ runner.temp }}/F-ROMV2-D12-EVIDENCE/sha256.txt"
+      - name: Upload D12 preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d12-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D12-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
