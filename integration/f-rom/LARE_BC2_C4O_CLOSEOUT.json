@@ -1,0 +1,82 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:1761481a506e398c300c282246b262635c9584787c614867bb8d074f0e6212a1",
+    "aggregate_artifact_id": 10593008535,
+    "execution_head": "78767bff42440bf983fbfa9d3b2ab691953d700e",
+    "result_sha256": "bd6bd837c25a41750b161543256a7aee7effbc64eef9b287f75fb867eca620d5",
+    "workflow_run": 35471782977
+  },
+  "closure_authorized": false,
+  "decision": "NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES",
+  "groundwater_feedback_authorized": false,
+  "hold_guard": {
+    "2.5_P_FACE_rms": 0.0009190761587879642,
+    "2.5_P_INTERACTION_rms": 2.6748636702190975e-14,
+    "5.0_P_FACE_rms": 0.0021800372527774896,
+    "5.0_P_INTERACTION_rms": 1.5861858648549893e-14
+  },
+  "key_results": {
+    "2.5": {
+      "P_BOUNDARY": {
+        "same_sign_fraction": 0.365234375,
+        "signed_cosine": -0.2536948411539556,
+        "unscaled_response_rms_error": 0.16933046926734815
+      },
+      "P_FACE": {
+        "same_sign_fraction": 0.83203125,
+        "signed_cosine": 0.401965719627859,
+        "unscaled_response_rms_error": 0.013035503690892297
+      },
+      "P_INTERACTION": {
+        "same_sign_fraction": 0.51171875,
+        "signed_cosine": -0.07307479917586036,
+        "unscaled_response_rms_error": 0.013949527419306555
+      }
+    },
+    "5.0": {
+      "P_BOUNDARY": {
+        "same_sign_fraction": 0.001953125,
+        "signed_cosine": -0.8423115503459276,
+        "unscaled_response_rms_error": 0.1962009537328005
+      },
+      "P_FACE": {
+        "same_sign_fraction": 0.576171875,
+        "signed_cosine": -0.08247947364973397,
+        "unscaled_response_rms_error": 0.03997695533277072
+      },
+      "P_INTERACTION": {
+        "same_sign_fraction": 0.888671875,
+        "signed_cosine": 0.3060285926572712,
+        "unscaled_response_rms_error": 0.02804841031326038
+      }
+    }
+  },
+  "model_changed": false,
+  "next_authority": "RECONCILE_LARE_VERSUS_CORICHARDS_REPRESENTATION_OPTIONS",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.c4o.closeout.v1",
+  "scientific_interpretation": [
+    "No single zero-fit existing-state conditioner dominates across both tested widths.",
+    "At 2.5 cm the geometry-only P_FACE signal remains strongest in pooled moving data: signed cosine about 0.402 and sign agreement about 0.832, whereas the interaction degrades to about -0.073 and 0.512.",
+    "At 5 cm the opposite occurs: P_INTERACTION improves signed cosine to about 0.306 and sign agreement to about 0.889, while P_FACE is about -0.082 and 0.576.",
+    "The interaction successfully collapses HOLD toward zero at both widths, but its moving-regime transfer is width-dependent. Further scalar tuning would therefore be post-hoc rather than physically established.",
+    "The workstream returns to representation selection. No new scalar closure, propagation, groundwater feedback, application acceptance or speed claim is authorized."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_NO_SINGLE_STATE_CONDITIONER_RETURN_TO_REPRESENTATION_SELECTION",
+  "width_artifacts": {
+    "2.5": {
+      "digest": "sha256:5f2e797a3318647ce3e1058036ba2e3ae9818c631c3c2ae281db39c27a87832d",
+      "id": 10592439813
+    },
+    "5.0": {
+      "digest": "sha256:6ebad662597ae09a5562159bbbe4962f89d34e3a34808a09e68efe5ac73f72d0",
+      "id": 10592054922
+    }
+  },
+  "work_unit": "LARE-BC2-C4O",
+  "workstream": "F-ROM-LARE"
+}

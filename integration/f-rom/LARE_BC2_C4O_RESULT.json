@@ -1,0 +1,459 @@
+{
+  "application_acceptance_adjudicated": false,
+  "closure_authorized": false,
+  "complete": true,
+  "decision": "NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES",
+  "groundwater_feedback_authorized": false,
+  "interpretation": [
+    "C4O is a zero-fit mechanism map over existing B9 state-derived signals.",
+    "P_FACE is the C4N geometry-only correction signal; P_BOUNDARY is B9 lower-boundary disequilibrium; P_INTERACTION is their response-blind product.",
+    "The decision compares signed cosine and sign agreement only; no response-dependent coefficient, sign flip or classifier is fitted.",
+    "No C4O outcome authorizes a closure or propagated dynamics."
+  ],
+  "next_authority": "RETURN_TO_REPRESENTATION_SELECTION_NO_SIMPLE_CONDITIONER",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.c4o.result.v1",
+  "speed_claim_authorized": false,
+  "widths": {
+    "2.5": {
+      "closure_authorized": false,
+      "complete": true,
+      "failures": [],
+      "hard_checks": {
+        "failure_count": 0,
+        "hold_reference_delta_rms": 2.9103830456733704e-11,
+        "max_B8_qi_identity_cm_per_day": 1.2818190953112207e-11,
+        "minimum_B9_K_cm_per_day": 22.142996212733422,
+        "minimum_reference_K_cm_per_day": 22.183913741965966
+      },
+      "hard_pass": true,
+      "histories": {
+        "WT_FALL": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 512,
+              "pearson_correlation": 0.39470385480834935,
+              "predictor_max_abs": 0.4357720137340948,
+              "predictor_rms": 0.15700052899333197,
+              "same_sign_fraction": 0.130859375,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.3919578049981525,
+              "unscaled_response_rms_error": 0.16191376943229852
+            },
+            "P_FACE": {
+              "count": 512,
+              "pearson_correlation": 0.16283142428062203,
+              "predictor_max_abs": 0.013465263196102369,
+              "predictor_rms": 0.006345245570832281,
+              "same_sign_fraction": 0.84375,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.6386609545501752,
+              "unscaled_response_rms_error": 0.009015984145531251
+            },
+            "P_INTERACTION": {
+              "count": 512,
+              "pearson_correlation": -0.27809200128630746,
+              "predictor_max_abs": 0.005887177156609684,
+              "predictor_rms": 0.0009110862253224953,
+              "same_sign_fraction": 0.84375,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.295609947427159,
+              "unscaled_response_rms_error": 0.01139588397316552
+            }
+          },
+          "response": {
+            "max_abs": 0.09725270321580759,
+            "rms": 0.011631924005338894
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 138.7951892376359,
+              "median": 137.92247695534508,
+              "min": 122.89575877982023
+            },
+            "theta_b_mid": {
+              "max": 0.40527679215818835,
+              "median": 0.39163801350021904,
+              "min": 0.3866204522365857
+            },
+            "theta_t_mid": {
+              "max": 0.42734550684620115,
+              "median": 0.4271620341871834,
+              "min": 0.4271367361935319
+            }
+          }
+        },
+        "WT_HOLD": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 2.9103830456733704e-11,
+              "predictor_rms": 2.9103830456733704e-11,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 0.0
+            },
+            "P_FACE": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 0.0009190761587879643,
+              "predictor_rms": 0.0009190761587879642,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 0.0009190761878917948
+            },
+            "P_INTERACTION": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 2.6748636702190978e-14,
+              "predictor_rms": 2.6748636702190975e-14,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 2.913057909343589e-11
+            }
+          },
+          "response": {
+            "max_abs": 2.9103830456733704e-11,
+            "rms": 2.9103830456733704e-11
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 120.0,
+              "median": 120.0,
+              "min": 120.0
+            },
+            "theta_b_mid": {
+              "max": 0.4006255597260764,
+              "median": 0.4006255597260764,
+              "min": 0.4006255597260764
+            },
+            "theta_t_mid": {
+              "max": 0.42709405858165017,
+              "median": 0.42709405858165017,
+              "min": 0.42709405858165017
+            }
+          }
+        },
+        "WT_RISE": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 512,
+              "pearson_correlation": -0.05880901022007383,
+              "predictor_max_abs": 0.4800305078388192,
+              "predictor_rms": 0.17323819427396478,
+              "same_sign_fraction": 0.599609375,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.1620958198728398,
+              "unscaled_response_rms_error": 0.17643567358339168
+            },
+            "P_FACE": {
+              "count": 512,
+              "pearson_correlation": 0.5469791907300989,
+              "predictor_max_abs": 0.037866992516341576,
+              "predictor_rms": 0.010875315860827952,
+              "same_sign_fraction": 0.8203125,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.30259165573298363,
+              "unscaled_response_rms_error": 0.01607982409226116
+            },
+            "P_INTERACTION": {
+              "count": 512,
+              "pearson_correlation": -0.3000063713768065,
+              "predictor_max_abs": 0.018214180218687214,
+              "predictor_rms": 0.0019919508315610493,
+              "same_sign_fraction": 0.1796875,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.20119237770530682,
+              "unscaled_response_rms_error": 0.016103181639481063
+            }
+          },
+          "response": {
+            "max_abs": 0.17345470374538996,
+            "rms": 0.015583764811145765
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 118.90549936829512,
+              "median": 105.49126839934758,
+              "min": 103.49199753806064
+            },
+            "theta_b_mid": {
+              "max": 0.41843928050684265,
+              "median": 0.4154569468326189,
+              "min": 0.396846026598474
+            },
+            "theta_t_mid": {
+              "max": 0.427035139725923,
+              "median": 0.4269955757799223,
+              "min": 0.42670652575002593
+            }
+          }
+        }
+      },
+      "pooled_moving": {
+        "P_BOUNDARY": {
+          "count": 1024,
+          "pearson_correlation": -0.2706988299680541,
+          "predictor_max_abs": 0.4800305078388192,
+          "predictor_rms": 0.16531884051657578,
+          "same_sign_fraction": 0.365234375,
+          "sign_scored_count": 1024,
+          "signed_cosine": -0.2536948411539556,
+          "unscaled_response_rms_error": 0.16933046926734815
+        },
+        "P_FACE": {
+          "count": 1024,
+          "pearson_correlation": 0.39864220934690514,
+          "predictor_max_abs": 0.037866992516341576,
+          "predictor_rms": 0.008903219542023624,
+          "same_sign_fraction": 0.83203125,
+          "sign_scored_count": 1024,
+          "signed_cosine": 0.401965719627859,
+          "unscaled_response_rms_error": 0.013035503690892297
+        },
+        "P_INTERACTION": {
+          "count": 1024,
+          "pearson_correlation": -0.060700721856653185,
+          "predictor_max_abs": 0.018214180218687214,
+          "predictor_rms": 0.0015488618765611651,
+          "same_sign_fraction": 0.51171875,
+          "sign_scored_count": 1024,
+          "signed_cosine": -0.07307479917586036,
+          "unscaled_response_rms_error": 0.013949527419306555
+        }
+      },
+      "production_rom_authorized": false,
+      "propagated_dynamics_authorized": false,
+      "schema": "swap5.lare.bc2.c4o.width-result.v1",
+      "width_cm": 2.5,
+      "work_unit": "LARE-BC2-C4O",
+      "workstream": "F-ROM-LARE"
+    },
+    "5.0": {
+      "closure_authorized": false,
+      "complete": true,
+      "failures": [],
+      "hard_checks": {
+        "failure_count": 0,
+        "hold_reference_delta_rms": 7.275957614183426e-12,
+        "max_B8_qi_identity_cm_per_day": 1.3027801060161437e-11,
+        "minimum_B9_K_cm_per_day": 17.084499643853746,
+        "minimum_reference_K_cm_per_day": 17.08449964386932
+      },
+      "hard_pass": true,
+      "histories": {
+        "WT_FALL": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 512,
+              "pearson_correlation": -0.2111227277015495,
+              "predictor_max_abs": 0.45083858813450206,
+              "predictor_rms": 0.16421232831671434,
+              "same_sign_fraction": 0.001953125,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.8111809497089744,
+              "unscaled_response_rms_error": 0.18290531445136704
+            },
+            "P_FACE": {
+              "count": 512,
+              "pearson_correlation": -0.03176849822414735,
+              "predictor_max_abs": 0.033491494817073794,
+              "predictor_rms": 0.012978924750173053,
+              "same_sign_fraction": 0.96484375,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.791758189258733,
+              "unscaled_response_rms_error": 0.014537737743296045
+            },
+            "P_INTERACTION": {
+              "count": 512,
+              "pearson_correlation": 0.08027220591371916,
+              "predictor_max_abs": 0.0151382455789046,
+              "predictor_rms": 0.0020701175365743824,
+              "same_sign_fraction": 0.96484375,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.6093337040896143,
+              "unscaled_response_rms_error": 0.021263995622669802
+            }
+          },
+          "response": {
+            "max_abs": 0.20698229256313994,
+            "rms": 0.022461940350566614
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 138.7951892376359,
+              "median": 137.92247695534508,
+              "min": 122.89575877982023
+            },
+            "theta_b_mid": {
+              "max": 0.4036833825048515,
+              "median": 0.38965590415561846,
+              "min": 0.3844011933807002
+            },
+            "theta_t_mid": {
+              "max": 0.4270235199707876,
+              "median": 0.4264154331621249,
+              "min": 0.4263171665922367
+            }
+          }
+        },
+        "WT_HOLD": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 7.275957614183426e-12,
+              "predictor_rms": 7.275957614183426e-12,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 0.0
+            },
+            "P_FACE": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 0.002180037252777489,
+              "predictor_rms": 0.0021800372527774896,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 0.0021800372600534468
+            },
+            "P_INTERACTION": {
+              "count": 256,
+              "pearson_correlation": null,
+              "predictor_max_abs": 1.586185864854989e-14,
+              "predictor_rms": 1.5861858648549893e-14,
+              "same_sign_fraction": null,
+              "sign_scored_count": 0,
+              "signed_cosine": null,
+              "unscaled_response_rms_error": 7.291819472831973e-12
+            }
+          },
+          "response": {
+            "max_abs": 7.275957614183426e-12,
+            "rms": 7.275957614183426e-12
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 120.0,
+              "median": 120.0,
+              "min": 120.0
+            },
+            "theta_b_mid": {
+              "max": 0.3981632446798928,
+              "median": 0.3981632446798928,
+              "min": 0.3981632446798928
+            },
+            "theta_t_mid": {
+              "max": 0.4261713843847817,
+              "median": 0.4261713843847817,
+              "min": 0.4261713843847817
+            }
+          }
+        },
+        "WT_RISE": {
+          "predictors": {
+            "P_BOUNDARY": {
+              "count": 512,
+              "pearson_correlation": -0.587114684066537,
+              "predictor_max_abs": 0.4644332831230713,
+              "predictor_rms": 0.17786121528985221,
+              "same_sign_fraction": 0.001953125,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.8798431694878864,
+              "unscaled_response_rms_error": 0.20865108299926838
+            },
+            "P_FACE": {
+              "count": 512,
+              "pearson_correlation": 0.8278664689828666,
+              "predictor_max_abs": 0.06574654618327275,
+              "predictor_rms": 0.033277315330742345,
+              "same_sign_fraction": 0.1875,
+              "sign_scored_count": 512,
+              "signed_cosine": -0.30824805359976015,
+              "unscaled_response_rms_error": 0.05463486155069707
+            },
+            "P_INTERACTION": {
+              "count": 512,
+              "pearson_correlation": -0.609402627597539,
+              "predictor_max_abs": 0.02512306216901166,
+              "predictor_rms": 0.004938089956343575,
+              "same_sign_fraction": 0.8125,
+              "sign_scored_count": 512,
+              "signed_cosine": 0.22933260533975133,
+              "unscaled_response_rms_error": 0.03348535698422673
+            }
+          },
+          "response": {
+            "max_abs": 0.15109990259526507,
+            "rms": 0.034271066046597486
+          },
+          "state_context": {
+            "H_mid_cm": {
+              "max": 118.90549936829512,
+              "median": 105.49126839934758,
+              "min": 103.49199753806064
+            },
+            "theta_b_mid": {
+              "max": 0.41653116531886125,
+              "median": 0.41326219708883266,
+              "min": 0.39344874231373633
+            },
+            "theta_t_mid": {
+              "max": 0.4259779521859315,
+              "median": 0.42583140593333635,
+              "min": 0.4249520988496556
+            }
+          }
+        }
+      },
+      "pooled_moving": {
+        "P_BOUNDARY": {
+          "count": 1024,
+          "pearson_correlation": -0.8442977697366055,
+          "predictor_max_abs": 0.4644332831230713,
+          "predictor_rms": 0.17117286682704644,
+          "same_sign_fraction": 0.001953125,
+          "sign_scored_count": 1024,
+          "signed_cosine": -0.8423115503459276,
+          "unscaled_response_rms_error": 0.1962009537328005
+        },
+        "P_FACE": {
+          "count": 1024,
+          "pearson_correlation": 0.031387984809778884,
+          "predictor_max_abs": 0.06574654618327275,
+          "predictor_rms": 0.025257001042209213,
+          "same_sign_fraction": 0.576171875,
+          "sign_scored_count": 1024,
+          "signed_cosine": -0.08247947364973397,
+          "unscaled_response_rms_error": 0.03997695533277072
+        },
+        "P_INTERACTION": {
+          "count": 1024,
+          "pearson_correlation": 0.28437443422007563,
+          "predictor_max_abs": 0.02512306216901166,
+          "predictor_rms": 0.003786166863212323,
+          "same_sign_fraction": 0.888671875,
+          "sign_scored_count": 1024,
+          "signed_cosine": 0.3060285926572712,
+          "unscaled_response_rms_error": 0.02804841031326038
+        }
+      },
+      "production_rom_authorized": false,
+      "propagated_dynamics_authorized": false,
+      "schema": "swap5.lare.bc2.c4o.width-result.v1",
+      "width_cm": 5.0,
+      "work_unit": "LARE-BC2-C4O",
+      "workstream": "F-ROM-LARE"
+    }
+  },
+  "work_unit": "LARE-BC2-C4O",
+  "workstream": "F-ROM-LARE"
+}
