@@ -313,6 +313,7 @@ contains
     end do
     parameter_set%dz=ROSSFAST_D3R_DZ_CM
     parameter_set%node_distance=ROSSFAST_D3R_DZ_CM
+    parameter_set%node_distance(1)=0.5_real64*ROSSFAST_D3R_DZ_CM
     cofgen_out=0.0_real64
     do j=1,n
       cofgen_out(1,j)=mat%theta_r
