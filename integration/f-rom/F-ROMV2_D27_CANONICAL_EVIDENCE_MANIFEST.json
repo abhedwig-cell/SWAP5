@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.f-romv2-d27.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D27",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d27-unstressed-uptake-accounting",
+    "pull_request": 479,
+    "pull_request_merged": false,
+    "head": "2f900f1f051c2eca8cc614fad8a32982a7521d73",
+    "workflow_run": 35473248463,
+    "workflow_job": 105977946609,
+    "artifact_id": 10593421258,
+    "artifact_digest": "sha256:543ee579e11615039e6b37e0dfc95b193ff52c9a4a6dc2bf593c92713bdd3468",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "65c27e8a54cd2a80278899752a74ebf4964c1cc4",
+    "result_sha256": "112eeaf94a712a1fa38ca2b7132d30022dd0026549c499b46cecde8c9fbe9344",
+    "SWAP_o0_o2_stdout_sha256": "9851064dc3e9e754c3d3b0b0804640735b33c9e5cf6bf9ce70732abe43c1c809",
+    "analyzer_sha256": "05e0318163eedd9657280fece8ab93b692b04dc281b756b419345faa79d0ec98"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D27_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D27_RESULT.json",
+    "integration/f-rom/F-ROMV2_D27_STATUS.json",
+    "integration/f-rom/F-ROMV2_D27_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D27_UNSTRESSED_UPTAKE_ACCOUNTING.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d27_swap_unstressed_uptake.f90",
+    "tests/rom/analyze_f_romv2_d27_uptake_accounting.py",
+    "tests/rom/run_f_romv2_d27_uptake_accounting.sh",
+    ".github/workflows/f-romv2-d27-uptake-accounting.yml",
+    "raw workflow artifact"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "native_FMC_trajectory_authority_claimed": false,
+  "spatial_sink_equivalence_claimed": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}
