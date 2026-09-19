@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.lare.bc2.c4n.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4N",
+  "phase": "PREREGISTERED_AFTER_C4M_BEFORE_FACE_INTERPOLATED_GRADIENT_TEST",
+  "title": "Response-blind face-interpolated internal-gradient amplitude test",
+  "question": "Can the existing B9 terminal and bulk one-sided storage reconstructions support a smaller, parameter-free face-interpolated interface slope that improves qi across width and regime while preserving qH and hydrostatics?",
+  "predecessors": {
+    "C4M": {
+      "closeout": "integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json",
+      "required_status": "CLOSED_DIAGNOSTIC_BLOCKED_CENTRAL_NOT_SUPPORTED_WHERE_INTERPRETABLE",
+      "required_decision": "C4M_DIAGNOSTIC_BLOCKED",
+      "next_authority": "PREREGISTER_RESPONSE_BLIND_FACE_INTERPOLATED_GRADIENT_AMPLITUDE_TEST"
+    },
+    "C4K": {
+      "closeout": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+      "required_decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT"
+    },
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference": "immutable A2 Reference"
+  },
+  "candidate": {
+    "name": "FACE_INTERPOLATED_PIECEWISE_LINEAR_GRADIENT",
+    "interpretation": "Treat the B9 terminal and bulk one-sided reconstructed slopes as control-volume-centered gradient proxies and linearly interpolate them to their shared interface using opposite center-to-face distances.",
+    "endpoint_slope": "s_face=(B*a_t+d*b_bulk)/(B+d)",
+    "equivalent_correction": "delta_face=s_face-a_t=d/(B+d)*(b_bulk-a_t)",
+    "endpoint_interface_K": "unchanged B9 terminal-interface K_i",
+    "endpoint_qi": "K_i*(1-s_face)",
+    "qH": "unchanged B9 qH=Ks*(1-a_t)",
+    "state_used": [
+      "Wb",
+      "Wt",
+      "H",
+      "d",
+      "frozen constitutive law"
+    ],
+    "added_state_dimension": 0,
+    "fitted_parameters": 0,
+    "no_response_calibration": true,
+    "hydrostatic_identity": "a_t=b_bulk=1 implies s_face=1 and qi=qH=0"
+  },
+  "reference_diagnostic": {
+    "qi_ref": "B8 split moving-control-volume ledger",
+    "K_ref_bar": "arithmetic mean of Reference endpoint interface K",
+    "interval_effective_slope": "s_ref=1-qi_ref/K_ref_bar",
+    "role": "diagnostic only"
+  },
+  "baseline": {
+    "name": "B9 TERMINAL_SIDE_LINEAR",
+    "endpoint_slope": "a_t",
+    "endpoint_qi": "K_i*(1-a_t)",
+    "qH": "Ks*(1-a_t)"
+  },
+  "outputs": [
+    "BASE and FACE qi bias, MAE, RMS, max_abs, sign mismatches and correlation",
+    "BASE and FACE exact interval-effective slope error relative to s_ref",
+    "delta_ref and delta_face distributions",
+    "fraction intervals delta_face has same sign as delta_ref",
+    "fraction intervals FACE slope closer to s_ref than BASE",
+    "amplitude ratio |delta_face|/|delta_central| as a pure geometry diagnostic",
+    "qH candidate-vs-B9 identity residual",
+    "manufactured hydrostatic slope identity"
+  ],
+  "hard_gates": {
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "qH_candidate_vs_B9_identity_cm_per_day": 1e-12,
+    "finite_positive_reference_K": true,
+    "finite_positive_candidate_K": true,
+    "hydrostatic_abs_slope_minus_1": 1e-12,
+    "all_fluxes_finite": true
+  },
+  "support_rules": {
+    "moving": "For each width in WT_RISE and WT_FALL, FACE qi must have strictly lower RMS and MAE than BASE by more than 1e-12 and no greater sign-mismatch count.",
+    "hold": "For each width in WT_HOLD, FACE qi RMS and MAE must be no greater than BASE within 1e-12 and no greater sign-mismatch count."
+  },
+  "decisions": {
+    "FACE_INTERPOLATED_GRADIENT_STATIC_CANDIDATE_SUPPORTED": "All hard gates pass; all four moving cases support and both HOLD cases are noninferior.",
+    "FACE_INTERPOLATED_GRADIENT_MOVING_ONLY": "All hard gates pass; all four moving cases support but at least one HOLD case fails.",
+    "FACE_INTERPOLATED_GRADIENT_MIXED": "All hard gates pass but moving support is not uniform.",
+    "C4N_DIAGNOSTIC_BLOCKED": "Any hard authority or numerical gate fails."
+  },
+  "boundaries": [
+    "C4N does not use C4M response magnitudes to choose a coefficient.",
+    "The distance weight d/(B+d) is fixed by geometry before execution.",
+    "Positive static support does not authorize propagated dynamics.",
+    "No direction switch, fitted blend, Hdot term, memory state or clipping is allowed."
+  ],
+  "propagated_dynamics_authorized": false,
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
