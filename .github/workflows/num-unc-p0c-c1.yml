@@ -15,5 +15,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: research/num-unc-p0
       - name: Run preregistered C1 N0-N1 comparison
         run: bash tests/num_unc/run_num_unc_p0c_c1.sh
