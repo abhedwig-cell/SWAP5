@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.f-romv2-d5.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D5",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d5-two-layer-physical-reduction",
+    "pull_request": 424,
+    "pull_request_merged": false,
+    "head": "e2263533fd54c3d8ddb1b82b29b8da0782a2c1ee",
+    "workflow_run": 35445739551,
+    "workflow_job": 105904227494,
+    "artifact_id": 10584269469,
+    "artifact_digest": "sha256:5d3d7aa22889f5fd1a373b656cbb1287e680e2c93efc7c7d1b17bc8f91cf2e29",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "R16_o0_sha256": "fb62f94a3fddc37a547272521fd0a3e575e6ffaa30acb9e680d2fd985ec3154c",
+    "R16_o2_sha256": "fb62f94a3fddc37a547272521fd0a3e575e6ffaa30acb9e680d2fd985ec3154c",
+    "result_sha256": "e8336dd1bf49898963faa6c4a991c28516e60c874a7310034b5dff8baa030d15",
+    "analyzer_sha256": "fe5cb4b18f26530267783c03bd73cf041eff84d12e2df22ecb4113aefb058ca4"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D5_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D5_RESULT.json",
+    "integration/f-rom/F-ROMV2_D5_STATUS.json",
+    "integration/f-rom/F-ROMV2_D5_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D5_TWO_LAYER_PHYSICAL_REDUCTION_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d5_r16_reference.f90",
+    "tests/rom/analyze_f_romv2_d5_two_layer_physical_reduction.py",
+    "tests/rom/run_f_romv2_d5_two_layer_physical_reduction.sh",
+    ".github/workflows/f-romv2-d5-two-layer-physical-reduction.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_equation_retuning": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}
