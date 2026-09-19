@@ -109,5 +109,15 @@
   ],
   "propagated_dynamics_authorized": false,
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalisation": {
+    "before_first_C4N_execution": true,
+    "interval_effective_slope": "For Reference use s_ref=1-qi_ref/Kref_bar. For BASE and FACE use s=1-q_interval/Ki_bar, where q_interval is the trapezoidal endpoint flux and Ki_bar is the arithmetic mean of unchanged B9 endpoint Ki. This makes q=Kbar*(1-s) exact.",
+    "endpoint_geometry": "The frozen endpoint face slope s_face=(B*a_t+d*b_bulk)/(B+d) and endpoint delta_face=d/(B+d)*(b_bulk-a_t) are secondary geometry diagnostics. They are not substituted for the exact interval-effective slope in primary comparisons.",
+    "geometry_ratio": "When |b_bulk-a_t|>1e-12, report |delta_face_endpoint|/|delta_central_endpoint|=d/B. Intervals/endpoints below that numerical floor are omitted from the ratio only.",
+    "zero_floor": 1e-12,
+    "zero_floor_role": "Numerical guard only; not hydrological acceptance.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
