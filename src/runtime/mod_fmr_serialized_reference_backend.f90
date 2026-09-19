@@ -617,6 +617,7 @@ contains
     type(fmr_serialized_reference_model_t), intent(inout) :: model
     model%snow_active = .false.
     model%soil_temperature_active = .false.
+    model%black_evaporation_active = .false.
     model%snow_event_prepared = .false.
     model%state_profile_admitted = .false.
     model%snow_outer_t0 = 0.0_real64
@@ -638,6 +639,7 @@ contains
     call clear_snow_preparation(model)
     model%snow_active = parameters%snow_active
     model%soil_temperature_active = parameters%soil_temperature_active
+    model%black_evaporation_active = parameters%black_evaporation_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
