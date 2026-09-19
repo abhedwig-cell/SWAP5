@@ -1,0 +1,57 @@
+name: F-ROM-LARE persist BC2-B2 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b2-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact BC2-B2 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b2-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586862666/zip" > /tmp/lare-bc2-b2-persist/b2.zip
+          echo "14ffd095b5e4542b3db77e219e116947ba74c3c743fa30e936a6faa73c2e54b0  /tmp/lare-bc2-b2-persist/b2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b2-persist/b2.zip -d /tmp/lare-bc2-b2-persist
+          test -f /tmp/lare-bc2-b2-persist/LARE_BC2_B2_RESULT.json
+
+      - name: Validate and persist BC2-B2
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b2-persist/LARE_BC2_B2_RESULT.json'))
+          assert r['decision']=='BC2_B2_RESIDUAL_ONLY_MIXED_RESPONSE'
+          assert r['hard_gates']['all_histories_qualified'] is True
+          assert r['hard_gates']['fixed_equilibrium_rhs_max_residual_cm_per_day'] <= 1e-10
+          assert r['hard_gates']['max_physical_moving_ledger_residual_cm'] <= 1e-10
+          assert r['relative_to_B0']['WT_HOLD']['noninferior_all_components'] is True
+          assert r['relative_to_B0']['WT_RISE']['noninferior_all_components'] is True
+          assert r['relative_to_B0']['WT_FALL']['noninferior_all_components'] is False
+          assert r['relative_to_B0']['WT_CYCLE']['noninferior_all_components'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B2_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b2-persist/LARE_BC2_B2_RESULT.json integration/f-rom/LARE_BC2_B2_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B2_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B2 residual-only control"
+          git push origin HEAD:work/f-rom-lare-rs1
