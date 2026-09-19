@@ -1,0 +1,66 @@
+name: F-ROM-LARE BC2-B5 storage-consistent qH
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_B5_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_b5_storage_linear_qh.py'
+      - '.github/workflows/f-rom-lare-bc2-b5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Recover qualified BC2-A2 Reference geometry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b5/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-b5/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-b5/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b5/a2.zip -d /tmp/lare-bc2-b5/a2
+          cmp /tmp/lare-bc2-b5/a2/o0.txt /tmp/lare-bc2-b5/a2/o2.txt
+      - name: Execute storage-consistent boundary-gradient diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_B5_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_b5_storage_linear_qh.py \
+            --reference /tmp/lare-bc2-b5/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_B5_PREREGISTRATION.json \
+            --b3-result integration/f-rom/LARE_BC2_B3_RESULT.json \
+            --b4-result integration/f-rom/LARE_BC2_B4_RESULT.json \
+            --output LARE_BC2_B5_EVIDENCE/LARE_BC2_B5_RESULT.json \
+            | tee LARE_BC2_B5_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_B5_EVIDENCE/LARE_BC2_B5_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_SUPPORTED',
+              'BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_DIRECTION_DEPENDENT',
+              'BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_NOT_SUPPORTED',
+              'BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_BLOCKED',
+          }
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B5_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_B5_EVIDENCE/* > LARE_BC2_B5_EVIDENCE/sha256.txt
+      - name: Upload BC2-B5 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-b5
+          path: LARE_BC2_B5_EVIDENCE/
+          if-no-files-found: warn
