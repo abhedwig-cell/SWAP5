@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.hydro_memory.capability_gate.v1",
+  "date": "2026-09-19",
+  "repository": "abhedwig-cell/SWAP5",
+  "authority_branch": "integration/f-ci-canonical",
+  "decision": "BLOCKED_BY_COMPOSITION_ADMISSION",
+  "scientific_stage0_authorized": false,
+  "core_physics_missing": false,
+  "primary_blockers": [
+    "PPA-WU01 groundwater application-owner profile explicitly rejects root_extraction_active",
+    "F-GC44-F-GC49 live coupled qualification is root-inactive and near-equilibrium",
+    "root-active groundwater affine tangent/corrector has no direct coupled qualification",
+    "groundwater storage/budget diagnostic is not exposed by F-GC49D research-facing API"
+  ],
+  "already_available": [
+    "Reference Richards production physics",
+    "live MODFLOW6 transient storage and two-way flux coupling",
+    "persistent FMR committed state across window-scoped groundwater contexts",
+    "bounded precipitation and reference-ET forcing through PPA-WU03",
+    "restricted drought-only Feddes root uptake through F-CI31",
+    "hard SWAP mass accounting and exact interface ledger semantics",
+    "hydraulic hysteresis and advanced stress mechanisms can remain excluded"
+  ],
+  "next_work_unit": {
+    "id": "HYDRO-MEMORY-CAP01",
+    "title": "Restricted root-active dynamic-groundwater research profile",
+    "type": "COMPOSITION_AND_QUALIFICATION",
+    "new_physics_allowed": false,
+    "solver_change_allowed": false,
+    "required_qualification": [
+      "restricted root-active groundwater profile ownership",
+      "root sink immutability across same-origin correctors",
+      "analytic groundwater tangent versus independent finite-difference correctors",
+      "dynamic groundwater drawdown under root demand",
+      "recharge and groundwater recovery under recovery forcing",
+      "complete SWAP, interface and groundwater storage diagnostics",
+      "multi-window preservation sequence",
+      "numerical sensitivity below scientific signal"
+    ]
+  },
+  "sequence": [
+    "HYDRO-MEMORY-CAP01",
+    "freeze groundwater storage diagnostic",
+    "freeze hydraulic soil parameter sets",
+    "run preregistered HYDRO-MEMORY Stage 0"
+  ],
+  "kill_condition": "If root-active groundwater tangent/corrector compatibility cannot be qualified without changing physics or relaxing scientific/numerical criteria, HYDRO-MEMORY Stage 0 remains blocked."
+}
