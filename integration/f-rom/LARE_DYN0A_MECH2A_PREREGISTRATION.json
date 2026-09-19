@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.lare.dyn0a.mech2a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH2A",
+  "phase": "FORMALIZE_EXPLORATORY_B01_SCALING_BEFORE_CROSS_MATERIAL_VALIDATION",
+  "trigger": {
+    "mech1_result": "integration/f-rom/LARE_DYN0A_MECH1_RESULT.json",
+    "decision": "GRADIENT_RECONSTRUCTION_DOMINANT",
+    "d4_result": "integration/f-rom/LARE_DYN0A_D4_RESULT.json",
+    "d4_decision": "RESOLUTION_BENEFIT_CLEAR"
+  },
+  "prior_exposure": {
+    "exploratory_B01_curve_seen": true,
+    "observation": "An exploratory calculation on the already-exposed B01 fine-Reference trajectories suggested that first-pulse interface-flux error peaks when coarse-layer thickness L is about 2.3-2.9 times sqrt(D0*T_pulse) across the qualified WET/DRY anchors.",
+    "consequence": "MECH2A is mechanism formalization and reproducibility evidence, not an independent validation or novelty test. Cross-material testing must be preregistered before the new material trajectory is inspected."
+  },
+  "scientific_hypothesis": "Standard layer-mean gradient closure error is organized by the ratio between coarse-layer thickness and the hydraulic penetration length over the forcing timescale. Error is small when the layer is already fine, and can also be small when the active perturbation occupies only a small fraction of a very thick layer; the worst aliasing occurs at an intermediate L/sqrt(D*T).",
+  "reference": {
+    "artifact_id": 10586020583,
+    "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "material": "B01",
+    "cases": "fine-Reference QUALIFIED fixed-flux cases only",
+    "no_new_reference_run": true
+  },
+  "nested_ladder": {
+    "coarse_upper_layer_bottom_cm": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "representation": "one upper layer 0-L cm followed by 10-cm layers from L to 160 cm",
+    "state_dimension_formula": "1 + (160-L)/10",
+    "anchors": {
+      "L140": "D3",
+      "L130": "D4",
+      "L10": "16 x 10 cm fine-sized LARE spatial closure endpoint"
+    },
+    "role": "operator-resolution ladder only; no state dimension is admitted from MECH2A"
+  },
+  "hydraulic_scaling": {
+    "diffusivity": "D0 = K(h0)/C(h0) from the initial B01 Mualem-van Genuchten state",
+    "capacity": "C=dtheta/dh on the standard unsaturated MvG branch",
+    "pulse_duration_day": 0.2048,
+    "full_horizon_day": 0.8192,
+    "ell_pulse": "sqrt(D0 * 0.2048 d)",
+    "ell_full": "sqrt(D0 * 0.8192 d)",
+    "dimensionless_coordinates": [
+      "lambda_pulse=L/ell_pulse",
+      "lambda_full=L/ell_full"
+    ]
+  },
+  "frozen_metrics": {
+    "first_pulse_window_steps": [
+      1,
+      256
+    ],
+    "first_pulse_forcings": [
+      "WET",
+      "DRY"
+    ],
+    "per_L_case": [
+      "RMS standard-LARE interface flux error",
+      "maximum absolute standard-LARE interface flux error",
+      "lambda_pulse",
+      "lambda_full"
+    ],
+    "per_case": [
+      "L with maximum first-pulse RMS error",
+      "lambda_pulse at maximum error",
+      "error at D3 L=140",
+      "error at D4 L=130",
+      "error at L=10 endpoint"
+    ],
+    "full_horizon": "RMS interface flux error over 1024 observations for all qualified dynamic cases"
+  },
+  "exploratory_pattern_to_record": {
+    "previously_seen_peak_lambda_band": [
+      2.3,
+      2.95
+    ],
+    "role": "descriptive B01 pattern only; must not be treated as a validated universal criterion"
+  },
+  "next_gate": {
+    "if_B01_pattern_reproduced": "Preregister MECH2B on an uninspected contrasting hydraulic material before generating its dynamic trajectories. Test the frozen dimensionless peak/location hypothesis without retuning the ladder or scaling.",
+    "if_not_reproduced": "Close diffusion-length hypothesis as unsupported and do not carry it to material transfer."
+  },
+  "firewalls": [
+    "NO_PARAMETER_FIT_IN_MECH2A",
+    "NO_POST_RESULT_L_SELECTION",
+    "NO_NEW_LARE_STATE_PROPAGATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_CLAIM_OF_CROSS_MATERIAL_GENERALITY",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
