@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.lare.bc2.c4p.representation-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4P",
+  "phase": "REPRESENTATION_SELECTION_RECONCILED_AFTER_C4O",
+  "frozen_lare_scientific_basis": "9bb73821bb78a04c759b763746b50a3f777cd416",
+  "current_lare_branch": "work/f-rom-lare-rs1",
+  "current_lare_branch_head": "e2aa498fd806108b44ffa2fdd983e8303d3ab505",
+  "external_later_canonical_authority": {
+    "canonical_head": "ea0c8297a10679fb760dacf20b437c798773e152",
+    "role": "LATER_CROSS_WORKSTREAM_REPRESENTATION_EVIDENCE_ONLY",
+    "scientific_basis_rebased": false,
+    "statement": "The LARE evidence remains bound to its frozen basis. F-ROMV2 canonical evidence is imported only to inform representation selection and comparator choice."
+  },
+  "trigger": {
+    "C4O_closeout": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "required_status": "CLOSED_NO_SINGLE_STATE_CONDITIONER_RETURN_TO_REPRESENTATION_SELECTION",
+    "required_decision": "NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES"
+  },
+  "representation_inventory": {
+    "LARE": {
+      "identity": "Low-dimensional layer/storage representation with explicit conservative state and reconstructed hydraulic closure.",
+      "positive_evidence": [
+        "State information location matters; compact lower-zone storage partitions can separate bounded groundwater states.",
+        "Terminal moving-control-volume accounting and B9 terminal-side qH closure are physically coherent.",
+        "The dominant remaining B9 internal-flux error is gradient-reconstruction rather than conductivity."
+      ],
+      "limiting_evidence": [
+        "C4L qH-preserving cubic closure is mixed across width/regime.",
+        "C4N face-interpolated gradient helps FALL but fails RISE and HOLD.",
+        "C4O finds no single zero-fit existing-state conditioner transferable across both tested widths.",
+        "Further scalar blend/switch tuning is not authorized."
+      ],
+      "disposition": "PAUSE_SCALAR_CLOSURE_SEARCH_RETURN_TO_REPRESENTATION_SELECTION"
+    },
+    "COARSE_RICHARDS": {
+      "project_alias": "Coarse Richards / CoRichards comparator family",
+      "authority": [
+        "F-ROMV2-D2",
+        "F-ROMV2-D4"
+      ],
+      "retained_members": [
+        "R8",
+        "R4",
+        "R2"
+      ],
+      "role": "STRUCTURAL_PHYSICAL_REDUCTION_COMPARATOR",
+      "evidence": {
+        "balance_fidelity": "degrades smoothly with stronger coarsening",
+        "event_fidelity": "lower-boundary flux magnitude/sign/reversal fidelity weak",
+        "nonlinear_solve": "still required",
+        "value": "transparent benchmark for any more specialized reduced representation"
+      },
+      "disposition": "RETAIN_AS_REQUIRED_COMPARATOR_NOT_PRIMARY_NEW_ARCHITECTURE"
+    },
+    "TWO_LAYER_AND_QUASI_STEADY": {
+      "authority": [
+        "F-ROMV2-D5",
+        "F-ROMV2-D7",
+        "F-ROMV2-D8",
+        "F-ROMV2-D10"
+      ],
+      "members": [
+        "L2_IMC",
+        "QS1",
+        "QS2_COMPOSITE",
+        "HE2"
+      ],
+      "result": "NONE_CROSSED_R2_FRONTIER_ON_THEIR_PREREGISTERED_B01_VIEWS",
+      "diagnosis": "Insufficient lower-zone/groundwater memory or lower-boundary flux closure.",
+      "disposition": "DO_NOT_EXTEND_BY_POST_HOC_SEGMENT_OR_EQUATION_TUNING"
+    },
+    "FMC_SMVE": {
+      "authority": [
+        "F-ROMV2-D11",
+        "F-ROMV2-D12",
+        "F-ROMV2-D13",
+        "F-ROMV2-D17",
+        "F-ROMV2-D19",
+        "F-ROMV2-D20",
+        "F-ROMV2-D22",
+        "F-ROMV2-D23"
+      ],
+      "identity": "Finite-water-content / Soil Moisture Velocity Equation physical reduction using moisture-content/front coordinates, explicit finite-volume water accounting and no global nonlinear Richards solve.",
+      "positive_evidence": [
+        "D13 groundwater-front branch beats R2 on preregistered balance and transient groundwater-flux views.",
+        "D17 simultaneous separated surface+groundwater branch beats R2 on all preregistered views.",
+        "D19 exact contact/merge and early post-merge dynamics beat R2 on all preregistered views.",
+        "D20 one-hour relative advantage over R2 persists through the last quarter.",
+        "D22 native rainfall-threshold response is better-or-equal to R2 on all preregistered response views.",
+        "D23 short rainfall/redistribution trajectory beats R2 on every preregistered D23 frontier view."
+      ],
+      "unresolved_boundaries": [
+        "Absolute bottom-flux error and systematic storage/bottom-exchange drift remain material in longer tests.",
+        "Upper-zone integrated storage can be worse than R2.",
+        "Native ponding/runoff thresholds are not equivalent to R16.",
+        "Live moving groundwater-table coupling in SWAP5 is not yet qualified.",
+        "ET/root uptake, drought/recovery, heterogeneous soils, seasonal/multi-year balance and application acceptance are not qualified.",
+        "No formal same-runtime production speedup is admitted."
+      ],
+      "disposition": "PRIMARY_DISTINCT_PHYSICAL_REDUCTION_CANDIDATE_FOR_NEXT_CROSS_REPRESENTATION_DISCRIMINATOR"
+    }
+  },
+  "reconciliation_decision": "LARE_SCALAR_CLOSURE_SEARCH_PAUSED_COMPARE_AGAINST_COARSE_RICHARDS_AND_FMC_SMVE",
+  "scientific_reasoning": [
+    "The LARE C4 chain no longer supports additional scalar closure invention: width/regime dependence survives multiple physically derived no-fit closure families.",
+    "Coarse Richards provides the mandatory transparent structural comparator but does not remove the nonlinear Richards solve and has weak lower-boundary event fidelity.",
+    "The two-layer/quasi-steady alternatives already tested in F-ROMV2 do not justify a new branch because they remain behind R2.",
+    "FMC/SMVE is the only reviewed distinct physical-reduction family with repeated bounded SWAP5 evidence crossing the R2 frontier on groundwater, combined surface-groundwater, merge and rainfall/redistribution views.",
+    "Therefore the next useful experiment is a matched-workload representation discriminator, not another LARE scalar closure."
+  ],
+  "next_experiment": {
+    "id": "LARE-BC2-C4Q",
+    "title": "Matched lower-boundary representation discriminator",
+    "objective": "Compare LARE/B9, a retained coarse-Richards comparator and the literature-bound FMC/SMVE route on one shared bounded hydraulic workload chosen before exposure.",
+    "required_properties": [
+      "same material and initial physical state",
+      "same forcing and lower-boundary semantics within all three representations' admitted authority",
+      "explicit water ledger",
+      "separate balance, state/profile, bottom-flux magnitude, sign/reversal and systematic-bias views",
+      "no generic aggregate score",
+      "no post-result threshold tuning",
+      "no production runtime claim"
+    ],
+    "preferred_scope": "A fixed-water-table or zero-head lower-boundary workload that lies inside existing FMC authority and can be represented by the current LARE boundary machinery without inventing new groundwater coupling.",
+    "prohibited": [
+      "DO_NOT_REBASE_LARE_EVIDENCE_TO_CURRENT_CANONICAL",
+      "DO_NOT_ADD_NEW_LARE_SCALAR_BLEND",
+      "DO_NOT_TREAT_R2_AS_GROUND_TRUTH",
+      "DO_NOT_CLAIM_FMC_GENERAL_DOMINANCE",
+      "DO_NOT_ADJUDICATE_APPLICATION_ACCEPTANCE",
+      "DO_NOT_CLAIM_SPEEDUP"
+    ]
+  },
+  "model_changed": false,
+  "next_model_change_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
