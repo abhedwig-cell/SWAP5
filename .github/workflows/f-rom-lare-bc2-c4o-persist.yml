@@ -1,0 +1,133 @@
+name: F-ROM-LARE persist C4O conditioner-map closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4o-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4O authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4o
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593008535/zip" > /tmp/c4o.zip
+          echo "1761481a506e398c300c282246b262635c9584787c614867bb8d074f0e6212a1  /tmp/c4o.zip" | sha256sum -c -
+          unzip -q /tmp/c4o.zip -d /tmp/c4o
+          echo "bd6bd837c25a41750b161543256a7aee7effbc64eef9b287f75fb867eca620d5  /tmp/c4o/LARE_BC2_C4O_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4O
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4o/LARE_BC2_C4O_RESULT.json'))
+          assert r['decision']=='NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES'
+          assert all(r['widths'][w]['hard_pass'] for w in ('2.5','5.0'))
+          assert r['closure_authorized'] is False
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          p25=r['widths']['2.5']['pooled_moving']
+          p5=r['widths']['5.0']['pooled_moving']
+          assert p25['P_FACE']['signed_cosine'] > p25['P_INTERACTION']['signed_cosine']
+          assert p25['P_FACE']['same_sign_fraction'] > p25['P_INTERACTION']['same_sign_fraction']
+          assert p5['P_INTERACTION']['signed_cosine'] > p5['P_FACE']['signed_cosine']
+          assert p5['P_INTERACTION']['same_sign_fraction'] > p5['P_FACE']['same_sign_fraction']
+          print('LARE_BC2_C4O_VALIDATION=PASS')
+          PY
+
+      - name: Build C4O closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4o/LARE_BC2_C4O_RESULT.json'))
+          def pick(w,p):
+              x=r['widths'][w]['pooled_moving'][p]
+              return {'signed_cosine':x['signed_cosine'],'same_sign_fraction':x['same_sign_fraction'],'unscaled_response_rms_error':x['unscaled_response_rms_error']}
+          out={
+            'schema':'swap5.lare.bc2.c4o.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4O',
+            'status':'CLOSED_NO_SINGLE_STATE_CONDITIONER_RETURN_TO_REPRESENTATION_SELECTION',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35471782977,
+              'execution_head':'78767bff42440bf983fbfa9d3b2ab691953d700e',
+              'aggregate_artifact_id':10593008535,
+              'aggregate_artifact_digest':'sha256:1761481a506e398c300c282246b262635c9584787c614867bb8d074f0e6212a1',
+              'result_sha256':'bd6bd837c25a41750b161543256a7aee7effbc64eef9b287f75fb867eca620d5'
+            },
+            'width_artifacts':{
+              '2.5':{'id':10592439813,'digest':'sha256:5f2e797a3318647ce3e1058036ba2e3ae9818c631c3c2ae281db39c27a87832d'},
+              '5.0':{'id':10592054922,'digest':'sha256:6ebad662597ae09a5562159bbbe4962f89d34e3a34808a09e68efe5ac73f72d0'}
+            },
+            'key_results':{
+              '2.5':{'P_FACE':pick('2.5','P_FACE'),'P_BOUNDARY':pick('2.5','P_BOUNDARY'),'P_INTERACTION':pick('2.5','P_INTERACTION')},
+              '5.0':{'P_FACE':pick('5.0','P_FACE'),'P_BOUNDARY':pick('5.0','P_BOUNDARY'),'P_INTERACTION':pick('5.0','P_INTERACTION')}
+            },
+            'hold_guard':{
+              '2.5_P_FACE_rms':r['widths']['2.5']['histories']['WT_HOLD']['predictors']['P_FACE']['predictor_rms'],
+              '2.5_P_INTERACTION_rms':r['widths']['2.5']['histories']['WT_HOLD']['predictors']['P_INTERACTION']['predictor_rms'],
+              '5.0_P_FACE_rms':r['widths']['5.0']['histories']['WT_HOLD']['predictors']['P_FACE']['predictor_rms'],
+              '5.0_P_INTERACTION_rms':r['widths']['5.0']['histories']['WT_HOLD']['predictors']['P_INTERACTION']['predictor_rms']
+            },
+            'scientific_interpretation':[
+              'No single zero-fit existing-state conditioner dominates across both tested widths.',
+              'At 2.5 cm the geometry-only P_FACE signal remains strongest in pooled moving data: signed cosine about 0.402 and sign agreement about 0.832, whereas the interaction degrades to about -0.073 and 0.512.',
+              'At 5 cm the opposite occurs: P_INTERACTION improves signed cosine to about 0.306 and sign agreement to about 0.889, while P_FACE is about -0.082 and 0.576.',
+              'The interaction successfully collapses HOLD toward zero at both widths, but its moving-regime transfer is width-dependent. Further scalar tuning would therefore be post-hoc rather than physically established.',
+              'The workstream returns to representation selection. No new scalar closure, propagation, groundwater feedback, application acceptance or speed claim is authorized.'
+            ],
+            'next_authority':'RECONCILE_LARE_VERSUS_CORICHARDS_REPRESENTATION_OPTIONS',
+            'model_changed':False,
+            'closure_authorized':False,
+            'propagated_dynamics_authorized':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4O_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4O closeout
+
+          Formal decision: NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES.
+
+          C4O tested three zero-fit signals derived only from the existing B9 state: the C4N face geometry signal, lower-boundary disequilibrium, and their interaction. No regression, fitted coefficient, direction label, Hdot or extra state was used.
+
+          The interaction fixes one important defect: under HOLD it collapses essentially to zero at both widths. But it is not transferable across representation width. At 2.5 cm, P_FACE remains clearly stronger in pooled moving data, with signed cosine about 0.402 and sign agreement 83.2%; P_INTERACTION gives about -0.073 and 51.2%. At 5 cm, the ranking reverses: P_INTERACTION gives signed cosine about 0.306 and sign agreement 88.9%, while P_FACE gives about -0.082 and 57.6%.
+
+          That width reversal is the decisive result. A new scalar blend or switch would be post-hoc tuning rather than an established physical closure. The LARE branch therefore returns to representation selection.
+
+          The next bounded task is to reconcile the already existing LARE and CoRichards representation options against the accumulated state-sufficiency and closure evidence before proposing any further model family.
+          MD
+
+      - name: Persist C4O authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4o/LARE_BC2_C4O_RESULT.json integration/f-rom/LARE_BC2_C4O_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4O_RESULT.json integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4O_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4O conditioner map"
+          git push origin HEAD:work/f-rom-lare-rs1
