@@ -1,0 +1,54 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:301cc82963d3c0cd194ee2ea4e218ff416c2d12348dd8419ac82b755f5b315cb",
+    "artifact_id": 10591051083,
+    "execution_head": "65ed4d63838537ddaedeb34535adff7573aa4ccc",
+    "result_sha256": "0d18526edab182a94f398c7d498ab92ecbfe2ffafe898ac043ea088e66b3345f",
+    "workflow_run": 35463177970
+  },
+  "case_classification_counts": {
+    "CONDUCTIVITY_COMPONENT_DOMINANT": 0,
+    "GRADIENT_COMPONENT_DOMINANT": 4,
+    "MIXED_COMPONENTS": 0
+  },
+  "decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED",
+  "groundwater_feedback_authorized": false,
+  "key_results": {
+    "2.5_WT_FALL": {
+      "conductivity_RMS_cm_per_day": 0.004113733105072651,
+      "fraction_abs_gradient_gt_conductivity": 0.99609375,
+      "gradient_RMS_cm_per_day": 0.2923861016393274
+    },
+    "2.5_WT_RISE": {
+      "conductivity_RMS_cm_per_day": 0.005251479937228738,
+      "fraction_abs_gradient_gt_conductivity": 0.99609375,
+      "gradient_RMS_cm_per_day": 0.36137552793778044
+    },
+    "5.0_WT_FALL": {
+      "conductivity_RMS_cm_per_day": 0.008752989220202453,
+      "fraction_abs_gradient_gt_conductivity": 1.0,
+      "gradient_RMS_cm_per_day": 0.48480867042856574
+    },
+    "5.0_WT_RISE": {
+      "conductivity_RMS_cm_per_day": 0.01635450726860645,
+      "fraction_abs_gradient_gt_conductivity": 1.0,
+      "gradient_RMS_cm_per_day": 0.6356248290897144
+    }
+  },
+  "model_changed": false,
+  "next_authority": "PREREGISTER_PHYSICALLY_DERIVED_GRADIENT_RECONSTRUCTION_CANDIDATE_USING_EXISTING_WB_WT_H_STATE",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4h.closeout.v1",
+  "scientific_interpretation": [
+    "The remaining B9 TERMINAL_SIDE_LINEAR qi error is gradient-component dominant in all four monotone width/history cases under the preregistered symmetric product-difference factorisation.",
+    "Interface-conductivity reconstruction error is much smaller than the effective-gradient component and does not justify a K-focused correction.",
+    "The next research candidate should therefore alter the physically reconstructed pressure-head/gradient shape while keeping the existing conservative Wb/Wt/H state and frozen constitutive law.",
+    "No empirical gradient correction or free-running model change is authorized by C4H."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_GRADIENT_COMPONENT_TARGET_NO_MODEL_CHANGE",
+  "work_unit": "LARE-BC2-C4H",
+  "workstream": "F-ROM-LARE"
+}
