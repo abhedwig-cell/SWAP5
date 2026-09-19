@@ -269,7 +269,7 @@ contains
            'F-ROMV2 D20 REF physical water-content bounds')
       write(*,'(*(g0))') 'F_ROMV2_D20_REF_STATE|SPLIT=DEVELOPMENT|HISTORY=',trim(history_label(ih)), &
            '|STEP=',step,'|REL_T=',real(step,real64)*step_dt,'|T=',t1,'|REV=',state%current_revision(), &
-           '|PHASE=',trim(phase_label(step)),'|TOP_FACTOR=',history_factor(ih),'|BOTTOM_MODE=',5, &
+           '|PHASE=',trim(phase_label(step)),'|TOP_FACTOR=',history_factor(ih,step),'|BOTTOM_MODE=',5, &
            '|TOTAL_STORAGE=',total,'|UPPER_STORAGE=',upper,'|LOWER_STORAGE=',lower, &
            '|TOP_FLUX_NATIVE=',forcing%top_flux,'|PRESCRIBED_INFILTRATION=',-forcing%top_flux*(t1-t0), &
            '|BOTTOM_OUTWARD_EXCHANGE=',bex,'|BOTTOM_FLUX=',bflux, &
@@ -366,7 +366,7 @@ contains
     end select
   end function history_factor
 
-  pure function phase_label(step) result(label)
+  function phase_label(step) result(label)
     integer,intent(in) :: step
     character(len=8) :: label
     write(label,'(A,I2.2)') 'BLK',((step-1)/30)+1
