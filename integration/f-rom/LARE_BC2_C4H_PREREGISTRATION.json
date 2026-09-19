@@ -84,5 +84,11 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_clarification": {
+    "before_first_C4H_execution": true,
+    "case_classification_operationalisation": "There is one frozen B9 trapezoidal endpoint route. 'Both' in the case-classification wording refers to the two preregistered magnitude summaries, RMS and MAE, not to two numerical routes. GRADIENT requires E_G > E_K in both RMS and MAE; CONDUCTIVITY requires the reverse; otherwise MIXED.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
