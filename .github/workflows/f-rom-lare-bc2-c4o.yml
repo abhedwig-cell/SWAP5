@@ -1,0 +1,97 @@
+name: F-ROM-LARE BC2-C4O existing-state conditioner map
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4O_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4o_state_conditioner_map.py'
+      - 'tests/rom/aggregate_lare_bc2_c4o.py'
+      - '.github/workflows/f-rom-lare-bc2-c4o.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4o-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  width:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {tag: w2p5, width: 2.5}
+          - {tag: w5, width: 5.0}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numpy
+        run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c4o/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c4o/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c4o/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c4o/a2.zip -d /tmp/lare-bc2-c4o/a2
+          cmp /tmp/lare-bc2-c4o/a2/o0.txt /tmp/lare-bc2-c4o/a2/o2.txt
+      - name: Execute C4O width
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4O_WIDTH
+          python3 tests/rom/analyze_lare_bc2_c4o_state_conditioner_map.py             --reference /tmp/lare-bc2-c4o/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C4O_PREREGISTRATION.json             --c4n-closeout integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json             --c4k-closeout integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json             --c4h-closeout integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json             --b8-result integration/f-rom/LARE_BC2_B8_RESULT.json             --b9-result integration/f-rom/LARE_BC2_B9_RESULT.json             --width "${{ matrix.width }}"             --output "LARE_BC2_C4O_WIDTH/case_${{ matrix.tag }}.json"             | tee "LARE_BC2_C4O_WIDTH/runner_${{ matrix.tag }}.txt"
+      - name: Upload width evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4o-width-${{ matrix.tag }}
+          path: LARE_BC2_C4O_WIDTH/
+          if-no-files-found: error
+
+  aggregate:
+    needs: width
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recover C4O width cases
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c4o-width-*
+          path: /tmp/lare-bc2-c4o-cases
+          merge-multiple: true
+      - name: Aggregate C4O
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4O_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c4o.py             --case-dir /tmp/lare-bc2-c4o-cases             --prereg integration/f-rom/LARE_BC2_C4O_PREREGISTRATION.json             --output LARE_BC2_C4O_EVIDENCE/LARE_BC2_C4O_RESULT.json             | tee LARE_BC2_C4O_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4O_EVIDENCE/LARE_BC2_C4O_RESULT.json'))
+          assert r['decision'] in (
+            'FACE_BOUNDARY_INTERACTION_SIGNAL_SUPPORTED',
+            'FACE_GEOMETRY_SIGNAL_REMAINS_STRONGER',
+            'BOUNDARY_SIGNAL_REMAINS_STRONGER',
+            'NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES',
+            'C4O_DIAGNOSTIC_BLOCKED'
+          )
+          assert r['closure_authorized'] is False
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4O_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4O_EVIDENCE/* > LARE_BC2_C4O_EVIDENCE/sha256.txt
+      - name: Upload aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4o
+          path: LARE_BC2_C4O_EVIDENCE/
+          if-no-files-found: error
