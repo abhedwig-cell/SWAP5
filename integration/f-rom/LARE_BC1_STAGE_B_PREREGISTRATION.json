@@ -1,0 +1,212 @@
+{
+  "schema": "swap5.lare.bc1.stage-b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-B",
+  "phase": "PREREGISTERED_BEFORE_PRESCRIBED_HEAD_REDUCED_DYNAMICS",
+  "purpose": "Compare two no-fit fixed-domain prescribed-head boundary conductivity closures inside otherwise unchanged standard LARE D3/D4 dynamics against the qualified RS1-GW fine Reference histories.",
+  "authority": {
+    "dyn0a_closeout": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "boundary_authority": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "corrected_reference_semantics": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "stage_a_reference": {
+      "workflow_run": 35444243790,
+      "artifact_id": 10585316225,
+      "artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+      "o0_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+    }
+  },
+  "reduced_model": {
+    "internal_interface_closure": "unchanged HE2021 Eq.24 adjacent fixed-layer extension used in DYN0A",
+    "state": "fixed layer storage W_i",
+    "constitutive": "frozen B01 Mualem-Van Genuchten",
+    "coordinate": "depth and bottom flux positive downward",
+    "partitions": {
+      "D3": {
+        "boundaries_cm": [
+          0,
+          140,
+          150,
+          160
+        ],
+        "role": "minimum RS1 state-information candidate"
+      },
+      "D4": {
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ],
+        "role": "closure-resolution control"
+      }
+    },
+    "boundary_candidates": {
+      "CURRENT_LAYER_FACE": {
+        "formula": "q_b = K(theta_bar_N(t)) * [1 + 2*(psi_b(t)-psi_bar_N(t))/L_N]",
+        "role": "standard reduced-current-state face closure; no fitted coefficient"
+      },
+      "BOUNDARY_FACE": {
+        "formula": "q_b = K(h_b(t)) * [1 + 2*(psi_b(t)-psi_bar_N(t))/L_N]",
+        "role": "Dirichlet/source-structure sensitivity closure; no fitted coefficient and not claimed as an explicitly validated arbitrary-unsaturated-head He-2021 formula"
+      }
+    },
+    "explicitly_not_used": "SWKIMPL=0 lagged K is Reference numerical time-level semantics and is not imported as the preferred physical LARE closure"
+  },
+  "histories": {
+    "G00": {
+      "se0": 0.85,
+      "segments": [
+        [
+          "BOTTOM_HEAD_FALL",
+          24
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          40
+        ],
+        [
+          "HOLD",
+          960
+        ]
+      ],
+      "role": "historical reversal control"
+    },
+    "G03": {
+      "se0": 0.95,
+      "segments": [
+        [
+          "BOTTOM_HEAD_FALL",
+          256
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          512
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "wet head fall-rise"
+    },
+    "G04": {
+      "se0": 0.85,
+      "segments": [
+        [
+          "BOTTOM_HEAD_RISE",
+          256
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          512
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "mid head rise-fall"
+    },
+    "G05": {
+      "se0": 0.65,
+      "segments": [
+        [
+          "COMBINED_RISE_PLUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ],
+        [
+          "COMBINED_FALL_MINUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "dry combined top/head forcing"
+    }
+  },
+  "forcing_semantics": {
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "source_downward_top": {
+      "HOLD": "K0",
+      "BOTTOM_HEAD_RISE": "K0",
+      "BOTTOM_HEAD_FALL": "K0",
+      "COMBINED_RISE_PLUS": "0.99*K0",
+      "COMBINED_FALL_MINUS": "1.01*K0"
+    },
+    "mode2_hold_bottom": "K0 downward",
+    "prescribed_head": {
+      "BOTTOM_HEAD_RISE": "h_b = 0.75*h0; psi_b=-h_b",
+      "BOTTOM_HEAD_FALL": "h_b = 1.25*h0; psi_b=-h_b"
+    },
+    "initial_state": "uniform Se0 after the already-qualified gravity-consistent seed; fixed-flux equilibrium is exact in the reduced source convention"
+  },
+  "numerical_floor": {
+    "method": "iterative Heun predictor-corrector, same source-anchored DYN0A implementation family",
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": "0.0001 day if qualified",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "domain": "theta_r < theta_bar_i < theta_s and standard MvG branch psi>0.01 cm",
+    "no_clipping": true,
+    "water_ledger_hard_gate_cm": 1e-10,
+    "refinement_report": [
+      "max layer-storage difference between dt=0.0002 and 0.0001",
+      "max cumulative-bottom-exchange difference",
+      "max interval-average-bottom-flux difference"
+    ]
+  },
+  "reference_comparison": {
+    "reference_storage": "project the exact fine Reference theta profile onto the same D3/D4 bands at every accepted Stage-A step",
+    "reference_bottom_exchange": "BOTTOM_OUTWARD_EXCHANGE from the qualified Stage-A artifact, accumulated over intervals",
+    "reference_interval_average_bottom_flux": "BOTTOM_OUTWARD_EXCHANGE / 0.0008 day",
+    "forbidden_observable_claim": "Do not interpret Stage-A BOTTOM_FLUX as an independent current-K instantaneous Darcy-face observation.",
+    "primary_metrics": [
+      "maximum absolute layer-storage error over time",
+      "time-mean absolute layer-storage error",
+      "final signed layer-storage error",
+      "maximum absolute cumulative bottom-exchange error",
+      "final signed cumulative bottom-exchange error",
+      "maximum absolute interval-average bottom-flux error",
+      "bottom-flux sign mismatch count",
+      "reversal sequence and reversal-step differences",
+      "water-ledger residual"
+    ]
+  },
+  "adjudication": {
+    "common_case_rule": "Candidate comparison uses only partition/history cases qualified for both CURRENT_LAYER_FACE and BOUNDARY_FACE on the finest Heun route and backed by complete fine Reference data.",
+    "no_scalar_weighting": true,
+    "relative_support_rule": "A boundary candidate has relative support only if it is no worse than the other candidate on every primary maximum-error/sign/reversal component over the common cohort and strictly better on at least one. Otherwise close MIXED_NO_RELATIVE_SELECTION.",
+    "D3_D4_interpretation": "D4 improvement over D3 is closure-resolution evidence, not new state-information evidence.",
+    "application_acceptance": false,
+    "valid_outcomes": [
+      "BC1_CURRENT_LAYER_RELATIVE_SUPPORT",
+      "BC1_BOUNDARY_FACE_RELATIVE_SUPPORT",
+      "BC1_MIXED_NO_RELATIVE_SELECTION",
+      "BC1_BOTH_DYNAMICS_BLOCKED",
+      "BC1_REFERENCE_OR_DOMAIN_INSUFFICIENT"
+    ]
+  },
+  "firewalls": [
+    "NO_BOUNDARY_COEFFICIENT_FIT",
+    "NO_POST_RESPONSE_CANDIDATE_RETUNING",
+    "NO_IMPORT_OF_REFERENCE_LAGGED_K_AS_PHYSICAL_CLOSURE",
+    "NO_CHANGE_TO_STANDARD_INTERNAL_LARE_INTERFACE_CLOSURE",
+    "NO_MOVING_WATER_TABLE_GEOMETRY",
+    "NO_REFERENCE_RICHARDS_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_INTEGRATION"
+  ],
+  "production_rom_authorized": false
+}
