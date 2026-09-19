@@ -1,0 +1,34 @@
+name: F-TAB01 legacy table oracle characterization
+
+on:
+  push:
+    branches:
+      - work/f-tab01-tabulated-hydraulics-audit
+    paths:
+      - 'tests/tabulated/**'
+      - '.github/workflows/f-tab01-legacy-table-oracle.yml'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Compile isolated legacy oracle
+        run: |
+          mkdir -p build/f-tab01
+          gfortran -O2 -std=legacy -fcheck=all -c             tests/tabulated/reference/swap_array_dimensions_stub.f90             -J build/f-tab01 -o build/f-tab01/dims.o
+          gfortran -O2 -std=legacy -fcheck=all -c             tests/tabulated/reference/sptabulated_legacy_oracle.f90             -I build/f-tab01 -J build/f-tab01 -o build/f-tab01/oracle.o
+          gfortran -O2 -std=legacy -fcheck=all -c             tests/tabulated/test_f_tab01_legacy_oracle.f90             -I build/f-tab01 -J build/f-tab01 -o build/f-tab01/test.o
+          gfortran build/f-tab01/dims.o build/f-tab01/oracle.o build/f-tab01/test.o             -o build/f-tab01/f_tab01_legacy_oracle
+      - name: Characterize
+        run: |
+          build/f-tab01/f_tab01_legacy_oracle | tee build/f-tab01/metrics.txt
+      - name: Upload metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-tab01-legacy-oracle-metrics
+          path: build/f-tab01/metrics.txt
