@@ -79,7 +79,8 @@
     "stale_historical_gates": [
       "F-SI39 reports unexpected production delta because its historical gate freezes its own postimage scope.",
       "F-CI72/F-CI74/F-CI79 moving-preservation gates freeze the pre-PPA F-ROSS12 backend blob and therefore report red after this intentional backend successor.",
-      "F-KT22 FMR compile/runtime currently omits pre-existing mod_b110_smooth_freatic_projection from its compile list; this is independent of PPA-LOW02-TIME."
+      "F-KT22 FMR compile/runtime currently omits pre-existing mod_b110_smooth_freatic_projection from its compile list; this is independent of PPA-LOW02-TIME.",
+      "PPA-WU02 workflow run 35426313776 fails its frozen 0d1798 source-delta assertion because current canonical intentionally contains later kernel/backend successors including PPA-LOW02-TIME; it is a historical admission gate, not a current semantic preservation oracle."
     ],
     "disposition": "These red historical/blob-lock checks are not treated as scientific or runtime failures; direct PPA qualification, F-ROSS12, F-CI96, F-GC42 and F-GC44 successor-preservation evidence is green."
   },
@@ -101,5 +102,12 @@
     "PPA-LOW03 deep-aquifer Cauchy explicit/implicit boundary",
     "PPA-LOW08 lysimeter active-set continuation"
   ],
-  "closeout_basis": "Functional admission is canonical; this closeout branch updates the machine inventory and gap register without production source changes."
+  "closeout_basis": "Functional admission is canonical; this closeout branch updates the machine inventory and gap register without production source changes.",
+  "closeout_requalification": {
+    "pull_request": 362,
+    "ppa_low02_run": 35426313748,
+    "documentation_run": 35426313717,
+    "ppa_wu02_historical_gate_run": 35426313776,
+    "ppa_wu02_historical_gate_disposition": "EXPECTED_FROZEN_DELTA_REJECTION_NOT_CURRENT_SEMANTIC_FAILURE"
+  }
 }
