@@ -80,19 +80,25 @@ def find_bracket(seed,lo,hi,ev):
     return None,finite
 
 def solve(seeds,lo,hi,ev):
+    cache={}
+    def E(x):
+        if x not in cache: cache[x]=ev(x)
+        return cache[x]
     allfinite=[]
     for seed in seeds:
         if not(lo<seed<hi): continue
-        br,fin=find_bracket(seed,lo,hi,ev); allfinite+=fin
+        br,fin=find_bracket(seed,lo,hi,E); allfinite+=fin
         if not br: continue
-        a,b=sorted(br); ea=ev(a); eb=ev(b)
+        a,b=sorted(br); ea=E(a); eb=E(b)
         if not(ea[0] and eb[0]) or ea[1]*eb[1]>0: continue
         for _ in range(100):
-            m=.5*(a+b); em=ev(m)
+            m=.5*(a+b)
+            if m==a or m==b: break
+            em=E(m)
             if not em[0]: return {"ok":False,"reason":"invalid_midpoint"}
             if ea[1]*em[1]<=0: b=m; eb=em
             else: a=m; ea=em
-        m=.5*(a+b); em=ev(m)
+        m=.5*(a+b); em=E(m)
         return {"ok":em[0],"root":m,"residual":em[1] if em[0] else None}
     return {"ok":False,"reason":"no_finite_sign_bracket"}
 
