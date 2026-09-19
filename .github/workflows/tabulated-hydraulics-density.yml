@@ -1,0 +1,196 @@
+name: TAB-HYD Hupsel table-density sweep
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-density.yml'
+
+jobs:
+  density:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: legacy-runtime/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: legacy-runtime/subprojects/ttutil
+
+      - name: Checkout pinned Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup legacy-runtime/builddir legacy-runtime -Denable_pfunit=false
+          meson compile -C legacy-runtime/builddir
+
+      - name: Prepare analytical control and table-density variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-density
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          import re
+          import shutil
+
+          spec = importlib.util.spec_from_file_location(
+              "prep", "research/tabulated_hydraulics/prepare_hupsel_e2e.py"
+          )
+          prep = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          src = Path("swap-testcases/cases/hupselbrook/legacy")
+          root = Path("build/tab-hyd-density")
+
+          analytic = root / "analytic"
+          shutil.copytree(src, analytic)
+          prep.edit_case(analytic, table=False, swkimpl=0)
+
+          candidates = [30, 40, 50, 75, 100, 150, 250, 400, 600, 900]
+          for n in candidates:
+              dst = root / f"table_{n:03d}"
+              shutil.copytree(src, dst)
+              prep.NCANDIDATE = n
+              counts = prep.edit_case(dst, table=True, swkimpl=0)
+              (dst / "table_counts.txt").write_text(
+                  f"candidate_points={n}\n"
+                  f"top_rows={counts[0]}\n"
+                  f"sub_rows={counts[1]}\n"
+              )
+
+          for d in [analytic, *sorted(root.glob("table_*"))]:
+              p = d / "swap.swp"
+              s = p.read_text()
+              s, changed = re.subn(
+                  r"(?m)^(\s*SWMONTH\s*=\s*)1\b", r"\g<1>0", s, count=1
+              )
+              if changed != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {d.name}")
+              p.write_text(s)
+          PY
+
+      - name: Run full-period density sweep
+        shell: bash
+        run: |
+          set -euo pipefail
+          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
+          printf 'variant\treturn_code\truntime_seconds\ttop_rows\tsub_rows\n' \
+            > build/tab-hyd-density/status.tsv
+
+          run_variant () {
+            name="$1"
+            work="$GITHUB_WORKSPACE/build/tab-hyd-density/$name"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 90 "$BIN" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            top=NA
+            sub=NA
+            if [ -f "$work/table_counts.txt" ]; then
+              top=$(awk -F= '/^top_rows=/{print $2}' "$work/table_counts.txt")
+              sub=$(awk -F= '/^sub_rows=/{print $2}' "$work/table_counts.txt")
+            fi
+            printf '%s\t%s\t%s\t%s\t%s\n' "$name" "$rc" "$runtime" "$top" "$sub" \
+              | tee -a build/tab-hyd-density/status.tsv
+            test "$rc" -eq 100
+          }
+
+          run_variant analytic
+          for work in build/tab-hyd-density/table_*; do
+            run_variant "$(basename "$work")"
+          done
+
+      - name: Compare every table density with analytical control
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/tab-hyd-density/comparisons.txt
+          for work in build/tab-hyd-density/table_*; do
+            name="$(basename "$work")"
+            python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              build/tab-hyd-density/analytic "$work" \
+              "build/tab-hyd-density/$name-comparison.json" \
+              --label "$name" \
+              | tee -a build/tab-hyd-density/comparisons.txt
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          import json
+
+          root=Path("build/tab-hyd-density")
+          status={}
+          with (root/"status.tsv").open() as fh:
+              for row in csv.DictReader(fh, delimiter="\t"):
+                  status[row["variant"]]=row
+
+          rows=[]
+          for p in sorted(root.glob("table_*-comparison.json")):
+              name=p.name.replace("-comparison.json","")
+              d=json.loads(p.read_text())
+              m=d["metrics"]
+              rows.append({
+                  "variant":name,
+                  "candidate_points":int(name.split("_")[1]),
+                  "top_rows":int(status[name]["top_rows"]),
+                  "sub_rows":int(status[name]["sub_rows"]),
+                  "runtime_seconds":float(status[name]["runtime_seconds"]),
+                  "gwl_max_abs":m["GWL"]["max_abs"],
+                  "gwl_rmse":m["GWL"]["rmse"],
+                  "dstor_max_abs":m["DSTOR"]["max_abs"],
+                  "drainage_max_abs":m["DRAINAGE"]["max_abs"],
+                  "tact_max_abs":m["TACT"]["max_abs"],
+              })
+          fields=list(rows[0])
+          with (root/"density-summary.csv").open("w", newline="") as fh:
+              w=csv.DictWriter(fh, fieldnames=fields)
+              w.writeheader()
+              w.writerows(rows)
+          print((root/"density-summary.csv").read_text())
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-density-sweep
+          path: |
+            build/tab-hyd-density/status.tsv
+            build/tab-hyd-density/comparisons.txt
+            build/tab-hyd-density/density-summary.csv
+            build/tab-hyd-density/*-comparison.json
+            build/tab-hyd-density/*/table_counts.txt
+            build/tab-hyd-density/*/runtime_seconds.txt
