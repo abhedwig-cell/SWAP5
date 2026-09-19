@@ -24,6 +24,8 @@ wu03 = load("integration/audits/PPA_WU03_STATUS.json")
 wu04 = load("integration/audits/PPA_WU04_STATUS.json")
 wu05 = load("integration/audits/PPA_WU05_STATUS.json")
 wu05a = load("integration/audits/PPA_WU05A_STATUS.json")
+low02 = load("integration/audits/PPA_LOW02_TIME_STATUS.json")
+wu05c = load("integration/audits/PPA_WU05C_STATUS.json")
 src_path = "src/runtime/mod_fmr_production_application_bootstrap.f90"
 src = read(src_path).decode("utf-8")
 
@@ -60,6 +62,19 @@ assert git_blob_sha("integration/audits/PPA_WU05A_STATUS.json") == rec["later_ca
 assert wu05a["production_source_mutation"] is False
 assert wu05a["production_admission"] == "NONE_REVIEW_ONLY"
 
+assert git_blob_sha("integration/audits/PPA_LOW02_TIME_STATUS.json") == rec["later_canonical_workunits"]["PPA_LOW02_TIME"]["status_blob"]
+assert low02["status"] == "CANONICAL_ADMITTED_CLOSED"
+assert low02["admission"]["state"] == "CANONICAL_ADMITTED"
+assert "new groundwater-coupling semantics" in low02["explicit_nonclaims"]
+assert "mixed bottom-mode production profiles" in low02["explicit_nonclaims"]
+assert rec["later_canonical_workunits"]["PPA_LOW02_TIME"]["groundwater_semantics_change"] is False
+
+assert git_blob_sha("integration/audits/PPA_WU05C_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU05C"]["status_blob"]
+assert wu05c["status"] == "CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED"
+assert wu05c["scope"]["production_source_mutation"] is False
+assert wu05c["production_admission"] == "NONE_REVIEW_ONLY"
+
+assert rec["canonical_head_at_reconcile"] == "301690864e6507484a22f40e143a5f0828889e90"
 assert rec["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
 
 print("PUB_GC_E7_CURRENT_RESULT_CLOSED=PASS")
@@ -71,4 +86,6 @@ print("PUB_GC_E7_PPA_WU03_NO_GW_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_PPA_WU05_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_PPA_WU05A_REVIEW_ONLY=PASS")
+print("PUB_GC_E7_PPA_LOW02_TIME_NO_GW_WIDENING=PASS")
+print("PUB_GC_E7_PPA_WU05C_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_CURRENT_CANONICAL_PRESERVED=PASS")
