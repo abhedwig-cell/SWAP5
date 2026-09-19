@@ -1,0 +1,67 @@
+name: F-ROM-LARE BC2-C4K gradient state sufficiency
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4K_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4k_gradient_state_sufficiency.py'
+      - '.github/workflows/f-rom-lare-bc2-c4k.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4k-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c4k/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c4k/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c4k/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c4k/a2.zip -d /tmp/lare-bc2-c4k/a2
+          cmp /tmp/lare-bc2-c4k/a2/o0.txt /tmp/lare-bc2-c4k/a2/o2.txt
+
+      - name: Execute C4K state sufficiency diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4K_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4k_gradient_state_sufficiency.py             --reference /tmp/lare-bc2-c4k/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C4K_PREREGISTRATION.json             --c4j-closeout integration/f-rom/LARE_BC2_C4J_CLOSEOUT.json             --b4-result integration/f-rom/LARE_BC2_B4_RESULT.json             --b8-result integration/f-rom/LARE_BC2_B8_RESULT.json             --output LARE_BC2_C4K_EVIDENCE/LARE_BC2_C4K_RESULT.json             | tee LARE_BC2_C4K_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4K_EVIDENCE/LARE_BC2_C4K_RESULT.json'))
+          assert r['decision'] in (
+            'DIRECTION_HISTORY_INFORMATION_SUPPORTED',
+            'CURRENT_STATE_NOT_SHOWN_INSUFFICIENT',
+            'C4K_DIAGNOSTIC_BLOCKED'
+          )
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4K_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4K_EVIDENCE/* > LARE_BC2_C4K_EVIDENCE/sha256.txt
+
+      - name: Upload C4K evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4k
+          path: LARE_BC2_C4K_EVIDENCE/
+          if-no-files-found: error
