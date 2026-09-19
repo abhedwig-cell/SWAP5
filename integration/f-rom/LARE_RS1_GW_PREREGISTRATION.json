@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.lare.rs1.gw.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW",
+  "phase": "PREREGISTERED_BEFORE_NEW_GW_LIBRARY_EXECUTION",
+  "canonical_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "purpose": "Test conservative reduced-state sufficiency for groundwater recharge, capillary rise and drainage/capillary regime transitions before any LARE closure is introduced.",
+  "capability": "PURE_ONE_COLUMN_MATRIX_WATER_HYDRAULICS",
+  "material_stage_A": "B01",
+  "geometry": {
+    "nodes": 16,
+    "depth_cm": 160,
+    "base_cell_thickness_cm": 10
+  },
+  "reference_policy": {
+    "route": "current admitted Reference Richards research observation seam",
+    "hard_mass_gate_cm": 1e-12,
+    "no_dt_subdivision": true,
+    "failed_trial_never_mutates_committed_state": true,
+    "fallback_policy": "reuse the already-qualified strict-first ROM1AR2 total/local representation-floor research policy unchanged where still source-compatible; otherwise fail closed and reconcile before scientific interpretation"
+  },
+  "known_control": {
+    "source": "F-ROMV-MDE-S1 held-out H02",
+    "observation_step_day": 0.0008,
+    "full_order_second_bottom_flux_reversal_step": 57,
+    "historical_reduced_prediction_step": 38,
+    "role": "failure-mode control only; the old reduced dynamics is not reused",
+    "required_metric": "terminal bottom-flux sign and reversal timing remain explicit diagnostics in RS1-GW"
+  },
+  "stage_A": {
+    "observation_step_day": 0.0008,
+    "maximum_steps_per_long_history": 1024,
+    "maximum_horizon_day": 0.8192,
+    "initial_effective_saturation_anchors": [0.65,0.85,0.95],
+    "forcing_amplitudes": {
+      "top_plus": "qeq + 0.01*K0",
+      "top_minus": "qeq - 0.01*K0",
+      "bottom_head_rise": "0.75*h0",
+      "bottom_head_fall": "1.25*h0"
+    },
+    "histories": [
+      {
+        "id": "G00_ROMV_H02_CONTROL",
+        "se0": 0.85,
+        "steps": 64,
+        "segments": [["BOTTOM_HEAD_FALL",24],["BOTTOM_HEAD_RISE",40]],
+        "role": "exact forcing-shape control inherited from held-out H02"
+      },
+      {
+        "id": "G01_DRY_GRAVITY",
+        "se0": 0.65,
+        "steps": 1024,
+        "segments": [["HOLD",1024]]
+      },
+      {
+        "id": "G02_MID_TOP_WET_DRY",
+        "se0": 0.85,
+        "steps": 1024,
+        "segments": [["TOP_PLUS",256],["HOLD",256],["TOP_MINUS",256],["HOLD",256]]
+      },
+      {
+        "id": "G03_WET_HEAD_FALL_RISE",
+        "se0": 0.95,
+        "steps": 1024,
+        "segments": [["BOTTOM_HEAD_FALL",256],["BOTTOM_HEAD_RISE",512],["HOLD",256]]
+      },
+      {
+        "id": "G04_MID_HEAD_RISE_FALL",
+        "se0": 0.85,
+        "steps": 1024,
+        "segments": [["BOTTOM_HEAD_RISE",256],["BOTTOM_HEAD_FALL",512],["HOLD",256]]
+      },
+      {
+        "id": "G05_DRY_COMBINED",
+        "se0": 0.65,
+        "steps": 1024,
+        "segments": [["COMBINED_RISE_PLUS",256],["HOLD",256],["COMBINED_FALL_MINUS",256],["HOLD",256]]
+      }
+    ]
+  },
+  "state_candidates": {
+    "enumeration": "all contiguous fixed partitions of the 16 base cells for dimensions 2 through 10",
+    "state": "exact layer storage W_i, represented equivalently as layer mean theta for fixed thickness",
+    "selection_rule": "state-collision census only proposes candidates; no candidate is accepted until future-response ambiguity is tested against a separately frozen purpose envelope"
+  },
+  "future_probe_policy": {
+    "pair_selection": "cross-history nearest collisions are frozen before future response is evaluated",
+    "identical_future_forcing_required": true,
+    "probe_families": [
+      "HOLD",
+      "TOP_PLUS",
+      "TOP_MINUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL",
+      "BOTTOM_HEAD_RISE_THEN_FALL",
+      "BOTTOM_HEAD_FALL_THEN_RISE"
+    ],
+    "horizons": "short, intermediate and long horizons are frozen before probe execution; no horizon selected from candidate error"
+  },
+  "primary_purpose_outputs": [
+    "cumulative_bottom_exchange",
+    "instantaneous_terminal_bottom_flux",
+    "bottom_flux_sign",
+    "drainage_to_capillary_reversal_time",
+    "capillary_to_drainage_reversal_time",
+    "total_storage",
+    "upper_0_40cm_storage",
+    "lower_40_160cm_storage",
+    "systematic_bottom_exchange_bias"
+  ],
+  "acceptance_envelope_rule": "Numerical full-state separation is diagnostic only. A reduced-state collision fails RS1-GW only when identical future forcing produces a preregistered groundwater-purpose output difference outside the independently frozen hydrological acceptance envelope.",
+  "stage_B_not_yet_authorized": {
+    "possible_extensions": [
+      "stronger head excursions",
+      "longer multi-day horizon",
+      "B14 material transfer",
+      "shallow saturation geometry",
+      "material contrasts"
+    ],
+    "rule": "Stage B requires a new preregistration after Stage A reference reachability and numerical robustness are known; candidate outcomes may not be used to tune Stage A retrospectively."
+  },
+  "firewalls": [
+    "NO_LARE_DYNAMICS_IN_RS1_GW",
+    "NO_CLOSURE_MODEL_FIT",
+    "NO_PURPOSE_THRESHOLD_DERIVED_FROM_COLLISION_RESPONSE",
+    "NO_POST_RESULT_FORCING_RETUNING_WITHIN_STAGE_A",
+    "NO_PRODUCTION_ROM",
+    "NO_MASS_CORRECTION_FLUX",
+    "OUTSIDE_QUALIFIED_DOMAIN_IS_ALLOWED"
+  ],
+  "production_rom_authorized": false
+}
