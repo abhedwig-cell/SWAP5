@@ -223,6 +223,24 @@
       "N1_execution_allowed_in_C0": false,
       "N1_outcomes_allowed_in_case_selection": false,
       "transition_cases_must_be_persisted_before_C1": true
-    }
+    },
+    "geometry_rule": {
+      "vertical_grid": "cell-centred",
+      "cells": 16,
+      "cell_thickness_cm": 10,
+      "node_elevation_cm": "z_i=-dz*(i-0.5)",
+      "node_distance_cm": "node_distance(1)=0.5*dz for surface-to-first-node; node_distance(i>1)=dz",
+      "rationale": "Dynamic top boundary uses node_distance(1) in the surface hydraulic gradient; the prescribed-flux P2 harness geometry cannot be copied unchanged."
+    },
+    "preregistration_repairs": [
+      {
+        "id": "P0C-R01",
+        "date": "2026-09-19",
+        "timing": "BEFORE_ANY_N1_EXECUTION",
+        "change": "Correct first surface node distance from dz to 0.5*dz and supersede the first C0 locator result.",
+        "scientific_freedom_added": false,
+        "outcome_visibility": "Only N0 locator output had been generated; no N1 comparison existed."
+      }
+    ]
   }
 }
