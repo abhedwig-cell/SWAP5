@@ -391,7 +391,7 @@
     }
   },
   "p0a_stress": {
-    "status": "A0_PREREGISTERED_BEFORE_EXECUTION",
+    "status": "A0_FREEZE_CLOSED",
     "numerical_treatment": "N0_ONLY_LOCATOR",
     "material": "B01",
     "root_parameters": {
@@ -452,6 +452,38 @@
       "run_id": 35429834944,
       "outcome": "INFRASTRUCTURE_BLOCK_BEFORE_COMPILATION",
       "reason": "PR merge ref included canonical source advancement relative to original research baseline; no A0 model execution occurred."
+    },
+    "authoritative_A0_result": "integration/num-unc/NUM_UNC_P0A0_RESULT.json",
+    "frozen_cases": {
+      "A_minus": 0.16270876169331827,
+      "A_zero": 0.16520876169331827,
+      "A_plus": 0.16770876169331828
+    },
+    "spatial_control": {
+      "status": "PREREGISTERED_BEFORE_EXECUTION",
+      "grid": {
+        "cells": 32,
+        "dz_cm": 5,
+        "total_depth_cm": 160,
+        "rooted_nodes": 12,
+        "root_depth_cm": 60,
+        "surface_to_first_node_cm": 2.5
+      },
+      "gate_cases": [
+        {
+          "id": "A_minus",
+          "Se0": 0.16270876169331827,
+          "required_class": "STRESS_BEFORE_RESCUE"
+        },
+        {
+          "id": "A_plus",
+          "Se0": 0.16770876169331828,
+          "required_class": "NOT_BEFORE_RESCUE"
+        }
+      ],
+      "A_zero_is_gate": false,
+      "posthoc_offset_widening_allowed": false,
+      "N1_execution_allowed": false
     }
   },
   "canonical_reconciliation_checkpoints": [
@@ -467,4 +499,4 @@
       "document": "integration/num-unc/NUM_UNC_CANONICAL_RECONCILIATION_20260919.md"
     }
   ]
-}
+}\n
