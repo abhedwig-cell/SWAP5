@@ -65,18 +65,20 @@ jobs:
           ./build/tab-hyd/tabulated_hydraulics_resolution_sweep | tee build/tab-hyd/resolution-sweep.csv
           grep -q '^RESOLUTION_SWEEP_COMPLETED$' build/tab-hyd/resolution-sweep.csv
 
-      - name: Characterize representative published Staring tables
+      - name: Characterize all published BOFEK/Staring tables
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/tab-hyd/real-tables
           python3 - <<'PY'
           from pathlib import Path
-          names = [
-              "starb1_cm.csv", "starb9_cm.csv", "starb18_cm.csv",
-              "staro1_cm.csv", "staro9_cm.csv", "staro18_cm.csv",
-          ]
           src = Path("staring-source/xdata/soils/bofek2012/tables")
+          names = sorted(
+              [p.name for p in src.glob("starb*_cm.csv")] +
+              [p.name for p in src.glob("staro*_cm.csv")]
+          )
+          if len(names) != 36:
+              raise SystemExit(f"expected 36 BOFEK/Staring tables, found {len(names)}")
           dst = Path("build/tab-hyd/real-tables")
           for name in names:
               rows = []
@@ -99,7 +101,198 @@ jobs:
           for table in build/tab-hyd/real-tables/*.dat; do
             ./build/tab-hyd/tabulated_hydraulics_file_characterization "$table" | tee -a build/tab-hyd/staring-characterization.txt
           done
-          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED$' build/tab-hyd/staring-characterization.txt)" -eq 6
+          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED
+
+      - name: Compile current public hydraulic wrappers
+        shell: bash
+        run: |
+          set -euo pipefail
+          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=bounds -fbacktrace -Wall -Wextra"
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd -c research/tabulated_hydraulics/current_wrapper_stubs.f90 -o build/tab-hyd/current_wrapper_stubs.o
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd -c upstream-swap/src/utils/soilhydraulicsutils.f90 -o build/tab-hyd/soilhydraulicsutils.o
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd research/tabulated_hydraulics/tabulated_hydraulics_wrapper_characterization.f90 \
+            build/tab-hyd/array_dimensions_stub.o build/tab-hyd/current_wrapper_stubs.o build/tab-hyd/sptabulated.o \
+            build/tab-hyd/soilhydraulicsutils.o -o build/tab-hyd/tabulated_hydraulics_wrapper_characterization
+
+      - name: Run public wrapper saturation transition characterization
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          ./build/tab-hyd/tabulated_hydraulics_wrapper_characterization | tee build/tab-hyd/wrapper-characterization.csv
+          rc=${PIPESTATUS[0]}
+          set -e
+          if ! grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd/wrapper-characterization.csv; then
+            echo "WRAPPER_CHARACTERIZATION_INCOMPLETE return_code=$rc"
+            exit 1
+          fi
+          {
+            echo "return_code=$rc"
+            grep '^WRAPPER ' build/tab-hyd/wrapper-characterization.csv || true
+          } | tee build/tab-hyd/wrapper-summary.txt
+          if [ "$rc" -ne 0 ]; then
+            echo "WRAPPER_POST_COMPLETION_NONZERO=$rc" | tee -a build/tab-hyd/wrapper-summary.txt
+          fi
+
+      - name: Characterize dry-side derivative extrapolation
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          ./build/tab-hyd/tabulated_hydraulics_wrapper_characterization dry_probe > build/tab-hyd/dry-probe.log 2>&1
+          rc=$?
+          set -e
+          cat build/tab-hyd/dry-probe.log
+          echo "return_code=$rc" > build/tab-hyd/dry-probe-summary.txt
+          if [ "$rc" -eq 0 ]; then
+            echo "DRY_PROBE_NOT_REPRODUCED" | tee -a build/tab-hyd/dry-probe-summary.txt
+            exit 1
+          fi
+          if grep -Fq "Index '0' of dimension 3 of array 'sptab' below lower bound of 1" build/tab-hyd/dry-probe.log; then
+            echo "DRY_DKDH_OUT_OF_RANGE_REPRODUCED" | tee -a build/tab-hyd/dry-probe-summary.txt
+          else
+            echo "DRY_PROBE_UNEXPECTED_FAILURE" | tee -a build/tab-hyd/dry-probe-summary.txt
+            exit 1
+          fi
+
+      - name: Upload characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-current-numerics-evidence
+          path: |
+            build/tab-hyd/characterization.csv
+            build/tab-hyd/summary.txt
+            build/tab-hyd/evidence.txt
+            build/tab-hyd/resolution-sweep.csv
+            build/tab-hyd/staring-characterization.txt
+            build/tab-hyd/wrapper-characterization.csv
+            build/tab-hyd/wrapper-summary.txt
+            build/tab-hyd/dry-probe.log
+            build/tab-hyd/dry-probe-summary.txt
+
+  characterize-current-public-production-reachability:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned current public SWAP
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: current-swap
+
+      - name: Materialize current toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: current-swap/subprojects/toml-f
+
+      - name: Materialize current ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: current-swap/subprojects/ttutil
+
+      - name: Checkout Hupselbrook TOML case source
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Install Meson build tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user 'meson==1.7.0' ninja
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Build current public SWAP production binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd current-swap
+          FCFLAGS="-fcheck=all -fbacktrace" meson setup builddir -Denable_pfunit=false
+          meson compile -C builddir
+
+      - name: Stage baseline and tabulated-switch cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd/reachability/baseline build/tab-hyd/reachability/tabulated
+          cp -a swap-testcases/cases/hupselbrook/toml/. build/tab-hyd/reachability/baseline/
+          cp -a swap-testcases/cases/hupselbrook/toml/. build/tab-hyd/reachability/tabulated/
+          for d in baseline tabulated; do
+            if [ -f "build/tab-hyd/reachability/$d/swap_linux.swp.template" ]; then
+              cp "build/tab-hyd/reachability/$d/swap_linux.swp.template" "build/tab-hyd/reachability/$d/swap.swp"
+            fi
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ("baseline", "tabulated"):
+              p=Path("build/tab-hyd/reachability")/name/"swap.toml"
+              s=p.read_text()
+              if "[general.paths]" not in s:
+                  s += '\n[general.paths]\nwork = "./"\natmosphere = "./"\ncrop = "./"\ndrain = "./"\n'
+              s = s.replace("end_date   = 2004-12-31", "end_date   = 2002-01-31", 1)
+              if name == "tabulated":
+                  old="swsophy = 0"
+                  if old not in s:
+                      raise SystemExit("expected swsophy = 0 not found")
+                  s=s.replace(old,"swsophy = 1",1)
+              p.write_text(s)
+          PY
+
+      - name: Run analytical baseline
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          (cd build/tab-hyd/reachability/baseline && timeout 30 "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/baseline.log 2>&1
+          rc=$?
+          set -e
+          echo "baseline_return_code=$rc" | tee build/tab-hyd/reachability/reachability-summary.txt
+          tail -100 build/tab-hyd/reachability/baseline.log
+          if [ "$rc" -ne 100 ]; then
+            echo "BASELINE_FAILED" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+            exit 1
+          fi
+          echo "BASELINE_OK" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+
+      - name: Probe swsophy=1 through current production TOML path
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          (cd build/tab-hyd/reachability/tabulated && timeout 20 "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/tabulated.log 2>&1
+          rc=$?
+          set -e
+          echo "tabulated_return_code=$rc" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          if [ "$rc" -eq 124 ]; then
+            echo "TABULATED_SWITCH_TIMEOUT_AFTER_20S" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          fi
+          tail -160 build/tab-hyd/reachability/tabulated.log
+          if [ "$rc" -eq 100 ]; then
+            echo "TABULATED_SWITCH_REACHED_NORMAL_COMPLETION_WITHOUT_TABLE_SCHEMA" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          else
+            echo "TABULATED_SWITCH_NOT_EXECUTABLE_THROUGH_CURRENT_TYPED_INPUT" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          fi
+
+      - name: Upload production reachability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-current-public-production-reachability
+          path: |
+            build/tab-hyd/reachability/reachability-summary.txt
+            build/tab-hyd/reachability/baseline.log
+            build/tab-hyd/reachability/tabulated.log
+ build/tab-hyd/staring-characterization.txt)" -eq 36
 
       - name: Compile current public hydraulic wrappers
         shell: bash
