@@ -32,6 +32,9 @@ Each claim classifies what the manuscript is allowed to assert before submission
 | ST-C23 | 10 | Current SWAP5 status must be rebuilt from then-current canonical authority at submission | repository authority | all | MANDATORY |
 | ST-C24 | 11 | Coupling, scale, numerical robustness, drought response and computational feasibility remain broad research themes | thematic outlook only | PUB-GC/PUB-SG/P2/HYDRO-MEMORY/DIFFICULTY/NUM-UNC/F-ROM | AMBER, no near-final RQs |
 | ST-C25 | 11 | Technical feasibility must not be equated with hydrological validity | generic closing principle | multiple | GREEN/AMBER |
+| ST-C26 | current status | Reference Richards, committed-boundary restart and serialized real-physics MultiSWAP are qualified current production capabilities | current canonical PPA/capability authority | P1/P2 only if expanded into evidence/results | GREEN as status fact |
+| ST-C27 | current status | A bounded live SWAP5-MODFLOW 6 production-oriented coupling chain is qualified, while actual iMOD Coupler product-driver integration remains separate | post-Status-A groundwater authority / PPA audit | PUB-GC | GREEN/AMBER: status only, no coupling science |
+| ST-C28 | current status | Several advanced legacy process/input families are not yet broad normal SWAP5 production routes | current canonical PPA audit | TRACE / future migration lines | GREEN as scope limitation |
 
 ## Prohibited claim forms before international publication
 
