@@ -1,0 +1,279 @@
+name: F-ROM-LARE BC2-C4S D13 CoRichards qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4S_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c4s_corichards_harness.py'
+      - 'tests/rom/analyze_lare_bc2_c4s_member.py'
+      - 'tests/rom/aggregate_lare_bc2_c4s.py'
+      - '.github/workflows/f-rom-lare-bc2-c4s.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4s-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
+          path: canonical
+          fetch-depth: 0
+
+      - name: Recover C4R controls and materialize generalized harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4s /tmp/c4s/c4r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/c4s/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/c4s/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/c4s/c4r.zip -d /tmp/c4s/c4r
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/c4s/c4r/R16_o0.txt" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/c4s/c4r/R2_o0.txt" | sha256sum -c -
+
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/c4s/d13_base.f90
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/analyze_f_romv2_d13_fmc_groundwater.py > /tmp/c4s/d13_analyzer.py
+
+          python3 tests/rom/materialize_lare_bc2_c4r_d13_assets.py             --fortran-source /tmp/c4s/d13_base.f90             --fortran-output /tmp/c4s/c4r_blind.f90             --analyzer-source /tmp/c4s/d13_analyzer.py             --analyzer-output /tmp/c4s/c4r_blind_analyzer.py             --manifest /tmp/c4s/c4r_materialization.json
+
+          python3 tests/rom/materialize_lare_bc2_c4s_corichards_harness.py             --blind-source /tmp/c4s/c4r_blind.f90             --output /tmp/c4s/C4S_REFERENCE.f90             --manifest /tmp/c4s/C4S_HARNESS_MATERIALIZATION.json
+
+          cp /tmp/c4s/C4S_REFERENCE.f90 canonical/tests/rom/test_lare_bc2_c4s_reference.f90
+
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C4S_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_AFTER_C4R_BEFORE_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION'
+          assert c['status']==p['authority']['required_C4R_status'] if 'required_C4R_status' in p['authority'] else True
+          assert c['decision']=='C4R_BLIND_PROFILE_FRONTIER_REPLICATED'
+          assert p['authority']['C4R_reference_canonical_head']=='e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1'
+          assert p['firewalls'][0]=='NO_HYDROLOGICAL_ERROR_COMPARISON_IN_C4S'
+          m=json.load(open('/tmp/c4s/C4S_HARNESS_MATERIALIZATION.json'))
+          assert m['solver_or_physics_changed'] is False
+          assert m['numerical_policy_changed'] is False
+          print('LARE_BC2_C4S_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Reproduce C4R R2 and R16 exactly with generalized harness
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4s/control-output
+          for spec in "R2 2 80" "R16 16 10"; do
+            read -r id n dz <<<"$spec"
+            stub="canonical/c4s_control_${id}.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              build="/tmp/c4s/build_control_${id}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "c4s_control_${id}.f90"                 --target tests/rom/test_lare_bc2_c4s_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              "$build/rom0_test" > "/tmp/c4s/control-output/${id}_o${opt}.txt" 2>&1
+            done
+            cmp "/tmp/c4s/control-output/${id}_o0.txt" "/tmp/c4s/control-output/${id}_o2.txt"
+            cmp "/tmp/c4s/control-output/${id}_o0.txt" "/tmp/c4s/c4r/${id}_o0.txt"
+          done
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/c4s/control-output/R2_o0.txt" | sha256sum -c -
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/c4s/control-output/R16_o0.txt" | sha256sum -c -
+
+          python3 - <<'PY'
+          import json
+          out={
+            'schema':'swap5.lare.bc2.c4s.controls.v1',
+            'pass':True,
+            'canonical_head':'e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1',
+            'R2_exact_C4R_reproduction':True,
+            'R16_exact_C4R_reproduction':True,
+            'R2_sha256':'121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4',
+            'R16_sha256':'6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6',
+            'D13_harness_source_head':'9d66a3e8a7fda6d1e456188cfc87cf9f884075a4'
+          }
+          open('/tmp/c4s/C4S_CONTROLS.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - name: Upload C4S controls and frozen harness
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4s-controls
+          path: |
+            /tmp/c4s/C4S_REFERENCE.f90
+            /tmp/c4s/C4S_HARNESS_MATERIALIZATION.json
+            /tmp/c4s/C4S_CONTROLS.json
+          if-no-files-found: error
+
+  member:
+    needs: controls
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {member: R3, dimension: 3, thickness: '140,10,10'}
+          - {member: R4, dimension: 4, thickness: '130,10,10,10'}
+          - {member: R5, dimension: 5, thickness: '120,10,10,10,10'}
+          - {member: R6, dimension: 6, thickness: '110,10,10,10,10,10'}
+          - {member: R8, dimension: 8, thickness: '90,10,10,10,10,10,10,10'}
+          - {member: R12, dimension: 12, thickness: '50,10,10,10,10,10,10,10,10,10,10,10'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: lare-bc2-c4s-controls
+          path: /tmp/c4s-controls
+
+      - name: Compile frozen same-partition CoRichards member
+        run: |
+          set -euo pipefail
+          cp /tmp/c4s-controls/C4S_REFERENCE.f90 canonical/tests/rom/test_lare_bc2_c4s_reference.f90
+          python3 tests/rom/materialize_lare_variable_grid_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/c4s_member_grid.f90             --layer-thickness-cm "${{ matrix.thickness }}"
+          for opt in 0 2; do
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical               --stub c4s_member_grid.f90               --target tests/rom/test_lare_bc2_c4s_reference.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c4s-build-o${opt}" --opt "$opt"
+          done
+
+      - name: Execute histories fail-closed
+        run: |
+          set -euo pipefail
+          mkdir -p C4S_MEMBER_EVIDENCE
+          python3 - <<'PY'
+          import json
+          h={x:{} for x in ('V01','V02','V03','V04')}
+          json.dump({'schema':'swap5.lare.bc2.c4s.execution-manifest.v1','member':'${{ matrix.member }}','histories':h},open('C4S_MEMBER_EVIDENCE/execution_manifest.json','w'),indent=2,sort_keys=True)
+          PY
+
+          for hist in V01 V02 V03 V04; do
+            statuses=()
+            for opt in 0 2; do
+              log="C4S_MEMBER_EVIDENCE/${{ matrix.member }}-${hist}-o${opt}.txt"
+              set +e
+              C4S_HISTORY_FILTER="$hist" "/tmp/c4s-build-o${opt}/rom0_test" > "$log" 2>&1
+              rc=$?
+              set -e
+              status="$(python3 - "$log" "$rc" <<'PY'
+          import sys
+          path,rc=sys.argv[1],int(sys.argv[2])
+          raw=open(path,errors='replace').read()
+          if rc==0 and 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' in raw and raw.count('F_ROMV2_D13_REF_STATE|')==64:
+              print('QUALIFIED')
+          elif 'F_ROMV2_D13_REF_FAIL' in raw:
+              print('FAIL_CLOSED_REFERENCE_POLICY')
+          else:
+              print('TECHNICAL_FAILURE')
+          PY
+          )"
+              statuses+=("$status")
+            done
+
+            if [[ "${statuses[0]}" != "${statuses[1]}" ]]; then
+              status="TECHNICAL_FAILURE"
+            else
+              status="${statuses[0]}"
+            fi
+
+            if [[ "$status" == "QUALIFIED" ]]; then
+              cmp "C4S_MEMBER_EVIDENCE/${{ matrix.member }}-${hist}-o0.txt" "C4S_MEMBER_EVIDENCE/${{ matrix.member }}-${hist}-o2.txt" || status="TECHNICAL_FAILURE"
+            elif [[ "$status" == "FAIL_CLOSED_REFERENCE_POLICY" ]]; then
+              python3 - "C4S_MEMBER_EVIDENCE/${{ matrix.member }}-${hist}-o0.txt" "C4S_MEMBER_EVIDENCE/${{ matrix.member }}-${hist}-o2.txt" <<'PY'
+          import sys
+          def first(p):
+              for line in open(p,errors='replace'):
+                  if line.startswith('F_ROMV2_D13_REF_FAIL'):
+                      return line.strip()
+          a,b=first(sys.argv[1]),first(sys.argv[2])
+          if a is None or a!=b: raise SystemExit(1)
+          PY
+              if [[ "$?" -ne 0 ]]; then status="TECHNICAL_FAILURE"; fi
+            fi
+
+            python3 - "C4S_MEMBER_EVIDENCE/execution_manifest.json" "$hist" "$status" <<'PY'
+          import json,sys
+          path,hist,status=sys.argv[1:]
+          p=json.load(open(path))
+          p['histories'][hist]={
+            'status':status,
+            'o0_file':f"{p['member']}-{hist}-o0.txt",
+            'o2_file':f"{p['member']}-{hist}-o2.txt"
+          }
+          json.dump(p,open(path,'w'),indent=2,sort_keys=True)
+          PY
+          done
+
+          python3 tests/rom/analyze_lare_bc2_c4s_member.py             --evidence-dir C4S_MEMBER_EVIDENCE             --member "${{ matrix.member }}"             --dimension "${{ matrix.dimension }}"             --thickness "${{ matrix.thickness }}"             --output "C4S_MEMBER_EVIDENCE/LARE_BC2_C4S_${{ matrix.member }}_RESULT.json"             | tee C4S_MEMBER_EVIDENCE/analyzer.txt
+          sha256sum C4S_MEMBER_EVIDENCE/* > C4S_MEMBER_EVIDENCE/sha256.txt
+
+      - name: Upload C4S member evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4s-${{ matrix.member }}
+          path: C4S_MEMBER_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: [controls, member]
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: lare-bc2-c4s-controls
+          path: /tmp/c4s-controls
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c4s-R*
+          path: /tmp/c4s-members
+          merge-multiple: false
+
+      - name: Aggregate C4S comparator availability
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4S_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c4s.py             --member-dir /tmp/c4s-members             --controls /tmp/c4s-controls/C4S_CONTROLS.json             --prereg integration/f-rom/LARE_BC2_C4S_PREREGISTRATION.json             --output LARE_BC2_C4S_EVIDENCE/LARE_BC2_C4S_RESULT.json             | tee LARE_BC2_C4S_EVIDENCE/runner.txt
+          cp /tmp/c4s-controls/C4S_CONTROLS.json LARE_BC2_C4S_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4S_EVIDENCE/LARE_BC2_C4S_RESULT.json'))
+          assert r['decision'] in (
+            'C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE',
+            'C4S_CORICHARDS_PARTIAL_COMMON_COHORT_ONLY',
+            'C4S_CORICHARDS_REDUCED_COMPARATOR_UNAVAILABLE',
+            'C4S_COMPARATOR_AUTHORITY_BLOCKED'
+          )
+          assert r['hydrological_comparison_performed'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4S_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4S_EVIDENCE/* > LARE_BC2_C4S_EVIDENCE/sha256.txt
+
+      - name: Upload C4S aggregate authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4s
+          path: LARE_BC2_C4S_EVIDENCE/
+          if-no-files-found: error
