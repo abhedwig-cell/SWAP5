@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.f-romv2-d21.stage2-authorization.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D21",
+  "stage": "STAGE2_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_AUTHORIZED",
+  "original_preregistration_blob": "234ba54bbdde1e1bac22893743efa318ad8cffd6",
+  "stage1_execution": {
+    "pull_request": 464,
+    "workflow_run": 35462604315,
+    "workflow_job": 105949034359,
+    "executed_head": "2ed98f1d9969a3a7ae7c31fd5a8c7fd8574b37ef",
+    "artifact_id": 10590430843,
+    "artifact_digest": "sha256:cfb0f9672b461ee94777de924a99fc49b679636f99f2ebedceb68d2dc8d1d805",
+    "decision": "D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_PASS",
+    "R16_R2_trajectory_evidence_consumed": false
+  },
+  "frozen_thresholds": {
+    "flux_factor_Ksat": 0.25,
+    "pond_factor_Ksat": 2,
+    "runoff_factor_Ksat": 4,
+    "ponding_max_cm": 0.0036140064814814818,
+    "runoff_resistance_day": 0.001,
+    "runoff_exponent": 1,
+    "process_step_seconds": 10
+  },
+  "stage2_micro_preflight": {
+    "SWAP_trajectory_evidence_consumed": false,
+    "initial_state": "D16 I_DEEP connected fronts, no slugs, zero surface store",
+    "histories": [
+      {
+        "id": "M_FLUX",
+        "factor_Ksat": 0.25,
+        "steps": 1,
+        "required": "all supplied rain infiltrates; final surface store=0; runoff=0"
+      },
+      {
+        "id": "M_POND",
+        "factor_Ksat": 2,
+        "steps": 1,
+        "required": "final surface store>0 and runoff=0"
+      },
+      {
+        "id": "M_RUNOFF",
+        "factor_Ksat": 4,
+        "steps": 1,
+        "required": "final surface store>ponding_max and runoff>0"
+      }
+    ],
+    "FMC_step_order": [
+      "surface water available = previous surface store + rainfall*dt",
+      "advance already connected D16 fronts with frozen D16/D14 Eq.18 using h_p=previous committed surface-store depth",
+      "allocate available water sequentially left-to-right over existing-front demands",
+      "apply D14 conservative front relaxation",
+      "route residual water through the frozen D21 linear surface-reservoir law",
+      "require global water ledger initial column + rain + previous store = final column + final store + runoff"
+    ],
+    "dry_bin_activation": "not expected because all active D16 I_DEEP bins are already connected; activation during this one-step micro-preflight is a fail-closed design mismatch",
+    "falling_slugs": false,
+    "groundwater_front": false,
+    "hard_mass_gate_cm": 1e-12,
+    "positive": "D21_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_PASS",
+    "negative": "D21_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_NO_GO"
+  },
+  "stage3_if_positive": {
+    "authorized_now": false,
+    "proposed_temporal_design": "reuse D16 temporal envelope: 16 rainfall steps followed by 48 zero-rain hiatus steps for each of the three frozen factors",
+    "note": "Stage 3 must be separately frozen after Stage 2 and before any R16/R2 trajectory exposure."
+  },
+  "prohibited": [
+    "change selected factors",
+    "change ponding_max or runoff resistance",
+    "change Eq.18 or surface-reservoir law",
+    "change bins or process step",
+    "generate R16/R2 rainfall-threshold trajectories in Stage 2",
+    "claim application acceptance or formal speedup"
+  ],
+  "production_rom_authorized": false
+}
