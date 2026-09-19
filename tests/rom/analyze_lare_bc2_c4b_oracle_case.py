@@ -66,9 +66,25 @@ def exact_interval_oracles(history,step,d,init_meta,init_nodes,states,nodes):
     y1,p1,_=c1.exact_reference_state(history,step,d,init_meta,init_nodes,states,nodes)
     refs=c1.reference_fluxes(history,step,p0,p1,states)
     q90=float(refs["q90"]); qi=float(refs["qi"]); qH=float(refs["qH"])
-    Gi=(float(y1[IDX_WB]-y0[IDX_WB])/OBS_DT)-q90+qi
     H0=float(p0["H"]); H1=float(p1["H"])
-    return y0,y1,H0,H1,{"q90":q90,"qi":qi,"qH":qH,"Gi":Gi}
+    Hdot=(H1-H0)/OBS_DT
+    Gi_mid=0.5*(float(p0["theta_i"])+float(p1["theta_i"]))*Hdot
+    dWb=float(y1[IDX_WB]-y0[IDX_WB])/OBS_DT
+    dWt=float(y1[IDX_WT]-y0[IDX_WT])/OBS_DT
+    qi_bulk=q90+Gi_mid-dWb
+    qi_term=dWt+qH-THETA_S*Hdot+Gi_mid
+    Gi=dWb-q90+qi
+    reference_ledger=(
+        float(np.sum(np.asarray(y1[:PHYS_N])-np.asarray(y0[:PHYS_N])))
+        + qH*OBS_DT
+        - THETA_S*(H1-H0)
+    )
+    checks={
+        "qi_bulk_minus_terminal":qi_bulk-qi_term,
+        "reference_physical_ledger":reference_ledger,
+        "qH_direct_minus_reference":qH-states[(history,step)]["bottom_exchange"]/OBS_DT,
+    }
+    return y0,y1,H0,H1,{"q90":q90,"qi":qi,"qH":qH,"Gi":Gi},checks
 
 
 def variant_channels(variant):
@@ -174,17 +190,19 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
     rows={v:[] for v in VARIANTS}
     cumulative={v:np.zeros(PHYS_N,dtype=float) for v in VARIANTS}
     max_oracle_identity=0.0
+    max_reference_qi_split_identity=0.0
+    max_reference_ledger=0.0
     max_baseline_identity=0.0
     max_shape_residual=0.0
     Hfinal=None
 
     for step in range(1,c0.HISTORY_STEPS[history]+1):
-        y0,yr,H0,H1,oracle=exact_interval_oracles(history,step,d,init_meta,init_nodes,states,nodes)
+        y0,yr,H0,H1,oracle,refchecks=exact_interval_oracles(history,step,d,init_meta,init_nodes,states,nodes)
         Hfinal=H1
 
-        # Independent Reference identity checks.
-        qH_direct=states[(history,step)]["bottom_exchange"]/OBS_DT
-        max_oracle_identity=max(max_oracle_identity,abs(oracle["qH"]-qH_direct))
+        max_oracle_identity=max(max_oracle_identity,abs(refchecks["qH_direct_minus_reference"]))
+        max_reference_qi_split_identity=max(max_reference_qi_split_identity,abs(refchecks["qi_bulk_minus_terminal"]))
+        max_reference_ledger=max(max_reference_ledger,abs(refchecks["reference_physical_ledger"]))
 
         baseline_check=c1.advance_interval(y0,H0,H1,dt,d)
         baseline_y=np.asarray(baseline_check["y"][:PHYS_N],dtype=float)
@@ -245,6 +263,8 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
     )
     hard=max(
         max_oracle_identity,
+        max_reference_qi_split_identity,
+        max_reference_ledger,
         max_baseline_identity,
         max_shape_residual,
         max(v["max_abs_ledger_residual_cm"] for v in summaries.values()),
@@ -257,6 +277,8 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
         "best_single_channel":single_rank[0],
         "hard_checks":{
             "max_reference_oracle_identity_cm_per_day":max_oracle_identity,
+            "max_reference_qi_bulk_minus_terminal_identity_cm_per_day":max_reference_qi_split_identity,
+            "max_reference_physical_ledger_residual_cm":max_reference_ledger,
             "max_BASE_vs_C1_implementation_identity_cm":max_baseline_identity,
             "max_mass_neutral_projection_residual_cm":max_shape_residual,
             "max_variant_physical_ledger_residual_cm":max(v["max_abs_ledger_residual_cm"] for v in summaries.values()),
