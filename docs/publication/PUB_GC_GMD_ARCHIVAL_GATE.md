@@ -236,6 +236,6 @@ Controlling assets:
 
 The gate has four stages: pre-authority, authority-ready, archive-ready and submission-ready. Strict stages fail unless their controlling external values are explicit.
 
-The publication-critical prearchive set was also rechecked against canonical `187e30153c890151768e929170d14bb22af1d86d`: **24/24 exact blob matches**. Record: `PUB_GC_GMD_CURRENT_CANONICAL_PRESERVATION_20260919.json`.
+The publication-critical prearchive set was also rechecked against canonical `6e212f9315606fac3e3922a9aa02c11d51a96bc2`: **24/24 exact blob matches**. Record: `PUB_GC_GMD_CURRENT_CANONICAL_PRESERVATION_20260919.json`.
 
 This does not close A1/A2/A3. It reduces their eventual execution to controlled metadata binding and external archive action.
