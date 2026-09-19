@@ -1,0 +1,194 @@
+{
+  "schema": "swap5.f-romv2-d19.state-of-art-gap-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D19",
+  "phase": "LITERATURE_GAP_RECONCILIATION_CLOSED",
+  "canonical_base": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+  "decision": "GARTO_FAITHFUL_COMPARATOR_JUSTIFIED_AS_DISTINCT_DYNAMIC_WT_CANDIDATE",
+  "governing_question": "After D17 retained bounded combined FMC candidacy and D18 showed that one natural contact-event route was not reached, did D11 omit a materially distinct published reduction family that should be tested before inventing further custom FMC/ROM architectures?",
+  "answer": "YES_GARTO_WAS_A_MATERIAL_OMISSION; LGAR_IS_A_RELEVANT_COMPLEMENT_BUT_NOT_A_DYNAMIC_GROUNDWATER_SUBSTITUTE.",
+  "historical_governance": {
+    "D11_reclassified": false,
+    "D11_statement": "D11 remains the historical reviewed-set decision. D19 expands the reviewed set with GARTO/LGAR evidence that was not included there.",
+    "F_ROMV_terminal_reclassified": false,
+    "production_rom_authorized": false
+  },
+  "primary_sources": [
+    {
+      "family": "GARTO",
+      "citation": "Lai, Ogden, Steinke & Talbot (2015), An efficient and guaranteed stable numerical method for continuous modeling of infiltration and redistribution with a shallow dynamic water table, Water Resources Research 51, 1514-1528.",
+      "doi": "10.1002/2014WR016487",
+      "role": "PRIMARY_GARTO_EQUATION_DYNAMIC_WT_AND_EXTERNAL_PERFORMANCE_AUTHORITY"
+    },
+    {
+      "family": "FMC_SMVE",
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300.",
+      "doi": "10.1002/2015WR017126",
+      "role": "PRIMARY_RICHER_FINITE_WATER_CONTENT_COMPARATOR_AUTHORITY"
+    },
+    {
+      "family": "LGAR",
+      "citation": "La Follette, Ogden & Jan (2023), Layered Green and Ampt Infiltration With Redistribution, Water Resources Research 59.",
+      "doi": "10.1029/2022WR033742",
+      "role": "PRIMARY_LAYERED_CONTINUOUS_GAR_PRECEDENT"
+    }
+  ],
+  "GARTO_scientific_identity": {
+    "distinct_from_FMC_SMVE": true,
+    "statements": [
+      "Combines GAR redistribution with selected Talbot-Ogden concepts rather than discretizing the complete surface moisture-content domain into ~200 finite-water-content states.",
+      "Represents a limited number of explicit surface wetting fronts; the published simulations set maximum surface-front capacity N=10 and observed at most three active surface fronts.",
+      "Allows all active surface wetting fronts to infiltrate, merges overshooting surface fronts conservatively, and uses a redistribution ODE for rainfall below Ks.",
+      "Adds capillary groundwater fronts and a dynamic-water-table ODE; a surface front that touches a groundwater front becomes groundwater.",
+      "Supports infiltration-excess and saturation-excess behavior and was tested with multiple rainfall pulses, runoff, shallow fixed water tables and a rising water table.",
+      "Guaranteed mass conservation and numerical stability are part of the published method identity."
+    ],
+    "state_dimension_note": "Surface state is materially lower-order than the 200-bin FMC route. The groundwater branch still uses a front/bin discretization whose exact published operational count must be reconciled before a faithful SWAP comparator; the paper notes that shallow-water-table behavior can be smoothed by increasing groundwater bins.",
+    "homogeneous_soil_scope": true,
+    "hysteresis_supported": false,
+    "ET_simulated_in_primary_tests": false,
+    "ET_note": "The paper states ET could be represented by withdrawing water from the right-most wetting front at root-zone depth, but does not test ET in the reported study. This is not SWAP root-uptake authority."
+  },
+  "hydraulic_mapping": {
+    "published_soil_function": "Brooks-Corey in the reported tests",
+    "van_Genuchten_allowed_by_primary_source": true,
+    "B01_rule": "Use the existing B01 Van Genuchten/Mualem functions directly and evaluate the effective capillary-drive integral numerically. Do not fit/convert B01 to Brooks-Corey merely to reproduce the paper.",
+    "reason": "The primary paper explicitly states that Van Genuchten can be used, with numerical integration of effective capillary drive or parameter conversion; numerical integration avoids introducing a new soil-parameter calibration."
+  },
+  "external_evidence": {
+    "accuracy_scope": "External GARTO-vs-FUCG-Richards evidence only; not SWAP acceptance thresholds.",
+    "moving_water_table": {
+      "test": "Published Test 4",
+      "condition": "four coarser soils, water table rising at 5 cm/h, surface rainfall/runoff, soil becoming saturated then draining",
+      "finding": "GARTO and FUCG Richards were qualitatively similar, with reported soil-dependent differences."
+    },
+    "shallow_water_table_tradeoff": {
+      "statement": "Published cumulative-infiltration discrepancy grows as the water table approaches the surface.",
+      "reported_mean_abs_percent_by_depth_multiple_of_air_entry": {
+        "2": 5.4,
+        "4": 4.04,
+        "8": 2.55,
+        "16": 1.79
+      },
+      "use_as_swap_threshold": false
+    },
+    "runtime": {
+      "hardware_context": "CentOS Linux 6.5, 3.4 GHz Intel i7; external study only",
+      "GARTO_us_per_step_range": [
+        0.27,
+        1.74
+      ],
+      "FUCG_RE_us_per_step_range": [
+        13.78,
+        86.55
+      ],
+      "reported_speedup_without_near_surface_WT": "over 139x in reported tests",
+      "reported_speedup_with_near_surface_WT_range": [
+        8,
+        71
+      ],
+      "GARTO_time_step_seconds_used": 10,
+      "paper_accuracy_recommendation": "less than 1 minute",
+      "import_as_SWAP5_speedup": false
+    }
+  },
+  "LGAR_disposition": {
+    "distinct_extension": true,
+    "strengths": [
+      "continuous multi-event infiltration in an arbitrary number of soil layers",
+      "mass-conservative",
+      "multi-month comparisons against HYDRUS-1D",
+      "published open code/data authority exists"
+    ],
+    "blockers_for_current_dynamic_WT_question": [
+      "primary LGAR derivation explicitly assumes no influence of groundwater table on soil moisture",
+      "application envelope emphasizes arid/semi-arid conditions where cumulative PET exceeds cumulative precipitation"
+    ],
+    "disposition": "RETAIN_AS_LAYERED_DEEP_WT_ATMOSPHERIC_PRECEDENT_NOT_D20_DYNAMIC_WT_COMPARATOR"
+  },
+  "secondary_oracle": {
+    "HydPy_GARTO": {
+      "relevance": "HydPy documents a GARTO implementation checked against original C source supplied by two GARTO authors.",
+      "caveat": "HydPy explicitly documents differences and generally assumes hydrostatic groundwater rather than the complete dynamic-groundwater GARTO method.",
+      "authority_role": "SECONDARY_SURFACE_GARTO_ORACLE_AFTER_PROVENANCE_REVIEW_NOT_PRIMARY_DYNAMIC_WT_AUTHORITY"
+    }
+  },
+  "comparative_position_after_D19": {
+    "FMC_SMVE": {
+      "status": "SWAP5_BOUNDED_RESEARCH_CANDIDATE_RETAINED_THROUGH_D17",
+      "strengths": [
+        "resolved profile fidelity",
+        "fixed-WT simultaneous surface/GW evidence",
+        "explicit finite-volume accounting"
+      ],
+      "open_boundaries": [
+        "moving-water-table SWAP comparator",
+        "contact/merge hydrology not yet reached in D18",
+        "longer realistic horizon",
+        "ET/root uptake",
+        "runtime"
+      ]
+    },
+    "GARTO": {
+      "status": "AUTHORIZED_FOR_STAGED_FAITHFUL_RESEARCH_COMPARATOR",
+      "potential_advantage": "substantially lower surface-state complexity and strong external moving-WT/runtime precedent",
+      "open_boundaries": [
+        "exact equation transcription",
+        "groundwater bin/discretization authority",
+        "B01 Van Genuchten capillary-drive numerical integration qualification",
+        "SWAP fidelity"
+      ]
+    },
+    "coarse_Richards_R2_R4_R8": {
+      "status": "RETAIN_AS_TRANSPARENT_PHYSICAL_COST_FIDELITY_COMPARATORS"
+    },
+    "LGAR": {
+      "status": "DEFERRED_COMPLEMENT_FOR_LAYERED_DEEP_WT_APPLICATIONS"
+    }
+  },
+  "D20_authority": {
+    "authorized": true,
+    "work_unit": "F-ROMV2-D20",
+    "title": "Literature-faithful GARTO equation/source benchmark and bounded B01 comparator",
+    "staged": true,
+    "stage1_source_equation_authority": [
+      "Transcribe and test GARTO equations 6, 8, 9, 10 and effective capillary-drive relation from the primary source.",
+      "Reconcile original/source-code semantics where available, especially wetting-front ordering, surface-water allocation, merge ordering and groundwater-front/bin representation.",
+      "Determine and freeze the groundwater discretization used for a published shallow/moving-water-table benchmark before SWAP evidence.",
+      "Freeze maximum surface wetting fronts N=10 and process time step 10 s from the published study for the first faithful benchmark.",
+      "No SWAP trajectory may be used in Stage 1."
+    ],
+    "stage2_published_benchmark": [
+      "Reproduce at least one primary-source GARTO benchmark with Brooks-Corey parameters before B01 mapping.",
+      "Include a shallow or rising-water-table case, not only deep infiltration.",
+      "Verify exact/explicit mass closure, front ordering, surface/groundwater contact behavior and benchmark direction/magnitude against published evidence.",
+      "Any ambiguity in groundwater bins or moving-water-table update is a blocker, not a tuning invitation."
+    ],
+    "stage3_B01_if_and_only_if_stage2_passes": [
+      "homogeneous B01 only",
+      "no hysteresis",
+      "no ET/root uptake",
+      "B01 Van Genuchten/Mualem constitutive functions",
+      "effective capillary drive by frozen numerical integration of B01 constitutive law; no Brooks-Corey fitting",
+      "surface flux and water-table boundary only within reconciled GARTO authority",
+      "R16 and R2 comparators",
+      "FMC D17 retained as an architecture comparator where envelopes overlap",
+      "development evidence only; no application acceptance"
+    ],
+    "performance_boundary": "Published FUCG speedups are motivation only. No SWAP5 speed claim until same-runtime implementation and admitted performance host exist."
+  },
+  "prohibited": [
+    "DO_NOT_RETROACTIVELY_RECLASSIFY_D11",
+    "DO_NOT_USE_GARTO_PUBLISHED_PERCENT_ERRORS_AS_SWAP_ACCEPTANCE_THRESHOLDS",
+    "DO_NOT_IMPORT_GARTO_EXTERNAL_RUNTIME_RATIO_AS_SWAP5_SPEEDUP",
+    "DO_NOT_FIT_B01_BROOKS_COREY_PARAMETERS_TO_MAKE_GARTO_WORK",
+    "DO_NOT_TUNE_GROUNDWATER_BIN_COUNT_ON_SWAP_OUTPUTS",
+    "DO_NOT_COMBINE_LGAR_AND_GARTO_GROUNDWATER_SEMANTICS_AD_HOC",
+    "DO_NOT_CLAIM_ET_ROOT_UPTAKE_AUTHORITY",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}
