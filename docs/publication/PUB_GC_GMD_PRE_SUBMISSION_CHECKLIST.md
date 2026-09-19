@@ -18,8 +18,11 @@ Date: 2026-09-19.
 | exact code/data persistent archive | BLOCKED_AFTER_R1_L1 | deposit exact release and obtain PID/DOI |
 | software licence stated | BLOCKED_L1 | obtain authorized SWAP5 archive statement |
 | run-control/postprocessing/evidence material | READY_AT_REPOSITORY_LEVEL | include exact repository revision in archive |
-| figure exports | PLAN_READY | export F1–F7 and validate |
+| figure exports | QUALIFIED_REPRODUCIBLE | run 35425367690 PASS; regenerate from final immutable release after R1/L1/DOI |
 | supplement | READY_THROUGH_E7 | format only |
 | funding / interests / acknowledgements | BLOCKED_AUTHOR_METADATA | provide statements |
 
 Final submission must not imply a successful Hupsel loose/strong run, a realistic E7 correction magnitude, regional Hupsel groundwater validation, or novelty for generic partitioned-coupling machinery.
+
+
+Figure export qualification: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
