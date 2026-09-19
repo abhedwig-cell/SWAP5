@@ -1,0 +1,227 @@
+{
+  "schema": "swap5.lare.dyn0a.grid1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-GRID1",
+  "phase": "PREREGISTERED_BEFORE_NEW_PATH_GUIDED_GRID_REFERENCE_TRAJECTORIES",
+  "purpose": "Test whether the already frozen a-priori PATH_GEOMETRIC_D penetration scale can improve actual standard-LARE state propagation by placing a fixed four-state grid around the predicted hydraulically active depth.",
+  "trigger_authority": {
+    "nonlinear_scale_discovery": "integration/f-rom/LARE_DYN0A_MECH3A_RESULT.json",
+    "nonlinear_scale_blind_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
+    "curvature_mechanism_discovery": "integration/f-rom/LARE_DYN0A_MECH4A_RESULT.json",
+    "curvature_blind_transfer": "integration/f-rom/LARE_DYN0A_MECH4B_RESULT.json",
+    "frozen_scale": "PATH_GEOMETRIC_D",
+    "global_c": 4.051189215592548,
+    "interpretation": "MECH3 provides the prospective pre-simulation depth scale; MECH4 supplies mechanistic support that local capillary-potential curvature ranks interface-gradient risk. Fine-trajectory curvature itself is forbidden as a grid-selection oracle."
+  },
+  "external_material_authority": {
+    "source": "Carsel and Parrish (1988) textural class Mualem-van Genuchten parameters as reproduced in HYDRUS",
+    "source_url": "https://www.pc-progress.com/en/OnlineHelp/HYDRUS3/WaterFlowParameters.html",
+    "selection_rule": "Three textural classes not used in MECH3B or MECH4B blind panels, spanning coarse-to-fine hydraulic behavior.",
+    "materials": {
+      "LOAMY_SAND": {
+        "theta_r": 0.057,
+        "theta_s": 0.41,
+        "alpha_per_cm": 0.124,
+        "n": 2.28,
+        "Ksat_cm_per_day": 350.2,
+        "lambda": 0.5
+      },
+      "SILT_LOAM": {
+        "theta_r": 0.067,
+        "theta_s": 0.45,
+        "alpha_per_cm": 0.02,
+        "n": 1.41,
+        "Ksat_cm_per_day": 10.8,
+        "lambda": 0.5
+      },
+      "SANDY_CLAY_LOAM": {
+        "theta_r": 0.1,
+        "theta_s": 0.39,
+        "alpha_per_cm": 0.059,
+        "n": 1.48,
+        "Ksat_cm_per_day": 31.44,
+        "lambda": 0.5
+      }
+    }
+  },
+  "experiment": {
+    "fine_reference": "16 x 10 cm Reference Richards column",
+    "profile_depth_cm": 160,
+    "initial_effective_saturation": [
+      0.65,
+      0.85,
+      0.95
+    ],
+    "top_forcing": {
+      "WET": "1.5*K0 for steps 1-256, then 1.0*K0 through step 1024",
+      "DRY": "0.5*K0 for steps 1-256, then 1.0*K0 through step 1024"
+    },
+    "pulse_duration_day": 0.2048,
+    "bottom_boundary": "fixed downward flux K0",
+    "sinks": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "standard_lare": "unchanged CA1 adjacent fixed-layer closure with iterative Heun numerical-floor route; no closure repair"
+  },
+  "prediction_rule": {
+    "constitutive_target": "For forcing multiplier r, solve K(theta_f)=r*K(theta0) within the unsaturated constitutive domain.",
+    "path_diffusivity": "D_G = exp(|integral_theta0^thetaf ln(K(theta)*dpsi/dtheta) dtheta| / |theta_f-theta0|)",
+    "continuous_depth_cm": "L_pred = 4.051189215592548*sqrt(D_G*T_pulse)",
+    "ladder_cm": [
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "snapping": "nearest ladder member; ties choose smaller L",
+    "censoring": "If continuous L_pred lies outside [20,140] cm, mark GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN and do not clamp into the candidate comparison.",
+    "frozen_before_reference": true,
+    "response_data_used": false
+  },
+  "four_state_grids": {
+    "PATH_R4": {
+      "definition": "For uncensored snapped L*, boundaries [0,L*-10,L*,L*+10,160] cm.",
+      "role": "prospective mechanism-guided candidate",
+      "fixed_during_each_trajectory": true
+    },
+    "U4": {
+      "boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "role": "equal-dimension uniform control"
+    },
+    "BOTTOM_R4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "equal-dimension fixed bottom-refined control inherited from B01 groundwater laboratory"
+    },
+    "TOP_R4": {
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        160
+      ],
+      "role": "equal-dimension fixed surface-refined control"
+    }
+  },
+  "common_observation_operator": {
+    "bands_cm": [
+      [
+        0,
+        20
+      ],
+      [
+        20,
+        40
+      ],
+      [
+        40,
+        60
+      ],
+      [
+        60,
+        80
+      ],
+      [
+        80,
+        100
+      ],
+      [
+        100,
+        120
+      ],
+      [
+        120,
+        140
+      ],
+      [
+        140,
+        160
+      ]
+    ],
+    "method": "Integrate candidate piecewise-constant layer theta over each fixed 20-cm diagnostic band; observation only, never fed back into dynamics.",
+    "rationale": "Different candidate grids cannot be compared fairly by their own native layer-storage errors."
+  },
+  "numerical_authority": {
+    "integrator": "iterative Heun predictor-corrector as in DYN0A",
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": "0.0001 day if qualified",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "hard_water_ledger_cm": 1e-10,
+    "no_clipping": true,
+    "domain": "theta_r < theta_bar_i < theta_s and standard MvG branch psi>0.01 cm"
+  },
+  "reference_domain_policy": {
+    "statuses": [
+      "QUALIFIED",
+      "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION",
+      "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION",
+      "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN"
+    ],
+    "minimum_panel": "At least 10 uncensored qualified cases overall; every material must contribute at least one WET and one DRY case. Otherwise close GRID1_REFERENCE_PANEL_INSUFFICIENT.",
+    "no_retuning": true
+  },
+  "primary_metrics": {
+    "per_case": [
+      "max absolute 20-cm-band storage error over time",
+      "time-mean absolute 20-cm-band storage error",
+      "p95 absolute 20-cm-band storage error",
+      "final signed 20-cm-band storage error",
+      "maximum absolute fine-vs-reduced total storage difference as structural check",
+      "numerical-floor difference dt 0.0002 vs 0.0001",
+      "domain status and ledger"
+    ],
+    "pooled": [
+      "median case maximum 20-cm-band error",
+      "mean of case mean 20-cm-band error",
+      "worst-case maximum 20-cm-band error",
+      "qualified case coverage"
+    ]
+  },
+  "adjudication": {
+    "PATH_GUIDED_GRID_PROPAGATION_SUPPORTED": "Panel sufficient AND PATH_R4 is no worse than U4, BOTTOM_R4 and TOP_R4 on all three pooled primary storage-error components and qualified coverage, with strict improvement over every fixed control on at least one component.",
+    "PATH_GUIDED_GRID_PROPAGATION_PARTIAL": "Panel sufficient AND PATH_R4 Pareto-dominates at least one fixed control but not all three.",
+    "PATH_GUIDED_GRID_PROPAGATION_NOT_SUPPORTED": "Panel sufficient AND PATH_R4 Pareto-dominates none of the fixed controls.",
+    "GRID1_REFERENCE_PANEL_INSUFFICIENT": "Frozen minimum panel not met.",
+    "no_scalar_weighting": true,
+    "application_acceptance": false
+  },
+  "firewalls": [
+    "NO_GRID_SELECTION_FROM_FINE_REFERENCE_RESPONSE",
+    "NO_TAYLOR_CURVATURE_ORACLE_FOR_GRID_PLACEMENT",
+    "NO_NEW_PATH_SCALE_MULTIPLIER",
+    "NO_MATERIAL_SPECIFIC_MULTIPLIER",
+    "NO_CASE_SPECIFIC_FIT",
+    "NO_DYNAMIC_REMESHING",
+    "NO_CLOSURE_CHANGE",
+    "NO_REFERENCE_RICHARDS_CHANGE",
+    "NO_POST_RESULT_GRID_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
