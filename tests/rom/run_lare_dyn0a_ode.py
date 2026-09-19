@@ -247,7 +247,11 @@ def main() -> int:
     max_ledger = 0.0
     equilibrium_max_change = 0.0
     fixed_flux_finest_success = 0
+    fixed_flux_outside_domain = 0
+    fixed_flux_numerical_blocked = 0
     free_drainage_finest_success = 0
+    free_drainage_outside_domain = 0
+    free_drainage_numerical_blocked = 0
 
     for case in cases:
         refinements = {}
@@ -265,13 +269,31 @@ def main() -> int:
 
         finest_key = f"{HEUN_DT[-1]:.7f}"
         finest = refinements.get(finest_key)
-        status = "QUALIFIED" if finest is not None else "NUMERICAL_OR_DOMAIN_BLOCKED"
-
+        finest_failure = failures.get(finest_key, "")
         if finest is not None:
+            status = "QUALIFIED"
+        elif "OUTSIDE_QUALIFIED_DOMAIN" in finest_failure:
+            status = "OUTSIDE_QUALIFIED_DOMAIN"
+        else:
+            status = "NUMERICAL_BLOCKED"
+
+        if status == "QUALIFIED":
             if case.bottom == "FIXED_FLUX":
                 fixed_flux_finest_success += 1
             else:
                 free_drainage_finest_success += 1
+        elif status == "OUTSIDE_QUALIFIED_DOMAIN":
+            if case.bottom == "FIXED_FLUX":
+                fixed_flux_outside_domain += 1
+            else:
+                free_drainage_outside_domain += 1
+        else:
+            if case.bottom == "FIXED_FLUX":
+                fixed_flux_numerical_blocked += 1
+            else:
+                free_drainage_numerical_blocked += 1
+
+        if finest is not None:
             if case.forcing_id == "EQ":
                 total = np.asarray(finest["total_storage_cm"], dtype=float)
                 equilibrium_max_change = max(
@@ -334,8 +356,12 @@ def main() -> int:
         "case_count": len(cases),
         "fixed_flux_case_count": 24,
         "fixed_flux_finest_success_count": fixed_flux_finest_success,
+        "fixed_flux_outside_qualified_domain_count": fixed_flux_outside_domain,
+        "fixed_flux_numerical_blocked_count": fixed_flux_numerical_blocked,
         "free_drainage_case_count": 24,
         "free_drainage_finest_success_count": free_drainage_finest_success,
+        "free_drainage_outside_qualified_domain_count": free_drainage_outside_domain,
+        "free_drainage_numerical_blocked_count": free_drainage_numerical_blocked,
         "max_abs_water_ledger_cm": max_ledger,
         "max_abs_equilibrium_total_storage_change_cm": equilibrium_max_change,
         "cases": results,
@@ -348,7 +374,11 @@ def main() -> int:
         "decision": payload["decision"],
         "case_count": len(cases),
         "fixed_flux_finest_success_count": fixed_flux_finest_success,
+        "fixed_flux_outside_qualified_domain_count": fixed_flux_outside_domain,
+        "fixed_flux_numerical_blocked_count": fixed_flux_numerical_blocked,
         "free_drainage_finest_success_count": free_drainage_finest_success,
+        "free_drainage_outside_qualified_domain_count": free_drainage_outside_domain,
+        "free_drainage_numerical_blocked_count": free_drainage_numerical_blocked,
         "max_abs_water_ledger_cm": max_ledger,
         "max_abs_equilibrium_total_storage_change_cm": equilibrium_max_change,
     }, sort_keys=True))
