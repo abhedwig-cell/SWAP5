@@ -9,15 +9,13 @@ fail() { echo "PUB_P2E01_GATE_FAIL $*" >&2; exit 1; }
 
 TEST=tests/publication/test_difficulty_p0c_replay.f90
 
-git diff --check -- "$TEST" tests/publication/run_pub_p2e01_e0_paired_pilot.sh || fail 'diff check'
+git diff --check -- "$TEST" tests/publication/run_difficulty_p0c_replay.sh || fail 'diff check'
 [[ -z "$(git diff --name-only -- src)" ]] || fail 'production source dirty before publication pilot'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/transaction/mod_transaction_reference.f90
-  src/research/mod_difficulty_trial_record.f90
-  src/research/mod_difficulty_counterfactual_replay.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
@@ -29,6 +27,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/research/mod_difficulty_trial_record.f90
+  src/research/mod_difficulty_counterfactual_replay.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
