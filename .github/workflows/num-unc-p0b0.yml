@@ -15,5 +15,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: research/num-unc-p0
       - name: Run N0-only exchange-reversal locator
         run: bash tests/num_unc/run_num_unc_p0b0_exchange_locator.sh
