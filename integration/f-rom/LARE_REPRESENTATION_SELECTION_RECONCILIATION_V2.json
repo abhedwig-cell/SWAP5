@@ -1,0 +1,125 @@
+{
+  "schema": "swap5.lare.representation-selection.reconciliation.v2",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-REPSEL-2",
+  "phase": "SUPERSEDING_RECONCILIATION_AFTER_C4P_C4Q_AND_CORICHARDS_Q1",
+  "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "supersedes": {
+    "path": "integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json",
+    "prior_status": "CLOSED_FIXED_PARTITION_BOUNDARY_NEXT_FAMILY_SOURCE_BINDING_REQUIRED",
+    "prior_decision": "NEXT_INDEPENDENT_PHYSICAL_FAMILY_QUASI_STEADY_MANIFOLD_SOURCE_BINDING",
+    "reason": [
+      "The prior closeout omitted already-present C4P and C4Q authorities from its authority set.",
+      "C4P had already reconciled later canonical F-ROMV2 evidence showing L2_IMC, QS1, QS2_COMPOSITE and HE2 behind the retained R2 comparator on their preregistered B01 views.",
+      "C4Q had already executed a matched D13 discriminator and found a positive bounded LARE/FMC frontier result before the prior representation closeout was committed.",
+      "Therefore choosing quasi-steady/integrated-manifold source binding as the next family was stale relative to live repository authority."
+    ]
+  },
+  "authority_order": [
+    {
+      "path": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
+      "role": "post-C4O cross-family reconciliation",
+      "finding": "FMC/SMVE is the retained distinct physical-reduction candidate; previously tested two-layer/quasi-steady families are closed without post-hoc tuning."
+    },
+    {
+      "path": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+      "role": "matched D13 representation discriminator",
+      "finding": "LARE R4 crosses D13 R2 on all frozen views; LARE R12 crosses FMC_GW200 on all frozen views; no value/runtime claim."
+    },
+    {
+      "path": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+      "role": "same-partition CoRichards fixed-flux numerical viability",
+      "finding": "R3-R12 provide no reduced dynamic comparator under the DYN0A strict Reference authority; R16 qualifies. This does not establish hydrological superiority."
+    },
+    {
+      "external_ref": "ea0c8297a10679fb760dacf20b437c798773e152",
+      "paths": [
+        "integration/f-rom/F-ROMV2_D5_RESULT.json",
+        "integration/f-rom/F-ROMV2_D7_RESULT.json",
+        "integration/f-rom/F-ROMV2_D8_RESULT.json",
+        "integration/f-rom/F-ROMV2_D10_RESULT.json",
+        "integration/f-rom/F-ROMV2_D11_RESULT.json",
+        "integration/f-rom/F-ROMV2_D13_RESULT.json"
+      ],
+      "role": "later external comparator evidence only; no rebase of LARE scientific basis"
+    }
+  ],
+  "external_family_dispositions": {
+    "L2_IMC": {
+      "decision": "L2_IMC_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+      "disposition": "CLOSED_NO_RETUNING"
+    },
+    "QS1": {
+      "decision": "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+      "disposition": "CLOSED_NO_RETUNING"
+    },
+    "QS2_COMPOSITE": {
+      "decision": "QS2_COMPOSITE_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+      "disposition": "CLOSED_NO_RETUNING"
+    },
+    "HE2": {
+      "decision": "HE2_PUBLISHED_CORE_NOT_COMPETITIVE_ON_ITS_ZERO_HEAD_ENVELOPE",
+      "disposition": "CLOSED_NO_RETUNING"
+    },
+    "FMC_SMVE": {
+      "D11_decision": "FMC_SMVE_FAITHFUL_COMPARATOR_JUSTIFIED_VZAA_AND_ADAPTIVE_ROM_DEFERRED",
+      "D13_decision": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+      "disposition": "RETAIN_DISTINCT_PHYSICAL_REDUCTION_FAMILY"
+    }
+  },
+  "reconciled_representation_state": {
+    "fixed_partition_LARE": {
+      "disposition": "RETAIN_HIGH_RESOLUTION_BOUNDED_REPRESENTATION_PAUSE_SCALAR_CLOSURE_TUNING",
+      "evidence": [
+        "C4O closes simple zero-fit scalar conditioner search.",
+        "C4Q shows R12 crosses FMC_GW200 on all five preregistered D13 fidelity views, while R4 crosses D13 R2.",
+        "This is narrow fixed-water-table capillary-relaxation evidence, not general application qualification."
+      ]
+    },
+    "same_partition_CoRichards": {
+      "disposition": "COMPARATOR_AUTHORITY_WORKLOAD_DEPENDENT",
+      "evidence": [
+        "Q1 shows R3-R12 unavailable dynamically in the DYN0A fixed-flux lab under its strict numerical authority.",
+        "Q1 does not test D13 zero-head mode-5 authority and therefore cannot be transferred to C4Q's D13 workload.",
+        "A same-partition D13 qualification is required before CoRichards can enter a matched C4Q cost-fidelity comparison."
+      ]
+    },
+    "FMC_SMVE": {
+      "disposition": "RETAIN_PRIMARY_DISTINCT_PHYSICAL_REDUCTION_COMPARATOR",
+      "evidence": [
+        "D13 positive bounded groundwater-front result.",
+        "C4Q shows only LARE R12 crosses FMC on all matched D13 fidelity views.",
+        "Broader process/application authority remains separate and limited."
+      ]
+    }
+  },
+  "decision": "D13_SAME_PARTITION_CORICHARDS_QUALIFICATION_REQUIRED_BEFORE_VALUE_DISCRIMINATOR",
+  "next_authority": {
+    "id": "LARE-BC2-C4R",
+    "title": "D13 same-partition CoRichards qualification",
+    "purpose": "Determine whether conventional Richards on the exact frozen C4Q R3-R12 partitions is numerically admissible on the immutable D13 fixed-water-table workload under the original D13 mode-5 numerical policy.",
+    "full_ladder_required": true,
+    "controls": [
+      "R2 immutable D13 comparator identity",
+      "R16 immutable D13 Reference identity"
+    ],
+    "hydrological_fidelity_comparison_in_C4R": false,
+    "performance_measurement_in_C4R": false,
+    "successor_if_reduced_qualifies": "Preregister a matched D13 cost-fidelity discriminator using only the common qualified LARE/CoRichards/FMC/R16 cohort and frozen C4Q fidelity views.",
+    "successor_if_no_reduced_qualifies": "Close same-partition CoRichards as unavailable for D13 value comparison under current authority; do not relax the numerical policy post-result."
+  },
+  "prohibited": [
+    "DO_NOT_REOPEN_L2_IMC_QS1_QS2_OR_HE2_BY_POST_HOC_TUNING",
+    "DO_NOT_REBASE_LARE_SCIENCE_TO_LATER_CANONICAL",
+    "DO_NOT_TRANSFER_Q1_FIXED_FLUX_NUMERICAL_FAILURE_TO_D13_ZERO_HEAD_WITHOUT_EXECUTION",
+    "DO_NOT_MEASURE_OR_CLAIM_COST_VALUE_BEFORE_C4R",
+    "DO_NOT_CLAIM_GENERAL_LARE_OR_FMC_SUPERIORITY",
+    "DO_NOT_ADJUDICATE_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "model_changed": false,
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
