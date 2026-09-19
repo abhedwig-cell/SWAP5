@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.f-romv2-d4.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D4",
+  "title": "Integrated water-depth numerical integrity policy for deliberately coarse Richards reductions",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "ad8a0fbebcf2426e0aab0baaff133b058f8a1d8e",
+  "purpose": "Test whether strongly coarse Richards reductions can be hydrologically evaluated under a timestep- and grid-aware research numerical-integrity policy expressed in integrated water-depth error rather than by inheriting the full-order fixed residual-rate threshold.",
+  "scientific_role": {
+    "class": "DEVELOPMENT_NUMERICAL_AUTHORITY_AND_ARCHITECTURE_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "production_reference_policy": false,
+    "production_rom_authorized": false
+  },
+  "independent_basis": {
+    "hard_accepted_transaction_mass_gate_cm": 1e-12,
+    "authority": "Pre-existing F-ROM/F-KT accepted-transaction hard water-ledger gate, fixed before D2-D4.",
+    "P2E06_P2E07_context": "Pre-existing Reference-only evidence showed that fixed residual-rate criteria can become dominated by representation/cancellation scales as dt changes. D4 does not fit any D2 or D3 residual magnitude.",
+    "D3_role": "D3 is retained only as a negative result showing that the prospective ulp-bound policy is unusable. Its observed ratios do not enter D4."
+  },
+  "scope": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "geometries": [
+      {
+        "id": "R16",
+        "nodes": 16,
+        "dz_cm": 10,
+        "role": "development reference"
+      },
+      {
+        "id": "R8",
+        "nodes": 8,
+        "dz_cm": 20,
+        "role": "D2 retained comparator"
+      },
+      {
+        "id": "R4",
+        "nodes": 4,
+        "dz_cm": 40,
+        "role": "strongly coarse candidate"
+      },
+      {
+        "id": "R2",
+        "nodes": 2,
+        "dz_cm": 80,
+        "role": "strongly coarse candidate"
+      }
+    ]
+  },
+  "research_numerical_policy": {
+    "id": "STRICT_FIRST_INTEGRATED_WATER_DEPTH_REATTEMPT",
+    "first_attempt": "unchanged strict Reference-sample controls",
+    "trigger": [
+      "first attempt returns SW_SOLVE_RETRY_ADVISED",
+      "direct failed-workspace diagnosis is RETRY_TOTAL_ONLY or RETRY_LOCAL_BALANCE",
+      "head convergence flag count is zero",
+      "committed state, time, revision and lineage remain bitwise/identity unchanged"
+    ],
+    "depth_budget": {
+      "epsilon_depth_cm": 1e-12,
+      "total_integrated_gate_cm": "epsilon_depth_cm",
+      "local_integrated_gate_cm": "epsilon_depth_cm / active_node_count",
+      "rationale": "If every compartment is at its local gate, the L1 sum of local integrated residual magnitudes is bounded by the same pre-existing 1e-12 cm water-depth scale as the accepted transaction mass gate."
+    },
+    "reattempt_rate_tolerances": {
+      "total_balance_cm_per_day": "epsilon_depth_cm / dt_day",
+      "compartment_balance_cm_per_day": "epsilon_depth_cm / (active_node_count * dt_day)"
+    },
+    "pre_reattempt_checks": [
+      "abs(sum_failed_residual_rate)*dt_day <= epsilon_depth_cm",
+      "max_abs_failed_compartment_residual_rate*dt_day <= epsilon_depth_cm/active_node_count",
+      "all diagnosed quantities finite"
+    ],
+    "accepted_candidate_checks": [
+      "solver converged",
+      "one research Reference physical advance",
+      "no internal retry and no kernel retry",
+      "finite physical state",
+      "water content within B01 residual/saturated physical bounds",
+      "finite bottom exchange and terminal bottom flux",
+      "complete accepted transaction water ledger",
+      "abs(accepted transaction mass residual) <= 1e-12 cm",
+      "kernel-owned commit succeeds"
+    ],
+    "fail_closed": "Head or mixed failures, pre-reattempt integrated-budget failure, failed reattempt, nonfinite state, physical-bound failure or hard accepted mass failure stop that geometry/history. No third policy or post-result widening is allowed.",
+    "boundary": "Research-only reduced-model numerical integrity. This is not a production Reference tolerance and does not claim numerical equivalence to R16."
+  },
+  "hydrological_evaluation": {
+    "reference": "R16 under the same D4 strict-first integrated-water-depth policy",
+    "outputs": [
+      "total storage",
+      "upper/lower 80-cm storage",
+      "cumulative bottom exchange",
+      "terminal bottom flux",
+      "bottom-flux sign",
+      "reversal sequence",
+      "mapped theta",
+      "mapped pressure head"
+    ],
+    "computational_proxies": [
+      "node count",
+      "total nonlinear iterations",
+      "total backtracking attempts",
+      "integrated-policy reattempt count"
+    ],
+    "reporting": "Absolute and relative development discrepancies are reported by history and pooled. They are not converted into application thresholds.",
+    "frontier_views": [
+      "balance fidelity versus node count and nonlinear work",
+      "event/flux fidelity versus node count and nonlinear work"
+    ]
+  },
+  "decisions": {
+    "positive": "STRONGLY_COARSE_RICHARDS_HYDROLOGICALLY_MEASURABLE_UNDER_INTEGRATED_MASS_POLICY",
+    "negative": "STRONGLY_COARSE_RICHARDS_FAILS_INTEGRATED_MASS_POLICY",
+    "retention": "A completed geometry is retained as a candidate only if integrity passes and it is non-dominated on at least one declared multi-objective development frontier. Completion alone is not application acceptance.",
+    "next_if_positive": "Carry retained R4/R2 and R8 into comparison against a clean-sheet layered/quasi-steady physical reduction.",
+    "next_if_negative": "No further coarse-Richards numerical-policy widening. Move to layered/quasi-steady physical reduction."
+  },
+  "firewalls": [
+    "NO_D2_OR_D3_RESIDUAL_MAGNITUDE_FITTING",
+    "NO_POST_RESULT_POLICY_RETUNING",
+    "NO_PRODUCTION_REFERENCE_TOLERANCE_CHANGE",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_BLIND_CONFIRMATION_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
