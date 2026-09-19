@@ -1,0 +1,112 @@
+name: F-ROM-LARE BC2-C2B sharded tangent panel
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'tests/rom/run_lare_bc2_c2b_case.py'
+      - 'tests/rom/aggregate_lare_bc2_c2b_cases.py'
+      - '.github/workflows/f-rom-lare-bc2-c2b-sharded.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  case:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {tag: w2p5_hold, width: 2.5, history: WT_HOLD}
+          - {tag: w2p5_rise, width: 2.5, history: WT_RISE}
+          - {tag: w2p5_fall, width: 2.5, history: WT_FALL}
+          - {tag: w2p5_cycle, width: 2.5, history: WT_CYCLE}
+          - {tag: w5_hold, width: 5.0, history: WT_HOLD}
+          - {tag: w5_rise, width: 5.0, history: WT_RISE}
+          - {tag: w5_fall, width: 5.0, history: WT_FALL}
+          - {tag: w5_cycle, width: 5.0, history: WT_CYCLE}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c2b/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c2b/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c2b/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c2b/a2.zip -d /tmp/lare-bc2-c2b/a2
+          cmp /tmp/lare-bc2-c2b/a2/o0.txt /tmp/lare-bc2-c2b/a2/o2.txt
+
+      - name: Execute frozen C2B case
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C2B_CASE
+          python3 tests/rom/run_lare_bc2_c2b_case.py \
+            --reference /tmp/lare-bc2-c2b/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json \
+            --c1r-result integration/f-rom/LARE_BC2_C1R_RESULT.json \
+            --c2a-result integration/f-rom/LARE_BC2_C2A_RESULT.json \
+            --binding integration/f-rom/LARE_BC2_C2B_AUTHORITY_BINDING.json \
+            --width "${{ matrix.width }}" \
+            --history "${{ matrix.history }}" \
+            --output "LARE_BC2_C2B_CASE/case_${{ matrix.tag }}.json" \
+            | tee "LARE_BC2_C2B_CASE/runner_${{ matrix.tag }}.txt"
+
+      - name: Upload case
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c2b-case-${{ matrix.tag }}
+          path: LARE_BC2_C2B_CASE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: case
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover all C2B cases
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c2b-case-*
+          path: /tmp/lare-bc2-c2b-cases
+          merge-multiple: true
+
+      - name: Aggregate and hard-gate
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C2B_SHARDED_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c2b_cases.py \
+            --case-dir /tmp/lare-bc2-c2b-cases \
+            --output LARE_BC2_C2B_SHARDED_EVIDENCE/LARE_BC2_C2B_RESULT.json \
+            | tee LARE_BC2_C2B_SHARDED_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C2B_SHARDED_EVIDENCE/LARE_BC2_C2B_RESULT.json'))
+          assert r['decision']=='BC2_C2B_BLIND_TANGENT_PANEL_MAPPED'
+          assert r['complete'] is True
+          assert r['execution_mode']=='SHARDED_EXECUTION_EQUIVALENT'
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C2B_SHARDED_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C2B_SHARDED_EVIDENCE/* > LARE_BC2_C2B_SHARDED_EVIDENCE/sha256.txt
+
+      - name: Upload aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c2b-sharded
+          path: LARE_BC2_C2B_SHARDED_EVIDENCE/
+          if-no-files-found: error
