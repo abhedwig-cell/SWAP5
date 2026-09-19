@@ -14,105 +14,267 @@
     "RETRY_LOCAL_BALANCE": 1140,
     "RETRY_TOTAL_ONLY": 28284
   },
+  "interpretation_note": "GW_D and GW_R are adjudicated separately. Combining them into one Pareto verdict would contradict the preregistered purpose-dependent acceptance framework. Representation-specific adversarial pair sets are response-blind but not identical across representations, so relative maxima are research-progression diagnostics rather than pointwise error comparisons.",
   "lare_dynamics_executed": false,
   "max_abs_committed_mass_residual_cm": 4.1916557030896584e-14,
   "pair_reselection_after_response": false,
-  "production_rom_authorized": false,
-  "relative_to_uniform_controls": {
+  "primary_relative_progression_by_purpose": {
     "D2": {
-      "CONTROL_U4": {
+      "GW_D": {
         "component_noninferiority": {
           "gw_d_cum_bottom_cm": true,
+          "gw_d_lower_storage_cm": true,
           "gw_d_max_reversal_step_difference": true,
           "gw_d_terminal_bottom_flux_cm_per_day": true,
+          "gw_d_terminal_flux_sign_mismatch_count": true,
           "gw_d_total_storage_cm": true,
-          "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+          "reversal_sequence_mismatch_count": true
         },
-        "noninferior_all_components": false,
-        "promising_relative_to_control": false,
+        "noninferior_all_components": true,
+        "promising_relative_to_control": true,
         "strictly_better_at_least_one_component": true
       },
-      "CONTROL_U8_Z8": {
+      "GW_R": {
         "component_noninferiority": {
-          "gw_d_cum_bottom_cm": false,
-          "gw_d_max_reversal_step_difference": false,
-          "gw_d_terminal_bottom_flux_cm_per_day": true,
-          "gw_d_total_storage_cm": false,
+          "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
           "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+          "gw_r_one_day_total_storage_cm": false
         },
         "noninferior_all_components": false,
         "promising_relative_to_control": false,
+        "strictly_better_at_least_one_component": false
+      },
+      "primary_uniform_control": "CONTROL_U4",
+      "research_progression": {
+        "GW_D": "STATE_INFORMATION_PROMISING_FOR_GW_D_DYNAMICS",
+        "GW_R": "STATE_INFORMATION_NOT_BETTER_THAN_COARSE_CONTROL_FOR_GW_R"
+      }
+    },
+    "D3": {
+      "GW_D": {
+        "component_noninferiority": {
+          "gw_d_cum_bottom_cm": true,
+          "gw_d_lower_storage_cm": true,
+          "gw_d_max_reversal_step_difference": true,
+          "gw_d_terminal_bottom_flux_cm_per_day": true,
+          "gw_d_terminal_flux_sign_mismatch_count": true,
+          "gw_d_total_storage_cm": true,
+          "reversal_sequence_mismatch_count": true
+        },
+        "noninferior_all_components": true,
+        "promising_relative_to_control": true,
         "strictly_better_at_least_one_component": true
+      },
+      "GW_R": {
+        "component_noninferiority": {
+          "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+          "gw_r_one_day_cum_bottom_cm": false,
+          "gw_r_one_day_total_storage_cm": false
+        },
+        "noninferior_all_components": false,
+        "promising_relative_to_control": false,
+        "strictly_better_at_least_one_component": false
+      },
+      "primary_uniform_control": "CONTROL_U4",
+      "research_progression": {
+        "GW_D": "STATE_INFORMATION_PROMISING_FOR_GW_D_DYNAMICS",
+        "GW_R": "STATE_INFORMATION_NOT_BETTER_THAN_COARSE_CONTROL_FOR_GW_R"
+      }
+    },
+    "D4": {
+      "GW_D": {
+        "component_noninferiority": {
+          "gw_d_cum_bottom_cm": true,
+          "gw_d_lower_storage_cm": true,
+          "gw_d_max_reversal_step_difference": true,
+          "gw_d_terminal_bottom_flux_cm_per_day": true,
+          "gw_d_terminal_flux_sign_mismatch_count": true,
+          "gw_d_total_storage_cm": true,
+          "reversal_sequence_mismatch_count": true
+        },
+        "noninferior_all_components": true,
+        "promising_relative_to_control": true,
+        "strictly_better_at_least_one_component": true
+      },
+      "GW_R": {
+        "component_noninferiority": {
+          "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+          "gw_r_one_day_cum_bottom_cm": false,
+          "gw_r_one_day_total_storage_cm": false
+        },
+        "noninferior_all_components": false,
+        "promising_relative_to_control": false,
+        "strictly_better_at_least_one_component": false
+      },
+      "primary_uniform_control": "CONTROL_U4",
+      "research_progression": {
+        "GW_D": "STATE_INFORMATION_PROMISING_FOR_GW_D_DYNAMICS",
+        "GW_R": "STATE_INFORMATION_NOT_BETTER_THAN_COARSE_CONTROL_FOR_GW_R"
+      }
+    }
+  },
+  "production_rom_authorized": false,
+  "relative_to_uniform_controls_by_purpose": {
+    "D2": {
+      "CONTROL_U4": {
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": true,
+            "gw_d_lower_storage_cm": true,
+            "gw_d_max_reversal_step_difference": true,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": true,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": true,
+          "promising_relative_to_control": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": false,
+            "gw_d_lower_storage_cm": false,
+            "gw_d_max_reversal_step_difference": false,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": false,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
       }
     },
     "D3": {
       "CONTROL_U4": {
-        "component_noninferiority": {
-          "gw_d_cum_bottom_cm": true,
-          "gw_d_max_reversal_step_difference": true,
-          "gw_d_terminal_bottom_flux_cm_per_day": true,
-          "gw_d_total_storage_cm": true,
-          "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": true,
+            "gw_d_lower_storage_cm": true,
+            "gw_d_max_reversal_step_difference": true,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": true,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": true,
+          "promising_relative_to_control": true,
+          "strictly_better_at_least_one_component": true
         },
-        "noninferior_all_components": false,
-        "promising_relative_to_control": false,
-        "strictly_better_at_least_one_component": true
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
       },
       "CONTROL_U8_Z8": {
-        "component_noninferiority": {
-          "gw_d_cum_bottom_cm": false,
-          "gw_d_max_reversal_step_difference": false,
-          "gw_d_terminal_bottom_flux_cm_per_day": true,
-          "gw_d_total_storage_cm": false,
-          "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": false,
+            "gw_d_lower_storage_cm": false,
+            "gw_d_max_reversal_step_difference": false,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": false,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": true
         },
-        "noninferior_all_components": false,
-        "promising_relative_to_control": false,
-        "strictly_better_at_least_one_component": true
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
       }
     },
     "D4": {
       "CONTROL_U4": {
-        "component_noninferiority": {
-          "gw_d_cum_bottom_cm": true,
-          "gw_d_max_reversal_step_difference": true,
-          "gw_d_terminal_bottom_flux_cm_per_day": true,
-          "gw_d_total_storage_cm": true,
-          "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": true,
+            "gw_d_lower_storage_cm": true,
+            "gw_d_max_reversal_step_difference": true,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": true,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": true,
+          "promising_relative_to_control": true,
+          "strictly_better_at_least_one_component": true
         },
-        "noninferior_all_components": false,
-        "promising_relative_to_control": false,
-        "strictly_better_at_least_one_component": true
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
       },
       "CONTROL_U8_Z8": {
-        "component_noninferiority": {
-          "gw_d_cum_bottom_cm": false,
-          "gw_d_max_reversal_step_difference": false,
-          "gw_d_terminal_bottom_flux_cm_per_day": true,
-          "gw_d_total_storage_cm": false,
-          "gw_r_one_day_cum_bottom_cm": false,
-          "gw_r_one_day_total_storage_cm": false,
-          "reversal_sequence_mismatch_count": true,
-          "terminal_flux_sign_mismatch_count": true
+        "GW_D": {
+          "component_noninferiority": {
+            "gw_d_cum_bottom_cm": false,
+            "gw_d_lower_storage_cm": false,
+            "gw_d_max_reversal_step_difference": false,
+            "gw_d_terminal_bottom_flux_cm_per_day": true,
+            "gw_d_terminal_flux_sign_mismatch_count": true,
+            "gw_d_total_storage_cm": false,
+            "reversal_sequence_mismatch_count": true
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": true
         },
-        "noninferior_all_components": false,
-        "promising_relative_to_control": false,
-        "strictly_better_at_least_one_component": true
+        "GW_R": {
+          "component_noninferiority": {
+            "gw_r_abs_mean_signed_pair_exchange_difference_cm": false,
+            "gw_r_one_day_cum_bottom_cm": false,
+            "gw_r_one_day_total_storage_cm": false
+          },
+          "noninferior_all_components": false,
+          "promising_relative_to_control": false,
+          "strictly_better_at_least_one_component": false
+        }
       }
     }
   },
@@ -140,15 +302,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.28869265899622576,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.01056384442776448,
         "gw_d_upper_storage_cm": 1.5121761620662255e-08,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.0032056005370017992,
         "gw_r_mean_signed_pair_exchange_difference_cm": -0.0032056005370017992,
         "gw_r_one_day_cum_bottom_cm": 0.012700147992632527,
         "gw_r_one_day_cum_bottom_mm": 0.12700147992632527,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0005067038699735349,
         "gw_r_one_day_total_storage_cm": 0.012700147992632083,
         "gw_r_one_day_total_storage_mm": 0.12700147992632083,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -699,15 +864,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.9904136485161512,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.01204464062802657,
         "gw_d_upper_storage_cm": 4.145048038139976e-08,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 5.904738039685942e-05,
         "gw_r_mean_signed_pair_exchange_difference_cm": -5.904738039685942e-05,
         "gw_r_one_day_cum_bottom_cm": 0.00024742388201559606,
         "gw_r_one_day_cum_bottom_mm": 0.0024742388201559606,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0012700782647816489,
         "gw_r_one_day_total_storage_cm": 0.00024742388201559606,
         "gw_r_one_day_total_storage_mm": 0.0024742388201559606,
-        "reversal_sequence_mismatch_count": 12,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 12
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -1278,15 +1446,18 @@
         "gw_d_max_reversal_step_difference": 0,
         "gw_d_max_reversal_time_difference_minutes": 0.0,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.37613032740857477,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.00406110032528062,
         "gw_d_upper_storage_cm": 6.20672402362743e-09,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.00010770863686244374,
         "gw_r_mean_signed_pair_exchange_difference_cm": 0.00010770863686244374,
         "gw_r_one_day_cum_bottom_cm": 0.00022528368861429726,
         "gw_r_one_day_cum_bottom_mm": 0.0022528368861429726,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0003318515773287345,
         "gw_r_one_day_total_storage_cm": 0.00022528368861429726,
         "gw_r_one_day_total_storage_mm": 0.0022528368861429726,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -1818,15 +1989,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.28869265899622576,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.01056384442776448,
         "gw_d_upper_storage_cm": 1.5121761620662255e-08,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.0032056005370017992,
         "gw_r_mean_signed_pair_exchange_difference_cm": -0.0032056005370017992,
         "gw_r_one_day_cum_bottom_cm": 0.012700147992632527,
         "gw_r_one_day_cum_bottom_mm": 0.12700147992632527,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0005067038699735349,
         "gw_r_one_day_total_storage_cm": 0.012700147992632083,
         "gw_r_one_day_total_storage_mm": 0.12700147992632083,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -2375,15 +2549,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.05520340626397058,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.006367365388960877,
         "gw_d_upper_storage_cm": 0.0004088288494337178,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.0032547685943884147,
         "gw_r_mean_signed_pair_exchange_difference_cm": -0.0032547685943884147,
         "gw_r_one_day_cum_bottom_cm": 0.005778844606964206,
         "gw_r_one_day_cum_bottom_mm": 0.05778844606964206,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0019855222355151803,
         "gw_r_one_day_total_storage_cm": 0.0057788446069650945,
         "gw_r_one_day_total_storage_mm": 0.057788446069650945,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -2973,15 +3150,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.28869265899622576,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.01056384442776448,
         "gw_d_upper_storage_cm": 1.5121761620662255e-08,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.0032056005370017992,
         "gw_r_mean_signed_pair_exchange_difference_cm": -0.0032056005370017992,
         "gw_r_one_day_cum_bottom_cm": 0.012700147992632527,
         "gw_r_one_day_cum_bottom_mm": 0.12700147992632527,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0005067038699735349,
         "gw_r_one_day_total_storage_cm": 0.012700147992632083,
         "gw_r_one_day_total_storage_mm": 0.12700147992632083,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
@@ -3532,15 +3712,18 @@
         "gw_d_max_reversal_step_difference": 1,
         "gw_d_max_reversal_time_difference_minutes": 1.1520000000000001,
         "gw_d_terminal_bottom_flux_cm_per_day": 0.28869265899622576,
+        "gw_d_terminal_flux_sign_mismatch_count": 0,
         "gw_d_total_storage_cm": 0.01056384442776448,
         "gw_d_upper_storage_cm": 1.5121761620662255e-08,
+        "gw_r_abs_mean_signed_pair_exchange_difference_cm": 0.0032056005370017992,
         "gw_r_mean_signed_pair_exchange_difference_cm": -0.0032056005370017992,
         "gw_r_one_day_cum_bottom_cm": 0.012700147992632527,
         "gw_r_one_day_cum_bottom_mm": 0.12700147992632527,
+        "gw_r_one_day_terminal_bottom_flux_cm_per_day": 0.0005067038699735349,
         "gw_r_one_day_total_storage_cm": 0.012700147992632083,
         "gw_r_one_day_total_storage_mm": 0.12700147992632083,
-        "reversal_sequence_mismatch_count": 0,
-        "terminal_flux_sign_mismatch_count": 0
+        "gw_r_terminal_flux_sign_mismatch_count": 0,
+        "reversal_sequence_mismatch_count": 0
       },
       "pair_count": 8,
       "reversal_summary": [
