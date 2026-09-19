@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.lare.bc2.c4k.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4K",
+  "phase": "PREREGISTERED_AFTER_C4J_BEFORE_REFERENCE_GRADIENT_STATE_SUFFICIENCY",
+  "title": "Reference local-gradient state-sufficiency diagnostic",
+  "question": "Does the existing reduced state (H, Wb, Wt) retain enough information to make the local lower-profile gradient geometry approximately single-valued across opposite water-table motion directions, or does direction/history carry additional information?",
+  "predecessors": {
+    "C4J": {
+      "closeout": "integration/f-rom/LARE_BC2_C4J_CLOSEOUT.json",
+      "required_status": "CLOSED_ROOT_MULTIPLICITY_NOT_SUPPORTED_DIRECTION_GEOMETRY_SUPPORTED"
+    },
+    "B4": {
+      "result": "integration/f-rom/LARE_BC2_B4_RESULT.json",
+      "required_decision": "BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    }
+  },
+  "widths_cm": [
+    2.5,
+    5
+  ],
+  "histories": [
+    "WT_RISE",
+    "WT_FALL"
+  ],
+  "reduced_state": {
+    "coordinates": [
+      "H_norm = H / 160 cm",
+      "theta_b_norm = (Wb/B - theta_r)/(theta_s-theta_r)",
+      "theta_t_norm = (Wt/d - theta_r)/(theta_s-theta_r)"
+    ],
+    "distance": "Euclidean distance in the three fixed physically normalized coordinates.",
+    "response_used_for_selection": false
+  },
+  "hidden_reference_geometry": {
+    "source": "A2 full-order Reference profile only; never added to reduced state.",
+    "point_authority": "Use the already-supported B4 point-head distances. For d=2.5 cm use capillary head at x=d and x=2d = 5 cm above the water table. For d=5 cm use x=d and x=2d = 10 cm.",
+    "definitions": [
+      "psi_d = -h(H-d)",
+      "psi_2d = -h(H-2d)",
+      "s_terminal = psi_d/d",
+      "s_bulk_adjacent = (psi_2d-psi_d)/d",
+      "curvature_proxy = s_bulk_adjacent-s_terminal"
+    ],
+    "hydrostatic_identity": "s_terminal=s_bulk_adjacent=1 and curvature_proxy=0"
+  },
+  "pairing": {
+    "cross_direction": "For every RISE endpoint choose the nearest FALL endpoint by reduced-state distance and for every FALL endpoint choose the nearest RISE endpoint; deduplicate identical unordered pairs.",
+    "within_direction_control_pool": "All distinct endpoint pairs within RISE plus all distinct endpoint pairs within FALL. Selection uses reduced state only.",
+    "distance_matching": "For each cross-direction pair, choose the within-direction control pair whose reduced-state distance is nearest to the cross-pair distance, using sorted distance and deterministic lower-index tie break. Controls may be reused.",
+    "no_response_matching": true
+  },
+  "outputs": [
+    "cross-direction and matched-control reduced-state distance distributions",
+    "absolute differences in s_terminal, s_bulk_adjacent and curvature_proxy",
+    "fraction of cross-direction pairs whose hidden-geometry difference exceeds its distance-matched within-direction control",
+    "median and p90 hidden-geometry differences for cross-direction and matched controls",
+    "closest 32 cross-direction pairs by state distance with full diagnostics",
+    "direction-conditioned means and ranges of curvature_proxy"
+  ],
+  "decision_rule": {
+    "DIRECTION_HISTORY_INFORMATION_SUPPORTED": "For both widths, cross-direction pairs have strictly larger median hidden-geometry difference than matched controls for s_terminal and curvature_proxy, and more than 50% of pairs exceed matched controls for both quantities.",
+    "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT": "Complete diagnostic but the above rule is not met for both widths.",
+    "C4K_DIAGNOSTIC_BLOCKED": "Reference point extraction, state construction or pairing cannot be completed."
+  },
+  "interpretation_boundary": [
+    "Support means direction/history contains information about local gradient geometry not well captured by closeness in the current (H,Wb,Wt) state under this A2 laboratory.",
+    "Support does not by itself choose a new prognostic state, Hdot-dependent closure, direction switch or memory model.",
+    "Failure to support does not prove universal sufficiency outside the tested laboratory."
+  ],
+  "hard_gates": {
+    "all_endpoint_states_finite": true,
+    "all_reference_points_inside_profile": true,
+    "minimum_cross_direction_pair_count": 32,
+    "minimum_control_pair_count": 1000
+  },
+  "firewalls": [
+    "NO_FITTED_REGRESSION",
+    "NO_RESPONSE_BASED_PAIR_SELECTION",
+    "NO_NEW_STATE",
+    "NO_DIRECTION_SWITCH",
+    "NO_NEW_CLOSURE",
+    "NO_FREE_PROPAGATION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
