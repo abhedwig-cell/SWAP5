@@ -103,5 +103,19 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalization": {
+    "before_first_MECH1_flux_result": true,
+    "primary_mechanism_partition": "D3",
+    "high_state_dynamic_cohort": "fine-Reference-qualified dynamic fixed-flux cases with Se0 >= 0.85; equilibrium cases and Se0=0.65 are reported but do not set the primary mechanism label",
+    "expected_case_ids": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ],
+    "pooled_RMS_rule": "For each signed component, pool all observation times and both D3 interfaces across the frozen high-state dynamic cohort, compute sqrt(mean(E_component^2)), and label the component with the largest pooled RMS only if it is uniquely largest.",
+    "mixed_rule": "If different components dominate individual case/interface blocks or the pooled-largest component is not consistently explanatory, close as MIXED_CLOSURE_ERROR even when one pooled RMS is numerically largest.",
+    "D4_role": "Report the same decomposition for D4 and compare shared 140/150-cm interfaces, but D4 cannot replace D3 as the primary mechanism authority."
+  }
 }
