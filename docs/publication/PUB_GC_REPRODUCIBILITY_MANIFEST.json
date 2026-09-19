@@ -1,7 +1,7 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-19",
-  "canonical_basis": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+  "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
   "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; current canonical still fails closed for active root extraction/drainage in the mode-5 production groundwater owner; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
@@ -66,11 +66,11 @@
     },
     "e7_result": {
       "path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "blob": "7788197e3c45b7bb7fc07f94e8435f57e7bee2f4"
+      "blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794"
     },
     "e7_application_requirements": {
       "path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-      "blob": "39dd3b3d3ceec60d347ea6ca4be0f549338f3928"
+      "blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad"
     },
     "e7_selection_result": {
       "path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
@@ -82,11 +82,11 @@
     },
     "e7_current_canonical_reconciliation": {
       "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
-      "blob": "bb6dc11ea7ab87c865d3d4476d764c10ce1a5fbc"
+      "blob": "9298c0533481ab8de86bb906b1edcf487975b49b"
     },
     "e7_current_canonical_reconciliation_narrative": {
       "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.md",
-      "blob": "3527dec7f457164d10e6c228270723a6324abf3c"
+      "blob": "a3c4c2446e11e4b391fee63534488f59b92573ab"
     }
   },
   "evidence": {
@@ -210,9 +210,9 @@
     },
     "result": {
       "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "result_blob": "7788197e3c45b7bb7fc07f94e8435f57e7bee2f4",
+      "result_blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794",
       "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
-      "narrative_blob": "ca0dd0a133b4f43cc98a7d4992a196e0638d8a49",
+      "narrative_blob": "9e7ed5f788f87d378841e8b62d32a24e1293aa64",
       "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
       "loose_completed_windows": 0,
       "strong_completed_windows": 0,
@@ -244,11 +244,11 @@
     "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
     "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability.",
     "current_canonical_reconciliation": {
-      "canonical_basis": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+      "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
       "record_path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
-      "record_blob": "bb6dc11ea7ab87c865d3d4476d764c10ce1a5fbc",
+      "record_blob": "9298c0533481ab8de86bb906b1edcf487975b49b",
       "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-      "application_requirements_blob": "39dd3b3d3ceec60d347ea6ca4be0f549338f3928",
+      "application_requirements_blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad",
       "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
       "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
       "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
@@ -259,7 +259,7 @@
       "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
       "post_relevant_production_live_delta": {
         "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-        "head": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+        "head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
         "classification": "NO_E7_PRODUCTION_OWNER_EFFECT"
       },
       "hydro_memory_acc02_f1_result_blob": "35cd7dd71ed10d7d61ed55abc9a805361f26a8ea",
@@ -267,10 +267,12 @@
       "hydro_memory_acc02_f1_support_bridge_blob": "b767769f3df5fe698698621a99c53185bcc61093",
       "hydro_memory_acc02_f2_result_blob": "757760b6d89c0c48583b9b92a10ea5eb07520772",
       "hydro_memory_acc02_f2_preregistration_blob": "c513fa4c4af275b214c5b7ba97c3d5fff2206dae",
-      "hydro_memory_acc02_f2_support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c"
+      "hydro_memory_acc02_f2_support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c",
+      "hydro_memory_dyn01_result_blob": "9b67737a416fb1b7806695a18fc57fb06ea2adaa",
+      "hydro_memory_dyn01_preregistration_blob": "387a7ef6f2303aaf80a69fe10e3f4904811e83df"
     }
   },
-  "manifest_note": "Current-tree path/blob identities bind the journal-neutral E1-E7 package at canonical_basis. Historical qualification blobs are retained under explicit source-head/historical scope fields and are not presented as current-tree identities. E7 remains closed as a realistic component-domain limit; ACC02-F1/F2 are research-only root-active evidence with drainage inactive and no production-owner widening. Remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
+  "manifest_note": "Current-tree path/blob identities bind the journal-neutral E1-E7 package at canonical_basis. Historical qualification blobs are retained under explicit source-head/historical scope fields and are not presented as current-tree identities. E7 remains closed as a realistic component-domain limit; ACC02-F1/F2 and DYN01 do not widen the production mode-5 root+drainage owner. Remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
   "gmd_presubmission": {
     "status": "REPOSITORY_PREPARATION_COMPLETE_EXTERNAL_GOVERNANCE_ARCHIVE_AUTHOR_FIELDS_OPEN",
     "policy_checked": "2026-09-19",
