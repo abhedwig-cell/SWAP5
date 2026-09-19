@@ -58,6 +58,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p build
           python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
             swap-testcases/cases/hupselbrook/legacy build/tab-hyd-diagnostic \
             | tee build/tab-hyd-diagnostic-prepare.log
