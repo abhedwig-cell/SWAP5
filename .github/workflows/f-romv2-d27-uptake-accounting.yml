@@ -1,0 +1,36 @@
+name: F-ROMV2 D27 unstressed uptake accounting
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'integration/f-rom/F-ROMV2_D27_PREREGISTRATION.json'
+      - 'tests/rom/test_f_romv2_d27_swap_unstressed_uptake.f90'
+      - 'tests/rom/analyze_f_romv2_d27_uptake_accounting.py'
+      - 'tests/rom/run_f_romv2_d27_uptake_accounting.sh'
+      - '.github/workflows/f-romv2-d27-uptake-accounting.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  accounting-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute frozen D27 accounting preflight
+        env:
+          F_ROMV2_D27_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D27-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d27_uptake_accounting.sh
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d27-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D27-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
