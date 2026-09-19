@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.lare.bc2.c2b.authority-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2B",
+  "required_C1R_decision": "BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED",
+  "C1R_result_path": "integration/f-rom/LARE_BC2_C1R_RESULT.json",
+  "C1R_result_blob_sha": "681abbbd1c02e508a636b19d701fe025e4900d3b",
+  "C1R_result_sha256": "f85d964bfa35e8ff595f1c5058db3805d436d96c1fc72c479d3efcd385844d68",
+  "required_C2A_decision": "BC2_C2A_ACTUAL_DRIFT_GAIN_MAPPED",
+  "C2A_result_path": "integration/f-rom/LARE_BC2_C2A_RESULT.json",
+  "C2A_result_blob_sha": "52544c38328730d691186776105ff86605d7d8ce",
+  "C2A_source_run": 35457132388,
+  "C2A_artifact_id": 10588339361,
+  "C2A_artifact_digest": "sha256:7b4c3c1d2846e124b9bd2aa72154a4100c6c27f560ec3be2ff809d4e563d0045",
+  "C2A_result_sha256": "288099d209bff2b0d5898ad647dcd649934291b97ca8d2646488b2bcc3d0bc27",
+  "C2_preregistration_path": "integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json",
+  "C2_preregistration_blob_sha": "8f82d1203c9ca2cf284a2b1a66191818a4fce695",
+  "C2B_execution_authorized": true,
+  "authorization_scope": "Diagnostic B only: frozen blind mass-neutral adjacent-mode tangent panel around exact Reference-projected states, using the unchanged C0 map and frozen epsilon amplitudes.",
+  "C2A_decision_context": {
+    "all_eight_cases_actual_case_amplifying": false,
+    "max_fraction_intervals_gain_gt_1": 0.3796477495107632,
+    "consequence": "Global MANIFOLD_AMPLIFICATION_SUPPORTED is already impossible under frozen C2C unanimity rules; C2B remains required to distinguish BIAS_ACCUMULATION_DOMINANT from MIXED_STATE_DYNAMICS."
+  },
+  "firewalls": [
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_NEW_STATE",
+    "NO_CLOSURE_CHANGE",
+    "NO_EPSILON_RETUNING",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ]
+}
