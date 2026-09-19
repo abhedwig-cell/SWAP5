@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.f-romv-purpose-dependent-acceptance-envelope.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-PAE",
+  "phase": "FROZEN_CONCEPTUAL_ENVELOPE_BEFORE_FINAL_MDE_QUALIFICATION",
+  "principle": "A reduced model is judged by application-relevant hydrological fidelity and computational value, not by solver-level numerical equivalence to Reference Richards.",
+  "numerical_reference_floor_role": "MEASUREMENT_CONTEXT_ONLY",
+  "fixed_universal_percentage_tolerance": false,
+  "threshold_derivation_rule": "Any numerical acceptance threshold must be justified from the declared application, decision or scientific inference before the final qualification dataset for that application is inspected. Thresholds may not be selected to fit observed ROM performance.",
+  "integrity_constraints": [
+    "EXPLICIT_WATER_ACCOUNTING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "FINITE_PHYSICALLY_ADMISSIBLE_PUBLISHED_STATE",
+    "FAIL_CLOSED_OUTSIDE_QUALIFIED_DOMAIN",
+    "DETERMINISTIC_RESTART_PERSISTENCE_WHEN_ROM_OWNS_STATE",
+    "DECLARED_TEMPLATE_PARAMETER_BOUNDARY_CAPABILITY_IDENTITY"
+  ],
+  "metric_axes": [
+    "LONG_TERM_WATER_BALANCE",
+    "CUMULATIVE_AND_MEAN_ACTUAL_EVAPOTRANSPIRATION",
+    "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+    "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+    "GROUNDWATER_HEAD_RESPONSE",
+    "FAST_EVENT_TIMING",
+    "EXTREMA_AND_DROUGHT_RESPONSE",
+    "REGIME_TRANSITION_TIMING",
+    "SYSTEMATIC_BIAS",
+    "MASS_BALANCE_INTEGRITY",
+    "OUT_OF_DOMAIN_BEHAVIOUR",
+    "COMPUTATIONAL_COST",
+    "ROBUSTNESS"
+  ],
+  "application_classes": [
+    {
+      "id": "A_LONG_TERM_REGIONAL_WATER_BALANCE",
+      "intended_use": "regional scenario, policy or resource-balance calculations over seasons to years",
+      "primary": [
+        "LONG_TERM_WATER_BALANCE",
+        "CUMULATIVE_AND_MEAN_ACTUAL_EVAPOTRANSPIRATION",
+        "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+        "SYSTEMATIC_BIAS",
+        "ROBUSTNESS",
+        "COMPUTATIONAL_COST"
+      ],
+      "secondary": [
+        "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+        "GROUNDWATER_HEAD_RESPONSE"
+      ],
+      "diagnostic": [
+        "FAST_EVENT_TIMING",
+        "REGIME_TRANSITION_TIMING"
+      ],
+      "interpretation": "Fast-event deviations can be acceptable only when they do not materially alter cumulative fluxes, drought classification or coupled groundwater response."
+    },
+    {
+      "id": "B_OPERATIONAL_SOIL_MOISTURE_DROUGHT",
+      "intended_use": "operational drought monitoring, state updating or irrigation/water-management support",
+      "primary": [
+        "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+        "EXTREMA_AND_DROUGHT_RESPONSE",
+        "CUMULATIVE_AND_MEAN_ACTUAL_EVAPOTRANSPIRATION",
+        "REGIME_TRANSITION_TIMING",
+        "OUT_OF_DOMAIN_BEHAVIOUR",
+        "ROBUSTNESS"
+      ],
+      "secondary": [
+        "LONG_TERM_WATER_BALANCE",
+        "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+        "FAST_EVENT_TIMING"
+      ],
+      "diagnostic": [
+        "GROUNDWATER_HEAD_RESPONSE"
+      ],
+      "interpretation": "Mean annual flux agreement is insufficient if drought onset, recovery or state-update response is biased."
+    },
+    {
+      "id": "C_GROUNDWATER_COUPLED_MANY_COLUMN",
+      "intended_use": "large N:1 unsaturated-zone to groundwater coupling",
+      "primary": [
+        "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+        "GROUNDWATER_HEAD_RESPONSE",
+        "LONG_TERM_WATER_BALANCE",
+        "MASS_BALANCE_INTEGRITY",
+        "OUT_OF_DOMAIN_BEHAVIOUR",
+        "ROBUSTNESS",
+        "COMPUTATIONAL_COST"
+      ],
+      "secondary": [
+        "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+        "REGIME_TRANSITION_TIMING"
+      ],
+      "diagnostic": [
+        "FAST_EVENT_TIMING"
+      ],
+      "interpretation": "Internal profile mismatch can be tolerated only if exchanged recharge/capillary response, storage response and coupled convergence remain fit for purpose."
+    },
+    {
+      "id": "D_FAST_EVENT_THRESHOLD",
+      "intended_use": "infiltration, drainage pulses, ponding/runoff or other threshold-sensitive event simulation",
+      "primary": [
+        "FAST_EVENT_TIMING",
+        "REGIME_TRANSITION_TIMING",
+        "EXTREMA_AND_DROUGHT_RESPONSE",
+        "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+        "MASS_BALANCE_INTEGRITY"
+      ],
+      "secondary": [
+        "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+        "SYSTEMATIC_BIAS"
+      ],
+      "diagnostic": [
+        "LONG_TERM_WATER_BALANCE"
+      ],
+      "interpretation": "Good seasonal totals cannot compensate for wrong event ordering, threshold activation or peak magnitude."
+    },
+    {
+      "id": "E_SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE",
+      "intended_use": "scientific attribution of vadose-zone processes, memory, extremes or transitions",
+      "primary": [
+        "ROOT_ZONE_AND_PROFILE_SOIL_MOISTURE",
+        "EXTREMA_AND_DROUGHT_RESPONSE",
+        "REGIME_TRANSITION_TIMING",
+        "FAST_EVENT_TIMING",
+        "SYSTEMATIC_BIAS",
+        "OUT_OF_DOMAIN_BEHAVIOUR",
+        "ROBUSTNESS"
+      ],
+      "secondary": [
+        "DRAINAGE_AND_GROUNDWATER_RECHARGE",
+        "GROUNDWATER_HEAD_RESPONSE",
+        "LONG_TERM_WATER_BALANCE"
+      ],
+      "diagnostic": [
+        "COMPUTATIONAL_COST"
+      ],
+      "interpretation": "This class has the strongest fidelity demand; a reduced model may simply be inappropriate if the scientific conclusion depends on discarded state structure."
+    }
+  ],
+  "frontier_rule": "Compare candidate routes on a multi-output computational-cost versus hydrological-fidelity frontier. A route is interesting only if it is non-dominated for at least one declared application class after integrity constraints are satisfied.",
+  "precedent": {
+    "MetaSWAP": {
+      "role": "PRECEDENT_FOR_PURPOSE_DEPENDENT_APPROXIMATE_UNSATURATED_ZONE_MODELLING",
+      "nonclaim": "MetaSWAP acceptance thresholds are not imported into SWAP5 ROM qualification.",
+      "lessons": [
+        "Approximate unsaturated-zone models can be evaluated against application outputs rather than numerical identity.",
+        "Applicability depends on soil, root-zone depth, groundwater depth, forcing year and target output.",
+        "Speed advantage is meaningful only together with a declared fidelity domain."
+      ]
+    }
+  },
+  "production_rom_authorized": false
+}
