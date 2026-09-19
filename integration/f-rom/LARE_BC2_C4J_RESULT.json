@@ -1,0 +1,786 @@
+{
+  "application_acceptance_adjudicated": false,
+  "decision": "C4J_DIAGNOSTIC_BLOCKED",
+  "diagnostic_A": {
+    "root_map": {
+      "WT_FALL": {
+        "H_cm": 120.0,
+        "Wb_cm": 11.0172028924671,
+        "Wt_cm": 1.0677351464541254,
+        "cross_quadrature_matches": [],
+        "max_cross_quadrature_flux_difference_cm_per_day": Infinity,
+        "quadrature": {
+          "128": {
+            "clusters": [
+              {
+                "Ki": 24.28100279388016,
+                "a": 1.0009011773172158,
+                "b": -0.0004926105506530246,
+                "max_member_storage_residual_cm": 1.5207834991315394e-12,
+                "member_start_indices": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.58368582392875,
+                "psi_i": 2.4991741273514583,
+                "qH_cm_per_day": -0.028139276148901677,
+                "qi_cm_per_day": 0.037923901826404455,
+                "slope_i": 0.9984381245639508,
+                "theta_i": 0.42640279945559606
+              }
+            ],
+            "distinct_cluster_count": 1,
+            "flux_spread": {
+              "qH_cm_per_day": 0.0,
+              "qi_cm_per_day": 0.0
+            },
+            "max_storage_residual_cm": 1.5207834991315394e-12,
+            "minimum_pairwise_ab_separation": null,
+            "starts": [
+              {
+                "Ki": 24.281002794889027,
+                "a": 1.0009011770793474,
+                "b": -0.0004926105393959021,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924114,
+                "psi_i": 2.4991741268271443,
+                "qH_cm_per_day": -0.028139268721457344,
+                "qi_cm_per_day": 0.037923906236994105,
+                "slope_i": 0.9984381243823679,
+                "start_index": 0,
+                "theta_i": 0.42640279945599135,
+                "valid": true
+              },
+              {
+                "Ki": 24.28100279493486,
+                "a": 1.0009011770685023,
+                "b": -0.0004926105388799673,
+                "max_storage_residual_cm": 6.039613253960852e-14,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685827063096,
+                "psi_i": 2.4991741268032563,
+                "qH_cm_per_day": -0.02813926838281884,
+                "qi_cm_per_day": 0.03792390643775761,
+                "slope_i": 0.9984381243741025,
+                "start_index": 1,
+                "theta_i": 0.42640279945600934,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794889222,
+                "a": 1.0009011770792837,
+                "b": -0.0004926105393929388,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924867,
+                "psi_i": 2.499174126827003,
+                "qH_cm_per_day": -0.02813926871946747,
+                "qi_cm_per_day": 0.03792390623818053,
+                "slope_i": 0.998438124382319,
+                "start_index": 2,
+                "theta_i": 0.42640279945599147,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002790807165,
+                "a": 1.0009011780417292,
+                "b": -0.0004926105849432902,
+                "max_storage_residual_cm": 1.5207834991315394e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685814802916,
+                "psi_i": 2.4991741289484275,
+                "qH_cm_per_day": -0.028139298771842257,
+                "qi_cm_per_day": 0.037923888392706565,
+                "slope_i": 0.9984381251170127,
+                "start_index": 3,
+                "theta_i": 0.42640279945439186,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          },
+          "64": {
+            "clusters": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_member_storage_residual_cm": 3.450773000679419e-11,
+                "member_start_indices": [
+                  0
+                ],
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "theta_i": 0.42640279949226795
+              },
+              {
+                "Ki": 24.281002793690227,
+                "a": 1.0009011773619814,
+                "b": -0.0004926105527719956,
+                "max_member_storage_residual_cm": 1.2723155862204294e-12,
+                "member_start_indices": [
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.583685823364647,
+                "psi_i": 2.4991741274501287,
+                "qH_cm_per_day": -0.0281392775467059,
+                "qi_cm_per_day": 0.03792390099640976,
+                "slope_i": 0.9984381245981214,
+                "theta_i": 0.4264027994555216
+              }
+            ],
+            "distinct_cluster_count": 2,
+            "flux_spread": {
+              "qH_cm_per_day": 6.903652275125349e-07,
+              "qi_cm_per_day": 4.0994941463007306e-07
+            },
+            "max_storage_residual_cm": 3.450773000679419e-11,
+            "minimum_pairwise_ab_separation": 2.213411038338956e-08,
+            "starts": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_storage_residual_cm": 3.450773000679419e-11,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "start_index": 0,
+                "theta_i": 0.42640279949226795,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828755,
+                "a": 1.0009011770935425,
+                "b": -0.0004926105400676678,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826745377,
+                "psi_i": 2.499174126858433,
+                "qH_cm_per_day": -0.028139269164699242,
+                "qi_cm_per_day": 0.037923905973782965,
+                "slope_i": 0.9984381243932042,
+                "start_index": 1,
+                "theta_i": 0.42640279945596776,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828506,
+                "a": 1.0009011770936127,
+                "b": -0.0004926105400709863,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826744496,
+                "psi_i": 2.499174126858588,
+                "qH_cm_per_day": -0.028139269166890177,
+                "qi_cm_per_day": 0.037923905972483234,
+                "slope_i": 0.9984381243932577,
+                "start_index": 2,
+                "theta_i": 0.42640279945596765,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002791413382,
+                "a": 1.0009011778987889,
+                "b": -0.0004926105781773327,
+                "max_storage_residual_cm": 1.2723155862204294e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368581660407,
+                "psi_i": 2.499174128633364,
+                "qH_cm_per_day": -0.02813929430852828,
+                "qi_cm_per_day": 0.037923891042965716,
+                "slope_i": 0.9984381250079022,
+                "start_index": 3,
+                "theta_i": 0.42640279945462944,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          }
+        },
+        "root_multiplicity_supported": false
+      },
+      "WT_HOLD": {
+        "H_cm": 120.0,
+        "Wb_cm": 11.0172028924671,
+        "Wt_cm": 1.0677351464541254,
+        "cross_quadrature_matches": [],
+        "max_cross_quadrature_flux_difference_cm_per_day": Infinity,
+        "quadrature": {
+          "128": {
+            "clusters": [
+              {
+                "Ki": 24.28100279388016,
+                "a": 1.0009011773172158,
+                "b": -0.0004926105506530246,
+                "max_member_storage_residual_cm": 1.5207834991315394e-12,
+                "member_start_indices": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.58368582392875,
+                "psi_i": 2.4991741273514583,
+                "qH_cm_per_day": -0.028139276148901677,
+                "qi_cm_per_day": 0.037923901826404455,
+                "slope_i": 0.9984381245639508,
+                "theta_i": 0.42640279945559606
+              }
+            ],
+            "distinct_cluster_count": 1,
+            "flux_spread": {
+              "qH_cm_per_day": 0.0,
+              "qi_cm_per_day": 0.0
+            },
+            "max_storage_residual_cm": 1.5207834991315394e-12,
+            "minimum_pairwise_ab_separation": null,
+            "starts": [
+              {
+                "Ki": 24.281002794889027,
+                "a": 1.0009011770793474,
+                "b": -0.0004926105393959021,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924114,
+                "psi_i": 2.4991741268271443,
+                "qH_cm_per_day": -0.028139268721457344,
+                "qi_cm_per_day": 0.037923906236994105,
+                "slope_i": 0.9984381243823679,
+                "start_index": 0,
+                "theta_i": 0.42640279945599135,
+                "valid": true
+              },
+              {
+                "Ki": 24.28100279493486,
+                "a": 1.0009011770685023,
+                "b": -0.0004926105388799673,
+                "max_storage_residual_cm": 6.039613253960852e-14,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685827063096,
+                "psi_i": 2.4991741268032563,
+                "qH_cm_per_day": -0.02813926838281884,
+                "qi_cm_per_day": 0.03792390643775761,
+                "slope_i": 0.9984381243741025,
+                "start_index": 1,
+                "theta_i": 0.42640279945600934,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794889222,
+                "a": 1.0009011770792837,
+                "b": -0.0004926105393929388,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924867,
+                "psi_i": 2.499174126827003,
+                "qH_cm_per_day": -0.02813926871946747,
+                "qi_cm_per_day": 0.03792390623818053,
+                "slope_i": 0.998438124382319,
+                "start_index": 2,
+                "theta_i": 0.42640279945599147,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002790807165,
+                "a": 1.0009011780417292,
+                "b": -0.0004926105849432902,
+                "max_storage_residual_cm": 1.5207834991315394e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685814802916,
+                "psi_i": 2.4991741289484275,
+                "qH_cm_per_day": -0.028139298771842257,
+                "qi_cm_per_day": 0.037923888392706565,
+                "slope_i": 0.9984381251170127,
+                "start_index": 3,
+                "theta_i": 0.42640279945439186,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          },
+          "64": {
+            "clusters": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_member_storage_residual_cm": 3.450773000679419e-11,
+                "member_start_indices": [
+                  0
+                ],
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "theta_i": 0.42640279949226795
+              },
+              {
+                "Ki": 24.281002793690227,
+                "a": 1.0009011773619814,
+                "b": -0.0004926105527719956,
+                "max_member_storage_residual_cm": 1.2723155862204294e-12,
+                "member_start_indices": [
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.583685823364647,
+                "psi_i": 2.4991741274501287,
+                "qH_cm_per_day": -0.0281392775467059,
+                "qi_cm_per_day": 0.03792390099640976,
+                "slope_i": 0.9984381245981214,
+                "theta_i": 0.4264027994555216
+              }
+            ],
+            "distinct_cluster_count": 2,
+            "flux_spread": {
+              "qH_cm_per_day": 6.903652275125349e-07,
+              "qi_cm_per_day": 4.0994941463007306e-07
+            },
+            "max_storage_residual_cm": 3.450773000679419e-11,
+            "minimum_pairwise_ab_separation": 2.213411038338956e-08,
+            "starts": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_storage_residual_cm": 3.450773000679419e-11,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "start_index": 0,
+                "theta_i": 0.42640279949226795,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828755,
+                "a": 1.0009011770935425,
+                "b": -0.0004926105400676678,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826745377,
+                "psi_i": 2.499174126858433,
+                "qH_cm_per_day": -0.028139269164699242,
+                "qi_cm_per_day": 0.037923905973782965,
+                "slope_i": 0.9984381243932042,
+                "start_index": 1,
+                "theta_i": 0.42640279945596776,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828506,
+                "a": 1.0009011770936127,
+                "b": -0.0004926105400709863,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826744496,
+                "psi_i": 2.499174126858588,
+                "qH_cm_per_day": -0.028139269166890177,
+                "qi_cm_per_day": 0.037923905972483234,
+                "slope_i": 0.9984381243932577,
+                "start_index": 2,
+                "theta_i": 0.42640279945596765,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002791413382,
+                "a": 1.0009011778987889,
+                "b": -0.0004926105781773327,
+                "max_storage_residual_cm": 1.2723155862204294e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368581660407,
+                "psi_i": 2.499174128633364,
+                "qH_cm_per_day": -0.02813929430852828,
+                "qi_cm_per_day": 0.037923891042965716,
+                "slope_i": 0.9984381250079022,
+                "start_index": 3,
+                "theta_i": 0.42640279945462944,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          }
+        },
+        "root_multiplicity_supported": false
+      },
+      "WT_RISE": {
+        "H_cm": 120.0,
+        "Wb_cm": 11.0172028924671,
+        "Wt_cm": 1.0677351464541254,
+        "cross_quadrature_matches": [],
+        "max_cross_quadrature_flux_difference_cm_per_day": Infinity,
+        "quadrature": {
+          "128": {
+            "clusters": [
+              {
+                "Ki": 24.28100279388016,
+                "a": 1.0009011773172158,
+                "b": -0.0004926105506530246,
+                "max_member_storage_residual_cm": 1.5207834991315394e-12,
+                "member_start_indices": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.58368582392875,
+                "psi_i": 2.4991741273514583,
+                "qH_cm_per_day": -0.028139276148901677,
+                "qi_cm_per_day": 0.037923901826404455,
+                "slope_i": 0.9984381245639508,
+                "theta_i": 0.42640279945559606
+              }
+            ],
+            "distinct_cluster_count": 1,
+            "flux_spread": {
+              "qH_cm_per_day": 0.0,
+              "qi_cm_per_day": 0.0
+            },
+            "max_storage_residual_cm": 1.5207834991315394e-12,
+            "minimum_pairwise_ab_separation": null,
+            "starts": [
+              {
+                "Ki": 24.281002794889027,
+                "a": 1.0009011770793474,
+                "b": -0.0004926105393959021,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924114,
+                "psi_i": 2.4991741268271443,
+                "qH_cm_per_day": -0.028139268721457344,
+                "qi_cm_per_day": 0.037923906236994105,
+                "slope_i": 0.9984381243823679,
+                "start_index": 0,
+                "theta_i": 0.42640279945599135,
+                "valid": true
+              },
+              {
+                "Ki": 24.28100279493486,
+                "a": 1.0009011770685023,
+                "b": -0.0004926105388799673,
+                "max_storage_residual_cm": 6.039613253960852e-14,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685827063096,
+                "psi_i": 2.4991741268032563,
+                "qH_cm_per_day": -0.02813926838281884,
+                "qi_cm_per_day": 0.03792390643775761,
+                "slope_i": 0.9984381243741025,
+                "start_index": 1,
+                "theta_i": 0.42640279945600934,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794889222,
+                "a": 1.0009011770792837,
+                "b": -0.0004926105393929388,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826924867,
+                "psi_i": 2.499174126827003,
+                "qH_cm_per_day": -0.02813926871946747,
+                "qi_cm_per_day": 0.03792390623818053,
+                "slope_i": 0.998438124382319,
+                "start_index": 2,
+                "theta_i": 0.42640279945599147,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002790807165,
+                "a": 1.0009011780417292,
+                "b": -0.0004926105849432902,
+                "max_storage_residual_cm": 1.5207834991315394e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685814802916,
+                "psi_i": 2.4991741289484275,
+                "qH_cm_per_day": -0.028139298771842257,
+                "qi_cm_per_day": 0.037923888392706565,
+                "slope_i": 0.9984381251170127,
+                "start_index": 3,
+                "theta_i": 0.42640279945439186,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          },
+          "64": {
+            "clusters": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_member_storage_residual_cm": 3.450773000679419e-11,
+                "member_start_indices": [
+                  0
+                ],
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "theta_i": 0.42640279949226795
+              },
+              {
+                "Ki": 24.281002793690227,
+                "a": 1.0009011773619814,
+                "b": -0.0004926105527719956,
+                "max_member_storage_residual_cm": 1.2723155862204294e-12,
+                "member_start_indices": [
+                  1,
+                  2,
+                  3
+                ],
+                "psi_anchor": 29.583685823364647,
+                "psi_i": 2.4991741274501287,
+                "qH_cm_per_day": -0.0281392775467059,
+                "qi_cm_per_day": 0.03792390099640976,
+                "slope_i": 0.9984381245981214,
+                "theta_i": 0.4264027994555216
+              }
+            ],
+            "distinct_cluster_count": 2,
+            "flux_spread": {
+              "qH_cm_per_day": 6.903652275125349e-07,
+              "qi_cm_per_day": 4.0994941463007306e-07
+            },
+            "max_storage_residual_cm": 3.450773000679419e-11,
+            "minimum_pairwise_ab_separation": 2.213411038338956e-08,
+            "starts": [
+              {
+                "Ki": 24.28100288746598,
+                "a": 1.000901155252618,
+                "b": -0.0004926095064019611,
+                "max_storage_residual_cm": 3.450773000679419e-11,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368610181677,
+                "psi_i": 2.4991740787165324,
+                "qH_cm_per_day": -0.028138587181478388,
+                "qi_cm_per_day": 0.03792431094582439,
+                "slope_i": 0.9984381077206081,
+                "start_index": 0,
+                "theta_i": 0.42640279949226795,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828755,
+                "a": 1.0009011770935425,
+                "b": -0.0004926105400676678,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826745377,
+                "psi_i": 2.499174126858433,
+                "qH_cm_per_day": -0.028139269164699242,
+                "qi_cm_per_day": 0.037923905973782965,
+                "slope_i": 0.9984381243932042,
+                "start_index": 1,
+                "theta_i": 0.42640279945596776,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002794828506,
+                "a": 1.0009011770936127,
+                "b": -0.0004926105400709863,
+                "max_storage_residual_cm": 0.0,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.583685826744496,
+                "psi_i": 2.499174126858588,
+                "qH_cm_per_day": -0.028139269166890177,
+                "qi_cm_per_day": 0.037923905972483234,
+                "slope_i": 0.9984381243932577,
+                "start_index": 2,
+                "theta_i": 0.42640279945596765,
+                "valid": true
+              },
+              {
+                "Ki": 24.281002791413382,
+                "a": 1.0009011778987889,
+                "b": -0.0004926105781773327,
+                "max_storage_residual_cm": 1.2723155862204294e-12,
+                "minimum_psi": 0.0,
+                "psi_anchor": 29.58368581660407,
+                "psi_i": 2.499174128633364,
+                "qH_cm_per_day": -0.02813929430852828,
+                "qi_cm_per_day": 0.037923891042965716,
+                "slope_i": 0.9984381250079022,
+                "start_index": 3,
+                "theta_i": 0.42640279945462944,
+                "valid": true
+              }
+            ],
+            "valid_root_count": 4
+          }
+        },
+        "root_multiplicity_supported": false
+      }
+    },
+    "supported": false
+  },
+  "diagnostic_B": {
+    "geometry": {
+      "WT_FALL": {
+        "fraction_interface_abs_error_improved": 0.96484375,
+        "fraction_water_table_abs_error_improved": 0.96484375,
+        "interface_slope_error": {
+          "BASE": {
+            "bias": 0.019697215027980157,
+            "count": 512,
+            "mae": 0.020428351851217552,
+            "max_abs": 0.1871710267487745,
+            "rms": 0.022120204810898266
+          },
+          "QUADRATIC": {
+            "bias": -0.00036513207382933696,
+            "count": 512,
+            "mae": 0.0061596510402768725,
+            "max_abs": 0.15903660081148785,
+            "rms": 0.013804773403755919
+          }
+        },
+        "interval_count": 512,
+        "mean_reference_interface_slope": 0.8375765491594382,
+        "mean_reference_water_table_slope": 0.8846381423120341,
+        "status": "COMPLETE",
+        "water_table_slope_error": {
+          "BASE": {
+            "bias": -0.027364378124615684,
+            "count": 512,
+            "mae": 0.028085689115901577,
+            "max_abs": 0.1846556137691886,
+            "rms": 0.03287095299796985
+          },
+          "QUADRATIC": {
+            "bias": -0.01581608997526416,
+            "count": 512,
+            "mae": 0.016474181807218855,
+            "max_abs": 0.16837273988877632,
+            "rms": 0.025567195555546294
+          }
+        }
+      },
+      "WT_HOLD": {
+        "fraction_interface_abs_error_improved": 0.0,
+        "fraction_water_table_abs_error_improved": 0.0,
+        "interface_slope_error": {
+          "BASE": {
+            "bias": -7.275957614183426e-12,
+            "count": 256,
+            "mae": 7.275957614183426e-12,
+            "max_abs": 7.275957614183426e-12,
+            "rms": 7.275957614183426e-12
+          },
+          "QUADRATIC": {
+            "bias": -0.0034533301167706254,
+            "count": 256,
+            "mae": 0.0034533301167706254,
+            "max_abs": 0.0034533301167706254,
+            "rms": 0.0034533301167706254
+          }
+        },
+        "interval_count": 256,
+        "mean_reference_interface_slope": 1.0,
+        "mean_reference_water_table_slope": 1.0,
+        "status": "COMPLETE",
+        "water_table_slope_error": {
+          "BASE": {
+            "bias": -7.275957614183426e-12,
+            "count": 256,
+            "mae": 7.275957614183426e-12,
+            "max_abs": 7.275957614183426e-12,
+            "rms": 7.275957614183426e-12
+          },
+          "QUADRATIC": {
+            "bias": 0.001987785527900243,
+            "count": 256,
+            "mae": 0.001987785527900243,
+            "max_abs": 0.001987785527900243,
+            "rms": 0.0019877855279002436
+          }
+        }
+      },
+      "WT_RISE": {
+        "fraction_interface_abs_error_improved": 0.1875,
+        "fraction_water_table_abs_error_improved": 0.19140625,
+        "interface_slope_error": {
+          "BASE": {
+            "bias": -0.02774409650789542,
+            "count": 512,
+            "mae": 0.028279321861555726,
+            "max_abs": 0.13701769053703883,
+            "rms": 0.0341582829112195
+          },
+          "QUADRATIC": {
+            "bias": -0.06085778002545672,
+            "count": 512,
+            "mae": 0.061135428509191875,
+            "max_abs": 0.19607065096845955,
+            "rms": 0.0630853880209428
+          }
+        },
+        "interval_count": 512,
+        "mean_reference_interface_slope": 1.1889262419195035,
+        "mean_reference_water_table_slope": 1.1202451870382686,
+        "status": "COMPLETE",
+        "water_table_slope_error": {
+          "BASE": {
+            "bias": 0.04093695837333966,
+            "count": 512,
+            "mae": 0.04208829790764083,
+            "max_abs": 0.20749072406150182,
+            "rms": 0.04716283126925355
+          },
+          "QUADRATIC": {
+            "bias": 0.059960830435340236,
+            "count": 512,
+            "mae": 0.06063911267558557,
+            "max_abs": 0.1940290776236573,
+            "rms": 0.06417778339560949
+          }
+        }
+      },
+      "support_components": {
+        "WT_FALL_improves_both": true,
+        "WT_HOLD_fails_noninferiority": true,
+        "WT_RISE_worsens_both": true
+      }
+    },
+    "supported": true
+  },
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "B8_qi_identity_gate_cm_per_day": 1e-10,
+    "max_abs_B8_qi_identity_cm_per_day": 1.3027801060161437e-11,
+    "max_cross_quadrature_root_flux_difference_cm_per_day": Infinity,
+    "max_root_storage_residual_cm": 3.450773000679419e-11,
+    "minimum_reference_interface_K_cm_per_day": 17.08449964386932,
+    "root_flux_crosscheck_gate_cm_per_day": 5e-08,
+    "root_storage_gate_cm": 1e-10
+  },
+  "interpretation": [
+    "C4J characterizes the failed C4I profile family; it does not select among roots or introduce a replacement closure.",
+    "A multiple-root claim is admissible only when the cluster structure is cross-quadrature stable. A split seen at one quadrature alone is treated as numerical root-resolution sensitivity, not physical non-identifiability.",
+    "The 5 cm comparison is performed in effective gradient space, consistent with C4H's finding that the residual qi error is gradient-component dominant.",
+    "If FALL improves and RISE worsens in both interface and water-table slopes, the C4I direction dependence is a reconstruction-geometry effect rather than a conductivity effect."
+  ],
+  "next_authority": "MECHANISM_REMAINS_PARTIAL",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4j.result.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C4J",
+  "workstream": "F-ROM-LARE"
+}

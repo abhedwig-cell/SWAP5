@@ -1,0 +1,47 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:7fa179f0efcef03faf5316108eb0c32b4d5190546a209b9fe9eaa1f4ebcbe451",
+    "artifact_id": 10591757425,
+    "execution_head": "390d04da4cd59c4a1137ca8acded2a7f7107dbb6",
+    "result_sha256": "d0320f6008ccc7e83f3efdca8394974e58189273310242a2d8fa2a00e79f8f7a",
+    "workflow_run": 35467219446
+  },
+  "decision": "C4J_DIAGNOSTIC_BLOCKED",
+  "direction_geometry": {
+    "WT_FALL_interface_rms_base": 0.022120204810898266,
+    "WT_FALL_interface_rms_quadratic": 0.013804773403755919,
+    "WT_FALL_water_table_rms_base": 0.03287095299796985,
+    "WT_FALL_water_table_rms_quadratic": 0.025567195555546294,
+    "WT_HOLD_interface_rms_base": 7.275957614183426e-12,
+    "WT_HOLD_interface_rms_quadratic": 0.0034533301167706254,
+    "WT_RISE_interface_rms_base": 0.0341582829112195,
+    "WT_RISE_interface_rms_quadratic": 0.0630853880209428,
+    "WT_RISE_water_table_rms_base": 0.04716283126925355,
+    "WT_RISE_water_table_rms_quadratic": 0.06417778339560949,
+    "supported": true
+  },
+  "groundwater_feedback_authorized": false,
+  "model_changed": false,
+  "next_authority": "TEST_REFERENCE_LOCAL_GRADIENT_STATE_SUFFICIENCY_BEFORE_ANY_NEW_MEMORYLESS_CLOSURE",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "root_multiplicity": {
+    "cluster_count_128": 1,
+    "cluster_count_64": 2,
+    "interpretation": "The apparent 64-point root split is not cross-quadrature stable and is classified as numerical root-resolution sensitivity, not physical non-identifiability.",
+    "max_qH_spread_64_cm_per_day": 6.903652275125349e-07,
+    "max_qi_spread_64_cm_per_day": 4.0994941463007306e-07,
+    "supported": false
+  },
+  "schema": "swap5.lare.bc2.c4j.closeout.v1",
+  "scientific_interpretation": [
+    "C4J withdraws the stronger C4I inference that the 2.5 cm quadratic family is physically multi-valued; that split does not survive quadrature refinement.",
+    "The 5 cm direction dependence is independently supported in effective-gradient space: the quadratic profile improves both slope targets in FALL, worsens both in RISE, and damages the HOLD hydrostatic state.",
+    "The next question is therefore state sufficiency for the local gradient itself, not root selection within the quadratic family."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_ROOT_MULTIPLICITY_NOT_SUPPORTED_DIRECTION_GEOMETRY_SUPPORTED",
+  "work_unit": "LARE-BC2-C4J",
+  "workstream": "F-ROM-LARE"
+}
