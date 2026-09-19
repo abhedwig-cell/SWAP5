@@ -130,11 +130,13 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
     max_q90_reference_identity=0.0
     max_shape_mass_neutral=0.0
     final_H=None
+    H_ends=[]
 
     for step in range(1,c0.HISTORY_STEPS[history]+1):
         y0,p0,_=c1.exact_reference_state(history,step-1,d,init_meta,init_nodes,states,nodes)
         yr,p1,_=c1.exact_reference_state(history,step,d,init_meta,init_nodes,states,nodes)
         H0=float(p0["H"]); H1=float(p1["H"]); final_H=H1
+        H_ends.append(H1)
         teacher=c1.advance_interval(y0,H0,H1,dt,d)
         yt=np.asarray(teacher["y"][:PHYS_N],dtype=float)
         y0p=np.asarray(y0[:PHYS_N],dtype=float)
@@ -189,9 +191,7 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
             for k in members:
                 errs[k]=bias[k][idx]
             v=np.sum(np.stack(list(contribution_vectors(errs).values())),axis=0)
-            Hstep=(
-                c1.exact_reference_state(history,idx+1,d,init_meta,init_nodes,states,nodes)[1]["H"]
-            )
+            Hstep=H_ends[idx]
             sr,res=shape_rms(v,float(Hstep),d)
             fshape.append(sr)
             fcum+=v
