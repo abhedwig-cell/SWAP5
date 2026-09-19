@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.lare.bc2.b2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B2",
+  "phase": "PREREGISTERED_BEFORE_RESIDUAL_ONLY_EQUILIBRIUM_SUBTRACTION",
+  "purpose": "Remove only the standard-LARE discrete hydrostatic residual at the current moving geometry, while retaining the original conservative moving-volume equation and allowing non-equilibrium dynamics to determine the flux response.",
+  "predecessors": {
+    "B0": "integration/f-rom/LARE_BC2_B0_RESULT.json",
+    "required_B0_decision": "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED_WITH_RESPONSE_CONFUNDING",
+    "B1": "integration/f-rom/LARE_BC2_B1_RESULT.json",
+    "required_B1_decision": "BC2_B1_EQSUB_CONTROL_MIXED_RESPONSE"
+  },
+  "rationale": {
+    "B1_finding": "The path-preserving equilibrium control strongly reduces WT_HOLD drift but over-forces moving histories because it adds the flux required to follow the instantaneous hydrostatic storage manifold.",
+    "B2_question": "Can hydrostatic discretization drift be removed without imposing quasi-static equilibrium tracking during rapid H(t) motion?",
+    "literature_context": "Conceptually aligned with hydrostatic-equilibrium subtraction in Zeng & Decker (2009), but implemented here only as a LARE diagnostic control."
+  },
+  "geometry": {
+    "same_as_B0_B1": true,
+    "profile_depth_cm": 160,
+    "fixed_anchor_cm": 90,
+    "moving_layer": "90..H(t)",
+    "prescribed_H_source": "qualified BC2-A2 interior zero-pressure crossing",
+    "no_feedback_to_H": true,
+    "no_layer_birth_death": true,
+    "no_material_boundary_crossing": true
+  },
+  "hydrostatic_reference": {
+    "same_exact_layer_average_manifold_as_B1": true,
+    "suction": "psi_E(z;H)=H-z",
+    "quadrature": "64-point Gauss-Legendre with 128-point crosscheck",
+    "quadrature_gate_cm": 1e-10
+  },
+  "corrected_flux_control": {
+    "standard_candidate_flux": "q_L(state,H) from unchanged standard-LARE closures",
+    "standard_equilibrium_residual": "q_L_E(H)=q_L(W_E(H),H)",
+    "corrected_flux": "q_RES = q_L(state,H) - q_L_E(H)",
+    "no_required_equilibrium_path_flux": true,
+    "fixed_layer_balance": "dW_i/dt=q_RES_in-q_RES_out",
+    "moving_layer_balance": "dW_m/dt=q_RES_90-q_RES_H+theta_s*dHdt",
+    "interpretation": "At fixed H an exact hydrostatic layer-average state is stationary. When H moves, only the conservative geometry term and state departure drive the trajectory; the control does not force instantaneous hydrostatic equilibrium."
+  },
+  "manufactured_checks": {
+    "fixed_H_equilibrium": "For Hdot=0 and state=W_E(H), every corrected flux and every storage derivative must be zero to <=1e-10 cm/day.",
+    "moving_path_not_a_target": "No requirement is imposed that W_E[H(t)] be followed when Hdot!=0."
+  },
+  "initial_state": {
+    "same_as_B0_B1": true,
+    "source": "BC2-A2 accepted initial Reference projection",
+    "no_fit": true
+  },
+  "histories": [
+    "WT_HOLD",
+    "WT_RISE",
+    "WT_FALL",
+    "WT_CYCLE"
+  ],
+  "numerical_floor": {
+    "observation_dt_day": 0.0008,
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": 0.0001,
+    "method": "iterative Heun predictor-corrector",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "physical_water_ledger_hard_gate_cm": 1e-10,
+    "fixed_equilibrium_rhs_gate_cm_per_day": 1e-10,
+    "no_clipping": true
+  },
+  "comparison": {
+    "primary_baseline": "BC2-B0 conservative standard-LARE",
+    "secondary_diagnostic": "BC2-B1 path-preserving equilibrium control",
+    "governed_metrics_all_histories": [
+      "max absolute total unsaturated storage error",
+      "max absolute cumulative q_H error",
+      "q_H sign mismatch count"
+    ],
+    "governed_metric_WT_CYCLE": [
+      "reversal step difference"
+    ],
+    "additional_report_only": [
+      "max absolute interval q_H error"
+    ],
+    "no_scalar_weighting": true
+  },
+  "adjudication": {
+    "hard_requirements": [
+      "quadrature crosscheck <=1e-10 cm",
+      "fixed-H equilibrium RHS residual <=1e-10 cm/day",
+      "physical moving-control-volume ledger <=1e-10 cm",
+      "fine route qualified for all four histories"
+    ],
+    "relative_support_rule": "B2 receives relative support only if it is component-wise noninferior to B0 on all governed metrics and strictly improves at least one governed metric.",
+    "valid_outcomes": [
+      "BC2_B2_RESIDUAL_ONLY_RELATIVE_SUPPORT",
+      "BC2_B2_RESIDUAL_ONLY_MIXED_RESPONSE",
+      "BC2_B2_RESIDUAL_ONLY_NO_RELATIVE_SUPPORT",
+      "BC2_B2_RESIDUAL_ONLY_NUMERICALLY_BLOCKED"
+    ],
+    "application_acceptance": false
+  },
+  "firewalls": [
+    "NO_EQUILIBRIUM_PATH_FLUX",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_POST_RESPONSE_RETUNING",
+    "NO_PRODUCTION_PHYSICS_PROMOTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
