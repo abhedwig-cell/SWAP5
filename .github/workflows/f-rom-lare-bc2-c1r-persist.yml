@@ -1,0 +1,95 @@
+name: F-ROM-LARE persist BC2-C1R recovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C1R_PERSIST_BINDING.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Read immutable recovery binding
+        id: binding
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C1R_PERSIST_BINDING.json'))
+          assert p['schema']=='swap5.lare.bc2.c1r.persist-binding.v1'
+          assert p['required_decision']=='BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED'
+          assert p['artifact_id'] > 0
+          assert p['artifact_zip_sha256']
+          assert p['result_sha256']
+          print(f"artifact_id={p['artifact_id']}")
+          print(f"artifact_zip_sha256={p['artifact_zip_sha256']}")
+          print(f"result_sha256={p['result_sha256']}")
+          PY
+
+      - name: Recover exact C1R artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.binding.outputs.artifact_id }}
+          ARTIFACT_SHA: ${{ steps.binding.outputs.artifact_zip_sha256 }}
+          RESULT_SHA: ${{ steps.binding.outputs.result_sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1r-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > /tmp/lare-bc2-c1r-persist/c1r.zip
+          echo "${ARTIFACT_SHA}  /tmp/lare-bc2-c1r-persist/c1r.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c1r-persist/c1r.zip -d /tmp/lare-bc2-c1r-persist
+          echo "${RESULT_SHA}  /tmp/lare-bc2-c1r-persist/LARE_BC2_C1R_RESULT.json" | sha256sum -c -
+
+      - name: Validate recovery semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-c1r-persist/LARE_BC2_C1R_RESULT.json'))
+          assert r['decision']=='BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED'
+          assert r['complete'] is True
+          assert r['original_C1_primary_failure_retained'] is True
+          h=r['hard_checks']
+          assert h['both_routes_qualified'] is True
+          assert h['failure_count']==0
+          assert h['max_additive_or_ledger_residual'] <= h['gate']
+          assert all(h['classification_match'].values())
+          for k in ('state_shape','q90','qi','qH'):
+              assert r['classifications']['recovered_primary'][k] == r['classifications']['new_cross'][k]
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C1R_PERSIST_VALIDATION=PASS')
+          PY
+
+      - name: Persist byte-identical C1R result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-bc2-c1r-persist/LARE_BC2_C1R_RESULT.json /tmp/LARE_BC2_C1R_RESULT.validated.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin work/f-rom-lare-rs1
+          git reset --hard origin/work/f-rom-lare-rs1
+          cp /tmp/LARE_BC2_C1R_RESULT.validated.json integration/f-rom/LARE_BC2_C1R_RESULT.json
+          git add integration/f-rom/LARE_BC2_C1R_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist recovered BC2-C1R numerical qualification"
+
+          for attempt in 1 2 3; do
+            if git push origin HEAD:work/f-rom-lare-rs1; then
+              exit 0
+            fi
+            git fetch origin work/f-rom-lare-rs1
+            git rebase origin/work/f-rom-lare-rs1
+          done
+          exit 1
