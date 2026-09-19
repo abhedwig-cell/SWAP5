@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.lare.dyn0a.mech1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH1",
+  "phase": "PREREGISTERED_BEFORE_INTERFACE_FLUX_DECOMPOSITION",
+  "trigger_authority": {
+    "D3_result": "integration/f-rom/LARE_DYN0A_FX_FINE_ONLY_RESULT.json",
+    "D3_decision": "STANDARD_LARE_D3_REGIME_DEPENDENT_CLOSURE_ERROR_CONFIRMED",
+    "D4_result": "integration/f-rom/LARE_DYN0A_D4_RESULT.json",
+    "D4_decision": "RESOLUTION_BENEFIT_CLEAR",
+    "coarse_comparator": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+    "coarse_decision": "EQUAL_DIMENSION_COARSE_RICHARDS_DYNAMIC_COMPARATOR_BLOCKED"
+  },
+  "scientific_question": "For the standard LARE interface closure, how much instantaneous flux error arises from nonlinear constitutive averaging, from localizing interface conductivity, and from reconstructing the hydraulic gradient from layer means?",
+  "reference": {
+    "artifact_id": 10586020583,
+    "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "route": "fine 16 x 10 cm DYN0A fixed-flux Reference Richards",
+    "cases": "only fine-Reference cases already QUALIFIED inside the strict-unsaturated common domain",
+    "observation_grid": "1024 committed observations at 0.0008 d"
+  },
+  "partitions": {
+    "D3": {
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "interfaces_cm": [
+        140,
+        150
+      ]
+    },
+    "D4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "interfaces_cm": [
+        130,
+        140,
+        150
+      ]
+    }
+  },
+  "constitutive": {
+    "material": "B01 homogeneous Mualem-van Genuchten",
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "Ksat_cm_per_day": 31.225016,
+    "lambda": 0.98087,
+    "qualified_branch": "h < -0.01 cm, so standard unsaturated MvG is used; no near-saturation smoothing is reconstructed"
+  },
+  "fine_reference_interface_flux": {
+    "conductivity_mean": "arithmetic mean of the two adjacent fine-cell conductivities because DYN0A Reference fixes swkmean=1",
+    "formula": "q_ref = K_face * [1 + (h_upper - h_lower)/10 cm]",
+    "sign": "positive downward, matching the integrated-LARE convention",
+    "provenance": "headcalc internal residual uses kmean*head_gradient with head_gradient=(h_upper-h_lower)/distance+1"
+  },
+  "decomposition": {
+    "q_standard": "Published/source-anchored LARE closure evaluated on exact projected layer storage: psi_i=psi(theta_bar_i), K_i=K(theta_bar_i), thickness-weighted K interface, layer-center gradient.",
+    "q_exact_layer_means": "Same LARE interface interpolation and layer-center gradient, but replace psi(theta_bar) and K(theta_bar) by exact volume means of fine-reference psi and K within each layer.",
+    "q_local_K_mean_gradient": "Use exact fine-reference interface K_face while retaining the gradient reconstructed from exact layer-mean psi.",
+    "q_reference": "Fine-reference local Darcy flux at the same interface.",
+    "signed_identity": [
+      "E_constitutive = q_standard - q_exact_layer_means",
+      "E_K_localization = q_exact_layer_means - q_local_K_mean_gradient",
+      "E_gradient = q_local_K_mean_gradient - q_reference",
+      "E_total = q_standard - q_reference",
+      "E_total = E_constitutive + E_K_localization + E_gradient to floating-point tolerance"
+    ],
+    "note": "Components are signed diagnostic increments. Absolute magnitudes are not interpreted as additive percentages because cancellation is possible."
+  },
+  "metrics": [
+    "per interface/case maximum absolute total flux error",
+    "per interface/case RMS total flux error",
+    "per interface/case RMS magnitude of each signed component",
+    "time and observation step of maximum total error",
+    "component values at maximum total error",
+    "D3 versus D4 closure error at shared interfaces 140 and 150 cm",
+    "critical Se0=0.95 DRY diagnostic",
+    "decomposition identity residual"
+  ],
+  "adjudication": {
+    "CONSTITUTIVE_AVERAGING_DOMINANT": "Across high-error cases, E_constitutive has the largest RMS component magnitude at the interface(s) controlling the propagated error.",
+    "INTERFACE_LOCALIZATION_DOMINANT": "E_K_localization has the largest RMS component magnitude.",
+    "GRADIENT_RECONSTRUCTION_DOMINANT": "E_gradient has the largest RMS component magnitude.",
+    "MIXED_CLOSURE_ERROR": "No single component is largest across the relevant high-error cases/interfaces, or strong signed cancellation makes a single-mechanism label misleading.",
+    "next_rule": "Do not modify the closure until this diagnostic is closed. Do not add D5/D6 merely because D4 improved D3."
+  },
+  "firewalls": [
+    "NO_LARE_STATE_PROPAGATION_IN_MECH1",
+    "NO_PARAMETER_FIT",
+    "NO_LAYER_BOUNDARY_RETUNING",
+    "NO_CLOSURE_MODIFICATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
