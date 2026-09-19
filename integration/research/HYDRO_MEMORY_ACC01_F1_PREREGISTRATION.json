@@ -40,7 +40,7 @@
     "ROOT completes requested 0.1 day interval and returns ready candidate",
     "ROOT hard mass ledger is complete and absolute residual <=1e-12 cm",
     "ROOT accepted state differs from initial equilibrium state",
-    "ROOT temporal certificate route is available and reference-richards-raw-bound",
+    "ROOT temporal certificate is available; ROOT and GENERIC select the same qualified Reference-Richards bound route (raw-bound or defect-bound), with accepted normalized temporal indicator <=1",
     "GENERIC control also completes with hard mass",
     "ROOT and GENERIC final pressure head and water content agree at 64*epsilon scaled tolerance",
     "ROOT and GENERIC retry/solver-rejection/temporal-rejection counts are identical",
@@ -66,5 +66,25 @@
     "not dynamic stress-dependent root uptake",
     "not live MODFLOW6 two-way coupling",
     "not production project admission"
+  ],
+  "amendments": [
+    {
+      "id": "ACC01-F1-A1",
+      "date": "2026-09-19",
+      "trigger": "First content-complete F1 execution passed transaction completion, hard mass, state change and ROOT/GENERIC equivalence, but the final accepted temporal indicator selected the pre-existing route reference-richards-defect-bound rather than the preregistered expected route reference-richards-raw-bound.",
+      "source_authority": "mod_reference_richards_temporal_indicator chooses raw-bound when raw_norm <= 2*defect_norm and defect-bound otherwise; both are branches of the same qualified bounded indicator head_inf_bound=min(raw_norm,2*defect_norm)/sqrt(min_mass_weight).",
+      "correction": "Replace the route-name expectation with: certificate must be available; ROOT and GENERIC must select the same qualified Reference-Richards route in {reference-richards-raw-bound, reference-richards-defect-bound}; accepted normalized temporal indicator must remain <=1 under the unchanged 0.1 cm budget.",
+      "rationale": "The original raw-bound expectation incorrectly froze a data-dependent internal branch rather than the scientific acceptance criterion. This amendment does not relax H_app, A_temporal, H_temporal, mass tolerance, root sink, requested interval, retry budget or solver settings.",
+      "observed_before_amendment": {
+        "final_route_root": "reference-richards-defect-bound",
+        "final_route_generic": "reference-richards-defect-bound",
+        "final_head_inf_bound_cm": 0.017608352151799657,
+        "final_normalized_indicator": 0.17608352151799656,
+        "accepted_substeps": 2,
+        "max_accepted_normalized_indicator": 0.5388703917816001,
+        "min_accepted_dt_day": 0.00625,
+        "max_accepted_dt_day": 0.09375
+      }
+    }
   ]
 }
