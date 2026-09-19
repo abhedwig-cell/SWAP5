@@ -748,6 +748,10 @@ contains
       cum_top=cum_top+forcing%top_flux*(t1-t0)
       cum_bottom=cum_bottom+bex
       if(fallback_used)fallback_count=fallback_count+1
+      write(*,'(*(g0))') 'LAREGW1P_STEP|HISTORY=',trim(history_label(ih)),'|START_STEP=',target_step, &
+           '|PROBE=',trim(probe_label(ip)),'|STEP=',step,'|T=',t1, &
+           '|BOTTOM_FLUX=',bflux,'|CUM_BOTTOM_OUTWARD_EXCHANGE=',cum_bottom, &
+           '|MASS=',mass,'|FALLBACK=',fallback_used
 
       do ihor=1,NHORIZ
         if(step==horizon_steps(ihor))then
