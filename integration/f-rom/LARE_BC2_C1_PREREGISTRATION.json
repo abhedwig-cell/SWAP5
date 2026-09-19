@@ -93,16 +93,12 @@
     ]
   },
   "diagnostic_classification": {
-    "per_history_width": {
-      "STATE_DRIFT_DOMINANT": "For both total-unsaturated-storage and qH interval error, RMS |free-teacher| > RMS |teacher-reference|.",
-      "LOCAL_CLOSURE_DOMINANT": "For both total-unsaturated-storage and qH interval error, RMS |teacher-reference| >= RMS |free-teacher|.",
-      "MIXED": "The two primary components disagree on dominance."
-    },
-    "overall": "No scalar majority vote. Report the classification for every history and width separately.",
+    "per_history_width_and_channel": "Apply the pre_execution_classification_clarification rule independently to state_shape, q90, qi and qH.",
+    "overall": "No scalar majority vote or aggregate verdict across channels.",
     "next_step_binding": {
-      "if_state_drift_dominant": "Next work must investigate stability/manifold preservation of the prognostic state before changing q90/qi/qH formulas.",
-      "if_local_closure_dominant": "Next work may target the offending local closure channel identified by q90/qi/qH decomposition.",
-      "if_mixed": "Next work must keep closure and drift channels separated; no single closure replacement is authorized."
+      "state_shape_drift": "If state-shape is drift-dominant while teacher-forced flux errors remain bounded relative to free errors, investigate invariant/manifold stability before changing local closure formulas.",
+      "local_flux_closure": "If q90, qi or qH is local-closure-dominant on Reference states, only that identified local channel may be targeted next.",
+      "mixed": "If channels disagree, preserve the decomposition and do not replace all closures together."
     }
   },
   "firewalls": [
@@ -115,5 +111,22 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_classification_clarification": {
+    "before_first_C1_execution": true,
+    "reason": "Total storage is structurally conservative and can hide internal redistribution drift, especially WT_HOLD.",
+    "diagnostic_channels": [
+      "state_shape: RMS over all physical reduced-state component errors [9 fixed storages, Wb, Wt]",
+      "q90 interval flux",
+      "qi interval flux",
+      "qH interval flux",
+      "total unsaturated storage reported separately but not used as sole drift diagnostic"
+    ],
+    "per_channel_rule": {
+      "STATE_DRIFT_DOMINANT": "RMS |free-teacher| > RMS |teacher-reference|",
+      "LOCAL_CLOSURE_DOMINANT": "RMS |teacher-reference| >= RMS |free-teacher|"
+    },
+    "overall_rule": "No majority vote and no scalar combination across channels. Report every channel separately for every history and width.",
+    "additive_identity": "Checked componentwise before norms are formed."
+  }
 }
