@@ -1,0 +1,73 @@
+name: F-ROM-LARE DYN0A MECH2B blind B14 transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json'
+      - 'tests/rom/test_lare_dyn0a_b14_reference.f90'
+      - 'tests/rom/run_lare_dyn0a_b14_reference.sh'
+      - 'tests/rom/analyze_lare_dyn0a_mech2b.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech2b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  b14:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock blind B14 transfer authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_NEW_B14_DYN0A_TRAJECTORY_GENERATION'
+          assert p['spatial_transfer']['diagnostic_L_cm']==list(range(10,141,10))
+          assert p['blind_predictions']['Se0_0.65']['predicted_peak_L_cm']==10
+          assert p['blind_predictions']['Se0_0.85']['predicted_peak_L_cm']==10
+          assert p['blind_predictions']['Se0_0.95']['predicted_peak_L_cm']==20
+          assert 'NO_B14_LADDER_RETUNING' in p['firewalls']
+          print('LARE_DYN0A_MECH2B_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute blind B14 fine Reference
+        run: bash tests/rom/run_lare_dyn0a_b14_reference.sh
+
+      - name: Adjudicate frozen scaling transfer
+        run: |
+          python3 tests/rom/analyze_lare_dyn0a_mech2b.py \
+            --reference-dir LARE_DYN0A_B14_EVIDENCE \
+            --status LARE_DYN0A_B14_EVIDENCE/LARE_DYN0A_MECH2B_B14_REFERENCE_STATUS.json \
+            --prereg integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json \
+            --output LARE_DYN0A_B14_EVIDENCE/LARE_DYN0A_MECH2B_RESULT.json \
+            | tee LARE_DYN0A_B14_EVIDENCE/mech2b-analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_B14_EVIDENCE/LARE_DYN0A_MECH2B_RESULT.json'))
+          assert p['decision'] in {
+            'SCALING_TRANSFER_SUPPORTED',
+            'SCALING_TRANSFER_PARTIAL',
+            'SCALING_TRANSFER_NOT_SUPPORTED',
+            'B14_REFERENCE_BLOCKED'
+          }
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH2B_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_B14_EVIDENCE/* > LARE_DYN0A_B14_EVIDENCE/final-sha256.txt
+
+      - name: Upload MECH2B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech2b
+          path: LARE_DYN0A_B14_EVIDENCE/
+          if-no-files-found: warn
