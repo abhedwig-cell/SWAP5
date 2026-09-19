@@ -76,6 +76,9 @@
       "max_integrated_mass_residual_cm": 3.3139713195851075e-15
     }
   },
-  "locator_status": "FREEZE_READY",
-  "interpretation": "This is transition-location evidence only. It contains no N0-versus-N1 inference comparison and cannot support NUM-UNC novelty."
+  "locator_status": "SUPERSEDED_HARNESS_GEOMETRY_ERROR",
+  "interpretation": "This is transition-location evidence only. It contains no N0-versus-N1 inference comparison and cannot support NUM-UNC novelty.",
+  "authoritative_freeze": false,
+  "superseded_reason": "Dynamic-top harness inherited the P2 prescribed-flux node_distance=dz convention. For a cell-centred dynamic surface boundary the surface-to-first-node distance must be half the first-cell thickness; the original C0 transition location is therefore not retained as scientific authority.",
+  "superseded_before_N1": true
 }
