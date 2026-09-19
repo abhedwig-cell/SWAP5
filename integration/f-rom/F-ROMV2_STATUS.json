@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.f-romv2.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2",
+  "title": "Purpose-dependent ROM fidelity and value",
+  "phase": "PROPOSITION_OPEN",
+  "canonical_base": "4cb575c51e0e9135f5a97357c4b94cebc77647b7",
+  "predecessor": {
+    "work_unit": "F-ROMV",
+    "decision": "CLOSED_NO_GO_UNDER_CURRENT_PROPOSITION",
+    "canonical_status_blob": "4ba4b9f59af4a2469e5734efc63519e9ae9432d7",
+    "stage1_result_blob": "340685ea0cfb782b7d5ecbcff8a64ee1991f7911",
+    "reclassified": false
+  },
+  "governing_question": "For which SWAP5/MultiSWAP application classes can a deliberately reduced conservative unsaturated-zone model occupy a useful computational-cost versus hydrological-fidelity frontier?",
+  "numerical_equivalence_to_reference_required": false,
+  "integrity_constraints": [
+    "EXPLICIT_WATER_ACCOUNTING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "FINITE_PHYSICALLY_ADMISSIBLE_PUBLISHED_STATE",
+    "FAIL_CLOSED_OOD",
+    "DETERMINISTIC_PERSISTENCE_IF_ROM_OWNS_STATE",
+    "DECLARED_TEMPLATE_FORCING_BOUNDARY_CAPABILITY_IDENTITY"
+  ],
+  "application_classes": [
+    "LONG_TERM_REGIONAL_WATER_BALANCE",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT",
+    "GROUNDWATER_COUPLED_MANY_COLUMN",
+    "FAST_EVENT_THRESHOLD",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE"
+  ],
+  "candidate_families": [
+    "LOCAL_CONSERVATIVE_DYNAMIC_REDUCTION",
+    "QUASI_STEADY_OR_INTEGRATED_MANIFOLD_PHYSICAL_REDUCTION",
+    "OUTPUT_SPECIFIC_SURROGATE"
+  ],
+  "exploratory_post_terminal_evidence": {
+    "local_table_C2": "FEASIBILITY_ONLY_NOT_CONFIRMATORY",
+    "reason": "Generated after historical F-ROMV closure and before F-ROMV2 proposition authority; may motivate design but may not count as blind qualification."
+  },
+  "current_authority": {
+    "production_rom_authorized": false,
+    "final_application_thresholds_frozen": false,
+    "blind_validation_authorized": false,
+    "performance_frontier_authorized": false
+  },
+  "next": "PREREGISTER V2 DISCOVERY-TO-BLIND-VALIDATION HANDOFF AND NEW VALIDATION HISTORIES BEFORE GENERATION"
+}
