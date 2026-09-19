@@ -84,8 +84,8 @@ def regime_metrics(t: np.ndarray, H: np.ndarray, Hdot: np.ndarray, p: dict[str, 
     expected_literal = -theta_bar * HHdot
 
     relation_error = r_literal - expected_literal
-    abs_integral = float(np.trapz(np.abs(r_literal), tt)) if len(tt) > 1 else 0.0
-    signed_integral = float(np.trapz(r_literal, tt)) if len(tt) > 1 else 0.0
+    abs_integral = float(np.trapezoid(np.abs(r_literal), tt)) if len(tt) > 1 else 0.0
+    signed_integral = float(np.trapezoid(r_literal, tt)) if len(tt) > 1 else 0.0
 
     return {
         "sample_count": int(len(L)),
