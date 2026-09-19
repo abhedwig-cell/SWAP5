@@ -74,6 +74,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
