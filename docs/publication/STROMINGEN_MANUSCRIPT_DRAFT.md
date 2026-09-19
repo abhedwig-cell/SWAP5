@@ -2,21 +2,23 @@
 
 ## Werkstatus
 
-Tweede werkversie, redactioneel herschreven voor Stromingen en gecontroleerd tegen de publicatie-firewall. Niet voor indiening. Actuele claims over het Nederlandse instrumentarium zijn gecontroleerd op 19 september 2026. De statusparagraaf over SWAP5 moet vlak voor indiening opnieuw worden opgebouwd uit de dan geldende canonical qualification authority.
+Derde werkversie, redactioneel herschreven voor Stromingen, voorzien van canonical-evidence status en gecontroleerd tegen de publicatie-firewall. Niet voor indiening. Actuele claims over het Nederlandse instrumentarium zijn gecontroleerd op 19 september 2026. De statusparagraaf over SWAP5 moet vlak voor indiening opnieuw worden opgebouwd uit de dan geldende canonical qualification authority.
 
-# Van SWAP naar een modulair hydrologisch instrumentarium
+# SWAP in een veranderend hydrologisch instrumentarium
+
+## Modernisering van de onverzadigde zone naast MODFLOW 6 en Ribasim
 
 ## Waarom het instrumentarium verandert
 
-Wie aan het Nederlandse watersysteem rekent, krijgt zelden met één hydrologisch domein tegelijk te maken. Neerslag en verdamping werken door in bodemvocht en gewasverdamping. De onverzadigde zone wisselt water uit met het grondwater. Grondwater en oppervlaktewater beïnvloeden elkaar, terwijl beheer en waterverdeling bepalen hoeveel water op welk moment beschikbaar is. In regionale en landelijke toepassingen komen die processen samen.
+Een regionaal hydrologisch model is steeds minder één programma dat van invoer naar uitvoer rekent. Neerslag en verdamping werken door in bodemvocht en gewasverdamping, de onverzadigde zone wisselt water uit met het grondwater, en grondwater staat weer in verbinding met oppervlaktewater en waterverdeling. Wie het watersysteem als geheel wil beschrijven, moet daarom steeds vaker verschillende gespecialiseerde modellen tijdens dezelfde berekening laten samenwerken.
 
-De modellen waarmee we dit systeem beschrijven zijn historisch minder geïntegreerd ontstaan. Voor verschillende delen van de waterkringloop zijn gespecialiseerde modelcodes ontwikkeld, ieder met een eigen numerieke aanpak, ruimtelijke schematisatie en toepassingsgeschiedenis. Dat heeft veel kennis en bruikbare software opgeleverd. Het maakt de koppeling tussen deelsystemen echter ook tot een modelvraag op zichzelf.
+Die modellen zijn historisch niet als één systeem ontstaan. Voor de onverzadigde zone, het grondwater en het oppervlaktewater zijn afzonderlijke modelcodes ontwikkeld, met ieder hun eigen numerieke aanpak, ruimtelijke schematisatie en toepassingsgeschiedenis. Dat heeft veel hydrologische kennis en bruikbare software opgeleverd. Tegelijk verschuift een deel van de modelvraag naar de grenzen tussen die onderdelen: welke informatie wisselen ze uit, op welke schaal gebeurt dat en hoe weet je dat de combinatie nog de hydrologie beschrijft die je denkt te berekenen?
 
 Juist daar verandert het Nederlandse hydrologische instrumentarium op dit moment zichtbaar. Binnen het NHI zijn eind 2025 stabiele releases opgeleverd van iMOD Python voor de opbouw van MODFLOW 6-modellen en van de iMOD Coupler voor de koppeling tussen MODFLOW 6 en MetaSWAP. Ook voor Ribasim kwam een stabiele release beschikbaar. Het NHI positioneert Ribasim als basis voor de verdere vervanging van oudere oppervlaktewatermodules als MOZART, DM en SIMRES. Regionale waterbeheerders passen Ribasim inmiddels ook samen met MODFLOW 6 toe [1].
 
 Het beeld dat daarbij ontstaat is niet dat één nieuw model alle hydrologie overneemt. Eerder worden gespecialiseerde modelcomponenten duidelijker afgebakend en vervolgens expliciet met elkaar verbonden. MODFLOW 6 beschrijft het grondwater. Ribasim richt zich op waterbalans, netwerk en waterverdeling in het oppervlaktewatersysteem [2]. Voor de onverzadigde zone bestaat in Nederland een lange traditie rond SWAP en MetaSWAP. Ook daar vindt nu een overgang plaats.
 
-Dit artikel beschrijft die ontwikkeling vanuit SWAP. Niet om nieuwe onderzoeksresultaten vooruit te lopen, maar om te laten zien waarom de SWAP-modelbasis wordt gemoderniseerd, hoe dat past bij MODFLOW 6 en Ribasim en welke nieuwe eisen ontstaan wanneer afzonderlijke hydrologische modellen onderdelen worden van één gekoppeld instrumentarium.
+Dit artikel beschrijft die ontwikkeling vanuit SWAP, niet om nieuwe onderzoeksresultaten vooruit te lopen, maar om te laten zien waarom de SWAP-modelbasis wordt gemoderniseerd, hoe dat past bij MODFLOW 6 en Ribasim en welke nieuwe eisen ontstaan wanneer afzonderlijke hydrologische modellen onderdelen worden van één gekoppeld instrumentarium.
 
 ## Vijftig jaar SWAP, maar een andere modelomgeving
 
@@ -72,7 +74,7 @@ Het onderscheid klinkt administratief, maar voorkomt een wezenlijk misverstand. 
 
 Juist bij een model met een lange geschiedenis is die terughoudendheid nuttig. De bedoeling is niet om de bestaande SWAP-kennis terzijde te schuiven en opnieuw te beginnen. De modernisering moet die kennis bruikbaar maken in een nieuwe softwareomgeving zonder sneller wetenschappelijke zekerheid te claimen dan de beschikbare controles toelaten.
 
-Dat is ook relevant voor de communicatie over SWAP5. In dit artikel maken we daarom onderscheid tussen functionaliteit die gekwalificeerd beschikbaar is, functionaliteit waarvan de kwalificatie nog loopt, actieve ontwikkeling en onderzoek dat nog geen productiestatus heeft. De precieze invulling van die vier categorieën moet vlak voor publicatie worden geactualiseerd, omdat de ontwikkeling momenteel snel gaat.
+Dat is ook relevant voor de communicatie over SWAP5. In dit artikel wordt daarom onderscheid gemaakt tussen functionaliteit die gekwalificeerd beschikbaar is, functionaliteit waarvan de kwalificatie nog loopt, actieve ontwikkeling en onderzoek dat nog geen productiestatus heeft. De precieze invulling van die vier categorieën moet vlak voor publicatie worden geactualiseerd, omdat de ontwikkeling momenteel snel gaat.
 
 ## Detail, rekentijd en toepassing
 
@@ -86,13 +88,23 @@ Voor gebruikers is dat uiteindelijk belangrijker dan de interne softwarearchitec
 
 Daar hoort ook een minder zichtbaar deel van modelontwikkeling bij. Een bruikbaar nationaal of regionaal instrumentarium bestaat niet alleen uit rekenkernen. Documentatie, referentiecases, versiebeheer, modeldata, testprocedures en afspraken over interfaces zijn minstens zo bepalend voor de vraag of een instrumentarium duurzaam gebruikt kan worden.
 
-## Waar staan we en waar gaat het heen?
+## Waar staat SWAP5 nu?
 
-Voor het bredere Nederlandse instrumentarium is de overgang al duidelijk zichtbaar. Het NHI meldde in juni 2026 stabiele releases van iMOD Python en de iMOD Coupler voor MODFLOW 6 en MetaSWAP, en een stabiele release van Ribasim [1]. MultiSWAP wordt publiek gepositioneerd als opvolger van MetaSWAP [5]. Tegelijk wordt gewerkt aan verdere regionale en landelijke toepassing en schematisatie. Het oude instrumentarium wordt dus niet op één datum vervangen door een volledig afgerond nieuw systeem. Verschillende onderdelen bewegen in hun eigen tempo.
+De huidige canonical SWAP5-basis is inmiddels veel meer dan een architectuurprototype, maar vertegenwoordigt nog niet de volledige toepassing van SWAP 4.3.1. Een productie-audit van 18 september 2026 laat juist beide kanten zien: er is een substantiële getypeerde en gekwalificeerde runtime ontstaan, terwijl verschillende historische proces- en invoerroutes nog bewust buiten de normale productieomgeving vallen.
 
-Voor SWAP5 geldt hetzelfde. De modernisering heeft inmiddels een omvangrijke nieuwe modelbasis en qualification-infrastructuur opgeleverd, maar een actuele beschrijving van wat precies als gekwalificeerde productiefunctionaliteit beschikbaar is moet worden gekoppeld aan een concrete software- en kwalificatiebaseline. Dat voorkomt dat een artikel dat tijdens een snelle ontwikkelfase wordt geschreven meer claimt dan op het moment van publicatie formeel kan worden onderbouwd.
+De Reference-Richards bodemwaterkern is als productiecomponent gekwalificeerd. Ook committed-boundary restart, serialized real-physics MultiSWAP en een begrensde parallelle MultiSWAP-route zijn toegelaten. Rond de hoofdrekenkern zijn inmiddels beperkte maar reële productieroutes beschikbaar voor onder meer atmosferische bovengrensprocessen, referentieverdamping, Feddes-wortelopname, WOFOST, drainage, oppervlaktewaterberging, sneeuw en bodemtemperatuur. Het woord beperkt is daarbij belangrijk: de kwalificatie geldt voor omschreven configuraties en niet automatisch voor alle historische SWAP-opties.
 
-De interessantste ontwikkeling zit daarom niet in een lijst met nieuwe functies. Belangrijker is de verandering in de manier waarop het hydrologische instrumentarium wordt opgebouwd. De onverzadigde zone, het grondwater en het oppervlaktewater kunnen steeds duidelijker als afzonderlijke modelcomponenten worden ontwikkeld en getest, terwijl hun onderlinge samenhang expliciet onderdeel wordt van de modelopzet.
+Ook de grondwaterkoppeling is verder dan een alleen conceptuele interface. De huidige canonical bevat een productiegerichte SWAP5-MODFLOW 6-keten die voor begrensde live MODFLOW 6-toepassingen is gekwalificeerd. Daarmee kan SWAP5 in een gecontroleerde modelomgeving met een externe grondwaterrekenkern worden uitgevoerd. De stap naar de daadwerkelijke productintegratie in de iMOD Coupler-driver en de bijbehorende productconfiguratie is echter nog een afzonderlijke ontwikkelstap. Een technisch werkende koppeling moet dus niet worden verward met een afgerond landelijk product.
+
+Tegelijk zijn belangrijke delen van de brede SWAP-functionaliteit nog niet als normale SWAP5-productieroute beschikbaar. Dat geldt onder meer voor volledige meteorologische en kalenderinvoer, verschillende geavanceerde wortelstressmechanismen, macroporiënstroming, vorst en faseovergangen, hysterese, brede solute-hydraulische interacties, volledige management- en tillagefunctionaliteit en volledige compatibiliteit met de historische uitvoerfamilie. Voor sommige onderdelen is de wetenschappelijke basis helder maar ontbreekt de nieuwe productieroute; andere vragen eerst aanvullende wetenschappelijke beoordeling.
+
+Deze stand van zaken is juist relevant voor de manier waarop SWAP5 wordt ontwikkeld. Het doel is niet om zo snel mogelijk iedere historische optie onder een nieuwe naam beschikbaar te maken. De nieuwe modelbasis wordt per capability uitgebreid en gekwalificeerd, waarbij beperkingen zichtbaar blijven. Daardoor is beter aan te geven wat daadwerkelijk kan worden toegepast en waar nog onderzoek of migratiewerk nodig is.
+
+## Waar gaat het instrumentarium heen?
+
+Voor het bredere Nederlandse instrumentarium is dezelfde geleidelijke overgang zichtbaar. Het NHI meldde in juni 2026 stabiele releases van iMOD Python en de iMOD Coupler voor MODFLOW 6 en MetaSWAP, en een stabiele release van Ribasim [1]. MultiSWAP wordt publiek gepositioneerd als opvolger van MetaSWAP [5]. Verschillende onderdelen bewegen dus in hun eigen tempo van bestaande praktijk, via ontwikkeling en kwalificatie, naar nieuwe toepassingen.
+
+De interessantste verandering zit niet in een lijst met modelnamen. Belangrijker is dat de onverzadigde zone, het grondwater en het oppervlaktewater steeds duidelijker als afzonderlijke modelcomponenten kunnen worden ontwikkeld en getoetst, terwijl hun onderlinge samenhang expliciet onderdeel wordt van de modelopzet.
 
 Dat levert ook een onderzoeksagenda op. Koppeling, ruimtelijke en temporele schaal, numerieke robuustheid, rekentijd en toepassingen waarin bodem, vegetatie, grondwater en oppervlaktewater sterk op elkaar terugwerken, worden beter afzonderlijk onderzoekbaar. De technische architectuur geeft daar geen antwoorden op. Zij maakt het wel mogelijk om de vragen scherper en reproduceerbaarder te stellen.
 
