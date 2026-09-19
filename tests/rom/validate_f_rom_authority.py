@@ -1130,6 +1130,110 @@ def validate_romv2_d11_if_present() -> str:
     return "CLOSED_STATE_OF_ART_RECONCILED"
 
 
+def validate_romv2_d12_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D12_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D12_PREREGISTRATION.json")
+            == "8840f706af8f7209eceb6557fdf128740cea9656",
+            "F-ROMV2-D12 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D12_RESULT.json")
+            == "37afe2f88f3fad27df948a01b8fa30a9df8f8807",
+            "F-ROMV2-D12 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D12_STATUS.json")
+            == "99618692043049c932d48fcdad87dd1a5974d950",
+            "F-ROMV2-D12 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D12_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "73610393c232d8040f25889d94da7b49f7a4fcc1",
+            "F-ROMV2-D12 evidence manifest blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D12_FMC_SMVE_PREFLIGHT_ADJUDICATION.md")
+            == "6c2833f96f5c868d85092ce7ffe470a3ef170ef1",
+            "F-ROMV2-D12 adjudication blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D12_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D12_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D12_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D12_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D12_FMC_SMVE_PREFLIGHT_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D12 preregistration phase drift")
+    require(prereg["scientific_role"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D12 preregistration consumes SWAP trajectory evidence")
+    require(prereg["discretization"]["bins"] == 200,
+            "F-ROMV2-D12 frozen FMC bin count drift")
+    require(prereg["numerical_preflight"]["maximum_infiltration_substep_seconds"] == 10,
+            "F-ROMV2-D12 frozen FMC substep drift")
+    require("DO_NOT_TUNE_BIN_COUNT_ON_SWAP_RESULTS" in prereg["boundary_firewall"]
+            and "DO_NOT_TUNE_SUBSTEP_FROM_SWAP_RESULTS" in prereg["boundary_firewall"],
+            "F-ROMV2-D12 anti-tuning firewall drift")
+
+    require(result["decision"] == "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+            "F-ROMV2-D12 decision drift")
+    require(result["adjudication"]
+            == "LITERATURE_BOUND_EQUATION_AUTHORITY_AND_ANALYTICAL_PREFLIGHT_PASS_WITHOUT_SWAP_TRAJECTORY_EXPOSURE",
+            "F-ROMV2-D12 adjudication drift")
+    require(result["authority"]["SWAP_trajectory_evidence_consumed"] is False
+            and result["authority"]["external_source_code_copied"] is False
+            and result["authority"]["public_oracle_used"] is False,
+            "F-ROMV2-D12 provenance firewall drift")
+    require(result["frozen_discretization"]["moisture_content_bins"] == 200
+            and result["frozen_discretization"]["maximum_infiltration_substep_seconds"] == 10
+            and result["frozen_discretization"]["tuned_from_SWAP_outcomes"] is False,
+            "F-ROMV2-D12 frozen discretization result drift")
+    require(result["preflight"]["Green_Ampt_single_bin"]["pass"] is True
+            and result["preflight"]["groundwater_hydrostatic_equilibrium"]["pass"] is True
+            and result["preflight"]["capillary_relaxation_finite_volume"]["pass"] is True
+            and result["preflight"]["B01_constitutive_and_capillary_drive"]["pass"] is True
+            and result["preflight"]["published_power_law_timescale"]["pass"] is True,
+            "F-ROMV2-D12 preflight gate drift")
+    hc = float(result["preflight"]["B01_constitutive_and_capillary_drive"]["HcM_cm"])
+    require(abs(hc - 14.085215420920257) < 1.0e-12,
+            "F-ROMV2-D12 B01 effective capillary drive drift")
+    require(result["D13_authority"]["authorized"] is True
+            and result["D13_authority"]["bin_count"] == 200
+            and result["D13_authority"]["maximum_infiltration_substep_seconds"] == 10,
+            "F-ROMV2-D12 D13 authority drift")
+    require(result["D13_authority"]["arbitrary_nonzero_SWAP_bottom_head_authorized"] is False,
+            "F-ROMV2-D12 prematurely authorizes arbitrary nonzero SWAP bottom head")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D12 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_EQUATION_AUTHORITY_PREFLIGHT_PASS",
+            "F-ROMV2-D12 status phase drift")
+    require(status["D13_FMC_hydraulic_comparator_authorized"] is True
+            and status["arbitrary_nonzero_SWAP_bottom_head_authorized"] is False
+            and status["root_uptake_ET_authorized"] is False,
+            "F-ROMV2-D12 successor/status boundary drift")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D12 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D12 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D12 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["external_source_code_copied"] is False
+            and manifest["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D12 manifest provenance/mutation drift")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D12 manifest authorizes production ROM")
+
+    require("The equations are not the full mass-conservation authority by themselves." in doc,
+            "F-ROMV2-D12 finite-volume authority distinction missing")
+    require("No SWAP trajectory evidence was consumed." in doc,
+            "F-ROMV2-D12 no-exposure statement missing")
+    require("Arbitrary nonzero SWAP prescribed bottom pressure head is **not** authorized by" in doc
+            and "D12." in doc,
+            "F-ROMV2-D12 arbitrary-head firewall missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D12 production prohibition missing")
+
+    return "CLOSED_EQUATION_AUTHORITY_PREFLIGHT_PASS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1167,6 +1271,7 @@ def main() -> int:
     romv2_d9_phase = validate_romv2_d9_if_present()
     romv2_d10_phase = validate_romv2_d10_if_present()
     romv2_d11_phase = validate_romv2_d11_if_present()
+    romv2_d12_phase = validate_romv2_d12_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1188,6 +1293,7 @@ def main() -> int:
     print(f"F_ROMV2_D9_PHASE={romv2_d9_phase}")
     print(f"F_ROMV2_D10_PHASE={romv2_d10_phase}")
     print(f"F_ROMV2_D11_PHASE={romv2_d11_phase}")
+    print(f"F_ROMV2_D12_PHASE={romv2_d12_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
