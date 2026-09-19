@@ -246,13 +246,15 @@ Candidate closures include low-order Operator Inference, constrained state-space
 
 **Why it is not yet admitted:** no closure evidence, no long-horizon evidence, no qualified computational break-even, no proof that enough columns share a template, and no end-to-end bottleneck proof.
 
-### B. ROM-assisted full-order nonlinear solving
+### B. Quasi-steady or tabulated physical reduction for regional/coupled use
 
-Use a reduced predictor only to generate an improved full-state initial guess, timestep proposal or regime estimate; then let Reference/RossFast execute and own accepted physics.
+This family reduces the physical state/evolution itself rather than merely projecting a fine-grid numerical state. A MetaSWAP-like precedent is a low-dimensional storage/flux manifold derived from detailed unsaturated-zone physics and advanced online by conservative balance equations.
 
-**Why it is attractive:** scientific risk is much lower because mass balance and acceptance remain with the admitted solver. Literature shows this can reduce nonlinear iterations and rescue some difficult nonlinear solves.
+This is a **candidate family, not permission to copy MetaSWAP**. F-ROM retains the clean-sheet rule: no source-code inheritance and no algorithmic inheritance without independent justification.
 
-**Why it may be redundant:** SWAP's current RossFast route already attacks numerical cost, and this chat is not allowed to own RossFast/solver research. This direction is retained only as a comparison or handoff if the discriminating experiment shows a large difficult-tail cost that current solver work does not remove.
+**Why it is attractive:** it directly targets regional and groundwater-coupled applications in which long-term ET, recharge, storage response and groundwater feedback can matter more than exact sub-daily profile evolution. Published MetaSWAP evidence demonstrates that such a deliberate approximation can be assessed by application-facing fidelity rather than numerical identity, and current NHI material reports a practical 10-20x speed motivation.
+
+**Why it may fail:** quasi-steady assumptions can lose wetting-front dynamics, fast reversals, deep-root-zone behaviour, drought/extreme transients and profile information. It must therefore be placed on the same purpose-dependent cost-fidelity frontier as a dynamic ROM and coarse Richards.
 
 ### C. Output-specific surrogate for many-query ensemble/data-assimilation work
 
@@ -261,6 +263,8 @@ For calibration, UQ, data assimilation or optimization, emulate only a declared 
 **Why it is plausible:** the literature already shows strong value of surrogates in repeated inverse/UQ unsaturated-flow workflows.
 
 **Why it is not a general SWAP ROM:** it is an emulator. It cannot automatically replace stateful SWAP evolution or coupled process physics.
+
+**ROM-assisted full-order solving remains a comparator/handoff, not a shortlisted ROM architecture.** A reduced predictor can still be useful for initial guesses or timestep/regime proposals while Reference/RossFast retains accepted physics. If profiling shows that difficult nonlinear tails dominate, that question belongs with the solver workstream rather than being used to rescue F-ROM.
 
 ## 10. Directions rejected at this stage
 
@@ -286,7 +290,10 @@ One B01-qualified physical template, using accepted current-canonical trajectori
 2. current admitted RossFast where the B01 case lies inside its qualified envelope;
 3. a scientifically consistent spatially coarsened Richards comparator;
 4. one deliberately simple conservative nine-state closure using `Z8_PLUS_G8`;
-5. the same reduced route with fail-closed fallback to RossFast/Reference.
+5. the same reduced route with fail-closed fallback to RossFast/Reference;
+6. where scientifically constructible without expanding the first execution excessively, a simple quasi-steady/integrated-manifold comparator representing the MetaSWAP-like physical-reduction family.
+
+The physical-reduction comparator need not match the nine-state ROM on event fidelity. It is evaluated under the same declared application envelopes and belongs on the same cost-fidelity frontier.
 
 The first closure should be structured and low-capacity, for example linear/bilinear Operator Inference or constrained regression with explicit forcing terms. A neural operator is not the first discriminant.
 
