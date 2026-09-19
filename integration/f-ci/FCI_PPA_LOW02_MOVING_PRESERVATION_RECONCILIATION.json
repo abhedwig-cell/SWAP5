@@ -76,13 +76,20 @@
     "The temporal-indicator provider must equal exact admitted blob 2068215a...; pre-admission lineage still requires the historical authority blob.",
     "No PPA-ROOT-HYD01 equations, tolerances, solver behavior or application accuracy budget are changed.",
     "Test-only RossFast serialized and PUB-P2E01 compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator, matching the admitted Fortran module dependency.",
-    "The targeted reconciliation workflow replays PPA-ROOT-HYD01 temporal preservation plus both dependent compile/runtime surfaces."
+    "The targeted reconciliation workflow replays PPA-ROOT-HYD01 temporal preservation plus both dependent compile/runtime surfaces.",
+    "The PPA-LOW02 owner runner is lineage-aware: before canonical LOW02 admission it preserves the historical exact one-file delta; after admission it pins the exact admitted backend blob instead of misclassifying its own canonical successor as an unexpected delta.",
+    "After PPA-ROOT-HYD01 admission, the PPA-LOW02 owner replay pins the exact admitted temporal-indicator blob while preserving all other inherited authorities.",
+    "PPA-LOW02 owner and independent compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator."
   ],
   "production_delta": [],
   "reference_delta": [],
   "scientific_claim_change": false,
   "test_only_compile_delta": [
     "tests/ross/run_ross12_serialized_production_wiring.sh",
-    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh"
-  ]
+    "tests/ross/run_fross22_admission_all_material.sh",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+    "tests/fapp/run_ppa_low02_time_application_admission.sh",
+    "tests/fvq/run_ppa_low02_time_independent.sh"
+  ],
+  "current_repair_note": "Current-state replay semantics were repaired without production/reference mutation; historical admission behavior remains fail-closed on its original lineage."
 }
