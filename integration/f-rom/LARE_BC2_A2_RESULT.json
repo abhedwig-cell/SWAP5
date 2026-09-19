@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.lare.bc2.a2.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-A2",
+  "decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_A_PREREGISTRATION.json",
+    "workflow_run": 35451231415,
+    "artifact_id": 10587360597,
+    "artifact_digest": "sha256:86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278",
+    "executed_head": "f88c6658a1d24e4846a0cfe4e933978494cb863b"
+  },
+  "evidence": {
+    "repeat_stdout_bitwise_identity": true,
+    "max_abs_reference_mass_residual_cm": 8.673617379884035e-19,
+    "max_saturated_node_theta_departure": 0,
+    "max_abs_interval_moving_storage_ledger_cm": 9.534040223968532e-15,
+    "max_abs_cumulative_moving_storage_ledger_cm": 9.3718435789647e-15,
+    "histories": {
+      "WT_HOLD": {
+        "H_min_cm": 120,
+        "H_max_cm": 120,
+        "excursion_cm": 0,
+        "direction_changes": 0
+      },
+      "WT_RISE": {
+        "H_min_cm": 103.48952360402006,
+        "H_max_cm": 120,
+        "excursion_cm": 16.510476395979936,
+        "direction_changes": 0
+      },
+      "WT_FALL": {
+        "H_min_cm": 120,
+        "H_max_cm": 138.79618325255618,
+        "excursion_cm": 18.796183252556176,
+        "direction_changes": 0
+      },
+      "WT_CYCLE": {
+        "H_min_cm": 105.49125506379416,
+        "H_max_cm": 136.99047955964556,
+        "excursion_cm": 31.499224495851408,
+        "direction_changes": 2
+      }
+    }
+  },
+  "geometry_semantics": {
+    "H_source": "strict interior zero-pressure crossing diagnosed from accepted full Reference profile",
+    "bottom_head_used_as_H": false,
+    "canonical_mode2_projection_policy_bypassed": false,
+    "U_ref": "W_total - theta_s*(D-H)",
+    "q_H_reference": "bottom outward exchange after saturated-zone theta_s audit"
+  },
+  "bc2_reduced_dynamics_authorized": true,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
