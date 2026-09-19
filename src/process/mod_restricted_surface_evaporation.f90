@@ -11,6 +11,7 @@ module mod_restricted_surface_evaporation
   integer, parameter, public :: BLACK_EVAP_NOT_RUN = 0
   integer, parameter, public :: BLACK_EVAP_AVAILABLE = 1
   integer, parameter, public :: BLACK_EVAP_INVALID_INPUT = 2
+  real(real64), parameter, public :: BLACK_EVAP_PONDING_CLASSIFICATION_CM = 1.0e-10_real64
 
   type, public :: black_evaporation_parameters_t
     real(real64) :: cofred = 0.0_real64
