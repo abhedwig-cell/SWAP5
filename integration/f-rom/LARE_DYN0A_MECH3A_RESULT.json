@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.lare.dyn0a.mech3a.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH3A",
+  "decision": "NONLINEAR_SCALE_SELECTED_FOR_BLIND_VALIDATION",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH3A_PREREGISTRATION.json",
+    "workflow_run": 35449285170,
+    "artifact_id": 10586253413,
+    "artifact_digest": "sha256:455b22c4dbe4544667b280c4ed64dfd6e089b4a870fb49165d02a0491c90c733",
+    "executed_head": "6d3fbb0d9ac3f4e921926510bc79d2b146ad2975",
+    "exact_result_sha256": "6fba1fb45dde915dee07234f78f1b9c025e9976f385d2901cb94c33bb0982973"
+  },
+  "selection_ranking": [
+    "PATH_GEOMETRIC_D",
+    "PATH_ARITHMETIC_D",
+    "PARLANGE_SD",
+    "LOCAL_D0"
+  ],
+  "selected_candidate": "PATH_GEOMETRIC_D",
+  "discovery_metrics": {
+    "LOCAL_D0": {
+      "pooled_ln_lambda_std": 0.5676702397598649,
+      "B01_vs_B14_abs_mean_ln_lambda_shift": 0.7671777220573592,
+      "global_geometric_multiplier_c": 3.876336858823168,
+      "lambda_range": [
+        2.327966349213156,
+        11.263703529633238
+      ]
+    },
+    "PATH_GEOMETRIC_D": {
+      "pooled_ln_lambda_std": 0.5582259211425725,
+      "B01_vs_B14_abs_mean_ln_lambda_shift": 0.7239466046507486,
+      "global_geometric_multiplier_c": 4.051189215592548,
+      "lambda_range": [
+        2.3067643339685753,
+        12.33421044718725
+      ]
+    }
+  },
+  "eligibility": {
+    "improves_pooled_log_dispersion_vs_LOCAL_D0": true,
+    "improves_B01_B14_material_shift_vs_LOCAL_D0": true
+  },
+  "scientific_interpretation": [
+    "Path-integrating nonlinear diffusivity improves the preregistered discovery metrics relative to initial-state D0, but the improvement is small.",
+    "The selected scale still spans more than a factor five in observed peak lambda across B01 and B14, so MECH3A does not establish a tight universal penetration law.",
+    "The result is sufficient only to justify a blind falsification test on previously unexposed materials.",
+    "No material-, saturation-, or forcing-specific multiplier is authorized."
+  ],
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
