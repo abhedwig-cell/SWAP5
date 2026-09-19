@@ -33,6 +33,35 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def _descriptor_has_font_file(font: object) -> bool:
+    """Return True when a PDF font or Type0 descendant embeds its font program."""
+    if not hasattr(font, "get"):
+        return False
+
+    subtype = str(font.get("/Subtype", ""))
+    if subtype == "/Type3":
+        # Type3 glyph programs live in the PDF itself.
+        return True
+
+    descriptor = font.get("/FontDescriptor")
+    if descriptor is not None:
+        descriptor = descriptor.get_object()
+        if any(k in descriptor for k in ("/FontFile", "/FontFile2", "/FontFile3")):
+            return True
+
+    # Composite Type0 fonts carry the descriptor on the descendant CIDFont,
+    # not on the top-level Type0 resource.
+    descendants = font.get("/DescendantFonts")
+    if descendants is not None:
+        descendants = descendants.get_object()
+        for child_ref in descendants:
+            child = child_ref.get_object()
+            if _descriptor_has_font_file(child):
+                return True
+
+    return False
+
+
 def font_embedding_status(reader: PdfReader) -> dict[str, object]:
     """Report whether any referenced PDF fonts depend on unembedded files."""
     total = 0
@@ -51,23 +80,21 @@ def font_embedding_status(reader: PdfReader) -> dict[str, object]:
         for name, ref in fonts.items():
             total += 1
             font = ref.get_object()
-            descriptor = font.get("/FontDescriptor")
             subtype = str(font.get("/Subtype", ""))
             basefont = str(font.get("/BaseFont", ""))
-            if descriptor is None:
-                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "none"})
-                if subtype == "/Type3":
-                    embedded += 1
-                else:
-                    missing.append(f"{name}:{subtype}:{basefont}")
-                continue
-            descriptor = descriptor.get_object()
-            if any(k in descriptor for k in ("/FontFile", "/FontFile2", "/FontFile3")):
+            is_embedded = _descriptor_has_font_file(font)
+            if is_embedded:
                 embedded += 1
-                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "embedded"})
             else:
-                details.append({"name": str(name), "subtype": subtype, "basefont": basefont, "descriptor": "unembedded"})
                 missing.append(f"{name}:{subtype}:{basefont}")
+            details.append(
+                {
+                    "name": str(name),
+                    "subtype": subtype,
+                    "basefont": basefont,
+                    "descriptor": "embedded" if is_embedded else "unembedded",
+                }
+            )
     return {
         "font_resources": total,
         "embedded_font_resources": embedded,
