@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.pub_gc_gmd.authority_intake.v1",
+  "date": "2026-09-19",
+  "status": "AWAITING_CONTROLLED_AUTHORITY_VALUES",
+  "candidate_binding": {
+    "scientific_source_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "git_tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "candidate_authority": "release/pub-gc-gmd/PUB_GC_GMD_UNVERSIONED_CANDIDATE.json"
+  },
+  "R1": {
+    "release_identifier": null,
+    "required": true,
+    "instruction": "Provide one exact immutable publication release identifier for the frozen candidate tree. Do not reuse or move SWAP5-RB1-v1 unless controlling governance explicitly says so."
+  },
+  "L1": {
+    "SWAP5_publication_archive_licence_and_redistribution_statement": null,
+    "historical_SWAP_4_3_1_reviewer_access_statement": null,
+    "required": true,
+    "upstream_evidence": "Official SWAP 4 GNU GPL version 2 provenance is established, but it is not itself the SWAP5 publication-release declaration."
+  },
+  "authority": {
+    "name_or_role": null,
+    "governing_record": null,
+    "effective_date": null
+  },
+  "author_metadata": {
+    "final_author_list": null,
+    "affiliations": null,
+    "corresponding_author": null,
+    "corresponding_email": null,
+    "contributions": null,
+    "funding_statement": null,
+    "acknowledgements": null,
+    "competing_interests_statement": null,
+    "ai_tool_disclosure_if_required": null
+  },
+  "validation": {
+    "null_values_are_intentional": true,
+    "null_values_are_not_authority": true,
+    "publication_release_may_not_be_finalized_until_R1_and_L1_are_non_null_and_authorized": true,
+    "persistent_archive_DOI_or_PID_is_created_after_R1_and_L1": true
+  }
+}
