@@ -27,7 +27,8 @@ def authority():
     ids=con["authority"]["corrected_reference"]["files"]
     req(ids["SWAP/frozencond.f90"] in b0, "frozencond identity absent from B0 manifest")
     req(ids["SWAP/temperature.f90"] in b0, "temperature identity absent from B0 manifest")
-    req(ids["SWAP/frozencond.f90"]==dep["reference"]["patch_target_audit"] and False if False else True, "unreachable")
+    req(dep["reference"]["patch_target_audit"]["frozencond"]=="unchanged from B0", "frozencond B1 patch relation drift")
+    req(dep["reference"]["patch_target_audit"]["temperature"]=="unchanged from B0", "temperature B1 patch relation drift")
     req("no frost or latent-heat phase-change physics" in f45.lower(), "F-CI45 frost/latent-heat hold missing")
     req(con["frozen_boundaries"]["thermodynamic_phase_change"]=="OUTSIDE_LEGACY_MIGRATION_AUTHORITY_NEW_PHYSICS", "phase-change conflation")
     req(con["frozen_boundaries"]["restart"]=="UNKNOWN_DO_NOT_INFER until exact source trace.", "restart inferred")
