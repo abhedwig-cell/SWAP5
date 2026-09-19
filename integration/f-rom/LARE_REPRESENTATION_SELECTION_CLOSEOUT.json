@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.representation-selection.closeout.v1",
+  "schema": "swap5.lare.representation-selection.closeout.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-REPSEL-1",
-  "status": "CLOSED_FIXED_PARTITION_BOUNDARY_NEXT_FAMILY_SOURCE_BINDING_REQUIRED",
+  "status": "CLOSED_FIXED_PARTITION_AND_MATCHED_D13_DEVELOPMENT_BOUNDARY_BLIND_VALIDATION_REQUIRED",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "authorities": {
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
@@ -11,7 +11,9 @@
     "moving_lower_zone_closure_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
     "purpose_dependent_rom": "integration/f-rom/F-ROMV2_STATUS.json",
-    "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json"
+    "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
+    "cross_family_reconciliation": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
+    "matched_D13_discriminator": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json"
   },
   "reconciled_findings": {
     "fixed_partition_LARE": [
@@ -58,31 +60,44 @@
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
   "next_family_authority": {
-    "family": "QUASI_STEADY_OR_INTEGRATED_MANIFOLD_PHYSICAL_REDUCTION",
+    "family": "BLIND_VALIDATION_OF_CURRENT_REPRESENTATION_FRONTIER",
     "repository_basis": [
-      "integration/f-rom/F-ROMV2_STATUS.json lists this as a candidate family.",
-      "integration/f-rom/F-ROMV2_V1_RESULT.json explicitly authorizes testing an independent quasi-steady or integrated-manifold physical reduction for regional or groundwater-coupled use."
+      "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+      "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+      "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json"
     ],
-    "relation_to_current_boundary": "Independent physical representation family rather than another scalar correction to fixed-partition LARE or a conventional spatial coarsening of Richards.",
+    "relation_to_current_boundary": "Confirm or falsify the C4Q development frontier on newly generated current-canonical Reference trajectories before any cost/value measurement or further representation invention.",
     "required_before_model_definition": [
-      "Bind an inspectable primary source formulation and state definition.",
-      "Separate equilibrium/manifold reconstruction from any transient disequilibrium or memory state.",
-      "Freeze conservation and boundary-flux semantics.",
-      "Define what state is prognostic versus diagnostically reconstructed.",
-      "Use the existing purpose-dependent acceptance framework; do not demand universal Richards equivalence."
+      "Freeze new validation histories before generating their Reference response.",
+      "Keep the full frozen LARE resolution ladder so development-selected dimensions are not cherry-picked.",
+      "Freeze the FMC/SMVE equations and validate their implementation against immutable D13 before exposing new trajectories.",
+      "Generate new Reference/R2 trajectories against the current canonical backend under a preregistered strict-first accepted-trajectory policy.",
+      "Report comparator-relative GW-vector and profile/process frontiers separately; do not infer application acceptance without independently sourced thresholds."
     ],
-    "implementation_authorized": false,
-    "reason": "The family is authorized for research, but the exact manifold equations and source authority are not yet bound in this repository workstream."
+    "implementation_authorized": true,
+    "reason": "This is validation of already-frozen representations and equations, not a new closure family."
   },
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
   },
-  "decision": "NEXT_INDEPENDENT_PHYSICAL_FAMILY_QUASI_STEADY_MANIFOLD_SOURCE_BINDING",
-  "next_authority": "BIND_PRIMARY_SOURCE_FOR_QUASI_STEADY_OR_INTEGRATED_MANIFOLD_REDUCTION",
+  "decision": "PREREGISTER_NEW_BLIND_D13_CLASS_VALIDATION_BEFORE_VALUE_MEASUREMENT",
+  "next_authority": "LARE_BC2_C4R_BLIND_FIXED_WATER_TABLE_VALIDATION",
   "model_changed": false,
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "stale_v1_repair": {
+    "repaired": true,
+    "reason": "The v1 next-family statement was written without reconciling the already-live C4P/C4Q evidence. C4P had bound later canonical F-ROMV2 quasi-steady, integrated-manifold and FMC/SMVE families, and C4Q had already executed a matched D13 discriminator. The v1 source-binding next step is therefore superseded.",
+    "scientific_results_changed": false
+  },
+  "additional_reconciled_findings": {
+    "C4P": "Later canonical evidence shows L2/QS1/QS2/HE2 did not cross R2 on their preregistered views; FMC/SMVE is the distinct physical reduction family with repeated bounded frontier-crossing evidence.",
+    "C4Q": "On exposed D13 fixed-water-table relaxation, all frozen LARE members R3-R16 qualify. R4 is minimum reduced LARE crossing R2 on all five frozen views; R12 is the only reduced LARE member crossing FMC on all five.",
+    "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
+  }
 }
