@@ -1,0 +1,3832 @@
+{
+  "absolute_application_acceptance_adjudicated": false,
+  "cohort": {
+    "candidate_enriched": true,
+    "cross_history_pair_count": 480,
+    "full_state_diagnostic_pair_count": 477,
+    "full_state_near_identical_pair_count": 3,
+    "population_probability_claim_authorized": false,
+    "response_blind_state_source": "formal P2 selection",
+    "unique_state_count": 41
+  },
+  "common_cohort_dominance": {
+    "0.25": {
+      "CONTROL_B01_B14_PILOT_R4": {
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D2": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D3": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      }
+    },
+    "0.5": {
+      "CONTROL_B01_B14_PILOT_R4": {
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D2": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D3": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      }
+    },
+    "1.0": {
+      "CONTROL_B01_B14_PILOT_R4": {
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D2": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D3": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      },
+      "D4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U4": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D2": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        },
+        "D3": {
+          "comparable": false,
+          "reason": "at least one representation has no reduction-induced alias in this common cohort radius"
+        }
+      }
+    },
+    "2.0": {
+      "CONTROL_B01_B14_PILOT_R4": {
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_U4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D2": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D3": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      }
+    },
+    "4.0": {
+      "CONTROL_B01_B14_PILOT_R4": {
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_U4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": false,
+            "gw_r_max_one_day_storage": false,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_U8_Z8": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": false,
+            "gw_d_max_reversal_steps": false,
+            "gw_d_max_terminal_flux": false,
+            "gw_d_max_total_storage": false,
+            "gw_d_reversal_sequence_mismatches": false,
+            "gw_d_sign_mismatches": false,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": false
+          },
+          "dominates": false,
+          "noninferior_all_components": false,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D2": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D3": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      },
+      "D4": {
+        "CONTROL_B01_B14_PILOT_R4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "CONTROL_U4": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_U8_Z8": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": true,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": true
+        },
+        "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D2": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        },
+        "D3": {
+          "comparable": true,
+          "component_noninferiority": {
+            "gw_d_max_cum_bottom": true,
+            "gw_d_max_reversal_steps": true,
+            "gw_d_max_terminal_flux": true,
+            "gw_d_max_total_storage": true,
+            "gw_d_reversal_sequence_mismatches": true,
+            "gw_d_sign_mismatches": true,
+            "gw_r_max_one_day_exchange": true,
+            "gw_r_max_one_day_storage": true,
+            "gw_r_sign_mismatches": true,
+            "pair_count": true
+          },
+          "dominates": false,
+          "noninferior_all_components": true,
+          "strictly_better_at_least_one_component": false
+        }
+      }
+    }
+  },
+  "decision": "LARE_RS1_GW_P2C_COMMON_COHORT_AMBIGUITY_MAPPED",
+  "full_state_near_identical_baseline": {
+    "gw_d": {
+      "comparison_record_count": 63,
+      "cumulative_bottom_exchange_cm": {
+        "maximum": 0.006224530027950093,
+        "median": 0.00036230180623419983,
+        "p95": 0.005685232771125466
+      },
+      "lower_40_160cm_storage_cm": {
+        "maximum": 0.00622454174747844,
+        "median": 0.0003623084812431898,
+        "p95": 0.005685243155217985
+      },
+      "maximum_reversal_step_difference_when_sequence_lengths_match": 0,
+      "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 0.0,
+      "reversal_sequence_mismatch_pair_probe_count": 0,
+      "terminal_bottom_flux_cm_per_day": {
+        "maximum": 0.2273078908565651,
+        "median": 0.004604444985290002,
+        "p95": 0.199349647608038
+      },
+      "terminal_flux_sign_mismatch_count": 0,
+      "total_storage_cm": {
+        "maximum": 0.0062245300279499816,
+        "median": 0.00036230180623419983,
+        "p95": 0.005685232771125466
+      }
+    },
+    "gw_r": {
+      "comparison_record_count": 21,
+      "mean_signed_one_day_pair_exchange_difference_cm": -0.0013953736497470722,
+      "one_day_cumulative_bottom_exchange_cm": {
+        "maximum": 0.0079449584851905,
+        "median": 0.00022748661999116848,
+        "p95": 0.007928889172859499
+      },
+      "one_day_total_storage_cm": {
+        "maximum": 0.007944958485190057,
+        "median": 0.00022748661999116848,
+        "p95": 0.007928889172859499
+      },
+      "terminal_flux_sign_mismatch_count": 0
+    },
+    "pair_count": 3,
+    "role": "FULL_STATE_NEAR_IDENTICAL_BASELINE_NOT_REDUCTION_INDUCED",
+    "status": "ALIASES_PRESENT"
+  },
+  "interpretation_firewalls": [
+    "All representations are evaluated on one frozen 41-state cohort and one common cross-history pair universe.",
+    "Reduction-induced alias metrics exclude pairs already indistinguishable at the frozen full-state diagnostic floor.",
+    "The cohort is candidate-enriched and does not estimate real-world alias frequency.",
+    "No absolute application acceptance threshold is applied.",
+    "No LARE dynamics or reduced propagation model is executed."
+  ],
+  "lare_dynamics_executed": false,
+  "production_rom_authorized": false,
+  "representations": {
+    "CONTROL_B01_B14_PILOT_R4": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 58,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.12159329140461216,
+          "gw_d": {
+            "comparison_record_count": 1218,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.016802575236511186,
+              "median": 0.0002815702396787856,
+              "p95": 0.0094237977111431
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.016802589380489508,
+              "median": 0.0003344589420244404,
+              "p95": 0.009423795360589793
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 4,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 4.6080000000000005,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.5512712282751409,
+              "median": 0.008692283612887763,
+              "p95": 0.21492483585738853
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.016802575236511075,
+              "median": 0.0002815702396787856,
+              "p95": 0.009423797711143322
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 406,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0003331217203013946,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.019483392924883436,
+              "median": 0.00019864337919628383,
+              "p95": 0.012696262251937984
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.019483392924882992,
+              "median": 0.00019864337919628383,
+              "p95": 0.01269626225193754
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 58,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 151,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.3165618448637317,
+          "gw_d": {
+            "comparison_record_count": 3171,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.019111035644655827
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.03740847408962367,
+              "median": 0.0008060394244893132,
+              "p95": 0.019111035605440918
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 74,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.0672717781279317,
+              "median": 0.008542439058345508,
+              "p95": 0.5993133722625998
+            },
+            "terminal_flux_sign_mismatch_count": 50,
+            "total_storage_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.01911103564465577
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1057,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016724254289617125,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.0026164906495154128,
+              "p95": 0.0310512143384587
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.0026164906495154128,
+              "p95": 0.031051214338458522
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 151,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        10,
+        140,
+        150,
+        160
+      ],
+      "dimension": 4,
+      "end_indices": [
+        1,
+        14,
+        15,
+        16
+      ]
+    },
+    "CONTROL_U4": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 36,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.07547169811320754,
+          "gw_d": {
+            "comparison_record_count": 756,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.0005700407539137586,
+              "p95": 0.00874744060516977
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.012044641073650553,
+              "median": 0.0005700407528621554,
+              "p95": 0.008747441043457371
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 2,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 2.3040000000000003,
+            "reversal_sequence_mismatch_pair_probe_count": 24,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.9904136485161512,
+              "median": 0.007449520671443111,
+              "p95": 0.5455998387482452
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.0005700407539137586,
+              "p95": 0.008747440605169743
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 252,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0006540095111830803,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.004535316538770928,
+              "median": 0.00014833742540787398,
+              "p95": 0.0031682423764163303
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.004535316538770928,
+              "median": 0.00014833742540787398,
+              "p95": 0.0031682423764163303
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 36,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "ALIASES_PRESENT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 63,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.1320754716981132,
+          "gw_d": {
+            "comparison_record_count": 1323,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.00036796390351412356,
+              "p95": 0.007476125928214117
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.012044641073650553,
+              "median": 0.00039330475558330136,
+              "p95": 0.007476121092786059
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 3,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 3.4560000000000004,
+            "reversal_sequence_mismatch_pair_probe_count": 38,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.9904136485161512,
+              "median": 0.008362467500688808,
+              "p95": 0.4712984865307135
+            },
+            "terminal_flux_sign_mismatch_count": 2,
+            "total_storage_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.00036796390351412356,
+              "p95": 0.007476125928214117
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 441,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0012706027933885016,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.0089390238297824,
+              "median": 0.00017322213370363215,
+              "p95": 0.008745933536899564
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.0089390238297824,
+              "median": 0.00017322213370363215,
+              "p95": 0.008745933536900452
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 63,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "ALIASES_PRESENT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 137,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.28721174004192873,
+          "gw_d": {
+            "comparison_record_count": 2877,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.021214725702876025,
+              "median": 0.0007589389492395071,
+              "p95": 0.01629979898033166
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.021214726148912177,
+              "median": 0.0007589389909341548,
+              "p95": 0.016299766618826074
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 64,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.506414198368942,
+              "median": 0.006888758647960458,
+              "p95": 0.6001572020259963
+            },
+            "terminal_flux_sign_mismatch_count": 4,
+            "total_storage_cm": {
+              "maximum": 0.02121472570287608,
+              "median": 0.0007589389492395071,
+              "p95": 0.01629979898033155
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 959,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.00010050756654547181,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.02052788847918041,
+              "median": 0.002539744458672999,
+              "p95": 0.02035428466689986
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.020527888479179524,
+              "median": 0.002539744458672999,
+              "p95": 0.020354284666901635
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 137,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "ALIASES_PRESENT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 201,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.42138364779874216,
+          "gw_d": {
+            "comparison_record_count": 4221,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.04034696594209142,
+              "median": 0.0010675061582432546,
+              "p95": 0.030063314029433755
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.040754167024054766,
+              "median": 0.0010675061582574585,
+              "p95": 0.029957951922824577
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 11,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 12.672,
+            "reversal_sequence_mismatch_pair_probe_count": 104,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.9646941384543481,
+              "median": 0.007840272218118116,
+              "p95": 0.8921308772613656
+            },
+            "terminal_flux_sign_mismatch_count": 56,
+            "total_storage_cm": {
+              "maximum": 0.04034696594209208,
+              "median": 0.0010675061582432477,
+              "p95": 0.03006331402943374
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1407,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0013155459582123322,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.044516999819508296,
+              "median": 0.002962787929767785,
+              "p95": 0.04119203706702743
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.044516999819506964,
+              "median": 0.002962787929767785,
+              "p95": 0.0411920370670316
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 201,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 328,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.6876310272536688,
+          "gw_d": {
+            "comparison_record_count": 6888,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.0791247281308134,
+              "median": 0.0018106456107922495,
+              "p95": 0.05963795552226979
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.0795319441620066,
+              "median": 0.0018106456106607993,
+              "p95": 0.05952388224974925
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 15,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 17.28,
+            "reversal_sequence_mismatch_pair_probe_count": 286,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 3.4800795860867577,
+              "median": 0.0114312129895211,
+              "p95": 1.7269634737093753
+            },
+            "terminal_flux_sign_mismatch_count": 274,
+            "total_storage_cm": {
+              "maximum": 0.0791247281308145,
+              "median": 0.0018106456107922497,
+              "p95": 0.05963795552226969
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 2296,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.002743715357014679,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.08698847706409207,
+              "median": 0.005721037501575488,
+              "p95": 0.07376352313092316
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.08698847706408941,
+              "median": 0.005721037501576376,
+              "p95": 0.07376352313092127
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 328,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "dimension": 4,
+      "end_indices": [
+        4,
+        8,
+        12,
+        16
+      ]
+    },
+    "CONTROL_U8_Z8": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 15,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.031446540880503145,
+          "gw_d": {
+            "comparison_record_count": 315,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.0040611003252806754,
+              "median": 0.0006156054260486599,
+              "p95": 0.003372351772397778
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.004061100382109828,
+              "median": 0.0006156054262262955,
+              "p95": 0.0033723518095506227
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 1,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 1.1520000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.37613032740857477,
+              "median": 0.00722240657502482,
+              "p95": 0.2718136735868628
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.00406110032528062,
+              "median": 0.0006156054260486599,
+              "p95": 0.0033723517723977642
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 105,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.00048100789497122304,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.0029897276856227784,
+              "median": 0.00014220847536705605,
+              "p95": 0.002971086542430612
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.0029897276856232224,
+              "median": 0.00014220847536705605,
+              "p95": 0.002971086542430612
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 15,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "ALIASES_PRESENT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 23,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.04821802935010482,
+          "gw_d": {
+            "comparison_record_count": 483,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.004808150448106119,
+              "median": 0.00047101056456711615,
+              "p95": 0.003353161488789183
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.004808150435223979,
+              "median": 0.00047101056457421464,
+              "p95": 0.0033531615428756822
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 1,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 1.1520000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.37613032740857477,
+              "median": 0.006974272324100639,
+              "p95": 0.24625849839310376
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.004808150448106119,
+              "median": 0.0004710105645671092,
+              "p95": 0.003353161488789169
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 161,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0005490110456697497,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.004535316538770928,
+              "median": 0.00016158298768687018,
+              "p95": 0.0031750294451526884
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.004535316538770928,
+              "median": 0.00016158298768687018,
+              "p95": 0.0031750294451526884
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 23,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "ALIASES_PRESENT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 71,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.1488469601677149,
+          "gw_d": {
+            "comparison_record_count": 1491,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.0004590421943078127,
+              "p95": 0.007476125928214117
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.012044641073650553,
+              "median": 0.00045904219448544836,
+              "p95": 0.007476121092786059
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 3,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 3.4560000000000004,
+            "reversal_sequence_mismatch_pair_probe_count": 50,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.9904136485161512,
+              "median": 0.008694109405738004,
+              "p95": 0.49667365071392844
+            },
+            "terminal_flux_sign_mismatch_count": 2,
+            "total_storage_cm": {
+              "maximum": 0.01204464062802657,
+              "median": 0.0004590421943078127,
+              "p95": 0.007476125928214117
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 497,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.001500367638249969,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.011457591165886072,
+              "median": 0.00017803903809721078,
+              "p95": 0.011019621334969986
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.011457591165886072,
+              "median": 0.00017803903809721078,
+              "p95": 0.011019621334969542
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 71,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "ALIASES_PRESENT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 139,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.2914046121593291,
+          "gw_d": {
+            "comparison_record_count": 2919,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.021214725702876025,
+              "median": 0.0007707119501532134,
+              "p95": 0.01639128997332559
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.021214726148912177,
+              "median": 0.0007707119500182102,
+              "p95": 0.01639125542045505
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 64,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.506414198368942,
+              "median": 0.006904672131824441,
+              "p95": 0.5997352871442981
+            },
+            "terminal_flux_sign_mismatch_count": 4,
+            "total_storage_cm": {
+              "maximum": 0.02121472570287608,
+              "median": 0.0007707119501532134,
+              "p95": 0.01639128997332548
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 973,
+            "mean_signed_one_day_pair_exchange_difference_cm": -8.336360006686898e-05,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.02257024008610431,
+              "median": 0.0025452777411416605,
+              "p95": 0.020376542770183546
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.022570240086103865,
+              "median": 0.0025452777411416605,
+              "p95": 0.020376542770185323
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 139,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 208,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.4360587002096436,
+          "gw_d": {
+            "comparison_record_count": 4368,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.04034696594209142,
+              "median": 0.0010847083482339315,
+              "p95": 0.03215966111110147
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.040754167024054766,
+              "median": 0.0010847083527352197,
+              "p95": 0.032159675669319654
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 11,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 12.672,
+            "reversal_sequence_mismatch_pair_probe_count": 106,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.9646941384543481,
+              "median": 0.008253410817005147,
+              "p95": 0.8944261798671249
+            },
+            "terminal_flux_sign_mismatch_count": 70,
+            "total_storage_cm": {
+              "maximum": 0.04034696594209208,
+              "median": 0.0010847083482339315,
+              "p95": 0.03215966111110191
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1456,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.001895554941529036,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.002971506045806649,
+              "p95": 0.04351155798813355
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.002971506045806649,
+              "p95": 0.043511557988137994
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 208,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ],
+      "dimension": 8,
+      "end_indices": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16
+      ]
+    },
+    "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 58,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.12159329140461216,
+          "gw_d": {
+            "comparison_record_count": 1218,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.016802575236511186,
+              "median": 0.0002815702396787856,
+              "p95": 0.0094237977111431
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.016802589380489508,
+              "median": 0.0003344589420244404,
+              "p95": 0.009423795360589793
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 4,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 4.6080000000000005,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.5512712282751409,
+              "median": 0.008692283612887763,
+              "p95": 0.21492483585738853
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.016802575236511075,
+              "median": 0.0002815702396787856,
+              "p95": 0.009423797711143322
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 406,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0003331217203013946,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.019483392924883436,
+              "median": 0.00019864337919628383,
+              "p95": 0.012696262251937984
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.019483392924882992,
+              "median": 0.00019864337919628383,
+              "p95": 0.01269626225193754
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 58,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 151,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.3165618448637317,
+          "gw_d": {
+            "comparison_record_count": 3171,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.019111035644655827
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.03740847408962367,
+              "median": 0.0008060394244893132,
+              "p95": 0.019111035605440918
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 74,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.0672717781279317,
+              "median": 0.008542439058345508,
+              "p95": 0.5993133722625998
+            },
+            "terminal_flux_sign_mismatch_count": 50,
+            "total_storage_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.01911103564465577
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1057,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016724254289617125,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.0026164906495154128,
+              "p95": 0.0310512143384587
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.0026164906495154128,
+              "p95": 0.031051214338458522
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 151,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        150,
+        160
+      ],
+      "dimension": 9,
+      "end_indices": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        15,
+        16
+      ]
+    },
+    "D2": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 17,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.03563941299790356,
+          "gw_d": {
+            "comparison_record_count": 357,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.00945874073212849,
+              "median": 4.6121844022195546e-05,
+              "p95": 0.006815545124753396
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.009458739852952647,
+              "median": 0.00012304449597877465,
+              "p95": 0.006815542902283766
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 1,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 1.1520000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.09130675213242512,
+              "median": 0.009978704005320083,
+              "p95": 0.059969384592406076
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.00945874073212849,
+              "median": 4.6121844022195546e-05,
+              "p95": 0.00681554512475344
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 119,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0006441788829397338,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.01172089276133903,
+              "median": 0.00565255127167319,
+              "p95": 0.008764247827626548
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.01172089276133903,
+              "median": 0.00565255127167319,
+              "p95": 0.008764247827626548
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 17,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "ALIASES_PRESENT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 24,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.050314465408805034,
+          "gw_d": {
+            "comparison_record_count": 504,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.009702413775237062,
+              "median": 7.869867474852299e-05,
+              "p95": 0.007123970408616708
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.009702411695805324,
+              "median": 0.00014533816690232015,
+              "p95": 0.007123966848853057
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 1,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 1.1520000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.1446293320039871,
+              "median": 0.009396651963200497,
+              "p95": 0.07623814288226737
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.009702413775237062,
+              "median": 7.869867474852299e-05,
+              "p95": 0.007123970408616741
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 168,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016750932192036584,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.01173893954099725,
+              "median": 0.005627358960832662,
+              "p95": 0.01170673153186248
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.01173893954099725,
+              "median": 0.0056273589608331065,
+              "p95": 0.011706731531862502
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 24,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "ALIASES_PRESENT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 45,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.09433962264150944,
+          "gw_d": {
+            "comparison_record_count": 945,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.023988149434565287,
+              "median": 0.00018334090621152654,
+              "p95": 0.010051818768680042
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.023988191727866592,
+              "median": 0.00028652386820482434,
+              "p95": 0.010051814433316507
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 2,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 2.3040000000000003,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.3018332707949156,
+              "median": 0.009550335375863028,
+              "p95": 0.180887682327934
+            },
+            "terminal_flux_sign_mismatch_count": 10,
+            "total_storage_cm": {
+              "maximum": 0.023988149434565287,
+              "median": 0.00018334090621152654,
+              "p95": 0.01005181876868022
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 315,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.003326931930394785,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.03079622571087315,
+              "median": 0.002997291992549833,
+              "p95": 0.030636835970642727
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.030796225710872704,
+              "median": 0.002997291992549833,
+              "p95": 0.03063683597064539
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 45,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "ALIASES_PRESENT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 64,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.13417190775681342,
+          "gw_d": {
+            "comparison_record_count": 1344,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.024036544201500476,
+              "median": 0.0003046469357563808,
+              "p95": 0.010678740921084543
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.024036585353172768,
+              "median": 0.00035519832260533235,
+              "p95": 0.01067874048553108
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 4,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 4.6080000000000005,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.5512712282751409,
+              "median": 0.009016507585002387,
+              "p95": 0.22201527438747695
+            },
+            "terminal_flux_sign_mismatch_count": 12,
+            "total_storage_cm": {
+              "maximum": 0.024036544201500476,
+              "median": 0.0003046469357563808,
+              "p95": 0.01067874092108454
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 448,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0019473316121893483,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.03080042891242174,
+              "median": 0.00020388123782666412,
+              "p95": 0.03062204867905418
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.030800428912421296,
+              "median": 0.00020388123782666412,
+              "p95": 0.030622048679056844
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 64,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 151,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.3165618448637317,
+          "gw_d": {
+            "comparison_record_count": 3171,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.019111035644655827
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.03740847408962367,
+              "median": 0.0008060394244893132,
+              "p95": 0.019111035605440918
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 74,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.0672717781279317,
+              "median": 0.008542439058345508,
+              "p95": 0.5993133722625998
+            },
+            "terminal_flux_sign_mismatch_count": 50,
+            "total_storage_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.01911103564465577
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1057,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016724254289617125,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.0026164906495154128,
+              "p95": 0.0310512143384587
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.0026164906495154128,
+              "p95": 0.031051214338458522
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 151,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "dimension": 2,
+      "end_indices": [
+        15,
+        16
+      ]
+    },
+    "D3": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 58,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.12159329140461216,
+          "gw_d": {
+            "comparison_record_count": 1218,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.016802575236511186,
+              "median": 0.0002815702396787856,
+              "p95": 0.0094237977111431
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.016802589380489508,
+              "median": 0.0003344589420244404,
+              "p95": 0.009423795360589793
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 4,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 4.6080000000000005,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.5512712282751409,
+              "median": 0.008692283612887763,
+              "p95": 0.21492483585738853
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.016802575236511075,
+              "median": 0.0002815702396787856,
+              "p95": 0.009423797711143322
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 406,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0003331217203013946,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.019483392924883436,
+              "median": 0.00019864337919628383,
+              "p95": 0.012696262251937984
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.019483392924882992,
+              "median": 0.00019864337919628383,
+              "p95": 0.01269626225193754
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 58,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 151,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.3165618448637317,
+          "gw_d": {
+            "comparison_record_count": 3171,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.019111035644655827
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.03740847408962367,
+              "median": 0.0008060394244893132,
+              "p95": 0.019111035605440918
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 74,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.0672717781279317,
+              "median": 0.008542439058345508,
+              "p95": 0.5993133722625998
+            },
+            "terminal_flux_sign_mismatch_count": 50,
+            "total_storage_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.01911103564465577
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1057,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016724254289617125,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.0026164906495154128,
+              "p95": 0.0310512143384587
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.0026164906495154128,
+              "p95": 0.031051214338458522
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 151,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "dimension": 3,
+      "end_indices": [
+        14,
+        15,
+        16
+      ]
+    },
+    "D4": {
+      "by_radius": {
+        "0.25": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.25,
+          "radius_theta": 0.0001355115732900869,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "0.5": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 0.5,
+          "radius_theta": 0.0002710231465801738,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "1.0": {
+          "common_cohort_close_pair_count": 0,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.0,
+          "gw_d": null,
+          "gw_r": null,
+          "pair_count": 0,
+          "radius_multiplier": 1.0,
+          "radius_theta": 0.0005420462931603476,
+          "status": "NO_ALIAS_IN_COMMON_COHORT"
+        },
+        "2.0": {
+          "common_cohort_close_pair_count": 58,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.12159329140461216,
+          "gw_d": {
+            "comparison_record_count": 1218,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.016802575236511186,
+              "median": 0.0002815702396787856,
+              "p95": 0.0094237977111431
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.016802589380489508,
+              "median": 0.0003344589420244404,
+              "p95": 0.009423795360589793
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 4,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 4.6080000000000005,
+            "reversal_sequence_mismatch_pair_probe_count": 0,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 0.5512712282751409,
+              "median": 0.008692283612887763,
+              "p95": 0.21492483585738853
+            },
+            "terminal_flux_sign_mismatch_count": 0,
+            "total_storage_cm": {
+              "maximum": 0.016802575236511075,
+              "median": 0.0002815702396787856,
+              "p95": 0.009423797711143322
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 406,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0003331217203013946,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.019483392924883436,
+              "median": 0.00019864337919628383,
+              "p95": 0.012696262251937984
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.019483392924882992,
+              "median": 0.00019864337919628383,
+              "p95": 0.01269626225193754
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 58,
+          "radius_multiplier": 2.0,
+          "radius_theta": 0.0010840925863206952,
+          "status": "ALIASES_PRESENT"
+        },
+        "4.0": {
+          "common_cohort_close_pair_count": 151,
+          "fraction_of_full_diagnostic_common_pairs_marked_close": 0.3165618448637317,
+          "gw_d": {
+            "comparison_record_count": 3171,
+            "cumulative_bottom_exchange_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.019111035644655827
+            },
+            "lower_40_160cm_storage_cm": {
+              "maximum": 0.03740847408962367,
+              "median": 0.0008060394244893132,
+              "p95": 0.019111035605440918
+            },
+            "maximum_reversal_step_difference_when_sequence_lengths_match": 6,
+            "maximum_reversal_time_difference_minutes_when_sequence_lengths_match": 6.912000000000001,
+            "reversal_sequence_mismatch_pair_probe_count": 74,
+            "terminal_bottom_flux_cm_per_day": {
+              "maximum": 1.0672717781279317,
+              "median": 0.008542439058345508,
+              "p95": 0.5993133722625998
+            },
+            "terminal_flux_sign_mismatch_count": 50,
+            "total_storage_cm": {
+              "maximum": 0.037408431034329226,
+              "median": 0.000806039424318783,
+              "p95": 0.01911103564465577
+            }
+          },
+          "gw_r": {
+            "comparison_record_count": 1057,
+            "mean_signed_one_day_pair_exchange_difference_cm": 0.0016724254289617125,
+            "one_day_cumulative_bottom_exchange_cm": {
+              "maximum": 0.04517985655509538,
+              "median": 0.0026164906495154128,
+              "p95": 0.0310512143384587
+            },
+            "one_day_total_storage_cm": {
+              "maximum": 0.04517985655509449,
+              "median": 0.0026164906495154128,
+              "p95": 0.031051214338458522
+            },
+            "terminal_flux_sign_mismatch_count": 0
+          },
+          "pair_count": 151,
+          "radius_multiplier": 4.0,
+          "radius_theta": 0.0021681851726413903,
+          "status": "ALIASES_PRESENT"
+        }
+      },
+      "depth_boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "dimension": 4,
+      "end_indices": [
+        13,
+        14,
+        15,
+        16
+      ]
+    }
+  },
+  "schema": "swap5.lare.rs1.gw.p2c.result.v1",
+  "work_unit": "LARE-RS1-GW-P2C",
+  "workstream": "F-ROM-LARE"
+}
