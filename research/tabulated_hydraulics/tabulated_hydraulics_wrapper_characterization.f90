@@ -7,7 +7,7 @@ program tabulated_hydraulics_wrapper_characterization
   implicit none
 
   integer, parameter :: n = 241
-  integer, parameter :: nh = 13
+  integer, parameter :: nh = 12
   real(real64), parameter :: theta_r=0.05_real64, theta_s=0.45_real64
   real(real64), parameter :: alpha=0.02_real64, nvg=1.60_real64
   real(real64), parameter :: mvg=1.0_real64-1.0_real64/nvg
@@ -16,6 +16,7 @@ program tabulated_hydraulics_wrapper_characterization
   real(real64) :: heads(nh), h, theta, cap, kval, dkdh, theta_ref, k_ref
   real(real64) :: frac, exponent, dummy
   integer :: i,j
+  character(len=32) :: mode
 
   swsophy=1
   swfrost=0
@@ -65,9 +66,23 @@ program tabulated_hydraulics_wrapper_characterization
     sptab(7,1,i)=sigma(i)
   end do
 
-  heads=[-1.0e8_real64,-1.0e6_real64,-1.0e4_real64,-1.0e2_real64,-1.0_real64, &
+  mode=''
+  if(command_argument_count()>0) call get_command_argument(1,mode)
+  if(trim(mode)=='dry_probe') then
+    h=-1.0e8_real64
+    theta=watcon(1,h)
+    cap=moiscap(1,h)
+    kval=hconduc(1,h,theta,1.0_real64)
+    write(*,'(A,ES24.16,A,ES24.16,A,ES24.16,A,ES24.16)') &
+      'DRY_PROBE h=',h,' theta=',theta,' C=',cap,' K=',kval
+    dkdh=dhconduc(1,h,theta,cap,1.0_real64)
+    write(*,'(A,ES24.16)') 'DRY_PROBE_UNEXPECTED_SUCCESS dKdh=',dkdh
+    stop
+  end if
+
+  heads=[-1.0e7_real64,-1.0e6_real64,-1.0e4_real64,-1.0e2_real64,-1.0_real64, &
          -1.0e-2_real64,-1.0e-3_real64,-1.0e-4_real64,-1.0e-5_real64,-1.0e-6_real64, &
-         -1.1e-9_real64,-1.0e-9_real64,0.0_real64]
+         -1.1e-9_real64,0.0_real64]
 
   write(*,'(A)') 'h_cm,theta,theta_ref,C,K,K_ref,dKdh'
   do i=1,nh
