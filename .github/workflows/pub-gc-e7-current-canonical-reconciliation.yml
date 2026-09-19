@@ -24,6 +24,9 @@ on:
       - 'integration/research/HYDRO_MEMORY_ACC02_F1_RESULT.json'
       - 'integration/research/HYDRO_MEMORY_ACC02_F1_PREREGISTRATION.json'
       - 'tests/research/support/mod_hydro_memory_acc02_f1_bridge.f90'
+      - 'integration/research/HYDRO_MEMORY_ACC02_F2_RESULT.json'
+      - 'integration/research/HYDRO_MEMORY_ACC02_F2_PREREGISTRATION.json'
+      - 'tests/research/support/mod_hydro_memory_acc02_f2_bridge.f90'
       - 'docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json'
       - 'docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json'
       - 'tests/fapp/test_ppa_wu01_production_application_bootstrap.f90'
@@ -39,6 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
