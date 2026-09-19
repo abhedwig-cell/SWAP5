@@ -53,12 +53,15 @@ PY
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 build_run(){
   local opt="$1" out="$2"
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/solver/mod_soil_water_accepted_step_direction_contract.f90 -o "$out/step_direction.o"
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 -o "$out/trajectory_sensitivity.o"
+  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_accepted_trajectory_directional_publication.f90 -o "$out/trajectory_publication.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/transaction/mod_transaction_reference.f90 -o "$out/transaction.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/runtime/mod_canonical_contracts.f90 -o "$out/contracts.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/runtime/mod_coupling_application_accuracy_contract.f90 -o "$out/accuracy_contract.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c src/runtime/mod_coupling_application_accuracy_adapter.f90 -o "$out/accuracy_adapter.o"
   gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/research/test_hydro_memory_acc01_accuracy_binding.f90 -o "$out/test.o"
-  gfortran "$opt" "$out/transaction.o" "$out/contracts.o" "$out/accuracy_contract.o" "$out/accuracy_adapter.o" "$out/test.o" -o "$out/test"
+  gfortran "$opt" "$out/step_direction.o" "$out/trajectory_sensitivity.o" "$out/trajectory_publication.o" "$out/transaction.o" "$out/contracts.o" "$out/accuracy_contract.o" "$out/accuracy_adapter.o" "$out/test.o" -o "$out/test"
   "$out/test" > "$out/output.txt"
 }
 
