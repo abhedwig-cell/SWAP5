@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.lare.bc2.c4a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4A",
+  "phase": "CONDITIONALLY_PREREGISTERED_BEFORE_DYNAMIC_C3_RESULT_EXPOSURE",
+  "hypothesis": "If Q90 is the common dominant signed local shape-bias injector, the dominant bias is the same non-well-balanced layer-mean hydraulic-gradient defect already exposed by hydrostatic-preservation analysis, and can be reduced by subtracting the C0 Q90 flux of the hydrostatic equilibrium state at the same prescribed H.",
+  "execution_condition": {
+    "required_C3_decision": "BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED",
+    "dynamic_histories": [
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ],
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "rule": "For all six dynamic width/history cases, Q90 must rank first by cumulative_injection_shape_rms_theta_at_final_geometry on both the 0.00005-day primary and 0.000025-day cross routes.",
+    "hold_role": "WT_HOLD is a supporting equilibrium control but is not sufficient to authorize C4A.",
+    "if_false": "Do not execute universal Q90 correction. Close as REGIME_SPECIFIC_LOCAL_BIAS and design a separate diagnostic from frozen C3 evidence."
+  },
+  "counterfactual": {
+    "model_change_scope": "teacher-forced diagnostic only; replace Q90 closure and no other channel",
+    "original_Q90": "unchanged C0 layer-mean q90 closure",
+    "equilibrium_Q90": "evaluate the identical C0 q90 formula on exact hydrostatic layer-mean storages for the fixed 80-90 cm layer and moving bulk 90..H-d at the same prescribed H and terminal width d",
+    "corrected_Q90": "Q90_WB(state,H,d) = Q90_C0(state,H,d) - Q90_C0(hydrostatic_projection(H,d),H,d)",
+    "exact_property": "At an exactly hydrostatic projected state, corrected Q90 is zero up to numerical quadrature/root precision.",
+    "parameters_added": 0,
+    "calibration": false,
+    "other_channels": [
+      "q10..q80 unchanged",
+      "qi unchanged",
+      "qH unchanged",
+      "Gi geometry unchanged"
+    ]
+  },
+  "stage_A_teacher_forced_test": {
+    "start_state": "exact A2 Reference projection at every interval",
+    "prescribed_H": "exact A2 H(t)",
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ],
+    "internal_dt_day": [
+      0.00005,
+      0.000025
+    ],
+    "compare": [
+      "original C0 teacher local state injection",
+      "Q90_WB teacher local state injection"
+    ],
+    "primary_metrics": [
+      "Q90 signed and absolute integrated bias",
+      "mass-neutral one-step state-shape injection RMS",
+      "cumulative local-bias storage vector shape norm",
+      "q_i and q_H local errors as non-target channels",
+      "total-storage local error",
+      "hard physical ledger residual"
+    ]
+  },
+  "progression_rule": {
+    "teacher_support_required": "Q90_WB must exactly pass the hydrostatic HOLD control and reduce the mass-neutral local shape-injection RMS in every six dynamic case on both time-step routes without increasing absolute integrated qH bias or violating any hard gate.",
+    "if_supported": "A later separately preregistered C4B may test free propagated dynamics.",
+    "if_not_supported": "Do not propagate Q90_WB; retain bias localization and investigate regime-dependent or multi-channel closure."
+  },
+  "hard_gates": {
+    "hydrostatic_Q90_cm_per_day": 1e-10,
+    "physical_ledger_cm": 1e-10,
+    "finite_constitutive_state": true,
+    "no_clipping_or_fallback": true
+  },
+  "firewalls": [
+    "CONDITIONAL_NO_EXECUTION_UNLESS_C3_RULE_PASSES",
+    "TEACHER_FORCED_ONLY_IN_C4A",
+    "NO_QI_CHANGE",
+    "NO_QH_CHANGE",
+    "NO_NEW_STATE",
+    "NO_FITTED_PARAMETER",
+    "NO_STABILIZER",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
