@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.lare.dyn0a.c1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-C1",
+  "phase": "PREREGISTERED_BEFORE_CLOSURE_COMPONENT_ORACLE_EVALUATION",
+  "purpose": "Attribute the regime-dependent D3/D4 standard-LARE redistribution error to mean-state constitutive averaging, interface-state localization, or residual interface-operator structure before any closure repair is designed.",
+  "trigger_authority": {
+    "d3_result": "integration/f-rom/LARE_DYN0A_FX_FINE_ONLY_RESULT.json",
+    "d3_decision": "STANDARD_LARE_D3_REGIME_DEPENDENT_CLOSURE_ERROR_CONFIRMED",
+    "d4_result": "integration/f-rom/LARE_DYN0A_D4_RESULT.json",
+    "d4_decision": "RESOLUTION_BENEFIT_CLEAR",
+    "key_observation": "Adding a 130-140 cm state reduces the worst common-band dynamic storage error from 2.452332276685631 cm to 0.6877291124718212 cm without changing the HE2021 interface closure."
+  },
+  "scientific_question": "Which approximation in the standard fixed-layer LARE closure causes the wet-state drying redistribution error: nonlinear constitutive averaging over a thick layer, loss of near-interface state localization, or the remaining Taylor interface operator?",
+  "hypotheses": {
+    "H1_MEAN_STATE_NONLINEARITY": "The dominant error is caused by replacing spatially varying constitutive quantities by psi(theta_bar) and K(theta_bar), especially in the 0-140 cm D3 layer under wet-to-dry evolution.",
+    "H2_INTERFACE_LOCALIZATION": "The dominant error is caused by representing the upper side of the 140-cm interface with the whole 0-140 cm state rather than a hydraulically local state near 130-140 cm; D4 improves because it retains this local state.",
+    "H3_RESIDUAL_OPERATOR": "Even after constitutive and localization oracle substitutions, a material discrepancy remains, implicating the first-order Taylor interface operator or an unrepresented profile-shape variable.",
+    "note": "H1-H3 are diagnostic alternatives and may all contribute; C1 does not force a single exclusive label."
+  },
+  "frozen_models": {
+    "D3": {
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ]
+    },
+    "D4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "material": "B01 homogeneous Mualem-Van Genuchten",
+    "standard_closure": "HE2021 adjacent-layer first-order Taylor closure already bound in docs/science/F-ROM_LARE_CA1_CLOSURE_AUTHORITY.md"
+  },
+  "evidence_inputs": {
+    "fine_reference": {
+      "role": "physical oracle trajectory only within already qualified DYN0A-FX cases",
+      "geometry": "16 x 10 cm",
+      "no_refit": true
+    },
+    "lare_D3": {
+      "role": "observed standard-closure propagation error",
+      "source": "persisted DYN0A fine-only characterization and frozen ODE artifact"
+    },
+    "lare_D4": {
+      "role": "nested resolution-control propagation error",
+      "source": "DYN0A-D4 artifact and persisted closeout"
+    }
+  },
+  "cohort": {
+    "primary_case": {
+      "initial_effective_saturation": 0.95,
+      "forcing": "DRY",
+      "bottom": "FIXED_FLUX"
+    },
+    "secondary_cases": "all seven dynamic cases common to fine Reference, D3 LARE and D4 LARE",
+    "exclusion_rule": "Only preregistered domain/numerical status may exclude a case; no exclusion by observed closure-error magnitude."
+  },
+  "diagnostics": {
+    "layer_constitutive_averaging": {
+      "for_each_frozen_layer_and_observation": [
+        "theta_bar_ref = thickness-weighted mean fine-Reference theta",
+        "psi_of_mean = psi(theta_bar_ref)",
+        "K_of_mean = K(theta_bar_ref)",
+        "mean_psi = thickness-weighted mean of fine-Reference pressure/capillary-head quantity after explicit sign normalization",
+        "mean_K = thickness-weighted mean of K(theta_j) evaluated with the same B01 MvG law"
+      ],
+      "reported_gaps": [
+        "psi_of_mean - mean_psi",
+        "K_of_mean - mean_K",
+        "relative K gap where denominator is safely nonzero"
+      ],
+      "interpretation": "Measures Jensen/nonlinear averaging error without propagating an alternative model."
+    },
+    "interface_oracles": {
+      "STD_PROJECTED": "Evaluate the published LARE interface operator on fine-Reference layer means using psi(theta_bar) and K(theta_bar).",
+      "CONSTITUTIVE_ORACLE": "Keep the same layer geometry and Taylor operator but replace psi(theta_bar) and K(theta_bar) by thickness-weighted fine-profile mean psi and mean K for each layer.",
+      "LOCALIZATION_ORACLE": "At the 140-cm interface, use the immediately adjacent 10-cm fine bands as the two interface-side states, with their actual center separation, while retaining the same Darcy-Buckingham sign convention. This is diagnostic and is not a D3 model candidate.",
+      "FINE_FACE_REFERENCE": "Recover the fine Reference face flux only from verified SWAP source semantics. If the exact face-conductivity/gradient rule cannot be bound unambiguously, mark this component AUTHORITY_INCOMPLETE and do not invent a flux formula."
+    },
+    "flux_error_metrics_if_FINE_FACE_REFERENCE_authorized": [
+      "instantaneous signed interface-flux error",
+      "maximum absolute interface-flux error",
+      "time-mean absolute interface-flux error",
+      "cumulative signed interface-exchange error",
+      "forcing-transition local maxima"
+    ],
+    "state_linkage": [
+      "correlate closure diagnostic magnitudes with observed D3 and D4 layer-storage errors only descriptively",
+      "no fitted regression coefficient is promoted to model closure"
+    ]
+  },
+  "source_authority_step": {
+    "required_before_FINE_FACE_REFERENCE": "Trace SWAP headcalc residual/vertical-flux semantics and the active swkmean=1 face-conductivity rule on the current branch.",
+    "known_from_current_harness": "DYN0A Reference uses swkimpl=0 and swkmean=1.",
+    "forbidden": "Do not assume an arithmetic/harmonic face conductivity merely from derivative code; bind the actual hcomean semantics or fail closed."
+  },
+  "adjudication": {
+    "CONSTITUTIVE_AVERAGING_DOMINANT": "CONSTITUTIVE_ORACLE gives a consistently smaller fine-face flux error than STD_PROJECTED over the primary case and materially accounts for the timing/magnitude of the D3 redistribution error; localization adds little further improvement.",
+    "INTERFACE_LOCALIZATION_DOMINANT": "LOCALIZATION_ORACLE gives a substantial additional reduction beyond CONSTITUTIVE_ORACLE, consistent with the observed D4 benefit.",
+    "MIXED_CONSTITUTIVE_AND_LOCALIZATION": "Both substitutions produce distinct, repeatable reductions and neither alone explains the critical case.",
+    "RESIDUAL_OPERATOR_LIMIT": "A substantial fine-face discrepancy remains after both oracle substitutions.",
+    "AUTHORITY_INCOMPLETE": "Fine-face Reference semantics cannot be bound without new source authority.",
+    "note": "No numerical percentage threshold is invented. Report componentwise error ratios and absolute dimensional differences; labels require directionally consistent evidence across the primary case and are checked against secondary cases."
+  },
+  "next_logic": {
+    "if_CONSTITUTIVE_AVERAGING_DOMINANT": "Preregister an equilibrium/constitutive-aware closure candidate while retaining D3 as state authority.",
+    "if_INTERFACE_LOCALIZATION_DOMINANT": "Treat local interface-state information as the missing quantity; evaluate a physically interpretable interface-shape/local-state augmentation before adding arbitrary global layers.",
+    "if_MIXED_CONSTITUTIVE_AND_LOCALIZATION": "Design the minimum physically interpretable augmentation that addresses both effects, then test against frozen D3/D4 controls.",
+    "if_RESIDUAL_OPERATOR_LIMIT": "Revisit the first-order Taylor closure itself; do not continue state refinement as the default repair.",
+    "if_AUTHORITY_INCOMPLETE": "Close C1 at the state-level Jensen/localization diagnostics and open a separate source-authority extraction before any flux-level claim."
+  },
+  "firewalls": [
+    "NO_CLOSURE_PARAMETER_FIT",
+    "NO_NEW_STATE_SELECTED_FROM_ORACLE_RESPONSE",
+    "NO_POST_RESULT_LAYER_BOUNDARY_RETUNING",
+    "NO_FORCING_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
