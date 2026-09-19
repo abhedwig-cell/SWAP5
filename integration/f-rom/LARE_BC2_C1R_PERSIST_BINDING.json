@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.lare.bc2.c1r.persist-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C1R",
+  "required_decision": "BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED",
+  "workflow_run": 35456312916,
+  "artifact_id": 10587924415,
+  "artifact_zip_sha256": "c5c5abb8197f3f3623b0f9bf28c0f19b9bf05724370614a25fabdb6ce5b4f24c",
+  "result_sha256": "f85d964bfa35e8ff595f1c5058db3805d436d96c1fc72c479d3efcd385844d68",
+  "executed_head": "6854db292333cc90edb7059b72f40480d669df61",
+  "result": {
+    "complete": true,
+    "recovered_primary_dt_day": 0.00005,
+    "new_cross_dt_day": 0.000025,
+    "classification_match": {
+      "state_shape": true,
+      "q90": true,
+      "qi": true,
+      "qH": true
+    },
+    "recovered_classification": {
+      "state_shape": "STATE_DRIFT_DOMINANT",
+      "q90": "STATE_DRIFT_DOMINANT",
+      "qi": "LOCAL_CLOSURE_DOMINANT",
+      "qH": "LOCAL_CLOSURE_DOMINANT"
+    },
+    "max_additive_or_ledger_residual": 2.7000623958883807e-13,
+    "hard_gate": 1e-10
+  },
+  "original_C1_primary_failure_retained": true,
+  "scientific_effect": "Authorizes use of the recovered 0.00005-day C1 route for the previously blocked 2.5-cm WT_CYCLE classification only. It does not reclassify original C1 as a pass and authorizes no model change."
+}
