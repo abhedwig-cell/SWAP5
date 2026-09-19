@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.hydro_memory.acc01_f1.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC01-F1",
+  "title": "Governed temporal feasibility for state-changing prescribed root uptake",
+  "parent_accuracy_result": "ACC01_GOVERNANCE_QUALIFIED",
+  "canonical_authority": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "required_production_authority": "PPA-ROOT-HYD01 R1 qualified restricted prescribed root-sink temporal certificate",
+  "purpose": "Test whether the frozen Stage 0 0.1 cm temporal head-error budget can actually admit a nonzero state-changing prescribed root sink without changing physics, tolerances or the governed budget.",
+  "frozen_fixture": {
+    "richards": "Reference Richards",
+    "pressure_head_cm": -75,
+    "initial_state": "constant head hydraulic equilibrium",
+    "reference_top_bottom_flux": "-K(-75 cm)",
+    "root_total_cm_per_day": 0.02,
+    "root_distribution": "equal over first min(4,numnod) compartments",
+    "compensating_subsurface_source": false,
+    "requested_interval_day": 0.1,
+    "bottom_mode": 2,
+    "swkimpl": 0,
+    "swkmean": 1,
+    "swsophy": 0,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "min_step_duration_day": 1e-8,
+    "hard_mass_tolerance_cm": 1e-12,
+    "transaction_temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "temporal_budget_cm": 0.1,
+    "max_retries": 8,
+    "max_committed_substeps": 32,
+    "numerical_continuation": "FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
+    "previous_right_derivative": "zero vector"
+  },
+  "paired_control": {
+    "route": "GENERIC",
+    "definition": "same sink vector through one ordinary drainage/source-sink level with root extraction inactive",
+    "purpose": "Verify complete adaptive transaction equivalence of the admitted prescribed ROOT carrier and the already admitted generic sink carrier."
+  },
+  "pass_gates": [
+    "ROOT completes requested 0.1 day interval and returns ready candidate",
+    "ROOT hard mass ledger is complete and absolute residual <=1e-12 cm",
+    "ROOT accepted state differs from initial equilibrium state",
+    "ROOT temporal certificate route is available and reference-richards-raw-bound",
+    "GENERIC control also completes with hard mass",
+    "ROOT and GENERIC final pressure head and water content agree at 64*epsilon scaled tolerance",
+    "ROOT and GENERIC retry/solver-rejection/temporal-rejection counts are identical",
+    "O0/O2 executable outputs are identical"
+  ],
+  "fail_decisions": [
+    "F1_BLOCKED_GOVERNED_TEMPORAL_BUDGET_NOT_FEASIBLE",
+    "F1_BLOCKED_ROOT_GENERIC_ADAPTIVE_TRANSACTION_DIVERGENCE",
+    "F1_BLOCKED_MASS_OR_STATE_RESPONSE"
+  ],
+  "forbidden_after_execution": [
+    "relax H_app",
+    "relax A_temporal",
+    "relax H_temporal",
+    "change root sink magnitude",
+    "change requested interval",
+    "change mass tolerance",
+    "increase retry budget",
+    "change solver tolerances to obtain pass"
+  ],
+  "nonclaims": [
+    "not a 90-day Stage 0 result",
+    "not dynamic stress-dependent root uptake",
+    "not live MODFLOW6 two-way coupling",
+    "not production project admission"
+  ]
+}
