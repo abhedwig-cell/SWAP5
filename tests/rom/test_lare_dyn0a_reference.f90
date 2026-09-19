@@ -36,6 +36,7 @@ program test_lare_dyn0a_reference
   integer :: ih,total_states,total_fallbacks,bottom_filter,active_histories,env_status
   real(real64) :: max_abs_mass
   character(len=32) :: filter_raw
+  character(len=48) :: case_filter_raw
 
   call require(abs(sum(dz(1:numnod))-160.0_real64)<=1.0e-12_real64,'LAREDYN0R depth frozen')
   bottom_filter=0
@@ -46,18 +47,26 @@ program test_lare_dyn0a_reference
     call require(env_status==0.and.bottom_filter>=0.and.bottom_filter<=2,'LAREDYN0R valid bottom filter')
   end if
 
+  case_filter_raw=''
+  call get_environment_variable('LARE_DYN0A_CASE_FILTER',case_filter_raw,status=env_status)
+  if(env_status/=0)case_filter_raw=''
+
   total_states=0;total_fallbacks=0;max_abs_mass=0.0_real64;active_histories=0
 
   do ih=1,NHIST
     if(bottom_filter==0.or.bottom_kind(ih)==bottom_filter)then
-      call run_history(ih,total_states,total_fallbacks,max_abs_mass)
-      active_histories=active_histories+1
+      if(len_trim(case_filter_raw)==0.or.trim(case_label(ih))==trim(case_filter_raw))then
+        call run_history(ih,total_states,total_fallbacks,max_abs_mass)
+        active_histories=active_histories+1
+      end if
     end if
   end do
+  call require(active_histories>0,'LAREDYN0R case filter selected at least one history')
 
   call require(total_states==active_histories*NSTEPS,'LAREDYN0R exact library state count')
   write(*,'(A,I0)') 'LAREDYN0R_HISTORY_COUNT=',active_histories
   write(*,'(A,I0)') 'LAREDYN0R_BOTTOM_FILTER=',bottom_filter
+  write(*,'(A,A)') 'LAREDYN0R_CASE_FILTER=',trim(case_filter_raw)
   write(*,'(A,I0)') 'LAREDYN0R_STEPS_PER_HISTORY=',NSTEPS
   write(*,'(A,I0)') 'LAREDYN0R_STATE_COUNT=',total_states
   write(*,'(A,I0)') 'LAREDYN0R_TOTAL_FALLBACK_COUNT=',total_fallbacks
