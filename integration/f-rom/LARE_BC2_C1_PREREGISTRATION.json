@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.lare.bc2.c1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C1",
+  "phase": "PREREGISTERED_BEFORE_TEACHER_FORCED_DRIFT_DECOMPOSITION",
+  "purpose": "Separate local closure error from accumulated reduced-state drift in the BC2-C0 enriched prescribed-H dynamics failure, without changing state dimension, flux closures, geometry, forcing or groundwater feedback.",
+  "predecessor": {
+    "c0_workflow_run": 35453934192,
+    "c0_artifact_id": 10587324672,
+    "c0_artifact_digest": "sha256:4f9608cbbe147a17c989b32c74e56d7399e461e86758c930ff4d31a085f756fc",
+    "c0_result_sha256": "94e28ab6546bbb4f7cfc0d903bf6cef9041f83742499b19ee8e9b0eef5e0545d",
+    "required_decision": "BC2_C0_ENRICHED_DYNAMICS_MIXED_RESPONSE",
+    "c0_primary_dt_day": 0.0001,
+    "c0_widths_cm": [
+      2.5,
+      5
+    ]
+  },
+  "unchanged_model": {
+    "fixed_geometry_anchor_cm": 90,
+    "terminal_widths_cm": [
+      2.5,
+      5
+    ],
+    "fixed_fixed_closure": "standard published adjacent-layer LARE",
+    "q90": "same source-aligned standard closure as C0",
+    "qi": "BC2-B9 TERMINAL_SIDE_LINEAR",
+    "qH": "BC2-B7 terminal linear shape, qH=Ks*(1-a_t)",
+    "H_input": "same prescribed qualified BC2-A2 Reference H(t)",
+    "H_feedback": false,
+    "no_fit": true,
+    "no_new_state": true,
+    "no_direction_switch": true,
+    "no_empirical_coefficient": true
+  },
+  "decomposition": {
+    "free_branch": "Identical to C0 free propagation. The reduced state at interval k begins from the previous reduced end state.",
+    "teacher_branch": "At every observation interval, reconstruct the exact reduced state by conservative projection of the accepted Reference state at the interval start, then propagate exactly one interval with the unchanged C0 model and the same H(t) path.",
+    "exact_additive_state_identity": "free_end-reference_end = (teacher_end-reference_end) + (free_end-teacher_end)",
+    "exact_additive_flux_identity": "free_interval_flux-reference_interval_flux = (teacher_interval_flux-reference_interval_flux) + (free_interval_flux-teacher_interval_flux)",
+    "interpretation": {
+      "local_closure_component": "teacher-reference",
+      "accumulated_state_component": "free-teacher",
+      "total_free_error": "free-reference"
+    }
+  },
+  "interval_fluxes": [
+    "q90",
+    "qi",
+    "qH"
+  ],
+  "state_components": [
+    "fixed 0-90 cm layer storages",
+    "Wb",
+    "Wt",
+    "total unsaturated storage"
+  ],
+  "histories": [
+    "WT_HOLD",
+    "WT_RISE",
+    "WT_FALL",
+    "WT_CYCLE"
+  ],
+  "numerics": {
+    "method": "same iterative Heun structure and theta-based corrector norm as corrected C0",
+    "observation_dt_day": 0.0008,
+    "primary_internal_dt_day": 0.0001,
+    "cross_internal_dt_day": 0.00005,
+    "reason_for_cross_dt": "C0 showed 0.0002 may leave the qualified domain for the 2.5-cm moving cases; a smaller cross-step tests numerical convergence without changing the physical model.",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "no_clipping": true,
+    "teacher_branch_reset_each_observation_interval": true
+  },
+  "hard_gates": {
+    "physical_moving_ledger_cm": 1e-10,
+    "additive_decomposition_identity_cm": 1e-10,
+    "additive_flux_identity_cm_per_day": 1e-10,
+    "both_primary_and_cross_routes_required": true,
+    "all_reference_projections_finite": true
+  },
+  "reported_metrics": {
+    "per_history_width": [
+      "RMS and maximum local-closure state error",
+      "RMS and maximum accumulated-state contribution",
+      "RMS and maximum total free-propagation state error",
+      "RMS and maximum local/state/total interval q90 error",
+      "RMS and maximum local/state/total interval qi error",
+      "RMS and maximum local/state/total interval qH error",
+      "fraction of intervals where |state-induced component| exceeds |local closure component| for each flux",
+      "first interval where state-induced component exceeds local component for each flux and total storage",
+      "primary-vs-cross numerical-floor differences"
+    ]
+  },
+  "diagnostic_classification": {
+    "per_history_width": {
+      "STATE_DRIFT_DOMINANT": "For both total-unsaturated-storage and qH interval error, RMS |free-teacher| > RMS |teacher-reference|.",
+      "LOCAL_CLOSURE_DOMINANT": "For both total-unsaturated-storage and qH interval error, RMS |teacher-reference| >= RMS |free-teacher|.",
+      "MIXED": "The two primary components disagree on dominance."
+    },
+    "overall": "No scalar majority vote. Report the classification for every history and width separately.",
+    "next_step_binding": {
+      "if_state_drift_dominant": "Next work must investigate stability/manifold preservation of the prognostic state before changing q90/qi/qH formulas.",
+      "if_local_closure_dominant": "Next work may target the offending local closure channel identified by q90/qi/qH decomposition.",
+      "if_mixed": "Next work must keep closure and drift channels separated; no single closure replacement is authorized."
+    }
+  },
+  "firewalls": [
+    "NO_NEW_STATE",
+    "NO_NEW_CLOSURE",
+    "NO_Q90_RETUNING",
+    "NO_WIDTH_SELECTION_FROM_C1",
+    "NO_H_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
