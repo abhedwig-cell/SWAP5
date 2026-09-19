@@ -1,0 +1,172 @@
+name: F-ROM-LARE BC2-C4R blind fixed-water-table validation
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4R_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c4r_d13_assets.py'
+      - 'tests/rom/analyze_lare_bc2_c4r_blind.py'
+      - '.github/workflows/f-rom-lare-bc2-c4r.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4r-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout preregistered current canonical backend
+        uses: actions/checkout@v4
+        with:
+          ref: e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable D13 development authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4r/d13
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587057124/zip" > /tmp/c4r/d13.zip
+          echo "03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408  /tmp/c4r/d13.zip" | sha256sum -c -
+          unzip -q /tmp/c4r/d13.zip -d /tmp/c4r/d13
+          echo "498d2c46828055c288524fc8176cf46f5339ea8db0649b450b955b3eb3c86747  /tmp/c4r/d13/R16_o0.txt" | sha256sum -c -
+          echo "8188300a660b2f203b28080399b4a747b6693d617de669f23395876ddaf8c6ec  /tmp/c4r/d13/R2_o0.txt" | sha256sum -c -
+          echo "28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c  /tmp/c4r/d13/F-ROMV2_D13_RESULT.json" | sha256sum -c -
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/c4r/d13_base.f90
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/analyze_f_romv2_d13_fmc_groundwater.py > /tmp/c4r/d13_analyzer.py
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json > /tmp/c4r/d13_prereg.json
+          echo "23ba278a37e142dc4c21e605af51dbf8f100ce92  /tmp/c4r/d13_base.f90" | git hash-object --stdin >/dev/null || true
+          test -f /tmp/c4r/d13/F-ROMV2_D13_PREFLIGHT_RESULT.json
+
+      - name: Reproduce D13 FMC before blind response generation
+        run: |
+          set -euo pipefail
+          python3 /tmp/c4r/d13_analyzer.py             --r16 /tmp/c4r/d13/R16_o0.txt             --r2 /tmp/c4r/d13/R2_o0.txt             --prereg /tmp/c4r/d13_prereg.json             --preflight /tmp/c4r/d13/F-ROMV2_D13_PREFLIGHT_RESULT.json             --output /tmp/c4r/d13_reproduced.json > /tmp/c4r/d13_reproduction_stdout.txt
+          python3 - <<'PY'
+          import json,math,pathlib
+          a=json.load(open('/tmp/c4r/d13/F-ROMV2_D13_RESULT.json'))
+          b=json.load(open('/tmp/c4r/d13_reproduced.json'))
+          assert a['decision']==b['decision']=='FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY'
+          checks=[]
+          for group,path in [
+              ('FMC',('FMC','pooled')),
+              ('R2',('R2_comparator',))
+          ]:
+              aa=a
+              bb=b
+              for k in path:
+                  aa=aa[k]; bb=bb[k]
+              metric_names=['total_storage_error_cm','cumulative_bottom_exchange_error_cm','terminal_bottom_flux_error_cm_per_day']
+              if group=='FMC':
+                  metric_names.append('R16_cell_theta_error')
+              for m in metric_names:
+                  for stat in ('mean','mean_abs','rmse','p95_abs','max_abs'):
+                      d=abs(float(aa[m][stat])-float(bb[m][stat]))
+                      checks.append((group,m,stat,d))
+                      assert d<=1e-12,(group,m,stat,d)
+              assert aa['bottom_flux_sign_error_count']==bb['bottom_flux_sign_error_count']
+          out={
+            'schema':'swap5.lare.bc2.c4r.fmc-reproduction.v1',
+            'pass':True,
+            'absolute_tolerance':1e-12,
+            'maximum_abs_scalar_difference':max(x[3] for x in checks),
+            'source_result_sha256':'28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c'
+          }
+          pathlib.Path('/tmp/c4r/FMC_D13_REPRODUCTION.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - name: Materialize blind D13-class assets
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c4r_d13_assets.py             --fortran-source /tmp/c4r/d13_base.f90             --fortran-output canonical/tests/rom/test_lare_bc2_c4r_reference.f90             --analyzer-source /tmp/c4r/d13_analyzer.py             --analyzer-output /tmp/c4r/analyze_fmc_blind.py             --manifest /tmp/c4r/materialization.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C4R_PREREGISTRATION.json'))
+          m=json.load(open('/tmp/c4r/materialization.json'))
+          assert p['pre_execution_implementation_binding']['d13_fortran_harness_blob']=='23ba278a37e142dc4c21e605af51dbf8f100ce92'
+          assert p['pre_execution_implementation_binding']['d13_fmc_analyzer_blob']=='803867a2ccdb190142274e9c41aafc3d3ca8d76a'
+          assert p['reference_authority']['current_canonical_at_preregistration']=='e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1'
+          print('LARE_BC2_C4R_MATERIALIZATION_AUTHORITY=PASS')
+          PY
+
+      - name: Generate new blind current-canonical Reference and R2 trajectories
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4r/reference
+          for spec in "R16 16 10" "R2 2 80"; do
+            read -r id n dz <<<"$spec"
+            stub="/tmp/c4r/stubs_n${n}.f90"
+            python3 tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              outdir="/tmp/c4r/build_${id}_o${opt}"
+              python3 tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "$stub"                 --target tests/rom/test_lare_bc2_c4r_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$outdir" --opt "$opt"
+              "$outdir/rom0_test" > "/tmp/c4r/reference/${id}_o${opt}.txt" 2>&1
+              grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/c4r/reference/${id}_o${opt}.txt"
+              test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/c4r/reference/${id}_o${opt}.txt")" -eq 256
+              test "$(grep -c 'F_ROMV2_D13_REF_INITIAL|' "/tmp/c4r/reference/${id}_o${opt}.txt")" -eq 4
+            done
+            cmp "/tmp/c4r/reference/${id}_o0.txt" "/tmp/c4r/reference/${id}_o2.txt"
+          done
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C4R_CURRENT_CANONICAL_REFERENCE=PASS"
+
+      - name: Evaluate frozen FMC on blind trajectories
+        run: |
+          set -euo pipefail
+          python3 /tmp/c4r/analyze_fmc_blind.py             --r16 /tmp/c4r/reference/R16_o0.txt             --r2 /tmp/c4r/reference/R2_o0.txt             --prereg /tmp/c4r/d13_prereg.json             --preflight /tmp/c4r/d13/F-ROMV2_D13_PREFLIGHT_RESULT.json             --output /tmp/c4r/FMC_C4R_RESULT.json             | tee /tmp/c4r/FMC_C4R_RUNNER.txt
+
+      - name: Execute blind LARE frontier
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4R_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4r_blind.py             --r16 /tmp/c4r/reference/R16_o0.txt             --r2 /tmp/c4r/reference/R2_o0.txt             --fmc-result /tmp/c4r/FMC_C4R_RESULT.json             --fmc-reproduction /tmp/c4r/FMC_D13_REPRODUCTION.json             --prereg integration/f-rom/LARE_BC2_C4R_PREREGISTRATION.json             --bc1-closeout integration/f-rom/LARE_BC1_CLOSEOUT.json             --representation-closeout integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json             --corichards-closeout integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json             --output LARE_BC2_C4R_EVIDENCE/LARE_BC2_C4R_RESULT.json             | tee LARE_BC2_C4R_EVIDENCE/runner.txt
+          cp /tmp/c4r/FMC_D13_REPRODUCTION.json LARE_BC2_C4R_EVIDENCE/
+          cp /tmp/c4r/FMC_C4R_RESULT.json LARE_BC2_C4R_EVIDENCE/
+          cp /tmp/c4r/materialization.json LARE_BC2_C4R_EVIDENCE/
+          cp /tmp/c4r/reference/R16_o0.txt LARE_BC2_C4R_EVIDENCE/
+          cp /tmp/c4r/reference/R2_o0.txt LARE_BC2_C4R_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4R_EVIDENCE/LARE_BC2_C4R_RESULT.json'))
+          assert r['decision'] in (
+            'C4R_BLIND_PROFILE_FRONTIER_REPLICATED',
+            'C4R_BLIND_GW_FRONTIER_ONLY',
+            'C4R_BLIND_R2_FRONTIER_ONLY',
+            'C4R_BLIND_REDUCED_FRONTIER_NOT_REPLICATED',
+            'C4R_REFERENCE_OR_EXECUTION_BLOCKED'
+          )
+          assert r['blind_validation'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4R_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4R_EVIDENCE/* > LARE_BC2_C4R_EVIDENCE/sha256.txt
+
+      - name: Upload blind C4R evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4r
+          path: LARE_BC2_C4R_EVIDENCE/
+          if-no-files-found: warn
