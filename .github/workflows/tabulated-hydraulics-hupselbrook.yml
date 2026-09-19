@@ -23,6 +23,20 @@ jobs:
           ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
           path: upstream-swap
 
+      - name: Materialize current toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: upstream-swap/subprojects/toml-f
+
+      - name: Materialize pinned ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: upstream-swap/subprojects/ttutil
+
       - name: Checkout pinned SWAP regression cases
         uses: actions/checkout@v4
         with:
@@ -52,6 +66,8 @@ jobs:
           {
             echo "swap_commit=c22bd832ddf3e53e330a552f5e31e74f183362d1"
             echo "testcases_commit=a839e2e905f34dd264ad0c739f638454b3023def"
+            echo "toml_f_commit=f9ff54793b2d1a3edca7d6890548d18d48c98e36"
+            echo "ttutil_ref=v4.2.7"
             gfortran --version | head -1
             meson --version
           } > build-identity.txt
