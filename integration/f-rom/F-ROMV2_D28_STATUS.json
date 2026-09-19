@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.f-romv2-d28.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D28",
+  "phase": "BLOCKED_EXTERNAL_NATIVE_ET_STATE_UPDATE_ORACLE",
+  "decision": "M2WC70_NATIVE_ET_STATE_UPDATE_ORACLE_EXTERNAL_RETRIEVAL_BLOCKER",
+  "source_identified": true,
+  "source_materialized": false,
+  "primary_paper_semantics_sufficient_for_synthetic_accounting": true,
+  "primary_paper_semantics_sufficient_for_native_composite_root_active_trajectory": false,
+  "native_FMC_root_active_trajectory_authorized": false,
+  "drought_stress_feedback_authorized": false,
+  "seasonal_ET_authorized": false,
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false,
+  "next": "MATERIALIZE_M2WC70_OR_EQUIVALENT_IMPLEMENTATION_AUTHORITY_THEN_CLEAN_ROOM_STATE_UPDATE_RECONCILIATION"
+}
