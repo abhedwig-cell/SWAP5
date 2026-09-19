@@ -21,6 +21,12 @@
       "failing_job": 105862082311,
       "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/solver/mod_reference_richards_temporal_indicator.f90",
       "cause": "PPA-ROOT-HYD01 PR #387 is already canonically admitted; the moving preservation gate still expected the pre-admission Status-A blob."
+    },
+    "current_compile_successor": {
+      "workflow_run": 35429748346,
+      "failing_workflow": "F-CI107 RossFast transform cache admission",
+      "message": "mod_reference_richards_temporal_indicator requires admitted mod_b110_root_sink_provider module, but two preservation compile lists still ordered the root provider after the temporal indicator",
+      "classification": "STALE_TEST_BUILD_DEPENDENCY_AFTER_PPA_ROOT_HYD01"
     }
   },
   "existing_authority": {
@@ -68,9 +74,15 @@
     "The generic historical dependency surface no longer rejects the already-admitted PPA-ROOT-HYD01 temporal-indicator successor.",
     "PPA-ROOT-HYD01 is accepted only when canonical admission 308a619c... is an ancestor and qualified head b7803c1c... is contained by that admission.",
     "The temporal-indicator provider must equal exact admitted blob 2068215a...; pre-admission lineage still requires the historical authority blob.",
-    "No PPA-ROOT-HYD01 equations, tolerances, solver behavior or application accuracy budget are changed."
+    "No PPA-ROOT-HYD01 equations, tolerances, solver behavior or application accuracy budget are changed.",
+    "Test-only RossFast serialized and PUB-P2E01 compile lists place mod_b110_root_sink_provider before mod_reference_richards_temporal_indicator, matching the admitted Fortran module dependency.",
+    "The targeted reconciliation workflow replays PPA-ROOT-HYD01 temporal preservation plus both dependent compile/runtime surfaces."
   ],
   "production_delta": [],
   "reference_delta": [],
-  "scientific_claim_change": false
+  "scientific_claim_change": false,
+  "test_only_compile_delta": [
+    "tests/ross/run_ross12_serialized_production_wiring.sh",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh"
+  ]
 }
