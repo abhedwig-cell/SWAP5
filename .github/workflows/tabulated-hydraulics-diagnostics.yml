@@ -1,0 +1,195 @@
+name: TAB-HYD focused implicit-route diagnostics
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - 'research/tabulated_hydraulics/prepare_hupsel_e2e.py'
+      - 'research/tabulated_hydraulics/compare_hupsel_e2e.py'
+      - '.github/workflows/tabulated-hydraulics-diagnostics.yml'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: legacy-runtime/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: legacy-runtime/subprojects/ttutil
+
+      - name: Checkout pinned regression cases
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Set up build tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup legacy-runtime/builddir legacy-runtime -Denable_pfunit=false
+          meson compile -C legacy-runtime/builddir
+          cp legacy-runtime/builddir/swap legacy-runtime/builddir/swap-original
+
+      - name: Prepare paired Hupsel cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py             swap-testcases/cases/hupselbrook/legacy build/tab-hyd-diagnostic             | tee build/tab-hyd-diagnostic-prepare.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("build/tab-hyd-diagnostic")
+          for name in ("analytic_k0","table_k0"):
+              p=root/name/"swap.swp"
+              s=p.read_text()
+              s,n1=re.subn(r"(?m)^(s*TENDs*=s*)d{4}-d{2}-d{2}(.*)$",r"\g<1>2002-01-31\2",s,count=1)
+              s,n2=re.subn(r"(?m)^(s*SWMONTHs*=s*)1",r"\g<1>0",s,count=1)
+              if n1!=1 or n2!=1:
+                  raise RuntimeError(f"failed daily 31-day setup for {name}")
+              p.write_text(s)
+
+          for name in ("analytic_k1","table_k1"):
+              p=root/name/"swap.swp"
+              s=p.read_text()
+              s,n1=re.subn(r"(?m)^(s*TENDs*=s*)d{4}-d{2}-d{2}(.*)$",r"\g<1>2002-01-01\2",s,count=1)
+              s,n2=re.subn(r"(?m)^(s*SWMONTHs*=s*)1",r"\g<1>0",s,count=1)
+              if n1!=1 or n2!=1:
+                  raise RuntimeError(f"failed one-day implicit setup for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Run 31-day explicit-conductivity pair
+        shell: bash
+        run: |
+          set -uo pipefail
+          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-original"
+          : > build/tab-hyd-diagnostic/k0-status.tsv
+          for name in analytic_k0 table_k0; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-diagnostic/$name"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 60 "$BIN" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            printf "%s	%s	%s
+" "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k0-status.tsv
+            test "$rc" -eq 100
+          done
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py             build/tab-hyd-diagnostic/analytic_k0 build/tab-hyd-diagnostic/table_k0             build/tab-hyd-diagnostic/k0-comparison.json --label "SWKIMPL=0,daily31"             | tee build/tab-hyd-diagnostic/k0-comparison.txt
+
+      - name: Run one-day original implicit pair
+        shell: bash
+        run: |
+          set -uo pipefail
+          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-original"
+          : > build/tab-hyd-diagnostic/k1-original-status.tsv
+          for name in analytic_k1 table_k1; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-diagnostic/$name"
+            rm -f "$work/result_output.csv" "$work/run-original.log"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_original_seconds.txt timeout 30 "$BIN" > run-original.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_original_seconds.txt" 2>/dev/null || echo NA)
+            printf "%s	%s	%s
+" "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k1-original-status.tsv
+          done
+
+      - name: Build diagnostic derivative-sentinel variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("legacy-runtime/src/utils/soilhydraulicsutils.f90")
+          s=p.read_text()
+          old="dhconduc = 1.0d+08"
+          if s.count(old) != 1:
+              raise SystemExit(f"expected exactly one sentinel, found {s.count(old)}")
+          p.write_text(s.replace(old,"dhconduc = 1.0d-12",1))
+          print("DIAGNOSTIC_PATCH saturated table dKdh 1e8 -> 1e-12")
+          PY
+          meson compile -C legacy-runtime/builddir
+          cp legacy-runtime/builddir/swap legacy-runtime/builddir/swap-dhcap-diagnostic
+
+      - name: Run one-day tabulated implicit case with diagnostic derivative sentinel
+        shell: bash
+        run: |
+          set -uo pipefail
+          work="$GITHUB_WORKSPACE/build/tab-hyd-diagnostic/table_k1"
+          rm -f "$work/result_output.csv" "$work/run-patched.log"
+          pushd "$work" >/dev/null
+          set +e
+          /usr/bin/time -f '%e' -o runtime_patched_seconds.txt timeout 30             "$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-dhcap-diagnostic" > run-patched.log 2>&1
+          rc=$?
+          set -e
+          popd >/dev/null
+          runtime=$(tail -1 "$work/runtime_patched_seconds.txt" 2>/dev/null || echo NA)
+          echo -e "table_k1_patched	$rc	$runtime" | tee build/tab-hyd-diagnostic/k1-patched-status.tsv
+          if [ "$rc" -eq 100 ] && [ -f "$work/result_output.csv" ]; then
+            python research/tabulated_hydraulics/compare_hupsel_e2e.py               build/tab-hyd-diagnostic/analytic_k1 build/tab-hyd-diagnostic/table_k1               build/tab-hyd-diagnostic/k1-patched-comparison.json --label "SWKIMPL=1,dKdh-sentinel-diagnostic"               | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
+          else
+            echo "PATCHED_IMPLICIT_PAIR_INCOMPLETE rc=$rc" | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
+          fi
+
+      - name: Write focused diagnostic summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "# TAB-HYD focused diagnostics"
+            echo
+            echo "## Explicit-conductivity daily pair"
+            cat build/tab-hyd-diagnostic/k0-status.tsv
+            cat build/tab-hyd-diagnostic/k0-comparison.txt
+            echo
+            echo "## Original implicit pair, one day"
+            cat build/tab-hyd-diagnostic/k1-original-status.tsv
+            echo
+            echo "## Diagnostic saturated-dKdh patch"
+            cat build/tab-hyd-diagnostic/k1-patched-status.tsv
+            cat build/tab-hyd-diagnostic/k1-patched-comparison.txt
+          } > build/tab-hyd-diagnostic/summary.md
+          cat build/tab-hyd-diagnostic/summary.md
+
+      - name: Upload focused diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-focused-diagnostic-evidence
+          path: |
+            build/tab-hyd-diagnostic/summary.md
+            build/tab-hyd-diagnostic/*status.tsv
+            build/tab-hyd-diagnostic/*comparison*
+            build/tab-hyd-diagnostic/*/run*.log
+            build/tab-hyd-diagnostic/*/runtime*_seconds.txt
+            build/tab-hyd-diagnostic/*/result_output.csv
