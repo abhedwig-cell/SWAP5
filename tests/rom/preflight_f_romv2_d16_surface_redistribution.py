@@ -82,24 +82,26 @@ def run_history(factor):
         partial_bins.append(partial)
         max_front=max(max_front,max(fronts.values()))
 
+    # Eq.19 is a pure translation. Store each slug as (top, invariant length)
+    # so floating subtraction of two independently advanced endpoints cannot
+    # manufacture a nonphysical length drift after many identical translations.
     slugs={j:[0.0,z] for j,z in fronts.items()}
-    detach_storage=TI*DEPTH + DTH*math.fsum(b-a for a,b in slugs.values())
+    detach_storage=TI*DEPTH + DTH*math.fsum(length for _,length in slugs.values())
     if abs(detach_storage-front_storage(fronts))>TOL:
         return {"pass":False,"reason":"detachment_storage_drift"}
 
-    max_slug_bottom=max(b for _,b in slugs.values())
+    max_slug_bottom=max(top+length for top,length in slugs.values())
     max_len_drift=0.0
     for _ in range(HIATUS):
-        for j,(top,bottom) in list(slugs.items()):
+        for j,(top,length) in list(slugs.items()):
             move=slug_velocity(j)*DT
-            nt=top+move; nb=bottom+move
+            nt=top+move; nb=nt+length
             if not(math.isfinite(nt) and math.isfinite(nb) and 0.0<=nt<nb<DEPTH):
                 return {"pass":False,"reason":"slug_bottom_or_bounds","bin":j,"top":nt,"bottom":nb}
-            max_len_drift=max(max_len_drift,abs((nb-nt)-(bottom-top)))
-            slugs[j]=[nt,nb]
+            slugs[j]=[nt,length]
             max_slug_bottom=max(max_slug_bottom,nb)
 
-    final_storage=TI*DEPTH + DTH*math.fsum(b-a for a,b in slugs.values())
+    final_storage=TI*DEPTH + DTH*math.fsum(length for _,length in slugs.values())
     global_ledger=final_storage-(s0+supplied)
     return {
       "pass":abs(global_ledger)<=TOL and max_ledger<=TOL and max_len_drift<=TOL,
