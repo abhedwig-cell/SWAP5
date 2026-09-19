@@ -27,6 +27,7 @@ def main():
 
     blocked=[]; unsupported=[]; supported=[]
     max_store=0.0; minpsi=float("inf"); minroots=999; max_qx=0.0; max_qh=0.0; max_qiid=0.0
+    max_hydro_u=0.0; max_hydro_v=0.0
     summary={}
     for w,h in sorted(expected):
         r=cases[(w,h)]
@@ -37,6 +38,8 @@ def main():
         max_qx=max(max_qx,float(hc["max_qi_64_vs_128_cm_per_day"]))
         max_qh=max(max_qh,float(hc["max_qH_candidate_vs_baseline_cm_per_day"]))
         max_qiid=max(max_qiid,float(hc["max_B8_qi_identity_cm_per_day"]))
+        max_hydro_u=max(max_hydro_u,float(hc["max_hydrostatic_abs_u"]))
+        max_hydro_v=max(max_hydro_v,float(hc["max_hydrostatic_abs_v"]))
         if r["decision"]=="C4L_CASE_BLOCKED": blocked.append((w,h))
         elif r["decision"]=="C4L_CASE_NOT_SUPPORTED": unsupported.append((w,h))
         else: supported.append((w,h))
@@ -58,6 +61,8 @@ def main():
         and max_qx<=float(pre["hard_gates"]["qi_64_vs_128_cm_per_day"])
         and max_qh<=float(pre["hard_gates"]["qH_candidate_vs_B9_identity_cm_per_day"])
         and max_qiid<=float(pre["hard_gates"]["B8_qi_identity_cm_per_day"])
+        and max_hydro_u<=float(pre["hard_gates"]["hydrostatic_abs_u"])
+        and max_hydro_v<=float(pre["hard_gates"]["hydrostatic_abs_v"])
     )
 
     moving={(w,h) for w in WIDTHS for h in ("WT_RISE","WT_FALL")}
@@ -84,7 +89,9 @@ def main():
             "minimum_valid_multistart_roots":minroots,
             "maximum_qi_64_vs_128_cm_per_day":max_qx,
             "maximum_qH_candidate_vs_B9_identity_cm_per_day":max_qh,
-            "maximum_B8_qi_identity_cm_per_day":max_qiid
+            "maximum_B8_qi_identity_cm_per_day":max_qiid,
+            "maximum_hydrostatic_abs_u":max_hydro_u,
+            "maximum_hydrostatic_abs_v":max_hydro_v
         },
         "supported_cases":[{"width_cm":w,"history":h} for w,h in supported],
         "unsupported_cases":[{"width_cm":w,"history":h} for w,h in unsupported],
