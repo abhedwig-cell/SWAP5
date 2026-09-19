@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.f-romv2.acceptance-framework.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-P",
+  "phase": "FROZEN_CONCEPTUAL_FRAMEWORK_BEFORE_NEW_VALIDATION",
+  "threshold_policy": "No universal percentage tolerance. Application-specific numerical thresholds, if needed, must be justified from the application or scientific inference and frozen before final validation evidence for that application is inspected.",
+  "numerical_reference_floor_role": "MEASUREMENT_CONTEXT_NOT_UNIVERSAL_ACCEPTANCE_TOLERANCE",
+  "integrity_is_application_independent": true,
+  "frontier_axes": {
+    "cost": [
+      "ONLINE_CPU_PER_ACCEPTED_INTERVAL",
+      "END_TO_END_WALL_TIME",
+      "P50_P95_P99_MAX_COLUMN_COST",
+      "FALLBACK_OVERHEAD",
+      "OFFLINE_COST",
+      "AMORTIZATION_BREAK_EVEN"
+    ],
+    "cumulative_fidelity": [
+      "LONG_TERM_STORAGE_DRIFT",
+      "CUMULATIVE_ET",
+      "CUMULATIVE_RECHARGE_DRAINAGE",
+      "SYSTEMATIC_BIAS"
+    ],
+    "state_fidelity": [
+      "ROOT_ZONE_SOIL_MOISTURE",
+      "PROFILE_STATE_WHERE_REQUIRED",
+      "GROUNDWATER_HEAD_RESPONSE"
+    ],
+    "event_fidelity": [
+      "FLUX_SIGN",
+      "REVERSAL_TIMING",
+      "THRESHOLD_ACTIVATION",
+      "EXTREMA",
+      "DROUGHT_ONSET_RECOVERY"
+    ],
+    "safety": [
+      "MASS_ACCOUNTING",
+      "PHYSICAL_ADMISSIBILITY",
+      "OOD_DETECTION",
+      "ROBUSTNESS"
+    ]
+  },
+  "stage_boundary": {
+    "old_exposed_histories": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "old_exposed_histories_may_be_blind_validation": false,
+    "new_validation_must_be_generated_after_preregistration": true,
+    "current_canonical_accepted_trajectory_authority_required": true
+  },
+  "production_rom_authorized": false
+}
