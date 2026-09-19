@@ -300,5 +300,35 @@
       "lare_standalone_characterization_allowed": true,
       "hydrological_comparator_claim_allowed": false
     }
+  },
+  "pre_successful_comparison_freeze": {
+    "date": "2026-09-19",
+    "before_first_successful_lare_vs_richards_hydrological_comparison": true,
+    "common_case_rule": "For each partition, compare only cases that are QUALIFIED for the LARE finest Heun route, fine Reference Richards, and the equal-partition coarse Richards comparator. Exclusion is permitted only for preregistered OUTSIDE_QUALIFIED_DOMAIN or BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION status, never because an observed hydrological error is large.",
+    "fixed_flux_discriminating_outputs": [
+      "per-layer storage error versus projection of fine Reference onto the same fixed partition",
+      "maximum absolute layer-storage error over time",
+      "time-mean absolute layer-storage error",
+      "final signed layer-storage error",
+      "bottom-layer storage error",
+      "middle/upper layer redistribution error where the partition contains those layers"
+    ],
+    "fixed_flux_ledger_controls": [
+      "total storage",
+      "cumulative top exchange",
+      "cumulative bottom exchange",
+      "terminal bottom flux",
+      "mass residual"
+    ],
+    "interpretation": "Because q_top and q_bottom are prescribed in DYN0A-FX and no sinks exist, total storage and bottom exchange are largely boundary-ledger quantities and are not sufficient evidence that the internal LARE closure is accurate.",
+    "paired_comparator_rule": {
+      "D3": "Compare LARE D3 and coarse Richards D3 against the same projected fine-Reference D3 storage trajectory for every common qualified case.",
+      "D2": "Compare LARE D2 and coarse Richards D2 against the same projected fine-Reference D2 storage trajectory for every common qualified case.",
+      "no_scalar_weighting": true,
+      "report": "Per-case error vectors, aggregate maxima/means, and counts of cases in which LARE is lower/equal/higher than coarse Richards for each storage metric."
+    },
+    "D4_resolution_control_rule": "Do not introduce D4 merely to improve a poor D3 result. Execute D4 only if D3 versus coarse D3 leaves an unresolved closure-resolution question, consistent with the RS1-GW closeout role already frozen before DYN0A.",
+    "seed_diagnostic": "Report any Reference seed drift from the uniform initial state where observable; do not silently absorb seed drift into closure error.",
+    "scientific_effect": "Interpretation and cohort governance only. No forcing amplitude, material, partition, constitutive relation, LARE interface closure or numerical threshold is changed."
   }
 }
