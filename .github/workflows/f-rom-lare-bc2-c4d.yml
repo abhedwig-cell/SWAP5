@@ -1,0 +1,107 @@
+name: F-ROM-LARE BC2-C4D phase-resolved cycle diagnosis
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4d_cycle_phase.py'
+      - 'tests/rom/aggregate_lare_bc2_c4d.py'
+      - '.github/workflows/f-rom-lare-bc2-c4d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  case:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {tag: w2p5, width: 2.5}
+          - {tag: w5, width: 5.0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c4d/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c4d/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c4d/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c4d/a2.zip -d /tmp/lare-bc2-c4d/a2
+          cmp /tmp/lare-bc2-c4d/a2/o0.txt /tmp/lare-bc2-c4d/a2/o2.txt
+
+      - name: Execute phase-resolved C4D case
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4D_CASE
+          python3 tests/rom/analyze_lare_bc2_c4d_cycle_phase.py \
+            --reference /tmp/lare-bc2-c4d/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json \
+            --c3 integration/f-rom/LARE_BC2_C3_RESULT.json \
+            --c3a integration/f-rom/LARE_BC2_C3A_RESULT.json \
+            --width "${{ matrix.width }}" \
+            --output "LARE_BC2_C4D_CASE/case_${{ matrix.tag }}.json" \
+            | tee "LARE_BC2_C4D_CASE/runner_${{ matrix.tag }}.txt"
+
+      - name: Upload C4D case
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4d-case-${{ matrix.tag }}
+          path: LARE_BC2_C4D_CASE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: case
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover C4D cases
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c4d-case-*
+          path: /tmp/lare-bc2-c4d-cases
+          merge-multiple: true
+
+      - name: Aggregate phase mechanism
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4D_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c4d.py \
+            --case /tmp/lare-bc2-c4d-cases/case_w2p5.json \
+            --case /tmp/lare-bc2-c4d-cases/case_w5.json \
+            --prereg integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json \
+            --output LARE_BC2_C4D_EVIDENCE/LARE_BC2_C4D_RESULT.json \
+            | tee LARE_BC2_C4D_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4D_EVIDENCE/LARE_BC2_C4D_RESULT.json'))
+          assert r['decision']=='BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED'
+          assert r['complete'] is True
+          assert r['hard_checks']['maximum_recorded_hard_residual_or_identity_error'] <= 1e-10
+          assert r['model_changed'] is False
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4D_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4D_EVIDENCE/* > LARE_BC2_C4D_EVIDENCE/sha256.txt
+
+      - name: Upload aggregate C4D evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4d
+          path: LARE_BC2_C4D_EVIDENCE/
+          if-no-files-found: error
