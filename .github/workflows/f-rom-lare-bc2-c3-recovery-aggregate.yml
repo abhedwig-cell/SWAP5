@@ -1,0 +1,71 @@
+name: F-ROM-LARE BC2-C3 recovery aggregate
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c3-recovery-aggregate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover eight already-qualified C3 case artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c3cases /tmp/zips
+          for spec in \
+            "10589486381 w2p5_hold" \
+            "10589081706 w2p5_rise" \
+            "10589192145 w2p5_fall" \
+            "10589656503 w2p5_cycle" \
+            "10589456401 w5_hold" \
+            "10589436533 w5_rise" \
+            "10589356757 w5_fall" \
+            "10588772068 w5_cycle"
+          do
+            set -- $spec
+            id="$1"; tag="$2"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/$id/zip" > "/tmp/zips/$tag.zip"
+            mkdir -p "/tmp/unpack-$tag"
+            unzip -q "/tmp/zips/$tag.zip" -d "/tmp/unpack-$tag"
+            find "/tmp/unpack-$tag" -name 'case_*.json' -exec cp {} /tmp/c3cases/ \;
+          done
+          test "$(find /tmp/c3cases -name 'case_*.json' | wc -l)" -eq 8
+          ls -l /tmp/c3cases
+
+      - name: Aggregate exact preregistered C3 cases
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C3_RECOVERY_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c3_cases.py \
+            --case-dir /tmp/c3cases \
+            --output LARE_BC2_C3_RECOVERY_EVIDENCE/LARE_BC2_C3_RESULT.json \
+            | tee LARE_BC2_C3_RECOVERY_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C3_RECOVERY_EVIDENCE/LARE_BC2_C3_RESULT.json'))
+          assert r['decision']=='BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED'
+          assert r['complete'] is True
+          assert r['hard_checks']['maximum_recorded_hard_residual_or_identity_error'] <= 1e-10
+          assert r['next_model_change_authorized'] is False
+          print('LARE_BC2_C3_RECOVERY_AGGREGATE=PASS')
+          PY
+          sha256sum LARE_BC2_C3_RECOVERY_EVIDENCE/* > LARE_BC2_C3_RECOVERY_EVIDENCE/sha256.txt
+
+      - name: Upload recovered aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c3-recovery
+          path: LARE_BC2_C3_RECOVERY_EVIDENCE/
+          if-no-files-found: error
