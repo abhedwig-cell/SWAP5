@@ -8,7 +8,6 @@ import pathlib
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.integrate import solve_ivp
 
 THETA_R = 0.02
 THETA_S = 0.427494
@@ -19,7 +18,7 @@ KS = 31.225016
 LAMBDA = 0.98087
 OBS_DT = 0.0008
 STEPS = 1024
-HEUN_DT = (0.0008, 0.0004, 0.0002)
+HEUN_DT = (0.0008, 0.0004, 0.0002, 0.0001)
 HEUN_CORRECTOR_TOL_THETA = 1.0e-13
 HEUN_MAX_CORRECTOR = 50
 
@@ -141,42 +140,6 @@ def initial(case: Case) -> tuple[np.ndarray, np.ndarray, float]:
     return dz, y0, k0
 
 
-def solve_high_accuracy(case: Case) -> dict[str, object]:
-    dz, y, k0 = initial(case)
-    times = [0.0]
-    ys = [y.copy()]
-    for start, end, qtop in forcing_segments(case, k0):
-        eval_times = np.arange(
-            math.floor((start + 1.0e-14) / OBS_DT) + 1,
-            round(end / OBS_DT) + 1,
-            dtype=int,
-        ) * OBS_DT
-        if len(eval_times) == 0 or abs(eval_times[-1] - end) > 1.0e-12:
-            raise AssertionError("segment observation grid mismatch")
-        sol = solve_ivp(
-            lambda t, state: rhs(state, dz, qtop, k0, case.bottom),
-            (start, end),
-            y,
-            method="DOP853",
-            t_eval=eval_times,
-            rtol=1.0e-11,
-            atol=1.0e-13,
-            max_step=OBS_DT / 4.0,
-        )
-        if not sol.success:
-            raise RuntimeError(sol.message)
-        for j in range(sol.y.shape[1]):
-            times.append(float(sol.t[j]))
-            ys.append(sol.y[:, j].copy())
-        y = sol.y[:, -1].copy()
-
-    arr = np.asarray(ys)
-    tarr = np.asarray(times)
-    if len(tarr) != STEPS + 1 or np.max(np.abs(tarr - np.arange(STEPS + 1) * OBS_DT)) > 1.0e-12:
-        raise AssertionError("high-accuracy observation grid mismatch")
-    return trajectory(case, dz, k0, tarr, arr, "DOP853_HIGH_ACCURACY")
-
-
 def heun_step(y: np.ndarray, dt: float, dz: np.ndarray, qtop: float, k0: float, bottom: str) -> tuple[np.ndarray, int]:
     f0 = rhs(y, dz, qtop, k0, bottom)
     guess = y + dt * f0
@@ -283,29 +246,48 @@ def main() -> int:
     results = {}
     max_ledger = 0.0
     equilibrium_max_change = 0.0
-    for case in cases:
-        high = solve_high_accuracy(case)
-        heun = {f"{dt:.7f}": solve_heun(case, dt) for dt in HEUN_DT}
-        floor = {
-            "heun_dt_vs_high_accuracy": {
-                key: compare(value, high) for key, value in heun.items()
-            },
-            "heun_refinement": {
-                "dt_0.0008_vs_0.0004": compare(heun["0.0008000"], heun["0.0004000"]),
-                "dt_0.0004_vs_0.0002": compare(heun["0.0004000"], heun["0.0002000"]),
-            },
-        }
-        max_ledger = max(
-            max_ledger,
-            float(high["max_abs_water_ledger_cm"]),
-            *(float(value["max_abs_water_ledger_cm"]) for value in heun.values()),
-        )
-        if case.forcing_id == "EQ":
-            total = np.asarray(high["total_storage_cm"], dtype=float)
-            equilibrium_max_change = max(
-                equilibrium_max_change, float(np.max(np.abs(total - total[0])))
-            )
+    fixed_flux_finest_success = 0
+    free_drainage_finest_success = 0
 
+    for case in cases:
+        refinements = {}
+        failures = {}
+        for dt in HEUN_DT:
+            key = f"{dt:.7f}"
+            try:
+                refinements[key] = solve_heun(case, dt)
+                max_ledger = max(
+                    max_ledger,
+                    float(refinements[key]["max_abs_water_ledger_cm"]),
+                )
+            except (ValueError, RuntimeError, FloatingPointError) as exc:
+                failures[key] = f"{type(exc).__name__}: {exc}"
+
+        finest_key = f"{HEUN_DT[-1]:.7f}"
+        finest = refinements.get(finest_key)
+        status = "QUALIFIED" if finest is not None else "NUMERICAL_OR_DOMAIN_BLOCKED"
+
+        if finest is not None:
+            if case.bottom == "FIXED_FLUX":
+                fixed_flux_finest_success += 1
+            else:
+                free_drainage_finest_success += 1
+            if case.forcing_id == "EQ":
+                total = np.asarray(finest["total_storage_cm"], dtype=float)
+                equilibrium_max_change = max(
+                    equilibrium_max_change,
+                    float(np.max(np.abs(total - total[0]))),
+                )
+
+        pairwise = {}
+        keys = [f"{dt:.7f}" for dt in HEUN_DT]
+        for left, right in zip(keys[:-1], keys[1:]):
+            if left in refinements and right in refinements:
+                pairwise[f"dt_{left}_vs_{right}"] = compare(
+                    refinements[left], refinements[right]
+                )
+
+        successful_dts = sorted(float(key) for key in refinements)
         results[case.id] = {
             "case": {
                 "partition": case.partition,
@@ -314,29 +296,46 @@ def main() -> int:
                 "forcing_id": case.forcing_id,
                 "bottom_boundary": case.bottom,
             },
-            "high_accuracy": high,
-            "heun_numerical_floor": floor,
+            "status": status,
+            "finest_successful_dt_day": (
+                min(successful_dts) if successful_dts else None
+            ),
+            "finest_reference": finest,
+            "heun_refinements": refinements,
+            "heun_failures": failures,
+            "heun_pairwise_numerical_floor": pairwise,
             "heun_max_corrector_iterations": {
-                key: value["max_corrector_iterations"] for key, value in heun.items()
+                key: value["max_corrector_iterations"]
+                for key, value in refinements.items()
             },
         }
 
     payload = {
-        "schema": "swap5.lare.dyn0a.ode-reference.v1",
+        "schema": "swap5.lare.dyn0a.ode-reference.v2",
         "workstream": "F-ROM-LARE",
         "work_unit": "LARE-DYN0A-ODE",
-        "decision": "LARE_DYN0A_ODE_REFERENCE_GENERATED",
+        "decision": "LARE_DYN0A_HEUN_REFINEMENT_CHARACTERIZED",
         "model": {
             "interface_closure": "HE2021_EQ24_ADJACENT_FIXED_LAYER_EXTENSION",
             "bottom_variants": list(BOTTOM_VARIANTS),
             "observation_dt_day": OBS_DT,
             "steps": STEPS,
+            "heun_refinement_dt_day": list(HEUN_DT),
             "mvg": {
-                "theta_r": THETA_R, "theta_s": THETA_S, "alpha_per_cm": ALPHA,
-                "n": N_VG, "m": M_VG, "Ksat_cm_per_day": KS, "lambda": LAMBDA,
+                "theta_r": THETA_R,
+                "theta_s": THETA_S,
+                "alpha_per_cm": ALPHA,
+                "n": N_VG,
+                "m": M_VG,
+                "Ksat_cm_per_day": KS,
+                "lambda": LAMBDA,
             },
         },
         "case_count": len(cases),
+        "fixed_flux_case_count": 24,
+        "fixed_flux_finest_success_count": fixed_flux_finest_success,
+        "free_drainage_case_count": 24,
+        "free_drainage_finest_success_count": free_drainage_finest_success,
         "max_abs_water_ledger_cm": max_ledger,
         "max_abs_equilibrium_total_storage_change_cm": equilibrium_max_change,
         "cases": results,
@@ -348,11 +347,12 @@ def main() -> int:
         "schema": payload["schema"],
         "decision": payload["decision"],
         "case_count": len(cases),
+        "fixed_flux_finest_success_count": fixed_flux_finest_success,
+        "free_drainage_finest_success_count": free_drainage_finest_success,
         "max_abs_water_ledger_cm": max_ledger,
         "max_abs_equilibrium_total_storage_change_cm": equilibrium_max_change,
     }, sort_keys=True))
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
