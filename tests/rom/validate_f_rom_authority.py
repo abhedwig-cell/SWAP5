@@ -249,6 +249,88 @@ def validate_romv2_if_present() -> str:
     return "PROPOSITION_OPEN"
 
 
+def validate_romv2_v1_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_V1_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_V1_PREREGISTRATION.json")
+            == "91069b15c64fafedbced5b5f1c02d24468490022",
+            "F-ROMV2-V1 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_V1_RESULT.json")
+            == "db5939c7591b17f21a2b5a5291e4faa8041638c3",
+            "F-ROMV2-V1 result summary blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_V1_STATUS.json")
+            == "96774ca5abb9551923981ed37dbdb8d41af8e2d5",
+            "F-ROMV2-V1 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_V1_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "cc242ac1b5aa4f8c67d54fedeb38a76c243b42d7",
+            "F-ROMV2-V1 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_V1_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_V1_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_V1_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_V1_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_V1_BLIND_HYDRAULIC_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_CURRENT_CANONICAL_TRAJECTORY_GENERATION",
+            "F-ROMV2-V1 preregistration phase drift")
+    require(prereg["frozen_state"]["id"] == "C2" and prereg["frozen_state"]["dimension"] == 2,
+            "F-ROMV2-V1 frozen C2 identity drift")
+    require(prereg["closure"]["family"] == "FORCING_SPECIFIC_ONE_NEAREST_NEIGHBOR_TRANSITION_TABLE",
+            "F-ROMV2-V1 closure family drift")
+    require(prereg["ood_gate"]["distance_threshold"] is False,
+            "F-ROMV2-V1 distance threshold unexpectedly introduced")
+    require(prereg["firewalls"][0] == "NO_H01_H04_BLIND_REUSE",
+            "F-ROMV2-V1 exposed-history firewall drift")
+
+    require(result["decision"] == "V2_V1_C2_BLIND_HYDRAULIC_FEASIBILITY_PASS",
+            "F-ROMV2-V1 blind decision drift")
+    require(result["adjudication"]
+            == "BLIND_HYDRAULIC_FEASIBILITY_PASS_WITH_DOMAIN_COVERAGE_LIMITING_COMPUTATIONAL_VALUE",
+            "F-ROMV2-V1 adjudication drift")
+    require(result["integrity"]["pass"] is True, "F-ROMV2-V1 integrity gate drift")
+    require(result["integrity"]["v04_failclosed"] is True, "F-ROMV2-V1 V04 fail-closed drift")
+    require(result["blind_value_screen_V01_V03"]["C2_beats_shared_fallback_forcing_only_on_both_preregistered_balance_metrics"] is True,
+            "F-ROMV2-V1 state-information value gate drift")
+    require(abs(float(result["fallback_imposed_ideal_speedup_ceiling"]["pooled_V01_V03"]["ideal_upper_bound_speedup"]) - 1.6875) < 1e-12,
+            "F-ROMV2-V1 fallback speed ceiling drift")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-V1 unexpectedly authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_BLIND_HYDRAULIC_FEASIBILITY_PASS_DOMAIN_COVERAGE_LIMITING",
+            "F-ROMV2-V1 terminal phase drift")
+    require(status["decision"] == "V2_V1_C2_BLIND_HYDRAULIC_FEASIBILITY_PASS",
+            "F-ROMV2-V1 status decision drift")
+    require(status["current_authority"]["production_rom_authorized"] is False,
+            "F-ROMV2-V1 status authorizes production ROM")
+    require(status["current_authority"]["performance_frontier_authorized"] is False,
+            "F-ROMV2-V1 status prematurely authorizes performance frontier")
+    require(status["current_authority"]["C2_ood_retuning_authorized"] is False,
+            "F-ROMV2-V1 status authorizes post-blind OOD retuning")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-V1 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-V1 execution branch unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-V1 evidence import claims production/reference mutation")
+    require(manifest["old_H01_H04_imported_as_blind_validation"] is False,
+            "F-ROMV2-V1 reuses exposed H01-H04")
+    require(manifest["predecessor_F_ROMV_reclassified"] is False,
+            "F-ROMV2-V1 reclassifies terminal predecessor")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-V1 manifest authorizes production ROM")
+
+    require("DOMAIN COVERAGE LIMITS CURRENT COMPUTATIONAL VALUE" in doc,
+            "F-ROMV2-V1 domain-coverage adjudication missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-V1 production prohibition missing")
+
+    return "CLOSED_BLIND_HYDRAULIC_FEASIBILITY_PASS_DOMAIN_COVERAGE_LIMITING"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -275,6 +357,7 @@ def main() -> int:
     rom0_phase = validate_rom0_current()
     rom1_phase = validate_rom1_if_present()
     romv2_phase = validate_romv2_if_present()
+    romv2_v1_phase = validate_romv2_v1_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -285,6 +368,7 @@ def main() -> int:
     print(f"F_ROM0_PHASE={rom0_phase}")
     print(f"F_ROM1_PHASE={rom1_phase}")
     print(f"F_ROMV2_PHASE={romv2_phase}")
+    print(f"F_ROMV2_V1_PHASE={romv2_v1_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
