@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.lare.bc2.c3b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C3B",
+  "phase": "PREREGISTERED_AFTER_C3A_REGIME_DEPENDENCE_BEFORE_DIRECTION_BLOCK_RESPONSE",
+  "question": "Is the full-cycle QH rank-1 result a genuine distinct cycle mechanism, or does it arise because QI bias has opposite signed accumulation across physically distinct rising/falling water-table blocks?",
+  "predecessor": {
+    "c3_result": "integration/f-rom/LARE_BC2_C3_RESULT.json",
+    "required_c3_decision": "BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED",
+    "c3a_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+    "required_c3a_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+    "c3a_c4_authority": "NO_GLOBAL_CLOSURE_CHANGE_NEW_REGIME_PREREGISTRATION_REQUIRED"
+  },
+  "geometry_regime_definition": {
+    "coordinate": "water-table depth H positive downward",
+    "source": "immutable BC2-A2 projected H(t), independent of C3 bias response",
+    "classifier": {
+      "WATER_TABLE_RISING": "H_end-H_start < 0",
+      "WATER_TABLE_FALLING": "H_end-H_start > 0",
+      "STATIONARY": "H_end-H_start == 0 exactly"
+    },
+    "epsilon_or_magnitude_threshold": null,
+    "A2_input_geometry_check": {
+      "WT_HOLD": {
+        "stationary": 256,
+        "rising": 0,
+        "falling": 0
+      },
+      "WT_RISE": {
+        "stationary": 0,
+        "rising": 512,
+        "falling": 0
+      },
+      "WT_FALL": {
+        "stationary": 0,
+        "rising": 0,
+        "falling": 512
+      },
+      "WT_CYCLE": {
+        "stationary": 0,
+        "rising": 512,
+        "falling": 256,
+        "contiguous_blocks": [
+          {
+            "steps": [
+              1,
+              256
+            ],
+            "regime": "WATER_TABLE_RISING"
+          },
+          {
+            "steps": [
+              257,
+              512
+            ],
+            "regime": "WATER_TABLE_FALLING"
+          },
+          {
+            "steps": [
+              513,
+              768
+            ],
+            "regime": "WATER_TABLE_RISING"
+          }
+        ]
+      }
+    }
+  },
+  "model_policy": {
+    "model": "unchanged BC2-C0 teacher-forced local map",
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "history": "WT_CYCLE",
+    "routes_day": [
+      0.00005,
+      0.000025
+    ],
+    "no_model_change": true,
+    "no_new_state": true,
+    "no_fit": true
+  },
+  "channel_ledger": {
+    "source_definition": "identical elementary/family contribution ledger as C3",
+    "families": [
+      "FIXED_INTERIOR_Q",
+      "Q90",
+      "QI",
+      "QH",
+      "GEOMETRY_GI"
+    ],
+    "ranking_metric": "cumulative_injection_shape_rms_theta_at_block_end_geometry",
+    "per_block_metrics": [
+      "signed_integrated_bias_cm",
+      "absolute_integrated_bias_cm",
+      "coherence_ratio_abs_signed_over_absolute_integral",
+      "cumulative_storage_injection_vector_cm",
+      "cumulative_injection_shape_rms_theta_at_block_end_geometry",
+      "one_interval_shape_injection_rms_theta"
+    ]
+  },
+  "comparator": {
+    "monotonic_reference": "Use already-persisted C3 WT_RISE and WT_FALL family rank for the same width and numerical route.",
+    "response_use": "C3 monotonic rankings are comparator evidence, not used to alter block boundaries or metrics."
+  },
+  "decision_rule": {
+    "DIRECTION_PARTITION_EXPLAINS_CYCLE_RANK_SHIFT": "For both widths and both numerical routes, every CYCLE rising block rank-1 family equals that width/route's C3 WT_RISE rank-1 family, every CYCLE falling block rank-1 family equals the C3 WT_FALL rank-1 family, and primary/cross rank-1 agrees for each block.",
+    "WITHIN_DIRECTION_REGIME_DEPENDENCE_REMAINS": "All hard gates pass but at least one CYCLE block does not match its corresponding monotonic-direction rank-1 family or has a primary/cross rank-1 mismatch.",
+    "NUMERICAL_DIAGNOSTIC_BLOCKED": "Any block cannot be reconstructed, leaves the qualified domain, or violates the C3 conservation/identity gates."
+  },
+  "interpretation_constraints": [
+    "This diagnostic tests cancellation and direction partition only; it is not a direction-switched model.",
+    "A positive direction-partition result may authorize a later teacher-forced oracle counterfactual panel, but not a production switch.",
+    "Because qH directly changes total unsaturated storage while qi redistributes bulk-to-terminal water, both channels must remain separately reported even when one is rank-1 for shape.",
+    "No threshold based on C3 bias magnitude is introduced."
+  ],
+  "next_step_if_direction_explains": "Preregister a teacher-forced causal oracle-removal panel within the fixed Hdot-sign regimes, testing QI-only, QH-only and QI+QH removal before proposing any implementable closure.",
+  "next_step_if_not": "Retain finer history/phase dependence and do not introduce a direction-only correction.",
+  "firewalls": [
+    "NO_DIRECTION_SWITCH_IMPLEMENTATION",
+    "NO_CLOSURE_CHANGE",
+    "NO_ORACLE_COUNTERFACTUAL_IN_C3B",
+    "NO_NEW_STATE",
+    "NO_FITTED_THRESHOLD",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
