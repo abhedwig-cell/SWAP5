@@ -13,7 +13,7 @@ program tabulated_hydraulics_wrapper_characterization
   real(real64), parameter :: mvg=1.0_real64-1.0_real64/nvg
   real(real64), parameter :: lexp=0.50_real64, ksat=50.0_real64
   real(real64) :: head_raw(n), x(n), theta_tab(n), logk_tab(n), dydx(n), sigma(n)
-  real(real64) :: heads(nh), h, theta, cap, kval, dkdh, theta_ref, k_ref
+  real(real64) :: heads(nh), h, theta, cap, kval, dkdh
   real(real64) :: frac, exponent, dummy
   integer :: i,j
   character(len=32) :: mode
@@ -83,24 +83,21 @@ program tabulated_hydraulics_wrapper_characterization
   heads=[-1.0e7_real64,-1.0e6_real64,-1.0e4_real64,-1.0e2_real64,-1.0_real64, &
          -1.0e-2_real64,-1.0e-3_real64,-1.0e-4_real64,-1.0e-5_real64,-1.0e-6_real64]
 
-  write(*,'(A)') 'h_cm,theta,theta_ref,C,K,K_ref,dKdh'
+  write(*,'(A)') 'h_cm,theta,C,K,dKdh'
   do i=1,nh
     h=heads(i)
     theta=watcon(1,h)
     cap=moiscap(1,h)
     kval=hconduc(1,h,theta,1.0_real64)
     dkdh=dhconduc(1,h,theta,cap,1.0_real64)
-    theta_ref=vg_theta(h)
-    k_ref=vg_k(h)
-
     if(.not.ieee_is_finite(theta) .or. .not.ieee_is_finite(cap) .or. &
        .not.ieee_is_finite(kval) .or. .not.ieee_is_finite(dkdh)) error stop 'nonfinite wrapper output'
     if(theta<theta_r-1.0e-10_real64 .or. theta>theta_s+1.0e-10_real64) error stop 'theta outside bounds'
     if(kval<=0.0_real64 .or. kval>ksat*(1.0_real64+1.0e-10_real64)) error stop 'K outside bounds'
     if(cap<0.0_real64) error stop 'negative C'
 
-    write(*,'(ES22.14,",",ES22.14,",",ES22.14,",",ES22.14,",",ES22.14,",",ES22.14,",",ES22.14)') &
-      h,theta,theta_ref,cap,kval,k_ref,dkdh
+    write(*,'(ES22.14,",",ES22.14,",",ES22.14,",",ES22.14,",",ES22.14)') &
+      h,theta,cap,kval,dkdh
   end do
 
   write(*,'(A,ES24.16)') 'WRAPPER near_sat_C=',moiscap(1,-1.0e-6_real64)
@@ -108,28 +105,4 @@ program tabulated_hydraulics_wrapper_characterization
     dhconduc(1,-1.0e-6_real64,watcon(1,-1.0e-6_real64),moiscap(1,-1.0e-6_real64),1.0_real64)
   write(*,'(A)') 'WRAPPER_CHARACTERIZATION_COMPLETED'
 
-contains
-
-  pure real(real64) function vg_theta(head) result(theta_out)
-    real(real64),intent(in)::head
-    real(real64)::se
-    if(head>=0.0_real64) then
-      theta_out=theta_s
-    else
-      se=(1.0_real64+(alpha*abs(head))**nvg)**(-mvg)
-      theta_out=theta_r+(theta_s-theta_r)*se
-    end if
-  end function vg_theta
-
-  pure real(real64) function vg_k(head) result(kout)
-    real(real64),intent(in)::head
-    real(real64)::se,bracket
-    if(head>=0.0_real64) then
-      kout=ksat
-    else
-      se=(1.0_real64+(alpha*abs(head))**nvg)**(-mvg)
-      bracket=1.0_real64-(1.0_real64-se**(1.0_real64/mvg))**mvg
-      kout=ksat*se**lexp*bracket**2
-    end if
-  end function vg_k
 end program tabulated_hydraulics_wrapper_characterization
