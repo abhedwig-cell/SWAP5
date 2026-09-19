@@ -1,0 +1,273 @@
+{
+  "schema": "swap5.lare.bc2.c4s.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4S",
+  "phase": "PREREGISTERED_AFTER_C4R_BEFORE_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION",
+  "title": "Blind D13-class same-partition CoRichards qualification",
+  "question": "On the exact C4R blind fixed-water-table workload, which conventional Richards discretisations using the frozen LARE R3-R12 partitions are numerically admissible under the same preregistered current-canonical D13 mode-5 Reference policy?",
+  "authority": {
+    "C4R_closeout": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "required_C4R_status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE",
+    "required_C4R_decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
+    "representation_reconciliation": "integration/f-rom/LARE_REPRESENTATION_SELECTION_RECONCILIATION_V2.json",
+    "Q1_closeout": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+    "frozen_lare_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "C4R_reference_canonical_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "D13_harness_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "D13_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "C4R_artifact_id": 10593626518,
+    "C4R_artifact_digest": "sha256:da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9",
+    "C4R_R16_stdout_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6",
+    "C4R_R2_stdout_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4"
+  },
+  "terminology": {
+    "CoRichards": "Conventional current-canonical Reference-Richards route executed on exactly the same fixed partition and spatial state count as the corresponding frozen LARE R_N member.",
+    "not_new_solver": true,
+    "comparator_role_only": true
+  },
+  "workload": {
+    "identity": "C4R blind D13-class workload",
+    "material": "B01 homogeneous Mualem-van Genuchten",
+    "depth_cm": 160,
+    "histories": {
+      "V01": {
+        "lambda": 0.375
+      },
+      "V02": {
+        "lambda": 0.625
+      },
+      "V03": {
+        "lambda": 0.875
+      },
+      "V04": {
+        "lambda": 1.125
+      }
+    },
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "mode 5 zero pressure head at fixed 160-cm lower boundary",
+    "observation_dt_day": 0.001,
+    "steps": 64,
+    "temporal_refinement": false,
+    "sinks": false,
+    "ET_root_uptake": false,
+    "moving_water_table": false
+  },
+  "partitions": [
+    {
+      "id": "R2",
+      "dimension": 2,
+      "thickness_cm": [
+        80,
+        80
+      ],
+      "role": "C4R exact-reproduction control, not same-partition LARE ladder member"
+    },
+    {
+      "id": "R3",
+      "dimension": 3,
+      "thickness_cm": [
+        140,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R4",
+      "dimension": 4,
+      "thickness_cm": [
+        130,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R5",
+      "dimension": 5,
+      "thickness_cm": [
+        120,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R6",
+      "dimension": 6,
+      "thickness_cm": [
+        110,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "thickness_cm": [
+        90,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R12",
+      "dimension": 12,
+      "thickness_cm": [
+        50,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R16",
+      "dimension": 16,
+      "thickness_cm": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "role": "C4R exact-reproduction fine control"
+    }
+  ],
+  "full_ladder_rule": "R3,R4,R5,R6,R8,R12 are all attempted. No dimension is selected from C4R fidelity results.",
+  "numerical_policy": {
+    "canonical_source_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "D13_semantics_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "step_dt_day": 0.001,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance": 1e-12,
+    "original_total_balance_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_retries": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "fallback_tolerance_rule": "exact D13 integrated-water-depth rule",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "no_temporal_subdivision": true
+  },
+  "preregistered_research_harness_changes": [
+    {
+      "id": "ALLOW_FROZEN_LADDER_GEOMETRIES",
+      "change": "Generalize D13 numnod guard from [2,16] to [2,3,4,5,6,8,12,16].",
+      "effect": "Execution plumbing only; no solver/physics/numerical-policy change."
+    },
+    {
+      "id": "BLIND_HISTORY_MATERIALIZATION",
+      "change": "Use the already-bound C4R labels/lambdas V01..V04.",
+      "effect": "Exact C4R workload identity."
+    },
+    {
+      "id": "OPTIONAL_HISTORY_FILTER",
+      "change": "Environment variable C4S_HISTORY_FILTER runs one fresh D13 history at a time; unset executes all four exactly as C4R.",
+      "effect": "Allows per-history fail-closed qualification without changing history physics."
+    },
+    {
+      "id": "NONUNIFORM_80CM_DIAGNOSTIC",
+      "change": "For nonuniform partitions, upper/lower output diagnostics use exact geometric overlap with 0-80 and 80-160 cm. R2/R16 retain original index-half expression to preserve byte-reproduction controls.",
+      "effect": "Diagnostic semantics only; not a qualification gate beyond finite output."
+    }
+  ],
+  "control_reproduction": {
+    "R2": {
+      "unfiltered_C4S_output_must_equal_C4R": true,
+      "expected_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4"
+    },
+    "R16": {
+      "unfiltered_C4S_output_must_equal_C4R": true,
+      "expected_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6"
+    }
+  },
+  "per_history_status": {
+    "QUALIFIED": "O0 and O2 both finish the selected history with exactly 64 committed states, hard transaction mass residual <=1e-12 cm, completion marker present, and byte-identical scientific stdout.",
+    "FAIL_CLOSED_REFERENCE_POLICY": "O0 and O2 both fail under the frozen D13 policy with the same first F_ROMV2_D13_REF_FAIL marker before publishing completion.",
+    "TECHNICAL_FAILURE": "Build, source/provenance, status identity, trace identity, or harness failure not classifiable as the frozen Reference policy."
+  },
+  "outputs": [
+    "status for every R3-R12 member and every V01-V04 history",
+    "first deterministic fail-closed marker",
+    "maximum transaction mass residual for qualified histories",
+    "fallback count for qualified histories",
+    "qualified-history count by dimension",
+    "minimum reduced dimension with any qualified history",
+    "minimum reduced dimension with all four histories qualified",
+    "R2/R16 exact C4R output reproduction"
+  ],
+  "hard_gates": {
+    "C4R_artifact_digest_exact": true,
+    "C4R_R2_R16_sha_exact": true,
+    "canonical_head_exact": true,
+    "D13_harness_source_exact": true,
+    "control_reproduction_exact": true,
+    "O0_O2_status_identity": true,
+    "qualified_O0_O2_trace_identity": true,
+    "qualified_mass_residual_cm": 1e-12,
+    "technical_failure_count": 0
+  },
+  "decisions": {
+    "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE": "Hard gates pass and at least one R3-R12 member qualifies all four blind histories.",
+    "C4S_CORICHARDS_PARTIAL_COMMON_COHORT_ONLY": "Hard gates pass, no R3-R12 member qualifies all four, and at least one qualifies one or more histories.",
+    "C4S_CORICHARDS_REDUCED_COMPARATOR_UNAVAILABLE": "Hard gates pass and no R3-R12 member qualifies any blind history.",
+    "C4S_COMPARATOR_AUTHORITY_BLOCKED": "Any provenance/control/technical hard gate fails."
+  },
+  "successor": {
+    "if_full": "A separately preregistered cost-fidelity screen may use members/histories from the full common cohort, with C4R fidelity metrics frozen and runtime measured prospectively.",
+    "if_partial": "Any later value screen must be explicitly restricted to the preregistered common qualified histories and must report coverage loss as part of value; no extrapolation to all C4R histories.",
+    "if_unavailable": "No same-partition CoRichards value comparator exists under current authority. Do not relax time step/tolerances/fallback after result.",
+    "if_blocked": "Repair technical/provenance issues only."
+  },
+  "firewalls": [
+    "NO_HYDROLOGICAL_ERROR_COMPARISON_IN_C4S",
+    "NO_RUNTIME_OR_SPEED_MEASUREMENT_IN_C4S",
+    "NO_TEMPORAL_REFINEMENT",
+    "NO_TOLERANCE_RELAXATION",
+    "NO_NEW_FALLBACK_CLASS",
+    "NO_PARTITION_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "model_changed": false,
+  "hydrological_comparison_authorized": false,
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
