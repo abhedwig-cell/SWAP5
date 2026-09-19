@@ -1546,7 +1546,12 @@ def validate_romv2_d16_if_present() -> str:
             "F-ROMV2-D16 adjudication drift")
     require(result["staged_preflight"]["first_attempt"]["SWAP_trajectory_evidence_consumed"] is False,
             "F-ROMV2-D16 first preflight consumed SWAP evidence")
-    require(result["staged_preflight"]["technical_repair"]["scientific_parameters_changed"] is False,
+    repair = result["staged_preflight"]["technical_repair"]
+    require(repair["hydrological_equations_changed"] is False
+            and repair["pulse_factors_changed"] is False
+            and repair["pulse_or_hiatus_duration_changed"] is False
+            and repair["bins_or_substep_changed"] is False
+            and repair["decision_gates_changed"] is False,
             "F-ROMV2-D16 technical preflight repair changed science")
     require(result["staged_preflight"]["admitted_preflight"]["decision"]
             == "D16_FMC_SURFACE_REDISTRIBUTION_INTERNAL_PREFLIGHT_PASS",
