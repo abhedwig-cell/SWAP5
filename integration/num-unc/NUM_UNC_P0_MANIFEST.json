@@ -128,9 +128,10 @@
     "protocol_change_allowed": false
   },
   "root_parameter_rule": {
-    "status": "UNBOUND_PENDING_AUTHORITY_SELECTION",
+    "status": "BLOCKED_NO_PROVENANCE_COMPLETE_PROFILE_FOUND_IN_CURRENT_QUALIFIED_CHAIN",
     "rule": "Use first repository-qualified/provenance-complete active-crop profile providing hlim3l,hlim3h,hlim4,adcrl,adcrh without undocumented reconstruction; otherwise block Experiment A.",
-    "invented_defaults_allowed": false
+    "invented_defaults_allowed": false,
+    "audit_note": "Current canonical root-uptake runtime binds/evaluates the process but the bounded search did not identify a qualified active-crop profile supplying all five required Feddes values. Experiment A remains blocked; no defaults may be invented."
   },
   "kill_criteria": [
     "all admissible N0/N1 runs inference-invariant",
@@ -141,5 +142,87 @@
     "software defect or unequal physics/forcing explains result",
     "discovery mechanism fails preregistered O14 replication",
     "direct prior literature already covers same mechanism design"
-  ]
+  ],
+  "p0c": {
+    "stage": "C0_LOCATOR_PREREGISTERED",
+    "purpose": "Locate and freeze the B01 surface flux-to-ponding transition with N0 only before any N1 primary comparison.",
+    "initial_effective_saturation": 0.85,
+    "selection_reason": "Middle preregistered P2E08 state stratum; avoids deliberately selecting the known near-wet Se=0.98 stratum with the largest prior Reference self-disagreement.",
+    "initial_state_rule": "Uniform pressure head obtained by inverting the B01 van Genuchten retention relation at Se=0.85; water content evaluated by the canonical B1.10 constitutive provider.",
+    "bottom_boundary": {
+      "mode": "PRESCRIBED_FLUX",
+      "qbot_cm_per_day": 0
+    },
+    "inactive_processes": [
+      "root_uptake",
+      "drainage",
+      "irrigation",
+      "snowmelt",
+      "runon",
+      "surface_evaporation"
+    ],
+    "surface": {
+      "potential_bare_soil_evaporation_cm_per_day": 0,
+      "potential_pond_evaporation_cm_per_day": 0,
+      "ponding_max_cm": 10,
+      "runoff_resistance_day": 1,
+      "runoff_exponent": 1,
+      "runoff_role": "nonbinding guard; any nonzero runoff makes the locator case invalid"
+    },
+    "forcing_schedule": {
+      "block_duration_day": 0.0064,
+      "pulse_block_fractions": [
+        0.25,
+        0.5,
+        0.75,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "postpulse_zero_blocks": 8,
+      "precipitation_rule": "q_precip(block)=multiplier*Ksatfit*pulse_block_fraction during the 8 pulse blocks; zero during 8 postpulse blocks",
+      "total_duration_day": 0.1024,
+      "common_forcing_breaks_for_N0_N1": true
+    },
+    "multiplier_search": {
+      "initial_values": [
+        0.25,
+        0.5,
+        1,
+        2,
+        4
+      ],
+      "declared_envelope": [
+        0.25,
+        4
+      ],
+      "bracket_rule": "first adjacent ordered pair with NO_PONDING then PONDING under N0",
+      "bisection_iterations": 12,
+      "early_stop_relative_width": 0.001,
+      "no_bracket_outcome": "NO_TRANSITION_IN_DECLARED_ENVELOPE",
+      "c_minus_rule": "0.90 * frozen_transition_multiplier",
+      "c_zero_rule": "frozen_transition_multiplier",
+      "c_plus_rule": "1.10 * frozen_transition_multiplier"
+    },
+    "ponding_event_rule": {
+      "threshold_cm": 1e-10,
+      "source_authority": "B110_DYN_TOP_PONDING_CLASSIFICATION_CM",
+      "event": "any accepted endpoint ponding_depth_cm > threshold"
+    },
+    "admissibility_additions": {
+      "exact_N0_step_required": true,
+      "retry_advised_is_inadmissible": true,
+      "nonzero_internal_retry_is_inadmissible": true,
+      "alternative_linear_solver_call_is_inadmissible": true,
+      "integrated_mass_residual_abs_max_cm": 1e-12,
+      "runoff_must_remain_zero": true
+    },
+    "data_firewall": {
+      "N1_execution_allowed_in_C0": false,
+      "N1_outcomes_allowed_in_case_selection": false,
+      "transition_cases_must_be_persisted_before_C1": true
+    }
+  }
 }
