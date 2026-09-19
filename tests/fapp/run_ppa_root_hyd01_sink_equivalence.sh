@@ -106,7 +106,7 @@ run_one(){
 run_one 0
 run_one 2
 
-for marker in PPA_ROOT_HYD01_QREF= PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS; do
+for marker in PPA_ROOT_HYD01_QREF= PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS; do
   grep -Fq "$marker" "$BUILD/o0/output.txt" || { cat "$BUILD/o0/output.txt" >&2; fail "missing marker $marker"; }
 done
 [[ "$(grep -c '^PPA_ROOT_HYD01_ROOT duration=' "$BUILD/o0/output.txt")" -eq 5 ]] || fail "expected five ROOT duration results"
