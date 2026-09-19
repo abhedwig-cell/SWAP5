@@ -2032,6 +2032,87 @@ def validate_romv2_d21_if_present() -> str:
     return "CLOSED_MATCHED_BOUNDARY_THRESHOLD_NO_GO_BEFORE_TRAJECTORY_EXPOSURE"
 
 
+def validate_romv2_d22_if_present() -> str:
+    status_path=Path("integration/f-rom/F-ROMV2_D22_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D22_PREREGISTRATION.json")=="bfac813721baf5638afc367936b99ab6dbad1275",
+            "F-ROMV2-D22 preregistration blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D22_RESULT.json")=="9d818920297fa7d439f5f1ac1f760f0c59263b57",
+            "F-ROMV2-D22 result blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D22_STATUS.json")=="1cd6c306efdf71f8140395c2500b8c0d2ae92ef5",
+            "F-ROMV2-D22 status blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D22_CANONICAL_EVIDENCE_MANIFEST.json")=="56c111c7722a0bc4ed9f0f41f629a16a9010255a",
+            "F-ROMV2-D22 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D22_PREREGISTRATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D22_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D22_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D22_CANONICAL_EVIDENCE_MANIFEST.json")
+    d21=load_json("integration/f-rom/F-ROMV2_D21_STATUS.json")
+    doc=Path("docs/science/F-ROMV2_D22_NATIVE_THRESHOLD_RESPONSE_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
+            and prereg["scientific_role"]["Richards_trajectory_test"] is False,
+            "F-ROMV2-D22 role drift")
+    require(prereg["common_context"]["rainfall_factor_ladder_Ksat"]==[0.25,0.5,1,2,4,8,16],
+            "F-ROMV2-D22 frozen factor ladder drift")
+    require("NO_MATCHED_LABEL_SEARCH" in prereg["firewalls"]
+            and "NO_RICHARDS_TRAJECTORY_GENERATION" in prereg["firewalls"],
+            "F-ROMV2-D22 firewalls drift")
+
+    require(result["decision"]=="FMC_NATIVE_SURFACE_THRESHOLD_RESPONSE_COMPETITIVE_WITH_R2",
+            "F-ROMV2-D22 decision drift")
+    require(result["integrity_pass"] is True,
+            "F-ROMV2-D22 integrity drift")
+    require(result["frontier_gates"]["all_required"] is True
+            and result["frontier_gates"]["retained"] is True
+            and all(v is True for k,v in result["frontier_gates"].items()
+                    if k not in ("all_required","retained")),
+            "F-ROMV2-D22 frontier gate drift")
+    require(result["onsets_Ksat"]["R16"]=={"ponding":2.0,"runoff":4.0}
+            and result["onsets_Ksat"]["R2"]=={"ponding":1.0,"runoff":2.0}
+            and result["onsets_Ksat"]["FMC"]=={"ponding":1.0,"runoff":2.0},
+            "F-ROMV2-D22 onset result drift")
+    require(result["response_curve_metrics_vs_R16"]["FMC"]["infiltration_RMSE_cm"]
+            < result["response_curve_metrics_vs_R16"]["R2"]["infiltration_RMSE_cm"]
+            and result["response_curve_metrics_vs_R16"]["FMC"]["surface_store_RMSE_cm"]
+            < result["response_curve_metrics_vs_R16"]["R2"]["surface_store_RMSE_cm"]
+            and result["response_curve_metrics_vs_R16"]["FMC"]["runoff_RMSE_cm"]
+            < result["response_curve_metrics_vs_R16"]["R2"]["runoff_RMSE_cm"],
+            "F-ROMV2-D22 continuous response advantage drift")
+    require(result["scientific_interpretation"]["R16_threshold_equivalence"] is False
+            and result["scientific_interpretation"]["D21_reclassified"] is False
+            and result["scientific_interpretation"]["D13_D20_reclassified"] is False,
+            "F-ROMV2-D22 scientific boundary drift")
+
+    require(status["phase"]=="CLOSED_NATIVE_SURFACE_THRESHOLD_RESPONSE_CANDIDACY_RETAINED_RELATIVE_TO_R2"
+            and status["all_preregistered_frontier_gates_pass"] is True
+            and status["R16_threshold_equivalence"] is False
+            and status["Richards_trajectory_qualification"] is False,
+            "F-ROMV2-D22 terminal status drift")
+    require(d21["decision"]=="D21_MATCHED_RAIN_PONDING_RUNOFF_BOUNDARY_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+            "F-ROMV2-D22 reclassifies D21")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["source_execution"]["pull_request_merged"] is False
+            and manifest["execution_surfaces_imported"] is False
+            and manifest["parameter_or_gate_retuning_after_exposure"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D22 provenance drift")
+    require(manifest["frozen_payload_digests"]["raw_result_sha256"]
+            =="dedbb131e159f1f1ac7af87ef2e51d7ac3e03b618533c9fbea59a877b5356f3d",
+            "F-ROMV2-D22 raw result digest drift")
+
+    require("D21 and D22 must both remain true." in doc,
+            "F-ROMV2-D22 non-reclassification statement missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D22 production prohibition missing")
+    return "CLOSED_NATIVE_SURFACE_THRESHOLD_RESPONSE_CANDIDACY_RETAINED_RELATIVE_TO_R2"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2079,6 +2160,7 @@ def main() -> int:
     romv2_d19_phase = validate_romv2_d19_if_present()
     romv2_d20_phase = validate_romv2_d20_if_present()
     romv2_d21_phase = validate_romv2_d21_if_present()
+    romv2_d22_phase = validate_romv2_d22_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2110,6 +2192,7 @@ def main() -> int:
     print(f"F_ROMV2_D19_PHASE={romv2_d19_phase}")
     print(f"F_ROMV2_D20_PHASE={romv2_d20_phase}")
     print(f"F_ROMV2_D21_PHASE={romv2_d21_phase}")
+    print(f"F_ROMV2_D22_PHASE={romv2_d22_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
