@@ -1,0 +1,145 @@
+{
+  "schema": "swap5.num_unc.p0.preregistration.v0.1",
+  "workstream": "NUM-UNC",
+  "work_unit": "NUM-UNC-P0",
+  "phase": "PREREGISTERED_HARNESS_SPECIFICATION",
+  "protocol_date": "2026-09-19",
+  "repository_observation_baseline": "187e30153c890151768e929170d14bb22af1d86d",
+  "canonical_branch": "integration/f-ci-canonical",
+  "research_branch": "research/num-unc-p0",
+  "production_source_change_allowed": false,
+  "reference_source_change_allowed": false,
+  "primary_hypothesis": "Hydrological transition dynamics can amplify or preserve differences among independently study-admissible temporal realizations sufficiently to change a preregistered event- or regime-level scientific inference.",
+  "p0a": {
+    "numerical_treatment": "TEMPORAL_POLICY_ONLY",
+    "solver": "REFERENCE_RICHARDS_ONLY",
+    "grid_primary": {
+      "cells": 16,
+      "cell_thickness_cm": 10,
+      "total_depth_cm": 160
+    },
+    "temporal_configurations": [
+      {
+        "id": "N0",
+        "requested_dt_day": 0.0064,
+        "role": "transition-location and primary admissible realization"
+      },
+      {
+        "id": "N1",
+        "requested_dt_day": 0.0032,
+        "role": "second primary admissible realization"
+      }
+    ],
+    "finer_probe": {
+      "requested_dt_day": 0.0016,
+      "role": "diagnostic only; not presumed truth"
+    },
+    "p2e08_authority": "docs/publication/P2E08_REFERENCE_VALID_CALIBRATION_DOMAIN_RESULT.json",
+    "tolerance_variation_allowed": false,
+    "solver_substitution_allowed": false,
+    "spatial_discretization_as_treatment_allowed": false,
+    "groundwater_coupling_numerics_allowed": false
+  },
+  "materials": {
+    "discovery": {
+      "id": "B01",
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "ksatfit_cm_per_day": 31.225016,
+      "ksatexm_cm_per_day": 312.25016,
+      "lambda": 0.98087
+    },
+    "replication": {
+      "id": "O14",
+      "theta_r": 0.01,
+      "theta_s": 0.393878,
+      "alpha_per_cm": 0.003288,
+      "n": 1.616573,
+      "ksatfit_cm_per_day": 2.495984,
+      "ksatexm_cm_per_day": 4.991968,
+      "lambda": 0.514012,
+      "selection_reason": "Prospectively chosen hydraulic contrast to B01; not selected from NUM-UNC outcomes."
+    }
+  },
+  "experiments": [
+    {
+      "id": "A",
+      "name": "drought_stress_transition",
+      "continuation_variable": "initial_effective_saturation",
+      "root_uptake": "required",
+      "primary_inference": [
+        "STRESS_BEFORE_RESCUE",
+        "STRESS_AFTER_RESCUE"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "capillary_support_transition",
+      "continuation_variable": "prescribed_lower_boundary_head",
+      "coupled_groundwater": false,
+      "primary_inference": [
+        "STRESS_BEFORE_EVENT",
+        "STRESS_AFTER_EVENT"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "surface_regime_transition",
+      "continuation_variable": "precipitation_pulse_multiplier_of_Ksatfit",
+      "root_uptake": false,
+      "initial_bracket": [
+        0.25,
+        2
+      ],
+      "primary_inference": [
+        "NO_PONDING_EVENT",
+        "PONDING_EVENT"
+      ]
+    }
+  ],
+  "transition_case_policy": {
+    "locator_configuration": "N0_ONLY",
+    "freeze_before_N1": true,
+    "frozen_positions": [
+      "minus",
+      "transition",
+      "plus"
+    ],
+    "posthoc_case_relocation_allowed": false
+  },
+  "amplification_rule": {
+    "post_to_pre_divergence_ratio_min": 4,
+    "post_vs_reference_floor_multiplier_min": 2,
+    "requires_endpoint_change": true,
+    "threshold_flip_without_amplification_class": "THRESHOLD_PROXIMITY_ONLY"
+  },
+  "outcome_classes": [
+    "INVARIANT",
+    "THRESHOLD_PROXIMITY_ONLY",
+    "AMPLIFIED_INFERENCE_FRAGILITY",
+    "NUMERICAL_FAILURE_ONLY",
+    "UNRESOLVED_REFERENCE_ENVELOPE"
+  ],
+  "replication_rule": {
+    "required_for_go": true,
+    "material": "O14",
+    "protocol_change_allowed": false
+  },
+  "root_parameter_rule": {
+    "status": "UNBOUND_PENDING_AUTHORITY_SELECTION",
+    "rule": "Use first repository-qualified/provenance-complete active-crop profile providing hlim3l,hlim3h,hlim4,adcrl,adcrh without undocumented reconstruction; otherwise block Experiment A.",
+    "invented_defaults_allowed": false
+  },
+  "kill_criteria": [
+    "all admissible N0/N1 runs inference-invariant",
+    "inference differences occur only in inadmissible trajectories",
+    "all differences are threshold-proximity-only",
+    "spatial instability cannot be separated from temporal effect",
+    "accepted-state alignment removes apparent amplification",
+    "software defect or unequal physics/forcing explains result",
+    "discovery mechanism fails preregistered O14 replication",
+    "direct prior literature already covers same mechanism design"
+  ]
+}
