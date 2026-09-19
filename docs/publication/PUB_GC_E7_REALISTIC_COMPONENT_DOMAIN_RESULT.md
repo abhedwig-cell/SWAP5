@@ -122,7 +122,7 @@ A future production capability that admits active drainage and the required Hups
 
 ## Current-canonical reconciliation
 
-Current canonical basis for this closeout: `integration/f-ci-canonical@3bc160ad6b73f8f491b07671ec747cf2b2bc3074`.
+Current canonical basis for this closeout: `integration/f-ci-canonical@6ec1c53c1ed051beae6e750a36cbf279a88a87a1`.
 
 The decisive production boundary is unchanged:
 
