@@ -1,0 +1,132 @@
+name: F-ROM-LARE persist C4F mechanism closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4f-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover reconciled C4F authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4f
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10590740470/zip" > /tmp/c4f.zip
+          echo "6fe1da8685aa510a50cd031eb4d8489f768fb28c69601bbb7447530972b8b188  /tmp/c4f.zip" | sha256sum -c -
+          unzip -q /tmp/c4f.zip -d /tmp/c4f
+          echo "94301aa9e0f086b01cc35fa4be34fc669461884d0a54b0d62d4f98b7628db9f9  /tmp/c4f/LARE_BC2_C4F_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4F
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4f/LARE_BC2_C4F_RESULT.json'))
+          assert r['decision']=='VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E'
+          assert r['complete'] is True
+          assert r['hypotheses']['H_VECTOR_INTERFERENCE']['supported'] is True
+          assert r['hypotheses']['H_TERMINAL_WIDTH_AMPLIFICATION']['supported'] is True
+          assert r['hard_checks']['maximum_additive_or_mass_residual_cm'] <= 1e-10
+          assert r['hard_checks']['maximum_squared_norm_identity_residual_theta2'] <= 1e-12
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4F_CLOSEOUT_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout and science note
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4f/LARE_BC2_C4F_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4f.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4F',
+            'status':'CLOSED_MECHANISM_EXPLAINED_NO_MODEL_CHANGE',
+            'decision':r['decision'],
+            'authority':{
+              'case_execution_workflow_run':35462236101,
+              'case_execution_head':'a83ba7644472a104f943fdec8c9383196f667376',
+              'case_artifacts':{
+                '2.5:WT_RISE':{'id':10590481052,'digest':'sha256:5d2fd28843bcce6f2f90cd8249acdf3a9a4fa6bbc84f68937fb37edd82f00bb3'},
+                '2.5:WT_FALL':{'id':10589124634,'digest':'sha256:0798e0f1ec8365d298895cc344114c76825ff3050e0df74b64b3e73f9f91422c'},
+                '5.0:WT_RISE':{'id':10590576118,'digest':'sha256:fe60ea191f7c98a131e55e6ae2ce138b164a0775cebb556157406502237979a9'},
+                '5.0:WT_FALL':{'id':10589074987,'digest':'sha256:0cdb220285cae64906e3d3002f1b545861f52b5bd97c1b51eccdae9a7a3df049'}
+              },
+              'reconciliation_workflow_run':35462516670,
+              'reconciliation_head':'617d5da328356d11853fa873bc506c5a7f9036d5',
+              'aggregate_artifact_id':10590740470,
+              'aggregate_artifact_digest':'sha256:6fe1da8685aa510a50cd031eb4d8489f768fb28c69601bbb7447530972b8b188',
+              'result_sha256':'94301aa9e0f086b01cc35fa4be34fc669461884d0a54b0d62d4f98b7628db9f9'
+            },
+            'superseded_intermediate_aggregate':{
+              'workflow_run':35462236101,
+              'artifact_id':10590985089,
+              'artifact_digest':'sha256:1147760a9187c15d479f89d4bd49090a139f19596845cc4000c8770d8223c957',
+              'reason':'The first aggregate compared the full 512-interval C4F WT_FALL ratio with the intentionally 13-interval admissible-only C4E ratio. The immutable case evidence was valid; only the unlike-cohort crosscheck was corrected.'
+            },
+            'mechanism':{
+              'vector_interference':'Exact additive-vector geometry reproduces the sign of QI-removal response on every interval. At 2.5 cm WT_RISE QI and the non-QI remainder are strongly anti-aligned, so QI cancels other local error and removing it worsens shape fidelity.',
+              'terminal_width_scaling':'QI is a mass-neutral bulk-terminal storage transfer. Per unit storage, terminal mean-theta response is exactly 1/d; 2.5 cm therefore has twice the conversion factor of 5 cm.',
+              'admissibility':'The 499 QI-removal blocks for 2.5 cm WT_FALL coincide exactly with negative mean-theta state margin and are not mass-ledger failures.'
+            },
+            'next_authority':'SECONDARY_METRIC_SENSITIVITY_REVIEW_BEFORE_CLOSURE_DESIGN',
+            'primary_metric_status':'The preregistered unweighted mass-neutral theta RMS remains authoritative for C2/C3/C4E. C4F does not retroactively replace it.',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4F_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4F_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4F closeout
+
+          C4F was an observation-only explanation step after C4E. No Richards solve, free counterfactual propagation, fitted correction or model change was introduced.
+
+          The immutable case execution is workflow run 35462236101 at head a83ba7644472a104f943fdec8c9383196f667376. A cohort-semantics error in the first aggregate compared a full-history C4F ratio with the deliberately admissible-subset C4E ratio for 2.5 cm WT_FALL. The four case artifacts were not changed or rerun. Reconciliation run 35462516670 reused those exact artifacts and corrected only that unlike-cohort comparison.
+
+          Formal decision: VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E.
+
+          The squared-norm identity closes to about 2.12e-22 theta2 and the additive/mass identities to about 2.13e-14 cm. The sign of QI-removal improvement or deterioration is reproduced on every interval without fitted parameters.
+
+          For 2.5 cm WT_RISE, QI and the non-QI remainder are almost antiparallel: mean cosine is about -0.985 in both internal-dt routes. QI therefore cancels a larger opposing error. Removing QI worsens the primary shape norm on every interval and increases the pooled norm by about a factor 3.85.
+
+          For 2.5 cm WT_FALL the anti-alignment is stronger, mean cosine about -0.997. QI removal is physically inadmissible on 499 of 512 intervals. Those 499 failures coincide exactly with a negative mean-theta state margin. This is not a mass-conservation failure.
+
+          For 5 cm WT_RISE, QI removal reduces the pooled primary shape norm to about 0.297 of BASE and helps on 98.8% of intervals. For 5 cm WT_FALL it reduces the pooled norm to about 0.598 of BASE and helps on 99.8% of intervals. The exact removal criterion, not the sign of QI alone, explains these outcomes.
+
+          The terminal mean-theta response to a unit QI storage transfer is exactly 1/d. The measured conversion factor is 0.4 per cm for d=2.5 cm and 0.2 per cm for d=5 cm. Thus the thinner terminal representation doubles this geometric sensitivity before any constitutive nonlinearity is considered.
+
+          C4F explains the C4E behavior but does not choose a corrected closure. The preregistered unweighted mass-neutral theta RMS remains the historical primary shape metric for C2, C3 and C4E. Before a new closure hypothesis is allowed, a separate secondary metric-sensitivity review must determine whether the width-dependent causal picture persists under a depth-weighted hydrological shape norm. That review may qualify interpretation, but may not rewrite the original metric or its results.
+          MD
+
+      - name: Persist exact result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c4f/LARE_BC2_C4F_RESULT.json integration/f-rom/LARE_BC2_C4F_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4F_RESULT.json integration/f-rom/LARE_BC2_C4F_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4F_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4F vector interference mechanism"
+          git push origin HEAD:work/f-rom-lare-rs1
