@@ -1,0 +1,185 @@
+name: TAB-HYD Hupselbrook end-to-end characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - 'research/tabulated_hydraulics/**'
+      - '.github/workflows/tabulated-hydraulics-hupselbrook.yml'
+
+jobs:
+  hupselbrook-analytic-vs-table:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned current SWAP implementation
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: upstream-swap
+
+      - name: Checkout pinned SWAP regression cases
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: testcases
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+      - name: Build pinned current SWAP
+        shell: bash
+        run: |
+          set -euo pipefail
+          meson setup upstream-swap/builddir upstream-swap -Denable_pfunit=false
+          meson compile -C upstream-swap/builddir
+          test -x upstream-swap/builddir/swap
+          upstream-swap/builddir/swap --help >/dev/null 2>&1 || true
+          {
+            echo "swap_commit=c22bd832ddf3e53e330a552f5e31e74f183362d1"
+            echo "testcases_commit=a839e2e905f34dd264ad0c739f638454b3023def"
+            gfortran --version | head -1
+            meson --version
+          } > build-identity.txt
+
+      - name: Generate equivalent Hupselbrook hydraulic tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/hupselbrook/tables
+          python research/tabulated_hydraulics/generate_hupselbrook_tables.py build/hupselbrook/tables | tee build/hupselbrook/table-generation.txt
+          wc -l build/hupselbrook/tables/*.csv | tee -a build/hupselbrook/table-generation.txt
+
+      - name: Prepare four Hupselbrook variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import shutil
+
+          root = Path("build/hupselbrook")
+          src = Path("testcases/cases/hupselbrook/legacy")
+          variants = {
+              "analytic_swkimpl0": (0, 0),
+              "table_swkimpl0": (1, 0),
+              "analytic_swkimpl1": (0, 1),
+              "table_swkimpl1": (1, 1),
+          }
+          for name, (swsophy, swkimpl) in variants.items():
+              dst = root / name
+              if dst.exists():
+                  shutil.rmtree(dst)
+              shutil.copytree(src, dst)
+              template = dst / "swap_linux.swp.template"
+              text = template.read_text()
+              text, n1 = re.subn(r"(?im)^(\s*SWSOPHY\s*=\s*)[01](\b.*)$", rf"\g<1>{swsophy}\2", text, count=1)
+              text, n2 = re.subn(r"(?im)^(\s*SWKIMPL\s*=\s*)[01](\b.*)$", rf"\g<1>{swkimpl}\2", text, count=1)
+              if n1 != 1 or n2 != 1:
+                  raise RuntimeError(f"failed to edit switches for {name}: SWSOPHY={n1}, SWKIMPL={n2}")
+              (dst / "swap.swp").write_text(text)
+              if swsophy == 1:
+                  for table in ("topsoil_sand_b2.csv", "subsoil_sand_o2.csv"):
+                      shutil.copy2(root / "tables" / table, dst / table)
+              print(name, "SWSOPHY", swsophy, "SWKIMPL", swkimpl)
+          PY
+
+      - name: Run all Hupselbrook variants
+        shell: bash
+        run: |
+          set -uo pipefail
+          BIN="$GITHUB_WORKSPACE/upstream-swap/builddir/swap"
+          OUT="$GITHUB_WORKSPACE/build/hupselbrook/run-status.tsv"
+          printf "variant\treturn_code\tduration_seconds\toutput_csv\n" > "$OUT"
+          for variant in analytic_swkimpl0 table_swkimpl0 analytic_swkimpl1 table_swkimpl1; do
+            work="$GITHUB_WORKSPACE/build/hupselbrook/$variant"
+            start=$(date +%s)
+            set +e
+            (
+              cd "$work"
+              timeout 240 "$BIN"
+            ) >"$work/run.log" 2>&1
+            rc=$?
+            set -e
+            end=$(date +%s)
+            duration=$((end-start))
+            if [ -f "$work/result_output.csv" ]; then
+              csv=yes
+            else
+              csv=no
+            fi
+            printf "%s\t%s\t%s\t%s\n" "$variant" "$rc" "$duration" "$csv" | tee -a "$OUT"
+            tail -40 "$work/run.log" > "$work/run-tail.log" || true
+          done
+          cat "$OUT"
+
+      - name: Compare successful analytical and table runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/hupselbrook/comparison
+          for impl in 0 1; do
+            a="build/hupselbrook/analytic_swkimpl$impl/result_output.csv"
+            t="build/hupselbrook/table_swkimpl$impl/result_output.csv"
+            out="build/hupselbrook/comparison/swkimpl$impl.json"
+            if [ -f "$a" ] && [ -f "$t" ]; then
+              python research/tabulated_hydraulics/compare_swap_outputs.py "$a" "$t" "$out" | tee "build/hupselbrook/comparison/swkimpl$impl.txt"
+            else
+              printf "comparison_unavailable analytic=%s table=%s\n" "$([ -f "$a" ] && echo yes || echo no)" "$([ -f "$t" ] && echo yes || echo no)" | tee "build/hupselbrook/comparison/swkimpl$impl.txt"
+            fi
+          done
+
+      - name: Write characterization summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "# TAB-HYD Hupselbrook end-to-end characterization"
+            echo
+            echo "Pinned SWAP: c22bd832ddf3e53e330a552f5e31e74f183362d1"
+            echo "Pinned test cases: a839e2e905f34dd264ad0c739f638454b3023def"
+            echo
+            echo "## Run status"
+            echo '~~~'
+            cat build/hupselbrook/run-status.tsv
+            echo '~~~'
+            for impl in 0 1; do
+              echo
+              echo "## SWKIMPL=$impl"
+              echo '~~~'
+              cat "build/hupselbrook/comparison/swkimpl$impl.txt"
+              echo '~~~'
+            done
+          } > build/hupselbrook/summary.md
+          cat build/hupselbrook/summary.md
+
+      - name: Upload Hupselbrook characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-hupselbrook-e2e-evidence
+          path: |
+            build-identity.txt
+            build/hupselbrook/table-generation.txt
+            build/hupselbrook/run-status.tsv
+            build/hupselbrook/summary.md
+            build/hupselbrook/comparison/
+            build/hupselbrook/*/run.log
+            build/hupselbrook/*/run-tail.log
+            build/hupselbrook/*/result_output.csv
+            build/hupselbrook/tables/
