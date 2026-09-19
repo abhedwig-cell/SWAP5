@@ -124,9 +124,13 @@ contains
     sub_dt=step_dt/real(substeps,real64)
     do step=1,NSTEPS
       call configure_case(ih,step,h0,k0,qeq,p,forcing)
+      sub_t0=t0
       do substep=1,substeps
-        sub_t0=t0
-        sub_t1=sub_t0+sub_dt
+        if(substep==substeps)then
+          sub_t1=real(seed_intervals,real64)*seed_dt+real(step,real64)*step_dt
+        else
+          sub_t1=sub_t0+sub_dt
+        end if
         call strict_first_sample(column,template,p,state,forcing,sub_t0,sub_t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
         call require(ok,'LAREDYN0R accepted history step')
         call require(abs(mass)<=hard_mass_gate,'LAREDYN0R hard mass gate')
@@ -139,9 +143,10 @@ contains
           history_fallbacks=history_fallbacks+1
           total_fallbacks=total_fallbacks+1
         end if
-        t0=sub_t1
+        sub_t0=sub_t1
       end do
-      t1=t0
+      t1=sub_t1
+      t0=t1
       total_states=total_states+1
       call emit_state(ih,step,state,forcing,t1-sub_dt,t1,mass,bex,bflux,nl,back,fallback_used)
     end do
