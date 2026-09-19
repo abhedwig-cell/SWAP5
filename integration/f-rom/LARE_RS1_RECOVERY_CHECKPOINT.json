@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
+  "branch": "work/f-rom-lare-rs1",
+  "checkpoint_live_head_observed": "06172343fb4e0b5d3f939e689078c8cb68b54893",
+  "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
+  "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
+  "durable_scientific_authority": [
+    {
+      "unit": "RS1-GW-P1",
+      "result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "RS1-GW-P2",
+      "result": "integration/f-rom/LARE_RS1_GW_P2_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "RS1-GW-P2C",
+      "result": "integration/f-rom/LARE_RS1_GW_P2C_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C2A",
+      "result": "integration/f-rom/LARE_BC2_C2A_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C2B",
+      "result": "integration/f-rom/LARE_BC2_C2B_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C2C",
+      "result": "integration/f-rom/LARE_BC2_C2C_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C3",
+      "result": "integration/f-rom/LARE_BC2_C3_RESULT.json",
+      "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C3A",
+      "result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+      "status": "PERSISTED"
+    }
+  ],
+  "active_units_without_durable_result": [
+    {
+      "unit": "BC2-C3B",
+      "preregistration": "integration/f-rom/LARE_BC2_C3B_PREREGISTRATION.json",
+      "expected_result": "integration/f-rom/LARE_BC2_C3B_RESULT.json",
+      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c3b.yml",
+      "hardening_commit": "13035355e714b6d9add44868ec629ef91ff63460",
+      "resume_rule": "If expected result exists, do not rerun. Else inspect newest non-superseded C3B run/artifacts and aggregate only missing evidence."
+    },
+    {
+      "unit": "BC2-C4D",
+      "preregistration": "integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json",
+      "expected_result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
+      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c4d.yml",
+      "hardening_commit": "fb529e34f07b6f5509d8f60378bcdbe3ad078dd6",
+      "resume_rule": "If expected result exists, do not rerun. Else inspect newest non-superseded C4D case artifacts; rerun only a missing width, then aggregate."
+    },
+    {
+      "unit": "BC2-C4B",
+      "preregistration": "integration/f-rom/LARE_BC2_C4B_PREREGISTRATION.json",
+      "expected_result": "integration/f-rom/LARE_BC2_C4B_RESULT.json",
+      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c4b.yml",
+      "hardening_commit": "8d023448e71254740c163d7f44e18c3cc429d340",
+      "resume_rule": "C4B has several superseded historical runs. Ignore them unless needed for provenance. Use only the newest run compatible with live preregistration/analyzer; structured BC2_C4B_CASE_BLOCKED is a valid preregistered case outcome and must not be blindly rerun."
+    }
+  ],
+  "workflow_hardening": {
+    "case_timeout_minutes": 15,
+    "aggregate_target_timeout_minutes": 5,
+    "supersession": "workflow-level concurrency with cancel-in-progress=true for C3B/C4B/C4D",
+    "case_evidence": "structured JSON artifact per matrix case; C3B/C4B/C4D preserve case evidence independently of aggregate",
+    "scientific_effect": "NONE"
+  },
+  "resume_algorithm": [
+    "Reconcile live branch head.",
+    "Check expected durable RESULT.json first.",
+    "If result exists and authority hashes remain valid: reuse it and continue.",
+    "If result does not exist: inspect latest relevant workflow artifact before launching anything.",
+    "Persist an aggregate/blocked result as soon as enough evidence exists.",
+    "Update this checkpoint before launching the next expensive scientific work unit.",
+    "Never rerun a qualified predecessor solely because chat/session context was lost."
+  ],
+  "next_state_boundary": "Close/persist C3B, C4D and C4B independently. Do not wait for all three before persisting any one that completes.",
+  "production_rom_authorized": false
+}
