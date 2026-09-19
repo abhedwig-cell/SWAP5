@@ -26,7 +26,6 @@ program test_lare_rs1_gw_library
   integer, parameter :: NHIST=6, NSTEPS=1024
   integer, parameter :: SYM_HOLD=1, SYM_TOP_PLUS=2, SYM_TOP_MINUS=3, SYM_RISE=4, SYM_FALL=5, &
                         SYM_COMBINED_RISE_PLUS=6, SYM_COMBINED_FALL_MINUS=7
-  real(real64), parameter :: se0=0.85_real64
   real(real64), parameter :: seed_dt=0.0016_real64
   integer, parameter :: seed_intervals=2
   real(real64), parameter :: step_dt=0.0008_real64
@@ -311,7 +310,7 @@ contains
   function history_label(ih) result(label)
     integer,intent(in) :: ih
     character(len=3) :: label
-    write(label,'(A1,I2.2)') 'G',ih
+    write(label,'(A1,I2.2)') 'G',ih-1
   end function history_label
 
   pure function split_label(ih) result(label)
@@ -373,34 +372,6 @@ contains
     is_head_symbol=symbol==SYM_RISE.or.symbol==SYM_FALL.or. &
          symbol==SYM_COMBINED_RISE_PLUS.or.symbol==SYM_COMBINED_FALL_MINUS
   end function is_head_symbol
-
-  function history_label(ih) result(label)
-    integer,intent(in) :: ih
-    character(len=3) :: label
-    write(label,'(A1,I2.2)') merge('D','H',ih<=8),merge(ih,ih-8,ih<=8)
-  end function history_label
-
-  pure function split_label(ih) result(label)
-    integer,intent(in) :: ih
-    character(len=9) :: label
-    if(ih<=8)then;label='DISCOVERY'
-    else;label='HELD_OUT ';end if
-  end function split_label
-
-  pure function symbol_label(symbol) result(label)
-    integer,intent(in) :: symbol
-    character(len=24) :: label
-    select case(symbol)
-    case(SYM_HOLD); label='HOLD'
-    case(SYM_TOP_PLUS); label='TOP_PLUS'
-    case(SYM_TOP_MINUS); label='TOP_MINUS'
-    case(SYM_RISE); label='BOTTOM_HEAD_RISE'
-    case(SYM_FALL); label='BOTTOM_HEAD_FALL'
-    case(SYM_COMBINED_RISE_PLUS); label='COMBINED_RISE_PLUS'
-    case(SYM_COMBINED_FALL_MINUS); label='COMBINED_FALL_MINUS'
-    case default; label='UNKNOWN'
-    end select
-  end function symbol_label
 
   subroutine seed_steady(column,template,p,state,forcing,qeq,ok)
     type(fmr_logical_column_t),intent(in) :: column
@@ -617,6 +588,7 @@ contains
 
   subroutine initialize_state(p,se_anchor,h0,k0,state)
     type(fmr_b110_physical_parameters_t),intent(in) :: p
+    real(real64),intent(in) :: se_anchor
     real(real64),intent(out) :: h0,k0
     type(fmr_b110_physical_state_t),intent(out) :: state
     type(b110_default_mvg_parameters_t),target :: hp
