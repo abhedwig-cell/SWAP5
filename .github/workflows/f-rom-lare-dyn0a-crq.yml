@@ -1,0 +1,42 @@
+name: F-ROM-LARE DYN0A coarse Richards temporal qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_PREREGISTRATION.json'
+      - 'tests/rom/test_lare_dyn0a_reference.f90'
+      - 'tests/rom/analyze_lare_dyn0a_crq.py'
+      - 'tests/rom/run_lare_dyn0a_crq.sh'
+      - '.github/workflows/f-rom-lare-dyn0a-crq.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crq:
+    strategy:
+      fail-fast: false
+      matrix:
+        geometry: [d3, d2]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute preregistered coarse Richards temporal qualification
+        env:
+          LARE_DYN0A_CRQ_GEOMETRY: ${{ matrix.geometry }}
+        run: bash tests/rom/run_lare_dyn0a_crq.sh
+
+      - name: Upload CRQ evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-crq-${{ matrix.geometry }}
+          path: LARE_DYN0A_CRQ_EVIDENCE/
+          if-no-files-found: warn
