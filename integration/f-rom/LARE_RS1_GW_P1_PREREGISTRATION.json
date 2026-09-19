@@ -53,7 +53,7 @@
     ],
     "coordinate": "layer mean theta; exactly information-equivalent to fixed-layer storage W_i after multiplication by layer thickness",
     "collision_at_multiplier": "all candidate layer-mean differences <= multiplier * diagnostic theta_floor while full theta L_inf exceeds diagnostic theta_floor",
-    "score": "for each dimension minimize collision count lexicographically at multipliers [4,2,1,0.5,0.25]; ties use lexicographically smallest cut tuple",
+    "score": "exact hierarchical evaluation of the frozen lexicographic collision-count score [4,2,1,0.5,0.25]: exhaust all partitions at 4x; evaluate only exact minimum-count ties at each subsequent multiplier; final tie uses lexicographically smallest cut tuple",
     "reason": "favor partitions that remain state-separating as the purely diagnostic proximity neighborhood is widened"
   },
   "fixed_controls": [
@@ -110,11 +110,11 @@
     "pair_reselection_after_future_response": false
   },
   "outputs": [
-    "collision_count_by_partition_dimension_and_proximity_multiplier",
-    "response_blind_selected_partition_per_dimension",
-    "fixed_control_collision_counts",
-    "frozen_adversarial_pair_manifests",
-    "full_state_contrast_for_each_frozen_pair"
+    "minimum collision count and tie count per dimension at the widest 4x diagnostic proximity",
+    "response-blind selected partition per dimension under the exact hierarchical lexicographic score",
+    "all five diagnostic multiplier collision counts for each selected partition and fixed control",
+    "frozen adversarial pair manifests",
+    "full-state contrast for each frozen pair"
   ],
   "next_gate": {
     "name": "LARE-RS1-GW-P2",
@@ -129,5 +129,11 @@
     "NO_PURPOSE_THRESHOLD_TUNING",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_method_clarification": {
+    "before_first_P1_execution": true,
+    "reason": "Avoid multiplying the exact all-pair bitset workload across five proximity scales while preserving the frozen response-blind ranking.",
+    "method": "Evaluate every partition first at the widest 4x diagnostic proximity. For each dimension retain all minimum-collision ties. Evaluate only those ties successively at 2x, 1x, 0.5x and 0.25x until one or more ties remain; final tie-break is lexicographic cut tuple. Fixed controls and the finally selected partition per dimension are then reported at all five multipliers.",
+    "scientific_effect": "None. This is algebraically identical to the already frozen lexicographic score [4,2,1,0.5,0.25] and uses no future response."
+  }
 }
