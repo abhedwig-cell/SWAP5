@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.lare.ca1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-CA1",
+  "title": "Published multi-layer LARE closure authority extraction",
+  "phase": "PREREGISTERED_BEFORE_EQUATION_TRANSCRIPTION_OR_IMPLEMENTATION",
+  "predecessor": {
+    "state_closeout": "docs/science/F-ROM_LARE_RS1_GW_CLOSEOUT.md",
+    "decision": "PROCEED_TO_LARE_CLOSURE_QUALIFICATION_B01_GW_LAB"
+  },
+  "scientific_question": "What exact multi-layer integrated-Richards equations, constitutive averaging rules, interface-flux closure, boundary-condition formulas and time-integration semantics define the published LARE method that will be tested against SWAP Reference Richards?",
+  "authority_order": [
+    {
+      "priority": 1,
+      "source": "He et al. 2026, A Numerical Model for Integrated Form of Richards Equation, Hydrological Processes 40(1), DOI 10.1002/hyp.70396",
+      "role": "current published LARE authority"
+    },
+    {
+      "priority": 2,
+      "source": "Junhao He 2021 Auburn dissertation, Modeling Soil Moisture Dynamics in Wetlands",
+      "role": "historical multi-layer LARE derivation and algorithm authority where the 2026 web article does not expose equations"
+    },
+    {
+      "priority": 3,
+      "source": "He et al. 2021, A two-layer numerical model of soil moisture dynamics: Model development, DOI 10.1016/j.jhydrol.2021.126797",
+      "role": "two-layer derivation and sign/boundary semantics"
+    },
+    {
+      "priority": 4,
+      "source": "He et al. 2022, Two-Layer numerical model of soil moisture dynamics: Model assessment and Bayesian uncertainty estimation, DOI 10.1016/j.jhydrol.2022.128327",
+      "role": "documented applicability limits and layer-thickness sensitivity"
+    },
+    {
+      "priority": 5,
+      "source": "author-linked Zenodo DOI 10.5281/zenodo.17613977",
+      "role": "algorithm/source corroboration only; no source-code inheritance into SWAP5"
+    }
+  ],
+  "required_extraction": [
+    "vertical coordinate and flux sign convention",
+    "layer storage / average moisture state definition",
+    "integrated continuity equation for every interior layer",
+    "definition of layer-average matric potential",
+    "definition of layer-average unsaturated hydraulic conductivity",
+    "interlayer hydraulic conductivity / interface flux formula",
+    "treatment of discontinuous soil hydraulic parameters at a material interface",
+    "top prescribed-flux boundary",
+    "top prescribed-head / ponding boundary",
+    "bottom prescribed-flux or free-drainage boundary",
+    "bottom prescribed-head / water-table boundary",
+    "moving-water-table terms where applicable",
+    "time integrator and iterative corrector semantics",
+    "state bounds and wet/saturated transition treatment",
+    "mass-conservation identity",
+    "published numerical stabilization or clipping rules, if any"
+  ],
+  "transcription_policy": {
+    "equations": "transcribe symbolically with source equation/page identifiers where source access permits",
+    "unit_check": "derive dimensions for every term independently",
+    "sign_check": "rederive the layer water balance from continuity before accepting source notation",
+    "limiting_checks": [
+      "uniform hydrostatic state",
+      "unit-gradient/free-drainage state",
+      "zero-flux equilibrium",
+      "two-layer limit reproduces He et al. 2021",
+      "identical adjacent layers do not create a spurious interface discontinuity"
+    ],
+    "no_invention": "If a required multi-layer closure term cannot be recovered unambiguously from published or author-supplied authority, CA1 closes BLOCKED_SOURCE_AUTHORITY rather than filling the gap with a plausible formula."
+  },
+  "clean_sheet_rule": "Published equations and algorithm semantics may be reimplemented clean-sheet. No LARE source file is copied into production or research code.",
+  "implementation_status": "HELD_UNTIL_CA1_CLOSES_POSITIVE",
+  "close_decisions": [
+    "LARE_CLOSURE_AUTHORITY_COMPLETE",
+    "LARE_CLOSURE_AUTHORITY_COMPLETE_WITH_DECLARED_INTERPRETATION",
+    "BLOCKED_SOURCE_AUTHORITY",
+    "PUBLISHED_METHOD_NOT_REPRODUCIBLE_FROM_AVAILABLE_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
