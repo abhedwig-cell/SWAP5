@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.lare.bc2.c4a.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4A",
+  "status": "CONDITION_NOT_MET_NOT_EXECUTED",
+  "preregistration": "integration/f-rom/LARE_BC2_C4A_PREREGISTRATION.json",
+  "governing_C3A_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+  "governing_C3A_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+  "execution_condition": {
+    "required": "Q90 rank-1 by cumulative shape injection on both numerical routes in all six dynamic RISE/FALL/CYCLE cases.",
+    "observed": {
+      "2.5:WT_RISE": "QI",
+      "2.5:WT_FALL": "QI",
+      "2.5:WT_CYCLE": "QH",
+      "5.0:WT_RISE": "QI",
+      "5.0:WT_FALL": "QI",
+      "5.0:WT_CYCLE": "QH"
+    },
+    "satisfied": false
+  },
+  "decision": "UNIVERSAL_WELL_BALANCED_Q90_COUNTERFACTUAL_NOT_AUTHORIZED",
+  "interpretation": [
+    "Q90 is the dominant HOLD/equilibrium bias injector, but it is not the dominant dynamic injector.",
+    "Executing the preregistered global Q90 correction after this failed condition would violate the prospectively frozen C4A gate.",
+    "The C3A authority requires a new regime-partition preregistration before any intervention."
+  ],
+  "model_changed": false,
+  "next_model_change_authorized": false,
+  "groundwater_feedback_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
