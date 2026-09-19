@@ -1,0 +1,129 @@
+name: TAB-HYD exhaustive Staring table characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-staring-all.yml'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_file_characterization.f90'
+      - 'research/tabulated_hydraulics/array_dimensions_stub.f90'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned current SWAP table engine
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: upstream-swap
+
+      - name: Checkout BOFEK/Staring tables
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Compile file characterization harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd/all-staring
+          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/tab-hyd/all-staring \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/tab-hyd/all-staring/array_dimensions_stub.o
+          gfortran $FLAGS -I build/tab-hyd/all-staring -J build/tab-hyd/all-staring \
+            -c upstream-swap/src/soil/sptabulated.f90 \
+            -o build/tab-hyd/all-staring/sptabulated.o
+          gfortran $FLAGS -I build/tab-hyd/all-staring -J build/tab-hyd/all-staring \
+            research/tabulated_hydraulics/tabulated_hydraulics_file_characterization.f90 \
+            build/tab-hyd/all-staring/array_dimensions_stub.o \
+            build/tab-hyd/all-staring/sptabulated.o \
+            -o build/tab-hyd/all-staring/characterize
+
+      - name: Convert and characterize all 36 tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd/all-staring/tables
+          python3 - <<'PY'
+          from pathlib import Path
+          src = Path("staring-source/xdata/soils/bofek2012/tables")
+          dst = Path("build/tab-hyd/all-staring/tables")
+          files = sorted(src.glob("starb*_cm.csv")) + sorted(src.glob("staro*_cm.csv"))
+          if len(files) != 36:
+              raise SystemExit(f"expected 36 tables, found {len(files)}")
+          for p in files:
+              rows = []
+              for line in p.read_text().splitlines():
+                  s = line.strip()
+                  if not s or s.startswith("*") or s.lower().startswith("headtab"):
+                      continue
+                  parts = s.split(",")
+                  if len(parts) >= 3:
+                      rows.append(tuple(float(x) for x in parts[:3]))
+              out = dst / p.name.replace(".csv", ".dat")
+              with out.open("w") as fh:
+                  fh.write(f"{len(rows)}\n")
+                  for h, theta, k in rows:
+                      fh.write(f"{h:.17e} {theta:.17e} {k:.17e}\n")
+          PY
+          : > build/tab-hyd/all-staring/results.txt
+          for table in build/tab-hyd/all-staring/tables/*.dat; do
+            build/tab-hyd/all-staring/characterize "$table" \
+              | tee -a build/tab-hyd/all-staring/results.txt
+          done
+          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED$' build/tab-hyd/all-staring/results.txt)" -eq 36
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path("build/tab-hyd/all-staring/results.txt").read_text()
+          blocks = text.split("FILE_CHARACTERIZATION_COMPLETED")
+          n = 0
+          bad_theta = 0
+          bad_k = 0
+          min_c = float("inf")
+          min_dk = float("inf")
+          for block in blocks:
+              if "SUMMARY n=" not in block:
+                  continue
+              n += 1
+              def get_int(key):
+                  m = re.search(rf"SUMMARY {key}=([0-9+-]+)", block)
+                  return int(m.group(1))
+              def get_float(key):
+                  m = re.search(rf"SUMMARY {key}=\s*([0-9.Ee+-]+)", block)
+                  return float(m.group(1))
+              bad_theta += get_int("theta_overshoot")
+              bad_k += get_int("k_overshoot")
+              min_c = min(min_c, get_float("min_C"))
+              min_dk = min(min_dk, get_float("min_dKdh"))
+          summary = (
+              f"tables={n}\n"
+              f"theta_overshoot_total={bad_theta}\n"
+              f"k_overshoot_total={bad_k}\n"
+              f"global_min_C={min_c:.17e}\n"
+              f"global_min_dKdh={min_dk:.17e}\n"
+          )
+          Path("build/tab-hyd/all-staring/summary.txt").write_text(summary)
+          print(summary, end="")
+          if n != 36 or bad_theta != 0 or bad_k != 0 or min_c < 0 or min_dk < 0:
+              raise SystemExit("exhaustive Staring characterization failed")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-all-staring-evidence
+          path: |
+            build/tab-hyd/all-staring/results.txt
+            build/tab-hyd/all-staring/summary.txt
