@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.f-romv2-d23.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D23",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "stage1_execution": {
+    "workflow_run": 35467095819,
+    "workflow_job": 105961331644,
+    "artifact_id": 10591367823,
+    "artifact_digest": "sha256:5b577b876916a18c3e36d3c0abd5a12f2040f5bf9fbbfaa74eacc87fede4feb2",
+    "R16_R2_trajectory_evidence_consumed": false
+  },
+  "primary_execution": {
+    "branch": "work/f-romv2-d23-short-rainfall-trajectory",
+    "pull_request": 469,
+    "pull_request_merged": false,
+    "head": "2682829ceb969cbe0e7d19b9eb14d9b8bb28b6ab",
+    "workflow_run": 35467238981,
+    "workflow_job": 105961724341,
+    "artifact_id": 10591841201,
+    "artifact_digest": "sha256:688b48f23d44ef950cbe27d8e942e714c76f3119a871f33fb78d83d70bf0a230",
+    "conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "R16_o0_o2_sha256": "cb51595ccb41912102da4084911b329980f591585c665dfd08693748ad33bc34",
+    "R2_o0_o2_sha256": "626cf24505fa7210e17b5f0bb51c9817b3876972238ae4329cf83771c0d07090",
+    "fmc_preflight_sha256": "4f6d7fec9afcd0b9a53b42e7fdde46a9a5711bb5a9302df4c6bf6b1e1cc32ba1",
+    "raw_result_sha256": "39a42412403d97e22a499676ec758cbf8e546b961e50b6f0eebbd57e5f316626",
+    "preflight_stdout_sha256": "f14e381acb1f698e0839e608d625c36ad29cf2cb58ffb31f68375dd343f1dc6d",
+    "analyzer_stdout_sha256": "8fa8401b435526bff1a8d9cd465afd77728af3d053a2c43237c905d45bcd99ff"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D23_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D23_RESULT.json",
+    "integration/f-rom/F-ROMV2_D23_STATUS.json",
+    "integration/f-rom/F-ROMV2_D23_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D23_SHORT_RAINFALL_TRAJECTORY_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d23_short_rainfall.py",
+    "tests/rom/test_f_romv2_d23_rainfall_comparators.f90",
+    "tests/rom/analyze_f_romv2_d23_short_rainfall.py",
+    "tests/rom/run_f_romv2_d23_short_rainfall.sh",
+    ".github/workflows/f-romv2-d23-short-rainfall.yml",
+    "raw workflow artifacts"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_exposure_science_retuning": false,
+  "D21_reclassified": false,
+  "D22_reclassified": false,
+  "R16_threshold_equivalence_claimed": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}
