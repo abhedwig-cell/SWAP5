@@ -1,0 +1,178 @@
+name: F-ROM-LARE persist C4R blind validation
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4r-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4R authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/c4r.zip -d /tmp/c4r
+          echo "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65  /tmp/c4r/LARE_BC2_C4R_RESULT.json" | sha256sum -c -
+          echo "aed20e871bef0b1d8b6bed54a33afd448f2f0945571c7e40f31b1cbccf0c81f0  /tmp/c4r/FMC_D13_REPRODUCTION.json" | sha256sum -c -
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/c4r/R16_o0.txt" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/c4r/R2_o0.txt" | sha256sum -c -
+
+      - name: Validate C4R hard gates and build closeout
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,re,pathlib
+          r=json.load(open('/tmp/c4r/LARE_BC2_C4R_RESULT.json'))
+          assert r['decision']=='C4R_BLIND_PROFILE_FRONTIER_REPLICATED'
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['fmc_D13_reproduction_pass'] is True
+          assert r['integrity']['R16_operator_control_status']=='QUALIFIED'
+          assert r['integrity']['qualified_member_count']==7
+          assert r['integrity']['qualified_reduced_member_count']==6
+          assert r['frontiers']['minimum_dimension']=={
+              'FMC_GW':4,'FMC_PROFILE':12,'R2_GW':4,'R2_PROFILE':4
+          }
+          assert r['development_hypothesis_replication']['H_GW_DIMENSION_SEPARATION_exact'] is True
+          assert r['development_hypothesis_replication']['H_PROFILE_DIMENSION_SEPARATION_exact'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+
+          ref={}
+          for ident in ('R16','R2'):
+              raw=pathlib.Path(f'/tmp/c4r/{ident}_o0.txt').read_text()
+              m=re.search(r'F_ROMV2_D13_REF_MAX_ABS_MASS=([^\n]+)',raw)
+              assert m
+              mass=float(m.group(1).strip())
+              assert mass<=1e-12
+              assert raw.count('F_ROMV2_D13_REF_STATE|')==256
+              assert raw.count('F_ROMV2_D13_REF_INITIAL|')==4
+              assert 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' in raw
+              ref[ident]={'max_abs_mass_cm':mass,'state_count':256,'history_count':4}
+
+          members={m['id']:m for m in r['lare_members']}
+          key={}
+          for mid in ('R3','R4','R8','R12','R16'):
+              m=members[mid]
+              key[mid]={
+                'dimension':m['dimension'],
+                'status':m['status'],
+                'total_storage_RMSE_cm':m['pooled']['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':m['pooled']['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':m['pooled']['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':m['pooled']['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':m['pooled']['bottom_flux_sign_error_count'],
+                'crosses_R2_GW':m['crosses_R2_GW'],
+                'crosses_FMC_GW':m['crosses_FMC_GW'],
+                'crosses_R2_PROFILE':m['crosses_R2_PROFILE'],
+                'crosses_FMC_PROFILE':m['crosses_FMC_PROFILE']
+              }
+
+          out={
+            'schema':'swap5.lare.bc2.c4r.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4R',
+            'status':'CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35472962909,
+              'execution_head':'e0a79dd63dbf97b4249be171ff9eae8d96e48034',
+              'artifact_id':10593626518,
+              'artifact_digest':'sha256:da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9',
+              'result_sha256':'d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65',
+              'reference_R16_sha256':'6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6',
+              'reference_R2_sha256':'121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4',
+              'FMC_D13_reproduction_sha256':'aed20e871bef0b1d8b6bed54a33afd448f2f0945571c7e40f31b1cbccf0c81f0'
+            },
+            'blind_design':r['reference'],
+            'reference_integrity':ref,
+            'frontiers':r['frontiers'],
+            'development_hypothesis_replication':r['development_hypothesis_replication'],
+            'comparators':{
+              'R2':{
+                'total_storage_RMSE_cm':r['comparators']['R2']['pooled']['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':r['comparators']['R2']['pooled']['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':r['comparators']['R2']['pooled']['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':r['comparators']['R2']['pooled']['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':r['comparators']['R2']['pooled']['bottom_flux_sign_error_count']
+              },
+              'FMC_GW200':{
+                'total_storage_RMSE_cm':r['comparators']['FMC_GW200']['pooled']['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':r['comparators']['FMC_GW200']['pooled']['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':r['comparators']['FMC_GW200']['pooled']['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':r['comparators']['FMC_GW200']['pooled']['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':r['comparators']['FMC_GW200']['pooled']['bottom_flux_sign_error_count']
+              }
+            },
+            'lare_key_members':key,
+            'scientific_interpretation':[
+              'The C4Q matched development frontier replicates on four newly generated blind half-offset lambda histories against preregistered current-canonical Reference trajectories.',
+              'R4 is again the minimum reduced LARE dimension crossing both R2 and FMC on the groundwater vector, and also the minimum crossing R2 when profile fidelity is included.',
+              'R12 is again the minimum and only reduced member crossing FMC when the mapped 10-cm profile axis is retained.',
+              'All frozen LARE members R3-R16 remain physically and conservatively executable; the dimension separation between groundwater-output fidelity and profile fidelity is therefore reproducible rather than a C4Q history-selection artifact.',
+              'Comparator-relative frontier replication is not application acceptance and does not establish computational value. C4S same-partition D13 CoRichards qualification remains required before any cost-fidelity screen.'
+            ],
+            'next_authority':'PREREGISTER_C4S_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION',
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4R_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4R closeout
+
+          Formal decision: **C4R_BLIND_PROFILE_FRONTIER_REPLICATED**.
+
+          C4R generated four new blind fixed-water-table validation histories at lambda 0.375, 0.625, 0.875 and 1.125. Their Reference and R2 trajectories were generated from the canonical source head frozen before exposure. The FMC equations were frozen from D13 and reproduced the immutable D13 result exactly before the new Reference response was generated.
+
+          The development dimension separation from C4Q replicates exactly. On the groundwater vector, R4 is again the minimum reduced LARE member crossing both R2 and FMC. When mapped 10-cm profile fidelity is included, R4 remains the minimum crossing R2 while R12 is again the minimum and only reduced member crossing FMC.
+
+          | representation | storage RMSE cm | cumulative bottom RMSE cm | bottom-flux RMSE cm/d | mapped theta RMSE | sign errors |
+          |---|---:|---:|---:|---:|---:|
+          | R2 | 0.284288 | 0.284288 | 7.15433 | 0.0449920 | 4 |
+          | FMC_GW200 | 0.178419 | 0.178419 | 4.50306 | 0.00280145 | 4 |
+          | LARE R4 | 0.00573421 | 0.00573421 | 0.281923 | 0.0289172 | 1 |
+          | LARE R8 | 0.00311377 | 0.00311377 | 0.0928725 | 0.00781520 | 1 |
+          | LARE R12 | 0.00311377 | 0.00311377 | 0.0928725 | 0.000327887 | 1 |
+
+          All seven frozen LARE ladder members qualify. The R16/R2 blind Reference routes satisfy the 1e-12 cm transaction-mass gate; maximum observed values are approximately 1.73e-18 cm for R16 and zero for R2.
+
+          This is comparator-relative blind validation, not application acceptance. No runtime or computational-value conclusion follows. In particular R12 retains 12 of 16 water states.
+
+          The next authority is C4S: qualify conventional Richards on the same D13-class R3-R12 partitions. Only after that comparator authority is known may a cost-fidelity value screen be considered.
+          MD
+
+      - name: Persist C4R
+        run: |
+          set -euo pipefail
+          cp /tmp/c4r/LARE_BC2_C4R_RESULT.json integration/f-rom/LARE_BC2_C4R_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4R_RESULT.json integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4R_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close blind C4R frontier validation"
+          git push origin HEAD:work/f-rom-lare-rs1
