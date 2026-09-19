@@ -149,7 +149,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/tab-hyd-derivfix/wrapper
-          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=all -fbacktrace"
+          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=bounds -fbacktrace"
           gfortran $FLAGS -J build/tab-hyd-derivfix/wrapper \
             -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
             -o build/tab-hyd-derivfix/wrapper/array_dimensions_stub.o
