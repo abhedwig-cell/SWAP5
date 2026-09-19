@@ -9,6 +9,8 @@ Canonical basis inspected: `integration/f-ci-canonical@f3a82d8f303ea371fed4b52ee
 
 E7 was canonically admitted through PR #330 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`. PR #327 is historical/superseded and must not be rebased or merged as a second authority path.
 
+The latest E7-relevant production merge before this reconcile is PPA-WU04-B at `4d40b8d4b6a1df06ff97fab55497542778431290`. The subsequent delta through the inspected live head changes only F-DOC/TRACE records and has no production-runtime, coupling, Hupsel-authority or PUB-GC asset effect.
+
 ## Current prescribed-head owner
 
 The production bootstrap still admits homogeneous profiles for:
