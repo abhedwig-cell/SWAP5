@@ -1,0 +1,62 @@
+name: F-ROM-LARE persist BC1-B result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc1-stage-b-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact BC1-B artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc1-b-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586945126/zip" > /tmp/lare-bc1-b-persist/bc1b.zip
+          echo "ba449e345e710c4c3e5504de290c2bca3f9d083317743efd194e05623bb94350  /tmp/lare-bc1-b-persist/bc1b.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc1-b-persist/bc1b.zip -d /tmp/lare-bc1-b-persist
+
+      - name: Validate preregistered BC1-B adjudication
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc1-b-persist/LARE_BC1_STAGE_B_RESULT.json'))
+          assert r['decision']=='BC1_CURRENT_LAYER_RELATIVE_SUPPORT'
+          assert r['relative_support']['CURRENT_LAYER_FACE_noninferior'] is True
+          assert r['relative_support']['CURRENT_LAYER_FACE_strictly_better'] is True
+          assert r['relative_support']['BOUNDARY_FACE_noninferior'] is False
+          assert r['relative_support']['qualified_case_coverage']=={
+              'BOUNDARY_FACE':7,'CURRENT_LAYER_FACE':7
+          }
+          assert r['aggregate_by_closure']['CURRENT_LAYER_FACE']['bottom_flux_sign_mismatch_count']==3
+          assert r['aggregate_by_closure']['BOUNDARY_FACE']['bottom_flux_sign_mismatch_count']==20
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['moving_water_table_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC1_STAGE_B_VALIDATION=PASS')
+          PY
+
+      - name: Persist exact BC1-B result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-bc1-b-persist/LARE_BC1_STAGE_B_RESULT.json integration/f-rom/LARE_BC1_STAGE_B_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC1_STAGE_B_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist prescribed-head BC1-B dynamics result"
+          git push origin HEAD:work/f-rom-lare-rs1
