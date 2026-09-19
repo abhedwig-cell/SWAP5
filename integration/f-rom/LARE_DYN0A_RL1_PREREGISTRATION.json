@@ -1,0 +1,197 @@
+{
+  "schema": "swap5.lare.dyn0a.rl1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-RL1",
+  "phase": "PREREGISTERED_BEFORE_NESTED_RESOLUTION_LADDER_EXECUTION",
+  "purpose": "Measure the state-count versus hydrological-fidelity curve of the unchanged standard LARE closure after MECH1 identified long-layer hydraulic-gradient reconstruction as the dominant DYN0A error mechanism.",
+  "trigger_authority": {
+    "mech1_result": "integration/f-rom/LARE_DYN0A_MECH1_RESULT.json",
+    "mech1_decision": "GRADIENT_RECONSTRUCTION_DOMINANT",
+    "d4_result": "integration/f-rom/LARE_DYN0A_D4_RESULT.json",
+    "d4_decision": "RESOLUTION_BENEFIT_CLEAR"
+  },
+  "scientific_question": "How rapidly does standard-LARE redistribution fidelity improve when the single long upper layer is progressively shortened and replaced by 10-cm local layers above the lower active interfaces, and how many retained storage states are needed before further spatial refinement yields diminishing hydrological benefit?",
+  "ladder": [
+    {
+      "id": "R3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "status": "existing D3 authority"
+    },
+    {
+      "id": "R4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "status": "existing D4 authority"
+    },
+    {
+      "id": "R5",
+      "dimension": 5,
+      "boundaries_cm": [
+        0,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R12",
+      "dimension": 12,
+      "boundaries_cm": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R16",
+      "dimension": 16,
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    }
+  ],
+  "ladder_rationale": [
+    "Every refinement is nested; no existing boundary is moved.",
+    "Each added state converts another 10-cm band immediately above the current long-layer interface into an explicit local storage state.",
+    "R16 is a no-spatial-reduction control, not a proposed ROM.",
+    "The ladder is mechanism-driven from MECH1 and is not a response-blind state-selection result."
+  ],
+  "unchanged": [
+    "B01 Mualem-Van Genuchten parameters",
+    "HE2021 standard adjacent-layer Taylor closure",
+    "fixed-flux bottom boundary",
+    "Se0 anchors 0.65, 0.85, 0.95",
+    "EQ, WET, DRY, WET_DRY forcing",
+    "1024 observations at 0.0008 d",
+    "iterative Heun refinement ladder ending at 0.0001 d",
+    "strict standard-MvG qualified domain",
+    "fine 16x10 cm Reference Richards trajectory",
+    "no sinks"
+  ],
+  "comparison": {
+    "reference": "fine 16x10 cm Reference Richards projected to common D3 bands",
+    "common_bands_cm": [
+      [
+        0,
+        140
+      ],
+      [
+        140,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ],
+    "common_case_rule": "Use only cases qualified in fine Reference and in the ladder member being evaluated. For pairwise resolution trends, use the intersection of the two adjacent ladder members and report exclusions explicitly.",
+    "primary_dynamic_metrics": [
+      "per-case maximum absolute common-band storage error",
+      "per-case mean absolute common-band storage error",
+      "bottom 140-150 and 150-160 cm storage error",
+      "final signed common-band storage error"
+    ],
+    "mechanism_metrics": [
+      "maximum and RMS projected standard-LARE flux error at the unique interface adjacent to the remaining long upper layer",
+      "that interface depth and long-layer thickness"
+    ],
+    "aggregate_curve": [
+      "maximum dynamic common-band storage error versus state dimension",
+      "mean of per-case mean dynamic storage error versus state dimension",
+      "critical Se0=0.95 DRY error versus state dimension",
+      "dominant long-layer-interface flux RMS error versus long-layer thickness"
+    ]
+  },
+  "hypotheses": {
+    "H_RESOLUTION_CONVERGENCE": "Errors decrease as the long layer shortens because the interface gradient is reconstructed from increasingly local states.",
+    "H_DIMINISHING_RETURNS": "Hydrological improvement per added state decreases before R16, creating a potential purpose-dependent operating range.",
+    "H_STANDARD_CLOSURE_INEFFICIENT": "Material error persists until state count approaches the fine grid, implying that standard LARE obtains accuracy mainly by surrendering reduction rather than by an efficient closure."
+  },
+  "adjudication": {
+    "RESOLUTION_CONVERGENCE_CLEAR": "For every adjacent ladder pair on their common dynamic cohort, the higher-resolution member is non-inferior in both maximum and mean common-band storage error, and the critical Se0=0.95 DRY error is non-increasing across all qualified members.",
+    "RESOLUTION_EFFECT_NONMONOTONE": "At least one higher-resolution member worsens either maximum or mean common-band error for a common dynamic case beyond floating-point equality.",
+    "note": "No application threshold, elbow cutoff or minimum acceptable dimension is selected in RL1. The full error-versus-dimension curve is the result."
+  },
+  "interpretation_firewalls": [
+    "Do not call R16 a reduced model.",
+    "Do not select an acceptable dimension from the observed curve without a separately frozen purpose-dependent envelope.",
+    "Do not modify the standard LARE closure inside RL1.",
+    "Do not retune forcing, layer boundaries, material parameters or Heun settings after observing RL1.",
+    "Do not use coarse Richards numerical failure as evidence that LARE is hydrologically superior.",
+    "No speed claim and no production ROM."
+  ],
+  "next_logic": {
+    "if_curve_reaches_low_error_at_small_dimension": "Carry the smallest scientifically interesting members into the external purpose-envelope stage without declaring universal acceptance.",
+    "if_error_requires_near_fine_dimension": "Open a gradient-aware closure/state-augmentation work unit rather than continuing spatial refinement.",
+    "regardless": "Retain D3 as the minimum response-blind state authority and distinguish state sufficiency from propagation/closure fidelity."
+  },
+  "production_rom_authorized": false
+}
