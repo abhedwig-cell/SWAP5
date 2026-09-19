@@ -1,0 +1,41 @@
+name: F-ROMV2 D6 quasi-steady manifold preflight
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D6_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d6_quasi_steady_manifold.py'
+      - '.github/workflows/f-romv2-d6-quasi-steady-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute frozen D6 manifold preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE"
+          python3 tests/rom/preflight_f_romv2_d6_quasi_steady_manifold.py \
+            --prereg integration/f-rom/F-ROMV2_D6_PREREGISTRATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE/F-ROMV2_D6_PREFLIGHT_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE/F-ROMV2_D6_PREFLIGHT_RESULT.json" \
+            "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE/preflight.txt" \
+            > "${{ runner.temp }}/F-ROMV2-D6-EVIDENCE/sha256.txt"
+      - name: Upload D6 preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d6-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D6-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
