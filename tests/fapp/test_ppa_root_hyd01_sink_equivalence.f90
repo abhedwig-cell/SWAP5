@@ -74,11 +74,21 @@ contains
          generic_obs%temporal_certificate_available, ' normalized_indicator=', generic_obs%temporal_normalized_indicator, &
          ' reason=', trim(generic_obs%temporal_certificate_unavailable_reason)
 
-    call require(trim(root_obs%temporal_indicator_route) == 'root-sink-envelope-deferred', &
-         'D2 root route did not expose root-sink-envelope-deferred')
-    call require(.not. root_obs%temporal_certificate_available, 'D2 root certificate unexpectedly available')
-    call require(trim(generic_obs%temporal_indicator_route) /= 'root-sink-envelope-deferred', &
-         'D2 generic route incorrectly hit root-sink policy')
+    call require(root_obs%temporal_certificate_available, 'R1 root certificate unavailable')
+    call require(generic_obs%temporal_certificate_available, 'R1 generic certificate unavailable')
+    call require(trim(root_obs%temporal_indicator_route) == trim(generic_obs%temporal_indicator_route), &
+         'R1 ROOT/GENERIC indicator route mismatch')
+    call require(same_scaled(root_obs%temporal_head_inf_bound, generic_obs%temporal_head_inf_bound), &
+         'R1 ROOT/GENERIC head_inf_bound mismatch')
+    call require(same_scaled(root_obs%temporal_normalized_indicator, generic_obs%temporal_normalized_indicator), &
+         'R1 ROOT/GENERIC normalized indicator mismatch')
+    call require(root_obs%temporal_additional_full_nonlinear_solves == 0 .and. &
+         generic_obs%temporal_additional_full_nonlinear_solves == 0, &
+         'R1 temporal indicator introduced nonlinear solve')
+    call require(root_obs%temporal_additional_tridiagonal_solves == 1 .and. &
+         generic_obs%temporal_additional_tridiagonal_solves == 1, &
+         'R1 temporal indicator tridiagonal cost drift')
+    write(*,'(a)') 'PPA_ROOT_HYD01_R1_ROOT_GENERIC_TEMPORAL_EQUIVALENCE=PASS'
   end subroutine diagnose_model_certificate_routes
 
   subroutine run_certificate_case(root_route, result, candidate, diagnostics, obs)
@@ -366,6 +376,15 @@ contains
       call require(.false., 'root candidate state type')
     end select
   end subroutine compare_candidate_states
+
+  logical function same_scaled(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    real(real64) :: scale
+    same = .false.
+    if (.not. ieee_is_finite(a) .or. .not. ieee_is_finite(b)) return
+    scale = max(1.0_real64, abs(a), abs(b))
+    same = abs(a-b) <= 64.0_real64*epsilon(1.0_real64)*scale
+  end function same_scaled
 
   subroutine require(condition, label)
     logical, intent(in) :: condition
