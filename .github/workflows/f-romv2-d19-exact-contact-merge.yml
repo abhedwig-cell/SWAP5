@@ -1,0 +1,39 @@
+name: F-ROMV2 D19 exact-contact merge preflight
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D19_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d19_exact_contact_merge.py'
+      - '.github/workflows/f-romv2-d19-exact-contact-merge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute frozen D19 exact-contact preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D19-EVIDENCE"
+          python3 tests/rom/preflight_f_romv2_d19_exact_contact_merge.py \
+            --prereg integration/f-rom/F-ROMV2_D19_PREREGISTRATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D19-EVIDENCE/F-ROMV2_D19_PREFLIGHT_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D19-EVIDENCE/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D19-EVIDENCE/"* \
+            > "${{ runner.temp }}/F-ROMV2-D19-EVIDENCE/sha256.txt"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d19-preflight-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D19-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
