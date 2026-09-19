@@ -1,0 +1,156 @@
+name: F-ROM-LARE persist C4I reconstruction block
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4i-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4I authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4i
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591587439/zip" > /tmp/c4i.zip
+          echo "42f7ee4d10ae552bc29769703bef53b46ca5841bc5f1f308d2ea59be908b59cd  /tmp/c4i.zip" | sha256sum -c -
+          unzip -q /tmp/c4i.zip -d /tmp/c4i
+          echo "a5db2986178ae918ad7034cded7e132b1f896c8e43b3a8c5b9752ce588a17a0d  /tmp/c4i/LARE_BC2_C4I_RESULT.json" | sha256sum -c -
+
+      - name: Validate blocked C4I science result
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4i/LARE_BC2_C4I_RESULT.json'))
+          assert r['decision']=='C4I_RECONSTRUCTION_BLOCKED'
+          assert r['complete'] is False
+          assert r['hard_checks']['failure_count'] == 3
+          assert all(x['error']=='AMBIGUOUS_RECONSTRUCTION nq=64' for x in r['failures'])
+          assert all(x['width_cm']==2.5 and x['step']==0 for x in r['failures'])
+          assert r['report']['5.0']['WT_FALL']['status']=='COMPLETE'
+          assert r['report']['5.0']['WT_RISE']['status']=='COMPLETE'
+          assert r['report']['5.0']['WT_HOLD']['status']=='COMPLETE'
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4I_BLOCK_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout and science note
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4i/LARE_BC2_C4I_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4i.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4I',
+            'status':'CLOSED_RECONSTRUCTION_BLOCKED_NO_MODEL_CHANGE',
+            'decision':r['decision'],
+            'authority':{
+              'first_failed_reporting_run':35463375073,
+              'authoritative_rerun':35466871058,
+              'authoritative_head':'1b45d0577f1086415935472b98bea644786af541',
+              'artifact_id':10591587439,
+              'artifact_digest':'sha256:42f7ee4d10ae552bc29769703bef53b46ca5841bc5f1f308d2ea59be908b59cd',
+              'result_sha256':'a5db2986178ae918ad7034cded7e132b1f896c8e43b3a8c5b9752ce588a17a0d'
+            },
+            'primary_blockers':[
+              'At d=2.5 cm, the initial Reference state for HOLD, RISE and FALL has multiple physically admissible quadratic roots satisfying the same Wb/Wt constraints under the frozen multistart test; the candidate is therefore not identifiable from Wb/Wt/H within this profile family.',
+              'The 64-vs-128 qH crosscheck reaches 1.9128758133035717e-08 cm/d, exceeding the preregistered 1e-08 gate.',
+              'The manufactured hydrostatic a-recovery residual reaches 1.0736922462228904e-10, slightly exceeding the preregistered 1e-10 gate.'
+            ],
+            'bounded_5cm_evidence':{
+              'WT_FALL':{
+                'qi_base_rms':r['report']['5.0']['WT_FALL']['qi']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qi_quadratic_rms':r['report']['5.0']['WT_FALL']['qi']['C1_QUADRATIC_STORAGE_PROFILE']['rms'],
+                'qH_base_rms':r['report']['5.0']['WT_FALL']['qH']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qH_quadratic_rms':r['report']['5.0']['WT_FALL']['qH']['C1_QUADRATIC_STORAGE_PROFILE']['rms']
+              },
+              'WT_RISE':{
+                'qi_base_rms':r['report']['5.0']['WT_RISE']['qi']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qi_quadratic_rms':r['report']['5.0']['WT_RISE']['qi']['C1_QUADRATIC_STORAGE_PROFILE']['rms'],
+                'qH_base_rms':r['report']['5.0']['WT_RISE']['qH']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qH_quadratic_rms':r['report']['5.0']['WT_RISE']['qH']['C1_QUADRATIC_STORAGE_PROFILE']['rms']
+              },
+              'WT_HOLD':{
+                'qi_base_rms':r['report']['5.0']['WT_HOLD']['qi']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qi_quadratic_rms':r['report']['5.0']['WT_HOLD']['qi']['C1_QUADRATIC_STORAGE_PROFILE']['rms'],
+                'qH_base_rms':r['report']['5.0']['WT_HOLD']['qH']['BASE_TERMINAL_SIDE_LINEAR']['rms'],
+                'qH_quadratic_rms':r['report']['5.0']['WT_HOLD']['qH']['C1_QUADRATIC_STORAGE_PROFILE']['rms']
+              }
+            },
+            'scientific_interpretation':[
+              'C4I rejects one specific C1-smooth quadratic reconstruction family. It does not prove that Wb/Wt/H are insufficient for every possible gradient closure.',
+              'The 2.5 cm ambiguity shows that two integral storage constraints do not uniquely identify this nonlinear quadratic pressure-profile family at the tested initial state.',
+              'The qualified 5 cm subset is strongly direction dependent: FALL improves, RISE worsens, and HOLD loses the near-hydrostatic zero-flux behaviour.',
+              'No post-response root-selection rule, direction switch or fitted branch selector is authorized.'
+            ],
+            'next_authority':'CHARACTERIZE_QUADRATIC_ROOT_MULTIPLICITY_AND_DIRECTION_GEOMETRY_BEFORE_ANY_NEW_RECONSTRUCTION_FAMILY',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4I_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4I_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4I closeout
+
+          Formal decision: C4I_RECONSTRUCTION_BLOCKED.
+
+          C4I tested a C1-smooth quadratic pressure profile psi(x)=a x+b x^2, constrained only by the existing lower-domain states Wb, Wt and H. The candidate added no prognostic state and used no response fit.
+
+          The first execution exposed a reporting bug after reconstruction failure. That bug was repaired without changing the candidate, frozen starts, root solver, hard gates or comparison rules. The authoritative rerun is workflow 35466871058 at head 1b45d0577f1086415935472b98bea644786af541.
+
+          ## Main result
+
+          The 2.5 cm candidate is not uniquely identifiable at the initial Reference state. For HOLD, RISE and FALL, all four frozen starts yield physically admissible roots of the two storage constraints, but the resulting (a,b) pairs do not agree within the preregistered uniqueness tolerance. The result is AMBIGUOUS_RECONSTRUCTION, not a root-solver failure.
+
+          This conclusion is bounded to the tested quadratic profile family. It does not establish that Wb/Wt/H are insufficient for every possible gradient closure.
+
+          Two additional hard gates also fail. The maximum 64-vs-128 qH difference is about 1.91e-8 cm/d, above the frozen 1e-8 cm/d gate. The manufactured hydrostatic a=1 recovery residual reaches about 1.07e-10, marginally above the 1e-10 gate.
+
+          ## 5 cm subset
+
+          The 5 cm reconstruction completes, but is not a transferable replacement.
+
+          Under WT_FALL, qi RMS improves from about 0.492 to 0.327 cm/d and qH RMS from about 1.026 to 0.798 cm/d.
+
+          Under WT_RISE, the direction reverses: qi RMS worsens from about 0.630 to 1.196 cm/d, while qH RMS worsens from about 1.473 to 2.004 cm/d.
+
+          Under WT_HOLD, TERMINAL_SIDE_LINEAR retains near-zero flux errors around 1e-10 cm/d, whereas the quadratic reconstruction introduces roughly 0.070 cm/d qi error and 0.062 cm/d qH error.
+
+          ## Consequence
+
+          C4I authorizes no root-selection heuristic, direction switch, fitted branch selector or free-running corrected LARE. The next diagnostic must first characterize why the quadratic storage map is multi-valued at 2.5 cm and why the 5 cm profile helps FALL but hurts RISE.
+          MD
+
+      - name: Persist exact C4I result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c4i/LARE_BC2_C4I_RESULT.json integration/f-rom/LARE_BC2_C4I_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4I_RESULT.json integration/f-rom/LARE_BC2_C4I_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4I_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close blocked C4I quadratic reconstruction"
+          git push origin HEAD:work/f-rom-lare-rs1
