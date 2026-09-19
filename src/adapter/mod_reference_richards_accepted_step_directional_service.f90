@@ -15,6 +15,7 @@ module mod_reference_richards_accepted_step_directional_service
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_default_mvg_directional_provider, only: evaluate_b110_default_mvg_state_direction
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
@@ -206,8 +207,25 @@ contains
        return
     end select
     if (associated(request%evaluation%root_sink)) then
-       route = 'root-sink-direction-unavailable'
-       return
+       select type (root => request%evaluation%root_sink)
+       type is (b110_root_sink_provider_t)
+          if (root%active_nodes /= n) then
+             route = 'prescribed-root-direction-size-mismatch'
+             return
+          end if
+          if (.not. associated(root%root_extraction_sink)) then
+             route = 'prescribed-root-direction-not-bound'
+             return
+          end if
+          if (size(root%root_extraction_sink) /= n .or. &
+              any(.not. ieee_is_finite(root%root_extraction_sink))) then
+             route = 'prescribed-root-direction-invalid'
+             return
+          end if
+       class default
+          route = 'root-sink-direction-unavailable'
+          return
+       end select
     end if
     if (.not. allocated(direction_request%incoming_pressure_head) .or. &
         .not. allocated(direction_request%incoming_water_content)) then
@@ -292,6 +310,19 @@ contains
     direction_result%source_sink_direction_covered = &
          allocated(direction_request%incoming_source_direction) .or. &
          allocated(direction_request%incoming_sink_direction)
+    direction_result%root_sink_direction_covered = .false.
+    if (associated(request%evaluation%root_sink)) then
+       select type (root => request%evaluation%root_sink)
+       type is (b110_root_sink_provider_t)
+          ! The admitted B1.10 provider returns a prescribed vector unchanged
+          ! during this trial. Its direct derivative with respect to bottom
+          ! flux/head control is therefore exactly zero. The physical sink is
+          ! still present in the principal Richards solve.
+          direction_result%root_sink_direction_covered = .true.
+       class default
+          continue
+       end select
+    end if
 
     ! Re-evaluate the immutable constitutive value provider at the step base
     ! state for the exact frozen K values used by swkimpl=0. Its historical

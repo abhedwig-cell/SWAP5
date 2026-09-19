@@ -46,6 +46,11 @@ module mod_soil_water_accepted_step_direction_contract
      ! True only when this accepted-step tangent explicitly included the
      ! direction of the active state-dependent source/sink owner(s).
      logical :: source_sink_direction_covered = .false.
+     ! True only when an associated root-sink owner is the qualified prescribed
+     ! B1.10 carrier whose direct derivative with respect to the requested
+     ! coupling control is exactly zero. Arbitrary/state-dependent root uptake
+     ! must leave this false and fail closed at the service boundary.
+     logical :: root_sink_direction_covered = .false.
      integer :: additional_tridiagonal_backsolves = 0
      integer :: additional_jacobian_builds = 0
      integer :: additional_full_nonlinear_solves = 0
