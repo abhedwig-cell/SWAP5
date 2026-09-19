@@ -64,26 +64,24 @@ jobs:
 
           def patch(path):
               p = Path(path)
-              s = p.read_text()
-              old = """      else if (swsophy == 1) then
-         if (theta >= sptab(2,node,numtab(node)) - 1.0d-9) then
-            dhconduc = 1.0d+08
-         else
-            call EvalTabulatedFunction(0, numtab(node), 1, 3, 5, node, sptab, ientrytab, head, dummy, dhconduc, 4)
-         end if
-      end if"""
-              new = """      else if (swsophy == 1) then
-         if (theta >= sptab(2,node,numtab(node)) - 1.0d-9) then
-            dhconduc = 0.0_real64
-         else if (theta <= sptab(2,node,1) + 1.0d-9) then
-            dhconduc = 0.0_real64
-         else
-            call EvalTabulatedFunction(0, numtab(node), 1, 3, 5, node, sptab, ientrytab, head, dummy, dhconduc, 4)
-         end if
-      end if"""
-              if s.count(old) != 1:
-                  raise SystemExit(f"expected table dhconduc block once in {path}, found {s.count(old)}")
-              p.write_text(s.replace(old, new, 1))
+              lines = p.read_text().splitlines()
+              hits = [i for i, line in enumerate(lines) if "dhconduc = 1.0d+08" in line]
+              if len(hits) != 1:
+                  raise SystemExit(f"expected one saturated table sentinel in {path}, found {len(hits)}")
+              idx = hits[0]
+              lines[idx] = lines[idx].replace("dhconduc = 1.0d+08", "dhconduc = 0.0_real64")
+              else_idx = next(
+                  i for i in range(idx + 1, min(idx + 6, len(lines)))
+                  if lines[i].strip() == "else"
+              )
+              indent = lines[else_idx][:-len(lines[else_idx].lstrip())]
+              body_indent = indent + "   "
+              lines[else_idx:else_idx + 1] = [
+                  indent + "else if (theta <= sptab(2,node,1) + 1.0d-9) then",
+                  body_indent + "dhconduc = 0.0_real64",
+                  indent + "else",
+              ]
+              p.write_text(chr(10).join(lines) + chr(10))
               print(f"PATCHED {path}")
 
           patch("legacy-runtime/src/utils/soilhydraulicsutils.f90")
