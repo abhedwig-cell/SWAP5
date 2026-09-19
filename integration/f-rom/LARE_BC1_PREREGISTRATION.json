@@ -65,7 +65,9 @@
       "swapface_max_abs_error_cm_per_day": 1e-9,
       "swapface_terminal_flux_sign_mismatch_count": 0
     },
-    "sourceface_rule": "Report full error/sign distribution only. It is not selected or rejected by fitting against Reference."
+    "sourceface_rule": "Report full error/sign distribution only. It is not selected or rejected by fitting against Reference.",
+    "superseded_by": "stage_A1_operator_audit",
+    "technical_identity_gates_status": "SUPERSEDED_AFTER_EXECUTABLE_SOURCE_TRACE"
   },
   "stage_B_if_A_passes": {
     "purpose": "Propagate standard LARE D3 and D4 under prescribed-head rise/fall histories using BC1_SWAPFACE, with DYN0A fixed interface closure otherwise unchanged.",
@@ -85,7 +87,8 @@
     ],
     "comparator": "same fine Reference trajectories already qualified in RS1-GW Stage A where possible; new trajectories only if required by changed reduced-state initial projection",
     "D3_D4_role": "D3 minimum state candidate; D4 closure-resolution control",
-    "no_application_acceptance": true
+    "no_application_acceptance": true,
+    "prerequisite": "stage_A1_operator_audit hard gates pass"
   },
   "firewalls": [
     "NO_MOVING_WATER_TABLE_GEOMETRY",
@@ -94,7 +97,44 @@
     "NO_CHANGE_TO_INTERNAL_STANDARD_LARE_INTERFACE_CLOSURE",
     "NO_REFERENCE_RICHARDS_CHANGE",
     "NO_PRODUCTION_INTEGRATION",
-    "NO_APPLICATION_ACCEPTANCE"
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RETUNING_BC1_SWAPFACE_TO_BALANCE_MATERIALIZED_QBOT",
+    "NO_SILENT_IMPORT_OF_SWKIMPL0_LAGGED_K_AS_A_PHYSICAL_LARE_CLOSURE"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "stage_A0_observed_blocker": {
+    "workflow_run": 35450069347,
+    "artifact_id": 10586424195,
+    "status": "BLOCKED_EXPECTED_IDENTITY_TARGET_WAS_NOT_THE_RAW_FACE_OPERATOR",
+    "observed": {
+      "mode5_state_count": 2112,
+      "end_state_reference_replay_vs_reported_bottom_flux_max_abs_error_cm_per_day": 0.5797888120571457,
+      "end_state_swapface_vs_reported_bottom_flux_max_abs_error_cm_per_day": 0.5797888120571137,
+      "end_state_swapface_sign_mismatch_count": 0,
+      "constitutive_h_theta_roundtrip_max_abs_error_cm": 4.973799150320701e-14
+    },
+    "source_trace_cause": [
+      "HeadCalc with SWKIMPL=0 initializes state%kmean(NN+1)=state%k(NN) from the timestep base state and does not update conductivity during Newton iterations.",
+      "Mode-5 pressure-head solves therefore use a lagged face conductivity with the iterated candidate head gradient.",
+      "After the solve, mod_reference_richards_legacy_binding materializes state%qbot from the exact SWAP water-balance grouping rather than publishing the raw Darcy face product.",
+      "Kernel terminal_bottom_outward_flux_native is the sign-adapted materialized solve_result%bottom_flux, not a raw face-operator observable."
+    ],
+    "classification": "AUTHORITY_OBSERVABLE_MISMATCH_NOT_LARE_FORMULA_FAILURE",
+    "no_fit_used": true
+  },
+  "stage_A1_operator_audit": {
+    "purpose": "Bind geometry, sign and constitutive inversion on one common accepted state, without mistaking balance-materialized qbot for the raw Darcy face operator.",
+    "input_states": "same 2112 accepted mode-5 Stage-A states",
+    "state_operator_reference": "K(h_N_state) * [1 + 2*(h_N_state-h_b)/dz_N]",
+    "bc1_swapface_state_operator": "K(theta_bar_N_state) * [1 + 2*(h(theta_bar_N_state)-h_b)/L_N]",
+    "identity_reason": "For D3/D4 the last reduced layer is exactly the fine 150-160 cm control volume, so theta_bar_N equals emitted node-16 theta on the projected accepted state.",
+    "hard_gates": {
+      "analytic_h_theta_roundtrip_max_abs_error_cm": 1e-10,
+      "swapface_vs_state_operator_max_abs_error_cm_per_day": 1e-9,
+      "swapface_vs_state_operator_sign_mismatch_count": 0
+    },
+    "reported_terminal_qbot_rule": "Compare state-operator flux to the balance-materialized terminal qbot only as a time-level/materialization diagnostic. It is not an identity gate.",
+    "lagged_reference_semantics": "The executable Reference mode-5 residual uses base-state K_face when SWKIMPL=0 and candidate-state head gradient. This will be compared at full-dynamics level, not silently folded into the LARE boundary formula.",
+    "sourceface_rule": "Report state-operator sensitivity only; no selection or fitting."
+  }
 }
