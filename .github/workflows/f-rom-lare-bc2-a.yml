@@ -1,0 +1,42 @@
+name: F-ROM-LARE BC2-A moving geometry authority
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'docs/science/F-ROM_LARE_BC2_GEOMETRY_AUTHORITY.md'
+      - 'integration/f-rom/LARE_BC2_A_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_a1_algebra.py'
+      - '.github/workflows/f-rom-lare-bc2-a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  algebra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lock BC2-A authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_A_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_MOVING_WATER_TABLE_REFERENCE_GEOMETRY_EXECUTION'
+          assert p['source_algebra']['discrepancy_class']=='SOURCE_ALGEBRA_DISCREPANCY_MOVING_AVERAGE_VS_CONSERVATIVE_STORAGE'
+          assert 'NO_USE_OF_BOTTOM_HEAD_AS_WATER_TABLE_DEPTH' in p['firewalls']
+          assert p['production_rom_authorized'] is False
+          print('LARE_BC2_A_AUTHORITY_LOCK=PASS')
+          PY
+      - name: Execute moving-control-volume algebra gate
+        run: |
+          mkdir -p LARE_BC2_A_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_a1_algebra.py             --prereg integration/f-rom/LARE_BC2_A_PREREGISTRATION.json             --output LARE_BC2_A_EVIDENCE/LARE_BC2_A1_ALGEBRA_RESULT.json             | tee LARE_BC2_A_EVIDENCE/a1.txt
+          sha256sum LARE_BC2_A_EVIDENCE/* > LARE_BC2_A_EVIDENCE/sha256.txt
+      - name: Upload BC2-A1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-a1
+          path: LARE_BC2_A_EVIDENCE/
