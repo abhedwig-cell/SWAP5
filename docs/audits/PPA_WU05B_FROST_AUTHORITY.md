@@ -215,3 +215,16 @@ This review can be persisted as the authoritative blocker boundary. It cannot ho
 On 2026-09-19 the project Library surface was rechecked directly. The exact `SWAP_4.3.1(6).zip` archive and several byte-size-identical duplicates are visible, but none exposes an authorized raw-byte materialization path. The audit folder also contains hundreds of loose `.f90` artifacts; a recursive inventory found no loose `frozencond.f90` or `temperature.f90`.
 
 This confirms that the blocker is access to the exact source bytes, not uncertainty about where the archive is stored.
+
+
+## Qualification
+
+The review-only frost authority gate passed on 2026-09-19:
+
+- workflow `PPA-WU05-B frost authority`, run `35426148761`;
+- authority job `105852323316`: PASS;
+- independent-contract job `105852323606`: PASS;
+- Documentation run `35426148696`: PASS;
+- F-CI canonical qualification run `35426148676`: PASS, all 15 jobs successful.
+
+This qualifies the fail-closed authority boundary and source-materialization blocker. It does not admit frost production.
