@@ -2337,6 +2337,125 @@ def validate_romv2_d24_if_present() -> str:
     return "CLOSED_NATIVE_RAIN_GROUNDWATER_COMPOSITION_CANDIDACY"
 
 
+def validate_romv2_d25_if_present() -> str:
+    status_path=Path("integration/f-rom/F-ROMV2_D25_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json")=="b36e5ad7ab2a3f952b264598ecf632cf502adaf3",
+            "F-ROMV2-D25 preregistration blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D25_RESULT.json")=="32200d5ffcd77645c6ab7ca9116bb9dbe48781b6",
+            "F-ROMV2-D25 result blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D25_STATUS.json")=="1e08d7b7676e009cc43089f09f69b05acb1c1001",
+            "F-ROMV2-D25 status blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D25_CANONICAL_EVIDENCE_MANIFEST.json")=="7447b8e35fa537f7dad9ca60684050dce1fcdba5",
+            "F-ROMV2-D25 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D25_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D25_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D25_CANONICAL_EVIDENCE_MANIFEST.json")
+    d24=load_json("integration/f-rom/F-ROMV2_D24_STATUS.json")
+    mp8=load_json("benchmarks/performance/isolated-runner-readiness.json")
+    mp7=load_json("benchmarks/performance/evidence/mp-b01-host-admission.summary.json")
+    doc=Path("docs/science/F-ROMV2_D25_COMPUTATIONAL_VALUE_SCREEN_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_COMPILED_FMC_IMPLEMENTATION_AND_TIMING_EXPOSURE",
+            "F-ROMV2-D25 phase drift")
+    require(prereg["pre_execution_reconciliation"]["ownership_disjunct"] is True
+            and prereg["pre_execution_reconciliation"]["scientific_fields_changed"] is False
+            and prereg["pre_execution_reconciliation"]["timing_protocol_changed"] is False
+            and prereg["pre_execution_reconciliation"]["execution_started_before_reconciliation"] is False,
+            "F-ROMV2-D25 pre-execution reconciliation drift")
+    require(prereg["performance_governance"]["cpu_baseline_established"] is False
+            and prereg["performance_governance"]["MP8_isolated_runner_readiness"]=="INFRASTRUCTURE_PENDING",
+            "F-ROMV2-D25 performance-governance boundary drift")
+    require("NO_EFFECT_BASED_BATCH_LENGTH_SELECTION" in prereg["firewalls"]
+            and "NO_POSTHOC_TIMING_OUTLIER_DELETION" in prereg["firewalls"]
+            and "NO_FORMAL_SPEEDUP_CLAIM" in prereg["firewalls"]
+            and "NO_D24_SCIENCE_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D25 screening firewall drift")
+
+    require(result["decision"]=="FMC_SHARED_HOST_COST_ADVANTAGE_RESOLVED_RELATIVE_TO_R16",
+            "F-ROMV2-D25 decision drift")
+    require(result["compiled_FMC_implementation_equivalence"]["decision"]=="D25_COMPILED_FMC_IMPLEMENTATION_EQUIVALENCE_PASS"
+            and result["compiled_FMC_implementation_equivalence"]["O0_pass"] is True
+            and result["compiled_FMC_implementation_equivalence"]["O2_pass"] is True
+            and result["compiled_FMC_implementation_equivalence"]["max_mapped_theta_difference"]==0.0,
+            "F-ROMV2-D25 implementation-equivalence drift")
+    require(result["R16_only_calibration"]["selected_internal_repetitions"]==32
+            and result["R16_only_calibration"]["FMC_R2_effect_timing_exposed_before_selection"] is False,
+            "F-ROMV2-D25 calibration drift")
+    require(result["screening_protocol"]["warmups_per_route"]==3
+            and result["screening_protocol"]["measured_samples_per_route"]==30
+            and result["screening_protocol"]["no_posthoc_timing_outlier_deletion"] is True,
+            "F-ROMV2-D25 screening protocol drift")
+    require(result["screening_cpu_ratios"]["FMC_over_R16"]["mean"]<1.0
+            and result["screening_cpu_ratios"]["FMC_over_R2"]["mean"]<1.0
+            and result["paired_FMC_minus_R16_cpu_seconds_per_workload"]["resolved_negative"] is True
+            and result["paired_FMC_minus_R16_cpu_seconds_per_workload"]["upper_two_se_bound"]<0.0,
+            "F-ROMV2-D25 resolved screening signal drift")
+    require(result["performance_governance"]["screening_only"] is True
+            and result["performance_governance"]["host_admitted_for_cpu_baseline"] is False
+            and result["performance_governance"]["cpu_baseline_established"] is False
+            and result["performance_governance"]["formal_performance_claim"] is False
+            and result["performance_governance"]["portable_speedup_claim"] is False,
+            "F-ROMV2-D25 formal-performance firewall drift")
+    require(result["purpose_dependent_boundary"]["application_acceptance"] is False
+            and result["purpose_dependent_boundary"]["ET_root_uptake_qualified"] is False
+            and result["purpose_dependent_boundary"]["seasonal_water_balance_qualified"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D25 purpose/application overclaim drift")
+
+    require(d24["decision"]=="FMC_NATIVE_RAINFALL_GROUNDWATER_COMPOSITION_RETAINS_RESEARCH_CANDIDACY_RELATIVE_TO_R2"
+            and d24["all_eight_preregistered_frontier_gates_pass"] is True,
+            "F-ROMV2-D25 reclassifies D24")
+    require(mp8["status"]=="INFRASTRUCTURE_PENDING"
+            and mp8["cpu_baseline_established"] is False,
+            "F-ROMV2-D25 conflicts with MP-8 readiness authority")
+    require(mp7["host_admitted_for_cpu_baseline"] is False
+            and mp7["cpu_baseline_established"] is False,
+            "F-ROMV2-D25 conflicts with MP-7 host authority")
+
+    require(status["phase"]=="CLOSED_SHARED_HOST_COMPUTATIONAL_VALUE_SCREEN_POSITIVE"
+            and status["compiled_FMC_equivalence_pass"] is True
+            and status["screening_cost_advantage_resolved"] is True
+            and status["computational_research_candidacy_retained"] is True,
+            "F-ROMV2-D25 terminal status drift")
+    require(status["host_admitted_for_cpu_baseline"] is False
+            and status["cpu_baseline_established"] is False
+            and status["formal_performance_claim"] is False
+            and status["portable_speedup_claim"] is False
+            and status["application_acceptance"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D25 status boundary drift")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["primary_execution"]["pull_request_merged"] is False
+            and manifest["primary_execution"]["later_execution_branch_commits_authoritative"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["post_result_science_retuning"] is False,
+            "F-ROMV2-D25 provenance drift")
+    require(manifest["frozen_payload_digests"]["cost_screen_sha256"]=="1bcad51c6ddc24d2cf6177979e902391501d02a07b0739fab4119a629a78286f"
+            and manifest["frozen_payload_digests"]["implementation_equivalence_sha256"]=="bad16c214c7c7a8d6b3d0dd2a5360a857ceefd748348a595fe5d471f47f8081e"
+            and manifest["frozen_payload_digests"]["FMC_o0_o2_stdout_sha256"]=="3842e16a148138162caf81d743282dab8ac3be67584700d8ef0ef5a1fd97fff9",
+            "F-ROMV2-D25 immutable payload digest drift")
+    require(manifest["formal_performance_claimed"] is False
+            and manifest["portable_speedup_claimed"] is False
+            and manifest["application_acceptance_claimed"] is False
+            and manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D25 manifest overclaim drift")
+
+    require("These reciprocals are **not formal speedup claims**." in doc,
+            "F-ROMV2-D25 non-speedup statement missing")
+    require("The main blocker is no longer basic computational plausibility." in doc,
+            "F-ROMV2-D25 next-boundary statement missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D25 production prohibition missing")
+    return "CLOSED_SHARED_HOST_COMPUTATIONAL_VALUE_SCREEN_POSITIVE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2387,6 +2506,7 @@ def main() -> int:
     romv2_d22_phase = validate_romv2_d22_if_present()
     romv2_d23_phase = validate_romv2_d23_if_present()
     romv2_d24_phase = validate_romv2_d24_if_present()
+    romv2_d25_phase = validate_romv2_d25_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2421,6 +2541,7 @@ def main() -> int:
     print(f"F_ROMV2_D22_PHASE={romv2_d22_phase}")
     print(f"F_ROMV2_D23_PHASE={romv2_d23_phase}")
     print(f"F_ROMV2_D24_PHASE={romv2_d24_phase}")
+    print(f"F_ROMV2_D25_PHASE={romv2_d25_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
