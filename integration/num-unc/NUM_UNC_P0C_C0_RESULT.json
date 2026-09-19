@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.num_unc.p0c.locator_result.v1",
+  "work_unit": "NUM-UNC-P0C-C0",
+  "date": "2026-09-19",
+  "baseline": "187e30153c890151768e929170d14bb22af1d86d",
+  "research_head": "156068691e0f6c5e192d325233d79d632ffd090a",
+  "pull_request": 370,
+  "workflow_run_id": 35427546986,
+  "workflow_conclusion": "success",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "output_sha256": "2c417762601c0e22758f749428ea5274485f21e4c0191145cbcf57155dd2579c",
+  "N1_executed": false,
+  "material": "B01",
+  "initial_effective_saturation": 0.85,
+  "dt_day": 0.0064,
+  "initial_search": [
+    {
+      "multiplier": 0.25,
+      "class": "NO_PONDING",
+      "valid": true,
+      "max_pond_cm": 0
+    },
+    {
+      "multiplier": 0.5,
+      "class": "NO_PONDING",
+      "valid": true,
+      "max_pond_cm": 0
+    },
+    {
+      "multiplier": 1,
+      "class": "NO_PONDING",
+      "valid": true,
+      "max_pond_cm": 0
+    },
+    {
+      "multiplier": 2,
+      "class": "PONDING",
+      "valid": true,
+      "max_pond_cm": 0.8997025211272432,
+      "switch_block": 3
+    },
+    {
+      "multiplier": 4,
+      "class": "PONDING",
+      "valid": true,
+      "max_pond_cm": 3.2968702913279806,
+      "switch_block": 2
+    }
+  ],
+  "frozen_bracket": {
+    "lo": 1.05859375,
+    "hi": 1.0595703125
+  },
+  "frozen_transition_multiplier": 1.05908203125,
+  "frozen_cases": {
+    "C_minus": {
+      "multiplier": 0.9531738281250001,
+      "class_N0": "NO_PONDING",
+      "max_pond_cm": 0,
+      "max_integrated_mass_residual_cm": 4.0387249100604096e-15
+    },
+    "C_zero": {
+      "multiplier": 1.05908203125,
+      "class_N0": "NO_PONDING",
+      "max_pond_cm": 0,
+      "max_integrated_mass_residual_cm": 2.214051164628472e-15
+    },
+    "C_plus": {
+      "multiplier": 1.164990234375,
+      "class_N0": "PONDING",
+      "max_pond_cm": 0.04647548650473368,
+      "switch_block": 6,
+      "max_integrated_mass_residual_cm": 3.3139713195851075e-15
+    }
+  },
+  "locator_status": "FREEZE_READY",
+  "interpretation": "This is transition-location evidence only. It contains no N0-versus-N1 inference comparison and cannot support NUM-UNC novelty."
+}
