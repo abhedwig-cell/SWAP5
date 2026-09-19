@@ -1,0 +1,60 @@
+name: F-ROM-LARE persist formal P1 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-rs1-gw-p1-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact-fast P1 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-rs1-p1-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585158155/zip" > /tmp/lare-rs1-p1-persist/p1.zip
+          echo "809e801495404cb817c3256ad4eaa8db23e8424d248cfe455d848ba1666ea0c7  /tmp/lare-rs1-p1-persist/p1.zip" | sha256sum -c -
+          unzip -q /tmp/lare-rs1-p1-persist/p1.zip -d /tmp/lare-rs1-p1-persist
+
+      - name: Reconcile formal P1 with independent cross-check
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          formal=json.load(open('/tmp/lare-rs1-p1-persist/LARE_RS1_GW_P1_RESULT.json'))
+          cross=json.load(open('integration/f-rom/LARE_RS1_GW_P1_KDTREE_CROSSCHECK.json'))
+          assert formal['decision']=='LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN'
+          assert formal['future_probe_response_used'] is False
+          assert formal['input']['accepted_state_payload_sha256']=='7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345'
+          for cid in [f'D{i}' for i in range(2,11)]:
+              assert formal['selected_partitions'][cid]['depth_boundaries_cm']==cross['selected_partitions'][cid]['depth_boundaries_cm']
+              assert formal['selected_partitions'][cid]['collision_counts']==cross['selected_partitions'][cid]['collision_counts']
+          for cid in ('U4','U8_Z8','B01_B14_PILOT_R4','Z8_PLUS_G8_INFORMATION_EQUIVALENT'):
+              assert formal['fixed_controls'][cid]['collision_counts']==cross['fixed_controls'][cid]['collision_counts']
+          assert all(len(row['pairs'])==8 for row in formal['frozen_adversarial_pairs'].values())
+          print('LARE_RS1_GW_P1_FORMAL_CROSSCHECK=PASS')
+          PY
+
+      - name: Persist formal P1 result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-rs1-p1-persist/LARE_RS1_GW_P1_RESULT.json integration/f-rom/LARE_RS1_GW_P1_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_RS1_GW_P1_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist formal response-blind GW P1 result"
+          git push origin HEAD:work/f-rom-lare-rs1
