@@ -5,7 +5,7 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical head inspected: `67dcbd5252ec6aab465329c55e427f535ce47f02`.
+Canonical head inspected: `2dc52991ade07daadd2cc963356f851e37ed29e5`.
 
 E7 was canonically admitted by PR #330 as:
 
