@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "PREREGISTERED_HARNESS_SPECIFICATION",
+  "status": "P0C_LOCATOR_PREREGISTERED",
   "implemented": false,
   "persisted": true,
   "tested": false,
@@ -16,7 +16,10 @@
     "src/solver/mod_soil_water_solver_contract.f90",
     "src/process/mod_root_water_uptake_process.f90",
     "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
-    "src/adapter/mod_reference_richards_legacy_binding.f90"
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "tests/num_unc/"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -29,10 +32,11 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Bind a provenance-complete root-water-uptake parameter profile; then implement a research-only P0 harness and structural preregistration validator without executing N1 primary comparisons before transition cases are frozen.",
-  "recovery_point": "Protocol, manifest and run-record schema on research/num-unc-p0.",
+  "next_action": "Implement and structurally validate the C0 N0-only surface-transition locator. C0 must not compile or execute N1 comparison logic. Persist the frozen C-/C0/C+ multipliers before opening C1.",
+  "recovery_point": "P0 protocol plus C0 locator design frozen on research/num-unc-p0; N1 primary comparison not yet authorized.",
   "blockers": [
-    "Experiment A requires a qualified/provenance-complete active-crop Feddes parameter profile before execution.",
-    "Spatial-control grid stability must be established before primary P0 comparison."
+    "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
+    "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
+    "Spatial-control grid stability remains required before C1 inference claims."
   ]
 }
