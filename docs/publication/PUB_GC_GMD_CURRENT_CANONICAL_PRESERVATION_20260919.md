@@ -12,7 +12,7 @@ The prearchive package was originally frozen against:
 
 The publication-critical set was rechecked against live canonical:
 
-`187e30153c890151768e929170d14bb22af1d86d`
+`6e212f9315606fac3e3922a9aa02c11d51a96bc2`
 
 All **24/24** governed publication-critical blobs match exactly.
 
