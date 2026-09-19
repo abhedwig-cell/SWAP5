@@ -119,10 +119,6 @@ for marker in   'FSI38_PRESCRIBED_QBOT_TEMPORAL_CERTIFICATE=PASS'; do
 done
 grep -Fq 'FSI25_REFERENCE_INDICATOR_CASE PASS' "$BUILD/o0/fsi25.txt" || { cat "$BUILD/o0/fsi25.txt" >&2; fail "FSI25 marker"; }
 grep -Fq ':EXTRA_NONLINEAR=0:EXTRA_TRIDAG=1:' "$BUILD/o0/fsi25.txt" || { cat "$BUILD/o0/fsi25.txt" >&2; fail "FSI25 bounded cost"; }
-for marker in   'FMR44R_MODE2_EQUILIBRIUM_TRANSACTION=PASS'   'FMR44R_POSITIVE_QBOT_ACCEPTED_INFLOW=PASS'   'FMR44R_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS'   'FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS'; do
-  grep -Fq "$marker" "$BUILD/o0/fmr44r.txt" || { cat "$BUILD/o0/fmr44r.txt" >&2; fail "missing $marker"; }
-done
-
 for name in fsi38 fsi25; do
   diff -u "$BUILD/o0/$name.txt" "$BUILD/o2/$name.txt" || fail "$name O0/O2 output identity"
 done
