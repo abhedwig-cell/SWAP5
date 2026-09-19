@@ -99,16 +99,17 @@
     }
   },
   "numerical_reference": {
-    "primary_ode_route": "high-accuracy research integration of the frozen ODE; dynamics conclusions concern closure/state, not production integrator performance",
+    "primary_ode_route": "iterative Heun predictor-corrector with preregistered step refinement; the finest successful refinement is the DYN0A model-form numerical reference",
     "heun_crosscheck": {
       "method": "iterative Heun predictor-corrector, source-anchored to He et al. 2021",
       "observation_dt_day": 0.0008,
       "refinement_dt_day": [
         0.0008,
         0.0004,
-        0.0002
+        0.0002,
+        0.0001
       ],
-      "role": "characterize numerical floor and confirm model-form conclusions are not a time-integration artifact"
+      "role": "source-anchored numerical-floor authority; compare successive refinements and use the finest successful route for hydrological comparison"
     },
     "hard_invariants": [
       "finite state and fluxes",
@@ -266,5 +267,38 @@
     "NO_APPLICATION_ACCEPTANCE_THRESHOLD_DERIVED_FROM_DYN0A",
     "NO_SPEED_CLAIM_BEFORE_FIDELITY"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "preflight_reconciliation": {
+    "date": "2026-09-19",
+    "before_successful_hydrological_comparison": true,
+    "failed_runs": [
+      {
+        "workflow_run": 35446594110,
+        "stage": "LARE ODE numerical-reference preflight",
+        "observation": "unbounded DOP853 internal stage entered theta outside the qualified 0<Se<1 constitutive branch; no DYN0A result artifact was produced",
+        "disposition": "remove DOP853 as authority and use the source-anchored iterative Heun refinement ladder as the numerical-floor authority; forcing, state, closure and partitions unchanged"
+      },
+      {
+        "workflow_run": 35446696565,
+        "stage": "Richards comparator preflight",
+        "observation": "fine 16x10 cm Reference completed all four fixed-flux histories at Se0=0.65, then failed closed on the first free-drainage history because mode 7 has no previously qualified strict-first fallback authority",
+        "disposition": "split DYN0A-FX fixed-flux comparison from DYN0A-FD free-drainage comparison. DYN0A-FX proceeds unchanged. DYN0A-FD remains BLOCKED_REFERENCE_MODE7_QUALIFICATION_REQUIRED; no new fallback is invented here."
+      }
+    ],
+    "scientific_firewall": "No successful LARE-vs-Richards hydrological comparison was observed before this reconciliation; no forcing amplitude, partition, metric or purpose criterion is changed."
+  },
+  "experiment_staging": {
+    "DYN0A_FX": {
+      "status": "AUTHORIZED_TO_CONTINUE",
+      "bottom_boundary": "FIXED_FLUX",
+      "histories": "all preregistered Se0 and top-forcing sequences",
+      "comparator": "fine Reference Richards plus equal-dimension D3 and D2 coarse Richards"
+    },
+    "DYN0A_FD": {
+      "status": "BLOCKED_REFERENCE_MODE7_QUALIFICATION_REQUIRED",
+      "bottom_boundary": "FREE_DRAINAGE",
+      "lare_standalone_characterization_allowed": true,
+      "hydrological_comparator_claim_allowed": false
+    }
+  }
 }
