@@ -29,7 +29,7 @@ p=json.load(open(sys.argv[1]))
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
 assert [(g["id"],g["nodes"],g["dz_cm"]) for g in p["scope"]["geometries"]]==[
  ("R16",16,10),("R8",8,20),("R4",4,40),("R2",2,80)]
-assert p["scope"]["blind_confirmation"] is False
+assert p["scientific_role"]["blind_confirmation"] is False
 assert p["hydrological_evaluation"]["reporting"].startswith("Absolute and relative")
 assert p["research_numerical_policy"]["id"]=="STRICT_FIRST_INTEGRATED_WATER_DEPTH_REATTEMPT"
 assert p["research_numerical_policy"]["depth_budget"]["epsilon_depth_cm"]==1e-12
