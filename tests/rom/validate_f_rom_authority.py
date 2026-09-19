@@ -1607,6 +1607,105 @@ def validate_romv2_d16_if_present() -> str:
     return "CLOSED_BOUNDED_SURFACE_REDISTRIBUTION_CANDIDACY_RETAINED"
 
 
+def validate_romv2_d17_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D17_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D17_PREREGISTRATION.json")
+            == "d94b9af3ca1033b62f4f9aa7fd770f7376121f5c",
+            "F-ROMV2-D17 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D17_RESULT.json")
+            == "b9509716e42d81ea4f3094ef94641790bbb51887",
+            "F-ROMV2-D17 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D17_STATUS.json")
+            == "b30ff2306481f77ee3bd2d33312c3015fe257855",
+            "F-ROMV2-D17 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D17_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "114c1243be2c1783f7e62109d38b14c1d6073edd",
+            "F-ROMV2-D17 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D17_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D17_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D17_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D17_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D17_COMBINED_FMC_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+            "F-ROMV2-D17 preregistration phase drift")
+    require(prereg["discretization"]["moisture_bins"] == 200
+            and prereg["discretization"]["process_step_seconds"] == 10,
+            "F-ROMV2-D17 frozen FMC discretization drift")
+    require(prereg["matched_boundaries"]["bottom"]["type"] == "fixed zero pressure head",
+            "F-ROMV2-D17 lower-boundary envelope drift")
+    require("NO_SURFACE_GROUNDWATER_CONTACT_OR_MERGE_IN_D17" in prereg["firewalls"]
+            and "NO_FALLING_SLUG_BRANCH_IN_D17" in prereg["firewalls"]
+            and "NO_BIN_COUNT_TUNING" in prereg["firewalls"]
+            and "NO_SUBSTEP_TUNING" in prereg["firewalls"],
+            "F-ROMV2-D17 composition firewall drift")
+
+    require(result["decision"] == "FMC_COMBINED_SURFACE_GROUNDWATER_RETAINS_RESEARCH_CANDIDACY",
+            "F-ROMV2-D17 decision drift")
+    require(result["adjudication"]
+            == "BOUNDED_SIMULTANEOUS_SEPARATED_SURFACE_GROUNDWATER_FMC_BEATS_R2_ON_ALL_PREREGISTERED_VIEWS",
+            "F-ROMV2-D17 adjudication drift")
+    require(result["preflight"]["decision"] == "D17_FMC_COMBINED_PULSE_GW_PREFLIGHT_PASS"
+            and result["preflight"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D17 staged preflight drift")
+    require(result["integrity"]["pass"] is True
+            and result["integrity"]["minimum_surface_groundwater_separation_cm"] > 0.0,
+            "F-ROMV2-D17 integrity/separation drift")
+    require(all(result["frontier"][k] is True for k in (
+        "balance_total_storage",
+        "balance_cumulative_bottom_exchange",
+        "profile_theta",
+        "groundwater_bottom_flux_magnitude",
+        "groundwater_bottom_flux_sign")),
+        "F-ROMV2-D17 one or more preregistered frontier gates no longer pass")
+    require(result["frontier"]["retained"] is True,
+            "F-ROMV2-D17 retained-candidacy drift")
+    require(result["envelope"]["surface_groundwater_contact_or_merge"] is False
+            and result["envelope"]["falling_slug"] is False
+            and result["envelope"]["ponding_or_runoff"] is False
+            and result["envelope"]["ET_or_root_uptake"] is False,
+            "F-ROMV2-D17 result overextends process envelope")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D17 overclaims authority")
+
+    require(status["phase"] == "CLOSED_BOUNDED_COMBINED_FMC_RESEARCH_CANDIDACY_RETAINED",
+            "F-ROMV2-D17 status phase drift")
+    require(status["all_preregistered_frontier_views_pass"] is True,
+            "F-ROMV2-D17 status frontier drift")
+    require(status["surface_groundwater_contact_or_merge_qualified"] is False,
+            "F-ROMV2-D17 status prematurely qualifies contact/merge")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D17 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D17 import scope drift")
+    require(manifest["source_execution"]["pull_request"] == 449
+            and manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D17 execution authority drift")
+    require(manifest["scientific_inputs_changed_by_repairs"] is False,
+            "F-ROMV2-D17 technical repairs changed science")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D17 evidence import claims production/reference mutation")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D17 manifest authorizes production ROM")
+
+    require("All five preregistered decision gates pass" in doc,
+            "F-ROMV2-D17 frontier adjudication missing")
+    require("contact or merge" in doc,
+            "F-ROMV2-D17 contact/merge boundary missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D17 production prohibition missing")
+
+    return "CLOSED_BOUNDED_COMBINED_FMC_RESEARCH_CANDIDACY_RETAINED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1649,6 +1748,7 @@ def main() -> int:
     romv2_d14_phase = validate_romv2_d14_if_present()
     romv2_d15_phase = validate_romv2_d15_if_present()
     romv2_d16_phase = validate_romv2_d16_if_present()
+    romv2_d17_phase = validate_romv2_d17_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1675,6 +1775,7 @@ def main() -> int:
     print(f"F_ROMV2_D14_PHASE={romv2_d14_phase}")
     print(f"F_ROMV2_D15_PHASE={romv2_d15_phase}")
     print(f"F_ROMV2_D16_PHASE={romv2_d16_phase}")
+    print(f"F_ROMV2_D17_PHASE={romv2_d17_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
