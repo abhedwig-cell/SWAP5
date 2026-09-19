@@ -119,5 +119,20 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_solver_clarification": {
+    "before_first_C4L_execution": true,
+    "least_squares_tolerances": {
+      "xtol": 1e-13,
+      "ftol": 1e-13,
+      "gtol": 1e-13,
+      "max_nfev": 400
+    },
+    "physical_domain_handling": "No clipping. If the cubic psi profile has an interior value below -1e-10 cm, the residual evaluator returns a deterministic large penalty; such a solution is never counted as a valid root.",
+    "profile_minimum": "Evaluate endpoints plus every real root of dpsi/dx inside [0,L], so physical admissibility is analytic for the cubic rather than grid-sampled.",
+    "root_reconciliation": "Average u,v only after at least two valid starts converge and every valid root satisfies the frozen 1e-8 combined relative/absolute uniqueness tolerance; re-evaluate both storage residuals and physical domain at the reconciled root.",
+    "interval_flux": "Endpoint qi values are trapezoidally averaged exactly as in B9. qH uses the unchanged B9 terminal slope and must match the baseline interval value within the frozen identity gate.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
