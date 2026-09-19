@@ -1,0 +1,43 @@
+name: F-ROM-LARE BC2 source-output oracle retrieval
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-source-oracle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve official EPA ScienceHub workbook
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_SOURCE_ORACLE
+          url='https://pasteur.epa.gov/uploads/10.23719/1524300/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx'
+          curl --fail --location --retry 3 --retry-delay 2             --user-agent 'SWAP5-F-ROM-LARE-research/1.0'             "$url"             --output LARE_BC2_SOURCE_ORACLE/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx
+          test -s LARE_BC2_SOURCE_ORACLE/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx
+          file LARE_BC2_SOURCE_ORACLE/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx
+          sha256sum LARE_BC2_SOURCE_ORACLE/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx             | tee LARE_BC2_SOURCE_ORACLE/sha256.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          p=Path('LARE_BC2_SOURCE_ORACLE/ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx')
+          assert zipfile.is_zipfile(p), 'download is not a valid XLSX/ZIP container'
+          with zipfile.ZipFile(p) as z:
+              names=set(z.namelist())
+              assert 'xl/workbook.xml' in names
+              assert '[Content_Types].xml' in names
+          print('LARE_BC2_SOURCE_ORACLE_XLSX_CONTAINER=PASS')
+          PY
+      - name: Upload exact EPA source oracle
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-source-oracle
+          path: LARE_BC2_SOURCE_ORACLE/
