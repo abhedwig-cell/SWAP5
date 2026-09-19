@@ -1,0 +1,239 @@
+{
+  "schema": "swap5.f-romv2-d23.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D23",
+  "title": "Short accepted rainfall trajectory with native ponding/runoff thresholds",
+  "phase": "PREREGISTERED_BEFORE_FMC_INTERNAL_PREFLIGHT_AND_RICHARDS_TRAJECTORY_EXECUTION",
+  "canonical_base": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+  "purpose": "Determine whether the D22 native FMC surface-threshold response propagates through a short storm and post-storm redistribution trajectory at least as faithfully as the admitted R2 coarse-Richards comparator, without forcing threshold equivalence to R16.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_SHORT_RAINFALL_TRAJECTORY_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D15": "Full FMC atmospheric-side finite-volume accounting preflight passed.",
+    "D16": "FMC surface infiltration/hiatus redistribution beats R2 on the bounded prescribed-infiltration development views.",
+    "D20": "FMC one-hour fixed-water-table persistence retains research candidacy.",
+    "D21": "Matched R16/FMC rainfall regime labels fail at 2 Ksat before trajectory exposure; no threshold retuning is authorized.",
+    "D22": "FMC native one-step threshold response is competitive with R2 on all preregistered native surface-response views while remaining non-equivalent to R16.",
+    "interpretation": "D23 preserves native threshold displacement and tests its multi-step hydrological consequences."
+  },
+  "material": {
+    "id": "B01",
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "effective_capillary_drive_HcM_cm": 14.085215420920257
+  },
+  "common_initial_state": {
+    "id": "D16_D14_I_DEEP",
+    "total_depth_cm": 160,
+    "FMC_bins": 200,
+    "baseline_bin_i": 100,
+    "active_connected_bins": "101..199",
+    "connected_front_depths": "linear from z_101=120 cm to z_199=10 cm",
+    "falling_slugs": "none",
+    "surface_store_cm": 0,
+    "cumulative_runoff_cm": 0,
+    "R16_R2_mapping": "exact D16 finite-volume mapping of the same FMC profile into 10-cm and 80-cm cell averages"
+  },
+  "histories": [
+    {
+      "id": "R05",
+      "rainfall_factor_Ksat": 0.5,
+      "interpretation": "common native no-runoff/low-supply control from the D22 ladder"
+    },
+    {
+      "id": "R20",
+      "rainfall_factor_Ksat": 2,
+      "interpretation": "known native threshold-mismatch case: R16 ponded/no-runoff in D21/D22 one-step response while R2/FMC are already on the runoff side"
+    },
+    {
+      "id": "R40",
+      "rainfall_factor_Ksat": 4,
+      "interpretation": "common active-runoff regime control from the D22 ladder"
+    }
+  ],
+  "temporal_contract": {
+    "observation_step_seconds": 10,
+    "observation_step_day": "10/86400",
+    "storm_steps": 16,
+    "hiatus_steps": 48,
+    "total_steps": 64,
+    "storm_duration_seconds": 160,
+    "hiatus_duration_seconds": 480,
+    "total_duration_seconds": 640
+  },
+  "surface_parameters": {
+    "ponding_max_cm": 0.0036140064814814818,
+    "definition": "Ksat * 10 seconds",
+    "runoff_resistance_day": 0.001,
+    "runoff_exponent": 1,
+    "potential_evaporation_cm_per_day": 0,
+    "irrigation_snowmelt_runon_cm_per_day": 0
+  },
+  "R16_R2_route": {
+    "geometries": [
+      {
+        "id": "R16",
+        "nodes": 16,
+        "dz_cm": 10,
+        "role": "fuller-grid development reference"
+      },
+      {
+        "id": "R2",
+        "nodes": 2,
+        "dz_cm": 80,
+        "role": "admitted coarse-Richards physical-reduction comparator"
+      }
+    ],
+    "bottom_boundary": "mode 2, prescribed bottom flux 0 cm/day",
+    "root_sink_drainage_subsurface_irrigation": "zero",
+    "top_boundary_per_interval": [
+      "read committed top-cell theta and pressure head",
+      "set previous_ponding_depth to the separately tracked accepted surface store from the preceding interval",
+      "set precipitation_rate to frozen factor*Ksat for steps 1..16 and zero for steps 17..64",
+      "iterate current-canonical evaluate_b110_dynamic_top_boundary from candidate ponding=previous store until bitwise fixed or absolute candidate change <=1e-14 cm, maximum 32 iterations",
+      "require provider availability, finite outputs and surface water ledger closure",
+      "materialize provider actual_top_flux_cm_per_day as the explicit top flux for exactly one accepted Reference soil-water interval",
+      "commit the soil-water candidate through the existing kernel owner",
+      "publish provider candidate ponding as the external accepted surface store and accumulate provider runoff_depth"
+    ],
+    "numerical_authority": "D4 strict-first integrated-water-depth research reattempt policy; hard accepted transaction soil-water mass gate 1e-12 cm; no production tolerance change.",
+    "surface_ledger_cm": "previous_store + rainfall - accepted_soil_infiltration - new_store - runoff",
+    "surface_ledger_gate_cm": 1e-12,
+    "note": "Surface store is a research-comparator state tracked outside the fixed-flux Reference kernel because D23 tests pre-resolved current-canonical dynamic-top semantics without changing production state ownership."
+  },
+  "FMC_route": {
+    "frozen_sources": [
+      "D12 equations/bins",
+      "D14 Eq.18/Eq.19 kinematics",
+      "D15 finite-volume surface accounting",
+      "D16 I_DEEP mapping/redistribution",
+      "D22 surface-reservoir law"
+    ],
+    "moisture_bins": 200,
+    "process_step_seconds": 10,
+    "connected_phase_per_interval": [
+      "available surface water = previous accepted surface store + rainfall depth",
+      "advance every existing connected bin by the D14/D16 Eq.18 potential front advance",
+      "allocate available water left-to-right by D15 finite-volume accounting; no new dry-bin activation is expected because I_DEEP already has active bins 101..199",
+      "apply D14 conservative connected-front relaxation",
+      "route residual surface water through the frozen D22 ponding/runoff reservoir law"
+    ],
+    "hiatus_transition": "On a zero-rain interval whose accepted residual surface store is <=1e-14 cm, detach every connected interval [0,z_j] to a falling slug with identical water volume at the END of that interval. No slug translation occurs until the next interval.",
+    "detached_hiatus_phase": "Translate every falling slug by the D14 Eq.19 velocity for one 10-s interval; preserve each slug length exactly; no new surface-connected front is created.",
+    "forbidden_events": "Any slug collision/overlap, bottom-boundary contact, nonfinite state, front/slug leaving 0..160 cm, or ledger failure is fail-closed.",
+    "no_groundwater_front": true,
+    "bottom_exchange_cm": 0,
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "FMC_internal_preflight": {
+    "runs_before_R16_R2_trajectory_generation": true,
+    "SWAP_trajectory_evidence_consumed": false,
+    "histories": [
+      "R05",
+      "R20",
+      "R40"
+    ],
+    "checks": [
+      "all 64 intervals complete under the frozen FMC route",
+      "every interval surface+soil ledger closes within 1e-12 cm",
+      "global rain = final soil storage change + final surface store + cumulative runoff within 1e-12 cm",
+      "all connected fronts and falling slugs remain inside 0..160 cm",
+      "no collision, overlap, clipping, dry-bin retuning or full-order fallback occurs"
+    ],
+    "failure_rule": "If the FMC-only preflight fails, close D23 before generating any R16/R2 trajectory. No factor, duration, surface parameter, bin, process step, Eq.18/Eq.19 rule or detachment rule may be retuned."
+  },
+  "outputs_per_interval": [
+    "soil total storage",
+    "upper 0-80 cm storage",
+    "lower 80-160 cm storage",
+    "R16-mapped 16-cell theta profile",
+    "rainfall depth",
+    "accepted infiltration depth into soil",
+    "surface store",
+    "runoff depth and cumulative runoff",
+    "bottom exchange and bottom flux diagnostic",
+    "surface ledger residual",
+    "soil transaction mass residual",
+    "Richards nonlinear work and research reattempt count"
+  ],
+  "comparison_metrics": {
+    "all_steps_equal_weight": [
+      "cumulative infiltration RMSE versus R16",
+      "surface-store RMSE versus R16",
+      "cumulative-runoff RMSE versus R16",
+      "upper-storage RMSE versus R16",
+      "R16-mapped 16-cell theta RMSE versus R16"
+    ],
+    "hiatus_steps_17_64": [
+      "upper-storage RMSE versus R16",
+      "R16-mapped 16-cell theta RMSE versus R16"
+    ],
+    "diagnostics_not_acceptance_thresholds": [
+      "total-storage RMSE",
+      "lower-storage RMSE",
+      "first ponding step",
+      "first runoff step",
+      "storm-end cumulative runoff error",
+      "final cumulative runoff error",
+      "final upper/lower storage bias",
+      "native regime mismatch count"
+    ],
+    "R2_profile_mapping": "repeat each 80-cm R2 cell-average theta across the corresponding eight R16 10-cm cells",
+    "no_weighted_score": true
+  },
+  "decision_logic": {
+    "positive": "FMC_SHORT_RAINFALL_TRAJECTORY_RETAINS_FAST_SURFACE_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+    "negative": "FMC_SHORT_RAINFALL_TRAJECTORY_NOT_COMPETITIVE_WITH_R2",
+    "all_required": [
+      "FMC-only preflight passes before any Richards trajectory generation",
+      "all R05/R20/R40 R16, R2 and FMC trajectories complete with integrity",
+      "FMC cumulative-infiltration RMSE <= R2",
+      "FMC surface-store RMSE <= R2",
+      "FMC cumulative-runoff RMSE <= R2",
+      "FMC all-step upper-storage RMSE <= R2",
+      "FMC all-step mapped-theta RMSE <= R2",
+      "FMC hiatus upper-storage RMSE <= R2",
+      "FMC hiatus mapped-theta RMSE <= R2"
+    ],
+    "R16_threshold_equivalence_required": false,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "interpretation_boundary": {
+    "if_positive": "Retain FMC for short rainfall/ponding/runoff trajectory research relative to R2. D21 native threshold non-equivalence remains true. Longer rainfall+groundwater composition and same-runtime performance remain separate.",
+    "if_negative": "Do not retune native FMC thresholds or surface parameters. Preserve FMC candidacy only for already qualified D13-D20 envelopes and any D22 one-step relative frontier that remains scientifically relevant.",
+    "neither_outcome": "No application acceptance, production ROM authority, ET/root-uptake fidelity, seasonal balance or formal speedup claim."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_RAINFALL_FACTOR_RETUNING",
+    "NO_STORM_OR_HIATUS_DURATION_RETUNING",
+    "NO_PONDING_MAX_OR_RUNOFF_LAW_RETUNING",
+    "NO_FMC_BIN_OR_PROCESS_STEP_RETUNING",
+    "NO_EQ18_EQ19_OR_RELAXATION_RETUNING",
+    "NO_DYNAMIC_TOP_PROVIDER_RETUNING",
+    "NO_MATCHED_THRESHOLD_LABEL_REQUIREMENT",
+    "NO_POST_PREFLIGHT_DETACHMENT_RULE_RETUNING",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
