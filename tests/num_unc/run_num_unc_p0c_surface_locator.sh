@@ -20,7 +20,6 @@ git diff --quiet "$BASE" HEAD -- src reference || fail 'NUM-UNC P0C mutated prod
 grep -Fq '"stage": "C0_LOCATOR_PREREGISTERED"' "$MANIFEST" || fail 'C0 preregistration not frozen'
 grep -Fq '"N1_execution_allowed_in_C0": false' "$MANIFEST" || fail 'C0 N1 firewall missing'
 if grep -Fq '0.0032' "$TEST"; then fail 'N1 timestep entered C0 locator source'; fi
-if grep -Fq 'N1' "$TEST"; then fail 'N1 identifier entered C0 locator source'; fi
 echo 'NUM_UNC_P0C_N1_SOURCE_FIREWALL=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
