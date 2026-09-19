@@ -1,7 +1,7 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "1c6506d2bc223e4992e0f0b250568f43bb4a5829",
+  "canonical_head_at_reconcile": "67dcbd5252ec6aab465329c55e427f535ce47f02",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
@@ -67,9 +67,29 @@
       "production_source_mutation": false,
       "production_admission": "NONE_REVIEW_ONLY",
       "e7_effect": "NONE"
+    },
+    "PPA_LOW02_TIME": {
+      "status_path": "integration/audits/PPA_LOW02_TIME_STATUS.json",
+      "status_blob": "31b03245e2c17f4e4ac3c98d5622eb2f46b4744f",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "production_scope": "legacy SWBOTB=2 time law and dry continuation inside homogeneous typed bottom_mode=2 serialized Reference application",
+      "production_sources": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "groundwater_semantics_change": false,
+      "e7_effect": "NONE; mode-2 lower-boundary time-law reachability does not widen the bottom_mode=5 groundwater owner and explicitly claims no new groundwater-coupling semantics"
+    },
+    "PPA_WU05C": {
+      "status_path": "integration/audits/PPA_WU05C_STATUS.json",
+      "status_blob": "a73842aa8c744651e55c1f05cf4678663622cf68",
+      "state": "CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED",
+      "production_source_mutation": false,
+      "production_admission": "NONE_REVIEW_ONLY",
+      "production_scope": "oxygen-stress source/state/owner decomposition only",
+      "e7_effect": "NONE"
     }
   },
   "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
-  "interpretation": "All canonical work admitted after the E7 closure either preserves the same production groundwater-owner guard or is review-only. No later workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
+  "interpretation": "All canonical work admitted after the E7 closure through current head 67dcbd5252ec6aab465329c55e427f535ce47f02 either preserves the same production groundwater-owner guard, widens only the independent bottom_mode=2 prescribed-qbot application, or is review-only. PPA-LOW02-TIME changes only the serialized Reference mode-2 time law/dry continuation and explicitly adds no groundwater-coupling semantics. PPA-WU05C is review-only with zero production source mutation. No later workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
   "reopen_rule": "Reopen only as a new prospective experiment if a future canonically admitted production capability actually composes the required active Hupsel processes with prescribed-head groundwater ownership. Review-only authority or unrelated forcing/bottom-mode reachability does not reopen E7."
 }
