@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.lare.bc2.c2a.persist-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2A",
+  "required_decision": "BC2_C2A_ACTUAL_DRIFT_GAIN_MAPPED",
+  "workflow_run": 35457132388,
+  "artifact_id": 10588339361,
+  "artifact_zip_sha256": "7b4c3c1d2846e124b9bd2aa72154a4100c6c27f560ec3be2ff809d4e563d0045",
+  "result_sha256": "288099d209bff2b0d5898ad647dcd649934291b97ca8d2646488b2bcc3d0bc27",
+  "executed_head": "26481a57bb67a0d88f4e7ba0e78d476ddb0f0d22",
+  "result_summary": {
+    "complete": true,
+    "diagnostic_B_authorized": true,
+    "max_hard_residual_cm": 1.5543122344752192e-13,
+    "hard_gate_cm": 1e-10,
+    "all_eight_actual_cases_amplifying_majority": false,
+    "maximum_fraction_intervals_gain_gt_1": 0.3796477495107632,
+    "maximum_case": "5.0:WT_RISE"
+  },
+  "scientific_effect": "Persists the exact qualified C2A diagnostic result only. No state, closure, stabilizer, forcing, groundwater feedback, application acceptance or production capability is changed."
+}
