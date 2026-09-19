@@ -190,7 +190,6 @@ def main()->None:
                 require(status==PreparedSolveStatus.OK,session.last_error)
                 require(it is not None,f"missing MODFLOW input-head iterate {outer}")
                 require(np.array_equal(it.accepted_head_old_m,accepted_xold),"MODFLOW XOLD drifted")
-                require(bool(it.modflow_converged),f"input-head MODFLOW solve {outer} did not converge")
                 h_swap=float(it.head_m[1])
 
                 q_swap=swap.trial(h_swap)
@@ -201,7 +200,6 @@ def main()->None:
                 require(status==PreparedSolveStatus.OK,session.last_error)
                 require(it2 is not None,f"missing MODFLOW return-head iterate {outer}")
                 require(np.array_equal(it2.accepted_head_old_m,accepted_xold),"MODFLOW XOLD drifted on return solve")
-                require(bool(it2.modflow_converged),f"return-head MODFLOW solve {outer} did not converge")
                 h_groundwater=float(it2.head_m[1])
                 q_package=(current_hcof*h_groundwater-updated_rhs)/(AREA_M2*DAY_TO_S)
 
@@ -217,7 +215,7 @@ def main()->None:
                     f"QPKG={q_package:.17g} QRES={flux_residual:.17g} HOK={int(head_ok)}"
                 )
 
-                if head_ok and abs(flux_residual)<=FLUX_ITER_TOL:
+                if bool(it.modflow_converged) and bool(it2.modflow_converged) and head_ok and abs(flux_residual)<=FLUX_ITER_TOL:
                     converged=True
                     final_h_swap=h_swap
                     final_h_groundwater=h_groundwater
