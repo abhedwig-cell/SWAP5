@@ -1,0 +1,69 @@
+name: F-ROM-LARE persist formal P2 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-rs1-gw-p2-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover formal P2 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-rs1-p2-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10584843824/zip" > /tmp/lare-rs1-p2-persist/p2.zip
+          echo "56f9b9c732becdbfd5a0c11da21bc2b90f5bed04ab15f7b9c984a199251ded3c  /tmp/lare-rs1-p2-persist/p2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-rs1-p2-persist/p2.zip -d /tmp/lare-rs1-p2-persist
+
+      - name: Validate P2 closure
+        run: |
+          python3 - <<'PY'
+          import json
+          result=json.load(open('/tmp/lare-rs1-p2-persist/LARE_RS1_GW_P2_RESULT.json'))
+          selection=json.load(open('/tmp/lare-rs1-p2-persist/LARE_RS1_GW_P2_SELECTION.json'))
+          assert result['decision']=='LARE_RS1_GW_P2_PURPOSE_AMBIGUITY_MAPPED'
+          assert result['evidence_complete'] is True
+          assert result['repeat_stdout_bitwise_identity'] is True
+          assert result['start_state_identity_with_stage_A_library'] is True
+          assert result['selection_rule_result']=={
+              'D_AGGRESSIVE':'D2',
+              'D_STATE_SEPARATING':'D3',
+              'D_ROBUST_PLATEAU':'D4',
+              'minimum_4x_collision_count':40942,
+          }
+          assert selection['response_used_for_selection'] is False
+          assert selection['pair_reselection'] is False
+          assert selection['unique_start_state_count']==41
+          for cid in ('D2','D3','D4'):
+              assert result['representations'][cid]['metrics']['terminal_flux_sign_mismatch_count']==0
+          assert result['representations']['CONTROL_U4']['metrics']['reversal_sequence_mismatch_count']==12
+          assert result['application_acceptance']['absolute_ACCEPT_FOR_PURPOSE_adjudicated'] is False
+          print('LARE_RS1_GW_P2_FORMAL_VALIDATION=PASS')
+          PY
+
+      - name: Persist formal P2 result and selection
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-rs1-p2-persist/LARE_RS1_GW_P2_RESULT.json integration/f-rom/LARE_RS1_GW_P2_RESULT.json
+          cp /tmp/lare-rs1-p2-persist/LARE_RS1_GW_P2_SELECTION.json integration/f-rom/LARE_RS1_GW_P2_SELECTION.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_RS1_GW_P2_RESULT.json integration/f-rom/LARE_RS1_GW_P2_SELECTION.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist formal purpose-dependent GW P2 evidence"
+          git push origin HEAD:work/f-rom-lare-rs1
