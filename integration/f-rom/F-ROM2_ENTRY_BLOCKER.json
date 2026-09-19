@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.f-rom2.entry-blocker.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-2-ENTRY",
+  "phase": "BLOCKED_GOVERNANCE_DECISION_REQUIRED",
+  "governing_authority": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+  "upstream_ROM1_decision": "MATERIAL_SPECIFIC_ONLY",
+  "basis": {
+    "B01_state_sufficiency": {
+      "coordinate": "Z8_PLUS_G8",
+      "dimension": 9,
+      "discovery_state_separation": "PASS_ZERO_COLLISIONS",
+      "heldout_state_separation": "PASS_ZERO_COLLISIONS"
+    },
+    "B14_transfer": {
+      "state_separation": "FAIL_351_COLLISIONS",
+      "frozen_future_probe_subset": "NO_FORMAL_STORAGE_AMBIGUITY_ESTABLISHED",
+      "material_transfer_admitted": false
+    }
+  },
+  "current_proposition_transition_gate": {
+    "cross_material_transfer_required_before_ROM2": true,
+    "passed": false,
+    "ROM2_authorized": false,
+    "B01_only_ROM2_allowed": false
+  },
+  "repository_reconciliation": {
+    "material_specific_ROM2_amendment_found": false,
+    "ROM2_preregistration_found": false,
+    "ROM2_branch_found": false
+  },
+  "permitted_future_paths_requiring_new_authority": [
+    {
+      "id": "NEW_MATERIAL_SPECIFIC_B01_CLOSURE_PROPOSITION",
+      "description": "Preregister an explicitly material-specific B01 closure study before any closure/model fitting.",
+      "requirements": [
+        "state scientific value despite failed cross-material transfer",
+        "freeze closure candidates and selection/evaluation firewall before fitting",
+        "retain B14 as exposed non-transfer evidence, not as independent validation",
+        "no production-ROM claim from B01-only evidence"
+      ]
+    },
+    {
+      "id": "NEW_UNCONTAMINATED_TRANSFER_PROPOSITION",
+      "description": "Design a new cross-material transfer study using independent material/trajectory evidence not used to enrich the frozen coordinate.",
+      "requirements": [
+        "new preregistration before exposure",
+        "independent transfer population",
+        "no reuse of exposed B14 outcomes as fresh confirmation after B14-driven enrichment"
+      ]
+    },
+    {
+      "id": "STOP_ROM_TRACK",
+      "description": "Retain MATERIAL_SPECIFIC_ONLY as the terminal result under the current proposition."
+    }
+  ],
+  "forbidden_until_new_authority": [
+    "ROM2_CLOSURE_IDENTIFICATION",
+    "REDUCED_DYNAMICS_FIT",
+    "POD_OR_MODAL_FIT",
+    "MEMORY_STATE_FIT",
+    "B14_DRIVEN_COORDINATE_ENRICHMENT_FOLLOWED_BY_B14_AS_INDEPENDENT_TRANSFER",
+    "PRODUCTION_ROM_ADMISSION"
+  ],
+  "decision": "ROM2_ENTRY_BLOCKED_PENDING_NEW_INDEPENDENT_GOVERNANCE_AUTHORITY"
+}
