@@ -91,5 +91,15 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalisation": {
+    "before_first_C4K_execution": true,
+    "endpoint_population": "Accepted Reference endpoints step 1..N only; the shared step-0 initial condition is excluded from pairing.",
+    "nearest_neighbor_ties": "Euclidean state-distance ties use lower opposite-direction step index.",
+    "deduplication": "Cross-direction pairs are deduplicated by unordered (RISE step,FALL step) identity after both directional nearest-neighbor passes.",
+    "matched_control_ties": "Controls are pre-sorted by [distance,direction_order,left_step,right_step]; equal absolute distance mismatch selects the earlier tuple.",
+    "statistics": "Median uses numpy median; p90 uses numpy percentile(...,90) with default linear interpolation.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
