@@ -37,6 +37,7 @@ module mod_accepted_trajectory_directional_sensitivity
     real(real64) :: ponding_direction = 0.0_real64
     real(real64) :: integrated_bottom_exchange_derivative = 0.0_real64
     logical :: source_sink_direction_coverage_complete = .false.
+    logical :: root_sink_direction_coverage_complete = .false.
     character(len=48) :: method = 'not-requested'
     character(len=64) :: route = 'not-requested'
     integer :: additional_tridiagonal_backsolves = 0
@@ -56,6 +57,7 @@ module mod_accepted_trajectory_directional_sensitivity
     real(real64) :: pending_ponding_direction = 0.0_real64
     real(real64) :: pending_bottom_exchange_derivative = 0.0_real64
     logical :: pending_source_sink_direction_covered = .false.
+    logical :: pending_root_sink_direction_covered = .false.
     character(len=48) :: pending_method = 'not-run'
     character(len=64) :: pending_route = 'not-run'
     integer :: pending_backsolves = 0
@@ -122,6 +124,7 @@ contains
       state%next_step_sequence = 1
       state%integrated_bottom_exchange_derivative = 0.0_real64
       state%source_sink_direction_coverage_complete = .true.
+      state%root_sink_direction_coverage_complete = .true.
       allocate(state%pressure_head_direction(active_nodes), state%water_content_direction(active_nodes))
       state%pressure_head_direction = 0.0_real64
       state%water_content_direction = 0.0_real64
@@ -236,6 +239,7 @@ contains
     state%pending_route = result%route
     state%pending_available = result%status == SW_STEP_DIRECTION_AVAILABLE .and. result%available
     state%pending_source_sink_direction_covered = result%source_sink_direction_covered
+    state%pending_root_sink_direction_covered = result%root_sink_direction_covered
 
     if (state%pending_available) then
       if (.not. allocated(result%outgoing_pressure_head) .or. .not. allocated(result%outgoing_water_content)) then
@@ -286,6 +290,8 @@ contains
            state%pending_bottom_exchange_derivative
       state%source_sink_direction_coverage_complete = &
            state%source_sink_direction_coverage_complete .and. state%pending_source_sink_direction_covered
+      state%root_sink_direction_coverage_complete = &
+           state%root_sink_direction_coverage_complete .and. state%pending_root_sink_direction_covered
       state%method = state%pending_method
       state%route = state%pending_route
       state%status = TRAJECTORY_DIRECTION_ACTIVE
@@ -348,6 +354,7 @@ contains
     state%pending_ponding_direction = 0.0_real64
     state%pending_bottom_exchange_derivative = 0.0_real64
     state%pending_source_sink_direction_covered = .false.
+    state%pending_root_sink_direction_covered = .false.
     state%pending_method = 'not-run'
     state%pending_route = 'not-run'
     state%pending_backsolves = 0
