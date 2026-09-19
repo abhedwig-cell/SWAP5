@@ -193,10 +193,10 @@
     "R16": "Immutable D13 R16_o0.txt is scientific reference behavior, not mathematical truth."
   },
   "frontier_rules": {
-    "member_crosses_R2": "LARE member has no worse total-storage RMSE, cumulative-bottom-exchange RMSE, terminal-bottom-flux RMSE, mapped-theta RMSE or sign-error count than reconstructed D13 R2.",
-    "member_crosses_FMC": "LARE member has no worse the same five metrics than immutable D13 FMC.",
+    "member_crosses_R2": "Any QUALIFIED reduced LARE member (dimension < 16) has no worse total-storage RMSE, cumulative-bottom-exchange RMSE, terminal-bottom-flux RMSE, mapped-theta RMSE or sign-error count than reconstructed D13 R2.",
+    "member_crosses_FMC": "Any QUALIFIED reduced LARE member (dimension < 16) has no worse the same five metrics than immutable D13 FMC.",
     "numerical_equality_tolerance": 1e-12,
-    "selection": "Report every member. Also report the lowest frozen dimension, if any, satisfying each frontier rule. Do not infer an application-acceptable dimension."
+    "selection": "Report every attempted member and its domain status. Among QUALIFIED reduced members, report the lowest frozen dimension, if any, satisfying each frontier rule. R16 is reported only as an operator control and cannot establish reduced-model frontier crossing."
   },
   "hard_gates": {
     "D13_artifact_digest_exact": true,
@@ -204,17 +204,20 @@
     "D13_R2_payload_sha256_exact": true,
     "D13_raw_result_sha256_exact": true,
     "D13_raw_decision": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
-    "lare_max_abs_water_ledger_cm": 1e-10,
-    "lare_all_members_complete": true,
-    "lare_all_theta_physical": true,
+    "all_lare_members_attempted": true,
+    "R16_operator_control_qualified": true,
+    "qualified_lare_member_max_abs_water_ledger_cm": 1e-10,
+    "qualified_lare_member_theta_physical": true,
+    "fail_open_count": 0,
     "lare_no_clipping": true,
     "lare_no_fallback": true
   },
   "decisions": {
-    "LARE_FRONTIER_CROSSES_FMC": "Hard gates pass and at least one frozen LARE member crosses FMC on all five frontier views.",
-    "LARE_FRONTIER_CROSSES_R2_NOT_FMC": "Hard gates pass, no member crosses FMC, and at least one member crosses R2 on all five views.",
-    "LARE_FRONTIER_DOES_NOT_CROSS_R2": "Hard gates pass and no frozen LARE member crosses R2 on all five views.",
-    "C4Q_DIAGNOSTIC_BLOCKED": "Any hard authority or execution gate fails."
+    "LARE_REDUCED_FRONTIER_CROSSES_FMC": "Hard gates pass and at least one QUALIFIED reduced LARE member crosses FMC on all five frontier views.",
+    "LARE_REDUCED_FRONTIER_CROSSES_R2_NOT_FMC": "Hard gates pass, no reduced member crosses FMC, and at least one QUALIFIED reduced member crosses R2 on all five views.",
+    "LARE_REDUCED_FRONTIER_DOES_NOT_CROSS_R2": "Hard gates pass, at least one reduced member is QUALIFIED, and no QUALIFIED reduced member crosses R2 on all five views.",
+    "LARE_REDUCED_DOMAIN_NO_GO": "Hard gates pass but no reduced member is QUALIFIED.",
+    "C4Q_DIAGNOSTIC_BLOCKED": "D13 provenance, fail-closed semantics, or R16 operator-control execution fails."
   },
   "interpretation_boundaries": [
     "C4Q is exposed matched-workload development evidence, not blind confirmation.",
@@ -228,5 +231,20 @@
   "next_model_change_authorized": false,
   "application_acceptance_adjudicated": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_domain_policy": {
+    "before_first_C4Q_execution": true,
+    "rationale": "Existing BC1 authority already demonstrates that aggressive low-dimensional LARE members can legitimately leave the strict theta/near-saturation qualified domain under wet head-driven states. C4Q therefore treats per-member fail-closed domain loss as representation evidence rather than invalidating the whole ladder.",
+    "member_statuses": [
+      "QUALIFIED",
+      "OUTSIDE_QUALIFIED_DOMAIN",
+      "NUMERICAL_BLOCKED"
+    ],
+    "all_members_must_be_attempted": true,
+    "fail_open_forbidden": true,
+    "R16_operator_control_must_be_qualified": true,
+    "at_least_one_reduced_member_required_for_reduced_frontier_adjudication": true,
+    "response_based": false,
+    "scientific_effect": "Preserves fail-closed domain coverage as an explicit comparator dimension; does not alter formulas, metrics or frontier inequalities."
+  }
 }
