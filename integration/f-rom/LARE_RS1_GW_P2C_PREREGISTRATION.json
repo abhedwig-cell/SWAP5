@@ -1,0 +1,124 @@
+{
+  "schema": "swap5.lare.rs1.gw.p2c.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW-P2C",
+  "phase": "PREREGISTERED_BEFORE_COMMON_COHORT_CROSS_PAIR_RESPONSE_ANALYSIS",
+  "purpose": "Make cross-representation state-information comparisons on one common response-blind state cohort, avoiding candidate-specific adversarial-pair selection as a ranking confounder.",
+  "predecessor": {
+    "p1_result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+    "p2_workflow_run": 35445731057,
+    "p2_artifact_id": 10584843824,
+    "p2_artifact_digest": "sha256:56f9b9c732becdbfd5a0c11da21bc2b90f5bed04ab15f7b9c984a199251ded3c",
+    "p2_decision": "LARE_RS1_GW_P2_PURPOSE_AMBIGUITY_MAPPED",
+    "p2_unique_start_state_count": 41
+  },
+  "prior_exposure": {
+    "formal_p2_candidate_specific_metrics_seen": true,
+    "firewall": "The common-cohort pair universe, radii, output metrics, aggregation and interpretation rules below are frozen before any cross-candidate pair response outside the original P2 frozen pair manifests is computed.",
+    "forbidden": "No common-cohort pair may be added, removed or weighted based on its future-response difference."
+  },
+  "cohort": {
+    "source": "exact 41 unique start states in the formal P2 selection artifact",
+    "pair_universe": "all unordered cross-history pairs among those 41 states",
+    "same_history_pairs_excluded": true,
+    "rationale": "The 41-state cohort is response-blind but candidate-enriched because it is the union of formal P1 adversarial pair endpoints. It is suitable for fair within-cohort comparison, not for a population-wide probability claim."
+  },
+  "representations": [
+    "D2",
+    "D3",
+    "D4",
+    "CONTROL_U4",
+    "CONTROL_U8_Z8",
+    "CONTROL_B01_B14_PILOT_R4",
+    "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT"
+  ],
+  "state_distance": {
+    "coordinate": "fixed-layer mean theta, information-equivalent to layer storage for fixed thickness",
+    "metric": "L_inf",
+    "diagnostic_floor": 0.0005420462931603476,
+    "radii_multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "role": "diagnostic neighborhood only, never an application acceptance tolerance"
+  },
+  "future_response_source": {
+    "execution": "reuse the already completed formal P2 Reference trajectories for each of the 41 starts",
+    "no_new_physics": true,
+    "no_new_reference_solve_required": true,
+    "probes": [
+      "HOLD",
+      "TOP_PLUS",
+      "TOP_MINUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL",
+      "BOTTOM_HEAD_RISE_THEN_FALL",
+      "BOTTOM_HEAD_FALL_THEN_RISE"
+    ],
+    "identical_future_forcing_for_pair_members": true
+  },
+  "purpose_vectors": {
+    "GW_D": {
+      "horizons_steps": [
+        4,
+        64,
+        256
+      ],
+      "metrics": [
+        "maximum_abs_cumulative_bottom_exchange_difference",
+        "maximum_abs_total_storage_difference",
+        "maximum_abs_lower_40_160cm_storage_difference",
+        "maximum_abs_terminal_bottom_flux_difference",
+        "terminal_flux_sign_mismatch_pair_probe_horizon_count",
+        "reversal_sequence_mismatch_pair_probe_count",
+        "maximum_reversal_step_difference_when_sequence_lengths_match"
+      ]
+    },
+    "GW_R": {
+      "horizon_steps": [
+        1250
+      ],
+      "metrics": [
+        "maximum_abs_one_day_cumulative_bottom_exchange_difference",
+        "maximum_abs_one_day_total_storage_difference",
+        "mean_signed_one_day_pair_exchange_difference",
+        "terminal_flux_sign_mismatch_count_as_diagnostic"
+      ]
+    }
+  },
+  "aggregation": {
+    "for_each_representation_and_radius": [
+      "common_cohort_close_pair_count",
+      "fraction_of_common_cross_history_pairs_marked_close",
+      "maximum response difference for every primary purpose component",
+      "median and 95th percentile magnitude for cumulative exchange and storage components",
+      "sign/reversal mismatch counts"
+    ],
+    "monotonicity_check": "As the diagnostic radius increases, close-pair count must be nondecreasing; maximum ambiguity components must be nondecreasing up to numerical equality because each larger-radius set contains the smaller-radius set.",
+    "zero_pair_rule": "If a representation has zero close pairs at a radius, report NO_ALIAS_IN_COMMON_COHORT rather than zero hydrological ambiguity."
+  },
+  "comparison_rule": {
+    "no_single_score": true,
+    "common_pair_advantage": "At a fixed diagnostic radius, representation A has common-cohort ambiguity dominance over B only when A has no greater close-pair count and no worse value on every declared purpose component, with at least one strict improvement.",
+    "dimension_interpretation": "A lower-dimensional representation may remain scientifically interesting even without dominance if it meets a later external application envelope at materially lower computational state dimension.",
+    "application_acceptance": "Still not adjudicated in P2C; absolute tolerances must remain externally sourced."
+  },
+  "expected_scientific_questions": [
+    "Does U4's small one-day ambiguity persist when tested on the same state-pair cohort as D2-D4?",
+    "Does D3 preserve the nearest-future response structure of D4 despite one fewer state?",
+    "Do uniform controls create more hidden aliases with sign/reversal consequences than active-zone-refined states?",
+    "At what state radius does purpose-relevant ambiguity begin to grow sharply for each representation?"
+  ],
+  "firewalls": [
+    "NO_PAIR_SELECTION_FROM_COMMON_COHORT_FUTURE_RESPONSE",
+    "NO_POST_RESULT_RADIUS_TUNING",
+    "NO_SCALAR_OVERALL_SCORE",
+    "NO_ABSOLUTE_APPLICATION_ACCEPTANCE",
+    "NO_LARE_DYNAMICS",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
