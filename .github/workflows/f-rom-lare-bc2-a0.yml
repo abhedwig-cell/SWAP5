@@ -1,0 +1,54 @@
+name: F-ROM-LARE BC2-A0 moving control volume
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_A0_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_a0_moving_control_volume.py'
+      - '.github/workflows/f-rom-lare-bc2-a0.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Execute preregistered moving-control-volume audit
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-a0
+          python3 tests/rom/analyze_lare_bc2_a0_moving_control_volume.py \
+            --prereg integration/f-rom/LARE_BC2_A0_PREREGISTRATION.json \
+            --output /tmp/lare-bc2-a0/LARE_BC2_A0_RESULT.json \
+            | tee /tmp/lare-bc2-a0/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-a0/LARE_BC2_A0_RESULT.json'))
+          assert r['decision'] in {
+              'PRODUCT_AND_PRINTED_FORMS_CONTROL_VOLUME_EQUIVALENT',
+              'PRINTED_AVERAGE_LITERAL_NOT_CONTROL_VOLUME_EQUIVALENT',
+              'SOURCE_EQUATION_SEMANTICS_UNRESOLVED',
+              'BC2_A0_NUMERICALLY_BLOCKED',
+          }
+          assert r['swap_reference_used'] is False
+          assert r['moving_water_table_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_A0_FIREWALL=PASS')
+          PY
+          sha256sum /tmp/lare-bc2-a0/LARE_BC2_A0_RESULT.json /tmp/lare-bc2-a0/analyzer.txt > /tmp/lare-bc2-a0/sha256.txt
+
+      - name: Upload BC2-A0 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-a0
+          path: /tmp/lare-bc2-a0/
