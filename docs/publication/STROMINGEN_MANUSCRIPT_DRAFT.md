@@ -2,7 +2,9 @@
 
 ## Werkstatus
 
-Derde werkversie, redactioneel herschreven voor Stromingen, voorzien van canonical-evidence status en gecontroleerd tegen de publicatie-firewall. Niet voor indiening. Actuele claims over het Nederlandse instrumentarium zijn gecontroleerd op 19 september 2026. De statusparagraaf over SWAP5 moet vlak voor indiening opnieuw worden opgebouwd uit de dan geldende canonical qualification authority.
+Derde werkversie, redactioneel herschreven voor Stromingen, voorzien van canonical-evidence status en gecontroleerd tegen de publicatie-firewall. Niet voor indiening.
+
+**Voorlopige penvoerder:** Ab Veldhuizen. **Coauteurs:** vast te stellen op basis van inhoudelijke bijdrage en goedkeuring van de uiteindelijke scope. Actuele claims over het Nederlandse instrumentarium zijn gecontroleerd op 19 september 2026. De statusparagraaf over SWAP5 moet vlak voor indiening opnieuw worden opgebouwd uit de dan geldende canonical qualification authority.
 
 # SWAP in een veranderend hydrologisch instrumentarium
 
@@ -56,7 +58,7 @@ Dat sluit aan bij MODFLOW 6. Binnen het huidige NHI-traject wordt MODFLOW 6 stee
 
 ![Figuur 3. Terminologie tijdens de overgang.](figures/stromingen/FIG3_TERMINOLOGY_TRANSITION.svg)
 
-*Figuur 3. Context van enkele modelnamen tijdens de huidige overgang. MetaSWAP blijft onderdeel van bestaande gekoppelde toepassingen, terwijl MultiSWAP publiek als opvolger wordt ontwikkeld. SWAP5 verwijst in dit artikel naar de modernisering van de SWAP-modelbasis. De precieze product- en projectinbedding moet bij publicatie worden afgestemd op de dan actuele programma-authority.*
+*Figuur 3. Context van enkele modelnamen tijdens de huidige overgang. MetaSWAP blijft onderdeel van bestaande gekoppelde toepassingen, terwijl MultiSWAP publiek als opvolger wordt ontwikkeld. SWAP5 verwijst in dit artikel naar de modernisering van de SWAP-modelbasis. De precieze product- en projectinbedding moet bij publicatie worden afgestemd op de dan actuele officiële projectdocumentatie.*
 
 Samen vormen deze ontwikkelingen de bouwstenen voor een instrumentarium waarin verschillende delen van het watersysteem met gespecialiseerde componenten kunnen worden beschreven. Dat betekent niet dat iedere denkbare combinatie al productierijp is. De technische mogelijkheid om componenten met elkaar te verbinden is slechts het begin. De hydrologische betekenis van die verbinding moet voor de betreffende toepassing ook voldoende zijn onderbouwd.
 
@@ -84,7 +86,7 @@ Die kwalificatie kan verschillende vormen aannemen. Geautomatiseerde tests contr
 
 ![Figuur 4. Van technische implementatie naar gekwalificeerd gebruik.](figures/stromingen/FIG4_QUALIFICATION_PATH.svg)
 
-*Figuur 4. In dit artikel wordt onderscheid gemaakt tussen technische implementatie, lopende kwalificatie en gekwalificeerd gebruik. Onderzoek en toekomstige opties vormen een aparte categorie. De actuele positie van afzonderlijke SWAP5-capabilities moet worden ontleend aan de geldende qualification baseline op het moment van publicatie.*
+*Figuur 4. In dit artikel wordt onderscheid gemaakt tussen technische implementatie, lopende kwalificatie en gekwalificeerd gebruik. Onderzoek en toekomstige opties vormen een aparte categorie. De actuele positie van afzonderlijke SWAP5-capabilities moet worden ontleend aan de geldende kwalificatiebasis op het moment van publicatie.*
 
 Het onderscheid klinkt administratief, maar voorkomt een wezenlijk misverstand. Een functie die in een ontwikkelbranch aanwezig is, is daarmee nog geen productiemogelijkheid. En een modelcomponent die zelfstandig goed rekent, is niet automatisch gekwalificeerd voor iedere gekoppelde toepassing.
 
@@ -115,7 +117,7 @@ Deze momentopname is gebaseerd op de actuele canonical ontwikkellijn en de Produ
 - **Grondwaterkoppeling:** een productiegerichte live SWAP5-MODFLOW 6-keten is voor begrensde toepassingen gekwalificeerd; integratie in de daadwerkelijke iMOD Coupler-productdriver blijft een afzonderlijke stap.
 - **Nog niet breed als SWAP5-productieroute beschikbaar:** volledige meteorologische/kalenderinvoer, geavanceerde wortelstress, macroporiënstroming, vorst en faseovergangen, hysterese, brede solute-hydraulische interacties, volledige management/tillage en de volledige historische uitvoerfamilie.
 
-De huidige canonical SWAP5-basis is inmiddels veel meer dan een architectuurprototype, maar vertegenwoordigt nog niet de volledige toepassing van SWAP 4.3.1. Een productie-audit van 18 september 2026 laat juist beide kanten zien: er is een substantiële getypeerde en gekwalificeerde runtime ontstaan, terwijl verschillende historische proces- en invoerroutes nog bewust buiten de normale productieomgeving vallen.
+De huidige canonical SWAP5-basis is inmiddels veel meer dan een architectuurprototype, maar vertegenwoordigt nog niet de volledige toepassing van SWAP 4.3.1 [7]. Een productie-audit van 18 september 2026 laat juist beide kanten zien: er is een substantiële getypeerde en gekwalificeerde runtime ontstaan, terwijl verschillende historische proces- en invoerroutes nog bewust buiten de normale productieomgeving vallen.
 
 De Reference-Richards bodemwaterkern is als productiecomponent gekwalificeerd. Ook committed-boundary restart, serialized real-physics MultiSWAP en een begrensde parallelle MultiSWAP-route zijn toegelaten. Rond de hoofdrekenkern zijn inmiddels beperkte maar reële productieroutes beschikbaar voor onder meer atmosferische bovengrensprocessen, referentieverdamping, Feddes-wortelopname, WOFOST, drainage, oppervlaktewaterberging, sneeuw en bodemtemperatuur. Het woord beperkt is daarbij belangrijk: de kwalificatie geldt voor omschreven configuraties en niet automatisch voor alle historische SWAP-opties.
 
@@ -156,7 +158,7 @@ SWAP5 moet in dat verband niet worden gezien als een losstaand softwareproject. 
 ## Redactionele notities voor indiening
 
 1. De terminologie SWAP5, MultiSWAP en MetaSWAP moet vlak voor indiening worden gereconcilieerd met de actuele project- en publieke authority.
-2. De actuele SWAP5-status moet worden ingevuld vanuit de dan geldende canonical qualification baseline.
+2. De actuele SWAP5-status moet worden ingevuld vanuit de dan geldende canonical kwalificatiebasis.
 3. De tekst mag niet worden uitgebreid met P1-resultaten over de transactionele moderniseringsmethodiek.
 4. De tekst mag niet worden uitgebreid met PUB-GC-resultaten over koppelsemantiek, response-identiteit, convergentie of whole-window exchange.
 5. De schaalparagrafen mogen niet worden uitgebreid met PUB-SG-resultaten over equivalente kolommen of transferability.
