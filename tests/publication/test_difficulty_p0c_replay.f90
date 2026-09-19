@@ -43,6 +43,7 @@ program test_difficulty_p0c_replay
   call bind_b110_source_sink_provider(ss,drainage,irrigation,root_sink)
   call init_request(req,p,constitutive,ss,tb,theta,k(1))
   source_h=req%base_state%pressure_head; source_t=req%base_state%water_content
+  call as%initialize('assets/rossfast/d3r','B01',initialized,status); call require(initialized,'ross initial init')
 
   tmpl_r%identity%checkpoint_id='cp'; tmpl_r%identity%counterfactual_group_id='group'
   tmpl_r%identity%method_id=DIFF_METHOD_REFERENCE_NEWTON; tmpl_r%identity%method_class=DIFF_METHOD_CLASS_ITERATIVE_NONLINEAR
