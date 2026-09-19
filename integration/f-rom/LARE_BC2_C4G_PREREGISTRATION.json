@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.lare.bc2.c4g.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4G",
+  "phase": "PREREGISTERED_AFTER_C4F_BEFORE_SECONDARY_METRIC_SENSITIVITY",
+  "question": "Is the width-dependent QI-removal behavior exposed by C4E/C4F robust to a secondary depth-weighted mass-neutral theta norm, or is it primarily a consequence of the historically frozen equal-coordinate shape metric?",
+  "predecessors": {
+    "C4F": {
+      "closeout": "integration/f-rom/LARE_BC2_C4F_CLOSEOUT.json",
+      "required_status": "CLOSED_MECHANISM_EXPLAINED_NO_MODEL_CHANGE",
+      "required_decision": "VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E"
+    },
+    "C2_metric": {
+      "preregistration": "integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json",
+      "historical_primary": "unweighted RMS over mass-neutral mean-theta shape components"
+    }
+  },
+  "metric_policy": {
+    "historical_primary_unchanged": true,
+    "primary_metric": "UNWEIGHTED_MASS_NEUTRAL_THETA_RMS",
+    "secondary_metric": "DEPTH_WEIGHTED_MASS_NEUTRAL_THETA_RMS",
+    "secondary_formula": "sqrt(sum_i(L_i * e_shape_i^2) / sum_i(L_i))",
+    "mass_neutral_projection": "e_shape_i = delta_W_i/L_i - sum(delta_W_i)/sum(L_i)",
+    "role": "interpretation sensitivity only; cannot retroactively change C2/C3/C4E decisions"
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "internal_dt_day": [
+      0.00005,
+      0.000025
+    ]
+  },
+  "execution_policy": {
+    "new_richards_solves": false,
+    "free_propagation": false,
+    "no_fit": true,
+    "no_clipping": true,
+    "no_model_change": true,
+    "reference_artifact_id": 10587360597
+  },
+  "preregistered_outputs": [
+    "unweighted and depth-weighted pooled local shape RMS",
+    "unweighted and depth-weighted pooled non-QI remainder RMS",
+    "removal-to-base ratio in both metrics",
+    "fraction of intervals improved/worsened in both metrics",
+    "depth-weighted QI dot remainder and cosine",
+    "fraction of intervals whose QI-removal direction changes between metrics",
+    "squared-norm identity residual in both metrics",
+    "C4F QI-counterfactual admissibility count retained as interpretation boundary"
+  ],
+  "decision_logic": {
+    "WIDTH_EFFECT_ROBUST_TO_DEPTH_WEIGHTING": "For WT_RISE in both dt routes, QI removal worsens the pooled shape norm at 2.5 cm and improves it at 5 cm under both historical and depth-weighted metrics. No fitted tolerance is used; the boundary is ratio=1.",
+    "WIDTH_EFFECT_METRIC_SENSITIVE": "The WT_RISE 2.5-versus-5 cm pooled removal direction is not preserved under the depth-weighted metric in both routes.",
+    "C4G_DIAGNOSTIC_BLOCKED": "Required identities, predecessor authority or route completion fails."
+  },
+  "hard_gates": {
+    "additive_identity_cm": 1e-10,
+    "squared_norm_identity_theta2": 1e-12
+  },
+  "claim_boundary": [
+    "Secondary weighting does not replace the historical primary metric.",
+    "No closure formula is selected.",
+    "No new state is authorized.",
+    "No groundwater feedback, application acceptance, performance or production claim is authorized."
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
