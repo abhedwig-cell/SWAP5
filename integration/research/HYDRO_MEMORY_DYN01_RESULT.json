@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.hydro_memory.dyn01.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-DYN01",
+  "decision": "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION",
+  "authority": {
+    "canonical_base": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+    "qualified_head": "4d5a9a403cc9ac63ada2fe9e11e1fc42296e741d",
+    "workflow_run": 35459983635,
+    "workflow_job": 105941988359,
+    "conclusion": "success"
+  },
+  "frozen_composition": {
+    "canopy": {
+      "crop_emerged": true,
+      "vegetation_cover_fraction": 1,
+      "crop_factor": 1,
+      "co2_transpiration_factor": 1
+    },
+    "feddes": {
+      "hlim3l_cm": -800,
+      "hlim3h_cm": -400,
+      "hlim4_cm": -16000,
+      "adcrl": 0.1,
+      "adcrh": 0.5
+    },
+    "root_geometry": {
+      "rooted_nodes": 3,
+      "cumulative_root_fraction": [
+        0,
+        0.1,
+        0.55,
+        1
+      ]
+    },
+    "drought": {
+      "precipitation_cm_per_day": 0,
+      "reference_et_mm_per_day": 4
+    },
+    "recovery": {
+      "precipitation_cm_per_day": 0.5,
+      "reference_et_mm_per_day": 3
+    },
+    "dry_root_heads_cm": [
+      -1200,
+      -800,
+      -400
+    ]
+  },
+  "observed": {
+    "drought_potential_transpiration_cm_per_day": 0.4,
+    "recovery_potential_transpiration_cm_per_day": 0.30000000000000004,
+    "drought_top_flux_cm_per_day": 0,
+    "recovery_top_flux_cm_per_day": -0.5,
+    "wet_drought_actual_uptake_cm_per_day": 0.4,
+    "dry_drought_actual_uptake_cm_per_day": 0.39470967741935487,
+    "wet_recovery_actual_uptake_cm_per_day": 0.30000000000000004
+  },
+  "pass_evidence": [
+    "PPA-WU03 and F-CI31 authorities locked",
+    "full-cover reference ET mapping exact",
+    "drought/recovery dynamic-top pure-flux mapping exact",
+    "dry accepted state reduces restricted Feddes uptake at identical atmospheric demand",
+    "same-state forcing and root-uptake replay bit-stable",
+    "committed-state revision not mutated by stateless composition",
+    "O0/O2 output identity"
+  ],
+  "nonclaims": [
+    "qualification root geometry is not yet the final 0.60 m Stage-0 root discretization",
+    "no live MODFLOW coupling in DYN01",
+    "no soil hydraulic set freeze",
+    "no Stage-0 scientific result",
+    "no production-bootstrap root-active admission"
+  ],
+  "downstream": "DYN02: integrate per-accepted-window PPA-WU03 + F-CI31 materialization into live root-active SWAP-MODFLOW6 coupling under unchanged governed accuracy."
+}
