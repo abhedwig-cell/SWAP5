@@ -1,0 +1,26 @@
+name: F-ROMV terminal evidence admission
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'docs/science/F-ROMV*'
+      - 'integration/f-rom/F-ROMV*'
+      - 'tests/rom/validate_f_romv_terminal_evidence.py'
+      - '.github/workflows/f-romv-terminal-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Validate terminal evidence-only authority
+        run: python3 tests/rom/validate_f_romv_terminal_evidence.py

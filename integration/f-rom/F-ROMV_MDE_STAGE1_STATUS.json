@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.f-romv-mde-stage1.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-MDE-S1",
+  "phase": "CLOSED_EARLY_NO_GO",
+  "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+  "parent_decision": "CONDITIONAL_GO_NARROW_RESEARCH_ONLY",
+  "parent_pr": 403,
+  "research_branch": "work/f-romv-mde-b01",
+  "data_authority": {
+    "rom1ar2_workflow_run": 35379176697,
+    "rom1ar2_artifact_id": 10561841507,
+    "rom1ar2_artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0"
+  },
+  "frozen_model": {
+    "coordinate": "Z8_PLUS_G8_REPARAMETERIZED_WITH_EXPLICIT_TOTAL_STORAGE",
+    "dimension": 9,
+    "closure": "BILINEAR_CONTROLLED_AFFINE_OPERATOR_INFERENCE",
+    "training_transitions": 504,
+    "heldout_transitions": 252,
+    "production_mutation": false
+  },
+  "qualification": {
+    "structural_water_ledger": "PASS",
+    "heldout_bottom_flux_sign": "FAIL",
+    "heldout_flow_reversal_timing": "FAIL_19_STEPS_EARLY_IN_H02",
+    "heldout_physical_state_bounds": "FAIL_H03_IN_DOMAIN_REDUCED_STEPS",
+    "ood_fail_closed_for_unseen_combined_forcing": "PASS_H04_63_OF_63_FALLBACK",
+    "hybrid_fallback_fraction": 0.30952380952380953,
+    "direct_comparator_stage": "NOT_EXECUTED_PREREGISTERED_EARLY_KILL"
+  },
+  "interpretation": [
+    "B01 state-separation sufficiency does not imply that this simple low-capacity closure can propagate the state safely.",
+    "The failure is dynamical and validity-related, not a hidden water-accounting correction.",
+    "The frozen min-max plus forcing-tuple OOD gate fails to detect some dangerous in-domain recursive states.",
+    "The discovery regression design is full-rank but severely ill-conditioned, so post-result regularization could change the result but is not allowed inside this frozen Stage-1 experiment."
+  ],
+  "governance": {
+    "production_rom_authorized": false,
+    "cross_material_rom_authorized": false,
+    "rom2_authorized": false,
+    "post_result_regularization_retuning_authorized": false,
+    "post_result_ood_retuning_authorized": false,
+    "neural_escalation_authorized": false
+  },
+  "next": "STOP_F_ROMV_TRACK_UNDER_CURRENT_PREREGISTRATION. Any reopening requires a new independently governed proposition justified by new computational-bottleneck evidence or a materially different scientific question; this result must not be reclassified."
+}

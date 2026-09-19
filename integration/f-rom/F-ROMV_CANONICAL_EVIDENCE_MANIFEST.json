@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.f-romv.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV",
+  "canonical_preimage": "d5587a650007e96e9f6008a179ac4bdf0cf77218",
+  "admission_scope": "EVIDENCE_AND_RESEARCH_AUTHORITY_ONLY",
+  "historical_research": {
+    "go_no_head": "f662451bcc825dc4b4933c1a947e2d6227f66b9e",
+    "go_no_pr": 403,
+    "stage1_head": "c4626211a20a6e00bd0b09a0e84253b8d848405d",
+    "stage1_pr": 409
+  },
+  "imported_authority_blobs": {
+    "docs/science/F-ROMV_COMPUTATIONAL_VALUE_GONOGO.md": "790869e446bdabddd147a4c1db95f15bb19cbfcf",
+    "integration/f-rom/F-ROMV_MINIMAL_DISCRIMINATING_EXPERIMENT.json": "259af88fc6febf918b1d5214bc4442fc261a3834",
+    "integration/f-rom/F-ROMV_MDE_STAGE1_PREREGISTRATION.json": "a9e51756cb9ac738a38e91ddd57f035cb7a09bc6",
+    "integration/f-rom/F-ROMV_MDE_STAGE1_RESULT.json": "340685ea0cfb782b7d5ecbcff8a64ee1991f7911",
+    "integration/f-rom/F-ROMV_MDE_STAGE1_STATUS.json": "ae6d67ee18294862a2f44c39e9b5c1dc8640b480",
+    "docs/science/F-ROMV_MDE_STAGE1_RESULT.md": "a1eb388886632bd4226b0f5202ff327d079e5ef7"
+  },
+  "trajectory_data_authority": {
+    "work_unit": "ROM-1A-R2",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0"
+  },
+  "terminal_adjudication": {
+    "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+    "f_romv_closed": true,
+    "production_rom_authorized": false,
+    "rom2_authorized": false,
+    "cross_material_rom_authorized": false,
+    "direct_performance_comparator_stage_executed": false,
+    "reason": "PREREGISTERED_SCIENTIFIC_EARLY_KILL"
+  },
+  "non_imported_surfaces": [
+    "src/**",
+    "reference/**",
+    "tests/rom/analyze_f_romv_mde_stage1.py",
+    ".github/workflows/f-romv-mde-stage1.yml"
+  ]
+}
