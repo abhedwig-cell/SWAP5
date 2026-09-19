@@ -1,0 +1,159 @@
+name: TAB-HYD Hupsel runtime benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-benchmark.yml'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: legacy-runtime/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: legacy-runtime/subprojects/ttutil
+
+      - name: Checkout pinned regression cases
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup legacy-runtime/builddir legacy-runtime -Denable_pfunit=false
+          meson compile -C legacy-runtime/builddir
+
+      - name: Prepare full-period SWKIMPL0 pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-benchmark
+          rm -rf build/tab-hyd-benchmark/analytic_k1 build/tab-hyd-benchmark/table_k1
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ("analytic_k0", "table_k0"):
+              p = Path("build/tab-hyd-benchmark") / name / "swap.swp"
+              s = p.read_text()
+              s, n = re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b", r"\g<1>0", s, count=1)
+              if n != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Benchmark alternating full-period runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          import statistics
+          import subprocess
+          import time
+
+          root = Path("build/tab-hyd-benchmark").resolve()
+          binary = Path("legacy-runtime/builddir/swap").resolve()
+          variants = {"analytic": root / "analytic_k0", "table": root / "table_k0"}
+
+          def run_one(label, round_no, warmup=False):
+              work = variants[label]
+              for name in ("result_output.csv", "swap.log"):
+                  p = work / name
+                  if p.exists():
+                      p.unlink()
+              t0 = time.perf_counter()
+              proc = subprocess.run(
+                  [str(binary)],
+                  cwd=work,
+                  stdout=subprocess.DEVNULL,
+                  stderr=subprocess.DEVNULL,
+                  timeout=30,
+              )
+              dt = time.perf_counter() - t0
+              if proc.returncode != 100:
+                  raise RuntimeError(f"{label} round {round_no}: rc={proc.returncode}")
+              if not (work / "result_output.csv").exists():
+                  raise RuntimeError(f"{label} round {round_no}: no output")
+              return dt
+
+          # One unreported warm-up per route to reduce cold-start/cache bias.
+          run_one("analytic", -1, warmup=True)
+          run_one("table", -1, warmup=True)
+
+          rows = []
+          per_round = {}
+          for r in range(10):
+              order = ("analytic", "table") if r % 2 == 0 else ("table", "analytic")
+              per_round[r] = {}
+              for label in order:
+                  dt = run_one(label, r)
+                  per_round[r][label] = dt
+                  rows.append((r, label, dt))
+
+          with (root / "timings.csv").open("w", newline="") as fh:
+              w = csv.writer(fh)
+              w.writerow(["round", "variant", "seconds"])
+              w.writerows(rows)
+
+          a = [dt for _, label, dt in rows if label == "analytic"]
+          t = [dt for _, label, dt in rows if label == "table"]
+          ratios = [per_round[r]["table"] / per_round[r]["analytic"] for r in range(10)]
+
+          summary = {
+              "analytic_median_s": statistics.median(a),
+              "analytic_mean_s": statistics.mean(a),
+              "analytic_stdev_s": statistics.stdev(a),
+              "table_median_s": statistics.median(t),
+              "table_mean_s": statistics.mean(t),
+              "table_stdev_s": statistics.stdev(t),
+              "median_table_over_analytic": statistics.median(ratios),
+              "mean_table_over_analytic": statistics.mean(ratios),
+          }
+          summary["median_table_delta_pct"] = 100.0 * (summary["median_table_over_analytic"] - 1.0)
+
+          with (root / "benchmark-summary.txt").open("w") as fh:
+              for k, v in summary.items():
+                  fh.write(f"{k}={v:.9g}\n")
+
+          print((root / "benchmark-summary.txt").read_text(), end="")
+          PY
+
+      - name: Upload benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-hupsel-runtime-benchmark
+          path: |
+            build/tab-hyd-benchmark/timings.csv
+            build/tab-hyd-benchmark/benchmark-summary.txt
