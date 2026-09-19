@@ -50,5 +50,21 @@
     "no structural/parameter/forcing uncertainty qualification",
     "no relaxation of hard mass conservation",
     "no Stage 0 scientific result"
+  ],
+  "amendments": [
+    {
+      "id": "ACC01-A1",
+      "date": "2026-09-19",
+      "trigger": "First governance run computed the exact committed UTF-8 SHA-256 and rejected the hand-reconstructed digest before packet validation.",
+      "decision": "Replace only the recorded provenance digest with the exact sha256sum of the already committed governance source bytes.",
+      "exact_source_sha256": "b35d4e4af46f1ed56b787e0b4c606077e2fded727cff8a16e34cc7e09d4f74b7",
+      "unchanged": [
+        "H_app=0.4 cm",
+        "A_temporal=0.25",
+        "H_temporal=0.1 cm",
+        "Stage 0 design basis",
+        "all forbidden-substitution rules"
+      ]
+    }
   ]
 }
