@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.lare.dyn0a.mech4b.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH4B",
+  "decision": "CURVATURE_RISK_RANKING_TRANSFER_SUPPORTED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH4B_PREREGISTRATION.json",
+    "workflow_run": 35450594628,
+    "artifact_id": 10586710694,
+    "artifact_digest": "sha256:41c461ed04141db8ac11678a37217ba70a4fe3d79ffb0bda7624093614cfdc7a",
+    "executed_head": "bcb24be332fac28d2aebbd04b90a10628731d263"
+  },
+  "panel": {
+    "qualified_case_count": 16,
+    "excluded_cases": [
+      {
+        "material": "SANDY_LOAM",
+        "case": "S2_B1_F2",
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      {
+        "material": "SANDY_LOAM",
+        "case": "S3_B1_F2",
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      }
+    ],
+    "usable_materials": [
+      "SANDY_LOAM",
+      "SILT",
+      "CLAY_LOAM"
+    ],
+    "reference_panel_sufficient": true
+  },
+  "aggregate": {
+    "LENGTH_ONLY": {
+      "median_spearman": -0.9972527472527473,
+      "median_abs_peak_error_cm": 115,
+      "exact_peak_hit_count": 1,
+      "case_count": 16
+    },
+    "TAYLOR2_RMS": {
+      "median_spearman": 0.989010989010989,
+      "median_abs_peak_error_cm": 0,
+      "exact_peak_hit_count": 11,
+      "case_count": 16
+    },
+    "TAYLOR3_RMS": {
+      "median_spearman": 0.9945054945054945,
+      "median_abs_peak_error_cm": 0,
+      "exact_peak_hit_count": 13,
+      "case_count": 16
+    }
+  },
+  "material_consistency": {
+    "SANDY_LOAM": true,
+    "SILT": true,
+    "CLAY_LOAM": true
+  },
+  "scientific_interpretation": [
+    "The unfitted TAYLOR3 curvature indicator prospectively transfers as an ordering diagnostic for interface-gradient risk to three previously unused Carsel-Parrish textures.",
+    "The result validates ranking/location of risk only. MECH4A already rejected the same Taylor expansion as a quantitative signed flux-error correction.",
+    "Curvature information computed from a fine future trajectory is diagnostic, not an operational grid-selection input.",
+    "Prospective grid placement must therefore use pre-simulation information such as the frozen PATH_GEOMETRIC_D penetration scale, with curvature transfer serving as mechanistic support rather than as an oracle."
+  ],
+  "closure_correction_authorized": false,
+  "adaptive_or_moving_mesh_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
