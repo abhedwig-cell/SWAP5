@@ -1,0 +1,185 @@
+{
+  "schema": "swap5.lare.bc1.stage-c.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-C",
+  "decision": "RESOLUTION_EFFECT_MIXED_WITH_R8_SPATIAL_PLATEAU",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC1_STAGE_C_PREREGISTRATION.json",
+    "workflow_run": 35450712912,
+    "artifact_id": 10586088632,
+    "artifact_digest": "sha256:5e036917dead72eeea2c4ed2c8047030365b7fc19b472cc83b476dfb9fc66502",
+    "executed_head": "44ead74568213736585f36b118520981039b3b9c",
+    "independent_replication": {
+      "preregistration": "integration/f-rom/LARE_BC1_RL1_PREREGISTRATION.json",
+      "workflow_run": 35450766230,
+      "artifact_id": 10587205212,
+      "artifact_digest": "sha256:1293bd455badcc127719a3d382094412afd1d48e8d85b416f3d2781b2e5105f0",
+      "role": "implementation cross-check only; BC1-C remains primary scientific authority"
+    }
+  },
+  "all_ladder_common_histories": [
+    "G00",
+    "G04",
+    "G05"
+  ],
+  "common_curve": {
+    "R3": {
+      "dimension": 3,
+      "max_common_band_storage_error_cm": 0.6236860099746337,
+      "max_cumulative_bottom_exchange_error_cm": 0.15748269481028854,
+      "max_interval_bottom_flux_error_cm_per_day": 1.504110202479879,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R4": {
+      "dimension": 4,
+      "max_common_band_storage_error_cm": 0.09820052202884,
+      "max_cumulative_bottom_exchange_error_cm": 0.06084779932152884,
+      "max_interval_bottom_flux_error_cm_per_day": 0.24502783837907405,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R5": {
+      "dimension": 5,
+      "max_common_band_storage_error_cm": 0.028985374944205944,
+      "max_cumulative_bottom_exchange_error_cm": 0.02270182719308611,
+      "max_interval_bottom_flux_error_cm_per_day": 0.1025232196802146,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R6": {
+      "dimension": 6,
+      "max_common_band_storage_error_cm": 0.009421873591740848,
+      "max_cumulative_bottom_exchange_error_cm": 0.006425667978454008,
+      "max_interval_bottom_flux_error_cm_per_day": 0.10252321648450691,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R8": {
+      "dimension": 8,
+      "max_common_band_storage_error_cm": 0.0014036367736363076,
+      "max_cumulative_bottom_exchange_error_cm": 0.0011168313970811306,
+      "max_interval_bottom_flux_error_cm_per_day": 0.10252321648190454,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R12": {
+      "dimension": 12,
+      "max_common_band_storage_error_cm": 0.0014036367736376398,
+      "max_cumulative_bottom_exchange_error_cm": 0.001116831397081075,
+      "max_interval_bottom_flux_error_cm_per_day": 0.10252321648190454,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    },
+    "R16": {
+      "dimension": 16,
+      "max_common_band_storage_error_cm": 0.0014036367736376398,
+      "max_cumulative_bottom_exchange_error_cm": 0.001116831397081075,
+      "max_interval_bottom_flux_error_cm_per_day": 0.10252321648190454,
+      "bottom_flux_sign_mismatch_count": 1,
+      "max_reversal_step_difference": 1
+    }
+  },
+  "wet_G03_curve": {
+    "R3": {
+      "status": "OUTSIDE_QUALIFIED_DOMAIN"
+    },
+    "R4": {
+      "max_common_band_storage_error_cm": 0.30813411910316546,
+      "max_cumulative_bottom_exchange_error_cm": 0.12534016590988806,
+      "max_interval_bottom_flux_error_cm_per_day": 0.8356455136399958,
+      "bottom_flux_sign_mismatch_count": 1,
+      "reversal_steps": [
+        257,
+        261
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "R5": {
+      "max_common_band_storage_error_cm": 0.11049899784736539,
+      "max_cumulative_bottom_exchange_error_cm": 0.03955387791065945,
+      "max_interval_bottom_flux_error_cm_per_day": 0.4804497557389702,
+      "bottom_flux_sign_mismatch_count": 0,
+      "reversal_steps": [
+        257,
+        260
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "R6": {
+      "max_common_band_storage_error_cm": 0.03991578293634035,
+      "max_cumulative_bottom_exchange_error_cm": 0.01598362675110465,
+      "max_interval_bottom_flux_error_cm_per_day": 0.38816227390298597,
+      "bottom_flux_sign_mismatch_count": 0,
+      "reversal_steps": [
+        257,
+        260
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "R8": {
+      "max_common_band_storage_error_cm": 0.0045838189730389445,
+      "max_cumulative_bottom_exchange_error_cm": 0.002433040964486821,
+      "max_interval_bottom_flux_error_cm_per_day": 0.34967806871095064,
+      "bottom_flux_sign_mismatch_count": 0,
+      "reversal_steps": [
+        257,
+        260
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "R12": {
+      "max_common_band_storage_error_cm": 0.001960625923642212,
+      "max_cumulative_bottom_exchange_error_cm": 0.0012218818990969993,
+      "max_interval_bottom_flux_error_cm_per_day": 0.34729619574764214,
+      "bottom_flux_sign_mismatch_count": 0,
+      "reversal_steps": [
+        257,
+        260
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "R16": {
+      "max_common_band_storage_error_cm": 0.001960648224072159,
+      "max_cumulative_bottom_exchange_error_cm": 0.0012218406135202642,
+      "max_interval_bottom_flux_error_cm_per_day": 0.34729505102055125,
+      "bottom_flux_sign_mismatch_count": 0,
+      "reversal_steps": [
+        257,
+        260
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    }
+  },
+  "interpretation": [
+    "Head-driven CURRENT_LAYER_FACE dynamics show strong resolution convergence from R3 through R8.",
+    "G03 re-enters the strict standard-LARE qualified domain at R4 and recovers the exact Reference reversal sequence by R5.",
+    "On the three histories qualified at every resolution, integrated storage and cumulative exchange reach a numerical plateau at R8; R12 and R16 provide no material spatial-resolution benefit.",
+    "The formal preregistered decision remains RESOLUTION_EFFECT_MIXED because R12-to-R16 fails the strict noninferiority/equality gate by a tiny storage difference rather than providing strict further convergence.",
+    "The nonzero R16 residual is not interpreted as spatial reduction error alone because Reference uses SWKIMPL=0 lagged conductivity and balance-materialized bottom exchange.",
+    "No acceptable dimension is selected from the curve."
+  ],
+  "next_gate": "BC1-D R16 time-level attribution diagnostic; freeze spatial grid and compare physical CURRENT_LAYER_FACE with a Reference-aligned observation-lagged lower-face K control without promoting the control to LARE physics.",
+  "application_acceptance_adjudicated": false,
+  "moving_water_table_authorized": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
