@@ -164,5 +164,23 @@
       "NUMERICAL_DIAGNOSTIC_BLOCKED": "Any inherited hard gate, constitutive-domain requirement, or required frozen perturbation route fails."
     },
     "scientific_effect": "Clarifies deterministic implementation of already preregistered diagnostics before C1R result exposure; no model, state, closure, forcing, width, amplitude or acceptance threshold is changed."
+  },
+  "pre_execution_decision_rule_clarification": {
+    "before_C1R_and_C2_response_exposure": true,
+    "actual_case_amplifying": "More than 50% of eligible Diagnostic-A intervals have actual_shape_gain > 1. Intervals below the frozen denominator floor are excluded from numerator and denominator.",
+    "tangent_state_amplifying": "At a frozen Diagnostic-B start state, at least one adjacent mass-neutral mode has directional_shape_gain > 1 at both frozen epsilon amplitudes. No amplitude-consistency tolerance is fitted; the relative gain difference is reported separately.",
+    "tangent_case_amplifying": "More than 50% of that width/history case's frozen start states are tangent_state_amplifying.",
+    "case_classification": {
+      "AMPLIFICATION_SUPPORTED": "actual_case_amplifying AND tangent_case_amplifying",
+      "BIAS_ACCUMULATION_SUPPORTED": "NOT actual_case_amplifying AND NOT tangent_case_amplifying",
+      "MIXED_STATE_DYNAMICS": "the two diagnostics disagree at case level"
+    },
+    "global_classification": {
+      "MANIFOLD_AMPLIFICATION_SUPPORTED": "all eight width/history cases are AMPLIFICATION_SUPPORTED",
+      "BIAS_ACCUMULATION_DOMINANT": "all eight width/history cases are BIAS_ACCUMULATION_SUPPORTED",
+      "MIXED_STATE_DYNAMICS": "all other complete combinations",
+      "NUMERICAL_DIAGNOSTIC_BLOCKED": "either diagnostic is incomplete under its frozen hard gates"
+    },
+    "rationale": "Use exact threshold-free physical gain boundary g=1 and strict majority only to operationalize the already-preregistered word predominantly; no response magnitude is used to set a tunable tolerance."
   }
 }
