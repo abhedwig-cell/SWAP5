@@ -1,0 +1,49 @@
+name: F-ROM-LARE persist BC2-B4 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b4-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+      - name: Recover and persist exact BC2-B4 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b4-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587795453/zip" > /tmp/lare-bc2-b4-persist/b4.zip
+          echo "bbf4c8bf848550e6d10cdf10bfcb40afd08aa063a30b8f4d0d6129c9dd0cf424  /tmp/lare-bc2-b4-persist/b4.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b4-persist/b4.zip -d /tmp/lare-bc2-b4-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b4-persist/LARE_BC2_B4_RESULT.json'))
+          assert r['decision']=='BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED'
+          assert r['complete'] is True
+          assert r['consistent_best']==['POINT_2_5CM']
+          for n in ('POINT_2_5CM','POINT_5_0CM','POINT_10_0CM'):
+              assert r['support'][n]['WATER_TABLE_RISING'] is True
+              assert r['support'][n]['WATER_TABLE_FALLING'] is True
+          assert r['reduced_state_change_authorized'] is False
+          print('LARE_BC2_B4_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b4-persist/LARE_BC2_B4_RESULT.json integration/f-rom/LARE_BC2_B4_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B4_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B4 boundary localization result"
+          git push origin HEAD:work/f-rom-lare-rs1
