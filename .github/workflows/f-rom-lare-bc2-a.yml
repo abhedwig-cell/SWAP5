@@ -8,6 +8,8 @@ on:
       - 'docs/science/F-ROM_LARE_BC2_GEOMETRY_AUTHORITY.md'
       - 'integration/f-rom/LARE_BC2_A_PREREGISTRATION.json'
       - 'tests/rom/analyze_lare_bc2_a1_algebra.py'
+      - 'tests/rom/test_lare_bc2_a2_reference_geometry.f90'
+      - 'tests/rom/analyze_lare_bc2_a2_reference_geometry.py'
       - '.github/workflows/f-rom-lare-bc2-a.yml'
   workflow_dispatch:
 
@@ -32,11 +34,55 @@ jobs:
           PY
       - name: Execute moving-control-volume algebra gate
         run: |
-          mkdir -p LARE_BC2_A_EVIDENCE
-          python3 tests/rom/analyze_lare_bc2_a1_algebra.py             --prereg integration/f-rom/LARE_BC2_A_PREREGISTRATION.json             --output LARE_BC2_A_EVIDENCE/LARE_BC2_A1_ALGEBRA_RESULT.json             | tee LARE_BC2_A_EVIDENCE/a1.txt
-          sha256sum LARE_BC2_A_EVIDENCE/* > LARE_BC2_A_EVIDENCE/sha256.txt
+          mkdir -p LARE_BC2_A1_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_a1_algebra.py             --prereg integration/f-rom/LARE_BC2_A_PREREGISTRATION.json             --output LARE_BC2_A1_EVIDENCE/LARE_BC2_A1_ALGEBRA_RESULT.json             | tee LARE_BC2_A1_EVIDENCE/a1.txt
+          sha256sum LARE_BC2_A1_EVIDENCE/* > LARE_BC2_A1_EVIDENCE/sha256.txt
       - name: Upload BC2-A1 evidence
         uses: actions/upload-artifact@v4
         with:
           name: lare-bc2-a1
-          path: LARE_BC2_A_EVIDENCE/
+          path: LARE_BC2_A1_EVIDENCE/
+
+  reference-geometry:
+    needs: algebra
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Re-run and bind A1 algebra authority
+        run: |
+          mkdir -p /tmp/lare-bc2-a
+          python3 tests/rom/analyze_lare_bc2_a1_algebra.py             --prereg integration/f-rom/LARE_BC2_A_PREREGISTRATION.json             --output /tmp/lare-bc2-a/LARE_BC2_A1_ALGEBRA_RESULT.json
+
+      - name: Materialize 16 by 10 cm Reference stubs
+        run: |
+          python3 tests/rom/materialize_f_rom0_headcalc_stubs.py             --source tests/fsi/fsi04_real_headcalc_stubs.f90             --output /tmp/lare-bc2-a/stubs_n16.f90             --nodes 16             --dz-cm 10
+
+      - name: Build and execute BC2-A2 Reference geometry panel
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_A2_EVIDENCE
+          for opt in 0 2; do
+            out="/tmp/lare-bc2-a/o${opt}"
+            python3 tests/rom/compile_f_rom0_fortran_closure.py               --root "$PWD"               --stub /tmp/lare-bc2-a/stubs_n16.f90               --target tests/rom/test_lare_bc2_a2_reference_geometry.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$out"               --opt "$opt"
+            "$out/rom0_test" > "LARE_BC2_A2_EVIDENCE/o${opt}.txt" 2>&1
+            grep -Fq 'LAREBC2A2_EXECUTION_COMPLETE=PASS' "LARE_BC2_A2_EVIDENCE/o${opt}.txt"
+          done
+          cmp LARE_BC2_A2_EVIDENCE/o0.txt LARE_BC2_A2_EVIDENCE/o2.txt
+          echo 'LARE_BC2_A2_O0_O2_IDENTITY=PASS'
+
+      - name: Adjudicate Reference geometry
+        run: |
+          python3 tests/rom/analyze_lare_bc2_a2_reference_geometry.py             --input LARE_BC2_A2_EVIDENCE/o2.txt             --repeat LARE_BC2_A2_EVIDENCE/o0.txt             --prereg integration/f-rom/LARE_BC2_A_PREREGISTRATION.json             --algebra /tmp/lare-bc2-a/LARE_BC2_A1_ALGEBRA_RESULT.json             --output LARE_BC2_A2_EVIDENCE/LARE_BC2_A2_REFERENCE_GEOMETRY_RESULT.json             | tee LARE_BC2_A2_EVIDENCE/analyzer.txt
+          sha256sum LARE_BC2_A2_EVIDENCE/* > LARE_BC2_A2_EVIDENCE/sha256.txt
+
+      - name: Upload BC2-A2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-a2
+          path: LARE_BC2_A2_EVIDENCE/
+          if-no-files-found: warn
