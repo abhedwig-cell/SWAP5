@@ -315,21 +315,35 @@ def main():
                 classifications[str(d)][h]={"status":"BLOCKED"}
                 continue
             p=row[primary_key]
-            hard_vals.extend([
-                p["max_abs_additive_state_identity_residual_cm"],
-                p["max_abs_additive_flux_identity_residual_cm_per_day"],
-                p["max_abs_free_physical_ledger_residual_cm"],
-                p["max_abs_teacher_interval_ledger_residual_cm"],
-            ])
+            route_hard={}
+            for route_key in (primary_key,cross_key):
+                if route_key not in row:
+                    continue
+                rr=row[route_key]
+                vals=[
+                    rr["max_abs_additive_state_identity_residual_cm"],
+                    rr["max_abs_additive_flux_identity_residual_cm_per_day"],
+                    rr["max_abs_free_physical_ledger_residual_cm"],
+                    rr["max_abs_teacher_interval_ledger_residual_cm"],
+                ]
+                hard_vals.extend(vals)
+                route_hard[route_key]=max(vals)
             classifications[str(d)][h]={
                 "state_shape":p["state_shape"]["dominance"],
                 "q90":p["fluxes"]["q90"]["dominance"],
                 "qi":p["fluxes"]["qi"]["dominance"],
                 "qH":p["fluxes"]["qH"]["dominance"],
                 "first_interval_state_component_exceeds_local":p["first_interval_state_component_exceeds_local"],
+                "max_hard_residual_by_route":route_hard,
             }
             if cross_key in row:
                 floors[str(d)][h]=numerical_floor(p,row[cross_key])
+                floors[str(d)][h]["classification_match"]={
+                    "state_shape":p["state_shape"]["dominance"]==row[cross_key]["state_shape"]["dominance"],
+                    "q90":p["fluxes"]["q90"]["dominance"]==row[cross_key]["fluxes"]["q90"]["dominance"],
+                    "qi":p["fluxes"]["qi"]["dominance"]==row[cross_key]["fluxes"]["qi"]["dominance"],
+                    "qH":p["fluxes"]["qH"]["dominance"]==row[cross_key]["fluxes"]["qH"]["dominance"],
+                }
 
     max_hard=max(hard_vals or [math.inf])
     complete=all_routes and not failures and max_hard <= IDENTITY_GATE
@@ -352,8 +366,9 @@ def main():
         "complete":complete,
         "hard_checks":{
             "all_primary_and_cross_routes_qualified":all_routes and not failures,
+            "all_primary_and_cross_routes_hard_gated":True,
             "failure_count":len(failures),
-            "max_additive_or_ledger_residual":max_hard,
+            "max_additive_or_ledger_residual_across_primary_and_cross":max_hard,
             "gate":IDENTITY_GATE,
         },
         "failures":failures,
