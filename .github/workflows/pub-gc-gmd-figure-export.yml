@@ -28,8 +28,11 @@ jobs:
       - name: Install pinned export dependencies
         run: python -m pip install --disable-pip-version-check "cairosvg==2.8.2" "pillow==12.3.0" "pypdf==6.1.1"
 
-      - name: Verify render dependency
-        run: command -v pdftoppm
+      - name: Install render dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends poppler-utils
+          command -v pdftoppm
 
       - name: Export and validate governed figures
         run: python tools/publication/export_pub_gc_gmd_figures.py
