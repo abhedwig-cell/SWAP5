@@ -1,0 +1,36 @@
+name: F-ROM-LARE DYN0A coarse Richards temporal qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_CQ_PREREGISTRATION.json'
+      - 'tests/rom/test_lare_dyn0a_reference.f90'
+      - 'tests/rom/analyze_lare_dyn0a_coarse_temporal_qualification.py'
+      - 'tests/rom/run_lare_dyn0a_coarse_temporal_qualification.sh'
+      - '.github/workflows/f-rom-lare-dyn0a-cq.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute coarse Richards temporal qualification
+        run: bash tests/rom/run_lare_dyn0a_coarse_temporal_qualification.sh
+
+      - name: Upload CQ evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-coarse-richards-temporal-qualification
+          path: LARE_DYN0A_CQ_EVIDENCE/
+          if-no-files-found: warn
