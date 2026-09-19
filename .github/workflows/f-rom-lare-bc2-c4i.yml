@@ -1,0 +1,71 @@
+name: F-ROM-LARE BC2-C4I quadratic storage reconstruction
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4I_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4i_quadratic_storage_profile.py'
+      - '.github/workflows/f-rom-lare-bc2-c4i.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4i-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c4i/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c4i/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c4i/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c4i/a2.zip -d /tmp/lare-bc2-c4i/a2
+          cmp /tmp/lare-bc2-c4i/a2/o0.txt /tmp/lare-bc2-c4i/a2/o2.txt
+
+      - name: Execute quadratic reconstruction diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4I_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4i_quadratic_storage_profile.py             --reference /tmp/lare-bc2-c4i/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C4I_PREREGISTRATION.json             --b8-result integration/f-rom/LARE_BC2_B8_RESULT.json             --b9-result integration/f-rom/LARE_BC2_B9_RESULT.json             --c4h-closeout integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json             --output LARE_BC2_C4I_EVIDENCE/LARE_BC2_C4I_RESULT.json             | tee LARE_BC2_C4I_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4I_EVIDENCE/LARE_BC2_C4I_RESULT.json'))
+          assert r['decision'] in (
+            'QUADRATIC_STORAGE_RECONSTRUCTION_SUPPORTED',
+            'QI_IMPROVES_QH_TRADEOFF',
+            'QUADRATIC_RECONSTRUCTION_MIXED'
+          )
+          assert r['hard_checks']['max_storage_reconstruction_residual_cm'] <= 1e-10
+          assert r['hard_checks']['minimum_valid_multistart_roots_per_quadrature_state'] >= 2
+          assert r['hard_checks']['max_abs_qi_64_vs_128_cm_per_day'] <= 1e-8
+          assert r['hard_checks']['max_abs_qH_64_vs_128_cm_per_day'] <= 1e-8
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4I_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4I_EVIDENCE/* > LARE_BC2_C4I_EVIDENCE/sha256.txt
+
+      - name: Upload C4I evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4i
+          path: LARE_BC2_C4I_EVIDENCE/
+          if-no-files-found: error
