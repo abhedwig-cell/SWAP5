@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.lare.dyn0a.mech4b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH4B",
+  "phase": "PREREGISTERED_BEFORE_NEW_TAYLOR_RANKING_VALIDATION_TRAJECTORIES",
+  "purpose": "Blindly test whether the unfitted TAYLOR3 curvature indicator transfers as a grid-risk ranking diagnostic to previously unused soil textures.",
+  "trigger_authority": {
+    "mech4a_result": "integration/f-rom/LARE_DYN0A_MECH4A_RESULT.json",
+    "mech4a_decision": "CURVATURE_RANKING_SUPPORTED_LOCAL_EXPANSION_INCOMPLETE",
+    "frozen_indicator": "TAYLOR3_RMS",
+    "analytic_formula": "E3=(d-L)/3 psi'' + [(d^2-dL+L^2)/12 - 25/6] psi''' with d=10 cm",
+    "forbidden_interpretation": "TAYLOR3 is a ranking/risk indicator only. MECH4A rejected its use as a signed flux correction."
+  },
+  "external_materials": {
+    "source": "Carsel and Parrish (1988) USDA textural-class van Genuchten parameters as reproduced in HYDRUS; Mualem l=0.5",
+    "selection_rule": "Three previously unused textural classes spanning moderately coarse to fine behavior, frozen before any MECH4B trajectory.",
+    "materials": {
+      "SANDY_LOAM": {
+        "theta_r": 0.065,
+        "theta_s": 0.41,
+        "alpha_per_cm": 0.075,
+        "n": 1.89,
+        "Ksat_cm_per_day": 106.1,
+        "lambda": 0.5
+      },
+      "SILT": {
+        "theta_r": 0.034,
+        "theta_s": 0.46,
+        "alpha_per_cm": 0.016,
+        "n": 1.37,
+        "Ksat_cm_per_day": 6,
+        "lambda": 0.5
+      },
+      "CLAY_LOAM": {
+        "theta_r": 0.095,
+        "theta_s": 0.41,
+        "alpha_per_cm": 0.019,
+        "n": 1.31,
+        "Ksat_cm_per_day": 6.24,
+        "lambda": 0.5
+      }
+    }
+  },
+  "reference_experiment": {
+    "geometry": "16 x 10 cm homogeneous fine Reference column",
+    "initial_effective_saturation": [
+      0.65,
+      0.85,
+      0.95
+    ],
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "pulse_steps": 256,
+    "pulse_duration_day": 0.2048,
+    "forcing_cases": [
+      {
+        "id": "WET",
+        "top_flux": "1.5*K0 for steps 1-256 then K0"
+      },
+      {
+        "id": "DRY",
+        "top_flux": "0.5*K0 for steps 1-256 then K0"
+      }
+    ],
+    "bottom_boundary": "fixed flux K0 in normalized positive-downward convention",
+    "sinks": false,
+    "numerical_authority": "unchanged DYN0A fine-Reference strict-first route",
+    "domain_policy": [
+      "QUALIFIED",
+      "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION",
+      "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+    ],
+    "no_retuning": true
+  },
+  "ranking_experiment": {
+    "L_cm": [
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "lower_adjacent_layer_d_cm": 10,
+    "derivative_stencil_cm": [
+      -15,
+      -5,
+      5,
+      15
+    ],
+    "actual_error": "RMS over pulse steps of exact-layer-mean gradient minus 10-cm fine central gradient, identical to normalized MECH1 E_gradient",
+    "indicators": {
+      "LENGTH_ONLY": "|L-10|",
+      "TAYLOR2_RMS": "RMS[(10-L)/3 * psi'']",
+      "TAYLOR3_RMS": "RMS[(10-L)/3 psi'' + ((100-10L+L^2)/12 - 25/6) psi''']"
+    },
+    "no_response_fit": true
+  },
+  "minimum_reference_authority": {
+    "material_usable": "At least one qualified WET and one qualified DRY case for a material.",
+    "panel_sufficient": "At least two of three materials usable and at least 10 qualified WET/DRY cases overall.",
+    "otherwise": "BLIND_RANKING_REFERENCE_INSUFFICIENT"
+  },
+  "metrics": {
+    "casewise": [
+      "Spearman rank correlation across L between each indicator and actual RMS error",
+      "actual peak L and indicator peak L",
+      "absolute peak-location error",
+      "exact peak hit"
+    ],
+    "aggregate": [
+      "median Spearman across all qualified cases",
+      "median absolute peak-location error",
+      "exact peak hit count"
+    ],
+    "per_material": [
+      "median Spearman for TAYLOR3 and LENGTH_ONLY",
+      "median peak error for TAYLOR3 and LENGTH_ONLY",
+      "TAYLOR3 exact hit count"
+    ]
+  },
+  "adjudication": {
+    "dominance_definition": "TAYLOR3 aggregate median Spearman >= LENGTH_ONLY, median peak error <= LENGTH_ONLY, exact peak hits >= LENGTH_ONLY, with at least one strict improvement.",
+    "material_consistency": "For every usable material, TAYLOR3 median Spearman must be strictly greater than LENGTH_ONLY median Spearman and TAYLOR3 median peak error must be no greater.",
+    "CURVATURE_RISK_RANKING_TRANSFER_SUPPORTED": "Panel sufficient, aggregate dominance holds, and material consistency holds for every usable material.",
+    "CURVATURE_RISK_RANKING_TRANSFER_PARTIAL": "Panel sufficient and aggregate dominance holds, but at least one usable material fails material consistency.",
+    "CURVATURE_RISK_RANKING_TRANSFER_NOT_SUPPORTED": "Panel sufficient and aggregate dominance fails.",
+    "BLIND_RANKING_REFERENCE_INSUFFICIENT": "Reference minimum not met."
+  },
+  "interpretation_firewalls": [
+    "A supported result validates only ordering of interface risk over this frozen L ladder, not the magnitude or sign of the gradient error.",
+    "No Taylor coefficient may be fitted from MECH4B.",
+    "No material may be removed because it weakens transfer.",
+    "No application-specific layer size is selected from this experiment.",
+    "A supported result may justify a curvature-based adaptive fixed-grid diagnostic; it does not authorize moving meshes or production ROM."
+  ],
+  "firewalls": [
+    "NO_PARAMETER_RETUNING",
+    "NO_FORCING_RETUNING",
+    "NO_LADDER_RETUNING",
+    "NO_REFERENCE_TOLERANCE_RELAXATION",
+    "NO_TAYLOR_COEFFICIENT_FIT",
+    "NO_LARE_CLOSURE_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
