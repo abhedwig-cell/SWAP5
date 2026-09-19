@@ -14,7 +14,7 @@ DYNAMIC=("WT_RISE","WT_FALL","WT_CYCLE")
 SHAPE_KEY="cumulative_shape_rms_theta_at_final_geometry"
 
 def best(case,route):
-    return case["routes"][route]["best_single_channel"]
+    return case["routes"][route]["unique_best_single_channel"]
 
 def shape(case,route,variant):
     return float(case["routes"][route]["variants"][variant][SHAPE_KEY])
@@ -73,11 +73,13 @@ def main():
     )
 
     if not complete:
-        decision="BC2_C4B_NUMERICAL_DIAGNOSTIC_BLOCKED"
+        decision="C4B_DIAGNOSTIC_BLOCKED"
     elif monotone_qi and cycle_qh:
-        decision="REGIME_DEPENDENT_QI_MONOTONE_QH_CYCLE_CAUSALITY"
-    elif coupled_qi_qh:
-        decision="COUPLED_LOWER_INTERFACE_CAUSALITY"
+        decision="REGIME_DEPENDENT_COUPLED_LOWER_BOUNDARY_CAUSALITY"
+    elif monotone_qi:
+        decision="MONOTONE_QI_CAUSALITY_ONLY"
+    elif cycle_qh:
+        decision="CYCLE_QH_CAUSALITY_ONLY"
     else:
         decision="MULTI_CHANNEL_OR_SUBINTERVAL_DYNAMICS_REQUIRED"
 
