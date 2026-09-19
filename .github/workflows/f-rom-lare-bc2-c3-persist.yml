@@ -26,10 +26,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/lare-bc2-c3-persist
-          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10589421934/zip" > /tmp/lare-bc2-c3-persist/c3.zip
-          echo "437eada585bc7a88208fede4762d2360f72b6913ed0ce8f612bafeb0ff069459  /tmp/lare-bc2-c3-persist/c3.zip" | sha256sum -c -
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10589232188/zip" > /tmp/lare-bc2-c3-persist/c3.zip
+          echo "cfb6a22d82ae094e7d8384b6ea2117cc0ea88aac3aa66b99da86c7d6b63b2b5a  /tmp/lare-bc2-c3-persist/c3.zip" | sha256sum -c -
           unzip -q /tmp/lare-bc2-c3-persist/c3.zip -d /tmp/lare-bc2-c3-persist
-          echo "b3eaa9be23ff46154de64b727bd0c84df4cb59efce9d8daa36d08649944aa08f  /tmp/lare-bc2-c3-persist/LARE_BC2_C3_RESULT.json" | sha256sum -c -
+          echo "12d99184df2ce8c968a5c9d6894b39bfc41cf1592c271f34c7194abec5f07db0  /tmp/lare-bc2-c3-persist/LARE_BC2_C3_RESULT.json" | sha256sum -c -
 
       - name: Validate qualified C3 authority
         run: |
@@ -78,11 +78,11 @@ jobs:
             "schema": "swap5.lare.bc2.c3.authority-binding.v1",
             "workstream": "F-ROM-LARE",
             "work_unit": "LARE-BC2-C3",
-            "source_workflow_run": 35458946068,
-            "source_executed_head": "2dec8bed9182cf9455cfde5831cc8f28aabcb1f4",
-            "aggregate_artifact_id": 10589421934,
-            "aggregate_artifact_digest": "sha256:437eada585bc7a88208fede4762d2360f72b6913ed0ce8f612bafeb0ff069459",
-            "result_sha256": "b3eaa9be23ff46154de64b727bd0c84df4cb59efce9d8daa36d08649944aa08f",
+            "source_workflow_run": 35459217586,
+            "source_executed_head": "811fffc9ffb4505b88cbd13ea566999dfd5b8c0b",
+            "aggregate_artifact_id": 10589232188,
+            "aggregate_artifact_digest": "sha256:cfb6a22d82ae094e7d8384b6ea2117cc0ea88aac3aa66b99da86c7d6b63b2b5a",
+            "result_sha256": "12d99184df2ce8c968a5c9d6894b39bfc41cf1592c271f34c7194abec5f07db0",
             "required_decision": "BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED",
             "c3a_rule_source": "integration/f-rom/LARE_BC2_C3_ADJUDICATION_PREREGISTRATION.json",
             "c3a_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
