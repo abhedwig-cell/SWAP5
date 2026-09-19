@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.lare.bc2.c4b.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4B",
+  "status": "CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED",
+  "preregistration": "integration/f-rom/LARE_BC2_C4B_PREREGISTRATION.json",
+  "governing_predecessor": {
+    "c3a_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+    "c3a_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+    "c4a_closeout": "integration/f-rom/LARE_BC2_C4A_CLOSEOUT.json"
+  },
+  "execution": {
+    "diagnostic_context_run": 35459550898,
+    "diagnostic_context_head": "4bf9acf499ba693caf2c508f67f78cedb2a9abdb",
+    "note": "The context-only rerun changed no scientific rule, variant, threshold, state, or closure. It only wrapped existing failures with variant/step/history/width/dt identifiers."
+  },
+  "decision": "C4B_DIAGNOSTIC_BLOCKED",
+  "blocking_evidence": [
+    {
+      "case": "2.5:WT_RISE",
+      "job_id": 105940820100,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.000077376024221",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000301764860375"
+    },
+    {
+      "case": "5.0:WT_RISE",
+      "job_id": 105940820098,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000168974027177",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0003892703780368"
+    },
+    {
+      "case": "2.5:WT_CYCLE",
+      "job_id": 105940820136,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.000077376024221",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000301764860375"
+    },
+    {
+      "case": "5.0:WT_CYCLE",
+      "job_id": 105940820131,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000168974027177",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0003892703780368"
+    },
+    {
+      "case": "2.5:WT_FALL",
+      "job_id": 105940820161,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QI step 1 blocks in iterative Heun corrector",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_GI step 1 leaves constitutive domain; max Se=1.0000366520769488"
+    },
+    {
+      "case": "5.0:WT_FALL",
+      "job_id": 105940820342,
+      "primary_dt_day": 0.00005,
+      "primary_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000183926271993",
+      "cross_dt_day": 0.000025,
+      "cross_failure": "ORACLE_QH step 1 leaves constitutive domain; max Se=1.0000100797883964"
+    }
+  ],
+  "frozen_rule_application": {
+    "rule": "Any required C4B case/route that is incomplete, leaves the qualified constitutive domain, fails the corrector, or violates a hard gate closes the panel as numerical diagnostic blocked.",
+    "triggered": true,
+    "clipping_or_fallback_allowed": false,
+    "tolerance_retuning_allowed": false
+  },
+  "scientific_interpretation": [
+    "C4B does not establish or refute QI, QH, Q90 or Gi causal dominance because the frozen oracle intervention family is not jointly well-defined inside the qualified reduced-state domain.",
+    "The failures are intervention-induced: exact interval-average Reference channel substitution can push the reduced terminal/bulk state outside its constitutive domain or prevent the frozen Heun corrector from converging.",
+    "The small amount by which Se exceeds one is not grounds for clipping because C4B explicitly preregistered no clipping or fallback.",
+    "A new causal diagnostic may proceed only with a separately preregistered intervention that preserves physical admissibility by construction; it may not be tuned to make the blocked oracle variants pass.",
+    "C3/C3A remain the governing mechanism evidence: dynamic local bias injection is regime-dependent, with QI rank-1 in monotone RISE/FALL and QH rank-1 in whole-cycle accumulation."
+  ],
+  "causal_hypotheses_adjudicated": false,
+  "model_candidate_tested": false,
+  "next_model_change_authorized": false,
+  "groundwater_feedback_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
