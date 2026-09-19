@@ -1,0 +1,180 @@
+{
+  "schema": "swap5.f-romv2-d7.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D7",
+  "title": "Finite-domain continuation search for the QS1 quasi-steady manifold",
+  "phase": "PREREGISTERED_BEFORE_PREFLIGHT_OR_TRAJECTORY_EXECUTION",
+  "canonical_base": "38559be9288e2fe5a7f0d9b202e9611c3d33de33",
+  "purpose": "Re-test the unchanged QS1 quasi-steady physical manifold using a deterministic root-search construction that brackets only through finite physically admissible profile evaluations, then evaluate exposed B01 development trajectories only if preflight succeeds.",
+  "predecessor": {
+    "D6_decision": "D6_FIXED_ENDPOINT_BRACKET_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+    "D6_trajectory_evidence_consumed": false,
+    "D6_failure": "fixed extreme endpoints were not physically admissible",
+    "preserved_from_D6": [
+      "QS1 one-state total-storage dynamics",
+      "steady profile ODE dh/dy=q/K(h)-1 and dStorage/dy=theta(h)",
+      "B01 Van Genuchten/Mualem constitutive identity",
+      "RK4 with 1024 fixed subintervals",
+      "scalar Heun dynamic update",
+      "no clipping, dynamic substeps or full-order fallback"
+    ],
+    "changed_only": "root-search/bracketing construction"
+  },
+  "scope": {
+    "material": "B01",
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "blind_confirmation": false,
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "total_depth_cm": 160
+  },
+  "constitutive_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "initial_effective_saturation": 0.85
+  },
+  "profile_integrator": {
+    "equations": "unchanged from D6",
+    "RK4_subintervals": 1024,
+    "profile_depth_cm": 160,
+    "physical_requirement": "every RK4 stage and endpoint must have finite h<0, theta_r<theta(h)<theta_s, and finite K(h)>0",
+    "invalid_profile": "return INVALID, never clip or extrapolate"
+  },
+  "root_search_common": {
+    "residual": "integrated profile storage - requested storage",
+    "exact_root_rule": "a finite candidate with residual exactly 0.0 is accepted",
+    "bracket_rule": "only two neighboring finite candidates in the ordered candidate set may bracket a root; an INVALID point breaks adjacency and cannot be jumped over",
+    "bracket_selection": "if multiple valid sign-change brackets exist, choose the one whose midpoint is closest to the deterministic state-derived center; ties choose the lower ordered interval",
+    "bisection_iterations": 64,
+    "midpoint_invalid_rule": "fail closed for that manifold evaluation",
+    "root_output": "after 64 iterations use midpoint of final finite sign bracket and re-evaluate profile",
+    "no_residual_tolerance_fit": true
+  },
+  "prescribed_bottom_head_search": {
+    "unknown": "downward steady flux q",
+    "center": "q_center=K(theta_bar), theta_bar=storage/160",
+    "search_domain_cm_per_day": "[-Ksat,+Ksat]",
+    "initial_increment_cm_per_day": "Ksat/1024",
+    "continuation_candidates": "q_center plus and minus (Ksat/1024)*2^k for k=0..10, clipped to [-Ksat,+Ksat], together with q_center and unique clipped domain limits",
+    "evaluation_order": "construct all unique candidates first, sort ascending q, evaluate independently",
+    "sign_bracket": "apply root_search_common to neighboring finite candidates only"
+  },
+  "prescribed_bottom_flux_search": {
+    "known": "downward q_bottom=-native bottom flux",
+    "unknown": "bottom pressure head h_bottom<0",
+    "center": "h_center=h(theta_bar), theta_bar=storage/160",
+    "suction_domain_cm": "[1e-8,1e6], h=-suction",
+    "continuation_candidates": "h_center plus multiplicative suction continuation: suction=abs(h_center)*2^(j/4) for integer j=-80..80, clipped to [1e-8,1e6], plus unique domain limits",
+    "evaluation_order": "construct all unique h candidates first, sort ascending h, evaluate independently",
+    "sign_bracket": "apply root_search_common to neighboring finite candidates only"
+  },
+  "preflight": {
+    "must_pass_before_trajectory_consumption": true,
+    "target_storage": "initial Se=0.85 storage",
+    "cases": [
+      "prescribed flux q=K(theta0)",
+      "prescribed bottom head 0.75*h0",
+      "prescribed bottom head 1.25*h0"
+    ],
+    "requirements": [
+      "each case finds a finite bracket or exact root",
+      "each returned profile is physically admissible",
+      "equilibrium prescribed-flux case reproduces initial storage within the fixed RK4 integration result, with no fitted correction"
+    ],
+    "on_failure": "close D7 preflight no-go; do not evaluate trajectories"
+  },
+  "dynamic_candidate": {
+    "id": "QS1",
+    "dynamic_state": [
+      "total_storage_cm"
+    ],
+    "state_dimension": 1,
+    "scalar_integrator": "single Heun predictor-corrector per 0.0008-day interval",
+    "derivative": "dS/dt=q_top-q_bottom_from_manifold",
+    "predictor_and_corrector": "each stage invokes the D7 finite-domain manifold search appropriate to the bottom-boundary mode",
+    "terminal_profile": "reconstructed by the same final-state manifold solution",
+    "upper_lower_storage": "integrate terminal profile over upper/lower 80 cm",
+    "bottom_exchange": "dt*0.5*(q_bottom_stage1+q_bottom_stage2)",
+    "top_exchange": "-dt*q_top",
+    "transaction_mass_residual": "S_new-S_old+top_exchange+bottom_exchange",
+    "hard_mass_gate_cm": 1e-12,
+    "training": false,
+    "calibration": false,
+    "clipping": false,
+    "adaptive_dynamic_substeps": false,
+    "full_order_fallback": false
+  },
+  "comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "D5_L2_IMC": "closed no-go; retained only as diagnostic predecessor, not the positive threshold comparator"
+  },
+  "decision_logic": {
+    "positive": "QS1_HYDROLOGICALLY_WORTH_TABULATING",
+    "negative": "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+    "preflight_no_go": "D7_FINITE_DOMAIN_SEARCH_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+    "integrity_kill": [
+      "preflight failure",
+      "dynamic root search has no valid finite adjacent sign bracket",
+      "bisection midpoint INVALID",
+      "nonfinite state/flux/profile",
+      "storage leaves open physical bounds",
+      "transaction mass residual exceeds 1e-12 cm",
+      "any clipping, fitted correction, adaptive dynamic substep or full-order fallback"
+    ],
+    "positive_rule": [
+      "all 12 histories complete with integrity",
+      "and QS1 improves on R2 on at least one declared fidelity view",
+      "balance view: total-storage RMSE and cumulative-bottom-exchange RMSE both <= R2",
+      "or transient view: terminal bottom-flux RMSE <= R2 and sign-error count <= R2"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "computational_boundary": {
+    "root_search_and_RK4_cost_not_a_performance_candidate": true,
+    "formal_speedup_claim": false,
+    "if_positive": "tabulation/interpolation becomes a separate preregistered acceleration workunit",
+    "if_negative": "do not tabulate a hydrologically dominated manifold"
+  },
+  "firewalls": [
+    "NO_TRAJECTORY_EXECUTION_IF_PREFLIGHT_FAILS",
+    "NO_POST_PREFLIGHT_SEARCH_GRID_RETUNING",
+    "NO_POST_RESULT_RK4_REFINEMENT",
+    "NO_POST_RESULT_EQUATION_RETUNING",
+    "NO_TRAJECTORY_TRAINING",
+    "NO_CLIPPING",
+    "NO_ADAPTIVE_DYNAMIC_SUBSTEPS",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
