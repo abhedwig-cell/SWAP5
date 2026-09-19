@@ -128,5 +128,19 @@
     },
     "overall_rule": "No majority vote and no scalar combination across channels. Report every channel separately for every history and width.",
     "additive_identity": "Checked componentwise before norms are formed."
+  },
+  "pre_execution_execution_reconciliation": {
+    "before_authoritative_sharded_C1_result": true,
+    "scientific_semantics_unchanged": true,
+    "execution_change": "The frozen 2 widths x 4 histories are executed as eight independent shards and merged deterministically after all shards pass.",
+    "invariant_requirements": [
+      "same immutable A2 Reference artifact",
+      "same immutable C0 result authority",
+      "same primary and cross internal dt",
+      "same teacher/free decomposition",
+      "same hard gates and per-channel classification",
+      "all eight case shards required before aggregation"
+    ],
+    "reason": "Execution parallelization only; avoids serial CPU walltime without changing any scientific choice."
   }
 }
