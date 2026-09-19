@@ -430,8 +430,10 @@ def main():
             "cross_unique_best_single":routes[ck]["unique_best_single_channel"],
             "primary_single_rank":routes[pk]["single_channel_rank_by_cumulative_shape"],
             "cross_single_rank":routes[ck]["single_channel_rank_by_cumulative_shape"],
-            "primary_cumulative_shape":{v:routes[pk]["variants"][v]["cumulative_shape_rms_theta_at_final_geometry"] for v in VARIANTS},
-            "primary_interval_shape":{v:routes[pk]["variants"][v]["interval_shape_rms_theta"] for v in VARIANTS},
+            "primary_cumulative_shape":{v:row["cumulative_shape_rms_theta_at_final_geometry"] for v,row in routes[pk]["variants"].items()},
+            "primary_interval_shape":{v:row["interval_shape_rms_theta"] for v,row in routes[pk]["variants"].items()},
+            "primary_variant_failures":routes[pk].get("variant_failures",{}),
+            "cross_variant_failures":routes[ck].get("variant_failures",{}),
             "hard_checks":routes[pk]["hard_checks"],
         },sort_keys=True))
     else:
