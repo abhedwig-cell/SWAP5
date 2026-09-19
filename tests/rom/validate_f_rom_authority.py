@@ -331,6 +331,84 @@ def validate_romv2_v1_if_present() -> str:
     return "CLOSED_BLIND_HYDRAULIC_FEASIBILITY_PASS_DOMAIN_COVERAGE_LIMITING"
 
 
+def validate_romv2_d2_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D2_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D2_PREREGISTRATION.json")
+            == "e06f3a8d691c930befad8cc7a6d348a659f30ea2",
+            "F-ROMV2-D2 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D2_RESULT.json")
+            == "702f2a875be96f1ebc9efccf77d9020e05761108",
+            "F-ROMV2-D2 result summary blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D2_STATUS.json")
+            == "8507a1821e8b26f6b159178bd82eb3fd65e90a97",
+            "F-ROMV2-D2 status blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D2_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D2_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D2_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D2_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D2_COARSE_RICHARDS_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D2 preregistration phase drift")
+    require(prereg["scientific_role"]["blind_confirmation"] is False,
+            "F-ROMV2-D2 unexpectedly claims blind confirmation")
+    require(prereg["decisions"]["no_application_thresholds"] is True,
+            "F-ROMV2-D2 application threshold unexpectedly introduced")
+    require("NO_C2_OOD_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D2 C2 retuning firewall missing")
+
+    require(result["decision"] == "COARSE_RICHARDS_REMAINS_SERIOUS_PHYSICAL_REDUCTION_CANDIDATE",
+            "F-ROMV2-D2 decision drift")
+    require(result["adjudication"]
+            == "R8_BALANCE_REDUCTION_CANDIDATE_EVENT_FIDELITY_WEAK_R4_R2_NUMERICAL_AUTHORITY_NO_GO",
+            "F-ROMV2-D2 adjudication drift")
+    require(result["R8"]["status"] == "COMPLETE" and result["R8"]["integrity_pass"] is True,
+            "F-ROMV2-D2 R8 completion/integrity drift")
+    require(result["R4"]["status"] == "FROZEN_REFERENCE_POLICY_NO_GO"
+            and result["R2"]["status"] == "FROZEN_REFERENCE_POLICY_NO_GO",
+            "F-ROMV2-D2 R4/R2 numerical-authority classification drift")
+    require(result["purpose_dependent_interpretation"]["long_term_regional_balance"]
+            == "R8_REMAINS_PLAUSIBLE_NOT_QUALIFIED",
+            "F-ROMV2-D2 balance interpretation drift")
+    require(result["purpose_dependent_interpretation"]["fast_event_threshold"]
+            == "R8_NOT_QUALIFIED_IN_D2",
+            "F-ROMV2-D2 event interpretation drift")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D2 unexpectedly authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_ARCHITECTURE_SCREEN_SPLIT_RESULT",
+            "F-ROMV2-D2 status phase drift")
+    require(status["retained_candidate"] == "R8",
+            "F-ROMV2-D2 retained candidate drift")
+    require(status["application_acceptance"] is False
+            and status["performance_claim"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D2 status overclaims authority")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D2 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D2 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D2 evidence import claims production/reference mutation")
+    require(manifest["R4_R2_hydrological_invalidity_claimed"] is False,
+            "F-ROMV2-D2 wrongly promotes numerical-policy failure to hydrological invalidity")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D2 manifest authorizes production ROM")
+
+    require("R4 and R2 are not hydrological no-go results" in doc,
+            "F-ROMV2-D2 purpose-dependent R4/R2 distinction missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D2 production prohibition missing")
+
+    return "CLOSED_ARCHITECTURE_SCREEN_SPLIT_RESULT"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -358,6 +436,7 @@ def main() -> int:
     rom1_phase = validate_rom1_if_present()
     romv2_phase = validate_romv2_if_present()
     romv2_v1_phase = validate_romv2_v1_if_present()
+    romv2_d2_phase = validate_romv2_d2_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -369,6 +448,7 @@ def main() -> int:
     print(f"F_ROM1_PHASE={rom1_phase}")
     print(f"F_ROMV2_PHASE={romv2_phase}")
     print(f"F_ROMV2_V1_PHASE={romv2_v1_phase}")
+    print(f"F_ROMV2_D2_PHASE={romv2_d2_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 

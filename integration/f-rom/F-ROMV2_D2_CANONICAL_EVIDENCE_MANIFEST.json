@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-romv2-d2.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D2",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d2-coarse-richards-screen",
+    "pull_request": 418,
+    "pull_request_merged": false,
+    "executed_head": "329ffa7582f592529984b172f5c4fc01240dc363",
+    "workflow_run": 35441802458,
+    "workflow_job": 105893780103,
+    "artifact_id": 10583802946,
+    "artifact_digest": "sha256:95cd25551da619091f8e3b2d14c494cf55ddb39bf650ac41d806b049e22e252b",
+    "workflow_conclusion": "success",
+    "prior_partial_run": {
+      "workflow_run": 35441681811,
+      "classification": "ORCHESTRATION_ABORT_AFTER_R4_SCIENTIFIC_FAILURE",
+      "scientific_policy_changed_in_repair": false
+    }
+  },
+  "frozen_payload_digests": {
+    "R16_stdout_sha256": "212a0772ace2d5a657265e361a5ec32fc51dc8be9ce04e68d71d957668a27bb1",
+    "R8_stdout_sha256": "74f98c91ec94967b0814dfe3d2fe132e4f1411f293d5a4a8574671a1ecc8a227",
+    "geometry_status_sha256": "e173bd65cfa506418ed14fb488c5d93c96439e8955ca6fb38031b0b6b21bc4c5",
+    "result_sha256": "abfa8e6adc208971d7dcbec08bb155b717a40ba566c1dee00e77f8c4dd7397c9",
+    "analyzer_sha256": "08fbf53aa3dfa536d2fa2c61ac878550103a5eff57ea086d7d3fc54cbd7bb4a5"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D2_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D2_RESULT.json",
+    "integration/f-rom/F-ROMV2_D2_STATUS.json",
+    "integration/f-rom/F-ROMV2_D2_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D2_COARSE_RICHARDS_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d2_coarse_richards_trajectories.f90",
+    "tests/rom/analyze_f_romv2_d2_coarse_richards.py",
+    "tests/rom/run_f_romv2_d2_coarse_richards.sh",
+    ".github/workflows/f-romv2-d2-coarse-richards.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "R4_R2_hydrological_invalidity_claimed": false,
+  "production_rom_authorized": false
+}
