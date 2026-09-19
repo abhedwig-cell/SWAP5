@@ -1,0 +1,212 @@
+{
+  "schema": "swap5.f-romv2-d16.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D16",
+  "title": "Bounded FMC surface-infiltration and hiatus redistribution comparator",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+  "canonical_base": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
+  "purpose": "Test whether the literature-bound FMC atmospheric-side route retains more vertical redistribution fidelity than admitted R2 coarse Richards on a matched no-runoff, no-bottom-flow B01 pulse-to-hiatus envelope, before any general surface or application claim.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_SURFACE_REDISTRIBUTION_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D12": "FMC/SMVE constitutive/equation preflight passed with 200 bins and max 10 s process step.",
+    "D13": "FMC groundwater-front branch beat matched R2 inside a bounded fixed-water-table envelope.",
+    "D14": "Eq.18 surface-front and Eq.19 falling-slug kinematics passed.",
+    "D15": "Full atmospheric-side finite-volume accounting passed; D16 exposed development comparator authorized."
+  },
+  "frozen_B01_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "effective_capillary_drive_HcM_cm": 14.085215420920257
+  },
+  "state_and_geometry": {
+    "total_depth_cm": 160,
+    "FMC_moisture_bins": 200,
+    "FMC_baseline_bin_i": 100,
+    "FMC_active_bins": "j=101..199",
+    "FMC_dtheta_formula": "(theta_s-theta_r)/200",
+    "initial_profile_id": "D14_I_DEEP",
+    "initial_surface_connected_fronts": "linear in j from z_101=120 cm to z_199=10 cm",
+    "initial_falling_slugs": "none",
+    "initial_surface_store_cm": 0,
+    "initial_runoff_cm": 0,
+    "initial_mapping_to_SWAP": "For each R16/R2 cell, water content is the exact finite-volume average of baseline theta_i plus dtheta times the overlap of every connected [0,z_j] interval with the cell. Pressure head is the B01 inverse-retention value of that cell-average theta.",
+    "exact_initial_storage_identity_required": true
+  },
+  "matched_boundaries": {
+    "top": {
+      "interpretation": "prescribed infiltrating soil-water flux, not rainfall supply",
+      "native_SWAP_sign": "downward physical q_in maps to forcing.top_flux=-q_in",
+      "FMC_supply": "exact q_in*dt finite water depth",
+      "preflight_requirement": "FMC must absorb the entire prescribed supply at every pulse substep; any residual surface water/runoff makes that history fail closed because the matched prescribed-infiltration boundary would no longer be equivalent."
+    },
+    "bottom": {
+      "SWAP": "bottom mode 2 with prescribed bottom flux 0 cm/day",
+      "FMC": "no groundwater front and no bottom exchange",
+      "safety_requirement": "every connected or falling-slug interval must remain strictly above 160 cm; otherwise fail closed"
+    },
+    "root_sink": "zero",
+    "drainage": "zero",
+    "subsurface_irrigation": "zero"
+  },
+  "development_histories": [
+    {
+      "id": "S10",
+      "top_infiltration_factor_of_Ksat": 0.1,
+      "pulse_steps": 16,
+      "hiatus_steps": 48
+    },
+    {
+      "id": "S25",
+      "top_infiltration_factor_of_Ksat": 0.25,
+      "pulse_steps": 16,
+      "hiatus_steps": 48
+    },
+    {
+      "id": "S50",
+      "top_infiltration_factor_of_Ksat": 0.5,
+      "pulse_steps": 16,
+      "hiatus_steps": 48
+    },
+    {
+      "id": "S75",
+      "top_infiltration_factor_of_Ksat": 0.75,
+      "pulse_steps": 16,
+      "hiatus_steps": 48
+    }
+  ],
+  "temporal_contract": {
+    "observation_step_seconds": 10,
+    "observation_step_day": "10/86400",
+    "FMC_internal_substeps_per_observation": 1,
+    "SWAP_step_duration_day": "10/86400",
+    "total_steps_per_history": 64,
+    "total_duration_seconds": 640,
+    "pulse_duration_seconds": 160,
+    "hiatus_duration_seconds": 480
+  },
+  "FMC_dynamic_algorithm": {
+    "pulse_phase": [
+      "compute D14 Eq.18 potential advance for every currently surface-connected bin using frozen B01 relations and current front depth",
+      "allocate exact prescribed infiltration supply left-to-right using D15 finite-volume accounting",
+      "partial final connected-front advance is allowed; dry-bin activation is not expected because all j=101..199 bins are already active in I_DEEP",
+      "apply D14/Ogden-2015 conservative capillary relaxation to connected-front ordering",
+      "require zero residual surface supply/runoff"
+    ],
+    "hiatus_transition": "At the first zero-supply step, every connected [0,z_j] interval detaches to one falling slug [0,z_j] with identical water volume.",
+    "hiatus_phase": [
+      "translate each falling slug by D14 Eq.19 for exactly one 10 s step",
+      "top and bottom of each same-bin slug translate identically",
+      "no new connected surface front is created",
+      "no slug collision/merge is expected in this single-pulse design; any collision, overlap with bottom boundary, or physical-domain failure is fail closed"
+    ],
+    "capillary_relaxation_during_hiatus": "none beyond D14-qualified slug translation; D16 intentionally isolates the published falling-slug kinematic memory after detachment",
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "SWAP_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "development reference"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "admitted coarse-Richards comparator"
+    },
+    "numerical_authority": "D4 strict-first integrated-water-depth reattempt policy; hard accepted-transaction mass gate 1e-12 cm; no production tolerance change."
+  },
+  "internal_preflight_before_SWAP_trajectories": {
+    "trajectory_data_consumed": false,
+    "tests": [
+      "exact I_DEEP finite-volume storage mapping",
+      "for all four histories and all 16 pulse steps, prescribed supply is fully absorbed with residual <=1e-14 cm and no dry-bin activation/runoff",
+      "all 48 hiatus slug-translation steps remain inside 0..160 cm with no collision/merge",
+      "FMC global finite-volume ledger closes to <=1e-14 cm over each complete 64-step history"
+    ],
+    "failure_rule": "If any test fails, close D16 before generating R16/R2 trajectories; no factor/duration/bin/substep retuning is allowed."
+  },
+  "hydrological_outputs": {
+    "primary": [
+      "upper 0-80 cm storage",
+      "lower 80-160 cm storage",
+      "R16-mapped 16-cell theta profile"
+    ],
+    "diagnostics": [
+      "total storage",
+      "cumulative prescribed top infiltration",
+      "bottom exchange",
+      "maximum occupied FMC depth",
+      "finite-volume mass residual",
+      "R16/R2 nonlinear iterations and research reattempt counts"
+    ],
+    "excluded_from_frontier": [
+      "bottom-flux magnitude because the frozen bottom boundary is prescribed zero flux",
+      "runoff/ponding because D16 requires complete absorption of prescribed infiltration"
+    ]
+  },
+  "comparison_metrics": {
+    "all_64_steps": [
+      "upper-storage RMSE versus R16",
+      "lower-storage RMSE versus R16",
+      "mapped 16-cell theta RMSE versus R16"
+    ],
+    "hiatus_only_steps_17_64": [
+      "upper-storage RMSE versus R16",
+      "lower-storage RMSE versus R16",
+      "mapped 16-cell theta RMSE versus R16"
+    ],
+    "R2_mapping_to_R16": "repeat each 80-cm R2 cell-average theta across the corresponding eight 10-cm R16 cells before profile RMSE",
+    "no_weighted_score": true
+  },
+  "decision_logic": {
+    "positive": "FMC_SURFACE_REDISTRIBUTION_RETAINS_RESEARCH_CANDIDACY",
+    "negative": "FMC_SURFACE_REDISTRIBUTION_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "internal preflight passes before SWAP trajectory generation",
+      "all S10/S25/S50/S75 R16, R2 and FMC histories complete with integrity",
+      "FMC all-step upper-storage RMSE <= R2 all-step upper-storage RMSE",
+      "FMC all-step mapped 16-cell theta RMSE <= R2",
+      "FMC hiatus-only upper-storage RMSE <= R2 hiatus-only upper-storage RMSE",
+      "FMC hiatus-only mapped 16-cell theta RMSE <= R2"
+    ],
+    "lower_storage_note": "Because total water input and zero bottom flux are matched, upper- and lower-storage errors are complementary; lower storage is reported but not duplicated as an independent gate.",
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Retain FMC surface and groundwater branches for a later combined-boundary development experiment; still no ET/root uptake or production authority.",
+    "if_negative": "Close the current surface falling-slug route without retuning D12-D15 discretization or D16 pulse design; reassess whether FMC remains groundwater-branch-only.",
+    "formal_performance": "Deferred until a candidate spans enough hydrological branches to justify same-runtime timing."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_RAINFALL_RUNOFF_CLAIM_IN_D16",
+    "NO_BOTTOM_HEAD_OR_GROUNDWATER_COUPLING_CLAIM_IN_D16",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_PULSE_FACTOR_OR_DURATION_RETUNING_AFTER_PREFLIGHT",
+    "NO_GREEN_AMPT_OR_ALLOCATION_RETUNING",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
