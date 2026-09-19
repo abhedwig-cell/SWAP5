@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.lare.bc2.b7.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B7",
+  "phase": "PREREGISTERED_BEFORE_TERMINAL_STORAGE_SHAPE_RECONSTRUCTION_DIAGNOSTIC",
+  "purpose": "Test whether the one-state terminal storage enrichment rejected under the naive B6 average-to-potential closure becomes informative when its local boundary gradient is reconstructed mass-consistently without fit.",
+  "predecessors": {
+    "B4": "integration/f-rom/LARE_BC2_B4_RESULT.json",
+    "required_B4_decision": "BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED",
+    "B5": "integration/f-rom/LARE_BC2_B5_RESULT.json",
+    "required_B5_decision": "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_NOT_SUPPORTED",
+    "B6": "integration/f-rom/LARE_BC2_B6_RESULT.json",
+    "required_B6_decision": "BC2_B6_TERMINAL_STORAGE_NOT_SUPPORTED"
+  },
+  "hypothesis": "B6 failed because psi(mean(theta)) is not a boundary-gradient preserving map even in a short terminal band. The terminal storage Wt may nevertheless carry the required local information if it is mapped to a mass-consistent local suction slope rather than to psi(theta_bar).",
+  "added_state": {
+    "dimension_increment": 1,
+    "widths_cm": [
+      2.5,
+      5,
+      10
+    ],
+    "state_for_width_d": [
+      "Wt(d)=integral_{H-d}^{H} theta dz",
+      "Wb(d)=Wm-Wt(d)"
+    ],
+    "conservation": "Wb+Wt=Wm",
+    "no_point_head": true,
+    "no_profile_moment": true,
+    "no_fitted_parameter": true
+  },
+  "local_shape_reconstruction": {
+    "coordinate": "x=H-z on 0<=x<=d",
+    "form": "psi_t(x)=a_t*x, a_t>=0",
+    "mass_constraint": "Wt=integral_0^d theta[psi=a_t*x] dx",
+    "slope_solution": "unique nonnegative root by deterministic bracket expansion and bisection",
+    "boundary_flux": "qH_TERM_LINEAR(d)=Ks*(1-a_t)",
+    "hydrostatic_property": "For exact hydrostatic terminal storage, a_t=1 and qH=0 up to frozen quadrature/root tolerance.",
+    "role": "No-fit physically constrained state-to-gradient reconstruction, not a profile claim."
+  },
+  "projection_authority": {
+    "Wt_source": "same conservative Reference terminal-band projection qualified technically in BC2-B6",
+    "H_source": "qualified BC2-A2 strict interior zero-pressure crossing",
+    "widths": "frozen in BC2-B6 before its response",
+    "no_new_reference_solve": true
+  },
+  "numerical_authority": {
+    "primary_shape_quadrature": "64-point Gauss-Legendre on 0..d",
+    "crosscheck_shape_quadrature": "128-point Gauss-Legendre on 0..d",
+    "root_storage_residual_gate_cm": 1e-10,
+    "primary_vs_crosscheck_qH_gate_cm_per_day": 1e-8,
+    "hydrostatic_slope_gate": 1e-10,
+    "no_clipping": true,
+    "outside_domain_if_no_nonnegative_root": true
+  },
+  "comparators": [
+    "MOVING_LAYER_AVERAGE standard B0",
+    "LINEAR_STORAGE global zero-added-state B5",
+    "TERMINAL_AVERAGE same-width B6",
+    "POINT_2_5CM B4 full-order diagnostic context only"
+  ],
+  "time_alignment": "Trapezoidal average of candidate endpoint qH values versus accepted interval-average Reference qH, identical to B4-B6.",
+  "strata": [
+    "HOLD",
+    "WATER_TABLE_RISING",
+    "WATER_TABLE_FALLING",
+    "each frozen history"
+  ],
+  "metrics": [
+    "bias",
+    "mean absolute qH error",
+    "RMS qH error",
+    "maximum absolute qH error",
+    "qH sign mismatch count",
+    "Pearson correlation",
+    "local slope a_t range",
+    "distance to POINT_2_5CM diagnostic envelope"
+  ],
+  "adjudication": {
+    "support_rule": "A frozen width supports the enriched terminal state only if qH_TERM_LINEAR has lower RMS and mean-absolute error than both MOVING_LAYER_AVERAGE and global LINEAR_STORAGE and no greater sign-mismatch count than either in both WATER_TABLE_RISING and WATER_TABLE_FALLING strata.",
+    "hold_rule": "The same width must be noninferior to global LINEAR_STORAGE in HOLD on RMS, mean-absolute error and sign mismatch.",
+    "b6_recovery_rule": "The candidate must strictly improve RMS and mean-absolute error over the same-width B6 TERMINAL_AVERAGE in both moving strata and HOLD.",
+    "width_selection_rule": "A preferred width is declared only when it is component-wise minimum or tied minimum for RMS and mean-absolute error in WATER_TABLE_RISING, WATER_TABLE_FALLING and HOLD among all supported widths. Otherwise support may be positive with width unresolved.",
+    "point_gap_rule": "POINT_2_5CM remains diagnostic-only. B7 need not match it to receive support.",
+    "valid_outcomes": [
+      "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED",
+      "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED",
+      "BC2_B7_TERMINAL_STORAGE_SHAPE_DIRECTION_DEPENDENT",
+      "BC2_B7_TERMINAL_STORAGE_SHAPE_NOT_SUPPORTED",
+      "BC2_B7_TERMINAL_STORAGE_SHAPE_BLOCKED"
+    ],
+    "propagated_dynamics_authorized": false
+  },
+  "future_if_supported": {
+    "next_question": "Derive and test the exact moving-control-volume evolution equation for Wt with both boundaries H-d and H moving together, before propagating any reduced dynamics.",
+    "no_automatic_dynamics": true
+  },
+  "firewalls": [
+    "NO_WIDTH_REFIT",
+    "NO_POINT_HEAD_AS_STATE",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_POST_RESPONSE_SHAPE_CHANGE",
+    "NO_EMPIRICAL_SLOPE_COEFFICIENT",
+    "NO_DYNAMIC_TERMINAL_BAND_EVOLUTION_IN_B7",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
