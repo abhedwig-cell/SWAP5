@@ -8,8 +8,7 @@ on:
       - 'src/solver/mod_reference_richards_temporal_indicator.f90'
       - 'tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90'
       - 'tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh'
-      - 'tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh'
-      - 'tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh'
+      - 'tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh'
       - '.github/workflows/ppa-root-hyd01.yml'
   workflow_dispatch:
 
@@ -29,22 +28,12 @@ jobs:
       - name: Run restricted root temporal equivalence gate
         run: bash tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh
 
-  preserve-fsi38:
+  preserve-current-temporal:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Preserve F-SI38 and F-SI25 temporal owner gates
-        run: bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh
-
-  preserve-fmr44r:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Preserve serialized prescribed-qbot temporal runtime
-        run: bash tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh
+      - name: Preserve F-SI38, F-SI25 and FMR44R behavior
+        run: bash tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh
