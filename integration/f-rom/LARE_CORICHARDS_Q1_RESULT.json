@@ -1,0 +1,4437 @@
+{
+  "Q2_authorized": false,
+  "Q2_scope": null,
+  "R16_authority_reproduction": {
+    "expected_outside_domain": [
+      "S3_B1_F2",
+      "S3_B1_F4"
+    ],
+    "expected_qualified": [
+      "S1_B1_F1",
+      "S1_B1_F2",
+      "S1_B1_F3",
+      "S1_B1_F4",
+      "S2_B1_F1",
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F1",
+      "S3_B1_F3"
+    ],
+    "pass": true,
+    "substeps1_status": {
+      "S1_B1_F1": "QUALIFIED",
+      "S1_B1_F2": "QUALIFIED",
+      "S1_B1_F3": "QUALIFIED",
+      "S1_B1_F4": "QUALIFIED",
+      "S2_B1_F1": "QUALIFIED",
+      "S2_B1_F2": "QUALIFIED",
+      "S2_B1_F3": "QUALIFIED",
+      "S2_B1_F4": "QUALIFIED",
+      "S3_B1_F1": "QUALIFIED",
+      "S3_B1_F2": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION",
+      "S3_B1_F3": "QUALIFIED",
+      "S3_B1_F4": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+    }
+  },
+  "R3_imported_anchor": {
+    "authority": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+    "dimension": 3,
+    "dynamic_qualification": "BLOCKED_ALL_9_DYNAMIC_CASES_THROUGH_16_SUBSTEPS",
+    "rerun_in_Q1": false,
+    "thickness_cm": [
+      140,
+      10,
+      10
+    ]
+  },
+  "application_acceptance_adjudicated": false,
+  "complete": true,
+  "decision": "ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE",
+  "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "hydrological_comparison_performed": false,
+  "integrity": {
+    "all_O0_O2_identity": true,
+    "maximum_mass_residual_cm": 4.263256414560601e-14,
+    "technical_failures": {}
+  },
+  "members": {
+    "R12": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 12,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R12",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        50.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    },
+    "R16": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 8.189409452796781e-07,
+            "max_abs_total_storage_cm": 7.247535904753022e-13,
+            "mean_abs_layer_storage_cm": 8.824105999553585e-08
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 6.524576399158377e-06,
+              "max_abs_total_storage_cm": 7.105427357601002e-14,
+              "mean_abs_layer_storage_cm": 7.044004950362219e-07
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 3.269972537189858e-06,
+              "max_abs_total_storage_cm": 1.4921397450962104e-13,
+              "mean_abs_layer_storage_cm": 3.526360495973628e-07
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.636915320624155e-06,
+              "max_abs_total_storage_cm": 3.268496584496461e-13,
+              "mean_abs_layer_storage_cm": 1.7642734730926603e-07
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 8.189409452796781e-07,
+              "max_abs_total_storage_cm": 7.247535904753022e-13,
+              "mean_abs_layer_storage_cm": 8.824105999553585e-08
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 151,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1129,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4085,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 9.107073242198283e-07,
+            "max_abs_total_storage_cm": 2.984279490192421e-13,
+            "mean_abs_layer_storage_cm": 8.637700458485735e-08
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 7.267430258917074e-06,
+              "max_abs_total_storage_cm": 9.237055564881302e-14,
+              "mean_abs_layer_storage_cm": 6.89445959105371e-07
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 3.638917852821777e-06,
+              "max_abs_total_storage_cm": 6.394884621840902e-14,
+              "mean_abs_layer_storage_cm": 3.4517097394185675e-07
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.8207623186938804e-06,
+              "max_abs_total_storage_cm": 1.7763568394002505e-13,
+              "mean_abs_layer_storage_cm": 1.7269778518184693e-07
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 9.107073242198283e-07,
+              "max_abs_total_storage_cm": 2.984279490192421e-13,
+              "mean_abs_layer_storage_cm": 8.637700458485735e-08
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 227,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1403,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4089,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 1.4484602055553353e-06,
+            "max_abs_total_storage_cm": 4.618527782440651e-13,
+            "mean_abs_layer_storage_cm": 1.0941547534676225e-07
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.1559431121188624e-05,
+              "max_abs_total_storage_cm": 6.394884621840902e-14,
+              "mean_abs_layer_storage_cm": 8.727123590695606e-07
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 5.7877640782244555e-06,
+              "max_abs_total_storage_cm": 1.5631940186722204e-13,
+              "mean_abs_layer_storage_cm": 4.371010657790327e-07
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 2.89590687740926e-06,
+              "max_abs_total_storage_cm": 3.552713678800501e-13,
+              "mean_abs_layer_storage_cm": 2.1873734380115908e-07
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.4484602055553353e-06,
+              "max_abs_total_storage_cm": 4.618527782440651e-13,
+              "mean_abs_layer_storage_cm": 1.0941547534676225e-07
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 179,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.4508715369686573e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 3.354912512078603e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1199,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4086,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 2.212290138407791e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 1.0898288051564009e-05,
+            "max_abs_total_storage_cm": 2.5579538487363607e-13,
+            "mean_abs_layer_storage_cm": 1.601409202893223e-06
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 8.66610855041472e-05,
+              "max_abs_total_storage_cm": 9.237055564881302e-14,
+              "mean_abs_layer_storage_cm": 1.2832572150125998e-05
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 4.347870046794711e-05,
+              "max_abs_total_storage_cm": 1.5631940186722204e-13,
+              "mean_abs_layer_storage_cm": 6.410188828825963e-06
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 2.1777351451035543e-05,
+              "max_abs_total_storage_cm": 1.8474111129762605e-13,
+              "mean_abs_layer_storage_cm": 3.203576984156623e-06
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.0898288051564009e-05,
+              "max_abs_total_storage_cm": 2.5579538487363607e-13,
+              "mean_abs_layer_storage_cm": 1.601409202893223e-06
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 73,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1872,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 3.214247444593976e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4095,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 3.01278099690272e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 8.830198239717646e-06,
+            "max_abs_total_storage_cm": 2.8421709430404007e-13,
+            "mean_abs_layer_storage_cm": 1.0858934550535195e-06
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 7.020398200330291e-05,
+              "max_abs_total_storage_cm": 7.815970093361102e-14,
+              "mean_abs_layer_storage_cm": 8.688192197408293e-06
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 3.522564630387137e-05,
+              "max_abs_total_storage_cm": 9.947598300641403e-14,
+              "mean_abs_layer_storage_cm": 4.343784563177848e-06
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.764448265229035e-05,
+              "max_abs_total_storage_cm": 1.9895196601282805e-13,
+              "mean_abs_layer_storage_cm": 2.1718207451424526e-06
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 8.830198239717646e-06,
+              "max_abs_total_storage_cm": 2.8421709430404007e-13,
+              "mean_abs_layer_storage_cm": 1.0858934550535195e-06
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 78,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.8757595263440017e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1817,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4093,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 4.1643446503647485e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 1.5241831353485225e-05,
+            "max_abs_total_storage_cm": 3.268496584496461e-13,
+            "mean_abs_layer_storage_cm": 1.8184912025500993e-06
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.00012086295053048701,
+              "max_abs_total_storage_cm": 7.815970093361102e-14,
+              "mean_abs_layer_storage_cm": 1.4557647207046368e-05
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 6.073499563408191e-05,
+              "max_abs_total_storage_cm": 2.4158453015843406e-13,
+              "mean_abs_layer_storage_cm": 7.276008711919332e-06
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 3.04447143011366e-05,
+              "max_abs_total_storage_cm": 1.8474111129762605e-13,
+              "mean_abs_layer_storage_cm": 3.637321298836948e-06
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 1.5241831353485225e-05,
+              "max_abs_total_storage_cm": 3.268496584496461e-13,
+              "mean_abs_layer_storage_cm": 1.8184912025500993e-06
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 91,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.842170943040401e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 1863,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 3.214247444593976e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4095,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 3.552713678800501e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 7.400552202119215e-05,
+            "max_abs_total_storage_cm": 2.4158453015843406e-13,
+            "mean_abs_layer_storage_cm": 8.062023626763393e-06
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0005931868390574024,
+              "max_abs_total_storage_cm": 8.526512829121202e-14,
+              "mean_abs_layer_storage_cm": 6.475934792363061e-05
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.000296266275153112,
+              "max_abs_total_storage_cm": 1.2789769243681803e-13,
+              "mean_abs_layer_storage_cm": 3.230432513762926e-05
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.00014805182234578496,
+              "max_abs_total_storage_cm": 1.5631940186722204e-13,
+              "mean_abs_layer_storage_cm": 1.613340335969763e-05
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 7.400552202119215e-05,
+              "max_abs_total_storage_cm": 2.4158453015843406e-13,
+              "mean_abs_layer_storage_cm": 8.062023626763393e-06
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 115,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 2.941917542909067e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 16384,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 4.263256414560601e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 2014,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 4.263256414560601e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 4096,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 3.8867780521867346e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 8192,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 4.263256414560601e-14,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 16,
+      "dynamic_qualified_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F3"
+      ],
+      "dynamic_qualified_count": 7,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 4.263256414560601e-14,
+      "member": "R16",
+      "numerically_blocked_dynamic_cases": [
+        "S3_B1_F2",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    },
+    "R4": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 4,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R4",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        130.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    },
+    "R5": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 5,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R5",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        120.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    },
+    "R6": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 6,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R6",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        110.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    },
+    "R8": {
+      "all_O0_O2_identity": true,
+      "application_acceptance_adjudicated": false,
+      "cases": {
+        "S1_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S1_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S1_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S2_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S2_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F1": {
+          "finest_pair_8_vs_16": {
+            "max_abs_bottom_flux_cm_per_day": 0.0,
+            "max_abs_layer_storage_cm": 0.0,
+            "max_abs_total_storage_cm": 0.0,
+            "mean_abs_layer_storage_cm": 0.0
+          },
+          "finest_successful_internal_dt_day": 5e-05,
+          "finest_successful_substeps": 16,
+          "forcing_kind": "EQ",
+          "pairwise_refinement": {
+            "1_vs_2": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "2_vs_4": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "4_vs_8": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            },
+            "8_vs_16": {
+              "max_abs_bottom_flux_cm_per_day": 0.0,
+              "max_abs_layer_storage_cm": 0.0,
+              "max_abs_total_storage_cm": 0.0,
+              "mean_abs_layer_storage_cm": 0.0
+            }
+          },
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0008,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "16": {
+              "fallback_count": 0,
+              "internal_dt_day": 5e-05,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "2": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0004,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "4": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0002,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            },
+            "8": {
+              "fallback_count": 0,
+              "internal_dt_day": 0.0001,
+              "max_abs_mass_residual_cm": 0.0,
+              "o0_o2_scientific_trace_identity": true,
+              "o0_o2_status_identity": true,
+              "status": "QUALIFIED"
+            }
+          },
+          "temporal_qualification": "QUALIFIED"
+        },
+        "S3_B1_F2": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F3": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        },
+        "S3_B1_F4": {
+          "finest_pair_8_vs_16": null,
+          "finest_successful_internal_dt_day": null,
+          "finest_successful_substeps": null,
+          "forcing_kind": "WET_DRY",
+          "pairwise_refinement": {},
+          "refinement_monotonic": true,
+          "routes": {
+            "1": {
+              "internal_dt_day": 0.0008,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "16": {
+              "internal_dt_day": 5e-05,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "2": {
+              "internal_dt_day": 0.0004,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "4": {
+              "internal_dt_day": 0.0002,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            },
+            "8": {
+              "internal_dt_day": 0.0001,
+              "o0_o2_scientific_trace_identity": null,
+              "o0_o2_status_identity": true,
+              "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+            }
+          },
+          "temporal_qualification": "NOT_QUALIFIED"
+        }
+      },
+      "decision": "CORICHARDS_MEMBER_VIABILITY_MAPPED",
+      "dimension": 8,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "equilibrium_qualified_count": 3,
+      "hydrological_comparison_performed": false,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R8",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": [],
+      "production_rom_authorized": false,
+      "schema": "swap5.lare.corichards.q1.member-result.v1",
+      "speed_claim_authorized": false,
+      "technical_failure_cases": [],
+      "thickness_cm": [
+        90.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-CORICHARDS-Q1",
+      "workstream": "F-ROM-LARE"
+    }
+  },
+  "minimum_reduced_dimension_with_all_expected_in_domain_dynamic_cases": null,
+  "minimum_reduced_dimension_with_any_dynamic_qualification": null,
+  "minimum_reduced_member_with_all_expected_in_domain_dynamic_cases": null,
+  "minimum_reduced_member_with_any_dynamic_qualification": null,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.corichards.q1.result.v1",
+  "scientific_interpretation": [
+    "Q1 maps numerical comparator viability only. It does not compare LARE and CoRichards hydrological fidelity.",
+    "R3 is imported as the previously blocked equal-dimension anchor; R4-R16 are the frozen nested LARE resolution ladder run through conventional Reference-Richards discretisation.",
+    "A reduced member is scientifically usable for later paired fidelity only on histories that are also qualified for LARE and the fine Reference.",
+    "Numerical robustness of one representation is not hydrological superiority over another."
+  ],
+  "speed_claim_authorized": false,
+  "viability_curve": [
+    {
+      "dimension": 4,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R4",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 5,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R5",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 6,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R6",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 8,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R8",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 12,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R12",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 16,
+      "dynamic_qualified_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F3"
+      ],
+      "dynamic_qualified_count": 7,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 4.263256414560601e-14,
+      "member": "R16",
+      "numerically_blocked_dynamic_cases": [
+        "S3_B1_F2",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    }
+  ],
+  "work_unit": "LARE-CORICHARDS-Q1",
+  "workstream": "F-ROM-LARE"
+}

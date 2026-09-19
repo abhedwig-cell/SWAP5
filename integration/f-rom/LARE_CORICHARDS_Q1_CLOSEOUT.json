@@ -1,0 +1,240 @@
+{
+  "Q2_authorized": false,
+  "R16_authority_reproduction": {
+    "expected_outside_domain": [
+      "S3_B1_F2",
+      "S3_B1_F4"
+    ],
+    "expected_qualified": [
+      "S1_B1_F1",
+      "S1_B1_F2",
+      "S1_B1_F3",
+      "S1_B1_F4",
+      "S2_B1_F1",
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F1",
+      "S3_B1_F3"
+    ],
+    "pass": true,
+    "substeps1_status": {
+      "S1_B1_F1": "QUALIFIED",
+      "S1_B1_F2": "QUALIFIED",
+      "S1_B1_F3": "QUALIFIED",
+      "S1_B1_F4": "QUALIFIED",
+      "S2_B1_F1": "QUALIFIED",
+      "S2_B1_F2": "QUALIFIED",
+      "S2_B1_F3": "QUALIFIED",
+      "S2_B1_F4": "QUALIFIED",
+      "S3_B1_F1": "QUALIFIED",
+      "S3_B1_F2": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION",
+      "S3_B1_F3": "QUALIFIED",
+      "S3_B1_F4": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+    }
+  },
+  "R3_imported_anchor": {
+    "authority": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+    "dimension": 3,
+    "dynamic_qualification": "BLOCKED_ALL_9_DYNAMIC_CASES_THROUGH_16_SUBSTEPS",
+    "rerun_in_Q1": false,
+    "thickness_cm": [
+      140,
+      10,
+      10
+    ]
+  },
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:7372ec1c0e96506b7798d5275426d2d57eb1f8af85444c9fb3d4f2004da6b819",
+    "aggregate_artifact_id": 10593970490,
+    "execution_head": "f77946c56440555755e2596e6ed8bf596a766781",
+    "result_sha256": "b8eace7b8adcca96b7d2f2ad8e29c02791d9e71ff38f5e9bb7fb82a751f3ae96",
+    "workflow_run": 35472116931
+  },
+  "decision": "ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE",
+  "hydrological_comparison_performed": false,
+  "integrity": {
+    "all_O0_O2_identity": true,
+    "maximum_mass_residual_cm": 4.263256414560601e-14,
+    "technical_failures": {}
+  },
+  "member_artifacts": {
+    "R12": {
+      "compact_digest": "sha256:20e39128bc2dcfcfe80f878f82a88d92d827793e784ad12f1d94e40bdd6330b8",
+      "compact_id": 10593435504,
+      "raw_digest": "sha256:79f0e0e14bd07fe8e1bd5820a19aedc9f587f07a49334404af9abe0a802499ea",
+      "raw_id": 10593285263
+    },
+    "R16": {
+      "compact_digest": "sha256:39e0995e092a4eae77dcf57ef72963153305ceaddb60fcebaca9f63b6b5e551d",
+      "compact_id": 10593995426,
+      "raw_digest": "sha256:51a37cbeea876c868c7598efefb8d3e57b0beb403df3f807c117f24899e19368",
+      "raw_id": 10594005396
+    },
+    "R4": {
+      "compact_digest": "sha256:0afdfa00efe56a0fe96e1794660edbd3ef725d31d04d84000d5e15a76f26e1a4",
+      "compact_id": 10592859643,
+      "raw_digest": "sha256:43b19d51784382cbf155240d5c8eb23593c746dab34b824fc61c8afb60f58898",
+      "raw_id": 10593795045
+    },
+    "R5": {
+      "compact_digest": "sha256:79a030c7e8fb9b428fc2c456482a6f51a87c86d803a6db49b4605421779aa0da",
+      "compact_id": 10593070585,
+      "raw_digest": "sha256:f26b6fa2f8f8651072ce1a78c13523b9fed0201584cf4ec679b45849691591d2",
+      "raw_id": 10593046000
+    },
+    "R6": {
+      "compact_digest": "sha256:589da9483ee172abcab2b72a175d0420066a79525d4c92c31dea1ae2bb8b3246",
+      "compact_id": 10592649966,
+      "raw_digest": "sha256:7d72867d56dc0305add84fe2c689eb77bb485f658949b529e3b8e422a1ffbe30",
+      "raw_id": 10593530351
+    },
+    "R8": {
+      "compact_digest": "sha256:8eada3050ec3017f0de59541f56add17cfc2bc54bc50579c0fc5a7074228df0e",
+      "compact_id": 10593750090,
+      "raw_digest": "sha256:93614beb787b1b4ef41e0819ac94a86c6e7cc262208b3f0b7c945140e8fbe59f",
+      "raw_id": 10592744924
+    }
+  },
+  "model_changed": false,
+  "next_authority": "RECONCILE_PHYSICAL_REDUCTION_FAMILIES_AFTER_LARE_AND_CORICHARDS_BOUNDARIES",
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false,
+  "representation_selection_consequence": "FIXED_PARTITION_CORICHARDS_REDUCED_COMPARATOR_UNAVAILABLE_UNDER_CURRENT_NUMERICAL_AUTHORITY",
+  "schema": "swap5.lare.corichards.q1.closeout.v1",
+  "scientific_interpretation": [
+    "Under the frozen strict Reference authority, same-partition conventional Richards has no qualified non-equilibrium dynamic case from R3 through R12, even with temporal substeps down to 0.00005 day.",
+    "R16 reproduces the existing fine Reference authority and temporally qualifies all seven expected physically in-domain non-equilibrium histories plus all three equilibrium controls.",
+    "Therefore the tested CoRichards family does not provide a reduced equal-dimension dynamic comparator on this B01 fixed-flux laboratory; numerical dynamic viability appears only when spatial reduction has disappeared.",
+    "This is a numerical-comparator availability result, not evidence that LARE is hydrologically more accurate than coarse Richards.",
+    "The preregistered Q2 paired LARE-versus-CoRichards fidelity comparison is not authorized because no reduced CoRichards member has a dynamic common cohort."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE_NO_Q2",
+  "viability_curve": [
+    {
+      "dimension": 4,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R4",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 5,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R5",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 6,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R6",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 8,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R8",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 12,
+      "dynamic_qualified_cases": [],
+      "dynamic_qualified_count": 0,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 0.0,
+      "member": "R12",
+      "numerically_blocked_dynamic_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    },
+    {
+      "dimension": 16,
+      "dynamic_qualified_cases": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F3"
+      ],
+      "dynamic_qualified_count": 7,
+      "equilibrium_qualified_count": 3,
+      "maximum_mass_residual_cm": 4.263256414560601e-14,
+      "member": "R16",
+      "numerically_blocked_dynamic_cases": [
+        "S3_B1_F2",
+        "S3_B1_F4"
+      ],
+      "outside_domain_cases": []
+    }
+  ],
+  "work_unit": "LARE-CORICHARDS-Q1",
+  "workstream": "F-ROM-LARE"
+}
