@@ -1,0 +1,217 @@
+{
+  "schema": "swap5.f-romv2-d18.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D18",
+  "title": "Bounded FMC falling-slug to groundwater-front merge comparator",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+  "canonical_base": "3bc160ad6b73f8f491b07671ec747cf2b2bc3074",
+  "purpose": "Test the published falling-slug/groundwater-front contact and merge transition against R16 and admitted R2 after D17 retained simultaneous but strictly separated FMC surface and groundwater branches.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_FMC_CONTACT_MERGE_TRANSITION_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D12": "FMC/SMVE equation authority; 200 moisture bins and <=10 s explicit process step frozen.",
+    "D13": "FMC groundwater-front branch retained candidacy versus R2 for G25/G50/G75/G125.",
+    "D14": "Eq.19 falling-slug translation preserves slug length under the frozen 10 s process step.",
+    "D15": "Exact-contact slug/groundwater finite-volume merge primitive passed accounting preflight.",
+    "D17": "Simultaneous surface plus groundwater operation retained candidacy while all occupied intervals remained separated.",
+    "implication": "D18 changes no constitutive, bin, time-step, capillary-relaxation or groundwater-front equations. It qualifies only the previously excluded contact/merge transition."
+  },
+  "primary_source_authority": {
+    "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+    "doi": "10.1002/2015WR017126",
+    "retained_semantics": [
+      "falling slugs advance first using published Eq.19 and preserve their length",
+      "a falling slug that encounters a groundwater front during a time step is merged with that groundwater front",
+      "the merged groundwater front is raised toward the surface by exactly the length of the merged slug in that water-content bin",
+      "groundwater-front motion uses published Eq.21 and capillary relaxation remains finite-volume mass conservative"
+    ],
+    "excluded_inference": "D18 does not invent geometric overlap subtraction, empirical contact-time correction or a post-contact tuning factor."
+  },
+  "frozen_B01_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087
+  },
+  "discretization": {
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "process_step_seconds": 10,
+    "observation_step_seconds": 10,
+    "total_steps_per_history": 64
+  },
+  "histories": [
+    {
+      "id": "M25",
+      "groundwater_lambda": 0.25
+    },
+    {
+      "id": "M50",
+      "groundwater_lambda": 0.5
+    },
+    {
+      "id": "M75",
+      "groundwater_lambda": 0.75
+    },
+    {
+      "id": "M125",
+      "groundwater_lambda": 1.25
+    }
+  ],
+  "initial_state": {
+    "groundwater_fronts": "H_j=lambda*abs(psi(theta_j)), using the four already-qualified D13 lambda values.",
+    "falling_slug_length_cm": 5,
+    "falling_slug_velocity": "v_j=[K(theta_j)-K(theta_{j-1})]/[theta_j-theta_{j-1}] from Eq.19.",
+    "prospective_contact_gap": "gap_j=0.5*v_j*dt.",
+    "falling_slug_bottom": "bottom_j=(160-H_j)-gap_j.",
+    "falling_slug_top": "top_j=bottom_j-5 cm.",
+    "separation_requirement": "0 < top_j < bottom_j < 160-H_j < 160 for every active bin before execution.",
+    "rationale": "The half-step gap is defined solely from the already frozen Eq.19 velocity and 10 s step. It guarantees an encounter in the first FMC translation step without using SWAP outcomes.",
+    "finite_volume_storage": "S=theta_i*160+dtheta*sum_j[(slug_bottom_j-slug_top_j)+H_j].",
+    "exact_SWAP_mapping": "For each R16/R2 cell, theta is the exact finite-volume average of baseline plus falling-slug and groundwater occupied intervals, with no overlap at t=0; pressure head is obtained from inverse B01 retention.",
+    "initial_storage_identity_tolerance_cm": 1e-12
+  },
+  "boundaries": {
+    "top": {
+      "type": "zero prescribed flux",
+      "SWAP_native_top_flux_cm_per_day": 0,
+      "FMC_surface_supply_cm": 0
+    },
+    "bottom": {
+      "type": "fixed zero pressure head",
+      "SWAP": "bottom mode 5, prescribed bottom pressure head 0 cm",
+      "FMC": "fixed water table at z=160 cm with D13 Eq.21 groundwater-front dynamics"
+    },
+    "root_sink": "zero",
+    "ET": "zero",
+    "drainage": "zero",
+    "subsurface_irrigation": "zero"
+  },
+  "FMC_transition_algorithm": {
+    "first_step_order": [
+      "advance every falling slug by Eq.19 for one 10 s step; slug length remains invariant",
+      "for every bin whose translated slug bottom reaches or passes the pre-step groundwater-front top, remove that slug",
+      "increase that bin groundwater-front height H_j by exactly the invariant slug length; this is the published finite-volume merge rule",
+      "require merge storage before/after to agree within 1e-14 cm; do not subtract geometric overshoot",
+      "advance all resulting groundwater fronts with D13 Eq.21 forward Euler for the same 10 s process step",
+      "apply D13 conservative capillary relaxation to groundwater-front heights",
+      "compute bottom-outward exchange as negative groundwater-connected storage change excluding the internal slug-to-groundwater transfer",
+      "require global column water ledger <=1e-12 cm"
+    ],
+    "subsequent_steps": [
+      "no falling slugs remain after the designed first-step merge",
+      "advance groundwater fronts with the unchanged D13 Eq.21 plus conservative capillary relaxation",
+      "top exchange remains zero",
+      "bottom-outward exchange equals negative column storage change"
+    ],
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "internal_preflight_before_SWAP_trajectories": {
+    "trajectory_data_consumed": false,
+    "checks": [
+      "all initial H_j, slug tops and slug bottoms are finite and strictly physical for M25/M50/M75/M125",
+      "initial slug and groundwater intervals are disjoint in every active bin",
+      "initial finite-volume storage maps to R16 and R2 cell averages within 1e-12 cm",
+      "all 99 falling slugs in each history encounter the pre-step groundwater front during process step 1",
+      "published merge raises each H_j by exactly 5 cm and removes the corresponding slug",
+      "merge-only finite-volume storage drift <=1e-14 cm",
+      "after Eq.21 and capillary relaxation every groundwater front remains finite, positive, <=160 cm and monotone",
+      "all 64 FMC steps complete with no clipping or fallback",
+      "max absolute per-step global mass residual <=1e-12 cm"
+    ],
+    "failure_rule": "Any failure closes D18 before R16/R2 trajectory generation. No lambda, slug length, gap fraction, bin count, substep or merge semantics may be retuned inside D18."
+  },
+  "SWAP_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "development reference"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "admitted physical-reduction comparator"
+    },
+    "numerical_authority": "D4 strict-first integrated-water-depth research policy with hard accepted-transaction mass gate 1e-12 cm; no production tolerance change.",
+    "initialization": "exact cell-average mapping of the frozen D18 finite-volume initial state",
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head"
+  },
+  "hydrological_metrics": {
+    "all_64_steps": [
+      "total-storage RMSE versus R16",
+      "cumulative-bottom-exchange RMSE versus R16",
+      "mapped 16-cell theta RMSE versus R16",
+      "terminal bottom-flux RMSE versus R16",
+      "bottom-flux sign-error count"
+    ],
+    "transition_window_steps_1_8": [
+      "total-storage RMSE",
+      "cumulative-bottom-exchange RMSE",
+      "mapped 16-cell theta RMSE",
+      "terminal bottom-flux RMSE"
+    ],
+    "diagnostics": [
+      "per-history merge count",
+      "per-history first-step merge storage residual",
+      "per-history systematic bias",
+      "p95/max mapped theta error",
+      "max FMC global mass residual",
+      "R16/R2 research reattempt counts"
+    ],
+    "no_weighted_score": true
+  },
+  "decision_logic": {
+    "positive": "FMC_SLUG_GROUNDWATER_MERGE_RETAINS_RESEARCH_CANDIDACY",
+    "negative": "FMC_SLUG_GROUNDWATER_MERGE_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "internal preflight passes before SWAP trajectory exposure",
+      "all M25/M50/M75/M125 FMC/R16/R2 histories complete with integrity",
+      "FMC all-step total-storage RMSE <= R2",
+      "FMC all-step cumulative-bottom-exchange RMSE <= R2",
+      "FMC all-step mapped 16-cell theta RMSE <= R2",
+      "FMC all-step terminal bottom-flux RMSE <= R2 and FMC sign-error count <= R2",
+      "FMC transition-window total-storage, cumulative-bottom-exchange, mapped-theta and terminal-bottom-flux RMSE are each <= matched R2"
+    ],
+    "all_views_required": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Retain FMC as a broad hydraulic research candidate spanning groundwater, surface redistribution, separated composition and contact/merge. Next consider purpose-specific longer-horizon validation or rainfall/ponding threshold evidence before formal runtime.",
+    "if_negative": "Do not retune D12-D17 discretization or merge semantics. Restrict candidacy to the already positive non-contact envelopes and diagnose the failed transition view.",
+    "formal_performance": "Still deferred until contact/merge and at least one longer hydrological horizon are retained."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_LAMBDA_RETUNING",
+    "NO_SLUG_LENGTH_RETUNING",
+    "NO_CONTACT_GAP_RETUNING",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_MERGE_RULE_RETUNING",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_RAINFALL_RUNOFF_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
