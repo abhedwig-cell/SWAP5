@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swap5.num_unc.p0.run_record.v0.1",
+  "title": "NUM-UNC P0 run record",
+  "type": "object",
+  "required": [
+    "schema",
+    "provenance",
+    "physical_case",
+    "numerical_configuration",
+    "admissibility",
+    "accepted_series",
+    "inference"
+  ],
+  "properties": {
+    "schema": {
+      "const": "swap5.num_unc.p0.run_record.v0.1"
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "repository_commit",
+        "experiment_id",
+        "case_id",
+        "material_id",
+        "forcing_hash"
+      ],
+      "properties": {
+        "repository_commit": {
+          "type": "string"
+        },
+        "experiment_id": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "case_id": {
+          "type": "string"
+        },
+        "material_id": {
+          "enum": [
+            "B01",
+            "O14"
+          ]
+        },
+        "forcing_hash": {
+          "type": "string"
+        },
+        "compiler_runtime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "physical_case": {
+      "type": "object",
+      "required": [
+        "grid_cells",
+        "cell_thickness_cm",
+        "process_switches",
+        "continuation_variable",
+        "continuation_value"
+      ],
+      "properties": {
+        "grid_cells": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cell_thickness_cm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "process_switches": {
+          "type": "object"
+        },
+        "continuation_variable": {
+          "type": "string"
+        },
+        "continuation_value": {
+          "type": "number"
+        }
+      }
+    },
+    "numerical_configuration": {
+      "type": "object",
+      "required": [
+        "id",
+        "requested_dt_day",
+        "solver_identity"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "N0",
+            "N1",
+            "FINE_DIAGNOSTIC"
+          ]
+        },
+        "requested_dt_day": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "solver_identity": {
+          "const": "REFERENCE_RICHARDS"
+        }
+      }
+    },
+    "admissibility": {
+      "type": "object",
+      "required": [
+        "eligible",
+        "solve_converged",
+        "mass_gate_passed",
+        "finite_state",
+        "retry_exhausted",
+        "defect_detected"
+      ],
+      "properties": {
+        "eligible": {
+          "type": "boolean"
+        },
+        "solve_converged": {
+          "type": "boolean"
+        },
+        "mass_gate_passed": {
+          "type": "boolean"
+        },
+        "finite_state": {
+          "type": "boolean"
+        },
+        "retry_exhausted": {
+          "type": "boolean"
+        },
+        "defect_detected": {
+          "type": "boolean"
+        },
+        "exclusion_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "accepted_series": {
+      "type": "object",
+      "required": [
+        "time_day",
+        "pressure_head_cm",
+        "water_content",
+        "bottom_flux_cm_per_day"
+      ],
+      "properties": {
+        "time_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "pressure_head_cm": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "water_content": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "ponding_depth_cm": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "bottom_flux_cm_per_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "actual_root_uptake_cm_per_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "potential_root_uptake_cm_per_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "drought_reduction_cm_per_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "execution_diagnostics": {
+      "type": "object",
+      "properties": {
+        "accepted_dt_day": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "nonlinear_iterations": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "jacobian_builds": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "linear_solves": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "backtracking_attempts": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "internal_retries": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "integrated_mass_residual_cm": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "inference": {
+      "type": "object",
+      "required": [
+        "primary_label"
+      ],
+      "properties": {
+        "primary_label": {
+          "type": "string"
+        },
+        "stress_onset_day": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "recovery_day": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ponding_onset_day": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "stress_duration_day": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
