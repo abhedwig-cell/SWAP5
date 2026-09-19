@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.lare.bc2.a1.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-A1",
+  "decision": "BC2_SOURCE_ALGEBRA_DISCREPANCY_CONFIRMED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_A_PREREGISTRATION.json",
+    "workflow_run": 35451231415,
+    "artifact_id": 10587105838,
+    "artifact_digest": "sha256:6c9bf89f06eabb6bc137cf68c8819d8fa0b542f3fed2cf299b209c25c3f91eca",
+    "executed_head": "f88c6658a1d24e4846a0cfe4e933978494cb863b"
+  },
+  "key_cases": {
+    "GENERAL_POLYNOMIAL": {
+      "product_residual": 0,
+      "expanded_residual": 2.220446049250313e-16,
+      "published_residual": -1.7496493710937502
+    },
+    "WATER_TABLE_THETA_S": {
+      "product_residual": 1.1102230246251565e-16,
+      "expanded_residual": 1.1102230246251565e-16,
+      "published_residual": 3.0329571328
+    },
+    "CONSTANT_SATURATED": {
+      "product_residual": 0,
+      "expanded_residual": 0,
+      "published_residual": -2.05
+    },
+    "STATIONARY_GEOMETRY": {
+      "expanded_residual": 0,
+      "published_residual": 0
+    }
+  },
+  "interpretation": [
+    "Conservative product storage and its correct expanded average form are algebraically identical.",
+    "The displayed published average-state form differs by -theta_bar*dH/dt whenever geometry moves.",
+    "The discrepancy vanishes exactly in the stationary-geometry limit."
+  ],
+  "author_intent_inferred": false,
+  "bc2_reduced_dynamics_authorized": false,
+  "production_rom_authorized": false
+}
