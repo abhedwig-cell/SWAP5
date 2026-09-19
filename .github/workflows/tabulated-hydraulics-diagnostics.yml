@@ -141,6 +141,16 @@ jobs:
             printf '%s\t%s\t%s\n' "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k1-original-status.tsv
           done
 
+      - name: Compare analytical SWKIMPL 0 and 1 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-diagnostic/analytic_k0 build/tab-hyd-diagnostic/analytic_k1 \
+            build/tab-hyd-diagnostic/analytic-kimpl-control.json \
+            --label "analytic,SWKIMPL0-vs1" \
+            | tee build/tab-hyd-diagnostic/analytic-kimpl-control.txt
+
       - name: Build diagnostic derivative-sentinel variant
         shell: bash
         run: |
@@ -152,8 +162,8 @@ jobs:
           old = "dhconduc = 1.0d+08"
           if s.count(old) != 1:
               raise SystemExit(f"expected exactly one sentinel, found {s.count(old)}")
-          p.write_text(s.replace(old, "dhconduc = 1.0d-12", 1))
-          print("DIAGNOSTIC_PATCH saturated table dKdh 1e8 -> 1e-12")
+          p.write_text(s.replace(old, "dhconduc = 0.0d0", 1))
+          print("DIAGNOSTIC_PATCH saturated table dKdh 1e8 -> 0")
           PY
           meson compile -C legacy-runtime/builddir
           cp legacy-runtime/builddir/swap legacy-runtime/builddir/swap-dhcap-diagnostic
@@ -177,9 +187,9 @@ jobs:
             | tee build/tab-hyd-diagnostic/k1-patched-status.tsv
           if [ "$rc" -eq 100 ] && [ -f "$work/result_output.csv" ]; then
             python research/tabulated_hydraulics/compare_hupsel_e2e.py \
-              build/tab-hyd-diagnostic/analytic_k1 build/tab-hyd-diagnostic/table_k1 \
+              build/tab-hyd-diagnostic/table_k0 build/tab-hyd-diagnostic/table_k1 \
               build/tab-hyd-diagnostic/k1-patched-comparison.json \
-              --label "SWKIMPL=1,dKdh-sentinel-diagnostic" \
+              --label "table,SWKIMPL0-vs1,dKdh-clamp-zero" \
               | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
           else
             echo "PATCHED_IMPLICIT_PAIR_INCOMPLETE rc=$rc" \
@@ -199,6 +209,9 @@ jobs:
             echo
             echo "## Original implicit pair, 31 days"
             cat build/tab-hyd-diagnostic/k1-original-status.tsv
+            echo
+            echo "## Analytical SWKIMPL control"
+            cat build/tab-hyd-diagnostic/analytic-kimpl-control.txt
             echo
             echo "## Diagnostic saturated-dKdh patch"
             cat build/tab-hyd-diagnostic/k1-patched-status.tsv
