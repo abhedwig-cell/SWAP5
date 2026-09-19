@@ -135,7 +135,9 @@ The **complete** atmospheric/input envelope is still open. Legacy weather-file/c
 
 ### 3. Stateful ET and advanced stress physics
 
-SWREDU=1/2 are important because their legacy continuation variables are real restart state. F-PM06 also identifies a legacy control-flow hazard: those states are mutated before the SoilWater retry loop. SWAP5 must preserve the equations while making trial-state mutation transactional.
+PPA-WU04-A has now qualified the first bounded stateful ET slice: SWREDU=1 Black. LDWET is an option-discriminated committed process state, rejected candidates cannot mutate it, changed-dt retries re-evaluate from the same checkpoint, restart preserves it exactly, and accepted actual evaporation remains owned by the hydraulic dynamic-top boundary.
+
+SWREDU=2 remains open. Its atomic SPEV/SAEV continuation pair is source-bound by PPA-WU04 but still needs its own equation oracle and production qualification. SWINTER=1/2 likewise remain open because their source-window aggregate/progress semantics are distinct from Black reduction.
 
 Advanced root stress is a larger scientific block. Oxygen, salinity, frost, compensated uptake, MICRO/Jong-van-Lier and macropore uptake interact with distinct state owners and, for coupled groundwater response, derivative coverage.
 
@@ -225,7 +227,7 @@ Other work must be serialized because it shares physical state or semantic owner
 
 **PPA-WU03, Atmospheric forcing and normal-input adapter boundary. CLOSED / CANONICAL ADMITTED.** PR #323 merged at `97c4471155001e12133109be5eb6bd95f799eb00`. The admitted slice covers generic-time precipitation, SWETR=1 reference ET, explicit canopy view and no/already-resolved surface irrigation under SWINTER=0, with only pure-flux dynamic-top handoff to PPA-WU01. File/calendar grammar, PMdirect ingestion, Rutter state ownership and broader management ingestion remain outside the workunit.
 
-**PPA-WU04, Stateful ET/interception scientific review.** Re-derive SWINTER=1/2 and SWREDU=1/2 state, event, restart and rollback semantics from B1.11. This should be a review/authority unit, not an implementation unit.
+**PPA-WU04, Stateful ET/interception scientific review. CLOSED / AUTHORITY FROZEN.** The parent review froze SWINTER=1/2 and SWREDU=1/2 state, event, restart and rollback semantics from B1.11. **PPA-WU04-A, SWREDU=1 Black production slice: QUALIFIED / READY FOR CANONICAL ADMISSION.** Workflow 35438366101 passed the exact equation oracle, transactional LDWET, changed-dt retry, exact restart, hard mass and PPA-WU01/WU03 behavioral-preservation gates. PPA-WU04-B/C/D remain separate bounded slices.
 
 **PPA-WU05, Advanced water-process triage.** Build the dependency graph and acceptance criteria for macropore, frost and advanced root-stress migration, then select the first high-use bounded target. No production physics should be migrated inside the triage unit.
 
@@ -269,3 +271,15 @@ The canonical nonclaims remain: no legacy weather-file grammar or calendar/date 
 PPA-WU02 completed the exact B1.11 lower-boundary selector inventory and removed the prior common-mode H authority ambiguity. After reconciling the shared production-bootstrap surface with canonical PPA-WU03, head `eff8670a2614f72d34016dbfc7eba040c940c245` passed owner and independent qualification in workflow `35374976662`, plus PPA-WU01 preservation. PR #324 merged at `013c549686a8f310834ddb3e8d1270166f8283f1`.
 
 The admitted delta is deliberately narrow: homogeneous typed `bottom_mode=2` with already-resolved prescribed qbot through the existing production application owner. It does not admit the legacy SW2 sine/table materializer, DATE2/QBOT2 parser, oven-dry 2-to--2 continuation, or remaining selector families.
+
+
+## Post-audit update: PPA-WU04-A
+
+PPA-WU04-A qualifies the restricted SWREDU=1 Black production path on source head `f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938`.
+
+Qualification workflow run: `35438366101`  
+Qualification job: `105884808295` PASS
+
+The slice introduces no new water-mass owner. `EMPREVA` remains a demand, while the existing dynamic hydraulic top boundary determines and accounts accepted actual evaporation. The only new persistent process state is `LDWET`, carried in an option-discriminated transaction/restart family.
+
+The workunit does not admit SWREDU=2, SWINTER=1/2, legacy weather/calendar parsing, snowmelt/runon Black composition, groundwater mode-5 Black composition or RossFast Black composition.
