@@ -4,7 +4,8 @@ Date: 2026-09-19
 
 Status: `SOURCE_MATERIALIZATION_BLOCKED / REVIEW-ONLY OWNER BOUNDARIES FROZEN`
 
-Canonical reconcile base: `integration/f-ci-canonical@add4adf54be39251ccbb6b000eed01e98326fb83`.
+Original review base: `integration/f-ci-canonical@add4adf54be39251ccbb6b000eed01e98326fb83`.  
+Live reconciliation: `integration/f-ci-canonical@e473afc2d378a2567a59cc0db1577b4c724feeb2` via two-parent checkpoint `023cc58fecd1a4f916cdbd7bf92f1f93740c54a4`; no WU05-B review-surface, production or reference overlap.
 
 ## Purpose
 
@@ -207,3 +208,10 @@ PPA-WU05-B does not claim:
 `OWNER_AND_NONCONFLATION_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_BLOCKED_ON_EXACT_SOURCE_MATERIALIZATION`
 
 This review can be persisted as the authoritative blocker boundary. It cannot honestly satisfy the parent WU05-B exit condition for exact equation/state trace until B1 source materialization succeeds.
+
+
+## Current source-materialization recheck
+
+On 2026-09-19 the project Library surface was rechecked directly. The exact `SWAP_4.3.1(6).zip` archive and several byte-size-identical duplicates are visible, but none exposes an authorized raw-byte materialization path. The audit folder also contains hundreds of loose `.f90` artifacts; a recursive inventory found no loose `frozencond.f90` or `temperature.f90`.
+
+This confirms that the blocker is access to the exact source bytes, not uncertainty about where the archive is stored.
