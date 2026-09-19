@@ -66,8 +66,9 @@ contains
     real(real64) :: c_h_at_max_active, c_ref_at_max_active, c_q_at_max_active
     real(real64) :: theta_self_max_rel, k_self_max_rel
     real(real64) :: hp, hm, tp, tm, kp, km, c_fd, dk_fd, eps
-    real(real64) :: denom
+    real(real64) :: denom, prev_theta, prev_k
     integer :: i, q, j, node, theta_iter, k_iter, theta_invalid, k_invalid
+    integer :: theta_monotonic_violations, k_monotonic_violations
 
     node = 1
     sptab = 0.0_real64
@@ -141,6 +142,10 @@ contains
     c_q_at_max_active = 0.0_real64
     theta_self_max_rel = 0.0_real64
     k_self_max_rel = 0.0_real64
+    prev_theta = -huge(1.0_real64)
+    prev_k = -huge(1.0_real64)
+    theta_monotonic_violations = 0
+    k_monotonic_violations = 0
 
     do q = 1, n_query
        xq = x_min + (real(q,real64)-0.5_real64) / real(n_query,real64) * (0.0_real64-x_min)
@@ -162,6 +167,12 @@ contains
        end if
        if (theta_q < THETA_R-1.0e-12_real64 .or. theta_q > THETA_S+1.0e-12_real64) failures = failures + 1
        if (k_q <= 0.0_real64) failures = failures + 1
+       if (q > 1) then
+          if (theta_q < prev_theta-1.0e-13_real64) theta_monotonic_violations = theta_monotonic_violations + 1
+          if (k_q < prev_k*(1.0_real64-1.0e-12_real64)) k_monotonic_violations = k_monotonic_violations + 1
+       end if
+       prev_theta = theta_q
+       prev_k = k_q
 
        theta_max_abs = max(theta_max_abs, abs(theta_q-theta_ref_q))
        theta_max_range_norm = max(theta_max_range_norm, abs(theta_q-theta_ref_q)/(THETA_S-THETA_R))
@@ -222,6 +233,11 @@ contains
       'F_TAB01_C_VALUES n=',n,' grid=',grid_mode,' Cref_at_max_rel=',c_ref_at_max_rel, &
       ' Ctab_at_max_rel=',c_q_at_max_rel, &
       ' Cref_at_max_active=',c_ref_at_max_active,' Ctab_at_max_active=',c_q_at_max_active
+    write(*,'(A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_MONOTONIC n=',n,' grid=',grid_mode, &
+      ' theta_violations=',theta_monotonic_violations,' K_violations=',k_monotonic_violations
+    if (theta_monotonic_violations /= 0 .or. k_monotonic_violations /= 0) then
+       failures = failures + theta_monotonic_violations + k_monotonic_violations
+    end if
   end subroutine characterize_table
 
   subroutine generate_heads(n, grid_mode, htab)
