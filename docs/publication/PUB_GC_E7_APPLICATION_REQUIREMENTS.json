@@ -54,7 +54,7 @@
     "whole_hupsel_accepted_intervals": 32518
   },
   "current_canonical_authority": {
-    "canonical_basis": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
+    "canonical_basis": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
     "production_groundwater_owner": {
       "file": "src/runtime/mod_fmr_production_application_bootstrap.f90",
       "blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
@@ -102,16 +102,35 @@
     },
     "post_wu04b_live_delta": {
       "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-      "head": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
-      "classification": "NO_E7_AUTHORITY_EFFECT",
+      "head": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+      "classification": "NO_E7_PRODUCTION_OWNER_EFFECT",
       "paths": [
         "docs/science/F-ROMV2_*",
         "integration/f-rom/**",
         "integration/f-doc/F-DOC33_STATUS.json",
         "integration/trace/**",
-        "tests/rom/**"
+        "tests/rom/**",
+        "docs/publication/HYDRO_MEMORY_*",
+        "integration/research/HYDRO_MEMORY_ACC0*",
+        "tests/research/**"
       ],
-      "reason": "No production/reference or PUB-GC authority changed after PPA-WU04-B; the latest delta is evidence-only F-ROMV2/TRACE/F-DOC/ROM-test work."
+      "reason": "Later canonical work includes evidence-only ROM work and HYDRO-MEMORY ACC02-F1 live root-active research qualification. ACC02-F1 has no production/reference source mutation, uses a tests/research support bridge with prescribed root extraction active and drainage response inactive, and does not widen the mode-5 production application owner."
+    },
+    "HYDRO_MEMORY_ACC02_F1": {
+      "canonical_merge": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+      "result_path": "integration/research/HYDRO_MEMORY_ACC02_F1_RESULT.json",
+      "result_blob": "35cd7dd71ed10d7d61ed55abc9a805361f26a8ea",
+      "preregistration_path": "integration/research/HYDRO_MEMORY_ACC02_F1_PREREGISTRATION.json",
+      "preregistration_blob": "17beb966009e87df0a2cabd513b07ff54b231d18",
+      "support_bridge": "tests/research/support/mod_hydro_memory_acc02_f1_bridge.f90",
+      "support_bridge_blob": "b767769f3df5fe698698621a99c53185bcc61093",
+      "decision": "ACC02_F1_PASS_LIVE_ROOT_ACTIVE_SINGLE_WINDOW",
+      "production_source_change": false,
+      "root_extraction_active": true,
+      "drainage_response_active": false,
+      "production_application_owner_widened": false,
+      "stage0_authorized": false,
+      "effect_on_e7": "NONE; research-only prescribed-root live-coupling feasibility does not admit the authentic Hupsel root+drainage mode-5 production application composition"
     }
   },
   "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute.",
