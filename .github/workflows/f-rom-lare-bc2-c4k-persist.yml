@@ -1,0 +1,130 @@
+name: F-ROM-LARE persist C4K state sufficiency closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4k-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4K authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4k
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591891373/zip" > /tmp/c4k.zip
+          echo "26bc3bdddcea3ef4cf9212b9c8f16a10ddcef0bba47574bc94224a2fca678024  /tmp/c4k.zip" | sha256sum -c -
+          unzip -q /tmp/c4k.zip -d /tmp/c4k
+          echo "4fa0c2d9dcce88909412613dbd0f6b2d11f36c4d6e5c42b6de0ae6cc8d6346b8  /tmp/c4k/LARE_BC2_C4K_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4K
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4k/LARE_BC2_C4K_RESULT.json'))
+          assert r['decision']=='CURRENT_STATE_NOT_SHOWN_INSUFFICIENT'
+          assert r['complete'] is True
+          assert all(v['status']=='COMPLETE' for v in r['widths'].values())
+          assert all(v['direction_history_information_supported'] is False for v in r['widths'].values())
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4K_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4k/LARE_BC2_C4K_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4k.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4K',
+            'status':'CLOSED_MEMORYLESS_STATE_SUFFICIENCY_NOT_REJECTED',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35467454296,
+              'execution_head':'70da35878e51dd9a99334339fbec3984c739c11e',
+              'artifact_id':10591891373,
+              'artifact_digest':'sha256:26bc3bdddcea3ef4cf9212b9c8f16a10ddcef0bba47574bc94224a2fca678024',
+              'result_sha256':'4fa0c2d9dcce88909412613dbd0f6b2d11f36c4d6e5c42b6de0ae6cc8d6346b8'
+            },
+            'key_results':{
+              '2.5':{
+                'cross_pair_count':r['widths']['2.5']['cross_direction_pair_count'],
+                'median_cross_state_distance':r['widths']['2.5']['state_distance']['cross']['median'],
+                'median_matched_control_distance':r['widths']['2.5']['state_distance']['matched_control']['median'],
+                's_terminal_fraction_cross_gt_control':r['widths']['2.5']['hidden_geometry']['s_terminal']['fraction_cross_gt_matched_control'],
+                'curvature_fraction_cross_gt_control':r['widths']['2.5']['hidden_geometry']['curvature_proxy']['fraction_cross_gt_matched_control'],
+                'curvature_cross_median':r['widths']['2.5']['hidden_geometry']['curvature_proxy']['cross']['median'],
+                'curvature_control_median':r['widths']['2.5']['hidden_geometry']['curvature_proxy']['matched_control']['median']
+              },
+              '5.0':{
+                'cross_pair_count':r['widths']['5.0']['cross_direction_pair_count'],
+                'median_cross_state_distance':r['widths']['5.0']['state_distance']['cross']['median'],
+                'median_matched_control_distance':r['widths']['5.0']['state_distance']['matched_control']['median'],
+                's_terminal_fraction_cross_gt_control':r['widths']['5.0']['hidden_geometry']['s_terminal']['fraction_cross_gt_matched_control'],
+                'curvature_fraction_cross_gt_control':r['widths']['5.0']['hidden_geometry']['curvature_proxy']['fraction_cross_gt_matched_control'],
+                'curvature_cross_median':r['widths']['5.0']['hidden_geometry']['curvature_proxy']['cross']['median'],
+                'curvature_control_median':r['widths']['5.0']['hidden_geometry']['curvature_proxy']['matched_control']['median']
+              }
+            },
+            'scientific_interpretation':[
+              'C4K does not support the claim that current (H,Wb,Wt) state is insufficient because of direction/history ambiguity in this A2 laboratory.',
+              'RISE and FALL occupy substantially separated regions of reduced-state space; the current state already carries regime information rather than presenting widespread near-collisions.',
+              'Cross-direction terminal and adjacent secant slopes differ strongly, but the preregistered curvature ambiguity criterion fails for both widths. Curvature differences are smaller than matched within-direction controls for most pairs.',
+              'This is not proof of universal memoryless sufficiency. It only removes the present evidence basis for adding a memory state before another existing-state gradient representation is tested.'
+            ],
+            'next_authority':'PREREGISTER_QH_PRESERVING_MEMORYLESS_CURVATURE_RECONSTRUCTION_USING_EXISTING_STATE',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4K_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4K closeout
+
+          Formal decision: CURRENT_STATE_NOT_SHOWN_INSUFFICIENT.
+
+          C4K selected cross-direction pairs using only the existing reduced state H, theta_b and theta_t. Full-order local pressure-head geometry was exposed only after that response-blind pairing.
+
+          The RISE and FALL trajectories are not near-overlapping manifolds in this state space. Median nearest cross-direction state distance is about 0.128 in the fixed normalized coordinates for both widths, whereas the within-direction control pool reaches only about 0.102 at its upper end. This limits strict distance matching and is itself evidence that motion direction is substantially encoded in the current state.
+
+          Cross-direction terminal and adjacent secant slopes differ strongly, but the preregistered insufficiency rule also required curvature ambiguity. That condition is not met. For d=2.5 cm, only about 8.0% of cross-direction pairs have larger curvature difference than the matched within-direction control; for d=5 cm this is about 6.1%. Median cross-direction curvature difference is lower than the matched-control median for both widths.
+
+          Therefore C4K does not justify adding a direction/history memory state. It does not prove universal state sufficiency; it only means that current evidence points first toward a better memoryless state-to-gradient representation.
+
+          The next candidate should preserve the already-supported qH terminal slope and hydrostatic identity while using the existing Wb/Wt/H information to introduce internal curvature for qi. No free propagation, groundwater feedback, application acceptance or production ROM is authorized.
+          MD
+
+      - name: Persist C4K authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4k/LARE_BC2_C4K_RESULT.json integration/f-rom/LARE_BC2_C4K_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4K_RESULT.json integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4K_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4K state sufficiency diagnostic"
+          git push origin HEAD:work/f-rom-lare-rs1
