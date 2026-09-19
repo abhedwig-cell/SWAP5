@@ -31,7 +31,11 @@
     "observation_step_day": 0.0008,
     "maximum_steps_per_long_history": 1024,
     "maximum_horizon_day": 0.8192,
-    "initial_effective_saturation_anchors": [0.65,0.85,0.95],
+    "initial_effective_saturation_anchors": [
+      0.65,
+      0.85,
+      0.95
+    ],
     "forcing_amplitudes": {
       "top_plus": "qeq + 0.01*K0",
       "top_minus": "qeq - 0.01*K0",
@@ -42,39 +46,117 @@
       {
         "id": "G00_ROMV_H02_CONTROL",
         "se0": 0.85,
-        "steps": 64,
-        "segments": [["BOTTOM_HEAD_FALL",24],["BOTTOM_HEAD_RISE",40]],
-        "role": "exact forcing-shape control inherited from held-out H02"
+        "steps": 1024,
+        "segments": [
+          [
+            "BOTTOM_HEAD_FALL",
+            24
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            40
+          ],
+          [
+            "HOLD",
+            960
+          ]
+        ],
+        "role": "steps 1-64 reproduce the exact held-out H02 forcing shape; steps 65-1024 are pre-execution HOLD relaxation"
       },
       {
         "id": "G01_DRY_GRAVITY",
         "se0": 0.65,
         "steps": 1024,
-        "segments": [["HOLD",1024]]
+        "segments": [
+          [
+            "HOLD",
+            1024
+          ]
+        ]
       },
       {
         "id": "G02_MID_TOP_WET_DRY",
         "se0": 0.85,
         "steps": 1024,
-        "segments": [["TOP_PLUS",256],["HOLD",256],["TOP_MINUS",256],["HOLD",256]]
+        "segments": [
+          [
+            "TOP_PLUS",
+            256
+          ],
+          [
+            "HOLD",
+            256
+          ],
+          [
+            "TOP_MINUS",
+            256
+          ],
+          [
+            "HOLD",
+            256
+          ]
+        ]
       },
       {
         "id": "G03_WET_HEAD_FALL_RISE",
         "se0": 0.95,
         "steps": 1024,
-        "segments": [["BOTTOM_HEAD_FALL",256],["BOTTOM_HEAD_RISE",512],["HOLD",256]]
+        "segments": [
+          [
+            "BOTTOM_HEAD_FALL",
+            256
+          ],
+          [
+            "BOTTOM_HEAD_RISE",
+            512
+          ],
+          [
+            "HOLD",
+            256
+          ]
+        ]
       },
       {
         "id": "G04_MID_HEAD_RISE_FALL",
         "se0": 0.85,
         "steps": 1024,
-        "segments": [["BOTTOM_HEAD_RISE",256],["BOTTOM_HEAD_FALL",512],["HOLD",256]]
+        "segments": [
+          [
+            "BOTTOM_HEAD_RISE",
+            256
+          ],
+          [
+            "BOTTOM_HEAD_FALL",
+            512
+          ],
+          [
+            "HOLD",
+            256
+          ]
+        ]
       },
       {
         "id": "G05_DRY_COMBINED",
         "se0": 0.65,
         "steps": 1024,
-        "segments": [["COMBINED_RISE_PLUS",256],["HOLD",256],["COMBINED_FALL_MINUS",256],["HOLD",256]]
+        "segments": [
+          [
+            "COMBINED_RISE_PLUS",
+            256
+          ],
+          [
+            "HOLD",
+            256
+          ],
+          [
+            "COMBINED_FALL_MINUS",
+            256
+          ],
+          [
+            "HOLD",
+            256
+          ]
+        ]
       }
     ]
   },
@@ -128,5 +210,10 @@
     "NO_MASS_CORRECTION_FLUX",
     "OUTSIDE_QUALIFIED_DOMAIN_IS_ALLOWED"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_amendment": {
+    "date": "2026-09-19",
+    "before_first_RS1_GW_execution": true,
+    "reason": "Use one fixed 1024-step library shape for deterministic O0/O2 replay and pair analysis. The inherited H02 forcing shape remains exactly steps 1-64; steps 65-1024 are a preregistered HOLD relaxation, not an outcome-driven forcing change."
+  }
 }
