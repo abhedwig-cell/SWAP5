@@ -8,7 +8,7 @@ program f_tab01_legacy_oracle_characterization
   integer, parameter :: n_cases = 5
   integer, parameter :: n_query = 4000
   integer :: sizes(n_cases)
-  integer :: icase, n, failures
+  integer :: icase, n, failures, grid_mode
   real(real64), parameter :: THETA_R = 0.05_real64
   real(real64), parameter :: THETA_S = 0.43_real64
   real(real64), parameter :: KSAT    = 50.0_real64
@@ -29,11 +29,15 @@ program f_tab01_legacy_oracle_characterization
 
   write(*,'(A)') 'F-TAB01 legacy TSPACK oracle characterization'
   write(*,'(A)') 'Source lineage: SWAP-model/SWAP c22bd832, blob 62a4df82'
-  write(*,'(A)') 'Table knots uniform in transformed x=-log(1-h); K interpolated in log(K).'
+  write(*,'(A)') 'K is interpolated in log(K).'
+  write(*,'(A)') 'grid=1: uniform transformed x=-log(1-h)'
+  write(*,'(A)') 'grid=2: segmented refinement with explicit Hcrit knot and dense near-saturation branch'
 
   do icase = 1, n_cases
      n = sizes(icase)
-     call characterize_table(n, sptab, ientrytab, failures)
+     do grid_mode = 1, 2
+        call characterize_table(n, grid_mode, sptab, ientrytab, failures)
+     end do
   end do
 
   if (failures /= 0) then
@@ -45,8 +49,8 @@ program f_tab01_legacy_oracle_characterization
 
 contains
 
-  subroutine characterize_table(n, sptab, ientrytab, failures)
-    integer, intent(in) :: n
+  subroutine characterize_table(n, grid_mode, sptab, ientrytab, failures)
+    integer, intent(in) :: n, grid_mode
     real(real64), intent(inout) :: sptab(7,MACP,MATAB)
     integer, intent(inout) :: ientrytab(MACP,0:MATABENTRIES)
     integer, intent(inout) :: failures
@@ -74,11 +78,14 @@ contains
     htab = 0.0_real64
 
     x_min = -log(1.0_real64 - (-1.0e6_real64))
+    call generate_heads(n, grid_mode, htab)
 
     do i = 1, n
-       xtab(i) = x_min + real(i-1,real64) / real(n-1,real64) * (0.0_real64 - x_min)
-       htab(i) = 1.0_real64 - exp(-xtab(i))
-       if (i == n) htab(i) = 0.0_real64
+       if (htab(i) < 0.0_real64) then
+          xtab(i) = -log(-htab(i)+1.0_real64)
+       else
+          xtab(i) = 0.0_real64
+       end if
        ytab(i) = theta_reference(htab(i))
        sptab(1,node,i) = xtab(i)
        sptab(2,node,i) = ytab(i)
@@ -195,26 +202,74 @@ contains
        k_self_max_rel = max(k_self_max_rel,abs(dkdh_q-dk_fd)/denom)
     end do
 
-    write(*,'(A,I0,A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_PREPROC n=',n, &
+    write(*,'(A,I0,A,I0,A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_PREPROC n=',n,' grid=',grid_mode, &
       ' theta_iterations=',theta_iter,' theta_invalid_constraints=',theta_invalid, &
       ' K_iterations=',k_iter,' K_invalid_constraints=',k_invalid
-    write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
-      'F_TAB01_METRICS n=',n, &
+    write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
+      'F_TAB01_METRICS n=',n,' grid=',grid_mode, &
       ' theta_max_abs=',theta_max_abs, &
       ' theta_range_norm=',theta_max_range_norm, &
       ' K_max_log10_decades=',k_max_log10, &
       ' C_max_rel_h_le_hcrit=',c_max_rel_smooth, &
       ' theta_derivative_self_rel=',theta_self_max_rel, &
       ' K_derivative_self_rel=',k_self_max_rel
-    write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
-      'F_TAB01_C_DETAIL n=',n,' C_max_abs=',c_max_abs, &
+    write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
+      'F_TAB01_C_DETAIL n=',n,' grid=',grid_mode,' C_max_abs=',c_max_abs, &
       ' C_max_rel_active_Cgt1e-6=',c_max_rel_active, &
       ' h_at_max_rel=',c_h_at_max_rel,' h_at_max_active=',c_h_at_max_active
-    write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
-      'F_TAB01_C_VALUES n=',n,' Cref_at_max_rel=',c_ref_at_max_rel, &
+    write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
+      'F_TAB01_C_VALUES n=',n,' grid=',grid_mode,' Cref_at_max_rel=',c_ref_at_max_rel, &
       ' Ctab_at_max_rel=',c_q_at_max_rel, &
       ' Cref_at_max_active=',c_ref_at_max_active,' Ctab_at_max_active=',c_q_at_max_active
   end subroutine characterize_table
+
+  subroutine generate_heads(n, grid_mode, htab)
+    integer, intent(in) :: n, grid_mode
+    real(real64), intent(out) :: htab(MATAB)
+    integer :: i, j, n_dry, n_mid, n_wet
+    real(real64) :: frac, x0, x1, x, p
+
+    htab = 0.0_real64
+    if (grid_mode == 1) then
+       x0 = -log(1.0_real64 - (-1.0e6_real64))
+       do i = 1, n
+          x = x0 + real(i-1,real64)/real(n-1,real64)*(0.0_real64-x0)
+          htab(i) = 1.0_real64-exp(-x)
+       end do
+       htab(n) = 0.0_real64
+       return
+    end if
+
+    n_dry = max(3,int(0.55_real64*real(n,real64)))
+    n_mid = max(3,int(0.25_real64*real(n,real64)))
+    n_wet = n - n_dry - n_mid
+    if (n_wet < 3) then
+       n_wet = 3
+       n_mid = n - n_dry - n_wet
+    end if
+
+    x0 = -log(1.0_real64 - (-1.0e6_real64))
+    x1 = -log(2.0_real64)
+    do i = 1, n_dry
+       frac = real(i-1,real64)/real(n_dry-1,real64)
+       x = x0 + frac*(x1-x0)
+       htab(i) = 1.0_real64-exp(-x)
+    end do
+    htab(n_dry) = -1.0_real64
+
+    do j = 1, n_mid
+       frac = real(j,real64)/real(n_mid,real64)
+       p = -2.0_real64*frac
+       htab(n_dry+j) = -(10.0_real64**p)
+    end do
+    htab(n_dry+n_mid) = H_CRIT
+
+    do j = 1, n_wet
+       frac = real(j,real64)/real(n_wet,real64)
+       htab(n_dry+n_mid+j) = H_CRIT*(1.0_real64-frac)
+    end do
+    htab(n) = 0.0_real64
+  end subroutine generate_heads
 
   subroutine build_entry_index(n, htab, index_row)
     integer, intent(in) :: n
