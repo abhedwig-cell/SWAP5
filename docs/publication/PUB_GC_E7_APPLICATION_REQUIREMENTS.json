@@ -54,7 +54,7 @@
     "whole_hupsel_accepted_intervals": 32518
   },
   "current_canonical_authority": {
-    "canonical_basis": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
+    "canonical_basis": "6413adc4d29f5749105b30e45f395331b450d5f3",
     "production_groundwater_owner": {
       "file": "src/runtime/mod_fmr_production_application_bootstrap.f90",
       "blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
@@ -102,7 +102,7 @@
     },
     "post_wu04b_live_delta": {
       "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-      "head": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
+      "head": "6413adc4d29f5749105b30e45f395331b450d5f3",
       "classification": "NO_E7_AUTHORITY_EFFECT",
       "paths": [
         "docs/science/F-ROMV2_*",
@@ -111,7 +111,7 @@
         "integration/trace/**",
         "tests/rom/**"
       ],
-      "reason": "Current bootstrap/backend/runtime/restart/surface-evaporation blobs remain exactly the admitted PPA-WU04-B postimages; later canonical work is ROM/TRACE/F-DOC evidence and tests only."
+      "reason": "No production/reference or PUB-GC authority changed after PPA-WU04-B; the latest delta is evidence-only F-ROMV2/TRACE/F-DOC/ROM-test work."
     }
   },
   "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute.",
