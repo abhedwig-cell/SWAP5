@@ -60,11 +60,11 @@ jobs:
           test -x legacy-runtime/builddir/swap
           {
             echo "runtime_source=SWAP-model/SWAP@2a5ace1c06be7a257b64e9ac1896b489533f16e9"
-            echo "testcases_source=SWAP-model/swap-testcases@a839e2e905f34dd264ad0c739f638454b3023def"
+            echo "current_public_reference=SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1"
             echo "table_engine_blob=62a4df82de75f1231fe066351473d140cf2ac31c"
             echo "wrapper_blob=493b9997615c967dcb5555691e447bcfe7b11e1f"
-            echo "toml_f_commit=f9ff54793b2d1a3edca7d6890548d18d48c98e36"
-            echo "ttutil_ref=v4.2.7"
+            echo "testcases_source=SWAP-model/swap-testcases@a839e2e905f34dd264ad0c739f638454b3023def"
+            echo "qualification_window=2002-01-01..2002-03-31"
             gfortran --version | head -1
             meson --version
           } > legacy-runtime-identity.txt
@@ -77,91 +77,7 @@ jobs:
           python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
             swap-testcases/cases/hupselbrook/legacy build/tab-hyd-e2e \
             | tee build/tab-hyd-e2e-prepare.log
-          grep -q '^PREPARE_E2E_COMPLETED        shell: bash
-        run: |
-          set -uo pipefail
-          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
-          OUT="$GITHUB_WORKSPACE/build/tab-hyd-e2e/run-status.tsv"
-          printf "variant\treturn_code\truntime_seconds\toutput_csv\n" > "$OUT"
-          for name in analytic_k0 table_k0 analytic_k1 table_k1; do
-            work="$GITHUB_WORKSPACE/build/tab-hyd-e2e/$name"
-            pushd "$work" >/dev/null
-            set +e
-            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 120 "$BIN" > run.log 2>&1
-            rc=$?
-            set -e
-            popd >/dev/null
-            runtime=$(cat "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
-            if [ -f "$work/result_output.csv" ]; then
-              csv=yes
-            else
-              csv=no
-            fi
-            printf "%s\t%s\t%s\t%s\n" "$name" "$rc" "$runtime" "$csv" | tee -a "$OUT"
-            tail -80 "$work/run.log" > "$work/run-tail.log" || true
-          done
-          cat "$OUT"
-
-      - name: Compare analytical and table outputs
-        shell: bash
-        run: |
-          set -euo pipefail
-          for k in 0 1; do
-            a="build/tab-hyd-e2e/analytic_k$k"
-            t="build/tab-hyd-e2e/table_k$k"
-            if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
-              python research/tabulated_hydraulics/compare_hupsel_e2e.py \
-                "$a" "$t" "build/tab-hyd-e2e/comparison_k$k.json" \
-                --label "SWKIMPL=$k" | tee "build/tab-hyd-e2e/comparison_k$k.txt"
-            else
-              echo "PAIR SWKIMPL=$k incomplete: result_output.csv missing" \
-                | tee "build/tab-hyd-e2e/comparison_k$k.txt"
-            fi
-          done
-          echo "E2E_COMPARISON_COMPLETED"
-
-      - name: Write end-to-end summary
-        shell: bash
-        run: |
-          set -euo pipefail
-          {
-            echo "# TAB-HYD pre-strangler Hupsel end-to-end"
-            echo
-            cat legacy-runtime-identity.txt
-            echo
-            echo "## Run status"
-            echo '~~~'
-            cat build/tab-hyd-e2e/run-status.tsv
-            echo '~~~'
-            for k in 0 1; do
-              echo
-              echo "## SWKIMPL=$k"
-              echo '~~~'
-              cat "build/tab-hyd-e2e/comparison_k$k.txt"
-              echo '~~~'
-            done
-          } > build/tab-hyd-e2e/summary.md
-          cat build/tab-hyd-e2e/summary.md
-
-      - name: Upload end-to-end evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tab-hyd-legacy-runtime-e2e-evidence
-          path: |
-            legacy-runtime-identity.txt
-            build/tab-hyd-e2e-prepare.log
-            build/tab-hyd-e2e/run-status.tsv
-            build/tab-hyd-e2e/summary.md
-            build/tab-hyd-e2e/comparison_k*.json
-            build/tab-hyd-e2e/comparison_k*.txt
-            build/tab-hyd-e2e/*/run.log
-            build/tab-hyd-e2e/*/run-tail.log
-            build/tab-hyd-e2e/*/runtime_seconds.txt
-            build/tab-hyd-e2e/*/result_output.csv
-            build/tab-hyd-e2e/table_k0/topsoil_sand_b2.csv
-            build/tab-hyd-e2e/table_k0/subsoil_sand_o2.csv
- build/tab-hyd-e2e-prepare.log
+          grep -q '^PREPARE_E2E_COMPLETED$' build/tab-hyd-e2e-prepare.log
 
       - name: Bound qualification window to first 90 days
         shell: bash
@@ -190,23 +106,27 @@ jobs:
           set -uo pipefail
           BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
           OUT="$GITHUB_WORKSPACE/build/tab-hyd-e2e/run-status.tsv"
-          printf "variant\treturn_code\truntime_seconds\toutput_csv\n" > "$OUT"
+          printf "variant\treturn_code\truntime_seconds\toutput_csv\tdata_lines\n" > "$OUT"
           for name in analytic_k0 table_k0 analytic_k1 table_k1; do
             work="$GITHUB_WORKSPACE/build/tab-hyd-e2e/$name"
             pushd "$work" >/dev/null
             set +e
-            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 300 "$BIN" > run.log 2>&1
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 120 "$BIN" > run.log 2>&1
             rc=$?
             set -e
             popd >/dev/null
-            runtime=$(cat "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
             if [ -f "$work/result_output.csv" ]; then
               csv=yes
+              data_lines=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" | grep -c . || true)
             else
               csv=no
+              data_lines=0
             fi
-            printf "%s\t%s\t%s\t%s\n" "$name" "$rc" "$runtime" "$csv" | tee -a "$OUT"
-            tail -80 "$work/run.log" > "$work/run-tail.log" || true
+            printf "%s\t%s\t%s\t%s\t%s\n" "$name" "$rc" "$runtime" "$csv" "$data_lines" | tee -a "$OUT"
+            tail -120 "$work/run.log" > "$work/run-tail.log" || true
+            echo "===== $name run tail ====="
+            cat "$work/run-tail.log"
           done
           cat "$OUT"
 
@@ -217,12 +137,20 @@ jobs:
           for k in 0 1; do
             a="build/tab-hyd-e2e/analytic_k$k"
             t="build/tab-hyd-e2e/table_k$k"
-            if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
+            a_lines=0
+            t_lines=0
+            if [ -f "$a/result_output.csv" ]; then
+              a_lines=$(grep -v '^[[:space:]]*\*' "$a/result_output.csv" | grep -c . || true)
+            fi
+            if [ -f "$t/result_output.csv" ]; then
+              t_lines=$(grep -v '^[[:space:]]*\*' "$t/result_output.csv" | grep -c . || true)
+            fi
+            if [ "$a_lines" -gt 1 ] && [ "$t_lines" -gt 1 ]; then
               python research/tabulated_hydraulics/compare_hupsel_e2e.py \
                 "$a" "$t" "build/tab-hyd-e2e/comparison_k$k.json" \
                 --label "SWKIMPL=$k" | tee "build/tab-hyd-e2e/comparison_k$k.txt"
             else
-              echo "PAIR SWKIMPL=$k incomplete: result_output.csv missing" \
+              echo "PAIR SWKIMPL=$k incomplete: analytic_data_lines=$a_lines table_data_lines=$t_lines" \
                 | tee "build/tab-hyd-e2e/comparison_k$k.txt"
             fi
           done
