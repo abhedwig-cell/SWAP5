@@ -92,13 +92,23 @@
       "effect_on_e7": "NONE"
     },
     "PPA_WU04B": {
-      "canonical_merge": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
       "status_path": "integration/audits/PPA_WU04B_STATUS.json",
       "status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
       "scope": "SWREDU=2 Boesten-Stroosnijder evaporation reduction bounded production slice",
       "mode5_boesten_composition_admitted": false,
       "broadens_mode5_root_or_drainage_composition": false,
       "effect_on_e7": "NONE"
+    },
+    "post_wu04b_live_delta": {
+      "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "head": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+      "classification": "NO_E7_AUTHORITY_EFFECT",
+      "paths": [
+        "integration/f-doc/F-DOC23_STATUS.json",
+        "integration/trace/**"
+      ],
+      "reason": "No production runtime, coupling, PUB-GC publication asset, Hupsel authority, or application-owner source changed."
     }
   },
   "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute.",
