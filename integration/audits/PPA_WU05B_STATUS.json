@@ -4,7 +4,7 @@
   "title": "Legacy frost hydraulic boundary source trace",
   "branch": "audit/ppa-wu05b-frost-authority",
   "reconcile_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
-  "status": "SOURCE_MATERIALIZATION_BLOCKED_REVIEW_BOUNDARIES_FROZEN",
+  "status": "QUALIFIED_REVIEW_BOUNDARIES_FROZEN_SOURCE_MATERIALIZATION_BLOCKED",
   "production_source_mutation": false,
   "reference_mutation": false,
   "authority": {
@@ -45,11 +45,22 @@
     "PPA-WU05-B4 snow/frost composition"
   ],
   "qualification": {
-    "state": "PENDING"
+    "state": "PASS",
+    "workflow": "PPA-WU05-B frost authority",
+    "run_id": 35426148761,
+    "authority_job": 105852323316,
+    "authority_conclusion": "success",
+    "independent_job": 105852323606,
+    "independent_conclusion": "success",
+    "documentation_run": 35426148696,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run": 35426148676,
+    "canonical_qualification_conclusion": "success",
+    "canonical_matrix": "15/15 jobs successful"
   },
   "production_admission": "NONE_REVIEW_ONLY_BLOCKED",
-  "verdict": "OWNER_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_BLOCKED",
-  "next_action": "Persist/qualify this blocker boundary. Continue ownership-disjunct PPA-WU05-D compensation review while B1 remains source-blocked. Do not implement frost.",
+  "verdict": "QUALIFIED_OWNER_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_SOURCE_BLOCKED",
+  "next_action": "Canonical-admit this review/blocker authority only. PPA-WU05-B1 remains blocked until exact B1.11 frozencond/temperature source bytes are materialized. Continue ownership-disjunct PPA-WU05-D; do not implement frost.",
   "materialization_recheck_20260919": {
     "library_archive_found": true,
     "library_archive_name": "SWAP_4.3.1(6).zip",
