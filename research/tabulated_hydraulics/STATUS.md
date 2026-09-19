@@ -37,18 +37,25 @@ A table-resolution sweep gave:
 
 This says that a very dense table is not automatically necessary for this smooth test function. Around 100 points, the conductivity interpolation error in this test is already close to the residual error floor of the current interpolation/transformation policy.
 
-### 2. Representative published Staring tables behave regularly under the current interpolator
+### 2. The 36-file BOFEK2012/Staring set exposes one input-table defect
 
-Six published BOFEK/Staring table files were sampled: B1, B9, B18, O1, O9 and O18. Each contains 459 rows.
+The complete public BOFEK2012/Staring table set in `Murilodsv/SWAP-SAMUCA` was checked against the admission rules implemented by current `ReadSwap`.
 
-At every interval midpoint tested:
+Results:
 
-- theta overshoot count = 0;
-- K overshoot count = 0;
-- C remained positive;
-- dK/dh remained positive.
+- 36 tables inspected;
+- 35 are admissible under the current strict-increase checks;
+- `starb4_cm.csv` is rejected because theta decreases near saturation;
+- the first violation occurs at row 446 and the decrease continues through the final h=0 row;
+- all 35 admissible tables completed the actual interpolation preprocessing and midpoint characterization;
+- total theta overshoots = 0;
+- total K overshoots = 0;
+- global minimum C = `4.33786093674867725e-12`, positive;
+- global minimum dK/dh = `2.27733862942200173e-23`, positive.
 
-This is evidence that the current interpolation itself does not introduce obvious midpoint oscillation or loss of monotonicity for these representative tables. It is not yet an exhaustive audit of every Staring/BOFEK table.
+For `starb4_cm.csv`, theta changes from `0.41959083171` at h=`-1.0964781961 cm` to `0.41959082646` at h=`-1.0715193052 cm`, and then continues decreasing to `0.41957607059` at saturation. The current reader explicitly requires theta to increase with increasing pressure head, so this table cannot be loaded unchanged.
+
+Thus the interpolator behaves regularly for all 35 tables that satisfy the current input contract, but the public table collection itself is not fully compatible with that contract.
 
 ### 3. The legacy-input table route is hydrologically faithful for Hupsel with SWKIMPL=0
 
@@ -114,17 +121,25 @@ The executable current-public production-path probe is now closed. On the same 3
 
 This binds the source-audit gap to executable behavior: `SWSOPHY=1` is **not production-executable through the current typed SWAP input path**. The current schema accepts the switch but supplies none of the table state consumed by the solver.
 
+## Source-authority boundary
+
+The executable end-to-end experiments above use the public/transitional SWAP source lineage whose current table engine is byte-identical between the tested pre-strangler and current-public pins. They are not yet an execution of the immutable supplied SWAP 4.3.1 B0 archive.
+
+Canonical SWAP5 authority defines B0 by the supplied `SWAP_4.3.1.zip` SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360` and nested source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. The canonical repository also records that a byte-identical unpacked B0 source mirror is still pending because the source archive contains non-UTF-8 bytes and the historical baseline must not be silently re-encoded.
+
+Therefore these results establish the behavior of the current/public table implementation and the tested legacy-input lineage. A final claim specifically about the exact supplied 4.3.1 B0 binary/source still requires running the same gates through `tools/vq/b0_source_runner.py` against the canonical raw archive.
+
 ## Current disposition
 
 The table option is **not globally "broken"**, but neither is it currently safe to call it a generally working production option.
 
 The bounded conclusion is:
 
-1. the core table interpolation is numerically well behaved for the tested normal range and representative Staring tables;
+1. the core table interpolation is numerically well behaved for the tested normal range and for all 35 BOFEK2012/Staring tables that satisfy the current ReadSwap input contract;
 2. the legacy-input route works very accurately for Hupsel with `SWKIMPL=0`;
 3. the existing implementation is slower, not faster, in the repeated Hupsel benchmark;
 4. the table route has a reproducible dry-side derivative bounds defect;
 5. the `SWKIMPL=1` table route has a reproducible severe convergence/runtime defect associated with the saturated dK/dh sentinel and is not qualified;
 6. the current public typed production input path accepts `SWSOPHY=1` but does not provide the required table state; the bounded executable probe stalls and times out.
 
-No production admission or performance claim should be made until points 4-6 are resolved or explicitly excluded from the intended application envelope.
+No production admission or performance claim should be made until points 4-6 are resolved or explicitly excluded from the intended application envelope. In addition, `starb4_cm.csv` must be corrected or deliberately excluded before the 36-file BOFEK2012/Staring set can be treated as a valid table library.
