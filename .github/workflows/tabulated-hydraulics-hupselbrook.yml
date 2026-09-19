@@ -107,6 +107,21 @@ jobs:
               path = dst / "swap.toml"
               text = path.read_text()
 
+              # The current Hupsel TOML fixture omits legacy path defaults.
+              # In a direct binary invocation those fixed-length globals retain
+              # NUL padding, so config_to_variables constructs an invalid CSV
+              # path. Make the legacy "./" defaults explicit in the research
+              # fixture so the analytical baseline itself is executable.
+              if not re.search(r"(?im)^\s*pathatm\s*=", text):
+                  text, npaths = re.subn(
+                      r"(?m)^(\[general\]\s*)$",
+                      "\\1\\npathwork = \"./\"\\npathatm = \"./\"\\npathcrop = \"./\"\\npathdrain = \"./\"",
+                      text,
+                      count=1,
+                  )
+                  if npaths != 1:
+                      raise RuntimeError(f"failed to set legacy path defaults for {name}")
+
               text, n1 = re.subn(
                   r"(?im)^(\s*swsophy\s*=\s*)[01](\s*(?:#.*)?)$",
                   rf"\g<1>{swsophy}\2",
