@@ -1,0 +1,39 @@
+name: F-ROMV2 D22 native threshold response
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D22_PREREGISTRATION.json'
+      - 'tests/rom/test_f_romv2_d22_swap_threshold_response.f90'
+      - 'tests/rom/analyze_f_romv2_d22_native_threshold_response.py'
+      - 'tests/rom/run_f_romv2_d22_native_threshold_response.sh'
+      - '.github/workflows/f-romv2-d22-native-threshold-response.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-threshold-response:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute preregistered D22 response frontier
+        env:
+          F_ROMV2_D22_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D22-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d22_native_threshold_response.sh
+      - name: Upload D22 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d22-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D22-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
