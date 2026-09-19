@@ -98,6 +98,53 @@
         "5 percent slope gate",
         "no balancing subsurface source"
       ]
+    },
+    {
+      "id": "CAP01-A4",
+      "date": "2026-09-19",
+      "type": "DIAGNOSTIC_CHARACTERIZATION_ONLY",
+      "trigger": "The A3 exact-equilibrium unbalanced root sink failed exclusively through solver rejection: 9 solver rejections, 0 temporal rejections, 0 mass rejections.",
+      "purpose": "Discriminate a general root-active fixture failure from a failure specific to net hydraulic root extraction before closing CAP01.",
+      "fixed_cases": [
+        {
+          "id": "Z",
+          "root_total_cm_per_day": 0,
+          "subsurface_source": "zero",
+          "expected_control": "must complete"
+        },
+        {
+          "id": "B",
+          "root_total_cm_per_day": 0.02,
+          "subsurface_source": "exactly equal to root sink by node",
+          "expected_control": "must complete"
+        },
+        {
+          "id": "U1",
+          "root_total_cm_per_day": 0.0002,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        },
+        {
+          "id": "U2",
+          "root_total_cm_per_day": 0.002,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        },
+        {
+          "id": "U3",
+          "root_total_cm_per_day": 0.02,
+          "subsurface_source": "zero",
+          "expected_control": "observe only"
+        }
+      ],
+      "frozen_environment": "Same A3 h=-75 cm equilibrium state, qtop=qbot=-K(-75 cm), same Richards parameters and canonical external full-half transaction policy.",
+      "interpretation_rules": [
+        "If Z and B complete but one or more U cases fail through solver rejection, classify the gap as net-root-extraction hydraulic execution, not generic root-active binding/accounting.",
+        "If Z fails, classify the CAP01 fixture/runtime route as invalid and do not infer a net-root-specific blocker.",
+        "If B fails, existing FMR09-style balanced root evidence has not been reproduced on the CAP01 production-trial route and must be reconciled before further inference.",
+        "No unbalanced sink amplitude or numerical tolerance may be adjusted after observing this matrix."
+      ],
+      "qualification_effect": "None. A4 cannot turn CAP01 green. The original unbalanced ROOT_TOTAL=0.02 cm/day Phase-A gate remains the qualification target."
     }
   ]
 }
