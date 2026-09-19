@@ -221,3 +221,21 @@ The current figure-export plan uses the stricter GMD production guidance for pre
 The archival blocker remains unchanged in substance. F-RB02 gives an immutable predecessor release `SWAP5-RB1-v1` and requires future releases to enumerate their delta and qualify their own candidate. It does not authorize reusing RB1 as the paper release. The Status-A baseline permits a successor release-candidate boundary but does not choose its identifier or licence.
 
 Accordingly this gate remains **BLOCKED_GOVERNANCE_METADATA_NOT_SCIENCE**.
+
+
+## Fail-closed finalization route — 2026-09-19
+
+The remaining governance/archive sequence is now mechanized without choosing authority values.
+
+Controlling assets:
+
+- `PUB_GC_GMD_FINALIZATION_CONTRACT.md`;
+- `PUB_GC_GMD_FINALIZATION_INPUT.json`;
+- `tools/publication/finalize_pub_gc_gmd_release.py`;
+- `.github/workflows/pub-gc-gmd-finalization.yml`.
+
+The gate has four stages: pre-authority, authority-ready, archive-ready and submission-ready. Strict stages fail unless their controlling external values are explicit.
+
+The publication-critical prearchive set was also rechecked against canonical `187e30153c890151768e929170d14bb22af1d86d`: **24/24 exact blob matches**. Record: `PUB_GC_GMD_CURRENT_CANONICAL_PRESERVATION_20260919.json`.
+
+This does not close A1/A2/A3. It reduces their eventual execution to controlled metadata binding and external archive action.
