@@ -1,0 +1,19 @@
+name: NUM-UNC P0C C1 inference test
+
+on:
+  pull_request:
+    paths:
+      - 'integration/num-unc/**'
+      - 'tests/num_unc/**'
+      - '.github/workflows/num-unc-p0c-c1.yml'
+  workflow_dispatch:
+
+jobs:
+  p0c-c1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run preregistered C1 N0-N1 comparison
+        run: bash tests/num_unc/run_num_unc_p0c_c1.sh
