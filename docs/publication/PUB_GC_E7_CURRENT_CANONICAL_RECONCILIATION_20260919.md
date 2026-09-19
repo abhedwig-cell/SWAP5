@@ -5,11 +5,11 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical basis inspected: `integration/f-ci-canonical@e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382`.
+Canonical basis inspected: `integration/f-ci-canonical@6413adc4d29f5749105b30e45f395331b450d5f3`.
 
 E7 was canonically admitted through PR #330 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`. PR #327 is historical/superseded and must not be rebased or merged as a second authority path.
 
-The latest E7-relevant production merge before this reconcile is PPA-WU04-B at `4d40b8d4b6a1df06ff97fab55497542778431290`. The subsequent delta through the inspected live head is confined to F-ROMV2/TRACE/F-DOC evidence and ROM tests. The current bootstrap, serialized backend, runtime core, restart state and restricted surface-evaporation blobs remain exactly the PPA-WU04-B postimages, so that delta has no E7 authority effect.
+The latest E7-relevant production merge before this reconcile is PPA-WU04-B at `4d40b8d4b6a1df06ff97fab55497542778431290`. The subsequent delta through the inspected live head is confined to evidence-only F-ROMV2/TRACE/F-DOC work and ROM tests. The current bootstrap, serialized backend, runtime core, restart state and restricted surface-evaporation blobs remain exactly the PPA-WU04-B postimages, so that delta has no E7 authority effect.
 
 ## Current prescribed-head owner
 
