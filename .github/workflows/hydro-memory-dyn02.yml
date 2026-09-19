@@ -14,7 +14,7 @@ on:
       - 'integration/research/HYDRO_MEMORY_DYN02_PREREGISTRATION.json'
       - 'tests/research/support/mod_hydro_memory_dyn02_bridge.f90'
       - 'tests/research/test_hydro_memory_dyn02_live_modflow.py'
-      - 'tests/research/run_hydro_memory_dyn02_live_modflow.sh'
+      - 'tests/research/run_hydro_memory_dyn02_live_recomposition.sh'
       - '.github/workflows/hydro-memory-acc02-f2.yml'
   workflow_dispatch:
 
@@ -38,4 +38,4 @@ jobs:
           gfortran --version
           python3 --version
       - name: Run governed root-active live MODFLOW6 qualification
-        run: bash tests/research/run_hydro_memory_dyn02_live_modflow.sh
+        run: bash tests/research/run_hydro_memory_dyn02_live_recomposition.sh
