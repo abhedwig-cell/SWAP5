@@ -33,7 +33,8 @@
     ],
     "temporal_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
     "temporal_tolerance": 0.000001,
-    "numerical_continuation": "FMR_NUMERICAL_CONTINUATION_NONE"
+    "numerical_continuation": "FMR_NUMERICAL_CONTINUATION_NONE",
+    "local_response_equilibrium_anchor": "h=-75 cm; qtop=qbot=-K(h), derived from frozen constitutive law"
   },
   "tests": [
     "root-active real production trial completes with hard mass",
@@ -81,6 +82,21 @@
         "5 percent slope gate",
         "Richards physics",
         "groundwater-head corrector physics"
+      ]
+    },
+    {
+      "id": "CAP01-A3",
+      "date": "2026-09-19",
+      "trigger": "Root-active nominal execution remained solver-rejected after binding canonical temporal policy and root-active state topology. The remaining fixture inherited F-GC44 hydrostatic state plus near-zero qbot, unlike the existing root-active runtime authority.",
+      "decision": "Use the FMR09 hydraulic equilibrium anchor for the local CAP01 response gate: constant pressure head -75 cm and top/bottom reference flux equal to minus the constitutive conductivity K(-75 cm). Keep the root extraction unbalanced.",
+      "rationale": "This removes an unrelated initial-condition disequilibrium while preserving a genuine hydraulic effect of root extraction. The equilibrium flux is derived deterministically from the frozen constitutive parameters, not tuned against CAP01 output.",
+      "unchanged": [
+        "ROOT_TOTAL=0.02 cm/day",
+        "hard mass gate",
+        "FD qbot perturbation",
+        "head perturbation",
+        "5 percent slope gate",
+        "no balancing subsurface source"
       ]
     }
   ]
