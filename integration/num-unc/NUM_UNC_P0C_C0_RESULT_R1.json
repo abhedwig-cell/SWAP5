@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.num_unc.p0c.locator_result.v1",
+  "work_unit": "NUM-UNC-P0C-C0-R1",
+  "date": "2026-09-19",
+  "baseline": "187e30153c890151768e929170d14bb22af1d86d",
+  "research_head": "730ac6f9b4a80c4548d6ae51f61010ab06de71b9",
+  "pull_request": 370,
+  "workflow_run_id": 35427628180,
+  "workflow_conclusion": "success",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "output_sha256": "86304fe368e8841f2e74d22e8a0e3405cb8dd58f3c6e143e43a672a9d3dc7006",
+  "N1_executed": false,
+  "repair": "P0C-R01",
+  "geometry": {
+    "cells": 16,
+    "dz_cm": 10,
+    "surface_to_first_node_cm": 5,
+    "internal_node_distance_cm": 10
+  },
+  "material": "B01",
+  "initial_effective_saturation": 0.85,
+  "dt_day": 0.0064,
+  "frozen_bracket": {
+    "lo": 1.111328125,
+    "hi": 1.1123046875
+  },
+  "frozen_transition_multiplier": 1.11181640625,
+  "frozen_cases": {
+    "C_minus": {
+      "multiplier": 1.000634765625,
+      "class_N0": "NO_PONDING",
+      "max_pond_cm": 0,
+      "max_integrated_mass_residual_cm": 2.091837814077735e-15
+    },
+    "C_zero": {
+      "multiplier": 1.11181640625,
+      "class_N0": "PONDING",
+      "max_pond_cm": 0.00011494684626821363,
+      "switch_block": 8,
+      "max_integrated_mass_residual_cm": 3.33102434524335e-15
+    },
+    "C_plus": {
+      "multiplier": 1.2229980468750001,
+      "class_N0": "PONDING",
+      "max_pond_cm": 0.040578257613793176,
+      "switch_block": 7,
+      "max_integrated_mass_residual_cm": 4.519051799434237e-15
+    }
+  },
+  "comparison_to_superseded_first_locator": {
+    "old_transition_multiplier": 1.05908203125,
+    "relative_shift": 0.049792531120331995,
+    "interpretation": "Geometry correction materially shifts the located boundary; the earlier result remains explicitly superseded."
+  },
+  "authoritative_freeze": true,
+  "locator_status": "FREEZE_READY",
+  "interpretation": "Transition-location evidence only. No N1 execution or numerical-inference comparison exists at C0."
+}
