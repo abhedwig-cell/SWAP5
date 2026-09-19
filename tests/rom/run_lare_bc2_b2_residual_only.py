@@ -412,6 +412,7 @@ def main()->int:
     ap.add_argument("--reference",required=True,type=pathlib.Path)
     ap.add_argument("--prereg",required=True,type=pathlib.Path)
     ap.add_argument("--b0-result",required=True,type=pathlib.Path)
+    ap.add_argument("--b1-result",required=True,type=pathlib.Path)
     ap.add_argument("--output",required=True,type=pathlib.Path)
     args=ap.parse_args()
 
