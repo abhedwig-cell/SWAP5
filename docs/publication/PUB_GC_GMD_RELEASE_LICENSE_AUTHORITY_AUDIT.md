@@ -81,3 +81,20 @@ GitHub's moving development branch is not substituted for the frozen persistent 
 The remaining archive blocker is **governance/metadata, not science**.
 
 No new hydrological experiment, positive Hupsel trajectory, solver change or tolerance change can resolve A1/A2/A3.
+
+
+## External official evidence update — 2026-09-19
+
+The upstream licence evidence has now been verified against public official WUR/SWAP sources.
+
+- The official SWAP 4 technical addendum states that SWAP source code and executable are distributed under **GNU GENERAL PUBLIC LICENSE Version 2, June 1991**.
+- The WUR research-software licensing guidance states that research software reuse terms should be made explicit and that WUR does not mandate one single software licence.
+- Evidence and URLs are frozen in `PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.md` and `PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.json`.
+
+### Effect on A2/L1
+
+This removes uncertainty about **upstream SWAP 4 licence provenance**.
+
+It does **not** authorize this publication workstream to declare the exact SWAP5 publication candidate under a particular SPDX expression or redistribution statement. That final release declaration remains authority-bound.
+
+The remaining L1 decision is therefore narrow: confirm the exact licence/redistribution wording for candidate tree `9ca065553765e38eec4d4ceb611ec80d866dbae3`, including the treatment of the separately governed SWAP 4.3.1 reference asset.

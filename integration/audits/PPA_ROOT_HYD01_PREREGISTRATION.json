@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.ppa_root_hyd01.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD01",
+  "title": "Net root-extraction hydraulic execution authority and solver diagnosis",
+  "canonical_base": "1dc12a3f47935a3639ef3fb38dc0d6338a0f44c0",
+  "cap01_evidence": {
+    "branch": "research/hydro-memory-cap01",
+    "result_head": "979113fb5776b45a0c7d8d0923e486c0d522a8be",
+    "decisive_run": 35427908820,
+    "classification": "CLOSED_BLOCKED_NET_ROOT_EXTRACTION_HYDRAULIC_EXECUTION"
+  },
+  "phase": "R1_RESTRICTED_ROOT_TEMPORAL_CERTIFICATE_EXTENSION",
+  "production_mutation_allowed": false,
+  "reference_mutation_allowed": false,
+  "purpose": "Determine whether CAP01 failure is root-specific or a broader transient sink/window-scale limitation before considering any repair.",
+  "frozen_fixture": {
+    "pressure_head_cm": -75,
+    "top_bottom_reference_flux": "-K(-75 cm) from canonical constitutive provider",
+    "total_sink_cm_per_day": 0.02,
+    "sink_distribution": "equal over first min(4,numnod) compartments",
+    "subsurface_source_cm_per_day": 0,
+    "bottom_mode": 2,
+    "top_boundary": "fixed flux",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "temporal_policy": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance": 0.000001,
+    "mass_tolerance_cm": 1e-12,
+    "parameter_solver_controls": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "min_step_duration_day": 1e-8,
+      "head_abs_tolerance": 1e-12,
+      "head_rel_tolerance": 1e-12
+    }
+  },
+  "duration_sweep_day": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1
+  ],
+  "paired_routes": [
+    {
+      "id": "ROOT",
+      "root_extraction_active": true,
+      "root_sink": "frozen sink distribution",
+      "drainage_sink": 0
+    },
+    {
+      "id": "GENERIC",
+      "root_extraction_active": false,
+      "root_sink": 0,
+      "drainage_sink": "same frozen sink distribution in one drainage level"
+    }
+  ],
+  "interpretation_rules": [
+    "If ROOT and GENERIC have the same accept/reject pattern across all durations, do not classify the failure as root-specific.",
+    "If GENERIC succeeds at a duration where ROOT fails, classify a root-specific execution discrepancy and trace provider/binding/HeadCalc semantics.",
+    "If both routes fail only at short durations but succeed at longer durations, classify CAP01 primarily as a coupling-window numerical-envelope problem.",
+    "If both routes fail at all durations through solver rejection, investigate common transient sink/Newton execution before any root-specific repair.",
+    "If both routes succeed at the same duration, compare accepted storage/head response and mass accounting; material divergence is a semantic discrepancy.",
+    "No duration, sink magnitude, solver tolerance or retry limit may be changed after observing this D1 sweep."
+  ],
+  "next_if_needed": [
+    "D2 direct HeadCalc/retry-owner localization",
+    "D3 exact corrected B1.11 reference execution using the pinned source archive authority",
+    "REPAIR only after authority identifies a local defect"
+  ],
+  "d1_result": {
+    "run_id": 35428100983,
+    "conclusion": "COMMON_TRANSIENT_SINK_ACCEPTANCE_GAP_NOT_ROOT_SPECIFIC",
+    "key_finding": "ROOT and GENERIC sink routes had identical accept/reject counts at all five durations."
+  },
+  "d2": {
+    "authority_findings": [
+      "fmr_serialized_temporal_identity returns 0 only for exact full-step/two-half state identity and HUGE otherwise.",
+      "The Reference-Richards model temporal indicator explicitly returns route root-sink-envelope-deferred when request%evaluation%root_sink is associated.",
+      "The same indicator admits b110_source_sink_provider_t for ordinary source/sink forcing.",
+      "Therefore the current root-active state-changing Reference-Richards route has neither a meaningful external full-half error metric nor an admitted model-certificate indicator."
+    ],
+    "test": {
+      "duration_day": 0.1,
+      "reason": "D1 showed zero solver rejections at 0.1 day for both ROOT and GENERIC routes.",
+      "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+      "temporal_head_budget": 0.00001,
+      "previous_right_derivative": "zero vector in RICHARDS_TEMPORAL_HISTORY committed state",
+      "max_retries": 0,
+      "paired_routes": [
+        "ROOT",
+        "GENERIC"
+      ],
+      "expected_diagnostic_not_outcome": [
+        "ROOT: converged hydraulic solve followed by temporal-indicator route root-sink-envelope-deferred / unavailable certificate.",
+        "GENERIC: temporal indicator is not rejected for root-sink policy; record whether certificate is available and its normalized indicator."
+      ]
+    },
+    "interpretation_rules": [
+      "If ROOT reports root-sink-envelope-deferred while GENERIC reaches an available Reference-Richards temporal indicator, classify the missing authority as root-sink temporal-certificate coverage.",
+      "If both indicators are unavailable for the same non-root reason, do not make a root-specific temporal-certification claim.",
+      "D2 does not change indicator equations, budgets, tolerances or retry policy."
+    ]
+  },
+  "r1": {
+    "authority_basis": [
+      "b110_root_sink_provider_t is a concrete prescribed provider: evaluate() returns the bound root_extraction_sink vector and does not depend on pressure_head or water_content.",
+      "HeadCalc adds root_sink_term(i) linearly to the same Richards residual in which the ordinary matrix sink appears.",
+      "D1 showed identical ROOT and GENERIC rejection patterns over five frozen durations.",
+      "D2 showed GENERIC reaches an available Reference-Richards temporal indicator while ROOT is rejected solely by the explicit root-sink-envelope-deferred policy guard."
+    ],
+    "allowed_source_change": [
+      "mod_reference_richards_temporal_indicator may admit only concrete b110_root_sink_provider_t.",
+      "Validate root provider node count and bound finite prescribed vector.",
+      "No change to the temporal-indicator equations, defect operator, normalization, HeadCalc, root-sink provider, Richards solver, transaction core or tolerances."
+    ],
+    "fail_closed_rules": [
+      "Any other root_sink_provider_t implementation remains unavailable.",
+      "Malformed or nonfinite prescribed root-sink state fails closed.",
+      "Macropores and all previously deferred envelopes remain deferred."
+    ],
+    "qualification": {
+      "fixture": "D2 0.1 day exact-equilibrium case with ROOT_TOTAL=0.02 cm/day",
+      "previous_derivative": "same zero-vector temporal-history state for ROOT and GENERIC",
+      "budget_cm": 0.00001,
+      "expected": [
+        "ROOT and GENERIC both expose available model certificates.",
+        "Their indicator status, route, head_inf_bound and normalized indicator are numerically identical to tight floating-point tolerance.",
+        "No additional nonlinear solve is introduced.",
+        "O0 and O2 outputs are identical.",
+        "Existing temporal owner and negative fail-closed tests must remain green."
+      ],
+      "equivalence_tolerance": "64*epsilon scaled relative comparison"
+    },
+    "repair_decision_rule": "Admit the restricted extension only if ROOT/GNERIC equivalence is demonstrated and existing temporal regression gates remain green."
+  }
+}

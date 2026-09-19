@@ -1,0 +1,59 @@
+{
+  "trace_id": "TRACE-SWAP-0000",
+  "model": "SWAP",
+  "status": "CANDIDATE",
+  "discovery": {
+    "first_observed_date": "YYYY-MM-DD",
+    "registered_date": "YYYY-MM-DD",
+    "observer": "UNSET",
+    "work_unit": null,
+    "inspection_trigger": "OTHER",
+    "planned_or_opportunistic": "PLANNED"
+  },
+  "eligibility": {
+    "known_before_registration": false,
+    "disposition_known_before_registration": false,
+    "prospective_eligible": false,
+    "decision_reason": "PENDING"
+  },
+  "scientific_element": {
+    "scientific_element_id": "UNSET",
+    "subsystem": "UNSET",
+    "description": "UNSET"
+  },
+  "representations": [],
+  "conflict": {
+    "relation_classes": [],
+    "initial_statement": "UNSET",
+    "application_envelope": "UNSET",
+    "discovery_uncertainty": "UNSET"
+  },
+  "detection": {
+    "first_exposing_evidence": "UNSET",
+    "method": "UNSET",
+    "modernization_specific": null
+  },
+  "scientific_consequence": {
+    "potential": [],
+    "demonstrated": ["NONE_DEMONSTRATED"],
+    "evidence": "PENDING"
+  },
+  "regression_counterfactual": {
+    "preexisting_suite_ref": null,
+    "affected_route_within_scope": null,
+    "outcome": "COUNTERFACTUAL_NOT_RECONSTRUCTABLE",
+    "evidence": "PENDING"
+  },
+  "resolution": {
+    "candidate_authorities": [],
+    "final_authority": null,
+    "disposition": "UNRESOLVED_INSUFFICIENT_AUTHORITY",
+    "code_changed": null,
+    "documentation_changed": null,
+    "tests_changed": null
+  },
+  "reproducibility": {
+    "pre_resolution_ref": "UNSET",
+    "evidence_manifest": "UNSET"
+  }
+}
