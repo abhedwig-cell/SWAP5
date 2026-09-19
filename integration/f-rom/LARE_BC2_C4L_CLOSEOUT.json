@@ -1,22 +1,22 @@
 {
   "application_acceptance_adjudicated": false,
   "authority": {
-    "artifact_digest": "sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa",
-    "artifact_id": 10591503680,
-    "execution_head": "f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93",
-    "result_sha256": "4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20",
-    "workflow_run": 35467705083
+    "artifact_digest": "sha256:44f187711c4b87faa8e3c31407160af9793752bfdd56b2b67cd9185e7b886b16",
+    "artifact_id": 10592180556,
+    "execution_head": "c0381a606ac7245fcfeabddf8a8fdffb276dd285",
+    "result_sha256": "f71a1452dd87785c9f4ac68d73a82e56586afc60a2ed300eae94052158683fd8",
+    "workflow_run": 35467786671
   },
   "decision": "QH_PRESERVING_CUBIC_MIXED",
   "groundwater_feedback_authorized": false,
   "key_results": {
     "2.5_FALL": {
-      "base_rms": 0.29407170728749293,
-      "cubic_rms": 0.28158484430778125
+      "base_rms": 0.2940717072874931,
+      "cubic_rms": 0.2815848443113312
     },
     "2.5_HOLD": {
       "base_rms": 7.066239399564952e-10,
-      "cubic_rms": 0.004614730016634765
+      "cubic_rms": 0.004614730016289731
     },
     "2.5_RISE": {
       "base_rms": 0.3611379908408748,
@@ -31,8 +31,8 @@
       "cubic_rms": 0.01690199320626108
     },
     "5_RISE": {
-      "base_rms": 0.6302082750086816,
-      "cubic_rms": 0.8535351138975779
+      "base_rms": 0.6302082750086809,
+      "cubic_rms": 0.8535351139074127
     }
   },
   "model_changed": false,
@@ -48,6 +48,12 @@
   ],
   "speed_claim_authorized": false,
   "status": "CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION",
+  "superseded_authority": {
+    "artifact_id": 10591503680,
+    "execution_head": "f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93",
+    "reason": "Pre-repair C4L execution used clipping inside quadrature and did not enforce the preregistered hydrostatic u/v gates. Its scientific pattern is not used as authority.",
+    "workflow_run": 35467705083
+  },
   "supported_cases": [
     {
       "history": "WT_FALL",
