@@ -136,5 +136,33 @@
     "gain_denominator_floor_theta_rms": 1e-12,
     "floor_role": "pure numerical division guard; not a hydrological acceptance threshold",
     "below_floor_semantics": "report BELOW_GAIN_DENOMINATOR_FLOOR and do not assign g_k"
+  },
+  "pre_execution_algorithm_clarification": {
+    "before_first_C2_execution": true,
+    "diagnostic_A": {
+      "shape_coordinate": "mean water-content error per physical reduced compartment: 9 fixed 10-cm layers, moving bulk Wb/B, terminal Wt/d",
+      "shape_norm": "RMS over the 11 mean-water-content error components",
+      "denominator_numerical_floor_theta_rms": 1e-12,
+      "gain": "g_k = RMS(free_end-teacher_end shape error) / RMS(free_start-reference_start shape error)",
+      "cosine": "dot(previous shape-error, propagated state-induced shape-error)/(L2 norms) where both norms exceed the same numerical floor",
+      "predominantly_amplifying": "fraction of eligible intervals with g_k > 1.0 is greater than 0.5",
+      "note": "The 1e-12 floor is only a division-by-near-zero eligibility floor, not a hydrological acceptance threshold."
+    },
+    "diagnostic_B": {
+      "fraction_start_indices": "for history length N use start-state indices 0, floor(N/4), floor(N/2), floor(3N/4)",
+      "switch_start_indices": "add the start-state index immediately preceding every sign change of successive prescribed H increments; duplicates removed",
+      "mass_neutral_adjacent_transfer": "for adjacent compartments i,j with thicknesses Li,Lj, apply delta_theta_i=+epsilon and delta_theta_j=-epsilon*Li/Lj; the opposite signed perturbation is used for the central difference",
+      "gain": "RMS of central-difference output shape perturbation divided by RMS of the central-difference input shape perturbation",
+      "amplitude_support": "A mode is locally amplification-supporting only when both frozen amplitudes produce gain > 1.0. Amplitude gain ratios are reported without a fitted consistency tolerance.",
+      "state_support": "A frozen state supports local tangent amplification when at least one adjacent transfer mode is amplification-supporting at both amplitudes.",
+      "no_posthoc_mode_selection": true
+    },
+    "final_classification_implementation": {
+      "MANIFOLD_AMPLIFICATION_SUPPORTED": "At least one width/history is predominantly amplifying in Diagnostic A and at least one frozen Diagnostic-B state in that same width/history supports local tangent amplification.",
+      "BIAS_ACCUMULATION_DOMINANT": "No width/history is predominantly amplifying in Diagnostic A and no frozen Diagnostic-B state supports local tangent amplification.",
+      "MIXED_STATE_DYNAMICS": "All other finite hard-gated combinations, including regime-dependent amplification or disagreement between A and B.",
+      "NUMERICAL_DIAGNOSTIC_BLOCKED": "Any inherited hard gate, constitutive-domain requirement, or required frozen perturbation route fails."
+    },
+    "scientific_effect": "Clarifies deterministic implementation of already preregistered diagnostics before C1R result exposure; no model, state, closure, forcing, width, amplitude or acceptance threshold is changed."
   }
 }
