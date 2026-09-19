@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.lare.bc2.c2a.authority-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2A",
+  "required_C1R_decision": "BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED",
+  "C1R_result_path": "integration/f-rom/LARE_BC2_C1R_RESULT.json",
+  "C1R_result_blob_sha": "681abbbd1c02e508a636b19d701fe025e4900d3b",
+  "C1R_source_run": 35456312916,
+  "C1R_artifact_id": 10587924415,
+  "C1R_artifact_digest": "sha256:c5c5abb8197f3f3623b0f9bf28c0f19b9bf05724370614a25fabdb6ce5b4f24c",
+  "C1R_result_sha256": "f85d964bfa35e8ff595f1c5058db3805d436d96c1fc72c479d3efcd385844d68",
+  "C2_preregistration_path": "integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json",
+  "C2_preregistration_blob_sha": "8f82d1203c9ca2cf284a2b1a66191818a4fce695",
+  "C2_execution_authorized": true,
+  "authorization_scope": "Diagnostic A actual-trajectory one-interval shape gain only; unchanged C0 model; no model change.",
+  "firewalls": [
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_NEW_STATE",
+    "NO_CLOSURE_CHANGE",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_PRODUCTION_ROM"
+  ]
+}
