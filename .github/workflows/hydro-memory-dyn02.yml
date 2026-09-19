@@ -15,7 +15,7 @@ on:
       - 'tests/research/support/mod_hydro_memory_dyn02_bridge.f90'
       - 'tests/research/test_hydro_memory_dyn02_live_modflow.py'
       - 'tests/research/run_hydro_memory_dyn02_live_recomposition.sh'
-      - '.github/workflows/hydro-memory-acc02-f2.yml'
+      - '.github/workflows/hydro-memory-dyn02.yml'
   workflow_dispatch:
 
 permissions:
