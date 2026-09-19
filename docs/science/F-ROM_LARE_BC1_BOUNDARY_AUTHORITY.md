@@ -64,6 +64,37 @@ Using the He et al. capillary-head convention `psi = -h` in the unsaturated bran
 
 Therefore the published Taylor gradient and SWAP mode-5 gradient are algebraically compatible.
 
+## Executable Reference time-level and output semantics
+
+The original structural statement `K_face = K_N` requires an explicit time-level qualifier for the current Stage-A authority.
+
+The qualified B01 Stage-A Reference route uses `SWKIMPL=0`. In `headcalc` this means:
+
+- nodal conductivity and `kmean` are initialized from the **start-of-step/base state** before Newton iteration;
+- the pressure-head state and bottom head gradient are updated during nonlinear iteration;
+- conductivity is not recomputed from the iterated candidate head when `SWKIMPL=0`.
+
+Thus the accepted mode-5 residual uses
+
+`K_face^n * [1 + (h_N^{n+1} - h_b)/(0.5*dz_N)]`
+
+for the lower face.
+
+After the solve, `mod_reference_richards_legacy_binding` does not publish this raw face product as mode-5 `qbot`. It materializes `qbot` with the exact legacy water-balance grouping from top flux, storage change and source/sink terms. The kernel's terminal bottom-outward flux is the sign-adapted value of that materialized `qbot`.
+
+This was established executably by BC1-A2:
+
+- 2108 auditable mode-5 intervals;
+- lagged Reference face replay maximum absolute error `4.62e-11 cm/day`;
+- projected lagged reduced-last-layer replay maximum absolute error `4.62e-11 cm/day`;
+- zero sign mismatches.
+
+Therefore:
+
+1. same-state current-layer face flux is a physical LARE closure quantity;
+2. lagged-`K` face flux is a Reference numerical-semantics diagnostic/control, not silently imported as LARE physics;
+3. balance-materialized interval bottom exchange is the primary hydrological Reference observable for BC1-B.
+
 ## BC1 candidate closures
 
 No fitted coefficient is introduced.
@@ -78,7 +109,7 @@ Role:
 - directly mirrors the current SWAP mode-5 face-conductivity convention;
 - uses only the reduced last-layer state plus the prescribed external boundary head.
 
-For D3 and D4 the last layer is exactly `150-160 cm`, identical to the last 10-cm fine Reference cell. On a projected Reference state, BC1-SWAPFACE should therefore reproduce the Reference mode-5 face operator up to constitutive inversion / floating-point effects. This is a preregistered identity expectation, not a fitted result.
+For D3 and D4 the last layer is exactly `150-160 cm`, identical to the last 10-cm fine Reference cell. On one common projected state, BC1-SWAPFACE reproduces the corresponding current-state face operator to numerical noise. It is not expected to equal the Stage-A balance-materialized terminal qbot because the qualified Reference route uses lagged start-of-step conductivity under SWKIMPL=0.
 
 ### BC1-SOURCEFACE
 
@@ -101,9 +132,9 @@ BC1 has two questions.
 
 Question 1 must close before question 2.
 
-A failure of BC1-SWAPFACE in the projection audit is a sign/implementation/authority defect and blocks reduced-dynamics interpretation.
+BC1-A0 initially failed because it compared different time-level/output observables. That result is retained as blocked evidence, not interpreted as boundary-physics failure.
 
-A successful projection audit does not imply LARE dynamics fidelity, because internal interface fluxes remain approximate.
+BC1-A2 and the repaired same-state audit now qualify the geometry/sign/constitutive binding. This authorizes BC1-B fixed-domain head-driven reduced dynamics. It does not imply LARE dynamics fidelity, because internal interface fluxes remain approximate.
 
 ## Flux conventions
 
