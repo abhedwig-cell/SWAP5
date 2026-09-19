@@ -1,0 +1,122 @@
+name: TAB-HYD full Hupsel SWKIMPL0 qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-longrun.yml'
+
+jobs:
+  hupsel-full:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: legacy-runtime/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: legacy-runtime/subprojects/ttutil
+
+      - name: Checkout pinned regression cases
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup legacy-runtime/builddir legacy-runtime -Denable_pfunit=false
+          meson compile -C legacy-runtime/builddir
+
+      - name: Prepare full-period daily-output pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-long \
+            | tee build/tab-hyd-long-prepare.log
+          rm -rf build/tab-hyd-long/analytic_k1 build/tab-hyd-long/table_k1
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ("analytic_k0","table_k0"):
+              p=Path("build/tab-hyd-long")/name/"swap.swp"
+              s=p.read_text()
+              s,n=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
+              if n != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Run full 2002-2004 pair
+        shell: bash
+        run: |
+          set -uo pipefail
+          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
+          : > build/tab-hyd-long/status.tsv
+          for name in analytic_k0 table_k0; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-long/$name"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 90 "$BIN" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\n' "$name" "$rc" "$runtime" "$rows" | tee -a build/tab-hyd-long/status.tsv
+            test "$rc" -eq 100
+          done
+
+      - name: Compare full-period daily outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-long/analytic_k0 build/tab-hyd-long/table_k0 \
+            build/tab-hyd-long/comparison.json \
+            --label "SWKIMPL=0,Hupsel-2002-2004-daily" \
+            | tee build/tab-hyd-long/comparison.txt
+          {
+            echo "# TAB-HYD full Hupsel SWKIMPL0 qualification"
+            cat build/tab-hyd-long/status.tsv
+            cat build/tab-hyd-long/comparison.txt
+          } > build/tab-hyd-long/summary.md
+          cat build/tab-hyd-long/summary.md
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-full-hupsel-k0-evidence
+          path: |
+            build/tab-hyd-long/summary.md
+            build/tab-hyd-long/status.tsv
+            build/tab-hyd-long/comparison.*
+            build/tab-hyd-long/*/runtime_seconds.txt
+            build/tab-hyd-long/*/run.log
+            build/tab-hyd-long/*/result_output.csv
