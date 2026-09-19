@@ -1,0 +1,34 @@
+name: F-ROMV2 purpose-dependent fidelity authority
+
+on:
+  push:
+    branches:
+      - work/f-romv2-purpose-dependent-fidelity
+    paths:
+      - 'docs/science/F-ROMV2_*'
+      - 'integration/f-rom/F-ROMV2_*'
+      - 'tests/rom/validate_f_romv2_proposition.py'
+      - '.github/workflows/f-romv2-purpose-dependent-fidelity.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/science/F-ROMV2_*'
+      - 'integration/f-rom/F-ROMV2_*'
+      - 'tests/rom/validate_f_romv2_proposition.py'
+      - '.github/workflows/f-romv2-purpose-dependent-fidelity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate independent F-ROMV2 proposition
+        run: python3 tests/rom/validate_f_romv2_proposition.py
