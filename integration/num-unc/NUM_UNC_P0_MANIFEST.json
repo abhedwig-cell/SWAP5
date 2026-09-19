@@ -460,7 +460,7 @@
       "A_plus": 0.16770876169331828
     },
     "spatial_control": {
-      "status": "PREREGISTERED_BEFORE_EXECUTION",
+      "status": "PASS_OUTER_BRACKET_STABLE",
       "grid": {
         "cells": 32,
         "dz_cm": 5,
@@ -483,7 +483,45 @@
       ],
       "A_zero_is_gate": false,
       "posthoc_offset_widening_allowed": false,
-      "N1_execution_allowed": false
+      "N1_execution_allowed": false,
+      "result_path": "integration/num-unc/NUM_UNC_P0A_SPATIAL_RESULT.json"
+    },
+    "a1": {
+      "status": "PREREGISTERED_BEFORE_N1_EXECUTION",
+      "cases": {
+        "A_minus": 0.16270876169331827,
+        "A_zero": 0.16520876169331827,
+        "A_plus": 0.16770876169331828
+      },
+      "N0_dt_day": 0.0064,
+      "N1_dt_day": 0.0032,
+      "N1_substeps_per_forcing_block": 2,
+      "physical_forcing_block_day": 0.0064,
+      "root_process_reevaluated_each_numerical_step": true,
+      "primary_inference": "FIRST_TA_TP_LT_0.999999999999_STRICTLY_BEFORE_0.4096_DAY",
+      "outer_controls": {
+        "A_minus": "STRESS_BEFORE_RESCUE",
+        "A_plus": "NOT_BEFORE_RESCUE"
+      },
+      "primary_divergence_metric": "THETA_RMS_AT_COMMON_BLOCK_ENDPOINTS",
+      "pre_blocks": [
+        1,
+        62
+      ],
+      "post_blocks": [
+        63,
+        80
+      ],
+      "no_switch_floor_case": "A_plus",
+      "no_switch_floor_blocks": [
+        1,
+        64
+      ],
+      "representation_floor_formula": "1024*epsilon(1.0_real64)",
+      "amplification_ratio_min": 4,
+      "post_vs_floor_multiplier_min": 2,
+      "posthoc_case_relocation_allowed": false,
+      "posthoc_floor_substitution_allowed": false
     }
   },
   "canonical_reconciliation_checkpoints": [
@@ -499,4 +537,4 @@
       "document": "integration/num-unc/NUM_UNC_CANONICAL_RECONCILIATION_20260919.md"
     }
   ]
-}\n
+}
