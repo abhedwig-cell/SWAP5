@@ -166,7 +166,9 @@
     "pre_submission_checklist": "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
     "cover_letter_draft": "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
     "validator": "tools/publication/check_pub_gc_gmd_submission.py",
-    "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml"
+    "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml",
+    "figure_export_qualification": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.json",
+    "figure_export_tool": "tools/publication/export_pub_gc_gmd_figures.py"
   },
   "policy_verification": {
     "journal": "Geoscientific Model Development",
@@ -178,5 +180,19 @@
     "individual_pdf_figure_max_mb": 2,
     "individual_other_figure_max_mb": 5,
     "overall_non_supplement_max_mb": 30
+  },
+  "figure_export_qualification": {
+    "state": "PASS_REPRODUCIBLE_TRANSFORM_SEMANTICS",
+    "first_successful_run": 35425367690,
+    "latest_confirmation_run": 35425488276,
+    "latest_confirmation_job": 105850571113,
+    "latest_artifact_id": 10578682866,
+    "latest_artifact_digest": "sha256:c64439b533ac482c8f493a7074c687d95e211b2c2847cb299476ccf3b9dff8a6",
+    "latest_run_specific_submission_zip_sha256": "4dab31c587644d37542f0cf223c8e30a2ea623c224c326d9ad29814869eeabee",
+    "latest_total_pdf_bytes": 164661,
+    "pdf_byte_identity_across_runs": false,
+    "reason": "PDF/archive metadata is not timestamp/document-ID normalized; governed SVG sources and structural qualification gates are authoritative before final release.",
+    "final_release_bound_regeneration_required": true,
+    "final_release_visual_upload_review_required": true
   }
 }

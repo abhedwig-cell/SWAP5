@@ -147,3 +147,18 @@ Current non-scientific blockers:
 3. persistent exact-version archive + DOI/PID after R1/L1;
 4. final author/affiliation/contribution/funding/interest metadata;
 5. final figure PDF exports and upload packaging.
+
+
+## Qualified figure export route — 2026-09-19
+
+The F1–F7 SVG→PDF production route is now qualified:
+
+- run 35425367690 — SUCCESS;
+- seven one-page vector PDFs;
+- embedded fonts;
+- each PDF <2 MB;
+- exact flat zip ordering;
+- combined PDFs 164,666 bytes;
+- qualification evidence: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
+
+This removes figure rendering/packaging as an independent blocker. Final PDFs are regenerated once from the exact immutable publication release after R1/L1/archive closure.
