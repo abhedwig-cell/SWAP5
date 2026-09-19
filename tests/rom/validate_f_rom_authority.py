@@ -2456,6 +2456,66 @@ def validate_romv2_d25_if_present() -> str:
     return "CLOSED_SHARED_HOST_COMPUTATIONAL_VALUE_SCREEN_POSITIVE"
 
 
+def validate_romv2_d26_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D26_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D26_ROOT_UPTAKE_AUTHORITY.json")
+            == "a75c4d6f7f56ddca93823913c786e6b9e4aa964c",
+            "F-ROMV2-D26 authority blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D26_STATUS.json")
+            == "0163f673873e59f263c5b87ff909bf4f96459db1",
+            "F-ROMV2-D26 status blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D26_ROOT_UPTAKE_AUTHORITY.md")
+            == "4bed0045cb40a26445195f245b302db6bfe557c7",
+            "F-ROMV2-D26 adjudication blob drift")
+
+    auth = load_json("integration/f-rom/F-ROMV2_D26_ROOT_UPTAKE_AUTHORITY.json")
+    status = load_json("integration/f-rom/F-ROMV2_D26_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D26_ROOT_UPTAKE_AUTHORITY.md").read_text(encoding="utf-8")
+
+    require(auth["decision"]
+            == "UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_AUTHORIZED_NATIVE_FMC_TRAJECTORY_ET_HELD_PENDING_STATE_UPDATE_ORACLE",
+            "F-ROMV2-D26 decision drift")
+    require(auth["source_authority"]["FMC_primary_2015"]["role"]
+            == "CURRENT_PRIMARY_FMC_ROOT_UPTAKE_PROCESS_AUTHORITY",
+            "F-ROMV2-D26 FMC process authority drift")
+    require(auth["reconciliation"]["key_statement"].startswith(
+            "A valid purpose-dependent comparison must not require FMC to reproduce SWAP's nodewise Feddes sink field."),
+            "F-ROMV2-D26 structural non-equivalence rule missing")
+    require(auth["D27_authority"]["authorized"] is True
+            and auth["D27_authority"]["positive"] == "D27_UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_PASS",
+            "F-ROMV2-D26 D27 handoff drift")
+    require(auth["external_source_blocker"]["status"] == "IDENTIFIED_NOT_MATERIALIZED",
+            "F-ROMV2-D26 external oracle blocker drift")
+    require("NO_SWAPP_FEDDES_SPATIAL_SINK_RELABELED_AS_NATIVE_FMC" in auth["firewalls"],
+            "F-ROMV2-D26 native-FMC firewall missing")
+    require(auth["application_acceptance"] is False
+            and auth["formal_performance_claim"] is False
+            and auth["production_rom_authorized"] is False,
+            "F-ROMV2-D26 overclaims authority")
+
+    require(status["phase"] == "CLOSED_ROOT_UPTAKE_AUTHORITY_RECONCILIATION"
+            and status["D27_unstressed_accounting_preflight_authorized"] is True,
+            "F-ROMV2-D26 terminal phase/handoff drift")
+    require(status["native_FMC_root_active_trajectory_authorized"] is False
+            and status["drought_stress_feedback_authorized"] is False
+            and status["seasonal_ET_authorized"] is False,
+            "F-ROMV2-D26 status prematurely authorizes ET trajectory/stress")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D26 status authorizes production ROM")
+
+    require("same **total** water depth" in doc,
+            "F-ROMV2-D26 total-uptake comparison boundary missing")
+    require("does not authorize a root-active FMC trajectory" in doc,
+            "F-ROMV2-D26 trajectory hold missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D26 production prohibition missing")
+
+    return "CLOSED_ROOT_UPTAKE_AUTHORITY_RECONCILIATION"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2507,6 +2567,7 @@ def main() -> int:
     romv2_d23_phase = validate_romv2_d23_if_present()
     romv2_d24_phase = validate_romv2_d24_if_present()
     romv2_d25_phase = validate_romv2_d25_if_present()
+    romv2_d26_phase = validate_romv2_d26_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2542,6 +2603,7 @@ def main() -> int:
     print(f"F_ROMV2_D23_PHASE={romv2_d23_phase}")
     print(f"F_ROMV2_D24_PHASE={romv2_d24_phase}")
     print(f"F_ROMV2_D25_PHASE={romv2_d25_phase}")
+    print(f"F_ROMV2_D26_PHASE={romv2_d26_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
