@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_wu02.swbotb_classification.v1",
   "work_unit": "PPA-WU02",
-  "canonical_reconciled": "0d1798aafbf43417801d75a140e4f4f3cef74bd8",
+  "canonical_reconciled": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
   "b1_11": {
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
     "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
@@ -25,10 +25,10 @@
       "meaning": "prescribed_native_qbot",
       "time": "SW2_sinus_or_DATE2_QBOT2_table",
       "typed_contract": "production_admitted",
-      "application": "canonical_homogeneous_typed_production_bootstrap",
+      "application": "canonical_homogeneous_typed_production_bootstrap_with_b111_time_law_and_state_derived_dry_continuation",
       "groundwater_relation": "none_intrinsic",
       "classification": "RESTRICTED_PRODUCTION_TYPED_APPLICATION_CANONICAL",
-      "risk": "low_for_qualified_typed_direct_slice_medium_for_full_legacy_adapter",
+      "risk": "low_for_admitted_typed_direct_and_b111_time_law_slice",
       "qualification": {
         "owner_workflow_run": 35374976662,
         "owner_job": 105697423309,
@@ -39,8 +39,22 @@
         "documentation_run": 35374976742,
         "exact_qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
         "canonical_merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
-        "pull_request": 324
-      }
+        "pull_request": 324,
+        "ppa_low02_time_workflow_run": 35426047814,
+        "ppa_low02_time_owner_job": 105852054740,
+        "ppa_low02_time_independent_job": 105852181968,
+        "ppa_low02_time_qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+        "ppa_low02_time_pull_request": 360,
+        "ppa_low02_time_canonical_merge_commit": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+        "ppa_low02_time_status": "CANONICAL_ADMITTED_CLOSED"
+      },
+      "nonclaims": [
+        "general SWP/BBC parser migration",
+        "raw DATE2 calendar-string ingestion",
+        "mixed lower-boundary production profiles",
+        "new groundwater coupling semantics",
+        "RossFast execution of the legacy SWBOTB2 application control"
+      ]
     },
     {
       "selector": "3",
@@ -107,10 +121,10 @@
       "meaning": "mode2_oven_dry_free_drainage_continuation",
       "time": "state_triggered_internal",
       "typed_contract": "solver_admitted_as_free_drainage",
-      "application": "not_normal_selector",
+      "application": "internal_continuation_canonically_reachable_from_admitted_mode2_application_control_not_normal_selector",
       "groundwater_relation": "none",
-      "classification": "INTERNAL_CONTINUATION_PRESERVED",
-      "risk": "medium_full_legacy_mode2_only"
+      "classification": "INTERNAL_CONTINUATION_CANONICALLY_REACHABLE_NOT_NORMAL_SELECTOR",
+      "risk": "low_within_admitted_PPA_LOW02_TIME_slice"
     },
     {
       "selector": "9",
@@ -163,8 +177,12 @@
     {
       "id": "PPA-LOW02-TIME",
       "priority": 2,
-      "status": "NOT_IMPLEMENTED",
-      "meaning": "legacy SWBOTB=2 sine/table forcing plus oven-dry 2->-2 continuation"
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "meaning": "B1.11 SWBOTB=2 sine/table forcing plus exact state-derived oven-dry 2->-2 continuation",
+      "admission": {
+        "pull_request": 360,
+        "canonical_merge_commit": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
+      }
     },
     {
       "id": "PPA-LOW05-APP",
@@ -202,5 +220,21 @@
     "merge_commit": "013c549686a8f310834ddb3e8d1270166f8283f1",
     "qualified_head": "eff8670a2614f72d34016dbfc7eba040c940c245",
     "state": "CANONICAL_ADMITTED_CLOSED"
+  },
+  "ppa_low02_time": {
+    "status": "CANONICAL_ADMITTED_CLOSED",
+    "functional_pr": 360,
+    "canonical_merge_commit": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+    "qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+    "workflow_run": 35426047814,
+    "scope": "typed B1.11 SW2 sine/table law and exact state-derived mode2-to-internal--2 continuation on homogeneous Reference bottom_mode=2 applications",
+    "explicit_nonclaims": [
+      "general legacy SWP/BBC parser",
+      "raw DATE2 date-string ingestion",
+      "mode -2 as normal application selector",
+      "mixed bottom-mode profiles",
+      "new groundwater semantics",
+      "other SWBOTB selectors"
+    ]
   }
 }
