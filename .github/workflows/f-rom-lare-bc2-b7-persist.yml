@@ -1,0 +1,51 @@
+name: F-ROM-LARE persist BC2-B7 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b7-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover and persist exact BC2-B7 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b7-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586903877/zip" > /tmp/lare-bc2-b7-persist/b7.zip
+          echo "aca4f349234ff49a0e91a04bc103be799b007d7af40e186cf17ed0a6ffc75f72  /tmp/lare-bc2-b7-persist/b7.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b7-persist/b7.zip -d /tmp/lare-bc2-b7-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b7-persist/LARE_BC2_B7_RESULT.json'))
+          assert r['decision']=='BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED'
+          assert r['complete'] is True
+          assert set(r['supported_candidates'])=={'TERM_LINEAR_2_5CM','TERM_LINEAR_5_0CM'}
+          assert r['preferred_candidate']==[]
+          assert r['hard_checks']['failure_count']==0
+          assert r['added_state_dimension']==1
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B7_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b7-persist/LARE_BC2_B7_RESULT.json integration/f-rom/LARE_BC2_B7_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B7_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B7 terminal-shape result"
+          git push origin HEAD:work/f-rom-lare-rs1
