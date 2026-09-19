@@ -12,13 +12,8 @@ end = next(
 )
 hits = [
     i for i in range(start, end)
-    if "if(inverse .eq. 0)then" in line.replace(" ", "")
+    if "if(inverse.eq.0)then" in lines[i].replace(" ", "")
 ]
-if not hits:
-    hits = [
-        i for i in range(start, end)
-        if "if(inverse.eq.0)then" in lines[i].replace(" ", "")
-    ]
 if len(hits) != 1:
     # robust fallback to semantic tokens, because historical formatting differs
     hits = [
