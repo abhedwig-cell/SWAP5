@@ -36,7 +36,9 @@ After R1/L1/DOI and author metadata resolve:
 
 ## Figures
 
-Use F1 as key figure. Export F1–F7 per `PUB_GC_GMD_FIGURE_EXPORT_PLAN.json`.
+Use F1 as key figure. F1–F7 PDF export is reproducibly qualified by `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json` and `tools/publication/export_pub_gc_gmd_figures.py`.
+
+Qualified run 35425367690 generated embedded-font single-page PDFs, all <2 MB, in the required flat package. Regenerate from the final immutable publication release after R1/L1/DOI are fixed; do not treat the 90-day CI artifact as the persistent archive.
 
 Do not redraw F7 as if coupled Hupsel MODFLOW windows executed.
 
