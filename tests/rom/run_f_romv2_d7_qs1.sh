@@ -37,7 +37,7 @@ for opt in 0 2; do
 done
 cmp "$EVIDENCE/R16_o0.txt" "$EVIDENCE/R16_o2.txt" || fail "R16 O0/O2 drift"
 
-cc -O2 -fPIC -shared "$PROFILE_C" -o "$BUILD/libqs1.so" -lm
+cc -O3 -fPIC -shared "$PROFILE_C" -o "$BUILD/libqs1.so" -lm
 python3 "$ANALYZER" --reference "$EVIDENCE/R16_o2.txt" --prereg "$PREREG" \
   --preflight "$EVIDENCE/F-ROMV2_D7_PREFLIGHT_RESULT.json" \
   --profile-lib "$BUILD/libqs1.so" \
