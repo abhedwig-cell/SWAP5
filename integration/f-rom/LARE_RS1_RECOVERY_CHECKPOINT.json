@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
   "branch": "work/f-rom-lare-rs1",
-  "checkpoint_live_head_observed": "06172343fb4e0b5d3f939e689078c8cb68b54893",
+  "checkpoint_live_head_observed": "1088b99837f0910f45499c1a7bc34dbe972c1ebd",
   "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
   "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
   "durable_scientific_authority": [
@@ -44,6 +44,13 @@
       "unit": "BC2-C3A",
       "result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
       "status": "PERSISTED"
+    },
+    {
+      "unit": "BC2-C4B",
+      "result": "integration/f-rom/LARE_BC2_C4B_CLOSEOUT.json",
+      "status": "CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED",
+      "decision": "C4B_DIAGNOSTIC_BLOCKED",
+      "note": "Core oracle interventions leave the qualified constitutive/numerical domain. Later variant-local execution semantics refine diagnostics only; no causal hypothesis or model change is authorized."
     }
   ],
   "active_units_without_durable_result": [
@@ -62,14 +69,6 @@
       "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c4d.yml",
       "hardening_commit": "fb529e34f07b6f5509d8f60378bcdbe3ad078dd6",
       "resume_rule": "If expected result exists, do not rerun. Else inspect newest non-superseded C4D case artifacts; rerun only a missing width, then aggregate."
-    },
-    {
-      "unit": "BC2-C4B",
-      "preregistration": "integration/f-rom/LARE_BC2_C4B_PREREGISTRATION.json",
-      "expected_result": "integration/f-rom/LARE_BC2_C4B_RESULT.json",
-      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c4b.yml",
-      "hardening_commit": "8d023448e71254740c163d7f44e18c3cc429d340",
-      "resume_rule": "C4B has several superseded historical runs. Ignore them unless needed for provenance. Use only the newest run compatible with live preregistration/analyzer; structured BC2_C4B_CASE_BLOCKED is a valid preregistered case outcome and must not be blindly rerun."
     }
   ],
   "workflow_hardening": {
@@ -88,6 +87,6 @@
     "Update this checkpoint before launching the next expensive scientific work unit.",
     "Never rerun a qualified predecessor solely because chat/session context was lost."
   ],
-  "next_state_boundary": "Close/persist C3B, C4D and C4B independently. Do not wait for all three before persisting any one that completes.",
+  "next_state_boundary": "Close/persist C3B and C4D independently. C4B is durable CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED and must not be rerun as a prerequisite.",
   "production_rom_authorized": false
 }
