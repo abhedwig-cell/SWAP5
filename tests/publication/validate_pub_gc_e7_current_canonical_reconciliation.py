@@ -74,7 +74,7 @@ assert wu05c["status"] == "CANONICAL_ADMITTED_REVIEW_AUTHORITY_CLOSED"
 assert wu05c["scope"]["production_source_mutation"] is False
 assert wu05c["production_admission"] == "NONE_REVIEW_ONLY"
 
-assert rec["canonical_head_at_reconcile"] == "67dcbd5252ec6aab465329c55e427f535ce47f02"
+assert rec["canonical_head_at_reconcile"] == "2dc52991ade07daadd2cc963356f851e37ed29e5"
 assert rec["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
 
 print("PUB_GC_E7_CURRENT_RESULT_CLOSED=PASS")
