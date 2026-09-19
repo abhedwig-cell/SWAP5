@@ -42,6 +42,14 @@
       "message": "PPA_ROOT_HYD01_PRESERVE_FAIL unexpected production source delta",
       "classification": "STALE_ROOT_HYD01_PRESERVATION_SCOPE_AFTER_CANONICAL_ROOT_HYD02_AND_WU04A_B",
       "note": "The moving F-CI preservation replay itself passed. The downstream root-temporal preservation script still assumed that temporal_indicator was the only src successor after its frozen base."
+    },
+    "pub_gc_e7_closeout_pr408_low02_owner_replay": {
+      "workflow_run": 35456302984,
+      "job": 105932067563,
+      "failed_step": "Replay PPA-LOW02 owner qualification",
+      "message": "PPA_LOW02_GATE_FAIL admitted PPA-LOW02 backend successor drift",
+      "classification": "STALE_LOW02_OWNER_LOCK_AFTER_CANONICAL_PPA_WU04A_B",
+      "note": "Moving F-CI, ROOT-HYD01, RossFast and publication seam preservation had already passed. The LOW02 owner gate still pinned the pre-WU04 stateful-evaporation backend/bootstrap postimages."
     }
   },
   "existing_authority": {
@@ -118,7 +126,9 @@
     "No production/reference source is changed by this reconciliation.",
     "PPA-ROOT-HYD01 temporal preservation recognizes PPA-ROOT-HYD02 only through its exact canonical admission, qualified-head containment and exact five-file tangent postimages.",
     "PPA-ROOT-HYD01 temporal preservation recognizes PPA-WU04-A/B only through exact admission ancestry and exact adapter/process/bootstrap/restart/runtime/backend postimages.",
-    "The root-temporal preservation source-delta comparison remains fail-closed: observed src paths must equal the lineage-derived exact successor set."
+    "The root-temporal preservation source-delta comparison remains fail-closed: observed src paths must equal the lineage-derived exact successor set.",
+    "PPA-LOW02 owner qualification recognizes the exact PPA-WU04-A/B serialized-backend and production-bootstrap successors only after canonical admission ancestry and qualified-head containment checks.",
+    "All other LOW02 inherited authority locks remain byte-exact against their original canonical base."
   ],
   "production_delta": [],
   "reference_delta": [],
@@ -131,5 +141,5 @@
     "tests/fvq/run_ppa_low02_time_independent.sh",
     "tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh"
   ],
-  "current_repair_note": "Moving-current and downstream PPA-ROOT-HYD01 preservation are now lineage-aware for the exact admitted ROOT-HYD02 and PPA-WU04-A/B successors. No production/reference source or scientific claim changes."
+  "current_repair_note": "Moving-current, ROOT-HYD01 and LOW02 owner preservation now recognize exact admitted ROOT-HYD02/PPA-WU04-A/B successors. All repairs are tests/governance only; no production/reference source or scientific claim changes."
 }
