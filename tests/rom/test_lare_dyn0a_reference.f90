@@ -57,7 +57,7 @@ program test_lare_dyn0a_reference
   call get_environment_variable('LARE_DYN0A_SUBSTEPS',substeps_raw,status=env_status)
   if(env_status==0.and.len_trim(substeps_raw)>0)then
     read(substeps_raw,*,iostat=env_status)substeps
-    call require(env_status==0.and.any(substeps==[1,2,4,8]),'LAREDYN0R valid substep count')
+    call require(env_status==0.and.any(substeps==[1,2,4,8,16]),'LAREDYN0R valid substep count')
   end if
 
   total_states=0;total_fallbacks=0;max_abs_mass=0.0_real64;active_histories=0
