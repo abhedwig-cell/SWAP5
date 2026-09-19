@@ -1,0 +1,98 @@
+name: F-ROM-LARE CoRichards Q1 R16 sharded recovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'tests/rom/run_lare_corichards_q1_r16_case.sh'
+      - 'tests/rom/merge_lare_corichards_q1_r16_shards.py'
+      - '.github/workflows/f-rom-lare-corichards-q1-r16-sharded.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-corichards-q1-r16-sharded-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  case:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - S1_B1_F1
+          - S1_B1_F2
+          - S1_B1_F3
+          - S1_B1_F4
+          - S2_B1_F1
+          - S2_B1_F2
+          - S2_B1_F3
+          - S2_B1_F4
+          - S3_B1_F1
+          - S3_B1_F2
+          - S3_B1_F3
+          - S3_B1_F4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute R16 history shard
+        env:
+          LARE_CORICHARDS_Q1_CASE_EVIDENCE_DIR: LARE_CORICHARDS_Q1_R16_CASE
+        run: |
+          set -euo pipefail
+          bash tests/rom/run_lare_corichards_q1_r16_case.sh "${{ matrix.case }}"
+
+      - name: Upload R16 history shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1-r16-${{ matrix.case }}
+          path: LARE_CORICHARDS_Q1_R16_CASE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: case
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Recover R16 shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-corichards-q1-r16-*
+          path: /tmp/lare-corichards-r16
+          merge-multiple: false
+
+      - name: Merge and adjudicate R16
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_CORICHARDS_Q1_R16_EVIDENCE
+          python3 tests/rom/merge_lare_corichards_q1_r16_shards.py             --shard-dir /tmp/lare-corichards-r16             --output-dir LARE_CORICHARDS_Q1_R16_EVIDENCE
+          python3 tests/rom/analyze_lare_corichards_q1_member.py             --evidence-dir LARE_CORICHARDS_Q1_R16_EVIDENCE             --prereg integration/f-rom/LARE_CORICHARDS_Q1_PREREGISTRATION.json             --output LARE_CORICHARDS_Q1_R16_EVIDENCE/LARE_CORICHARDS_Q1_R16_RESULT.json             | tee LARE_CORICHARDS_Q1_R16_EVIDENCE/analyzer.txt
+          sha256sum LARE_CORICHARDS_Q1_R16_EVIDENCE/*.json LARE_CORICHARDS_Q1_R16_EVIDENCE/analyzer.txt > LARE_CORICHARDS_Q1_R16_EVIDENCE/result_sha256.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_CORICHARDS_Q1_R16_EVIDENCE/LARE_CORICHARDS_Q1_R16_RESULT.json'))
+          assert r['member']=='R16'
+          assert r['dimension']==16
+          assert r['all_O0_O2_identity'] is True
+          assert r['production_rom_authorized'] is False
+          print('LARE_CORICHARDS_Q1_R16_SHARDED_FIREWALL=PASS')
+          PY
+
+      - name: Upload sharded R16 member authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1-r16-sharded
+          path: LARE_CORICHARDS_Q1_R16_EVIDENCE/
+          if-no-files-found: error
