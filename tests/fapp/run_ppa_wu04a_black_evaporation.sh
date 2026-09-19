@@ -186,6 +186,20 @@ for opt in 0 2; do
 
   grep -Fq 'PPA-WU04-A BLACK PROCESS TEST PASS' "$OUT/process.txt" || fail "process marker O$opt"
   grep -Fq 'PPA-WU04-A BLACK RUNTIME TEST PASS' "$OUT/runtime.txt" || fail "runtime marker O$opt"
+
+  # Compile the admitted predecessor application tests against the same
+  # dependency-complete object graph.  Their standalone shell runners currently
+  # carry an older hand-written module order on canonical; preservation here is
+  # behavioral, not a historical runner-blob assertion.
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 -o "$OUT/wu01_test.o" || fail "WU01 preservation compile O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/wu01_test.o" -o "$OUT/wu01_test" || fail "WU01 preservation link O$opt"
+  "$OUT/wu01_test" > "$OUT/wu01.txt" 2>&1 || { cat "$OUT/wu01.txt" >&2; fail "WU01 preservation runtime O$opt"; }
+  grep -Fq 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS' "$OUT/wu01.txt" || fail "WU01 preservation marker O$opt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 -o "$OUT/wu03_test.o" || fail "WU03 preservation compile O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/wu03_test.o" -o "$OUT/wu03_test" || fail "WU03 preservation link O$opt"
+  "$OUT/wu03_test" > "$OUT/wu03.txt" 2>&1 || { cat "$OUT/wu03.txt" >&2; fail "WU03 preservation runtime O$opt"; }
+  grep -Fq 'PPA-WU03 COMMON FORCING OWNER GATE PASS' "$OUT/wu03.txt" || fail "WU03 preservation marker O$opt"
   for marker in     PPA_WU04A_BLACK_SOURCE_EQUATION_ORACLE=PASS     PPA_WU04A_EXPLICIT_WETTING_RESET_ORACLE=PASS     PPA_WU04A_PONDING_RESET_ORACLE=PASS     PPA_WU04A_PRODUCTION_APPLICATION_REACHABLE=PASS     PPA_WU04A_ACTUAL_EVAPORATION_HYDRAULIC_MASS_OWNER=PASS     PPA_WU04A_REJECTED_TRIAL_LDWET_IMMUTABLE=PASS     PPA_WU04A_CHANGED_DT_RETRY_FROM_CHECKPOINT=PASS     PPA_WU04A_RESTART_EXACT_LDWET_ROUNDTRIP=PASS     PPA_WU04A_RESTART_OPTION_LAYOUT_FAIL_CLOSED=PASS     PPA_WU04A_HARD_MASS=PASS; do
     grep -Fq "$marker" "$OUT/process.txt" "$OUT/runtime.txt" || fail "marker $marker O$opt"
   done
@@ -194,20 +208,9 @@ done
 
 cmp -s "$BUILD/o0/process.txt" "$BUILD/o2/process.txt" || fail "process O0/O2 output identity"
 cmp -s "$BUILD/o0/runtime.txt" "$BUILD/o2/runtime.txt" || fail "runtime O0/O2 output identity"
+cmp -s "$BUILD/o0/wu01.txt" "$BUILD/o2/wu01.txt" || fail "WU01 preservation O0/O2 output identity"
+cmp -s "$BUILD/o0/wu03.txt" "$BUILD/o2/wu03.txt" || fail "WU03 preservation O0/O2 output identity"
 echo 'PPA_WU04A_O0_O2_OUTPUT_IDENTITY=PASS'
-
-# Direct preservation of the production bootstrap and the already-admitted WU03
-# normal-input adapter.  These are the two application surfaces WU04-A composes.
-bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh > "$BUILD/wu01.txt" 2>&1 || {
-  cat "$BUILD/wu01.txt" >&2
-  fail "PPA-WU01 preservation"
-}
-bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh > "$BUILD/wu03.txt" 2>&1 || {
-  cat "$BUILD/wu03.txt" >&2
-  fail "PPA-WU03 preservation"
-}
-grep -Fq 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS' "$BUILD/wu01.txt" || fail "WU01 marker"
-grep -Fq 'PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS' "$BUILD/wu03.txt" || fail "WU03 marker"
 echo 'PPA_WU04A_PPA_WU01_PRESERVATION=PASS'
 echo 'PPA_WU04A_PPA_WU03_PRESERVATION=PASS'
 
