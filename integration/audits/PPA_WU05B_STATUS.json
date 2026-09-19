@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.ppa_wu05b.status.v1",
+  "work_unit": "PPA-WU05-B",
+  "title": "Legacy frost hydraulic boundary source trace",
+  "branch": "audit/ppa-wu05b-frost-authority",
+  "reconcile_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+  "status": "QUALIFIED_REVIEW_BOUNDARIES_FROZEN_SOURCE_MATERIALIZATION_BLOCKED",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "frozencond_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+  },
+  "frozen_boundaries": {
+    "target": "LEGACY_HYDRAULIC_FROST_MODIFIER",
+    "phase_change_new_physics": true,
+    "current_temperature_owner_preserved": true,
+    "current_hydraulic_owner_preserved": true,
+    "swap011_k_derivative_consistency_required": true,
+    "persistent_state": "UNKNOWN_DO_NOT_INFER",
+    "restart": "UNKNOWN_DO_NOT_INFER",
+    "recomputability": "UNKNOWN_DO_NOT_INFER"
+  },
+  "blocker": {
+    "class": "EXTERNAL_SOURCE_MATERIALIZATION",
+    "detail": "Exact source identities are pinned, but complete B1.11 frozencond/temperature bytes are not materialized on the current repository/project tool surface.",
+    "attempted_routes": [
+      "repository manifests and snapshots",
+      "current and historical Git trees",
+      "historical S9/S11/A23 patches",
+      "Project/Library SWAP_4.3.1 archive",
+      "historical scientific/energy audits",
+      "2026-09-19 Files/Library recheck: exact SWAP_4.3.1(6).zip and duplicates are visible but raw-byte materialization is unauthorized; recursive loose .f90 inventory contains no frozencond.f90 or temperature.f90."
+    ],
+    "raw_project_archive_located": true,
+    "raw_export_available": false,
+    "architecture_choice_required": false
+  },
+  "migration_slices": [
+    "PPA-WU05-B1 exact source materialization/census",
+    "PPA-WU05-B2 typed frost-effect oracle",
+    "PPA-WU05-B3 Richards thermal-hydraulic composition",
+    "PPA-WU05-B4 snow/frost composition"
+  ],
+  "qualification": {
+    "state": "PASS",
+    "workflow": "PPA-WU05-B frost authority",
+    "run_id": 35426148761,
+    "authority_job": 105852323316,
+    "authority_conclusion": "success",
+    "independent_job": 105852323606,
+    "independent_conclusion": "success",
+    "documentation_run": 35426148696,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run": 35426148676,
+    "canonical_qualification_conclusion": "success",
+    "canonical_matrix": "15/15 jobs successful"
+  },
+  "production_admission": "NONE_REVIEW_ONLY_BLOCKED",
+  "verdict": "QUALIFIED_OWNER_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_SOURCE_BLOCKED",
+  "next_action": "Canonical-admit this review/blocker authority only. PPA-WU05-B1 remains blocked until exact B1.11 frozencond/temperature source bytes are materialized. Continue ownership-disjunct PPA-WU05-D; do not implement frost.",
+  "materialization_recheck_20260919": {
+    "library_archive_found": true,
+    "library_archive_name": "SWAP_4.3.1(6).zip",
+    "duplicate_archives_found": true,
+    "raw_materialization": "FAILED_NO_AUTHORIZED_RAW_BYTE_PATH",
+    "loose_f90_inventory_checked": true,
+    "frozencond_loose_file_found": false,
+    "temperature_loose_file_found": false,
+    "conclusion": "SOURCE_MATERIALIZATION_BLOCKER_CONFIRMED_ON_CURRENT_FILES_SURFACE"
+  },
+  "canonical_reconciliation": {
+    "prior_reconcile_base": "add4adf54be39251ccbb6b000eed01e98326fb83",
+    "current_canonical": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+    "reconciliation_commit": "023cc58fecd1a4f916cdbd7bf92f1f93740c54a4",
+    "topology": "TRUE_TWO_PARENT",
+    "overlap": "NONE_WITH_WU05B_REVIEW_SURFACE",
+    "production_overlap": "NONE",
+    "reference_overlap": "NONE"
+  }
+}
