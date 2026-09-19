@@ -1,0 +1,270 @@
+{
+  "schema": "swap5.lare.dyn0a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A",
+  "phase": "PREREGISTERED_BEFORE_FIRST_LARE_DYNAMICS_EXECUTION",
+  "purpose": "Establish a source-anchored fixed-layer LARE research reference and compare its hydrological dynamics with fine and equal-dimension coarse Richards before any solver/product integration.",
+  "state_authority": {
+    "source": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
+    "primary": {
+      "id": "D3",
+      "depth_boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "layer_thickness_cm": [
+        140,
+        10,
+        10
+      ]
+    },
+    "aggressive_challenge": {
+      "id": "D2",
+      "depth_boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "layer_thickness_cm": [
+        150,
+        10
+      ]
+    },
+    "robustness_control": {
+      "id": "D4",
+      "role": "not executed in DYN0A unless D3 produces an unresolved state-information question"
+    }
+  },
+  "literature_authority": {
+    "He_2021": {
+      "citation": "He et al. (2021), A two-layer numerical model of soil moisture dynamics: Model development, Journal of Hydrology 602, 126797",
+      "doi": "10.1016/j.jhydrol.2021.126797",
+      "source_facts": [
+        "z positive downward",
+        "q positive downward",
+        "fixed-layer storage balance follows integrated continuity",
+        "layer-average hydraulic functions are approximated by hydraulic functions evaluated at layer-average water content",
+        "two-layer interface flux is Eq. 24 with conductivity Eq. 23",
+        "free drainage bottom flux is Eq. 32",
+        "ODE system is solved with iterative Heun predictor-corrector"
+      ]
+    },
+    "He_2026": {
+      "citation": "He et al. (2026), A Numerical Model for Integrated Form of Richards Equation, Hydrological Processes 40(1)",
+      "doi": "10.1002/hyp.70396",
+      "role": "confirms a generalized multilayer LARE research line exists; DYN0A does not claim byte/formula identity with the 2026 implementation because full generalized equations/code have not been independently inspected"
+    }
+  },
+  "model_definition": {
+    "coordinate": "depth z positive downward in the LARE research model",
+    "state": "W_i = Delta_z_i * theta_bar_i",
+    "conservation": "dW_i/dt = q_(i-1/2) - q_(i+1/2); no sink/source in DYN0A",
+    "constitutive": {
+      "material": "B01 homogeneous Mualem-van Genuchten",
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "m": "1 - 1/n",
+      "Ksat_cm_per_day": 31.225016,
+      "lambda": 0.98087,
+      "inverse": "psi(theta) = ((Se^(-1/m)-1)^(1/n))/alpha with psi=-h > 0 for unsaturated state",
+      "conductivity": "K(theta)=Ksat*Se^lambda*[1-(1-Se^(1/m))^m]^2",
+      "qualified_branch": "strictly unsaturated standard MvG branch only; fail OUTSIDE_QUALIFIED_DOMAIN if theta approaches endpoints or SWAP near-saturation smoothing would be entered"
+    },
+    "internal_interface": {
+      "label": "HE2021_EQ24_ADJACENT_FIXED_LAYER_EXTENSION",
+      "formula": "q_ij = K_ij * [1 + 2*(psi_j-psi_i)/(Delta_i+Delta_j)]",
+      "conductivity": "K_ij = [Delta_j*K_i + Delta_i*K_j]/(Delta_i+Delta_j)",
+      "provenance": "For N=2 this is algebraically He et al. 2021 Eq. 24/Eq. 23 after H=Delta_1+Delta_2 and beta=Delta_2/H. For N>2 DYN0A applies the same first-order two-layer interface closure pairwise to adjacent fixed layers.",
+      "claim_limit": "source-anchored adjacent-layer extension; not claimed as exact reproduction of the uninspected 2026 generalized LARE implementation"
+    },
+    "bottom_boundaries": [
+      {
+        "id": "FIXED_FLUX",
+        "formula": "q_bottom = K0 for each initial anchor",
+        "purpose": "controlled conservation/response experiment without an additional bottom closure"
+      },
+      {
+        "id": "FREE_DRAINAGE",
+        "formula": "q_bottom = K(theta_bar_N)",
+        "provenance": "He et al. 2021 Eq. 32"
+      }
+    ],
+    "top_boundary": {
+      "type": "prescribed physical downward flux",
+      "swap_translation": "q_down = -q_native_SWAP for the explicit-flux Reference harness"
+    }
+  },
+  "numerical_reference": {
+    "primary_ode_route": "high-accuracy research integration of the frozen ODE; dynamics conclusions concern closure/state, not production integrator performance",
+    "heun_crosscheck": {
+      "method": "iterative Heun predictor-corrector, source-anchored to He et al. 2021",
+      "observation_dt_day": 0.0008,
+      "refinement_dt_day": [
+        0.0008,
+        0.0004,
+        0.0002
+      ],
+      "role": "characterize numerical floor and confirm model-form conclusions are not a time-integration artifact"
+    },
+    "hard_invariants": [
+      "finite state and fluxes",
+      "theta_r < theta_i < theta_s on qualified steps",
+      "exact discrete water ledger to floating-point tolerance",
+      "uniform equilibrium remains invariant under q_top=q_bottom=K0",
+      "no correction flux"
+    ]
+  },
+  "experiments": {
+    "initial_effective_saturation": [
+      0.65,
+      0.85,
+      0.95
+    ],
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "duration_day": 0.8192,
+    "top_forcing_sequences": [
+      {
+        "id": "EQ",
+        "segments": [
+          [
+            "1.0*K0",
+            1024
+          ]
+        ]
+      },
+      {
+        "id": "WET",
+        "segments": [
+          [
+            "1.5*K0",
+            256
+          ],
+          [
+            "1.0*K0",
+            768
+          ]
+        ]
+      },
+      {
+        "id": "DRY",
+        "segments": [
+          [
+            "0.5*K0",
+            256
+          ],
+          [
+            "1.0*K0",
+            768
+          ]
+        ]
+      },
+      {
+        "id": "WET_DRY",
+        "segments": [
+          [
+            "1.5*K0",
+            256
+          ],
+          [
+            "0.5*K0",
+            256
+          ],
+          [
+            "1.0*K0",
+            512
+          ]
+        ]
+      }
+    ],
+    "bottom_variants": [
+      "FIXED_FLUX",
+      "FREE_DRAINAGE"
+    ]
+  },
+  "comparators": {
+    "fine_reference": {
+      "geometry_cm": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "route": "current admitted Reference Richards research harness",
+      "identical_constitutive_and_physical_flux_forcing": true
+    },
+    "coarse_richards_D3": {
+      "geometry_cm": [
+        140,
+        10,
+        10
+      ],
+      "requirement": "exact same fixed layer boundaries as LARE D3",
+      "role": "mandatory equal-state-dimension comparator"
+    },
+    "coarse_richards_D2": {
+      "geometry_cm": [
+        150,
+        10
+      ],
+      "role": "aggressive challenge comparator"
+    }
+  },
+  "primary_outputs": [
+    "total storage",
+    "D3/D2 layer storage",
+    "terminal bottom downward flux",
+    "cumulative bottom downward exchange",
+    "signed storage bias",
+    "maximum layer-storage error",
+    "time series of bottom-flux error",
+    "mass residual",
+    "qualified-domain status"
+  ],
+  "adjudication": {
+    "first_question": "Does LARE D3 preserve projected fine-Reference storage and bottom exchange better than coarse Richards D3 on the same three-layer geometry?",
+    "secondary_question": "Does D2 remain purpose-useful despite known state aliasing?",
+    "no_absolute_application_acceptance": true,
+    "no_speed_claim_in_DYN0A": true,
+    "valid_outcomes": [
+      "LARE_D3_OUTPERFORMS_EQUAL_DIMENSION_COARSE_RICHARDS",
+      "COARSE_RICHARDS_D3_SUFFICIENT",
+      "LARE_D3_CLOSURE_NOT_ADEQUATE",
+      "D2_PURPOSE_DEPENDENT_ONLY",
+      "OUTSIDE_QUALIFIED_DOMAIN"
+    ]
+  },
+  "deferred": [
+    "prescribed bottom-head closure and groundwater reversal DYN0B",
+    "moving water table",
+    "heterogeneous materials",
+    "Hupsel realistic crop/drainage forcing",
+    "production solver registration",
+    "performance claim"
+  ],
+  "firewalls": [
+    "NO_PRODUCTION_SOURCE_CHANGE",
+    "NO_POST_RESULT_PARTITION_RETUNING",
+    "NO_HIDDEN_STATE_RECONSTRUCTION_IN_DYNAMICS",
+    "NO_BOTTOM_HEAD_CLOSURE_IN_DYN0A",
+    "NO_APPLICATION_ACCEPTANCE_THRESHOLD_DERIVED_FROM_DYN0A",
+    "NO_SPEED_CLAIM_BEFORE_FIDELITY"
+  ],
+  "production_rom_authorized": false
+}
