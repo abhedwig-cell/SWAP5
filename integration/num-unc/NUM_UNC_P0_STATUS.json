@@ -4,10 +4,10 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0C_C0_FREEZE_CLOSED",
+  "status": "P0C_C0_REPAIR_RERUN_REQUIRED",
   "implemented": true,
   "persisted": true,
-  "tested": true,
+  "tested": false,
   "qualified": false,
   "relevant_paths": [
     "integration/num-unc/",
@@ -32,8 +32,8 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Run a prospectively amended spatial-control gate on frozen C- and C+ before authorizing C1. Do not treat C0 itself as spatially invariant because it is intentionally transition-near. N1 remains unauthorized.",
-  "recovery_point": "C0 frozen: transition multiplier 1.05908203125; C-=0.9531738281250001; C0=1.05908203125; C+=1.164990234375. N1 not executed.",
+  "next_action": "Rerun the exact N0-only C0 locator after P0C-R01 geometry correction. Do not use the superseded first freeze and do not execute N1.",
+  "recovery_point": "P0C-R01 persisted before N1: dynamic surface distance corrected to half-cell; prior C0 result explicitly superseded.",
   "blockers": [
     "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
     "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
