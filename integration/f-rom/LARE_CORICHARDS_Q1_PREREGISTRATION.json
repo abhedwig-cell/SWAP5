@@ -1,0 +1,261 @@
+{
+  "schema": "swap5.lare.corichards.q1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-CORICHARDS-Q1",
+  "phase": "PREREGISTERED_AFTER_C4O_BEFORE_HIGHER_DIMENSION_CORICHARDS_VIABILITY_CURVE",
+  "title": "Same-partition CoRichards numerical viability curve",
+  "governing_authority": {
+    "proposition": "docs/science/F-ROM_RESEARCH_PROPOSITION.md",
+    "lare_dyn0a": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "prior_coarse_richards": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+    "representation_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "purpose_framework": "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416"
+  },
+  "terminology": {
+    "CoRichards": "Conventional Reference-Richards discretisation run on exactly the same fixed vertical partition and therefore the same number of spatial prognostic water states as the corresponding LARE R_N member.",
+    "not_a_new_solver": true,
+    "purpose": "equal-representation-complexity comparator, not numerical-equivalence target and not production route"
+  },
+  "predecessor_findings": {
+    "C4O": "No single zero-fit Wb/Wt/H-conditioned scalar internal-gradient correction transfers across both 2.5 and 5 cm terminal representations; return to representation selection.",
+    "DYN0A_CRQ": "R2/R3 equal-dimension CoRichards dynamic cases remained numerically blocked under the frozen strict Reference authority through 16 temporal substeps. This is a comparator qualification blocker, not evidence of LARE hydrological superiority.",
+    "DYN0A_RL1": "Standard LARE is resolution-convergent on the nested R3-R16 ladder; R16 is a no-spatial-reduction control."
+  },
+  "scientific_question": "At what spatial state dimensions, if any below the 16-node fine Reference grid, does conventional same-partition Richards become a numerically qualified dynamic comparator under the already-frozen DYN0A B01 fixed-flux laboratory and strict Reference authority?",
+  "scope": {
+    "material": "B01 homogeneous Mualem-van Genuchten",
+    "profile_depth_cm": 160,
+    "sinks": false,
+    "bottom_boundary": "fixed downward flux equal to initial equilibrium K0",
+    "observation_dt_day": 0.0008,
+    "observation_steps": 1024,
+    "histories": {
+      "initial_effective_saturation": [
+        0.65,
+        0.85,
+        0.95
+      ],
+      "forcing": [
+        "EQ",
+        "WET",
+        "DRY",
+        "WET_DRY"
+      ],
+      "total": 12
+    },
+    "production_rom_authorized": false
+  },
+  "imported_anchor": {
+    "R3": {
+      "dimension": 3,
+      "thickness_cm": [
+        140,
+        10,
+        10
+      ],
+      "authority": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+      "dynamic_qualification": "BLOCKED_ALL_9_DYNAMIC_CASES_THROUGH_16_SUBSTEPS",
+      "rerun_in_Q1": false
+    }
+  },
+  "viability_ladder": [
+    {
+      "id": "R4",
+      "dimension": 4,
+      "thickness_cm": [
+        130,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R5",
+      "dimension": 5,
+      "thickness_cm": [
+        120,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R6",
+      "dimension": 6,
+      "thickness_cm": [
+        110,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "thickness_cm": [
+        90,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R12",
+      "dimension": 12,
+      "thickness_cm": [
+        50,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R16",
+      "dimension": 16,
+      "thickness_cm": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "role": "fine-grid no-spatial-reduction control"
+    }
+  ],
+  "spatial_governance": [
+    "All partitions are copied unchanged from LARE_DYN0A_RL1_PREREGISTRATION.json.",
+    "No partition may be moved, inserted or removed after observing Q1.",
+    "R16 is a numerical authority/control, not a reduced model."
+  ],
+  "numerical_route": {
+    "harness": "tests/rom/test_lare_dyn0a_reference.f90",
+    "variable_grid_materializer": "tests/rom/materialize_lare_variable_grid_stubs.py",
+    "reference_binding": "current research Reference-Richards route frozen by the DYN0A harness; no src/reference changes",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "temporal_substeps_per_observation": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "internal_dt_day": [
+      0.0008,
+      0.0004,
+      0.0002,
+      0.0001,
+      0.00005
+    ],
+    "forcing_rule": "piecewise constant over the original observation interval; forcing change indices remain unchanged",
+    "committed_sampling": "only states on the original 0.0008-day observation grid enter convergence diagnostics",
+    "fallback_policy": "exact inherited DYN0A strict-first research policy; no new failure class, tolerance relaxation or fallback authority",
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "route_classification": {
+    "QUALIFIED": "process succeeds, emits exactly 1024 accepted observation states, hard mass gate passes and O0/O2 scientific traces are bit-identical",
+    "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION": "existing preregistered near-saturation/representation-bound exit, not a numerical-failure count",
+    "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION": "existing fail-closed Reference numerical route blocks without physical-domain exit",
+    "TECHNICAL_FAILURE": "harness/infrastructure failure; blocks Q1 until repaired without changing science"
+  },
+  "temporal_qualification": {
+    "temporary_numerical_reference": "finest successful preregistered temporal route for that exact member/history",
+    "pairwise_metrics": [
+      "maximum absolute per-layer storage difference at observation times",
+      "mean absolute per-layer storage difference at observation times",
+      "maximum absolute total-storage difference at observation times",
+      "maximum absolute terminal bottom-flux difference at observation times"
+    ],
+    "qualified_case_rule": "substeps 8 and 16 both QUALIFIED, their observation-grid difference is finite, and all available successive-refinement pair metrics are non-increasing toward the finest route within numerical equality",
+    "numerical_equality": "max(1e-15,1e-10*max(1,previous_metric)) as inherited from DYN0A-CQ; numerical monotonicity only, not hydrological acceptance",
+    "no_absolute_hydrological_tolerance": true
+  },
+  "R16_authority_reproduction_gate": {
+    "expected_substeps1": {
+      "QUALIFIED": [
+        "S1_B1_F1",
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F1",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F1",
+        "S3_B1_F3"
+      ],
+      "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION": [
+        "S3_B1_F2",
+        "S3_B1_F4"
+      ]
+    },
+    "source": "existing DYN0A fine Reference fixed-flux authority",
+    "role": "technical/scientific authority reproduction before reduced-grid viability is interpreted"
+  },
+  "outputs": [
+    "route status for every member/history/substep",
+    "O0/O2 deterministic scientific-trace identity",
+    "per-case temporal pairwise convergence metrics",
+    "qualified dynamic-case count by dimension and forcing regime",
+    "finest successful internal dt by case",
+    "R16 reproduction-gate result",
+    "minimum reduced dimension with at least one qualified dynamic case, if any",
+    "minimum reduced dimension with all physically in-domain dynamic cases qualified, if any"
+  ],
+  "decisions": {
+    "REDUCED_CORICHARDS_DYNAMIC_VIABILITY_ESTABLISHED": "R16 reproduction passes and at least one R4/R5/R6/R8/R12 member has at least one non-EQ dynamic case temporally qualified.",
+    "ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE": "R16 reproduction passes, no R4-R12 non-EQ dynamic case qualifies, and R16 has at least one qualified dynamic case.",
+    "CORICHARDS_Q1_COMPARATOR_AUTHORITY_BLOCKED": "R16 reproduction fails, any TECHNICAL_FAILURE remains, or no R16 dynamic case is numerically qualified."
+  },
+  "Q2_authorization": {
+    "if_reduced_viability": "Preregister paired LARE_RN versus CoRichards_RN fidelity comparison on the common LARE+CoRichards+fine-Reference qualified cohort. Q1 does not itself compare hydrological error.",
+    "if_only_fine": "Close same-dimension reduced CoRichards comparator as unavailable on this bounded laboratory; do not infer LARE superiority from numerical robustness.",
+    "fidelity_metrics_not_selected_from_Q1": true
+  },
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_SPATIAL_GRID_RETUNING",
+    "NO_FORCING_RETUNING",
+    "NO_CONSTITUTIVE_CHANGE",
+    "NO_TOLERANCE_RELAXATION",
+    "NO_NEW_FALLBACK_POLICY",
+    "NO_USE_OF_LARE_ERROR_TO_SELECT_GRID_OR_DT",
+    "NO_HYDROLOGICAL_LARE_VS_CORICHARDS_CLAIM_IN_Q1",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "hydrological_comparison_authorized": false,
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
