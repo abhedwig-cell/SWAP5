@@ -49,3 +49,24 @@ No source, solver or reference mutation is permitted in D1.
 - When both succeed, accepted hydraulic state and mass response must be compared. A meaningful divergence is itself a semantic discrepancy.
 
 D1 is diagnostic. It cannot authorize HYDRO-MEMORY Stage 0 and it cannot justify a repair by itself.
+
+
+## R1: restricted root temporal-certificate extension
+
+D1 and D2 narrowed the blocker to the temporal authority layer. The generic prescribed sink reaches the Reference-Richards temporal indicator, while the mathematically equivalent root sink is rejected only by the explicit `root-sink-envelope-deferred` guard.
+
+A bounded repair is now preregistered before any production-source mutation.
+
+The extension may admit **only** the concrete `b110_root_sink_provider_t`. That provider is state-independent: its `evaluate` routine returns the bound prescribed root-extraction vector and does not use pressure head or water content to alter the sink. HeadCalc inserts that prescribed root sink additively into the same residual where an ordinary sink enters.
+
+The repair is limited to policy coverage in `mod_reference_richards_temporal_indicator`:
+
+- recognize `b110_root_sink_provider_t`;
+- verify matching node count;
+- verify the prescribed vector remains bound and finite;
+- leave every temporal-indicator equation and normalization unchanged;
+- keep all other root-sink provider implementations fail-closed.
+
+No HeadCalc, Richards, Feddes, transaction, tolerance or accuracy-budget change is authorized.
+
+Qualification uses the already frozen D2 0.1-day case. ROOT and GENERIC must produce available certificates with equivalent indicator result, route, `head_inf_bound` and normalized indicator to a 64-epsilon scaled floating-point tolerance. Existing temporal owner and negative fail-closed gates must remain green.
