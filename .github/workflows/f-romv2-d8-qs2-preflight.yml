@@ -1,4 +1,4 @@
-name: F-ROMV2 D8 two-segment composite preflight
+name: F-ROMV2 D8 two-segment composite discriminator
 on:
   pull_request:
     branches: [integration/f-ci-canonical]
@@ -6,29 +6,30 @@ on:
       - 'integration/f-rom/F-ROMV2_D8_PREREGISTRATION.json'
       - 'tests/rom/f_romv2_d8_qs2_segment.c'
       - 'tests/rom/preflight_f_romv2_d8_qs2_composite.py'
+      - 'tests/rom/test_f_romv2_d8_r16_reference.f90'
+      - 'tests/rom/analyze_f_romv2_d8_qs2_trajectories.py'
+      - 'tests/rom/run_f_romv2_d8_qs2.sh'
       - '.github/workflows/f-romv2-d8-qs2-preflight.yml'
 permissions: {contents: read}
 jobs:
-  preflight:
+  discriminator:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-      - name: Compile frozen segment kernel
-        run: cc -O3 -fPIC -shared tests/rom/f_romv2_d8_qs2_segment.c -o "${{ runner.temp }}/libqs2.so" -lm
-      - name: Execute frozen D8 preflight
+        with: {fetch-depth: 0}
+      - name: Compiler identity
         run: |
-          mkdir -p "${{ runner.temp }}/F-ROMV2-D8-EVIDENCE"
-          python3 tests/rom/preflight_f_romv2_d8_qs2_composite.py \
-            --prereg integration/f-rom/F-ROMV2_D8_PREREGISTRATION.json \
-            --lib "${{ runner.temp }}/libqs2.so" \
-            --output "${{ runner.temp }}/F-ROMV2-D8-EVIDENCE/F-ROMV2_D8_PREFLIGHT_RESULT.json" \
-            | tee "${{ runner.temp }}/F-ROMV2-D8-EVIDENCE/preflight.txt"
-          sha256sum "${{ runner.temp }}/F-ROMV2-D8-EVIDENCE/"* > "${{ runner.temp }}/F-ROMV2-D8-EVIDENCE/sha256.txt"
+          gfortran --version
+          cc --version
+      - name: Execute frozen D8 preflight then trajectories
+        env:
+          F_ROMV2_D8_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D8-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d8_qs2.sh
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-romv2-d8-preflight-${{ github.run_id }}
+          name: f-romv2-d8-${{ github.run_id }}
           path: ${{ runner.temp }}/F-ROMV2-D8-EVIDENCE
           if-no-files-found: error
           retention-days: 90
