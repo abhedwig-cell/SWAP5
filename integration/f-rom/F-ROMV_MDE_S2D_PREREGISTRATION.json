@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.f-romv-mde-s2d.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-MDE-S2D",
+  "title": "Discovery-only local tabulated conservative closure screen",
+  "phase": "PREREGISTERED_BEFORE_DISCOVERY_CROSS_VALIDATION",
+  "predecessor": {
+    "work_unit": "F-ROMV-MDE-S1",
+    "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+    "reason_for_new_family": "Stage 1 exposed severe instability from a globally fitted bilinear closure despite nearby same-forcing discovery states. A local table tests whether the problem is global operator identification rather than absence of useful state compression."
+  },
+  "purpose": "Use only discovery histories to test whether a nonparametric local, forcing-specific transition table can propagate reduced B01 states conservatively and stably enough to justify generation of genuinely new validation histories.",
+  "data_authority": {
+    "source_work_unit": "ROM-1A-R2",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "discovery_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "excluded_from_s2d": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "B14"
+    ],
+    "reason": "H01-H04 have already been exposed by Stage 1 and may not serve as blind evidence for a successor architecture."
+  },
+  "candidate_states": [
+    {
+      "id": "C2",
+      "dimension": 2,
+      "definition": "total storage plus one contrast between the two contiguous 80-cm theta means"
+    },
+    {
+      "id": "C4",
+      "dimension": 4,
+      "definition": "total storage plus three contrasts of contiguous 40-cm theta means relative to the deepest band"
+    },
+    {
+      "id": "C8",
+      "dimension": 8,
+      "definition": "total storage plus seven contrasts of contiguous 20-cm theta means relative to the deepest band"
+    },
+    {
+      "id": "C9_G8",
+      "dimension": 9,
+      "definition": "C8 plus G8 = 0.5*(theta_cell_15-theta_cell_16)"
+    }
+  ],
+  "closure": {
+    "family": "FORCING_SPECIFIC_ONE_NEAREST_NEIGHBOR_TRANSITION_TABLE",
+    "training_partition": "leave one discovery history out; train on the other seven histories",
+    "transition_inputs": "accepted reduced state at step k",
+    "forcing_identity": "exact frozen tuple (u_top,u_bottom,u_head_mode) of target interval k+1",
+    "lookup_metric": "Euclidean distance after per-coordinate mean/std standardization from the training partition only",
+    "nearest_neighbor_count": 1,
+    "interpolation": false,
+    "regression": false,
+    "learned_weights": false,
+    "predicted_quantities": [
+      "reduced shape-coordinate increment",
+      "bottom outward exchange",
+      "terminal bottom flux"
+    ],
+    "top_exchange": "exact from declared forcing interval",
+    "storage_update": "exact conservative update S_next = S_current - top_exchange - predicted_bottom_outward_exchange",
+    "hidden_mass_correction": false
+  },
+  "baselines": [
+    {
+      "id": "FORCING_ONLY_MEAN",
+      "definition": "within each training partition and exact forcing tuple, predict the mean shape increment, bottom exchange and bottom flux independent of state"
+    }
+  ],
+  "evaluation": {
+    "one_step": "use the exact target-history state at step k as input",
+    "recursive": "start from exact target-history step 1 and recursively advance steps 2..64",
+    "histories": "eight leave-one-history-out folds",
+    "required_metrics": [
+      "physical_state_admissibility",
+      "structural_water_ledger",
+      "total_upper_lower_storage_error",
+      "cumulative_bottom_exchange_error_and_bias",
+      "terminal_bottom_flux_error_and_sign",
+      "flow_reversal_timing",
+      "nearest_neighbor_distance_distribution",
+      "candidate_vs_forcing_only_baseline",
+      "metrics_by_candidate_dimension_and_forcing_regime"
+    ]
+  },
+  "purpose_dependent_lenses": [
+    "A_LONG_TERM_REGIONAL_WATER_BALANCE_PROXY",
+    "C_GROUNDWATER_COUPLED_HYDRAULIC_PROXY",
+    "D_FAST_EVENT_THRESHOLD"
+  ],
+  "development_decision": {
+    "positive": "LOCAL_TABLE_DISCOVERY_PROMISING_FOR_NEW_UNEXPOSED_VALIDATION",
+    "negative": "STOP_LOCAL_TABLE_DYNAMIC_ROM",
+    "structural_kill_if": [
+      "any candidate publishes nonfinite state",
+      "any candidate reconstructs theta outside B01 [0.02,0.427494]",
+      "any candidate violates the conservative water ledger by more than 1e-12 cm"
+    ],
+    "value_screen": "A candidate is not considered promising merely because it is stable. It must outperform the forcing-only mean baseline on both recursive cumulative-bottom-exchange RMSE and recursive total-storage RMSE over the pooled leave-one-history-out discovery folds.",
+    "dimension_rule": "Prefer the lowest-dimensional candidate that passes the structural gate and the value screen. Event-fidelity metrics remain separately reported and cannot be traded away silently.",
+    "final_application_acceptance": "NOT_ALLOWED_IN_S2D. Any candidate that passes S2D must be frozen before generating new unexposed validation histories and before numerical application thresholds are specified."
+  },
+  "firewalls": [
+    "NO_H01_H04_USE",
+    "NO_B14_USE",
+    "NO_NEURAL_MODEL",
+    "NO_DISTANCE_THRESHOLD_TUNING",
+    "NO_INTERPOLATION_OR_K_SELECTION",
+    "NO_PRODUCTION_ROM",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM"
+  ]
+}
