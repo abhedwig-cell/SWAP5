@@ -168,6 +168,7 @@ Governing documents:
 - `STROMINGEN_FIGURE_PLAN.md`
 - `STROMINGEN_CLAIM_LEDGER.md`
 - `STROMINGEN_MANUSCRIPT_DRAFT.md`
+- `STROMINGEN_SOURCE_AUDIT.md`
 
 Publication classification:
 
