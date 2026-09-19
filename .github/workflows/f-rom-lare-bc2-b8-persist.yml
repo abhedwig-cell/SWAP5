@@ -1,0 +1,49 @@
+name: F-ROM-LARE persist BC2-B8 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b8-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+      - name: Recover and persist exact BC2-B8 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b8-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587343581/zip" > /tmp/lare-bc2-b8-persist/b8.zip
+          echo "c158e8e364c28dca9ee394f75d5f206bf8b0d5f05fe0e0528e7b69a54dd8c545  /tmp/lare-bc2-b8-persist/b8.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b8-persist/b8.zip -d /tmp/lare-bc2-b8-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b8-persist/LARE_BC2_B8_RESULT.json'))
+          assert r['decision']=='BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED'
+          assert r['complete'] is True
+          assert r['qualified_widths_cm']==[2.5,5.0]
+          assert r['hard_checks']['max_abs_qi_bulk_minus_terminal_cm_per_day'] <= r['hard_checks']['qi_identity_gate_cm_per_day']
+          assert r['interface_flux_closure_authorized'] is False
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B8_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b8-persist/LARE_BC2_B8_RESULT.json integration/f-rom/LARE_BC2_B8_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B8_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B8 terminal control-volume result"
+          git push origin HEAD:work/f-rom-lare-rs1
