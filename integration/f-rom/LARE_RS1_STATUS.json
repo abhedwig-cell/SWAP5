@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.lare.rs1.status.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1",
+  "branch": "work/f-rom-lare-rs1",
+  "head": "23d2210c112716d5a26bcd98429ba0897592bb73",
+  "canonical_start": "9bb73821bb78a04c759b763746b50a3f777cd416",
+  "state": "RS1_PILOT_AND_OBSERVATION_TOOLING_QUALIFIED_HUPSEL_DAILY_LIBRARY_NOT_YET_EXECUTED",
+  "completed": {
+    "purpose_dependent_preregistration": true,
+    "historical_B01_B14_artifact_recovery": true,
+    "exhaustive_contiguous_partition_screen": true,
+    "partition_screen_replay_qualified": true,
+    "hupsel_candidate_grids_frozen_before_new_profile_response": true,
+    "hupsel_daily_output_preparation_tool": true,
+    "hupsel_conservative_vap_projector": true,
+    "hupsel_observation_tool_test": true,
+    "science_reconciliation_documented": true
+  },
+  "qualification": {
+    "partition_replay": {
+      "workflow_run": 35443794334,
+      "conclusion": "success"
+    },
+    "observation_tools": {
+      "workflow_run": 35443933613,
+      "conclusion": "success"
+    }
+  },
+  "key_result": {
+    "minimum_B01_zero_collision_dimension": 3,
+    "minimum_B14_zero_collision_dimension": 4,
+    "minimum_cross_material_zero_collision_dimension": 4,
+    "minimum_cross_material_partition_cm": [[0,10],[10,140],[140,150],[150,160]],
+    "interpretation": "retrospective pilot state-information result only; not predictive or application-level LARE qualification"
+  },
+  "hupsel_authority": {
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_distribution_size_bytes": 8959314,
+    "period": "2002-01-01 through 2004-12-31",
+    "profile_depth_cm": 200,
+    "material_boundary_cm": 30,
+    "drain_depth_cm": 80,
+    "bottom_boundary": "ZERO_FLUX",
+    "exact_daily_profile_execution": "NOT_YET_EXECUTED",
+    "runtime_constraint": "The exact distribution is known to exist in the user's Library but raw-byte materialization is not authorized in this Project runtime; the official public 4.3.1 download requires registration. No non-authoritative substitute is used."
+  },
+  "next_actions": [
+    "Execute the output-only daily Hupsel profile run against the exact distribution and require unchanged normalized result.bal/result.blc hashes.",
+    "Build the conservative H4/H6/H8/H10 profile library.",
+    "Perform prospective purpose-dependent collision selection and future-response probing.",
+    "Build RS1-GW separately because Hupsel zero-flux bottom is not a bottom-recharge authority.",
+    "Only then authorize comparison of standard LARE, EQ-LARE and coarse Richards on surviving fixed partitions."
+  ],
+  "production_source_changed": false,
+  "production_rom_authorized": false
+}
