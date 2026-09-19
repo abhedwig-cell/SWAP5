@@ -1,4 +1,4 @@
-name: TAB-HYD current table bounds characterization
+name: TAB-HYD current table characterization
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       - '.github/workflows/tabulated-hydraulics-characterization.yml'
 
 jobs:
-  reproduce-near-saturation-bounds-defect:
+  characterize-current-table-numerics:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout SWAP5 research branch
@@ -23,7 +23,7 @@ jobs:
           ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
           path: upstream-swap
 
-      - name: Compile current table implementation with runtime bounds checks
+      - name: Compile actual table implementation with runtime checks
         shell: bash
         run: |
           set -euo pipefail
@@ -31,41 +31,28 @@ jobs:
           FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=all -fbacktrace -Wall -Wextra"
           gfortran $FLAGS -J build/tab-hyd -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o build/tab-hyd/array_dimensions_stub.o
           gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd -c upstream-swap/src/soil/sptabulated.f90 -o build/tab-hyd/sptabulated.o
-          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd research/tabulated_hydraulics/near_saturation_bounds_harness.f90 \
-            build/tab-hyd/array_dimensions_stub.o build/tab-hyd/sptabulated.o -o build/tab-hyd/near_saturation_bounds_harness
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd research/tabulated_hydraulics/tabulated_hydraulics_characterization.f90 \
+            build/tab-hyd/array_dimensions_stub.o build/tab-hyd/sptabulated.o -o build/tab-hyd/tabulated_hydraulics_characterization
 
-      - name: Reproduce and classify bounds failure
+      - name: Run complete-preprocessing characterization
         shell: bash
         run: |
-          set -uo pipefail
-          set +e
-          ./build/tab-hyd/near_saturation_bounds_harness > build/tab-hyd/runtime.log 2>&1
-          rc=$?
-          set -e
-          cat build/tab-hyd/runtime.log
+          set -euo pipefail
+          ./build/tab-hyd/tabulated_hydraulics_characterization | tee build/tab-hyd/characterization.csv
+          grep '^SUMMARY ' build/tab-hyd/characterization.csv | tee build/tab-hyd/summary.txt
+          grep -q '^CHARACTERIZATION_COMPLETED$' build/tab-hyd/characterization.csv
           {
             echo "upstream_commit=c22bd832ddf3e53e330a552f5e31e74f183362d1"
-            echo "pressure_head_cm=-1.0e-6"
-            echo "process_return_code=$rc"
+            echo "compiler=$(gfortran --version | head -1)"
+            cat build/tab-hyd/summary.txt
           } > build/tab-hyd/evidence.txt
-
-          if [ "$rc" -eq 0 ]; then
-            echo "DEFECT_NOT_REPRODUCED: harness returned successfully" | tee -a build/tab-hyd/evidence.txt
-            exit 1
-          fi
-
-          if grep -Fq "Index '0' of dimension 3 of array 'sptab' below lower bound of 1" build/tab-hyd/runtime.log; then
-            echo "DEFECT_REPRODUCED: near-saturation fast lookup reaches sptab third-index zero" | tee -a build/tab-hyd/evidence.txt
-          else
-            echo "UNEXPECTED_FAILURE: nonzero return was not the predicted sptab bounds failure" | tee -a build/tab-hyd/evidence.txt
-            exit 1
-          fi
 
       - name: Upload characterization evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tab-hyd-near-saturation-bounds-evidence
+          name: tab-hyd-current-numerics-evidence
           path: |
-            build/tab-hyd/runtime.log
+            build/tab-hyd/characterization.csv
+            build/tab-hyd/summary.txt
             build/tab-hyd/evidence.txt
