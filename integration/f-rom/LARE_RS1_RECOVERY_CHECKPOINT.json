@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
   "branch": "work/f-rom-lare-rs1",
-  "checkpoint_live_head_observed": "6421e7c5f11cd6fcf27552598c11d6c988bdf8ac",
+  "checkpoint_live_head_observed": "04311dfd9f7f64714d6806988cf9e35bb284edda",
   "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
   "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
   "durable_scientific_authority": [
@@ -58,18 +58,21 @@
       "authority_binding": "integration/f-rom/LARE_BC2_C3B_AUTHORITY_BINDING.json",
       "decision": "DIRECTION_PARTITION_EXPLAINS_CYCLE_RANK_SHIFT",
       "status": "PERSISTED"
-    }
-  ],
-  "active_units_without_durable_result": [
+    },
     {
       "unit": "BC2-C4D",
-      "preregistration": "integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json",
-      "expected_result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
-      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c4d.yml",
-      "hardening_commit": "fb529e34f07b6f5509d8f60378bcdbe3ad078dd6",
-      "resume_rule": "If expected result exists, do not rerun. Else inspect newest non-superseded C4D case artifacts; rerun only a missing width, then aggregate."
+      "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
+      "status": "PERSISTED",
+      "decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
+      "authority": {
+        "workflow_run": 35459567540,
+        "aggregate_artifact_id": 10589288088,
+        "aggregate_artifact_digest": "sha256:162849c85ce46e73c68999d5e79dcfc1aff3409e66c95f6102e4168b30df421c"
+      },
+      "mechanism": "H_CANCELLATION_SUPPORTED; H_QH_PHASE_NOT_SUPPORTED; H_REVERSAL_LOCAL_NOT_SUPPORTED"
     }
   ],
+  "active_units_without_durable_result": [],
   "workflow_hardening": {
     "case_timeout_minutes": 15,
     "aggregate_target_timeout_minutes": 5,
@@ -86,19 +89,7 @@
     "Update this checkpoint before launching the next expensive scientific work unit.",
     "Never rerun a qualified predecessor solely because chat/session context was lost."
   ],
-  "next_state_boundary": "Persist/close BC2-C4D as soon as its hardened run is complete. Then update recovery checkpoint before launching the next diagnostic. Do not rerun C3B or C4B.",
+  "next_state_boundary": "C3B, C4B and C4D are durably closed. Next authorized diagnostic is a separately preregistered teacher-forced QI local-bias-removal causal test on monotone phases. Do not rescue C4B with clipping and do not introduce a deployable direction switch.",
   "production_rom_authorized": false,
-  "partial_case_authority": [
-    {
-      "unit": "BC2-C4D",
-      "case": "5.0",
-      "workflow_run": 35459704156,
-      "artifact_id": 10588852667,
-      "artifact_digest": "sha256:f321061521889c647a8cea7fd118bf65ea9991c626528a10e3ce6b12245acd90",
-      "decision": "BC2_C4D_PHASE_RESOLVED_CYCLE_MAPPED",
-      "complete": true,
-      "key_observation": "QI rank-1 in RISE_1/FALL/RISE_2 and non-reversal tails on both dt routes; exact reversals rank GEOMETRY_GI; QI directional cancellation ratio about 0.93. Await 2.5-cm width before width-general mechanism adjudication.",
-      "rerun_policy": "Do not rerun this width if the artifact remains available and digest-valid."
-    }
-  ]
+  "partial_case_authority": []
 }
