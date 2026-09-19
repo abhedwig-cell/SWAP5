@@ -446,6 +446,25 @@
     "data_firewall": {
       "N1_execution_allowed_in_A0": false,
       "freeze_before_A1": true
+    },
+    "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+    "first_workflow_attempt": {
+      "run_id": 35429834944,
+      "outcome": "INFRASTRUCTURE_BLOCK_BEFORE_COMPILATION",
+      "reason": "PR merge ref included canonical source advancement relative to original research baseline; no A0 model execution occurred."
     }
-  }
+  },
+  "canonical_reconciliation_checkpoints": [
+    {
+      "date": "2026-09-19",
+      "old_baseline": "187e30153c890151768e929170d14bb22af1d86d",
+      "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "timing": "BEFORE_ANY_P0A0_SCIENTIFIC_EXECUTION",
+      "source_delta": [
+        "src/solver/mod_reference_richards_temporal_indicator.f90"
+      ],
+      "scientific_design_changed": false,
+      "document": "integration/num-unc/NUM_UNC_CANONICAL_RECONCILIATION_20260919.md"
+    }
+  ]
 }
