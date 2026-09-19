@@ -1,0 +1,48 @@
+name: F-ROM-LARE persist BC2-B5 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b5-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover and persist exact BC2-B5 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b5-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586818295/zip" > /tmp/lare-bc2-b5-persist/b5.zip
+          echo "1f037b4a654faa57337c2a5420131c68d23d6effb06f67927ce305e7879931a4  /tmp/lare-bc2-b5-persist/b5.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b5-persist/b5.zip -d /tmp/lare-bc2-b5-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b5-persist/LARE_BC2_B5_RESULT.json'))
+          assert r['decision']=='BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_NOT_SUPPORTED'
+          assert r['hard_checks']['complete'] is True
+          assert r['support_relative_to_moving_average']['WATER_TABLE_FALLING']['noninferior'] is False
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B5_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b5-persist/LARE_BC2_B5_RESULT.json integration/f-rom/LARE_BC2_B5_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B5_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B5 storage-only gradient result"
+          git push origin HEAD:work/f-rom-lare-rs1
