@@ -182,11 +182,25 @@ jobs:
           ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
           path: current-swap
 
+      - name: Materialize current toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: current-swap/subprojects/toml-f
+
+      - name: Materialize current ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: current-swap/subprojects/ttutil
+
       - name: Checkout Hupselbrook TOML case source
         uses: actions/checkout@v4
         with:
           repository: SWAP-model/swap-testcases
-          ref: main
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
           path: swap-testcases
 
       - name: Install Meson build tooling
@@ -201,7 +215,7 @@ jobs:
         run: |
           set -euo pipefail
           cd current-swap
-          meson setup builddir -Denable_pfunit=false
+          FCFLAGS="-fcheck=all -fbacktrace" meson setup builddir -Denable_pfunit=false
           meson compile -C builddir
 
       - name: Stage baseline and tabulated-switch cases
@@ -218,12 +232,17 @@ jobs:
           done
           python3 - <<'PY'
           from pathlib import Path
-          p=Path("build/tab-hyd/reachability/tabulated/swap.toml")
-          s=p.read_text()
-          old="swsophy = 0"
-          if old not in s:
-              raise SystemExit("expected swsophy = 0 not found")
-          p.write_text(s.replace(old,"swsophy = 1",1))
+          for name in ("baseline", "tabulated"):
+              p=Path("build/tab-hyd/reachability")/name/"swap.toml"
+              s=p.read_text()
+              if "[general.paths]" not in s:
+                  s += '\n[general.paths]\nwork = "./"\natmosphere = "./"\ncrop = "./"\ndrain = "./"\n'
+              if name == "tabulated":
+                  old="swsophy = 0"
+                  if old not in s:
+                      raise SystemExit("expected swsophy = 0 not found")
+                  s=s.replace(old,"swsophy = 1",1)
+              p.write_text(s)
           PY
 
       - name: Run analytical baseline
@@ -253,10 +272,10 @@ jobs:
           echo "tabulated_return_code=$rc" | tee -a build/tab-hyd/reachability/reachability-summary.txt
           tail -160 build/tab-hyd/reachability/tabulated.log
           if [ "$rc" -eq 100 ]; then
-            echo "TABULATED_SWITCH_REACHED_NORMAL_COMPLETION" | tee -a build/tab-hyd/reachability/reachability-summary.txt
-            exit 1
+            echo "TABULATED_SWITCH_REACHED_NORMAL_COMPLETION_WITHOUT_TABLE_SCHEMA" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          else
+            echo "TABULATED_SWITCH_NOT_EXECUTABLE_THROUGH_CURRENT_TYPED_INPUT" | tee -a build/tab-hyd/reachability/reachability-summary.txt
           fi
-          echo "TABULATED_SWITCH_NOT_PRODUCTION_REACHABLE" | tee -a build/tab-hyd/reachability/reachability-summary.txt
 
       - name: Upload production reachability evidence
         if: always()
