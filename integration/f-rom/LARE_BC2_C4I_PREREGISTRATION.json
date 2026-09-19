@@ -109,5 +109,12 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_solver_clarification": {
+    "before_first_C4I_execution": true,
+    "minimum_independent_converged_physically_admissible_starts_per_quadrature": 2,
+    "rule": "At least two of the four frozen starts must converge to physically admissible roots at both 64- and 128-point quadrature. All valid roots at a given quadrature must satisfy the frozen a,b uniqueness tolerance. A single surviving root is insufficient evidence of identifiability.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
