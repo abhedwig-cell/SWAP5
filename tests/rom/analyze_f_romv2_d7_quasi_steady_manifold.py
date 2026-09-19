@@ -42,7 +42,7 @@ def qstats(values):
     return {"count":len(vals),"mean":sum(vals)/len(vals),
             "mean_abs":sum(abs(x) for x in vals)/len(vals),
             "rmse":math.sqrt(sum(x*x for x in vals)/len(vals)),
-            "p95_abs":a[min(len(a)-1,math.ceil(0.95*len(a))-1],
+            "p95_abs":a[min(len(a)-1,math.ceil(0.95*len(a))-1)],
             "max_abs":a[-1]}
 
 def sign(x):
