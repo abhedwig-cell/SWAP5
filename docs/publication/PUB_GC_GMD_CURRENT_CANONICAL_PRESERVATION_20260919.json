@@ -1,0 +1,135 @@
+{
+  "schema": "pub-gc-gmd-current-canonical-preservation-v1",
+  "date": "2026-09-19",
+  "previous_prearchive_basis": "faf33c1fb023a164a6456da160422685c32a88c4",
+  "current_canonical_checked": "187e30153c890151768e929170d14bb22af1d86d",
+  "publication_critical_assets_total": 24,
+  "publication_critical_assets_exact_blob_matches": 24,
+  "publication_critical_asset_drift": [],
+  "conclusion": "PUBLICATION_PACKAGE_EXACTLY_PRESERVED_ON_CURRENT_CANONICAL",
+  "interpretation": "Later canonical production/application/release work did not alter any frozen PUB-GC manuscript, E1-E7 result, table, notation, claim-audit, figure-source, or numeric-figure-generator blob listed in the prearchive inventory.",
+  "e7": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+  "archive_blocker_effect": "NONE; remaining blockers are governed release identifier, licence/redistribution authority, persistent archive PID/DOI, and final author/declaration metadata.",
+  "asset_blobs": [
+    {
+      "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+      "blob": "5c3bd2404fd8f47b653c90b78a8f635c69aeca46",
+      "role": "manuscript"
+    },
+    {
+      "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
+      "blob": "79293b3c55f558345445e142da5f0264368ab493",
+      "role": "supplement"
+    },
+    {
+      "path": "docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json",
+      "blob": "771c842b0f7f78ce9d6829e033a1d23a9f9a61e4",
+      "role": "provenance"
+    },
+    {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
+      "blob": "4636972d1e73f44c4547bdeb6c99c867043e06a3",
+      "role": "tables"
+    },
+    {
+      "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
+      "blob": "547659962f31272e1f7a1800891f85d45ee2511a",
+      "role": "notation"
+    },
+    {
+      "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
+      "blob": "b341cd36288654a9b10a7a7dfe586d631b8c4227",
+      "role": "claim evidence"
+    },
+    {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
+      "blob": "b6834d10f846ec091b4d9d90145ef560d0a36ae4",
+      "role": "claim audit"
+    },
+    {
+      "path": "docs/publication/PUB_GC_REFERENCE_AUDIT.md",
+      "blob": "5b03ccdd7a876ba45058013c517243d5e5182675",
+      "role": "reference audit"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E1_E2_RESULT.json",
+      "blob": "1c573c7287323b986ff44173748e6cf90480caf3",
+      "role": "E1/E2"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E3_RESULT.json",
+      "blob": "48b3196dc0c8a67d52c5d3c2c4282c8da4a78787",
+      "role": "E3"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json",
+      "blob": "70e757c70bac9e3d4fe013899c5ba2e95b370486",
+      "role": "E4"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.json",
+      "blob": "78a8bce35f370d6c894e8d5e4a26d0b4b1627e38",
+      "role": "E5"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json",
+      "blob": "8f420fab688f19b80332850198b4c1ddb1903e4c",
+      "role": "E6 active drainage"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E6A_STATE_SCREEN_RESULT.json",
+      "blob": "9c793a785a726da4fc6217e8d3598bb6ed61231b",
+      "role": "E6 state/flux"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+      "blob": "12751b77cc2dc9fcccaac4926f15d48e7e849651",
+      "role": "E7"
+    },
+    {
+      "path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "blob": "e4534f6f71b534e39c73ac3c52f31545af1b6159",
+      "role": "E7 selection"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F1_OWNERSHIP_AUTHORITY.svg",
+      "blob": "e2b92000435bcf66607e52e91321f8e9404d81be",
+      "role": "F1"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F2_TYPED_HYDROLOGICAL_INTERFACE.svg",
+      "blob": "774b64c40b91de98e757c41f560b8ebc4be22a9c",
+      "role": "F2"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F3_CLOSURE_VS_HEAD_CORRECTION.svg",
+      "blob": "92fb168c00bf4e387dca0b11e7e5f1a24b8bd2eb",
+      "role": "F3"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F4_RESPONSE_IDENTITY.svg",
+      "blob": "82eede35a5dcec1279296e646b596b281bc0691d",
+      "role": "F4"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg",
+      "blob": "645629d1633fbe1d7f39e191778fe97a2843e945",
+      "role": "F5"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg",
+      "blob": "2016252885c724041b481ac61953e854bf372733",
+      "role": "F6"
+    },
+    {
+      "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "blob": "b1c78a79feb817527e015a500a35478d6c6ab5a5",
+      "role": "F7"
+    },
+    {
+      "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
+      "blob": "e3843f9a5fb96c6f49899b2788539b7941c86119",
+      "role": "figure regeneration"
+    }
+  ]
+}
