@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.hydro_memory.cap01.preregistration.v1",
+  "date": "2026-09-19",
+  "authority_base": "187e30153c890151768e929170d14bb22af1d86d",
+  "work_unit": "HYDRO-MEMORY-CAP01",
+  "phase": "A_ROOT_ACTIVE_RESPONSE_ROUTE",
+  "purpose": "Qualify the existing Reference-Richards root-active groundwater response without new physics or solver changes before any HYDRO-MEMORY scientific run.",
+  "discovered_authority_boundary": {
+    "analytic_tangent": "NOT_ADMITTED_WITH_ROOT_UPTAKE",
+    "evidence": [
+      "mod_modflow6_swap_predictor_tangent_adapter sets root_uptake_covered false",
+      "mod_reference_richards_accepted_step_directional_service rejects associated root_sink",
+      "mod_modflow6_swap_predictor_response admits MODFLOW6_DERIVATIVE_CENTERED_FD without requiring tangent_complete"
+    ],
+    "disposition": "Preserve analytic fail-closed behavior. Use independently evaluated centered finite difference of the complete root-active production trajectory."
+  },
+  "frozen_profile": {
+    "richards": "Reference Richards",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "predictor_lower_boundary": "prescribed qbot / SW_STEP_CONTROL_BOTTOM_FLUX",
+    "corrector_lower_boundary": "prescribed groundwater head / bottom_mode=5",
+    "root_sink": "nonzero immutable precomputed sink within one window",
+    "excluded": [
+      "drainage response",
+      "macropore",
+      "snow",
+      "hysteresis",
+      "tabulated hydraulics",
+      "elasticity",
+      "frost",
+      "soil temperature"
+    ]
+  },
+  "tests": [
+    "root-active real production trial completes with hard mass",
+    "requested analytic accepted-trajectory direction remains unavailable/fail-closed",
+    "centered-FD endpoint derivative from qbot plus/minus perturbations is finite and well-conditioned",
+    "typed MODFLOW6 predictor response accepts centered FD with root_uptake_active=true and root_uptake_covered=false",
+    "groundwater head materializer preserves the root sink bit-for-bit for multiple heads",
+    "same-origin prescribed-head correctors do not mutate committed state before publication",
+    "local root-active centered-FD predictor agrees with centered corrector flux slope within 5 percent"
+  ],
+  "tolerances": {
+    "hard_mass_cm": 1e-12,
+    "fd_qbot_perturbation_cm_per_day": 0.0001,
+    "corrector_head_perturbation_m": 0.000001,
+    "local_slope_relative_error_max": 0.05
+  },
+  "pass_decision": "CAP01_A_PASS_CENTERED_FD_ROUTE",
+  "fail_decision": "CAP01_BLOCKED_ROOT_ACTIVE_GROUNDWATER_RESPONSE",
+  "nonclaims": [
+    "no analytic root-active tangent admission",
+    "no long drought/recovery scientific result",
+    "no PPA-WU01 root-active production-bootstrap widening",
+    "no MODFLOW6 dynamic-storage drawdown/recharge qualification yet"
+  ]
+}
