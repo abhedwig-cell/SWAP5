@@ -24,9 +24,12 @@ program test_f_romv2_d13_fmc_groundwater_comparators
   implicit none
 
   integer, parameter :: NHIST=4, NSTEPS=64
-  integer, parameter :: SYM_F0=0
+  integer, parameter :: SYM_F0=0, SYM_F025=1, SYM_F05=2, SYM_F075=3, SYM_F1=4, &
+                        SYM_F125=5, SYM_F15=6, SYM_F175=7, SYM_F2=8
   integer, parameter :: fmc_bins=200, fmc_i=100, fmc_j0=101, fmc_j1=199
   real(real64), parameter :: step_dt=0.001_real64
+  real(real64), parameter :: seed_dt=0.001_real64
+  integer, parameter :: seed_intervals=2
   real(real64), parameter :: original_total_tol=1.0e-12_real64
   real(real64), parameter :: hard_mass_gate=1.0e-12_real64
   real(real64), parameter :: theta_r_b01=0.02_real64
