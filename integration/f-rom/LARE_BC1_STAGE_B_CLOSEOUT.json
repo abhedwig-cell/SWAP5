@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.lare.bc1.stage-b.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-B",
+  "decision": "BC1_CURRENT_LAYER_RELATIVE_SUPPORT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC1_STAGE_B_PREREGISTRATION.json",
+    "reference_semantics": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "workflow_run": 35450497790,
+    "artifact_id": 10586945126,
+    "artifact_digest": "sha256:ba449e345e710c4c3e5504de290c2bca3f9d083317743efd194e05623bb94350",
+    "executed_head": "67d0be50a04f42c1d9a9060c0ca4fe751cc409e4",
+    "reference_artifact_id": 10585316225,
+    "reference_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "aggregate": {
+    "CURRENT_LAYER_FACE": {
+      "qualified_case_count": 7,
+      "outside_qualified_domain_count": 1,
+      "numerical_blocked_count": 0,
+      "max_abs_layer_storage_error_cm": 0.6236860099746337,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.04264705497079856,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.15748269481028898,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 1.504110202479879,
+      "bottom_flux_sign_mismatch_count": 3,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 1,
+      "max_abs_water_ledger_cm": 4.1255887595070817e-13
+    },
+    "BOUNDARY_FACE": {
+      "qualified_case_count": 7,
+      "outside_qualified_domain_count": 1,
+      "numerical_blocked_count": 0,
+      "max_abs_layer_storage_error_cm": 0.9609018857714702,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.06267447889969342,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.1822693642416101,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 10.763841461672577,
+      "bottom_flux_sign_mismatch_count": 20,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 9,
+      "max_abs_water_ledger_cm": 5.662137425588298e-13
+    }
+  },
+  "discriminating_cases": {
+    "D3_G00_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.6236860099746337,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.0013961797398494014,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.10354324459502529,
+      "bottom_flux_sign_mismatch_count": 0,
+      "candidate_reversal_steps": [
+        25,
+        57
+      ],
+      "reference_reversal_steps": [
+        25,
+        57
+      ]
+    },
+    "D4_G00_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.1298169418115549,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.001118541797504688,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.10252569524298982,
+      "bottom_flux_sign_mismatch_count": 0,
+      "candidate_reversal_steps": [
+        25,
+        57
+      ],
+      "reference_reversal_steps": [
+        25,
+        57
+      ]
+    },
+    "D3_G03_CURRENT_LAYER_FACE": {
+      "status": "OUTSIDE_QUALIFIED_DOMAIN"
+    },
+    "D4_G03_CURRENT_LAYER_FACE": {
+      "status": "QUALIFIED",
+      "max_abs_layer_storage_error_cm": 0.36916538188251025,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.12534016590988983,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.8356455136399958,
+      "bottom_flux_sign_mismatch_count": 1,
+      "candidate_reversal_steps": [
+        257,
+        261
+      ],
+      "reference_reversal_steps": [
+        257,
+        260
+      ]
+    },
+    "D3_G04_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.2130159493607806,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.15748269481028898,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 1.504110202479879,
+      "bottom_flux_sign_mismatch_count": 1,
+      "candidate_reversal_steps": [
+        20
+      ],
+      "reference_reversal_steps": [
+        19
+      ]
+    },
+    "D4_G04_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.07633510094115792,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.060847799321523954,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.24502783837907405,
+      "bottom_flux_sign_mismatch_count": 1,
+      "candidate_reversal_steps": [
+        20
+      ],
+      "reference_reversal_steps": [
+        19
+      ]
+    },
+    "D3_G05_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.0764860040130344,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.03282640654575664,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.3751766893038653,
+      "bottom_flux_sign_mismatch_count": 0,
+      "candidate_reversal_steps": [
+        257
+      ],
+      "reference_reversal_steps": [
+        257
+      ]
+    },
+    "D4_G05_CURRENT_LAYER_FACE": {
+      "max_abs_layer_storage_error_cm": 0.030240198562033527,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.0020513520990576017,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.015177573465400274,
+      "bottom_flux_sign_mismatch_count": 0,
+      "candidate_reversal_steps": [
+        257
+      ],
+      "reference_reversal_steps": [
+        257
+      ]
+    }
+  },
+  "interpretation": [
+    "CURRENT_LAYER_FACE has preregistered relative support over BOUNDARY_FACE with equal qualified-case coverage and no coefficient fitting.",
+    "D3 G00 reproduces the two Reference reversal steps exactly; the dominant remaining D3 error is layer redistribution rather than reversal timing or water ledger.",
+    "D4 materially reduces storage and exchange error for several histories without demonstrated additional RS1 predictive-state information, so the improvement is attributed to closure/discretization resolution.",
+    "D3 G03 exits the standard unsaturated LARE domain while D4 G03 remains qualified, showing that resolution also affects qualified-domain coverage near the wet regime.",
+    "BOUNDARY_FACE remains a sensitivity/control and is not supported as the preferred arbitrary-unsaturated fixed-head closure in this B01 laboratory."
+  ],
+  "next_gate": "LARE-BC1-RL1 current-layer-face head-driven resolution/convergence ladder; moving-water-table geometry remains held.",
+  "application_acceptance_adjudicated": false,
+  "moving_water_table_authorized": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
