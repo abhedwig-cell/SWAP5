@@ -1,4 +1,4 @@
-name: F-ROMV2 D17 combined FMC preflight
+name: F-ROMV2 D17 combined FMC comparator
 
 on:
   pull_request:
@@ -6,28 +6,30 @@ on:
     paths:
       - 'integration/f-rom/F-ROMV2_D17_PREREGISTRATION.json'
       - 'tests/rom/preflight_f_romv2_d17_combined_fmc.py'
+      - 'tests/rom/test_f_romv2_d17_combined_comparators.f90'
+      - 'tests/rom/analyze_f_romv2_d17_combined_fmc.py'
+      - 'tests/rom/run_f_romv2_d17_combined_fmc.sh'
       - '.github/workflows/f-romv2-d17-combined-fmc.yml'
 
 permissions: {contents: read}
 
 jobs:
-  preflight:
+  comparator:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
-      - name: Execute frozen D17 FMC-only preflight
-        run: |
-          mkdir -p "${{ runner.temp }}/F-ROMV2-D17-EVIDENCE"
-          python3 tests/rom/preflight_f_romv2_d17_combined_fmc.py \
-            --prereg integration/f-rom/F-ROMV2_D17_PREREGISTRATION.json \
-            --output "${{ runner.temp }}/F-ROMV2-D17-EVIDENCE/F-ROMV2_D17_PREFLIGHT_RESULT.json" \
-            | tee "${{ runner.temp }}/F-ROMV2-D17-EVIDENCE/preflight.txt"
-          sha256sum "${{ runner.temp }}/F-ROMV2-D17-EVIDENCE/"* > "${{ runner.temp }}/F-ROMV2-D17-EVIDENCE/sha256.txt"
+        with: {fetch-depth: 0}
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute frozen D17 preflight then matched comparator
+        env:
+          F_ROMV2_D17_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D17-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d17_combined_fmc.sh
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-romv2-d17-preflight-${{ github.run_id }}
+          name: f-romv2-d17-${{ github.run_id }}
           path: ${{ runner.temp }}/F-ROMV2-D17-EVIDENCE
           if-no-files-found: error
           retention-days: 90
