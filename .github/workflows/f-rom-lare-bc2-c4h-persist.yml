@@ -1,0 +1,138 @@
+name: F-ROM-LARE persist C4H terminal qi factorisation
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4h-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4H authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4h
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591051083/zip" > /tmp/c4h.zip
+          echo "301cc82963d3c0cd194ee2ea4e218ff416c2d12348dd8419ac82b755f5b315cb  /tmp/c4h.zip" | sha256sum -c -
+          unzip -q /tmp/c4h.zip -d /tmp/c4h
+          echo "0d18526edab182a94f398c7d498ab92ecbfe2ffafe898ac043ea088e66b3345f  /tmp/c4h/LARE_BC2_C4H_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4H
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4h/LARE_BC2_C4H_RESULT.json'))
+          assert r['decision']=='TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED'
+          assert r['complete'] is True
+          assert r['case_classification_counts']=={
+            'GRADIENT_COMPONENT_DOMINANT':4,
+            'CONDUCTIVITY_COMPONENT_DOMINANT':0,
+            'MIXED_COMPONENTS':0
+          }
+          assert r['hard_checks']['max_abs_B8_qi_bulk_minus_terminal_cm_per_day'] <= 1e-10
+          assert r['hard_checks']['max_abs_symmetric_factorisation_residual_cm_per_day'] <= 1e-12
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4H_CLOSEOUT_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout and science note
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4h/LARE_BC2_C4H_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4h.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4H',
+            'status':'CLOSED_GRADIENT_COMPONENT_TARGET_NO_MODEL_CHANGE',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35463177970,
+              'execution_head':'65ed4d63838537ddaedeb34535adff7573aa4ccc',
+              'artifact_id':10591051083,
+              'artifact_digest':'sha256:301cc82963d3c0cd194ee2ea4e218ff416c2d12348dd8419ac82b755f5b315cb',
+              'result_sha256':'0d18526edab182a94f398c7d498ab92ecbfe2ffafe898ac043ea088e66b3345f'
+            },
+            'case_classification_counts':r['case_classification_counts'],
+            'key_results':{
+              '2.5_WT_RISE':{
+                'gradient_RMS_cm_per_day':r['cases']['2.5']['WT_RISE']['gradient_component_EG']['rms'],
+                'conductivity_RMS_cm_per_day':r['cases']['2.5']['WT_RISE']['conductivity_component_EK']['rms'],
+                'fraction_abs_gradient_gt_conductivity':r['cases']['2.5']['WT_RISE']['fraction_abs_EG_gt_EK']
+              },
+              '2.5_WT_FALL':{
+                'gradient_RMS_cm_per_day':r['cases']['2.5']['WT_FALL']['gradient_component_EG']['rms'],
+                'conductivity_RMS_cm_per_day':r['cases']['2.5']['WT_FALL']['conductivity_component_EK']['rms'],
+                'fraction_abs_gradient_gt_conductivity':r['cases']['2.5']['WT_FALL']['fraction_abs_EG_gt_EK']
+              },
+              '5.0_WT_RISE':{
+                'gradient_RMS_cm_per_day':r['cases']['5.0']['WT_RISE']['gradient_component_EG']['rms'],
+                'conductivity_RMS_cm_per_day':r['cases']['5.0']['WT_RISE']['conductivity_component_EK']['rms'],
+                'fraction_abs_gradient_gt_conductivity':r['cases']['5.0']['WT_RISE']['fraction_abs_EG_gt_EK']
+              },
+              '5.0_WT_FALL':{
+                'gradient_RMS_cm_per_day':r['cases']['5.0']['WT_FALL']['gradient_component_EG']['rms'],
+                'conductivity_RMS_cm_per_day':r['cases']['5.0']['WT_FALL']['conductivity_component_EK']['rms'],
+                'fraction_abs_gradient_gt_conductivity':r['cases']['5.0']['WT_FALL']['fraction_abs_EG_gt_EK']
+              }
+            },
+            'scientific_interpretation':[
+              'The remaining B9 TERMINAL_SIDE_LINEAR qi error is gradient-component dominant in all four monotone width/history cases under the preregistered symmetric product-difference factorisation.',
+              'Interface-conductivity reconstruction error is much smaller than the effective-gradient component and does not justify a K-focused correction.',
+              'The next research candidate should therefore alter the physically reconstructed pressure-head/gradient shape while keeping the existing conservative Wb/Wt/H state and frozen constitutive law.',
+              'No empirical gradient correction or free-running model change is authorized by C4H.'
+            ],
+            'next_authority':'PREREGISTER_PHYSICALLY_DERIVED_GRADIENT_RECONSTRUCTION_CANDIDATE_USING_EXISTING_WB_WT_H_STATE',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4H_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4H closeout
+
+          C4H factorised the already-authorized B9 TERMINAL_SIDE_LINEAR q_i error. It did not change the closure, add state or propagate a corrected model.
+
+          Formal decision: TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED.
+
+          Reference q_i is the conservative B8 split moving-control-volume flux. The predicted q_i is exactly the B9 TERMINAL_SIDE_LINEAR trapezoidal endpoint closure. For each interval, the product q=K g was split symmetrically into a conductivity contribution E_K and an effective-gradient contribution E_G. The factorisation closes to at most 1.17e-15 cm/d.
+
+          All four monotone cases classify GRADIENT_COMPONENT_DOMINANT. At 2.5 cm WT_RISE, RMS(E_G) is about 0.3614 cm/d versus 0.00525 cm/d for RMS(E_K); |E_G| exceeds |E_K| on about 99.6% of intervals. At 5 cm WT_RISE the corresponding values are about 0.6356 and 0.01635 cm/d, with gradient dominance on every interval. The FALL cases show the same dominance.
+
+          The result is not a claim that conductivity is exact. It is a target-selection result: within the current B9 closure, remaining q_i error is not primarily explained by the interface-K reconstruction. A K-focused correction would therefore address the smaller component.
+
+          The next research step may preregister a physically derived pressure-head/gradient reconstruction that uses only the already existing Wb, Wt and H state, remains mass consistent and preserves hydrostatic equilibrium. C4H does not authorize an empirical gradient correction, an extra state variable, free propagation, groundwater feedback, application acceptance, speed claims or production ROM.
+          MD
+
+      - name: Persist exact C4H result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c4h/LARE_BC2_C4H_RESULT.json integration/f-rom/LARE_BC2_C4H_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4H_RESULT.json integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4H_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4H gradient factorisation"
+          git push origin HEAD:work/f-rom-lare-rs1
