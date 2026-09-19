@@ -1,0 +1,101 @@
+name: F-ROM-LARE BC2-C1 blocked adjudication
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c1-blocked-adjudication.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  adjudicate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable A2 Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c1-adj/a2 /tmp/c1-adj/cases
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/c1-adj/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/c1-adj/a2.zip" | sha256sum -c -
+          unzip -q /tmp/c1-adj/a2.zip -d /tmp/c1-adj/a2
+          cmp /tmp/c1-adj/a2/o0.txt /tmp/c1-adj/a2/o2.txt
+
+      - name: Recover frozen eight C1 case shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          fetch_case () {
+            id="$1"; digest="$2"; slug="$3"
+            zip="/tmp/c1-adj/${slug}.zip"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" > "$zip"
+            echo "${digest}  ${zip}" | sha256sum -c -
+            unzip -q "$zip" -d /tmp/c1-adj/cases
+          }
+          fetch_case 10588532196 7cb359ae0656f28e16004185b85f2e1c0a93ce0ba93b3ef1712205f5cf2020da w2p5_fall
+          fetch_case 10587998099 0a8f6bec599dfc5f070c9012a9c604bfb5594d0e28679280db60b7ef0598ba92 w2p5_rise
+          fetch_case 10587783770 d3b711027acb7d761b2159028fccae4a523f10a93d7fb47b2b26df8db3bb3acb w2p5_cycle
+          fetch_case 10587708788 ca3e6e18603577599e6a13b125055868267016680a11b5dfad0b2f4e285fe89b w2p5_hold
+          fetch_case 10588287473 7b9afb5e38ddfa0a93544776cca694a74b757c55a77b7e8bfa493911cd508ba3 w5_fall
+          fetch_case 10587479270 910d3b602fbe1709197e7df70cf7e076b592d6e2fa4d4e07779e1a199526efda w5_rise
+          fetch_case 10587693954 936cf4237e8208abf1e211e6095b65051b57f9befc0175171cf605c26a3318f0 w5_cycle
+          fetch_case 10587514058 f9efea212987c9cb770af2153e6363c25a550f4c4bb379aa90d6257c24b4cae6 w5_hold
+          test "$(find /tmp/c1-adj/cases -name 'c1_*.json' | wc -l)" -eq 8
+
+      - name: Adjudicate original C1 gate
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C1_BLOCKED_EVIDENCE
+          set +e
+          python3 tests/rom/aggregate_lare_bc2_c1_cases.py \
+            --cases-dir /tmp/c1-adj/cases \
+            --reference /tmp/c1-adj/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json \
+            --c0-result integration/f-rom/LARE_BC2_C0_RESULT.json \
+            --output LARE_BC2_C1_BLOCKED_EVIDENCE/LARE_BC2_C1_RESULT.json \
+            | tee LARE_BC2_C1_BLOCKED_EVIDENCE/runner.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -eq 2
+
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C1_BLOCKED_EVIDENCE/LARE_BC2_C1_RESULT.json'))
+          assert r['decision']=='BC2_C1_DIAGNOSTIC_BLOCKED'
+          assert r['complete'] is False
+          h=r['hard_checks']
+          assert h['all_reference_projections_finite'] is True
+          assert h['reference_projection_failure'] is None
+          assert h['failure_count']==1
+          assert h['all_primary_and_cross_routes_qualified'] is False
+          assert r['failures']=={
+              '2.5:WT_CYCLE:0.00010000':
+              'OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465153356722,1.0000110667249589]'
+          }
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C1_NEGATIVE_GATE=PASS')
+          PY
+          sha256sum LARE_BC2_C1_BLOCKED_EVIDENCE/* > LARE_BC2_C1_BLOCKED_EVIDENCE/sha256.txt
+
+      - name: Upload blocked C1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c1-blocked-adjudication
+          path: LARE_BC2_C1_BLOCKED_EVIDENCE/
+          if-no-files-found: error
