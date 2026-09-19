@@ -90,3 +90,22 @@ The CAP01 local response fixture therefore uses:
 - no compensating subsurface source.
 
 The equilibrium flux is calculated from the frozen hydraulic parameters and is not tuned to obtain a passing result. The root sink must therefore still produce a genuine hydrological perturbation. All previously frozen mass, finite-difference and slope criteria remain unchanged.
+
+
+## Amendment CAP01-A4: diagnostic characterization only
+
+The A3 exact-equilibrium run failed exclusively through solver rejection: 9 solver rejections, no temporal rejection and no mass rejection. Before classifying this as a net-root-extraction capability gap, one fixed diagnostic matrix is frozen.
+
+All cases use the same A3 state and numerical configuration. Only root extraction and its compensating subsurface source differ:
+
+| Case | Total root sink | Subsurface source | Role |
+| --- | ---: | --- | --- |
+| Z | 0 cm d-1 | 0 | root-active zero-sink control, must complete |
+| B | 0.02 cm d-1 | exactly equal by node | FMR09-style balanced control, must complete |
+| U1 | 0.0002 cm d-1 | 0 | observe only |
+| U2 | 0.002 cm d-1 | 0 | observe only |
+| U3 | 0.02 cm d-1 | 0 | observe only |
+
+Interpretation is frozen before execution. If Z and B complete while one or more U cases fail through solver rejection, the blocker is classified as **net-root-extraction hydraulic execution**, not generic root-active binding or accounting. If Z or B fails, that inference is not permitted.
+
+The unbalanced amplitudes and numerical tolerances may not be adjusted after inspecting this matrix. A4 is diagnostic only and cannot make CAP01 pass; the original unbalanced 0.02 cm d-1 qualification target remains unchanged.
