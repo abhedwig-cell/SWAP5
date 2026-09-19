@@ -4,9 +4,9 @@
   "audit_date": "2026-09-18",
   "canonical_basis": {
     "branch": "integration/f-ci-canonical",
-    "head": "013c549686a8f310834ddb3e8d1270166f8283f1",
+    "head": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
     "initial_head": "73bd6571de1c7f17a34417d407b14075d58b8798",
-    "reconciliation": "Initial audit baseline was followed by bounded PPA-WU03 and PPA-WU02 admissions. This register records those admitted deltas without broadening their explicit envelopes."
+    "reconciliation": "Initial audit baseline was followed by bounded PPA-WU03, PPA-WU02-A and PPA-LOW02-TIME admissions. This register records those admitted deltas without broadening their explicit envelopes."
   },
   "reference_authority": {
     "family": "SWAP-4.3.1-corrected",
@@ -693,41 +693,48 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90",
         "integration/f-si/F-SI38_STATUS.json",
         "integration/f-mr/F-MR44R_STATUS.json",
-        "integration/audits/PPA_WU02_STATUS.json"
+        "integration/audits/PPA_WU02_STATUS.json",
+        "integration/audits/PPA_LOW02_TIME_PREREGISTRATION.json",
+        "integration/audits/PPA_LOW02_TIME_STATUS.json"
       ],
-      "typed_input_config_authority": "Homogeneous typed bottom_mode=2 with already-resolved bottom_flux is admitted through the production application bootstrap. Legacy SWBOTB=2 sine/table grammar and dry-continuation semantics are not part of this route.",
-      "state_ownership": "No new process state; committed/candidate hydraulic state remains under the existing FMR transaction owner.",
-      "transaction_status": "Canonical transactional production route through the serialized Reference backend. Only accepted transfers enter canonical mass accounting.",
+      "typed_input_config_authority": "Homogeneous typed bottom_mode=2 is admitted through the production application bootstrap. PPA-LOW02-TIME additionally admits a typed B1.11 SW2 control carried with forcing: the sinus law uses explicit legacy calendar-year starts, the DATE2/QBOT2-equivalent table uses AFGEN linear interpolation with endpoint clamping, and the exact oven-dry guard derives internal -2 from trial-start bottom pressure head. Raw legacy file/date-string parsing is not admitted.",
+      "state_ownership": "No second selector/process state. The SWBOTB=2 control is immutable typed forcing; effective mode 2 or internal -2 is derived from each trial-start hydraulic state. Committed/candidate hydraulic state remains under the existing FMR transaction owner.",
+      "transaction_status": "Canonical transactional production route through the serialized Reference backend. Time-law and dry guard are re-evaluated inside each physical advance, so retries/substeps use their own t0/t1 and trial-start state. Only accepted transfers enter canonical mass accounting.",
       "qualification_evidence": [
         "F-SI38",
         "F-MR44R",
         "F-VQ75",
         "PPA-WU02 workflow 35374976662: owner job 105697423309 PASS; independent job 105697676084 PASS",
-        "PPA-WU01 preservation run 35374976768 PASS",
-        "PR #324 canonical merge 013c549686a8f310834ddb3e8d1270166f8283f1"
+        "PPA-LOW02-TIME workflow 35426047814: owner job 105852054740 PASS; independent job 105852181968 PASS",
+        "F-ROSS12 production wiring run 35426047903 PASS",
+        "F-CI96 F-ROSS12 postimage preservation run 35426047828 PASS",
+        "F-GC42/F-GC44 successor preservation runs 35426047891, 35426047827 and 35426047766 PASS",
+        "PR #360 canonical merge 6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
       ],
-      "production_admission": "CANONICAL_ADMITTED via PR #324 at 013c549686a8f310834ddb3e8d1270166f8283f1.",
+      "production_admission": "CANONICAL_ADMITTED: PPA-WU02-A via PR #324 for direct typed qbot; PPA-LOW02-TIME via PR #360 at 6c63b8d0e340669d9722bc5e3d947d42d2b467a5 for the B1.11 sine/table law and state-derived dry continuation.",
       "production_reachable": "YES_RESTRICTED_TYPED_APPLICATION_CANONICAL",
       "restrictions": [
         "Homogeneous bottom_mode=2 production profile only",
-        "No legacy SW2 sinusoidal forcing materializer",
-        "No DATE2/QBOT2 legacy table adapter",
-        "No automatic oven-dry SWBOTB=2 to internal -2 continuation",
+        "No general SWP/BBC legacy file parser",
+        "No raw DATE2 calendar-string ingestion",
+        "Legacy SWBOTB2 application control is Reference-backend only",
+        "Internal -2 is continuation only, not a normal user selector",
         "No mixed lower-boundary production profile admission",
         "No new groundwater coupling semantics"
       ],
-      "scientific_risk": "LOW for the admitted typed direct slice; MEDIUM for full legacy SWBOTB=2 application semantics",
+      "scientific_risk": "LOW within the admitted typed direct and B1.11 SW2/dry-continuation slice; broader parser/application preprocessing remains separate",
       "use_relevance": "MEDIUM_HIGH",
       "dependencies": [
         "PPA-WU01 production owner",
-        "Full legacy selector/time-law adapter remains separate"
+        "F-SI38/F-MR44R/F-VQ75 prescribed-qbot authority",
+        "PPA-LOW02-TIME canonical application control"
       ],
       "priority_band": "P1"
     },
     {
       "id": "PPA-LOW-OTHER",
       "subsystem": "lower boundary",
-      "capability": "Source-bound legacy SWBOTB remainder beyond the admitted typed qbot, zero-flux, free-drainage and restricted groundwater/head routes",
+      "capability": "Source-bound legacy SWBOTB remainder beyond the admitted typed qbot including B1.11 SW2/dry continuation, zero-flux, free-drainage and restricted groundwater/head routes",
       "classification": "F_NOT_YET_MIGRATED",
       "legacy_present": true,
       "legacy_authority": {
@@ -748,7 +755,8 @@
         "PPA-WU02 workflow 35374976662 PASS",
         "B1.11 source-bound selector inventory",
         "F-CI95 exact SWBOTB=6 restricted mapping",
-        "PPA-WU02-A canonical typed qbot admission"
+        "PPA-WU02-A canonical typed qbot admission",
+        "PPA-LOW02-TIME workflow 35426047814 PASS and PR #360 canonical admission"
       ],
       "production_admission": "NO broad lower-boundary family admission",
       "production_reachable": "NO_FOR_REMAINING_SELECTOR_FAMILIES",
@@ -757,13 +765,12 @@
         "SWBOTB=3 Cauchy/deep-aquifer semantics not migrated",
         "SWBOTB=4 q(gwl) application law not migrated",
         "legacy standalone SWBOTB=5 DATE5/HBOT5 application adapter not migrated",
-        "SWBOTB=8 lysimeter active-set continuation not migrated",
-        "legacy SWBOTB=2 sine/table and 2-to--2 dry continuation remain outside the typed direct qbot admission"
+        "SWBOTB=8 lysimeter active-set continuation not migrated"
       ],
       "scientific_risk": "MEDIUM to HIGH by selector",
       "use_relevance": "HIGH",
       "dependencies": [
-        "Use PPA-WU02 frozen migration slices; do not reopen broad source recovery"
+        "Use the remaining PPA-WU02 frozen selector-specific migration slices; do not reopen broad source recovery"
       ],
       "priority_band": "P1"
     },
