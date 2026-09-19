@@ -1,0 +1,51 @@
+name: F-ROM-LARE persist BC2-B6 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b6-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover and persist exact BC2-B6 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b6-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586893546/zip" > /tmp/lare-bc2-b6-persist/b6.zip
+          echo "331799b2fc6642c05ed1f594be38c5272a2ea8607f1e39ffc416753f4fba0721  /tmp/lare-bc2-b6-persist/b6.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b6-persist/b6.zip -d /tmp/lare-bc2-b6-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b6-persist/LARE_BC2_B6_RESULT.json'))
+          assert r['decision']=='BC2_B6_TERMINAL_STORAGE_NOT_SUPPORTED'
+          assert r['complete'] is True
+          assert r['hard_checks']['failure_count']==0
+          assert r['hard_checks']['max_abs_terminal_storage_64_vs_128_cm'] <= r['hard_checks']['quadrature_crosscheck_gate_cm']
+          assert r['supported_terminal_states']==[]
+          assert r['added_state_dimension']==1
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B6_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b6-persist/LARE_BC2_B6_RESULT.json integration/f-rom/LARE_BC2_B6_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B6_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B6 terminal-storage result"
+          git push origin HEAD:work/f-rom-lare-rs1
