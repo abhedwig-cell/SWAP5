@@ -355,10 +355,11 @@
       ],
       "expansion_allowed": false,
       "bisection_max": 12,
-      "stop_scaled_width": 0.001,
       "frozen_minus_offset_cm": -10,
       "frozen_plus_offset_cm": 10,
-      "posthoc_offset_widening_allowed": false
+      "posthoc_offset_widening_allowed": false,
+      "exact_zero_rule": "If a prospective search or bisection point is ZERO_WITHIN_REPRESENTATION, freeze that delta_h directly as the transition centre.",
+      "bisection_execution": "Exactly 12 bisection iterations unless ZERO_WITHIN_REPRESENTATION is encountered."
     },
     "inference": {
       "quantity": "Q_dry = sum blocks 9..32 qbot*dt",
