@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.f-romv2-d2.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D2",
+  "title": "Physical-reduction architecture discrimination by vertical Richards coarsening",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "9bb73821bb78a04c759b763746b50a3f777cd416",
+  "purpose": "Determine whether training-free vertical coarsening of the same Richards physics provides a broader and scientifically competitive reduced-model family before investing in a quasi-steady or learned successor.",
+  "scientific_role": {
+    "class": "DEVELOPMENT_ARCHITECTURE_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "production_rom_authorized": false,
+    "statement": "Spatially coarsened Richards is treated as a legitimate deliberately reduced physical model, not merely as a benchmark that must lose to a learned ROM."
+  },
+  "authority": {
+    "F_ROMV2_proposition": "integration/f-rom/F-ROMV2_STATUS.json",
+    "F_ROMV2_V1": "integration/f-rom/F-ROMV2_V1_STATUS.json",
+    "vertical_reference_precedent": "integration/f-rom/F-ROM0V1_RESULT.json",
+    "reference_route": "current-canonical F-ROM1A-I0 one-advance observation seam plus frozen research-only strict-first fallback policy",
+    "material": "B01",
+    "constitutive_model": "same B01 Mualem-van Genuchten parameters at every grid resolution",
+    "total_depth_cm": 160,
+    "effective_saturation_initial": 0.85
+  },
+  "exposed_development_workload": {
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "use": "architecture screening only",
+    "new_blind_claim": false,
+    "forcing_sequences": "exact F-ROMV2-V1 D01-D08 and V01-V04 sequences",
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016
+  },
+  "geometries": [
+    {
+      "id": "R16",
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "FULLER_GRID_DEVELOPMENT_REFERENCE"
+    },
+    {
+      "id": "R8",
+      "nodes": 8,
+      "dz_cm": 20,
+      "role": "COARSE_RICHARDS_CANDIDATE"
+    },
+    {
+      "id": "R4",
+      "nodes": 4,
+      "dz_cm": 40,
+      "role": "COARSE_RICHARDS_CANDIDATE"
+    },
+    {
+      "id": "R2",
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "COARSE_RICHARDS_CANDIDATE"
+    }
+  ],
+  "invariants": [
+    "same 160 cm physical depth",
+    "same homogeneous B01 constitutive parameters",
+    "same initial effective saturation",
+    "same physical forcing rates and prescribed bottom heads",
+    "same observation times",
+    "same strict-first research Reference policy",
+    "same hard accepted-step transaction mass gate of 1e-12 cm",
+    "no source or reference mutation"
+  ],
+  "common_fidelity_outputs": [
+    "total_storage_cm",
+    "upper_0_80cm_storage_cm",
+    "lower_80_160cm_storage_cm",
+    "cumulative_bottom_outward_exchange_cm",
+    "terminal_bottom_outward_flux_cm_per_day",
+    "bottom_flux_sign",
+    "flow_reversal_steps",
+    "long_horizon_bias_within_each_64_step_history",
+    "physical_state_bounds",
+    "accepted_step_mass_residual"
+  ],
+  "profile_outputs": {
+    "rule": "Profile fidelity is diagnostic and resolution-aware, not a universal acceptance requirement.",
+    "R8_mapping": "compare each 20 cm R8 cell theta/head with average of corresponding two 10 cm R16 cells",
+    "R4_mapping": "compare each 40 cm R4 cell with average of corresponding four R16 cells",
+    "R2_mapping": "compare each 80 cm R2 cell with average of corresponding eight R16 cells",
+    "metrics": [
+      "mapped_theta_Linf",
+      "mapped_theta_RMS",
+      "mapped_head_Linf",
+      "mapped_head_RMS"
+    ]
+  },
+  "computational_proxies": {
+    "formal_performance_claim": false,
+    "metrics": [
+      "node_count",
+      "nonlinear_iterations_total",
+      "nonlinear_iterations_per_accepted_interval",
+      "backtracking_total",
+      "research_reference_fallback_count"
+    ],
+    "interpretation": "Node count and solver work are architecture proxies only. They do not substitute for isolated-host end-to-end timing."
+  },
+  "analysis": {
+    "per_history": true,
+    "pooled_D01_D08": true,
+    "pooled_V01_V03": true,
+    "V04_safety_context": true,
+    "normalization": "Report absolute errors and errors relative to the magnitude/range of the corresponding R16 signal where informative. Do not turn observed ratios into acceptance thresholds.",
+    "frontier": "Report non-dominated candidates separately for cumulative/balance fidelity and transient/event fidelity versus structural computational proxies."
+  },
+  "decisions": {
+    "positive_family": "COARSE_RICHARDS_REMAINS_SERIOUS_PHYSICAL_REDUCTION_CANDIDATE",
+    "negative_family": "COARSE_RICHARDS_NOT_COMPETITIVE_IN_TESTED_B01_DEVELOPMENT_DOMAIN",
+    "selection_rule": "No single winner is chosen by a weighted score. Retain every geometry that is non-dominated on at least one declared fidelity/cost view and satisfies integrity.",
+    "integrity_kill": [
+      "nonfinite accepted state",
+      "physical water content outside B01 theta bounds",
+      "accepted-step transaction mass residual exceeds 1e-12 cm",
+      "frozen research Reference policy cannot produce the preregistered history without an unclassified failure"
+    ],
+    "no_application_thresholds": true
+  },
+  "successor_logic": {
+    "if_coarse_richards_competitive": "Carry the strongest non-dominated coarse grid(s) directly into later purpose-specific cost-fidelity qualification. A quasi-steady manifold must then beat or complement them, not merely beat R16.",
+    "if_coarse_richards_not_competitive": "Proceed to an independently specified quasi-steady/integrated-manifold physical reduction.",
+    "if_tradeoff_split": "Retain coarse Richards for event-sensitive/high-fidelity use and test quasi-steady reduction for regional/groundwater-coupled balance use."
+  },
+  "firewalls": [
+    "NO_PRODUCTION_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_BLIND_CONFIRMATION_CLAIM",
+    "NO_APPLICATION_THRESHOLD_FROM_D2_RESULTS",
+    "NO_WEIGHTED_ACCURACY_SCORE",
+    "NO_C2_OOD_RETUNING",
+    "NO_METASWAP_CODE_OR_ALGORITHM_INHERITANCE"
+  ]
+}
