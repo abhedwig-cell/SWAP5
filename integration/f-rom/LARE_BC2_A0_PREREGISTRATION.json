@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.lare.bc2.a0.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-A0",
+  "phase": "PREREGISTERED_BEFORE_MOVING_CONTROL_VOLUME_AUDIT",
+  "canonical_research_branch": "work/f-rom-lare-rs1",
+  "purpose": "Reconcile the printed moving-average ODE with the exact moving-control-volume storage identity before any moving-water-table response comparison or SWAP groundwater bridge.",
+  "authority": {
+    "source_doc": "docs/science/F-ROM_LARE_BC2_MOVING_WATER_TABLE_AUTHORITY.md",
+    "primary_paper": "He et al. 2021 J Hydrol 602 126797 DOI 10.1016/j.jhydrol.2021.126797",
+    "assessment_paper": "He et al. 2022 J Hydrol 613A 128327 DOI 10.1016/j.jhydrol.2022.128327",
+    "public_author_dataset": {
+      "doi": "10.23719/1524300",
+      "filename": "ScienceHub_2LAYER_MODEL_DEVELOPMENT.xlsx",
+      "role": "preferred later trajectory reproduction oracle when exact bytes are available",
+      "not_required_for_A0": true
+    }
+  },
+  "published_dynamic_water_table": {
+    "h_cm": 10,
+    "H0_cm": 40,
+    "H_of_t": "H0*(1-exp(-0.03*t))",
+    "dHdt": "0.03*H0*exp(-0.03*t)",
+    "duration_day": 100,
+    "reported_dt_day": 0.001,
+    "top_rain_cm_per_day": 0,
+    "potential_transpiration_cm_per_day": 0,
+    "materials": {
+      "SANDY_LOAM": {
+        "alpha_per_cm": 0.075,
+        "n": 1.89,
+        "theta_r": 0.065,
+        "theta_s": 0.41,
+        "Ks_cm_per_day": 106.1,
+        "lambda": 0.5
+      },
+      "LOAM": {
+        "alpha_per_cm": 0.036,
+        "n": 1.56,
+        "theta_r": 0.078,
+        "theta_s": 0.43,
+        "Ks_cm_per_day": 24.96,
+        "lambda": 0.5
+      },
+      "CLAY_LOAM": {
+        "alpha_per_cm": 0.019,
+        "n": 1.31,
+        "theta_r": 0.095,
+        "theta_s": 0.41,
+        "Ks_cm_per_day": 6.24,
+        "lambda": 0.5
+      }
+    },
+    "expected_transition_time_day": "-ln(1-h/H0)/0.03",
+    "expected_transition_time_approx_day": 9.5894
+  },
+  "moving_storage_identity": {
+    "generic_interval": "a <= z <= H(t)",
+    "average_definition": "theta_bar = integral_a^H(theta dz)/(H-a)",
+    "storage": "U=(H-a)*theta_bar",
+    "exact_leibniz": "dU/dt - theta(H,t)*dH/dt = q_in-q_out-Q_sink",
+    "water_table_specialization": "theta(H,t)=theta_s",
+    "expanded_exact": "(H-a)*dtheta_bar/dt + (theta_bar-theta_s)*dH/dt = q_in-q_out-Q_sink"
+  },
+  "candidate_interpretations": {
+    "CONSERVATIVE_PRODUCT": {
+      "equation": "d[(H-a)*theta_bar]/dt - theta_s*dH/dt = q_in-q_out-Q_sink",
+      "role": "exact moving-control-volume identity implied by the average definition plus continuity"
+    },
+    "PRINTED_AVERAGE_LITERAL": {
+      "equation": "(H-a)*dtheta_bar/dt - theta_s*dH/dt = q_in-q_out-Q_sink",
+      "role": "literal reading of the displayed moving-average ODE in the 2021/2022 papers; not assumed equivalent to product form"
+    }
+  },
+  "test_path": {
+    "state_path": "hydrostatic equilibrium profile referenced to the prescribed water-table depth H(t), used only as a physically admissible manufactured moving-state path",
+    "pressure_suction": "psi(z,t)=H(t)-z for z<=H",
+    "theta": "Mualem-Van Genuchten retention using the frozen source material parameters",
+    "quadrature": "high-accuracy deterministic numerical quadrature of theta over each active virtual layer",
+    "rationale": "Provides physically valid theta_bar(H) over both H<=h and H>h without using future response or fitting."
+  },
+  "diagnostics": [
+    "analytic and numerical H=h transition time",
+    "moving layer thickness and storage continuity at H=h",
+    "exact product-form ledger residual",
+    "literal printed-form ledger defect evaluated on the same state path",
+    "theoretical identity defect PRINTED minus PRODUCT = theta_bar*dHdt",
+    "maximum and time-integrated absolute defect by material and regime",
+    "zero-thickness behavior as H approaches 0",
+    "finite/bounded theta_bar and constitutive state"
+  ],
+  "decisions": [
+    "PRODUCT_AND_PRINTED_FORMS_CONTROL_VOLUME_EQUIVALENT",
+    "PRINTED_AVERAGE_LITERAL_NOT_CONTROL_VOLUME_EQUIVALENT",
+    "SOURCE_EQUATION_SEMANTICS_UNRESOLVED",
+    "BC2_A0_NUMERICALLY_BLOCKED"
+  ],
+  "adjudication": {
+    "numerical_identity_gate_cm_per_day": 1e-10,
+    "transition_time_gate_day": 1e-10,
+    "equivalent_only_if": "literal and product control-volume residuals are both within numerical identity gate over all tested positive-thickness states",
+    "non_equivalent_if": "product residual is within gate and literal residual exceeds gate consistently with theta_bar*dHdt",
+    "interpretation_firewall": "NON_EQUIVALENT does not by itself label the published implementation wrong; it triggers source/output reproduction before choosing BC2 dynamics."
+  },
+  "firewalls": [
+    "NO_SOURCE_FORM_RELABELED_ERROR_FROM_ALGEBRA_AUDIT_ALONE",
+    "NO_EMPIRICAL_GEOMETRY_TERM",
+    "NO_SWAPPING_TO_SWAPPRODUCTION",
+    "NO_SWAP_GROUNDWATER_COUPLER",
+    "NO_RESPONSE_FIT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
