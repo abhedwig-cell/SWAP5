@@ -46,6 +46,8 @@ acc02_f2 = load("integration/research/HYDRO_MEMORY_ACC02_F2_RESULT.json")
 acc02_f2_pre = load("integration/research/HYDRO_MEMORY_ACC02_F2_PREREGISTRATION.json")
 acc02_f2_bridge_path = "tests/research/support/mod_hydro_memory_acc02_f2_bridge.f90"
 acc02_f2_bridge = read(acc02_f2_bridge_path).decode("utf-8")
+dyn01 = load("integration/research/HYDRO_MEMORY_DYN01_RESULT.json")
+dyn01_pre = load("integration/research/HYDRO_MEMORY_DYN01_PREREGISTRATION.json")
 src_path = "src/runtime/mod_fmr_production_application_bootstrap.f90"
 backend_path = "src/runtime/mod_fmr_serialized_reference_backend.f90"
 temporal_path = "src/solver/mod_reference_richards_temporal_indicator.f90"
@@ -159,6 +161,17 @@ assert rec["later_research_authority"]["HYDRO_MEMORY_ACC02_F2"]["mode5_productio
 assert req["current_canonical_authority"]["HYDRO_MEMORY_ACC02_F2"]["production_application_owner_widened"] is False
 assert req["current_canonical_authority"]["HYDRO_MEMORY_ACC02_F2"]["drainage_response_active"] is False
 
+assert git_blob_sha("integration/research/HYDRO_MEMORY_DYN01_RESULT.json") == rec["later_research_authority"]["HYDRO_MEMORY_DYN01"]["result_blob"]
+assert git_blob_sha("integration/research/HYDRO_MEMORY_DYN01_PREREGISTRATION.json") == rec["later_research_authority"]["HYDRO_MEMORY_DYN01"]["preregistration_blob"]
+assert dyn01["decision"] == "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION"
+assert dyn01_pre["production_source_change"] is False
+assert dyn01_pre["reference_source_change"] is False
+assert "no live MODFLOW coupling in DYN01" in dyn01["nonclaims"]
+assert "no production-bootstrap root-active admission" in dyn01["nonclaims"]
+assert rec["later_research_authority"]["HYDRO_MEMORY_DYN01"]["mode5_production_owner_widened"] is False
+assert req["current_canonical_authority"]["HYDRO_MEMORY_DYN01"]["production_application_owner_widened"] is False
+assert req["current_canonical_authority"]["HYDRO_MEMORY_DYN01"]["live_modflow"] is False
+
 assert e7["canonical_reconciliation"]["production_bootstrap_blob"] == rec["current_production_boundary"]["bootstrap_blob"]
 assert e7["canonical_reconciliation"]["ppa_root_hyd02_result_blob"] == rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["result_blob"]
 assert e7["canonical_reconciliation"]["ppa_wu04a_status_blob"] == rec["later_canonical_workunits"]["PPA_WU04A"]["status_blob"]
@@ -246,6 +259,7 @@ print("PUB_GC_E7_PPA_WU04A_NO_MODE5_PROCESS_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04B_NO_MODE5_PROCESS_WIDENING=PASS")
 print("PUB_GC_E7_ACC02_F1_RESEARCH_ONLY_NO_MODE5_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_ACC02_F2_RESEARCH_ONLY_NO_MODE5_OWNER_WIDENING=PASS")
+print("PUB_GC_E7_DYN01_STANDALONE_NO_MODE5_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_APPLICATION_REQUIREMENTS_CURRENT_PROVENANCE=PASS")
 print("PUB_GC_E7_REPRODUCIBILITY_MANIFEST_BOUND=PASS")
 print("PUB_GC_E7_MANIFEST_CURRENT_HISTORICAL_BLOB_SCOPES=PASS")
