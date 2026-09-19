@@ -1,0 +1,11 @@
+name: DIFFICULTY P0E Outcome-blind Regimes
+on:
+  pull_request:
+    paths: ['src/research/mod_difficulty_regime_selector.f90','tests/publication/test_difficulty_p0e_regimes.f90','tests/publication/run_difficulty_p0e_regimes.sh','.github/workflows/difficulty-p0e-regimes.yml']
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/publication/run_difficulty_p0e_regimes.sh
