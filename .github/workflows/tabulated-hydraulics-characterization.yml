@@ -61,10 +61,57 @@ jobs:
       - name: Run public wrapper saturation transition characterization
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
+          set +e
           ./build/tab-hyd/tabulated_hydraulics_wrapper_characterization | tee build/tab-hyd/wrapper-characterization.csv
-          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd/wrapper-characterization.csv
-          grep '^WRAPPER ' build/tab-hyd/wrapper-characterization.csv | tee build/tab-hyd/wrapper-summary.txt
+          rc=${PIPESTATUS[0]}
+          set -e
+          if ! grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED
+      - name: Characterize dry-side derivative extrapolation
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          ./build/tab-hyd/tabulated_hydraulics_wrapper_characterization dry_probe > build/tab-hyd/dry-probe.log 2>&1
+          rc=$?
+          set -e
+          cat build/tab-hyd/dry-probe.log
+          echo "return_code=$rc" > build/tab-hyd/dry-probe-summary.txt
+          if [ "$rc" -eq 0 ]; then
+            echo "DRY_PROBE_NOT_REPRODUCED" | tee -a build/tab-hyd/dry-probe-summary.txt
+            exit 1
+          fi
+          if grep -Fq "Index '0' of dimension 3 of array 'sptab' below lower bound of 1" build/tab-hyd/dry-probe.log; then
+            echo "DRY_DKDH_OUT_OF_RANGE_REPRODUCED" | tee -a build/tab-hyd/dry-probe-summary.txt
+          else
+            echo "DRY_PROBE_UNEXPECTED_FAILURE" | tee -a build/tab-hyd/dry-probe-summary.txt
+            exit 1
+          fi
+
+      - name: Upload characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-current-numerics-evidence
+          path: |
+            build/tab-hyd/characterization.csv
+            build/tab-hyd/summary.txt
+            build/tab-hyd/evidence.txt
+            build/tab-hyd/wrapper-characterization.csv
+            build/tab-hyd/wrapper-summary.txt
+            build/tab-hyd/dry-probe.log
+            build/tab-hyd/dry-probe-summary.txt
+ build/tab-hyd/wrapper-characterization.csv; then
+            echo "WRAPPER_CHARACTERIZATION_INCOMPLETE return_code=$rc"
+            exit 1
+          fi
+          {
+            echo "return_code=$rc"
+            grep '^WRAPPER ' build/tab-hyd/wrapper-characterization.csv || true
+          } | tee build/tab-hyd/wrapper-summary.txt
+          if [ "$rc" -ne 0 ]; then
+            echo "WRAPPER_POST_COMPLETION_NONZERO=$rc" | tee -a build/tab-hyd/wrapper-summary.txt
+          fi
 
       - name: Characterize dry-side derivative extrapolation
         shell: bash
