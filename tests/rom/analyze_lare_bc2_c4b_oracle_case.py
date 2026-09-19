@@ -394,7 +394,7 @@ def main():
         key=f"{dt:.8f}"
         try:
             routes[key]=run_route(args.history,args.width,dt,init_meta,init_nodes,states,nodes)
-            if routes[key]["status"]!="QUALIFIED":
+            if routes[key]["status"]!="QUALIFIED_CORE":
                 failures[key]=routes[key]["status"]
         except (ValueError,RuntimeError,FloatingPointError) as exc:
             failures[key]=str(exc)
@@ -421,13 +421,11 @@ def main():
         "production_rom_authorized":False,
     }
     args.output.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
-    if complete:
+    if core_complete:
         print(json.dumps({
             "decision":result["decision"],
             "width_cm":args.width,
             "history":args.history,
-            "primary_best_single":routes[pk]["best_single_channel"],
-            "cross_best_single":routes[ck]["best_single_channel"],
             "primary_unique_best_single":routes[pk]["unique_best_single_channel"],
             "cross_unique_best_single":routes[ck]["unique_best_single_channel"],
             "primary_single_rank":routes[pk]["single_channel_rank_by_cumulative_shape"],
