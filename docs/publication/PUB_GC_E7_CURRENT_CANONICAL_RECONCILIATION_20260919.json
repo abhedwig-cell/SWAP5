@@ -1,17 +1,17 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
+  "canonical_head_at_reconcile": "6413adc4d29f5749105b30e45f395331b450d5f3",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "a8f739d8258513798b9ac30269abefed7d66a6ba",
+    "result_blob": "145ea2598d474eb2170c1ec01bcde9109af8e939",
     "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-    "application_requirements_blob": "1d8be60965757307f37bb82d6c4b1a80a8d7d8e3"
+    "application_requirements_blob": "d4fa8b276895b7adc215e07462db04891e20fe2d"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -143,7 +143,7 @@
   "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
   "post_relevant_production_live_delta": {
     "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-    "head": "e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382",
+    "head": "6413adc4d29f5749105b30e45f395331b450d5f3",
     "changed_scope": [
       "docs/science/F-ROMV2_*",
       "integration/f-rom/**",
@@ -159,6 +159,6 @@
       "restart_state": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
       "restricted_surface_evaporation": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
     },
-    "reason": "No later canonical commit changed the E7-relevant production owner or participant-domain semantics."
+    "reason": "No production/reference, coupling, Hupsel authority or PUB-GC scientific asset changed after PPA-WU04-B. The latest canonical delta is evidence-only F-ROMV2/TRACE/F-DOC work plus ROM tests."
   }
 }
