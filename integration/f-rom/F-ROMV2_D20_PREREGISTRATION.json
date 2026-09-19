@@ -1,0 +1,255 @@
+{
+  "schema": "swap5.f-romv2-d20.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D20",
+  "title": "One-hour repeated-forcing FMC persistence comparator",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+  "canonical_base": "7a91adaf287ff4147d42c22c6e4c859dc576e8d0",
+  "purpose": "Test whether the admitted FMC surface-plus-fixed-water-table advantage over R2 persists for one hour under repeated changes in prescribed infiltrating flux, without changing any D12-D19 process law.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_HYDRAULIC_PERSISTENCE_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D13": "Groundwater-front branch retained research candidacy.",
+    "D16": "Surface infiltration/redistribution branch retained research candidacy.",
+    "D17": "Simultaneous separated surface+groundwater operation retained research candidacy.",
+    "D19": "Exact-contact merge plus post-merge groundwater relaxation retained research candidacy.",
+    "implication": "D20 introduces no new front, slug, groundwater or merge equations. It extends only duration and forcing order while remaining inside the separated continuous-infiltration branch."
+  },
+  "frozen_identity": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "process_step_seconds": 10,
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "HcM_cm": 14.085215420920257
+  },
+  "initial_state": {
+    "authority": "D17 initial composite state",
+    "surface_component": "D16 I_DEEP connected fronts: z_101=120 cm linearly to z_199=10 cm",
+    "groundwater_component": "D13 G25: H_j=0.25*abs(psi(theta_j)) above fixed water table at 160 cm",
+    "falling_slugs": "none",
+    "contact": "none",
+    "mapping": "exact finite-volume cell averages to R16/R2"
+  },
+  "temporal_design": {
+    "process_and_observation_step_seconds": 10,
+    "block_steps": 30,
+    "block_duration_seconds": 300,
+    "blocks_per_history": 12,
+    "total_steps_per_history": 360,
+    "total_duration_seconds": 3600,
+    "cycles_of_four_blocks": 3,
+    "last_quarter_steps": "271..360"
+  },
+  "forcing_factors_of_Ksat": [
+    0.1,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "histories": [
+    {
+      "id": "P_UP",
+      "block_sequence": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        0.1,
+        0.25,
+        0.5,
+        0.75
+      ]
+    },
+    {
+      "id": "P_DOWN",
+      "block_sequence": [
+        0.75,
+        0.5,
+        0.25,
+        0.1,
+        0.75,
+        0.5,
+        0.25,
+        0.1,
+        0.75,
+        0.5,
+        0.25,
+        0.1
+      ]
+    },
+    {
+      "id": "P_ALT_A",
+      "block_sequence": [
+        0.1,
+        0.75,
+        0.25,
+        0.5,
+        0.1,
+        0.75,
+        0.25,
+        0.5,
+        0.1,
+        0.75,
+        0.25,
+        0.5
+      ]
+    },
+    {
+      "id": "P_ALT_B",
+      "block_sequence": [
+        0.75,
+        0.1,
+        0.5,
+        0.25,
+        0.75,
+        0.1,
+        0.5,
+        0.25,
+        0.75,
+        0.1,
+        0.5,
+        0.25
+      ]
+    }
+  ],
+  "matched_boundaries": {
+    "top": "prescribed infiltrating flux q_in=factor*Ksat; native SWAP top_flux=-q_in",
+    "bottom": "fixed zero pressure head / fixed water table at z=160 cm",
+    "ET_root_sink_drainage_subsurface_irrigation": "zero",
+    "ponding_runoff": "not allowed in D20",
+    "dry_bin_activation": "not allowed in D20",
+    "surface_detachment_or_falling_slug": "not allowed in D20",
+    "surface_groundwater_contact_or_merge": "not allowed in D20"
+  },
+  "FMC_algorithm": {
+    "per_step": [
+      "reserve K(theta_i)*dt gray-bin direct throughflow from top supply",
+      "allocate all remaining supply to already connected D17 surface fronts with D15 left-to-right finite-volume accounting and D14 Eq.18 kinematics",
+      "apply D14 conservative connected-front relaxation",
+      "advance D13 groundwater fronts by Eq.21 and conservative relaxation",
+      "bottom outward exchange = gray direct throughflow - groundwater-front storage change",
+      "require connected surface and groundwater intervals remain strictly separated",
+      "require global finite-volume ledger <=1e-12 cm"
+    ],
+    "no_new_physics": true,
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "internal_preflight_before_SWAP": {
+    "trajectory_data_consumed": false,
+    "checks": [
+      "all four histories complete 360 FMC steps",
+      "every step has surface supply >= gray-bin demand",
+      "all residual surface supply is absorbed by already connected fronts",
+      "no dry-bin activation, ponding or runoff",
+      "no contact/merge or slug state",
+      "all front states finite and physical",
+      "mass ledger <=1e-12 cm every step",
+      "all histories have identical cumulative prescribed top input"
+    ],
+    "failure_rule": "Any failure closes D20 before R16/R2 trajectory generation. Do not retune factor order, block duration, total duration, G25 lambda, bins, process step or equations."
+  },
+  "SWAP_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "development reference"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "admitted physical-reduction comparator"
+    },
+    "numerical_authority": "D4 integrated-water-depth strict-first research policy; hard accepted transaction mass gate 1e-12 cm",
+    "initialization": "exact D17 composite cell-average mapping"
+  },
+  "hydrological_metrics": {
+    "full_hour": [
+      "total-storage RMSE",
+      "cumulative-bottom-exchange RMSE",
+      "mapped R16-cell theta RMSE",
+      "upper-storage RMSE",
+      "lower-storage RMSE",
+      "terminal bottom-flux RMSE",
+      "bottom-flux sign-error count"
+    ],
+    "late_window_steps_271_360": [
+      "same seven metrics"
+    ],
+    "persistence_diagnostics": [
+      "per-block cumulative-bottom-exchange bias",
+      "per-block mapped-theta RMSE",
+      "absolute error at each block boundary",
+      "maximum FMC mass residual",
+      "minimum surface-groundwater separation",
+      "R16/R2 reattempt counts"
+    ]
+  },
+  "decision_logic": {
+    "positive": "FMC_ONE_HOUR_PERSISTENCE_RETAINS_RESEARCH_CANDIDACY",
+    "negative": "FMC_ONE_HOUR_PERSISTENCE_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "internal preflight passes before SWAP exposure",
+      "all four R16/R2/FMC histories complete with integrity",
+      "full-hour FMC total-storage RMSE <= R2",
+      "full-hour FMC cumulative-bottom-exchange RMSE <= R2",
+      "full-hour FMC mapped-theta RMSE <= R2",
+      "full-hour FMC bottom-flux RMSE <= R2 and sign errors <= R2",
+      "late-window FMC total-storage, cumulative-bottom-exchange, mapped-theta and bottom-flux RMSE each <= R2"
+    ],
+    "all_views_required": true,
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "purpose_boundary": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "D20 is only a one-hour hydraulic persistence discriminator; positive result may justify longer/application-specific validation but not acceptance.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "Fixed-water-table exchange only; live coupling remains separate.",
+    "FAST_EVENT_THRESHOLD": "No rainfall/ponding/runoff threshold qualification.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "Not tested; no ET/root uptake.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "Not qualified."
+  },
+  "successor_logic": {
+    "if_positive": "Retain FMC for a rainfall/ponding threshold workunit and permit a separate same-runtime screening experiment; application acceptance remains deferred.",
+    "if_negative": "Do not retune D12-D19 physics. Diagnose persistence failure and restrict FMC to shorter bounded envelopes.",
+    "if_preflight_fails": "Move next to a separately preregistered rainfall/ponding or contact-capable persistence design; do not alter D20."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_FACTOR_VALUE_TUNING",
+    "NO_BLOCK_DURATION_TUNING",
+    "NO_HISTORY_ORDER_RETUNING",
+    "NO_LAMBDA_RETUNING",
+    "NO_BIN_OR_PROCESS_STEP_TUNING",
+    "NO_DRY_BIN_ACTIVATION",
+    "NO_PONDING_OR_RUNOFF",
+    "NO_SLUG_OR_MERGE_BRANCH",
+    "NO_ET_ROOT_UPTAKE",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
