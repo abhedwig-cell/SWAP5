@@ -51,7 +51,8 @@ jobs:
             'QUADRATIC_MULTIVALUED_AND_DIRECTION_GEOMETRY_CONFIRMED',
             'QUADRATIC_ROOT_MULTIPLICITY_ONLY',
             'QUADRATIC_DIRECTION_GEOMETRY_ONLY',
-            'C4J_MECHANISM_PARTIAL'
+            'C4J_MECHANISM_PARTIAL',
+            'C4J_DIAGNOSTIC_BLOCKED'
           )
           assert r['next_model_change_authorized'] is False
           assert r['production_rom_authorized'] is False
