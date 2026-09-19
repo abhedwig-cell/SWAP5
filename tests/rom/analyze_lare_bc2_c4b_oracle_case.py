@@ -208,7 +208,13 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
         baseline_y=np.asarray(baseline_check["y"][:PHYS_N],dtype=float)
 
         for variant in VARIANTS:
-            y,it=advance(y0,H0,H1,dt,d,variant,oracle)
+            try:
+                y,it=advance(y0,H0,H1,dt,d,variant,oracle)
+            except (ValueError,RuntimeError,FloatingPointError) as exc:
+                raise RuntimeError(
+                    f"C4B_VARIANT_BLOCKED variant={variant} step={step} "
+                    f"history={history} width_cm={d} dt_day={dt}: {exc}"
+                ) from exc
             phys=np.asarray(y[:PHYS_N],dtype=float)
             if variant=="BASE_C0":
                 max_baseline_identity=max(max_baseline_identity,float(np.max(np.abs(phys-baseline_y))))
