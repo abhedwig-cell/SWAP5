@@ -125,7 +125,7 @@ contains
     do step=1,NSTEPS
       call configure_case(ih,step,h0,k0,qeq,p,forcing)
       do substep=1,substeps
-        sub_t0=real(seed_intervals,real64)*seed_dt + real(step-1,real64)*step_dt + real(substep-1,real64)*sub_dt
+        sub_t0=t0
         sub_t1=sub_t0+sub_dt
         call strict_first_sample(column,template,p,state,forcing,sub_t0,sub_t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
         call require(ok,'LAREDYN0R accepted history step')
@@ -139,11 +139,11 @@ contains
           history_fallbacks=history_fallbacks+1
           total_fallbacks=total_fallbacks+1
         end if
+        t0=sub_t1
       end do
-      t1=real(seed_intervals,real64)*seed_dt+real(step,real64)*step_dt
+      t1=t0
       total_states=total_states+1
       call emit_state(ih,step,state,forcing,t1-sub_dt,t1,mass,bex,bflux,nl,back,fallback_used)
-      t0=t1
     end do
 
     write(*,'(*(g0))') 'LAREDYN0R_HISTORY_PASS|CASE=',trim(case_label(ih)),'|SE0=',initial_se(ih), &
