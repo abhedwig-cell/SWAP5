@@ -1,0 +1,310 @@
+{
+  "schema": "swap5.lare.bc1.rl1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-RL1",
+  "phase": "PREREGISTERED_BEFORE_HEAD_DRIVEN_RESOLUTION_LADDER_EXECUTION",
+  "purpose": "Measure convergence and qualified-domain recovery of the no-fit CURRENT_LAYER_FACE prescribed-head LARE closure as the unchanged standard interior closure is resolved on a nested fixed-layer ladder.",
+  "trigger_authority": {
+    "bc1_a2": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "bc1_b": "integration/f-rom/LARE_BC1_STAGE_B_CLOSEOUT.json",
+    "bc1_b_decision": "BC1_CURRENT_LAYER_RELATIVE_SUPPORT",
+    "dyn0a_rl1": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+    "rs1_state": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json"
+  },
+  "fixed_model": {
+    "material": "B01 homogeneous Mualem-Van Genuchten",
+    "interior_closure": "HE2021 Eq.24 adjacent fixed-layer extension, unchanged",
+    "prescribed_head_closure": "CURRENT_LAYER_FACE",
+    "prescribed_head_formula": "q_b = K(theta_bar_N) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+    "hold_bottom": "K0 downward fixed flux",
+    "coordinate": "depth and bottom flux positive downward",
+    "no_boundary_fit": true
+  },
+  "ladder": [
+    {
+      "id": "R3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "status": "BC1-B D3 authority"
+    },
+    {
+      "id": "R4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "status": "BC1-B D4 authority"
+    },
+    {
+      "id": "R5",
+      "dimension": 5,
+      "boundaries_cm": [
+        0,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R12",
+      "dimension": 12,
+      "boundaries_cm": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "R16",
+      "dimension": 16,
+      "boundaries_cm": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "no-spatial-reduction control"
+    }
+  ],
+  "ladder_rationale": [
+    "Every refinement is nested and no existing layer boundary is moved.",
+    "The final 150-160 cm prescribed-head layer remains 10 cm in every member, so lower-face geometry is fixed.",
+    "Each refinement only shortens the long upper layer and exposes another 10-cm local storage immediately above the active lower region.",
+    "R16 is a resolution/control endpoint, not a proposed ROM."
+  ],
+  "histories": {
+    "G00": {
+      "se0": 0.85,
+      "segments": [
+        [
+          "BOTTOM_HEAD_FALL",
+          24
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          40
+        ],
+        [
+          "HOLD",
+          960
+        ]
+      ],
+      "role": "historical reversal control"
+    },
+    "G03": {
+      "se0": 0.95,
+      "segments": [
+        [
+          "BOTTOM_HEAD_FALL",
+          256
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          512
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "wet domain-coverage stress"
+    },
+    "G04": {
+      "se0": 0.85,
+      "segments": [
+        [
+          "BOTTOM_HEAD_RISE",
+          256
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          512
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "mid head rise-fall"
+    },
+    "G05": {
+      "se0": 0.65,
+      "segments": [
+        [
+          "COMBINED_RISE_PLUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ],
+        [
+          "COMBINED_FALL_MINUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ],
+      "role": "dry combined top/head forcing"
+    }
+  },
+  "forcing_semantics": {
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "source_downward_top": {
+      "HOLD": "K0",
+      "BOTTOM_HEAD_RISE": "K0",
+      "BOTTOM_HEAD_FALL": "K0",
+      "COMBINED_RISE_PLUS": "0.99*K0",
+      "COMBINED_FALL_MINUS": "1.01*K0"
+    },
+    "mode2_hold_bottom": "K0 downward",
+    "prescribed_head": {
+      "BOTTOM_HEAD_RISE": "h_b=0.75*h0",
+      "BOTTOM_HEAD_FALL": "h_b=1.25*h0"
+    }
+  },
+  "numerical_authority": {
+    "method": "iterative Heun predictor-corrector",
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": "0.0001 day if qualified",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "water_ledger_hard_gate_cm": 1e-10,
+    "domain": "strict standard unsaturated MvG branch; theta_r<theta<theta_s and psi>0.01 cm",
+    "no_clipping": true
+  },
+  "reference": {
+    "stage_a_artifact_id": 10585316225,
+    "stage_a_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345",
+    "storage": "project fine 16x10 cm accepted Reference theta onto candidate layers and common bands",
+    "bottom_exchange": "accepted BOTTOM_OUTWARD_EXCHANGE accumulated over intervals",
+    "interval_bottom_flux": "BOTTOM_OUTWARD_EXCHANGE / 0.0008 day",
+    "common_bands_cm": [
+      [
+        0,
+        140
+      ],
+      [
+        140,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ]
+  },
+  "metrics": {
+    "per_member_history": [
+      "maximum absolute candidate-layer storage error",
+      "maximum and mean absolute common-band storage error",
+      "maximum absolute cumulative bottom-exchange error",
+      "final signed cumulative bottom-exchange error",
+      "maximum absolute interval-average bottom-flux error",
+      "bottom-flux sign mismatch count",
+      "reversal sequence and reversal-step difference",
+      "Heun refinement differences",
+      "qualified-domain status",
+      "water-ledger residual"
+    ],
+    "aggregate_curve": [
+      "maximum common-band storage error versus dimension",
+      "maximum cumulative exchange error versus dimension",
+      "maximum interval-average bottom-flux error versus dimension",
+      "reversal timing error versus dimension",
+      "qualified-history count versus dimension"
+    ]
+  },
+  "hypotheses": {
+    "H_HEAD_RESOLUTION_CONVERGENCE": "On adjacent common qualified cohorts, increasing nested resolution is non-inferior in maximum common-band storage error and maximum cumulative bottom-exchange error.",
+    "H_WET_DOMAIN_RECOVERY": "The wet G03 history re-enters the strict standard-LARE domain at some member above R3 without changing physics or closure.",
+    "H_REVERSAL_PRESERVATION": "G00 reversal sequence remains correct for all qualified ladder members using CURRENT_LAYER_FACE.",
+    "H_STANDARD_CLOSURE_COST": "If small exchange/storage error requires near-fine dimension, standard LARE remains physically coherent but inefficient as an aggressive ROM under head-driven forcing."
+  },
+  "adjudication": {
+    "numerical_equality_abs_cm": 1e-12,
+    "resolution_convergence_clear": "Every adjacent pair on its common qualified history cohort is non-inferior in maximum common-band storage and cumulative bottom-exchange error within floating-point equality, and G00 reversal sequence does not degrade.",
+    "resolution_effect_nonmonotone": "At least one adjacent higher-resolution member worsens a primary integrated metric on the common cohort beyond numerical equality.",
+    "no_elbow_selection": true,
+    "no_application_threshold": true
+  },
+  "firewalls": [
+    "NO_BOUNDARY_CLOSURE_CHANGE",
+    "NO_POST_RESULT_LAYER_RETUNING",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_IMPORT_OF_REFERENCE_LAGGED_K_AS_LARE_PHYSICS",
+    "NO_MOVING_WATER_TABLE_GEOMETRY",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
