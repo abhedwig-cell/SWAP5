@@ -1,0 +1,232 @@
+name: TAB-HYD dormant PCHIP route characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-pchip.yml'
+
+jobs:
+  pchip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout pinned Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build TSPACK control
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup swap-src/build-tspack swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-tspack
+          cp swap-src/build-tspack/swap swap-tspack
+
+      - name: Build dormant PCHIP variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("swap-src/src/soil/sptabulated.f90")
+          s=p.read_text()
+          old="logical, parameter :: use_TSPACK = .true."
+          new="logical, parameter :: use_TSPACK = .false."
+          if s.count(old) != 1:
+              raise SystemExit(f"expected one active use_TSPACK flag, found {s.count(old)}")
+          p.write_text(s.replace(old,new,1))
+          print("PCHIP_VARIANT use_TSPACK=.false.")
+          PY
+          meson setup swap-src/build-pchip swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-pchip
+          cp swap-src/build-pchip/swap swap-pchip
+
+      - name: Prepare full-period analytical and table controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-pchip
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-pchip/prepared
+          cp -a build/tab-hyd-pchip/prepared/analytic_k0 build/tab-hyd-pchip/analytic
+          cp -a build/tab-hyd-pchip/prepared/table_k0 build/tab-hyd-pchip/table_tspack
+          cp -a build/tab-hyd-pchip/prepared/table_k0 build/tab-hyd-pchip/table_pchip
+          rm -rf build/tab-hyd-pchip/prepared
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ("analytic","table_tspack","table_pchip"):
+              p=Path("build/tab-hyd-pchip")/name/"swap.swp"
+              s=p.read_text()
+              s,n=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
+              if n != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Run one full-period qualification per route
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/tab-hyd-pchip/status.tsv
+          printf 'variant\tbinary\treturn_code\truntime_seconds\n' > build/tab-hyd-pchip/status.tsv
+
+          run_case () {
+            variant="$1"
+            binary="$2"
+            work="$GITHUB_WORKSPACE/build/tab-hyd-pchip/$variant"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o qualification_runtime.txt timeout 90 "$binary" > qualification.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/qualification_runtime.txt")
+            printf '%s\t%s\t%s\t%s\n' "$variant" "$(basename "$binary")" "$rc" "$runtime" \
+              | tee -a build/tab-hyd-pchip/status.tsv
+            test "$rc" -eq 100
+          }
+
+          run_case analytic "$GITHUB_WORKSPACE/swap-tspack"
+          run_case table_tspack "$GITHUB_WORKSPACE/swap-tspack"
+          run_case table_pchip "$GITHUB_WORKSPACE/swap-pchip"
+
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-pchip/analytic build/tab-hyd-pchip/table_tspack \
+            build/tab-hyd-pchip/tspack-comparison.json \
+            --label "TSPACK-vs-analytic" \
+            | tee build/tab-hyd-pchip/tspack-comparison.txt
+
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-pchip/analytic build/tab-hyd-pchip/table_pchip \
+            build/tab-hyd-pchip/pchip-comparison.json \
+            --label "PCHIP-vs-analytic" \
+            | tee build/tab-hyd-pchip/pchip-comparison.txt
+
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-pchip/table_tspack build/tab-hyd-pchip/table_pchip \
+            build/tab-hyd-pchip/pchip-vs-tspack.json \
+            --label "PCHIP-vs-TSPACK" \
+            | tee build/tab-hyd-pchip/pchip-vs-tspack.txt
+
+      - name: Benchmark all three routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          import statistics
+          import subprocess
+          import time
+
+          root=Path("build/tab-hyd-pchip").resolve()
+          binaries={
+              "analytic":Path("swap-tspack").resolve(),
+              "tspack":Path("swap-tspack").resolve(),
+              "pchip":Path("swap-pchip").resolve(),
+          }
+          workdirs={
+              "analytic":root/"analytic",
+              "tspack":root/"table_tspack",
+              "pchip":root/"table_pchip",
+          }
+
+          def one(label):
+              work=workdirs[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists():
+                      p.unlink()
+              t0=time.perf_counter()
+              p=subprocess.run(
+                  [str(binaries[label])],cwd=work,
+                  stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30
+              )
+              dt=time.perf_counter()-t0
+              if p.returncode != 100:
+                  raise RuntimeError(f"{label}: rc={p.returncode}")
+              return dt
+
+          for label in ("analytic","tspack","pchip"):
+              one(label)
+
+          rows=[]
+          orders=[
+              ("analytic","tspack","pchip"),
+              ("pchip","analytic","tspack"),
+              ("tspack","pchip","analytic"),
+          ]
+          for r in range(12):
+              for label in orders[r%3]:
+                  rows.append((r,label,one(label)))
+
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh)
+              w.writerow(["round","route","seconds"])
+              w.writerows(rows)
+
+          vals={k:[] for k in ("analytic","tspack","pchip")}
+          for _,k,v in rows:
+              vals[k].append(v)
+          med={k:statistics.median(v) for k,v in vals.items()}
+          mean={k:statistics.mean(v) for k,v in vals.items()}
+          summary={
+              "analytic_median_s":med["analytic"],
+              "tspack_median_s":med["tspack"],
+              "pchip_median_s":med["pchip"],
+              "tspack_over_analytic":med["tspack"]/med["analytic"],
+              "pchip_over_analytic":med["pchip"]/med["analytic"],
+              "pchip_over_tspack":med["pchip"]/med["tspack"],
+              "analytic_mean_s":mean["analytic"],
+              "tspack_mean_s":mean["tspack"],
+              "pchip_mean_s":mean["pchip"],
+          }
+          with (root/"benchmark-summary.txt").open("w") as fh:
+              for k,v in summary.items():
+                  fh.write(f"{k}={v:.9g}\n")
+          print((root/"benchmark-summary.txt").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-pchip-characterization
+          path: |
+            build/tab-hyd-pchip/status.tsv
+            build/tab-hyd-pchip/*comparison*
+            build/tab-hyd-pchip/benchmark.csv
+            build/tab-hyd-pchip/benchmark-summary.txt
+            build/tab-hyd-pchip/*/qualification.log
+            build/tab-hyd-pchip/*/qualification_runtime.txt
