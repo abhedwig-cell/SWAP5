@@ -261,6 +261,9 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
         SINGLE_ORACLES,
         key=lambda v:(summaries[v]["cumulative_shape_rms_theta_at_final_geometry"],v)
     )
+    first_value=summaries[single_rank[0]]["cumulative_shape_rms_theta_at_final_geometry"]
+    second_value=summaries[single_rank[1]]["cumulative_shape_rms_theta_at_final_geometry"]
+    unique_best=single_rank[0] if first_value < second_value else None
     hard=max(
         max_oracle_identity,
         max_reference_qi_split_identity,
@@ -275,6 +278,7 @@ def run_route(history,d,dt,init_meta,init_nodes,states,nodes):
         "variants":summaries,
         "single_channel_rank_by_cumulative_shape":single_rank,
         "best_single_channel":single_rank[0],
+        "unique_best_single_channel":unique_best,
         "hard_checks":{
             "max_reference_oracle_identity_cm_per_day":max_oracle_identity,
             "max_reference_qi_bulk_minus_terminal_identity_cm_per_day":max_reference_qi_split_identity,
@@ -341,6 +345,8 @@ def main():
             "history":args.history,
             "primary_best_single":routes[pk]["best_single_channel"],
             "cross_best_single":routes[ck]["best_single_channel"],
+            "primary_unique_best_single":routes[pk]["unique_best_single_channel"],
+            "cross_unique_best_single":routes[ck]["unique_best_single_channel"],
             "primary_single_rank":routes[pk]["single_channel_rank_by_cumulative_shape"],
             "cross_single_rank":routes[ck]["single_channel_rank_by_cumulative_shape"],
             "primary_cumulative_shape":{v:routes[pk]["variants"][v]["cumulative_shape_rms_theta_at_final_geometry"] for v in VARIANTS},
