@@ -1,0 +1,81 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:fe5ffa0e88e770e5f49385f1b606cca69e36fd53ea4683981220ec6b6d1719fa",
+    "artifact_id": 10591503680,
+    "execution_head": "f3ce5c0e6fa8bf0b1634cd307ea36e9835e4fd93",
+    "result_sha256": "4fc0cc59551f7f28594d4272f0a6b8151a8017e20c0a5add0112bb8263f96f20",
+    "workflow_run": 35467705083
+  },
+  "decision": "QH_PRESERVING_CUBIC_MIXED",
+  "groundwater_feedback_authorized": false,
+  "key_results": {
+    "2.5_FALL": {
+      "base_rms": 0.29407170728749293,
+      "cubic_rms": 0.28158484430778125
+    },
+    "2.5_HOLD": {
+      "base_rms": 7.066239399564952e-10,
+      "cubic_rms": 0.004614730016634765
+    },
+    "2.5_RISE": {
+      "base_rms": 0.3611379908408748,
+      "cubic_rms": 0.3433615233300034
+    },
+    "5_FALL": {
+      "base_rms": 0.4915997730754116,
+      "cubic_rms": 0.4386758463314377
+    },
+    "5_HOLD": {
+      "base_rms": 1.4646994474146863e-10,
+      "cubic_rms": 0.01690199320626108
+    },
+    "5_RISE": {
+      "base_rms": 0.6302082750086816,
+      "cubic_rms": 0.8535351138975779
+    }
+  },
+  "model_changed": false,
+  "next_authority": "PREREGISTER_INTERNAL_SLOPE_CORRECTION_MECHANISM_REVIEW",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4l.closeout.v1",
+  "scientific_interpretation": [
+    "The qH-preserving cubic is numerically well-defined and conservative but is not a transferable qi closure across width and regime.",
+    "It improves both moving directions at 2.5 cm and improves 5 cm FALL, but worsens 5 cm RISE and introduces nonzero qi under HOLD where the B9 baseline is essentially hydrostatic.",
+    "Because qH is identical to B9, the mixed result is attributable to the internal gradient reconstruction itself, not a lower-boundary tradeoff.",
+    "No propagated cubic dynamics are authorized."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION",
+  "supported_cases": [
+    {
+      "history": "WT_FALL",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_RISE",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_FALL",
+      "width_cm": "5.0"
+    }
+  ],
+  "unsupported_cases": [
+    {
+      "history": "WT_HOLD",
+      "width_cm": "2.5"
+    },
+    {
+      "history": "WT_HOLD",
+      "width_cm": "5.0"
+    },
+    {
+      "history": "WT_RISE",
+      "width_cm": "5.0"
+    }
+  ],
+  "work_unit": "LARE-BC2-C4L",
+  "workstream": "F-ROM-LARE"
+}
