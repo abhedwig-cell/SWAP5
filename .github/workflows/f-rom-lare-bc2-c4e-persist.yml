@@ -1,0 +1,192 @@
+name: F-ROM-LARE persist C4E causal diagnostic closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4e-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4E aggregate authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-c4e
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10589773291/zip" > /tmp/lare-c4e.zip
+          echo "d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485  /tmp/lare-c4e.zip" | sha256sum -c -
+          unzip -q /tmp/lare-c4e.zip -d /tmp/lare-c4e
+          echo "06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290  /tmp/lare-c4e/LARE_BC2_C4E_RESULT.json" | sha256sum -c -
+
+      - name: Validate preregistered scientific disposition
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-c4e/LARE_BC2_C4E_RESULT.json'))
+          assert r['schema']=='swap5.lare.bc2.c4e.result.v1'
+          assert r['decision']=='QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED'
+          assert r['complete'] is True
+          h=r['hard_checks']
+          assert h['all_cases_complete'] is True
+          assert h['all_primary_cross_removal_rank_match'] is True
+          assert h['any_counterfactual_comparison_blocked'] is True
+          assert h['maximum_recorded_hard_residual_or_identity_error'] <= h['gate'] == 1.0e-10
+          assert r['model_changed'] is False
+          assert r['counterfactual_propagated'] is False
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+
+          c=r['cases']['5.0:WT_RISE']
+          for route in ('0.00005000','0.00002500'):
+              q=c['routes'][route]
+              assert q['decision']=='CASE_QI_UNIQUE_BEST'
+              assert q['all_single_family_controls_admissible'] is True
+              assert q['QI_strictly_improves_BASE'] is True
+              assert q['QI_unique_best_single_family_removal'] is True
+
+          c=r['cases']['5.0:WT_FALL']
+          for route in ('0.00005000','0.00002500'):
+              q=c['routes'][route]
+              assert q['decision']=='CASE_DIAGNOSTIC_BLOCKED'
+              assert q['variants']['REMOVE_QI']['admissible_all_intervals'] is True
+              assert q['variants']['REMOVE_GEOMETRY_GI']['blocked_interval_count']==1
+              assert q['QI_strictly_improves_BASE'] is True
+
+          c=r['cases']['2.5:WT_RISE']
+          for route in ('0.00005000','0.00002500'):
+              q=c['routes'][route]
+              assert q['decision']=='CASE_DIAGNOSTIC_BLOCKED'
+              assert q['variants']['REMOVE_QI']['admissible_all_intervals'] is True
+              assert q['variants']['REMOVE_QI']['fraction_intervals_lower_shape_error_than_BASE']==0.0
+              assert q['variants']['REMOVE_QH']['blocked_interval_count']==428
+              assert q['variants']['REMOVE_QI']['pooled_rms_shape_error_theta'] > 3.8*q['variants']['BASE']['pooled_rms_shape_error_theta']
+
+          c=r['cases']['2.5:WT_FALL']
+          for route in ('0.00005000','0.00002500'):
+              q=c['routes'][route]
+              assert q['decision']=='CASE_DIAGNOSTIC_BLOCKED'
+              assert q['variants']['REMOVE_QI']['blocked_interval_count']==499
+              assert q['variants']['REMOVE_QH']['blocked_interval_count']==1
+              assert q['variants']['REMOVE_GEOMETRY_GI']['blocked_interval_count']==1
+
+          print('LARE_BC2_C4E_CLOSEOUT_VALIDATION=PASS')
+          PY
+
+      - name: Build durable closeout and science reconciliation
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-c4e/LARE_BC2_C4E_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4e.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4E',
+            'status':'CLOSED_DIAGNOSTIC_BLOCKED_NO_MODEL_CHANGE',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35460239887,
+              'execution_head':'80a95f35c278e0985764f7cf730066d5ac4c73a2',
+              'execution_analyzer':'tests/rom/analyze_lare_bc2_c4e_local_qi_causal.py',
+              'aggregate_artifact_id':10589773291,
+              'aggregate_artifact_digest':'sha256:d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485',
+              'result_sha256':'06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290',
+              'reference_artifact_id':10587360597,
+              'reference_zip_sha256':'86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278'
+            },
+            'bounded_findings':{
+              '5cm_WT_RISE':'All controls admissible in both routes; REMOVE_QI is unique-best and reduces pooled local shape error to about 0.2972 of BASE.',
+              '5cm_WT_FALL':'REMOVE_QI is admissible and reduces pooled local shape error to about 0.5976 of BASE, but REMOVE_GEOMETRY_GI is outside the qualified domain for one interval in each route, so unique-best causal ranking is blocked.',
+              '2p5cm_WT_RISE':'REMOVE_QI is admissible for all 512 intervals but increases pooled local shape error to about 3.85 times BASE in both routes; REMOVE_QH is outside the qualified domain for 428 intervals.',
+              '2p5cm_WT_FALL':'REMOVE_QI is outside the qualified domain for 499 of 512 intervals in both routes; subset-only QI error ratios are not full-history evidence.'
+            },
+            'scientific_interpretation':[
+              'C4E does not support a width-independent claim that QI local bias is the uniquely causal monotone-phase closure defect.',
+              'Within this bounded 2.5 cm versus 5 cm laboratory, both causal effect and counterfactual admissibility depend on representation width and history.',
+              'The 5 cm RISE result remains valid positive local evidence for QI attribution in that specific case, but it cannot be promoted to a general closure rule.',
+              'The 2.5 cm RISE response directly shows that exact removal of the frozen QI contribution can worsen shape fidelity even while remaining physically admissible.',
+              'C4B remains authoritative that direct free-running oracle flux substitution is not generally admissible.',
+              'No corrected QI closure, direction switch, extra memory state, free propagation, application acceptance or speed claim is authorized.'
+            ],
+            'next_authority':'SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_CLOSURE_HYPOTHESIS',
+            'next_question':'Resolve why QI attribution changes with representation width and why counterfactual admissibility fails before preregistering any new terminal-profile/QI reconstruction.',
+            'model_changed':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4E_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4E closeout
+
+          ## Scope
+
+          C4E is a bounded, teacher-forced endpoint counterfactual. It removes one exact C3 additive local-error family at a time. Counterfactual states are not propagated. No closure is fitted or changed.
+
+          Authority is workflow run 35460239887 at execution head 80a95f35c278e0985764f7cf730066d5ac4c73a2, using tests/rom/analyze_lare_bc2_c4e_local_qi_causal.py. The aggregate artifact is 10589773291, digest sha256:d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485. The exact result SHA-256 is 06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290.
+
+          ## Formal decision
+
+          QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED
+
+          All four cases and both internal time-step routes completed, the additive and physical-ledger hard gates remained below 1e-10, and primary/cross removal rankings were route-consistent. The causal comparison is nevertheless blocked because not every preregistered single-family counterfactual remains inside the same qualified physical domain.
+
+          ## What the bounded cases show
+
+          At 5 cm under WT_RISE, all controls are admissible. REMOVE_QI is uniquely best in both routes and lowers pooled local shape error to about 0.297 of BASE, a reduction of about 70.3%.
+
+          At 5 cm under WT_FALL, REMOVE_QI is admissible and lowers pooled local shape error to about 0.598 of BASE, a reduction of about 40.2%. REMOVE_GEOMETRY_GI is outside the qualified domain for one interval in each route. The preregistered unique-best causal comparison is therefore not valid for this case.
+
+          At 2.5 cm under WT_RISE, REMOVE_QI itself is admissible for all 512 intervals, but pooled local shape error increases to about 3.85 times BASE in both routes. REMOVE_QH is outside the qualified domain for 428 intervals. This is direct bounded evidence that exact QI-contribution removal is not resolution-independent in its effect.
+
+          At 2.5 cm under WT_FALL, REMOVE_QI is outside the qualified physical domain for 499 of 512 intervals in both routes. The QI metric over the remaining subset must not be read as a full-history response result.
+
+          ## Scientific reconciliation
+
+          The earlier C3/C4D result remains valid: QI is rank-1 across the frozen monotone phase-integrated signed-bias decomposition and strong signed cancellation explains the cycle-level rank shift. C4E asks a different question: whether removing that contribution yields a physically admissible and consistently better endpoint state.
+
+          It does not do so uniformly. In this bounded laboratory, QI attribution is representation- and history-dependent. A rank-1 error contribution is therefore not sufficient evidence for a transferable corrective closure.
+
+          This also sharpens the state-versus-closure distinction established by P2C and DYN0A. Sufficient retained state information does not imply that a chosen low-order propagation closure, or a local error-family correction derived from it, is adequate at every representation width.
+
+          ## Boundary of the claim
+
+          C4E does not adjudicate GW-R, GW-D, AG-WB, EVT or SCI-P application acceptance. It does not test groundwater feedback, free-running corrected LARE, computational speed or production deployment. C4B remains authoritative evidence that direct oracle-flux substitution may leave the qualified domain.
+
+          No QI correction, direction switch, extra memory state or production ROM is authorized.
+
+          ## Next scientific boundary
+
+          A new closure hypothesis now requires a separate preregistration that first explains the width-dependent change in QI effect and the counterfactual-admissibility failures. Choosing that mechanism is a scientific decision, not an automatic continuation from C4E.
+          MD
+
+      - name: Persist exact aggregate result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-c4e/LARE_BC2_C4E_RESULT.json integration/f-rom/LARE_BC2_C4E_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4E_RESULT.json integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4E_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4E width-dependent causal diagnostic"
+          git push origin HEAD:work/f-rom-lare-rs1
