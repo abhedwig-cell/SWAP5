@@ -18,6 +18,7 @@ def git_blob_sha(path: str) -> str:
     return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
 
 rec = load("docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json")
+manifest = load("docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json")
 e7 = load("docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json")
 req = load("docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json")
 wu02 = load("integration/audits/PPA_WU02_STATUS.json")
@@ -111,6 +112,53 @@ assert e7["canonical_reconciliation"]["ppa_root_hyd02_result_blob"] == rec["late
 assert e7["canonical_reconciliation"]["ppa_wu04a_status_blob"] == rec["later_canonical_workunits"]["PPA_WU04A"]["status_blob"]
 assert rec["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
 
+# Reproducibility manifest must bind the current, journal-facing closeout assets.
+required_assets = (
+    "manuscript",
+    "claim_ledger",
+    "tables",
+    "figure_manifest",
+    "submission_readiness",
+    "supplement",
+    "e7_result",
+    "e7_application_requirements",
+    "e7_selection_result",
+    "e7_selected_days",
+    "e7_current_canonical_reconciliation",
+)
+for key in required_assets:
+    asset = manifest["publication_assets"][key]
+    assert git_blob_sha(asset["path"]) == asset["blob"], f"manifest blob mismatch: {key}"
+assert manifest["canonical_basis"] == rec["canonical_head_at_reconcile"]
+assert manifest["E7"]["current_canonical_reconciliation"]["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
+assert manifest["E7"]["current_canonical_reconciliation"]["production_bootstrap_blob"] == rec["current_production_boundary"]["bootstrap_blob"]
+
+# Current-state/journal-facing anti-drift scan. Historical preregistration is excluded.
+anti_drift_paths = (
+    "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+    "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
+    "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
+    "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
+    "docs/publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md",
+    "docs/publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md",
+    "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
+    "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
+    "docs/publication/PUB_GC_SUBMISSION_PROSE_AUDIT.md",
+    "docs/publication/PUBLICATION_PROGRAMME.md",
+)
+forbidden = (
+    "E7 coupled execution pending",
+    "E7 blocked",
+    "F7 pending",
+    "T6 blocked",
+    "RQ5 unanswered",
+    "coupled Hupsel execution is next required action",
+)
+for path in anti_drift_paths:
+    body = read(path).decode("utf-8").lower()
+    for phrase in forbidden:
+        assert phrase.lower() not in body, f"stale current-state phrase in {path}: {phrase}"
+
 print("PUB_GC_E7_CURRENT_RESULT_CLOSED=PASS")
 print("PUB_GC_E7_CURRENT_BOOTSTRAP_BLOB=PASS")
 print("PUB_GC_E7_CURRENT_MODE5_GROUNDWATER_PROFILE=PASS")
@@ -126,4 +174,6 @@ print("PUB_GC_E7_PPA_WU05C_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_ROOT_HYD02_TANGENT_ONLY_NO_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04A_NO_MODE5_PROCESS_WIDENING=PASS")
 print("PUB_GC_E7_APPLICATION_REQUIREMENTS_CURRENT_PROVENANCE=PASS")
+print("PUB_GC_E7_REPRODUCIBILITY_MANIFEST_BOUND=PASS")
+print("PUB_GC_E7_CURRENT_STATE_ANTI_DRIFT=PASS")
 print("PUB_GC_E7_CURRENT_CANONICAL_PRESERVED=PASS")
