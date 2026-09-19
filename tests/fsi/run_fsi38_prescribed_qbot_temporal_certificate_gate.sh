@@ -23,9 +23,6 @@ echo 'FSI38_STATIC_OPERATOR_CONTRACT=PASS'
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
-  src/solver/mod_soil_water_accepted_step_direction_contract.f90
-  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
-  src/transaction/mod_accepted_trajectory_directional_publication.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_reference_richards_workspace.f90
@@ -33,7 +30,6 @@ MODULE_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
