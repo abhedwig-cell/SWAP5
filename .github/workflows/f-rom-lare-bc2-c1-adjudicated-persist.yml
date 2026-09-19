@@ -1,0 +1,70 @@
+name: F-ROM-LARE persist adjudicated BC2-C1 evidence
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c1-adjudicated-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact adjudicated C1 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1-adjudicated
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10588152916/zip" > /tmp/lare-bc2-c1-adjudicated.zip
+          echo "c54309cc91eaf9a01e433553c178015cea3d4088e377adadccc939c748d7c7aa  /tmp/lare-bc2-c1-adjudicated.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c1-adjudicated.zip -d /tmp/lare-bc2-c1-adjudicated
+          echo "07677c6832dc60387d064e0e617f3cc3838ecd1de7840e9e18bb142bc665f160  /tmp/lare-bc2-c1-adjudicated/LARE_BC2_C1_RESULT.json" | sha256sum -c -
+
+      - name: Validate hard-gated blocked result
+        run: |
+          python3 - <<'PY'
+          import json
+          p='/tmp/lare-bc2-c1-adjudicated/LARE_BC2_C1_RESULT.json'
+          r=json.load(open(p))
+          assert r['decision']=='BC2_C1_DIAGNOSTIC_BLOCKED'
+          assert r['complete'] is False
+          h=r['hard_checks']
+          assert h['all_primary_and_cross_routes_qualified'] is False
+          assert h['all_primary_and_cross_routes_hard_gated'] is True
+          assert h['all_reference_projections_finite'] is True
+          assert h['failure_count']==1
+          assert h['max_additive_or_ledger_residual_across_primary_and_cross'] <= h['gate']
+          assert r['failures']=={
+            '2.5:WT_CYCLE:0.00010000':
+            'OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465153356722,1.0000110667249589]'
+          }
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C1_ADJUDICATED_RESULT=PASS')
+          PY
+
+      - name: Persist without losing concurrent branch work
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-bc2-c1-adjudicated/LARE_BC2_C1_RESULT.json integration/f-rom/LARE_BC2_C1_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C1_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist adjudicated BC2-C1 blocked result"
+          git fetch origin work/f-rom-lare-rs1
+          git rebase origin/work/f-rom-lare-rs1
+          git push origin HEAD:work/f-rom-lare-rs1
