@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.f-romv2-v1.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-V1",
+  "phase": "PREREGISTERED_WAITING_PROPOSITION_CANONICAL_ADMISSION",
+  "decision": null,
+  "preregistration_blob": "91069b15c64fafedbced5b5f1c02d24468490022",
+  "frozen_candidate": "C2",
+  "candidate_dimension": 2,
+  "new_validation_histories": [
+    "V01",
+    "V02",
+    "V03",
+    "V04"
+  ],
+  "old_exposed_histories_reused": false,
+  "trajectory_generation_executed": false,
+  "blind_validation_executed": false,
+  "execution_authorized": false,
+  "blocker": "F-ROMV2 proposition PR #415 must be canonically admitted before generation of V01-V04.",
+  "production_rom_authorized": false
+}
