@@ -62,7 +62,8 @@ contains
     real(real64) :: theta_ref_q, k_ref_q, c_ref_q
     real(real64) :: theta_max_abs, theta_max_range_norm
     real(real64) :: k_max_log10, c_max_rel_smooth, c_max_rel_active, c_max_abs
-    real(real64) :: c_wet_max_rel, c_wet_h_at_max, pexp
+    real(real64) :: c_wet_max_rel, c_wet_h_at_max, pexp, wet_rel
+    real(real64) :: c_wet_cross_1pct, c_wet_cross_10pct, c_wet_cross_50pct
     real(real64) :: c_h_at_max_rel, c_ref_at_max_rel, c_q_at_max_rel
     real(real64) :: c_h_at_max_active, c_ref_at_max_active, c_q_at_max_active
     real(real64) :: theta_self_max_rel, k_self_max_rel
@@ -137,6 +138,9 @@ contains
     c_max_abs = 0.0_real64
     c_wet_max_rel = 0.0_real64
     c_wet_h_at_max = 0.0_real64
+    c_wet_cross_1pct = 0.0_real64
+    c_wet_cross_10pct = 0.0_real64
+    c_wet_cross_50pct = 0.0_real64
     c_h_at_max_rel = 0.0_real64
     c_ref_at_max_rel = 0.0_real64
     c_q_at_max_rel = 0.0_real64
@@ -242,14 +246,20 @@ contains
        call EvalTabulatedFunction(0,n,1,2,4,node,sptab,ientrytab,hq,dummy,c_q,3)
        c_ref_q = capacity_reference_raw(hq)
        if (c_ref_q > 0.0_real64) then
-          if (abs(c_q-c_ref_q)/c_ref_q > c_wet_max_rel) then
-             c_wet_max_rel = abs(c_q-c_ref_q)/c_ref_q
+          wet_rel = abs(c_q-c_ref_q)/c_ref_q
+          if (wet_rel > c_wet_max_rel) then
+             c_wet_max_rel = wet_rel
              c_wet_h_at_max = hq
           end if
+          if (wet_rel > 0.01_real64 .and. c_wet_cross_1pct == 0.0_real64) c_wet_cross_1pct = hq
+          if (wet_rel > 0.10_real64 .and. c_wet_cross_10pct == 0.0_real64) c_wet_cross_10pct = hq
+          if (wet_rel > 0.50_real64 .and. c_wet_cross_50pct == 0.0_real64) c_wet_cross_50pct = hq
        end if
     end do
     write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6)') 'F_TAB01_C_WET n=',n,' grid=',grid_mode, &
       ' C_wet_max_rel=',c_wet_max_rel,' h_at_max=',c_wet_h_at_max
+    write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6,A,ES14.6)') 'F_TAB01_C_WET_CROSS n=',n,' grid=',grid_mode, &
+      ' h_1pct=',c_wet_cross_1pct,' h_10pct=',c_wet_cross_10pct,' h_50pct=',c_wet_cross_50pct
 
     write(*,'(A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_MONOTONIC n=',n,' grid=',grid_mode, &
       ' theta_violations=',theta_monotonic_violations,' K_violations=',k_monotonic_violations
