@@ -129,10 +129,18 @@
     "protocol_change_allowed": false
   },
   "root_parameter_rule": {
-    "status": "BLOCKED_NO_PROVENANCE_COMPLETE_PROFILE_FOUND_IN_CURRENT_QUALIFIED_CHAIN",
-    "rule": "Use first repository-qualified/provenance-complete active-crop profile providing hlim3l,hlim3h,hlim4,adcrl,adcrh without undocumented reconstruction; otherwise block Experiment A.",
-    "invented_defaults_allowed": false,
-    "audit_note": "Current canonical root-uptake runtime binds/evaluates the process but the bounded search did not identify a qualified active-crop profile supplying all five required Feddes values. Experiment A remains blocked; no defaults may be invented."
+    "status": "BOUND_TO_RECOVERED_A14_HISTORICAL_QUALIFICATION_FOR_P0_PILOT",
+    "authority_path": "integration/num-unc/NUM_UNC_P0A_PARAMETER_AUTHORITY.md",
+    "values": {
+      "hlim3h_cm": -325,
+      "hlim3l_cm": -600,
+      "hlim4_cm": -8000,
+      "adcrh_cm_per_day": 0.5,
+      "adcrl_cm_per_day": 0.1
+    },
+    "provenance": "Historical A14 2002 Hupsel simple-maize root-water-uptake qualification plus A22 crop-state shadow recovered from Project Library.",
+    "limitation": "Historical package bytes were not rematerializable in the current runtime; use is limited to P0 pilot parameter binding and does not constitute a new replay of A14.",
+    "invented_defaults_allowed": false
   },
   "kill_criteria": [
     "all admissible N0/N1 runs inference-invariant",
@@ -380,6 +388,64 @@
     "data_firewall": {
       "N1_execution_allowed_in_B0": false,
       "freeze_before_B1": true
+    }
+  },
+  "p0a_stress": {
+    "status": "A0_PREREGISTERED_BEFORE_EXECUTION",
+    "numerical_treatment": "N0_ONLY_LOCATOR",
+    "material": "B01",
+    "root_parameters": {
+      "hlim3h_cm": -325,
+      "hlim3l_cm": -600,
+      "hlim4_cm": -8000,
+      "adcrh_cm_per_day": 0.5,
+      "adcrl_cm_per_day": 0.1
+    },
+    "potential_transpiration_cm_per_day": 0.1806735915459957,
+    "potential_transpiration_authority": "A22_INTEGRATED_TRACE.csv, four accepted 10 June 2002 steps",
+    "grid": {
+      "cells": 16,
+      "dz_cm": 10,
+      "total_depth_cm": 160,
+      "rooted_nodes": 6,
+      "root_depth_cm": 60
+    },
+    "root_distribution": "UNIFORM_OVER_FIRST_6_CELLS_CONTROLLED_RESEARCH_PROFILE",
+    "root_distribution_field_representation_claim": false,
+    "bottom_boundary": {
+      "mode": 2,
+      "qbot_cm_per_day": 0
+    },
+    "forcing": {
+      "dt_day": 0.0064,
+      "total_blocks": 192,
+      "rescue_start_block": 65,
+      "rescue_end_block": 80,
+      "rescue_top_flux_cm_per_day": 0.1806735915459957,
+      "drydown_top_flux_cm_per_day": 0
+    },
+    "stress_event": {
+      "actual_to_potential_ratio_lt": 0.999999999999,
+      "rescue_time_day": 0.4096
+    },
+    "continuation": {
+      "coordinate": "Se0 = Secrit + delta_Se",
+      "delta_Se_search": [
+        0,
+        0.0025,
+        0.005,
+        0.01,
+        0.02
+      ],
+      "expansion_allowed": false,
+      "bisection_iterations": 12,
+      "freeze_minus_delta_Se": -0.0025,
+      "freeze_plus_delta_Se": 0.0025,
+      "posthoc_offset_widening_allowed": false
+    },
+    "data_firewall": {
+      "N1_execution_allowed_in_A0": false,
+      "freeze_before_A1": true
     }
   }
 }
