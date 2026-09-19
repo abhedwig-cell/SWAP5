@@ -9,6 +9,7 @@ module mod_reference_richards_temporal_indicator
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
   private
@@ -110,9 +111,29 @@ contains
        return
     end if
     if (associated(request%evaluation%root_sink)) then
-       indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
-       indicator_result%route = 'root-sink-envelope-deferred'
-       return
+       select type (root_sink_provider => request%evaluation%root_sink)
+       type is (b110_root_sink_provider_t)
+          if (root_sink_provider%active_nodes /= n) then
+             indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+             indicator_result%route = 'root-sink-size-mismatch'
+             return
+          end if
+          if (.not. associated(root_sink_provider%root_extraction_sink)) then
+             indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+             indicator_result%route = 'root-sink-not-bound'
+             return
+          end if
+          if (size(root_sink_provider%root_extraction_sink) /= n .or. &
+              any(.not. ieee_is_finite(root_sink_provider%root_extraction_sink))) then
+             indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+             indicator_result%route = 'root-sink-invalid-prescribed-vector'
+             return
+          end if
+       class default
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'root-sink-policy-deferred'
+          return
+       end select
     end if
     if (request%numerical%conductivity_implicit_mode /= 0 .or. &
         request%numerical%conductivity_mean_method /= 1) then
