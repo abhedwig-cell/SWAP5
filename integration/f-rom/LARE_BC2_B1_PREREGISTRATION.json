@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.lare.bc2.b1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B1",
+  "phase": "PREREGISTERED_BEFORE_EQUILIBRIUM_SUBTRACTED_MOVING_GEOMETRY_CONTROL",
+  "purpose": "Remove the known fixed-geometry hydrostatic discretization drift from the conservative BC2 moving-geometry experiment without fitting any coefficient, so residual moving-history error can be attributed to non-equilibrium closure/geometry response rather than equilibrium preservation failure.",
+  "predecessor": {
+    "bc2_a2": "integration/f-rom/LARE_BC2_A2_RESULT.json",
+    "required_a2_decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED",
+    "bc2_b0": "integration/f-rom/LARE_BC2_B0_RESULT.json",
+    "required_b0_decision": "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED_WITH_RESPONSE_CONFUNDING",
+    "b0_next_primary_authority": "LARE_BC2_B1_EQUILIBRIUM_SUBTRACTED_CONSERVATIVE_CONTROL"
+  },
+  "literature_context": {
+    "Zeng_Decker_2009": {
+      "citation": "Zeng, X. & Decker, M. (2009), Improving the Numerical Solution of Soil Moisture-Based Richards Equation for Land Models with a Deep or Shallow Water Table, Journal of Hydrometeorology 10, 308-319, DOI 10.1175/2008JHM1011.1",
+      "role": "conceptual precedent that subtracting hydrostatic-equilibrium structure can remove water-table-related discretization error; BC2-B1 does not claim to reproduce the CLM discretization or equation."
+    },
+    "novelty_firewall": "Hydrostatic-equilibrium subtraction is not claimed as novel. BC2-B1 is a source-anchored diagnostic control inside the LARE reduction study."
+  },
+  "geometry": {
+    "same_as_b0": true,
+    "profile_depth_cm": 160,
+    "fixed_anchor_cm": 90,
+    "fixed_layers_cm": [
+      [
+        0,
+        10
+      ],
+      [
+        10,
+        20
+      ],
+      [
+        20,
+        30
+      ],
+      [
+        30,
+        40
+      ],
+      [
+        40,
+        50
+      ],
+      [
+        50,
+        60
+      ],
+      [
+        60,
+        70
+      ],
+      [
+        70,
+        80
+      ],
+      [
+        80,
+        90
+      ]
+    ],
+    "moving_layer": "90..H(t)",
+    "prescribed_H_source": "qualified BC2-A2 interior zero-pressure crossing",
+    "no_feedback_to_H": true,
+    "no_layer_birth_death": true,
+    "no_material_boundary_crossing": true
+  },
+  "hydrostatic_reference_manifold": {
+    "suction": "psi_E(z;H)=H-z for 0<=z<=H",
+    "fixed_layer_storage": "W_E_i(H)=integral_{z_i}^{z_{i+1}} theta[H-z] dz",
+    "moving_layer_storage": "W_E_m(H)=integral_{90}^{H} theta[H-z] dz",
+    "quadrature": "64-point Gauss-Legendre per layer",
+    "quadrature_crosscheck": "128-point Gauss-Legendre",
+    "quadrature_max_abs_storage_difference_gate_cm": 1e-10,
+    "no_fit": true
+  },
+  "required_equilibrium_flux_path": {
+    "top_flux": "q_E(0)=0",
+    "interior_interface_at_depth_z": "q_E(z)=[theta(H-z)-theta(H)]*dHdt",
+    "water_table_flux": "q_E(H)=[theta_s-theta(H)]*dHdt",
+    "derivation": "chosen so the exact hydrostatic layer storages satisfy the conservative fixed-layer balances and dW_m/dt=q_90-q_H+theta_s*dHdt"
+  },
+  "corrected_flux_control": {
+    "standard_candidate_flux": "q_L(state,H) from the unchanged standard-LARE adjacent-layer and water-table closures used in BC2-B0",
+    "standard_equilibrium_flux": "q_L_E(H)=q_L(W_E(H),H)",
+    "corrected_flux": "q_WB = q_L(state,H) - q_L_E(H) + q_E(H,dHdt)",
+    "moving_state_equation": "dW_m/dt=q_WB_90-q_WB_H+theta_s*dHdt",
+    "fixed_state_equation": "dW_i/dt=q_WB_{i-1/2}-q_WB_{i+1/2}",
+    "property": "If state=W_E(H), the corrected ODE follows dW_E/dt exactly up to numerical quadrature/integration floor.",
+    "role": "diagnostic equilibrium-path-preserving control only; not selected production physics"
+  },
+  "initial_state": {
+    "same_as_b0": true,
+    "source": "exact BC2-A2 accepted initial Reference projection",
+    "reason": "Hold initial projection fixed so the only changed mechanism is the response flux correction."
+  },
+  "histories": [
+    "WT_HOLD",
+    "WT_RISE",
+    "WT_FALL",
+    "WT_CYCLE"
+  ],
+  "numerical_floor": {
+    "observation_dt_day": 0.0008,
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": 0.0001,
+    "method": "iterative Heun predictor-corrector",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "physical_water_ledger_hard_gate_cm": 1e-10,
+    "hydrostatic_manifold_rhs_gate_cm_per_day": 1e-10,
+    "no_clipping": true
+  },
+  "comparison": {
+    "reference": "same BC2-A2 full-order geometry/output used by BC2-B0",
+    "baseline": "persisted BC2-B0 conservative metrics",
+    "metrics": [
+      "max absolute total unsaturated storage error",
+      "max absolute cumulative q_H error",
+      "max absolute interval q_H error",
+      "q_H sign mismatch count",
+      "reversal sequence and timing",
+      "physical moving-control-volume ledger",
+      "WT_HOLD hydrostatic drift"
+    ],
+    "response_used_to_define_control": false
+  },
+  "adjudication": {
+    "hard_requirements": [
+      "quadrature crosscheck <=1e-10 cm",
+      "manufactured equilibrium-manifold RHS residual <=1e-10 cm/day",
+      "physical moving-control-volume ledger <=1e-10 cm",
+      "fine route numerically qualified for all four histories"
+    ],
+    "relative_support_rule": "B1 is relatively supported as a deconfounding control only if it is component-wise noninferior to B0 on total-storage error, cumulative-qH error, sign mismatch count and reversal-step difference over the four frozen histories, and strictly improves at least one of those components.",
+    "fixed_geometry_attribution_rule": "WT_HOLD is interpreted separately. A material reduction of WT_HOLD storage/exchange drift supports attribution of the B0 stationary error to hydrostatic discretization rather than moving-volume algebra.",
+    "no_application_threshold": true,
+    "valid_outcomes": [
+      "BC2_B1_EQSUB_CONTROL_RELATIVE_SUPPORT",
+      "BC2_B1_EQSUB_CONTROL_MIXED_RESPONSE",
+      "BC2_B1_EQSUB_CONTROL_NO_RELATIVE_SUPPORT",
+      "BC2_B1_EQSUB_CONTROL_NUMERICALLY_BLOCKED"
+    ]
+  },
+  "firewalls": [
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_POST_RESPONSE_RETUNING_OF_EQUILIBRIUM_MANIFOLD",
+    "NO_PROMOTION_OF_CONTROL_TO_PRODUCTION_PHYSICS",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
