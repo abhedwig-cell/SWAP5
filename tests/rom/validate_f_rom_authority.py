@@ -1851,6 +1851,97 @@ def validate_romv2_d19_if_present() -> str:
     return "CLOSED_BOUNDED_EXACT_CONTACT_MERGE_CANDIDACY_RETAINED"
 
 
+def validate_romv2_d20_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D20_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D20_PREREGISTRATION.json") == "af1cf1bd4ad8073fb6b9aade554f8ab72c2cbef7",
+            "F-ROMV2-D20 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D20_STAGE2_AUTHORIZATION.json") == "d5ccb341ab0f836ac5f7d8504c955a50cdd25a61",
+            "F-ROMV2-D20 Stage-2 authority blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D20_RESULT.json") == "9cec863cb392c82fb4e0670921b2c85a1d448132",
+            "F-ROMV2-D20 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D20_STATUS.json") == "5a65f3670f82e500c16470bafa96ef066369a8cb",
+            "F-ROMV2-D20 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D20_CANONICAL_EVIDENCE_MANIFEST.json") == "334eabf8783686f121d5a17bc3fedce87c512c57",
+            "F-ROMV2-D20 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D20_PREREGISTRATION.json")
+    auth=load_json("integration/f-rom/F-ROMV2_D20_STAGE2_AUTHORIZATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D20_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D20_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D20_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc=Path("docs/science/F-ROMV2_D20_ONE_HOUR_PERSISTENCE_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+            "F-ROMV2-D20 preregistration phase drift")
+    require(prereg["temporal_design"]["total_steps_per_history"]==360
+            and prereg["temporal_design"]["last_quarter_steps"]=="271..360",
+            "F-ROMV2-D20 persistence horizon drift")
+    require([h["id"] for h in prereg["histories"]]==["P_UP","P_DOWN","P_ALT_A","P_ALT_B"],
+            "F-ROMV2-D20 forcing-order histories drift")
+    require("NO_HISTORY_ORDER_RETUNING" in prereg["firewalls"]
+            and "NO_FACTOR_VALUE_TUNING" in prereg["firewalls"]
+            and "NO_PONDING_OR_RUNOFF" in prereg["firewalls"],
+            "F-ROMV2-D20 workload firewalls drift")
+
+    require(auth["stage"]=="STAGE2_MATCHED_R16_R2_AUTHORIZED"
+            and auth["original_preregistration_blob"]=="af1cf1bd4ad8073fb6b9aade554f8ab72c2cbef7"
+            and auth["stage1_execution"]["decision"]=="D20_FMC_ONE_HOUR_PREFLIGHT_PASS"
+            and auth["stage1_execution"]["SWAP_trajectory_evidence_consumed"] is False
+            and auth["stage2_authorized"] is True,
+            "F-ROMV2-D20 staged authority drift")
+
+    require(result["decision"]=="FMC_ONE_HOUR_PERSISTENCE_RETAINS_RESEARCH_CANDIDACY",
+            "F-ROMV2-D20 decision drift")
+    require(result["integrity"]["pass"] is True
+            and result["integrity"]["R16_O0_O2_identity"] is True
+            and result["integrity"]["R2_O0_O2_identity"] is True,
+            "F-ROMV2-D20 integrity/reproducibility drift")
+    require(result["frontier"]["all_views_required"] is True
+            and result["frontier"]["retained"] is True,
+            "F-ROMV2-D20 frontier retention drift")
+    require(all(v is True for k,v in result["frontier"].items()
+                if k not in ("all_views_required","retained")),
+            "F-ROMV2-D20 one or more preregistered gates fail")
+    require(result["full_hour"]["FMC"]["upper_0_80_storage_RMSE_cm"]
+            > result["full_hour"]["R2"]["upper_0_80_storage_RMSE_cm"],
+            "F-ROMV2-D20 upper-zone weakness was lost")
+    require(result["full_hour"]["FMC"]["lower_80_160_storage_RMSE_cm"]
+            < result["full_hour"]["R2"]["lower_80_160_storage_RMSE_cm"],
+            "F-ROMV2-D20 lower-zone advantage was lost")
+    require(result["last_quarter_steps_271_360"]["FMC"]["total_storage_RMSE_cm"]
+            < result["last_quarter_steps_271_360"]["R2"]["total_storage_RMSE_cm"],
+            "F-ROMV2-D20 late-window persistence drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D20 overclaims authority")
+
+    require(status["phase"]=="CLOSED_ONE_HOUR_FIXED_WATER_TABLE_PERSISTENCE_CANDIDACY_RETAINED"
+            and status["all_preregistered_frontier_gates_pass"] is True
+            and status["upper_zone_storage_advantage_over_R2"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D20 terminal status drift")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["source_execution"]["pull_request_merged"] is False
+            and manifest["scientific_parameter_or_gate_retuning_after_exposure"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D20 provenance drift")
+    require(manifest["frozen_payload_digests"]["raw_result_sha256"]
+            == "dbbd89fa075504ef7dc8e8b820ef39c8a811225165bfbd6950aa00b4253b289b",
+            "F-ROMV2-D20 raw result digest drift")
+
+    require("FMC is therefore almost three times worse than R2 for this integrated upper-zone storage metric." in doc,
+            "F-ROMV2-D20 purpose-dependent upper-zone limitation missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D20 production prohibition missing")
+    return "CLOSED_ONE_HOUR_FIXED_WATER_TABLE_PERSISTENCE_CANDIDACY_RETAINED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1896,6 +1987,7 @@ def main() -> int:
     romv2_d17_phase = validate_romv2_d17_if_present()
     romv2_d18_phase = validate_romv2_d18_if_present()
     romv2_d19_phase = validate_romv2_d19_if_present()
+    romv2_d20_phase = validate_romv2_d20_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1925,6 +2017,7 @@ def main() -> int:
     print(f"F_ROMV2_D17_PHASE={romv2_d17_phase}")
     print(f"F_ROMV2_D18_PHASE={romv2_d18_phase}")
     print(f"F_ROMV2_D19_PHASE={romv2_d19_phase}")
+    print(f"F_ROMV2_D20_PHASE={romv2_d20_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
