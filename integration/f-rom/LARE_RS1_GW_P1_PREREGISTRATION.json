@@ -1,0 +1,133 @@
+{
+  "schema": "swap5.lare.rs1.gw.p1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW-P1",
+  "phase": "PREREGISTERED_BEFORE_REDUCED_PARTITION_SCREEN",
+  "predecessor": {
+    "result": "integration/f-rom/LARE_RS1_GW_STAGE_A_RESULT.json",
+    "decision": "LARE_RS1_GW_STAGE_A_REFERENCE_LIBRARY_QUALIFIED",
+    "workflow_run": 35444243790,
+    "artifact_id": 10585316225,
+    "accepted_state_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "purpose": "Select and freeze fixed conservative storage partitions and adversarial state pairs without inspecting any identical-future-probe response.",
+  "diagnostic_state_scale": {
+    "theta_floor": 0.0005420462931603476,
+    "provenance": "independently frozen B01 ROM-0/ROM-1 theta numerical scale used historically for state distinguishability",
+    "role": "PAIR_DISCOVERY_SCALE_ONLY",
+    "not_a_hydrological_acceptance_threshold": true,
+    "proximity_multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ]
+  },
+  "pair_population": {
+    "histories": [
+      "G00",
+      "G01",
+      "G02",
+      "G03",
+      "G04",
+      "G05"
+    ],
+    "cross_history_only": true,
+    "same_history_pairs_excluded": true,
+    "full_state_diagnostic_filter": "full theta L_inf > diagnostic theta_floor",
+    "future_outputs_visible": false
+  },
+  "candidates": {
+    "family": "all contiguous fixed partitions of the 16 x 10-cm base cells",
+    "dimensions": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "coordinate": "layer mean theta; exactly information-equivalent to fixed-layer storage W_i after multiplication by layer thickness",
+    "collision_at_multiplier": "all candidate layer-mean differences <= multiplier * diagnostic theta_floor while full theta L_inf exceeds diagnostic theta_floor",
+    "score": "for each dimension minimize collision count lexicographically at multipliers [4,2,1,0.5,0.25]; ties use lexicographically smallest cut tuple",
+    "reason": "favor partitions that remain state-separating as the purely diagnostic proximity neighborhood is widened"
+  },
+  "fixed_controls": [
+    {
+      "id": "U4",
+      "end_indices": [
+        4,
+        8,
+        12,
+        16
+      ]
+    },
+    {
+      "id": "U8_Z8",
+      "end_indices": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16
+      ]
+    },
+    {
+      "id": "B01_B14_PILOT_R4",
+      "end_indices": [
+        1,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "id": "Z8_PLUS_G8_INFORMATION_EQUIVALENT",
+      "end_indices": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        15,
+        16
+      ]
+    }
+  ],
+  "adversarial_pair_freeze": {
+    "selected_partitions": "one response-blind selected partition per dimension plus all fixed controls",
+    "pair_count_per_partition": 8,
+    "rule": "among cross-history full-state-distinguishable pairs, select the eight smallest candidate-coordinate L_inf distances; tie-break by larger full theta L_inf then history/step key",
+    "pair_reselection_after_future_response": false
+  },
+  "outputs": [
+    "collision_count_by_partition_dimension_and_proximity_multiplier",
+    "response_blind_selected_partition_per_dimension",
+    "fixed_control_collision_counts",
+    "frozen_adversarial_pair_manifests",
+    "full_state_contrast_for_each_frozen_pair"
+  ],
+  "next_gate": {
+    "name": "LARE-RS1-GW-P2",
+    "condition": "P1 completes deterministically",
+    "rule": "Freeze purpose-dependent future-probe horizons and acceptance envelopes before executing future responses for P1 pairs."
+  },
+  "firewalls": [
+    "NO_FUTURE_PROBE_RESPONSE_USED_FOR_PARTITION_SELECTION",
+    "NO_HYDROLOGICAL_ACCEPTANCE_FROM_P1_COLLISION_COUNTS",
+    "NO_LARE_DYNAMICS",
+    "NO_CLOSURE_FIT",
+    "NO_PURPOSE_THRESHOLD_TUNING",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
