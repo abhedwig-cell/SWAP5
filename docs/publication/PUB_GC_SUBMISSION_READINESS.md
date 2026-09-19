@@ -162,3 +162,17 @@ The F1–F7 SVG→PDF production route is now qualified:
 - qualification evidence: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
 
 This removes figure rendering/packaging as an independent blocker. Final PDFs are regenerated once from the exact immutable publication release after R1/L1/archive closure.
+
+
+## Fail-closed release/archive finalization — 2026-09-19
+
+The repository now contains a staged finalization gate that preserves the governance boundary while making post-decision execution mechanical:
+
+- pre-authority: validates frozen publication content and E7 zero-window guard;
+- authority-ready: requires governed R1/L1 values and authority/effective date;
+- archive-ready: additionally requires exact checked-out publication commit plus persistent DOI/PID;
+- submission-ready: additionally rejects unresolved journal/author placeholders.
+
+The publication-critical prearchive set was rechecked on canonical `1720abc365a9d0a65ea8253df2f94c991f2b9fc1`; all 24 frozen blobs match exactly.
+
+This does not change the current blocker classification: R1/L1/A3 and author metadata remain external/governance tasks, not scientific work.

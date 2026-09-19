@@ -122,6 +122,9 @@ def main() -> int:
         "PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
         "PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
         "PUB_GC_GMD_COVER_LETTER_DRAFT.md",
+        "PUB_GC_GMD_FINALIZATION_CONTRACT.md",
+        "PUB_GC_GMD_FINALIZATION_INPUT.json",
+        "PUB_GC_GMD_CURRENT_CANONICAL_PRESERVATION_20260919.json",
     ]
     for name in required_new:
         if not (PUB / name).is_file():
