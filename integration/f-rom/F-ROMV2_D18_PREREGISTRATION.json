@@ -1,0 +1,141 @@
+{
+  "schema": "swap5.f-romv2-d18.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D18",
+  "title": "Primary-source-bound FMC falling-slug to groundwater-front merge transition",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_EVENT_PREFLIGHT",
+  "canonical_base": "3bc160ad6b73f8f491b07671ec747cf2b2bc3074",
+  "purpose": "Test the first surface-groundwater transition deliberately excluded from D17: a D16-style falling slug contacting and merging into a D13-style groundwater front under the primary Ogden et al. 2015 finite-volume merge rule.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_TRANSITION_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D13": "FMC_GW200 groundwater-front branch retained candidacy.",
+    "D14": "Eq.19 falling-slug translation conserves slug length and finite-volume water.",
+    "D15": "Synthetic same-bin slug-groundwater merge and surface accounting ledger pass.",
+    "D16": "Surface pulse/hiatus falling-slug development branch retained candidacy.",
+    "D17": "Simultaneous separated surface and groundwater branches retained candidacy; minimum gap remained positive.",
+    "implication": "D18 adds only the previously excluded contact/merge transition; it does not retune bins, process step, constitutive laws, front velocities, lambda or D17 pulse forcing."
+  },
+  "primary_source_authority": {
+    "doi": "10.1002/2015WR017126",
+    "rules": [
+      "falling slugs advance by Eq.19 while preserving length",
+      "a falling slug that encounters a groundwater front during a time step is merged into that groundwater front",
+      "the groundwater front is raised toward the surface by an amount equal to the merged slug length in that bin",
+      "capillary relaxation is finite-volume mass-conservative",
+      "groundwater fronts advance or retreat by Eq.21 under a fixed-head lower boundary"
+    ],
+    "bounded_implementation_note": "D18 preserves the admitted D16 slug-translation representation and D13 groundwater-front relaxation. It does not introduce a new generalized falling-slug relaxation operator; the contact/merge event itself is the new operation under test."
+  },
+  "frozen_identity": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "process_step_seconds": 10,
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "HcM_cm": 14.085215420920257
+  },
+  "stage1_event_preflight": {
+    "SWAP_trajectory_evidence_consumed": false,
+    "initial_state": "Reproduce the admitted D17 C75_G25 FMC state after exactly 16 continuous 10-s steps at top supply 0.75*Ksat, with D16 I_DEEP surface fronts and D13 G25 groundwater fronts.",
+    "transition_surface_flux": "q_top = K(theta_i), where i=100. The entire 10-s supply equals the frozen gray-bin direct-throughflow demand, leaving zero residual supply for connected surface fronts.",
+    "detachment": "At the first transition step, all remaining surface-connected wetted intervals detach into falling slugs with unchanged lengths, as in the admitted D15/D16 hiatus representation.",
+    "per_step_order": [
+      "route q_top*dt = K(theta_i)*dt as gray-bin direct downward exchange",
+      "advance every surviving falling slug by Eq.19 for 10 s, preserving its length",
+      "for each bin whose translated slug bottom reaches or passes the top of the same-bin groundwater interval, merge the entire slug into the groundwater front by H_j <- H_j + slug_length and remove that slug",
+      "require every merged H_j finite, positive and <=160 cm; no clipping",
+      "advance all groundwater fronts by the admitted D13 Eq.21 forward-Euler 10-s step",
+      "apply the admitted D13 conservative groundwater-front relaxation",
+      "require every remaining slug and groundwater interval physical and nonoverlapping",
+      "ledger bottom-outward exchange = gray direct throughflow - groundwater-front storage change; require delta storage + bottom-outward exchange = 0 within 1e-12 cm"
+    ],
+    "event_search_max_steps": 512,
+    "event_locator": "earliest 10-s transition step with at least one same-bin slug-groundwater merge",
+    "positive": "D18_FMC_SLUG_GW_MERGE_EVENT_PREFLIGHT_PASS",
+    "negative": "D18_FMC_SLUG_GW_MERGE_EVENT_PREFLIGHT_NO_GO",
+    "pass_requirements": [
+      "D17 reconstruction identity passes before transition",
+      "at least one merge occurs within 512 transition steps",
+      "the first merge changes no finite-volume water except declared boundary exchange",
+      "no groundwater front exceeds the column depth",
+      "no surviving slug overlaps a groundwater interval after merge",
+      "all step ledgers close within 1e-12 cm",
+      "no hidden correction, clipping or full-order fallback"
+    ],
+    "failure_rule": "Any failure closes D18 before R16/R2 transition trajectories. Do not change the pulse factor, G25 lambda, q_top=K(theta_i), bin count, process step, equations or event horizon inside D18."
+  },
+  "stage2_if_preflight_passes": {
+    "authorization": "A pre-SWAP execution amendment may record the FMC-only first-contact step and freeze a matched comparator window without changing any physical rule.",
+    "matched_history": "Start R16/R2 from the exact cell-average mapping of the FMC state eight 10-s steps before first merge when available; otherwise from transition step 0. Run through first merge plus sixteen post-merge steps.",
+    "boundaries": "top prescribed downward q=K(theta_i); bottom fixed zero pressure head; no root sink, ET, drainage, subsurface irrigation, ponding or runoff.",
+    "comparators": [
+      "R16",
+      "R2"
+    ],
+    "metrics": [
+      "total-storage RMSE",
+      "cumulative bottom-exchange RMSE",
+      "mapped R16-cell theta RMSE",
+      "upper/lower 80-cm storage RMSE",
+      "terminal bottom-flux RMSE",
+      "bottom-flux sign errors",
+      "pre-contact / first-merge / post-merge profile errors",
+      "FMC mass residual and merge count"
+    ],
+    "decision_positive": "FMC_CONTACT_MERGE_RETAINS_RESEARCH_CANDIDACY",
+    "decision_negative": "FMC_CONTACT_MERGE_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "event preflight passed before SWAP trajectory exposure",
+      "matched R16/R2 window completes with integrity",
+      "FMC total-storage and cumulative-bottom-exchange RMSE <= R2",
+      "FMC mapped R16-cell theta RMSE <= R2",
+      "FMC terminal bottom-flux RMSE <= R2 and FMC sign-error count <= R2"
+    ],
+    "all_views_required": true
+  },
+  "explicit_nonclaims": [
+    "general falling-slug relaxation fidelity",
+    "multiple repeated merge events under arbitrary rainfall",
+    "ponding/runoff threshold fidelity",
+    "moving water table coupling",
+    "ET/root uptake",
+    "seasonal balance",
+    "application acceptance",
+    "formal runtime",
+    "production ROM"
+  ],
+  "firewalls": [
+    "NO_SWAP_TRAJECTORY_BEFORE_EVENT_PREFLIGHT_PASS",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_C75_OR_G25_RETUNING",
+    "NO_TRANSITION_SURFACE_FLUX_RETUNING",
+    "NO_EVENT_HORIZON_RETUNING",
+    "NO_POST_EVENT_EQUATION_RETUNING",
+    "NO_NEW_SLUG_RELAXATION_OPERATOR_IN_D18",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_ROOT_UPTAKE",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
