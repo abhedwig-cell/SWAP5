@@ -98,6 +98,11 @@ program test_hydro_memory_cap01_root_active_response
   window%t1 = DURATION_DAY
 
   call run_root_candidate(QBOT0, .false., nominal_result, nominal_candidate, nominal_diagnostics)
+  write(*,'(a,i0,a,l1,a,es14.6,a,i0,a,i0,a,i0,a,i0,a,i0)') 'HMCAP01_NOMINAL_DIAG status=', &
+       nominal_result%status, ' completed=', nominal_result%completed, ' completed_t=', nominal_result%completed_t, &
+       ' retries=', nominal_diagnostics%retries, ' solver_rejections=', nominal_diagnostics%solver_rejections, &
+       ' temporal_rejections=', nominal_diagnostics%temporal_rejections, ' temporal_unavailable=', &
+       nominal_diagnostics%temporal_unavailable_rejections, ' mass_rejections=', nominal_diagnostics%mass_rejections
   call require(nominal_result%status == CANONICAL_STATUS_COMPLETED .and. nominal_result%completed, &
        'root-active nominal production candidate did not complete')
   call require(nominal_candidate%ready(), 'root-active nominal candidate not ready')
