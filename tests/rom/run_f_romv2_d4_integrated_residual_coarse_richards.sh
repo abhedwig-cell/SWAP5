@@ -27,7 +27,6 @@ python3 - "$PREREG" <<'PY'
 import json,sys
 p=json.load(open(sys.argv[1]))
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
-assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
 assert [(g["id"],g["nodes"],g["dz_cm"]) for g in p["scope"]["geometries"]]==[
  ("R16",16,10),("R8",8,20),("R4",4,40),("R2",2,80)]
 assert p["scope"]["blind_confirmation"] is False
@@ -72,7 +71,7 @@ done
 
 python3 - "$EVIDENCE/geometry-status.tsv" "$EVIDENCE/geometry-status.json" <<'PY'
 import json,sys
-out={"schema":"swap5.f-romv2-d3.geometry-execution-status.v1","geometries":{}}
+out={"schema":"swap5.f-romv2-d4.geometry-execution-status.v1","geometries":{}}
 for line in open(sys.argv[1]):
     g,rc0,rc2,c0,c2,ident,status=line.rstrip().split("\t")
     out["geometries"][g]={"o0_exit_code":int(rc0),"o2_exit_code":int(rc2),
