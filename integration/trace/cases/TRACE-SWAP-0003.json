@@ -1,7 +1,7 @@
 {
   "trace_id": "TRACE-SWAP-0003",
   "model": "SWAP",
-  "status": "CONFIRMED",
+  "status": "CLOSED",
   "discovery": {
     "first_observed_date": "2026-09-19",
     "registered_date": "2026-09-19",
@@ -91,10 +91,17 @@
       }
     ],
     "final_authority": "F-DOC33 post-merge closeout status at 9f133284cd3bfe43a8be7e686988209c195d516c plus PR #200 merge d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
-    "disposition": "UNRESOLVED_INSUFFICIENT_AUTHORITY",
+    "disposition": "DOCUMENTATION_CORRECTED",
     "code_changed": false,
-    "documentation_changed": null,
-    "tests_changed": null
+    "documentation_changed": true,
+    "tests_changed": false,
+    "repair": {
+      "status_path": "integration/f-doc/F-DOC33_STATUS.json",
+      "source_closeout_ref": "9f133284cd3bfe43a8be7e686988209c195d516c",
+      "source_closeout_blob": "a50cbeacb43597434b19e7befd6aeb18e9b1cdc6",
+      "repair_head": "7910d1410e4639766304801143505e0ffd0d3926",
+      "change": "Propagate the already-authored post-merge F-DOC33 CLOSE/DOCUMENTATION_ADMITTED_AND_CLOSED status onto the current canonical lineage without changing provenance content or scientific semantics."
+    }
   },
   "reproducibility": {
     "pre_resolution_ref": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
@@ -106,6 +113,14 @@
       "pr": 200,
       "merge_commit": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
       "post_merge_closeout_head": "9f133284cd3bfe43a8be7e686988209c195d516c"
+    },
+    "repair_postimage_ref": "7910d1410e4639766304801143505e0ffd0d3926",
+    "repair_qualification": {
+      "trace_workflow_run": 35439595539,
+      "trace_conclusion": "success",
+      "broad_preservation_workflow": "F-GC42 live whole-window service",
+      "broad_preservation_run": 35439595565,
+      "broad_preservation_conclusion": "success"
     }
   }
 }
