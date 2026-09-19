@@ -176,80 +176,15 @@ jobs:
           set -uo pipefail
 
           set +e
-          build/tab-hyd-derivfix/wrapper/probe \
-            > build/tab-hyd-derivfix/wrapper-normal.txt 2>&1
+          build/tab-hyd-derivfix/wrapper/probe > build/tab-hyd-derivfix/wrapper-normal.txt 2>&1
           normal_rc=$?
           set -e
           cat build/tab-hyd-derivfix/wrapper-normal.txt
           echo "normal_probe_return_code=$normal_rc"
-          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED
-      - name: Write candidate qualification summary
-        shell: bash
-        run: |
-          set -euo pipefail
-          {
-            echo "# TAB-HYD derivative-clamp candidate"
-            echo
-            echo "Candidate contract: dK/dh = 0 outside the tabulated theta range, consistent with the existing constant K endpoint extension."
-            echo
-            cat build/tab-hyd-derivfix/status.tsv
-            cat build/tab-hyd-derivfix/comparison.txt
-            echo
-            grep '^WRAPPER ' build/tab-hyd-derivfix/wrapper-normal.txt || true
-            grep '^DRY_PROBE' build/tab-hyd-derivfix/wrapper-dry.txt || true
-          } > build/tab-hyd-derivfix/summary.md
-          cat build/tab-hyd-derivfix/summary.md
-
-      - name: Upload evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tab-hyd-derivative-clamp-candidate
-          path: |
-            build/tab-hyd-derivfix/summary.md
-            build/tab-hyd-derivfix/status.tsv
-            build/tab-hyd-derivfix/comparison.*
-            build/tab-hyd-derivfix/*/runtime_seconds.txt
-            build/tab-hyd-derivfix/*/run.log
-            build/tab-hyd-derivfix/wrapper-normal.txt
-            build/tab-hyd-derivfix/wrapper-dry.txt
- build/tab-hyd-derivfix/wrapper-normal.txt
-          grep -q '^WRAPPER near_sat_dKdh=  *0\.0000000000000000E+00
-      - name: Write candidate qualification summary
-        shell: bash
-        run: |
-          set -euo pipefail
-          {
-            echo "# TAB-HYD derivative-clamp candidate"
-            echo
-            echo "Candidate contract: dK/dh = 0 outside the tabulated theta range, consistent with the existing constant K endpoint extension."
-            echo
-            cat build/tab-hyd-derivfix/status.tsv
-            cat build/tab-hyd-derivfix/comparison.txt
-            echo
-            grep '^WRAPPER ' build/tab-hyd-derivfix/wrapper-normal.txt || true
-            grep '^DRY_PROBE' build/tab-hyd-derivfix/wrapper-dry.txt || true
-          } > build/tab-hyd-derivfix/summary.md
-          cat build/tab-hyd-derivfix/summary.md
-
-      - name: Upload evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tab-hyd-derivative-clamp-candidate
-          path: |
-            build/tab-hyd-derivfix/summary.md
-            build/tab-hyd-derivfix/status.tsv
-            build/tab-hyd-derivfix/comparison.*
-            build/tab-hyd-derivfix/*/runtime_seconds.txt
-            build/tab-hyd-derivfix/*/run.log
-            build/tab-hyd-derivfix/wrapper-normal.txt
-            build/tab-hyd-derivfix/wrapper-dry.txt
- build/tab-hyd-derivfix/wrapper-normal.txt
+          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd-derivfix/wrapper-normal.txt
 
           set +e
-          build/tab-hyd-derivfix/wrapper/probe dry_probe \
-            > build/tab-hyd-derivfix/wrapper-dry.txt 2>&1
+          build/tab-hyd-derivfix/wrapper/probe dry_probe > build/tab-hyd-derivfix/wrapper-dry.txt 2>&1
           dry_rc=$?
           set -e
           cat build/tab-hyd-derivfix/wrapper-dry.txt
