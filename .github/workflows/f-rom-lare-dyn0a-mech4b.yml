@@ -1,0 +1,67 @@
+name: F-ROM-LARE DYN0A MECH4B blind Taylor ranking
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH4B_PREREGISTRATION.json'
+      - 'tests/rom/test_lare_dyn0a_mech4b_reference.f90'
+      - 'tests/rom/run_lare_dyn0a_mech4b_reference.sh'
+      - 'tests/rom/analyze_lare_dyn0a_mech4b.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech4b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blind-ranking:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock blind ranking authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_DYN0A_MECH4B_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_NEW_TAYLOR_RANKING_VALIDATION_TRAJECTORIES'
+          assert set(p['external_materials']['materials'])=={'SANDY_LOAM','SILT','CLAY_LOAM'}
+          assert p['ranking_experiment']['L_cm']==list(range(20,141,10))
+          assert p['trigger_authority']['frozen_indicator']=='TAYLOR3_RMS'
+          assert 'NO_TAYLOR_COEFFICIENT_FIT' in p['firewalls']
+          print('LARE_DYN0A_MECH4B_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute blind Reference panel
+        run: bash tests/rom/run_lare_dyn0a_mech4b_reference.sh
+
+      - name: Adjudicate blind risk-ranking transfer
+        run: |
+          python3 tests/rom/analyze_lare_dyn0a_mech4b.py             --reference-dir LARE_DYN0A_MECH4B_EVIDENCE             --status LARE_DYN0A_MECH4B_EVIDENCE/LARE_DYN0A_MECH4B_REFERENCE_STATUS.json             --prereg integration/f-rom/LARE_DYN0A_MECH4B_PREREGISTRATION.json             --output LARE_DYN0A_MECH4B_EVIDENCE/LARE_DYN0A_MECH4B_RESULT.json             | tee LARE_DYN0A_MECH4B_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_DYN0A_MECH4B_EVIDENCE/LARE_DYN0A_MECH4B_RESULT.json'))
+          assert r['decision'] in {
+            'CURVATURE_RISK_RANKING_TRANSFER_SUPPORTED',
+            'CURVATURE_RISK_RANKING_TRANSFER_PARTIAL',
+            'CURVATURE_RISK_RANKING_TRANSFER_NOT_SUPPORTED',
+            'BLIND_RANKING_REFERENCE_INSUFFICIENT'
+          }
+          assert r['closure_correction_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH4B_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_MECH4B_EVIDENCE/* > LARE_DYN0A_MECH4B_EVIDENCE/final-sha256.txt
+
+      - name: Upload MECH4B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech4b
+          path: LARE_DYN0A_MECH4B_EVIDENCE/
+          if-no-files-found: warn
