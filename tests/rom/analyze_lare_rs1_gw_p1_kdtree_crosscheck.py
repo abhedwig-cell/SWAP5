@@ -237,6 +237,26 @@ def main() -> int:
     cross_history_total = 15 * EXPECTED_STEPS * EXPECTED_STEPS
     full_relevant_count = cross_history_total - len(full_indist)
 
+    full_trees = {
+        history: cKDTree(profiles[index])
+        for history, index in groups.items()
+    }
+    full_close_counts = {}
+    for multiplier in (1.0, 2.0, 4.0):
+        threshold = multiplier * FLOOR
+        count = 0
+        for left_history, right_history in cross_history_pairs(groups):
+            count += int(
+                full_trees[left_history].count_neighbors(
+                    full_trees[right_history], threshold, p=np.inf
+                )
+            )
+        full_close_counts[str(multiplier)] = count
+    full_state_relevant_near_pair_lower_bound = {
+        str(multiplier): full_close_counts[str(multiplier)] - len(full_indist)
+        for multiplier in (1.0, 2.0, 4.0)
+    }
+
     selected = {
         f"D{dimension}": select_dimension(
             dimension, means, groups, full_indist, max(1, args.workers)
@@ -244,17 +264,34 @@ def main() -> int:
         for dimension in range(2, 11)
     }
 
+    for row in selected.values():
+        row["excess_reduction_collisions_over_full_state_lower_bound"] = {
+            str(multiplier): (
+                row["selected_collision_counts"][str(multiplier)]
+                - full_state_relevant_near_pair_lower_bound[str(multiplier)]
+            )
+            for multiplier in (1.0, 2.0, 4.0)
+        }
+
     controls = {}
     for control in prereg["fixed_controls"]:
         ends = tuple(int(value) for value in control["end_indices"])
+        counts = {
+            str(multiplier): collision_count(
+                ends, multiplier, means, groups, full_indist
+            )
+            for multiplier in MULTIPLIERS
+        }
         controls[control["id"]] = {
             "end_indices": list(ends),
             "depth_boundaries_cm": [0] + [10 * value for value in ends],
-            "collision_counts": {
-                str(multiplier): collision_count(
-                    ends, multiplier, means, groups, full_indist
+            "collision_counts": counts,
+            "excess_reduction_collisions_over_full_state_lower_bound": {
+                str(multiplier): (
+                    counts[str(multiplier)]
+                    - full_state_relevant_near_pair_lower_bound[str(multiplier)]
                 )
-                for multiplier in MULTIPLIERS
+                for multiplier in (1.0, 2.0, 4.0)
             },
         }
 
@@ -294,6 +331,8 @@ def main() -> int:
             "full_state_indistinguishable_pair_count_at_floor": len(full_indist),
             "full_state_diagnostic_pair_count": full_relevant_count,
             "diagnostic_theta_floor": FLOOR,
+            "full_state_close_pair_count": full_close_counts,
+            "full_state_relevant_near_pair_lower_bound": full_state_relevant_near_pair_lower_bound,
         },
         "selected_partitions": selected,
         "fixed_controls": controls,
@@ -302,7 +341,9 @@ def main() -> int:
             "Exact cKDTree L_inf cross-history neighbor counts. For thresholds "
             "at or above the full-state floor, full-state-indistinguishable pairs "
             "form a constant subset because fixed-layer averaging is non-expansive "
-            "under L_inf. Below the floor, that subset is evaluated explicitly."
+            "under L_inf. Below the floor, that subset is evaluated explicitly. "
+            "The reported excess-reduction collision count subtracts the unavoidable "
+            "full-state near-pair lower bound at the same diagnostic radius."
         ),
         "hydrological_acceptance_adjudicated": False,
         "lare_dynamics_executed": False,
