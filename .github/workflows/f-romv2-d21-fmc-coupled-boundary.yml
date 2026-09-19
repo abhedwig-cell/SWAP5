@@ -1,0 +1,45 @@
+name: F-ROMV2 D21 FMC coupled boundary micro-preflight
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json'
+      - 'integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json'
+      - 'tests/rom/preflight_f_romv2_d21_fmc_coupled_boundary.py'
+      - '.github/workflows/f-romv2-d21-fmc-coupled-boundary.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  micro-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Lock Stage-2 authority
+        run: |
+          test "$(git rev-parse HEAD:integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json)" = "234ba54bbdde1e1bac22893743efa318ad8cffd6"
+          test "$(git rev-parse HEAD:integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json)" = "9a68c5580c0636878c11c2ce4c004d6e92caea52"
+      - name: Execute frozen FMC micro-preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D21-STAGE2"
+          python3 tests/rom/preflight_f_romv2_d21_fmc_coupled_boundary.py \
+            --prereg integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json \
+            --auth integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D21-STAGE2/F-ROMV2_D21_STAGE2_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D21-STAGE2/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D21-STAGE2/"* > "${{ runner.temp }}/F-ROMV2-D21-STAGE2/sha256.txt"
+      - name: Upload Stage-2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d21-stage2-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D21-STAGE2
+          if-no-files-found: error
+          retention-days: 90
