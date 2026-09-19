@@ -26,6 +26,7 @@ jobs:
           gfortran build/f-tab01/dims.o build/f-tab01/oracle.o build/f-tab01/test.o             -o build/f-tab01/f_tab01_legacy_oracle
       - name: Characterize
         run: |
+          set -o pipefail
           build/f-tab01/f_tab01_legacy_oracle | tee build/f-tab01/metrics.txt
       - name: Upload metrics
         uses: actions/upload-artifact@v4
