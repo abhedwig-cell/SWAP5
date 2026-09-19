@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.lare.bc2.c2.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2",
+  "status": "CLOSED_BIAS_ACCUMULATION_DOMINANT",
+  "authority": {
+    "c2_preregistration": "integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json",
+    "c2a_result": "integration/f-rom/LARE_BC2_C2A_RESULT.json",
+    "c2a_blob": "52544c38328730d691186776105ff86605d7d8ce",
+    "c2a_result_sha256": "288099d209bff2b0d5898ad647dcd649934291b97ca8d2646488b2bcc3d0bc27",
+    "c2b_result": "integration/f-rom/LARE_BC2_C2B_RESULT.json",
+    "c2b_blob": "63821f3728bbed2b370f16aae1d7530f71382e50",
+    "c2b_result_sha256": "c19e2f341b7c7c36595788b9cb9bf06254b8ff421f6ad0eb3c493641ed383f3f",
+    "c2c_result": "integration/f-rom/LARE_BC2_C2C_RESULT.json",
+    "c2c_blob": "222d6bbde419ac2c0097b326c276a0cb783868fa",
+    "c2c_result_sha256": "f89c1f9f3868d96d0e04161f2cd33a4e817758f8508115cd57a958411ef73856"
+  },
+  "decision": "BIAS_ACCUMULATION_DOMINANT",
+  "case_counts": {
+    "AMPLIFICATION_SUPPORTED": 0,
+    "BIAS_ACCUMULATION_SUPPORTED": 8,
+    "MIXED_STATE_DYNAMICS": 0
+  },
+  "key_evidence": {
+    "actual_drift_gain": {
+      "maximum_fraction_intervals_gain_gt_1": 0.3796477495107632,
+      "case": "5.0:WT_RISE",
+      "all_case_majority_amplifying": false
+    },
+    "blind_tangent_panel": {
+      "maximum_tangent_amplifying_state_fraction": 0.25,
+      "maximum_directional_shape_gain": 1.571453451981882,
+      "local_gain_gt_1_cases": [
+        "5.0:WT_RISE",
+        "5.0:WT_CYCLE"
+      ],
+      "all_case_majority_amplifying": false,
+      "constitutive_skip_count": 0,
+      "max_hard_residual_cm": 2.1297416955001758e-14
+    }
+  },
+  "scientific_conclusion": [
+    "The accumulated reduced-state drift is not supported as a generic self-amplifying manifold instability under the frozen C2 rules.",
+    "Occasional local tangent gains above one exist, especially at the initial 5-cm RISE/CYCLE states, but they are too sparse to explain the persistent multi-interval drift.",
+    "Repeated local teacher-reference closure bias is therefore the supported mechanism class across all eight width/history cases.",
+    "A global stabilizer, projection-to-manifold correction or new memory state is not justified by C2.",
+    "C1R remains mechanistically relevant: state-shape drift is robustly state-drift-dominant after accumulation, while local qi and qH closure errors are important in the difficult thin-terminal cases."
+  ],
+  "next_research_authority": {
+    "work_unit": "LARE-BC2-C3",
+    "question": "Which signed local closure-bias channels inject the persistent mass-neutral state-shape error, under which H-motion regimes, and with what conservation-consistent contribution?",
+    "required_channels": [
+      "all fixed-layer internal interface fluxes through q90",
+      "bulk-terminal interface qi",
+      "lower-boundary qH",
+      "moving-boundary geometric transfer G_i = theta_i * Hdot"
+    ],
+    "rule": "Diagnose and rank signed bias channels before any closure replacement, stabilizer, new state or empirical correction is tested."
+  },
+  "firewalls": [
+    "NO_STABILIZER_FROM_C2",
+    "NO_MANIFOLD_PROJECTION_FROM_C2",
+    "NO_NEW_STATE_FROM_C2",
+    "NO_CLOSURE_REPLACEMENT_BEFORE_C3",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
