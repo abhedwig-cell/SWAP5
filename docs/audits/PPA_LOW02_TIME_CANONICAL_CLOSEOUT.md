@@ -106,7 +106,10 @@ intentional backend successor. F-SI39 likewise rejects any production delta
 outside its own historical slice. F-KT22 currently has a separate pre-existing
 compile-list defect involving `mod_b110_smooth_freatic_projection`. These are
 not used as positive PPA-LOW02 evidence and do not override the direct owner,
-independent and successor-preservation results above.
+independent and successor-preservation results above. The PPA-WU02 closeout
+replay on PR #362 likewise rejects the accumulated current production delta
+against its frozen pre-WU02 base; that historical admission assertion is not a
+current semantic-preservation oracle for the admitted PPA-LOW02 successor.
 
 ## Canonical admission
 
