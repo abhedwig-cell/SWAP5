@@ -1251,6 +1251,17 @@ contains
       else
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
       end if
+      if (parameters%black_evaporation_active) then
+        ok = ok .and. self%black_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
+             self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
+             parameters%bottom_mode /= 5
+        if (ok) ok = ieee_is_finite(parameters%black_evaporation%cofred) .and. &
+             parameters%black_evaporation%cofred >= 0.0_real64
+      else
+        ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active
+      end if
       if (parameters%drainage_response_active) then
         ok = ok .and. allocated(parameters%drainage_response_levels) .and. &
              .not. self%fixed_weir_surface_water_active
@@ -1304,6 +1315,11 @@ contains
       self%root_extraction_active = parameters%root_extraction_active
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      self%black_evaporation_active = parameters%black_evaporation_active
+      self%black_evaporation_parameters = black_evaporation_parameters_t()
+      if (parameters%black_evaporation_active .and. allocated(parameters%black_evaporation)) then
+        self%black_evaporation_parameters = parameters%black_evaporation
+      end if
       self%drainage_response_active = parameters%drainage_response_active
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
@@ -1327,6 +1343,7 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
+    real(real64) :: black_values(9)
     self%forcing_admitted = .false.
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
@@ -1336,6 +1353,7 @@ contains
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
+    self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%trajectory_direction_requested = config%accepted_trajectory_direction%requested
     self%trajectory_control_coordinate = config%accepted_trajectory_direction%control_coordinate
     self%trajectory_requested_t0 = interval%t0
@@ -1409,6 +1427,33 @@ contains
       else
         if (allocated(forcing%soil_temperature)) return
       end if
+
+      self%black_evaporation_forcing = fmr_black_evaporation_runtime_forcing_t()
+      if (self%black_evaporation_active) then
+        if (.not. allocated(forcing%black_evaporation)) return
+        if (forcing%top_flux /= 0.0_real64) return
+        black_values = [forcing%black_evaporation%precipitation_rate_cm_per_day, &
+             forcing%black_evaporation%irrigation_rate_cm_per_day, &
+             forcing%black_evaporation%snowmelt_rate_cm_per_day, &
+             forcing%black_evaporation%runon_rate_cm_per_day, &
+             forcing%black_evaporation%potential_bare_soil_evaporation_cm_per_day, &
+             forcing%black_evaporation%potential_pond_evaporation_cm_per_day, &
+             forcing%black_evaporation%ponding_max_cm, forcing%black_evaporation%runoff_resistance_day, &
+             forcing%black_evaporation%runoff_exponent]
+        if (.not. all(ieee_is_finite(black_values))) return
+        if (any(black_values(1:8) < 0.0_real64)) return
+        if (forcing%black_evaporation%runoff_exponent /= 1.0_real64) return
+        if (forcing%black_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%black_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        if (forcing%black_evaporation%wetting_reset_event) then
+          if (.not. ieee_is_finite(forcing%black_evaporation%wetting_event_time)) return
+          if (forcing%black_evaporation%wetting_event_time > interval%t0) return
+        end if
+        self%black_evaporation_forcing = forcing%black_evaporation
+      else
+        if (allocated(forcing%black_evaporation)) return
+      end if
+
       if (associated(self%qdra)) deallocate(self%qdra)
       if (associated(self%qssdi)) deallocate(self%qssdi)
       if (associated(self%qrot)) deallocate(self%qrot)
