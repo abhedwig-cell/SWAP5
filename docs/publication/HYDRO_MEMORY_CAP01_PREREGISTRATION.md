@@ -48,3 +48,20 @@ The 5% bound is deliberately frozen before executing the test. Failure is eviden
 - `CAP01_BLOCKED_ROOT_ACTIVE_GROUNDWATER_RESPONSE`
 
 A pass does not authorize the scientific Stage 0. Phase B must still establish live transient-MODFLOW drawdown/recharge, multi-window advancement and the research diagnostic surface.
+
+## Amendment CAP01-A1, frozen before a successful Phase-A run
+
+The first executable root-active nominal trial used the F-GC44 temporal-certificate fixture and failed before any groundwater-response hypothesis was evaluated. Diagnostics were: transaction status 2, 8 retries, 7 solver rejections, 2 temporal rejections, 2 temporal-certificate-unavailable rejections and 0 mass rejections.
+
+That temporal route is not an admitted root-active authority. CAP01 does not require it because the analytic root-active tangent remains intentionally unavailable and the preregistered response route is centered finite difference.
+
+Phase A therefore uses the canonical transaction default:
+
+- `TX_TEMPORAL_EXTERNAL_FULL_HALF`;
+- temporal tolerance `1.0e-6`;
+- unchanged hard mass gate `1.0e-12 cm`;
+- unchanged qbot perturbation `1.0e-4 cm d-1`;
+- unchanged head perturbation `1.0e-6 m`;
+- unchanged 5% local-slope agreement criterion.
+
+The temporal tolerance is a pre-existing canonical default, not selected by fitting CAP01 output. No further temporal-tolerance tuning is permitted after observing the centered-FD/slope result.
