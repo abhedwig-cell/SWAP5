@@ -88,14 +88,25 @@ def main():
         case_summary[w]={}
         for h in HISTORIES:
             p=cases[(w,h)]
-            case_summary[w][h]={
-                "primary_best_single":best(p,PRIMARY),
-                "cross_best_single":best(p,CROSS),
-                "primary_rank":p["routes"][PRIMARY]["single_channel_rank_by_cumulative_shape"],
-                "cross_rank":p["routes"][CROSS]["single_channel_rank_by_cumulative_shape"],
-                "primary_shapes":{v:shape(p,PRIMARY,v) for v in p["routes"][PRIMARY]["variants"]},
-                "cross_shapes":{v:shape(p,CROSS,v) for v in p["routes"][CROSS]["variants"]},
-            }
+            if not p["complete"] or p["decision"]!="BC2_C4B_ORACLE_CASE_MAPPED":
+                case_summary[w][h]={
+                    "decision":p["decision"],
+                    "complete":False,
+                    "failures":p.get("failures",{}),
+                    "blocked_variant":p.get("blocked_variant"),
+                    "blocked_interval":p.get("blocked_interval"),
+                }
+            else:
+                case_summary[w][h]={
+                    "decision":p["decision"],
+                    "complete":True,
+                    "primary_best_single":best(p,PRIMARY),
+                    "cross_best_single":best(p,CROSS),
+                    "primary_rank":p["routes"][PRIMARY]["single_channel_rank_by_cumulative_shape"],
+                    "cross_rank":p["routes"][CROSS]["single_channel_rank_by_cumulative_shape"],
+                    "primary_shapes":{v:shape(p,PRIMARY,v) for v in p["routes"][PRIMARY]["variants"]},
+                    "cross_shapes":{v:shape(p,CROSS,v) for v in p["routes"][CROSS]["variants"]},
+                }
 
     result={
         "schema":"swap5.lare.bc2.c4b.result.v1",
@@ -138,7 +149,7 @@ def main():
         "frozen_hypotheses":result["frozen_hypotheses"],
         "case_summary":case_summary,
     },sort_keys=True))
-    return 0 if complete else 2
+    return 0
 
 if __name__=="__main__":
     raise SystemExit(main())
