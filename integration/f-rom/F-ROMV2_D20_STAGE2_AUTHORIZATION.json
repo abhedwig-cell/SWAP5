@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-romv2-d20.stage2-authorization.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D20",
+  "stage": "STAGE2_MATCHED_R16_R2_AUTHORIZED",
+  "original_preregistration_blob": "af1cf1bd4ad8073fb6b9aade554f8ab72c2cbef7",
+  "stage1_execution": {
+    "pull_request": 462,
+    "workflow_run": 35460196880,
+    "workflow_job": 105942554405,
+    "executed_head": "aab4ff555a13e1cc0e1659fa0a5c450e497012bb",
+    "merge_execution_base": "52b4608fdf548b89b154f19caeb97c1a5effe3de",
+    "artifact_id": 10589358371,
+    "artifact_digest": "sha256:0149f5fd61d9208c89c45b838662ae31a25d1c66717e3d5ec0ac557526885204",
+    "decision": "D20_FMC_ONE_HOUR_PREFLIGHT_PASS",
+    "SWAP_trajectory_evidence_consumed": false
+  },
+  "stage1_findings": {
+    "equal_cumulative_top_input": true,
+    "cumulative_top_cm": 0.520416933333335,
+    "cumulative_bottom_cm": -0.37164803986853223,
+    "minimum_surface_groundwater_separation_cm": 8.698376203237913,
+    "max_abs_step_mass_residual_cm": 1.1701577207201552e-14,
+    "contact_merge": false,
+    "ponding_runoff": false,
+    "dry_bin_activation": false,
+    "slug_state": false
+  },
+  "live_canonical_advance_after_preregistration": {
+    "classification": "OWNERSHIP_DISJUNCT_RESEARCH_ONLY",
+    "files": "HYDRO-MEMORY DYN01 only",
+    "scientific_D20_design_changed": false
+  },
+  "stage2_authorized": true,
+  "stage2_changes_allowed": [
+    "add matched R16/R2 execution harness for the frozen D20 workload",
+    "add analyzer implementing preregistered full-hour and late-window gates",
+    "add workflow/runner and immutable evidence packaging"
+  ],
+  "prohibited": [
+    "change forcing factors/order/block duration/total duration",
+    "change G25 lambda or initial profile",
+    "change bins/process step/FMC equations",
+    "consume V01-V04 as blind evidence",
+    "claim application acceptance or formal speedup"
+  ],
+  "production_rom_authorized": false,
+  "original_preregistration_creation_commit": "9f7384e44403918aa4abe310a7622c077c67194e"
+}
