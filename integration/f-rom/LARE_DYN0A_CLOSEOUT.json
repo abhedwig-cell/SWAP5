@@ -1,0 +1,156 @@
+{
+  "schema": "swap5.lare.dyn0a.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-CLOSE",
+  "status": "CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION",
+  "branch": "work/f-rom-lare-rs1",
+  "authority_head": "de25d052a9a79937c2f0661edfc7c32932cfdb87",
+  "decision": "STANDARD_LARE_PHYSICALLY_COHERENT_AND_RESOLUTION_CONVERGENT_BUT_LOW_DIMENSION_NOT_BROADLY_QUALIFIED",
+  "scope": {
+    "material_stage": "B01 primary fixed-flux dynamics plus B14 and blind Carsel-Parrish mechanism transfer",
+    "bottom_boundary": "externally prescribed fixed flux for hydrological dynamics characterization",
+    "sinks": false,
+    "production_scope": false
+  },
+  "findings": {
+    "state_information": {
+      "authority": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
+      "conclusion": "D3 is the minimum state-information candidate in the bounded B01 groundwater laboratory; D4 adds no demonstrated RS1 predictive-state information and is a closure-resolution control.",
+      "D3_layers_cm": [
+        [
+          0,
+          140
+        ],
+        [
+          140,
+          150
+        ],
+        [
+          150,
+          160
+        ]
+      ],
+      "D4_layers_cm": [
+        [
+          0,
+          130
+        ],
+        [
+          130,
+          140
+        ],
+        [
+          140,
+          150
+        ],
+        [
+          150,
+          160
+        ]
+      ]
+    },
+    "standard_lare_dynamics": {
+      "authority": "integration/f-rom/LARE_DYN0A_FX_FINE_ONLY_RESULT.json",
+      "conclusion": "Equilibrium and water ledger are preserved, but dynamic redistribution error is strongly regime dependent.",
+      "D3_critical_case": {
+        "case": "B01 Se0=0.95 DRY",
+        "max_abs_layer_storage_error_mm": 24.52332276685631,
+        "max_abs_bottom_10cm_storage_error_mm": 16.775931086054612
+      }
+    },
+    "closure_resolution": {
+      "authority": "integration/f-rom/LARE_DYN0A_D4_RESULT.json",
+      "conclusion": "One additional 10-cm layer immediately above the active lower interface removes most but not all critical dynamic error without changing the closure.",
+      "D4_critical_max_common_band_error_mm": 6.877291124718212,
+      "D3_to_D4_error_reduction_fraction": 0.7195612034266013
+    },
+    "mechanism": {
+      "authority": "integration/f-rom/LARE_DYN0A_MECH1_RESULT.json",
+      "conclusion": "Hydraulic-gradient reconstruction from adjacent layer means is the dominant projected interface-flux error; conductivity localization is secondary and constitutive averaging is small on the tested B01 cohort.",
+      "D3_high_state_pooled_rms_flux_error_cm_per_day": 0.4523278014489869,
+      "D3_component_rms_cm_per_day": {
+        "constitutive_averaging": 0.0033731144080649082,
+        "K_localization": 0.112185765025855,
+        "gradient_reconstruction": 0.3384748956260475
+      }
+    },
+    "resolution_ladder": {
+      "authority": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+      "conclusion": "Standard-LARE storage fidelity improves monotonically along the nested resolution ladder.",
+      "critical_Se095_DRY_max_common_band_error_mm": {
+        "R3_140cm": 24.52332276685631,
+        "R4_130cm": 6.877291124718212,
+        "R5_120cm": 1.74283577975757,
+        "R6_110cm": 1.105792169697466,
+        "R8_90cm": 0.8031871185790607,
+        "R12_50cm": 0.28789551084429377,
+        "R16_10cm": 0.012684125483701791
+      }
+    },
+    "mechanism_scaling": {
+      "discovery": "integration/f-rom/LARE_DYN0A_MECH3A_RESULT.json",
+      "blind_validation": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
+      "conclusion": "The forcing-path geometric-mean hydraulic-diffusivity scale improves all three preregistered blind pooled criteria relative to the local initial-state diffusivity scale, but remains broad and is not a universal layer-size rule.",
+      "blind_panel": {
+        "decision": "NONLINEAR_SCALE_TRANSFER_SUPPORTED",
+        "qualified_WET_DRY_cases": 12,
+        "usable_materials_for_minimum": [
+          "LOAM",
+          "CLAY"
+        ],
+        "sand_usable_for_minimum": false,
+        "selected_PATH_GEOMETRIC_D": {
+          "pooled_ln_lambda_std": 0.885846388999054,
+          "between_material_mean_ln_lambda_std": 0.5082667427956602,
+          "rms_log_prediction_error": 0.9842561284722403,
+          "median_abs_log_prediction_error": 0.4376117312011274,
+          "max_abs_log_prediction_error": 2.218662981585991
+        },
+        "baseline_LOCAL_D0": {
+          "pooled_ln_lambda_std": 1.0553075808829286,
+          "between_material_mean_ln_lambda_std": 0.5794277348613336,
+          "rms_log_prediction_error": 1.1703767733338664,
+          "median_abs_log_prediction_error": 0.42050907492086087,
+          "max_abs_log_prediction_error": 2.6566203677213465
+        }
+      }
+    },
+    "coarse_richards_comparator": {
+      "authority": "integration/f-rom/LARE_DYN0A_CRQ_RESULT.json",
+      "conclusion": "Equal-dimension dynamic D2/D3 coarse-Richards comparison remains unavailable under the current strict Reference numerical authority even after the preregistered temporal-refinement ladder.",
+      "claim_firewall": "No LARE-over-coarse-Richards performance or fidelity advantage may be claimed from DYN0A."
+    }
+  },
+  "scientific_adjudication": [
+    "The RS1 result and DYN0A result answer different questions: D3 contains sufficient state information for the bounded B01 state laboratory, but the published standard-LARE closure does not propagate that information accurately across all tested dynamic regimes at D3 resolution.",
+    "D4 improvement despite RS1 D3/D4 state-information equivalence identifies closure resolution, not missing Markov state information, as the immediate limiting mechanism in the critical B01 transient.",
+    "The nested ladder demonstrates convergence of standard LARE as the long layer is shortened; this supports the closure class physically but does not establish useful low dimensionality at an application-relevant tolerance.",
+    "The blind PATH_GEOMETRIC_D result supports hydraulic penetration scale as a mechanism/risk diagnostic. The scatter, endpoint censoring and incomplete sand authority are too large for a universal grid-design rule.",
+    "Fixed-flux DYN0A cannot establish groundwater recharge/capillary-exchange fidelity under prescribed groundwater head because the exchange is imposed rather than predicted.",
+    "Absolute GW-D or GW-R application acceptance remains unadjudicated."
+  ],
+  "next_authority": {
+    "primary": {
+      "id": "LARE-BC1",
+      "question": "Can a source-anchored fixed-layer LARE bottom closure be established for an arbitrary prescribed unsaturated pressure head, distinct from free drainage and the special saturated water-table boundary?",
+      "reason": "This is required before LARE can predict the bottom exchange under the existing SWAP mode-5 groundwater-head laboratory rather than receiving qbot as imposed forcing."
+    },
+    "secondary": {
+      "id": "LARE-MECH4",
+      "question": "Does the full dimensionless interface-error curve collapse as a function of L/ell_G on a second blind multi-texture panel?",
+      "rule": "No new fitted multiplier, layer threshold or response-driven material selection is authorized."
+    }
+  },
+  "held": [
+    "general prescribed-head reduced dynamics until BC1 closes",
+    "moving-water-table geometry",
+    "Hupsel application dynamics",
+    "crop/ET/root-uptake reduction",
+    "absolute purpose acceptance",
+    "computational speed/value claim",
+    "production solver integration"
+  ],
+  "application_acceptance_adjudicated": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
