@@ -835,6 +835,100 @@ def validate_romv2_d7_if_present() -> str:
     return "CLOSED_ONE_STATE_QUASI_STEADY_MANIFOLD_NO_GO"
 
 
+def validate_romv2_d8_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D8_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D8_PREREGISTRATION.json")
+            == "72f683bec3fb8c2ddfe57f793db0a58b5c13ccc8",
+            "F-ROMV2-D8 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D8_RESULT.json")
+            == "76659c70c3369e7a0381a1ffdb1ba21aee600089",
+            "F-ROMV2-D8 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D8_STATUS.json")
+            == "020c4d5c2c8419948675a1fcb325891f2cfc0a62",
+            "F-ROMV2-D8 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D8_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "0103d18c04853a85c312e2e220efa59dcb7b2688",
+            "F-ROMV2-D8 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D8_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D8_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D8_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D8_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D8_QS2_COMPOSITE_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_PREFLIGHT",
+            "F-ROMV2-D8 preregistration phase drift")
+    require(prereg["candidate"]["id"] == "QS2_COMPOSITE"
+            and prereg["candidate"]["dynamic_state_dimension"] == 2,
+            "F-ROMV2-D8 candidate identity drift")
+    require(prereg["candidate"]["training_required"] is False
+            and prereg["candidate"]["full_order_fallback"] is False
+            and prereg["candidate"]["clipping_allowed"] is False
+            and prereg["candidate"]["adaptive_dynamic_substepping"] is False,
+            "F-ROMV2-D8 candidate firewall drift")
+    require(prereg["segment_profile_equations"]["RK4_subintervals_per_80cm_segment"] == 512,
+            "F-ROMV2-D8 frozen segment integration drift")
+    require("NO_POST_RESULT_EQUATION_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D8 equation-retuning firewall missing")
+
+    require(result["decision"] == "QS2_COMPOSITE_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+            "F-ROMV2-D8 decision drift")
+    require(result["adjudication"]
+            == "DYNAMIC_TWO_SEGMENT_COMPOSITE_IMPROVES_QS1_BUT_REMAINS_DOMINATED_BY_R2",
+            "F-ROMV2-D8 adjudication drift")
+    require(result["preflight"]["decision"] == "D8_QS2_COMPOSITE_PREFLIGHT_PASS"
+            and result["preflight"]["all_synthetic_cases_pass"] is True,
+            "F-ROMV2-D8 preflight evidence drift")
+    require(result["integrity"]["pass"] is True,
+            "F-ROMV2-D8 integrity drift")
+    require(result["comparative_interpretation"]["QS2_improves_over_QS1_balance"] is True
+            and result["comparative_interpretation"]["QS2_improves_over_D5_balance"] is True,
+            "F-ROMV2-D8 predecessor-improvement evidence drift")
+    require(result["comparative_interpretation"]["QS2_improves_over_R2_balance"] is False
+            and result["comparative_interpretation"]["QS2_improves_over_R2_transient"] is False
+            and result["comparative_interpretation"]["retained"] is False,
+            "F-ROMV2-D8 R2 frontier decision drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D8 overclaims authority")
+
+    require(status["phase"] == "CLOSED_TWO_SEGMENT_COMPOSITE_MANIFOLD_NO_GO",
+            "F-ROMV2-D8 terminal phase drift")
+    require(status["tabulation_authorized"] is False
+            and status["post_result_search_retuning_authorized"] is False
+            and status["post_result_equation_retuning_authorized"] is False
+            and status["post_result_segmentation_retuning_authorized"] is False,
+            "F-ROMV2-D8 status permits post-result escalation")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D8 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D8 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D8 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["post_result_search_retuning"] is False
+            and manifest["post_result_equation_retuning"] is False
+            and manifest["post_result_segmentation_retuning"] is False,
+            "F-ROMV2-D8 evidence mutation/retuning drift")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D8 manifest authorizes production ROM")
+
+    require("The sequence D5 → D7 → D8 shows monotonic improvement" in doc,
+            "F-ROMV2-D8 monotonic architecture evidence missing")
+    require("Further segmentation is plausible but should not be invented" in doc,
+            "F-ROMV2-D8 literature-reconciliation boundary missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D8 production prohibition missing")
+
+    return "CLOSED_TWO_SEGMENT_COMPOSITE_MANIFOLD_NO_GO"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -868,6 +962,7 @@ def main() -> int:
     romv2_d5_phase = validate_romv2_d5_if_present()
     romv2_d6_phase = validate_romv2_d6_if_present()
     romv2_d7_phase = validate_romv2_d7_if_present()
+    romv2_d8_phase = validate_romv2_d8_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -885,6 +980,7 @@ def main() -> int:
     print(f"F_ROMV2_D5_PHASE={romv2_d5_phase}")
     print(f"F_ROMV2_D6_PHASE={romv2_d6_phase}")
     print(f"F_ROMV2_D7_PHASE={romv2_d7_phase}")
+    print(f"F_ROMV2_D8_PHASE={romv2_d8_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
