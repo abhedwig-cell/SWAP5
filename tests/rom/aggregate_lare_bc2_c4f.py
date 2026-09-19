@@ -59,10 +59,22 @@ def main():
             vector_identity &= close(rr["interference"]["fraction_sign_prediction_exact"],1.0,1.0e-15)
 
             ref=c4e["summary"][w][h][route]
+            c4e_case=c4e["cases"][f"{w}:{h}"]["routes"][route]
             ratio=rr["pooled_rms"]["remainder_to_local_ratio"]
             improve=rr["interference"]["fraction_removal_improves"]
-            c4e_reproduced &= close(ratio,ref["QI_shape_error_ratio_to_BASE"],5.0e-12)
-            c4e_reproduced &= close(improve,ref["QI_fraction_intervals_improved"],5.0e-12)
+            qi_c4e=c4e_case["variants"]["REMOVE_QI"]
+            if qi_c4e["admissible_all_intervals"]:
+                c4e_reproduced &= close(ratio,ref["QI_shape_error_ratio_to_BASE"],5.0e-12)
+                c4e_reproduced &= close(improve,ref["QI_fraction_intervals_improved"],5.0e-12)
+            else:
+                # C4E intentionally computed pooled QI metrics only on the
+                # physically admissible subset. C4F diagnoses all intervals.
+                # Do not compare unlike pooled cohorts; reconcile the blocked
+                # population itself instead.
+                c4e_reproduced &= (
+                    int(qi_c4e["blocked_interval_count"])
+                    == int(rr["width_margin"]["hydraulic_blocked_interval_count"])
+                )
 
             wm=rr["width_margin"]
             mean_margin_classification &= close(
@@ -138,7 +150,7 @@ def main():
             "H_VECTOR_INTERFERENCE":{
                 "supported":vector_support,
                 "exact_sign_prediction_all_intervals":vector_identity,
-                "C4E_metrics_reproduced":c4e_reproduced
+                "C4E_metrics_or_block_population_reproduced_on_matching_cohort":c4e_reproduced
             },
             "H_TERMINAL_WIDTH_AMPLIFICATION":{
                 "supported":width_support,
@@ -157,7 +169,7 @@ def main():
         "summary":summary,
         "interpretation":[
             "The sign and magnitude direction of the C4E QI-removal response are explained by exact additive-vector interference between the QI shape contribution and the non-QI remainder; no fitted parameter is used.",
-            "At 5 cm the QI contribution is predominantly aligned with the total endpoint shape error, so removal reduces the norm. At 2.5 cm WT_RISE the QI contribution counteracts other local error contributions, so removing it increases the norm.",
+            "At 5 cm the QI contribution is large enough relative to the non-QI remainder that the exact removal criterion is positive for almost every interval, even though QI and the remainder are not uniformly aligned. At 2.5 cm WT_RISE they are strongly anti-aligned, so QI is acting as an error-cancelling contribution and removing it increases the norm.",
             "The QI contribution is a mass-neutral storage transfer between bulk and terminal states. Per unit transferred storage, its terminal mean-theta perturbation is exactly proportional to 1/d, giving a factor two larger terminal perturbation at 2.5 cm than at 5 cm.",
             "The 2.5 cm WT_FALL QI-removal admissibility failure is a state-margin failure, not a mass-conservation failure.",
             "These findings explain the C4E diagnostic behavior but do not select a corrected closure."
