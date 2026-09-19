@@ -95,3 +95,20 @@ SWAP 4.3.1 reference distribution.
 ```
 
 A DOI/PID is mechanical only after these two authority values exist.
+
+
+## L1 evidence now attached
+
+Official external evidence is frozen in:
+
+- `PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.md`;
+- `PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.json`.
+
+The evidence establishes official SWAP 4 **GNU GPL version 2** provenance. It does not by itself authorize the final SWAP5 archive declaration.
+
+Accordingly L1 can now be answered in one line plus authority:
+
+```text
+L1 SWAP5 publication archive licence/redistribution statement:
+<exact authorized wording for candidate tree 9ca065553765e38eec4d4ceb611ec80d866dbae3>
+```
