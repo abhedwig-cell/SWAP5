@@ -1,0 +1,106 @@
+{
+  "schema": "pub-gc-e7-application-requirements-v2",
+  "date": "2026-09-19",
+  "status": "FROZEN_APPLICATION_REQUIREMENTS_WITH_CURRENT_CANONICAL_AUTHORITY_RECONCILED",
+  "methodological_note": "The selected Hupsel dates and application requirements were frozen before coupled output. This record preserves those frozen scientific requirements while updating only post-selection canonical authority/provenance.",
+  "historical_frozen_requirements_origin": {
+    "branch": "work/pub-gc-e7-realistic-component-domain",
+    "blob": "c83599866d8fce324bb9b8a3b2719e264419082f"
+  },
+  "exact_application_authority": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "hupsel_swap_swp_path": "SWAP_4.3.1/cases/1.hupselbrook/swap.swp",
+    "hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "extracted_configuration": {
+      "SWCROP": 1,
+      "SWETR": 0,
+      "SWDRA": 1,
+      "maximum_rooting_depth_cm": 200,
+      "crop_2003": {
+        "start": "2003-05-10",
+        "end": "2003-09-29",
+        "crop_file": "potato",
+        "crop_type": 2
+      }
+    },
+    "source_excerpt_control": "Only configuration values and hashes are retained here; the externally governed distribution is not redistributed."
+  },
+  "frozen_selection": {
+    "population_complete_days": 1096,
+    "coupled_output_observed_before_freeze": false,
+    "selected_days": [
+      {
+        "role": "high_dynamics_day",
+        "date": "2003-05-20",
+        "inside_2003_crop_period": true,
+        "standalone_drainage_out_cm": 0.9069694038599311,
+        "standalone_actual_et_cm": 0.11468910769777912
+      },
+      {
+        "role": "median_dynamics_control",
+        "date": "2003-06-17",
+        "inside_2003_crop_period": true,
+        "standalone_drainage_out_cm": 0.022586870162615704,
+        "standalone_actual_et_cm": 0.17917240345831503
+      }
+    ]
+  },
+  "typed_application_authority": {
+    "f_app04_file": "integration/f-app/F-APP04_TYPED_APPLICATION_COMPOSITION_QUALIFICATION.json",
+    "root_mapping": "PMdirect interval potential_transpiration_cm_per_day -> crop_root_uptake_input_t%potential_transpiration for emerged crop",
+    "whole_hupsel_file": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+    "whole_hupsel_drainage_nonzero_intervals": 16507,
+    "whole_hupsel_accepted_intervals": 32518
+  },
+  "current_canonical_authority": {
+    "canonical_basis": "4d40b8d4b6a1df06ff97fab55497542778431290",
+    "production_groundwater_owner": {
+      "file": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "profile": "homogeneous bottom_mode=5 prescribed-head groundwater owner",
+      "explicit_fail_closed_flags": [
+        "root_extraction_active",
+        "drainage_response_active"
+      ],
+      "wider_process_complete_groundwater_owner_found_in_canonical": false
+    },
+    "PPA_WU02": {
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "scope": "homogeneous typed bottom_mode=2 prescribed-qbot application reachability",
+      "broadens_mode5_process_composition": false
+    },
+    "PPA_WU03": {
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "scope": "bounded stateless common forcing adapter and read-only run_standalone_with_forcing seam",
+      "broadens_mode5_process_composition": false
+    },
+    "PPA_ROOT_HYD01": {
+      "scope": "restricted prescribed-root temporal-certificate coverage",
+      "application_owner_broadened": false,
+      "groundwater_owner_broadened": false
+    },
+    "PPA_ROOT_HYD02": {
+      "scope": "restricted prescribed-root accepted-trajectory tangent coverage",
+      "application_owner_broadened": false,
+      "groundwater_owner_broadened": false,
+      "nonclaim": "no real live-MODFLOW root-active application admission by this workunit alone"
+    },
+    "PPA_WU04A": {
+      "scope": "SWREDU=1 Black evaporation reduction production slice",
+      "mode5_black_composition_admitted": false,
+      "effect_on_e7": "NONE"
+    },
+    "PPA_WU04B": {
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "status_path": "integration/audits/PPA_WU04B_STATUS.json",
+      "status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
+      "scope": "SWREDU=2 Boesten-Stroosnijder evaporation reduction bounded production slice",
+      "mode5_boesten_composition_admitted": false,
+      "broadens_mode5_root_or_drainage_composition": false,
+      "effect_on_e7": "NONE"
+    }
+  },
+  "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute.",
+  "current_disposition": "REALISTIC_COMPONENT_DOMAIN_LIMIT"
+}
