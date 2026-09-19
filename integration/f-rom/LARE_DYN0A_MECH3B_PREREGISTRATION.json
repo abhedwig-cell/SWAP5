@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.lare.dyn0a.mech3b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH3B",
+  "phase": "PREREGISTERED_BEFORE_NEW_CARSEL_PARRISH_DYN0A_TRAJECTORY_GENERATION",
+  "purpose": "Blind multi-material falsification of the MECH3A-selected path-geometric hydraulic-diffusivity penetration scale.",
+  "trigger_authority": {
+    "mech3a_result": "integration/f-rom/LARE_DYN0A_MECH3A_RESULT.json",
+    "mech3a_decision": "NONLINEAR_SCALE_SELECTED_FOR_BLIND_VALIDATION",
+    "selected_scale": "PATH_GEOMETRIC_D",
+    "selected_discovery_global_c": 4.051189215592548,
+    "selected_discovery_pooled_ln_lambda_std": 0.5582259211425725,
+    "selected_discovery_material_shift": 0.7239466046507486,
+    "baseline_scale": "LOCAL_D0",
+    "baseline_discovery_global_c": 3.876336858823168,
+    "baseline_discovery_pooled_ln_lambda_std": 0.5676702397598649
+  },
+  "external_parameter_authority": {
+    "source": "Carsel and Parrish (1988) USDA textural-class van Genuchten parameters as reproduced in HYDRUS; Mualem pore-connectivity l=0.5",
+    "source_urls": [
+      "https://www.pc-progress.com/en/OnlineHelp/HYDRUS3/WaterFlowParameters.html",
+      "https://www.pc-progress.com/Downloads/Pgm_Hydrus3D2/HYDRUS3D%20Technical%20Manual.pdf"
+    ],
+    "selection_rule": "Three a-priori textural anchors spanning coarse, medium and fine hydraulic behavior; no material was chosen from a MECH3 response.",
+    "materials": {
+      "SAND": {
+        "theta_r": 0.045,
+        "theta_s": 0.43,
+        "alpha_per_cm": 0.145,
+        "n": 2.68,
+        "Ksat_cm_per_day": 712.8,
+        "lambda": 0.5
+      },
+      "LOAM": {
+        "theta_r": 0.078,
+        "theta_s": 0.43,
+        "alpha_per_cm": 0.036,
+        "n": 1.56,
+        "Ksat_cm_per_day": 24.96,
+        "lambda": 0.5
+      },
+      "CLAY": {
+        "theta_r": 0.068,
+        "theta_s": 0.38,
+        "alpha_per_cm": 0.008,
+        "n": 1.09,
+        "Ksat_cm_per_day": 4.8,
+        "lambda": 0.5
+      }
+    }
+  },
+  "unchanged_experiment": {
+    "geometry": "16 x 10 cm fine Reference column",
+    "initial_effective_saturation": [
+      0.65,
+      0.85,
+      0.95
+    ],
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "pulse_steps": 256,
+    "pulse_duration_day": 0.2048,
+    "top_forcing": {
+      "EQ": "1.0*K0",
+      "WET": "1.5*K0 for steps 1-256, then 1.0*K0",
+      "DRY": "0.5*K0 for steps 1-256, then 1.0*K0",
+      "WET_DRY": "1.5*K0 steps 1-256, 0.5*K0 steps 257-512, then 1.0*K0"
+    },
+    "bottom_boundary": "FIXED_FLUX q_bottom=K0 in positive-downward normalized convention",
+    "sinks": false,
+    "diagnostic_L_cm": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "standard_lare_operator": "unchanged CA1 adjacent-layer Taylor closure; MECH3B evaluates projected interface-flux error only, not LARE state propagation"
+  },
+  "selected_scale_definition": {
+    "target_state": "theta_f solves K(theta_f)=r*K(theta0), r=1.5 WET or 0.5 DRY",
+    "D_geometric": "D_G = exp(|integral_theta0^thetaf ln(D(theta)) dtheta| / |theta_f-theta0|)",
+    "penetration_length": "ell_G=sqrt(D_G*T_pulse)",
+    "lambda": "lambda_G=L_peak/ell_G",
+    "frozen_absolute_prediction": "L_pred_continuous = c_MECH3A * ell_G with c_MECH3A=4.051189215592548",
+    "frozen_ladder_prediction": "nearest member of 10,20,...,140 cm to L_pred_continuous; exact ties choose the smaller L; outside-range predictions are censored to the nearest endpoint and marked censored",
+    "no_refit": true
+  },
+  "baseline_scale_definition": {
+    "id": "LOCAL_D0",
+    "penetration_length": "ell_0=sqrt((K0/C0)*T_pulse)",
+    "frozen_absolute_prediction": "L_pred_continuous=c_D0*ell_0 with c_D0=3.876336858823168"
+  },
+  "reference_domain_policy": {
+    "classification": [
+      "QUALIFIED",
+      "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION",
+      "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+    ],
+    "no_retuning": true,
+    "case_use": "Only QUALIFIED WET/DRY cases contribute peak locations. Every excluded case and its reason is reported.",
+    "minimum_for_panel_adjudication": "At least two of three materials must each supply at least one qualified WET and one qualified DRY case, and at least 10 qualified WET/DRY cases must exist overall. Otherwise close BLIND_PANEL_REFERENCE_INSUFFICIENT."
+  },
+  "blind_metrics": {
+    "per_case": [
+      "observed pulse-peak L",
+      "selected PATH_GEOMETRIC_D lambda",
+      "LOCAL_D0 lambda",
+      "continuous and snapped peak prediction for each scale",
+      "absolute log prediction error for each scale"
+    ],
+    "pooled": [
+      "pooled std ln(lambda) for selected and baseline",
+      "std across material mean ln(lambda) for selected and baseline",
+      "RMS absolute log peak-prediction error using frozen discovery c for selected and baseline",
+      "median absolute log peak-prediction error",
+      "exact snapped-L hit count"
+    ]
+  },
+  "adjudication": {
+    "NONLINEAR_SCALE_TRANSFER_SUPPORTED": "Panel authority sufficient and PATH_GEOMETRIC_D improves on LOCAL_D0 in all three primary pooled criteria: pooled ln(lambda) std, between-material mean-ln(lambda) std, and RMS log prediction error using the frozen discovery constants.",
+    "NONLINEAR_SCALE_TRANSFER_PARTIAL": "Panel authority sufficient and PATH_GEOMETRIC_D improves on LOCAL_D0 in one or two of the three primary pooled criteria.",
+    "NONLINEAR_SCALE_TRANSFER_NOT_SUPPORTED": "Panel authority sufficient and PATH_GEOMETRIC_D improves on LOCAL_D0 in none of the three primary pooled criteria.",
+    "BLIND_PANEL_REFERENCE_INSUFFICIENT": "Reference-domain minimum not met under unchanged authority."
+  },
+  "interpretation_firewalls": [
+    "Exact snapped peak hit count is diagnostic and does not override the three pooled criteria.",
+    "No Carsel-Parrish material may be removed because it performs badly.",
+    "No new multiplier or alternative theta_f rule may be introduced after new trajectories are exposed.",
+    "A supported result is evidence only for this fixed-flux pulse mechanism, not a universal LARE grid criterion.",
+    "A partial or negative result closes this scalar-scaling attempt; do not refit on the blind panel."
+  ],
+  "firewalls": [
+    "NO_PARAMETER_RETUNING",
+    "NO_FORCING_RETUNING",
+    "NO_LADDER_RETUNING",
+    "NO_REFERENCE_TOLERANCE_RELAXATION",
+    "NO_LARE_CLOSURE_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
