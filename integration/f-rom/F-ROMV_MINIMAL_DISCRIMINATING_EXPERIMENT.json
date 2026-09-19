@@ -15,7 +15,8 @@
     "CURRENT_ADMITTED_ROSSFAST_WHEN_WITHIN_ENVELOPE",
     "SPATIALLY_COARSENED_RICHARDS",
     "SIMPLE_CONSERVATIVE_REDUCED_CLOSURE",
-    "SIMPLE_REDUCED_CLOSURE_WITH_FAIL_CLOSED_FULL_ROUTE_FALLBACK"
+    "SIMPLE_REDUCED_CLOSURE_WITH_FAIL_CLOSED_FULL_ROUTE_FALLBACK",
+    "QUASI_STEADY_OR_INTEGRATED_MANIFOLD_REDUCTION_WHERE_COMPARABLE"
   ],
   "first_closure_family": "LOW_CAPACITY_STRUCTURED_OPERATOR_INFERENCE_OR_CONSTRAINED_REGRESSION",
   "neural_operator_first": false,
@@ -149,5 +150,10 @@
       "event_timing": "PRIMARY_WHEN_PART_OF_SCIENTIFIC_INFERENCE"
     }
   ],
-  "threshold_policy": "NO_UNIVERSAL_PERCENTAGE_TOLERANCE. Application-specific envelopes must be justified from the intended decision or scientific inference before final qualification; illustrative values such as 1-2% annual ET are not acceptance criteria."
+  "threshold_policy": "NO_UNIVERSAL_PERCENTAGE_TOLERANCE. Application-specific envelopes must be justified from the intended decision or scientific inference before final qualification; illustrative values such as 1-2% annual ET are not acceptance criteria.",
+  "physical_reduction_precedent": {
+    "example": "MetaSWAP",
+    "role": "APPLICATION_FACING_COMPARATOR_PRECEDENT_NOT_CODE_OR_ALGORITHM_INHERITANCE",
+    "qualification_rule": "Evaluate under the same declared application envelopes and cost-fidelity frontier; do not require event-scale numerical equivalence when the application does not require it."
+  }
 }
