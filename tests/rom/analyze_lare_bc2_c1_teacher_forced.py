@@ -160,6 +160,13 @@ def decompose(history, d, dt, init_meta, init_nodes, states, nodes):
         )
         H0=float(pref_start["H"])
         H1=float(pref_end["H"])
+        reference_values=np.concatenate([
+            np.asarray(yref_start[:PHYS_N],dtype=float),
+            np.asarray(yref_end[:PHYS_N],dtype=float),
+            np.asarray([H0,H1,Uref_start,Uref_end],dtype=float),
+        ])
+        if not np.all(np.isfinite(reference_values)):
+            raise RuntimeError("NONFINITE_REFERENCE_PROJECTION")
 
         teacher = advance_interval(yref_start, H0, H1, dt, d)
         free = advance_interval(yfree, H0, H1, dt, d)
@@ -191,6 +198,8 @@ def decompose(history, d, dt, init_meta, init_nodes, states, nodes):
         total_total.append(Uf-Ur)
 
         refs=reference_fluxes(history,step,pref_start,pref_end,states)
+        if not all(math.isfinite(float(refs[name])) for name in ("q90","qi","qH")):
+            raise RuntimeError("NONFINITE_REFERENCE_FLUX")
         for name in ("q90","qi","qH"):
             lv=float(teacher[name])-float(refs[name])
             dv=float(free[name])-float(teacher[name])
@@ -367,6 +376,7 @@ def main():
         "hard_checks":{
             "all_primary_and_cross_routes_qualified":all_routes and not failures,
             "all_primary_and_cross_routes_hard_gated":True,
+            "all_reference_projections_finite":len(failures)==0,
             "failure_count":len(failures),
             "max_additive_or_ledger_residual_across_primary_and_cross":max_hard,
             "gate":IDENTITY_GATE,
