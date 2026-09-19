@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.lare.bc2.c3.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C3-CLOSEOUT",
+  "status": "CLOSED_REGIME_DEPENDENT_BIAS_INJECTION",
+  "authority": {
+    "c3_result": "integration/f-rom/LARE_BC2_C3_RESULT.json",
+    "c3a_result": "integration/f-rom/LARE_BC2_C3A_RESULT.json",
+    "c3_binding": "integration/f-rom/LARE_BC2_C3_AUTHORITY_BINDING.json",
+    "c3a_decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+    "source_workflow_run": 35458946068,
+    "source_head": "2dec8bed9182cf9455cfde5831cc8f28aabcb1f4"
+  },
+  "established_results": {
+    "hard_gate_pass": true,
+    "maximum_hard_residual_or_identity_error": 2.6483704118618334e-11,
+    "hard_gate": 1e-10,
+    "primary_cross_rank1_mismatch_dynamic_cases": [],
+    "dynamic_rank1": {
+      "2.5:WT_RISE": "QI",
+      "2.5:WT_FALL": "QI",
+      "2.5:WT_CYCLE": "QH",
+      "5.0:WT_RISE": "QI",
+      "5.0:WT_FALL": "QI",
+      "5.0:WT_CYCLE": "QH"
+    },
+    "hold_rank1": {
+      "2.5:WT_HOLD": "Q90",
+      "5.0:WT_HOLD": "Q90"
+    },
+    "universal_dynamic_top_family": null
+  },
+  "interpretation": {
+    "fact": [
+      "Monotone prescribed-H RISE and FALL histories select QI as the largest cumulative mass-neutral shape-bias injector on both terminal widths and both numerical routes.",
+      "The complete RISE-FALL-RISE cycle selects QH as the largest cumulative mass-neutral shape-bias injector on both widths and both numerical routes.",
+      "HOLD selects Q90, so equilibrium/stationary and dynamic dominant channels differ.",
+      "The prospectively frozen unanimity condition for a global closure intervention fails."
+    ],
+    "hypothesis_to_test": [
+      "QI remains the dominant local injector within each monotone phase of WT_CYCLE but its signed contributions reverse and cancel across the cycle, allowing the more persistent QH residual to dominate final cumulative shape injection.",
+      "If this hypothesis is false, a reversal-local or history-conditioned QH mechanism exists that is not explained by simple QI cancellation."
+    ]
+  },
+  "falsified_path": {
+    "preregistration": "integration/f-rom/LARE_BC2_C4A_PREREGISTRATION.json",
+    "closeout": "integration/f-rom/LARE_BC2_C4A_CLOSEOUT.json",
+    "decision": "UNIVERSAL_WELL_BALANCED_Q90_COUNTERFACTUAL_NOT_AUTHORIZED"
+  },
+  "next_authority": [
+    "A new regime/phase-resolved diagnostic may use only the already-authoritative A2 H trajectory and the unchanged C3 signed-bias definitions.",
+    "No global closure change is authorized.",
+    "No new memory state, empirical stabilizer, groundwater feedback or production ROM is authorized."
+  ],
+  "model_changed": false,
+  "production_rom_authorized": false
+}
