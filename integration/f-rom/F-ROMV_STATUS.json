@@ -41,7 +41,19 @@
     "b14_cross_material_transfer_admitted": false,
     "rom2_authorized": false
   },
-  "next": "EXECUTE_ONE_MINIMAL_DISCRIMINATING_EXPERIMENT_BEFORE_ANY_COMPLEX_ROM_ARCHITECTURE",
+  "next": "EXECUTE_PURPOSE_DEPENDENT_MINIMAL_DISCRIMINATING_EXPERIMENT_BEFORE_ANY_COMPLEX_ROM_ARCHITECTURE",
   "production_mutation_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "acceptance_model": "PURPOSE_DEPENDENT_HYDROLOGICAL_FIDELITY",
+  "numerical_equivalence_required_for_rom": false,
+  "reference_floor_role": "MEASUREMENT_CONTEXT_NOT_UNIVERSAL_ROM_TOLERANCE",
+  "value_objective": "NON_DOMINATED_COMPUTATIONAL_COST_VERSUS_HYDROLOGICAL_FIDELITY",
+  "application_envelopes": [
+    "LONG_TERM_REGIONAL_WATER_BALANCE",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT",
+    "GROUNDWATER_COUPLED_MANY_COLUMN",
+    "FAST_EVENT_THRESHOLD",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE"
+  ],
+  "fixed_percentage_tolerance": false
 }
