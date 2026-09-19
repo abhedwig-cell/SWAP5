@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.hydro_memory.acc01_f1.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC01-F1",
+  "decision": "ACC01_F1_PASS_GOVERNED_TEMPORAL_ROUTE",
+  "governed_accuracy": {
+    "h_app_cm": 0.4,
+    "a_temporal": 0.25,
+    "h_temporal_cm": 0.1
+  },
+  "authority": {
+    "canonical_base": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+    "branch": "research/hydro-memory-acc01",
+    "qualified_head": "7ea9e8f202af0d9f19c973239a4eddb8a3e15d66",
+    "workflow_run": 35430447651,
+    "governance_job": "PASS",
+    "temporal_feasibility_job": "PASS"
+  },
+  "fixture": {
+    "requested_interval_day": 0.1,
+    "root_total_cm_per_day": 0.02,
+    "initial_head_cm": -75,
+    "reference_flux_cm_per_day": -0.1626392064213146,
+    "root_sink_compensated": false,
+    "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "max_retries": 8,
+    "hard_mass_tolerance_cm": 1e-12
+  },
+  "observed": {
+    "accepted_substeps": 2,
+    "retries": 4,
+    "solver_rejections": 0,
+    "temporal_rejections": 4,
+    "max_accepted_temporal_indicator": 0.5388703917816001,
+    "min_accepted_dt_day": 0.00625,
+    "max_accepted_dt_day": 0.09375,
+    "final_indicator_route": "reference-richards-defect-bound",
+    "final_head_inf_bound_cm": 0.017608352151799657,
+    "final_normalized_indicator": 0.17608352151799656,
+    "max_head_change_cm": 0.7180918727159309,
+    "root_generic_max_head_diff_cm": 0,
+    "root_generic_max_theta_diff": 0,
+    "o0_o2_output_identity": true
+  },
+  "pass_evidence": [
+    "ROOT completed the full governed interval with ready candidate.",
+    "Hard transaction mass gate <=1e-12 cm passed.",
+    "Hydraulic state changed materially from the equilibrium origin.",
+    "ROOT and mathematically equivalent GENERIC sink trajectories were identical in final head and water content.",
+    "ROOT and GENERIC retry, solver-rejection, temporal-rejection and mass-rejection topology matched.",
+    "All accepted temporal indicators remained <=1 under the unchanged 0.1 cm budget.",
+    "O0 and O2 executable outputs were identical."
+  ],
+  "preregistration_amendment": {
+    "id": "ACC01-F1-A1",
+    "nature": "route-name correction only",
+    "note": "The pre-existing indicator selects raw-bound or defect-bound from a data-dependent norm comparison. No numerical threshold or physical configuration was relaxed."
+  },
+  "stage0_authorized": false,
+  "remaining_requirements": [
+    "Qualify the groundwater-interface/coupling numerical error allocation separately from the already qualified temporal 25 percent share.",
+    "Demonstrate root-active groundwater response across actual two-way groundwater-head perturbations and multiple accepted windows under the governed accuracy contract.",
+    "Only then execute the 90-day drought-recovery Stage 0 experiment."
+  ]
+}
