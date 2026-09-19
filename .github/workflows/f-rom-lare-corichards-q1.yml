@@ -1,0 +1,114 @@
+name: F-ROM-LARE CoRichards Q1 viability curve
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_CORICHARDS_Q1_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_corichards_q1_member.py'
+      - 'tests/rom/run_lare_corichards_q1_member.sh'
+      - 'tests/rom/aggregate_lare_corichards_q1.py'
+      - '.github/workflows/f-rom-lare-corichards-q1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-corichards-q1-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  member:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {member: R4, thickness: '130,10,10,10'}
+          - {member: R5, thickness: '120,10,10,10,10'}
+          - {member: R6, thickness: '110,10,10,10,10,10'}
+          - {member: R8, thickness: '90,10,10,10,10,10,10,10'}
+          - {member: R12, thickness: '50,10,10,10,10,10,10,10,10,10,10,10'}
+          - {member: R16, thickness: '10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Execute same-partition CoRichards member
+        env:
+          LARE_CORICHARDS_Q1_EVIDENCE_DIR: LARE_CORICHARDS_Q1_EVIDENCE
+        run: |
+          set -euo pipefail
+          bash tests/rom/run_lare_corichards_q1_member.sh "${{ matrix.member }}" "${{ matrix.thickness }}"
+
+      - name: Build compact member evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_CORICHARDS_Q1_COMPACT
+          cp LARE_CORICHARDS_Q1_EVIDENCE/LARE_CORICHARDS_Q1_*_RESULT.json LARE_CORICHARDS_Q1_COMPACT/ 2>/dev/null || true
+          cp LARE_CORICHARDS_Q1_EVIDENCE/execution_manifest.json LARE_CORICHARDS_Q1_COMPACT/ 2>/dev/null || true
+          cp LARE_CORICHARDS_Q1_EVIDENCE/analyzer.txt LARE_CORICHARDS_Q1_COMPACT/ 2>/dev/null || true
+          cp LARE_CORICHARDS_Q1_EVIDENCE/result_sha256.txt LARE_CORICHARDS_Q1_COMPACT/ 2>/dev/null || true
+
+      - name: Upload compact member evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1-compact-${{ matrix.member }}
+          path: LARE_CORICHARDS_Q1_COMPACT/
+          if-no-files-found: error
+
+      - name: Upload raw member evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1-raw-${{ matrix.member }}
+          path: LARE_CORICHARDS_Q1_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: member
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover compact member evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-corichards-q1-compact-*
+          path: /tmp/lare-corichards-q1
+          merge-multiple: false
+
+      - name: Aggregate viability curve
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_CORICHARDS_Q1_EVIDENCE
+          python3 tests/rom/aggregate_lare_corichards_q1.py             --member-dir /tmp/lare-corichards-q1             --prereg integration/f-rom/LARE_CORICHARDS_Q1_PREREGISTRATION.json             --output LARE_CORICHARDS_Q1_EVIDENCE/LARE_CORICHARDS_Q1_RESULT.json             | tee LARE_CORICHARDS_Q1_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_CORICHARDS_Q1_EVIDENCE/LARE_CORICHARDS_Q1_RESULT.json'))
+          assert r['decision'] in (
+            'REDUCED_CORICHARDS_DYNAMIC_VIABILITY_ESTABLISHED',
+            'ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE',
+            'CORICHARDS_Q1_COMPARATOR_AUTHORITY_BLOCKED'
+          )
+          assert r['hydrological_comparison_performed'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_CORICHARDS_Q1_FIREWALL=PASS')
+          PY
+          sha256sum LARE_CORICHARDS_Q1_EVIDENCE/* > LARE_CORICHARDS_Q1_EVIDENCE/sha256.txt
+
+      - name: Upload Q1 aggregate authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1
+          path: LARE_CORICHARDS_Q1_EVIDENCE/
+          if-no-files-found: error
