@@ -31,7 +31,8 @@
       "current and historical Git trees",
       "historical S9/S11/A23 patches",
       "Project/Library SWAP_4.3.1 archive",
-      "historical scientific/energy audits"
+      "historical scientific/energy audits",
+      "2026-09-19 Files/Library recheck: exact SWAP_4.3.1(6).zip and duplicates are visible but raw-byte materialization is unauthorized; recursive loose .f90 inventory contains no frozencond.f90 or temperature.f90."
     ],
     "raw_project_archive_located": true,
     "raw_export_available": false,
@@ -48,5 +49,15 @@
   },
   "production_admission": "NONE_REVIEW_ONLY_BLOCKED",
   "verdict": "OWNER_BOUNDARIES_FROZEN_DETAILED_FROST_AUTHORITY_BLOCKED",
-  "next_action": "Persist/qualify this blocker boundary. Continue ownership-disjunct PPA-WU05-D compensation review while B1 remains source-blocked. Do not implement frost."
+  "next_action": "Persist/qualify this blocker boundary. Continue ownership-disjunct PPA-WU05-D compensation review while B1 remains source-blocked. Do not implement frost.",
+  "materialization_recheck_20260919": {
+    "library_archive_found": true,
+    "library_archive_name": "SWAP_4.3.1(6).zip",
+    "duplicate_archives_found": true,
+    "raw_materialization": "FAILED_NO_AUTHORIZED_RAW_BYTE_PATH",
+    "loose_f90_inventory_checked": true,
+    "frozencond_loose_file_found": false,
+    "temperature_loose_file_found": false,
+    "conclusion": "SOURCE_MATERIALIZATION_BLOCKER_CONFIRMED_ON_CURRENT_FILES_SURFACE"
+  }
 }
