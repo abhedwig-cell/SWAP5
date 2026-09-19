@@ -1,8 +1,8 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
-  "date": "2026-09-18",
-  "canonical_basis": "faf33c1fb023a164a6456da160422685c32a88c4",
-  "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
+  "date": "2026-09-19",
+  "canonical_basis": "4d40b8d4b6a1df06ff97fab55497542778431290",
+  "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; current canonical still fails closed for active root extraction/drainage in the mode-5 production groundwater owner; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
       "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
@@ -30,7 +30,7 @@
     },
     "submission_readiness": {
       "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
-      "blob": "6b0106d5d1cd0be24acbdf2b5f52e901f93c1442"
+      "blob": "5c1fd452e59879904747ea803ab9149a03e4d6f8"
     },
     "notation": {
       "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
@@ -46,7 +46,7 @@
     },
     "consolidation_status": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md",
-      "blob": "5f9acd64547b003eaac9f125c7026649f19c784a"
+      "blob": "769b288f898c27561ec5293f005b0b5ba309dd88"
     },
     "figure_table_plan": {
       "path": "docs/publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md",
@@ -63,6 +63,30 @@
     "gmd_archival_gate": {
       "path": "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.md",
       "blob": "86280b9380553066842ea5e2da0be296dece1da7"
+    },
+    "e7_result": {
+      "path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+      "blob": "994e39565f5b93938e9c5ce11f18f667b122dbf2"
+    },
+    "e7_application_requirements": {
+      "path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+      "blob": "850d855205ef993dd210ec38a39c24e8c11f20a8"
+    },
+    "e7_selection_result": {
+      "path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "blob": "e4534f6f71b534e39c73ac3c52f31545af1b6159"
+    },
+    "e7_selected_days": {
+      "path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
+      "blob": "cfc65cfbd680e89d393a8697e09fa056f54f32d2"
+    },
+    "e7_current_canonical_reconciliation": {
+      "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
+      "blob": "67cce9c3721b96f46cc7f71135c4ab20057e3202"
+    },
+    "e7_current_canonical_reconciliation_narrative": {
+      "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.md",
+      "blob": "4afaddc3ca6ac08e8906db50cf1064ce50497d10"
     }
   },
   "evidence": {
@@ -175,12 +199,14 @@
       "ppa_wu03_status_path": "integration/audits/PPA_WU03_STATUS.json",
       "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
       "groundwater_profile": "all tiles bottom_mode=5",
-      "limiting_guard": "drainage_response_active rejected by tile_config_valid before owner-state allocation",
-      "ppa_wu03_broadens_groundwater_process_profile": false
+      "limiting_guard": "drainage_response_active and root_extraction_active rejected by tile_config_valid before owner-state allocation",
+      "ppa_wu03_broadens_groundwater_process_profile": false,
+      "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b"
     },
     "result": {
       "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "result_blob": "5e8b66f82f1f94fcaaf4214cdc57e5fc2706bf86",
+      "result_blob": "994e39565f5b93938e9c5ce11f18f667b122dbf2",
       "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
       "narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
       "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
@@ -209,13 +235,22 @@
     "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
     "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability.",
     "current_canonical_reconciliation": {
-      "production_bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+      "canonical_basis": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "record_path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
+      "record_blob": "67cce9c3721b96f46cc7f71135c4ab20057e3202",
+      "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+      "application_requirements_blob": "850d855205ef993dd210ec38a39c24e8c11f20a8",
+      "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
       "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
-      "ppa_wu02_scope": "homogeneous typed bottom_mode=2 prescribed-qbot application only",
-      "e7_effect": "NONE; prescribed-head groundwater owner remains mode 5 and active drainage/root extraction remain fail-closed"
+      "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+      "ppa_root_hyd02_result_blob": "5ac799921574082731180356a23f7e983585800b",
+      "ppa_wu04a_status_blob": "75674d84b5eb4d17ae92d7e25696957630fe7fd0",
+      "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
+      "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a"
     }
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package and current GMD preparation layer. E7 remains closed; unresolved submission items are governance/archive/author/formatting metadata only.",
+  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package at the stated canonical basis plus the current closeout branch assets. Historical preregistration/selection evidence is unchanged. E7 remains closed as a realistic component-domain limit; remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
   "gmd_presubmission": {
     "status": "REPOSITORY_PREPARATION_COMPLETE_EXTERNAL_GOVERNANCE_ARCHIVE_AUTHOR_FIELDS_OPEN",
     "policy_checked": "2026-09-19",
