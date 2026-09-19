@@ -59,3 +59,20 @@ Initial run **35425336798** stopped on F2 because the first validator inspected 
 ## Final-release rule
 
 This qualification proves the export route. After R1/L1 and the exact publication release/archive identity are fixed, regenerate the same F1–F7 package from that immutable release and record the final release-bound hashes. The temporary Actions artifact is not substituted for the persistent GMD archive.
+
+
+## Repeatability clarification
+
+A second successful run on the documentation-updated branch head (run **35425488276**, job **105850571113**) reproduced all structural qualification gates: seven one-page PDFs, embedded fonts, <2 MB per PDF, exact flat package membership and total size far below 30 MB.
+
+The generated PDF byte hashes were not identical to the earlier successful run; sizes differed by at most two bytes. Cairo/PDF and zip metadata are not normalized to a fixed creation timestamp/document identifier. Therefore the qualification claim is **reproducible transformation and validation semantics**, not pre-release byte-for-byte PDF determinism.
+
+The governed SVG blobs remain the scientific source authority. Final PDF and zip hashes are frozen only after regeneration from the immutable publication release. A final visual/upload review is also performed at that release-bound stage.
+
+Latest confirmation:
+
+- run 35425488276 — SUCCESS;
+- artifact 10578682866;
+- artifact wrapper digest `sha256:c64439b533ac482c8f493a7074c687d95e211b2c2847cb299476ccf3b9dff8a6`;
+- run-specific submission zip SHA-256 `4dab31c587644d37542f0cf223c8e30a2ea623c224c326d9ad29814869eeabee`;
+- combined PDF bytes 164,661.
