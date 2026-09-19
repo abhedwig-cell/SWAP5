@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-romv2-d25.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D25",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "primary_execution": {
+    "branch": "work/f-romv2-d25-same-runtime-cost-screen",
+    "pull_request": 476,
+    "pull_request_merged": false,
+    "executed_head": "ac5adb9b7946ace395fc04acbdc691ba394f56a6",
+    "workflow_run": 35472426493,
+    "workflow_job": 105975698305,
+    "artifact_id": 10593580295,
+    "artifact_digest": "sha256:66d49bfc57b2b2b97288ed30eb48f149116fadb5f4df59db7a821ba6c27fdb7f",
+    "workflow_conclusion": "success",
+    "later_execution_branch_commits_authoritative": false
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "b36e5ad7ab2a3f952b264598ecf632cf502adaf3",
+    "cost_screen_sha256": "1bcad51c6ddc24d2cf6177979e902391501d02a07b0739fab4119a629a78286f",
+    "implementation_equivalence_sha256": "bad16c214c7c7a8d6b3d0dd2a5360a857ceefd748348a595fe5d471f47f8081e",
+    "oracle_sha256": "7ca8fd6ef6ffefdfb960cb4009d1b36757c70f0208cd20dd3ab421160de5a447",
+    "FMC_o0_o2_stdout_sha256": "3842e16a148138162caf81d743282dab8ac3be67584700d8ef0ef5a1fd97fff9",
+    "R16_o0_o2_stdout_sha256": "c0571d38427e4122a6376afb9f24aa6a1c625b2ba2524f81542c5dca3bb0c826",
+    "R2_o0_o2_stdout_sha256": "a1fec425c91e5131bccb53874ed4f8d82c65a62d8e8e3a6b901806b710e20748",
+    "screen_stdout_sha256": "989baf4dc1fa3d37526f749bd342621f1f26164166b09640310742fadaa63fa8"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D25_RESULT.json",
+    "integration/f-rom/F-ROMV2_D25_STATUS.json",
+    "integration/f-rom/F-ROMV2_D25_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D25_COMPUTATIONAL_VALUE_SCREEN_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "compiled FMC research source",
+    "benchmark-capable R16/R2 research harness",
+    "timing driver and workflow",
+    "raw 30-sample timing payload",
+    "raw workflow artifact"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_science_retuning": false,
+  "formal_performance_claimed": false,
+  "portable_speedup_claimed": false,
+  "application_acceptance_claimed": false,
+  "production_rom_authorized": false
+}
