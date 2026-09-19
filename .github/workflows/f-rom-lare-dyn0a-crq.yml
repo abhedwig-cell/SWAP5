@@ -5,10 +5,9 @@ on:
     branches:
       - work/f-rom-lare-rs1
     paths:
-      - 'integration/f-rom/LARE_DYN0A_PREREGISTRATION.json'
-      - 'tests/rom/test_lare_dyn0a_reference.f90'
-      - 'tests/rom/analyze_lare_dyn0a_crq.py'
       - 'tests/rom/run_lare_dyn0a_crq.sh'
+      - 'tests/rom/test_lare_dyn0a_reference.f90'
+      - 'integration/f-rom/LARE_DYN0A_PREREGISTRATION.json'
       - '.github/workflows/f-rom-lare-dyn0a-crq.yml'
   workflow_dispatch:
 
@@ -17,10 +16,6 @@ permissions:
 
 jobs:
   crq:
-    strategy:
-      fail-fast: false
-      matrix:
-        geometry: [d3, d2]
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -28,15 +23,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Execute preregistered coarse Richards temporal qualification
-        env:
-          LARE_DYN0A_CRQ_GEOMETRY: ${{ matrix.geometry }}
+      - name: Qualify variable-grid materializer
+        run: python3 tests/rom/test_lare_variable_grid_materializer.py
+
+      - name: Execute preregistered coarse Richards substep ladder
         run: bash tests/rom/run_lare_dyn0a_crq.sh
+
+      - name: Validate CRQ firewalls
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_CRQ_EVIDENCE/LARE_DYN0A_CRQ_RESULT.json'))
+          assert p['decision']=='LARE_DYN0A_COARSE_RICHARDS_TEMPORAL_QUALIFICATION_CHARACTERIZED'
+          assert p['substep_counts']==[1,2,4,8]
+          assert p['finite_reference_claim'] is False
+          assert p['conservative_error_bound_claim'] is False
+          assert p['application_tolerance_selected'] is False
+          assert p['production_rom_authorized'] is False
+          print('LARE_DYN0A_CRQ_FIREWALL=PASS')
+          PY
 
       - name: Upload CRQ evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lare-dyn0a-crq-${{ matrix.geometry }}
+          name: lare-dyn0a-crq
           path: LARE_DYN0A_CRQ_EVIDENCE/
           if-no-files-found: warn
