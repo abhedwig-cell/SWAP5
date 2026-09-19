@@ -340,7 +340,7 @@ contains
 
   pure function phase_label(step) result(label)
     integer,intent(in) :: step
-    character(len=8) :: label
+    character(len=9) :: label
     label='POSTMERGE'
   end function phase_label
 
