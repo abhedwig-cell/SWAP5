@@ -1,0 +1,127 @@
+{
+  "schema": "swap5.lare.bc2.c4m.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4M",
+  "phase": "PREREGISTERED_AFTER_C4L_BEFORE_INTERNAL_SLOPE_CORRECTION_REVIEW",
+  "title": "Internal interface slope-correction mechanism review",
+  "question": "Can the mixed C4L behavior be explained and improved by the parameter-free central finite-volume interface slope implied by the existing B9 terminal and bulk one-sided linear reconstructions, without changing qH or adding state?",
+  "predecessors": {
+    "C4L": {
+      "closeout": "integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json",
+      "required_status": "CLOSED_QH_PRESERVING_CUBIC_MIXED_NO_PROPAGATION",
+      "required_decision": "QH_PRESERVING_CUBIC_MIXED",
+      "required_schema": "swap5.lare.bc2.c4l.closeout.v2"
+    },
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "C4K": {
+      "closeout": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+      "required_decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference": "immutable A2 Reference used by B8/B9/C4H/C4L"
+  },
+  "baseline": {
+    "operator": "B9 TERMINAL_SIDE_LINEAR",
+    "endpoint_interface_slope": "s_base=a_t",
+    "endpoint_interface_K": "K_i from the B9 terminal storage reconstruction",
+    "endpoint_qi": "K_i*(1-a_t)",
+    "qH": "Ks*(1-a_t)"
+  },
+  "central_candidate": {
+    "name": "CENTRAL_PIECEWISE_LINEAR_INTERFACE_GRADIENT",
+    "derivation": "Use the already reconstructed B9 terminal slope a_t over thickness d and bulk slope b_bulk over thickness B. The secant slope between the two reconstructed control-volume centers is s_central=(d*a_t+B*b_bulk)/(B+d).",
+    "endpoint_slope": "s_central=(d*a_t+B*b_bulk)/(B+d)",
+    "endpoint_qi": "K_i*(1-s_central), using the unchanged B9 terminal-interface K_i",
+    "qH": "unchanged B9 qH=Ks*(1-a_t)",
+    "state_used": [
+      "Wb",
+      "Wt",
+      "H",
+      "terminal width d",
+      "frozen constitutive law"
+    ],
+    "added_state_dimension": 0,
+    "fitted_parameters": 0,
+    "hydrostatic_identity": "a_t=b_bulk=1 implies s_central=1 and qi=qH=0",
+    "role": "response-blind static closure candidate"
+  },
+  "reference_slope_diagnostic": {
+    "qi_ref": "B8 split moving-control-volume ledger",
+    "K_ref_bar": "trapezoidal endpoint mean constitutive K evaluated at Reference projected interface theta",
+    "interval_effective_slope": "s_ref=1-qi_ref/K_ref_bar",
+    "note": "s_ref is an interval-effective diagnostic, not asserted to equal a pointwise Richards derivative."
+  },
+  "cubic_comparator": {
+    "source": "authoritative C4L reconstructed endpoint slopes",
+    "role": "mechanism comparator only; no new cubic execution authority",
+    "comparison": "Compare correction relative to baseline a_t: delta_cubic=s_cubic-a_t versus delta_ref=s_ref-a_t."
+  },
+  "outputs": [
+    "baseline, central and cubic interval-effective slope errors relative to s_ref: bias, MAE, RMS, max_abs",
+    "delta_ref, delta_central and delta_cubic signed distributions",
+    "fraction intervals where central correction has same sign as delta_ref",
+    "fraction intervals where cubic correction has same sign as delta_ref",
+    "fraction intervals where central slope is closer to s_ref than baseline and cubic",
+    "baseline, central and cubic qi bias, MAE, RMS, max_abs and sign mismatches",
+    "qH identity residual for central candidate",
+    "manufactured hydrostatic central-slope identity"
+  ],
+  "hard_gates": {
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "qH_central_vs_B9_identity_cm_per_day": 1e-12,
+    "finite_positive_reference_K": true,
+    "central_hydrostatic_abs_slope_minus_1": 1e-12,
+    "all_candidate_fluxes_finite": true
+  },
+  "case_support": {
+    "moving": "For WT_RISE and WT_FALL, CENTRAL qi must have strictly lower RMS and MAE than B9 baseline and no greater sign-mismatch count.",
+    "hold": "For WT_HOLD, CENTRAL qi RMS and MAE must be no greater than B9 baseline within 1e-12 and sign-mismatch count no greater.",
+    "mechanism_consistency": "Report, but do not gate support on, whether central slope MAE/RMS is also lower than baseline and cubic. A flux improvement can differ from slope improvement because K is nonlinear."
+  },
+  "decisions": {
+    "CENTRAL_INTERFACE_GRADIENT_STATIC_CANDIDATE_SUPPORTED": "All hard gates pass; central qi supports both widths in RISE and FALL and is noninferior in HOLD for both widths.",
+    "CENTRAL_INTERFACE_GRADIENT_MOVING_ONLY": "All hard gates pass; all four moving cases support, but at least one HOLD case fails noninferiority.",
+    "CENTRAL_INTERFACE_GRADIENT_MIXED": "All hard gates pass but moving support is not uniform across width/direction.",
+    "C4M_DIAGNOSTIC_BLOCKED": "Any hard authority or numerical gate fails."
+  },
+  "interpretation_boundary": [
+    "C4M is a static Reference-state mechanism review.",
+    "Positive central support does not authorize propagated dynamics.",
+    "Cubic is a comparator only and cannot be rescued by post-hoc direction selection.",
+    "No blending factor, fitted weight, Hdot term, memory state or direction switch is allowed."
+  ],
+  "firewalls": [
+    "NO_PARAMETER_FIT",
+    "NO_EXTRA_STATE",
+    "NO_DIRECTION_SWITCH",
+    "NO_BLENDING_FACTOR",
+    "NO_FREE_PROPAGATION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
