@@ -1,6 +1,6 @@
 # F-TAB01 — Tabulated soil hydraulics current-state audit
 
-**Status:** AUDIT_OPEN  
+**Status:** CHARACTERIZED_BLOCKED_FOR_DROPIN  
 **Canonical start:** `integration/f-ci-canonical@f5988c04ee93d92d54876696b5414bd326360ad9`  
 **Scope:** correctness and scientific/numerical qualification only. No performance claim and no production admission.
 
@@ -184,3 +184,125 @@ This separates the scientific question “does table hydraulics work?” from th
 **NEXT_GATE = EXECUTABLE_CONSTITUTIVE_EQUIVALENCE**
 
 No conclusion about speedup is authorized before that gate is closed.
+
+
+## Executable characterization result
+
+An isolated executable harness now compiles the preserved historical TSPACK
+implementation and evaluates it against the hydraulic vector already used by
+the current SWAP5 F-SI24 nonlinear B1.10 qualification fixture:
+
+```text
+theta_r = 0.032
+theta_s = 0.423
+Ksat    = 4.75 cm/d
+alpha   = 0.0135 /cm
+lambda  = 0.365
+n       = 1.455
+m       = 1 - 1/n
+h_enpr  = 0
+```
+
+The executable source is the upstream historical interpolation blob
+`62a4df82de75f1231fe066351473d140cf2ac31c`. That blob is identical between
+the public frozen lineage at `c22bd832...` and the upstream modernization
+line immediately before the table path was retired on 2026-05-24. This is
+strong lineage evidence, but it is still not asserted to be byte-identical to
+the separately supplied SWAP 4.3.1 B0 archive.
+
+### Knot-placement result
+
+Two table constructions were compared:
+
+1. a uniform grid in transformed `x=-log(1-h)`;
+2. a segmented grid with an explicit `Hcrit=-0.01 cm` knot and dedicated
+   near-saturation refinement.
+
+For the refined 400-knot table, away from the saturation endpoint:
+
+```text
+max |theta_tab-theta_ref|                    = 3.275127e-6
+max theta error / (theta_s-theta_r)          = 8.376283e-6
+max |log10(K_tab)-log10(K_ref)|              = 4.205997e-3 decades
+max relative C error where C_ref > 1e-6,
+  on the smooth h <= Hcrit branch            = 1.914036e-4
+theta monotonicity violations                = 0
+K monotonicity violations                    = 0
+```
+
+Thus the historical interpolation mathematics can reproduce the admitted
+constitutive values very closely when the table is designed around the actual
+branch structure. A large generic table is not sufficient by itself.
+
+The result is strongly grid-dependent. A 25-knot refined table produced two
+local K monotonicity violations. Uniform transformed grids remained monotone in
+this test, but represented `C` around the `Hcrit` transition much less
+accurately. Increasing the number of knots did not improve every K metric
+monotonically because TSPACK recomputes derivatives and tension factors from
+the whole knot set.
+
+### Near-saturation blocker
+
+The historical preprocessor hard-codes the theta-spline derivative at the
+saturation endpoint to `1e-7`.
+
+That is not equivalent to the current B1.10 analytical near-saturation
+continuation. For the F-SI24 hydraulic vector the analytical continuation
+immediately below saturation has approximately
+
+```text
+C = 2.863915e-5 /cm
+```
+
+The refined 400-knot historical table gives:
+
+| h (cm) | analytical C | tabulated C | relative difference |
+|---:|---:|---:|---:|
+| -9e-3 | 2.863915e-5 | 2.863915e-5 | 2.1e-8 |
+| -5e-3 | 2.863915e-5 | 2.863915e-5 | 8.9e-9 |
+| -1e-3 | 2.863915e-5 | 2.863915e-5 | 1.2e-7 |
+| -1e-4 | 2.863915e-5 | 3.683251e-5 | 2.86e-1 |
+| -1e-5 | 2.863915e-5 | 8.595727e-6 | 7.00e-1 |
+| -1e-6 | 2.863915e-5 | 9.978070e-7 | 9.65e-1 |
+| -1e-7 | 2.863915e-5 | 1.902630e-7 | 9.93e-1 |
+| -1e-8 | 2.863915e-5 | 1.090311e-7 | 9.96e-1 |
+
+This discrepancy persists with increasing table density because it is imposed
+by the endpoint condition, not caused by missing knots.
+
+It is therefore not scientifically justified to treat the historical
+`swsophy=1` route as a drop-in acceleration of the currently admitted
+analytical SWAP5 provider.
+
+### TSPACK diagnostic finding
+
+Positive `IER` returned by `TSPBI` is an iteration count, not an error.
+Negative values are the actual input/workspace failures.
+
+The preprocessing also reports many invalid requested convexity constraints.
+The legacy wrapper requests positive second-derivative sign in every interval;
+TSPACK flags intervals where that constraint is incompatible and treats those
+constraints as null. The successful value interpolation must therefore not be
+described as globally convexity-preserving by construction.
+
+## Updated disposition
+
+```text
+CURRENT_SW5_TABLE_ROUTE
+  NOT_REACHABLE_NOT_ADMITTED
+
+HISTORICAL_TSPACK_VALUE_INTERPOLATION
+  EXECUTABLE_AND_NUMERICALLY_PROMISING
+
+HISTORICAL_TSPACK_AS_DROPIN_FOR_CURRENT_B110
+  BLOCKED_NEAR_SATURATION_CAPACITY_SEMANTICS
+
+PERFORMANCE_BENCHMARK
+  DEFERRED
+```
+
+The next technical slice should not simply reconnect the historical
+`swsophy=1` implementation. It should define a SWAP5-compatible tabulated
+constitutive provider whose endpoint/branch semantics reproduce the admitted
+B1.10 provider, then rerun the same constitutive characterization before any
+Richards-level A/B or runtime benchmark.
