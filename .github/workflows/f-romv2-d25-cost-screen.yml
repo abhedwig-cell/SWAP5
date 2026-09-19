@@ -1,4 +1,4 @@
-name: F-ROMV2 D25 compiled shared-host cost screen
+name: F-ROMV2 D25 compiled FMC cost screen
 
 on:
   pull_request:
@@ -7,19 +7,19 @@ on:
       - 'integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json'
       - 'tests/rom/oracle_f_romv2_d25_fmc.py'
       - 'tests/rom/test_f_romv2_d25_fmc_compiled.f90'
-      - 'tests/rom/validate_f_romv2_d25_fmc_equivalence.py'
       - 'tests/rom/test_f_romv2_d25_reference_benchmark.f90'
-      - 'tests/rom/run_f_romv2_d25_cost_screen.py'
-      - 'tests/rom/run_f_romv2_d25.sh'
+      - 'tests/rom/validate_f_romv2_d25_fmc_equivalence.py'
+      - 'tests/rom/run_f_romv2_d25_timing.py'
+      - 'tests/rom/run_f_romv2_d25_cost_screen.sh'
       - '.github/workflows/f-romv2-d25-cost-screen.yml'
 
 permissions:
   contents: read
 
 jobs:
-  screen:
+  cost-screen:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,10 +28,10 @@ jobs:
         run: |
           gfortran --version
           python3 --version
-      - name: Execute preregistered compiled cost screen
+      - name: Execute staged D25 equivalence and cost screen
         env:
           F_ROMV2_D25_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D25-EVIDENCE
-        run: bash tests/rom/run_f_romv2_d25.sh
+        run: bash tests/rom/run_f_romv2_d25_cost_screen.sh
       - if: always()
         uses: actions/upload-artifact@v4
         with:
