@@ -115,9 +115,8 @@ def rhs(y: np.ndarray, H: float, Hdot: float, d: float):
 def convergence_vector(y: np.ndarray, H: float, d: float):
     hs = hydraulic_state(y, H, d)
     # C0 inherits B0's theta-based Heun corrector criterion. The reconstructed
-    # terminal slope a_t is a deterministic diagnostic/closure quantity, not
-    # an independent prognostic state and therefore is not part of the
-    # corrector convergence norm.
+    # terminal slope a_t is a deterministic closure quantity, not an
+    # independent prognostic state.
     return np.concatenate([
         hs["fixed_theta"],
         [hs["theta_b"], hs["theta_t_mean"]],
@@ -502,3 +501,41 @@ def main():
                 for h in HISTORY_STEPS
             }
             for d in WIDTHS
+        },
+        "interpretation": [
+            "C0 changes only the lower moving-domain representation and q_i/q_H closures relative to B0; q90 remains the source-aligned standard closure.",
+            "H(t) remains externally prescribed from qualified A2 Reference geometry, so C0 does not test groundwater feedback.",
+            "The physical moving-volume ledger remains a hard structural gate; response improvement is adjudicated only relative to the frozen B0 baseline.",
+            "No application-level tolerance or speed claim is introduced."
+        ],
+        "groundwater_feedback_authorized": False,
+        "application_acceptance_adjudicated": False,
+        "production_rom_authorized": False
+    }
+    args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    print(json.dumps({
+        "decision": decision,
+        "hard_checks": result["hard_checks"],
+        "support_vs_B0": support,
+        "supported_widths_cm": supported,
+        "preferred_width_cm": preferred,
+        "primary_summary": {
+            str(d): {
+                h: {
+                    "status": cases[(d, h)]["status"],
+                    "total_err_cm": None if cases[(d, h)]["fine"] is None else cases[(d, h)]["fine"]["max_abs_total_unsaturated_storage_error_cm"],
+                    "cum_qH_err_cm": None if cases[(d, h)]["fine"] is None else cases[(d, h)]["fine"]["max_abs_cumulative_qH_error_cm"],
+                    "qH_err_cm_per_day": None if cases[(d, h)]["fine"] is None else cases[(d, h)]["fine"]["max_abs_interval_qH_error_cm_per_day"],
+                    "qi_err_cm_per_day": None if cases[(d, h)]["fine"] is None else cases[(d, h)]["fine"]["max_abs_interval_qi_error_cm_per_day"],
+                    "sign_mismatch": None if cases[(d, h)]["fine"] is None else cases[(d, h)]["fine"]["qH_sign_mismatch_count"],
+                }
+                for h in HISTORY_STEPS
+            }
+            for d in WIDTHS
+        }
+    }, sort_keys=True))
+    return 0 if all(s == "QUALIFIED" for s in all_status) and ledger_ok else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
