@@ -34,6 +34,14 @@
       "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/runtime/mod_fmr_runtime_core.f90",
       "classification": "STALE_MOVING_PRESERVATION_LOCK_AFTER_CANONICAL_PPA_WU04B",
       "note": "Frozen authority jobs passed; failure was in the moving-current successor gate."
+    },
+    "pub_gc_e7_closeout_pr408_root_hyd01_replay": {
+      "workflow_run": 35456091618,
+      "job": 105931501374,
+      "failed_step": "Replay PPA-ROOT-HYD01 temporal preservation",
+      "message": "PPA_ROOT_HYD01_PRESERVE_FAIL unexpected production source delta",
+      "classification": "STALE_ROOT_HYD01_PRESERVATION_SCOPE_AFTER_CANONICAL_ROOT_HYD02_AND_WU04A_B",
+      "note": "The moving F-CI preservation replay itself passed. The downstream root-temporal preservation script still assumed that temporal_indicator was the only src successor after its frozen base."
     }
   },
   "existing_authority": {
@@ -107,7 +115,10 @@
     "Their qualified heads must be contained by the corresponding canonical admission commits.",
     "runtime_core, restart-state, restricted-surface-evaporation and serialized-backend postimages are pinned to exact WU04-A/B blobs; wildcard successor acceptance is forbidden.",
     "Before PPA-WU04-A admission the historical Status-A equality rules remain in force for the three generic dependency paths.",
-    "No production/reference source is changed by this reconciliation."
+    "No production/reference source is changed by this reconciliation.",
+    "PPA-ROOT-HYD01 temporal preservation recognizes PPA-ROOT-HYD02 only through its exact canonical admission, qualified-head containment and exact five-file tangent postimages.",
+    "PPA-ROOT-HYD01 temporal preservation recognizes PPA-WU04-A/B only through exact admission ancestry and exact adapter/process/bootstrap/restart/runtime/backend postimages.",
+    "The root-temporal preservation source-delta comparison remains fail-closed: observed src paths must equal the lineage-derived exact successor set."
   ],
   "production_delta": [],
   "reference_delta": [],
@@ -117,7 +128,8 @@
     "tests/ross/run_fross22_admission_all_material.sh",
     "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
     "tests/fapp/run_ppa_low02_time_application_admission.sh",
-    "tests/fvq/run_ppa_low02_time_independent.sh"
+    "tests/fvq/run_ppa_low02_time_independent.sh",
+    "tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh"
   ],
-  "current_repair_note": "Moving-current preservation now recognizes the exact admitted PPA-WU04-A/B stateful-evaporation successors in addition to PPA-LOW02 and PPA-ROOT-HYD01. This is governance/test repair only; production/reference sources are unchanged."
+  "current_repair_note": "Moving-current and downstream PPA-ROOT-HYD01 preservation are now lineage-aware for the exact admitted ROOT-HYD02 and PPA-WU04-A/B successors. No production/reference source or scientific claim changes."
 }
