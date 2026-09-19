@@ -1,0 +1,52 @@
+name: F-ROM-LARE DYN0A fine-only dynamic characterization
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'tests/rom/analyze_lare_dyn0a_fx_fine_only.py'
+      - '.github/workflows/f-rom-lare-dyn0a-fine-only.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover qualified LARE ODE and fine Reference artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-dyn0a-fine/ode /tmp/lare-dyn0a-fine/ref
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586625140/zip" > /tmp/lare-dyn0a-fine/ode.zip
+          echo "9a77fd80ad804e325608a9ec7948ec8746aa6f55bf6bce110e43751c2afd490f  /tmp/lare-dyn0a-fine/ode.zip" | sha256sum -c -
+          unzip -q /tmp/lare-dyn0a-fine/ode.zip -d /tmp/lare-dyn0a-fine/ode
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/lare-dyn0a-fine/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/lare-dyn0a-fine/ref.zip" | sha256sum -c -
+          unzip -q /tmp/lare-dyn0a-fine/ref.zip -d /tmp/lare-dyn0a-fine/ref
+
+      - name: Characterize LARE against fine Reference
+        run: |
+          mkdir -p LARE_DYN0A_FINE_ONLY_EVIDENCE
+          python3 tests/rom/analyze_lare_dyn0a_fx_fine_only.py \
+            --ode /tmp/lare-dyn0a-fine/ode/LARE_DYN0A_ODE_REFERENCE.json \
+            --reference-dir /tmp/lare-dyn0a-fine/ref \
+            --reference-status /tmp/lare-dyn0a-fine/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --output LARE_DYN0A_FINE_ONLY_EVIDENCE/LARE_DYN0A_FX_FINE_ONLY_RESULT.json \
+            | tee LARE_DYN0A_FINE_ONLY_EVIDENCE/analyzer.txt
+          sha256sum LARE_DYN0A_FINE_ONLY_EVIDENCE/* > LARE_DYN0A_FINE_ONLY_EVIDENCE/sha256.txt
+
+      - name: Upload fine-only evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-fine-only
+          path: LARE_DYN0A_FINE_ONLY_EVIDENCE/
