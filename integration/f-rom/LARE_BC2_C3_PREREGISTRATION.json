@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.lare.bc2.c3.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C3",
+  "phase": "PREREGISTERED_BEFORE_SIGNED_LOCAL_BIAS_LEDGER_EXECUTION",
+  "predecessor": {
+    "required_C2_decision": "BIAS_ACCUMULATION_DOMINANT",
+    "closeout_path": "integration/f-rom/LARE_BC2_C2_CLOSEOUT.json",
+    "c2c_result_path": "integration/f-rom/LARE_BC2_C2C_RESULT.json",
+    "c2c_result_blob_sha": "222d6bbde419ac2c0097b326c276a0cb783868fa"
+  },
+  "question": "Which signed teacher-reference local closure-bias channels inject the persistent mass-neutral reduced-state shape error, under which prescribed-H motion regimes?",
+  "model_policy": {
+    "model": "unchanged BC2-C0 enriched prescribed-H reduced model",
+    "reference_start": "exact A2 Reference-projected reduced state at every observation interval",
+    "groundwater_head": "prescribed exact Reference H(t)",
+    "observation_interval_day": 0.0008,
+    "primary_internal_dt_day": 0.00005,
+    "cross_internal_dt_day": 0.000025,
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ]
+  },
+  "elementary_channels": {
+    "fixed_internal": "q0 through q7 between adjacent 10-cm fixed layers",
+    "q90": "q8 between the lowest fixed layer and moving bulk storage",
+    "qi": "bulk-to-terminal moving-domain interface flux",
+    "qH": "terminal-to-saturated lower-boundary flux",
+    "Gi": "moving-boundary geometric transfer theta_i * Hdot, diagnosed exactly from the bulk balance"
+  },
+  "exact_ledger_definition": {
+    "physical_state_order": "9 fixed-layer storages, Wb, Wt",
+    "channel_contributions": [
+      "qj error transfers -e_qj*dt from upstream compartment and +e_qj*dt to downstream compartment",
+      "qi error transfers -e_qi*dt from Wb and +e_qi*dt to Wt",
+      "qH error contributes -e_qH*dt to Wt",
+      "Gi error contributes +e_Gi*dt to Wb and -e_Gi*dt to Wt"
+    ],
+    "reference_fixed_fluxes": "diagnosed recursively from exact Reference fixed-layer storage changes with frozen zero top flux",
+    "teacher_fixed_fluxes": "diagnosed recursively from teacher start/end fixed-layer storage changes; q90 is cross-checked against the integrated C0 q90",
+    "Gi_teacher": "(dWb_teacher/dt) - q90_teacher + qi_teacher",
+    "Gi_reference": "(dWb_reference/dt) - q90_reference + qi_reference",
+    "hard_identity": "sum of all channel storage-contribution vectors must reproduce teacher_end minus Reference_end physical-state error for every interval"
+  },
+  "diagnostic_families": {
+    "FIXED_INTERIOR_Q": "sum of elementary q0..q7 contribution vectors",
+    "Q90": "q90 contribution",
+    "QI": "qi contribution",
+    "QH": "qH contribution",
+    "GEOMETRY_GI": "Gi contribution"
+  },
+  "metrics_per_elementary_channel_and_family": [
+    "mean_signed_flux_or_transfer_bias_cm_per_day",
+    "rms_bias_cm_per_day",
+    "max_abs_bias_cm_per_day",
+    "signed_integrated_bias_cm",
+    "absolute_integrated_bias_cm",
+    "coherence_ratio_abs_signed_over_absolute_integral",
+    "RMS one-interval mass-neutral theta-shape injection",
+    "max one-interval mass-neutral theta-shape injection",
+    "cumulative storage-state injection vector over the history",
+    "mass-neutral theta-shape norm of cumulative injection at final geometry"
+  ],
+  "route_consistency": {
+    "rule": "All signed and shape-injection diagnostics are computed independently at 0.00005 and 0.000025 day internal dt.",
+    "reporting": "Absolute primary-minus-cross differences are reported for every aggregate metric.",
+    "no_fitted_tolerance": true,
+    "role": "Numerical sensitivity diagnostic only; no route is selected from the result."
+  },
+  "hard_gates": {
+    "channel_state_additivity_cm": 1e-10,
+    "teacher_physical_ledger_cm": 1e-10,
+    "reference_flux_identity_cm_per_day": 1e-10,
+    "teacher_q90_reconstruction_identity_cm_per_day": 1e-10,
+    "finite_state_and_fluxes": true,
+    "constitutive_domain_exit": "NUMERICAL_DIAGNOSTIC_BLOCKED; no clipping or retuning"
+  },
+  "interpretation_rules": [
+    "C3 maps bias injection; it does not test a corrected closure.",
+    "A large local flux bias is not automatically a dominant state-shape injector if another channel cancels it conservatively.",
+    "qH is the only elementary channel that changes total unsaturated storage directly under identical H(t); internal flux and Gi errors redistribute water and therefore act primarily on shape.",
+    "HOLD is retained as an equilibrium/control regime and must not be used to dilute dynamic RISE/FALL/CYCLE conclusions.",
+    "No universal signed-bias threshold is introduced. Channel/family rankings are reported per case and route."
+  ],
+  "next_step_rule": "Only after C3 is closed may a separate C4 preregistration select one observed bias family or an explicitly regime-dependent correction hypothesis for a surgical teacher-forced counterfactual. C3 itself authorizes no closure change.",
+  "firewalls": [
+    "NO_CLOSURE_CHANGE",
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_NEW_STATE",
+    "NO_EMPIRICAL_BIAS_CORRECTION",
+    "NO_GAIN_THRESHOLD_FITTING",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
