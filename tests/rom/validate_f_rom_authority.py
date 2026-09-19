@@ -2113,6 +2113,111 @@ def validate_romv2_d22_if_present() -> str:
     return "CLOSED_NATIVE_SURFACE_THRESHOLD_RESPONSE_CANDIDACY_RETAINED_RELATIVE_TO_R2"
 
 
+def validate_romv2_d23_if_present() -> str:
+    status_path=Path("integration/f-rom/F-ROMV2_D23_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D23_PREREGISTRATION.json")=="b0103ef9f5493a141ac6486e82fbff6b4f8ac453",
+            "F-ROMV2-D23 preregistration blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D23_RESULT.json")=="becf458a85030168aeab7ee295a5f280c7a9c81b",
+            "F-ROMV2-D23 result blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D23_STATUS.json")=="5d2b22c056dafc9d8fde4c03b6fb0d6617e8047f",
+            "F-ROMV2-D23 status blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D23_CANONICAL_EVIDENCE_MANIFEST.json")=="84e90344067b3e8c20da54ac7c2b13e7af95d3b0",
+            "F-ROMV2-D23 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D23_PREREGISTRATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D23_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D23_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D23_CANONICAL_EVIDENCE_MANIFEST.json")
+    d21=load_json("integration/f-rom/F-ROMV2_D21_STATUS.json")
+    d22=load_json("integration/f-rom/F-ROMV2_D22_STATUS.json")
+    doc=Path("docs/science/F-ROMV2_D23_SHORT_RAINFALL_TRAJECTORY_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_FMC_INTERNAL_PREFLIGHT_AND_RICHARDS_TRAJECTORY_EXECUTION",
+            "F-ROMV2-D23 phase drift")
+    require([h["rainfall_factor_Ksat"] for h in prereg["histories"]]==[0.5,2.0,4.0],
+            "F-ROMV2-D23 rainfall factors drift")
+    require(prereg["temporal_contract"]["storm_steps"]==16
+            and prereg["temporal_contract"]["hiatus_steps"]==48
+            and prereg["temporal_contract"]["total_steps"]==64,
+            "F-ROMV2-D23 temporal contract drift")
+    require(prereg["decision_logic"]["R16_threshold_equivalence_required"] is False,
+            "F-ROMV2-D23 threshold-equivalence boundary drift")
+    require("NO_RAINFALL_FACTOR_RETUNING" in prereg["firewalls"]
+            and "NO_PONDING_MAX_OR_RUNOFF_LAW_RETUNING" in prereg["firewalls"]
+            and "NO_POST_PREFLIGHT_DETACHMENT_RULE_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D23 anti-retuning firewall drift")
+
+    require(result["decision"]=="FMC_SHORT_RAINFALL_TRAJECTORY_RETAINS_FAST_SURFACE_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+            "F-ROMV2-D23 decision drift")
+    require(result["integrity"]["pass"] is True
+            and result["execution"]["stage1_preflight"]["R16_R2_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D23 staged integrity drift")
+    require(result["frontier_gates"]["all_required"] is True
+            and all(v is True for k,v in result["frontier_gates"].items() if k!="all_required"),
+            "F-ROMV2-D23 frontier gate drift")
+    require(result["native_threshold_timing"]["R20"]["R16"]["first_runoff_step"]==2
+            and result["native_threshold_timing"]["R20"]["FMC"]["first_runoff_step"]==1
+            and result["native_threshold_timing"]["R20"]["R2"]["first_runoff_step"]==1,
+            "F-ROMV2-D23 R20 native timing drift")
+    require(result["pooled_rmse_vs_R16"]["FMC"]["mapped_theta"]
+            < result["pooled_rmse_vs_R16"]["R2"]["mapped_theta"]
+            and result["pooled_rmse_vs_R16"]["FMC"]["cumulative_runoff_cm"]
+            < result["pooled_rmse_vs_R16"]["R2"]["cumulative_runoff_cm"],
+            "F-ROMV2-D23 key relative-fidelity advantage drift")
+    require(result["diagnostic_caveat"]["FMC_lower_storage_RMSE_cm"]
+            > result["diagnostic_caveat"]["R2_lower_storage_RMSE_cm"],
+            "F-ROMV2-D23 lower-zone caveat drift")
+    require(result["scientific_interpretation"]["D21_reclassified"] is False
+            and result["scientific_interpretation"]["D22_reclassified"] is False
+            and result["scientific_interpretation"]["R16_threshold_equivalence"] is False,
+            "F-ROMV2-D23 predecessor/non-equivalence boundary drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D23 overclaims authority")
+
+    require(status["phase"]=="CLOSED_SHORT_NATIVE_RAINFALL_TRAJECTORY_CANDIDACY_RETAINED_RELATIVE_TO_R2"
+            and status["stage1_preflight_pass"] is True
+            and status["stage2_trajectory_pass"] is True
+            and status["all_preregistered_frontier_gates_pass"] is True,
+            "F-ROMV2-D23 terminal status drift")
+    require(status["R16_threshold_equivalence"] is False
+            and status["D21_reclassified"] is False
+            and status["D22_reclassified"] is False
+            and status["concurrent_rainfall_groundwater_qualified"] is False,
+            "F-ROMV2-D23 status boundary drift")
+    require(d21["decision"]=="D21_MATCHED_RAIN_PONDING_RUNOFF_BOUNDARY_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+            "F-ROMV2-D23 reclassifies D21")
+    require(d22["decision"]=="FMC_NATIVE_SURFACE_THRESHOLD_RESPONSE_COMPETITIVE_WITH_R2",
+            "F-ROMV2-D23 reclassifies D22")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["primary_execution"]["pull_request_merged"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["post_exposure_science_retuning"] is False,
+            "F-ROMV2-D23 provenance drift")
+    require(manifest["frozen_payload_digests"]["raw_result_sha256"]
+            =="39a42412403d97e22a499676ec758cbf8e546b961e50b6f0eebbd57e5f316626",
+            "F-ROMV2-D23 raw result digest drift")
+    require(manifest["R16_threshold_equivalence_claimed"] is False
+            and manifest["application_acceptance_claimed"] is False
+            and manifest["formal_performance_claimed"] is False
+            and manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D23 manifest overclaim drift")
+
+    require("D21 and D22 established two facts that must remain simultaneously true." in doc,
+            "F-ROMV2-D23 predecessor preservation statement missing")
+    require("R2 is better on this diagnostic." in doc,
+            "F-ROMV2-D23 lower-zone caveat missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D23 production prohibition missing")
+    return "CLOSED_SHORT_NATIVE_RAINFALL_TRAJECTORY_CANDIDACY_RETAINED_RELATIVE_TO_R2"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2161,6 +2266,7 @@ def main() -> int:
     romv2_d20_phase = validate_romv2_d20_if_present()
     romv2_d21_phase = validate_romv2_d21_if_present()
     romv2_d22_phase = validate_romv2_d22_if_present()
+    romv2_d23_phase = validate_romv2_d23_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2193,6 +2299,7 @@ def main() -> int:
     print(f"F_ROMV2_D20_PHASE={romv2_d20_phase}")
     print(f"F_ROMV2_D21_PHASE={romv2_d21_phase}")
     print(f"F_ROMV2_D22_PHASE={romv2_d22_phase}")
+    print(f"F_ROMV2_D23_PHASE={romv2_d23_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
