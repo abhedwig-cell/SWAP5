@@ -1,19 +1,21 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "canonical_head_at_reconcile": "6413adc4d29f5749105b30e45f395331b450d5f3",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "12751b77cc2dc9fcccaac4926f15d48e7e849651",
-    "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT"
+    "result_blob": "145ea2598d474eb2170c1ec01bcde9109af8e939",
+    "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+    "application_requirements_blob": "d4fa8b276895b7adc215e07462db04891e20fe2d"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
-    "bootstrap_blob": "135803e056697a20aa3295721b02c77aba22367a",
+    "bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
     "groundwater_profile": "homogeneous bottom_mode=5",
     "prescribed_qbot_profile": "homogeneous bottom_mode=2",
     "standalone_profile": "homogeneous bottom_mode=7",
@@ -28,9 +30,9 @@
       "soil_temperature_active",
       "tabulated_hydraulics_active"
     ],
-    "e7_decisive_guard": "drainage_response_active and root_extraction_active remain rejected before owner-state allocation",
+    "e7_decisive_guard": "drainage_response_active and root_extraction_active remain rejected before owner-state allocation on current canonical",
     "serialized_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "serialized_backend_blob": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+    "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
     "temporal_indicator_path": "src/solver/mod_reference_richards_temporal_indicator.f90",
     "temporal_indicator_blob": "2068215a57edb1d2a59c36d6b32f519ebdc09ebd"
   },
@@ -101,9 +103,62 @@
       "production_source_mutation": false,
       "production_admission": "NONE_REVIEW_ONLY",
       "e7_effect": "NONE; oxygen/root authority review creates no production groundwater-owner composition"
+    },
+    "PPA_ROOT_HYD02": {
+      "result_path": "integration/audits/PPA_ROOT_HYD02_RESULT.json",
+      "result_blob": "5ac799921574082731180356a23f7e983585800b",
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+      "production_delta": [
+        "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+        "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90",
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90"
+      ],
+      "admitted_scope": "restricted prescribed-root accepted-trajectory tangent coverage",
+      "groundwater_owner_broadened": false,
+      "application_owner_broadened": false,
+      "e7_effect": "NONE; tangent coverage does not admit root_extraction_active in the production prescribed-head owner"
+    },
+    "PPA_WU04A": {
+      "status_path": "integration/audits/PPA_WU04A_STATUS.json",
+      "status_blob": "75674d84b5eb4d17ae92d7e25696957630fe7fd0",
+      "state": "CANONICAL_ADMITTED_BOUNDED_PRODUCTION_SLICE",
+      "production_scope": "SWREDU=1 Black evaporation reduction with committed LDWET",
+      "mode5_black_composition_admitted": false,
+      "e7_effect": "NONE; mode-5 Black composition remains rejected and root/drainage guards are unchanged"
+    },
+    "PPA_WU04B": {
+      "status_path": "integration/audits/PPA_WU04B_STATUS.json",
+      "status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "production_scope": "SWREDU=2 Boesten-Stroosnijder evaporation reduction bounded production slice",
+      "mode5_boesten_composition_admitted": false,
+      "root_or_drainage_owner_broadened": false,
+      "e7_effect": "NONE"
     }
   },
   "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
-  "interpretation": "All canonical work admitted after the E7 closure preserves the decisive production groundwater-owner guard. PPA-WU02/PPA-LOW02-TIME broaden bottom_mode=2 prescribed-qbot application semantics only; PPA-WU03 adds bounded stateless forcing only; PPA-ROOT-HYD01 broadens temporal-certificate coverage for a prescribed root-sink carrier without changing application ownership; PPA-WU04/WU05/WU05A/WU05C are review/authority work with no relevant production owner widening. No current workunit admits authentic Hupsel active drainage/root extraction under the prescribed-head bottom_mode=5 groundwater owner. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
-  "reopen_rule": "Reopen only as a new prospective experiment if a future canonically admitted production capability actually composes the required active Hupsel processes with prescribed-head groundwater ownership. Review-only authority or unrelated forcing/bottom-mode reachability does not reopen E7."
+  "interpretation": "Current canonical still rejects active drainage and active root extraction in the homogeneous bottom_mode=5 production groundwater owner before owner-state allocation. PPA-WU02/PPA-LOW02-TIME affect bottom_mode=2 prescribed-qbot semantics; PPA-WU03 adds bounded stateless forcing; PPA-ROOT-HYD01/HYD02 add restricted prescribed-root temporal/tangent evidence without application-owner admission; PPA-WU04-A/B add bounded evaporation slices but explicitly not mode-5 evaporation composition. No admitted workunit materializes authentic Hupsel active root plus drainage under prescribed-head mode 5. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
+  "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
+  "post_relevant_production_live_delta": {
+    "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
+    "head": "6413adc4d29f5749105b30e45f395331b450d5f3",
+    "changed_scope": [
+      "docs/science/F-ROMV2_*",
+      "integration/f-rom/**",
+      "integration/f-doc/F-DOC33_STATUS.json",
+      "integration/trace/**",
+      "tests/rom/**"
+    ],
+    "classification": "NO_E7_AUTHORITY_EFFECT",
+    "exact_preserved_postimages": {
+      "bootstrap": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "serialized_backend": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+      "runtime_core": "dc1dbffab96542ee09be5f923cea65628864d87b",
+      "restart_state": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
+      "restricted_surface_evaporation": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    "reason": "No production/reference, coupling, Hupsel authority or PUB-GC scientific asset changed after PPA-WU04-B. The latest canonical delta is evidence-only F-ROMV2/TRACE/F-DOC work plus ROM tests."
+  }
 }
