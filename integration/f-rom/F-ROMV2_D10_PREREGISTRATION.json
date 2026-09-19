@@ -197,5 +197,14 @@
     "NO_FORMAL_SPEEDUP_CLAIM",
     "NO_PRODUCTION_ROM_AUTHORITY"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "seed": {
+    "initial_effective_saturation": 0.85,
+    "intervals": 2,
+    "dt_day": 0.001,
+    "top_flux_factor": 1,
+    "bottom_boundary": "zero pressure head h=0 / psi_b=0 from the first seed interval",
+    "rule": "R16, R2 and HE2 apply the identical published-envelope boundary transition during both seed intervals before P01-P04.",
+    "data_exposure": "FROZEN_BEFORE_ANY_D10_EXECUTION"
+  }
 }
