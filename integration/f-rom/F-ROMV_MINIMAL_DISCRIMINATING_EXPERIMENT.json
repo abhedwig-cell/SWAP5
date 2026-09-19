@@ -4,7 +4,9 @@
   "work_unit": "F-ROMV-MDE",
   "phase": "PREREGISTERED_DESIGN_ONLY",
   "purpose": "Discriminate whether template-local reduced dynamics has scientific and computational value before any production ROM work.",
-  "material_scope": ["B01"],
+  "material_scope": [
+    "B01"
+  ],
   "state_coordinate": "Z8_PLUS_G8",
   "state_dimension": 9,
   "data_authority": "ACCEPTED_CURRENT_CANONICAL_REFERENCE_TRAJECTORIES_ONLY",
@@ -29,15 +31,23 @@
     "WATER_LEDGER",
     "CUMULATIVE_TOP_EXCHANGE",
     "CUMULATIVE_BOTTOM_EXCHANGE",
+    "CUMULATIVE_AND_MEAN_ET_WHEN_APPLICATION_CAPABILITY_INCLUDES_ET",
+    "GROUNDWATER_RECHARGE_DRAINAGE",
     "TOTAL_STORAGE",
     "UPPER_BAND_STORAGE",
     "LOWER_BAND_STORAGE",
+    "ROOT_ZONE_SOIL_MOISTURE_WHEN_APPLICATION_CAPABILITY_INCLUDES_ROOT_ZONE",
+    "GROUNDWATER_HEAD_RESPONSE_WHEN_COUPLED",
     "BOTTOM_FLUX_SIGN",
     "REVERSAL_EVENT_TIMING",
+    "FAST_EVENT_AND_REGIME_TRANSITION_TIMING",
+    "EXTREMA_AND_DROUGHT_RESPONSE",
+    "SYSTEMATIC_BIAS",
     "LONG_HORIZON_DRIFT",
     "INVALID_STATE_COUNT",
     "OUTSIDE_DOMAIN_DETECTION",
-    "FALLBACK_FRACTION"
+    "FALLBACK_FRACTION",
+    "ROBUSTNESS_UNDER_HELDOUT_PERTURBATIONS"
   ],
   "computational_metrics": [
     "ONLINE_CPU_PER_ACCEPTED_INTERVAL",
@@ -50,20 +60,94 @@
     "TIMING_RESOLUTION_FLOOR"
   ],
   "kill_criteria": [
-    "HYDROLOGICALLY_MEANINGFUL_HELDOUT_EVENT_OR_BUDGET_FAILURE",
+    "NO_DECLARED_APPLICATION_ENVELOPE_RETAINS_SUFFICIENT_HELDOUT_HYDROLOGICAL_FIDELITY",
+    "WATER_ACCOUNTING_INTEGRITY_FAILS_OR_REQUIRES_HIDDEN_CORRECTION",
     "FALLBACK_FRACTION_ERASES_ONLINE_ADVANTAGE",
-    "COARSE_RICHARDS_EQUAL_OR_BETTER_COST_ERROR_FRONTIER",
+    "COARSE_RICHARDS_EQUAL_OR_BETTER_COST_FIDELITY_FRONTIER",
     "ROSSFAST_DIRECT_RUNTIME_REMOVES_REALISTIC_AMORTIZATION_VALUE",
     "DOMAIN_PARTITION_PROLIFERATION_DESTROYS_TEMPLATE_REUSE"
   ],
   "positive_gate": [
-    "ERROR_WITHIN_PREDECLARED_ROM0_INFORMED_ENVELOPE",
+    "AT_LEAST_ONE_PREDECLARED_APPLICATION_ENVELOPE_PASSES",
+    "NON_NEGOTIABLE_INTEGRITY_CONSTRAINTS_PASS",
     "NO_HIDDEN_MASS_CORRECTION",
     "FAIL_CLOSED_OOD",
-    "HELDOUT_LONG_HORIZON_AND_REVERSAL_PASS",
-    "ONLINE_COST_RESOLVED_BELOW_BEST_ADMISSIBLE_DIRECT_COMPARATOR",
+    "SYSTEMATIC_BIAS_AND_LONG_HORIZON_DRIFT_REPORTED",
+    "ONLINE_COST_RESOLVED_BELOW_BEST_ADMISSIBLE_DIRECT_COMPARATOR_FOR_SAME_WORKLOAD",
+    "NON_DOMINATED_ON_COMPUTATIONAL_COST_VERSUS_HYDROLOGICAL_FIDELITY_FRONTIER",
     "BREAK_EVEN_WITHIN_REALISTIC_REPEATED_WORKLOAD"
   ],
   "production_mutation_allowed": false,
-  "production_solver_authorized": false
+  "production_solver_authorized": false,
+  "acceptance_principle": {
+    "type": "PURPOSE_DEPENDENT_HYDROLOGICAL_FIDELITY",
+    "numerical_equivalence_to_reference_required": false,
+    "numerical_reference_floor_role": "MEASUREMENT_CONTEXT_NOT_UNIVERSAL_ACCEPTANCE_TOLERANCE",
+    "universal_percentage_tolerance_frozen": false,
+    "invariant_constraints": [
+      "EXPLICIT_WATER_ACCOUNTING",
+      "PHYSICALLY_ADMISSIBLE_PUBLISHED_STATE",
+      "FAIL_CLOSED_OOD",
+      "DETERMINISTIC_RESTART_IF_ROM_OWNS_STATE",
+      "NO_HIDDEN_MASS_CORRECTION"
+    ]
+  },
+  "application_envelopes": [
+    {
+      "id": "A_LONG_TERM_REGIONAL_WATER_BALANCE",
+      "priority_outputs": [
+        "CUMULATIVE_ET",
+        "CUMULATIVE_RECHARGE_DRAINAGE",
+        "LONG_TERM_STORAGE_DRIFT",
+        "SYSTEMATIC_BIAS",
+        "GROUNDWATER_RESPONSE_IF_COUPLED"
+      ],
+      "event_timing": "SECONDARY_UNLESS_IT_CHANGES_PRIORITY_OUTPUTS"
+    },
+    {
+      "id": "B_OPERATIONAL_SOIL_MOISTURE_DROUGHT",
+      "priority_outputs": [
+        "ROOT_ZONE_SOIL_MOISTURE",
+        "DROUGHT_ONSET",
+        "DROUGHT_RECOVERY",
+        "ET_STRESS_RESPONSE",
+        "ROBUSTNESS_TO_STATE_UPDATING"
+      ],
+      "event_timing": "RELEVANT_WHEN_IT_CHANGES_DROUGHT_CLASSIFICATION_OR_RECOVERY"
+    },
+    {
+      "id": "C_GROUNDWATER_COUPLED_MANY_COLUMN",
+      "priority_outputs": [
+        "RECHARGE_CAPILLARY_EXCHANGE",
+        "STORAGE_RESPONSE",
+        "GROUNDWATER_HEAD_FEEDBACK",
+        "COUPLING_STABILITY",
+        "MASS_ACCOUNTING"
+      ],
+      "event_timing": "RELEVANT_WHEN_IT_CHANGES_COUPLED_ITERATION_OR_EXCHANGE"
+    },
+    {
+      "id": "D_FAST_EVENT_THRESHOLD",
+      "priority_outputs": [
+        "EVENT_TIMING",
+        "EVENT_MAGNITUDE",
+        "REGIME_TRANSITIONS",
+        "EXTREMA",
+        "SHORT_HORIZON_STATE"
+      ],
+      "event_timing": "PRIMARY"
+    },
+    {
+      "id": "E_SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE",
+      "priority_outputs": [
+        "PROFILE_STATE",
+        "REGIME_TRANSITIONS",
+        "EXTREMA",
+        "DROUGHT_MEMORY",
+        "PROCESS_ATTRIBUTION"
+      ],
+      "event_timing": "PRIMARY_WHEN_PART_OF_SCIENTIFIC_INFERENCE"
+    }
+  ],
+  "threshold_policy": "NO_UNIVERSAL_PERCENTAGE_TOLERANCE. Application-specific envelopes must be justified from the intended decision or scientific inference before final qualification; illustrative values such as 1-2% annual ET are not acceptance criteria."
 }
