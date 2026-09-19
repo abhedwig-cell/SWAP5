@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.num_unc.p0c.spatial_control_result.v1",
+  "work_unit": "NUM-UNC-P0C-R02",
+  "date": "2026-09-19",
+  "workflow_run_id": 35427721868,
+  "output_sha256": "e58e0b3838271a9f9edbb3665ec638dd0bd162b6fc46f730884420b9aaba2ea1",
+  "N1_executed": false,
+  "grid": {
+    "cells": 32,
+    "dz_cm": 5,
+    "total_depth_cm": 160,
+    "surface_to_first_node_cm": 2.5
+  },
+  "cases": {
+    "C_minus": {
+      "multiplier": 1.000634765625,
+      "class": "NO_PONDING",
+      "valid": true,
+      "max_pond_cm": 0,
+      "max_integrated_mass_residual_cm": 1.8843593352357856e-15
+    },
+    "C_plus": {
+      "multiplier": 1.2229980468750001,
+      "class": "PONDING",
+      "valid": true,
+      "max_pond_cm": 0.05877609373091419,
+      "max_integrated_mass_residual_cm": 4.355626970209414e-15
+    }
+  },
+  "status": "PASS_OUTER_BRACKET_STABLE",
+  "claim_ceiling": "Establishes only qualitative transition-bracket stability under one twofold vertical refinement."
+}
