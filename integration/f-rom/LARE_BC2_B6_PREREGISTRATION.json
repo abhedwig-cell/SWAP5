@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.lare.bc2.b6.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B6",
+  "phase": "PREREGISTERED_BEFORE_CONSERVATIVE_TERMINAL_BAND_STATE_DIAGNOSTIC",
+  "purpose": "Test whether one additional conservative near-water-table storage state can retain the local hydraulic information supported by BC2-B4 after the storage-only zero-added-state reconstruction failed in BC2-B5.",
+  "predecessors": {
+    "B4": "integration/f-rom/LARE_BC2_B4_RESULT.json",
+    "required_B4_decision": "BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED",
+    "B5": "integration/f-rom/LARE_BC2_B5_RESULT.json",
+    "required_B5_decision": "BC2_B5_STORAGE_ONLY_BOUNDARY_GRADIENT_NOT_SUPPORTED"
+  },
+  "scientific_logic": [
+    "B4 shows that local pressure-head information close to H improves qH in both movement directions.",
+    "B5 shows that the same information cannot be recovered robustly from the existing single moving-layer storage Wm and geometry L using the preregistered mass-consistent linear reconstruction.",
+    "B6 therefore tests the minimum next state enrichment: one extra conservative terminal storage band adjacent to H."
+  ],
+  "geometry": {
+    "anchor_depth_cm": 90,
+    "moving_layer": "90..H",
+    "qualified_H_range_cm": [
+      103.48952360402006,
+      138.79618325255618
+    ],
+    "minimum_moving_thickness_cm": 13.48952360402006,
+    "terminal_widths_cm": [
+      2.5,
+      5,
+      10
+    ],
+    "excluded_width_20cm_reason": "20 cm does not remain inside the moving 90..H layer over the already-qualified H range; exclusion is geometric and frozen before B6 response."
+  },
+  "added_state": {
+    "dimension_increment": 1,
+    "for_each_width_d": {
+      "terminal_storage": "Wt(d)=integral_{H-d}^{H} theta(z) dz",
+      "bulk_storage": "Wb(d)=Wm-Wt(d)=integral_{90}^{H-d} theta(z) dz",
+      "conservation": "Wb+Wt=Wm exactly within projection tolerance",
+      "terminal_mean_theta": "theta_t=Wt/d"
+    },
+    "restart_semantics": "Candidate state is (Wb,Wt,H) for a frozen d. No point head, profile moment, fitted coefficient or hidden full-order state is retained.",
+    "moving_internal_boundary": "H-d moves with H; B6 is projection/operator diagnosis only and does not yet authorize its dynamic conservation law."
+  },
+  "reference_projection": {
+    "source": "qualified BC2-A2 accepted pressure-head profiles and moving-layer storage",
+    "H": "same strict interior zero-pressure crossing used in BC2-A2/B3/B4/B5",
+    "pressure_reconstruction": "piecewise-linear interpolation of accepted pressure head h(z), with h(H)=0 by the diagnosed crossing",
+    "terminal_storage_quadrature": "integrate theta[-h(z)] over H-d..H",
+    "primary_quadrature": "64-point Gauss-Legendre",
+    "crosscheck_quadrature": "128-point Gauss-Legendre",
+    "no_extrapolation": true
+  },
+  "candidate_flux": {
+    "formula": "qH_TERM(d)=Ks*[1-2*psi(theta_t)/d]",
+    "interpretation": "standard published LARE water-table face closure applied to the added terminal storage layer",
+    "conductivity": "Ks at the zero-pressure water table",
+    "no_equilibrium_subtraction": true,
+    "no_fit": true
+  },
+  "comparators": [
+    "MOVING_LAYER_AVERAGE from standard B0",
+    "LINEAR_STORAGE from B5, zero-added-state reconstruction",
+    "POINT_2_5CM from B4, diagnostic full-order local-information benchmark only"
+  ],
+  "hard_gates": {
+    "terminal_band_inside_moving_layer": true,
+    "projection_storage_closure_cm": 1e-10,
+    "primary_vs_crosscheck_terminal_storage_cm": 1e-10,
+    "constitutive_domain": "theta_r < theta_t < theta_s unless exact saturated endpoint is analytically handled",
+    "no_clipping": true,
+    "all_fluxes_finite": true
+  },
+  "metrics": [
+    "bias",
+    "mean absolute qH error",
+    "RMS qH error",
+    "maximum absolute qH error",
+    "qH sign mismatch count",
+    "Pearson correlation",
+    "terminal theta range",
+    "terminal psi range",
+    "projection storage closure"
+  ],
+  "strata": [
+    "HOLD",
+    "WATER_TABLE_RISING",
+    "WATER_TABLE_FALLING",
+    "each frozen history"
+  ],
+  "adjudication": {
+    "moving_support_rule": "A frozen width supports terminal-state enrichment only when its RMS and mean-absolute qH errors are both lower than MOVING_LAYER_AVERAGE and LINEAR_STORAGE, and its sign-mismatch count is no greater than either comparator, in both WATER_TABLE_RISING and WATER_TABLE_FALLING strata.",
+    "hold_rule": "The same width must be noninferior to LINEAR_STORAGE on RMS, mean-absolute error and sign mismatch in HOLD.",
+    "width_selection_rule": "A preferred frozen width is declared only if it is component-wise minimum or tied minimum for RMS and mean-absolute error in both moving directions and HOLD among widths satisfying the support rules. Otherwise state enrichment may be supported with width unresolved.",
+    "local_information_gap": "POINT_2_5CM is reported only to quantify remaining information gap and cannot be selected as reduced-state input.",
+    "valid_outcomes": [
+      "BC2_B6_TERMINAL_STORAGE_STATE_SUPPORTED",
+      "BC2_B6_TERMINAL_STORAGE_STATE_SUPPORTED_WIDTH_UNRESOLVED",
+      "BC2_B6_TERMINAL_STORAGE_DIRECTION_DEPENDENT",
+      "BC2_B6_TERMINAL_STORAGE_NOT_SUPPORTED",
+      "BC2_B6_TERMINAL_STORAGE_DIAGNOSTIC_BLOCKED"
+    ],
+    "propagated_dynamics_authorized": false
+  },
+  "firewalls": [
+    "NO_DYNAMIC_TERMINAL_BAND_EVOLUTION",
+    "NO_POINT_HEAD_AS_REDUCED_STATE",
+    "NO_POST_RESPONSE_WIDTH_FIT",
+    "NO_EQUILIBRIUM_SUBTRACTION_IN_B6",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_CONDUCTIVITY_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
