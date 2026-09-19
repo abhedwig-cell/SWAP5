@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.lare.bc1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1",
+  "phase": "PREREGISTERED_BEFORE_PRESCRIBED_HEAD_OPERATOR_RESPONSE_AUDIT",
+  "purpose": "Establish and qualify a fixed-domain prescribed-head bottom closure before any LARE groundwater-head dynamics experiment.",
+  "authority": {
+    "dyn0a_closeout": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "boundary_authority": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "reference_canonical": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "stage_a_reference_artifact": {
+      "workflow_run": 35444243790,
+      "artifact_id": 10585316225,
+      "artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+      "o0_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+    }
+  },
+  "source_equations": {
+    "He2021_Eq28": "q_b = K_b * (dpsi_dz_b + 1)",
+    "He2021_Eq30": "dpsi_dz_b = 2*(psi_b - psi_bar_N)/L_N",
+    "He2021_Eq29_31_scope": "K_b = K_s is explicitly tied to the water-table / bubbling-suction boundary",
+    "He2021_Eq32": "free drainage q_b approximately K(theta_bar_N)"
+  },
+  "swap_mode5": {
+    "pressure_head_gradient": "1 + (h_N - h_b)/(0.5*dz_N)",
+    "face_conductivity": "K_N",
+    "public_bottom_outward_flux_direction": "positive downward/out of SWAP",
+    "native_qbot_warning": "native SWAP qbot has opposite sign in the public groundwater contract"
+  },
+  "stage_A_operator_audit": {
+    "input_states": "all accepted Stage-A states whose emitted BOTTOM_MODE equals 5",
+    "expected_mode5_state_count": 2112,
+    "geometry": {
+      "fine_last_cell_cm": [
+        150,
+        160
+      ],
+      "D3_last_layer_cm": [
+        150,
+        160
+      ],
+      "D4_last_layer_cm": [
+        150,
+        160
+      ],
+      "last_layer_thickness_cm": 10
+    },
+    "candidates": {
+      "BC1_SWAPFACE": {
+        "formula": "K(theta_bar_N) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+        "role": "primary comparator-aligned fixed-head closure"
+      },
+      "BC1_SOURCEFACE": {
+        "formula": "K(psi_b) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+        "role": "source-structure Dirichlet sensitivity/control; not claimed as explicitly validated published formula"
+      },
+      "REFERENCE_OPERATOR_REPLAY": {
+        "formula": "K(h_N) * [1 + (h_N-h_b)/(0.5*dz_N)]",
+        "role": "sign and extraction self-check using emitted fine Reference head"
+      }
+    },
+    "constitutive_mapping": "Use the exact frozen B01 Mualem-Van Genuchten parameters from the Stage-A harness. Reconstruct h(theta_bar_N) analytically without fitting.",
+    "technical_identity_gates": {
+      "reference_operator_max_abs_error_cm_per_day": 1e-10,
+      "swapface_max_abs_error_cm_per_day": 1e-9,
+      "swapface_terminal_flux_sign_mismatch_count": 0
+    },
+    "sourceface_rule": "Report full error/sign distribution only. It is not selected or rejected by fitting against Reference."
+  },
+  "stage_B_if_A_passes": {
+    "purpose": "Propagate standard LARE D3 and D4 under prescribed-head rise/fall histories using BC1_SWAPFACE, with DYN0A fixed interface closure otherwise unchanged.",
+    "histories": [
+      "G00 historical reversal control",
+      "G03 wet head fall-rise",
+      "G04 mid head rise-fall",
+      "G05 dry combined top/head forcing"
+    ],
+    "outputs": [
+      "layer storage",
+      "cumulative bottom outward exchange",
+      "terminal bottom flux",
+      "bottom flux sign",
+      "reversal timing",
+      "mass ledger"
+    ],
+    "comparator": "same fine Reference trajectories already qualified in RS1-GW Stage A where possible; new trajectories only if required by changed reduced-state initial projection",
+    "D3_D4_role": "D3 minimum state candidate; D4 closure-resolution control",
+    "no_application_acceptance": true
+  },
+  "firewalls": [
+    "NO_MOVING_WATER_TABLE_GEOMETRY",
+    "NO_EMPIRICAL_BOUNDARY_COEFFICIENT",
+    "NO_BOUNDARY_FORMULA_RETUNING_FROM_STAGE_A",
+    "NO_CHANGE_TO_INTERNAL_STANDARD_LARE_INTERFACE_CLOSURE",
+    "NO_REFERENCE_RICHARDS_CHANGE",
+    "NO_PRODUCTION_INTEGRATION",
+    "NO_APPLICATION_ACCEPTANCE"
+  ],
+  "production_rom_authorized": false
+}
