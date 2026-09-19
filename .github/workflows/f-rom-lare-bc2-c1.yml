@@ -1,0 +1,68 @@
+name: F-ROM-LARE BC2-C1 teacher-forced drift decomposition
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c1_teacher_forced.py'
+      - '.github/workflows/f-rom-lare-bc2-c1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable A2 and C0 evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1/a2 /tmp/lare-bc2-c1/c0
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-c1/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-c1/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c1/a2.zip -d /tmp/lare-bc2-c1/a2
+          cmp /tmp/lare-bc2-c1/a2/o0.txt /tmp/lare-bc2-c1/a2/o2.txt
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587324672/zip" > /tmp/lare-bc2-c1/c0.zip
+          echo "4f9608cbbe147a17c989b32c74e56d7399e461e86758c930ff4d31a085f756fc  /tmp/lare-bc2-c1/c0.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-c1/c0.zip -d /tmp/lare-bc2-c1/c0
+          echo "94e28ab6546bbb4f7cfc0d903bf6cef9041f83742499b19ee8e9b0eef5e0545d  /tmp/lare-bc2-c1/c0/LARE_BC2_C0_RESULT.json" | sha256sum -c -
+
+      - name: Execute C1 decomposition
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C1_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c1_teacher_forced.py             --reference /tmp/lare-bc2-c1/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json             --c0-result /tmp/lare-bc2-c1/c0/LARE_BC2_C0_RESULT.json             --output LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json             | tee LARE_BC2_C1_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_C1_ERROR_CHANNELS_DECOMPOSED',
+              'BC2_C1_DIAGNOSTIC_BLOCKED',
+          }
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C1_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C1_EVIDENCE/* > LARE_BC2_C1_EVIDENCE/sha256.txt
+
+      - name: Upload C1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c1
+          path: LARE_BC2_C1_EVIDENCE/
+          if-no-files-found: warn
