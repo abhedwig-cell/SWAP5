@@ -66,8 +66,8 @@
     "constitutive_sample": "right edge of each moisture bin, saturation edge excluded"
   },
   "groundwater_front": {
-    "baseline_theta": "theta_i = theta_r + 0.15*(theta_s-theta_r), identical to the D12 groundwater-equilibrium preflight baseline",
-    "active_bins": "j=31..199, i=30 on a 200-bin full-range grid",
+    "baseline_theta": "theta_i = theta_r + 0.50*(theta_s-theta_r), exact bin i=100 on the frozen 200-bin grid",
+    "active_bins": "j=101..199, i=100 on the frozen 200-bin full-range grid",
     "equation": "dH_j/dt = [K(theta_j)-K(theta_i)]/[theta_j-theta_i] * [abs(psi(theta_j))/H_j - 1]",
     "equilibrium": "H_j=abs(psi(theta_j))",
     "physical_bounds": "0 < H_j <= column_depth_cm",
@@ -77,7 +77,7 @@
     "terminal_bottom_outward_flux_cm_per_day": "-dtheta*sum_j(dH_j/dt) evaluated on the accepted relaxed state"
   },
   "initial_states": {
-    "rule": "H_j(0)=lambda*min(abs(psi(theta_j)),160 cm)",
+    "rule": "H_j(0)=lambda*abs(psi(theta_j)); every initial H_j must be <=160 cm without clipping",
     "lambda_histories": [
       {
         "id": "G25",
@@ -97,10 +97,10 @@
       {
         "id": "G125",
         "lambda": 1.25,
-        "role": "capillary-fringe retreat toward hydrostatic equilibrium, with H capped at 160 cm before scaling prohibited; only bins whose lambda*psi remain <=160 are admitted"
+        "role": "capillary-fringe retreat toward hydrostatic equilibrium"
       }
     ],
-    "G125_admission_rule": "If any active bin gives lambda*abs(psi)>160 cm, that bin/history preflight is fail-closed rather than clipped. No alternate lambda is selected after preflight."
+    "G125_admission_rule": "All active bins must satisfy 1.25*abs(psi(theta_j))<=160 cm before execution; otherwise D13 preflight fails closed."
   },
   "matched_SWAP_state": {
     "reconstruction": "At height y above the lower boundary, theta(y)=theta_i+dtheta*count(H_j>=y).",
@@ -186,5 +186,10 @@
     "NO_SRC_OR_REFERENCE_MUTATION",
     "NO_PRODUCTION_ROM_AUTHORITY"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "design_amendment_before_execution": {
+    "SWAP_trajectory_evidence_consumed": false,
+    "preflight_executed_before_amendment": false,
+    "reason": "The initial Se=0.15 design made several lambda-scaled capillary fronts exceed the 160 cm physical column by constitutive identity alone. The baseline is moved prospectively to exact bin 100/200 (Se=0.50) so all four frozen lambda histories are physically admissible without clipping."
+  }
 }
