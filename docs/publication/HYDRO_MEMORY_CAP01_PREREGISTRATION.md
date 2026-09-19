@@ -65,3 +65,15 @@ Phase A therefore uses the canonical transaction default:
 - unchanged 5% local-slope agreement criterion.
 
 The temporal tolerance is a pre-existing canonical default, not selected by fitting CAP01 output. No further temporal-tolerance tuning is permitted after observing the centered-FD/slope result.
+
+## Amendment CAP01-A2, frozen before a successful Phase-A run
+
+With the canonical external full-half transaction policy, the root-active nominal trial still failed before the centered-FD response was evaluated. Diagnostics were 8 solver rejections, 1 temporal rejection, no certificate-unavailable rejection and no mass rejection.
+
+The remaining inherited F-GC44-specific element was the Richards temporal-history continuation carrier. Existing root-active FMR09 authority uses an ordinary committed state without that continuation topology. CAP01 Phase A is therefore rebound to:
+
+- `FMR_NUMERICAL_CONTINUATION_NONE`;
+- `fmr_new_b110_committed_state`;
+- the already frozen external full-half temporal policy.
+
+This is a state-topology/composition correction, not a hydrological-physics change. Root extraction, hydraulic parameters, mass gate, FD perturbations and the 5% predictor/corrector slope criterion remain unchanged.
