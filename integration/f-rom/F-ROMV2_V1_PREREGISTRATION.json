@@ -1,0 +1,418 @@
+{
+  "schema": "swap5.f-romv2-v1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-V1",
+  "title": "Current-canonical blind B01 validation of frozen C2 local conservative closure",
+  "phase": "PREREGISTERED_BEFORE_CURRENT_CANONICAL_TRAJECTORY_GENERATION",
+  "proposition": {
+    "branch_parent": "f80aedfed1bca2056a11f072433bf25c43e39205",
+    "work_unit": "F-ROMV2",
+    "predecessor_F_ROMV_reclassified": false,
+    "production_rom_authorized": false
+  },
+  "exploratory_design_authority": {
+    "source": "post-terminal discovery-only S2D feasibility experiment",
+    "role": "ARCHITECTURE_SELECTION_ONLY_NOT_CONFIRMATORY_EVIDENCE",
+    "frozen_candidate": "C2",
+    "reason": "C2 was the lowest-dimensional candidate that passed structural integrity and outperformed the forcing-only mean baseline in leave-one-discovery-history-out exploratory replay.",
+    "old_H01_H04_used_for_selection": false
+  },
+  "trajectory_authority": {
+    "rule": "Regenerate D01-D08 and generate V01-V04 through the current-canonical F-ROM1A-I0 one-advance observation seam plus the separately frozen research-only strict-first fallback policy above; every published state must be explicitly committed and satisfy the hard transaction mass gate.",
+    "canonical_preimage_at_preregistration": "4cb575c51e0e9135f5a97357c4b94cebc77647b7",
+    "material": "B01",
+    "geometry": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "total_depth_cm": 160
+    },
+    "initial_effective_saturation": 0.85,
+    "seed": {
+      "intervals": 2,
+      "dt_day": 0.0016
+    },
+    "validation_step_dt_day": 0.0008,
+    "steps_per_history": 64,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "old_ROM1AR2_payload_reused_as_validation": false
+  },
+  "frozen_state": {
+    "id": "C2",
+    "dimension": 2,
+    "coordinates": [
+      "S_total_cm = sum(theta_i*dz_i), i=1..16",
+      "C80 = mean(theta_1:8) - mean(theta_9:16)"
+    ],
+    "diagnostic_reconstruction": [
+      "theta_upper80 = S_total_cm/160 + C80/2",
+      "theta_lower80 = S_total_cm/160 - C80/2"
+    ],
+    "physical_theta_bounds": [
+      0.02,
+      0.427494
+    ],
+    "claim_boundary": "C2 is a closure state candidate, not a claim that the full Richards state is intrinsically two-dimensional."
+  },
+  "training_histories": {
+    "ids": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "source_design": "exact historical ROM1AR2 D01-D08 symbol sequences, freshly regenerated on current canonical",
+    "use": "fit lookup table only",
+    "validation_use": false
+  },
+  "forcing_symbols": {
+    "HOLD": {
+      "top": "qeq",
+      "bottom_mode": 2,
+      "bottom": "qeq"
+    },
+    "TOP_PLUS": {
+      "top": "qeq+0.01*k0",
+      "bottom_mode": 2,
+      "bottom": "qeq"
+    },
+    "TOP_MINUS": {
+      "top": "qeq-0.01*k0",
+      "bottom_mode": 2,
+      "bottom": "qeq"
+    },
+    "BOTTOM_HEAD_RISE": {
+      "top": "qeq",
+      "bottom_mode": 5,
+      "bottom_head": "0.75*h0"
+    },
+    "BOTTOM_HEAD_FALL": {
+      "top": "qeq",
+      "bottom_mode": 5,
+      "bottom_head": "1.25*h0"
+    },
+    "COMBINED_RISE_PLUS": {
+      "top": "qeq+0.01*k0",
+      "bottom_mode": 5,
+      "bottom_head": "0.75*h0"
+    },
+    "COMBINED_FALL_MINUS": {
+      "top": "qeq-0.01*k0",
+      "bottom_mode": 5,
+      "bottom_head": "1.25*h0"
+    }
+  },
+  "new_blind_validation_histories": [
+    {
+      "id": "V01",
+      "role": "known-forcing repeated multi-regime sequence",
+      "sequence": [
+        [
+          "TOP_PLUS",
+          8
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          8
+        ],
+        [
+          "TOP_MINUS",
+          8
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          8
+        ],
+        [
+          "TOP_PLUS",
+          8
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          8
+        ],
+        [
+          "TOP_MINUS",
+          8
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          8
+        ]
+      ]
+    },
+    {
+      "id": "V02",
+      "role": "asymmetric duration and state-memory challenge using known forcing tuples",
+      "sequence": [
+        [
+          "BOTTOM_HEAD_FALL",
+          12
+        ],
+        [
+          "TOP_MINUS",
+          12
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          20
+        ],
+        [
+          "TOP_PLUS",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "V03",
+      "role": "rapid regime-switch challenge using known forcing tuples",
+      "sequence": [
+        [
+          "BOTTOM_HEAD_RISE",
+          4
+        ],
+        [
+          "TOP_PLUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          4
+        ],
+        [
+          "TOP_MINUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          4
+        ],
+        [
+          "TOP_PLUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          4
+        ],
+        [
+          "TOP_MINUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          4
+        ],
+        [
+          "TOP_PLUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          4
+        ],
+        [
+          "TOP_MINUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_RISE",
+          4
+        ],
+        [
+          "TOP_PLUS",
+          4
+        ],
+        [
+          "BOTTOM_HEAD_FALL",
+          4
+        ],
+        [
+          "TOP_MINUS",
+          4
+        ]
+      ]
+    },
+    {
+      "id": "V04",
+      "role": "explicit unseen-forcing fail-closed and re-entry control",
+      "sequence": [
+        [
+          "HOLD",
+          8
+        ],
+        [
+          "COMBINED_RISE_PLUS",
+          16
+        ],
+        [
+          "TOP_MINUS",
+          8
+        ],
+        [
+          "COMBINED_FALL_MINUS",
+          16
+        ],
+        [
+          "TOP_PLUS",
+          16
+        ]
+      ],
+      "expected_forcing_ood": [
+        [
+          "HOLD",
+          8
+        ],
+        [
+          "COMBINED_RISE_PLUS",
+          16
+        ],
+        [
+          "COMBINED_FALL_MINUS",
+          16
+        ]
+      ]
+    }
+  ],
+  "closure": {
+    "family": "FORCING_SPECIFIC_ONE_NEAREST_NEIGHBOR_TRANSITION_TABLE",
+    "training_pairs": "within D01-D08, accepted C2 state k -> state/output k+1 for k=1..63",
+    "lookup": "exact forcing tuple then nearest C2 training input after discovery-only mean/std standardization",
+    "interpolation": false,
+    "regression": false,
+    "learned_weights": false,
+    "predicted": [
+      "delta_C80",
+      "bottom_outward_exchange_cm",
+      "terminal_bottom_flux_cm_per_day"
+    ],
+    "top_exchange": "exact declared forcing interval",
+    "storage_update": "S_next = S_current - top_exchange - predicted_bottom_outward_exchange",
+    "hidden_mass_correction": false
+  },
+  "ood_gate": {
+    "forcing": "exact forcing tuple must exist in training",
+    "state": "for the exact forcing tuple, C2 query must lie inside the closed convex hull of training C2 inputs",
+    "threshold_fit": false,
+    "distance_threshold": false,
+    "action": "OUTSIDE_QUALIFIED_DOMAIN -> publish full-order validation transition and continue from the accepted full-order state",
+    "reentry": "reduced use may resume on a later interval only if both forcing and state gates pass",
+    "V04_unseen_forcing_must_fallback": true
+  },
+  "comparator": {
+    "id": "FORCING_ONLY_MEAN",
+    "definition": "training-set mean transition/output for the exact forcing tuple, independent of state",
+    "purpose": "test whether C2 carries predictive information beyond forcing identity",
+    "hybrid_fallback_mask": "Use exactly the realized C2 hybrid fallback mask. Whenever C2 publishes the full-order transition, the forcing-only comparator publishes the same full-order transition; whenever C2 uses a reduced transition, the forcing-only comparator uses its forcing-mean transition. This prevents fallback coverage from confounding state-information value.",
+    "storage_update": "same exact conservative storage update using exact top exchange and comparator bottom-exchange prediction",
+    "shape_update": "mean delta_C80 for the exact forcing tuple"
+  },
+  "metrics": {
+    "integrity": [
+      "nonfinite_state_count",
+      "reconstructed_theta_bounds_failure_count",
+      "structural_water_ledger_residual",
+      "OOD_failopen_count",
+      "V04_expected_forcing_OOD_missed_count"
+    ],
+    "cumulative_balance": [
+      "total_storage_error_and_bias",
+      "cumulative_bottom_exchange_error_and_bias",
+      "long_horizon_drift",
+      "per_history_final_cumulative_bottom_exchange_error"
+    ],
+    "event_flux": [
+      "terminal_bottom_flux_error",
+      "bottom_flux_sign_error",
+      "flow_reversal_steps_and_timing_error"
+    ],
+    "domain": [
+      "state_OOD_count",
+      "forcing_OOD_count",
+      "fallback_fraction",
+      "reentry_count",
+      "nearest_neighbor_distance_distribution_for_in_domain_steps"
+    ],
+    "relative_value": [
+      "C2_vs_forcing_only_total_storage_RMSE",
+      "C2_vs_forcing_only_cumulative_bottom_exchange_RMSE"
+    ]
+  },
+  "decision": {
+    "integrity_fail": "V2_V1_INTEGRITY_NO_GO",
+    "no_generalization": "V2_V1_C2_NO_GENERALIZATION_VALUE",
+    "positive": "V2_V1_C2_BLIND_HYDRAULIC_FEASIBILITY_PASS",
+    "positive_gate": [
+      "all integrity metrics pass",
+      "V04 unseen forcing is fail-closed",
+      "V01-V03 include at least one genuinely reduced published transition",
+      "using the exact same realized fallback mask, C2 has lower pooled V01-V03 recursive total-storage RMSE than FORCING_ONLY_MEAN",
+      "using the exact same realized fallback mask, C2 has lower pooled V01-V03 recursive cumulative-bottom-exchange RMSE than FORCING_ONLY_MEAN"
+    ],
+    "non_gating_but_mandatory_report": [
+      "absolute cumulative balance errors",
+      "systematic bias",
+      "bottom flux sign and reversal timing",
+      "fallback fraction",
+      "per-history failures"
+    ],
+    "interpretation": "A positive V1 result authorizes only purpose-specific acceptance-threshold definition and later cost-fidelity comparison. It does not itself establish application acceptance or production ROM value."
+  },
+  "firewalls": [
+    "NO_H01_H04_BLIND_REUSE",
+    "NO_B14",
+    "NO_POST_VALIDATION_K_OR_DISTANCE_TUNING",
+    "NO_APPLICATION_PERCENTAGE_THRESHOLD_SELECTED_FROM_V1_RESULTS",
+    "NO_PRODUCTION_ROM",
+    "NO_PERFORMANCE_CLAIM_FROM_PYTHON_LOOKUP_TIMING"
+  ],
+  "research_reference_policy": {
+    "scope": "RESEARCH_REFERENCE_ONLY_NOT_PRODUCTION_FALLBACK",
+    "seam_authority": {
+      "work_unit": "F-ROM1A-I0",
+      "decision": "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+      "ordinary_runtime_semantics_changed": false,
+      "production_reference_fallback_admitted": false
+    },
+    "imported_pre_result_policy_authority": {
+      "source": "ROM1AR2 frozen strict-first discovery-qualified research Reference policy",
+      "original_attempt_always_first": true,
+      "original_compartment_balance_tolerance_cm_per_day": 1e-12,
+      "original_total_balance_tolerance_cm_per_day": 1e-12,
+      "total_representation_bound_formula_cm": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_start_i)) * dz_i)",
+      "local_integrated_allowance_cm": 1.6e-15,
+      "RETRY_TOTAL_ONLY": {
+        "requires_zero_head_flags": true,
+        "requires_zero_local_balance_flags": true,
+        "requires_max_local_residual_le_original_compartment_tolerance": true,
+        "requires_total_integrated_residual_le_pre_solve_representation_bound": true,
+        "compartment_tolerance_on_single_reattempt": "1e-12 unchanged",
+        "total_tolerance_on_single_reattempt": "max(1e-12,total_representation_bound/dt)"
+      },
+      "RETRY_LOCAL_BALANCE": {
+        "requires_zero_head_flags": true,
+        "requires_local_integrated_residual_le_1p6e15_cm": true,
+        "requires_total_integrated_residual_le_pre_solve_representation_bound": true,
+        "compartment_tolerance_on_single_reattempt": "max(1e-12,1.6e-15/dt)",
+        "total_tolerance_on_single_reattempt": "max(1e-12,total_representation_bound/dt)"
+      },
+      "all_other_failure_classes": "FAIL_CLOSED",
+      "fresh_backend_same_interval_one_reattempt": true,
+      "dt_subdivision": false
+    },
+    "current_canonical_requalification_gates": [
+      "strict attempt always first",
+      "failed sample leaves committed state bit-identical",
+      "fallback classification is pre-result rule only",
+      "fallback residuals satisfy pre-solve bounds",
+      "accepted candidate passes independent 1e-12 cm transaction mass gate",
+      "revision and time progress exactly",
+      "O0/O2 stdout bit identity",
+      "no src/reference mutation"
+    ],
+    "validation_failure_rule": "If a newly preregistered V history encounters a failure class outside this frozen policy, V1 is reference-authority blocked for that history. Do not retune tolerances, dt or history after exposure."
+  }
+}

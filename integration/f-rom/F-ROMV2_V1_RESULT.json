@@ -1,0 +1,286 @@
+{
+  "schema": "swap5.f-romv2-v1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-V1",
+  "title": "Blind B01 validation of frozen C2 local conservative closure",
+  "decision": "V2_V1_C2_BLIND_HYDRAULIC_FEASIBILITY_PASS",
+  "adjudication": "BLIND_HYDRAULIC_FEASIBILITY_PASS_WITH_DOMAIN_COVERAGE_LIMITING_COMPUTATIONAL_VALUE",
+  "proposition_authority": {
+    "canonical_admission": "560fae8dcf9b2d9d6b55b31fbfbc07cbef2679b8",
+    "pull_request": 415,
+    "predecessor_F_ROMV_reclassified": false
+  },
+  "execution": {
+    "workflow_run": 35441133786,
+    "workflow_job": 105891994940,
+    "executed_head": "2ef240fb390b107bffba263ad779dc2bdda23669",
+    "artifact_id": 10583941868,
+    "artifact_digest": "sha256:26928a0dbc9dfc0c422505a86dbf70e47ccee03bef71c54932d11d97d277d276",
+    "conclusion": "success",
+    "stdout_sha256": "68207a1c2d0d381cb0801fc4b74e0946145a8e8a969f4aba9e24e1ee9ef99d7a",
+    "trajectory_result_sha256": "31d989fe3d9be641faaabedef4ef5b437e50b8f4cef69d9735c9599d676ec391",
+    "c2_result_sha256": "d1202d5162daac71ad041fa0939813f2d4492ff752900a9cba5b5f7261375b20",
+    "trajectory_analyzer_sha256": "8538bffcc35e3f0804a35c2c4bfa72d0479f85e748101e27e245de67742d7ffd",
+    "c2_analyzer_sha256": "9ed6bbce00ce5b80a70df718c7b56f7688ac3ee42dad8cfa9ba089dbae02da64",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "trajectory_authority": {
+    "material": "B01",
+    "histories": 12,
+    "training_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "validation_histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "accepted_states": 768,
+    "training_states": 512,
+    "validation_states": 256,
+    "nodes_per_state": 16,
+    "node_records": 12288,
+    "max_abs_step_mass_residual_cm": 2.203315654925042e-14,
+    "pressure_head_range_cm": [
+      -33.813489289785984,
+      -25.13481247066326
+    ],
+    "water_content_range": [
+      0.35549315754846394,
+      0.37905331947203436
+    ],
+    "research_reference_strict_first_fallback_count": 65,
+    "reference_fallback_semantics_pass": true,
+    "policy_retuned_from_validation": false,
+    "B14_generated": false
+  },
+  "frozen_candidate": {
+    "id": "C2",
+    "dimension": 2,
+    "coordinates": [
+      "total_storage_cm",
+      "upper_80cm_mean_theta_minus_lower_80cm_mean_theta"
+    ],
+    "closure": "FORCING_SPECIFIC_ONE_NEAREST_NEIGHBOR_TRANSITION_TABLE",
+    "ood_state_gate": "EXACT_FORCING_SPECIFIC_CLOSED_CONVEX_HULL",
+    "ood_forcing_gate": "EXACT_FORCING_TUPLE_PRESENT_IN_TRAINING",
+    "interpolation": false,
+    "regression": false,
+    "learned_weights": false,
+    "hidden_mass_correction": false
+  },
+  "integrity": {
+    "pass": true,
+    "nonfinite_count": 0,
+    "reconstructed_theta_bounds_failure_count": 0,
+    "structural_mass_failure_count": 0,
+    "ood_failopen_count": 0,
+    "v04_expected_forcing_ood_missed_count": 0,
+    "v04_failclosed": true
+  },
+  "blind_value_screen_V01_V03": {
+    "intervals": 189,
+    "C2_total_storage_error_cm": {
+      "mean": 0.000017059028230226842,
+      "mean_abs": 0.000183724020865395,
+      "rmse": 0.0005010204003621666,
+      "p95_abs": 0.0011170986440376396,
+      "max_abs": 0.0026370539601145992
+    },
+    "forcing_only_total_storage_error_cm": {
+      "mean": -0.0006206026729736184,
+      "mean_abs": 0.0020615986780556897,
+      "rmse": 0.003991973405033476,
+      "p95_abs": 0.00997474605284765,
+      "max_abs": 0.01146492565707291
+    },
+    "C2_cumulative_bottom_exchange_error_cm": {
+      "mean": -0.0003099454605130813,
+      "mean_abs": 0.0005315038966232866,
+      "rmse": 0.0010032301313465848,
+      "p95_abs": 0.00263705396012881,
+      "max_abs": 0.0034447627527712243
+    },
+    "forcing_only_cumulative_bottom_exchange_error_cm": {
+      "mean": 0.0017215132354774026,
+      "mean_abs": 0.004767947933211166,
+      "rmse": 0.005247898560146771,
+      "p95_abs": 0.008726953301092188,
+      "max_abs": 0.008726953301092206
+    },
+    "C2_terminal_bottom_flux_error_cm_per_day": {
+      "mean": -0.017994713061570626,
+      "mean_abs": 0.042579831317037665,
+      "rmse": 0.12951716918500678,
+      "p95_abs": 0.41111644232927524,
+      "max_abs": 0.5559781064423461
+    },
+    "C2_beats_shared_fallback_forcing_only_on_both_preregistered_balance_metrics": true
+  },
+  "by_history": {
+    "V01": {
+      "role": "known-forcing repeated multi-regime sequence",
+      "actual_cumulative_bottom_exchange_cm": 0.2075746953184367,
+      "reduced_transitions": 60,
+      "fallback_transitions": 3,
+      "fallback_fraction": 0.047619047619047616,
+      "state_ood_steps": [
+        25,
+        33,
+        57
+      ],
+      "forcing_ood_steps": [],
+      "total_storage_rmse_cm": 0.000866153099855273,
+      "cumulative_bottom_exchange_rmse_cm": 0.001691260370021396,
+      "final_cumulative_bottom_exchange_error_cm": -0.0032529207068919264,
+      "terminal_bottom_flux_rmse_cm_per_day": 0.21901228528872374,
+      "bottom_flux_sign_error_count": 0,
+      "actual_reversal_steps": [
+        9,
+        17,
+        41,
+        49
+      ],
+      "C2_reversal_steps": [
+        9,
+        17,
+        41,
+        49
+      ],
+      "interpretation": "Strong domain coverage and blind balance/event feasibility; instantaneous flux magnitude error remains materially larger than storage error."
+    },
+    "V02": {
+      "role": "asymmetric duration and state-memory challenge",
+      "actual_cumulative_bottom_exchange_cm": 0.1493729788559808,
+      "reduced_transitions": 11,
+      "fallback_transitions": 52,
+      "fallback_fraction": 0.8253968253968254,
+      "state_ood_count": 52,
+      "forcing_ood_count": 0,
+      "total_storage_rmse_cm": 0,
+      "cumulative_bottom_exchange_rmse_cm": 0,
+      "terminal_bottom_flux_rmse_cm_per_day": 0,
+      "bottom_flux_sign_error_count": 0,
+      "actual_reversal_steps": [
+        25,
+        45
+      ],
+      "C2_reversal_steps": [
+        25,
+        45
+      ],
+      "interpretation": "Zero hybrid error is dominated by full-order fallback and is not evidence of useful ROM coverage."
+    },
+    "V03": {
+      "role": "rapid regime-switch challenge",
+      "actual_cumulative_bottom_exchange_cm": 0.20765985043076002,
+      "reduced_transitions": 6,
+      "fallback_transitions": 57,
+      "fallback_fraction": 0.9047619047619048,
+      "state_ood_count": 57,
+      "forcing_ood_count": 0,
+      "total_storage_rmse_cm": 0.00005332103101308782,
+      "cumulative_bottom_exchange_rmse_cm": 0.00039881129637981273,
+      "final_cumulative_bottom_exchange_error_cm": 0.0005321200919823355,
+      "terminal_bottom_flux_rmse_cm_per_day": 0.04855625844011966,
+      "bottom_flux_sign_error_count": 0,
+      "actual_reversal_steps": [
+        5,
+        17,
+        21,
+        33,
+        37,
+        49,
+        53
+      ],
+      "C2_reversal_steps": [
+        5,
+        17,
+        21,
+        33,
+        37,
+        49,
+        53
+      ],
+      "interpretation": "Event ordering is retained where published, but almost all intervals fall back; practical acceleration is therefore structurally constrained."
+    },
+    "V04": {
+      "role": "explicit unseen-forcing fail-closed and re-entry control",
+      "actual_cumulative_bottom_exchange_cm": 0.2165293871883039,
+      "reduced_transitions": 7,
+      "fallback_transitions": 56,
+      "fallback_fraction": 0.8888888888888888,
+      "forcing_ood_count": 39,
+      "state_ood_count": 17,
+      "reentry_count": 1,
+      "v04_failclosed": true,
+      "bottom_flux_sign_error_count": 0,
+      "actual_reversal_steps": [
+        9,
+        25
+      ],
+      "C2_reversal_steps": [
+        9,
+        25
+      ],
+      "interpretation": "OOD behavior works as designed; this history is a safety control, not a target for acceleration."
+    }
+  },
+  "fallback_imposed_ideal_speedup_ceiling": {
+    "definition": "Upper bound 1/f if each fallback costs one full-order interval and reduced intervals have zero cost and zero overhead. This is an optimistic ceiling, not a performance measurement.",
+    "V01": {
+      "fallback_fraction": 0.047619047619047616,
+      "ideal_upper_bound_speedup": 21
+    },
+    "V02": {
+      "fallback_fraction": 0.8253968253968254,
+      "ideal_upper_bound_speedup": 1.2115384615384617
+    },
+    "V03": {
+      "fallback_fraction": 0.9047619047619048,
+      "ideal_upper_bound_speedup": 1.1052631578947367
+    },
+    "V04": {
+      "fallback_fraction": 0.8888888888888888,
+      "ideal_upper_bound_speedup": 1.125
+    },
+    "pooled_V01_V03": {
+      "fallback_fraction": 0.5925925925925926,
+      "ideal_upper_bound_speedup": 1.6875
+    },
+    "pooled_V01_V04": {
+      "fallback_fraction": 0.6666666666666666,
+      "ideal_upper_bound_speedup": 1.5
+    },
+    "caveat": "Actual speedup must be lower once lookup/OOD/fallback orchestration and non-solver cost are included."
+  },
+  "purpose_dependent_adjudication": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_YET_QUALIFIED; blind cumulative/storage behavior is promising where C2 remains in domain, but V02/V03 coverage is too narrow and no ET/seasonal horizon is present.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED; V1 has no root uptake, ET stress, drought season or state-updating evidence.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_YET_QUALIFIED; bottom-flux sign/reversal behavior is encouraging, but instantaneous flux magnitude error and fallback coverage require a coupled/application-scale test.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED; reversal ordering passes in V1 but terminal bottom-flux magnitude errors remain material and no threshold/ponding process is present.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED; C2 intentionally discards profile information and V1 is a bounded hydraulic feasibility test only."
+  },
+  "scientific_conclusion": "C2 establishes blind, physically safe local state-information value for B01 but does not yet establish broad enough state-domain coverage for a compelling general accelerator. Domain coverage, not basic local hydrological feasibility, is now the dominant barrier.",
+  "next_authorized_research": [
+    "FREEZE_APPLICATION_SPECIFIC_ACCEPTANCE_LOGIC_WITHOUT_USING_V1_TO_CHOOSE_CONVENIENT_THRESHOLDS",
+    "TEST_AN_INDEPENDENT_QUASI_STEADY_OR_INTEGRATED_MANIFOLD_PHYSICAL_REDUCTION_FOR_REGIONAL_OR_GROUNDWATER_COUPLED_USE",
+    "MEASURE_CURRENT_DIRECT_ROUTE_COST_ONLY_AFTER_A_CANDIDATE_HAS_SUFFICIENT_DOMAIN_COVERAGE_TO_MAKE_SPEEDUP_PLAUSIBLE"
+  ],
+  "prohibited_next": [
+    "DO_NOT_LOOSEN_OR_RETUNE_C2_CONVEX_HULL_OOD_FROM_V1_RESULTS",
+    "DO_NOT_REUSE_V01_V04_AS_BLIND_CONFIRMATION_FOR_A_MODIFIED_C2_MODEL",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_CLAIM_PRODUCTION_SPEEDUP",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
