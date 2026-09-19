@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.lare.bc2.c4f.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4F",
+  "phase": "PREREGISTERED_AFTER_C4E_BEFORE_VECTOR_INTERFERENCE_DIAGNOSTIC",
+  "question": "Can the width- and history-dependent C4E response be explained by the geometry of the exact additive QI storage-error vector relative to the non-QI remainder, together with terminal-layer state-margin scaling, without introducing a new closure or state variable?",
+  "predecessors": {
+    "C4E": {
+      "closeout": "integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json",
+      "required_status": "CLOSED_DIAGNOSTIC_BLOCKED_NO_MODEL_CHANGE",
+      "required_decision": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED",
+      "workflow_run": 35460239887,
+      "aggregate_artifact_id": 10589773291
+    },
+    "C4D": {
+      "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
+      "required_decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED"
+    },
+    "C3": {
+      "analyzer": "tests/rom/analyze_lare_bc2_c3_signed_bias_case.py",
+      "role": "exact additive teacher-minus-reference local storage decomposition"
+    }
+  },
+  "execution_policy": {
+    "new_richards_solves": false,
+    "free_propagation": false,
+    "model_change": false,
+    "reference_artifact_id": 10587360597,
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "internal_dt_day": [
+      0.00005,
+      0.000025
+    ],
+    "all_intervals_required": true
+  },
+  "vector_definition": {
+    "local_shape_error": "mass-neutral theta-shape vector of teacher endpoint minus Reference endpoint",
+    "qi_shape_contribution": "mass-neutral theta-shape vector induced by the exact C3 QI storage contribution",
+    "remainder_shape_error": "local_shape_error - qi_shape_contribution",
+    "identity": "||remainder||^2 - ||local||^2 = -||qi||^2 - 2 qi dot remainder",
+    "interpretation": "Removing QI improves shape error iff ||qi||^2 + 2 qi dot remainder > 0. It worsens shape error iff this quantity is < 0."
+  },
+  "preregistered_metrics": [
+    "pooled RMS local shape error",
+    "pooled RMS QI shape contribution",
+    "pooled RMS non-QI remainder shape error",
+    "mean and median qi_dot_remainder",
+    "mean and median cosine(qi,remainder) on nonzero intervals",
+    "fraction intervals for which exact QI removal lowers shape error",
+    "fraction intervals for which exact QI removal raises shape error",
+    "identity residual for squared-norm change",
+    "QI storage-transfer magnitude in cm",
+    "QI-induced terminal mean-theta increment magnitude = |dW_QI|/terminal_width",
+    "counterfactual terminal mean-theta margin to theta_r/theta_s",
+    "counterfactual reconstructed-interface Se margin where hydraulic_state is admissible",
+    "blocked interval count and first blocked step"
+  ],
+  "hypotheses": {
+    "H_VECTOR_INTERFERENCE": {
+      "support_rule": "For every physically admissible interval, the sign of observed QI-removal shape-error change is exactly predicted by S = ||qi||^2 + 2 qi dot remainder, with squared-norm identity residual <= 1e-12. Case-level improvement fractions must be reproduced without fitted parameters.",
+      "meaning": "C4E width/history reversal is an additive-vector interference effect."
+    },
+    "H_TERMINAL_WIDTH_AMPLIFICATION": {
+      "support_rule": "For matched history and route, QI storage-transfer converted to terminal mean-theta perturbation scales inversely with terminal width to numerical identity where storage transfer is the same quantity; admissibility failures must coincide with non-positive state margin under the exact counterfactual, not with mass-ledger failure.",
+      "meaning": "Part of the 2.5 cm fragility is geometric state scaling, not evidence for missing mass or a new prognostic state."
+    }
+  },
+  "adjudication": {
+    "VECTOR_INTERFERENCE_EXPLAINS_C4E": "H_VECTOR_INTERFERENCE supported in all cases; terminal-width evidence may be supportive or mixed.",
+    "VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E": "H_VECTOR_INTERFERENCE and H_TERMINAL_WIDTH_AMPLIFICATION both supported.",
+    "C4E_MECHANISM_PARTIAL": "vector identity holds but width/admissibility pattern is not sufficiently explained by the preregistered scaling diagnostics.",
+    "C4F_DIAGNOSTIC_BLOCKED": "required predecessor, physical-state reconstruction, or hard identity gate fails."
+  },
+  "hard_gates": {
+    "additive_identity_cm": 1e-10,
+    "squared_norm_identity_theta2": 1e-12,
+    "no_parameter_fitting": true,
+    "no_clipping": true
+  },
+  "claim_boundary": [
+    "No corrected QI closure is authorized.",
+    "No direction switch is authorized.",
+    "No extra memory state is authorized.",
+    "No groundwater-feedback conclusion is authorized.",
+    "No application acceptance or speed claim is authorized."
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
