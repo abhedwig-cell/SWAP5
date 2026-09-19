@@ -1,7 +1,7 @@
 {
   "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
   "branch": "work/f-rom-lare-rs1",
-  "checkpoint_live_head_observed": "02f45833db6f0d91447f61851e7864b3b06da9c7",
+  "checkpoint_live_head_observed": "6421e7c5f11cd6fcf27552598c11d6c988bdf8ac",
   "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
   "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
   "durable_scientific_authority": [
@@ -51,17 +51,16 @@
       "status": "CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED",
       "decision": "C4B_DIAGNOSTIC_BLOCKED",
       "note": "Core oracle interventions leave the qualified constitutive/numerical domain. Later variant-local execution semantics refine diagnostics only; no causal hypothesis or model change is authorized."
+    },
+    {
+      "unit": "BC2-C3B",
+      "result": "integration/f-rom/LARE_BC2_C3B_RESULT.json",
+      "authority_binding": "integration/f-rom/LARE_BC2_C3B_AUTHORITY_BINDING.json",
+      "decision": "DIRECTION_PARTITION_EXPLAINS_CYCLE_RANK_SHIFT",
+      "status": "PERSISTED"
     }
   ],
   "active_units_without_durable_result": [
-    {
-      "unit": "BC2-C3B",
-      "preregistration": "integration/f-rom/LARE_BC2_C3B_PREREGISTRATION.json",
-      "expected_result": "integration/f-rom/LARE_BC2_C3B_RESULT.json",
-      "hardened_workflow": ".github/workflows/f-rom-lare-bc2-c3b.yml",
-      "hardening_commit": "13035355e714b6d9add44868ec629ef91ff63460",
-      "resume_rule": "If expected result exists, do not rerun. Else inspect newest non-superseded C3B run/artifacts and aggregate only missing evidence."
-    },
     {
       "unit": "BC2-C4D",
       "preregistration": "integration/f-rom/LARE_BC2_C4D_PREREGISTRATION.json",
@@ -87,7 +86,7 @@
     "Update this checkpoint before launching the next expensive scientific work unit.",
     "Never rerun a qualified predecessor solely because chat/session context was lost."
   ],
-  "next_state_boundary": "Close/persist C3B and C4D independently. C4B is durable CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED and must not be rerun as a prerequisite.",
+  "next_state_boundary": "Persist/close BC2-C4D as soon as its hardened run is complete. Then update recovery checkpoint before launching the next diagnostic. Do not rerun C3B or C4B.",
   "production_rom_authorized": false,
   "partial_case_authority": [
     {
