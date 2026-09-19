@@ -32,7 +32,7 @@ module mod_fmr_serialized_reference_backend
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t, &
        publish_accepted_trajectory_direction
   use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
-  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -43,7 +43,12 @@ module mod_fmr_serialized_reference_backend
   use mod_rossfast_d3r_execution_policy, only: ROSSFAST_D3R_RETRY_SCALE, ROSSFAST_D3R_MAX_FULL_INDEX, &
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
-       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
+       bind_b110_dynamic_top_boundary_solver_provider
+  use mod_restricted_surface_evaporation, only: black_evaporation_parameters_t, black_evaporation_state_t, &
+       black_evaporation_forcing_t, black_evaporation_result_t, evaluate_black_evaporation_reduction, &
+       BLACK_EVAP_AVAILABLE, BLACK_EVAP_PONDING_CLASSIFICATION_CM
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
@@ -134,6 +139,14 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_fixed_weir_surface_water_state_clone
   end type fmr_b110_fixed_weir_surface_water_state_t
 
+  ! PPA-WU04-A option-discriminated process continuation family. LDWET is
+  ! physical process continuation state, not a hydraulic field or worker scratch.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_black_evaporation_state_t
+    type(black_evaporation_state_t) :: black_evaporation
+  contains
+    procedure :: clone => fmr_b110_black_evaporation_state_clone
+  end type fmr_b110_black_evaporation_state_t
+
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
     integer :: active_nodes = 0
@@ -164,6 +177,8 @@ module mod_fmr_serialized_reference_backend
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
     logical :: soil_temperature_active = .false.
+    logical :: black_evaporation_active = .false.
+    type(black_evaporation_parameters_t), allocatable :: black_evaporation
     ! F-PM14 drainage response runtime composition. Immutable response and
     ! prepared geometry data belong to parameters, never to persistent state.
     logical :: drainage_response_active = .false.
@@ -175,6 +190,20 @@ module mod_fmr_serialized_reference_backend
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
   end type fmr_b110_physical_parameters_t
+
+  type, public :: fmr_black_evaporation_runtime_forcing_t
+    real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
+    real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+    logical :: wetting_reset_event = .false.
+    real(real64) :: wetting_event_time = 0.0_real64
+  end type fmr_black_evaporation_runtime_forcing_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: top_flux = 0.0_real64
@@ -188,6 +217,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: root_extraction_sink(:)
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
+    type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -245,6 +275,12 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_response_mass_accounted_in_trial = .false.
     real(real64) :: drainage_response_signed_exchange_native = 0.0_real64
     type(fmr_drainage_response_diagnostics_t) :: drainage_response
+    logical :: black_evaporation_active = .false.
+    logical :: black_evaporation_evaluated = .false.
+    logical :: black_wetting_reset_applied = .false.
+    logical :: black_ponding_reset_applied = .false.
+    real(real64) :: black_empirical_demand = 0.0_real64
+    real(real64) :: black_candidate_ldwet = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -319,6 +355,9 @@ module mod_fmr_serialized_reference_backend
     type(snow_flux_result_t) :: snow_fluxes
     type(snow_diagnostics_t) :: snow_diagnostics
     logical :: soil_temperature_active = .false.
+    logical :: black_evaporation_active = .false.
+    type(black_evaporation_parameters_t) :: black_evaporation_parameters
+    type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -379,6 +418,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
+  public :: fmr_new_b110_black_evaporation_committed_state
 
 contains
 
@@ -447,6 +487,17 @@ contains
       typed_copy%surface_water = self%surface_water
     end select
   end subroutine fmr_b110_fixed_weir_surface_water_state_clone
+
+  subroutine fmr_b110_black_evaporation_state_clone(self, copy)
+    class(fmr_b110_black_evaporation_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_black_evaporation_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_black_evaporation_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%black_evaporation = self%black_evaporation
+    end select
+  end subroutine fmr_b110_black_evaporation_state_clone
 
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
@@ -522,17 +573,40 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_fixed_weir_surface_water_committed_state
 
+  subroutine fmr_new_b110_black_evaporation_committed_state(committed, lineage_id, state, black_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(black_evaporation_state_t), intent(in) :: black_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. ieee_is_finite(black_state%ldwet) .or. black_state%ldwet < 0.0_real64) return
+    allocate(fmr_b110_black_evaporation_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_black_evaporation_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%black_evaporation = black_state
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_black_evaporation_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
-                                                               fixed_weir_surface_water_active) result(matches)
+                                                               fixed_weir_surface_water_active, &
+                                                               black_evaporation_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active, black_evaporation_active
     select type (state)
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active
+      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active
+      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. .not. black_evaporation_active
+    type is (fmr_b110_black_evaporation_state_t)
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. black_evaporation_active
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active
+      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active
     class default
       matches = .false.
     end select
@@ -569,7 +643,8 @@ contains
     call committed%snapshot(snapshot, available)
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
-                                                           model%fixed_weir_surface_water_active)) return
+                                                           model%fixed_weir_surface_water_active, &
+                                                           model%black_evaporation_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
