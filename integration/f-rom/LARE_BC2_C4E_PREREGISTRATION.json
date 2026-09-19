@@ -98,5 +98,12 @@
   "model_changed": false,
   "groundwater_feedback_authorized": false,
   "application_acceptance_adjudicated": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_comparison_integrity": {
+    "before_first_C4E_execution": true,
+    "support_requires_all_single_family_controls_physically_admissible": true,
+    "if_QI_admissible_but_any_control_blocked": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED for the unique-best causal claim; report QI-vs-BASE improvement descriptively without promoting it to support",
+    "reason": "A unique-best counterfactual ranking is not interpretable if a competing preregistered intervention cannot be evaluated in the same physical domain.",
+    "scientific_effect": "No response has been exposed and no interval, family, width, history, route or metric is changed."
+  }
 }
