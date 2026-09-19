@@ -1,0 +1,144 @@
+{
+  "application_acceptance_adjudicated": false,
+  "c4_authority": "NO_GLOBAL_CLOSURE_CHANGE_NEW_REGIME_PREREGISTRATION_REQUIRED",
+  "checks": {
+    "all_six_dynamic_cases_present": true,
+    "c3_hard_complete": true,
+    "missing_cases": [],
+    "primary_cross_rank1_mismatch_cases": [],
+    "same_cross_top_family_all_dynamic": false,
+    "same_primary_top_family_all_dynamic": false,
+    "unanimous_same_family_both_routes": false
+  },
+  "complete": true,
+  "decision": "REGIME_DEPENDENT_BIAS_INJECTION",
+  "dynamic_cases": {
+    "2.5:WT_CYCLE": {
+      "cross_rank": [
+        "QH",
+        "QI",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QH",
+      "primary_rank": [
+        "QH",
+        "QI",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QH",
+      "rank1_match": true
+    },
+    "2.5:WT_FALL": {
+      "cross_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QI",
+      "primary_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QI",
+      "rank1_match": true
+    },
+    "2.5:WT_RISE": {
+      "cross_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QI",
+      "primary_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QI",
+      "rank1_match": true
+    },
+    "5.0:WT_CYCLE": {
+      "cross_rank": [
+        "QH",
+        "QI",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QH",
+      "primary_rank": [
+        "QH",
+        "QI",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QH",
+      "rank1_match": true
+    },
+    "5.0:WT_FALL": {
+      "cross_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QI",
+      "primary_rank": [
+        "QI",
+        "QH",
+        "Q90",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QI",
+      "rank1_match": true
+    },
+    "5.0:WT_RISE": {
+      "cross_rank": [
+        "QI",
+        "Q90",
+        "QH",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "cross_top": "QI",
+      "primary_rank": [
+        "QI",
+        "Q90",
+        "QH",
+        "GEOMETRY_GI",
+        "FIXED_INTERIOR_Q"
+      ],
+      "primary_top": "QI",
+      "rank1_match": true
+    }
+  },
+  "frozen_rule_source": "integration/f-rom/LARE_BC2_C3_ADJUDICATION_PREREGISTRATION.json",
+  "groundwater_feedback_authorized": false,
+  "interpretation": [
+    "The decision implements the prospectively frozen unanimity rule; no effect-size threshold, top-k substitution or majority fallback is introduced.",
+    "HOLD is excluded from dynamic-family selection exactly as preregistered.",
+    "REGIME_DEPENDENT_BIAS_INJECTION forbids a global closure correction and requires a separately preregistered regime partition before any counterfactual."
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c3a.adjudication.v1",
+  "selected_global_family": null,
+  "work_unit": "LARE-BC2-C3A",
+  "workstream": "F-ROM-LARE"
+}
