@@ -77,3 +77,16 @@ The remaining inherited F-GC44-specific element was the Richards temporal-histor
 - the already frozen external full-half temporal policy.
 
 This is a state-topology/composition correction, not a hydrological-physics change. Root extraction, hydraulic parameters, mass gate, FD perturbations and the 5% predictor/corrector slope criterion remain unchanged.
+
+## Amendment CAP01-A3, frozen before a successful Phase-A run
+
+After A1 and A2, the nominal root-active trial still failed through solver rejection, with no mass rejection. The remaining fixture mixed the F-GC44 hydrostatic initial profile with a near-zero prescribed qbot. Existing root-active FMR09 authority instead uses an exact hydraulic equilibrium anchor.
+
+The CAP01 local response fixture therefore uses:
+
+- constant pressure head (h=-75\,\mathrm{cm}) over the column;
+- reference top and bottom flux (q=-K(-75\,\mathrm{cm})), evaluated from the frozen constitutive law;
+- the same unbalanced root extraction of (0.02\,\mathrm{cm\,d^{-1}});
+- no compensating subsurface source.
+
+The equilibrium flux is calculated from the frozen hydraulic parameters and is not tuned to obtain a passing result. The root sink must therefore still produce a genuine hydrological perturbation. All previously frozen mass, finite-difference and slope criteria remain unchanged.
