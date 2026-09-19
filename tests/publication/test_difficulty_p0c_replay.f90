@@ -96,13 +96,15 @@ contains
     q%parameters=>ps; q%evaluation%constitutive=>ch; q%evaluation%source_sink=>sp; q%evaluation%top_boundary=>tp
     q%base_state%active_nodes=n; allocate(q%base_state%pressure_head(n),q%base_state%water_content(n))
     q%base_state%pressure_head=-101.0_real64; q%base_state%water_content=th; q%base_state%ponding_depth=0.0_real64
-    q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX; q%boundary%top_flux=0.01_real64*k0; q%boundary%bottom_mode=2; q%boundary%bottom_flux=-0.004_real64*k0
+    q%base_state%groundwater_level=-999.0_real64
+    q%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX; q%boundary%top_flux=0.01_real64*k0; q%boundary%top_head=-101.0_real64
+    q%boundary%bottom_mode=2; q%boundary%bottom_flux=-0.004_real64*k0; q%boundary%bottom_head=-999999.0_real64
     q%step_duration=ROSSFAST_D3R_OUTER_HORIZON_DAY
     q%numerical%max_iterations=16; q%numerical%max_backtracking=8; q%numerical%conductivity_implicit_mode=0
     q%numerical%conductivity_mean_method=1; q%numerical%min_step_duration=1e-8_real64
     q%numerical%head_abs_tolerance=1e-12_real64; q%numerical%head_rel_tolerance=1e-12_real64
     q%numerical%compartment_balance_tolerance=1e-12_real64; q%numerical%total_balance_tolerance=1e-12_real64
-    q%numerical%ponding_tolerance=1e-12_real64
+    q%numerical%ponding_tolerance=1e-12_real64; q%request_interface_sensitivity=.false.
     tp%prescribed_flux=0.0_real64; tp%surface_conductivity=max(k0,tiny(1.0_real64))
   end subroutine
   subroutine require(x,label)
