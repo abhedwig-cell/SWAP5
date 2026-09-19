@@ -180,7 +180,7 @@ jobs:
 
           build/tab-hyd-derivfix/wrapper/probe dry_probe \
             | tee build/tab-hyd-derivfix/wrapper-dry.txt
-          grep -q '^DRY_PROBE_UNEXPECTED_SUCCESS dKdh=' build/tab-hyd-derivfix/wrapper-dry.txt
+          grep -q '^DRY_PROBE_SUCCESS dKdh=' build/tab-hyd-derivfix/wrapper-dry.txt
           python3 - <<'PY'
           from pathlib import Path
           import re
