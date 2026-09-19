@@ -1,0 +1,142 @@
+{
+  "schema": "swap5.lare.dyn0a.coarse-richards-temporal-qualification.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-CQ",
+  "phase": "PREREGISTERED_BEFORE_COARSE_RICHARDS_TEMPORAL_REFINEMENT",
+  "canonical_start": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "parent_authority": "integration/f-rom/LARE_DYN0A_PREREGISTRATION.json",
+  "purpose": "Qualify equal-dimension coarse Richards D3 and D2 as numerical comparators for DYN0A by temporal refinement only, after the base 0.0008-day route blocked on local residual qualification under perturbed fixed-flux forcing.",
+  "observed_preflight": {
+    "reference_artifact_id": 10586020583,
+    "reference_artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
+    "fine_reference": {
+      "qualified_fixed_flux_cases": 10,
+      "outside_domain_near_saturation_cases": 2,
+      "numerical_blocked_cases": 0
+    },
+    "coarse_D3": {
+      "qualified_fixed_flux_cases": 3,
+      "numerical_blocked_cases": 9,
+      "representative_block": "local residual within prior integrated allowance"
+    },
+    "coarse_D2": {
+      "qualified_fixed_flux_cases": 3,
+      "numerical_blocked_cases": 9,
+      "representative_block": "local residual within prior integrated allowance"
+    },
+    "interpretation": "The equal-dimension spatial comparators are not yet scientifically usable outside equilibrium. Temporal qualification is required before any LARE-vs-coarse-Richards fidelity claim."
+  },
+  "frozen_physics": {
+    "material": "B01 homogeneous Mualem-van Genuchten",
+    "partitions": {
+      "D3_cm": [
+        140,
+        10,
+        10
+      ],
+      "D2_cm": [
+        150,
+        10
+      ]
+    },
+    "initial_effective_saturation": [
+      0.65,
+      0.85,
+      0.95
+    ],
+    "fixed_flux_top_forcing": {
+      "EQ": [
+        [
+          1,
+          1024
+        ]
+      ],
+      "WET": [
+        [
+          1.5,
+          256
+        ],
+        [
+          1,
+          768
+        ]
+      ],
+      "DRY": [
+        [
+          0.5,
+          256
+        ],
+        [
+          1,
+          768
+        ]
+      ],
+      "WET_DRY": [
+        [
+          1.5,
+          256
+        ],
+        [
+          0.5,
+          256
+        ],
+        [
+          1,
+          512
+        ]
+      ]
+    },
+    "bottom_boundary": "fixed downward flux q_bottom = initial equilibrium K0",
+    "sinks": "none"
+  },
+  "temporal_refinement": {
+    "observation_dt_day": 0.0008,
+    "internal_dt_day": [
+      0.0008,
+      0.0004,
+      0.0002,
+      0.0001,
+      0.00005
+    ],
+    "substeps_per_observation": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "forcing_rule": "Forcing remains piecewise constant over the original 0.0008-day observation interval. Substeps do not move forcing change times.",
+    "state_sampling": "Only committed states at the original 0.0008-day observation grid are used for comparator error and convergence assessment.",
+    "seed_policy": "Use the same initial state and seed authority as the existing DYN0A Reference harness; no spatial or constitutive retuning."
+  },
+  "numerical_policy": {
+    "first_attempt": "Use the current admitted Reference Richards route and the same strict-first diagnostics as DYN0A.",
+    "fallback": "No new fallback class is introduced. Any retry/fallback already admitted by the parent research harness may be used unchanged; otherwise fail closed.",
+    "temporal_convergence_metrics": [
+      "max absolute per-layer storage difference at observation times",
+      "mean absolute per-layer storage difference at observation times",
+      "max absolute bottom-flux difference at observation times",
+      "max absolute total-storage difference at observation times"
+    ],
+    "comparator_reference_rule": "For each geometry/case, the finest successful internal_dt route is the temporary numerical reference. Successive coarser successful routes are compared against it.",
+    "qualify_case_rule": "A case is comparator-qualified when at least two successive finest routes are successful and their observation-grid state difference is finite and non-increasing with refinement. No absolute hydrological acceptance threshold is introduced here.",
+    "strict_failure_rule": "If a case remains numerically blocked at 0.00005 day, classify BLOCKED_COARSE_RICHARDS_TEMPORAL_QUALIFICATION rather than altering the spatial grid or fallback policy."
+  },
+  "hydrological_comparison_after_qualification": {
+    "fine_reference": "existing 16x10 cm DYN0A fixed-flux fine Reference artifact",
+    "D3": "compare temporally-qualified coarse Richards D3 and LARE D3 against the same projected fine Reference trajectory",
+    "D2": "compare temporally-qualified coarse Richards D2 and LARE D2 against the same projected fine Reference trajectory",
+    "common_case_rule": "Only cases qualified for fine Reference, LARE finest Heun, and temporally-qualified coarse Richards enter the paired comparison."
+  },
+  "firewalls": [
+    "NO_SPATIAL_GRID_CHANGE",
+    "NO_FORCING_RETUNING",
+    "NO_CONSTITUTIVE_CHANGE",
+    "NO_NEW_FALLBACK_POLICY",
+    "NO_USE_OF_LARE_ERROR_TO_CHOOSE_TEMPORAL_DT",
+    "NO_SPEED_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_SOURCE_CHANGE"
+  ],
+  "production_rom_authorized": false
+}
