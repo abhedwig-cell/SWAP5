@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.lare.bc2.c2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2",
+  "phase": "PREREGISTERED_CONDITIONALLY_BEFORE_C1R_RESULT_EXPOSURE",
+  "title": "Reduced-manifold error amplification diagnostic",
+  "purpose": "Determine whether the state-shape drift identified by C1 is primarily sustained accumulation of local bias or amplification of existing reduced-state deviations under the unchanged C0 flow map, before any stabilizer, state enrichment or closure change is introduced.",
+  "execution_condition": {
+    "required_C1R_decision": "BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED",
+    "rule": "Do not execute C2 if C1R does not recover the blocked 2.5-cm WT_CYCLE temporal qualification with classification stability."
+  },
+  "predecessor_authority": {
+    "C0": "BC2_C0_ENRICHED_DYNAMICS_MIXED_RESPONSE",
+    "C1_adjudicated_run": 35456330698,
+    "C1_decision": "BC2_C1_DIAGNOSTIC_BLOCKED",
+    "C1_blocker": "2.5 cm WT_CYCLE at dt=0.0001 day only; Reference projections finite and decomposition identities valid",
+    "observed_C1_pattern_before_C1R": [
+      "state_shape is STATE_DRIFT_DOMINANT in all seven fully dual-route-qualified width/history cases",
+      "q90 is regime-dependent",
+      "qi and qH are local-closure-dominant for the 2.5-cm dynamic cases already qualified, but state-drift-dominant for the 5-cm dynamic cases",
+      "no global closure replacement is authorized by C1"
+    ]
+  },
+  "unchanged_model": {
+    "model": "exact BC2-C0 enriched prescribed-H reduced dynamics",
+    "q90": "source-aligned standard adjacent-layer LARE closure",
+    "qi": "BC2-B9 TERMINAL_SIDE_LINEAR",
+    "qH": "BC2-B7 terminal linear shape",
+    "geometry_anchor_cm": 90,
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ],
+    "H_input": "same qualified externally prescribed BC2-A2 Reference H(t)",
+    "H_feedback": false,
+    "no_new_state": true,
+    "no_new_closure": true,
+    "no_fit": true,
+    "no_projection_correction": true,
+    "no_clipping": true
+  },
+  "numerical_route": {
+    "primary_internal_dt_day": 0.00005,
+    "authority": "use C1R-recovered route after successful C1R; chosen before C1R outcome because it is the already-qualified C1 cross route",
+    "observation_dt_day": 0.0008
+  },
+  "diagnostic_A_actual_drift_gain": {
+    "description": "Follow the actual C0 free trajectory and, at each observation interval, compare its start-of-interval deviation from the exact Reference-projected reduced state with the one-interval state-induced component free_end - teacher_end under identical H(t).",
+    "coordinates": "physical reduced storage components only; cumulative diagnostic states excluded",
+    "state_shape_norm": "RMS over normalized compartment water-content deviations, not raw storage, so unequal compartment thickness does not dominate the norm",
+    "total_storage_reported_separately": true,
+    "metrics": [
+      "g_k = ||free_end-teacher_end||_shape / ||free_start-reference_start||_shape when denominator exceeds the numerical floor",
+      "median, 95th percentile and maximum g_k per width/history",
+      "fraction of eligible intervals with g_k > 1",
+      "first interval with g_k > 1",
+      "cumulative product of log(g_k) reported only over eligible intervals as a diagnostic, not as a fitted Lyapunov exponent",
+      "angle/cosine between previous shape-error vector and propagated state-induced vector",
+      "local teacher-reference shape-error norm alongside g_k"
+    ],
+    "interpretation": [
+      "g_k > 1 means the unchanged one-interval reduced map amplifies the existing actual shape deviation over that interval.",
+      "g_k < 1 means the existing deviation contracts, even if repeated local closure bias may still accumulate.",
+      "This is a trajectory-direction diagnostic and is not a global linear-stability theorem."
+    ]
+  },
+  "diagnostic_B_blind_tangent_panel": {
+    "execution_trigger": "Execute only after Diagnostic A result is frozen; the perturbation panel below is nevertheless frozen now and may not be tuned from Diagnostic A.",
+    "state_selection": {
+      "rule": "For each width/history select fixed observation fractions 0, 1/4, 1/2, 3/4 of the history plus the interval immediately preceding each prescribed H-direction switch; duplicates removed.",
+      "response_used_for_selection": false
+    },
+    "perturbation_coordinates": "mass-neutral pairwise transfers in normalized mean-water-content coordinates between adjacent reduced compartments; total physical water storage held fixed to roundoff",
+    "perturbation_amplitudes_theta": [
+      0.000001,
+      5e-7
+    ],
+    "finite_difference": "symmetric central difference",
+    "admissibility": "Skip a perturbation direction only when either signed perturbation leaves the strict constitutive domain; report the skipped direction, do not shrink epsilon post hoc.",
+    "outputs": [
+      "one-interval directional amplification factors for each admissible shape mode",
+      "largest measured shape-mode gain at each frozen state",
+      "amplitude-consistency ratio between 1e-6 and 5e-7 results",
+      "dominant adjacent-compartment transfer mode",
+      "relation of high-gain states to H direction and terminal width"
+    ],
+    "interpretation": "Supports local tangent-instability evidence only where the two frozen perturbation amplitudes give consistent directional gains."
+  },
+  "decision_logic": {
+    "BIAS_ACCUMULATION_DOMINANT": "Actual-drift gains are predominantly contractive/non-amplifying while local teacher-reference shape bias persists; investigate local closure bias source rather than a stabilizer.",
+    "MANIFOLD_AMPLIFICATION_SUPPORTED": "Actual-drift gain repeatedly exceeds one and blind mass-neutral tangent perturbations show consistent gain >1 in corresponding regimes; investigate invariant/manifold stability before changing closure formulas.",
+    "MIXED_STATE_DYNAMICS": "Amplification is regime/width dependent or tangent and actual-drift diagnostics disagree; retain per-channel/per-regime classification and do not introduce a global stabilizer.",
+    "NUMERICAL_DIAGNOSTIC_BLOCKED": "frozen perturbation or integration routes do not support a finite, converged diagnosis."
+  },
+  "hard_gates": {
+    "physical_moving_ledger_cm": 1e-10,
+    "all_reference_projections_finite": true,
+    "no_hidden_mass_change_in_mass_neutral_tangent_perturbations": true,
+    "additive_C1_identity_not_redefined": true
+  },
+  "firewalls": [
+    "NO_STABILIZER",
+    "NO_MANIFOLD_PROJECTION",
+    "NO_NEW_STATE",
+    "NO_CLOSURE_CHANGE",
+    "NO_GAIN_THRESHOLD_FITTING",
+    "NO_PERTURBATION_AMPLITUDE_RETUNING",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
