@@ -24,8 +24,8 @@ def authority():
     req(h in manifest and "SWAP/rootextraction.f90" in manifest,"rootextraction identity missing")
     req("compens" in " ".join(fci31["nonclaims"]).lower(),"F-CI31 compensation nonclaim missing")
     req("compens" not in root,"current restricted root process unexpectedly contains compensation")
-    nodes={n["id"]:n for n in dep["nodes"]}
-    req(nodes["WU05-D"]["state"]=="REVIEW_FIRST","parent WU05-D state drift")
+    targets={n["id"]:n for n in dep["ranked_targets"]}
+    req(targets["PPA-WU05-D"]["implementation_admission"]=="REVIEW_FIRST","parent WU05-D state drift")
     req(con["invariants"]["compensation_mass_owner"].startswith("NONE_SEPARATE"),"second mass owner introduced")
     req(con["invariants"]["persistent_physical_state"]=="UNKNOWN_DO_NOT_INFER","persistent state inferred")
     req(con["unresolved_source_trace"]["state"].startswith("BLOCKED_EXACT_B1_11"),"source blocker absent")
