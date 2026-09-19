@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json, subprocess
+import json, os, subprocess
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -35,7 +35,9 @@ assert delta["reference"]["deleted_count"]==0
 for path,blob in meta["critical_publication_blobs"].items():
     assert git("rev-parse",f"{SOURCE}:{path}")==blob,(path,blob)
 
-changed=git("diff","--name-only",SOURCE+"..HEAD").splitlines()
+candidate_head=os.environ.get("PUB_GC_CANDIDATE_HEAD") or git("rev-parse","HEAD")
+git("cat-file","-e",candidate_head+"^{commit}")
+changed=git("diff","--name-only",SOURCE+".."+candidate_head).splitlines()
 allowed_prefixes=("release/pub-gc-gmd/",)
 allowed_exact={".github/workflows/pub-gc-gmd-unversioned-candidate.yml",
                "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md"}
@@ -52,6 +54,7 @@ assert e7["coupled_execution"]["modflow_e7_windows_executed"]==0
 print("PUB_GC_GMD_CANDIDATE_SOURCE_TREE=PASS")
 print("PUB_GC_GMD_CANDIDATE_RB1_DELTA=PASS")
 print("PUB_GC_GMD_CANDIDATE_CRITICAL_BLOBS=PASS")
+print("PUB_GC_GMD_CANDIDATE_METADATA_HEAD="+candidate_head)
 print("PUB_GC_GMD_CANDIDATE_METADATA_ONLY_DESCENDANT=PASS")
 print("PUB_GC_GMD_CANDIDATE_EXTERNAL_ASSET_NOT_REDISTRIBUTED=PASS")
 print("PUB_GC_GMD_CANDIDATE_R1_L1_FAIL_CLOSED=PASS")
