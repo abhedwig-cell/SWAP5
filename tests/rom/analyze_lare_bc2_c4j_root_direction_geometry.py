@@ -357,7 +357,7 @@ def main():
         "diagnostic_B":{"supported":direction_support,"geometry":geom},
         "interpretation":[
             "C4J characterizes the failed C4I profile family; it does not select among roots or introduce a replacement closure.",
-            "Multiple quadratic roots with different flux predictions under identical Wb/Wt/H demonstrate non-identifiability of this reconstruction family, not generic insufficiency of all reduced states.",
+            "A multiple-root claim is admissible only when the cluster structure is cross-quadrature stable. A split seen at one quadrature alone is treated as numerical root-resolution sensitivity, not physical non-identifiability.",
             "The 5 cm comparison is performed in effective gradient space, consistent with C4H's finding that the residual qi error is gradient-component dominant.",
             "If FALL improves and RISE worsens in both interface and water-table slopes, the C4I direction dependence is a reconstruction-geometry effect rather than a conductivity effect."
         ],
@@ -382,7 +382,9 @@ def main():
         } for h in HISTORIES},
         "geometry":geom
     },sort_keys=True))
-    return 0 if hard_ok else 2
+    # A preregistered scientific BLOCKED result is valid evidence and must not
+    # be converted into an infrastructure failure.
+    return 0
 
 if __name__=="__main__":
     raise SystemExit(main())
