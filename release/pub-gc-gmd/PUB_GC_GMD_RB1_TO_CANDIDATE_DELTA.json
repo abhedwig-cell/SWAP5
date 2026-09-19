@@ -1,0 +1,870 @@
+{
+  "schema": "swap5.pub_gc_gmd.rb1_delta.v1",
+  "date": "2026-09-19",
+  "status": "COMPLETE_TREE_DELTA_SOURCE_REFERENCE",
+  "predecessor": {
+    "release_id": "SWAP5-RB1-v1",
+    "scientific_source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "unversioned_publication_candidate": {
+    "scientific_source_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "src_tree": "573df94cbb1c3f1cb38498e0003f11b8f7e3bcf1",
+    "reference_tree": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4"
+  },
+  "scope_note": "This is the complete Git-tree delta for src and reference between RB1 scientific source authority and the unversioned GMD publication candidate. It is not a final release/version decision and does not claim all added code as paper scope.",
+  "src": {
+    "added_count": 127,
+    "deleted_count": 0,
+    "modified_count": 23,
+    "added": [
+      {
+        "path": "src/adapter/fmr_groundwater_application_runtime.py",
+        "type": "blob",
+        "sha": "874c67bbaf6b4893c303809870b25c9263ab2abf"
+      },
+      {
+        "path": "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+        "type": "blob",
+        "sha": "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+      },
+      {
+        "path": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+        "type": "blob",
+        "sha": "8a59211335f44034a93d9ecd0d7a8920ee9baa39"
+      },
+      {
+        "path": "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "type": "blob",
+        "sha": "0406d3180262b06a5a393b605cc553a912a26aa0"
+      },
+      {
+        "path": "src/adapter/mod_b1_10_accepted_trajectory_transaction_executor.f90",
+        "type": "blob",
+        "sha": "b293e5e130f79868cad66ac03baebbf3cc1aa35b"
+      },
+      {
+        "path": "src/adapter/mod_canonical_result_text_adapter.f90",
+        "type": "blob",
+        "sha": "410d722fbd6e0bcf7ad3a5cc1fc6c133dd95403a"
+      },
+      {
+        "path": "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+        "type": "blob",
+        "sha": "5367043f4ea071298d6084684412a7da527809e8"
+      },
+      {
+        "path": "src/adapter/mod_groundwater_external_gateway.f90",
+        "type": "blob",
+        "sha": "f307f17e2fd20983432f91e91ac90aaae8311849"
+      },
+      {
+        "path": "src/adapter/mod_modflow6_fgc34_c_bridge.f90",
+        "type": "blob",
+        "sha": "5c5577715c9c150f72de7bfccaf966cd72db5add"
+      },
+      {
+        "path": "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
+        "type": "blob",
+        "sha": "2c9b686272e0124beaf09ed958a74ab1896a9884"
+      },
+      {
+        "path": "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+        "type": "blob",
+        "sha": "8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7"
+      },
+      {
+        "path": "src/adapter/mod_rossfast_application_config_file_adapter.f90",
+        "type": "blob",
+        "sha": "55dc1632eb4d72d52cc2e038765710801bee5dd2"
+      },
+      {
+        "path": "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+        "type": "blob",
+        "sha": "ba7547ec4c39f61c4724ed146e2b1ba9daf4baba"
+      },
+      {
+        "path": "src/adapter/modflow6_fgc34_ctypes_publisher.py",
+        "type": "blob",
+        "sha": "ccf16f446ae9aaab34dae6f432082d70569faad9"
+      },
+      {
+        "path": "src/adapter/modflow6_groundwater_application_service.py",
+        "type": "blob",
+        "sha": "c7ee72821b4ad9332e4efab20c1bab7abc366372"
+      },
+      {
+        "path": "src/adapter/modflow6_prepared_solve_session.py",
+        "type": "blob",
+        "sha": "b085ae0e4e5f09a7e59f735007d7c80e79d913b4"
+      },
+      {
+        "path": "src/adapter/modflow6_xmi_package_adapter.py",
+        "type": "blob",
+        "sha": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713"
+      },
+      {
+        "path": "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "type": "blob",
+        "sha": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da"
+      },
+      {
+        "path": "src/crop/mod_wofost81_assimilation.f90",
+        "type": "blob",
+        "sha": "be5865fbce5e128fbb9ecf62d10a59443878d821"
+      },
+      {
+        "path": "src/crop/mod_wofost81_crop_owner_state.f90",
+        "type": "blob",
+        "sha": "689ae451c7ddc3a8c61fbc27a7a5d5ac15e68b5d"
+      },
+      {
+        "path": "src/crop/mod_wofost81_daily_parameter_contract.f90",
+        "type": "blob",
+        "sha": "736f0b2645955ae2333bc17d259316d55106b990"
+      },
+      {
+        "path": "src/crop/mod_wofost81_leaf_structural_evolution.f90",
+        "type": "blob",
+        "sha": "c2338813d2d5d64454e17222afb6f7abff8c9c69"
+      },
+      {
+        "path": "src/crop/mod_wofost81_n_owner_state.f90",
+        "type": "blob",
+        "sha": "10019345b281cb00cffa4a74f8fa6cf4a1ae46ae"
+      },
+      {
+        "path": "src/crop/mod_wofost81_n_stress.f90",
+        "type": "blob",
+        "sha": "2c437012196db6a0886f6cd01101b5552013a952"
+      },
+      {
+        "path": "src/crop/mod_wofost81_nitrogen.f90",
+        "type": "blob",
+        "sha": "49d75092fd06920468eb8665a3e1138022d19751"
+      },
+      {
+        "path": "src/crop/mod_wofost81_one_day_candidate.f90",
+        "type": "blob",
+        "sha": "74055565400c501f8a9f0bbe12d5d235c3990b61"
+      },
+      {
+        "path": "src/crop/mod_wofost81_parameter_contract.f90",
+        "type": "blob",
+        "sha": "cb62f049db15ad116d91037f1b2aae817e528483"
+      },
+      {
+        "path": "src/crop/mod_wofost81_prepare_assimilation.f90",
+        "type": "blob",
+        "sha": "787773d17ad42c1651bf7e87c8731674d7193bcc"
+      },
+      {
+        "path": "src/crop/mod_wofost81_rate_correction.f90",
+        "type": "blob",
+        "sha": "b30939392ef5c20a6cebdec2db381a047b64bf6c"
+      },
+      {
+        "path": "src/kernel/mod_energy_conservation_types.f90",
+        "type": "blob",
+        "sha": "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+      },
+      {
+        "path": "src/process/mod_drainage_empirical_interflow_response.f90",
+        "type": "blob",
+        "sha": "eb53096b678d08b76d3fb1adb2247bc2a58ee748"
+      },
+      {
+        "path": "src/process/mod_drainage_ernst_ipos45_preparation.f90",
+        "type": "blob",
+        "sha": "fa1d5d400bb32be42e78889c0ff2a3bcab335142"
+      },
+      {
+        "path": "src/process/mod_drainage_ernst_ipos45_response.f90",
+        "type": "blob",
+        "sha": "b00ef0ae1f10182af2d0a8ea636d10b196e93379"
+      },
+      {
+        "path": "src/process/mod_drainage_hooghoudt_equivalent_depth.f90",
+        "type": "blob",
+        "sha": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108"
+      },
+      {
+        "path": "src/process/mod_drainage_hooghoudt_ipos1_response.f90",
+        "type": "blob",
+        "sha": "89f26e2d2b77bef5bdd0c5fdb2ce9ca1f03206fa"
+      },
+      {
+        "path": "src/process/mod_drainage_hooghoudt_ipos23_response.f90",
+        "type": "blob",
+        "sha": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164"
+      },
+      {
+        "path": "src/process/mod_drainage_multilevel_aggregation.f90",
+        "type": "blob",
+        "sha": "70d35512ef7c5958f7e4bf284cba104a7b641fdb"
+      },
+      {
+        "path": "src/process/mod_drainage_process.f90",
+        "type": "blob",
+        "sha": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+      },
+      {
+        "path": "src/process/mod_drainage_tabulated_response.f90",
+        "type": "blob",
+        "sha": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a"
+      },
+      {
+        "path": "src/process/mod_external_liquid_water_temperature.f90",
+        "type": "blob",
+        "sha": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf"
+      },
+      {
+        "path": "src/process/mod_linear_mixture_sensible_storage.f90",
+        "type": "blob",
+        "sha": "0403c23454a879356ce8d2345006df130484067d"
+      },
+      {
+        "path": "src/process/mod_liquid_water_sensible_enthalpy.f90",
+        "type": "blob",
+        "sha": "2247370ee34fac73a0e2d0b9fa15e171467aded3"
+      },
+      {
+        "path": "src/process/mod_pmdirect_swetr0_process.f90",
+        "type": "blob",
+        "sha": "3eb23d075a56ba1158f4758f75a8d94c94e09b39"
+      },
+      {
+        "path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+        "type": "blob",
+        "sha": "16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa"
+      },
+      {
+        "path": "src/process/mod_restricted_soil_temperature.f90",
+        "type": "blob",
+        "sha": "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+      },
+      {
+        "path": "src/process/mod_rutter_interception_process.f90",
+        "type": "blob",
+        "sha": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822"
+      },
+      {
+        "path": "src/process/mod_soil_temperature_contract.f90",
+        "type": "blob",
+        "sha": "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+      },
+      {
+        "path": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "type": "blob",
+        "sha": "6ff53ac9c97b7b4c42fa8043193aa03bb116bd13"
+      },
+      {
+        "path": "src/process/mod_whole_column_sensible_energy_accounting.f90",
+        "type": "blob",
+        "sha": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+      },
+      {
+        "path": "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+        "type": "blob",
+        "sha": "9212d600e89c85287e9280832c7e0a94befb642e"
+      },
+      {
+        "path": "src/runtime/mod_coupling_application_accuracy_contract.f90",
+        "type": "blob",
+        "sha": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+      },
+      {
+        "path": "src/runtime/mod_eb_i23_sensible_boundary_runtime.f90",
+        "type": "blob",
+        "sha": "35dda86ca51bd91040af0672a43e2961c8db64fd"
+      },
+      {
+        "path": "src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90",
+        "type": "blob",
+        "sha": "5f27ff7a4fa67a3991c622d960a7133857dab1c2"
+      },
+      {
+        "path": "src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90",
+        "type": "blob",
+        "sha": "fc88731c12c8af5136aad13bda2a7da3d768dc4c"
+      },
+      {
+        "path": "src/runtime/mod_energy_conservation_ledger.f90",
+        "type": "blob",
+        "sha": "cc166e82e51d8e0738fee51b4517626d0a2e890f"
+      },
+      {
+        "path": "src/runtime/mod_fmr_bottom_external_thermal_binding.f90",
+        "type": "blob",
+        "sha": "ed2a2ee36add299ebb5f8bde276da2f3b360cc28"
+      },
+      {
+        "path": "src/runtime/mod_fmr_bottom_external_thermal_provider.f90",
+        "type": "blob",
+        "sha": "885cc50ad1f5cfc17843e412c0f5dfdb989d553b"
+      },
+      {
+        "path": "src/runtime/mod_fmr_bottom_sensible_energy.f90",
+        "type": "blob",
+        "sha": "6c7e9b9ed77d116104fd6299a6404037a2548960"
+      },
+      {
+        "path": "src/runtime/mod_fmr_bottom_thermal_carrier.f90",
+        "type": "blob",
+        "sha": "c371be3e22eaa6da70ca8cbb060bc42d1e0e0bfb"
+      },
+      {
+        "path": "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90",
+        "type": "blob",
+        "sha": "481dc8cb1af683053614de3a11c4155acb34b413"
+      },
+      {
+        "path": "src/runtime/mod_fmr_drainage_response_binding.f90",
+        "type": "blob",
+        "sha": "76c2a2ea569a4e85e490ebd2e7fb89c28d8b3fb5"
+      },
+      {
+        "path": "src/runtime/mod_fmr_fixed_weir_serialized_runtime.f90",
+        "type": "blob",
+        "sha": "f81229c2f4ad766fb8606111ca965963ebba46fe"
+      },
+      {
+        "path": "src/runtime/mod_fmr_groundwater_application_context.f90",
+        "type": "blob",
+        "sha": "38d73025243c2ba94fb428aa43b1710e667b6895"
+      },
+      {
+        "path": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+        "type": "blob",
+        "sha": "8518d07982769cbe4184ef91c807f33ab5ef43ae"
+      },
+      {
+        "path": "src/runtime/mod_fmr_groundwater_participant_registry.f90",
+        "type": "blob",
+        "sha": "5425a3448de44157c8c273d0cd2116b7ef151378"
+      },
+      {
+        "path": "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+        "type": "blob",
+        "sha": "f57e431b77048ba853df847a9a2bce03c4db3ca2"
+      },
+      {
+        "path": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "type": "blob",
+        "sha": "ca5fd1cd5353ba18deae89b7e1178b1b9bb43435"
+      },
+      {
+        "path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+        "type": "blob",
+        "sha": "456c87437e83d1d362d41fbf9820e70d96353ff9"
+      },
+      {
+        "path": "src/runtime/mod_fmr_owned_commit_receipt.f90",
+        "type": "blob",
+        "sha": "2ab067d160715ff7358dd31efaa12694ef95852c"
+      },
+      {
+        "path": "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90",
+        "type": "blob",
+        "sha": "a6e1ed43bb9ee7cb13d088668c3874a11877980a"
+      },
+      {
+        "path": "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90",
+        "type": "blob",
+        "sha": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68"
+      },
+      {
+        "path": "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90",
+        "type": "blob",
+        "sha": "1a67d8a25727c2e821dd11e4853aa925e43cd95b"
+      },
+      {
+        "path": "src/runtime/mod_fmr_pmdirect_swinter0_dynamic_top_binding.f90",
+        "type": "blob",
+        "sha": "7d76af48cac085d6f4b5653987d75bfc54fb7692"
+      },
+      {
+        "path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "type": "blob",
+        "sha": "135803e056697a20aa3295721b02c77aba22367a"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rossfast_application_config.f90",
+        "type": "blob",
+        "sha": "5892d5b2573c678ab8d121ae80353870b66886d2"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rossfast_application_runtime.f90",
+        "type": "blob",
+        "sha": "a1af0d6eb0041565602711251748666f7b959d8e"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rossfast_application_selection.f90",
+        "type": "blob",
+        "sha": "5b652f04f172a8faa468d38faa23883ce6f35294"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rossfast_registry_dispatch.f90",
+        "type": "blob",
+        "sha": "7f900e75f4bea1c9b999464b7a8d4f7be4b35064"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90",
+        "type": "blob",
+        "sha": "cca61af52bde3eed12b756547277cc2776589648"
+      },
+      {
+        "path": "src/runtime/mod_fmr_rutter_output_application_binding.f90",
+        "type": "blob",
+        "sha": "1d9c702eee9cdc68f030c6e600b343f3b720ee46"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_kernel_backend.f90",
+        "type": "blob",
+        "sha": "29093b517bc6fdd40f32325018729c4c3dee6e85"
+      },
+      {
+        "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+        "type": "blob",
+        "sha": "daca18b77673608436425e81ecd397ef3e35e4b2"
+      },
+      {
+        "path": "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90",
+        "type": "blob",
+        "sha": "f0f3ce5c16a66c2058c22a529e176d6b06446649"
+      },
+      {
+        "path": "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90",
+        "type": "blob",
+        "sha": "299717757082ff06e98bd3aaec2c0b8b3013ea21"
+      },
+      {
+        "path": "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90",
+        "type": "blob",
+        "sha": "5742147b8b3ace2ec40b5295c4df915e9787ea3f"
+      },
+      {
+        "path": "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+        "type": "blob",
+        "sha": "fb8744fb00439b6eb35a679f1a77b4547a9978d2"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_accuracy_binding.f90",
+        "type": "blob",
+        "sha": "b8ac03e810c73519b433f7851c6fd143ba26676a"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_application_plan.f90",
+        "type": "blob",
+        "sha": "09adfe388804175bb1b0a7072db3926f87c8ce46"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_coupled_restart.f90",
+        "type": "blob",
+        "sha": "0596933ff3ae89c61ab7a0913189a4fa3179e50b"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_coupling_contract.f90",
+        "type": "blob",
+        "sha": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_coupling_policy.f90",
+        "type": "blob",
+        "sha": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_coupling_response.f90",
+        "type": "blob",
+        "sha": "645141676536ae8289b9d52433798a965c7baa04"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_exchange_service_contract.f90",
+        "type": "blob",
+        "sha": "e99ae052fccd9992b76c12a91422a987dce059e2"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+        "type": "blob",
+        "sha": "a867e04b088f61f686f693d07e470c3e9c33bdec"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_coupler.f90",
+        "type": "blob",
+        "sha": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_publication.f90",
+        "type": "blob",
+        "sha": "02bc938fac28231c2c1234dd4ac3c3f8ba617983"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_swap_phase.f90",
+        "type": "blob",
+        "sha": "9a69effc9433363e52fcf8d5b40fa2c5d01347a9"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_topology.f90",
+        "type": "blob",
+        "sha": "2ce4e9f7083c46e7040493d3029abfc233f59f16"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_transaction.f90",
+        "type": "blob",
+        "sha": "d7d9fa81d9d3d5e619e51625f202a8e425807eda"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_multiswap_types.f90",
+        "type": "blob",
+        "sha": "35f475228886bf04d64efb13bbd84a42bc2678ad"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_predictor_corrector_window.f90",
+        "type": "blob",
+        "sha": "fa2a5a45d558fbaaea242438915cdb7420b6503c"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+        "type": "blob",
+        "sha": "fb8fd6a5447edd4fa4f664cd754c93d7db331969"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+        "type": "blob",
+        "sha": "f3bf2effebc772b1e3417232d2baabe49ebb8da0"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+        "type": "blob",
+        "sha": "52668b12d5eb7e8a3cd852725a4e6bff5ee17fea"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_tile_aggregation.f90",
+        "type": "blob",
+        "sha": "d62ecba039d9bef178acde6900b81e9d5b0931eb"
+      },
+      {
+        "path": "src/runtime/mod_groundwater_topology_composition.f90",
+        "type": "blob",
+        "sha": "e43806fdd8db666183c14d8a5c83a24ab9cffa12"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_api_binding.f90",
+        "type": "blob",
+        "sha": "780ed4bf3a8bdf067db40f4aedd800832144eca6"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_linear_response_backend.f90",
+        "type": "blob",
+        "sha": "afa5ab2997af80f503b7f618705625ce873f673a"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+        "type": "blob",
+        "sha": "288a274612f6c0be0b3ced149028066a066908ca"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90",
+        "type": "blob",
+        "sha": "f32453168667917a06d8fde483887e1e9a5cbffd"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_swap_predictor_origin.f90",
+        "type": "blob",
+        "sha": "b7bc66ad473ae404f5c0b1e54b0a70d536038c33"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+        "type": "blob",
+        "sha": "e16c9935670643fbbbcb9388eb52ba698764c493"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90",
+        "type": "blob",
+        "sha": "2d5342b45a61c9426d2b589b285050b648d141b9"
+      },
+      {
+        "path": "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90",
+        "type": "blob",
+        "sha": "15c859e5cb62ba8442879fdec153438e4aadff89"
+      },
+      {
+        "path": "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+        "type": "blob",
+        "sha": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+      },
+      {
+        "path": "src/runtime/mod_rossfast_d3r_kernel_model_adapter.f90",
+        "type": "blob",
+        "sha": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e"
+      },
+      {
+        "path": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+        "type": "blob",
+        "sha": "5442fd7e7a2f392c9b796cd17c76b17977259f22"
+      },
+      {
+        "path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+        "type": "blob",
+        "sha": "b1e794d2f0e661a2abb14280a59175e1cf1d5724"
+      },
+      {
+        "path": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "type": "blob",
+        "sha": "42fb85a03e6835a839574bf6d4b4c01472a01236"
+      },
+      {
+        "path": "src/solver/mod_b110_smooth_freatic_projection.f90",
+        "type": "blob",
+        "sha": "e83c1013a1d96508740619a71cfa1dbfdd665d61"
+      },
+      {
+        "path": "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+        "type": "blob",
+        "sha": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+      },
+      {
+        "path": "src/solver/mod_rossfast_d3r_table_kernel.f90",
+        "type": "blob",
+        "sha": "438ee46e012e9eb183b8f2532437e2fe56aa18ed"
+      },
+      {
+        "path": "src/solver/mod_rossfast_d3r_table_provider.f90",
+        "type": "blob",
+        "sha": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+      },
+      {
+        "path": "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+        "type": "blob",
+        "sha": "b5a0276d2f1b2c8ffe581e68dffecdaf55a32768"
+      },
+      {
+        "path": "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+        "type": "blob",
+        "sha": "b1be9af9ece045cac1fd17087e6b08bc615bd733"
+      },
+      {
+        "path": "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+        "type": "blob",
+        "sha": "d267a763ceb697557e762c937a99b7f11cb44684"
+      },
+      {
+        "path": "src/transaction/mod_accepted_trajectory_transaction_binding.f90",
+        "type": "blob",
+        "sha": "3cd25cfecb75f0e6ba7cb537859d6d738097abe8"
+      }
+    ],
+    "deleted": [],
+    "modified": [
+      {
+        "path": "src/adapter/mod_b110_serialized_context_binding.f90",
+        "type": "blob",
+        "old_sha": "e21c964eac48d5feb91388cfd06a646c4002a497",
+        "new_sha": "58fa665b16851448d3901bb9a46cc23c74797d3a"
+      },
+      {
+        "path": "src/adapter/mod_b1_10_recoverable_reference_model.f90",
+        "type": "blob",
+        "old_sha": "e4a37554359f25efb120f55eea7465559a94938d",
+        "new_sha": "b1519c72d11f1f31d96874dbbdafd7422dd400c9"
+      },
+      {
+        "path": "src/adapter/mod_b1_10_reference_model.f90",
+        "type": "blob",
+        "old_sha": "366a4df93a829413bed552b050ca723544e31ce4",
+        "new_sha": "b6df103027842857d64baefe23247777725d564d"
+      },
+      {
+        "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "type": "blob",
+        "old_sha": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+        "new_sha": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53"
+      },
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "type": "blob",
+        "old_sha": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+        "new_sha": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11"
+      },
+      {
+        "path": "src/legacy/b1_10_port/headcalc.f90",
+        "type": "blob",
+        "old_sha": "55893f1f5ccba2052ad681743aa155b69f351246",
+        "new_sha": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55"
+      },
+      {
+        "path": "src/legacy/b1_10_port/soilwater.f90",
+        "type": "blob",
+        "old_sha": "470bc81a380e114d70fecd75426ec2331c1c9fcc",
+        "new_sha": "2ab6ea917525cd6f2560860bd55aec1da16be014"
+      },
+      {
+        "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+        "type": "blob",
+        "old_sha": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+        "new_sha": "f96a66c0185d96ba48258f8560db275fa7fed58c"
+      },
+      {
+        "path": "src/runtime/mod_canonical_contracts.f90",
+        "type": "blob",
+        "old_sha": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+        "new_sha": "3962c270a7579b7403764674302445fe15ef5f72"
+      },
+      {
+        "path": "src/runtime/mod_canonical_interval_runtime.f90",
+        "type": "blob",
+        "old_sha": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+        "new_sha": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee"
+      },
+      {
+        "path": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+        "type": "blob",
+        "old_sha": "232875e7192f995930c102609cee08dc8938c86a",
+        "new_sha": "0dceaa2d108d5c7e1263e0f424a056a8df585908"
+      },
+      {
+        "path": "src/runtime/mod_fmr_restart_state_contract.f90",
+        "type": "blob",
+        "old_sha": "f1359f97d02408d8b700b0c93fe961a6ba46742c",
+        "new_sha": "872c28bbc345f40073396cce57e4eb43c71de850"
+      },
+      {
+        "path": "src/runtime/mod_fmr_runtime_core.f90",
+        "type": "blob",
+        "old_sha": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+        "new_sha": "43eef1979e0202f8ecc92f73eb7d8025dab515a4"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+        "type": "blob",
+        "old_sha": "f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+        "new_sha": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "type": "blob",
+        "old_sha": "9af5a494526810324dc00706b444e448e770cba9",
+        "new_sha": "5d63f91b37443952b4a96292925f645aae0b22d1"
+      },
+      {
+        "path": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90",
+        "type": "blob",
+        "old_sha": "bc40bc6b121f56071d2b811195759f86130defeb",
+        "new_sha": "b8ff1fb1d9434e952163b6955305c6373dd8ac82"
+      },
+      {
+        "path": "src/solver/mod_b110_default_mvg_provider.f90",
+        "type": "blob",
+        "old_sha": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+        "new_sha": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739"
+      },
+      {
+        "path": "src/solver/mod_reference_linear_solver.f90",
+        "type": "blob",
+        "old_sha": "b292d284e5549049eac1c80df4cc30008154eb96",
+        "new_sha": "5b6ecd2341b315967bcfac6b879c3afe227fb245"
+      },
+      {
+        "path": "src/solver/mod_reference_richards_state_binding.f90",
+        "type": "blob",
+        "old_sha": "e68d88382c6502c571713cc97fddd4e18434e271",
+        "new_sha": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+      },
+      {
+        "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+        "type": "blob",
+        "old_sha": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+        "new_sha": "b648502dea7dfd5de8279bcfa06908c705dcfd2f"
+      },
+      {
+        "path": "src/solver/mod_reference_richards_workspace.f90",
+        "type": "blob",
+        "old_sha": "59ef9d037c1875610d45ac83387ebab9e917e0fe",
+        "new_sha": "74f99556005ae39614f9df678467b1e19097bae2"
+      },
+      {
+        "path": "src/solver/mod_soil_water_solver_contract.f90",
+        "type": "blob",
+        "old_sha": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+        "new_sha": "40a1ddc05fb8e2c1822763de645fd07a094568a3"
+      },
+      {
+        "path": "src/transaction/mod_transaction_reference.f90",
+        "type": "blob",
+        "old_sha": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+        "new_sha": "d5a71a526efaebd82054580c3186f8e3545db331"
+      }
+    ]
+  },
+  "reference": {
+    "added_count": 3,
+    "deleted_count": 0,
+    "modified_count": 7,
+    "added": [
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/apply_and_verify.py",
+        "type": "blob",
+        "sha": "6794ac01da3374a5f75518ecf99f2ac5da1adaf3"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/fix.patch",
+        "type": "blob",
+        "sha": "a609f6f1fd261798c40493b946663781af3d9804"
+      },
+      {
+        "path": "reference/swap-4.3.1/snapshots/B1.11.yml",
+        "type": "blob",
+        "sha": "21f5c6aaf6544ea6f657b31215ea59fe373ff4f0"
+      }
+    ],
+    "deleted": [],
+    "modified": [
+      {
+        "path": "reference/swap-4.3.1/README.md",
+        "type": "blob",
+        "old_sha": "62cc4eb87db9db1e105c31fc77529ea150b35768",
+        "new_sha": "ab1b321f9ae38a6dd61016a9a64a0679e4fa16a7"
+      },
+      {
+        "path": "reference/swap-4.3.1/b1-manifest.yml",
+        "type": "blob",
+        "old_sha": "cf793c8df7b0cb2911c5e9794563e073d29f53e5",
+        "new_sha": "d6ae17800f5f09e0c1a41ca66a4df72c7abcfc0b"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/ADMISSION_CHECKLIST.md",
+        "type": "blob",
+        "old_sha": "6681025bc09caea5e21b0e7b709696ec93cf92f1",
+        "new_sha": "d9da0890c6073d3b9badd0124df66a9a304f7a34"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/PATCH_PROVENANCE.md",
+        "type": "blob",
+        "old_sha": "c34af7a3241f52977962b3c5b1fedf37d4d48a1c",
+        "new_sha": "5bf7bdfb040fc64f1096ea1198845ee12c2d6ecd"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/README.md",
+        "type": "blob",
+        "old_sha": "f92906d179f578b0b2f0f381ebdab85adb256df4",
+        "new_sha": "87f20a7ab475309c88b85ab94f2f4c31c14bf85c"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/finding.md",
+        "type": "blob",
+        "old_sha": "4ff4bb6e90406bdfe62a25bbda4d6bae0a5717c3",
+        "new_sha": "acff76dc299b46ecb9e6f7d1f965b60a2b5a6ff9"
+      },
+      {
+        "path": "reference/swap-4.3.1/patches/SWAP-011/qualification.md",
+        "type": "blob",
+        "old_sha": "b0dd8e5a3ad812c8e18cac3c96108ace3bf64162",
+        "new_sha": "94821a2e4508526c11ed3e2e49a232a6a3999835"
+      }
+    ]
+  },
+  "governance_rule": "Any final successor release must cite RB1, preserve this or a subsequently regenerated exact delta for its own source tree, and run its own qualification. This file does not authorize a release identifier or licence."
+}
