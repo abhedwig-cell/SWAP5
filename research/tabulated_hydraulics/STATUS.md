@@ -35,27 +35,27 @@ A table-resolution sweep gave:
 | 400 | 6.18122e-7 | 1.19833e-5 |
 | 800 | 1.99463e-7 | 1.19108e-5 |
 
-This says that a very dense table is not automatically necessary for this smooth test function. Around 100 points, the conductivity interpolation error in this test is already close to the residual error floor of the current interpolation/transformation policy.
+For this smooth constitutive curve, very dense tables are therefore not required for interpolation fidelity. Around 100 input points, the conductivity error is already close to the residual error floor of the current interpolation/transformation policy.
 
-### 2. The 36-file BOFEK2012/Staring set exposes one input-table defect
+### 2. The complete 36-file BOFEK2012/Staring set exposes one source-table incompatibility
 
-The complete public BOFEK2012/Staring table set in `Murilodsv/SWAP-SAMUCA` was checked against the admission rules implemented by current `ReadSwap`.
+The complete public BOFEK2012/Staring table set in `Murilodsv/SWAP-SAMUCA` was checked against the actual strict-increase rules implemented by current `ReadSwap`.
 
 Results:
 
 - 36 tables inspected;
-- 35 are admissible under the current strict-increase checks;
+- 35 are admissible;
 - `starb4_cm.csv` is rejected because theta decreases near saturation;
-- the first violation occurs at row 446 and the decrease continues through the final h=0 row;
-- all 35 admissible tables completed the actual interpolation preprocessing and midpoint characterization;
+- all 35 admissible tables completed the actual preprocessing;
+- each interval was sampled at nine interior locations, not only at its midpoint;
 - total theta overshoots = 0;
 - total K overshoots = 0;
-- global minimum C = `4.33786093674867725e-12`, positive;
-- global minimum dK/dh = `2.27733862942200173e-23`, positive.
+- global minimum C = `3.95537127817299401e-12`, positive;
+- global minimum dK/dh = `1.77925057428754186e-23`, positive.
 
-For `starb4_cm.csv`, theta changes from `0.41959083171` at h=`-1.0964781961 cm` to `0.41959082646` at h=`-1.0715193052 cm`, and then continues decreasing to `0.41957607059` at saturation. The current reader explicitly requires theta to increase with increasing pressure head, so this table cannot be loaded unchanged.
+For `starb4_cm.csv`, the first detected decrease is from theta `0.41959083171` at h=`-1.0964781961 cm` to `0.41959082646` at h=`-1.0715193052 cm`; the decrease continues towards the final saturated value `0.41957607059`.
 
-Thus the interpolator behaves regularly for all 35 tables that satisfy the current input contract, but the public table collection itself is not fully compatible with that contract.
+Thus the current interpolator behaves regularly for every table in this set that actually satisfies the current input contract. The table collection itself is not fully compatible with that contract.
 
 ### 3. The legacy-input table route is hydrologically faithful for Hupsel with SWKIMPL=0
 
@@ -66,80 +66,122 @@ A full 2002-2004 Hupsel run was executed with daily output for:
 
 Both completed normally with 1096 daily result rows. Differences were very small:
 
-- GWL max absolute difference: `1.8e-4 cm`;
+- GWL maximum absolute difference: `1.8e-4 cm`;
 - GWL RMSE: `6.80e-6 cm`;
-- DSTOR max absolute difference: `1e-5 cm`;
-- rainfall, irrigation, runoff, drainage, QBOTTOM, EPOT, EACT, TPOT and TACT matched at the written output precision.
+- DSTOR maximum absolute difference: `1e-5 cm`;
+- rainfall, irrigation, runoff, drainage, QBOTTOM, EPOT, EACT, TPOT and TACT matched at written output precision.
 
-This is strong bounded evidence that the existing tabulated route can reproduce the analytical Hupsel response when the table is generated from the same constitutive functions and `SWKIMPL=0` is used.
+This is strong bounded evidence that the existing table route can reproduce the analytical Hupsel response when the table is generated from the same constitutive functions and `SWKIMPL=0` is used.
 
-### 4. The current implementation is not faster in the Hupsel control
+### 4. Table density strongly affects fidelity, but hardly affects runtime in the current implementation
 
-A repeated full-period benchmark used ten alternating analytical/table runs after one warm-up per route.
+A full-period Hupsel sweep varied the table generator from 30 to 900 candidate pressure-head points. After removal of the repeated near-saturated Ksat values, this produced from 22/20 to 638/572 actual rows for the top/subsoil.
+
+Selected results against the analytical `SWKIMPL=0` control:
+
+| candidate points | actual rows top/sub | GWL max abs (cm) | GWL RMSE (cm) | runtime (s, single run) |
+| ---: | ---: | ---: | ---: | ---: |
+| 30 | 22 / 20 | 0.53839 | 0.11585 | 1.52 |
+| 40 | 29 / 26 | 0.14469 | 0.03147 | 1.53 |
+| 50 | 36 / 33 | 0.06199 | 0.00967 | 1.53 |
+| 75 | 54 / 48 | 0.00751 | 0.000984 | 1.52 |
+| 100 | 72 / 64 | 0.00207 | 0.000340 | 1.54 |
+| 150 | 107 / 96 | 0.00046 | 0.000120 | 1.53 |
+| 250 | 178 / 159 | 0.00018 | 0.0000109 | 1.54 |
+| 900 | 638 / 572 | 0.00018 | 0.00000680 | 1.59 |
+
+The analytical control took `1.44 s` in the same sweep. This is exploratory timing because each density was run only once, but the pattern is clear enough to reject one simple hypothesis: reducing the number of rows by an order of magnitude does not make the existing table engine faster than the analytical route.
+
+A separate ten-pair alternating benchmark of the dense table route gave:
 
 - analytical median: `1.41755 s`;
 - table median: `1.56812 s`;
 - median table/analytical runtime ratio: `1.10597`;
 - median table runtime delta: `+10.60%`.
 
-So the present table implementation is about 11% slower in this case. This does not rule out a faster table design, fewer points, a different interpolation method, vectorization, caching, or a workload where constitutive evaluation dominates more strongly. It does rule out treating the existing table option itself as an already demonstrated acceleration.
+The present table implementation is therefore not an acceleration. If a fast table route exists, the likely target is the per-evaluation interpolation/lookup method rather than merely reducing table length.
 
-### 5. SWKIMPL=1 is not qualified for the table route
+### 5. TAB-HYD-001: the table dK/dh endpoint policy is inconsistent with the residual K policy
 
-For a 31-day Hupsel test:
+The existing table `hconduc` route extends K as a constant outside the tabulated theta range:
 
-- analytical `SWKIMPL=1` completed;
-- tabulated `SWKIMPL=1` timed out after 20 s;
-- the same tabulated case with only the saturated table derivative sentinel changed from `dK/dh = 1e8` to `0` completed in about 0.17 s.
+- wet side: use the last tabulated K;
+- dry side: use the first tabulated K.
 
-The public wrapper explicitly returns `dK/dh = 1e8` when theta is within `1e-9` of the last tabulated theta. The executable diagnostic therefore identifies this sentinel as a direct cause of the observed table-route stall in this Hupsel experiment.
+The corresponding `dhconduc` route does something else:
 
-However, `SWKIMPL=1` itself is not a clean reference control in this pre-strangler runtime: the analytical `SWKIMPL=0` and `SWKIMPL=1` Hupsel runs show very large GWL differences. The table `SWKIMPL=1` route therefore remains **not qualified**, and the sentinel experiment must not be treated as a production fix or as proof of analytical/table equivalence under `SWKIMPL=1`.
+- wet side: return `1e8`;
+- dry side: continue into the table derivative evaluator, which can address table index 0.
 
-### 6. A dry-side dK/dh bounds defect is reproducible
+This violates the Jacobian-consistency rule already established by SWAP-011: the derivative used by implicit Richards must be the derivative of the actual K relation used in the residual. The derivative of the existing constant endpoint extension is zero.
 
-A direct call through the current public wrapper at a very dry pressure head (`h=-1e8 cm`) gives finite theta, C and K, but the dK/dh table evaluation reaches table index 0. With bounds checking this reproduces:
+The finding is recorded separately in `TAB-HYD-001-endpoint-derivative-finding.md`.
 
-`Index '0' of dimension 3 of array 'sptab' below lower bound of 1`.
+### 6. A bounded zero-endpoint dK/dh candidate removes both reproduced endpoint failures
 
-The dry-side derivative extrapolation therefore has a real bounds defect even though the theta and K extrapolation paths themselves remain finite in the same probe.
+A research-only candidate was tested in which `dhconduc=0` when theta is at or beyond either tabulated endpoint, while the interior interpolation remains unchanged.
 
-### 7. Current public typed production reachability
+Bounds-checked/current-wrapper probes then gave:
 
-Source audit of `c22bd832...` already shows a capability gap:
+- near-saturated dK/dh = `0`;
+- dry probe at h=`-1e8 cm`: finite theta, C and K, and dK/dh = `0`;
+- the previous dry-side `sptab(...,0)` bounds failure was no longer reached.
+
+The candidate also completed full 2002-2004 Hupsel runs for both table `SWKIMPL=0` and table `SWKIMPL=1`. Comparing those two numerical routes over 1096 daily outputs gave:
+
+- GWL max absolute difference: `0.62579 cm`;
+- GWL RMSE: `0.04348 cm`;
+- DRAINAGE max absolute difference: `0.00732 cm`;
+- DSTOR max absolute difference: `0.00733 cm`;
+- TACT max absolute difference: `0.00266 cm`;
+- RAIN, IRRIG, RUNOFF, QBOTTOM, EPOT, EACT and TPOT matched at written precision.
+
+This closes the two reproduced endpoint failure mechanisms for the tested current/public lineage and shows that the corrected table `SWKIMPL=1` route can complete a three-year realistic case.
+
+It does **not** yet justify a production/B1 fix claim. Exact SWAP 4.3.1 B0 execution remains unavailable in this workstream because the canonical raw archive cannot currently be materialized through the available file path. Also, `SWKIMPL=0` and `SWKIMPL=1` are distinct numerical linearizations, so their non-zero long-run difference requires an acceptance rule rather than an expectation of bit identity.
+
+### 7. Current public typed production reachability remains a separate blocker
+
+Source audit of `c22bd832...` shows:
 
 - `soil.swsophy` accepts value 1;
 - the typed soil schema has no table-file/table-data field corresponding to legacy `FILENAMESOPHY`;
 - `config_to_variables` does not populate `numtablay`, `sptablay` or `ientrytablay`;
 - `Initialize` explicitly zeros `numtablay` and `sptablay`;
-- the `swsophy=1` branch in `soilhydraulics.f90` immediately consumes those arrays and indexes the final table entry via `numtab(node)`.
+- the `swsophy=1` branch immediately consumes those arrays.
 
-The executable current-public production-path probe is now closed. On the same 31-day Hupsel control and the same bounds-checked binary:
+On the same 31-day Hupsel control and bounds-checked current-public binary:
 
 - `SWSOPHY=0` completed normally with return code 100;
-- changing only the typed input switch to `SWSOPHY=1` produced no runtime log and timed out after 20 s.
+- changing only the typed switch to `SWSOPHY=1` timed out after 20 s.
 
-This binds the source-audit gap to executable behavior: `SWSOPHY=1` is **not production-executable through the current typed SWAP input path**. The current schema accepts the switch but supplies none of the table state consumed by the solver.
+Thus `SWSOPHY=1` is **not production-executable through the current typed SWAP input path**. This capability gap is independent of TAB-HYD-001.
 
 ## Source-authority boundary
 
-The executable end-to-end experiments above use the public/transitional SWAP source lineage whose current table engine is byte-identical between the tested pre-strangler and current-public pins. They are not yet an execution of the immutable supplied SWAP 4.3.1 B0 archive.
+The executable end-to-end experiments use the public/transitional SWAP source lineage. They are not yet executions of the immutable supplied SWAP 4.3.1 B0 archive.
 
-Canonical SWAP5 authority defines B0 by the supplied `SWAP_4.3.1.zip` SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360` and nested source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`. The canonical repository also records that a byte-identical unpacked B0 source mirror is still pending because the source archive contains non-UTF-8 bytes and the historical baseline must not be silently re-encoded.
+Canonical SWAP5 authority defines B0 by:
 
-Therefore these results establish the behavior of the current/public table implementation and the tested legacy-input lineage. A final claim specifically about the exact supplied 4.3.1 B0 binary/source still requires running the same gates through `tools/vq/b0_source_runner.py` against the canonical raw archive.
+- supplied `SWAP_4.3.1.zip` SHA-256 `2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360`;
+- nested source archive SHA-256 `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
+
+The canonical repository records that a byte-identical unpacked B0 source mirror is still pending because the source contains non-UTF-8 bytes and the historical baseline must not be silently re-encoded.
+
+The intended derivative rule itself has stronger repository authority: admitted finding SWAP-011 states that the implicit Richards Jacobian must differentiate the actual conductivity function used in the residual. TAB-HYD-001 applies that same consistency rule to the table endpoint extension.
+
+A final claim specifically about exact supplied 4.3.1 B0 still requires running the table gates through the exact archive authority.
 
 ## Current disposition
 
-The table option is **not globally "broken"**, but neither is it currently safe to call it a generally working production option.
+The functional question can now be split cleanly:
 
-The bounded conclusion is:
+1. **Interior table interpolation:** works well for the tested smooth constitutive curve and for all 35 admissible tables in the tested BOFEK2012/Staring set.
+2. **Legacy-input, SWKIMPL=0:** works and reproduces the analytical Hupsel control very closely.
+3. **Existing performance:** not faster. Dense tables are about 11% slower in the repeated Hupsel benchmark, and sparse tables do not remove that disadvantage.
+4. **Endpoint derivative implementation:** contains a real Jacobian-consistency defect. A zero-endpoint derivative candidate removes both the dry bounds failure and the wet-side `SWKIMPL=1` stall in the tested lineage.
+5. **Exact B0 authority:** not yet executed for this finding.
+6. **Current typed production route:** cannot currently supply table state and therefore cannot use `SWSOPHY=1` operationally.
+7. **Table library quality:** `starb4_cm.csv` must be corrected or excluded before the complete 36-file public set can be treated as ReadSwap-compatible.
 
-1. the core table interpolation is numerically well behaved for the tested normal range and for all 35 BOFEK2012/Staring tables that satisfy the current ReadSwap input contract;
-2. the legacy-input route works very accurately for Hupsel with `SWKIMPL=0`;
-3. the existing implementation is slower, not faster, in the repeated Hupsel benchmark;
-4. the table route has a reproducible dry-side derivative bounds defect;
-5. the `SWKIMPL=1` table route has a reproducible severe convergence/runtime defect associated with the saturated dK/dh sentinel and is not qualified;
-6. the current public typed production input path accepts `SWSOPHY=1` but does not provide the required table state; the bounded executable probe stalls and times out.
-
-No production admission or performance claim should be made until points 4-6 are resolved or explicitly excluded from the intended application envelope. In addition, `starb4_cm.csv` must be corrected or deliberately excluded before the 36-file BOFEK2012/Staring set can be treated as a valid table library.
+The next acceleration question should therefore not be “how many table rows should we use?” The evidence points instead to: **can a much cheaper lookup/interpolation representation preserve the hydrologically required fidelity while outperforming direct analytical constitutive evaluation?**
