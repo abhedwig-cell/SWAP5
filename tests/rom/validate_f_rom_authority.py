@@ -2218,6 +2218,125 @@ def validate_romv2_d23_if_present() -> str:
     return "CLOSED_SHORT_NATIVE_RAINFALL_TRAJECTORY_CANDIDACY_RETAINED_RELATIVE_TO_R2"
 
 
+def validate_romv2_d24_if_present() -> str:
+    status_path=Path("integration/f-rom/F-ROMV2_D24_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D24_PREREGISTRATION.json")=="3fe9b67722aa82aa62f8c55dc1a10df399b61816",
+            "F-ROMV2-D24 preregistration blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D24_RESULT.json")=="49da0f933ba6064b14ee499445523674c34f4bc1",
+            "F-ROMV2-D24 result blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D24_STATUS.json")=="fb4f06f7f493515c45c76a399a088c554bfce02d",
+            "F-ROMV2-D24 status blob drift")
+    require(git("rev-parse","HEAD:integration/f-rom/F-ROMV2_D24_CANONICAL_EVIDENCE_MANIFEST.json")=="f2567f54eaf42943eb321df8e4970aeb1fe87b33",
+            "F-ROMV2-D24 manifest blob drift")
+
+    prereg=load_json("integration/f-rom/F-ROMV2_D24_PREREGISTRATION.json")
+    result=load_json("integration/f-rom/F-ROMV2_D24_RESULT.json")
+    status=load_json("integration/f-rom/F-ROMV2_D24_STATUS.json")
+    manifest=load_json("integration/f-rom/F-ROMV2_D24_CANONICAL_EVIDENCE_MANIFEST.json")
+    d13=load_json("integration/f-rom/F-ROMV2_D13_STATUS.json")
+    d17=load_json("integration/f-rom/F-ROMV2_D17_STATUS.json")
+    d23=load_json("integration/f-rom/F-ROMV2_D23_STATUS.json")
+    doc=Path("docs/science/F-ROMV2_D24_NATIVE_RAIN_GROUNDWATER_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"]=="PREREGISTERED_BEFORE_FMC_INTERNAL_PREFLIGHT_AND_RICHARDS_TRAJECTORY_EXECUTION",
+            "F-ROMV2-D24 phase drift")
+    require([h["rainfall_factor_Ksat"] for h in prereg["histories"]]==[0.5,2.0,4.0],
+            "F-ROMV2-D24 rainfall factors drift")
+    require(prereg["temporal_contract"]["rainfall_steps"]==16
+            and prereg["temporal_contract"]["total_steps"]==16
+            and prereg["temporal_contract"]["hiatus_steps"]==0,
+            "F-ROMV2-D24 temporal contract drift")
+    require(prereg["initial_composite_state"]["groundwater_component"]["lambda"]==0.25
+            and prereg["R16_R2_route"]["bottom_boundary"]=="mode 5, fixed zero pressure head at 160 cm",
+            "F-ROMV2-D24 groundwater envelope drift")
+    require(prereg["decision_logic"]["R16_threshold_equivalence_required"] is False,
+            "F-ROMV2-D24 threshold-equivalence boundary drift")
+    require("NO_CONTACT_OR_MERGE_IN_D24" in prereg["firewalls"]
+            and "NO_RAINFALL_FACTOR_OR_DURATION_RETUNING" in prereg["firewalls"]
+            and "NO_LAMBDA_OR_INITIAL_COMPOSITE_STATE_RETUNING" in prereg["firewalls"]
+            and "NO_FMC_BIN_OR_PROCESS_STEP_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D24 anti-retuning firewall drift")
+
+    require(result["decision"]=="FMC_NATIVE_RAINFALL_GROUNDWATER_COMPOSITION_RETAINS_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+            "F-ROMV2-D24 decision drift")
+    require(result["execution"]["preflight"]["decision"]=="D24_FMC_NATIVE_RAIN_GW_PREFLIGHT_PASS"
+            and result["execution"]["preflight"]["R16_R2_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D24 staged preflight authority drift")
+    require(result["integrity"]["pass"] is True
+            and result["integrity"]["minimum_FMC_surface_groundwater_separation_cm"]>0.0
+            and result["integrity"]["contact_merge_count"]==0,
+            "F-ROMV2-D24 integrity/separation drift")
+    require(result["preregistered_frontier_gates"]["all_required_pass"] is True
+            and all(v is True for k,v in result["preregistered_frontier_gates"].items() if k!="all_required_pass"),
+            "F-ROMV2-D24 frontier gate drift")
+    require(result["pooled_metrics_vs_R16"]["FMC"]["mapped_R16_cell_theta_rmse"]
+            < result["pooled_metrics_vs_R16"]["R2"]["mapped_R16_cell_theta_rmse"]
+            and result["pooled_metrics_vs_R16"]["FMC"]["cumulative_bottom_exchange_rmse_cm"]
+            < result["pooled_metrics_vs_R16"]["R2"]["cumulative_bottom_exchange_rmse_cm"]
+            and result["pooled_metrics_vs_R16"]["FMC"]["terminal_bottom_flux_rmse_cm_per_day"]
+            < result["pooled_metrics_vs_R16"]["R2"]["terminal_bottom_flux_rmse_cm_per_day"],
+            "F-ROMV2-D24 key profile/groundwater advantage drift")
+    require(result["diagnostic_caveat"]["R2_upper_storage_rmse_better_than_FMC"] is True
+            and result["pooled_metrics_vs_R16"]["R2"]["upper_storage_rmse_cm"]
+            < result["pooled_metrics_vs_R16"]["FMC"]["upper_storage_rmse_cm"],
+            "F-ROMV2-D24 upper-zone caveat drift")
+    require(result["scientific_interpretation"]["general_FMC_acceptance"] is False
+            and result["scientific_interpretation"]["application_acceptance"] is False
+            and result["scientific_interpretation"]["formal_performance_claim"] is False
+            and result["scientific_interpretation"]["live_groundwater_coupling_qualified"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D24 overclaims authority")
+
+    require(status["phase"]=="CLOSED_NATIVE_RAIN_GROUNDWATER_COMPOSITION_CANDIDACY"
+            and status["preflight_pass"] is True
+            and status["trajectory_integrity_pass"] is True
+            and status["all_eight_preregistered_frontier_gates_pass"] is True
+            and status["comparative_frontier_retained"] is True,
+            "F-ROMV2-D24 terminal status drift")
+    require(status["application_acceptance"] is False
+            and status["formal_performance_claim"] is False
+            and status["live_groundwater_coupling_qualified"] is False
+            and status["post_result_retuning_authorized"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D24 status boundary drift")
+
+    require(d13["decision"]=="FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+            "F-ROMV2-D24 reclassifies D13")
+    require(d17["decision"]=="FMC_COMBINED_SURFACE_GROUNDWATER_RETAINS_RESEARCH_CANDIDACY",
+            "F-ROMV2-D24 reclassifies D17")
+    require(d23["decision"]=="FMC_SHORT_RAINFALL_TRAJECTORY_RETAINS_FAST_SURFACE_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+            "F-ROMV2-D24 reclassifies D23")
+
+    require(manifest["canonical_import_scope"]=="EVIDENCE_ONLY"
+            and manifest["source_execution"]["pull_request_merged"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["post_result_retuning"] is False,
+            "F-ROMV2-D24 provenance drift")
+    require(manifest["frozen_payload_digests"]["result_sha256"]
+            =="649dd06a588972c382634e8d7247e196a78409f4d590d675469b3ba01fca9ede"
+            and manifest["frozen_payload_digests"]["R16_o0_o2_sha256"]
+            =="c0571d38427e4122a6376afb9f24aa6a1c625b2ba2524f81542c5dca3bb0c826"
+            and manifest["frozen_payload_digests"]["R2_o0_o2_sha256"]
+            =="a1fec425c91e5131bccb53874ed4f8d82c65a62d8e8e3a6b901806b710e20748",
+            "F-ROMV2-D24 immutable payload digest drift")
+    require(manifest["application_acceptance_claimed"] is False
+            and manifest["formal_performance_claimed"] is False
+            and manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D24 manifest overclaim drift")
+
+    require("Every preregistered D24 frontier gate passes." in doc,
+            "F-ROMV2-D24 all-gates statement missing")
+    require("R2 is slightly better on this diagnostic." in doc,
+            "F-ROMV2-D24 upper-zone caveat missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D24 production prohibition missing")
+    return "CLOSED_NATIVE_RAIN_GROUNDWATER_COMPOSITION_CANDIDACY"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2267,6 +2386,7 @@ def main() -> int:
     romv2_d21_phase = validate_romv2_d21_if_present()
     romv2_d22_phase = validate_romv2_d22_if_present()
     romv2_d23_phase = validate_romv2_d23_if_present()
+    romv2_d24_phase = validate_romv2_d24_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2300,6 +2420,7 @@ def main() -> int:
     print(f"F_ROMV2_D21_PHASE={romv2_d21_phase}")
     print(f"F_ROMV2_D22_PHASE={romv2_d22_phase}")
     print(f"F_ROMV2_D23_PHASE={romv2_d23_phase}")
+    print(f"F_ROMV2_D24_PHASE={romv2_d24_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
