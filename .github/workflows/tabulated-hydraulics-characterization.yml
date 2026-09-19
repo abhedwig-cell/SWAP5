@@ -34,7 +34,7 @@ jobs:
           gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd research/tabulated_hydraulics/tabulated_hydraulics_characterization.f90 \
             build/tab-hyd/array_dimensions_stub.o build/tab-hyd/sptabulated.o -o build/tab-hyd/tabulated_hydraulics_characterization
 
-      - name: Run complete-preprocessing characterization
+      - name: Run complete preprocessing characterization
         shell: bash
         run: |
           set -euo pipefail
@@ -47,6 +47,25 @@ jobs:
             cat build/tab-hyd/summary.txt
           } > build/tab-hyd/evidence.txt
 
+      - name: Compile current public hydraulic wrappers
+        shell: bash
+        run: |
+          set -euo pipefail
+          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=all -fbacktrace -Wall -Wextra"
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd -c research/tabulated_hydraulics/current_wrapper_stubs.f90 -o build/tab-hyd/current_wrapper_stubs.o
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd -c upstream-swap/src/utils/soilhydraulicsutils.f90 -o build/tab-hyd/soilhydraulicsutils.o
+          gfortran $FLAGS -I build/tab-hyd -J build/tab-hyd research/tabulated_hydraulics/tabulated_hydraulics_wrapper_characterization.f90 \
+            build/tab-hyd/array_dimensions_stub.o build/tab-hyd/current_wrapper_stubs.o build/tab-hyd/sptabulated.o \
+            build/tab-hyd/soilhydraulicsutils.o -o build/tab-hyd/tabulated_hydraulics_wrapper_characterization
+
+      - name: Run public wrapper saturation transition characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./build/tab-hyd/tabulated_hydraulics_wrapper_characterization | tee build/tab-hyd/wrapper-characterization.csv
+          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd/wrapper-characterization.csv
+          grep '^WRAPPER ' build/tab-hyd/wrapper-characterization.csv | tee build/tab-hyd/wrapper-summary.txt
+
       - name: Upload characterization evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -56,3 +75,5 @@ jobs:
             build/tab-hyd/characterization.csv
             build/tab-hyd/summary.txt
             build/tab-hyd/evidence.txt
+            build/tab-hyd/wrapper-characterization.csv
+            build/tab-hyd/wrapper-summary.txt
