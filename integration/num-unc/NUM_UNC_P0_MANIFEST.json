@@ -487,7 +487,7 @@
       "result_path": "integration/num-unc/NUM_UNC_P0A_SPATIAL_RESULT.json"
     },
     "a1": {
-      "status": "PREREGISTERED_BEFORE_N1_EXECUTION",
+      "status": "EXECUTED",
       "cases": {
         "A_minus": 0.16270876169331827,
         "A_zero": 0.16520876169331827,
@@ -521,7 +521,9 @@
       "amplification_ratio_min": 4,
       "post_vs_floor_multiplier_min": 2,
       "posthoc_case_relocation_allowed": false,
-      "posthoc_floor_substitution_allowed": false
+      "posthoc_floor_substitution_allowed": false,
+      "result_path": "integration/num-unc/NUM_UNC_P0A1_RESULT.json",
+      "outcome": "INVARIANT"
     }
   },
   "canonical_reconciliation_checkpoints": [
@@ -536,5 +538,15 @@
       "scientific_design_changed": false,
       "document": "integration/num-unc/NUM_UNC_CANONICAL_RECONCILIATION_20260919.md"
     }
-  ]
+  ],
+  "p0_decision": {
+    "status": "CLOSED_NEGATIVE_PRIMARY_MECHANISM",
+    "go_rule_met": false,
+    "applicable_kill_criteria": [
+      "K3"
+    ],
+    "P0b_tolerance_variation_authorized": false,
+    "O14_replication_authorized": false,
+    "result_path": "integration/num-unc/NUM_UNC_P0_CLOSEOUT.json"
+  }
 }

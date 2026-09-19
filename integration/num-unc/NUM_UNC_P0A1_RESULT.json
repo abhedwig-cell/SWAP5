@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.num_unc.p0a1.result.v1",
+  "work_unit": "NUM-UNC-P0A1",
+  "date": "2026-09-19",
+  "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "workflow_run_id": 35430350113,
+  "workflow_conclusion": "success",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "output_sha256": "f9a45e88d1544fc34e8bd94dd83243828ee791cbc8461f7bd51ada12ce6eef3c",
+  "cases": {
+    "A_minus": {
+      "Se0": 0.16270876169331827,
+      "N0": {
+        "class": "STRESS_BEFORE_RESCUE",
+        "first_stress_block": 12,
+        "first_stress_time_day": 0.0704,
+        "min_Ta_Tp": 0.9938215247887908,
+        "max_mass_cm": 9.272364126511334e-16
+      },
+      "N1": {
+        "class": "STRESS_BEFORE_RESCUE",
+        "first_stress_block": 11,
+        "first_stress_time_day": 0.0672,
+        "min_Ta_Tp": 0.9938048187532329,
+        "max_mass_cm": 9.39093247609435e-16
+      }
+    },
+    "A_zero": {
+      "Se0": 0.16520876169331827,
+      "N0": {
+        "class": "STRESS_BEFORE_RESCUE",
+        "first_stress_block": 64,
+        "first_stress_time_day": 0.4032,
+        "min_Ta_Tp": 0.9955636877773199,
+        "max_mass_cm": 1.0751399770470017e-15
+      },
+      "N1": {
+        "class": "STRESS_BEFORE_RESCUE",
+        "first_stress_block": 64,
+        "first_stress_time_day": 0.4032,
+        "min_Ta_Tp": 0.995547561282887,
+        "max_mass_cm": 9.633515339613207e-16
+      }
+    },
+    "A_plus": {
+      "Se0": 0.16770876169331828,
+      "N0": {
+        "class": "NOT_BEFORE_RESCUE",
+        "first_stress_block": 73,
+        "first_stress_time_day": 0.4608,
+        "min_Ta_Tp": 0.9972441357327619,
+        "max_mass_cm": 1.0148994492031882e-15
+      },
+      "N1": {
+        "class": "NOT_BEFORE_RESCUE",
+        "first_stress_block": 72,
+        "first_stress_time_day": 0.4576,
+        "min_Ta_Tp": 0.9972285614414395,
+        "max_mass_cm": 1.0266749689985534e-15
+      }
+    }
+  },
+  "amplification": {
+    "metric": "D_THETA_RMS_AT_COMMON_BLOCK_ENDPOINTS",
+    "A_plus_floor": 1.5610469352373094e-8,
+    "A_zero_pre_max": 1.4399804066272689e-8,
+    "A_zero_post_max": 2.593634307113492e-8,
+    "representation_floor": 2.2737367544323206e-13,
+    "ratio_A": 1.6614710605861505,
+    "required_ratio": 4,
+    "post_gt_2_Aplus_floor": false,
+    "max_common_origin_actual_uptake_difference_pre_cm_per_day": 0,
+    "max_common_origin_actual_uptake_difference_post_cm_per_day": 1.8584688787903758e-9
+  },
+  "primary_inference_changed": false,
+  "hydrological_amplification_criterion_passed": false,
+  "outcome": "INVARIANT",
+  "interpretation": "The preregistered drought-stress timing inference is invariant between N0 and N1 for A0. Continuous state divergence increases modestly around stress onset and rescue but remains below both preregistered amplification criteria.",
+  "O14_replication_authorized": false
+}

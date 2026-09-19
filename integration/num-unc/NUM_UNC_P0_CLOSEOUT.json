@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.num_unc.p0.closeout.v1",
+  "date": "2026-09-19",
+  "primary_hypothesis": "Hydrological transition dynamics can amplify or preserve differences among independently study-admissible temporal realizations sufficiently to change a preregistered event- or regime-level scientific inference.",
+  "experiments": {
+    "C_surface_regime": {
+      "transition_found": true,
+      "spatial_control": "PASS_OUTER_BRACKET_STABLE",
+      "inference_changed": true,
+      "amplification_ratio": 1.1442578730272732,
+      "outcome": "THRESHOLD_PROXIMITY_ONLY"
+    },
+    "B_lower_boundary_exchange": {
+      "transition_found": false,
+      "declared_search_envelope_cm": [
+        -100,
+        -50,
+        -25,
+        0,
+        25
+      ],
+      "outcome": "NO_TRANSITION_IN_DECLARED_ENVELOPE"
+    },
+    "A_drought_stress": {
+      "transition_found": true,
+      "spatial_control": "PASS_OUTER_BRACKET_STABLE",
+      "inference_changed": false,
+      "amplification_ratio": 1.6614710605861505,
+      "outcome": "INVARIANT"
+    }
+  },
+  "go_rule_met": false,
+  "applicable_kill_criteria": [
+    "K3"
+  ],
+  "decision": "CLOSED_NEGATIVE_PRIMARY_MECHANISM",
+  "P0b_tolerance_variation_authorized": false,
+  "O14_replication_authorized": false,
+  "prohibited_posthoc_actions": [
+    "relocate frozen transition cases to obtain a flip",
+    "expand the failed P0B search envelope",
+    "lower the preregistered amplification threshold",
+    "replace the preregistered numerical floor after seeing outcomes",
+    "add convergence-tolerance variation as a rescue of the failed P0a mechanism screen"
+  ],
+  "claim_ceiling": "Within these preregistered B01 pilot experiments, temporal refinement changed a transition-near ponding classification without qualifying hydrological amplification, did not change the drought-stress timing class, and did not encounter the prescribed-head exchange transition inside the declared B0 envelope. This does not establish absence of amplification in vadose-zone models generally.",
+  "publication_implication": "The standalone NUM-UNC paper concept is not supported by P0 in its current amplification-based form. The negative evidence may be retained as methodological or supplementary evidence elsewhere, but threshold proximity alone must not be relabelled as the intended novelty."
+}

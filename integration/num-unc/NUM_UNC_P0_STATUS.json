@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0A1_PREREGISTERED_N1_AUTHORIZED",
+  "status": "P0_CLOSED_NEGATIVE_PRIMARY_MECHANISM",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,8 +32,8 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Implement A1 exactly as preregistered: N0 versus N1 on frozen A-/A0/A+, common-block trajectory comparison, A+ numerical floor, fixed amplification rules.",
-  "recovery_point": "A spatial control passed on workflow 35430200093. A1 analysis frozen before first N1 execution.",
+  "next_action": "Do not extend the current NUM-UNC amplification hypothesis by post-hoc parameter-range expansion, tolerance variation or O14 replication. Retain the evidence and return the standalone paper concept to publication regie as not supported by P0.",
+  "recovery_point": "P0 closed after A1 workflow 35430350113: C=THRESHOLD_PROXIMITY_ONLY, B=NO_TRANSITION_IN_DECLARED_ENVELOPE, A=INVARIANT. Go rule not met.",
   "blockers": [
     "Historical A14 package cannot be raw-byte replayed in current runtime; parameter binding is pilot-scoped and explicitly provenance-limited."
   ],
@@ -55,7 +55,12 @@
     "p0a0_result_path": "integration/num-unc/NUM_UNC_P0A0_RESULT.json",
     "p0a_spatial_workflow_run_id": 35430200093,
     "p0a_spatial_output_sha256": "1ddb3f671aadaab1a8c102ddc3580934d33b97e438c2ad9c407c6806702dafa2",
-    "p0a_spatial_result_path": "integration/num-unc/NUM_UNC_P0A_SPATIAL_RESULT.json"
+    "p0a_spatial_result_path": "integration/num-unc/NUM_UNC_P0A_SPATIAL_RESULT.json",
+    "p0a1_workflow_run_id": 35430350113,
+    "p0a1_output_sha256": "f9a45e88d1544fc34e8bd94dd83243828ee791cbc8461f7bd51ada12ce6eef3c",
+    "p0a1_result_path": "integration/num-unc/NUM_UNC_P0A1_RESULT.json",
+    "p0_closeout_path": "integration/num-unc/NUM_UNC_P0_CLOSEOUT.json"
   },
-  "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635"
+  "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "closed": true
 }
