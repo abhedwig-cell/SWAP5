@@ -1,0 +1,132 @@
+{
+  "trace_id": "TRACE-SWAP-0002",
+  "model": "SWAP",
+  "status": "CLOSED",
+  "discovery": {
+    "first_observed_date": "2026-09-19",
+    "registered_date": "2026-09-19",
+    "observer": "TRACE_PRIMARY_RECONCILIATION",
+    "work_unit": "TRACE-B03-SWAP-E01",
+    "inspection_trigger": "SCHEDULED_SYSTEMATIC_RECONCILIATION",
+    "planned_or_opportunistic": "PLANNED"
+  },
+  "eligibility": {
+    "known_before_registration": false,
+    "disposition_known_before_registration": false,
+    "prospective_eligible": true,
+    "decision_reason": "The F-DOC23 status mismatch was first observed during preregistered Batch-03 Snow inspection and frozen before PR #170 or work-branch closeout chronology was inspected."
+  },
+  "scientific_element": {
+    "scientific_element_id": "TRACE-ELEM-SWAP-B03-001",
+    "subsystem": "snow",
+    "description": "Restricted one-call-daily Snow scientific semantics and the reviewer-facing F-DOC23 authority state."
+  },
+  "representations": [
+    {
+      "kind": "reviewer_documentation",
+      "path": "docs/science/restricted-snow.md",
+      "pre_resolution_blob": "23ad587193b36350ed6f25684fa7bc17a92fcdcd",
+      "claim": "Documents the bounded admitted one-call-daily Snow formulation and cites F-VQ16/F-PM02/F-DOC23 authority."
+    },
+    {
+      "kind": "canonical_documentation_status",
+      "path": "integration/f-doc/F-DOC23_STATUS.json",
+      "pre_resolution_blob": "983c7534f1fdf93ae700ac873eafe421e6f6dc68",
+      "claim": "phase=VERIFY; PASS_READY_FOR_ADMISSION; next action still says to admit PR #170."
+    },
+    {
+      "kind": "work_branch_closeout_status",
+      "path": "integration/f-doc/F-DOC23_STATUS.json",
+      "ref": "4cb2425147624a33cc01e767b2f5eaa0ae062712",
+      "blob": "5c1891fcc8671d2ad050e7ba8e790e38afac2678",
+      "claim": "phase=CLOSE; ADMITTED_AND_CLOSED; PR #170 merged at canonical head 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33."
+    },
+    {
+      "kind": "snow_capability_authority",
+      "path": "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json",
+      "pre_resolution_blob": "3f6c48482386965b6608c2796843123b414dc217",
+      "claim": "Restricted one-call-daily Snow capability is closed on current canonical with no missing admission gate."
+    }
+  ],
+  "conflict": {
+    "relation_classes": [
+      "DOCUMENTATION_IMPLEMENTATION"
+    ],
+    "initial_statement": "The current reviewer Snow reference and capability authority are admitted/current, but canonical F-DOC23 status still represents future documentation admission although PR #170 has already merged and the work branch contains an explicit post-merge closeout.",
+    "application_envelope": "Interpretation of the authority/admission state of the bounded WOFOST/Snow documentation workunit. Snow physics, mass semantics and runtime behaviour are not disputed.",
+    "discovery_uncertainty": "Before chronology reconstruction it was unknown whether the VERIFY status was intentionally frozen provenance or stale current metadata."
+  },
+  "detection": {
+    "first_exposing_evidence": "Side-by-side inspection of restricted-snow.md, F-DOC23_STATUS.json and F-PM02_CURRENT_CANONICAL_CLOSE.json during planned Batch-03 reconciliation.",
+    "method": "Prospective scheduled reconciliation followed, after evidence freeze, by PR #170, F-DOC23 branch-head and status-only post-merge chronology reconstruction.",
+    "modernization_specific": true,
+    "mechanism_code": "POST_MERGE_CLOSEOUT_STATUS_NOT_PROPAGATED_TO_CANONICAL"
+  },
+  "scientific_consequence": {
+    "potential": [
+      "INTERPRETATIVE",
+      "STRUCTURAL"
+    ],
+    "demonstrated": [
+      "INTERPRETATIVE"
+    ],
+    "evidence": "A reviewer reading current canonical can conclude that F-DOC23 is still awaiting admission even though PR #170 merged and its own post-merge closeout records ADMITTED_AND_CLOSED. No change in Snow equations, state trajectories, mass accounting or runtime results is demonstrated."
+  },
+  "regression_counterfactual": {
+    "preexisting_suite_ref": "F-DOC23 Documentation workflow run 35184887753 on verify checkpoint fc8c2f9f42573d25101bf36f11d7d0bd3b4c7dd0",
+    "affected_route_within_scope": false,
+    "outcome": "REGRESSION_NOT_APPLICABLE",
+    "evidence": "The Documentation workflow validated the pre-admission verify checkpoint before merge. The inconsistency arose only after merge because the later status-only closeout commit was not propagated to canonical; no pre-existing post-merge status-synchronization oracle was identified."
+  },
+  "resolution": {
+    "candidate_authorities": [
+      {
+        "authority": "F-DOC23 PR #170",
+        "ref": "merge 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+        "role": "Establishes that documentation admission occurred from verify checkpoint fc8c2f9f42573d25101bf36f11d7d0bd3b4c7dd0."
+      },
+      {
+        "authority": "F-DOC23 work-branch closeout status",
+        "ref": "4cb2425147624a33cc01e767b2f5eaa0ae062712",
+        "role": "Explicit post-merge closeout records ADMITTED_AND_CLOSED and canonical admitted head 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33."
+      },
+      {
+        "authority": "F-PM02",
+        "ref": "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json",
+        "role": "Confirms the bounded Snow capability itself is already closed and not the source of the discrepancy."
+      }
+    ],
+    "final_authority": "F-DOC23 work-branch closeout status at 4cb2425147624a33cc01e767b2f5eaa0ae062712 plus merged PR #170 / canonical merge 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+    "disposition": "DOCUMENTATION_CORRECTED",
+    "code_changed": false,
+    "documentation_changed": true,
+    "tests_changed": false,
+    "repair": {
+      "status_path": "integration/f-doc/F-DOC23_STATUS.json",
+      "source_closeout_ref": "4cb2425147624a33cc01e767b2f5eaa0ae062712",
+      "source_closeout_blob": "5c1891fcc8671d2ad050e7ba8e790e38afac2678",
+      "repair_head": "bbdb3b8e56d13a16a2a6fd7f22d4681e2ad8286f",
+      "change": "Propagate the already-authored post-merge F-DOC23 CLOSE/ADMITTED_AND_CLOSED status onto current canonical lineage without changing reviewer content, Snow process semantics or production source."
+    }
+  },
+  "reproducibility": {
+    "pre_resolution_ref": "52d5e1092b00a77d59b81f54db953b040fe9347e",
+    "evidence_manifest": "integration/trace/evidence/TRACE-SWAP-0002/manifest.json",
+    "chronology": {
+      "content_head": "83513160269a3a7c8989fd50071ecc2b16268f00",
+      "verify_checkpoint": "fc8c2f9f42573d25101bf36f11d7d0bd3b4c7dd0",
+      "verify_checkpoint_run": 35184887753,
+      "pr": 170,
+      "merge_commit": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+      "post_merge_closeout_head": "4cb2425147624a33cc01e767b2f5eaa0ae062712"
+    },
+    "repair_postimage_ref": "bbdb3b8e56d13a16a2a6fd7f22d4681e2ad8286f",
+    "repair_qualification": {
+      "trace_workflow_run": 35439141518,
+      "trace_conclusion": "success",
+      "broad_preservation_workflow": "F-GC42 live whole-window service",
+      "broad_preservation_run": 35439141610,
+      "broad_preservation_conclusion": "success"
+    }
+  }
+}
