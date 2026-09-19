@@ -1,0 +1,50 @@
+name: F-ROM-LARE BC2-C3A dynamic-family adjudication
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C3_RESULT.json'
+      - 'integration/f-rom/LARE_BC2_C3_ADJUDICATION_PREREGISTRATION.json'
+      - 'tests/rom/adjudicate_lare_bc2_c3.py'
+      - '.github/workflows/f-rom-lare-bc2-c3a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adjudicate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply frozen C3 dynamic-family rule
+        run: |
+          set -euo pipefail
+          test -f integration/f-rom/LARE_BC2_C3_RESULT.json
+          mkdir -p LARE_BC2_C3A_EVIDENCE
+          python3 tests/rom/adjudicate_lare_bc2_c3.py \
+            --c3 integration/f-rom/LARE_BC2_C3_RESULT.json \
+            --prereg integration/f-rom/LARE_BC2_C3_ADJUDICATION_PREREGISTRATION.json \
+            --output LARE_BC2_C3A_EVIDENCE/LARE_BC2_C3A_RESULT.json \
+            | tee LARE_BC2_C3A_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C3A_EVIDENCE/LARE_BC2_C3A_RESULT.json'))
+          assert r['complete'] is True
+          assert r['decision'] in ('GLOBAL_SINGLE_FAMILY_SUPPORTED','REGIME_DEPENDENT_BIAS_INJECTION')
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C3A_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C3A_EVIDENCE/* > LARE_BC2_C3A_EVIDENCE/sha256.txt
+
+      - name: Upload C3A evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c3a
+          path: LARE_BC2_C3A_EVIDENCE/
+          if-no-files-found: error
