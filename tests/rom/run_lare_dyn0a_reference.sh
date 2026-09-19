@@ -38,16 +38,16 @@ for geometry in fine d3 d2; do
     OUT="$BUILD/${geometry}-o${opt}"
     python3 "$COMPILER"       --root "$ROOT"       --stub "$BUILD/${geometry}.f90"       --target "$TEST"       --external-source src/legacy/b1_10_port/headcalc.f90       --build "$OUT"       --opt "$opt"
 
-    "$OUT/rom0_test" > "$EVIDENCE/${geometry}-o${opt}.txt" 2>&1 || {
+    LARE_DYN0A_BOTTOM_FILTER=1 "$OUT/rom0_test" > "$EVIDENCE/${geometry}-o${opt}.txt" 2>&1 || {
       tail -n 500 "$EVIDENCE/${geometry}-o${opt}.txt" >&2
       fail "${geometry} O${opt} execution"
     }
 
     grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$EVIDENCE/${geometry}-o${opt}.txt" ||
       fail "missing completion marker ${geometry} O${opt}"
-    [[ "$(grep -c 'LAREDYN0R_STATE|' "$EVIDENCE/${geometry}-o${opt}.txt")" -eq 24576 ]] ||
+    [[ "$(grep -c 'LAREDYN0R_STATE|' "$EVIDENCE/${geometry}-o${opt}.txt")" -eq 12288 ]] ||
       fail "state count ${geometry} O${opt}"
-    expected_nodes=$((24576 * nodes))
+    expected_nodes=$((12288 * nodes))
     [[ "$(grep -c 'LAREDYN0R_NODE|' "$EVIDENCE/${geometry}-o${opt}.txt")" -eq "$expected_nodes" ]] ||
       fail "node count ${geometry} O${opt}"
   done
@@ -68,9 +68,13 @@ for geom,nodes in [('fine',16),('d3',3),('d2',2)]:
     assert max_mass <= 1e-12, (geom,max_mass)
     active=re.search(r'LAREDYN0R_ACTIVE_NODES=(\d+)',raw)
     assert active and int(active.group(1))==nodes
+    filt=re.search(r'LAREDYN0R_BOTTOM_FILTER=(\d+)',raw)
+    assert filt and int(filt.group(1))==1
+    hist=re.search(r'LAREDYN0R_HISTORY_COUNT=(\d+)',raw)
+    assert hist and int(hist.group(1))==12
 print('LARE_DYN0A_REFERENCE_STRUCTURAL_GATE=PASS')
 PY
 
 sha256sum "$EVIDENCE"/*.txt > "$EVIDENCE/sha256.txt"
 git diff --check "$CANONICAL_START"...HEAD
-echo 'LARE_DYN0A_REFERENCE_GATE=PASS'
+echo 'LARE_DYN0A_FX_REFERENCE_GATE=PASS'
