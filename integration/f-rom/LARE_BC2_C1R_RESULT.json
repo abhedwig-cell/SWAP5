@@ -1,0 +1,279 @@
+{
+  "application_acceptance_adjudicated": false,
+  "case": {
+    "history": "WT_CYCLE",
+    "width_cm": 2.5
+  },
+  "classifications": {
+    "new_cross": {
+      "q90": "STATE_DRIFT_DOMINANT",
+      "qH": "LOCAL_CLOSURE_DOMINANT",
+      "qi": "LOCAL_CLOSURE_DOMINANT",
+      "state_shape": "STATE_DRIFT_DOMINANT"
+    },
+    "recovered_primary": {
+      "q90": "STATE_DRIFT_DOMINANT",
+      "qH": "LOCAL_CLOSURE_DOMINANT",
+      "qi": "LOCAL_CLOSURE_DOMINANT",
+      "state_shape": "STATE_DRIFT_DOMINANT"
+    }
+  },
+  "complete": true,
+  "decision": "BC2_C1R_NUMERICAL_QUALIFICATION_RECOVERED",
+  "failures": {},
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "both_routes_qualified": true,
+    "classification_match": {
+      "q90": true,
+      "qH": true,
+      "qi": true,
+      "state_shape": true
+    },
+    "failure_count": 0,
+    "gate": 1e-10,
+    "max_additive_or_ledger_residual": 2.7000623958883807e-13
+  },
+  "interpretation": [
+    "The original C1 0.0001-day primary-route domain exit remains part of the evidence and is not reclassified as a pass.",
+    "C1R tests whether the already-preregistered qualified 0.00005-day route is stable against one additional factor-two temporal refinement.",
+    "No state, closure, forcing, geometry, terminal width, H(t), decomposition identity, or classification rule is changed."
+  ],
+  "next_model_change_authorized": false,
+  "numerical_floor": {
+    "fluxes": {
+      "q90": {
+        "local_rms_difference": 5.355423050246166e-06,
+        "state_rms_difference": 1.2857750005368374e-05,
+        "total_rms_difference": 8.29207905606033e-06
+      },
+      "qH": {
+        "local_rms_difference": 0.0017661476671113618,
+        "state_rms_difference": 0.0009986143464808528,
+        "total_rms_difference": 0.00011517735392807538
+      },
+      "qi": {
+        "local_rms_difference": 0.0017199831075100924,
+        "state_rms_difference": 0.001074553677272716,
+        "total_rms_difference": 0.0001325148275928001
+      }
+    },
+    "state_shape": {
+      "local_rms_difference": 4.043051646908987e-07,
+      "state_rms_difference": 4.137763847000819e-06,
+      "total_rms_difference": 4.136874412113967e-06
+    },
+    "total_unsaturated_storage": {
+      "local_rms_difference": 1.4129181336768395e-06,
+      "state_rms_difference": 1.3545806633041835e-06,
+      "total_rms_difference": 4.6228170957896e-07
+    }
+  },
+  "original_C1_primary_failure_retained": true,
+  "production_rom_authorized": false,
+  "routes": {
+    "new_cross_dt_day": 2.5e-05,
+    "recovered_primary_dt_day": 5e-05
+  },
+  "runs": {
+    "0.00002500": {
+      "dt_day": 2.5e-05,
+      "first_interval_state_component_exceeds_local": {
+        "q90": 4,
+        "qH": 7,
+        "qi": 257,
+        "state_shape": 3,
+        "total_storage": 3
+      },
+      "fluxes": {
+        "q90": {
+          "dominance": "STATE_DRIFT_DOMINANT",
+          "fraction_abs_state_gt_local": 0.9778645833333334,
+          "local_closure": {
+            "max_abs": 2.2355270758331476,
+            "rms": 0.5169777601212938
+          },
+          "state_induced": {
+            "max_abs": 2.911642238560682,
+            "rms": 1.8373291926907198
+          },
+          "total_free": {
+            "max_abs": 3.0729177066851037,
+            "rms": 1.748503972538419
+          }
+        },
+        "qH": {
+          "dominance": "LOCAL_CLOSURE_DOMINANT",
+          "fraction_abs_state_gt_local": 0.0026041666666666665,
+          "local_closure": {
+            "max_abs": 30.0870513995568,
+            "rms": 3.444093930953834
+          },
+          "state_induced": {
+            "max_abs": 34.98281749021893,
+            "rms": 2.2768152011152063
+          },
+          "total_free": {
+            "max_abs": 34.52127022205421,
+            "rms": 5.414543951922815
+          }
+        },
+        "qi": {
+          "dominance": "LOCAL_CLOSURE_DOMINANT",
+          "fraction_abs_state_gt_local": 0.0026041666666666665,
+          "local_closure": {
+            "max_abs": 17.182940195743203,
+            "rms": 3.731569892551882
+          },
+          "state_induced": {
+            "max_abs": 18.18287473334764,
+            "rms": 1.6235338419089373
+          },
+          "total_free": {
+            "max_abs": 19.213448575697015,
+            "rms": 5.226965105762891
+          }
+        }
+      },
+      "max_abs_additive_flux_identity_residual_cm_per_day": 1.7763568394002505e-15,
+      "max_abs_additive_state_identity_residual_cm": 0.0,
+      "max_abs_free_physical_ledger_residual_cm": 2.7000623958883807e-13,
+      "max_abs_teacher_interval_ledger_residual_cm": 3.198309672658439e-14,
+      "max_corrector_iterations": 12,
+      "state_shape": {
+        "dominance": "STATE_DRIFT_DOMINANT",
+        "fraction_abs_state_gt_local": 0.8925189393939394,
+        "local_closure": {
+          "max_abs": 0.03332129149282359,
+          "rms": 0.0010618814126096647
+        },
+        "state_induced": {
+          "max_abs": 0.7417955477891081,
+          "rms": 0.12958273329141531
+        },
+        "total_free": {
+          "max_abs": 0.7405353046398631,
+          "rms": 0.12983990786913974
+        }
+      },
+      "status": "QUALIFIED",
+      "total_unsaturated_storage": {
+        "dominance": "STATE_DRIFT_DOMINANT",
+        "fraction_abs_state_gt_local": 0.99609375,
+        "local_closure": {
+          "max_abs": 0.024069641119652374,
+          "rms": 0.0027552751447634085
+        },
+        "state_induced": {
+          "max_abs": 0.9635975642332752,
+          "rms": 0.4485618502077924
+        },
+        "total_free": {
+          "max_abs": 0.9631598325258004,
+          "rms": 0.4485154506842144
+        }
+      }
+    },
+    "0.00005000": {
+      "dt_day": 5e-05,
+      "first_interval_state_component_exceeds_local": {
+        "q90": 4,
+        "qH": 7,
+        "qi": 257,
+        "state_shape": 3,
+        "total_storage": 3
+      },
+      "fluxes": {
+        "q90": {
+          "dominance": "STATE_DRIFT_DOMINANT",
+          "fraction_abs_state_gt_local": 0.9778645833333334,
+          "local_closure": {
+            "max_abs": 2.235565017445489,
+            "rms": 0.5169831155443441
+          },
+          "state_induced": {
+            "max_abs": 2.911651534427495,
+            "rms": 1.8373163349407144
+          },
+          "total_free": {
+            "max_abs": 3.0729355538309497,
+            "rms": 1.748495680459363
+          }
+        },
+        "qH": {
+          "dominance": "LOCAL_CLOSURE_DOMINANT",
+          "fraction_abs_state_gt_local": 0.0026041666666666665,
+          "local_closure": {
+            "max_abs": 30.08351868753877,
+            "rms": 3.4423277832867227
+          },
+          "state_induced": {
+            "max_abs": 34.96845792390775,
+            "rms": 2.277813815461687
+          },
+          "total_free": {
+            "max_abs": 34.52117227326779,
+            "rms": 5.414428774568887
+          }
+        },
+        "qi": {
+          "dominance": "LOCAL_CLOSURE_DOMINANT",
+          "fraction_abs_state_gt_local": 0.0026041666666666665,
+          "local_closure": {
+            "max_abs": 17.1664779651581,
+            "rms": 3.729849909444372
+          },
+          "state_induced": {
+            "max_abs": 18.16254092937882,
+            "rms": 1.62460839558621
+          },
+          "total_free": {
+            "max_abs": 19.199122923305676,
+            "rms": 5.226832590935298
+          }
+        }
+      },
+      "max_abs_additive_flux_identity_residual_cm_per_day": 7.105427357601002e-15,
+      "max_abs_additive_state_identity_residual_cm": 0.0,
+      "max_abs_free_physical_ledger_residual_cm": 7.904787935331115e-14,
+      "max_abs_teacher_interval_ledger_residual_cm": 1.9954524144161212e-14,
+      "max_corrector_iterations": 20,
+      "state_shape": {
+        "dominance": "STATE_DRIFT_DOMINANT",
+        "fraction_abs_state_gt_local": 0.8927556818181818,
+        "local_closure": {
+          "max_abs": 0.03331816232512175,
+          "rms": 0.0010614771074449738
+        },
+        "state_induced": {
+          "max_abs": 0.7417560142797424,
+          "rms": 0.1295785955275683
+        },
+        "total_free": {
+          "max_abs": 0.740495772789787,
+          "rms": 0.12983577099472762
+        }
+      },
+      "status": "QUALIFIED",
+      "total_unsaturated_storage": {
+        "dominance": "STATE_DRIFT_DOMINANT",
+        "fraction_abs_state_gt_local": 0.99609375,
+        "local_closure": {
+          "max_abs": 0.024066814950039372,
+          "rms": 0.0027538622266297316
+        },
+        "state_induced": {
+          "max_abs": 0.963599832522327,
+          "rms": 0.4485604956271291
+        },
+        "total_free": {
+          "max_abs": 0.963169577253705,
+          "rms": 0.4485149884025048
+        }
+      }
+    }
+  },
+  "schema": "swap5.lare.bc2.c1r.result.v1",
+  "work_unit": "LARE-BC2-C1R",
+  "workstream": "F-ROM-LARE"
+}
