@@ -1,0 +1,90 @@
+name: F-ROM-LARE DYN0A D4 resolution control
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_D4_PREREGISTRATION.json'
+      - 'tests/rom/run_lare_dyn0a_d4.py'
+      - 'tests/rom/analyze_lare_dyn0a_d4_resolution.py'
+      - '.github/workflows/f-rom-lare-dyn0a-d4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  d4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Lock D4 authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_DYN0A_D4_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_D4_RESPONSE_EXECUTION'
+          assert p['models']['D4']['boundaries_cm']==[0,130,140,150,160]
+          assert p['comparison_basis']['common_physical_bands_cm']==[[0,140],[140,150],[150,160]]
+          assert 'NO_CHANGE_TO_LARE_INTERFACE_CLOSURE' in p['firewalls']
+          print('LARE_DYN0A_D4_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute D4 LARE Heun refinement
+        run: |
+          mkdir -p LARE_DYN0A_D4_EVIDENCE
+          python3 tests/rom/run_lare_dyn0a_d4.py \
+            --output LARE_DYN0A_D4_EVIDENCE/LARE_DYN0A_D4_ODE.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_D4_EVIDENCE/LARE_DYN0A_D4_ODE.json'))
+          assert p['decision']=='LARE_DYN0A_D4_HEUN_REFINEMENT_CHARACTERIZED'
+          assert p['case_count']==12
+          assert p['qualified_case_count']>0
+          assert p['max_abs_water_ledger_cm']<=1e-9
+          assert p['max_abs_equilibrium_total_storage_change_cm']<=1e-9
+          for cid,row in p['cases'].items():
+              if row['case']['forcing_id']=='EQ':
+                  assert row['status']=='QUALIFIED', cid
+          print('LARE_DYN0A_D4_ODE_GATE=PASS')
+          PY
+
+      - name: Recover frozen fine Reference and D3 characterization
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/dyn0a-d4/reference /tmp/dyn0a-d4/d3
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585720780/zip" > /tmp/dyn0a-d4/reference.zip
+          echo "d2056a69e2d96f11e4cb10398ec6b8208e43a0e10b6d788cb088e31bff82270c  /tmp/dyn0a-d4/reference.zip" | sha256sum -c -
+          unzip -q /tmp/dyn0a-d4/reference.zip -d /tmp/dyn0a-d4/reference
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10585856154/zip" > /tmp/dyn0a-d4/d3.zip
+          echo "72802185067522082f74d3b8d7f218abcc17f08fee1e4a724164d94444793ea8  /tmp/dyn0a-d4/d3.zip" | sha256sum -c -
+          unzip -q /tmp/dyn0a-d4/d3.zip -d /tmp/dyn0a-d4/d3
+
+      - name: Adjudicate D4 resolution effect on common D3 bands
+        run: |
+          python3 tests/rom/analyze_lare_dyn0a_d4_resolution.py \
+            --d4 LARE_DYN0A_D4_EVIDENCE/LARE_DYN0A_D4_ODE.json \
+            --d3-fine-only /tmp/dyn0a-d4/d3/LARE_DYN0A_FX_FINE_ONLY_RESULT.json \
+            --reference-dir /tmp/dyn0a-d4/reference \
+            --reference-status /tmp/dyn0a-d4/reference/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --output LARE_DYN0A_D4_EVIDENCE/LARE_DYN0A_D4_RESULT.json
+          cat LARE_DYN0A_D4_EVIDENCE/LARE_DYN0A_D4_RESULT.json
+          sha256sum LARE_DYN0A_D4_EVIDENCE/*.json > LARE_DYN0A_D4_EVIDENCE/sha256.txt
+
+      - name: Upload D4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-d4
+          path: LARE_DYN0A_D4_EVIDENCE/
+          if-no-files-found: warn
