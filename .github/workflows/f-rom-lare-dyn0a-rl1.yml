@@ -1,0 +1,105 @@
+name: F-ROM-LARE DYN0A RL1 nested resolution ladder
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json'
+      - 'tests/rom/run_lare_dyn0a_rl1.py'
+      - 'tests/rom/analyze_lare_dyn0a_rl1.py'
+      - '.github/workflows/f-rom-lare-dyn0a-rl1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rl1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Lock RL1 authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_NESTED_RESOLUTION_LADDER_EXECUTION'
+          assert [r['id'] for r in p['ladder']]==['R3','R4','R5','R6','R8','R12','R16']
+          assert p['ladder'][-1]['boundaries_cm']==list(range(0,161,10))
+          assert p['pre_execution_numerical_equality']['storage_error_abs_cm']==1e-12
+          assert 'Do not modify the standard LARE closure inside RL1.' in p['interpretation_firewalls']
+          print('LARE_DYN0A_RL1_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute unchanged standard-LARE ladder
+        run: |
+          mkdir -p LARE_DYN0A_RL1_EVIDENCE
+          python3 tests/rom/run_lare_dyn0a_rl1.py \
+            --prereg integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json \
+            --output LARE_DYN0A_RL1_EVIDENCE/LARE_DYN0A_RL1_ODE.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_RL1_EVIDENCE/LARE_DYN0A_RL1_ODE.json'))
+          assert p['decision']=='LARE_DYN0A_RL1_HEUN_LADDER_EXECUTED'
+          assert p['case_count']==84
+          assert p['max_abs_water_ledger_cm']<=1e-9
+          assert p['max_abs_equilibrium_total_storage_change_cm']<=1e-9
+          for mid,row in p['ladder'].items():
+              assert row['status_counts']['QUALIFIED']>=3, mid
+          print('LARE_DYN0A_RL1_ODE_GATE=PASS')
+          PY
+
+      - name: Recover frozen fine Reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-dyn0a-rl1/ref
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586020583/zip" > /tmp/lare-dyn0a-rl1/ref.zip
+          echo "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc  /tmp/lare-dyn0a-rl1/ref.zip" | sha256sum -c -
+          unzip -q /tmp/lare-dyn0a-rl1/ref.zip -d /tmp/lare-dyn0a-rl1/ref
+
+      - name: Adjudicate hydrological and mechanism curves
+        run: |
+          python3 tests/rom/analyze_lare_dyn0a_rl1.py \
+            --rl1 LARE_DYN0A_RL1_EVIDENCE/LARE_DYN0A_RL1_ODE.json \
+            --reference-dir /tmp/lare-dyn0a-rl1/ref \
+            --reference-status /tmp/lare-dyn0a-rl1/ref/LARE_DYN0A_FX_REFERENCE_STATUS.json \
+            --prereg integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json \
+            --output LARE_DYN0A_RL1_EVIDENCE/LARE_DYN0A_RL1_RESULT.json \
+            | tee LARE_DYN0A_RL1_EVIDENCE/analyzer.txt
+
+      - name: Reconcile R3 and R4 with prior authorities
+        run: |
+          python3 - <<'PY'
+          import json, math
+          p=json.load(open('LARE_DYN0A_RL1_EVIDENCE/LARE_DYN0A_RL1_RESULT.json'))
+          d3=json.load(open('integration/f-rom/LARE_DYN0A_FX_FINE_ONLY_RESULT.json'))
+          d4=json.load(open('integration/f-rom/LARE_DYN0A_D4_RESULT.json'))
+          assert p['decision'] in {'RESOLUTION_CONVERGENCE_CLEAR','RESOLUTION_EFFECT_NONMONOTONE'}
+          r3=p['members']['R3']['aggregate']
+          r4=p['members']['R4']['aggregate']
+          assert math.isclose(r3['maximum_dynamic_common_band_error_cm'],
+                              d3['D3']['maximum_dynamic_layer_storage_error_cm'],
+                              rel_tol=0,abs_tol=1e-12)
+          assert math.isclose(r4['maximum_dynamic_common_band_error_cm'],
+                              d4['comparison']['D4_maximum_dynamic_common_band_error_cm'],
+                              rel_tol=0,abs_tol=1e-12)
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          print('LARE_DYN0A_RL1_PRIOR_AUTHORITY_RECONCILIATION=PASS')
+          PY
+          sha256sum LARE_DYN0A_RL1_EVIDENCE/* > LARE_DYN0A_RL1_EVIDENCE/sha256.txt
+
+      - name: Upload RL1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-rl1
+          path: LARE_DYN0A_RL1_EVIDENCE/
