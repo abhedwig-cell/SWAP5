@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0B0_CLOSED_NO_TRANSITION",
+  "status": "P0A0_PREREGISTERED",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,12 +32,10 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Do not expand the P0B0 prescribed-head envelope. Audit repository-held SWAP/crop authority for a provenance-complete Feddes drought-stress parameter profile to unblock Experiment A. If unavailable, NUM-UNC P0 remains unresolved/negative rather than inventing root parameters.",
-  "recovery_point": "P0C closed THRESHOLD_PROXIMITY_ONLY; P0B0 closed NO_TRANSITION_IN_DECLARED_ENVELOPE; Experiment A remains blocked pending Feddes authority.",
+  "next_action": "Implement and run N0-only P0A0 drought-stress timing locator. N1 remains prohibited until A-/A0/A+ are frozen.",
+  "recovery_point": "P0C closed THRESHOLD_PROXIMITY_ONLY; P0B0 closed NO_TRANSITION; historical A14/A22 authority resolves Feddes profile for P0 pilot; A0 preregistered before execution.",
   "blockers": [
-    "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
-    "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
-    "Spatial-control grid stability remains required before C1 inference claims."
+    "Historical A14 package cannot be raw-byte replayed in current runtime; parameter binding is pilot-scoped and explicitly provenance-limited."
   ],
   "evidence": {
     "p0c_locator_workflow_run_id": 35427546986,
