@@ -136,7 +136,7 @@
       "physical moving-control-volume ledger <=1e-10 cm",
       "fine route numerically qualified for all four histories"
     ],
-    "relative_support_rule": "B1 is relatively supported as a deconfounding control only if it is component-wise noninferior to B0 on total-storage error, cumulative-qH error, sign mismatch count and reversal-step difference over the four frozen histories, and strictly improves at least one of those components.",
+    "relative_support_rule": "B1 is relatively supported as a deconfounding control only if it is component-wise noninferior to B0 on total-storage error, cumulative-qH error and sign-mismatch count over all four frozen histories, is noninferior on reversal-step difference for WT_CYCLE where B0 explicitly persists the reversal sequence, and strictly improves at least one of those governed components.",
     "fixed_geometry_attribution_rule": "WT_HOLD is interpreted separately. A material reduction of WT_HOLD storage/exchange drift supports attribution of the B0 stationary error to hydrostatic discretization rather than moving-volume algebra.",
     "no_application_threshold": true,
     "valid_outcomes": [
@@ -154,5 +154,12 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_baseline_clarification": {
+    "before_first_B1_execution": true,
+    "B0_persisted_metric_path": "conservative.histories.<history>",
+    "reversal_authority": "The B0 closeout explicitly persists candidate/reference reversal steps only for WT_CYCLE; no synthetic reversal value is inferred for WT_HOLD, WT_RISE or WT_FALL.",
+    "relative_support_revision": "Component-wise B0 comparison uses total-storage error, cumulative-qH error and sign-mismatch count for all four histories, plus reversal-step difference for WT_CYCLE only.",
+    "scientific_effect": "No B1 response has been observed; this only aligns the preregistered comparator with the information actually persisted by the predecessor authority."
+  }
 }
