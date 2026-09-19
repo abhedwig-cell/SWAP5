@@ -33,10 +33,11 @@ program test_lare_dyn0a_reference
   real(real64), parameter :: hard_mass_gate=1.0e-12_real64
   integer(int64), parameter :: column_id=971001_int64
 
-  integer :: ih,total_states,total_fallbacks,bottom_filter,active_histories,env_status
+  integer :: ih,total_states,total_fallbacks,bottom_filter,active_histories,env_status,substeps
   real(real64) :: max_abs_mass
   character(len=32) :: filter_raw
   character(len=48) :: case_filter_raw
+  character(len=32) :: substeps_raw
 
   call require(abs(sum(dz(1:numnod))-160.0_real64)<=1.0e-12_real64,'LAREDYN0R depth frozen')
   bottom_filter=0
@@ -50,6 +51,14 @@ program test_lare_dyn0a_reference
   case_filter_raw=''
   call get_environment_variable('LARE_DYN0A_CASE_FILTER',case_filter_raw,status=env_status)
   if(env_status/=0)case_filter_raw=''
+
+  substeps=1
+  substeps_raw=''
+  call get_environment_variable('LARE_DYN0A_SUBSTEPS',substeps_raw,status=env_status)
+  if(env_status==0.and.len_trim(substeps_raw)>0)then
+    read(substeps_raw,*,iostat=env_status)substeps
+    call require(env_status==0.and.any(substeps==[1,2,4,8]),'LAREDYN0R valid substep count')
+  end if
 
   total_states=0;total_fallbacks=0;max_abs_mass=0.0_real64;active_histories=0
 
@@ -67,6 +76,7 @@ program test_lare_dyn0a_reference
   write(*,'(A,I0)') 'LAREDYN0R_HISTORY_COUNT=',active_histories
   write(*,'(A,I0)') 'LAREDYN0R_BOTTOM_FILTER=',bottom_filter
   write(*,'(A,A)') 'LAREDYN0R_CASE_FILTER=',trim(case_filter_raw)
+  write(*,'(A,I0)') 'LAREDYN0R_SUBSTEPS=',substeps
   write(*,'(A,I0)') 'LAREDYN0R_STEPS_PER_HISTORY=',NSTEPS
   write(*,'(A,I0)') 'LAREDYN0R_STATE_COUNT=',total_states
   write(*,'(A,I0)') 'LAREDYN0R_TOTAL_FALLBACK_COUNT=',total_fallbacks
@@ -87,8 +97,8 @@ contains
     type(kernel_committed_state_t) :: state
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
-    real(real64) :: h0,k0,qeq,t0,t1,mass,bex,bflux
-    integer :: step,status,nl,ir,back
+    real(real64) :: h0,k0,qeq,t0,t1,mass,bex,bflux,sub_t0,sub_t1,sub_dt
+    integer :: step,status,nl,ir,back,substep
     character(len=96) :: route
     logical :: ok,fallback_used
     integer :: history_fallbacks
@@ -111,28 +121,34 @@ contains
     history_fallbacks=0
     history_max_mass=0.0_real64
 
+    sub_dt=step_dt/real(substeps,real64)
     do step=1,NSTEPS
       call configure_case(ih,step,h0,k0,qeq,p,forcing)
+      do substep=1,substeps
+        sub_t0=real(seed_intervals,real64)*seed_dt + real(step-1,real64)*step_dt + real(substep-1,real64)*sub_dt
+        sub_t1=sub_t0+sub_dt
+        call strict_first_sample(column,template,p,state,forcing,sub_t0,sub_t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
+        call require(ok,'LAREDYN0R accepted history step')
+        call require(abs(mass)<=hard_mass_gate,'LAREDYN0R hard mass gate')
+        call require(state%current_revision()==int(seed_intervals+(step-1)*substeps+substep,int64), &
+             'LAREDYN0R exact revision progression')
+        call require_current_time(state,sub_t1)
+        history_max_mass=max(history_max_mass,abs(mass))
+        max_abs_mass=max(max_abs_mass,abs(mass))
+        if(fallback_used)then
+          history_fallbacks=history_fallbacks+1
+          total_fallbacks=total_fallbacks+1
+        end if
+      end do
       t1=real(seed_intervals,real64)*seed_dt+real(step,real64)*step_dt
-      call strict_first_sample(column,template,p,state,forcing,t0,t1,ok,mass,bex,bflux,status,route,nl,ir,back,fallback_used)
-      call require(ok,'LAREDYN0R accepted history step')
-      call require(abs(mass)<=hard_mass_gate,'LAREDYN0R hard mass gate')
-      call require(state%current_revision()==int(seed_intervals+step,int64),'LAREDYN0R exact revision progression')
-      call require_current_time(state,t1)
-      history_max_mass=max(history_max_mass,abs(mass))
-      max_abs_mass=max(max_abs_mass,abs(mass))
-      if(fallback_used)then
-        history_fallbacks=history_fallbacks+1
-        total_fallbacks=total_fallbacks+1
-      end if
       total_states=total_states+1
-      call emit_state(ih,step,state,forcing,t0,t1,mass,bex,bflux,nl,back,fallback_used)
+      call emit_state(ih,step,state,forcing,t1-sub_dt,t1,mass,bex,bflux,nl,back,fallback_used)
       t0=t1
     end do
 
     write(*,'(*(g0))') 'LAREDYN0R_HISTORY_PASS|CASE=',trim(case_label(ih)),'|SE0=',initial_se(ih), &
          '|FORCING=',trim(forcing_label(forcing_kind(ih))),'|BOTTOM=',trim(bottom_label(bottom_kind(ih))), &
-         '|STATES=',NSTEPS,'|FALLBACKS=',history_fallbacks,'|MAX_ABS_MASS=',history_max_mass, &
+         '|STATES=',NSTEPS,'|SUBSTEPS=',substeps,'|FALLBACKS=',history_fallbacks,'|MAX_ABS_MASS=',history_max_mass, &
          '|FINAL_REV=',state%current_revision(),'|FINAL_T=',t0
   end subroutine run_history
 
