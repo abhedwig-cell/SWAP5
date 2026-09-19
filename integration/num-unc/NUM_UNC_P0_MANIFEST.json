@@ -240,7 +240,38 @@
         "change": "Correct first surface node distance from dz to 0.5*dz and supersede the first C0 locator result.",
         "scientific_freedom_added": false,
         "outcome_visibility": "Only N0 locator output had been generated; no N1 comparison existed."
+      },
+      {
+        "id": "P0C-R02",
+        "date": "2026-09-19",
+        "timing": "BEFORE_SPATIAL_CONTROL_AND_BEFORE_ANY_N1_EXECUTION",
+        "change": "Clarify that spatial-control gate applies to frozen outer bracketing cases C- and C+, not the intentionally transition-near C0.",
+        "scientific_freedom_added": false
       }
-    ]
+    ],
+    "authoritative_c0_result": "integration/num-unc/NUM_UNC_P0C_C0_RESULT_R1.json",
+    "spatial_control": {
+      "status": "PREREGISTERED_BEFORE_EXECUTION",
+      "grid": {
+        "cells": 32,
+        "cell_thickness_cm": 5,
+        "total_depth_cm": 160,
+        "surface_to_first_node_cm": 2.5
+      },
+      "gate_cases": [
+        {
+          "id": "C_minus",
+          "multiplier": 1.000634765625,
+          "required_class": "NO_PONDING"
+        },
+        {
+          "id": "C_plus",
+          "multiplier": 1.2229980468750001,
+          "required_class": "PONDING"
+        }
+      ],
+      "C_zero_is_gate": false,
+      "posthoc_offset_widening_allowed": false
+    }
   }
 }
