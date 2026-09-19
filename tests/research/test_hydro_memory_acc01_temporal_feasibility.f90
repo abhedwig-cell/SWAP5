@@ -43,7 +43,7 @@ program test_hydro_memory_acc01_temporal_feasibility
   call initialize_column_template(column, template)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, base_parameters%cofgen)
   call bind_b110_default_mvg_provider(constitutive, hydraulic_parameters, DURATION_DAY)
-  call derive_equilibrium_flux(qref)
+  call derive_equilibrium_flux(constitutive, qref)
 
   call run_route(.true., root_result, root_candidate, root_diag, root_obs)
   call run_route(.false., generic_result, generic_candidate, generic_diag, generic_obs)
