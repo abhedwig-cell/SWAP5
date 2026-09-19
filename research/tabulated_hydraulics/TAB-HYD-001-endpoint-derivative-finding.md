@@ -1,6 +1,6 @@
 # TAB-HYD-001: tabulated conductivity derivative is inconsistent at table endpoints
 
-Status: **CONFIRMED CURRENT/PUBLIC IMPLEMENTATION DEFECT; CANDIDATE FIX UNDER QUALIFICATION**
+Status: **CONFIRMED CURRENT/PUBLIC IMPLEMENTATION DEFECT; BOUNDED CANDIDATE QUALIFIED ON PUBLIC/TRANSITIONAL LINEAGE**
 
 Scope: research finding only. No production or B1 admission is made by this document.
 
@@ -26,7 +26,7 @@ For the endpoint extension actually used by `hconduc`, K is locally constant. Th
 
 In the 31-day Hupsel table case with `SWKIMPL=1`, the unmodified implementation timed out after 20 s. Replacing only the wet endpoint derivative sentinel `1e8` by zero made the case complete in about 0.17 s.
 
-A broader candidate, zero derivative at both tabulated endpoints, has also completed both `SWKIMPL=0` and `SWKIMPL=1` for the full 2002-2004 Hupsel period in the pre-strangler executable test route. Final qualification of that candidate is tracked by the dedicated derivative-clamp workflow.
+A broader candidate, zero derivative at both tabulated endpoints, completed both `SWKIMPL=0` and `SWKIMPL=1` for the full 2002-2004 Hupsel period in the pre-strangler executable test route. The dedicated candidate workflow also verified zero wet- and dry-endpoint derivatives with the current-public wrapper under bounds checking.
 
 ### Dry endpoint
 
@@ -58,13 +58,17 @@ The existing `1e8` value instead creates a Jacobian term that is not the derivat
 
 ## Qualification boundary
 
-Before any production/B1 admission, all of the following remain required:
+The first three bounded qualification items have now passed on the public/transitional lineage:
 
-1. successful bounds-checked wet and dry endpoint wrapper probes;
-2. full-period executable evidence that the table `SWKIMPL=1` route no longer stalls;
-3. characterization of the numerical difference between table `SWKIMPL=0` and `SWKIMPL=1`;
-4. exact-B0 source binding, or an explicit decision that the correction is admitted only against a later/current source authority;
-5. regression evidence that interior table behavior and `SWKIMPL=0` are unchanged;
-6. separate handling of the current typed-input reachability gap, which is independent of this derivative defect.
+1. bounds-checked wrapper probes give dK/dh = 0 at both wet and dry endpoint extensions;
+2. the full-period table `SWKIMPL=1` Hupsel case completes normally;
+3. the full-period `SWKIMPL=0` versus `SWKIMPL=1` difference has been quantified.
+
+Before any production/B1 admission, the remaining requirements are:
+
+4. exact-B0 source binding, or an explicit authority decision that the correction belongs only to a later/current source lineage;
+5. broader regression evidence that interior table behavior and `SWKIMPL=0` are unchanged;
+6. an explicit numerical acceptance envelope for the non-identical `SWKIMPL=0` and `SWKIMPL=1` trajectories;
+7. separate handling of the current typed-input reachability gap, which is independent of this derivative defect.
 
 The candidate must not be described as an acceleration result. Its purpose is Jacobian consistency and functional correctness.
