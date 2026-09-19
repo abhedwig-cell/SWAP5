@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.lare.bc2.c4i.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4I",
+  "phase": "PREREGISTERED_AFTER_C4H_BEFORE_QUADRATIC_STORAGE_RECONSTRUCTION",
+  "title": "C1-smooth quadratic pressure-profile reconstruction from existing Wb/Wt/H state",
+  "question": "Can a single physically admissible C1-smooth pressure-head profile constrained by the existing bulk and terminal storages reduce the gradient-dominant B9 qi error without sacrificing qH, adding prognostic state, or fitting to response?",
+  "predecessors": {
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_status": "CLOSED_GRADIENT_COMPONENT_TARGET_NO_MODEL_CHANGE",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "candidate": {
+    "name": "C1_QUADRATIC_STORAGE_PROFILE",
+    "coordinate": "x = H-z, distance upward from the water table; x=0 at the water table, x=L=H-anchor at the fixed anchor",
+    "profile": "psi(x) = a*x + b*x^2",
+    "boundary": "psi(0)=0 exactly",
+    "state_constraints": [
+      "Wt = integral_0^d theta(psi(x)) dx",
+      "Wb = integral_d^L theta(psi(x)) dx"
+    ],
+    "state_used": [
+      "Wb",
+      "Wt",
+      "H",
+      "terminal width d",
+      "frozen constitutive law"
+    ],
+    "added_state_dimension": 0,
+    "interface": {
+      "psi_i": "a*d + b*d^2",
+      "slope_i": "a + 2*b*d",
+      "qi": "K(theta(psi_i)) * (1-slope_i)"
+    },
+    "lower_boundary": {
+      "slope_H": "a",
+      "qH": "Ks * (1-a)"
+    },
+    "hydrostatic_identity": "a=1,b=0 gives psi=x and qi=qH=0",
+    "rationale": "Two existing independent storage constraints determine the two profile-shape parameters; pressure and derivative are continuous because one profile spans both lower subdomains."
+  },
+  "reconstruction_solver": {
+    "method": "deterministic bounded nonlinear root via scipy least_squares on nonnegative pressure values psi_i=psi(d) and psi_anchor=psi(L), converted uniquely to a,b",
+    "response_used": false,
+    "quadrature_primary": 64,
+    "quadrature_crosscheck": 128,
+    "fixed_multistart": [
+      "piecewise-linear state seed from existing B9 terminal and bulk reconstructions",
+      "hydrostatic seed psi_i=d, psi_anchor=L",
+      "half of the piecewise-linear pressure seed",
+      "twice the piecewise-linear pressure seed"
+    ],
+    "uniqueness_rule": "All converged physically admissible starts at a state must agree in a,b within 1e-8 relative/absolute combined tolerance. Otherwise the state is AMBIGUOUS_RECONSTRUCTION and C4I is blocked.",
+    "no_response_tuning": true
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference": "same immutable A2 Reference used by B8/B9/C4H"
+  },
+  "hard_gates": {
+    "storage_residual_cm": 1e-10,
+    "psi_nonnegative_tolerance_cm": 1e-10,
+    "root_uniqueness_ab": 1e-8,
+    "q_primary_crosscheck_cm_per_day": 1e-8,
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "all_candidate_states_physically_admissible": true,
+    "hydrostatic_abs_a_minus_1": 1e-10,
+    "hydrostatic_abs_b": 1e-10
+  },
+  "comparison": {
+    "baseline": "B9 TERMINAL_SIDE_LINEAR using the same projected Wb/Wt/H state and trapezoidal endpoint averaging",
+    "qi_support_rule": "For each width and each moving history WT_RISE and WT_FALL, candidate qi must have strictly lower RMS and MAE than TERMINAL_SIDE_LINEAR and no greater sign-mismatch count.",
+    "qH_noninferiority_rule": "For each width and WT_HOLD/WT_RISE/WT_FALL, candidate qH must have RMS and MAE no greater than TERMINAL_SIDE_LINEAR within 1e-12 and no greater sign-mismatch count.",
+    "no_absolute_application_tolerance": true
+  },
+  "decisions": {
+    "QUADRATIC_STORAGE_RECONSTRUCTION_SUPPORTED": "All candidate states pass hard gates, qi support holds for both widths and both moving histories, and qH is noninferior for both widths across HOLD/RISE/FALL.",
+    "QI_IMPROVES_QH_TRADEOFF": "All hard gates pass and qi support holds for both widths/moving histories, but qH noninferiority fails in at least one case.",
+    "QUADRATIC_RECONSTRUCTION_MIXED": "All hard gates pass but qi support is not uniform across width/direction.",
+    "C4I_RECONSTRUCTION_BLOCKED": "Any storage, uniqueness, physical-domain, hydrostatic, cross-quadrature or predecessor hard gate fails."
+  },
+  "firewalls": [
+    "STATIC_REFERENCE_STATE_CLOSURE_DIAGNOSTIC_ONLY",
+    "NO_FREE_PROPAGATION",
+    "NO_PARAMETER_FIT",
+    "NO_CLIPPING",
+    "NO_EXTRA_STATE",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
