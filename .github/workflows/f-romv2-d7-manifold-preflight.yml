@@ -1,29 +1,34 @@
-name: F-ROMV2 D7 finite-domain manifold preflight
+name: F-ROMV2 D7 finite-domain manifold discriminator
 on:
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:
       - 'integration/f-rom/F-ROMV2_D7_PREREGISTRATION.json'
       - 'tests/rom/preflight_f_romv2_d7_finite_domain_manifold.py'
+      - 'tests/rom/test_f_romv2_d7_r16_reference.f90'
+      - 'tests/rom/analyze_f_romv2_d7_quasi_steady_manifold.py'
+      - 'tests/rom/run_f_romv2_d7_quasi_steady_manifold.sh'
       - '.github/workflows/f-romv2-d7-manifold-preflight.yml'
-permissions: {contents: read}
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  preflight:
+  discriminator:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-        with: {fetch-depth: 0}
-      - name: Execute frozen D7 preflight
-        run: |
-          mkdir -p "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE"
-          python3 tests/rom/preflight_f_romv2_d7_finite_domain_manifold.py \
-            --prereg integration/f-rom/F-ROMV2_D7_PREREGISTRATION.json \
-            --output "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE/F-ROMV2_D7_PREFLIGHT_RESULT.json" \
-            | tee "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE/preflight.txt"
-          grep -Fq '"decision": "D7_FINITE_DOMAIN_SEARCH_PREFLIGHT_PASS"' "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE/F-ROMV2_D7_PREFLIGHT_RESULT.json"
-          sha256sum "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE/"* > "${{ runner.temp }}/F-ROMV2-D7-EVIDENCE/sha256.txt"
-      - name: Upload preflight
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute frozen D7 preflight and dynamic discriminator
+        env:
+          F_ROMV2_D7_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-D7-EVIDENCE
+        run: bash tests/rom/run_f_romv2_d7_quasi_steady_manifold.sh
+      - name: Upload D7 evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
