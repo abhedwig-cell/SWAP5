@@ -4,12 +4,15 @@ program tabulated_hydraulics_file_characterization
   use swap_array_dimensions, only: macp, matab, matabentries
   implicit none
 
+  integer, parameter :: nsamp_interval = 9
   real(real64) :: headtab(matab), x(matab), theta_tab(matab), logk_tab(matab), kraw(matab)
   real(real64) :: dydx(matab), sigma(matab), sptab(7,macp,matab)
   integer :: ientrytab(macp,0:matabentries)
-  real(real64) :: h, theta_eval, k_eval, c_eval, dk_eval, dummy, xmid
-  real(real64) :: theta_lo, theta_hi, k_lo, k_hi, min_c, min_dk
-  integer :: n, i, j, ios, iu, theta_overshoot, k_overshoot
+  real(real64) :: h, theta_eval, k_eval, c_eval, dk_eval, dummy, xe
+  real(real64) :: theta_lo, theta_hi, k_lo, k_hi, min_c, min_dk, frac
+  real(real64) :: min_input_dtheta, min_input_dk
+  integer :: n, i, j, isamp, ios, iu
+  integer :: theta_overshoot, k_overshoot, theta_decrease, k_decrease
   character(len=512) :: path
 
   if(command_argument_count()<1) error stop 'usage: file-characterization <numeric-table>'
@@ -25,10 +28,16 @@ program tabulated_hydraulics_file_characterization
   end do
   close(iu)
 
+  theta_decrease=0
+  k_decrease=0
+  min_input_dtheta=huge(1.0_real64)
+  min_input_dk=huge(1.0_real64)
   do i=2,n
     if(headtab(i)<=headtab(i-1)) error stop 'head not strictly increasing'
-    if(theta_tab(i)<=theta_tab(i-1)) error stop 'theta not strictly increasing'
-    if(kraw(i)<=kraw(i-1)) error stop 'K not strictly increasing'
+    min_input_dtheta=min(min_input_dtheta,theta_tab(i)-theta_tab(i-1))
+    min_input_dk=min(min_input_dk,kraw(i)-kraw(i-1))
+    if(theta_tab(i)<theta_tab(i-1)) theta_decrease=theta_decrease+1
+    if(kraw(i)<kraw(i-1)) k_decrease=k_decrease+1
   end do
   if(abs(headtab(n))>1.0e-12_real64) error stop 'table does not terminate at h=0'
 
@@ -71,36 +80,44 @@ program tabulated_hydraulics_file_characterization
   min_dk=huge(1.0_real64)
 
   do i=1,n-1
-    xmid=0.5_real64*(x(i)+x(i+1))
-    h=-(exp(-xmid)-1.0_real64)
-    if(h>=-1.0e-9_real64) cycle
-
-    dummy=0.0_real64
-    call EvalTabulatedFunction(0,n,1,2,4,1,sptab,ientrytab,h,theta_eval,dummy,1)
-    dummy=0.0_real64
-    call EvalTabulatedFunction(0,n,1,3,5,1,sptab,ientrytab,h,k_eval,dummy,2)
-    c_eval=0.0_real64
-    dummy=0.0_real64
-    call EvalTabulatedFunction(0,n,1,2,4,1,sptab,ientrytab,h,dummy,c_eval,3)
-    dk_eval=0.0_real64
-    dummy=0.0_real64
-    call EvalTabulatedFunction(0,n,1,3,5,1,sptab,ientrytab,h,dummy,dk_eval,4)
-
-    if(.not.ieee_is_finite(theta_eval) .or. .not.ieee_is_finite(k_eval) .or. &
-       .not.ieee_is_finite(c_eval) .or. .not.ieee_is_finite(dk_eval)) error stop 'nonfinite interpolation'
-
     theta_lo=min(theta_tab(i),theta_tab(i+1))
     theta_hi=max(theta_tab(i),theta_tab(i+1))
     k_lo=min(kraw(i),kraw(i+1))
     k_hi=max(kraw(i),kraw(i+1))
-    if(theta_eval<theta_lo-1.0e-12_real64 .or. theta_eval>theta_hi+1.0e-12_real64) theta_overshoot=theta_overshoot+1
-    if(k_eval<k_lo*(1.0_real64-1.0e-10_real64) .or. k_eval>k_hi*(1.0_real64+1.0e-10_real64)) k_overshoot=k_overshoot+1
-    min_c=min(min_c,c_eval)
-    min_dk=min(min_dk,dk_eval)
+
+    do isamp=1,nsamp_interval
+      frac=real(isamp,real64)/real(nsamp_interval+1,real64)
+      xe=x(i)+frac*(x(i+1)-x(i))
+      h=-(exp(-xe)-1.0_real64)
+      if(h>=-1.0e-9_real64) cycle
+
+      dummy=0.0_real64
+      call EvalTabulatedFunction(0,n,1,2,4,1,sptab,ientrytab,h,theta_eval,dummy,1)
+      dummy=0.0_real64
+      call EvalTabulatedFunction(0,n,1,3,5,1,sptab,ientrytab,h,k_eval,dummy,2)
+      c_eval=0.0_real64
+      dummy=0.0_real64
+      call EvalTabulatedFunction(0,n,1,2,4,1,sptab,ientrytab,h,dummy,c_eval,3)
+      dk_eval=0.0_real64
+      dummy=0.0_real64
+      call EvalTabulatedFunction(0,n,1,3,5,1,sptab,ientrytab,h,dummy,dk_eval,4)
+
+      if(.not.ieee_is_finite(theta_eval) .or. .not.ieee_is_finite(k_eval) .or. &
+         .not.ieee_is_finite(c_eval) .or. .not.ieee_is_finite(dk_eval)) error stop 'nonfinite interpolation'
+
+      if(theta_eval<theta_lo-1.0e-12_real64 .or. theta_eval>theta_hi+1.0e-12_real64) theta_overshoot=theta_overshoot+1
+      if(k_eval<k_lo*(1.0_real64-1.0e-10_real64) .or. k_eval>k_hi*(1.0_real64+1.0e-10_real64)) k_overshoot=k_overshoot+1
+      min_c=min(min_c,c_eval)
+      min_dk=min(min_dk,dk_eval)
+    end do
   end do
 
   write(*,'(A,A)') 'TABLE ',trim(path)
   write(*,'(A,I0)') 'SUMMARY n=',n
+  write(*,'(A,I0)') 'SUMMARY input_theta_decrease=',theta_decrease
+  write(*,'(A,I0)') 'SUMMARY input_k_decrease=',k_decrease
+  write(*,'(A,ES24.16)') 'SUMMARY min_input_dtheta=',min_input_dtheta
+  write(*,'(A,ES24.16)') 'SUMMARY min_input_dK=',min_input_dk
   write(*,'(A,I0)') 'SUMMARY theta_overshoot=',theta_overshoot
   write(*,'(A,I0)') 'SUMMARY k_overshoot=',k_overshoot
   write(*,'(A,ES24.16)') 'SUMMARY min_C=',min_c
