@@ -1,8 +1,8 @@
 {
   "schema": "swap5.fci.ppa_low02_moving_preservation_reconciliation.v1",
   "date": "2026-09-19",
-  "state": "PREREGISTERED_GOVERNANCE_RECONCILIATION",
-  "purpose": "Reconcile the canonical moving P2E05 preservation gate with the already-qualified and canonically admitted PPA-LOW02-TIME serialized-backend successor.",
+  "state": "CURRENT_CANONICAL_RECONCILIATION",
+  "purpose": "Reconcile the canonical moving P2E05 preservation gate with the already-qualified and canonically admitted PPA-LOW02-TIME serialized-backend successor and the later PPA-ROOT-HYD01 temporal-indicator successor.",
   "observed_failure": {
     "canonical_heads": [
       "1720abc365a9d0a65ea8253df2f94c991f2b9fc1",
@@ -14,7 +14,14 @@
     ],
     "failing_job": "current-restricted-canonical-preservation",
     "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted F-ROM1A serialized backend successor drift",
-    "inherited_by_pub_gc_pr371": true
+    "inherited_by_pub_gc_pr371": true,
+    "current_canonical_successor": {
+      "canonical_head": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "workflow_run": 35429748350,
+      "failing_job": 105862082311,
+      "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/solver/mod_reference_richards_temporal_indicator.f90",
+      "cause": "PPA-ROOT-HYD01 PR #387 is already canonically admitted; the moving preservation gate still expected the pre-admission Status-A blob."
+    }
   },
   "existing_authority": {
     "f_rom1a_admission": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
@@ -37,6 +44,16 @@
         35426047766
       ],
       "fgc42_run": 35426047891
+    },
+    "ppa_root_hyd01": {
+      "qualified_head": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+      "functional_admission_pr": 387,
+      "canonical_merge": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "status_path": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+      "exact_temporal_indicator_blob": "2068215a57edb1d2a59c36d6b32f519ebdc09ebd",
+      "qualification_run": 35429605183,
+      "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+      "new_physics_in_this_reconciliation": false
     }
   },
   "repair_contract": [
@@ -47,7 +64,11 @@
     "The F-SI39 default-MvG provider must remain exact.",
     "The exact F-ROM1A kernel successor remains independently pinned.",
     "Any later backend drift fails closed.",
-    "Owner and independent PPA-LOW02 qualification are replayed on the repair PR."
+    "Owner and independent PPA-LOW02 qualification are replayed on the repair PR.",
+    "The generic historical dependency surface no longer rejects the already-admitted PPA-ROOT-HYD01 temporal-indicator successor.",
+    "PPA-ROOT-HYD01 is accepted only when canonical admission 308a619c... is an ancestor and qualified head b7803c1c... is contained by that admission.",
+    "The temporal-indicator provider must equal exact admitted blob 2068215a...; pre-admission lineage still requires the historical authority blob.",
+    "No PPA-ROOT-HYD01 equations, tolerances, solver behavior or application accuracy budget are changed."
   ],
   "production_delta": [],
   "reference_delta": [],
