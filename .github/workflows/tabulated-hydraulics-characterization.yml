@@ -101,7 +101,7 @@ jobs:
           for table in build/tab-hyd/real-tables/*.dat; do
             ./build/tab-hyd/tabulated_hydraulics_file_characterization "$table" | tee -a build/tab-hyd/staring-characterization.txt
           done
-          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED
+          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED$' build/tab-hyd/staring-characterization.txt)" -eq 36
 
       - name: Compile current public hydraulic wrappers
         shell: bash
