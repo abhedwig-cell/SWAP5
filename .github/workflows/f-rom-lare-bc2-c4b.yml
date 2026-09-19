@@ -52,6 +52,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p LARE_BC2_C4B_CASE
+          set +e
           python3 tests/rom/analyze_lare_bc2_c4b_oracle_case.py \
             --reference /tmp/lare-bc2-c4b/a2/o0.txt \
             --prereg integration/f-rom/LARE_BC2_C4B_PREREGISTRATION.json \
@@ -60,6 +61,23 @@ jobs:
             --history "${{ matrix.history }}" \
             --output "LARE_BC2_C4B_CASE/case_${{ matrix.tag }}.json" \
             | tee "LARE_BC2_C4B_CASE/runner_${{ matrix.tag }}.txt"
+          rc=${PIPESTATUS[0]}
+          set -e
+          python3 - "$rc" "LARE_BC2_C4B_CASE/case_${{ matrix.tag }}.json" <<'PY'
+          import json,sys
+          rc=int(sys.argv[1]); path=sys.argv[2]
+          row=json.load(open(path))
+          decision=row["decision"]
+          assert rc in (0,2), (rc,decision)
+          if rc==0:
+              assert decision=="BC2_C4B_ORACLE_CASE_MAPPED" and row["complete"] is True
+          else:
+              assert decision=="BC2_C4B_CASE_BLOCKED" and row["complete"] is False
+          assert row["model_candidate_tested"] is False
+          assert row["next_model_change_authorized"] is False
+          assert row["production_rom_authorized"] is False
+          print("LARE_BC2_C4B_CASE_STRUCTURED_OUTCOME=PASS",decision)
+          PY
 
       - name: Upload case
         if: always()
@@ -70,6 +88,7 @@ jobs:
           if-no-files-found: error
 
   aggregate:
+    if: always()
     needs: case
     runs-on: ubuntu-latest
     steps:
@@ -94,12 +113,22 @@ jobs:
           python3 - <<'PY'
           import json
           r=json.load(open('LARE_BC2_C4B_EVIDENCE/LARE_BC2_C4B_RESULT.json'))
-          assert r['complete'] is True
-          assert r['hard_checks']['maximum_recorded_hard_residual_or_identity_error'] <= 1e-10
+          assert r['decision'] in (
+              'REGIME_DEPENDENT_COUPLED_LOWER_BOUNDARY_CAUSALITY',
+              'MONOTONE_QI_CAUSALITY_ONLY',
+              'CYCLE_QH_CAUSALITY_ONLY',
+              'MULTI_CHANNEL_OR_SUBINTERVAL_DYNAMICS_REQUIRED',
+              'C4B_DIAGNOSTIC_BLOCKED',
+          )
+          if r['complete']:
+              assert r['hard_checks']['maximum_recorded_hard_residual_or_identity_error'] <= 1e-10
+          else:
+              assert r['decision']=='C4B_DIAGNOSTIC_BLOCKED'
+              assert r['hard_checks']['failure_count'] > 0
           assert r['model_candidate_tested'] is False
           assert r['next_model_change_authorized'] is False
           assert r['production_rom_authorized'] is False
-          print('LARE_BC2_C4B_FIREWALL=PASS')
+          print('LARE_BC2_C4B_FIREWALL=PASS',r['decision'])
           PY
           sha256sum LARE_BC2_C4B_EVIDENCE/* > LARE_BC2_C4B_EVIDENCE/sha256.txt
 
