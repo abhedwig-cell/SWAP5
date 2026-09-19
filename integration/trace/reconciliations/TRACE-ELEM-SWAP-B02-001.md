@@ -10,9 +10,9 @@ Reference evapotranspiration demand and drought-only root-water uptake, selected
 
 ## Frozen scientific and implementation scope
 
-F-DOC21 binds the reviewer-facing claim to the frozen Status-A scientific production baseline `50346642bd565f79134ea17d5462e544b354998c`.
+The reviewer page itself binds the claim to the frozen SWAP5 Status-A review baseline and identifies the restricted reference profile rather than the full historical SWAP evapotranspiration chapter. It explicitly excludes broader historical ET methods, interception variants, wet/oxygen stress, salinity stress, compensation and process-based root hydraulics.
 
-The authority matrix permits only the restricted ET partition and drought-only root extraction. It explicitly excludes broader historical ET methods, interception variants, wet/oxygen stress, salinity stress, compensation and process-based root hydraulics.
+The exact frozen scientific production baseline used for direct source inspection is `50346642bd565f79134ea17d5462e544b354998c`.
 
 Direct inspection of the frozen source confirms the reviewer equations.
 
@@ -40,9 +40,9 @@ F-VQ35 independently qualified this exact ET-demand source blob over 1700 grid c
 - exact reporting of potential, actual and drought-reduction terms as one physical root withdrawal;
 - early zero routes for no roots and negligible transpiration.
 
-F-DOC21 identifies this exact frozen process source as the current implementation evidence for the drought-only Feddes branch.
+F-CI19's full source-lineage admission audit identifies this exact root-process blob as F-VQ22 `INDEPENDENT_PROCESS_ADMISSION` for the MACRO/Feddes drought-only root-water-uptake process, while explicitly stating that higher runtime composition is not implied.
 
-Current runtime/canonical evidence, including F-CI34, records independent real-HeadCalc root-sink and hard-mass checks without changing this process science.
+The current canonical blob remains identical. Later runtime/coupling work therefore does not replace the process-level scientific authority.
 
 ## Post-selection canonical delta
 
