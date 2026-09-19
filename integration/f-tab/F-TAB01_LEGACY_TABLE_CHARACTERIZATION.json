@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TAB01",
+  "status": "CHARACTERIZED_BLOCKED_FOR_DROPIN",
+  "branch": "work/f-tab01-tabulated-hydraulics-audit",
+  "canonical_start": "f5988c04ee93d92d54876696b5414bd326360ad9",
+  "oracle": {
+    "repository": "SWAP-model/SWAP",
+    "commit": "c22bd832ddf3e53e330a552f5e31e74f183362d1",
+    "path": "src/soil/sptabulated.f90",
+    "blob_sha": "62a4df82de75f1231fe066351473d140cf2ac31c",
+    "exact_supplied_swap431_identity_claimed": false
+  },
+  "hydraulic_authority": {
+    "source": "tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90",
+    "theta_r": 0.032,
+    "theta_s": 0.423,
+    "ksat_cm_d": 4.75,
+    "alpha_per_cm": 0.0135,
+    "lambda": 0.365,
+    "n": 1.455,
+    "m": 0.3127147766323024,
+    "h_enpr_cm": 0.0
+  },
+  "actions": {
+    "characterization_run": 35451033898,
+    "near_saturation_run": 35451276465
+  },
+  "refined_400": {
+    "theta_max_abs": 3.275127e-6,
+    "theta_range_normalized_max": 8.376283e-6,
+    "k_max_log10_decades": 4.205997e-3,
+    "c_max_rel_active_h_le_hcrit": 1.914036e-4,
+    "theta_monotonicity_violations": 0,
+    "k_monotonicity_violations": 0
+  },
+  "near_saturation_capacity": [
+    {"h_cm": -0.009, "c_ref": 2.863915e-5, "c_table": 2.863915e-5, "rel_error": 2.124347e-8},
+    {"h_cm": -0.005, "c_ref": 2.863915e-5, "c_table": 2.863915e-5, "rel_error": 8.860580e-9},
+    {"h_cm": -0.001, "c_ref": 2.863915e-5, "c_table": 2.863915e-5, "rel_error": 1.241689e-7},
+    {"h_cm": -0.0001, "c_ref": 2.863915e-5, "c_table": 3.683251e-5, "rel_error": 2.860895e-1},
+    {"h_cm": -0.00001, "c_ref": 2.863915e-5, "c_table": 8.595727e-6, "rel_error": 6.998610e-1},
+    {"h_cm": -0.000001, "c_ref": 2.863915e-5, "c_table": 9.978070e-7, "rel_error": 9.651593e-1},
+    {"h_cm": -0.0000001, "c_ref": 2.863915e-5, "c_table": 1.902630e-7, "rel_error": 9.933565e-1},
+    {"h_cm": -0.00000001, "c_ref": 2.863915e-5, "c_table": 1.090311e-7, "rel_error": 9.961929e-1}
+  ],
+  "disposition": {
+    "current_swap5_table_route": "NOT_REACHABLE_NOT_ADMITTED",
+    "historical_tspack_value_interpolation": "EXECUTABLE_AND_NUMERICALLY_PROMISING",
+    "historical_tspack_dropin_current_b110": "BLOCKED_NEAR_SATURATION_CAPACITY_SEMANTICS",
+    "performance_benchmark": "DEFERRED"
+  }
+}
