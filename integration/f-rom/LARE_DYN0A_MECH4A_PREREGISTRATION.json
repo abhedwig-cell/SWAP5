@@ -144,5 +144,15 @@
     "NO_LARE_PROPAGATION_CHANGE",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalization": {
+    "before_first_MECH4A_result": true,
+    "spearman_ties": "average ranks",
+    "undefined_spearman": "If either vector is constant, assign correlation 0.0 rather than dropping the case.",
+    "peak_ties": "If multiple L values share the exact maximum within floating representation, choose the smallest L.",
+    "pooling": "Signed residual RMS pools every qualified material/case/interface/pulse-step sample with equal sample weight; case-ranking summaries give each qualified case equal weight.",
+    "dominance": "Indicator A dominates LENGTH_ONLY when median Spearman_A >= median Spearman_LENGTH, median peak-error_A <= median peak-error_LENGTH, exact-hit_A >= exact-hit_LENGTH, and at least one inequality is strict.",
+    "numeric_zero_for_sign": 1e-12,
+    "scientific_effect": "Operationalizes preregistered metrics only; no response has been calculated."
+  }
 }
