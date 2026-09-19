@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.lare.bc2.c4l.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4L",
+  "phase": "PREREGISTERED_AFTER_C4K_BEFORE_QH_PRESERVING_CUBIC_RECONSTRUCTION",
+  "title": "qH-preserving cubic storage reconstruction",
+  "question": "Can curvature inferred only from the existing Wb/Wt/H state improve the gradient-dominant internal flux qi while preserving the already-supported terminal qH closure exactly?",
+  "predecessors": {
+    "C4K": {
+      "closeout": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+      "required_status": "CLOSED_MEMORYLESS_STATE_SUFFICIENCY_NOT_REJECTED",
+      "required_decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT"
+    },
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "B7": {
+      "result": "integration/f-rom/LARE_BC2_B7_RESULT.json",
+      "required_decision": "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "candidate": {
+    "name": "QH_PRESERVING_CUBIC_STORAGE_PROFILE",
+    "coordinate": "x=H-z upward from water table; x=0 at water table and x=L=H-anchor at the fixed anchor",
+    "profile": "psi(x)=a*x + u*x^2/L + v*x^3/L^2",
+    "terminal_slope_authority": "a is fixed exactly to the B7/B9 terminal-storage linear slope a_t(Wt,d). Therefore qH=Ks*(1-a) is identical to TERMINAL_SIDE_LINEAR at every endpoint.",
+    "unknowns": [
+      "dimensionless curvature coefficient u",
+      "dimensionless curvature coefficient v"
+    ],
+    "constraints": [
+      "Wt = integral_0^d theta(psi(x)) dx",
+      "Wb = integral_d^L theta(psi(x)) dx"
+    ],
+    "state_used": [
+      "Wb",
+      "Wt",
+      "H",
+      "terminal width d",
+      "frozen constitutive law"
+    ],
+    "added_state_dimension": 0,
+    "interface": {
+      "psi_i": "a*d + u*d^2/L + v*d^3/L^2",
+      "slope_i": "a + 2*u*d/L + 3*v*d^2/L^2",
+      "qi": "K(theta(psi_i))*(1-slope_i)"
+    },
+    "hydrostatic_identity": "a=1,u=0,v=0 gives psi=x and qi=qH=0"
+  },
+  "solver": {
+    "method": "deterministic scipy least_squares on (u,v), no response fit and no clipping",
+    "quadrature_primary": 64,
+    "quadrature_crosscheck": 128,
+    "frozen_starts": [
+      "u=0,v=0",
+      "v=0 and u=(b_bulk-a)*L/(2d), which matches the existing B9 bulk-side slope at the interface in a quadratic seed",
+      "u=(a-b_bulk)*L/d and v=-(a-b_bulk)*L^2/d^2, which preserves the linear terminal interface pressure while matching the B9 bulk-side interface slope in the seed",
+      "one half of the preceding cubic seed"
+    ],
+    "minimum_valid_starts_per_state": 2,
+    "uniqueness": "All valid roots at a quadrature must agree in u and v within combined absolute/relative 1e-8. Otherwise reconstruction is blocked.",
+    "response_used": false
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference": "immutable A2 Reference"
+  },
+  "hard_gates": {
+    "storage_residual_cm": 1e-10,
+    "psi_nonnegative_tolerance_cm": 1e-10,
+    "root_uniqueness_uv": 1e-8,
+    "minimum_valid_multistart_roots": 2,
+    "qi_64_vs_128_cm_per_day": 1e-8,
+    "qH_candidate_vs_B9_identity_cm_per_day": 1e-12,
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "hydrostatic_abs_u": 1e-9,
+    "hydrostatic_abs_v": 1e-9
+  },
+  "comparison": {
+    "baseline": "B9 TERMINAL_SIDE_LINEAR on identical Reference-projected states",
+    "moving_qi_support": "For each width and each of WT_RISE and WT_FALL, cubic qi must have strictly lower RMS and MAE than baseline and no greater sign-mismatch count.",
+    "hold_qi_noninferiority": "For each width under WT_HOLD, cubic qi RMS and MAE must be no greater than baseline within 1e-12 and sign-mismatch count no greater.",
+    "qH_rule": "Candidate qH must be bit/numerically identical to baseline by construction; qH is not traded for qi improvement.",
+    "no_absolute_application_tolerance": true
+  },
+  "decisions": {
+    "QH_PRESERVING_CUBIC_QI_SUPPORTED": "All hard gates pass; moving qi improves for both widths/directions; HOLD qi is noninferior for both widths; qH identity holds.",
+    "QH_PRESERVING_CUBIC_MOVING_ONLY": "All hard gates pass and moving qi improves for both widths/directions, but HOLD qi noninferiority fails.",
+    "QH_PRESERVING_CUBIC_MIXED": "All hard gates pass but moving qi improvement is not uniform across width/direction.",
+    "C4L_RECONSTRUCTION_BLOCKED": "Any reconstruction, uniqueness, physical-domain, quadrature, hydrostatic, qH-identity or B8-ledger hard gate fails."
+  },
+  "firewalls": [
+    "STATIC_REFERENCE_STATE_CLOSURE_DIAGNOSTIC_ONLY",
+    "NO_FREE_PROPAGATION",
+    "NO_PARAMETER_FIT",
+    "NO_CLIPPING",
+    "NO_EXTRA_STATE",
+    "NO_DIRECTION_SWITCH",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
