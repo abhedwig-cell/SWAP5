@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.pub_gc_gmd.final_authority_input.v1",
+  "date": "2026-09-19",
+  "state": "AWAITING_R1_L1_AUTHORITY",
+  "candidate_binding": {
+    "authority_file": "release/pub-gc-gmd/PUB_GC_GMD_UNVERSIONED_CANDIDATE.json",
+    "scientific_source_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "scientific_source_tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "src_tree": "573df94cbb1c3f1cb38498e0003f11b8f7e3bcf1",
+    "reference_tree": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4",
+    "predecessor_release": "SWAP5-RB1-v1"
+  },
+  "R1": {
+    "publication_release_identifier": null,
+    "authority_name_or_role": null,
+    "governing_record": null,
+    "effective_date": null
+  },
+  "L1": {
+    "software_license_expression": null,
+    "publication_archive_redistribution_statement": null,
+    "public_archive_redistribution_authorized": null,
+    "authority_name_or_role": null,
+    "governing_record": null,
+    "effective_date": null,
+    "evidence_packet": "docs/publication/PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.json",
+    "upstream_sw4_provenance": "GNU General Public License Version 2, June 1991 (official SWAP 4 technical addendum)"
+  },
+  "external_reference_asset": {
+    "name": "SWAP 4.3.1 distribution",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "redistributed_in_publication_archive": false,
+    "reviewer_access_statement": null,
+    "reviewer_access_authority": null
+  },
+  "A3": {
+    "persistent_archive_doi_or_pid": null,
+    "archive_url": null,
+    "archive_created_at": null,
+    "prerequisite": "Only populate after R1 and L1 are authorized and the exact candidate release is deposited."
+  },
+  "rules": [
+    "Do not change candidate_binding to follow moving canonical.",
+    "Do not reuse or move SWAP5-RB1-v1.",
+    "Do not set state to AUTHORIZED_FOR_PUBLIC_ARCHIVE unless R1 and L1 are explicit and public archive redistribution is authorized.",
+    "Do not populate A3 before the persistent archive actually exists.",
+    "Do not add SWAP_4.3.1.zip bytes to the publication archive without separate controlling redistribution authority."
+  ]
+}
