@@ -1,0 +1,69 @@
+name: F-ROM-LARE BC2-B4 boundary localization
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_B4_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_b4_boundary_localization.py'
+      - '.github/workflows/f-rom-lare-bc2-b4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover qualified BC2-A2 Reference geometry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b4/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-b4/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-b4/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b4/a2.zip -d /tmp/lare-bc2-b4/a2
+          cmp /tmp/lare-bc2-b4/a2/o0.txt /tmp/lare-bc2-b4/a2/o2.txt
+
+      - name: Execute water-table information-localization diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_B4_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_b4_boundary_localization.py \
+            --reference /tmp/lare-bc2-b4/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_B4_PREREGISTRATION.json \
+            --b3-result integration/f-rom/LARE_BC2_B3_RESULT.json \
+            --output LARE_BC2_B4_EVIDENCE/LARE_BC2_B4_RESULT.json \
+            | tee LARE_BC2_B4_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_B4_EVIDENCE/LARE_BC2_B4_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED',
+              'BC2_B4_LOCAL_INFORMATION_DIRECTION_DEPENDENT',
+              'BC2_B4_GLOBAL_AVERAGE_NOT_DISADVANTAGED',
+              'BC2_B4_BOUNDARY_LOCALIZATION_DIAGNOSTIC_BLOCKED',
+          }
+          assert r['reduced_state_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B4_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_B4_EVIDENCE/* > LARE_BC2_B4_EVIDENCE/sha256.txt
+
+      - name: Upload BC2-B4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-b4
+          path: LARE_BC2_B4_EVIDENCE/
+          if-no-files-found: warn
