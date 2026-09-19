@@ -6,7 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C4M_PREREGISTRATION.json'
-      - 'tests/rom/analyze_lare_bc2_c4m_internal_slope_correction.py'
+      - 'tests/rom/analyze_lare_bc2_c4m_internal_slope_mechanism.py'
       - 'tests/rom/aggregate_lare_bc2_c4m.py'
       - '.github/workflows/f-rom-lare-bc2-c4m.yml'
   workflow_dispatch:
@@ -51,7 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p LARE_BC2_C4M_CASE
-          python3 tests/rom/analyze_lare_bc2_c4m_internal_slope_correction.py             --reference /tmp/lare-bc2-c4m/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C4M_PREREGISTRATION.json             --c4l-closeout integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json             --c4h-closeout integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json             --c4k-closeout integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json             --b8-result integration/f-rom/LARE_BC2_B8_RESULT.json             --b9-result integration/f-rom/LARE_BC2_B9_RESULT.json             --width "${{ matrix.width }}"             --history "${{ matrix.history }}"             --output "LARE_BC2_C4M_CASE/case_${{ matrix.tag }}.json"             | tee "LARE_BC2_C4M_CASE/runner_${{ matrix.tag }}.txt"
+          python3 tests/rom/analyze_lare_bc2_c4m_internal_slope_mechanism.py             --reference /tmp/lare-bc2-c4m/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C4M_PREREGISTRATION.json             --c4l-closeout integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json             --c4l-result integration/f-rom/LARE_BC2_C4L_RESULT.json             --c4h-closeout integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json             --c4k-closeout integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json             --b8-result integration/f-rom/LARE_BC2_B8_RESULT.json             --b9-result integration/f-rom/LARE_BC2_B9_RESULT.json             --width "${{ matrix.width }}"             --history "${{ matrix.history }}"             --output "LARE_BC2_C4M_CASE/case_${{ matrix.tag }}.json"             | tee "LARE_BC2_C4M_CASE/runner_${{ matrix.tag }}.txt"
       - name: Upload case evidence
         if: always()
         uses: actions/upload-artifact@v4
