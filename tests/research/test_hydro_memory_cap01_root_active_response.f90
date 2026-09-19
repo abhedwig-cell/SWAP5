@@ -8,10 +8,10 @@ program test_hydro_memory_cap01_root_active_response
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_committed_state
   use mod_fmr_groundwater_head_forcing_adapter, only: fmr_groundwater_head_forcing_materializer_t
   use mod_fmr_groundwater_swap_participant, only: fmr_groundwater_swap_participant_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK
@@ -299,7 +299,7 @@ contains
     t%state_layout_id = 590123_int64
     t%solver_interface_id = 590124_int64
     t%optional_state_layout_id = 0_int64
-    t%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    t%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
     t%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     c%column_id = COLUMN_ID
     c%template_id = t%template_id
@@ -328,7 +328,6 @@ contains
     type(fmr_b110_physical_parameters_t), intent(in) :: p
     type(fmr_b110_physical_state_t) :: physical
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-    real(real64) :: accepted_predecessor_right_derivative(numnod)
     logical :: ok
     integer :: i
 
@@ -343,9 +342,7 @@ contains
     physical%water_content = water
     physical%ponding_depth = 0.0_real64
     physical%groundwater_level = -2.0_real64
-    accepted_predecessor_right_derivative = 0.0_real64
-    call fmr_new_b110_temporal_indicator_committed_state(state, COLUMN_ID, physical, 0.0_real64, ok, &
-         accepted_predecessor_right_derivative)
+    call fmr_new_b110_committed_state(state, COLUMN_ID, physical, 0.0_real64, ok)
     call require(ok, 'root-active committed state initialization')
   end subroutine initialize_committed_state
 
