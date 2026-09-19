@@ -85,10 +85,16 @@ program test_hydro_memory_acc01_temporal_feasibility
   write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MAX_TEMPORAL_INDICATOR=', root_diag%max_temporal_indicator
   write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MIN_ACCEPTED_DT_DAY=', root_diag%min_accepted_substep_duration
   write(*,'(a,es24.16)') 'HYDRO_MEMORY_F1_ROOT_MAX_ACCEPTED_DT_DAY=', root_diag%max_accepted_substep_duration
-  call require(trim(root_obs%temporal_indicator_route) == 'reference-richards-raw-bound', &
-       'ROOT final temporal route drift')
-  call require(trim(generic_obs%temporal_indicator_route) == 'reference-richards-raw-bound', &
-       'GENERIC final temporal route drift')
+  call require(qualified_reference_route(root_obs%temporal_indicator_route), &
+       'ROOT final temporal route outside qualified Reference-Richards bounds')
+  call require(qualified_reference_route(generic_obs%temporal_indicator_route), &
+       'GENERIC final temporal route outside qualified Reference-Richards bounds')
+  call require(trim(root_obs%temporal_indicator_route) == trim(generic_obs%temporal_indicator_route), &
+       'ROOT/GENERIC final temporal route divergence')
+  call require(root_diag%max_temporal_indicator <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64), &
+       'ROOT accepted temporal indicator exceeds governed budget')
+  call require(generic_diag%max_temporal_indicator <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64), &
+       'GENERIC accepted temporal indicator exceeds governed budget')
   call require(root_obs%temporal_head_budget_valid .and. generic_obs%temporal_head_budget_valid, &
        'governed temporal budget not valid at runtime')
   call require(same_scaled(root_obs%temporal_head_budget, H_APP_CM*A_TEMPORAL), &
@@ -333,6 +339,12 @@ contains
       call require(.false., 'F1 ROOT comparison snapshot type')
     end select
   end subroutine compare_candidate_states
+
+  pure logical function qualified_reference_route(route) result(ok)
+    character(len=*), intent(in) :: route
+    ok = trim(route) == 'reference-richards-raw-bound' .or. &
+         trim(route) == 'reference-richards-defect-bound'
+  end function qualified_reference_route
 
   pure logical function same_scaled(a, b) result(same)
     real(real64), intent(in) :: a, b
