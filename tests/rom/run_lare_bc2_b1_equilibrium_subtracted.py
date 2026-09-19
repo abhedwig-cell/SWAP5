@@ -478,7 +478,7 @@ def main()->int:
     strict_any=False
     for history,row in cases.items():
         fine=compact(row)
-        base=b0["conservative"][history]
+        base=b0["conservative"]["histories"][history]
         if fine["status"]!="QUALIFIED":
             comparisons[history]={"qualified":False}
             all_noninferior=False
@@ -487,14 +487,20 @@ def main()->int:
             "total_storage":fine["max_abs_total_unsaturated_storage_error_cm"]<=base["max_total_unsat_error_cm"]+1e-14,
             "cumulative_qH":fine["max_abs_cumulative_qH_error_cm"]<=base["max_cum_qH_error_cm"]+1e-14,
             "sign_mismatch":fine["qH_sign_mismatch_count"]<=base["sign_mismatch_count"],
-            "reversal_step":gate_value(fine["max_reversal_step_difference"])<=gate_value(base.get("max_reversal_step_difference"))+1e-14,
         }
         strict={
             "total_storage":fine["max_abs_total_unsaturated_storage_error_cm"]<base["max_total_unsat_error_cm"]-1e-12,
             "cumulative_qH":fine["max_abs_cumulative_qH_error_cm"]<base["max_cum_qH_error_cm"]-1e-12,
             "sign_mismatch":fine["qH_sign_mismatch_count"]<base["sign_mismatch_count"],
-            "reversal_step":gate_value(fine["max_reversal_step_difference"])<gate_value(base.get("max_reversal_step_difference"))-1e-12,
         }
+        if history=="WT_CYCLE":
+            b0_reversal=max(
+                [abs(a-b) for a,b in zip(base["reversal_candidate"],base["reversal_reference"])] or [0]
+            )
+            components["reversal_step"]=gate_value(fine["max_reversal_step_difference"])<=b0_reversal+1e-14
+            strict["reversal_step"]=gate_value(fine["max_reversal_step_difference"])<b0_reversal-1e-12
+        else:
+            b0_reversal=None
         noninferior=all(components.values())
         all_noninferior &= noninferior
         strict_any |= any(strict.values())
@@ -515,7 +521,7 @@ def main()->int:
                 "max_cum_qH_error_cm":base["max_cum_qH_error_cm"],
                 "max_interval_qH_error_cm_per_day":base["max_interval_qH_error_cm_per_day"],
                 "sign_mismatch_count":base["sign_mismatch_count"],
-                "max_reversal_step_difference":base.get("max_reversal_step_difference"),
+                "max_reversal_step_difference":b0_reversal,
             }
         }
 
@@ -539,7 +545,7 @@ def main()->int:
         decision="BC2_B1_EQSUB_CONTROL_NO_RELATIVE_SUPPORT"
 
     hold=compact(cases["WT_HOLD"])
-    b0hold=b0["conservative"]["WT_HOLD"]
+    b0hold=b0["conservative"]["histories"]["WT_HOLD"]
     result={
         "schema":"swap5.lare.bc2.b1.result.v1",
         "workstream":"F-ROM-LARE",
