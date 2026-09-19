@@ -105,14 +105,15 @@
   "development_decision": {
     "positive": "LOCAL_TABLE_DISCOVERY_PROMISING_FOR_NEW_UNEXPOSED_VALIDATION",
     "negative": "STOP_LOCAL_TABLE_DYNAMIC_ROM",
-    "structural_kill_if": [
+    "value_screen": "A candidate is not considered promising merely because it is stable. It must outperform the forcing-only mean baseline on both recursive cumulative-bottom-exchange RMSE and recursive total-storage RMSE over the pooled leave-one-history-out discovery folds.",
+    "dimension_rule": "Prefer the lowest-dimensional candidate that passes the structural gate and the value screen. Event-fidelity metrics remain separately reported and cannot be traded away silently.",
+    "final_application_acceptance": "NOT_ALLOWED_IN_S2D. Any candidate that passes S2D must be frozen before generating new unexposed validation histories and before numerical application thresholds are specified.",
+    "candidate_structural_kill_if": [
       "any candidate publishes nonfinite state",
       "any candidate reconstructs theta outside B01 [0.02,0.427494]",
       "any candidate violates the conservative water ledger by more than 1e-12 cm"
     ],
-    "value_screen": "A candidate is not considered promising merely because it is stable. It must outperform the forcing-only mean baseline on both recursive cumulative-bottom-exchange RMSE and recursive total-storage RMSE over the pooled leave-one-history-out discovery folds.",
-    "dimension_rule": "Prefer the lowest-dimensional candidate that passes the structural gate and the value screen. Event-fidelity metrics remain separately reported and cannot be traded away silently.",
-    "final_application_acceptance": "NOT_ALLOWED_IN_S2D. Any candidate that passes S2D must be frozen before generating new unexposed validation histories and before numerical application thresholds are specified."
+    "family_negative_rule": "STOP_LOCAL_TABLE_DYNAMIC_ROM only if no candidate state passes both its structural gate and the value screen."
   },
   "firewalls": [
     "NO_H01_H04_USE",
