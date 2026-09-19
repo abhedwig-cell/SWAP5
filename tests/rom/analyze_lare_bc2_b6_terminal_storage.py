@@ -49,17 +49,33 @@ def sample_h_array(profile, depth):
 def terminal_storage(profile, H, d, nq):
     if d <= 0.0 or H - d < b3.ANCHOR - 1.0e-12:
         raise ValueError("terminal band is not fully inside moving layer")
+
+    # The accepted Reference pressure head is piecewise linear between nodes.
+    # Integrate each smooth interpolation segment independently so the 64/128
+    # Gauss-Legendre crosscheck measures constitutive quadrature rather than
+    # convergence across interpolation kinks.
+    z_nodes, _ = profile_arrays(profile)
+    lo = H - d
+    cuts = [lo]
+    cuts.extend(float(z) for z in z_nodes if lo + 1.0e-12 < z < H - 1.0e-12)
+    cuts.append(H)
+    cuts = sorted(set(cuts))
+
     x, w = GL[nq]
-    half = 0.5 * d
-    zq = (H - 0.5 * d) + half * x
-    hq = sample_h_array(profile, zq)
-    if np.max(hq) > 1.0e-9:
-        raise ValueError("terminal band includes positive-pressure sample")
-    psi = -hq
-    if np.min(psi) < -1.0e-9:
-        raise ValueError("negative suction in terminal band")
-    theta = b3.theta_from_psi(psi)
-    return float(half * np.sum(w * theta))
+    total = 0.0
+    for a, b in zip(cuts, cuts[1:]):
+        half = 0.5 * (b - a)
+        mid = 0.5 * (a + b)
+        zq = mid + half * x
+        hq = sample_h_array(profile, zq)
+        if np.max(hq) > 1.0e-9:
+            raise ValueError("terminal band includes positive-pressure sample")
+        psi = -hq
+        if np.min(psi) < -1.0e-9:
+            raise ValueError("negative suction in terminal band")
+        theta = b3.theta_from_psi(psi)
+        total += float(half * np.sum(w * theta))
+    return total
 
 
 def terminal_candidate(profile, total, d, nq):
