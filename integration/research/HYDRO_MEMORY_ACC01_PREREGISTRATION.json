@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.hydro_memory.acc01.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC01",
+  "title": "Stage 0 externally governed numerical groundwater-head accuracy",
+  "canonical_base": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "source_document": "docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md",
+  "source_sha256": "8ddbc0fefe801aea73155e2f519e1749bd16a934ade9ed1e08eb0d8ceb836924",
+  "frozen_before_feasibility_execution": true,
+  "independent_design_basis": {
+    "groundwater_depth_treatments_m": [
+      0.8,
+      1.2,
+      1.6,
+      2,
+      2.5,
+      3,
+      4
+    ],
+    "minimum_treatment_spacing_cm": 40,
+    "application_rule": "Maximum absolute numerical groundwater-head prediction error <= 1% of minimum prescribed groundwater-depth treatment spacing.",
+    "h_app_cm": 0.4,
+    "temporal_allocation_fraction": 0.25,
+    "temporal_budget_cm": 0.1
+  },
+  "forbidden_derivations": [
+    "SWAP temporal-indicator magnitude",
+    "observed timestep or retry behavior",
+    "solver convergence tolerance",
+    "coupling corrector difference",
+    "physical impact threshold",
+    "calibration statistic",
+    "model-generated uncertainty"
+  ],
+  "gates": [
+    "exact source SHA-256 equals packet provenance digest",
+    "pinned qualified F-GC13 validator accepts the packet",
+    "canonical F-GC14 typed adapter maps the verified packet view to H_app=0.4 cm and A_temporal=0.25",
+    "canonical application contract materializes H_temporal=0.1 cm exactly within floating-point tolerance",
+    "no production/reference source mutation",
+    "only after governance passes may temporal feasibility be evaluated"
+  ],
+  "result_states": [
+    "ACC01_GOVERNANCE_QUALIFIED",
+    "ACC01_BLOCKED_GOVERNANCE_OR_PROVENANCE"
+  ],
+  "nonclaims": [
+    "no universal SWAP5 accuracy default",
+    "no production MODFLOW admission",
+    "no structural/parameter/forcing uncertainty qualification",
+    "no relaxation of hard mass conservation",
+    "no Stage 0 scientific result"
+  ]
+}
