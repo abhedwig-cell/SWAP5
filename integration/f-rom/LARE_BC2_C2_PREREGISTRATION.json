@@ -140,11 +140,11 @@
   "pre_execution_algorithm_clarification": {
     "before_first_C2_execution": true,
     "diagnostic_A": {
-      "shape_coordinate": "mean water-content error per physical reduced compartment: 9 fixed 10-cm layers, moving bulk Wb/B, terminal Wt/d",
-      "shape_norm": "RMS over the 11 mean-water-content error components",
+      "shape_coordinate": "mass-neutral shape error e_shape_i = delta_theta_i - delta_theta_uniform after converting each physical storage error to instantaneous mean-water-content error; total storage is reported separately",
+      "shape_norm": "unweighted RMS over the 11 mass-neutral e_shape components, consistent with pre_execution_shape_metric_clarification",
       "denominator_numerical_floor_theta_rms": 1e-12,
-      "gain": "g_k = RMS(free_end-teacher_end shape error) / RMS(free_start-reference_start shape error)",
-      "cosine": "dot(previous shape-error, propagated state-induced shape-error)/(L2 norms) where both norms exceed the same numerical floor",
+      "gain": "g_k = RMS(free_end-teacher_end mass-neutral shape error) / RMS(free_start-reference_start mass-neutral shape error)",
+      "cosine": "cosine between previous mass-neutral shape-error vector and propagated mass-neutral state-induced shape-error vector when both norms exceed the numerical floor",
       "predominantly_amplifying": "fraction of eligible intervals with g_k > 1.0 is greater than 0.5",
       "note": "The 1e-12 floor is only a division-by-near-zero eligibility floor, not a hydrological acceptance threshold."
     },
@@ -163,7 +163,7 @@
       "MIXED_STATE_DYNAMICS": "All other finite hard-gated combinations, including regime-dependent amplification or disagreement between A and B.",
       "NUMERICAL_DIAGNOSTIC_BLOCKED": "Any inherited hard gate, constitutive-domain requirement, or required frozen perturbation route fails."
     },
-    "scientific_effect": "Clarifies deterministic implementation of already preregistered diagnostics before C1R result exposure; no model, state, closure, forcing, width, amplitude or acceptance threshold is changed."
+    "scientific_effect": "Prospectively resolves wording in favor of the earlier frozen mass-neutral shape metric before C1R result exposure and before any C2 execution; no model, state, closure, forcing, width, amplitude or acceptance threshold is changed."
   },
   "pre_execution_decision_rule_clarification": {
     "before_C1R_and_C2_response_exposure": true,
