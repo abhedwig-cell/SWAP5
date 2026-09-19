@@ -1,4 +1,4 @@
-# TRACE prospective research protocol v0.1
+# TRACE prospective research protocol v0.2
 
 Date: 2026-09-19
 Model in this repository: SWAP/SWAP5
@@ -110,6 +110,7 @@ Mechanisms are open-coded. Units, signs, indexing, hidden state, temporal stagin
 - QUANTITATIVE
 - STRUCTURAL
 - CONSERVATION
+- NUMERICAL
 - APPLICATION_ENVELOPE
 - CALIBRATION
 - NONE_DEMONSTRATED
@@ -144,6 +145,7 @@ Possible dispositions include:
 - LEGACY_BEHAVIOUR_PRESERVED
 - BEHAVIOUR_VERSIONED
 - RECALIBRATION_REQUIRED
+- MODEL_EVOLUTION_REQUIRED
 - EQUIVALENCE_DEMONSTRATED
 - APPLICATION_ENVELOPE_NARROWED
 - UNRESOLVED_INSUFFICIENT_AUTHORITY
@@ -220,3 +222,7 @@ If supported by data:
 "We prospectively studied the emergence and resolution of scientifically consequential inconsistencies across multiple representations of two mature environmental models, preserved pre-resolution evidence, and directly tested whether existing regression-preservation evidence would have exposed each replayable case."
 
 No claim of being the first theory-code reconciliation method, no generic claim that regression testing is unreliable, and no population-prevalence claim for environmental models is permitted.
+
+## v0.2 pilot-calibration amendment
+
+Before any prospective candidate was registered, six known pre-freeze cases (three SWAP and three ANIMO) were used as a historical pilot to stress-test the coding scheme. This pilot showed that `NUMERICAL` consequence must be distinguishable from physical/structural consequence, and that `MODEL_EVOLUTION_REQUIRED` is needed when evidence demonstrates missing scientific state or process representation rather than a local implementation repair. No research question, hypothesis, inclusion rule, prospective boundary, regression-counterfactual definition or kill criterion changed.

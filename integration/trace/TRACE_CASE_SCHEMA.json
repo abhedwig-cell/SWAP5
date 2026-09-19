@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "trace.case.v0.1",
+  "$id": "trace.case.v0.2",
   "title": "TRACE discrepancy episode",
   "type": "object",
   "required": [
@@ -49,8 +49,8 @@
     "scientific_consequence": {
       "type":"object",
       "properties":{
-        "potential":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
-        "demonstrated":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
+        "potential":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","NUMERICAL","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
+        "demonstrated":{"type":"array","items":{"enum":["INTERPRETATIVE","QUANTITATIVE","STRUCTURAL","CONSERVATION","NUMERICAL","APPLICATION_ENVELOPE","CALIBRATION","NONE_DEMONSTRATED"]}},
         "evidence":{"type":"string"}
       }
     },
@@ -68,7 +68,7 @@
       "properties":{
         "candidate_authorities":{"type":"array","items":{"type":"object"}},
         "final_authority":{"type":["string","null"]},
-        "disposition":{"enum":["IMPLEMENTATION_CORRECTED","DOCUMENTATION_CORRECTED","THEORY_CLARIFIED","REGRESSION_ORACLE_CORRECTED","LEGACY_BEHAVIOUR_PRESERVED","BEHAVIOUR_VERSIONED","RECALIBRATION_REQUIRED","EQUIVALENCE_DEMONSTRATED","APPLICATION_ENVELOPE_NARROWED","UNRESOLVED_INSUFFICIENT_AUTHORITY","REJECTED_NON_DISCREPANCY"]},
+        "disposition":{"enum":["IMPLEMENTATION_CORRECTED","DOCUMENTATION_CORRECTED","THEORY_CLARIFIED","REGRESSION_ORACLE_CORRECTED","LEGACY_BEHAVIOUR_PRESERVED","BEHAVIOUR_VERSIONED","RECALIBRATION_REQUIRED","MODEL_EVOLUTION_REQUIRED","EQUIVALENCE_DEMONSTRATED","APPLICATION_ENVELOPE_NARROWED","UNRESOLVED_INSUFFICIENT_AUTHORITY","REJECTED_NON_DISCREPANCY"]},
         "code_changed":{"type":["boolean","null"]},
         "documentation_changed":{"type":["boolean","null"]},
         "tests_changed":{"type":["boolean","null"]}
