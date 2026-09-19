@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.f-romv2-d18.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D18",
+  "decision": "D18_FMC_SLUG_GW_MERGE_EVENT_PREFLIGHT_NO_GO",
+  "adjudication": "NATURAL_D17_TO_HIATUS_ROUTE_DOES_NOT_REACH_MERGE_WITHIN_FROZEN_HORIZON",
+  "execution": {
+    "workflow_run": 35458926533,
+    "workflow_job": 105939131681,
+    "executed_head": "1b3c4157bbae4b33d7b37b9ea82134fc6ca50144",
+    "execution_pull_request": 451,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10589491335,
+    "artifact_digest": "sha256:2094394dbd0a4c2a262dba12757968b5fbd5770cb4a70fce752deac4b6261ffd",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "1a735dd21040de81cbf0b887848c9453a5679fdd4f8b4bf10dd3d944cdf721bb",
+    "preflight_stdout_sha256": "dd1f630f6cca5544bb5e049d1357f9c9cd843e1d1a666267aeba9b90e56c3d43"
+  },
+  "staged_authority": {
+    "SWAP_trajectory_evidence_consumed": false,
+    "stage2_R16_R2_authorized": false,
+    "primary_merge_semantics_adjudicated": false,
+    "reason": "No falling-slug/groundwater-front merge occurred within the preregistered event-search horizon."
+  },
+  "reconstructed_start": {
+    "predecessor_history": "D17 C75_G25",
+    "pulse_steps": 16,
+    "storage_cm": 51.42059870341421,
+    "minimum_surface_groundwater_separation_cm": 14.01869021932935
+  },
+  "frozen_transition": {
+    "top_flux_cm_per_day": 0.12143689355971198,
+    "top_flux_identity": "K(theta_i), i=100",
+    "event_search_steps": 512,
+    "process_step_seconds": 10,
+    "elapsed_search_seconds": 5120,
+    "first_merge_step": null,
+    "first_merge_bins": [],
+    "total_merge_count": 0,
+    "minimum_pre_merge_gap_cm": 13.159307441526266,
+    "gap_reduction_cm": 0.8593827778030843,
+    "max_abs_mass_residual_cm": 1.0369309577651364e-14,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "integrity": {
+    "pass": true,
+    "mass_gate_pass": true,
+    "hidden_mass_correction": false,
+    "clipping": false,
+    "full_order_fallback": false
+  },
+  "scientific_interpretation": {
+    "merge_rule_invalidated": false,
+    "falling_slug_branch_invalidated": false,
+    "workload_reachability_result": "NO_MERGE_EVENT_WITHIN_FROZEN_512_STEP_SUCCESSOR_ROUTE",
+    "statement": "D18 does not test merge hydrological fidelity because the event is not reached. It only closes the specific natural C75_G25-to-K(theta_i) hiatus route under its frozen 512-step horizon.",
+    "successor_constraint": "Do not lengthen D18 or retune C75/G25/top flux. Any further contact/merge test must be a separately named work unit with independently preregistered event construction."
+  },
+  "next": [
+    "ADMIT_D18_AS_EVENT_REACHABILITY_NO_GO",
+    "DO_NOT_EXECUTE_D18_STAGE2_R16_R2_COMPARATOR",
+    "IF_CONTACT_TRANSITION_REMAINS_SCIENTIFICALLY_USEFUL_PREREGISTER_A_DISTINCT_D19_EVENT_CONSTRUCTION",
+    "PREFER_A_TRANSITION_CONSTRUCTION_THAT_AVOIDS_UNQUALIFIED_GENERAL_SLUG_RELAXATION",
+    "PRESERVE_D17_COMBINED_SEPARATED_FRONT_CANDIDACY"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

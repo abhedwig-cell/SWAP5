@@ -1706,6 +1706,91 @@ def validate_romv2_d17_if_present() -> str:
     return "CLOSED_BOUNDED_COMBINED_FMC_RESEARCH_CANDIDACY_RETAINED"
 
 
+def validate_romv2_d18_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D18_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D18_PREREGISTRATION.json")
+            == "075a6baa0cc3cdcfb0066bfbea8e8723af8f89d3",
+            "F-ROMV2-D18 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D18_RESULT.json")
+            == "653c463699bd7b369e56b76d5641e7e9a1ed7c98",
+            "F-ROMV2-D18 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D18_STATUS.json")
+            == "c01006386fa66befe955ec31aaaa9e6018280fdf",
+            "F-ROMV2-D18 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D18_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "981bed12af18ae5c3958ca6864972fb8accb29ce",
+            "F-ROMV2-D18 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D18_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D18_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D18_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D18_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D18_MERGE_EVENT_PREFLIGHT_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_INTERNAL_EVENT_PREFLIGHT",
+            "F-ROMV2-D18 preregistration phase drift")
+    require(prereg["stage1_event_preflight"]["SWAP_trajectory_evidence_consumed"] is False
+            and prereg["stage1_event_preflight"]["event_search_max_steps"] == 512,
+            "F-ROMV2-D18 staged event-preflight contract drift")
+    require("NO_EVENT_HORIZON_RETUNING" in prereg["firewalls"]
+            and "NO_C75_OR_G25_RETUNING" in prereg["firewalls"]
+            and "NO_SWAP_TRAJECTORY_BEFORE_EVENT_PREFLIGHT_PASS" in prereg["firewalls"],
+            "F-ROMV2-D18 anti-retuning/exposure firewalls drift")
+
+    require(result["decision"] == "D18_FMC_SLUG_GW_MERGE_EVENT_PREFLIGHT_NO_GO",
+            "F-ROMV2-D18 decision drift")
+    require(result["adjudication"]
+            == "NATURAL_D17_TO_HIATUS_ROUTE_DOES_NOT_REACH_MERGE_WITHIN_FROZEN_HORIZON",
+            "F-ROMV2-D18 adjudication drift")
+    require(result["staged_authority"]["SWAP_trajectory_evidence_consumed"] is False
+            and result["staged_authority"]["stage2_R16_R2_authorized"] is False
+            and result["staged_authority"]["primary_merge_semantics_adjudicated"] is False,
+            "F-ROMV2-D18 staged authority overclaim")
+    require(result["frozen_transition"]["event_search_steps"] == 512
+            and result["frozen_transition"]["total_merge_count"] == 0
+            and result["frozen_transition"]["first_merge_step"] is None,
+            "F-ROMV2-D18 event-reachability evidence drift")
+    require(result["integrity"]["pass"] is True
+            and result["frozen_transition"]["max_abs_mass_residual_cm"] <= 1.0e-12,
+            "F-ROMV2-D18 integrity drift")
+    require(result["scientific_interpretation"]["merge_rule_invalidated"] is False
+            and result["scientific_interpretation"]["falling_slug_branch_invalidated"] is False,
+            "F-ROMV2-D18 incorrectly promotes reachability no-go to physics no-go")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D18 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_EVENT_PREFLIGHT_NO_GO_BEFORE_SWAP_EXPOSURE",
+            "F-ROMV2-D18 status phase drift")
+    require(status["SWAP_trajectory_evidence_consumed"] is False
+            and status["stage2_authorized"] is False
+            and status["merge_hydrology_adjudicated"] is False,
+            "F-ROMV2-D18 status exposure/adjudication drift")
+    require(status["horizon_or_forcing_retuning_authorized"] is False,
+            "F-ROMV2-D18 status permits post-result retuning")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D18 import scope drift")
+    require(manifest["source_execution"]["pull_request"] == 451
+            and manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D18 execution authority drift")
+    require(manifest["D18_horizon_forcing_or_state_retuned_after_result"] is False
+            and manifest["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D18 provenance drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D18 evidence import claims production/reference mutation")
+
+    require("event-reachability no-go" in doc,
+            "F-ROMV2-D18 reachability interpretation missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D18 production prohibition missing")
+
+    return "CLOSED_EVENT_PREFLIGHT_NO_GO_BEFORE_SWAP_EXPOSURE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1749,6 +1834,7 @@ def main() -> int:
     romv2_d15_phase = validate_romv2_d15_if_present()
     romv2_d16_phase = validate_romv2_d16_if_present()
     romv2_d17_phase = validate_romv2_d17_if_present()
+    romv2_d18_phase = validate_romv2_d18_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1776,6 +1862,7 @@ def main() -> int:
     print(f"F_ROMV2_D15_PHASE={romv2_d15_phase}")
     print(f"F_ROMV2_D16_PHASE={romv2_d16_phase}")
     print(f"F_ROMV2_D17_PHASE={romv2_d17_phase}")
+    print(f"F_ROMV2_D18_PHASE={romv2_d18_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
