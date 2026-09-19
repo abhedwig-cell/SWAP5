@@ -1,0 +1,19 @@
+name: NUM-UNC P0B0 exchange locator
+
+on:
+  pull_request:
+    paths:
+      - 'integration/num-unc/**'
+      - 'tests/num_unc/**'
+      - '.github/workflows/num-unc-p0b0.yml'
+  workflow_dispatch:
+
+jobs:
+  p0b0:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run N0-only exchange-reversal locator
+        run: bash tests/num_unc/run_num_unc_p0b0_exchange_locator.sh
