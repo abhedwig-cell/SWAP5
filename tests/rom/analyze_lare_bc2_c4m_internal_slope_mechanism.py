@@ -209,14 +209,14 @@ def main():
           "central_slope_closer_than_baseline_fraction":central_closer,
           "central_slope_closer_than_cubic_fraction":central_vs_cubic,
         }
-        endpoint={
+        endpoint_diag={
           "base":stats([r["endpoint_slope_base"] for r in rows]),
           "bulk":stats([r["endpoint_slope_bulk"] for r in rows]),
           "central":stats([r["endpoint_slope_central"] for r in rows]),
           "cubic":stats([r["endpoint_slope_cubic"] for r in rows]),
         }
     else:
-        qi=slope=correction=endpoint=None
+        qi=slope=correction=endpoint_diag=None
 
     key=str(args.width)
     auth=c4lr["summary"][key][args.history]["qi_CUBIC"]
@@ -236,7 +236,7 @@ def main():
       "hard_checks":{"max_B8_qi_identity_cm_per_day":max_qiid,"max_qH_central_vs_B9_identity_cm_per_day":max_qhid,
                      "minimum_interface_K_cm_per_day":min_k,"central_hydrostatic_abs_slope_minus_1":max_hydro,
                      "C4L_cubic_metrics_reproduced":c4l_reproduced,"failure_count":len(failures)},
-      "qi":qi,"slope_error":slope,"correction_geometry":correction,"endpoint_slope_diagnostics":endpoint,
+      "qi":qi,"slope_error":slope,"correction_geometry":correction,"endpoint_slope_diagnostics":endpoint_diag,
       "failures":failures[:20],"propagated_dynamics_authorized":False,"production_rom_authorized":False
     }
     args.output.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
