@@ -1,0 +1,34 @@
+name: PUB-ME D6 F-CI98 successor replay
+
+on:
+  pull_request:
+    paths:
+      - 'docs/publications/PUB-ME_D6_FCI98_SUCCESSOR_REPLAY.md'
+      - 'docs/publications/PUB-ME_D6_RESULT.md'
+      - 'tests/publication/test_pub_me_d6_rejected_publication.f90'
+      - 'tests/publication/run_pub_me_d6_fci98_successor_replay.sh'
+      - '.github/workflows/pub-me-d6-fci98-successor-replay.yml'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/solver/mod_soil_water_accepted_step_direction_contract.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_sensitivity.f90'
+      - 'src/transaction/mod_accepted_trajectory_directional_publication.f90'
+      - 'src/transaction/mod_accepted_trajectory_transaction_binding.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  d6-fci98-successor-replay:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Replay admitted D6 against F-CI98 successor
+        run: bash tests/publication/run_pub_me_d6_fci98_successor_replay.sh
