@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.f-romv2-d13.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D13",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d13-fmc-groundwater-front",
+    "pull_request": 439,
+    "pull_request_merged": false,
+    "head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "workflow_run": 35452125577,
+    "workflow_job": 105920995915,
+    "artifact_id": 10587057124,
+    "artifact_digest": "sha256:03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preflight_result_sha256": "ac9be533a406bd91d1941e79bb9c4bde77c3c403a564550ae762369986fb7257",
+    "hydrological_result_sha256": "28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c",
+    "R16_o0_o2_sha256": "498d2c46828055c288524fc8176cf46f5339ea8db0649b450b955b3eb3c86747",
+    "R2_o0_o2_sha256": "8188300a660b2f203b28080399b4a747b6693d617de669f23395876ddaf8c6ec",
+    "analyzer_sha256": "e4156b8359c6a89c339b1b949220eef3647922c2e00e2132d27fbdf2140e0be1",
+    "preflight_stdout_sha256": "e1bedafbc820a0672ecba58692a0381c8280d9407af7c5708a27bda6f8f72b5d"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D13_RESULT.json",
+    "integration/f-rom/F-ROMV2_D13_STATUS.json",
+    "integration/f-rom/F-ROMV2_D13_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D13_FMC_GROUNDWATER_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d13_fmc_groundwater.py",
+    "tests/rom/test_f_romv2_d13_groundwater_comparators.f90",
+    "tests/rom/analyze_f_romv2_d13_fmc_groundwater.py",
+    "tests/rom/run_f_romv2_d13_fmc_groundwater.sh",
+    ".github/workflows/f-romv2-d13-fmc-groundwater-preflight.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "bin_or_substep_retuned_after_result": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}
