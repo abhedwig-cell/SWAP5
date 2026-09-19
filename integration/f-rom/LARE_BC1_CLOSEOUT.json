@@ -1,0 +1,80 @@
+{
+  "schema": "swap5.lare.bc1.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1",
+  "decision": "FIXED_DOMAIN_PRESCRIBED_HEAD_CLOSURE_QUALIFIED_WITH_RESOLUTION_DEPENDENCE",
+  "authority": {
+    "boundary_authority": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "face_semantics": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "stage_b": "integration/f-rom/LARE_BC1_STAGE_B_RESULT.json",
+    "stage_b_workflow_run": 35450497790,
+    "stage_b_artifact_id": 10586945126,
+    "stage_b_artifact_digest": "sha256:ba449e345e710c4c3e5504de290c2bca3f9d083317743efd194e05623bb94350",
+    "rl1_preregistration": "integration/f-rom/LARE_BC1_RL1_PREREGISTRATION.json",
+    "rl1_workflow_run": 35450766230,
+    "rl1_artifact_id": 10587205212,
+    "rl1_artifact_digest": "sha256:1293bd455badcc127719a3d382094412afd1d48e8d85b416f3d2781b2e5105f0"
+  },
+  "boundary_selection": {
+    "selected": "CURRENT_LAYER_FACE",
+    "formula": "q_b = K(theta_bar_N) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+    "comparator": "BOUNDARY_FACE = K(psi_b) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+    "reason": "equal qualified-domain coverage and component-wise relative support on the preregistered common cohort",
+    "application_acceptance": false
+  },
+  "rl1": {
+    "decision": "BC1_HEAD_RESOLUTION_EFFECT_NONMONOTONE",
+    "qualification_note": "The strict every-adjacent-step monotonicity gate fails because very small residual differences occur after the error curve reaches its Reference/time-level plateau. This does not reverse the strong coarse-to-fine convergence evidence.",
+    "G03_first_qualified_member": "R4",
+    "G00_reversal_sequence_correct_for_all_qualified_members": true,
+    "representative_curve_own_qualified": {
+      "R3": {
+        "dimension": 3,
+        "max_common_storage_error_cm": 0.6236860099746337,
+        "max_cum_bottom_error_cm": 0.15748269481028898
+      },
+      "R4": {
+        "dimension": 4,
+        "max_common_storage_error_cm": 0.30813411910317257,
+        "max_cum_bottom_error_cm": 0.12534016590988983
+      },
+      "R5": {
+        "dimension": 5,
+        "max_common_storage_error_cm": 0.11049899784735118,
+        "max_cum_bottom_error_cm": 0.03955387791065945
+      },
+      "R6": {
+        "dimension": 6,
+        "max_common_storage_error_cm": 0.03991578293634035,
+        "max_cum_bottom_error_cm": 0.015983626751102875
+      },
+      "R8": {
+        "dimension": 8,
+        "max_common_storage_error_cm": 0.00458381897304605,
+        "max_cum_bottom_error_cm": 0.0024330409645036966
+      },
+      "R12": {
+        "dimension": 12,
+        "max_common_storage_error_cm": 0.001960625923642212,
+        "max_cum_bottom_error_cm": 0.0012218818990969993
+      },
+      "R16": {
+        "dimension": 16,
+        "max_common_storage_error_cm": 0.001960648224072159,
+        "max_cum_bottom_error_cm": 0.00122184061351982
+      }
+    },
+    "residual_plateau_interpretation": "R12 and R16 are effectively on the same integrated-error floor. Residual differences may contain Reference SWKIMPL=0 time-level and balance-materialized exchange semantics in addition to LARE spatial/integration error; no zero-asymptote claim is made."
+  },
+  "scientific_interpretation": [
+    "The fixed-domain arbitrary prescribed-head problem no longer requires a fitted boundary coefficient.",
+    "CURRENT_LAYER_FACE is the supported no-fit boundary closure for subsequent fixed-domain LARE research.",
+    "Aggressive low dimension remains limited mainly by internal gradient reconstruction and spatial closure resolution, not by the bottom-face conductivity choice.",
+    "Moving-water-table geometry is not covered by BC1 because the unsaturated control volume itself changes with H(t).",
+    "BC1 does not establish an application-independent acceptable dimension or a computational-value claim."
+  ],
+  "next_primary_authority": "LARE_BC2_MOVING_WATER_TABLE_GEOMETRY_AND_CONSERVATION",
+  "moving_water_table_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
