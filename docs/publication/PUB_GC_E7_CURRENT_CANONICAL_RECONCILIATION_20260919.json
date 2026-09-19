@@ -8,10 +8,10 @@
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "994e39565f5b93938e9c5ce11f18f667b122dbf2",
+    "result_blob": "7c9bfbfb950920cb8ba3be90643f935b87bd04be",
     "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-    "application_requirements_blob": "850d855205ef993dd210ec38a39c24e8c11f20a8"
+    "application_requirements_blob": "da1f3f5caf893c8aba363d98c1f3004b015405b6"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -131,7 +131,7 @@
     "PPA_WU04B": {
       "status_path": "integration/audits/PPA_WU04B_STATUS.json",
       "status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
-      "canonical_merge": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+      "canonical_merge": "4d40b8d4b6a1df06ff97fab55497542778431290",
       "production_scope": "SWREDU=2 Boesten-Stroosnijder evaporation reduction bounded production slice",
       "mode5_boesten_composition_admitted": false,
       "root_or_drainage_owner_broadened": false,
@@ -140,5 +140,15 @@
   },
   "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
   "interpretation": "Current canonical still rejects active drainage and active root extraction in the homogeneous bottom_mode=5 production groundwater owner before owner-state allocation. PPA-WU02/PPA-LOW02-TIME affect bottom_mode=2 prescribed-qbot semantics; PPA-WU03 adds bounded stateless forcing; PPA-ROOT-HYD01/HYD02 add restricted prescribed-root temporal/tangent evidence without application-owner admission; PPA-WU04-A/B add bounded evaporation slices but explicitly not mode-5 evaporation composition. No admitted workunit materializes authentic Hupsel active root plus drainage under prescribed-head mode 5. E7 remains closed as REALISTIC_COMPONENT_DOMAIN_LIMIT.",
-  "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition."
+  "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
+  "post_relevant_production_live_delta": {
+    "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
+    "head": "f3a82d8f303ea371fed4b52ee47b89928cf945cf",
+    "changed_scope": [
+      "integration/f-doc/F-DOC23_STATUS.json",
+      "integration/trace/**"
+    ],
+    "classification": "NO_E7_AUTHORITY_EFFECT",
+    "reason": "No production runtime, coupling, PUB-GC publication asset, Hupsel authority, or application-owner source changed."
+  }
 }
