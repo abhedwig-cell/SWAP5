@@ -5,7 +5,7 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical basis inspected: `integration/f-ci-canonical@6ec1c53c1ed051beae6e750a36cbf279a88a87a1`.
+Canonical basis inspected: `integration/f-ci-canonical@ab8d52a3b3ab39470a989a46dc19e3bd24a01906`.
 
 E7 was canonically admitted through PR #330 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`. PR #327 is historical/superseded and must not be rebased or merged as a second authority path.
 
@@ -43,8 +43,9 @@ The authentic Hupsel application therefore still cannot be materialized as a pro
 | PPA-ROOT-HYD02 | restricted prescribed-root accepted-trajectory tangent coverage | explicitly no live-MODFLOW root-active application admission by this workunit alone |
 | PPA-WU04-A | bounded SWREDU=1 Black evaporation production slice | mode-5 Black composition remains unadmitted; root/drainage guards unchanged |
 | PPA-WU04-B | bounded SWREDU=2 Boesten-Stroosnijder evaporation production slice | mode-5 Boesten composition remains unadmitted; root/drainage guards unchanged |
+| HYDRO-MEMORY ACC02-F1 | live MODFLOW6 single-window prescribed-root research qualification | no production/reference source change; drainage inactive; no mode-5 production-owner widening; Stage 0 not authorized |
 
-PPA-ROOT-HYD01/HYD02 are relevant numerical/accepted-trajectory capabilities, but they do not constitute application-owner composition. PPA-WU04-A/B change bounded evaporation production code, but both remain excluded from mode 5 and leave the E7-critical root/drainage guards intact.
+PPA-ROOT-HYD01/HYD02 are relevant numerical/accepted-trajectory capabilities, but they do not constitute application-owner composition. PPA-WU04-A/B change bounded evaporation production code, but both remain excluded from mode 5 and leave the E7-critical root/drainage guards intact. HYDRO-MEMORY ACC02-F1 does not alter that conclusion: it is a research qualification of prescribed-root coupling with drainage inactive, not a process-complete application-owner admission.
 
 ## E7 provenance repair
 
