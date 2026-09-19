@@ -1,0 +1,82 @@
+name: F-ROM-LARE DYN0A MECH3B blind nonlinear scale panel
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH3B_PREREGISTRATION.json'
+      - 'tests/rom/prepare_lare_dyn0a_mech3b_predictions.py'
+      - 'tests/rom/test_lare_dyn0a_mech3b_reference.f90'
+      - 'tests/rom/run_lare_dyn0a_mech3b_reference.sh'
+      - 'tests/rom/analyze_lare_dyn0a_mech3b.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech3b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blind-panel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install prediction dependency
+        run: python3 -m pip install --disable-pip-version-check scipy
+
+      - name: Freeze constitutive predictions before Reference execution
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_DYN0A_MECH3B_EVIDENCE
+          python3 tests/rom/prepare_lare_dyn0a_mech3b_predictions.py \
+            --prereg integration/f-rom/LARE_DYN0A_MECH3B_PREREGISTRATION.json \
+            --output LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_PREDICTIONS.json
+          sha256sum LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_PREDICTIONS.json \
+            > LARE_DYN0A_MECH3B_EVIDENCE/prediction-sha256-before-reference.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_PREDICTIONS.json'))
+          assert p['generated_before_new_reference_trajectory'] is True
+          assert p['response_data_used'] is False
+          assert set(p['materials'])=={'SAND','LOAM','CLAY'}
+          print('LARE_DYN0A_MECH3B_PREDICTIONS_FROZEN=PASS')
+          PY
+
+      - name: Execute blind Carsel-Parrish fine Reference panel
+        run: bash tests/rom/run_lare_dyn0a_mech3b_reference.sh
+
+      - name: Adjudicate blind scaling transfer
+        run: |
+          python3 tests/rom/analyze_lare_dyn0a_mech3b.py \
+            --reference-dir LARE_DYN0A_MECH3B_EVIDENCE \
+            --status LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json \
+            --predictions LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_PREDICTIONS.json \
+            --prereg integration/f-rom/LARE_DYN0A_MECH3B_PREREGISTRATION.json \
+            --output LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_RESULT.json \
+            | tee LARE_DYN0A_MECH3B_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_DYN0A_MECH3B_EVIDENCE/LARE_DYN0A_MECH3B_RESULT.json'))
+          assert r['decision'] in {
+            'NONLINEAR_SCALE_TRANSFER_SUPPORTED',
+            'NONLINEAR_SCALE_TRANSFER_PARTIAL',
+            'NONLINEAR_SCALE_TRANSFER_NOT_SUPPORTED',
+            'BLIND_PANEL_REFERENCE_INSUFFICIENT'
+          }
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH3B_FIREWALL=PASS')
+          PY
+          sha256sum LARE_DYN0A_MECH3B_EVIDENCE/* > LARE_DYN0A_MECH3B_EVIDENCE/final-sha256.txt
+
+      - name: Upload MECH3B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech3b
+          path: LARE_DYN0A_MECH3B_EVIDENCE/
+          if-no-files-found: warn
