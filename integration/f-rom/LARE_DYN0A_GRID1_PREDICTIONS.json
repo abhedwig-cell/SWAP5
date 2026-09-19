@@ -1,0 +1,323 @@
+{
+  "schema": "swap5.lare.dyn0a.grid1.predictions.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-GRID1",
+  "generated_before_new_reference_trajectory": true,
+  "selected_scale": "PATH_GEOMETRIC_D",
+  "global_c": 4.051189215592548,
+  "pulse_duration_day": 0.2048,
+  "ladder_cm": [
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140
+  ],
+  "materials": {
+    "LOAMY_SAND": [
+      {
+        "se0": 0.65,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.7084391915215407,
+        "D_PATH_GEOMETRIC_cm2_per_day": 1593.3102575185023,
+        "penetration_length_cm": 18.06405106114875,
+        "continuous_L_pred_cm": 73.18088884883893,
+        "snapped_L_star_cm": 70,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          60,
+          70,
+          80,
+          160
+        ]
+      },
+      {
+        "se0": 0.65,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.5577253044567911,
+        "D_PATH_GEOMETRIC_cm2_per_day": 1035.1291381550732,
+        "penetration_length_cm": 14.56002910347912,
+        "continuous_L_pred_cm": 58.98543288272825,
+        "snapped_L_star_cm": 60,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          50,
+          60,
+          70,
+          160
+        ]
+      },
+      {
+        "se0": 0.85,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.9100533819876044,
+        "D_PATH_GEOMETRIC_cm2_per_day": 6326.931646518439,
+        "penetration_length_cm": 35.99660541227431,
+        "continuous_L_pred_cm": 145.82905964414604,
+        "snapped_L_star_cm": 140,
+        "censoring": "RIGHT",
+        "PATH_R4_boundaries_cm": null
+      },
+      {
+        "se0": 0.85,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.7440732865664537,
+        "D_PATH_GEOMETRIC_cm2_per_day": 3323.8565346559812,
+        "penetration_length_cm": 26.09072283969045,
+        "continuous_L_pred_cm": 105.69845499516813,
+        "snapped_L_star_cm": 110,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          100,
+          110,
+          120,
+          160
+        ]
+      },
+      {
+        "se0": 0.95,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.991252642390427,
+        "D_PATH_GEOMETRIC_cm2_per_day": 23959.513103890808,
+        "penetration_length_cm": 70.04932750338747,
+        "continuous_L_pred_cm": 283.7830801412338,
+        "snapped_L_star_cm": 140,
+        "censoring": "RIGHT",
+        "PATH_R4_boundaries_cm": null
+      },
+      {
+        "se0": 0.95,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.8515033022708632,
+        "D_PATH_GEOMETRIC_cm2_per_day": 7922.59731922466,
+        "penetration_length_cm": 40.28086308629956,
+        "continuous_L_pred_cm": 163.18539812997676,
+        "snapped_L_star_cm": 140,
+        "censoring": "RIGHT",
+        "PATH_R4_boundaries_cm": null
+      }
+    ],
+    "SILT_LOAM": [
+      {
+        "se0": 0.65,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.6832242729725663,
+        "D_PATH_GEOMETRIC_cm2_per_day": 77.7686930378155,
+        "penetration_length_cm": 3.9908681178591476,
+        "continuous_L_pred_cm": 16.16776187992311,
+        "snapped_L_star_cm": 20,
+        "censoring": "LEFT",
+        "PATH_R4_boundaries_cm": null
+      },
+      {
+        "se0": 0.65,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.5957085565714573,
+        "D_PATH_GEOMETRIC_cm2_per_day": 55.815016000462,
+        "penetration_length_cm": 3.380963660984042,
+        "continuous_L_pred_cm": 13.696923521688852,
+        "snapped_L_star_cm": 20,
+        "censoring": "LEFT",
+        "PATH_R4_boundaries_cm": null
+      },
+      {
+        "se0": 0.85,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.8835855306442267,
+        "D_PATH_GEOMETRIC_cm2_per_day": 399.1294666997853,
+        "penetration_length_cm": 9.041112474696686,
+        "continuous_L_pred_cm": 36.62725735445047,
+        "snapped_L_star_cm": 40,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          30,
+          40,
+          50,
+          160
+        ]
+      },
+      {
+        "se0": 0.85,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.790284689408468,
+        "D_PATH_GEOMETRIC_cm2_per_day": 260.1402086450043,
+        "penetration_length_cm": 7.299089993314022,
+        "continuous_L_pred_cm": 29.56999466455325,
+        "snapped_L_star_cm": 30,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          20,
+          30,
+          40,
+          160
+        ]
+      },
+      {
+        "se0": 0.95,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.9724137064174262,
+        "D_PATH_GEOMETRIC_cm2_per_day": 1442.7138262336396,
+        "penetration_length_cm": 17.1891765833227,
+        "continuous_L_pred_cm": 69.63660679927288,
+        "snapped_L_star_cm": 70,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          60,
+          70,
+          80,
+          160
+        ]
+      },
+      {
+        "se0": 0.95,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.901097570794219,
+        "D_PATH_GEOMETRIC_cm2_per_day": 792.7784900757816,
+        "penetration_length_cm": 12.74209695330875,
+        "continuous_L_pred_cm": 51.62064576127907,
+        "snapped_L_star_cm": 50,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          40,
+          50,
+          60,
+          160
+        ]
+      }
+    ],
+    "SANDY_CLAY_LOAM": [
+      {
+        "se0": 0.65,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.6863627638788025,
+        "D_PATH_GEOMETRIC_cm2_per_day": 132.29764762546452,
+        "penetration_length_cm": 5.205243340488044,
+        "continuous_L_pred_cm": 21.087425685520095,
+        "snapped_L_star_cm": 20,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          160
+        ]
+      },
+      {
+        "se0": 0.65,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_OUTSIDE_DESIGN_DOMAIN",
+        "se_target": 0.5907547988440057,
+        "D_PATH_GEOMETRIC_cm2_per_day": 93.92767913550925,
+        "penetration_length_cm": 4.385930766319994,
+        "continuous_L_pred_cm": 17.76823542085112,
+        "snapped_L_star_cm": 20,
+        "censoring": "LEFT",
+        "PATH_R4_boundaries_cm": null
+      },
+      {
+        "se0": 0.85,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.8865222787891404,
+        "D_PATH_GEOMETRIC_cm2_per_day": 635.9173805770374,
+        "penetration_length_cm": 11.41209356525687,
+        "continuous_L_pred_cm": 46.23255037890174,
+        "snapped_L_star_cm": 50,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          40,
+          50,
+          60,
+          160
+        ]
+      },
+      {
+        "se0": 0.85,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.7848722663067161,
+        "D_PATH_GEOMETRIC_cm2_per_day": 405.612428593262,
+        "penetration_length_cm": 9.11424299521908,
+        "continuous_L_pred_cm": 36.92352293052146,
+        "snapped_L_star_cm": 40,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          30,
+          40,
+          50,
+          160
+        ]
+      },
+      {
+        "se0": 0.95,
+        "forcing": "WET",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.9743372749315128,
+        "D_PATH_GEOMETRIC_cm2_per_day": 2244.3391407508007,
+        "penetration_length_cm": 21.439231703252894,
+        "continuous_L_pred_cm": 86.85438426680798,
+        "snapped_L_star_cm": 90,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          80,
+          90,
+          100,
+          160
+        ]
+      },
+      {
+        "se0": 0.95,
+        "forcing": "DRY",
+        "status": "GRID_PREDICTION_QUALIFIED",
+        "se_target": 0.8960564464421559,
+        "D_PATH_GEOMETRIC_cm2_per_day": 1182.8340878484141,
+        "penetration_length_cm": 15.564203198087437,
+        "continuous_L_pred_cm": 63.053532145382874,
+        "snapped_L_star_cm": 60,
+        "censoring": "NONE",
+        "PATH_R4_boundaries_cm": [
+          0,
+          50,
+          60,
+          70,
+          160
+        ]
+      }
+    ]
+  },
+  "qualified_prediction_count": 12,
+  "censored_prediction_count": 6,
+  "response_data_used": false
+}
