@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.hydro_memory.acc01.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC01",
+  "decision": "ACC01_GOVERNANCE_QUALIFIED",
+  "branch": "research/hydro-memory-acc01",
+  "canonical_base": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "qualified_head": "5cbadaba8f03f1d5de872d03c5a2dfe8912cd0a3",
+  "workflow_run": 35430102367,
+  "governed_values": {
+    "qoi": "GROUNDWATER_HEAD",
+    "h_app_cm": 0.4,
+    "a_temporal": 0.25,
+    "h_temporal_cm": 0.1
+  },
+  "design_basis": {
+    "groundwater_depth_treatments_m": [
+      0.8,
+      1.2,
+      1.6,
+      2,
+      2.5,
+      3,
+      4
+    ],
+    "minimum_spacing_cm": 40,
+    "h_app_rule": "1 percent of minimum prescribed groundwater-depth treatment spacing",
+    "temporal_allocation_rule": "25 percent of governed application numerical head-error allowance"
+  },
+  "evidence": {
+    "source_digest_verified": true,
+    "fgc13_packet_decision": "ACCEPT",
+    "fgc13_mapping": "PASS",
+    "fgc14_typed_binding": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "source_changes": false,
+  "stage0_authorized": false,
+  "next": "ACC01-F1 governed temporal feasibility for state-changing prescribed root uptake"
+}
