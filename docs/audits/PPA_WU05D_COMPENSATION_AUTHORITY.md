@@ -4,7 +4,8 @@ Date: 2026-09-19
 
 Status: `SOURCE_MATERIALIZATION_BLOCKED / REVIEW-ONLY OWNER BOUNDARIES FROZEN`
 
-Canonical base: `integration/f-ci-canonical@e473afc2d378a2567a59cc0db1577b4c724feeb2`.
+Original base: `integration/f-ci-canonical@e473afc2d378a2567a59cc0db1577b4c724feeb2`.  
+Live reconciliation: `integration/f-ci-canonical@6c63b8d0e340669d9722bc5e3d947d42d2b467a5` via two-parent checkpoint `2bdd9fe4e285ccb07bb887a50ecc5802ef824265`; the intervening PPA-LOW02 runtime delta does not overlap compensation/root-authority files.
 
 ## Purpose
 
