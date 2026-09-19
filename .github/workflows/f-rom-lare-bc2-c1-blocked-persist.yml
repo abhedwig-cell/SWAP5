@@ -1,0 +1,109 @@
+name: F-ROM-LARE persist BC2-C1 blocked evidence
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c1-blocked-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover all frozen C1 case artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1-cases
+          fetch_case () {
+            id="$1"; digest="$2"; name="$3"
+            zip="/tmp/${name}.zip"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" > "$zip"
+            echo "${digest}  $zip" | sha256sum -c -
+            unzip -q "$zip" -d /tmp/lare-bc2-c1-cases
+          }
+          fetch_case 10588532196 7cb359ae0656f28e16004185b85f2e1c0a93ce0ba93b3ef1712205f5cf2020da w2p5_WT_FALL
+          fetch_case 10588287473 7b9afb5e38ddfa0a93544776cca694a74b757c55a77b7e8bfa493911cd508ba3 w5p0_WT_FALL
+          fetch_case 10587998099 0a8f6bec599dfc5f070c9012a9c604bfb5594d0e28679280db60b7ef0598ba92 w2p5_WT_RISE
+          fetch_case 10587783770 d3b711027acb7d761b2159028fccae4a523f10a93d7fb47b2b26df8db3bb3acb w2p5_WT_CYCLE
+          fetch_case 10587708788 ca3e6e18603577599e6a13b125055868267016680a11b5dfad0b2f4e285fe89b w2p5_WT_HOLD
+          fetch_case 10587693954 936cf4237e8208abf1e211e6095b65051b57f9befc0175171cf605c26a3318f0 w5p0_WT_CYCLE
+          fetch_case 10587514058 f9efea212987c9cb770af2153e6363c25a550f4c4bb379aa90d6257c24b4cae6 w5p0_WT_HOLD
+          fetch_case 10587479270 910d3b602fbe1709197e7df70cf7e076b592d6e2fa4d4e07779e1a199526efda w5p0_WT_RISE
+          test "$(find /tmp/lare-bc2-c1-cases -name 'c1_*.json' | wc -l)" -eq 8
+
+      - name: Aggregate without relaxing the preregistered hard gate
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-c1-close
+          set +e
+          python3 tests/rom/aggregate_lare_bc2_c1_cases.py \
+            --cases-dir /tmp/lare-bc2-c1-cases \
+            --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json \
+            --c0-result integration/f-rom/LARE_BC2_C0_RESULT.json \
+            --output /tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json \
+            > /tmp/lare-bc2-c1-close/runner.txt 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          cat /tmp/lare-bc2-c1-close/runner.txt
+          python3 - <<'PY'
+          import json
+          p='/tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json'
+          r=json.load(open(p))
+          assert r['decision']=='BC2_C1_DIAGNOSTIC_BLOCKED'
+          assert r['complete'] is False
+          assert r['hard_checks']['all_primary_and_cross_routes_qualified'] is False
+          assert r['hard_checks']['all_primary_and_cross_routes_hard_gated'] is True
+          assert r['hard_checks']['all_reference_projections_finite'] is False
+          assert r['hard_checks']['failure_count']==1
+          assert r['failures']=={
+              '2.5:WT_CYCLE:0.00010000':
+              'OUTSIDE_QUALIFIED_DOMAIN Se=[0.4725465153356722,1.0000110667249589]'
+          }
+          # All seven fully qualified width/history cases must be classification
+          # stable across the preregistered primary and cross temporal routes.
+          for d,hrows in r['numerical_floor'].items():
+              for h,row in hrows.items():
+                  if row:
+                      assert all(row['classification_match'].values()), (d,h,row)
+          assert r['next_model_change_authorized'] is False
+          assert r['groundwater_feedback_authorized'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C1_BLOCKED_EVIDENCE_VALID=PASS')
+          PY
+          sha256sum /tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json /tmp/lare-bc2-c1-close/runner.txt > /tmp/lare-bc2-c1-close/sha256.txt
+
+      - name: Persist blocked scientific result
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-bc2-c1-close/LARE_BC2_C1_RESULT.json integration/f-rom/LARE_BC2_C1_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C1_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-C1 hard-gated blocked decomposition"
+          git push origin HEAD:work/f-rom-lare-rs1
+
+      - name: Upload blocked C1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c1-blocked-closeout
+          path: /tmp/lare-bc2-c1-close/
+          if-no-files-found: error
