@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.ppa_low02_time.preregistration.v1",
+  "work_unit": "PPA-LOW02-TIME",
+  "title": "Legacy SWBOTB=2 time law and dry-continuation application semantics",
+  "branch": "work/ppa-low02-time-current",
+  "canonical_base_ref": "integration/f-ci-canonical",
+  "phase": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "authority": {
+    "reference": "SWAP 4.3.1 B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "boundbottom_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "readswap_sha256": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c",
+    "headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "inherited_production_authority": [
+      "F-SI27",
+      "F-SI38",
+      "F-MR44R",
+      "F-VQ75",
+      "F-CI62",
+      "F-CI62P",
+      "PPA-WU02-A"
+    ]
+  },
+  "source_semantics": {
+    "normal_selector": 2,
+    "sw2_1": "qbot = SINAVE + SINAMP*cos((2*pi/365)*(legacy_t - SINMAX)); legacy_t is time relative to start of current calendar year and is evaluated at substep start",
+    "sw2_2": "qbot = AFGEN(DATE2/QBOT2, legacy_t1900_at_substep_end)",
+    "table_interpolation": "legacy AFGEN linear interpolation with endpoint clamping",
+    "dry_guard": "if bottom pressure head < -1.0e7 cm, effective selector is internal -2; otherwise effective selector is 2",
+    "dry_flux": "effective -2 uses existing admitted free-drainage equation qbot=-K_bottom",
+    "reentry": "the guard is re-evaluated from the next trial-start physical state; no independent persistent selector state is required"
+  },
+  "architecture_binding": {
+    "owner": "existing F-KT/F-MR transactional runtime remains sole state, retry, mass and commit owner",
+    "time_law": "typed immutable application control carried with forcing and resolved inside each physical advance using that substep's t0/t1",
+    "calendar": "runtime performs no Gregorian parsing; the application control receives an affine canonical-to-legacy-t1900 origin plus explicit consecutive calendar-year start boundaries for SW2=1",
+    "dry_continuation": "derived read-only from trial-start bottom pressure head; never stored as a second committed state",
+    "solver": "no residual, Jacobian, constitutive or free-drainage physics change",
+    "parser": "no general file-I/O/parser redesign; the typed adapter represents already decoded B1.11 SWBOTB=2 fields"
+  },
+  "planned_production_delta": [
+    "src/adapter/mod_b110_legacy_swbotb2_application_control.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "qualification_required": [
+    "exact SW2=1 phase/value oracle including year-boundary reset",
+    "exact SW2=2 interpolation and endpoint-clamp oracle",
+    "exact strict dry threshold and re-entry oracle",
+    "production bootstrap end-to-end reachability for time-varying SWBOTB=2",
+    "dynamic -2 route identity with directly configured admitted -2 reference",
+    "hard mass closure",
+    "rollback/retry determinism and A-B-A purity",
+    "O0/O2 identity",
+    "PPA-WU01, PPA-WU02 and PPA-WU03 preservation",
+    "fail-closed invalid control and non-mode2 attachment"
+  ],
+  "explicit_nonclaims": [
+    "general SWAP .SWP/.BBC file parser migration",
+    "SWBOTB=1,3,4,5,8 migration",
+    "mode -2 as a normal user selector",
+    "new solver physics or numerical policy",
+    "mixed bottom-mode production profiles",
+    "groundwater coupling semantics",
+    "ROM"
+  ],
+  "exit": "Canonical admission only if the complete typed legacy SWBOTB=2 time-law plus dry-continuation route passes owner and independent qualification without weakening inherited gates.",
+  "canonical_base_commit": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+  "preregistered_commit": "549eac02de069995448eb54fa020c756f3c087eb",
+  "implementation_adjustment": {
+    "trigger": "Broad preservation CI compiles mod_fmr_serialized_reference_backend.f90 directly through established source lists; a new module dependency caused missing .mod failures in F-ROSS12 and F-GC44 despite the PPA-LOW02 owner and independent gates passing.",
+    "evidence": {
+      "initial_qualification_run": 35406517730,
+      "initial_owner_job": 105797289526,
+      "initial_independent_job": 105797515526,
+      "compile_graph_failures": [
+        "F-ROSS12 run 35406517671 job 105797289106: missing mod_b110_legacy_swbotb2_application_control.mod",
+        "F-GC44 run 35406517646 job 105797290780: missing mod_b110_legacy_swbotb2_application_control.mod"
+      ]
+    },
+    "disposition": "Co-locate the immutable SWBOTB=2 application-control type and pure evaluation law with fmr_b110_physical_forcing_t in mod_fmr_serialized_reference_backend. Semantics and transaction ownership are unchanged; the separate adapter module is removed.",
+    "final_production_delta": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "architecture_impact": "none_beyond_dependency_locality",
+    "science_impact": "none"
+  },
+  "live_canonical_reconciliation": {
+    "source_pr": 355,
+    "source_head": "272f98e37d7652923b355ccb778ada106f144543",
+    "source_qualification_run": 35406517730,
+    "source_qualification_conclusion": "success",
+    "reconciled_pr": 360,
+    "reconciled_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+    "method": "fresh branch from live canonical; qualified delta replayed without unrelated history",
+    "required_before_admission": "rerun owner, independent and preservation qualification on reconciled postimage"
+  }
+}
