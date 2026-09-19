@@ -1,0 +1,67 @@
+name: F-ROM-LARE BC2-C4F reconcile immutable cases
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4f-reconcile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover immutable C4F case artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4f-cases
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10590481052/zip" > /tmp/w2p5-rise.zip
+          echo "5d2fd28843bcce6f2f90cd8249acdf3a9a4fa6bbc84f68937fb37edd82f00bb3  /tmp/w2p5-rise.zip" | sha256sum -c -
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10589124634/zip" > /tmp/w2p5-fall.zip
+          echo "0798e0f1ec8365d298895cc344114c76825ff3050e0df74b64b3e73f9f91422c  /tmp/w2p5-fall.zip" | sha256sum -c -
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10590576118/zip" > /tmp/w5-rise.zip
+          echo "fe60ea191f7c98a131e55e6ae2ce138b164a0775cebb556157406502237979a9  /tmp/w5-rise.zip" | sha256sum -c -
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10589074987/zip" > /tmp/w5-fall.zip
+          echo "0cdb220285cae64906e3d3002f1b545861f52b5bd97c1b51eccdae9a7a3df049  /tmp/w5-fall.zip" | sha256sum -c -
+          for z in /tmp/w2p5-rise.zip /tmp/w2p5-fall.zip /tmp/w5-rise.zip /tmp/w5-fall.zip; do
+            unzip -q "$z" -d /tmp/c4f-cases
+          done
+          test $(find /tmp/c4f-cases -name 'case_*.json' | wc -l) -eq 4
+
+      - name: Reconcile corrected cohort semantics
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4F_RECONCILED
+          python3 tests/rom/aggregate_lare_bc2_c4f.py             --case-dir /tmp/c4f-cases             --prereg integration/f-rom/LARE_BC2_C4F_PREREGISTRATION.json             --c4e-result integration/f-rom/LARE_BC2_C4E_RESULT.json             --output LARE_BC2_C4F_RECONCILED/LARE_BC2_C4F_RESULT.json             | tee LARE_BC2_C4F_RECONCILED/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4F_RECONCILED/LARE_BC2_C4F_RESULT.json'))
+          assert r['decision'] in (
+            'VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E',
+            'VECTOR_INTERFERENCE_EXPLAINS_C4E',
+            'C4E_MECHANISM_PARTIAL'
+          )
+          assert r['hard_checks']['maximum_additive_or_mass_residual_cm'] <= 1e-10
+          assert r['hard_checks']['maximum_squared_norm_identity_residual_theta2'] <= 1e-12
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4F_RECONCILE_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4F_RECONCILED/* > LARE_BC2_C4F_RECONCILED/sha256.txt
+
+      - name: Upload reconciled aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4f-reconciled
+          path: LARE_BC2_C4F_RECONCILED/
+          if-no-files-found: error
