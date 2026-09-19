@@ -1,0 +1,218 @@
+{
+  "schema": "swap5.lare.bc2.c0.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C0",
+  "phase": "PREREGISTERED_BEFORE_ENRICHED_PRESCRIBED_H_DYNAMICS",
+  "purpose": "Propagate the first fully closed enriched moving-water-table reduced state under the already-qualified prescribed Reference H(t) trajectories, isolating whether B7/B9 local closures improve dynamics beyond the conservative single-moving-layer B0 baseline.",
+  "predecessors": {
+    "B0": "integration/f-rom/LARE_BC2_B0_RESULT.json",
+    "required_B0_decision": "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED_WITH_RESPONSE_CONFUNDING",
+    "B7": "integration/f-rom/LARE_BC2_B7_RESULT.json",
+    "required_B7_decision": "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED",
+    "B8": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+    "required_B8_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED",
+    "B9": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+    "required_B9_decision": "BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED_OPERATOR_OR_WIDTH_UNRESOLVED"
+  },
+  "geometry": {
+    "profile_depth_cm": 160,
+    "anchor_cm": 90,
+    "fixed_layers_cm": [
+      [
+        0,
+        10
+      ],
+      [
+        10,
+        20
+      ],
+      [
+        20,
+        30
+      ],
+      [
+        30,
+        40
+      ],
+      [
+        40,
+        50
+      ],
+      [
+        50,
+        60
+      ],
+      [
+        60,
+        70
+      ],
+      [
+        70,
+        80
+      ],
+      [
+        80,
+        90
+      ]
+    ],
+    "terminal_widths_cm": [
+      2.5,
+      5
+    ],
+    "bulk_moving_layer": "90 .. H-d",
+    "terminal_moving_layer": "H-d .. H",
+    "H_input": "qualified BC2-A2 Reference H(t), linearly interpolated within every 0.0008-day observation interval",
+    "H_feedback_from_reduced_model": false,
+    "no_layer_birth_death": true,
+    "no_material_crossing": true
+  },
+  "prognostic_state": {
+    "per_width": "9 fixed-layer storages + Wb + Wt",
+    "state_dimension": 11,
+    "prescribed_geometry_not_counted_as_state": "H(t)",
+    "cumulative_diagnostic": "QH_cumulative, not part of hydraulic Markov state"
+  },
+  "closures": {
+    "fixed_fixed": "standard published adjacent-layer LARE closure",
+    "q90": {
+      "route": "standard published adjacent-layer LARE closure between 80-90 cm fixed layer and bulk moving-layer average",
+      "reason": "Freeze q90 at source-aligned B0 form to attribute C0 changes only to the enriched lower moving-domain state and B7/B9 closures.",
+      "no_B2_equilibrium_subtraction": true
+    },
+    "qi": {
+      "route": "BC2-B9 preferred TERMINAL_SIDE_LINEAR",
+      "terminal_slope": "a_t solves Wt=integral_0^d theta(a_t*x) dx",
+      "interface_suction": "psi_i=a_t*d",
+      "interface_conductivity": "K_i=K[theta(psi_i)]",
+      "formula": "qi=K_i*(1-a_t)"
+    },
+    "qH": {
+      "route": "BC2-B7 local terminal shape",
+      "formula": "qH=Ks*(1-a_t)"
+    },
+    "theta_i_geometry": {
+      "formula": "theta_i=theta(psi_i=a_t*d)",
+      "role": "reduced-state reconstruction used in exact B8 moving-boundary terms"
+    },
+    "no_fit": true
+  },
+  "balances_no_sinks": {
+    "fixed_0": "dW0/dt=-q_0_1",
+    "fixed_i": "dWi/dt=q_{i-1/2}-q_{i+1/2}",
+    "fixed_80_90": "dW8/dt=q_70_80-q90",
+    "bulk": "dWb/dt=q90-qi+theta_i*dH/dt",
+    "terminal": "dWt/dt=qi-qH+(theta_s-theta_i)*dH/dt",
+    "total": "dU/dt=-qH+theta_s*dH/dt",
+    "physical_ledger": "U-U0+QH-theta_s*(H-H0)=0"
+  },
+  "forcing": {
+    "top_flux_cm_per_day": 0,
+    "sinks": 0,
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL",
+      "WT_CYCLE"
+    ],
+    "source": "same frozen BC2-A2 histories"
+  },
+  "initial_state": {
+    "source": "exact projection of each A2 accepted initial hydrostatic profile",
+    "fixed_storages": "accepted 10-cm cell storages 0-90 cm",
+    "Wt": "same conservative segmented terminal-band projection as B6-B8",
+    "Wb": "Wm-Wt",
+    "no_fit": true
+  },
+  "numerics": {
+    "method": "iterative Heun predictor-corrector identical in structure to BC2-B0",
+    "observation_dt_day": 0.0008,
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_dt_day": 0.0001,
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "no_clipping": true,
+    "domain": [
+      "all fixed layer theta within open constitutive interval",
+      "B=H-90-d > 0",
+      "bulk theta within constitutive interval",
+      "terminal Wt admits a unique nonnegative local slope root",
+      "all reconstructed fluxes finite"
+    ],
+    "physical_ledger_gate_cm": 1e-10
+  },
+  "reference_metrics": [
+    "max absolute fixed 0-90 cm layer-storage error",
+    "max absolute Wb error",
+    "max absolute Wt error",
+    "max absolute total unsaturated storage error",
+    "max absolute cumulative qH error",
+    "final signed cumulative qH error",
+    "max absolute interval qH error",
+    "qH sign mismatch count",
+    "reversal sequence and timing",
+    "max absolute interval qi error using BC2-B8 reference qi",
+    "physical moving-volume ledger residual",
+    "0.0002 vs 0.0001 numerical-floor differences"
+  ],
+  "baseline_comparison": {
+    "source": "persisted BC2-B0 conservative closeout",
+    "B0_metrics": {
+      "WT_HOLD": {
+        "max_total_unsat_error_cm": 0.06670501168628107,
+        "max_cum_qH_error_cm": 0.06670501168628515,
+        "max_interval_qH_error_cm_per_day": 2.0251238271369263,
+        "sign_mismatch_count": 256
+      },
+      "WT_RISE": {
+        "max_total_unsat_error_cm": 0.10641372733468302,
+        "max_cum_qH_error_cm": 0.10641372733470866,
+        "max_interval_qH_error_cm_per_day": 8.577916537028653,
+        "sign_mismatch_count": 0
+      },
+      "WT_FALL": {
+        "max_total_unsat_error_cm": 0.29836421045124695,
+        "max_cum_qH_error_cm": 0.29836421045131467,
+        "max_interval_qH_error_cm_per_day": 10.536162008550928,
+        "sign_mismatch_count": 0
+      },
+      "WT_CYCLE": {
+        "max_total_unsat_error_cm": 0.3907388280223998,
+        "max_cum_qH_error_cm": 0.3907388280224128,
+        "max_interval_qH_error_cm_per_day": 15.630796909936045,
+        "sign_mismatch_count": 1
+      }
+    }
+  },
+  "adjudication": {
+    "hard_requirements": [
+      "all histories remain inside qualified domain",
+      "physical ledger <=1e-10 cm",
+      "0.0002 and 0.0001 routes both qualify",
+      "primary/cross temporal difference is reported before response interpretation"
+    ],
+    "progression_rule": "A width supports enriched moving dynamics when, versus B0 on every frozen history, max total-unsaturated-storage error, max cumulative qH error and max interval qH error are all no worse, qH sign mismatches are no greater, and at least one magnitude component is strictly improved in every non-HOLD moving history; HOLD must be no worse on all four components.",
+    "width_selection_rule": "A unique width is selected only if it is component-wise noninferior to the other supported width over every frozen response metric and history and strictly better in at least one component. Otherwise dynamics may be supported with width unresolved.",
+    "valid_outcomes": [
+      "BC2_C0_ENRICHED_PRESCRIBED_H_DYNAMICS_SUPPORTED",
+      "BC2_C0_ENRICHED_PRESCRIBED_H_DYNAMICS_SUPPORTED_WIDTH_UNRESOLVED",
+      "BC2_C0_ENRICHED_DYNAMICS_MIXED_RESPONSE",
+      "BC2_C0_ENRICHED_DYNAMICS_OUTSIDE_DOMAIN",
+      "BC2_C0_ENRICHED_DYNAMICS_NUMERICALLY_BLOCKED"
+    ],
+    "groundwater_feedback_authorized": false
+  },
+  "firewalls": [
+    "NO_Q90_RETUNING_IN_C0",
+    "NO_H_FEEDBACK",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_WIDTH_REFIT",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
