@@ -7,6 +7,8 @@ on:
     paths:
       - 'integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json'
       - 'tests/rom/analyze_lare_bc2_c1_teacher_forced.py'
+      - 'tests/rom/run_lare_bc2_c1_case.py'
+      - 'tests/rom/aggregate_lare_bc2_c1_cases.py'
       - '.github/workflows/f-rom-lare-bc2-c1.yml'
   workflow_dispatch:
 
@@ -15,9 +17,22 @@ permissions:
   actions: read
 
 jobs:
-  diagnose:
+  case:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { width: 2.5, history: WT_HOLD, slug: w2p5_WT_HOLD }
+          - { width: 2.5, history: WT_RISE, slug: w2p5_WT_RISE }
+          - { width: 2.5, history: WT_FALL, slug: w2p5_WT_FALL }
+          - { width: 2.5, history: WT_CYCLE, slug: w2p5_WT_CYCLE }
+          - { width: 5.0, history: WT_HOLD, slug: w5p0_WT_HOLD }
+          - { width: 5.0, history: WT_RISE, slug: w5p0_WT_RISE }
+          - { width: 5.0, history: WT_FALL, slug: w5p0_WT_FALL }
+          - { width: 5.0, history: WT_CYCLE, slug: w5p0_WT_CYCLE }
+
     steps:
       - uses: actions/checkout@v4
 
@@ -40,29 +55,75 @@ jobs:
           unzip -q /tmp/lare-bc2-c1/c0.zip -d /tmp/lare-bc2-c1/c0
           echo "94e28ab6546bbb4f7cfc0d903bf6cef9041f83742499b19ee8e9b0eef5e0545d  /tmp/lare-bc2-c1/c0/LARE_BC2_C0_RESULT.json" | sha256sum -c -
 
-      - name: Execute C1 decomposition
+      - name: Execute one frozen C1 case
+        run: |
+          set -euo pipefail
+          mkdir -p C1_CASE
+          python3 tests/rom/run_lare_bc2_c1_case.py \
+            --reference /tmp/lare-bc2-c1/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json \
+            --c0-result /tmp/lare-bc2-c1/c0/LARE_BC2_C0_RESULT.json \
+            --width "${{ matrix.width }}" \
+            --history "${{ matrix.history }}" \
+            --output "C1_CASE/c1_${{ matrix.slug }}.json"
+
+      - name: Upload case
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c1-case-${{ matrix.slug }}
+          path: C1_CASE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: case
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download all C1 case artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c1-case-*
+          path: /tmp/lare-bc2-c1-cases
+          merge-multiple: true
+
+      - name: Aggregate and hard-gate C1
         run: |
           set -euo pipefail
           mkdir -p LARE_BC2_C1_EVIDENCE
-          python3 tests/rom/analyze_lare_bc2_c1_teacher_forced.py             --reference /tmp/lare-bc2-c1/a2/o0.txt             --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json             --c0-result /tmp/lare-bc2-c1/c0/LARE_BC2_C0_RESULT.json             --output LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json             | tee LARE_BC2_C1_EVIDENCE/runner.txt
+          python3 tests/rom/aggregate_lare_bc2_c1_cases.py \
+            --cases-dir /tmp/lare-bc2-c1-cases \
+            --prereg integration/f-rom/LARE_BC2_C1_PREREGISTRATION.json \
+            --c0-result integration/f-rom/LARE_BC2_C0_RESULT.json \
+            --output LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json \
+            | tee LARE_BC2_C1_EVIDENCE/runner.txt
+
           python3 - <<'PY'
           import json
           r=json.load(open('LARE_BC2_C1_EVIDENCE/LARE_BC2_C1_RESULT.json'))
-          assert r['decision'] in {
-              'BC2_C1_ERROR_CHANNELS_DECOMPOSED',
-              'BC2_C1_DIAGNOSTIC_BLOCKED',
-          }
+          assert r['decision']=='BC2_C1_ERROR_CHANNELS_DECOMPOSED'
+          h=r['hard_checks']
+          assert h['all_primary_and_cross_routes_qualified'] is True
+          assert h['all_primary_and_cross_routes_hard_gated'] is True
+          assert h['all_reference_projections_finite'] is True
+          assert h['max_additive_or_ledger_residual_across_primary_and_cross'] <= h['gate']
+          for d in ('2.5','5.0'):
+              for history,row in r['numerical_floor'][d].items():
+                  assert all(row['classification_match'].values()), (d,history,row['classification_match'])
           assert r['next_model_change_authorized'] is False
           assert r['groundwater_feedback_authorized'] is False
+          assert r['application_acceptance_adjudicated'] is False
           assert r['production_rom_authorized'] is False
-          print('LARE_BC2_C1_FIREWALL=PASS')
+          print('LARE_BC2_C1_SHARDED_FIREWALL=PASS')
           PY
           sha256sum LARE_BC2_C1_EVIDENCE/* > LARE_BC2_C1_EVIDENCE/sha256.txt
 
-      - name: Upload C1 evidence
-        if: always()
+      - name: Upload authoritative C1 evidence
         uses: actions/upload-artifact@v4
         with:
           name: lare-bc2-c1
           path: LARE_BC2_C1_EVIDENCE/
-          if-no-files-found: warn
+          if-no-files-found: error
