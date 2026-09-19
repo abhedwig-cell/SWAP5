@@ -1,0 +1,224 @@
+{
+  "schema": "swap5.f-romv-mde-stage1.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-MDE-S1",
+  "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+  "preregistration": "integration/f-rom/F-ROMV_MDE_STAGE1_PREREGISTRATION.json",
+  "data_authority": {
+    "source_work_unit": "ROM-1A-R2",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "accepted_states": 768,
+    "training_pairs": 504,
+    "heldout_recursive_intervals": 252
+  },
+  "model": {
+    "family": "BILINEAR_CONTROLLED_AFFINE_OPERATOR_INFERENCE",
+    "state": "S_TOTAL_PLUS_R1_TO_R7_PLUS_G8",
+    "dimension": 9,
+    "feature_count": 40,
+    "design_rank": 40,
+    "svd_pseudoinverse_rcond": 1e-15,
+    "design_condition_number": 149233614574.55634,
+    "coefficient_l2_norm": 242801915.60702935,
+    "maximum_abs_coefficient": 89050600.10977459,
+    "seen_forcing_tuples": [
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        1
+      ],
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    "training_rmse_outputs": [
+      0.000003618216618538654,
+      0.0000036182017154117172,
+      0.000003618209152039398,
+      0.0000036182090362596386,
+      0.000003618209080567375,
+      0.000003618219739195497,
+      0.0000036383303555547647,
+      0.000004257890240607062,
+      0.00007196215011025276,
+      0.08995268945983484
+    ]
+  },
+  "hybrid": {
+    "ood_fallback_count": 75,
+    "ood_fallback_fraction": 0.2976190476190476,
+    "integrity": {
+      "nonfinite_count": 0,
+      "reconstructed_theta_bounds_failure_count": 16,
+      "structural_mass_failure_count": 0,
+      "ood_failopen_count": 0,
+      "pass": false
+    },
+    "integrity_failure_domain": {
+      "history": "H03",
+      "target_steps": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "forcing": "BOTTOM_HEAD_FALL",
+      "first_failure": {
+        "target_step": 41,
+        "predicted_total_storage_cm": -1630.493594581488,
+        "predicted_bottom_outward_exchange_cm": 1689.1794928792208,
+        "predicted_terminal_bottom_flux_cm_per_day": 2111474.366102843,
+        "reconstructed_theta_min": -182.0056569980184,
+        "reconstructed_theta_max": 12.544598696953926
+      }
+    },
+    "heldout_errors_after_diagnostic_full_order_recovery_from_integrity_failures": {
+      "total_storage_cm": {
+        "mean": 0.002833928957166278,
+        "mean_abs": 0.006919415343049304,
+        "rmse": 0.01994323024193951,
+        "p95_abs": 0.051331814535146195,
+        "max_abs": 0.10596043481512396
+      },
+      "bottom_outward_exchange_cm_per_step": {
+        "mean": 0.000212020732639771,
+        "mean_abs": 0.0018283902176814343,
+        "rmse": 0.005104126367065576,
+        "p95_abs": 0.01016319916376295,
+        "max_abs": 0.03289093046128535
+      },
+      "terminal_bottom_flux_cm_per_day": {
+        "mean": 0.2650257716075934,
+        "mean_abs": 2.2854879758789526,
+        "rmse": 6.3801581770351055,
+        "p95_abs": 12.703999567914218,
+        "max_abs": 41.11366380725596
+      },
+      "terminal_bottom_flux_sign": {
+        "wrong_count": 32,
+        "fraction": 0.12698412698412698
+      },
+      "reconstructed_theta_linf": {
+        "mean_abs": 0.0007748594591716536,
+        "rmse": 0.0021465582699665155,
+        "p95_abs": 0.005806883458034301,
+        "max_abs": 0.011757805340044947
+      }
+    },
+    "by_history": {
+      "H01": {
+        "ood_fallback_count": 0,
+        "integrity_failure_count": 0,
+        "actual_reversal_steps": [],
+        "predicted_reversal_steps": [],
+        "final_cumulative_bottom_exchange_error_cm": 1.032565860592527e-8
+      },
+      "H02": {
+        "ood_fallback_count": 4,
+        "integrity_failure_count": 0,
+        "actual_reversal_steps": [
+          25,
+          57
+        ],
+        "predicted_reversal_steps": [
+          16,
+          25,
+          31,
+          34,
+          45,
+          62,
+          64
+        ],
+        "actual_cumulative_bottom_exchange_cm": 0.10556725224898296,
+        "final_cumulative_bottom_exchange_error_cm": 0.09116159246854273
+      },
+      "H03": {
+        "ood_fallback_count": 8,
+        "integrity_failure_count": 16,
+        "actual_reversal_steps": [
+          9,
+          25
+        ],
+        "predicted_reversal_steps_after_diagnostic_recovery": [
+          9,
+          25
+        ],
+        "actual_cumulative_bottom_exchange_cm": 0.21540737329773102,
+        "final_cumulative_bottom_exchange_error_cm_after_diagnostic_recovery": -0.03773237816897976
+      },
+      "H04": {
+        "ood_fallback_count": 63,
+        "integrity_failure_count": 0,
+        "actual_reversal_steps": [
+          19
+        ],
+        "predicted_reversal_steps": [
+          19
+        ],
+        "actual_cumulative_bottom_exchange_cm": 0.24957987817417482,
+        "final_cumulative_bottom_exchange_error_cm": 0,
+        "interpretation": "All evaluated transitions fall back because combined forcing tuples were not present in discovery training."
+      }
+    }
+  },
+  "diagnosis": {
+    "primary": "ILL_CONDITIONED_CLOSURE_NOT_SIMPLE_DOMAIN_EXTRAPOLATION",
+    "evidence": {
+      "design_condition_number": 149233614574.55634,
+      "first_failure_input_is_inside_frozen_componentwise_discovery_box": true,
+      "first_failure_same_forcing_nearest_discovery_standardized_distance": 0.011879364894746051,
+      "first_failure_nearest_discovery_input": "D07_STEP48",
+      "interpretation": "A held-out state can be marginally very close to a discovery state with the same forcing yet receive an explosive prediction. The failure is therefore not rescued by arguing that H03 is simply far outside the sampled state range."
+    },
+    "ood_gate_assessment": "COMPONENTWISE_MIN_MAX_GATE_INSUFFICIENT_TO_GUARANTEE_SAFE_CLOSURE_USE",
+    "post_result_retuning_permitted": false
+  },
+  "purpose_dependent_adjudication": {
+    "integrity_precondition": "FAIL",
+    "A_LONG_TERM_REGIONAL_WATER_BALANCE_PROXY": "NOT_ACCEPTED; H02 cumulative bottom-exchange error is large relative to its 0.1056 cm heldout cumulative exchange and H03 violates state admissibility.",
+    "C_GROUNDWATER_COUPLED_HYDRAULIC_PROXY": "NOT_ACCEPTED; bottom-flux and exchange fidelity is poor in heldout cases and physical admissibility fails.",
+    "D_FAST_EVENT_THRESHOLD": "NOT_ACCEPTED; H02 reversal timing contains multiple spurious reversals and flux-sign errors occur in 32/252 hybrid intervals.",
+    "E_PROFILE_SENSITIVE_SCIENTIFIC_DIAGNOSTIC": "NOT_ACCEPTED; the simple closure violates physical state bounds despite modest errors on many other intervals.",
+    "statement": "Purpose-dependent tolerance does not relax non-negotiable integrity constraints. Numerical identity with Richards is not required, but a reduced model that publishes impossible state is not acceptable for any declared application."
+  },
+  "reference_floor_interpretation": {
+    "total_storage_scale_cm": 3.552713678800501e-14,
+    "upper_storage_scale_cm": 0.0003748292968630551,
+    "lower_storage_scale_cm": 0.00037482929685239696,
+    "role": "MEASUREMENT_CONTEXT_NOT_ROM_ACCEPTANCE_TOLERANCE"
+  },
+  "scope": {
+    "simple_bilinear_template_local_closure": "STOP",
+    "general_template_local_rom_hypothesis": "NOT_PROVEN_FALSE_BY_THIS_STAGE",
+    "direct_comparator_stage_for_this_closure": "NOT_AUTHORIZED",
+    "production_rom_authorized": false
+  },
+  "next": "DO_NOT_REGULARIZE_OR_RETUNE_THIS_CLOSURE_ON_EXPOSED_H01_H04. Any successor must use a separately preregistered model/domain design and new unexposed validation evidence, or test an independently justified physical-reduction family such as a quasi-steady/integrated-manifold approach."
+}
