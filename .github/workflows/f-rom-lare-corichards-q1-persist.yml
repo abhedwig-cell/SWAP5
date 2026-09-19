@@ -1,0 +1,139 @@
+name: F-ROM-LARE persist CoRichards Q1 closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-corichards-q1-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact Q1 aggregate authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/q1
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/10593970490/zip" > /tmp/q1.zip
+          echo "7372ec1c0e96506b7798d5275426d2d57eb1f8af85444c9fb3d4f2004da6b819  /tmp/q1.zip" | sha256sum -c -
+          unzip -q /tmp/q1.zip -d /tmp/q1
+          echo "b8eace7b8adcca96b7d2f2ad8e29c02791d9e71ff38f5e9bb7fb82a751f3ae96  /tmp/q1/LARE_CORICHARDS_Q1_RESULT.json" | sha256sum -c -
+
+      - name: Validate Q1 authority
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/q1/LARE_CORICHARDS_Q1_RESULT.json'))
+          assert r['decision']=='ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE'
+          assert r['R16_authority_reproduction']['pass'] is True
+          assert r['integrity']['technical_failures']=={}
+          assert r['integrity']['all_O0_O2_identity'] is True
+          assert r['integrity']['maximum_mass_residual_cm']<=1e-12
+          assert r['Q2_authorized'] is False
+          for row in r['viability_curve']:
+              if row['member']!='R16':
+                  assert row['dynamic_qualified_count']==0
+          r16=next(x for x in r['viability_curve'] if x['member']=='R16')
+          assert r16['dynamic_qualified_count']==7
+          assert r16['equilibrium_qualified_count']==3
+          assert set(r16['dynamic_qualified_cases'])=={
+            'S1_B1_F2','S1_B1_F3','S1_B1_F4',
+            'S2_B1_F2','S2_B1_F3','S2_B1_F4','S3_B1_F3'
+          }
+          assert r['hydrological_comparison_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_CORICHARDS_Q1_VALIDATION=PASS')
+          PY
+
+      - name: Build Q1 closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/q1/LARE_CORICHARDS_Q1_RESULT.json'))
+          out={
+            'schema':'swap5.lare.corichards.q1.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-CORICHARDS-Q1',
+            'status':'CLOSED_ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE_NO_Q2',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35472116931,
+              'execution_head':'f77946c56440555755e2596e6ed8bf596a766781',
+              'aggregate_artifact_id':10593970490,
+              'aggregate_artifact_digest':'sha256:7372ec1c0e96506b7798d5275426d2d57eb1f8af85444c9fb3d4f2004da6b819',
+              'result_sha256':'b8eace7b8adcca96b7d2f2ad8e29c02791d9e71ff38f5e9bb7fb82a751f3ae96'
+            },
+            'member_artifacts':{
+              'R4':{'compact_id':10592859643,'compact_digest':'sha256:0afdfa00efe56a0fe96e1794660edbd3ef725d31d04d84000d5e15a76f26e1a4','raw_id':10593795045,'raw_digest':'sha256:43b19d51784382cbf155240d5c8eb23593c746dab34b824fc61c8afb60f58898'},
+              'R5':{'compact_id':10593070585,'compact_digest':'sha256:79a030c7e8fb9b428fc2c456482a6f51a87c86d803a6db49b4605421779aa0da','raw_id':10593046000,'raw_digest':'sha256:f26b6fa2f8f8651072ce1a78c13523b9fed0201584cf4ec679b45849691591d2'},
+              'R6':{'compact_id':10592649966,'compact_digest':'sha256:589da9483ee172abcab2b72a175d0420066a79525d4c92c31dea1ae2bb8b3246','raw_id':10593530351,'raw_digest':'sha256:7d72867d56dc0305add84fe2c689eb77bb485f658949b529e3b8e422a1ffbe30'},
+              'R8':{'compact_id':10593750090,'compact_digest':'sha256:8eada3050ec3017f0de59541f56add17cfc2bc54bc50579c0fc5a7074228df0e','raw_id':10592744924,'raw_digest':'sha256:93614beb787b1b4ef41e0819ac94a86c6e7cc262208b3f0b7c945140e8fbe59f'},
+              'R12':{'compact_id':10593435504,'compact_digest':'sha256:20e39128bc2dcfcfe80f878f82a88d92d827793e784ad12f1d94e40bdd6330b8','raw_id':10593285263,'raw_digest':'sha256:79f0e0e14bd07fe8e1bd5820a19aedc9f587f07a49334404af9abe0a802499ea'},
+              'R16':{'compact_id':10593995426,'compact_digest':'sha256:39e0995e092a4eae77dcf57ef72963153305ceaddb60fcebaca9f63b6b5e551d','raw_id':10594005396,'raw_digest':'sha256:51a37cbeea876c868c7598efefb8d3e57b0beb403df3f807c117f24899e19368'}
+            },
+            'R3_imported_anchor':r['R3_imported_anchor'],
+            'R16_authority_reproduction':r['R16_authority_reproduction'],
+            'viability_curve':r['viability_curve'],
+            'integrity':r['integrity'],
+            'scientific_interpretation':[
+              'Under the frozen strict Reference authority, same-partition conventional Richards has no qualified non-equilibrium dynamic case from R3 through R12, even with temporal substeps down to 0.00005 day.',
+              'R16 reproduces the existing fine Reference authority and temporally qualifies all seven expected physically in-domain non-equilibrium histories plus all three equilibrium controls.',
+              'Therefore the tested CoRichards family does not provide a reduced equal-dimension dynamic comparator on this B01 fixed-flux laboratory; numerical dynamic viability appears only when spatial reduction has disappeared.',
+              'This is a numerical-comparator availability result, not evidence that LARE is hydrologically more accurate than coarse Richards.',
+              'The preregistered Q2 paired LARE-versus-CoRichards fidelity comparison is not authorized because no reduced CoRichards member has a dynamic common cohort.'
+            ],
+            'representation_selection_consequence':'FIXED_PARTITION_CORICHARDS_REDUCED_COMPARATOR_UNAVAILABLE_UNDER_CURRENT_NUMERICAL_AUTHORITY',
+            'next_authority':'RECONCILE_PHYSICAL_REDUCTION_FAMILIES_AFTER_LARE_AND_CORICHARDS_BOUNDARIES',
+            'Q2_authorized':False,
+            'hydrological_comparison_performed':False,
+            'performance_comparison_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'model_changed':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_CORICHARDS_Q1_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE CoRichards Q1 closeout
+
+          Formal decision: **ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE**.
+
+          Q1 defines CoRichards as conventional Reference-Richards discretisation on exactly the same fixed vertical partition and state dimension as the corresponding LARE member. It is a comparator, not a new solver.
+
+          The authority reproduction gate passes. R16, the 16 x 10 cm no-spatial-reduction control, reproduces the existing fine Reference status map at the original observation step: ten histories qualify and the two known Se0=0.95 WET/WET_DRY histories leave the qualified near-saturation domain. O0/O2 scientific traces are deterministic and the maximum transaction mass residual is about 4.26e-14 cm.
+
+          The reduced viability curve is discontinuous. R3 was already known to have zero qualified dynamic cases. Q1 now shows the same for R4, R5, R6, R8 and R12: each retains only its three equilibrium controls, while every non-equilibrium history remains numerically blocked through 16 temporal substeps per observation interval. R16, by contrast, qualifies all seven expected physically in-domain dynamic histories plus the three equilibrium histories.
+
+          Therefore conventional same-partition Richards is not an available reduced dynamic comparator on this bounded B01 fixed-flux laboratory under the frozen strict Reference numerical authority. Dynamic viability appears only at the fine spatial discretisation, where there is no spatial reduction.
+
+          This must not be restated as “LARE is better than coarse Richards”. Q1 contains no paired hydrological-fidelity comparison, and the preregistered Q2 comparison is not authorized because no reduced CoRichards member has a dynamic common qualified cohort.
+
+          Together with C4O, the result closes the immediate fixed-partition representation comparison boundary: standard low-dimensional LARE has transferable closure limitations, while same-dimension conventional Richards is numerically unavailable for dynamic comparison at R3-R12 under current authority. The next research step is representation selection among genuinely different physical reduction families, not further scalar tuning of either current family.
+          MD
+
+      - name: Persist Q1 authority
+        run: |
+          set -euo pipefail
+          cp /tmp/q1/LARE_CORICHARDS_Q1_RESULT.json integration/f-rom/LARE_CORICHARDS_Q1_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_CORICHARDS_Q1_RESULT.json integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json docs/science/F-ROM_LARE_CORICHARDS_Q1_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close CoRichards Q1 viability curve"
+          git push origin HEAD:work/f-rom-lare-rs1
