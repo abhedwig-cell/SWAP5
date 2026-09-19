@@ -54,7 +54,7 @@
     "whole_hupsel_accepted_intervals": 32518
   },
   "current_canonical_authority": {
-    "canonical_basis": "7a91adaf287ff4147d42c22c6e4c859dc576e8d0",
+    "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
     "production_groundwater_owner": {
       "file": "src/runtime/mod_fmr_production_application_bootstrap.f90",
       "blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
@@ -102,7 +102,7 @@
     },
     "post_wu04b_live_delta": {
       "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-      "head": "7a91adaf287ff4147d42c22c6e4c859dc576e8d0",
+      "head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
       "classification": "NO_E7_PRODUCTION_OWNER_EFFECT",
       "paths": [
         "docs/science/F-ROMV2_*",
@@ -114,7 +114,7 @@
         "integration/research/HYDRO_MEMORY_ACC0*",
         "tests/research/**"
       ],
-      "reason": "Later canonical work includes evidence-only ROM work and HYDRO-MEMORY ACC02-F1/F2 root-active research qualification. F1/F2 have no production/reference source mutation, use tests/research support bridges with prescribed root extraction active and drainage response inactive, and do not widen the mode-5 production application owner."
+      "reason": "Later canonical work includes evidence-only ROM work plus HYDRO-MEMORY ACC02-F1/F2 and DYN01 research qualification. None changes production/reference source or widens the mode-5 production application owner; ACC02-F1/F2 keep drainage inactive and DYN01 has no live MODFLOW coupling."
     },
     "HYDRO_MEMORY_ACC02_F1": {
       "canonical_merge": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
@@ -148,6 +148,20 @@
       "production_application_owner_widened": false,
       "stage0_authorized": false,
       "effect_on_e7": "NONE; repeated research-only prescribed-root live coupling does not admit authentic Hupsel root+drainage mode-5 production composition"
+    },
+    "HYDRO_MEMORY_DYN01": {
+      "canonical_head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+      "result_path": "integration/research/HYDRO_MEMORY_DYN01_RESULT.json",
+      "result_blob": "9b67737a416fb1b7806695a18fc57fb06ea2adaa",
+      "preregistration_path": "integration/research/HYDRO_MEMORY_DYN01_PREREGISTRATION.json",
+      "preregistration_blob": "387a7ef6f2303aaf80a69fe10e3f4904811e83df",
+      "decision": "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION",
+      "production_source_change": false,
+      "reference_source_change": false,
+      "live_modflow": false,
+      "stage0_scientific_result": false,
+      "production_application_owner_widened": false,
+      "effect_on_e7": "NONE; standalone forcing/Feddes composition evidence does not admit the authentic Hupsel root+drainage mode-5 production application composition"
     }
   },
   "preregistered_interpretation": "If the process-complete selected Hupsel windows cannot be materialized as prescribed-head groundwater participants without disabling/freezing active application processes, classify E7 as REALISTIC_COMPONENT_DOMAIN_LIMIT and do not execute a synthetic loose/strong substitute.",
