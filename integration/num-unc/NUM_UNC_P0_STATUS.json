@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0A0_PREREGISTERED_RECONCILED",
+  "status": "P0A_SPATIAL_PREREGISTERED",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,8 +32,8 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Execute the unchanged N0-only P0A0 locator on the reconciled research baseline. The failed first workflow attempt stopped at baseline lock before compilation and generated no scientific A0 output.",
-  "recovery_point": "Research branch merged with canonical 308a619 before A0 execution; workflows pinned to research head; P0A0 design unchanged.",
+  "next_action": "Run N0-only 32x5 cm A-/A+ spatial-control gate. N1 remains prohibited until that gate is persisted and A1 analysis is separately preregistered.",
+  "recovery_point": "A0 freeze closed on workflow 35430016968: A-=0.16270876169331827, A0=0.16520876169331827, A+=0.16770876169331828. Spatial gate preregistered; N1 not executed.",
   "blockers": [
     "Historical A14 package cannot be raw-byte replayed in current runtime; parameter binding is pilot-scoped and explicitly provenance-limited."
   ],
@@ -49,7 +49,10 @@
     "p0b0_workflow_run_id": 35428092861,
     "p0b0_output_sha256": "b3e3383f102e5601e03587be3004af143bf72e33d8fa6703d4be50a1eeb2d470",
     "p0b0_result_path": "integration/num-unc/NUM_UNC_P0B0_RESULT.json",
-    "p0a0_preexecution_blocked_run_id": 35429834944
+    "p0a0_preexecution_blocked_run_id": 35429834944,
+    "p0a0_workflow_run_id": 35430016968,
+    "p0a0_output_sha256": "d6a3279f18c20fec0327d95829ddada87ea6f65930082233bd66b0db7013a8a2",
+    "p0a0_result_path": "integration/num-unc/NUM_UNC_P0A0_RESULT.json"
   },
   "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635"
-}
+}\n
