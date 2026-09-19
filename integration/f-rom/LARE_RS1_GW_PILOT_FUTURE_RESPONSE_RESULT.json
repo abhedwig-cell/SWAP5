@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.lare.rs1.gw.pilot-future-response.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW-PILOT-PROBE",
+  "status": "SUPPLEMENTAL_RESPONSE_BLIND_PAIR_EVIDENCE_NOT_P1_P2_ADMISSION",
+  "execution": {
+    "workflow_run": 35444765010,
+    "artifact_id": 10585246987,
+    "artifact_digest": "sha256:bd4222c2d6f2aa97b2fa7babf43caf3a6069d80d873f330643710dc4fd6ca78d",
+    "executed_head": "811f7c96f0e9857e8875dc15208efa3d2a6d9b2a",
+    "conclusion": "success"
+  },
+  "authority_note": "The four pairs were frozen response-blind before future-probe execution, but this pilot is supplemental because formal LARE-RS1-GW-P1 uses a broader preregistered 2-10-dimensional partition screen and eight pairs per selected representation.",
+  "evidence": {
+    "pair_count": 4,
+    "probe_count": 7,
+    "horizons_steps": [
+      4,
+      64,
+      256,
+      1024
+    ],
+    "horizons_day": [
+      0.0032,
+      0.0512,
+      0.2048,
+      0.8192
+    ],
+    "comparison_record_count": 112,
+    "start_state_identity_with_stage_A_library": true,
+    "repeat_stdout_bitwise_identity": true,
+    "max_abs_committed_mass_residual_cm": 3.552713678800501e-14,
+    "terminal_bottom_flux_sign_mismatch_at_frozen_horizons": 0,
+    "pair_probe_reversal_sequence_mismatch_count": 7,
+    "maximum_response_difference": {
+      "cumulative_bottom_exchange_cm": 0.0710205955631853,
+      "cumulative_bottom_exchange_mm": 0.710205955631853,
+      "delta_total_storage_cm": 0.07102059556318352,
+      "delta_total_storage_mm": 0.7102059556318352,
+      "delta_lower_storage_cm": 0.07102930715464595,
+      "delta_upper_storage_cm": 0.0013596543762464108,
+      "terminal_bottom_flux_cm_per_day": 0.4242320771741235,
+      "terminal_bottom_flux_mm_per_day": 4.242320771741235
+    },
+    "reversal_timing_examples": [
+      {
+        "pair": "P01_G00_G02_MAX_HIDDEN",
+        "probe": "BOTTOM_HEAD_RISE",
+        "a_step": 21,
+        "b_step": 19,
+        "difference_steps": 2,
+        "difference_minutes": 2.304
+      },
+      {
+        "pair": "P02_G00_G02_MIN_REDUCED",
+        "probe": "BOTTOM_HEAD_RISE",
+        "a_step": 20,
+        "b_step": 19,
+        "difference_steps": 1,
+        "difference_minutes": 1.152
+      },
+      {
+        "pair": "P03_G00_G04_MAX_HIDDEN",
+        "probe": "BOTTOM_HEAD_RISE",
+        "a_step": 8,
+        "b_step": 6,
+        "difference_steps": 2,
+        "difference_minutes": 2.304
+      },
+      {
+        "pair": "P03_G00_G04_MAX_HIDDEN",
+        "probe": "BOTTOM_HEAD_FALL_THEN_RISE",
+        "a_step": 563,
+        "b_step": 562,
+        "difference_steps": 1,
+        "difference_minutes": 1.152
+      }
+    ]
+  },
+  "scientific_interpretation": [
+    "Two-layer state collisions can produce measurable future groundwater-response differences even under identical future forcing.",
+    "In this pilot the largest cumulative exchange/storage difference is sub-millimetre over 0.8192 day, while instantaneous terminal bottom-flux differences can be several millimetres per day.",
+    "No terminal flux-sign mismatch occurs at the four frozen horizons, but several reversal times differ by one or two 0.0008-day steps.",
+    "The largest ambiguity is concentrated in lower-column storage; upper 0-40 cm response differences remain much smaller for the worst bottom-exchange case.",
+    "These magnitudes are measurements, not pass/fail judgments. Purpose-dependent acceptance thresholds remain unfrozen and must not be derived from this pilot."
+  ],
+  "hydrological_acceptance_adjudicated": false,
+  "pair_reselection_after_response": false,
+  "lare_dynamics_executed": false,
+  "production_rom_authorized": false
+}
