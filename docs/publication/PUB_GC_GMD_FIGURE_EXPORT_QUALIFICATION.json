@@ -1,0 +1,165 @@
+{
+  "schema": "pub-gc-gmd-figure-export-qualification-v1",
+  "date": "2026-09-19",
+  "status": "PASS_REPRODUCIBLE_EXPORT_PIPELINE_NONDETERMINISTIC_PDF_METADATA",
+  "scope": "Presentation-only SVG to PDF export qualification for governed F1-F7 sources",
+  "source_head": "e99cfe76f97a5b01bcc5d71f101274d999013561",
+  "workflow": {
+    "name": "PUB-GC GMD qualified figure exports",
+    "run_id": 35425367690,
+    "job_id": 105850258985,
+    "conclusion": "success"
+  },
+  "validation": {
+    "figure_count": 7,
+    "all_single_page": true,
+    "all_fonts_embedded": true,
+    "all_pdf_under_2_mb": true,
+    "flat_zip_exact_names": true,
+    "total_pdf_bytes": 164666,
+    "total_under_30_mb_budget": true,
+    "presentation_transform_only": true
+  },
+  "export_transform": {
+    "renderer": "CairoSVG 2.8.2",
+    "validator": "pypdf 6.1.1",
+    "font_normalization": "Arial/Helvetica/sans-serif -> DejaVu Sans/sans-serif during PDF rendering only",
+    "governed_svg_sources_unchanged": true
+  },
+  "figures": [
+    {
+      "id": "F1",
+      "file": "f01.pdf",
+      "size_bytes": 21923,
+      "sha256": "61f48bacc7bc353dd01aa9db8aa3d56a22652997a5cf7b81a8c1440b79578895"
+    },
+    {
+      "id": "F2",
+      "file": "f02.pdf",
+      "size_bytes": 25804,
+      "sha256": "1ecff067c6b16c2d684386472905cb8df5b69aa2d1f4572619f3dd65d2a27741"
+    },
+    {
+      "id": "F3",
+      "file": "f03.pdf",
+      "size_bytes": 24629,
+      "sha256": "2224cc33de771abdf2f9b89df06e344168be757bd640dcd041fdc2b76d2c852b"
+    },
+    {
+      "id": "F4",
+      "file": "f04.pdf",
+      "size_bytes": 21918,
+      "sha256": "481dfc24b504f1a5a2d18b1c9b60e0d301e6bf9362bacdbafb90953fbd35c0b0"
+    },
+    {
+      "id": "F5",
+      "file": "f05.pdf",
+      "size_bytes": 22094,
+      "sha256": "5bdd959f1ad3d9e83b4a199b9b3508471dde110524551c9686f4cafbb76a026a"
+    },
+    {
+      "id": "F6",
+      "file": "f06.pdf",
+      "size_bytes": 25585,
+      "sha256": "483822464e0818c0983291cfefb45302bd7ba46464b1bc9cea10465b7d81da9a"
+    },
+    {
+      "id": "F7",
+      "file": "f07.pdf",
+      "size_bytes": 22713,
+      "sha256": "6c4618cc10836f0946c0bc55d6e6c34e836c38daeccf2f293b5c2f7ae9f6b42e"
+    }
+  ],
+  "submission_zip": {
+    "sha256": "ae2e998d307f0cd78821d6ed9420649667b3289ddf7c46e7597f0764b3cfccb4",
+    "flat_contents": [
+      "f01.pdf",
+      "f02.pdf",
+      "f03.pdf",
+      "f04.pdf",
+      "f05.pdf",
+      "f06.pdf",
+      "f07.pdf"
+    ]
+  },
+  "github_artifact": {
+    "id": 10578549141,
+    "name": "pub-gc-gmd-qualified-figures",
+    "wrapper_size_bytes": 152068,
+    "wrapper_digest": "sha256:390701f774e94d40eec03de54f71b722467a9c5be0491b000914bccf413fb468",
+    "expires_at": "2026-12-18T05:58:54Z"
+  },
+  "repair_note": "Initial run 35425336798 correctly stopped because the validator did not follow Type0 DescendantFonts. The validator was repaired to inspect descendant CIDFont descriptors. No SVG or scientific figure content changed.",
+  "finalization_rule": "After R1/L1 and the exact publication release/archive identity are fixed, regenerate F1-F7 once from that immutable release, perform the final visual/upload review, and freeze those release-bound PDF/zip hashes.",
+  "latest_confirmation": {
+    "source_head": "8d5aad869d7f267bf3d1ceeda05d9ca71c1f8df1",
+    "workflow_run": 35425488276,
+    "job_id": 105850571113,
+    "conclusion": "success",
+    "figure_count": 7,
+    "font_embedding": "PASS",
+    "flat_zip": "PASS",
+    "size_budget": "PASS",
+    "total_pdf_bytes": 164661,
+    "submission_zip_sha256": "4dab31c587644d37542f0cf223c8e30a2ea623c224c326d9ad29814869eeabee",
+    "artifact_id": 10578682866,
+    "artifact_wrapper_digest": "sha256:c64439b533ac482c8f493a7074c687d95e211b2c2847cb299476ccf3b9dff8a6",
+    "pdfs": [
+      {
+        "id": "F1",
+        "file": "f01.pdf",
+        "size_bytes": 21923,
+        "sha256": "cec6b12ac31cee66d86cd33c0e57d273fcd1905de82ee67c2db63a8e616baed2"
+      },
+      {
+        "id": "F2",
+        "file": "f02.pdf",
+        "size_bytes": 25803,
+        "sha256": "6a281e41a0084b15d4206bb11395f6258d4c1fae792e69581d388e38888e63ea"
+      },
+      {
+        "id": "F3",
+        "file": "f03.pdf",
+        "size_bytes": 24627,
+        "sha256": "16c9c510640690af15eeaa6eb8a5d96b08173b3ed5bad0ca54bcde460b8d515c"
+      },
+      {
+        "id": "F4",
+        "file": "f04.pdf",
+        "size_bytes": 21917,
+        "sha256": "db0d4721fe339446b01511d736ae1b79ed48418e4a51a972449dccd630d1b208"
+      },
+      {
+        "id": "F5",
+        "file": "f05.pdf",
+        "size_bytes": 22094,
+        "sha256": "8a4ff6523297de8f7a6683c4c3b0c6946bdce7a5fe73322566aed8d47c76a279"
+      },
+      {
+        "id": "F6",
+        "file": "f06.pdf",
+        "size_bytes": 25584,
+        "sha256": "b492019ba84d3ba56f962ed3b3f382b86bba651cf14444e7a17a958cb51b4c17"
+      },
+      {
+        "id": "F7",
+        "file": "f07.pdf",
+        "size_bytes": 22713,
+        "sha256": "47ac297b811b9f9a5f1275fb38ff4469ead855329f2ba9157f58a9f713fef2ef"
+      }
+    ]
+  },
+  "reproducibility_interpretation": {
+    "invariant_across_successful_runs": [
+      "seven governed SVG inputs",
+      "seven numbered one-page PDF outputs",
+      "font embedding passes",
+      "all individual PDF files remain far below 2 MB",
+      "flat zip membership/order",
+      "total size remains far below 30 MB",
+      "scientific SVG sources remain unchanged"
+    ],
+    "not_invariant_before_final_freeze": "Generated PDF and zip byte hashes vary between runs because renderer/archive metadata is not normalized to a fixed timestamp/document identifier.",
+    "authority_rule": "Do not use pre-release PDF or zip hashes as scientific-content authority. Governed SVG blobs are authoritative; final PDF hashes are frozen only when regenerated from the immutable publication release."
+  }
+}

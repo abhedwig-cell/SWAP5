@@ -2,7 +2,7 @@
 
 ## Status
 
-**EXPORT PLAN READY — PDF EXPORTS NOT YET FROZEN**
+**EXPORT PIPELINE QUALIFIED — FINAL RELEASE-BOUND PDF HASHES PENDING R1/L1/ARCHIVE**
 
 Date: 2026-09-19.
 
@@ -30,3 +30,17 @@ Validation:
 - F7 must remain a participant-domain stop with zero E7 coupled windows.
 
 Machine-readable companion: `PUB_GC_GMD_FIGURE_EXPORT_PLAN.json`.
+
+
+## Qualification result
+
+Reproducible export route qualification:
+
+- workflow run: **35425367690** — SUCCESS;
+- fonts embedded: PASS;
+- each PDF <=2 MB: PASS;
+- flat zip `f01.pdf`–`f07.pdf`: PASS;
+- total seven-PDF bytes: **164,666**;
+- qualification record: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
+
+The final paper-release PDFs must be regenerated from the immutable publication release after R1/L1/archive identity is resolved.

@@ -67,7 +67,7 @@ These items do not require new science:
 - add acknowledgements, funding and conflict/data/code availability declarations required by the journal;
 - freeze an archival repository release/DOI and replace development-revision language with the archived identifier;
 - final language/notation consistency pass on the closed E1–E7 manuscript;
-- prepare journal-resolution raster/PDF exports if the journal does not accept SVG.
+- regenerate the qualified F1–F7 PDF package once from the immutable publication release and perform the final visual/upload review.
 
 ## Decision boundary
 
@@ -146,4 +146,19 @@ Current non-scientific blockers:
 2. L1 — authorized SWAP5 publication-archive licence/redistribution statement;
 3. persistent exact-version archive + DOI/PID after R1/L1;
 4. final author/affiliation/contribution/funding/interest metadata;
-5. final figure PDF exports and upload packaging.
+5. final release-bound regeneration of the already-qualified PDF package after R1/L1/archive closure.
+
+
+## Qualified figure export route — 2026-09-19
+
+The F1–F7 SVG→PDF production route is now qualified:
+
+- run 35425367690 — SUCCESS;
+- seven one-page vector PDFs;
+- embedded fonts;
+- each PDF <2 MB;
+- exact flat zip ordering;
+- combined PDFs 164,666 bytes;
+- qualification evidence: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
+
+This removes figure rendering/packaging as an independent blocker. Final PDFs are regenerated once from the exact immutable publication release after R1/L1/archive closure.
