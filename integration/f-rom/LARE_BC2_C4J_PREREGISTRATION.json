@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.lare.bc2.c4j.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4J",
+  "phase": "PREREGISTERED_AFTER_C4I_BEFORE_ROOT_AND_DIRECTION_GEOMETRY_DIAGNOSTIC",
+  "question": "Why does the C4I quadratic storage reconstruction become non-identifiable at d=2.5 cm and direction dependent at d=5 cm, without selecting a root branch or proposing another closure?",
+  "predecessors": {
+    "C4I": {
+      "closeout": "integration/f-rom/LARE_BC2_C4I_CLOSEOUT.json",
+      "required_status": "CLOSED_RECONSTRUCTION_BLOCKED_NO_MODEL_CHANGE",
+      "required_decision": "C4I_RECONSTRUCTION_BLOCKED"
+    },
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "diagnostic_A_root_multiplicity": {
+    "width_cm": 2.5,
+    "states": "initial Reference state of WT_HOLD, WT_RISE and WT_FALL",
+    "roots": "reuse exactly the four frozen C4I starts at 64- and 128-point quadrature; no added starts and no branch selection",
+    "clustering": "same C4I a,b combined absolute/relative tolerance 1e-8",
+    "outputs": [
+      "number of valid roots and distinct root clusters",
+      "a,b,psi_i,psi_anchor,interface slope, q_i and q_H for every distinct root",
+      "minimum pairwise separation in (a,b)",
+      "q_i and q_H spread across roots for identical Wb/Wt/H",
+      "cross-quadrature root-cluster correspondence"
+    ],
+    "support_rule": "ROOT_MULTIPLICITY_CONFIRMED if at least two distinct physically admissible root clusters occur at both quadratures for every tested initial history and the same cluster structure is cross-quadrature reproducible."
+  },
+  "diagnostic_B_5cm_direction_geometry": {
+    "width_cm": 5,
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference_effective_slopes": {
+      "interface": "s_i_ref = 1 - q_i_ref / K_i_ref_bar, with q_i_ref from B8 and K_i_ref_bar from Reference interface theta at both endpoints",
+      "water_table": "a_ref = 1 - q_H_ref / Ks"
+    },
+    "candidate_slopes": {
+      "baseline": "B9 TERMINAL_SIDE_LINEAR interval-average a_t; the same terminal linear slope controls both q_i and q_H.",
+      "quadratic": "C4I interval-average slope_i at the internal interface and interval-average a at the water table."
+    },
+    "outputs": [
+      "RMS, MAE, bias and max absolute slope error for baseline and quadratic at both interface and water table",
+      "fraction intervals quadratic has smaller absolute slope error",
+      "signed relation between slope-error change and flux-error change",
+      "WT_HOLD distance from effective hydrostatic slope one"
+    ],
+    "support_rule": "DIRECTION_GEOMETRY_CONFIRMED if the quadratic reconstruction strictly improves both RMS and MAE of both effective slope targets for WT_FALL, strictly worsens both for WT_RISE, and worsens or fails noninferiority for HOLD, matching the bounded C4I flux-direction pattern without using response to choose a branch."
+  },
+  "decisions": {
+    "QUADRATIC_MULTIVALUED_AND_DIRECTION_GEOMETRY_CONFIRMED": "Both diagnostics support.",
+    "QUADRATIC_ROOT_MULTIPLICITY_ONLY": "Only diagnostic A supports.",
+    "QUADRATIC_DIRECTION_GEOMETRY_ONLY": "Only diagnostic B supports.",
+    "C4J_MECHANISM_PARTIAL": "Both diagnostics complete but neither/both rules are not fully satisfied.",
+    "C4J_DIAGNOSTIC_BLOCKED": "Required reconstruction, ledger identity or numerical checks cannot be completed."
+  },
+  "hard_gates": {
+    "root_storage_residual_cm": 1e-10,
+    "root_cross_quadrature_flux_cm_per_day": 5e-8,
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "finite_positive_reference_K": true
+  },
+  "firewalls": [
+    "NO_ROOT_SELECTION_RULE",
+    "NO_MONOTONICITY_FILTER_AS_CLOSURE",
+    "NO_DIRECTION_SWITCH",
+    "NO_NEW_RECONSTRUCTION_FAMILY",
+    "NO_EXTRA_STATE",
+    "NO_FREE_PROPAGATION",
+    "NO_GROUNDWATER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
