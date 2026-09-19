@@ -1,7 +1,7 @@
 {
-  "schema": "swap5.f-rom-lare.recovery-checkpoint.v1",
+  "schema": "swap5.f-rom-lare.recovery-checkpoint.v2",
   "branch": "work/f-rom-lare-rs1",
-  "checkpoint_live_head_observed": "04311dfd9f7f64714d6806988cf9e35bb284edda",
+  "checkpoint_live_head_observed": "c5c068baef92fce91dc372480ed2030457161f6b",
   "purpose": "Minimal durable resume authority for interactive/session timeouts. Read this before repeating any LARE calculation.",
   "execution_protocol": "docs/science/F-ROM_LARE_BOUNDED_EXECUTION_RECOVERY.md",
   "durable_scientific_authority": [
@@ -50,7 +50,7 @@
       "result": "integration/f-rom/LARE_BC2_C4B_CLOSEOUT.json",
       "status": "CLOSED_NUMERICAL_DIAGNOSTIC_BLOCKED",
       "decision": "C4B_DIAGNOSTIC_BLOCKED",
-      "note": "Core oracle interventions leave the qualified constitutive/numerical domain. Later variant-local execution semantics refine diagnostics only; no causal hypothesis or model change is authorized."
+      "note": "Do not rescue with clipping or arbitrary oracle substitution."
     },
     {
       "unit": "BC2-C3B",
@@ -62,34 +62,39 @@
     {
       "unit": "BC2-C4D",
       "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
-      "status": "PERSISTED",
       "decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
-      "authority": {
-        "workflow_run": 35459567540,
-        "aggregate_artifact_id": 10589288088,
-        "aggregate_artifact_digest": "sha256:162849c85ce46e73c68999d5e79dcfc1aff3409e66c95f6102e4168b30df421c"
-      },
+      "status": "PERSISTED",
       "mechanism": "H_CANCELLATION_SUPPORTED; H_QH_PHASE_NOT_SUPPORTED; H_REVERSAL_LOCAL_NOT_SUPPORTED"
+    },
+    {
+      "unit": "BC2-C4E",
+      "result": "integration/f-rom/LARE_BC2_C4E_RESULT.json",
+      "closeout": "integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json",
+      "science_reconciliation": "docs/science/F-ROM_LARE_BC2_C4E_CLOSEOUT.md",
+      "status": "CLOSED_DIAGNOSTIC_BLOCKED_NO_MODEL_CHANGE",
+      "decision": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED",
+      "authority": {
+        "workflow_run": 35460239887,
+        "execution_head": "80a95f35c278e0985764f7cf730066d5ac4c73a2",
+        "aggregate_artifact_id": 10589773291,
+        "aggregate_artifact_digest": "sha256:d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485",
+        "result_sha256": "06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290"
+      },
+      "note": "5 cm RISE supports local QI attribution in that case, but 2.5 cm RISE shows the admissible QI removal worsens shape fidelity; FALL cases also expose comparator/QI admissibility limits. No width-independent corrective closure is authorized."
     }
   ],
   "active_units_without_durable_result": [],
-  "workflow_hardening": {
-    "case_timeout_minutes": 15,
-    "aggregate_target_timeout_minutes": 5,
-    "supersession": "workflow-level concurrency with cancel-in-progress=true for C3B/C4B/C4D",
-    "case_evidence": "structured JSON artifact per matrix case; C3B/C4B/C4D preserve case evidence independently of aggregate",
-    "scientific_effect": "NONE"
-  },
   "resume_algorithm": [
-    "Reconcile live branch head.",
-    "Check expected durable RESULT.json first.",
-    "If result exists and authority hashes remain valid: reuse it and continue.",
-    "If result does not exist: inspect latest relevant workflow artifact before launching anything.",
-    "Persist an aggregate/blocked result as soon as enough evidence exists.",
-    "Update this checkpoint before launching the next expensive scientific work unit.",
-    "Never rerun a qualified predecessor solely because chat/session context was lost."
+    "Reconcile live branch head and current canonical without rebasing frozen research authority.",
+    "Check expected durable RESULT/CLOSEOUT first.",
+    "If result exists and authority hashes remain valid, reuse it and continue.",
+    "If result does not exist, inspect latest relevant workflow artifact before launching anything.",
+    "Persist an aggregate or blocked result as soon as enough evidence exists.",
+    "Never rerun a qualified predecessor solely because chat or session context was lost."
   ],
-  "next_state_boundary": "C3B, C4B and C4D are durably closed. Next authorized diagnostic is a separately preregistered teacher-forced QI local-bias-removal causal test on monotone phases. Do not rescue C4B with clipping and do not introduce a deployable direction switch.",
-  "production_rom_authorized": false,
-  "partial_case_authority": []
+  "next_state_boundary": "C4E is durably closed. A new closure hypothesis is not automatically authorized. First make and preregister a scientific choice that explains the width-dependent QI effect and counterfactual-admissibility failures. No QI correction, direction switch, extra memory state or free-running corrected LARE is authorized from current evidence.",
+  "unbound_execution_note": "tests/rom/analyze_lare_bc2_c4e_local_counterfactual.py exists on a later branch head but was not used by C4E workflow run 35460239887; do not treat it as qualified C4E evidence without a separate preregistered run.",
+  "application_acceptance_adjudicated": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
 }
