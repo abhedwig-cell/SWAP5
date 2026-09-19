@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.lare.rs1.partition-screen-result.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-P0",
+  "status": "PILOT_SCREEN_COMPLETE",
+  "canonical_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "inputs": {
+    "B01": {
+      "artifact_id": 10561841507,
+      "artifact_zip_sha256_local_replay": "2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+      "o0_state_library_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+      "state_count": 768,
+      "cross_history_full_state_distinguishable_pair_count": 234642,
+      "theta_floor": 0.0005420462931603476
+    },
+    "B14": {
+      "artifact_id": 10566892886,
+      "artifact_zip_sha256": "12ebef87ead22cac3cda4ed832a4f7e230faf4238936cc760ce3a67e3b7202d9",
+      "o0_state_library_sha256": "37411b9a7e93fedbac14905e005f9554df1eee797146708c53727d119ebd8f50",
+      "state_count": 768,
+      "cross_history_full_state_distinguishable_pair_count": 239154,
+      "theta_floor": 0.0000016414144244913942
+    }
+  },
+  "partition_search": {
+    "base_grid": "16 contiguous cells of 10 cm",
+    "candidate_family": "all contiguous fixed partitions",
+    "candidate_coordinate": "mean theta per partition layer, information-equivalent to layer storage for fixed thickness",
+    "B01": {
+      "2": {"candidate_count": 15, "zero_collision_count": 0, "minimum_collision_count": 6005},
+      "3": {"candidate_count": 105, "zero_collision_count": 1, "minimum_collision_count": 0, "unique_minimum_partition_end_indices": [14,15,16]},
+      "4": {"candidate_count": 455, "zero_collision_count": 13, "minimum_collision_count": 0},
+      "5": {"candidate_count": 1365, "zero_collision_count": 78, "minimum_collision_count": 0},
+      "6": {"candidate_count": 3003, "zero_collision_count": 286, "minimum_collision_count": 0},
+      "7": {"candidate_count": 5005, "zero_collision_count": 715, "minimum_collision_count": 0},
+      "8": {"candidate_count": 6435, "zero_collision_count": 1287, "minimum_collision_count": 0},
+      "9": {"candidate_count": 6435, "zero_collision_count": 1716, "minimum_collision_count": 0},
+      "10": {"candidate_count": 5005, "zero_collision_count": 1716, "minimum_collision_count": 0}
+    },
+    "B14": {
+      "2": {"candidate_count": 15, "zero_collision_count": 0, "minimum_collision_count": 770},
+      "3": {"candidate_count": 105, "zero_collision_count": 0, "minimum_collision_count": 351, "minimum_collision_partition_end_indices": [[13,15,16],[14,15,16]]},
+      "4": {"candidate_count": 455, "zero_collision_count": 2, "minimum_collision_count": 0, "zero_collision_partition_end_indices": [[1,13,15,16],[1,14,15,16]]},
+      "5": {"candidate_count": 1365, "zero_collision_count": 23, "minimum_collision_count": 0},
+      "6": {"candidate_count": 3003, "zero_collision_count": 121, "minimum_collision_count": 0},
+      "7": {"candidate_count": 5005, "zero_collision_count": 385, "minimum_collision_count": 0},
+      "8": {"candidate_count": 6435, "zero_collision_count": 825, "minimum_collision_count": 0},
+      "9": {"candidate_count": 6435, "zero_collision_count": 1254, "minimum_collision_count": 0},
+      "10": {"candidate_count": 5005, "zero_collision_count": 1386, "minimum_collision_count": 0}
+    },
+    "cross_material": {
+      "2": {"zero_collision_in_both": 0},
+      "3": {"zero_collision_in_both": 0},
+      "4": {"zero_collision_in_both": 1, "partition_end_indices": [[1,14,15,16]]},
+      "5": {"zero_collision_in_both": 12},
+      "6": {"zero_collision_in_both": 66}
+    }
+  },
+  "cross_material_minimum_partition": {
+    "depth_layers_cm": [[0,10],[10,140],[140,150],[150,160]],
+    "dimension": 4,
+    "B01": {
+      "collision_count": 0,
+      "minimum_induced_theta_linf": 0.0005426494193735976,
+      "minimum_margin_over_floor": 0.0000006031262132499826
+    },
+    "B14": {
+      "collision_count": 0,
+      "minimum_induced_theta_linf": 0.0000016487946105092632,
+      "minimum_margin_over_floor": 0.00000000738018601786905
+    },
+    "one_percent_relaxed_near_collision_count": {
+      "B01_discovery_only": 15,
+      "B01_pairs_with_heldout": 35,
+      "B01_all": 50,
+      "B14_all": 26
+    },
+    "interpretation": "The partition is collision-free at the frozen numerical floors but has very small separation margins and is not robust evidence that four layers are hydrologically sufficient."
+  },
+  "scientific_interpretation": [
+    "B01 distinguishability is concentrated near the lower end of the 160 cm pilot column.",
+    "B14 additionally requires information from the uppermost 10 cm in the minimum cross-material partition.",
+    "This supports an active-zone-resolution hypothesis, not a universal four-layer grid.",
+    "The pilot libraries span only short near-equilibrium perturbations and cannot establish application-level LARE sufficiency.",
+    "Existing B14 future-probe evidence found no predictive ambiguity in the frozen eight-pair subset despite formal state collisions, supporting the need for purpose-dependent rather than full-state acceptance."
+  ],
+  "next_gate": "Generate prospective RS1_GW and RS1_HUPSEL libraries and adjudicate collisions against purpose-dependent future-output envelopes before implementing LARE propagation dynamics.",
+  "production_rom_authorized": false
+}
