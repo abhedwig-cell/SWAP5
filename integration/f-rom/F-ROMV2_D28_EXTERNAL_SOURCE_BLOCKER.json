@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.f-romv2-d28.external-source-blocker.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D28",
+  "title": "Native FMC root-withdrawal composite-state update oracle retrieval checkpoint",
+  "phase": "CLOSED_EXTERNAL_SOURCE_BLOCKER",
+  "canonical_base": "c68deaa1142084a56b6d57baa788d6ed805873c2",
+  "decision": "M2WC70_NATIVE_ET_STATE_UPDATE_ORACLE_EXTERNAL_RETRIEVAL_BLOCKER",
+  "predecessor": {
+    "D26": "Root-uptake authority reconciled; total uptake is comparable but spatial sink semantics are structurally different.",
+    "D27": "Synthetic unstressed total-uptake finite-volume accounting passes with exact SWAP-vs-FMC total uptake identity and explicit spatial non-equivalence.",
+    "implication": "The remaining authority gap is not total water accounting. It is the native composite FMC state update when root extraction intersects surface fronts, falling slugs and/or groundwater fronts."
+  },
+  "primary_paper_authority": {
+    "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+    "doi": "10.1002/2015WR017126",
+    "explicit_statements": [
+      "potential transpiration demand is calculated before root-zone withdrawal",
+      "water is removed from the right-most water-containing bin in the specified root zone until demand is met",
+      "root uptake can remove water from surface wetting fronts, falling slugs and groundwater fronts if those states occupy the root zone",
+      "finite-volume water movement/removal is the mass-conservation authority"
+    ],
+    "insufficient_for_native_composite_update": [
+      "does not specify an unambiguous update ordering when the selected right-most bin is represented simultaneously in multiple disjoint FMC geometric state components",
+      "does not fully specify how partially exhausted root-zone occupancy is redistributed across surface-front, slug and groundwater-front representations after withdrawal",
+      "does not provide enough prose detail to reproduce the authors' eight-month ET state evolution without inventing implementation semantics"
+    ],
+    "conclusion": "The paper is sufficient for process identity and D27 synthetic accounting, but not for a faithful native composite root-active trajectory implementation."
+  },
+  "external_oracle": {
+    "repository": "University of Wyoming DataCorral",
+    "dataset_id": "M2WC70",
+    "dataset_page": "https://datacorral.uwyo.edu/repository/M2WC70",
+    "linked_paper_doi": "10.1002/2015WR017126",
+    "resource_url": "https://pathfinder.arcc.uwyo.edu/publications/Computational_Hydrology/M2WC70/M2WC70.zip",
+    "resource_type": "zip",
+    "reported_size": "230 MB",
+    "reported_contents": "authors' C code plus the eight-month Panama rainfall/ET loam case",
+    "rights": "CC0/public-domain dedication reported by DataCorral",
+    "intended_use": "READ_ONLY_SECONDARY_IMPLEMENTATION_ORACLE_FOR_SEMANTIC_RECONCILIATION_ONLY",
+    "external_code_copy_into_SWAP5_authorized": false
+  },
+  "retrieval_due_diligence": {
+    "direct_repository_page_resolved": true,
+    "direct_resource_url_resolved_from_repository_metadata": true,
+    "direct_web_fetch": {
+      "attempted": true,
+      "outcome": "TIMEOUT_FETCHING_230MB_PATHFINDER_RESOURCE"
+    },
+    "container_download": {
+      "attempted": true,
+      "outcome": "DOWNLOAD_FAILED_EXTERNAL_HOST_NOT_RESOLVABLE_FROM_CONTAINER_ROUTE"
+    },
+    "mirror_search": {
+      "attempted": true,
+      "outcome": "NO_TRACEABLE_PUBLIC_MIRROR_FOUND"
+    },
+    "primary_paper_reinspection": {
+      "attempted": true,
+      "outcome": "ROOT_UPTAKE_PROCESS_IDENTITY_CONFIRMED_BUT_COMPOSITE_STATE_UPDATE_REMAINS_UNDERSPECIFIED"
+    },
+    "blocker_class": "EXTERNAL_SOURCE_RETRIEVAL"
+  },
+  "authority_boundary": {
+    "native_FMC_root_active_trajectory_authorized": false,
+    "native_FMC_drought_stress_feedback_authorized": false,
+    "seasonal_ET_authorized": false,
+    "eight_month_ET_reproduction_authorized": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "allowed_next_when_source_becomes_available": [
+    "verify archive provenance against M2WC70 repository metadata and record an immutable archive digest",
+    "inspect only the root-zone uptake and composite state-update routines needed to disambiguate surface-front, falling-slug and groundwater-front withdrawal semantics",
+    "write a clean-room equations/state-transition specification without copying external source code into SWAP5",
+    "preregister a native FMC wet/no-stress root-active trajectory before execution",
+    "only after a wet/no-stress trajectory closes may drought stress and seasonal ET be proposed"
+  ],
+  "prohibited": [
+    "DO_NOT_INVENT_COMPOSITE_FMC_ROOT_WITHDRAWAL_UPDATE_RULES_FROM_D27",
+    "DO_NOT_USE_SWAPP_FEDDES_SPATIAL_DISTRIBUTION_AS_NATIVE_FMC",
+    "DO_NOT_TREAT_THE_SYNTHETIC_D27_BIN_WITHDRAWAL_AS_A_GENERAL_TRAJECTORY_ALGORITHM",
+    "DO_NOT_DOWNLOAD_AND_COPY_EXTERNAL_CODE_INTO_PRODUCTION_OR_REFERENCE_SOURCE",
+    "DO_NOT_ADD_DROUGHT_STRESS_OR_SEASONAL_ET_BEFORE_NATIVE_STATE_UPDATE_AUTHORITY",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "stopping_condition": "Current F-ROMV2 research stops here until the external M2WC70 implementation oracle or an equally authoritative source becomes retrievable. This is an external source-authority blocker, not a request for an ungoverned modeling choice."
+}
