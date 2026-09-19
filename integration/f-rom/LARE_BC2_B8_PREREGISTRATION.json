@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.lare.bc2.b8.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B8",
+  "phase": "PREREGISTERED_BEFORE_TERMINAL_BAND_MOVING_CONTROL_VOLUME_AUDIT",
+  "purpose": "Establish the exact moving-control-volume conservation authority for the one-state terminal-band enrichment supported by BC2-B7 before any prognostic interface-flux closure or reduced dynamics is introduced.",
+  "predecessors": {
+    "B7": "integration/f-rom/LARE_BC2_B7_RESULT.json",
+    "required_B7_decision": "BC2_B7_TERMINAL_STORAGE_SHAPE_SUPPORTED_WIDTH_UNRESOLVED",
+    "A2": "integration/f-rom/LARE_BC2_A2_RESULT.json",
+    "required_A2_decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED"
+  },
+  "widths_cm": [
+    2.5,
+    5
+  ],
+  "width_status": "Both widths are carried because BC2-B7 supports both but does not authorize a preferred width.",
+  "geometry": {
+    "anchor_a_cm": 90,
+    "water_table_H": "qualified strict interior zero-pressure crossing",
+    "moving_internal_interface": "z_i(t)=H(t)-d",
+    "terminal_band": "H-d .. H",
+    "bulk_moving_band": "90 .. H-d",
+    "both_terminal_boundaries_move_with_velocity": "dH/dt"
+  },
+  "state_definitions": {
+    "Wb": "integral_90^{H-d} theta dz",
+    "Wt": "integral_{H-d}^{H} theta dz",
+    "Wm": "Wb+Wt=integral_90^H theta dz",
+    "theta_i": "theta at z_i=H-d",
+    "theta_H": "theta_s at the zero-pressure water table"
+  },
+  "continuous_balance_no_sinks": {
+    "bulk": "dWb/dt = q90 - qi + theta_i*dH/dt",
+    "terminal": "dWt/dt = qi - qH + (theta_s-theta_i)*dH/dt",
+    "sum": "d(Wb+Wt)/dt = q90 - qH + theta_s*dH/dt",
+    "sign_convention": "z and q positive downward, identical to BC2 authority"
+  },
+  "discrete_reference_audit": {
+    "dt_day": 0.0008,
+    "Hdot": "(H1-H0)/dt",
+    "theta_i_time_alignment": "trapezoidal endpoint theta_i_bar = 0.5*(theta_i0+theta_i1)",
+    "geometry_transfer": "Gi=theta_i_bar*Hdot",
+    "q90_reference": "independent fixed-column storage identity already used and qualified in BC2-B3",
+    "qH_reference": "accepted bottom outward exchange / dt",
+    "qi_from_bulk": "q90_reference + Gi - (Wb1-Wb0)/dt",
+    "qi_from_terminal": "(Wt1-Wt0)/dt + qH_reference - theta_s*Hdot + Gi",
+    "identity_requirement": "qi_from_bulk - qi_from_terminal equals the already-qualified total moving-layer ledger residual up to numerical projection error.",
+    "role_of_theta_i": "Reference-only geometry-term diagnostic; theta_i is not yet an authorized reduced-state input."
+  },
+  "projection_authority": {
+    "source": "qualified BC2-A2 accepted full Reference profiles",
+    "Wt": "same segmented conservative terminal-band quadrature repaired and qualified in BC2-B6",
+    "Wb": "Wm-Wt",
+    "theta_i": "piecewise-linear pressure-head interpolation at H-d followed by frozen constitutive theta(h)",
+    "primary_quadrature": "64-point Gauss-Legendre split at Reference interpolation-node kinks",
+    "crosscheck_quadrature": "128-point Gauss-Legendre with same segmentation",
+    "no_extrapolation": true,
+    "no_clipping": true
+  },
+  "hard_gates": {
+    "max_abs_Wb_plus_Wt_minus_Wm_cm": 1e-10,
+    "max_abs_terminal_storage_64_vs_128_cm": 1e-10,
+    "max_abs_qi_bulk_minus_terminal_cm_per_day": 1e-10,
+    "all_geometry_and_flux_terms_finite": true,
+    "terminal_band_inside_moving_layer": true
+  },
+  "reported_diagnostics": [
+    "qi_from_bulk and qi_from_terminal by history and water-table direction",
+    "geometry transfer Gi range",
+    "theta_i range",
+    "H and Hdot range",
+    "qi sign changes",
+    "width-to-width difference in diagnosed qi"
+  ],
+  "adjudication": {
+    "qualified_rule": "Both supported widths must close the split control-volume identity within all hard gates over every frozen A2 history.",
+    "valid_outcomes": [
+      "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED",
+      "BC2_B8_WIDTH_SPECIFIC_GEOMETRY_QUALIFICATION",
+      "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_BLOCKED"
+    ],
+    "interface_flux_closure_authorized": false,
+    "propagated_dynamics_authorized": false
+  },
+  "next_if_qualified": "BC2-B9 may test response-blind no-fit closures for qi on Reference-projected (Wb,Wt,H) states while retaining the BC2-B7 qH operator.",
+  "firewalls": [
+    "NO_QI_CLOSURE_IN_B8",
+    "NO_REDUCED_PROPAGATION",
+    "NO_WIDTH_SELECTION_FROM_CONSERVATION_IDENTITY",
+    "NO_POINT_HEAD_AS_PROGNOSTIC_STATE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
