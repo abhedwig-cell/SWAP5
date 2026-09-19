@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.lare.bc2.b0.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B0",
+  "phase": "PREREGISTERED_BEFORE_PRESCRIBED_MOVING_GEOMETRY_REPLAY",
+  "purpose": "Isolate moving-water-table geometry dynamics by prescribing the qualified full-order H(t) trajectory to conservative and literal-published reduced equations on a fine-ish fixed upper discretization.",
+  "authority": {
+    "geometry": "docs/science/F-ROM_LARE_BC2_GEOMETRY_AUTHORITY.md",
+    "a0": "integration/f-rom/LARE_BC2_A0_RESULT.json",
+    "a1": "integration/f-rom/LARE_BC2_A1_RESULT.json",
+    "a2": "integration/f-rom/LARE_BC2_A2_RESULT.json",
+    "a2_workflow_run": 35451231415,
+    "a2_artifact_id": 10587360597,
+    "a2_artifact_digest": "sha256:86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278",
+    "a2_decision": "BC2_REFERENCE_GEOMETRY_QUALIFIED"
+  },
+  "model_geometry": {
+    "material": "B01 homogeneous Mualem-Van Genuchten",
+    "profile_depth_cm": 160,
+    "fixed_anchor_a_cm": 90,
+    "fixed_layer_boundaries_cm": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90
+    ],
+    "moving_layer": "90 cm to prescribed H(t)",
+    "state_dimension": 10,
+    "role": "geometry-isolation control, not aggressive ROM",
+    "H_range_authority": {
+      "minimum_cm": 103.48952360402006,
+      "maximum_cm": 138.79618325255618,
+      "minimum_moving_layer_thickness_cm": 13.48952360402006,
+      "maximum_moving_layer_thickness_cm": 48.79618325255618
+    },
+    "no_layer_birth_death": true,
+    "no_material_boundary_crossing": true
+  },
+  "constitutive": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "Ks_cm_per_day": 31.225016,
+    "lambda": 0.98087,
+    "source_convention": "positive capillary suction psi=-h in unsaturated branch"
+  },
+  "geometry_input": {
+    "source": "strict interior zero-pressure crossing H(t) diagnosed in qualified A2 Reference profiles",
+    "within_each_observation_interval": "linear interpolation between accepted H endpoints",
+    "dHdt": "constant interval slope (H_{n+1}-H_n)/0.0008 day",
+    "bottom_prescribed_head_not_used_as_H": true,
+    "no_feedback_from_reduced_model_to_H": true
+  },
+  "initial_state": {
+    "source": "A2 accepted initial Reference profile at H=120 cm",
+    "fixed_storages": "exact 10-cm Reference cell storages for 0-90 cm",
+    "total_unsaturated_storage": "W_total - theta_s*(160-H)",
+    "moving_storage": "total unsaturated storage minus fixed 0-90 cm storage",
+    "published_theta_initial": "moving_storage/(H-90)",
+    "no_fit": true
+  },
+  "common_dynamics": {
+    "top_flux_cm_per_day": 0,
+    "sinks": 0,
+    "fixed_layer_balance": "dW_i/dt=q_{i-1/2}-q_{i+1/2}",
+    "fixed_fixed_interface": "standard He-2021 adjacent layer-average interface closure",
+    "fixed_moving_interface": "same adjacent-layer closure with d_fixed=10 cm and d_moving=H(t)-90 cm",
+    "water_table_flux": "q_H=Ks*[1+2*(0-psi_bar_moving)/(H-90)]",
+    "water_table_conductivity": "Ks because moving boundary is the zero-pressure saturated water table",
+    "no_empirical_coefficients": true
+  },
+  "variants": {
+    "BC2_CONSERVATIVE": {
+      "moving_state": "W_m=(H-a)*theta_bar_m",
+      "equation": "dW_m/dt=q_interface-q_H+theta_s*dHdt",
+      "authority_role": "first-principles moving-control-volume route"
+    },
+    "BC2_PUBLISHED_THETA": {
+      "moving_state": "theta_bar_m",
+      "equation": "(H-a)*dtheta_bar_m/dt-theta_s*dHdt=q_interface-q_H",
+      "equivalent_implemented_derivative": "dtheta_bar_m/dt=(q_interface-q_H+theta_s*dHdt)/(H-a)",
+      "role": "literal displayed-equation diagnostic only; cannot become preferred physics by response fit"
+    }
+  },
+  "histories": [
+    "WT_HOLD",
+    "WT_RISE",
+    "WT_FALL",
+    "WT_CYCLE"
+  ],
+  "numerical_floor": {
+    "observation_dt_day": 0.0008,
+    "internal_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_route": 0.0001,
+    "method": "iterative Heun predictor-corrector",
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "no_clipping": true,
+    "domain": "theta_r < theta_bar < theta_s; finite psi and K; moving thickness > 0",
+    "physical_water_ledger_hard_gate_cm": 1e-10
+  },
+  "reference_comparison": {
+    "fixed_layer_storage": "accepted A2 theta for nodes 1-9 times 10 cm",
+    "moving_reference_storage": "U_ref minus fixed 0-90 cm storage",
+    "total_unsaturated_reference_storage": "W_total-theta_s*(160-H)",
+    "q_H_reference": "accepted bottom outward exchange divided by 0.0008 day after A2 saturated-zone audit",
+    "cumulative_q_H_reference": "cumulative accepted bottom outward exchange",
+    "metrics": [
+      "max absolute fixed-layer storage error",
+      "max absolute moving-layer storage error",
+      "max absolute total-unsaturated-storage error",
+      "max absolute cumulative water-table exchange error",
+      "max absolute interval-average water-table flux error",
+      "flux sign mismatch count",
+      "reversal sequence and timing",
+      "physical moving-control-volume ledger residual",
+      "Heun temporal-refinement differences",
+      "qualified-domain coverage"
+    ]
+  },
+  "adjudication": {
+    "no_scalar_weighting": true,
+    "conservative_hard_requirement": "BC2_CONSERVATIVE physical moving-control-volume ledger must remain <=1e-10 cm and numerical floor must qualify",
+    "published_role": "diagnostic only regardless of response fit because A1 confirmed non-equivalence to moving-control-volume conservation",
+    "valid_outcomes": [
+      "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED",
+      "BC2_CONSERVATIVE_MOVING_GEOMETRY_OUTSIDE_DOMAIN",
+      "BC2_CONSERVATIVE_NUMERICALLY_BLOCKED",
+      "BC2_REFERENCE_OR_GEOMETRY_INSUFFICIENT"
+    ],
+    "application_acceptance": false
+  },
+  "firewalls": [
+    "NO_CHOICE_OF_PUBLISHED_THETA_AS_PHYSICAL_MODEL_FROM_FIT",
+    "NO_FEEDBACK_TO_REFERENCE_H",
+    "NO_BOTTOM_HEAD_AS_H",
+    "NO_LAYER_BIRTH_DEATH",
+    "NO_MATERIAL_BOUNDARY_CROSSING",
+    "NO_EMPIRICAL_COEFFICIENT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
