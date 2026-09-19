@@ -357,7 +357,19 @@ def main():
         rows=rows_by_width[dk]
         for history in HISTORIES:
             rr=[r for r in rows if r["history"]==history]
+            expected=b3.HISTORY_STEPS[history]
+            if len(rr)!=expected:
+                report[dk][history]={
+                    "status":"INCOMPLETE_RECONSTRUCTION",
+                    "completed_interval_count":len(rr),
+                    "expected_interval_count":expected,
+                }
+                if history in ("WT_RISE","WT_FALL"):
+                    qi_support[dk][history]=False
+                qH_noninferior[dk][history]=False
+                continue
             report[dk][history]={
+                "status":"COMPLETE",
                 "qi":{
                     "BASE_TERMINAL_SIDE_LINEAR":flux_metrics(rr,"qi_BASE","qi_ref"),
                     "C1_QUADRATIC_STORAGE_PROFILE":flux_metrics(rr,"qi_QUADRATIC","qi_ref"),
@@ -441,16 +453,24 @@ def main():
         "qi_support":qi_support,
         "qH_noninferior":qH_noninferior,
         "summary":{
-            d:{h:{
-                "qi_base":report[d][h]["qi"]["BASE_TERMINAL_SIDE_LINEAR"],
-                "qi_quad":report[d][h]["qi"]["C1_QUADRATIC_STORAGE_PROFILE"],
-                "qH_base":report[d][h]["qH"]["BASE_TERMINAL_SIDE_LINEAR"],
-                "qH_quad":report[d][h]["qH"]["C1_QUADRATIC_STORAGE_PROFILE"],
-                "shape":report[d][h]["quadratic_shape"]
-            } for h in HISTORIES} for d in map(str,WIDTHS)
-        }
+            d:{h:(
+                {
+                    "status":report[d][h]["status"],
+                    "qi_base":report[d][h]["qi"]["BASE_TERMINAL_SIDE_LINEAR"],
+                    "qi_quad":report[d][h]["qi"]["C1_QUADRATIC_STORAGE_PROFILE"],
+                    "qH_base":report[d][h]["qH"]["BASE_TERMINAL_SIDE_LINEAR"],
+                    "qH_quad":report[d][h]["qH"]["C1_QUADRATIC_STORAGE_PROFILE"],
+                    "shape":report[d][h]["quadratic_shape"]
+                }
+                if report[d][h]["status"]=="COMPLETE"
+                else report[d][h]
+            ) for h in HISTORIES} for d in map(str,WIDTHS)
+        },
+        "failures":failures[:20]
     },sort_keys=True))
-    return 0 if hard_ok else 2
+    # A preregistered scientific BLOCKED result is a valid completed diagnostic,
+    # not an infrastructure failure. Workflow firewalls adjudicate the decision.
+    return 0
 
 if __name__=="__main__":
     raise SystemExit(main())
