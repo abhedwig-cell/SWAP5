@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.num_unc.p0a0.locator_result.v1",
+  "work_unit": "NUM-UNC-P0A0",
+  "date": "2026-09-19",
+  "execution_baseline": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "workflow_run_id": 35430016968,
+  "workflow_conclusion": "success",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "output_sha256": "d6a3279f18c20fec0327d95829ddada87ea6f65930082233bd66b0db7013a8a2",
+  "N1_executed": false,
+  "material": "B01",
+  "numerical_configuration": {
+    "id": "N0",
+    "dt_day": 0.0064
+  },
+  "root_authority": "integration/num-unc/NUM_UNC_P0A_PARAMETER_AUTHORITY.md",
+  "potential_transpiration_cm_per_day": 0.1806735915459957,
+  "critical_pressure_head_cm": -544.536905812128,
+  "critical_effective_saturation": 0.1622110199940995,
+  "rescue_time_day": 0.4096,
+  "initial_search": [
+    {
+      "Se0": 0.1622110199940995,
+      "class": "STRESS_BEFORE_RESCUE",
+      "first_stress_block": 2,
+      "first_stress_time_day": 0.0064,
+      "min_Ta_Tp": 0.9934670496317991,
+      "max_mass_cm": 7.684520554607222e-16
+    },
+    {
+      "Se0": 0.1647110199940995,
+      "class": "STRESS_BEFORE_RESCUE",
+      "first_stress_block": 54,
+      "first_stress_time_day": 0.3392,
+      "min_Ta_Tp": 0.9952218319469553,
+      "max_mass_cm": 9.443999401947955e-16
+    },
+    {
+      "Se0": 0.1672110199940995,
+      "class": "NOT_BEFORE_RESCUE",
+      "first_stress_block": 71,
+      "first_stress_time_day": 0.448,
+      "min_Ta_Tp": 0.9969143553920987,
+      "max_mass_cm": 7.740476662410067e-16
+    },
+    {
+      "Se0": 0.17221101999409952,
+      "class": "NOT_BEFORE_RESCUE",
+      "first_stress_block": 117,
+      "first_stress_time_day": 0.7424,
+      "min_Ta_Tp": 0.9996217489474201,
+      "max_mass_cm": 7.924107550683068e-16
+    },
+    {
+      "Se0": 0.1822110199940995,
+      "class": "NOT_BEFORE_RESCUE",
+      "first_stress_block": 0,
+      "first_stress_time_day": null,
+      "min_Ta_Tp": 1,
+      "max_mass_cm": 1.0699661642799008e-15
+    }
+  ],
+  "frozen_bracket": {
+    "lo_Se": 0.16520845651753702,
+    "hi_Se": 0.16520906686909953
+  },
+  "frozen_transition_Se": 0.16520876169331827,
+  "frozen_cases": {
+    "A_minus": {
+      "Se0": 0.16270876169331827,
+      "class_N0": "STRESS_BEFORE_RESCUE",
+      "first_stress_block": 12,
+      "first_stress_time_day": 0.0704,
+      "min_Ta_Tp": 0.9938215247887908,
+      "max_mass_cm": 9.272364126511334e-16
+    },
+    "A_zero": {
+      "Se0": 0.16520876169331827,
+      "class_N0": "STRESS_BEFORE_RESCUE",
+      "first_stress_block": 64,
+      "first_stress_time_day": 0.4032,
+      "min_Ta_Tp": 0.9955636877773199,
+      "max_mass_cm": 1.0751399770470017e-15
+    },
+    "A_plus": {
+      "Se0": 0.16770876169331828,
+      "class_N0": "NOT_BEFORE_RESCUE",
+      "first_stress_block": 73,
+      "first_stress_time_day": 0.4608,
+      "min_Ta_Tp": 0.9972441357327619,
+      "max_mass_cm": 1.0148994492031882e-15
+    }
+  },
+  "status": "FREEZE_READY",
+  "interpretation": "N0-only physical-case location. No N0-versus-N1 inference comparison exists at A0."
+}\n
