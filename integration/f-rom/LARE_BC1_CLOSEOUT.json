@@ -13,7 +13,9 @@
     "rl1_preregistration": "integration/f-rom/LARE_BC1_RL1_PREREGISTRATION.json",
     "rl1_workflow_run": 35450766230,
     "rl1_artifact_id": 10587205212,
-    "rl1_artifact_digest": "sha256:1293bd455badcc127719a3d382094412afd1d48e8d85b416f3d2781b2e5105f0"
+    "rl1_artifact_digest": "sha256:1293bd455badcc127719a3d382094412afd1d48e8d85b416f3d2781b2e5105f0",
+    "stage_c_closeout": "integration/f-rom/LARE_BC1_STAGE_C_CLOSEOUT.json",
+    "stage_d": "integration/f-rom/LARE_BC1_STAGE_D_RESULT.json"
   },
   "boundary_selection": {
     "selected": "CURRENT_LAYER_FACE",
@@ -71,10 +73,20 @@
     "CURRENT_LAYER_FACE is the supported no-fit boundary closure for subsequent fixed-domain LARE research.",
     "Aggressive low dimension remains limited mainly by internal gradient reconstruction and spatial closure resolution, not by the bottom-face conductivity choice.",
     "Moving-water-table geometry is not covered by BC1 because the unsaturated control volume itself changes with H(t).",
-    "BC1 does not establish an application-independent acceptable dimension or a computational-value claim."
+    "BC1 does not establish an application-independent acceptable dimension or a computational-value claim.",
+    "An R16 attribution control shows that importing the Reference SWKIMPL=0 lower-face conductivity time level does not remove the residual plateau; it improves instantaneous flux slightly while worsening cumulative exchange and maximum storage. The residual therefore cannot be assigned primarily to lower-face K timing."
   ],
   "next_primary_authority": "LARE_BC2_MOVING_WATER_TABLE_GEOMETRY_AND_CONSERVATION",
   "moving_water_table_authorized": false,
   "application_acceptance_adjudicated": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "stage_d": {
+    "decision": "BC1_R16_BOUNDARY_TIME_LEVEL_NOT_DOMINANT",
+    "current_layer_face_max_cumulative_bottom_exchange_error_cm": 0.0012218406135202642,
+    "lagged_bottom_face_max_cumulative_bottom_exchange_error_cm": 0.0012619051769400258,
+    "current_layer_face_max_interval_bottom_flux_error_cm_per_day": 0.34729505102055125,
+    "lagged_bottom_face_max_interval_bottom_flux_error_cm_per_day": 0.3270280157671772,
+    "interpretation": "Observation-lagged lower-face K is not a dominant explanation of the R16 plateau and remains diagnostic only; CURRENT_LAYER_FACE remains the supported physical closure."
+  },
+  "fixed_domain_boundary_authority_complete": true
 }
