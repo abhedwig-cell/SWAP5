@@ -929,6 +929,61 @@ def validate_romv2_d8_if_present() -> str:
     return "CLOSED_TWO_SEGMENT_COMPOSITE_MANIFOLD_NO_GO"
 
 
+def validate_romv2_d9_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D9_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D9_LITERATURE_RECONCILIATION.json")
+            == "477e244b9b65c81a6a21966f0d50cd52070fe216",
+            "F-ROMV2-D9 literature reconciliation blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D9_STATUS.json")
+            == "c4e891e523fbedc64995410eaacc35ed68ea5134",
+            "F-ROMV2-D9 status blob drift")
+
+    rec = load_json("integration/f-rom/F-ROMV2_D9_LITERATURE_RECONCILIATION.json")
+    status = load_json("integration/f-rom/F-ROMV2_D9_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D9_HE_TWO_LAYER_LITERATURE_RECONCILIATION.md").read_text(encoding="utf-8")
+
+    require(rec["phase"] == "LITERATURE_RECONCILIATION_CLOSED",
+            "F-ROMV2-D9 reconciliation phase drift")
+    require(rec["decision"]
+            == "PUBLISHED_TWO_LAYER_INTEGRATED_RICHARDS_FAITHFUL_COMPARATOR_AUTHORIZED_WITH_BOUNDARY_ENVELOPE",
+            "F-ROMV2-D9 decision drift")
+    require(rec["model_identity"]["published_epsilon_theta"] == 0.0001,
+            "F-ROMV2-D9 published corrector tolerance drift")
+    require(rec["swap5_reproduction_scope"]["faithful_fixed_geometry_subset"]["total_depth_cm"] == 160
+            and rec["swap5_reproduction_scope"]["faithful_fixed_geometry_subset"]["upper_layer_thickness_cm"] == 80
+            and rec["swap5_reproduction_scope"]["faithful_fixed_geometry_subset"]["lower_layer_thickness_cm"] == 80,
+            "F-ROMV2-D9 faithful geometry drift")
+    require("arbitrary nonzero unsaturated prescribed bottom pressure head, including the current D/V h≈-30 cm challenge values"
+            in rec["swap5_reproduction_scope"]["unsupported_as_faithful_without_extension"],
+            "F-ROMV2-D9 arbitrary-head firewall missing")
+    require(rec["next_authority"]["authorized_work_unit"] == "F-ROMV2-D10"
+            and rec["next_authority"]["production_rom_authorized"] is False,
+            "F-ROMV2-D9 successor authority drift")
+    require(rec["production_rom_authorized"] is False,
+            "F-ROMV2-D9 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_LITERATURE_AUTHORITY_RECONCILED",
+            "F-ROMV2-D9 status phase drift")
+    require(status["faithful_D10_authorized"] is True,
+            "F-ROMV2-D9 faithful D10 authority missing")
+    require(status["arbitrary_nonzero_bottom_head_extension_authorized"] is False,
+            "F-ROMV2-D9 prematurely authorizes arbitrary-head extension")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D9 status authorizes production ROM")
+
+    require("The published two-layer model instead closes the interlayer flux directly" in doc,
+            "F-ROMV2-D9 model distinction missing")
+    require("That is not the same as the published zero-pressure-head water-table test." in doc,
+            "F-ROMV2-D9 boundary-envelope distinction missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D9 production prohibition missing")
+
+    return "CLOSED_LITERATURE_AUTHORITY_RECONCILED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -963,6 +1018,7 @@ def main() -> int:
     romv2_d6_phase = validate_romv2_d6_if_present()
     romv2_d7_phase = validate_romv2_d7_if_present()
     romv2_d8_phase = validate_romv2_d8_if_present()
+    romv2_d9_phase = validate_romv2_d9_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -981,6 +1037,7 @@ def main() -> int:
     print(f"F_ROMV2_D6_PHASE={romv2_d6_phase}")
     print(f"F_ROMV2_D7_PHASE={romv2_d7_phase}")
     print(f"F_ROMV2_D8_PHASE={romv2_d8_phase}")
+    print(f"F_ROMV2_D9_PHASE={romv2_d9_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
