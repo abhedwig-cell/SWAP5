@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.lare.bc2.b0.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B0",
+  "decision": "BC2_CONSERVATIVE_MOVING_GEOMETRY_QUALIFIED_WITH_RESPONSE_CONFUNDING",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_B0_PREREGISTRATION.json",
+    "workflow_run": 35451592096,
+    "artifact_id": 10586791797,
+    "artifact_digest": "sha256:de359fab00359084e7a360468cc965a83260c6012918a41d81103ea2da3f5836",
+    "executed_head": "12187bea026d309e97ccad43db9233331a45a7eb",
+    "reference_geometry": "integration/f-rom/LARE_BC2_A2_RESULT.json"
+  },
+  "conservative": {
+    "max_physical_moving_ledger_residual_cm": 1.3589129821411916e-13,
+    "histories": {
+      "WT_HOLD": {
+        "max_total_unsat_error_cm": 0.06670501168628107,
+        "max_cum_qH_error_cm": 0.06670501168628515,
+        "max_interval_qH_error_cm_per_day": 2.0251238271369263,
+        "sign_mismatch_count": 256
+      },
+      "WT_RISE": {
+        "max_total_unsat_error_cm": 0.10641372733468302,
+        "max_cum_qH_error_cm": 0.10641372733470866,
+        "max_interval_qH_error_cm_per_day": 8.577916537028653,
+        "sign_mismatch_count": 0
+      },
+      "WT_FALL": {
+        "max_total_unsat_error_cm": 0.29836421045124695,
+        "max_cum_qH_error_cm": 0.29836421045131467,
+        "max_interval_qH_error_cm_per_day": 10.536162008550928,
+        "sign_mismatch_count": 0
+      },
+      "WT_CYCLE": {
+        "max_total_unsat_error_cm": 0.3907388280223998,
+        "max_cum_qH_error_cm": 0.3907388280224128,
+        "max_interval_qH_error_cm_per_day": 15.630796909936045,
+        "sign_mismatch_count": 1,
+        "reversal_candidate": [
+          257,
+          514
+        ],
+        "reversal_reference": [
+          257,
+          513
+        ]
+      }
+    }
+  },
+  "published_theta_diagnostic": {
+    "WT_HOLD": "QUALIFIED_BUT_SAME_FIXED_GEOMETRY_DRIFT_AS_STANDARD",
+    "WT_RISE": {
+      "status": "QUALIFIED",
+      "max_physical_ledger_residual_cm": 6.211508952695239,
+      "max_total_unsat_error_cm": 1.8075342048390581,
+      "max_cum_qH_error_cm": 6.084905386670696
+    },
+    "WT_FALL": "OUTSIDE_QUALIFIED_DOMAIN",
+    "WT_CYCLE": "OUTSIDE_QUALIFIED_DOMAIN"
+  },
+  "interpretation": [
+    "Conservative moving storage closes the physical moving-control-volume ledger to numerical precision across all frozen H(t) histories.",
+    "The literal published-theta route is not physically conservative under moving geometry, becomes grossly inaccurate for WT_RISE and exits the constitutive domain for WT_FALL and WT_CYCLE.",
+    "The nonzero WT_HOLD response establishes a fixed-geometry hydrostatic discretization/closure drift in standard LARE. Therefore the moving-history response errors cannot be attributed solely to the moving-volume term.",
+    "B0 qualifies the conservative geometry state/equation, not application-level moving-water-table response fidelity."
+  ],
+  "next_primary_authority": "LARE_BC2_B1_EQUILIBRIUM_SUBTRACTED_CONSERVATIVE_CONTROL",
+  "application_acceptance_adjudicated": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
