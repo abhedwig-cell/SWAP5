@@ -1,0 +1,203 @@
+{
+  "schema": "swap5.f-romv-mde-s2d.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-MDE-S2D",
+  "decision": "LOCAL_TABLE_DISCOVERY_PROMISING_FOR_NEW_UNEXPOSED_VALIDATION",
+  "preregistration": "integration/f-rom/F-ROMV_MDE_S2D_PREREGISTRATION.json",
+  "data_authority": {
+    "source_work_unit": "ROM-1A-R2",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "discovery_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "excluded": [
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "B14"
+    ]
+  },
+  "evaluation": {
+    "protocol": "LEAVE_ONE_DISCOVERY_HISTORY_OUT_RECURSIVE",
+    "evaluated_intervals": 504,
+    "candidate_states": [
+      "C2",
+      "C4",
+      "C8",
+      "C9_G8"
+    ],
+    "baseline": "FORCING_ONLY_MEAN"
+  },
+  "candidates": {
+    "C2": {
+      "dimension": 2,
+      "structural_pass": true,
+      "nonfinite_count": 0,
+      "theta_bounds_failure_count": 0,
+      "water_ledger_failure_count": 0,
+      "value_screen": true,
+      "recursive_total_storage_error_cm": {
+        "mean": -0.0015869,
+        "mean_abs": 0.0029525,
+        "rmse": 0.00872723,
+        "p95_abs": 0.01859194,
+        "max_abs": 0.05374203
+      },
+      "recursive_cumulative_bottom_exchange_error_cm": {
+        "rmse": 0.00872723,
+        "p95_abs": 0.01859194,
+        "max_abs": 0.05374203
+      },
+      "per_step_bottom_exchange_error_cm": {
+        "rmse": 0.000451804,
+        "max_abs": 0.002108845
+      },
+      "terminal_bottom_flux_error_cm_per_day": {
+        "rmse": 0.564755,
+        "p95_abs": 1.545995,
+        "max_abs": 2.636056
+      },
+      "bottom_flux_sign_error": {
+        "count": 0,
+        "total": 504,
+        "fraction": 0
+      },
+      "nearest_neighbor_standardized_distance": {
+        "mean": 0.393,
+        "p95": 2.15,
+        "max": 3.98
+      },
+      "per_history_final_cumulative_bottom_exchange_error_cm": {
+        "D01": 0,
+        "D02": 0,
+        "D03": -0.0202555,
+        "D04": 0.05374203,
+        "D05": 0,
+        "D06": 0.00332784,
+        "D07": -0.00183562,
+        "D08": 0.00342652
+      },
+      "per_history_actual_cumulative_bottom_exchange_cm": {
+        "D03": 0.0395072,
+        "D04": 0.327682,
+        "D06": 0.24958,
+        "D07": 0.215407,
+        "D08": 0.17379
+      },
+      "reversal_steps": {
+        "D01": {
+          "actual": [],
+          "predicted": []
+        },
+        "D02": {
+          "actual": [],
+          "predicted": []
+        },
+        "D03": {
+          "actual": [
+            19
+          ],
+          "predicted": [
+            19
+          ]
+        },
+        "D04": {
+          "actual": [],
+          "predicted": []
+        },
+        "D05": {
+          "actual": [],
+          "predicted": []
+        },
+        "D06": {
+          "actual": [
+            19
+          ],
+          "predicted": [
+            19
+          ]
+        },
+        "D07": {
+          "actual": [
+            17,
+            33
+          ],
+          "predicted": [
+            17,
+            33
+          ]
+        },
+        "D08": {
+          "actual": [
+            33,
+            49
+          ],
+          "predicted": [
+            33,
+            49
+          ]
+        }
+      }
+    },
+    "C4": {
+      "dimension": 4,
+      "structural_pass": true,
+      "value_screen": true,
+      "terminal_bottom_flux_sign_error_count": 0
+    },
+    "C8": {
+      "dimension": 8,
+      "structural_pass": true,
+      "value_screen": true,
+      "terminal_bottom_flux_sign_error_count": 0
+    },
+    "C9_G8": {
+      "dimension": 9,
+      "structural_pass": true,
+      "value_screen": true,
+      "terminal_bottom_flux_sign_error_count": 0
+    }
+  },
+  "baseline": {
+    "FORCING_ONLY_MEAN": {
+      "recursive_total_storage_rmse_cm": 0.03432265,
+      "recursive_cumulative_bottom_exchange_rmse_cm": 0.03432265,
+      "bottom_flux_sign_error": {
+        "count": 95,
+        "total": 504,
+        "fraction": 0.1884920634920635
+      }
+    }
+  },
+  "selection": {
+    "rule": "LOWEST_DIMENSION_PASSING_STRUCTURAL_GATE_AND_VALUE_SCREEN",
+    "selected": "C2",
+    "selected_dimension": 2,
+    "interpretation": "C2 is the lowest-dimensional discovery-only local-table candidate that remains physically admissible and improves both preregistered recursive balance metrics over the forcing-only baseline.",
+    "application_acceptance": false
+  },
+  "caution": {
+    "D03": "final cumulative bottom-exchange error is about half the magnitude of the evaluated cumulative exchange",
+    "D04": "final cumulative bottom-exchange error remains material despite structural stability",
+    "implication": "Discovery success is insufficient for long-term regional or groundwater-coupled acceptance. Fresh unexposed validation is required."
+  },
+  "scope": {
+    "production_rom_authorized": false,
+    "direct_performance_claim": false,
+    "application_fidelity_claim": false,
+    "H01_H04_reused": false,
+    "B14_used": false
+  },
+  "next": "FREEZE C2 BEFORE GENERATING GENUINELY NEW VALIDATION HISTORIES ON CURRENT CANONICAL"
+}
