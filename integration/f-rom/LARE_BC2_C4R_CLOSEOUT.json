@@ -1,0 +1,174 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "FMC_D13_reproduction_sha256": "aed20e871bef0b1d8b6bed54a33afd448f2f0945571c7e40f31b1cbccf0c81f0",
+    "artifact_digest": "sha256:da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9",
+    "artifact_id": 10593626518,
+    "execution_head": "e0a79dd63dbf97b4249be171ff9eae8d96e48034",
+    "reference_R16_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6",
+    "reference_R2_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4",
+    "result_sha256": "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65",
+    "workflow_run": 35472962909
+  },
+  "blind_design": {
+    "R16_node_count": 16,
+    "R2_node_count": 2,
+    "canonical_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "histories": {
+      "V01": 0.375,
+      "V02": 0.625,
+      "V03": 0.875,
+      "V04": 1.125
+    }
+  },
+  "comparators": {
+    "FMC_GW200": {
+      "bottom_flux_sign_errors": 4,
+      "cumulative_bottom_exchange_RMSE_cm": 0.1784194492646324,
+      "mapped_R16_theta_RMSE": 0.0028014515401062726,
+      "terminal_bottom_flux_RMSE_cm_per_day": 4.503056378794693,
+      "total_storage_RMSE_cm": 0.1784194492646273
+    },
+    "R2": {
+      "bottom_flux_sign_errors": 4,
+      "cumulative_bottom_exchange_RMSE_cm": 0.2842882461738036,
+      "mapped_R16_theta_RMSE": 0.04499198933820675,
+      "terminal_bottom_flux_RMSE_cm_per_day": 7.154329410128041,
+      "total_storage_RMSE_cm": 0.28428824617379994
+    }
+  },
+  "decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
+  "development_hypothesis_replication": {
+    "H_GW_DIMENSION_SEPARATION_exact": true,
+    "H_PROFILE_DIMENSION_SEPARATION_exact": true
+  },
+  "frontiers": {
+    "crossing_members": {
+      "FMC_GW": [
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R12"
+      ],
+      "FMC_PROFILE": [
+        "R12"
+      ],
+      "R2_GW": [
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R12"
+      ],
+      "R2_PROFILE": [
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R12"
+      ]
+    },
+    "minimum_dimension": {
+      "FMC_GW": 4,
+      "FMC_PROFILE": 12,
+      "R2_GW": 4,
+      "R2_PROFILE": 4
+    }
+  },
+  "lare_key_members": {
+    "R12": {
+      "bottom_flux_sign_errors": 1,
+      "crosses_FMC_GW": true,
+      "crosses_FMC_PROFILE": true,
+      "crosses_R2_GW": true,
+      "crosses_R2_PROFILE": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.003113767520544167,
+      "dimension": 12,
+      "mapped_R16_theta_RMSE": 0.00032788670852877363,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.09287249853374263,
+      "total_storage_RMSE_cm": 0.0031137675205397475
+    },
+    "R16": {
+      "bottom_flux_sign_errors": 1,
+      "crosses_FMC_GW": false,
+      "crosses_FMC_PROFILE": false,
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false,
+      "cumulative_bottom_exchange_RMSE_cm": 0.0031137675205441537,
+      "dimension": 16,
+      "mapped_R16_theta_RMSE": 5.238131877575317e-05,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.09287249853374385,
+      "total_storage_RMSE_cm": 0.0031137675205353877
+    },
+    "R3": {
+      "bottom_flux_sign_errors": 35,
+      "crosses_FMC_GW": false,
+      "crosses_FMC_PROFILE": false,
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false,
+      "cumulative_bottom_exchange_RMSE_cm": 0.04601214158154669,
+      "dimension": 3,
+      "mapped_R16_theta_RMSE": 0.03857070309872652,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 1.9233891036737358,
+      "total_storage_RMSE_cm": 0.04601214158153579
+    },
+    "R4": {
+      "bottom_flux_sign_errors": 1,
+      "crosses_FMC_GW": true,
+      "crosses_FMC_PROFILE": false,
+      "crosses_R2_GW": true,
+      "crosses_R2_PROFILE": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.005734214567883345,
+      "dimension": 4,
+      "mapped_R16_theta_RMSE": 0.028917216263134846,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.28192349905536246,
+      "total_storage_RMSE_cm": 0.0057342145678791045
+    },
+    "R8": {
+      "bottom_flux_sign_errors": 1,
+      "crosses_FMC_GW": true,
+      "crosses_FMC_PROFILE": false,
+      "crosses_R2_GW": true,
+      "crosses_R2_PROFILE": true,
+      "cumulative_bottom_exchange_RMSE_cm": 0.0031137677437941412,
+      "dimension": 8,
+      "mapped_R16_theta_RMSE": 0.007815203048742596,
+      "status": "QUALIFIED",
+      "terminal_bottom_flux_RMSE_cm_per_day": 0.09287249292140921,
+      "total_storage_RMSE_cm": 0.0031137677438065558
+    }
+  },
+  "model_changed": false,
+  "next_authority": "PREREGISTER_C4S_D13_SAME_PARTITION_CORICHARDS_QUALIFICATION",
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false,
+  "reference_integrity": {
+    "R16": {
+      "history_count": 4,
+      "max_abs_mass_cm": 1.734723475976807e-18,
+      "state_count": 256
+    },
+    "R2": {
+      "history_count": 4,
+      "max_abs_mass_cm": 0.0,
+      "state_count": 256
+    }
+  },
+  "schema": "swap5.lare.bc2.c4r.closeout.v1",
+  "scientific_interpretation": [
+    "The C4Q matched development frontier replicates on four newly generated blind half-offset lambda histories against preregistered current-canonical Reference trajectories.",
+    "R4 is again the minimum reduced LARE dimension crossing both R2 and FMC on the groundwater vector, and also the minimum crossing R2 when profile fidelity is included.",
+    "R12 is again the minimum and only reduced member crossing FMC when the mapped 10-cm profile axis is retained.",
+    "All frozen LARE members R3-R16 remain physically and conservatively executable; the dimension separation between groundwater-output fidelity and profile fidelity is therefore reproducible rather than a C4Q history-selection artifact.",
+    "Comparator-relative frontier replication is not application acceptance and does not establish computational value. C4S same-partition D13 CoRichards qualification remains required before any cost-fidelity screen."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE",
+  "work_unit": "LARE-BC2-C4R",
+  "workstream": "F-ROM-LARE"
+}
