@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.f-romv2-d15.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D15",
+  "decision": "D15_FMC_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS",
+  "adjudication": "FULL_ATMOSPHERIC_SIDE_FINITE_VOLUME_LEDGER_PASS_BEFORE_SWAP_TRAJECTORY_EXPOSURE",
+  "execution": {
+    "workflow_run": 35455721244,
+    "workflow_job": 105930504818,
+    "executed_head": "58ee8e9367f5338758477a3a3e17bdbaa3082c11",
+    "execution_pull_request": 443,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10587992420,
+    "artifact_digest": "sha256:33bbd2075ceebbdfaa97aee0c88ccf05c565c4f6092dcfa12bfdc531575b1912",
+    "workflow_conclusion": "success"
+  },
+  "authority": {
+    "predecessor_D12": "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+    "predecessor_D13": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+    "predecessor_D14": "D14_FMC_SURFACE_KINEMATICS_PREFLIGHT_PASS",
+    "SWAP_trajectory_evidence_consumed": false,
+    "moisture_bins": 200,
+    "maximum_explicit_substep_seconds": 10,
+    "post_result_retuning": false
+  },
+  "tests": {
+    "A1_SUPPLY_LIMITED_EXISTING_FRONTS": {
+      "supply_cm": 0.0009035016203703704,
+      "allocated_cm": 0.0009035016203703704,
+      "partial_bin": 128,
+      "remaining_cm": 0,
+      "storage_increment_cm": 0.0009035016203702284,
+      "ledger_residual_cm": -1.4203048459560108e-16,
+      "pass": true
+    },
+    "A2_DRY_BIN_ACTIVATION": {
+      "supply_cm": 0.014456025925925927,
+      "activation_water_cm": 0.0009354546719397634,
+      "remaining_cm": 0.013520571253986164,
+      "root_depth_cm": 0.4591256175255407,
+      "root_residual_cm": 0,
+      "ledger_residual_cm": 0,
+      "pass": true
+    },
+    "A3_OVERFLOW_RUNOFF_AND_SURFACE_STORE": {
+      "capacity_cm": 0.04172261686564394,
+      "supply_cm": 0.08344523373128789,
+      "no_ponding_runoff_cm": 0.04172261686564394,
+      "no_ponding_ledger_residual_cm": 0,
+      "finite_store_cap_cm": 0.0036140064814814818,
+      "finite_store_cm": 0.0036140064814814818,
+      "finite_store_runoff_cm": 0.03810861038416246,
+      "finite_store_ledger_residual_cm": 0,
+      "pass": true
+    },
+    "A4_HIATUS_DETACHMENT_AND_TRANSLATION": {
+      "water_before_cm": 0.1833723,
+      "water_after_detachment_cm": 0.1833723,
+      "water_after_translation_cm": 0.1833723,
+      "max_abs_slug_length_drift_cm": 0,
+      "pass": true
+    },
+    "A5_SLUG_GROUNDWATER_MERGE": {
+      "bin": 160,
+      "pre_unique_occupied_length_cm": 140,
+      "post_occupied_length_cm": 140,
+      "water_residual_cm": 0,
+      "pass": true
+    },
+    "A6_COMPOSITE_CAPILLARY_RELAXATION": {
+      "raw_inversion_count": 1,
+      "monotone_after": true,
+      "water_before_cm": 0.08964868000000001,
+      "water_after_cm": 0.08964868000000001,
+      "water_difference_cm": 0,
+      "pass": true
+    },
+    "A7_END_TO_END_SURFACE_LEDGER": {
+      "rainfall_cm": 0.0015158338824906234,
+      "infiltrated_cm": 0.001004393239029028,
+      "runoff_cm": 0.0005114406434615954,
+      "activated_bin_103": true,
+      "activated_bin_104": false,
+      "remaining_surface_water_at_hiatus_cm": 0,
+      "pulse_ledger_residual_cm": -3.0357660829594124e-18,
+      "water_before_detachment_cm": 0.07842825323902902,
+      "water_after_translation_cm": 0.07842825323902902,
+      "global_ledger_residual_cm": 0,
+      "pass": true
+    }
+  },
+  "preflight_pass": true,
+  "D16_surface_comparator_authorized": true,
+  "D16_boundary": {
+    "homogeneous_B01_only": true,
+    "no_root_extraction_ET": true,
+    "R16_and_R2_comparators": true,
+    "use_frozen_D12_D15_bins_substep_kinematics_accounting": true,
+    "exposed_development_only": true,
+    "no_blind_reuse": true
+  },
+  "explicitly_not_qualified": [
+    "surface-infiltration hydrological fidelity versus SWAP",
+    "joint atmospheric plus groundwater branch fidelity",
+    "ET/root uptake",
+    "seasonal water balance",
+    "live groundwater coupling",
+    "same-runtime performance"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

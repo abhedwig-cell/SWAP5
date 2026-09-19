@@ -1413,6 +1413,93 @@ def validate_romv2_d14_if_present() -> str:
     return "CLOSED_SURFACE_KINEMATICS_PREFLIGHT_PASS"
 
 
+def validate_romv2_d15_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D15_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D15_PREREGISTRATION.json")
+            == "8eeeaaf0492ab7b69a4dae4e61450300b9e17ef0",
+            "F-ROMV2-D15 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D15_RESULT.json")
+            == "48cdcc96a9e37e4ccb57eb3d8e24ec3fab94bdef",
+            "F-ROMV2-D15 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D15_STATUS.json")
+            == "7ce4d9d07cc3b6cf839c7b0bbdd56205eeaa1987",
+            "F-ROMV2-D15 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D15_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "c3922e94d35445a2982b6771111724b4cd488753",
+            "F-ROMV2-D15 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D15_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D15_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D15_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D15_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D15_FMC_SURFACE_ACCOUNTING_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D15 preregistration phase drift")
+    require(prereg["scientific_role"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D15 unexpectedly consumes SWAP trajectories")
+    require(prereg["discretization"]["moisture_bins"] == 200
+            and prereg["discretization"]["accounting_substep_seconds"] == 10,
+            "F-ROMV2-D15 discretization drift")
+    require("NO_2008_CAPILLARY_WEIGHTED_REDISTRIBUTION" in prereg["firewalls"]
+            and "NO_POST_RESULT_GREEN_AMPT_RETUNING" in prereg["firewalls"]
+            and "NO_POST_RESULT_ALLOCATION_ORDER_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D15 accounting/anti-tuning firewall drift")
+
+    require(result["decision"] == "D15_FMC_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS",
+            "F-ROMV2-D15 decision drift")
+    require(result["adjudication"]
+            == "FULL_ATMOSPHERIC_SIDE_FINITE_VOLUME_LEDGER_PASS_BEFORE_SWAP_TRAJECTORY_EXPOSURE",
+            "F-ROMV2-D15 adjudication drift")
+    require(all(v["pass"] is True for v in result["tests"].values()),
+            "F-ROMV2-D15 one or more accounting tests no longer pass")
+    require(abs(float(result["tests"]["A7_END_TO_END_SURFACE_LEDGER"]["global_ledger_residual_cm"])) <= 1.0e-14,
+            "F-ROMV2-D15 global end-to-end ledger drift")
+    require(result["tests"]["A7_END_TO_END_SURFACE_LEDGER"]["activated_bin_103"] is True
+            and result["tests"]["A7_END_TO_END_SURFACE_LEDGER"]["activated_bin_104"] is False,
+            "F-ROMV2-D15 dry-bin transition control drift")
+    require(result["D16_surface_comparator_authorized"] is True,
+            "F-ROMV2-D15 D16 comparator authority drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D15 overclaims authority")
+
+    require(status["phase"] == "CLOSED_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS",
+            "F-ROMV2-D15 status phase drift")
+    require(status["full_surface_accounting_qualified"] is True
+            and status["surface_hydrological_fidelity_qualified"] is False,
+            "F-ROMV2-D15 accounting/fidelity boundary drift")
+    require(status["D16_surface_comparator_authorized"] is True,
+            "F-ROMV2-D15 status does not authorize D16")
+    require(status["post_result_bin_substep_green_ampt_allocation_retuning_authorized"] is False,
+            "F-ROMV2-D15 status permits post-result retuning")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D15 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D15 execution PR unexpectedly treated as canonical")
+    require(manifest["SWAP_trajectory_evidence_consumed"] is False
+            and manifest["bin_substep_green_ampt_allocation_retuned_after_result"] is False,
+            "F-ROMV2-D15 provenance/anti-tuning drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D15 evidence import claims production/reference mutation")
+
+    require("D15 establishes that the frozen FMC atmospheric-side **state and water" in doc
+            and "accounting** can be made internally closed." in doc,
+            "F-ROMV2-D15 scientific accounting conclusion missing")
+    require("Application acceptance remains unqualified." in doc,
+            "F-ROMV2-D15 application boundary missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D15 production prohibition missing")
+
+    return "CLOSED_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1453,6 +1540,7 @@ def main() -> int:
     romv2_d12_phase = validate_romv2_d12_if_present()
     romv2_d13_phase = validate_romv2_d13_if_present()
     romv2_d14_phase = validate_romv2_d14_if_present()
+    romv2_d15_phase = validate_romv2_d15_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1477,6 +1565,7 @@ def main() -> int:
     print(f"F_ROMV2_D12_PHASE={romv2_d12_phase}")
     print(f"F_ROMV2_D13_PHASE={romv2_d13_phase}")
     print(f"F_ROMV2_D14_PHASE={romv2_d14_phase}")
+    print(f"F_ROMV2_D15_PHASE={romv2_d15_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
