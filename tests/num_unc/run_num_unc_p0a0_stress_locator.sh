@@ -12,7 +12,7 @@ fail(){ echo "NUM_UNC_P0A0_GATE_FAIL $*" >&2; exit 1; }
 TEST=tests/num_unc/test_num_unc_p0a0_stress_locator.f90
 MANIFEST=integration/num-unc/NUM_UNC_P0_MANIFEST.json
 AUTHORITY=integration/num-unc/NUM_UNC_P0A_PARAMETER_AUTHORITY.md
-BASE=187e30153c890151768e929170d14bb22af1d86d
+BASE=308a619c91d2cc3dae7f7aa143cfbe97c780c635
 
 [[ -f "$TEST" && -f "$MANIFEST" && -f "$AUTHORITY" ]] || fail 'missing test, manifest or authority'
 git merge-base --is-ancestor "$BASE" HEAD || fail 'research branch does not descend from frozen baseline'
