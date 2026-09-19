@@ -1,8 +1,8 @@
 {
   "schema": "pub-gc-gmd-prearchive-inventory-v2",
   "date": "2026-09-19",
-  "canonical_basis": "faf33c1fb023a164a6456da160422685c32a88c4",
-  "status": "PUBLICATION_CONTENTS_INVENTORIED_R1_L1_ARCHIVE_AUTHOR_METADATA_UNRESOLVED",
+  "canonical_basis": "187e30153c890151768e929170d14bb22af1d86d",
+  "status": "PUBLICATION_CONTENTS_PRESERVED_CURRENT_CANONICAL_R1_L1_ARCHIVE_AUTHOR_METADATA_UNRESOLVED",
   "scientific_scope": "PUB-GC E1-E7 closed/bounded; E7 REALISTIC_COMPONENT_DOMAIN_LIMIT",
   "blockers": {
     "R1": {
@@ -168,7 +168,11 @@
     "validator": "tools/publication/check_pub_gc_gmd_submission.py",
     "workflow": ".github/workflows/pub-gc-gmd-current-presubmission.yml",
     "figure_export_qualification": "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.json",
-    "figure_export_tool": "tools/publication/export_pub_gc_gmd_figures.py"
+    "figure_export_tool": "tools/publication/export_pub_gc_gmd_figures.py",
+    "finalization_contract": "docs/publication/PUB_GC_GMD_FINALIZATION_CONTRACT.md",
+    "finalization_input": "docs/publication/PUB_GC_GMD_FINALIZATION_INPUT.json",
+    "finalization_tool": "tools/publication/finalize_pub_gc_gmd_release.py",
+    "finalization_workflow": ".github/workflows/pub-gc-gmd-finalization.yml"
   },
   "policy_verification": {
     "journal": "Geoscientific Model Development",
@@ -194,5 +198,13 @@
     "reason": "PDF/archive metadata is not timestamp/document-ID normalized; governed SVG sources and structural qualification gates are authoritative before final release.",
     "final_release_bound_regeneration_required": true,
     "final_release_visual_upload_review_required": true
+  },
+  "current_canonical_preservation": {
+    "previous_basis": "faf33c1fb023a164a6456da160422685c32a88c4",
+    "checked_head": "187e30153c890151768e929170d14bb22af1d86d",
+    "critical_assets_checked": 24,
+    "exact_blob_matches": 24,
+    "drift": 0,
+    "record": "docs/publication/PUB_GC_GMD_CURRENT_CANONICAL_PRESERVATION_20260919.json"
   }
 }
