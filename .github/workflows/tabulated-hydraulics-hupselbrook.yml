@@ -90,7 +90,9 @@ jobs:
           import shutil
 
           root = Path("build/hupselbrook")
-          src = Path("testcases/cases/hupselbrook/legacy")
+          # Current public SWAP no longer executes readswap(); it requires
+          # swap.toml. Use the runtime-reachable Hupselbrook TOML case.
+          src = Path("testcases/cases/hupselbrook/toml")
           variants = {
               "analytic_swkimpl0": (0, 0),
               "table_swkimpl0": (1, 0),
@@ -102,17 +104,47 @@ jobs:
               if dst.exists():
                   shutil.rmtree(dst)
               shutil.copytree(src, dst)
-              template = dst / "swap_linux.swp.template"
-              text = template.read_text()
-              text, n1 = re.subn(r"(?im)^(\s*SWSOPHY\s*=\s*)[01](\b.*)$", rf"\g<1>{swsophy}\2", text, count=1)
-              text, n2 = re.subn(r"(?im)^(\s*SWKIMPL\s*=\s*)[01](\b.*)$", rf"\g<1>{swkimpl}\2", text, count=1)
-              if n1 != 1 or n2 != 1:
-                  raise RuntimeError(f"failed to edit switches for {name}: SWSOPHY={n1}, SWKIMPL={n2}")
-              (dst / "swap.swp").write_text(text)
+              path = dst / "swap.toml"
+              text = path.read_text()
+
+              text, n1 = re.subn(
+                  r"(?im)^(\s*swsophy\s*=\s*)[01](\s*(?:#.*)?)$",
+                  rf"\g<1>{swsophy}\2",
+                  text,
+                  count=1,
+              )
+              if n1 != 1:
+                  raise RuntimeError(f"failed to edit swsophy for {name}")
+
+              # Hupselbrook's current TOML fixture omits swkimpl and therefore
+              # uses the default 0. Insert an explicit value so both numerical
+              # routes are characterized.
+              if re.search(r"(?im)^\s*swkimpl\s*=", text):
+                  text, n2 = re.subn(
+                      r"(?im)^(\s*swkimpl\s*=\s*)[01](\s*(?:#.*)?)$",
+                      rf"\g<1>{swkimpl}\2",
+                      text,
+                      count=1,
+                  )
+              else:
+                  text, n2 = re.subn(
+                      r"(?m)^(\[simulation\.numerical\]\s*)$",
+                      rf"\1\nswkimpl = {swkimpl}",
+                      text,
+                      count=1,
+                  )
+              if n2 != 1:
+                  raise RuntimeError(f"failed to set swkimpl for {name}")
+
+              path.write_text(text)
               if swsophy == 1:
+                  # These files are deliberately staged next to swap.toml.
+                  # Current typed config has no filenamesophy/table field; if
+                  # the runtime cannot consume them, that is the capability
+                  # gap being characterized rather than a missing fixture.
                   for table in ("topsoil_sand_b2.csv", "subsoil_sand_o2.csv"):
                       shutil.copy2(root / "tables" / table, dst / table)
-              print(name, "SWSOPHY", swsophy, "SWKIMPL", swkimpl)
+              print(name, "swsophy", swsophy, "swkimpl", swkimpl)
           PY
 
       - name: Run all Hupselbrook variants
@@ -140,7 +172,9 @@ jobs:
               csv=no
             fi
             printf "%s\t%s\t%s\t%s\n" "$variant" "$rc" "$duration" "$csv" | tee -a "$OUT"
-            tail -40 "$work/run.log" > "$work/run-tail.log" || true
+            tail -60 "$work/run.log" > "$work/run-tail.log" || true
+            echo "===== $variant tail ====="
+            cat "$work/run-tail.log"
           done
           cat "$OUT"
 
@@ -169,6 +203,7 @@ jobs:
             echo
             echo "Pinned SWAP: c22bd832ddf3e53e330a552f5e31e74f183362d1"
             echo "Pinned test cases: a839e2e905f34dd264ad0c739f638454b3023def"
+            echo "Runtime input path: TOML (the live public SWAP runtime does not call readswap)"
             echo
             echo "## Run status"
             echo '~~~'
