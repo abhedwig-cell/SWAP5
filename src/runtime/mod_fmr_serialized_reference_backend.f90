@@ -16,7 +16,8 @@ module mod_fmr_serialized_reference_backend
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
-  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER
+  use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
@@ -1095,7 +1096,25 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
-    if (parameters%soil_temperature_active) then
+    if (parameters%black_evaporation_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION) then
+      result = kernel_result_t()
+      result%status = KERNEL_STATUS_NOT_ADMITTED
+      candidate = kernel_candidate_state_t()
+      diagnostics = kernel_diagnostics_t()
+      diagnostics%admission_rejections = 1
+      return
+    else if (parameters%soil_temperature_active) then
       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .or. &
           parameters%snow_active) then
         result = kernel_result_t()
