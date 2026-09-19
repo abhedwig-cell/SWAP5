@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.lare.dyn0a.fx.fine-only-authority.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-FX-FINE",
+  "decision": "STANDARD_LARE_D3_REGIME_DEPENDENT_CLOSURE_ERROR_CONFIRMED",
+  "authority": {
+    "workflow_run": 35447389993,
+    "artifact_id": 10585856154,
+    "artifact_digest": "sha256:72802185067522082f74d3b8d7f218abcc17f08fee1e4a724164d94444793ea8",
+    "executed_head": "65dd30c626e7c577ea613db1dff7d86eb649e82c",
+    "conclusion": "success"
+  },
+  "model": {
+    "material": "B01 Mualem-Van Genuchten",
+    "bottom_boundary": "FIXED_FLUX",
+    "reference": "fine 16 x 10 cm Reference Richards projected to candidate fixed layers",
+    "lare_closure": "HE2021_EQ24_ADJACENT_FIXED_LAYER_EXTENSION",
+    "numerical_authority": "source-anchored iterative Heun; finest qualified dt=0.0001 d"
+  },
+  "D3": {
+    "layers_cm": [
+      [
+        0,
+        140
+      ],
+      [
+        140,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ],
+    "qualified_cases": 10,
+    "qualified_dynamic_cases": 7,
+    "outside_common_domain_cases": [
+      "SE0=0.95 WET",
+      "SE0=0.95 WET_DRY"
+    ],
+    "dynamic_case_max_abs_layer_storage_cm": {
+      "SE0=0.65 WET": 0.002054498882422706,
+      "SE0=0.65 DRY": 0.0020493624627064833,
+      "SE0=0.65 WET_DRY": 0.0006514055309807532,
+      "SE0=0.85 WET": 0.1314521005865572,
+      "SE0=0.85 DRY": 0.12145242523870081,
+      "SE0=0.85 WET_DRY": 0.04923823862721832,
+      "SE0=0.95 DRY": 2.452332276685631
+    },
+    "dynamic_case_max_abs_bottom_10cm_storage_cm": {
+      "SE0=0.65 WET": 0.0009664743086212901,
+      "SE0=0.65 DRY": 0.0009637610205452951,
+      "SE0=0.65 WET_DRY": 0.0003710895569217776,
+      "SE0=0.85 WET": 0.07900393861171029,
+      "SE0=0.85 DRY": 0.07383048108702672,
+      "SE0=0.85 WET_DRY": 0.030654953815563157,
+      "SE0=0.95 DRY": 1.6775931086054612
+    },
+    "maximum_dynamic_layer_storage_error_cm": 2.452332276685631,
+    "maximum_dynamic_bottom_10cm_storage_error_cm": 1.6775931086054612,
+    "maximum_dynamic_bottom_10cm_mean_theta_error_equivalent": 0.16775931086054613
+  },
+  "D2": {
+    "layers_cm": [
+      [
+        0,
+        150
+      ],
+      [
+        150,
+        160
+      ]
+    ],
+    "qualified_cases": 8,
+    "qualified_dynamic_cases": 5,
+    "maximum_dynamic_layer_storage_error_cm": 2.876356100207883,
+    "maximum_dynamic_bottom_10cm_storage_error_cm": 2.876356100207883,
+    "maximum_dynamic_bottom_10cm_mean_theta_error_equivalent": 0.2876356100207883
+  },
+  "interpretation": [
+    "Equilibrium trajectories are reproduced to roundoff; failure is dynamic, not a water-ledger artifact.",
+    "D3 closure error is very small at Se0=0.65, grows materially at Se0=0.85, and becomes large for the qualified Se0=0.95 DRY transient.",
+    "The error is redistribution error because fixed top and bottom fluxes constrain total storage and cumulative boundary exchange.",
+    "D2 is less robust than D3 and exits the qualified domain for additional Se0=0.85 forcing cases.",
+    "This result activates the preregistered D4 closure-resolution control. It does not authorize retuning D3, changing the LARE closure, or claiming application acceptance."
+  ],
+  "coarse_richards_equal_dimension_verdict": "PENDING_DYN0A_CRQ",
+  "D4_resolution_control_authorized": true,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
