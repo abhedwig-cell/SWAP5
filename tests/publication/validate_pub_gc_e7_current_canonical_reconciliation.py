@@ -24,7 +24,12 @@ wu03 = load("integration/audits/PPA_WU03_STATUS.json")
 wu04 = load("integration/audits/PPA_WU04_STATUS.json")
 wu05 = load("integration/audits/PPA_WU05_STATUS.json")
 wu05a = load("integration/audits/PPA_WU05A_STATUS.json")
+low02 = load("integration/audits/PPA_LOW02_TIME_STATUS.json")
+root_hyd01 = load("integration/audits/PPA_ROOT_HYD01_R1_RESULT.json")
+wu05c = load("integration/audits/PPA_WU05C_STATUS.json")
 src_path = "src/runtime/mod_fmr_production_application_bootstrap.f90"
+backend_path = "src/runtime/mod_fmr_serialized_reference_backend.f90"
+temporal_path = "src/solver/mod_reference_richards_temporal_indicator.f90"
 src = read(src_path).decode("utf-8")
 
 assert e7["status"] == "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT"
@@ -36,6 +41,8 @@ assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%paramete
 assert "prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
 assert "tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active" in src
+assert git_blob_sha(backend_path) == rec["current_production_boundary"]["serialized_backend_blob"]
+assert git_blob_sha(temporal_path) == rec["current_production_boundary"]["temporal_indicator_blob"]
 
 assert git_blob_sha("integration/audits/PPA_WU02_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU02"]["status_blob"]
 assert wu02["status"] == "CANONICAL_ADMITTED_CLOSED"
@@ -60,6 +67,25 @@ assert git_blob_sha("integration/audits/PPA_WU05A_STATUS.json") == rec["later_ca
 assert wu05a["production_source_mutation"] is False
 assert wu05a["production_admission"] == "NONE_REVIEW_ONLY"
 
+assert git_blob_sha("integration/audits/PPA_LOW02_TIME_STATUS.json") == rec["later_canonical_workunits"]["PPA_LOW02_TIME"]["status_blob"]
+assert low02["status"] == "CANONICAL_ADMITTED_CLOSED"
+assert "bottom_mode=2" in low02["production_scope"]["route"]
+assert "new groundwater-coupling semantics" in low02["explicit_nonclaims"]
+assert backend_path in low02["production_scope"]["production_source"]
+
+assert git_blob_sha("integration/audits/PPA_ROOT_HYD01_R1_RESULT.json") == rec["later_canonical_workunits"]["PPA_ROOT_HYD01"]["result_blob"]
+assert root_hyd01["decision"] == "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE"
+assert root_hyd01["production_delta"] == [temporal_path]
+assert root_hyd01["source_semantics"]["headcalc_changed"] is False
+assert root_hyd01["source_semantics"]["richards_solver_changed"] is False
+assert root_hyd01["source_semantics"]["transaction_core_changed"] is False
+assert root_hyd01["source_semantics"]["tolerance_changed"] is False
+assert root_hyd01["implication_for_hydro_memory"]["stage0_authorized"] is False
+
+assert git_blob_sha("integration/audits/PPA_WU05C_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU05C"]["status_blob"]
+assert wu05c["scope"]["production_source_mutation"] is False
+assert wu05c["production_admission"] == "NONE_REVIEW_ONLY"
+
 assert rec["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
 
 print("PUB_GC_E7_CURRENT_RESULT_CLOSED=PASS")
@@ -71,4 +97,7 @@ print("PUB_GC_E7_PPA_WU03_NO_GW_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU04_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_PPA_WU05_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_PPA_WU05A_REVIEW_ONLY=PASS")
+print("PUB_GC_E7_PPA_LOW02_TIME_NO_GW_WIDENING=PASS")
+print("PUB_GC_E7_ROOT_HYD01_TEMPORAL_ONLY_NO_OWNER_WIDENING=PASS")
+print("PUB_GC_E7_PPA_WU05C_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_CURRENT_CANONICAL_PRESERVED=PASS")
