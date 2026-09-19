@@ -2611,6 +2611,68 @@ def validate_romv2_d27_if_present() -> str:
     return "CLOSED_UNSTRESSED_UPTAKE_ACCOUNTING_PREFLIGHT_PASS"
 
 
+def validate_romv2_d28_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D28_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D28_EXTERNAL_SOURCE_BLOCKER.json")
+            == "efc4f99276c4acb10a45ca50e23db411a9eb58b5",
+            "F-ROMV2-D28 blocker blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D28_STATUS.json")
+            == "2b5eb2aaa30d230f553925ecacbf9bee674536c5",
+            "F-ROMV2-D28 status blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D28_NATIVE_ET_SOURCE_BLOCKER.md")
+            == "1cfef6b321dcc889f9745e77f3be2ea25756cd9d",
+            "F-ROMV2-D28 blocker adjudication blob drift")
+
+    blocker = load_json("integration/f-rom/F-ROMV2_D28_EXTERNAL_SOURCE_BLOCKER.json")
+    status = load_json("integration/f-rom/F-ROMV2_D28_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D28_NATIVE_ET_SOURCE_BLOCKER.md").read_text(encoding="utf-8")
+
+    require(blocker["phase"] == "CLOSED_EXTERNAL_SOURCE_BLOCKER"
+            and blocker["decision"] == "M2WC70_NATIVE_ET_STATE_UPDATE_ORACLE_EXTERNAL_RETRIEVAL_BLOCKER",
+            "F-ROMV2-D28 decision/phase drift")
+    require(blocker["external_oracle"]["dataset_id"] == "M2WC70"
+            and blocker["external_oracle"]["resource_type"] == "zip"
+            and blocker["external_oracle"]["reported_size"] == "230 MB",
+            "F-ROMV2-D28 oracle identity drift")
+    require(blocker["external_oracle"]["external_code_copy_into_SWAP5_authorized"] is False,
+            "F-ROMV2-D28 unexpectedly authorizes external source copy")
+    require(blocker["retrieval_due_diligence"]["direct_repository_page_resolved"] is True
+            and blocker["retrieval_due_diligence"]["direct_resource_url_resolved_from_repository_metadata"] is True
+            and blocker["retrieval_due_diligence"]["blocker_class"] == "EXTERNAL_SOURCE_RETRIEVAL",
+            "F-ROMV2-D28 retrieval due diligence drift")
+    require(blocker["authority_boundary"]["native_FMC_root_active_trajectory_authorized"] is False
+            and blocker["authority_boundary"]["native_FMC_drought_stress_feedback_authorized"] is False
+            and blocker["authority_boundary"]["seasonal_ET_authorized"] is False
+            and blocker["authority_boundary"]["production_rom_authorized"] is False,
+            "F-ROMV2-D28 prematurely authorizes blocked science")
+    require("DO_NOT_INVENT_COMPOSITE_FMC_ROOT_WITHDRAWAL_UPDATE_RULES_FROM_D27" in blocker["prohibited"],
+            "F-ROMV2-D28 anti-invention firewall missing")
+
+    require(status["phase"] == "BLOCKED_EXTERNAL_NATIVE_ET_STATE_UPDATE_ORACLE"
+            and status["source_identified"] is True
+            and status["source_materialized"] is False,
+            "F-ROMV2-D28 terminal blocker status drift")
+    require(status["primary_paper_semantics_sufficient_for_synthetic_accounting"] is True
+            and status["primary_paper_semantics_sufficient_for_native_composite_root_active_trajectory"] is False,
+            "F-ROMV2-D28 primary-paper sufficiency boundary drift")
+    require(status["native_FMC_root_active_trajectory_authorized"] is False
+            and status["seasonal_ET_authorized"] is False
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D28 status overclaims authority")
+
+    require("This is therefore an external-source retrieval blocker." in doc,
+            "F-ROMV2-D28 blocker classification missing")
+    require("No scientific choice is required before step 1." in doc,
+            "F-ROMV2-D28 deterministic restart statement missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D28 production prohibition missing")
+
+    return "BLOCKED_EXTERNAL_NATIVE_ET_STATE_UPDATE_ORACLE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2664,6 +2726,7 @@ def main() -> int:
     romv2_d25_phase = validate_romv2_d25_if_present()
     romv2_d26_phase = validate_romv2_d26_if_present()
     romv2_d27_phase = validate_romv2_d27_if_present()
+    romv2_d28_phase = validate_romv2_d28_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2701,6 +2764,7 @@ def main() -> int:
     print(f"F_ROMV2_D25_PHASE={romv2_d25_phase}")
     print(f"F_ROMV2_D26_PHASE={romv2_d26_phase}")
     print(f"F_ROMV2_D27_PHASE={romv2_d27_phase}")
+    print(f"F_ROMV2_D28_PHASE={romv2_d28_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
