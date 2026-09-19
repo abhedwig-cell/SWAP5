@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.num_unc.p0c.c1_result.v1",
+  "work_unit": "NUM-UNC-P0C-C1",
+  "date": "2026-09-19",
+  "workflow_run_id": 35427844891,
+  "output_sha256": "516ced4687ca462e3c13836b403d4155ec3deb0b8a38682c514c9722a7f2ae30",
+  "deterministic_builds": [
+    "O0",
+    "O2"
+  ],
+  "cases": {
+    "C_minus": {
+      "multiplier": 1.000634765625,
+      "N0": {
+        "class": "NO_PONDING",
+        "valid": true,
+        "max_pond_cm": 0,
+        "max_mass_cm": 2.091837814077735e-15
+      },
+      "N1": {
+        "class": "NO_PONDING",
+        "valid": true,
+        "max_pond_cm": 0,
+        "max_mass_cm": 2.7753799258789513e-15
+      }
+    },
+    "C_zero": {
+      "multiplier": 1.11181640625,
+      "N0": {
+        "class": "PONDING",
+        "valid": true,
+        "max_pond_cm": 0.00011494684626821363,
+        "max_mass_cm": 3.33102434524335e-15
+      },
+      "N1": {
+        "class": "NO_PONDING",
+        "valid": true,
+        "max_pond_cm": 0,
+        "max_mass_cm": 2.872013737942325e-15
+      }
+    },
+    "C_plus": {
+      "multiplier": 1.2229980468750001,
+      "N0": {
+        "class": "PONDING",
+        "valid": true,
+        "max_pond_cm": 0.040578257613793176,
+        "max_mass_cm": 4.519051799434237e-15
+      },
+      "N1": {
+        "class": "PONDING",
+        "valid": true,
+        "max_pond_cm": 0.015614920385639504,
+        "max_mass_cm": 3.1079139262146783e-15
+      }
+    }
+  },
+  "amplification": {
+    "metric": "D_THETA_RMS_AT_COMMON_BLOCK_ENDPOINTS",
+    "C_minus_floor": 0.0002957426477749189,
+    "C_zero_pre_max": 0.00031934953884535524,
+    "C_zero_post_max": 0.0003654182240714268,
+    "representation_floor": 2.2737367544323206e-13,
+    "ratio_A": 1.1442578730272732,
+    "required_ratio": 4,
+    "post_gt_2_Cminus_floor": false,
+    "required_post_floor_multiplier": 2
+  },
+  "primary_inference_changed": true,
+  "hydrological_amplification_criterion_passed": false,
+  "outcome": "THRESHOLD_PROXIMITY_ONLY",
+  "interpretation": "The frozen transition-near case changes ponding-event classification between two admissible temporal realizations, but trajectory divergence does not increase enough relative to preregistered pre-transition and no-switch floors to support a hydrological-amplification mechanism.",
+  "replication_O14_authorized": false,
+  "claim_ceiling": "C1 demonstrates numerical contingency of a deliberately transition-near ponding classification, not hydrological amplification of numerical uncertainty.",
+  "next_scientific_action": "Close P0C as a negative mechanism test. Do not relocate C cases and do not run O14 replication under the P0 go rule. Continue falsification with a distinct preregistered hydrological transition family."
+}
