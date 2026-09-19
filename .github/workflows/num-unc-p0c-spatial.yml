@@ -1,0 +1,19 @@
+name: NUM-UNC P0C spatial control
+
+on:
+  pull_request:
+    paths:
+      - 'integration/num-unc/**'
+      - 'tests/num_unc/**'
+      - '.github/workflows/num-unc-p0c-spatial.yml'
+  workflow_dispatch:
+
+jobs:
+  p0c-spatial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run P0C spatial-control gate
+        run: bash tests/num_unc/run_num_unc_p0c_spatial_control.sh
