@@ -1,7 +1,7 @@
 {
   "schema": "pub-gc-reproducibility-manifest-v1",
   "date": "2026-09-19",
-  "canonical_basis": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+  "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
   "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; current canonical still fails closed for active root extraction/drainage in the mode-5 production groundwater owner; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
   "publication_assets": {
     "manuscript": {
@@ -66,11 +66,11 @@
     },
     "e7_result": {
       "path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "blob": "8d7bb10c34523a034b96581499a253dab33648ab"
+      "blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794"
     },
     "e7_application_requirements": {
       "path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-      "blob": "efb7ecf4409c209a698a0a42ac6ca1c218973730"
+      "blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad"
     },
     "e7_selection_result": {
       "path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
@@ -82,11 +82,11 @@
     },
     "e7_current_canonical_reconciliation": {
       "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
-      "blob": "58a2d4a8af1a625df75745b171c245e87c9494fa"
+      "blob": "9298c0533481ab8de86bb906b1edcf487975b49b"
     },
     "e7_current_canonical_reconciliation_narrative": {
       "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.md",
-      "blob": "acb1e90c96939f3d690b2464322917283a772dad"
+      "blob": "a3c4c2446e11e4b391fee63534488f59b92573ab"
     }
   },
   "evidence": {
@@ -193,7 +193,7 @@
     },
     "production_boundary": {
       "bootstrap_source_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
-      "bootstrap_source_blob": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+      "bootstrap_source_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
       "ppa_wu01_status_path": "integration/audits/PPA_WU01_STATUS.json",
       "ppa_wu01_status_blob": "3034a68e8675b958cc15d4ef24a8aeffde7d8375",
       "ppa_wu03_status_path": "integration/audits/PPA_WU03_STATUS.json",
@@ -202,17 +202,24 @@
       "limiting_guard": "drainage_response_active and root_extraction_active rejected by tile_config_valid before owner-state allocation",
       "ppa_wu03_broadens_groundwater_process_profile": false,
       "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
-      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b"
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "qualification_bootstrap_source_ref": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
+      "qualification_bootstrap_source_blob": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+      "qualification_bootstrap_source_blob_scope": "historical E7 qualification source head",
+      "bootstrap_source_blob_scope": "current-tree path binding at canonical_basis"
     },
     "result": {
       "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-      "result_blob": "8d7bb10c34523a034b96581499a253dab33648ab",
+      "result_blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794",
       "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
-      "narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
+      "narrative_blob": "9e7ed5f788f87d378841e8b62d32a24e1293aa64",
       "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
       "loose_completed_windows": 0,
       "strong_completed_windows": 0,
-      "modflow_e7_windows_executed": 0
+      "modflow_e7_windows_executed": 0,
+      "historical_narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
+      "historical_narrative_blob_scope": "retained pre-closeout E7 narrative object; object existence verified via GitHub blob lookup on 2026-09-19",
+      "narrative_blob_scope": "current-tree path binding at canonical_basis"
     },
     "qualification": {
       "test_path": "tests/publication/validate_pub_gc_e7_component_domain.py",
@@ -222,7 +229,9 @@
       "source_head": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
       "run_id": 35375181814,
       "job_id": 105698080443,
-      "conclusion": "success"
+      "conclusion": "success",
+      "test_blob_scope": "historical qualification source_head path binding",
+      "workflow_blob_scope": "historical qualification workflow binding"
     },
     "safeguards": {
       "date_replacement": false,
@@ -235,11 +244,11 @@
     "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
     "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability.",
     "current_canonical_reconciliation": {
-      "canonical_basis": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+      "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
       "record_path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
-      "record_blob": "58a2d4a8af1a625df75745b171c245e87c9494fa",
+      "record_blob": "9298c0533481ab8de86bb906b1edcf487975b49b",
       "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-      "application_requirements_blob": "efb7ecf4409c209a698a0a42ac6ca1c218973730",
+      "application_requirements_blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad",
       "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
       "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
       "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
@@ -250,15 +259,20 @@
       "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
       "post_relevant_production_live_delta": {
         "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-        "head": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+        "head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
         "classification": "NO_E7_PRODUCTION_OWNER_EFFECT"
       },
       "hydro_memory_acc02_f1_result_blob": "35cd7dd71ed10d7d61ed55abc9a805361f26a8ea",
       "hydro_memory_acc02_f1_preregistration_blob": "17beb966009e87df0a2cabd513b07ff54b231d18",
-      "hydro_memory_acc02_f1_support_bridge_blob": "b767769f3df5fe698698621a99c53185bcc61093"
+      "hydro_memory_acc02_f1_support_bridge_blob": "b767769f3df5fe698698621a99c53185bcc61093",
+      "hydro_memory_acc02_f2_result_blob": "757760b6d89c0c48583b9b92a10ea5eb07520772",
+      "hydro_memory_acc02_f2_preregistration_blob": "c513fa4c4af275b214c5b7ba97c3d5fff2206dae",
+      "hydro_memory_acc02_f2_support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c",
+      "hydro_memory_dyn01_result_blob": "9b67737a416fb1b7806695a18fc57fb06ea2adaa",
+      "hydro_memory_dyn01_preregistration_blob": "387a7ef6f2303aaf80a69fe10e3f4904811e83df"
     }
   },
-  "manifest_note": "Blob identities bind the journal-neutral E1-E7 package at the stated canonical basis plus the current closeout branch assets. Historical preregistration/selection evidence is unchanged. E7 remains closed as a realistic component-domain limit; remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
+  "manifest_note": "Current-tree path/blob identities bind the journal-neutral E1-E7 package at canonical_basis. Historical qualification blobs are retained under explicit source-head/historical scope fields and are not presented as current-tree identities. E7 remains closed as a realistic component-domain limit; ACC02-F1/F2 and DYN01 do not widen the production mode-5 root+drainage owner. Remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
   "gmd_presubmission": {
     "status": "REPOSITORY_PREPARATION_COMPLETE_EXTERNAL_GOVERNANCE_ARCHIVE_AUTHOR_FIELDS_OPEN",
     "policy_checked": "2026-09-19",
