@@ -5,11 +5,11 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical basis inspected: `integration/f-ci-canonical@ab8d52a3b3ab39470a989a46dc19e3bd24a01906`.
+Canonical basis inspected: `integration/f-ci-canonical@ee83e12504e12ac92fc6c55a8d8e5a134666ed19`.
 
 E7 was canonically admitted through PR #330 as `REALISTIC_COMPONENT_DOMAIN_LIMIT`. PR #327 is historical/superseded and must not be rebased or merged as a second authority path.
 
-The latest E7-relevant production merge before this reconcile is PPA-WU04-B at `4d40b8d4b6a1df06ff97fab55497542778431290`. The subsequent delta through the inspected live head is confined to evidence-only F-ROMV2/TRACE/F-DOC work and ROM tests. The current bootstrap, serialized backend, runtime core, restart state and restricted surface-evaporation blobs remain exactly the PPA-WU04-B postimages, so that delta has no E7 authority effect.
+The latest E7-relevant production merge before this reconcile is PPA-WU04-B at `4d40b8d4b6a1df06ff97fab55497542778431290`. The subsequent delta through the inspected live head contains evidence-only F-ROMV2/TRACE/F-DOC work plus HYDRO-MEMORY ACC02-F1/F2 and DYN01 research qualification. ACC02-F1/F2 do not change production/reference source and keep drainage inactive; DYN01 also changes no production/reference source and has no live MODFLOW coupling. The current bootstrap, serialized backend, runtime core, restart state and restricted surface-evaporation blobs remain exactly the PPA-WU04-B postimages, so that delta has no E7 production-owner effect.
 
 ## Current prescribed-head owner
 
@@ -44,8 +44,10 @@ The authentic Hupsel application therefore still cannot be materialized as a pro
 | PPA-WU04-A | bounded SWREDU=1 Black evaporation production slice | mode-5 Black composition remains unadmitted; root/drainage guards unchanged |
 | PPA-WU04-B | bounded SWREDU=2 Boesten-Stroosnijder evaporation production slice | mode-5 Boesten composition remains unadmitted; root/drainage guards unchanged |
 | HYDRO-MEMORY ACC02-F1 | live MODFLOW6 single-window prescribed-root research qualification | no production/reference source change; drainage inactive; no mode-5 production-owner widening; Stage 0 not authorized |
+| HYDRO-MEMORY ACC02-F2 | four consecutive live MODFLOW6 prescribed-root research windows | no production/reference source change; drainage inactive; no mode-5 production-owner widening; Stage 0 not authorized |
+| HYDRO-MEMORY DYN01 | standalone forcing + accepted-state-dependent restricted Feddes composition | no production/reference source change; no live MODFLOW; no mode-5 production-owner widening; no Stage-0 scientific result |
 
-PPA-ROOT-HYD01/HYD02 are relevant numerical/accepted-trajectory capabilities, but they do not constitute application-owner composition. PPA-WU04-A/B change bounded evaporation production code, but both remain excluded from mode 5 and leave the E7-critical root/drainage guards intact. HYDRO-MEMORY ACC02-F1 does not alter that conclusion: it is a research qualification of prescribed-root coupling with drainage inactive, not a process-complete application-owner admission.
+PPA-ROOT-HYD01/HYD02 are relevant numerical/accepted-trajectory capabilities, but they do not constitute application-owner composition. PPA-WU04-A/B change bounded evaporation production code, but both remain excluded from mode 5 and leave the E7-critical root/drainage guards intact. HYDRO-MEMORY ACC02-F1/F2 and DYN01 do not alter that conclusion: the former are prescribed-root research qualifications with drainage inactive, while DYN01 is standalone forcing/Feddes composition. None is a process-complete application-owner admission.
 
 ## E7 provenance repair
 
