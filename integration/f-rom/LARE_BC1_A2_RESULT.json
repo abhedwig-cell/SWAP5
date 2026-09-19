@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.lare.bc1.a2.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-A2",
+  "decision": "BC1_REFERENCE_FACE_SEMANTICS_QUALIFIED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC1_A2_PREREGISTRATION.json",
+    "workflow_run": 35450236726,
+    "artifact_id": 10586539310,
+    "artifact_digest": "sha256:581907dbe07ad597f305382d6360179f7cb5a6c662a513170b98586aac7dfc33",
+    "executed_head": "e619dc66d2262c1b97efc74f5ad287372d2a75db",
+    "stage_a_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "evidence": {
+    "mode5_state_count": 2112,
+    "auditable_mode5_interval_count": 2108,
+    "skipped_first_mode5_interval_count": 4,
+    "REFERENCE_LAGGED_HEAD": {
+      "max_abs_error_cm_per_day": 4.622613403171272e-11,
+      "rms_error_cm_per_day": 1.2386467637773731e-11,
+      "mean_abs_error_cm_per_day": 9.854019474705847e-12,
+      "sign_mismatch_count": 0
+    },
+    "PROJECTED_LAGGED_LAYER": {
+      "max_abs_error_cm_per_day": 4.6203041392800515e-11,
+      "rms_error_cm_per_day": 1.238636311813412e-11,
+      "mean_abs_error_cm_per_day": 9.853740378847705e-12,
+      "sign_mismatch_count": 0
+    },
+    "CURRENT_LAYER_FACE": {
+      "max_abs_error_cm_per_day": 0.5797888120571137,
+      "rms_error_cm_per_day": 0.03130273954834212,
+      "mean_abs_error_cm_per_day": 0.0073443370668783,
+      "sign_mismatch_count": 0
+    },
+    "BOUNDARY_FACE": {
+      "max_abs_error_cm_per_day": 10.856639784527701,
+      "rms_error_cm_per_day": 1.1173193720741794,
+      "mean_abs_error_cm_per_day": 0.8115243057816708,
+      "sign_mismatch_count": 0
+    }
+  },
+  "technical_gates": {
+    "reference_lagged_head_max_abs_error_cm_per_day": 5e-9,
+    "projected_lagged_layer_max_abs_error_cm_per_day": 5e-9,
+    "projected_lagged_layer_sign_mismatch_count": 0,
+    "all_passed": true
+  },
+  "scientific_interpretation": [
+    "The earlier BC1-A operator-audit failure was caused by an incorrect observable time-level assumption, not by a sign error or failure of the prescribed-head gradient structure.",
+    "Under SWKIMPL=0, the accepted Reference mode-5 face term uses start-of-step last-node conductivity with the accepted end-state head gradient.",
+    "The reduced storage/constitutive projection reproduces that lagged Reference face term to numerical noise for the shared 150-160 cm last layer.",
+    "CURRENT_LAYER_FACE and BOUNDARY_FACE remain separately named no-fit Stage-B dynamics candidates; A2 does not select between them.",
+    "Integrated bottom exchange and reduced layer storage, not relabelled instantaneous qbot semantics, are the primary Stage-B comparison quantities."
+  ],
+  "stage_B_reduced_dynamics_authorized": true,
+  "moving_water_table_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
