@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.lare.bc1.stage-a0-blocked.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-A0",
+  "status": "BLOCKED_WRONG_REFERENCE_OBSERVABLE",
+  "authority": {
+    "preregistration_initial": "integration/f-rom/LARE_BC1_PREREGISTRATION.json",
+    "workflow_run": 35450069347,
+    "artifact_id": 10586424195
+  },
+  "observations": {
+    "mode5_state_count": 2112,
+    "constitutive_roundtrip_max_abs_h_error_cm": 4.973799150320701e-14,
+    "reference_end_state_face_formula_vs_reported_terminal_qbot_max_abs_error_cm_per_day": 0.5797888120571457,
+    "bc1_swapface_end_state_vs_reported_terminal_qbot_max_abs_error_cm_per_day": 0.5797888120571137,
+    "bc1_swapface_terminal_flux_sign_mismatch_count": 0,
+    "bc1_sourceface_max_abs_error_cm_per_day": 10.856639784527701
+  },
+  "executable_source_trace": {
+    "headcalc": "With SWKIMPL=0, conductivity and kmean are initialized from the timestep base state before Newton and are not updated with candidate head during the iteration.",
+    "mode5_gradient": "The lower head gradient is evaluated from candidate h_N and prescribed h_b.",
+    "postsolve_qbot": "mod_reference_richards_legacy_binding materializes mode-5 qbot from qtop + storage change / dt + sinks/sources after the solve.",
+    "kernel_publication": "terminal_bottom_outward_flux_native publishes the sign-adapted materialized solve_result%bottom_flux."
+  },
+  "classification": "TECHNICAL_AUTHORITY_OBSERVABLE_MISMATCH",
+  "scientific_disposition": [
+    "A0 does not falsify BC1-SWAPFACE.",
+    "The reported terminal qbot is not a raw same-state Darcy face operator and cannot be used as an operator identity target.",
+    "BC1-A1 must compare same-state operator geometry/constitutive semantics first and retain terminal qbot only as a hydrological output diagnostic."
+  ],
+  "fit_performed": false,
+  "production_rom_authorized": false
+}
