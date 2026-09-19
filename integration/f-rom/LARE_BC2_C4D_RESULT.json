@@ -1,0 +1,254 @@
+{
+  "application_acceptance_adjudicated": false,
+  "cancellation": {
+    "2.5": {
+      "0.00002500": {
+        "Q90": {
+          "directional_cancellation_ratio": 0.240993105936393,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.011422153729284013,
+            0.14177299119820042,
+            -0.020988532742564292
+          ]
+        },
+        "QH": {
+          "directional_cancellation_ratio": 0.9411757320897945,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.5933126630759146,
+            -0.8836627874788475,
+            0.19216420606252915
+          ]
+        },
+        "QI": {
+          "directional_cancellation_ratio": 0.9619257546801206,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.6777883657962042,
+            -0.9843163994762638,
+            0.2343229785310588
+          ]
+        }
+      },
+      "0.00005000": {
+        "Q90": {
+          "directional_cancellation_ratio": 0.2409886722081811,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.01142372816053072,
+            0.14177428049124874,
+            -0.020988486035661946
+          ]
+        },
+        "QH": {
+          "directional_cancellation_ratio": 0.9416041122762493,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.5933559679395184,
+            -0.8829465176347884,
+            0.19215924576084767
+          ]
+        },
+        "QI": {
+          "directional_cancellation_ratio": 0.9623300960058065,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.6778626992813025,
+            -0.9836192598414278,
+            0.2343410883710551
+          ]
+        }
+      }
+    },
+    "5.0": {
+      "0.00002500": {
+        "Q90": {
+          "directional_cancellation_ratio": 0.6625810150224754,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            -0.03992780021097398,
+            0.13087082040608866,
+            -0.024907918434778242
+          ]
+        },
+        "QH": {
+          "directional_cancellation_ratio": 0.2850880611746013,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.03122431775513334,
+            -0.17490221525033403,
+            -0.012923802715256486
+          ]
+        },
+        "QI": {
+          "directional_cancellation_ratio": 0.9299217464452753,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.35532337434185196,
+            -0.5114331308082283,
+            0.08912336458707848
+          ]
+        }
+      },
+      "0.00005000": {
+        "Q90": {
+          "directional_cancellation_ratio": 0.6625721993465781,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            -0.03992660384572577,
+            0.13087101043416238,
+            -0.024907918938762208
+          ]
+        },
+        "QH": {
+          "directional_cancellation_ratio": 0.28469611973045916,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.031154639425608425,
+            -0.17472819621064228,
+            -0.012979574256125812
+          ]
+        },
+        "QI": {
+          "directional_cancellation_ratio": 0.9300296340951751,
+          "has_both_signs": true,
+          "phase_signed_integrated_bias_cm": [
+            0.35529277058818964,
+            -0.511270348906609,
+            0.08910886021325827
+          ]
+        }
+      }
+    }
+  },
+  "complete": true,
+  "decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "failure_count": 0,
+    "failures": {},
+    "gate": 1e-10,
+    "maximum_recorded_hard_residual_or_identity_error": 1.4787282509587385e-11
+  },
+  "interpretation": [
+    "C4D uses only the frozen A2 H-direction partition and the unchanged C3 signed-bias ledger.",
+    "Whole-cycle QH dominance is not interpreted as a local QH closure defect unless QH also dominates a sustained phase or exact reversal interval under the preregistered checks.",
+    "No effect-size threshold, fitted phase boundary, closure change, memory state or stabilizer is introduced."
+  ],
+  "mechanisms": {
+    "H_CANCELLATION": {
+      "checks": {
+        "QI_phase_signed_bias_has_both_signs": true,
+        "all_nonreversal_tail_top_QI": true,
+        "all_phase_top_QI": true,
+        "whole_cycle_C3_top_QH_both_widths": true
+      },
+      "supported": true
+    },
+    "H_QH_PHASE": {
+      "QH_rank1_sustained_segments_consistent_both_widths_routes": [],
+      "supported": false
+    },
+    "H_REVERSAL_LOCAL": {
+      "QH_rank1_reversal_steps_consistent_both_widths_routes": [],
+      "supported": false
+    }
+  },
+  "model_changed": false,
+  "next_authority": [
+    "QI_TEACHER_ORACLE_ON_MONOTONE_PHASES_MAY_BE_PREREGISTERED_AS_CAUSAL_DIAGNOSTIC"
+  ],
+  "next_model_change_authorized": false,
+  "phase_top_families": {
+    "2.5": {
+      "0.00002500": {
+        "FALL": "QI",
+        "RISE_1": "QI",
+        "RISE_2": "QI"
+      },
+      "0.00005000": {
+        "FALL": "QI",
+        "RISE_1": "QI",
+        "RISE_2": "QI"
+      }
+    },
+    "5.0": {
+      "0.00002500": {
+        "FALL": "QI",
+        "RISE_1": "QI",
+        "RISE_2": "QI"
+      },
+      "0.00005000": {
+        "FALL": "QI",
+        "RISE_1": "QI",
+        "RISE_2": "QI"
+      }
+    }
+  },
+  "primary_cross_rank_mismatch_segments": [],
+  "production_rom_authorized": false,
+  "reversal_top_families": {
+    "2.5": {
+      "0.00002500": {
+        "257": "GEOMETRY_GI",
+        "513": "QH"
+      },
+      "0.00005000": {
+        "257": "GEOMETRY_GI",
+        "513": "QH"
+      }
+    },
+    "5.0": {
+      "0.00002500": {
+        "257": "GEOMETRY_GI",
+        "513": "GEOMETRY_GI"
+      },
+      "0.00005000": {
+        "257": "GEOMETRY_GI",
+        "513": "GEOMETRY_GI"
+      }
+    }
+  },
+  "schema": "swap5.lare.bc2.c4d.result.v1",
+  "tail_top_families": {
+    "2.5": {
+      "0.00002500": {
+        "FALL_TAIL": "QI",
+        "RISE_2_TAIL": "QI"
+      },
+      "0.00005000": {
+        "FALL_TAIL": "QI",
+        "RISE_2_TAIL": "QI"
+      }
+    },
+    "5.0": {
+      "0.00002500": {
+        "FALL_TAIL": "QI",
+        "RISE_2_TAIL": "QI"
+      },
+      "0.00005000": {
+        "FALL_TAIL": "QI",
+        "RISE_2_TAIL": "QI"
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-C4D",
+  "workstream": "F-ROM-LARE",
+  "authority_binding": {
+    "workflow_run": 35459567540,
+    "aggregate_artifact_id": 10589288088,
+    "aggregate_artifact_digest": "sha256:162849c85ce46e73c68999d5e79dcfc1aff3409e66c95f6102e4168b30df421c",
+    "source_head": "65f5940dbdc6640e86edcf710ffb13c148145151",
+    "case_artifacts": {
+      "2.5": {
+        "artifact_id": 10589767391,
+        "digest": "sha256:d72b88f0eaedc529d184b63aa2ccada22a7b9f1ba14a13e625165aaf3113c0f1"
+      },
+      "5.0": {
+        "artifact_id": 10589238086,
+        "digest": "sha256:06daea6d930fdf497e656796fff0902043bcf11a8d4f45b19fac0694f16727c0"
+      }
+    }
+  }
+}
