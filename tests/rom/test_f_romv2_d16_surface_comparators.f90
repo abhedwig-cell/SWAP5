@@ -242,7 +242,7 @@ contains
            'F-ROMV2 D16 REF physical water-content bounds')
       write(*,'(*(g0))') 'F_ROMV2_D16_REF_STATE|SPLIT=',trim(split_label(ih)),'|HISTORY=',trim(history_label(ih)), &
            '|STEP=',step,'|REL_T=',real(step,real64)*step_dt,'|T=',t1,'|REV=',state%current_revision(), &
-           '|LAMBDA=',history_rain_factor(ih),'|SYMBOL=',trim(symbol_label(symbol)),'|TOP_FACTOR=',0.0_real64,'|BOTTOM_MODE=',5, &
+           '|RAIN_FACTOR=',history_rain_factor(ih),'|PULSE_STEPS=',history_pulse_steps(ih),'|SYMBOL=',trim(symbol_label(symbol)),'|TOP_FACTOR=',merge(history_rain_factor(ih),0.0_real64,symbol==SYM_RAIN),'|BOTTOM_MODE=',2, &
            '|TOTAL_STORAGE=',total,'|UPPER_STORAGE=',upper,'|LOWER_STORAGE=',lower, &
            '|TOP_EXCHANGE=',forcing%top_flux*(t1-t0),'|BOTTOM_OUTWARD_EXCHANGE=',bex,'|BOTTOM_FLUX=',bflux, &
            '|MASS=',mass,'|NL=',nl,'|BACKTRACK=',back,'|FALLBACK=',fallback_used
