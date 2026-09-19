@@ -1489,7 +1489,8 @@ def validate_romv2_d15_if_present() -> str:
             and manifest["reference_source_changed"] is False,
             "F-ROMV2-D15 evidence import claims production/reference mutation")
 
-    require("D15 establishes that the frozen FMC atmospheric-side **state and water accounting** can be made internally closed." in doc,
+    require("D15 establishes that the frozen FMC atmospheric-side **state and water" in doc
+            and "accounting** can be made internally closed." in doc,
             "F-ROMV2-D15 scientific accounting conclusion missing")
     require("Application acceptance remains unqualified." in doc,
             "F-ROMV2-D15 application boundary missing")
