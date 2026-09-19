@@ -89,7 +89,8 @@
     "slug_translation": "D14 Eq.19; top and bottom translate by identical distance within each bin",
     "slug_groundwater_merge": "on exact contact or overlap with same-bin groundwater water, replace disjoint/overlapping intervals by their finite-volume union; any geometric overlap is counted once before and after merge",
     "capillary_relaxation": "D14/Ogden-2015 conservative ordering operation; no water source/sink",
-    "ledger": "initial column water + surface input + initial surface store = final column water + final surface store + runoff"
+    "ledger": "initial column water + surface input + initial surface store = final column water + final surface store + runoff",
+    "end_to_end_boundary": "A7 uses a no-ponding rainfall boundary so all non-infiltrated pulse water is runoff before the hiatus begins."
   },
   "synthetic_tests": [
     {
@@ -128,8 +129,8 @@
     },
     {
       "id": "A7_END_TO_END_SURFACE_LEDGER",
-      "state": "synthetic 10 s sequence combining finite supply, one dry-bin activation opportunity, partial final-bin advance, hiatus detachment, slug translation and finite surface store",
-      "requirement": "global water ledger closes to <=1e-14 cm without clipping, hidden correction or full-order fallback"
+      "state": "synthetic two-stage sequence: no-ponding rainfall pulse fully advances existing connected fronts, activates one dry bin, leaves insufficient water for the next dry-bin activation and routes that residual to runoff; a subsequent zero-supply hiatus detaches the connected wetted intervals and applies one Eq.19 slug-translation step",
+      "requirement": "global ledger across pulse plus hiatus closes to <=1e-14 cm; no surface water remains at hiatus start; detachment/translation introduce no water source or sink"
     }
   ],
   "D16_gate": {
@@ -162,7 +163,8 @@
     "NO_APPLICATION_ACCEPTANCE_CLAIM",
     "NO_FORMAL_SPEEDUP_CLAIM",
     "NO_SRC_OR_REFERENCE_MUTATION",
-    "NO_PRODUCTION_ROM_AUTHORITY"
+    "NO_PRODUCTION_ROM_AUTHORITY",
+    "NO_PONDING_DURING_A7_HIATUS"
   ],
   "production_rom_authorized": false
 }
