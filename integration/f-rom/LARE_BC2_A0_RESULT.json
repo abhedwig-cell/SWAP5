@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.lare.bc2.a0.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-A0",
+  "decision": "PRINTED_AVERAGE_LITERAL_NOT_CONTROL_VOLUME_EQUIVALENT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_A0_PREREGISTRATION.json",
+    "workflow_run": 35451289355,
+    "artifact_id": 10587210897,
+    "artifact_digest": "sha256:c5e33547a6613dd6b72a33910108929396b764f46c995d1388c87185fe923efb",
+    "executed_head": "bdf6f40eade94e484d2721ad1a2e6d72ed852313"
+  },
+  "audit": {
+    "max_abs_product_form_residual_cm_per_day": 1.0646865333807654e-16,
+    "max_abs_printed_literal_residual_cm_per_day": 0.5159845110302704,
+    "max_abs_literal_identity_relation_error_cm_per_day": 1.1102230246251565e-16,
+    "max_abs_switch_storage_jump_cm": 5.504663391775466e-10,
+    "transition_time_day": 9.589402415059364
+  },
+  "integrated_abs_literal_defect_cm": {
+    "SANDY_LOAM": {
+      "H_le_h": 4.000723068711982,
+      "H_gt_h": 10.260395313706404,
+      "total": 14.261118382418386
+    },
+    "LOAM": {
+      "H_le_h": 4.262089870143251,
+      "H_gt_h": 11.601076935406265,
+      "total": 15.863166805549517
+    },
+    "CLAY_LOAM": {
+      "H_le_h": 4.0839331588252294,
+      "H_gt_h": 11.32817612469605,
+      "total": 15.41210928352128
+    }
+  },
+  "interpretation": [
+    "The exact moving-storage/product form satisfies the manufactured moving-control-volume identity to floating-point precision.",
+    "A literal implementation of the displayed average-state equation differs by -theta_bar*dH/dt on the same state path and is not control-volume equivalent.",
+    "This does not infer what equation the authors' implementation executed."
+  ],
+  "author_intent_inferred": false,
+  "moving_water_table_dynamics_authorized": false,
+  "production_rom_authorized": false
+}
