@@ -1,0 +1,36 @@
+name: F-ROM-LARE C2 static metric guard
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c2a_actual_drift_gain.py'
+      - 'tests/rom/test_lare_bc2_c2_shape_metric.py'
+      - '.github/workflows/f-rom-lare-bc2-c2-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+      - name: Verify preregistered mass-neutral shape coordinate
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C2_PREREGISTRATION.json'))
+          m=p['pre_execution_metric_reconciliation']
+          assert m['before_C1R_result_exposure'] is True
+          assert m['response_based'] is False
+          assert m['execution_authority']['implementation']=='tests/rom/analyze_lare_bc2_c2a_actual_drift_gain.py'
+          assert p['pre_execution_shape_metric_clarification']['primary_shape_norm'].startswith('unweighted RMS over e_shape_i')
+          print('LARE_BC2_C2_METRIC_AUTHORITY=PASS')
+          PY
+          python3 tests/rom/test_lare_bc2_c2_shape_metric.py
