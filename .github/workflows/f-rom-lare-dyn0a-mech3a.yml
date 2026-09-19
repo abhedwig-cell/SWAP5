@@ -1,0 +1,39 @@
+name: F-ROM-LARE DYN0A MECH3A nonlinear scale discovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_MECH3A_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_dyn0a_mech3a.py'
+      - '.github/workflows/f-rom-lare-dyn0a-mech3a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Evaluate preregistered nonlinear scales
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-mech3a
+          python3 tests/rom/analyze_lare_dyn0a_mech3a.py \
+            --prereg integration/f-rom/LARE_DYN0A_MECH3A_PREREGISTRATION.json \
+            --output /tmp/lare-mech3a/LARE_DYN0A_MECH3A_RESULT.json
+          cat /tmp/lare-mech3a/LARE_DYN0A_MECH3A_RESULT.json
+
+      - name: Upload MECH3A evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-mech3a
+          path: /tmp/lare-mech3a/LARE_DYN0A_MECH3A_RESULT.json
