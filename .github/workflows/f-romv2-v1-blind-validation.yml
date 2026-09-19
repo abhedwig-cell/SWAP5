@@ -1,0 +1,48 @@
+name: F-ROMV2 V1 blind hydraulic validation
+
+on:
+  push:
+    branches:
+      - work/f-romv2-v1-blind-validation
+    paths:
+      - 'integration/f-rom/F-ROMV2_V1_*'
+      - 'tests/rom/test_f_romv2_v1_current_canonical_trajectories.f90'
+      - 'tests/rom/analyze_f_romv2_v1_current_canonical_trajectories.py'
+      - 'tests/rom/analyze_f_romv2_v1_c2_blind.py'
+      - 'tests/rom/run_f_romv2_v1_current_canonical_trajectories.sh'
+      - '.github/workflows/f-romv2-v1-blind-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f-romv2-v1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  blind-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Execute preregistered current-canonical blind validation
+        env:
+          F_ROMV2_V1_EVIDENCE_DIR: ${{ runner.temp }}/F-ROMV2-V1-EVIDENCE
+        run: bash tests/rom/run_f_romv2_v1_current_canonical_trajectories.sh
+
+      - name: Upload immutable V1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-v1-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-V1-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
