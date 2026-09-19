@@ -1,0 +1,30 @@
+name: HYDRO-MEMORY ACC01 governed accuracy
+
+on:
+  push:
+    branches:
+      - research/hydro-memory-acc01
+    paths:
+      - 'docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md'
+      - 'integration/research/HYDRO_MEMORY_ACC01_PROJECT_ACCURACY_PACKET.json'
+      - 'integration/research/HYDRO_MEMORY_ACC01_PREREGISTRATION.json'
+      - 'tests/research/test_hydro_memory_acc01_accuracy_binding.f90'
+      - 'tests/research/run_hydro_memory_acc01_governance.sh'
+      - '.github/workflows/hydro-memory-acc01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: gfortran --version
+      - name: Run ACC01 governed accuracy gate
+        run: bash tests/research/run_hydro_memory_acc01_governance.sh
