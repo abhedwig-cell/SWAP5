@@ -7,6 +7,7 @@ on:
       - 'tests/rom/preflight_f_romv2_d7_admissible_manifold.py'
       - 'tests/rom/test_f_romv2_d7_r16_reference.f90'
       - 'tests/rom/analyze_f_romv2_d7_qs1_trajectories.py'
+      - 'tests/rom/f_romv2_d7_qs1_profile.c'
       - 'tests/rom/run_f_romv2_d7_qs1.sh'
       - '.github/workflows/f-romv2-d7-admissible-preflight.yml'
 permissions: {contents: read}
