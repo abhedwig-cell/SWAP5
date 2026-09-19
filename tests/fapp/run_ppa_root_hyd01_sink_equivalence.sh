@@ -10,8 +10,10 @@ fail(){ echo "PPA_ROOT_HYD01_D1_FAIL $*" >&2; exit 61; }
 BASE=1dc12a3f47935a3639ef3fb38dc0d6338a0f44c0
 git merge-base --is-ancestor "$BASE" HEAD || fail "branch is not descended from frozen CAP01 authority base"
 
-git diff --quiet "$BASE"..HEAD -- src || fail "PPA-ROOT-HYD01 D1 changed production source"
-git diff --quiet "$BASE"..HEAD -- reference || fail "PPA-ROOT-HYD01 D1 changed reference source"
+changed_src="$(git diff --name-only "$BASE"..HEAD -- src | sort)"
+expected_src='src/solver/mod_reference_richards_temporal_indicator.f90'
+[[ "$changed_src" == "$expected_src" ]] || { printf '%s\n' "$changed_src" >&2; fail "unexpected R1 production source delta"; }
+git diff --quiet "$BASE"..HEAD -- reference || fail "PPA-ROOT-HYD01 changed reference source"
 
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow)
@@ -52,6 +54,7 @@ MODULE_SRC=(
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
@@ -63,7 +66,6 @@ MODULE_SRC=(
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -106,7 +108,7 @@ run_one(){
 run_one 0
 run_one 2
 
-for marker in PPA_ROOT_HYD01_QREF= PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS; do
+for marker in PPA_ROOT_HYD01_QREF= PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS PPA_ROOT_HYD01_R1_ROOT_GENERIC_TEMPORAL_EQUIVALENCE=PASS; do
   grep -Fq "$marker" "$BUILD/o0/output.txt" || { cat "$BUILD/o0/output.txt" >&2; fail "missing marker $marker"; }
 done
 [[ "$(grep -c '^PPA_ROOT_HYD01_ROOT duration=' "$BUILD/o0/output.txt")" -eq 5 ]] || fail "expected five ROOT duration results"
@@ -116,4 +118,4 @@ done
 diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || fail "O0/O2 output identity"
 cat "$BUILD/o0/output.txt"
 echo 'PPA_ROOT_HYD01_D1_O0_O2_OUTPUT_IDENTITY=PASS'
-echo 'PPA_ROOT_HYD01_D1_GATE=PASS'
+echo 'PPA_ROOT_HYD01_R1_GATE=PASS'
