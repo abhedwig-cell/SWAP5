@@ -7,8 +7,6 @@ on:
     paths:
       - 'tests/research/test_hydro_memory_cap01_root_active_response.f90'
       - 'tests/research/run_hydro_memory_cap01_root_active_response.sh'
-      - 'integration/research/HYDRO_MEMORY_CAP01_PREREGISTRATION.json'
-      - 'docs/publication/HYDRO_MEMORY_CAP01_PREREGISTRATION.md'
       - '.github/workflows/hydro-memory-cap01.yml'
   workflow_dispatch:
 
