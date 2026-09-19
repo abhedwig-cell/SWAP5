@@ -63,8 +63,7 @@ else:
     elif 'LAREDYN0R_FAIL ' in raw:
         print('BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION')
     else:
-        tail='
-'.join(raw.splitlines()[-40:])
+        tail='\\n'.join(raw.splitlines()[-40:])
         raise SystemExit('unexpected technical MECH4B Reference failure\\n'+tail)
 PY
 )" || fail "$material $case_id O$opt classification"
