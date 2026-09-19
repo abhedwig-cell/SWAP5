@@ -4,7 +4,7 @@
   "title": "Legacy SWBOTB=2 time law and dry-continuation application semantics",
   "branch": "work/ppa-low02-time-current",
   "canonical_base_ref": "integration/f-ci-canonical",
-  "phase": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "phase": "CANONICAL_ADMITTED_CLOSED",
   "authority": {
     "reference": "SWAP 4.3.1 B1.11",
     "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
@@ -93,5 +93,28 @@
     "reconciled_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
     "method": "fresh branch from live canonical; qualified delta replayed without unrelated history",
     "required_before_admission": "rerun owner, independent and preservation qualification on reconciled postimage"
+  },
+  "admission": {
+    "functional_pr": 360,
+    "canonical_merge_commit": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+    "qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+    "owner_and_independent_run": 35426047814,
+    "owner_job": 105852054740,
+    "independent_job": 105852181968,
+    "backend_blob_sha": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+    "successor_preservation": {
+      "fross12_run": 35426047903,
+      "fci96_run": 35426047828,
+      "fgc42_run": 35426047891,
+      "fgc44_participant_run": 35426047827,
+      "fgc44_end_to_end_run": 35426047766,
+      "fvq116_run": 35426047859
+    },
+    "result": "CANONICAL_ADMITTED"
+  },
+  "exit_gate": {
+    "result": "FULFILLED",
+    "evidence": "Owner and independent qualification pass on the live-canonical reconciled postimage; F-ROSS12/F-CI96 and F-GC42/F-GC44 successor preservation are green.",
+    "closeout_status_file": "integration/audits/PPA_LOW02_TIME_STATUS.json"
   }
 }
