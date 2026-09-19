@@ -1,0 +1,129 @@
+{
+  "schema": "swap5.lare.rs1.gw.stage-a-result.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-GW-A",
+  "decision": "LARE_RS1_GW_STAGE_A_REFERENCE_LIBRARY_QUALIFIED",
+  "execution": {
+    "workflow_run": 35444243790,
+    "artifact_id": 10585316225,
+    "artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+    "executed_head": "21784f23b34ac70f9478811a7d47221e1c061902",
+    "conclusion": "success"
+  },
+  "reference_library": {
+    "qualified": true,
+    "state_count": 6144,
+    "history_count": 6,
+    "steps_per_history": 1024,
+    "node_record_count": 98304,
+    "repeat_stdout_bitwise_identity": true,
+    "max_abs_step_mass_residual_cm": 4.263256414560601e-14,
+    "hard_mass_gate_cm": 1e-12,
+    "fallback_count": 549,
+    "fallback_classes": {
+      "RETRY_LOCAL_BALANCE": 17,
+      "RETRY_TOTAL_ONLY": 532
+    },
+    "theta_range": [
+      0.27282576290772725,
+      0.4130211559989127
+    ],
+    "pressure_head_range_cm": [
+      -70.54580792590704,
+      -11.457848155161532
+    ],
+    "accepted_state_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "reversal_evidence": {
+    "G00": {
+      "forcing": "BOTTOM_HEAD_FALL steps 1-24; BOTTOM_HEAD_RISE steps 25-64; HOLD thereafter",
+      "events": [
+        {
+          "step": 25,
+          "from_sign": 1,
+          "to_sign": -1,
+          "terminal_bottom_flux_cm_per_day": -3.205391861992031
+        },
+        {
+          "step": 57,
+          "from_sign": -1,
+          "to_sign": 1,
+          "terminal_bottom_flux_cm_per_day": 0.04408366774652395
+        }
+      ],
+      "historical_ROMV_full_order_second_reversal_step": 57,
+      "historical_failed_reduced_second_reversal_step": 38,
+      "interpretation": "The current-canonical Reference replay independently reproduces the historical full-order second reversal at step 57; the old reduced-dynamics timing failure therefore remains a useful adversarial control."
+    },
+    "G03": {
+      "events": [
+        {
+          "step": 257,
+          "from_sign": 1,
+          "to_sign": -1,
+          "terminal_bottom_flux_cm_per_day": -1.32770519938569
+        },
+        {
+          "step": 260,
+          "from_sign": -1,
+          "to_sign": 1,
+          "terminal_bottom_flux_cm_per_day": 0.5403188061389805
+        }
+      ]
+    },
+    "G04": {
+      "events": [
+        {
+          "step": 19,
+          "from_sign": -1,
+          "to_sign": 1,
+          "terminal_bottom_flux_cm_per_day": 0.007087717540942062
+        }
+      ]
+    },
+    "G05": {
+      "events": [
+        {
+          "step": 257,
+          "from_sign": -1,
+          "to_sign": 1,
+          "terminal_bottom_flux_cm_per_day": 0.6134201392802247
+        }
+      ]
+    }
+  },
+  "bottom_flux_ranges_cm_per_day": {
+    "G00": [
+      -3.205391861992031,
+      9.639166448200138
+    ],
+    "G01": [
+      0.6134201392802247,
+      0.6134201392802247
+    ],
+    "G02": [
+      3.9239980890384993,
+      3.9239980890384993
+    ],
+    "G03": [
+      -1.32770519938569,
+      17.826690775952574
+    ],
+    "G04": [
+      -1.7912069388889407,
+      19.695952171491616
+    ],
+    "G05": [
+      -1.3416455320897889,
+      5.18351553987056
+    ]
+  },
+  "scientific_disposition": {
+    "reference_reachability": "QUALIFIED",
+    "state_sufficiency": "NOT_YET_ADJUDICATED",
+    "lare_dynamics": "NOT_EXECUTED",
+    "purpose_acceptance": "NOT_YET_ADJUDICATED",
+    "note": "Stage A creates the full-order evidence base only. No reduced representation or LARE closure is admitted by this result."
+  },
+  "production_rom_authorized": false
+}
