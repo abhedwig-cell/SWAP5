@@ -1,0 +1,19 @@
+name: NUM-UNC P0A0 stress locator
+
+on:
+  pull_request:
+    paths:
+      - 'integration/num-unc/**'
+      - 'tests/num_unc/**'
+      - '.github/workflows/num-unc-p0a0.yml'
+  workflow_dispatch:
+
+jobs:
+  p0a0-locator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run N0-only P0A0 drought-stress locator
+        run: bash tests/num_unc/run_num_unc_p0a0_stress_locator.sh
