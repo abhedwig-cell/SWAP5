@@ -5,7 +5,7 @@ cd "$ROOT"
 
 BASE=e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
 PREREG=integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json
-PREREG_BLOB=188d4912875b58cd8a31dcdd6f256b868e648166
+PREREG_BLOB=b36e5ad7ab2a3f952b264598ecf632cf502adaf3
 D24_PREREG=integration/f-rom/F-ROMV2_D24_PREREGISTRATION.json
 ORACLE=tests/rom/oracle_f_romv2_d25_fmc.py
 FMC_SRC=tests/rom/test_f_romv2_d25_fmc_compiled.f90
