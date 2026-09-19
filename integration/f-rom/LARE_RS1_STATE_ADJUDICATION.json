@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.lare.rs1.state-adjudication.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-STATE-CLOSE",
+  "status": "STATE_INFORMATION_PHASE_CLOSED_FOR_FIRST_DYNAMICS_EXPERIMENT",
+  "authority": {
+    "canonical_start": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "p1_result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+    "p1_blob_sha": "24ba05a72c1d188c148102f51af7c759c1743f3b",
+    "p2_result": "integration/f-rom/LARE_RS1_GW_P2_RESULT.json",
+    "p2_blob_sha": "84c7b4a6b830859e950ae84d6c86afd1c7089a9d",
+    "p2c_result": "integration/f-rom/LARE_RS1_GW_P2C_RESULT.json",
+    "p2c_blob_sha": "4ac87662c4df69cf09ce6d620a6312739dd9e3ab"
+  },
+  "decisions": {
+    "primary_dynamics_state": {
+      "id": "D3",
+      "depth_boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "layer_thickness_cm": [
+        140,
+        10,
+        10
+      ],
+      "dimension": 3,
+      "disposition": "AUTHORIZE_RESEARCH_DYNAMICS_COMPARISON",
+      "rationale": [
+        "smallest formal P1 representation with zero 1x reduction-induced collisions in the 6144-state Stage-A library",
+        "zero reduction-induced aliases at 1x in the common 41-state P2C cohort",
+        "at 2x, fewer aliases and no worse declared common-cohort purpose-vector components than the uniform U4/U8 controls",
+        "D4 provides no P2C response or alias benefit over D3 at 2x or 4x and only nine fewer global P1 collisions at 4x"
+      ]
+    },
+    "aggressive_challenge_state": {
+      "id": "D2",
+      "depth_boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "layer_thickness_cm": [
+        150,
+        10
+      ],
+      "dimension": 2,
+      "disposition": "AUTHORIZE_AS_AGGRESSIVE_CHALLENGE_NOT_AS_SUFFICIENT_STATE",
+      "rationale": [
+        "retains 7988 formal 1x collisions in the complete Stage-A library and 45 reduction-induced aliases in the P2C common cohort at 1x",
+        "at 1x P2C it has no reversal-sequence mismatch but measurable GW-D and GW-R ambiguity",
+        "it tests whether a purpose-specific reduced dynamics can remain useful despite state non-injectivity"
+      ]
+    },
+    "robustness_control": {
+      "id": "D4",
+      "depth_boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "layer_thickness_cm": [
+        130,
+        10,
+        10,
+        10
+      ],
+      "dimension": 4,
+      "disposition": "CONTROL_ONLY_FOR_FIRST_DYNAMICS_STAGE",
+      "rationale": [
+        "formal P1 4x collision minimum is only nine pairs lower than D3",
+        "P2C D3 and D4 are identical on tested alias counts and response maxima at 2x and 4x",
+        "no demonstrated first-stage hydrological information gain justifies the extra state"
+      ]
+    },
+    "higher_dimensions": {
+      "ids": [
+        "D5",
+        "D6",
+        "D7",
+        "D8",
+        "D9",
+        "D10"
+      ],
+      "disposition": "NOT_AUTHORIZED_FOR_FIRST_DYNAMICS_STAGE",
+      "rationale": "no formal P1 collision-count improvement over D4 at any preregistered radius"
+    }
+  },
+  "key_common_cohort_evidence": {
+    "cohort_states": 41,
+    "cross_history_pairs": 480,
+    "full_state_diagnostic_pairs": 477,
+    "radius_1x": {
+      "D2": {
+        "alias_pairs": 45,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.023988149434565287,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 0.3018332707949156,
+        "gw_d_reversal_sequence_mismatch_count": 0,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.03079622571087315
+      },
+      "D3": {
+        "alias_pairs": 0
+      },
+      "D4": {
+        "alias_pairs": 0
+      },
+      "U4": {
+        "alias_pairs": 137,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.021214725702876025,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 1.506414198368942,
+        "gw_d_reversal_sequence_mismatch_count": 64,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.02052788847918041
+      },
+      "U8": {
+        "alias_pairs": 71,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.01204464062802657,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 0.9904136485161512,
+        "gw_d_reversal_sequence_mismatch_count": 50,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.011457591165886072
+      }
+    },
+    "radius_2x": {
+      "D3": {
+        "alias_pairs": 58,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "gw_d_reversal_sequence_mismatch_count": 0,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.019483392924883436
+      },
+      "D4": {
+        "alias_pairs": 58,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "gw_d_reversal_sequence_mismatch_count": 0,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.019483392924883436
+      },
+      "U4": {
+        "alias_pairs": 201,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.04034696594209142,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 1.9646941384543481,
+        "gw_d_reversal_sequence_mismatch_count": 104,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.044516999819508296
+      },
+      "U8": {
+        "alias_pairs": 139,
+        "gw_d_max_cumulative_bottom_exchange_cm": 0.021214725702876025,
+        "gw_d_max_terminal_bottom_flux_cm_per_day": 1.506414198368942,
+        "gw_d_reversal_sequence_mismatch_count": 64,
+        "gw_r_max_one_day_bottom_exchange_cm": 0.02257024008610431
+      }
+    }
+  },
+  "scientific_interpretation": [
+    "The first dynamics experiment should test D3, not D4, because the extra D4 state has not demonstrated useful additional information.",
+    "D2 remains scientifically valuable because purpose-dependent usefulness may survive formal state aliasing; it is a challenge case, not a sufficient-state claim.",
+    "Uniform vertical coarsening is not an adequate substitute for information-aware layer placement in this synthetic groundwater laboratory.",
+    "State separation is necessary evidence for some claims but is not by itself a dynamics or application-fidelity result.",
+    "The active lower-column geometry is specific to the B01 Stage-A forcing laboratory and must not be transferred unchanged to Hupsel."
+  ],
+  "next_authorized_step": "LARE_DYN0A_FIXED_LAYER_FREE_DRAINAGE",
+  "absolute_application_acceptance_adjudicated": false,
+  "lare_dynamics_executed": false,
+  "production_rom_authorized": false
+}
