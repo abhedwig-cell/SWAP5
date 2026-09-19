@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.f-romv2-d20.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D20",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d20-hourly-persistence",
+    "pull_request": 462,
+    "pull_request_merged": false,
+    "stage1_run": 35460196880,
+    "stage1_artifact_id": 10589358371,
+    "stage1_artifact_digest": "sha256:0149f5fd61d9208c89c45b838662ae31a25d1c66717e3d5ec0ac557526885204",
+    "stage2_run": 35460468883,
+    "stage2_job": 105943287019,
+    "stage2_head": "aa565fd60a3db0dd93253559594479e4f4fc7687",
+    "stage2_artifact_id": 10589368773,
+    "stage2_artifact_digest": "sha256:01ced1ca2bafd794fc966a3a5b8d883bbb48adcb4090b696fd3abad3fe294250",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "af1cf1bd4ad8073fb6b9aade554f8ab72c2cbef7",
+    "stage2_authorization_blob": "d5ccb341ab0f836ac5f7d8504c955a50cdd25a61",
+    "raw_result_sha256": "dbbd89fa075504ef7dc8e8b820ef39c8a811225165bfbd6950aa00b4253b289b",
+    "raw_preflight_sha256": "30e0d2bc71a73ef3c7945d61f5f89cc8b84c120b3652ba87fc84164aec391ccf",
+    "analyzer_stdout_sha256": "22788257fa0cd5c5c94c1a9bc0e15ca3395ddc9505a11575669baef0a8d927db",
+    "R16_o0_o2_sha256": "f1301d55f1f548833b9a7a0461491336a2c97c651abf22ba5f00231ac3361914",
+    "R2_o0_o2_sha256": "9333c589d39fa9f7e41b8f256a037c9061f03722565c197e6b398ca801eb2dfc"
+  },
+  "technical_attempts": [
+    {
+      "workflow_run": 35460411554,
+      "artifact_id": 10588683696,
+      "classification": "COMPILE_ONLY_NO_SCIENTIFIC_TRAJECTORY_EXPOSURE",
+      "scientific_design_changed": false
+    }
+  ],
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D20_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D20_STAGE2_AUTHORIZATION.json",
+    "integration/f-rom/F-ROMV2_D20_RESULT.json",
+    "integration/f-rom/F-ROMV2_D20_STATUS.json",
+    "integration/f-rom/F-ROMV2_D20_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D20_ONE_HOUR_PERSISTENCE_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d20_hourly_persistence.py",
+    "tests/rom/test_f_romv2_d20_hourly_persistence_comparators.f90",
+    "tests/rom/analyze_f_romv2_d20_hourly_persistence.py",
+    "tests/rom/run_f_romv2_d20_hourly_persistence.sh",
+    ".github/workflows/f-romv2-d20-hourly-preflight.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_parameter_or_gate_retuning_after_exposure": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}
