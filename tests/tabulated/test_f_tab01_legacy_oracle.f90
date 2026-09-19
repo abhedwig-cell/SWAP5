@@ -68,8 +68,8 @@ contains
     real(real64) :: c_h_at_max_active, c_ref_at_max_active, c_q_at_max_active
     real(real64) :: theta_self_max_rel, k_self_max_rel
     real(real64) :: hp, hm, tp, tm, kp, km, c_fd, dk_fd, eps
-    real(real64) :: denom, prev_theta, prev_k
-    integer :: i, q, j, node, theta_iter, k_iter, theta_invalid, k_invalid
+    real(real64) :: denom, prev_theta, prev_k, probes(10)
+    integer :: i, q, j, node, theta_iter, k_iter, theta_invalid, k_invalid, ip
     integer :: theta_monotonic_violations, k_monotonic_violations
 
     node = 1
@@ -260,6 +260,18 @@ contains
       ' C_wet_max_rel=',c_wet_max_rel,' h_at_max=',c_wet_h_at_max
     write(*,'(A,I0,A,I0,A,ES14.6,A,ES14.6,A,ES14.6)') 'F_TAB01_C_WET_CROSS n=',n,' grid=',grid_mode, &
       ' h_1pct=',c_wet_cross_1pct,' h_10pct=',c_wet_cross_10pct,' h_50pct=',c_wet_cross_50pct
+
+    if (n == 400 .and. grid_mode == 2) then
+       probes = [-9.0e-3_real64, -5.0e-3_real64, -1.0e-3_real64, -1.0e-4_real64, -1.0e-5_real64, &
+                 -1.0e-6_real64, -1.0e-7_real64, -1.0e-8_real64, -2.0e-9_real64, -1.1e-9_real64]
+       do ip = 1, size(probes)
+          hq = probes(ip)
+          call EvalTabulatedFunction(0,n,1,2,4,node,sptab,ientrytab,hq,dummy,c_q,3)
+          c_ref_q = capacity_reference_raw(hq)
+          write(*,'(A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') 'F_TAB01_C_PROBE h=',hq, &
+            ' Cref=',c_ref_q,' Ctab=',c_q,' rel=',abs(c_q-c_ref_q)/c_ref_q
+       end do
+    end if
 
     write(*,'(A,I0,A,I0,A,I0,A,I0)') 'F_TAB01_MONOTONIC n=',n,' grid=',grid_mode, &
       ' theta_violations=',theta_monotonic_violations,' K_violations=',k_monotonic_violations
