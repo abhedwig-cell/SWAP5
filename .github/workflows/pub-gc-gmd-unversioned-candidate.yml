@@ -7,7 +7,6 @@ on:
     paths:
       - 'release/pub-gc-gmd/**'
       - '.github/workflows/pub-gc-gmd-unversioned-candidate.yml'
-      - 'docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md'
   workflow_dispatch:
 
 permissions:
@@ -26,4 +25,5 @@ jobs:
       - name: Validate unversioned GMD publication candidate
         env:
           PUB_GC_CANDIDATE_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUB_GC_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: python release/pub-gc-gmd/validate_unversioned_candidate.py

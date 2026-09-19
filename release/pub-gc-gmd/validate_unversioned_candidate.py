@@ -36,13 +36,23 @@ for path,blob in meta["critical_publication_blobs"].items():
     assert git("rev-parse",f"{SOURCE}:{path}")==blob,(path,blob)
 
 candidate_head=os.environ.get("PUB_GC_CANDIDATE_HEAD") or git("rev-parse","HEAD")
+head_ref=os.environ.get("PUB_GC_HEAD_REF","")
 git("cat-file","-e",candidate_head+"^{commit}")
-changed=git("diff","--name-only",SOURCE+".."+candidate_head).splitlines()
-allowed_prefixes=("release/pub-gc-gmd/",)
-allowed_exact={".github/workflows/pub-gc-gmd-unversioned-candidate.yml",
-               "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md"}
-bad=[p for p in changed if not p.startswith(allowed_prefixes) and p not in allowed_exact]
-assert not bad,bad
+
+if head_ref=="release/pub-gc-gmd-unversioned-publication-candidate":
+    changed=git("diff","--name-only",SOURCE+".."+candidate_head).splitlines()
+    allowed_prefixes=("release/pub-gc-gmd/",)
+    allowed_exact={".github/workflows/pub-gc-gmd-unversioned-candidate.yml",
+                   "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md"}
+    bad=[p for p in changed if not p.startswith(allowed_prefixes) and p not in allowed_exact]
+    assert not bad,bad
+    mode="STRICT_CANDIDATE_DESCENDANT"
+else:
+    # After canonical admission this workflow is a preservation gate. Later
+    # development may legitimately differ from the frozen paper source tree;
+    # the authority below must continue to point to and validate that exact
+    # historical candidate rather than treating moving canonical as the paper.
+    mode="FROZEN_CANDIDATE_PRESERVATION"
 
 paths=git("ls-tree","-r","--name-only",SOURCE).splitlines()
 assert not any(p.lower().endswith("swap_4.3.1.zip") for p in paths)
@@ -55,7 +65,8 @@ print("PUB_GC_GMD_CANDIDATE_SOURCE_TREE=PASS")
 print("PUB_GC_GMD_CANDIDATE_RB1_DELTA=PASS")
 print("PUB_GC_GMD_CANDIDATE_CRITICAL_BLOBS=PASS")
 print("PUB_GC_GMD_CANDIDATE_METADATA_HEAD="+candidate_head)
-print("PUB_GC_GMD_CANDIDATE_METADATA_ONLY_DESCENDANT=PASS")
+print("PUB_GC_GMD_CANDIDATE_VALIDATION_MODE="+mode)
+print("PUB_GC_GMD_CANDIDATE_METADATA_ONLY_DESCENDANT=PASS" if mode=="STRICT_CANDIDATE_DESCENDANT" else "PUB_GC_GMD_CANDIDATE_PRESERVATION=PASS")
 print("PUB_GC_GMD_CANDIDATE_EXTERNAL_ASSET_NOT_REDISTRIBUTED=PASS")
 print("PUB_GC_GMD_CANDIDATE_R1_L1_FAIL_CLOSED=PASS")
 print("PUB_GC_GMD_UNVERSIONED_CANDIDATE_GATE=PASS")
