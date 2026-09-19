@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.lare.dyn0a.mech2b.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH2B",
+  "decision": "SCALING_TRANSFER_PARTIAL",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json",
+    "workflow_run": 35448522522,
+    "artifact_id": 10585857746,
+    "artifact_digest": "sha256:f67b65702e8dbab10ab29c3bc15755cf607bb15b555fe06380a1910c020864f7",
+    "executed_head": "3b3f503f61e54563222ee76fcf2c02cc4b01a782",
+    "conclusion": "success",
+    "exact_result_sha256": "ed9f362bf6787cc1444a3d628b4d8b413297ce10f4e2d6c6e24ae28374943d06"
+  },
+  "frozen_B01_peak_lambda_band": [
+    2.327966349213156,
+    2.909957936516445
+  ],
+  "blind_predictions": {
+    "Se065": {
+      "predicted_peak_L_cm": 10,
+      "qualification": "LEFT_CENSORED_BY_10CM_LADDER"
+    },
+    "Se085": {
+      "predicted_peak_L_cm": 10,
+      "predicted_lambda": 2.596080189472635,
+      "qualification": "DIRECT_BAND_HIT"
+    },
+    "Se095": {
+      "predicted_peak_L_cm": 20,
+      "predicted_lambda": 2.835402046941639,
+      "qualification": "DIRECT_BAND_HIT"
+    }
+  },
+  "observed_B14_peaks": [
+    {
+      "se0": 0.65,
+      "forcing": "WET",
+      "L_cm": 20,
+      "lambda_pulse": 11.263703529633236,
+      "rms_flux_error_cm_per_day": 0.000004565473794383873,
+      "prediction_pass": false
+    },
+    {
+      "se0": 0.65,
+      "forcing": "DRY",
+      "L_cm": 20,
+      "lambda_pulse": 11.263703529633236,
+      "rms_flux_error_cm_per_day": 0.000004565299346958279,
+      "prediction_pass": false
+    },
+    {
+      "se0": 0.85,
+      "forcing": "WET",
+      "L_cm": 20,
+      "lambda_pulse": 5.191659998914896,
+      "rms_flux_error_cm_per_day": 0.000257277435587735,
+      "prediction_pass": false
+    },
+    {
+      "se0": 0.85,
+      "forcing": "DRY",
+      "L_cm": 20,
+      "lambda_pulse": 5.191659998914896,
+      "rms_flux_error_cm_per_day": 0.0002570963950800475,
+      "prediction_pass": false
+    },
+    {
+      "se0": 0.95,
+      "forcing": "WET",
+      "L_cm": 20,
+      "lambda_pulse": 2.8354035308671532,
+      "rms_flux_error_cm_per_day": 0.0026983139277945182,
+      "prediction_pass": true
+    },
+    {
+      "se0": 0.95,
+      "forcing": "DRY",
+      "L_cm": 20,
+      "lambda_pulse": 2.8354035308671532,
+      "rms_flux_error_cm_per_day": 0.0026903918400029213,
+      "prediction_pass": true
+    }
+  ],
+  "observed_B14_peak_lambda_band": [
+    2.8354035308671532,
+    11.263703529633236
+  ],
+  "anchor_prediction_pass": {
+    "Se065": false,
+    "Se085": false,
+    "Se095": true
+  },
+  "scientific_interpretation": [
+    "The initial-state local diffusion length sqrt((K0/C0)*T_pulse) is not a material-general predictor of the standard-LARE interface-error peak.",
+    "The frozen B01 lambda band transfers only at the wettest B14 anchor Se0=0.95.",
+    "At Se0=0.65 and 0.85 the B14 peak occurs at L=20 cm, giving lambda values far above the B01 band.",
+    "Because the B14 ladder, material and B01 band were frozen prospectively, the partial transfer is a genuine falsification of the simple universal initial-state diffusivity scaling hypothesis rather than a tuning result.",
+    "A next mechanism hypothesis must account for nonlinear transient hydraulic diffusivity or an integrated/sorptivity-type penetration scale; no B14 refit of the B01 band is authorized."
+  ],
+  "blocked_required_cases": [],
+  "application_acceptance_adjudicated": false,
+  "cross_material_generality_claimed": false,
+  "production_rom_authorized": false
+}
