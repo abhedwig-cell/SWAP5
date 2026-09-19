@@ -1,6 +1,6 @@
 program test_difficulty_p0c_replay
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, soil_water_solve_result_t
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, reference_richards_legacy_workspace_t
   use mod_rossfast_d3r_soil_water_solver, only: rossfast_d3r_soil_water_solver_t, rossfast_d3r_soil_water_workspace_t
   use mod_rossfast_d3r_model_binding, only: rossfast_d3r_material_t, rossfast_d3r_material_from_id, &
@@ -52,13 +52,17 @@ program test_difficulty_p0c_replay
 
   ! A then B.
   call difficulty_replay_one(rs,rw,req,tmpl_r,rr1,r1)
+  call require(r1%status==SW_SOLVE_CONVERGED,'reference A-B converged')
   call difficulty_replay_one(as,aw,req,tmpl_a,aa1,a1)
+  call require(a1%status==SW_SOLVE_CONVERGED,'alternative A-B converged')
   call require(all(req%base_state%pressure_head==source_h).and.all(req%base_state%water_content==source_t),'source immutable A-B')
 
   ! Reinitialize solver-owned alternative workspace/solver, then B then A.
   call as%initialize('assets/rossfast/d3r','B01',initialized,status); call require(initialized,'ross init')
   call difficulty_replay_one(as,aw,req,tmpl_a,aa2,a2)
+  call require(a2%status==SW_SOLVE_CONVERGED,'alternative B-A converged')
   call difficulty_replay_one(rs,rw,req,tmpl_r,rr2,r2)
+  call require(r2%status==SW_SOLVE_CONVERGED,'reference B-A converged')
 
   call require(all(req%base_state%pressure_head==source_h).and.all(req%base_state%water_content==source_t),'source immutable B-A')
   call require(all(rr1%pre%pressure_head==rr2%pre%pressure_head).and.all(aa1%pre%pressure_head==aa2%pre%pressure_head),'identical pretrial records')
