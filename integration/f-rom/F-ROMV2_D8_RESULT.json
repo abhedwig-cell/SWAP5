@@ -1,0 +1,164 @@
+{
+  "schema": "swap5.f-romv2-d8.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D8",
+  "decision": "QS2_COMPOSITE_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+  "adjudication": "DYNAMIC_TWO_SEGMENT_COMPOSITE_IMPROVES_QS1_BUT_REMAINS_DOMINATED_BY_R2",
+  "execution": {
+    "workflow_run": 35448009892,
+    "workflow_job": 105910200873,
+    "executed_head": "efe098fcb2a51926fb92c37a60ebd52446a4d598",
+    "execution_pull_request": 431,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10585551503,
+    "artifact_digest": "sha256:5b24db1d8fb089fa20bd4418d822856eb3cebdb4653930faacabe2912c77564d",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "b26c7e8920b57e8c07994bbc2037e005ea85175ceb9bf8864efaab325a1e249e",
+    "result_sha256": "6fb44f6f3db281f50210e51c09f19ea6953e8f23b61eb7018bd51e6e91e6cea3",
+    "R16_o0_sha256": "e74c3e565c4c4f30c414102f09c6b24d746ea49e4e512d410aeb46641a4fc5fe",
+    "R16_o2_sha256": "e74c3e565c4c4f30c414102f09c6b24d746ea49e4e512d410aeb46641a4fc5fe",
+    "analyzer_sha256": "f8cf5976a7339f7f3247f46bcd2f48549f2fb0a3c76a9bc189bba7244a143dce",
+    "preflight_stdout_sha256": "9eaeffed50bf856e6d8ffe002077b18ed2d0b1d53e91de0d5e0f724696b2249d",
+    "R16_O0_O2_identity": true
+  },
+  "preflight": {
+    "decision": "D8_QS2_COMPOSITE_PREFLIGHT_PASS",
+    "trajectory_evidence_consumed": false,
+    "synthetic_case_count": 15,
+    "all_synthetic_cases_pass": true,
+    "equilibrium_control_pass": true,
+    "post_preflight_search_or_equation_retuning_authorized": false
+  },
+  "candidate": {
+    "id": "QS2_COMPOSITE",
+    "dynamic_state_dimension": 2,
+    "dynamic_state": [
+      "upper_0_80_storage_cm",
+      "lower_80_160_storage_cm"
+    ],
+    "segment_depth_cm": 80,
+    "training_required": false,
+    "calibration_required": false,
+    "nonlinear_Richards_time_step_required": false,
+    "full_order_fallback": false,
+    "clipping_used": false,
+    "adaptive_dynamic_substeps_used": false,
+    "hidden_mass_correction": false
+  },
+  "integrity": {
+    "pass": true,
+    "failure": null,
+    "max_abs_transaction_mass_residual_cm": 3.3115871156397247e-15,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "pooled": {
+    "total_storage_rmse_cm": 0.04407019187823081,
+    "cumulative_bottom_exchange_rmse_cm": 0.04407019187823241,
+    "terminal_bottom_flux_rmse_cm_per_day": 3.1804460282470153,
+    "bottom_flux_sign_error_count": 136,
+    "history_reversal_sequence_mismatch_count": 8,
+    "upper_storage_rmse_cm": 0.0015160879968205893,
+    "lower_storage_rmse_cm": 0.04263720901781713
+  },
+  "comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8
+    },
+    "QS1_D7": {
+      "total_storage_rmse_cm": 0.04733753360033441,
+      "cumulative_bottom_exchange_rmse_cm": 0.04733753360033365,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.344448287196304,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8
+    },
+    "L2_IMC_D5": {
+      "total_storage_rmse_cm": 0.05164492935964347,
+      "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933,
+      "bottom_flux_sign_error_count": 136,
+      "history_reversal_sequence_mismatch_count": 8
+    }
+  },
+  "comparative_interpretation": {
+    "QS2_improves_over_QS1_balance": true,
+    "QS2_improves_over_QS1_bottom_flux_magnitude": true,
+    "QS2_improves_over_D5_balance": true,
+    "QS2_improves_over_D5_bottom_flux_magnitude": true,
+    "QS2_improves_over_R2_balance": false,
+    "QS2_improves_over_R2_transient": false,
+    "balance_view_pass": false,
+    "transient_view_pass": false,
+    "retained": false,
+    "statement": "Adding independent dynamic upper/lower storage materially improves the quasi-steady family, especially upper-zone storage, but the remaining lower-zone storage/groundwater-exchange error keeps QS2 behind R2."
+  },
+  "selected_history_findings": {
+    "D03": {
+      "cumulative_bottom_exchange_rmse_cm": 0.09559255,
+      "terminal_bottom_flux_rmse_cm_per_day": 2.9500053,
+      "bottom_flux_sign_errors": 18,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": 3.6223
+    },
+    "D06": {
+      "cumulative_bottom_exchange_rmse_cm": 0.0516777,
+      "terminal_bottom_flux_rmse_cm_per_day": 5.05924,
+      "bottom_flux_sign_errors": 18,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": -0.198485
+    },
+    "V01": {
+      "cumulative_bottom_exchange_rmse_cm": 0.0178634,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.81754,
+      "bottom_flux_sign_errors": 16,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": -0.05232
+    },
+    "V02": {
+      "cumulative_bottom_exchange_rmse_cm": 0.033374,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.41169,
+      "bottom_flux_sign_errors": 20,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": 0.25188
+    },
+    "V03": {
+      "cumulative_bottom_exchange_rmse_cm": 0.0089104,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.81213,
+      "bottom_flux_sign_errors": 16,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": -0.03186
+    },
+    "V04": {
+      "cumulative_bottom_exchange_rmse_cm": 0.0310734,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.77853,
+      "bottom_flux_sign_errors": 16,
+      "reversal_mismatch": true,
+      "relative_final_cumulative_bottom_exchange_error": -0.09067
+    }
+  },
+  "physical_diagnosis": {
+    "upper_zone_memory": "Largely recovered: pooled upper-storage RMSE drops to about 0.00152 cm.",
+    "lower_zone_memory": "Still limiting: pooled lower-storage RMSE remains about 0.04264 cm and dominates total-storage error.",
+    "implication": "A two-segment quasi-steady composite improves monotonically over D5 and D7 but still lacks sufficient lower-zone transient memory. Further segmentation is plausible but should not be invented before reconciling the published two-layer integrated-Richards literature."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_RETAINED_AGAINST_R2_DEVELOPMENT_FRONTIER; improved versus D5/QS1 but no application acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_QUALIFIED; lower-boundary magnitude/sign/reversal fidelity remains behind R2.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "next": [
+    "CLOSE_QS2_COMPOSITE_WITHOUT_SEGMENT_OR_EQUATION_RETUNING",
+    "DO_NOT_TABULATE_QS2_FOR_PERFORMANCE",
+    "RECONCILE_PUBLISHED_TWO_LAYER_INTEGRATED_RICHARDS_FORMULATION_BEFORE_INVENTING_QS3",
+    "RETAIN_R2_R4_R8_AS_PHYSICAL_REDUCTION_COMPARATORS",
+    "PRESERVE_PURPOSE_DEPENDENT_ACCEPTANCE_AND_COST_FIDELITY_FRONTIER"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}
