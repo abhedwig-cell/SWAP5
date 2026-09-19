@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "\${BASH_SOURCE[0]}")/../.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="\${RUNNER_TEMP:-\${TMPDIR:-/tmp}}/swap5-hmcap01-a-\${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-hmcap01-a-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "HMCAP01_A_FAIL $*" >&2; exit 61; }
@@ -103,13 +103,13 @@ run_one(){
   mkdir -p "$out"
   local objects=()
   local source obj
-  for source in "\${MODULE_SRC[@]}"; do
-    obj="$out/$(basename "\${source%.*}").o"
-    gfortran "\${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj" || fail "compile $source O$opt"
+  for source in "${MODULE_SRC[@]}"; do
+    obj="$out/$(basename "${source%.*}").o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$source" -o "$obj" || fail "compile $source O$opt"
     objects+=("$obj")
   done
-  gfortran "\${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c tests/research/test_hydro_memory_cap01_root_active_response.f90 -o "$out/test.o" || fail "compile CAP01 test O$opt"
-  gfortran -fopenmp -O"$opt" "\${objects[@]}" "$out/test.o" -o "$out/test" || fail "link CAP01 test O$opt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c tests/research/test_hydro_memory_cap01_root_active_response.f90 -o "$out/test.o" || fail "compile CAP01 test O$opt"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$out/test.o" -o "$out/test" || fail "link CAP01 test O$opt"
   "$out/test" > "$out/output.txt" 2>&1 || { cat "$out/output.txt" >&2; fail "run CAP01 test O$opt"; }
 }
 
