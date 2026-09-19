@@ -77,12 +77,18 @@ def frontier(rows,axes):
 
 def main():
     ap=argparse.ArgumentParser()
-    for g in GEOMS: ap.add_argument("--"+g.lower(),required=True)
+    ap.add_argument("--r16",required=True)
+    for g in ("R8","R4","R2"): ap.add_argument("--"+g.lower())
+    ap.add_argument("--status",required=True)
     ap.add_argument("--prereg",required=True); ap.add_argument("--output",required=True)
     a=ap.parse_args()
-    runs={g:parse(getattr(a,g.lower())) for g in GEOMS}
-    for g,n in GEOMS.items():
-        if runs[g]["n"]!=n: raise SystemExit(f"{g} node mismatch")
+    runs={"R16":parse(a.r16)}
+    for g in ("R8","R4","R2"):
+        path=getattr(a,g.lower())
+        if path: runs[g]=parse(path)
+    for g,run in runs.items():
+        if run["n"]!=GEOMS[g]: raise SystemExit(f"{g} node mismatch")
+    status=json.loads(pathlib.Path(a.status).read_text())
     ref=runs["R16"]
 
     integrity={}
@@ -101,6 +107,7 @@ def main():
     results={}
     pooled={}
     for g in ("R8","R4","R2"):
+        if g not in runs: continue
         run=runs[g]
         all_storage=[]; all_upper=[]; all_lower=[]; all_cum=[]; all_q=[]; all_th=[]; all_h=[]
         byhist={}
@@ -162,7 +169,7 @@ def main():
     balance_frontier=frontier(proxy_rows,["nodes","storage","bottom"])
     transient_frontier=frontier(proxy_rows,["nodes","q","sign"])
     solverwork_balance_frontier=frontier(proxy_rows,["nl","storage","bottom"])
-    surviving=[g for g in ("R8","R4","R2") if integrity[g]["pass"] and
+    surviving=[g for g in ("R8","R4","R2") if g in integrity and integrity[g]["pass"] and
                (g in balance_frontier or g in transient_frontier or g in solverwork_balance_frontier)]
     decision="COARSE_RICHARDS_REMAINS_SERIOUS_PHYSICAL_REDUCTION_CANDIDATE" if surviving else "COARSE_RICHARDS_NOT_COMPETITIVE_IN_TESTED_B01_DEVELOPMENT_DOMAIN"
     out={
@@ -174,6 +181,8 @@ def main():
                                             "total_backtracking_attempts":ref_back,
                                             "research_reference_fallback_count":ref_fb}},
       "candidates":results,
+      "geometry_execution_status":status,
+      "failed_candidates":{g:status["geometries"][g] for g in ("R8","R4","R2") if status["geometries"][g]["scientific_status"]!="COMPLETE"},
       "frontiers":{"structural_balance_nodes_storage_bottom":balance_frontier,
                    "structural_transient_nodes_q_sign":transient_frontier,
                    "solverwork_balance_nonlinear_iterations_storage_bottom":solverwork_balance_frontier,
@@ -185,7 +194,7 @@ def main():
     print(json.dumps({"decision":decision,"frontiers":out["frontiers"],
                       "reference":out["reference"],"candidate_pooled":{g:results[g]["pooled"] for g in results},
                       "candidate_proxies":{g:results[g]["computational_proxies"] for g in results}},sort_keys=True))
-    return 0 if all(x["pass"] for x in integrity.values()) else 2
+    return 0 if integrity["R16"]["pass"] else 2
 
 if __name__=="__main__":
     raise SystemExit(main())
