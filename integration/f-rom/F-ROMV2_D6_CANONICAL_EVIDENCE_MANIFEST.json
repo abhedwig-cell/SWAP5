@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.f-romv2-d6.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D6",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d6-quasi-steady-manifold",
+    "pull_request": 426,
+    "pull_request_merged": false,
+    "head": "e979ff99045166b645be72a6ece09afba2066e5d",
+    "workflow_run": 35446115430,
+    "workflow_job": 105905207753,
+    "artifact_id": 10585064118,
+    "artifact_digest": "sha256:4177cc02c7cb542f546f3b6969fdc68b743770cf2a45751753d3112677ce6588",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preflight_result_sha256": "fb827152dec40c8f0081f6f4cd9e188aa47bf4f916e5d4c754437b453548ce7a",
+    "preflight_stdout_sha256": "0017c03bf6ad57d813f2e2c61465de99204a2d9bb11654863d24f540a2fa89ab"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D6_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D6_RESULT.json",
+    "integration/f-rom/F-ROMV2_D6_STATUS.json",
+    "integration/f-rom/F-ROMV2_D6_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D6_MANIFOLD_PREFLIGHT_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d6_quasi_steady_manifold.py",
+    ".github/workflows/f-romv2-d6-quasi-steady-preflight.yml",
+    "raw workflow artifact payload"
+  ],
+  "trajectory_evidence_consumed": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_bracket_retuning": false,
+  "production_rom_authorized": false
+}

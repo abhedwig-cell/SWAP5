@@ -1,0 +1,206 @@
+{
+  "schema": "swap5.f-romv2-d6.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D6",
+  "title": "Quasi-steady storage-flux manifold hydrological discriminator",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "27b5cc6503ffce104472a150848393c3b5a4f283",
+  "purpose": "Test whether a physics-derived quasi-steady vertical profile manifold can recover the lower-zone storage/groundwater-flux relationship that defeated L2_IMC, before any lookup-table approximation or performance engineering.",
+  "scientific_role": {
+    "class": "DEVELOPMENT_PHYSICAL_MANIFOLD_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_evidence": {
+    "D4": "R8/R4/R2 form an admitted coarse-Richards development fidelity sequence but have weak lower-boundary event fidelity and high reattempt fractions.",
+    "D5": "L2_IMC is stable and mass-conservative but dominated by R2; its pooled upper-storage error is tiny while lower-storage/bottom-flux error dominates.",
+    "implication": "D6 changes the lower-zone closure architecture rather than retuning D5."
+  },
+  "literature_precedent": {
+    "MetaSWAP": "Storage/flux manifolds built from physically resolved unsaturated-zone profiles are precedent for purpose-dependent reduced modeling; no MetaSWAP implementation or calibration table is reused.",
+    "two_layer_integrated": "He et al. 2021/2022 are precedent for layer-integrated conservation and groundwater coupling; D6 is not their two-layer ODE.",
+    "inheritance_boundary": "D6 is a clean-sheet steady-profile manifold defined entirely below."
+  },
+  "scope": {
+    "material": "B01",
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "blind_confirmation": false,
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "total_depth_cm": 160
+  },
+  "constitutive_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "initial_effective_saturation": 0.85
+  },
+  "candidate": {
+    "id": "QS1",
+    "dynamic_state": [
+      "total_storage_cm"
+    ],
+    "dynamic_state_dimension": 1,
+    "profile_state": "not dynamically stored; reconstructed from a steady B01 vertical profile manifold at each stage",
+    "training_required": false,
+    "calibration_required": false,
+    "trajectory_data_used_to_construct_manifold": false,
+    "nonlinear_Richards_time_step_required": false,
+    "full_order_fallback": false,
+    "clipping_allowed": false,
+    "adaptive_dynamic_substepping": false,
+    "hidden_mass_correction": false
+  },
+  "steady_profile_equations": {
+    "coordinate": "x positive downward from surface; auxiliary y=160-x positive upward from bottom",
+    "flux_sign": "q positive downward",
+    "Darcy_relation": "q=K(h)*(1-dh/dx)",
+    "integrated_ODE": "dh/dy=q/K(h)-1; dStorage/dy=theta(h)",
+    "constitutive": "same analytic B01 Van Genuchten/Mualem equations as D5",
+    "profile_depth_cm": 160
+  },
+  "manifold_evaluation": {
+    "numerical_integration": "fixed-step classical RK4 on the steady-profile ODE",
+    "RK4_subintervals": 1024,
+    "dynamic_tuning": false,
+    "prescribed_bottom_head": {
+      "known": "h_bottom",
+      "unknown": "steady downward q",
+      "q_bracket_cm_per_day": "[-Ksat,+Ksat]",
+      "root_method": "bisection",
+      "root_iterations": 100,
+      "residual": "integrated profile storage - requested dynamic storage"
+    },
+    "prescribed_bottom_flux": {
+      "known": "q_bottom=-native prescribed bottom flux",
+      "unknown": "h_bottom",
+      "h_bracket_cm": "[-1e6,-1e-8]",
+      "root_method": "bisection",
+      "root_iterations": 100,
+      "residual": "integrated profile storage - requested dynamic storage"
+    },
+    "root_requirement": "bracket endpoints must be finite and have opposite residual signs or one exact zero; otherwise fail closed",
+    "physical_profile_requirement": "all evaluated h finite and negative; all theta strictly between theta_r and theta_s; all K finite and positive"
+  },
+  "dynamic_update": {
+    "method": "single scalar Heun predictor-corrector per 0.0008-day interval",
+    "derivative": "dS/dt=q_top-q_bottom(S,boundary)",
+    "q_top_mapping": "same native-to-downward-positive mapping frozen in D5",
+    "predictor_gate": "theta_r*160 < S_predictor < theta_s*160",
+    "corrected_gate": "theta_r*160 < S_corrected < theta_s*160",
+    "bottom_exchange_cm": "dt*0.5*(q_bottom_stage1+q_bottom_stage2)",
+    "top_exchange_cm": "-dt*q_top",
+    "transaction_mass_residual_cm": "S_new-S_old+top_exchange+bottom_exchange",
+    "hard_mass_gate_cm": 1e-12,
+    "terminal_bottom_flux": "manifold q_bottom evaluated at S_new",
+    "upper_lower_storage": "integrals of the terminal quasi-steady profile over 0-80 and 80-160 cm"
+  },
+  "seed": {
+    "initial_storage_cm": "160*theta(Se=0.85)",
+    "seed_boundary": "gravity-consistent prescribed q=K(theta0)",
+    "seed_rule": "apply the same scalar Heun update for two seed intervals; exact equilibrium should not drift beyond roundoff"
+  },
+  "hydrological_metrics": [
+    "total-storage error",
+    "upper/lower 80-cm storage error",
+    "cumulative bottom-exchange error",
+    "terminal bottom-flux magnitude error",
+    "bottom-flux sign errors",
+    "reversal-sequence mismatch",
+    "systematic history bias",
+    "mass residual",
+    "root-bracketing/profile failures"
+  ],
+  "computational_boundary": {
+    "hydrological_discriminator_only": true,
+    "online_manifold_root_solves_are_not_a_performance_candidate": true,
+    "formal_speedup_claim": false,
+    "next_if_hydrologically_positive": "Only then preregister offline tabulation/interpolation and same-runtime cost qualification.",
+    "rationale": "Use a deliberately accurate manifold evaluator first so hydrological architecture error is not confounded with table discretization."
+  },
+  "preexisting_comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "D5_L2_IMC": {
+      "total_storage_rmse_cm": 0.05164492935964347,
+      "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    }
+  },
+  "decision_logic": {
+    "integrity_kill": [
+      "root bracket failure",
+      "nonfinite profile/state/flux",
+      "profile pressure head reaches or exceeds zero or leaves finite constitutive domain",
+      "dynamic storage outside open physical bounds",
+      "absolute transaction mass residual >1e-12 cm",
+      "any clipping, adaptive dynamic substep or full-order fallback"
+    ],
+    "positive": "QS1_HYDROLOGICALLY_WORTH_TABULATING",
+    "negative": "QS1_NOT_WORTH_TABULATING_IN_EXPOSED_B01_DOMAIN",
+    "positive_rule": [
+      "all 12 histories complete with integrity",
+      "and QS1 improves on R2 on at least one preregistered fidelity view",
+      "balance view: total-storage RMSE and cumulative-bottom-exchange RMSE both <= R2",
+      "or transient view: terminal bottom-flux RMSE <= R2 and sign-error count <= R2"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "purpose_dependent_boundary": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "D6 can establish architecture candidacy only, not acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "May remain candidate only if bottom-flux behavior improves; actual coupling qualification remains separate.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED by D6.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED."
+  },
+  "successor_logic": {
+    "if_positive": "Preregister a tabulated QS1 manifold with interpolation error controls, then place it on an actual cost-fidelity frontier against R8/R4/R2/RossFast/current Reference.",
+    "if_negative": "Close one-state quasi-steady manifold. The remaining reduced-model direction requires explicit dynamic profile memory/state, not further tuning of QS1.",
+    "if_integrity_fails": "Close QS1 without widening brackets or changing integration after exposure."
+  },
+  "firewalls": [
+    "NO_TRAJECTORY_TRAINING",
+    "NO_POST_RESULT_BRACKET_WIDENING",
+    "NO_POST_RESULT_RK4_REFINEMENT",
+    "NO_POST_RESULT_EQUATION_RETUNING",
+    "NO_CLIPPING",
+    "NO_ADAPTIVE_DYNAMIC_SUBSTEPS",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
