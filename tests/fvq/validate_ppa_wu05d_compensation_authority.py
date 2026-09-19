@@ -29,7 +29,7 @@ def authority():
     req(con["invariants"]["compensation_mass_owner"].startswith("NONE_SEPARATE"),"second mass owner introduced")
     req(con["invariants"]["persistent_physical_state"]=="UNKNOWN_DO_NOT_INFER","persistent state inferred")
     req(con["unresolved_source_trace"]["state"].startswith("BLOCKED_EXACT_B1_11"),"source blocker absent")
-    req(con["corroborating_historical_artifact"]["class"]=="CORROBORATING_LATER_ARTIFACT_NOT_B1_11_ORACLE","corroboration promoted")
+    req(con["authority"]["corroborating_historical_artifact"]["class"]=="CORROBORATING_LATER_ARTIFACT_NOT_B1_11_ORACLE","corroboration promoted")
 
     base=git("merge-base","HEAD","origin/integration/f-ci-canonical")
     changed=git("diff","--name-only",f"{base}...HEAD").splitlines()
