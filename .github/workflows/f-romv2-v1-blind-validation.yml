@@ -11,6 +11,16 @@ on:
       - 'tests/rom/analyze_f_romv2_v1_c2_blind.py'
       - 'tests/rom/run_f_romv2_v1_current_canonical_trajectories.sh'
       - '.github/workflows/f-romv2-v1-blind-validation.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_V1_*'
+      - 'tests/rom/test_f_romv2_v1_current_canonical_trajectories.f90'
+      - 'tests/rom/analyze_f_romv2_v1_current_canonical_trajectories.py'
+      - 'tests/rom/analyze_f_romv2_v1_c2_blind.py'
+      - 'tests/rom/run_f_romv2_v1_current_canonical_trajectories.sh'
+      - '.github/workflows/f-romv2-v1-blind-validation.yml'
   workflow_dispatch:
 
 permissions:
