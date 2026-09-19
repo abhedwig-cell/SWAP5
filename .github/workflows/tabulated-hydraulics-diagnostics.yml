@@ -87,14 +87,14 @@ jobs:
               s = p.read_text()
               s, n1 = re.subn(
                   r"(?m)^(\s*TEND\s*=\s*)\d{4}-\d{2}-\d{2}(.*)$",
-                  r"\g<1>2002-01-01\2", s, count=1
+                  r"\g<1>2002-01-31\2", s, count=1
               )
               s, n2 = re.subn(
                   r"(?m)^(\s*SWMONTH\s*=\s*)1\b",
                   r"\g<1>0", s, count=1
               )
               if n1 != 1 or n2 != 1:
-                  raise RuntimeError(f"failed one-day implicit setup for {name}")
+                  raise RuntimeError(f"failed 31-day implicit setup for {name}")
               p.write_text(s)
           PY
 
@@ -122,7 +122,7 @@ jobs:
             --label "SWKIMPL=0,daily31" \
             | tee build/tab-hyd-diagnostic/k0-comparison.txt
 
-      - name: Run one-day original implicit pair
+      - name: Run 31-day original implicit pair
         shell: bash
         run: |
           set -uo pipefail
@@ -133,7 +133,7 @@ jobs:
             rm -f "$work/result_output.csv" "$work/run-original.log"
             pushd "$work" >/dev/null
             set +e
-            /usr/bin/time -f '%e' -o runtime_original_seconds.txt timeout 30 "$BIN" > run-original.log 2>&1
+            /usr/bin/time -f '%e' -o runtime_original_seconds.txt timeout 20 "$BIN" > run-original.log 2>&1
             rc=$?
             set -e
             popd >/dev/null
@@ -158,7 +158,7 @@ jobs:
           meson compile -C legacy-runtime/builddir
           cp legacy-runtime/builddir/swap legacy-runtime/builddir/swap-dhcap-diagnostic
 
-      - name: Run one-day tabulated implicit case with diagnostic derivative sentinel
+      - name: Run 31-day tabulated implicit case with diagnostic derivative sentinel
         shell: bash
         run: |
           set -uo pipefail
@@ -166,7 +166,7 @@ jobs:
           rm -f "$work/result_output.csv" "$work/run-patched.log"
           pushd "$work" >/dev/null
           set +e
-          /usr/bin/time -f '%e' -o runtime_patched_seconds.txt timeout 30 \
+          /usr/bin/time -f '%e' -o runtime_patched_seconds.txt timeout 20 \
             "$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-dhcap-diagnostic" \
             > run-patched.log 2>&1
           rc=$?
@@ -197,7 +197,7 @@ jobs:
             cat build/tab-hyd-diagnostic/k0-status.tsv
             cat build/tab-hyd-diagnostic/k0-comparison.txt
             echo
-            echo "## Original implicit pair, one day"
+            echo "## Original implicit pair, 31 days"
             cat build/tab-hyd-diagnostic/k1-original-status.tsv
             echo
             echo "## Diagnostic saturated-dKdh patch"
