@@ -15,6 +15,11 @@ on:
       - 'integration/audits/PPA_WU04_STATUS.json'
       - 'integration/audits/PPA_WU05_STATUS.json'
       - 'integration/audits/PPA_WU05A_STATUS.json'
+      - 'integration/audits/PPA_LOW02_TIME_STATUS.json'
+      - 'integration/audits/PPA_ROOT_HYD01_R1_RESULT.json'
+      - 'integration/audits/PPA_WU05C_STATUS.json'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
   workflow_dispatch:
 
 permissions:
