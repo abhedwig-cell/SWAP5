@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.lare.bc2.b4.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-B4",
+  "phase": "PREREGISTERED_BEFORE_WATER_TABLE_BOUNDARY_LOCALIZATION_DIAGNOSTIC",
+  "purpose": "Determine whether the dominant q_H operator error identified by BC2-B3 is primarily caused by using one global 90..H layer-average state instead of hydraulic information localized near the water table.",
+  "predecessor": {
+    "B3": "integration/f-rom/LARE_BC2_B3_RESULT.json",
+    "required_decision": "BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR",
+    "required_face_finding": "qH_consistently_larger_error=true"
+  },
+  "diagnostic_only": true,
+  "reference": {
+    "source": "qualified BC2-A2 accepted pressure-head profiles and interval bottom exchange",
+    "H": "strict interior zero-pressure crossing",
+    "qH_interval_average": "accepted bottom outward exchange / 0.0008 day",
+    "no_new_reference_solve": true
+  },
+  "candidate_gradient_diagnostics": {
+    "MOVING_LAYER_AVERAGE": {
+      "formula": "q=Ks*[1-2*psi(theta_bar_90_H)/(H-90)]",
+      "role": "current standard-LARE qH information pattern"
+    },
+    "ANCHOR_90_POINT": {
+      "formula": "q=Ks*[1+h(z=90)/(H-90)]",
+      "role": "full moving-thickness secant using localized pressure head rather than averaged theta"
+    },
+    "POINT_20CM": {
+      "distance_above_H_cm": 20,
+      "formula": "q=Ks*[1+h(H-20)/20]"
+    },
+    "POINT_10CM": {
+      "distance_above_H_cm": 10,
+      "formula": "q=Ks*[1+h(H-10)/10]"
+    },
+    "POINT_5CM": {
+      "distance_above_H_cm": 5,
+      "formula": "q=Ks*[1+h(H-5)/5]"
+    },
+    "POINT_2_5CM": {
+      "distance_above_H_cm": 2.5,
+      "formula": "q=Ks*[1+h(H-2.5)/2.5]"
+    }
+  },
+  "pressure_head_sampling": {
+    "method": "piecewise-linear interpolation between accepted A2 pressure-head node values in depth",
+    "no_extrapolation": true,
+    "endpoint_zero": "H is defined by the same strict linear negative-to-positive zero crossing",
+    "reason": "This is an information-localization diagnostic, not a proposed production reconstruction."
+  },
+  "time_alignment": {
+    "primary": "trapezoidal average of candidate q at accepted interval start and end states compared with interval-average Reference qH",
+    "endpoint_values": "diagnostic only"
+  },
+  "direction_strata": {
+    "HOLD": "|Hdot| <= 1e-12 cm/day",
+    "WATER_TABLE_RISING": "Hdot < -1e-12 cm/day",
+    "WATER_TABLE_FALLING": "Hdot > 1e-12 cm/day",
+    "histories_reported_separately": true
+  },
+  "metrics": [
+    "signed mean qH error",
+    "mean absolute qH error",
+    "RMS qH error",
+    "maximum absolute qH error",
+    "qH sign mismatch count",
+    "Pearson correlation",
+    "implied required pressure head h_req(d)=d*(qH_ref/Ks-1) compared with sampled h(H-d)"
+  ],
+  "selection_firewall": {
+    "distances_frozen_before_response": [
+      2.5,
+      5,
+      10,
+      20
+    ],
+    "no_continuous_distance_optimization": true,
+    "no_fit": true,
+    "no_direction_specific_choice": true
+  },
+  "adjudication": {
+    "local_information_support_rule": "Near-water-table information is supported when at least one frozen local-point diagnostic has both lower RMS and lower mean-absolute qH error than MOVING_LAYER_AVERAGE in both WATER_TABLE_RISING and WATER_TABLE_FALLING strata.",
+    "consistent_distance_rule": "A frozen distance is called consistently best only if it is component-wise minimum or tied minimum for both RMS and mean-absolute error in both moving direction strata; otherwise no preferred distance is declared.",
+    "valid_outcomes": [
+      "BC2_B4_LOCAL_WATER_TABLE_INFORMATION_SUPPORTED",
+      "BC2_B4_LOCAL_INFORMATION_DIRECTION_DEPENDENT",
+      "BC2_B4_GLOBAL_AVERAGE_NOT_DISADVANTAGED",
+      "BC2_B4_BOUNDARY_LOCALIZATION_DIAGNOSTIC_BLOCKED"
+    ],
+    "reduced_state_change_authorized": false
+  },
+  "firewalls": [
+    "NO_NEW_REDUCED_STATE",
+    "NO_DISTANCE_FIT",
+    "NO_DIRECTION_SPECIFIC_SWITCH",
+    "NO_CONDUCTIVITY_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
