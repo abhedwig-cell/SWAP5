@@ -68,7 +68,10 @@ def selected_boundaries(history,d,init_meta,init_nodes,states,nodes):
         if sgn==0:
             continue
         if prev_nonzero is not None and sgn!=prev_nonzero:
-            out.add(idx)
+            # A direction change between increments idx-1 and idx occurs at
+            # state idx. The preregistered blind panel adds the start state of
+            # the interval immediately preceding that switch: idx-1.
+            out.add(max(0,idx-1))
         prev_nonzero=sgn
     return sorted(s for s in out if 0<=s<n)
 
