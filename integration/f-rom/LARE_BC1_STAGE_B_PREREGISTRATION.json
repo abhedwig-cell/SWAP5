@@ -208,5 +208,12 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_INTEGRATION"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_domain_coverage_clarification": {
+    "before_first_BC1_B_execution": true,
+    "qualified_case_coverage_is_primary_component": true,
+    "rule": "Relative support additionally requires the candidate to qualify at least as many preregistered partition/history cases as the comparator. A candidate with smaller errors only on a narrower surviving cohort cannot dominate.",
+    "blocked_vs_outside": "OUTSIDE_QUALIFIED_DOMAIN and NUMERICAL_BLOCKED are reported separately and neither may be silently discarded.",
+    "scientific_effect": "Adjudication clarification only; no candidate, forcing, numerical route, partition, or metric changed."
+  }
 }
