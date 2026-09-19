@@ -1,0 +1,53 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:6fe1da8685aa510a50cd031eb4d8489f768fb28c69601bbb7447530972b8b188",
+    "aggregate_artifact_id": 10590740470,
+    "case_artifacts": {
+      "2.5:WT_FALL": {
+        "digest": "sha256:0798e0f1ec8365d298895cc344114c76825ff3050e0df74b64b3e73f9f91422c",
+        "id": 10589124634
+      },
+      "2.5:WT_RISE": {
+        "digest": "sha256:5d2fd28843bcce6f2f90cd8249acdf3a9a4fa6bbc84f68937fb37edd82f00bb3",
+        "id": 10590481052
+      },
+      "5.0:WT_FALL": {
+        "digest": "sha256:0cdb220285cae64906e3d3002f1b545861f52b5bd97c1b51eccdae9a7a3df049",
+        "id": 10589074987
+      },
+      "5.0:WT_RISE": {
+        "digest": "sha256:fe60ea191f7c98a131e55e6ae2ce138b164a0775cebb556157406502237979a9",
+        "id": 10590576118
+      }
+    },
+    "case_execution_head": "a83ba7644472a104f943fdec8c9383196f667376",
+    "case_execution_workflow_run": 35462236101,
+    "reconciliation_head": "617d5da328356d11853fa873bc506c5a7f9036d5",
+    "reconciliation_workflow_run": 35462516670,
+    "result_sha256": "94301aa9e0f086b01cc35fa4be34fc669461884d0a54b0d62d4f98b7628db9f9"
+  },
+  "decision": "VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E",
+  "groundwater_feedback_authorized": false,
+  "mechanism": {
+    "admissibility": "The 499 QI-removal blocks for 2.5 cm WT_FALL coincide exactly with negative mean-theta state margin and are not mass-ledger failures.",
+    "terminal_width_scaling": "QI is a mass-neutral bulk-terminal storage transfer. Per unit storage, terminal mean-theta response is exactly 1/d; 2.5 cm therefore has twice the conversion factor of 5 cm.",
+    "vector_interference": "Exact additive-vector geometry reproduces the sign of QI-removal response on every interval. At 2.5 cm WT_RISE QI and the non-QI remainder are strongly anti-aligned, so QI cancels other local error and removing it worsens shape fidelity."
+  },
+  "model_changed": false,
+  "next_authority": "SECONDARY_METRIC_SENSITIVITY_REVIEW_BEFORE_CLOSURE_DESIGN",
+  "next_model_change_authorized": false,
+  "primary_metric_status": "The preregistered unweighted mass-neutral theta RMS remains authoritative for C2/C3/C4E. C4F does not retroactively replace it.",
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4f.closeout.v1",
+  "speed_claim_authorized": false,
+  "status": "CLOSED_MECHANISM_EXPLAINED_NO_MODEL_CHANGE",
+  "superseded_intermediate_aggregate": {
+    "artifact_digest": "sha256:1147760a9187c15d479f89d4bd49090a139f19596845cc4000c8770d8223c957",
+    "artifact_id": 10590985089,
+    "reason": "The first aggregate compared the full 512-interval C4F WT_FALL ratio with the intentionally 13-interval admissible-only C4E ratio. The immutable case evidence was valid; only the unlike-cohort crosscheck was corrected.",
+    "workflow_run": 35462236101
+  },
+  "work_unit": "LARE-BC2-C4F",
+  "workstream": "F-ROM-LARE"
+}

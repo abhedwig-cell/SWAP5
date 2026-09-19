@@ -1,0 +1,446 @@
+{
+  "application_acceptance_adjudicated": false,
+  "complete": true,
+  "decision": "VECTOR_INTERFERENCE_PLUS_WIDTH_MARGIN_EXPLAINS_C4E",
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "additive_gate_cm": 1e-10,
+    "maximum_additive_or_mass_residual_cm": 2.128868912751325e-14,
+    "maximum_squared_norm_identity_residual_theta2": 2.117582368135751e-22,
+    "squared_norm_gate_theta2": 1e-12
+  },
+  "hypotheses": {
+    "H_TERMINAL_WIDTH_AMPLIFICATION": {
+      "WT_FALL_QI_block_pattern_2p5_vs_5cm": true,
+      "WT_RISE_QI_block_pattern_both_admissible": true,
+      "hydraulic_blocking_exactly_classified_by_negative_mean_theta_margin": true,
+      "supported": true,
+      "terminal_theta_conversion_ratio_2p5_over_5cm_is_two": true
+    },
+    "H_VECTOR_INTERFERENCE": {
+      "C4E_metrics_or_block_population_reproduced_on_matching_cohort": true,
+      "exact_sign_prediction_all_intervals": true,
+      "supported": true
+    }
+  },
+  "interpretation": [
+    "The sign and magnitude direction of the C4E QI-removal response are explained by exact additive-vector interference between the QI shape contribution and the non-QI remainder; no fitted parameter is used.",
+    "At 5 cm the QI contribution is large enough relative to the non-QI remainder that the exact removal criterion is positive for almost every interval, even though QI and the remainder are not uniformly aligned. At 2.5 cm WT_RISE they are strongly anti-aligned, so QI is acting as an error-cancelling contribution and removing it increases the norm.",
+    "The QI contribution is a mass-neutral storage transfer between bulk and terminal states. Per unit transferred storage, its terminal mean-theta perturbation is exactly proportional to 1/d, giving a factor two larger terminal perturbation at 2.5 cm than at 5 cm.",
+    "The 2.5 cm WT_FALL QI-removal admissibility failure is a state-margin failure, not a mass-conservation failure.",
+    "These findings explain the C4E diagnostic behavior but do not select a corrected closure."
+  ],
+  "next_authority": "MECHANISM_EXPLAINED_REPRESENTATION_GEOMETRY_REVIEW_REQUIRED_BEFORE_CLOSURE_DESIGN",
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4f.result.v1",
+  "speed_claim_authorized": false,
+  "summary": {
+    "2.5": {
+      "WT_FALL": {
+        "0.00002500": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0022532340210708046,
+            "mean": 0.0007992553646205312,
+            "median": 0.0006537118836992539,
+            "min": 0.00039074229754620937,
+            "p05": 0.00040714559865907276,
+            "p95": 0.0017180728767129476
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.0056330850526770775,
+            "mean": 0.0019981384115513264,
+            "median": 0.0016342797092480958,
+            "min": 0.0009768557438654694,
+            "p05": 0.001017863996647652,
+            "p95": 0.004295182191782355
+          },
+          "conversion_factor_per_cm": 0.4000000000000008,
+          "cosine_qi_remainder": {
+            "max": -0.995354854486052,
+            "mean": -0.9968306848674287,
+            "median": -0.9970387517010905,
+            "min": -0.999707630786629,
+            "p05": -0.9976802837564607,
+            "p95": -0.9954080444600802
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.0012918785691555246,
+            "mean": -0.0004019766977166946,
+            "median": -0.0002556146189942876,
+            "min": -0.0019258385550748325,
+            "p05": -0.0013405811413119805,
+            "p95": -8.631887395613166e-06
+          },
+          "first_hydraulic_blocked_step": 2,
+          "fraction_removal_improves": 0.0,
+          "fraction_removal_worsens": 1.0,
+          "hydraulic_blocked_interval_count": 499,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -1.2223820971965208e-08,
+            "mean": -6.523906092649182e-08,
+            "median": -3.441877823887421e-08,
+            "min": -4.1963178609376525e-07,
+            "p05": -2.3701936407763783e-07,
+            "p95": -1.3276664662158116e-08
+          },
+          "remainder_to_local_ratio": 6.29191767126254
+        },
+        "0.00005000": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0022515372029600633,
+            "mean": 0.0007989498559434561,
+            "median": 0.0006535470105822339,
+            "min": 0.00039066099030288237,
+            "p05": 0.00040705969755315264,
+            "p95": 0.0017168596437034526
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.005628843007400156,
+            "mean": 0.00199737463985864,
+            "median": 0.0016338675264555578,
+            "min": 0.0009766524757573627,
+            "p05": 0.001017649243882925,
+            "p95": 0.004292149109258548
+          },
+          "conversion_factor_per_cm": 0.3999999999999999,
+          "cosine_qi_remainder": {
+            "max": -0.9953523928130411,
+            "mean": -0.9968300532752884,
+            "median": -0.9970384387651031,
+            "min": -0.9997034270338179,
+            "p05": -0.9976802307338017,
+            "p95": -0.9954056984534716
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.0012986498469430563,
+            "mean": -0.0004016194431116421,
+            "median": -0.00025542922081800423,
+            "min": -0.0019240945144322064,
+            "p05": -0.0013393172881914993,
+            "p95": -8.532121542928492e-06
+          },
+          "first_hydraulic_blocked_step": 2,
+          "fraction_removal_improves": 0.0,
+          "fraction_removal_worsens": 1.0,
+          "hydraulic_blocked_interval_count": 499,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -1.22179654736089e-08,
+            "mean": -6.517191947091908e-08,
+            "median": -3.439923236399106e-08,
+            "min": -4.189651289805124e-07,
+            "p05": -2.3665818657181732e-07,
+            "p95": -1.3270226925411435e-08
+          },
+          "remainder_to_local_ratio": 6.288523990818487
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0017752422666813539,
+            "mean": 0.0007869871733077165,
+            "median": 0.0006643051801029365,
+            "min": 0.000114725303755836,
+            "p05": 0.00042761985473813434,
+            "p95": 0.0014942966638246567
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.004438105666703378,
+            "mean": 0.0019674679332692922,
+            "median": 0.0016607629502574078,
+            "min": 0.00028681325938969453,
+            "p05": 0.0010690496368453454,
+            "p95": 0.003735741659561693
+          },
+          "conversion_factor_per_cm": 0.4,
+          "cosine_qi_remainder": {
+            "max": -0.9783101070954519,
+            "mean": -0.9851922695204461,
+            "median": -0.9847375099660279,
+            "min": -0.9986396369516166,
+            "p05": -0.9904368734333436,
+            "p95": -0.9790206662766263
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.0022665906779922307,
+            "mean": 0.0011963659751286259,
+            "median": 0.0010696893199906021,
+            "min": 0.0008154265889250278,
+            "p05": 0.0008313144608254857,
+            "p95": 0.0019155416114337936
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.0,
+          "fraction_removal_worsens": 1.0,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -2.75779658837938e-09,
+            "mean": -5.6912601866298205e-08,
+            "median": -3.3883681634287085e-08,
+            "min": -2.3586621053022753e-07,
+            "p05": -1.6827107324485273e-07,
+            "p95": -1.4099950144223117e-08
+          },
+          "remainder_to_local_ratio": 3.8554048056864043
+        },
+        "0.00005000": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0017756063220308316,
+            "mean": 0.000787043430859974,
+            "median": 0.0006643215111067358,
+            "min": 0.00011689776567058718,
+            "p05": 0.0004276043599025392,
+            "p95": 0.0014946146723923803
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.0044390158050771275,
+            "mean": 0.0019676085771499338,
+            "median": 0.0016608037777669452,
+            "min": 0.00029224441417638334,
+            "p05": 0.0010690108997563337,
+            "p95": 0.0037365366809809742
+          },
+          "conversion_factor_per_cm": 0.40000000000000024,
+          "cosine_qi_remainder": {
+            "max": -0.9783104354136691,
+            "mean": -0.9851926132590129,
+            "median": -0.9847377136990317,
+            "min": -0.9986999290927995,
+            "p05": -0.9904369028670986,
+            "p95": -0.9790210063208319
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.002266839303443624,
+            "mean": 0.0011963847319442769,
+            "median": 0.0010696730802132182,
+            "min": 0.0008153904260484457,
+            "p05": 0.0008312787073012501,
+            "p95": 0.0019157757596924728
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.0,
+          "fraction_removal_worsens": 1.0,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -2.8332737761515434e-09,
+            "mean": -5.6921660661879925e-08,
+            "median": -3.388355906517511e-08,
+            "min": -2.359539811911508e-07,
+            "p05": -1.6833809036577508e-07,
+            "p95": -1.4098078393295592e-08
+          },
+          "remainder_to_local_ratio": 3.854870838486877
+        }
+      }
+    },
+    "5.0": {
+      "WT_FALL": {
+        "0.00002500": {
+          "abs_delta_theta_terminal": {
+            "max": 0.001612236118428978,
+            "mean": 0.0002208571589450446,
+            "median": 0.00018702872649223323,
+            "min": 0.00011900047361262933,
+            "p05": 0.00012358723781853432,
+            "p95": 0.0004445841439593451
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.008061180592145091,
+            "mean": 0.0011042857947252279,
+            "median": 0.0009351436324609933,
+            "min": 0.0005950023680633352,
+            "p05": 0.0006179361890925886,
+            "p95": 0.0022229207197967454
+          },
+          "conversion_factor_per_cm": 0.19999999999999968,
+          "cosine_qi_remainder": {
+            "max": -0.813820025435083,
+            "mean": -0.9435682134890298,
+            "median": -0.9655783025283365,
+            "min": -0.9998267742701265,
+            "p05": -0.9888627419403375,
+            "p95": -0.8307418943371384
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.0018343914658685567,
+            "mean": 0.0009539039649645039,
+            "median": 0.0010195650920652721,
+            "min": 0.00025798561145790044,
+            "p05": 0.0005243305544473387,
+            "p95": 0.0011278962091963469
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.998046875,
+          "fraction_removal_worsens": 0.001953125,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -4.3796192143722495e-10,
+            "mean": -2.0139523901805737e-09,
+            "median": -9.837644104743839e-10,
+            "min": -2.0611730445796126e-07,
+            "p05": -6.199750468917394e-09,
+            "p95": -4.704648580489208e-10
+          },
+          "remainder_to_local_ratio": 0.597714607794761
+        },
+        "0.00005000": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0016140812777455937,
+            "mean": 0.0002208158608322234,
+            "median": 0.00018699795549781406,
+            "min": 0.0001189839926207803,
+            "p05": 0.00012356995443094654,
+            "p95": 0.000444432547924789
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.008070406388727998,
+            "mean": 0.0011040793041611158,
+            "median": 0.000934989777488959,
+            "min": 0.0005949199631039864,
+            "p05": 0.0006178497721547752,
+            "p95": 0.002222162739624004
+          },
+          "conversion_factor_per_cm": 0.19999999999999976,
+          "cosine_qi_remainder": {
+            "max": -0.8134764838344372,
+            "mean": -0.9434958380853888,
+            "median": -0.9655512752437408,
+            "min": -0.9998245297971493,
+            "p05": -0.9888613469809849,
+            "p95": -0.8304436854194833
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.001835808138863193,
+            "mean": 0.0009539630623422547,
+            "median": 0.0010196065715535052,
+            "min": 0.0002581660596816526,
+            "p05": 0.000524472834729689,
+            "p95": 0.00112792073205063
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.998046875,
+          "fraction_removal_worsens": 0.001953125,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": -4.3765512984390263e-10,
+            "mean": -2.013038488246715e-09,
+            "median": -9.829178701733506e-10,
+            "min": -2.065547704416222e-07,
+            "p05": -6.192326591304966e-09,
+            "p95": -4.701319006508304e-10
+          },
+          "remainder_to_local_ratio": 0.5976126341127866
+        }
+      },
+      "WT_RISE": {
+        "0.00002500": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0003864143381450136,
+            "mean": 0.00021110449526577353,
+            "median": 0.00017332889397037032,
+            "min": 9.636505048182809e-05,
+            "p05": 0.00012157620434183614,
+            "p95": 0.0003802212144099315
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.0019320716907249606,
+            "mean": 0.0010555224763288695,
+            "median": 0.0008666444698516647,
+            "min": 0.0004818252524090632,
+            "p05": 0.0006078810217092695,
+            "p95": 0.001901106072049691
+          },
+          "conversion_factor_per_cm": 0.19999999999999876,
+          "cosine_qi_remainder": {
+            "max": 0.9873997670274085,
+            "mean": -0.02267512833455075,
+            "median": 0.15858535963471554,
+            "min": -0.9972073644327386,
+            "p05": -0.9200184002118349,
+            "p95": 0.42208964888989803
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.003275021065242245,
+            "mean": 0.0017288857845259194,
+            "median": 0.001656474912684086,
+            "min": 0.0015307527688485645,
+            "p05": 0.001538904152269882,
+            "p95": 0.002130318669218284
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.98828125,
+          "fraction_removal_worsens": 0.01171875,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": 6.761173462050409e-09,
+            "mean": -2.0112886625563922e-10,
+            "median": 1.1025307252414573e-10,
+            "min": -1.342794240284615e-08,
+            "p05": -2.48381727752677e-09,
+            "p95": 3.7086742554105314e-10
+          },
+          "remainder_to_local_ratio": 0.29718441899187165
+        },
+        "0.00005000": {
+          "abs_delta_theta_terminal": {
+            "max": 0.0003863854311360604,
+            "mean": 0.000211083589653339,
+            "median": 0.00017330722234751295,
+            "min": 9.661876831651428e-05,
+            "p05": 0.00012156104385309674,
+            "p95": 0.00038019247889487797
+          },
+          "abs_qi_storage_transfer_cm": {
+            "max": 0.0019319271556801866,
+            "mean": 0.0010554179482667055,
+            "median": 0.0008665361117375905,
+            "min": 0.00048309384158249106,
+            "p05": 0.0006078052192654001,
+            "p95": 0.0019009623944742514
+          },
+          "conversion_factor_per_cm": 0.1999999999999977,
+          "cosine_qi_remainder": {
+            "max": 0.9874012536800089,
+            "mean": -0.022066850870281485,
+            "median": 0.15909577575555395,
+            "min": -0.9972070154195933,
+            "p05": -0.9199983971726672,
+            "p95": 0.42288686660202457
+          },
+          "counterfactual_mean_theta_margin": {
+            "max": 0.0032752284987947466,
+            "mean": 0.0017288429796659473,
+            "median": 0.0016564333488873484,
+            "min": 0.0015307271516347143,
+            "p05": 0.0015388774920545272,
+            "p95": 0.0021302421001538866
+          },
+          "first_hydraulic_blocked_step": null,
+          "fraction_removal_improves": 0.98828125,
+          "fraction_removal_worsens": 0.01171875,
+          "hydraulic_blocked_interval_count": 0,
+          "mean_margin_block_classification_fraction": 1.0,
+          "qi_dot_remainder": {
+            "max": 6.763066234394779e-09,
+            "mean": -2.0026672868948699e-10,
+            "median": 1.1057833511074498e-10,
+            "min": -1.3427379349766266e-08,
+            "p05": -2.4817237325370976e-09,
+            "p95": 3.7202578814000785e-10
+          },
+          "remainder_to_local_ratio": 0.2971597681037871
+        }
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-C4F",
+  "workstream": "F-ROM-LARE"
+}
