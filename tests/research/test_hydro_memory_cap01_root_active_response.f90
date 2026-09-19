@@ -2,7 +2,7 @@ program test_hydro_memory_cap01_root_active_response
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t, CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
@@ -311,15 +311,15 @@ contains
 
   function corrector_config() result(cfg)
     type(canonical_numerical_config_t) :: cfg
-    cfg%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
-    cfg%transaction%temporal_tolerance = 0.0_real64
+    cfg%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
+    cfg%transaction%temporal_tolerance = 1.0e-6_real64
     cfg%transaction%mass_tolerance = MASS_TOL
     cfg%transaction%retry_scale = 0.5_real64
     cfg%transaction%max_retries = 8
     cfg%max_committed_substeps = 32
     cfg%progress_tolerance = 0.0_real64
-    cfg%model_temporal_indicator_budget_available = .true.
-    cfg%model_temporal_indicator_budget = HEAD_BUDGET
+    cfg%model_temporal_indicator_budget_available = .false.
+    cfg%model_temporal_indicator_budget = 0.0_real64
     cfg%accepted_trajectory_direction%requested = .false.
   end function corrector_config
 
