@@ -140,10 +140,10 @@
   "pre_execution_algorithm_clarification": {
     "before_first_C2_execution": true,
     "diagnostic_A": {
-      "shape_coordinate": "mass-neutral shape error e_shape_i = delta_theta_i - delta_theta_uniform after converting each physical storage error to instantaneous mean-water-content error; total storage is reported separately",
-      "shape_norm": "unweighted RMS over the 11 mass-neutral e_shape components, consistent with pre_execution_shape_metric_clarification",
+      "shape_coordinate": "Mass-neutral mean-water-content shape error e_shape: storage error divided by instantaneous compartment thickness, then subtract delta_theta_uniform=sum(delta_W_i)/sum(L_i).",
+      "shape_norm": "Unweighted RMS over the mass-neutral e_shape components; uncentered theta RMS and total storage are secondary diagnostics only.",
       "denominator_numerical_floor_theta_rms": 1e-12,
-      "gain": "g_k = RMS(free_end-teacher_end mass-neutral shape error) / RMS(free_start-reference_start mass-neutral shape error)",
+      "gain": "g_k = RMS_mass_neutral(free_end-teacher_end) / RMS_mass_neutral(free_start-reference_start)",
       "cosine": "cosine between previous mass-neutral shape-error vector and propagated mass-neutral state-induced shape-error vector when both norms exceed the numerical floor",
       "predominantly_amplifying": "fraction of eligible intervals with g_k > 1.0 is greater than 0.5",
       "note": "The 1e-12 floor is only a division-by-near-zero eligibility floor, not a hydrological acceptance threshold."
@@ -152,7 +152,7 @@
       "fraction_start_indices": "for history length N use start-state indices 0, floor(N/4), floor(N/2), floor(3N/4)",
       "switch_start_indices": "add the start-state index immediately preceding every sign change of successive prescribed H increments; duplicates removed",
       "mass_neutral_adjacent_transfer": "for adjacent compartments i,j with thicknesses Li,Lj, apply delta_theta_i=+epsilon and delta_theta_j=-epsilon*Li/Lj; the opposite signed perturbation is used for the central difference",
-      "gain": "RMS of central-difference output shape perturbation divided by RMS of the central-difference input shape perturbation",
+      "gain": "RMS of mass-neutral central-difference output shape perturbation divided by RMS of mass-neutral central-difference input shape perturbation; differential total-storage response reported separately.",
       "amplitude_support": "A mode is locally amplification-supporting only when both frozen amplitudes produce gain > 1.0. Amplitude gain ratios are reported without a fitted consistency tolerance.",
       "state_support": "A frozen state supports local tangent amplification when at least one adjacent transfer mode is amplification-supporting at both amplitudes.",
       "no_posthoc_mode_selection": true
@@ -182,5 +182,22 @@
       "NUMERICAL_DIAGNOSTIC_BLOCKED": "either diagnostic is incomplete under its frozen hard gates"
     },
     "rationale": "Use exact threshold-free physical gain boundary g=1 and strict majority only to operationalize the already-preregistered word predominantly; no response magnitude is used to set a tunable tolerance."
+  },
+  "pre_execution_metric_reconciliation": {
+    "before_C1R_result_exposure": true,
+    "reason": "Resolve wording tension between the earlier mass-neutral shape-metric clarification and the later deterministic algorithm clarification before any C1R outcome can influence metric choice.",
+    "authoritative_primary_shape_coordinate": "For each physical reduced control volume convert storage error to mean-water-content error, subtract delta_theta_uniform=sum(delta_W_i)/sum(L_i), and use the resulting mass-neutral e_shape vector.",
+    "authoritative_primary_shape_norm": "Unweighted RMS over the mass-neutral e_shape components.",
+    "total_storage": "Reported separately and never folded into primary shape gain.",
+    "secondary_raw_theta": "Uncentered mean-water-content RMS remains diagnostic only.",
+    "diagnostic_A_gain": "g_k = RMS_mass_neutral(free_end-teacher_end) / RMS_mass_neutral(free_start-reference_start), subject only to the frozen 1e-12 numerical denominator floor.",
+    "diagnostic_B_gain": "Use the same mass-neutral shape projection at input and output; total-storage response is reported separately.",
+    "execution_authority": {
+      "workflow": ".github/workflows/f-rom-lare-bc2-c2a.yml",
+      "implementation": "tests/rom/analyze_lare_bc2_c2a_actual_drift_gain.py"
+    },
+    "nonauthority_note": "tests/rom/run_lare_bc2_c2a_actual_drift_gain.py is not an execution authority unless separately reconciled to this mass-neutral metric.",
+    "response_based": false,
+    "model_or_closure_effect": "NONE"
   }
 }
