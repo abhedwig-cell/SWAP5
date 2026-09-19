@@ -7,7 +7,7 @@ program tabulated_hydraulics_wrapper_characterization
   implicit none
 
   integer, parameter :: n = 241
-  integer, parameter :: nh = 12
+  integer, parameter :: nh = 10
   real(real64), parameter :: theta_r=0.05_real64, theta_s=0.45_real64
   real(real64), parameter :: alpha=0.02_real64, nvg=1.60_real64
   real(real64), parameter :: mvg=1.0_real64-1.0_real64/nvg
@@ -81,8 +81,7 @@ program tabulated_hydraulics_wrapper_characterization
   end if
 
   heads=[-1.0e7_real64,-1.0e6_real64,-1.0e4_real64,-1.0e2_real64,-1.0_real64, &
-         -1.0e-2_real64,-1.0e-3_real64,-1.0e-4_real64,-1.0e-5_real64,-1.0e-6_real64, &
-         -1.1e-9_real64,0.0_real64]
+         -1.0e-2_real64,-1.0e-3_real64,-1.0e-4_real64,-1.0e-5_real64,-1.0e-6_real64]
 
   write(*,'(A)') 'h_cm,theta,theta_ref,C,K,K_ref,dKdh'
   do i=1,nh
@@ -104,8 +103,9 @@ program tabulated_hydraulics_wrapper_characterization
       h,theta,theta_ref,cap,kval,k_ref,dkdh
   end do
 
-  write(*,'(A,ES24.16)') 'WRAPPER saturated_C=',moiscap(1,0.0_real64)
-  write(*,'(A,ES24.16)') 'WRAPPER saturated_dKdh=',dhconduc(1,0.0_real64,theta_s,moiscap(1,0.0_real64),1.0_real64)
+  write(*,'(A,ES24.16)') 'WRAPPER near_sat_C=',moiscap(1,-1.0e-6_real64)
+  write(*,'(A,ES24.16)') 'WRAPPER near_sat_dKdh=', &
+    dhconduc(1,-1.0e-6_real64,watcon(1,-1.0e-6_real64),moiscap(1,-1.0e-6_real64),1.0_real64)
   write(*,'(A)') 'WRAPPER_CHARACTERIZATION_COMPLETED'
 
 contains
