@@ -1,0 +1,148 @@
+{
+  "schema": "swap5.lare.dyn0a.mech4a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-MECH4A",
+  "phase": "PREREGISTERED_BEFORE_TAYLOR_GRADIENT_STRUCTURE_ANALYSIS",
+  "purpose": "Test whether the MECH1-dominant LARE gradient-reconstruction error follows the Taylor truncation structure implied by unequal adjacent layer lengths and local capillary-potential curvature.",
+  "discovery_status": {
+    "mode": "MECHANISTIC_DISCOVERY_ON_ALREADY_EXPOSED_REFERENCE_TRAJECTORIES",
+    "materials": [
+      "B01",
+      "B14",
+      "SAND",
+      "LOAM",
+      "CLAY"
+    ],
+    "warning": "No blind transfer claim is allowed in MECH4A. Remaining Carsel-Parrish textures are not exposed here and remain available for a later MECH4B falsification."
+  },
+  "analytic_derivation": {
+    "coordinate": "x=0 at the tested interface, upper layer x in [-L,0], lower layer x in [0,d], positive downward",
+    "lower_layer_d_cm": 10,
+    "exact_mean_expansions": [
+      "psi_bar_upper = psi0 - L/2 psi' + L^2/6 psi'' - L^3/24 psi''' + O(L^4)",
+      "psi_bar_lower = psi0 + d/2 psi' + d^2/6 psi'' + d^3/24 psi''' + O(d^4)"
+    ],
+    "layer_mean_gradient": "G_L = 2(psi_bar_lower-psi_bar_upper)/(L+d)",
+    "relative_to_point_derivative": "G_L-psi' = (d-L)/3 psi'' + (d^2-dL+L^2)/12 psi''' + higher terms",
+    "fine_reference_gradient": "G_10 = [psi(+5)-psi(-5)]/10 = psi' + 25/6 psi''' + higher terms",
+    "predicted_MECH1_gradient_error_terms": {
+      "T2": "E2=(d-L)/3 * psi''",
+      "T3": "E3=E2 + [(d^2-dL+L^2)/12 - 25/6] * psi'''"
+    },
+    "key_implication": "For equal adjacent lengths L=d the leading psi'' term cancels. Strong layer-length asymmetry makes local curvature a first-order gradient-reconstruction risk."
+  },
+  "derivative_estimator": {
+    "source": "fine 10-cm Reference capillary potentials psi=-h at four cell centers x=-15,-5,+5,+15 cm around each tested interface",
+    "cubic_interpolant": true,
+    "second_derivative": "psi''(0)=[psi(-15)+psi(+15)-psi(-5)-psi(+5)]/200",
+    "third_derivative": "psi'''(0)=[psi(+15)-psi(-15)-3*(psi(+5)-psi(-5))]/1000",
+    "tested_interfaces_cm": [
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140
+    ],
+    "excluded_interfaces": "10 cm and 150 cm lack the symmetric four-center stencil inside the 0-160 cm profile."
+  },
+  "actual_error_definition": {
+    "alignment": "Identical to the normalized MECH1 gradient-reconstruction component before multiplication by local K_face.",
+    "exact_upper_mean": "arithmetic depth-average of fine Reference psi over 0-L",
+    "exact_lower_mean": "arithmetic depth-average of fine Reference psi over L-(L+10)",
+    "G_layer_mean": "2*(psi_bar_lower-psi_bar_upper)/(L+10)",
+    "G_reference": "[psi_cell_below_interface-psi_cell_above_interface]/10",
+    "E_gradient_normalized": "G_layer_mean-G_reference",
+    "reason": "Using exact layer-mean psi removes the separately diagnosed constitutive-averaging term and isolates gradient reconstruction."
+  },
+  "cohort": {
+    "forcing": [
+      "WET",
+      "DRY"
+    ],
+    "pulse_steps": [
+      1,
+      256
+    ],
+    "qualified_cases_only": true,
+    "reference_sources": {
+      "B01": {
+        "artifact_id": 10586020583,
+        "zip_sha256": "beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc"
+      },
+      "B14": {
+        "artifact_id": 10585857746,
+        "zip_sha256": "f67b65702e8dbab10ab29c3bc15755cf607bb15b555fe06380a1910c020864f7"
+      },
+      "CARSEL_PANEL": {
+        "artifact_id": 10586248675,
+        "zip_sha256": "81a86b10cfcca1570c44071611b823555eedbb9439869ff16fa3f2153b9fa46f"
+      }
+    }
+  },
+  "indicators": [
+    {
+      "id": "LENGTH_ONLY",
+      "value": "|L-d|",
+      "role": "geometry-only baseline with no hydraulic-state information"
+    },
+    {
+      "id": "TAYLOR2_RMS",
+      "value": "RMS over pulse steps of E2",
+      "role": "leading unequal-layer curvature term"
+    },
+    {
+      "id": "TAYLOR3_RMS",
+      "value": "RMS over pulse steps of E3",
+      "role": "second plus third derivative Taylor structure corrected to the 10-cm central Reference gradient"
+    }
+  ],
+  "metrics": {
+    "per_case": [
+      "pulse RMS actual normalized gradient error versus L",
+      "pulse RMS LENGTH_ONLY, TAYLOR2 and TAYLOR3 indicator versus L",
+      "Spearman rank correlation across L between each indicator and actual RMS error",
+      "actual peak L and indicator peak L",
+      "absolute peak-location error"
+    ],
+    "signed_prediction": [
+      "pooled RMS(E_actual-E2)",
+      "pooled RMS(E_actual-E3)",
+      "pooled RMS(E_actual) as zero-prediction baseline",
+      "sign agreement fraction for E2 and E3 where |E_actual| exceeds 1e-12"
+    ],
+    "aggregation": [
+      "median Spearman correlation across cases",
+      "median absolute peak-location error across cases",
+      "exact peak hit count"
+    ]
+  },
+  "adjudication": {
+    "curvature_indicator_selection": "Choose between TAYLOR2_RMS and TAYLOR3_RMS lexicographically by higher median Spearman correlation, then lower median peak-location error, then more exact peak hits.",
+    "CURVATURE_RANKING_SUPPORTED_AND_TAYLOR3_IMPROVES": "Best curvature indicator is strictly better than LENGTH_ONLY on at least one ranking metric and no worse on the others, and pooled RMS(E_actual-E3) < pooled RMS(E_actual-E2) < pooled RMS(E_actual).",
+    "CURVATURE_RANKING_SUPPORTED_LOCAL_EXPANSION_INCOMPLETE": "Best curvature indicator dominates LENGTH_ONLY on ranking metrics, but the signed T3 residual chain above does not hold.",
+    "LOCAL_TAYLOR_STRUCTURE_SUPPORTED_WITHOUT_RANKING_GAIN": "Signed T3 residual chain holds, but curvature indicators do not dominate LENGTH_ONLY in casewise ranking.",
+    "TAYLOR_CURVATURE_STRUCTURE_NOT_SUPPORTED": "Neither ranking dominance nor the signed T3 residual chain holds."
+  },
+  "next_step_firewall": {
+    "if_supported": "A separate MECH4B may freeze a curvature-based grid-risk indicator and test it blindly on previously unused Carsel-Parrish materials such as Sandy Loam, Silt and Clay Loam.",
+    "if_incomplete": "Do not fit coefficients to MECH4A. Consider a nonlocal curvature/integral defect or explicit first-moment state.",
+    "if_not_supported": "Abandon local Taylor curvature as a grid-selection mechanism."
+  },
+  "firewalls": [
+    "NO_NEW_RICHARDS_TRAJECTORY_IN_MECH4A",
+    "NO_COEFFICIENT_FIT",
+    "NO_CASE_REMOVAL_AFTER_RESULTS",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_LARE_PROPAGATION_CHANGE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
