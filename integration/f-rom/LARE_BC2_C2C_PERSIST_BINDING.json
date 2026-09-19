@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.lare.bc2.c2c.persist-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C2C",
+  "required_decision": "BIAS_ACCUMULATION_DOMINANT",
+  "workflow_run": 35458577082,
+  "artifact_id": 10588846545,
+  "artifact_zip_sha256": "216ac4bca1a795b7b797c61f00825034433013df15e47df0423c1f232ce3c734",
+  "result_sha256": "f89c1f9f3868d96d0e04161f2cd33a4e817758f8508115cd57a958411ef73856",
+  "executed_head": "542f59525242d8782b7805477090e6c7187b1cc7",
+  "result_summary": {
+    "complete": true,
+    "classification_counts": {
+      "AMPLIFICATION_SUPPORTED": 0,
+      "BIAS_ACCUMULATION_SUPPORTED": 8,
+      "MIXED_STATE_DYNAMICS": 0
+    },
+    "next_research_direction": "Investigate persistent teacher-reference local closure bias by channel; no stabilizer is justified.",
+    "maximum_actual_gain_fraction_gt_1": 0.3796477495107632,
+    "maximum_local_tangent_gain": 1.571453451981882,
+    "maximum_tangent_amplifying_state_fraction": 0.25
+  },
+  "scientific_effect": "Persists the exact preregistered C2 adjudication. It authorizes no model change, stabilizer, new state, groundwater feedback, application acceptance or production ROM."
+}
