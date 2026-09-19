@@ -10,7 +10,7 @@
     "decisive_run": 35427908820,
     "classification": "CLOSED_BLOCKED_NET_ROOT_EXTRACTION_HYDRAULIC_EXECUTION"
   },
-  "phase": "D2_TEMPORAL_ACCEPTANCE_AUTHORITY",
+  "phase": "R1_RESTRICTED_ROOT_TEMPORAL_CERTIFICATE_EXTENSION",
   "production_mutation_allowed": false,
   "reference_mutation_allowed": false,
   "purpose": "Determine whether CAP01 failure is root-specific or a broader transient sink/window-scale limitation before considering any repair.",
@@ -102,5 +102,37 @@
       "If both indicators are unavailable for the same non-root reason, do not make a root-specific temporal-certification claim.",
       "D2 does not change indicator equations, budgets, tolerances or retry policy."
     ]
+  },
+  "r1": {
+    "authority_basis": [
+      "b110_root_sink_provider_t is a concrete prescribed provider: evaluate() returns the bound root_extraction_sink vector and does not depend on pressure_head or water_content.",
+      "HeadCalc adds root_sink_term(i) linearly to the same Richards residual in which the ordinary matrix sink appears.",
+      "D1 showed identical ROOT and GENERIC rejection patterns over five frozen durations.",
+      "D2 showed GENERIC reaches an available Reference-Richards temporal indicator while ROOT is rejected solely by the explicit root-sink-envelope-deferred policy guard."
+    ],
+    "allowed_source_change": [
+      "mod_reference_richards_temporal_indicator may admit only concrete b110_root_sink_provider_t.",
+      "Validate root provider node count and bound finite prescribed vector.",
+      "No change to the temporal-indicator equations, defect operator, normalization, HeadCalc, root-sink provider, Richards solver, transaction core or tolerances."
+    ],
+    "fail_closed_rules": [
+      "Any other root_sink_provider_t implementation remains unavailable.",
+      "Malformed or nonfinite prescribed root-sink state fails closed.",
+      "Macropores and all previously deferred envelopes remain deferred."
+    ],
+    "qualification": {
+      "fixture": "D2 0.1 day exact-equilibrium case with ROOT_TOTAL=0.02 cm/day",
+      "previous_derivative": "same zero-vector temporal-history state for ROOT and GENERIC",
+      "budget_cm": 0.00001,
+      "expected": [
+        "ROOT and GENERIC both expose available model certificates.",
+        "Their indicator status, route, head_inf_bound and normalized indicator are numerically identical to tight floating-point tolerance.",
+        "No additional nonlinear solve is introduced.",
+        "O0 and O2 outputs are identical.",
+        "Existing temporal owner and negative fail-closed tests must remain green."
+      ],
+      "equivalence_tolerance": "64*epsilon scaled relative comparison"
+    },
+    "repair_decision_rule": "Admit the restricted extension only if ROOT/GNERIC equivalence is demonstrated and existing temporal regression gates remain green."
   }
 }
