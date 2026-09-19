@@ -180,32 +180,55 @@ Training data must come from **accepted committed trajectories**, not failed sol
 
 A tiny systematic one-step flux bias can create unacceptable seasonal storage or groundwater-exchange drift. Exact or explicitly bounded ledger accounting is therefore more important than a small instantaneous profile RMSE.
 
-## 8. Error and output hierarchy
+## 8. Purpose-dependent hydrological fidelity
 
-For any future experiment, the following quantities are treated differently.
+A reduced model is not an alternative numerical solver and is therefore not required, by definition, to reproduce the Reference-Richards trajectory to the same equivalence standard used for an alternative numerical route. The relevant question is whether the reduced model preserves the hydrological information needed by its declared use.
 
-**Hard or nearly-hard invariants**
+The ROM-0 numerical floor remains useful as a measurement reference: discrepancies below that floor cannot be interpreted cleanly. It is **not** the universal ROM acceptance tolerance.
 
-- accepted total water accounting;
-- nonnegative/physically admissible water contents;
-- committed-state/transaction semantics;
-- correct boundary-mode identity;
-- fail-closed material/template identity;
-- no hidden correction flux used solely to erase accumulated ROM mass error.
+Future qualification separates two layers.
 
-**Hydrologically consequential observables**
+**Non-negotiable integrity constraints**
 
-- cumulative top and bottom exchange;
-- sign changes of bottom flux;
-- timing of wetting/saturation/ponding or stress events;
-- total, upper-band and lower-band storage;
-- extrema and recovery time after forcing transitions;
-- long-horizon drift.
+- explicit water accounting, with no hidden correction flux used solely to erase structural mass error;
+- finite, physically admissible published state;
+- declared template/material and boundary semantics;
+- deterministic restart/persistence semantics where the ROM owns prognostic state;
+- fail-closed behaviour outside the qualified state/forcing/parameter/capability domain.
 
-**Potentially approximable diagnostics**
+**Purpose-dependent fidelity quantities**
 
-- full pressure-head and moisture profiles, only if future predictive sufficiency remains demonstrated;
-- local instantaneous flux details that do not alter downstream process activation or cumulative budgets.
+- long-term water balance and systematic storage drift;
+- cumulative and mean actual evapotranspiration;
+- drainage and groundwater recharge;
+- root-zone and profile soil-moisture state;
+- groundwater head where coupled feedback is part of the use case;
+- timing of fast wetting, drainage, ponding or flux-reversal events;
+- extrema, drought onset, drought persistence and recovery;
+- activation and timing of hydrological regime transitions;
+- systematic bias, not just symmetric error;
+- robustness across held-out histories and small perturbations;
+- computational cost including fallback and amortized offline work.
+
+No universal percentage is frozen in advance. A 1% or 2% annual ET difference may later be acceptable for one application and unacceptable for another; that must be justified from the intended decision or scientific inference rather than chosen because it is convenient for the ROM.
+
+### 8.1 Application envelopes
+
+The first cost-fidelity evaluation uses separate lenses rather than one scalar accuracy score.
+
+1. **Regional long-term water-balance / groundwater-resource use.** Priority: cumulative ET, recharge/drainage, storage drift, coupled groundwater response and systematic bias. Sub-daily event timing can be secondary if it does not alter these quantities.
+2. **Operational root-zone soil-moisture / drought monitoring.** Priority: soil-moisture state, drought onset/recovery, ET stress response, robustness under changing forcing and state-updating compatibility. Long-term flux totals alone are insufficient.
+3. **Groundwater-coupled many-column simulation.** Priority: recharge/capillary exchange, storage coefficient/response, groundwater-head feedback, mass conservation and stability of iterative coupling. Exact internal pressure-head profiles are secondary unless they alter the exchanged response.
+4. **Fast-event or threshold-sensitive applications.** Priority: timing and magnitude of infiltration/drainage pulses, ponding/runoff or other regime transitions. A model that is acceptable for annual balances may be unacceptable here.
+5. **Scientific process attribution or extreme-event inference.** Highest fidelity requirement. A ROM may be inappropriate when the scientific conclusion depends on profile structure, threshold timing or tail behaviour that the reduced state does not retain.
+
+A ROM is therefore qualified only for the application classes whose required observables meet a separately justified acceptance envelope. Passing one class never implies passing the others.
+
+### 8.2 Precedent from simplified unsaturated-zone models
+
+MetaSWAP is a relevant precedent because it deliberately replaces online transient Richards resolution with a quasi-steady meta-model derived from SWAP information. Its published plausibility tests were application-facing rather than numerical-equivalence tests: groundwater model efficiency and evapotranspiration differences were evaluated across soil type, root-zone thickness, groundwater depth and contrasting years. The results were explicitly conditional on that domain, and the authors described them as an indication of applicability rather than exact equivalence.
+
+This precedent does not supply SWAP5 ROM tolerances. It demonstrates the more important principle that a reduced unsaturated-zone model can be scientifically legitimate when its approximation, application domain and output-specific fidelity are explicit.
 
 RMSE alone is never a sufficient admission metric.
 
@@ -298,22 +321,28 @@ Use many independent B01 columns with diverse **held-out reachable states and fo
 
 The research line stops if any of the following occurs:
 
-1. the simple closure cannot survive held-out reversal/long-horizon tests without hydrologically meaningful event or cumulative-budget error;
-2. safe OOD gating causes fallback so frequently that online cost is not materially below the best direct route;
-3. spatially coarsened Richards lies on an equal or better cost-error frontier;
-4. RossFast plus existing batching removes enough cost that realistic amortization cannot recover the ROM offline cost;
-5. the required state/domain partition proliferates into many special cases, destroying practical template-level reuse.
+1. no declared application class retains sufficient hydrological fidelity under held-out long-horizon, reversal, drought/state or coupling-relevant challenges;
+2. the reduced route cannot maintain explicit water-accounting integrity or requires hidden correction fluxes to control drift;
+3. safe OOD gating causes fallback so frequently that online cost is not materially below the best direct route;
+4. spatially coarsened Richards lies on an equal or better **cost-fidelity** frontier;
+5. RossFast plus existing batching removes enough cost that realistic amortization cannot recover the ROM offline cost;
+6. the required state/domain partition proliferates into many special cases, destroying practical template-level reuse.
+
+An error in fast-event timing is a kill condition only for an application envelope in which that timing is decision- or inference-relevant. It remains a mandatory reported metric for all envelopes.
 
 ### Positive criterion
 
-A positive result requires all of the following, not merely low RMSE:
+There is no single application-independent accuracy gate. A positive result requires all of the following:
 
-- hydrologic error remains inside a predeclared envelope informed by the ROM-0 numerical floor;
-- no hidden mass correction is needed;
+- at least one declared application class has a defensible, predeclared purpose-dependent acceptance envelope and the reduced/hybrid route stays inside it on held-out evidence;
+- water-accounting integrity and other non-negotiable constraints pass without hidden mass correction;
 - OOD behavior is fail-closed;
-- held-out long-horizon and reversal evidence passes;
-- online cost is resolved below the best admissible direct comparator;
+- systematic bias, long-horizon drift and robustness are reported even when aggregate RMSE is small;
+- online cost is resolved below the best admissible direct comparator on the same workload;
+- the resulting point is non-dominated on the **computational-cost versus hydrological-fidelity frontier**, rather than merely faster than Reference;
 - break-even lies within a realistic repeated-workload size.
+
+Failure for an event-sensitive application does not automatically invalidate a ROM for a long-term water-balance application, and conversely good annual totals do not qualify event-scale or drought-process use.
 
 ## 12. Go/no-go
 
