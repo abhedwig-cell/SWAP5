@@ -2,16 +2,17 @@ program test_ppa_root_hyd01_sink_equivalence
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, &
-       fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, &
+       fmr_new_b110_temporal_indicator_committed_state
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
@@ -45,8 +46,105 @@ program test_ppa_root_hyd01_sink_equivalence
     call compare_routes(DURATIONS(i))
   end do
   write(*,'(a)') 'PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS'
+  call diagnose_model_certificate_routes()
+  write(*,'(a)') 'PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS'
 
 contains
+
+  subroutine diagnose_model_certificate_routes()
+    type(kernel_result_t) :: root_result, generic_result
+    type(kernel_candidate_state_t) :: root_candidate, generic_candidate
+    type(kernel_diagnostics_t) :: root_diag, generic_diag
+    type(fmr_serialized_physical_observation_t) :: root_obs, generic_obs
+
+    call run_certificate_case(.true., root_result, root_candidate, root_diag, root_obs)
+    call run_certificate_case(.false., generic_result, generic_candidate, generic_diag, generic_obs)
+
+    write(*,'(a,l1,a,i0,a,i0,a,a,a,l1,a,es24.16,a,a)') &
+         'PPA_ROOT_HYD01_D2_ROOT completed=', root_result%completed, ' status=', root_result%status, &
+         ' certificate_unavailable_rejections=', root_diag%temporal_certificate_unavailable_rejections, &
+         ' indicator_route=', trim(root_obs%temporal_indicator_route), ' cert_available=', &
+         root_obs%temporal_certificate_available, ' normalized_indicator=', root_obs%temporal_normalized_indicator, &
+         ' reason=', trim(root_obs%temporal_certificate_unavailable_reason)
+
+    write(*,'(a,l1,a,i0,a,i0,a,a,a,l1,a,es24.16,a,a)') &
+         'PPA_ROOT_HYD01_D2_GENERIC completed=', generic_result%completed, ' status=', generic_result%status, &
+         ' certificate_unavailable_rejections=', generic_diag%temporal_certificate_unavailable_rejections, &
+         ' indicator_route=', trim(generic_obs%temporal_indicator_route), ' cert_available=', &
+         generic_obs%temporal_certificate_available, ' normalized_indicator=', generic_obs%temporal_normalized_indicator, &
+         ' reason=', trim(generic_obs%temporal_certificate_unavailable_reason)
+
+    call require(trim(root_obs%temporal_indicator_route) == 'root-sink-envelope-deferred', &
+         'D2 root route did not expose root-sink-envelope-deferred')
+    call require(.not. root_obs%temporal_certificate_available, 'D2 root certificate unexpectedly available')
+    call require(trim(generic_obs%temporal_indicator_route) /= 'root-sink-envelope-deferred', &
+         'D2 generic route incorrectly hit root-sink policy')
+  end subroutine diagnose_model_certificate_routes
+
+  subroutine run_certificate_case(root_route, result, candidate, diagnostics, obs)
+    logical, intent(in) :: root_route
+    type(kernel_result_t), intent(out) :: result
+    type(kernel_candidate_state_t), intent(out) :: candidate
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    type(fmr_serialized_physical_observation_t), intent(out) :: obs
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_committed_state_t) :: temporal_committed
+    type(kernel_checkpoint_t) :: checkpoint
+    type(canonical_numerical_config_t) :: numerical
+    type(fmr_template_t) :: temporal_template
+    real(real64) :: previous_derivative(numnod)
+    integer :: rooted
+    logical :: ok
+
+    parameters = base_parameters
+    parameters%root_extraction_active = root_route
+    call initialize_forcing(forcing, qref)
+    rooted = min(4, numnod)
+    if (root_route) then
+      forcing%root_extraction_sink(1:rooted) = ROOT_TOTAL / real(rooted, real64)
+    else
+      forcing%drainage_flux_by_level(1,1:rooted) = ROOT_TOTAL / real(rooted, real64)
+    end if
+
+    temporal_template = template
+    temporal_template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    previous_derivative = 0.0_real64
+    call initialize_temporal_committed_state(temporal_committed, previous_derivative)
+
+    numerical = numerical_config()
+    numerical%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
+    numerical%transaction%max_retries = 0
+    numerical%model_temporal_indicator_budget_available = .true.
+    numerical%model_temporal_indicator_budget = 1.0e-5_real64
+
+    call fmr_capture_checkpoint(temporal_committed, checkpoint, ok)
+    call require(ok, 'D2 temporal checkpoint capture')
+    call backend%initialize(top)
+    call backend%run_trial(column, temporal_template, parameters, temporal_committed, forcing, numerical, &
+         0.0_real64, 1.0e-1_real64, checkpoint, result, candidate, diagnostics)
+    obs = backend%observation()
+  end subroutine run_certificate_case
+
+  subroutine initialize_temporal_committed_state(state, previous_derivative)
+    type(kernel_committed_state_t), intent(out) :: state
+    real(real64), intent(in) :: previous_derivative(:)
+    type(fmr_b110_physical_state_t) :: physical
+    real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
+    logical :: ok
+
+    heads = H0_CM
+    call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
+    physical%active_nodes = numnod
+    allocate(physical%pressure_head(numnod), physical%water_content(numnod))
+    physical%pressure_head = heads
+    physical%water_content = water
+    physical%ponding_depth = 0.0_real64
+    physical%groundwater_level = -2.0_real64
+    call fmr_new_b110_temporal_indicator_committed_state(state, COLUMN_ID, physical, 0.0_real64, ok, previous_derivative)
+    call require(ok, 'D2 temporal committed state initialization')
+  end subroutine initialize_temporal_committed_state
 
   subroutine compare_routes(duration)
     real(real64), intent(in) :: duration
