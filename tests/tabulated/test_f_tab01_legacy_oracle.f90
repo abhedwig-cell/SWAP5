@@ -56,7 +56,9 @@ contains
     real(real64) :: x_min, xq, hq, theta_q, k_q, c_q, dkdh_q, dummy
     real(real64) :: theta_ref_q, k_ref_q, c_ref_q
     real(real64) :: theta_max_abs, theta_max_range_norm
-    real(real64) :: k_max_log10, c_max_rel_smooth
+    real(real64) :: k_max_log10, c_max_rel_smooth, c_max_rel_active, c_max_abs
+    real(real64) :: c_h_at_max_rel, c_ref_at_max_rel, c_q_at_max_rel
+    real(real64) :: c_h_at_max_active, c_ref_at_max_active, c_q_at_max_active
     real(real64) :: theta_self_max_rel, k_self_max_rel
     real(real64) :: hp, hm, tp, tm, kp, km, c_fd, dk_fd, eps
     real(real64) :: denom
@@ -121,6 +123,14 @@ contains
     theta_max_range_norm = 0.0_real64
     k_max_log10 = 0.0_real64
     c_max_rel_smooth = 0.0_real64
+    c_max_rel_active = 0.0_real64
+    c_max_abs = 0.0_real64
+    c_h_at_max_rel = 0.0_real64
+    c_ref_at_max_rel = 0.0_real64
+    c_q_at_max_rel = 0.0_real64
+    c_h_at_max_active = 0.0_real64
+    c_ref_at_max_active = 0.0_real64
+    c_q_at_max_active = 0.0_real64
     theta_self_max_rel = 0.0_real64
     k_self_max_rel = 0.0_real64
 
@@ -149,8 +159,24 @@ contains
        theta_max_range_norm = max(theta_max_range_norm, abs(theta_q-theta_ref_q)/(THETA_S-THETA_R))
        k_max_log10 = max(k_max_log10, abs(log10(k_q)-log10(k_ref_q)))
 
-       if (hq <= H_CRIT .and. c_ref_q > 1.0e-14_real64) then
-          c_max_rel_smooth = max(c_max_rel_smooth, abs(c_q-c_ref_q)/c_ref_q)
+       if (hq <= H_CRIT) then
+          c_max_abs = max(c_max_abs, abs(c_q-c_ref_q))
+          if (c_ref_q > 1.0e-14_real64) then
+             if (abs(c_q-c_ref_q)/c_ref_q > c_max_rel_smooth) then
+                c_max_rel_smooth = abs(c_q-c_ref_q)/c_ref_q
+                c_h_at_max_rel = hq
+                c_ref_at_max_rel = c_ref_q
+                c_q_at_max_rel = c_q
+             end if
+          end if
+          if (c_ref_q > 1.0e-6_real64) then
+             if (abs(c_q-c_ref_q)/c_ref_q > c_max_rel_active) then
+                c_max_rel_active = abs(c_q-c_ref_q)/c_ref_q
+                c_h_at_max_active = hq
+                c_ref_at_max_active = c_ref_q
+                c_q_at_max_active = c_q
+             end if
+          end if
        end if
 
        eps = max(1.0e-8_real64, abs(hq)*2.0e-6_real64)
@@ -180,6 +206,14 @@ contains
       ' C_max_rel_h_le_hcrit=',c_max_rel_smooth, &
       ' theta_derivative_self_rel=',theta_self_max_rel, &
       ' K_derivative_self_rel=',k_self_max_rel
+    write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
+      'F_TAB01_C_DETAIL n=',n,' C_max_abs=',c_max_abs, &
+      ' C_max_rel_active_Cgt1e-6=',c_max_rel_active, &
+      ' h_at_max_rel=',c_h_at_max_rel,' h_at_max_active=',c_h_at_max_active
+    write(*,'(A,I0,A,ES14.6,A,ES14.6,A,ES14.6,A,ES14.6)') &
+      'F_TAB01_C_VALUES n=',n,' Cref_at_max_rel=',c_ref_at_max_rel, &
+      ' Ctab_at_max_rel=',c_q_at_max_rel, &
+      ' Cref_at_max_active=',c_ref_at_max_active,' Ctab_at_max_active=',c_q_at_max_active
   end subroutine characterize_table
 
   subroutine build_entry_index(n, htab, index_row)
