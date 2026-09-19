@@ -24,7 +24,12 @@ def parse_ref(path):
         elif "F_ROMV2_D17_REF_STATE|" in line:
             r=fields(line.split("F_ROMV2_D17_REF_STATE|",1)[1]); states[(r["HISTORY"],int(r["STEP"]))]=r
         elif "F_ROMV2_D17_REF_NODE|" in line:
-            r=fields(line.split("F_ROMV2_D17_REF_NODE|",1)[1]); nodes[(r["HISTORY"],int(r["STEP"]))][int(r["NODE"])]=r
+            r=fields(line.split("F_ROMV2_D17_REF_NODE|",1)[1])
+            if "THETA" not in r or "H" not in r:
+                raise SystemExit(f"malformed node record {path}: {line}")
+            nodes[(r["HISTORY"],int(r["STEP"]))][int(r["NODE"])]={
+                "H":float(r["H"]),"THETA":float(r["THETA"])
+            }
     expected={(h,s) for h in HISTS for s in range(1,STEPS+1)}
     if set(states)!=expected or set(nodes)!=expected:
         raise SystemExit(f"reference structure mismatch {path}")
