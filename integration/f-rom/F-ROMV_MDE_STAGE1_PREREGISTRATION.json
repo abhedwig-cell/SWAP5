@@ -1,0 +1,205 @@
+{
+  "schema": "swap5.f-romv-mde-stage1.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV-MDE-S1",
+  "title": "B01 template-local conservative closure scientific pre-screen",
+  "phase": "PREREGISTERED_BEFORE_MODEL_FIT",
+  "parent_design": "integration/f-rom/F-ROMV_MINIMAL_DISCRIMINATING_EXPERIMENT.json",
+  "branch_parent": "f662451bcc825dc4b4933c1a947e2d6227f66b9e",
+  "purpose": "Characterize the simplest template-local reduced dynamics on held-out B01 histories and determine whether any declared application lens remains scientifically plausible before direct-route timing and coarse-Richards comparison.",
+  "data_authority": {
+    "source_work_unit": "ROM-1A-R2",
+    "workflow_run": 35379176697,
+    "artifact_id": 10561841507,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "executed_head": "67a6af4922143a618ffd250c3cc4e38e7090850c",
+    "material": "B01",
+    "accepted_states": 768,
+    "nodes_per_state": 16,
+    "discovery_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08"
+    ],
+    "heldout_histories": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "heldout_used_for_fit_or_model_selection": false
+  },
+  "state_definition": {
+    "parent_coordinate": "Z8_PLUS_G8",
+    "dimension": 9,
+    "Z8": "eight contiguous 20-cm water-content means",
+    "G8": "0.5*(theta_cell_15-theta_cell_16)",
+    "regression_coordinate": [
+      "S_total_cm",
+      "R1=Z1-Z8",
+      "R2=Z2-Z8",
+      "R3=Z3-Z8",
+      "R4=Z4-Z8",
+      "R5=Z5-Z8",
+      "R6=Z6-Z8",
+      "R7=Z7-Z8",
+      "G8"
+    ],
+    "inverse": "Z8=(S_total_cm/20-sum(R1:R7))/8; Zi=Ri+Z8 for i=1..7",
+    "reason": "Carry total storage explicitly so conservation is structural rather than an after-the-fact mass correction.",
+    "reconstruction_for_physical_bounds": "For cells 1-14, use each 20-cm band mean Zi for both 10-cm cells; for cells 15-16 use Z8+G8 and Z8-G8. This is a reduced-state reconstruction diagnostic, not a claim of full-profile fidelity.",
+    "reconstruction_used_for_outputs": false
+  },
+  "forcing_features": {
+    "u_top": {
+      "TOP_PLUS": 1,
+      "TOP_MINUS": -1,
+      "otherwise": 0
+    },
+    "u_bottom": {
+      "BOTTOM_HEAD_RISE": 1,
+      "COMBINED_RISE_PLUS": 1,
+      "BOTTOM_HEAD_FALL": -1,
+      "COMBINED_FALL_MINUS": -1,
+      "otherwise": 0
+    },
+    "u_head_mode": {
+      "bottom_mode_5": 1,
+      "bottom_mode_2": 0
+    },
+    "combined_forcing_is_not_discovery_seen": true
+  },
+  "training_pairs": {
+    "rule": "Within each discovery history use accepted state k as input and accepted state k+1 plus interval outputs as target for k=1..63.",
+    "count": 504,
+    "first_interval_from_seed_excluded": true
+  },
+  "closure": {
+    "family": "BILINEAR_CONTROLLED_AFFINE_OPERATOR_INFERENCE",
+    "fit_method": "ordinary least squares using SVD pseudoinverse; no heldout tuning; no ridge hyperparameter",
+    "state_standardization": "discovery mean and standard deviation only",
+    "feature_basis": [
+      "1",
+      "standardized_state_1_to_9",
+      "u_top",
+      "u_bottom",
+      "u_head_mode",
+      "standardized_state_i*u_top for i=1..9",
+      "standardized_state_i*u_bottom for i=1..9",
+      "standardized_state_i*u_head_mode for i=1..9"
+    ],
+    "predicted_outputs": [
+      "delta_R1_to_R7",
+      "delta_G8",
+      "bottom_outward_exchange_cm",
+      "terminal_bottom_flux_cm_per_day"
+    ],
+    "top_exchange": "taken exactly from the declared forcing interval, not learned",
+    "storage_update": "S_next = S_current - top_exchange - predicted_bottom_outward_exchange",
+    "mass_correction_flux": false,
+    "neural_network": false,
+    "quadratic_state_terms": false
+  },
+  "ood_gate": {
+    "state_rule": "All nine regression-state coordinates must lie within the closed discovery min/max range.",
+    "forcing_rule": "The exact tuple (u_top,u_bottom,u_head_mode) must occur in discovery training pairs.",
+    "decision": "If either rule fails, classify OUTSIDE_QUALIFIED_DOMAIN and use the full-order recorded transition in the hybrid replay.",
+    "no_distance_threshold_fit": true,
+    "no_heldout_threshold_tuning": true
+  },
+  "evaluation": {
+    "pure_rom": "Starting from exact heldout accepted step 1, recursively predict steps 2..64 without fallback for diagnostic failure characterization.",
+    "hybrid": "Starting from exact heldout accepted step 1, use reduced transition only when the frozen OOD gate passes; otherwise publish the recorded full-order transition and continue from that full-order accepted state.",
+    "heldout_prediction_steps": 252,
+    "required_metrics": [
+      "water_ledger_residual",
+      "total_upper_lower_storage_error_and_bias",
+      "cumulative_top_exchange_error",
+      "cumulative_bottom_exchange_error_and_bias",
+      "terminal_bottom_flux_error_and_sign",
+      "flow_reversal_event_step_error",
+      "reduced_state_reconstruction_error",
+      "invalid_water_content_count",
+      "ood_count",
+      "fallback_fraction",
+      "one_step_and_recursive_error_distributions",
+      "metrics_partitioned_by_application_lens"
+    ]
+  },
+  "stage1_decision": {
+    "positive": "PROCEED_TO_DIRECT_COMPARATOR_STAGE_ONLY",
+    "negative": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+    "not_allowed": "No Stage-1 result can authorize production ROM, universal Richards equivalence, or final MDE success.",
+    "integrity_kill_if": [
+      "Any in-domain hybrid reduced transition produces nonfinite state.",
+      "Any reconstructed in-domain hybrid water content lies outside B01 physical [theta_r,theta_s]=[0.02,0.427494].",
+      "Any in-domain hybrid reduced transition violates the structural water ledger by more than 1e-12 cm.",
+      "OOD gate publishes a reduced transition for a state or forcing outside its frozen discovery envelope."
+    ],
+    "fidelity_rule": "Event timing, flux sign, storage, exchange and bias errors are evaluated separately under the declared application lenses. Failure of an event-sensitive lens does not automatically fail a long-term-balance lens. No fixed percentage tolerance is introduced after observing heldout results.",
+    "advance_rule": "Proceed only if integrity constraints pass and at least one application lens remains scientifically plausible enough to justify the preregistered direct-route/coarse-Richards cost-fidelity comparison. Stage 1 may also close a lens as unsuitable while leaving another open."
+  },
+  "firewalls": [
+    "NO_SRC_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM",
+    "NO_B14",
+    "NO_HELDOUT_FIT_OR_MODEL_SELECTION",
+    "NO_NEURAL_ARCHITECTURE_ESCALATION_AFTER_FAILURE",
+    "NO_POST_RESULT_OOD_RETUNING"
+  ],
+  "application_lenses": {
+    "stage1_scope": [
+      {
+        "id": "A_LONG_TERM_REGIONAL_WATER_BALANCE_PROXY",
+        "available_metrics": [
+          "TOTAL_STORAGE",
+          "CUMULATIVE_TOP_EXCHANGE",
+          "CUMULATIVE_BOTTOM_EXCHANGE",
+          "SYSTEMATIC_STORAGE_AND_BOTTOM_EXCHANGE_BIAS"
+        ],
+        "limitation": "ET and full groundwater-head feedback are not present in the ROM1AR2 pure-hydraulics laboratory."
+      },
+      {
+        "id": "C_GROUNDWATER_COUPLED_HYDRAULIC_PROXY",
+        "available_metrics": [
+          "BOTTOM_EXCHANGE",
+          "TERMINAL_BOTTOM_FLUX",
+          "STORAGE_RESPONSE",
+          "FLOW_DIRECTION"
+        ],
+        "limitation": "This is not yet a live MODFLOW coupling qualification."
+      },
+      {
+        "id": "D_FAST_EVENT_THRESHOLD",
+        "available_metrics": [
+          "BOTTOM_FLUX_SIGN",
+          "FLOW_REVERSAL_TIMING",
+          "SHORT_HORIZON_STORAGE"
+        ],
+        "limitation": "Failure here does not automatically invalidate long-term-balance use."
+      },
+      {
+        "id": "E_PROFILE_SENSITIVE_SCIENTIFIC_DIAGNOSTIC",
+        "available_metrics": [
+          "REDUCED_STATE_RECONSTRUCTION_ERROR",
+          "UPPER_AND_LOWER_STORAGE"
+        ],
+        "limitation": "The nine-state representation is not required to reproduce the complete pressure-head profile."
+      }
+    ],
+    "unavailable_for_stage1": [
+      "FULL_ET_APPLICATION_FIDELITY",
+      "ROOT_WATER_STRESS_AND_DROUGHT_PROCESS_FIDELITY",
+      "LIVE_GROUNDWATER_HEAD_COUPLING",
+      "PONDING_RUNOFF_THRESHOLD_FIDELITY"
+    ]
+  },
+  "threshold_policy": "No universal percentage or numerical-equivalence tolerance. ROM-0 floors are retained as measurement context. Any later application acceptance envelope must be justified from the intended use before final qualification.",
+  "computational_cost_stage1": "Only Python-level closure evaluation cost may be recorded diagnostically. Formal value is deferred to the direct comparator stage on an admitted performance host."
+}
