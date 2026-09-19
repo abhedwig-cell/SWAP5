@@ -1500,6 +1500,113 @@ def validate_romv2_d15_if_present() -> str:
     return "CLOSED_FULL_SURFACE_ACCOUNTING_PREFLIGHT_PASS"
 
 
+def validate_romv2_d16_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D16_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D16_PREREGISTRATION.json")
+            == "ef4d00934e7fbcaefdf9378031b6b4b5bcbb1dbe",
+            "F-ROMV2-D16 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D16_RESULT.json")
+            == "c0c950fd9154a4abafe1c906c5c5343491ecc559",
+            "F-ROMV2-D16 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D16_STATUS.json")
+            == "5137619f4df6ee00c6b855322591ba7ae6557914",
+            "F-ROMV2-D16 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D16_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "556b262edcc82752aa25c50b653613c66785e558",
+            "F-ROMV2-D16 evidence manifest blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D16_FMC_SURFACE_REDISTRIBUTION_ADJUDICATION.md")
+            == "4bd1de65d28f99d9c45496383f0930d2d25f0a43",
+            "F-ROMV2-D16 adjudication document blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D16_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D16_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D16_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D16_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D16_FMC_SURFACE_REDISTRIBUTION_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+            "F-ROMV2-D16 preregistration phase drift")
+    require(prereg["state_and_geometry"]["FMC_moisture_bins"] == 200
+            and prereg["temporal_contract"]["observation_step_seconds"] == 10,
+            "F-ROMV2-D16 frozen discretization drift")
+    require(prereg["matched_boundaries"]["bottom"]["FMC"] == "no groundwater front and no bottom exchange",
+            "F-ROMV2-D16 bottom-boundary envelope drift")
+    require("NO_BIN_COUNT_TUNING" in prereg["firewalls"]
+            and "NO_SUBSTEP_TUNING" in prereg["firewalls"]
+            and "NO_PULSE_FACTOR_OR_DURATION_RETUNING_AFTER_PREFLIGHT" in prereg["firewalls"],
+            "F-ROMV2-D16 anti-tuning firewall drift")
+
+    require(result["decision"] == "FMC_SURFACE_REDISTRIBUTION_RETAINS_RESEARCH_CANDIDACY",
+            "F-ROMV2-D16 decision drift")
+    require(result["adjudication"]
+            == "BOUNDED_SURFACE_PULSE_HIATUS_FMC_BEATS_R2_ON_ALL_PREREGISTERED_REDISTRIBUTION_VIEWS",
+            "F-ROMV2-D16 adjudication drift")
+    require(result["staged_preflight"]["first_attempt"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D16 first preflight consumed SWAP evidence")
+    repair = result["staged_preflight"]["technical_repair"]
+    require(repair["hydrological_equations_changed"] is False
+            and repair["pulse_factors_changed"] is False
+            and repair["pulse_or_hiatus_duration_changed"] is False
+            and repair["bins_or_substep_changed"] is False
+            and repair["decision_gates_changed"] is False,
+            "F-ROMV2-D16 technical preflight repair changed science")
+    require(result["staged_preflight"]["admitted_preflight"]["decision"]
+            == "D16_FMC_SURFACE_REDISTRIBUTION_INTERNAL_PREFLIGHT_PASS",
+            "F-ROMV2-D16 admitted preflight drift")
+    require(result["integrity"]["pass"] is True,
+            "F-ROMV2-D16 integrity result drift")
+    require(all(result["comparative_interpretation"][k] is True for k in (
+        "all_step_upper_storage_gate",
+        "all_step_profile_gate",
+        "hiatus_upper_storage_gate",
+        "hiatus_profile_gate")),
+        "F-ROMV2-D16 one or more preregistered fidelity gates no longer pass")
+    require(result["comparative_interpretation"]["FMC_profile_RMSE_ratio_to_R2"] < 1.0
+            and result["comparative_interpretation"]["FMC_hiatus_profile_RMSE_ratio_to_R2"] < 1.0,
+            "F-ROMV2-D16 profile frontier drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D16 overclaims authority")
+
+    require(status["phase"] == "CLOSED_BOUNDED_SURFACE_REDISTRIBUTION_CANDIDACY_RETAINED",
+            "F-ROMV2-D16 status phase drift")
+    require(status["FMC_surface_branch_research_candidacy"] is True
+            and status["combined_surface_groundwater_branch_qualified"] is False,
+            "F-ROMV2-D16 branch-candidacy boundary drift")
+    require(status["rainfall_runoff_ponding_qualified"] is False
+            and status["ET_root_uptake_qualified"] is False,
+            "F-ROMV2-D16 status overextends surface authority")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D16 import scope drift")
+    require(manifest["source_execution"]["pull_request"] == 445
+            and manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D16 primary execution authority drift")
+    require(manifest["pre_trajectory_preflight"]["SWAP_trajectory_evidence_consumed_before_repair"] is False
+            and manifest["pre_trajectory_preflight"]["technical_repair_scientific_parameters_changed"] is False,
+            "F-ROMV2-D16 preflight repair provenance drift")
+    require(manifest["post_exposure_pulse_bin_substep_or_gate_retuning"] is False,
+            "F-ROMV2-D16 post-exposure retuning drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D16 evidence import claims production/reference mutation")
+
+    require("PR #445 is the primary D16 scientific exposure." in doc,
+            "F-ROMV2-D16 primary authority statement missing")
+    require("PR #446" in doc and "closed as superseded" in doc,
+            "F-ROMV2-D16 parallel-branch supersession missing")
+    require("Application acceptance remains unqualified." in doc,
+            "F-ROMV2-D16 application boundary missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D16 production prohibition missing")
+
+    return "CLOSED_BOUNDED_SURFACE_REDISTRIBUTION_CANDIDACY_RETAINED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1541,6 +1648,7 @@ def main() -> int:
     romv2_d13_phase = validate_romv2_d13_if_present()
     romv2_d14_phase = validate_romv2_d14_if_present()
     romv2_d15_phase = validate_romv2_d15_if_present()
+    romv2_d16_phase = validate_romv2_d16_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1566,6 +1674,7 @@ def main() -> int:
     print(f"F_ROMV2_D13_PHASE={romv2_d13_phase}")
     print(f"F_ROMV2_D14_PHASE={romv2_d14_phase}")
     print(f"F_ROMV2_D15_PHASE={romv2_d15_phase}")
+    print(f"F_ROMV2_D16_PHASE={romv2_d16_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
