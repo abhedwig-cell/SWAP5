@@ -2516,6 +2516,101 @@ def validate_romv2_d26_if_present() -> str:
     return "CLOSED_ROOT_UPTAKE_AUTHORITY_RECONCILIATION"
 
 
+def validate_romv2_d27_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D27_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D27_PREREGISTRATION.json")
+            == "65c27e8a54cd2a80278899752a74ebf4964c1cc4",
+            "F-ROMV2-D27 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D27_RESULT.json")
+            == "85e70be94b7d6143dfdbd6b9a5ae95d7f5cf962e",
+            "F-ROMV2-D27 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D27_STATUS.json")
+            == "f2f571c4a7e7b9e05da2a580bf45ac9efb5a701a",
+            "F-ROMV2-D27 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D27_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "b92c582671eae8bd064c97c0434adceabdc2d7c0",
+            "F-ROMV2-D27 manifest blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D27_UNSTRESSED_UPTAKE_ACCOUNTING.md")
+            == "55f1eb50f267d225d7594ffd26cf11ec8981200f",
+            "F-ROMV2-D27 adjudication blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D27_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D27_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D27_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D27_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D27_UNSTRESSED_UPTAKE_ACCOUNTING.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D27 preregistration phase drift")
+    require(prereg["authority"]["SWAP_process_source"]["blob"]
+            == "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+            "F-ROMV2-D27 frozen SWAP root source drift")
+    require(prereg["synthetic_state"]["selected_bin_index"] == 170
+            and prereg["forcing"]["potential_transpiration_cm_per_day"] == 0.4,
+            "F-ROMV2-D27 frozen synthetic state drift")
+    require("NO_NATIVE_FMC_COMPOSITE_STATE_UPDATE_CLAIM" in prereg["firewalls"]
+            and "NO_SPATIAL_SINK_EQUIVALENCE_REQUIREMENT" in prereg["firewalls"],
+            "F-ROMV2-D27 structural firewalls missing")
+
+    require(result["decision"] == "D27_UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_PASS",
+            "F-ROMV2-D27 decision drift")
+    require(result["adjudication"]
+            == "TOTAL_UNSTRESSED_UPTAKE_AND_MASS_ACCOUNTING_EQUIVALENT_SPATIAL_EXTRACTION_STRUCTURALLY_NON_EQUIVALENT",
+            "F-ROMV2-D27 adjudication drift")
+    require(result["SWAP"]["O0_O2_identity"] is True
+            and result["SWAP"]["actual_uptake_cm_per_day"] == 0.4,
+            "F-ROMV2-D27 SWAP current-source result drift")
+    require(result["mass_accounting"]["SWAP_minus_FMC_total_uptake_depth_cm"] == 0,
+            "F-ROMV2-D27 total uptake identity drift")
+    require(abs(float(result["mass_accounting"]["FMC_root_zone_residual_cm"])) < 1e-14
+            and abs(float(result["mass_accounting"]["FMC_whole_column_residual_cm"])) < 1e-14,
+            "F-ROMV2-D27 FMC mass ledger drift")
+    require(result["scientific_interpretation"]["total_unstressed_uptake_equivalent"] is True
+            and result["scientific_interpretation"]["spatial_sink_equivalent"] is False,
+            "F-ROMV2-D27 structural interpretation drift")
+    require(result["native_FMC_root_active_trajectory_authorized"] is False
+            and result["drought_stress_feedback_authorized"] is False
+            and result["seasonal_ET_authorized"] is False,
+            "F-ROMV2-D27 prematurely authorizes root-active/ET trajectories")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D27 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_UNSTRESSED_UPTAKE_ACCOUNTING_PREFLIGHT_PASS"
+            and status["total_uptake_equivalent"] is True
+            and status["spatial_sink_equivalent"] is False,
+            "F-ROMV2-D27 terminal status drift")
+    require(status["native_FMC_root_active_trajectory_authorized"] is False
+            and status["seasonal_ET_authorized"] is False
+            and status["external_secondary_oracle_materialized"] is False,
+            "F-ROMV2-D27 authority hold drift")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY"
+            and manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D27 evidence import scope drift")
+    require(manifest["frozen_payload_digests"]["result_sha256"]
+            == "112eeaf94a712a1fa38ca2b7132d30022dd0026549c499b46cecde8c9fbe9344"
+            and manifest["frozen_payload_digests"]["SWAP_o0_o2_stdout_sha256"]
+            == "9851064dc3e9e754c3d3b0b0804640735b33c9e5cf6bf9ce70732abe43c1c809",
+            "F-ROMV2-D27 payload digest drift")
+    require(manifest["native_FMC_trajectory_authority_claimed"] is False
+            and manifest["spatial_sink_equivalence_claimed"] is False
+            and manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False,
+            "F-ROMV2-D27 manifest overclaim/mutation drift")
+
+    require("same prescribed **total**" in doc,
+            "F-ROMV2-D27 total-uptake scope missing")
+    require("does **not** authorize native FMC root-active trajectories" in doc,
+            "F-ROMV2-D27 trajectory hold missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D27 production prohibition missing")
+
+    return "CLOSED_UNSTRESSED_UPTAKE_ACCOUNTING_PREFLIGHT_PASS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2568,6 +2663,7 @@ def main() -> int:
     romv2_d24_phase = validate_romv2_d24_if_present()
     romv2_d25_phase = validate_romv2_d25_if_present()
     romv2_d26_phase = validate_romv2_d26_if_present()
+    romv2_d27_phase = validate_romv2_d27_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2604,6 +2700,7 @@ def main() -> int:
     print(f"F_ROMV2_D24_PHASE={romv2_d24_phase}")
     print(f"F_ROMV2_D25_PHASE={romv2_d25_phase}")
     print(f"F_ROMV2_D26_PHASE={romv2_d26_phase}")
+    print(f"F_ROMV2_D27_PHASE={romv2_d27_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
