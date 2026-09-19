@@ -5,8 +5,7 @@ on:
     branches:
       - work/f-rom-lare-rs1
     paths:
-      - 'tests/rom/analyze_lare_rs1_partition_ladder.py'
-      - 'tests/rom/validate_lare_rs1_partition_screen.py'
+      - 'tests/rom/*lare_rs1*.py'
       - 'integration/f-rom/LARE_RS1_*'
       - '.github/workflows/f-rom-lare-rs1-partition-screen.yml'
   workflow_dispatch:
@@ -23,6 +22,9 @@ jobs:
 
       - name: Install analysis dependency
         run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Validate Hupsel observation-only tooling
+        run: python3 tests/rom/test_lare_rs1_hupsel_observation_tools.py
 
       - name: Recover frozen historical ROM state artifacts
         env:
