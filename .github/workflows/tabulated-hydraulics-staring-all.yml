@@ -49,42 +49,97 @@ jobs:
             build/tab-hyd/all-staring/sptabulated.o \
             -o build/tab-hyd/all-staring/characterize
 
-      - name: Convert and characterize all 36 tables
+      - name: Validate all 36 tables against current ReadSwap admission rules
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/tab-hyd/all-staring/tables
           python3 - <<'PY'
           from pathlib import Path
+
           src = Path("staring-source/xdata/soils/bofek2012/tables")
           dst = Path("build/tab-hyd/all-staring/tables")
           files = sorted(src.glob("starb*_cm.csv")) + sorted(src.glob("staro*_cm.csv"))
           if len(files) != 36:
               raise SystemExit(f"expected 36 tables, found {len(files)}")
+
+          valid = []
+          invalid = []
+          details = []
+
           for p in files:
               rows = []
               for line in p.read_text().splitlines():
-                  s = line.strip()
-                  if not s or s.startswith("*") or s.lower().startswith("headtab"):
+                  q = line.strip()
+                  if not q or q.startswith("*") or q.lower().startswith("headtab"):
                       continue
-                  parts = s.split(",")
+                  parts = q.split(",")
                   if len(parts) >= 3:
                       rows.append(tuple(float(x) for x in parts[:3]))
+
+              issues = []
+              for i, (a, b) in enumerate(zip(rows, rows[1:]), start=2):
+                  dh = b[0] - a[0]
+                  dtheta = b[1] - a[1]
+                  dk = b[2] - a[2]
+                  # Exact current ReadSwap thresholds:
+                  # head delta > nihil (1e-24)
+                  # theta delta > vsmall (1e-16)
+                  # conductivity delta > nihil**2 (1e-48)
+                  if dh <= 1.0e-24:
+                      issues.append((i, "head", dh, a, b))
+                  if dtheta <= 1.0e-16:
+                      issues.append((i, "theta", dtheta, a, b))
+                  if dk <= 1.0e-48:
+                      issues.append((i, "conductivity", dk, a, b))
+
+              if issues:
+                  invalid.append(p.name)
+                  for row, field, delta, a, b in issues:
+                      details.append(
+                          f"{p.name}\tINVALID\trow={row}\tfield={field}\tdelta={delta:.17e}"
+                          f"\tprev={a}\tcur={b}"
+                      )
+                  continue
+
+              valid.append(p.name)
               out = dst / p.name.replace(".csv", ".dat")
               with out.open("w") as fh:
                   fh.write(f"{len(rows)}\n")
                   for h, theta, k in rows:
                       fh.write(f"{h:.17e} {theta:.17e} {k:.17e}\n")
+
+          report = [
+              f"total_tables={len(files)}",
+              f"readswap_admissible={len(valid)}",
+              f"readswap_rejected={len(invalid)}",
+              "admissible_names=" + ",".join(valid),
+              "rejected_names=" + ",".join(invalid),
+              "",
+              *details,
+          ]
+          Path("build/tab-hyd/all-staring/readswap-validation.txt").write_text("\n".join(report) + "\n")
+          Path("build/tab-hyd/all-staring/valid-count.txt").write_text(str(len(valid)) + "\n")
+          print("\n".join(report))
           PY
+
+      - name: Characterize every ReadSwap-admissible Staring table
+        shell: bash
+        run: |
+          set -euo pipefail
           : > build/tab-hyd/all-staring/results.txt
           for table in build/tab-hyd/all-staring/tables/*.dat; do
             build/tab-hyd/all-staring/characterize "$table" \
               | tee -a build/tab-hyd/all-staring/results.txt
           done
-          test "$(grep -c '^FILE_CHARACTERIZATION_COMPLETED$' build/tab-hyd/all-staring/results.txt)" -eq 36
+          expected="$(cat build/tab-hyd/all-staring/valid-count.txt)"
+          actual="$(grep -c '^FILE_CHARACTERIZATION_COMPLETED$' build/tab-hyd/all-staring/results.txt)"
+          test "$actual" -eq "$expected"
+
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           text = Path("build/tab-hyd/all-staring/results.txt").read_text()
           blocks = text.split("FILE_CHARACTERIZATION_COMPLETED")
           n = 0
@@ -92,6 +147,7 @@ jobs:
           bad_k = 0
           min_c = float("inf")
           min_dk = float("inf")
+
           for block in blocks:
               if "SUMMARY n=" not in block:
                   continue
@@ -106,8 +162,18 @@ jobs:
               bad_k += get_int("k_overshoot")
               min_c = min(min_c, get_float("min_C"))
               min_dk = min(min_dk, get_float("min_dKdh"))
+
+          expected = int(Path("build/tab-hyd/all-staring/valid-count.txt").read_text())
+          validation = Path("build/tab-hyd/all-staring/readswap-validation.txt").read_text()
+          rejected = int(re.search(r"readswap_rejected=(\d+)", validation).group(1))
+          rejected_names = re.search(r"rejected_names=(.*)", validation).group(1)
+
           summary = (
-              f"tables={n}\n"
+              f"total_tables=36\n"
+              f"readswap_admissible={expected}\n"
+              f"readswap_rejected={rejected}\n"
+              f"rejected_names={rejected_names}\n"
+              f"characterized_tables={n}\n"
               f"theta_overshoot_total={bad_theta}\n"
               f"k_overshoot_total={bad_k}\n"
               f"global_min_C={min_c:.17e}\n"
@@ -115,8 +181,9 @@ jobs:
           )
           Path("build/tab-hyd/all-staring/summary.txt").write_text(summary)
           print(summary, end="")
-          if n != 36 or bad_theta != 0 or bad_k != 0 or min_c < 0 or min_dk < 0:
-              raise SystemExit("exhaustive Staring characterization failed")
+
+          if n != expected or bad_theta != 0 or bad_k != 0 or min_c < 0 or min_dk < 0:
+              raise SystemExit("admissible-table characterization failed")
           PY
 
       - name: Upload evidence
@@ -125,5 +192,6 @@ jobs:
         with:
           name: tab-hyd-all-staring-evidence
           path: |
+            build/tab-hyd/all-staring/readswap-validation.txt
             build/tab-hyd/all-staring/results.txt
             build/tab-hyd/all-staring/summary.txt
