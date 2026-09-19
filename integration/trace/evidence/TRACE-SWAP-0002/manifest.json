@@ -1,0 +1,49 @@
+{
+  "schema": "trace.evidence_manifest.v0.1",
+  "trace_id": "TRACE-SWAP-0002",
+  "freeze_date": "2026-09-19",
+  "pre_resolution": {
+    "repository": "abhedwig-cell/SWAP5",
+    "ref": "research/trace-exposure-b03",
+    "commit": "52d5e1092b00a77d59b81f54db953b040fe9347e"
+  },
+  "theory_sources": [],
+  "documentation_sources": [
+    {
+      "path": "docs/science/restricted-snow.md",
+      "blob_sha": "23ad587193b36350ed6f25684fa7bc17a92fcdcd",
+      "observed_claim": "Current reviewer-facing page documents the exact bounded Status-A restricted one-call-daily Snow formulation and cites F-DOC23/F-VQ16/F-PM02 authority."
+    },
+    {
+      "path": "integration/f-doc/F-DOC23_STATUS.json",
+      "blob_sha": "983c7534f1fdf93ae700ac873eafe421e6f6dc68",
+      "observed_claims": [
+        "phase=VERIFY",
+        "decision=QUALIFIED_DOCUMENTATION_POSTIMAGE_READY_FOR_ADMISSION",
+        "verdict=PASS_READY_FOR_ADMISSION",
+        "next_permitted_action says to admit PR #170 after live reconciliation"
+      ]
+    }
+  ],
+  "implementation_sources": [],
+  "existing_regression_evidence": [],
+  "authority_and_governance_sources": [
+    {
+      "path": "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json",
+      "blob_sha": "3f6c48482386965b6608c2796843123b414dc217",
+      "observed_claims": [
+        "phase=CLOSE",
+        "status=CLOSED_CURRENT_CANONICAL_RESTRICTED_SNOW_CAPABILITY",
+        "missing_admission_gate_remaining=false",
+        "next_permitted_action=None for bounded Snow closure"
+      ]
+    }
+  ],
+  "inputs_and_configuration": [],
+  "runtime_environment": [],
+  "reproduction_commands": [],
+  "outputs": [],
+  "checksums": [],
+  "initial_conflict": "The selected current repository state contains the reviewer Snow reference while its F-DOC23 status still describes future documentation admission. It is not yet known whether that status is intentionally frozen pre-admission evidence or stale current documentation governance.",
+  "notes": "Evidence frozen before PR #170 state, F-DOC23 branch chronology, post-merge closeout status or freeze semantics are inspected."
+}
