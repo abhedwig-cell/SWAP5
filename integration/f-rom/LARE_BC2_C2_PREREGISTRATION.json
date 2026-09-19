@@ -90,7 +90,9 @@
       "dominant adjacent-compartment transfer mode",
       "relation of high-gain states to H direction and terminal width"
     ],
-    "interpretation": "Supports local tangent-instability evidence only where the two frozen perturbation amplitudes give consistent directional gains."
+    "interpretation": "Supports local tangent-instability evidence only where the two frozen perturbation amplitudes give consistent directional gains.",
+    "mass_neutral_projection": "At the output boundary, remove the uniform total-storage component before computing the primary shape-mode amplification. Report differential total-storage response separately.",
+    "direction_definition": "For adjacent compartments i,j, +epsilon is applied to theta_i and theta_j changes by -epsilon*L_i/L_j so the signed perturbation has zero total water storage; the negative branch uses the exact opposite perturbation."
   },
   "decision_logic": {
     "BIAS_ACCUMULATION_DOMINANT": "Actual-drift gains are predominantly contractive/non-amplifying while local teacher-reference shape bias persists; investigate local closure bias source rather than a stabilizer.",
@@ -123,5 +125,16 @@
     "role": "Numerical zero/noise guard only; intervals below this start-error norm are INELIGIBLE_FOR_GAIN rather than assigned zero or infinite gain.",
     "application_acceptance_role": "NONE",
     "response_based": false
+  },
+  "pre_execution_shape_metric_clarification": {
+    "before_C1R_result_exposure": true,
+    "theta_error_vector": "For each physical reduced control volume convert storage error to mean-water-content error by dividing by its instantaneous thickness.",
+    "total_storage_component": "delta_theta_uniform = sum(delta_W_i) / sum(L_i). Report total storage error separately.",
+    "mass_neutral_shape_vector": "e_shape_i = delta_theta_i - delta_theta_uniform. This has sum(L_i*e_shape_i)=0 to roundoff.",
+    "primary_shape_norm": "unweighted RMS over e_shape_i so each reduced control volume contributes one shape coordinate independent of thickness.",
+    "secondary_raw_theta_norm": "unweighted RMS over uncentered delta_theta_i, reported diagnostically.",
+    "gain_denominator_floor_theta_rms": 1e-12,
+    "floor_role": "pure numerical division guard; not a hydrological acceptance threshold",
+    "below_floor_semantics": "report BELOW_GAIN_DENOMINATOR_FLOOR and do not assign g_k"
   }
 }
