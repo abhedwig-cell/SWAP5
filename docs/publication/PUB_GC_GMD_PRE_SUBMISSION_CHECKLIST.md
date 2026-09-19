@@ -15,7 +15,7 @@ Date: 2026-09-19.
 | abstract | READY | use manuscript abstract |
 | short summary <=500 chars | READY | re-count after edits |
 | Code and data availability | STRUCTURE_READY | bind final release/licence/DOI |
-| exact code/data persistent archive | BLOCKED_AFTER_R1_L1 | deposit exact release and obtain PID/DOI |
+| exact code/data persistent archive | BLOCKED_AFTER_R1_L1 | finalization gate prepared; deposit exact release and obtain PID/DOI |
 | software licence stated | BLOCKED_L1 | obtain authorized SWAP5 archive statement |
 | run-control/postprocessing/evidence material | READY_AT_REPOSITORY_LEVEL | include exact repository revision in archive |
 | figure exports | QUALIFIED_REPRODUCIBLE | run 35425367690 PASS; regenerate from final immutable release after R1/L1/DOI |
@@ -26,3 +26,14 @@ Final submission must not imply a successful Hupsel loose/strong run, a realisti
 
 
 Figure export qualification: `PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md` / `.json`.
+
+
+## Mechanical finalization readiness
+
+- current-canonical publication preservation: **24/24 exact critical blobs**;
+- finalization input schema: READY, deliberately unresolved;
+- pre-authority finalization gate: READY;
+- authority-ready/archive-ready/submission-ready strict modes: READY_TO_ENFORCE;
+- final archive binding emission: READY after R1/L1/A3.
+
+No governance value is inferred by these tools.
