@@ -107,7 +107,12 @@ Source audit of `c22bd832...` already shows a capability gap:
 - `Initialize` explicitly zeros `numtablay` and `sptablay`;
 - the `swsophy=1` branch in `soilhydraulics.f90` immediately consumes those arrays and indexes the final table entry via `numtab(node)`.
 
-An executable current-public production-path probe is retained in the workflow and is being used to bind the exact runtime failure mode. Until that evidence is closed, `SWSOPHY=1` must not be considered a production-reachable capability of the current typed SWAP runtime.
+The executable current-public production-path probe is now closed. On the same 31-day Hupsel control and the same bounds-checked binary:
+
+- `SWSOPHY=0` completed normally with return code 100;
+- changing only the typed input switch to `SWSOPHY=1` produced no runtime log and timed out after 20 s.
+
+This binds the source-audit gap to executable behavior: `SWSOPHY=1` is **not production-executable through the current typed SWAP input path**. The current schema accepts the switch but supplies none of the table state consumed by the solver.
 
 ## Current disposition
 
@@ -120,6 +125,6 @@ The bounded conclusion is:
 3. the existing implementation is slower, not faster, in the repeated Hupsel benchmark;
 4. the table route has a reproducible dry-side derivative bounds defect;
 5. the `SWKIMPL=1` table route has a reproducible severe convergence/runtime defect associated with the saturated dK/dh sentinel and is not qualified;
-6. the current public typed production input path does not yet provide the table data required by `SWSOPHY=1`.
+6. the current public typed production input path accepts `SWSOPHY=1` but does not provide the required table state; the bounded executable probe stalls and times out.
 
 No production admission or performance claim should be made until points 4-6 are resolved or explicitly excluded from the intended application envelope.
