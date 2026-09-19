@@ -1,0 +1,340 @@
+{
+  "baseline_global_c": 3.876336858823168,
+  "baseline_scale": "LOCAL_D0",
+  "generated_before_new_reference_trajectory": true,
+  "ladder_cm": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140
+  ],
+  "materials": {
+    "CLAY": [
+      {
+        "LOCAL_D0": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 1.4037004186879798,
+          "snapped_peak_prediction_cm": 10
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 2.1750883664495304,
+          "snapped_peak_prediction_cm": 10
+        },
+        "ell_LOCAL_D0_cm": 0.362120339333495,
+        "ell_PATH_GEOMETRIC_D_cm": 0.536901203744785,
+        "forcing": "WET",
+        "se0": 0.65,
+        "se_target": 0.6607191733240537
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 1.4037004186879798,
+          "snapped_peak_prediction_cm": 10
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 2.5024758185210487,
+          "snapped_peak_prediction_cm": 10
+        },
+        "ell_LOCAL_D0_cm": 0.362120339333495,
+        "ell_PATH_GEOMETRIC_D_cm": 0.6177138823556587,
+        "forcing": "DRY",
+        "se0": 0.65,
+        "se_target": 0.6320654839167449
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 8.18453378180643,
+          "snapped_peak_prediction_cm": 10
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 9.045392008501457,
+          "snapped_peak_prediction_cm": 10
+        },
+        "ell_LOCAL_D0_cm": 2.1114093227416784,
+        "ell_PATH_GEOMETRIC_D_cm": 2.2327745082078154,
+        "forcing": "WET",
+        "se0": 0.85,
+        "se_target": 0.863018508448438
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 8.18453378180643,
+          "snapped_peak_prediction_cm": 10
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "LEFT",
+          "continuous_peak_prediction_cm": 7.784022577388393,
+          "snapped_peak_prediction_cm": 10
+        },
+        "ell_LOCAL_D0_cm": 2.1114093227416784,
+        "ell_PATH_GEOMETRIC_D_cm": 1.9214166910369457,
+        "forcing": "DRY",
+        "se0": 0.85,
+        "se_target": 0.8278051628012191
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 21.980551222380836,
+          "snapped_peak_prediction_cm": 20
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 24.653491481464208,
+          "snapped_peak_prediction_cm": 20
+        },
+        "ell_LOCAL_D0_cm": 5.670444035932934,
+        "ell_PATH_GEOMETRIC_D_cm": 6.0854949422198885,
+        "forcing": "WET",
+        "se0": 0.95,
+        "se_target": 0.9603376767390809
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 21.980551222380836,
+          "snapped_peak_prediction_cm": 20
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 20.394878428675018,
+          "snapped_peak_prediction_cm": 20
+        },
+        "ell_LOCAL_D0_cm": 5.670444035932934,
+        "ell_PATH_GEOMETRIC_D_cm": 5.0342942141970415,
+        "forcing": "DRY",
+        "se0": 0.95,
+        "se_target": 0.9306565633703869
+      }
+    ],
+    "LOAM": [
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 21.91266145376925,
+          "snapped_peak_prediction_cm": 20
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 24.496776604827126,
+          "snapped_peak_prediction_cm": 20
+        },
+        "ell_LOCAL_D0_cm": 5.6529301378677905,
+        "ell_PATH_GEOMETRIC_D_cm": 6.046811269772819,
+        "forcing": "WET",
+        "se0": 0.65,
+        "se_target": 0.6895549997983196
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 21.91266145376925,
+          "snapped_peak_prediction_cm": 20
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 20.52173021212688,
+          "snapped_peak_prediction_cm": 20
+        },
+        "ell_LOCAL_D0_cm": 5.6529301378677905,
+        "ell_PATH_GEOMETRIC_D_cm": 5.065606447889713,
+        "forcing": "DRY",
+        "se0": 0.65,
+        "se_target": 0.5857677354623
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 45.68209635972865,
+          "snapped_peak_prediction_cm": 50
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 52.30328996625032,
+          "snapped_peak_prediction_cm": 50
+        },
+        "ell_LOCAL_D0_cm": 11.784862364515309,
+        "ell_PATH_GEOMETRIC_D_cm": 12.910601599387444,
+        "forcing": "WET",
+        "se0": 0.85,
+        "se_target": 0.8895988592831569
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 45.68209635972865,
+          "snapped_peak_prediction_cm": 50
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 41.28746532895272,
+          "snapped_peak_prediction_cm": 40
+        },
+        "ell_LOCAL_D0_cm": 11.784862364515309,
+        "ell_PATH_GEOMETRIC_D_cm": 10.191443334723086,
+        "forcing": "DRY",
+        "se0": 0.85,
+        "se_target": 0.7792518066066318
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 81.60279434737502,
+          "snapped_peak_prediction_cm": 80
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 97.5110450523251,
+          "snapped_peak_prediction_cm": 100
+        },
+        "ell_LOCAL_D0_cm": 21.05152295049743,
+        "ell_PATH_GEOMETRIC_D_cm": 24.069733567866102,
+        "forcing": "WET",
+        "se0": 0.95,
+        "se_target": 0.9764154388784264
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 81.60279434737502,
+          "snapped_peak_prediction_cm": 80
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 69.13261648821982,
+          "snapped_peak_prediction_cm": 70
+        },
+        "ell_LOCAL_D0_cm": 21.05152295049743,
+        "ell_PATH_GEOMETRIC_D_cm": 17.064771060837288,
+        "forcing": "DRY",
+        "se0": 0.95,
+        "se_target": 0.8905837596046382
+      }
+    ],
+    "SAND": [
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 85.53723374441253,
+          "snapped_peak_prediction_cm": 90
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 97.92180580154519,
+          "snapped_peak_prediction_cm": 100
+        },
+        "ell_LOCAL_D0_cm": 22.066511982754026,
+        "ell_PATH_GEOMETRIC_D_cm": 24.171126202808733,
+        "forcing": "WET",
+        "se0": 0.65,
+        "se_target": 0.7150377111662313
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 85.53723374441253,
+          "snapped_peak_prediction_cm": 90
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 77.76986371880241,
+          "snapped_peak_prediction_cm": 80
+        },
+        "ell_LOCAL_D0_cm": 22.066511982754026,
+        "ell_PATH_GEOMETRIC_D_cm": 19.196798663334558,
+        "forcing": "DRY",
+        "se0": 0.65,
+        "se_target": 0.5486323643916884
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 160.33846085081103,
+          "snapped_peak_prediction_cm": 140
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 194.91505377696973,
+          "snapped_peak_prediction_cm": 140
+        },
+        "ell_LOCAL_D0_cm": 41.363397117011345,
+        "ell_PATH_GEOMETRIC_D_cm": 48.113046170927966,
+        "forcing": "WET",
+        "se0": 0.85,
+        "se_target": 0.9181926858410394
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 160.33846085081103,
+          "snapped_peak_prediction_cm": 140
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "NONE",
+          "continuous_peak_prediction_cm": 136.1290952917426,
+          "snapped_peak_prediction_cm": 140
+        },
+        "ell_LOCAL_D0_cm": 41.363397117011345,
+        "ell_PATH_GEOMETRIC_D_cm": 33.60225554703735,
+        "forcing": "DRY",
+        "se0": 0.85,
+        "se_target": 0.731389056652273
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 278.2500582761874,
+          "snapped_peak_prediction_cm": 140
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 402.3710209106333,
+          "snapped_peak_prediction_cm": 140
+        },
+        "ell_LOCAL_D0_cm": 71.78170226430281,
+        "ell_PATH_GEOMETRIC_D_cm": 99.32170518275346,
+        "forcing": "WET",
+        "se0": 0.95,
+        "se_target": 0.996938242278215
+      },
+      {
+        "LOCAL_D0": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 278.2500582761874,
+          "snapped_peak_prediction_cm": 140
+        },
+        "PATH_GEOMETRIC_D": {
+          "censoring": "RIGHT",
+          "continuous_peak_prediction_cm": 206.07642062310805,
+          "snapped_peak_prediction_cm": 140
+        },
+        "ell_LOCAL_D0_cm": 71.78170226430281,
+        "ell_PATH_GEOMETRIC_D_cm": 50.86813023443691,
+        "forcing": "DRY",
+        "se0": 0.95,
+        "se_target": 0.8358289221945142
+      }
+    ]
+  },
+  "response_data_used": false,
+  "schema": "swap5.lare.dyn0a.mech3b.predictions.v1",
+  "selected_global_c": 4.051189215592548,
+  "selected_scale": "PATH_GEOMETRIC_D",
+  "work_unit": "LARE-DYN0A-MECH3B"
+}

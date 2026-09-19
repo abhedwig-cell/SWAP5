@@ -1,0 +1,233 @@
+{
+  "bottom_boundary": "FIXED_FLUX",
+  "decision": "LARE_DYN0A_MECH3B_BLIND_REFERENCE_PANEL_CHARACTERIZED",
+  "materials": {
+    "CLAY": {
+      "S1_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -14910.226259576359,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F2": {
+        "max_abs_mass_residual_cm": 7.105427357601002e-15,
+        "max_pressure_head_cm": -14910.219707335043,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F3": {
+        "max_abs_mass_residual_cm": 7.105427357601002e-15,
+        "max_pressure_head_cm": -14910.22625957632,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F4": {
+        "max_abs_mass_residual_cm": 7.105427357601002e-15,
+        "max_pressure_head_cm": -14910.219707335043,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -662.5088841926902,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F2": {
+        "max_abs_mass_residual_cm": 1.4210854715202004e-14,
+        "max_pressure_head_cm": -662.2909325225987,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F3": {
+        "max_abs_mass_residual_cm": 8.69571181079669e-15,
+        "max_pressure_head_cm": -662.5088841926879,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F4": {
+        "max_abs_mass_residual_cm": 8.695718851758064e-15,
+        "max_pressure_head_cm": -662.2909325225987,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -108.98585432464452,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F2": {
+        "max_abs_mass_residual_cm": 2.1316282072803006e-14,
+        "max_pressure_head_cm": -107.61062791858977,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F3": {
+        "max_abs_mass_residual_cm": 2.842170943040401e-14,
+        "max_pressure_head_cm": -108.98585432464405,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F4": {
+        "max_abs_mass_residual_cm": 2.1316282072803006e-14,
+        "max_pressure_head_cm": -107.61062791858977,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      }
+    },
+    "LOAM": {
+      "S1_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -47.64462211605974,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F2": {
+        "max_abs_mass_residual_cm": 2.842170943040401e-14,
+        "max_pressure_head_cm": -46.33673940942473,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F3": {
+        "max_abs_mass_residual_cm": 2.842170943040401e-14,
+        "max_pressure_head_cm": -47.64462211605972,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F4": {
+        "max_abs_mass_residual_cm": 2.1316282072803006e-14,
+        "max_pressure_head_cm": -46.33673940942473,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -19.430088042290706,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F2": {
+        "max_abs_mass_residual_cm": 2.842170943040401e-14,
+        "max_pressure_head_cm": -16.297637629744433,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F3": {
+        "max_abs_mass_residual_cm": 2.978715364643225e-14,
+        "max_pressure_head_cm": -19.430088042290702,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F4": {
+        "max_abs_mass_residual_cm": 2.842170943040401e-14,
+        "max_pressure_head_cm": -16.297637629744433,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -8.359021574081861,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F2": {
+        "max_abs_mass_residual_cm": 3.420180805235873e-14,
+        "max_pressure_head_cm": 0.570626971206237,
+        "state_count": 630,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S3_B1_F3": {
+        "max_abs_mass_residual_cm": 3.420180805235873e-14,
+        "max_pressure_head_cm": -8.359021574081861,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F4": {
+        "max_abs_mass_residual_cm": 3.420180805235873e-14,
+        "max_pressure_head_cm": 0.3677508657770122,
+        "state_count": 654,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      }
+    },
+    "SAND": {
+      "S1_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -6.865926950202809,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F2": {
+        "max_abs_mass_residual_cm": 2.0233814623793478e-14,
+        "max_pressure_head_cm": 0.1177200773368004,
+        "state_count": 166,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S1_B1_F3": {
+        "max_abs_mass_residual_cm": 2.2277318878494157e-14,
+        "max_pressure_head_cm": -6.488534899564928,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S1_B1_F4": {
+        "max_abs_mass_residual_cm": 2.0233814623793478e-14,
+        "max_pressure_head_cm": 0.1177200773368004,
+        "state_count": 166,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S2_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -4.378589062960342,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S2_B1_F2": {
+        "max_abs_mass_residual_cm": 2.1344037648418634e-14,
+        "max_pressure_head_cm": 3.1896472731263175,
+        "state_count": 49,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S2_B1_F3": {
+        "max_abs_mass_residual_cm": 2.213507155346406e-14,
+        "max_pressure_head_cm": -4.378589062960342,
+        "state_count": 169,
+        "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+      },
+      "S2_B1_F4": {
+        "max_abs_mass_residual_cm": 2.1344037648418634e-14,
+        "max_pressure_head_cm": 3.1896472731263175,
+        "state_count": 49,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S3_B1_F1": {
+        "max_abs_mass_residual_cm": 0.0,
+        "max_pressure_head_cm": -2.7521212853067065,
+        "state_count": 1024,
+        "status": "QUALIFIED"
+      },
+      "S3_B1_F2": {
+        "max_abs_mass_residual_cm": 9.2148511043888e-15,
+        "max_pressure_head_cm": 0.03089443662505631,
+        "state_count": 6,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      },
+      "S3_B1_F3": {
+        "max_abs_mass_residual_cm": 2.5923707624997405e-14,
+        "max_pressure_head_cm": -2.7521212853069668,
+        "state_count": 97,
+        "status": "BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION"
+      },
+      "S3_B1_F4": {
+        "max_abs_mass_residual_cm": 9.2148511043888e-15,
+        "max_pressure_head_cm": 0.03089443662505631,
+        "state_count": 6,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN_NEAR_SATURATION"
+      }
+    }
+  },
+  "numerical_block_count": 2,
+  "outside_domain_count": 8,
+  "production_rom_authorized": false,
+  "qualified_count": 26,
+  "schema": "swap5.lare.dyn0a.mech3b.reference-status.v1"
+}
