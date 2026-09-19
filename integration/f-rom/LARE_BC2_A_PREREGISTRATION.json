@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.lare.bc2.a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-A",
+  "phase": "PREREGISTERED_BEFORE_MOVING_WATER_TABLE_REFERENCE_GEOMETRY_EXECUTION",
+  "purpose": "Establish a mass-conservative moving-water-table geometry oracle and quantify the published-average-state algebra discrepancy before any BC2 reduced dynamics.",
+  "authorities": {
+    "geometry_document": "docs/science/F-ROM_LARE_BC2_GEOMETRY_AUTHORITY.md",
+    "predecessor_fixed_head": "integration/f-rom/LARE_BC1_STAGE_B_RESULT.json",
+    "source_2021": "He et al. 2021 Journal of Hydrology 602:126797",
+    "source_2022": "He et al. 2022 Journal of Hydrology 613:128327",
+    "source_2026": "He et al. 2026 Hydrological Processes e70396",
+    "source_code_record": "Zenodo 10.5281/zenodo.17613977; record public, files restricted at preregistration time",
+    "current_swap_geometry": "src/solver/mod_b110_smooth_freatic_projection.f90",
+    "current_swap_head_adapter": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90"
+  },
+  "source_algebra": {
+    "definition": "W_u=(H-a)*theta_bar=integral_a^H theta dz",
+    "conservative_balance": "dW_u/dt = q_a - q_H - S_u + theta_H*dH/dt",
+    "water_table_specialization": "theta_H=theta_s",
+    "expanded_conservative_average_form": "(H-a)*d(theta_bar)/dt - (theta_s-theta_bar)*dH/dt = q_a-q_H-S_u",
+    "published_2021_2022_displayed_form": "(H-a)*d(theta_bar)/dt - theta_s*dH/dt = q_a-q_H-S_u",
+    "discrepancy_class": "SOURCE_ALGEBRA_DISCREPANCY_MOVING_AVERAGE_VS_CONSERVATIVE_STORAGE",
+    "no_author_intent_inference": true
+  },
+  "stage_A1_algebra_gate": {
+    "role": "model-independent calculus check",
+    "tests": [
+      "analytic polynomial moving-control-volume identity under arbitrary smooth theta(z,t) and H(t)",
+      "water-table specialization with theta(H(t),t)=theta_s",
+      "stationary-geometry limit dH/dt=0",
+      "constant-saturated-field moving-boundary limit"
+    ],
+    "hard_rule": "BC2-CONSERVATIVE must satisfy the analytic identities to floating-point tolerance. BC2-PUBLISHED-THETA is reported diagnostically and is not selected by fit."
+  },
+  "stage_A2_reference_geometry": {
+    "role": "fixed-domain Richards profile used only as a full-order geometry oracle",
+    "material": "B01 Mualem-Van Genuchten, same hydraulic authority as RS1-GW",
+    "profile": {
+      "depth_cm": 160,
+      "nodes": 16,
+      "cell_thickness_cm": 10,
+      "coordinate": "SWAP z negative upward-coordinate convention internally; reported H is positive depth below surface",
+      "initial_water_table_depth_cm": 120,
+      "initial_pressure_head_rule": "h(z) = -H0 - z, with z in cm relative to surface elevation 0",
+      "initial_state": "hydrostatic interior zero-pressure crossing; lower profile saturated",
+      "top_boundary": "explicit zero flux",
+      "bottom_mode": 5,
+      "initial_bottom_pressure_head_cm": 40
+    },
+    "histories": [
+      {
+        "id": "WT_HOLD",
+        "steps": 256,
+        "bottom_head_cm": [
+          [
+            40,
+            256
+          ]
+        ],
+        "role": "stationary hydrostatic geometry control"
+      },
+      {
+        "id": "WT_RISE",
+        "steps": 512,
+        "bottom_head_cm": [
+          [
+            60,
+            512
+          ]
+        ],
+        "role": "head step favoring shallower equilibrium water table"
+      },
+      {
+        "id": "WT_FALL",
+        "steps": 512,
+        "bottom_head_cm": [
+          [
+            20,
+            512
+          ]
+        ],
+        "role": "head step favoring deeper equilibrium water table"
+      },
+      {
+        "id": "WT_CYCLE",
+        "steps": 768,
+        "bottom_head_cm": [
+          [
+            60,
+            256
+          ],
+          [
+            20,
+            256
+          ],
+          [
+            40,
+            256
+          ]
+        ],
+        "role": "reversal of water-table motion"
+      }
+    ],
+    "observation_step_day": 0.0008,
+    "no_sinks": true,
+    "no_macropore": true,
+    "no_crop": true,
+    "no_dynamic_active_nodes": true
+  },
+  "geometry_observation": {
+    "H_definition": "positive depth H=-z_wt where z_wt is the strict interior linear zero-pressure crossing between adjacent Reference nodes",
+    "crossing_rule": "same linear interpolation geometry as mod_b110_smooth_freatic_projection; policy restriction bottom_mode==2 is not bypassed or relabeled as canonical projection",
+    "canonical_projection_status_expected": "UNSUPPORTED_BOTTOM_MODE for mode 5; recorded explicitly",
+    "smoothness_gate": [
+      "one and only one strict negative-to-positive pressure-head crossing",
+      "no zero-pressure node",
+      "bottom node pressure head positive",
+      "not fully saturated"
+    ],
+    "theta_s_rule": "B01 saturated water content from frozen constitutive parameters",
+    "moving_unsaturated_storage_cm": "U_ref = W_total - theta_s*(D-H), valid only while all Reference nodes strictly below the zero crossing are saturated to constitutive theta_s within floating-point tolerance",
+    "water_table_flux_reference": "q_H is identified with the fixed-bottom through-flux only after the saturated-zone storage audit verifies theta=theta_s below H and no source/sink exists in the saturated zone",
+    "no_direct_equivalence": "bottom prescribed pressure head is never used as H; H is diagnosed from the accepted full profile"
+  },
+  "reference_ledger": {
+    "source_sign": "depth and q positive downward for BC2 reporting",
+    "expected_identity_over_interval": "Delta U_ref = Q_top_down - Q_H_down + theta_s*Delta H",
+    "equivalent_total_profile_identity": "Delta W_total = Q_top_down - Q_bottom_down",
+    "hard_mass_gate_cm": 1e-10,
+    "geometry_ledger_report": [
+      "max absolute interval moving-unsaturated ledger residual",
+      "max absolute cumulative moving-unsaturated ledger residual",
+      "max saturated-node theta departure from theta_s",
+      "minimum and maximum diagnosed H",
+      "water-table direction changes"
+    ]
+  },
+  "comparison_variants_after_A2": {
+    "BC2_CONSERVATIVE": {
+      "state": "W_u",
+      "geometry_input": "diagnosed H(t) and finite-difference dH/dt from the frozen Reference trajectory",
+      "equation": "dW_u/dt=q_a-q_H+theta_s*dH/dt in sink-free A2/B",
+      "authorization": "only after A2 geometry ledger qualifies"
+    },
+    "BC2_PUBLISHED_THETA": {
+      "state": "theta_bar",
+      "equation": "(H-a)dtheta_bar/dt-theta_s*dH/dt=q_a-q_H",
+      "role": "publication-form discrepancy diagnostic only",
+      "authorization": "may be executed on identical frozen H(t) only after A2 qualifies"
+    }
+  },
+  "adjudication": {
+    "valid_outcomes": [
+      "BC2_REFERENCE_GEOMETRY_QUALIFIED",
+      "BC2_REFERENCE_GEOMETRY_NOT_YET_AUTHORITATIVE",
+      "BC2_SOURCE_ALGEBRA_DISCREPANCY_CONFIRMED",
+      "BC2_REFERENCE_NUMERICAL_BLOCKED"
+    ],
+    "rule": "A2 must qualify a smooth interior water-table geometry and moving-volume ledger before any reduced moving-water-table dynamics are admitted.",
+    "application_acceptance": false
+  },
+  "firewalls": [
+    "NO_USE_OF_BOTTOM_HEAD_AS_WATER_TABLE_DEPTH",
+    "NO_BYPASS_OF_CANONICAL_MODE2_ONLY_FREATIC_PROJECTION_POLICY",
+    "NO_CHOICE_BETWEEN_SOURCE_FORMS_FROM_RESPONSE_FIT",
+    "NO_MOVING_MESH_REFERENCE",
+    "NO_LAYER_BIRTH_DEATH",
+    "NO_MATERIAL_BOUNDARY_CROSSING",
+    "NO_COUPLER_FEEDBACK",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
