@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.lare.bc1.a2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-A2",
+  "phase": "PREREGISTERED_BEFORE_LAGGED_REFERENCE_FACE_REPLAY",
+  "predecessor": "integration/f-rom/LARE_BC1_STAGE_A_RECONCILIATION.json",
+  "purpose": "Verify exact time-level and sign semantics of the current SWAP mode-5 Reference boundary before reduced-dynamics qualification.",
+  "reference_semantics": {
+    "numerical_mode": "SWKIMPL=0",
+    "accepted_face_term": "K_N(t0) * [1 + (h_N(t1)-h_b)/(0.5*dz_N)]",
+    "emitted_bottom_flux": "public outward flux = - materialized native qbot",
+    "qbot_materialization": "exact legacy watstor()+fluxes() interval water-balance arithmetic",
+    "expected_relation": "At a converged accepted interval, outward materialized qbot and the lagged-K accepted bottom residual face term differ only by the accepted residual/mass floor."
+  },
+  "input": {
+    "stage_a_artifact_id": 10585316225,
+    "stage_a_o0_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345",
+    "mode5_states_total": 2112,
+    "first_mode5_states_without_emitted_t0_predecessor": 4,
+    "auditable_mode5_intervals": 2108
+  },
+  "operators": {
+    "REFERENCE_LAGGED_HEAD": {
+      "conductivity": "K(h_N(t0))",
+      "gradient": "1 + 2*(h_N(t1)-h_b)/10cm",
+      "role": "primary Reference semantics identity"
+    },
+    "PROJECTED_LAGGED_LAYER": {
+      "conductivity": "K(theta_N(t0))",
+      "gradient": "1 + 2*(h(theta_N(t1))-h_b)/10cm",
+      "role": "same identity through reduced storage/constitutive mapping"
+    },
+    "CURRENT_LAYER_FACE": {
+      "conductivity": "K(theta_N(t1))",
+      "gradient": "1 + 2*(h(theta_N(t1))-h_b)/10cm",
+      "role": "future standard-LARE prescribed-head dynamics candidate; characterization only in A2"
+    },
+    "BOUNDARY_FACE": {
+      "conductivity": "K(h_b)",
+      "gradient": "1 + 2*(h(theta_N(t1))-h_b)/10cm",
+      "role": "future Dirichlet/source-structure dynamics candidate; characterization only in A2"
+    }
+  },
+  "technical_gates": {
+    "reference_lagged_head_max_abs_error_cm_per_day": 5e-9,
+    "projected_lagged_layer_max_abs_error_cm_per_day": 5e-9,
+    "projected_lagged_layer_sign_mismatch_count": 0
+  },
+  "stage_B_rule": "If both lagged identity gates pass, execute CURRENT_LAYER_FACE and BOUNDARY_FACE as separately named no-fit reduced-dynamics candidates. A2 does not select between them.",
+  "firewalls": [
+    "NO_REINTERPRETATION_OF_INTERVAL_QBOT_AS_TERMINAL_CURRENT_K_FLUX",
+    "NO_COEFFICIENT_FIT",
+    "NO_CANDIDATE_SELECTION_FROM_A2_ERROR_MAGNITUDE",
+    "NO_MOVING_WATER_TABLE",
+    "NO_REFERENCE_SOURCE_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE"
+  ],
+  "production_rom_authorized": false
+}
