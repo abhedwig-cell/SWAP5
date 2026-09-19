@@ -1,0 +1,40 @@
+name: F-ROM-LARE DYN0A Richards comparators
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_DYN0A_PREREGISTRATION.json'
+      - 'tests/rom/test_lare_dyn0a_reference.f90'
+      - 'tests/rom/run_lare_dyn0a_reference.sh'
+      - 'tests/rom/materialize_lare_variable_grid_stubs.py'
+      - 'tests/rom/test_lare_variable_grid_materializer.py'
+      - '.github/workflows/f-rom-lare-dyn0a-reference.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Qualify variable-grid materializer
+        run: python3 tests/rom/test_lare_variable_grid_materializer.py
+
+      - name: Execute fine, D3 and D2 Richards comparators
+        run: bash tests/rom/run_lare_dyn0a_reference.sh
+
+      - name: Upload DYN0A Reference evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-dyn0a-richards-reference
+          path: LARE_DYN0A_REFERENCE_EVIDENCE/
+          if-no-files-found: warn
