@@ -984,6 +984,85 @@ def validate_romv2_d9_if_present() -> str:
     return "CLOSED_LITERATURE_AUTHORITY_RECONCILED"
 
 
+def validate_romv2_d10_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D10_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D10_PREREGISTRATION.json")
+            == "8b4cbc76d872e7e8eb259c93a09de848e7a0a64f",
+            "F-ROMV2-D10 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D10_RESULT.json")
+            == "8ddde141dee3716967b25122404450b509b1b7f6",
+            "F-ROMV2-D10 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D10_STATUS.json")
+            == "8160ac0113a0fefec3421c5f8a02b674657dc84a",
+            "F-ROMV2-D10 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D10_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "33d8f8d2b8c378d1afde650c931ef2f2fcaabb7d",
+            "F-ROMV2-D10 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D10_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D10_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D10_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D10_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D10_HE_TWO_LAYER_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_EXECUTION",
+            "F-ROMV2-D10 preregistration phase drift")
+    require(prereg["he2"]["id"] == "HE2_PUBLISHED_FIXED_H"
+            and prereg["scope"]["bottom_boundary"] == "zero pressure head h=0 / psi_b=0",
+            "F-ROMV2-D10 literature-faithful subset drift")
+    require("NO_ARBITRARY_NONZERO_BOTTOM_HEAD" in prereg["firewalls"]
+            and "NO_POST_RESULT_EQUATION_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D10 extension/retuning firewall drift")
+
+    require(result["decision"] == "HE2_PUBLISHED_CORE_NOT_COMPETITIVE_ON_ITS_ZERO_HEAD_ENVELOPE",
+            "F-ROMV2-D10 decision drift")
+    require(result["adjudication"]
+            == "LITERATURE_FAITHFUL_HE2_INTEGRITY_PASS_BUT_DOMINATED_BY_MATCHED_R2_AND_FAILS_CAPILLARY_DIRECTION",
+            "F-ROMV2-D10 adjudication drift")
+    require(result["HE2"]["integrity"]["pass"] is True,
+            "F-ROMV2-D10 HE2 integrity drift")
+    require(result["comparative_interpretation"]["HE2_beats_R2_balance"] is False
+            and result["comparative_interpretation"]["HE2_beats_R2_transient"] is False
+            and result["comparative_interpretation"]["retained"] is False,
+            "F-ROMV2-D10 matched R2 frontier drift")
+    require(result["authority"]["primary_equation_recheck"]["implementation_sign_or_transcription_error_found"] is False,
+            "F-ROMV2-D10 equation-sign verification drift")
+    require(result["successor"]["HE2_SWAPH_arbitrary_head_extension_authorized"] is False,
+            "F-ROMV2-D10 prematurely authorizes arbitrary-head extension")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D10 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_LITERATURE_FAITHFUL_COMPARATOR_NO_GO",
+            "F-ROMV2-D10 terminal phase drift")
+    require(status["HE2_SWAPH_extension_authorized"] is False
+            and status["post_result_equation_retuning_authorized"] is False,
+            "F-ROMV2-D10 status leaves rescue path open")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D10 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D10 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D10 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["arbitrary_nonzero_bottom_head_extension_implemented"] is False
+            and manifest["post_result_equation_retuning"] is False,
+            "F-ROMV2-D10 evidence mutation/extension drift")
+
+    require("The sign discrepancy is physical" in doc,
+            "F-ROMV2-D10 raw sign adjudication missing")
+    require("HE2_SWAPH" in doc and "is **not authorized**" in doc,
+            "F-ROMV2-D10 extension prohibition missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D10 production prohibition missing")
+
+    return "CLOSED_LITERATURE_FAITHFUL_COMPARATOR_NO_GO"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1019,6 +1098,7 @@ def main() -> int:
     romv2_d7_phase = validate_romv2_d7_if_present()
     romv2_d8_phase = validate_romv2_d8_if_present()
     romv2_d9_phase = validate_romv2_d9_if_present()
+    romv2_d10_phase = validate_romv2_d10_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1038,6 +1118,7 @@ def main() -> int:
     print(f"F_ROMV2_D7_PHASE={romv2_d7_phase}")
     print(f"F_ROMV2_D8_PHASE={romv2_d8_phase}")
     print(f"F_ROMV2_D9_PHASE={romv2_d9_phase}")
+    print(f"F_ROMV2_D10_PHASE={romv2_d10_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
