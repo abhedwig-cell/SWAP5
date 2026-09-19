@@ -1,0 +1,53 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:42f7ee4d10ae552bc29769703bef53b46ca5841bc5f1f308d2ea59be908b59cd",
+    "artifact_id": 10591587439,
+    "authoritative_head": "1b45d0577f1086415935472b98bea644786af541",
+    "authoritative_rerun": 35466871058,
+    "first_failed_reporting_run": 35463375073,
+    "result_sha256": "a5db2986178ae918ad7034cded7e132b1f896c8e43b3a8c5b9752ce588a17a0d"
+  },
+  "bounded_5cm_evidence": {
+    "WT_FALL": {
+      "qH_base_rms": 1.0263960332968567,
+      "qH_quadratic_rms": 0.7983360902970619,
+      "qi_base_rms": 0.4915997730754116,
+      "qi_quadratic_rms": 0.32653891788379663
+    },
+    "WT_HOLD": {
+      "qH_base_rms": 2.2719189291819933e-10,
+      "qH_quadratic_rms": 0.06206863491325354,
+      "qi_base_rms": 1.4646994474146863e-10,
+      "qi_quadratic_rms": 0.06953622892600697
+    },
+    "WT_RISE": {
+      "qH_base_rms": 1.4726601609877426,
+      "qH_quadratic_rms": 2.0039523133724404,
+      "qi_base_rms": 0.6302082750086809,
+      "qi_quadratic_rms": 1.1963710915247827
+    }
+  },
+  "decision": "C4I_RECONSTRUCTION_BLOCKED",
+  "groundwater_feedback_authorized": false,
+  "model_changed": false,
+  "next_authority": "CHARACTERIZE_QUADRATIC_ROOT_MULTIPLICITY_AND_DIRECTION_GEOMETRY_BEFORE_ANY_NEW_RECONSTRUCTION_FAMILY",
+  "next_model_change_authorized": false,
+  "primary_blockers": [
+    "At d=2.5 cm, the initial Reference state for HOLD, RISE and FALL has multiple physically admissible quadratic roots satisfying the same Wb/Wt constraints under the frozen multistart test; the candidate is therefore not identifiable from Wb/Wt/H within this profile family.",
+    "The 64-vs-128 qH crosscheck reaches 1.9128758133035717e-08 cm/d, exceeding the preregistered 1e-08 gate.",
+    "The manufactured hydrostatic a-recovery residual reaches 1.0736922462228904e-10, slightly exceeding the preregistered 1e-10 gate."
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4i.closeout.v1",
+  "scientific_interpretation": [
+    "C4I rejects one specific C1-smooth quadratic reconstruction family. It does not prove that Wb/Wt/H are insufficient for every possible gradient closure.",
+    "The 2.5 cm ambiguity shows that two integral storage constraints do not uniquely identify this nonlinear quadratic pressure-profile family at the tested initial state.",
+    "The qualified 5 cm subset is strongly direction dependent: FALL improves, RISE worsens, and HOLD loses the near-hydrostatic zero-flux behaviour.",
+    "No post-response root-selection rule, direction switch or fitted branch selector is authorized."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_RECONSTRUCTION_BLOCKED_NO_MODEL_CHANGE",
+  "work_unit": "LARE-BC2-C4I",
+  "workstream": "F-ROM-LARE"
+}

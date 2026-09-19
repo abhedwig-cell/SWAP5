@@ -1,0 +1,298 @@
+{
+  "application_acceptance_adjudicated": false,
+  "complete": false,
+  "decision": "C4I_RECONSTRUCTION_BLOCKED",
+  "failures": [
+    {
+      "error": "AMBIGUOUS_RECONSTRUCTION nq=64",
+      "history": "WT_HOLD",
+      "step": 0,
+      "width_cm": 2.5
+    },
+    {
+      "error": "AMBIGUOUS_RECONSTRUCTION nq=64",
+      "history": "WT_RISE",
+      "step": 0,
+      "width_cm": 2.5
+    },
+    {
+      "error": "AMBIGUOUS_RECONSTRUCTION nq=64",
+      "history": "WT_FALL",
+      "step": 0,
+      "width_cm": 2.5
+    }
+  ],
+  "groundwater_feedback_authorized": false,
+  "hard_checks": {
+    "B8_qi_identity_gate_cm_per_day": 1e-10,
+    "failure_count": 3,
+    "hydrostatic_gate": 1e-10,
+    "max_abs_B8_qi_bulk_minus_terminal_cm_per_day": 1.3027801060161437e-11,
+    "max_abs_qH_64_vs_128_cm_per_day": 1.9128758133035717e-08,
+    "max_abs_qi_64_vs_128_cm_per_day": 9.445565218868524e-09,
+    "max_hydrostatic_abs_a_minus_1": 1.0736922462228904e-10,
+    "max_hydrostatic_abs_b": 9.770622089178005e-12,
+    "max_storage_reconstruction_residual_cm": 8.876011037273202e-12,
+    "minimum_profile_psi_cm": 0.0,
+    "minimum_valid_multistart_roots_per_quadrature_state": 4,
+    "psi_nonnegative_tolerance_cm": 1e-10,
+    "q_crosscheck_gate_cm_per_day": 1e-08,
+    "required_minimum_valid_multistart_roots": 2,
+    "storage_gate_cm": 1e-10
+  },
+  "interpretation": [
+    "C4I solves the existing Wb and Wt storage constraints for one C1-smooth quadratic pressure profile over the whole moving lower domain. No response is used in reconstruction.",
+    "The profile uses no extra prognostic state and preserves the water-table pressure boundary psi=0.",
+    "Hydrostatic psi=x is a manufactured identity case, not a fitted calibration target.",
+    "Candidate support requires improved qi closure across both widths and moving directions without sacrificing the lower-boundary qH closure.",
+    "No propagated reduced dynamics are authorized by this static Reference-state comparison."
+  ],
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "qH_noninferior": {
+    "2.5": {
+      "WT_FALL": false,
+      "WT_HOLD": false,
+      "WT_RISE": false
+    },
+    "5.0": {
+      "WT_FALL": true,
+      "WT_HOLD": false,
+      "WT_RISE": false
+    }
+  },
+  "qi_support": {
+    "2.5": {
+      "WT_FALL": false,
+      "WT_RISE": false
+    },
+    "5.0": {
+      "WT_FALL": true,
+      "WT_RISE": false
+    }
+  },
+  "report": {
+    "2.5": {
+      "WT_FALL": {
+        "completed_interval_count": 0,
+        "expected_interval_count": 512,
+        "status": "INCOMPLETE_RECONSTRUCTION"
+      },
+      "WT_HOLD": {
+        "completed_interval_count": 0,
+        "expected_interval_count": 256,
+        "status": "INCOMPLETE_RECONSTRUCTION"
+      },
+      "WT_RISE": {
+        "completed_interval_count": 0,
+        "expected_interval_count": 512,
+        "status": "INCOMPLETE_RECONSTRUCTION"
+      }
+    },
+    "5.0": {
+      "WT_FALL": {
+        "qH": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": 0.854453144771175,
+            "corr": 0.9852016649563928,
+            "count": 512,
+            "mae": 0.8769760920150527,
+            "max_abs": 5.765874494432736,
+            "rms": 1.0263960332968567,
+            "sign_mismatch": 0
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": 0.4938576625350629,
+            "corr": 0.9893097478010854,
+            "count": 512,
+            "mae": 0.5144065905173176,
+            "max_abs": 5.2574414969908805,
+            "rms": 0.7983360902970619,
+            "sign_mismatch": 0
+          }
+        },
+        "qi": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": -0.42648397642290303,
+            "corr": 0.9928542125708502,
+            "count": 512,
+            "mae": 0.4442848671525568,
+            "max_abs": 4.557028026791355,
+            "rms": 0.4915997730754116,
+            "sign_mismatch": 0
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": -0.0006595085397825551,
+            "corr": 0.9912280734028502,
+            "count": 512,
+            "mae": 0.13379576084503003,
+            "max_abs": 3.8541667909336956,
+            "rms": 0.32653891788379663,
+            "sign_mismatch": 0
+          }
+        },
+        "quadratic_shape": {
+          "a": {
+            "count": 512,
+            "max": 0.945881363136863,
+            "mean": 0.8688220523367699,
+            "min": 0.5180106978736896,
+            "rms": 0.8729681914018931
+          },
+          "b": {
+            "count": 512,
+            "max": 0.008500890358583608,
+            "mean": -0.0031610635251161016,
+            "min": -0.0038571404107152238,
+            "rms": 0.00345567286499942
+          },
+          "slope_i": {
+            "count": 512,
+            "max": 0.9143195700446687,
+            "mean": 0.8372114170856089,
+            "min": 0.6030196014595257,
+            "rms": 0.8405672542220031
+          }
+        },
+        "status": "COMPLETE"
+      },
+      "WT_HOLD": {
+        "qH": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": 2.2719189291819925e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 2.2719189291819925e-10,
+            "max_abs": 2.271918929181993e-10,
+            "rms": 2.2719189291819933e-10,
+            "sign_mismatch": 256
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": -0.06206863491325354,
+            "corr": null,
+            "count": 256,
+            "mae": 0.06206863491325354,
+            "max_abs": 0.06206863491325354,
+            "rms": 0.06206863491325354,
+            "sign_mismatch": 256
+          }
+        },
+        "qi": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": 1.4646994474146865e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 1.4646994474146865e-10,
+            "max_abs": 1.464699447414686e-10,
+            "rms": 1.4646994474146863e-10,
+            "sign_mismatch": 256
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": 0.06953622892600698,
+            "corr": null,
+            "count": 256,
+            "mae": 0.06953622892600698,
+            "max_abs": 0.06953622892600698,
+            "rms": 0.06953622892600697,
+            "sign_mismatch": 256
+          }
+        },
+        "quadratic_shape": {
+          "a": {
+            "count": 256,
+            "max": 1.0019877855279002,
+            "mean": 1.0019877855279002,
+            "min": 1.0019877855279002,
+            "rms": 1.0019877855279002
+          },
+          "b": {
+            "count": 256,
+            "max": -0.0005441115644670846,
+            "mean": -0.0005441115644670847,
+            "min": -0.0005441115644670846,
+            "rms": 0.0005441115644670846
+          },
+          "slope_i": {
+            "count": 256,
+            "max": 0.9965466698832294,
+            "mean": 0.9965466698832297,
+            "min": 0.9965466698832294,
+            "rms": 0.9965466698832293
+          }
+        },
+        "status": "COMPLETE"
+      },
+      "WT_RISE": {
+        "qH": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": -1.2782571801988651,
+            "corr": 0.9626708683286238,
+            "count": 512,
+            "mae": 1.3142077755788515,
+            "max_abs": 6.4789011786719755,
+            "rms": 1.4726601609877426,
+            "sign_mismatch": 0
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": -1.8722778897167855,
+            "corr": 0.9399828816878334,
+            "count": 512,
+            "mae": 1.893457263520962,
+            "max_abs": 6.05856105326394,
+            "rms": 2.0039523133724404,
+            "sign_mismatch": 0
+          }
+        },
+        "qi": {
+          "BASE_TERMINAL_SIDE_LINEAR": {
+            "bias": 0.5161959604033738,
+            "corr": 0.9818041087410796,
+            "count": 512,
+            "mae": 0.5254214330076118,
+            "max_abs": 2.9329775094968027,
+            "rms": 0.6302082750086809,
+            "sign_mismatch": 0
+          },
+          "C1_QUADRATIC_STORAGE_PROFILE": {
+            "bias": 1.1510195585064757,
+            "corr": 0.9842394611086303,
+            "count": 512,
+            "mae": 1.1559161597442371,
+            "max_abs": 3.948457820236478,
+            "rms": 1.1963710915247827,
+            "sign_mismatch": 0
+          }
+        },
+        "quadratic_shape": {
+          "a": {
+            "count": 512,
+            "max": 1.5047568519587486,
+            "mean": 1.1802060174736089,
+            "min": 1.1143632543785742,
+            "rms": 1.1820949754745234
+          },
+          "b": {
+            "count": 512,
+            "max": 0.004539237258726292,
+            "mean": -0.005213755557956187,
+            "min": -0.016243179157430867,
+            "rms": 0.0068836388737568595
+          },
+          "slope_i": {
+            "count": 512,
+            "max": 1.394087302919451,
+            "mean": 1.1280684618940469,
+            "min": 1.0275932076918521,
+            "rms": 1.1320555380123545
+          }
+        },
+        "status": "COMPLETE"
+      }
+    }
+  },
+  "schema": "swap5.lare.bc2.c4i.result.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C4I",
+  "workstream": "F-ROM-LARE"
+}
