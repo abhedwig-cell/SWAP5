@@ -27,8 +27,6 @@ python3 - "$PREREG" <<'PY'
 import json,sys
 p=json.load(open(sys.argv[1]))
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
-assert [(g["id"],g["nodes"],g["dz_cm"]) for g in p["geometries"]]==[
- ("R16",16,10),("R8",8,20),("R4",4,40),("R2",2,80)]
 assert p["phase"]=="PREREGISTERED_BEFORE_EXECUTION"
 assert [(g["id"],g["nodes"],g["dz_cm"]) for g in p["scope"]["geometries"]]==[
  ("R16",16,10),("R8",8,20),("R4",4,40),("R2",2,80)]
