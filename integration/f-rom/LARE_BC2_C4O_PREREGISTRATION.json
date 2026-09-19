@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.lare.bc2.c4o.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4O",
+  "phase": "PREREGISTERED_AFTER_C4N_BEFORE_EXISTING_STATE_CONDITIONER_MAP",
+  "title": "Existing-state conditioner map for internal gradient correction",
+  "question": "Does lower-boundary disequilibrium already encoded by the B9 terminal slope condition the sign and relative amplitude of the Reference-required internal-gradient correction better than geometry-only slope contrast?",
+  "predecessors": {
+    "C4N": {
+      "closeout": "integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json",
+      "required_status": "CLOSED_FACE_INTERPOLATED_GRADIENT_MIXED_NO_PROPAGATION",
+      "required_decision": "FACE_INTERPOLATED_GRADIENT_MIXED",
+      "next_authority": "PREREGISTER_EXISTING_STATE_CONDITIONED_CORRECTION_MAP"
+    },
+    "C4K": {
+      "closeout": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+      "required_decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT"
+    },
+    "C4H": {
+      "closeout": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "required_decision": "TERMINAL_QI_GRADIENT_RECONSTRUCTION_TARGET_SUPPORTED"
+    },
+    "B8": {
+      "result": "integration/f-rom/LARE_BC2_B8_RESULT.json",
+      "required_decision": "BC2_B8_TERMINAL_MOVING_CONTROL_VOLUME_QUALIFIED"
+    },
+    "B9": {
+      "result": "integration/f-rom/LARE_BC2_B9_RESULT.json",
+      "required_preferred_operator": "TERMINAL_SIDE_LINEAR"
+    }
+  },
+  "cases": {
+    "widths_cm": [
+      2.5,
+      5
+    ],
+    "histories": [
+      "WT_HOLD",
+      "WT_RISE",
+      "WT_FALL"
+    ],
+    "reference": "immutable A2 Reference"
+  },
+  "response": {
+    "name": "delta_ref",
+    "definition": "delta_ref=s_ref-s_base",
+    "s_ref": "1-qi_ref/Kref_bar using B8 qi_ref and arithmetic mean Reference endpoint interface K",
+    "s_base": "1-qi_B9/Ki_bar using B9 interval qi and arithmetic mean B9 endpoint Ki",
+    "role": "diagnostic response only; never used to define or scale predictors"
+  },
+  "predictors": {
+    "P_FACE": {
+      "endpoint": "eta*(b_bulk-a_t)",
+      "eta": "d/(B+d)",
+      "interval": "arithmetic mean of endpoint P_FACE",
+      "interpretation": "C4N geometry-only face correction signal"
+    },
+    "P_BOUNDARY": {
+      "endpoint": "1-a_t",
+      "interval": "arithmetic mean of endpoint P_BOUNDARY",
+      "interpretation": "B9 lower-boundary hydraulic disequilibrium; proportional to B9 qH/Ks"
+    },
+    "P_INTERACTION": {
+      "endpoint": "eta*(b_bulk-a_t)*(1-a_t)",
+      "interval": "arithmetic mean of endpoint P_INTERACTION",
+      "interpretation": "response-blind interaction of internal slope contrast with lower-boundary disequilibrium"
+    }
+  },
+  "no_fit_contract": {
+    "fitted_parameters": 0,
+    "response_scaling": false,
+    "sign_flip_after_response": false,
+    "regression": false,
+    "classifier": false,
+    "history_label_input": false,
+    "Hdot_input": false,
+    "extra_state": false
+  },
+  "diagnostics": {
+    "per_width_pooled_moving": "Pool WT_RISE and WT_FALL only. For each predictor report signed cosine with delta_ref, Pearson correlation, same-sign fraction on intervals where |delta_ref| and |predictor| exceed the numerical floor, and predictor-vs-response RMS after no scaling.",
+    "per_history": "Report the same diagnostics separately for WT_RISE and WT_FALL.",
+    "hold_guard": "For WT_HOLD report predictor RMS and max_abs. No sign score is interpreted because delta_ref is numerically near zero.",
+    "state_context": "Report ranges of H, theta_b and theta_t by history to bind the conditioner map to the existing Wb/Wt/H state regions already implicated by C4K."
+  },
+  "numerical_floor": {
+    "absolute_slope": 1e-9,
+    "role": "numerical sign/cosine guard only; not hydrological acceptance"
+  },
+  "hard_gates": {
+    "B8_qi_identity_cm_per_day": 1e-10,
+    "finite_positive_reference_K": true,
+    "finite_positive_B9_K": true,
+    "all_predictors_finite": true,
+    "hold_reference_delta_rms_max": 1e-8
+  },
+  "decision_rule": {
+    "FACE_BOUNDARY_INTERACTION_SIGNAL_SUPPORTED": "At both widths in pooled moving data, P_INTERACTION has strictly larger signed cosine and same-sign fraction than both P_FACE and P_BOUNDARY; and in HOLD its RMS is strictly smaller than P_FACE.",
+    "FACE_GEOMETRY_SIGNAL_REMAINS_STRONGER": "At both widths P_FACE has signed cosine and same-sign fraction at least as large as both alternatives.",
+    "BOUNDARY_SIGNAL_REMAINS_STRONGER": "At both widths P_BOUNDARY has signed cosine and same-sign fraction at least as large as both alternatives.",
+    "NO_SINGLE_EXISTING_STATE_CONDITIONER_DOMINATES": "Hard gates pass but no predictor satisfies one of the uniform dominance rules.",
+    "C4O_DIAGNOSTIC_BLOCKED": "Any hard gate fails."
+  },
+  "interpretation_boundary": [
+    "C4O is a mechanism map, not a closure qualification.",
+    "A supported interaction signal would only authorize preregistration of a parameter-free interaction candidate; it would not authorize propagation.",
+    "A non-dominant result sends the workstream back to representation selection rather than post-hoc tuning.",
+    "No application acceptance, groundwater feedback or speed claim is adjudicated."
+  ],
+  "propagated_dynamics_authorized": false,
+  "next_model_change_authorized": false,
+  "production_rom_authorized": false
+}
