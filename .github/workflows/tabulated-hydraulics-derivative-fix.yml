@@ -1,0 +1,228 @@
+name: TAB-HYD derivative-clamp candidate qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-derivative-fix.yml'
+      - 'research/tabulated_hydraulics/prepare_hupsel_e2e.py'
+      - 'research/tabulated_hydraulics/compare_hupsel_e2e.py'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_wrapper_characterization.f90'
+      - 'research/tabulated_hydraulics/current_wrapper_stubs.f90'
+      - 'research/tabulated_hydraulics/array_dimensions_stub.f90'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-runtime
+
+      - name: Checkout current public SWAP for wrapper probe
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: current-swap
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: legacy-runtime/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: legacy-runtime/subprojects/ttutil
+
+      - name: Checkout pinned Hupsel regression case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Apply bounded derivative-clamp candidate to both source copies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def patch(path):
+              p = Path(path)
+              s = p.read_text()
+              old = """      else if (swsophy == 1) then
+         if (theta >= sptab(2,node,numtab(node)) - 1.0d-9) then
+            dhconduc = 1.0d+08
+         else
+            call EvalTabulatedFunction(0, numtab(node), 1, 3, 5, node, sptab, ientrytab, head, dummy, dhconduc, 4)
+         end if
+      end if"""
+              new = """      else if (swsophy == 1) then
+         if (theta >= sptab(2,node,numtab(node)) - 1.0d-9) then
+            dhconduc = 0.0_real64
+         else if (theta <= sptab(2,node,1) + 1.0d-9) then
+            dhconduc = 0.0_real64
+         else
+            call EvalTabulatedFunction(0, numtab(node), 1, 3, 5, node, sptab, ientrytab, head, dummy, dhconduc, 4)
+         end if
+      end if"""
+              if s.count(old) != 1:
+                  raise SystemExit(f"expected table dhconduc block once in {path}, found {s.count(old)}")
+              p.write_text(s.replace(old, new, 1))
+              print(f"PATCHED {path}")
+
+          patch("legacy-runtime/src/utils/soilhydraulicsutils.f90")
+          patch("current-swap/src/utils/soilhydraulicsutils.f90")
+          PY
+
+      - name: Build patched legacy runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup legacy-runtime/builddir legacy-runtime -Denable_pfunit=false
+          meson compile -C legacy-runtime/builddir
+
+      - name: Prepare full-period Hupsel table controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-derivfix \
+            | tee build/tab-hyd-derivfix-prepare.log
+          rm -rf build/tab-hyd-derivfix/analytic_k0 build/tab-hyd-derivfix/analytic_k1
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for name in ("table_k0", "table_k1"):
+              p = Path("build/tab-hyd-derivfix") / name / "swap.swp"
+              s = p.read_text()
+              s, n = re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b", r"\g<1>0", s, count=1)
+              if n != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Run full 2002-2004 table SWKIMPL 0 and 1 pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          BIN="$GITHUB_WORKSPACE/legacy-runtime/builddir/swap"
+          : > build/tab-hyd-derivfix/status.tsv
+          for name in table_k0 table_k1; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-derivfix/$name"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 90 "$BIN" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\n' "$name" "$rc" "$runtime" "$rows" \
+              | tee -a build/tab-hyd-derivfix/status.tsv
+            test "$rc" -eq 100
+          done
+
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-derivfix/table_k0 build/tab-hyd-derivfix/table_k1 \
+            build/tab-hyd-derivfix/comparison.json \
+            --label "table,SWKIMPL0-vs1,endpoint-dKdh-zero" \
+            | tee build/tab-hyd-derivfix/comparison.txt
+
+      - name: Compile patched current-public wrapper probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-derivfix/wrapper
+          FLAGS="-std=f2018 -ffree-line-length-none -O0 -g -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/tab-hyd-derivfix/wrapper \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/tab-hyd-derivfix/wrapper/array_dimensions_stub.o
+          gfortran $FLAGS -I build/tab-hyd-derivfix/wrapper -J build/tab-hyd-derivfix/wrapper \
+            -c research/tabulated_hydraulics/current_wrapper_stubs.f90 \
+            -o build/tab-hyd-derivfix/wrapper/current_wrapper_stubs.o
+          gfortran $FLAGS -I build/tab-hyd-derivfix/wrapper -J build/tab-hyd-derivfix/wrapper \
+            -c current-swap/src/soil/sptabulated.f90 \
+            -o build/tab-hyd-derivfix/wrapper/sptabulated.o
+          gfortran $FLAGS -I build/tab-hyd-derivfix/wrapper -J build/tab-hyd-derivfix/wrapper \
+            -c current-swap/src/utils/soilhydraulicsutils.f90 \
+            -o build/tab-hyd-derivfix/wrapper/soilhydraulicsutils.o
+          gfortran $FLAGS -I build/tab-hyd-derivfix/wrapper -J build/tab-hyd-derivfix/wrapper \
+            research/tabulated_hydraulics/tabulated_hydraulics_wrapper_characterization.f90 \
+            build/tab-hyd-derivfix/wrapper/array_dimensions_stub.o \
+            build/tab-hyd-derivfix/wrapper/current_wrapper_stubs.o \
+            build/tab-hyd-derivfix/wrapper/sptabulated.o \
+            build/tab-hyd-derivfix/wrapper/soilhydraulicsutils.o \
+            -o build/tab-hyd-derivfix/wrapper/probe
+
+      - name: Verify dry and saturation endpoint derivative clamps
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/tab-hyd-derivfix/wrapper/probe \
+            | tee build/tab-hyd-derivfix/wrapper-normal.txt
+          grep -q '^WRAPPER_CHARACTERIZATION_COMPLETED$' build/tab-hyd-derivfix/wrapper-normal.txt
+
+          build/tab-hyd-derivfix/wrapper/probe dry_probe \
+            | tee build/tab-hyd-derivfix/wrapper-dry.txt
+          grep -q '^DRY_PROBE_UNEXPECTED_SUCCESS dKdh=' build/tab-hyd-derivfix/wrapper-dry.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path("build/tab-hyd-derivfix/wrapper-dry.txt").read_text()
+          m = re.search(r"DRY_PROBE_UNEXPECTED_SUCCESS dKdh=\s*([0-9.Ee+-]+)", text)
+          if not m:
+              raise SystemExit("dry derivative result missing")
+          value = float(m.group(1))
+          print(f"DRY_ENDPOINT_DKDH={value:.17e}")
+          if value != 0.0:
+              raise SystemExit(f"expected zero dry endpoint derivative, got {value}")
+          PY
+
+      - name: Write candidate qualification summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "# TAB-HYD derivative-clamp candidate"
+            echo
+            echo "Candidate contract: dK/dh = 0 outside the tabulated theta range, consistent with the existing constant K endpoint extension."
+            echo
+            cat build/tab-hyd-derivfix/status.tsv
+            cat build/tab-hyd-derivfix/comparison.txt
+            echo
+            grep '^WRAPPER ' build/tab-hyd-derivfix/wrapper-normal.txt || true
+            grep '^DRY_PROBE' build/tab-hyd-derivfix/wrapper-dry.txt || true
+          } > build/tab-hyd-derivfix/summary.md
+          cat build/tab-hyd-derivfix/summary.md
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-derivative-clamp-candidate
+          path: |
+            build/tab-hyd-derivfix/summary.md
+            build/tab-hyd-derivfix/status.tsv
+            build/tab-hyd-derivfix/comparison.*
+            build/tab-hyd-derivfix/*/runtime_seconds.txt
+            build/tab-hyd-derivfix/*/run.log
+            build/tab-hyd-derivfix/wrapper-normal.txt
+            build/tab-hyd-derivfix/wrapper-dry.txt
