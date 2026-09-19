@@ -1063,6 +1063,73 @@ def validate_romv2_d10_if_present() -> str:
     return "CLOSED_LITERATURE_FAITHFUL_COMPARATOR_NO_GO"
 
 
+def validate_romv2_d11_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D11_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D11_RESULT.json")
+            == "3e48fb63efa988e9e98ac142b3a9322db693b0c2",
+            "F-ROMV2-D11 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D11_STATUS.json")
+            == "2fdd37368984c0d8595687de231b6396d15bd7d8",
+            "F-ROMV2-D11 status blob drift")
+
+    result = load_json("integration/f-rom/F-ROMV2_D11_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D11_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D11_STATE_OF_ART_RECONCILIATION.md").read_text(encoding="utf-8")
+
+    require(result["phase"] == "STATE_OF_ART_RECONCILIATION_CLOSED",
+            "F-ROMV2-D11 phase drift")
+    require(result["decision"] == "FMC_SMVE_FAITHFUL_COMPARATOR_JUSTIFIED_VZAA_AND_ADAPTIVE_ROM_DEFERRED",
+            "F-ROMV2-D11 decision drift")
+    require(result["candidate_classes"]["FMC_SMVE"]["disposition"]
+            == "AUTHORIZED_AS_NEXT_LITERATURE_BOUND_RESEARCH_COMPARATOR",
+            "F-ROMV2-D11 FMC/SMVE authority drift")
+    require(result["candidate_classes"]["VZAA"]["disposition"]
+            == "DEFER_GENERAL_SWAP5_COMPARATOR_RETAIN_AS_APPLICATION_SPECIFIC_REGIONAL_PRECEDENT",
+            "F-ROMV2-D11 VZAA disposition drift")
+    require(result["candidate_classes"]["ADAPTIVE_CLUSTER_ROM"]["disposition"]
+            == "DEFER_AS_FUTURE_C2_COVERAGE_ARCHITECTURE_NOT_D12_PRIMARY",
+            "F-ROMV2-D11 adaptive-ROM disposition drift")
+    require(result["candidate_classes"]["POD_DEIM_HYPERREDUCTION"]["disposition"]
+            == "SECONDARY_FALLBACK_IF_FMC_SMVE_FAILS",
+            "F-ROMV2-D11 POD/DEIM disposition drift")
+    require(result["D12_authority"]["authorized"] is True
+            and result["D12_authority"]["work_unit"] == "F-ROMV2-D12",
+            "F-ROMV2-D11 D12 authority missing")
+    require(result["D12_authority"]["runtime_boundary"].startswith("Published HYDRUS speed ratios are external precedent only"),
+            "F-ROMV2-D11 external-runtime firewall drift")
+    require("DO_NOT_IMPLEMENT_VZAA_AS_GENERAL_SWAP5_ROM_FROM_D11" in result["prohibited"],
+            "F-ROMV2-D11 VZAA firewall missing")
+    require("DO_NOT_START_POD_OR_DEEP_ROM_BEFORE_FMC_SMVE_DISCRIMINATION" in result["prohibited"],
+            "F-ROMV2-D11 escalation firewall missing")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D11 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_STATE_OF_ART_RECONCILED",
+            "F-ROMV2-D11 status phase drift")
+    require(status["D12_FMC_SMVE_authorized"] is True,
+            "F-ROMV2-D11 status misses D12 authority")
+    require(status["VZAA_general_comparator_authorized"] is False
+            and status["adaptive_cluster_forward_comparator_authorized"] is False
+            and status["POD_DEIM_primary_next_authorized"] is False,
+            "F-ROMV2-D11 status prematurely authorizes deferred paths")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D11 status authorizes production ROM")
+
+    require("finite-water-content / Soil Moisture Velocity Equation (FMC/SMVE)" in doc,
+            "F-ROMV2-D11 selected research class missing")
+    require("regional-groundwater application precedent, deferred as a general SWAP5 reduced-model comparator" in doc,
+            "F-ROMV2-D11 VZAA boundary missing")
+    require("Existing V01-V04 histories remain exposed and cannot become blind confirmation." in doc,
+            "F-ROMV2-D11 blind-evidence firewall missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D11 production prohibition missing")
+
+    return "CLOSED_STATE_OF_ART_RECONCILED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1099,6 +1166,7 @@ def main() -> int:
     romv2_d8_phase = validate_romv2_d8_if_present()
     romv2_d9_phase = validate_romv2_d9_if_present()
     romv2_d10_phase = validate_romv2_d10_if_present()
+    romv2_d11_phase = validate_romv2_d11_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1119,6 +1187,7 @@ def main() -> int:
     print(f"F_ROMV2_D8_PHASE={romv2_d8_phase}")
     print(f"F_ROMV2_D9_PHASE={romv2_d9_phase}")
     print(f"F_ROMV2_D10_PHASE={romv2_d10_phase}")
+    print(f"F_ROMV2_D11_PHASE={romv2_d11_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
