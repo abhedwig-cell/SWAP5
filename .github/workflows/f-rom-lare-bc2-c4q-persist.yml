@@ -1,0 +1,167 @@
+name: F-ROM-LARE persist C4Q matched representation closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4q-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4Q authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4q
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593455706/zip" > /tmp/c4q.zip
+          echo "74b669ccf05d2dee4b0f831c2dedf987f39c0c671033eb9c5404a1dc2beb5b29  /tmp/c4q.zip" | sha256sum -c -
+          unzip -q /tmp/c4q.zip -d /tmp/c4q
+          echo "067be546d4236ce8205b5cd21aef19548aeae232407f23b3ca1812b21c9bafc8  /tmp/c4q/LARE_BC2_C4Q_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4Q
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4q/LARE_BC2_C4Q_RESULT.json'))
+          assert r['decision']=='LARE_REDUCED_FRONTIER_CROSSES_FMC'
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['R16_operator_control_status']=='QUALIFIED'
+          assert r['integrity']['qualified_reduced_member_count']==6
+          assert r['frontier']['reduced_members_crossing_R2']==['R4','R5','R6','R8','R12']
+          assert r['frontier']['reduced_members_crossing_FMC']==['R12']
+          assert r['frontier']['lowest_dimension_crossing_R2']==4
+          assert r['frontier']['lowest_dimension_crossing_FMC']==12
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4Q_VALIDATION=PASS')
+          PY
+
+      - name: Build C4Q closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4q/LARE_BC2_C4Q_RESULT.json'))
+          by={m['id']:m for m in r['lare_members']}
+          def compact(m):
+              p=by[m]['pooled']
+              return {
+                'dimension':by[m]['dimension'],
+                'status':by[m]['status'],
+                'total_storage_RMSE_cm':p['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':p['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':p['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':p['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':p['bottom_flux_sign_error_count'],
+                'upper_0_80_storage_RMSE_cm':p['upper_storage_error_cm']['rmse'],
+                'lower_80_160_storage_RMSE_cm':p['lower_storage_error_cm']['rmse'],
+                'crosses_R2':by[m]['crosses_R2'],
+                'crosses_FMC':by[m]['crosses_FMC']
+              }
+          fmc=r['comparators']['FMC_GW200']['pooled']
+          r2=r['comparators']['R2']['pooled']
+          out={
+            'schema':'swap5.lare.bc2.c4q.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4Q',
+            'status':'CLOSED_LARE_R12_CROSSES_FMC_ON_MATCHED_D13_NO_VALUE_CLAIM',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35472283735,
+              'execution_head':'9fb2c28a6b495e36c7b9e091059e3612c4e7f464',
+              'aggregate_artifact_id':10593455706,
+              'aggregate_artifact_digest':'sha256:74b669ccf05d2dee4b0f831c2dedf987f39c0c671033eb9c5404a1dc2beb5b29',
+              'result_sha256':'067be546d4236ce8205b5cd21aef19548aeae232407f23b3ca1812b21c9bafc8',
+              'superseded_technical_run':35472171483,
+              'superseded_reason':'Dynamic Python loader failed before hydrological execution; fixed by module registration only.'
+            },
+            'frozen_lare_scientific_basis':'9bb73821bb78a04c759b763746b50a3f777cd416',
+            'external_D13_authority':{
+              'artifact_id':10587057124,
+              'artifact_digest':'sha256:03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408',
+              'scientific_basis_rebased':False
+            },
+            'frontier':r['frontier'],
+            'lare_key_members':{m:compact(m) for m in ('R3','R4','R8','R12','R16')},
+            'comparators':{
+              'R2':{
+                'total_storage_RMSE_cm':r2['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':r2['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':r2['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':r2['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':r2['bottom_flux_sign_error_count']
+              },
+              'FMC_GW200':{
+                'total_storage_RMSE_cm':fmc['total_storage_error_cm']['rmse'],
+                'cumulative_bottom_exchange_RMSE_cm':fmc['cumulative_bottom_exchange_error_cm']['rmse'],
+                'terminal_bottom_flux_RMSE_cm_per_day':fmc['terminal_bottom_flux_error_cm_per_day']['rmse'],
+                'mapped_R16_theta_RMSE':fmc['mapped_R16_cell_theta_error']['rmse'],
+                'bottom_flux_sign_errors':fmc['bottom_flux_sign_error_count']
+              }
+            },
+            'scientific_interpretation':[
+              'R4 is the minimum frozen reduced LARE member that crosses the D13 R2 comparator on all five preregistered fidelity views.',
+              'R12 is the only reduced LARE member that crosses FMC_GW200 on all five views; R8 remains behind FMC because its mapped 10-cm profile error is larger even though its balance and bottom-flux errors are much smaller.',
+              'The D13 groundwater-relaxation result therefore supports LARE as a high-resolution reduced representation, but not aggressive low-dimensional LARE for this purpose.',
+              'R12 retains 12 of the 16 spatial water states, so hydrological frontier success does not establish computational value. Cost/value must be tested separately against R16 Reference, same-partition CoRichards and FMC.',
+              'No application acceptance, general LARE superiority, production speedup or production ROM is authorized.'
+            ],
+            'next_authority':'RECONCILE_CORICHARDS_Q1_THEN_PREREGISTER_COST_FIDELITY_VALUE_DISCRIMINATOR_IF_NUMERICAL_COMPARATOR_AUTHORITY_ALLOWS',
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4Q_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4Q closeout
+
+          Formal decision: LARE_REDUCED_FRONTIER_CROSSES_FMC.
+
+          C4Q is a matched, exposed representation discriminator on the immutable F-ROMV2-D13 fixed-water-table capillary-relaxation workload. It compares the full frozen LARE R3-R16 ladder against the D13 R2 coarse-Richards comparator and FMC_GW200. The frozen LARE scientific basis remains 9bb73821; later F-ROMV2 evidence is imported only as external comparator authority.
+
+          All seven LARE members qualify and conserve the water ledger. R4 is the lowest reduced member that crosses R2 on all five frozen views. R12 is the only reduced member that also crosses FMC.
+
+          Key pooled RMSE values:
+
+          | representation | states | storage cm | cumulative bottom cm | bottom flux cm/d | mapped theta | sign errors |
+          |---|---:|---:|---:|---:|---:|---:|
+          | R2 coarse Richards | 2 | 0.39853 | 0.39853 | 10.0978 | 0.04505 | 1 |
+          | FMC_GW200 | front state | 0.22874 | 0.22874 | 5.8855 | 0.004114 | 1 |
+          | LARE R4 | 4 | 0.006858 | 0.006858 | 0.26834 | 0.02677 | 0 |
+          | LARE R8 | 8 | 0.005526 | 0.005526 | 0.14175 | 0.009007 | 0 |
+          | LARE R12 | 12 | 0.005526 | 0.005526 | 0.14175 | 0.001623 | 0 |
+          | LARE R16 control | 16 | 0.005526 | 0.005526 | 0.14175 | 0.0000934 | 0 |
+
+          The result is important but narrow. LARE becomes FMC-competitive only at R12, retaining 12 of the 16 spatial water states. Thus C4Q supports a high-resolution LARE representation on this groundwater-relaxation purpose, not aggressive low-dimensional compression.
+
+          No runtime or computational-value conclusion follows from state dimension. The next authority is to reconcile the independent same-partition CoRichards-Q1 numerical viability curve and only then decide whether a cost-fidelity discriminator is justified.
+          MD
+
+      - name: Persist C4Q authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4q/LARE_BC2_C4Q_RESULT.json integration/f-rom/LARE_BC2_C4Q_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4Q_RESULT.json integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4Q_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4Q matched representation frontier"
+          git push origin HEAD:work/f-rom-lare-rs1
