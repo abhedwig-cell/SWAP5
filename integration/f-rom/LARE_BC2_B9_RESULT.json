@@ -1,0 +1,793 @@
+{
+  "application_acceptance_adjudicated": false,
+  "candidate_failures": {
+    "2.5": {
+      "BULK_SIDE_LINEAR": [],
+      "STANDARD_SPLIT_LARE": [],
+      "TERMINAL_SIDE_LINEAR": []
+    },
+    "5.0": {
+      "BULK_SIDE_LINEAR": [],
+      "STANDARD_SPLIT_LARE": [],
+      "TERMINAL_SIDE_LINEAR": []
+    }
+  },
+  "decision": "BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED_OPERATOR_OR_WIDTH_UNRESOLVED",
+  "hard_checks": {
+    "hydrostatic_slope_gate": 1e-10,
+    "max_abs_reference_qi_bulk_minus_terminal_cm_per_day": 1.3131717935266352e-11,
+    "max_abs_shape_root_storage_residual_cm": 9.992007221626409e-14,
+    "max_hydrostatic_abs_slope_minus_1": 2.9103830456733704e-11,
+    "reference_qi_identity_gate_cm_per_day": 1e-10,
+    "root_storage_residual_gate_cm": 1e-10
+  },
+  "interpretation": [
+    "Reference qi is fixed by the qualified B8 split moving-control-volume ledger, not by a fitted local flux target.",
+    "All candidate qi closures use only Wb, Wt, H and frozen constitutive functions.",
+    "The terminal-vs-bulk one-sided flux mismatch is reported without empirical blending.",
+    "Positive operator support would still require a separately preregistered propagated-dynamics experiment."
+  ],
+  "preferred_operator": [
+    "TERMINAL_SIDE_LINEAR"
+  ],
+  "preferred_width_cm": [],
+  "production_rom_authorized": false,
+  "propagated_dynamics_authorized": false,
+  "schema": "swap5.lare.bc2.b9.result.v1",
+  "support": {
+    "2.5": {
+      "BULK_SIDE_LINEAR": {
+        "HOLD_NONINFERIOR": true,
+        "WATER_TABLE_FALLING": false,
+        "WATER_TABLE_RISING": false,
+        "defined_on_all_states": true
+      },
+      "TERMINAL_SIDE_LINEAR": {
+        "HOLD_NONINFERIOR": true,
+        "WATER_TABLE_FALLING": true,
+        "WATER_TABLE_RISING": true,
+        "defined_on_all_states": true
+      }
+    },
+    "5.0": {
+      "BULK_SIDE_LINEAR": {
+        "HOLD_NONINFERIOR": false,
+        "WATER_TABLE_FALLING": false,
+        "WATER_TABLE_RISING": false,
+        "defined_on_all_states": true
+      },
+      "TERMINAL_SIDE_LINEAR": {
+        "HOLD_NONINFERIOR": true,
+        "WATER_TABLE_FALLING": true,
+        "WATER_TABLE_RISING": true,
+        "defined_on_all_states": true
+      }
+    }
+  },
+  "supported_width_operator_pairs": [
+    {
+      "operator": "TERMINAL_SIDE_LINEAR",
+      "width_cm": 2.5
+    },
+    {
+      "operator": "TERMINAL_SIDE_LINEAR",
+      "width_cm": 5.0
+    }
+  ],
+  "widths": {
+    "2.5": {
+      "by_direction": {
+        "HOLD": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 0.2677755640950807,
+            "corr": null,
+            "count": 256,
+            "mae": 0.2677755640950807,
+            "max_abs": 0.2677755640950807,
+            "rms": 0.2677755640950807,
+            "sign_mismatch": 256
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.822976706365179,
+            "corr": null,
+            "count": 256,
+            "mae": 0.822976706365179,
+            "max_abs": 0.8229767063651791,
+            "rms": 0.8229767063651792,
+            "sign_mismatch": 256
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 7.06623939956495e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 7.06623939956495e-10,
+            "max_abs": 7.066239399564952e-10,
+            "rms": 7.066239399564952e-10,
+            "sign_mismatch": 256
+          },
+          "a_t": {
+            "count": 256,
+            "max": 0.9999999999708962,
+            "mean": 0.9999999999708962,
+            "min": 0.9999999999708962,
+            "rms": 0.9999999999708962
+          },
+          "b_bulk": {
+            "count": 256,
+            "max": 0.9889710860654406,
+            "mean": 0.9889710860654405,
+            "min": 0.9889710860654406,
+            "rms": 0.9889710860654407
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 256,
+            "max": -0.26777556338845676,
+            "mean": -0.2677755633884567,
+            "min": -0.26777556338845676,
+            "rms": 0.26777556338845676
+          }
+        },
+        "WATER_TABLE_FALLING": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 2.7182483473639665,
+            "corr": 0.9011762346669276,
+            "count": 768,
+            "mae": 2.9122821593817787,
+            "max_abs": 9.206339117303992,
+            "rms": 3.005130081350098,
+            "sign_mismatch": 0
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 2.0413324356579796,
+            "corr": 0.8990873465474303,
+            "count": 768,
+            "mae": 2.3058494023293865,
+            "max_abs": 10.105803338374832,
+            "rms": 2.419275855503674,
+            "sign_mismatch": 0
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": -0.15013862492190613,
+            "corr": 0.9933639907274533,
+            "count": 768,
+            "mae": 0.27757499166099536,
+            "max_abs": 5.942170534533049,
+            "rms": 0.3791808878826132,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 768,
+            "max": 0.9368619610904716,
+            "mean": 0.8194216656860552,
+            "min": 0.40128882718272507,
+            "rms": 0.8269984915388997
+          },
+          "b_bulk": {
+            "count": 768,
+            "max": 0.8800848946546967,
+            "mean": 0.7048409150083815,
+            "min": 0.4865678208330829,
+            "rms": 0.7107474966979676
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 768,
+            "max": 6.319644487716388,
+            "mean": -2.8683869722858724,
+            "min": -4.056826934884351,
+            "rms": 3.1205933688589136
+          }
+        },
+        "WATER_TABLE_RISING": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.0042149623774739,
+            "corr": 0.6984357536603065,
+            "count": 1024,
+            "mae": 1.281377554328036,
+            "max_abs": 13.719563658781947,
+            "rms": 2.0815092089551244,
+            "sign_mismatch": 26
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.19011232610965495,
+            "corr": 0.7140803114517931,
+            "count": 1024,
+            "mae": 1.1111652904637337,
+            "max_abs": 12.556304609895061,
+            "rms": 1.8202769105409091,
+            "sign_mismatch": 16
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.08330246658094644,
+            "corr": 0.982688016326148,
+            "count": 1024,
+            "mae": 0.2461122585511183,
+            "max_abs": 4.846051979309026,
+            "rms": 0.3941464042544215,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 1024,
+            "max": 1.4800305078388192,
+            "mean": 1.1504710514116425,
+            "min": 1.0177857013768516,
+            "rms": 1.1540514465261669
+          },
+          "b_bulk": {
+            "count": 1024,
+            "max": 1.3499039171059204,
+            "mean": 1.1111058922960322,
+            "min": 0.7483316381708656,
+            "rms": 1.1164660365504917
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 1024,
+            "max": 1.4088403086715662,
+            "mean": -0.9209124957965275,
+            "min": -14.318489399833393,
+            "rms": 2.0898676332971466
+          }
+        }
+      },
+      "by_history": {
+        "WT_CYCLE": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.6283759438148533,
+            "corr": 0.9372288553476612,
+            "count": 768,
+            "mae": 1.897042978680318,
+            "max_abs": 13.719563658781947,
+            "rms": 2.8000305163906374,
+            "sign_mismatch": 26
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 0.6147848763619533,
+            "corr": 0.9386188848329979,
+            "count": 768,
+            "mae": 1.793739255643074,
+            "max_abs": 12.556304609895061,
+            "rms": 2.4503386648734775,
+            "sign_mismatch": 16
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.049196169013098,
+            "corr": 0.9968681840822716,
+            "count": 768,
+            "mae": 0.2663092087456434,
+            "max_abs": 5.942170534533049,
+            "rms": 0.45421813931266236,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 768,
+            "max": 1.4800305078388192,
+            "mean": 1.0060102776721085,
+            "min": 0.40128882718272507,
+            "rms": 1.03046275437197
+          },
+          "b_bulk": {
+            "count": 768,
+            "max": 1.3499039171059204,
+            "mean": 0.9416824821781696,
+            "min": 0.4865678208330829,
+            "rms": 0.9761043112534432
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 768,
+            "max": 6.319644487716388,
+            "mean": -1.579179774801755,
+            "min": -14.318489399833393,
+            "rms": 2.7863767621050415
+          }
+        },
+        "WT_FALL": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 2.586025148509374,
+            "corr": 0.8573037790642951,
+            "count": 512,
+            "mae": 2.751237906188457,
+            "max_abs": 5.725832802487987,
+            "rms": 2.8092526412192433,
+            "sign_mismatch": 0
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.9278122745895339,
+            "corr": 0.8516746469104549,
+            "count": 512,
+            "mae": 2.1585963646918556,
+            "max_abs": 6.4948755520363015,
+            "rms": 2.231824915994322,
+            "sign_mismatch": 0
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": -0.18655339275245592,
+            "corr": 0.9947852857140027,
+            "count": 512,
+            "mae": 0.25619288511181915,
+            "max_abs": 2.485710039945973,
+            "rms": 0.29407170728749293,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 512,
+            "max": 0.9368619610904716,
+            "mean": 0.8656643021730304,
+            "min": 0.5642279862659052,
+            "rms": 0.8694698214718247
+          },
+          "b_bulk": {
+            "count": 512,
+            "max": 0.8791200055816093,
+            "mean": 0.7539500465629567,
+            "min": 0.6498226688615327,
+            "rms": 0.7560412511780052
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 512,
+            "max": 5.166152678409055,
+            "mean": -2.7725785412618293,
+            "min": -3.5643844926360475,
+            "rms": 2.989622218492599
+          }
+        },
+        "WT_HOLD": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 0.2677755640950807,
+            "corr": null,
+            "count": 256,
+            "mae": 0.2677755640950807,
+            "max_abs": 0.2677755640950807,
+            "rms": 0.2677755640950807,
+            "sign_mismatch": 256
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.822976706365179,
+            "corr": null,
+            "count": 256,
+            "mae": 0.822976706365179,
+            "max_abs": 0.8229767063651791,
+            "rms": 0.8229767063651792,
+            "sign_mismatch": 256
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 7.06623939956495e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 7.06623939956495e-10,
+            "max_abs": 7.066239399564952e-10,
+            "rms": 7.066239399564952e-10,
+            "sign_mismatch": 256
+          },
+          "a_t": {
+            "count": 256,
+            "max": 0.9999999999708962,
+            "mean": 0.9999999999708962,
+            "min": 0.9999999999708962,
+            "rms": 0.9999999999708962
+          },
+          "b_bulk": {
+            "count": 256,
+            "max": 0.9889710860654406,
+            "mean": 0.9889710860654405,
+            "min": 0.9889710860654406,
+            "rms": 0.9889710860654407
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 256,
+            "max": -0.26777556338845676,
+            "mean": -0.2677755633884567,
+            "min": -0.26777556338845676,
+            "rms": 0.26777556338845676
+          }
+        },
+        "WT_RISE": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.0572133815692442,
+            "corr": 0.8830405689441099,
+            "count": 512,
+            "mae": 1.3343759735198064,
+            "max_abs": 9.532201797286847,
+            "rms": 1.5998170649819057,
+            "sign_mismatch": 0
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.16821558786480384,
+            "corr": 0.8956638002744756,
+            "count": 512,
+            "mae": 0.8318994362650808,
+            "max_abs": 7.777307151462019,
+            "rms": 1.1911665480180755,
+            "sign_mismatch": 0
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.054156135011842604,
+            "corr": 0.979452690655582,
+            "count": 512,
+            "mae": 0.2529303063634454,
+            "max_abs": 4.020667926429853,
+            "rms": 0.3611379908408743,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 512,
+            "max": 1.4800305078388192,
+            "mean": 1.1553948826711746,
+            "min": 1.0826975334784947,
+            "rms": 1.1579297203620145
+          },
+          "b_bulk": {
+            "count": 512,
+            "max": 1.3499039171059204,
+            "mean": 1.1129993872744257,
+            "min": 1.00804628905024,
+            "rms": 1.1180196842994439
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 512,
+            "max": 1.4088403086715662,
+            "mean": -1.0030572465574017,
+            "min": -9.250554221855646,
+            "rms": 1.6608924438844015
+          }
+        }
+      }
+    },
+    "5.0": {
+      "by_direction": {
+        "HOLD": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 0.2633137407264426,
+            "corr": null,
+            "count": 256,
+            "mae": 0.2633137407264426,
+            "max_abs": 0.2633137407264426,
+            "rms": 0.26331374072644265,
+            "sign_mismatch": 256
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.12126441873667225,
+            "corr": null,
+            "count": 256,
+            "mae": 0.12126441873667225,
+            "max_abs": 0.12126441873667224,
+            "rms": 0.12126441873667222,
+            "sign_mismatch": 256
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 1.4646994474146865e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 1.4646994474146865e-10,
+            "max_abs": 1.464699447414686e-10,
+            "rms": 1.4646994474146863e-10,
+            "sign_mismatch": 256
+          },
+          "a_t": {
+            "count": 256,
+            "max": 0.999999999992724,
+            "mean": 0.999999999992724,
+            "min": 0.999999999992724,
+            "rms": 0.999999999992724
+          },
+          "b_bulk": {
+            "count": 256,
+            "max": 0.9869197764760591,
+            "mean": 0.986919776476059,
+            "min": 0.9869197764760591,
+            "rms": 0.986919776476059
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 256,
+            "max": -0.26331374057997264,
+            "mean": -0.26331374057997264,
+            "min": -0.26331374057997264,
+            "rms": 0.2633137405799726
+          }
+        },
+        "WATER_TABLE_FALLING": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 2.0027012552282706,
+            "corr": 0.9154169120595782,
+            "count": 768,
+            "mae": 2.23367406229556,
+            "max_abs": 6.362409910599796,
+            "rms": 2.3230704014849324,
+            "sign_mismatch": 0
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.736408406676862,
+            "corr": 0.9218181267472095,
+            "count": 768,
+            "mae": 1.9909311485363153,
+            "max_abs": 6.213256070350434,
+            "rms": 2.0840656293169824,
+            "sign_mismatch": 0
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": -0.48214521851485154,
+            "corr": 0.9957391839542513,
+            "count": 768,
+            "mae": 0.5014192293574667,
+            "max_abs": 4.557028026791355,
+            "rms": 0.5613578608374787,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 768,
+            "max": 0.9343516208027722,
+            "mean": 0.8107148856418149,
+            "min": 0.3956301256985171,
+            "rms": 0.8182200911659455
+          },
+          "b_bulk": {
+            "count": 768,
+            "max": 0.8985884974097933,
+            "mean": 0.6942854199340233,
+            "min": 0.4855470964164059,
+            "rms": 0.700197354985233
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 768,
+            "max": 7.407366605823844,
+            "mean": -2.484846473743122,
+            "min": -3.3216244290799963,
+            "rms": 2.7367972662319873
+          }
+        },
+        "WATER_TABLE_RISING": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.6890390483480764,
+            "corr": 0.7216105188148537,
+            "count": 1024,
+            "mae": 1.7193782684549355,
+            "max_abs": 12.109139506161124,
+            "rms": 2.309617875335005,
+            "sign_mismatch": 230
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.3134518028889515,
+            "corr": 0.7570763277126704,
+            "count": 1024,
+            "mae": 1.3813979347086154,
+            "max_abs": 11.071622430347434,
+            "rms": 1.921981148105277,
+            "sign_mismatch": 99
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.4725325040631574,
+            "corr": 0.9773426462021838,
+            "count": 1024,
+            "mae": 0.5008794685652562,
+            "max_abs": 5.900786231386075,
+            "rms": 0.6534842381031596,
+            "sign_mismatch": 1
+          },
+          "a_t": {
+            "count": 1024,
+            "max": 1.4722178794181673,
+            "mean": 1.156094297775958,
+            "min": 1.0177857014059555,
+            "rms": 1.1595836321132247
+          },
+          "b_bulk": {
+            "count": 1024,
+            "max": 1.3610856619471332,
+            "mean": 1.0918866828505458,
+            "min": 0.7088992193436991,
+            "rms": 1.0988538383392294
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 1024,
+            "max": 1.4722031327354062,
+            "mean": -1.216506544284919,
+            "min": -12.461207084617087,
+            "rms": 2.113954333118152
+          }
+        }
+      },
+      "by_history": {
+        "WT_CYCLE": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.6393255633233899,
+            "corr": 0.9474630400644434,
+            "count": 768,
+            "mae": 1.7536465744304255,
+            "max_abs": 12.109139506161124,
+            "rms": 2.4190694462012234,
+            "sign_mismatch": 36
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.2871204456822025,
+            "corr": 0.9548372506459064,
+            "count": 768,
+            "mae": 1.4611604785569738,
+            "max_abs": 11.071622430347434,
+            "rms": 2.0913385599327365,
+            "sign_mismatch": 23
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.08809013091571123,
+            "corr": 0.9968349441480763,
+            "count": 768,
+            "mae": 0.5227876540043627,
+            "max_abs": 5.900786231386075,
+            "rms": 0.6772170818909624,
+            "sign_mismatch": 1
+          },
+          "a_t": {
+            "count": 768,
+            "max": 1.4722178794181673,
+            "mean": 1.0065366762770747,
+            "min": 0.3956301256985171,
+            "rms": 1.0321441941374845
+          },
+          "b_bulk": {
+            "count": 768,
+            "max": 1.3610856619471332,
+            "mean": 0.9304205271559841,
+            "min": 0.4855470964164059,
+            "rms": 0.9659698100025063
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 768,
+            "max": 7.407366605823844,
+            "mean": -1.5512354324076787,
+            "min": -12.461207084617087,
+            "rms": 2.5315581622971686
+          }
+        },
+        "WT_FALL": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.9578867219854965,
+            "corr": 0.8646996701330827,
+            "count": 512,
+            "mae": 2.163203636032736,
+            "max_abs": 6.286262974330262,
+            "rms": 2.229373001473092,
+            "sign_mismatch": 0
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.7106988516895245,
+            "corr": 0.8735570714120963,
+            "count": 512,
+            "mae": 1.9380895326594996,
+            "max_abs": 6.213256070350434,
+            "rms": 2.0091514990364687,
+            "sign_mismatch": 0
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": -0.42648397642290303,
+            "corr": 0.9928542125708502,
+            "count": 512,
+            "mae": 0.4442848671525568,
+            "max_abs": 4.557028026791355,
+            "rms": 0.4915997730754116,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 512,
+            "max": 0.9343516208027722,
+            "mean": 0.8572737641874184,
+            "min": 0.5491614118654979,
+            "rms": 0.8611116171240714
+          },
+          "b_bulk": {
+            "count": 512,
+            "max": 0.8958642076557967,
+            "mean": 0.7437469135115122,
+            "min": 0.6449167959082595,
+            "rms": 0.7457533210511038
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 512,
+            "max": 5.758698587555452,
+            "mean": -2.384370698408399,
+            "min": -2.909283041551009,
+            "rms": 2.591443970065837
+          }
+        },
+        "WT_HOLD": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 0.2633137407264426,
+            "corr": null,
+            "count": 256,
+            "mae": 0.2633137407264426,
+            "max_abs": 0.2633137407264426,
+            "rms": 0.26331374072644265,
+            "sign_mismatch": 256
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": -0.12126441873667225,
+            "corr": null,
+            "count": 256,
+            "mae": 0.12126441873667225,
+            "max_abs": 0.12126441873667224,
+            "rms": 0.12126441873667222,
+            "sign_mismatch": 256
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 1.4646994474146865e-10,
+            "corr": null,
+            "count": 256,
+            "mae": 1.4646994474146865e-10,
+            "max_abs": 1.464699447414686e-10,
+            "rms": 1.4646994474146863e-10,
+            "sign_mismatch": 256
+          },
+          "a_t": {
+            "count": 256,
+            "max": 0.999999999992724,
+            "mean": 0.999999999992724,
+            "min": 0.999999999992724,
+            "rms": 0.999999999992724
+          },
+          "b_bulk": {
+            "count": 256,
+            "max": 0.9869197764760591,
+            "mean": 0.986919776476059,
+            "min": 0.9869197764760591,
+            "rms": 0.986919776476059
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 256,
+            "max": -0.26331374057997264,
+            "mean": -0.26331374057997264,
+            "min": -0.26331374057997264,
+            "rms": 0.2633137405799726
+          }
+        },
+        "WT_RISE": {
+          "BULK_SIDE_LINEAR": {
+            "bias": 1.9652549125679777,
+            "corr": 0.9164961614520464,
+            "count": 512,
+            "mae": 1.9955941326748368,
+            "max_abs": 7.89080551522211,
+            "rms": 2.239576776425276,
+            "sign_mismatch": 194
+          },
+          "STANDARD_SPLIT_LARE": {
+            "bias": 1.5901366955803675,
+            "corr": 0.9422652147946471,
+            "count": 512,
+            "mae": 1.6193623417267433,
+            "max_abs": 6.587125944866452,
+            "rms": 1.8181810096417668,
+            "sign_mismatch": 76
+          },
+          "TERMINAL_SIDE_LINEAR": {
+            "bias": 0.5161959604033738,
+            "corr": 0.9818041087410796,
+            "count": 512,
+            "mae": 0.5254214330076118,
+            "max_abs": 2.9329775094968027,
+            "rms": 0.6302082750086809,
+            "sign_mismatch": 0
+          },
+          "a_t": {
+            "count": 512,
+            "max": 1.4644332831230713,
+            "mean": 1.1611821454116082,
+            "min": 1.0826975334566669,
+            "rms": 1.1636145851301452
+          },
+          "b_bulk": {
+            "count": 512,
+            "max": 1.3610856619471332,
+            "mean": 1.085823791356638,
+            "min": 0.9639731173036051,
+            "rms": 1.0929682032634902
+          },
+          "one_sided_mismatch_cm_per_day": {
+            "count": 512,
+            "max": 1.4722031327354062,
+            "mean": -1.449058952164604,
+            "min": -6.379980966713702,
+            "rms": 1.9605950158229075
+          }
+        }
+      }
+    }
+  },
+  "work_unit": "LARE-BC2-B9",
+  "workstream": "F-ROM-LARE"
+}
