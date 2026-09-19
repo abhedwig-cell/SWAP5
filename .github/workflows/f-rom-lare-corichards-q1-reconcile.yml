@@ -1,0 +1,123 @@
+name: F-ROM-LARE reconcile CoRichards Q1 authority
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-corichards-q1-reconcile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Recover immutable Q1 member authorities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/q1/R4 /tmp/q1/R5 /tmp/q1/R6 /tmp/q1/R8 /tmp/q1/R12 /tmp/q1/R16
+          recover() {
+            id="$1"; digest="$2"; out="$3"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" > "/tmp/a-${id}.zip"
+            echo "${digest}  /tmp/a-${id}.zip" | sha256sum -c -
+            unzip -q "/tmp/a-${id}.zip" -d "$out"
+          }
+          recover 10592859643 0afdfa00efe56a0fe96e1794660edbd3ef725d31d04d84000d5e15a76f26e1a4 /tmp/q1/R4
+          recover 10593070585 79a030c7e8fb9b428fc2c456482a6f51a87c86d803a6db49b4605421779aa0da /tmp/q1/R5
+          recover 10592649966 589da9483ee172abcab2b72a175d0420066a79525d4c92c31dea1ae2bb8b3246 /tmp/q1/R6
+          recover 10593750090 8eada3050ec3017f0de59541f56add17cfc2bc54bc50579c0fc5a7074228df0e /tmp/q1/R8
+          recover 10593435504 20e39128bc2dcfcfe80f878f82a88d92d827793e784ad12f1d94e40bdd6330b8 /tmp/q1/R12
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593042290/zip" > /tmp/a-r16.zip
+          echo "3513365d205c8f0cb483d07578d5659b73102cfd3f3eb5cfeeb5da62f04efe79  /tmp/a-r16.zip" | sha256sum -c -
+          unzip -q /tmp/a-r16.zip -d /tmp/q1/R16
+          test -f /tmp/q1/R16/LARE_CORICHARDS_Q1_R16_RESULT.json
+
+      - name: Verify authority semantics and aggregate
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('/tmp/q1')
+          expected={'R4':0,'R5':0,'R6':0,'R8':0,'R12':0,'R16':7}
+          for m,n in expected.items():
+              p=next((root/m).glob(f'LARE_CORICHARDS_Q1_{m}_RESULT.json'))
+              r=json.load(open(p))
+              assert r['member']==m
+              assert r['dynamic_qualified_count']==n
+              assert r['all_O0_O2_identity'] is True
+              assert r['technical_failure_cases']==[]
+              assert r['hydrological_comparison_performed'] is False
+              assert r['production_rom_authorized'] is False
+          r16=json.load(open(root/'R16'/'LARE_CORICHARDS_Q1_R16_RESULT.json'))
+          assert r16['dynamic_qualified_cases']==[
+              'S1_B1_F2','S1_B1_F3','S1_B1_F4',
+              'S2_B1_F2','S2_B1_F3','S2_B1_F4','S3_B1_F3'
+          ]
+          print('LARE_CORICHARDS_Q1_MEMBER_AUTHORITY=PASS')
+          PY
+          mkdir -p LARE_CORICHARDS_Q1_RECONCILED
+          python3 tests/rom/aggregate_lare_corichards_q1.py             --member-dir /tmp/q1             --prereg integration/f-rom/LARE_CORICHARDS_Q1_PREREGISTRATION.json             --output LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_RESULT.json             | tee LARE_CORICHARDS_Q1_RECONCILED/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_RESULT.json'))
+          assert r['decision']=='ONLY_FINE_CORICHARDS_DYNAMIC_VIABLE'
+          assert r['R16_authority_reproduction']['pass'] is True
+          assert r['minimum_reduced_member_with_any_dynamic_qualification'] is None
+          assert r['Q2_authorized'] is False
+          assert r['hydrological_comparison_performed'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_CORICHARDS_Q1_RECONCILED_FIREWALL=PASS')
+          PY
+          sha256sum LARE_CORICHARDS_Q1_RECONCILED/* > LARE_CORICHARDS_Q1_RECONCILED/sha256.txt
+
+      - name: Record mixed execution provenance
+        run: |
+          python3 - <<'PY'
+          import json,hashlib
+          r=json.load(open('LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_RESULT.json'))
+          prov={
+            'schema':'swap5.lare.corichards.q1.reconciled-authority.v1',
+            'scientific_preregistration':'integration/f-rom/LARE_CORICHARDS_Q1_PREREGISTRATION.json',
+            'reduced_members':{
+              'workflow_run':35472116931,
+              'execution_head':'f77946c56440555755e2596e6ed8bf596a766781',
+              'artifacts':{
+                'R4':{'id':10592859643,'digest':'sha256:0afdfa00efe56a0fe96e1794660edbd3ef725d31d04d84000d5e15a76f26e1a4'},
+                'R5':{'id':10593070585,'digest':'sha256:79a030c7e8fb9b428fc2c456482a6f51a87c86d803a6db49b4605421779aa0da'},
+                'R6':{'id':10592649966,'digest':'sha256:589da9483ee172abcab2b72a175d0420066a79525d4c92c31dea1ae2bb8b3246'},
+                'R8':{'id':10593750090,'digest':'sha256:8eada3050ec3017f0de59541f56add17cfc2bc54bc50579c0fc5a7074228df0e'},
+                'R12':{'id':10593435504,'digest':'sha256:20e39128bc2dcfcfe80f878f82a88d92d827793e784ad12f1d94e40bdd6330b8'}
+              }
+            },
+            'R16':{
+              'workflow_run':35472394040,
+              'execution_head':'03c879bb00c32712cbb760a0ba1a6cc90aac8647',
+              'artifact_id':10593042290,
+              'artifact_digest':'sha256:3513365d205c8f0cb483d07578d5659b73102cfd3f3eb5cfeeb5da62f04efe79',
+              'execution_change':'history sharding only; preregistration, R16 grid, solver route, five temporal refinements, O0/O2 checks and analyzer unchanged'
+            },
+            'decision':r['decision'],
+            'Q2_authorized':r['Q2_authorized'],
+            'result_sha256':hashlib.sha256(open('LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_RESULT.json','rb').read()).hexdigest()
+          }
+          open('LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_AUTHORITY.json','w').write(json.dumps(prov,indent=2,sort_keys=True)+'\n')
+          PY
+          sha256sum LARE_CORICHARDS_Q1_RECONCILED/LARE_CORICHARDS_Q1_AUTHORITY.json >> LARE_CORICHARDS_Q1_RECONCILED/sha256.txt
+
+      - name: Upload reconciled Q1 authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-corichards-q1-reconciled
+          path: LARE_CORICHARDS_Q1_RECONCILED/
+          if-no-files-found: error
