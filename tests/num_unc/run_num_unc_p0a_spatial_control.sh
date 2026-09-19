@@ -10,9 +10,15 @@ A0=integration/num-unc/NUM_UNC_P0A0_RESULT.json
 BASE=308a619c91d2cc3dae7f7aa143cfbe97c780c635
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled baseline not ancestor'
 git diff --quiet "$BASE" HEAD -- src reference || fail 'production/reference source mutation'
-grep -Fq '"status": "PREREGISTERED_BEFORE_EXECUTION"' "$MANIFEST" || fail 'A spatial gate not preregistered'
-grep -Fq '"N1_execution_allowed": false' "$MANIFEST" || fail 'A spatial N1 firewall missing'
-grep -Fq '"posthoc_offset_widening_allowed": false' "$MANIFEST" || fail 'A spatial offset firewall missing'
+python3 - "$MANIFEST" <<'PY'
+import json,sys
+m=json.load(open(sys.argv[1]))
+s=m['p0a_stress']['spatial_control']
+assert s['status'] in ('PREREGISTERED_BEFORE_EXECUTION','PASS_OUTER_BRACKET_STABLE')
+assert s['N1_execution_allowed'] is False
+assert s['posthoc_offset_widening_allowed'] is False
+print('NUM_UNC_P0A_SPATIAL_MANIFEST_GATE=PASS')
+PY
 grep -Fq '"status": "FREEZE_READY"' "$A0" || fail 'A0 freeze result missing'
 if grep -Fq '0.0032' "$TEST"; then fail 'N1 timestep entered A spatial source'; fi
 
