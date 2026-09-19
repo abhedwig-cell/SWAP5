@@ -25,4 +25,5 @@ jobs:
       - name: Validate unversioned GMD publication candidate
         env:
           PUB_GC_CANDIDATE_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUB_GC_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: python release/pub-gc-gmd/validate_unversioned_candidate.py
