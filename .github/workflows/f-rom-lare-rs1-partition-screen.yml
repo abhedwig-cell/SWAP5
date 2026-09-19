@@ -1,0 +1,52 @@
+name: F-ROM-LARE RS1 pilot partition replay
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'tests/rom/analyze_lare_rs1_partition_ladder.py'
+      - 'tests/rom/validate_lare_rs1_partition_screen.py'
+      - 'integration/f-rom/LARE_RS1_*'
+      - '.github/workflows/f-rom-lare-rs1-partition-screen.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover frozen historical ROM state artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-rs1/b01 /tmp/lare-rs1/b14
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10561841507/zip" > /tmp/lare-rs1/b01.zip
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10566892886/zip" > /tmp/lare-rs1/b14.zip
+          echo "2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f  /tmp/lare-rs1/b01.zip" | sha256sum -c -
+          echo "12ebef87ead22cac3cda4ed832a4f7e230faf4238936cc760ce3a67e3b7202d9  /tmp/lare-rs1/b14.zip" | sha256sum -c -
+          unzip -q /tmp/lare-rs1/b01.zip -d /tmp/lare-rs1/b01
+          unzip -q /tmp/lare-rs1/b14.zip -d /tmp/lare-rs1/b14
+
+      - name: Recompute exhaustive contiguous partition screen
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_rs1_partition_ladder.py \
+            --b01 /tmp/lare-rs1/b01/o0.txt \
+            --b14 /tmp/lare-rs1/b14/o0.txt \
+            --output /tmp/lare-rs1/generated.json
+
+      - name: Validate persisted pilot result
+        run: |
+          python3 tests/rom/validate_lare_rs1_partition_screen.py \
+            --generated /tmp/lare-rs1/generated.json \
+            --expected integration/f-rom/LARE_RS1_PARTITION_SCREEN_RESULT.json
