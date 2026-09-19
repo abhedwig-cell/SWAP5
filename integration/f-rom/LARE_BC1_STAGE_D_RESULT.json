@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.lare.bc1.stage-d.result.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-D",
+  "decision": "BC1_R16_BOUNDARY_TIME_LEVEL_NOT_DOMINANT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC1_STAGE_D_PREREGISTRATION.json",
+    "workflow_run": 35451077632,
+    "artifact_id": 10587070823,
+    "artifact_digest": "sha256:c06e9f236373b1c9b5164ed6400012d7f96c7b2040a65b94a8d32a9da03045d8",
+    "executed_head": "f11c1048e4ec526371b066a23b8b6a18348b4b19"
+  },
+  "geometry": "R16 16x10cm no-spatial-reduction control",
+  "aggregate": {
+    "CURRENT_LAYER_FACE": {
+      "case_count": 4,
+      "max_abs_layer_storage_error_cm": 0.001960648224072159,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.000034250339284334676,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.0012218406135202642,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.34729505102055125,
+      "bottom_flux_sign_mismatch_count": 1,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 1,
+      "max_abs_water_ledger_cm": 3.7125857943465235e-13
+    },
+    "OBSERVATION_LAGGED_BOTTOM_FACE": {
+      "case_count": 4,
+      "max_abs_layer_storage_error_cm": 0.0020162812812163367,
+      "mean_of_case_mean_abs_layer_storage_error_cm": 0.00002964194343698321,
+      "max_abs_cumulative_bottom_exchange_error_cm": 0.0012619051769400258,
+      "max_abs_interval_bottom_flux_error_cm_per_day": 0.3270280157671772,
+      "bottom_flux_sign_mismatch_count": 1,
+      "reversal_sequence_mismatch_case_count": 0,
+      "max_reversal_step_difference": 1,
+      "max_abs_water_ledger_cm": 4.725109192804666e-13
+    }
+  },
+  "adjudication": {
+    "lagged_noninferior_all_preregistered_components": false,
+    "lagged_strictly_improves_max_cumulative_exchange": false,
+    "lagged_strictly_improves_max_interval_flux": true
+  },
+  "interpretation": [
+    "The Reference-aligned lower-face K time level is not the dominant explanation of the nonzero R16 residual.",
+    "Freezing lower-face K over each observation interval slightly improves the maximum interval-flux error but worsens maximum cumulative exchange and maximum layer-storage error.",
+    "The supported physical BC1 closure therefore remains CURRENT_LAYER_FACE.",
+    "Residual R16 discrepancy may still include interior Reference time-level/operator differences and integration/materialization semantics; it is not assigned to spatial reduction alone."
+  ],
+  "physical_closure_selected": "CURRENT_LAYER_FACE",
+  "lagged_control_promoted_to_physics": false,
+  "application_acceptance_adjudicated": false,
+  "moving_water_table_authorized": false,
+  "production_rom_authorized": false
+}
