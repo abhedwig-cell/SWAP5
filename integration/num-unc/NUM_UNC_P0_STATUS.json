@@ -4,7 +4,7 @@
   "work_unit": "NUM-UNC-P0",
   "baseline": "integration/f-ci-canonical@187e30153c890151768e929170d14bb22af1d86d",
   "branch": "research/num-unc-p0",
-  "status": "P0B0_PREREGISTERED",
+  "status": "P0B0_CLOSED_NO_TRANSITION",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,8 +32,8 @@
   "invariants_affected": [],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "next_action": "Implement N0-only P0B0 prescribed-head exchange-reversal locator exactly as frozen. Do not execute N1 before B-/B0/B+ are persisted.",
-  "recovery_point": "P0C closed threshold-proximity-only; P0B0 root-free exchange-reversal locator preregistered before execution.",
+  "next_action": "Do not expand the P0B0 prescribed-head envelope. Audit repository-held SWAP/crop authority for a provenance-complete Feddes drought-stress parameter profile to unblock Experiment A. If unavailable, NUM-UNC P0 remains unresolved/negative rather than inventing root parameters.",
+  "recovery_point": "P0C closed THRESHOLD_PROXIMITY_ONLY; P0B0 closed NO_TRANSITION_IN_DECLARED_ENVELOPE; Experiment A remains blocked pending Feddes authority.",
   "blockers": [
     "Experiment A is blocked because no provenance-complete qualified active-crop profile with hlim3l,hlim3h,hlim4,adcrl,adcrh was identified in the current qualified chain.",
     "Experiment B is deferred until P0C establishes whether the primary amplification mechanism survives a clean boundary-switching test.",
@@ -47,6 +47,9 @@
     "spatial_output_sha256": "e58e0b3838271a9f9edbb3665ec638dd0bd162b6fc46f730884420b9aaba2ea1",
     "c1_workflow_run_id": 35427844891,
     "c1_output_sha256": "516ced4687ca462e3c13836b403d4155ec3deb0b8a38682c514c9722a7f2ae30",
-    "c1_result_path": "integration/num-unc/NUM_UNC_P0C_C1_RESULT.json"
+    "c1_result_path": "integration/num-unc/NUM_UNC_P0C_C1_RESULT.json",
+    "p0b0_workflow_run_id": 35428092861,
+    "p0b0_output_sha256": "b3e3383f102e5601e03587be3004af143bf72e33d8fa6703d4be50a1eeb2d470",
+    "p0b0_result_path": "integration/num-unc/NUM_UNC_P0B0_RESULT.json"
   }
 }
