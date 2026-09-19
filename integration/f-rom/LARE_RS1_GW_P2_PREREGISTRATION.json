@@ -194,5 +194,17 @@
     "NO_LARE_CLOSURE_FIT_IN_P2",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_comparator_clarification": {
+    "before_first_formal_P2_response_execution": true,
+    "reason": "Make the response-blind relative state-information gate operational without advantaging higher-dimensional uniform controls.",
+    "primary_uniform_comparator_rule": "For each selected nonuniform candidate, use the smallest-dimensional preregistered uniform control whose state dimension is greater than or equal to the candidate dimension.",
+    "secondary_uniform_controls": "All larger preregistered uniform controls are reported as stricter diagnostics but do not replace the primary matched/next-higher comparator.",
+    "expected_mapping_if_P1_selects_D2_D3_D4": {
+      "D2": "U4",
+      "D3": "U4",
+      "D4": "U4"
+    },
+    "scientific_effect": "None on candidate selection, frozen pair selection, probes or thresholds; no formal P2 future response has been executed."
+  }
 }
