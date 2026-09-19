@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.lare.dyn0a.rl1.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-RL1",
+  "decision": "RESOLUTION_CONVERGENCE_CLEAR",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json",
+    "workflow_run": 35448293978,
+    "artifact_id": 10586072322,
+    "artifact_digest": "sha256:9e28f91363fec4a1a29f6af9d645573b4b01fe6edccf4935617586ccf667aabd",
+    "executed_head": "5ac7a6f6a58157337d745d6c25900726fc0e3824",
+    "conclusion": "success",
+    "exact_result_sha256": "08a2bb212e8e71074dc834aefbba87fb29758e0f5e00970bc74bf4a9c83a2afe"
+  },
+  "critical_Se095_DRY_curve": [
+    {
+      "member": "R3",
+      "dimension": 3,
+      "long_layer_cm": 140,
+      "max_common_band_error_cm": 2.452332276685631,
+      "max_common_band_error_mm": 24.52332276685631
+    },
+    {
+      "member": "R4",
+      "dimension": 4,
+      "long_layer_cm": 130,
+      "max_common_band_error_cm": 0.6877291124718212,
+      "max_common_band_error_mm": 6.877291124718212
+    },
+    {
+      "member": "R5",
+      "dimension": 5,
+      "long_layer_cm": 120,
+      "max_common_band_error_cm": 0.174283577975757,
+      "max_common_band_error_mm": 1.74283577975757
+    },
+    {
+      "member": "R6",
+      "dimension": 6,
+      "long_layer_cm": 110,
+      "max_common_band_error_cm": 0.1105792169697466,
+      "max_common_band_error_mm": 1.105792169697466
+    },
+    {
+      "member": "R8",
+      "dimension": 8,
+      "long_layer_cm": 90,
+      "max_common_band_error_cm": 0.08031871185790607,
+      "max_common_band_error_mm": 0.8031871185790607
+    },
+    {
+      "member": "R12",
+      "dimension": 12,
+      "long_layer_cm": 50,
+      "max_common_band_error_cm": 0.028789551084429377,
+      "max_common_band_error_mm": 0.28789551084429377
+    },
+    {
+      "member": "R16",
+      "dimension": 16,
+      "long_layer_cm": 10,
+      "max_common_band_error_cm": 0.0012684125483701791,
+      "max_common_band_error_mm": 0.012684125483701791
+    }
+  ],
+  "aggregate_max_dynamic_error_cm": {
+    "R3": 2.452332276685631,
+    "R4": 0.6877291124718212,
+    "R5": 0.174283577975757,
+    "R6": 0.1105792169697466,
+    "R8": 0.08031871185790607,
+    "R12": 0.028789551084429377,
+    "R16": 0.0012684125483701791
+  },
+  "long_layer_interface_flux_rms_dynamic_all_cm_per_day": {
+    "R3": 0.4835602374717202,
+    "R4": 0.22076566563068067,
+    "R5": 0.13917327789228717,
+    "R6": 0.12785730477075588,
+    "R8": 0.13691832297773485,
+    "R12": 0.15122170511142233,
+    "R16": 1.1568862611846297e-14
+  },
+  "adjacent_resolution_checks": {
+    "all_pairs_noninferior_on_max_and_mean_storage_error": true,
+    "all_pairs_have_strict_improvement_in_all_7_common_dynamic_cases": true
+  },
+  "scientific_interpretation": [
+    "Standard LARE storage fidelity improves monotonically along the nested state-resolution ladder on every adjacent common dynamic cohort.",
+    "The critical Se0=0.95 DRY error falls rapidly from R3 to R5, but remains non-negligible until relatively high state dimension; no application-specific acceptable dimension is inferred.",
+    "The projected long-interface flux RMS is not monotonically decreasing from R6 through R12 even while integrated storage fidelity continues to improve, so a single instantaneous interface-flux metric is not sufficient to define the state-count operating point.",
+    "R16 nearly recovers the fine-grid interface operator because its layers coincide with the 10-cm Reference cells; R16 is a no-spatial-reduction control, not a ROM.",
+    "The result supports resolution convergence but does not by itself establish efficient reduction by the standard LARE closure."
+  ],
+  "next_question": "Use MECH2B blind transfer to test whether the B01 diffusion-length explanation is material-general; if it fails, replace the initial-state local-diffusivity scaling hypothesis rather than choosing an RL1 elbow post hoc.",
+  "application_acceptance_adjudicated": false,
+  "speed_claim": false,
+  "production_rom_authorized": false
+}
