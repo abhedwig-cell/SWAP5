@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.f-romv2-d24.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D24",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d24-native-rainfall-groundwater",
+    "pull_request": 472,
+    "pull_request_merged": false,
+    "head": "0d7abc3acc374dbe6192baaca471f545caa103c3",
+    "preflight_workflow_run": 35467798461,
+    "primary_workflow_run": 35471764440,
+    "primary_workflow_job": 105973868867,
+    "artifact_id": 10591979922,
+    "artifact_digest": "sha256:2c53b47c03ab3adf26419c169447f708daa5d5197fdedb29dd715c827a9d98cd",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "3fe9b67722aa82aa62f8c55dc1a10df399b61816",
+    "preflight_result_sha256": "3ce11796b509209361e114476d5583e005c89e16eebdf4d8da1637f7217e3acd",
+    "preflight_stdout_sha256": "4d08a695b37b2f13b35db1bfada9faccf60625016d304f38e549b8936b8b0746",
+    "result_sha256": "649dd06a588972c382634e8d7247e196a78409f4d590d675469b3ba01fca9ede",
+    "analyzer_stdout_sha256": "d8346b42ce4ec4a41b267afed03683a3b7e97a94ff139c6b0177e086f84668fa",
+    "R16_o0_o2_sha256": "c0571d38427e4122a6376afb9f24aa6a1c625b2ba2524f81542c5dca3bb0c826",
+    "R2_o0_o2_sha256": "a1fec425c91e5131bccb53874ed4f8d82c65a62d8e8e3a6b901806b710e20748"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D24_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D24_RESULT.json",
+    "integration/f-rom/F-ROMV2_D24_STATUS.json",
+    "integration/f-rom/F-ROMV2_D24_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D24_NATIVE_RAIN_GROUNDWATER_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d24_native_rain_gw.py",
+    "tests/rom/test_f_romv2_d24_native_rain_gw_comparators.f90",
+    "tests/rom/analyze_f_romv2_d24_native_rain_gw.py",
+    "tests/rom/run_f_romv2_d24_native_rain_gw.sh",
+    ".github/workflows/f-romv2-d24-native-rain-gw.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_retuning": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}
