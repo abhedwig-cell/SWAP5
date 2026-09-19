@@ -1,0 +1,55 @@
+name: F-ROM-LARE persist BC2-B3 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b3-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact BC2-B3 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b3-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587770272/zip" > /tmp/lare-bc2-b3-persist/b3.zip
+          echo "097d9d199a6554e3bfb520fa750bc3061ff8b0fd9f938115b526b0713faad74c  /tmp/lare-bc2-b3-persist/b3.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b3-persist/b3.zip -d /tmp/lare-bc2-b3-persist
+
+      - name: Validate and persist BC2-B3
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b3-persist/LARE_BC2_B3_RESULT.json'))
+          assert r['decision']=='BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR'
+          assert r['hard_checks']['max_reference_q90_identity_residual_cm_per_day'] <= 1e-10
+          assert r['standard_face_consistency']['qH_consistently_larger_error'] is True
+          assert r['operator_ordering_relative_to_STANDARD_B0']['RESIDUAL_ONLY_B2']['q90']['WATER_TABLE_RISING']=='BETTER'
+          assert r['operator_ordering_relative_to_STANDARD_B0']['RESIDUAL_ONLY_B2']['q90']['WATER_TABLE_FALLING']=='BETTER'
+          assert r['operator_ordering_relative_to_STANDARD_B0']['RESIDUAL_ONLY_B2']['qH']['WATER_TABLE_RISING']=='BETTER'
+          assert r['operator_ordering_relative_to_STANDARD_B0']['RESIDUAL_ONLY_B2']['qH']['WATER_TABLE_FALLING']=='WORSE_OR_MIXED'
+          assert r['next_model_change_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B3_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b3-persist/LARE_BC2_B3_RESULT.json integration/f-rom/LARE_BC2_B3_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B3_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B3 operator attribution"
+          git push origin HEAD:work/f-rom-lare-rs1
