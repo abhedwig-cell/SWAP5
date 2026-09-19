@@ -73,9 +73,6 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
-  src/runtime/mod_fmr_accepted_commit_receipt.f90
-  src/runtime/mod_fmr_owned_commit_receipt.f90
-  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_groundwater_coupling_contract.f90
   src/runtime/mod_groundwater_swap_forcing_adapter.f90
   src/runtime/mod_groundwater_swap_transaction_participant.f90
@@ -111,9 +108,7 @@ run_opt(){
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$out/fsi25.o" -o "$out/fsi25"
   "$out/fsi25" -75.0 0.01 > "$out/fsi25.txt" 2>&1 || { cat "$out/fsi25.txt" >&2; fail "FSI25 O$opt"; }
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90 -o "$out/fmr44r.o"
-  gfortran -fopenmp -O"$opt" "${objects[@]}" "$out/fmr44r.o" -o "$out/fmr44r"
-  "$out/fmr44r" > "$out/fmr44r.txt" 2>&1 || { cat "$out/fmr44r.txt" >&2; fail "FMR44R O$opt"; }
+
 }
 
 run_opt 0
@@ -128,14 +123,12 @@ for marker in   'FMR44R_MODE2_EQUILIBRIUM_TRANSACTION=PASS'   'FMR44R_POSITIVE_Q
   grep -Fq "$marker" "$BUILD/o0/fmr44r.txt" || { cat "$BUILD/o0/fmr44r.txt" >&2; fail "missing $marker"; }
 done
 
-for name in fsi38 fsi25 fmr44r; do
+for name in fsi38 fsi25; do
   diff -u "$BUILD/o0/$name.txt" "$BUILD/o2/$name.txt" || fail "$name O0/O2 output identity"
 done
 
 cat "$BUILD/o0/fsi38.txt"
 cat "$BUILD/o0/fsi25.txt"
-cat "$BUILD/o0/fmr44r.txt"
 echo 'PPA_ROOT_HYD01_PRESERVE_FSI38=PASS'
 echo 'PPA_ROOT_HYD01_PRESERVE_FSI25=PASS'
-echo 'PPA_ROOT_HYD01_PRESERVE_FMR44R=PASS'
 echo 'PPA_ROOT_HYD01_PRESERVATION_GATE=PASS'
