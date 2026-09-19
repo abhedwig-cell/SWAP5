@@ -1,17 +1,17 @@
 {
   "schema": "pub-gc-e7-current-canonical-preservation-v1",
   "date": "2026-09-19",
-  "canonical_head_at_reconcile": "3bc160ad6b73f8f491b07671ec747cf2b2bc3074",
+  "canonical_head_at_reconcile": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
   "e7": {
     "canonical_admission_pr": 330,
     "canonical_admission_merge": "8d78c305d12939bb061bbcb248b8a33730494f34",
     "stale_cleanup_pr": 332,
     "stale_cleanup_merge": "c739026e6f4e8b2fccc22aed3149259206dc6bd1",
     "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
-    "result_blob": "d732eeb1079dc10667da2b8d500e1aa139d7eb4d",
+    "result_blob": "048dde3557110c3b819003e7de0e60ff6c68ddfc",
     "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
     "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
-    "application_requirements_blob": "19836cf8b90b4ec256198d8f7345ddc0c5cf8397"
+    "application_requirements_blob": "e0589cb5903c03ecb53e005a2451ceb80ec5dee2"
   },
   "current_production_boundary": {
     "bootstrap_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -143,7 +143,7 @@
   "reopen_rule": "Do not reopen E7. A future canonically admitted process-complete prescribed-head owner would define a new prospective realistic coupling experiment; it would not retroactively alter the closed E7 disposition.",
   "post_relevant_production_live_delta": {
     "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-    "head": "3bc160ad6b73f8f491b07671ec747cf2b2bc3074",
+    "head": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
     "changed_scope": [
       "docs/science/F-ROMV2_*",
       "integration/f-rom/**",
@@ -159,6 +159,6 @@
       "restart_state": "ddcb880dbdbf1d6b41c8721f931df9a2c8bc121a",
       "restricted_surface_evaporation": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
     },
-    "reason": "No production/reference, coupling, Hupsel authority or PUB-GC scientific asset changed after PPA-WU04-B. The latest canonical delta through F-ROMV2-D17 is evidence-only F-ROMV2/TRACE/F-DOC work plus ROM tests."
+    "reason": "No production/reference, coupling, Hupsel authority or PUB-GC scientific asset changed after PPA-WU04-B. The latest canonical delta through F-ROMV2-D18 is evidence-only F-ROMV2/TRACE/F-DOC work plus ROM tests."
   }
 }
