@@ -122,7 +122,7 @@ A future production capability that admits active drainage and the required Hups
 
 ## Current-canonical reconciliation
 
-Current canonical basis for this closeout: `integration/f-ci-canonical@f3a82d8f303ea371fed4b52ee47b89928cf945cf`.
+Current canonical basis for this closeout: `integration/f-ci-canonical@e6f7a98b8e4b4e5f7be67f231adf73a1d0b3e382`.
 
 The decisive production boundary is unchanged:
 
@@ -134,6 +134,6 @@ The decisive production boundary is unchanged:
 - PPA-WU04-A admits the bounded SWREDU=1 Black evaporation slice, but does not admit Black evaporation under mode 5 and does not alter the root/drainage guards.
 - PPA-WU04-B admits the bounded SWREDU=2 Boesten-Stroosnijder evaporation slice, but likewise rejects mode-5 Boesten composition and leaves the root/drainage guards unchanged.
 
-The current production-bootstrap blob is `356b3825a8ba13af1fed385ab17ffdb330b1058f`. Therefore the authentic Hupsel root/drainage composition is still outside the admitted prescribed-head participant domain.
+The current production-bootstrap blob is `356b3825a8ba13af1fed385ab17ffdb330b1058f`. Canonical work after PPA-WU04-B through the inspected head is confined to ROM/TRACE/F-DOC evidence and ROM tests; the relevant production postimages are unchanged. Therefore the authentic Hupsel root/drainage composition is still outside the admitted prescribed-head participant domain.
 
 E7 remains `REALISTIC_COMPONENT_DOMAIN_LIMIT`. A future process-complete prescribed-head owner would define a new prospective experiment; it does not turn the closed E7 result into unfinished work.
