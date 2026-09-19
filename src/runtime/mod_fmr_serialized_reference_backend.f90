@@ -1466,7 +1466,7 @@ contains
             forcing%black_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
         if (forcing%black_evaporation%wetting_reset_event) then
           if (.not. ieee_is_finite(forcing%black_evaporation%wetting_event_time)) return
-          if (forcing%black_evaporation%wetting_event_time > interval%t0) return
+          if (.not. same_real_bits(forcing%black_evaporation%wetting_event_time, interval%t0)) return
         end if
         self%black_evaporation_forcing = forcing%black_evaporation
       else
