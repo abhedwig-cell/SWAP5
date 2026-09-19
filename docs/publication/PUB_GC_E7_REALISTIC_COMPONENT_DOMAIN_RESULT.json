@@ -48,7 +48,7 @@
     "failure_stage": "tile_config_valid before owner-state allocation",
     "failure_status": "FMR_APP_BOOT_PROFILE_NOT_ADMITTED",
     "source_blob_current_canonical": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
-    "current_canonical_basis": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+    "current_canonical_basis": "831d1d000899422099eaa702870c3c22a4b8bb7d",
     "current_guard_status": "PRESERVED_ACTIVE_ROOT_AND_DRAINAGE_FAIL_CLOSED"
   },
   "later_application_composition": {
@@ -101,6 +101,21 @@
       "production_source_change": false,
       "stage0_authorized": false,
       "effect_on_e7": "NONE; research-only prescribed-root feasibility is not process-complete mode-5 Hupsel application admission"
+    },
+    "hydro_memory_acc02_f2": {
+      "canonical_merge": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+      "result_path": "integration/research/HYDRO_MEMORY_ACC02_F2_RESULT.json",
+      "result_blob": "757760b6d89c0c48583b9b92a10ea5eb07520772",
+      "preregistration_path": "integration/research/HYDRO_MEMORY_ACC02_F2_PREREGISTRATION.json",
+      "preregistration_blob": "c513fa4c4af275b214c5b7ba97c3d5fff2206dae",
+      "support_bridge": "tests/research/support/mod_hydro_memory_acc02_f2_bridge.f90",
+      "support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c",
+      "root_active": true,
+      "drainage_active": false,
+      "production_source_change": false,
+      "reference_source_change": false,
+      "stage0_authorized": false,
+      "effect_on_e7": "NONE; repeated research-only prescribed-root feasibility is not process-complete mode-5 Hupsel application admission"
     }
   },
   "active_drainage_precedent": {
@@ -155,19 +170,19 @@
   ],
   "disposition": "Close E7 as the preregistered realistic component-domain outcome. Do not widen production physics, disable drainage, replace dates, retune tolerances or launch another synthetic search merely to obtain a positive loose-versus-strong trajectory.",
   "canonical_reconciliation": {
-    "current_canonical": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+    "current_canonical": "831d1d000899422099eaa702870c3c22a4b8bb7d",
     "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
     "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
     "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
     "ppa_root_hyd02_result_blob": "5ac799921574082731180356a23f7e983585800b",
     "ppa_wu04a_status_blob": "75674d84b5eb4d17ae92d7e25696957630fe7fd0",
     "effect_on_e7": "NONE",
-    "reason": "Current canonical still requires homogeneous bottom_mode=5 for the production groundwater owner and tile_config_valid rejects drainage_response_active/root_extraction_active before owner-state allocation. PPA-WU02/WU03, PPA-ROOT-HYD01/HYD02, PPA-WU04-A/B and HYDRO-MEMORY ACC02-F1 do not admit the authentic Hupsel root+drainage mode-5 production process composition. ACC02-F1 is research-only prescribed-root coupling evidence with drainage inactive and no production source mutation.",
+    "reason": "Current canonical still requires homogeneous bottom_mode=5 for the production groundwater owner and tile_config_valid rejects drainage_response_active/root_extraction_active before owner-state allocation. PPA-WU02/WU03, PPA-ROOT-HYD01/HYD02, PPA-WU04-A/B and HYDRO-MEMORY ACC02-F1/F2 do not admit the authentic Hupsel root+drainage mode-5 production process composition. ACC02-F1/F2 are research-only prescribed-root coupling evidence with drainage inactive and no production/reference source mutation.",
     "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
     "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
     "post_wu04b_live_delta": {
       "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
-      "head": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+      "head": "831d1d000899422099eaa702870c3c22a4b8bb7d",
       "classification": "NO_E7_PRODUCTION_OWNER_EFFECT",
       "paths": [
         "docs/science/F-ROMV2_*",
@@ -179,7 +194,7 @@
         "integration/research/HYDRO_MEMORY_ACC0*",
         "tests/research/**"
       ],
-      "reason": "ACC02-F1 adds live root-active coupling evidence through a research support bridge only. Its preregistration/result explicitly preserve production/reference source, the bridge has root extraction active but drainage response inactive, and the current production bootstrap remains unchanged and fail-closed for root/drainage mode-5 application composition."
+      "reason": "ACC02-F1/F2 add live prescribed-root research coupling evidence through tests/research support bridges only. Their preregistrations preserve production/reference source, both keep drainage response inactive, and the current production bootstrap remains unchanged and fail-closed for root/drainage mode-5 application composition."
     }
   }
 }
