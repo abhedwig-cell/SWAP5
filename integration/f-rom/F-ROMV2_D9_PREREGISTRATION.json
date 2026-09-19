@@ -1,0 +1,242 @@
+{
+  "schema": "swap5.f-romv2-d9.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D9",
+  "title": "Literature-bound He-Hantush two-layer integrated Richards comparator",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "2a18ecbd884b85f064847ccac4c400f1cf4ad351",
+  "purpose": "Test whether the published first-order, layer-averaged two-layer Richards formulation of He et al. (2021), adapted only at the fixed-depth prescribed-pressure lower boundary by retaining its pre-water-table Darcy/Taylor equations, provides a stronger B01 cost-fidelity candidate than the clean-sheet D5-D8 reductions and the R2 coarse-Richards comparator.",
+  "literature_authority": {
+    "primary": {
+      "citation": "He, J., Hantush, M.M., Kalin, L., Rezaeianzadeh, M., Isik, S. (2021). A two-layer numerical model of soil moisture dynamics: Model development. Journal of Hydrology 602, 126797.",
+      "doi": "10.1016/j.jhydrol.2021.126797",
+      "equations_used": [
+        7,
+        9,
+        17,
+        18,
+        23,
+        24,
+        28,
+        30,
+        37,
+        38,
+        39,
+        40,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "documented_corrector_tolerance_theta": 0.0001
+    },
+    "assessment": {
+      "citation": "He, J., Hantush, M.M., Kalin, L., Isik, S. (2022). Two-Layer numerical model of soil moisture dynamics: Model assessment and Bayesian uncertainty estimation. Journal of Hydrology 613, 128327.",
+      "doi": "10.1016/j.jhydrol.2022.128327",
+      "role": "external evidence on strengths, limitations and layer-thickness sensitivity; not calibration authority for B01"
+    }
+  },
+  "scientific_role": {
+    "class": "LITERATURE_BOUND_DEVELOPMENT_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false,
+    "statement": "D9 evaluates an existing published reduction before inventing a new custom state/segmentation architecture."
+  },
+  "predecessor_evidence": {
+    "D5": "Two dynamic layer averages with harmonic-conductivity instantaneous Darcy closure are robust but dominated by R2.",
+    "D7": "One-state quasi-steady profile manifold is robust but dominated by R2.",
+    "D8": "Two dynamic quasi-steady composite segments improve monotonically over D5/D7, especially upper-zone storage, but remain dominated by R2; lower-zone exchange remains limiting.",
+    "implication": "A published first-order integrated-Richards closure must be tested before a custom QS3 or lag state is justified."
+  },
+  "scope": {
+    "material": "B01",
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "blind_confirmation": false,
+    "total_depth_H_cm": 160,
+    "upper_layer_h_cm": 80,
+    "lower_layer_thickness_cm": 80,
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "root_uptake_sink": "zero in D9 hydraulic discriminator"
+  },
+  "constitutive_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "lambda_Mualem": 0.98087,
+    "pressure_variable": "psi = -h > 0 for unsaturated pressure head h<0"
+  },
+  "state": {
+    "id": "HE2021_FD80X80",
+    "dynamic_state": [
+      "theta_bar_1_upper_0_80",
+      "theta_bar_2_lower_80_160"
+    ],
+    "state_dimension": 2,
+    "storage_mapping": [
+      "S_upper=80*theta_bar_1",
+      "S_lower=80*theta_bar_2"
+    ],
+    "training_required": false,
+    "calibration_required": false,
+    "fallback_to_Richards": false,
+    "clipping_allowed": false,
+    "adaptive_dynamic_substepping": false,
+    "hidden_mass_correction": false
+  },
+  "exact_published_core": {
+    "beta": "(H-h)/H = 0.5",
+    "Kbar_i": "K(theta_bar_i), as the paper's first-order approximation to layer-average K",
+    "psibar_i": "psi(theta_bar_i), as used by the published layer-average constitutive closure",
+    "q_interface": "q1 = (2/H)*(beta*Kbar1+(1-beta)*Kbar2)*(psibar2-psibar1) + beta*Kbar1+(1-beta)*Kbar2",
+    "balances": [
+      "h*dtheta1/dt = q0-q1, with sink zero",
+      "(H-h)*dtheta2/dt = q1-q2 because H is fixed in the D9 SWAP comparator"
+    ],
+    "sign_convention": "q positive downward"
+  },
+  "lower_boundary": {
+    "prescribed_flux": {
+      "rule": "q2 equals the declared downward-positive physical bottom flux",
+      "publication_relation": "compatible with the ODE balance; no extra closure needed"
+    },
+    "prescribed_pressure_head": {
+      "SWAP_input": "negative pressure head h_b",
+      "transform": "psi_b=-h_b",
+      "derivation": "Retain published Eq. 28 q=K*dpsi/dz+K and Eq. 30 dpsi/dz≈2*(psi_b-psibar2)/(H-h), but do not apply the water-table-only Eq. 29 specialization K_b=Ks.",
+      "K_bottom": "K(theta(psi_b)) from the same B01 Van Genuchten/Mualem law",
+      "q2": "K_bottom * ( 2*(psi_b-psibar2)/(H-h) + 1 )",
+      "boundary_label": "DIRECT_FIRST_ORDER_FIXED_DEPTH_PRESSURE_EXTENSION_OF_PUBLISHED_DERIVATION",
+      "claim_boundary": "This pressure-boundary expression is literature-derived but was not the zero-pressure water-table special case used in the paper's main validation."
+    }
+  },
+  "top_boundary": {
+    "rule": "q0 is the externally declared downward-positive forcing flux from the frozen B01 workload.",
+    "no_infiltration_capacity_or_ET_submodel": "D9 isolates the unsaturated-zone reduction; no new surface or ET physics is introduced."
+  },
+  "time_integration": {
+    "method": "published iterative Heun predictor-corrector",
+    "predictor": "theta_i^0 = theta_i^j + f_i(theta^j)*dt",
+    "corrector": "theta_i^(j+1,p) = theta_i^j + 0.5*(f_i(theta^j)+f_i(theta^(j+1,p-1)))*dt",
+    "convergence": "absolute change in each layer-average theta <= 0.0001, matching the published model-evaluation setting",
+    "epsilon_theta": 0.0001,
+    "maximum_corrector_iterations": 100,
+    "maximum_iteration_role": "execution safety only; failure at 100 is fail-closed and does not authorize tolerance or timestep retuning",
+    "internal_dynamic_substeps": 1,
+    "boundary_forcing_within_interval": "piecewise constant",
+    "hard_total_transaction_mass_gate_cm": 1e-12
+  },
+  "seed": {
+    "initial_effective_saturation": 0.85,
+    "theta1_equals_theta2": true,
+    "initial_q": "K(theta0)",
+    "initial_bottom_pressure_head": "h(theta0) for equilibrium control when pressure mode is used",
+    "seed_rule": "two intervals using the same iterative Heun scheme and equilibrium prescribed top/bottom flux; any drift and mass residual are reported"
+  },
+  "integrity": [
+    "theta_r < theta_bar_i < theta_s for both layers at every published state and every corrector iterate used for flux evaluation",
+    "all psi, K and fluxes finite",
+    "Heun corrector converges within 100 iterations",
+    "absolute total transaction mass residual <=1e-12 cm",
+    "no clipping, fallback, adaptive substeps or hidden correction"
+  ],
+  "hydrological_metrics": [
+    "total storage error",
+    "upper 0-80 storage error",
+    "lower 80-160 storage error",
+    "cumulative bottom exchange error",
+    "terminal bottom flux magnitude error",
+    "bottom flux sign error count",
+    "reversal-sequence mismatch",
+    "systematic history bias",
+    "corrector iteration count",
+    "physical/integrity failure count"
+  ],
+  "comparators": {
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "QS2_D8": {
+      "total_storage_rmse_cm": 0.04407019187823081,
+      "cumulative_bottom_exchange_rmse_cm": 0.04407019187823241,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.1804460282470153,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "QS1_D7": {
+      "total_storage_rmse_cm": 0.04733753360033441,
+      "cumulative_bottom_exchange_rmse_cm": 0.04733753360033365,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.344448287196304
+    },
+    "L2_IMC_D5": {
+      "total_storage_rmse_cm": 0.05164492935964347,
+      "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933
+    }
+  },
+  "decision_logic": {
+    "positive": "HE2021_FIXED_DEPTH_REMAINS_SERIOUS_PHYSICAL_REDUCTION_CANDIDATE",
+    "negative": "HE2021_FIXED_DEPTH_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+    "positive_rule": [
+      "all 12 histories complete with integrity",
+      "and balance view beats/equal R2 on both total-storage and cumulative-bottom-exchange RMSE",
+      "or transient view beats/equal R2 on bottom-flux RMSE and sign-error count"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "purpose_dependent_boundary": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "D9 can retain a literature-bound architecture candidate only; no application acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "May remain candidate if lower-boundary behavior is competitive; live coupling remains separate.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "successor_logic": {
+    "if_positive": "Retain the literature-bound model for later purpose-specific validation and same-runtime cost-fidelity qualification before inventing a custom successor.",
+    "if_negative": "Close the faithful first-order two-layer family for the exposed B01 hydraulic problem; only then consider a custom third lower-zone segment, higher-order correction, or explicit lag state.",
+    "if_integrity_fails": "Close D9 without changing epsilon, time step, layer split or boundary formula."
+  },
+  "firewalls": [
+    "NO_TRAJECTORY_TRAINING",
+    "NO_PARAMETER_CALIBRATION",
+    "NO_POST_RESULT_HEUN_TOLERANCE_RETUNING",
+    "NO_POST_RESULT_LAYER_SPLIT_RETUNING",
+    "NO_POST_RESULT_BOUNDARY_FORMULA_RETUNING",
+    "NO_CLIPPING",
+    "NO_ADAPTIVE_DYNAMIC_SUBSTEPS",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
