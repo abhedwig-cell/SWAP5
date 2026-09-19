@@ -251,7 +251,7 @@
     ],
     "authoritative_c0_result": "integration/num-unc/NUM_UNC_P0C_C0_RESULT_R1.json",
     "spatial_control": {
-      "status": "PREREGISTERED_BEFORE_EXECUTION",
+      "status": "PASS_OUTER_BRACKET_STABLE",
       "grid": {
         "cells": 32,
         "cell_thickness_cm": 5,
@@ -271,7 +271,49 @@
         }
       ],
       "C_zero_is_gate": false,
-      "posthoc_offset_widening_allowed": false
+      "posthoc_offset_widening_allowed": false,
+      "result_path": "integration/num-unc/NUM_UNC_P0C_SPATIAL_RESULT.json"
+    },
+    "c1": {
+      "status": "PREREGISTERED_BEFORE_N1_EXECUTION",
+      "cases": {
+        "C_minus": 1.000634765625,
+        "C_zero": 1.11181640625,
+        "C_plus": 1.2229980468750001
+      },
+      "N0_dt_day": 0.0064,
+      "N1_dt_day": 0.0032,
+      "common_forcing_block_day": 0.0064,
+      "N1_substeps_per_forcing_block": 2,
+      "C_zero_pre_blocks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "C_zero_post_blocks": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "primary_inference": "ANY_ACCEPTED_ENDPOINT_PONDING_GT_1E-10_CM",
+      "primary_divergence_metric": "THETA_RMS_AT_COMMON_BLOCK_ENDPOINTS",
+      "no_switch_floor_case": "C_minus",
+      "representation_floor_formula": "1024*epsilon(1.0_real64)",
+      "amplification_ratio_min": 4,
+      "post_vs_Cminus_floor_multiplier_min": 2,
+      "outer_controls_must_retain_inference": true,
+      "posthoc_case_relocation_allowed": false,
+      "posthoc_floor_substitution_allowed": false
     }
   }
 }
