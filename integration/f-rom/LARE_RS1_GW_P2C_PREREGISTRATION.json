@@ -120,5 +120,13 @@
     "NO_LARE_DYNAMICS",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_alias_clarification": {
+    "before_first_P2C_cross_pair_response_analysis": true,
+    "full_state_diagnostic_filter": "full 16-cell theta L_inf > diagnostic_floor",
+    "primary_alias_definition": "full-state-diagnostic pair AND candidate reduced-state L_inf <= radius_multiplier * diagnostic_floor",
+    "full_state_near_identical_pairs": "reported separately as a baseline and excluded from reduction-induced alias response summaries",
+    "rationale": "Preserves the formal P1 distinction between intrinsic Reference-scale state indistinguishability and information loss introduced by projection.",
+    "scientific_effect": "No pair is selected or excluded using future response; the rule depends only on already frozen full and reduced state geometry."
+  }
 }
