@@ -5,7 +5,7 @@
 **E7_CURRENT_CANONICAL_PRESERVED**
 
 Reconcile date: 2026-09-19.  
-Canonical head inspected: `1c6506d2bc223e4992e0f0b250568f43bb4a5829`.
+Canonical head inspected: `67dcbd5252ec6aab465329c55e427f535ce47f02`.
 
 E7 was canonically admitted by PR #330 as:
 
@@ -50,8 +50,10 @@ Current bootstrap blob:
 | PPA-WU04 | scientific transaction authority frozen / closed | review-only; no production source mutation or admission | unchanged |
 | PPA-WU05 | dependency-graph authority frozen / closed | review-only; no production source mutation | unchanged |
 | PPA-WU05-A | canonically admitted review authority | no production source mutation; production implementation explicitly held | unchanged |
+| PPA-LOW02-TIME | canonical admitted / closed | adds the B1.11 SWBOTB=2 time law and dry continuation inside the typed `bottom_mode=2` serialized Reference application; explicitly no new groundwater-coupling semantics | unchanged |
+| PPA-WU05-C | canonical review authority / closed | oxygen-stress source/state/owner decomposition only; zero production source mutation and no production admission | unchanged |
 
-None admits active Hupsel drainage or root extraction under the prescribed-head groundwater owner.
+None admits active Hupsel drainage or root extraction under the prescribed-head groundwater owner. The current production bootstrap remains byte-identical to the earlier preservation point (`135803e056697a20aa3295721b02c77aba22367a`); the later LOW02-TIME production mutation is confined to `mod_fmr_serialized_reference_backend.f90` and the homogeneous mode-2 application.
 
 ## Scientific consequence
 
