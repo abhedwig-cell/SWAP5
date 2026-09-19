@@ -1,0 +1,86 @@
+{
+  "adjudication": {
+    "cross_material_rom_authorized": false,
+    "direct_rossfast_and_coarse_richards_comparator_stage_executed": false,
+    "neural_architecture_escalation_authorized": false,
+    "post_result_ood_retuning_authorized": false,
+    "production_rom_authorized": false,
+    "reason_comparator_stage_not_executed": "PREREGISTERED_SCIENTIFIC_EARLY_KILL",
+    "scientific_pre_screen_passed": false
+  },
+  "data_authority": {
+    "accepted_states": 768,
+    "artifact_digest": "sha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f",
+    "artifact_id": 10561841507,
+    "raw_stdout_sha256": "f1ea53496cd08cbadf1ceaad46c78d83a0767957fd9de676c88c51162346a1e0",
+    "workflow_run": 35379176697
+  },
+  "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+  "discovery_leave_one_history_out_diagnostic": {
+    "D01": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 149535243223.24826, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 9.939863030750118e-05, "max_abs_total_storage_error_cm": 7.951980762754829e-08},
+    "D02": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 149122613525.90207, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 1.0770018277206361e-06, "max_abs_total_storage_error_cm": 8.61149374031811e-10},
+    "D03": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 116006931390.06572, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 0.3692062150281177, "max_abs_total_storage_error_cm": 0.00029536498011850654},
+    "D04": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 311276922648.55585, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 1.240664159301184, "max_abs_total_storage_error_cm": 0.0009925314826375597},
+    "D05": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 149145430509.28363, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 2.2363209906117731e-07, "max_abs_total_storage_error_cm": 1.7287504761043238e-10},
+    "D06": {"bottom_flux_sign_mismatch_count": 0, "design_condition_number": 183719602786.8472, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 1.5230447727778298, "max_abs_total_storage_error_cm": 0.0012184358497719927},
+    "D07": {"bottom_flux_sign_mismatch_count": 16, "design_condition_number": 1498542466582792.8, "invalid_reconstructed_state_count": 0, "max_abs_bottom_flux_error_cm_per_day": 535.1653191918798, "max_abs_total_storage_error_cm": 0.4281322553567293},
+    "D08": {"bottom_flux_sign_mismatch_count": 16, "design_condition_number": 4.827796278920526e+16, "invalid_reconstructed_state_count": 16, "max_abs_bottom_flux_error_cm_per_day": 640317.3143819616, "max_abs_total_storage_error_cm": 512.2538515056975}
+  },
+  "early_kill_triggers": {
+    "flow_reversal_timing_error_gt_one_step": true,
+    "nonfinite_or_invalid_in_domain_reduced_transition": true,
+    "structural_mass_gate_failure": false,
+    "wrong_nonzero_bottom_flux_sign_in_domain": true
+  },
+  "fit": {
+    "design_condition_number": 149233614574.55634,
+    "design_rank": 40,
+    "feature_count": 40,
+    "interpretation": "Full-rank but severely ill-conditioned discovery design; held-out conclusions remain governed by the frozen model and may not be repaired by post-result regularization.",
+    "training_max_abs_errors": {
+      "bottom_outward_exchange_cm": 0.0004990992419486948,
+      "delta_G8": 2.9443362915050858e-05,
+      "delta_R1_R7": 2.5121031628633488e-05,
+      "terminal_bottom_flux_cm_per_day": 0.6238739077316495
+    },
+    "training_transition_count": 504
+  },
+  "heldout_one_step": {
+    "H02_in_domain_sign_mismatch_steps": [57, 58, 59],
+    "in_domain_bottom_flux_sign_mismatch_count": 3,
+    "in_domain_transition_count": 182,
+    "transition_count": 252
+  },
+  "hybrid_recursive": {
+    "by_history": {
+      "H01": {"bottom_flux_sign_mismatch_count": 0, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": 4.0355948027759325e-09, "invalid_reconstructed_state_count": 0, "max_abs_cumulative_bottom_exchange_error_cm": 4.0355948027759325e-09, "max_abs_lower_storage_error_cm": 6.520284756561523e-08, "max_abs_structural_mass_residual_cm": 4.924012586560167e-15, "max_abs_terminal_bottom_flux_error_cm_per_day": 2.3771759227741995e-07, "max_abs_total_storage_error_cm": 4.035527467749489e-09, "max_abs_upper_storage_error_cm": 6.921446527030639e-08, "published_reversal_steps": [], "reduced_steps": 63, "steps": 63, "true_reversal_steps": []},
+      "H02": {"bottom_flux_sign_mismatch_count": 19, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": 0.10433917177976125, "invalid_reconstructed_state_count": 0, "max_abs_cumulative_bottom_exchange_error_cm": 0.10433917177976125, "max_abs_lower_storage_error_cm": 0.10434417252625394, "max_abs_structural_mass_residual_cm": 4.1630381867469035e-15, "max_abs_terminal_bottom_flux_error_cm_per_day": 18.671369707581146, "max_abs_total_storage_error_cm": 0.10433917177971352, "max_abs_upper_storage_error_cm": 5.000746529759681e-06, "published_reversal_steps": [25, 38], "reduced_steps": 63, "steps": 63, "true_reversal_steps": [25, 57]},
+      "H03": {"bottom_flux_sign_mismatch_count": 0, "fallback_fraction": 0.23809523809523808, "fallback_steps": 15, "final_cumulative_bottom_exchange_error_cm": 13513.329396243113, "invalid_reconstructed_state_count": 8, "max_abs_cumulative_bottom_exchange_error_cm": 13513.329396243113, "max_abs_lower_storage_error_cm": 1689.167577294231, "max_abs_structural_mass_residual_cm": 2.2737367544323206e-13, "max_abs_terminal_bottom_flux_error_cm_per_day": 2111457.920951209, "max_abs_total_storage_error_cm": 1689.166336761071, "max_abs_upper_storage_error_cm": 0.0012405338047027925, "published_reversal_steps": [9, 25], "reduced_steps": 48, "steps": 63, "true_reversal_steps": [9, 25]},
+      "H04": {"bottom_flux_sign_mismatch_count": 0, "fallback_fraction": 1.0, "fallback_steps": 63, "final_cumulative_bottom_exchange_error_cm": 0.0, "invalid_reconstructed_state_count": 0, "max_abs_cumulative_bottom_exchange_error_cm": 0.0, "max_abs_lower_storage_error_cm": 0.0, "max_abs_structural_mass_residual_cm": 0.0, "max_abs_terminal_bottom_flux_error_cm_per_day": 0.0, "max_abs_total_storage_error_cm": 0.0, "max_abs_upper_storage_error_cm": 0.0, "published_reversal_steps": [19], "reduced_steps": 0, "steps": 63, "true_reversal_steps": [19]}
+    },
+    "event_failures": [{"history": "H02", "published_step": 38, "step_error": 19, "true_step": 57}],
+    "fallback_fraction": 0.30952380952380953,
+    "fallback_steps": 78,
+    "in_domain_bottom_flux_sign_mismatch_count": 19,
+    "in_domain_invalid_reconstructed_state_count": 8,
+    "in_domain_structural_mass_gate_failure_count": 0,
+    "reduced_steps": 174,
+    "total_steps": 252
+  },
+  "pure_rom_recursive_diagnostic": {
+    "by_history": {
+      "H01": {"bottom_flux_sign_mismatch_count": 0, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": 4.0355948027759325e-09, "invalid_reconstructed_state_count": 0, "max_abs_cumulative_bottom_exchange_error_cm": 4.0355948027759325e-09, "max_abs_lower_storage_error_cm": 6.520284756561523e-08, "max_abs_structural_mass_residual_cm": 4.924012586560167e-15, "max_abs_terminal_bottom_flux_error_cm_per_day": 2.3771759227741995e-07, "max_abs_total_storage_error_cm": 4.035527467749489e-09, "max_abs_upper_storage_error_cm": 6.921446527030639e-08, "published_reversal_steps": [], "reduced_steps": 63, "steps": 63, "true_reversal_steps": []},
+      "H02": {"bottom_flux_sign_mismatch_count": 19, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": 0.10433917177976125, "invalid_reconstructed_state_count": 0, "max_abs_cumulative_bottom_exchange_error_cm": 0.10433917177976125, "max_abs_lower_storage_error_cm": 0.10434417252625394, "max_abs_structural_mass_residual_cm": 4.1630381867469035e-15, "max_abs_terminal_bottom_flux_error_cm_per_day": 18.671369707581146, "max_abs_total_storage_error_cm": 0.10433917177971352, "max_abs_upper_storage_error_cm": 5.000746529759681e-06, "published_reversal_steps": [25, 38], "reduced_steps": 63, "steps": 63, "true_reversal_steps": [25, 57]},
+      "H03": {"bottom_flux_sign_mismatch_count": 8, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": 29980.531471174443, "invalid_reconstructed_state_count": 24, "max_abs_cumulative_bottom_exchange_error_cm": 29982.931325247882, "max_abs_lower_storage_error_cm": 29984.117939083397, "max_abs_structural_mass_residual_cm": 2.449040970020633e-12, "max_abs_terminal_bottom_flux_error_cm_per_day": 2632220.4354434134, "max_abs_total_storage_error_cm": 29982.931325247886, "max_abs_upper_storage_error_cm": 3.550028629863938, "published_reversal_steps": [9, 25, 57], "reduced_steps": 63, "steps": 63, "true_reversal_steps": [9, 25]},
+      "H04": {"bottom_flux_sign_mismatch_count": 36, "fallback_fraction": 0.0, "fallback_steps": 0, "final_cumulative_bottom_exchange_error_cm": -46215.2513764195, "invalid_reconstructed_state_count": 41, "max_abs_cumulative_bottom_exchange_error_cm": 46215.2513764195, "max_abs_lower_storage_error_cm": 46220.95924254443, "max_abs_structural_mass_residual_cm": 2.7284841053187847e-12, "max_abs_terminal_bottom_flux_error_cm_per_day": 5559847.130806977, "max_abs_total_storage_error_cm": 46215.25137641949, "max_abs_upper_storage_error_cm": 5.707866124900942, "published_reversal_steps": [41, 51], "reduced_steps": 63, "steps": 63, "true_reversal_steps": [19]}
+    }
+  },
+  "rom0_reference_scales": {
+    "lower_storage_cm": 0.00037482929685239696,
+    "total_storage_cm": 3.552713678800501e-14,
+    "upper_storage_cm": 0.0003748292968630551
+  },
+  "schema": "swap5.f-romv-mde-stage1.result.v1",
+  "work_unit": "F-ROMV-MDE-S1",
+  "workstream": "F-ROM"
+}
