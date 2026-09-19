@@ -266,10 +266,13 @@ jobs:
         run: |
           set -uo pipefail
           set +e
-          (cd build/tab-hyd/reachability/tabulated && "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/tabulated.log 2>&1
+          (cd build/tab-hyd/reachability/tabulated && timeout 20 "$GITHUB_WORKSPACE/current-swap/builddir/swap") > build/tab-hyd/reachability/tabulated.log 2>&1
           rc=$?
           set -e
           echo "tabulated_return_code=$rc" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          if [ "$rc" -eq 124 ]; then
+            echo "TABULATED_SWITCH_TIMEOUT_AFTER_20S" | tee -a build/tab-hyd/reachability/reachability-summary.txt
+          fi
           tail -160 build/tab-hyd/reachability/tabulated.log
           if [ "$rc" -eq 100 ]; then
             echo "TABULATED_SWITCH_REACHED_NORMAL_COMPLETION_WITHOUT_TABLE_SCHEMA" | tee -a build/tab-hyd/reachability/reachability-summary.txt
