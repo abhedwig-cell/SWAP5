@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.fci.ppa_low02_moving_preservation_reconciliation.v1",
+  "date": "2026-09-19",
+  "state": "PREREGISTERED_GOVERNANCE_RECONCILIATION",
+  "purpose": "Reconcile the canonical moving P2E05 preservation gate with the already-qualified and canonically admitted PPA-LOW02-TIME serialized-backend successor.",
+  "observed_failure": {
+    "canonical_heads": [
+      "1720abc365a9d0a65ea8253df2f94c991f2b9fc1",
+      "800eb65c1b5126a4814f27fc4acc0b06f76312b6"
+    ],
+    "workflow_runs": [
+      35427432128,
+      35427565217
+    ],
+    "failing_job": "current-restricted-canonical-preservation",
+    "message": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted F-ROM1A serialized backend successor drift",
+    "inherited_by_pub_gc_pr371": true
+  },
+  "existing_authority": {
+    "f_rom1a_admission": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+    "f_rom1a_kernel_blob": "c28cb8246aaf087da92538e58b1aa2da5d1b5b11",
+    "f_rom1a_backend_blob": "5d63f91b37443952b4a96292925f645aae0b22d1",
+    "ppa_low02": {
+      "qualified_head": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+      "functional_admission_pr": 360,
+      "canonical_merge": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+      "closeout_pr": 362,
+      "status_path": "integration/audits/PPA_LOW02_TIME_STATUS.json",
+      "current_qualified_backend_blob": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+      "owner_independent_run": 35426047814,
+      "owner_job": 105852054740,
+      "independent_job": 105852181968,
+      "fross12_runtime_run": 35426047903,
+      "fci96_run": 35426047828,
+      "fgc44_runs": [
+        35426047827,
+        35426047766
+      ],
+      "fgc42_run": 35426047891
+    }
+  },
+  "repair_contract": [
+    "No production source or reference data may change.",
+    "The moving gate recognizes PPA-LOW02 only when canonical admission 6c63b8d... is an ancestor.",
+    "The PPA-LOW02 qualified head 8d238bb... must be contained by that canonical admission.",
+    "The serialized backend must equal exact qualified blob 80c7ca....",
+    "The F-SI39 default-MvG provider must remain exact.",
+    "The exact F-ROM1A kernel successor remains independently pinned.",
+    "Any later backend drift fails closed.",
+    "Owner and independent PPA-LOW02 qualification are replayed on the repair PR."
+  ],
+  "production_delta": [],
+  "reference_delta": [],
+  "scientific_claim_change": false
+}
