@@ -1,0 +1,33 @@
+name: PPA-WU05-D compensation authority
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05d-compensation-authority.yml'
+      - 'docs/audits/PPA_WU05D_COMPENSATION_AUTHORITY.md'
+      - 'integration/audits/PPA_WU05D_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05D_COMPENSATION_AUTHORITY_CONTRACT.json'
+      - 'integration/audits/PPA_WU05D_STATUS.json'
+      - 'tests/fvq/validate_ppa_wu05d_compensation_authority.py'
+  workflow_dispatch:
+
+jobs:
+  authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical ref
+        run: git fetch origin integration/f-ci-canonical
+      - name: Validate compensation authority
+        run: python3 tests/fvq/validate_ppa_wu05d_compensation_authority.py --mode authority
+
+  independent-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate independent compensation contract
+        run: python3 tests/fvq/validate_ppa_wu05d_compensation_authority.py --mode independent

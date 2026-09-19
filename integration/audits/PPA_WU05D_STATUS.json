@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.ppa_wu05d.status.v1",
+  "work_unit": "PPA-WU05-D",
+  "title": "Compensated root-water-uptake authority",
+  "branch": "audit/ppa-wu05d-compensation-authority",
+  "reconcile_base": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+  "status": "SOURCE_MATERIALIZATION_BLOCKED_REVIEW_BOUNDARIES_FROZEN",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "prior_fpm05": "Compensated uptake held outside admitted drought-only route"
+  },
+  "frozen_findings": {
+    "accepted_mass_owner": "EXISTING_ROOT_WATER_UPTAKE_ONLY",
+    "separate_compensation_mass_owner": false,
+    "corroborated_shape": "POST_STRESS_CANDIDATE_ROOT_SINK_TRANSFORMATION",
+    "exact_b1_11_order": "HELD",
+    "persistent_state": "UNKNOWN_DO_NOT_INFER",
+    "retry_rule": "Never compound compensation by scaling a rejected already-compensated qrot; rebuild from the same committed pre-compensation root result."
+  },
+  "blocker": {
+    "class": "EXACT_SOURCE_MATERIALIZATION_REQUIRED",
+    "external_scientific_decision_required": false,
+    "production_implementation_permitted": false
+  },
+  "migration_slices": [
+    "PPA-WU05-D1 exact source/order/state census",
+    "PPA-WU05-D2 Jarvis typed compositor",
+    "PPA-WU05-D3 Walsum typed compositor",
+    "PPA-WU05-D4 multi-stressor compensation",
+    "PPA-WU05-D5 MICRO compensation"
+  ],
+  "qualification": {
+    "state": "PENDING"
+  },
+  "production_admission": "NONE_REVIEW_ONLY_BLOCKED",
+  "verdict": "OWNER_AND_TRANSACTION_BOUNDARIES_FROZEN_DETAILED_COMPENSATION_AUTHORITY_BLOCKED",
+  "next_action": "Qualify this review-only boundary. Do not implement compensation until D1 exact B1.11 source materialization closes equation/order/state authority.",
+  "canonical_reconciliation": {
+    "previous_base": "e473afc2d378a2567a59cc0db1577b4c724feeb2",
+    "current_canonical": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+    "reconciliation_commit": "2bdd9fe4e285ccb07bb887a50ecc5802ef824265",
+    "topology": "TRUE_TWO_PARENT",
+    "canonical_delta_scope": "PPA-LOW02 time-varying lower-boundary runtime only",
+    "overlap": "NONE_WITH_WU05D_REVIEW_SURFACE_OR_ROOT_AUTHORITY"
+  }
+}
