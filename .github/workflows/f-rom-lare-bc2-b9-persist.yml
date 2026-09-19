@@ -1,0 +1,49 @@
+name: F-ROM-LARE persist BC2-B9 result
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-b9-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+      - name: Recover and persist exact BC2-B9 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b9-persist
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587761415/zip" > /tmp/lare-bc2-b9-persist/b9.zip
+          echo "839ae245bd3c17b221df3d53e2709aee1a17d053ffc289b622f50d8e30ea0e67  /tmp/lare-bc2-b9-persist/b9.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b9-persist/b9.zip -d /tmp/lare-bc2-b9-persist
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-bc2-b9-persist/LARE_BC2_B9_RESULT.json'))
+          assert r['decision']=='BC2_B9_ENRICHED_STATE_QI_CLOSURE_SUPPORTED_OPERATOR_OR_WIDTH_UNRESOLVED'
+          assert r['preferred_operator']==['TERMINAL_SIDE_LINEAR']
+          pairs={(x['width_cm'],x['operator']) for x in r['supported_width_operator_pairs']}
+          assert pairs=={(2.5,'TERMINAL_SIDE_LINEAR'),(5.0,'TERMINAL_SIDE_LINEAR')}
+          assert r['preferred_width_cm']==[]
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B9_FORMAL_VALIDATION=PASS')
+          PY
+          cp /tmp/lare-bc2-b9-persist/LARE_BC2_B9_RESULT.json integration/f-rom/LARE_BC2_B9_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_B9_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist BC2-B9 internal-flux result"
+          git push origin HEAD:work/f-rom-lare-rs1
