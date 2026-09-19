@@ -1,0 +1,38 @@
+name: F-ROMV2 D13 FMC groundwater-front preflight
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json'
+      - 'tests/rom/preflight_f_romv2_d13_fmc_groundwater.py'
+      - '.github/workflows/f-romv2-d13-fmc-groundwater-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute frozen D13 branch preflight
+        run: |
+          mkdir -p "${{ runner.temp }}/F-ROMV2-D13-EVIDENCE"
+          python3 tests/rom/preflight_f_romv2_d13_fmc_groundwater.py \
+            --prereg integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json \
+            --output "${{ runner.temp }}/F-ROMV2-D13-EVIDENCE/F-ROMV2_D13_PREFLIGHT_RESULT.json" \
+            | tee "${{ runner.temp }}/F-ROMV2-D13-EVIDENCE/preflight.txt"
+          sha256sum "${{ runner.temp }}/F-ROMV2-D13-EVIDENCE/"* > "${{ runner.temp }}/F-ROMV2-D13-EVIDENCE/sha256.txt"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-romv2-d13-preflight-${{ github.run_id }}
+          path: ${{ runner.temp }}/F-ROMV2-D13-EVIDENCE
+          if-no-files-found: error
+          retention-days: 90
