@@ -330,5 +330,53 @@
     "D4_resolution_control_rule": "Do not introduce D4 merely to improve a poor D3 result. Execute D4 only if D3 versus coarse D3 leaves an unresolved closure-resolution question, consistent with the RS1-GW closeout role already frozen before DYN0A.",
     "seed_diagnostic": "Report any Reference seed drift from the uniform initial state where observable; do not silently absorb seed drift into closure error.",
     "scientific_effect": "Interpretation and cohort governance only. No forcing amplitude, material, partition, constitutive relation, LARE interface closure or numerical threshold is changed."
+  },
+  "pre_comparison_reference_qualification": {
+    "date": "2026-09-19",
+    "before_first_successful_lare_vs_coarse_richards_hydrological_comparison": true,
+    "observed_preflight": {
+      "fine_reference_fixed_flux": "10 of 12 histories complete inside the strict-unsaturated common domain; Se0=0.95 WET and WET_DRY enter the near-saturation branch and are OUTSIDE_QUALIFIED_DOMAIN.",
+      "coarse_D3_fixed_flux": "Only the three EQ histories complete under the inherited strict-first numerical authority; dynamic cases are BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION rather than physical-domain exits.",
+      "coarse_D2_fixed_flux": "Same qualitative result: EQ histories complete, dynamic cases are numerically blocked under the inherited strict-first authority.",
+      "lare_fixed_flux": "D3 qualifies 10 of 12 physical histories; D2 qualifies 8 of 12. Blocked cases are endpoint/domain exits under the source-anchored Heun route."
+    },
+    "fine_only_characterization_rule": "LARE may be characterized against projected fine Reference on the common LARE+fine physical-domain cohort even when the equal-dimension coarse comparator is numerically blocked. Such characterization cannot support the final coarse-comparator outcome.",
+    "coarse_richards_temporal_qualification": {
+      "label": "DYN0A_CRQ",
+      "purpose": "Distinguish spatial coarse-Richards model-form error from failure of the inherited observation-step numerical route.",
+      "primary_partition": "D3",
+      "secondary_partition": "D2",
+      "observation_dt_day": 0.0008,
+      "substep_counts": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "internal_dt_day": [
+        0.0008,
+        0.0004,
+        0.0002,
+        0.0001
+      ],
+      "forcing_rule": "Keep each preregistered observation-interval forcing constant over its internal substeps.",
+      "unchanged": [
+        "spatial partition",
+        "material and constitutive functions",
+        "top and bottom physical fluxes",
+        "nonlinear tolerances",
+        "fallback classes and fallback tolerances",
+        "mass gate"
+      ],
+      "forbidden": [
+        "no tolerance relaxation",
+        "no new fallback class",
+        "no post-result spatial refinement",
+        "no forcing-amplitude change"
+      ],
+      "qualification_rule": "A coarse case is numerically qualified only if a preregistered substep route completes deterministically under the existing mass/fallback authority. Use the finest successful route for model-form comparison and report successive-refinement storage differences. Failure at all four routes remains BLOCKED_REFERENCE_NUMERICAL_QUALIFICATION.",
+      "comparison_firewall": "The fine Reference and LARE trajectories are not re-tuned to match whichever coarse temporal route succeeds."
+    },
+    "scientific_effect": "Numerical qualification and broader fine-only characterization only; no LARE closure, state, forcing, spatial partition or application acceptance threshold is changed."
   }
 }
