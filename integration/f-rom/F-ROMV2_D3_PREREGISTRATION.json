@@ -1,0 +1,148 @@
+{
+  "schema": "swap5.f-romv2-d3.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D3",
+  "title": "Representation-aware accepted-state authority for deliberately coarse Richards reductions",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "2a1145fdab834afe913e843d335ac0e218bbcf4a",
+  "purpose": "Determine whether R4/R2 can be evaluated as deliberately reduced hydrological models without inheriting a numerically indistinguishable full-order Reference calibration threshold, while preserving hard mass accounting, finite physical state and fail-closed semantics.",
+  "motivation": {
+    "F_ROMV2_rule": "Reduced hydrological models are not automatically subject to the same numerical-equivalence envelope as alternative solvers for the full Richards model.",
+    "D2_result": "R4 and R2 failed only the frozen strict local-balance Reference-sample authority before hydrological fidelity could be measured.",
+    "independent_numerical_authority": "PUB-P2E07 found the fixed 1e-12 cm/day local Reference criterion not numerically distinguishable from the preregistered representation-floor diagnostic in 102/103 diagnosed full-order local-balance failure states.",
+    "anti_tuning": "D3 tolerance formulas are derived from pre-existing P2E07 representation-floor logic and the pre-existing hard transaction mass gate. No D2 residual magnitude is used to set a numerical threshold."
+  },
+  "scope": {
+    "material": "B01",
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "data_status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "geometries": [
+      {
+        "id": "R16",
+        "nodes": 16,
+        "dz_cm": 10,
+        "role": "development reference"
+      },
+      {
+        "id": "R8",
+        "nodes": 8,
+        "dz_cm": 20,
+        "role": "retained D2 comparator"
+      },
+      {
+        "id": "R4",
+        "nodes": 4,
+        "dz_cm": 40,
+        "role": "requalified coarse candidate"
+      },
+      {
+        "id": "R2",
+        "nodes": 2,
+        "dz_cm": 80,
+        "role": "requalified coarse candidate"
+      }
+    ],
+    "total_depth_cm": 160,
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016
+  },
+  "authority": {
+    "F_ROMV2": "integration/f-rom/F-ROMV2_STATUS.json",
+    "F_ROMV2_D2": "integration/f-rom/F-ROMV2_D2_STATUS.json",
+    "P2E07_preregistration": "docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_PREREGISTRATION.json",
+    "P2E07_result": "docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_RESULT.json",
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "production_reference_policy_changed": false
+  },
+  "reduced_model_numerical_policy": {
+    "id": "STRICT_FIRST_PROSPECTIVE_REPRESENTATION_AWARE_REATTEMPT",
+    "first_attempt": {
+      "compartment_balance_tolerance_cm_per_day": 1e-12,
+      "total_balance_tolerance_cm_per_day": 1e-12,
+      "head_abs_tolerance_cm": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "max_iterations": 16,
+      "max_backtracking": 8
+    },
+    "reattempt_trigger": [
+      "first attempt status is SW_SOLVE_RETRY_ADVISED",
+      "direct failed-workspace diagnosis is RETRY_LOCAL_BALANCE",
+      "head convergence flag count is zero",
+      "failed committed state is unchanged bitwise",
+      "all prospective representation bounds are finite and positive"
+    ],
+    "prospective_local_integrated_bound_cm": "For each cell i, b_i = 0.5*(spacing(theta_s)+spacing(theta_base_i))*dz_i. This uses only the pre-attempt committed input state and material theta_s.",
+    "reattempt_compartment_tolerance_cm_per_day": "max(1e-12, max_i(b_i)/dt)",
+    "prospective_total_integrated_bound_cm": "sum_i b_i",
+    "reattempt_total_tolerance_cm_per_day": "max(1e-12, sum_i(b_i)/dt)",
+    "acceptance_after_reattempt": [
+      "solver returns converged with one research Reference physical advance",
+      "no internal retry and no kernel retry",
+      "candidate is finite and physically bounded",
+      "bottom exchange and terminal bottom flux are finite",
+      "accepted transaction water ledger is complete",
+      "absolute accepted transaction mass residual <= 1e-12 cm",
+      "candidate commits through the kernel owner"
+    ],
+    "fail_closed": "Any head failure, mixed failure, nonfinite bound, failed representation-aware reattempt, hard mass failure or physical-state failure stops that geometry/history. No further widening is allowed.",
+    "scientific_boundary": "This is a research-only numerical distinguishability policy for deliberately reduced models. It is not a Reference solver tolerance change, not production policy and not a claim of numerical equivalence to R16."
+  },
+  "hydrological_evaluation": {
+    "reference_geometry": "R16 under the same strict-first representation-aware research policy",
+    "outputs": [
+      "total storage",
+      "upper and lower 80-cm storage",
+      "cumulative bottom exchange",
+      "terminal bottom flux",
+      "bottom-flux sign",
+      "reversal timing",
+      "mapped profile theta/head"
+    ],
+    "computational_proxies": [
+      "node count",
+      "nonlinear iterations",
+      "backtracking attempts",
+      "representation-aware reattempt count"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "frontier_views": [
+      "balance: node count / nonlinear work versus storage and cumulative-bottom-exchange error",
+      "event: node count / nonlinear work versus bottom-flux magnitude, sign and reversal fidelity"
+    ]
+  },
+  "decisions": {
+    "positive": "STRONGLY_COARSE_RICHARDS_HYDROLOGICALLY_MEASURABLE_UNDER_PURPOSE_APPROPRIATE_NUMERICAL_AUTHORITY",
+    "negative": "STRONGLY_COARSE_RICHARDS_REMAINS_FAIL_CLOSED_AFTER_REPRESENTATION_AWARE_AUTHORITY",
+    "family_rule": "R4/R2 are retained only if they complete with integrity. Completion does not imply application acceptance.",
+    "successor_if_positive": "Compare surviving R4/R2 with R8 and a clean-sheet quasi-steady/integrated-manifold reduction.",
+    "successor_if_negative": "Do not widen numerical policy. Move to quasi-steady/integrated-manifold physical reduction."
+  },
+  "firewalls": [
+    "NO_D2_RESIDUAL_FITTING",
+    "NO_POST_RESULT_TOLERANCE_RETUNING",
+    "NO_PRODUCTION_REFERENCE_TOLERANCE_CHANGE",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_BLIND_CONFIRMATION_CLAIM",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}
