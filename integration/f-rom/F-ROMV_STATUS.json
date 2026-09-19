@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.f-romv.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV",
+  "title": "ROM computational-value go/no reassessment",
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "head": "50e7d1dece5b75d0103459d5c118d03a2665eea3"
+  },
+  "phase": "GONOGO_EXPLORATION_CLOSED",
+  "decision": "CONDITIONAL_GO_NARROW_RESEARCH_ONLY",
+  "general_production_rom": "NO_GO",
+  "cross_material_rom": "NOT_AUTHORIZED",
+  "rom1_terminal_result_preserved": "MATERIAL_SPECIFIC_ONLY",
+  "qualified_research_target": "TEMPLATE_LOCAL_MANY_QUERY_COMPUTATIONAL_VALUE",
+  "computational_problem": "Repeated advancement of many columns sharing one qualified physical/model template, with differing reachable states and admitted forcings, conditional on soil-water advancement remaining a material end-to-end cost after direct optimization, RossFast, batching and parallelism.",
+  "required_conditions": [
+    "MANY_QUERY_AMORTIZATION",
+    "SOLVER_COST_REMAINS_MATERIAL",
+    "REPEATED_LOW_DIMENSIONAL_STATE_STRUCTURE",
+    "FAIL_CLOSED_FALLBACK_TO_ADMITTED_FULL_ROUTE"
+  ],
+  "shortlist": [
+    "TEMPLATE_LOCAL_CONSERVATIVE_STATE_SPACE_ROM_WITH_HYBRID_FALLBACK",
+    "ROM_ASSISTED_FULL_ORDER_NONLINEAR_SOLVING_AS_COMPARATOR_OR_HANDOFF",
+    "OUTPUT_SPECIFIC_SURROGATE_FOR_ENSEMBLE_DATA_ASSIMILATION_WORKLOADS"
+  ],
+  "rejected_initial_directions": [
+    "GLOBAL_CROSS_MATERIAL_ROM",
+    "PRODUCTION_NEURAL_OPERATOR_AS_FIRST_ARCHITECTURE",
+    "GLOBAL_LINEAR_DMD",
+    "PLAIN_POD_WITHOUT_HYPER_REDUCTION",
+    "INSTANCE_SPECIFIC_PINN_REPLACEMENT_SOLVER",
+    "GROUNDWATER_AFFINE_Q_OF_H_SURROGATE_DUPLICATING_F_GC40_F_GC33",
+    "AVERAGE_OUTPUT_EMULATOR_RELABELED_AS_ROM"
+  ],
+  "evidence_limits": {
+    "formal_end_to_end_multiswap_performance_baseline_available": false,
+    "rossfast_formal_isolated_host_performance_claim_available": false,
+    "b01_state_sufficiency_within_material": true,
+    "b14_cross_material_transfer_admitted": false,
+    "rom2_authorized": false
+  },
+  "next": "EXECUTE_ONE_MINIMAL_DISCRIMINATING_EXPERIMENT_BEFORE_ANY_COMPLEX_ROM_ARCHITECTURE",
+  "production_mutation_authorized": false,
+  "production_rom_authorized": false
+}
