@@ -1234,6 +1234,100 @@ def validate_romv2_d12_if_present() -> str:
     return "CLOSED_EQUATION_AUTHORITY_PREFLIGHT_PASS"
 
 
+def validate_romv2_d13_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D13_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json")
+            == "639abdde5146d5848d0043f8cead6a74fb4cd67d",
+            "F-ROMV2-D13 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D13_RESULT.json")
+            == "e52ae98dc17a394504baa8264d7b718779fe0bc4",
+            "F-ROMV2-D13 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D13_STATUS.json")
+            == "684d228fdfa62e2b00855e4bb80d4934a53e4b85",
+            "F-ROMV2-D13 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D13_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "64964ac80e64eab4622dbbb3606564e949f0832e",
+            "F-ROMV2-D13 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D13_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D13_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D13_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D13_FMC_GROUNDWATER_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_FULL_ALGORITHM_PREFLIGHT",
+            "F-ROMV2-D13 preregistration phase drift")
+    require(prereg["candidate"]["id"] == "FMC_GW200"
+            and prereg["candidate"]["moisture_bins"] == 200,
+            "F-ROMV2-D13 candidate/discretization drift")
+    require(prereg["design_amendment_before_execution"]["SWAP_trajectory_evidence_consumed"] is False
+            and prereg["design_amendment_before_execution"]["preflight_executed_before_amendment"] is False,
+            "F-ROMV2-D13 prospective amendment provenance drift")
+    require("NO_BIN_COUNT_TUNING" in prereg["firewalls"]
+            and "NO_SUBSTEP_TUNING" in prereg["firewalls"]
+            and "NO_POST_PREFLIGHT_LAMBDA_RETUNING" in prereg["firewalls"],
+            "F-ROMV2-D13 anti-tuning firewall drift")
+
+    require(result["decision"] == "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+            "F-ROMV2-D13 decision drift")
+    require(result["adjudication"]
+            == "LITERATURE_BOUND_GROUNDWATER_FRONT_BRANCH_BREAKS_R2_DEVELOPMENT_FRONTIER_WITHIN_BOUNDED_ENVELOPE",
+            "F-ROMV2-D13 adjudication drift")
+    require(result["preflight"]["decision"] == "D13_FMC_GROUNDWATER_FRONT_PREFLIGHT_PASS"
+            and result["preflight"]["SWAP_trajectory_evidence_consumed"] is False,
+            "F-ROMV2-D13 preflight authority drift")
+    require(result["integrity"]["pass"] is True
+            and float(result["integrity"]["max_abs_substep_mass_residual_cm"]) == 0.0
+            and float(result["integrity"]["max_abs_capillary_relaxation_storage_difference_cm"]) == 0.0,
+            "F-ROMV2-D13 integrity drift")
+    require(result["frontier"]["balance_view_pass"] is True
+            and result["frontier"]["transient_view_pass"] is True
+            and result["frontier"]["retained"] is True,
+            "F-ROMV2-D13 frontier result drift")
+    require(float(result["pooled"]["FMC_GW200"]["total_storage_rmse_cm"])
+            < float(result["pooled"]["R2"]["total_storage_rmse_cm"]),
+            "F-ROMV2-D13 storage frontier drift")
+    require(float(result["pooled"]["FMC_GW200"]["terminal_bottom_flux_rmse_cm_per_day"])
+            < float(result["pooled"]["R2"]["terminal_bottom_flux_rmse_cm_per_day"]),
+            "F-ROMV2-D13 flux frontier drift")
+    require(result["application_acceptance"] is False
+            and result["formal_performance_claim"] is False
+            and result["production_rom_authorized"] is False,
+            "F-ROMV2-D13 overclaims authority")
+
+    require(status["phase"] == "CLOSED_BOUNDED_GROUNDWATER_BRANCH_CANDIDACY_RETAINED",
+            "F-ROMV2-D13 status phase drift")
+    require(status["general_FMC_hydraulic_accelerator_qualified"] is False
+            and status["arbitrary_nonzero_SWAP_bottom_head_authorized"] is False
+            and status["ET_root_uptake_authorized"] is False,
+            "F-ROMV2-D13 bounded-envelope status drift")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D13 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY",
+            "F-ROMV2-D13 import scope drift")
+    require(manifest["source_execution"]["pull_request_merged"] is False,
+            "F-ROMV2-D13 execution PR unexpectedly treated as canonical")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["bin_or_substep_retuned_after_result"] is False,
+            "F-ROMV2-D13 provenance/mutation drift")
+    require(manifest["production_rom_authorized"] is False,
+            "F-ROMV2-D13 manifest authorizes production ROM")
+
+    require("first tested non-Richards physical reduction in F-ROMV2" in doc,
+            "F-ROMV2-D13 frontier significance missing")
+    require("It is **not** yet a general unsaturated-zone model result." in doc,
+            "F-ROMV2-D13 bounded interpretation missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D13 production prohibition missing")
+
+    return "CLOSED_BOUNDED_GROUNDWATER_BRANCH_CANDIDACY_RETAINED"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -1272,6 +1366,7 @@ def main() -> int:
     romv2_d10_phase = validate_romv2_d10_if_present()
     romv2_d11_phase = validate_romv2_d11_if_present()
     romv2_d12_phase = validate_romv2_d12_if_present()
+    romv2_d13_phase = validate_romv2_d13_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -1294,6 +1389,7 @@ def main() -> int:
     print(f"F_ROMV2_D10_PHASE={romv2_d10_phase}")
     print(f"F_ROMV2_D11_PHASE={romv2_d11_phase}")
     print(f"F_ROMV2_D12_PHASE={romv2_d12_phase}")
+    print(f"F_ROMV2_D13_PHASE={romv2_d13_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
