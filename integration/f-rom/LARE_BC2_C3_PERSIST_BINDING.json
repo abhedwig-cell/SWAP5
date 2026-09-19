@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.lare.bc2.c3.persist-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C3",
+  "required_decision": "BC2_C3_SIGNED_LOCAL_BIAS_LEDGER_MAPPED",
+  "workflow_run": 35459217586,
+  "artifact_id": 10589232188,
+  "artifact_zip_sha256": "cfb6a22d82ae094e7d8384b6ea2117cc0ea88aac3aa66b99da86c7d6b63b2b5a",
+  "result_sha256": "12d99184df2ce8c968a5c9d6894b39bfc41cf1592c271f34c7194abec5f07db0",
+  "executed_head": "811fffc9ffb4505b88cbd13ea566999dfd5b8c0b",
+  "source_case_artifacts": {
+    "2.5:WT_HOLD": 10589486381,
+    "2.5:WT_RISE": 10589081706,
+    "2.5:WT_FALL": 10589192145,
+    "2.5:WT_CYCLE": 10589656503,
+    "5.0:WT_HOLD": 10589456401,
+    "5.0:WT_RISE": 10589436533,
+    "5.0:WT_FALL": 10589356757,
+    "5.0:WT_CYCLE": 10588772068
+  },
+  "result_summary": {
+    "complete": true,
+    "max_hard_residual_or_identity_error": 2.6483704118618334e-11,
+    "hard_gate": 1e-10,
+    "dynamic_primary_top_family_counts": {
+      "QI": 4,
+      "QH": 2
+    },
+    "unanimous_dynamic_top_family": null,
+    "primary_cross_rank_mismatch_cases": [
+      "5.0:WT_HOLD"
+    ],
+    "universal_Q90_dynamic_condition_met": false
+  },
+  "scientific_effect": "Persists the exact qualified signed local-bias ledger. It authorizes no closure modification or production use."
+}
