@@ -73,6 +73,24 @@ def svg_geometry(path: Path) -> tuple[float, float]:
     return value("width"), value("height")
 
 
+def add_proportional_export_margin(
+    svg_text: str,
+    padding_fraction: float = 0.015,
+) -> str:
+    """Expand the SVG viewBox proportionally without mutating governed source."""
+    match = re.search(r'viewBox="([^"]+)"', svg_text)
+    if not match:
+        raise SystemExit("governed SVG must provide a viewBox for qualified export")
+    vals = [float(x) for x in re.split(r"[ ,]+", match.group(1).strip())]
+    if len(vals) != 4 or vals[2] <= 0 or vals[3] <= 0:
+        raise SystemExit(f"invalid SVG viewBox: {match.group(1)}")
+    x0, y0, width, height = vals
+    dx = width * padding_fraction
+    dy = height * padding_fraction
+    padded = f"{x0-dx:g} {y0-dy:g} {width+2*dx:g} {height+2*dy:g}"
+    return svg_text[: match.start(1)] + padded + svg_text[match.end(1) :]
+
+
 def _descriptor_has_font_file(font: object) -> bool:
     """Return True when a PDF font or Type0 descendant embeds its font program."""
     if not hasattr(font, "get"):
@@ -232,6 +250,9 @@ def main() -> int:
                 "font-family:Arial,Helvetica,sans-serif",
                 "font-family:DejaVu Sans,sans-serif",
             )
+            # Keep governed SVG files unchanged while ensuring PDF glyph metrics
+            # cannot clip long labels/titles at the page boundary.
+            svg_text = add_proportional_export_margin(svg_text, 0.015)
             cairosvg.svg2pdf(
                 bytestring=svg_text.encode("utf-8"),
                 write_to=str(target),
@@ -328,6 +349,7 @@ def main() -> int:
         "source_rule": plan["source_rule"],
         "presentation_transform_only": True,
         "source_date_epoch": os.environ.get("SOURCE_DATE_EPOCH"),
+        "export_padding_fraction": 0.015,
         "export_font_normalization": (
             "Arial/Helvetica/sans-serif -> DejaVu Sans/sans-serif "
             "for PDF embedding only"
