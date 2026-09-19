@@ -1,0 +1,65 @@
+name: F-ROM-LARE BC2-B0 geometry-only replay
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_B0_GEO_PREREGISTRATION.json'
+      - 'tests/rom/run_lare_bc2_b0_geometry_only.py'
+      - '.github/workflows/f-rom-lare-bc2-b0-geo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover qualified A2 geometry artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b0geo/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-b0geo/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-b0geo/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b0geo/a2.zip -d /tmp/lare-bc2-b0geo/a2
+          cmp /tmp/lare-bc2-b0geo/a2/o0.txt /tmp/lare-bc2-b0geo/a2/o2.txt
+          echo 'LARE_BC2_B0GEO_REFERENCE_BINDING=PASS'
+
+      - name: Execute geometry-only replay
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_B0GEO_EVIDENCE
+          python3 tests/rom/run_lare_bc2_b0_geometry_only.py \
+            --reference /tmp/lare-bc2-b0geo/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_B0_GEO_PREREGISTRATION.json \
+            --output LARE_BC2_B0GEO_EVIDENCE/LARE_BC2_B0_GEO_RESULT.json \
+            | tee LARE_BC2_B0GEO_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_B0GEO_EVIDENCE/LARE_BC2_B0_GEO_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_GEOMETRY_REPLAY_CONSERVATIVE_IDENTITY_CONFIRMED',
+              'BC2_GEOMETRY_REPLAY_BLOCKED',
+              'BC2_REFERENCE_GEOMETRY_INSUFFICIENT',
+          }
+          assert r['source_form_selected'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B0GEO_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_B0GEO_EVIDENCE/* > LARE_BC2_B0GEO_EVIDENCE/sha256.txt
+
+      - name: Upload geometry-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-b0-geo
+          path: LARE_BC2_B0GEO_EVIDENCE/
+          if-no-files-found: warn
