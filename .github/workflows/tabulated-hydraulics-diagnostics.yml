@@ -58,27 +58,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python research/tabulated_hydraulics/prepare_hupsel_e2e.py             swap-testcases/cases/hupselbrook/legacy build/tab-hyd-diagnostic             | tee build/tab-hyd-diagnostic-prepare.log
+          python research/tabulated_hydraulics/prepare_hupsel_e2e.py \
+            swap-testcases/cases/hupselbrook/legacy build/tab-hyd-diagnostic \
+            | tee build/tab-hyd-diagnostic-prepare.log
           python3 - <<'PY'
           from pathlib import Path
           import re
 
           root = Path("build/tab-hyd-diagnostic")
-          for name in ("analytic_k0","table_k0"):
-              p=root/name/"swap.swp"
-              s=p.read_text()
-              s,n1=re.subn(r"(?m)^(s*TENDs*=s*)d{4}-d{2}-d{2}(.*)$",r"\g<1>2002-01-31\2",s,count=1)
-              s,n2=re.subn(r"(?m)^(s*SWMONTHs*=s*)1",r"\g<1>0",s,count=1)
-              if n1!=1 or n2!=1:
+          for name in ("analytic_k0", "table_k0"):
+              p = root / name / "swap.swp"
+              s = p.read_text()
+              s, n1 = re.subn(
+                  r"(?m)^(\s*TEND\s*=\s*)\d{4}-\d{2}-\d{2}(.*)$",
+                  r"\g<1>2002-01-31\2", s, count=1
+              )
+              s, n2 = re.subn(
+                  r"(?m)^(\s*SWMONTH\s*=\s*)1\b",
+                  r"\g<1>0", s, count=1
+              )
+              if n1 != 1 or n2 != 1:
                   raise RuntimeError(f"failed daily 31-day setup for {name}")
               p.write_text(s)
 
-          for name in ("analytic_k1","table_k1"):
-              p=root/name/"swap.swp"
-              s=p.read_text()
-              s,n1=re.subn(r"(?m)^(s*TENDs*=s*)d{4}-d{2}-d{2}(.*)$",r"\g<1>2002-01-01\2",s,count=1)
-              s,n2=re.subn(r"(?m)^(s*SWMONTHs*=s*)1",r"\g<1>0",s,count=1)
-              if n1!=1 or n2!=1:
+          for name in ("analytic_k1", "table_k1"):
+              p = root / name / "swap.swp"
+              s = p.read_text()
+              s, n1 = re.subn(
+                  r"(?m)^(\s*TEND\s*=\s*)\d{4}-\d{2}-\d{2}(.*)$",
+                  r"\g<1>2002-01-01\2", s, count=1
+              )
+              s, n2 = re.subn(
+                  r"(?m)^(\s*SWMONTH\s*=\s*)1\b",
+                  r"\g<1>0", s, count=1
+              )
+              if n1 != 1 or n2 != 1:
                   raise RuntimeError(f"failed one-day implicit setup for {name}")
               p.write_text(s)
           PY
@@ -98,11 +112,14 @@ jobs:
             set -e
             popd >/dev/null
             runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
-            printf "%s	%s	%s
-" "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k0-status.tsv
+            printf '%s\t%s\t%s\n' "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k0-status.tsv
             test "$rc" -eq 100
           done
-          python research/tabulated_hydraulics/compare_hupsel_e2e.py             build/tab-hyd-diagnostic/analytic_k0 build/tab-hyd-diagnostic/table_k0             build/tab-hyd-diagnostic/k0-comparison.json --label "SWKIMPL=0,daily31"             | tee build/tab-hyd-diagnostic/k0-comparison.txt
+          python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/tab-hyd-diagnostic/analytic_k0 build/tab-hyd-diagnostic/table_k0 \
+            build/tab-hyd-diagnostic/k0-comparison.json \
+            --label "SWKIMPL=0,daily31" \
+            | tee build/tab-hyd-diagnostic/k0-comparison.txt
 
       - name: Run one-day original implicit pair
         shell: bash
@@ -120,8 +137,7 @@ jobs:
             set -e
             popd >/dev/null
             runtime=$(tail -1 "$work/runtime_original_seconds.txt" 2>/dev/null || echo NA)
-            printf "%s	%s	%s
-" "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k1-original-status.tsv
+            printf '%s\t%s\t%s\n' "$name" "$rc" "$runtime" | tee -a build/tab-hyd-diagnostic/k1-original-status.tsv
           done
 
       - name: Build diagnostic derivative-sentinel variant
@@ -130,12 +146,12 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          p=Path("legacy-runtime/src/utils/soilhydraulicsutils.f90")
-          s=p.read_text()
-          old="dhconduc = 1.0d+08"
+          p = Path("legacy-runtime/src/utils/soilhydraulicsutils.f90")
+          s = p.read_text()
+          old = "dhconduc = 1.0d+08"
           if s.count(old) != 1:
               raise SystemExit(f"expected exactly one sentinel, found {s.count(old)}")
-          p.write_text(s.replace(old,"dhconduc = 1.0d-12",1))
+          p.write_text(s.replace(old, "dhconduc = 1.0d-12", 1))
           print("DIAGNOSTIC_PATCH saturated table dKdh 1e8 -> 1e-12")
           PY
           meson compile -C legacy-runtime/builddir
@@ -149,16 +165,24 @@ jobs:
           rm -f "$work/result_output.csv" "$work/run-patched.log"
           pushd "$work" >/dev/null
           set +e
-          /usr/bin/time -f '%e' -o runtime_patched_seconds.txt timeout 30             "$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-dhcap-diagnostic" > run-patched.log 2>&1
+          /usr/bin/time -f '%e' -o runtime_patched_seconds.txt timeout 30 \
+            "$GITHUB_WORKSPACE/legacy-runtime/builddir/swap-dhcap-diagnostic" \
+            > run-patched.log 2>&1
           rc=$?
           set -e
           popd >/dev/null
           runtime=$(tail -1 "$work/runtime_patched_seconds.txt" 2>/dev/null || echo NA)
-          echo -e "table_k1_patched	$rc	$runtime" | tee build/tab-hyd-diagnostic/k1-patched-status.tsv
+          printf 'table_k1_patched\t%s\t%s\n' "$rc" "$runtime" \
+            | tee build/tab-hyd-diagnostic/k1-patched-status.tsv
           if [ "$rc" -eq 100 ] && [ -f "$work/result_output.csv" ]; then
-            python research/tabulated_hydraulics/compare_hupsel_e2e.py               build/tab-hyd-diagnostic/analytic_k1 build/tab-hyd-diagnostic/table_k1               build/tab-hyd-diagnostic/k1-patched-comparison.json --label "SWKIMPL=1,dKdh-sentinel-diagnostic"               | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
+            python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              build/tab-hyd-diagnostic/analytic_k1 build/tab-hyd-diagnostic/table_k1 \
+              build/tab-hyd-diagnostic/k1-patched-comparison.json \
+              --label "SWKIMPL=1,dKdh-sentinel-diagnostic" \
+              | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
           else
-            echo "PATCHED_IMPLICIT_PAIR_INCOMPLETE rc=$rc" | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
+            echo "PATCHED_IMPLICIT_PAIR_INCOMPLETE rc=$rc" \
+              | tee build/tab-hyd-diagnostic/k1-patched-comparison.txt
           fi
 
       - name: Write focused diagnostic summary
