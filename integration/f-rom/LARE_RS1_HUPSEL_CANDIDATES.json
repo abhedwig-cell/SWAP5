@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.lare.rs1.hupsel-candidates.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-RS1-HUPSEL",
+  "status": "FROZEN_BEFORE_NEW_DAILY_PROFILE_RESPONSE_EXPOSURE",
+  "authority_context": {
+    "profile_depth_cm": 200.0,
+    "soil_material_boundary_cm": 30.0,
+    "drain_depth_cm": 80.0,
+    "initial_groundwater_depth_cm": 75.0,
+    "bottom_boundary": "ZERO_FLUX",
+    "simulation_period": "2002-01-01 through 2004-12-31"
+  },
+  "projection_rule": "Each candidate W_i is the overlap-weighted integral of full-order compartment theta over the fixed candidate depth band. Candidate boundaries must coincide with full-order compartment boundaries for LARE-eligible candidates.",
+  "candidates": [
+    {
+      "id": "H4_ACTIVE_BOUNDARIES",
+      "dimension": 4,
+      "boundaries_cm": [0,10,30,80,200],
+      "rationale": "minimum physically structured challenger: surface layer, material boundary, drainage depth"
+    },
+    {
+      "id": "H6_DRAIN_ZONE",
+      "dimension": 6,
+      "boundaries_cm": [0,10,30,60,80,100,200],
+      "rationale": "adds bracketing resolution around the 80-cm drain/freatic active zone"
+    },
+    {
+      "id": "H8_SURFACE_DRAIN",
+      "dimension": 8,
+      "boundaries_cm": [0,10,20,30,60,80,100,150,200],
+      "rationale": "adds upper-root-zone and deeper-freatic information while preserving material and drain boundaries"
+    },
+    {
+      "id": "H10_SURFACE_DRAIN",
+      "dimension": 10,
+      "boundaries_cm": [0,5,10,20,30,50,70,80,100,150,200],
+      "rationale": "conservative higher-resolution fixed-grid challenger"
+    }
+  ],
+  "noneligible_representation_controls": [
+    {
+      "id": "U4_EQUAL_DEPTH_CONTROL",
+      "dimension": 4,
+      "boundaries_cm": [0,50,100,150,200],
+      "role": "information-only control; crosses the 30-cm material boundary and is not eligible for first LARE dynamics"
+    },
+    {
+      "id": "U8_EQUAL_DEPTH_CONTROL",
+      "dimension": 8,
+      "boundaries_cm": [0,25,50,75,100,125,150,175,200],
+      "role": "information-only control; crosses the 30-cm material boundary and is not eligible for first LARE dynamics"
+    }
+  ],
+  "firewalls": [
+    "NO_BOUNDARY_RETUNING_AFTER_HUPSEL_COLLISION_OR_FUTURE_RESPONSE_INSPECTION",
+    "NO_CANDIDATE_SELECTED_AS_PRODUCTION_ROM_FROM_STATE_SEPARATION_ALONE",
+    "NO_CROP_YEAR_USED_TO_MOVE_FIXED_BOUNDARIES_POST_HOC"
+  ]
+}
