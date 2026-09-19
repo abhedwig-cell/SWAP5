@@ -19,6 +19,7 @@ def git_blob_sha(path: str) -> str:
 
 rec = load("docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json")
 e7 = load("docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json")
+req = load("docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json")
 wu02 = load("integration/audits/PPA_WU02_STATUS.json")
 wu03 = load("integration/audits/PPA_WU03_STATUS.json")
 wu04 = load("integration/audits/PPA_WU04_STATUS.json")
@@ -26,7 +27,9 @@ wu05 = load("integration/audits/PPA_WU05_STATUS.json")
 wu05a = load("integration/audits/PPA_WU05A_STATUS.json")
 low02 = load("integration/audits/PPA_LOW02_TIME_STATUS.json")
 root_hyd01 = load("integration/audits/PPA_ROOT_HYD01_R1_RESULT.json")
+root_hyd02 = load("integration/audits/PPA_ROOT_HYD02_RESULT.json")
 wu05c = load("integration/audits/PPA_WU05C_STATUS.json")
+wu04a = load("integration/audits/PPA_WU04A_STATUS.json")
 src_path = "src/runtime/mod_fmr_production_application_bootstrap.f90"
 backend_path = "src/runtime/mod_fmr_serialized_reference_backend.f90"
 temporal_path = "src/solver/mod_reference_richards_temporal_indicator.f90"
@@ -35,6 +38,12 @@ src = read(src_path).decode("utf-8")
 assert e7["status"] == "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT"
 assert e7["outcome"] == "REALISTIC_COMPONENT_DOMAIN_LIMIT"
 assert git_blob_sha("docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json") == rec["e7"]["result_blob"]
+assert git_blob_sha("docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json") == rec["e7"]["application_requirements_blob"]
+assert req["status"] == "FROZEN_APPLICATION_REQUIREMENTS_WITH_CURRENT_CANONICAL_AUTHORITY_RECONCILED"
+assert req["frozen_selection"]["coupled_output_observed_before_freeze"] is False
+assert req["current_canonical_authority"]["PPA_WU03"]["state"] == "CANONICAL_ADMITTED_CLOSED"
+assert req["current_canonical_authority"]["PPA_WU03"]["broadens_mode5_process_composition"] is False
+assert req["current_canonical_authority"]["production_groundwater_owner"]["wider_process_complete_groundwater_owner_found_in_canonical"] is False
 
 assert git_blob_sha(src_path) == rec["current_production_boundary"]["bootstrap_blob"]
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
@@ -86,6 +95,20 @@ assert git_blob_sha("integration/audits/PPA_WU05C_STATUS.json") == rec["later_ca
 assert wu05c["scope"]["production_source_mutation"] is False
 assert wu05c["production_admission"] == "NONE_REVIEW_ONLY"
 
+assert git_blob_sha("integration/audits/PPA_ROOT_HYD02_RESULT.json") == rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["result_blob"]
+assert root_hyd02["decision"] == "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE"
+assert "no real live-MODFLOW root-active application admission by this workunit alone" in root_hyd02["nonclaims"]
+assert rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["application_owner_broadened"] is False
+assert rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["groundwater_owner_broadened"] is False
+
+assert git_blob_sha("integration/audits/PPA_WU04A_STATUS.json") == rec["later_canonical_workunits"]["PPA_WU04A"]["status_blob"]
+assert wu04a["work_unit"] == "PPA-WU04-A"
+assert "groundwater mode 5 Black composition" in wu04a["admitted_claim_boundary"]["nonclaims"]
+assert rec["later_canonical_workunits"]["PPA_WU04A"]["mode5_black_composition_admitted"] is False
+
+assert e7["canonical_reconciliation"]["production_bootstrap_blob"] == rec["current_production_boundary"]["bootstrap_blob"]
+assert e7["canonical_reconciliation"]["ppa_root_hyd02_result_blob"] == rec["later_canonical_workunits"]["PPA_ROOT_HYD02"]["result_blob"]
+assert e7["canonical_reconciliation"]["ppa_wu04a_status_blob"] == rec["later_canonical_workunits"]["PPA_WU04A"]["status_blob"]
 assert rec["verdict"] == "E7_CURRENT_CANONICAL_PRESERVED"
 
 print("PUB_GC_E7_CURRENT_RESULT_CLOSED=PASS")
@@ -100,4 +123,7 @@ print("PUB_GC_E7_PPA_WU05A_REVIEW_ONLY=PASS")
 print("PUB_GC_E7_PPA_LOW02_TIME_NO_GW_WIDENING=PASS")
 print("PUB_GC_E7_ROOT_HYD01_TEMPORAL_ONLY_NO_OWNER_WIDENING=PASS")
 print("PUB_GC_E7_PPA_WU05C_REVIEW_ONLY=PASS")
+print("PUB_GC_E7_ROOT_HYD02_TANGENT_ONLY_NO_OWNER_WIDENING=PASS")
+print("PUB_GC_E7_PPA_WU04A_NO_MODE5_PROCESS_WIDENING=PASS")
+print("PUB_GC_E7_APPLICATION_REQUIREMENTS_CURRENT_PROVENANCE=PASS")
 print("PUB_GC_E7_CURRENT_CANONICAL_PRESERVED=PASS")
