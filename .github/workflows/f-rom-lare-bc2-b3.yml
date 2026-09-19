@@ -1,0 +1,71 @@
+name: F-ROM-LARE BC2-B3 operator attribution
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_B3_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_b3_operator_attribution.py'
+      - '.github/workflows/f-rom-lare-bc2-b3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover qualified BC2-A2 Reference geometry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b3/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-b3/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-b3/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b3/a2.zip -d /tmp/lare-bc2-b3/a2
+          cmp /tmp/lare-bc2-b3/a2/o0.txt /tmp/lare-bc2-b3/a2/o2.txt
+          echo 'LARE_BC2_B3_REFERENCE_BINDING=PASS'
+
+      - name: Execute Reference-projected face attribution
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_B3_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_b3_operator_attribution.py \
+            --reference /tmp/lare-bc2-b3/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_B3_PREREGISTRATION.json \
+            --output LARE_BC2_B3_EVIDENCE/LARE_BC2_B3_RESULT.json \
+            | tee LARE_BC2_B3_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_B3_EVIDENCE/LARE_BC2_B3_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_B3_WATER_TABLE_FACE_CONSISTENTLY_LARGER_ERROR',
+              'BC2_B3_FIXED_MOVING_INTERFACE_CONSISTENTLY_LARGER_ERROR',
+              'BC2_B3_DIRECTION_DEPENDENT_MIXED_OPERATOR_ERROR',
+              'BC2_B3_OPERATOR_ERRORS_COMPARABLE_OR_MIXED',
+              'BC2_B3_REFERENCE_OPERATOR_ATTRIBUTION_BLOCKED',
+          }
+          assert r['next_model_change_authorized'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B3_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_B3_EVIDENCE/* > LARE_BC2_B3_EVIDENCE/sha256.txt
+
+      - name: Upload BC2-B3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-b3
+          path: LARE_BC2_B3_EVIDENCE/
+          if-no-files-found: warn
