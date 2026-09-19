@@ -7,6 +7,11 @@ on:
     paths:
       - 'integration/f-rom/LARE_RS1_GW_P1_RESULT.json'
       - 'integration/f-rom/LARE_RS1_GW_P2_PREREGISTRATION.json'
+      - 'tests/rom/prepare_lare_rs1_gw_p2_selection.py'
+      - 'tests/rom/test_lare_rs1_gw_p2_future_probe.f90'
+      - 'tests/rom/analyze_lare_rs1_gw_p2_future_response.py'
+      - 'tests/rom/run_lare_rs1_gw_p2.sh'
+      - '.github/workflows/f-rom-lare-rs1-gw-p2.yml'
   workflow_dispatch:
 
 permissions:
