@@ -130,5 +130,25 @@
     },
     "coupled_QI_QH_role": "COUPLED_QI_QH is an independent supporting diagnostic. It does not change the single-channel decision map and cannot rescue a failed MONOTONE_QI or CYCLE_QH hypothesis.",
     "scientific_effect": "Makes the preregistered decision tree exhaustive only. Regimes, variants, metrics, cases and causal hypotheses are unchanged."
+  },
+  "pre_execution_variant_blocking_clarification": {
+    "after_route_level_failure_before_variant_specific_response_exposure": true,
+    "observed_information": "An earlier implementation reported route-level OUTSIDE_QUALIFIED_DOMAIN/NUMERICAL_BLOCKED without identifying which variant caused it. No variant-specific response, rank or error metric was exposed.",
+    "core_single_channel_required_variants": [
+      "BASE_C0",
+      "ORACLE_Q90",
+      "ORACLE_QI",
+      "ORACLE_QH",
+      "ORACLE_GI"
+    ],
+    "core_rule": "Every core required variant must qualify on every required case and both routes. Any core variant outside domain, nonfinite, nonconvergent, or over a hard gate yields C4B_DIAGNOSTIC_BLOCKED. No clipping or fallback.",
+    "coupled_QI_QH_rule": "ORACLE_QI_QH must qualify in every dynamic case and both routes for the independent COUPLED_QI_QH hypothesis to be evaluable. If it is blocked, that coupled hypothesis is reported BLOCKED/FALSE but cannot invalidate an otherwise complete single-channel causal adjudication.",
+    "auxiliary_variants": [
+      "ORACLE_QI_QH_GI",
+      "ORACLE_Q90_QI_QH_GI"
+    ],
+    "auxiliary_rule": "These variants are interaction diagnostics only and occur in no frozen single-channel decision rule. They fail closed individually; their domain exit does not erase qualified core single-channel evidence.",
+    "implementation_requirement": "Variant execution and failure reporting must be isolated so one failed variant cannot suppress already-defined independent variants.",
+    "scientific_effect": "Clarifies logical dependency already implied by the frozen hypotheses; no regime, oracle definition, forcing, metric, state, closure, tolerance or response threshold changes."
   }
 }
