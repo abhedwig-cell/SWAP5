@@ -1,0 +1,72 @@
+name: F-ROM-LARE persist MECH3B blind panel
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-dyn0a-mech3b-persist.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact blind-panel artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-mech3b
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10586248675/zip" > /tmp/lare-mech3b/mech3b.zip
+          echo "81a86b10cfcca1570c44071611b823555eedbb9439869ff16fa3f2153b9fa46f  /tmp/lare-mech3b/mech3b.zip" | sha256sum -c -
+          unzip -q /tmp/lare-mech3b/mech3b.zip -d /tmp/lare-mech3b/evidence
+
+      - name: Validate blind result
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_RESULT.json'))
+          s=json.load(open('/tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json'))
+          p=json.load(open('/tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_PREDICTIONS.json'))
+          assert r['decision']=='NONLINEAR_SCALE_TRANSFER_SUPPORTED'
+          assert r['reference_panel_sufficient'] is True
+          assert r['qualified_WET_DRY_case_count']==12
+          assert r['primary_transfer_checks']=={
+              'between_material_mean_ln_lambda_std_improved': True,
+              'pooled_ln_lambda_std_improved': True,
+              'rms_log_prediction_error_improved': True,
+          }
+          assert r['usable_materials']['LOAM']['usable_for_minimum'] is True
+          assert r['usable_materials']['CLAY']['usable_for_minimum'] is True
+          assert r['usable_materials']['SAND']['usable_for_minimum'] is False
+          assert s['qualified_count']==26
+          assert s['outside_domain_count']==8
+          assert s['numerical_block_count']==2
+          assert p['generated_before_new_reference_trajectory'] is True
+          assert p['response_data_used'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_DYN0A_MECH3B_BLIND_RESULT=PASS')
+          PY
+
+      - name: Persist exact result and frozen prediction/status authority
+        run: |
+          set -euo pipefail
+          cp /tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_RESULT.json integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json
+          cp /tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json integration/f-rom/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json
+          cp /tmp/lare-mech3b/evidence/LARE_DYN0A_MECH3B_PREDICTIONS.json integration/f-rom/LARE_DYN0A_MECH3B_PREDICTIONS.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json                   integration/f-rom/LARE_DYN0A_MECH3B_REFERENCE_STATUS.json                   integration/f-rom/LARE_DYN0A_MECH3B_PREDICTIONS.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist blind nonlinear scale validation"
+          git push origin HEAD:work/f-rom-lare-rs1
