@@ -123,5 +123,16 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_model_change_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalisation": {
+    "before_first_C4M_execution": true,
+    "primary_interval_slope": "For Reference, TERMINAL_SIDE_LINEAR, CENTRAL and cubic, compute the primary interval-effective slope as s=1-q_interval/Kbar, with q_interval the trapezoidal mean of endpoint fluxes and Kbar the arithmetic mean of that representation's endpoint interface K. This makes q=Kbar*(1-s) an exact identity for every representation.",
+    "correction_definitions": "delta_ref=s_ref-s_base; delta_central=s_central-s_base; delta_cubic=s_cubic-s_base use the primary interval-effective slopes above.",
+    "endpoint_slopes": "Arithmetic means of endpoint a_t, b_bulk, central endpoint slope and cubic endpoint slope are secondary diagnostics only and never replace the primary interval-effective slope in adjudication.",
+    "zero_floor": 1e-12,
+    "zero_floor_role": "Pure numerical guard for sign fractions and cosine calculations; not a hydrological tolerance.",
+    "c4l_reproduction": "Recomputed cubic qi summary metrics must reproduce the persisted authoritative C4L case RMS and MAE within 1e-10 cm/day before cubic mechanism comparisons are interpreted.",
+    "response_based": false,
+    "scientific_effect": "NONE"
+  }
 }
