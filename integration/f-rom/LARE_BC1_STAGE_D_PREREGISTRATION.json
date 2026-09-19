@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.lare.bc1.stage-d.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC1-D",
+  "phase": "PREREGISTERED_BEFORE_R16_TIME_LEVEL_ATTRIBUTION",
+  "purpose": "Attribute the nonzero R16 head-driven residual between spatial LARE closure error and Reference SWKIMPL=0 lower-face conductivity time-level semantics without modifying the supported physical CURRENT_LAYER_FACE closure.",
+  "authority": {
+    "bc1_a2": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "bc1_b": "integration/f-rom/LARE_BC1_STAGE_B_CLOSEOUT.json",
+    "bc1_c": "integration/f-rom/LARE_BC1_STAGE_C_CLOSEOUT.json",
+    "reference_artifact_id": 10585316225,
+    "reference_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+  },
+  "fixed_geometry": {
+    "id": "R16",
+    "dimension": 16,
+    "boundaries_cm": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160
+    ],
+    "rationale": "No spatial reduction; freezes the grid at the BC1-C asymptotic endpoint."
+  },
+  "controls": {
+    "CURRENT_LAYER_FACE": {
+      "role": "supported physical LARE boundary closure baseline",
+      "formula": "K(theta_N(stage)) * [1 + 2*(psi_b-psi_N(stage))/10]"
+    },
+    "OBSERVATION_LAGGED_BOTTOM_FACE": {
+      "role": "Reference-time-level attribution control only; never a candidate physical LARE closure",
+      "formula": "K(theta_N at start of the 0.0008-day observation interval) * [1 + 2*(psi_b-psi_N(stage))/10]",
+      "freeze_semantics": "The lower-face K is frozen once per accepted-observation interval and reused for every Heun predictor/corrector evaluation and internal substep in that interval.",
+      "internal_interfaces": "remain standard current-state LARE; only bottom-face K time level is changed"
+    }
+  },
+  "histories": [
+    "G00",
+    "G03",
+    "G04",
+    "G05"
+  ],
+  "numerical": {
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "heun_dt_day": [
+      0.0002,
+      0.0001
+    ],
+    "primary_dt_day": 0.0001,
+    "corrector_theta_tolerance": 1e-13,
+    "max_corrector_iterations": 50,
+    "water_ledger_gate_cm": 1e-10,
+    "no_clipping": true
+  },
+  "comparison": {
+    "reference_storage": "fine 16x10 cm accepted Reference storage, identical spatial bands to R16",
+    "reference_bottom_exchange": "accepted interval BOTTOM_OUTWARD_EXCHANGE",
+    "metrics": [
+      "maximum absolute layer-storage error",
+      "mean absolute layer-storage error",
+      "maximum cumulative bottom-exchange error",
+      "maximum interval-average bottom-flux error",
+      "bottom-flux sign mismatch count",
+      "reversal sequence and timing",
+      "Heun refinement floor"
+    ]
+  },
+  "hypotheses": {
+    "H_BOUNDARY_TIME_LEVEL_DOMINANT": "If lower-face conductivity time level dominates the R16 residual, OBSERVATION_LAGGED_BOTTOM_FACE is non-inferior to CURRENT_LAYER_FACE on all integrated/storage/sign/reversal maxima and strictly improves both cumulative bottom exchange and interval-average bottom-flux maxima.",
+    "H_BOUNDARY_TIME_LEVEL_PARTIAL": "If lagging lower-face K improves exchange/flux but leaves material storage residual, the remaining asymptote is attributed to interior temporal/operator differences and/or Heun versus Reference integration semantics.",
+    "H_NOT_DOMINANT": "If the lagged control fails to improve exchange/flux consistently, the R16 residual is not primarily a lower-face K time-level effect."
+  },
+  "adjudication": {
+    "no_scalar_weighting": true,
+    "outcomes": [
+      "BC1_R16_BOUNDARY_TIME_LEVEL_DOMINANT",
+      "BC1_R16_BOUNDARY_TIME_LEVEL_PARTIAL",
+      "BC1_R16_BOUNDARY_TIME_LEVEL_NOT_DOMINANT",
+      "BC1_R16_ATTRIBUTION_BLOCKED"
+    ],
+    "rule": "Dominant requires lagged control non-inferior on max storage, cumulative exchange, interval flux, sign mismatch and reversal timing and strictly better on cumulative exchange and interval flux. Partial requires strict improvement in both exchange components but failure of full noninferiority. Otherwise not dominant."
+  },
+  "firewalls": [
+    "NO_PROMOTION_OF_LAGGED_CONTROL_TO_PHYSICAL_LARE_CLOSURE",
+    "NO_SPATIAL_GRID_CHANGE",
+    "NO_INTERNAL_INTERFACE_CLOSURE_CHANGE",
+    "NO_COEFFICIENT_FIT",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_MOVING_WATER_TABLE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
