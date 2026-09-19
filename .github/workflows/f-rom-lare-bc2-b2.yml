@@ -1,0 +1,72 @@
+name: F-ROM-LARE BC2-B2 residual-only equilibrium control
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_B2_PREREGISTRATION.json'
+      - 'tests/rom/run_lare_bc2_b2_residual_only.py'
+      - '.github/workflows/f-rom-lare-bc2-b2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover qualified BC2-A2 Reference geometry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lare-bc2-b2/a2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587360597/zip" > /tmp/lare-bc2-b2/a2.zip
+          echo "86a7922e540a64e168835c23868fea3f67fc49d820c28901db7ba62ec3daa278  /tmp/lare-bc2-b2/a2.zip" | sha256sum -c -
+          unzip -q /tmp/lare-bc2-b2/a2.zip -d /tmp/lare-bc2-b2/a2
+          test -f /tmp/lare-bc2-b2/a2/o0.txt
+          cmp /tmp/lare-bc2-b2/a2/o0.txt /tmp/lare-bc2-b2/a2/o2.txt
+          echo 'LARE_BC2_B2_REFERENCE_BINDING=PASS'
+
+      - name: Execute residual-only equilibrium control
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_B2_EVIDENCE
+          python3 tests/rom/run_lare_bc2_b2_residual_only.py \
+            --reference /tmp/lare-bc2-b2/a2/o0.txt \
+            --prereg integration/f-rom/LARE_BC2_B2_PREREGISTRATION.json \
+            --b0-result integration/f-rom/LARE_BC2_B0_RESULT.json \
+            --b1-result integration/f-rom/LARE_BC2_B1_RESULT.json \
+            --output LARE_BC2_B2_EVIDENCE/LARE_BC2_B2_RESULT.json \
+            | tee LARE_BC2_B2_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_B2_EVIDENCE/LARE_BC2_B2_RESULT.json'))
+          assert r['decision'] in {
+              'BC2_B2_RESIDUAL_ONLY_RELATIVE_SUPPORT',
+              'BC2_B2_RESIDUAL_ONLY_MIXED_RESPONSE',
+              'BC2_B2_RESIDUAL_ONLY_NO_RELATIVE_SUPPORT',
+              'BC2_B2_RESIDUAL_ONLY_NUMERICALLY_BLOCKED',
+          }
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_B2_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_B2_EVIDENCE/* > LARE_BC2_B2_EVIDENCE/sha256.txt
+
+      - name: Upload BC2-B2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-b2
+          path: LARE_BC2_B2_EVIDENCE/
+          if-no-files-found: warn
