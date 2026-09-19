@@ -1,0 +1,137 @@
+name: F-ROM-LARE persist final C4M mechanism closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4m-final-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover final C4M authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4m
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591881707/zip" > /tmp/c4m.zip
+          echo "e018228b6127a9dd097f740f93c9c8e89c87a9296f4e86eae596f4f181589dc9  /tmp/c4m.zip" | sha256sum -c -
+          unzip -q /tmp/c4m.zip -d /tmp/c4m
+          echo "aab38baa6119630688e71569d220031cf89d5cd071e7952a375128ef1be22731  /tmp/c4m/LARE_BC2_C4M_RESULT.json" | sha256sum -c -
+
+      - name: Validate final C4M
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4m/LARE_BC2_C4M_RESULT.json'))
+          assert r['decision']=='C4M_DIAGNOSTIC_BLOCKED'
+          assert r['blocked_cases']==[{'history':'WT_HOLD','width_cm':'5.0'}]
+          assert len(r['unsupported_cases'])==5
+          assert r['supported_cases']==[]
+          assert r['summary']['5.0']['WT_HOLD']['hard_checks']['C4L_cubic_metrics_reproduced'] is False
+          for w,h in [('2.5','WT_HOLD'),('2.5','WT_RISE'),('2.5','WT_FALL'),('5.0','WT_RISE'),('5.0','WT_FALL')]:
+              assert r['summary'][w][h]['hard_checks']['C4L_cubic_metrics_reproduced'] is True
+              assert r['summary'][w][h]['decision']=='C4M_CASE_NOT_SUPPORTED'
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4M_FINAL_VALIDATION=PASS')
+          PY
+
+      - name: Build final C4M closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4m/LARE_BC2_C4M_RESULT.json'))
+          c4l=json.load(open('integration/f-rom/LARE_BC2_C4L_RESULT.json'))
+          cur=r['summary']['5.0']['WT_HOLD']['qi']['CUBIC']
+          auth=c4l['summary']['5.0']['WT_HOLD']['qi_CUBIC']
+          repro_delta={
+            'rms_abs_difference_cm_per_day':abs(cur['rms']-auth['rms']),
+            'mae_abs_difference_cm_per_day':abs(cur['mae']-auth['mae']),
+            'frozen_reproduction_gate_cm_per_day':1e-10
+          }
+          out={
+            'schema':'swap5.lare.bc2.c4m.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4M',
+            'status':'CLOSED_DIAGNOSTIC_BLOCKED_CENTRAL_NOT_SUPPORTED_WHERE_INTERPRETABLE',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35468238818,
+              'execution_head':'47a99351a92365a7d927c50961f71fa9df2b686c',
+              'aggregate_artifact_id':10591881707,
+              'aggregate_artifact_digest':'sha256:e018228b6127a9dd097f740f93c9c8e89c87a9296f4e86eae596f4f181589dc9',
+              'result_sha256':'aab38baa6119630688e71569d220031cf89d5cd071e7952a375128ef1be22731'
+            },
+            'superseded_runs':{
+              'pre_interval_semantics_run':35468029171,
+              'name_shadowing_blocked_run':35468138955
+            },
+            'formal_blocker':{
+              'case':'5.0:WT_HOLD',
+              'reason':'Recomputed C4L cubic summary misses the preregistered 1e-10 cm/day reproduction gate.',
+              **repro_delta,
+              'source_blobs_bit_identical_to_C4L_execution_authority':True
+            },
+            'bounded_interpretable_result':{
+              'five_cases_with_C4L_reproduction':5,
+              'central_supported_cases':0,
+              'central_not_supported_cases':5,
+              'note':'These five cases do not override the formal aggregate BLOCKED decision.'
+            },
+            'scientific_interpretation':[
+              'C4M is formally blocked by the frozen cubic-reproduction gate in 5 cm HOLD; the gate is not relaxed post response.',
+              'The C4L, B9, B8 and B7 source blobs are bit-identical to the C4L authority, so the miss is classified as run-to-run numerical reproducibility rather than provenance drift.',
+              'In every one of the five otherwise interpretable cases, the parameter-free central interface gradient is not supported relative to B9.',
+              'The central slope generally over-applies the available terminal-to-bulk slope contrast. This motivates an independent response-blind amplitude-geometry test, not a fitted blend.'
+            ],
+            'next_authority':'PREREGISTER_RESPONSE_BLIND_FACE_INTERPOLATED_GRADIENT_AMPLITUDE_TEST',
+            'model_changed':False,
+            'propagated_dynamics_authorized':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4M_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4M closeout
+
+          Formal decision: C4M_DIAGNOSTIC_BLOCKED.
+
+          The final authority is workflow 35468238818 at head 47a99351a92365a7d927c50961f71fa9df2b686c. Earlier C4M runs are superseded.
+
+          Five of six cases reproduce the authoritative C4L cubic metrics and all five reject the parameter-free central interface gradient relative to B9. The remaining 5 cm HOLD case is formally blocked because the recomputed cubic RMS differs from the persisted C4L value by about 1.92e-10 cm/d, above the frozen 1e-10 reproduction gate. The source blobs are bit-identical, so this is treated as numerical reproducibility rather than provenance drift. The gate is not relaxed.
+
+          The usable bounded mechanism evidence still points in one direction: the direct central finite-volume slope uses too much of the terminal-to-bulk slope contrast. It is therefore not admitted for propagation.
+
+          A new independent diagnostic may test a response-blind face-interpolated slope with the opposite distance weighting, delta_s = d/(B+d)*(b_bulk-a_t). This is a physically derived geometry hypothesis, not a fitted blend, and must be preregistered separately.
+          MD
+
+      - name: Persist final C4M authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4m/LARE_BC2_C4M_RESULT.json integration/f-rom/LARE_BC2_C4M_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4M_RESULT.json integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4M_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close blocked C4M slope mechanism review"
+          git push origin HEAD:work/f-rom-lare-rs1
