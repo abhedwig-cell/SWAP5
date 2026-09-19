@@ -1,0 +1,122 @@
+name: F-ROM-LARE persist C4M slope-correction closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4m-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4M authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4m
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10591921245/zip" > /tmp/c4m.zip
+          echo "b2907d401d301e615a9a57bdbd6f5447057826831a11372c66b97bd2ed0cea42  /tmp/c4m.zip" | sha256sum -c -
+          unzip -q /tmp/c4m.zip -d /tmp/c4m
+          echo "d534dff883958fdb32e585edee9e651aa6c1da3c4f3c4e0edb95ba9d3ffb302f  /tmp/c4m/LARE_BC2_C4M_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4M
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4m/LARE_BC2_C4M_RESULT.json'))
+          assert r['decision']=='CENTRAL_INTERFACE_GRADIENT_MIXED'
+          assert r['supported_cases']==[]
+          assert len(r['unsupported_cases'])==6
+          assert r['blocked_cases']==[]
+          assert r['hard_checks']['maximum_qH_central_vs_B9_identity_cm_per_day']==0.0
+          assert r['hard_checks']['maximum_central_hydrostatic_abs_slope_minus_1']==0.0
+          assert r['propagated_dynamics_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4M_VALIDATION=PASS')
+          PY
+
+      - name: Build closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4m/LARE_BC2_C4M_RESULT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4m.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4M',
+            'status':'CLOSED_CENTRAL_GRADIENT_REJECTED_AMPLITUDE_MECHANISM_OPEN',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35468029171,
+              'execution_head':'5470367ee2a25bac90920b10c353dca9009fbb06',
+              'aggregate_artifact_id':10591921245,
+              'aggregate_artifact_digest':'sha256:b2907d401d301e615a9a57bdbd6f5447057826831a11372c66b97bd2ed0cea42',
+              'result_sha256':'d534dff883958fdb32e585edee9e651aa6c1da3c4f3c4e0edb95ba9d3ffb302f'
+            },
+            'case_artifacts':{
+              '2.5:WT_HOLD':{'id':10592065959,'digest':'sha256:c27fd1439da67b3018510167b9754058bde02004b9f1f9932469f8728f768212'},
+              '2.5:WT_RISE':{'id':10592225773,'digest':'sha256:9bfe8611ce440df2b00e516f65e78697d666069be08d30a59b6edd7c694ef44f'},
+              '2.5:WT_FALL':{'id':10591459224,'digest':'sha256:b1a6713cbc934000e80c0ecad7ce2612ffe44fe1ab2cab075b6da948d54b4bd8'},
+              '5.0:WT_HOLD':{'id':10591504075,'digest':'sha256:7bd48a96b77f52fb2a3f72b3eaea0f250197d9d65acc3e00c27b4b44c65d9724'},
+              '5.0:WT_RISE':{'id':10591334287,'digest':'sha256:4034487cd3eec15a412125fb375417b1e8cc5b848b16f039eafce1b9f7ab5576'},
+              '5.0:WT_FALL':{'id':10591831464,'digest':'sha256:e306a4b9d705c51e294167078a6de13301005270eb42cce0a72c9de729ffcdfc'}
+            },
+            'hard_checks':r['hard_checks'],
+            'supported_cases':r['supported_cases'],
+            'unsupported_cases':r['unsupported_cases'],
+            'scientific_interpretation':[
+              'The parameter-free central finite-volume interface slope is rejected in all six cases despite exact qH preservation and hydrostatic identity.',
+              'The available one-sided slope contrast often carries the correct correction sign, but the central geometric amplitude is much too large.',
+              'Cubic corrections are much smaller and often closer to Reference, but remain non-transferable across width/regime and damage HOLD.',
+              'The next question is whether correction amplitude has a response-blind physical scaling in existing state/geometry. No fitted blend is authorized.'
+            ],
+            'next_authority':'PREREGISTER_RESPONSE_BLIND_CORRECTION_AMPLITUDE_GEOMETRY_AUDIT',
+            'model_changed':False,
+            'propagated_dynamics_authorized':False,
+            'next_model_change_authorized':False,
+            'groundwater_feedback_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4M_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4M closeout
+
+          Formal decision: CENTRAL_INTERFACE_GRADIENT_MIXED, with zero supported cases.
+
+          C4M tested the parameter-free finite-volume interface slope implied by the existing B9 terminal and bulk one-sided linear reconstructions. qH and interface K were kept unchanged.
+
+          All hard gates pass, but the central candidate is worse than B9 in every HOLD, RISE and FALL case at both widths. The failure is primarily amplitude, not sign. In 5 cm FALL the Reference-required mean correction is about -0.0197 while the central construction applies about -0.1017. In 2.5 cm FALL the corresponding values are about -0.0075 and -0.1059.
+
+          The central correction often has the same sign as Reference, but overshoots severely. The cubic correction is much smaller and usually closer, yet C4L showed it is not transferable and harms HOLD.
+
+          Therefore no central-gradient propagation, fitted blend factor or direction switch is authorized. The next diagnostic is restricted to identifying whether correction amplitude follows a pre-existing physical geometry or state scale without using response to tune a coefficient.
+          MD
+
+      - name: Persist C4M authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4m/LARE_BC2_C4M_RESULT.json integration/f-rom/LARE_BC2_C4M_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4M_RESULT.json integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4M_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4M central-gradient rejection"
+          git push origin HEAD:work/f-rom-lare-rs1
