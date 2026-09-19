@@ -44,26 +44,28 @@ jobs:
           assert p['production_rom_authorized'] is False
           assert p['fixed_flux_case_count']==24
           assert p['free_drainage_case_count']==24
-          assert 0 < p['fixed_flux_finest_success_count'] <= 24
-          assert 0 <= p['free_drainage_finest_success_count'] <= 24
+          assert p['fixed_flux_finest_success_count'] + p['fixed_flux_outside_qualified_domain_count'] == 24
+          assert p['fixed_flux_numerical_blocked_count'] == 0
+          assert p['free_drainage_finest_success_count'] + p['free_drainage_outside_qualified_domain_count'] == 24
+          assert p['free_drainage_numerical_blocked_count'] == 0
           assert p['max_abs_water_ledger_cm'] <= 1e-9
           assert p['max_abs_equilibrium_total_storage_change_cm'] <= 1e-9
-          blocked=[]
+          outside=[]
           for cid,case in p['cases'].items():
-              assert case['status'] in ('QUALIFIED','NUMERICAL_OR_DOMAIN_BLOCKED')
+              assert case['status'] in ('QUALIFIED','OUTSIDE_QUALIFIED_DOMAIN')
               if case['status']=='QUALIFIED':
                   lo,hi=case['finest_reference']['theta_range']
                   assert lo > 0.02 and hi < 0.427494
               else:
-                  blocked.append(cid)
-                  assert case['heun_failures']
+                  outside.append(cid)
+                  assert any('OUTSIDE_QUALIFIED_DOMAIN' in msg for msg in case['heun_failures'].values())
               for n in case['heun_max_corrector_iterations'].values():
                   assert n <= 50
           # Equilibrium must remain qualified for every state/bottom variant.
           for cid,case in p['cases'].items():
               if case['case']['forcing_id']=='EQ':
                   assert case['status']=='QUALIFIED', cid
-          print('LARE_DYN0A_ODE_BLOCKED_CASES=' + ','.join(sorted(blocked)))
+          print('LARE_DYN0A_ODE_OUTSIDE_DOMAIN_CASES=' + ','.join(sorted(outside)))
           print('LARE_DYN0A_ODE_STRUCTURAL_GATE=PASS')
           PY
 
