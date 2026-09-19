@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.lare.representation-selection.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-REPSEL-1",
+  "status": "CLOSED_FIXED_PARTITION_BOUNDARY_NEXT_FAMILY_SOURCE_BINDING_REQUIRED",
+  "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "authorities": {
+    "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+    "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
+    "moving_lower_zone_closure_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+    "purpose_dependent_rom": "integration/f-rom/F-ROMV2_STATUS.json",
+    "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json"
+  },
+  "reconciled_findings": {
+    "fixed_partition_LARE": [
+      "Conservative standard LARE is physically coherent and resolution-convergent in the bounded DYN0A laboratory.",
+      "Low-dimensional fixed partitions are not broadly qualified; critical dynamic storage error decreases strongly with added states and approaches the fine control only at high dimension.",
+      "Gradient reconstruction, not conductivity localization, is the dominant bounded internal-flux error mechanism.",
+      "C4K did not establish a need for extra history state in the tested BC2 current-state space.",
+      "C4L, C4M, C4N and C4O did not establish a transferable zero-fit scalar internal-gradient correction across width and regime.",
+      "Further scalar tuning of the same fixed-partition closure is therefore not authorized by current evidence."
+    ],
+    "same_partition_CoRichards": [
+      "R3 was already dynamically blocked under frozen strict Reference numerical authority.",
+      "Q1 extended the same comparator to R4, R5, R6, R8 and R12 and found zero qualified non-equilibrium dynamic histories at every reduced dimension through 16 temporal substeps.",
+      "R16 exactly reproduces the fine Reference status map and qualifies all seven expected physically in-domain dynamic histories.",
+      "Reduced same-partition CoRichards is therefore unavailable as a dynamic equal-dimension comparator in this bounded laboratory under current authority.",
+      "This numerical availability result does not imply hydrological superiority of LARE."
+    ],
+    "purpose_and_value": [
+      "F-ROMV2 does not require numerical equivalence to fine Richards for a deliberately reduced model.",
+      "Application acceptance remains purpose-dependent and has not been adjudicated for this representation boundary.",
+      "No speed or production-ROM claim is authorized."
+    ]
+  },
+  "closed_routes": [
+    {
+      "id": "FIXED_PARTITION_SCALAR_LARE_CLOSURE_TUNING",
+      "disposition": "NO_FURTHER_ZERO_FIT_SCALAR_TUNING_WITHOUT_NEW_REPRESENTATION_AUTHORITY",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
+      ]
+    },
+    {
+      "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2",
+      "disposition": "NOT_AUTHORIZED_NO_REDUCED_DYNAMIC_COMMON_COHORT",
+      "evidence": [
+        "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json"
+      ]
+    }
+  ],
+  "retained_controls": [
+    "Fine Reference Richards remains scientific reference.",
+    "R16 remains no-spatial-reduction control, not a ROM.",
+    "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
+    "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
+  ],
+  "next_family_authority": {
+    "family": "QUASI_STEADY_OR_INTEGRATED_MANIFOLD_PHYSICAL_REDUCTION",
+    "repository_basis": [
+      "integration/f-rom/F-ROMV2_STATUS.json lists this as a candidate family.",
+      "integration/f-rom/F-ROMV2_V1_RESULT.json explicitly authorizes testing an independent quasi-steady or integrated-manifold physical reduction for regional or groundwater-coupled use."
+    ],
+    "relation_to_current_boundary": "Independent physical representation family rather than another scalar correction to fixed-partition LARE or a conventional spatial coarsening of Richards.",
+    "required_before_model_definition": [
+      "Bind an inspectable primary source formulation and state definition.",
+      "Separate equilibrium/manifold reconstruction from any transient disequilibrium or memory state.",
+      "Freeze conservation and boundary-flux semantics.",
+      "Define what state is prognostic versus diagnostically reconstructed.",
+      "Use the existing purpose-dependent acceptance framework; do not demand universal Richards equivalence."
+    ],
+    "implementation_authorized": false,
+    "reason": "The family is authorized for research, but the exact manifold equations and source authority are not yet bound in this repository workstream."
+  },
+  "secondary_representation_note": {
+    "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
+    "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
+  },
+  "decision": "NEXT_INDEPENDENT_PHYSICAL_FAMILY_QUASI_STEADY_MANIFOLD_SOURCE_BINDING",
+  "next_authority": "BIND_PRIMARY_SOURCE_FOR_QUASI_STEADY_OR_INTEGRATED_MANIFOLD_REDUCTION",
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
