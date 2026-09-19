@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.lare.dyn0a.crq.authority.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-DYN0A-CRQ",
+  "decision": "EQUAL_DIMENSION_COARSE_RICHARDS_DYNAMIC_COMPARATOR_BLOCKED",
+  "authority": {
+    "workflow_run": 35447532447,
+    "artifact_id": 10586270946,
+    "artifact_digest": "sha256:011ab21b4b883cc91811d74cceee27f9eee1761239f5af501c5f9691ab43fe60",
+    "executed_head": "58460a47f8e49b737c9f82ce1acf66c6625cc86b",
+    "conclusion": "success",
+    "note": "This run follows the time-coordinate preflight repair and is the CRQ authority. Earlier CRQ artifacts are superseded preflight evidence."
+  },
+  "qualification_design": {
+    "geometries": {
+      "D3": [
+        140,
+        10,
+        10
+      ],
+      "D2": [
+        150,
+        10
+      ]
+    },
+    "substep_counts": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "internal_dt_day": [
+      0.0008,
+      0.0004,
+      0.0002,
+      0.0001,
+      0.00005
+    ],
+    "spatial_partition_changed": false,
+    "forcing_changed": false,
+    "tolerance_relaxed": false,
+    "fallback_authority_expanded": false
+  },
+  "result": {
+    "D3": {
+      "qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "dynamic_cases_blocked_all_refinements": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ]
+    },
+    "D2": {
+      "qualified_cases": [
+        "S1_B1_F1",
+        "S2_B1_F1",
+        "S3_B1_F1"
+      ],
+      "dynamic_cases_blocked_all_refinements": [
+        "S1_B1_F2",
+        "S1_B1_F3",
+        "S1_B1_F4",
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4",
+        "S3_B1_F2",
+        "S3_B1_F3",
+        "S3_B1_F4"
+      ]
+    },
+    "total_dynamic_blocked_all_refinements": 18
+  },
+  "scientific_interpretation": [
+    "The three equilibrium histories per coarse geometry are numerically qualified and invariant across the temporal-refinement ladder.",
+    "Temporal subdivision alone does not qualify any dynamic D3 or D2 coarse-Richards history, even at 16 substeps per 0.0008-day observation interval.",
+    "Therefore the equal-state-dimension dynamic coarse-Richards comparator is unavailable under the current strict Reference numerical authority.",
+    "This cannot be interpreted as LARE outperforming coarse Richards; it is a comparator-qualification blocker.",
+    "LARE may still be characterized against fine Reference Richards on its common physical domain."
+  ],
+  "valid_next_question": "Determine whether standard LARE closure error is primarily resolution-driven using the already-preregistered D4 control, and separately decide whether a higher-dimensional conventional Richards viability curve is scientifically useful.",
+  "production_rom_authorized": false
+}
