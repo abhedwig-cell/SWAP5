@@ -145,16 +145,16 @@ def candidate_rows(name,r16,r2=None):
             for st in range(1,STEPS+1):
                 s=ref["states"][(h,st)]
                 if ref["n"]==2:
-                    theta16=[float(ref["nodes"][(h,st,1)]["THETA"])]*8+[float(ref["nodes"][(h,st,2)]["THETA"])]*8
+                    theta16=[float(ref["nodes"][(h,st)][1]["THETA"])]*8+[float(ref["nodes"][(h,st)][2]["THETA"])]*8
                 else:
-                    theta16=[float(ref["nodes"][(h,st,n)]["THETA"]) for n in range(1,17)]
+                    theta16=[float(ref["nodes"][(h,st)][n]["THETA"]) for n in range(1,17)]
                 rows[st]={"theta16":theta16,"upper":float(s["UPPER_STORAGE"]),"lower":float(s["LOWER_STORAGE"]),
                           "total":float(s["TOTAL_STORAGE"]),"bottom_exchange":float(s["BOTTOM_OUTWARD_EXCHANGE"]),
                           "bottom_flux":float(s["BOTTOM_FLUX"]),"mass":float(s["MASS"])}
         et=[];ec=[];ep=[];eu=[];el=[];eq=[];cum=0.;refcum=0.;se=0
         for st in range(1,STEPS+1):
             rr=r16["states"][(h,st)]
-            rt=[float(r16["nodes"][(h,st,n)]["THETA"]) for n in range(1,17)]
+            rt=[float(r16["nodes"][(h,st)][n]["THETA"]) for n in range(1,17)]
             row=rows[st]; cum+=row["bottom_exchange"]; refcum+=float(rr["BOTTOM_OUTWARD_EXCHANGE"])
             et.append(row["total"]-float(rr["TOTAL_STORAGE"])); ec.append(cum-refcum)
             eu.append(row["upper"]-float(rr["UPPER_STORAGE"])); el.append(row["lower"]-float(rr["LOWER_STORAGE"]))
