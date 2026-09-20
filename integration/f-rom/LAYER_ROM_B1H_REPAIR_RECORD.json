@@ -28,7 +28,7 @@
     "threshold_changed": false,
     "prospective_integrity": "No new B1H material preflight or Reference response ran before the repair."
   },
-  "rerun_required": true,
+  "rerun_required": false,
   "production_rom_authorized": false,
   "additional_failed_pre_response_runs": [
     {
@@ -56,5 +56,14 @@
     "expected_rerun": 35495947476,
     "scientific_design_changed": false,
     "response_generated_before_final_repair": false
+  },
+  "final_successful_execution": {
+    "workflow_run": 35495947476,
+    "executed_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10600374489,
+    "aggregate_artifact_digest": "sha256:ca2197a7cb4e7479e39a097d5652916582e473e6500dbe7be6a810d65ddf6852",
+    "all_six_material_jobs_success": true,
+    "aggregate_gate_success": true
   }
 }
