@@ -164,7 +164,7 @@
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
     "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
     "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
-    "next_gate": "Execute F-GC38 native MODFLOW component-budget gate in an environment with MODFLOW 6.8/XMI, then bind its accepted API transfer to the SWAP accepted interface ledger and canonical SWAP mass account for the combined P3 gate. No production non-overlap inference and no E7 rerun.",
+    "next_gate": "Execute native MODFLOW component-budget gate and add a controlled two-level nonzero STO perturbation. Require conservative component/combined budgets and distinct storage-ledger roles; do not require solution invariance and do not infer production authority from geometric overlap alone.",
     "proof_obligations": {
       "P1": "accepted interface mass continuity",
       "P2": "hydraulic compatibility under declared head-transfer operator",
@@ -197,6 +197,14 @@
         "terms": "STO + API coupling + CHD + any other native accepted records",
         "acceptance": "absolute sum <= 1e-10 * max(1,sum(abs(terms)))"
       }
+    },
+    "scientific_interpretation": {
+      "state": "STATE_SPACE_AUTHORITY_REFINED_PENDING_QUALIFICATION",
+      "finding": "MODFLOW head may represent a regional groundwater hydraulic-head DOF while SWAP retains vertically resolved column storage and diagnostic phreatic level; geometric overlap alone is not proof of duplicated dynamic storage.",
+      "interface_condition": "H_MF = H_SWAP_bottom does not imply H_MF = z_GW_SWAP",
+      "response_interpretation": "u/dt is condensed SWAP interface-transfer sensitivity dq_i/dH_bottom, not an additional MODFLOW STO volume",
+      "required_discriminant": "controlled nonzero MODFLOW STO perturbation with fixed SWAP physics and coupling, observing both storage ledgers, heads, interface transfer, u, and component/combined residuals",
+      "commit": "70e0ea18f3fa1c6137baf400c2712d0f84918575"
     }
   },
   "current_pr_divergence": {
