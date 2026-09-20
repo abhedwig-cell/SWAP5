@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.lare.bc2.c6e.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6E",
+  "status": "CLOSED_BEMR_PRESCRIBED_FLUX_BOUNDARY_NOT_QUALIFIED_FREE_RUNNING_NOT_AUTHORIZED_SCIENTIFIC_CHOICE_REQUIRED",
+  "decision": "STOP_BEMR_FREE_RUNNING_ROUTE_WITHOUT_POST_RESULT_RETUNING",
+  "role": "RESPONSE_FREE_PRESCRIBED_FLUX_BOUNDARY_QUALIFICATION_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json",
+    "execution_binding": "integration/f-rom/LARE_BC2_C6E_EXECUTION_BINDING.json",
+    "authoritative_run": 35525617524,
+    "execution_head": "3a72c980cd8f8488e20b51daeb1ab2d382d01a22",
+    "artifact_id": 10610210439,
+    "artifact_digest": "sha256:3a6fd2bc94abcbcd69af59c8d475decf7aa4acb5733b4453ad47c619febfb2ac",
+    "result_sha256": "79018d6316aceadf76f681ea94723289fe2676810ca9982e9181760be3e0b3b5",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6E_RESULT.json",
+    "serial_run": {
+      "workflow_run": 35525415304,
+      "execution_head": "8bb45327f74576eabdbf90ee84a59c02b231bbf2",
+      "role": "INDEPENDENT_CROSSCHECK_IF_COMPLETED",
+      "scientific_authority": false
+    }
+  },
+  "qualification": {
+    "case_count": 126,
+    "fixed_start_count": 630,
+    "gates": {
+      "G1_STRICT_STATE_MOMENT_REALIZABILITY": true,
+      "G2_ALL_CASES_CONVERGE": true,
+      "G3_UNIQUE_NUMERICAL_BRANCH": false,
+      "G4_BOUNDED_REALIZABILITY": true,
+      "G5_HYDRAULIC_CONTINUITY": false,
+      "G6_STATE_RECOVERY": false,
+      "G7_QUADRATURE_CONSISTENCY": false,
+      "G8_NO_RESPONSE_DATA": true
+    },
+    "counts": {
+      "moment_bound_pass": 126,
+      "all_starts_converged": 126,
+      "unique_numerical_branch": 121,
+      "bounded_realizability": 126,
+      "hydraulic_continuity": 121,
+      "state_recovery": 121,
+      "quadrature_consistency": 125
+    },
+    "conditioning": {
+      "finite_jacobian_condition_count": 628,
+      "median_condition_number": 3895.32433334536,
+      "max_condition_number": 147607757390.6423,
+      "hard_gate": false
+    },
+    "diagnostic_extrema": {
+      "min_Se": 0.020038338688906778,
+      "max_Se": 0.995,
+      "max_abs_interface_pressure_jump_cm": 3.697637112054508e-7,
+      "max_abs_interface_flux_jump_cm_per_day": 2.189305714495049e-8,
+      "max_abs_top_flux_residual_cm_per_day": 0.30596018103504735,
+      "max_abs_bottom_flux_residual_cm_per_day": 1.0724320737010018e-12,
+      "max_abs_storage_recovery_cm": 0.000025383567557213382,
+      "max_abs_moment_recovery_cm2": 0.009972041729369607
+    }
+  },
+  "failing_cases": [
+    {
+      "id": "UNIFORM_060|BOTTOM_HEAVY_ALL|HOLD_Q_SE090",
+      "failing_start_pattern": [
+        "AFFINE_DUAL_BASE"
+      ],
+      "interpretation": "A near-upper-bound attractor coexists with a well-qualified solution found by the other frozen starts."
+    },
+    {
+      "id": "UNIFORM_060|ALTERNATING|HOLD_Q_SE090",
+      "failing_start_pattern": [
+        "POSITIVE_P3_DUAL"
+      ],
+      "interpretation": "One frozen start converges to a near-upper-bound attractor with a large top-flux residual; the other starts find the qualified branch."
+    },
+    {
+      "id": "TOP_DRY_BOTTOM_WET|BOTTOM_HEAVY_ALL|HOLD_Q_SE075",
+      "failing_start_pattern": [
+        "POSITIVE_P3_DUAL"
+      ],
+      "interpretation": "One frozen start converges to a boundary-saturated attractor while the other starts recover the qualified branch."
+    },
+    {
+      "id": "TOP_DRY_BOTTOM_WET|BOTTOM_HEAVY_ALL|HOLD_Q_SE090",
+      "failing_start_pattern": [
+        "NEGATIVE_P2_DUAL",
+        "POSITIVE_P3_DUAL"
+      ],
+      "interpretation": "Two frozen starts fail the common-branch physical contract although other starts find a qualified solution."
+    },
+    {
+      "id": "TOP_DRY_BOTTOM_WET|ALTERNATING|HOLD_Q_SE090",
+      "failing_start_pattern": [
+        "NEGATIVE_P2_DUAL",
+        "POSITIVE_P3_DUAL"
+      ],
+      "interpretation": "Two frozen starts converge to near-boundary nonphysical residual minima while other starts find the qualified branch."
+    }
+  ],
+  "adjudication": {
+    "ALL_STATE_MOMENT_TARGETS_REALIZABLE": true,
+    "ALL_SOLVER_STARTS_REPORT_CONVERGENCE": true,
+    "BOUNDED_ENTROPY_MAP_PRESERVES_SE_BOUNDS": true,
+    "GLOBAL_PRESCRIBED_FLUX_MAP_UNIQUE_AND_ROBUST": false,
+    "ALL_STARTS_SATISFY_HYDRAULIC_CONTRACT": false,
+    "ALL_STARTS_RECOVER_STATE": false,
+    "BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFIED": false,
+    "GOOD_SOLUTION_EXISTS_IN_EACH_FAILED_CASE": true,
+    "FAILURE_IS_SIMPLE_NONEXISTENCE": false,
+    "FAILURE_IS_START_DEPENDENT_NEAR_BOUNDARY_ATTRACTOR": true,
+    "C6D_PRESCRIBED_HEAD_MECHANISM_SUPPORT_RETRACTED": false,
+    "C6D_TRANSITION_TAIL_RISK_RETRACTED": false,
+    "FREE_RUNNING_BEMR_IMPLEMENTATION_AUTHORIZED": false,
+    "FRESH_BLIND_BEMR_FREE_RUNNING_AUTHORIZED": false,
+    "POST_RESULT_START_SELECTION_AUTHORIZED": false,
+    "REGULARIZATION_OR_BOUND_TUNING_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "SCIENTIFIC_CHOICE_REQUIRED": true
+  },
+  "scientific_interpretation": [
+    "C6E preserves C6C's core realizability result: every frozen target is admissible and the logistic entropy-dual map remains inside the frozen Se interval.",
+    "The prescribed-flux extension fails the prospective all-start common-branch contract in five of 126 state/boundary cases. Therefore the issue is not a universal absence of a mathematical solution.",
+    "In the failed cases, one or two frozen starts can converge to a near-upper-bound profile attractor with large top-flux and/or state residuals, while other starts recover a near-exact physical branch. A free-running implementation would therefore require a branch-selection, regularization or continuation principle that was not part of the frozen BEMR family.",
+    "Choosing only the successful starts, adding regularization, relaxing bounds, changing the dual order, narrowing the moment domain or changing the HOLD flux anchors after this result would be post-result retuning and is not authorized.",
+    "C6D remains valid exposed mechanism evidence for prescribed-head moving states: adding the centered moment through BEMR improved the preregistered primary interface-flux vector but preserved an important reversal tail-risk. C6E prevents promotion of that mechanism result to the planned general free-running BEMR test.",
+    "The first centered moment remains physically meaningful and its exact continuity-derived balance remains valid. C6E rejects this complete BEMR algebraic family as the next general free-running Layer-ROM, not the conservation-derived moment concept itself."
+  ],
+  "next_authority": {
+    "target": null,
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_ANY_NEW_PROPAGATION_OR_STATE_FAMILY",
+    "question": "Which independently justified reduced representation should be investigated next, given that the first-moment BEMR family is admissible and promising under prescribed-head frozen states but lacks a prospectively robust prescribed-flux algebraic branch?",
+    "excluded_shortcuts": [
+      "Do not select successful C6E starts post hoc as a branch rule.",
+      "Do not add coefficient regularization or continuation solely to escape the exposed C6E attractors.",
+      "Do not relax the frozen Se interval, moment amplitudes, flux anchors, residual gates or branch-agreement tolerances.",
+      "Do not proceed to fresh blind BEMR free-running under only prescribed-head histories while presenting that as qualification of the general BEMR family.",
+      "Do not reinterpret C6D aggregate improvement as application acceptance or performance value."
+    ],
+    "still_open_read_only_families": [
+      "A new branch-selection principle only if it can be derived independently from a physical variational or stability law rather than from the C6E failures.",
+      "A genuinely conserved dual-control-volume or interface-local state family with its own balance law and a pre-response minimality argument.",
+      "An independently justified adaptive or moving-partition representation.",
+      "A different realizability-preserving moment closure derived from a new physical principle, not a retune of BEMR."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "c6d_response_used_for_design": false,
+    "free_running_bemr_implemented": false,
+    "fresh_blind_bemr_response_generated": false,
+    "post_result_retuning": false,
+    "moment_fitting": false,
+    "moment_localization": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
