@@ -354,3 +354,14 @@ Current disposition:
 `AUDIT_CLOSED_REPAIR_REQUIRED_STORAGE_AUTHORITY_BLOCKED`.
 
 No production physics, solver, tolerance, Hupsel configuration or coupling implementation was changed by this audit.
+
+
+## 12. 2026-09-20 authority correction and residual blocker
+
+A subsequent source check corrected one legacy-option typo in the first audit pass: prescribed groundwater level is SWBOTB=1, not SWBOTB=6. SWBOTB=6 is zero bottom flux. This correction strengthens, rather than weakens, the central conclusion that SWBOTB=5 is a prescribed lower-face pressure head and not a prescribed groundwater-level application.
+
+The detailed current execution trace is persisted in `SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md`. The corrected semantic target is persisted in `SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md`.
+
+One issue prevents a scientifically complete architecture closeout: the SWAP-derived finite-window response coefficient `u` is inserted into the MODFLOW affine boundary slope while realistic MODFLOW models may also carry STO storage. The repository does not yet define the non-overlapping physical storage domains or an overlap correction. Existing live tests establish numerical composition, not absence of storage double counting in a realistic application.
+
+Therefore the semantics audit is closed far enough to classify the mode-5 defect and to define repair slices, but broad production repair is **BLOCKED_STORAGE_PARTITION_AUTHORITY** until that scientific/architectural ownership is made explicit.
