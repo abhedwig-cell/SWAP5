@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.lare.bc2.c4y.execution-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4Y",
+  "status": "TECHNICAL_DIAGNOSTIC_CAPTURE_REPAIR_AFTER_PRE_ANALYSIS_REFERENCE_FAILURE",
+  "failed_run": {
+    "run_id": 35495063024,
+    "job_id": 106036446785,
+    "execution_head": "c26f2c53008e4a2246ba3db1e94151f94bfe5320",
+    "stage": "Generate blind current-canonical R16 and R2 trajectories",
+    "observed": "R16 O0/O2 route completed; R2 O0 executable returned nonzero before completion marker. Analyzer and C4Y frontier were never executed.",
+    "c4y_result_exposed": false
+  },
+  "allowed_repair": [
+    "capture and emit failed Reference stdout before terminating",
+    "persist failed Reference stdout in always-upload evidence",
+    "rerun the exact preregistered workload unchanged"
+  ],
+  "prohibited_changes": [
+    "histories",
+    "initial effective saturations",
+    "head multipliers",
+    "segment timings",
+    "LARE partitions",
+    "LARE closure",
+    "LARE timestep",
+    "Reference numerical policy",
+    "metrics",
+    "crossing rules",
+    "decision logic"
+  ],
+  "scientific_design_changed": false,
+  "reference_response_used_to_change_design": false,
+  "post_hoc_retuning_authorized": false,
+  "rerun_required": true
+}
