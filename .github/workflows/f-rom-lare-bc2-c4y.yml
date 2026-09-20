@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C4Y_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C4Y_EXECUTION_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c4y_dynamic_head.py'
       - 'tests/rom/analyze_lare_bc2_c4y_dynamic_head.py'
       - '.github/workflows/f-rom-lare-bc2-c4y.yml'
@@ -73,7 +74,17 @@ jobs:
             for opt in 0 2; do
               build="/tmp/c4y/build_${id}_o${opt}"
               python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "c4y_${id}_stubs.f90"                 --target tests/rom/test_lare_bc2_c4y_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
-              "$build/rom0_test" > "/tmp/c4y/reference/${id}_o${opt}.txt" 2>&1
+              log="/tmp/c4y/reference/${id}_o${opt}.txt"
+              set +e
+              "$build/rom0_test" > "$log" 2>&1
+              rc=$?
+              set -e
+              if [[ "$rc" -ne 0 ]]; then
+                cp "$log" "LARE_BC2_C4Y_EVIDENCE/${id}_o${opt}_FAILED.txt"
+                echo "LARE_BC2_C4Y_REFERENCE_EXECUTION_FAILURE|${id}|O${opt}|RC=${rc}"
+                cat "$log"
+                exit "$rc"
+              fi
               grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "/tmp/c4y/reference/${id}_o${opt}.txt"
               grep -Fq 'LAREGW1_C4Y_BLIND_DYNAMIC_HEAD_GENERATED=TRUE' "/tmp/c4y/reference/${id}_o${opt}.txt"
               test "$(grep -c 'LAREGW1_STATE|' "/tmp/c4y/reference/${id}_o${opt}.txt")" -eq 4096
