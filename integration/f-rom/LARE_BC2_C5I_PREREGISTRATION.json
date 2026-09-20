@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.lare.bc2.c5i.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5I",
+  "phase": "PREREGISTERED_BEFORE_C5I_T16_RESPONSE",
+  "title": "Final matched T16 temporal extension before any new spatial Reference level",
+  "scientific_question": "At T16, do the R512 and R1024 temporal shifts continue to converge and does the matched R512-R1024 spatial gap stabilize, reverse, or continue increasing relative to T8?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_FINAL_TEMPORAL_EXTENSION_BEFORE_SPATIAL_EXTENSION",
+  "authority": {
+    "c5h_closeout": "integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json",
+    "required_c5h_status": "CLOSED_T8_TEMPORAL_PROGRESS_SPATIAL_GAP_STILL_INCREASING_T16_REQUIRED",
+    "c5h_result_sha256": "2af0756ec31ec62bd6348404d656a969d5b5005c262c72ed0318cf950723c75e",
+    "c5h_artifact_id": 10602232995,
+    "c5h_artifact_digest": "sha256:55331b6a8b0e5fb3a72c6a7a2ac05b607dcaedd7d53b48fb5a7d773fa9aed2b4",
+    "R512_T8_sha256": "aea94e7936317da738d9fb7d17a221cf0d8a3c85852fe82d76f738bad7a16c88",
+    "R1024_T8_sha256": "8f119c72af9111ad5d5b867a4893d69cf2bf33962baf07a308aa1086f97f43d6",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "new_lare_or_closure_authorized": false
+  },
+  "new_routes": [
+    {
+      "id": "R512_T16",
+      "nodes": 512,
+      "dz_cm": 0.3125,
+      "main_transaction_dt_day": 0.00005,
+      "steps_per_history": 16384
+    },
+    {
+      "id": "R1024_T16",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "main_transaction_dt_day": 0.00005,
+      "steps_per_history": 16384
+    }
+  ],
+  "preserved_routes": [
+    "R512_T4",
+    "R512_T8",
+    "R1024_T4",
+    "R1024_T8"
+  ],
+  "physical_contract": {
+    "material": "B14",
+    "histories": "exact C5A-C5H Z01-Z04",
+    "physical_horizon_day": 0.8192,
+    "forcing_switch_times": "unchanged in physical time",
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "seed_refined": false,
+    "output_aggregation_window_day": 0.0008
+  },
+  "numerical_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "O0_O2_identity_required": true,
+    "no_tolerance_relaxation": true,
+    "no_new_failure_class": true
+  },
+  "known_pre_response_baseline": {
+    "spatial_T4_RMSE_cm_per_day": 0.022330388263774027,
+    "spatial_T8_RMSE_cm_per_day": 0.023031448991176342,
+    "R512_T4_T8_RMSE_cm_per_day": 0.002712056754708395,
+    "R1024_T4_T8_RMSE_cm_per_day": 0.003402723734856983,
+    "temporal_order_R512_T2_T4_T8": 0.7907598524267788,
+    "temporal_order_R1024_T2_T4_T8": 0.8430956626308688
+  },
+  "diagnostics": {
+    "spatial": [
+      "R512-R1024 pooled bottom-flux RMSE at T4, T8 and T16",
+      "continuous T16/T8 spatial-gap ratio and relative change"
+    ],
+    "temporal": [
+      "R512 T8-T16 pooled bottom-flux RMSE and T4/T8/T16 descriptive order",
+      "R1024 T8-T16 pooled bottom-flux RMSE and T4/T8/T16 descriptive order"
+    ],
+    "interaction": [
+      "T8-T16 temporal shifts divided by matched T16 spatial gap",
+      "resolution dependence of the T8-T16 temporal shift",
+      "history- and phase-specific signed decomposition"
+    ],
+    "no_absolute_stability_threshold": true
+  },
+  "adjudication": {
+    "T16_TEMPORAL_PROGRESS_SPATIAL_GAP_NUMERICALLY_STABLE": "Both temporal shifts progress and T16/T8 spatial gaps are equal within 1e-12.",
+    "T16_TEMPORAL_PROGRESS_SPATIAL_GAP_REVERSES": "Both temporal shifts progress and T16 spatial gap is smaller than T8.",
+    "T16_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING": "Both temporal shifts progress and T16 spatial gap is larger than T8.",
+    "T16_SPACE_TIME_PATTERN_MIXED_OR_TEMPORAL_PROGRESS_BLOCKED": "Any other qualified pattern.",
+    "interpretation": "Direction and continuous relative change are reported without introducing a post-selected stability threshold."
+  },
+  "next_logic": {
+    "if_spatial_gap_stable_or_reverses_and_temporal_subdominant": "A matched R2048 spatial extension at T16 may be prospectively considered.",
+    "if_spatial_gap_continues_increasing_despite_temporal_progress": "Stop brute-force space/time extension as the default next move and open a Reference discretization/boundary-formulation mechanism audit before R2048.",
+    "if_temporal_progress_fails": "Diagnose Reference temporal/nonlinear behavior before any spatial or LARE extension."
+  },
+  "hard_gates": {
+    "exact_C5H_anchor_hashes": true,
+    "R512_T16_O0_O2_identity": true,
+    "R1024_T16_O0_O2_identity": true,
+    "exact_state_count_per_route": 65536,
+    "exact_history_pass_count": 4,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "baseline_identity_to_C5H": true,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "physical_history_changed": false,
+    "numerical_policy_changed": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5i_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
+    "c5i_analyzer_blob": "9748f03b5659ddc0cee1722380ee0bc683dc3430",
+    "response_based_design": true,
+    "reason": "C5I follows C5H, but T16 routes, diagnostics and branching logic are frozen before any T16 response is generated.",
+    "allowed_new_code": "pre-bound T16 materialization and common-window diagnostic aggregation only",
+    "prohibited_new_code": "LARE execution, closure change, solver-policy relaxation, physical forcing change, application thresholds"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
