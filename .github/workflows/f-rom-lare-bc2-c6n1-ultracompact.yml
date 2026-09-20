@@ -5,7 +5,7 @@ on:
     branches:
       - work/f-rom-lare-rs1
     paths:
-      - 'integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json'
+      - 'integration/f-rom/LARE_BC2_C6N1_ULTRACOMPACT_LEGACY_DISABLED_TRIGGER'
 
 concurrency:
   group: f-rom-lare-bc2-c6n1-ultracompact-${{ github.sha }}
