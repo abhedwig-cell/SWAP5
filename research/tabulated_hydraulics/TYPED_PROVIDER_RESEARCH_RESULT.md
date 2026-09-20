@@ -97,3 +97,54 @@ A generated MvG-equivalent provider remains distinct from generic user-supplied 
 - reference-preservation proof.
 
 The current analytical MvG provider remains the production reference.
+
+
+## Serialized Reference runtime integration
+
+Workflow `35536380158` is the controlling integrated runtime result.
+
+The research table provider was injected only through the existing constitutive-provider pointer in a workflow copy of the canonical serialized Reference backend. The analytical production provider, solver code, transaction policy and canonical branch were not modified.
+
+A first diagnostic run intentionally exposed an important fixture issue: if the table route is started with water content and equilibrium flux computed by the analytical provider, the table route is constitutively inconsistent at t0 and the transaction layer rejects all attempts on the temporal full/half gate. The diagnostic was:
+
+- attempts = 9;
+- retries = 8;
+- temporal rejections = 9;
+- solver rejections = 0;
+- mass rejections = 0;
+- admission rejections = 0.
+
+No tolerance was changed. The fixture was repaired by keeping the same initial pressure head while deriving theta and the equilibrium conductivity from the active provider, which matches normal pressure-head-based initialization semantics.
+
+With that provider-consistent initialization, the integrated result was:
+
+| material | max head difference (cm) | max theta difference | mass-residual delta | retries equal | nonlinear iterations A/T | table runtime delta |
+| --- | ---: | ---: | ---: | --- | --- | ---: |
+| coarse | 0 | 3.842e-9 | 0 | yes | 3 / 3 | **-24.92%** |
+| loam | 0 | 4.430e-10 | 0 | yes | 3 / 3 | **-30.72%** |
+| clay | 0 | 3.785e-10 | 0 | yes | 3 / 3 | **-26.78%** |
+
+The paired median reductions were approximately -24.86%, -30.61% and -26.69%, respectively. One coarse timing pair was an outlier, but the coarse median still showed a large separation and the loam/clay pairs were tightly separated.
+
+Preprocessing occurs in the warm-up/configuration path and is excluded from repeated hot-loop timing. The research backend caches immutable preprocessed table state by `parameter_set_id`, because canonical kernel configuration is invoked for each trial.
+
+### What this proves
+
+Within the current synthetic equilibrium fixture, the generated raw-head table provider:
+
+- passes the real serialized Reference transaction/runtime layer;
+- preserves accepted/retry semantics;
+- preserves pressure-head state exactly at written double precision in this equilibrium test;
+- preserves mass accounting;
+- retains a material runtime reduction after transaction/runtime overhead.
+
+### What it still does not prove
+
+The equilibrium runtime fixture is not a dynamic application trajectory. It does not yet prove:
+
+- whole-Hupsel speedup;
+- identical retry decisions under non-equilibrium forcing;
+- production robustness under the full application envelope;
+- generic user-table support.
+
+A non-equilibrium FMR trajectory with identical forcing is therefore the next K0 scientific gate before recommending a production work unit.
