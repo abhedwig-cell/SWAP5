@@ -122,9 +122,10 @@
   "numerical_qualification": {
     "instrumentation_state_identity": "byte exact on LAREGW1_STATE lines against immutable C5I",
     "max_water_ledger_cm": 1e-12,
-    "local_flux_reconstruction_tolerance_cm_per_day": 1e-8,
+    "local_flux_reconstruction_tolerance_cm_per_day": 2.1e-8,
     "exact_steady_half_cell_distance_residual_cm": 1e-10,
-    "note": "These are code/numerical-consistency tolerances only, not hydrological acceptance thresholds."
+    "note": "These are code/numerical-consistency tolerances only, not hydrological acceptance thresholds.",
+    "local_flux_reconstruction_basis": "For the frozen no-source/sink C5I workload, summing the accepted HeadCalc residual telescopes to Q_current_face - Q_published. The D13 fallback total integrated residual gate is 1e-12 cm; at dt=5e-5 d this is 2e-8 cm/d. The 2.1e-8 gate adds only floating-output margin."
   },
   "adjudication_rules": {
     "continuous_effect_sizes_first": true,
