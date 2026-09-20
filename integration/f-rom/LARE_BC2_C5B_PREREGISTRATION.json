@@ -1,0 +1,151 @@
+{
+  "schema": "swap5.lare.bc2.c5b.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5B",
+  "phase": "PREREGISTERED_ZERO_FIT_AFTER_C5A_WITHOUT_ACCEPTANCE_RETUNING",
+  "title": "Zero-fit mechanism audit of the C5A pooled signed bottom-flux blocker",
+  "scientific_question": "Is the sole C5A blocking component primarily caused by LARE time integration, residual state-resolution insufficiency, dynamic lower-boundary closure response, or cross-history cancellation in the R2 comparator?",
+  "role": "POST_RESULT_MECHANISTIC_DIAGNOSIS_NOT_ACCEPTANCE_RESCORING",
+  "known_trigger": {
+    "c5a_closeout": "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+    "c5a_decision": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+    "exact_c5a_result_sha256": "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc",
+    "sole_failed_component_for_R3_R16": "abs_mean_signed_bottom_flux_error_cm_per_day",
+    "known_R2_cancellation_ratio": 0.000735823233542339,
+    "known_R5_R16_baseline_plateau": true,
+    "interpretation": "These are already observed C5A facts and motivate C5B. C5B is not response-blind and must not be presented as confirmatory acceptance evidence."
+  },
+  "source_evidence": {
+    "c5a_artifact_id": 10600184543,
+    "c5a_artifact_digest": "sha256:272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f",
+    "c5a_execution_head": "279ab2e34fc28a81fc3507a835a20b144049fc83",
+    "R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "R2_reference_sha256": "422981be7232bad79baa42767e295462e8d06212e012d9984947e907d18f406c",
+    "no_new_reference_generation": true
+  },
+  "frozen_workload": {
+    "material": "B14",
+    "histories": "exact C5A Z01-Z04",
+    "lower_boundary": "exact C5A fixed-domain prescribed-head RISE/FALL and mode-2 HOLD",
+    "top_boundary": "exact C5A gravity-consistent material-specific qeq",
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "LARE_partitions": "exact C5A R5, R8 and R16 only for mechanism diagnosis",
+    "accepted_closure": "CURRENT_LAYER_FACE",
+    "no_history_change": true,
+    "no_partition_change": true,
+    "no_forcing_change": true
+  },
+  "diagnostics": {
+    "R2_aggregation": [
+      "pooled signed bottom-flux mean",
+      "mean absolute history-specific signed bottom-flux mean",
+      "cancellation ratio",
+      "history-specific signed mean and RMSE",
+      "phase-specific signed mean and RMSE for PHASE1, PHASE2 and HOLD"
+    ],
+    "timestep_convergence": {
+      "member": "R16",
+      "closure": "CURRENT_LAYER_FACE",
+      "dt_day": [
+        0.0001,
+        0.00005,
+        0.000025
+      ],
+      "outputs": [
+        "signed-bias sequence",
+        "difference between successive timestep levels",
+        "estimated convergence order when numerically defined",
+        "Richardson-style dt->0 signed-mean extrapolation when numerically defined",
+        "full bottom-flux timeseries distance between dt=1e-4 and dt=2.5e-5"
+      ]
+    },
+    "state_resolution": {
+      "closure": "CURRENT_LAYER_FACE",
+      "dt_day": 0.000025,
+      "members": [
+        "R5",
+        "R8",
+        "R16"
+      ],
+      "outputs": [
+        "R5-to-R16 and R8-to-R16 bottom-flux timeseries distances",
+        "signed-bias and RMSE at each member",
+        "phase-specific error persistence"
+      ]
+    },
+    "closure_counterfactual": {
+      "member": "R16",
+      "dt_day": 0.000025,
+      "accepted_closure": "CURRENT_LAYER_FACE",
+      "counterfactual": "BOUNDARY_FACE",
+      "authority": "pre-existing BC1 alternative closure only",
+      "purpose": "mechanism sensitivity; never C5A rescue or admission",
+      "outputs": [
+        "bottom-flux timeseries distance between closures",
+        "change in pooled signed mean",
+        "change in pooled RMSE",
+        "phase-specific signed-error changes"
+      ]
+    }
+  },
+  "effect_size_labels": {
+    "reference": "current-face R16 dt=2.5e-5 pooled bottom-flux RMSE to exact C5A R16 Reference",
+    "SMALL_LT_0P1_RESIDUAL": "effect-size RMSE below one tenth of that residual",
+    "COMPARABLE_0P1_TO_1_RESIDUAL": "effect-size RMSE between one tenth and one times that residual",
+    "LARGE_GT_RESIDUAL": "effect-size RMSE larger than that residual",
+    "interpretation": "Mechanism-description labels only. They are not hydrological acceptance thresholds."
+  },
+  "analysis_questions": [
+    "Does timestep refinement materially move the signed-bias floor toward zero or toward the R2 pooled bias?",
+    "At fine timestep, is R8-to-R16 or R5-to-R16 state-resolution change negligible relative to the current-face Reference residual?",
+    "Does switching only the pre-existing lower-boundary conductivity closure produce an effect comparable to or larger than the current-face Reference residual?",
+    "Which boundary phases carry the persistent signed error?",
+    "How much of R2's exceptionally small pooled bias is due to cancellation among history-specific signed errors?"
+  ],
+  "decision_language": {
+    "permitted": [
+      "TIME_INTEGRATION_SENSITIVE",
+      "STATE_RESOLUTION_SENSITIVE",
+      "BOUNDARY_CLOSURE_SENSITIVE",
+      "R2_AGGREGATION_CANCELLATION_STRONG",
+      "MIXED_OR_UNRESOLVED"
+    ],
+    "rule": "Report continuous effect sizes first. Multiple labels may apply. Do not force a single causal winner unless evidence separates mechanisms clearly."
+  },
+  "hard_gates": {
+    "exact_C5A_result_reproduced_by_R16_DT100": true,
+    "exact_C5A_R16_and_R2_reference_hashes": true,
+    "all_diagnostic_runs_water_ledger_cm": 1e-10,
+    "no_new_reference_generation": true,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5A_metric_vector_changed": false,
+    "C5A_threshold_changed": false,
+    "C5A_frontier_recomputed_for_acceptance": false,
+    "partition_retuning": false,
+    "forcing_retuning": false,
+    "new_closure_fit": false,
+    "counterfactual_closure_admission": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "analyzer_blob": "b51b4b60fd229786ec566948f400eb69771d0c56",
+    "c5a_analyzer_blob": "aec3a22ba50e07fd8d90aa54a92d067952fd397d",
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "response_based_design": true,
+    "reason": "C5B is explicitly a post-C5A mechanism audit. The analysis plan is frozen before any new C5B diagnostic run, but it is not independent of C5A observations.",
+    "allowed_new_code": "diagnostic reruns of frozen C5A LARE equations, phase decomposition, timestep/state/closure effect-size calculations",
+    "prohibited_new_code": "new fitted closure, partition optimization, acceptance threshold changes, production implementation"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
