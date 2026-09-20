@@ -1,0 +1,183 @@
+name: F-ROM-LARE persist C5L R2048 T16 closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5l-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5L artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5l
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604130807" > /tmp/c5l/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5l/artifact.json'))
+          assert a['id']==10604130807
+          assert a['digest']=='sha256:8c427adcbc863fa2fdb8fe26ea684eab58b377cad8f2df1a41b0695088ba2163'
+          assert a['workflow_run']['id']==35506158189
+          assert a['workflow_run']['head_sha']=='06179a0e9aa9c911e6bc0474c3fa1143f319a553'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604130807/zip" > /tmp/c5l.zip
+          echo "8c427adcbc863fa2fdb8fe26ea684eab58b377cad8f2df1a41b0695088ba2163  /tmp/c5l.zip" | sha256sum -c -
+          unzip -q /tmp/c5l.zip -d /tmp/c5l/evidence
+          echo "8fbaafa2e75ad7fed63d4b95a24ea6bc82baf87ccb8dc2c25856a28fc0d3eb1d  /tmp/c5l/evidence/LARE_BC2_C5L_RESULT.json" | sha256sum -c -
+          echo "98ac0bae9e260d7379c7758929c5c266768730f00a993bec88d92442a9031d92  /tmp/c5l/evidence/R2048_T16_o0.txt" | sha256sum -c -
+          echo "98ac0bae9e260d7379c7758929c5c266768730f00a993bec88d92442a9031d92  /tmp/c5l/evidence/R2048_T16_o2.txt" | sha256sum -c -
+
+      - name: Persist C5L result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5l/evidence/LARE_BC2_C5L_RESULT.json integration/f-rom/LARE_BC2_C5L_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5L_RESULT.json'))
+          assert r['status']=='SPATIAL_REFINEMENT_PROGRESSING_AT_R2048'
+          assert r['baseline_identity_to_C5I_T16'] is True
+          a=r['adjacent_spatial']; tc=r['temporal_context']
+          closeout={
+            'schema':'swap5.lare.bc2.c5l.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5L',
+            'status':'CLOSED_R2048_SPATIAL_REFINEMENT_PROGRESSING_CONTINUUM_NOT_ADMITTED_REPRESENTATION_RECONCILIATION_NEXT',
+            'decision':'C5L_SPATIAL_PROGRESS_RECOVERED_AT_R2048_NO_CONTINUUM_REFERENCE_ADMISSION',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5L_PREREGISTRATION.json',
+              'workflow_run':35506158189,
+              'job_id':106066513007,
+              'execution_head':'06179a0e9aa9c911e6bc0474c3fa1143f319a553',
+              'artifact_id':10604130807,
+              'artifact_digest':'sha256:8c427adcbc863fa2fdb8fe26ea684eab58b377cad8f2df1a41b0695088ba2163',
+              'result_sha256':'8fbaafa2e75ad7fed63d4b95a24ea6bc82baf87ccb8dc2c25856a28fc0d3eb1d',
+              'R2048_T16_sha256':'98ac0bae9e260d7379c7758929c5c266768730f00a993bec88d92442a9031d92'
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'evidence':{
+              'R512_R1024_RMSE_cm_per_day':a['R512_R1024']['rmse_cm_per_day'],
+              'R1024_R2048_RMSE_cm_per_day':a['R1024_R2048']['rmse_cm_per_day'],
+              'R512_R2048_RMSE_cm_per_day':a['R512_R2048']['rmse_cm_per_day'],
+              'adjacent_gap_ratio':a['R1024_R2048_over_R512_R1024'],
+              'descriptive_spatial_order':a['descriptive_order_R512_R1024_R2048'],
+              'R1024_R2048_spatial_over_frozen_R1024_T8_T16_temporal':tc['R1024_R2048_spatial_over_frozen_R1024_temporal_anchor'],
+              'R1024_T8_T16_temporal_anchor_cm_per_day':tc['frozen_R1024_T8_T16_RMSE_cm_per_day'],
+              'R1024_R2048_HOLD_gap_exactly_zero':all(
+                r['signed_diagnostics']['R1024_R2048']['by_phase'][h]['HOLD']['max_abs_cm_per_day']==0.0
+                for h in ('Z01','Z02','Z03','Z04')
+              )
+            },
+            'adjudication':{
+              'SPATIAL_REFINEMENT_PROGRESSING_AT_R2048':True,
+              'ADJACENT_SPATIAL_GAP_REDUCED_BY_MORE_THAN_HALF':a['R1024_R2048_over_R512_R1024']<0.5,
+              'DESCRIPTIVE_SPATIAL_ORDER_POSITIVE':a['descriptive_order_R512_R1024_R2048']>0.0,
+              'R2048_CONTINUUM_REFERENCE_ADMITTED':False,
+              'R2048_TEMPORAL_ERROR_INDEPENDENTLY_QUALIFIED':False,
+              'R4096_AUTHORIZED':False,
+              'T32_AUTHORIZED':False,
+              'NEW_LARE_RUN_AUTHORIZED':False,
+              'REPRESENTATION_RECONCILIATION_AUTHORIZED':True
+            },
+            'scientific_interpretation':[
+              'After temporal and lower-boundary mechanism reconciliation, the unchanged current Reference shows a clear spatial-refinement step at R2048: the adjacent bottom-flux RMSE falls from about 0.02340 cm/d for R512-R1024 to about 0.00742 cm/d for R1024-R2048.',
+              'The adjacent-gap ratio is about 0.317 and the descriptive three-level spatial order is about 1.66. This is qualitatively different from the earlier slow and nonmonotone high-resolution sequence and demonstrates renewed spatial convergence progress.',
+              'The R1024-R2048 gap is still about 4.13 times the frozen R1024 T8-T16 temporal shift. This supports spatial dominance relative to that known temporal anchor, but R2048 temporal error was not independently refined and cannot be assumed negligible.',
+              'As throughout C5F-C5L, the adjacent-grid difference remains confined to prescribed-head phases; HOLD is exactly equal at R1024 and R2048.',
+              'C5L therefore does not establish a continuum Reference or authorize treating R2048 as scientific truth. It establishes only that the unchanged current Reference enters a substantially stronger spatial-refinement regime at the next level.',
+              'The Reference audit has now served its scientific purpose: it shows why the coarse R16 comparator used in C5A cannot support portable absolute representation conclusions, while also showing no justified boundary-formulation replacement. The correct next step is representation-evidence reconciliation, not further brute-force Reference refinement.'
+            ],
+            'next_authority':{
+              'target':'LARE-REPSEL-C5M',
+              'state':'READ_ONLY_REPRESENTATION_EVIDENCE_RECONCILIATION_AUTHORIZED',
+              'question':'Which state-dimension, placement and purpose conclusions from C4X/C4Z/C5A remain valid after the C5B-C5L Reference audit, and what representation question, if any, still requires a new blind experiment?',
+              'constraints':[
+                'Read-only synthesis first; no new solver or LARE response in C5M',
+                'Retain formal C5A decision under its frozen comparator but do not generalize it to a high-resolution or continuum Reference',
+                'Distinguish robust placement findings from comparator-dependent dimension thresholds',
+                'Do not infer a universal minimum layer count',
+                'Application acceptance remains blocked by C4U external H_app/A_temporal authority',
+                'No performance, speed or production-ROM claim',
+                'Require a fresh preregistration if synthesis identifies a genuinely necessary new blind experiment'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5L_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5L closeout
+
+          C5L performs one final spatial extension of the unchanged current Reference after temporal and lower-boundary mechanism reconciliation.
+
+          Authority is run 35506158189 at execution head 06179a0e9aa9c911e6bc0474c3fa1143f319a553, artifact 10604130807, digest sha256:8c427adcbc863fa2fdb8fe26ea684eab58b377cad8f2df1a41b0695088ba2163. The result SHA-256 is 8fbaafa2e75ad7fed63d4b95a24ea6bc82baf87ccb8dc2c25856a28fc0d3eb1d. R2048 O0 and O2 are byte-identical.
+
+          The R512-R1024 T16 bottom-flux RMSE is 0.0233969 cm/d. R1024-R2048 falls to 0.00742446 cm/d, a ratio of 0.317. The descriptive spatial order over R512/R1024/R2048 is about 1.656.
+
+          This is clear spatial-refinement progress, but not a continuum proof. The new spatial gap remains about 4.13 times the known R1024 T8-T16 temporal shift, while R2048 temporal error was not independently refined.
+
+          HOLD remains exactly equal between R1024 and R2048; differences remain localized to prescribed-head phases.
+
+          The Reference investigation has now established enough to interpret the Layer-ROM evidence without pretending that the original coarse R16 comparator was continuum-like. C5M returns to the central representation question and reconciles which layer-count and placement conclusions survive.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v17'
+          j['status']='CLOSED_THROUGH_C5L_R2048_SPATIAL_PROGRESS_REPRESENTATION_RECONCILIATION_NEXT'
+          j.setdefault('authorities',{})['C5L_R2048_T16_reference_extension']='integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5L']='With unchanged G0K0 Reference at T16, R1024-R2048 bottom-flux RMSE falls to ~0.00742 cm/d from ~0.02340 for R512-R1024 (ratio ~0.317, descriptive order ~1.66). Spatial refinement is clearly progressing, but R2048 is not admitted as continuum truth and its temporal error is not independently qualified.'
+          j['decision']='RECONCILE_LAYER_REPRESENTATION_EVIDENCE_AFTER_REFERENCE_AUDIT_BEFORE_ANY_NEW_RESPONSE_EXPERIMENT'
+          j['next_authority']='LARE-REPSEL-C5M'
+          j['next_family_authority']={
+            'family':'C5M_REPRESENTATION_EVIDENCE_RECONCILIATION',
+            'state':'AUTHORIZED_FOR_READ_ONLY_REPOSITORY_SYNTHESIS',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json'
+            ],
+            'purpose':'Separate robust state-placement/purpose findings from comparator-dependent dimension thresholds after the full B14 dynamic-head Reference audit.',
+            'new_reference_run_authorized':False,
+            'new_lare_run_authorized':False,
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5L closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5L_RESULT.json                   integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5L_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5L R2048 T16 Reference audit"
+          git push origin HEAD:work/f-rom-lare-rs1
