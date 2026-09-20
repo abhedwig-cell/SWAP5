@@ -1,0 +1,65 @@
+name: F-ROM-LARE BC2-C4W reversal magnitude diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4W_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4w_reversal_magnitude.py'
+      - '.github/workflows/f-rom-lare-bc2-c4w.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4w-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable C4V authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4w/c4v
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10599921961/zip" > /tmp/c4w/c4v.zip
+          echo "cd15afd49f198199644895dd783bdf390f86835624f83578cb5fdd610b952365  /tmp/c4w/c4v.zip" | sha256sum -c -
+          unzip -q /tmp/c4w/c4v.zip -d /tmp/c4w/c4v
+          echo "58453f537bdc3d6b47e2738cd5b3050fed1b18fad0d2734744b3fd9853ec3be3  /tmp/c4w/c4v/LARE_BC2_C4V_RESULT.json" | sha256sum -c -
+          echo "e8951a67acac3dc73562f0ae80b1d7ca78bfab4aca6e2ad76115afc9d2fea654  /tmp/c4w/c4v/R16_o0.txt" | sha256sum -c -
+
+      - name: Execute frozen reversal magnitude diagnostic
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4W_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4w_reversal_magnitude.py             --r16 /tmp/c4w/c4v/R16_o0.txt             --c4v-result /tmp/c4w/c4v/LARE_BC2_C4V_RESULT.json             --c4v-prereg integration/f-rom/LARE_BC2_C4V_PREREGISTRATION.json             --prereg integration/f-rom/LARE_BC2_C4W_PREREGISTRATION.json             --output LARE_BC2_C4W_EVIDENCE/LARE_BC2_C4W_RESULT.json             | tee LARE_BC2_C4W_EVIDENCE/runner.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4W_EVIDENCE/LARE_BC2_C4W_RESULT.json'))
+          assert r['decision']=='C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED'
+          assert r['integrity']['pass'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4W_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4W_EVIDENCE/* > LARE_BC2_C4W_EVIDENCE/sha256.txt
+
+      - name: Upload C4W evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4w
+          path: LARE_BC2_C4W_EVIDENCE/
+          if-no-files-found: error
