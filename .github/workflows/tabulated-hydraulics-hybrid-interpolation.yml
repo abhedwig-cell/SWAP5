@@ -1,0 +1,232 @@
+name: TAB-HYD hybrid interpolation qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-hybrid-interpolation.yml'
+      - 'research/tabulated_hydraulics/patch_hybrid_interpolator.py'
+      - 'research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Prepare common patched source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py swap-src/src/soil/sptabulated.f90 swap-src/src/io/readswap.f90
+          cp -a swap-src swap-theta-t
+          cp -a swap-src swap-k-t
+          python3 research/tabulated_hydraulics/patch_hybrid_interpolator.py swap-theta-t/src/soil/sptabulated.f90 theta-tspack
+          python3 research/tabulated_hydraulics/patch_hybrid_interpolator.py swap-k-t/src/soil/sptabulated.f90 k-tspack
+
+      - name: Build four binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+          meson setup swap-src/build swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build
+          cp swap-src/build/swap swap-full-tspack
+          meson setup swap-theta-t/build swap-theta-t -Denable_pfunit=false
+          meson compile -C swap-theta-t/build
+          cp swap-theta-t/build/swap swap-theta-tspack
+          meson setup swap-k-t/build swap-k-t -Denable_pfunit=false
+          meson compile -C swap-k-t/build
+          cp swap-k-t/build/swap swap-k-tspack
+
+      - name: Prepare log-head400 route matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/hybrid
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          ls=importlib.util.spec_from_file_location("logprep",lp)
+          logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
+          prep=logprep.prep; prep.uniform_rows=lambda p: logprep.loghead_rows(p,400)
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          root=Path("build/hybrid/envelope"); root.mkdir(parents=True)
+          routes=("thetaT_KP","thetaP_KT")
+          for scenario,sc in prep.SCENARIOS.items():
+              params=[series[sc["top"]],series[sc["sub"]]]
+              a=root/f"{scenario}__analytic_k0"; prep.prepare_case(src,a,params,sc,False,0)
+              base=root/f"{scenario}__base_k0"; prep.prepare_case(src,base,params,sc,True,0)
+              for route in routes: shutil.copytree(base,root/f"{scenario}__{route}_k0")
+          for scenario in ("coarse_dry_free","coarse_dry_pulse"):
+              sc=prep.SCENARIOS[scenario]; params=[series[sc["top"]],series[sc["sub"]]]
+              a=root/f"{scenario}__analytic_k1"; prep.prepare_case(src,a,params,sc,False,1)
+              base=root/f"{scenario}__base_k1"; prep.prepare_case(src,base,params,sc,True,1)
+              for route in routes: shutil.copytree(base,root/f"{scenario}__{route}_k1")
+
+          hp=Path("research/tabulated_hydraulics/prepare_hupsel_e2e.py")
+          hs=importlib.util.spec_from_file_location("hprep",hp)
+          hprep=importlib.util.module_from_spec(hs); hs.loader.exec_module(hprep)
+          hroot=Path("build/hybrid/hupsel"); hroot.mkdir(parents=True)
+          psets=[dict(ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],h_enpr=0.0,comment=f"hupsel_{i}") for i,p in enumerate(hprep.PARAMS)]
+          def overwrite(dst):
+              for name,p in zip(hprep.TABLE_NAMES,psets):
+                  rows=logprep.loghead_rows(p,400)
+                  with (dst/name).open("w",newline="\n") as fh:
+                      fh.write("* TAB-HYD proven log-head400 table\nheadtab,thetatab,conductab\n")
+                      for h,t,k in rows: fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
+          for kval in (0,1):
+              a=hroot/f"analytic_k{kval}"; shutil.copytree(src,a); hprep.edit_case(a,False,kval)
+              t=hroot/f"fullT_k{kval}"; shutil.copytree(src,t); hprep.edit_case(t,True,kval); overwrite(t)
+              for route in routes: shutil.copytree(t,hroot/f"{route}_k{kval}")
+          PY
+
+      - name: Run both hybrid transfer envelopes
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_case () {
+            work="$1"; bin="$2"
+            pushd "$work" >/dev/null; set +e; timeout 30 "$bin" >/dev/null 2>&1; rc=$?; set -e; popd >/dev/null
+            test "$rc" -eq 100
+          }
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            run_case "build/hybrid/envelope/${scenario}__analytic_k0" "$GITHUB_WORKSPACE/swap-analytic"
+            for route in thetaT_KP thetaP_KT; do
+              if [ "$route" = thetaT_KP ]; then bin="$GITHUB_WORKSPACE/swap-theta-tspack"; else bin="$GITHUB_WORKSPACE/swap-k-tspack"; fi
+              run_case "build/hybrid/envelope/${scenario}__${route}_k0" "$bin"
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+                "build/hybrid/envelope/${scenario}__analytic_k0" "build/hybrid/envelope/${scenario}__${route}_k0" \
+                "build/hybrid/${scenario}__${route}_k0.json" --label "${scenario},K0,${route}"
+            done
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            run_case "build/hybrid/envelope/${scenario}__analytic_k1" "$GITHUB_WORKSPACE/swap-analytic"
+            for route in thetaT_KP thetaP_KT; do
+              if [ "$route" = thetaT_KP ]; then bin="$GITHUB_WORKSPACE/swap-theta-tspack"; else bin="$GITHUB_WORKSPACE/swap-k-tspack"; fi
+              run_case "build/hybrid/envelope/${scenario}__${route}_k1" "$bin"
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+                "build/hybrid/envelope/${scenario}__analytic_k1" "build/hybrid/envelope/${scenario}__${route}_k1" \
+                "build/hybrid/${scenario}__${route}_k1.json" --label "${scenario},K1,${route}"
+            done
+          done
+
+      - name: Classify hybrid fidelity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={"GWL":(0.05,0.01),"DSTOR":(0.02,0.005),"DRAINAGE":(0.02,0.005),"DRN":(0.02,0.005),"QBOTTOM":(0.02,0.005),"TACT":(0.02,0.005)}
+          byroute={}
+          lines=["route\tlabel\tmetric\tmax_abs\trmse\tpass"]
+          for p in sorted(Path("build/hybrid").glob("*__theta*_k[01].json")):
+              d=json.loads(p.read_text()); route=d["label"].split(",")[-1]
+              byroute.setdefault(route,[])
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]; ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  lines.append(f"{route}\t{d['label']}\t{metric}\t{m['max_abs']}\t{m['rmse']}\t{ok}")
+                  if not ok: byroute[route].append((d["label"],metric,m))
+          Path("build/hybrid/fidelity.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/hybrid/fidelity.tsv").read_text(),end="")
+          for route in ("thetaT_KP","thetaP_KT"):
+              fails=byroute.get(route,[])
+              print(f"{route}_fidelity_failures={len(fails)}")
+          PY
+
+      - name: Benchmark hybrids against full TSPACK
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,statistics,subprocess,time
+          root=Path("build/hybrid").resolve()
+          bins={
+            "analytic":Path("swap-analytic").resolve(),
+            "fullT":Path("swap-full-tspack").resolve(),
+            "thetaT_KP":Path("swap-theta-tspack").resolve(),
+            "thetaP_KT":Path("swap-k-tspack").resolve()}
+          routes={}
+          for kval in (0,1):
+              routes[f"analytic_k{kval}"]=(bins["analytic"],root/f"hupsel/analytic_k{kval}")
+              routes[f"fullT_k{kval}"]=(bins["fullT"],root/f"hupsel/fullT_k{kval}")
+              routes[f"thetaT_KP_k{kval}"]=(bins["thetaT_KP"],root/f"hupsel/thetaT_KP_k{kval}")
+              routes[f"thetaP_KT_k{kval}"]=(bins["thetaP_KT"],root/f"hupsel/thetaP_KT_k{kval}")
+          def one(label):
+              binary,work=routes[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists(): p.unlink()
+              t=time.perf_counter(); proc=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30); dt=time.perf_counter()-t
+              if proc.returncode!=100: raise RuntimeError((label,proc.returncode))
+              return dt
+          for label in routes: one(label)
+          vals={x:[] for x in routes}; rows=[]; labels=list(routes)
+          for rnd in range(12):
+              order=labels[rnd%len(labels):]+labels[:rnd%len(labels)]
+              if rnd%2: order=list(reversed(order))
+              for label in order:
+                  dt=one(label); vals[label].append(dt); rows.append((rnd,label,dt))
+          med={k:statistics.median(v) for k,v in vals.items()}
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["round","route","seconds"]); w.writerows(rows)
+          lines=[f"{key}_median_s={med[key]:.9g}" for key in labels]
+          for kval in (0,1):
+              for route in ("fullT","thetaT_KP","thetaP_KT"):
+                  lines.append(f"{route}_k{kval}_delta_vs_analytic_pct={100*(med[f'{route}_k{kval}']/med[f'analytic_k{kval}']-1):.9g}")
+                  if route!="fullT":
+                      lines.append(f"{route}_vs_fullT_k{kval}_pct={100*(med[f'{route}_k{kval}']/med[f'fullT_k{kval}']-1):.9g}")
+          (root/"benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-hybrid-interpolation
+          path: |
+            build/hybrid/fidelity.tsv
+            build/hybrid/*__theta*_k*.json
+            build/hybrid/benchmark.csv
+            build/hybrid/benchmark-summary.txt
