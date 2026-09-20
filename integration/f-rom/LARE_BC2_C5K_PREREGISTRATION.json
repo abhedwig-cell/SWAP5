@@ -86,8 +86,8 @@
       "role": "isolates the effect of using post-step instead of explicit pre-step cell conductivity on the same frozen state pair"
     },
     "arithmetic_center_boundary": {
-      "definition": "Q_arith = 0.5*[K(h_post)+K(hbot)] * [1 + (h_post-hbot)/delta]",
-      "role": "frozen-state constitutive diagnostic related to C5J K1, but not a dynamic rerun"
+      "definition": "Q_arith_post = 0.5*[K(h_post)+K(hbot)] * [1 + (h_post-hbot)/delta]",
+      "role": "Removes explicit pre-step K lag before applying the arithmetic center-boundary mean; zero-fit spatial constitutive diagnostic."
     },
     "integrated_linear_head": {
       "definition": "K_int = integral(K(h) dh)/(h_post-hbot) for h_post != hbot, with the continuous limit K(h_post) when equal; Q_int = K_int * [1 + (h_post-hbot)/delta]",
@@ -96,12 +96,16 @@
     "exact_steady_half_cell": {
       "definition": "Use downward coordinate s from cell center to the prescribed boundary. Solve dh/ds = 1-Q/K(h), h(0)=h_post, h(delta)=hbot. Equivalently delta = integral from h_post to hbot of K(h)/(K(h)-Q) dh. Select the unique branch Q<min K when hbot>h_post, Q>max K when hbot<h_post, and Q=K(h) when equal.",
       "role": "local steady nonlinear Darcy/Richards half-cell boundary-value diagnostic only; not assumed valid as a dynamic production closure"
+    },
+    "arithmetic_pre_boundary": {
+      "definition": "Q_arith_pre = 0.5*[K(h_pre)+K(hbot)] * [1 + (h_post-hbot)/delta]",
+      "role": "Frozen-state reconstruction of the conductivity localization used by the C5J K1 dynamic counterfactual, without feedback."
     }
   },
   "aggregation_and_metrics": {
     "transaction_level": [
       "observed published mass-balance outward flux",
-      "Q_current_face, Q_postK, Q_arith, Q_int, Q_exact_steady",
+      "Q_current_face, Q_postK, Q_arith_pre, Q_arith_post, Q_int, Q_exact_steady",
       "Q_current_face minus published outward flux",
       "each theory diagnostic minus Q_current_face"
     ],
@@ -115,6 +119,8 @@
     ],
     "temporal_localization": [
       "RMSE(Q_postK-Q_current_face)",
+      "RMSE(Q_arith_pre-Q_current_face)",
+      "RMSE(Q_arith_post-Q_postK)",
       "RMSE(Q_int-Q_postK)",
       "RMSE(Q_exact_steady-Q_postK)"
     ]
@@ -161,7 +167,7 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "BOUND_BEFORE_EXECUTION",
+    "state": "IMPLEMENTATION_REPAIR_BEFORE_EXECUTION_PENDING_REBIND",
     "response_based_design": false,
     "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py",
     "instrumentation_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
@@ -170,7 +176,8 @@
     "c5i_history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
     "c5i_full_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
     "allowed_new_code": "logging-only C5I harness instrumentation and postprocessing theory diagnostics on frozen states",
-    "prohibited_new_code": "Reference solver/boundary changes, fitted conductivity means, response-driven formula changes, T32/R2048, LARE changes"
+    "prohibited_new_code": "Reference solver/boundary changes, fitted conductivity means, response-driven formula changes, T32/R2048, LARE changes",
+    "repair_reason": "Pre-execution analyzer review found a history-summary KeyError and separated C5J-matching pre-step arithmetic K from post-step arithmetic K. No C5K response existed."
   },
   "model_changed": false
 }
