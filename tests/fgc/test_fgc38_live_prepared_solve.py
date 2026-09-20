@@ -312,6 +312,20 @@ def run_case(
             status = session.finalize_time_step_once()
             require(status == PreparedSolveStatus.OK, session.last_error)
             require(kernel.finalize_time_step_calls == 1, "F-GC41 timestep finalization count mismatch")
+            budget_observation = session.accepted_budget_observation()
+            require(budget_observation is not None, "CSR-04 accepted budget observation unavailable")
+            require_allclose(
+                budget_observation.accepted_head_old_m,
+                accepted_xold,
+                0.0,
+                "CSR-04 observation changed accepted origin",
+            )
+            require_allclose(
+                budget_observation.accepted_head_new_m,
+                session.head,
+                0.0,
+                "CSR-04 observation changed accepted terminal head",
+            )
             require(not session.timestep_ready_for_finalize(), "finalized timestep remained ready")
             require(
                 session.finalize_time_step_once() == PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,
@@ -444,6 +458,7 @@ def main() -> None:
         "clean reference lifecycle mismatch",
     )
 
+    print("F_GC_CSR04_ACCEPTED_MODFLOW_STATE_OBSERVATION=PASS")
     print("FGC38_OFFICIAL_MODFLOW680_LOADED=PASS")
     print("FGC38_ONE_PREPARE_SOLVE_PER_WINDOW=PASS")
     print("FGC38_XOLD_ACCEPTED_ORIGIN_FIXED=PASS")
