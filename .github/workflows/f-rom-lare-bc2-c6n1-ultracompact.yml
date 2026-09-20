@@ -45,15 +45,16 @@ jobs:
           test "$(git hash-object integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json)" = "d177069d2ae7daa623cebd5a25f3f89eaf6d9537"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py)" = "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py)" = "15c4c0bc0c3f7be1df1394a812b509512b2a7049"
+          export C6N1_WORKFLOW_BLOB="$(git hash-object .github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml)"
           python3 - <<'PY'
-          import json
+          import json,os
           p=json.load(open('integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json'))
           r=json.load(open('integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json'))
           assert p['phase']=='PREREGISTERED_BEFORE_C6N1_T32_REFERENCE_RESPONSE'
           assert r['status']=='BOUND_ULTRACOMPACT_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE'
           assert r['scientific_authority']['qualification_changed'] is False
           assert r['scientific_firewall']['T32_reference_response_seen'] is False
-          assert r['ultracompact_authority_run']['workflow_blob'] == "$(git hash-object .github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml)"
+          assert r['ultracompact_authority_run']['workflow_blob'] == os.environ['C6N1_WORKFLOW_BLOB']
           print('C6N1_ULTRACOMPACT_AUTHORITY_LOCK=PASS')
           PY
 
