@@ -348,8 +348,25 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "response_based_design": false,
+    "reference_materializer": "tests/rom/materialize_lare_bc2_c5p_reference.py",
+    "reference_materializer_blob": "4a0d0b5c346c4c49f0cc33e9bfc5cadbd0c0f834",
+    "reference_slice_materializer": "tests/rom/materialize_lare_bc2_c5p_reference_slice.py",
+    "reference_slice_materializer_blob": "6b5cee590b9b34d34cad1cfb8a875bec9653c5c4",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5p_bottom_placement.py",
+    "analyzer_blob": "bd720cb776bbf3c93ae4775e89ce1885630e4dca",
+    "analyzer_base": "tests/rom/analyze_lare_bc2_c5n_fresh_highres.py",
+    "analyzer_base_blob": "c14ff931d0c34fec7989a96e553891468cbd2f56",
+    "lare_runner": "tests/rom/run_lare_bc1_stage_b.py",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "source_harness": "tests/rom/test_lare_rs1_gw_library.f90",
+    "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
+    "c5n_reference_materializer_blob": "88db9aa07507acc6dd95efdee5b38525e48f5e2d",
+    "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "allowed_new_code": "fresh P01-P04 Reference materialization, history-sliced execution, fixed-dimension D4/D8 bottom-placement candidates, and preregistered comparator-relative analysis",
+    "prohibited_new_code": "response-driven partition changes, new closure terms, scalar tuning, boundary counterfactuals, production Reference edits"
   },
   "model_changed": false
 }
