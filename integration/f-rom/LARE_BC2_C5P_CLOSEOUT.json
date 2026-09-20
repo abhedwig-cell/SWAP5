@@ -1,0 +1,115 @@
+{
+  "D8_B2P5_evidence": {
+    "cumulative_RMSE_cm": 0.0026159957575508336,
+    "flux_RMSE_cm_per_day": 0.12480870691235192,
+    "history_bias_cm_per_day": 0.0017368445459967014,
+    "mapped_theta_RMSE": 6.749034436279963e-05,
+    "ratio_to_R1024_R2048_reference_gap": {
+      "cumulative": 151.87930133696466,
+      "flux": 14.775972903127057,
+      "history_bias": 180.05464124267021,
+      "mapped_theta": 158.73330155778197,
+      "storage": 151.87930145345516
+    },
+    "relative_to_D8_B10": {
+      "componentwise_no_worse_GW": true,
+      "componentwise_no_worse_PROFILE": true,
+      "cumulative_rmse_ratio": 0.23209422260858006,
+      "flux_rmse_ratio": 0.7416608268837901,
+      "mapped_theta_rmse_ratio": 0.23925147273000189,
+      "signed_history_bias_ratio": 0.1171900301839214,
+      "storage_rmse_ratio": 0.23209422262631282,
+      "strict_flux_improvement": true
+    },
+    "reversal_penalty_steps": 0,
+    "reversal_sequence_mismatch_history_count": 0,
+    "sign_mismatch_count": 0,
+    "storage_RMSE_cm": 0.002615995757582164
+  },
+  "adjudication": {
+    "ANY_FOCUSED_MEMBER_CROSSES_R1024_GW": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "BOTTOM_ADJACENT_STATE_PLACEMENT_CAUSALLY_MATTERS_AT_FIXED_DIMENSION": true,
+    "CLOSURE_FAILURE_UNIQUELY_IDENTIFIED": false,
+    "D4_OVERCONCENTRATION_CAN_DEGRADE_SIGN_OR_REVERSAL_TIMING": true,
+    "D8_MONOTONE_COMPONENTWISE_BOTTOM_FOCUS_PROGRESS": true,
+    "NEW_CLOSURE_IMPLEMENTATION_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PLACEMENT_ALONE_SUFFICIENT_FOR_HIGH_RES_FIDELITY": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "RESPONSE_BASED_PARTITION_OPTIMIZATION_AUTHORIZED": false,
+    "SPEED_CLAIM_AUTHORIZED": false,
+    "VERTICAL_MEMORY_BREADTH_VS_PROPAGATION_RECONCILIATION_AUTHORIZED": true
+  },
+  "authority": {
+    "artifact_digest": "sha256:44837e7386c1a4f275bdd88135c2ce5ed1fb385907ee671248933faed7300928",
+    "artifact_id": 10604607315,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5P_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "c6f5ef73106edc64ce91e4d1a074a881e41225e3",
+    "preregistration": "integration/f-rom/LARE_BC2_C5P_PREREGISTRATION.json",
+    "result_sha256": "abdfc5f978c530881342bb61ddb60d6f9136b90445ec4c11d3215abd39a81fc0",
+    "workflow_run": 35507762232
+  },
+  "decision": "PRESERVE_BOTTOM_ADJACENT_PLACEMENT_EFFECT_NO_FRONTIER_RECONCILE_VERTICAL_MEMORY_BREADTH_BEFORE_NEW_CLOSURE",
+  "fixed_dimension_adjudication": {
+    "D4_B2P5_componentwise_improves_B5_GW": false,
+    "D4_B2P5_reversal_penalty_steps": 25,
+    "D4_B2P5_sign_mismatches": 25,
+    "D4_B5_componentwise_improves_B10_GW": true,
+    "D8_B2P5_componentwise_improves_B5_GW": true,
+    "D8_B5_componentwise_improves_B10_GW": true,
+    "D8_dyadic_progression": true,
+    "focused_R1024_GW_frontier": []
+  },
+  "model_changed": false,
+  "next_authority": {
+    "constraints": [
+      "Read-only first; no new response in C5Q.",
+      "Do not optimize layer boundaries from C5P response magnitudes.",
+      "Use C5P D4 timing degradation and D8 monotone improvement as identifiability evidence, not as application thresholds.",
+      "Retain CURRENT_LAYER_FACE and Reference physics until a separate prospective authority changes the research comparator.",
+      "No scalar closure tuning; C4O remains closed.",
+      "No application, performance, speed or production-ROM claim."
+    ],
+    "question": "Does current evidence justify a fresh fixed-D12 bottom-focus discriminator that preserves broader vertical memory while sharing the D8_B2P5 2.5-cm lower-boundary support, or is a physically distinct inter-layer closure discriminator already identifiable without that test?",
+    "state": "READ_ONLY_VERTICAL_MEMORY_BREADTH_VS_CLOSURE_IDENTIFIABILITY_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C5Q"
+  },
+  "reference_evidence": {
+    "R1024_vs_R2048_cumulative_RMSE_cm": 1.722417560867557e-05,
+    "R1024_vs_R2048_flux_RMSE_cm_per_day": 0.00844673360804137,
+    "R1024_vs_R2048_history_bias_cm_per_day": 9.646208139982651e-06,
+    "R1024_vs_R2048_mapped_theta_RMSE": 4.251807509858406e-07,
+    "R1024_vs_R2048_storage_RMSE_cm": 1.7224175595671016e-05,
+    "R2048_T8_vs_T16_flux_RMSE_cm_per_day": 0.0017191485983460322
+  },
+  "reference_quality": {
+    "R1024_frontier_interpretable": true,
+    "temporal_no_worse_than_R1024_GW": true,
+    "temporal_no_worse_than_R1024_PROFILE": true
+  },
+  "schema": "swap5.lare.bc2.c5p.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5N_result_changed": false,
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": true,
+    "new_closure_fit": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "response_based_repartitioning": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "C5P prospectively isolates state placement from state count. At both D4 and D8, moving retained state toward the lower boundary materially improves high-resolution B14 prescribed-head response under unchanged CURRENT_LAYER_FACE closure.",
+    "The D8 family is the cleanest result: B10 to B5 to B2P5 is componentwise non-worsening on both groundwater and mapped-profile views. D8_B2P5 reduces storage and cumulative error to about 23% of D8_B10, mapped-profile error to about 24%, history-specific signed-bias magnitude to about 12%, and bottom-flux RMSE to about 74%.",
+    "The D4 family shows the complementary information needed for representation design. D4_B5 improves cleanly, but concentrating D4 further to 2.5-cm bottom support introduces 25 sign mismatches and a 25-step reversal penalty despite substantially smaller continuous error magnitudes. The minimum representation therefore cannot be described by bottom-cell thickness alone; enough vertical memory must remain outside the immediate boundary layer.",
+    "No focused member crosses the independent R1024 high-resolution comparator. D8_B2P5 remains about 14.8 times the R1024-R2048 flux gap, about 152 times the storage/cumulative gap, about 180 times the per-history signed-bias gap, and about 159 times the mapped-profile gap.",
+    "C5P therefore rejects both extreme interpretations: placement is not a minor detail, but placement alone is not a high-resolution solution. Because D4 loses dynamic timing when too much state is moved downward while D8 does not, the remaining error cannot yet be uniquely assigned to the propagation closure.",
+    "A simple three-point Richardson or power-law extrapolation across B10/B5/B2P5 is not scientifically valid here because the fixed-dimension variants redistribute state elsewhere in the profile and do not form an h-only asymptotic family. No closure floor is inferred from those three points."
+  ],
+  "status": "CLOSED_BOTTOM_FOCUS_CAUSALLY_IMPROVES_FIXED_DIMENSION_NO_HIGH_RES_FRONTIER_BREADTH_VS_CLOSURE_NEXT",
+  "work_unit": "LARE-BC2-C5P",
+  "workstream": "F-ROM-LARE"
+}
