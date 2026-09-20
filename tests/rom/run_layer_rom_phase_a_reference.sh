@@ -9,6 +9,9 @@ PREREG_COMMIT=a0c03f7a247f62e404724a5a86bca5114324dff3
 PREREG=integration/f-rom/LAYER_ROM_PHASE_A_REFERENCE_PREREGISTRATION.json
 TEST=tests/rom/test_layer_rom_phase_a_reference.f90
 ANALYZER=tests/rom/analyze_layer_rom_phase_a_reference.py
+STATE_ANALYZER=tests/rom/analyze_layer_rom_phase_a_independent_state.py
+STATE_PREREG=integration/f-rom/LAYER_ROM_PHASE_A_PREREGISTRATION.json
+STATE_RESPONSE_PREREG=integration/f-rom/LAYER_ROM_PHASE_A_STATE_RESPONSE_PREREGISTRATION.json
 COMPILER=tests/rom/compile_f_rom0_fortran_closure.py
 MATERIALIZER=tests/rom/materialize_f_rom0_headcalc_stubs.py
 
@@ -81,11 +84,23 @@ python3 "$ANALYZER" \
   tee "$EVIDENCE/analyzer.txt"
 
 cat "$EVIDENCE/LAYER_ROM_PHASE_A_REFERENCE_RESULT.json"
+
+python3 "$STATE_ANALYZER" \
+  --input "$EVIDENCE/o2.txt" \
+  --prereg "$STATE_PREREG" \
+  --state-prereg "$STATE_RESPONSE_PREREG" \
+  --output "$EVIDENCE/LAYER_ROM_PHASE_A_INDEPENDENT_STATE_RESULT.json" |
+  tee "$EVIDENCE/state_analyzer.txt"
+
+cat "$EVIDENCE/LAYER_ROM_PHASE_A_INDEPENDENT_STATE_RESULT.json"
+
 sha256sum \
   "$EVIDENCE/o0.txt" \
   "$EVIDENCE/o2.txt" \
   "$EVIDENCE/LAYER_ROM_PHASE_A_REFERENCE_RESULT.json" \
-  "$EVIDENCE/analyzer.txt" > "$EVIDENCE/sha256.txt"
+  "$EVIDENCE/LAYER_ROM_PHASE_A_INDEPENDENT_STATE_RESULT.json" \
+  "$EVIDENCE/analyzer.txt" \
+  "$EVIDENCE/state_analyzer.txt" > "$EVIDENCE/sha256.txt"
 
 git diff --check "$CANONICAL_START"...HEAD
 echo 'LAYER_ROM_PHASE_A_REFERENCE_LIBRARY_GATE=PASS'
