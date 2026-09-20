@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c5t_instrumentation.py'
       - 'tests/rom/materialize_lare_bc2_c5t_history_slice.py'
       - 'tests/rom/analyze_lare_bc2_c5t_dse2p.py'
@@ -49,7 +50,7 @@ jobs:
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5t_instrumentation.py)" = "10926dd5f32b8a7dbad18febe4e1782688ee4ec6"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5t_history_slice.py)" = "10983adaf736a0eb4c64a443f78db5ea38e13ae3"
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c5t_dse2p.py)" = "5b3b9e17badb1ecc0f266ea6e824f7b181413be1"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5t_dse2p.py)" = "bd7b3d7fc3cfad95efc418ea1c177797088eefd8"
           python3 -m py_compile tests/rom/materialize_lare_bc2_c5t_instrumentation.py
           python3 -m py_compile tests/rom/materialize_lare_bc2_c5t_history_slice.py
           python3 -m py_compile tests/rom/analyze_lare_bc2_c5t_dse2p.py
@@ -62,6 +63,10 @@ jobs:
           assert s['decision']=='PREREGISTER_FROZEN_STATE_DARCIAN_TWO_POINT_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING_IMPLEMENTATION'
           assert p['scientific_firewall']['blind_validation'] is False
           assert p['workload']['solver_feedback_from_candidate'] is False
+          e=json.load(open('integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json'))
+          assert e['status']=='TECHNICAL_ANALYZER_FAIL_CLOSED_REPAIR_AFTER_NUMERICAL_QUALIFICATION_EXCEPTION'
+          assert e['repair']['numerical_method_changed'] is False
+          assert e['repair']['response_based_retuning'] is False
           print('LARE_BC2_C5T_AUTHORITY_LOCK=PASS')
           PY
 
@@ -166,7 +171,7 @@ jobs:
       - name: Execute prebound frozen-state DSE2P analysis
         run: |
           set -euo pipefail
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c5t_dse2p.py)" = "5b3b9e17badb1ecc0f266ea6e824f7b181413be1"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5t_dse2p.py)" = "bd7b3d7fc3cfad95efc418ea1c177797088eefd8"
           python3 tests/rom/analyze_lare_bc2_c5t_dse2p.py             --instrumented /tmp/c5t/routes/R2048_T16_o0.txt             --c5r-baseline /tmp/c5t/base/R2048_T16_o0.txt             --prereg integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json             --c5s integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json             --output LARE_BC2_C5T_EVIDENCE/LARE_BC2_C5T_RESULT.json             | tee LARE_BC2_C5T_EVIDENCE/runner.txt
           cp integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json LARE_BC2_C5T_EVIDENCE/
           cp integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json LARE_BC2_C5T_EVIDENCE/
