@@ -1,0 +1,106 @@
+name: F-ROM-LARE BC2-C6J aggregation-only recovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6j-aggregate-recovery-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install aggregation dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify aggregation-only recovery binding
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "f9dc70c58892bac333cbeb7c652c5e12e8e69e5b"
+          python3 - <<'PY'
+          import json
+          b=json.load(open('integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json'))
+          assert b['status']=='BOUND_AGGREGATION_ONLY_RECOVERY_NO_SCIENTIFIC_CHANGE'
+          assert b['source_run']['workflow_run']==35530325107
+          assert b['source_run']['execution_head']=='14e333ef35e5dbbb2c71c1da0386f07863b3572e'
+          assert b['source_run']['qualifier_blob']=='d3da358fff311dd7610b8e00fa03512e9c50dba1'
+          assert b['repaired_aggregator']['blob']=='f9dc70c58892bac333cbeb7c652c5e12e8e69e5b'
+          assert b['scientific_design_changed'] is False
+          assert b['workflow']['state']=='BOUND_BEFORE_AGGREGATION'
+          print('C6J_AGGREGATION_RECOVERY_LOCK=PASS')
+          PY
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611445050 --jq '.digest')" = "sha256:27e15b0f5bed23372668f0cef9919c6413cfe71f44300ee076146f1eea7b044d"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611117492 --jq '.digest')" = "sha256:a92fcebd5dfe43a2fa34770f94e2b9792c49e24edebd790d5e6623111fadbeb9"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611102536 --jq '.digest')" = "sha256:18f9477de180ac5c25d791a045ca8ae59e1b9c1be394647f7069230e6df14170"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611092600 --jq '.digest')" = "sha256:87ae95f6dbce7d77d245d74c90320e85fe5e9acacf9ddb30c3e591aa84babbe5"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610808168 --jq '.digest')" = "sha256:81238a13a52d74f7ed3ffcb7ce102b92fc5cfc217101aa621ac9e3ec05d647ce"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610688432 --jq '.digest')" = "sha256:758c577f30be1e6b9eb5aa3ba92f7c0cb540a882b5520d7a9c8746b0d70eb7e2"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610589291 --jq '.digest')" = "sha256:6f3728e263574ef0d05b6eec5d16a2b35ff1596e329931691d27cb3a30acf518"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610464646 --jq '.digest')" = "sha256:33da9d3646328f56f10a0319c4a1f66ecaee8ec9a732a6431bdb67b0484ef073"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610129978 --jq '.digest')" = "sha256:07d1234ba2df005223c54dfc39dbc631e131b69b5f2d4afd68c4daa46380231e"
+          echo C6J_IMMUTABLE_SHARDS=PASS
+
+      - name: Recover immutable scientific shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6j-shards
+          gh run download 35530325107 -p 'lare-bc2-c6j-shard-*' -D /tmp/c6j-shards
+          test "$(find /tmp/c6j-shards -name 'LARE_BC2_C6J_SHARD_*.json' | wc -l)" -eq 9
+
+      - name: Aggregate frozen C6J evidence
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6J_EVIDENCE
+          python3 tests/rom/merge_lare_bc2_c6j_femo_shards.py \
+            --shard-dir /tmp/c6j-shards \
+            --output LARE_BC2_C6J_EVIDENCE/LARE_BC2_C6J_RESULT.json \
+            | tee LARE_BC2_C6J_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json LARE_BC2_C6J_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json LARE_BC2_C6J_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json LARE_BC2_C6J_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json LARE_BC2_C6J_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6J_EVIDENCE/LARE_BC2_C6J_RESULT.json'))
+          assert r['state_case_count']==126
+          assert r['expected_head_operator_case_count']==168
+          assert r['expected_flux_operator_case_count']==126
+          assert r['status'] in (
+            'C6J_FEMO_MATHEMATICALLY_QUALIFIED',
+            'C6J_FEMO_LOCAL_MANIFOLD_NOT_QUALIFIED',
+            'C6J_FEMO_ONSAGER_OPERATOR_NOT_QUALIFIED'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['BEMR_reopened'] is False
+          assert f['free_running_FEMO_implemented'] is False
+          assert f['production_rom_authorized'] is False
+          print('C6J_AGGREGATED_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6J_EVIDENCE/* > LARE_BC2_C6J_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C6J aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6j-aggregate-recovery
+          path: LARE_BC2_C6J_EVIDENCE/
+          if-no-files-found: error
