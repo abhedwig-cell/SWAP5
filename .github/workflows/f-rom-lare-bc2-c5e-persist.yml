@@ -1,0 +1,169 @@
+name: F-ROM-LARE persist C5E high-resolution Reference extension
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5e-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5E artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5e
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602206315" > /tmp/c5e/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5e/artifact.json'))
+          assert a['id']==10602206315
+          assert a['digest']=='sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c'
+          assert a['workflow_run']['id']==35500351323
+          assert a['workflow_run']['head_sha']=='54961ef725868bf3ea17feccedb116634cef3da9'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602206315/zip" > /tmp/c5e.zip
+          echo "08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c  /tmp/c5e.zip" | sha256sum -c -
+          unzip -q /tmp/c5e.zip -d /tmp/c5e/evidence
+          echo "80288f4dbc6d7fce59aef7c92226de702a8506810c3c49debf486abcf906e75a  /tmp/c5e/evidence/LARE_BC2_C5E_RESULT.json" | sha256sum -c -
+          echo "b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c  /tmp/c5e/evidence/R512_o0.txt" | sha256sum -c -
+          echo "e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505  /tmp/c5e/evidence/R1024_o0.txt" | sha256sum -c -
+
+      - name: Persist exact result and build C5E closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5e/evidence/LARE_BC2_C5E_RESULT.json integration/f-rom/LARE_BC2_C5E_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5E_RESULT.json'))
+          c=r['convergence']
+          closeout={
+            'schema':'swap5.lare.bc2.c5e.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5E',
+            'status':'CLOSED_REFERENCE_REFINEMENT_STRONGLY_IMPROVING_THROUGH_R1024_SPATIOTEMPORAL_RECONCILIATION_NEXT',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5E_PREREGISTRATION.json',
+              'workflow_run':35500351323,
+              'job_id':106050918397,
+              'execution_head':'54961ef725868bf3ea17feccedb116634cef3da9',
+              'artifact_id':10602206315,
+              'artifact_digest':'sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c',
+              'result_sha256':'80288f4dbc6d7fce59aef7c92226de702a8506810c3c49debf486abcf906e75a',
+              'R512_reference_sha256':'b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c',
+              'R1024_reference_sha256':'e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505',
+              'R64_reference_sha256':'dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1',
+              'R128_reference_sha256':'22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe',
+              'R256_reference_sha256':'684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961'
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5D':r['baseline_identity_to_C5D'],
+            'reference_extension':c,
+            'adjudication':{
+              'R512_QUALIFIED':True,
+              'R1024_QUALIFIED':True,
+              'TWO_NEW_CONSECUTIVE_ADJACENT_RMSE_DECREASES':True,
+              'OBSERVED_ORDER_STRENGTHENED_AT_BOTH_NEW_TRIPLETS':True,
+              'CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED':False,
+              'SPATIOTEMPORAL_RECONCILIATION_REQUIRED':True,
+              'NEW_LARE_OR_CLOSURE_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'High-resolution Reference refinement now shows a substantially stronger convergence trend than C5D.',
+              'Adjacent-grid bottom-flux RMSE decreases from 0.04361 cm/d at R128-R256 to 0.03439 at R256-R512 and 0.01928 at R512-R1024.',
+              'The descriptive observed order strengthens from about 0.112 to 0.343 and then 0.835. The final refinement ratio is about 0.561.',
+              'R512 and R1024 both satisfy the unchanged numerical policy, O0/O2 identity and mass gates.',
+              'This is strong empirical spatial-refinement progress, but R1024 is not yet admitted as continuum truth because temporal interval error and nonlinear tolerance are held fixed rather than jointly refined.',
+              'The next scientific task is therefore a matched space-time Reference audit, not immediate brute-force extension to R2048 and not a new LARE closure.'
+            ],
+            'next_authority':{
+              'state':'REFERENCE_SPATIOTEMPORAL_RECONCILIATION_AUTHORIZED',
+              'target':'LARE-BC2-C5F',
+              'question':'At R512 and R1024, how large is temporal-transaction refinement error relative to the remaining R512-R1024 spatial difference under identical physical histories?',
+              'constraints':[
+                'Reference-only; no LARE run and no closure modification',
+                'preserve exact C5A B14 physical history in physical time',
+                'retain the frozen D13 integrated-water-depth numerical policy',
+                'compare refined-time outputs on the original 0.0008-day aggregation grid',
+                'do not admit R1024 as continuum truth until space-time error is separated',
+                'no application, performance, speed or production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5E_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5E closeout
+
+          C5E extended the B14 dynamic prescribed-head Richards Reference to R512 and R1024 under the unchanged C5A-C5D numerical policy. No LARE representation or closure was run.
+
+          The authoritative run is 35500351323 at execution head 54961ef725868bf3ea17feccedb116634cef3da9. Both R512 and R1024 pass O0/O2 identity and all mass and transaction gates. The exact result SHA-256 is 80288f4dbc6d7fce59aef7c92226de702a8506810c3c49debf486abcf906e75a.
+
+          The spatial-refinement behavior improves materially. Adjacent-grid bottom-flux RMSE is 0.04361 cm/d for R128-R256, 0.03439 for R256-R512 and 0.01928 for R512-R1024. The descriptive observed order rises from about 0.112 in the preceding triplet to 0.343 and then 0.835.
+
+          This is substantially stronger evidence of spatial convergence than C5D, but it still does not make R1024 a continuum-like scientific truth. The Reference transaction interval, nonlinear policy and tolerances have not been jointly refined.
+
+          The next experiment is C5F: a Reference-only matched space-time audit at R512 and R1024. The exact physical histories are retained, the time interval is refined prospectively, and refined outputs are aggregated back to the original 0.0008-day observation windows. No new LARE closure or representation is authorized.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v10'
+          j['status']='CLOSED_THROUGH_C5E_SPATIAL_REFERENCE_STRONGLY_PROGRESSING_SPATIOTEMPORAL_AUDIT_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5E_high_resolution_reference':'integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5E':'R512 and R1024 qualify. Adjacent-grid RMSE decreases strongly and descriptive order strengthens to about 0.84, but temporal transaction error remains unreconciled; no continuum Reference is yet admitted.'
+          })
+          j['decision']='PREREGISTER_REFERENCE_SPATIOTEMPORAL_C5F_BEFORE_R2048_OR_NEW_LARE_CLOSURE'
+          j['next_authority']='LARE-BC2-C5F'
+          j['next_family_authority']={
+            'family':'C5F_REFERENCE_SPATIOTEMPORAL_RECONCILIATION',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json'
+            ],
+            'purpose':'Separate remaining temporal-transaction error from high-resolution spatial Reference error before treating a fine Richards grid as scientific authority.',
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5E closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5E_RESULT.json                   integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5E_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5E high-resolution Reference extension"
+          git push origin HEAD:work/f-rom-lare-rs1
