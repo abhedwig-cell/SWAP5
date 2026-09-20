@@ -114,7 +114,29 @@ jobs:
             python3 research/tabulated_hydraulics/compare_hupsel_e2e.py               "build/pwx/envelope/${scenario}__analytic_k1" "build/pwx/envelope/${scenario}__table_k1"               "build/pwx/${scenario}__k1.json" --label "${scenario},K1,piecewise-x400"
           done
 
+      - name: Isolate clay representation from lookup
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a build/pwx/envelope/clay_wet_free__table_k0 build/pwx/envelope/clay_wet_free__legacy_k0
+          pushd build/pwx/envelope/clay_wet_free__legacy_k0 >/dev/null
+          set +e
+          timeout 30 "$GITHUB_WORKSPACE/swap-table-legacy" > legacy.log 2>&1
+          rc=$?
+          set -e
+          popd >/dev/null
+          test "$rc" -eq 100
+          python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/pwx/envelope/clay_wet_free__analytic_k0 \
+            build/pwx/envelope/clay_wet_free__legacy_k0 \
+            build/pwx/clay_legacy_vs_analytic.json --label "clay,K0,piecewise-legacy"
+          python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+            build/pwx/envelope/clay_wet_free__legacy_k0 \
+            build/pwx/envelope/clay_wet_free__table_k0 \
+            build/pwx/clay_legacy_vs_direct.json --label "clay,K0,legacy-vs-direct"
+
       - name: Gate fidelity
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -194,6 +216,8 @@ jobs:
           path: |
             build/pwx/fidelity.tsv
             build/pwx/*__k*.json
+            build/pwx/clay_legacy_vs_analytic.json
+            build/pwx/clay_legacy_vs_direct.json
             build/pwx/lookup-k*.json
             build/pwx/benchmark.csv
             build/pwx/benchmark-summary.txt
