@@ -133,7 +133,15 @@
   },
   "decision": "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED",
   "model_changed": false,
-  "next_authority": "INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER",
+  "next_authority": {
+    "state": "SCIENTIFIC_CHOICE_REQUIRED",
+    "choices": [
+      "INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER",
+      "INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER"
+    ],
+    "reason": "C4W closes the mechanism question but current authority does not privilege one independent transfer axis over the other.",
+    "external_application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+  },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
   "schema": "swap5.lare.bc2.c4w.closeout.v1",
