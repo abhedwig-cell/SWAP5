@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.layer-rom.phase-b1r.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1R",
+  "status": "CLOSED_CORRECTED_R2_FRONTIER_DIMENSION4_FMC_FLUX_FRONTIER_HELD",
+  "decision": "B1R_CORRECTED_R2_FRONTIER_REBUILT",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1R_PREREGISTRATION.json",
+    "analyzer": "tests/rom/analyze_layer_rom_b1r.py",
+    "workflow": ".github/workflows/f-rom-layer-b1r-corrected-frontier.yml",
+    "workflow_run": 35501337422,
+    "artifact_id": 10602616038,
+    "artifact_digest": "sha256:7b24e6fc4484dfea8e0013b0b77016fe9c6c14f717807dbf42b22c030c6bbaac",
+    "raw_result_sha256": "a1a9d8e0a10141be6af08e5770914c5442aa761f0334798d031eea8481c043f8"
+  },
+  "conclusions": [
+    "The corrected B01 short-horizon R2-relative GW frontier is first reached at L4.",
+    "The old FMC-inclusive fixed-head frontier is not repaired and remains held.",
+    "Old mixed-semantics bottom-flux components are superseded; retained storage/cumulative/profile components reproduce exactly."
+  ],
+  "next_authorized": "B2R_AFTER_B1HCG_CORRECTED_TEMPORAL_DIAGNOSIS",
+  "production_rom_authorized": false
+}
