@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6d.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6D",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6D_INSTRUMENTED_RESPONSE_OR_OPERATOR_METRICS",
   "title": "Exposed frozen-state BEMR interface-flux mechanism discriminator",
   "role": "EXPOSED_MECHANISM_DIAGNOSTIC_NOT_BLIND_VALIDATION_NOT_FREE_RUNNING",
   "scientific_question": "On immutable C5R R2048-T16 prescribed-head moving-phase states, with both integrated storage and centered first water-content moment projected exactly to D12_B2P5, does the mathematically qualified BEMR reconstruction reduce internal-interface flux error relative to CURRENT_LAYER_FACE without changing the Reference trajectory or fitting to its residuals?",
@@ -193,19 +193,22 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "moment_instrumenter": "tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py",
-    "moment_instrumenter_blob": null,
+    "moment_instrumenter_blob": "5b22a72c7f3f51e4bbfaf978953c7ff50a425b29",
     "history_slicer": "tests/rom/materialize_lare_bc2_c5t_history_slice.py",
     "history_slicer_blob": "10983adaf736a0eb4c64a443f78db5ea38e13ae3",
     "analyzer": "tests/rom/analyze_lare_bc2_c6d_bemr_flux.py",
-    "analyzer_blob": null,
+    "analyzer_blob": "d4826988daa11cdaa48bcd302b4b3c43809ca34e",
     "bemr_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "bemr_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6d.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "dc5a2b65d228f236b8ee715383c254dab98d45d1",
+    "execution_binding_complete": true,
+    "aggregator": "tests/rom/aggregate_lare_bc2_c6d_bemr_flux.py",
+    "aggregator_blob": "4777b0fad33ff2e293173d69044d777b425dc67e",
+    "binding_note": "C6D histories, projected S/M state, BEMR equations, starts, metrics, interface set, execution blobs and workflow are frozen before any authoritative C6D instrumented response or operator metric."
   },
   "model_changed": false
 }
