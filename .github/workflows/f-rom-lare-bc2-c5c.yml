@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C5C_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C5C_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c5c_reference_refinement.py'
       - 'tests/rom/analyze_lare_bc2_c5c_bottom_refinement.py'
       - '.github/workflows/f-rom-lare-bc2-c5c.yml'
@@ -43,7 +44,7 @@ jobs:
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5c_reference_refinement.py)" = "b3529057034ee5d964a74048e1d5bcde165275e7"
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c5c_bottom_refinement.py)" = "82d019ddd3e8505b224ba303bb6fde48bf0b8da6"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5c_bottom_refinement.py)" = "8a672eea451b2f9e2799b80428e7b01f3824d6f8"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py)" = "f4f666d3504568d084d1d5ca3f90008ab6af2df9"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c4z_dynamic_head.py)" = "105e75b93425780f565c714de1be1cb7ae0ee767"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c5b_signed_flux_mechanism.py)" = "b51b4b60fd229786ec566948f400eb69771d0c56"
@@ -55,6 +56,11 @@ jobs:
           assert c['status']=='CLOSED_TIME_AND_UPPER_STATE_PLATEAU_PRESCRIBED_HEAD_BOUNDARY_RESPONSE_LOCALIZED'
           assert p['authority']['new_closure_authorized'] is False
           assert p['scientific_firewall']['C5A_formal_decision_changed'] is False
+          r=json.load(open('integration/f-rom/LARE_BC2_C5C_EXECUTION_BINDING_RECONCILIATION.json'))
+          assert r['status']=='TECHNICAL_REFERENCE_PARSER_REPAIRED_BEFORE_ANY_LARE_REFINEMENT_METRICS'
+          assert r['repair']['new_analyzer_blob']=='8a672eea451b2f9e2799b80428e7b01f3824d6f8'
+          assert r['repair']['scientific_effect']=='NONE'
+          assert r['response_use']['R32_R64_hydrological_values_used_for_repair'] is False
           print('LARE_BC2_C5C_AUTHORITY_LOCK=PASS')
           PY
 
