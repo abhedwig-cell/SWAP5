@@ -44,7 +44,8 @@
     "C6B": "The centered first water-content moment is retained, but the failed cubic-theta map is not reopened. BEMR represents the frozen bounded effective-saturation interval through a logistic entropy-dual variable and uses the minimum four-dimensional polynomial dual space required by the existing S/M plus hydraulic degree count. The family is selected response-free and must be qualified on the unchanged C5Z synthetic domain before any hydrological response.",
     "C6C": "BEMR passes response-free mathematical qualification on all 168 unchanged C5Z B14 state/moment cases and all 840 fixed starts. Strict moment realizability, convergence, single branch, bounded Se, hydraulic continuity, state recovery and quadrature consistency all pass. This establishes the algebraic map, not hydrological fidelity.",
     "C6D": "On 2,304 immutable C5R moving states, directly projected S/M plus the C6C-qualified BEMR map passes all numerical gates and prospectively supports boundary-extension qualification: pooled primary RMSE 0.008709->0.006075 cm/d, mean-absolute interface/history signed bias 0.001138->0.000190 cm/d and sign mismatches 229->190, with RMSE improved at each primary face. However max absolute error worsens 0.1027->0.1842 cm/d due a preserved R02 phase-reversal outlier; BEMR is not uniformly superior.",
-    "C6E": "Response-free prescribed-flux qualification is negative. All 126 S/M targets are realizable and all 630 starts report convergence, but only 121/126 cases satisfy the frozen unique-branch, hydraulic-continuity and state-recovery contract. Five cases exhibit start-dependent near-upper-bound residual attractors despite a qualified branch existing from other starts. No post-result start selection, regularization, continuation, bound relaxation or free-running BEMR is authorized."
+    "C6E": "Response-free prescribed-flux qualification is negative. All 126 S/M targets are realizable and all 630 starts report convergence, but only 121/126 cases satisfy the frozen unique-branch, hydraulic-continuity and state-recovery contract. Five cases exhibit start-dependent near-upper-bound residual attractors despite a qualified branch existing from other starts. No post-result start selection, regularization, continuation, bound relaxation or free-running BEMR is authorized.",
+    "C6F": "Two conserved half-layer inventories have exact local balances and direct box realizability, but the natural Darcy implementation is exactly a fixed 2N finite-volume refinement. Any physically distinct internal q_mid requires a new closure not determined by conservation. C6F therefore closes without D24/free-running response."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -99,7 +100,8 @@
     "C6B_bounded_entropy_moment": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
     "C6C_BEMR_mathematical_qualification": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
     "C6D_BEMR_frozen_state_mechanism": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
-    "C6E_BEMR_prescribed_flux_boundary": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json"
+    "C6E_BEMR_prescribed_flux_boundary": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
   },
   "closed_routes": [
     {
@@ -143,42 +145,46 @@
       "evidence": [
         "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json"
       ]
+    },
+    {
+      "id": "FIXED_HALF_LAYER_INVENTORY_AS_NEW_ROM_FAMILY",
+      "disposition": "NOT_AUTHORIZED_C6F_STANDARD_DARCY_IS_SIMPLE_2N_REFINEMENT_ALTERNATIVE_QMID_REQUIRES_NEW_CLOSURE",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
+      ]
     }
   ],
-  "decision": "STOP_BEMR_FREE_RUNNING_ROUTE_AT_C6E_PRESCRIBED_FLUX_BRANCH_ROBUSTNESS_FAILURE",
+  "decision": "DO_NOT_IMPLEMENT_FIXED_HALF_LAYER_INVENTORY_FAMILY_AS_NEW_ROM_ROUTE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
   "next_authority": null,
   "next_family_authority": {
-    "additional_D8_to_D12_breadth_at_shared_B2P5_support_is_active": false,
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "bottom_placement_is_material": true,
-    "current_layer_face_high_resolution_frontier_preserved": false,
-    "family": "UNSELECTED_POST_BEMR_PROPAGATION_OR_STATE_FAMILY",
+    "family": "UNSELECTED_POST_C6F_INFORMATION_CHANGING_REPRESENTATION_FAMILY",
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_PREREGISTRATION",
+    "C6C_mathematically_qualified": true,
+    "C6D_frozen_state_mechanism_supported": true,
+    "C6D_transition_tail_risk_preserved": true,
+    "C6E_prescribed_flux_boundary_qualified": false,
+    "C6F_fixed_half_layer_is_new_rom_family": false,
+    "BEMR_general_free_running_authorized": false,
+    "fixed_half_layer_implementation_authorized": false,
+    "fresh_blind_free_running_authorized": false,
     "hydrological_response_authorized": false,
     "new_family_implementation_authorized": false,
     "qualified_replacement_closure_available": false,
-    "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json"
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "candidate_read_only_directions": [
+      "GENUINELY_INTERFACE_LOCAL_CONSERVED_STATE_NOT_EQUIVALENT_TO_FIXED_LAYER_SPLIT",
+      "ADAPTIVE_OR_MOVING_PARTITION_WITH_CONSERVATIVE_REMAP_AND_RESPONSE_INDEPENDENT_TRIGGER",
+      "INDEPENDENT_VARIATIONAL_OR_STABILITY_PRINCIPLE_FOR_BRANCH_SELECTION"
     ],
-    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_PREREGISTRATION",
-    "C6A_interface_variables_alone_are_sufficient": false,
-    "C6B_family_selected": true,
-    "C6C_mathematically_qualified": true,
-    "exposed_frozen_state_diagnostic_authorized": false,
-    "C6D_frozen_state_mechanism_supported": true,
-    "C6D_transition_tail_risk_preserved": true,
-    "fresh_blind_free_running_authorized": false,
-    "response_free_prescribed_flux_boundary_qualification_authorized": false,
-    "C6E_prescribed_flux_boundary_qualified": false,
-    "BEMR_general_free_running_authorized": false
+    "repository_basis": [
+      "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
+    ]
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -210,7 +216,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v34",
+  "schema": "swap5.lare.representation-selection.closeout.v35",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -221,7 +227,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6E_BEMR_PRESCRIBED_FLUX_NOT_QUALIFIED_FREE_RUNNING_STOPPED_SCIENTIFIC_CHOICE_REQUIRED",
+  "status": "CLOSED_THROUGH_C6F_FIXED_SUBLAYER_MEMORY_COLLAPSES_TO_REFINEMENT_OR_NEW_CLOSURE_SCIENTIFIC_CHOICE_REQUIRED",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
