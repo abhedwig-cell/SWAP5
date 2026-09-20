@@ -172,14 +172,14 @@
     "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py",
     "instrumentation_materializer_blob": "570722580fce88123f61d8d93240fea93d74abdc",
     "analyzer": "tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py",
-    "analyzer_blob": "a2ea2726feadaab74e9277c3a85d912070387b98",
+    "analyzer_blob": "536ee6a0f2c91672a3d7bd4538ec9e665907f35f",
     "c5i_history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
     "c5i_full_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
     "allowed_new_code": "logging-only C5I harness instrumentation and postprocessing theory diagnostics on frozen states",
     "prohibited_new_code": "Reference solver/boundary changes, fitted conductivity means, response-driven formula changes, T32/R2048, LARE changes",
     "repair_reason": "Pre-execution review only: repaired history summary, separated pre/post arithmetic conductivity diagnostics, and removed an arbitrary mechanism-label threshold. No C5K response existed.",
     "execution_reconciliation": "integration/f-rom/LARE_BC2_C5K_EXECUTION_BINDING_RECONCILIATION.json",
-    "repair_note": "Logging-only anchor repair after run 35505566475 failed before solver execution; scientific design, logging payload, analyzer and theory formulas unchanged."
+    "repair_note": "Logging-only anchor repair after run 35505566475 failed before solver execution, followed by analyzer semantics repair after run 35505654292: interval exchange rate and terminal flux are distinct quantities. Theory formulas, metric set and adjudication are unchanged."
   },
   "model_changed": false
 }
