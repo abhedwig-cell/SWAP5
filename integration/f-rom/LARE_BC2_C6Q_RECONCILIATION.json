@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.lare.bc2.c6q.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6Q",
+  "status": "CLOSED_MINIMAL_LAYER_MEAN_HEAD_FEDDES_SELECTED_FOR_PROSPECTIVE_FALSIFICATION_ROOT_ACTIVE_REFERENCE_REQUIRED",
+  "decision": "PREREGISTER_ROOT_ACTIVE_REFERENCE_ONLY_BEFORE_ANY_REDUCED_DYNAMIC_ROOT_FEEDBACK_RESPONSE",
+  "role": "READ_ONLY_PURPOSE_DEPENDENT_ROOT_FEEDBACK_APPROXIMATION_SELECTION_AND_VALIDATION_ARCHITECTURE",
+  "authority": {
+    "C6P": "integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json",
+    "C6O": "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
+    "purpose_policy": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
+    "root_process": "src/process/mod_root_water_uptake_process.f90",
+    "prescribed_root_equivalence": [
+      "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+      "integration/audits/PPA_ROOT_HYD02_RESULT.json"
+    ],
+    "hydrological_response_used": false
+  },
+  "selected_reduced_feedback": {
+    "id": "LAYER_MEAN_HEAD_FEDDES",
+    "selection_type": "SCIENTIFIC_CHOICE_FOR_DELIBERATELY_APPROXIMATE_PURPOSE_MODEL",
+    "selection_rationale": [
+      "Uses only the existing conserved Layer-ROM state S_i; no new root-specific memory is introduced.",
+      "Uses the exact retained-layer root fraction Delta F_i.",
+      "Uses the unchanged frozen retention relation to map mean water content to one representative pressure head.",
+      "Uses the unchanged drought-only Feddes alpha(h) law.",
+      "Contains no fitted coefficient, relaxation time, error correction or C6P-derived tuning.",
+      "The same formula was frozen in C6P before ambiguity was evaluated, where it was explicitly classified as a diagnostic rather than an accepted closure."
+    ],
+    "formula": [
+      "theta_bar_i = S_i/d_i",
+      "h_bar_i = h(theta_bar_i)",
+      "Delta F_i = integral of prescribed root-fraction density over retained layer i",
+      "Q_root_i = T_p * Delta F_i * alpha(h_bar_i)"
+    ],
+    "exact_mass_conservation": true,
+    "exact_root_fraction_aggregation": true,
+    "exact_stress_feedback": false,
+    "known_structural_limit": "C6P proves that the fine root-weighted alpha(h) functional is not uniquely determined by S_i and that the mean-head evaluation is not exact.",
+    "application_acceptance": false
+  },
+  "reference_feedback_contract": {
+    "evaluation_state": "Committed hydraulic pressure-head state, matching current SWAP5 root process semantics.",
+    "root_process": "Exact fine-node Delta f_n*T_p*alpha(h_n).",
+    "trial_semantics": "The evaluated sink vector is then prescribed during the Richards trial, consistent with the admitted concrete root-sink provider semantics.",
+    "candidate_semantics": "Reduced feedback is likewise evaluated once from the committed retained state and held prescribed during the reduced hydraulic trial.",
+    "synchronization_rule": "Reference and candidate must receive the same T_p, root-distribution and Feddes parameter schedule at each committed step.",
+    "no_within_trial_feedback_re_evaluation": true
+  },
+  "validation_sequence": {
+    "stage_1": "ROOT_ACTIVE_HIGH_RES_REFERENCE_QUALIFICATION",
+    "stage_2": "PRESCRIBED_SINK_REDUCED_EQUIVALENCE_HARNESS_CHECK",
+    "stage_3": "PROSPECTIVE_DYNAMIC_ROOT_FEEDBACK_COMPARISON",
+    "stage_4": "ONLY_AFTER_EXTERNAL_PURPOSE_REQUIREMENT_APPLICATION_ACCEPTANCE"
+  },
+  "root_active_reference_design_principles": {
+    "boundary": "Use the already-admitted fixed bottom-flux DYN0A numerical route; do not reopen free-drainage or fixed-head retry authority.",
+    "surface_forcing": "Keep top and bottom hydraulic flux at the initial gravity-equilibrium value in the first mechanistic root-feedback Reference. Root extraction is the sole driver of net drying.",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "root_depth_cm": 80,
+    "root_profiles": [
+      "UNIFORM",
+      "SHALLOW"
+    ],
+    "stress_levels": "Use a frozen synthetic mechanism set first; do not claim crop calibration.",
+    "numerical_hierarchy": "Use the C6N0/C6N1 three-level space-time uncertainty method rather than the failed C6M2 dominance rule.",
+    "candidate_response_before_reference_qualification": false
+  },
+  "prospective_candidate_scope_after_reference": {
+    "existing_representations_only": [
+      "U4",
+      "U8",
+      "R8",
+      "R16"
+    ],
+    "rationale": "C6N2 identifies U4/U8 as purpose-relevant surface controls while retaining R8 as the groundwater-oriented same-dimension contrast and R16 as the no-spatial-reduction LARE control.",
+    "new_partition_authorized": false,
+    "new_root_state_authorized": false,
+    "new_hydraulic_closure_authorized": false,
+    "metrics": [
+      "actual_transpiration_fraction and cumulative actual uptake",
+      "root-zone 0-40 cm storage",
+      "upper-zone 0-80 cm storage",
+      "mapped 10-cm theta profile",
+      "root-stress timing / onset diagnostics"
+    ],
+    "no_scalar_score": true
+  },
+  "interpretation_boundary": [
+    "C6Q selects a candidate approximation for falsification, not an accepted ET closure.",
+    "A failure of the mean-head route would not prove that all low-dimensional ET models require new state; it would reject this minimum existing-state approximation on the tested domain.",
+    "A successful comparator-relative result still requires an independent application tolerance before operational ET/drought acceptance."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6R",
+    "state": "ROOT_ACTIVE_HIGH_RES_REFERENCE_PREREGISTRATION_AUTHORIZED",
+    "question": "Can a fresh root-active fixed-flux Reference panel with committed-state drought-only Feddes feedback be numerically qualified by a three-level space-time uncertainty hierarchy before any reduced feedback response?",
+    "candidate_response_authorized": false
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "dynamic_root_feedback_implemented": false,
+    "C6P_errors_used_to_tune_feedback": false,
+    "new_root_state_selected": false,
+    "new_partition_selected": false,
+    "application_tolerance_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
