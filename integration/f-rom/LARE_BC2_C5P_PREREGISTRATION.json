@@ -1,0 +1,355 @@
+{
+  "schema": "swap5.lare.bc2.c5p.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5P",
+  "phase": "PREREGISTERED_BEFORE_C5P_FRESH_REFERENCE_OR_LARE_RESPONSE",
+  "title": "Fresh blind fixed-dimension bottom-adjacent state-placement discriminator",
+  "scientific_question": "At fixed total state dimension, does reallocating vertically aggregated state from higher parts of the column into progressively thinner bottom-adjacent layers materially improve high-resolution B14 dynamic prescribed-head fidelity under unchanged BC1 CURRENT_LAYER_FACE?",
+  "role": "BLIND_PLACEMENT_IDENTIFIABILITY_DISCRIMINATOR_NOT_APPLICATION_ACCEPTANCE",
+  "authority": {
+    "c5o_reconciliation": "integration/f-rom/LARE_BC2_C5O_RECONCILIATION.json",
+    "required_c5o_decision": "TEST_BOTTOM_ADJACENT_STATE_PLACEMENT_AT_FIXED_DIMENSION_BEFORE_NEW_CLOSURE_FAMILY",
+    "c5n_closeout": "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
+    "c5c_closeout": "integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "live_canonical_at_preregistration": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "frozen_scientific_basis_rebased": false,
+    "application_acceptance_authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+  },
+  "blind_design": {
+    "response_blind": true,
+    "histories_previously_exposed": false,
+    "material_previously_exposed": true,
+    "boundary_semantics_previously_exposed": true,
+    "history_ids": [
+      "P01",
+      "P02",
+      "P03",
+      "P04"
+    ],
+    "initial_effective_saturation": {
+      "P01": 0.68,
+      "P02": 0.78,
+      "P03": 0.86,
+      "P04": 0.92
+    },
+    "phase_schedule_observation_steps": {
+      "P01": {
+        "phase1": "FALL",
+        "phase1_steps": 192,
+        "phase2": "RISE",
+        "phase2_steps": 384,
+        "hold_steps": 448
+      },
+      "P02": {
+        "phase1": "RISE",
+        "phase1_steps": 192,
+        "phase2": "FALL",
+        "phase2_steps": 384,
+        "hold_steps": 448
+      },
+      "P03": {
+        "phase1": "FALL",
+        "phase1_steps": 272,
+        "phase2": "RISE",
+        "phase2_steps": 304,
+        "hold_steps": 448
+      },
+      "P04": {
+        "phase1": "RISE",
+        "phase1_steps": 304,
+        "phase2": "FALL",
+        "phase2_steps": 272,
+        "hold_steps": 448
+      }
+    },
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192,
+    "bottom_head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125
+    },
+    "top_forcing": "gravity-consistent B14 qeq only",
+    "hold_boundary": "mode-2 equilibrium HOLD",
+    "sinks": false,
+    "moving_water_table": false,
+    "history_design_note": "Fresh exact initial states and switching schedules were fixed before any P01-P04 response. Head amplitudes retain the established C5A/C5N envelope to isolate placement."
+  },
+  "material": {
+    "id": "B14",
+    "theta_r": 0.01,
+    "theta_s": 0.416774,
+    "alpha_per_cm": 0.00541,
+    "n": 1.301528,
+    "Ksat_cm_per_day": 0.895023,
+    "mualem_lambda": -0.334926
+  },
+  "reference_design": {
+    "target": {
+      "id": "R2048_T16",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 16,
+      "transaction_dt_day": 0.00005,
+      "interpretation": "Finest available numerical control, not continuum truth."
+    },
+    "spatial_comparator": {
+      "id": "R1024_T16",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "temporal_factor": 16
+    },
+    "temporal_control": {
+      "id": "R2048_T8",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 8,
+      "transaction_dt_day": 0.0001
+    },
+    "numerical_policy": "exact pre-existing D13 integrated-water-depth Reference policy used by C5I/C5L/C5N",
+    "O0_O2_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "profile_output": "16 fixed 10-cm water-content bins at each 0.0008-day observation window",
+    "node_output": false
+  },
+  "representations": {
+    "closure": "BC1 CURRENT_LAYER_FACE; no closure tuning",
+    "candidate_dt_day": 0.0001,
+    "candidate_dt_authority": "C5B established negligible CURRENT_LAYER_FACE timestep effect relative to representation error; C5P retains the frozen candidate dt.",
+    "fixed_dimension_families": {
+      "D4": {
+        "B10": {
+          "id": "D4_B10",
+          "boundaries_cm": [
+            0,
+            130,
+            140,
+            150,
+            160
+          ],
+          "widths_cm": [
+            130,
+            10,
+            10,
+            10
+          ],
+          "role": "historical R4 baseline"
+        },
+        "B5": {
+          "id": "D4_B5",
+          "boundaries_cm": [
+            0,
+            140,
+            150,
+            155,
+            160
+          ],
+          "widths_cm": [
+            140,
+            10,
+            5,
+            5
+          ],
+          "role": "move one state from 130-140 cm to split bottom 10 cm into two 5-cm states"
+        },
+        "B2P5": {
+          "id": "D4_B2P5",
+          "boundaries_cm": [
+            0,
+            150,
+            155,
+            157.5,
+            160
+          ],
+          "widths_cm": [
+            150,
+            5,
+            2.5,
+            2.5
+          ],
+          "role": "concentrate all three nonbulk states within bottom 10 cm"
+        }
+      },
+      "D8": {
+        "B10": {
+          "id": "D8_B10",
+          "boundaries_cm": [
+            0,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ],
+          "widths_cm": [
+            90,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "role": "historical R8 baseline"
+        },
+        "B5": {
+          "id": "D8_B5",
+          "boundaries_cm": [
+            0,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            155,
+            160
+          ],
+          "widths_cm": [
+            100,
+            10,
+            10,
+            10,
+            10,
+            10,
+            5,
+            5
+          ],
+          "role": "move one upper lower-zone state to split bottom 10 cm into two 5-cm states"
+        },
+        "B2P5": {
+          "id": "D8_B2P5",
+          "boundaries_cm": [
+            0,
+            110,
+            120,
+            130,
+            140,
+            150,
+            155,
+            157.5,
+            160
+          ],
+          "widths_cm": [
+            110,
+            10,
+            10,
+            10,
+            10,
+            5,
+            2.5,
+            2.5
+          ],
+          "role": "concentrate two states further into bottom 10 cm"
+        }
+      }
+    },
+    "design_origin": {
+      "bottom_scales_cm": [
+        10,
+        5,
+        2.5
+      ],
+      "provenance": "C5C pre-existing mechanism evidence showed strong B14 dynamic-head sensitivity when bottom support was refined from 10 to 5 to 2.5 cm.",
+      "response_based_on_C5P": false,
+      "optimization_claim": false,
+      "interpretation": "Dyadic transfer levels are prospective diagnostic coordinates, not fitted optimal boundaries."
+    },
+    "total_state_count_controlled_within_each_family": true,
+    "no_response_based_repartitioning": true
+  },
+  "metric_views": {
+    "groundwater": [
+      "total_storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "interval_bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm",
+      "reversal_sequence_mismatch_history_count",
+      "reversal_penalty_steps"
+    ],
+    "profile": "groundwater view plus mapped_theta_rmse across 16 fixed 10-cm bins",
+    "cancellation_diagnostics": [
+      "pooled_signed_bottom_flux_bias_cm_per_day",
+      "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+      "cancellation_ratio"
+    ],
+    "placement_diagnostics": [
+      "componentwise D4_B5 versus D4_B10 groundwater comparison",
+      "componentwise D4_B2P5 versus D4_B5 and D4_B10 groundwater comparisons",
+      "componentwise D8_B5 versus D8_B10 groundwater comparison",
+      "componentwise D8_B2P5 versus D8_B5 and D8_B10 groundwater comparisons",
+      "continuous error ratios for every metric without scalar collapse",
+      "profile tradeoff reported separately from groundwater response"
+    ],
+    "no_scalar_score": true,
+    "no_application_threshold": true,
+    "no_universal_layer_threshold": true
+  },
+  "comparator_rules": {
+    "target": "R2048_T16",
+    "high_resolution_spatial_frontier": "Candidate is componentwise no worse than R1024_T16 relative to R2048_T16 on the declared view.",
+    "temporal_floor": "Candidate is componentwise no worse than R2048_T8 relative to R2048_T16 on the declared view; numerical diagnostic only.",
+    "baseline_improvement": "Focused candidate is componentwise no worse than the same-dimension B10 baseline on the groundwater view and has strictly smaller interval-bottom-flux RMSE by more than 1e-12.",
+    "dyadic_progression": "B2P5 componentwise no worse than B5 and B5 componentwise no worse than B10 on the groundwater view; reported as a hypothesis, not required for a useful continuous placement response.",
+    "equality_tolerance_numeric": 1e-12
+  },
+  "reference_quality_interpretation": {
+    "gate": "R2048 T8-to-T16 must be componentwise no worse than R1024-to-R2048 on both groundwater and profile views before any C5P LARE response is generated.",
+    "if_failed": "Stop before candidate response and preserve the Reference-quality blocker.",
+    "if_passed": "Proceed with frozen D4/D8 placement families; R1024 crossing remains comparator-relative, not continuum or application acceptance."
+  },
+  "hypotheses": {
+    "H_D4_BOTTOM_FOCUS_IMPROVES": "At least one D4 focused variant (B5 or B2P5) is componentwise no worse than D4_B10 on groundwater view and strictly lowers bottom-flux RMSE.",
+    "H_D8_BOTTOM_FOCUS_IMPROVES": "At least one D8 focused variant (B5 or B2P5) is componentwise no worse than D8_B10 on groundwater view and strictly lowers bottom-flux RMSE.",
+    "H_D4_DYADIC_PROGRESS": "D4_B2P5 is componentwise no worse than D4_B5, and D4_B5 no worse than D4_B10, on groundwater view.",
+    "H_D8_DYADIC_PROGRESS": "D8_B2P5 is componentwise no worse than D8_B5, and D8_B5 no worse than D8_B10, on groundwater view.",
+    "H_ANY_FOCUSED_MEMBER_CROSSES_R1024_GW": "At least one B5/B2P5 focused member crosses the R1024 groundwater comparator.",
+    "H_PROFILE_TRADEOFF": "Groundwater improvement from bottom-focused redistribution need not imply mapped-profile improvement; both views are reported separately."
+  },
+  "decision_logic": {
+    "C5P_BOTTOM_FOCUS_RESCUES_HIGH_RES_GW_FRONTIER": "Reference gate passes and at least one focused member crosses R1024 on groundwater view.",
+    "C5P_BOTTOM_FOCUS_IMPROVES_BUT_NO_HIGH_RES_FRONTIER": "Reference gate passes, no focused member crosses R1024 GW, but at least one fixed-dimension family satisfies the baseline-improvement rule.",
+    "C5P_BOTTOM_FOCUS_NO_IMPROVEMENT_CLOSURE_RECONCILIATION_REQUIRED": "Reference gate passes and neither D4 nor D8 focused family satisfies baseline-improvement.",
+    "C5P_REFERENCE_OR_EXECUTION_BLOCKED": "Reference quality, provenance, integrity, or fail-closed gate fails."
+  },
+  "stop_rules": [
+    "No C5P response-based adjustment of partition coordinates.",
+    "No new state count within C5P; dimensions are fixed at 4 and 8.",
+    "No new closure, scalar correction, history state or boundary counterfactual.",
+    "No R4096 or T32.",
+    "No Reference production physics change.",
+    "No application acceptance, performance, speedup or production-ROM claim.",
+    "If placement improves but no comparator frontier is reached, retain the continuous improvement result; do not invent an acceptance tolerance.",
+    "If placement does not improve, closure-family reconciliation is strengthened but still requires a separate prospective closure discriminator before implementation."
+  ],
+  "execution_plan": {
+    "stage1": "Generate fresh R1024_T16, R2048_T16 and R2048_T8 Reference controls on P01-P04 and qualify O0/O2, mass and temporal-quality gates.",
+    "stage2": "Only after Reference qualification, execute six frozen fixed-dimension LARE candidates.",
+    "execution_partition": "Reference routes may be split by history and compiler optimization only as execution topology.",
+    "checkpoints_are_repository_checkpoints": true
+  },
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5N_result_changed": false,
+    "production_reference_changed": false,
+    "boundary_counterfactual": false,
+    "new_closure_fit": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
