@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6m.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6M",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE",
   "title": "Fresh high-resolution surface-flux Reference qualification for purpose-dependent Layer-ROM validation",
   "role": "REFERENCE_ONLY_SURFACE_DRIVEN_SPACE_TIME_QUALIFICATION_NO_LARE_RESPONSE",
   "scientific_question": "Do fresh source-free free-drainage surface-flux histories on B01 and B14 admit a numerically qualified high-resolution Richards hierarchy suitable for a later blind comparison of the already-frozen Layer-ROM representations?",
@@ -171,7 +171,8 @@
     "finite_physical_state": true,
     "physical_theta_bounds": true,
     "root_sink_zero": true,
-    "free_drainage_only": true
+    "free_drainage_only": true,
+    "profile_state_total_consistency_cm": 1e-9
   },
   "stop_rules": [
     "No Layer-ROM candidate is executed in C6M.",
@@ -184,17 +185,23 @@
   "next_if_qualified": "PREREGISTER_C6N_FRESH_BLIND_SURFACE_PURPOSE_EXISTING_REPRESENTATION_COMPARISON",
   "next_if_blocked": "STOP_SURFACE_PURPOSE_RESPONSE_AND_RECONCILE_REFERENCE_NUMERICAL_QUALITY_WITHOUT_LARE_DATA",
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "materializer": "tests/rom/materialize_lare_bc2_c6m_surface_reference.py",
-    "materializer_blob": null,
+    "materializer_blob": "9a72f9ab418d1281fd09b0b776ab4be8937b8bfc",
     "analyzer": "tests/rom/analyze_lare_bc2_c6m_surface_reference.py",
-    "analyzer_blob": null,
+    "analyzer_blob": "37cef751f2537e4e22af1a7e01b3090a454f8bf1",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6m.yml",
-    "workflow_blob": null,
-    "variable_grid_tool": "tests/rom/materialize_f_rom0_headcalc_stubs.py",
-    "compile_tool": "tests/rom/compile_f_rom0_fortran_closure.py",
-    "execution_binding_complete": false
+    "workflow_blob": "537fd6808fff6fab9ed4a81b1fd59664cdad5862",
+    "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
+    "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
+    "B14_source_harness_blob": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "variable_grid_tool": "canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py",
+    "compile_tool": "canonical/tests/rom/compile_f_rom0_fortran_closure.py",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "execution_binding_complete": true,
+    "binding_note": "Scientific histories, materials, metrics and space-time gate were frozen before first C6M Reference response. Workflow creation did not trigger C6M; this final preregistration update is the first response-eligible commit."
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
