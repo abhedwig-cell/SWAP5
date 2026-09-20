@@ -1,0 +1,629 @@
+{
+  "R1024_available": true,
+  "adjacent_grid_distances": {
+    "R128_vs_R256": {
+      "max_abs_cm_per_day": 1.1180015393286167,
+      "rmse_cm_per_day": 0.04361359244706386,
+      "signed_mean_cm_per_day": 0.00035738499943064787
+    },
+    "R256_vs_R512": {
+      "max_abs_cm_per_day": 1.0325652468079483,
+      "rmse_cm_per_day": 0.03439131360942865,
+      "signed_mean_cm_per_day": 0.0001098455387001273
+    },
+    "R512_vs_R1024": {
+      "max_abs_cm_per_day": 0.5840970692272407,
+      "rmse_cm_per_day": 0.019278087500445875,
+      "signed_mean_cm_per_day": 3.0399307444136252e-05
+    },
+    "R64_vs_R128": {
+      "max_abs_cm_per_day": 0.7538297130160739,
+      "rmse_cm_per_day": 0.04712184008248888,
+      "signed_mean_cm_per_day": 0.001041122645298234
+    }
+  },
+  "adjacent_grid_signed_diagnostics": {
+    "R128_vs_R256": {
+      "by_history": {
+        "Z01": {
+          "abs_signed_mean_cm_per_day": 0.0009353847668647209,
+          "max_abs_cm_per_day": 0.4729636278621996,
+          "rmse_cm_per_day": 0.03743099558693223,
+          "signed_mean_cm_per_day": 0.0009353847668647209
+        },
+        "Z02": {
+          "abs_signed_mean_cm_per_day": 5.8859703786287305e-05,
+          "max_abs_cm_per_day": 1.1180015393286167,
+          "rmse_cm_per_day": 0.04757967848524971,
+          "signed_mean_cm_per_day": 5.8859703786287305e-05
+        },
+        "Z03": {
+          "abs_signed_mean_cm_per_day": 0.0003643835240312043,
+          "max_abs_cm_per_day": 0.8993811242596907,
+          "rmse_cm_per_day": 0.043782109307175514,
+          "signed_mean_cm_per_day": 0.0003643835240312043
+        },
+        "Z04": {
+          "abs_signed_mean_cm_per_day": 7.091200304037888e-05,
+          "max_abs_cm_per_day": 0.9592381607781417,
+          "rmse_cm_per_day": 0.04502003391580469,
+          "signed_mean_cm_per_day": 7.091200304037888e-05
+        }
+      },
+      "by_phase": {
+        "Z01": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.0007818312338162001,
+            "max_abs_cm_per_day": 0.29772351904711075,
+            "rmse_cm_per_day": 0.031368983287734686,
+            "signed_mean_cm_per_day": -0.0007818312338162001,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0036186962410200683,
+            "max_abs_cm_per_day": 0.4729636278621996,
+            "rmse_cm_per_day": 0.06079674076796935,
+            "signed_mean_cm_per_day": 0.0036186962410200683,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z02": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.001214764941866175,
+            "max_abs_cm_per_day": 0.46624003415374193,
+            "rmse_cm_per_day": 0.04340398596520215,
+            "signed_mean_cm_per_day": 0.001214764941866175,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.000783460901376821,
+            "max_abs_cm_per_day": 1.1180015393286167,
+            "rmse_cm_per_day": 0.07574376394857318,
+            "signed_mean_cm_per_day": -0.000783460901376821,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z03": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.0001983657756388087,
+            "max_abs_cm_per_day": 0.5115757716378511,
+            "rmse_cm_per_day": 0.03396954144998941,
+            "signed_mean_cm_per_day": -0.0001983657756388087,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0017054913156733266,
+            "max_abs_cm_per_day": 0.8993811242596907,
+            "rmse_cm_per_day": 0.07889917742688242,
+            "signed_mean_cm_per_day": 0.0017054913156733266,
+            "step_end": 576,
+            "step_start": 321
+          }
+        },
+        "Z04": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.0012476129214733503,
+            "max_abs_cm_per_day": 0.384524401297881,
+            "rmse_cm_per_day": 0.03710992524842656,
+            "signed_mean_cm_per_day": 0.0012476129214733503,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0012758681396801733,
+            "max_abs_cm_per_day": 0.9592381607781417,
+            "rmse_cm_per_day": 0.0799110794895868,
+            "signed_mean_cm_per_day": -0.0012758681396801733,
+            "step_end": 576,
+            "step_start": 321
+          }
+        }
+      },
+      "cancellation_ratio": 1.0,
+      "mean_abs_history_signed_mean_cm_per_day": 0.00035738499943064787,
+      "pooled_abs_signed_mean_cm_per_day": 0.00035738499943064787,
+      "pooled_max_abs_cm_per_day": 1.1180015393286167,
+      "pooled_rmse_cm_per_day": 0.04361359244706386,
+      "pooled_signed_mean_cm_per_day": 0.00035738499943064787
+    },
+    "R256_vs_R512": {
+      "by_history": {
+        "Z01": {
+          "abs_signed_mean_cm_per_day": 0.00026095227524843034,
+          "max_abs_cm_per_day": 0.6587752512832168,
+          "rmse_cm_per_day": 0.03239931585526748,
+          "signed_mean_cm_per_day": 0.00026095227524843034
+        },
+        "Z02": {
+          "abs_signed_mean_cm_per_day": 3.174742325799725e-05,
+          "max_abs_cm_per_day": 1.0195771093179933,
+          "rmse_cm_per_day": 0.03678427107673194,
+          "signed_mean_cm_per_day": 3.174742325799725e-05
+        },
+        "Z03": {
+          "abs_signed_mean_cm_per_day": 9.661460115446846e-05,
+          "max_abs_cm_per_day": 0.7981184871841407,
+          "rmse_cm_per_day": 0.0301256433201189,
+          "signed_mean_cm_per_day": 9.661460115446846e-05
+        },
+        "Z04": {
+          "abs_signed_mean_cm_per_day": 5.006785513961317e-05,
+          "max_abs_cm_per_day": 1.0325652468079483,
+          "rmse_cm_per_day": 0.03769213651600796,
+          "signed_mean_cm_per_day": 5.006785513961317e-05
+        }
+      },
+      "by_phase": {
+        "Z01": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.00014720660111017188,
+            "max_abs_cm_per_day": 0.3916172680895612,
+            "rmse_cm_per_day": 0.02790491200949803,
+            "signed_mean_cm_per_day": -0.00014720660111017188,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0009528125616831147,
+            "max_abs_cm_per_day": 0.6587752512832168,
+            "rmse_cm_per_day": 0.052308152766464375,
+            "signed_mean_cm_per_day": 0.0009528125616831147,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z02": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.00031135594980719137,
+            "max_abs_cm_per_day": 0.471506172221581,
+            "rmse_cm_per_day": 0.03237241570600293,
+            "signed_mean_cm_per_day": 0.00031135594980719137,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0001474930054201625,
+            "max_abs_cm_per_day": 1.0195771093179933,
+            "rmse_cm_per_day": 0.05908879484940424,
+            "signed_mean_cm_per_day": -0.0001474930054201625,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z03": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 4.326072569615998e-05,
+            "max_abs_cm_per_day": 0.414667849151229,
+            "rmse_cm_per_day": 0.024018959693155057,
+            "signed_mean_cm_per_day": -4.326072569615998e-05,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.00044053431173807374,
+            "max_abs_cm_per_day": 0.7981184871841407,
+            "rmse_cm_per_day": 0.053935883332688075,
+            "signed_mean_cm_per_day": 0.00044053431173807374,
+            "step_end": 576,
+            "step_start": 321
+          }
+        },
+        "Z04": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.00032133787286614535,
+            "max_abs_cm_per_day": 0.4539761136257424,
+            "rmse_cm_per_day": 0.029804534822042223,
+            "signed_mean_cm_per_day": 0.00032133787286614535,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.0002014009205242289,
+            "max_abs_cm_per_day": 1.0325652468079483,
+            "rmse_cm_per_day": 0.06761952935814929,
+            "signed_mean_cm_per_day": -0.0002014009205242289,
+            "step_end": 576,
+            "step_start": 321
+          }
+        }
+      },
+      "cancellation_ratio": 1.0,
+      "mean_abs_history_signed_mean_cm_per_day": 0.0001098455387001273,
+      "pooled_abs_signed_mean_cm_per_day": 0.0001098455387001273,
+      "pooled_max_abs_cm_per_day": 1.0325652468079483,
+      "pooled_rmse_cm_per_day": 0.03439131360942865,
+      "pooled_signed_mean_cm_per_day": 0.0001098455387001273
+    },
+    "R512_vs_R1024": {
+      "by_history": {
+        "Z01": {
+          "abs_signed_mean_cm_per_day": 6.918216948099964e-05,
+          "max_abs_cm_per_day": 0.5630401755318817,
+          "rmse_cm_per_day": 0.02146557244716381,
+          "signed_mean_cm_per_day": 6.918216948099964e-05
+        },
+        "Z02": {
+          "abs_signed_mean_cm_per_day": 1.0373205384938959e-05,
+          "max_abs_cm_per_day": 0.48892536977263035,
+          "rmse_cm_per_day": 0.018699126073485162,
+          "signed_mean_cm_per_day": 1.0373205384938959e-05
+        },
+        "Z03": {
+          "abs_signed_mean_cm_per_day": 2.4378151450634493e-05,
+          "max_abs_cm_per_day": 0.3894457291941933,
+          "rmse_cm_per_day": 0.014007489873857507,
+          "signed_mean_cm_per_day": 2.4378151450634493e-05
+        },
+        "Z04": {
+          "abs_signed_mean_cm_per_day": 1.766370345997191e-05,
+          "max_abs_cm_per_day": 0.5840970692272407,
+          "rmse_cm_per_day": 0.021907549879816295,
+          "signed_mean_cm_per_day": 1.766370345997191e-05
+        }
+      },
+      "by_phase": {
+        "Z01": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 2.930653185406797e-05,
+            "max_abs_cm_per_day": 0.2924939849702215,
+            "rmse_cm_per_day": 0.01897872270565568,
+            "signed_mean_cm_per_day": -2.930653185406797e-05,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.00024482816782245347,
+            "max_abs_cm_per_day": 0.5630401755318817,
+            "rmse_cm_per_day": 0.034442895190730786,
+            "signed_mean_cm_per_day": 0.00024482816782245347,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z02": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 7.841378348721938e-05,
+            "max_abs_cm_per_day": 0.26053317378149643,
+            "rmse_cm_per_day": 0.01681540837963963,
+            "signed_mean_cm_per_day": 7.841378348721938e-05,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 2.9536769557970835e-05,
+            "max_abs_cm_per_day": 0.48892536977263035,
+            "rmse_cm_per_day": 0.02987803614261574,
+            "signed_mean_cm_per_day": -2.9536769557970835e-05,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z03": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 1.00483006360006e-05,
+            "max_abs_cm_per_day": 0.18232452356770068,
+            "rmse_cm_per_day": 0.011018859756905697,
+            "signed_mean_cm_per_day": -1.00483006360006e-05,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.00011007298159753851,
+            "max_abs_cm_per_day": 0.3894457291941933,
+            "rmse_cm_per_day": 0.0251608823839097,
+            "signed_mean_cm_per_day": 0.00011007298159753851,
+            "step_end": 576,
+            "step_start": 321
+          }
+        },
+        "Z04": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 8.142018181889207e-05,
+            "max_abs_cm_per_day": 0.3012219094511437,
+            "rmse_cm_per_day": 0.017411671357660984,
+            "signed_mean_cm_per_day": 8.142018181889207e-05,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 3.112041343372767e-05,
+            "max_abs_cm_per_day": 0.5840970692272407,
+            "rmse_cm_per_day": 0.03925309023010247,
+            "signed_mean_cm_per_day": -3.112041343372767e-05,
+            "step_end": 576,
+            "step_start": 321
+          }
+        }
+      },
+      "cancellation_ratio": 1.0,
+      "mean_abs_history_signed_mean_cm_per_day": 3.0399307444136252e-05,
+      "pooled_abs_signed_mean_cm_per_day": 3.0399307444136252e-05,
+      "pooled_max_abs_cm_per_day": 0.5840970692272407,
+      "pooled_rmse_cm_per_day": 0.019278087500445875,
+      "pooled_signed_mean_cm_per_day": 3.0399307444136252e-05
+    },
+    "R64_vs_R128": {
+      "by_history": {
+        "Z01": {
+          "abs_signed_mean_cm_per_day": 0.0034402935633788562,
+          "max_abs_cm_per_day": 0.2675568642018788,
+          "rmse_cm_per_day": 0.03860005372698422,
+          "signed_mean_cm_per_day": 0.0034402935633788562
+        },
+        "Z02": {
+          "abs_signed_mean_cm_per_day": 0.00013814615494080104,
+          "max_abs_cm_per_day": 0.7538297130160739,
+          "rmse_cm_per_day": 0.051494409948562164,
+          "signed_mean_cm_per_day": -0.00013814615494080104
+        },
+        "Z03": {
+          "abs_signed_mean_cm_per_day": 0.0013344772472473326,
+          "max_abs_cm_per_day": 0.625387997166271,
+          "rmse_cm_per_day": 0.04960980433543809,
+          "signed_mean_cm_per_day": 0.0013344772472473326
+        },
+        "Z04": {
+          "abs_signed_mean_cm_per_day": 0.000472134074492452,
+          "max_abs_cm_per_day": 0.5957488691610281,
+          "rmse_cm_per_day": 0.04773992209002362,
+          "signed_mean_cm_per_day": -0.000472134074492452
+        }
+      },
+      "by_phase": {
+        "Z01": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.004840131920327839,
+            "max_abs_cm_per_day": 0.1696300467468603,
+            "rmse_cm_per_day": 0.03222230522934182,
+            "signed_mean_cm_per_day": -0.004840131920327839,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.014881044939074611,
+            "max_abs_cm_per_day": 0.2675568642018788,
+            "rmse_cm_per_day": 0.06274761915235608,
+            "signed_mean_cm_per_day": 0.014881044939074611,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z02": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.004822908303316053,
+            "max_abs_cm_per_day": 0.3004875481060765,
+            "rmse_cm_per_day": 0.04770700653591147,
+            "signed_mean_cm_per_day": 0.004822908303316053,
+            "step_end": 256,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.004300394338463405,
+            "max_abs_cm_per_day": 0.7538297130160739,
+            "rmse_cm_per_day": 0.08163694531857406,
+            "signed_mean_cm_per_day": -0.004300394338463405,
+            "step_end": 576,
+            "step_start": 257
+          }
+        },
+        "Z03": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.000960912130115733,
+            "max_abs_cm_per_day": 0.37092379089109795,
+            "rmse_cm_per_day": 0.03775228516345467,
+            "signed_mean_cm_per_day": -0.000960912130115733,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.006539049151633998,
+            "max_abs_cm_per_day": 0.625387997166271,
+            "rmse_cm_per_day": 0.08979413650664116,
+            "signed_mean_cm_per_day": 0.006539049151633998,
+            "step_end": 576,
+            "step_start": 321
+          }
+        },
+        "Z04": {
+          "HOLD": {
+            "abs_signed_mean_cm_per_day": 0.0,
+            "max_abs_cm_per_day": 0.0,
+            "rmse_cm_per_day": 0.0,
+            "signed_mean_cm_per_day": 0.0,
+            "step_end": 1024,
+            "step_start": 577
+          },
+          "PHASE1": {
+            "abs_signed_mean_cm_per_day": 0.004983728825097566,
+            "max_abs_cm_per_day": 0.2301881306721043,
+            "rmse_cm_per_day": 0.03962809608247,
+            "signed_mean_cm_per_day": 0.004983728825097566,
+            "step_end": 320,
+            "step_start": 1
+          },
+          "PHASE2": {
+            "abs_signed_mean_cm_per_day": 0.008118197329341766,
+            "max_abs_cm_per_day": 0.5957488691610281,
+            "rmse_cm_per_day": 0.08457788213087543,
+            "signed_mean_cm_per_day": -0.008118197329341766,
+            "step_end": 576,
+            "step_start": 321
+          }
+        }
+      },
+      "cancellation_ratio": 0.7733428244622481,
+      "mean_abs_history_signed_mean_cm_per_day": 0.0013462627600148605,
+      "pooled_abs_signed_mean_cm_per_day": 0.001041122645298234,
+      "pooled_max_abs_cm_per_day": 0.7538297130160739,
+      "pooled_rmse_cm_per_day": 0.04712184008248888,
+      "pooled_signed_mean_cm_per_day": 0.001041122645298234
+    }
+  },
+  "baseline_identity_to_C5D": {
+    "R128_R256_RMSE": true,
+    "R64_R128_RMSE": true
+  },
+  "convergence": {
+    "R128_R256_RMSE_cm_per_day": 0.04361359244706386,
+    "R256_R512_RMSE_cm_per_day": 0.03439131360942865,
+    "R512_R1024_RMSE_cm_per_day": 0.019278087500445875,
+    "R64_R128_RMSE_cm_per_day": 0.04712184008248888,
+    "estimated_order_from_R128_R256_R512": 0.3427336079069683,
+    "estimated_order_from_R256_R512_R1024": 0.8350822872054268,
+    "order_change_to_R128_R256_R512": 0.23111556112801435,
+    "order_change_to_R256_R512_R1024": 0.4923486792984585,
+    "prior_observed_order_R64_R128_R256": 0.11161804677895394,
+    "progressing_at_R1024": true,
+    "progressing_at_R512": true,
+    "ratio_R256_R512_over_R128_R256": 0.7885457647445856,
+    "ratio_R512_R1024_over_R256_R512": 0.5605510658703259,
+    "two_new_consecutive_progressing_steps": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "interpretation_boundaries": [
+    "C5E changes only Richards vertical Reference resolution.",
+    "No LARE representation or closure is executed or modified.",
+    "Monotone adjacent-grid decrease is not sufficient for a continuum claim.",
+    "Observed order is descriptive because temporal and nonlinear tolerances are held fixed rather than jointly refined.",
+    "C5A and all prior comparator-relative decisions remain unchanged."
+  ],
+  "role": "REFERENCE_ONLY_HIGH_RESOLUTION_SPATIAL_EXTENSION",
+  "schema": "swap5.lare.bc2.c5e.result.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "status": "REFERENCE_REFINEMENT_PROGRESSING_THROUGH_R1024",
+  "work_unit": "LARE-BC2-C5E",
+  "workstream": "F-ROM-LARE"
+}

@@ -1,0 +1,80 @@
+{
+  "adjudication": {
+    "CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "NEW_LARE_OR_CLOSURE_AUTHORIZED": false,
+    "OBSERVED_ORDER_STRENGTHENED_AT_BOTH_NEW_TRIPLETS": true,
+    "R1024_QUALIFIED": true,
+    "R512_QUALIFIED": true,
+    "SPATIOTEMPORAL_RECONCILIATION_REQUIRED": true,
+    "TWO_NEW_CONSECUTIVE_ADJACENT_RMSE_DECREASES": true
+  },
+  "authority": {
+    "R1024_reference_sha256": "e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505",
+    "R128_reference_sha256": "22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe",
+    "R256_reference_sha256": "684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961",
+    "R512_reference_sha256": "b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c",
+    "R64_reference_sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1",
+    "artifact_digest": "sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c",
+    "artifact_id": 10602206315,
+    "execution_head": "54961ef725868bf3ea17feccedb116634cef3da9",
+    "job_id": 106050918397,
+    "preregistration": "integration/f-rom/LARE_BC2_C5E_PREREGISTRATION.json",
+    "result_sha256": "80288f4dbc6d7fce59aef7c92226de702a8506810c3c49debf486abcf906e75a",
+    "workflow_run": 35500351323
+  },
+  "baseline_identity_to_C5D": {
+    "R128_R256_RMSE": true,
+    "R64_R128_RMSE": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "next_authority": {
+    "constraints": [
+      "Reference-only; no LARE run and no closure modification",
+      "preserve exact C5A B14 physical history in physical time",
+      "retain the frozen D13 integrated-water-depth numerical policy",
+      "compare refined-time outputs on the original 0.0008-day aggregation grid",
+      "do not admit R1024 as continuum truth until space-time error is separated",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "At R512 and R1024, how large is temporal-transaction refinement error relative to the remaining R512-R1024 spatial difference under identical physical histories?",
+    "state": "REFERENCE_SPATIOTEMPORAL_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C5F"
+  },
+  "reference_extension": {
+    "R128_R256_RMSE_cm_per_day": 0.04361359244706386,
+    "R256_R512_RMSE_cm_per_day": 0.03439131360942865,
+    "R512_R1024_RMSE_cm_per_day": 0.019278087500445875,
+    "R64_R128_RMSE_cm_per_day": 0.04712184008248888,
+    "estimated_order_from_R128_R256_R512": 0.3427336079069683,
+    "estimated_order_from_R256_R512_R1024": 0.8350822872054268,
+    "order_change_to_R128_R256_R512": 0.23111556112801435,
+    "order_change_to_R256_R512_R1024": 0.4923486792984585,
+    "prior_observed_order_R64_R128_R256": 0.11161804677895394,
+    "progressing_at_R1024": true,
+    "progressing_at_R512": true,
+    "ratio_R256_R512_over_R128_R256": 0.7885457647445856,
+    "ratio_R512_R1024_over_R256_R512": 0.5605510658703259,
+    "two_new_consecutive_progressing_steps": true
+  },
+  "schema": "swap5.lare.bc2.c5e.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "High-resolution Reference refinement now shows a substantially stronger convergence trend than C5D.",
+    "Adjacent-grid bottom-flux RMSE decreases from 0.04361 cm/d at R128-R256 to 0.03439 at R256-R512 and 0.01928 at R512-R1024.",
+    "The descriptive observed order strengthens from about 0.112 to 0.343 and then 0.835. The final refinement ratio is about 0.561.",
+    "R512 and R1024 both satisfy the unchanged numerical policy, O0/O2 identity and mass gates.",
+    "This is strong empirical spatial-refinement progress, but R1024 is not yet admitted as continuum truth because temporal interval error and nonlinear tolerance are held fixed rather than jointly refined.",
+    "The next scientific task is therefore a matched space-time Reference audit, not immediate brute-force extension to R2048 and not a new LARE closure."
+  ],
+  "status": "CLOSED_REFERENCE_REFINEMENT_STRONGLY_IMPROVING_THROUGH_R1024_SPATIOTEMPORAL_RECONCILIATION_NEXT",
+  "work_unit": "LARE-BC2-C5E",
+  "workstream": "F-ROM-LARE"
+}
