@@ -6,7 +6,12 @@ on:
     branches:
       - research/tabulated-hydraulics-characterization
     paths:
-      - 'research/tabulated_hydraulics/**'
+      - 'research/tabulated_hydraulics/array_dimensions_stub.f90'
+      - 'research/tabulated_hydraulics/current_wrapper_stubs.f90'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_characterization.f90'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_resolution_sweep.f90'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_file_characterization.f90'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_wrapper_characterization.f90'
       - '.github/workflows/tabulated-hydraulics-characterization.yml'
 
 jobs:
