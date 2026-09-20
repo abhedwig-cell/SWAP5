@@ -1,0 +1,153 @@
+name: F-ROM-LARE BC2-C5G matched space-time matrix completion
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5G_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c5g_matched_matrix.py'
+      - '.github/workflows/f-rom-lare-bc2-c5g.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5g-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify C5G authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5f_spatiotemporal.py)" = "2bc5b00b924aa018fb14a1ab108180f380a6ae5e"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5g_matched_matrix.py)" = "0edfbae9e86f0e947268b656d179351861ccb84c"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5G_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C5G_R512_T4_RESPONSE'
+          assert c['status']=='CLOSED_TEMPORAL_PROGRESS_SUBDOMINANT_BUT_SPATIOTEMPORAL_INTERACTION_NONNEGLIGIBLE_MATCHED_T4_SPATIAL_CELL_REQUIRED'
+          assert c['authority']['result_sha256']=='ae686248db6b782047b0fce1f3fb01116d3dcda6dd691516aa2cc21b1b3ba180'
+          assert p['new_cell']['geometry']=='R512'
+          assert p['new_cell']['temporal_route']=='T4'
+          assert p['scientific_firewall']['new_lare_run'] is False
+          print('LARE_BC2_C5G_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover frozen T1 T2 and R1024 T4 anchors
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5g/t1 /tmp/c5g/c5f /tmp/c5g/t4 LARE_BC2_C5G_EVIDENCE
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602206315/zip" > /tmp/c5g/c5e.zip
+          echo "08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c  /tmp/c5g/c5e.zip" | sha256sum -c -
+          unzip -q /tmp/c5g/c5e.zip -d /tmp/c5g/t1
+          echo "b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c  /tmp/c5g/t1/R512_o0.txt" | sha256sum -c -
+          echo "e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505  /tmp/c5g/t1/R1024_o0.txt" | sha256sum -c -
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602317061/zip" > /tmp/c5g/c5f.zip
+          echo "1ba8d90b08c99955d76c8b2ee60bae16bd40f68667ecda889cafc002627f43bb  /tmp/c5g/c5f.zip" | sha256sum -c -
+          unzip -q /tmp/c5g/c5f.zip -d /tmp/c5g/c5f
+          echo "2b8bd09285177e4347323649f6e53f0baabb3d5b303d32cf407551b3606de88e  /tmp/c5g/c5f/R512_T2_o0.txt" | sha256sum -c -
+          echo "d0778a8e9a95984538241b3afeac2b853e63686769ac1570819654ad711076be  /tmp/c5g/c5f/R1024_T2_o0.txt" | sha256sum -c -
+          echo "e0e600d44fdc56d849e2b04759971ea5702d3207b4f1b3b827e3a6ca69a9afe3  /tmp/c5g/c5f/R1024_T4_o0.txt" | sha256sum -c -
+          echo "LARE_BC2_C5G_ANCHORS=PASS"
+
+      - name: Materialize exact C5F T4 physical history
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c5f_spatiotemporal.py             --c5e-materializer tests/rom/materialize_lare_bc2_c5e_reference_extension.py             --c5d-materializer tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --temporal-factor 4             --output canonical/tests/rom/test_lare_bc2_c5g_t4.f90             --manifest LARE_BC2_C5G_EVIDENCE/materialization_t4.json
+
+      - name: Generate missing R512 T4 cell
+        run: |
+          set -euo pipefail
+          id=R512
+          n=512
+          dz=0.3125
+          stub="canonical/c5g_t4_${id}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          for opt in 0 2; do
+            build="/tmp/c5g/build_t4_${id}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical               --stub "c5g_t4_${id}_stubs.f90"               --target tests/rom/test_lare_bc2_c5g_t4.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
+            log="/tmp/c5g/t4/${id}_o${opt}.txt"
+            "$build/rom0_test" > "$log" 2>&1
+            grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+            grep -Fq 'LAREGW1_C5F_B14_SPATIOTEMPORAL_GENERATED=TRUE' "$log"
+            test "$(grep -c 'LAREGW1_STATE|' "$log")" -eq 16384
+            test "$(grep -c 'LAREGW1_HISTORY_PASS|' "$log")" -eq 4
+            test "$(grep -c 'LAREGW1_NODE|' "$log")" -eq 0
+            python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+          done
+          cmp /tmp/c5g/t4/R512_o0.txt /tmp/c5g/t4/R512_o2.txt
+          cp /tmp/c5g/t4/R512_o0.txt LARE_BC2_C5G_EVIDENCE/R512_T4_o0.txt
+          echo "LARE_BC2_C5G_R512_T4=PASS"
+
+      - name: Execute matched matrix analysis
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_bc2_c5g_matched_matrix.py             --r512-t1 /tmp/c5g/t1/R512_o0.txt             --r1024-t1 /tmp/c5g/t1/R1024_o0.txt             --r512-t2 /tmp/c5g/c5f/R512_T2_o0.txt             --r1024-t2 /tmp/c5g/c5f/R1024_T2_o0.txt             --r512-t4 /tmp/c5g/t4/R512_o0.txt             --r1024-t4 /tmp/c5g/c5f/R1024_T4_o0.txt             --c5f-result integration/f-rom/LARE_BC2_C5F_RESULT.json             --c5f-closeout integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json             --prereg integration/f-rom/LARE_BC2_C5G_PREREGISTRATION.json             --output LARE_BC2_C5G_EVIDENCE/LARE_BC2_C5G_RESULT.json             | tee LARE_BC2_C5G_EVIDENCE/runner.txt
+
+      - name: Validate C5G firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5G_EVIDENCE/LARE_BC2_C5G_RESULT.json'))
+          assert r['status'] in (
+            'MATRIX_COMPLETE_SPATIAL_GAP_DECREASES_AT_T4',
+            'MATRIX_COMPLETE_SPATIAL_GAP_INCREASES_AT_T4',
+            'MATRIX_COMPLETE_SPATIAL_GAP_NUMERICALLY_UNCHANGED_AT_T4'
+          )
+          assert all(r['baseline_identity_to_C5F'].values())
+          f=r['scientific_firewall']
+          assert f['new_lare_run'] is False
+          assert f['new_closure_fit'] is False
+          assert f['physical_history_changed'] is False
+          assert f['numerical_policy_changed'] is False
+          assert f['C5A_formal_decision_changed'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5G_FIREWALL=PASS')
+          PY
+          git -C canonical diff --quiet -- src reference
+          sha256sum LARE_BC2_C5G_EVIDENCE/* > LARE_BC2_C5G_EVIDENCE/sha256.txt
+
+      - name: Upload C5G evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5g
+          path: LARE_BC2_C5G_EVIDENCE/
+          if-no-files-found: error
