@@ -224,5 +224,24 @@
     "ahead": 48,
     "behind": 58,
     "admission": "RECOMPOSITION_REQUIRED"
+  },
+  "csr04_storage_authority": {
+    "state": "EQUATION_CLOSED_EXPERIMENT_PREREGISTERED_PENDING_EXECUTION",
+    "physical_combined_storage_gate": "HELD_PENDING_INDEPENDENT_MODFLOW_STORAGE_AUTHORITY",
+    "working_hypothesis": "F-GC33 SWAP finite-window Jacobian and native MODFLOW STO are algebraically distinct head-response terms; finite native STO adds independent MODFLOW head memory",
+    "experiment": {
+      "design": "multi-window forcing-pulse and recovery continuation",
+      "specific_yield_sequence": [
+        0.3,
+        0.05,
+        0.01,
+        0.001,
+        0.0001,
+        0.00001
+      ],
+      "primary_discriminant": "memory separation and convergence toward quasi-steady MODFLOW / transient SWAP limit",
+      "execution": "PENDING"
+    },
+    "code_guard_note": "existing geometric storage-partition fail-closed code is retained temporarily but is not extended; scientific authority may supersede it with state/storage-role authority"
   }
 }
