@@ -18,8 +18,8 @@ old_d = """      else if (swsophy == 1) then
          end if
       end if"""
 new_d = """      else if (swsophy == 1) then
-         ! TAB-HYD research candidate: final K knot is the constant-Ksat branch.
-         if (theta > sptab(2,node,numtab(node)-1)) then
+         ! TAB-HYD research candidate: final K knot is the constant-Ksat branch. The generated penultimate head is the exact residual-branch threshold.
+         if (head > 1.0_real64 - dexp(-sptab(1,node,numtab(node)-1))) then
             dhconduc = 0.0_real64
          else if (theta <= sptab(2,node,1) + 1.0d-9) then
             dhconduc = 0.0_real64
@@ -43,8 +43,8 @@ old_k = """      else if (swsophy == 1) then
          end if
       end if"""
 new_k = """      else if (swsophy == 1) then
-         ! TAB-HYD research candidate: split the finite Ksat jump explicitly.
-         if (theta > sptab(2,node,numtab(node)-1)) then
+         ! TAB-HYD research candidate: split the finite Ksat jump explicitly at the generated head threshold.
+         if (head > 1.0_real64 - dexp(-sptab(1,node,numtab(node)-1))) then
             hconduc = sptab(3,node,numtab(node))
             if (do_ln_trans) hconduc = dexp(hconduc)
          else if (theta <= sptab(2,node,1) + 1.0d-9) then
