@@ -8,6 +8,10 @@
 
 ## Repository manuscript status
 
+**SEMANTIC HOLD — 2026-09-20. Final submission authority is suspended.**
+
+The coupling-semantics audit in `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md` supersedes the current interpretation of legacy `bottom_mode=5`, predictor `q_u`, and the E6/E7 component-domain conclusions. The manuscript body below is retained as a historical draft and is **not** silently rewritten by this governance update. Claim-level revision waits for corrected storage/drainage/head-transfer authority and affected F-GC requalification. E7 is currently `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
+
 **Consolidated through E1–E7; E7 closed as a preregistered realistic component-domain limit, 2026-09-18.**
 
 The scientific text below is written as a manuscript rather than as a workplan. E7 is reported as a bounded negative realistic-transferability result rather than as an unexecuted future experiment. Repository evidence pointers and readiness notes are retained after the references and are not intended for journal submission.
