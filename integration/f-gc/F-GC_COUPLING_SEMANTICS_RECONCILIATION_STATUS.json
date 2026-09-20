@@ -77,7 +77,8 @@
     "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
     "csr03_csr04_checkpoint": "docs/integration/SWAP5_MODFLOW6_CSR03_CSR04_AUTHORITY_CHECKPOINT.md",
     "csr04_storage_derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
-    "csr04_vertical_storage_topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md"
+    "csr04_vertical_storage_topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
+    "csr04_closure_proof_obligations": "docs/integration/SWAP5_MODFLOW6_CSR04_CLOSURE_PROOF_OBLIGATIONS.md"
   },
   "repair_slices": [
     "CSR-01 explicit coupled-groundwater application profile independent of legacy bottom_mode",
@@ -163,12 +164,18 @@
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
     "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
     "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
-    "next_gate": "Materialize topology schema/fail-closed validation and controlled component+combined storage qualification; do not alter F-GC30/F-GC33 or rerun E7 first."
+    "next_gate": "Implement controlled A/B/C/D storage qualification only after topology metadata/fail-closed admission is available; preregister tolerances. E7 remains held.",
+    "proof_obligations": {
+      "P1": "accepted interface mass continuity",
+      "P2": "hydraulic compatibility under declared head-transfer operator",
+      "P3": "global storage closure over explicitly non-overlapping component domains",
+      "decision": "P1+P2 do not imply P3; existing evidence proves the interface, not storage-state-space additivity."
+    }
   },
   "current_pr_divergence": {
     "live_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
     "merge_base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-    "ahead": 41,
+    "ahead": 44,
     "behind": 58,
     "admission": "RECOMPOSITION_REQUIRED"
   }
