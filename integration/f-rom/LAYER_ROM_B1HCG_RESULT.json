@@ -1,0 +1,175 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcg.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCG",
+  "decision": "B1HCG_TEMPORAL_SIGNATURE_MIXED",
+  "execution": {
+    "workflow_run": 35501504092,
+    "executed_head": "d080f44daa0ed9b5e4f55b5b49f67665427438d0",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10602347830,
+    "aggregate_artifact_digest": "sha256:55397a1211e38285c6ae021389e4279fae0615ec9ea73767490999914689d7da",
+    "raw_result_sha256": "c79fd107dd60f45f6a53c68d2a8d0b85c52aef2c0842cad7aa5bb8356fcb7a01"
+  },
+  "frozen_temporal_ladder_day": [
+    0.0001,
+    0.00005,
+    0.000025
+  ],
+  "primary_horizon": {
+    "step": 1024,
+    "day": 1.024
+  },
+  "R16_OP_material_temporal_signature": {
+    "B02": false,
+    "B05": false,
+    "B06": false,
+    "B11": false,
+    "B12": false,
+    "B16": false
+  },
+  "R16_OP_finest_core_numerical_identity": {
+    "B02": false,
+    "B05": false,
+    "B06": false,
+    "B11": false,
+    "B12": false,
+    "B16": false
+  },
+  "day1_R16_core_nonincrease_counts_of_6": {
+    "storage_rmse_cm": 2,
+    "cumulative_bottom_rmse_cm": 2,
+    "qavg_rmse_cm_per_day": 3,
+    "qend_rmse_cm_per_day": 3,
+    "mapped_theta_rmse": 3
+  },
+  "selected_R16_OP_coarse_to_finest": {
+    "B02": {
+      "storage_rmse_cm": [
+        0.009127872189932332,
+        0.00912790322825092
+      ],
+      "cumulative_bottom_rmse_cm": [
+        0.009127872189962298,
+        0.009127903228282564
+      ],
+      "qavg_rmse_cm_per_day": [
+        0.0732276043350117,
+        0.07322855036742376
+      ],
+      "qend_rmse_cm_per_day": [
+        0.0448566783839444,
+        0.044856790545082716
+      ],
+      "mapped_theta_rmse": [
+        0.00015773726368909814,
+        0.00015773791718774264
+      ]
+    },
+    "B05": {
+      "storage_rmse_cm": [
+        0.0005584688838293555,
+        0.0005584733956157589
+      ],
+      "cumulative_bottom_rmse_cm": [
+        0.0005584688838501917,
+        0.0005584733956014841
+      ],
+      "qavg_rmse_cm_per_day": [
+        0.015570470252499273,
+        0.015564427476405117
+      ],
+      "qend_rmse_cm_per_day": [
+        0.019420154132688567,
+        0.01941184288416539
+      ],
+      "mapped_theta_rmse": [
+        0.00000969778854658786,
+        0.000009697403423067749
+      ]
+    },
+    "B06": {
+      "storage_rmse_cm": [
+        0.01631498168346754,
+        0.016315025860171622
+      ],
+      "cumulative_bottom_rmse_cm": [
+        0.0163149816834716,
+        0.016315025860166785
+      ],
+      "qavg_rmse_cm_per_day": [
+        0.0997677125656844,
+        0.09976840355665871
+      ],
+      "qend_rmse_cm_per_day": [
+        0.057005553273509736,
+        0.057005683661464523
+      ],
+      "mapped_theta_rmse": [
+        0.00020854236156421966,
+        0.00020854310021893268
+      ]
+    },
+    "B11": {
+      "storage_rmse_cm": [
+        0.0000016406765137545186,
+        0.000001640676242378731
+      ],
+      "cumulative_bottom_rmse_cm": [
+        0.000001640676500331074,
+        0.0000016406762394172617
+      ],
+      "qavg_rmse_cm_per_day": [
+        0.0000029407472377744035,
+        0.0000029407468513247498
+      ],
+      "qend_rmse_cm_per_day": [
+        1.6542291721245815e-7,
+        1.6542280338743595e-7
+      ],
+      "mapped_theta_rmse": [
+        8.790505427690041e-8,
+        8.790501170966815e-8
+      ]
+    },
+    "B12": {
+      "interpretation": "Changes across the frozen dt ladder remain at numerical-ripple scale; no preregistered strict temporal signature."
+    },
+    "B16": {
+      "interpretation": "All five causal-core errors increase slightly from dt=1e-4 to dt=2.5e-5."
+    }
+  },
+  "finest_dt_R8_vs_R16_OP_relation_counts": {
+    "GW": {
+      "A_COMPONENTWISE_NO_WORSE": 1,
+      "NUMERICALLY_EQUIVALENT": 1,
+      "TRADEOFF": 4
+    },
+    "PROFILE": {
+      "B_COMPONENTWISE_NO_WORSE": 6
+    }
+  },
+  "adjudication": [
+    "The simple hypothesis that the corrected equal-grid R16_OP residual is primarily the frozen Layer-ROM Heun time-step error is not supported across the six-material panel.",
+    "No material satisfies the preregistered five-component temporal-signature rule and no material approaches numerical identity on all five causal-core observables at the finest frozen time step.",
+    "Some components decrease under temporal refinement, some increase, and some remain at numerical-ripple scale; the direction is material and observable dependent.",
+    "An error increase relative to the finite Reference under candidate time-step refinement does not establish missing physics. It can also occur when the candidate converges toward a continuous-time trajectory that differs from the finite-discretization Reference trajectory.",
+    "Closure or state redesign is therefore premature until candidate self-convergence is separated from candidate-versus-Reference discrepancy."
+  ],
+  "falsified_or_held": {
+    "universal_simple_temporal_floor": "FALSIFIED_ON_FROZEN_PANEL",
+    "candidate_self_convergence": "NOT_YET_ADJUDICATED",
+    "finite_reference_temporal_contribution": "NOT_YET_ADJUDICATED",
+    "closure_redesign": "HELD_PENDING_SELF_CONVERGENCE",
+    "application_acceptance": "NOT_ADJUDICATED"
+  },
+  "next": "LAYER-ROM-B1HCH candidate self-convergence on the same fixed-head panel without new Reference trajectories.",
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY_IN_B1HCG",
+    "NO_CLOSURE_OR_STATE_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
