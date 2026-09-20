@@ -1,0 +1,231 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "phase": "SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6N1_RESULT_EXECUTION_BLOCKED",
+  "title": "Prospective surface-state comparison of existing Layer-ROM representations against a qualified numerical uncertainty envelope",
+  "role": "PURPOSE_SPECIFIC_REPRESENTATION_EVIDENCE_NOT_APPLICATION_ACCEPTANCE",
+  "execution_precondition": "C6N1 must close C6N1_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED before any C6N2 candidate response is generated.",
+  "authority": {
+    "C6N0": "integration/f-rom/LARE_BC2_C6N0_REFERENCE_AUTHORITY_RECONCILIATION.json",
+    "C6N1_preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
+    "C6N_v1_pre_result_candidate_design": "integration/f-rom/LARE_BC2_C6N_PREREGISTRATION.json",
+    "current_closure": "CURRENT_LAYER_FACE",
+    "response_information_used_for_design": false,
+    "C6N1_result_seen_before_design": false
+  },
+  "workload": {
+    "histories": [
+      "U01",
+      "U02",
+      "U03",
+      "U04"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "top_forcing": "Exactly C6M2/C6N1 exposed Reference-design surface-flux histories.",
+    "bottom_boundary": "Fixed gravity-equilibrium flux, bottom_mode 2.",
+    "sinks": false,
+    "candidate_internal_dt_day": 0.0001,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "bottom_exchange_fidelity_in_scope": false
+  },
+  "representations": {
+    "lower_zone_ladder": {
+      "R3": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "R4": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R5": [
+        0,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R6": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R8": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R12": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R16": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "placement_controls": {
+      "P4_TOP_LOWER": [
+        0,
+        10,
+        140,
+        150,
+        160
+      ],
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    },
+    "closure": "CURRENT_LAYER_FACE unchanged",
+    "integrator": "iterative Heun",
+    "no_clipping": true,
+    "no_fallback": true,
+    "new_partition_authorized": false
+  },
+  "reference_and_uncertainty": {
+    "target_if_precondition_passes": "C6N1 R2048_T32",
+    "uncertainty": "Metric- and material-specific U_combined from C6N1 = U_space + U_time.",
+    "interpretation": [
+      "Candidate metric <= U_combined: NUMERICALLY_UNRESOLVED_FROM_REFERENCE for that metric.",
+      "Candidate metric > U_combined: NUMERICALLY_RESOLVED_DIFFERENCE for that metric.",
+      "U_combined is numerical Reference uncertainty, not a hydrological application tolerance."
+    ],
+    "scalar_score": false
+  },
+  "metric_views": {
+    "SURFACE_20": [
+      "surface_0_20_storage_rmse_cm"
+    ],
+    "ROOT_ZONE_40": [
+      "surface_0_20_storage_rmse_cm",
+      "root_zone_0_40_storage_rmse_cm"
+    ],
+    "UPPER_ZONE_80": [
+      "surface_0_20_storage_rmse_cm",
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm"
+    ],
+    "PROFILE_STATE": [
+      "surface_0_20_storage_rmse_cm",
+      "root_zone_0_40_storage_rmse_cm",
+      "upper_0_80_storage_rmse_cm",
+      "mapped_10cm_theta_rmse"
+    ],
+    "diagnostics": [
+      "total_storage_rmse_cm as conservation/integrity diagnostic",
+      "per-history state/profile RMSE",
+      "maximum absolute 0-20, 0-40 and 0-80 storage error",
+      "time of maximum absolute 0-20 storage error"
+    ]
+  },
+  "classification": {
+    "per_metric": "NUMERICALLY_UNRESOLVED_FROM_REFERENCE iff candidate RMSE <= material-specific C6N1 U_combined for that metric.",
+    "per_view": "NUMERICALLY_UNRESOLVED_VIEW iff every metric in the declared view is numerically unresolved.",
+    "otherwise": "RESOLVED_DIFFERENCE_VIEW; report each metric and exceedance ratio candidate/U_combined without converting it to an application pass/fail.",
+    "minimum_dimension": "For each material and each view, report the minimum member of the frozen lower-zone ladder, if any, that is NUMERICALLY_UNRESOLVED_VIEW.",
+    "placement": "Compare R4, P4_TOP_LOWER, U4 and R8/U8 componentwise; no scalar winner."
+  },
+  "hypotheses": {
+    "H_TOP_PLACEMENT_R4": "P4_TOP_LOWER is componentwise no worse than R4 on SURFACE_20 and ROOT_ZONE_40.",
+    "H_UNIFORM_VS_FOCUSED_R4": "Report R4/P4/U4 componentwise without scalar ranking.",
+    "H_R8_VS_U8": "Report R8/U8 componentwise on all views.",
+    "H_PURPOSE_DIMENSION_SEPARATION": "Minimum numerically-unresolved dimension may differ among SURFACE_20, ROOT_ZONE_40, UPPER_ZONE_80 and PROFILE_STATE.",
+    "H_MATERIAL_TRANSFER": "Report B01 and B14 separately; no material-invariant minimum is presumed."
+  },
+  "decision_logic": {
+    "C6N2_NUMERICALLY_UNRESOLVED_REDUCED_FRONTIER": "At least one reduced representation is NUMERICALLY_UNRESOLVED_VIEW on at least one declared view.",
+    "C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY": "Every reduced representation has at least one resolved metric in every declared view.",
+    "C6N2_REFERENCE_PRECONDITION_FAILED": "C6N1 is not qualified; no candidate execution."
+  },
+  "interpretation_boundary": [
+    "A numerically unresolved candidate cannot be distinguished from the numerical Reference at the admitted discretization uncertainty for that metric/view.",
+    "A numerically resolved candidate is not automatically hydrologically unacceptable; application tolerance remains independently governed.",
+    "No ET/root-uptake, drainage/recharge, groundwater or drought prediction claim follows from this prescribed-bottom-flux surface-state workload."
+  ],
+  "stop_rules": [
+    "No candidate execution unless C6N1 qualifies.",
+    "Do not change partitions, dt, closure, histories, metrics or uncertainty classification after C6N1 result.",
+    "Do not reinterpret U_combined as an application tolerance.",
+    "No new top-focused partition after response.",
+    "No bottom-exchange fidelity claim.",
+    "No performance or speed screen."
+  ],
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "C6N1_result_seen_for_design": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "SCIENTIFIC_DESIGN_ONLY_EXECUTION_NOT_BOUND",
+    "runner": null,
+    "analyzer": null,
+    "workflow": null,
+    "execution_binding_complete": false
+  },
+  "model_changed": false
+}
