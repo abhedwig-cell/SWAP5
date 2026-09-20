@@ -51,7 +51,7 @@
       "bottom_flux_rmse_cm_per_day": 0.001048772401670199,
       "bottom_flux_sign_errors": 0,
       "cumulative_bottom_rmse_cm": 0.0006249553163419854,
-      "mapped_theta_rmse": 9.639760828446259e-06,
+      "mapped_theta_rmse": 0.000009639760828446259,
       "max_abs_final_cumulative_bottom_error_cm": 0.001144026003312204,
       "storage_rmse_cm": 0.0006249553163239763
     },
@@ -112,7 +112,23 @@
   },
   "material": "B14",
   "model_changed": false,
-  "next_authority": "INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER_OR_THIRD_MATERIAL_GENERALITY_TEST",
+  "next_authority": {
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_WITH_EXTERNAL_APPLICATION_BLOCKER",
+    "application_acceptance_route": {
+      "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+      "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+      "next_when_unblocked": "Instantiate externally governed H_app and independent A_temporal or direct temporal head-error budget with immutable provenance, then preregister purpose-specific GW-R and/or GW-D downstream-consequence validation."
+    },
+    "representation_generality_route": {
+      "status": "NOT_SELECTED",
+      "admissible_choices": [
+        "PREREGISTER_INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER",
+        "PREREGISTER_ADDITIONAL_MATERIAL_GENERALITY_TEST"
+      ],
+      "rule": "A new transfer axis requires a prospective preregistration and must not retune C4X histories, partitions, closure, thresholds or outcomes."
+    },
+    "reason": "C4X establishes material- and placement-dependent representation evidence but does not privilege one further generality axis over another."
+  },
   "performance_comparison_authorized": false,
   "persistent_groundwater_frontier": {
     "R2_all_members": [
@@ -182,5 +198,12 @@
   "speed_claim_authorized": false,
   "status": "CLOSED_B14_LARE_FAMILY_TRANSFERS_STATE_DIMENSION_AND_PLACEMENT_MATERIAL_DEPENDENT",
   "work_unit": "LARE-BC2-C4X",
-  "workstream": "F-ROM-LARE"
+  "workstream": "F-ROM-LARE",
+  "governance_reconciliation": {
+    "repaired_after_persistence": true,
+    "reason": "The initial persisted next_authority named two candidate experiments as if already selected. Existing C4X/C4U authority supports neither automatic choice.",
+    "scientific_result_changed": false,
+    "execution_authority_changed": false,
+    "post_hoc_retuning_authorized": false
+  }
 }
