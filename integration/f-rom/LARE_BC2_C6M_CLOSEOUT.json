@@ -2,78 +2,104 @@
   "schema": "swap5.lare.bc2.c6m.closeout.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6M",
-  "status": "CLOSED_SURFACE_FIXED_HEAD_REFERENCE_HIERARCHY_NOT_QUALIFIED_NO_LAYER_ROM_RESPONSE",
-  "decision": "STOP_C6M_BEFORE_CANDIDATE_RESPONSE_PIVOT_SURFACE_PROFILE_TEST_TO_ALREADY_QUALIFIED_FIXED_FLUX_REFERENCE_ROUTE",
+  "status": "CLOSED_REFERENCE_ROUTE_POLICY_BLOCKED_NO_LAYER_ROM_RESPONSE_FRESH_FIXED_FLUX_SURFACE_PANEL_NEXT",
+  "decision": "STOP_C6M_DO_NOT_RETROFIT_RETRY_POLICY_PREREGISTER_C6M2_FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE",
   "role": "REFERENCE_ONLY_SURFACE_DRIVEN_SPACE_TIME_QUALIFICATION_CLOSEOUT",
   "authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json",
-    "pre_response_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_BINDING_RECONCILIATION.json",
-    "initial_unadmitted_run": 35531511964,
-    "initial_unadmitted_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
-    "stale_lock_run": 35531891003,
-    "admitted_fixed_head_run": 35531907787,
-    "admitted_execution_head": "2e78121d02add1c9b25887cc154fa84a0884582e",
-    "diagnostic_run": 35531984060,
-    "candidate_response_generated": false
-  },
-  "execution_reconciliation": {
-    "phase_1": {
-      "classification": "PRE_SOLVER_ADMISSION_MISMATCH",
-      "old_boundary": "free drainage bottom_mode 7",
-      "fact": "Frozen Reference-floor sampling admits only bottom modes 2 and 5; the first C6M attempt was rejected before surface solver execution.",
-      "scientific_authority": false
+    "pre_response_mode7_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_BINDING_RECONCILIATION.json",
+    "earlier_execution_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_RECONCILIATION.json",
+    "attempt_1": {
+      "workflow_run": 35531511964,
+      "execution_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
+      "design": "FREE_DRAINAGE_BOTTOM_MODE_7",
+      "reference_jobs": 64,
+      "failed": 64,
+      "solver_surface_phase_executed": false,
+      "disposition": "SUPERSEDED_PRE_RESPONSE_AUTHORITY_MISMATCH"
     },
-    "phase_2": {
-      "classification": "ADMITTED_FIXED_HEAD_REFERENCE_EXECUTION_NOT_ROBUST_ON_FULL_FROZEN_PANEL",
-      "boundary": "fixed initial pressure head bottom_mode 5",
-      "full_run": 35531907787,
-      "full_matrix_jobs": 64,
-      "full_matrix_conclusion": "failure",
+    "attempt_2": {
+      "workflow_run": 35531907787,
+      "execution_head": "2e78121d02add1c9b25887cc154fa84a0884582e",
+      "design": "FIXED_INITIAL_HEAD_BOTTOM_MODE_5_STRICT_FIRST_NO_MODE5_RETRY",
+      "reference_jobs": 64,
+      "failed": 64,
+      "succeeded": 0,
       "analysis_job": "SKIPPED",
-      "diagnostic_facts": [
-        "B01 R1024_T16 O0 S01 executes through approximately transaction step 260 and then fails LAREDYN0R accepted history step.",
-        "The B01 diagnostic therefore confirms a genuine failed first-attempt Reference solve after admitted hydrological response has begun.",
-        "The DYN0A strict_first_sample retry/fallback is qualified only for bottom_mode 2; mode 5 fails closed after such a first-attempt failure.",
-        "B14 R1024_T16 O0 S01 returned executable exit code 0 in diagnostic run 35531984060, showing the failure is not universal non-executability of bottom_mode 5.",
-        "Because the preregistered C6M Reference authority requires both B01 and B14 complete space-time hierarchies, B01 failure is sufficient to block C6M before numerical quality metrics can be adjudicated."
-      ]
+      "artifacts": 0,
+      "disposition": "FINAL_C6M_RESPONSE_ELIGIBLE_AUTHORITY_RUN"
+    },
+    "diagnostic": {
+      "workflow_run": 35531978366,
+      "execution_head": "c42eae86d857fa082c01164e85199479c238ea8e",
+      "role": "NON_AUTHORITATIVE_FAILURE_CHARACTERIZATION"
     }
+  },
+  "observed_execution": {
+    "mode7": {
+      "classification": "REFERENCE_FLOOR_NOT_ADMITTED",
+      "fact": "fmr_serialized_backend_run_reference_floor_sample admits only bottom modes 2 and 5; mode 7 returns before solver execution."
+    },
+    "mode5": {
+      "classification": "ADMITTED_BUT_STRICT_FIRST_RETRY_BLOCKED",
+      "diagnostic_case": "B01_R1024_T16_O0_S01",
+      "accepted_transaction_steps_before_failure": 260,
+      "first_failed_transaction_step": 261,
+      "solver_status": 2,
+      "solver_route": "legacy-reference-retry",
+      "nonlinear_iterations": 16,
+      "internal_retries": 1,
+      "backtracking_attempts": 16,
+      "bottom_mode": 5,
+      "implication": "Mode 5 is executable and produces a surface-driven trajectory, but the frozen C6M strict-first policy stops at the first retry-advised interval."
+    },
+    "quality_metrics_available": false,
+    "numerical_quality_gate_adjudicated": false,
+    "layer_rom_candidate_response_generated": false
   },
   "adjudication": {
     "SURFACE_PURPOSE_REJECTED": false,
-    "FIXED_HEAD_SURFACE_REFERENCE_HIERARCHY_QUALIFIED": false,
+    "SURFACE_REFERENCE_NUMERICAL_POLICY_QUALIFIED": false,
     "C6M_SPACE_TIME_GATE_EVALUATED": false,
     "LAYER_ROM_CANDIDATE_RESPONSE_GENERATED": false,
     "C6N_SURFACE_CANDIDATE_COMPARISON_AUTHORIZED": false,
-    "MODE5_FALLBACK_EXTENSION_AUTHORIZED": false,
+    "POST_RESPONSE_MODE5_RETRY_RETROFIT_AUTHORIZED": false,
+    "S01_S04_CONFIRMATORY_REUSE_AUTHORIZED": false,
     "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
     "PERFORMANCE_COMPARISON_AUTHORIZED": false,
     "PRODUCTION_ROM_AUTHORIZED": false
   },
-  "scientific_interpretation": [
-    "C6M does not test Layer-ROM fidelity because no reduced candidate was executed.",
-    "The surface-driven research direction remains open; the blocker is the chosen high-resolution Reference execution route under the frozen numerical policy.",
-    "Extending the DYN0A retry/fallback policy from fixed-flux mode 2 to fixed-head mode 5 after observing the failure would be a new numerical-authority decision and is not required for the immediate purpose question.",
-    "A cleaner next test for upper-zone/profile sufficiency is to use the already-qualified fixed-bottom-flux DYN0A Reference route. That preserves surface-originating redistribution while explicitly removing bottom-exchange prediction from scope."
+  "interpretation": [
+    "C6M does not provide evidence about Layer-ROM surface-driven fidelity because no Layer-ROM candidate was executed.",
+    "The mode-7 failure was a pre-solver Reference-floor admission mismatch and was not hydrological evidence.",
+    "The later mode-5 route was admitted and advanced, but its preregistered strict-first policy eventually encountered retry-advised intervals across the matrix.",
+    "The pre-existing D13/C4Z retry policy is not retrofitted to the now-exposed C6M histories.",
+    "The surface-driven purpose question therefore remains open."
   ],
+  "retained_direction": {
+    "purpose_dependent_sufficiency": true,
+    "next_surface_question": "Test upper-zone/profile redistribution with a Reference route already inside the qualified DYN0A numerical boundary.",
+    "drainage_or_recharge_claim": false,
+    "root_ET_claim": false
+  },
   "next_authority": {
     "target": "LARE-BC2-C6M2",
-    "state": "FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE_QUALIFICATION_AUTHORIZED",
-    "question": "Can fresh top-flux histories on the already-qualified fixed-bottom-flux Reference route provide a high-resolution authority for upper-zone/profile purpose validation on B01 and B14?",
+    "state": "FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE_PREREGISTRATION_AUTHORIZED",
+    "question": "Can a fresh source-free, surface-driven, fixed-bottom-flux Reference panel be numerically qualified for upper-zone/profile representation testing without making a drainage/recharge claim?",
     "constraints": [
-      "Use fresh top-flux schedules frozen before C6M2 response.",
-      "Bottom flux is prescribed at the initial gravity-equilibrium value; bottom drainage/recharge prediction is therefore out of scope.",
-      "Use both B01 and B14.",
-      "Qualify the high-resolution Reference hierarchy before any new Layer-ROM response.",
-      "No new representation or closure.",
-      "No change to fixed-flux retry/fallback authority."
+      "Use fresh histories not S01-S04.",
+      "Use bottom_mode 2 fixed flux at each history's gravity-equilibrium qeq; this is the already-qualified DYN0A numerical route.",
+      "No drainage/recharge fidelity claim because bottom exchange is prescribed.",
+      "Reference space-time qualification precedes any Layer-ROM response.",
+      "No new Layer-ROM representation, partition or closure.",
+      "No thresholds derived from C6M response."
     ]
   },
-  "supersedes": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json@v1 free-drainage interpretation",
   "scientific_firewall": {
     "candidate_response_generated": false,
     "response_based_retuning": false,
-    "fixed_head_retry_policy_changed": false,
+    "retry_policy_changed_after_response": false,
+    "S01_S04_reused_for_confirmatory_surface_reference": false,
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
