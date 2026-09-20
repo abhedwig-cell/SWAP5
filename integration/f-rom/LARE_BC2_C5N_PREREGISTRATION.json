@@ -300,8 +300,18 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "state": "BOUND_BEFORE_EXECUTION",
+    "response_based_design": false,
+    "reference_materializer": "tests/rom/materialize_lare_bc2_c5n_reference.py",
+    "reference_materializer_blob": "a2a7db1e5c6669b4a2475eea0fe3b1c7481ea61c",
+    "reference_history_slicer": "tests/rom/materialize_lare_bc2_c5n_reference_slice.py",
+    "reference_history_slicer_blob": "3e294bdc0adb9f824f5119a19c03e7188ab5a97e",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5n_fresh_highres.py",
+    "analyzer_blob": "c14ff931d0c34fec7989a96e553891468cbd2f56",
+    "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "allowed_new_code": "Fresh Reference/history materialization, fixed 10-cm profile diagnostics, prebound comparator-quality and LARE analysis.",
+    "prohibited_new_code": "response-based history/partition/metric changes, boundary counterfactuals, closure fitting, application thresholds"
   },
   "model_changed": false
 }
