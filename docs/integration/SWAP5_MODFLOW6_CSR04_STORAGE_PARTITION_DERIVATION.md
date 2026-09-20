@@ -305,3 +305,72 @@ negligible in the shared state, or would duplicate part of the SWAP response.
 
 Until that algebraic equivalence is established, native STO remains a
 qualification variable rather than admitted coupled physics.
+
+
+## 15. Algebraic comparison: historical shared-state storage versus F-GC33
+
+The current runtime makes the SWAP contribution to the MODFLOW equation
+explicitly as a linear boundary flux. From
+`mod_modflow6_linear_response_backend`:
+
+`Q_API(H) = HCOF * H - RHS`
+
+with
+
+`HCOF = A * 86400 * dq_u/dH`
+
+and
+
+`RHS = HCOF * H_ref - A * 86400 * q_u,ref`.
+
+Therefore
+
+`Q_API(H) = A * 86400 * [q_u,ref + (dq_u/dH)(H-H_ref)]`.
+
+This is a linearized **exchange-flux response**. It is not entered as a
+MODFLOW STO coefficient by the SWAP5 runtime.
+
+For one MODFLOW degree of freedom, write the groundwater residual schematically
+as
+
+`R_MF(H) = R_regional(H) + R_STO(H; S_MF) + Q_API(H)`.
+
+Linearizing around `H_ref` gives the head Jacobian contribution
+
+`dR_MF/dH = dR_regional/dH + dR_STO/dH + A*86400*dq_u/dH`.
+
+The final term is the F-GC33 Schur-condensed SWAP response.
+
+The historical shared-state formulation instead supplied the column
+storage/head derivative to MODFLOW as the capacitance needed for the common
+head solve and deliberately suppressed additional MODFLOW storage in the
+shared top state. The two formulations can therefore be structurally
+equivalent only if the F-GC33 exchange Jacobian supplies the relevant column
+dynamic response and any native MODFLOW STO retained at that same shared
+degree of freedom represents a genuinely additional regional state.
+
+### Key consequence
+
+A nonzero native MODFLOW STO term is **not mathematically required by F-GC33**
+to make the SWAP response head-dependent: that dependence already exists in
+`HCOF = A*dq_u/dH`.
+
+Native STO adds a second head-derivative term to the assembled MODFLOW
+equation. Whether that term is desirable is a physical model-definition
+question, not a numerical necessity of the F-GC33 coupling law.
+
+This yields a falsifiable qualification:
+
+- run the controlled coupling with native STO tending toward zero;
+- run it with nonzero native STO;
+- keep the SWAP finite-window response identical;
+- compare accepted head, exchange, SWAP storage and water balance.
+
+If the intended authority is the historical shared-state limit, the near-zero
+STO sequence is the relevant convergence target. If nonzero STO is retained,
+its independent regional physical meaning must be declared and evidenced.
+
+This comparison does not yet authorize changing production STO. It establishes
+that native STO and the F-GC33 SWAP Jacobian are algebraically separate
+head-response terms and that native STO cannot be justified merely as the
+mechanism that lets MODFLOW react to SWAP.
