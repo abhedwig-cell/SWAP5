@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "c0bbae0e0039bc0b77cb29fedd903f07efbbbbcb",
+  "checkpoint_commit": "58bae144e40c17628c1cd555b7c2fdd84893c099",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "A1_CLOSED_A2_CLOSED_A2B_EXECUTION_IN_PROGRESS_FIXED_HEAD_AUTHORITY_BOUND",
-  "last_reconciled_head": "c0bbae0e0039bc0b77cb29fedd903f07efbbbbcb",
+  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_NEGATIVE_A3_MOMENT_OPERATOR_EXECUTION",
+  "last_reconciled_head": "58bae144e40c17628c1cd555b7c2fdd84893c099",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
@@ -20,7 +20,13 @@
     "tests/rom/analyze_layer_rom_a2b_integrated_closures.py",
     ".github/workflows/f-rom-layer-a2b-integrated-closure.yml",
     "integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json",
-    "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json"
+    "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
+    "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json",
+    "tests/rom/analyze_layer_rom_a3_moment_operator.py",
+    ".github/workflows/f-rom-layer-a3-moment-operator.yml",
+    "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -42,7 +48,10 @@
     "work/f-rom-lare-rs1 as noncanonical provenance only",
     "GitHub Actions run 35494166638 / artifact 10600227055 for A2",
     "GitHub Actions run 35494593395 for active A2B execution",
-    "work/f-rom-lare-rs1 BC1 fixed-head authority as selective branch evidence"
+    "work/f-rom-lare-rs1 BC1 fixed-head authority as selective branch evidence",
+    "GitHub Actions run 35494593395 / artifact 10599628932 for official A2B",
+    "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
+    "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -50,8 +59,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete A2B integrated/quasi-steady storage-only closure audit. If a closure passes the frozen broad-support rule, preregister fixed-flux propagation and then fixed-head propagation using LAYER_ROM_BC1 authority. If none passes, preregister one additional physically interpretable gradient/moment state; do not fit an empirical correction.",
-  "recovery_point": "Resume from work/f-rom-layer-a. A1 state sufficiency is closed; A2 pairwise closure screen is closed negative; A2B is the active gate. Fixed-head bottom authority is separately bound in LAYER_ROM_BC1_AUTHORITY_BINDING.json.",
+  "next_action": "Complete A3 exact first-moment teacher-forced operator audit. If at least one frozen moment closure passes broad support, derive and preregister the M1 continuity/evolution law before any reduced propagation. If neither passes, reconcile front-position versus explicit-layer alternatives without empirical fitting.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after checkpoint 58bae144e40c17628c1cd555b7c2fdd84893c099. A1, A2 and A2B are closed. A3 state, closures, metrics and gates are frozen before execution.",
   "blockers": [],
   "scope_guards": [
     "research only",
