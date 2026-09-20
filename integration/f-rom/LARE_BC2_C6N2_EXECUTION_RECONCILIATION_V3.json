@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.execution-reconciliation.v3",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "TECHNICAL_NUMPY_DEPENDENCY_ADDED_AFTER_PRE_RESPONSE_IMPORT_FAILURE",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35537768218,
+    "execution_head": "216912649404d8640f527371fb6c6469b22f35d8",
+    "authority_lock_pass": true,
+    "candidate_jobs": 20,
+    "candidate_jobs_entered_runner_import": true,
+    "candidate_solver_or_hydrological_response_generated": false,
+    "analyzer_executed": false,
+    "failure": "ModuleNotFoundError: No module named 'numpy' at runner import",
+    "scientific_gate_failure": false
+  },
+  "repair": {
+    "change": "Install numpy in each candidate job before invoking the already-frozen C6N2 runner.",
+    "runner_blob_unchanged": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "analyzer_blob_unchanged": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
+    "preregistration_blob_unchanged": "d54d404b466c1c5dc79359f1d0147616b914ab3b",
+    "candidate_partitions_changed": false,
+    "candidate_dt_changed": false,
+    "closure_changed": false,
+    "histories_changed": false,
+    "metrics_changed": false,
+    "uncertainty_bands_changed": false,
+    "classification_changed": false,
+    "response_based": false,
+    "scientific_effect": "NONE"
+  },
+  "prior_execution_reconciliation": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V2.json",
+  "rerun_required": true,
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false
+}
