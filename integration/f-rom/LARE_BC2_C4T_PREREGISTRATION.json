@@ -1,0 +1,438 @@
+{
+  "schema": "swap5.lare.bc2.c4t.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4T",
+  "phase": "PREREGISTERED_AFTER_C4S_BEFORE_COMPILED_COST_EXPOSURE",
+  "title": "Prospective shared-host cost-fidelity value screen on the blind C4R workload",
+  "purpose": "Determine whether the already blind-validated LARE representation ladder occupies a useful purpose-dependent computational cost versus hydrological fidelity frontier relative to same-partition CoRichards, FMC/SMVE and fine Reference Richards, without making a formal portable performance claim.",
+  "authority": {
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "C4R_closeout": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "required_C4R_status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE",
+    "required_C4R_decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
+    "C4S_closeout": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+    "required_C4S_status": "CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED",
+    "required_C4S_decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
+    "C4R_artifact_id": 10593626518,
+    "C4R_artifact_digest": "sha256:da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9",
+    "C4S_artifact_id": 10593106848,
+    "C4S_artifact_digest": "sha256:ed438b348dd48a462d9d1deb1e61920542b34d692aa208c7421e528d1dae77a8",
+    "C4S_result_sha256": "6a3fee756d86772b38c879e96acd0fa30d73ad6ec84476ff1c8a60b4291265bd",
+    "execution_source_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "live_canonical_at_preregistration": "c68deaa1142084a56b6d57baa788d6ed805873c2",
+    "live_delta_reconciliation": {
+      "commits_since_execution_source": 19,
+      "src_changed": false,
+      "reference_changed": false,
+      "scope": "F-ROMV2 D25-D27 evidence, documentation, status and authority validation only",
+      "execution_source_rebase_required": false
+    }
+  },
+  "performance_governance": {
+    "methodology_authority": "integration/f-rom/F-ROMV2_D25_PREREGISTRATION.json",
+    "D25_decision": "FMC_SHARED_HOST_COST_ADVANTAGE_RESOLVED_RELATIVE_TO_R16",
+    "D25_protocol_execution_head": "ac5adb9b7946ace395fc04acbdc691ba394f56a6",
+    "D25_timing_driver_blob": "f78a0c5507907c46a87f7d858eccdd41a1c71a50",
+    "D25_compiled_FMC_blob": "cd1d84f2186080c08ff06ba8c97d4132d05a61d7",
+    "host_authority": {
+      "MP7": "HOST_REJECTED_FOR_1PCT_CPU_BASELINE",
+      "MP8": "INFRASTRUCTURE_PENDING",
+      "shared_host_screening_only": true,
+      "formal_cpu_baseline_established": false,
+      "formal_speedup_claim_authorized": false
+    }
+  },
+  "rossfast_disposition": {
+    "included": false,
+    "reason": "Current admitted RossFast production model binding accepts rossfast_d3r_forcing_t with explicit top and bottom fluxes and a state-local flux envelope. C4R/C4S use prescribed bottom head mode 5 with psi_b=0, so no admitted fixed-head RossFast route exists for this workload.",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "no_new_rossfast_work": true
+  },
+  "frozen_workload": {
+    "identity": "Exact blind C4R fixed-water-table validation workload",
+    "material": "B01",
+    "depth_cm": 160,
+    "histories": {
+      "V01": {
+        "lambda": 0.375
+      },
+      "V02": {
+        "lambda": 0.625
+      },
+      "V03": {
+        "lambda": 0.875
+      },
+      "V04": {
+        "lambda": 1.125
+      }
+    },
+    "intervals_per_history": 64,
+    "observation_step_day": 0.001,
+    "total_intervals_per_complete_workload": 256,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head at 160 cm",
+    "ET_root_uptake": false,
+    "moving_water_table": false
+  },
+  "route_set": {
+    "LARE": [
+      {
+        "id": "LARE_R3",
+        "dimension": 3,
+        "partition": [
+          140,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "LARE_R4",
+        "dimension": 4,
+        "partition": [
+          130,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "LARE_R5",
+        "dimension": 5,
+        "partition": [
+          120,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "LARE_R6",
+        "dimension": 6,
+        "partition": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "LARE_R8",
+        "dimension": 8,
+        "partition": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "LARE_R12",
+        "dimension": 12,
+        "partition": [
+          50,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      }
+    ],
+    "CoRichards": [
+      {
+        "id": "COR_R2",
+        "dimension": 2,
+        "partition": [
+          80,
+          80
+        ],
+        "role": "structural low-dimensional control"
+      },
+      {
+        "id": "COR_R3",
+        "dimension": 3,
+        "partition": [
+          140,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "COR_R4",
+        "dimension": 4,
+        "partition": [
+          130,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "COR_R5",
+        "dimension": 5,
+        "partition": [
+          120,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "COR_R6",
+        "dimension": 6,
+        "partition": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "COR_R8",
+        "dimension": 8,
+        "partition": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "COR_R12",
+        "dimension": 12,
+        "partition": [
+          50,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      }
+    ],
+    "other": [
+      {
+        "id": "FMC",
+        "identity": "FMC_GW200 frozen D13 groundwater-front equations"
+      },
+      {
+        "id": "R16",
+        "identity": "fine current-canonical Reference Richards, 16 x 10 cm",
+        "role": "direct scientific reference and timing calibration route"
+      }
+    ],
+    "count": 15,
+    "no_route_dropped_after_timing": true
+  },
+  "hydrological_fidelity_binding": {
+    "LARE": "Use immutable C4R result metrics without recomputation or retuning.",
+    "R2": "Use immutable C4R R2 metrics.",
+    "FMC": "Use immutable C4R FMC metrics.",
+    "CoRichards_R3_R12": "Recover immutable C4S member artifacts and compute the exact C4R metric vector versus immutable C4R R16. No timing is exposed before this metric table is frozen.",
+    "R16": "Zero reference error by definition on this workload.",
+    "purpose_vectors": {
+      "GW": [
+        "pooled total-storage RMSE cm",
+        "pooled cumulative-bottom-exchange RMSE cm",
+        "pooled terminal-bottom-flux RMSE cm/day",
+        "bottom-flux sign-error count"
+      ],
+      "PROFILE": [
+        "all GW components",
+        "pooled mapped 10-cm R16-cell theta RMSE"
+      ]
+    },
+    "no_scalar_fidelity_score": true,
+    "no_application_threshold": true
+  },
+  "C4S_member_artifacts": {
+    "R3": {
+      "id": 10593941575,
+      "digest": "sha256:a83f82174fcbb24a84ed206cf180c10410b23f28651e9a74a789b15e5cb6a6b4"
+    },
+    "R4": {
+      "id": 10593866721,
+      "digest": "sha256:9df480099f2b696aeb37628b3cc379a7841664d5e602b3a9f4847e38581a3bcd"
+    },
+    "R5": {
+      "id": 10593447204,
+      "digest": "sha256:0cf3a723f39c25b36223e31ba0f96031af2c4acbb539c7b918a431757e1015dd"
+    },
+    "R6": {
+      "id": 10593346387,
+      "digest": "sha256:b3da9c9f0ffc763e3e7fa7b23fb540e9ec6bb2ce85af1af61883afd141152064"
+    },
+    "R8": {
+      "id": 10593657027,
+      "digest": "sha256:ed16ce34c563f99e586d41d7dc4164bb01f0d59a8deecc95aaf3e37d3ad5fe69"
+    },
+    "R12": {
+      "id": 10593236455,
+      "digest": "sha256:ce5b4abb4073093efa2da6a08b76f419d6c9fda8baf17dcad98743e2c5d93c66"
+    }
+  },
+  "compiled_implementation_equivalence": {
+    "required_before_timing": true,
+    "LARE": {
+      "language": "Fortran 2008 research-only standalone kernel",
+      "equations": "Exact C4R BC1 CURRENT_LAYER_FACE LARE equations, 0.0001-day internal Heun step, 1e-13 theta corrector tolerance, maximum 50 corrector iterations, no clipping/fallback.",
+      "validation": "For all six reduced members, reproduce immutable C4R pooled and by-history storage, cumulative-bottom, terminal-bottom-flux, mapped-theta and sign metrics.",
+      "tolerances": {
+        "water_depth_metric_abs": 1e-10,
+        "bottom_flux_metric_abs_cm_per_day": 1e-8,
+        "theta_metric_abs": 1e-12,
+        "sign_count_exact": true
+      }
+    },
+    "FMC": {
+      "language": "Fortran 2008 research-only standalone kernel",
+      "equations": "Exact frozen D13 groundwater-front FMC_GW200 route used in C4R.",
+      "validation": "Reproduce immutable C4R FMC pooled and by-history metrics.",
+      "tolerances": {
+        "water_depth_metric_abs": 1e-10,
+        "bottom_flux_metric_abs_cm_per_day": 1e-8,
+        "theta_metric_abs": 1e-12,
+        "sign_count_exact": true
+      }
+    },
+    "CoRichards_and_R16": {
+      "validation": "Benchmark-capable harness in validation mode must byte-reproduce each immutable C4S qualified per-history scientific stdout for R3-R12 and exact C4R control stdout for R2/R16.",
+      "numerical_policy_change": false
+    },
+    "failure_rule": "Any implementation-equivalence failure closes C4T before timing. No equation, partition, timestep, fallback class, tolerance or metric may be retuned inside C4T."
+  },
+  "timing_protocol": {
+    "compiler": "GNU Fortran, all compiled scientific routes in one workflow on ubuntu-24.04",
+    "optimization": "-O2",
+    "primary_measure": "in-process Fortran CPU_TIME around repeated complete four-history C4R workloads",
+    "diagnostic_measure": "external monotonic elapsed time per invocation",
+    "R16_only_batch_calibration": {
+      "candidates": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024
+      ],
+      "target_cpu_seconds_min": 0.5,
+      "target_cpu_seconds_max": 8,
+      "same_rule_as_D25": true,
+      "no_other_route_timing_exposed_before_selection": true
+    },
+    "warmups_per_route": 3,
+    "measured_rounds": 30,
+    "order": {
+      "base": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8",
+        "LARE_R12",
+        "COR_R2",
+        "COR_R3",
+        "COR_R4",
+        "COR_R5",
+        "COR_R6",
+        "COR_R8",
+        "COR_R12",
+        "FMC",
+        "R16"
+      ],
+      "rounds_1_15": "all 15 cyclic rotations of base",
+      "rounds_16_30": "all 15 cyclic rotations of reversed base",
+      "property": "every route occupies every measurement position exactly twice"
+    },
+    "no_posthoc_timing_outlier_deletion": true,
+    "checksum_required_every_sample": true
+  },
+  "cost_statistics": {
+    "per_route": [
+      "mean",
+      "median",
+      "p10",
+      "p90",
+      "sample_sd"
+    ],
+    "pairwise": "paired CPU delta for every route pair across the 30 position-balanced rounds, with mean, sd, SE, lower and upper two-SE bounds",
+    "resolved_cheaper_rule": "A is resolved cheaper than B only when mean(A-B)+2*SE < 0.",
+    "resolved_more_expensive_rule": "A is resolved more expensive than B only when mean(A-B)-2*SE > 0.",
+    "otherwise": "UNRESOLVED"
+  },
+  "purpose_frontier_rules": {
+    "fidelity_no_worse": "For the declared purpose vector, every component of route A is <= route B, using exact sign counts and 1e-12 numerical equality tolerance; at least one component must be strictly smaller for strict fidelity dominance.",
+    "resolved_value_dominance": "A resolved-dominates B only if A has no-worse purpose fidelity with at least one strict fidelity improvement, and A is resolved cheaper than B by the paired two-SE rule.",
+    "frontier": "A route remains on the resolved purpose frontier if no other route resolved-dominates it.",
+    "R16_cost_gate": "A reduced LARE route can support a positive computational-value signal only if it is resolved cheaper than R16.",
+    "no_weighted_cost_error_score": true
+  },
+  "decision_logic": {
+    "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED": "All hard gates pass; at least one reduced LARE member is on a resolved GW or PROFILE frontier and is resolved cheaper than R16; and it is not resolved-dominated on that same purpose by FMC or any qualified CoRichards route.",
+    "C4T_LARE_PURPOSE_VALUE_SIGNAL_NEGATIVE": "All hard gates pass; every reduced LARE member is resolved-dominated on both purpose frontiers, or no reduced LARE member has a resolved cost advantage over R16 while at least one non-LARE reduced route does.",
+    "C4T_LARE_PURPOSE_VALUE_SIGNAL_UNRESOLVED": "All hard gates pass but timing uncertainty or incomparable fidelity prevents positive or negative adjudication.",
+    "C4T_IMPLEMENTATION_OR_TIMING_BLOCKED": "Any authority, implementation-equivalence, checksum, calibration or timing-completion hard gate fails."
+  },
+  "outputs": [
+    "immutable purpose-fidelity table for all 15 routes",
+    "compiled-equivalence result",
+    "R16-only calibration",
+    "30 position-balanced timing rounds",
+    "per-route CPU and wall statistics",
+    "pairwise resolved/unresolved cost matrix",
+    "GW resolved nondominated frontier",
+    "PROFILE resolved nondominated frontier",
+    "minimal LARE dimension on each retained frontier",
+    "CoRichards fallback counts carried from C4S alongside cost"
+  ],
+  "firewalls": [
+    "NO_NEW_LARE_CLOSURE",
+    "NO_FMC_SCIENCE_RETUNING",
+    "NO_CORICHARDS_NUMERICAL_POLICY_CHANGE",
+    "NO_ROSSFAST_EXTENSION",
+    "NO_PARTITION_SELECTION_AFTER_TIMING",
+    "NO_EFFECT_BASED_BATCH_SELECTION",
+    "NO_POSTHOC_TIMING_OUTLIER_DELETION",
+    "NO_WEIGHTED_COST_ERROR_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_OR_PORTABLE_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "formal_performance_claim": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
