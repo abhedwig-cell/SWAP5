@@ -12,7 +12,7 @@ def load(name,path):
     return mod
 
 def patch_b14(c4v,p):
-    mat=p["materials"]["blind_transfer_B14"]
+    mat=p["materials"]["response_blind_transfer_B14"]
     c4v.TR=float(mat["theta_r"]);c4v.TS=float(mat["theta_s"])
     c4v.ALPHA=float(mat["alpha_per_cm"]);c4v.N=float(mat["n"])
     c4v.M=1.0-1.0/c4v.N;c4v.KS=float(mat["Ksat_cm_per_day"]);c4v.ELL=float(mat["mualem_lambda"])
