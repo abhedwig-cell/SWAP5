@@ -172,5 +172,21 @@
     "NO_RUNTIME_OR_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalization": {
+    "date": "2026-09-20",
+    "before_first_B1HCG_execution": true,
+    "primary_temporal_horizon_step": 1024,
+    "primary_horizon_day": 1.024,
+    "secondary_checkpoint_diagnostics_steps": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "material_R16_temporal_signature_applies_at_primary_horizon": true,
+    "all_checkpoint_monotonicity_reported_but_not_part_of_primary_signature_gate": true,
+    "strict_decrease_definition": "coarse dt=1e-4 error minus fine dt=2.5e-5 error > 1e-12",
+    "scientific_effect": "Clarifies the already frozen temporal comparison; no material, representation, dt, observable or causal-core component is changed."
+  }
 }
