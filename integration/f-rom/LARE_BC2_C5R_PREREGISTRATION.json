@@ -1,0 +1,242 @@
+{
+  "schema": "swap5.lare.bc2.c5r.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5R",
+  "phase": "PREREGISTERED_BEFORE_C5R_FRESH_REFERENCE_OR_LARE_RESPONSE",
+  "title": "Fresh blind D12 shared-bottom-support breadth discriminator",
+  "scientific_question": "With identical 2.5-cm lower-boundary support and unchanged CURRENT_LAYER_FACE closure, does restoring broader vertical memory from D8 to D12 materially improve fresh B14 dynamic prescribed-head fidelity?",
+  "role": "BLIND_VERTICAL_MEMORY_BREADTH_IDENTIFIABILITY_DISCRIMINATOR",
+  "authority": {
+    "c5q_reconciliation": "integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json",
+    "required_c5q_decision": "PREREGISTER_D12_SHARED_BOTTOM_SUPPORT_BREADTH_DISCRIMINATOR_BEFORE_CLOSURE_IMPLEMENTATION",
+    "c5p_closeout": "integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "frozen_scientific_basis_rebased": false
+  },
+  "blind_design": {
+    "response_blind": true,
+    "histories_previously_exposed": false,
+    "history_ids": [
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "initial_effective_saturation": {
+      "R01": 0.72,
+      "R02": 0.82,
+      "R03": 0.88,
+      "R04": 0.76
+    },
+    "phase_schedule_observation_steps": {
+      "R01": {
+        "phase1": "FALL",
+        "phase1_steps": 224,
+        "phase2": "RISE",
+        "phase2_steps": 352,
+        "hold_steps": 448
+      },
+      "R02": {
+        "phase1": "RISE",
+        "phase1_steps": 224,
+        "phase2": "FALL",
+        "phase2_steps": 352,
+        "hold_steps": 448
+      },
+      "R03": {
+        "phase1": "FALL",
+        "phase1_steps": 320,
+        "phase2": "RISE",
+        "phase2_steps": 256,
+        "hold_steps": 448
+      },
+      "R04": {
+        "phase1": "RISE",
+        "phase1_steps": 320,
+        "phase2": "FALL",
+        "phase2_steps": 256,
+        "hold_steps": 448
+      }
+    },
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192,
+    "bottom_head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125
+    },
+    "top_forcing": "gravity-consistent B14 qeq only",
+    "hold_boundary": "mode-2 equilibrium HOLD",
+    "sinks": false,
+    "moving_water_table": false,
+    "design_note": "Fresh histories fixed before any R01-R04 response; forcing amplitudes remain inside the established C5A/C5N/C5P envelope so the only new scientific axis is vertical memory breadth at shared bottom support."
+  },
+  "material": {
+    "id": "B14",
+    "theta_r": 0.01,
+    "theta_s": 0.416774,
+    "alpha_per_cm": 0.00541,
+    "n": 1.301528,
+    "Ksat_cm_per_day": 0.895023,
+    "mualem_lambda": -0.334926
+  },
+  "reference_design": {
+    "target": {
+      "id": "R2048_T16",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 16,
+      "transaction_dt_day": 0.00005
+    },
+    "spatial_comparator": {
+      "id": "R1024_T16",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "temporal_factor": 16
+    },
+    "temporal_control": {
+      "id": "R2048_T8",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 8,
+      "transaction_dt_day": 0.0001
+    },
+    "numerical_policy": "exact pre-existing D13 integrated-water-depth policy",
+    "O0_O2_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "profile_output": "16 fixed 10-cm bins",
+    "continuum_truth_assumed": false
+  },
+  "representations": {
+    "closure": "BC1 CURRENT_LAYER_FACE unchanged",
+    "candidate_dt_day": 0.0001,
+    "candidates": {
+      "D12_B10": {
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      "D12_B5": {
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          155,
+          160
+        ]
+      },
+      "D12_B2P5": {
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          155,
+          157.5,
+          160
+        ]
+      },
+      "D8_B2P5": {
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          155,
+          157.5,
+          160
+        ],
+        "role": "shared 2.5-cm bottom-support breadth control"
+      }
+    },
+    "geometry_origin": "Prospectively frozen in C5Q from pre-existing C5C/C5P 10/5/2.5-cm support levels; no C5R response-based partition optimization.",
+    "no_response_based_repartitioning": true
+  },
+  "metric_views": {
+    "groundwater": [
+      "total_storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "interval_bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm",
+      "reversal_sequence_mismatch_history_count",
+      "reversal_penalty_steps"
+    ],
+    "profile": "groundwater view plus mapped_theta_rmse",
+    "no_scalar_score": true,
+    "no_application_threshold": true
+  },
+  "hypotheses": {
+    "H_D12_DYADIC_BOTTOM_PROGRESS": "D12_B5 is componentwise no worse than D12_B10 and D12_B2P5 no worse than D12_B5 on groundwater view.",
+    "H_BREADTH_ACTIVE": "D12_B2P5 is componentwise no worse than D8_B2P5 on groundwater view and strictly improves at least one continuous groundwater metric.",
+    "H_PROPAGATION_LIMIT_STRENGTHENED": "D12_B2P5 does not materially improve D8_B2P5 groundwater vector while mapped-profile information is at least as good.",
+    "H_D12_B2P5_CROSSES_R1024_GW": "D12_B2P5 is componentwise no worse than R1024 relative to R2048 on groundwater view."
+  },
+  "adjudication_rules": {
+    "HIGH_RES_FRONTIER": "If D12_B2P5 crosses R1024 GW, do not justify closure replacement from this workload.",
+    "BREADTH_ACTIVE": "If D12_B2P5 is componentwise no worse than D8_B2P5 GW with strict improvement in at least one continuous GW metric, broader vertical memory remains active.",
+    "PROPAGATION_LIMIT_STRENGTHENED": "If D12_B2P5 is not better on GW while its mapped profile is at least as informative and all integrity gates pass, the remaining error is more strongly attributable to propagation/closure.",
+    "MIXED": "If D12/D8 trade groundwater components, preserve the mixed result and reconcile the component mechanism before any closure implementation."
+  },
+  "reference_quality_gate": "R2048 T8-to-T16 must be componentwise no worse than R1024-to-R2048 on GW and profile before candidate response generation.",
+  "stop_rules": [
+    "No new closure or scalar correction in C5R.",
+    "No new state count beyond D12/D8 controls.",
+    "No response-based partition changes.",
+    "No R4096 or T32.",
+    "No Reference physics changes.",
+    "No application acceptance, performance, speed or production-ROM claim."
+  ],
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5N_result_changed": false,
+    "C5P_result_changed": false,
+    "production_reference_changed": false,
+    "new_closure_fit": false,
+    "response_based_repartitioning": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false,
+    "reference_materializer": "tests/rom/materialize_lare_bc2_c5r_reference.py"
+  },
+  "model_changed": false
+}
