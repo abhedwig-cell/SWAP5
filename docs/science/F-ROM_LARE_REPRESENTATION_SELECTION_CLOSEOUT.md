@@ -119,6 +119,18 @@ The Richards energy-dissipation theory is retained; the current FEMO numerical r
 
 The workstream is therefore again at a scientific choice boundary: either define a genuinely new, independently motivated convex/obstacle moment realization before response, or stop searching for a universal low-dimensional replacement and evaluate purpose-dependent sufficiency of the already-qualified representation frontier.
 
+## C6K-C6L purpose-dependent program
+
+After C6J, the program no longer treats a universal very-low-dimensional Richards replacement as the default objective.
+
+C6K synthesizes the existing evidence as purpose-, material-, lower-boundary-, horizon- and placement-dependent. Groundwater-output and profile/state requirements are already demonstrably different, while ET/root uptake, long-horizon balance and scientific extremes remain direct evidence gaps rather than negative results.
+
+C6L binds the next validation order. A fresh B01/B14 free-drainage surface-flux Reference must first pass a high-resolution space-time qualification gate. Only after that may the already-existing R3-R16 ladder and P4/U4/U8 placement controls be compared on surface-driven soil-moisture/profile/drainage views.
+
+ET/root uptake remains a distinct later claim. Replaying a prescribed distributed sink can test hydraulic response to known extraction, but cannot establish that a reduced model predicts stress-dependent uptake or evapotranspiration.
+
+No new closure, partition or application threshold is authorized by C6K-C6L.
+
 ## Application and value boundary
 
 Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
