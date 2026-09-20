@@ -8,6 +8,9 @@ state while rebuilding the F-GC30/F-GC33 predictor from that state.
 
 SY_SEQUENCE=(0.30,0.05,1e-2,1e-3,1e-4,1e-5)
 FORCING_PHASES=("baseline","pulse","pulse","recovery","recovery","recovery")
+# Existing bridge forcing lever: equal prescribed top/bottom predictor flux.  The
+# pulse is deliberately tiny and diagnostic; no new atmospheric physics is introduced.
+QBOT_SEQUENCE_CM_PER_DAY=(1e-6,1e-6,5e-6,5e-6,1e-6,1e-6)
 REQUIRED_WINDOW_OBSERVATIONS={
     "accepted_modflow_head_m",
     "swap_lower_face_head_m",
@@ -30,6 +33,8 @@ FORBIDDEN_INFERENCES={
 def test_phase_b_preregistration():
     assert SY_SEQUENCE[-1] < SY_SEQUENCE[-2] < SY_SEQUENCE[-3]
     assert "pulse" in FORCING_PHASES and "recovery" in FORCING_PHASES
+    assert len(QBOT_SEQUENCE_CM_PER_DAY)==len(FORCING_PHASES)
+    assert max(QBOT_SEQUENCE_CM_PER_DAY)>QBOT_SEQUENCE_CM_PER_DAY[0]
     assert "swap_storage_change_native" in REQUIRED_WINDOW_OBSERVATIONS
     assert "modflow_sto_rate_m3_per_day" in REQUIRED_WINDOW_OBSERVATIONS
     assert "j_swap_dqdh" in REQUIRED_WINDOW_OBSERVATIONS
