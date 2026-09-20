@@ -41,7 +41,8 @@
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
     "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
     "C6A": "Response-free derivation shows that explicit algebraic interface head/flux unknowns guarantee conservation but do not supply missing transient subgrid information. Lowest-order linear hybridization condenses to a standard two-point Darcy operator; exact steady nonlinear half-cells condense to DSE2P; affine within-layer flux is P0. A genuinely new family therefore requires a new physically justified transient subgrid state or closure principle.",
-    "C6B": "The centered first water-content moment is retained, but the failed cubic-theta map is not reopened. BEMR represents the frozen bounded effective-saturation interval through a logistic entropy-dual variable and uses the minimum four-dimensional polynomial dual space required by the existing S/M plus hydraulic degree count. The family is selected response-free and must be qualified on the unchanged C5Z synthetic domain before any hydrological response."
+    "C6B": "The centered first water-content moment is retained, but the failed cubic-theta map is not reopened. BEMR represents the frozen bounded effective-saturation interval through a logistic entropy-dual variable and uses the minimum four-dimensional polynomial dual space required by the existing S/M plus hydraulic degree count. The family is selected response-free and must be qualified on the unchanged C5Z synthetic domain before any hydrological response.",
+    "C6C": "BEMR passes response-free mathematical qualification on all 168 unchanged C5Z B14 state/moment cases and all 840 fixed starts. Strict moment realizability, convergence, single branch, bounded Se, hydraulic continuity, state recovery and quadrature consistency all pass. This establishes the algebraic map, not hydrological fidelity."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -93,7 +94,8 @@
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
     "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
     "C6A_structure_preserving_coarse_richards": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
-    "C6B_bounded_entropy_moment": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json"
+    "C6B_bounded_entropy_moment": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
+    "C6C_BEMR_mathematical_qualification": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json"
   },
   "closed_routes": [
     {
@@ -132,14 +134,15 @@
       ]
     }
   ],
-  "decision": "PREREGISTER_C6C_BEMR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION",
+  "decision": "PREREGISTER_C6D_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
   "next_authority": {
-    "target": "LARE-BC2-C6C",
-    "state": "BEMR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_AUTHORIZED",
-    "authority": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
-    "hydrological_response_authorized": false
+    "target": "LARE-BC2-C6D",
+    "state": "EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION",
+    "authority": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
+    "hydrological_response_authorized": false,
+    "free_running_implementation_authorized": false
   },
   "next_family_authority": {
     "additional_D8_to_D12_breadth_at_shared_B2P5_support_is_active": false,
@@ -151,14 +154,18 @@
     "new_family_implementation_authorized": false,
     "qualified_replacement_closure_available": false,
     "repository_basis": [
+      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
       "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json"
+      "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json"
     ],
-    "state": "SELECTED_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_REQUIRED",
+    "state": "MATHEMATICALLY_QUALIFIED_MECHANISM_DISCRIMINATOR_REQUIRED",
     "C6A_interface_variables_alone_are_sufficient": false,
-    "C6B_family_selected": true
+    "C6B_family_selected": true,
+    "C6C_mathematically_qualified": true,
+    "exposed_frozen_state_diagnostic_authorized": true
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -190,7 +197,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v31",
+  "schema": "swap5.lare.representation-selection.closeout.v32",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -201,7 +208,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6B_BOUNDED_ENTROPY_MOMENT_FAMILY_SELECTED_C6C_MATHEMATICAL_QUALIFICATION_NEXT",
+  "status": "CLOSED_THROUGH_C6C_BEMR_MATHEMATICALLY_QUALIFIED_FROZEN_STATE_MECHANISM_DISCRIMINATOR_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
