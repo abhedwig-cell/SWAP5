@@ -7,7 +7,7 @@ program tabulated_hydraulics_wrapper_microbenchmark
   implicit none
 
   integer, parameter :: ntab=250, nhead=256
-  integer(int64), parameter :: nouter=50000_int64
+  integer(int64), parameter :: nouter=10000_int64
   real(real64), parameter :: ores=0.01_real64, osat=0.42_real64
   real(real64), parameter :: alfa=0.0276_real64, npar=1.491_real64
   real(real64), parameter :: mpar=1.0_real64-1.0_real64/npar
