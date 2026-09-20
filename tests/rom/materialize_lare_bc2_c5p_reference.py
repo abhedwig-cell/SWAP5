@@ -53,7 +53,7 @@ def symbol_block(factor:int)->str:
     return """  integer function history_symbol(ih,step) result(symbol)
     integer,intent(in) :: ih,step
     select case(ih)
-""")+"\n".join(rows)+"""
+"""+"\n".join(rows)+"""
     case default
       symbol=0
     end select
