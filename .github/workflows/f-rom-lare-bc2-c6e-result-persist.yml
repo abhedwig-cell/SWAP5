@@ -1,0 +1,62 @@
+name: F-ROM-LARE BC2-C6E result persist
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6e-result-persist.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C6E authority result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6e
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/35525617524 --jq '.status + ":" + .conclusion + ":" + .head_sha')" = "completed:success:3a72c980cd8f8488e20b51daeb1ab2d382d01a22"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610210439 --jq '.digest')" = "sha256:3a6fd2bc94abcbcd69af59c8d475decf7aa4acb5733b4453ad47c619febfb2ac"
+          gh run download 35525617524 -n lare-bc2-c6e-sharded -D /tmp/c6e
+          echo "79018d6316aceadf76f681ea94723289fe2676810ca9982e9181760be3e0b3b5  /tmp/c6e/LARE_BC2_C6E_RESULT.json" | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c6e/LARE_BC2_C6E_RESULT.json'))
+          assert r['status']=='C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_NOT_QUALIFIED'
+          assert r['case_count']==126
+          assert r['fixed_start_count']==630
+          assert r['gates']['G1_STRICT_STATE_MOMENT_REALIZABILITY'] is True
+          assert r['gates']['G2_ALL_CASES_CONVERGE'] is True
+          assert r['gates']['G4_BOUNDED_REALIZABILITY'] is True
+          assert r['gates']['G8_NO_RESPONSE_DATA'] is True
+          assert r['gates']['G3_UNIQUE_NUMERICAL_BRANCH'] is False
+          assert r['gates']['G5_HYDRAULIC_CONTINUITY'] is False
+          assert r['gates']['G6_STATE_RECOVERY'] is False
+          assert r['gates']['G7_QUADRATURE_CONSISTENCY'] is False
+          assert r['scientific_firewall']['hydrological_response_used'] is False
+          assert r['scientific_firewall']['production_rom_authorized'] is False
+          print('C6E_NEGATIVE_AUTHORITY=PASS')
+          PY
+          cp /tmp/c6e/LARE_BC2_C6E_RESULT.json integration/f-rom/LARE_BC2_C6E_RESULT.json
+
+      - name: Commit exact C6E result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6E_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist exact negative C6E result"
+          git push origin HEAD:work/f-rom-lare-rs1
