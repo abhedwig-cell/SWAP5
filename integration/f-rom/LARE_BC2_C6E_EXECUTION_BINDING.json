@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.lare.bc2.c6e.execution-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6E",
+  "status": "DRAFT_EXACT_CASE_SHARDING_EXECUTION_REPAIR_AWAITING_WORKFLOW_BINDING",
+  "decision": "PARTITION_FROZEN_C6E_CASE_SET_FOR_EXECUTION_ONLY_NO_SCIENTIFIC_CHANGE",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json",
+    "preregistration_blob": "da95787a692588e92d654302c7190c35fa1ae228",
+    "serial_run": 35525415304,
+    "serial_execution_head": "8bb45327f74576eabdbf90ee84a59c02b231bbf2"
+  },
+  "immutable_scientific_core": {
+    "qualifier": "tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py",
+    "qualifier_blob": "d524fb04251baa45cf5d732de707c2a720eeb788",
+    "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
+    "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
+    "scientific_preregistration_changed": false,
+    "state_domain_changed": false,
+    "prescribed_flux_anchors_changed": false,
+    "starts_changed": false,
+    "quadrature_changed": false,
+    "solver_tolerances_changed": false,
+    "gates_changed": false,
+    "hydrological_response_used": false
+  },
+  "execution_repair": {
+    "reason": "Bounded-execution partitioning of independent preregistered algebraic cases; created before reading any C6E numerical result.",
+    "shard_count": 9,
+    "partition_rule": "case_index modulo 9",
+    "exact_cover_required": true,
+    "shard_runner": "tests/rom/run_lare_bc2_c6e_shard.py",
+    "shard_runner_blob": "79ea9940751c2d6c134ca5fb0055f4326ebfafd3",
+    "aggregator": "tests/rom/merge_lare_bc2_c6e_shards.py",
+    "aggregator_blob": "a0b6482f613e5dcfb1ff72f81912e0ac2fbc061c",
+    "aggregation_rule": "Sort by preregistered case_index, require exact 0..125 cover, then apply the unchanged C6E gate logic.",
+    "serial_run_disposition": "REMAINS_VALID_CROSSCHECK_IF_COMPLETED; THE FIRST SUCCESSFUL PREBOUND EXACT EXECUTION MAY BE USED AS AUTHORITY, WITH THE OTHER AS INDEPENDENT CROSSCHECK."
+  },
+  "workflow": {
+    "path": ".github/workflows/f-rom-lare-bc2-c6e-sharded.yml",
+    "blob": null,
+    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "c6d_response_used_for_design": false,
+    "response_based_retuning": false,
+    "free_running_bemr_implemented": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
