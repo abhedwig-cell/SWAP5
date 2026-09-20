@@ -3,30 +3,26 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "58bae144e40c17628c1cd555b7c2fdd84893c099",
+  "checkpoint_commit": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_NEGATIVE_A3_MOMENT_OPERATOR_EXECUTION",
-  "last_reconciled_head": "58bae144e40c17628c1cd555b7c2fdd84893c099",
+  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_A3_EXECUTION_IN_PROGRESS",
+  "last_reconciled_head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
     "integration/f-rom/LAYER_ROM_A2_RESULT.json",
-    "integration/f-rom/LAYER_ROM_A2B_PREREGISTRATION.json",
-    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
-    "tests/rom/analyze_layer_rom_a2b_integrated_closures.py",
-    ".github/workflows/f-rom-layer-a2b-integrated-closure.yml",
-    "integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json",
-    "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
     "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
     "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json",
     "integration/f-rom/LAYER_ROM_A3_PREREGISTRATION.json",
     "tests/rom/analyze_layer_rom_a3_moment_operator.py",
     ".github/workflows/f-rom-layer-a3-moment-operator.yml",
-    "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
+    "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json",
+    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -42,16 +38,13 @@
   "evidence_paths": [
     "GitHub Actions artifact 10599363587 from run 35493862040 (A1)",
     "GitHub Actions artifact 10600227055 from run 35494166638 (A2)",
+    "GitHub Actions artifact 10599628932 from run 35494593395 (A2B)",
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
     "integration/f-rom/LAYER_ROM_A2_RESULT.json",
-    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
-    "work/f-rom-lare-rs1 as noncanonical provenance only",
-    "GitHub Actions run 35494166638 / artifact 10600227055 for A2",
-    "GitHub Actions run 35494593395 for active A2B execution",
-    "work/f-rom-lare-rs1 BC1 fixed-head authority as selective branch evidence",
-    "GitHub Actions run 35494593395 / artifact 10599628932 for official A2B",
     "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
-    "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json"
+    "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
+    "work/f-rom-lare-rs1 as selective noncanonical provenance only"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -59,8 +52,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete A3 exact first-moment teacher-forced operator audit. If at least one frozen moment closure passes broad support, derive and preregister the M1 continuity/evolution law before any reduced propagation. If neither passes, reconcile front-position versus explicit-layer alternatives without empirical fitting.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after checkpoint 58bae144e40c17628c1cd555b7c2fdd84893c099. A1, A2 and A2B are closed. A3 state, closures, metrics and gates are frozen before execution.",
+  "next_action": "Complete A3 first-moment teacher-forced operator audit in workflow run 35495220671. If supported, preregister a continuity-based M1 evolution law before any propagation. If unsupported, do not fit an empirical correction; compare second-moment/front state against explicit L4 resolution under a new preregistration.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f. A2B is closed negative; A3 has one authoritative analyzer/workflow and its numerical authority is reconciled before execution.",
   "blockers": [],
   "scope_guards": [
     "research only",
