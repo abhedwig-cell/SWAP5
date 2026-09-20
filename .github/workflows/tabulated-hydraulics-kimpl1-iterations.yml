@@ -1,0 +1,208 @@
+name: TAB-HYD corrected SWKIMPL1 iteration accounting
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-kimpl1-iterations.yml'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+      - 'research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_tspack.py'
+      - 'research/tabulated_hydraulics/generate_uniform_x_hupsel_tables.py'
+      - 'research/tabulated_hydraulics/prepare_hupsel_e2e.py'
+
+jobs:
+  account:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Checkout toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Checkout ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build consistent analytical and direct-table binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+
+          python3 research/tabulated_hydraulics/patch_direct_uniform_tspack.py \
+            swap-src/src/soil/sptabulated.f90
+          meson setup swap-src/build-table swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table
+          cp swap-src/build-table/swap swap-table
+
+      - name: Prepare corrected full-period Hupsel pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-iterations
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, re, shutil, subprocess
+
+          spec=importlib.util.spec_from_file_location(
+              "prep","research/tabulated_hydraulics/prepare_hupsel_e2e.py"
+          )
+          prep=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/tab-hyd-iterations")
+
+          a=root/"analytic_k1"
+          shutil.copytree(src,a)
+          prep.edit_case(a,table=False,swkimpl=1)
+
+          t=root/"direct_tspack_250_k1"
+          shutil.copytree(src,t)
+          prep.edit_case(t,table=True,swkimpl=1)
+          subprocess.run([
+              "python3",
+              "research/tabulated_hydraulics/generate_uniform_x_hupsel_tables.py",
+              str(t),"250"
+          ],check=True)
+
+          for d in (a,t):
+              p=d/"swap.swp"
+              s=p.read_text()
+              s,n=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
+              if n!=1:
+                  raise RuntimeError(d)
+              p.write_text(s)
+          PY
+
+      - name: Run pair and preserve iteration logs
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'route\treturn_code\truntime_seconds\n' > build/tab-hyd-iterations/status.tsv
+          for route in analytic_k1 direct_tspack_250_k1; do
+            work="$GITHUB_WORKSPACE/build/tab-hyd-iterations/$route"
+            if [ "$route" = analytic_k1 ]; then
+              bin="$GITHUB_WORKSPACE/swap-analytic"
+            else
+              bin="$GITHUB_WORKSPACE/swap-table"
+            fi
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime.txt timeout 60 "$bin" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+            printf '%s\t%s\t%s\n' "$route" "$rc" "$runtime" \
+              | tee -a build/tab-hyd-iterations/status.tsv
+            test "$rc" -eq 100
+            test -f "$work/swap_swap.log"
+          done
+
+      - name: Parse Newton and backtracking statistics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root=Path("build/tab-hyd-iterations")
+          routes=["analytic_k1","direct_tspack_250_k1"]
+          rows=[]
+          hist={}
+          for route in routes:
+              lines=(root/route/"swap_swap.log").read_text(errors="replace").splitlines()
+              try:
+                  i0=max(i for i,l in enumerate(lines) if "Iteration statistics" in l)
+              except ValueError:
+                  raise SystemExit(f"no iteration statistics in {route}")
+              h=[]
+              for l in lines[i0:]:
+                  m=re.match(r"^\s*(\d+)\s+(\d+)\s+(\d+)\s*$",l)
+                  if m:
+                      h.append(tuple(map(int,m.groups())))
+                  elif h and "Run-time:" in l:
+                      break
+              if not h:
+                  raise SystemExit(f"empty iteration histogram in {route}")
+              hist[route]=h
+              steps=sum(hits for it,hits,btr in h)
+              newton=sum(it*hits for it,hits,btr in h)
+              btr=sum(btr for it,hits,btr in h)
+              max_it=max(it for it,hits,btr in h if hits)
+              mean_it=newton/steps
+              rows.append((route,steps,newton,mean_it,btr,max_it))
+
+          with (root/"iteration-summary.tsv").open("w") as fh:
+              fh.write("route\taccepted_steps\ttotal_newton_iterations\tmean_iterations_per_step\ttotal_backtracking_cycles\tmax_iterations\n")
+              for r in rows:
+                  fh.write("\t".join(map(str,r))+"\n")
+
+          with (root/"iteration-histograms.tsv").open("w") as fh:
+              fh.write("route\titeration_count\thits\tbacktracking_cycles\n")
+              for route in routes:
+                  for it,hits,btr in hist[route]:
+                      fh.write(f"{route}\t{it}\t{hits}\t{btr}\n")
+
+          a=rows[0]
+          t=rows[1]
+          comparison=(
+              f"accepted_step_delta={t[1]-a[1]}\n"
+              f"newton_iteration_delta={t[2]-a[2]}\n"
+              f"newton_iteration_ratio={t[2]/a[2]:.12g}\n"
+              f"backtracking_delta={t[4]-a[4]}\n"
+              f"backtracking_ratio={(t[4]/a[4] if a[4] else float('nan')):.12g}\n"
+          )
+          (root/"iteration-comparison.txt").write_text(comparison)
+          print((root/"iteration-summary.tsv").read_text(),end="")
+          print(comparison,end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-kimpl1-iteration-accounting
+          path: |
+            build/tab-hyd-iterations/status.tsv
+            build/tab-hyd-iterations/iteration-summary.tsv
+            build/tab-hyd-iterations/iteration-histograms.tsv
+            build/tab-hyd-iterations/iteration-comparison.txt
+            build/tab-hyd-iterations/*/swap_swap.log
+            build/tab-hyd-iterations/*/run.log
