@@ -1,0 +1,163 @@
+name: TAB-HYD clay density convergence
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-clay-density.yml'
+
+jobs:
+  converge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel and Staring authorities
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical and branch-aware table binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py             swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py             swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py             swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-table swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table
+          cp swap-src/build-table/swap swap-table
+
+      - name: Prepare clay density matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/clay-density
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          spec=importlib.util.spec_from_file_location("logprep",lp)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          prep=mod.prep
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          sc=prep.SCENARIOS["clay_wet_free"]
+          params=[series[sc["top"]],series[sc["sub"]]]
+          root=Path("build/clay-density")
+          prep.prepare_case(src,root/"analytic",params,sc,table=False,kimpl=0)
+          for n in (100,150,250,400,600,900):
+              prep.uniform_rows=lambda p,n=n: mod.loghead_rows(p,n)
+              prep.prepare_case(src,root/f"table_{n}",params,sc,table=True,kimpl=0)
+              print("PREPARED",n)
+          PY
+
+      - name: Run density matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          pushd build/clay-density/analytic >/dev/null
+          "$GITHUB_WORKSPACE/swap-analytic" > run.log 2>&1
+          popd >/dev/null
+          printf 'rows\treturn_code\truntime_seconds\n' > build/clay-density/status.tsv
+          for n in 100 150 250 400 600 900; do
+            work="build/clay-density/table_${n}"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$GITHUB_WORKSPACE/swap-table" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+            printf '%s\t%s\t%s\n' "$n" "$rc" "$runtime" | tee -a build/clay-density/status.tsv
+            test "$rc" -eq 100
+          done
+
+      - name: Compare density convergence and divergence timing
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/clay-density/comparisons.txt
+          for n in 100 150 250 400 600 900; do
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py               build/clay-density/analytic "build/clay-density/table_${n}"               "build/clay-density/${n}.json" --label "clay_wet_free,K0,loghead,${n}"               | tee -a build/clay-density/comparisons.txt
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, json
+
+          def read(path):
+              lines=[x for x in path.read_text(errors="replace").splitlines() if x.strip() and not x.lstrip().startswith("*")]
+              rows=list(csv.DictReader(lines))
+              return rows
+
+          a=read(Path("build/clay-density/analytic/result_output.csv"))
+          out=["rows\tGWL_max_abs\tGWL_rmse\tfirst_gt_0.01\tfirst_gt_0.1\tfirst_gt_1\tmax_date"]
+          for n in (100,150,250,400,600,900):
+              d=json.loads(Path(f"build/clay-density/{n}.json").read_text())
+              t=read(Path(f"build/clay-density/table_{n}/result_output.csv"))
+              diffs=[]
+              for ra,rt in zip(a,t):
+                  diffs.append((ra.get("DATETIME",""),abs(float(rt["GWL"])-float(ra["GWL"]))))
+              first=[]
+              for lim in (0.01,0.1,1.0):
+                  hit=next((date for date,v in diffs if v>lim),"")
+                  first.append(hit)
+              maxdate,maxv=max(diffs,key=lambda x:x[1])
+              m=d["metrics"]["GWL"]
+              out.append(f"{n}\t{m['max_abs']}\t{m['rmse']}\t{first[0]}\t{first[1]}\t{first[2]}\t{maxdate}")
+          Path("build/clay-density/convergence.tsv").write_text("\n".join(out)+"\n")
+          print(Path("build/clay-density/convergence.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-clay-density-convergence
+          path: |
+            build/clay-density/status.tsv
+            build/clay-density/comparisons.txt
+            build/clay-density/convergence.tsv
+            build/clay-density/*.json
+            build/clay-density/analytic/result_output.csv
+            build/clay-density/table_250/result_output.csv
+            build/clay-density/table_900/result_output.csv
