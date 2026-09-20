@@ -1,0 +1,295 @@
+{
+  "schema": "swap5.lare.bc2.c6e.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6E",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Response-free prescribed-flux/HOLD boundary qualification for BEMR",
+  "role": "NO_HYDROLOGICAL_RESPONSE_BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFICATION",
+  "scientific_question": "Does the frozen D12_B2P5 BEMR S/M algebraic reconstruction remain realizable, single-branch and hydraulically consistent when both external conditions are prescribed flux, as required by the Reference HOLD boundary mode, before any fresh blind free-running BEMR test?",
+  "authority": {
+    "c6d": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
+    "required_c6d_decision": "AUTHORIZE_RESPONSE_FREE_PRESCRIBED_FLUX_BOUNDARY_MATHEMATICAL_QUALIFICATION_BEFORE_FRESH_BLIND_FREE_RUNNING",
+    "c6c": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
+    "c6b": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
+    "c5z_domain": "integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json",
+    "frozen_material": "B14",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "hydrological_response_authorized": false
+  },
+  "representation": {
+    "id": "D12_B2P5_BEMR",
+    "boundaries_cm": [
+      0,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      155,
+      157.5,
+      160
+    ],
+    "widths_cm": [
+      70,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      5,
+      2.5,
+      2.5
+    ],
+    "dynamic_state_per_layer": [
+      "integrated storage S_i",
+      "centered first water-content moment M_i"
+    ],
+    "profile": "Se=L+(U-L)*sigmoid(b0+b1*P1+b2*P2+b3*P3)",
+    "Se_interval": [
+      0.02,
+      0.995
+    ],
+    "dual_order": 3,
+    "moment_localization": false
+  },
+  "response_free_state_domain": {
+    "source": "Use the D12_B2P5 subset of the unchanged C5Z/C6C synthetic mean-Se profiles and moment patterns; the C6C HEAD_RISE/HEAD_FALL boundary labels are discarded because C6E replaces the external boundary family.",
+    "mean_Se_profiles": [
+      {
+        "id": "UNIFORM_060",
+        "mode": "uniform",
+        "Se": 0.6
+      },
+      {
+        "id": "UNIFORM_075",
+        "mode": "uniform",
+        "Se": 0.75
+      },
+      {
+        "id": "UNIFORM_090",
+        "mode": "uniform",
+        "Se": 0.9
+      },
+      {
+        "id": "TOP_DRY_BOTTOM_WET",
+        "mode": "linear",
+        "Se_top": 0.6,
+        "Se_bottom": 0.9
+      },
+      {
+        "id": "TOP_WET_BOTTOM_DRY",
+        "mode": "linear",
+        "Se_top": 0.9,
+        "Se_bottom": 0.6
+      },
+      {
+        "id": "BOTTOM_WET_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.7,
+        "Se_bottom": 0.9
+      },
+      {
+        "id": "BOTTOM_DRY_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.8,
+        "Se_bottom": 0.6
+      }
+    ],
+    "moment_patterns": [
+      {
+        "id": "ZERO",
+        "mode": "uniform_mu",
+        "mu": 0
+      },
+      {
+        "id": "BOTTOM_HEAVY_ALL",
+        "mode": "uniform_mu",
+        "mu": 0.25
+      },
+      {
+        "id": "TOP_HEAVY_ALL",
+        "mode": "uniform_mu",
+        "mu": -0.25
+      },
+      {
+        "id": "ALTERNATING",
+        "mode": "alternating",
+        "mu_abs": 0.25
+      },
+      {
+        "id": "BOTTOM_HEAVY_FOCUSED",
+        "mode": "bottom_focused",
+        "layers_from_bottom": 3,
+        "mu": 0.25
+      },
+      {
+        "id": "TOP_BOTTOM_OPPOSED",
+        "mode": "linear_mu",
+        "mu_top": -0.25,
+        "mu_bottom": 0.25
+      }
+    ],
+    "state_case_count": 42,
+    "state_targets_changed_from_C5Z": false,
+    "moment_amplitudes_changed": false
+  },
+  "prescribed_flux_domain": {
+    "semantics": "Both external faces prescribe the same positive-downward flux q_hold, matching the zero-net-column-storage character of the Reference HOLD forcing. The levels are derived only from the frozen B14 conductivity evaluated at three C6C uniform effective-saturation anchor states.",
+    "anchors": [
+      {
+        "id": "HOLD_Q_SE060",
+        "Se_anchor": 0.6,
+        "q_cm_per_day": 0.0007571898724519778
+      },
+      {
+        "id": "HOLD_Q_SE075",
+        "Se_anchor": 0.75,
+        "q_cm_per_day": 0.0056836030455087025
+      },
+      {
+        "id": "HOLD_Q_SE090",
+        "Se_anchor": 0.9,
+        "q_cm_per_day": 0.04012417311322044
+      }
+    ],
+    "boundary_case_count_per_state": 3,
+    "total_case_count": 126,
+    "relation_to_C6D": "No C6D observed flux, residual, phase-transition value or error is used to select these boundary levels."
+  },
+  "algebraic_system": {
+    "unknowns": "4N BEMR dual coefficients for N=12 layers",
+    "constraints": [
+      "N storage constraints",
+      "N centered first-moment constraints",
+      "N-1 pressure-continuity constraints",
+      "N-1 Darcy-flux-continuity constraints",
+      "top BEMR face flux equals q_hold",
+      "bottom BEMR face flux equals q_hold"
+    ],
+    "degree_count": "48 unknowns, 48 constraints",
+    "bottom_pressure_constraint_removed": true,
+    "bottom_flux_constraint_added": true
+  },
+  "numerical_contract": {
+    "solver": "scipy.optimize.least_squares method=trf",
+    "state_quadrature": "96-point Gauss-Legendre per layer",
+    "independent_state_check": "192-point Gauss-Legendre per layer",
+    "fixed_initial_starts": [
+      {
+        "id": "AFFINE_DUAL_BASE",
+        "p2_dual_delta": 0,
+        "p3_dual_delta": 0
+      },
+      {
+        "id": "POSITIVE_P2_DUAL",
+        "p2_dual_delta": 0.1,
+        "p3_dual_delta": 0
+      },
+      {
+        "id": "NEGATIVE_P2_DUAL",
+        "p2_dual_delta": -0.1,
+        "p3_dual_delta": 0
+      },
+      {
+        "id": "POSITIVE_P3_DUAL",
+        "p2_dual_delta": 0,
+        "p3_dual_delta": 0.1
+      },
+      {
+        "id": "NEGATIVE_P3_DUAL",
+        "p2_dual_delta": 0,
+        "p3_dual_delta": -0.1
+      }
+    ],
+    "solver_options": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 8000
+    },
+    "residual_scaling": {
+      "storage": "DeltaTheta*d_i",
+      "first_moment": "DeltaTheta*d_i^2",
+      "interface_pressure_cm": 100,
+      "interface_flux_cm_per_day": 0.895023,
+      "top_flux_cm_per_day": 0.895023,
+      "bottom_flux_cm_per_day": 0.895023
+    },
+    "physical_residual_gates": {
+      "max_abs_interface_pressure_jump_cm": 1e-8,
+      "max_abs_interface_flux_jump_cm_per_day": 1e-10,
+      "max_abs_top_flux_residual_cm_per_day": 1e-10,
+      "max_abs_bottom_flux_residual_cm_per_day": 1e-10,
+      "max_abs_storage_recovery_cm": 1e-8,
+      "max_abs_moment_recovery_cm2": 0.000001
+    },
+    "quadrature_consistency_gates": {
+      "max_abs_storage_delta_cm": 1e-8,
+      "max_abs_moment_delta_cm2": 0.000001
+    },
+    "solution_agreement_across_starts": {
+      "max_abs_theta_difference": 1e-8,
+      "max_abs_face_pressure_difference_cm": 0.000001,
+      "max_abs_face_flux_difference_cm_per_day": 1e-8
+    },
+    "no_post_result_retuning": true
+  },
+  "qualification_gates": {
+    "G1_STRICT_STATE_MOMENT_REALIZABILITY": "All 126 cases retain the exact bounded [0.02,0.995] first-moment realizability condition.",
+    "G2_ALL_CASES_CONVERGE": "All five fixed starts converge for all 126 cases.",
+    "G3_UNIQUE_NUMERICAL_BRANCH": "All five starts agree within the frozen C6C branch tolerances.",
+    "G4_BOUNDED_REALIZABILITY": "All BEMR profiles remain within [0.02,0.995].",
+    "G5_HYDRAULIC_CONTINUITY": "All internal pressure/flux continuity plus top and bottom prescribed-flux residuals pass.",
+    "G6_STATE_RECOVERY": "Independent 192-point quadrature recovers S and M.",
+    "G7_QUADRATURE_CONSISTENCY": "96- and 192-point state integrals agree within frozen gates.",
+    "G8_NO_RESPONSE_DATA": "No hydrological trajectory or C6D response residual is read."
+  },
+  "decision_logic": {
+    "C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFIED": "All G1-G8 pass.",
+    "C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_NOT_QUALIFIED": "Any gate fails.",
+    "next_if_qualified": "Preregister a fresh blind free-running D12_B2P5 BEMR test with both prescribed-head and HOLD phases. Include a prospective transition-tail guard because C6D exposed a reversal outlier, but do not tune BEMR to that outlier.",
+    "next_if_not_qualified": "Stop BEMR before free-running implementation; no boundary-specific tuning."
+  },
+  "stop_rules": [
+    "No C6D hydrological response or residual may be used by the C6E qualifier.",
+    "No change of S/M state, moment amplitude, dual order, Se interval, quadrature or solver tolerances.",
+    "No clipping, regularization, constitutive continuation or boundary-specific coefficient.",
+    "No free-running BEMR in C6E.",
+    "No application, performance, speed or production claim."
+  ],
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "c6d_response_used_for_design": false,
+    "free_running_bemr_implemented": false,
+    "moment_fitting": false,
+    "moment_localization": false,
+    "c6c_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "response_based_design": false,
+    "qualifier": "tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py",
+    "qualifier_blob": null,
+    "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
+    "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6e.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "model_changed": false
+}
