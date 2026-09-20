@@ -23,6 +23,12 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail(){ echo "LAYER_ROM_PHASE_A_REFERENCE_GATE_FAIL $*" >&2; exit 1; }
 
+python3 - <<'PY'
+import numpy
+assert numpy.__version__ == "2.3.3", numpy.__version__
+print("LAYER_ROM_PHASE_A_NUMPY_VERSION=2.3.3")
+PY
+
 git merge-base --is-ancestor "$CANONICAL_START" HEAD || fail "canonical start not ancestor"
 git merge-base --is-ancestor "$PREREG_COMMIT" HEAD || fail "Reference preregistration not ancestor"
 git diff --quiet "$CANONICAL_START"...HEAD -- src reference || fail "Layer-ROM Phase A changed src/reference"
