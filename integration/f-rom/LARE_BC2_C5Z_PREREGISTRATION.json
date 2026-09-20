@@ -245,7 +245,12 @@
       "hard_gate": false,
       "reason": "Condition number is reported as numerical conditioning evidence but no post-hoc universal threshold is imposed."
     },
-    "no_post_result_start_or_tolerance_retuning": true
+    "no_post_result_start_or_tolerance_retuning": true,
+    "invalid_trial_handling": {
+      "rule": "If any hydraulic face theta required to evaluate a residual is outside the constitutive Se domain or non-finite, return a deterministic finite penalty vector; do not clip theta and do not evaluate a constitutive continuation.",
+      "penalty_scaled_residual": 1000,
+      "qualification_effect": "A final solution with any sampled theta outside the domain fails G4 regardless of solver success."
+    }
   },
   "qualification_gates": {
     "G1_STATE_MOMENT_BOUNDS": "All prescribed S,M pairs satisfy the exact theta-box moment limit prospectively.",
