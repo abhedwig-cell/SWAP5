@@ -1,0 +1,147 @@
+name: F-ROM-LARE BC2-C4X B14 material transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4X_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c4x_b14.py'
+      - 'tests/rom/preflight_lare_bc2_c4x_fmc_b14.py'
+      - 'tests/rom/analyze_lare_bc2_c4x_b14.py'
+      - '.github/workflows/f-rom-lare-bc2-c4x.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4x-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout preregistered current canonical
+        uses: actions/checkout@v4
+        with:
+          ref: b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover frozen D13 equation assets
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4x
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/c4x/d13_base.f90
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/analyze_f_romv2_d13_fmc_groundwater.py > /tmp/c4x/d13_fmc.py
+          test "$(git hash-object /tmp/c4x/d13_base.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+          test "$(git hash-object /tmp/c4x/d13_fmc.py)" = "803867a2ccdb190142274e9c41aafc3d3ca8d76a"
+          test "$(git -C canonical rev-parse HEAD)" = "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d"
+
+      - name: Materialize B14 transfer assets
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4X_EVIDENCE
+          python3 tests/rom/materialize_lare_bc2_c4x_b14.py             --fortran-source /tmp/c4x/d13_base.f90             --fortran-output canonical/tests/rom/test_lare_bc2_c4x_b14_reference.f90             --fmc-source /tmp/c4x/d13_fmc.py             --fmc-output /tmp/c4x/fmc_b14.py             --manifest LARE_BC2_C4X_EVIDENCE/materialization.json
+
+      - name: Preflight frozen FMC B14 domain before Reference
+        id: preflight
+        run: |
+          set -euo pipefail
+          python3 tests/rom/preflight_lare_bc2_c4x_fmc_b14.py             --fmc-module /tmp/c4x/fmc_b14.py             --prereg integration/f-rom/LARE_BC2_C4X_PREREGISTRATION.json             --output LARE_BC2_C4X_EVIDENCE/FMC_B14_PREFLIGHT.json             | tee LARE_BC2_C4X_EVIDENCE/preflight.txt
+          pass="$(python3 - <<'PY'
+          import json
+          print('true' if json.load(open('LARE_BC2_C4X_EVIDENCE/FMC_B14_PREFLIGHT.json'))['pass'] else 'false')
+          PY
+          )"
+          echo "pass=$pass" >> "$GITHUB_OUTPUT"
+
+      - name: Record pre-Reference FMC domain blocker
+        if: steps.preflight.outputs.pass != 'true'
+        run: |
+          python3 - <<'PY'
+          import json
+          pre=json.load(open('LARE_BC2_C4X_EVIDENCE/FMC_B14_PREFLIGHT.json'))
+          out={
+            'schema':'swap5.lare.bc2.c4x.result.v1',
+            'workstream':'F-ROM-LARE','work_unit':'LARE-BC2-C4X',
+            'decision':'C4X_FMC_B14_DOMAIN_BLOCKED_BEFORE_REFERENCE',
+            'integrity':{'pass':False,'fmc_preflight':pre},
+            'reference_response_generated':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('LARE_BC2_C4X_EVIDENCE/LARE_BC2_C4X_RESULT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Generate current-canonical B14 Reference and R2
+        if: steps.preflight.outputs.pass == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4x/reference
+          for spec in "R16 16 10" "R2 2 80"; do
+            read -r id n dz <<<"$spec"
+            stub="/tmp/c4x/stubs_n${n}.f90"
+            python3 tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              build="/tmp/c4x/build_${id}_o${opt}"
+              python3 tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "$stub"                 --target tests/rom/test_lare_bc2_c4x_b14_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              "$build/rom0_test" > "/tmp/c4x/reference/${id}_o${opt}.txt" 2>&1
+              grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/c4x/reference/${id}_o${opt}.txt"
+              test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/c4x/reference/${id}_o${opt}.txt")" -eq 4096
+              test "$(grep -c 'F_ROMV2_D13_REF_INITIAL|' "/tmp/c4x/reference/${id}_o${opt}.txt")" -eq 4
+            done
+            cmp "/tmp/c4x/reference/${id}_o0.txt" "/tmp/c4x/reference/${id}_o2.txt"
+          done
+          cp /tmp/c4x/reference/R16_o0.txt LARE_BC2_C4X_EVIDENCE/
+          cp /tmp/c4x/reference/R2_o0.txt LARE_BC2_C4X_EVIDENCE/
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C4X_REFERENCE=PASS"
+
+      - name: Execute B14 material-transfer frontier
+        if: steps.preflight.outputs.pass == 'true'
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_bc2_c4x_b14.py             --r16 /tmp/c4x/reference/R16_o0.txt             --r2 /tmp/c4x/reference/R2_o0.txt             --fmc-module /tmp/c4x/fmc_b14.py             --fmc-preflight LARE_BC2_C4X_EVIDENCE/FMC_B14_PREFLIGHT.json             --prereg integration/f-rom/LARE_BC2_C4X_PREREGISTRATION.json             --c4v-closeout integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json             --c4w-closeout integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json             --output LARE_BC2_C4X_EVIDENCE/LARE_BC2_C4X_RESULT.json             | tee LARE_BC2_C4X_EVIDENCE/runner.txt
+
+      - name: Validate C4X firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4X_EVIDENCE/LARE_BC2_C4X_RESULT.json'))
+          assert r['decision'] in (
+            'C4X_B14_GW_TRANSFER_FRONTIER_PRESENT',
+            'C4X_B14_R2_RELATIVE_FRONTIER_ONLY',
+            'C4X_B14_REDUCED_GW_FRONTIER_NOT_PRESERVED',
+            'C4X_FMC_B14_DOMAIN_BLOCKED_BEFORE_REFERENCE',
+            'C4X_REFERENCE_OR_REPRESENTATION_BLOCKED'
+          )
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4X_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4X_EVIDENCE/* > LARE_BC2_C4X_EVIDENCE/sha256.txt
+
+      - name: Upload C4X evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4x
+          path: LARE_BC2_C4X_EVIDENCE/
+          if-no-files-found: error
