@@ -1,0 +1,88 @@
+name: F-ROM-LARE BC2-C5W P0 admissibility qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json'
+      - 'integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json'
+      - 'tests/rom/qualify_lare_bc2_c5w_p0_map.py'
+      - '.github/workflows/f-rom-lare-bc2-c5w.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5w-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify C5W scientific choice and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c5w_p0_map.py)" = "e4a5caa9f727da6311c413911b51d96a6a10af85"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c5w_p0_map.py
+          python3 - <<'PY'
+          import json
+          c=json.load(open('integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json'))
+          p=json.load(open('integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json'))
+          assert c['status']=='P0_UNIFORM_STORAGE_TENDENCY_SELECTED_AS_PROSPECTIVE_MINIMUM_STRUCTURE_HYPOTHESIS'
+          assert c['explicit_scientific_choice']['selected']=='P0_UNIFORM_STORAGE_TENDENCY'
+          assert c['scientific_firewall']['hydrological_response_authorized'] is False
+          assert p['phase']=='PREREGISTERED_BEFORE_P0_NUMERICAL_ADMISSIBILITY_RESPONSE'
+          assert p['implementation_binding']['response_based_design'] is False
+          assert p['implementation_binding']['qualifier_blob']=='e4a5caa9f727da6311c413911b51d96a6a10af85'
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          assert p['stop_rules'][0]=='No hydrological response trajectory may be read or generated in C5W.'
+          print('LARE_BC2_C5W_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute response-free P0 map qualification
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C5W_EVIDENCE
+          python3 tests/rom/qualify_lare_bc2_c5w_p0_map.py             --prereg integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json             --choice integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json             --output LARE_BC2_C5W_EVIDENCE/LARE_BC2_C5W_RESULT.json             | tee LARE_BC2_C5W_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json LARE_BC2_C5W_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json LARE_BC2_C5W_EVIDENCE/
+
+      - name: Validate C5W firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5W_EVIDENCE/LARE_BC2_C5W_RESULT.json'))
+          assert r['status'] in (
+            'C5W_P0_MATHEMATICALLY_NUMERICALLY_QUALIFIED',
+            'C5W_P0_LOCAL_MAP_ONLY_QUALIFIED_COLUMN_BLOCKED',
+            'C5W_P0_NOT_ADMISSIBLE'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['free_running_closure_implemented'] is False
+          assert f['response_based_parameter'] is False
+          assert f['new_dynamic_state_added'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5W_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5W_EVIDENCE/* > LARE_BC2_C5W_EVIDENCE/sha256.txt
+
+      - name: Upload C5W evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5w
+          path: LARE_BC2_C5W_EVIDENCE/
+          if-no-files-found: error
