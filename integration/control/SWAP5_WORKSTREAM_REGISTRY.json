@@ -5,8 +5,8 @@
   "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
   "snapshot": {
     "branch": "integration/f-ci-canonical",
-    "head": "5cb2fdfe00397dcfa38b3abc8a8afef062663f73",
-    "head_subject": "PROJECT-CONTROL-01: add SWAP5 project control baseline (#487)",
+    "head": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+    "head_subject": "PROJECT-CONTROL-01: bind F-GC coupling-semantics repair watch (#488)",
     "open_pr_count": 21,
     "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
   },
@@ -34,7 +34,7 @@
       "title": "Canonical integration and project control",
       "owner": "central SWAP5 regie",
       "status": "ACTIVE",
-      "canonical_authority": "integration/f-ci-canonical@5cb2fdfe00397dcfa38b3abc8a8afef062663f73",
+      "canonical_authority": "integration/f-ci-canonical@97afc3176395a8548daa686b89ca6fb2f2a4ea09",
       "open_prs": [
         58,
         72,
@@ -42,7 +42,7 @@
         172
       ],
       "current_blocker": null,
-      "next_gate": "Watch PR #486 as the current shared-authority coupling repair; if it becomes qualified, reconcile it before older governance debt. Otherwise reconcile #72, then #163/#172 in bounded slices.",
+      "next_gate": "PR #486 remains the shared-authority watch. While it is not admission-ready, the next central reconciliation debt is #163 followed by #172.",
       "write_scope": [
         "integration/control/**",
         "docs/development/project-control surfaces",
@@ -54,6 +54,12 @@
         "new solver functionality",
         "new groundwater coupling method",
         "production ROM development"
+      ],
+      "quality_governance": [
+        "docs/development/quality-governance-a-aa.md",
+        "docs/development/status-a-aa-gap-register.md",
+        "docs/verification/theory-code-discrepancy-register.md",
+        "integration/control/STATUS_A_AA_GOVERNANCE_RECONCILIATION_20260920.json"
       ]
     },
     {
@@ -236,9 +242,9 @@
     },
     {
       "pr": 72,
-      "class": "RECONCILE_REQUIRED",
+      "class": "SUPERSEDED_BY_RECOMPOSED_CURRENT_GOVERNANCE_ON_ADMISSION",
       "owner": "REGIE",
-      "action": "RECOMPOSE_CURRENT_GOVERNANCE_DO_NOT_MERGE_STALE_BRANCH_AS_IS"
+      "action": "CLOSE_AFTER_GOV_REC01_CANONICAL_ADMISSION_PRESERVE_HISTORY"
     },
     {
       "pr": 163,
@@ -352,7 +358,6 @@
   "central_admission_queue": {
     "ready_for_regie": [],
     "reconcile": [
-      72,
       163,
       172
     ],
@@ -388,7 +393,8 @@
     "owner_review_candidates": [
       289,
       366,
-      378
+      378,
+      72
     ],
     "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
   },
@@ -404,5 +410,5 @@
       "reason": "Retained as immutable reconciliation history; not the current routing map."
     }
   ],
-  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry for ownership boundaries, and returns to REGIE for admission, supersession or shared-authority conflict. PR #486 is the current shared-authority watch item."
+  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry and the current quality-governance policy for ownership/evidence boundaries, and returns to REGIE for admission, supersession or shared-authority conflict. PR #486 is the current shared-authority watch item."
 }

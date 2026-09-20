@@ -210,6 +210,34 @@ checkpoint(F-MQ01): persist deterministic harness before scale gate
 
 Final qualification commits remain separate when useful. Checkpoint commits may later be squashed or reorganized during canonical integration, provided the qualified lineage remains reconstructible.
 
+## Shared-semantics merge contract
+
+The recovery protocol does not authorize a workstream to widen shared semantics merely because its local implementation is persisted and tested.
+
+The project-wide rule is:
+
+```text
+parallel where ownership is disjoint
+serial where semantics are shared
+```
+
+When a work unit can affect shared state ownership, transaction semantics, application ownership, exchange/coupling contracts, numerical policy, mass ownership or common solver/runtime interfaces, its status/handoff record should identify:
+
+```text
+owned surface
+read-only authorities
+interfaces allowed to change
+interfaces held fixed
+dependency surface
+required qualification
+cross-workstream consequences
+canonical admission owner
+```
+
+If implementation discovers a required shared-contract change outside that boundary, persist the finding and return it to the shared integration authority instead of silently broadening local scope.
+
+See [Quality governance after Status A](quality-governance-a-aa.md) and the current PROJECT-CONTROL registry for the controlling governance and routing rules.
+
 ## Relation to architecture invariants
 
 This is a development and qualification execution protocol. It does not change SWAP physics, numerical policy, transactional semantics, runtime semantics or the Core Architecture Invariants.
