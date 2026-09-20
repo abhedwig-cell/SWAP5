@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.execution-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "PRE_RESULT_SEGMENTED_REFERENCE_ARTIFACT_BINDING_REPAIRED_SCIENTIFIC_DESIGN_UNCHANGED",
+  "decision": "USE_FINAL_C6N1_SEGMENTED_R2048_T32_ARTIFACTS_IF_AND_ONLY_IF_C6N1_QUALIFIES",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+    "phase_required": "SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6N1_RESULT_EXECUTION_BLOCKED",
+    "C6N1_execution_authority": "integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json",
+    "C6N1_result_seen_before_repair": false,
+    "candidate_response_generated_before_repair": false
+  },
+  "repair": {
+    "old_reference_artifact_binding": "c6n1u/c6n1c legacy artifact naming",
+    "new_reference_artifact_binding": "c6n1s1..c6n1s4 segmented R2048_T32 artifacts",
+    "reconstruction": "Concatenate segment_o0.txt in segment order 1..4 for each material/history, require 32768 STATE and 16384 PROFILE records per history, then concatenate U01..U04.",
+    "scientific_histories_changed": false,
+    "materials_changed": false,
+    "partitions_changed": false,
+    "closure_changed": false,
+    "candidate_dt_changed": false,
+    "metrics_changed": false,
+    "numerical_uncertainty_classification_changed": false,
+    "hypotheses_changed": false,
+    "decision_logic_changed": false,
+    "application_threshold_changed": false,
+    "scientific_effect": "NONE"
+  },
+  "implementation": {
+    "runner": "tests/rom/run_lare_bc2_c6n2_surface_candidate.py",
+    "runner_blob": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
+    "analyzer_blob": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n2.yml",
+    "workflow_blob": "81167c726c82219fe7f3d9858d4c20145d161545",
+    "execution_binding_complete": false,
+    "execution_remains_blocked_until_C6N1_closeout": true
+  },
+  "scientific_firewall": {
+    "C6N1_result_seen_for_design": false,
+    "candidate_response_generated": false,
+    "new_representation_selected": false,
+    "response_based_retuning": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
