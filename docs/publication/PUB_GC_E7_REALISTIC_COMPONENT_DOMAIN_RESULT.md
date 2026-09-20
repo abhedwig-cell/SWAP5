@@ -1,5 +1,16 @@
 # PUB-GC E7 realistic Hupsel result
 
+> **SEMANTIC SUPERSESSION NOTICE — 2026-09-20.** The observations, frozen dates,
+> qualification run and pre-owner stop in this file remain historical evidence.
+> Their former current interpretation as `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT`
+> is superseded by
+> `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md`.
+> Current E7 authority is `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
+> The stop demonstrates the old mode-5-bound production profile, not an intrinsic
+> physical incompatibility between SWAP-MODFLOW coupling and drainage/root uptake.
+> Do not rerun E7 until corrected head-transfer, storage-partition and drainage
+> ownership authority is established.
+
 ## Status
 
 **CLOSED — REALISTIC_COMPONENT_DOMAIN_LIMIT**
