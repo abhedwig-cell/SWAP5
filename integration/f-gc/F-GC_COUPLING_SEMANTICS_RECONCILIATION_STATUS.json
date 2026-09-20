@@ -164,7 +164,7 @@
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
     "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
     "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
-    "next_gate": "Bind a read-only accepted MODFLOW STO/external-flow budget diagnostic for the controlled one-cell fixture, normalize to the pinned volume/sign convention, then execute A/B/C/D. Do not alter coupling physics or rerun E7.",
+    "next_gate": "Bind native MODFLOW STO and external-flow budget records to the accepted-state observation; then compute independent MODFLOW component residual and execute controlled A/B/C/D. No physics changes and no E7 rerun.",
     "proof_obligations": {
       "P1": "accepted interface mass continuity",
       "P2": "hydraulic compatibility under declared head-transfer operator",
@@ -183,7 +183,10 @@
       "accepted_interface_transfer": "AVAILABLE_INTERFACE_MASS_LEDGER",
       "modflow_sto_component_budget": "NOT_YET_DEMONSTRATED_ON_REPOSITORY_OWNED_QUALIFICATION_SURFACE",
       "classification": "QUALIFICATION_OBSERVABILITY_GAP_NOT_PHYSICS_DEFECT",
-      "authorized_next_slice": "READ_ONLY_MODFLOW_ACCEPTED_BUDGET_ADAPTER"
+      "authorized_next_slice": "READ_ONLY_MODFLOW_ACCEPTED_BUDGET_ADAPTER",
+      "accepted_modflow_state": "IMPLEMENTED_READ_ONLY_AFTER_TIMESTEP_FINALIZATION",
+      "accepted_modflow_state_commit": "f69cd00d9b8cd403c109ad6046dead1d17a74db9",
+      "native_sto_external_budget": "STILL_REQUIRED"
     }
   },
   "current_pr_divergence": {
