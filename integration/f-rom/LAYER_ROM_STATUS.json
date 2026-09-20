@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-COST1",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "a264b7ec078fd8018496a1e74ca8038c4e36433f",
+  "checkpoint_commit": "506ae0343c3d980717088bcc45be041c310b85f8",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_ATOMIC_CALIBRATION_REPAIRED_EXECUTION",
-  "last_reconciled_head": "a264b7ec078fd8018496a1e74ca8038c4e36433f",
+  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_EXECUTION_CF1_SYNTHESIS_PREBOUND",
+  "last_reconciled_head": "506ae0343c3d980717088bcc45be041c310b85f8",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -116,7 +116,10 @@
     "integration/f-rom/LAYER_ROM_B1HCN_CLOSEOUT.json",
     "integration/f-rom/LAYER_ROM_B1HCQ_RESULT.json",
     "integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json",
-    "integration/f-rom/LAYER_ROM_COST1_REPAIR_RECORD.json"
+    "integration/f-rom/LAYER_ROM_COST1_REPAIR_RECORD.json",
+    "integration/f-rom/LAYER_ROM_CF1_PREREGISTRATION.json",
+    "tests/rom/synthesize_layer_rom_cf1.py",
+    ".github/workflows/f-rom-layer-cf1.yml"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -191,8 +194,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete COST1 run 35507539740 using the unchanged six-material L4/L6/R8 fidelity ladder and atomic repeats=1 fallback where one complete R16 workload exceeds the operational calibration window. Persist cost results without changing the frozen Phase-B fidelity frontier.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after a264b7ec078fd8018496a1e74ca8038c4e36433f. Phase B fidelity remains frozen. COST1 run 35507539740 is the execution authority; run 35507294494 exposed only the B16 R16 calibration route and is superseded.",
+  "next_action": "Complete authoritative COST1 run 35507539740. Persist its aggregate result without fidelity retuning, then execute the already-frozen CF1 cost-fidelity synthesis.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 506ae0343c3d980717088bcc45be041c310b85f8. Phase B fidelity is frozen; COST1 run 35507539740 remains execution authority. CF1 synthesis criteria and tooling are already persisted and must not be changed from timing results.",
   "blockers": [],
   "scope_guards": [
     "research only",
