@@ -4,13 +4,13 @@
   "title": "SWAP5-MODFLOW6 Coupling Semantics Reconciliation",
   "protocol": "RECONCILE -> THEORY AUTHORITY -> LEGACY SEMANTICS -> COUPLING OWNERSHIP -> CODE TRACE -> CLASSIFY DEFECT -> DESIGN CONTRACT -> IMPACT AUDIT -> PERSIST -> CLOSE",
   "phase": "CLOSE_AUDIT_AND_BOUNDED_REPAIR",
-  "state": "BOUNDED_CSR01_CSR02_IMPLEMENTED_STORAGE_AUTHORITY_BLOCKED",
+  "state": "CSR04_CONTRACT_PREREGISTERED_PRODUCTION_PARTITION_UNRESOLVED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "requested_start": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
     "reconciled_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
-    "live_reconciled_head": "3a815edda7cf5e155272b68ae49d440fd5db9138",
-    "live_delta_note": "Reconciled 2026-09-20: delta from semantic-audit preimage contains governance/project-control/ROM/test-bank changes; compare surface shows no F-GC production/runtime coupling change. PR #486 remains diverged and requires recomposition before admission."
+    "live_reconciled_head": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "live_delta_note": "Rechecked after CSR04 derivation: owner branch remains diverged (41 ahead/58 behind; merge base 09b6d0415fee3c63c71ecd11b215fe0d206e05ae). No broad recomposition/admission performed."
   },
   "scientific_authority": {
     "legacy_boundary": {
@@ -36,7 +36,7 @@
     "mode5": "permitted as internal lower-face Dirichlet realization, not application-level groundwater authority",
     "root_uptake": "SWAP-owned process; coupled admission/derivative coverage is separate from lower-boundary identity",
     "drainage": "one explicit process owner per physical path; mode5 itself does not prohibit SWAP drainage",
-    "storage": "u is storage-like finite-window coupling response; physical partition relative to MODFLOW STO is not specified by current production topology"
+    "storage": "u is a condensed finite-window SWAP interface-response coefficient; u/DeltaT is the local interface flux-to-head slope. Simultaneous use with MODFLOW STO requires explicit non-overlap or an explicit overlap correction."
   },
   "defect_classification": {
     "interpretation_defect": "CONFIRMED",
@@ -76,7 +76,8 @@
     "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
     "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
     "csr03_csr04_checkpoint": "docs/integration/SWAP5_MODFLOW6_CSR03_CSR04_AUTHORITY_CHECKPOINT.md",
-    "csr04_storage_derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md"
+    "csr04_storage_derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
+    "csr04_vertical_storage_topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md"
   },
   "repair_slices": [
     "CSR-01 explicit coupled-groundwater application profile independent of legacy bottom_mode",
@@ -158,18 +159,17 @@
     "authority": "Head transfer is an explicit application-topology operator; current identity_datum_aligned transfer is a named special-case assumption, not a universal physical equality. No new resistance law is authorized."
   },
   "csr04": {
-    "disposition": "BLOCKED_SCIENTIFIC_STORAGE_PARTITION_AUTHORITY",
-    "reason": "Repository evidence does not establish a non-overlapping physical storage partition between SWAP finite-window response u and MODFLOW STO, nor an overlap correction.",
-    "required": [
-      "explicit vertical control volumes and coupling plane",
-      "coupled water-balance and linearized-groundwater derivation",
-      "dimensional/sign audit of u, u/DeltaT, STO and accepted interface flux",
-      "proof or correction of storage non-overlap",
-      "nonzero-storage-change component and combined balance qualification"
-    ],
+    "disposition": "CONTRACT_PREREGISTERED_PRODUCTION_PARTITION_UNRESOLVED",
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
-    "interpretation": "u is a condensed finite-window SWAP interface-response coefficient; u/DeltaT is a local interface flux-to-head slope. It must not be labelled physical aquifer storage without a control-volume derivation.",
-    "candidate_partition": "SWAP owns storage inside the SWAP column to its lower face; MODFLOW STO owns groundwater storage outside/below that control volume; interface Q cancels in the combined balance. This candidate is not yet production authority because current topology does not materialize the vertical non-overlap.",
-    "next_gate": "Materialize explicit vertical storage-domain/topology contract and controlled nonzero-storage component+combined balance qualification. Do not modify F-GC30/F-GC33 or rerun E7 first."
+    "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
+    "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
+    "next_gate": "Materialize topology schema/fail-closed validation and controlled component+combined storage qualification; do not alter F-GC30/F-GC33 or rerun E7 first."
+  },
+  "current_pr_divergence": {
+    "live_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "merge_base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+    "ahead": 41,
+    "behind": 58,
+    "admission": "RECOMPOSITION_REQUIRED"
   }
 }
