@@ -4,7 +4,7 @@ Date: 2026-09-20
 
 Status: **research candidate; not production-admitted**
 
-> **Supersession note (2026-09-20):** the first raw-head qualification run (`35533250183`) used a research interval-hint condition that relied on Fortran `.and.` evaluation not touching `sptab(...,0)` when `klast=0`. Fortran does not guarantee such short-circuit evaluation. A bounds-checked constitutive run exposed the invalid index. Commit `1b0a24120f910dc0809f550ad41bd200e27ae8ed` replaces the condition by a structurally bounds-safe two-stage test. All raw-head fidelity and performance numbers below are therefore **provisional historical evidence** until reproduced by the bounds-safe rerun.
+> **Supersession/requalification note (2026-09-20):** the first raw-head qualification run (`35533250183`) used a research interval-hint condition that relied on Fortran `.and.` evaluation not touching `sptab(...,0)` when `klast=0`. Fortran does not guarantee such short-circuit evaluation. A bounds-checked constitutive run exposed the invalid index. Commit `1b0a24120f910dc0809f550ad41bd200e27ae8ed` replaced the condition by a structurally bounds-safe two-stage test. The bounds-safe reruns then reproduced the hydrological result and performance result: all transfer gates passed in run `35534127462`, the all-Staring bounds-checked constitutive scan passed in run `35534127461`, and the envelope timing run `35534127466` completed successfully. The pre-fix run remains historical only; the bounds-safe reruns are the controlling raw-head evidence.
 
 Scope: isolate whether the transformed pressure-head coordinate and associated interval-location work are the dominant residual cost of a high-fidelity tabulated hydraulic route.
 
@@ -118,3 +118,93 @@ At the time of this record:
 - all-Staring raw-head constitutive profile workflow has been queued.
 
 These are research gates, not production admission steps.
+
+
+## Bounds-safe requalification
+
+The repaired raw-head candidate was rerun after the interval-hint bounds fix.
+
+### Transfer fidelity
+
+Run `35534127462`:
+
+- `fidelity_failures=0`;
+- wet-clay K0 GWL max abs = `0.00821 cm`, RMSE = `2.48086e-4 cm`;
+- loam K0 GWL max abs = `0.00163 cm`, RMSE = `5.2895e-5 cm`;
+- coarse K0/K1 GWL max abs = `1e-5 cm`;
+- capillary loam K0 GWL difference = `0`.
+
+The bounds-safe rerun therefore reproduces the earlier hydrological result.
+
+### Hupsel repeated performance
+
+Run `35534127462`:
+
+- analytical K0 median = `1.21771565 s`;
+- raw-head K0 median = `1.21748346 s`, delta = `-0.0191%`;
+- analytical K1 median = `1.56817319 s`;
+- raw-head K1 median = `1.41794832 s`, delta = `-9.5796%`.
+
+A second bounds-safe workflow that also measured the full transfer envelope, run `35534127466`, independently gave:
+
+- Hupsel K0 delta = `+0.0090%`;
+- Hupsel K1 delta = `-9.5882%`.
+
+Thus the defensible current interpretation is:
+
+- K0: practical runtime parity, not an admitted speedup;
+- corrected K1: approximately 9.6% Hupsel speedup in the bounds-safe candidate.
+
+### Transfer-envelope performance
+
+Run `35534127466`, repeated scenario medians:
+
+| scenario | SWKIMPL | raw-head delta vs analytical |
+| --- | ---: | ---: |
+| coarse_dry_free | 0 | -0.012% |
+| loam_mid_free | 0 | -1.687% |
+| clay_wet_free | 0 | +3.144% |
+| coarse_dry_pulse | 0 | +0.002% |
+| loam_capillary | 0 | -1.701% |
+| coarse_dry_free | 1 | -10.722% |
+| coarse_dry_pulse | 1 | -11.024% |
+
+The K0 timings are small and noisy enough that they support parity rather than a broad speedup claim. The two preregistered K1 cases show a large, consistent speed reduction.
+
+### Raw-head interval-hint behavior
+
+Run `35534160351`:
+
+- K0 theta interval-hint hit rate = `93.88%`;
+- K0 K interval-hint hit rate = `92.47%`;
+- K1 theta interval-hint hit rate = `93.92%`;
+- K1 K interval-hint hit rate = `94.48%`.
+
+Binary-search fallback is therefore only about 5-8% of forward evaluations. Further interval-locator engineering is no longer the primary K0 target.
+
+### All-Staring constitutive scan
+
+Bounds-checked run `35534127461` completed for all 30 Staring parameter rows represented by the source parameter CSV.
+
+Global maximum sampled errors were:
+
+- theta abs = `5.321e-5`;
+- C abs = `4.297e-5`;
+- log10(K) abs = `3.038e-4`;
+- K relative = `3.090e-4`.
+
+The largest sampled `dK/dh` absolute difference was `14.4103` for B12 at `h=-4.6416e-4 cm`, very close to the analytical Ksat-clamp transition. Several other derivative maxima occur exactly at the wet theta branch boundary `h=-0.01 cm`.
+
+This derivative result is a numerical-Jacobian fidelity warning, not a residual K failure: the raw-head route differentiates its own interpolated K relation consistently. Expanded K1 trajectory qualification is therefore required before broadening the K1 claim beyond the preregistered coarse cases.
+
+### Exact theta/C reuse on top of raw-head
+
+Bounds-safe run `35534127458` preserved Hupsel written output exactly between raw-head and raw-head+capacity-reuse for both K0 and K1.
+
+Repeated Hupsel medians:
+
+- raw-head+capacity K0 vs analytical: `-0.006%` (parity);
+- raw-head+capacity K1 vs analytical: `-12.770%`;
+- raw-head+capacity K1 vs raw-head: `-3.503%`.
+
+The K1 improvement is promising, but it is not promoted beyond research until the expanded K1 envelope closes.
