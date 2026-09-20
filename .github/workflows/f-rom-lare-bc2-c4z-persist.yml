@@ -1,0 +1,217 @@
+name: F-ROM-LARE persist C4Z dynamic-head transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4z-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C4Z artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4z
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600099250" > /tmp/c4z/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c4z/artifact.json'))
+          assert a['id']==10600099250
+          assert a['digest']=='sha256:8dfa698c6b4f536531a3bb4d124b236b0853afd598afd5cd15be2d02e2349998'
+          assert a['workflow_run']['id']==35495437497
+          assert a['workflow_run']['head_sha']=='b664d97dd794ad3c01c5d10d8e021720c5ab11fd'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600099250/zip" > /tmp/c4z.zip
+          echo "8dfa698c6b4f536531a3bb4d124b236b0853afd598afd5cd15be2d02e2349998  /tmp/c4z.zip" | sha256sum -c -
+          unzip -q /tmp/c4z.zip -d /tmp/c4z/evidence
+          echo "6583968bceaf650daef81e523e197dee9eebdd45654dbafb931af78a3a1817c2  /tmp/c4z/evidence/LARE_BC2_C4Z_RESULT.json" | sha256sum -c -
+          echo "2f517cbcfd3266401ca53a930c922ea15c3e999fc1ae7b54a7d6221bf8581fe6  /tmp/c4z/evidence/R16_o0.txt" | sha256sum -c -
+          echo "8f000ee1ed5a41cf9a9a62902cc7f845b9d197181ac8a8d7d26d1e0fa91f46e6  /tmp/c4z/evidence/R2_o0.txt" | sha256sum -c -
+
+      - name: Validate C4Z scientific firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4z/evidence/LARE_BC2_C4Z_RESULT.json'))
+          assert r['decision']=='C4Z_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT'
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['R16_operator_control_status']=='QUALIFIED'
+          assert r['frontiers']['minimum_dimension_GW']==3
+          assert r['frontiers']['minimum_dimension_PROFILE']==3
+          assert r['hypotheses']['H_DYNAMIC_HEAD_MIN_NOT_BELOW_R4'] is False
+          assert r['hypotheses']['H_LOWER_ZONE_PLACEMENT_R4'] is True
+          assert r['hypotheses']['H_LOWER_ZONE_PLACEMENT_R8'] is True
+          assert r['hypotheses']['H_PROFILE_REQUIRES_MORE_STATE'] is False
+          assert r['R2_comparator']['bottom_flux_sign_mismatch_count']==93
+          assert r['R2_comparator']['reversal_sequence_mismatch_history_count']==3
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          PY
+
+      - name: Persist exact result and build closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c4z/evidence/LARE_BC2_C4Z_RESULT.json integration/f-rom/LARE_BC2_C4Z_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C4Z_RESULT.json'))
+          by={x['id']:x for x in r['members']}
+          closeout={
+            'schema':'swap5.lare.bc2.c4z.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4Z',
+            'status':'CLOSED_BLIND_DYNAMIC_HEAD_R2_RELATIVE_FRONTIER_PRESENT_PLACEMENT_TRANSFERRED_COMPARATOR_LIMITATION_RETAINED',
+            'decision':r['decision'],
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C4Z_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35495437497,
+              'job_id':106037422133,
+              'execution_head':'b664d97dd794ad3c01c5d10d8e021720c5ab11fd',
+              'artifact_id':10600099250,
+              'artifact_digest':'sha256:8dfa698c6b4f536531a3bb4d124b236b0853afd598afd5cd15be2d02e2349998',
+              'result_sha256':'6583968bceaf650daef81e523e197dee9eebdd45654dbafb931af78a3a1817c2',
+              'R16_reference_sha256':'2f517cbcfd3266401ca53a930c922ea15c3e999fc1ae7b54a7d6221bf8581fe6',
+              'R2_reference_sha256':'8f000ee1ed5a41cf9a9a62902cc7f845b9d197181ac8a8d7d26d1e0fa91f46e6',
+              'non_authoritative_parser_blocked_run':35495284832
+            },
+            'integrity':r['integrity'],
+            'frontiers':r['frontiers'],
+            'placement_tests':r['placement_tests'],
+            'hypothesis_adjudication':{
+              'H_DYNAMIC_HEAD_MIN_NOT_BELOW_R4':'NOT_SUPPORTED',
+              'H_LOWER_ZONE_PLACEMENT_R4':'SUPPORTED',
+              'H_LOWER_ZONE_PLACEMENT_R8':'SUPPORTED',
+              'H_PROFILE_REQUIRES_MORE_STATE':'NOT_SUPPORTED_ON_R2_RELATIVE_VECTOR'
+            },
+            'key_metrics':{
+              'R2':r['R2_comparator'],
+              'R3':by['R3']['metrics'],
+              'R4':by['R4']['metrics'],
+              'R6':by['R6']['metrics'],
+              'R8':by['R8']['metrics'],
+              'R12':by['R12']['metrics'],
+              'R16_LARE_CONTROL':by['R16']['metrics'],
+              'P4_TOP_LOWER':by['P4_TOP_LOWER']['metrics'],
+              'U4':by['U4']['metrics'],
+              'U8':by['U8']['metrics']
+            },
+            'scientific_interpretation':[
+              'A reduced lower-zone-focused LARE frontier transfers from fixed zero-head forcing to a fresh blind fixed-domain dynamic prescribed-head workload under the pre-existing D13 integrated-water-depth Reference policy.',
+              'All reduced lower-zone ladder members R3 through R12 cross the 2x80 cm R2 comparator on both preregistered vectors. The formal R2-relative minimum is R3.',
+              'That R3 minimum is not an absolute sufficiency claim. R2 is a weak dynamic-head comparator in this workload: it has 93 bottom-flux sign mismatches and misses the Reference reversal sequence in three of four histories.',
+              'The lower-zone ladder shows strong resolution improvement from R3 through R8. R8, R12 and R16 have nearly identical storage and bottom-flux errors, while mapped-profile error still decreases from R8 to R12/R16.',
+              'Placement transfers as a real representation variable. R4 is componentwise no worse than U4 and R8 is componentwise no worse than U8 on the dynamic groundwater vector. Uniform U4/U8 each miss reversal sequences in three histories.',
+              'Because C4Z has no independently authorized dynamic-head FMC comparator and no application threshold, it does not establish a universal minimum layer count or application acceptance.',
+              'The workload contains no top-boundary perturbation, ET or root uptake, so lower-zone placement evidence must not be generalized to surface-driven purposes.'
+            ],
+            'cross_evidence_reconciliation':{
+              'C4V_B01_fixed_zero_head':'one-day persistent comparator-relative GW minimum R8',
+              'C4X_B14_fixed_zero_head':'persistent GW minimum R3; FMC-relative PROFILE minimum R8',
+              'C4Z_B01_dynamic_prescribed_head':'R2-relative GW and PROFILE minimum R3, with strong R3-to-R8 convergence and placement advantage',
+              'implication':'Minimum state count is not invariant across material, boundary semantics or comparator strength. Vertical placement and purpose remain separate representation dimensions.'
+            },
+            'next_authority':{
+              'state':'REPRESENTATION_GENERALITY_INTERACTION_TEST_AUTHORIZED',
+              'target':'B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER',
+              'reason':'The existing evidence forms three cells of a material-by-lower-boundary design: B01 fixed, B14 fixed and B01 dynamic. A prospectively frozen B14 dynamic cell directly tests whether the placement and resolution pattern transfers jointly across material and boundary semantics.',
+              'constraints':[
+                'use fresh histories or a predeclared constitutive transfer mapping before response exposure',
+                'retain the pre-existing D13 integrated-water-depth Reference policy',
+                'retain BC1 CURRENT_LAYER_FACE with B14 constitutive constants only',
+                'do not infer application acceptance from R2-relative crossing',
+                'do not add performance or speed claims'
+              ],
+              'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+            },
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C4Z_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4Z closeout
+
+          C4Z is the fresh blind fixed-domain dynamic prescribed-head representation transfer that follows the C4Y numerical-policy blocker. It uses new Z01-Z04 histories, retains the C4Y head amplitude, keeps BC1 CURRENT_LAYER_FACE unchanged, and prospectively binds the already existing D13 integrated-water-depth Reference retry policy.
+
+          The authoritative run is 35495437497 at execution head b664d97dd794ad3c01c5d10d8e021720c5ab11fd. R16 and R2 both pass O0/O2 identity and the Reference mass gates. The exact result SHA-256 is 6583968bceaf650daef81e523e197dee9eebdd45654dbafb931af78a3a1817c2.
+
+          The formal decision is **C4Z_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT**. Every reduced lower-zone ladder member R3-R12 crosses R2 on both the frozen dynamic-groundwater vector and the profile-inclusive vector. The formal R2-relative minimum is R3 for both.
+
+          That minimum must not be read as an absolute three-layer sufficiency result. R2 is itself weak under dynamic prescribed-head forcing: it has 93 bottom-flux sign mismatches and misses the Reference reversal sequence in three of four histories. R3 already preserves every reversal sequence and reduces pooled bottom-flux RMSE from about 0.697 cm/d for R2 to 0.129 cm/d. Errors fall strongly through R8. R8, R12 and R16 then have nearly identical storage and bottom-flux errors, while mapped-profile RMSE improves from about 9.3e-6 at R8 to about 4.4e-6 at R12/R16.
+
+          Placement remains consequential. R4 is componentwise no worse than uniform U4 and R8 is componentwise no worse than uniform U8 on the dynamic-groundwater vector. U4 and U8 each miss reversal sequences in three histories, whereas the lower-zone ladder retains the Reference reversal sequence in all four. This strengthens the conclusion that state count by itself is not a sufficient descriptor of a useful vertically aggregated representation.
+
+          Across C4V, C4X and C4Z, the evidence now says something more precise than a universal layer number: required state is conditional on material, lower-boundary semantics, vertical placement and hydrological purpose. C4Z does not adjudicate application acceptance, and it contains no dynamic-head FMC comparator. The natural next generality test is the missing B14-by-dynamic-head cell, prospectively frozen before any response.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v5'
+          j['status']='CLOSED_THROUGH_C4Z_CROSS_MATERIAL_AND_BOUNDARY_SEMANTICS_EVIDENCE_INTERACTION_CELL_NEXT'
+          j.setdefault('authorities',{}).update({
+            'dynamic_head_C4Y_blocker':'integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json',
+            'dynamic_head_C4Z_blind_validation':'integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C4Z':'Fresh blind B01 dynamic prescribed-head validation yields a formal R2-relative minimum R3 for both frozen vectors, but R2 itself misses reversal sequences in 3/4 histories. The lower-zone ladder improves sharply through R8 and lower-zone placement outperforms uniform placement at dimensions 4 and 8.',
+            'cross_axis_gap':'C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.'
+          })
+          j['decision']='PREREGISTER_B14_DYNAMIC_HEAD_CROSS_AXIS_TRANSFER_WITHOUT_APPLICATION_OR_SPEED_CLAIMS'
+          j['next_authority']='B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER'
+          j['next_family_authority']={
+            'family':'B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC1_CLOSEOUT.json'
+            ],
+            'purpose':'Complete the material-by-lower-boundary 2x2 evidence needed to test whether lower-zone placement and resolution behavior jointly transfer.',
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json',
+            'implementation_authorized':True,
+            'post_hoc_retuning_authorized':False
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C4Z closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4Z_RESULT.json                   integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C4Z_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4Z blind dynamic-head transfer"
+          git push origin HEAD:work/f-rom-lare-rs1
