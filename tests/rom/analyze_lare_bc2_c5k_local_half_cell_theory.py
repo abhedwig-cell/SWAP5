@@ -343,10 +343,7 @@ def main():
             q1024["temporal_and_spatial_localization"]["postK_minus_current"]["rmse_cm_per_day"])
     spatial=max(q512["temporal_and_spatial_localization"]["integrated_minus_postK"]["rmse_cm_per_day"],
                 q1024["temporal_and_spatial_localization"]["integrated_minus_postK"]["rmse_cm_per_day"])
-    if spatial>0 and lag < 0.1*spatial:
-        lag_descriptor="PRE_STEP_K_LAG_SMALL_RELATIVE_TO_SPATIAL_CORRECTION"
-    else:
-        lag_descriptor="PRE_STEP_K_LAG_NONNEGLIGIBLE"
+    lag_to_spatial=None if spatial==0.0 else lag/spatial
 
     current_gap=gaps["current_face"]["rmse_cm_per_day"]
     steady_gap=gaps["steady"]["rmse_cm_per_day"]
@@ -369,8 +366,11 @@ def main():
       "corrections_to_current_local_face_grid_gap":corrections,
       "R512_local_operator_consistency":q512,
       "R1024_local_operator_consistency":q1024,
+      "continuous_mechanism_ratios":{
+        "max_grid_pre_step_K_lag_rmse_over_max_grid_integrated_spatial_correction_rmse":lag_to_spatial
+      },
       "descriptors":{
-        "pre_step_K_lag":lag_descriptor,
+        "pre_step_K_lag":"REPORTED_CONTINUOUSLY_NO_THRESHOLD",
         "local_steady_grid_direction":steady_direction
       },
       "interpretation_boundaries":[
