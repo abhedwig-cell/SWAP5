@@ -50,6 +50,13 @@ program test_difficulty_p0c_replay
   tmpl_a=tmpl_r; tmpl_a%identity%method_id=DIFF_METHOD_ROSSFAST_D3R
   tmpl_a%identity%method_class=DIFF_METHOD_CLASS_ALTERNATIVE_FORMULATION
 
+  ! Establish direct-solver authority before testing the observation seam.
+  call rs%solve(req,rw,r1)
+  call require(r1%status==SW_SOLVE_CONVERGED,'direct reference converged')
+  call as%solve(req,aw,a1)
+  call require(a1%status==SW_SOLVE_CONVERGED,'direct alternative converged')
+  call as%initialize('assets/rossfast/d3r','B01',initialized,status); call require(initialized,'ross reset after direct control')
+
   ! A then B.
   call difficulty_replay_one(rs,rw,req,tmpl_r,rr1,r1)
   write(*,'(A,I0,1X,A)') 'DIFFICULTY_P0C_REFERENCE_AB_STATUS=',r1%status,trim(r1%diagnostics%route)
