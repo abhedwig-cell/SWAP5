@@ -1,0 +1,307 @@
+{
+  "schema": "swap5.lare.bc2.c5n.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5N",
+  "phase": "PREREGISTERED_BEFORE_C5N_FRESH_REFERENCE_OR_LARE_RESPONSE",
+  "title": "Fresh blind high-resolution B14 dynamic prescribed-head representation discriminator",
+  "scientific_question": "On fresh B14 dynamic prescribed-head histories, which lower-zone-focused Layer-ROM representations remain competitive with high-resolution Richards controls for groundwater response and profile fidelity when Reference numerical resolution is explicit?",
+  "role": "BLIND_REPRESENTATION_DISCRIMINATOR_NOT_APPLICATION_ACCEPTANCE",
+  "authority": {
+    "c5m_reconciliation": "integration/f-rom/LARE_REPSEL_C5M_RECONCILIATION.json",
+    "required_c5m_decision": "PRESERVE_PLACEMENT_PURPOSE_AND_INTERACTION_FINDINGS_REJECT_UNIVERSAL_LAYER_COUNT_PREREGISTER_FRESH_HIGH_RES_B14_DYNAMIC_TEST",
+    "c5l_closeout": "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json",
+    "c5l_result_sha256": "8fbaafa2e75ad7fed63d4b95a24ea6bc82baf87ccb8dc2c25856a28fc0d3eb1d",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "application_acceptance_authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+  },
+  "blind_design": {
+    "response_blind": true,
+    "histories_previously_exposed": false,
+    "material_previously_exposed": true,
+    "boundary_semantics_previously_exposed": true,
+    "history_ids": [
+      "N01",
+      "N02",
+      "N03",
+      "N04"
+    ],
+    "initial_effective_saturation": {
+      "N01": 0.7,
+      "N02": 0.8,
+      "N03": 0.9,
+      "N04": 0.75
+    },
+    "phase_schedule_observation_steps": {
+      "N01": {
+        "phase1": "FALL",
+        "phase1_steps": 224,
+        "phase2": "RISE",
+        "phase2_steps": 352,
+        "hold_steps": 448
+      },
+      "N02": {
+        "phase1": "RISE",
+        "phase1_steps": 288,
+        "phase2": "FALL",
+        "phase2_steps": 288,
+        "hold_steps": 448
+      },
+      "N03": {
+        "phase1": "FALL",
+        "phase1_steps": 352,
+        "phase2": "RISE",
+        "phase2_steps": 224,
+        "hold_steps": 448
+      },
+      "N04": {
+        "phase1": "RISE",
+        "phase1_steps": 224,
+        "phase2": "FALL",
+        "phase2_steps": 352,
+        "hold_steps": 448
+      }
+    },
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192,
+    "bottom_head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125
+    },
+    "top_forcing": "gravity-consistent B14 qeq only",
+    "hold_boundary": "mode-2 equilibrium HOLD",
+    "sinks": false,
+    "moving_water_table": false
+  },
+  "material": {
+    "id": "B14",
+    "theta_r": 0.01,
+    "theta_s": 0.416774,
+    "alpha_per_cm": 0.00541,
+    "n": 1.301528,
+    "Ksat_cm_per_day": 0.895023,
+    "mualem_lambda": -0.334926
+  },
+  "reference_design": {
+    "finest_available_control": {
+      "id": "R2048_T16",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 16,
+      "transaction_dt_day": 0.00005,
+      "interpretation": "Finest available numerical control, not continuum truth."
+    },
+    "spatial_comparators": [
+      {
+        "id": "R512_T16",
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 16
+      },
+      {
+        "id": "R1024_T16",
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 16
+      }
+    ],
+    "temporal_control": {
+      "id": "R2048_T8",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "temporal_factor": 8,
+      "transaction_dt_day": 0.0001,
+      "purpose": "Quantify finest-grid T8-to-T16 numerical temporal difference on the same fresh histories."
+    },
+    "numerical_policy": "exact pre-existing D13 integrated-water-depth Reference policy used by C5I/C5L",
+    "O0_O2_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "profile_output": "16 fixed 10-cm water-content bins emitted only at the 0.0008-day observation windows",
+    "node_output": false
+  },
+  "representations": {
+    "closure": "BC1 CURRENT_LAYER_FACE; no closure tuning",
+    "candidate_dt_day": 0.0001,
+    "candidate_dt_authority": "C5B showed R16 CURRENT_LAYER_FACE time-refinement effect negligible relative to its then-current residual; C5N retains the already-qualified diagnostic dt without response tuning.",
+    "lower_zone_ladder": {
+      "R3": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "R4": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R5": [
+        0,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R6": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R8": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R12": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R16": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "placement_controls": {
+      "P4_TOP_LOWER": [
+        0,
+        10,
+        140,
+        150,
+        160
+      ],
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    },
+    "no_response_based_repartitioning": true
+  },
+  "metric_views": {
+    "groundwater": [
+      "total_storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "interval_bottom_flux_rmse_cm_per_day",
+      "bottom_flux_sign_mismatch_count",
+      "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm",
+      "reversal_sequence_mismatch_history_count",
+      "reversal_penalty_steps"
+    ],
+    "profile": "groundwater view plus mapped_theta_rmse across 16 fixed 10-cm bins",
+    "cancellation_diagnostics": [
+      "pooled_signed_bottom_flux_bias_cm_per_day",
+      "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+      "cancellation_ratio"
+    ],
+    "rationale": "Per-history signed bias replaces the C5A pooled-bias gate so cancellation cannot create an artificially strong comparator. Pooled bias is retained only as a diagnostic."
+  },
+  "comparator_rules": {
+    "target": "R2048_T16",
+    "spatial_frontiers": {
+      "R512": "Candidate is componentwise no worse than R512_T16 relative to R2048_T16 on the declared view.",
+      "R1024": "Candidate is componentwise no worse than R1024_T16 relative to R2048_T16 on the declared view."
+    },
+    "temporal_floor": {
+      "rule": "Report whether candidate is componentwise no worse than R2048_T8 relative to R2048_T16. This means numerically indistinguishable from the tested finest-grid temporal refinement on that view; it is not application acceptance."
+    },
+    "equality_tolerance_numeric": 1e-12,
+    "no_application_threshold": true,
+    "no_universal_layer_threshold": true
+  },
+  "reference_quality_interpretation": {
+    "if_R2048_T8_T16_exceeds_R1024_T16_R2048_T16_on_key_views": "Reference temporal uncertainty is not subdominant to the strong spatial comparator; preserve candidate metrics but do not interpret an R1024-relative representation frontier as a high-resolution state-sufficiency result.",
+    "otherwise": "R1024-relative crossing may be interpreted as high-resolution comparator-relative representation evidence, still not continuum or application acceptance."
+  },
+  "hypotheses": {
+    "H_PLACEMENT_R4": "R4 is no worse than U4 on the declared groundwater view.",
+    "H_PLACEMENT_R8": "R8 is no worse than U8 on the declared groundwater view.",
+    "H_REDUCED_MEMBER_CROSSES_R512_GW": "At least one reduced lower-zone ladder member crosses R512 on groundwater view.",
+    "H_REDUCED_MEMBER_CROSSES_R1024_GW": "At least one reduced lower-zone ladder member crosses R1024 on groundwater view.",
+    "H_PROFILE_REQUIRES_MORE_STATE": "Minimum lower-zone dimension crossing the same high-resolution comparator is larger for profile than groundwater view, when both minima exist."
+  },
+  "stop_rules": [
+    "No C5A gate or threshold is reused.",
+    "No post-response partition, history, metric or comparator tuning.",
+    "No boundary counterfactual and no production Reference change.",
+    "No scalar closure tuning.",
+    "No application acceptance, speedup or production-ROM claim.",
+    "If no reduced member crosses R1024 but some cross R512, report the bounded comparator-strength frontier rather than inventing a tolerance.",
+    "If no reduced member crosses either high-resolution spatial comparator, close with no demonstrated high-resolution reduced frontier for this workload.",
+    "If Reference temporal quality gate is not sufficient, stop at continuous candidate errors plus Reference-quality blocker."
+  ],
+  "execution_plan": {
+    "stage1": "Generate and qualify fresh R512_T16, R1024_T16, R2048_T16 and R2048_T8 Reference controls before analyzing LARE candidates.",
+    "stage2": "Only after Reference qualification, execute frozen LARE ladder and placement controls against R2048_T16.",
+    "execution_partition": "Reference routes may be split by history and compiler optimization as execution topology only.",
+    "checkpoints_are_repository_checkpoints": true
+  },
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "production_reference_changed": false,
+    "boundary_counterfactual": false,
+    "new_closure_fit": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
