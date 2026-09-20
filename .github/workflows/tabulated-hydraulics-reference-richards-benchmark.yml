@@ -1,0 +1,154 @@
+name: TAB-HYD typed Reference Richards integration benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-reference-richards-benchmark.yml'
+      - 'research/tabulated_hydraulics/tabhyd_reference_richards_benchmark.f90'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical-src
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Prepare 40-node heterogeneous typed profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/richards
+          cp canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90 build/richards/stubs.f90
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("build/richards/stubs.f90")
+          s=p.read_text()
+          s=s.replace("integer, parameter :: macp = 4","integer, parameter :: macp = 64")
+          s=s.replace("integer, parameter :: mabbc = 4","integer, parameter :: mabbc = 64")
+          s=s.replace("integer, parameter :: numnod = 4","integer, parameter :: numnod = 40")
+          s=s.replace(
+              "real(8), parameter :: z(numnod) = [-0.25d0, -0.75d0, -1.50d0, -2.50d0]\n"
+              "  real(8), parameter :: dz(numnod) = [0.50d0, 0.50d0, 1.00d0, 1.00d0]\n"
+              "  real(8), parameter :: disnod(numnod+1) = 1.0d0",
+              "real(8), parameter :: z(numnod) = ["+
+              ",".join(f"{-5.0*(i+0.5):.8f}d0" for i in range(40))+"]\n"
+              "  real(8), parameter :: dz(numnod) = 5.0d0\n"
+              "  real(8), parameter :: disnod(numnod+1) = 5.0d0")
+          s=s.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*64) = 0.0d0")
+          p.write_text(s)
+          PY
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          names=["b4"]*14+["b9"]*13+["b12"]*13
+          out=Path("build/richards/input.dat")
+          with out.open("w") as fh:
+              fh.write(f"{len(names)} 400 2.0e-2\n")
+              for soil in names:
+                  par=series[soil]
+                  if par["h_enpr"] != 0.0:
+                      raise SystemExit(f"H_ENPR unsupported: {soil}")
+                  rows=mod.loghead_rows(par,400)
+                  fh.write(
+                      f"{soil} {par['ores']:.17e} {par['osat']:.17e} "
+                      f"{par['alpha']:.17e} {par['n']:.17e} "
+                      f"{par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n")
+                  for h,t,k in rows:
+                      fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          print("RICHARDS_PROFILE_NODES=40")
+          print("RICHARDS_PROFILE_MATERIALS=b4,b9,b12")
+          PY
+
+      - name: Compile actual Reference Richards A/B harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/richards/mod
+          F="-O3 -std=f2018 -ffree-line-length-none -fopenmp"
+          compile () {
+            src="$1"; obj="$2"
+            gfortran $F -I build/richards/mod -J build/richards/mod -c "$src" -o "$obj"
+          }
+          compile build/richards/stubs.f90 build/richards/stubs.o
+          compile research/tabulated_hydraulics/array_dimensions_stub.f90 build/richards/arrays.o
+          compile legacy-src/src/soil/sptabulated.f90 build/richards/sptabulated.o
+          compile canonical-src/src/solver/mod_soil_water_solver_contract.f90 build/richards/contract.o
+          compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90 build/richards/stepdir.o
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 build/richards/trajsens.o
+          compile canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90 build/richards/worker.o
+          compile canonical-src/src/solver/mod_reference_linear_solver.f90 build/richards/linear.o
+          compile canonical-src/src/solver/mod_reference_richards_workspace.f90 build/richards/workspace.o
+          compile canonical-src/src/solver/mod_reference_richards_state_binding.f90 build/richards/statebind.o
+          compile canonical-src/src/solver/mod_b110_default_mvg_provider.f90 build/richards/mvg.o
+          compile canonical-src/src/solver/mod_b110_source_sink_provider.f90 build/richards/source.o
+          compile canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90 build/richards/top.o
+          compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90 build/richards/temporal.o
+          compile canonical-src/src/legacy/b1_10_port/headcalc.f90 build/richards/headcalc.o
+          compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90 build/richards/refbind.o
+          compile research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90 build/richards/tableprovider.o
+          compile research/tabulated_hydraulics/tabhyd_reference_richards_benchmark.f90 build/richards/bench.o
+          gfortran -O3 -fopenmp build/richards/stubs.o build/richards/arrays.o build/richards/sptabulated.o             build/richards/contract.o build/richards/stepdir.o build/richards/trajsens.o build/richards/worker.o             build/richards/linear.o build/richards/workspace.o build/richards/statebind.o build/richards/mvg.o             build/richards/source.o build/richards/top.o build/richards/temporal.o build/richards/headcalc.o             build/richards/refbind.o build/richards/tableprovider.o build/richards/bench.o -o build/richards/benchmark
+
+      - name: Run Reference Richards benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          OMP_NUM_THREADS=1 OMP_DYNAMIC=false build/richards/benchmark build/richards/input.dat | tee build/richards/result.txt
+
+      - name: Parse integration evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          vals={}
+          for line in Path("build/richards/result.txt").read_text().splitlines():
+              if "=" not in line or line.startswith("RICHARDS_BLOCK"): continue
+              k,v=line.split("=",1)
+              try: vals[k]=float(v)
+              except ValueError: pass
+          req=["RICHARDS_ANALYTIC_MEDIAN_S","RICHARDS_TABLE_MEDIAN_S","RICHARDS_TABLE_DELTA_PCT",
+               "RICHARDS_FINAL_HEAD_MAX_ABS","RICHARDS_FINAL_THETA_MAX_ABS",
+               "RICHARDS_ANALYTIC_ITER_MEDIAN","RICHARDS_TABLE_ITER_MEDIAN"]
+          missing=[k for k in req if k not in vals]
+          if missing: raise SystemExit(f"missing metrics {missing}")
+          lines=["metric\tvalue"]+[f"{k}\t{vals[k]:.17g}" for k in req]
+          Path("build/richards/summary.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/richards/summary.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-reference-richards-integration
+          path: |
+            build/richards/result.txt
+            build/richards/summary.tsv
