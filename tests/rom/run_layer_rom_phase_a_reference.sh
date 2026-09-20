@@ -29,6 +29,7 @@ assert numpy.__version__ == "2.3.3", numpy.__version__
 print("LAYER_ROM_PHASE_A_NUMPY_VERSION=2.3.3")
 PY
 
+grep -Fq 'fine[a][:, None, :]' "$STATE_ANALYZER" || fail "state analyzer pairwise broadcast contract drift"
 git merge-base --is-ancestor "$CANONICAL_START" HEAD || fail "canonical start not ancestor"
 git merge-base --is-ancestor "$PREREG_COMMIT" HEAD || fail "Reference preregistration not ancestor"
 git diff --quiet "$CANONICAL_START"...HEAD -- src reference || fail "Layer-ROM Phase A changed src/reference"
