@@ -1,0 +1,108 @@
+name: F-ROM-LARE BC2-C5B signed-flux mechanism audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5B_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c5b_signed_flux_mechanism.py'
+      - '.github/workflows/f-rom-lare-bc2-c5b.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5b-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify frozen C5B implementation and authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5b_signed_flux_mechanism.py)" = "b51b4b60fd229786ec566948f400eb69771d0c56"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5a_b14_dynamic_head.py)" = "aec3a22ba50e07fd8d90aa54a92d067952fd397d"
+          test "$(git hash-object tests/rom/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5B_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_ZERO_FIT_AFTER_C5A_WITHOUT_ACCEPTANCE_RETUNING'
+          assert c['decision']=='C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED'
+          assert c['authority']['result_sha256']=='50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc'
+          assert p['scientific_firewall']['C5A_formal_decision_changed'] is False
+          assert p['source_evidence']['no_new_reference_generation'] is True
+          print('LARE_BC2_C5B_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover exact C5A evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5b/c5a LARE_BC2_C5B_EVIDENCE
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600184543" > /tmp/c5b/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5b/artifact.json'))
+          assert a['id']==10600184543
+          assert a['digest']=='sha256:272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f'
+          assert a['workflow_run']['head_sha']=='279ab2e34fc28a81fc3507a835a20b144049fc83'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600184543/zip" > /tmp/c5b/c5a.zip
+          echo "272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f  /tmp/c5b/c5a.zip" | sha256sum -c -
+          unzip -q /tmp/c5b/c5a.zip -d /tmp/c5b/c5a
+          echo "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc  /tmp/c5b/c5a/LARE_BC2_C5A_RESULT.json" | sha256sum -c -
+          echo "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b  /tmp/c5b/c5a/R16_o0.txt" | sha256sum -c -
+          echo "422981be7232bad79baa42767e295462e8d06212e012d9984947e907d18f406c  /tmp/c5b/c5a/R2_o0.txt" | sha256sum -c -
+          echo "LARE_BC2_C5B_C5A_EVIDENCE_RECOVERY=PASS"
+
+      - name: Execute zero-fit mechanism audit
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_bc2_c5b_signed_flux_mechanism.py             --r16 /tmp/c5b/c5a/R16_o0.txt             --r2 /tmp/c5b/c5a/R2_o0.txt             --c5a-result /tmp/c5b/c5a/LARE_BC2_C5A_RESULT.json             --c5a-closeout integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json             --prereg integration/f-rom/LARE_BC2_C5B_PREREGISTRATION.json             --output LARE_BC2_C5B_EVIDENCE/LARE_BC2_C5B_RESULT.json             | tee LARE_BC2_C5B_EVIDENCE/runner.txt
+
+      - name: Validate C5B firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5B_EVIDENCE/LARE_BC2_C5B_RESULT.json'))
+          assert r['formal_C5A_decision_retained']=='C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED'
+          assert all(r['baseline_identity_to_C5A_R16'].values())
+          f=r['scientific_firewall']
+          assert f['C5A_formal_decision_changed'] is False
+          assert f['C5A_metric_vector_changed'] is False
+          assert f['C5A_threshold_changed'] is False
+          assert f['partition_retuning'] is False
+          assert f['new_closure_fit'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          for row in r['runs'].values():
+            assert row['max_abs_water_ledger_cm'] <= 1e-10
+          print('LARE_BC2_C5B_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5B_EVIDENCE/* > LARE_BC2_C5B_EVIDENCE/sha256.txt
+
+      - name: Upload C5B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5b
+          path: LARE_BC2_C5B_EVIDENCE/
+          if-no-files-found: error
