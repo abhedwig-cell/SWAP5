@@ -56,8 +56,8 @@ jobs:
           assert sum(x['status']=='QUALIFIED' for x in mats['B01'].values())==7
           assert sum(x['status']=='OUTSIDE_QUALIFIED_DOMAIN' for x in mats['B01'].values())==3
           assert sum(x['status']=='QUALIFIED' for x in mats['B14'].values())==10
-          assert all(v is None for v in r['minimum_dimensions']['B01'].values())
-          assert all(v is None for v in r['minimum_dimensions']['B14'].values())
+          assert all(v is None for v in r['minimum_numerically_unresolved_lower_zone_dimension']['B01'].values())
+          assert all(v is None for v in r['minimum_numerically_unresolved_lower_zone_dimension']['B14'].values())
 
           def pooled(material,member):
               return mats[material][member]['comparison']['pooled']
@@ -97,14 +97,14 @@ jobs:
             },
             'classification':{
               'status':r['status'],
-              'minimum_dimensions':r['minimum_dimensions'],
+              'minimum_dimensions':r['minimum_numerically_unresolved_lower_zone_dimension'],
               'reduced_unresolved_frontier_present':False,
               'uncertainty_interpretation':'C6N1 metric-specific U_combined is numerical Reference uncertainty only, not an application tolerance.',
               'bottom_exchange_fidelity_in_scope':False
             },
             'placement_evidence':{
-              'B01_P4_no_worse_than_R4_surface20_root40':r['placement']['B01']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
-              'B14_P4_no_worse_than_R4_surface20_root40':r['placement']['B14']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
+              'B01_P4_no_worse_than_R4_surface20_root40':r['placement_tests']['B01']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
+              'B14_P4_no_worse_than_R4_surface20_root40':r['placement_tests']['B14']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
               'B01_R8':pooled('B01','R8'),
               'B01_U8':pooled('B01','U8'),
               'B14_R8':pooled('B14','R8'),
