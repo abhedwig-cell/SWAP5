@@ -73,6 +73,16 @@
       "decision": "STANDARD_LARE_PHYSICALLY_COHERENT_AND_RESOLUTION_CONVERGENT_BUT_LOW_DIMENSION_NOT_BROADLY_QUALIFIED",
       "interpretation": "State-information sufficiency and propagation-closure sufficiency are distinct.",
       "status": "CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION"
+    },
+    "bc2_c4w": {
+      "closeout": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
+      "result": "integration/f-rom/LARE_BC2_C4W_RESULT.json",
+      "decision": "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED",
+      "status": "CLOSED_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED_TRANSFER_AXIS_NEXT",
+      "workflow_run": 35493886557,
+      "artifact_id": 10599418376,
+      "artifact_digest": "sha256:f8a7e03d8c6ecac6fee1af0457b3f106bc7881f8d873abfdcbdced0103ba8648",
+      "interpretation": "R4-R6 one-day sign failure is a false V03 reversal at still-material Reference capillary flux. Increasing state delays the false transition; it disappears at R8, explaining the C4V horizon-dependent minimum."
     }
   },
   "firewalls": [
@@ -134,18 +144,17 @@
     "observed_current_canonical": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae"
   },
   "next_authority": {
-    "prohibited": "No post-hoc closure retuning, application acceptance, portable speedup or production ROM claim.",
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_WITH_EXTERNAL_APPLICATION_BLOCKER",
+    "choices": [
+      "INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER",
+      "INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER"
+    ],
     "required_for_application_acceptance": [
       "externally governed groundwater head/drawdown application prediction-error requirement H_app",
       "independently governed temporal allocation A_temporal or direct temporal head-error budget",
       "verified immutable provenance/source digest for both claims"
     ],
-    "research_allowed_while_blocked": [
-      "independently preregistered material/constitutive transfer",
-      "independently preregistered lower-boundary/coupling-semantics transfer that does not alter production coupling",
-      "additional purpose/horizon characterization without converting comparator-relative errors into application acceptance"
-    ],
-    "state": "EXTERNAL_APPLICATION_BLOCKER_PLUS_OPEN_INDEPENDENT_TRANSFER_AXES"
+    "prohibited": "No post-hoc closure retuning, near-zero deadband selection, application acceptance, portable speedup or production ROM claim."
   },
   "p2c_common_cohort": {
     "cross_history_pairs": 480,
@@ -199,9 +208,9 @@
   },
   "production_rom_authorized": false,
   "production_source_changed": false,
-  "schema": "swap5.lare.rs1.status.v5",
+  "schema": "swap5.lare.rs1.status.v6",
   "speed_claim_authorized": false,
-  "state": "C4V_CLOSED_ONE_DAY_GW_MINIMUM_R8_C4U_EXTERNAL_APPLICATION_ACCURACY_BLOCKER",
+  "state": "C4W_CLOSED_SPURIOUS_REVERSAL_CHARACTERIZED_SCIENTIFIC_TRANSFER_CHOICE_REQUIRED",
   "state_adjudication": {
     "D2_role": "AGGRESSIVE_PURPOSE_DEPENDENT_CHALLENGE",
     "D3_partition_cm": [
