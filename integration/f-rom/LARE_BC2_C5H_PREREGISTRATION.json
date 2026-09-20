@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.lare.bc2.c5h.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5H",
+  "phase": "PREREGISTERED_BEFORE_C5H_T8_RESPONSE",
+  "title": "Matched T8 temporal extension at R512 and R1024",
+  "scientific_question": "After completing the T1/T2/T4 matrix, do matched T8 runs at R512 and R1024 continue temporal convergence and cause the R512-R1024 spatial gap to stabilize, reverse, or continue increasing?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_MATCHED_TEMPORAL_EXTENSION",
+  "authority": {
+    "c5g_closeout": "integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json",
+    "required_c5g_status": "CLOSED_MATCHED_MATRIX_SPATIAL_GAP_INCREASES_WITH_TEMPORAL_REFINEMENT_T8_REQUIRED",
+    "c5g_result_sha256": "88f05603f4af17f68f85c95d3f9b7e7e552715082b8323c62e107bc4022b73c3",
+    "c5g_artifact_id": 10602317291,
+    "c5g_artifact_digest": "sha256:3f55f9d5c7b659fa1abf18c11ecb1b5238d38a8a179730bd2013858544071ee7",
+    "c5f_artifact_id": 10602317061,
+    "c5f_artifact_digest": "sha256:1ba8d90b08c99955d76c8b2ee60bae16bd40f68667ecda889cafc002627f43bb",
+    "c5e_artifact_id": 10602206315,
+    "c5e_artifact_digest": "sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "new_lare_or_closure_authorized": false
+  },
+  "new_routes": [
+    {
+      "id": "R512_T8",
+      "nodes": 512,
+      "dz_cm": 0.3125,
+      "main_transaction_dt_day": 0.0001,
+      "steps_per_history": 8192
+    },
+    {
+      "id": "R1024_T8",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "main_transaction_dt_day": 0.0001,
+      "steps_per_history": 8192
+    }
+  ],
+  "preserved_matrix": [
+    "R512_T1",
+    "R512_T2",
+    "R512_T4",
+    "R1024_T1",
+    "R1024_T2",
+    "R1024_T4"
+  ],
+  "physical_contract": {
+    "material": "B14",
+    "histories": "exact C5A/C5G Z01-Z04",
+    "physical_horizon_day": 0.8192,
+    "forcing_switch_times": "unchanged in physical time",
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "seed_refined": false,
+    "output_aggregation_window_day": 0.0008
+  },
+  "numerical_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "O0_O2_identity_required": true,
+    "no_tolerance_relaxation": true,
+    "no_new_failure_class": true
+  },
+  "metrics": {
+    "spatial": [
+      "R512-R1024 pooled bottom-flux RMSE at T1/T2/T4/T8"
+    ],
+    "temporal": [
+      "R512 T4-T8 pooled bottom-flux RMSE and T2/T4/T8 descriptive order",
+      "R1024 T4-T8 pooled bottom-flux RMSE and T2/T4/T8 descriptive order"
+    ],
+    "interaction": [
+      "T8/T4 spatial-gap ratio",
+      "T4-T8 temporal shift at each spatial resolution divided by T8 spatial gap",
+      "resolution dependence of T4-T8 temporal shift",
+      "history- and phase-specific signed decomposition"
+    ],
+    "no_absolute_acceptance_threshold": true
+  },
+  "known_pre_response_baseline": {
+    "spatial_T1_RMSE_cm_per_day": 0.019278087500445875,
+    "spatial_T2_RMSE_cm_per_day": 0.02107178256136268,
+    "spatial_T4_RMSE_cm_per_day": 0.022330388263774027,
+    "R512_T2_T4_RMSE_cm_per_day": 0.004691818556970772,
+    "R1024_T2_T4_RMSE_cm_per_day": 0.006104129997747862,
+    "temporal_order_R512_T1_T2_T4": 0.64870840120376,
+    "temporal_order_R1024_T1_T2_T4": 0.6761258331712464
+  },
+  "adjudication": {
+    "T8_TEMPORAL_PROGRESS_SPATIAL_GAP_REVERSES_AND_TEMPORAL_SUBDOMINANT": "Both T4-T8 temporal shifts decrease relative to T2-T4, both remain below the T8 spatial gap, and T8 spatial gap is smaller than T4.",
+    "T8_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING": "Both T4-T8 temporal shifts decrease and T8 spatial gap is larger than T4.",
+    "T8_TEMPORAL_PROGRESS_SPATIAL_GAP_STABILIZES": "Both T4-T8 temporal shifts decrease and T8/T4 spatial gaps are numerically equal within 1e-12.",
+    "T8_SPACE_TIME_PATTERN_MIXED_OR_TEMPORAL_PROGRESS_BLOCKED": "Any other qualified pattern.",
+    "interpretation": "These are Reference-discretization diagnostics only."
+  },
+  "next_logic": {
+    "if_spatial_gap_stabilizes_or_reverses_with_temporal_subdominance": "A matched R2048 spatial extension at T8 may be considered prospectively.",
+    "if_spatial_gap_continues_increasing_while_temporal_progresses": "Temporal interaction is still shaping the spatial estimate; continue to T16 before R2048.",
+    "if_temporal_progress_fails": "Diagnose Reference temporal/nonlinear behavior before any spatial or LARE extension."
+  },
+  "hard_gates": {
+    "exact_C5E_C5F_C5G_anchor_hashes": true,
+    "R512_T8_O0_O2_identity": true,
+    "R1024_T8_O0_O2_identity": true,
+    "exact_state_count_per_route": 32768,
+    "exact_history_pass_count": 4,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "baseline_identity_to_C5G": true,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "physical_history_changed": false,
+    "numerical_policy_changed": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5h_materializer_blob": "f024e2a4875ec3c4af6d55538c3b9cfe461abff7",
+    "c5h_analyzer_blob": "b3c8487dc63c50164789b86ccfe2fd27b8dd915a",
+    "response_based_design": true,
+    "reason": "C5H follows the completed C5G matrix, but both T8 routes, metrics and directional adjudication are frozen before T8 response generation.",
+    "allowed_new_code": "pre-bound T8 materialization and common-window diagnostics only",
+    "prohibited_new_code": "LARE execution, closure change, solver-policy relaxation, physical forcing change, application thresholds"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
