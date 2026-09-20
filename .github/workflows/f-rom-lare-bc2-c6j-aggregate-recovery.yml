@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "b81c71a5404adfa23f0db344bbc6ea483605795a"
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "33e9c4ff1218d6b64024205af8705384601ed502"
           python3 - <<'PY'
           import json
           b=json.load(open('integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json'))
@@ -40,7 +40,7 @@ jobs:
           assert b['source_run']['workflow_run']==35530325107
           assert b['source_run']['execution_head']=='14e333ef35e5dbbb2c71c1da0386f07863b3572e'
           assert b['source_run']['qualifier_blob']=='d3da358fff311dd7610b8e00fa03512e9c50dba1'
-          assert b['repaired_aggregator']['blob']=='b81c71a5404adfa23f0db344bbc6ea483605795a'
+          assert b['repaired_aggregator']['blob']=='33e9c4ff1218d6b64024205af8705384601ed502'
           assert b['scientific_design_changed'] is False
           assert b['workflow']['state']=='BOUND_BEFORE_AGGREGATION'
           print('C6J_AGGREGATION_RECOVERY_LOCK=PASS')
