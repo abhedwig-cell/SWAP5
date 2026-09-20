@@ -1,0 +1,128 @@
+name: F-ROM-LARE BC2-C4Y blind dynamic-head transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4Y_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c4y_dynamic_head.py'
+      - 'tests/rom/analyze_lare_bc2_c4y_dynamic_head.py'
+      - '.github/workflows/f-rom-lare-bc2-c4y.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4y-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout preregistered current canonical backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify frozen C4Y authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c4y_dynamic_head.py)" = "4d0e0cce94665e7f1927e0f1991741de8d8a626f"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c4y_dynamic_head.py)" = "a61a3eb7bc9f38b02977a33f67c1b1cb4c5abfd6"
+          test "$(git hash-object tests/rom/test_lare_rs1_gw_library.f90)" = "98b05fcf13fc470689295d511766f2393a712e46"
+          test "$(git hash-object tests/rom/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C4Y_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C4Y_REFERENCE_RESPONSE'
+          assert p['authority']['current_canonical_at_preregistration']=='1caa431002d5c128c73cfcfbd31af4cc39ee9f12'
+          assert p['blind_histories']['response_inspected_before_preregistration'] is False
+          assert p['representations']['FMC_SMVE']['included'] is False
+          assert p['pre_execution_implementation_binding']['response_based'] is False
+          print('LARE_BC2_C4Y_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Materialize blind dynamic-head Reference harness
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4y/reference LARE_BC2_C4Y_EVIDENCE
+          python3 tests/rom/materialize_lare_bc2_c4y_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --output canonical/tests/rom/test_lare_bc2_c4y_reference.f90             --manifest LARE_BC2_C4Y_EVIDENCE/materialization.json
+
+      - name: Generate blind current-canonical R16 and R2 trajectories
+        run: |
+          set -euo pipefail
+          for spec in "R16 16 10" "R2 2 80"; do
+            read -r id n dz <<<"$spec"
+            stub="canonical/c4y_${id}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              build="/tmp/c4y/build_${id}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "c4y_${id}_stubs.f90"                 --target tests/rom/test_lare_bc2_c4y_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              "$build/rom0_test" > "/tmp/c4y/reference/${id}_o${opt}.txt" 2>&1
+              grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "/tmp/c4y/reference/${id}_o${opt}.txt"
+              grep -Fq 'LAREGW1_C4Y_BLIND_DYNAMIC_HEAD_GENERATED=TRUE' "/tmp/c4y/reference/${id}_o${opt}.txt"
+              test "$(grep -c 'LAREGW1_STATE|' "/tmp/c4y/reference/${id}_o${opt}.txt")" -eq 4096
+              test "$(grep -c 'LAREGW1_HISTORY_PASS|' "/tmp/c4y/reference/${id}_o${opt}.txt")" -eq 4
+              python3 - "/tmp/c4y/reference/${id}_o${opt}.txt" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+            done
+            cmp "/tmp/c4y/reference/${id}_o0.txt" "/tmp/c4y/reference/${id}_o2.txt"
+          done
+          cp /tmp/c4y/reference/R16_o0.txt LARE_BC2_C4Y_EVIDENCE/
+          cp /tmp/c4y/reference/R2_o0.txt LARE_BC2_C4Y_EVIDENCE/
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C4Y_REFERENCE=PASS"
+
+      - name: Execute frozen C4Y LARE representation frontier
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_bc2_c4y_dynamic_head.py             --r16 /tmp/c4y/reference/R16_o0.txt             --r2 /tmp/c4y/reference/R2_o0.txt             --prereg integration/f-rom/LARE_BC2_C4Y_PREREGISTRATION.json             --bc1-closeout integration/f-rom/LARE_BC1_CLOSEOUT.json             --c4x-closeout integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json             --output LARE_BC2_C4Y_EVIDENCE/LARE_BC2_C4Y_RESULT.json             | tee LARE_BC2_C4Y_EVIDENCE/runner.txt
+
+      - name: Validate C4Y firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4Y_EVIDENCE/LARE_BC2_C4Y_RESULT.json'))
+          assert r['decision'] in (
+            'C4Y_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT',
+            'C4Y_DYNAMIC_HEAD_GW_FRONTIER_ONLY',
+            'C4Y_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED',
+            'C4Y_REFERENCE_OR_EXECUTION_BLOCKED'
+          )
+          assert r['blind_validation'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4Y_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4Y_EVIDENCE/* > LARE_BC2_C4Y_EVIDENCE/sha256.txt
+
+      - name: Upload C4Y blind evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4y
+          path: LARE_BC2_C4Y_EVIDENCE/
+          if-no-files-found: error
