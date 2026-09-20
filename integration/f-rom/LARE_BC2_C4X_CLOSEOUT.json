@@ -1,0 +1,186 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "R16_reference_sha256": "f00775d67bdafe89776c1e9fbb8da911cfd2ca83bb50dd74f6fe84af384d1429",
+    "R2_reference_sha256": "f04eaa9295efbef1dec42c47c1e4566674a4b48a2155980592b00b593b2bac76",
+    "artifact_digest": "sha256:16da393daddd5864c30f5d319e0426d8daa37e3f741c20339c8e3932de3a3975",
+    "artifact_id": 10599913011,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C4X_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "2afd3e9f5211dd941031bc02be367396febe438a",
+    "fmc_preflight_sha256": "f3230119b71befe80625141b5f1ec8357dc8ab74b198797894c7b59b3d9656bf",
+    "non_authoritative_first_run": 35494145566,
+    "result_sha256": "3f2f007ef3e524a4000e4780ffcec9219a15ed8903a48f5be46cef5009be2427",
+    "workflow_run": 35494292851
+  },
+  "decision": "C4X_B14_GW_TRANSFER_FRONTIER_PRESENT",
+  "hypothesis_adjudication": {
+    "H_LAYER_PLACEMENT_MATTERS": "SUPPORTED_BY_FROZEN_CONTROLS",
+    "H_PROFILE_REQUIRES_MORE_STATE": "SUPPORTED_COMPARATOR_RELATIVE",
+    "H_R8_MATERIAL_TRANSFER_exact": "NOT_SUPPORTED"
+  },
+  "key_day1": {
+    "FMC": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.5434015506415592,
+      "bottom_flux_rmse_cm_per_day": 0.5790950550481552,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.3241071867552571,
+      "mapped_theta_rmse": 0.006332179389844576,
+      "max_abs_final_cumulative_bottom_error_cm": 0.6608376256822126,
+      "storage_rmse_cm": 0.3241071867552493
+    },
+    "LARE_P4_TOP_LOWER": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0023223748901959043,
+      "bottom_flux_rmse_cm_per_day": 0.004958911055768371,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.0013843592714111585,
+      "mapped_theta_rmse": 0.0224530429517497,
+      "max_abs_final_cumulative_bottom_error_cm": 0.005015293916546426,
+      "storage_rmse_cm": 0.0013843592714035755
+    },
+    "LARE_R12": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0009343246267968626,
+      "bottom_flux_rmse_cm_per_day": 0.001048772401670199,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.0006249553163419854,
+      "mapped_theta_rmse": 0.00018553957990534429,
+      "max_abs_final_cumulative_bottom_error_cm": 0.001144026003312204,
+      "storage_rmse_cm": 0.0006249553163275976
+    },
+    "LARE_R16": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0009343246267968626,
+      "bottom_flux_rmse_cm_per_day": 0.001048772401670199,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.0006249553163419854,
+      "mapped_theta_rmse": 9.639760828446259e-06,
+      "max_abs_final_cumulative_bottom_error_cm": 0.001144026003312204,
+      "storage_rmse_cm": 0.0006249553163239763
+    },
+    "LARE_R3": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0016314360191014134,
+      "bottom_flux_rmse_cm_per_day": 0.0047675900839160654,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.001272929937857955,
+      "mapped_theta_rmse": 0.022953119738820933,
+      "max_abs_final_cumulative_bottom_error_cm": 0.005006654244276376,
+      "storage_rmse_cm": 0.0012729299378791859
+    },
+    "LARE_R4": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0008019427833043751,
+      "bottom_flux_rmse_cm_per_day": 0.0010885023952685996,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.0006005381591256281,
+      "mapped_theta_rmse": 0.015722425356403443,
+      "max_abs_final_cumulative_bottom_error_cm": 0.0010592984046626785,
+      "storage_rmse_cm": 0.0006005381591265754
+    },
+    "LARE_R8": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0009343245943333094,
+      "bottom_flux_rmse_cm_per_day": 0.0010487723999150237,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.0006249553118225912,
+      "mapped_theta_rmse": 0.003935705743817689,
+      "max_abs_final_cumulative_bottom_error_cm": 0.0011440260029946803,
+      "storage_rmse_cm": 0.000624955311870593
+    },
+    "LARE_U4": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.8415755276117212,
+      "bottom_flux_rmse_cm_per_day": 0.846280737649129,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.5019581224863001,
+      "mapped_theta_rmse": 0.026212241662710998,
+      "max_abs_final_cumulative_bottom_error_cm": 0.9394559332654474,
+      "storage_rmse_cm": 0.5019581224862579
+    },
+    "LARE_U8": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.6009172154852055,
+      "bottom_flux_rmse_cm_per_day": 0.6096767688282941,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.3615552746190227,
+      "mapped_theta_rmse": 0.012639878941614356,
+      "max_abs_final_cumulative_bottom_error_cm": 0.7029520929882258,
+      "storage_rmse_cm": 0.36155527461906967
+    },
+    "R2": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.9118795214162116,
+      "bottom_flux_rmse_cm_per_day": 0.9165410147329317,
+      "bottom_flux_sign_errors": 0,
+      "cumulative_bottom_rmse_cm": 0.5439881908046138,
+      "mapped_theta_rmse": 0.04034627406571448,
+      "max_abs_final_cumulative_bottom_error_cm": 1.0037046825987446,
+      "storage_rmse_cm": 0.5439881908046015
+    }
+  },
+  "material": "B14",
+  "model_changed": false,
+  "next_authority": "INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER_OR_THIRD_MATERIAL_GENERALITY_TEST",
+  "performance_comparison_authorized": false,
+  "persistent_groundwater_frontier": {
+    "R2_all_members": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12",
+      "P4_TOP_LOWER",
+      "U4",
+      "U8"
+    ],
+    "both_all_members": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12",
+      "P4_TOP_LOWER"
+    ],
+    "minimum_any_dimension_both": 3,
+    "minimum_transferred_ladder_dimension_both": 3,
+    "placement_controls_both": [
+      "P4_TOP_LOWER"
+    ],
+    "transferred_ladder_both": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ]
+  },
+  "production_rom_authorized": false,
+  "profile_frontier_day1": {
+    "crossing_FMC": [
+      "R8",
+      "R12"
+    ],
+    "crossing_R2": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12",
+      "P4_TOP_LOWER",
+      "U4",
+      "U8"
+    ],
+    "minimum_dimension_FMC": 8,
+    "minimum_dimension_R2": 3
+  },
+  "schema": "swap5.lare.bc2.c4x.closeout.v1",
+  "scientific_interpretation": [
+    "The LARE representation family remains strongly competitive on the prospectively transferred B14 fixed-water-table one-day laboratory, but the B01 minimum state requirement does not transfer.",
+    "The B01 C4V one-day groundwater minimum R8 is falsified as a material-invariant rule: on B14 the transferred lower-zone R3 member already crosses both R2 and FMC at every preregistered checkpoint.",
+    "Profile/process information remains more demanding. At day 1.024, R8 is the minimum reduced LARE member that also crosses FMC when mapped 10-cm theta RMSE is added, while R3 already crosses R2 on that profile-inclusive vector.",
+    "Layer placement is decisive at fixed state count. R4 and the preregistered P4_TOP_LOWER both retain the groundwater frontier, while uniform U4 does not cross FMC; similarly R8 crosses both comparators while uniform U8 does not.",
+    "Uniform U4/U8 failure despite the same nominal dimension confirms that state count cannot be interpreted independently from where vertical information is retained.",
+    "B14 is one additional homogeneous material only. The result supports material-dependent state and placement requirements, not cross-material generality.",
+    "No application acceptance, coupled-groundwater authority, portable speedup, timing claim or production ROM follows."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_B14_LARE_FAMILY_TRANSFERS_STATE_DIMENSION_AND_PLACEMENT_MATERIAL_DEPENDENT",
+  "work_unit": "LARE-BC2-C4X",
+  "workstream": "F-ROM-LARE"
+}

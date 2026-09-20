@@ -1,0 +1,55 @@
+{
+  "application_acceptance_adjudicated": false,
+  "decision": "C4X_FMC_B14_DOMAIN_PREFLIGHT_PASS",
+  "failure": null,
+  "histories": {
+    "X01": {
+      "cumulative_bottom_exchange_cm": -0.5496062788900602,
+      "final_storage_cm": 37.04427473399365,
+      "initial_storage_cm": 36.49466845510359,
+      "lambda_B14": 0.022579865507494613,
+      "ledger_residual_cm": 0.0,
+      "maximum_front_height_cm": 38.902906178760304,
+      "minimum_front_height_cm": 0.22131766715632323,
+      "terminal_bottom_flux_cm_per_day": -0.381854121762588
+    },
+    "X02": {
+      "cumulative_bottom_exchange_cm": -0.4224753257172864,
+      "final_storage_cm": 38.48564275088995,
+      "initial_storage_cm": 38.063167425172665,
+      "lambda_B14": 0.037633109179157694,
+      "ledger_residual_cm": 0.0,
+      "maximum_front_height_cm": 64.5123917271097,
+      "minimum_front_height_cm": 0.3688627785938721,
+      "terminal_bottom_flux_cm_per_day": -0.31079930871434985
+    },
+    "X03": {
+      "cumulative_bottom_exchange_cm": -0.34500160085281095,
+      "final_storage_cm": 39.97666799609454,
+      "initial_storage_cm": 39.63166639524173,
+      "lambda_B14": 0.05268635285082077,
+      "ledger_residual_cm": 0.0,
+      "maximum_front_height_cm": 90.19228133496593,
+      "minimum_front_height_cm": 0.5164078900314208,
+      "terminal_bottom_flux_cm_per_day": -0.2635679694508341
+    },
+    "X04": {
+      "cumulative_bottom_exchange_cm": -0.29158704340824215,
+      "final_storage_cm": 41.491752408719044,
+      "initial_storage_cm": 41.2001653653108,
+      "lambda_B14": 0.06773959652248385,
+      "ledger_residual_cm": 0.0,
+      "maximum_front_height_cm": 115.8957860073684,
+      "minimum_front_height_cm": 0.6639530014689697,
+      "terminal_bottom_flux_cm_per_day": -0.22904315887313456
+    }
+  },
+  "max_abs_relaxation_storage_difference_cm": 0.0,
+  "max_abs_substep_mass_residual_cm": 0.0,
+  "pass": true,
+  "production_rom_authorized": false,
+  "reference_response_used": false,
+  "schema": "swap5.lare.bc2.c4x.fmc-b14-preflight.v1",
+  "work_unit": "LARE-BC2-C4X",
+  "workstream": "F-ROM-LARE"
+}
