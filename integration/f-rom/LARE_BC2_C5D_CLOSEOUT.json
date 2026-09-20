@@ -1,0 +1,73 @@
+{
+  "adjudication": {
+    "ASYMPTOTIC_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "NEW_LARE_OR_CLOSURE_AUTHORIZED": false,
+    "R128_QUALIFIED": true,
+    "R256_QUALIFIED": true,
+    "TWO_CONSECUTIVE_ADJACENT_RMSE_DECREASES": true
+  },
+  "authority": {
+    "R128_reference_sha256": "22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe",
+    "R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "R256_reference_sha256": "684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961",
+    "R32_reference_sha256": "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9",
+    "R64_reference_sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1",
+    "artifact_digest": "sha256:d08ceaf2d6dea6464ebca829bb91e15a3857ad669b573a74a2a67b09c15451eb",
+    "artifact_id": 10600714885,
+    "execution_head": "32ca500df7c00c4b9cadafff5dcb06a87dcf8319",
+    "job_id": 106050348497,
+    "preregistration": "integration/f-rom/LARE_BC2_C5D_PREREGISTRATION.json",
+    "result_sha256": "34082ec971a2461a43dae87faa885579b60a37241fff337ccc2c948b21345a50",
+    "workflow_run": 35500141508
+  },
+  "baseline_identity_to_C5C": {
+    "R16_R32_RMSE": true,
+    "R32_R64_RMSE": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "next_authority": {
+    "constraints": [
+      "Reference-only; no LARE run and no closure modification",
+      "reuse exact C5A B14 histories and frozen D13 numerical policy",
+      "R512 required; R1024 optional fail-closed with no retuning",
+      "preserve all R16-R256 anchors",
+      "do not claim continuum convergence from monotone decrease alone",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "Do adjacent-grid changes continue to decrease at R512 and, if numerically feasible under unchanged policy, R1024, and does the observed order begin to stabilize?",
+    "state": "REFERENCE_SPATIAL_EXTENSION_CONTINUES",
+    "target": "LARE-BC2-C5E"
+  },
+  "reference_extension": {
+    "R128_R256_RMSE_cm_per_day": 0.04361359244706386,
+    "R16_R32_RMSE_cm_per_day": 0.043792998749265497,
+    "R32_R64_RMSE_cm_per_day": 0.04898430447790572,
+    "R64_R128_RMSE_cm_per_day": 0.04712184008248888,
+    "observed_order_R32_R64_R128": 0.05592367904033602,
+    "observed_order_R64_R128_R256": 0.11161804677895394,
+    "ratio_R128_R256_over_R64_R128": 0.925549434629809,
+    "ratio_R64_R128_over_R32_R64": 0.9619783435680525,
+    "two_consecutive_decreases": true
+  },
+  "schema": "swap5.lare.bc2.c5d.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "Reference refinement finally shows two consecutive reductions after R64, but the reduction is weak rather than asymptotic-looking.",
+    "Adjacent-grid bottom-flux RMSE changes from 0.04898 cm/d for R32-R64 to 0.04712 for R64-R128 and 0.04361 for R128-R256.",
+    "The corresponding descriptive observed orders are only about 0.056 and 0.112. This is far from evidence of a stable expected-order convergence regime.",
+    "R128 and R256 both satisfy the unchanged numerical policy, O0/O2 identity and transaction mass gates, so the weak progress is not a failed-run artifact.",
+    "C5D therefore strengthens the conclusion that the B14 prescribed-head Reference is strongly spatial-resolution dependent while still not supplying a continuum-like authority.",
+    "No LARE closure or representation should be judged against R256 as if it were converged. Reference-only extension remains the correct next step."
+  ],
+  "status": "CLOSED_REFERENCE_REFINEMENT_WEAKLY_PROGRESSING_THROUGH_R256_NOT_ASYMPTOTIC",
+  "work_unit": "LARE-BC2-C5D",
+  "workstream": "F-ROM-LARE"
+}
