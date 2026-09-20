@@ -371,5 +371,31 @@
     "reason": "B14 was previously exposed by ROM1X and DYN0A-MECH2B. The original label 'blind_transfer_B14' overstated independence. This correction changes only the evidentiary label, not histories, material parameters, state scaling, partitions, comparators, metrics, hard gates or decision logic.",
     "response_seen": false,
     "scientific_design_changed": false
+  },
+  "pre_execution_implementation_binding": {
+    "before_any_C4X_response": true,
+    "materializer_blob": "3b5f7aa78abde7876245250903e1982205d1d4ce",
+    "fmc_preflight_blob": "13f66a6f6f20715ef4e5717c18b675700077d4f8",
+    "c4x_analyzer_blob": "3519fd1d0d0b49c32a124f9349bb47f1d97b4a05",
+    "c4v_analyzer_blob": "e7d22818d935bedddeb2f2cdf2cec58e95814f93",
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "d13_fortran_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "d13_fmc_analyzer_blob": "803867a2ccdb190142274e9c41aafc3d3ca8d76a",
+    "d13_execution_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "allowed_changes": [
+      "material constants B01 -> frozen B14",
+      "history front-scale mapping -> prospectively scaled X01-X04",
+      "horizon 64 -> 1024",
+      "addition of frozen placement controls and material-transfer aggregation"
+    ],
+    "prohibited_changes": [
+      "LARE closure law",
+      "LARE internal timestep",
+      "Reference boundary policy",
+      "FMC bin count",
+      "FMC substep count",
+      "post-response partition changes"
+    ],
+    "response_based": false
   }
 }
