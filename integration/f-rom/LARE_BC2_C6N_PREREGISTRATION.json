@@ -1,0 +1,234 @@
+{
+  "schema": "swap5.lare.bc2.c6n.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N",
+  "phase": "SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6M2_RESULT_CANDIDATE_EXECUTION_BLOCKED",
+  "title": "Fresh blind surface-driven upper-zone/profile comparison of existing fixed-partition LARE representations",
+  "role": "BLIND_PURPOSE_FRONTIER_NOT_APPLICATION_ACCEPTANCE",
+  "execution_precondition": "C6M2 must close C6M2_SURFACE_FIXED_FLUX_REFERENCE_QUALIFIED before any C6N candidate response is generated.",
+  "scientific_question": "On the fresh U01-U04 surface-flux histories, how do the already-existing LARE state-count and placement families reproduce upper-zone storage and 10-cm profile state across B01 and B14 when bottom flux is prescribed and therefore excluded from the fidelity claim?",
+  "authority": {
+    "C6K": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
+    "C6L": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
+    "C6M": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
+    "C6M2_preregistration": "integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json",
+    "DYN0A_RL1": "integration/f-rom/LARE_DYN0A_RL1_PREREGISTRATION.json",
+    "C4X_placement_set": "integration/f-rom/LARE_BC2_C4X_PREREGISTRATION.json",
+    "current_LARE_closure": "CURRENT_LAYER_FACE",
+    "response_information_used_for_C6N_design": false,
+    "C6M2_reference_metrics_seen_before_design": false
+  },
+  "workload": {
+    "histories": "Exactly C6M2 U01-U04",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "top_forcing": "Exactly C6M2 top-flux sequences",
+    "bottom_boundary": "Exactly C6M2 fixed gravity-equilibrium bottom flux, mode 2",
+    "sinks": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "candidate_internal_dt_day": 0.0001,
+    "bottom_flux_fidelity_in_scope": false
+  },
+  "representations": {
+    "lower_zone_ladder": {
+      "R3": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "R4": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R5": [
+        0,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R6": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R8": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R12": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "R16": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    "placement_controls": {
+      "P4_TOP_LOWER": [
+        0,
+        10,
+        140,
+        150,
+        160
+      ],
+      "U4": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ],
+      "U8": [
+        0,
+        20,
+        40,
+        60,
+        80,
+        100,
+        120,
+        140,
+        160
+      ]
+    },
+    "closure": "CURRENT_LAYER_FACE unchanged",
+    "integrator": "iterative Heun",
+    "no_clipping": true,
+    "no_fallback": true,
+    "new_partition_authorized": false,
+    "response_based_repartitioning": false
+  },
+  "state_projection": {
+    "initial": "Uniform C6M2 initial Se projected exactly to each fixed partition.",
+    "reference_output": "R2048_T16 10-cm profile bins and total storage from authoritative C6M2 artifact.",
+    "candidate_to_10cm": "Piecewise-uniform retained-layer theta mapped by exact geometric overlap to the fixed 16 x 10-cm bins.",
+    "conservation": "Candidate layer-water inventories are primary states; mapped profile is diagnostic only."
+  },
+  "metric_views": {
+    "SURFACE_20": [
+      "pooled_surface_0_20_storage_rmse_cm"
+    ],
+    "ROOT_ZONE_40": [
+      "pooled_surface_0_20_storage_rmse_cm",
+      "pooled_root_zone_0_40_storage_rmse_cm"
+    ],
+    "UPPER_ZONE_80": [
+      "pooled_surface_0_20_storage_rmse_cm",
+      "pooled_root_zone_0_40_storage_rmse_cm",
+      "pooled_upper_0_80_storage_rmse_cm"
+    ],
+    "PROFILE_STATE": [
+      "pooled_total_storage_rmse_cm",
+      "pooled_surface_0_20_storage_rmse_cm",
+      "pooled_root_zone_0_40_storage_rmse_cm",
+      "pooled_upper_0_80_storage_rmse_cm",
+      "pooled_mapped_10cm_theta_rmse"
+    ],
+    "by_history_diagnostics": [
+      "same five RMSE components by U01-U04",
+      "maximum absolute 0-20, 0-40 and 0-80 storage error",
+      "time of maximum absolute 0-20 storage error"
+    ],
+    "no_scalar_score": true
+  },
+  "comparator_rules": {
+    "target": "C6M2 R2048_T16",
+    "numerical_spatial_comparator": "C6M2 R1024_T16 relative to R2048_T16",
+    "high_resolution_crossing": "For a declared view, candidate is componentwise no worse than the R1024_T16-vs-R2048_T16 numerical vector within 1e-12.",
+    "secondary_R512_crossing": "Also report componentwise crossing of R512_T16-vs-R2048_T16.",
+    "R16_role": "No-spatial-reduction LARE operator control, not a ROM and not a Reference.",
+    "equality_tolerance_numeric": 1e-12,
+    "application_threshold": false,
+    "interpretation": "Crossing is high-resolution comparator-relative representation evidence only, not hydrological application acceptance."
+  },
+  "hypotheses": {
+    "H_TOP_PLACEMENT_R4": "At dimension 4, P4_TOP_LOWER is componentwise no worse than lower-zone R4 on SURFACE_20 and ROOT_ZONE_40.",
+    "H_UNIFORM_VS_FOCUSED_R4": "Report R4, P4_TOP_LOWER and U4 componentwise without scalar ranking.",
+    "H_R8_VS_U8": "Report R8 versus U8 componentwise on all views.",
+    "H_PURPOSE_DIMENSION_SEPARATION": "The minimum demonstrated lower-zone dimension may differ among SURFACE_20, ROOT_ZONE_40, UPPER_ZONE_80 and PROFILE_STATE.",
+    "H_MATERIAL_TRANSFER": "Report B01 and B14 minima separately; do not infer one material-invariant minimum."
+  },
+  "decision_logic": {
+    "C6N_HIGH_RES_SURFACE_PROFILE_FRONTIER_PRESENT": "C6M2 qualified and at least one reduced representation crosses R1024 on at least one declared state/profile view.",
+    "C6N_R512_RELATIVE_FRONTIER_ONLY": "No reduced representation crosses R1024, but at least one crosses R512 on at least one declared view.",
+    "C6N_NO_HIGH_RES_REDUCED_FRONTIER": "No reduced representation crosses either R512 or R1024 on any declared view.",
+    "C6N_REFERENCE_PRECONDITION_FAILED": "C6M2 is not qualified; no candidate execution is permitted."
+  },
+  "stop_rules": [
+    "Do not change U01-U04, material set, candidate dt, partitions, closure, metrics or comparator after C6M2 result.",
+    "Do not invent a top-focused partition beyond the already-frozen P4_TOP_LOWER.",
+    "Do not use bottom flux/exchange as candidate fidelity because it is prescribed.",
+    "Do not infer ET/root-uptake or drought prediction.",
+    "Do not turn R1024 numerical difference into an application tolerance.",
+    "No performance/speed screen in C6N."
+  ],
+  "next_logic": {
+    "if_surface_frontier": "Use the bounded view-specific frontier to select candidates for independently governed application-envelope work; keep ROOT/ET feedback separate.",
+    "if_no_surface_frontier": "Conclude that the existing fixed-partition family has no demonstrated high-resolution surface-state frontier on this workload; do not reopen universal closure search automatically."
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "C6M2_result_seen_for_design": false,
+    "new_representation_selected": false,
+    "new_closure_fit": false,
+    "bottom_exchange_fidelity_adjudicated": false,
+    "root_uptake_feedback_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "SCIENTIFIC_DESIGN_ONLY_EXECUTION_NOT_BOUND",
+    "runner": null,
+    "analyzer": null,
+    "workflow": null,
+    "execution_binding_complete": false
+  },
+  "model_changed": false
+}
