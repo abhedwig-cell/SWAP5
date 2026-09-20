@@ -267,3 +267,25 @@ The acceleration hypothesis is now supported at three increasingly integrated le
 The Reference-Richards benchmark is still a **solver-integration microbenchmark**, not a full production-application timing. It uses research-generated equivalent tables and a synthetic one-step forcing/state setup. It therefore justifies continuing to the serialized Reference/FMR and realistic application timing stages, but it does not justify a portable 25-30% SWAP speedup claim.
 
 No production code was changed or admitted by this benchmark.
+
+
+## Expanded K1 disposition
+
+The raw-head `dK/dh` warning was followed by an expanded K1 scenario matrix in workflow `35536301479`.
+
+Results:
+
+- `coarse_dry_free`: analytical K1, raw-head K1 and raw-head+capacity all completed; both table candidates passed all existing trajectory gates; GWL max difference about `1e-5 cm`.
+- `coarse_dry_pulse`: same result; all routes completed and both table candidates passed; GWL max difference about `1e-5 cm`.
+- `loam_mid_free`: the corrected **analytical K1 reference itself** exceeded the 60 s bounded runtime and returned timeout `124` before either table route was evaluated.
+- `clay_wet_free`: the corrected analytical K1 reference likewise exceeded 60 s.
+- `loam_capillary`: the corrected analytical K1 reference likewise exceeded 60 s.
+
+Therefore the expanded experiment does **not** establish a table-specific K1 failure in loam or clay. It establishes that the analytical K1 reference is itself outside the bounded practical qualification horizon for those scenarios.
+
+Current K1 disposition:
+
+- K1 acceleration/fidelity evidence is admitted only as a **bounded research result for the two coarse scenarios**;
+- the approximately 9.6-11% raw-head speed reduction and the Hupsel raw-head+capacity improvement are not generalized to loam/clay;
+- the local B12 derivative difference remains a warning, but cannot be adjudicated by trajectory comparison until the analytical K1 reference regime is separately qualified;
+- this does not affect the current production K0 research case because SWAP5 production explicitly does not admit K1.
