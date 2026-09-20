@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c5n_reference.py'
       - 'tests/rom/materialize_lare_bc2_c5n_reference_slice.py'
       - 'tests/rom/analyze_lare_bc2_c5n_fresh_highres.py'
@@ -48,7 +49,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
-          test "$(git hash-object tests/rom/materialize_lare_bc2_c5n_reference.py)" = "a2a7db1e5c6669b4a2475eea0fe3b1c7481ea61c"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5n_reference.py)" = "88db9aa07507acc6dd95efdee5b38525e48f5e2d"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5n_reference_slice.py)" = "3e294bdc0adb9f824f5119a19c03e7188ab5a97e"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c5n_fresh_highres.py)" = "c14ff931d0c34fec7989a96e553891468cbd2f56"
           python3 - <<'PY'
@@ -60,6 +61,10 @@ jobs:
           assert p['implementation_binding']['response_based_design'] is False
           assert m['decision']=='PRESERVE_PLACEMENT_PURPOSE_AND_INTERACTION_FINDINGS_REJECT_UNIVERSAL_LAYER_COUNT_PREREGISTER_FRESH_HIGH_RES_B14_DYNAMIC_TEST'
           assert p['scientific_firewall']['C5A_formal_decision_changed'] is False
+          e=json.load(open('integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json'))
+          assert e['status']=='TECHNICAL_REFERENCE_MATERIALIZER_ANCHOR_REPAIRED_BEFORE_ANY_SOLVER_RESPONSE'
+          assert e['repair']['scientific_effect']=='NONE'
+          assert e['failed_run']['solver_executed'] is False
           print('LARE_BC2_C5N_AUTHORITY_LOCK=PASS')
           PY
 
