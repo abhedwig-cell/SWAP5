@@ -1,0 +1,180 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-d.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-D",
+  "decision": "B1HCD_FULL_COHORT_HYDROLOGICAL_DECOMPOSITION_COMPLETE",
+  "execution": {
+    "workflow_run": 35499760107,
+    "executed_head": "3a65d8d7d3c23f8d452941125a016d78be3e1db8",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10600994215,
+    "aggregate_artifact_digest": "sha256:372404fbc2318fbf8ee51b46edee2db4c103a6f46644c71cba386c8c8575f2c2",
+    "raw_result_sha256": "c8dfa3deb0354fd6112bb07b5031e11d5a8ca004d3d357fd6aaff04408955b73"
+  },
+  "day1_GW6_relation_counts": {
+    "L4": {
+      "COR_COMPONENTWISE_NO_WORSE": 5,
+      "LARE_COMPONENTWISE_NO_WORSE": 1,
+      "TRADEOFF": 0,
+      "NUMERICALLY_EQUIVALENT": 0
+    },
+    "L6": {
+      "COR_COMPONENTWISE_NO_WORSE": 4,
+      "LARE_COMPONENTWISE_NO_WORSE": 0,
+      "TRADEOFF": 2,
+      "NUMERICALLY_EQUIVALENT": 0
+    },
+    "R8": {
+      "COR_COMPONENTWISE_NO_WORSE": 4,
+      "LARE_COMPONENTWISE_NO_WORSE": 0,
+      "TRADEOFF": 2,
+      "NUMERICALLY_EQUIVALENT": 0
+    }
+  },
+  "day1_GW6_relations": {
+    "B02": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "TRADEOFF",
+      "R8": "COR_COMPONENTWISE_NO_WORSE"
+    },
+    "B05": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "TRADEOFF"
+    },
+    "B06": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "TRADEOFF",
+      "R8": "TRADEOFF"
+    },
+    "B11": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "COR_COMPONENTWISE_NO_WORSE"
+    },
+    "B12": {
+      "L4": "COR_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "COR_COMPONENTWISE_NO_WORSE"
+    },
+    "B16": {
+      "L4": "LARE_COMPONENTWISE_NO_WORSE",
+      "L6": "COR_COMPONENTWISE_NO_WORSE",
+      "R8": "COR_COMPONENTWISE_NO_WORSE"
+    }
+  },
+  "key_diagnostics": {
+    "B05_L4": {
+      "LARE": {
+        "storage_rmse_cm": 1.2407564994427591,
+        "cumulative_bottom_rmse_cm": 1.2407564994427585,
+        "bottom_flux_rmse_cm_per_day": 2.2554483144062334,
+        "bottom_flux_sign_errors": 482,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 2.1509039188883268,
+        "max_abs_final_cumulative_bottom_error_cm": 2.6541178356761215,
+        "mapped_theta_rmse": 0.023791469940953283
+      },
+      "CoRichards": {
+        "storage_rmse_cm": 0.5420338311999646,
+        "cumulative_bottom_rmse_cm": 0.542033831199963,
+        "bottom_flux_rmse_cm_per_day": 1.0202734065973362,
+        "bottom_flux_sign_errors": 450,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.5162539319766744,
+        "max_abs_final_cumulative_bottom_error_cm": 1.4815429738657286,
+        "mapped_theta_rmse": 0.02165700265306539
+      },
+      "interpretation": "The difficult targeted L4 response is substantially shared with coarse discretization but Layer-ROM adds a large same-partition GW error burden."
+    },
+    "B02_L6_to_R8": {
+      "LARE_storage_rmse_cm": [
+        0.009065948515065198,
+        0.009127849745745107
+      ],
+      "CoRichards_storage_rmse_cm": [
+        0.004093196775804732,
+        5.716806387857937e-7
+      ],
+      "LARE_cumulative_bottom_rmse_cm": [
+        0.00906594851506782,
+        0.009127849745731465
+      ],
+      "CoRichards_cumulative_bottom_rmse_cm": [
+        0.004093196775805867,
+        5.716806405634875e-7
+      ],
+      "interpretation": "The LARE L6-to-R8 storage/exchange reversal is absent under same-partition Richards."
+    },
+    "B16_L6_to_R8": {
+      "LARE_storage_rmse_cm": [
+        0.001947913282556674,
+        0.001949865919554964
+      ],
+      "CoRichards_storage_rmse_cm": [
+        0.000010305199221050427,
+        9.104314661833264e-9
+      ],
+      "LARE_cumulative_bottom_rmse_cm": [
+        0.0019479132825730137,
+        0.0019498659196033445
+      ],
+      "CoRichards_cumulative_bottom_rmse_cm": [
+        0.000010305199227742312,
+        9.104317763331021e-9
+      ],
+      "interpretation": "The LARE L6-to-R8 storage/exchange reversal is absent under same-partition Richards."
+    },
+    "R8": {
+      "B02": {
+        "LARE_bottom_flux_rmse": 0.07793239872946985,
+        "COR_bottom_flux_rmse": 0.000003712912206789433,
+        "LARE_storage_rmse": 0.009127849745745107,
+        "COR_storage_rmse": 5.716806387857937e-7
+      },
+      "B05": {
+        "LARE_bottom_flux_rmse": 0.08597890935104484,
+        "COR_bottom_flux_rmse": 0.04877206818089109,
+        "LARE_sign_errors": 0,
+        "COR_sign_errors": 2
+      },
+      "B06": {
+        "LARE_bottom_flux_rmse": 0.11120862118647286,
+        "COR_bottom_flux_rmse": 0.0535637874641943,
+        "LARE_abs_mean_signed": 0.014938173898750906,
+        "COR_abs_mean_signed": 0.029868115138356043
+      },
+      "B11": {
+        "LARE_bottom_flux_rmse": 0.0000036502081535010704,
+        "COR_bottom_flux_rmse": 1.116533362368577e-11
+      },
+      "B12": {
+        "LARE_bottom_flux_rmse": 3.538361726836628e-8,
+        "COR_bottom_flux_rmse": 1.0516689788251562e-11
+      },
+      "B16": {
+        "LARE_bottom_flux_rmse": 0.003253036389002442,
+        "COR_bottom_flux_rmse": 7.197905209463858e-8,
+        "LARE_storage_rmse": 0.001949865919554964,
+        "COR_storage_rmse": 9.104314661833264e-9
+      }
+    }
+  },
+  "scientific_adjudication": [
+    "Same-partition CoRichards is fully available, so the Layer-ROM transfer findings are not confounded by comparator coverage.",
+    "For five of six materials at L4, CoRichards is componentwise no worse on the six-component groundwater vector; B16 is the bounded exception where the simplified L4 route has a compensating GW advantage over coarse Richards.",
+    "At higher dimension, CoRichards converges much more strongly toward Reference on B02, B11, B12 and B16 while Layer-ROM retains nonzero exchange/flux error. This is a model-form/closure signal, not evidence for missing vertical state alone.",
+    "The B02 and B16 L6-to-R8 storage/cumulative-exchange reversals are Layer-ROM-specific: same-partition Richards remains monotone. Those reversals therefore should not drive a conclusion that more vertical states are intrinsically harmful.",
+    "B05 remains intrinsically difficult at L4 for both routes, but Layer-ROM is substantially worse on every GW6 component. Both discretization and layer-closure/model-form contribute there.",
+    "R8 B05 and B06 remain vector tradeoffs, so a claim that CoRichards is universally superior at every component would be false.",
+    "Profile reconstruction error remains strongly tied to the shared coarse partition and must stay separate from groundwater-exchange fidelity."
+  ],
+  "next": "Reconcile the existing full-state R16_OP Layer-ROM control and then execute a teacher-forced fixed-head operator localization that separates internal-interface flux error, bottom-boundary flux error and temporal propagation.",
+  "firewalls": [
+    "NO_ADDITIVE_CLOSURE_ERROR_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "performance_measurement_performed": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
