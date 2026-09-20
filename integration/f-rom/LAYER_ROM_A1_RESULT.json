@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.layer-rom.phase-a.result-summary.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A1",
+  "decision": "L3_MINIMUM_BOUNDED_STATE_INFORMATION_CANDIDATE_ACTIVE_ZONE_PLACEMENT_SUPPORTED_CLOSURE_TEST_JUSTIFIED",
+  "evidence_class": "IMMUTABLE_REUSE_PARTLY_EXPOSED_DEVELOPMENT_EVIDENCE_NOT_BLIND_VALIDATION",
+  "execution": {
+    "workflow_run": 35493862040,
+    "executed_head": "be5fa0f33cb7c25780e8d57ea933263b27637368",
+    "artifact_id": 10599363587,
+    "artifact_digest": "sha256:5d161d9e78eed5c9c72308e0e9f5fa30150a35794293895bc2d2bd9b5fa49b2c",
+    "raw_result_sha256": "796069c3a8d477252d458f8368833841024d42e905b3d8a1d0589f4d69f550cd"
+  },
+  "cohort": {
+    "start_states": 41,
+    "cross_history_pairs": 480,
+    "full_state_diagnostic_pairs": 477,
+    "full_state_near_identical_pairs": 3
+  },
+  "radius_1x": {
+    "T1": {
+      "aliases": 320,
+      "gw_d_flux_max_cm_d": 3.268371471492058,
+      "gw_d_reversal_mismatch": 270,
+      "gw_r_one_day_exchange_max_cm": 0.08387617466685038
+    },
+    "L2": {
+      "aliases": 45,
+      "gw_d_flux_max_cm_d": 0.3018332707949156,
+      "gw_d_flux_sign_mismatch": 10,
+      "gw_d_reversal_mismatch": 0,
+      "gw_r_one_day_exchange_max_cm": 0.03079622571087315
+    },
+    "U2": {
+      "aliases": 201,
+      "gw_d_flux_max_cm_d": 1.9646941384543481,
+      "gw_d_reversal_mismatch": 104,
+      "gw_r_one_day_exchange_max_cm": 0.044516999819508296
+    },
+    "L3": {
+      "aliases": 0
+    },
+    "U3": {
+      "aliases": 145,
+      "gw_d_flux_max_cm_d": 1.506414198368942,
+      "gw_d_reversal_mismatch": 68,
+      "gw_r_one_day_exchange_max_cm": 0.02613968212583062
+    },
+    "L4": {
+      "aliases": 0
+    },
+    "U4": {
+      "aliases": 137,
+      "gw_d_flux_max_cm_d": 1.506414198368942,
+      "gw_d_reversal_mismatch": 64,
+      "gw_r_one_day_exchange_max_cm": 0.02052788847918041
+    },
+    "L6": {
+      "aliases": 0
+    },
+    "U6": {
+      "aliases": 116,
+      "gw_d_flux_max_cm_d": 1.506414198368942,
+      "gw_d_reversal_mismatch": 64,
+      "gw_r_one_day_exchange_max_cm": 0.016353604734939076
+    }
+  },
+  "active_family_radius_2x": {
+    "L3": {
+      "aliases": 58,
+      "gw_d_cumulative_bottom_max_cm": 0.016802575236511186,
+      "gw_d_flux_max_cm_d": 0.5512712282751409,
+      "gw_d_flux_sign_mismatch": 0,
+      "gw_d_reversal_mismatch": 0,
+      "gw_r_one_day_exchange_max_cm": 0.019483392924883436
+    },
+    "L4": {
+      "aliases": 58,
+      "gw_d_cumulative_bottom_max_cm": 0.016802575236511186,
+      "gw_d_flux_max_cm_d": 0.5512712282751409,
+      "gw_d_flux_sign_mismatch": 0,
+      "gw_d_reversal_mismatch": 0,
+      "gw_r_one_day_exchange_max_cm": 0.019483392924883436
+    },
+    "L6": {
+      "aliases": 58,
+      "gw_d_cumulative_bottom_max_cm": 0.016802575236511186,
+      "gw_d_flux_max_cm_d": 0.5512712282751409,
+      "gw_d_flux_sign_mismatch": 0,
+      "gw_d_reversal_mismatch": 0,
+      "gw_r_one_day_exchange_max_cm": 0.019483392924883436
+    }
+  },
+  "active_family_radius_4x": {
+    "L3": {
+      "aliases": 151,
+      "gw_d_cumulative_bottom_max_cm": 0.037408431034329226,
+      "gw_d_flux_max_cm_d": 1.0672717781279317,
+      "gw_d_flux_sign_mismatch": 50,
+      "gw_d_reversal_mismatch": 74,
+      "gw_r_one_day_exchange_max_cm": 0.04517985655509538
+    },
+    "L4": {
+      "aliases": 151,
+      "gw_d_cumulative_bottom_max_cm": 0.037408431034329226,
+      "gw_d_flux_max_cm_d": 1.0672717781279317,
+      "gw_d_flux_sign_mismatch": 50,
+      "gw_d_reversal_mismatch": 74,
+      "gw_r_one_day_exchange_max_cm": 0.04517985655509538
+    },
+    "L6": {
+      "aliases": 151,
+      "gw_d_cumulative_bottom_max_cm": 0.037408431034329226,
+      "gw_d_flux_max_cm_d": 1.0672717781279317,
+      "gw_d_flux_sign_mismatch": 50,
+      "gw_d_reversal_mismatch": 74,
+      "gw_r_one_day_exchange_max_cm": 0.04517985655509538
+    }
+  },
+  "reconstruction_theta_rmse_max": {
+    "L2": 0.0005538016811184364,
+    "L3": 0.00014651553898090293,
+    "L4": 0.00006628417871040549,
+    "L6": 0.00006607677188895093,
+    "U2": 0.0020560683940179965,
+    "U3": 0.0019375316413488921,
+    "U4": 0.0018543275256585024,
+    "U6": 0.0017073050917182043
+  },
+  "full_state_near_identical_baseline": {
+    "pairs": 3,
+    "gw_d_cumulative_bottom_max_cm": 0.006224530027950093,
+    "gw_d_flux_max_cm_d": 0.2273078908565651,
+    "gw_d_flux_sign_mismatch": 0,
+    "gw_d_reversal_mismatch": 0,
+    "gw_r_one_day_exchange_max_cm": 0.0079449584851905
+  },
+  "adjudication": [
+    "L3 is the smallest frozen layer-storage representation with zero reduction-induced aliases at 0.25x, 0.5x and 1x in the candidate-enriched 41-state common cohort.",
+    "L3, L4 and L6 have identical alias counts and future-response extrema at every frozen radius in this cohort; extra L4/L6 storage state therefore has no demonstrated state-information value here.",
+    "L2 is materially more informative than same-dimension U2 but retains purpose-relevant ambiguity and 1x bottom-flux sign mismatches.",
+    "Active-lower-zone placement strongly outperforms same-dimension uniform or near-uniform placement.",
+    "Current-profile reconstruction improves from L3 to L4, but A1 shows no corresponding future-response information gain; reconstruction error is not a state-sufficiency acceptance variable.",
+    "Together with prior DYN0A evidence that L4 greatly improves standard-LARE propagation over L3, A1 sharpens the attribution toward closure/resolution error rather than missing predictive state information."
+  ],
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_GLOBAL_L3_SUFFICIENCY_CLAIM",
+    "NO_SINGLE_SCORE",
+    "NO_PRODUCTION_ROM",
+    "NO_PORTABLE_SPEEDUP_CLAIM"
+  ],
+  "next": "PREREGISTER_SAME_STATE_CLOSURE_COMPARISON_WITH_L3_PRIMARY_AND_L4_RESOLUTION_CONTROL"
+}
