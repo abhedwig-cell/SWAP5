@@ -1,0 +1,135 @@
+{
+  "schema": "swap5.lare.bc2.c5x.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5X",
+  "status": "CLOSED_STORAGE_ONLY_SCAFP_REMAINS_STRUCTURALLY_UNDERDETERMINED_STATE_SUFFICIENCY_REOPENED",
+  "decision": "STOP_STORAGE_ONLY_ANSATZ_SHOPPING_REOPEN_MINIMUM_SUBGRID_SHAPE_STATE_DERIVATION",
+  "role": "READ_ONLY_REMAINING_SCAFP_FAMILY_AND_STATE_SUFFICIENCY_RECONCILIATION",
+  "authority": {
+    "C5W": "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
+    "C5V": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "C5T": "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
+    "C5R": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "C4K": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+    "hydrological_response_generated": false,
+    "model_run_executed": false
+  },
+  "evidence_chain": [
+    {
+      "step": "C5R",
+      "finding": "At identical 5/2.5/2.5-cm lower-boundary support, D8_B2P5 and D12_B2P5 groundwater responses are numerically indistinguishable; adding four distributed storage states does not rescue fidelity.",
+      "implication": "The remaining error is strongly tied to propagation/subgrid structure rather than missing broad storage totals."
+    },
+    {
+      "step": "C5T",
+      "finding": "A zero-fit constant-flux Darcian steady-equivalent closure fails its preregistered numerical admissibility route.",
+      "implication": "Quasi-steady two-point propagation does not provide an admissible next closure under its frozen contract."
+    },
+    {
+      "step": "C5V",
+      "finding": "Layer-integrated storage alone supplies only one integral constraint and does not uniquely determine transient subgrid tendency/profile shape.",
+      "implication": "Any storage-only transient reconstruction needs an additional scientific ansatz."
+    },
+    {
+      "step": "C5W",
+      "finding": "The most conservative storage-only ansatz, P0 uniform storage tendency, has conditional local uniqueness but fails prospective existence/admissibility over the frozen B14 domain: 264/405 local cases and 28/28 column cases fail.",
+      "implication": "The minimal conservation-aligned algebraic ansatz cannot proceed to hydrological response and is not retuned."
+    }
+  ],
+  "remaining_storage_only_options": {
+    "QUADRATIC_PRESSURE_PROFILE": {
+      "structural_assumption": "Choose a quadratic profile in native suction/pressure head, adding one algebraic shape mode per layer.",
+      "merits": [
+        "Minimum polynomial degree that closes the C5V finite-dimensional degree count.",
+        "Uses the native hydraulic variable appearing in Darcy gradients and prescribed-head boundary conditions.",
+        "Can be made zero-fit and storage-consistent."
+      ],
+      "unresolved": [
+        "No conservation principle uniquely selects pressure/suction rather than theta, hydraulic head or a transformed potential as the polynomial coordinate.",
+        "Profile order remains a structural modeling choice.",
+        "Selecting this family now would be a new ansatz choice rather than a consequence of existing state authority."
+      ]
+    },
+    "TRANSFORMED_POTENTIAL_PROFILE": {
+      "structural_assumption": "Choose a low-order profile in a constitutive transform such as a Kirchhoff hydraulic potential.",
+      "merits": [
+        "Kirchhoff transforms are established tools for reducing nonlinear conductivity structure in Richards numerics.",
+        "The transformed coordinate is physically tied to the conductivity integral."
+      ],
+      "unresolved": [
+        "For general van Genuchten-Mualem relations the transform does not uniquely remove all transient/gravity nonlinearity.",
+        "Transform definition and profile order remain scientific choices not determined by layer storage.",
+        "Its constitutive-integral structure is adjacent to, though not identical with, the DSE2P route that already encountered admissibility problems."
+      ]
+    }
+  },
+  "literature_due_diligence": [
+    {
+      "reference": "Celia, Bouloutas & Zarba (1990), WRR, doi:10.1029/WR026i007p01483",
+      "conclusion": "Mass-conservative mixed Richards formulations privilege correct storage/time treatment, but do not select a unique within-control-volume hydraulic profile."
+    },
+    {
+      "reference": "Morton & Sonar (2007), Acta Numerica, doi:10.1017/S0962492906300013",
+      "conclusion": "Finite-volume state variables are naturally cell averages and P0 is the lowest-order projection; higher-order reconstruction requires additional structural information."
+    },
+    {
+      "reference": "Suk & Park (2019), Journal of Hydrology 579:124213, doi:10.1016/j.jhydrol.2019.124213",
+      "conclusion": "Kirchhoff transformation is a useful Richards numerical coordinate, but its benefits depend on constitutive structure and it does not establish a unique reduced subgrid profile."
+    },
+    {
+      "reference": "AirMOSS quadratic soil-moisture retrieval literature",
+      "conclusion": "Quadratic vertical profiles are used as low-parameter empirical reconstructions when observations are limited; that supports feasibility, not physical uniqueness."
+    },
+    {
+      "reference": "Bootsma, van der Ploeg & Weerts (2026), Advances in Water Resources 213:105327, doi:10.1016/j.advwatres.2026.105327",
+      "conclusion": "A DAE view retaining moisture content with pressure linked by constitutive constraint reinforces the distinction between conserved moisture state and hydraulic algebraic variables; it does not remove the need for unresolved spatial information in an aggregated layer."
+    }
+  ],
+  "C4K_reconciliation": {
+    "prior_decision": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT",
+    "scope": "A2 direction/history ambiguity test on the then-current reduced state.",
+    "explicit_prior_caveat": "C4K was not proof of universal memoryless sufficiency.",
+    "new_evidence_after_C4K": [
+      "C5R propagation identifiability after placement/breadth controls.",
+      "C5V formal storage-only subgrid underdetermination.",
+      "C5W prospective failure of the minimum-additional-structure P0 storage-only map."
+    ],
+    "adjudication": "NEW_EVIDENCE_IS_SUFFICIENT_TO_REOPEN_STATE_SUFFICIENCY_READ_ONLY; it does not yet authorize a new dynamic state implementation."
+  },
+  "adjudication": {
+    "QUADRATIC_PRESSURE_PROFILE_IMPLEMENTATION_AUTHORIZED": false,
+    "TRANSFORMED_POTENTIAL_PROFILE_IMPLEMENTATION_AUTHORIZED": false,
+    "STORAGE_ONLY_ANSATZ_SHOPPING_AUTHORIZED": false,
+    "STORAGE_ONLY_PROGRAM_UNIVERSALLY_DISPROVEN": false,
+    "C4K_UNIVERSALLY_OVERTURNED": false,
+    "MINIMUM_SUBGRID_SHAPE_STATE_DERIVATION_AUTHORIZED": true,
+    "NEW_DYNAMIC_STATE_IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_TEST_AUTHORIZED": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5Y",
+    "state": "READ_ONLY_MINIMUM_SUBGRID_SHAPE_STATE_DERIVATION_AUTHORIZED",
+    "question": "What is the smallest additional physically interpretable subgrid state, beyond layer-integrated storage, that removes the C5V underdetermination and admits a conservative zero-fit propagation operator without arbitrary profile-coordinate selection?",
+    "constraints": [
+      "Theory/degree-count/conservation derivation only before any response experiment.",
+      "Do not select a moment/state by fitting C5R/C5N/C5P residuals.",
+      "Prefer states that are moments or integrals of the conserved water-content field and have an evolution equation derivable from Richards conservation.",
+      "Require an explicit projected evolution equation and interface conservation contract.",
+      "Reconcile whether one additional state is needed per layer, only in boundary-adjacent layers, or globally.",
+      "No implementation or hydrological response until the state and its governing equation are uniquely specified prospectively.",
+      "No application, performance, speed or production-ROM claim."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_storage_only_ansatz_selected": false,
+    "new_dynamic_state_implemented": false,
+    "scalar_tuning_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
