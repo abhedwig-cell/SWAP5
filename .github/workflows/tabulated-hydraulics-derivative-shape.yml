@@ -1,0 +1,172 @@
+name: TAB-HYD table-vs-MvG derivative shape
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-derivative-shape.yml'
+      - 'research/tabulated_hydraulics/table_vs_mvg_derivative_envelope.f90'
+      - 'research/tabulated_hydraulics/prepare_envelope_cases.py'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+      - 'research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_tspack.py'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout current public SWAP source
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: swap-src
+
+      - name: Checkout Staring parameters
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Apply bounded derivative and direct-index research candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_direct_uniform_tspack.py \
+            swap-src/src/soil/sptabulated.f90
+
+      - name: Generate exact 250-row uniform-x tables for six selected soils
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/derivative-shape/inputs
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases.py")
+          spec=importlib.util.spec_from_file_location("prep",p)
+          prep=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          series=prep.read_staring(
+              Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv")
+          )
+          out=Path("build/derivative-shape/inputs")
+          for soil in ("b4","o5","b9","o9","b12","o13"):
+              par=series[soil]
+              rows=prep.uniform_rows(par,250)
+              with (out/f"{soil}.dat").open("w") as fh:
+                  fh.write(
+                      f"{len(rows)} {par['ores']:.17e} {par['osat']:.17e} "
+                      f"{par['alpha']:.17e} {par['n']:.17e} "
+                      f"{par['ksat']:.17e} {par['lexp']:.17e}\n"
+                  )
+                  for h,theta,k in rows:
+                      fh.write(f"{h:.17e} {theta:.17e} {k:.17e}\n")
+          PY
+
+      - name: Compile actual public wrappers and patched table evaluator
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/derivative-shape/mod
+          FLAGS="-O0 -g -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/derivative-shape/mod \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/derivative-shape/arrays.o
+          gfortran $FLAGS -I build/derivative-shape/mod -J build/derivative-shape/mod \
+            -c research/tabulated_hydraulics/current_wrapper_stubs.f90 \
+            -o build/derivative-shape/stubs.o
+          gfortran $FLAGS -I build/derivative-shape/mod -J build/derivative-shape/mod \
+            -c swap-src/src/soil/sptabulated.f90 \
+            -o build/derivative-shape/sptabulated.o
+          gfortran $FLAGS -I build/derivative-shape/mod -J build/derivative-shape/mod \
+            -c swap-src/src/utils/soilhydraulicsutils.f90 \
+            -o build/derivative-shape/wrappers.o
+          gfortran $FLAGS -I build/derivative-shape/mod -J build/derivative-shape/mod \
+            research/tabulated_hydraulics/table_vs_mvg_derivative_envelope.f90 \
+            build/derivative-shape/arrays.o build/derivative-shape/stubs.o \
+            build/derivative-shape/sptabulated.o build/derivative-shape/wrappers.o \
+            -o build/derivative-shape/characterize
+
+      - name: Run six-soil derivative shape comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/derivative-shape/results.csv
+          first=1
+          for soil in b4 o5 b9 o9 b12 o13; do
+            build/derivative-shape/characterize "$soil" \
+              "build/derivative-shape/inputs/$soil.dat" > "build/derivative-shape/$soil.csv"
+            if [ "$first" -eq 1 ]; then
+              grep -v '^TABLE_VS_' "build/derivative-shape/$soil.csv" \
+                > build/derivative-shape/results.csv
+              first=0
+            else
+              grep -v -E '^(soil,|TABLE_VS_)' "build/derivative-shape/$soil.csv" \
+                >> build/derivative-shape/results.csv
+            fi
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, math
+
+          p=Path("build/derivative-shape/results.csv")
+          rows=[]
+          with p.open() as fh:
+              for r in csv.DictReader(fh):
+                  for k in ("h_cm","K_analytic","dKdh_analytic","K_table","dKdh_table","table_over_analytic"):
+                      r[k]=float(r[k])
+                  rows.append(r)
+
+          by={}
+          for r in rows:
+              by.setdefault(r["soil"],[]).append(r)
+
+          lines=[f"points={len(rows)}"]
+          for soil, rr in by.items():
+              active=[r for r in rr if abs(r["dKdh_analytic"])>1e-10]
+              max_a=max(abs(r["dKdh_analytic"]) for r in rr)
+              max_t=max(abs(r["dKdh_table"]) for r in rr)
+              max_k_rel=max(
+                  abs(r["K_table"]-r["K_analytic"]) /
+                  max(1e-12,abs(r["K_analytic"]))
+                  for r in rr
+              )
+              if active:
+                  ratios=[abs(r["dKdh_table"]/r["dKdh_analytic"]) for r in active]
+                  ratio_min=min(ratios)
+                  ratio_max=max(ratios)
+              else:
+                  ratio_min=ratio_max=0.0
+              lines += [
+                  f"{soil}_max_abs_dKdh_analytic={max_a:.17e}",
+                  f"{soil}_max_abs_dKdh_table={max_t:.17e}",
+                  f"{soil}_max_K_relative_error={max_k_rel:.17e}",
+                  f"{soil}_active_dKdh_ratio_min={ratio_min:.17e}",
+                  f"{soil}_active_dKdh_ratio_max={ratio_max:.17e}",
+              ]
+
+          Path("build/derivative-shape/summary.txt").write_text("\n".join(lines)+"\n")
+          print(Path("build/derivative-shape/summary.txt").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-table-vs-mvg-derivative-shape
+          path: |
+            build/derivative-shape/results.csv
+            build/derivative-shape/summary.txt
