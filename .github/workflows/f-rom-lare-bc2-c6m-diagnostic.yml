@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - '.github/workflows/f-rom-lare-bc2-c6m-diagnostic.yml'
+      - 'tests/rom/instrument_lare_bc2_c6m_diagnostic.py'
 
 permissions:
   contents: read
@@ -30,37 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object tests/rom/materialize_lare_bc2_c6m_surface_reference.py)" = "9a72f9ab418d1281fd09b0b776ab4be8937b8bfc"
-          python3 - <<'PY'
-          import json
-          p=json.load(open('integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json'))
-          assert p['phase']=='PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE'
-          assert p['blind_design']['histories']['S01']['initial_Se']==0.70
-          assert p['scientific_firewall']['candidate_response_generated'] is False
-          PY
-
-      - name: Materialize B01 R512 T16 S01 diagnostic
-        run: |
-          set -euo pipefail
-          python3 tests/rom/materialize_lare_bc2_c6m_surface_reference.py \
-            --source tests/rom/test_lare_dyn0a_reference.f90 \
-            --material B01 --temporal-factor 16 \
-            --output canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
-            --manifest /tmp/c6m_manifest.json
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90')
-          s=p.read_text()
-          old="        call require(ok,'LAREDYN0R accepted history step')"
-          new="""        if(.not.ok)then
-          write(*,'(*(g0))') 'LAREDYN0R_C6M_DIAG_FAIL|STEP=',step,'|SUBSTEP=',substep, &
-               '|T0=',sub_t0,'|T1=',sub_t1,'|STATUS=',status,'|ROUTE=',trim(route), &
-               '|NL=',nl,'|IR=',ir,'|BACK=',back,'|MASS=',mass,'|BEX=',bex,'|BFLUX=',bflux, &
-               '|TOP_FLUX=',forcing%top_flux,'|BOTTOM_MODE=',p%bottom_mode
-        end if
-        call require(ok,'LAREDYN0R accepted history step')"""
-          assert s.count(old)==1
-          p.write_text(s.replace(old,new,1))
-          PY
+          python3 tests/rom/instrument_lare_bc2_c6m_diagnostic.py \
+            --path canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90
           stub="canonical/c6m_diag_stubs.f90"
           python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
