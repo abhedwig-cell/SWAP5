@@ -1,7 +1,7 @@
 # SWAP5 Project Control
 
 **Work unit:** PROJECT-CONTROL-01  
-**Control snapshot:** `integration/f-ci-canonical@5cb2fdfe00397dcfa38b3abc8a8afef062663f73`  
+**Control snapshot:** `integration/f-ci-canonical@97afc3176395a8548daa686b89ca6fb2f2a4ea09`  
 **Date:** 2026-09-20  
 **Machine-readable authority:** `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
 
@@ -33,7 +33,7 @@ Central regie owns canonical admission, cross-workstream supersession, shared-au
 
 | Workstream | State | Current authority / finding | Next gate |
 |---|---|---|---|
-| REGIE | ACTIVE | canonical snapshot `5cb2fdf`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; #72/#163/#172 are reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #72, then #163/#172 |
+| REGIE | ACTIVE | canonical snapshot `97afc31`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; #163/#172 remain reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #163, then #172 |
 | PPA production physics | ACTIVE | WU04-A Black, ROOT-HYD02 prescribed-root tangent and WU04-B Boesten are already merged to canonical; WU05-A/C are review-only authority | Production owner selects the next source-authorized bounded slice; no inference from review authority to production |
 | F-GC groundwater coupling | ACTIVE | F-GC50 remains externally blocked at product integration, while PR #486 is an active noncanonical coupling-semantics/application-authority repair | Let #486 finish owner qualification, then reconcile shared production/coupling/publication consequences before admission |
 | F-ROM / LARE | BLOCKED_EXTERNAL | D31 confirms official M2WC70 archive metadata but cannot materialize the implementation oracle; D28 native-ET blocker also remains | Materialize acceptable FMC implementation authority or narrow/close the affected proposition |
@@ -106,9 +106,10 @@ This is substantial research capability evidence, but **Stage 0 is still not aut
 
 ### Central reconciliation queue
 
-These are the only old PRs that central regie should actively recompose when no newer admission is waiting:
+PR #72 has now been recomposed into current governance by GOV-REC01. The stale branch is not a merge target and should be closed after this successor is canonically admitted.
 
-- **#72** Status-A to Status-AA governance: reconcile useful principles against current governance; do not merge the stale branch as-is.
+The remaining central reconciliation debt is:
+
 - **#163** F-TB13 analytical reference preservation: reconcile against current F-TB authority.
 - **#172** F-TA04 transaction/restart traceability: reconcile against current transaction/restart authority.
 
@@ -134,6 +135,20 @@ PRs #359, #365, #371, #389, #181, #199, #217, #218 and #219 stay with their spec
 PR #187 is an immutable blocked PUB-P2E03 experiment and must not be merged as positive evidence.
 
 PR #207 is an immutable blocked first PUB-ME D2 attempt and must be preserved as negative evidence, not converted into a success.
+
+## Current quality-governance authority
+
+GOV-REC01 reconciles the useful governance principles from historical PR #72 against the admitted Status-A and current post-Status-A repository state.
+
+Current governance surfaces:
+
+- `docs/development/quality-governance-a-aa.md`;
+- `docs/development/status-a-aa-gap-register.md`;
+- `docs/development/lessons-register.md`;
+- `docs/verification/theory-code-discrepancy-register.md`;
+- `integration/control/STATUS_A_AA_GOVERNANCE_RECONCILIATION_20260920.json`.
+
+The new discrepancy register immediately records the live coupling-authority question as `TCD-SWAP5-001 / INVESTIGATING`. This does not pre-admit PR #486.
 
 ## Historical control records
 
@@ -179,6 +194,6 @@ Every specialized chat should begin with the same four operations:
 
 ## Default next action for central regie
 
-PR **#486** is the current shared-authority watch and takes precedence once its owner qualification is complete. While it is still qualifying, the next safe central housekeeping task remains **#72 governance reconciliation**, followed by #163 and #172. Each old governance/evidence PR should be recomposed against current canonical rather than replaying an old branch.
+PR **#486** remains the current shared-authority watch and takes precedence once its owner qualification is complete. GOV-REC01 resolves the former #72 governance debt by recomposition rather than stale-branch replay. While #486 is still qualifying, the next safe central housekeeping task is **#163**, followed by **#172**.
 
 This ordering is a routing decision, not a scientific priority ranking.
