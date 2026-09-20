@@ -1,0 +1,127 @@
+{
+  "schema": "swap5.lare.bc2.c6g.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6G",
+  "status": "CLOSED_INTERFACE_LOCAL_CONSERVED_STORAGE_IS_EITHER_DUAL_CONTROL_VOLUME_REFINEMENT_REDUNDANT_MOMENT_OR_NEW_INTERFACE_PHYSICS",
+  "decision": "DO_NOT_IMPLEMENT_INTERFACE_LOCAL_STORAGE_AS_NEW_ROM_STATE_UNDER_UNCHANGED_RICHARDS_PHYSICS",
+  "role": "READ_ONLY_INTERFACE_LOCAL_CONSERVED_STATE_IDENTIFIABILITY_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+    "propagation_reconciliation": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
+    "first_moment": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "bemr_boundary_failure": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "question": "Can a genuinely interface-local conserved water state add independent transient information under unchanged one-dimensional Richards physics without becoming a refined/dual control volume, a redundant weighted moment, or a new lower-dimensional physical storage law?",
+  "general_weighted_state": {
+    "definition": "X_w = integral_a^b w(z)*theta(z) dz",
+    "continuity": "dtheta/dt = -dq/dz",
+    "exact_balance": "dX_w/dt = -[w*q]_a^b + integral_a^b w'(z)*q(z) dz",
+    "consequence": "A general overlapping/smooth interface-local weight does not have a pure boundary-flux conservation law. It requires the distributed flux moment integral w' q, which is unresolved unless additional closure/state is introduced.",
+    "special_case": "For an indicator weight of a physical interval, w' is distributional only at the interval endpoints and the balance reduces to inflow minus outflow over that control volume."
+  },
+  "positive_measure_interface_storage": {
+    "construction": "Assign interface j a physical support interval I_j=[z_j-eps_left,z_j+eps_right] with positive thickness and state W_j=integral_{I_j} theta dz.",
+    "nonoverlap_case": {
+      "requirement": "To treat W_j as independent physical water inventory without double counting, interface supports and neighboring bulk supports must form a non-overlapping partition of the soil column.",
+      "result": "The interface interval is then simply an additional finite-volume/control-volume cell. Local conservation over it is ordinary grid refinement or repartitioning.",
+      "novelty": false
+    },
+    "overlap_case": {
+      "requirement": "Keep the original macro-layer storages while also integrating a positive-measure interface band that overlaps them.",
+      "result": "The physical water is represented more than once if all integrals are interpreted as independent inventories. If one instead treats W_j as an auxiliary moment, it is not an independent conserved storage state and its balance contains unresolved internal flux information.",
+      "novelty": "Only as a nonconserved/redundant moment, returning to the moment-closure problem rather than a new conserved interface state."
+    }
+  },
+  "zero_measure_interface_storage": {
+    "ordinary_richards_limit": "For bounded theta, the water inventory of a zero-thickness interface is zero.",
+    "finite_surface_storage_requirement": "A finite lower-dimensional interface capacity would require an additional constitutive law such as W_j=C_j(lambda_j) or another singular/interfacial storage relation.",
+    "interpretation": "That is new interface physics (membrane/fracture/contact storage or hysteretic interface capacity), not a reduction of the unchanged bulk Richards equation.",
+    "authorized": false
+  },
+  "dual_mesh_reconciliation": {
+    "statement": "Vertex-centered or mixed/dual control-volume Richards schemes achieve local conservation by assigning ordinary positive-measure control volumes around mesh vertices/interfaces. This changes the numerical partition, not the physical state dimension independent of that partition.",
+    "consequence": "Calling a dual control volume an interface-memory state does not make it a new reduced hydrological state.",
+    "independent_theory_context": [
+      {
+        "citation": "Farthing, M.W. and Ogden, F.L. (2017), Numerical Solution of Richards' Equation: A Review of Advances and Challenges, Soil Science Society of America Journal 81.",
+        "doi": "10.2136/sssaj2017.02.0058",
+        "relevance": "Reviews finite-volume and dual-control-volume formulations of Richards equation as integral local-conservation discretizations."
+      },
+      {
+        "citation": "Romano, N., Brunone, B., Santini, A. (1998), Numerical analysis of one-dimensional unsaturated flow in layered soils, Advances in Water Resources 21, 315-324.",
+        "doi": "10.1016/S0309-1708(96)00059-0",
+        "relevance": "Treats layered-soil interfaces through pressure-potential and flux continuity without an independent singular interface water-storage state."
+      }
+    ]
+  },
+  "dimensional_and_conservation_adjudication": {
+    "POSITIVE_MEASURE_NONOVERLAP_INTERFACE_STATE_HAS_EXACT_BALANCE": true,
+    "POSITIVE_MEASURE_NONOVERLAP_INTERFACE_STATE_IS_DISTINCT_FROM_GRID_REPARTITION": false,
+    "OVERLAPPING_INTERFACE_INVENTORY_IS_INDEPENDENT_PHYSICAL_STORAGE": false,
+    "OVERLAPPING_WEIGHTED_STATE_HAS_PURE_FLUX_BALANCE": false,
+    "ZERO_MEASURE_INTERFACE_HAS_FINITE_BULK_RICHARDS_STORAGE": false,
+    "FINITE_ZERO_MEASURE_INTERFACE_STORAGE_REQUIRES_NEW_PHYSICS": true,
+    "INTERFACE_LOCAL_CONSERVED_STATE_UNDER_UNCHANGED_RICHARDS_IS_NEW_ROM_FAMILY": false,
+    "IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "relation_to_c6f": {
+    "c6f_result": "Fixed upper/lower sub-control volumes collapse to ordinary refinement under standard Darcy.",
+    "c6g_generalization": "Any positive-measure non-overlapping interface-local conserved water state is likewise a control-volume repartition/refinement. Moving the extra storage from layer interior to layer interface does not change that structural identity."
+  },
+  "scientific_interpretation": [
+    "A local conservation law belongs naturally to a physical control volume. Under unchanged Richards physics, giving an interface its own finite water inventory therefore gives it finite spatial support.",
+    "Once those supports are non-overlapping so water is counted once, the model is simply a refined or dual finite-volume partition.",
+    "Overlapping weighted interface states can encode extra information, but they are moments rather than independent conserved inventories and inherit an unresolved flux-moment closure.",
+    "A finite storage located on a zero-thickness interface is not present in the bulk Richards equation and would constitute new physical interface capacity.",
+    "Therefore the interface-local conserved-state option does not supply the missing reduced representation without either returning to grid refinement/moment closure or adding new physics."
+  ],
+  "architecture_review": {
+    "affected_invariants": [
+      3,
+      4,
+      13,
+      20,
+      23,
+      25,
+      30
+    ],
+    "conclusion": "No implementation is admitted. Reference and production architecture remain untouched."
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6H",
+    "state": "ADAPTIVE_MOVING_PARTITION_READ_ONLY_DERIVATION_AUTHORIZED",
+    "rationale": "After C6F and C6G, fixed positive-measure conserved subcells—whether inside layers or centered on interfaces—are ordinary repartition/refinement. The remaining representation direction that can alter information placement without adding new bulk/interface physics is moving geometry.",
+    "question": "Can a fixed-count moving partition carry vertical hydrological memory through boundary positions while preserving exact water conservation, and is there a response-independent adaptation law derivable from the Richards state rather than from exposed error?",
+    "constraints": [
+      "Read-only theory first; no hydrological response.",
+      "Derive moving-control-volume balance with Reynolds transport/ALE relative flux.",
+      "Separate exact conservation/remapping from the still-open adaptation law.",
+      "Do not choose monitor functions or tuning coefficients from C5/C6 response residuals.",
+      "Do not claim that a generic moving-mesh method is a new physical model unless the retained state/information content differs from ordinary fixed-grid refinement.",
+      "Reference Richards, RossFast and production groundwater coupling remain unchanged."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_dynamic_state_implemented": false,
+    "new_interface_physics_introduced": false,
+    "response_based_design": false,
+    "post_c6e_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
