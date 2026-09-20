@@ -22,6 +22,7 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail(){ echo "LAYER_ROM_PHASE_A_RESPONSE_GATE_FAIL $*" >&2; exit 1; }
 
+grep -Fq "FUTURE_STEPS=256" "$FUTURE_TEST" || fail "future horizon contract drift"
 git merge-base --is-ancestor "$CANONICAL_START" HEAD || fail "canonical start not ancestor"
 git merge-base --is-ancestor "$STATE_AUTHORITY_COMMIT" HEAD || fail "state authority not ancestor"
 git diff --quiet "$CANONICAL_START"...HEAD -- src reference || fail "Layer-ROM response work changed src/reference"
