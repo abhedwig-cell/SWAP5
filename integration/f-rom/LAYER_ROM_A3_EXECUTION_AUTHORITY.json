@@ -22,5 +22,16 @@
     "observed_diagnostic_direction": "Neither first-moment closure passed broad support; this observation must not substitute for the authoritative rerun."
   },
   "no_scientific_change_from_routing": true,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "authoritative_final_run": {
+    "workflow_run": 35495220671,
+    "head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+    "conclusion": "success",
+    "artifact_id": 10599939300,
+    "artifact_digest": "sha256:6dcfcfbe7d05b28ab62e0d14d3911959e541a39caeaa22690d824e9aa5152a24",
+    "result_sha256": "bab62de3e2841e3352808cb9a77d93b66f0cfc2a6fb513b199c2f5bcacf97945",
+    "role": "DECISION_AUTHORITY"
+  },
+  "authoritative_initial_run_role": "REPRODUCED_PREDECESSOR",
+  "final_rerun_reproduced_initial_result_bitwise": true
 }
