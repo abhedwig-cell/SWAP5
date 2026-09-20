@@ -196,7 +196,10 @@
       "points": 257,
       "no_adaptive_post_result_expansion": true
     },
-    "outer_surface_flux_tolerance_cm_per_day": 1e-10
+    "outer_surface_flux_tolerance_cm_per_day": 1e-10,
+    "bracketing_scan_substeps_per_layer": 32,
+    "bracket_verification": "Every coarse sign-changing interval must retain opposite signs when re-evaluated on the 256-substep primary integrator before bisection qualification.",
+    "coarse_scan_cannot_qualify": true
   },
   "qualification_gates": {
     "G1_ANALYTIC_LOCAL_UNIQUENESS": "Proof conditions and sign argument encoded and independently checked against constitutive derivatives.",
