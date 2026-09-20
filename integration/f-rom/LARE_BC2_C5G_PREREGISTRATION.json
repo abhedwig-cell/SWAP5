@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.lare.bc2.c5g.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5G",
+  "phase": "PREREGISTERED_BEFORE_C5G_R512_T4_RESPONSE",
+  "title": "Matched R512/R1024 x T1/T2/T4 Reference matrix completion",
+  "scientific_question": "When the missing R512 T4 cell is added under the exact C5F physical history and numerical policy, how does the matched R512-R1024 spatial gap evolve from T1 to T2 to T4, and is temporal convergence consistent across R512 and R1024?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_SINGLE_CELL_MATRIX_COMPLETION",
+  "authority": {
+    "c5f_closeout": "integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json",
+    "required_c5f_status": "CLOSED_TEMPORAL_PROGRESS_SUBDOMINANT_BUT_SPATIOTEMPORAL_INTERACTION_NONNEGLIGIBLE_MATCHED_T4_SPATIAL_CELL_REQUIRED",
+    "c5f_result_sha256": "ae686248db6b782047b0fce1f3fb01116d3dcda6dd691516aa2cc21b1b3ba180",
+    "c5f_artifact_id": 10602317061,
+    "c5f_artifact_digest": "sha256:1ba8d90b08c99955d76c8b2ee60bae16bd40f68667ecda889cafc002627f43bb",
+    "c5e_artifact_id": 10602206315,
+    "c5e_artifact_digest": "sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c",
+    "R512_T2_sha256": "2b8bd09285177e4347323649f6e53f0baabb3d5b303d32cf407551b3606de88e",
+    "R1024_T2_sha256": "d0778a8e9a95984538241b3afeac2b853e63686769ac1570819654ad711076be",
+    "R1024_T4_sha256": "e0e600d44fdc56d849e2b04759971ea5702d3207b4f1b3b827e3a6ca69a9afe3",
+    "R512_T1_sha256": "b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c",
+    "R1024_T1_sha256": "e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "new_lare_or_closure_authorized": false
+  },
+  "new_cell": {
+    "geometry": "R512",
+    "nodes": 512,
+    "dz_cm": 0.3125,
+    "temporal_route": "T4",
+    "main_transaction_dt_day": 0.0002,
+    "steps_per_history": 4096,
+    "exact_physical_history": "C5F T4",
+    "aggregation_to_day": 0.0008
+  },
+  "preserved_cells": [
+    "R512_T1",
+    "R1024_T1",
+    "R512_T2",
+    "R1024_T2",
+    "R1024_T4"
+  ],
+  "numerical_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "O0_O2_identity_required": true,
+    "no_tolerance_relaxation": true,
+    "no_new_failure_class": true
+  },
+  "matrix_diagnostics": {
+    "spatial": [
+      "R512-R1024 pooled bottom-flux RMSE at T1",
+      "R512-R1024 pooled bottom-flux RMSE at T2",
+      "R512-R1024 pooled bottom-flux RMSE at T4"
+    ],
+    "temporal": [
+      "R512 T1-T2 and T2-T4 pooled bottom-flux RMSE and descriptive order",
+      "R1024 T1-T2 and T2-T4 pooled bottom-flux RMSE and descriptive order"
+    ],
+    "interaction": [
+      "spatial T2/T1 and T4/T2 ratios",
+      "R512 and R1024 T2-T4 temporal shifts relative to the T4 spatial gap",
+      "resolution dependence of the T2-T4 temporal shift",
+      "history- and phase-specific signed diagnostics"
+    ],
+    "no_absolute_acceptance_threshold": true
+  },
+  "adjudication": {
+    "MATRIX_COMPLETE_SPATIAL_GAP_DECREASES_AT_T4": "T4 R512-R1024 RMSE is smaller than T2 by more than 1e-12 numerical equality tolerance.",
+    "MATRIX_COMPLETE_SPATIAL_GAP_INCREASES_AT_T4": "T4 R512-R1024 RMSE is larger than T2 by more than 1e-12.",
+    "MATRIX_COMPLETE_SPATIAL_GAP_NUMERICALLY_UNCHANGED_AT_T4": "T4 and T2 spatial RMSE differ by at most 1e-12.",
+    "interpretation": "Direction of the T4 spatial-gap change is descriptive Reference evidence, not application acceptance."
+  },
+  "next_logic": {
+    "if_T4_gap_decreases_and_temporal_subdominant_both_resolutions": "A matched spatial extension at T4 may be considered before returning to LARE.",
+    "if_T4_gap_increases_or_temporal_not_subdominant": "Space-time interaction remains unresolved; extend temporal refinement before any spatial extension or LARE comparison.",
+    "no_outcome": "C5G never authorizes a new LARE closure, production ROM or application acceptance."
+  },
+  "hard_gates": {
+    "exact_C5F_and_C5E_anchor_hashes": true,
+    "R512_T4_O0_O2_identity": true,
+    "R512_T4_state_count": 16384,
+    "R512_T4_history_pass_count": 4,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "baseline_identity_to_C5F": true,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "physical_history_changed": false,
+    "numerical_policy_changed": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5f_materializer_blob": "2bc5b00b924aa018fb14a1ab108180f380a6ae5e",
+    "c5g_analyzer_blob": "0edfbae9e86f0e947268b656d179351861ccb84c",
+    "response_based_design": true,
+    "reason": "C5G is motivated by C5F space-time interaction, but the single missing matrix cell, diagnostics and directional adjudication are frozen before R512 T4 is generated.",
+    "allowed_new_code": "none beyond the pre-bound C5F T4 materializer and C5G matrix aggregator",
+    "prohibited_new_code": "LARE execution, closure changes, new tolerance, new physical forcing, application thresholds"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
