@@ -196,7 +196,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "moment_instrumenter": "tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py",
-    "moment_instrumenter_blob": "5b22a72c7f3f51e4bbfaf978953c7ff50a425b29",
+    "moment_instrumenter_blob": "9bb231634a83e333f042438ee9b2e55373c631e2",
     "history_slicer": "tests/rom/materialize_lare_bc2_c5t_history_slice.py",
     "history_slicer_blob": "10983adaf736a0eb4c64a443f78db5ea38e13ae3",
     "analyzer": "tests/rom/analyze_lare_bc2_c6d_bemr_flux.py",
@@ -204,11 +204,12 @@
     "bemr_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "bemr_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6d.yml",
-    "workflow_blob": "dc5a2b65d228f236b8ee715383c254dab98d45d1",
+    "workflow_blob": "2b8d2eebd49d99373063626ceb3314182b0b0d07",
     "execution_binding_complete": true,
     "aggregator": "tests/rom/aggregate_lare_bc2_c6d_bemr_flux.py",
     "aggregator_blob": "4777b0fad33ff2e293173d69044d777b425dc67e",
-    "binding_note": "C6D histories, projected S/M state, BEMR equations, starts, metrics, interface set, execution blobs and workflow are frozen before any authoritative C6D instrumented response or operator metric."
+    "binding_note": "C6D histories, projected S/M state, BEMR equations, starts, metrics, interface set, repaired logging delegation, execution blobs and workflow are frozen before any authoritative C6D Reference response or operator metric. Superseded run 35524423966 failed before Reference execution.",
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C6D_EXECUTION_BINDING_RECONCILIATION.json"
   },
   "model_changed": false
 }
