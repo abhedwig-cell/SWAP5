@@ -157,6 +157,71 @@ On the same 31-day Hupsel control and bounds-checked current-public binary:
 
 Thus `SWSOPHY=1` is **not production-executable through the current typed SWAP input path**. This capability gap is independent of TAB-HYD-001.
 
+
+### 8. Direct interval indexing removes the table-runtime penalty
+
+The existing table route spends appreciable time locating an interval through the logarithmic lookup-bin machinery. Two bounded experiments separated interval location from interpolation.
+
+A research-only table representation was generated with negative pressure-head knots uniform in the already-used transformed coordinate
+
+`x = -ln(1-h)`
+
+plus the saturated `h=0` endpoint. This permits O(1) interval selection by arithmetic rather than the existing `log10(-h)` bin lookup.
+
+#### Direct index plus linear interpolation
+
+Replacing both lookup and interpolation by direct-index linear interpolation removed essentially all table overhead, but lost too much trajectory fidelity. In a repeated full-period benchmark:
+
+- analytical median = `1.46789 s`;
+- dense legacy TSPACK = `1.61830 s`, ratio `1.10247`;
+- direct-linear variants = approximately `1.46795 s`, ratio approximately `1.0000`.
+
+Hydrological error remained material. For example, the 100-row direct-linear route gave GWL maximum absolute difference `0.14452 cm` and RMSE `0.01475 cm` relative to the analytical control.
+
+This shows that the existing runtime penalty is not primarily the arithmetic cost of TSPACK itself.
+
+#### Direct index plus cubic Hermite interpolation
+
+Using the same direct interval index but retaining cubic interpolation with the already-preprocessed endpoint slopes restored high fidelity:
+
+- 150 rows: GWL max abs `0.00018 cm`, RMSE `9.50e-6 cm`;
+- 250 rows: GWL max abs `0.00017 cm`, RMSE `6.69e-6 cm`.
+
+The dense legacy TSPACK control had GWL max abs `0.00018 cm` and RMSE `6.80e-6 cm`.
+
+Repeated runtime medians were:
+
+- analytical = `1.41719 s`;
+- dense legacy TSPACK = `1.56774 s`, ratio `1.10624`;
+- direct cubic 150 = `1.46742 s`, ratio `1.03545`;
+- direct cubic 250 = `1.46733 s`, ratio `1.03539`.
+
+Thus direct lookup recovers most, but not all, of the existing table penalty when cubic interpolation is implemented locally.
+
+#### Direct index plus unchanged TSPACK interpolation
+
+The strongest separation experiment changed only interval selection. After the O(1) direct index selected the two knots, the existing TSPACK `my_HVAL/my_HPVAL` evaluation was left unchanged.
+
+At 150-250 rows the hydrological trajectory was effectively indistinguishable from the dense legacy table route at the written-output scale:
+
+- 150 rows: GWL max abs `0.00018 cm`, RMSE `9.25e-6 cm`;
+- 250 rows: GWL max abs `0.00017 cm`, RMSE `6.69e-6 cm`;
+- dense legacy TSPACK: GWL max abs `0.00018 cm`, RMSE `6.80e-6 cm`.
+
+Repeated benchmark medians were:
+
+- analytical = `1.31706 s`;
+- dense legacy TSPACK = `1.41739 s`, ratio `1.07618`;
+- direct TSPACK 100 = `1.31713 s`, ratio `1.00006`;
+- direct TSPACK 150 = `1.31714 s`, ratio `1.00006`;
+- direct TSPACK 250 = `1.31706 s`, ratio `0.999999`;
+- direct TSPACK 400 = `1.31716 s`, ratio `1.00007`.
+
+This is strong evidence that the approximately 8-11% whole-model penalty of the existing table route in this Hupsel workload comes predominantly from the legacy interval-lookup/data-access path, not from TSPACK interpolation arithmetic. Once that lookup is replaced by direct arithmetic indexing, a high-fidelity table route reaches whole-model runtime parity with direct analytical MvG.
+
+It is **not yet a speedup**. Within measurement resolution, the best direct-index table route is equal to the analytical route rather than faster.
+
+
 ## Source-authority boundary
 
 The executable end-to-end experiments use the public/transitional SWAP source lineage. They are not yet executions of the immutable supplied SWAP 4.3.1 B0 archive.
