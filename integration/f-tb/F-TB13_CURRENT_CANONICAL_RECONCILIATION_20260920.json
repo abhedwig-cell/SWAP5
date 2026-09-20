@@ -52,6 +52,33 @@
     "VQ reference qualification",
     "F-CI canonical qualification"
   ],
-  "decision": "REBASED_EXACT_PRESERVATION_PACKAGE_PENDING_CURRENT_HEAD_QUALIFICATION",
-  "admission_effect": "If all current-head qualification gates pass and live canonical remains scope-compatible, admit F-TB13R as an additive permanent analytical/reference testbank surface and close historical PR #163 as superseded by the rebase."
+  "decision": "QUALIFIED_CURRENT_CANONICAL_ANALYTICAL_REFERENCE_PRESERVATION_READY_FOR_ADMISSION",
+  "admission_effect": "Admit F-TB13R as an additive permanent analytical/reference testbank surface. Historical PR #163 is superseded as a live merge target and may be closed with its evidence preserved.",
+  "qualification": {
+    "qualified_content_head": "b5e4c3f94ac6f22b30906d6aea2ff7ea33f5663e",
+    "dedicated_preservation": {
+      "run": 35493746367,
+      "conclusion": "success"
+    },
+    "documentation": {
+      "run": 35493746351,
+      "conclusion": "success"
+    },
+    "vq_reference": {
+      "run": 35493746331,
+      "conclusion": "success"
+    },
+    "f_gc42": {
+      "run": 35493746336,
+      "conclusion": "success"
+    },
+    "f_ci_canonical": {
+      "run": 35493746334,
+      "conclusion": "success",
+      "moving_current_job": 106033225979,
+      "moving_current_preservation": "success"
+    },
+    "exact_predecessor_blob_identity": "PASS_ALL_19_IMPORTED_FILES",
+    "evidence_inheritance": "This metadata-only successor records results obtained on qualified_content_head; no preserved asset, workflow, checker, source/reference or expected-result content changes."
+  }
 }
