@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6n1.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6N1_T32_REFERENCE_RESPONSE",
   "title": "Three-level space-time numerical uncertainty qualification for surface fixed-flux Reference",
   "role": "REFERENCE_ONLY_NO_LAYER_ROM_RESPONSE",
   "scientific_question": "Do the exposed C6M2 U01-U04 surface-driven fixed-flux histories exhibit monotone three-level spatial and temporal convergence sufficient to attach explicit numerical uncertainty envelopes to an R2048_T32 Reference?",
@@ -126,14 +126,24 @@
     "No application tolerance, performance or production claim."
   ],
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "materializer": "tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py",
-    "materializer_blob": null,
+    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
     "analyzer": "tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py",
-    "analyzer_blob": null,
+    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n1.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "71b8bca3973885a288f3599ce3ba17a25c31a959",
+    "prior_C6M2_run": 35532270427,
+    "prior_C6M2_artifact_id": 10612270980,
+    "prior_C6M2_artifact_digest": "sha256:5a6384a5c93aac24e68918f3dfe56ccfe30c6630aa55ba169ea25821643ba5cd",
+    "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
+    "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
+    "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
+    "B14_source_harness_blob": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "execution_binding_complete": true,
+    "response_based_design": false,
+    "binding_note": "T32 routes, three-level convergence formulas, GCI-style safety factor, required metrics and fail-closed rules were frozen before first C6N1 T32 Reference response."
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
