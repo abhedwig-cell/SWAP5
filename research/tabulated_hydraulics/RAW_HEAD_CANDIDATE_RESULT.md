@@ -4,6 +4,8 @@ Date: 2026-09-20
 
 Status: **research candidate; not production-admitted**
 
+> **Supersession note (2026-09-20):** the first raw-head qualification run (`35533250183`) used a research interval-hint condition that relied on Fortran `.and.` evaluation not touching `sptab(...,0)` when `klast=0`. Fortran does not guarantee such short-circuit evaluation. A bounds-checked constitutive run exposed the invalid index. Commit `1b0a24120f910dc0809f550ad41bd200e27ae8ed` replaces the condition by a structurally bounds-safe two-stage test. All raw-head fidelity and performance numbers below are therefore **provisional historical evidence** until reproduced by the bounds-safe rerun.
+
 Scope: isolate whether the transformed pressure-head coordinate and associated interval-location work are the dominant residual cost of a high-fidelity tabulated hydraulic route.
 
 ## Bound authorities
