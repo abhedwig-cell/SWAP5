@@ -8,7 +8,9 @@
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "requested_start": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
-    "reconciled_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8"
+    "reconciled_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
+    "live_reconciled_head": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+    "live_delta_note": "Canonical advanced by project-control/governance commits after audit preimage; no coupling production physics change was observed in that delta."
   },
   "scientific_authority": {
     "legacy_boundary": {
@@ -125,5 +127,21 @@
     "E6": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
     "E7": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
   },
-  "pub_gc_submission": "HELD"
+  "pub_gc_submission": "HELD",
+  "parallel_repair": {
+    "pull_request": 486,
+    "state": "OPEN_SHARED_AUTHORITY_REPAIR",
+    "reviewed_scope": [
+      "CSR-01 explicit groundwater_coupled application authority",
+      "CSR-02 private Reference mode-5 trial realization"
+    ],
+    "scope_assessment": "CONSISTENT_WITH_AUDIT_BOUNDARY",
+    "safeguards": [
+      "active root extraction remains fail-closed",
+      "active drainage response remains fail-closed",
+      "no storage-partition implementation was added",
+      "no Hupsel E7 rerun was authorized"
+    ],
+    "merge_assessment": "DO_NOT_MERGE_YET_FROM_THIS_AUDIT: branch is six canonical commits behind and contains concurrent shared-authority work; project-control watch is active in canonical."
+  }
 }
