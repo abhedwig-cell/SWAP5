@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.aggregation-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "BOUND_AGGREGATION_ONLY_AFTER_VALID_CANDIDATE_EXECUTION",
+  "decision": "CLASSIFY_IMMUTABLE_C6N2_CANDIDATE_PAYLOADS_AGAINST_IMMUTABLE_C6N1_UNCERTAINTY",
+  "scientific_authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+    "preregistration_blob": "d54d404b466c1c5dc79359f1d0147616b914ab3b",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
+    "analyzer_blob": "46b32eca7e91574775344f6f261554112337e6d5",
+    "C6N1_result": "integration/f-rom/LARE_BC2_C6N1_RESULT.json",
+    "C6N1_result_blob": "d6052da1072724c58798443baff835bae9a9dc5f",
+    "C6N1_closeout": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "C6N1_closeout_blob": "d07063d7df90d007ea55364a3f9e1fd548684de9",
+    "source_candidate_run": 35537872450,
+    "source_candidate_head": "540c0e4e5a70a197ffbdcf017f2bebd60269e182",
+    "source_candidate_count": 20,
+    "source_candidate_jobs_successful": 20,
+    "recovery_workflow": ".github/workflows/f-rom-lare-bc2-c6n2-aggregate-recovery.yml",
+    "recovery_workflow_blob": "456de8e57b3c35dc982951412d03e267ca5d2619",
+    "execution_reconciliation_v5": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V5.json"
+  },
+  "classification": {
+    "reference": "R2048_T32",
+    "uncertainty_field": "U_combined",
+    "metric_specific": true,
+    "scalar_score": false,
+    "bottom_exchange_fidelity_in_scope": false,
+    "application_tolerance_selected": false
+  },
+  "governance": {
+    "candidate_rerun_authorized": false,
+    "candidate_payloads_changed": false,
+    "uncertainty_values_changed": false,
+    "metrics_changed": false,
+    "views_changed": false,
+    "classification_logic_changed": false,
+    "response_based_retuning": false,
+    "source_run_overall_failure_due_only_to_analyzer_schema_key": true
+  },
+  "scientific_firewall": {
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
