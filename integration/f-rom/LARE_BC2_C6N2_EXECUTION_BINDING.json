@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.execution-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "BOUND_AFTER_C6N1_QUALIFICATION_BEFORE_CANDIDATE_RESPONSE",
+  "decision": "EXECUTE_FROZEN_EXISTING_REPRESENTATION_SURFACE_PROFILE_COMPARISON",
+  "scientific_authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+    "preregistration_blob": "d54d404b466c1c5dc79359f1d0147616b914ab3b",
+    "runner": "tests/rom/run_lare_bc2_c6n2_surface_candidate.py",
+    "runner_blob": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
+    "analyzer_blob": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n2.yml",
+    "workflow_blob": "81167c726c82219fe7f3d9858d4c20145d161545",
+    "C6N1_result": "integration/f-rom/LARE_BC2_C6N1_RESULT.json",
+    "C6N1_result_blob": "d6052da1072724c58798443baff835bae9a9dc5f",
+    "C6N1_closeout": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "C6N1_closeout_blob": "d07063d7df90d007ea55364a3f9e1fd548684de9",
+    "C6N1_qualified": true,
+    "C6N1_authority_run": 35534785660,
+    "C6N1_authority_execution_head": "7dba3ffb793d3c1128d335dc3968d09e8aa9babf",
+    "C6N1_authority_artifact_id": 10613517378,
+    "C6N1_authority_artifact_digest": "sha256:63d2dc2b9063159fe39119765d6798b06f266df7d9103a74c61a19bfd68dadb1"
+  },
+  "execution": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "members": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12",
+      "R16",
+      "P4_TOP_LOWER",
+      "U4",
+      "U8"
+    ],
+    "candidate_jobs": 20,
+    "histories": [
+      "U01",
+      "U02",
+      "U03",
+      "U04"
+    ],
+    "candidate_internal_dt_day": 0.0001,
+    "closure": "CURRENT_LAYER_FACE",
+    "reference": "R2048_T32",
+    "classification": "Metric-specific candidate RMSE relative to C6N1 U_combined; no scalar score.",
+    "bottom_exchange_fidelity_in_scope": false
+  },
+  "governance": {
+    "scientific_design_frozen_before_C6N1_result": true,
+    "C6N1_result_used_only_to_satisfy_execution_precondition_and_supply_predeclared_uncertainty_bands": true,
+    "partitions_changed_after_C6N1": false,
+    "metrics_changed_after_C6N1": false,
+    "hypotheses_changed_after_C6N1": false,
+    "application_tolerance_selected": false,
+    "performance_screen_authorized": false
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "new_representation_selected": false,
+    "closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
