@@ -3,8 +3,8 @@
   "work_unit": "F-GC-COUPLING-SEMANTICS-RECONCILIATION",
   "title": "SWAP5-MODFLOW6 Coupling Semantics Reconciliation",
   "protocol": "RECONCILE -> THEORY AUTHORITY -> LEGACY SEMANTICS -> COUPLING OWNERSHIP -> CODE TRACE -> CLASSIFY DEFECT -> DESIGN CONTRACT -> IMPACT AUDIT -> PERSIST -> CLOSE",
-  "phase": "CLOSE_AUDIT",
-  "state": "AUDIT_CLOSED_REPAIR_REQUIRED_STORAGE_AUTHORITY_BLOCKED",
+  "phase": "CLOSE_AUDIT_AND_BOUNDED_REPAIR",
+  "state": "BOUNDED_CSR01_CSR02_IMPLEMENTED_STORAGE_AUTHORITY_BLOCKED",
   "canonical": {
     "branch": "integration/f-ci-canonical",
     "requested_start": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
@@ -85,11 +85,14 @@
     "CSR-08 PUB-GC claim supersession and later E7 disposition only after corrected authority"
   ],
   "governance_note": "F-GC39/F-GC44 and later F-GC49/F-GC50 wording is ambiguous about internal service versus iMOD Coupler product-level predictor/corrector ownership; future documentation must distinguish outer product lifecycle coordination from bounded per-window coupling-service semantics.",
-  "production_changes": [],
+  "production_changes": [
+    "CSR-01 explicit groundwater_coupled application authority independent of legacy bottom_mode",
+    "CSR-02 Reference participant privately materializes coupled trial head through mode 5"
+  ],
   "reference_changes": [],
   "solver_changes": [],
   "hupsel_rerun": false,
-  "closeout": "AUDIT_COMPLETE; implementation repair intentionally not started because storage/drainage authority is not yet closed",
+  "closeout": "SEMANTIC_AUDIT_COMPLETE; CSR-01/CSR-02 bounded repair present on branch; broad production admission remains blocked by storage/drainage authority",
   "status": "SEMANTIC_CLASSIFICATION_COMPLETE_BLOCKED_STORAGE_PARTITION_AUTHORITY",
   "canonical_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
   "updated_at": "2026-09-20",
@@ -111,5 +114,16 @@
     "code": "BLOCKED_STORAGE_PARTITION_AUTHORITY",
     "reason": "realistic production contract does not yet state the non-overlapping physical storage ownership of SWAP-derived u versus MODFLOW STO",
     "consequence": "do not perform broad production architecture repair or rerun E7 until authority is explicit"
-  }
+  },
+  "decision": "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED",
+  "experiment_impact": {
+    "E1": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E2": "UNAFFECTED",
+    "E3": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+    "E4": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E5": "UNAFFECTED",
+    "E6": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+    "E7": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
+  },
+  "pub_gc_submission": "HELD"
 }
