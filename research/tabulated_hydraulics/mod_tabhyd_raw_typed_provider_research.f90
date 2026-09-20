@@ -2,6 +2,8 @@ module mod_tabhyd_raw_typed_provider_research
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use swap_array_dimensions, only: matab
   use TSPACK, only: my_HVAL, my_HPVAL
   implicit none
@@ -31,6 +33,8 @@ module mod_tabhyd_raw_typed_provider_research
   end type tabhyd_raw_provider_t
 
   public :: initialize_tabhyd_raw_provider
+  public :: initialize_tabhyd_raw_provider_from_mvg
+  public :: bind_tabhyd_raw_provider_step_duration
 
   interface
     subroutine PreProcTabulatedFunction(flag,n,x,y,dydx,sigma)
@@ -42,6 +46,82 @@ module mod_tabhyd_raw_typed_provider_research
   end interface
 
 contains
+
+  subroutine initialize_tabhyd_raw_provider_from_mvg(provider, cofgen, step_duration)
+    type(tabhyd_raw_provider_t), intent(out) :: provider
+    real(real64), intent(in) :: cofgen(:,:)
+    real(real64), intent(in) :: step_duration
+    type(b110_default_mvg_parameters_t), target :: analytic_parameters
+    type(b110_default_mvg_provider_t) :: analytic
+    real(real64), allocatable :: head_table(:,:), theta_table(:,:), conductivity_table(:,:)
+    real(real64), allocatable :: lo(:), hi(:), mid(:), target(:), hvec(:), theta(:), conductivity(:), capacity(:), dkdh(:)
+    real(real64) :: frac, u0
+    integer :: i, j, n
+
+    if (size(cofgen,1) < 12) error stop 'TAB-HYD typed research provider: insufficient MvG rows'
+    n = size(cofgen,2)
+    if (n <= 0) error stop 'TAB-HYD typed research provider: empty MvG parameter set'
+    if (any(cofgen(9,1:n) /= 0.0_real64)) &
+      error stop 'TAB-HYD typed research provider: generated route currently requires H_ENPR=0'
+    if (any(cofgen(10,1:n) > cofgen(3,1:n))) &
+      error stop 'TAB-HYD typed research provider: generated route excludes KSATEXM extension'
+    if (step_duration <= 0.0_real64) error stop 'TAB-HYD typed research provider: invalid generation step duration'
+
+    call initialize_b110_default_mvg_parameters(analytic_parameters, cofgen)
+    call bind_b110_default_mvg_provider(analytic, analytic_parameters, step_duration)
+
+    allocate(head_table(TABHYD_RAW_TABLE_N,n), theta_table(TABHYD_RAW_TABLE_N,n), &
+             conductivity_table(TABHYD_RAW_TABLE_N,n))
+    allocate(lo(n),hi(n),mid(n),target(n),hvec(n),theta(n),conductivity(n),capacity(n),dkdh(n))
+
+    lo = -1.0e7_real64
+    hi = -1.0e-12_real64
+    target = cofgen(3,1:n)*(1.0_real64-1.0e-8_real64)
+    do j = 1, 140
+      mid = 0.5_real64*(lo+hi)
+      call analytic%evaluate(mid,theta,conductivity,capacity,dkdh)
+      do i = 1, n
+        if (conductivity(i) <= target(i)) then
+          lo(i) = mid(i)
+        else
+          hi(i) = mid(i)
+        end if
+      end do
+    end do
+
+    u0 = log10(1.0e7_real64)
+    do j = 1, TABHYD_RAW_TABLE_N-1
+      frac = real(j-1,real64)/real(TABHYD_RAW_TABLE_N-2,real64)
+      do i = 1, n
+        if (j == TABHYD_RAW_TABLE_N-1) then
+          hvec(i) = lo(i)
+        else
+          hvec(i) = -10.0_real64**(u0 + frac*(log10(-lo(i))-u0))
+        end if
+      end do
+      call analytic%evaluate(hvec,theta,conductivity,capacity,dkdh)
+      head_table(j,:) = hvec
+      theta_table(j,:) = theta
+      conductivity_table(j,:) = conductivity
+    end do
+
+    hvec = 0.0_real64
+    call analytic%evaluate(hvec,theta,conductivity,capacity,dkdh)
+    head_table(TABHYD_RAW_TABLE_N,:) = hvec
+    theta_table(TABHYD_RAW_TABLE_N,:) = theta
+    conductivity_table(TABHYD_RAW_TABLE_N,:) = conductivity
+
+    call initialize_tabhyd_raw_provider(provider,head_table,theta_table,conductivity_table,cofgen,step_duration)
+  end subroutine initialize_tabhyd_raw_provider_from_mvg
+
+  subroutine bind_tabhyd_raw_provider_step_duration(provider, step_duration)
+    type(tabhyd_raw_provider_t), intent(inout) :: provider
+    real(real64), intent(in) :: step_duration
+    if (step_duration <= 0.0_real64) error stop 'TAB-HYD typed research provider: invalid bound step duration'
+    if (provider%active_nodes <= 0 .or. .not. allocated(provider%head)) &
+      error stop 'TAB-HYD typed research provider: bind before initialization'
+    provider%step_duration = step_duration
+  end subroutine bind_tabhyd_raw_provider_step_duration
 
   subroutine initialize_tabhyd_raw_provider(provider, head_table, theta_table, conductivity_table, cofgen, step_duration)
     type(tabhyd_raw_provider_t), intent(out) :: provider
