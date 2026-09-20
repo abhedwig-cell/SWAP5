@@ -255,6 +255,21 @@ contains
   subroutine validate_trial(r,c)
     type(kernel_result_t), intent(in) :: r
     type(kernel_candidate_state_t), intent(in) :: c
+    if (.not. (r%status==CANONICAL_STATUS_COMPLETED .and. r%completed .and. c%ready() .and. &
+        r%mass%complete .and. abs(r%mass%residual)<=mass_tolerance)) then
+      write(*,'(a,i0)') 'DIAG_STATUS=',r%status
+      write(*,'(a,l1)') 'DIAG_COMPLETED=',r%completed
+      write(*,'(a,l1)') 'DIAG_CANDIDATE_READY=',c%ready()
+      write(*,'(a,l1)') 'DIAG_MASS_COMPLETE=',r%mass%complete
+      write(*,'(a,es24.16)') 'DIAG_MASS_RESIDUAL=',r%mass%residual
+      write(*,'(a,i0)') 'DIAG_ATTEMPTS=',diagnostics%attempts
+      write(*,'(a,i0)') 'DIAG_RETRIES=',diagnostics%retries
+      write(*,'(a,i0)') 'DIAG_SOLVER_REJECTIONS=',diagnostics%solver_rejections
+      write(*,'(a,i0)') 'DIAG_TEMPORAL_REJECTIONS=',diagnostics%temporal_rejections
+      write(*,'(a,i0)') 'DIAG_MASS_REJECTIONS=',diagnostics%mass_rejections
+      write(*,'(a,i0)') 'DIAG_ADMISSION_REJECTIONS=',diagnostics%admission_rejections
+      write(*,'(a,es24.16)') 'DIAG_MAX_STEP_MASS_RESIDUAL=',diagnostics%max_abs_step_mass_residual
+    end if
     call require(r%status==CANONICAL_STATUS_COMPLETED .and. r%completed,'runtime completed')
     call require(c%ready(),'candidate ready')
     call require(r%mass%complete,'mass complete')
