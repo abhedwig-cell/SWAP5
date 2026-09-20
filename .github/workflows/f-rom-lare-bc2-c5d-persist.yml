@@ -1,0 +1,178 @@
+name: F-ROM-LARE persist C5D Reference extension
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5d-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5D artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5d
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600714885" > /tmp/c5d/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5d/artifact.json'))
+          assert a['id']==10600714885
+          assert a['digest']=='sha256:d08ceaf2d6dea6464ebca829bb91e15a3857ad669b573a74a2a67b09c15451eb'
+          assert a['workflow_run']['id']==35500141508
+          assert a['workflow_run']['head_sha']=='32ca500df7c00c4b9cadafff5dcb06a87dcf8319'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600714885/zip" > /tmp/c5d.zip
+          echo "d08ceaf2d6dea6464ebca829bb91e15a3857ad669b573a74a2a67b09c15451eb  /tmp/c5d.zip" | sha256sum -c -
+          unzip -q /tmp/c5d.zip -d /tmp/c5d/evidence
+          echo "34082ec971a2461a43dae87faa885579b60a37241fff337ccc2c948b21345a50  /tmp/c5d/evidence/LARE_BC2_C5D_RESULT.json" | sha256sum -c -
+          echo "22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe  /tmp/c5d/evidence/R128_o0.txt" | sha256sum -c -
+          echo "684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961  /tmp/c5d/evidence/R256_o0.txt" | sha256sum -c -
+
+      - name: Persist result and build C5D closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5d/evidence/LARE_BC2_C5D_RESULT.json integration/f-rom/LARE_BC2_C5D_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5D_RESULT.json'))
+          c=r['convergence']
+          d=r['adjacent_grid_distances']
+          closeout={
+            'schema':'swap5.lare.bc2.c5d.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5D',
+            'status':'CLOSED_REFERENCE_REFINEMENT_WEAKLY_PROGRESSING_THROUGH_R256_NOT_ASYMPTOTIC',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5D_PREREGISTRATION.json',
+              'workflow_run':35500141508,
+              'job_id':106050348497,
+              'execution_head':'32ca500df7c00c4b9cadafff5dcb06a87dcf8319',
+              'artifact_id':10600714885,
+              'artifact_digest':'sha256:d08ceaf2d6dea6464ebca829bb91e15a3857ad669b573a74a2a67b09c15451eb',
+              'result_sha256':'34082ec971a2461a43dae87faa885579b60a37241fff337ccc2c948b21345a50',
+              'R128_reference_sha256':'22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe',
+              'R256_reference_sha256':'684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961',
+              'R16_reference_sha256':'16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b',
+              'R32_reference_sha256':'3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9',
+              'R64_reference_sha256':'dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1'
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5C':r['baseline_identity_to_C5C'],
+            'reference_extension':{
+              'R16_R32_RMSE_cm_per_day':c['R16_R32_RMSE_cm_per_day'],
+              'R32_R64_RMSE_cm_per_day':c['R32_R64_RMSE_cm_per_day'],
+              'R64_R128_RMSE_cm_per_day':c['R64_R128_RMSE_cm_per_day'],
+              'R128_R256_RMSE_cm_per_day':c['R128_R256_RMSE_cm_per_day'],
+              'ratio_R64_R128_over_R32_R64':c['ratio_R64_R128_over_R32_R64'],
+              'ratio_R128_R256_over_R64_R128':c['ratio_R128_R256_over_R64_R128'],
+              'observed_order_R32_R64_R128':c['estimated_order_from_R32_R64_R128'],
+              'observed_order_R64_R128_R256':c['estimated_order_from_R64_R128_R256'],
+              'two_consecutive_decreases':c['two_consecutive_progressing_steps']
+            },
+            'adjudication':{
+              'R128_QUALIFIED':True,
+              'R256_QUALIFIED':True,
+              'TWO_CONSECUTIVE_ADJACENT_RMSE_DECREASES':True,
+              'ASYMPTOTIC_REFERENCE_AUTHORITY_ESTABLISHED':False,
+              'NEW_LARE_OR_CLOSURE_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'Reference refinement finally shows two consecutive reductions after R64, but the reduction is weak rather than asymptotic-looking.',
+              'Adjacent-grid bottom-flux RMSE changes from 0.04898 cm/d for R32-R64 to 0.04712 for R64-R128 and 0.04361 for R128-R256.',
+              'The corresponding descriptive observed orders are only about 0.056 and 0.112. This is far from evidence of a stable expected-order convergence regime.',
+              'R128 and R256 both satisfy the unchanged numerical policy, O0/O2 identity and transaction mass gates, so the weak progress is not a failed-run artifact.',
+              'C5D therefore strengthens the conclusion that the B14 prescribed-head Reference is strongly spatial-resolution dependent while still not supplying a continuum-like authority.',
+              'No LARE closure or representation should be judged against R256 as if it were converged. Reference-only extension remains the correct next step.'
+            ],
+            'next_authority':{
+              'state':'REFERENCE_SPATIAL_EXTENSION_CONTINUES',
+              'target':'LARE-BC2-C5E',
+              'question':'Do adjacent-grid changes continue to decrease at R512 and, if numerically feasible under unchanged policy, R1024, and does the observed order begin to stabilize?',
+              'constraints':[
+                'Reference-only; no LARE run and no closure modification',
+                'reuse exact C5A B14 histories and frozen D13 numerical policy',
+                'R512 required; R1024 optional fail-closed with no retuning',
+                'preserve all R16-R256 anchors',
+                'do not claim continuum convergence from monotone decrease alone',
+                'no application, performance, speed or production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5D_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5D closeout
+
+          C5D extended the B14 dynamic prescribed-head Richards Reference from R64 to R128 and R256 without changing the workload or numerical policy. No LARE representation was run.
+
+          The authoritative run is 35500141508 at execution head 32ca500df7c00c4b9cadafff5dcb06a87dcf8319. Both R128 and R256 pass O0/O2 identity and the unchanged transaction-mass and D13 integrated-water-depth gates. The exact result SHA-256 is 34082ec971a2461a43dae87faa885579b60a37241fff337ccc2c948b21345a50.
+
+          Adjacent-grid bottom-flux RMSE is 0.04379 cm/d for R16-R32, 0.04898 for R32-R64, 0.04712 for R64-R128 and 0.04361 for R128-R256. Thus two consecutive reductions appear after R64.
+
+          That is refinement progress, but not yet convincing asymptotic convergence. The descriptive observed order is only about 0.056 over R32-R64-R128 and 0.112 over R64-R128-R256. R256 therefore cannot yet be treated as a continuum-like Reference authority.
+
+          The correct next step remains Reference-only. C5E extends to R512 and attempts R1024 under exactly the same numerical policy. No new LARE closure or representation is authorized before the Reference behavior is understood.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v9'
+          j['status']='CLOSED_THROUGH_C5D_REFERENCE_WEAK_PROGRESS_R512_R1024_EXTENSION_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5D_reference_extension':'integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5D':'R128 and R256 qualify and adjacent-grid bottom-flux RMSE decreases twice after R64, but only weakly. Observed orders near 0.06-0.11 do not establish an asymptotic Reference regime.'
+          })
+          j['decision']='CONTINUE_REFERENCE_ONLY_TO_R512_AND_OPTIONAL_R1024_BEFORE_ANY_NEW_LARE_OR_CLOSURE'
+          j['next_authority']='LARE-BC2-C5E'
+          j['next_family_authority']={
+            'family':'C5E_REFERENCE_SPATIAL_EXTENSION',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json'
+            ],
+            'purpose':'Determine whether the very weak post-R64 reduction develops into a stable spatial-convergence trend at R512/R1024.',
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5D closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5D_RESULT.json                   integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5D_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5D Reference extension"
+          git push origin HEAD:work/f-rom-lare-rs1
