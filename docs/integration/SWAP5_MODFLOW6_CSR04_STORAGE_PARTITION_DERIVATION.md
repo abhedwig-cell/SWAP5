@@ -418,3 +418,98 @@ This yields the scientific interpretation of the continuation experiment:
 The continuation should therefore use a logarithmic sequence approaching zero,
 not a literal zero as its first implementation target, and report both
 hydraulic-head trajectories and accepted water-balance terms.
+
+
+## 17. Coupled equation reconstruction and discriminating proof
+
+Let `S^n` be the accepted SWAP column state at the start of a coupling
+window and let `H` be the MODFLOW/shared lower-face head sought for the end
+of that window.
+
+The SWAP transaction defines an implicit finite-window map
+
+`Phi_SWAP(S^n, F, H) -> (S^{n+1}, q_i)`.
+
+Around a trial/reference head `H_r`, F-GC30/F-GC33 exposes the condensed
+response
+
+`q_i(H) ~= q_r + J_s (H-H_r)`,
+
+where `J_s = dq_i/dH = u/DeltaT` in the admitted response convention.
+
+After area/unit conversion the API package contributes
+
+`Q_i(H) = A [q_r + J_s(H-H_r)]`
+
+to the groundwater residual.
+
+Write the remaining MODFLOW regional-flow residual as `R_g(H)`. Native
+transient groundwater storage contributes schematically
+
+`C_g (H-H^n)/DeltaT`.
+
+The assembled scalar form is therefore
+
+`R_g(H) + C_g(H-H^n)/DeltaT + A[q_r + J_s(H-H_r)] = 0`.
+
+Its Newton/head derivative contains two distinct transient-response
+contributions:
+
+`dR/dH = dR_g/dH + C_g/DeltaT + A J_s`.
+
+This establishes algebraically:
+
+- `A J_s` is the condensed finite-window SWAP response;
+- `C_g/DeltaT` is native MODFLOW head memory;
+- they are not the same coefficient and neither may be relabelled as the other;
+- setting `C_g -> 0` does not remove SWAP transience because `q_r`,
+  `J_s`, and the next-window map depend on `S^n`;
+- retaining `C_g > 0` adds an independent dependence on the previous
+  accepted MODFLOW head.
+
+### Mass accounting
+
+The accepted SWAP transaction remains governed by its physical column balance
+
+`Delta S_SWAP = E_SWAP - Q_i`
+
+under the chosen sign convention.
+
+Interface continuity requires the groundwater equation to receive the opposite
+accepted transfer. This proves exchange conservation but does not decide
+whether `C_g Delta H` is an additional physical water volume.
+
+Only when `C_g` has explicit independent regional-storage authority may a
+physical combined-storage statement include that term. Otherwise it is a
+head-solve/state-equation term and must not be added to SWAP storage as a
+second reservoir.
+
+### Single discriminating experiment
+
+Use one SWAP column coupled to one transient MODFLOW cell over multiple
+successive windows. Hold geometry, forcing, regional boundary conditions,
+SWAP parameters and coupling response construction fixed. Vary only native
+MODFLOW storage over
+
+`Sy = 0.30, 0.05, 1e-2, 1e-3, 1e-4, 1e-5`.
+
+For every accepted window record:
+
+- accepted MODFLOW head `H^n`;
+- imposed SWAP lower-face hydraulic head;
+- SWAP diagnostic groundwater level;
+- accepted interface transfer;
+- SWAP storage start/end/change;
+- native MODFLOW STO budget term;
+- `q_r` and `J_s`;
+- SWAP component mass residual and interface-ledger residual.
+
+The primary discriminant is **memory separation**, not a preselected target
+head. Apply a forcing pulse and subsequent recovery period. If trajectories
+converge as `Sy -> 0`, that sequence identifies the SWAP-memory/quasi-steady
+MODFLOW limit. The finite-Sy departures quantify independent MODFLOW head
+memory. Whether those departures are physically required must then be decided
+from application authority, not numerical greenness.
+
+No combined physical storage acceptance test is permitted until that authority
+classification is made.
