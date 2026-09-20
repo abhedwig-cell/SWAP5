@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC-CSR",
+  "date": "2026-09-20",
+  "canonical_reconciled": "919bbf76370c2136932daa04ad88135e7d1615a8",
+  "branch": "work/f-gc-coupling-semantics-reconciliation",
+  "decision": "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED",
+  "classification": {
+    "interpretation_defect": true,
+    "authority_binding_defect": true,
+    "authority_binding_defect_primary": true,
+    "implementation_defect": "production application/profile gate",
+    "fundamental_core_coupling_design_defect": false,
+    "conditional_design_defect": "present if legacy bottom_mode=5 is treated as coupled application groundwater authority rather than internal trial-boundary realization"
+  },
+  "ownership": {
+    "groundwater_state": "MODFLOW6",
+    "groundwater_storage": "MODFLOW6",
+    "swap_column_state": "SWAP",
+    "swap_process_state": "SWAP",
+    "coupling_iteration_acceptance_publication": "coupler/runtime",
+    "trial_modflow_head": "coupling iterate, not accepted groundwater state",
+    "accepted_head": "MODFLOW candidate only after coupled publication"
+  },
+  "interface": {
+    "location": "fixed lower SWAP coupling plane / lower face for current direct coupling",
+    "not_equivalent_to": [
+      "freatic surface",
+      "lowest SWAP node centre",
+      "MODFLOW cell centre as a geometric identity",
+      "groundwater storage"
+    ],
+    "head_condition": "H_SWAP(interface)=H_MF(interface)",
+    "flux_condition": "q_SWAP(interface)=-q_MF(interface)",
+    "reference_backend_realization": "trial H_interface may be mapped through H=z+psi to temporary prescribed lower-face pressure head"
+  },
+  "legacy_reconciliation": {
+    "SWBOTB_5": "prescribed pressure head at bottom boundary",
+    "SWBOTB_6": "prescribed groundwater level",
+    "conclusion": "SWBOTB=5 is not prescribed groundwater level and is not application-level coupled-groundwater authority"
+  },
+  "defect_location": [
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90 profile_admitted requires bottom_mode==5",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90 groundwater_profile defined by bottom_mode==5",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90 production_application_groundwater_ready repeats bottom_mode==5",
+    "PUB-GC E6/E7 interpretation promoted this implementation profile into a groundwater-coupling application-domain boundary"
+  ],
+  "retained_authority": [
+    "F-GC17 datum/head/sign/unit contract",
+    "F-GC18 exchange transaction ownership",
+    "F-GC19 exact interface ledger",
+    "F-GC21 transactional predictor/corrector ownership except mode-5 application admission",
+    "F-GC30/F-GC33 bounded response mathematics",
+    "F-GC39/F-GC41/F-GC49C/F-GC49D MODFLOW ownership, iteration and ordered publication"
+  ],
+  "mass_contract": {
+    "interface_transfer": "book exactly once with equal and opposite component signs",
+    "swap_storage": "SWAP-owned, not interface flux",
+    "modflow_storage": "MODFLOW-owned, not interface flux",
+    "drainage": "SWAP external sink when represented by SWAP; not automatically MODFLOW recharge",
+    "root_uptake": "SWAP external sink; not separate MODFLOW exchange",
+    "rejected_trials": "zero authoritative interface mass"
+  },
+  "pub_gc_submission": "HELD",
+  "experiment_impact": {
+    "E1_E2": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E3": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E4": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E5": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E6": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+    "E7": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
+  },
+  "e7": {
+    "historical_observation_preserved": true,
+    "old_interpretation_superseded": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "current_disposition": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
+    "rerun_authorized": false,
+    "rerun_condition": "corrected coupled-boundary authority and required process composition independently qualified"
+  },
+  "repair_slices": [
+    "CSR-01 explicit coupled-boundary application/runtime authority",
+    "CSR-02 Reference backend internal trial-head realization and numerical identity qualification",
+    "CSR-03 process-composition separation from legacy bottom mode",
+    "CSR-04 active-drainage/recharge no-double-counting mass qualification",
+    "CSR-05 root-active corrected coupled-boundary qualification",
+    "CSR-06 PUB-GC targeted requalification and E7 prospective rerun"
+  ],
+  "production_source_changed": false,
+  "hupsel_rerun_performed": false
+}
