@@ -227,12 +227,13 @@
     "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
     "analyzer_blob": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n2.yml",
-    "workflow_blob": "29c730013237c920a72d0f52742fcc627fbd1316",
+    "workflow_blob": "681ad6b792e207508c833293193d973ebd0e9d55",
     "trigger_path": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json",
     "execution_binding_complete": false,
     "candidate_response_possible_before_C6N1_closeout": false,
     "scientific_design_changed": false,
-    "c6n1_artifact_family": "c6n1u-*"
+    "c6n1_artifact_family": "c6n1u-*",
+    "authority_lock": "FUTURE_EXECUTION_BINDING_CARRIES_FINAL_PREREG_RUNNER_ANALYZER_WORKFLOW_BLOBS"
   },
   "model_changed": false
 }
