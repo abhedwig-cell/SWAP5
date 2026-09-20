@@ -1,0 +1,685 @@
+{
+  "adjudication": {
+    "BEMR_ALL_MOVING_POINTS_NUMERICALLY_QUALIFIED": true,
+    "BEMR_EACH_PRIMARY_MOVING_RMSE_NO_WORSE": true,
+    "BEMR_PRIMARY_MOVING_COMPONENTWISE_NO_WORSE": true,
+    "BEMR_PRIMARY_MOVING_RMSE_STRICTLY_IMPROVED": true,
+    "BEMR_SUPPORTED_FOR_BOUNDARY_EXTENSION_QUALIFICATION": true
+  },
+  "all_interface_moving": {
+    "BEMR": {
+      "max_abs_cm_per_day": 0.18420116268699926,
+      "mean_abs_cm_per_day": 0.0004079608104940042,
+      "rmse_cm_per_day": 0.0031745293439160993,
+      "sign_mismatch_count": 190,
+      "signed_mean_cm_per_day": 1.953393944665761e-05
+    },
+    "CURRENT_LAYER_FACE": {
+      "max_abs_cm_per_day": 0.10265674466756781,
+      "mean_abs_cm_per_day": 0.0011668662236158694,
+      "rmse_cm_per_day": 0.004550167886926845,
+      "sign_mismatch_count": 229,
+      "signed_mean_cm_per_day": 8.306508422705538e-05
+    }
+  },
+  "diagnostic_extrema": {
+    "max_Se": 0.8943979119272624,
+    "max_branch_flux_cm_per_day": 6.0886851116492835e-12,
+    "max_branch_pressure_cm": 1.8354739950154908e-10,
+    "max_branch_theta": 6.444844657949034e-14,
+    "max_interface_flux_jump_cm_per_day": 7.704947790898586e-14,
+    "max_interface_pressure_jump_cm": 2.6204816094832495e-11,
+    "max_moment_recovery_cm2": 4.604953571241133e-14,
+    "max_storage_recovery_cm": 7.582823258189819e-14,
+    "min_Se": 0.6974826319561689
+  },
+  "failure_count": 0,
+  "failures": [],
+  "history_identity": {
+    "R01": {
+      "face": true,
+      "face_count": 11264,
+      "layer": true,
+      "layer_count": 12288,
+      "profile": true,
+      "profile_count": 16384,
+      "state": true,
+      "state_count": 16384
+    },
+    "R02": {
+      "face": true,
+      "face_count": 11264,
+      "layer": true,
+      "layer_count": 12288,
+      "profile": true,
+      "profile_count": 16384,
+      "state": true,
+      "state_count": 16384
+    },
+    "R03": {
+      "face": true,
+      "face_count": 11264,
+      "layer": true,
+      "layer_count": 12288,
+      "profile": true,
+      "profile_count": 16384,
+      "state": true,
+      "state_count": 16384
+    },
+    "R04": {
+      "face": true,
+      "face_count": 11264,
+      "layer": true,
+      "layer_count": 12288,
+      "profile": true,
+      "profile_count": 16384,
+      "state": true,
+      "state_count": 16384
+    }
+  },
+  "instrumentation_identity_pass": true,
+  "interpretation_boundaries": [
+    "R01-R04 were exposed in C5R; C6D is mechanism evidence, not blind validation.",
+    "Reference storage and centered moment are projected directly from immutable fine Reference water-content state; no moment is fitted.",
+    "BEMR and CURRENT_LAYER_FACE are evaluated on the same Reference-projected coarse states and neither feeds back into Reference.",
+    "C6D adjudicates prescribed-head moving phases only. HOLD is deliberately excluded because BEMR prescribed-flux external boundary semantics have not yet been mathematically qualified.",
+    "A positive C6D authorizes only response-free prescribed-flux/HOLD boundary qualification before any fresh blind free-running test."
+  ],
+  "moving_observation_count": 2304,
+  "numerical_qualification_pass": true,
+  "numerically_qualified_observation_count": 2304,
+  "per_interface_phase": {
+    "100.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 4.914052761338661e-07,
+          "mean_abs_cm_per_day": 1.6759847227381966e-07,
+          "rmse_cm_per_day": 2.2166079060202662e-07,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -4.973075831873019e-09
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.6511607332842e-10,
+          "mean_abs_cm_per_day": 9.984900763523825e-12,
+          "rmse_cm_per_day": 5.964071593020163e-11,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 9.984684460672907e-12
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 4.460197611730332e-07,
+          "mean_abs_cm_per_day": 1.5945567848355096e-07,
+          "rmse_cm_per_day": 2.1982154403056996e-07,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 4.3286090124959115e-08
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 5.263151026113633e-15,
+          "mean_abs_cm_per_day": 2.8338174841843916e-16,
+          "rmse_cm_per_day": 5.056753336712458e-16,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.125642135756213e-16
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 4.914052761338661e-07,
+          "mean_abs_cm_per_day": 1.7488412987563903e-07,
+          "rmse_cm_per_day": 2.2329359107775965e-07,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -4.815232958272282e-08
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.6511607332842e-10,
+          "mean_abs_cm_per_day": 1.8918505789322873e-11,
+          "rmse_cm_per_day": 8.209511168076403e-11,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.8918159315399675e-11
+        }
+      }
+    },
+    "110.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 2.8641738742084255e-06,
+          "mean_abs_cm_per_day": 9.77087750296388e-07,
+          "rmse_cm_per_day": 1.2923845723344809e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -2.9220941824421808e-08
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.4568541598439233e-07,
+          "mean_abs_cm_per_day": 3.1765529765218658e-09,
+          "rmse_cm_per_day": 1.5907876446270802e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 3.17344652170334e-09
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 2.5996433355678084e-06,
+          "mean_abs_cm_per_day": 9.293936546327009e-07,
+          "rmse_cm_per_day": 1.2812384188904348e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.5229454593362615e-07
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 5.989873180789473e-11,
+          "mean_abs_cm_per_day": 9.454543682623266e-13,
+          "rmse_cm_per_day": 5.524718272886951e-12,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 9.45383550727484e-13
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 2.8641738742084255e-06,
+          "mean_abs_cm_per_day": 1.0197614148375817e-06,
+          "rmse_cm_per_day": 1.3022765838977561e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -2.811032203447805e-07
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.4568541598439233e-07,
+          "mean_abs_cm_per_day": 6.017886022659301e-09,
+          "rmse_cm_per_day": 2.189710227187092e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 6.012000171629361e-09
+        }
+      }
+    },
+    "120.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.6689721971049204e-05,
+          "mean_abs_cm_per_day": 5.738868591347517e-06,
+          "rmse_cm_per_day": 7.61595517410404e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -2.1642647533498754e-07
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.0295511283335557e-05,
+          "mean_abs_cm_per_day": 3.613545265437773e-07,
+          "rmse_cm_per_day": 1.452984269994962e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 3.5389916740314063e-07
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.5151823016913007e-05,
+          "mean_abs_cm_per_day": 5.416850336593053e-06,
+          "rmse_cm_per_day": 7.467494215906142e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.470419836487682e-06
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.1678357535876982e-07,
+          "mean_abs_cm_per_day": 2.9104562067741885e-09,
+          "rmse_cm_per_day": 1.3647067602210996e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.9104551999856455e-09
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.6689721971049204e-05,
+          "mean_abs_cm_per_day": 6.0269901877067755e-06,
+          "rmse_cm_per_day": 7.746377244963836e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -1.725710017492113e-06
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.0295511283335557e-05,
+          "mean_abs_cm_per_day": 6.820676421084643e-07,
+          "rmse_cm_per_day": 1.9999830562042818e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 6.679416993743845e-07
+        }
+      }
+    },
+    "130.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.00013884978451510904,
+          "mean_abs_cm_per_day": 3.577609730084733e-05,
+          "rmse_cm_per_day": 4.968975539229637e-05,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -4.072673366511276e-06
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.000201405167461758,
+          "mean_abs_cm_per_day": 1.55789992609312e-05,
+          "rmse_cm_per_day": 4.422456304471862e-05,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.2483534943875503e-05
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 8.828915493087897e-05,
+          "mean_abs_cm_per_day": 3.14786763898764e-05,
+          "rmse_cm_per_day": 4.333834922292743e-05,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 8.477007969308395e-06
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 3.2833879346889916e-05,
+          "mean_abs_cm_per_day": 1.4909500284022617e-06,
+          "rmse_cm_per_day": 5.319592515629041e-06,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.4897517349532358e-06
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.00013884978451510904,
+          "mean_abs_cm_per_day": 3.9621158115926574e-05,
+          "rmse_cm_per_day": 5.4751578562584226e-05,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -1.5301335614349928e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.000201405167461758,
+          "mean_abs_cm_per_day": 2.8184095942667615e-05,
+          "rmse_cm_per_day": 6.0666545040911e-05,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.2320077815016474e-05
+        }
+      }
+    },
+    "140.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.0011553942671731765,
+          "mean_abs_cm_per_day": 0.00023435509447841495,
+          "rmse_cm_per_day": 0.0003550322105321981,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -5.4616341843880765e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.0013053730665386065,
+          "mean_abs_cm_per_day": 0.0002649544281060795,
+          "rmse_cm_per_day": 0.0004460439718238279,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 3.9736054889812056e-05
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.00048182197588427997,
+          "mean_abs_cm_per_day": 0.00016185848160586431,
+          "rmse_cm_per_day": 0.00021546032333424087,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.7926111373624146e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.001189976308029278,
+          "mean_abs_cm_per_day": 0.00014191118599527397,
+          "rmse_cm_per_day": 0.000332306188717065,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 0.00012012262209781133
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.0011553942671731765,
+          "mean_abs_cm_per_day": 0.0002992204849433286,
+          "rmse_cm_per_day": 0.0004441745610337887,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -0.0001284701157753325
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.0013053730665386065,
+          "mean_abs_cm_per_day": 0.00037504574999469494,
+          "rmse_cm_per_day": 0.0005274128633841993,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -3.218876840155569e-05
+        }
+      }
+    },
+    "150.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.00323898253852548,
+          "mean_abs_cm_per_day": 0.0006894938924202107,
+          "rmse_cm_per_day": 0.0008944516223140453,
+          "sign_mismatch_count": 106,
+          "signed_mean_cm_per_day": 9.856744555090401e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.006912857044544765,
+          "mean_abs_cm_per_day": 0.0014415964712157375,
+          "rmse_cm_per_day": 0.002153212846914784,
+          "sign_mismatch_count": 106,
+          "signed_mean_cm_per_day": -9.930198300223891e-05
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.0012452067852954645,
+          "mean_abs_cm_per_day": 0.0003837159236106031,
+          "rmse_cm_per_day": 0.00047295245023907764,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -8.77337419523314e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.004233430713647839,
+          "mean_abs_cm_per_day": 0.0007991752377093193,
+          "rmse_cm_per_day": 0.0013577728050966666,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -0.0006284903216252866
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.00323898253852548,
+          "mean_abs_cm_per_day": 0.0009630847066182807,
+          "rmse_cm_per_day": 0.0011470544663016039,
+          "sign_mismatch_count": 106,
+          "signed_mean_cm_per_day": 0.00026525798173800943
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.006912857044544765,
+          "mean_abs_cm_per_day": 0.002016394416984638,
+          "rmse_cm_per_day": 0.0026711659338185135,
+          "sign_mismatch_count": 106,
+          "signed_mean_cm_per_day": 0.00037418231997627733
+        }
+      }
+    },
+    "155.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.020406920511876737,
+          "mean_abs_cm_per_day": 0.0009527130786766818,
+          "rmse_cm_per_day": 0.0016443608426644023,
+          "sign_mismatch_count": 39,
+          "signed_mean_cm_per_day": 3.354928126181344e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.016335200189360827,
+          "mean_abs_cm_per_day": 0.0052969772789099815,
+          "rmse_cm_per_day": 0.006444800553460307,
+          "sign_mismatch_count": 35,
+          "signed_mean_cm_per_day": 0.0004333384198201686
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.010838265785147964,
+          "mean_abs_cm_per_day": 0.0006361108796182687,
+          "rmse_cm_per_day": 0.0010554286729967598,
+          "sign_mismatch_count": 11,
+          "signed_mean_cm_per_day": 0.00014060692766000815
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.008799363212055655,
+          "mean_abs_cm_per_day": 0.004051596577467724,
+          "rmse_cm_per_day": 0.004976182391961225,
+          "sign_mismatch_count": 6,
+          "signed_mean_cm_per_day": -3.756482905476065e-05
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.020406920511876737,
+          "mean_abs_cm_per_day": 0.0012359887304657883,
+          "rmse_cm_per_day": 0.0020313906085765157,
+          "sign_mismatch_count": 28,
+          "signed_mean_cm_per_day": -6.223913919972922e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.016335200189360827,
+          "mean_abs_cm_per_day": 0.006411265274937264,
+          "rmse_cm_per_day": 0.007519503412679444,
+          "sign_mismatch_count": 29,
+          "signed_mean_cm_per_day": 0.0008546729056556319
+        }
+      }
+    },
+    "157.5": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.18420116268699926,
+          "mean_abs_cm_per_day": 0.0025683134511986414,
+          "rmse_cm_per_day": 0.01035477953206749,
+          "sign_mismatch_count": 45,
+          "signed_mean_cm_per_day": 0.00014169724533281833
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.10265674466756781,
+          "mean_abs_cm_per_day": 0.005816056741201447,
+          "rmse_cm_per_day": 0.013467427850381417,
+          "sign_mismatch_count": 88,
+          "signed_mean_cm_per_day": 0.0005271028172324804
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.09564043543035182,
+          "mean_abs_cm_per_day": 0.0018483065470762264,
+          "rmse_cm_per_day": 0.00673597144321194,
+          "sign_mismatch_count": 18,
+          "signed_mean_cm_per_day": 9.494063711750611e-05
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.0479418444915678,
+          "mean_abs_cm_per_day": 0.004127953532995355,
+          "rmse_cm_per_day": 0.00871568358418158,
+          "sign_mismatch_count": 24,
+          "signed_mean_cm_per_day": 6.543000985710533e-05
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 0.18420116268699926,
+          "mean_abs_cm_per_day": 0.0032125301548871187,
+          "rmse_cm_per_day": 0.01274987355531527,
+          "sign_mismatch_count": 27,
+          "signed_mean_cm_per_day": 0.00018353210531493985
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 0.10265674466756781,
+          "mean_abs_cm_per_day": 0.007326464874859529,
+          "rmse_cm_per_day": 0.016603748275005978,
+          "sign_mismatch_count": 64,
+          "signed_mean_cm_per_day": 0.0009401784869893945
+        }
+      }
+    },
+    "70.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 5.467665070701955e-10,
+          "mean_abs_cm_per_day": 1.8910788761250122e-10,
+          "rmse_cm_per_day": 2.488944724930089e-10,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -6.6633510389173195e-12
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.116468029138673e-14,
+          "mean_abs_cm_per_day": 3.994959744957338e-15,
+          "rmse_cm_per_day": 5.839079691215061e-15,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 3.081410994421052e-15
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 4.962721206203113e-10,
+          "mean_abs_cm_per_day": 1.7944612326903556e-10,
+          "rmse_cm_per_day": 2.459768599243747e-10,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 4.6683088677515244e-11
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.116468029138673e-14,
+          "mean_abs_cm_per_day": 4.538738155737524e-15,
+          "rmse_cm_per_day": 6.313830833353832e-15,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 3.786403890589994e-15
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 5.467665070701955e-10,
+          "mean_abs_cm_per_day": 1.9775262413033893e-10,
+          "rmse_cm_per_day": 2.514762768179652e-10,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -5.439437604835698e-11
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.116468029138673e-14,
+          "mean_abs_cm_per_day": 3.5084211668908563e-15,
+          "rmse_cm_per_day": 5.378900506831269e-15,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.450627876796209e-15
+        }
+      }
+    },
+    "80.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.4133885156003556e-08,
+          "mean_abs_cm_per_day": 4.820935495115826e-09,
+          "rmse_cm_per_day": 6.375810029321627e-09,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -1.4321789452264289e-10
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.869504964868156e-16,
+          "mean_abs_cm_per_day": 2.362476533845914e-16,
+          "rmse_cm_per_day": 3.5212142569381335e-16,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.612208630485945e-16
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.2828501417400107e-08,
+          "mean_abs_cm_per_day": 4.586639981467107e-09,
+          "rmse_cm_per_day": 6.32278215142837e-09,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.244749209626982e-09
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.869504964868156e-16,
+          "mean_abs_cm_per_day": 2.5968555328979274e-16,
+          "rmse_cm_per_day": 3.7944484796437576e-16,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.8886801844697487e-16
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 1.4133885156003556e-08,
+          "mean_abs_cm_per_day": 5.030568323117312e-09,
+          "rmse_cm_per_day": 6.4228849346641455e-09,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -1.385083198235465e-09
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.869504964868156e-16,
+          "mean_abs_cm_per_day": 2.1527690083783232e-16,
+          "rmse_cm_per_day": 3.257371614451988e-16,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.3648393453425419e-16
+        }
+      }
+    },
+    "90.0": {
+      "MOVING": {
+        "BEMR": {
+          "max_abs_cm_per_day": 8.425653638330366e-08,
+          "mean_abs_cm_per_day": 2.8736501948778582e-08,
+          "rmse_cm_per_day": 3.8005981571456846e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -8.526476732874271e-10
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.0488276913633854e-12,
+          "mean_abs_cm_per_day": 1.1734455638082175e-14,
+          "rmse_cm_per_day": 8.014359251083954e-14,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.1659428847746178e-14
+        }
+      },
+      "PHASE1": {
+        "BEMR": {
+          "max_abs_cm_per_day": 7.647471666344385e-08,
+          "mean_abs_cm_per_day": 2.734038747448518e-08,
+          "rmse_cm_per_day": 3.769072282963235e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 7.421807973095611e-09
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 6.869504964868156e-16,
+          "mean_abs_cm_per_day": 2.5968555328979274e-16,
+          "rmse_cm_per_day": 3.7944484796437576e-16,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 1.8886801844697487e-16
+        }
+      },
+      "PHASE2": {
+        "BEMR": {
+          "max_abs_cm_per_day": 8.425653638330366e-08,
+          "mean_abs_cm_per_day": 2.9985657004725313e-08,
+          "rmse_cm_per_day": 3.8285854802644354e-08,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": -8.256107988472251e-09
+        },
+        "CURRENT_LAYER_FACE": {
+          "max_abs_cm_per_day": 1.0488276913633854e-12,
+          "mean_abs_cm_per_day": 2.2001355187633255e-14,
+          "rmse_cm_per_day": 1.1031662266949972e-13,
+          "sign_mismatch_count": 0,
+          "signed_mean_cm_per_day": 2.1922562221329675e-14
+        }
+      }
+    }
+  },
+  "primary_interfaces_cm": [
+    150.0,
+    155.0,
+    157.5
+  ],
+  "primary_moving": {
+    "BEMR": {
+      "max_abs_cm_per_day": 0.18420116268699926,
+      "mean_abs_cm_per_day": 0.0014035068074318448,
+      "mean_abs_interface_history_signed_bias_cm_per_day": 0.00019011808575618413,
+      "rmse_cm_per_day": 0.006075234575533471,
+      "sign_mismatch_count": 190,
+      "signed_mean_cm_per_day": 9.127132404851196e-05
+    },
+    "CURRENT_LAYER_FACE": {
+      "max_abs_cm_per_day": 0.10265674466756781,
+      "mean_abs_cm_per_day": 0.004184876830442388,
+      "mean_abs_interface_history_signed_bias_cm_per_day": 0.0011378689281572954,
+      "rmse_cm_per_day": 0.008709064102861076,
+      "sign_mismatch_count": 229,
+      "signed_mean_cm_per_day": 0.0002870464180168034
+    }
+  },
+  "role": "EXPOSED_FROZEN_STATE_MECHANISM_DIAGNOSTIC",
+  "schema": "swap5.lare.bc2.c6d.result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "blind_validation": false,
+    "c6c_retuning": false,
+    "candidate_feedback": false,
+    "free_running_bemr_implemented": false,
+    "moment_fitting": false,
+    "moment_localization": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "status": "C6D_BEMR_SUPPORTED_FOR_BOUNDARY_EXTENSION_QUALIFICATION",
+  "strict_state_moment_realizable_count": 2304,
+  "work_unit": "LARE-BC2-C6D",
+  "workstream": "F-ROM-LARE"
+}
