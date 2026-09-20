@@ -1,0 +1,181 @@
+{
+  "schema": "swap5.lare.bc2.c6j.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6J",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Response-free mathematical qualification of Free-Energy Moment-Onsager (FEMO)",
+  "role": "NO_HYDROLOGICAL_RESPONSE_FEMO_MANIFOLD_METRIC_BOUNDARY_OPERATOR_QUALIFICATION",
+  "scientific_question": "Does the parameter-free physical free-energy S/M manifold admit unique interior profiles and a numerically positive-definite Onsager resistance operator with well-posed prescribed-head and prescribed-flux instantaneous boundary maps over the frozen B14 synthetic domains before any FEMO trajectory is generated?",
+  "authority": {
+    "C6I": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
+    "required_C6I_decision": "PREREGISTER_FREE_ENERGY_MOMENT_ONSAGER_REDUCTION_FOR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION",
+    "C6C_domain": "integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json",
+    "C6E_domain": "integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json",
+    "C5Y_state": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "frozen_material": "B14",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "hydrological_response_authorized": false
+  },
+  "family": {
+    "id": "FEMO",
+    "dynamic_state_per_layer": [
+      "S_i",
+      "M_i"
+    ],
+    "capillary_energy": "F'(theta)=-psi(theta)",
+    "local_profile": "unique minimizer of integral F(theta) dz subject to S_i,M_i and frozen constitutive bounds",
+    "unconstrained_interior_form": "psi(z)=A_i+B_i*(z-zc_i)",
+    "propagation": "Onsager/minimum hydraulic dissipation projected onto the S/M tangent manifold",
+    "fitted_parameters": [],
+    "BEMR_static_root_reused": false
+  },
+  "frozen_state_domains": {
+    "C6C": {
+      "source": "Use exactly both C6C partitions, seven C6C mean-Se profiles and six C6C moment patterns; boundary labels do not change the local state and are attached only for head-operator tests.",
+      "state_case_count": 84,
+      "head_operator_case_count": 168
+    },
+    "C6E": {
+      "source": "Use exactly the 42 D12 state targets and three response-independent HOLD flux anchors from C6E.",
+      "state_case_count": 42,
+      "flux_operator_case_count": 126
+    },
+    "state_domain_narrowing": false,
+    "moment_amplitudes_changed": false,
+    "Se_interval": [
+      0.02,
+      0.995
+    ]
+  },
+  "local_profile_numerical_contract": {
+    "quadrature": {
+      "solve": "96-point Gauss-Legendre per layer",
+      "independent_check": "192-point Gauss-Legendre per layer"
+    },
+    "solver": "scipy.optimize.least_squares on the two S/M residuals for A,B",
+    "solver_options": {
+      "method": "trf",
+      "xtol": 1e-13,
+      "ftol": 1e-13,
+      "gtol": 1e-13,
+      "max_nfev": 4000
+    },
+    "fixed_starts": [
+      "BASE: A=psi(mean theta); B=12*M/(dtheta_dpsi(mean)*d^3)",
+      "A_LOW: A=0.8*BASE_A, B=BASE_B",
+      "A_HIGH: A=1.2*BASE_A, B=BASE_B",
+      "B_PLUS: A=BASE_A, B=BASE_B+0.2*BASE_A/d",
+      "B_MINUS: A=BASE_A, B=BASE_B-0.2*BASE_A/d"
+    ],
+    "invalid_trial_rule": "If any quadrature suction leaves the frozen Se interval or is nonfinite, return a deterministic finite residual penalty; do not clip psi, theta or Se.",
+    "agreement": {
+      "max_abs_theta_difference": 1e-10,
+      "max_abs_A_difference_cm": 1e-8,
+      "max_abs_B_difference": 1e-10
+    },
+    "state_recovery": {
+      "max_abs_storage_cm": 1e-9,
+      "max_abs_moment_cm2": 1e-7
+    },
+    "interior_margin_Se": 1e-8,
+    "active_bound_policy": "If an unconstrained affine-suction minimizer touches the frozen Se bounds within the margin, G4 fails and the obstacle-profile extension is not introduced in C6J."
+  },
+  "tangent_metric_contract": {
+    "tangent_definition": "Use the exact local moment-map Jacobian J=int dtheta/dpsi [[1,x],[x,x^2]] dz and J^{-1} to compute partial theta/partial(S,M).",
+    "state_scaling": [
+      "S scale = DeltaTheta*d",
+      "M scale = DeltaTheta*d^2"
+    ],
+    "metric_grid": {
+      "primary_points_per_layer": 257,
+      "independent_points_per_layer": 513,
+      "integration": "composite trapezoidal per layer; interfaces are measure-zero and each layer is integrated separately"
+    },
+    "resistance": "G_kl=int B_k(z) B_l(z)/K(theta(z)) dz, where B_k(z)=integral_0^z partial theta/partial y_k ds for scaled coordinate y.",
+    "affine_flux_vector": "b_k=int B_k(z)/K(theta(z)) dz",
+    "total_storage_vector": "C_k=d(total storage)/dy_k, equal to DeltaTheta*d_i for scaled S_i modes and zero for M_i modes.",
+    "gates": {
+      "local_moment_jacobian_negative_definite": true,
+      "G_symmetry_relative": 1e-12,
+      "G_min_eigenvalue_relative_to_max": 1e-12,
+      "G_primary_independent_relative_frobenius": 0.00001,
+      "b_primary_independent_relative_l2": 0.00001,
+      "finite_condition_number_required": true
+    },
+    "condition_number_hard_gate": false
+  },
+  "boundary_operator_contract": {
+    "prescribed_head": {
+      "cases": "Use the 168 C6C partition/profile/moment x HEAD_RISE/HEAD_FALL cases.",
+      "top_flux": "q0=K(mean theta top), exactly C6C.",
+      "bottom_potential": "mu_b=-psi_bottom-H with psi_bottom equal to the C6C multiplier times suction at bottom-layer mean theta.",
+      "reduced_stationarity": "Solve G*y_dot = -(g_y-q0*b-mu_b*C).",
+      "gate": "finite unique solve and scaled stationarity residual <=1e-10"
+    },
+    "prescribed_flux": {
+      "cases": "Use the 126 C6E D12 state x HOLD_Q_SE060/075/090 cases.",
+      "boundary_constraint": "C^T*y_dot=q_top-q_bottom=0.",
+      "reduced_stationarity": "Solve the equality-constrained quadratic Onsager KKT system [G C; C^T 0][y_dot,lambda]^T = [-(g_y-q0*b),0]^T.",
+      "gate": "finite unique KKT solve, constraint residual <=1e-10 cm/day and scaled stationarity residual <=1e-10"
+    },
+    "reduced_energy_gradient": "For layer affine suction psi=A+B*x, envelope theorem gives dE/dS=-A-zc and dE/dM=-B-1 under z-positive-down convention; transform by the frozen state scales.",
+    "no_time_integration": true
+  },
+  "qualification_gates": {
+    "G1_FROZEN_STATE_MOMENT_REALIZABILITY": "All C6C and C6E targets remain within the unchanged exact bounded moment domain.",
+    "G2_LOCAL_PROFILE_CONVERGENCE": "All five frozen A/B starts converge for every layer of every state case.",
+    "G3_LOCAL_PROFILE_UNIQUENESS": "All five starts agree within the frozen profile-parameter and theta tolerances.",
+    "G4_INTERIOR_BOUNDED_PROFILE": "Every qualified energy minimizer stays strictly inside the frozen Se interval by the preregistered margin; no obstacle extension is needed.",
+    "G5_STATE_RECOVERY": "Independent 192-point quadrature recovers every S and M target within the frozen gates.",
+    "G6_LOCAL_MOMENT_JACOBIAN": "Every local moment-map Jacobian is finite and negative definite.",
+    "G7_ONSAGER_METRIC": "Every scaled global resistance matrix is symmetric and positive definite and agrees with the independent 513-point construction.",
+    "G8_PRESCRIBED_HEAD_OPERATOR": "All 168 prescribed-head instantaneous FEMO rate solves satisfy the frozen stationarity gate.",
+    "G9_PRESCRIBED_FLUX_OPERATOR": "All 126 prescribed-flux KKT rate solves satisfy stationarity and exact total-storage-rate constraint gates.",
+    "G10_NO_RESPONSE_DATA": "No hydrological trajectory, C6D/C6E response metric or free-running reduced solution is read or generated."
+  },
+  "decision_logic": {
+    "FEMO_MATHEMATICALLY_QUALIFIED": "All G1-G10 pass.",
+    "FEMO_LOCAL_MANIFOLD_NOT_QUALIFIED": "Any G1-G6 failure.",
+    "FEMO_ONSAGER_OPERATOR_NOT_QUALIFIED": "G1-G6 pass but any G7-G9 fails.",
+    "next_if_qualified": "Authorize a separate prospective fresh-blind free-running FEMO preregistration only after defining immutable new histories/workload that have not been exposed to C5/C6 representation selection.",
+    "next_if_not_qualified": "Stop FEMO without adding active-bound regularization, metric diagonal shifts, alternate state scaling, solver-start selection or response-driven terms."
+  },
+  "stop_rules": [
+    "No hydrological time trajectory in C6J.",
+    "No C6D/C6E response/error data may enter the FEMO equations, starts, gates or boundary levels.",
+    "No obstacle/bound-active extension if G4 fails.",
+    "No diagonal regularization of G or KKT systems.",
+    "No alternate metric or energy density after result.",
+    "No moment localization.",
+    "No performance, speed, application or production-ROM claim."
+  ],
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "c6d_response_used_for_design": false,
+    "c6e_failures_used_for_penalty_design": false,
+    "BEMR_reopened": false,
+    "free_running_FEMO_implemented": false,
+    "moment_localization_selected": false,
+    "fitted_parameter_added": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "response_based_design": false,
+    "qualifier": "tests/rom/qualify_lare_bc2_c6j_femo.py",
+    "qualifier_blob": null,
+    "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
+    "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6j.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "model_changed": false
+}
