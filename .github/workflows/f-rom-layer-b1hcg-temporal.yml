@@ -63,16 +63,30 @@ jobs:
           test "$(git hash-object /tmp/b1hcg/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
 
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcg/b1h.zip
-          test "$(sha256sum /tmp/b1hcg/b1h.zip | awk '{print $1}')" = "${{ matrix.b1h_digest }}"
+          b1h_actual="$(sha256sum /tmp/b1hcg/b1h.zip | awk '{print $1}')"
+          if [ "$b1h_actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1H archive digest drift: $b1h_actual" >&2
+            exit 1
+          fi
           unzip -q /tmp/b1hcg/b1h.zip -d /tmp/b1hcg/b1h
 
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.cf_id }}/zip" > /tmp/b1hcg/cf.zip
-          test "$(sha256sum /tmp/b1hcg/cf.zip | awk '{print $1}')" = "${{ matrix.cf_digest }}"
+          cf_actual="$(sha256sum /tmp/b1hcg/cf.zip | awk '{print $1}')"
+          if [ "$cf_actual" != "${{ matrix.cf_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1HCF archive digest drift: $cf_actual" >&2
+            exit 1
+          fi
           unzip -q /tmp/b1hcg/cf.zip -d /tmp/b1hcg/cf
 
           test -f "/tmp/b1hcg/b1h/R16_${{ matrix.material }}.txt"
           test -f "/tmp/b1hcg/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
           test -f "/tmp/b1hcg/cf/LAYER_ROM_B1HCF_${{ matrix.material }}_RESULT.json"
+          if [ "${{ matrix.material }}" = "B12" ]; then
+            test "$(sha256sum /tmp/b1hcg/b1h/R16_B12.txt | awk '{print $1}')" = "16598c0be9ab6c26a1196d5836d400d632f0c1bf9c0fb24a68312407b83b2652"
+            test "$(sha256sum /tmp/b1hcg/b1h/LAYER_ROM_B1H_B12_RESULT.json | awk '{print $1}')" = "dd429968299341397077eb44d0db1314b9db1e0dc10a4ad33502f0ad6086b9cb"
+            test "$(sha256sum /tmp/b1hcg/cf/LAYER_ROM_B1HCF_B12_RESULT.json | awk '{print $1}')" = "bb023e36d52fd66637e152fa25d9c20dad346ebae6a1da94f6cddcabdeba4346"
+            echo "LAYER_ROM_B1HCG_B12_FILE_LEVEL_INTEGRITY=PASS"
+          fi
           echo "LAYER_ROM_B1HCG_IMMUTABLE_EVIDENCE=PASS"
 
       - name: Install analysis dependency
