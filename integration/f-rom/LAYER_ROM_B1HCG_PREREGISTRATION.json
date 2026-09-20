@@ -194,6 +194,8 @@
     "continuous_strict_tolerance": 1e-12,
     "sign_count_rule": "nonincrease only; sign counts are reported but are not part of the five-component causal core",
     "baseline_reproduction": "Check both R8 and R16_OP at every frozen checkpoint against the immutable B1HCF per-material corrected result; continuous components <=1e-11 absolute difference and sign counts exact.",
-    "scientific_effect": "NONE: no material, state, partition, dt, closure, response component, or decision direction is changed."
+    "scientific_effect": "NONE: no material, state, partition, dt, closure, response component, or decision direction is changed.",
+    "primary_temporal_horizon_step": 1024,
+    "alias_note": "primary_temporal_horizon_step is an implementation-name alias of decision_checkpoint_step, both frozen at 1024 before any successful B1HCG scientific result."
   }
 }
