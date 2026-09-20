@@ -152,7 +152,13 @@
     "interpretation_if_mixed": "Classify temporal contribution as material/component dependent and hold any simple temporal-floor explanation.",
     "R8_vs_R16": "At each dt and material report componentwise R8 versus R16_OP relations. Do not subtract errors as an additive spatial-closure estimate.",
     "no_application_threshold": true,
-    "no_weighted_score": true
+    "no_weighted_score": true,
+    "decision_labels": {
+      "all_materials_and_finest_core_numerical_identity": "B1HCG_R16_TEMPORAL_SIGNATURE_SUPPORTED_NUMERICAL_COLLAPSE",
+      "all_materials_but_finest_core_residual_remains": "B1HCG_R16_TEMPORAL_SIGNATURE_SUPPORTED_RESIDUAL_REMAINS",
+      "mixed_material_or_component_signature": "B1HCG_TEMPORAL_SIGNATURE_MIXED"
+    },
+    "finest_core_numerical_identity": "All five R16_OP causal-core errors at dt=2.5e-5 d are <= 1e-12 for every material. This is a numerical identity criterion only."
   },
   "provenance": {
     "B1H_workflow_run": 35495947476,
