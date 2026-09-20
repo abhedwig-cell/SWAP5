@@ -1,0 +1,197 @@
+name: F-ROM-LARE persist C5J boundary factorial closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5j-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5J artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5j
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10603830103" > /tmp/c5j/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5j/artifact.json'))
+          assert a['id']==10603830103
+          assert a['digest']=='sha256:37c750d8c0a98918fc0b94c32899792779f202f6751fbee0c6db8dc373b7b838'
+          assert a['workflow_run']['id']==35504821498
+          assert a['workflow_run']['head_sha']=='7875595d1792ac740f2d4ea0f4916af931b43ea2'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10603830103/zip" > /tmp/c5j.zip
+          echo "37c750d8c0a98918fc0b94c32899792779f202f6751fbee0c6db8dc373b7b838  /tmp/c5j.zip" | sha256sum -c -
+          unzip -q /tmp/c5j.zip -d /tmp/c5j/evidence
+          echo "d6df503dac63e2224079ccc40249449d7d7a2ac0486da8ced558a353b8829213  /tmp/c5j/evidence/LARE_BC2_C5J_RESULT.json" | sha256sum -c -
+          echo "86e8acc740db40ad65a4b3d7ed2efe83e3b8d27b151a7ae70c092ba4ded4eb92  /tmp/c5j/evidence/GEOMETRY_R512_T16_o0.txt" | sha256sum -c -
+          echo "ecea45dec11eb2bf04a6a741a57b3e694083c9e13a363f244f99fd4aa10faaf9  /tmp/c5j/evidence/GEOMETRY_R1024_T16_o0.txt" | sha256sum -c -
+          echo "b5cfb9e6d28e2a4e2411689fb96fc39a9493f6eb20a34f40b092d86b43fd556d  /tmp/c5j/evidence/CONDUCTIVITY_R512_T16_o0.txt" | sha256sum -c -
+          echo "13d10db4db590b02e530eb7f3232a7a82b20ea6df1874cd360f013d54c39b3ff  /tmp/c5j/evidence/CONDUCTIVITY_R1024_T16_o0.txt" | sha256sum -c -
+          echo "f2c1e4be677b551fcb1f2105c8e541ff4b952effda7158f9f4fa117989d5957f  /tmp/c5j/evidence/COMBINED_R512_T16_o0.txt" | sha256sum -c -
+          echo "151f34d3791c7c5a0d952134dc3c8e22fdd1779e30b10b7dc057adaa4e3b8310  /tmp/c5j/evidence/COMBINED_R1024_T16_o0.txt" | sha256sum -c -
+
+      - name: Persist result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5j/evidence/LARE_BC2_C5J_RESULT.json integration/f-rom/LARE_BC2_C5J_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5J_RESULT.json'))
+          assert r['status']=='C5J_FACTORIAL_REFERENCE_BOUNDARY_SENSITIVITY_CHARACTERIZED'
+          assert r['baseline_identity_to_C5I_T16'] is True
+          cells=r['factorial_cells']; c=r['contrasts']; ratios=r['spatial_gap_rmse_ratio_to_current']
+          closeout={
+            'schema':'swap5.lare.bc2.c5j.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5J',
+            'status':'CLOSED_BOUNDARY_FACTORIAL_SENSITIVITY_CHARACTERIZED_NO_COUNTERFACTUAL_ADMITTED_LOCAL_FLUX_THEORY_REQUIRED',
+            'decision':'C5J_BOUNDARY_SENSITIVITY_WITHOUT_DISCRETIZATION_ADMISSION',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json',
+              'workflow_run':35504821498,
+              'execution_head':'7875595d1792ac740f2d4ea0f4916af931b43ea2',
+              'artifact_id':10603830103,
+              'artifact_digest':'sha256:37c750d8c0a98918fc0b94c32899792779f202f6751fbee0c6db8dc373b7b838',
+              'result_sha256':'d6df503dac63e2224079ccc40249449d7d7a2ac0486da8ced558a353b8829213'
+            },
+            'execution_qualification':{
+              'counterfactual_history_slices':48,
+              'all_slices_qualified':True,
+              'all_counterfactual_O0_O2_routes_byte_identical':True,
+              'C5I_baseline_reproduced':True,
+              'production_reference_source_changed':False
+            },
+            'evidence':{
+              'baseline_spatial_gap_rmse_cm_per_day':cells['G0K0_CURRENT_REFERENCE']['rmse_cm_per_day'],
+              'geometry_control_spatial_gap_rmse_cm_per_day':cells['G1K0_DISTANCE_DOUBLE_CONTROL']['rmse_cm_per_day'],
+              'arithmetic_K_spatial_gap_rmse_cm_per_day':cells['G0K1_CENTER_BOUNDARY_ARITHMETIC_K']['rmse_cm_per_day'],
+              'combined_spatial_gap_rmse_cm_per_day':cells['G1K1_COMBINED']['rmse_cm_per_day'],
+              'geometry_gap_ratio_to_current':ratios['geometry'],
+              'arithmetic_K_gap_ratio_to_current':ratios['conductivity'],
+              'combined_gap_ratio_to_current':ratios['combined'],
+              'geometry_contrast_rmse_cm_per_day':c['geometry_main']['rmse_cm_per_day'],
+              'conductivity_contrast_rmse_cm_per_day':c['conductivity_main']['rmse_cm_per_day'],
+              'interaction_rmse_cm_per_day':c['factorial_interaction']['rmse_cm_per_day'],
+              'geometry_contrast_over_baseline_gap':c['geometry_main']['rmse_over_baseline_gap'],
+              'conductivity_contrast_over_baseline_gap':c['conductivity_main']['rmse_over_baseline_gap'],
+              'interaction_over_larger_main':r['factorial_interaction_over_larger_main_contrast'],
+              'conductivity_projection_on_baseline_gap':c['conductivity_main']['projection_on_baseline_gap'],
+              'geometry_projection_on_baseline_gap':c['geometry_main']['projection_on_baseline_gap'],
+              'counterfactuals_reducing_spatial_gap':r['counterfactuals_reducing_spatial_gap'],
+              'hold_max_abs_gap_by_counterfactual':r['hold_max_abs_spatial_gap_cm_per_day']
+            },
+            'scientific_interpretation':[
+              'The persistent high-resolution discrepancy is strongly sensitive to prescribed-head boundary discretization while HOLD remains exactly unchanged in every counterfactual.',
+              'The distance-semantic control has the larger main-effect norm: about 0.01936 cm/d, approximately 83 percent of the current spatial-gap RMSE. However, doubling the center-to-boundary distance worsens the R512-R1024 gap from about 0.02340 to 0.03072 cm/d, so C5J does not support replacing the physical half-cell distance.',
+              'Extending swkmean=1 arithmetic conductivity averaging to the prescribed boundary has a smaller main-effect norm of about 0.00679 cm/d and reduces the spatial gap only modestly, to about 0.02279 cm/d or 97.4 percent of current.',
+              'The combined counterfactual worsens the gap to about 0.03044 cm/d. The factorial interaction norm is about 0.00583 cm/d, around 30 percent of the larger main-effect norm, so geometry and conductivity localization are not separable as purely additive effects.',
+              'A smaller inter-grid gap is not continuum truth. None of the three counterfactuals is admitted as a new Reference discretization.',
+              'The next question is mathematical rather than empirical tuning: what local nonlinear half-cell flux is implied by the Richards/Darcy operator and the B14 constitutive law for the actual prescribed-head state pairs?'
+            ],
+            'adjudication':{
+              'BOUNDARY_DISCRETIZATION_SENSITIVE':True,
+              'HALF_CELL_DISTANCE_REPLACEMENT_SUPPORTED':False,
+              'ARITHMETIC_BOUNDARY_K_ADMITTED':False,
+              'ANY_COUNTERFACTUAL_ADMITTED':False,
+              'LOCAL_HALF_CELL_FLUX_THEORY_AUDIT_AUTHORIZED':True,
+              'T32_AUTHORIZED':False,
+              'R2048_AUTHORIZED':False,
+              'NEW_LARE_AUTHORIZED':False,
+              'PRODUCTION_REFERENCE_CHANGE_AUTHORIZED':False
+            },
+            'next_authority':{
+              'target':'LARE-BC2-C5K',
+              'state':'LOCAL_NONLINEAR_HALF_CELL_FLUX_THEORY_AUDIT_AUTHORIZED',
+              'question':'For the actual C5I prescribed-head state pairs, how do current K_cell, arithmetic center-boundary K, and a theory-derived nonlinear half-cell conductivity/flux representation compare before any new dynamic Reference formulation is considered?',
+              'constraints':[
+                'instrument or reconstruct Reference state only; do not alter production Reference physics',
+                'retain exact B14 C5I T16 R512/R1024 histories',
+                'derive conductivity diagnostics from the constitutive law without fitted parameters',
+                'verify any instrumented baseline state/flux trajectory reproduces C5I',
+                'no T32/R2048, no LARE rerun, no application/performance/speed claim',
+                'stop before a new production boundary formula unless theory plus evidence uniquely supports it'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5J_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5J closeout
+
+          C5J prospectively isolated two ingredients of the frozen Reference prescribed-head lower boundary in a zero-fit 2 x 2 diagnostic factorial: lower-face distance semantics and conductivity localization.
+
+          Authority is run 35504821498, execution head 7875595d1792ac740f2d4ea0f4916af931b43ea2, artifact 10603830103, digest sha256:37c750d8c0a98918fc0b94c32899792779f202f6751fbee0c6db8dc373b7b838. The result SHA-256 is d6df503dac63e2224079ccc40249449d7d7a2ac0486da8ced558a353b8829213.
+
+          All 48 counterfactual history slices qualified. Reconstructed O0 and O2 routes are byte-identical for all three new factorial cells. The immutable C5I baseline is reproduced exactly.
+
+          The current R512-R1024 T16 spatial gap is about 0.02340 cm/d. Doubling the half-cell distance increases it to about 0.03072 cm/d. Extending arithmetic swkmean=1 conductivity averaging to the boundary lowers it only slightly to about 0.02279 cm/d. Combining both controls increases it to about 0.03044 cm/d.
+
+          The geometry main-effect norm is about 0.01936 cm/d, the conductivity-localization main-effect norm about 0.00679 cm/d, and the factorial interaction about 0.00583 cm/d. HOLD remains exactly unchanged.
+
+          This establishes boundary-discretization sensitivity but does not select a correct replacement. A smaller inter-grid gap is not continuum truth. C5J therefore admits no new Reference formulation.
+
+          C5K is authorized as a theory-based local nonlinear half-cell flux audit using the actual C5I state pairs, before any further dynamic Reference counterfactual or brute-force T32/R2048 extension.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v15'
+          j['status']='CLOSED_THROUGH_C5J_BOUNDARY_SENSITIVITY_LOCAL_HALF_CELL_THEORY_AUDIT_NEXT'
+          j.setdefault('authorities',{})['C5J_reference_boundary_factorial']='integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5J']='The prescribed-head spatial gap is strongly boundary-discretization-sensitive. Doubling the half-cell distance worsens the gap by ~31%; arithmetic center-boundary K reduces it only ~2.6%; interaction is ~30% of the larger main effect. No counterfactual is admitted.'
+          j['decision']='DERIVE_LOCAL_HALF_CELL_FLUX_THEORY_BEFORE_NEW_REFERENCE_COUNTERFACTUAL_OR_BRUTE_FORCE_EXTENSION'
+          j['next_authority']='LARE-BC2-C5K'
+          j['next_family_authority']={
+            'family':'C5K_LOCAL_NONLINEAR_HALF_CELL_FLUX_THEORY',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_DIAGNOSTIC_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json'
+            ],
+            'purpose':'Use actual C5I state pairs and B14 constitutive law to characterize the mathematically implied local prescribed-head half-cell flux/conductivity representation without fitted parameters.',
+            'new_reference_production_physics_authorized':False,
+            'new_lare_authorized':False,
+            'T32_authorized':False,
+            'R2048_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5J closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5J_RESULT.json                   integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5J_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5J boundary factorial audit"
+          git push origin HEAD:work/f-rom-lare-rs1
