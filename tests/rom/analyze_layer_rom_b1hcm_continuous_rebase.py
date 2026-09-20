@@ -66,6 +66,7 @@ def no_worse(a:dict[str,float|int],b:dict[str,float|int],tol:float=1e-12)->tuple
     return nw,strict
 
 def main()->int:
+    raise SystemExit("B1HCM_SUPERSEDED_BY_B1HCMR_QEND_SEMANTIC_REPAIR")
     ap=argparse.ArgumentParser()
     ap.add_argument("--material",required=True)
     ap.add_argument("--b1h-result",required=True,type=pathlib.Path)
