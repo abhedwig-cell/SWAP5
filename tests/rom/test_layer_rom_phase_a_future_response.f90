@@ -35,7 +35,7 @@
 
   integer, parameter :: NPROBES=6
   integer, parameter :: NHORIZ=3
-  integer, parameter :: horizon_steps(NHORIZ)=[4,64,256,1250]
+  integer, parameter :: horizon_steps(NHORIZ)=[8,64,256]
   integer :: start_unit,ios,ih,target_step,start_count
   character(len=512) :: starts_file
 
