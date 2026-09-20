@@ -239,7 +239,13 @@
       "max_abs_face_pressure_difference_cm": 0.000001,
       "max_abs_face_flux_difference_cm_per_day": 1e-8
     },
-    "no_post_result_retuning": true
+    "no_post_result_retuning": true,
+    "admissibility_sampling_points_per_layer": 129,
+    "invalid_trial_handling": {
+      "rule": "Nonfinite coefficients or constitutive/residual evaluation failures return one deterministic finite scaled-residual penalty vector. No coefficient clipping, Se clipping, constitutive continuation or regularization is permitted.",
+      "penalty_scaled_residual": 1000
+    },
+    "gate_attribution": "Solver convergence, branch agreement, bounded realizability, hydraulic continuity, state recovery and quadrature consistency are recorded and adjudicated as separate gates."
   },
   "qualification_gates": {
     "G1_STRICT_STATE_MOMENT_REALIZABILITY": "All 126 cases retain the exact bounded [0.02,0.995] first-moment realizability condition.",
