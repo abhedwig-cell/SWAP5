@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "9ea4b6a4b6c76ecec9b43691a6d568f1c2a0f3bb",
+  "checkpoint_commit": "c0bbae0e0039bc0b77cb29fedd903f07efbbbbcb",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "A1_CLOSED_A2_CLOSED_A2B_INTEGRATED_CLOSURE_AUDIT_IN_PROGRESS",
-  "last_reconciled_head": "9ea4b6a4b6c76ecec9b43691a6d568f1c2a0f3bb",
+  "phase": "A1_CLOSED_A2_CLOSED_A2B_EXECUTION_IN_PROGRESS_FIXED_HEAD_AUTHORITY_BOUND",
+  "last_reconciled_head": "c0bbae0e0039bc0b77cb29fedd903f07efbbbbcb",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
@@ -18,7 +18,9 @@
     "integration/f-rom/LAYER_ROM_A2B_PREREGISTRATION.json",
     "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
     "tests/rom/analyze_layer_rom_a2b_integrated_closures.py",
-    ".github/workflows/f-rom-layer-a2b-integrated-closure.yml"
+    ".github/workflows/f-rom-layer-a2b-integrated-closure.yml",
+    "integration/f-rom/LAYER_ROM_A2_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -37,7 +39,10 @@
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
     "integration/f-rom/LAYER_ROM_A2_RESULT.json",
     "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
-    "work/f-rom-lare-rs1 as noncanonical provenance only"
+    "work/f-rom-lare-rs1 as noncanonical provenance only",
+    "GitHub Actions run 35494166638 / artifact 10600227055 for A2",
+    "GitHub Actions run 35494593395 for active A2B execution",
+    "work/f-rom-lare-rs1 BC1 fixed-head authority as selective branch evidence"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -45,8 +50,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete the single authoritative A2B integrated/quasi-steady storage-only closure audit; if no candidate meets the preregistered broad-support gate, preregister A3 minimal gradient/moment state.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 9ea4b6a4b6c76ecec9b43691a6d568f1c2a0f3bb. A1 and A2 are closed. A2B preregistration is frozen; only the integrated-closure workflow is authoritative.",
+  "next_action": "Complete A2B integrated/quasi-steady storage-only closure audit. If a closure passes the frozen broad-support rule, preregister fixed-flux propagation and then fixed-head propagation using LAYER_ROM_BC1 authority. If none passes, preregister one additional physically interpretable gradient/moment state; do not fit an empirical correction.",
+  "recovery_point": "Resume from work/f-rom-layer-a. A1 state sufficiency is closed; A2 pairwise closure screen is closed negative; A2B is the active gate. Fixed-head bottom authority is separately bound in LAYER_ROM_BC1_AUTHORITY_BINDING.json.",
   "blockers": [],
   "scope_guards": [
     "research only",
