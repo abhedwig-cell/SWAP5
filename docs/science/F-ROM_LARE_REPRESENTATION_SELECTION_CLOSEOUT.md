@@ -143,6 +143,20 @@ C6N0 therefore replaces that *future* gate, not the C6M2 result, with a three-le
 
 C6N1 is the Reference-only execution of that design. It reuses the exact frozen C6M2 T8/T16 artifacts, adds only the T32 routes, and still authorizes no Layer-ROM response.
 
+## C6N1-C6N2 surface-purpose result
+
+C6N1 establishes a numerically qualified R2048_T32 surface/profile Reference with metric-specific space-time uncertainty bands. These bands measure Reference discretization uncertainty only; they are not hydrological application tolerances.
+
+C6N2 then executes the predeclared existing representation set on the same U01-U04 surface histories. No reduced lower-zone member falls inside the C6N1 uncertainty on any of the 0-20 cm, 0-40 cm, 0-80 cm or mapped-profile views. Even R16 remains numerically resolved from R2048_T32.
+
+That does **not** mean the representations are hydrologically unacceptable. It means their differences are larger than the numerical Reference uncertainty.
+
+The purpose-dependent representation result is much clearer. At the same eight-state dimension, U8 is substantially closer than lower-zone R8 on every declared surface/profile view for both B01 and B14. Thus the lower-zone-focused placement advantage found for groundwater objectives does not transfer to surface-driven soil-state objectives.
+
+The program therefore retains purpose-dependent placement as a positive finding while leaving application sufficiency unadjudicated.
+
+The next work unit is C6O: read-only derivation of the conservative root-extraction source contract and the separate stress-dependent root-uptake feedback requirements. No ET/drought response is authorized yet.
+
 ## Application and value boundary
 
 Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
