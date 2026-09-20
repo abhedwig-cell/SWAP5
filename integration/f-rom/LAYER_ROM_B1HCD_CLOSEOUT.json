@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-d.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-D",
+  "status": "CLOSED_SAME_PARTITION_DECOMPOSITION_MODEL_FORM_BURDEN_CONFIRMED_WITH_MATERIAL_EXCEPTIONS",
+  "decision": "B1HCD_FULL_COHORT_HYDROLOGICAL_DECOMPOSITION_COMPLETE",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCD_PREREGISTRATION.json",
+    "result": "integration/f-rom/LAYER_ROM_B1HCD_RESULT.json",
+    "workflow_run": 35499760107,
+    "artifact_id": 10600994215,
+    "artifact_digest": "sha256:372404fbc2318fbf8ee51b46edee2db4c103a6f46644c71cba386c8c8575f2c2"
+  },
+  "conclusions": [
+    "Vertical representation/discretization and layer closure/model form both matter, but their relative importance is material- and dimension-dependent.",
+    "The high-dimension fixed-head Layer-ROM error floor cannot be explained by insufficient state count alone.",
+    "The next question is operator localization, not another post-hoc partition or empirical correction."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCE_FIXED_HEAD_OPERATOR_LOCALIZATION",
+  "production_rom_authorized": false
+}
