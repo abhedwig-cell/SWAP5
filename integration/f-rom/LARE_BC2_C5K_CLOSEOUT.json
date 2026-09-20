@@ -1,0 +1,87 @@
+{
+  "adjudication": {
+    "CURRENT_FACE_LOCAL_TERM_RECONSTRUCTED_WITHIN_GATE": true,
+    "CURRENT_REFERENCE_R2048_T16_EXTENSION_AUTHORIZED": true,
+    "DYNAMIC_THEORY_DERIVED_BOUNDARY_COUNTERFACTUAL_AUTHORIZED": false,
+    "EXACT_STEADY_OPERATOR_REDUCES_GRID_GAP": false,
+    "INTEGRATED_K_REDUCES_GRID_GAP": false,
+    "NEW_LARE_AUTHORIZED": false,
+    "NONLINEAR_SPATIAL_CONSTITUTIVE_EFFECT_LARGER_THAN_PRE_STEP_K_LAG": true,
+    "POST_STEP_K_REDUCES_GRID_GAP": false,
+    "PRE_STEP_K_LAG_EXISTS": true,
+    "PRODUCTION_REFERENCE_CHANGE_AUTHORIZED": false,
+    "T32_AUTHORIZED": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:22f1a4e197cf4068e99da533487efaff736b50adac934ee5359396be9da5eac7",
+    "artifact_id": 10604245410,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5K_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "ab2d0f1697d819ab85c49d08c1046bc6c59b9ea6",
+    "preregistration": "integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json",
+    "result_sha256": "aeb315e72d2b4f60cd8e01cac316bbb89d703ed9f3166b0e0f34f064969a1ce9",
+    "workflow_run": 35505829870
+  },
+  "decision": "C5K_NO_THEORY_DERIVED_BOUNDARY_OPERATOR_DIRECTION_FOR_DYNAMIC_TEST",
+  "evidence": {
+    "R1024_integrated_minus_postK_rmse_cm_per_day": 0.024914012529358882,
+    "R1024_postK_minus_current_rmse_cm_per_day": 0.009441189468285191,
+    "R512_integrated_minus_postK_rmse_cm_per_day": 0.026370965238987368,
+    "R512_postK_minus_current_rmse_cm_per_day": 0.00269729571459358,
+    "arithmetic_post_gap_ratio_to_current": 1.0497091700951833,
+    "arithmetic_pre_gap_ratio_to_current": 1.0454015745690748,
+    "current_local_face_grid_gap_rmse_cm_per_day": 0.023396932284883532,
+    "integrated_gap_ratio_to_current": 1.059877109869595,
+    "postK_gap_ratio_to_current": 1.0175573980160262,
+    "pre_step_K_lag_over_integrated_spatial_correction": 0.3580145581598639,
+    "published_grid_gap_rmse_cm_per_day": 0.023396932284054154,
+    "steady_descriptor": "LOCAL_STEADY_THEORY_INCREASES_FROZEN_STATE_GRID_GAP",
+    "steady_gap_ratio_to_current": 1.0598823985516515
+  },
+  "next_authority": {
+    "constraints": [
+      "Current Reference only; no boundary counterfactual and no production change",
+      "retain exact B14 Z01-Z04 physical histories and T16 transaction interval",
+      "R2048 only; do not extend to T32 or R4096 in C5L",
+      "execute by independent histories to respect runner lifetime",
+      "require O0/O2 byte identity and unchanged mass/retry gates",
+      "compare against immutable C5I R512/R1024 T16 anchors",
+      "no continuum threshold selected after response",
+      "no LARE/application/performance/speed/production claim"
+    ],
+    "question": "Under the unchanged current Reference G0K0 boundary and T16 temporal authority, is the R1024-R2048 spatial difference smaller than the frozen R512-R1024 difference, and what descriptive spatial order follows?",
+    "state": "CURRENT_REFERENCE_R2048_T16_SPATIAL_EXTENSION_AUTHORIZED",
+    "target": "LARE-BC2-C5L"
+  },
+  "qualification": {
+    "R1024_max_abs_current_face_minus_published_cm_per_day": 3.9767756310205016e-09,
+    "R1024_max_steady_distance_residual_cm": 4.163336342344337e-17,
+    "R512_max_abs_current_face_minus_published_cm_per_day": 2.8143213037790105e-09,
+    "R512_max_steady_distance_residual_cm": 8.326672684688674e-17,
+    "instrumented_state_trajectory_byte_identical_to_C5I": true,
+    "published_baseline_identity_to_C5I_T16": true
+  },
+  "schema": "swap5.lare.bc2.c5k.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "dynamic_reference_counterfactual_executed": false,
+    "new_lare_closure": false,
+    "new_lare_run": false,
+    "new_reference_physics_admitted": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The frozen current local lower-face term reconstructs the published mass-balance bottom flux to a few 1e-9 cm/d, well within the preregistered equation-residual gate. The boundary discrepancy is therefore not an adapter publication artifact.",
+    "Replacing explicit pre-step cell conductivity by post-step cell conductivity changes the local operator, but its maximum-grid RMSE effect is only about 0.358 of the nonlinear integrated-conductivity correction scale. Explicit K lag is present but is not the dominant local mechanism in this decomposition.",
+    "Every postprocessed theory alternative increases, rather than reduces, the R512-R1024 frozen-state grid-gap RMSE: post-step K by about 1.8 percent, arithmetic means by about 4.5-5.0 percent, and both the Kirchhoff/integrated mean and exact steady half-cell operator by about 6.0 percent.",
+    "The integrated linear-head mean and exact steady nonlinear half-cell operator are nearly indistinguishable in their inter-grid effect for this workload. This is strong evidence that a more nonlinear local conductivity mean is not a mechanism-based rescue of the observed Reference spatial gap.",
+    "C5K therefore fails its preregistered direction requirement for a dynamic theory-derived boundary counterfactual. No alternative lower-boundary operator is authorized or admitted.",
+    "Because C5I already made temporal error subdominant and C5J-C5K have now characterized the local boundary sensitivity without identifying a justified replacement, one further spatial extension of the unchanged current Reference at T16 is the clean remaining test of the spatial convergence trend."
+  ],
+  "status": "CLOSED_LOCAL_HALF_CELL_THEORY_DOES_NOT_SUPPORT_NEW_DYNAMIC_BOUNDARY_OPERATOR_CURRENT_REFERENCE_SPATIAL_EXTENSION_NEXT",
+  "work_unit": "LARE-BC2-C5K",
+  "workstream": "F-ROM-LARE"
+}

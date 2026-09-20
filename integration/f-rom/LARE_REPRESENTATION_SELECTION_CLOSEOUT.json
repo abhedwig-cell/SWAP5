@@ -21,6 +21,7 @@
     "C5H": "At T8, temporal errors shrink with observed order ~0.79-0.84 and are only ~12-15% of the R512-R1024 spatial gap, but that spatial gap still increases to 0.02303 cm/d. One final matched temporal refinement is required before R2048.",
     "C5I": "At T16 the R512-R1024 spatial bottom-flux RMSE still increases to ~0.02340 cm/d while T8-T16 temporal shifts fall to ~0.00147/0.00180 cm/d (6.3/7.7% of the spatial gap). Temporal error is subdominant; brute-force T32/R2048 is stopped pending prescribed-head boundary-discretization diagnosis.",
     "C5J": "The prescribed-head spatial gap is strongly boundary-discretization-sensitive. Doubling the half-cell distance worsens the gap by ~31%; arithmetic center-boundary K reduces it only ~2.6%; interaction is ~30% of the larger main effect. No counterfactual is admitted.",
+    "C5K": "On byte-identical C5I states, post-step K and theory-derived arithmetic/integrated/exact-steady half-cell operators all increase the R512-R1024 grid gap; integrated and exact-steady are nearly identical. Pre-step K lag is smaller than the nonlinear spatial correction. No dynamic boundary counterfactual is authorized.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
@@ -40,6 +41,7 @@
     "C5H_matched_T8_reference": "integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json",
     "C5I_matched_T16_reference": "integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json",
     "C5J_reference_boundary_factorial": "integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json",
+    "C5K_local_half_cell_theory": "integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -76,23 +78,23 @@
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
     }
   ],
-  "decision": "DERIVE_LOCAL_HALF_CELL_FLUX_THEORY_BEFORE_NEW_REFERENCE_COUNTERFACTUAL_OR_BRUTE_FORCE_EXTENSION",
+  "decision": "EXTEND_UNCHANGED_CURRENT_REFERENCE_ONCE_TO_R2048_AT_T16_AFTER_BOUNDARY_MECHANISM_CLOSEOUT",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-BC2-C5K",
+  "next_authority": "LARE-BC2-C5L",
   "next_family_authority": {
-    "R2048_authorized": false,
     "T32_authorized": false,
     "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "C5K_LOCAL_NONLINEAR_HALF_CELL_FLUX_THEORY",
+    "family": "C5L_CURRENT_REFERENCE_R2048_T16",
+    "new_closure_authorized": false,
     "new_lare_authorized": false,
     "new_reference_production_physics_authorized": false,
-    "purpose": "Use actual C5I state pairs and B14 constitutive law to characterize the mathematically implied local prescribed-head half-cell flux/conductivity representation without fitted parameters.",
+    "purpose": "Measure one further current-Reference spatial refinement step after temporal and boundary-mechanism reconciliation.",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json"
     ],
-    "state": "AUTHORIZED_FOR_PROSPECTIVE_DIAGNOSTIC_PREREGISTRATION"
+    "state": "AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -124,7 +126,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v15",
+  "schema": "swap5.lare.representation-selection.closeout.v16",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -135,7 +137,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5J_BOUNDARY_SENSITIVITY_LOCAL_HALF_CELL_THEORY_AUDIT_NEXT",
+  "status": "CLOSED_THROUGH_C5K_NO_LOCAL_BOUNDARY_RESCUE_CURRENT_REFERENCE_R2048_T16_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
