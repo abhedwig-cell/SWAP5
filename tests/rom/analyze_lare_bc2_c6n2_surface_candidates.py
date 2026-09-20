@@ -187,7 +187,7 @@ def main():
     rows={}
     for material in ("B01","B14"):
         uncertainty={
-            k:float(n1["materials"][material]["metrics"][k]["combined_reference_uncertainty"])
+            k:float(n1["materials"][material]["metrics"][k]["U_combined"])
             for k in METRIC_KEYS
         }
         mrows={}
