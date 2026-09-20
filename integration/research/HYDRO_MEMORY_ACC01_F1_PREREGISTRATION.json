@@ -86,5 +86,28 @@
         "max_accepted_dt_day": 0.09375
       }
     }
+  ],
+  "implementation_adjudications": [
+    {
+      "id": "ACC01-F1-IA1",
+      "date": "2026-09-20",
+      "trigger": "Instrumented F1 run 35430358487 produced valid, equal ROOT and GENERIC certificates through canonical route reference-richards-defect-bound, but the test implementation had added an unpreregistered assertion requiring reference-richards-raw-bound.",
+      "authority": "mod_reference_richards_temporal_indicator defines both reference-richards-raw-bound and reference-richards-defect-bound as successful SW_TEMPORAL_INDICATOR_AVAILABLE outcomes, selected by bounded_norm=min(raw_norm,2*defect_norm).",
+      "decision": "Remove the unpreregistered raw-bound-only assertion. Require ROOT and GENERIC to use the same canonical successful route, restricted to reference-richards-raw-bound or reference-richards-defect-bound.",
+      "frozen_criteria_unchanged": [
+        "H_app=0.4 cm",
+        "A_temporal=0.25",
+        "H_temporal=0.1 cm",
+        "root sink=0.02 cm/day",
+        "outer interval=0.1 day",
+        "max retries=8",
+        "max committed substeps=32",
+        "hard mass tolerance=1e-12 cm",
+        "ROOT/GENERIC state equivalence",
+        "state-changing ROOT trajectory",
+        "O0/O2 identity"
+      ],
+      "classification": "TEST_ORACLE_CORRECTION_NOT_SCIENTIFIC_CRITERION_CHANGE"
+    }
   ]
 }
