@@ -1,22 +1,17 @@
 {
-  "schema": "swap5.lare.rs1.status.v3",
+  "schema": "swap5.lare.rs1.status.v4",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-RS1",
   "branch": "work/f-rom-lare-rs1",
   "live_reconciliation": {
-    "date": "2026-09-19",
-    "observed_branch_head_before_status_repair": "c5c068baef92fce91dc372480ed2030457161f6b",
-    "observed_current_canonical": "52b4608fdf548b89b154f19caeb97c1a5effe3de",
+    "date": "2026-09-20",
+    "observed_branch_head_before_status_update": "05a0d08ac1037116134dcdf5f2844a21bf1e1639",
+    "observed_current_canonical": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
     "canonical_start_authority": "9bb73821bb78a04c759b763746b50a3f777cd416",
-    "merge_base_with_current_canonical": "9bb73821bb78a04c759b763746b50a3f777cd416",
-    "relation_to_current_canonical": {
-      "status": "diverged",
-      "branch_ahead_by": 433,
-      "branch_behind_by": 184
-    },
-    "authority_rule": "Research evidence remains bound to the frozen canonical start unless a separate explicit requalification changes that authority. Current canonical is recorded for reconciliation only and does not silently replace the research basis."
+    "authority_rule": "LARE scientific evidence remains bound to the frozen start authority unless explicitly requalified. Later canonical evidence may be imported as separately identified comparator/governance authority without rebasing historical evidence.",
+    "latest_canonical_delta_role": "F-ROMV2 evidence/governance only relative to the C4T execution source; no src/reference delta requiring C4T re-execution."
   },
-  "state": "RS1_GW_P2C_CLOSED_DYN0A_AND_BC2_DIAGNOSTICS_CLOSED_C4E_SCIENTIFIC_CHOICE_BOUNDARY",
+  "state": "C4T_CLOSED_VALUE_SIGNAL_RESOLVED_C4U_EXTERNAL_APPLICATION_ACCURACY_BLOCKER",
   "formal_gw_state_evidence": {
     "p1": {
       "result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
@@ -151,6 +146,39 @@
         "note": "Present on later branch head but not used by workflow run 35460239887 and therefore carries no C4E execution authority."
       },
       "next_authority": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_CLOSURE_HYPOTHESIS"
+    },
+    "bc2_c4q": {
+      "closeout": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+      "decision": "LARE_REDUCED_FRONTIER_CROSSES_FMC",
+      "status": "CLOSED_LARE_R12_CROSSES_FMC_ON_MATCHED_D13_NO_VALUE_CLAIM",
+      "interpretation": "Exposed D13 matched representation discriminator. R4 is the minimum reduced LARE member crossing R2 on all five frozen views; R12 is the only reduced member crossing FMC when mapped 10-cm profile fidelity is included."
+    },
+    "bc2_c4r": {
+      "closeout": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+      "decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
+      "status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE",
+      "interpretation": "Blind half-offset fixed-water-table histories reproduce the purpose-dependent dimension separation: R4 for groundwater-vector crossing versus both R2/FMC; R12 for FMC profile-inclusive crossing."
+    },
+    "bc2_c4s": {
+      "closeout": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+      "decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
+      "status": "CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED",
+      "interpretation": "Same-partition CoRichards R3-R12 is fully available on the blind fixed-water-table workload, unlike the fixed-flux Q1 laboratory. Workload-specific numerical availability is therefore explicit."
+    },
+    "bc2_c4t": {
+      "closeout": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+      "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+      "status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED",
+      "workflow_run": 35492342285,
+      "artifact_id": 10599940848,
+      "artifact_digest": "sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833",
+      "interpretation": "Blind fidelity plus prospective position-balanced timing resolves a shared-host relative cost-fidelity value signal for LARE R3-R8. No portable speedup or application admission follows."
+    },
+    "bc2_c4u": {
+      "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+      "decision": "GW_APPLICATION_ACCEPTANCE_NOT_ADJUDICABLE_FROM_CURRENT_REPOSITORY_AUTHORITY",
+      "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+      "interpretation": "Canonical F-GC13/F-GC14 provide the fail-closed evidence transport contract and F-GC29 provides local dh/dq response sensitivity, but no real project H_app or temporal allocation is qualified. Synthetic fixtures, candidate errors, calibration metrics and solver tolerances are forbidden substitutes."
     }
   },
   "historical_hupsel_checkpoint": {
@@ -174,5 +202,14 @@
     "NO_REFERENCE_RICHARDS_CHANGE",
     "NO_ROSSFAST_CHANGE",
     "NO_SPEED_CLAIM_BEFORE_FIDELITY"
-  ]
+  ],
+  "next_authority": {
+    "state": "EXTERNAL_SOURCE_BLOCKER",
+    "required": [
+      "externally governed groundwater head/drawdown application prediction-error requirement H_app",
+      "independently governed temporal allocation A_temporal or direct temporal head-error budget",
+      "verified immutable provenance/source digest for both claims"
+    ],
+    "when_available": "Instantiate the existing F-GC13/F-GC14 boundary, then preregister a downstream-consequence GW-R/GW-D validation using frozen C4R/C4T candidates."
+  }
 }
