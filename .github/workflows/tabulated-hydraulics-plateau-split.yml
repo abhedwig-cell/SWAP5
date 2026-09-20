@@ -1,0 +1,195 @@
+name: TAB-HYD branch-aware Ksat table diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-plateau-split.yml'
+      - 'research/tabulated_hydraulics/patch_table_ksat_plateau_split.py'
+      - 'research/tabulated_hydraulics/prepare_envelope_cases.py'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_tspack.py'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel application
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build derivative-consistent analytical control
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+
+      - name: Build branch-aware direct-table candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py \
+            swap-src/src/utils/soilhydraulicsutils.f90 \
+            swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_direct_uniform_tspack.py \
+            swap-src/src/soil/sptabulated.f90
+          meson setup swap-src/build-table swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table
+          cp swap-src/build-table/swap swap-table
+
+      - name: Prepare five-scenario envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python3 research/tabulated_hydraulics/prepare_envelope_cases.py \
+            swap-testcases/cases/hupselbrook/legacy \
+            staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv \
+            build/plateau-split
+
+      - name: Run all routes without fail-fast
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'case\troute\tswkimpl\treturn_code\truntime_seconds\trows\n' > build/plateau-split/status.tsv
+          for work in build/plateau-split/*__analytic_k0 \
+                      build/plateau-split/*__analytic_k1 \
+                      build/plateau-split/*__table_k0 \
+                      build/plateau-split/*__table_k1; do
+            name=$(basename "$work")
+            case "$name" in
+              *__table_k0) route=table; k=0; bin="$GITHUB_WORKSPACE/swap-table" ;;
+              *__table_k1) route=table; k=1; bin="$GITHUB_WORKSPACE/swap-table" ;;
+              *__analytic_k0) route=analytic; k=0; bin="$GITHUB_WORKSPACE/swap-analytic" ;;
+              *__analytic_k1) route=analytic; k=1; bin="$GITHUB_WORKSPACE/swap-analytic" ;;
+            esac
+            pushd "$work" >/dev/null
+            rm -f result_output.csv run.log
+            set +e
+            /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$bin" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$name" "$route" "$k" "$rc" "$runtime" "$rows" \
+              | tee -a build/plateau-split/status.tsv
+          done
+
+      - name: Compare all completed analytical-table pairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/plateau-split/comparisons.txt
+          printf 'scenario\tswkimpl\tcomparison_rc\n' > build/plateau-split/comparison-status.tsv
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            for k in 0 1; do
+              a="build/plateau-split/${scenario}__analytic_k${k}"
+              t="build/plateau-split/${scenario}__table_k${k}"
+              if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
+                set +e
+                python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+                  "$a" "$t" "build/plateau-split/${scenario}__k${k}.json" \
+                  --label "${scenario},K${k},plateau-split" \
+                  | tee -a build/plateau-split/comparisons.txt
+                rc=${PIPESTATUS[0]}
+                set -e
+                printf '%s\t%s\t%s\n' "$scenario" "$k" "$rc" \
+                  | tee -a build/plateau-split/comparison-status.tsv
+              else
+                printf '%s\t%s\t%s\n' "$scenario" "$k" "incomplete" \
+                  | tee -a build/plateau-split/comparison-status.tsv
+              fi
+            done
+          done
+
+      - name: Apply original fidelity limits to completed pairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path("build/plateau-split")
+          limits={
+              "GWL":(0.05,0.01),
+              "DSTOR":(0.02,0.005),
+              "DRAINAGE":(0.02,0.005),
+              "DRN":(0.02,0.005),
+              "QBOTTOM":(0.02,0.005),
+              "TACT":(0.02,0.005),
+          }
+          rows=[]
+          failed=[]
+          for p in sorted(root.glob("*__k[01].json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]:
+                      continue
+                  m=d["metrics"][metric]
+                  ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  row=(d["label"],metric,m["max_abs"],m["rmse"],ok)
+                  rows.append(row)
+                  if not ok:
+                      failed.append(row)
+          with (root/"completed-pair-fidelity.tsv").open("w") as fh:
+              fh.write("label\tmetric\tmax_abs\trmse\twithin_original_limit\n")
+              for r in rows:
+                  fh.write("\t".join(map(str,r))+"\n")
+          print((root/"completed-pair-fidelity.tsv").read_text(),end="")
+          print(f"completed_metric_failures={len(failed)}")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-plateau-split-diagnostic
+          path: |
+            build/plateau-split/status.tsv
+            build/plateau-split/comparison-status.tsv
+            build/plateau-split/comparisons.txt
+            build/plateau-split/completed-pair-fidelity.tsv
+            build/plateau-split/*.json
+            build/plateau-split/*/run.log
