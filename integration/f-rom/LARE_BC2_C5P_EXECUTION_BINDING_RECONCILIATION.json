@@ -37,5 +37,20 @@
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "queue_unblock": {
+    "reason": "A superseded C5P run remained in_progress in GitHub Actions and held the ref-based concurrency slot after all of its jobs had been cancelled or were shutting down.",
+    "affected_superseded_run": 35507600169,
+    "blocked_fully_bound_run": 35507609830,
+    "change": "Workflow concurrency key changed from github.ref to github.sha and cancel-in-progress disabled so each immutable execution head is isolated.",
+    "scientific_design_changed": false,
+    "implementation_code_changed": false,
+    "histories_changed": false,
+    "partitions_changed": false,
+    "metrics_changed": false,
+    "solver_or_physics_changed": false,
+    "response_based": false,
+    "scientific_effect": "NONE",
+    "authority_rule": "Only a run whose head is explicitly bound in the preregistration after this queue-unblock workflow update may serve as C5P scientific authority."
+  }
 }
