@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.lare.bc2.c6m.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M",
+  "status": "CLOSED_SURFACE_FREE_DRAINAGE_REFERENCE_ROUTE_BLOCKED_NO_LAYER_ROM_RESPONSE",
+  "decision": "STOP_C6M_BEFORE_CANDIDATE_RESPONSE_DO_NOT_RELAX_FREE_DRAINAGE_REFERENCE_NUMERICAL_AUTHORITY",
+  "role": "REFERENCE_ONLY_SURFACE_DRIVEN_SPACE_TIME_QUALIFICATION_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json",
+    "workflow_run": 35531511964,
+    "execution_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_RECONCILIATION.json",
+    "reference_job_count": 64,
+    "reference_job_failure_count": 64,
+    "analysis_job": "SKIPPED",
+    "candidate_response_generated": false
+  },
+  "observed_execution": {
+    "authority_lock_passed_all_started_jobs": true,
+    "materialization_passed_all_started_jobs": true,
+    "common_failed_step": "Execute frozen Reference slice",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T16",
+      "R1024_T16",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "compiler_opts": [
+      0,
+      2
+    ],
+    "histories": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+    ],
+    "pattern": "64/64 exact matrix slices returned nonzero during frozen Reference execution.",
+    "quality_metrics_available": false,
+    "numerical_quality_gate_adjudicated": false
+  },
+  "interpretation": [
+    "C6M does not provide evidence about Layer-ROM surface-driven fidelity because no Layer-ROM candidate was executed.",
+    "The failure is upstream of the intended R1024/R2048 space-time comparison: the frozen free-drainage Reference route itself is not executable under the current DYN0A numerical authority for these histories.",
+    "The source harness explicitly allows its previously qualified retry/fallback only for bottom_mode=2 fixed flux. Free drainage bottom_mode=7 intentionally fails closed after a failed first attempt.",
+    "Enabling that fixed-flux retry for free drainage after observing this result would change numerical authority post response and is not authorized.",
+    "The purpose-dependent research direction remains valid; only the chosen free-drainage Reference route is blocked."
+  ],
+  "adjudication": {
+    "SURFACE_PURPOSE_REJECTED": false,
+    "FREE_DRAINAGE_REFERENCE_ROUTE_QUALIFIED": false,
+    "C6M_SPACE_TIME_GATE_EVALUATED": false,
+    "LAYER_ROM_CANDIDATE_RESPONSE_GENERATED": false,
+    "C6N_SURFACE_CANDIDATE_COMPARISON_AUTHORIZED": false,
+    "FREE_DRAINAGE_RETRY_POLICY_CHANGE_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6M2",
+    "state": "FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE_DESIGN_AUTHORIZED_AFTER_DIAGNOSTIC_CLASSIFICATION",
+    "question": "Can a fresh surface-driven, source-free, fixed-bottom-flux Reference panel be numerically qualified to test upper-zone/profile representation sufficiency while making no drainage-prediction claim?",
+    "rationale": "Fixed-bottom-flux is already within the DYN0A qualified numerical route. It isolates surface-originating redistribution and avoids changing the failed free-drainage retry policy.",
+    "constraints": [
+      "Use fresh histories not labeled blind before C6M.",
+      "Bottom flux is prescribed and therefore drainage/recharge fidelity is out of scope.",
+      "Reference high-resolution space-time qualification still precedes Layer-ROM response.",
+      "No new Layer-ROM representation or closure.",
+      "No reuse of C6M failures to set hydrological tolerances."
+    ]
+  },
+  "diagnostic_pending": {
+    "workflow_run": 35531984060,
+    "role": "Exact failure-text classification only; cannot change C6M decision.",
+    "authority_effect": "NONE_ON_C6M_ADJUDICATION"
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "response_based_retuning": false,
+    "reference_physics_changed": false,
+    "retry_policy_changed": false,
+    "free_drainage_route_repaired": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
