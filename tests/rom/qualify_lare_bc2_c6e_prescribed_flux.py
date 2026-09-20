@@ -126,18 +126,32 @@ def diagnostics(core,x,case,p):
     }
 
 
-def qualified(diag,p):
+def bounded_gate(diag):
+    return 0.02-1e-14<=diag["Se_min"] and diag["Se_max"]<=0.995+1e-14
+
+
+def hydraulic_gate(diag,p):
     g=p["numerical_contract"]["physical_residual_gates"]
-    q=p["numerical_contract"]["quadrature_consistency_gates"]
     return (
-        0.02-1e-14<=diag["Se_min"] and diag["Se_max"]<=0.995+1e-14
-        and diag["max_abs_interface_pressure_jump_cm"]<=float(g["max_abs_interface_pressure_jump_cm"])
+        diag["max_abs_interface_pressure_jump_cm"]<=float(g["max_abs_interface_pressure_jump_cm"])
         and diag["max_abs_interface_flux_jump_cm_per_day"]<=float(g["max_abs_interface_flux_jump_cm_per_day"])
         and diag["abs_top_flux_residual_cm_per_day"]<=float(g["max_abs_top_flux_residual_cm_per_day"])
         and diag["abs_bottom_flux_residual_cm_per_day"]<=float(g["max_abs_bottom_flux_residual_cm_per_day"])
-        and diag["max_abs_storage_recovery_cm"]<=float(g["max_abs_storage_recovery_cm"])
+    )
+
+
+def state_gate(diag,p):
+    g=p["numerical_contract"]["physical_residual_gates"]
+    return (
+        diag["max_abs_storage_recovery_cm"]<=float(g["max_abs_storage_recovery_cm"])
         and diag["max_abs_moment_recovery_cm2"]<=float(g["max_abs_moment_recovery_cm2"])
-        and diag["max_abs_96_192_storage_delta_cm"]<=float(q["max_abs_storage_delta_cm"])
+    )
+
+
+def quadrature_gate(diag,p):
+    q=p["numerical_contract"]["quadrature_consistency_gates"]
+    return (
+        diag["max_abs_96_192_storage_delta_cm"]<=float(q["max_abs_storage_delta_cm"])
         and diag["max_abs_96_192_moment_delta_cm2"]<=float(q["max_abs_moment_delta_cm2"])
     )
 
@@ -172,18 +186,23 @@ def qualify_case(core,case,p):
             diag_error=str(exc)
         else:
             diag_error=None
-        ok=bool(res.success and diag is not None and qualified(diag,p))
+        bg=bool(diag is not None and bounded_gate(diag))
+        hg=bool(diag is not None and hydraulic_gate(diag,p))
+        sg=bool(diag is not None and state_gate(diag,p))
+        qg=bool(diag is not None and quadrature_gate(diag,p))
         runs.append({
-            "start":sid,"success":bool(res.success),"qualified":ok,
+            "start":sid,"success":bool(res.success),
+            "bounded_realizability":bg,"hydraulic_continuity":hg,
+            "state_recovery":sg,"quadrature_consistency":qg,
             "status":int(res.status),"nfev":int(res.nfev),
             "cost":float(res.cost),"optimality":float(res.optimality),
             "condition_number":condition_number(res),
             "diagnostics":diag,"diagnostic_error":diag_error
         })
-        if ok:
+        if res.success and diag is not None:
             sols.append((sid,res.x.copy(),diag))
 
-    all_converged=len(sols)==len(runs)==5
+    all_converged=all(r["success"] for r in runs)
     unique=False
     max_theta=max_p=max_q=0.0
     if all_converged:
@@ -207,10 +226,10 @@ def qualify_case(core,case,p):
         "moment_bound_gate":moment_bound_gate(core,case),
         "all_starts_converged":all_converged,
         "unique_numerical_branch":unique,
-        "bounded_realizability":all(r["diagnostics"] is not None and 0.02-1e-14<=r["diagnostics"]["Se_min"] and r["diagnostics"]["Se_max"]<=0.995+1e-14 for r in runs),
-        "hydraulic_continuity":all(r["qualified"] for r in runs),
-        "state_recovery":all(r["qualified"] for r in runs),
-        "quadrature_consistency":all(r["qualified"] for r in runs),
+        "bounded_realizability":all(r["bounded_realizability"] for r in runs),
+        "hydraulic_continuity":all(r["hydraulic_continuity"] for r in runs),
+        "state_recovery":all(r["state_recovery"] for r in runs),
+        "quadrature_consistency":all(r["quadrature_consistency"] for r in runs),
         "max_pair_theta_difference":max_theta,
         "max_pair_face_pressure_difference_cm":max_p,
         "max_pair_face_flux_difference_cm_per_day":max_q,
