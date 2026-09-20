@@ -28,8 +28,11 @@ def main()->int:
     with tempfile.TemporaryDirectory() as td:
         td=pathlib.Path(td)
         base=td/"c5t_full.f90"; bm=td/"c5t_manifest.json"
+        c5t_materializer=pathlib.Path(__file__).with_name("materialize_lare_bc2_c5t_instrumentation.py")
+        if not c5t_materializer.is_file():
+            raise SystemExit(f"C5T base materializer not found: {c5t_materializer}")
         subprocess.run([
-          sys.executable,str(a.c5t_materializer),
+          sys.executable,str(c5t_materializer),
           "--c5r-materializer",str(a.c5r_materializer),
           "--c5p-materializer",str(a.c5p_materializer),
           "--c5n-materializer",str(a.c5n_materializer),
@@ -94,7 +97,7 @@ def main()->int:
     a.output.write_text(text,encoding="utf-8")
     out={
       "schema":"swap5.lare.bc2.c6d.moment-instrumentation-materialization.v1",
-      "c5t_materializer_sha256":sha256(a.c5t_materializer),
+      "c5t_materializer_sha256":sha256(c5t_materializer),
       "source_harness_sha256":sha256(a.source),
       "output_sha256":sha256(a.output),
       "geometry":{"nodes":2048,"dz_cm":DZ_FINE},
