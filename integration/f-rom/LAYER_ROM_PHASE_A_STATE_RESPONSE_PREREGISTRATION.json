@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.layer-rom.phase-a.state-response-preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-STATE1",
+  "phase": "PREREGISTERED_BEFORE_INDEPENDENT_REFERENCE_RESULT_EXPOSURE",
+  "canonical_basis": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "representation_source": "integration/f-rom/LAYER_ROM_PHASE_A_PREREGISTRATION.json",
+  "reference_source": "integration/f-rom/LAYER_ROM_PHASE_A_REFERENCE_PREREGISTRATION.json",
+  "diagnostic_state_scale": {
+    "theta_floor": 0.0005420462931603476,
+    "origin": "frozen historical B01 Reference diagnostic scale reused prospectively for comparability",
+    "role": "state-proximity diagnostic only",
+    "application_tolerance": false,
+    "multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ]
+  },
+  "independent_state_screen": {
+    "compare_cross_history_pairs": true,
+    "fine_state_distance": "max absolute 10-cm-cell theta difference",
+    "reduced_state_distance": "max absolute layer-mean theta difference over the frozen representation",
+    "reduction_induced_alias": "fine_state_distance > theta_floor and reduced_state_distance <= multiplier * theta_floor",
+    "no_partition_reselection": true
+  },
+  "adversarial_pair_freeze": {
+    "pair_count_per_representation": 6,
+    "representation_ids": [
+      "L2",
+      "L3",
+      "L4",
+      "L6",
+      "U2",
+      "U3",
+      "U4",
+      "U6"
+    ],
+    "ordering": "ascending reduced-state distance, then fine-state distance, then lexical history/step identity",
+    "primary_radius": "1.0x",
+    "fallback_radius": "2.0x only when fewer than six reduction-induced pairs exist at 1.0x",
+    "if_no_alias_within_2x": "freeze the six nearest full-state-distinguishable cross-history pairs above 2x and label them NEAR_BOUNDARY rather than aliases",
+    "future_response_unseen_when_pairs_frozen": true
+  },
+  "common_future_probe_bank": {
+    "material_constants": {
+      "B01_KSAT_cm_per_day": 31.225016,
+      "provenance": "same frozen B01 hydraulic parameter set used by the canonical Reference research harness"
+    },
+    "step_dt_day": 0.0008,
+    "horizons_steps": [
+      8,
+      64,
+      256
+    ],
+    "probes": [
+      {
+        "id": "P_FX_ZERO",
+        "bottom_mode": 2,
+        "top_flux_cm_per_day": 0,
+        "bottom_flux_cm_per_day": 0,
+        "schedule": "constant",
+        "intent": "closed-flux redistribution/memory probe"
+      },
+      {
+        "id": "P_FX_OPPOSED",
+        "bottom_mode": 2,
+        "top_flux_cm_per_day": 0.02,
+        "bottom_flux_cm_per_day": -0.02,
+        "schedule": "constant",
+        "intent": "fixed-flux gradient probe; sign labels are deliberately not interpreted as wet/dry a priori"
+      },
+      {
+        "id": "P_HD_WETTER",
+        "bottom_mode": 5,
+        "top_flux_cm_per_day": 0,
+        "bottom_head_cm": -25,
+        "schedule": "constant",
+        "intent": "fixed lower-head response probe"
+      },
+      {
+        "id": "P_HD_DRIER",
+        "bottom_mode": 5,
+        "top_flux_cm_per_day": 0,
+        "bottom_head_cm": -65,
+        "schedule": "constant",
+        "intent": "contrasting fixed lower-head response probe"
+      },
+      {
+        "id": "P_HD_SWITCH",
+        "bottom_mode": 5,
+        "top_flux_cm_per_day": 0,
+        "schedule": [
+          {
+            "steps": 64,
+            "bottom_head_cm": -25
+          },
+          {
+            "steps": 192,
+            "bottom_head_cm": -65
+          }
+        ],
+        "intent": "head-regime transition and reversal-memory probe"
+      },
+      {
+        "id": "P_TOP_SWITCH",
+        "bottom_mode": 2,
+        "bottom_flux_cm_per_day": 0,
+        "schedule": [
+          {
+            "steps": 64,
+            "top_flux_cm_per_day": 0.02
+          },
+          {
+            "steps": 192,
+            "top_flux_cm_per_day": -0.02
+          }
+        ],
+        "intent": "top-forcing transition and vertical-memory probe"
+      }
+    ],
+    "reachability_rule": "A probe that leaves the qualified Reference domain fails closed for that state/probe. Its amplitude or horizon is not retuned from candidate performance."
+  },
+  "future_response_vector": [
+    "delta total storage",
+    "delta 0-40 cm storage",
+    "delta 40-120 cm storage",
+    "delta 120-160 cm storage",
+    "cumulative bottom outward exchange",
+    "terminal bottom flux",
+    "bottom-flux sign",
+    "reversal sequence and reversal timing",
+    "fine theta profile difference",
+    "maximum and terminal vertical-zone divergence"
+  ],
+  "interpretation": {
+    "primary_question": "Do near-identical frozen reduced states remain hydrologically distinguishable under exactly identical future forcing?",
+    "no_single_score": true,
+    "no_application_threshold": true,
+    "same_dimension_control_required": true,
+    "purpose_views": [
+      "GW-R",
+      "GW-D",
+      "SCI-P"
+    ]
+  },
+  "closure_firewall": {
+    "closure_used_in_state_sufficiency": false,
+    "candidate_propagation_used": false,
+    "fine_reference_future_response_only": true
+  },
+  "production_rom_authorized": false
+}
