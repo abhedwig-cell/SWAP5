@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v5",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v6",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "BOUND_ULTRACOMPACT_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
+  "status": "V5_AUTHORITY_ACTIVE_ONE_JOB_INFRASTRUCTURE_TERMINATION_RERUN_AUTHORIZED",
   "decision": "ULTRACOMPACT_IDENTICAL_C6N1_MATRIX_WITH_REPAIRED_SELF_HASH_AUTHORITY_LOCK",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
@@ -100,7 +100,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
   },
-  "authority_rule": "Only the ultracompact run triggered by this v5 reconciliation update with workflow blob b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4 may become C6N1 scientific authority. All earlier queued or failed C6N1 runs remain superseded regardless of later scheduler execution.",
+  "authority_rule": "C6N1 scientific authority remains run 35534062401 at head 108734b4e506a46a62785936e135720c7e98b360. Job 106139807082 may be rerun unchanged because the only observed failure was hosted-runner shutdown exit 143; no scientific input, metric, threshold or solver policy changes.",
   "scientific_firewall": {
     "candidate_response_generated": false,
     "T32_reference_response_seen": false,
@@ -123,13 +123,12 @@
   "recovery_checkpoint": {
     "timestamp_context": "2026-09-20 current session",
     "branch": "work/f-rom-lare-rs1",
-    "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
-    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
-    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
-    "ultracompact_workflow_blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
-    "scientific_response_seen": false,
+    "authority_run": 35534062401,
+    "infrastructure_failed_job": 106139807082,
+    "exact_job_rerun_authorized": true,
+    "scientific_response_used_for_repair": false,
     "candidate_response_seen": false,
-    "next_action": "Use only the ultracompact run triggered by this v5 reconciliation update as C6N1 scientific authority."
+    "next_action": "Rerun only job 106139807082 unchanged; continue the same v5 C6N1 authority run."
   },
   "pre_response_lock_failures": [
     {
@@ -169,12 +168,29 @@
     "optimization_runs_per_history": 2
   },
   "ultracompact_authority_run": {
-    "workflow_run": null,
-    "execution_head": null,
+    "workflow_run": 35534062401,
+    "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
     "workflow_blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
     "jobs_expected": 6,
-    "state": "AWAITING_V5_TRIGGER",
+    "state": "ACTIVE_JOB_RERUN_FOR_INFRASTRUCTURE_FAILURE",
     "authority_if_completed": true
-  }
+  },
+  "infrastructure_failures": [
+    {
+      "workflow_run": 35534062401,
+      "job_id": 106139807082,
+      "job": "t32-B14-R2048_T32",
+      "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+      "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
+      "authority_lock_passed": true,
+      "materialization_or_compile_failure": false,
+      "solver_assertion_failure": false,
+      "scientific_gate_failure": false,
+      "artifact_uploaded": false,
+      "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
+      "rerun_exact_job_authorized": true,
+      "scientific_inputs_changed": false
+    }
+  ]
 }
