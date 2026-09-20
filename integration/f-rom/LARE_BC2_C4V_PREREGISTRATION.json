@@ -256,8 +256,9 @@
   "comparator_relative_crossing": {
     "definition": "At a checkpoint, a QUALIFIED reduced LARE member crosses a comparator only when every groundwater-horizon-vector component is no worse than that comparator within 1e-12 numerical equality tolerance.",
     "persistent_crossing": "A reduced member persistently crosses a comparator only if it crosses at every prospective checkpoint 128,256,512,1024.",
-    "exposed_step64_role": "Hard prefix check uses the original C4R four-component GW vector only: C4V step-64 crossing sets must equal C4R crossing sets R4,R5,R6,R8,R12 against both R2 and FMC. The two added long-horizon bias components are reported at step 64 but do not retroactively redefine C4R.",
-    "R16_excluded_from_reduced_crossing": true
+    "exposed_step64_role": "Reported only. Reproduce the C4R comparator ordering with the original four-component C4R GW vector (storage RMSE, cumulative-bottom RMSE, terminal-bottom-flux RMSE, sign-error count). The two new long-horizon bias components are not retroactively applied to C4R.",
+    "R16_excluded_from_reduced_crossing": true,
+    "prospective_vector": "At steps 128,256,512,1024 use all six preregistered C4V groundwater-horizon components."
   },
   "hard_gates": {
     "C4R_prefix_R16_exact": true,
