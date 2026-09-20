@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "bb5cba741933c5663955b72bffbd92e51afee690",
+  "checkpoint_commit": "39ee59129c5f118fbe174cf224bae22f8a81b8f7",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_B_FIDELITY_FROZEN_COST1_SHARED_HOST_SCREEN_ACTIVE",
-  "last_reconciled_head": "bb5cba741933c5663955b72bffbd92e51afee690",
+  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_SHARED_HOST_SCREEN_ACTIVE",
+  "last_reconciled_head": "39ee59129c5f118fbe174cf224bae22f8a81b8f7",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -171,7 +171,10 @@
     "GitHub Actions run 35506180114 / aggregate artifact 10603856403 plus B05 L6/R8 artifacts 10604095931/10603419858 (B1HCO full CoRichards temporal qualification)",
     "GitHub Actions run 35506606866 / artifact 10603996508 (B1HCP corrected model-form decomposition)",
     "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
-    "GitHub Actions run 35507294494 active for COST1 sole authority workflow"
+    "GitHub Actions run 35507294494 active for COST1 sole authority workflow",
+    "Phase B fidelity freeze: integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "Phase B closeout: integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
+    "GitHub Actions run 35507294494 active for COST1 shared-host screen"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -179,8 +182,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete COST1 compiled-equivalence gates and six-material shared-host timing. Do not expose or interpret cost before all material routes pass the frozen equivalence contract; if any route fails, repair implementation only or fail closed.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after bb5cba741933c5663955b72bffbd92e51afee690. Phase B fidelity is frozen. B1HCMR, B1HCO and B1HCP are closed. COST1 is preregistered and authority workflow run 35507294494 is active; duplicate timing workflow was removed.",
+  "next_action": "Complete COST1 run 35507294494 on the frozen six-material L4/L6/R8 fidelity ladder. If all implementation-equivalence gates and timings pass, persist the aggregate result and close COST1 as shared-host screening only; do not alter the fidelity frontier from timing evidence.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 39ee59129c5f118fbe174cf224bae22f8a81b8f7. Phase B is closed by LAYER_ROM_PHASE_B_CLOSEOUT.json. COST1 preregistration and single reconciled workflow are frozen; GitHub Actions run 35507294494 is the active execution authority unless superseded by an explicit later COST1 execution-authority record.",
   "blockers": [],
   "scope_guards": [
     "research only",
