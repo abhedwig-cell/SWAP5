@@ -106,8 +106,43 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_csr04_next_window_lineage_c
 
 contains
+
+  ! CSR-04 diagnostic-only seam.  This advances the coupling-window identity
+  ! from authoritative committed SWAP state; it deliberately does not rebuild
+  ! the predictor yet.  Keeping this separate prevents a multi-window
+  ! experiment from reusing the one-window 0->1 lineage silently.
+  integer(c_int) function fgc44_csr04_next_window_lineage_c(duration_day,t0,t1,origin_revision,candidate_revision) &
+       bind(C,name="fgc44_csr04_next_window_lineage_c")
+    real(c_double), value, intent(in) :: duration_day
+    real(c_double), intent(out) :: t0,t1
+    integer(c_int), intent(out) :: origin_revision,candidate_revision
+    real(real64) :: committed_time
+    integer(int64) :: revision
+    logical :: available
+
+    fgc44_csr04_next_window_lineage_c=1_c_int
+    t0=0.0_c_double; t1=0.0_c_double
+    origin_revision=-1_c_int; candidate_revision=-1_c_int
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(participant%has_live_candidate() .or. ledger_prepared)return
+
+    revision=committed%current_revision()
+    call committed%current_time(committed_time,available)
+    if(.not.available .or. .not.ieee_is_finite(committed_time))return
+
+    window%t0=committed_time
+    window%t1=committed_time+real(duration_day,real64)
+    active_duration_day=real(duration_day,real64)
+    t0=window%t0; t1=window%t1
+    origin_revision=int(revision,c_int)
+    candidate_revision=int(revision+1_int64,c_int)
+    fgc44_csr04_next_window_lineage_c=0_c_int
+  end function fgc44_csr04_next_window_lineage_c
+
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
