@@ -221,5 +221,26 @@
       "role": "floating-point identity only, never hydrological acceptance"
     },
     "scientific_effect": "No state coordinate, case, partition, closure formula, response metric or adjudication rule is changed."
+  },
+  "pre_execution_operationalization": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "exact_reference_M1": "For piecewise-constant 10 cm Reference cells, compute M1 exactly as sum(theta_i*dz_i*(z_i-70))/140 over z=0..140 cm.",
+    "linear_theta_slope": "b_theta = 12*M1/L^2; evaluate theta_135 = theta_bar + b_theta*(135-L/2). Reject if the reconstructed long-layer endpoint theta values leave (theta_r,theta_s).",
+    "linear_psi_initialization": [
+      "psi_center initial = psi(theta_bar).",
+      "Construct an affine-theta endpoint estimate from b_theta. If both endpoint theta values are physical, map them to psi and use their secant slope as the initial psi slope; otherwise initialize slope=0.",
+      "Map the initial slope into the frozen tanh parameterization and clip only the internal tanh argument to +/-0.95 to remain inside the preregistered positive-psi domain. This is numerical initialization, not a fitted coefficient.",
+      "Every observation is solved fresh from its own state-derived initial value; no response-based warm start or fallback closure is allowed."
+    ],
+    "reference_face_formula": "q_ref at 130/140 cm uses the adjacent fine-cell MvG conductivities with arithmetic mean and the 10 cm pressure-head gradient, matching the frozen DYN0A swkmean=1 diagnostic.",
+    "candidate_face_formula": "q = 0.5*(K_virtual+K_lower) * [1 + (psi_lower-psi_virtual)/10 cm], positive downward.",
+    "decision_labels": {
+      "supported": "A3_FIRST_MOMENT_OPERATOR_SUPPORTED_DYNAMICS_LAW_REQUIRED",
+      "unsupported": "A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED",
+      "blocked": "A3_MOMENT_AUDIT_BLOCKED"
+    },
+    "comparison_semantics": "L4_LOCAL_140 is an operator identity guard. L4_LONG_130 is the same-scalar-dimension localization control and is reported as a vector, not folded into the A3 support gate.",
+    "scientific_effect": "NONE; this freezes deterministic implementation details before any A3 moment result."
   }
 }
