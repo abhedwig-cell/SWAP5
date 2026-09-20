@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcj.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCJ",
+  "phase": "PREREGISTERED_BEFORE_B12_INVARIANT_DRIFT_RESULT",
+  "title": "B12 linear-invariant and floating-point accumulation diagnosis",
+  "trigger": {
+    "B1HCI_decision": "B1HCI_INDEPENDENT_ODE_ORACLE_RELATION_MIXED",
+    "sole_exception": "B12 R16_OP total storage",
+    "B12_fine_heun_storage_to_DOP853_rms_cm": 1.6710253314589699e-12,
+    "B12_DOP853_Radau_storage_rms_cm": 3.3306690738754696e-15,
+    "other_B12_primary_components": "pass"
+  },
+  "question": "Is the B12 storage-only Heun-to-oracle exception caused by floating-point loss of the exact linear water invariant during repeated state accumulation rather than by a different continuous-time Layer-ROM solution?",
+  "scope": {
+    "material": "B12",
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "representation": "R16_OP 16 x 10 cm",
+    "boundary": "zero top flux; fixed zero bottom pressure head",
+    "hydrological_ode": "unchanged B1HCI Layer-ROM ODE",
+    "reference_trajectory_used": false
+  },
+  "invariant": {
+    "formula": "sum(layer_storage_cm) + cumulative_bottom_outward_exchange_cm = initial_total_storage_cm",
+    "reason": "top exchange is exactly zero in this laboratory",
+    "diagnostic_sum": "math.fsum for float64 trajectory to separate state-invariant drift from ordinary summation-order error"
+  },
+  "routes": [
+    {
+      "id": "HEUN_FLOAT64",
+      "dt_day": [
+        0.0001,
+        0.00005,
+        0.000025
+      ],
+      "definition": "unchanged B1HCH/B1HCI iterative Heun implementation"
+    },
+    {
+      "id": "HEUN_EXTENDED_ACCUM",
+      "dt_day": [
+        0.0001,
+        0.00005,
+        0.000025
+      ],
+      "definition": "same iterative Heun formula and same float64 constitutive/RHS evaluation, but y, predictor/corrector additions and cumulative bookkeeping are accumulated in numpy.longdouble; no flux formula changes"
+    },
+    {
+      "id": "DOP853_STRICT",
+      "definition": "same B1HCI DOP853 oracle, rtol=1e-11, atol=1e-13, max_step=0.001 d"
+    }
+  ],
+  "output_vector": [
+    "RMS and max absolute total-storage difference to DOP853",
+    "RMS cumulative-bottom-exchange difference to DOP853",
+    "RMS mapped-theta difference to DOP853",
+    "RMS and max absolute fsum linear-invariant residual",
+    "RMS ordinary-sum minus fsum total-storage diagnostic",
+    "RMS storage-error decomposition into invariant drift minus cumulative-exchange error"
+  ],
+  "decision_gate": {
+    "label_confirmed": "B1HCJ_B12_FLOATING_INVARIANT_DRIFT_CONFIRMED",
+    "label_not_confirmed": "B1HCJ_B12_FLOATING_INVARIANT_DRIFT_NOT_CONFIRMED",
+    "confirmed_if": [
+      "For HEUN_FLOAT64 at dt=2.5e-5 d, cumulative-bottom RMS to DOP853 <= 1e-12 cm.",
+      "For HEUN_FLOAT64 at dt=2.5e-5 d, mapped-theta RMS to DOP853 <= 1e-13.",
+      "The RMS linear-invariant error difference relative to DOP853 is at least 0.80 times the RMS storage error to DOP853.",
+      "At dt=2.5e-5 d, HEUN_EXTENDED_ACCUM reduces both storage RMS to DOP853 and invariant RMS by at least a factor 4 relative to HEUN_FLOAT64.",
+      "The ordinary np.sum versus math.fsum storage diagnostic is smaller than 0.25 times the HEUN_FLOAT64 invariant RMS, so the dominant effect is state accumulation rather than final diagnostic summation order."
+    ],
+    "note": "These are numerical mechanism gates only. They do not define hydrological acceptance."
+  },
+  "interpretation_rules": [
+    "If confirmed, treat the B1HCI B12 exception as research-integrator floating-point accumulation at the numerical floor. Do not modify hydrological closure/state.",
+    "If not confirmed, keep finite-Reference refinement and model redesign held and investigate the B12 ODE/integrator mechanism further.",
+    "Even if confirmed, application fidelity remains unadjudicated."
+  ],
+  "provenance": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "B1HCI_run": 35502486907,
+    "B1HCI_aggregate_artifact_id": 10602039873,
+    "B1HCI_aggregate_digest": "sha256:02dfb77dbf4829eb495a6c635a402a462650d59f037fc76a944082746aa86f28",
+    "B1HCI_raw_result_sha256": "2a32ab82c201affe52458c3e2907e6e17f1658812660712616ab4f666646698e",
+    "basis_head": "e3b11802e88316dcd57147569e985153be99e215"
+  },
+  "firewalls": [
+    "NO_REFERENCE_TRAJECTORY",
+    "NO_CLOSURE_CHANGE",
+    "NO_STATE_REPRESENTATION_CHANGE",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
