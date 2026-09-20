@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.f-rom.codemap.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM-CODEMAP-01",
+  "canonical_base": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+  "lare_head_inspected": "353a779543923c58ce4641260b960c0cd977d3d8",
+  "decision": "FMC_AND_LARE_CODE_FRONTIERS_RECONCILED_DISTINCT_EXTERNAL_BLOCKERS",
+  "fmc": {
+    "state": "EXTERNAL_SOURCE_AUTHORITY_BLOCKED",
+    "canonical_authority_preserved": [
+      "F-ROMV2-D28",
+      "F-ROMV2-D30",
+      "F-ROMV2-D31"
+    ],
+    "implemented_research_capabilities": [
+      "native rainfall plus groundwater composition on bounded separated-front trajectories",
+      "compiled FMC research kernel and shared-host cost screen",
+      "one-day separated-front preflight that fails closed at natural surface-groundwater contact"
+    ],
+    "blockers": [
+      "natural within-step surface-front/groundwater-front contact semantics require M2WC70 or equivalent authoritative implementation oracle",
+      "native ET/root-withdrawal composite-state update semantics require implementation authority"
+    ],
+    "next": "MATERIALIZE_AUTHORITATIVE_FMC_IMPLEMENTATION_OR_NARROW_CLOSE_PROPOSITION"
+  },
+  "lare": {
+    "state": "RELATIVE_VALUE_SIGNAL_RESOLVED_EXTERNAL_APPLICATION_ACCURACY_BLOCKED",
+    "branch_only_authority": true,
+    "c4t": {
+      "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+      "status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED",
+      "workflow_run": 35492342285,
+      "execution_head": "4f938b040d92ee46646e3397278c78a46942944c",
+      "artifact_id": 10599940848,
+      "artifact_digest": "sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833",
+      "raw_result_sha256": "fc83b5229a0b3c0be3fcdfd93a30fe9d564144b32d70f97a4ce8aadc35dac7a6",
+      "fidelity_sha256": "044ce7897ee35f94812d86962c11b6a09da0688bbdd56edbf7b5fba6600c2b45",
+      "timing_sha256": "f525323dad0505bf09fb085e97e50e303314e902525a5e327a9f1295147cf0ff",
+      "compiled_equivalence_sha256": "03c44855fcb3e282695c66f3cc248b2b7041f259d14aa2cdcbd97e8be55605ea"
+    },
+    "c4u": {
+      "decision": "GW_APPLICATION_ACCEPTANCE_NOT_ADJUDICABLE_FROM_CURRENT_REPOSITORY_AUTHORITY",
+      "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+      "repository_code_missing": false,
+      "missing_external_authority": [
+        "real project groundwater head/drawdown prediction-error requirement H_app",
+        "independently governed temporal allocation A_temporal or direct temporal head-error budget",
+        "verified immutable provenance for both claims"
+      ]
+    },
+    "next": "SOURCE_PROJECT_GW_ACCURACY_AUTHORITY_THEN_PREREGISTER_DOWNSTREAM_CONSEQUENCE_VALIDATION"
+  },
+  "canonical_compatibility": {
+    "c4t_execution_source": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "checked_canonical": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+    "commits_since_execution_source": 43,
+    "src_changed": false,
+    "reference_changed": false,
+    "c4t_reexecution_required_by_source_drift": false
+  },
+  "routing": {
+    "merge_lare_branch_wholesale": false,
+    "selective_evidence_admission_required": true,
+    "production_rom_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "reference_richards_change_authorized": false,
+    "rossfast_change_authorized": false,
+    "production_groundwater_coupling_change_authorized": false
+  },
+  "next_shared_action": "RETURN_CODE_FRONTIER_RECONCILIATION_AND_LARE_C4T_C4U_TERMINAL_EVIDENCE_TO_CENTRAL_REGIE_FOR_SELECTIVE_ADMISSION"
+}
