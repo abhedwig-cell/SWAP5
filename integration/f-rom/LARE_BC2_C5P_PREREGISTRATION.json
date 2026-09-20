@@ -348,7 +348,7 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "reference_materializer": "tests/rom/materialize_lare_bc2_c5p_reference.py",
     "reference_materializer_blob": "4a0d0b5c346c4c49f0cc33e9bfc5cadbd0c0f834",
@@ -366,7 +366,11 @@
     "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
     "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
     "allowed_new_code": "fresh P01-P04 Reference materialization, history-sliced execution, fixed-dimension D4/D8 bottom-placement candidates, and preregistered comparator-relative analysis",
-    "prohibited_new_code": "response-driven partition changes, new closure terms, scalar tuning, boundary counterfactuals, production Reference edits"
+    "prohibited_new_code": "response-driven partition changes, new closure terms, scalar tuning, boundary counterfactuals, production Reference edits",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c5p.yml",
+    "workflow_blob": "da700cfe1028c9a03fecb9cf85ae8493378a3585",
+    "execution_binding_complete": true,
+    "binding_note": "Workflow and all scientific implementation blobs bound before the authoritative C5P response run; any workflow-triggered pre-binding run is superseded by concurrency and is not scientific authority."
   },
   "model_changed": false
 }
