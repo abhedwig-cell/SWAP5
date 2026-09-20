@@ -26,7 +26,8 @@
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
+    "C5M": "Read-only synthesis after C5L: layer placement remains a robust independent representation axis across material/boundary cells, but numeric minimum dimensions from C4/C5A are comparator- and purpose-dependent. Historical C5A R16-relative conclusions cannot be promoted to high-resolution sufficiency. A fresh blind paired-R1024/R2048 requalification of the frozen layer family is required before any new partition design."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -62,7 +63,8 @@
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+    "C5M_representation_evidence_reconciliation": "integration/f-rom/LARE_REPSEL_C5M_CLOSEOUT.json"
   },
   "closed_routes": [
     {
@@ -80,24 +82,23 @@
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
     }
   ],
-  "decision": "RECONCILE_LAYER_REPRESENTATION_EVIDENCE_AFTER_REFERENCE_AUDIT_BEFORE_ANY_NEW_RESPONSE_EXPERIMENT",
+  "decision": "PREREGISTER_FRESH_BLIND_REFERENCE_AWARE_LAYER_REPRESENTATION_REQUALIFICATION",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-REPSEL-C5M",
+  "next_authority": "LARE-BC2-C5N",
   "next_family_authority": {
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "C5M_REPRESENTATION_EVIDENCE_RECONCILIATION",
-    "new_closure_authorized": false,
-    "new_lare_run_authorized": false,
-    "new_reference_run_authorized": false,
-    "purpose": "Separate robust state-placement/purpose findings from comparator-dependent dimension thresholds after the full B14 dynamic-head Reference audit.",
+    "family": "C5N_FRESH_BLIND_REFERENCE_AWARE_LAYER_REPRESENTATION",
+    "state": "AUTHORIZED_FOR_PROSPECTIVE_PREREGISTRATION",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json"
+      "integration/f-rom/LARE_REPSEL_C5M_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json"
     ],
-    "state": "AUTHORIZED_FOR_READ_ONLY_REPOSITORY_SYNTHESIS"
+    "purpose": "Test the already-frozen layer state-count and placement family against paired R1024/R2048 current-Reference trajectories on fresh B14 dynamic prescribed-head histories.",
+    "new_partition_design_authorized": false,
+    "new_reference_production_physics_authorized": false,
+    "new_lare_closure_authorized": false,
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -129,7 +130,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v17",
+  "schema": "swap5.lare.representation-selection.closeout.v18",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -140,7 +141,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5L_R2048_SPATIAL_PROGRESS_REPRESENTATION_RECONCILIATION_NEXT",
+  "status": "CLOSED_THROUGH_C5M_ROBUST_PLACEMENT_SIGNAL_BLIND_HIGH_RESOLUTION_REQUALIFICATION_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
