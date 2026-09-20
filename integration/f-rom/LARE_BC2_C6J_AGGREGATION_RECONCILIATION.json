@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.lare.bc2.c6j.aggregation-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6J",
+  "status": "DRAFT_AGGREGATION_ONLY_RECOVERY_AFTER_COMPLETE_SCIENTIFIC_SHARDS",
+  "decision": "REUSE_IMMUTABLE_COMPLETE_C6J_SHARDS_AND_REPAIR_AGGREGATOR_MISSING_OPERATOR_HANDLING_ONLY",
+  "source_execution": {
+    "workflow_run": 35530325107,
+    "execution_head": "14e333ef35e5dbbb2c71c1da0386f07863b3572e",
+    "scientific_shard_count": 9,
+    "all_scientific_shards_completed_successfully": true,
+    "exact_case_cover": "126 preregistered state cases partitioned by case_index modulo 9",
+    "aggregate_job_failed": true,
+    "aggregate_failure": "AssertionError: expected 168 head operators but only 4 were generated because boundary operators are intentionally skipped when upstream local FEMO gates fail.",
+    "scientific_result_file_generated": false
+  },
+  "immutable_shard_artifacts": [
+    {
+      "id": 10611445050,
+      "name": "lare-bc2-c6j-shard-6",
+      "digest": "sha256:27e15b0f5bed23372668f0cef9919c6413cfe71f44300ee076146f1eea7b044d"
+    },
+    {
+      "id": 10611117492,
+      "name": "lare-bc2-c6j-shard-5",
+      "digest": "sha256:a92fcebd5dfe43a2fa34770f94e2b9792c49e24edebd790d5e6623111fadbeb9"
+    },
+    {
+      "id": 10611102536,
+      "name": "lare-bc2-c6j-shard-7",
+      "digest": "sha256:18f9477de180ac5c25d791a045ca8ae59e1b9c1be394647f7069230e6df14170"
+    },
+    {
+      "id": 10611092600,
+      "name": "lare-bc2-c6j-shard-1",
+      "digest": "sha256:87ae95f6dbce7d77d245d74c90320e85fe5e9acacf9ddb30c3e591aa84babbe5"
+    },
+    {
+      "id": 10610808168,
+      "name": "lare-bc2-c6j-shard-4",
+      "digest": "sha256:81238a13a52d74f7ed3ffcb7ce102b92fc5cfc217101aa621ac9e3ec05d647ce"
+    },
+    {
+      "id": 10610688432,
+      "name": "lare-bc2-c6j-shard-3",
+      "digest": "sha256:758c577f30be1e6b9eb5aa3ba92f7c0cb540a882b5520d7a9c8746b0d70eb7e2"
+    },
+    {
+      "id": 10610589291,
+      "name": "lare-bc2-c6j-shard-0",
+      "digest": "sha256:6f3728e263574ef0d05b6eec5d16a2b35ff1596e329931691d27cb3a30acf518"
+    },
+    {
+      "id": 10610464646,
+      "name": "lare-bc2-c6j-shard-2",
+      "digest": "sha256:33da9d3646328f56f10a0319c4a1f66ecaee8ec9a732a6431bdb67b0484ef073"
+    },
+    {
+      "id": 10610129978,
+      "name": "lare-bc2-c6j-shard-8",
+      "digest": "sha256:07d1234ba2df005223c54dfc39dbc631e131b69b5f2d4afd68c4daa46380231e"
+    }
+  ],
+  "repair": {
+    "old_aggregator_blob": "db89a175d56fca3cd8af92419748db55d9d53fb0",
+    "change": [
+      "Remove unconditional assertions that 168 head and 126 flux operators were generated.",
+      "Make G8 true only if exactly 168 head operators exist and all qualify.",
+      "Make G9 true only if exactly 126 flux operators exist and all qualify.",
+      "Record generated operator counts separately from expected counts."
+    ],
+    "scientific_shards_changed": false,
+    "FEMO_equations_changed": false,
+    "local_profile_results_changed": false,
+    "metric_results_changed": false,
+    "boundary_operator_results_changed": false,
+    "state_domains_changed": false,
+    "starts_changed": false,
+    "tolerances_changed": false,
+    "gates_changed": false,
+    "response_based_retuning": false
+  },
+  "recovery_rule": "Do not rerun scientific shards. Download the nine immutable artifacts from run 35530325107 and apply only the repaired aggregator.",
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "BEMR_reopened": false,
+    "free_running_FEMO_implemented": false,
+    "response_based_design": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
