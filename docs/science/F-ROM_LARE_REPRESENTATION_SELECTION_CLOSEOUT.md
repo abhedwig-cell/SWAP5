@@ -75,6 +75,16 @@ C6C qualifies the bounded entropy-moment state-to-profile map mathematically on 
 
 This removes the specific C5Z profile-admissibility blocker without reopening the failed cubic-theta route. It does not yet establish hydrological fidelity. The next authorized unit is C6D, an offline frozen-state interface-flux discriminator using directly projected Reference storage and first moments.
 
+## C6D BEMR frozen-state mechanism result
+
+C6D evaluates BEMR offline on 2,304 immutable C5R moving states with storage and centered first moment projected directly from the fine Reference profile. All states pass the frozen C6C numerical and realizability contract.
+
+The prospectively frozen primary mechanism vector improves: pooled RMSE falls from 0.008709 to 0.006075 cm/day, mean-absolute interface/history signed bias from 0.001138 to 0.000190 cm/day, and sign mismatches from 229 to 190. RMSE also improves separately at 150, 155 and 157.5 cm.
+
+The mechanism improvement is not uniform. Maximum absolute error worsens to 0.1842 cm/day at the first R02 observation after a RISE-to-FALL reversal, and 155-cm sign mismatches increase slightly. These exposed tail risks are retained and create a mandatory transition-tail guard for any later fresh blind free-running test.
+
+C6D therefore authorizes only response-free C6E prescribed-flux boundary qualification.
+
 ## Application and value boundary
 
 Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
