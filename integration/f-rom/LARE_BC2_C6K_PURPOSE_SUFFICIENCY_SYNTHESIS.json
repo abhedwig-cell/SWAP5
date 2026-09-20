@@ -1,0 +1,162 @@
+{
+  "schema": "swap5.lare.bc2.c6k.purpose-sufficiency-synthesis.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6K",
+  "status": "CLOSED_UNIVERSAL_LOW_DIMENSION_SEARCH_DEPRIORITIZED_PURPOSE_DEPENDENT_FRONTIER_ADOPTED",
+  "decision": "ADOPT_PURPOSE_DEPENDENT_SUFFICIENCY_PROGRAM_NO_NEW_UNIVERSAL_CLOSURE_FAMILY",
+  "role": "READ_ONLY_POST_C6J_EVIDENCE_SYNTHESIS_AND_RESEARCH_DIRECTION_SELECTION",
+  "authority": {
+    "user_selected_direction": "SYNTHESIS_AND_PURPOSE_DEPENDENT_SUFFICIENCY_OF_EXISTING_QUALIFIED_LAYER_ROM_FRONTIER",
+    "representation_selection": "integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json",
+    "C4T_cost_fidelity": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+    "C4U_groundwater_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "C4R_blind_fixed_B01": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "C4V_one_day_fixed_B01": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "C4X_one_day_fixed_B14": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "C4Z_blind_dynamic_B01": "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+    "C5A_dynamic_B14": "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+    "C5N_high_resolution_dynamic_B14": "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
+    "C6J_reconstruction_closeout": "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json",
+    "live_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_LARE_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416"
+  },
+  "governing_question": "For which hydrological purposes and bounded material/boundary/horizon domains is the already-qualified fixed-partition Layer-ROM evidence sufficient to justify further purpose-specific validation, without requiring a universal low-dimensional Richards replacement?",
+  "synthesis": {
+    "universal_minimum_state_count_supported": false,
+    "universal_low_dimensional_replacement_supported": false,
+    "vertical_placement_is_structural_variable": true,
+    "material_dependence_demonstrated": true,
+    "lower_boundary_semantics_dependence_demonstrated": true,
+    "horizon_dependence_demonstrated": true,
+    "purpose_dependence_demonstrated": true,
+    "universal_new_closure_search_is_current_default": false
+  },
+  "evidence_only_purpose_matrix": {
+    "GROUNDWATER_FIXED_SHORT_B01": {
+      "evidence_state": "BLIND_COMPARATOR_RELATIVE_FRONTIER_REPLICATED",
+      "bounded_finding": "R4 is the blind minimum reduced LARE member crossing R2 and FMC on the frozen short-horizon groundwater vector in C4R.",
+      "application_acceptance": false,
+      "caveat": "Short-horizon D13/B01 evidence only."
+    },
+    "GROUNDWATER_FIXED_ONE_DAY_B01": {
+      "evidence_state": "PROSPECTIVE_COMPARATOR_RELATIVE_FRONTIER",
+      "bounded_finding": "R8 and R12 are the only reduced LARE members crossing both R2 and FMC at every 0.128-1.024 day checkpoint; R8 is the minimum demonstrated reduced member for this bounded purpose.",
+      "application_acceptance": false,
+      "caveat": "Not a seasonal/regional coupled-groundwater acceptance claim."
+    },
+    "GROUNDWATER_FIXED_ONE_DAY_B14": {
+      "evidence_state": "PROSPECTIVE_TRANSFER_FRONTIER_MATERIAL_DEPENDENT",
+      "bounded_finding": "Lower-zone R3 crosses both comparators on the groundwater vector at every checkpoint, while placement-matched R4/R8 outperform uniform U4/U8. The B01 R8 minimum does not transfer as a material-invariant rule.",
+      "application_acceptance": false,
+      "caveat": "One homogeneous transferred material and fixed lower boundary."
+    },
+    "GROUNDWATER_DYNAMIC_HEAD_B01": {
+      "evidence_state": "BLIND_R2_RELATIVE_FRONTIER_WITH_WEAK_COMPARATOR",
+      "bounded_finding": "R3-R12 cross R2 on frozen groundwater/profile vectors, but R2 itself misses reversal sequences in three of four histories. Lower-zone placement advantage transfers.",
+      "application_acceptance": false,
+      "caveat": "No independently authorized dynamic-head FMC comparator or application threshold."
+    },
+    "GROUNDWATER_DYNAMIC_HEAD_B14_HIGH_RES": {
+      "evidence_state": "NO_REDUCED_HIGH_RES_FRONTIER_CURRENT_LAYER_FACE",
+      "bounded_finding": "No reduced R3-R12 member crosses even the R512 high-resolution groundwater comparator in C5N; R5-R16 plateau while placement remains beneficial.",
+      "application_acceptance": false,
+      "caveat": "This is a closure/propagation limitation for the tested dynamic prescribed-head family, not a universal rejection of Layer-ROM."
+    },
+    "PROFILE_OR_SOIL_STATE_FIXED_B01": {
+      "evidence_state": "BLIND_HIGHER_DIMENSION_REQUIREMENT",
+      "bounded_finding": "R12 is the minimum and only reduced member crossing FMC when mapped 10-cm profile fidelity is retained in C4R.",
+      "application_acceptance": false,
+      "caveat": "Profile fidelity is more demanding than groundwater-output fidelity in this bounded workload."
+    },
+    "PROFILE_OR_SOIL_STATE_FIXED_B14_ONE_DAY": {
+      "evidence_state": "PROSPECTIVE_HIGHER_DIMENSION_REQUIREMENT",
+      "bounded_finding": "R8 is the minimum reduced member crossing FMC on the profile-inclusive vector at day 1.024 while groundwater-only crossing occurs already at R3.",
+      "application_acceptance": false,
+      "caveat": "No root uptake/ET or drought-state acceptance threshold."
+    },
+    "LONG_TERM_REGIONAL_WATER_BALANCE": {
+      "evidence_state": "NOT_DIRECTLY_QUALIFIED",
+      "bounded_finding": "Exact model water accounting is preserved, and cumulative exchange/storage are measured in several bounded runs, but no seasonal/annual regional water-balance workload has been prospectively qualified.",
+      "application_acceptance": false,
+      "caveat": "Mass conservation is not equivalent to accurate partitioning of ET, drainage, recharge and storage over long horizons."
+    },
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": {
+      "evidence_state": "NOT_DIRECTLY_QUALIFIED",
+      "bounded_finding": "Mapped profile fidelity has been tested under lower-boundary-driven laboratories, but no dedicated atmosphere/root-uptake drought workload or application threshold is present in current authority.",
+      "application_acceptance": false,
+      "caveat": "C4Z explicitly forbids generalizing its lower-zone placement evidence to surface-driven purposes."
+    },
+    "EVAPOTRANSPIRATION_AND_ROOT_UPTAKE": {
+      "evidence_state": "NOT_QUALIFIED",
+      "bounded_finding": "No dedicated LARE authority was located for ET/root-uptake response.",
+      "application_acceptance": false,
+      "caveat": "Requires fresh surface-driven evidence before representation sufficiency can be discussed."
+    },
+    "DRAINAGE_AND_RECHARGE": {
+      "evidence_state": "PARTIAL_GROUNDWATER_EXCHANGE_EVIDENCE_ONLY",
+      "bounded_finding": "Bottom exchange magnitude, bias, sign and reversal timing are deeply characterized in the groundwater laboratories.",
+      "application_acceptance": false,
+      "caveat": "This does not yet establish regional/seasonal recharge or drainage-system fidelity."
+    },
+    "FAST_EVENT_THRESHOLD": {
+      "evidence_state": "PARTIAL_AND_RISK_SENSITIVE",
+      "bounded_finding": "Flux sign/reversal timing is a known discriminating axis. Low-dimensional or over-focused representations can create reversal errors, and high-resolution B14 dynamic-head comparison retains a propagation gap.",
+      "application_acceptance": false,
+      "caveat": "No independently sourced event-threshold consequence envelope exists."
+    },
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": {
+      "evidence_state": "NOT_QUALIFIED",
+      "bounded_finding": "Existing evidence is insufficient for mechanistic/extreme inference because profile fidelity, event tails and dynamic-head propagation remain representation-sensitive.",
+      "application_acceptance": false,
+      "caveat": "Full Richards remains the scientific reference."
+    }
+  },
+  "cost_value_boundary": {
+    "C4T_result": "On one shared-host B01 fixed-water-table workload, LARE R3-R8 occupy a resolved cost-fidelity frontier and are cheaper than fine R16; R12 is more expensive than R16.",
+    "portable_speed_claim": false,
+    "formal_performance_claim": false,
+    "reason": "C4T host/workload evidence is not a portable production performance baseline and does not adjudicate application adequacy."
+  },
+  "application_acceptance_boundary": {
+    "groundwater": "C4U remains blocked on externally governed H_app plus independent A_temporal/direct temporal head-error budget with immutable provenance.",
+    "other_purposes": "F-ROMV2 has no frozen final application thresholds; the current synthesis must not manufacture thresholds from observed ROM errors.",
+    "observed_error_as_threshold_forbidden": true
+  },
+  "research_direction": {
+    "default": "PURPOSE_DEPENDENT_SUFFICIENCY_AND_EVIDENCE_GAP_CLOSURE",
+    "no_longer_default": "UNIVERSAL_LOW_DIMENSION_CLOSURE_SEARCH",
+    "rationale": [
+      "Repeated C5/C6 work shows that adding a universally robust reconstruction/closure to a very small state vector is itself a major numerical/modeling problem.",
+      "Existing evidence already demonstrates materially different representation needs for groundwater output versus profile state, and across material, boundary and horizon.",
+      "The scientific value now lies in mapping where simpler conservative representations are sufficient, not in forcing a single universal minimum state dimension."
+    ]
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6L",
+    "state": "PURPOSE_EVIDENCE_GAP_AND_PROSPECTIVE_VALIDATION_ARCHITECTURE_AUTHORIZED",
+    "question": "What minimum new blind workloads are needed to fill the purpose matrix without reusing exposed response for representation or tolerance selection?",
+    "constraints": [
+      "Do not create application acceptance thresholds from existing errors.",
+      "Keep purpose classes separate: groundwater exchange, profile/soil moisture, ET/root uptake, long-term balance, fast events/extremes.",
+      "Use existing qualified LARE candidates and placement families; no new closure or state family in C6L.",
+      "Fresh workloads must be generated after preregistration and must include surface-driven forcing before any ET/drought claim.",
+      "Performance remains out of scope until a hydrological purpose gate is independently closed.",
+      "Full Richards remains scientific reference."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "new_model_family_implemented": false,
+    "new_closure_implemented": false,
+    "tolerances_retuned": false,
+    "observed_errors_reused_as_acceptance_thresholds": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
