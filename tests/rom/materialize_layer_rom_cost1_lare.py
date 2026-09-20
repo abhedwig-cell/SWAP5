@@ -50,7 +50,7 @@ def main()->int:
     if cost["phase"]!="PREREGISTERED_AFTER_PHASE_B_FIDELITY_FREEZE_BEFORE_NEW_TIMING_EXPOSURE":
         raise SystemExit("wrong COST1 phase")
     mat=next(x for x in panel["panel"] if x["id"]==a.material)
-    lambdas=[float(x) for x in b1h["initial_state_transfer"]["frozen_scaled_lambda"][a.material]
+    lambdas=[float(x) for x in b1h["initial_state_transfer"]["frozen_scaled_lambda"][a.material]]
 
     text=a.base_fortran.read_text(encoding="utf-8")
     text=replace_once(text,
