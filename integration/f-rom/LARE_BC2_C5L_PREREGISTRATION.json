@@ -1,0 +1,145 @@
+{
+  "schema": "swap5.lare.bc2.c5l.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5L",
+  "phase": "PREREGISTERED_BEFORE_C5L_R2048_RESPONSE",
+  "title": "Single unchanged-Reference R2048 T16 spatial extension",
+  "scientific_question": "After temporal-error reconciliation and boundary-mechanism closeout, does the unchanged current Reference show a smaller R1024-R2048 bottom-flux difference than the frozen R512-R1024 difference at the same T16 temporal resolution?",
+  "role": "PROSPECTIVE_CURRENT_REFERENCE_SPATIAL_EXTENSION_NOT_REFERENCE_REDESIGN",
+  "authority": {
+    "c5k_closeout": "integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json",
+    "required_c5k_status": "CLOSED_LOCAL_HALF_CELL_THEORY_DOES_NOT_SUPPORT_NEW_DYNAMIC_BOUNDARY_OPERATOR_CURRENT_REFERENCE_SPATIAL_EXTENSION_NEXT",
+    "c5k_result_sha256": "aeb315e72d2b4f60cd8e01cac316bbb89d703ed9f3166b0e0f34f064969a1ce9",
+    "c5i_result": "integration/f-rom/LARE_BC2_C5I_RESULT.json",
+    "c5i_result_sha256": "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302",
+    "c5i_artifact_id": 10602539613,
+    "c5i_artifact_digest": "sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664",
+    "R512_T16_sha256": "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7",
+    "R1024_T16_sha256": "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "live_canonical_at_preregistration": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_scientific_basis_rebased": false,
+    "note": "Live canonical has advanced independently. C5L remains intentionally bound to the same frozen Reference backend as C5A-C5K."
+  },
+  "workload": {
+    "material": "B14 homogeneous Mualem-van Genuchten",
+    "histories": "exact C5I Z01-Z04",
+    "lower_boundary": "exact current Reference G0K0 prescribed-head semantics",
+    "boundary_counterfactual": false,
+    "top_boundary": "exact C5I gravity-consistent qeq",
+    "physical_horizon_day": 0.8192,
+    "temporal_factor": 16,
+    "transaction_dt_day": 0.00005,
+    "output_window_day": 0.0008,
+    "numerical_policy": "exact C5I/D13 integrated-water-depth Reference policy",
+    "no_history_change": true,
+    "no_forcing_change": true,
+    "no_boundary_change": true,
+    "no_tolerance_change": true
+  },
+  "spatial_hierarchy": {
+    "preserved": [
+      {
+        "id": "R512",
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "source": "immutable C5I artifact"
+      },
+      {
+        "id": "R1024",
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "source": "immutable C5I artifact"
+      }
+    ],
+    "new": {
+      "id": "R2048",
+      "nodes": 2048,
+      "dz_cm": 0.078125,
+      "required": true
+    },
+    "prohibited_in_C5L": [
+      "R4096"
+    ]
+  },
+  "execution_topology": {
+    "route": "R2048 T16 only",
+    "partition": "history x compiler optimization",
+    "histories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "compiler_optimizations": [
+      0,
+      2
+    ],
+    "reconstruction": "concatenate Z01-Z04 in fixed order for each optimization",
+    "reason": "Execution partition only; C5I established this topology preserves exact route semantics while bounding runner lifetime."
+  },
+  "metrics": {
+    "primary": [
+      "R512-R1024 pooled bottom-flux RMSE at T16",
+      "R1024-R2048 pooled bottom-flux RMSE at T16",
+      "adjacent-gap ratio R1024-R2048 over R512-R1024",
+      "descriptive log2 spatial order"
+    ],
+    "secondary": [
+      "R512-R2048 pooled bottom-flux distance",
+      "history-specific and PHASE1/PHASE2/HOLD signed diagnostics for both adjacent gaps",
+      "R1024-R2048 spatial gap divided by frozen R1024 T8-T16 temporal RMSE as context only"
+    ],
+    "no_absolute_convergence_threshold": true,
+    "no_application_threshold": true
+  },
+  "adjudication": {
+    "SPATIAL_REFINEMENT_PROGRESSING_AT_R2048": "R1024-R2048 RMSE is smaller than frozen R512-R1024 RMSE.",
+    "SPATIAL_REFINEMENT_NOT_PROGRESSING_AT_R2048": "R1024-R2048 RMSE is larger than frozen R512-R1024 RMSE.",
+    "SPATIAL_ADJACENT_GAP_NUMERICALLY_UNCHANGED_AT_R2048": "The two adjacent-gap RMSE values are exactly equal in the analyzer's direct floating comparison.",
+    "interpretation": "Direction and descriptive order are spatial Reference diagnostics only. None establishes continuum truth."
+  },
+  "stop_rules": [
+    "Do not execute T32.",
+    "Do not execute R4096.",
+    "Do not modify or counterfactually alter the lower boundary.",
+    "Do not run LARE.",
+    "Do not select a convergence threshold after observing R2048.",
+    "Persist C5L and return to representation authority if one additional spatial level is scientifically sufficient; require a new authority for any further Reference refinement."
+  ],
+  "hard_gates": {
+    "R2048_O0_O2_byte_identity": true,
+    "exact_state_count_per_history": 16384,
+    "exact_history_count": 4,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "C5I_baseline_identity": true,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "production_reference_changed": false,
+    "boundary_counterfactual_executed": false,
+    "new_reference_physics_admitted": false,
+    "T32_executed": false,
+    "R4096_executed": false,
+    "new_lare_run": false,
+    "new_lare_closure": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "BOUND_BEFORE_EXECUTION",
+    "response_based_design": false,
+    "r2048_materializer": "tests/rom/materialize_lare_bc2_c5l_r2048_t16.py",
+    "r2048_materializer_blob": "3a0bca5ca87bfc0d29b8c4cee85309afd32b424d",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5l_r2048_t16.py",
+    "analyzer_blob": "528d43093f40dfd1971939b492127b1e1f3b84df",
+    "history_slice_materializer": "tests/rom/materialize_lare_bc2_c5i_history_slice.py",
+    "history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
+    "allowed_new_code": "R2048 geometry guard/materialization and prebound adjacent-grid analysis only",
+    "prohibited_new_code": "boundary variants, T32, R4096, LARE, response-driven thresholds"
+  },
+  "model_changed": false
+}
