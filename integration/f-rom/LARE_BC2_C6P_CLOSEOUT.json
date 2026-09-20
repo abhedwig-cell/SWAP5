@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.lare.bc2.c6p.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6P",
+  "status": "CLOSED_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK_APPROXIMATE_PURPOSE_ROUTE_SCIENTIFIC_CHOICE_NEXT",
+  "decision": "DO_NOT_ADD_ROOT_SPECIFIC_STATE_FROM_C6P_AMBIGUITY_SELECT_MINIMAL_EXISTING_STATE_FEEDBACK_ONLY_IN_SEPARATE_PROSPECTIVE_WORKUNIT",
+  "role": "RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json",
+    "workflow_run": 35538587682,
+    "execution_head": "c01148ca72a3e0d2fa9d34c93079010363cee61b",
+    "artifact_id": 10613836251,
+    "artifact_digest": "sha256:4403addbc9d4f1fccbbc85684dd17b81466f005d454c01356b9ec3d0c7ac4d43",
+    "result_sha256": "3dbbec3a0e56539cc14c612bdb1b72fb34e071305047bf5d6d732bcf1c1e1fc5",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6P_RESULT.json"
+  },
+  "hard_checks": {
+    "all_pass": true,
+    "max_abs_matched_storage_difference_cm": 1.4210854715202004e-14,
+    "max_abs_matched_P2_moment_difference_cm2": 1.7053025658242404e-13,
+    "max_abs_root_weight_sum_error": 0,
+    "Se_range": [
+      0.07250000000000001,
+      0.8275000000000001
+    ]
+  },
+  "hypotheses": {
+    "H_STORAGE_NOT_EXACTLY_SUFFICIENT": true,
+    "H_S_PLUS_M_NOT_EXACTLY_SUFFICIENT": true,
+    "H_MEAN_STORAGE_FEEDBACK_NOT_EXACT": true
+  },
+  "bounded_results": {
+    "maximum_storage_only_uptake_fraction_ambiguity": {
+      "B01": 0.3002529479835532,
+      "B14": 0.12107121076369332
+    },
+    "maximum_equal_S_and_M_uptake_fraction_ambiguity": {
+      "B01": 0.12467230144550867,
+      "B14": 0.040672966704993097
+    },
+    "maximum_mean_storage_feedback_abs_error_fraction": {
+      "B01": 0.25139805184409403,
+      "B14": 0.11414654936707191
+    },
+    "R16_equal_S_and_M_max_ambiguity": {
+      "B01": 0.018782043097469447,
+      "B14": 0.020407171101248234
+    },
+    "interpretation": "These are synthetic structural-identifiability magnitudes under Se-anchored Feddes probes. They are not ET application errors or acceptance tolerances."
+  },
+  "adjudication": {
+    "STORAGE_ONLY_EXACT_ROOT_FEEDBACK_STATE_SUFFICIENT": false,
+    "STORAGE_PLUS_GEOMETRIC_FIRST_MOMENT_EXACT_ROOT_FEEDBACK_STATE_SUFFICIENT": false,
+    "LAYER_MEAN_HEAD_FEDDES_EXACT": false,
+    "PRESCRIBED_SINK_COARSE_AGGREGATION_RETRACTED": false,
+    "NEW_ROOT_SPECIFIC_DYNAMIC_STATE_AUTHORIZED": false,
+    "NEW_PARTITION_AUTHORIZED": false,
+    "FREE_RUNNING_ET_DROUGHT_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "scientific_interpretation": [
+    "C6P proves structural non-identifiability, not application inadequacy.",
+    "Even adding the geometric first water-content moment does not generally determine the root-weighted Feddes stress functional because root weighting and stress-branch occupancy are different information functionals.",
+    "Exact root-feedback closure would require root-specific within-layer information or an additional reconstruction assumption.",
+    "The purpose-dependent ROM program does not require exact root-feedback equivalence. Therefore C6P is not authority to add more state solely to remove ambiguity.",
+    "The simplest no-new-state feedback approximation—evaluate Feddes at the representative pressure head implied by each layer-average storage and use exact aggregated root fraction—was declared in the C6P preregistration as a diagnostic before response. It remains eligible for a separately preregistered prospective falsification test, but is not accepted by C6P."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6Q",
+    "state": "SCIENTIFIC_CHOICE_MINIMAL_EXISTING_STATE_ROOT_FEEDBACK_PROSPECTIVE_ARCHITECTURE_AUTHORIZED",
+    "question": "Can the parameter-free layer-mean-head Feddes feedback be tested prospectively as a deliberately approximate purpose-specific closure, after first qualifying a root-active high-resolution Reference, without adding root-specific state or tuning to C6P ambiguity?",
+    "constraints": [
+      "Selection rationale is minimality and the project's purpose-dependent approximation policy, not minimization of exposed C6P errors.",
+      "Use exact aggregated root fraction per retained layer.",
+      "No fitted stress correction, sublayer reconstruction or root-specific memory state.",
+      "Qualify a high-resolution root-active Reference before reduced response.",
+      "Keep prescribed-sink hydraulic response and stress-feedback prediction conceptually separate.",
+      "Use fresh root-active histories and actual frozen root-process semantics for the response phase.",
+      "No application tolerance, performance or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "dynamic_root_feedback_implemented": false,
+    "new_representation_selected": false,
+    "new_root_state_selected": false,
+    "application_tolerance_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
