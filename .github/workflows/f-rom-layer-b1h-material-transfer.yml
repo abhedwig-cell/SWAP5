@@ -44,7 +44,7 @@ jobs:
       - name: Assert research-only source freeze and recover pinned basis
         run: |
           set -euo pipefail
-          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference
           mkdir -p /tmp/b1h/basis
           git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/b1h/d13_base.f90
           git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1h/basis/analyze_lare_bc2_c4v_one_day.py
