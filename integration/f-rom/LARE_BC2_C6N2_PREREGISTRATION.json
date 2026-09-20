@@ -221,11 +221,17 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "SCIENTIFIC_DESIGN_ONLY_EXECUTION_NOT_BOUND",
-    "runner": null,
-    "analyzer": null,
-    "workflow": null,
-    "execution_binding_complete": false
+    "state": "STAGED_EXECUTION_BLOCKED_PENDING_C6N1_QUALIFICATION",
+    "runner": "tests/rom/run_lare_bc2_c6n2_surface_candidate.py",
+    "runner_blob": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
+    "analyzer_blob": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n2.yml",
+    "workflow_blob": "fa5c9f26b1e033a485472e2180ed22b7a18f8a5b",
+    "trigger_path": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json",
+    "execution_binding_complete": false,
+    "candidate_response_possible_before_C6N1_closeout": false,
+    "scientific_design_changed": false
   },
   "model_changed": false
 }
