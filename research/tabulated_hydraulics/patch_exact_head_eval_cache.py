@@ -26,8 +26,8 @@ if s.count(old_int)!=1:
     raise SystemExit(f"integer declaration mismatch: {s.count(old_int)}")
 s=s.replace(old_int,new_int,1)
 
-old_decl="integer ientrytab(macp,0:matabentries), node    
-      ! SAVE removed - all local variables are temporary computation values"
+old_decl="""integer ientrytab(macp,0:matabentries), node    
+      ! SAVE removed - all local variables are temporary computation values"""
 new_decl="""integer ientrytab(macp,0:matabentries), node
       real(8), save :: cache_head(macp) = 1.0d300
       real(8), save :: cache_x(macp) = 0.0d0
