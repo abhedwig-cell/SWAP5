@@ -106,32 +106,42 @@ contains
     type(b110_default_mvg_provider_t), target, intent(inout) :: base
     type(direct_table_storage_t), target, intent(inout) :: storage
     type(direct_table_provider_t), target, intent(inout) :: candidate
-    real(real64) :: max_t,max_k,max_c,frac_local,x_local,h_local
-    integer :: qq
+    integer, parameter :: nb=3
+    integer, parameter :: bn(nb)=[512,1024,2048]
+    real(real64) :: max_t,max_k,max_c,frac_local,x_local,h_local,err_local
+    real(real64) :: max_t_head,max_k_head,max_c_head
+    integer :: qq,ib,ii
 
     c(9,:)=-10.0_real64
     call initialize_b110_default_mvg_parameters(params,c)
     call bind_b110_default_mvg_provider(base,params,dt)
-    call build_direct_table_from_provider(storage,base,nnode,512,hmin,1.0e-2_real64)
-    call bind_direct_table_provider(candidate,storage)
-
-    max_t=0.0_real64
-    max_k=0.0_real64
-    max_c=0.0_real64
     x_local=-log(1.0_real64-hmin/1.0e-2_real64)
-    do qq=1,neval
-      frac_local=real(qq-1,real64)/real(neval-1,real64)
-      h_local=1.0e-2_real64*(1.0_real64-exp(-x_local*(1.0_real64-frac_local)))
-      if(qq==neval) h_local=0.0_real64
-      heads=h_local
-      call base%evaluate(heads,theta_ref,k_ref,c_ref,dk_ref)
-      call candidate%evaluate(heads,theta_tab,k_tab,c_tab,dk_tab)
-      max_t=max(max_t,maxval(abs(theta_tab-theta_ref)))
-      max_k=max(max_k,maxval(abs(log10(k_tab)-log10(k_ref))))
-      max_c=max(max_c,maxval(abs(log10(c_tab)-log10(c_ref))))
+
+    do ib=1,nb
+      call build_direct_table_from_provider(storage,base,nnode,bn(ib),hmin,1.0e-2_real64)
+      call bind_direct_table_provider(candidate,storage)
+      max_t=0.0_real64; max_k=0.0_real64; max_c=0.0_real64
+      max_t_head=0.0_real64; max_k_head=0.0_real64; max_c_head=0.0_real64
+      do qq=1,neval
+        frac_local=real(qq-1,real64)/real(neval-1,real64)
+        h_local=1.0e-2_real64*(1.0_real64-exp(-x_local*(1.0_real64-frac_local)))
+        if(qq==neval) h_local=0.0_real64
+        heads=h_local
+        call base%evaluate(heads,theta_ref,k_ref,c_ref,dk_ref)
+        call candidate%evaluate(heads,theta_tab,k_tab,c_tab,dk_tab)
+        do ii=1,nnode
+          err_local=abs(theta_tab(ii)-theta_ref(ii))
+          if(err_local>max_t) then; max_t=err_local; max_t_head=h_local; end if
+          err_local=abs(log10(k_tab(ii))-log10(k_ref(ii)))
+          if(err_local>max_k) then; max_k=err_local; max_k_head=h_local; end if
+          err_local=abs(log10(c_tab(ii))-log10(c_ref(ii)))
+          if(err_local>max_c) then; max_c=err_local; max_c_head=h_local; end if
+        end do
+      end do
+      write(*,'(A,I0,A,ES18.10,A,ES18.10,A,ES18.10,A,ES18.10,A,ES18.10,A,ES18.10)') &
+        'BRANCH_B n=',bn(ib),' max_theta_abs=',max_t,' theta_head=',max_t_head, &
+        ' max_log10K_abs=',max_k,' K_head=',max_k_head,' max_log10C_abs=',max_c,' C_head=',max_c_head
     end do
-    write(*,'(A,ES18.10,A,ES18.10,A,ES18.10)') 'BRANCH_B max_theta_abs=',max_t, &
-      ' max_log10K_abs=',max_k,' max_log10C_abs=',max_c
   end subroutine characterize_branch_b
 
   subroutine configure_hupsel_like(c)
