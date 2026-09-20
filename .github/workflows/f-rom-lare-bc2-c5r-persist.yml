@@ -1,0 +1,189 @@
+name: F-ROM-LARE persist C5R breadth closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5r-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5R artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604483398" > /tmp/c5r/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5r/artifact.json'))
+          assert a['id']==10604483398
+          assert a['digest']=='sha256:bc93a2d01f4805ec7f0c0433fb3e84e6450c80a135e0e3a51ba0c88527d6e703'
+          assert a['workflow_run']['id']==35508594209
+          assert a['workflow_run']['head_sha']=='57c0a567666d77532a0b2584543766090e4969b6'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604483398/zip" > /tmp/c5r.zip
+          echo "bc93a2d01f4805ec7f0c0433fb3e84e6450c80a135e0e3a51ba0c88527d6e703  /tmp/c5r.zip" | sha256sum -c -
+          unzip -q /tmp/c5r.zip -d /tmp/c5r/evidence
+          echo "9add1aa0685f49de5f35d29e7b3b69c85c4b4fbaa6c42f4214cc451e6f2aecc6  /tmp/c5r/evidence/LARE_BC2_C5R_RESULT.json" | sha256sum -c -
+          echo "934a8a4d3c3fa4661dc3b9c80811ec471f436434e2d65cb7cacf62e4189b27d7  /tmp/c5r/evidence/R1024_T16_o0.txt" | sha256sum -c -
+          echo "0dd97cc457ef85911b0b9fd9095f4723eec9d09662293ca9a5e418042ec19f4b  /tmp/c5r/evidence/R2048_T16_o0.txt" | sha256sum -c -
+          echo "8fc40c29ae085d7dbca5c9ca3fbd4c8e291d7285af7ebcce8d0d62626c6ce229  /tmp/c5r/evidence/R2048_T8_o0.txt" | sha256sum -c -
+
+      - name: Persist C5R result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5r/evidence/LARE_BC2_C5R_RESULT.json integration/f-rom/LARE_BC2_C5R_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5R_RESULT.json'))
+          assert r['status']=='C5R_PROPAGATION_LIMIT_STRENGTHENED'
+          assert r['integrity']['pass'] is True
+          assert r['hypotheses']['H_D12_DYADIC_BOTTOM_PROGRESS'] is True
+          assert r['hypotheses']['H_BREADTH_ACTIVE'] is False
+          assert r['hypotheses']['H_PROPAGATION_LIMIT_STRENGTHENED'] is True
+          assert r['hypotheses']['H_D12_B2P5_CROSSES_R1024_GW'] is False
+          members={x['id']:x for x in r['members']}
+          cmp=r['comparisons']['D12_B2P5_vs_D8_B2P5']
+          closeout={
+            'schema':'swap5.lare.bc2.c5r.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5R',
+            'status':'CLOSED_SHARED_BOTTOM_SUPPORT_ADDED_BREADTH_INACTIVE_PROPAGATION_LIMIT_STRENGTHENED',
+            'decision':'AUTHORIZE_READ_ONLY_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURE_FAMILY_DERIVATION',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json',
+              'workflow_run':35508594209,
+              'execution_head':'57c0a567666d77532a0b2584543766090e4969b6',
+              'artifact_id':10604483398,
+              'artifact_digest':'sha256:bc93a2d01f4805ec7f0c0433fb3e84e6450c80a135e0e3a51ba0c88527d6e703',
+              'result_sha256':'9add1aa0685f49de5f35d29e7b3b69c85c4b4fbaa6c42f4214cc451e6f2aecc6'
+            },
+            'reference_quality':r['reference_quality'],
+            'key_evidence':{
+              'R1024_vs_R2048_flux_RMSE_cm_per_day':r['reference_comparators']['R1024_vs_R2048']['interval_bottom_flux_rmse_cm_per_day'],
+              'R2048_T8_vs_T16_flux_RMSE_cm_per_day':r['reference_comparators']['R2048_T8_vs_T16']['interval_bottom_flux_rmse_cm_per_day'],
+              'D12_B10_flux_RMSE_cm_per_day':members['D12_B10']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'D12_B5_flux_RMSE_cm_per_day':members['D12_B5']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'D12_B2P5_flux_RMSE_cm_per_day':members['D12_B2P5']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'D8_B2P5_flux_RMSE_cm_per_day':members['D8_B2P5']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'D12_B2P5_storage_RMSE_cm':members['D12_B2P5']['metrics']['total_storage_rmse_cm'],
+              'D8_B2P5_storage_RMSE_cm':members['D8_B2P5']['metrics']['total_storage_rmse_cm'],
+              'D12_B2P5_mapped_theta_RMSE':members['D12_B2P5']['metrics']['mapped_theta_rmse'],
+              'D8_B2P5_mapped_theta_RMSE':members['D8_B2P5']['metrics']['mapped_theta_rmse'],
+              'D12_vs_D8_shared_support':cmp
+            },
+            'adjudication':{
+              'REFERENCE_QUALITY_INTERPRETABLE':r['reference_quality']['R1024_frontier_interpretable'],
+              'D12_DYADIC_BOTTOM_PROGRESS':r['hypotheses']['H_D12_DYADIC_BOTTOM_PROGRESS'],
+              'BREADTH_ACTIVE_AT_SHARED_B2P5_SUPPORT':r['hypotheses']['H_BREADTH_ACTIVE'],
+              'PROPAGATION_LIMIT_STRENGTHENED':r['hypotheses']['H_PROPAGATION_LIMIT_STRENGTHENED'],
+              'D12_B2P5_CROSSES_R1024_GW':r['hypotheses']['H_D12_B2P5_CROSSES_R1024_GW'],
+              'NEW_SCALAR_CLOSURE_TUNING_AUTHORIZED':False,
+              'NEW_DISTINCT_CLOSURE_IMPLEMENTATION_AUTHORIZED':False,
+              'READ_ONLY_DISTINCT_CLOSURE_DERIVATION_AUTHORIZED':True,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'SPEED_CLAIM_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'C5R restores four additional vertically distributed states above 110 cm while keeping exactly the same 5/2.5/2.5-cm lower-boundary support and unchanged CURRENT_LAYER_FACE as D8_B2P5.',
+              'D12_B2P5 and D8_B2P5 are indistinguishable on the groundwater vector to numerical precision: flux-RMSE ratio is essentially 1, storage and cumulative ratios are essentially 1, sign/reversal diagnostics are identical, and per-history signed-bias magnitude is unchanged.',
+              'D12_B2P5 mapped-profile RMSE is only microscopically smaller than D8_B2P5, so the extra state breadth does not provide a meaningful hydrological rescue on this fresh workload.',
+              'Within D12 itself, B10 to B5 to B2P5 remains componentwise non-worsening, independently confirming that bottom-adjacent support matters. Yet no D12 member reaches the R1024 comparator.',
+              'The representation evidence therefore isolates a boundary: state placement matters until lower-boundary support reaches the tested B2P5 structure, but additional state breadth above that support no longer changes the response. The remaining high-resolution error is consequently much more strongly attributable to the propagation/inter-layer closure.',
+              'This does not authorize another scalar gradient correction. C4H-C4O already close conductivity-only and scalar/current-state gradient retuning routes. The next work unit must derive physically distinct conservative inter-layer closure families before any implementation.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5S',
+              'state':'READ_ONLY_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURE_DERIVATION_AUTHORIZED',
+              'question':'Which conservative inter-layer closure families are structurally distinct from CURRENT_LAYER_FACE and already-rejected scalar gradient corrections, are derivable from Richards physics using the retained layer-storage state, and admit a prospective zero-fit discriminator before implementation?',
+              'constraints':[
+                'Read-only theory/code/evidence synthesis first; no model response in C5S.',
+                'Do not reopen scalar multipliers, direction switches, geometry-only amplitude corrections, or conductivity-only fixes closed by C4H-C4O.',
+                'Do not add a dynamic memory state without new evidence; C4K remains authoritative.',
+                'Separate candidate families by mathematical closure object: local nonlinear two-point flux, storage-consistent subgrid reconstruction, or another explicitly derived conservative operator.',
+                'Reconcile against already-tested QS1/QS2/HE2 and FMC/SMVE so no closed family is silently reinvented.',
+                'No application, performance, speed or production-ROM claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5R_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5R closeout
+
+          C5R is the final vertical-memory-breadth discriminator before reopening propagation closure.
+
+          On fresh R01-R04 B14 dynamic prescribed-head histories, Reference temporal quality passes. D12 itself preserves the B10 -> B5 -> B2P5 bottom-focus progression, but D12_B2P5 does not cross the independent R1024 comparator.
+
+          The decisive comparison is D12_B2P5 versus D8_B2P5. Both have identical 5/2.5/2.5-cm lower-boundary support and unchanged CURRENT_LAYER_FACE closure; D12 adds four vertically distributed states above 110 cm. Their groundwater responses are numerically indistinguishable: bottom-flux, storage, cumulative exchange, signed-bias, sign and reversal metrics are effectively identical. The mapped-profile difference is negligible.
+
+          Thus the C5P residual is no longer plausibly explained by missing broad vertical state information. Bottom placement remains causally important, but once the tested B2P5 support is present, adding D8 -> D12 state breadth does not rescue high-resolution fidelity.
+
+          The remaining error is therefore much more strongly identified as a propagation/inter-layer closure limitation. This does not reopen scalar tuning: C4H-C4O remain authoritative against conductivity-only and scalar/current-state gradient fixes. C5S is read-only derivation of genuinely distinct conservative closure families before any implementation.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v23'
+          j['status']='CLOSED_THROUGH_C5R_PLACEMENT_ACTIVE_BREADTH_INACTIVE_PROPAGATION_LIMIT_STRENGTHENED'
+          j.setdefault('authorities',{})['C5Q_breadth_vs_closure_reconciliation']='integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json'
+          j.setdefault('authorities',{})['C5R_D12_shared_support_breadth']='integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5Q']='Read-only identifiability reconciliation required one final D12 shared-bottom-support breadth discriminator before any distinct closure implementation.'
+          j.setdefault('additional_reconciled_findings',{})['C5R']='Fresh D12 versus D8 comparison at identical B2P5 bottom support finds groundwater response numerically indistinguishable despite four additional vertically distributed states. Bottom placement remains active, but additional memory breadth is inactive; the residual is now strongly identified with propagation/inter-layer closure.'
+          j['decision']='DERIVE_PHYSICALLY_DISTINCT_CONSERVATIVE_INTERLAYER_CLOSURE_FAMILIES_BEFORE_IMPLEMENTATION'
+          j['next_authority']='LARE-BC2-C5S'
+          j['next_family_authority']={
+            'family':'C5S_DISTINCT_INTERLAYER_CLOSURE_DERIVATION',
+            'state':'AUTHORIZED_FOR_READ_ONLY_THEORY_CODE_EVIDENCE_SYNTHESIS',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json'
+            ],
+            'purpose':'Identify genuinely distinct conservative inter-layer closure families and a prospective zero-fit discriminator without implementing or fitting them.',
+            'new_closure_implementation_authorized':False,
+            'response_based_partition_optimization_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5R closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5R_RESULT.json                   integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5R_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5R breadth discriminator"
+          git push origin HEAD:work/f-rom-lare-rs1
