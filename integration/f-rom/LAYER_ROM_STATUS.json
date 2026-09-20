@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "572e9789d6b6e1d74e31eda5d7b8c37a608e2493",
+  "checkpoint_commit": "d2d07102d3eb26535dbdfe4570e6ad559ddd187e",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_PREREGISTERED_READY_FOR_STATE_RESPONSE_REPLAY",
-  "last_reconciled_head": "572e9789d6b6e1d74e31eda5d7b8c37a608e2493",
+  "phase": "A1_CLOSED_A2_CLOSURE_AUDIT_AUTHORIZED",
+  "last_reconciled_head": "d2d07102d3eb26535dbdfe4570e6ad559ddd187e",
   "last_reconciled_upstream": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
@@ -31,7 +31,10 @@
   "evidence_paths": [
     "GitHub Actions artifact 10585316225 from run 35444243790",
     "GitHub Actions artifact 10584843824 from run 35445731057",
-    "work/f-rom-lare-rs1@96f902d336a2ed8eb6e4c3a091fe7d290af006a6 as noncanonical evidence/code provenance"
+    "work/f-rom-lare-rs1@96f902d336a2ed8eb6e4c3a091fe7d290af006a6 as noncanonical evidence/code provenance",
+    "integration/f-rom/LAYER_ROM_A1_RESULT.json",
+    "integration/f-rom/LAYER_ROM_A1_CLOSEOUT.json",
+    "GitHub Actions artifact 10599363587 from run 35493862040"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -39,8 +42,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Run LAYER-ROM-A1 closure-free common-cohort response replay and persist the result before selecting any closure experiment.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after checkpoint 572e9789d6b6e1d74e31eda5d7b8c37a608e2493; do not regenerate Reference trajectories unless immutable artifact validation fails.",
+  "next_action": "Preregister and execute same-state teacher-forced closure comparison on immutable DYN0A fine-Reference states, L3 primary and L4 resolution control.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after d2d07102d3eb26535dbdfe4570e6ad559ddd187e. A1 is closed; preserve its frozen representation conclusion and continue with A2 closure sufficiency.",
   "blockers": [],
   "scope_guards": [
     "research only",
