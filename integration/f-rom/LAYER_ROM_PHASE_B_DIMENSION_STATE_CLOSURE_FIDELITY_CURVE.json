@@ -1,0 +1,218 @@
+{
+  "schema": "swap5.layer-rom.phase-b.dimension-state-closure-fidelity-curve.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-B-SYNTHESIS",
+  "phase": "FIDELITY_FROZEN_BEFORE_NEW_COST_SCREEN",
+  "canonical_basis": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "controlled_execution_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "question": "What does the combined fixed-flux, fixed-head, transfer and same-partition evidence imply about minimum useful vertical dimension, state placement and closure burden before computational cost is considered?",
+  "authority": {
+    "phase_A": "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "B1_fixed_head_frontier": "integration/f-rom/LAYER_ROM_B1_RESULT.json",
+    "B1H_transfer": "integration/f-rom/LAYER_ROM_B1H_RESULT.json",
+    "corrected_continuous_time_LayerROM": "integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json",
+    "full_CoRichards_temporal_qualification": "integration/f-rom/LAYER_ROM_B1HCO_RESULT.json",
+    "corrected_model_form_decomposition": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json"
+  },
+  "representation_frontier": [
+    {
+      "id": "L3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state_information": "B01 bounded future-response candidate; no 1x reduction-induced aliases in A1.",
+      "fixed_flux_propagation": "Not broadly adequate with tested storage-only/global-moment closures; critical standard-LARE redistribution error remained large.",
+      "fixed_head": "Below B01 comparator-relative groundwater frontier; qualitative exchange errors remain.",
+      "disposition": "INFORMATION_LOWER_BOUND_ONLY_NOT_PRACTICAL_GENERAL_LAYER_ROM"
+    },
+    {
+      "id": "L4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state_information": "No demonstrated A1 predictive-information gain over L3 in B01 cohort.",
+      "closure_value": "Localized fourth storage strongly improves long-to-local closure resolution; global first moment at equal scalar dimension does not.",
+      "fixed_head_B01": "First frozen short-horizon comparator-relative groundwater frontier member.",
+      "transfer": "Targeted placement stably supported on 5 of 6 materials; B05 is the counterexample.",
+      "same_partition_model_form": {
+        "CoRichards_no_worse_materials": [
+          "B02",
+          "B05",
+          "B06"
+        ],
+        "LayerROM_no_worse_materials": [
+          "B11",
+          "B12",
+          "B16"
+        ]
+      },
+      "disposition": "AGGRESSIVE_FOUR_STATE_CANDIDATE_MATERIAL_DEPENDENT"
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state_information": "No demonstrated A1 predictive-information gain over L3 in the B01 common cohort.",
+      "fixed_flux": "Substantially lower standard-LARE critical redistribution error than L4.",
+      "fixed_head_continuous_time": "Large groundwater-fidelity improvement over L4 on difficult B02/B05/B06; B11/B12 exchange already near numerical/reference floor.",
+      "same_partition_model_form": {
+        "CoRichards_no_worse_materials": [
+          "B05"
+        ],
+        "LayerROM_no_worse_materials": [
+          "B02",
+          "B06",
+          "B11",
+          "B12",
+          "B16"
+        ]
+      },
+      "disposition": "INTERMEDIATE_CANDIDATE_BROADLY_STRONGER_BUT_B05_CLOSURE_BURDEN_PERSISTS"
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state_information": "Not established as necessary state dimension; extra states are primarily closure/localization resolution in current evidence.",
+      "placement_transfer": "Targeted lower-zone placement stably supported on all 6 transfer materials.",
+      "fixed_head_continuous_time": "Groundwater exchange reaches or approaches equal-grid residual for several materials; B05 and B06 retain material residual.",
+      "same_partition_model_form": {
+        "LayerROM_no_worse_materials": [
+          "B02",
+          "B06",
+          "B11",
+          "B12",
+          "B16"
+        ],
+        "tradeoff_materials": [
+          "B05"
+        ],
+        "CoRichards_no_worse_materials": []
+      },
+      "disposition": "ROBUST_TARGETED_PLACEMENT_CANDIDATE_FOR_COST_SCREEN_NOT_APPLICATION_ACCEPTED"
+    },
+    {
+      "id": "R16_OP",
+      "dimension": 16,
+      "role": "No-spatial-reduction Layer-ROM operator control, not a ROM.",
+      "finding": "After Reference temporal-limit correction, residual is tiny but nonzero on some materials; useful operator/numerical control only."
+    }
+  ],
+  "state_vs_closure_attribution": [
+    "B01 future-response information saturates by L3 within the tested cohort, while propagated fidelity continues to improve from L3 through higher localized dimensions. This is direct evidence that state-information sufficiency and closure sufficiency are separate axes.",
+    "The equal-dimension L3+M1 experiment fails to replace L4. The fourth scalar is useful because it is localized adjacent to the active interface, not simply because scalar dimension increases from three to four.",
+    "Same-partition CoRichards shows that some low-dimensional error is ordinary Richards spatial discretization and some is Layer-ROM-specific closure/localization burden. The relative contribution changes by material and dimension.",
+    "At L4, CoRichards is componentwise no-worse on B02, B05 and B06, while Layer-ROM is no-worse on B11, B12 and B16. There is therefore no material-independent claim that either reduced closure or coarse Richards is intrinsically superior at equal dimension.",
+    "At L6, only B05 retains a CoRichards componentwise advantage. At R8, B05 becomes a tradeoff and Layer-ROM is componentwise no-worse on the other five materials.",
+    "A Layer-ROM componentwise advantage over same-partition CoRichards is not interpreted as superior physics because compensating errors are possible."
+  ],
+  "purpose_dependent_fidelity": {
+    "GW_R": {
+      "structural_evidence": "Targeted L6/R8 strongly reduce storage and cumulative-exchange residuals; R8 is the first tested dimension with six-material placement support and no CoRichards-dominant material under the full groundwater vector.",
+      "caveat": "B05:R8 remains a tradeoff and no external recharge tolerance is bound.",
+      "application_acceptance": false
+    },
+    "GW_D": {
+      "structural_evidence": "Flux sign, QAVG and QEND strongly constrain low dimension. B05 requires substantially more resolution than B11/B12; dimension cannot be fixed independent of material.",
+      "application_acceptance": false
+    },
+    "SCI_P": {
+      "structural_evidence": "Mapped profile error remains materially dimension-sensitive after groundwater exchange has reached near-floor levels, especially on B11/B12. Profile/process research therefore has a stricter representation need than exchange-only purposes.",
+      "application_acceptance": false
+    },
+    "AG_WB": {
+      "structural_evidence": "Outside current no-ET/no-root-uptake research envelope.",
+      "application_acceptance": false
+    },
+    "EVT": {
+      "structural_evidence": "Outside current no-ponding/no-runoff event envelope.",
+      "application_acceptance": false
+    }
+  },
+  "material_dependence": {
+    "B05": "Persistent hard case: CoRichards no-worse at L4/L6 and R8 is a tradeoff; Layer-ROM R8 still has corrected continuous-time cumulative-bottom RMS 0.0331344 cm, QAVG RMS 0.0834734 cm/day and one QEND sign mismatch.",
+    "B02": "L4 is closure-burden-limited relative to CoRichards; L6/R8 reverse the componentwise relation.",
+    "B06": "Same pattern as B02: CoRichards no-worse at L4, Layer-ROM no-worse at L6/R8.",
+    "B11_B12": "Groundwater exchange is at or near temporal-limit residual at moderate dimension while profile reconstruction continues improving; strong purpose-dependence.",
+    "B16": "Layer-ROM is componentwise no-worse than CoRichards across L4/L6/R8 on the frozen groundwater vector; profile still improves with dimension."
+  },
+  "minimum_dimension_statements": {
+    "forbidden": "There is no universal minimum layer count established by current evidence.",
+    "B01_state_information": "L3 is the bounded minimum predictive-state-information candidate in the A1 cohort.",
+    "B01_short_fixed_head_comparator_frontier": "L4 is the bounded first groundwater comparator-relative crossing.",
+    "six_material_targeted_placement": "R8 is the first tested targeted dimension with stable placement support on all six transfer materials.",
+    "application_minimum": "UNADJUDICATED_NO_EXTERNAL_PURPOSE_TOLERANCES"
+  },
+  "fidelity_freeze_for_cost_screen": {
+    "candidates": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "comparators": [
+      "same-partition CoRichards L4/L6/R8",
+      "fine R16 Reference"
+    ],
+    "FMC": "Include only if exact fixed-head regime and inherited FMC authority match the cost workload; otherwise report separately.",
+    "fixed_physics": "pure hydraulics, no sinks, fixed 160 cm bottom, prescribed zero pressure head, zero top flux",
+    "material_panel": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "rule": "Cost may now be screened without changing state, partition, closure, time-integration science or fidelity metrics."
+  },
+  "phase_B_adjudication": [
+    "The central Layer-ROM hypothesis remains viable, but not as a universal 3- or 4-layer replacement.",
+    "The evidence favors a small targeted layer ladder whose useful dimension depends on material and purpose.",
+    "L4 is an aggressive low-cost candidate, L6 is an intermediate candidate with much smaller difficult-material residual, and R8 is the first tested targeted representation with placement support across the full six-material panel.",
+    "The dominant design principle is local resolution where hydraulic gradients control exchange, not uniform layering and not a single global gradient moment.",
+    "No empirical correction is justified by current evidence.",
+    "Fidelity is now sufficiently frozen to begin a shared-host cost screen of L4/L6/R8 versus same-partition CoRichards and R16; that screen cannot by itself establish a formal or portable speedup."
+  ],
+  "next_research_question": "What computational reduction is actually obtained by L4, L6 and R8 on the frozen six-material fixed-head panel when measured against same-partition CoRichards and R16 without changing the fidelity definitions?",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_NEW_REPRESENTATION_SELECTED_FROM_COST",
+    "NO_CLOSURE_RETUNING",
+    "NO_PRODUCTION_ROM",
+    "NO_FORMAL_OR_PORTABLE_SPEEDUP_FROM_SHARED_HOST_SCREEN"
+  ],
+  "production_rom_authorized": false
+}
