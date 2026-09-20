@@ -1,0 +1,291 @@
+{
+  "schema": "swap5.lare.bc2.c5z.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5Z",
+  "phase": "PREREGISTERED_BEFORE_MOMENT_PROFILE_NUMERICAL_RESPONSE",
+  "title": "Response-free mathematical qualification of moment-enriched theta-profile reconstruction",
+  "role": "NO_HYDROLOGICAL_RESPONSE_ALGEBRAIC_PROFILE_ADMISSIBILITY_QUALIFICATION",
+  "scientific_question": "Does the all-layer moment-enriched conservation-native theta-polynomial reconstruction define a unique, admissible and numerically stable hydraulic profile map over a prospectively frozen synthetic B14 state/moment domain before any hydrological response is attempted?",
+  "authority": {
+    "C5Y": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "required_C5Y_status": "CLOSED_FIRST_WATER_CONTENT_MOMENT_IS_MINIMAL_CONSERVATION_DERIVED_SHAPE_STATE_MATHEMATICAL_QUALIFICATION_NEXT",
+    "C5X": "integration/f-rom/LARE_BC2_C5X_RECONCILIATION.json",
+    "C5W": "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
+    "frozen_material": "B14",
+    "hydrological_response_authorized": false
+  },
+  "reconstruction": {
+    "local_coordinate": "xi in [-1,1], z-zc=(d/2)xi",
+    "basis": [
+      "P0=1",
+      "P1=xi",
+      "P2=(3xi^2-1)/2",
+      "P3=(5xi^3-3xi)/2"
+    ],
+    "moment_enriched_layer": "theta(xi)=a0 + a1*P1 + a2*P2 + a3*P3",
+    "state_constraints": [
+      "a0 = S_i/d_i = mean theta_i",
+      "a1 = 6*M_i/d_i^2"
+    ],
+    "algebraic_unknowns_per_layer": [
+      "a2",
+      "a3"
+    ],
+    "hydraulic_relation": [
+      "psi(theta) is the frozen B14 inverse retention map on the unsaturated branch",
+      "q=K(theta)*(1 + dpsi/dz), positive downward",
+      "dpsi/dz=(dpsi/dtheta)*(2/d_i)*dtheta/dxi"
+    ],
+    "global_constraints": [
+      "psi_bottom(i)-psi_top(i+1)=0 for every internal interface",
+      "q_bottom(i)-q_top(i+1)=0 for every internal interface",
+      "q_top(1)-q_top_prescribed=0",
+      "psi_bottom(N)-psi_bottom_prescribed=0"
+    ],
+    "degree_count": "2N unknown higher-mode coefficients and 2N hydraulic constraints for N all-moment-enriched layers",
+    "state_recovery": "Storage and centered first moment are exact analytically by Legendre orthogonality and are not numerical residuals."
+  },
+  "physical_moment_domain": {
+    "bounded_theta_exact_moment_limit": "For mean effective saturation Se_bar and layer width d, |M| <= 0.5*(theta_s-theta_r)*d^2*Se_bar*(1-Se_bar).",
+    "derivation": "The extremum under theta_r<=theta<=theta_s places all excess water at one layer edge; the residual theta_r background has zero centered moment.",
+    "normalized_moment": "mu=M/Mmax(Se_bar,d)",
+    "synthetic_mu_values": [
+      -0.25,
+      0,
+      0.25
+    ],
+    "note": "C5Z deliberately remains away from the box-constraint extreme |mu|=1."
+  },
+  "synthetic_domain": {
+    "material": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "mualem_lambda": -0.334926
+    },
+    "constitutive_Se_domain": [
+      0.02,
+      0.995
+    ],
+    "partitions": {
+      "D8_B2P5": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ],
+      "D12_B2P5": [
+        0,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ]
+    },
+    "mean_Se_profiles": [
+      {
+        "id": "UNIFORM_DRY",
+        "mode": "uniform",
+        "Se": 0.6
+      },
+      {
+        "id": "UNIFORM_MID",
+        "mode": "uniform",
+        "Se": 0.75
+      },
+      {
+        "id": "UNIFORM_WET",
+        "mode": "uniform",
+        "Se": 0.9
+      },
+      {
+        "id": "TOP_DRY_BOTTOM_WET",
+        "mode": "linear",
+        "Se_top": 0.6,
+        "Se_bottom": 0.9
+      },
+      {
+        "id": "TOP_WET_BOTTOM_DRY",
+        "mode": "linear",
+        "Se_top": 0.9,
+        "Se_bottom": 0.6
+      },
+      {
+        "id": "BOTTOM_WET_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.7,
+        "Se_bottom": 0.92
+      },
+      {
+        "id": "BOTTOM_DRY_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.88,
+        "Se_bottom": 0.58
+      }
+    ],
+    "moment_patterns": [
+      {
+        "id": "ZERO",
+        "mode": "uniform_mu",
+        "mu": 0
+      },
+      {
+        "id": "BOTTOM_HEAVY_ALL",
+        "mode": "uniform_mu",
+        "mu": 0.25
+      },
+      {
+        "id": "TOP_HEAVY_ALL",
+        "mode": "uniform_mu",
+        "mu": -0.25
+      },
+      {
+        "id": "ALTERNATING",
+        "mode": "alternating",
+        "mu_abs": 0.25
+      },
+      {
+        "id": "BOTTOM_HEAVY_FOCUSED",
+        "mode": "bottom_focused",
+        "mu": 0.25,
+        "layers_from_bottom": 3
+      },
+      {
+        "id": "BOTTOM_TOP_OPPOSED",
+        "mode": "linear_mu",
+        "mu_top": -0.25,
+        "mu_bottom": 0.25
+      }
+    ],
+    "boundary_cases": [
+      {
+        "id": "HEAD_RISE",
+        "bottom_head_multiplier": 0.875
+      },
+      {
+        "id": "HEAD_FALL",
+        "bottom_head_multiplier": 1.125
+      }
+    ],
+    "top_flux_rule": "q_top_prescribed = K(psi(mean_theta_top)); no fitted multiplier.",
+    "bottom_head_rule": "psi_bottom_prescribed = multiplier * psi(mean_theta_bottom).",
+    "total_case_count": 168
+  },
+  "numerical_contract": {
+    "solver": "scipy.optimize.least_squares on the square 2N residual system using method='trf' and fixed residual scaling",
+    "coefficient_unknowns": "a2,a3 per layer",
+    "fixed_initial_starts": [
+      {
+        "id": "ZERO_HIGHER_MODES",
+        "a2_fraction_of_delta_theta": 0,
+        "a3_fraction_of_delta_theta": 0
+      },
+      {
+        "id": "POSITIVE_P2",
+        "a2_fraction_of_delta_theta": 0.01,
+        "a3_fraction_of_delta_theta": 0
+      },
+      {
+        "id": "NEGATIVE_P2",
+        "a2_fraction_of_delta_theta": -0.01,
+        "a3_fraction_of_delta_theta": 0
+      },
+      {
+        "id": "POSITIVE_P3",
+        "a2_fraction_of_delta_theta": 0,
+        "a3_fraction_of_delta_theta": 0.01
+      },
+      {
+        "id": "NEGATIVE_P3",
+        "a2_fraction_of_delta_theta": 0,
+        "a3_fraction_of_delta_theta": -0.01
+      }
+    ],
+    "solver_options": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 4000
+    },
+    "residual_scaling": {
+      "interface_pressure_cm": 100,
+      "interface_flux_cm_per_day": 0.895023,
+      "top_flux_cm_per_day": 0.895023,
+      "bottom_pressure_cm": "max(1,abs(psi_bottom_prescribed))"
+    },
+    "admissibility_sampling": "65 equally spaced xi points per layer including faces",
+    "physical_residual_gates": {
+      "max_abs_interface_pressure_jump_cm": 1e-8,
+      "max_abs_interface_flux_jump_cm_per_day": 1e-10,
+      "max_abs_top_flux_residual_cm_per_day": 1e-10,
+      "max_abs_bottom_pressure_residual_cm": 1e-8
+    },
+    "solution_agreement_across_starts": {
+      "max_abs_theta_difference": 1e-8,
+      "max_abs_face_pressure_difference_cm": 0.000001,
+      "max_abs_face_flux_difference_cm_per_day": 1e-8
+    },
+    "jacobian_condition_diagnostic": {
+      "compute": true,
+      "hard_gate": false,
+      "reason": "Condition number is reported as numerical conditioning evidence but no post-hoc universal threshold is imposed."
+    },
+    "no_post_result_start_or_tolerance_retuning": true
+  },
+  "qualification_gates": {
+    "G1_STATE_MOMENT_BOUNDS": "All prescribed S,M pairs satisfy the exact theta-box moment limit prospectively.",
+    "G2_ALL_CASES_CONVERGE": "Every fixed start converges for every synthetic case under frozen solver settings.",
+    "G3_UNIQUE_NUMERICAL_BRANCH": "All five fixed starts converge to the same admissible profile within the frozen solution-agreement tolerances.",
+    "G4_THETA_ADMISSIBILITY": "All sampled theta values in every solved layer remain within the frozen constitutive Se domain [0.02,0.995].",
+    "G5_HYDRAULIC_CONTINUITY": "Pressure and flux continuity plus top/bottom boundary residuals pass their physical-unit gates.",
+    "G6_STATE_RECOVERY": "Analytic storage and first-moment recovery from the polynomial coefficients matches the prescribed S,M to machine-level algebraic identity.",
+    "G7_NO_RESPONSE_DATA": "No C5R/C5N/C5P hydrological trajectory is consumed or generated."
+  },
+  "decision_logic": {
+    "C5Z_MOMENT_PROFILE_MATHEMATICALLY_QUALIFIED": "All G1-G7 pass.",
+    "C5Z_MOMENT_PROFILE_NUMERICALLY_MULTIBRANCH_OR_INADMISSIBLE": "G1/G2 may pass but G3, G4 or G5 fails.",
+    "C5Z_MOMENT_PROFILE_NOT_ADMISSIBLE": "G1, G2 or G6 fails.",
+    "next_if_qualified": "Authorize a separate frozen-state moment-state sufficiency discriminator before any free-running moment-ROM implementation.",
+    "next_if_not_qualified": "Stop the moment-enriched theta-polynomial route without tuning polynomial order, moment range, solver starts or tolerances."
+  },
+  "stop_rules": [
+    "No hydrological response data may be read or generated in C5Z.",
+    "No moment localization choice; every retained layer is moment-enriched in C5Z.",
+    "No free-running moment-state ROM.",
+    "No polynomial-order change after response.",
+    "No moment-domain narrowing, solver-start change, residual scaling change or tolerance retuning after response.",
+    "No new scalar closure correction.",
+    "No application, performance, speed or production-ROM claim."
+  ],
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "moment_state_implemented_in_hydrological_model": false,
+    "moment_localization_selected": false,
+    "response_based_profile_fit": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
