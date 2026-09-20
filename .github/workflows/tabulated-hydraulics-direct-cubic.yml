@@ -1,0 +1,223 @@
+name: TAB-HYD direct-index cubic experiment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-direct-cubic.yml'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_cubic.py'
+      - 'research/tabulated_hydraulics/generate_uniform_x_hupsel_tables.py'
+
+jobs:
+  direct_cubic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Checkout toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Checkout ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build control and direct-cubic binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          meson setup swap-src/build-control swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-control
+          cp swap-src/build-control/swap swap-control
+
+          python3 research/tabulated_hydraulics/patch_direct_uniform_cubic.py swap-src/src/soil/sptabulated.f90
+          meson setup swap-src/build-cubic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-cubic
+          cp swap-src/build-cubic/swap swap-cubic
+
+      - name: Prepare cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-cubic
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          import re
+          import shutil
+          import subprocess
+
+          spec=importlib.util.spec_from_file_location(
+              "prep","research/tabulated_hydraulics/prepare_hupsel_e2e.py"
+          )
+          prep=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/tab-hyd-cubic")
+
+          analytic=root/"analytic"
+          shutil.copytree(src,analytic)
+          prep.edit_case(analytic,table=False,swkimpl=0)
+
+          tspack=root/"tspack_dense"
+          shutil.copytree(src,tspack)
+          prep.NCANDIDATE=900
+          prep.edit_case(tspack,table=True,swkimpl=0)
+
+          for n in (80,100,150,250,400):
+              dst=root/f"cubic_{n:03d}"
+              shutil.copytree(src,dst)
+              prep.edit_case(dst,table=True,swkimpl=0)
+              subprocess.run(
+                  ["python3","research/tabulated_hydraulics/generate_uniform_x_hupsel_tables.py",
+                   str(dst),str(n)],check=True
+              )
+
+          for d in root.iterdir():
+              if not d.is_dir():
+                  continue
+              p=d/"swap.swp"
+              s=p.read_text()
+              s,k=re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b",r"\g<1>0",s,count=1)
+              if k != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {d.name}")
+              p.write_text(s)
+          PY
+
+      - name: Full-period fidelity qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'variant\treturn_code\truntime_seconds\n' > build/tab-hyd-cubic/status.tsv
+          run_case () {
+            variant="$1"; binary="$2"
+            work="$GITHUB_WORKSPACE/build/tab-hyd-cubic/$variant"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o qualification_runtime.txt timeout 90 "$binary" > qualification.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/qualification_runtime.txt")
+            printf '%s\t%s\t%s\n' "$variant" "$rc" "$runtime" | tee -a build/tab-hyd-cubic/status.tsv
+            test "$rc" -eq 100
+          }
+          run_case analytic "$GITHUB_WORKSPACE/swap-control"
+          run_case tspack_dense "$GITHUB_WORKSPACE/swap-control"
+          for work in build/tab-hyd-cubic/cubic_*; do
+            run_case "$(basename "$work")" "$GITHUB_WORKSPACE/swap-cubic"
+          done
+
+          : > build/tab-hyd-cubic/comparisons.txt
+          for work in build/tab-hyd-cubic/tspack_dense build/tab-hyd-cubic/cubic_*; do
+            name=$(basename "$work")
+            python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              build/tab-hyd-cubic/analytic "$work" \
+              "build/tab-hyd-cubic/$name-comparison.json" \
+              --label "$name-vs-analytic" \
+              | tee -a build/tab-hyd-cubic/comparisons.txt
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,json
+          root=Path("build/tab-hyd-cubic")
+          status={}
+          with (root/"status.tsv").open() as fh:
+              for row in csv.DictReader(fh,delimiter="\t"):
+                  status[row["variant"]]=row
+          rows=[]
+          for p in sorted(root.glob("*-comparison.json")):
+              name=p.name.replace("-comparison.json","")
+              d=json.loads(p.read_text())
+              m=d["metrics"]
+              rows.append((
+                  name,status[name]["runtime_seconds"],
+                  m["GWL"]["max_abs"],m["GWL"]["rmse"],
+                  m["DSTOR"]["max_abs"],m["DRAINAGE"]["max_abs"],m["TACT"]["max_abs"]
+              ))
+          with (root/"fidelity-summary.tsv").open("w") as fh:
+              fh.write("variant\truntime_s\tgwl_max_abs\tgwl_rmse\tdstor_max_abs\tdrainage_max_abs\ttact_max_abs\n")
+              for row in rows: fh.write("\t".join(map(str,row))+"\n")
+          print((root/"fidelity-summary.tsv").read_text())
+          PY
+
+      - name: Repeated benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,statistics,subprocess,time
+          root=Path("build/tab-hyd-cubic").resolve()
+          routes={
+              "analytic":(Path("swap-control").resolve(),root/"analytic"),
+              "tspack_dense":(Path("swap-control").resolve(),root/"tspack_dense"),
+              "cubic_100":(Path("swap-cubic").resolve(),root/"cubic_100"),
+              "cubic_150":(Path("swap-cubic").resolve(),root/"cubic_150"),
+              "cubic_250":(Path("swap-cubic").resolve(),root/"cubic_250"),
+          }
+          def one(label):
+              binary,work=routes[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists(): p.unlink()
+              t0=time.perf_counter()
+              p=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,
+                               stderr=subprocess.DEVNULL,timeout=30)
+              dt=time.perf_counter()-t0
+              if p.returncode != 100: raise RuntimeError((label,p.returncode))
+              return dt
+          for label in routes: one(label)
+          vals={k:[] for k in routes}; raw=[]; labels=list(routes)
+          for r in range(8):
+              order=labels[r%len(labels):]+labels[:r%len(labels)]
+              if r%2: order=list(reversed(order))
+              for label in order:
+                  dt=one(label); vals[label].append(dt); raw.append((r,label,dt))
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["round","route","seconds"]); w.writerows(raw)
+          med={k:statistics.median(v) for k,v in vals.items()}
+          lines=[f"{k}_median_s={med[k]:.9g}" for k in labels]
+          lines += [f"{k}_over_analytic={med[k]/med['analytic']:.9g}" for k in labels[1:]]
+          (root/"benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-direct-cubic-evidence
+          path: |
+            build/tab-hyd-cubic/status.tsv
+            build/tab-hyd-cubic/comparisons.txt
+            build/tab-hyd-cubic/fidelity-summary.tsv
+            build/tab-hyd-cubic/*-comparison.json
+            build/tab-hyd-cubic/benchmark.csv
+            build/tab-hyd-cubic/benchmark-summary.txt
