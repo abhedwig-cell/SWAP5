@@ -1,95 +1,91 @@
 {
-  "schema": "swap5.lare.bc2.c6p.closeout.v1",
-  "workstream": "F-ROM-LARE",
-  "work_unit": "LARE-BC2-C6P",
-  "status": "CLOSED_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK_APPROXIMATE_PURPOSE_ROUTE_SCIENTIFIC_CHOICE_NEXT",
-  "decision": "DO_NOT_ADD_ROOT_SPECIFIC_STATE_FROM_C6P_AMBIGUITY_SELECT_MINIMAL_EXISTING_STATE_FEEDBACK_ONLY_IN_SEPARATE_PROSPECTIVE_WORKUNIT",
-  "role": "RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_CLOSEOUT",
-  "authority": {
-    "preregistration": "integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json",
-    "workflow_run": 35538587682,
-    "execution_head": "c01148ca72a3e0d2fa9d34c93079010363cee61b",
-    "artifact_id": 10613836251,
-    "artifact_digest": "sha256:4403addbc9d4f1fccbbc85684dd17b81466f005d454c01356b9ec3d0c7ac4d43",
-    "result_sha256": "3dbbec3a0e56539cc14c612bdb1b72fb34e071305047bf5d6d732bcf1c1e1fc5",
-    "persisted_result": "integration/f-rom/LARE_BC2_C6P_RESULT.json"
-  },
-  "hard_checks": {
-    "all_pass": true,
-    "max_abs_matched_storage_difference_cm": 1.4210854715202004e-14,
-    "max_abs_matched_P2_moment_difference_cm2": 1.7053025658242404e-13,
-    "max_abs_root_weight_sum_error": 0,
-    "Se_range": [
-      0.07250000000000001,
-      0.8275000000000001
-    ]
-  },
-  "hypotheses": {
-    "H_STORAGE_NOT_EXACTLY_SUFFICIENT": true,
-    "H_S_PLUS_M_NOT_EXACTLY_SUFFICIENT": true,
-    "H_MEAN_STORAGE_FEEDBACK_NOT_EXACT": true
-  },
-  "bounded_results": {
-    "maximum_storage_only_uptake_fraction_ambiguity": {
-      "B01": 0.3002529479835532,
-      "B14": 0.12107121076369332
-    },
-    "maximum_equal_S_and_M_uptake_fraction_ambiguity": {
-      "B01": 0.12467230144550867,
-      "B14": 0.040672966704993097
-    },
-    "maximum_mean_storage_feedback_abs_error_fraction": {
-      "B01": 0.25139805184409403,
-      "B14": 0.11414654936707191
-    },
-    "R16_equal_S_and_M_max_ambiguity": {
-      "B01": 0.018782043097469447,
-      "B14": 0.020407171101248234
-    },
-    "interpretation": "These are synthetic structural-identifiability magnitudes under Se-anchored Feddes probes. They are not ET application errors or acceptance tolerances."
-  },
   "adjudication": {
-    "STORAGE_ONLY_EXACT_ROOT_FEEDBACK_STATE_SUFFICIENT": false,
-    "STORAGE_PLUS_GEOMETRIC_FIRST_MOMENT_EXACT_ROOT_FEEDBACK_STATE_SUFFICIENT": false,
-    "LAYER_MEAN_HEAD_FEDDES_EXACT": false,
-    "PRESCRIBED_SINK_COARSE_AGGREGATION_RETRACTED": false,
-    "NEW_ROOT_SPECIFIC_DYNAMIC_STATE_AUTHORIZED": false,
-    "NEW_PARTITION_AUTHORIZED": false,
-    "FREE_RUNNING_ET_DROUGHT_AUTHORIZED": false,
     "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "APPLICATION_TOLERANCE_SELECTED": false,
+    "FREE_RUNNING_ET_DROUGHT_AUTHORIZED": false,
+    "LAYER_MEAN_HEAD_FEEDBACK_EXACT": false,
+    "LAYER_STORAGE_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK": false,
+    "NEW_DYNAMIC_ROOT_STATE_SELECTED": false,
     "PERFORMANCE_COMPARISON_AUTHORIZED": false,
-    "PRODUCTION_ROM_AUTHORIZED": false
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "ROOT_WEIGHTED_SUBLAYER_INFORMATION_REQUIRED": true,
+    "STORAGE_PLUS_GEOMETRIC_FIRST_MOMENT_EXACTLY_SUFFICIENT": false
   },
-  "scientific_interpretation": [
-    "C6P proves structural non-identifiability, not application inadequacy.",
-    "Even adding the geometric first water-content moment does not generally determine the root-weighted Feddes stress functional because root weighting and stress-branch occupancy are different information functionals.",
-    "Exact root-feedback closure would require root-specific within-layer information or an additional reconstruction assumption.",
-    "The purpose-dependent ROM program does not require exact root-feedback equivalence. Therefore C6P is not authority to add more state solely to remove ambiguity.",
-    "The simplest no-new-state feedback approximation—evaluate Feddes at the representative pressure head implied by each layer-average storage and use exact aggregated root fraction—was declared in the C6P preregistration as a diagnostic before response. It remains eligible for a separately preregistered prospective falsification test, but is not accepted by C6P."
-  ],
+  "authority": {
+    "C6O": "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
+    "analyzer_blob": "7b6465c5e4028ee9489b6af18021a3775cfc63f9",
+    "artifact_digest": "sha256:70adc36e0a73cc19553cdd8eb060541b2940982a12b0f8019f2432e0e81f982c",
+    "artifact_id": 10612764170,
+    "execution_head": "ef48033189c0e580e348d4f9ea1d4d992388a7c4",
+    "preregistration": "integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json",
+    "result_sha256": "199edc08ef4431354d477f96c42f6c71021769c58088f5643572c4512c380bae",
+    "workflow_run": 35538619801
+  },
+  "decision": "DERIVE_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_CONTRACT_BEFORE_ANY_DYNAMIC_ET_STATE_SELECTION",
+  "hypotheses": {
+    "H_MEAN_STORAGE_FEEDBACK_NOT_EXACT": true,
+    "H_STORAGE_NOT_EXACTLY_SUFFICIENT": true,
+    "H_S_PLUS_M_NOT_EXACTLY_SUFFICIENT": true
+  },
   "next_authority": {
-    "target": "LARE-BC2-C6Q",
-    "state": "SCIENTIFIC_CHOICE_MINIMAL_EXISTING_STATE_ROOT_FEEDBACK_PROSPECTIVE_ARCHITECTURE_AUTHORIZED",
-    "question": "Can the parameter-free layer-mean-head Feddes feedback be tested prospectively as a deliberately approximate purpose-specific closure, after first qualifying a root-active high-resolution Reference, without adding root-specific state or tuning to C6P ambiguity?",
     "constraints": [
-      "Selection rationale is minimality and the project's purpose-dependent approximation policy, not minimization of exposed C6P errors.",
-      "Use exact aggregated root fraction per retained layer.",
-      "No fitted stress correction, sublayer reconstruction or root-specific memory state.",
-      "Qualify a high-resolution root-active Reference before reduced response.",
-      "Keep prescribed-sink hydraulic response and stress-feedback prediction conceptually separate.",
-      "Use fresh root-active histories and actual frozen root-process semantics for the response phase.",
-      "No application tolerance, performance or production claim."
-    ]
+      "No hydrological time integration.",
+      "Derive from the exact Feddes functional and C6O branch decomposition before selecting a new dynamic state.",
+      "Do not select threshold-specific branch fractions as forcing-independent state without accounting for changing h3.",
+      "Do not fit a finite moment basis to C6P ambiguity magnitudes.",
+      "No crop/application tolerance, performance or production claim."
+    ],
+    "question": "What forcing-independent information about the root-weighted pressure-head distribution is sufficient to evaluate the frozen drought-only Feddes uptake for arbitrary h3 within the admitted T_p-dependent h3 interval?",
+    "state": "READ_ONLY_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_DERIVATION_AUTHORIZED",
+    "target": "LARE-BC2-C6Q"
   },
+  "qualification": {
+    "components": {
+      "Se_bounds": true,
+      "matched_P2_moment": true,
+      "matched_storage": true,
+      "root_weight_sum": true,
+      "uptake_fraction_bounds": true
+    },
+    "max_abs_matched_P2_moment_difference_cm2": 1.7053025658242404e-13,
+    "max_abs_matched_storage_difference_cm": 1.4210854715202004e-14,
+    "max_abs_root_weight_sum_error": 0.0,
+    "maximum_Se": 0.8275000000000001,
+    "minimum_Se": 0.07250000000000001,
+    "pass": true
+  },
+  "role": "RESPONSE_FREE_STRUCTURAL_IDENTIFIABILITY_EVIDENCE_NO_APPLICATION_TOLERANCE",
+  "schema": "swap5.lare.bc2.c6p.closeout.v1",
   "scientific_firewall": {
-    "hydrological_response_generated": false,
-    "dynamic_root_feedback_implemented": false,
-    "new_representation_selected": false,
-    "new_root_state_selected": false,
-    "application_tolerance_selected": false,
     "application_acceptance_adjudicated": false,
+    "application_tolerance_selected": false,
+    "dynamic_root_feedback_implemented": false,
+    "hydrological_response_generated": false,
+    "new_partition_selected": false,
+    "new_representation_selected": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
   },
-  "model_changed": false
+  "scientific_interpretation": [
+    "C6P is a structural identifiability laboratory, not a crop calibration or hydrological trajectory.",
+    "Across 1080 prospectively frozen synthetic cases, exact retained-layer storage does not uniquely determine drought-only Feddes uptake.",
+    "The ambiguity survives after also matching the conservation-derived centered geometric first water-content moment. The maximum S+M-matched uptake-fraction separation is about 0.125 for B01 and about 0.041 for B14 in the frozen panel.",
+    "Increasing spatial state count reduces ambiguity in several partitions but does not remove it: even R16 has nonzero S-only and S+M ambiguity for both materials.",
+    "The simplest feedback closure based on alpha evaluated at layer-mean storage-derived head is also not exact.",
+    "These ambiguity magnitudes are not application tolerances and must not be used to accept or reject ET simulations.",
+    "C6O already gives exact instantaneous sufficient statistics for a fixed h3: root-weighted wet-branch occupancy, transition-branch occupancy, and transition-head moment. Because h3 changes with potential transpiration, the next task is to determine a forcing-portable information contract rather than immediately selecting those threshold-dependent diagnostics as dynamic states."
+  ],
+  "selected_summary": {
+    "B01_R16_S_plus_M_ambiguity_max": 0.018782043097469447,
+    "B01_R16_storage_ambiguity_max": 0.09149243766361648,
+    "B01_R4_S_plus_M_ambiguity_max": 0.12467230144550867,
+    "B01_R4_storage_ambiguity_max": 0.3002529479835532,
+    "B14_R16_S_plus_M_ambiguity_max": 0.020407171101248234,
+    "B14_R16_storage_ambiguity_max": 0.04903338629289433,
+    "B14_R4_S_plus_M_ambiguity_max": 0.039527689868932736,
+    "B14_R4_storage_ambiguity_max": 0.12107121076369332
+  },
+  "status": "CLOSED_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK",
+  "work_unit": "LARE-BC2-C6P",
+  "workstream": "F-ROM-LARE"
 }
