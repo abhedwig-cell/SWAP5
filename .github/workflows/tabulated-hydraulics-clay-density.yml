@@ -96,8 +96,12 @@ jobs:
         run: |
           set -euo pipefail
           pushd build/clay-density/analytic >/dev/null
+          set +e
           "$GITHUB_WORKSPACE/swap-analytic" > run.log 2>&1
+          arc=$?
+          set -e
           popd >/dev/null
+          test "$arc" -eq 100
           printf 'rows\treturn_code\truntime_seconds\n' > build/clay-density/status.tsv
           for n in 100 150 250 400 600 900; do
             work="build/clay-density/table_${n}"
