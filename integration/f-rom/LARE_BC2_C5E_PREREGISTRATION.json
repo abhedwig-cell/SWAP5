@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.lare.bc2.c5e.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5E",
+  "phase": "PREREGISTERED_BEFORE_C5E_R512_RESPONSE",
+  "title": "High-resolution Reference-only extension to R512 and optional R1024",
+  "scientific_question": "Does the weak spatial-refinement progress observed through R256 continue at R512 and R1024, and does the descriptive adjacent-grid convergence order stabilize rather than remain near zero?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_HIGH_RESOLUTION_EXTENSION",
+  "authority": {
+    "c5d_closeout": "integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json",
+    "required_c5d_status": "CLOSED_REFERENCE_REFINEMENT_WEAKLY_PROGRESSING_THROUGH_R256_NOT_ASYMPTOTIC",
+    "c5d_result": "integration/f-rom/LARE_BC2_C5D_RESULT.json",
+    "c5d_result_sha256": "34082ec971a2461a43dae87faa885579b60a37241fff337ccc2c948b21345a50",
+    "R64_reference_sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1",
+    "R128_reference_sha256": "22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe",
+    "R256_reference_sha256": "684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961",
+    "c5d_artifact_id": 10600714885,
+    "c5d_artifact_digest": "sha256:d08ceaf2d6dea6464ebca829bb91e15a3857ad669b573a74a2a67b09c15451eb",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "new_lare_or_closure_authorized": false
+  },
+  "workload": {
+    "material": "B14 homogeneous Mualem-van Genuchten",
+    "histories": "exact C5A Z01-Z04",
+    "forcing": "exact C5A gravity-consistent qeq and 0.875/1.125 prescribed-head factors",
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "numerical_policy": "exact C5A-C5D pre-existing D13 integrated-water-depth policy",
+    "no_workload_change": true
+  },
+  "reference_hierarchy": {
+    "preserved_anchors": [
+      {
+        "id": "R64",
+        "nodes": 64,
+        "dz_cm": 2.5,
+        "sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1"
+      },
+      {
+        "id": "R128",
+        "nodes": 128,
+        "dz_cm": 1.25,
+        "sha256": "22b02d59bda0fba30e90a76c589fc4b4e4ce6618d3bd77d76d191fb8e2eb29fe"
+      },
+      {
+        "id": "R256",
+        "nodes": 256,
+        "dz_cm": 0.625,
+        "sha256": "684567f5965e78f84e17c9dab98de35c877fbbee49bcd3dba6dfd5e9de7e0961"
+      }
+    ],
+    "primary_new": {
+      "id": "R512",
+      "nodes": 512,
+      "dz_cm": 0.3125,
+      "required": true
+    },
+    "secondary_new": {
+      "id": "R1024",
+      "nodes": 1024,
+      "dz_cm": 0.15625,
+      "required_for_C5E_execution": false,
+      "attempt_required": true,
+      "failure_rule": "retain exact qualification failure and continue without policy changes"
+    }
+  },
+  "known_pre_response_baseline": {
+    "R64_R128_RMSE_cm_per_day": 0.04712184008248888,
+    "R128_R256_RMSE_cm_per_day": 0.04361359244706386,
+    "observed_order_R64_R128_R256": 0.11161804677895394,
+    "interpretation": "Two adjacent-grid reductions exist but are weak. These observed values motivate rather than determine C5E outcome."
+  },
+  "diagnostics": {
+    "primary": [
+      "R256-R512 pooled bottom-flux timeseries RMSE",
+      "R128-R256-R512 descriptive observed order",
+      "adjacent-grid signed-error decomposition by history and phase"
+    ],
+    "secondary_if_R1024_qualified": [
+      "R512-R1024 pooled bottom-flux timeseries RMSE",
+      "R256-R512-R1024 descriptive observed order"
+    ],
+    "stabilization_reading": [
+      "whether R256-R512 < R128-R256",
+      "whether R512-R1024 < R256-R512 if R1024 qualifies",
+      "whether the descriptive order increases, remains comparable, or collapses relative to the preceding triplet"
+    ],
+    "no_absolute_convergence_threshold": true,
+    "no_continuum_extrapolation_as_authority": true
+  },
+  "adjudication": {
+    "R512_PROGRESS": "R256-R512 RMSE is smaller than R128-R256 RMSE.",
+    "R512_NO_PROGRESS": "R256-R512 RMSE is not smaller than R128-R256 RMSE.",
+    "R1024_TWO_NEW_STEP_PROGRESS": "R1024 qualifies and both R256-R512 < R128-R256 and R512-R1024 < R256-R512.",
+    "ORDER_STABILIZATION": "Report orders continuously; do not convert to pass/fail with a post-selected numeric threshold.",
+    "CONTINUUM_AUTHORITY": "Not automatically granted by any monotone sequence in C5E."
+  },
+  "execution_gates": {
+    "R512_required": {
+      "O0_O2_identity": true,
+      "exact_state_count": 4096,
+      "exact_history_pass_count": 4,
+      "max_abs_transaction_mass_cm": 1e-12
+    },
+    "R1024_optional": {
+      "attempt_required": true,
+      "same_gates_if_success": true,
+      "no_retuning_if_failure": true
+    },
+    "baseline_identity_to_C5D": {
+      "R64_R128_RMSE": true,
+      "R128_R256_RMSE": true
+    }
+  },
+  "next_logic": {
+    "if_two_new_decreases_and_order_strengthens": "Reference refinement has stronger empirical support, but a continuum claim still requires explicit resolution/temporal-error reconciliation before using the finest grid as scientific truth.",
+    "if_decreases_continue_with_order_near_zero": "Treat convergence as extremely slow/non-asymptotic; investigate why the prescribed-head discretization exhibits near-zero apparent order before extending brute-force resolution further.",
+    "if_R512_or_R1024_breaks_monotonicity": "Reference spatial behavior remains non-asymptotic; stop brute-force extension and inspect discretization/boundary formulation of Reference Richards.",
+    "no_outcome": "No LARE or closure admission is authorized by C5E."
+  },
+  "diagnostic_io": {
+    "per_node_text_output": false,
+    "state_output_retained": true,
+    "mass_and_transaction_output_retained": true
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "reference_solver_changed": false,
+    "numerical_policy_changed": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5e_materializer_blob": "cec7bb4f2917f064cc3e6e1ec671d16634a60d37",
+    "c5e_analyzer_blob": "501be4e4c287c5ef8015199a2312225bb41b534b",
+    "c5d_analyzer_blob": "73730efa988d5ed7a66e32d7f120fc3889127a74",
+    "response_based_design": true,
+    "reason": "C5E follows C5D weak-progress evidence, but R512/R1024 grids and all qualitative adjudication are frozen before new responses.",
+    "allowed_new_code": "Reference geometry extension and adjacent-grid diagnostics only",
+    "prohibited_new_code": "LARE execution, closure change, solver-policy relaxation, post-response convergence threshold"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
