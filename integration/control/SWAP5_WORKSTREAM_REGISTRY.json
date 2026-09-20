@@ -5,9 +5,9 @@
   "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
   "snapshot": {
     "branch": "integration/f-ci-canonical",
-    "head": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-    "head_subject": "F-ROMV2 D31: persist M2WC70 retrieval blocker reconciliation (#485)",
-    "open_pr_count": 20,
+    "head": "5cb2fdfe00397dcfa38b3abc8a8afef062663f73",
+    "head_subject": "PROJECT-CONTROL-01: add SWAP5 project control baseline (#487)",
+    "open_pr_count": 21,
     "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
   },
   "status_vocabulary": [
@@ -34,10 +34,15 @@
       "title": "Canonical integration and project control",
       "owner": "central SWAP5 regie",
       "status": "ACTIVE",
-      "canonical_authority": "integration/f-ci-canonical@09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-      "open_prs": [58, 72, 163, 172],
+      "canonical_authority": "integration/f-ci-canonical@5cb2fdfe00397dcfa38b3abc8a8afef062663f73",
+      "open_prs": [
+        58,
+        72,
+        163,
+        172
+      ],
       "current_blocker": null,
-      "next_gate": "Maintain this registry from live canonical delta; reconcile governance/evidence queue #72, #163 and #172 as bounded slices when no specialized admission has priority.",
+      "next_gate": "Watch PR #486 as the current shared-authority coupling repair; if it becomes qualified, reconcile it before older governance debt. Otherwise reconcile #72, then #163/#172 in bounded slices.",
       "write_scope": [
         "integration/control/**",
         "docs/development/project-control surfaces",
@@ -73,7 +78,10 @@
         "integration/audits/PPA_WU05C_STATUS.json"
       ],
       "status_freshness_note": "WU04-A, WU04-B and ROOT-HYD02 status/result files retain pre-admission wording in places even though their owner PRs are merged to canonical. Merge authority governs the current disposition; the wording is evidence-freshness debt, not a rollback of admission.",
-      "open_prs": [361, 363],
+      "open_prs": [
+        361,
+        363
+      ],
       "current_blockers": [
         "PPA-WU05-A production macropore implementation remains forbidden pending exact source materialization/census.",
         "PPA-WU05-B frost authority remains blocked.",
@@ -85,12 +93,26 @@
       "id": "F-GC",
       "title": "Groundwater coupling and iMOD Coupler product integration",
       "owner": "groundwater-coupling workstream",
-      "status": "BLOCKED_EXTERNAL",
-      "canonical_authority": "integration/f-gc/F-GC50_STATUS.json",
-      "state": "CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED",
-      "current_blocker": "FGC50-B1: actual iMOD Coupler product registration requires an upstream source mutation/extension route not available to the current connection.",
+      "status": "ACTIVE",
+      "canonical_authority": [
+        "integration/f-gc/F-GC50_STATUS.json remains the canonical product-integration authority and records external blocker FGC50-B1.",
+        "PR #486 is a noncanonical shared-authority repair candidate for coupling semantics and production application binding."
+      ],
+      "current_blocker": "Two distinct boundaries coexist: F-GC50 product integration remains externally blocked, while PR #486 is an active noncanonical semantics/application-authority repair that must qualify before admission.",
       "resolved_internal_blocker": "PPA-WU01 provides the restricted production-side Fortran/FMR owner required by F-GC49D.",
-      "next_gate": "Resume product integration only when an authorized upstream iMOD Coupler mutation/extension path exists. Do not create a local product-loop imitation."
+      "next_gate": "Allow #486 owner qualification to finish. Central regie must reconcile its shared production/coupling/publication consequences before admission. F-GC50 external product-integration blocker remains separate.",
+      "open_prs": [
+        486
+      ],
+      "current_candidate": {
+        "pr": 486,
+        "branch": "work/f-gc-coupling-semantics-reconciliation",
+        "decision": "CSR01_CSR02_IMPLEMENTED_QUALIFICATION_IN_PROGRESS",
+        "canonical_reconciled": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+        "key_correction": "SWBOTB=5 is a private Reference-backend trial realization of an interface head, not application-level coupled-groundwater authority.",
+        "scope_effect": "If admitted, explicit groundwater_coupled application authority replaces the bottom_mode==5 application gate while preserving SWBOTB=5 as internal Reference trial realization.",
+        "publication_effect": "PUB-GC submission is held; E6/E7 coupling-assumption-dependent requalification is required. No Hupsel rerun is authorized by the candidate itself."
+      }
     },
     {
       "id": "F-ROM",
@@ -114,7 +136,9 @@
         "no formal performance claim",
         "no contact-capable long-window trajectory"
       ],
-      "open_prs": [289],
+      "open_prs": [
+        289
+      ],
       "next_gate": "Materialize an acceptable implementation oracle or explicitly close/narrow the affected proposition; no central implementation action."
     },
     {
@@ -133,7 +157,10 @@
         "DYN01: atmospheric forcing plus accepted-state-dependent restricted Feddes composition passed."
       ],
       "stage0_authorized": false,
-      "open_prs": [366, 378],
+      "open_prs": [
+        366,
+        378
+      ],
       "current_blocker": "Scientific Stage 0 still requires the remaining dynamic coupling/composition and soil/diagnostic freeze; older CAP gate PRs no longer represent the complete live prerequisite state.",
       "next_gate": "Continue under research owner from current canonical authority; do not widen production application ownership by implication."
     },
@@ -142,7 +169,9 @@
       "title": "Physical predictability of numerical difficulty",
       "owner": "DIFFICULTY research workstream",
       "status": "OWNER_CONTROLLED",
-      "open_prs": [365],
+      "open_prs": [
+        365
+      ],
       "current_authority": "PR #365 preregisters the Phase-0 falsification experiment and records that the minimum pilot can proceed with current state/solver diagnostics.",
       "current_blocker": "A second genuinely independent iterative nonlinear Richards method is still required for the H3/independent-method part; RossFast may not be relabelled as that comparator.",
       "next_gate": "Research owner continues prospective experiment design/execution without solver-product changes in central regie."
@@ -167,11 +196,24 @@
       "owner": "publication-specific workstreams",
       "status": "OWNER_CONTROLLED",
       "canonical_authority": [
-        "PUB-GC E7 remains closed at REALISTIC_COMPONENT_DOMAIN_LIMIT and current provenance has been hardened through later HYDRO-MEMORY research evidence.",
+        "Canonical PUB-GC E7 still records REALISTIC_COMPONENT_DOMAIN_LIMIT at this control snapshot.",
+        "Noncanonical PR #486 identifies a coupling-authority interpretation defect and places PUB-GC submission on hold pending targeted requalification if that repair is admitted.",
         "Publication tooling must consume canonical capability; it does not confer production authority."
       ],
-      "open_prs": [359, 371, 389, 181, 199, 207, 217, 218, 219, 187],
+      "open_prs": [
+        359,
+        371,
+        389,
+        181,
+        199,
+        207,
+        217,
+        218,
+        219,
+        187
+      ],
       "current_blockers": [
+        "PR #486 creates a shared-authority watch: the old E7 application-domain interpretation may be superseded if the coupling-semantics repair is qualified and admitted.",
         "PUB-GC release/archive finalization still depends on explicit release/licence/archive metadata.",
         "PUB-P2E03 first calibration matrix remains an immutable blocked experiment.",
         "PUB-ME PR stack is research evidence and requires owner-side consolidation rather than central replay."
@@ -180,36 +222,174 @@
     }
   ],
   "open_pr_inventory": [
-    {"pr": 58, "class": "CANONICAL_CARRIER_DRAFT", "owner": "REGIE", "action": "KEEP_OPEN"},
-    {"pr": 72, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECOMPOSE_CURRENT_GOVERNANCE_DO_NOT_MERGE_STALE_BRANCH_AS_IS"},
-    {"pr": 163, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECONCILE_WITH_CURRENT_F_TB_AUTHORITY"},
-    {"pr": 172, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECONCILE_WITH_CURRENT_TRANSACTION_RESTART_AUTHORITY"},
-    {"pr": 361, "class": "BLOCKED_INTERNAL_AUTHORITY", "owner": "PPA", "action": "KEEP_BLOCKED"},
-    {"pr": 363, "class": "BLOCKED_INTERNAL_AUTHORITY", "owner": "PPA", "action": "REFRESH_DEPENDENCIES_BEFORE_IMPLEMENTATION"},
-    {"pr": 365, "class": "OWNER_CONTROLLED", "owner": "DIFFICULTY", "action": "OWNER_CONTINUES"},
-    {"pr": 366, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "HYDRO-MEMORY", "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"},
-    {"pr": 378, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "HYDRO-MEMORY", "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"},
-    {"pr": 359, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "RECONCILE_AND_CONTINUE_IF_STILL_REQUIRED"},
-    {"pr": 371, "class": "RECONCILE_REQUIRED", "owner": "PUBLICATIONS", "action": "REBIND_FINALIZATION_CONTRACT_TO_CURRENT_CANONICAL"},
-    {"pr": 389, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "CONTINUE_DRAFT_UNDER_PUBLICATION_FIREWALL"},
-    {"pr": 289, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "F-ROM", "action": "F_ROMV2_IS_CURRENT_OWNER; PRESERVE_OR_CLOSE_OLD_DRAFT_BY_OWNER"},
-    {"pr": 181, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "RECONCILE_PORTFOLIO_DOCUMENTATION_BEFORE_ANY_MERGE"},
-    {"pr": 187, "class": "BLOCKED_HISTORICAL_EXPERIMENT", "owner": "PUBLICATIONS", "action": "DO_NOT_MERGE_AS_POSITIVE_EVIDENCE"},
-    {"pr": 199, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
-    {"pr": 207, "class": "BLOCKED_HISTORICAL_EXPERIMENT", "owner": "PUBLICATIONS", "action": "PRESERVE_NEGATIVE_EVIDENCE_DO_NOT_MERGE_AS_POSITIVE_RESULT"},
-    {"pr": 217, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
-    {"pr": 218, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
-    {"pr": 219, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"}
+    {
+      "pr": 58,
+      "class": "CANONICAL_CARRIER_DRAFT",
+      "owner": "REGIE",
+      "action": "KEEP_OPEN"
+    },
+    {
+      "pr": 486,
+      "class": "SHARED_AUTHORITY_CANDIDATE_QUALIFICATION_IN_PROGRESS",
+      "owner": "F-GC",
+      "action": "QUALIFY_UNDER_OWNER_THEN_RETURN_TO_REGIE_FOR_RECONCILIATION"
+    },
+    {
+      "pr": 72,
+      "class": "RECONCILE_REQUIRED",
+      "owner": "REGIE",
+      "action": "RECOMPOSE_CURRENT_GOVERNANCE_DO_NOT_MERGE_STALE_BRANCH_AS_IS"
+    },
+    {
+      "pr": 163,
+      "class": "RECONCILE_REQUIRED",
+      "owner": "REGIE",
+      "action": "RECONCILE_WITH_CURRENT_F_TB_AUTHORITY"
+    },
+    {
+      "pr": 172,
+      "class": "RECONCILE_REQUIRED",
+      "owner": "REGIE",
+      "action": "RECONCILE_WITH_CURRENT_TRANSACTION_RESTART_AUTHORITY"
+    },
+    {
+      "pr": 361,
+      "class": "BLOCKED_INTERNAL_AUTHORITY",
+      "owner": "PPA",
+      "action": "KEEP_BLOCKED"
+    },
+    {
+      "pr": 363,
+      "class": "BLOCKED_INTERNAL_AUTHORITY",
+      "owner": "PPA",
+      "action": "REFRESH_DEPENDENCIES_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "pr": 365,
+      "class": "OWNER_CONTROLLED",
+      "owner": "DIFFICULTY",
+      "action": "OWNER_CONTINUES"
+    },
+    {
+      "pr": 366,
+      "class": "SUPERSEDED_AS_LIVE_AUTHORITY",
+      "owner": "HYDRO-MEMORY",
+      "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"
+    },
+    {
+      "pr": 378,
+      "class": "SUPERSEDED_AS_LIVE_AUTHORITY",
+      "owner": "HYDRO-MEMORY",
+      "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"
+    },
+    {
+      "pr": 359,
+      "class": "OWNER_CONTROLLED",
+      "owner": "PUBLICATIONS",
+      "action": "RECONCILE_AND_CONTINUE_IF_STILL_REQUIRED"
+    },
+    {
+      "pr": 371,
+      "class": "RECONCILE_REQUIRED",
+      "owner": "PUBLICATIONS",
+      "action": "REBIND_FINALIZATION_CONTRACT_TO_CURRENT_CANONICAL"
+    },
+    {
+      "pr": 389,
+      "class": "OWNER_CONTROLLED",
+      "owner": "PUBLICATIONS",
+      "action": "CONTINUE_DRAFT_UNDER_PUBLICATION_FIREWALL"
+    },
+    {
+      "pr": 289,
+      "class": "SUPERSEDED_AS_LIVE_AUTHORITY",
+      "owner": "F-ROM",
+      "action": "F_ROMV2_IS_CURRENT_OWNER; PRESERVE_OR_CLOSE_OLD_DRAFT_BY_OWNER"
+    },
+    {
+      "pr": 181,
+      "class": "OWNER_CONTROLLED",
+      "owner": "PUBLICATIONS",
+      "action": "RECONCILE_PORTFOLIO_DOCUMENTATION_BEFORE_ANY_MERGE"
+    },
+    {
+      "pr": 187,
+      "class": "BLOCKED_HISTORICAL_EXPERIMENT",
+      "owner": "PUBLICATIONS",
+      "action": "DO_NOT_MERGE_AS_POSITIVE_EVIDENCE"
+    },
+    {
+      "pr": 199,
+      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
+      "owner": "PUBLICATIONS",
+      "action": "OWNER_CONSOLIDATION_REQUIRED"
+    },
+    {
+      "pr": 207,
+      "class": "BLOCKED_HISTORICAL_EXPERIMENT",
+      "owner": "PUBLICATIONS",
+      "action": "PRESERVE_NEGATIVE_EVIDENCE_DO_NOT_MERGE_AS_POSITIVE_RESULT"
+    },
+    {
+      "pr": 217,
+      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
+      "owner": "PUBLICATIONS",
+      "action": "OWNER_CONSOLIDATION_REQUIRED"
+    },
+    {
+      "pr": 218,
+      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
+      "owner": "PUBLICATIONS",
+      "action": "OWNER_CONSOLIDATION_REQUIRED"
+    },
+    {
+      "pr": 219,
+      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
+      "owner": "PUBLICATIONS",
+      "action": "OWNER_CONSOLIDATION_REQUIRED"
+    }
   ],
   "central_admission_queue": {
     "ready_for_regie": [],
-    "reconcile": [72, 163, 172],
-    "blocked": [361, 363],
-    "external_blockers": ["F-GC50-B1", "F-ROMV2-D31-M2WC70"],
-    "owner_controlled_not_for_central_merge": [359, 365, 366, 371, 378, 389, 289, 181, 187, 199, 207, 217, 218, 219]
+    "reconcile": [
+      72,
+      163,
+      172
+    ],
+    "blocked": [
+      361,
+      363
+    ],
+    "external_blockers": [
+      "F-GC50-B1",
+      "F-ROMV2-D31-M2WC70"
+    ],
+    "owner_controlled_not_for_central_merge": [
+      359,
+      365,
+      366,
+      371,
+      378,
+      389,
+      289,
+      181,
+      187,
+      199,
+      207,
+      217,
+      218,
+      219
+    ],
+    "shared_authority_watch": [
+      486
+    ]
   },
   "supersession_cleanup_queue": {
-    "owner_review_candidates": [289, 366, 378],
+    "owner_review_candidates": [
+      289,
+      366,
+      378
+    ],
     "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
   },
   "historical_snapshots": [
@@ -224,5 +404,5 @@
       "reason": "Retained as immutable reconciliation history; not the current routing map."
     }
   ],
-  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry for ownership boundaries, and returns to REGIE only for admission, supersession or shared-authority conflict."
+  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry for ownership boundaries, and returns to REGIE for admission, supersession or shared-authority conflict. PR #486 is the current shared-authority watch item."
 }
