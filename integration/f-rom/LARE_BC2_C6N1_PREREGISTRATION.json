@@ -1,0 +1,146 @@
+{
+  "schema": "swap5.lare.bc2.c6n1.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N1",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Three-level space-time numerical uncertainty qualification for surface fixed-flux Reference",
+  "role": "REFERENCE_ONLY_NO_LAYER_ROM_RESPONSE",
+  "scientific_question": "Do the exposed C6M2 U01-U04 surface-driven fixed-flux histories exhibit monotone three-level spatial and temporal convergence sufficient to attach explicit numerical uncertainty envelopes to an R2048_T32 Reference?",
+  "authority": {
+    "C6N0": "integration/f-rom/LARE_BC2_C6N0_REFERENCE_AUTHORITY_RECONCILIATION.json",
+    "C6M2": "integration/f-rom/LARE_BC2_C6M2_CLOSEOUT.json",
+    "required_C6N0_decision": "REPLACE_FUTURE_SPATIAL_DOMINANCE_GATE_WITH_PROSPECTIVE_THREE_LEVEL_SPACE_TIME_UNCERTAINTY_AUTHORITY",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "prior_C6M2_run": 35532270427,
+    "prior_C6M2_artifact_id": 10612270980,
+    "prior_C6M2_artifact_digest": "sha256:5a6384a5c93aac24e68918f3dfe56ccfe30c6630aa55ba169ea25821643ba5cd",
+    "candidate_response_authorized": false
+  },
+  "physical_domain": {
+    "inherited_exactly_from": "integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "histories": [
+      "U01",
+      "U02",
+      "U03",
+      "U04"
+    ],
+    "bottom_boundary": "fixed gravity-equilibrium flux, bottom_mode 2",
+    "top_forcing": "unchanged C6M2 schedules and multipliers",
+    "sinks": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024
+  },
+  "reference_design": {
+    "new_T32_routes": {
+      "R512_T32": {
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      },
+      "R1024_T32": {
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      },
+      "R2048_T32": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      }
+    },
+    "reused_prior_routes": [
+      "R2048_T8",
+      "R2048_T16"
+    ],
+    "spatial_ladder": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "refinement_ratio": 2,
+    "compiler_optimization_routes": [
+      0,
+      2
+    ],
+    "O0_O2_bit_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "profile_bins": 16,
+    "profile_bin_thickness_cm": 10,
+    "reference_target_if_qualified": "R2048_T32"
+  },
+  "convergence_metrics": [
+    "surface_0_20_storage_rmse_norm",
+    "root_zone_0_40_storage_rmse_norm",
+    "upper_0_80_storage_rmse_norm",
+    "mapped_10cm_theta_rmse_norm"
+  ],
+  "integrity_only": [
+    "total_storage conservation trajectory",
+    "transaction mass residual",
+    "finite physical state",
+    "profile-state total consistency",
+    "O0/O2 bit identity"
+  ],
+  "qualification": {
+    "per_material_per_metric": [
+      "E_space_coarse = norm(R512_T32 - R1024_T32)",
+      "E_space_fine = norm(R1024_T32 - R2048_T32)",
+      "Require 0 < E_space_fine < E_space_coarse and finite.",
+      "p_space = ln(E_space_coarse/E_space_fine)/ln(2), require finite p_space>0.",
+      "E_time_coarse = norm(R2048_T8 - R2048_T16)",
+      "E_time_fine = norm(R2048_T16 - R2048_T32)",
+      "Require 0 < E_time_fine < E_time_coarse and finite.",
+      "p_time = ln(E_time_coarse/E_time_fine)/ln(2), require finite p_time>0.",
+      "U_space = 1.25*E_space_fine/(2^p_space-1).",
+      "U_time = 1.25*E_time_fine/(2^p_time-1).",
+      "U_combined = U_space + U_time; no independence assumption."
+    ],
+    "near_roundoff_rule": "If a metric difference is exactly zero or nonpositive after finite arithmetic, mark that axis NUMERICALLY_UNRESOLVED_NEAR_ROUNDOFF rather than manufacture an observed order; this does not qualify the metric.",
+    "pass_rule": "All four convergence metrics must qualify on both spatial and temporal axes for both materials.",
+    "fail_rule": "Any nonconvergent or unresolved required metric blocks candidate response.",
+    "no_application_threshold": true
+  },
+  "future_candidate_interpretation_if_qualified": [
+    "R2048_T32 is a numerical Reference with explicit metric-specific U_combined bands, not continuum truth.",
+    "Candidate-to-Reference differences <= U_combined are numerically unresolved.",
+    "Candidate differences > U_combined can support comparator-relative representation evidence only.",
+    "Application acceptance remains separately governed."
+  ],
+  "stop_rules": [
+    "No Layer-ROM candidate response in C6N1.",
+    "No changes to U01-U04 histories, forcing, metrics or qualification after first T32 response.",
+    "No new representation or closure.",
+    "No C6M2 retrospective reclassification.",
+    "No application tolerance, performance or production claim."
+  ],
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "materializer": "tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py",
+    "materializer_blob": null,
+    "analyzer": "tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py",
+    "analyzer_blob": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
