@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.execution-reconciliation.v2",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "TECHNICAL_C6N1_CLOSEOUT_LABEL_LOCK_REPAIRED_BEFORE_ANY_CANDIDATE_RESPONSE",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35537058302,
+    "execution_head": "83ee17c0c547b676fed21a93903e02c9e2f4de23",
+    "candidate_jobs": 20,
+    "candidate_jobs_entered_runner": 0,
+    "analyzer_executed": false,
+    "candidate_response_exposed": false,
+    "failure_stage": "Verify frozen C6N2 authority",
+    "failure": "Workflow asserted obsolete shortened C6N1 decision label and a nonexistent closeout firewall field.",
+    "scientific_gate_failure": false
+  },
+  "immutable_C6N1_authority": {
+    "closeout": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "closeout_blob": "d07063d7df90d007ea55364a3f9e1fd548684de9",
+    "status": "CLOSED_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED_C6N2_AUTHORIZED",
+    "decision": "AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON",
+    "next_authority_state": "EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON_AUTHORIZED",
+    "C6N1_result_blob": "d6052da1072724c58798443baff835bae9a9dc5f",
+    "C6N1_qualified": true
+  },
+  "repair": {
+    "change": "Update workflow authority assertions only: require the exact immutable C6N1 decision label including SURFACE_PROFILE and next_authority.state; remove assertion on a firewall key not present in the C6N1 closeout schema.",
+    "preregistration_changed": false,
+    "runner_changed": false,
+    "analyzer_changed": false,
+    "candidate_partitions_changed": false,
+    "candidate_dt_changed": false,
+    "closure_changed": false,
+    "histories_changed": false,
+    "metrics_changed": false,
+    "uncertainty_bands_changed": false,
+    "classification_changed": false,
+    "application_tolerance_changed": false,
+    "response_based": false,
+    "scientific_effect": "NONE"
+  },
+  "rerun_required": true,
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false
+}
