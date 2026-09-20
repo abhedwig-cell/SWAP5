@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcl.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCL",
+  "status": "CLOSED_FIRST_ORDER_REFERENCE_LIMIT_CONFIRMED_ALL_MATERIALS_REDUCED_LADDER_REBASE_AUTHORIZED",
+  "decision": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCL_PREREGISTRATION.json",
+    "workflow_run": 35505239620,
+    "executed_head": "63d5739e6e4254fa8b733571452b35c550636a55",
+    "aggregate_artifact_id": 10603104252,
+    "aggregate_artifact_digest": "sha256:95cb19ed4df84413e00087223c5103909e0a6499a06b571caf34adc33e60d159"
+  },
+  "scientific_boundary": [
+    "Finite Reference temporal truncation explains the prior equal-grid R16_OP residual under the frozen first-order holdout test.",
+    "No reduced-dimension closure has been newly qualified by this result.",
+    "Reduced candidates must be evaluated in continuous-time candidate form against the temporally qualified Reference limit before model-form attribution."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASE",
+  "production_rom_authorized": false
+}
