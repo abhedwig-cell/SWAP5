@@ -143,3 +143,11 @@ Therefore:
 `CSR04_CONTRACT_PREREGISTERED_PRODUCTION_PARTITION_UNRESOLVED`.
 
 This narrows the previous blocker. Schema/validation and controlled qualification infrastructure can proceed; authentic production admission cannot.
+
+## 11. Observability checkpoint
+
+Repository inspection after topology admission shows that SWAP accepted storage is already observable through the canonical transactional mass account (`storage_start`, `storage_end`, `storage_change`, `total_in`, `total_out`, `residual`). Accepted coupling transfer is also observable through the groundwater interface mass ledger.
+
+The remaining controlled-fixture gap is MODFLOW-side component observability: the inspected repository-owned application surface does not yet demonstrate an accepted per-window STO storage change plus the complete external-flow budget needed for an independent MODFLOW component balance.
+
+This is classified as a **qualification observability gap**, not a hydrological defect. The bounded next implementation is a read-only MODFLOW budget diagnostic adapter. It must not modify F-GC30/F-GC33, solve order, package coefficients, storage parameters, or convergence tolerances.
