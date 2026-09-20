@@ -365,3 +365,17 @@ The detailed current execution trace is persisted in `SWAP5_MODFLOW6_CURRENT_IMP
 One issue prevents a scientifically complete architecture closeout: the SWAP-derived finite-window response coefficient `u` is inserted into the MODFLOW affine boundary slope while realistic MODFLOW models may also carry STO storage. The repository does not yet define the non-overlapping physical storage domains or an overlap correction. Existing live tests establish numerical composition, not absence of storage double counting in a realistic application.
 
 Therefore the semantics audit is closed far enough to classify the mode-5 defect and to define repair slices, but broad production repair is **BLOCKED_STORAGE_PARTITION_AUTHORITY** until that scientific/architectural ownership is made explicit.
+
+
+## 13. Bounded repair actually present on this branch
+
+After the semantic classification was established, two bounded implementation slices were found/retained on this same branch and are consistent with the audit:
+
+- **CSR-01** adds explicit `groundwater_coupled` application authority independent of the legacy `bottom_mode` selector.
+- **CSR-02** keeps SWBOTB=5 private to the Reference participant trial path by copying the application parameters and setting mode 5 only for the internal coupled-head trial.
+
+The F-GC44 participant test includes an identity probe: changing only the application-visible legacy selector from 5 to 7 leaves the coupled Reference trial exchange unchanged because the internal corrector realization remains mode 5.
+
+These slices deliberately do not admit drainage or root extraction, do not alter solver physics and do not rerun Hupsel. They repair the semantic authority leak while retaining fail-closed process composition.
+
+Broad production admission remains blocked by storage-partition and drainage-ownership authority.
