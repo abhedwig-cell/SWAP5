@@ -1,58 +1,80 @@
 {
-  "schema": "swap5.lare.bc2.c5i.execution-binding-reconciliation.v1",
+  "schema": "swap5.lare.bc2.c5i.execution-binding-reconciliation.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C5I",
-  "status": "TECHNICAL_EXECUTION_TOPOLOGY_REPAIR_AFTER_REPEATED_EXTERNAL_RUNNER_SHUTDOWN",
+  "status": "TECHNICAL_EXECUTION_PARTITIONED_BY_HISTORY_AFTER_R1024_ROUTE_RUNNER_LIFETIME_BLOCKER",
   "scientific_authority": "integration/f-rom/LARE_BC2_C5I_PREREGISTRATION.json",
   "frozen_scientific_execution_head": "3d19680bd42c54fff14ea801f01d1b6f81884603",
-  "interrupted_run": {
+  "sequential_runner_evidence": {
     "run_id": 35501670782,
     "attempts": [
       {
         "attempt": 1,
         "job_id": 106054403590,
-        "failure": "external runner shutdown signal during R1024_T16 O0 executable",
-        "exit_code": 143,
-        "scientific_gate_failure": false,
-        "solver_failure": false
+        "route": "R1024_T16_O0",
+        "failure": "external runner shutdown signal",
+        "exit_code": 143
       },
       {
         "attempt": 2,
         "job_id": 106055570901,
-        "failure": "external runner shutdown signal during R1024_T16 O0 executable",
-        "exit_code": 143,
-        "scientific_gate_failure": false,
-        "solver_failure": false
+        "route": "R1024_T16_O0",
+        "failure": "external runner shutdown signal",
+        "exit_code": 143
       }
     ],
-    "repeated_location": "R1024_T16 O0 process after R512 T16 route execution",
-    "T16_metrics_exposed_or_inspected": false,
-    "authoritative_result_produced": false,
-    "authoritative_artifact_produced": false
+    "solver_failure": false,
+    "scientific_gate_failure": false,
+    "T16_metrics_exposed_or_inspected": false
   },
-  "repair": {
-    "old_workflow_blob": "72950c3b19dbffda5aee20baa073069f77b17583",
-    "materializer_blob_unchanged": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
-    "analyzer_blob_unchanged": "9748f03b5659ddc0cee1722380ee0bc683dc3430",
-    "change": "Execute the exact four frozen geometry/optimization routes R512-O0, R512-O2, R1024-O0 and R1024-O2 as independent matrix jobs, then merge their logs in a separate analysis job.",
-    "reason": "Bound individual process walltime and isolate runner lifetime from the scientific route. The prior sequential single-runner topology repeatedly received external SIGTERM before R1024 completed.",
+  "geometry_opt_split_evidence": {
+    "run_id": 35502531601,
+    "execution_head": "d2d249fe6fafbd2df722db10ab79fc4b1a3074ec",
+    "R512_O0": "QUALIFIED_ROUTE_EXECUTION",
+    "R512_O2": "QUALIFIED_ROUTE_EXECUTION",
+    "R1024_O2": {
+      "status": "EXTERNAL_RUNNER_SHUTDOWN",
+      "job_id": 106056741346,
+      "exit_code": 143,
+      "solver_failure": false,
+      "scientific_gate_failure": false
+    },
+    "conclusion": "Separating geometry and compiler optimization was sufficient for R512 but still exceeded the available runner lifetime for at least one R1024 T16 route.",
+    "T16_hydrological_metrics_used_for_repair": false,
+    "authoritative_C5I_result_produced": false
+  },
+  "current_repair": {
+    "history_slice_materializer": "tests/rom/materialize_lare_bc2_c5i_history_slice.py",
+    "history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
+    "full_C5I_materializer_blob_unchanged": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
+    "C5I_analyzer_blob_unchanged": "9748f03b5659ddc0cee1722380ee0bc683dc3430",
+    "execution_partition": "geometry x optimization x history_index, with histories Z01-Z04 executed as independent processes",
+    "merge_contract": [
+      "Each history starts from the exact same independent initialize_state and seed_steady path already used by the full C5I harness.",
+      "Each history retains original ih index, initial effective saturation, forcing symbols, step numbering, T16 step_dt, D13 retry policy, tolerances and mass gate.",
+      "For each geometry and optimization level, Z01-Z04 stdout logs are concatenated in fixed history-index order only after all slices qualify.",
+      "The unchanged C5I analyzer parses the concatenated state records exactly as it parses the unsliced full-route output.",
+      "Merged O0 and O2 logs must be byte-identical before scientific analysis."
+    ],
     "scientific_effect": "NONE",
     "physical_history_changed": false,
+    "initial_state_changed": false,
     "geometry_changed": false,
     "timestep_changed": false,
     "numerical_policy_changed": false,
     "tolerance_changed": false,
     "retry_policy_changed": false,
+    "solver_or_physics_changed": false,
     "analyzer_changed": false,
     "O0_O2_identity_requirement_changed": false,
-    "state_count_requirement_changed": false,
+    "total_state_count_changed": false,
     "mass_gate_changed": false
   },
   "response_use": {
     "T16_hydrological_metrics_used_for_repair": false,
-    "R512_T16_response_used_for_design": false,
-    "R1024_T16_response_available": false,
-    "only_execution_failure_location_and_SIGTERM_used": true
+    "partial_R512_T16_response_inspected": false,
+    "R1024_T16_response_inspected": false,
+    "only_external_SIGTERM_and_process_duration_topology_used": true
   },
   "rerun_required": true,
   "post_hoc_retuning_authorized": false,
