@@ -1,0 +1,143 @@
+{
+  "schema": "swap5.lare.bc2.c6h.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6H",
+  "status": "CLOSED_MOVING_PARTITION_CONSERVATION_EXACT_BUT_MESH_MOTION_IS_UNDERDETERMINED_COORDINATE_POLICY_NOT_PHYSICAL_MEMORY",
+  "decision": "DO_NOT_IMPLEMENT_GENERIC_MOVING_PARTITION_AS_NEXT_LAYER_ROM_FAMILY",
+  "role": "READ_ONLY_ADAPTIVE_MOVING_PARTITION_IDENTIFIABILITY_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
+    "fixed_sublayer": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "question": "Can moving layer boundaries provide a fixed-count hydrological memory representation whose motion law follows uniquely from Richards physics and conservation, rather than from an arbitrary numerical adaptation policy?",
+  "moving_control_volume": {
+    "boundaries": "b_0=0 < b_1(t) < ... < b_(N-1)(t) < b_N=H",
+    "storage": "S_i(t)=integral_{b_(i-1)(t)}^{b_i(t)} theta(z,t) dz",
+    "zero_source_continuity": "dtheta/dt=-dq/dz",
+    "exact_reynolds_balance": "dS_i/dt = q_(i-1/2)-q_(i+1/2) + theta_i^R * db_i/dt - theta_i^L * db_(i-1)/dt",
+    "relative_flux_form": "dS_i/dt = F_(i-1/2)-F_(i+1/2), with F_j=q_j-theta_j*v_j and v_j=db_j/dt",
+    "source_extension": "For root uptake or other volumetric source r, add integral_layer r dz to the moving-volume balance.",
+    "conclusion": "Exact water conservation is compatible with moving boundaries if transport is written in terms of flux relative to the moving mesh."
+  },
+  "gauge_freedom": {
+    "statement": "The physical Richards solution does not determine the computational boundary velocity v_j. For any sufficiently regular non-crossing mesh trajectory, the ALE relative-flux balance represents the same continuum conservation law.",
+    "consequence": "Mesh motion is coordinate/gauge freedom, not an additional hydrological evolution law supplied by Richards.",
+    "physical_flux_unchanged": true
+  },
+  "state_dimension": {
+    "algebraic_adaptation": {
+      "state": "N water inventories; N-1 boundary positions are recomputed from a monitor/equidistribution rule.",
+      "consequence": "Boundary positions do not carry independent dynamic memory. The method is an adaptive numerical discretization of the same state."
+    },
+    "dynamic_boundary_state": {
+      "state": "N water inventories plus N-1 retained boundary positions.",
+      "dynamic_dimension": "2N-1 before other hydraulic variables",
+      "requirement": "Needs N-1 independent boundary-motion equations not supplied by Richards conservation.",
+      "consequence": "Treating positions as memory nearly doubles state dimension and requires new motion closure."
+    }
+  },
+  "adaptation_laws": {
+    "equidistribution": {
+      "form": "Choose a positive monitor m(z,state) and positions so integral_{b_(j-1)}^{b_j} m dz is equalized.",
+      "issue": "Richards and mass conservation do not uniquely select m, its scaling, smoothing or relaxation time.",
+      "literature_context": "Moving-mesh methods commonly choose monitor functions or a posteriori error indicators to concentrate nodes near steep fronts; these are numerical adaptation strategies."
+    },
+    "error_indicator": {
+      "form": "Refine/move according to an a posteriori discretization-error indicator.",
+      "interpretation": "Scientifically legitimate numerical acceleration/accuracy control, but not a physically interpretable reduced hydrological state law."
+    },
+    "lagrangian_water_mass": {
+      "zero_source_choice": "Setting v=q/theta at an internal boundary makes relative flux F=0 and therefore makes each moving cell retain its water mass.",
+      "status": "Parameter-free kinematic coordinate choice, but not uniquely selected by the Eulerian Richards equation.",
+      "limitations": [
+        "It follows water-mass coordinates through a fixed soil matrix and therefore crosses fixed material/root/horizon structure.",
+        "Volumetric sinks/sources break constant cell water mass unless source terms are explicitly redistributed.",
+        "Using mobile water theta-theta_r instead changes the coordinate and can become singular near residual saturation.",
+        "With external infiltration/drainage, domain mass changes require insertion/remapping/boundary-cell rules."
+      ],
+      "conclusion": "Useful as a numerical/Lagrangian coordinate experiment, but not authority for a general SWAP Layer-ROM physical memory state."
+    }
+  },
+  "fixed_material_geometry": {
+    "issue": "SWAP soil horizons, root distributions, process source terms and many parameters are tied to fixed depth coordinates.",
+    "consequence": "A moving computational layer that crosses fixed physical horizons must either integrate changing material composition exactly or be constrained by fixed material interfaces. This reinforces that mesh motion is numerical geometry rather than physical layer motion."
+  },
+  "sharp_front_exception": {
+    "statement": "A physically moving wetting front can be introduced by adopting a sharp-front/free-boundary approximation with its own front jump/speed law.",
+    "boundary": "That is a distinct reduced physical model (for example Green-Ampt-like/front-tracking physics), not a moving-mesh representation of unchanged Richards physics.",
+    "authorization": "NOT_SELECTED_BY_C6H"
+  },
+  "independent_theory_context": [
+    {
+      "citation": "Clément, J.-B., Golay, F., Ersoy, M., Sous, D. (2021), An adaptive strategy for discontinuous Galerkin simulations of Richards' equation: Application to multi-materials dam wetting, Advances in Water Resources 151, 103897.",
+      "doi": "10.1016/j.advwatres.2021.103897",
+      "relevance": "Uses adaptive refinement driven by an a posteriori indicator to resolve moving wetting fronts; supports classification of adaptivity as numerical error control."
+    },
+    {
+      "citation": "Hu, G. and Zegeling, P.A. (2011), Simulating finger phenomena in porous media with a moving finite element method, Journal of Computational Physics 230, 3249-3263.",
+      "doi": "10.1016/j.jcp.2011.01.031",
+      "relevance": "Uses a moving finite-element mesh and a selected monitor function; illustrates that mesh movement requires an adaptation strategy beyond the Richards PDE."
+    },
+    {
+      "citation": "Huang, W. and Russell, R.D. (2001), Adaptive mesh movement — the MMPDE approach and its applications, Journal of Computational and Applied Mathematics 128.",
+      "relevance": "Moving mesh PDEs are constructed from equidistribution/monitor principles; the mesh equation is an added numerical design choice."
+    }
+  ],
+  "adjudication": {
+    "MOVING_CONTROL_VOLUME_MASS_BALANCE_EXACT": true,
+    "ALE_RELATIVE_FLUX_PRESERVES_CONSERVATION": true,
+    "RICHARDS_UNIQUELY_DETERMINES_MESH_VELOCITY": false,
+    "GENERIC_MONITOR_FUNCTION_IS_PHYSICAL_CLOSURE": false,
+    "ALGEBRAIC_ADAPTATION_ADDS_HYDROLOGICAL_MEMORY": false,
+    "DYNAMIC_BOUNDARY_POSITIONS_REQUIRE_EXTRA_MOTION_LAW": true,
+    "DYNAMIC_BOUNDARY_STATE_REMAINS_LOW_DIMENSION_WITHOUT_EXTRA_CONSTRAINTS": false,
+    "LAGRANGIAN_MASS_COORDINATE_IS_UNIQUE_PHYSICAL_LAYER_LAW": false,
+    "GENERIC_MOVING_PARTITION_IS_NEW_PHYSICAL_ROM_FAMILY": false,
+    "ADAPTIVE_GRID_REMAINS_VALID_SEPARATE_NUMERICAL_RESEARCH_DIRECTION": true,
+    "SHARP_FRONT_REDUCTION_IS_DISTINCT_PHYSICAL_MODEL_FAMILY": true,
+    "IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "scientific_interpretation": [
+    "Moving partitions can preserve water exactly; conservation is not their blocker.",
+    "Their blocker as a physical Layer-ROM state is identifiability: Richards fixes physical flux, but not computational mesh velocity.",
+    "If positions are recomputed from a monitor, the method redistributes numerical resolution and carries no independent hydrological memory.",
+    "If positions are retained dynamically, their motion law and almost N extra state degrees of freedom must be justified separately.",
+    "Therefore adaptive moving meshes remain potentially valuable for numerical acceleration, but they do not answer the current minimum hydrological state-representation question without an additional physical approximation."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6I",
+    "state": "RICHARDS_ENERGY_DISSIPATION_BRANCH_SELECTION_READ_ONLY_DUE_DILIGENCE_AUTHORIZED",
+    "rationale": "Fixed conserved subcells and generic moving geometry are now structurally classified. The remaining C6F/C6G option is whether an intrinsic variational/stability principle of Richards physics can select reduced propagation/branches without fitting C6E failures.",
+    "question": "Does the standard Richards energy-dissipation/Onsager structure supply a unique reduced evolution or branch-selection principle on a bounded moment manifold, without adding gradient energy, empirical regularization or response-fitted terms?",
+    "constraints": [
+      "Read-only theory and literature reconciliation only.",
+      "Derive the bulk Richards free-energy/dissipation identity under the repository sign convention.",
+      "Distinguish instantaneous energy minimization (hydrostatic/steady tendency) from dynamic minimum-dissipation or projected gradient-flow principles.",
+      "Do not construct a term specifically to penalize the five C6E failure cases.",
+      "No hydrological response, no BEMR restart, no branch selection implementation unless uniqueness/minimality follows independently."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "moving_grid_implemented": false,
+    "adaptation_monitor_selected": false,
+    "response_based_design": false,
+    "post_c6e_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
