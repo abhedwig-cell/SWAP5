@@ -1,0 +1,219 @@
+name: F-ROM-LARE BC2-C5R D12 breadth discriminator
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c5r_reference.py'
+      - 'tests/rom/materialize_lare_bc2_c5r_reference_slice.py'
+      - 'tests/rom/analyze_lare_bc2_c5r_breadth.py'
+      - '.github/workflows/f-rom-lare-bc2-c5r.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5r-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reference:
+    name: ref-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        route: [R1024_T16, R2048_T16, R2048_T8]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify C5R preregistered implementation
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5r_reference.py)" = "6d7d5c3283dfe1a6d8d433f2fc03e0255711dc91"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5r_reference_slice.py)" = "52f5ee43bc85d436d06a0dd4b524a6bf34dde7f4"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5r_breadth.py)" = "1447a7272fed7369279c8ffa217d024330ae0dbd"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5n_fresh_highres.py)" = "c14ff931d0c34fec7989a96e553891468cbd2f56"
+          test "$(git hash-object tests/rom/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c5r_reference.py
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c5r_reference_slice.py
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c5r_breadth.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json'))
+          q=json.load(open('integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C5R_FRESH_REFERENCE_OR_LARE_RESPONSE'
+          assert p['blind_design']['response_blind'] is True
+          assert p['blind_design']['histories_previously_exposed'] is False
+          assert p['implementation_binding']['response_based_design'] is False
+          assert q['decision']=='PREREGISTER_D12_SHARED_BOTTOM_SUPPORT_BREADTH_DISCRIMINATOR_BEFORE_CLOSURE_IMPLEMENTATION'
+          assert p['representations']['no_response_based_repartitioning'] is True
+          print('LARE_BC2_C5R_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Resolve route
+        id: route
+        run: |
+          set -euo pipefail
+          case "${{ matrix.route }}" in
+            R1024_T16) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+
+      - name: Materialize fresh R-history slice
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c5r_reference_slice.py             --c5r-materializer tests/rom/materialize_lare_bc2_c5r_reference.py             --c5p-materializer tests/rom/materialize_lare_bc2_c5p_reference.py             --c5n-materializer tests/rom/materialize_lare_bc2_c5n_reference.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --temporal-factor "${{ steps.route.outputs.factor }}"             --history-index "${{ matrix.history }}"             --output canonical/tests/rom/test_lare_bc2_c5r_slice.f90             --manifest /tmp/c5r_manifest.json
+          python3 - <<'PY'
+          import json
+          m=json.load(open('/tmp/c5r_manifest.json'))
+          assert m['response_based'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['numerical_policy_changed'] is False
+          assert m['diagnostic_partition_only'] is True
+          PY
+
+      - name: Execute frozen Reference slice
+        run: |
+          set -euo pipefail
+          route="${{ matrix.route }}"; opt="${{ matrix.opt }}"; h="${{ matrix.history }}"
+          n="${{ steps.route.outputs.nodes }}"; dz="${{ steps.route.outputs.dz }}"; factor="${{ steps.route.outputs.factor }}"
+          expected=$(printf 'R%02d' "$h")
+          mkdir -p slice_evidence
+          stub="canonical/c5r_${route}_o${opt}_h${h}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c5r/build_${route}_o${opt}_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c5r_${route}_o${opt}_h${h}_stubs.f90"             --target tests/rom/test_lare_bc2_c5r_slice.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          log="slice_evidence/${route}_o${opt}_h${h}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq 'LAREGW1_C5R_FRESH_B14_DYNAMIC_REFERENCE_GENERATED=TRUE' "$log"
+          expected_states=$((1024*factor))
+          test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq "$expected_states"
+          test "$(grep -c '^LAREGW1_PROFILE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$log")" -eq 1
+          test "$(grep -c '^LAREGW1_NODE|' "$log")" -eq 0
+          test "$(grep -c "^LAREGW1_STATE|.*|HISTORY=${expected}|" "$log")" -eq "$expected_states"
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c5r_manifest.json slice_evidence/
+          sha256sum slice_evidence/* > slice_evidence/sha256.txt
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C5R_REFERENCE_SLICE=PASS|${route}|O${opt}|H${h}"
+
+      - name: Upload Reference slice
+        uses: actions/upload-artifact@v4
+        with:
+          name: c5r-ref-${{ matrix.route }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: slice_evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: reference
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download Reference slices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c5r-ref-*
+          path: /tmp/c5r/slices
+          merge-multiple: false
+
+      - name: Reconstruct routes and require O0 O2 identity
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5r/routes LARE_BC2_C5R_EVIDENCE
+          for route in R1024_T16 R2048_T16 R2048_T8; do
+            for opt in 0 2; do
+              full="/tmp/c5r/routes/${route}_o${opt}.txt"; : > "$full"
+              for h in 1 2 3 4; do
+                part="/tmp/c5r/slices/c5r-ref-${route}-o${opt}-h${h}/${route}_o${opt}_h${h}.txt"
+                test -s "$part"; cat "$part" >> "$full"
+              done
+              if [[ "$route" == "R2048_T8" ]]; then factor=8; else factor=16; fi
+              test "$(grep -c '^LAREGW1_STATE|' "$full")" -eq $((4*1024*factor))
+              test "$(grep -c '^LAREGW1_PROFILE|' "$full")" -eq 65536
+              test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$full")" -eq 4
+            done
+            cmp "/tmp/c5r/routes/${route}_o0.txt" "/tmp/c5r/routes/${route}_o2.txt"
+            cp "/tmp/c5r/routes/${route}_o0.txt" "LARE_BC2_C5R_EVIDENCE/${route}_o0.txt"
+          done
+          echo "LARE_BC2_C5R_REFERENCE_IDENTITY=PASS"
+
+      - name: Execute prebound breadth analysis
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5r_breadth.py)" = "1447a7272fed7369279c8ffa217d024330ae0dbd"
+          python3 tests/rom/analyze_lare_bc2_c5r_breadth.py             --r1024-t16 /tmp/c5r/routes/R1024_T16_o0.txt             --r2048-t16 /tmp/c5r/routes/R2048_T16_o0.txt             --r2048-t8 /tmp/c5r/routes/R2048_T8_o0.txt             --prereg integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json             --c5q integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json             --output LARE_BC2_C5R_EVIDENCE/LARE_BC2_C5R_RESULT.json             | tee LARE_BC2_C5R_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json LARE_BC2_C5R_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json LARE_BC2_C5R_EVIDENCE/
+
+      - name: Validate C5R firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5R_EVIDENCE/LARE_BC2_C5R_RESULT.json'))
+          assert r['status'] in (
+            'C5R_D12_BOTTOM_FOCUS_REACHES_HIGH_RES_GW_FRONTIER',
+            'C5R_VERTICAL_MEMORY_BREADTH_ACTIVE',
+            'C5R_PROPAGATION_LIMIT_STRENGTHENED',
+            'C5R_BREADTH_PROPAGATION_MIXED',
+            'C5R_REFERENCE_OR_EXECUTION_BLOCKED'
+          )
+          f=r['scientific_firewall']
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          if r['status']=='C5R_REFERENCE_OR_EXECUTION_BLOCKED':
+              assert f['candidate_response_generated'] is False
+              assert r['members']==[]
+          else:
+              assert f['candidate_response_generated'] is True
+              assert f['production_reference_changed'] is False
+              assert f['new_closure_fit'] is False
+              assert f['response_based_repartitioning'] is False
+          print('LARE_BC2_C5R_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5R_EVIDENCE/* > LARE_BC2_C5R_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C5R evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5r
+          path: LARE_BC2_C5R_EVIDENCE/
+          if-no-files-found: error
