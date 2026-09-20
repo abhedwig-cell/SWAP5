@@ -354,8 +354,39 @@ def run_case(
             require(len(sto_terms) > 0, "CSR-04 accepted STO budget data unavailable")
             sto_rate_m3_per_day = float(sum(np.sum(np.asarray(term)) for term in sto_terms))
             require(math.isfinite(sto_rate_m3_per_day), "CSR-04 non-finite STO budget")
+
+            # Close the MODFLOW component budget from MODFLOW's own accepted
+            # cell-budget records. Do not infer any term from head change.
+            budget_rates: dict[str, float] = {}
+            for label in sorted(unique):
+                records = budget.get_data(text=label)
+                if not records:
+                    continue
+                total = 0.0
+                for record in records:
+                    array = np.asarray(record)
+                    if array.dtype.names and "q" in array.dtype.names:
+                        total += float(np.sum(array["q"]))
+                    else:
+                        total += float(np.sum(array))
+                budget_rates[label] = total
+
+            require("API_SWAP" in unique, "CSR-04 MODFLOW API coupling budget record missing")
+            require("CHD" in unique, "CSR-04 MODFLOW CHD budget record missing")
+            require("API_SWAP" in budget_rates and "CHD" in budget_rates, "CSR-04 external budget unavailable")
+            component_residual_m3_per_day = float(sum(budget_rates.values()))
+            budget_scale = max(1.0, sum(abs(value) for value in budget_rates.values()))
+            component_tolerance_m3_per_day = 1.0e-10 * budget_scale
+            require(
+                abs(component_residual_m3_per_day) <= component_tolerance_m3_per_day,
+                "CSR-04 MODFLOW component budget does not close: "
+                f"residual={component_residual_m3_per_day:.17g}, "
+                f"tol={component_tolerance_m3_per_day:.17g}, terms={budget_rates}",
+            )
             print(f"F_GC_CSR04_MODFLOW_STO_RATE_M3_PER_DAY={sto_rate_m3_per_day:.17g}")
+            print(f"F_GC_CSR04_MODFLOW_COMPONENT_RESIDUAL_M3_PER_DAY={component_residual_m3_per_day:.17g}")
             print("F_GC_CSR04_NATIVE_MODFLOW_STO_BUDGET=PASS")
+            print("F_GC_CSR04_NATIVE_MODFLOW_COMPONENT_BUDGET=PASS")
 
             return final_head, accepted_xold, heads, kernel
         finally:
