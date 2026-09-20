@@ -38,7 +38,16 @@
         "disposition": "AGGREGATION_RECOVERY_LOCK_FAILURE_BEFORE_SHARD_DOWNLOAD",
         "scientific_authority": false
       }
-    ]
+    ],
+    "aggregation_crosscheck": {
+      "workflow_run": 35530634510,
+      "execution_head": "1f752f916cae38560bb6b75ad77ad8b0a6b4acbb",
+      "artifact_id": 10610793654,
+      "artifact_digest": "sha256:2193317626ae839c6dd609a9dec02d2655d2ea4c9bab4b1724a7474b26f23d8a",
+      "result_sha256": "5c0682fc3fde0318331727d34e7613faa2c70598ed79c3684b3f4a8445dee88d",
+      "same_result_sha256_as_authority": true,
+      "role": "INDEPENDENT_AGGREGATION_REPRODUCIBILITY_CROSSCHECK_ON_IDENTICAL_IMMUTABLE_SHARDS"
+    }
   },
   "qualification": {
     "state_case_count": 126,
