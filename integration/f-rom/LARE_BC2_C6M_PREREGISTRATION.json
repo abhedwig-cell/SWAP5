@@ -1,0 +1,210 @@
+{
+  "schema": "swap5.lare.bc2.c6m.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Fresh high-resolution surface-flux Reference qualification for purpose-dependent Layer-ROM validation",
+  "role": "REFERENCE_ONLY_SURFACE_DRIVEN_SPACE_TIME_QUALIFICATION_NO_LARE_RESPONSE",
+  "scientific_question": "Do fresh source-free free-drainage surface-flux histories on B01 and B14 admit a numerically qualified high-resolution Richards hierarchy suitable for a later blind comparison of the already-frozen Layer-ROM representations?",
+  "authority": {
+    "C6K": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
+    "C6L": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
+    "required_C6L_decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "candidate_response_authorized": false
+  },
+  "physical_domain": {
+    "column_depth_cm": 160,
+    "homogeneous": true,
+    "top_boundary": "prescribed flux",
+    "bottom_boundary": "free drainage",
+    "sinks": false,
+    "root_uptake": false,
+    "drainage_system": false,
+    "moving_water_table": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192
+  },
+  "materials": {
+    "B01": {
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "Ksat_cm_per_day": 31.225016,
+      "mualem_lambda": 0.98087,
+      "source_harness": "tests/rom/test_lare_dyn0a_reference.f90"
+    },
+    "B14": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "mualem_lambda": -0.334926,
+      "source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90"
+    }
+  },
+  "blind_design": {
+    "response_blind": true,
+    "histories_previously_exposed": false,
+    "initial_states_previously_exposed": true,
+    "top_multiplier_levels": {
+      "WET": 1.125,
+      "DRY": 0.875,
+      "HOLD": 1
+    },
+    "definition": "At initialization q_eq is the material/state gravity-equilibrium top flux used by the existing DYN0A harness. Each phase prescribes multiplier*q_eq; free drainage remains unchanged.",
+    "histories": {
+      "S01": {
+        "initial_Se": 0.7,
+        "phase1": "WET",
+        "phase1_observations": 192,
+        "phase2": "DRY",
+        "phase2_observations": 320,
+        "hold_observations": 512
+      },
+      "S02": {
+        "initial_Se": 0.8,
+        "phase1": "DRY",
+        "phase1_observations": 192,
+        "phase2": "WET",
+        "phase2_observations": 320,
+        "hold_observations": 512
+      },
+      "S03": {
+        "initial_Se": 0.9,
+        "phase1": "WET",
+        "phase1_observations": 320,
+        "phase2": "DRY",
+        "phase2_observations": 192,
+        "hold_observations": 512
+      },
+      "S04": {
+        "initial_Se": 0.75,
+        "phase1": "DRY",
+        "phase1_observations": 320,
+        "phase2": "WET",
+        "phase2_observations": 192,
+        "hold_observations": 512
+      }
+    },
+    "schedule_scaling": "Observation schedules are multiplied exactly by temporal_factor inside each Reference route.",
+    "post_generation_history_reselection": false,
+    "response_based": false
+  },
+  "reference_design": {
+    "routes": {
+      "R512_T16": {
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R1024_T16": {
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R2048_T16": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R2048_T8": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 8,
+        "transaction_dt_day": 0.0001
+      }
+    },
+    "finest_control": "R2048_T16",
+    "interpretation": "Finest available numerical control, not continuum truth.",
+    "compiler_optimization_routes": [
+      0,
+      2
+    ],
+    "O0_O2_bit_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "output": {
+      "state_each_transaction": true,
+      "fixed_profile_bins": 16,
+      "profile_bin_thickness_cm": 10,
+      "profile_only_at_observation_windows": true,
+      "node_output": false
+    }
+  },
+  "numerical_quality_metrics": [
+    "pooled_total_storage_rmse_cm",
+    "pooled_root_zone_0_40_storage_rmse_cm",
+    "pooled_upper_0_80_storage_rmse_cm",
+    "pooled_cumulative_bottom_exchange_rmse_cm",
+    "pooled_interval_bottom_flux_rmse_cm_per_day",
+    "pooled_mapped_10cm_theta_rmse",
+    "mean_abs_history_signed_bottom_flux_error_cm_per_day",
+    "bottom_flux_sign_mismatch_count"
+  ],
+  "quality_gate": {
+    "target": "R2048_T16",
+    "spatial_comparators": [
+      "R512_T16",
+      "R1024_T16"
+    ],
+    "temporal_control": "R2048_T8",
+    "primary_rule": "For each material separately, every continuous numerical-quality metric of R2048_T8 relative to R2048_T16 must be no worse than R1024_T16 relative to R2048_T16. Discrete sign mismatch count must also be no larger.",
+    "secondary_rule": "Report R512_T16 relative differences without using them to rescue a failed R1024 gate.",
+    "equality_tolerance_numeric": 1e-12,
+    "if_failed": "Close C6M with Reference numerical-quality blocker and generate no Layer-ROM response.",
+    "if_passed": "Authorize separate C6N preregistration for blind comparison of only the existing frozen representation set."
+  },
+  "integrity_gates": {
+    "exact_material_history_route_count": true,
+    "exact_state_count": true,
+    "exact_profile_count": true,
+    "O0_O2_bit_identity": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "finite_physical_state": true,
+    "physical_theta_bounds": true,
+    "root_sink_zero": true,
+    "free_drainage_only": true
+  },
+  "stop_rules": [
+    "No Layer-ROM candidate is executed in C6M.",
+    "No new representation, partition or closure is introduced.",
+    "No history, multiplier or schedule changes after first Reference response.",
+    "No weakening of the R1024-vs-temporal quality gate after response.",
+    "No application tolerance is inferred from numerical Reference differences.",
+    "No performance or production claim."
+  ],
+  "next_if_qualified": "PREREGISTER_C6N_FRESH_BLIND_SURFACE_PURPOSE_EXISTING_REPRESENTATION_COMPARISON",
+  "next_if_blocked": "STOP_SURFACE_PURPOSE_RESPONSE_AND_RECONCILE_REFERENCE_NUMERICAL_QUALITY_WITHOUT_LARE_DATA",
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "response_based_design": false,
+    "materializer": "tests/rom/materialize_lare_bc2_c6m_surface_reference.py",
+    "materializer_blob": null,
+    "analyzer": "tests/rom/analyze_lare_bc2_c6m_surface_reference.py",
+    "analyzer_blob": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6m.yml",
+    "workflow_blob": null,
+    "variable_grid_tool": "tests/rom/materialize_f_rom0_headcalc_stubs.py",
+    "compile_tool": "tests/rom/compile_f_rom0_fortran_closure.py",
+    "execution_binding_complete": false
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "root_uptake_feedback_used": false,
+    "new_closure_fit": false,
+    "new_partition_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
