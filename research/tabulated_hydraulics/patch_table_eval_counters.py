@@ -23,8 +23,8 @@ contains
 end module tabhyd_diag_mod
 
 """
-if s.count("module doln")!=1: raise SystemExit("doln marker mismatch")
-s=s.replace("module doln",diagmod+"module doln",1)
+if s.count("module doln\n")!=1: raise SystemExit("doln marker mismatch")
+s=s.replace("module doln\n",diagmod+"module doln\n",1)
 old="""subroutine EvalTabulatedFunction(inverse,n,ind1,ind2,ind3,node,   &
      &                                  sptab,ientrytab,xe,ye,dyedxe, iWhat)
       use doln"""
