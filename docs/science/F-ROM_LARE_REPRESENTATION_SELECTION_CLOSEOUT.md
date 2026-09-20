@@ -59,7 +59,7 @@ The first moment may therefore appear in a future physically distinct family onl
 
 ## Current scientific choice boundary
 
-The BEMR family has now been selected and mathematically qualified through C6C; free-running use remains unauthorized.
+BEMR was mathematically qualified through C6C and supported as a prescribed-head frozen-state mechanism in C6D, but its prescribed-flux extension failed C6E branch-robustness qualification. General free-running BEMR is therefore stopped.
 
 A future read-only derivation may consider, without using exposed response residuals to choose among them:
 
@@ -84,6 +84,16 @@ The prospectively frozen primary mechanism vector improves: pooled RMSE falls fr
 The mechanism improvement is not uniform. Maximum absolute error worsens to 0.1842 cm/day at the first R02 observation after a RISE-to-FALL reversal, and 155-cm sign mismatches increase slightly. These exposed tail risks are retained and create a mandatory transition-tail guard for any later fresh blind free-running test.
 
 C6D therefore authorizes only response-free C6E prescribed-flux boundary qualification.
+
+## C6D and C6E BEMR boundary
+
+C6D provided positive but exposed mechanism evidence for BEMR under prescribed-head moving states. On directly projected D12_B2P5 storage and first moments, the preregistered lower-interface flux vector improved relative to CURRENT_LAYER_FACE, while a phase-reversal maximum-error tail risk remained.
+
+C6E then tested the missing prescribed-flux/HOLD boundary entirely response-free. The result is negative. All 126 frozen state/moment targets are realizable and all 630 starts report solver convergence, but five cases fail the required common-branch physical contract. Some starts find a near-exact solution while other frozen starts converge to near-upper-bound residual attractors.
+
+Therefore C6D is not retracted, but general free-running BEMR is not authorized. Choosing only successful starts, adding regularization/continuation or relaxing the frozen domain after C6E would be post-result retuning.
+
+The workstream is again at a scientific choice boundary before any new propagation or state family.
 
 ## Application and value boundary
 
