@@ -1,0 +1,265 @@
+name: F-ROM-LARE persist C5A B14 dynamic interaction
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5a-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5A artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5a
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600184543" > /tmp/c5a/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5a/artifact.json'))
+          assert a['id']==10600184543
+          assert a['digest']=='sha256:272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f'
+          assert a['workflow_run']['id']==35495825564
+          assert a['workflow_run']['head_sha']=='279ab2e34fc28a81fc3507a835a20b144049fc83'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600184543/zip" > /tmp/c5a.zip
+          echo "272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f  /tmp/c5a.zip" | sha256sum -c -
+          unzip -q /tmp/c5a.zip -d /tmp/c5a/evidence
+          echo "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc  /tmp/c5a/evidence/LARE_BC2_C5A_RESULT.json" | sha256sum -c -
+          echo "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b  /tmp/c5a/evidence/R16_o0.txt" | sha256sum -c -
+          echo "422981be7232bad79baa42767e295462e8d06212e012d9984947e907d18f406c  /tmp/c5a/evidence/R2_o0.txt" | sha256sum -c -
+
+      - name: Validate C5A result and derive zero-fit diagnostic summary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('/tmp/c5a/evidence/LARE_BC2_C5A_RESULT.json'))
+          assert r['decision']=='C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED'
+          assert r['integrity']['pass'] is True
+          assert r['frontiers']['GW']==[] and r['frontiers']['PROFILE']==[]
+          assert r['placement_tests']['R4_no_worse_than_U4_GW'] is True
+          assert r['placement_tests']['R8_no_worse_than_U8_GW'] is True
+          keys=[
+            'total_storage_rmse_cm','cumulative_bottom_rmse_cm',
+            'interval_bottom_flux_rmse_cm_per_day','bottom_flux_sign_mismatch_count',
+            'abs_mean_signed_bottom_flux_error_cm_per_day',
+            'max_abs_final_cumulative_bottom_error_cm',
+            'reversal_sequence_mismatch_history_count','reversal_penalty_steps'
+          ]
+          r2=r['R2_comparator']
+          rows={}
+          for m in r['members']:
+            if m['metrics'] is None: continue
+            mm=m['metrics']
+            failed=[]
+            for k in keys:
+              tol=0 if isinstance(mm[k],int) else 1e-12
+              if mm[k] > r2[k]+tol:
+                failed.append(k)
+            mean_abs_hist=sum(v['abs_mean_signed_bottom_flux_error_cm_per_day'] for v in mm['by_history'].values())/len(mm['by_history'])
+            rows[m['id']]={
+              'failed_GW_components_vs_R2':failed,
+              'pooled_abs_mean_signed_bottom_flux_error_cm_per_day':mm['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'mean_abs_history_signed_bottom_flux_error_cm_per_day':mean_abs_hist,
+              'cancellation_ratio':mm['abs_mean_signed_bottom_flux_error_cm_per_day']/mean_abs_hist if mean_abs_hist else None,
+              'interval_bottom_flux_rmse_cm_per_day':mm['interval_bottom_flux_rmse_cm_per_day'],
+              'bottom_flux_sign_mismatch_count':mm['bottom_flux_sign_mismatch_count'],
+              'reversal_sequence_mismatch_history_count':mm['reversal_sequence_mismatch_history_count']
+            }
+          r2_mean_abs=sum(v['abs_mean_signed_bottom_flux_error_cm_per_day'] for v in r2['by_history'].values())/len(r2['by_history'])
+          diag={
+            'schema':'swap5.lare.bc2.c5a.zero-fit-diagnostic-summary.v1',
+            'source_result_sha256':'50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc',
+            'formal_C5A_decision':r['decision'],
+            'frozen_gate_changed':False,
+            'R2':{
+              'pooled_abs_mean_signed_bottom_flux_error_cm_per_day':r2['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'mean_abs_history_signed_bottom_flux_error_cm_per_day':r2_mean_abs,
+              'cancellation_ratio':r2['abs_mean_signed_bottom_flux_error_cm_per_day']/r2_mean_abs,
+              'interval_bottom_flux_rmse_cm_per_day':r2['interval_bottom_flux_rmse_cm_per_day'],
+              'bottom_flux_sign_mismatch_count':r2['bottom_flux_sign_mismatch_count'],
+              'reversal_sequence_mismatch_history_count':r2['reversal_sequence_mismatch_history_count']
+            },
+            'members':rows,
+            'observations':[
+              'Every lower-zone ladder member R3-R16 fails the frozen R2-relative GW vector on exactly one component: pooled absolute mean signed bottom-flux error.',
+              'R2 has extremely strong cross-history signed-error cancellation: its pooled signed-bias magnitude is orders of magnitude smaller than its mean absolute per-history signed bias.',
+              'R5, R6, R8, R12 and R16 are numerically indistinguishable on the pooled signed-bias and interval-bottom-flux RMSE diagnostics to displayed precision.',
+              'Therefore the formal C5A negative decision is retained, but increasing lower-zone state dimension above R5 does not repair the sole failing component.'
+            ],
+            'interpretation_boundary':'This is a post-result decomposition of the already frozen C5A metrics. It does not replace, relax or reweight any preregistered gate.'
+          }
+          pathlib.Path('/tmp/c5a/C5A_ZERO_FIT_DIAGNOSTIC.json').write_text(json.dumps(diag,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Persist exact result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5a/evidence/LARE_BC2_C5A_RESULT.json integration/f-rom/LARE_BC2_C5A_RESULT.json
+          cp /tmp/c5a/C5A_ZERO_FIT_DIAGNOSTIC.json integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5A_RESULT.json'))
+          d=json.load(open('integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json'))
+          by={m['id']:m for m in r['members']}
+          closeout={
+            'schema':'swap5.lare.bc2.c5a.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5A',
+            'status':'CLOSED_MATCHED_B14_DYNAMIC_TRANSFER_NO_REDUCED_R2_VECTOR_FRONTIER_SINGLE_COMPONENT_BLOCKER',
+            'decision':r['decision'],
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5A_PREREGISTRATION.json',
+              'workflow_run':35495825564,
+              'job_id':106038449006,
+              'execution_head':'279ab2e34fc28a81fc3507a835a20b144049fc83',
+              'artifact_id':10600184543,
+              'artifact_digest':'sha256:272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f',
+              'result_sha256':'50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc',
+              'R16_reference_sha256':'16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b',
+              'R2_reference_sha256':'422981be7232bad79baa42767e295462e8d06212e012d9984947e907d18f406c'
+            },
+            'integrity':r['integrity'],
+            'frontiers':r['frontiers'],
+            'placement_tests':r['placement_tests'],
+            'formal_hypothesis_adjudication':{
+              'H_R3_R2_RELATIVE_GW_TRANSFER':'NOT_SUPPORTED_FORMALLY',
+              'H_R3_R2_RELATIVE_PROFILE_TRANSFER':'NOT_SUPPORTED_FORMALLY',
+              'H_LOWER_ZONE_PLACEMENT_R4':'SUPPORTED',
+              'H_LOWER_ZONE_PLACEMENT_R8':'SUPPORTED'
+            },
+            'zero_fit_diagnostic':'integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json',
+            'single_component_blocker':{
+              'component':'abs_mean_signed_bottom_flux_error_cm_per_day',
+              'R2':r['R2_comparator']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R3':by['R3']['metrics']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R4':by['R4']['metrics']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R5':by['R5']['metrics']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R8':by['R8']['metrics']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R16':by['R16']['metrics']['abs_mean_signed_bottom_flux_error_cm_per_day'],
+              'R2_mean_abs_per_history':d['R2']['mean_abs_history_signed_bottom_flux_error_cm_per_day'],
+              'R2_cancellation_ratio':d['R2']['cancellation_ratio']
+            },
+            'scientific_interpretation':[
+              'C5A completes the matched material-by-lower-boundary interaction cell. Unlike B01 C4Z, no reduced B14 lower-zone LARE member crosses the full frozen R2-relative dynamic-groundwater vector.',
+              'The negative decision is caused by exactly one frozen component for every lower-zone ladder member: pooled absolute mean signed bottom-flux error.',
+              'On the other seven groundwater-vector components, every lower-zone ladder member is no worse than R2. R2 itself has 832 sign mismatches and reversal-sequence mismatches in three of four histories.',
+              'R2 obtains an unusually small pooled signed-bias magnitude through strong cancellation among history-specific signed errors; its mean absolute history bias is about three orders of magnitude larger than its pooled bias.',
+              'The lower-zone LARE response converges to an apparent floor by R5-R8: R5, R6, R8, R12 and R16 are effectively identical on the blocking signed-bias metric and bottom-flux RMSE.',
+              'Consequently the C5A result does not support the interpretation that simply adding more lower-zone state resolves the B14 dynamic-head discrepancy.',
+              'Placement evidence nevertheless transfers: R4 remains componentwise no worse than U4 and R8 remains componentwise no worse than U8.',
+              'C5A retains its preregistered negative decision. The post-result diagnostic does not change the acceptance vector or create a new frontier.'
+            ],
+            'cross_axis_reconciliation':{
+              'B01_fixed':'C4V persistent one-day GW minimum R8 relative to its frozen comparators',
+              'B14_fixed':'C4X material-transfer frontier present, with material-dependent state/placement behavior',
+              'B01_dynamic':'C4Z formal R2-relative GW and PROFILE minimum R3, with strong convergence through R8',
+              'B14_dynamic':'C5A no reduced R2-vector frontier; sole blocker is pooled signed flux bias while lower-zone convergence plateaus by R5-R8',
+              'implication':'Material and lower-boundary semantics interact. State count alone cannot explain transfer behavior; closure response and metric structure now require explicit separation.'
+            },
+            'next_authority':{
+              'state':'ZERO_FIT_MECHANISTIC_RECONCILIATION_AUTHORIZED',
+              'target':'LARE-BC2-C5B',
+              'question':'Is the C5A pooled signed-flux blocker a genuine BC1 dynamic-boundary closure floor, a time-integration floor, or primarily a cross-history aggregation/cancellation property of R2?',
+              'constraints':[
+                'C5A formal decision remains unchanged',
+                'no gate, threshold, partition or closure tuning',
+                'reuse exact C5A workload and reference trajectories',
+                'diagnose signed error by history, boundary phase and resolution',
+                'test resolution/timestep sensitivity only as mechanism diagnosis, not acceptance rescue',
+                'no application, performance, speed or production claim'
+              ]
+            },
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5A_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5A closeout
+
+          C5A completes the matched material-by-lower-boundary interaction test by applying the exact C4Z dynamic prescribed-head workload to B14. Only the constitutive material constants changed. The Reference numerical policy, histories, head factors, switching times, LARE closure, partitions and metrics were frozen before the B14 dynamic response.
+
+          The authoritative run is 35495825564 at execution head 279ab2e34fc28a81fc3507a835a20b144049fc83. R16 and R2 both pass the Reference gates and O0/O2 identity. The exact result SHA-256 is 50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc.
+
+          The formal preregistered decision is **C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED**. No reduced lower-zone member R3-R12 crosses the complete frozen R2-relative dynamic-groundwater vector, and therefore no PROFILE frontier exists either.
+
+          The failure is highly specific. Every lower-zone member fails on exactly one of the eight groundwater-vector components: pooled absolute mean signed bottom-flux error. On the other seven components, all lower-zone members are no worse than R2. R2 itself has 832 flux-sign mismatches and misses the Reference reversal sequence in three of four histories.
+
+          The pooled signed-bias component is also unusual for R2. Its pooled bias magnitude is about 2.79e-6 cm/d, but the mean absolute history-specific signed bias is about 3.79e-3 cm/d. The cancellation ratio is therefore about 7.36e-4. For R8 the pooled bias is about 4.23e-6 cm/d while the mean absolute history-specific bias is about 4.99e-6 cm/d. The formal gate remains unchanged, but the decomposition shows that R2's advantage on the blocking component is dominated by cross-history cancellation.
+
+          Increasing lower-zone state does not repair the blocker. R5, R6, R8, R12 and R16 are effectively identical on both pooled signed bottom-flux bias and interval bottom-flux RMSE. This points away from a simple state-dimension explanation and toward a closure, boundary-response or integration-floor mechanism.
+
+          Placement evidence does transfer. R4 remains componentwise no worse than U4 and R8 remains componentwise no worse than U8. The cross-axis evidence therefore supports a stronger conclusion than a universal minimum number of layers: material, lower-boundary semantics, placement and closure response interact.
+
+          C5A remains a negative preregistered result. The next step is C5B, a zero-fit mechanistic reconciliation of the sole blocker. C5B may diagnose signed error by history, boundary phase, resolution and timestep, but it may not change the C5A gate or reinterpret C5A as accepted.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v6'
+          j['status']='CLOSED_THROUGH_C5A_FULL_MATERIAL_BY_BOUNDARY_INTERACTION_MATRIX_SINGLE_COMPONENT_MECHANISM_NEXT'
+          j.setdefault('authorities',{}).update({
+            'B14_dynamic_interaction':'integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json',
+            'B14_dynamic_zero_fit_diagnostic':'integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5A':'Matched B14 dynamic-head transfer has no reduced R2-relative GW frontier under the frozen vector. Every lower-zone member fails only pooled absolute mean signed bottom-flux error; R5-R16 plateau on that blocker while placement advantage persists.',
+            'interaction_matrix':'The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.'
+          })
+          j['decision']='DIAGNOSE_C5A_SINGLE_COMPONENT_BLOCKER_WITH_ZERO_FIT_C5B_BEFORE_ANY_NEW_REPRESENTATION_SELECTION'
+          j['next_authority']='LARE-BC2-C5B'
+          j['next_family_authority']={
+            'family':'C5B_ZERO_FIT_SIGNED_FLUX_MECHANISM',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_DIAGNOSTIC_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json',
+              'integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json'
+            ],
+            'purpose':'Separate state-resolution, closure/boundary-response and aggregation-cancellation explanations for the sole C5A blocking metric without altering C5A.',
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json',
+            'implementation_authorized':True,
+            'post_hoc_acceptance_retuning_authorized':False
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5A closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5A_RESULT.json                   integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json                   integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5A_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5A B14 dynamic interaction"
+          git push origin HEAD:work/f-rom-lare-rs1
