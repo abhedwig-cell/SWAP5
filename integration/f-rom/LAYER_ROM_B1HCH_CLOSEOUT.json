@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hch.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCH",
+  "status": "CLOSED_MIXED_FROZEN_GATE_INDEPENDENT_NUMERICAL_ORACLE_AUTHORIZED",
+  "decision": "B1HCH_R16_SELF_CONVERGENCE_MIXED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCH_PREREGISTRATION.json",
+    "canonical_reconciliation": "integration/f-rom/LAYER_ROM_B1HCH_CANONICAL_RECONCILIATION.json",
+    "repair_record": "integration/f-rom/LAYER_ROM_B1HCH_REPAIR_RECORD.json",
+    "material_run": 35502001117,
+    "aggregate_repair_run": 35502200612,
+    "artifact_id": 10602199199,
+    "artifact_digest": "sha256:151834b72480a4906f9f8171a30189a91baaa656fbd072cf6ea59d79201eab3f",
+    "raw_result_sha256": "f86679614840e6795811fab677835fae39108b6065515cb54c8fea508a87b6db"
+  },
+  "scientific_boundary": [
+    "The formal mixed decision is binding.",
+    "B11 saturation and B12 near-floor storage ripple are retained explicitly and are not reclassified post hoc.",
+    "No closure/state redesign is authorized before an independent numerical-oracle test of the unchanged research ODE."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCI_INDEPENDENT_NUMERICAL_ORACLE",
+  "production_rom_authorized": false
+}
