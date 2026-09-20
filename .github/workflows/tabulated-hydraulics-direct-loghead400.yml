@@ -199,7 +199,7 @@ jobs:
           for idx,p in enumerate(hprep.PARAMS):
               psets.append(dict(
                   ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],
-                  comment=f"hupsel_{idx}"
+                  h_enpr=0.0, comment=f"hupsel_{idx}"
               ))
 
           def overwrite_tables(dst):
