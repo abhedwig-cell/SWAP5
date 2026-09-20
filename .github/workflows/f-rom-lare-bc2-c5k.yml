@@ -1,0 +1,211 @@
+name: F-ROM-LARE BC2-C5K local half-cell theory audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py'
+      - 'tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py'
+      - '.github/workflows/f-rom-lare-bc2-c5k.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5k-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  instrument:
+    name: instrument-${{ matrix.geometry }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        geometry: [R512, R1024]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify C5K authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py)" = "c8bb4cd7805d140d3b6fd64c2617fe419e751564"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "a2ea2726feadaab74e9277c3a85d912070387b98"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_BOTTOM_STATE_INSTRUMENTATION_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['response_based_design'] is False
+          assert c['status']=='CLOSED_BOUNDARY_FACTORIAL_SENSITIVITY_CHARACTERIZED_NO_COUNTERFACTUAL_ADMITTED_LOCAL_FLUX_THEORY_REQUIRED'
+          assert c['adjudication']['LOCAL_HALF_CELL_FLUX_THEORY_AUDIT_AUTHORIZED'] is True
+          assert c['adjudication']['PRODUCTION_REFERENCE_CHANGE_AUTHORIZED'] is False
+          assert c['adjudication']['T32_AUTHORIZED'] is False
+          assert c['adjudication']['R2048_AUTHORIZED'] is False
+          print('LARE_BC2_C5K_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Materialize logging-only frozen C5I slice
+        run: |
+          set -euo pipefail
+          h="${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py             --c5i-history-slice-materializer tests/rom/materialize_lare_bc2_c5i_history_slice.py             --c5i-materializer tests/rom/materialize_lare_bc2_c5i_t16.py             --c5e-materializer tests/rom/materialize_lare_bc2_c5e_reference_extension.py             --c5d-materializer tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --history-index "$h"             --output canonical/tests/rom/test_lare_bc2_c5k_instrumented.f90             --manifest /tmp/c5k_manifest.json
+          python3 - <<'PY'
+          import json
+          m=json.load(open('/tmp/c5k_manifest.json'))
+          assert m['solver_input_changed'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['state_trajectory_changed'] is False
+          assert m['numerical_policy_changed'] is False
+          assert m['response_based'] is False
+          PY
+
+      - name: Execute exact current Reference with instrumentation
+        run: |
+          set -euo pipefail
+          id="${{ matrix.geometry }}"
+          h="${{ matrix.history }}"
+          if [[ "$id" == "R512" ]]; then n=512; dz=0.3125; else n=1024; dz=0.15625; fi
+          expected=$(printf 'Z%02d' "$h")
+          mkdir -p instrument_evidence
+          stub="canonical/c5k_${id}_h${h}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c5k/build_${id}_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c5k_${id}_h${h}_stubs.f90"             --target tests/rom/test_lare_bc2_c5k_instrumented.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt 0
+          log="instrument_evidence/${id}_h${h}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq 'LAREGW1_C5I_B14_T16_GENERATED=TRUE' "$log"
+          test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_C5K_PRE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_C5K_POST|' "$log")" -eq 16384
+          test "$(grep -c "^LAREGW1_STATE|.*|HISTORY=${expected}|" "$log")" -eq 16384
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c5k_manifest.json instrument_evidence/
+          sha256sum instrument_evidence/* > instrument_evidence/sha256.txt
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C5K_INSTRUMENT_SLICE=PASS|${id}|H${h}"
+
+      - name: Upload instrumented slice
+        uses: actions/upload-artifact@v4
+        with:
+          name: c5k-instrument-${{ matrix.geometry }}-h${{ matrix.history }}
+          path: instrument_evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: instrument
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable C5I baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5k/base /tmp/c5k/instrument LARE_BC2_C5K_EVIDENCE
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602539613/zip" > /tmp/c5k/c5i.zip
+          echo "8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664  /tmp/c5k/c5i.zip" | sha256sum -c -
+          unzip -q /tmp/c5k/c5i.zip -d /tmp/c5k/base
+          echo "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7  /tmp/c5k/base/R512_T16_o0.txt" | sha256sum -c -
+          echo "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6  /tmp/c5k/base/R1024_T16_o0.txt" | sha256sum -c -
+          echo "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302  /tmp/c5k/base/LARE_BC2_C5I_RESULT.json" | sha256sum -c -
+
+      - name: Download instrumented slices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c5k-instrument-*
+          path: /tmp/c5k/slices
+          merge-multiple: false
+
+      - name: Reconstruct and prove state-trajectory identity
+        run: |
+          set -euo pipefail
+          for id in R512 R1024; do
+            full="/tmp/c5k/instrument/${id}.txt"
+            : > "$full"
+            for h in 1 2 3 4; do
+              part="/tmp/c5k/slices/c5k-instrument-${id}-h${h}/${id}_h${h}.txt"
+              test -s "$part"
+              cat "$part" >> "$full"
+            done
+            test "$(grep -c '^LAREGW1_STATE|' "$full")" -eq 65536
+            test "$(grep -c '^LAREGW1_C5K_PRE|' "$full")" -eq 65536
+            test "$(grep -c '^LAREGW1_C5K_POST|' "$full")" -eq 65536
+            grep '^LAREGW1_STATE|' "$full" > "/tmp/c5k/instrument/${id}_state.txt"
+            grep '^LAREGW1_STATE|' "/tmp/c5k/base/${id}_T16_o0.txt" > "/tmp/c5k/base/${id}_state.txt"
+            cmp "/tmp/c5k/instrument/${id}_state.txt" "/tmp/c5k/base/${id}_state.txt"
+            cp "$full" "LARE_BC2_C5K_EVIDENCE/${id}_T16_instrumented.txt"
+          done
+          echo "LARE_BC2_C5K_STATE_TRAJECTORY_IDENTITY=PASS"
+
+      - name: Execute prebound local half-cell theory analysis
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "a2ea2726feadaab74e9277c3a85d912070387b98"
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py
+          python3 tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py             --r512 /tmp/c5k/instrument/R512.txt             --r1024 /tmp/c5k/instrument/R1024.txt             --c5i-result integration/f-rom/LARE_BC2_C5I_RESULT.json             --c5k-prereg integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json             --output LARE_BC2_C5K_EVIDENCE/LARE_BC2_C5K_RESULT.json             | tee LARE_BC2_C5K_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json LARE_BC2_C5K_EVIDENCE/
+
+      - name: Validate C5K firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5K_EVIDENCE/LARE_BC2_C5K_RESULT.json'))
+          assert r['status']=='C5K_LOCAL_HALF_CELL_THEORY_CHARACTERIZED'
+          assert r['published_baseline_identity_to_C5I_T16'] is True
+          f=r['scientific_firewall']
+          assert f['production_reference_changed'] is False
+          assert f['new_reference_physics_admitted'] is False
+          assert f['dynamic_reference_counterfactual_executed'] is False
+          assert f['new_lare_run'] is False
+          assert f['new_lare_closure'] is False
+          assert f['C5A_formal_decision_changed'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5K_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5K_EVIDENCE/* > LARE_BC2_C5K_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C5K evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5k
+          path: LARE_BC2_C5K_EVIDENCE/
+          if-no-files-found: error
