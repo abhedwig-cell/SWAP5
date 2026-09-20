@@ -125,7 +125,7 @@ def require_allclose(
         )
 
 
-def build_model(workdir: Path) -> None:
+def build_model(workdir: Path, specific_yield: float = 0.15) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name="FGC38_PREPARED_SOLVE",
         version="mf6",
@@ -178,7 +178,7 @@ def build_model(workdir: Path) -> None:
         gwf,
         iconvert=1,
         ss=0.02,
-        sy=0.15,
+        sy=specific_yield,
         transient={0: True},
     )
     flopy.mf6.ModflowGwfchd(
@@ -204,10 +204,11 @@ def run_case(
     libmf6: Path,
     bridge: Path,
     response_sequence: list[Term],
-) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], CountingKernel]:
+    specific_yield: float = 0.15,
+) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], CountingKernel, float]:
     with tempfile.TemporaryDirectory(prefix="fgc38-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir)
+        build_model(workdir, specific_yield=specific_yield)
 
         raw_kernel = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         kernel = CountingKernel(raw_kernel)
@@ -393,7 +394,7 @@ def run_case(
             print("F_GC_CSR04_NATIVE_MODFLOW_STO_BUDGET=PASS")
             print("F_GC_CSR04_NATIVE_MODFLOW_COMPONENT_BUDGET=PASS")
 
-            return final_head, accepted_xold, heads, kernel
+            return final_head, accepted_xold, heads, kernel, sto_rate_m3_per_day
         finally:
             if initialized:
                 # If the gate itself fails, tear down the kernel.  The test does
@@ -451,12 +452,12 @@ def main() -> None:
     response_b = Term(7001, hcof_m2_per_day=-0.30, rhs_m3_per_day=-0.165)
     response_c = Term(7001, hcof_m2_per_day=-0.12, rhs_m3_per_day=-0.066)
 
-    iterative_head, iterative_xold, heads, iterative_kernel = run_case(
+    iterative_head, iterative_xold, heads, iterative_kernel, iterative_sto = run_case(
         libmf6,
         bridge,
         [response_a, response_b, response_c],
     )
-    clean_head, clean_xold, clean_heads, clean_kernel = run_case(
+    clean_head, clean_xold, clean_heads, clean_kernel, clean_sto = run_case(
         libmf6,
         bridge,
         [response_c],
@@ -514,6 +515,32 @@ def main() -> None:
         and clean_kernel.finalize_solve_calls == 1,
         "clean reference lifecycle mismatch",
     )
+
+    # CSR-04 state-space discriminant: alter only MODFLOW STO while keeping
+    # coupling response and all other groundwater stresses fixed.
+    low_sy_head, _, _, _, low_sy_sto = run_case(
+        libmf6, bridge, [response_c], specific_yield=0.05
+    )
+    high_sy_head, _, _, _, high_sy_sto = run_case(
+        libmf6, bridge, [response_c], specific_yield=0.30
+    )
+    require(
+        not np.allclose(low_sy_head, high_sy_head, rtol=0.0, atol=1.0e-12),
+        "CSR-04 STO perturbation did not change MODFLOW accepted head response",
+    )
+    require(
+        not math.isclose(low_sy_sto, high_sy_sto, rel_tol=0.0, abs_tol=1.0e-12),
+        "CSR-04 STO perturbation did not change native MODFLOW storage response",
+    )
+    print(
+        "F_GC_CSR04_STO_PERTURBATION_HEAD_MAX_ABS_DIFF="
+        f"{float(np.max(np.abs(low_sy_head-high_sy_head))):.17g}"
+    )
+    print(
+        "F_GC_CSR04_STO_PERTURBATION_STORAGE_RATE_DIFF="
+        f"{abs(low_sy_sto-high_sy_sto):.17g}"
+    )
+    print("F_GC_CSR04_MODFLOW_STO_STATE_SPACE_DISCRIMINANT=PASS")
 
     print("F_GC_CSR04_ACCEPTED_MODFLOW_STATE_OBSERVATION=PASS")
     print("FGC38_OFFICIAL_MODFLOW680_LOADED=PASS")
