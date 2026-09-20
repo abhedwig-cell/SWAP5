@@ -9,7 +9,15 @@
     "material": "B01",
     "column_depth_cm": 160,
     "physics": "pure matrix-water hydraulics",
-    "excluded": ["ET","root uptake","macropores","frost","snow","production groundwater coupling","Hupsel transfer"],
+    "excluded": [
+      "ET",
+      "root uptake",
+      "macropores",
+      "frost",
+      "snow",
+      "production groundwater coupling",
+      "Hupsel transfer"
+    ],
     "production_rom_authorized": false
   },
   "authority_firewalls": [
@@ -38,19 +46,159 @@
     "coordinate": "fixed-layer mean theta, information-equivalent to exact layer storage for fixed layer thickness",
     "metric": "L_inf",
     "B01_theta_floor": 0.0005420462931603476,
-    "radii_multipliers": [0.25,0.5,1.0,2.0,4.0],
+    "radii_multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ],
     "role": "diagnostic state-neighborhood scale only, never an application tolerance"
   },
   "representations": [
-    {"id":"T1","class":"total_storage_control","end_indices":[16],"depth_boundaries_cm":[0,160]},
-    {"id":"L2","class":"active_lower_zone","end_indices":[15,16],"depth_boundaries_cm":[0,150,160]},
-    {"id":"U2","class":"uniform_control","end_indices":[8,16],"depth_boundaries_cm":[0,80,160]},
-    {"id":"L3","class":"active_lower_zone","end_indices":[14,15,16],"depth_boundaries_cm":[0,140,150,160]},
-    {"id":"U3","class":"near_uniform_control","end_indices":[5,11,16],"depth_boundaries_cm":[0,50,110,160]},
-    {"id":"L4","class":"active_lower_zone","end_indices":[13,14,15,16],"depth_boundaries_cm":[0,130,140,150,160]},
-    {"id":"U4","class":"uniform_control","end_indices":[4,8,12,16],"depth_boundaries_cm":[0,40,80,120,160]},
-    {"id":"L6","class":"nested_active_lower_zone","end_indices":[11,12,13,14,15,16],"depth_boundaries_cm":[0,110,120,130,140,150,160]},
-    {"id":"U6","class":"near_uniform_control","end_indices":[3,5,8,11,13,16],"depth_boundaries_cm":[0,30,50,80,110,130,160]}
+    {
+      "id": "T1",
+      "class": "total_storage_control",
+      "end_indices": [
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        160
+      ]
+    },
+    {
+      "id": "L2",
+      "class": "active_lower_zone",
+      "end_indices": [
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U2",
+      "class": "uniform_control",
+      "end_indices": [
+        8,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        80,
+        160
+      ]
+    },
+    {
+      "id": "L3",
+      "class": "active_lower_zone",
+      "end_indices": [
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U3",
+      "class": "near_uniform_control",
+      "end_indices": [
+        5,
+        11,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        50,
+        110,
+        160
+      ]
+    },
+    {
+      "id": "L4",
+      "class": "active_lower_zone",
+      "end_indices": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U4",
+      "class": "uniform_control",
+      "end_indices": [
+        4,
+        8,
+        12,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ]
+    },
+    {
+      "id": "L6",
+      "class": "nested_active_lower_zone",
+      "end_indices": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U6",
+      "class": "near_uniform_control",
+      "end_indices": [
+        3,
+        5,
+        8,
+        11,
+        13,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        30,
+        50,
+        80,
+        110,
+        130,
+        160
+      ]
+    }
   ],
   "partition_freeze_rationale": {
     "L_family": "Nested terminal refinement tests the prior active-lower-zone hypothesis without searching the new response results.",
@@ -62,9 +210,23 @@
     "pair_universe": "all unordered cross-history pairs among the 41 starts",
     "full_state_alias_filter": "full 16-cell theta L_inf > B01_theta_floor",
     "identical_future_forcing": true,
-    "probes": ["HOLD","TOP_PLUS","TOP_MINUS","BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL","BOTTOM_HEAD_RISE_THEN_FALL","BOTTOM_HEAD_FALL_THEN_RISE"],
-    "GW_D_horizons_steps": [4,64,256],
-    "GW_R_horizon_steps": [1250]
+    "probes": [
+      "HOLD",
+      "TOP_PLUS",
+      "TOP_MINUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL",
+      "BOTTOM_HEAD_RISE_THEN_FALL",
+      "BOTTOM_HEAD_FALL_THEN_RISE"
+    ],
+    "GW_D_horizons_steps": [
+      4,
+      64,
+      256
+    ],
+    "GW_R_horizon_steps": [
+      1250
+    ]
   },
   "response_vector": [
     "candidate close-pair count",
@@ -76,7 +238,8 @@
     "drainage-capillary reversal sequence mismatch",
     "reversal timing difference",
     "one-day cumulative bottom-exchange difference",
-    "one-day systematic signed exchange difference"
+    "one-day systematic signed exchange difference",
+    "piecewise-constant reconstructed theta profile RMSE and max-absolute error as secondary current-state diagnostics"
   ],
   "error_decomposition": {
     "state_information_error": "future-response ambiguity between full states that are close only after projection to the frozen layer state",
@@ -84,10 +247,22 @@
     "numerical_discretization_error": "difference caused by solving Richards on a coarser spatial discretization; represented separately by same-partition CoRichards where qualified"
   },
   "closure_families_frozen_for_successor": [
-    {"id":"C_LARE_TAYLOR","role":"published/declaration-bound adjacent-layer Taylor LARE closure"},
-    {"id":"C_DARCY_CENTROID","role":"Darcy flux from constitutive heads at layer-average state and centroid gradient, with separately declared conductivity averaging"},
-    {"id":"C_QS_PROFILE","role":"quasi-steady within-layer profile reconstruction constrained by layer storage before face flux evaluation"},
-    {"id":"C_GRADIENT_AWARE","role":"only after evidence shows layer storage alone insufficient; requires separately preregistered additional gradient or moment state"}
+    {
+      "id": "C_LARE_TAYLOR",
+      "role": "published/declaration-bound adjacent-layer Taylor LARE closure"
+    },
+    {
+      "id": "C_DARCY_CENTROID",
+      "role": "Darcy flux from constitutive heads at layer-average state and centroid gradient, with separately declared conductivity averaging"
+    },
+    {
+      "id": "C_QS_PROFILE",
+      "role": "quasi-steady within-layer profile reconstruction constrained by layer storage before face flux evaluation"
+    },
+    {
+      "id": "C_GRADIENT_AWARE",
+      "role": "only after evidence shows layer storage alone insufficient; requires separately preregistered additional gradient or moment state"
+    }
   ],
   "falsification_rules": [
     "If an added smart layer does not reduce state aliasing or future-response ambiguity relative to the lower-dimensional nested member, it has no demonstrated information value in this domain.",
@@ -96,5 +271,11 @@
     "No representation is application-accepted without independently sourced application tolerances."
   ],
   "next_if_A1_supports_layer_storage_state": "Freeze one or more surviving representations and compare C_LARE_TAYLOR, C_DARCY_CENTROID and C_QS_PROFILE without changing the state representation.",
-  "next_if_A1_rejects_layer_storage_state": "Preregister an additional physically interpretable state such as gradient/moment or front position before any new closure fitting."
+  "next_if_A1_rejects_layer_storage_state": "Preregister an additional physically interpretable state such as gradient/moment or front position before any new closure fitting.",
+  "pre_execution_amendment": {
+    "date": "2026-09-20",
+    "before_first_layer_response_replay": true,
+    "change": "Explicitly preregister current-profile reconstruction diagnostics already implied by the requested evaluation vector.",
+    "scientific_effect": "No partition, radius, future-response metric, acceptance rule or candidate selection changed."
+  }
 }
