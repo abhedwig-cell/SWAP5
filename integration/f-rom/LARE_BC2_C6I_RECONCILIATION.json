@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.lare.bc2.c6i.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6I",
+  "status": "CLOSED_RICHARDS_GRADIENT_FLOW_IDENTIFIES_DISTINCT_PARAMETER_FREE_FREE_ENERGY_MOMENT_ONSAGER_FAMILY_C6J_QUALIFICATION_NEXT",
+  "decision": "PREREGISTER_FREE_ENERGY_MOMENT_ONSAGER_REDUCTION_FOR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION",
+  "role": "READ_ONLY_RICHARDS_ENERGY_DISSIPATION_AND_REDUCED_VARIATIONAL_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
+    "first_moment": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "bemr_closeout": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "family": {
+    "id": "FEMO",
+    "name": "Free-Energy Moment-Onsager reduction",
+    "dynamic_state": "Per retained layer: integrated water storage S_i and centered first water-content moment M_i.",
+    "fitted_parameters": [],
+    "profile_principle": "Unique minimum-capillary-free-energy profile subject to the retained S_i,M_i and frozen constitutive bounds.",
+    "propagation_principle": "Project the standard Richards energy-dissipation/Onsager principle onto the retained moment manifold.",
+    "static_global_hydraulic_root": false
+  },
+  "richards_gradient_structure": {
+    "convention": {
+      "depth": "z positive downward",
+      "suction": "psi=-h, positive in unsaturated soil",
+      "flux": "q positive downward",
+      "darcy": "q=K(theta)*(1+dpsi/dz)"
+    },
+    "capillary_energy_density": "Choose F(theta) with F'(theta)=-psi(theta).",
+    "total_free_energy": "E[theta]=integral [F(theta)-z*theta] dz.",
+    "chemical_potential": "mu=delta E/delta theta=-psi(theta)-z.",
+    "darcy_as_gradient_flow": "q=-K(theta)*dmu/dz = K(theta)*(1+dpsi/dz).",
+    "continuity": "dtheta/dt=-dq/dz.",
+    "isolated_energy_identity": "dE/dt=-integral q^2/K(theta) dz <= 0, apart from boundary work when flux/head is imposed.",
+    "convexity": "On a strictly monotone retention branch, F''(theta)=-dpsi/dtheta>0."
+  },
+  "local_moment_manifold": {
+    "layer": "I_i=[z_-,z_+], center z_c, width d_i",
+    "constraints": [
+      "integral_I theta dz = S_i",
+      "integral_I (z-z_c)*theta dz = M_i",
+      "theta_lo <= theta(z) <= theta_hi on the frozen constitutive interval"
+    ],
+    "variational_definition": "theta_i^*(S_i,M_i)=argmin integral_I F(theta(z)) dz subject to the two moment constraints and bounds.",
+    "gravity_note": "The gravitational term -integral z*theta dz equals -(z_c*S_i+M_i), so it is constant when S_i and M_i are fixed. Local profile selection therefore minimizes capillary energy only.",
+    "existence": "For a nonempty closed bounded feasible moment set, the direct method gives a minimizer.",
+    "uniqueness": "Strict convexity of F makes the minimizer unique over the convex feasible set.",
+    "interior_kkt": "Where neither constitutive bound is active, F'(theta)+lambda_0+lambda_1*(z-z_c)=0, hence psi(theta(z))=lambda_0+lambda_1*(z-z_c).",
+    "interpretation": "The unique unconstrained local profile is affine in suction, not affine/cubic in theta and not logistic-information-entropy BEMR.",
+    "active_bound_case": "If a bound activates, the same strictly convex obstacle problem remains unique; numerical regularity/conditioning must be qualified."
+  },
+  "reduced_onsager_dynamics": {
+    "reduced_coordinates": "a=(S_1,M_1,...,S_N,M_N)",
+    "profile_map": "theta^*(z;a) assembled from the unique layer minimizers.",
+    "tangent": "dtheta/dt = sum_k (partial theta^*/partial a_k)*a_dot_k.",
+    "continuity_constraint": "dq/dz = -dtheta/dt plus volumetric sources where present.",
+    "global_flux_property": "A single integrated q(z) is used across the column, so mass flux is globally conservative and does not require separate left/right interface flux branches.",
+    "dissipation": "Phi=0.5*integral q(z)^2/K(theta^*) dz.",
+    "reduced_energy": "E_r(a)=E[theta^*(a)].",
+    "rayleighian": "R_r(a_dot)=Phi(a,a_dot)+grad(E_r) dot a_dot - external boundary power, subject to the selected boundary constraints.",
+    "stationarity": "Minimizing R_r gives a finite-dimensional generalized gradient-flow system G(a)*a_dot = driving(a,boundary), with G a symmetric resistance Gram matrix.",
+    "uniqueness_condition": "If K>0 and the tangent modes are independent after applying the boundary/mass constraints, G is positive definite on the admissible rate subspace and the instantaneous reduced rate is unique.",
+    "exact_projected_moment_balance": "Because q is linked to the tangent state by continuity, the C5Y storage and first-moment balance identities follow automatically from integration; no empirical moment relaxation law is introduced."
+  },
+  "boundary_semantics": {
+    "prescribed_flux": "Flux values enter as boundary constraints/affine terms in the continuity-integrated q field, not as a nonlinear static profile root.",
+    "prescribed_head": "Head/potential enters through the standard boundary-work/natural-boundary term of the Onsager functional; the exact reduced discrete form requires mathematical qualification before response.",
+    "significance": "FEMO does not reuse the C6E BEMR prescribed-flux algebraic system and therefore is not a post-result successful-start selection or solver repair."
+  },
+  "distinction_from_closed_routes": {
+    "BEMR": "BEMR used a cubic information-entropy dual profile and enforced storage, moment and hydraulic conditions in one static nonlinear profile solve. FEMO uses a unique physical capillary-energy moment manifold plus dynamic minimum-dissipation projection; no cubic dual or C6E branch solve remains.",
+    "C5Z": "No direct polynomial theta profile.",
+    "DSE2P": "No assumption that unresolved layers are instantaneously steady with constant Darcian flux.",
+    "P0": "No spatially uniform storage-tendency ansatz.",
+    "C6F_C6G": "No fixed added physical sub-control volume; the additional scalar is the conservation-derived first moment already established in C5Y.",
+    "C6H": "No mesh-velocity/adaptation law."
+  },
+  "why_not_post_c6e_retuning": [
+    "The capillary free-energy density is fixed by the same retention relation already present in Richards physics.",
+    "The hydraulic dissipation q^2/K is fixed by Darcy-Buckingham mobility.",
+    "The S,M state was derived in C5Y before BEMR response.",
+    "No term, coefficient, bound, monitor, start rule or penalty is chosen from the five C6E failure cases.",
+    "C6E BEMR equations are abandoned rather than repaired."
+  ],
+  "independent_theory_context": [
+    {
+      "citation": "Cancès, C. (2018), Energy stable numerical methods for porous media flow type problems, Oil & Gas Science and Technology 73, 78.",
+      "doi": "10.2516/ogst/2018067",
+      "relevance": "Shows porous-media equations including Richards-type flow as generalized gradient flows of a capillary/gravitational energy with mobility-driven dissipation."
+    },
+    {
+      "citation": "Kou, J. and Wang, X. (2024), Numerical modeling of unsaturated flow in porous media using a thermodynamical approach, Capillarity 11(3), 63-69.",
+      "doi": "10.46690/capi.2024.06.01",
+      "relevance": "Provides a thermodynamically consistent Richards formulation driven by chemical-potential gradients and an energy-dissipation law."
+    },
+    {
+      "citation": "Akman Yildiz, T., Uzunca, M., Karasözen, B. (2019), Structure preserving reduced order modeling for gradient systems, Applied Mathematics and Computation 347, 194-209.",
+      "doi": "10.1016/j.amc.2018.11.008",
+      "relevance": "Independent ROM literature supports preserving an underlying gradient/dissipation structure during model reduction; it does not establish FEMO hydrological fidelity."
+    }
+  ],
+  "adjudication": {
+    "STANDARD_RICHARDS_HAS_RELEVANT_ENERGY_DISSIPATION_STRUCTURE": true,
+    "CAPILLARY_ENERGY_IS_STRICTLY_CONVEX_ON_FROZEN_MONOTONE_RETENTION_BRANCH": true,
+    "S_M_CONSTRAINED_LOCAL_ENERGY_PROFILE_IS_UNIQUE_IF_FEASIBLE": true,
+    "INTERIOR_LOCAL_PROFILE_IS_AFFINE_IN_SUCTION": true,
+    "FEMO_REUSES_C6E_STATIC_BEMR_ROOT": false,
+    "FEMO_REQUIRES_EMPIRICAL_RELAXATION_PARAMETER": false,
+    "FEMO_PRESERVES_EXACT_PROJECTED_CONSERVATION_IN_PRINCIPLE": true,
+    "REDUCED_RESISTANCE_POSITIVE_DEFINITE_FOR_FULL_SYNTHETIC_DOMAIN_PROVEN": false,
+    "PRESCRIBED_HEAD_REDUCED_BOUNDARY_OPERATOR_QUALIFIED": false,
+    "PRESCRIBED_FLUX_REDUCED_BOUNDARY_OPERATOR_QUALIFIED": false,
+    "NUMERICAL_PROFILE_SOLVER_QUALIFIED": false,
+    "RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_AUTHORIZED": true,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "FREE_RUNNING_IMPLEMENTATION_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6J",
+    "state": "FEMO_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_AUTHORIZED",
+    "question": "Can the physical free-energy S/M manifold and its projected Onsager resistance operator be evaluated uniquely, smoothly and with a positive-definite constrained metric over the frozen B14 moment domain and both boundary classes before any hydrological trajectory?",
+    "constraints": [
+      "Use the unchanged C6C/C6E B14 S/M synthetic domains; no response-derived narrowing.",
+      "Use F'(theta)=-psi(theta) from the frozen B14 retention relation; no fitted energy term.",
+      "Qualify local moment-profile existence, uniqueness, bound activity, moment recovery and conditioning.",
+      "Construct tangent sensitivities and the Onsager resistance Gram matrix; require symmetry and positive definiteness on the admissible rate subspace.",
+      "Derive prescribed-flux and prescribed-head boundary power/operators before evaluating them.",
+      "No time trajectory, no C6D/C6E response metrics, no free-running FEMO, no performance claim.",
+      "If the reduced metric or boundary operators are not well posed, stop without regularization chosen from the result."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "bemr_reopened": false,
+    "c6e_solver_repaired": false,
+    "response_based_design": false,
+    "fitted_parameter_added": false,
+    "free_running_femo_implemented": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
