@@ -20,12 +20,12 @@ def main():
     f=load(a.fmc_module)
     expected={k:float(v["lambda_B14"]) for k,v in p["initial_state_transfer"]["histories"].items()}
     checks={
-      "TR":abs(f.TR-float(p["materials"]["blind_transfer_B14"]["theta_r"])),
-      "TS":abs(f.TS-float(p["materials"]["blind_transfer_B14"]["theta_s"])),
-      "ALPHA":abs(f.ALPHA-float(p["materials"]["blind_transfer_B14"]["alpha_per_cm"])),
-      "N":abs(f.N-float(p["materials"]["blind_transfer_B14"]["n"])),
-      "KS":abs(f.KS-float(p["materials"]["blind_transfer_B14"]["Ksat_cm_per_day"])),
-      "ELL":abs(f.ELL-float(p["materials"]["blind_transfer_B14"]["mualem_lambda"]))
+      "TR":abs(f.TR-float(p["materials"]["response_blind_transfer_B14"]["theta_r"])),
+      "TS":abs(f.TS-float(p["materials"]["response_blind_transfer_B14"]["theta_s"])),
+      "ALPHA":abs(f.ALPHA-float(p["materials"]["response_blind_transfer_B14"]["alpha_per_cm"])),
+      "N":abs(f.N-float(p["materials"]["response_blind_transfer_B14"]["n"])),
+      "KS":abs(f.KS-float(p["materials"]["response_blind_transfer_B14"]["Ksat_cm_per_day"])),
+      "ELL":abs(f.ELL-float(p["materials"]["response_blind_transfer_B14"]["mualem_lambda"]))
     }
     failure=None;histories={};maxmass=0.0;maxrelax=0.0
     if f.HISTS!=expected or f.NSTEPS!=1024 or f.NSUB!=9 or any(v!=0.0 for v in checks.values()):
