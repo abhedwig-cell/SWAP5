@@ -1,0 +1,115 @@
+{
+  "adjudication": {
+    "ANY_REDUCED_MEMBER_CROSSES_R1024_GW": false,
+    "ANY_REDUCED_MEMBER_CROSSES_R512_GW": false,
+    "ANY_REDUCED_MEMBER_CROSSES_TEMPORAL_FLOOR_GW": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "CURRENT_LAYER_FACE_HIGH_RES_SUFFICIENCY_DEMONSTRATED": false,
+    "INTERLAYER_CLOSURE_RECONCILIATION_AUTHORIZED": true,
+    "NEW_LAYER_BOUNDARY_OPTIMIZATION_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PLACEMENT_R4_REPLICATED": true,
+    "PLACEMENT_R8_REPLICATED": true,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "REFERENCE_TEMPORAL_QUALITY_SUFFICIENT_FOR_R1024_FRONTIER": true,
+    "REFERENCE_TEMPORAL_QUALITY_SUFFICIENT_FOR_R512_FRONTIER": true,
+    "SPEED_CLAIM_AUTHORIZED": false,
+    "STATE_COUNT_ONLY_RESCUE_SUPPORTED": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:4fdf4c551ab2e5357d911458186b6273c05b39c5a7d3d9807ee38de5e540b1d9",
+    "artifact_id": 10604541124,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "82f36f754cdbb8747e867b1875c325d665d6405d",
+    "preregistration": "integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json",
+    "result_sha256": "96ea7ca1f59e972d5933b2168c87ec19cea91915e6ebe9aab470c906af7ebfbe",
+    "workflow_run": 35506943959
+  },
+  "decision": "PRESERVE_VERTICAL_PLACEMENT_FINDING_REJECT_STATE_COUNT_ONLY_RESCUE_RECONCILE_INTERLAYER_CLOSURE",
+  "next_authority": {
+    "constraints": [
+      "Begin read-only from C4K-C4O, C5N and relevant theory/code; do not immediately fit or implement a closure.",
+      "Preserve the lower-zone placement finding but do not optimize new layer boundaries in C5O.",
+      "Do not reopen scalar tuning of CURRENT_LAYER_FACE or previously rejected scalar gradient corrections.",
+      "Separate inter-layer hydraulic gradient representation, interface conductivity/transmissivity, and any required extra state/history.",
+      "No production Reference change, no application acceptance, no performance/speed claim."
+    ],
+    "question": "Given replicated placement sensitivity but a state-count plateau through R16 on fresh high-resolution B14 dynamic-head evidence, which physically distinct inter-layer closure families remain scientifically admissible after C4K-C4O, and what prospective discriminator is needed before implementing one?",
+    "state": "INTERLAYER_CLOSURE_FAMILY_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C5O"
+  },
+  "reference_evidence": {
+    "R1024_vs_R2048_flux_RMSE_cm_per_day": 0.008162258326447418,
+    "R1024_vs_R2048_mapped_theta_RMSE": 4.063400935639364e-07,
+    "R1024_vs_R2048_storage_RMSE_cm": 1.6529434128060202e-05,
+    "R2048_T8_vs_T16_flux_RMSE_cm_per_day": 0.0016960492700794922,
+    "R2048_T8_vs_T16_mapped_theta_RMSE": 1.2305839882401758e-07,
+    "R2048_T8_vs_T16_storage_RMSE_cm": 5.2259987303521665e-06,
+    "R512_vs_R2048_flux_RMSE_cm_per_day": 0.030659299784343227,
+    "R512_vs_R2048_storage_RMSE_cm": 7.639095740381033e-05
+  },
+  "reference_quality": {
+    "R1024_frontier_interpretable": true,
+    "R512_frontier_interpretable": true,
+    "temporal_no_worse_than_R1024_GW": true,
+    "temporal_no_worse_than_R1024_PROFILE": true,
+    "temporal_no_worse_than_R512_GW": true,
+    "temporal_no_worse_than_R512_PROFILE": true
+  },
+  "representation_evidence": {
+    "R12_flux_RMSE_cm_per_day": 0.16988331097336284,
+    "R16_cumulative_bottom_RMSE_cm": 0.011437965056802394,
+    "R16_flux_RMSE_cm_per_day": 0.16988331097336284,
+    "R16_mapped_theta_RMSE": 0.0002882785081687062,
+    "R16_mean_abs_history_signed_flux_error_cm_per_day": 0.01543760102134319,
+    "R16_storage_RMSE_cm": 0.011437965056330624,
+    "R3_flux_RMSE_cm_per_day": 0.1698811289913788,
+    "R4_flux_RMSE_cm_per_day": 0.1698833021245673,
+    "R4_no_worse_than_U4_GW": true,
+    "R5_flux_RMSE_cm_per_day": 0.16988331095449782,
+    "R8_flux_RMSE_cm_per_day": 0.16988331097336284,
+    "R8_no_worse_than_U8_GW": true,
+    "U4_reversal_penalty_steps": 1024,
+    "U4_reversal_sequence_mismatch_history_count": 1,
+    "U4_sign_mismatch_count": 224,
+    "frontiers": {
+      "R1024_GW": [],
+      "R1024_PROFILE": [],
+      "R512_GW": [],
+      "R512_PROFILE": [],
+      "TEMPORAL_FLOOR_GW": [],
+      "TEMPORAL_FLOOR_PROFILE": []
+    },
+    "minimum_dimensions": {
+      "R1024_GW": null,
+      "R1024_PROFILE": null,
+      "R512_GW": null,
+      "R512_PROFILE": null,
+      "TEMPORAL_FLOOR_GW": null,
+      "TEMPORAL_FLOOR_PROFILE": null
+    }
+  },
+  "schema": "swap5.lare.bc2.c5n.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": true,
+    "new_closure_fit": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The fresh N01-N04 Reference hierarchy is numerically qualified for the preregistered comparator interpretation: R2048 T8-to-T16 error is componentwise no worse than both R512-to-R2048 and R1024-to-R2048 differences on groundwater and profile views.",
+    "No reduced lower-zone member R3-R12 crosses even the R512 comparator-relative groundwater frontier, and none crosses the R1024 or finest-grid temporal-floor frontier. The failure is therefore not an artifact of an underqualified Reference temporal route.",
+    "Vertical placement remains a replicated structural result. R4 is componentwise no worse than U4 and R8 no worse than U8 on the groundwater view. U4 is substantially worse, with 224 bottom-flux sign mismatches and one full reversal-sequence mismatch.",
+    "Within the lower-zone-focused CURRENT_LAYER_FACE family, increasing state dimension beyond R4/R5 produces essentially no groundwater-response improvement. R5, R6, R8, R12 and R16 have nearly identical storage, cumulative exchange and bottom-flux errors against R2048.",
+    "Even R16, which retains 16 layer states at 10-cm spacing, remains far outside both high-resolution spatial comparator envelopes. This makes ordinary state count an implausible primary remedy inside the existing closure family.",
+    "C5N therefore separates topology from propagation: placement contains real hydrological information, but the current inter-layer propagation/closure does not transmit that information with high-resolution prescribed-head fidelity.",
+    "The next scientific task is not to fit new layer boundaries. It is to reconcile prior closure evidence and identify a genuinely different physically derived inter-layer closure family. C4O remains authoritative that more scalar tuning of the existing fixed-partition closure is not allowed."
+  ],
+  "status": "CLOSED_BLIND_HIGH_RES_NO_REDUCED_FRONTIER_PLACEMENT_REPLICATED_CURRENT_LAYER_FACE_FAMILY_LIMITED",
+  "work_unit": "LARE-BC2-C5N",
+  "workstream": "F-ROM-LARE"
+}
