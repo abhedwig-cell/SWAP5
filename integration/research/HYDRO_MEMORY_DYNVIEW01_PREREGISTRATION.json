@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.hydro_memory.dynview01.preregistration.v1",
+  "date": "2026-09-20",
+  "work_unit": "HYDRO-MEMORY-DYNVIEW01",
+  "title": "Temporal-carrier hydraulic-view compatibility for accepted-state root uptake",
+  "canonical_base": "e07cea29725d822cfdb15e956a0c7b7bb0955843",
+  "trigger": {
+    "dyn02_branch": "research/hydro-memory-dyn02",
+    "failed_run": 35460379501,
+    "observed_status": 102,
+    "localized_gap": "fmr_build_committed_process_hydraulic_view accepts exact fmr_b110_physical_state_t only, while ACC01/ACC02 committed state is fmr_b110_temporal_indicator_state_t extending the same physical state."
+  },
+  "allowed_production_delta": [
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+  ],
+  "semantic_claim": "A process hydraulic view may read the inherited hydraulic fields of an fmr_b110_physical_state_t subtype without reading, modifying, or interpreting subtype-specific continuation state.",
+  "repair": {
+    "required": "Use polymorphic fmr_b110_physical_state_t selection for detached committed snapshots.",
+    "forbidden": [
+      "change root-water-uptake equations",
+      "change temporal history",
+      "change committed state or snapshot semantics",
+      "change Richards physics",
+      "change numerical tolerances",
+      "special-case DYN02 forcing"
+    ]
+  },
+  "qualification": [
+    "plain and temporal-indicator carriers containing identical hydraulic fields yield bit-identical hydraulic views",
+    "restricted Feddes uptake from identical plain and temporal carriers yields bit-identical root-extraction vectors and total uptake",
+    "process-view extraction does not mutate either committed revision",
+    "temporal-history availability remains present after view extraction",
+    "DYN01 forcing/root composition preservation passes",
+    "O0/O2 output identity"
+  ],
+  "decision_rules": {
+    "pass": "DYNVIEW01_QUALIFIED_POLYMORPHIC_PHYSICAL_VIEW",
+    "fail": "DYNVIEW01_BLOCKED_STATE_CARRIER_COMPATIBILITY"
+  }
+}
