@@ -66,13 +66,21 @@ def main():
     if len(base)!=10 or len(set(base))!=10 or set(base)!=set(routes): raise SystemExit("COST1 route-set drift")
     if base[-1]!="R16": raise SystemExit("R16 calibration route/order drift")
 
-    calibration=[];repeats=None;previous=None
+    calibration=[];repeats=None;previous=None;calibration_mode=None
     for n in CANDIDATES:
         x=run_one("R16",routes["R16"],n)
         calibration.append({"repeats":n,**x})
         if x["cpu_seconds"]>=0.3:
-            if x["cpu_seconds"]<=4.0: repeats=n
-            elif previous is not None and previous["cpu_seconds"]>=0.15: repeats=previous["repeats"]
+            if x["cpu_seconds"]<=4.0:
+                repeats=n;calibration_mode="TARGET_WINDOW"
+            elif previous is not None and previous["cpu_seconds"]>=0.15:
+                repeats=previous["repeats"];calibration_mode="PREVIOUS_BELOW_MAX"
+            elif n==1:
+                # The frozen complete four-history workload is indivisible.  If
+                # one atomic R16 workload already exceeds the operational
+                # calibration window, preserve that workload and time with
+                # repeats=1 rather than changing the scientific workload.
+                repeats=1;calibration_mode="ATOMIC_WORKLOAD_OVER_TARGET"
             break
         previous={"repeats":n,**x}
     if repeats is None:
@@ -123,7 +131,7 @@ def main():
       "schema":"swap5.layer-rom.cost1.timing.v1","workstream":"F-ROM-LAYER","work_unit":"LAYER-ROM-COST1",
       "decision":"COST1_MATERIAL_SHARED_HOST_TIMING_COMPLETE","screening_only":True,
       "formal_performance_claim":False,"host_admitted_for_cpu_baseline":False,
-      "internal_repetitions":repeats,"R16_only_calibration":calibration,
+      "internal_repetitions":repeats,"calibration_mode":calibration_mode,"R16_only_calibration":calibration,
       "warmups_per_route":WARMUPS,"measured_rounds":ROUNDS,
       "position_counts":positions,"scientific_checksums":checksums,
       "route_stats":stats,"pairwise_cpu":pairs,"cost_ratios":ratios,"samples":rows,
