@@ -1,0 +1,119 @@
+name: TAB-HYD table derivative envelope scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-table-derivative-envelope.yml'
+      - 'research/tabulated_hydraulics/tabulated_envelope_derivative_scan.f90'
+      - 'research/tabulated_hydraulics/prepare_envelope_cases.py'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout current table engine
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: swap-src
+
+      - name: Checkout Staring parameter authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Generate fixed 250-row direct-table candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/table-derivative/tables
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          spec=importlib.util.spec_from_file_location(
+              "prep","research/tabulated_hydraulics/prepare_envelope_cases.py"
+          )
+          prep=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          series=prep.read_staring(
+              Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv")
+          )
+          out=Path("build/table-derivative/tables")
+          for soil in ("b4","o5","b9","o9","b12","o13"):
+              rows=prep.uniform_rows(series[soil],250)
+              p=out/f"{soil}.dat"
+              with p.open("w") as fh:
+                  fh.write(f"{len(rows)}\n")
+                  for h,theta,k in rows:
+                      fh.write(f"{h:.17e} {theta:.17e} {k:.17e}\n")
+              print(soil,len(rows),rows[-2][0],rows[-2][2],rows[-1][2])
+          PY
+
+      - name: Compile actual TSPACK table derivative scanner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/table-derivative/obj
+          FLAGS="-O2 -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/table-derivative/obj \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/table-derivative/obj/arrays.o
+          gfortran $FLAGS -I build/table-derivative/obj -J build/table-derivative/obj \
+            -c swap-src/src/soil/sptabulated.f90 \
+            -o build/table-derivative/obj/sptabulated.o
+          gfortran $FLAGS -I build/table-derivative/obj -J build/table-derivative/obj \
+            research/tabulated_hydraulics/tabulated_envelope_derivative_scan.f90 \
+            build/table-derivative/obj/arrays.o build/table-derivative/obj/sptabulated.o \
+            -o build/table-derivative/scan
+
+      - name: Scan table derivative scale
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/table-derivative/results.txt
+          for table in build/table-derivative/tables/*.dat; do
+            build/table-derivative/scan "$table" | tee -a build/table-derivative/results.txt
+          done
+          test "$(grep -c '^TABULATED_ENVELOPE_DERIVATIVE_SCAN_COMPLETED$' build/table-derivative/results.txt)" -eq 6
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          txt=Path("build/table-derivative/results.txt").read_text()
+          blocks=txt.split("TABULATED_ENVELOPE_DERIVATIVE_SCAN_COMPLETED")
+          rows=[]
+          for b in blocks:
+              m=re.search(r"TABLE .*\/([a-z0-9]+)\.dat",b)
+              if not m:
+                  continue
+              soil=m.group(1)
+              def val(key):
+                  mm=re.search(rf"SUMMARY {key}=\s*([0-9.Ee+-]+)",b)
+                  return float(mm.group(1))
+              rows.append((soil,val("max_abs_dKdh"),val("h_at_max"),val("K_at_max"),val("min_dKdh")))
+          rows.sort(key=lambda x:x[1],reverse=True)
+          with Path("build/table-derivative/summary.tsv").open("w") as fh:
+              fh.write("soil\tmax_abs_dKdh\th_at_max\tK_at_max\tmin_dKdh\n")
+              for r in rows:
+                  fh.write("\t".join(map(str,r))+"\n")
+          print(Path("build/table-derivative/summary.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-table-derivative-envelope
+          path: |
+            build/table-derivative/results.txt
+            build/table-derivative/summary.tsv
