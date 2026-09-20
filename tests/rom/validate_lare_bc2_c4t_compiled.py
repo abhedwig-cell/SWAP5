@@ -87,8 +87,11 @@ def compare_stats(actual,expected,kind):
       ("terminal_bottom_flux_error_cm_per_day",1e-8),
       ("mapped_R16_cell_theta_error",1e-12)
     ]:
+        expected_metric=metric
+        if metric=="mapped_R16_cell_theta_error" and expected_metric not in expected and "R16_cell_theta_error" in expected:
+            expected_metric="R16_cell_theta_error"
         for stat in ("mean","mean_abs","rmse","p95_abs","max_abs"):
-            d=abs(float(actual[metric][stat])-float(expected[metric][stat]))
+            d=abs(float(actual[metric][stat])-float(expected[expected_metric][stat]))
             maxdiff=max(maxdiff,d)
             if d>tol:raise SystemExit(f"{kind} metric mismatch {metric} {stat} {d} > {tol}")
     if int(actual["bottom_flux_sign_error_count"])!=int(expected["bottom_flux_sign_error_count"]):
