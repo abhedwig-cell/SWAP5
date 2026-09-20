@@ -1,0 +1,259 @@
+name: TAB-HYD envelope failure diagnostics
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-envelope-diagnostic.yml'
+      - 'research/tabulated_hydraulics/prepare_envelope_cases.py'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+      - 'research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_tspack.py'
+      - 'research/tabulated_hydraulics/compare_hupsel_e2e.py'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5 research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f dependency
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil dependency
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring parameter authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build derivative-consistent analytical and direct-table binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-consistent swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-consistent
+          cp swap-src/build-consistent/swap swap-consistent-analytic
+
+          python3 research/tabulated_hydraulics/patch_direct_uniform_tspack.py \
+            swap-src/src/soil/sptabulated.f90
+          meson setup swap-src/build-direct swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-direct
+          cp swap-src/build-direct/swap swap-consistent-direct
+
+      - name: Prepare envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python3 research/tabulated_hydraulics/prepare_envelope_cases.py \
+            swap-testcases/cases/hupselbrook/legacy \
+            staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv \
+            build/tab-hyd-envelope-diagnostic \
+            | tee build/tab-hyd-envelope-diagnostic-prepare.log
+
+      - name: Run complete matrix without fail-fast
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'case\troute\tswkimpl\treturn_code\truntime_seconds\trows\n' \
+            > build/tab-hyd-envelope-diagnostic/status.tsv
+
+          for work in build/tab-hyd-envelope-diagnostic/*__analytic_k0 \
+                      build/tab-hyd-envelope-diagnostic/*__analytic_k1 \
+                      build/tab-hyd-envelope-diagnostic/*__table_k0 \
+                      build/tab-hyd-envelope-diagnostic/*__table_k1; do
+            name=$(basename "$work")
+            case "$name" in
+              *__table_k0) route=table; k=0; binary="$GITHUB_WORKSPACE/swap-consistent-direct" ;;
+              *__table_k1) route=table; k=1; binary="$GITHUB_WORKSPACE/swap-consistent-direct" ;;
+              *__analytic_k0) route=analytic; k=0; binary="$GITHUB_WORKSPACE/swap-consistent-analytic" ;;
+              *__analytic_k1) route=analytic; k=1; binary="$GITHUB_WORKSPACE/swap-consistent-analytic" ;;
+            esac
+            pushd "$work" >/dev/null
+            rm -f result_output.csv diagnostic.log
+            set +e
+            /usr/bin/time -f '%e' -o diagnostic_runtime.txt \
+              timeout 30 "$binary" > diagnostic.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/diagnostic_runtime.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
+              "$name" "$route" "$k" "$rc" "$runtime" "$rows" \
+              | tee -a build/tab-hyd-envelope-diagnostic/status.tsv
+          done
+
+      - name: Compare every completed analytical-table pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/tab-hyd-envelope-diagnostic/comparisons.txt
+          printf 'scenario\tswkimpl\tcomparison\n' \
+            > build/tab-hyd-envelope-diagnostic/comparison-status.tsv
+
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            for k in 0 1; do
+              a="build/tab-hyd-envelope-diagnostic/\${scenario}__analytic_k\${k}"
+              t="build/tab-hyd-envelope-diagnostic/\${scenario}__table_k\${k}"
+              if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
+                set +e
+                python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+                  "$a" "$t" \
+                  "build/tab-hyd-envelope-diagnostic/\${scenario}__k\${k}-comparison.json" \
+                  --label "\${scenario},SWKIMPL=\${k},diagnostic" \
+                  | tee -a build/tab-hyd-envelope-diagnostic/comparisons.txt
+                crc=\${PIPESTATUS[0]}
+                set -e
+                printf '%s\t%s\t%s\n' "$scenario" "$k" "rc=$crc" \
+                  | tee -a build/tab-hyd-envelope-diagnostic/comparison-status.tsv
+              else
+                printf '%s\t%s\t%s\n' "$scenario" "$k" "incomplete" \
+                  | tee -a build/tab-hyd-envelope-diagnostic/comparison-status.tsv
+              fi
+            done
+          done
+
+      - name: Diagnose clay wet SWKIMPL1 horizon
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, shutil
+          root=Path("build/tab-hyd-envelope-diagnostic")
+          srcs={
+              "analytic": root/"clay_wet_free__analytic_k1",
+              "table": root/"clay_wet_free__table_k1",
+          }
+          horizons=[
+              ("7d","2002-01-07"),
+              ("31d","2002-01-31"),
+              ("180d","2002-06-29"),
+              ("365d","2002-12-31"),
+          ]
+          for route, src in srcs.items():
+              for label, enddate in horizons:
+                  dst=root/f"clay_horizon__{route}__{label}"
+                  if dst.exists():
+                      shutil.rmtree(dst)
+                  shutil.copytree(src,dst)
+                  p=dst/"swap.swp"
+                  s=p.read_text()
+                  s,n=re.subn(
+                      r"(?m)^(\s*TEND\s*=\s*)\d{4}-\d{2}-\d{2}(.*)$",
+                      rf"\g<1>{enddate}\2",s,count=1
+                  )
+                  if n!=1:
+                      raise RuntimeError((route,label,"TEND not changed"))
+                  p.write_text(s)
+          PY
+
+          printf 'route\thorizon\treturn_code\truntime_seconds\trows\n' \
+            > build/tab-hyd-envelope-diagnostic/clay-horizon.tsv
+          for work in build/tab-hyd-envelope-diagnostic/clay_horizon__*; do
+            name=$(basename "$work")
+            route=$(echo "$name" | cut -d_ -f4)
+            horizon=$(echo "$name" | cut -d_ -f5)
+            if [ "$route" = analytic ]; then
+              binary="$GITHUB_WORKSPACE/swap-consistent-analytic"
+            else
+              binary="$GITHUB_WORKSPACE/swap-consistent-direct"
+            fi
+            pushd "$work" >/dev/null
+            rm -f result_output.csv horizon.log
+            set +e
+            /usr/bin/time -f '%e' -o horizon_runtime.txt \
+              timeout 20 "$binary" > horizon.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/horizon_runtime.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\t%s\n' "$route" "$horizon" "$rc" "$runtime" "$rows" \
+              | tee -a build/tab-hyd-envelope-diagnostic/clay-horizon.tsv
+          done
+
+      - name: Summarize diagnostic classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+
+          root=Path("build/tab-hyd-envelope-diagnostic")
+          rows=list(csv.DictReader((root/"status.tsv").open(),delimiter="\t"))
+          completed=[r for r in rows if r["return_code"]=="100"]
+          timed=[r for r in rows if r["return_code"]=="124"]
+          other=[r for r in rows if r["return_code"] not in {"100","124"}]
+
+          lines=[
+              "# TAB-HYD envelope failure diagnostic",
+              "",
+              "The preregistered broad envelope gate remains failed. This diagnostic does not relax it.",
+              "",
+              f"matrix_cases={len(rows)}",
+              f"completed={len(completed)}",
+              f"timeouts={len(timed)}",
+              f"other_failures={len(other)}",
+              "",
+              "## Matrix status",
+              (root/"status.tsv").read_text(),
+              "## Clay-wet SWKIMPL1 horizon ladder",
+              (root/"clay-horizon.tsv").read_text(),
+              "## Pair comparison availability",
+              (root/"comparison-status.tsv").read_text(),
+          ]
+          (root/"diagnostic-summary.md").write_text("\n".join(lines)+"\n")
+          print((root/"diagnostic-summary.md").read_text(),end="")
+          PY
+
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-envelope-failure-diagnostic
+          path: |
+            build/tab-hyd-envelope-diagnostic/status.tsv
+            build/tab-hyd-envelope-diagnostic/clay-horizon.tsv
+            build/tab-hyd-envelope-diagnostic/comparison-status.tsv
+            build/tab-hyd-envelope-diagnostic/comparisons.txt
+            build/tab-hyd-envelope-diagnostic/*comparison.json
+            build/tab-hyd-envelope-diagnostic/diagnostic-summary.md
+            build/tab-hyd-envelope-diagnostic/*/diagnostic.log
+            build/tab-hyd-envelope-diagnostic/clay_horizon__*/horizon.log
