@@ -1,0 +1,1345 @@
+{
+  "application_acceptance_adjudicated": false,
+  "decision": "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED",
+  "integrity": {
+    "all_members_complete": true,
+    "c4v_sign_and_reversal_reproduction": "PASS",
+    "maximum_water_ledger_cm": 3.3373304120232206e-13,
+    "pass": true
+  },
+  "interpretation_boundaries": [
+    "This is a post-C4V exposed diagnostic. It cannot alter the C4V decision or minimum persistent dimension.",
+    "No near-zero deadband or application tolerance is defined.",
+    "Percentile ranks are descriptive within-history magnitude context only.",
+    "No closure, partition, timestep, Reference trajectory or production source is changed."
+  ],
+  "mechanism_summary": {
+    "R12": {
+      "V03_candidate_reversal_steps": [],
+      "V03_first_mismatch": null,
+      "V03_mismatch_count": 0,
+      "V03_mismatch_reference_abs_q": {
+        "count": 0
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 0
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": []
+    },
+    "R16": {
+      "V03_candidate_reversal_steps": [],
+      "V03_first_mismatch": null,
+      "V03_mismatch_count": 0,
+      "V03_mismatch_reference_abs_q": {
+        "count": 0
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 0
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": []
+    },
+    "R4": {
+      "V03_candidate_reversal_steps": [
+        112
+      ],
+      "V03_first_mismatch": {
+        "candidate_q_cm_per_day": 0.0023057683225977676,
+        "day": 0.112,
+        "reference_abs_q_percentile_rank": 89.16015625,
+        "reference_q_cm_per_day": -0.9920365423070612,
+        "step": 112
+      },
+      "V03_mismatch_count": 913,
+      "V03_mismatch_reference_abs_q": {
+        "count": 913,
+        "max": 0.9920365423070612,
+        "mean": 0.45674716757767764,
+        "median": 0.399110683694914,
+        "min": 0.2654084269906613,
+        "p95": 0.837385957532887
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 913,
+        "max": 89.16015625,
+        "mean": 44.62890625,
+        "median": 44.62890625,
+        "min": 0.09765625,
+        "p95": 84.70703125
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": [
+        [
+          112,
+          1024
+        ]
+      ]
+    },
+    "R5": {
+      "V03_candidate_reversal_steps": [
+        295
+      ],
+      "V03_first_mismatch": {
+        "candidate_q_cm_per_day": 0.0001780656504655198,
+        "day": 0.295,
+        "reference_abs_q_percentile_rank": 71.2890625,
+        "reference_q_cm_per_day": -0.5955945920064204,
+        "step": 295
+      },
+      "V03_mismatch_count": 730,
+      "V03_mismatch_reference_abs_q": {
+        "count": 730,
+        "max": 0.5955945920064204,
+        "mean": 0.38254018666990935,
+        "median": 0.3617752104716484,
+        "min": 0.2654084269906613,
+        "p95": 0.5565586867206203
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 730,
+        "max": 71.2890625,
+        "mean": 35.693359375,
+        "median": 35.693359375,
+        "min": 0.09765625,
+        "p95": 67.7294921875
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": [
+        [
+          295,
+          1024
+        ]
+      ]
+    },
+    "R6": {
+      "V03_candidate_reversal_steps": [
+        629
+      ],
+      "V03_first_mismatch": {
+        "candidate_q_cm_per_day": 0.00031926096345841204,
+        "day": 0.629,
+        "reference_abs_q_percentile_rank": 38.671875,
+        "reference_q_cm_per_day": -0.37333402153905093,
+        "step": 629
+      },
+      "V03_mismatch_count": 396,
+      "V03_mismatch_reference_abs_q": {
+        "count": 396,
+        "max": 0.37333402153905093,
+        "mean": 0.31308537263537733,
+        "median": 0.309997856678734,
+        "min": 0.2654084269906613,
+        "p95": 0.36575846866426753
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 396,
+        "max": 38.671875,
+        "mean": 19.384765625,
+        "median": 19.384765625,
+        "min": 0.09765625,
+        "p95": 36.7431640625
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": [
+        [
+          629,
+          1024
+        ]
+      ]
+    },
+    "R8": {
+      "V03_candidate_reversal_steps": [],
+      "V03_first_mismatch": null,
+      "V03_mismatch_count": 0,
+      "V03_mismatch_reference_abs_q": {
+        "count": 0
+      },
+      "V03_mismatch_reference_abs_q_percentile_rank": {
+        "count": 0
+      },
+      "V03_reference_reversal_steps": [],
+      "V03_segments": []
+    }
+  },
+  "members": [
+    {
+      "dimension": 4,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.4014914127530371,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.03687856938371137,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.0023057683225977676,
+              "day": 0.112,
+              "reference_abs_q_percentile_rank": 89.16015625,
+              "reference_q_cm_per_day": -0.9920365423070612,
+              "step": 112
+            }
+          ],
+          "candidate_reversal_steps": [
+            112
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.47293399936706043,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.0023057683225977676,
+            "day": 0.112,
+            "reference_abs_q_percentile_rank": 89.16015625,
+            "reference_q_cm_per_day": -0.9920365423070612,
+            "step": 112
+          },
+          "last_mismatch_step": 1024,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 913,
+            "max": 0.5936888352741667,
+            "mean": 0.5169811650279593,
+            "median": 0.5358198061988785,
+            "min": 0.0023057683225977676,
+            "p95": 0.5927252475002824
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 913,
+            "max": 1.2207512177670576,
+            "mean": 0.9737283326056368,
+            "median": 0.9591129047426084,
+            "min": 0.7383424263577217,
+            "p95": 1.2152762342407697
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 913,
+            "max": 0.9920365423070612,
+            "mean": 0.45674716757767764,
+            "median": 0.399110683694914,
+            "min": 0.2654084269906613,
+            "p95": 0.837385957532887
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 913,
+            "max": 89.16015625,
+            "mean": 44.62890625,
+            "median": 44.62890625,
+            "min": 0.09765625,
+            "p95": 84.70703125
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 913,
+          "sign_mismatch_segments": [
+            [
+              112,
+              1024
+            ]
+          ]
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.29765539994413087,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 1.04473967227525,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.29765539994413087,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.29765539994413087,
+            "mean": 0.29765539994413087,
+            "median": 0.29765539994413087,
+            "min": 0.29765539994413087,
+            "p95": 0.29765539994413087
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.300572851575521,
+            "mean": 0.300572851575521,
+            "median": 0.300572851575521,
+            "min": 0.300572851575521,
+            "p95": 0.300572851575521
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R4",
+      "max_abs_water_ledger_cm": 2.509104035652854e-13,
+      "status": "QUALIFIED"
+    },
+    {
+      "dimension": 5,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.21397018213980235,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.024131424622788056,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.0001780656504655198,
+              "day": 0.295,
+              "reference_abs_q_percentile_rank": 71.2890625,
+              "reference_q_cm_per_day": -0.5955945920064204,
+              "step": 295
+            }
+          ],
+          "candidate_reversal_steps": [
+            295
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.3010077093489137,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.0001780656504655198,
+            "day": 0.295,
+            "reference_abs_q_percentile_rank": 71.2890625,
+            "reference_q_cm_per_day": -0.5955945920064204,
+            "step": 295
+          },
+          "last_mismatch_step": 1024,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 730,
+            "max": 0.3096406924019884,
+            "mean": 0.2599791010583287,
+            "median": 0.3015044367950772,
+            "min": 0.0001780656504655198,
+            "p95": 0.30954902189733685
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 730,
+            "max": 0.6891142617456033,
+            "mean": 0.642519287728238,
+            "median": 0.6490910684966131,
+            "min": 0.566416136339575,
+            "p95": 0.6886465173058638
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 730,
+            "max": 0.5955945920064204,
+            "mean": 0.38254018666990935,
+            "median": 0.3617752104716484,
+            "min": 0.2654084269906613,
+            "p95": 0.5565586867206203
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 730,
+            "max": 71.2890625,
+            "mean": 35.693359375,
+            "median": 35.693359375,
+            "min": 0.09765625,
+            "p95": 67.7294921875
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 730,
+          "sign_mismatch_segments": [
+            [
+              295,
+              1024
+            ]
+          ]
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.29320184729185006,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.7023041512228325,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.29320184729185006,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.29320184729185006,
+            "mean": 0.29320184729185006,
+            "median": 0.29320184729185006,
+            "min": 0.29320184729185006,
+            "p95": 0.29320184729185006
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.2961192989232402,
+            "mean": 0.2961192989232402,
+            "median": 0.2961192989232402,
+            "min": 0.2961192989232402,
+            "p95": 0.2961192989232402
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R5",
+      "max_abs_water_ledger_cm": 2.602362769721367e-13,
+      "status": "QUALIFIED"
+    },
+    {
+      "dimension": 6,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.8367103178920297,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.2084179681392111,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.00031926096345841204,
+              "day": 0.629,
+              "reference_abs_q_percentile_rank": 38.671875,
+              "reference_q_cm_per_day": -0.37333402153905093,
+              "step": 629
+            }
+          ],
+          "candidate_reversal_steps": [
+            629
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.14997503956044028,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.00031926096345841204,
+            "day": 0.629,
+            "reference_abs_q_percentile_rank": 38.671875,
+            "reference_q_cm_per_day": -0.37333402153905093,
+            "step": 629
+          },
+          "last_mismatch_step": 1024,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 396,
+            "max": 0.14997503956044028,
+            "mean": 0.09282208161693106,
+            "median": 0.10158351901812832,
+            "min": 0.00031926096345841204,
+            "p95": 0.14668353461696287
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 396,
+            "max": 0.41667953214822645,
+            "mean": 0.40590745425230845,
+            "median": 0.41158137569686226,
+            "min": 0.37365328250250934,
+            "p95": 0.4166512028832794
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 396,
+            "max": 0.37333402153905093,
+            "mean": 0.31308537263537733,
+            "median": 0.309997856678734,
+            "min": 0.2654084269906613,
+            "p95": 0.36575846866426753
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 396,
+            "max": 38.671875,
+            "mean": 19.384765625,
+            "median": 19.384765625,
+            "min": 0.09765625,
+            "p95": 36.7431640625
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 396,
+          "sign_mismatch_segments": [
+            [
+              629,
+              1024
+            ]
+          ]
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.2931491524705804,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.47788193406813995,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.2931491524705804,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.2931491524705804,
+            "mean": 0.2931491524705804,
+            "median": 0.2931491524705804,
+            "min": 0.2931491524705804,
+            "p95": 0.2931491524705804
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.2960666041019705,
+            "mean": 0.2960666041019705,
+            "median": 0.2960666041019705,
+            "min": 0.2960666041019705,
+            "p95": 0.2960666041019705
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R6",
+      "max_abs_water_ledger_cm": 3.3373304120232206e-13,
+      "status": "QUALIFIED"
+    },
+    {
+      "dimension": 8,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -1.3113520977251159,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.8013313248124392,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.17823202917954578,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.2931488366755432,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.28747793937331734,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.2931488366755432,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.2931488366755432,
+            "mean": 0.2931488366755432,
+            "median": 0.2931488366755432,
+            "min": 0.2931488366755432,
+            "p95": 0.2931488366755432
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.2960662883069333,
+            "mean": 0.2960662883069333,
+            "median": 0.2960662883069333,
+            "min": 0.2960662883069333,
+            "p95": 0.2960662883069333
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R8",
+      "max_abs_water_ledger_cm": 1.833533325168446e-13,
+      "status": "QUALIFIED"
+    },
+    {
+      "dimension": 12,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -1.311728445062402,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.8176786717610068,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.2652503823779356,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.2931488366675822,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.21756523804801464,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.2931488366675822,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.2931488366675822,
+            "mean": 0.2931488366675822,
+            "median": 0.2931488366675822,
+            "min": 0.2931488366675822,
+            "p95": 0.2931488366675822
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.2960662882989723,
+            "mean": 0.2960662882989723,
+            "median": 0.2960662882989723,
+            "min": 0.2960662882989723,
+            "p95": 0.2960662882989723
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R12",
+      "max_abs_water_ledger_cm": 9.314771176605063e-14,
+      "status": "QUALIFIED"
+    },
+    {
+      "dimension": 16,
+      "histories": {
+        "V01": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 19.36512682756586,
+            "mean": 3.6036143357597656,
+            "median": 2.495991624044789,
+            "min": 1.3142644003140473,
+            "p95": 9.938767403749077
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -1.3117280795251873,
+          "day_1p024_reference_q_cm_per_day": -1.3142644003140473,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V02": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 12.010893828545477,
+            "mean": 1.8647977000301053,
+            "median": 1.3719305476698185,
+            "min": 0.8184133635752224,
+            "p95": 4.600874569741362
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.8176779156445562,
+          "day_1p024_reference_q_cm_per_day": -0.8184133635752224,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V03": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 6.141281648233132,
+            "mean": 0.5861345907452674,
+            "median": 0.42634229530946716,
+            "min": 0.2654084269906613,
+            "p95": 1.3974320911959373
+          },
+          "candidate_reversal_detail": [],
+          "candidate_reversal_steps": [],
+          "day_1p024_candidate_q_cm_per_day": -0.26524889580820343,
+          "day_1p024_reference_q_cm_per_day": -0.2654084269906613,
+          "first_mismatch": null,
+          "last_mismatch_step": null,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 0
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 0
+          },
+          "reference_reversal_steps": [],
+          "sign_mismatch_count": 0,
+          "sign_mismatch_segments": []
+        },
+        "V04": {
+          "all_steps_abs_reference_q_cm_per_day": {
+            "count": 1024,
+            "max": 2.011697301746551,
+            "mean": 0.4085047039704971,
+            "median": 0.334900008390093,
+            "min": 0.002917451631390122,
+            "p95": 0.8649341255953391
+          },
+          "candidate_reversal_detail": [
+            {
+              "candidate_q_cm_per_day": 0.2931488366675822,
+              "day": 0.004,
+              "reference_abs_q_percentile_rank": 0.09765625,
+              "reference_q_cm_per_day": -0.002917451631390122,
+              "step": 4
+            }
+          ],
+          "candidate_reversal_steps": [
+            4
+          ],
+          "day_1p024_candidate_q_cm_per_day": 0.21690244973388603,
+          "day_1p024_reference_q_cm_per_day": 0.2170064471656258,
+          "first_mismatch": {
+            "candidate_q_cm_per_day": 0.2931488366675822,
+            "day": 0.004,
+            "reference_abs_q_percentile_rank": 0.09765625,
+            "reference_q_cm_per_day": -0.002917451631390122,
+            "step": 4
+          },
+          "last_mismatch_step": 4,
+          "mismatch_abs_candidate_q_cm_per_day": {
+            "count": 1,
+            "max": 0.2931488366675822,
+            "mean": 0.2931488366675822,
+            "median": 0.2931488366675822,
+            "min": 0.2931488366675822,
+            "p95": 0.2931488366675822
+          },
+          "mismatch_abs_flux_error_cm_per_day": {
+            "count": 1,
+            "max": 0.2960662882989723,
+            "mean": 0.2960662882989723,
+            "median": 0.2960662882989723,
+            "min": 0.2960662882989723,
+            "p95": 0.2960662882989723
+          },
+          "mismatch_abs_reference_q_cm_per_day": {
+            "count": 1,
+            "max": 0.002917451631390122,
+            "mean": 0.002917451631390122,
+            "median": 0.002917451631390122,
+            "min": 0.002917451631390122,
+            "p95": 0.002917451631390122
+          },
+          "mismatch_reference_abs_q_percentile_rank": {
+            "count": 1,
+            "max": 0.09765625,
+            "mean": 0.09765625,
+            "median": 0.09765625,
+            "min": 0.09765625,
+            "p95": 0.09765625
+          },
+          "reference_reversal_steps": [
+            5
+          ],
+          "sign_mismatch_count": 1,
+          "sign_mismatch_segments": [
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      "id": "R16",
+      "max_abs_water_ledger_cm": 1.2861933740282439e-13,
+      "status": "QUALIFIED"
+    }
+  ],
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4w.result.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C4W",
+  "workstream": "F-ROM-LARE"
+}

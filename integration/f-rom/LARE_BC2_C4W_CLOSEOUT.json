@@ -1,0 +1,151 @@
+{
+  "V03_reversal_magnitude": {
+    "R12": {
+      "candidate_reversal_steps": [],
+      "first_mismatch": null,
+      "mismatch_count": 0,
+      "reference_abs_q_over_mismatch": {
+        "count": 0
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 0
+      }
+    },
+    "R16": {
+      "candidate_reversal_steps": [],
+      "first_mismatch": null,
+      "mismatch_count": 0,
+      "reference_abs_q_over_mismatch": {
+        "count": 0
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 0
+      }
+    },
+    "R4": {
+      "candidate_reversal_steps": [
+        112
+      ],
+      "first_mismatch": {
+        "candidate_q_cm_per_day": 0.0023057683225977676,
+        "day": 0.112,
+        "reference_abs_q_percentile_rank": 89.16015625,
+        "reference_q_cm_per_day": -0.9920365423070612,
+        "step": 112
+      },
+      "mismatch_count": 913,
+      "reference_abs_q_over_mismatch": {
+        "count": 913,
+        "max": 0.9920365423070612,
+        "mean": 0.45674716757767764,
+        "median": 0.399110683694914,
+        "min": 0.2654084269906613,
+        "p95": 0.837385957532887
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 913,
+        "max": 89.16015625,
+        "mean": 44.62890625,
+        "median": 44.62890625,
+        "min": 0.09765625,
+        "p95": 84.70703125
+      }
+    },
+    "R5": {
+      "candidate_reversal_steps": [
+        295
+      ],
+      "first_mismatch": {
+        "candidate_q_cm_per_day": 0.0001780656504655198,
+        "day": 0.295,
+        "reference_abs_q_percentile_rank": 71.2890625,
+        "reference_q_cm_per_day": -0.5955945920064204,
+        "step": 295
+      },
+      "mismatch_count": 730,
+      "reference_abs_q_over_mismatch": {
+        "count": 730,
+        "max": 0.5955945920064204,
+        "mean": 0.38254018666990935,
+        "median": 0.3617752104716484,
+        "min": 0.2654084269906613,
+        "p95": 0.5565586867206203
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 730,
+        "max": 71.2890625,
+        "mean": 35.693359375,
+        "median": 35.693359375,
+        "min": 0.09765625,
+        "p95": 67.7294921875
+      }
+    },
+    "R6": {
+      "candidate_reversal_steps": [
+        629
+      ],
+      "first_mismatch": {
+        "candidate_q_cm_per_day": 0.00031926096345841204,
+        "day": 0.629,
+        "reference_abs_q_percentile_rank": 38.671875,
+        "reference_q_cm_per_day": -0.37333402153905093,
+        "step": 629
+      },
+      "mismatch_count": 396,
+      "reference_abs_q_over_mismatch": {
+        "count": 396,
+        "max": 0.37333402153905093,
+        "mean": 0.31308537263537733,
+        "median": 0.309997856678734,
+        "min": 0.2654084269906613,
+        "p95": 0.36575846866426753
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 396,
+        "max": 38.671875,
+        "mean": 19.384765625,
+        "median": 19.384765625,
+        "min": 0.09765625,
+        "p95": 36.7431640625
+      }
+    },
+    "R8": {
+      "candidate_reversal_steps": [],
+      "first_mismatch": null,
+      "mismatch_count": 0,
+      "reference_abs_q_over_mismatch": {
+        "count": 0
+      },
+      "reference_abs_q_percentile_rank_over_mismatch": {
+        "count": 0
+      }
+    }
+  },
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:f8a7e03d8c6ecac6fee1af0457b3f106bc7881f8d873abfdcbdced0103ba8648",
+    "artifact_id": 10599418376,
+    "execution_head": "6369fbf71ebb05e57c76ce902ea6a28c471db148",
+    "result_sha256": "57083e95228c96b6ec1c66474c315cfb0a7acd90266d838625984f29ee70cac2",
+    "superseded_reason": "history-series indexing bug fixed without scientific change",
+    "superseded_technical_run": 35493851517,
+    "workflow_run": 35493886557
+  },
+  "decision": "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED",
+  "model_changed": false,
+  "next_authority": "INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER",
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4w.closeout.v1",
+  "scientific_interpretation": [
+    "The long-horizon V03 sign failures of R4, R5 and R6 are not confined to an arbitrary near-zero-flux neighborhood.",
+    "At first mismatch the Reference bottom flux is about -0.992, -0.596 and -0.373 cm/d for R4, R5 and R6 respectively; the wrong-sign segments then persist to step 1024.",
+    "R8, R12 and the R16 LARE control have no V03 sign mismatch, supporting C4V minimum R8 without introducing a deadband.",
+    "The V04 one-step early reversal remains distinct: it occurs where the Reference flux is near zero and is retained only as timing context, not reclassified.",
+    "C4W is descriptive mechanism context. It does not alter C4V, authorize closure retuning, set application tolerance, or admit production use."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED_TRANSFER_AXIS_NEXT",
+  "work_unit": "LARE-BC2-C4W",
+  "workstream": "F-ROM-LARE"
+}
