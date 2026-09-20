@@ -1,0 +1,229 @@
+{
+  "schema": "swap5.layer-rom.phase-b1h.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1H",
+  "decision": "B1H_TRANSFER_PANEL_CHARACTERIZED_PLACEMENT_TRANSFERS_DIMENSION_ORDER_NOT_UNIVERSAL",
+  "execution": {
+    "workflow_run": 35495947476,
+    "executed_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "conclusion": "success",
+    "aggregate_artifact_id": 10600374489,
+    "aggregate_artifact_digest": "sha256:ca2197a7cb4e7479e39a097d5652916582e473e6500dbe7be6a810d65ddf6852",
+    "raw_aggregate_result_sha256": "7dfa874c4afbd495031ed19b44b84a7a9e4f3cb5f2cce9674990872a8a4b0a67"
+  },
+  "materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "integrity": {
+    "all_six_reference_runs_qualified": true,
+    "all_six_material_transfer_runs_qualified": true,
+    "O0_O2_reference_identity_required_and_passed": true,
+    "new_material_selection_response_independent": true
+  },
+  "placement_support": {
+    "dimension4": {
+      "supported_materials": [
+        "B02",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "not_supported": [
+        "B05"
+      ],
+      "support_count": 5,
+      "material_count": 6
+    },
+    "dimension8": {
+      "supported_materials": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "not_supported": [],
+      "support_count": 6,
+      "material_count": 6
+    }
+  },
+  "targeted_dimension_monotonicity": {
+    "fully_componentwise_monotone_L4_L6_R8": [
+      "B05",
+      "B06",
+      "B11",
+      "B12"
+    ],
+    "nonmonotone": {
+      "B02": "R8 improves bottom-flux RMSE and mapped-theta RMSE over L6 but slightly worsens cumulative-bottom/storage RMSE.",
+      "B16": "L6 and R8 improve bottom-flux and mapped-theta RMSE over L4, while cumulative-bottom/storage RMSE increase slightly; R8 repeats the same tradeoff versus L6."
+    }
+  },
+  "selected_day1_vectors": {
+    "B02": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 0.7176642529011472,
+        "cumulative_bottom_rmse_cm": 0.20652280291691594,
+        "mapped_theta_rmse": 0.030017485461855776
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 0.07914114617986426,
+        "cumulative_bottom_rmse_cm": 0.00906594851506782,
+        "mapped_theta_rmse": 0.009818792659615503
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 0.07793239872946985,
+        "cumulative_bottom_rmse_cm": 0.009127849745731465,
+        "mapped_theta_rmse": 0.004518614532228374
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 0.07793238364494019,
+        "cumulative_bottom_rmse_cm": 0.009127872189962298,
+        "mapped_theta_rmse": 0.00015773726368909814
+      }
+    },
+    "B05": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 2.2554483144062334,
+        "cumulative_bottom_rmse_cm": 1.2407564994427585,
+        "mapped_theta_rmse": 0.023791469940953283,
+        "bottom_flux_sign_errors": 482
+      },
+      "U4": {
+        "bottom_flux_rmse_cm_per_day": 1.141650022516428,
+        "cumulative_bottom_rmse_cm": 0.2870449752907529,
+        "mapped_theta_rmse": 0.02409033584921108,
+        "bottom_flux_sign_errors": 99
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 0.3438136512803302,
+        "cumulative_bottom_rmse_cm": 0.16507897298858937,
+        "mapped_theta_rmse": 0.013084019104285043,
+        "bottom_flux_sign_errors": 69
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 0.08597890935104484,
+        "cumulative_bottom_rmse_cm": 0.03284524676930012,
+        "mapped_theta_rmse": 0.008048721960064549,
+        "bottom_flux_sign_errors": 0
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 0.023559926605436054,
+        "cumulative_bottom_rmse_cm": 0.0005584688838501917,
+        "mapped_theta_rmse": 0.00000969778854658786,
+        "bottom_flux_sign_errors": 1
+      }
+    },
+    "B06": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 2.172236041338654,
+        "cumulative_bottom_rmse_cm": 0.9325097472306386,
+        "mapped_theta_rmse": 0.034519541779720726
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 0.29249776271902017,
+        "cumulative_bottom_rmse_cm": 0.049071880455976116,
+        "mapped_theta_rmse": 0.01641808579975893
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 0.11120862118647286,
+        "cumulative_bottom_rmse_cm": 0.015619644019509315,
+        "mapped_theta_rmse": 0.005370449932382276
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 0.10542646834723658,
+        "cumulative_bottom_rmse_cm": 0.016314981683473073,
+        "mapped_theta_rmse": 0.00020854236156421404
+      }
+    },
+    "B11": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 0.000003662965260715914,
+        "cumulative_bottom_rmse_cm": 0.0000016441446203118205,
+        "mapped_theta_rmse": 0.00821087751031811
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 0.000003650208408000394,
+        "cumulative_bottom_rmse_cm": 0.0000016406765513235217,
+        "mapped_theta_rmse": 0.004397755113293486
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 0.0000036502081535010704,
+        "cumulative_bottom_rmse_cm": 0.0000016406765002649668,
+        "mapped_theta_rmse": 0.002229717510931854
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 0.0000036502081535033337,
+        "cumulative_bottom_rmse_cm": 0.0000016406765002643055,
+        "mapped_theta_rmse": 8.790505427707888e-8
+      }
+    },
+    "B12": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 3.538456260250598e-8,
+        "cumulative_bottom_rmse_cm": 1.620082751120594e-8,
+        "mapped_theta_rmse": 0.00623901899966647
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 3.538361726836628e-8,
+        "cumulative_bottom_rmse_cm": 1.6200552119870065e-8,
+        "mapped_theta_rmse": 0.0033628804075088196
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 3.538361726836628e-8,
+        "cumulative_bottom_rmse_cm": 1.6200552119870065e-8,
+        "mapped_theta_rmse": 0.001724679148233066
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 3.538361726836628e-8,
+        "cumulative_bottom_rmse_cm": 1.6200552119870065e-8,
+        "mapped_theta_rmse": 1.2788693174694974e-9
+      }
+    },
+    "B16": {
+      "L4": {
+        "bottom_flux_rmse_cm_per_day": 0.00909371821010473,
+        "cumulative_bottom_rmse_cm": 0.001810403032650742,
+        "mapped_theta_rmse": 0.02876781702908463
+      },
+      "L6": {
+        "bottom_flux_rmse_cm_per_day": 0.0032551679945793575,
+        "cumulative_bottom_rmse_cm": 0.0019479132825730137,
+        "mapped_theta_rmse": 0.014537924088656078
+      },
+      "R8": {
+        "bottom_flux_rmse_cm_per_day": 0.003253036389002442,
+        "cumulative_bottom_rmse_cm": 0.0019498659196033445,
+        "mapped_theta_rmse": 0.007051880137613655
+      },
+      "R16_OP": {
+        "bottom_flux_rmse_cm_per_day": 0.003253033488428352,
+        "cumulative_bottom_rmse_cm": 0.0019498674955578169,
+        "mapped_theta_rmse": 0.000028677195867684617
+      }
+    }
+  },
+  "interpretation": [
+    "Targeted lower-zone placement transfers strongly but not absolutely: it is componentwise supported on five of six prospective materials at dimension four and all six at dimension eight.",
+    "B05 is a real counterexample to a universal four-layer placement rule: U4 has markedly smaller bottom-flux and cumulative-exchange error than L4, although L4 has slightly smaller mapped-profile RMSE. By the frozen vector L4 is therefore not componentwise supported on B05.",
+    "The L4-L6-R8 targeted ladder is fully componentwise monotone on four of six materials. B02 and B16 exhibit an output tradeoff in which greater dimension improves bottom-flux and profile fidelity but slightly worsens cumulative exchange/storage.",
+    "Several materials reach an R16-operator exchange-error floor by L6 or R8, while mapped-profile error continues to decrease with dimension. This reinforces purpose-dependent dimension selection.",
+    "B05 remains structurally difficult even at R8: R8 improves strongly over L4/L6 and U8 but remains above the R16-operator floor, so its residual should be decomposed with same-partition CoRichards before any closure retuning."
+  ],
+  "next": "Preregister same-partition CoRichards qualification on the exact frozen B1H material/history set, prioritizing L4/L6/R8, to separate Richards spatial-discretization error from Layer-ROM closure/model-form error.",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_POST_RESPONSE_PARTITION_RETUNING",
+    "NO_NEW_CLOSURE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
