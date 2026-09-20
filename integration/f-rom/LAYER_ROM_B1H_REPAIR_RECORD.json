@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.layer-rom.phase-b1h.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1H",
+  "failed_run": {
+    "workflow_run": 35495719330,
+    "executed_head": "bf80806f245104249d7c57b61f7542b65b894eca",
+    "conclusion": "failure",
+    "failed_step": "Assert research-only source freeze and recover pinned basis",
+    "response_generated": false,
+    "material_preflight_executed": false,
+    "scientific_result_generated": false
+  },
+  "diagnosis": {
+    "class": "TECHNICAL_GOVERNANCE_CHECK_ONLY",
+    "issue": "The source-freeze guard used triple-dot diff against current canonical on a branch whose history diverged from canonical, so it inspected branch-only ancestry rather than net tree differences.",
+    "direct_tree_reconciliation": "GitHub direct compare current canonical -> Layer-ROM branch reports no src/** or reference/** differences.",
+    "pinned_basis_blob_checks": "The D13 base, C4V analyzer and BC1 runner blob SHAs match their declared provenance."
+  },
+  "repair": {
+    "change": "Replace triple-dot source-freeze diff with direct two-tree diff: git diff --quiet <canonical> HEAD -- src reference.",
+    "scientific_design_changed": false,
+    "material_panel_changed": false,
+    "initial_state_scaling_changed": false,
+    "partitions_changed": false,
+    "closure_changed": false,
+    "response_vector_changed": false,
+    "threshold_changed": false,
+    "prospective_integrity": "No new B1H material preflight or Reference response ran before the repair."
+  },
+  "rerun_required": true,
+  "production_rom_authorized": false
+}
