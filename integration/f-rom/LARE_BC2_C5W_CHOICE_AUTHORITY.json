@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.lare.bc2.c5w.scientific-choice-authority.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5W",
+  "status": "P0_UNIFORM_STORAGE_TENDENCY_SELECTED_AS_PROSPECTIVE_MINIMUM_STRUCTURE_HYPOTHESIS",
+  "decision": "SELECT_P0_FOR_READ_ONLY_MATHEMATICAL_AND_NUMERICAL_ADMISSIBILITY_QUALIFICATION_BEFORE_ANY_HYDROLOGICAL_RESPONSE",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "trigger_status": "CLOSED_STORAGE_ONLY_SCAFP_NOT_UNIQUELY_DERIVABLE_SUBGRID_TENDENCY_ANSATZ_CHOICE_REQUIRED",
+    "existing_choice_boundary": "SCAFP_SUBGRID_PROFILE_ANSATZ",
+    "hydrological_response_used_for_choice": false,
+    "model_run_used_for_choice": false,
+    "C5R_C5T_residual_fit_used": false
+  },
+  "explicit_scientific_choice": {
+    "selected": "P0_UNIFORM_STORAGE_TENDENCY",
+    "claim_level": "RESEARCH_HYPOTHESIS_ONLY",
+    "not_claimed": [
+      "P0 is uniquely implied by Richards physics.",
+      "P0 is the physically correct unresolved subgrid profile.",
+      "P0 will improve C5R/C5N high-resolution error.",
+      "P0 is production-ready."
+    ],
+    "selection_principle": "MINIMUM_ADDITIONAL_STRUCTURE_ALIGNED_WITH_RETAINED_CONSERVATIVE_STATE",
+    "rationale": [
+      "The only retained dynamic variable per layer is integrated water storage S_i. P0 projects the unresolved local storage tendency dtheta/dt onto the same lowest-order constant basis within that layer.",
+      "The exact layer balance dS_i/dt=q_top-q_bottom is preserved and unequal transient face fluxes are allowed.",
+      "No fitted coefficient, transform parameter, polynomial coordinate or new dynamic shape state is introduced.",
+      "Quadratic-pressure and transformed-potential profiles require an additional structural choice of reconstruction coordinate/order that is not selected by the retained storage state.",
+      "P0 is therefore the least-assumptive prospectively testable member of the admissible SCAFP families, not an evidence-fitted winner."
+    ]
+  },
+  "independent_literature_due_diligence": [
+    {
+      "reference": "Celia, Bouloutas & Zarba (1990), Water Resources Research 26(7), 1483-1496, doi:10.1029/WR026i007p01483",
+      "relevance": "Mixed-form Richards discretization is mass conservative and emphasizes that treatment of the time/storage term is critical.",
+      "limitation": "Does not derive the C5W P0 subgrid ansatz."
+    },
+    {
+      "reference": "Morton & Sonar (2007), Acta Numerica 16, 155-238, doi:10.1017/S0962492906300013",
+      "relevance": "Finite-volume methods evolve cell-average conservative quantities; the lowest-order projection is piecewise constant.",
+      "limitation": "General finite-volume theory, not a Richards-specific proof of uniform within-layer dtheta/dt."
+    },
+    {
+      "reference": "Manzini & Ferraris (2004), Advances in Water Resources 27(12), 1199-1215, doi:10.1016/j.advwatres.2004.08.008",
+      "relevance": "Richards equation can be formulated with mass-conservative cell-centered finite volumes.",
+      "limitation": "Does not uniquely prescribe the reduced-order subgrid profile."
+    },
+    {
+      "reference": "Finite-volume predictor-corrector 1D Richards study, Journal of Hydrology (2015), S0022169415000700",
+      "relevance": "Cell-centered control-volume integration and explicit attention to mass conservation/intercell fluxes are standard Richards numerics.",
+      "limitation": "Not an argument that P0 is uniquely correct."
+    }
+  ],
+  "mathematical_basis_for_next_qualification": {
+    "within_layer": [
+      "Let xi=z/d in [0,1].",
+      "Assume dtheta/dt = sigma_i = (q_top-q_bottom)/d_i.",
+      "Then q(xi)=(1-xi) q_top + xi q_bottom.",
+      "Darcy in the reduced convention gives dpsi/dz=q(z)/K(psi)-1.",
+      "Storage closure requires S_i=integral_0^d theta(psi(z)) dz."
+    ],
+    "layer_local_monotonicity_argument": [
+      "For fixed top-face psi and q_top, treat q_bottom as the scalar shooting variable.",
+      "Sensitivity y=dpsi/dq_bottom satisfies a linear variational ODE with positive forcing xi/K(psi) when K>0 and y(0)=0, hence y(z)>0 on an admissible unsaturated trajectory.",
+      "For the unsaturated retention branch theta'(psi)<0, so d/dq_bottom integral theta(psi(z)) dz < 0.",
+      "Therefore the layer-storage shooting residual is strictly monotone in q_bottom wherever the trajectory stays inside the admissible constitutive domain; at most one layer-local q_bottom root exists."
+    ],
+    "unresolved_before_hydrological_test": [
+      "Existence/bracketing of the layer-local root across the intended state domain.",
+      "Admissibility of trajectories near saturation/dry limits.",
+      "Monotonicity and uniqueness of the full-column outer map for prescribed top flux plus prescribed bottom head.",
+      "Conditioning and numerical robustness without response-derived bracket/tolerance tuning."
+    ]
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5W",
+    "state": "P0_MATHEMATICAL_NUMERICAL_ADMISSIBILITY_QUALIFICATION_AUTHORIZED",
+    "no_hydrological_response_until_qualified": true
+  },
+  "scientific_firewall": {
+    "P0_selected_as_hypothesis": true,
+    "P0_declared_unique_physics": false,
+    "hydrological_response_authorized": false,
+    "free_running_closure_authorized": false,
+    "production_reference_changed": false,
+    "new_dynamic_state_added": false,
+    "scalar_tuning_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
