@@ -373,3 +373,46 @@ See:
 - `ENVELOPE_GATE_RESULT.md`;
 - `ENVELOPE_DIAGNOSTIC_RESULT.md`;
 - `TAB-HYD-004-ksat-clamp-discontinuity.md`.
+
+
+### 14. 400-row log-head branch-aware candidate closes the K0 transfer gap
+
+The failed 250-row transfer candidate was decomposed further rather than repaired by relaxing the preregistered acceptance limits.
+
+A direct constitutive profile using the actual public hydraulic wrappers and TSPACK evaluator showed that the 250-row log-head branch-aware tables already reproduce the forward hydraulic functions closely over ordinary pressure-head ranges. For B12, maximum relative K error was about `1.46e-4`; the largest C mismatch was concentrated at the extreme wet endpoint. Preserving the analytical linear wet theta/C branch explicitly improved the loam-mid K0 application result from about `0.01858 cm` to `0.00168 cm` maximum GWL difference, but did not remove the B12/O13 clay failure. Thus the wet endpoint policy was a real discrepancy, but not the sole clay mechanism.
+
+A dedicated B12/O13 density sweep then held the branch semantics fixed and varied only the number of log-head knots. The full-period clay-wet K0 result was strongly non-monotone at insufficient resolution because small constitutive differences could cross coupled model thresholds:
+
+| rows | GWL max abs (cm) | GWL RMSE (cm) |
+| ---: | ---: | ---: |
+| 100 | 0.33073 | 0.0108339 |
+| 150 | 32.72104 | 1.90803 |
+| 250 | 12.63591 | 1.06518 |
+| 400 | 0.00065 | 1.966e-5 |
+| 600 | 0.00011 | 3.431e-6 |
+| 900 | 0.00003 | 1.130e-6 |
+
+At 400 rows and above, the previous coupled EPOT/EACT/TACT divergence disappeared at written output precision. This demonstrates that the large 150-250 row application errors were not evidence of a fundamental inability of tabulated hydraulics to represent the heavy-clay regime. They were a resolution-sensitive threshold amplification.
+
+The 400-row candidate was then rerun through the same five-scenario transfer envelope without changing the original fidelity limits. All five K0 scenario pairs passed, as did the two bounded coarse-soil K1 controls that are executable within the present envelope harness.
+
+Selected K0 maximum GWL differences were:
+
+- coarse-dry free drainage: `1e-5 cm`;
+- loam-mid free drainage: `0.00160 cm`;
+- clay-wet free drainage: `0.00065 cm`;
+- coarse-dry infiltration pulse: `1e-5 cm`;
+- loam capillary rise: `0 cm`.
+
+For the clay-wet case, maximum drainage difference was about `1e-10 cm`, maximum DSTOR difference `1e-5 cm`, and TACT matched at written precision. The transfer gate reported `fidelity_failures=0`.
+
+This establishes the current post-failure representation candidate as:
+
+1. 400 generated rows;
+2. knots uniform in `log10(-h)` from the dry bound to the generated K-branch threshold;
+3. explicit Ksat plateau rather than a spline across the finite K jump;
+4. zero dK/dh on the constant K plateau;
+5. explicit preservation of the analytical wet theta/C branch;
+6. unchanged TSPACK interpolation within the continuous branches.
+
+The result is a **research transfer qualification**, not a production admission. The stock lookup path remains slower than analytical MvG in these runs, so acceleration still depends on replacing the legacy interval lookup without changing the now-qualified representation.
