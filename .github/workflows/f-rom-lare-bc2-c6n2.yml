@@ -1,0 +1,132 @@
+name: F-ROM-LARE BC2-C6N2 prospective surface candidate comparison
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6n2-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+        member: [R3, R4, R5, R6, R8, R12, R16, P4_TOP_LOWER, U4, U8]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen C6N2 authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json)" = "5ffebcbcffff0ac8110746baf0349c9a7f1a43e8"
+          test "$(git hash-object tests/rom/run_lare_bc2_c6n2_surface_candidate.py)" = "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py)" = "ef552ec75c99177a59f2aaf0ea3961c9ef53892a"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json'))
+          assert p['phase']=='SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6N1_RESULT_EXECUTION_BLOCKED'
+          assert b['status']=='BOUND_AFTER_C6N1_QUALIFICATION_BEFORE_CANDIDATE_RESPONSE'
+          assert b['scientific_authority']['C6N1_qualified'] is True
+          assert c['status']=='CLOSED_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED_C6N2_AUTHORIZED'
+          assert c['decision']=='AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_COMPARISON'
+          assert c['scientific_firewall']['candidate_response_generated'] is False
+          print('C6N2_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute frozen existing representation
+        run: |
+          set -euo pipefail
+          mkdir -p candidate
+          python3 tests/rom/run_lare_bc2_c6n2_surface_candidate.py \
+            --material "${{ matrix.material }}" \
+            --member "${{ matrix.member }}" \
+            --prereg integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json \
+            --c6n1-closeout integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json \
+            --output "candidate/${{ matrix.material }}_${{ matrix.member }}.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n2-${{ matrix.material }}-${{ matrix.member }}
+          path: candidate/
+          if-no-files-found: error
+
+  analyze:
+    needs: candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download C6N2 candidate payloads
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c6n2-*
+          path: /tmp/c6n2
+          merge-multiple: true
+
+      - name: Recover exact C6N1 R2048_T32 Reference slices
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          runid="$(python3 - <<'PY'
+          import json
+          print(json.load(open('integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json'))['scientific_authority']['C6N1_authority_run'])
+          PY
+          )"
+          mkdir -p /tmp/c6n1 /tmp/reference
+          gh run download "$runid" -p 'c6n1c-*' -D /tmp/c6n1
+          for material in B01 B14; do
+            full="/tmp/reference/${material}_R2048_T32_o0.txt"
+            : > "$full"
+            for history in U01 U02 U03 U04; do
+              part="$(find /tmp/c6n1 -type f -path "*c6n1c-${material}-R2048_T32-${history}*" -name "${material}_R2048_T32_o0_${history}.txt" -print -quit)"
+              test -n "$part"
+              cat "$part" >> "$full"
+            done
+          done
+
+      - name: Execute frozen C6N2 classification
+        run: |
+          set -euo pipefail
+          mkdir -p C6N2_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py \
+            --prereg integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json \
+            --c6n1-result integration/f-rom/LARE_BC2_C6N1_RESULT.json \
+            --b01-reference /tmp/reference/B01_R2048_T32_o0.txt \
+            --b14-reference /tmp/reference/B14_R2048_T32_o0.txt \
+            --candidate-dir /tmp/c6n2 \
+            --output C6N2_EVIDENCE/LARE_BC2_C6N2_RESULT.json \
+            | tee C6N2_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json C6N2_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json C6N2_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json C6N2_EVIDENCE/
+          sha256sum C6N2_EVIDENCE/* > C6N2_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6n2
+          path: C6N2_EVIDENCE/
+          if-no-files-found: error
