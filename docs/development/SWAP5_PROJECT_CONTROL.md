@@ -1,7 +1,7 @@
 # SWAP5 Project Control
 
 **Work unit:** PROJECT-CONTROL-01  
-**Control snapshot:** `integration/f-ci-canonical@09b6d0415fee3c63c71ecd11b215fe0d206e05ae`  
+**Control snapshot:** `integration/f-ci-canonical@5cb2fdfe00397dcfa38b3abc8a8afef062663f73`  
 **Date:** 2026-09-20  
 **Machine-readable authority:** `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
 
@@ -33,14 +33,14 @@ Central regie owns canonical admission, cross-workstream supersession, shared-au
 
 | Workstream | State | Current authority / finding | Next gate |
 |---|---|---|---|
-| REGIE | ACTIVE | canonical snapshot `09b6d04`; PR #58 remains the intentional carrier; #72/#163/#172 are reconciliation debt | Process live admissions first; otherwise reconcile #72, then #163/#172 in bounded slices |
+| REGIE | ACTIVE | canonical snapshot `5cb2fdf`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; #72/#163/#172 are reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #72, then #163/#172 |
 | PPA production physics | ACTIVE | WU04-A Black, ROOT-HYD02 prescribed-root tangent and WU04-B Boesten are already merged to canonical; WU05-A/C are review-only authority | Production owner selects the next source-authorized bounded slice; no inference from review authority to production |
-| F-GC groundwater coupling | BLOCKED_EXTERNAL | F-GC50 is internally ready; PPA-WU01 resolved the former internal bootstrap blocker | Wait for a real authorized upstream iMOD Coupler driver/config extension route |
+| F-GC groundwater coupling | ACTIVE | F-GC50 remains externally blocked at product integration, while PR #486 is an active noncanonical coupling-semantics/application-authority repair | Let #486 finish owner qualification, then reconcile shared production/coupling/publication consequences before admission |
 | F-ROM / LARE | BLOCKED_EXTERNAL | D31 confirms official M2WC70 archive metadata but cannot materialize the implementation oracle; D28 native-ET blocker also remains | Materialize acceptable FMC implementation authority or narrow/close the affected proposition |
 | HYDRO-MEMORY | ACTIVE | live root-active SWAP-MODFLOW6 passed one window and four consecutive windows; DYN01 forcing + state-dependent Feddes composition passed | Stage 0 remains unauthorized; continue remaining dynamic composition and soil/diagnostic freeze under research ownership |
 | DIFFICULTY | OWNER_CONTROLLED | Phase-0 preregistration exists in PR #365 | Continue prospective research; independent nonlinear-method comparison remains separately gated |
 | TRACE | ACTIVE | protocol, candidate register, Batch 02 closeout and Batch 03 are canonical | Continue prospectively; feed only shared governance implications back to regie |
-| Publications | OWNER_CONTROLLED | PUB-GC E7 remains closed as a realistic component-domain limit; later research evidence does not itself widen production ownership | Reconcile publication tooling to current canonical; explicit archive/release metadata remains separate |
+| Publications | OWNER_CONTROLLED | canonical E7 still carries the prior component-domain result, but PR #486 places that interpretation under semantic review and holds submission if admitted | Reconcile publication tooling to current canonical and coupling authority; explicit archive/release metadata remains separate |
 
 ## Important current distinctions
 
@@ -63,9 +63,15 @@ Advanced WU05 families remain different:
 
 ### Groundwater coupling
 
-F-GC50 is not waiting on another internal SWAP5 architecture redesign. Its current state is `CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED`. The remaining product-integration blocker is external: a real iMOD Coupler driver/config registration route requires upstream mutation/extension authority.
+There are now two separate coupling control questions and they must not be conflated.
 
-HYDRO-MEMORY live coupling evidence does not remove this product-integration boundary.
+**F-GC50 product integration** remains canonically `CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED`: the remaining product-integration blocker is an authorized upstream iMOD Coupler driver/config extension route.
+
+**PR #486 F-GC CSR** is a newer, noncanonical shared-authority repair candidate. Its authority audit identifies a distinct interpretation/application-binding defect: `SWBOTB=5` is prescribed pressure head at the lower SWAP boundary and may be used privately by the Reference backend to realize a trial interface head, but it is not itself the application-level authority for coupled groundwater. The candidate introduces explicit `groundwater_coupled` application authority and removes the application-level dependence on `bottom_mode==5`.
+
+PR #486 is still in `CSR01_CSR02_IMPLEMENTED_QUALIFICATION_IN_PROGRESS`. It changes production source and therefore is not admitted by this control workstream. Its branch explicitly holds PUB-GC submission and requires coupling-assumption-dependent E6/E7 requalification if the repair is admitted. No Hupsel rerun is authorized by the candidate itself.
+
+HYDRO-MEMORY live coupling evidence does not by itself settle either the F-GC50 product-integration boundary or the PR #486 semantic repair.
 
 ### ROM
 
@@ -93,6 +99,10 @@ Canonical now contains:
 This is substantial research capability evidence, but **Stage 0 is still not authorized** and this research route does not silently widen the production application owner.
 
 ## Open PR routing
+
+### Shared-authority watch
+
+- **#486 F-GC CSR** is the current highest-priority shared-authority watch item. It is not yet canonical and remains in owner qualification. If qualification succeeds, central regie must reconcile its production-application, coupling-semantics and PUB-GC consequences before admission. It must not be treated as a mere F-GC50 product-integration continuation.
 
 ### Central reconciliation queue
 
@@ -153,7 +163,7 @@ Every specialized chat should begin with the same four operations:
 
 ### Groundwater coupling continuation header
 
-> Continue F-GC from live canonical and the PROJECT-CONTROL registry. Treat F-GC50 as internally ready and externally blocked unless upstream product authority has changed. Do not invent a local iMOD Coupler product loop or transfer SWAP/FMR state ownership to Python. Return only genuinely new product-integration authority to central regie.
+> Continue F-GC from live canonical and the PROJECT-CONTROL registry. Keep F-GC50 product integration separate from PR #486 coupling-semantics repair. For #486, preserve the distinction between application-level `groundwater_coupled` authority and private Reference `SWBOTB=5` trial realization, finish owner qualification, and return the shared production/coupling/publication admission decision to central regie. Do not invent a local iMOD Coupler product loop or transfer SWAP/FMR state ownership to Python.
 
 ### ROM continuation header
 
@@ -169,6 +179,6 @@ Every specialized chat should begin with the same four operations:
 
 ## Default next action for central regie
 
-When no specialized workstream has a genuinely admission-ready successor, the next safe control task is **#72 governance reconciliation**, followed by #163 and #172. Each should be recomposed against current canonical rather than replaying an old branch.
+PR **#486** is the current shared-authority watch and takes precedence once its owner qualification is complete. While it is still qualifying, the next safe central housekeeping task remains **#72 governance reconciliation**, followed by #163 and #172. Each old governance/evidence PR should be recomposed against current canonical rather than replaying an old branch.
 
 This ordering is a routing decision, not a scientific priority ranking.
