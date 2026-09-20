@@ -9,6 +9,7 @@ module mod_research_direct_table_provider
      integer :: active_nodes = 0
      integer :: n_points = 0
      real(real64) :: h_min = 0.0_real64
+     real(real64) :: h_scale = 1.0_real64
      real(real64) :: x_min = 0.0_real64
      real(real64) :: dx = 0.0_real64
      real(real64), allocatable :: theta(:,:)
@@ -17,6 +18,7 @@ module mod_research_direct_table_provider
      real(real64), allocatable :: theta_slope(:,:)
      real(real64), allocatable :: logk_slope(:,:)
      real(real64), allocatable :: logc_slope(:,:)
+     real(real64), allocatable :: saturated_capacity(:)
   end type direct_table_storage_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: direct_table_provider_t
@@ -30,33 +32,37 @@ module mod_research_direct_table_provider
 
 contains
 
-  subroutine build_direct_table_from_provider(table, source, active_nodes, n_points, h_min)
+  subroutine build_direct_table_from_provider(table, source, active_nodes, n_points, h_min, h_scale)
     type(direct_table_storage_t), intent(out) :: table
     class(constitutive_hydraulics_provider_t), intent(in) :: source
     integer, intent(in) :: active_nodes, n_points
-    real(real64), intent(in) :: h_min
+    real(real64), intent(in) :: h_min, h_scale
 
     real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64), allocatable :: x(:)
-    real(real64) :: xj, hj, tiny_positive
+    real(real64) :: xj, hj, tiny_positive, negative_endpoint_head
     integer :: i, j
 
     if (active_nodes <= 0) error stop 'TAB-HYD SWAP5 table: active_nodes must be positive'
     if (n_points < 4) error stop 'TAB-HYD SWAP5 table: n_points must be at least four'
     if (.not. ieee_is_finite(h_min) .or. h_min >= 0.0_real64) &
          error stop 'TAB-HYD SWAP5 table: h_min must be finite and negative'
+    if (.not. ieee_is_finite(h_scale) .or. h_scale <= 0.0_real64) &
+         error stop 'TAB-HYD SWAP5 table: h_scale must be finite and positive'
 
     table%active_nodes = active_nodes
     table%n_points = n_points
     table%h_min = h_min
-    table%x_min = -log(1.0_real64-h_min)
+    table%h_scale = h_scale
+    table%x_min = -log(1.0_real64-h_min/h_scale)
     table%dx = -table%x_min/real(n_points-1,real64)
     if (.not. ieee_is_finite(table%dx) .or. table%dx <= 0.0_real64) &
          error stop 'TAB-HYD SWAP5 table: invalid transformed spacing'
 
     allocate(table%theta(n_points,active_nodes), table%logk(n_points,active_nodes), &
              table%logc(n_points,active_nodes), table%theta_slope(n_points,active_nodes), &
-             table%logk_slope(n_points,active_nodes), table%logc_slope(n_points,active_nodes))
+             table%logk_slope(n_points,active_nodes), table%logc_slope(n_points,active_nodes), &
+             table%saturated_capacity(active_nodes))
     allocate(head(active_nodes),theta(active_nodes),conductivity(active_nodes),capacity(active_nodes),dkdh(active_nodes))
     allocate(x(n_points))
 
@@ -65,7 +71,7 @@ contains
        xj = table%x_min + real(j-1,real64)*table%dx
        if (j == n_points) xj = 0.0_real64
        x(j) = xj
-       hj = 1.0_real64-exp(-xj)
+       hj = h_scale*(1.0_real64-exp(-xj))
        if (j == n_points) hj = 0.0_real64
        head = hj
        call source%evaluate(head,theta,conductivity,capacity,dkdh)
@@ -77,7 +83,18 @@ contains
        table%theta(j,:) = theta
        table%logk(j,:) = log(max(conductivity,tiny_positive))
        table%logc(j,:) = log(max(capacity,tiny_positive))
+       if (j == n_points) table%saturated_capacity = capacity
     end do
+
+    ! The qualified MvG provider intentionally uses a small saturated C floor at
+    ! h >= 0 while its negative-head branch has a different left limit.  Do not
+    ! smear that numerical discontinuity over the final table interval.
+    negative_endpoint_head = -max(1.0e-12_real64,1.0e-10_real64*h_scale)
+    head = negative_endpoint_head
+    call source%evaluate(head,theta,conductivity,capacity,dkdh)
+    if (any(.not. ieee_is_finite(capacity)) .or. any(capacity <= 0.0_real64)) &
+         error stop 'TAB-HYD SWAP5 table: invalid negative endpoint C'
+    table%logc(n_points,:) = log(max(capacity,tiny_positive))
 
     do i = 1, active_nodes
        call monotone_cubic_slopes(table%theta(:,i),table%dx,table%theta_slope(:,i))
@@ -114,9 +131,13 @@ contains
     do i = 1, n
        water_content(i) = interpolate_field(self%table, pressure_head(i), i, self%table%theta, self%table%theta_slope)
        logk_value = interpolate_field(self%table, pressure_head(i), i, self%table%logk, self%table%logk_slope)
-       logc_value = interpolate_field(self%table, pressure_head(i), i, self%table%logc, self%table%logc_slope)
        conductivity(i) = exp(logk_value)
-       capacity(i) = exp(logc_value)
+       if (pressure_head(i) >= 0.0_real64) then
+          capacity(i) = self%table%saturated_capacity(i)
+       else
+          logc_value = interpolate_field(self%table, pressure_head(i), i, self%table%logc, self%table%logc_slope)
+          capacity(i) = exp(logc_value)
+       end if
     end do
 
     ! Current Status-A ordinary provider contract does not admit SWKIMPL=1.
@@ -145,7 +166,7 @@ contains
        return
     end if
 
-    x = -log(1.0_real64-head)
+    x = -log(1.0_real64-head/table%h_scale)
     position = (x-table%x_min)/table%dx
     lo = int(floor(position)) + 1
     lo = max(1,min(table%n_points-1,lo))
