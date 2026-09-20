@@ -289,8 +289,13 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "response_based_design": false,
+    "qualifier": "tests/rom/qualify_lare_bc2_c5z_moment_profile.py",
+    "qualifier_blob": "73dc4e40bdea73e45d652eaa149d9d01ccfe76ab",
+    "derivation_authority": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "allowed_new_code": "Synthetic B14 moment/state algebraic qualification only; no hydrological response or free-running moment-ROM.",
+    "prohibited_new_code": "Hydrological trajectories, response-fitted moment localization, polynomial-order changes, solver/tolerance retuning after result."
   },
   "model_changed": false
 }
