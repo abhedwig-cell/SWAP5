@@ -127,6 +127,17 @@
       "scientific_criteria_changed": false,
       "frozen_sequence_changed": false,
       "numerical_tolerances_changed": false
+    },
+    {
+      "id": "DYN02-A2",
+      "date": "2026-09-20",
+      "trigger": "VIEW01 rerun reached live DYN02 diagnostics and failed because the inherited ACC02 accuracy ABI root_total slot still reports the historical fixed 0.02 cm/day qualification sink, while DYN02 root uptake is dynamically recomposed from F-CI31.",
+      "disposition": "Remove the legacy fixed-root diagnostic from DYN02 acceptance. Use hydro_memory_dyn02_window_diagnostics_c actual_uptake and root_sum as the authoritative per-window root diagnostics. Keep root tangent coverage and endpoint authority checks from the ACC02 ABI.",
+      "scientific_criteria_changed": false,
+      "forcing_sequence_changed": false,
+      "feddes_or_root_geometry_changed": false,
+      "accuracy_or_coupling_tolerance_changed": false,
+      "rationale": "DYN02 preregistration never fixes ROOT_TOTAL=0.02 cm/day; it explicitly requires actual uptake to be recomputed from accepted state and to remain <= potential transpiration."
     }
   ]
 }
