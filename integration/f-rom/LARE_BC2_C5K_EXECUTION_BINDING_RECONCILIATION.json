@@ -2,51 +2,54 @@
   "schema": "swap5.lare.bc2.c5k.execution-binding-reconciliation.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C5K",
-  "status": "TECHNICAL_TIME_INCREMENT_ANALYZER_REPAIR_AFTER_EXACT_STATE_IDENTITY",
+  "status": "TECHNICAL_INSTRUMENTATION_AND_ANALYZER_SEMANTICS_REPAIRED_WITHOUT_THEORY_FORMULA_CHANGE",
   "scientific_authority": "integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json",
-  "failed_run": {
-    "run_id": 35505566475,
-    "failure_stage": "Materialize logging-only frozen C5I slice",
-    "failure": "post-step instrumentation source anchor matched zero locations",
-    "solver_executed": false,
-    "hydrological_response_exposed": false,
-    "theory_response_exposed": false,
-    "scientific_gate_failure": false
-  },
-  "repair": {
-    "old_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
-    "new_materializer_blob": "570722580fce88123f61d8d93240fea93d74abdc",
-    "change": "Anchor the identical POST logging insertion on the unique LAREGW1_STATE output statement rather than on an overly specific preceding finite-profile assertion.",
-    "logging_payload_changed": false,
-    "pre_step_logging_changed": false,
-    "post_step_logging_changed": false,
-    "solver_input_changed": false,
-    "solver_or_physics_changed": false,
-    "analyzer_changed": false,
-    "theory_formula_changed": false,
-    "numerical_gate_changed": false,
-    "response_based": false
+  "repairs": [
+    {
+      "stage": "PRE_SOLVER_INSTRUMENTATION_MATERIALIZATION",
+      "failed_run_id": 35505566475,
+      "failure": "post-step instrumentation source anchor matched zero locations",
+      "solver_executed": false,
+      "hydrological_response_exposed": false,
+      "old_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
+      "new_materializer_blob": "570722580fce88123f61d8d93240fea93d74abdc",
+      "change": "Anchor identical POST logging on the unique LAREGW1_STATE output statement.",
+      "scientific_effect": "NONE"
+    },
+    {
+      "stage": "POSTPROCESSING_ANALYZER_AFTER_STATE_IDENTITY",
+      "failed_run_id": 35505654292,
+      "analyze_job_id": 106065072238,
+      "hydrological_state_identity_gate_passed": true,
+      "production_solver_or_state_changed": false,
+      "failure": "Analyzer incorrectly asserted interval-average published exchange rate equals terminal instantaneous bottom flux for every dynamic step.",
+      "independent_code_semantics": [
+        "sample_fresh exposes result%bottom_outward_exchange_native as bex and result%terminal_bottom_outward_flux_native as bflux as distinct quantities.",
+        "emit_state writes BOTTOM_OUTWARD_EXCHANGE=bex and BOTTOM_FLUX=bflux separately.",
+        "The C5K preregistration requires both to be available but does not assert equality."
+      ],
+      "old_analyzer_blob": "a2ea2726feadaab74e9277c3a85d912070387b98",
+      "new_analyzer_blob": "536ee6a0f2c91672a3d7bd4538ec9e665907f35f",
+      "change": "Remove only the invalid equality exception. Retain the prebound max_abs_exchange_rate_minus_terminal_flux diagnostic in output.",
+      "theory_formula_changed": false,
+      "constitutive_function_changed": false,
+      "metric_set_changed": false,
+      "adjudication_changed": false,
+      "numerical_gate_changed": false,
+      "response_values_used_to_tune_formula": false,
+      "scientific_effect": "NONE"
+    }
+  ],
+  "current_binding": {
+    "instrumentation_materializer_blob": "570722580fce88123f61d8d93240fea93d74abdc",
+    "analyzer_blob": "536ee6a0f2c91672a3d7bd4538ec9e665907f35f",
+    "theory_formulas": "UNCHANGED_FROM_PREREGISTRATION",
+    "dynamic_counterfactual": false
   },
   "rerun_required": true,
   "model_changed": false,
-  "instrumentation_run": {
-    "run_id": 35505654292,
-    "state_trajectory_identity_to_C5I": true,
-    "all_8_slices_qualified": true,
-    "theory_analysis_completed": false,
-    "failure_stage": "pre-theory published exchange/terminal identity check",
-    "failure": "Analyzer divided interval exchange by nominal STEP_DT rather than the actual IEEE-double t1-t0 used by the transaction runtime.",
-    "scientific_response_adjudicated": false
-  },
-  "time_increment_repair": {
-    "diagnosis": "Fortran computes t1=seed+step*step_dt and carries t0 from the previous t1. The actual binary interval length therefore differs from nominal 5e-5 day by a few ulps. bottom_outward_exchange_native is bottom_flux*(t1-t0).",
-    "raw_example_max_nominal_dt_mismatch_cm_per_day": 2.303934820702125e-12,
-    "exact_dt_reconstruction_max_exchange_terminal_mismatch_cm_per_day": 2.220446049250313e-16,
-    "repair": "Parse the round-trip-safe printed T value and divide each exchange by T(step)-T(step-1), with seed time 2*0.0016 day for the first interval.",
-    "numerical_threshold_changed": false,
-    "theory_formula_changed": false,
-    "state_data_changed": false,
-    "hydrological_metric_used_for_repair": false,
-    "response_based": false
-  }
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
 }
