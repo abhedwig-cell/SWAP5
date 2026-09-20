@@ -10,15 +10,37 @@
     "reason_not_to_augment_state_yet": "A2 did not test a constant-flux quasi-steady reconstruction or an integrated constitutive flux relation."
   },
   "state_representations": {
-    "L3": {"boundaries_cm":[0,140,150,160],"long_interface_cm":140},
-    "L4": {"boundaries_cm":[0,130,140,150,160],"long_interface_cm":130},
+    "L3": {
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "long_interface_cm": 140
+    },
+    "L4": {
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "long_interface_cm": 130
+    },
     "state": "exact layer storage only; no added state"
   },
   "reference": {
     "artifact_id": 10586020583,
     "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
     "source": "fine 16 x 10 cm B01 DYN0A fixed-flux Reference Richards",
-    "primary_cases": ["S2_B1_F2","S2_B1_F3","S2_B1_F4","S3_B1_F3"]
+    "primary_cases": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ]
   },
   "closures": [
     {
@@ -89,5 +111,47 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_numerical_freeze": {
+    "before_first_official_A2B_result": true,
+    "ode_method": "DOP853",
+    "ode_rtol": 1e-9,
+    "ode_atol": 1e-11,
+    "ode_max_step_rule": "max(abs(layer_or_centroid_distance)/8, 0.5 cm)",
+    "centroid_least_squares": {
+      "scaled_q": "q/Ksat",
+      "bounds": [
+        -20,
+        20
+      ],
+      "xtol": 1e-10,
+      "ftol": 1e-10,
+      "gtol": 1e-10,
+      "max_nfev": 30,
+      "endpoint_scaled_residual_max": 1e-9
+    },
+    "qs_least_squares": {
+      "variables": [
+        "log(psi_interface-0.0100001)",
+        "q/Ksat"
+      ],
+      "bounds": [
+        [
+          -20,
+          -20
+        ],
+        [
+          20,
+          20
+        ]
+      ],
+      "xtol": 1e-10,
+      "ftol": 1e-10,
+      "gtol": 1e-10,
+      "max_nfev": 30,
+      "storage_residual_max_theta": 1e-10
+    },
+    "warm_start": "previous observation solution within the same case/partition/closure only; first observation uses LARE state-derived initialization; warm start changes numerical initialization only",
+    "rationale": "Operational numerical freeze after a no-output runtime preflight. No A2B scientific flux result was produced or inspected before this freeze."
+  }
 }
