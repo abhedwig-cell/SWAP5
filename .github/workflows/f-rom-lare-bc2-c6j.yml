@@ -1,0 +1,133 @@
+name: F-ROM-LARE BC2-C6J FEMO response-free mathematical qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6j-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify frozen C6J authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6j_femo.py)" = "6c12dde9395e2d475d6bb8f3d604a49b8eb57857"
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "db89a175d56fca3cd8af92419748db55d9d53fb0"
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          test "$(git hash-object integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json)" = "0785ee33f882f9dbd12a90133095d000c16e0890"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6j_femo.py
+          python3 -m py_compile tests/rom/merge_lare_bc2_c6j_femo_shards.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6J_NUMERICAL_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert p['implementation_binding']['qualifier_blob']=='6c12dde9395e2d475d6bb8f3d604a49b8eb57857'
+          assert p['implementation_binding']['aggregator_blob']=='db89a175d56fca3cd8af92419748db55d9d53fb0'
+          assert c['decision']=='PREREGISTER_FREE_ENERGY_MOMENT_ONSAGER_REDUCTION_FOR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION'
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          assert p['scientific_firewall']['c6e_failures_used_for_penalty_design'] is False
+          print('LARE_BC2_C6J_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute exact C6J state shard
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6J_SHARD
+          python3 tests/rom/qualify_lare_bc2_c6j_femo.py \
+            --prereg integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json \
+            --c6i integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json \
+            --c6c-prereg integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json \
+            --c6e-prereg integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json \
+            --core tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --shard-index "${{ matrix.shard }}" \
+            --shard-count 9 \
+            --output "LARE_BC2_C6J_SHARD/LARE_BC2_C6J_SHARD_${{ matrix.shard }}.json" \
+            | tee LARE_BC2_C6J_SHARD/runner.txt
+          sha256sum LARE_BC2_C6J_SHARD/* > LARE_BC2_C6J_SHARD/sha256.txt
+
+      - name: Upload C6J shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6j-shard-${{ matrix.shard }}
+          path: LARE_BC2_C6J_SHARD/
+          if-no-files-found: error
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install aggregation dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover exact C6J shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c6j-shard-*
+          path: /tmp/lare-bc2-c6j-shards
+          merge-multiple: false
+
+      - name: Aggregate C6J authority
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6J_EVIDENCE
+          python3 tests/rom/merge_lare_bc2_c6j_femo_shards.py \
+            --shard-dir /tmp/lare-bc2-c6j-shards \
+            --output LARE_BC2_C6J_EVIDENCE/LARE_BC2_C6J_RESULT.json \
+            | tee LARE_BC2_C6J_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json LARE_BC2_C6J_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json LARE_BC2_C6J_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6J_EVIDENCE/LARE_BC2_C6J_RESULT.json'))
+          assert r['state_case_count']==126
+          assert r['head_operator_case_count']==168
+          assert r['flux_operator_case_count']==126
+          assert r['status'] in (
+            'C6J_FEMO_MATHEMATICALLY_QUALIFIED',
+            'C6J_FEMO_LOCAL_MANIFOLD_NOT_QUALIFIED',
+            'C6J_FEMO_ONSAGER_OPERATOR_NOT_QUALIFIED'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['BEMR_reopened'] is False
+          assert f['free_running_FEMO_implemented'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6J_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6J_EVIDENCE/* > LARE_BC2_C6J_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C6J evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6j
+          path: LARE_BC2_C6J_EVIDENCE/
+          if-no-files-found: error
