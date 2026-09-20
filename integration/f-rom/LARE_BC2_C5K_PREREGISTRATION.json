@@ -161,8 +161,16 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "state": "BOUND_BEFORE_EXECUTION",
+    "response_based_design": false,
+    "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py",
+    "instrumentation_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py",
+    "analyzer_blob": "a1d3f90e747ab5a7668bf3bb60ada0a085206f04",
+    "c5i_history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
+    "c5i_full_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
+    "allowed_new_code": "logging-only C5I harness instrumentation and postprocessing theory diagnostics on frozen states",
+    "prohibited_new_code": "Reference solver/boundary changes, fitted conductivity means, response-driven formula changes, T32/R2048, LARE changes"
   },
   "model_changed": false
 }
