@@ -30,7 +30,17 @@ for name,bounds in PARTITIONS.items():
 
 def load_ref(path,nn,dz):
     raw=c5a.load_reference_n(path,nn)
-    return {h:c5a.reference_arrays(raw,h,[dz]*nn) for h in HISTS}
+    out={}
+    for h in HISTS:
+        steps=raw[h]["steps"]
+        out[h]={
+          "q":[float(row["bottom_interval_flux_cm_per_day"]) for row in steps],
+          "cum":np.cumsum([float(row["bottom_exchange_cm"]) for row in steps]).tolist(),
+          "nodes":[row["nodes"] for row in steps],
+          "node_count":nn,
+          "dz_cm":dz,
+        }
+    return out
 
 def run_member(member):
     bounds=PARTITIONS[member]
