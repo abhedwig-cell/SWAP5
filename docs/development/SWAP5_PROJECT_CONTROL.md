@@ -1,7 +1,7 @@
 # SWAP5 Project Control
 
 **Work unit:** PROJECT-CONTROL-01  
-**Control snapshot:** `integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d`  
+**Control snapshot:** `integration/f-ci-canonical@3a815edda7cf5e155272b68ae49d440fd5db9138`  
 **Date:** 2026-09-20  
 **Machine-readable authority:** `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
 
@@ -33,10 +33,10 @@ Central regie owns canonical admission, cross-workstream supersession, shared-au
 
 | Workstream | State | Current authority / finding | Next gate |
 |---|---|---|---|
-| REGIE | ACTIVE | canonical snapshot `b3dc66c`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; F-TB13R resolves #163 on this admission; #172 remains reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #172 after F-TB13R admission |
+| REGIE | ACTIVE | canonical snapshot `3a815ed`; PR #58 remains the intentional carrier; F-TA04R resolves the last old housekeeping item #172 on this admission; #486 is blocked shared-authority repair rather than admission-ready work | After F-TA04R, wait for qualified specialized admission candidates or explicit preservation/shared-authority work |
 | PPA production physics | ACTIVE | WU04-A Black, ROOT-HYD02 prescribed-root tangent and WU04-B Boesten are already merged to canonical; WU05-A/C are review-only authority | Production owner selects the next source-authorized bounded slice; no inference from review authority to production |
-| F-GC groundwater coupling | ACTIVE | F-GC50 remains externally blocked at product integration, while PR #486 is an active noncanonical coupling-semantics/application-authority repair | Let #486 finish owner qualification, then reconcile shared production/coupling/publication consequences before admission |
-| F-ROM / LARE | BLOCKED_EXTERNAL | D31 confirms official M2WC70 archive metadata but cannot materialize the implementation oracle; D28 native-ET blocker also remains | Materialize acceptable FMC implementation authority or narrow/close the affected proposition |
+| F-GC groundwater coupling | BLOCKED_INTERNAL_AUTHORITY | F-GC50 remains externally blocked at product integration; PR #486 completed the semantic audit and bounded CSR-01/02 repair but broad admission is blocked by storage-partition and drainage-ownership authority | Resolve CSR-B1 storage partition and CSR-B2 drainage ownership before production admission or Hupsel rerun |
+| F-ROM / LARE | BLOCKED_EXTERNAL | F-ROM-CODEMAP-01 is canonical: FMC remains source-authority blocked for contact/native ET; LARE has a bounded relative cost-fidelity signal but lacks external groundwater application-accuracy authority | Continue FMC and LARE as distinct research lines; return only bounded evidence successors, never the large LARE branch wholesale |
 | HYDRO-MEMORY | ACTIVE | live root-active SWAP-MODFLOW6 passed one window and four consecutive windows; DYN01 forcing + state-dependent Feddes composition passed | Stage 0 remains unauthorized; continue remaining dynamic composition and soil/diagnostic freeze under research ownership |
 | DIFFICULTY | OWNER_CONTROLLED | Phase-0 preregistration exists in PR #365 | Continue prospective research; independent nonlinear-method comparison remains separately gated |
 | TRACE | ACTIVE | protocol, candidate register, Batch 02 closeout and Batch 03 are canonical | Continue prospectively; feed only shared governance implications back to regie |
@@ -75,16 +75,14 @@ HYDRO-MEMORY live coupling evidence does not by itself settle either the F-GC50 
 
 ### ROM
 
-The live ROM authority is F-ROMV2, not the old F-ROM0 draft PR.
+The live ROM control authority now includes **F-ROM-CODEMAP-01**, admitted through PR #489, in addition to F-ROMV2.
 
-D30 established that the natural within-step surface-front/groundwater-front contact transition is not sufficiently specified from the paper-level authority alone. D31 found the official M2WC70 archive metadata, but the archive could not be materialized and no equivalent traceable oracle was found.
+The key routing split is explicit:
 
-Therefore there is still:
+- **FMC / F-ROMV2** remains blocked on implementation authority for natural surface-front/groundwater-front contact and native ET/root-withdrawal composite-state updates.
+- **LARE** has a branch-local bounded relative cost-fidelity signal, but application acceptance cannot be adjudicated without a real project groundwater head/drawdown error requirement and independently governed temporal error allocation.
 
-- no contact-capable long-window trajectory;
-- no application acceptance;
-- no formal performance claim;
-- no production ROM.
+Therefore there is still no production ROM and no permission to merge the large LARE research branch wholesale.
 
 ### HYDRO-MEMORY
 
@@ -100,23 +98,30 @@ This is substantial research capability evidence, but **Stage 0 is still not aut
 
 ## Open PR routing
 
-### Shared-authority watch
+### Blocked shared-authority repair
 
-- **#486 F-GC CSR** is the current highest-priority shared-authority watch item. It is not yet canonical and remains in owner qualification. If qualification succeeds, central regie must reconcile its production-application, coupling-semantics and PUB-GC consequences before admission. It must not be treated as a mere F-GC50 product-integration continuation.
+- **#486 F-GC CSR** has completed its semantic classification and bounded CSR-01/CSR-02 repair, but its own current status says **do not merge yet**. The remaining blockers are `CSR-B1-STORAGE-PARTITION` and `CSR-B2-DRAINAGE-OWNERSHIP`. PUB-GC submission remains held and no Hupsel rerun is authorized. The repair is therefore no longer a generic “watch” item waiting on routine CI; it is blocked on explicit scientific/application authority.
 
 ### Central reconciliation queue
 
 PR #72 has now been recomposed into current governance by GOV-REC01. The stale branch is not a merge target and should be closed after this successor is canonically admitted.
 
-F-TB13R now rebases the unique analytical/reference preservation package from historical PR #163 onto current canonical. On successful current-head qualification and admission, #163 becomes historical evidence rather than a live merge target.
+F-TB13R is now canonically admitted and historical PR #163 is closed.
 
-The remaining central reconciliation debt is:
-
-- **#172** F-TA04 transaction/restart traceability: reconcile against current transaction/restart authority.
+F-TA04R is the final recomposed successor for the old central housekeeping queue. It registers bounded A23BL and pinned F-TB11 transaction/restart traceability and adds a fail-closed catalog-locator check. On successful exact-head qualification and admission, historical PR #172 becomes superseded and the old #72/#163/#172 queue is empty.
 
 ### Testbank preservation
 
 F-TB13R is an additive current-canonical rebase of the qualified analytical/reference package from PR #163. Its preserved archive, member identities, replay receipt and checker are imported unchanged; a new reconciliation record binds them to current B1.11 and requires fresh dedicated F-TB13, Documentation, VQ and F-CI qualification. It does not rewrite F-TB11/F-TB12 or claim SWAP5 production-solver equivalence.
+
+### Transaction/restart traceability
+
+F-TA04R recomposes historical PR #172 against current canonical. It does not change transaction or restart behaviour. It records two complete bounded catalog entries:
+
+- historical A23BL as a real executable regression/contract chain, explicitly not the current mass-completeness oracle;
+- pinned F-TB11 transaction/mass/rejected-publication/Restart preservation through its real manifest, validator, replay runner and workflow.
+
+A new documentation static-process check verifies that bounded catalog entries marked `complete` actually provide all required fields and resolve exact repository test/runner locators.
 
 ### Blocked production-authority PRs
 
@@ -199,6 +204,6 @@ Every specialized chat should begin with the same four operations:
 
 ## Default next action for central regie
 
-PR **#486** remains the current shared-authority watch and takes precedence once its owner qualification is complete. GOV-REC01 has resolved #72. F-TB13R now resolves #163 by current-canonical rebase and fresh replay. After that admission, the remaining central housekeeping item is **#172**.
+F-TA04R is the final item from the old #72/#163/#172 housekeeping queue. After its admission, central regie should not invent a new generic cleanup task. The next central action should be triggered by a genuinely qualified specialized admission candidate, explicit preservation drift, project-control refresh, or a shared-authority conflict. PR #486 remains blocked until its storage/drainage authority is resolved.
 
 This ordering is a routing decision, not a scientific priority ranking.
