@@ -1,0 +1,173 @@
+name: F-ROM-LARE persist C5W P0 qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5w-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5W artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5w
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10607788334" > /tmp/c5w/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5w/artifact.json'))
+          assert a['id']==10607788334
+          assert a['digest']=='sha256:3879f45668ba9655ffbe076ba354e490e8adfad2776bda2e13896c3ae6f7ab26'
+          assert a['workflow_run']['id']==35519658699
+          assert a['workflow_run']['head_sha']=='5b97186f6c42b59f7171c59bb83dd0afdce18b30'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10607788334/zip" > /tmp/c5w.zip
+          echo "3879f45668ba9655ffbe076ba354e490e8adfad2776bda2e13896c3ae6f7ab26  /tmp/c5w.zip" | sha256sum -c -
+          unzip -q /tmp/c5w.zip -d /tmp/c5w/evidence
+          echo "31a45bf40bd9ce6dc77e7e3eb7365484ebd0c799c9b5b751553161b26e056382  /tmp/c5w/evidence/LARE_BC2_C5W_RESULT.json" | sha256sum -c -
+
+      - name: Persist C5W negative qualification and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5w/evidence/LARE_BC2_C5W_RESULT.json integration/f-rom/LARE_BC2_C5W_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5W_RESULT.json'))
+          assert r['status']=='C5W_P0_NOT_ADMISSIBLE'
+          closeout={
+            'schema':'swap5.lare.bc2.c5w.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5W',
+            'status':'CLOSED_P0_CONDITIONALLY_UNIQUE_BUT_NOT_ADMISSIBLE_UNDER_FROZEN_DOMAIN_NO_HYDROLOGICAL_TEST',
+            'decision':'REJECT_PREREGISTERED_P0_ROUTE_WITHOUT_RETUNING_RECONCILE_REMAINING_SCAFP_FAMILIES',
+            'authority':{
+              'scientific_choice':'integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json',
+              'preregistration':'integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json',
+              'workflow_run':35519658699,
+              'execution_head':'5b97186f6c42b59f7171c59bb83dd0afdce18b30',
+              'artifact_id':10607788334,
+              'artifact_digest':'sha256:3879f45668ba9655ffbe076ba354e490e8adfad2776bda2e13896c3ae6f7ab26',
+              'result_sha256':'31a45bf40bd9ce6dc77e7e3eb7365484ebd0c799c9b5b751553161b26e056382'
+            },
+            'gates':r['gates'],
+            'evidence':{
+              'local_case_count':r['local_qualification']['case_count'],
+              'local_pass_count':r['local_qualification']['pass_count'],
+              'local_fail_count':r['local_qualification']['fail_count'],
+              'column_case_count':r['column_qualification']['case_count'],
+              'column_pass_count':r['column_qualification']['pass_count'],
+              'column_fail_count':r['column_qualification']['fail_count'],
+              'max_abs_storage_residual_cm':r['local_qualification']['max_abs_storage_residual_cm']
+            },
+            'adjudication':{
+              'P0_LOCAL_UNIQUENESS_CONDITIONAL_ON_EXISTENCE_SUPPORTED':r['gates']['G1_ANALYTIC_LOCAL_UNIQUENESS'],
+              'P0_LOCAL_EXISTENCE_OVER_FROZEN_DOMAIN_SUPPORTED':r['gates']['G2_LOCAL_EXISTENCE'],
+              'P0_COLUMN_EXISTENCE_UNIQUENESS_OVER_FROZEN_DOMAIN_SUPPORTED':r['gates']['G3_COLUMN_EXISTENCE_UNIQUENESS'],
+              'P0_CONSERVATION_BY_CONSTRUCTION_SUPPORTED':r['gates']['G4_CONSERVATION'],
+              'P0_STORAGE_CONSISTENCY_FOR_SOLVED_CASES_SUPPORTED':r['gates']['G5_STORAGE_CONSISTENCY'],
+              'P0_HYDROLOGICAL_RESPONSE_TEST_AUTHORIZED':False,
+              'P0_FREE_RUNNING_IMPLEMENTATION_AUTHORIZED':False,
+              'P0_POST_RESULT_BOUND_OR_BRANCH_RETUNING_AUTHORIZED':False,
+              'P0_UNIVERSALLY_PHYSICALLY_DISPROVEN':False,
+              'REMAINING_SCAFP_FAMILY_RECONCILIATION_AUTHORIZED':True
+            },
+            'scientific_interpretation':[
+              'The analytical monotonicity argument is retained: if an admissible local P0 storage root exists, it is unique on the declared unsaturated constitutive branch.',
+              'Existence is the failure mode. Only 141 of 405 prospectively defined local synthetic cases qualify; 264 fail the frozen existence/bracketing contract. The failures span all tested layer widths and are not localized to one flux ratio.',
+              'All 28 prospectively defined full-column cases fail to provide the single admissible outer branch required by the preregistration. Therefore the selected storage-only P0 boundary-value map is not sufficiently admissible over the intended B14 state domain.',
+              'The result is not repaired by widening flux bounds, changing branch logic, changing the state domain, or retuning numerical tolerances after response; those actions are explicitly prohibited by the C5W stop rules.',
+              'C5W does not prove that every conceivable uniform-storage-tendency formulation is physically impossible. It rejects the explicitly selected and preregistered P0 algebraic map as a viable basis for the next hydrological reduced-model test.',
+              'No hydrological response trajectory was used or generated, so this negative result is independent of C5R/C5T/C5N residual fitting.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5X',
+              'state':'READ_ONLY_REMAINING_SCAFP_FAMILY_RECONCILIATION_AUTHORIZED',
+              'question':'After prospective P0 failure, does a quadratic profile in native pressure/suction or a profile in a constitutively transformed potential provide the next minimum-assumption storage-consistent algebraic closure family, or does the storage-only program reach a scientific underdetermination boundary?',
+              'constraints':[
+                'Read-only theory/literature/code reconciliation first; no hydrological response.',
+                'Do not retune or reopen the failed P0 contract.',
+                'Do not use C5R/C5T/C5N response magnitudes to select a profile coordinate.',
+                'No new dynamic state without separate authority.',
+                'No scalar CURRENT_LAYER_FACE tuning.',
+                'Any selected remaining family must be prospectively mathematically qualified before hydrological implementation.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5W_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5W closeout
+
+          C5W prospectively selected P0 uniform storage tendency as the minimum-additional-structure SCAFP hypothesis and qualified it without any hydrological model response.
+
+          The layer-local storage residual is analytically strictly monotone on an admissible unsaturated trajectory, so a local root is unique if it exists. The failure is existence/admissibility rather than multiplicity.
+
+          Under the frozen synthetic B14 domain, only 141 of 405 local cases qualify; 264 do not satisfy the preregistered existence/bracketing contract. All 28 full-column prescribed-top-flux/prescribed-bottom-head cases fail to provide the required single admissible outer branch.
+
+          No bracket widening, state-domain narrowing, branch retuning or tolerance adjustment is performed after this result. P0 therefore does not proceed to hydrological response or free-running implementation.
+
+          The result does not claim that every imaginable P0 formulation is physically impossible. It rejects the explicit C5W P0 algebraic map as an admissible next closure route for this program.
+
+          C5X returns read-only to the remaining SCAFP families: quadratic reconstruction in the native hydraulic variable versus a constitutively transformed potential. Any further choice must be made independently of exposed hydrological residuals.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v26'
+          j['status']='CLOSED_THROUGH_C5W_P0_NOT_ADMISSIBLE_REMAINING_SCAFP_THEORY_CHOICE_NEXT'
+          j.setdefault('authorities',{})['C5W_P0_admissibility']='integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5W']='P0 uniform storage tendency was selected prospectively as the minimum-additional-structure SCAFP hypothesis and failed response-free admissibility qualification: local uniqueness is conditional, but 264/405 local cases and all 28 full-column synthetic cases fail the frozen existence/branch contract. No hydrological P0 test is authorized.'
+          j['decision']='RECONCILE_REMAINING_STORAGE_ONLY_SCAFP_FAMILIES_AFTER_P0_FAILURE'
+          j['next_authority']='LARE-BC2-C5X'
+          j['next_family_authority']={
+            'family':'REMAINING_SCAFP_PROFILE_FAMILIES',
+            'state':'READ_ONLY_THEORY_CHOICE_RECONCILIATION_AUTHORIZED',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json'
+            ],
+            'remaining_options':['QUADRATIC_PRESSURE_PROFILE','TRANSFORMED_POTENTIAL_PROFILE'],
+            'new_closure_implementation_authorized':False,
+            'hydrological_response_authorized':False,
+            'new_dynamic_state_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5W closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5W_RESULT.json                   integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5W_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5W P0 admissibility qualification"
+          git push origin HEAD:work/f-rom-lare-rs1
