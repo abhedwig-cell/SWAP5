@@ -29,5 +29,32 @@
     "prospective_integrity": "No new B1H material preflight or Reference response ran before the repair."
   },
   "rerun_required": true,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "additional_failed_pre_response_runs": [
+    {
+      "workflow_run": 35495829737,
+      "executed_head": "282c465fec513b4e4eea10a63baabc4f5f43b291",
+      "failure": "Fresh checkout did not contain historical evidence commits needed by git show.",
+      "response_generated": false
+    },
+    {
+      "workflow_run": 35495877981,
+      "executed_head": "64c58727a79937f4d9fa7f08d6b3bd1bb844a6ba",
+      "failure": "Provenance gate still failed before response; explicit log confirmed source/reference diff NONE.",
+      "response_generated": false
+    },
+    {
+      "workflow_run": 35495910480,
+      "executed_head": "bfbc9669eea7ec3087ef94872997229a11abb7be",
+      "failure": "Exact historical commits were fetched and all printed blob/canonical SHAs matched expected values, but shell equality assertions still returned nonzero before response.",
+      "response_generated": false
+    }
+  ],
+  "final_technical_repair": {
+    "class": "PROVENANCE_ASSERTION_IMPLEMENTATION_ONLY",
+    "change": "Fetch exact historical commits, expose recovered SHAs, and verify the same four frozen values in a deterministic Python string assertion.",
+    "expected_rerun": 35495947476,
+    "scientific_design_changed": false,
+    "response_generated_before_final_repair": false
+  }
 }
