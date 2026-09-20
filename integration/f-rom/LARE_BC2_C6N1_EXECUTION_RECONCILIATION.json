@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v2",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v3",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "BOUND_COMPACT_EXECUTION_QUEUED_EXTERNAL_RUNNER_BLOCKER_NO_T32_RESPONSE",
+  "status": "BOUND_COMPACT_EXECUTION_REPAIR_AFTER_PRE_RESPONSE_LOCK_FIX",
   "decision": "COMPACT_IDENTICAL_C6N1_MATRIX_TO_24_JOBS_WITH_O0_O2_SEQUENTIAL_IDENTITY",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
@@ -70,9 +70,9 @@
   },
   "compact_workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
-    "blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
+    "blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
     "state": "BOUND_BEFORE_EXECUTION",
-    "binding_note": "Workflow creation itself did not trigger the compact run. This reconciliation update is the first compact-response-eligible commit."
+    "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
   },
   "authority_rule": "Only a compact run triggered after this reconciliation is rebound with the exact workflow blob may become C6N1 authority. Earlier queued runs remain superseded even if they later execute.",
   "scientific_firewall": {
@@ -86,15 +86,12 @@
   },
   "model_changed": false,
   "compact_authority_run": {
-    "workflow_run": 35533244564,
-    "execution_head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+    "workflow_run": null,
+    "execution_head": null,
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
-    "workflow_blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
+    "workflow_blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
     "jobs_expected": 24,
-    "jobs_queued": 24,
-    "jobs_started": 0,
-    "response_started": false,
-    "state": "QUEUED_EXTERNAL_GITHUB_HOSTED_RUNNER_BLOCKER",
+    "state": "AWAITING_V3_TRIGGER",
     "authority_if_completed": true
   },
   "recovery_checkpoint": {
@@ -103,10 +100,27 @@
     "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
     "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
     "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
-    "compact_workflow_blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
-    "current_run": 35533244564,
+    "compact_workflow_blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
     "scientific_response_seen": false,
     "candidate_response_seen": false,
-    "next_action": "When the compact run leaves queued state, inspect only run 35533244564; if all 24 T32 jobs and analyze succeed, retrieve lare-bc2-c6n1-compact artifact and close C6N1. Earlier queued runs remain superseded."
-  }
+    "next_action": "Use only the compact run triggered by this v3 reconciliation update as C6N1 scientific authority."
+  },
+  "pre_response_lock_failures": [
+    {
+      "workflow_run": 35533244564,
+      "execution_head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+      "failure": "KeyError qualification_changed in authority-lock JSON path",
+      "failed_step": "Verify frozen C6N1 compact authority",
+      "T32_materialization_reached": false,
+      "T32_reference_execution_reached": false,
+      "scientific_response_seen": false,
+      "authority": false
+    },
+    {
+      "workflow_run": 35533309791,
+      "execution_head": "035b146b59eb460c5b7423012a1a01368ca1e874",
+      "disposition": "SUPERSEDED_BY_V3_LOCK_FIX_REGARDLESS_OF_LATER_SCHEDULER_STATE",
+      "scientific_authority": false
+    }
+  ]
 }
