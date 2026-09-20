@@ -2837,6 +2837,79 @@ def validate_romv2_d30_if_present() -> str:
     return "BLOCKED_EXTERNAL_SURFACE_GW_CONTACT_EVENT_UPDATE_ORACLE"
 
 
+def validate_romv2_d31_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D31_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D31_SOURCE_RETRIEVAL_RECONCILIATION.json")
+            == "1ad4eb773fe97e39468b7cd25aa54ad9106b026c",
+            "F-ROMV2-D31 source retrieval reconciliation blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D31_STATUS.json")
+            == "85993a72f1c0c77e3422ffb60cd113fa525f436b",
+            "F-ROMV2-D31 status blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D31_M2WC70_RETRIEVAL_RECONCILIATION.md")
+            == "cf426a7515e843de56381008e642c5ede4bcaa57",
+            "F-ROMV2-D31 adjudication blob drift")
+
+    recon = load_json("integration/f-rom/F-ROMV2_D31_SOURCE_RETRIEVAL_RECONCILIATION.json")
+    status = load_json("integration/f-rom/F-ROMV2_D31_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D31_M2WC70_RETRIEVAL_RECONCILIATION.md").read_text(encoding="utf-8")
+
+    require(recon["phase"] == "CLOSED_SOURCE_RETRIEVAL_RECONCILIATION_BLOCKED_EXTERNAL_ARCHIVE_ACCESS"
+            and recon["decision"]
+            == "M2WC70_OFFICIAL_ARCHIVE_CONFIRMED_BUT_RETRIEVAL_BLOCKER_PERSISTS_NO_EQUIVALENT_ORACLE_FOUND",
+            "F-ROMV2-D31 decision/phase drift")
+    require(recon["official_archive"]["dataset_id"] == "M2WC70"
+            and recon["official_archive"]["advertised_size_mb"] == 230,
+            "F-ROMV2-D31 official archive identity drift")
+    require(recon["retrieval_attempt_2026_09_20"]["metadata_page_reachable"] is True
+            and recon["retrieval_attempt_2026_09_20"]["archive_materialized"] is False
+            and recon["retrieval_attempt_2026_09_20"]["archive_digest_recorded"] is False
+            and recon["retrieval_attempt_2026_09_20"]["traceable_public_mirror_found"] is False,
+            "F-ROMV2-D31 retrieval blocker drift")
+    require(recon["alternative_source_reconciliation"]["hydpy_garto_author_code_lead_found"] is True
+            and recon["alternative_source_reconciliation"]["equivalent_to_M2WC70_FMC"] is False
+            and recon["alternative_source_reconciliation"]["companion_2015_papers_sufficient_for_D30_event"] is False,
+            "F-ROMV2-D31 alternative-oracle boundary drift")
+    require(recon["authority_boundary"]["D30_reclassified"] is False
+            and recon["authority_boundary"]["natural_surface_gw_contact_event_algorithm_authorized"] is False
+            and recon["authority_boundary"]["contact_capable_long_window_trajectory_authorized"] is False
+            and recon["authority_boundary"]["D29_stage2_reopened"] is False
+            and recon["authority_boundary"]["GARTO_rule_substitution_into_FMC_authorized"] is False,
+            "F-ROMV2-D31 prematurely authorizes blocked contact science")
+    require(recon["authority_boundary"]["D28_native_ET_blocker_preserved"] is True
+            and recon["authority_boundary"]["production_rom_authorized"] is False,
+            "F-ROMV2-D31 predecessor/production boundary drift")
+    require("DO_NOT_TREAT_GARTO_AS_SEMANTICALLY_EQUIVALENT_TO_M2WC70_FMC"
+            in recon["prohibited"],
+            "F-ROMV2-D31 GARTO substitution firewall missing")
+
+    require(status["phase"] == "BLOCKED_EXTERNAL_M2WC70_ARCHIVE_ACCESS"
+            and status["official_archive_metadata_confirmed"] is True
+            and status["official_archive_materialized"] is False
+            and status["traceable_public_mirror_found"] is False,
+            "F-ROMV2-D31 terminal retrieval status drift")
+    require(status["hydpy_garto_author_code_lead_found"] is True
+            and status["hydpy_garto_equivalent_oracle"] is False
+            and status["D30_preserved"] is True,
+            "F-ROMV2-D31 alternative-source/D30 preservation drift")
+    require(status["contact_capable_long_window_trajectory_authorized"] is False
+            and status["D29_stage2_authorized"] is False
+            and status["D28_native_ET_blocker_preserved"] is True
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D31 status overclaims authority")
+
+    require("The archive itself was not materialized:" in doc,
+            "F-ROMV2-D31 archive blocker statement missing")
+    require("This does **not** resolve D30." in doc,
+            "F-ROMV2-D31 D30 preservation statement missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D31 production prohibition missing")
+
+    return "BLOCKED_EXTERNAL_M2WC70_ARCHIVE_ACCESS"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2893,6 +2966,7 @@ def main() -> int:
     romv2_d28_phase = validate_romv2_d28_if_present()
     romv2_d29_phase = validate_romv2_d29_if_present()
     romv2_d30_phase = validate_romv2_d30_if_present()
+    romv2_d31_phase = validate_romv2_d31_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2933,6 +3007,7 @@ def main() -> int:
     print(f"F_ROMV2_D28_PHASE={romv2_d28_phase}")
     print(f"F_ROMV2_D29_PHASE={romv2_d29_phase}")
     print(f"F_ROMV2_D30_PHASE={romv2_d30_phase}")
+    print(f"F_ROMV2_D31_PHASE={romv2_d31_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
