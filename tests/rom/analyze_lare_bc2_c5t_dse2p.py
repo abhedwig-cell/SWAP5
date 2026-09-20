@@ -209,7 +209,21 @@ def main():
             kfu=float(k_from_theta([fr["THETA_UP"]])[0]);kfd=float(k_from_theta([fr["THETA_DOWN"]])[0])
             qr=0.5*(kfu+kfd)*(1.0+(fr["H_UP"]-fr["H_DOWN"])/DZ_FINE)
             psiu.append(pu);psid.append(pd);meta.append((h,obs,phase(h,obs)));qref.append(qr);qbase.append(qb)
-        qdse,num=dse_flux(np.asarray(psiu),np.asarray(psid),L)
+        try:
+            qdse,num=dse_flux(np.asarray(psiu),np.asarray(psid),L)
+        except RuntimeError as exc:
+            numerical_failure={
+              "depth_cm":float(dep),
+              "failure_class":"DSE2P_BRACKET_OR_NUMERICAL_QUALIFICATION_FAILURE",
+              "message":str(exc)
+            }
+            numerics.append({
+              "depth_cm":float(dep),
+              "all_qualified":False,
+              "failure_class":numerical_failure["failure_class"],
+              "message":numerical_failure["message"]
+            })
+            break
         num["depth_cm"]=float(dep);numerics.append(num)
         for idx,(h,obs,ph) in enumerate(meta):
             records.append({
@@ -217,8 +231,61 @@ def main():
               "q_ref":float(qref[idx]),"q_current":float(qbase[idx]),"q_dse2p":float(qdse[idx]),
               "e_current":float(qbase[idx]-qref[idx]),"e_dse2p":float(qdse[idx]-qref[idx])
             })
+    else:
+        numerical_failure=None
 
-    numerical_ok=all(x["all_qualified"] for x in numerics)
+    numerical_ok=numerical_failure is None and all(x["all_qualified"] for x in numerics)
+
+    if not numerical_ok:
+        out={
+          "schema":"swap5.lare.bc2.c5t.result.v1",
+          "workstream":"F-ROM-LARE","work_unit":"LARE-BC2-C5T",
+          "status":"C5T_DSE2P_NOT_SUPPORTED_NUMERICAL_QUALIFICATION_FAILED",
+          "role":"EXPOSED_FROZEN_STATE_MECHANISM_DIAGNOSTIC",
+          "instrumentation_identity":identity,
+          "numerical_qualification":{
+            "pass":False,
+            "by_interface":numerics,
+            "failure":numerical_failure
+          },
+          "primary_interfaces_cm":sorted(PRIMARY),
+          "primary":{},
+          "per_interface_phase":{},
+          "all_interface_secondary":{},
+          "adjudication":{
+            "DSE2P_PRIMARY_MOVING_COMPONENTWISE_NO_WORSE":False,
+            "DSE2P_EACH_PRIMARY_MOVING_RMSE_NO_WORSE":False,
+            "DSE2P_PRIMARY_MOVING_RMSE_STRICTLY_IMPROVED":False,
+            "DSE2P_HOLD_GUARD_PASS":False,
+            "DSE2P_NUMERICAL_QUALIFICATION_PASS":False,
+            "DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST":False
+          },
+          "interpretation_boundaries":[
+            "The preregistered DSE2P numerical method failed its all-points qualification gate before operator metrics could be fully adjudicated.",
+            "No quadrature order, physical branch, bracket rule, root tolerance or residual tolerance is changed after response.",
+            "This outcome does not authorize a free-running DSE2P implementation or any scalar/branch retuning.",
+            "The R01-R04 workload was exposed in C5R; C5T is mechanism evidence and cannot count as blind validation."
+          ],
+          "scientific_firewall":{
+            "blind_validation":False,
+            "candidate_feedback":False,
+            "production_reference_changed":False,
+            "free_running_closure_implemented":False,
+            "scalar_tuning_reopened":False,
+            "application_acceptance_adjudicated":False,
+            "performance_comparison_authorized":False,
+            "speed_claim_authorized":False,
+            "production_rom_authorized":False
+          }
+        }
+        a.output.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+        print(json.dumps({
+          "status":out["status"],
+          "identity":identity,
+          "numerical_qualification":out["numerical_qualification"],
+          "adjudication":out["adjudication"]
+        },sort_keys=True))
+        return
 
     per={}
     for dep in DEPTHS:
