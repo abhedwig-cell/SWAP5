@@ -2,8 +2,12 @@ module mod_research_direct_table_provider
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   implicit none
   private
+
+  real(real64), parameter :: B110_H_CRIT = -1.0e-2_real64
+  real(real64), parameter :: B110_SAT_K_SWITCH = 1.0_real64 - 1.0e-6_real64
 
   type, public :: direct_table_storage_t
      integer :: active_nodes = 0
@@ -19,6 +23,12 @@ module mod_research_direct_table_provider
      real(real64), allocatable :: logk_slope(:,:)
      real(real64), allocatable :: logc_slope(:,:)
      real(real64), allocatable :: saturated_capacity(:)
+     logical, allocatable :: branch_a(:)
+     real(real64), allocatable :: capacity_transition(:)
+     real(real64), allocatable :: capacity_near_saturation(:)
+     real(real64), allocatable :: conductivity_switch_head(:)
+     real(real64), allocatable :: conductivity_left_limit(:)
+     real(real64), allocatable :: saturated_conductivity(:)
   end type direct_table_storage_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: direct_table_provider_t
@@ -34,13 +44,15 @@ contains
 
   subroutine build_direct_table_from_provider(table, source, active_nodes, n_points, h_min, h_scale)
     type(direct_table_storage_t), intent(out) :: table
-    class(constitutive_hydraulics_provider_t), intent(in) :: source
+    type(b110_default_mvg_provider_t), intent(in) :: source
     integer, intent(in) :: active_nodes, n_points
     real(real64), intent(in) :: h_min, h_scale
 
     real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64), allocatable :: x(:)
     real(real64) :: xj, hj, tiny_positive, negative_endpoint_head
+    real(real64) :: theta_switch, c1, c2, c25, c26, c27, eps_head
+    real(real64), allocatable :: knot_head(:)
     integer :: i, j
 
     if (active_nodes <= 0) error stop 'TAB-HYD SWAP5 table: active_nodes must be positive'
@@ -62,9 +74,22 @@ contains
     allocate(table%theta(n_points,active_nodes), table%logk(n_points,active_nodes), &
              table%logc(n_points,active_nodes), table%theta_slope(n_points,active_nodes), &
              table%logk_slope(n_points,active_nodes), table%logc_slope(n_points,active_nodes), &
-             table%saturated_capacity(active_nodes))
+             table%saturated_capacity(active_nodes), table%branch_a(active_nodes), &
+             table%capacity_transition(active_nodes), table%capacity_near_saturation(active_nodes), &
+             table%conductivity_switch_head(active_nodes), table%conductivity_left_limit(active_nodes), &
+             table%saturated_conductivity(active_nodes))
     allocate(head(active_nodes),theta(active_nodes),conductivity(active_nodes),capacity(active_nodes),dkdh(active_nodes))
-    allocate(x(n_points))
+    allocate(x(n_points),knot_head(n_points))
+    table%branch_a = .false.
+    table%capacity_transition = 0.0_real64
+    table%capacity_near_saturation = 0.0_real64
+    table%conductivity_switch_head = 0.0_real64
+    table%conductivity_left_limit = 0.0_real64
+    table%saturated_conductivity = 0.0_real64
+
+    if (.not. associated(source%parameters)) error stop 'TAB-HYD SWAP5 table: B1.10 source parameters not bound'
+    if (source%parameters%active_nodes /= active_nodes) &
+         error stop 'TAB-HYD SWAP5 table: B1.10 source node count mismatch'
 
     tiny_positive = tiny(1.0_real64)
     do j = 1, n_points
@@ -72,6 +97,7 @@ contains
        if (j == n_points) xj = 0.0_real64
        x(j) = xj
        hj = h_scale*(1.0_real64-exp(-xj))
+       knot_head(j) = hj
        if (j == n_points) hj = 0.0_real64
        head = hj
        call source%evaluate(head,theta,conductivity,capacity,dkdh)
@@ -83,18 +109,74 @@ contains
        table%theta(j,:) = theta
        table%logk(j,:) = log(max(conductivity,tiny_positive))
        table%logc(j,:) = log(max(capacity,tiny_positive))
-       if (j == n_points) table%saturated_capacity = capacity
+       if (j == n_points) then
+          table%saturated_capacity = capacity
+          table%saturated_conductivity = conductivity
+       end if
     end do
 
-    ! The qualified MvG provider intentionally uses a small saturated C floor at
-    ! h >= 0 while its negative-head branch has a different left limit.  Do not
-    ! smear that numerical discontinuity over the final table interval.
+    ! Preserve the explicit branch surfaces of the qualified B1.10 provider.
+    ! A smooth interpolant must not smear the C jump at Hcrit or the Ksat guard.
+    do i = 1, active_nodes
+       if (source%parameters%cofgen(9,i) > B110_H_CRIT) then
+          table%branch_a(i) = .true.
+          c1 = source%parameters%cofgen(1,i)
+          c2 = source%parameters%cofgen(2,i)
+          c25 = source%parameters%cofgen(25,i)
+          c26 = source%parameters%cofgen(26,i)
+          c27 = source%parameters%cofgen(27,i)
+          if (c25 <= 0.0_real64 .or. c27 <= 0.0_real64) &
+               error stop 'TAB-HYD SWAP5 table: invalid Branch-A parameters'
+
+          head = B110_H_CRIT
+          call source%evaluate(head,theta,conductivity,capacity,dkdh)
+          table%capacity_transition(i) = capacity(i)
+
+          head = 0.5_real64*B110_H_CRIT
+          call source%evaluate(head,theta,conductivity,capacity,dkdh)
+          table%capacity_near_saturation(i) = capacity(i)
+
+          theta_switch = c1 + c25*B110_SAT_K_SWITCH
+          table%conductivity_switch_head(i) = B110_H_CRIT + (theta_switch-c26)/c27
+          if (table%conductivity_switch_head(i) <= B110_H_CRIT .or. &
+              table%conductivity_switch_head(i) >= 0.0_real64) &
+               error stop 'TAB-HYD SWAP5 table: Branch-A K switch outside near-saturation interval'
+       end if
+    end do
+
+    head = 0.0_real64
+    do i = 1, active_nodes
+       if (table%branch_a(i)) then
+          eps_head = max(1.0e-12_real64,abs(table%conductivity_switch_head(i))*1.0e-10_real64)
+          head(i) = table%conductivity_switch_head(i)-eps_head
+       end if
+    end do
+    call source%evaluate(head,theta,conductivity,capacity,dkdh)
+    do i = 1, active_nodes
+       if (table%branch_a(i)) then
+          table%conductivity_left_limit(i) = conductivity(i)
+          if (table%capacity_transition(i) <= 0.0_real64 .or. table%capacity_near_saturation(i) <= 0.0_real64 .or. &
+              table%conductivity_left_limit(i) <= 0.0_real64 .or. table%saturated_conductivity(i) <= 0.0_real64) &
+               error stop 'TAB-HYD SWAP5 table: invalid Branch-A support value'
+          do j = 1, n_points
+             if (knot_head(j) > B110_H_CRIT) &
+                  table%logc(j,i) = log(table%capacity_transition(i))
+             if (knot_head(j) > table%conductivity_switch_head(i)) &
+                  table%logk(j,i) = log(table%conductivity_left_limit(i))
+          end do
+       end if
+    end do
+
+    ! Preserve the separate saturated C branch at h >= 0. The negative endpoint
+    ! is support for the unsaturated interpolant only.
     negative_endpoint_head = -max(1.0e-12_real64,1.0e-10_real64*h_scale)
     head = negative_endpoint_head
     call source%evaluate(head,theta,conductivity,capacity,dkdh)
     if (any(.not. ieee_is_finite(capacity)) .or. any(capacity <= 0.0_real64)) &
          error stop 'TAB-HYD SWAP5 table: invalid negative endpoint C'
-    table%logc(n_points,:) = log(max(capacity,tiny_positive))
+    do i = 1, active_nodes
+       if (.not. table%branch_a(i)) table%logc(n_points,i) = log(max(capacity(i),tiny_positive))
+    end do
 
     do i = 1, active_nodes
        call monotone_cubic_slopes(table%theta(:,i),table%dx,table%theta_slope(:,i))
@@ -130,10 +212,21 @@ contains
 
     do i = 1, n
        water_content(i) = interpolate_field(self%table, pressure_head(i), i, self%table%theta, self%table%theta_slope)
-       logk_value = interpolate_field(self%table, pressure_head(i), i, self%table%logk, self%table%logk_slope)
-       conductivity(i) = exp(logk_value)
+       if (self%table%branch_a(i) .and. pressure_head(i) > self%table%conductivity_switch_head(i)) then
+          conductivity(i) = self%table%saturated_conductivity(i)
+       else if (self%table%branch_a(i) .and. pressure_head(i) == self%table%conductivity_switch_head(i)) then
+          conductivity(i) = self%table%conductivity_left_limit(i)
+       else
+          logk_value = interpolate_field(self%table, pressure_head(i), i, self%table%logk, self%table%logk_slope)
+          conductivity(i) = exp(logk_value)
+       end if
+
        if (pressure_head(i) >= 0.0_real64) then
           capacity(i) = self%table%saturated_capacity(i)
+       else if (self%table%branch_a(i) .and. pressure_head(i) > B110_H_CRIT) then
+          capacity(i) = self%table%capacity_near_saturation(i)
+       else if (self%table%branch_a(i) .and. pressure_head(i) == B110_H_CRIT) then
+          capacity(i) = self%table%capacity_transition(i)
        else
           logc_value = interpolate_field(self%table, pressure_head(i), i, self%table%logc, self%table%logc_slope)
           capacity(i) = exp(logc_value)
