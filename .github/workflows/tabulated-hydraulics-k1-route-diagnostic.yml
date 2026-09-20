@@ -1,0 +1,144 @@
+name: TAB-HYD K1 difficult-route diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-k1-route-diagnostic.yml'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build K1 binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
+          cp -a swap-src swap-raw-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-raw-src/src/utils/soilhydraulicsutils.f90 swap-raw-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_raw_head_logk_lookup.py swap-raw-src/src/soil/sptabulated.f90 swap-raw-src/src/io/readswap.f90 swap-raw-src/src/utils/soilhydraulicsutils.f90
+          cp -a swap-raw-src swap-rawcap-src
+          meson setup swap-raw-src/build swap-raw-src -Denable_pfunit=false
+          meson compile -C swap-raw-src/build
+          cp swap-raw-src/build/swap swap-raw
+          python3 research/tabulated_hydraulics/patch_raw_head_capacity_reuse.py swap-rawcap-src/src/soil/sptabulated.f90 swap-rawcap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-rawcap-src/build swap-rawcap-src -Denable_pfunit=false
+          meson compile -C swap-rawcap-src/build
+          cp swap-rawcap-src/build/swap swap-rawcap
+
+      - name: Prepare difficult K1 cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep; prep.uniform_rows=lambda x: mod.loghead_rows(x,400)
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/k1diag"); root.mkdir(parents=True)
+          for scenario in ("loam_mid_free","clay_wet_free","loam_capillary"):
+              sc=prep.SCENARIOS[scenario]
+              pars=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic",pars,sc,False,1)
+              prep.prepare_case(src,root/f"{scenario}__raw",pars,sc,True,1)
+              shutil.copytree(root/f"{scenario}__raw",root/f"{scenario}__rawcap")
+          PY
+
+      - name: Diagnose route completion
+        shell: bash
+        run: |
+          set -uo pipefail
+          echo -e "scenario\troute\trc\tseconds\tnormal_completion" > build/k1diag/runtime.tsv
+          for scenario in loam_mid_free clay_wet_free loam_capillary; do
+            for route in analytic raw rawcap; do
+              case "$route" in
+                analytic) bin="$GITHUB_WORKSPACE/swap-analytic" ;;
+                raw) bin="$GITHUB_WORKSPACE/swap-raw" ;;
+                rawcap) bin="$GITHUB_WORKSPACE/swap-rawcap" ;;
+              esac
+              work="build/k1diag/$scenario"__"$route"
+              echo "K1_DIAG_START scenario=$scenario route=$route"
+              start=$(date +%s)
+              pushd "$work" >/dev/null
+              timeout 120 "$bin" > run.log 2>&1
+              rc=$?
+              popd >/dev/null
+              stop=$(date +%s)
+              secs=$((stop-start))
+              normal=false
+              if [ "$rc" -eq 100 ]; then normal=true; fi
+              echo -e "$scenario\t$route\t$rc\t$secs\t$normal" | tee -a build/k1diag/runtime.tsv
+              echo "K1_DIAG_END scenario=$scenario route=$route rc=$rc seconds=$secs"
+            done
+          done
+          cat build/k1diag/runtime.tsv
+
+      - name: Compare completed route pairs
+        if: always()
+        shell: bash
+        run: |
+          set -u
+          mkdir -p build/k1diag/compare
+          for scenario in loam_mid_free clay_wet_free loam_capillary; do
+            arc=$(awk -v s="$scenario" '$1==s && $2=="analytic"{print $3}' build/k1diag/runtime.tsv)
+            rrc=$(awk -v s="$scenario" '$1==s && $2=="raw"{print $3}' build/k1diag/runtime.tsv)
+            crc=$(awk -v s="$scenario" '$1==s && $2=="rawcap"{print $3}' build/k1diag/runtime.tsv)
+            if [ "$arc" = 100 ] && [ "$rrc" = 100 ]; then
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py "build/k1diag/$scenario"__analytic "build/k1diag/$scenario"__raw "build/k1diag/compare/$scenario"__raw.json --label "$scenario,K1,raw-head"
+            fi
+            if [ "$arc" = 100 ] && [ "$crc" = 100 ]; then
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py "build/k1diag/$scenario"__analytic "build/k1diag/$scenario"__rawcap "build/k1diag/compare/$scenario"__rawcap.json --label "$scenario,K1,raw-head-capacity"
+            fi
+          done
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-k1-difficult-route-diagnostic
+          path: |
+            build/k1diag/runtime.tsv
+            build/k1diag/compare/*.json
+            build/k1diag/*/run.log
