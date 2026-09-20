@@ -177,7 +177,7 @@
     "No performance or production-ROM claim."
   ],
   "implementation_binding": {
-    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "state": "BOUND_BEFORE_EXECUTION",
     "materializer": "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py",
     "materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
     "segmented_materializer": "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py",
@@ -185,7 +185,7 @@
     "analyzer": "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
     "analyzer_blob": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6r.yml",
-    "workflow_blob": null,
+    "workflow_blob": "4cc15507c8b88f8350e70096ceb8e5ee9c492377",
     "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
     "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
     "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
@@ -193,9 +193,9 @@
     "root_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
     "root_sink_provider_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
     "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-    "execution_binding_complete": false,
+    "execution_binding_complete": true,
     "response_based_design": false,
-    "binding_note": "Root-process and root-sink-provider blobs are present in the same frozen C6N1 backend. R2048_T32 segmentation persists only hydraulic committed state and time; root sink is recomputed from that committed state after restart. Scientific cumulative uptake is reconstructed from interval uptake rates by the analyzer, not from a segment-persistent diagnostic accumulator."
+    "binding_note": "All scientific design, root-process/source-provider authority, materializers, segmented execution semantics, analyzer and workflow are frozen before the authoritative C6R response. The workflow verifies its own blob against this preregistration at runtime."
   },
   "scientific_firewall": {
     "reduced_candidate_response_generated": false,
