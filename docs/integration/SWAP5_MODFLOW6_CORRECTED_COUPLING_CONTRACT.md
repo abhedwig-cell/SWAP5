@@ -170,18 +170,18 @@ The coupling application topology must declare the choice. Legacy SWBOTB=5 does 
 
 ## 11. Storage partition and blocker
 
-The SWAP-derived `u` is a head-response coefficient and enters the MODFLOW boundary slope as `u/DeltaT`. It is storage-like.
+The SWAP-derived `u` is a finite-window head-response coefficient and enters the MODFLOW boundary slope as `u/DeltaT = dq_i/dH_b` in the local inverse-response interpretation. It is a condensed SWAP-side interface Jacobian; it must not be labelled a physical aquifer storage coefficient merely because it is storage-like in the coupled matrix.
 
 MODFLOW STO independently represents groundwater storage in its cells.
 
-A realistic application must therefore declare a non-overlapping storage partition or a mathematically justified overlap correction. At minimum the contract must state:
+A realistic application must therefore declare a non-overlapping storage partition or a mathematically justified overlap correction. Under the preferred non-overlap interpretation, SWAP owns storage in the column to its lower coupling face, MODFLOW STO owns groundwater storage outside/below that control volume, and the interface transfer cancels from the combined water balance. At minimum the contract must state:
 
 - what vertical/physical storage volume contributes to SWAP-derived `u`;
 - what storage volume is represented by MODFLOW STO;
 - whether the two domains overlap;
 - how overlap, if any, is removed from the assembled groundwater equation.
 
-The current production topology and bootstrap do not contain this authority. The existing live tests with nonzero STO demonstrate numerical composition only.
+The current production topology and bootstrap do not contain this authority. The existing live tests with nonzero STO demonstrate numerical composition only. They do not prove that the vertical physical volumes represented by the two storage responses are disjoint.
 
 **This is a real scientific/architectural authority blocker.** Broad production repair must not proceed by merely deleting the mode-5 guard while leaving storage ownership implicit.
 
