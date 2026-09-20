@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.representation-selection.closeout.v2",
+  "schema": "swap5.lare.representation-selection.closeout.v3",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-REPSEL-1",
-  "status": "CLOSED_FIXED_PARTITION_AND_MATCHED_D13_DEVELOPMENT_BOUNDARY_BLIND_VALIDATION_REQUIRED",
+  "status": "CLOSED_THROUGH_C4X_MATERIAL_AND_PLACEMENT_DEPENDENT_FRONTIER_SCIENTIFIC_CHOICE_OR_EXTERNAL_AUTHORITY_REQUIRED",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "authorities": {
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
@@ -13,7 +13,14 @@
     "purpose_dependent_rom": "integration/f-rom/F-ROMV2_STATUS.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "cross_family_reconciliation": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
-    "matched_D13_discriminator": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json"
+    "matched_D13_discriminator": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+    "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "same_partition_CoRichards_full_cohort": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+    "cost_fidelity_screen": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+    "groundwater_application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "one_day_B01_persistence": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
+    "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json"
   },
   "reconciled_findings": {
     "fixed_partition_LARE": [
@@ -60,30 +67,38 @@
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
   "next_family_authority": {
-    "family": "BLIND_VALIDATION_OF_CURRENT_REPRESENTATION_FRONTIER",
+    "family": "SCIENTIFIC_CHOICE_REQUIRED",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
-      "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
       "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json"
     ],
-    "relation_to_current_boundary": "Confirm or falsify the C4Q development frontier on newly generated current-canonical Reference trajectories before any cost/value measurement or further representation invention.",
-    "required_before_model_definition": [
-      "Freeze new validation histories before generating their Reference response.",
-      "Keep the full frozen LARE resolution ladder so development-selected dimensions are not cherry-picked.",
-      "Freeze the FMC/SMVE equations and validate their implementation against immutable D13 before exposing new trajectories.",
-      "Generate new Reference/R2 trajectories against the current canonical backend under a preregistered strict-first accepted-trajectory policy.",
-      "Report comparator-relative GW-vector and profile/process frontiers separately; do not infer application acceptance without independently sourced thresholds."
-    ],
-    "implementation_authorized": true,
-    "reason": "This is validation of already-frozen representations and equations, not a new closure family."
+    "reconciled_boundary": "C4X shows that useful state dimension is material-, placement- and purpose-dependent within the tested laboratory. No universal layer count is supported.",
+    "application_acceptance": {
+      "state": "EXTERNAL_SOURCE_BLOCKER",
+      "required": [
+        "externally governed groundwater application requirement H_app",
+        "independent A_temporal or direct temporal head-error budget",
+        "immutable verified provenance for both claims"
+      ],
+      "next_when_unblocked": "Preregister purpose-specific downstream groundwater consequence validation using frozen representation candidates."
+    },
+    "representation_generality": {
+      "state": "CHOICE_NOT_MADE",
+      "admissible_next_studies": [
+        "independent lower-boundary-semantics transfer",
+        "additional material generality transfer"
+      ],
+      "rule": "Whichever axis is selected must be preregistered before response exposure; no C4X post-hoc retuning is authorized."
+    },
+    "implementation_authorized": false
   },
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
   },
-  "decision": "PREREGISTER_NEW_BLIND_D13_CLASS_VALIDATION_BEFORE_VALUE_MEASUREMENT",
-  "next_authority": "LARE_BC2_C4R_BLIND_FIXED_WATER_TABLE_VALIDATION",
+  "decision": "PRESERVE_MATERIAL_AND_PLACEMENT_DEPENDENT_FRONTIER_STOP_AT_SCIENTIFIC_CHOICE_OR_EXTERNAL_GW_AUTHORITY",
+  "next_authority": "SCIENTIFIC_CHOICE_REQUIRED",
   "model_changed": false,
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
@@ -98,6 +113,19 @@
     "C4P": "Later canonical evidence shows L2/QS1/QS2/HE2 did not cross R2 on their preregistered views; FMC/SMVE is the distinct physical reduction family with repeated bounded frontier-crossing evidence.",
     "C4Q": "On exposed D13 fixed-water-table relaxation, all frozen LARE members R3-R16 qualify. R4 is minimum reduced LARE crossing R2 on all five frozen views; R12 is the only reduced LARE member crossing FMC on all five.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
+    "C4R": "Blind B01 validation replicated the comparator-relative separation: minimum R4 for the frozen GW vector and R12 for FMC-relative PROFILE crossing on the 64-step validation workload.",
+    "C4S": "A full same-workload CoRichards common cohort became available for the subsequent value screen; this comparator availability does not establish hydrological superiority.",
+    "C4T": "Shared-host purpose-dependent relative cost-fidelity evidence was resolved, but it supplies neither application acceptance nor a portable speedup claim.",
+    "C4U": "Groundwater application acceptance is blocked on externally governed H_app plus independent A_temporal or a direct temporal head-error budget with immutable provenance.",
+    "C4V": "On the 1.024-day B01 fixed-water-table persistence test, the minimum transferred lower-zone member persistently crossing both R2 and FMC moved to R8.",
+    "C4W": "The B01 one-day spurious reversal mechanism was characterized without authorizing closure retuning.",
+    "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor."
+  },
+  "v3_reconciliation": {
+    "reason": "The v2 representation-selection file stopped at C4R preregistration. Live branch authority now includes completed C4R through C4X evidence.",
+    "scientific_results_changed": false,
+    "frozen_lare_scientific_basis_rebased": false,
+    "post_hoc_retuning_authorized": false
   }
 }
