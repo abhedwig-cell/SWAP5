@@ -1,0 +1,181 @@
+name: TAB-HYD log-head plateau fidelity diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-loghead-plateau.yml'
+      - 'research/tabulated_hydraulics/prepare_envelope_cases_loghead.py'
+      - 'research/tabulated_hydraulics/patch_table_ksat_plateau_split.py'
+
+jobs:
+  fidelity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel application
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical and branch-aware table binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py \
+            swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          meson setup swap-src/build-table swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table
+          cp swap-src/build-table/swap swap-table
+
+      - name: Prepare log-head envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python3 research/tabulated_hydraulics/prepare_envelope_cases_loghead.py \
+            swap-testcases/cases/hupselbrook/legacy \
+            staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv \
+            build/loghead
+
+      - name: Run five K0 pairs and two bounded K1 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'case\treturn_code\truntime_seconds\trows\n' > build/loghead/status.tsv
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            for route in analytic table; do
+              work="build/loghead/${scenario}__${route}_k0"
+              if [ "$route" = analytic ]; then bin="$GITHUB_WORKSPACE/swap-analytic"; else bin="$GITHUB_WORKSPACE/swap-table"; fi
+              pushd "$work" >/dev/null
+              set +e
+              /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$bin" > run.log 2>&1
+              rc=$?
+              set -e
+              popd >/dev/null
+              runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+              rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+              printf '%s\t%s\t%s\t%s\n' "${scenario}__${route}_k0" "$rc" "$runtime" "$rows" | tee -a build/loghead/status.tsv
+              test "$rc" -eq 100
+            done
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            for route in analytic table; do
+              work="build/loghead/${scenario}__${route}_k1"
+              if [ "$route" = analytic ]; then bin="$GITHUB_WORKSPACE/swap-analytic"; else bin="$GITHUB_WORKSPACE/swap-table"; fi
+              pushd "$work" >/dev/null
+              set +e
+              /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$bin" > run.log 2>&1
+              rc=$?
+              set -e
+              popd >/dev/null
+              runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+              rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+              printf '%s\t%s\t%s\t%s\n' "${scenario}__${route}_k1" "$rc" "$runtime" "$rows" | tee -a build/loghead/status.tsv
+              test "$rc" -eq 100
+            done
+          done
+
+      - name: Compare and gate completed pairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/loghead/comparisons.txt
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/loghead/${scenario}__analytic_k0" \
+              "build/loghead/${scenario}__table_k0" \
+              "build/loghead/${scenario}__k0.json" \
+              --label "${scenario},K0,loghead-plateau" \
+              | tee -a build/loghead/comparisons.txt
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/loghead/${scenario}__analytic_k1" \
+              "build/loghead/${scenario}__table_k1" \
+              "build/loghead/${scenario}__k1.json" \
+              --label "${scenario},K1,loghead-plateau" \
+              | tee -a build/loghead/comparisons.txt
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={
+              "GWL":(0.05,0.01),
+              "DSTOR":(0.02,0.005),
+              "DRAINAGE":(0.02,0.005),
+              "DRN":(0.02,0.005),
+              "QBOTTOM":(0.02,0.005),
+              "TACT":(0.02,0.005),
+          }
+          failures=[]
+          rows=[]
+          for p in sorted(Path("build/loghead").glob("*__k[01].json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]
+                  ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  rows.append((d["label"],metric,m["max_abs"],m["rmse"],ok))
+                  if not ok: failures.append(rows[-1])
+          with Path("build/loghead/fidelity.tsv").open("w") as fh:
+              fh.write("label\tmetric\tmax_abs\trmse\tpass\n")
+              for r in rows: fh.write("\t".join(map(str,r))+"\n")
+          print(Path("build/loghead/fidelity.tsv").read_text(),end="")
+          print(f"fidelity_failures={len(failures)}")
+          if failures:
+              raise SystemExit("log-head plateau candidate exceeds original fidelity limits")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-loghead-plateau-fidelity
+          path: |
+            build/loghead/status.tsv
+            build/loghead/comparisons.txt
+            build/loghead/fidelity.tsv
+            build/loghead/*.json
