@@ -1,0 +1,156 @@
+name: F-ROM-LARE persist C4X B14 material transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4x-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover authoritative C4X evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4x
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10599913011/zip" > /tmp/c4x.zip
+          echo "16da393daddd5864c30f5d319e0426d8daa37e3f741c20339c8e3932de3a3975  /tmp/c4x.zip" | sha256sum -c -
+          unzip -q /tmp/c4x.zip -d /tmp/c4x
+          echo "3f2f007ef3e524a4000e4780ffcec9219a15ed8903a48f5be46cef5009be2427  /tmp/c4x/LARE_BC2_C4X_RESULT.json" | sha256sum -c -
+          echo "f3230119b71befe80625141b5f1ec8357dc8ab74b198797894c7b59b3d9656bf  /tmp/c4x/FMC_B14_PREFLIGHT.json" | sha256sum -c -
+          echo "f00775d67bdafe89776c1e9fbb8da911cfd2ca83bb50dd74f6fe84af384d1429  /tmp/c4x/R16_o0.txt" | sha256sum -c -
+          echo "f04eaa9295efbef1dec42c47c1e4566674a4b48a2155980592b00b593b2bac76  /tmp/c4x/R2_o0.txt" | sha256sum -c -
+
+      - name: Validate C4X result
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4x/LARE_BC2_C4X_RESULT.json'))
+          assert r['decision']=='C4X_B14_GW_TRANSFER_FRONTIER_PRESENT'
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['fmc_preflight_pass'] is True
+          assert r['integrity']['R16_operator_control_status']=='QUALIFIED'
+          assert r['persistent_crossing']['minimum_transferred_ladder_dimension_both']==3
+          assert r['persistent_crossing']['transferred_ladder_both']==['R3','R4','R5','R6','R8','R12']
+          assert r['persistent_crossing']['placement_controls_both']==['P4_TOP_LOWER']
+          assert r['profile_1024']['minimum_dimension_FMC']==8
+          assert r['profile_1024']['minimum_dimension_R2']==3
+          assert r['hypotheses']['H_R8_MATERIAL_TRANSFER_exact'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4X_VALIDATION=PASS')
+          PY
+
+      - name: Build C4X closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4x/LARE_BC2_C4X_RESULT.json'))
+          s=r['summaries']
+          def c(name):
+              x=s[name]['1024']
+              return {
+                'storage_rmse_cm':x['storage_rmse_cm'],
+                'cumulative_bottom_rmse_cm':x['cumulative_bottom_rmse_cm'],
+                'bottom_flux_rmse_cm_per_day':x['bottom_flux_rmse_cm_per_day'],
+                'bottom_flux_sign_errors':x['bottom_flux_sign_errors'],
+                'abs_mean_signed_bottom_flux_error_cm_per_day':x['abs_mean_signed_bottom_flux_error_cm_per_day'],
+                'max_abs_final_cumulative_bottom_error_cm':x['max_abs_final_cumulative_bottom_error_cm'],
+                'mapped_theta_rmse':x['mapped_theta_rmse']
+              }
+          out={
+            'schema':'swap5.lare.bc2.c4x.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4X',
+            'status':'CLOSED_B14_LARE_FAMILY_TRANSFERS_STATE_DIMENSION_AND_PLACEMENT_MATERIAL_DEPENDENT',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35494292851,
+              'execution_head':'2afd3e9f5211dd941031bc02be367396febe438a',
+              'artifact_id':10599913011,
+              'artifact_digest':'sha256:16da393daddd5864c30f5d319e0426d8daa37e3f741c20339c8e3932de3a3975',
+              'result_sha256':'3f2f007ef3e524a4000e4780ffcec9219a15ed8903a48f5be46cef5009be2427',
+              'fmc_preflight_sha256':'f3230119b71befe80625141b5f1ec8357dc8ab74b198797894c7b59b3d9656bf',
+              'R16_reference_sha256':'f00775d67bdafe89776c1e9fbb8da911cfd2ca83bb50dd74f6fe84af384d1429',
+              'R2_reference_sha256':'f04eaa9295efbef1dec42c47c1e4566674a4b48a2155980592b00b593b2bac76',
+              'non_authoritative_first_run':35494145566,
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C4X_EXECUTION_BINDING_RECONCILIATION.json'
+            },
+            'material':'B14',
+            'persistent_groundwater_frontier':r['persistent_crossing'],
+            'profile_frontier_day1':r['profile_1024'],
+            'key_day1':{
+              'R2':c('R2'),'FMC':c('FMC'),'LARE_R3':c('LARE_R3'),
+              'LARE_R4':c('LARE_R4'),'LARE_P4_TOP_LOWER':c('LARE_P4_TOP_LOWER'),
+              'LARE_U4':c('LARE_U4'),'LARE_R8':c('LARE_R8'),
+              'LARE_U8':c('LARE_U8'),'LARE_R12':c('LARE_R12'),'LARE_R16':c('LARE_R16')
+            },
+            'hypothesis_adjudication':{
+              'H_R8_MATERIAL_TRANSFER_exact':'NOT_SUPPORTED',
+              'H_LAYER_PLACEMENT_MATTERS':'SUPPORTED_BY_FROZEN_CONTROLS',
+              'H_PROFILE_REQUIRES_MORE_STATE':'SUPPORTED_COMPARATOR_RELATIVE'
+            },
+            'scientific_interpretation':[
+              'The LARE representation family remains strongly competitive on the prospectively transferred B14 fixed-water-table one-day laboratory, but the B01 minimum state requirement does not transfer.',
+              'The B01 C4V one-day groundwater minimum R8 is falsified as a material-invariant rule: on B14 the transferred lower-zone R3 member already crosses both R2 and FMC at every preregistered checkpoint.',
+              'Profile/process information remains more demanding. At day 1.024, R8 is the minimum reduced LARE member that also crosses FMC when mapped 10-cm theta RMSE is added, while R3 already crosses R2 on that profile-inclusive vector.',
+              'Layer placement is decisive at fixed state count. R4 and the preregistered P4_TOP_LOWER both retain the groundwater frontier, while uniform U4 does not cross FMC; similarly R8 crosses both comparators while uniform U8 does not.',
+              'Uniform U4/U8 failure despite the same nominal dimension confirms that state count cannot be interpreted independently from where vertical information is retained.',
+              'B14 is one additional homogeneous material only. The result supports material-dependent state and placement requirements, not cross-material generality.',
+              'No application acceptance, coupled-groundwater authority, portable speedup, timing claim or production ROM follows.'
+            ],
+            'next_authority':'INDEPENDENT_LOWER_BOUNDARY_SEMANTICS_TRANSFER_OR_THIRD_MATERIAL_GENERALITY_TEST',
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4X_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4X closeout
+
+          Formal decision: **C4X_B14_GW_TRANSFER_FRONTIER_PRESENT**.
+
+          C4X prospectively transfers the one-day fixed-water-table laboratory from B01 to the independently frozen B14 constitutive law. The finite-water-content initial profiles were rescaled before response generation to preserve the absolute depth of the deepest active front. The first C4X execution is explicitly non-authoritative because its exact tooling-blob provenance was stale; the authoritative rerun verifies the repaired binding before preflight and Reference generation.
+
+          The representation family transfers, but the B01 state-dimension minimum does not. Every transferred lower-zone member R3-R12 crosses both R2 and FMC on the six-component groundwater vector at every checkpoint from 0.128 through 1.024 day. Thus the B01 C4V minimum R8 is not material invariant: on B14 R3 is already the minimum tested persistent groundwater member.
+
+          At 1.024 day, R3 has approximately 0.00127 cm storage/cumulative-bottom RMSE and 0.00477 cm/d terminal bottom-flux RMSE, with zero sign errors. FMC has approximately 0.324 cm storage/cumulative RMSE and 0.579 cm/d flux RMSE; R2 has approximately 0.544 cm and 0.917 cm/d, respectively. These are comparator-relative laboratory results, not application tolerances.
+
+          Profile fidelity preserves a stronger state requirement. R3 does not cross FMC when mapped 10-cm theta RMSE is added. R8 is the minimum reduced LARE member that does, with mapped-theta RMSE about 0.00394 versus FMC 0.00633. R12 improves this further to about 0.000186.
+
+          The frozen placement controls show that state count alone is not explanatory. At dimension 4, lower-zone R4 crosses both comparators while uniform U4 fails the FMC groundwater frontier by a wide margin. At dimension 8, lower-zone R8 crosses both while uniform U8 does not. The pre-existing P4_TOP_LOWER control also crosses both, though it is less accurate than R4 on the day-one groundwater components.
+
+          The scientific conclusion is therefore material-dependent state sufficiency plus placement-dependent representation sufficiency. B14 is only a second material, so no cross-material generality or production claim is made. Application acceptance remains blocked by the C4U external H_app/A_temporal authority requirement.
+          MD
+
+      - name: Persist C4X authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4x/LARE_BC2_C4X_RESULT.json integration/f-rom/LARE_BC2_C4X_RESULT.json
+          cp /tmp/c4x/FMC_B14_PREFLIGHT.json integration/f-rom/LARE_BC2_C4X_FMC_PREFLIGHT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4X_RESULT.json integration/f-rom/LARE_BC2_C4X_FMC_PREFLIGHT.json integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4X_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4X B14 material transfer"
+          git push origin HEAD:work/f-rom-lare-rs1
