@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v1",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "BOUND_COMPACT_EXECUTION_REPAIR_BEFORE_ANY_T32_RESPONSE",
+  "status": "BOUND_COMPACT_EXECUTION_QUEUED_EXTERNAL_RUNNER_BLOCKER_NO_T32_RESPONSE",
   "decision": "COMPACT_IDENTICAL_C6N1_MATRIX_TO_24_JOBS_WITH_O0_O2_SEQUENTIAL_IDENTITY",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
@@ -84,5 +84,29 @@
     "performance_comparison_authorized": false,
     "production_rom_authorized": false
   },
-  "model_changed": false
+  "model_changed": false,
+  "compact_authority_run": {
+    "workflow_run": 35533244564,
+    "execution_head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
+    "workflow_blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
+    "jobs_expected": 24,
+    "jobs_queued": 24,
+    "jobs_started": 0,
+    "response_started": false,
+    "state": "QUEUED_EXTERNAL_GITHUB_HOSTED_RUNNER_BLOCKER",
+    "authority_if_completed": true
+  },
+  "recovery_checkpoint": {
+    "timestamp_context": "2026-09-20 current session",
+    "branch": "work/f-rom-lare-rs1",
+    "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
+    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
+    "compact_workflow_blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
+    "current_run": 35533244564,
+    "scientific_response_seen": false,
+    "candidate_response_seen": false,
+    "next_action": "When the compact run leaves queued state, inspect only run 35533244564; if all 24 T32 jobs and analyze succeed, retrieve lare-bc2-c6n1-compact artifact and close C6N1. Earlier queued runs remain superseded."
+  }
 }
