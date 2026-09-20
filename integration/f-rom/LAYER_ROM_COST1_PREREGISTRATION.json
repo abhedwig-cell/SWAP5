@@ -314,5 +314,26 @@
     "NO_PRODUCTION_ROM"
   ],
   "performance_class": "SHARED_HOST_SCREENING_ONLY",
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "post_calibration_feasibility_amendment": {
+    "date": "2026-09-20",
+    "trigger": {
+      "workflow_run": 35507294494,
+      "material": "B16",
+      "calibration_route": "R16",
+      "repeats": 1,
+      "observed_cpu_seconds": 15.339844,
+      "original_target_cpu_seconds_max": 4
+    },
+    "timing_exposure_boundary": "Only the R16 calibration route was executed. No Layer-ROM or CoRichards comparative timing sample and no position-balanced measured round had been exposed.",
+    "repair": [
+      "Preserve the complete four-history material workload as the indivisible timing unit.",
+      "If repeats=1 already exceeds target_cpu_seconds_max, use repeats=1 as an ATOMIC_WORKLOAD_OVER_TARGET calibration instead of declaring calibration unresolved.",
+      "Do not change materials, histories, route set, compiler, fidelity authority, warmups, measured rounds, route order, checksum gate, pairwise statistics or resolution rule.",
+      "Report the calibration mode explicitly in every material result."
+    ],
+    "rationale": "The original upper calibration target assumed the atomic complete workload could fit below 4 CPU-s. B16 falsified that operational assumption before any comparative route timing was exposed. Subdividing the frozen four-history workload would change the workload; retaining repeats=1 preserves the preregistered workload and only relaxes an unattainable repetition-calibration convenience.",
+    "scientific_effect": "NONE_ON_FIDELITY_OR_ROUTE_DEFINITIONS; TIMING_FEASIBILITY_REPAIR_ONLY",
+    "performance_claim_effect": "NONE; remains shared-host screening only with no formal or portable speedup claim"
+  }
 }
