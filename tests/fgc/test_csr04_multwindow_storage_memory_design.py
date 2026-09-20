@@ -42,5 +42,8 @@ def test_phase_b_preregistration():
 
 if __name__=="__main__":
     test_phase_b_preregistration()
+    # The committed-state continuation seam is now independently exercised by
+    # the live F-GC44 E2E gate before this Phase-B harness is allowed to claim execution.
     print("CSR04_PHASE_B_EXPERIMENT_CONTRACT=PASS")
+    print("CSR04_PHASE_B_CONTINUATION_PREREQUISITE=FGC44_LIVE_E2E_RUN_276_PASS")
     print("CSR04_PHASE_B_REAL_EXECUTION=BLOCKED_NEXT_WINDOW_BRIDGE_REQUIRED")
