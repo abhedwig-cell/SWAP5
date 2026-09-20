@@ -128,14 +128,14 @@ jobs:
 
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
             for k in 0 1; do
-              a="build/tab-hyd-envelope-diagnostic/\${scenario}__analytic_k\${k}"
-              t="build/tab-hyd-envelope-diagnostic/\${scenario}__table_k\${k}"
+              a="build/tab-hyd-envelope-diagnostic/${scenario}__analytic_k${k}"
+              t="build/tab-hyd-envelope-diagnostic/${scenario}__table_k${k}"
               if [ -f "$a/result_output.csv" ] && [ -f "$t/result_output.csv" ]; then
                 set +e
                 python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
                   "$a" "$t" \
-                  "build/tab-hyd-envelope-diagnostic/\${scenario}__k\${k}-comparison.json" \
-                  --label "\${scenario},SWKIMPL=\${k},diagnostic" \
+                  "build/tab-hyd-envelope-diagnostic/${scenario}__k${k}-comparison.json" \
+                  --label "${scenario},SWKIMPL=${k},diagnostic" \
                   | tee -a build/tab-hyd-envelope-diagnostic/comparisons.txt
                 crc=\${PIPESTATUS[0]}
                 set -e
@@ -187,8 +187,9 @@ jobs:
             > build/tab-hyd-envelope-diagnostic/clay-horizon.tsv
           for work in build/tab-hyd-envelope-diagnostic/clay_horizon__*; do
             name=$(basename "$work")
-            route=$(echo "$name" | cut -d_ -f4)
-            horizon=$(echo "$name" | cut -d_ -f5)
+            tailpart=${name#clay_horizon__}
+            route=${tailpart%%__*}
+            horizon=${tailpart##*__}
             if [ "$route" = analytic ]; then
               binary="$GITHUB_WORKSPACE/swap-consistent-analytic"
             else
@@ -256,4 +257,5 @@ jobs:
             build/tab-hyd-envelope-diagnostic/*comparison.json
             build/tab-hyd-envelope-diagnostic/diagnostic-summary.md
             build/tab-hyd-envelope-diagnostic/*/diagnostic.log
+            build/tab-hyd-envelope-diagnostic/*/result_output.csv
             build/tab-hyd-envelope-diagnostic/clay_horizon__*/horizon.log
