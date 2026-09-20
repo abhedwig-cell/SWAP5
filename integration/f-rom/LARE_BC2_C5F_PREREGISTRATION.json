@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.lare.bc2.c5f.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5F",
+  "phase": "PREREGISTERED_BEFORE_C5F_REFINED_TIME_RESPONSE",
+  "title": "Matched space-time reconciliation of the high-resolution Richards Reference",
+  "scientific_question": "At R512 and R1024, is main-history temporal transaction error smaller than the remaining R512-R1024 spatial difference when the exact same B14 dynamic prescribed-head history is represented at finer transaction intervals and re-aggregated to the original hydrological observation windows?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_SPATIOTEMPORAL_ERROR_SEPARATION",
+  "authority": {
+    "c5e_closeout": "integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json",
+    "required_c5e_status": "CLOSED_REFERENCE_REFINEMENT_STRONGLY_IMPROVING_THROUGH_R1024_SPATIOTEMPORAL_RECONCILIATION_NEXT",
+    "c5e_result": "integration/f-rom/LARE_BC2_C5E_RESULT.json",
+    "c5e_result_sha256": "80288f4dbc6d7fce59aef7c92226de702a8506810c3c49debf486abcf906e75a",
+    "c5e_artifact_id": 10602206315,
+    "c5e_artifact_digest": "sha256:08afdd428dfd5b394982af16b0cbf5acff98e20d1931e33150a3532696d4cd4c",
+    "R512_T1_reference_sha256": "b17e218573e0e1d121c7a35a3e68e9ad7748ce8b38408c4b3d22915ab8a6648c",
+    "R1024_T1_reference_sha256": "e52b1bf20f5e353b59c289ab4b7778a48cb9c167a8b7cdaf70d3b0b0d3990505",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "new_lare_or_closure_authorized": false
+  },
+  "physical_workload": {
+    "material": "B14",
+    "histories": "exact C5A/C5E Z01-Z04",
+    "physical_horizon_day": 0.8192,
+    "original_observation_window_day": 0.0008,
+    "forcing_switch_times": "identical in physical time to C5A/C5E",
+    "initial_state": "identical effective-saturation state and unchanged two-interval seed route",
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "seed_refined": false,
+    "head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125,
+      "HOLD": "equilibrium mode-2"
+    },
+    "top_boundary": "exact C5A material-specific gravity-consistent qeq",
+    "moving_water_table": false
+  },
+  "temporal_routes": {
+    "T1": {
+      "role": "frozen C5E anchor",
+      "factor": 1,
+      "main_transaction_dt_day": 0.0008,
+      "steps_per_history": 1024,
+      "generated_new": false
+    },
+    "T2": {
+      "role": "required matched temporal refinement",
+      "factor": 2,
+      "main_transaction_dt_day": 0.0004,
+      "steps_per_history": 2048,
+      "generated_new": true,
+      "geometries": [
+        "R512",
+        "R1024"
+      ]
+    },
+    "T4": {
+      "role": "optional second temporal refinement",
+      "factor": 4,
+      "main_transaction_dt_day": 0.0002,
+      "steps_per_history": 4096,
+      "generated_new": true,
+      "geometries": [
+        "R1024"
+      ],
+      "attempt_required": true,
+      "failure_rule": "retain exact qualification failure and continue C5F without any numerical-policy retuning"
+    }
+  },
+  "numerical_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "O0_O2_identity_required": true,
+    "integrated_gate_retained_under_shorter_transaction_intervals": true,
+    "no_tolerance_relaxation": true,
+    "no_new_failure_class": true
+  },
+  "aggregation_contract": {
+    "target_window_day": 0.0008,
+    "T2": "sum each pair of consecutive bottom outward exchanges and divide by 0.0008 d",
+    "T4": "sum each four consecutive bottom outward exchanges and divide by 0.0008 d",
+    "reason": "All space-time comparisons are made on the same physical hydrological window; refined transaction boundaries are not mistaken for new hydrological observations."
+  },
+  "metrics": {
+    "spatial": [
+      "R512_T1 vs R1024_T1 pooled bottom-flux timeseries RMSE",
+      "R512_T2 vs R1024_T2 pooled bottom-flux timeseries RMSE"
+    ],
+    "temporal": [
+      "R512 T1 vs T2 pooled bottom-flux timeseries RMSE",
+      "R1024 T1 vs T2 pooled bottom-flux timeseries RMSE",
+      "R1024 T2 vs T4 pooled bottom-flux timeseries RMSE if T4 qualifies",
+      "descriptive temporal order log2(error_T1T2/error_T2T4) if defined"
+    ],
+    "interaction": [
+      "R1024 temporal T1-T2 shift divided by T1 R512-R1024 spatial gap",
+      "R1024 temporal T2-T4 shift divided by T2 R512-R1024 spatial gap if available",
+      "change in R512-R1024 spatial gap between T1 and T2"
+    ],
+    "decomposition": "history- and boundary-phase signed-error decomposition for the T2 spatial gap and R1024 temporal shifts",
+    "no_absolute_acceptance_threshold": true
+  },
+  "adjudication": {
+    "TEMPORAL_PROGRESS_AT_R1024": "T4 qualifies and R1024 T2-T4 RMSE is smaller than R1024 T1-T2 RMSE.",
+    "TEMPORAL_SUBDOMINANT_TO_SPATIAL": "At matched T2 scale, R1024 T2-T4 RMSE is smaller than the R512_T2-R1024_T2 spatial RMSE.",
+    "TEMPORAL_NOT_SUBDOMINANT": "At matched T2 scale, R1024 T2-T4 RMSE is greater than or equal to the R512_T2-R1024_T2 spatial RMSE.",
+    "interpretation": "These are relative error-scale statements, not hydrological fidelity thresholds and not application acceptance."
+  },
+  "known_pre_response_anchor": {
+    "R512_T1_R1024_T1_spatial_RMSE_cm_per_day": 0.019278087500445875,
+    "C5E_observed_spatial_order_R256_R512_R1024": 0.8350822872054268,
+    "interpretation": "These frozen C5E facts motivate C5F. No C5F refined-time response has been generated or inspected."
+  },
+  "next_logic": {
+    "if_temporal_progresses_and_is_subdominant": "Spatial error dominates over the finest tested temporal shift. A prospectively matched next spatial extension may be considered, but R1024 still is not declared exact continuum truth.",
+    "if_temporal_progresses_but_not_subdominant": "Joint space-time refinement is required before further representation claims.",
+    "if_temporal_not_progressing": "Reference temporal authority is unresolved; diagnose temporal/nonlinear interaction before any new LARE comparison.",
+    "if_T2_blocked": "Close C5F as a Reference temporal-policy blocker without retuning."
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "physical_history_changed": false,
+    "seed_path_changed": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5f_materializer_blob": "2bc5b00b924aa018fb14a1ab108180f380a6ae5e",
+    "c5f_analyzer_blob": "3eeb6e8909735f56badaf94a1ba03a864cf92c25",
+    "c5e_materializer_blob": "cec7bb4f2917f064cc3e6e1ec671d16634a60d37",
+    "response_based_design": true,
+    "reason": "C5F is motivated by C5E high-resolution spatial evidence, but temporal factors, aggregation and adjudication are frozen before any refined-time response.",
+    "allowed_new_code": "matched temporal-history materialization and common-window Reference aggregation only",
+    "prohibited_new_code": "LARE execution, closure change, forcing change in physical time, seed refinement, tolerance changes, application thresholds"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
