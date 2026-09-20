@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "50399872c59daa3dbab092087b8507c972175873",
+  "checkpoint_commit": "b396b29f91e2925a09bbf17c63b9e7116ecd4921",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B1R_CLOSED_B1HCF_CLOSED_B1HCG_CLOSED_B1HCH_CLOSED_B1HCI_CLOSED_MIXED_B1HCJ_PREREGISTERED",
-  "last_reconciled_head": "50399872c59daa3dbab092087b8507c972175873",
+  "phase": "PHASE_A_CLOSED_B1HCJ_CLOSED_FLOATING_INVARIANT_B1HCK_REFERENCE_TEMPORAL_EXECUTION",
+  "last_reconciled_head": "b396b29f91e2925a09bbf17c63b9e7116ecd4921",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -68,7 +68,14 @@
     "integration/f-rom/LAYER_ROM_B1HCI_RESULT.json",
     "integration/f-rom/LAYER_ROM_B1HCI_CLOSEOUT.json",
     "integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json",
-    "tests/rom/analyze_layer_rom_b1hcj_invariant.py"
+    "tests/rom/analyze_layer_rom_b1hcj_invariant.py",
+    "integration/f-rom/LAYER_ROM_B1HCJ_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCJ_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json",
+    "tests/rom/materialize_layer_rom_b1hck_reference.py",
+    "tests/rom/analyze_layer_rom_b1hck_reference_temporal.py",
+    "tests/rom/aggregate_layer_rom_b1hck.py",
+    ".github/workflows/f-rom-layer-b1hck-reference-temporal.yml"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -108,7 +115,11 @@
     "integration/f-rom/LAYER_ROM_B1HCH_CLOSEOUT.json",
     "GitHub Actions run 35502486907 / aggregate artifact 10602039873 (B1HCI)",
     "integration/f-rom/LAYER_ROM_B1HCI_RESULT.json",
-    "integration/f-rom/LAYER_ROM_B1HCI_CLOSEOUT.json"
+    "integration/f-rom/LAYER_ROM_B1HCI_CLOSEOUT.json",
+    "GitHub Actions run 35502826121 / artifact 10602958541 (B1HCJ floating-invariant diagnosis)",
+    "integration/f-rom/LAYER_ROM_B1HCJ_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCJ_CLOSEOUT.json",
+    "GitHub Actions run 35504899043 active for B1HCK finite Reference temporal refinement"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -116,8 +127,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Execute B1HCJ B12 R16_OP linear-invariant/floating-accumulation diagnosis. Do not generate new Reference evidence or redesign closure/state until B1HCJ closes.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 50399872c59daa3dbab092087b8507c972175873. B1HCI run 35502486907 is closed mixed solely because of B12 storage; both independent oracles agree on all six materials. B1HCJ preregistration and analyzer are persisted; workflow execution is next.",
+  "next_action": "Complete B1HCK finite Reference temporal refinement on the six-material fixed-head panel. If all materials satisfy the frozen numerical bound, isolate the remaining equal-grid discrepancy as closure/operator difference and decide whether reduced L4/L6/R8 transfer metrics require fine-Reference rebasing. If any material is unbounded, stay on the Reference temporal axis.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after b396b29f91e2925a09bbf17c63b9e7116ecd4921. B1HCJ run 35502826121 is closed confirmed. B1HCK preregistration, materializer, analyzer, aggregator and workflow are persisted; workflow run 35504899043 is the next incomplete gate.",
   "blockers": [],
   "scope_guards": [
     "research only",
