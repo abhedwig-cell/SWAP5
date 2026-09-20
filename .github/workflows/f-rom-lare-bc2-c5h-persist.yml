@@ -1,0 +1,178 @@
+name: F-ROM-LARE persist C5H T8 authority
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5h-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5H artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5h
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602232995" > /tmp/c5h/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5h/artifact.json'))
+          assert a['id']==10602232995
+          assert a['digest']=='sha256:55331b6a8b0e5fb3a72c6a7a2ac05b607dcaedd7d53b48fb5a7d773fa9aed2b4'
+          assert a['workflow_run']['id']==35501297135
+          assert a['workflow_run']['head_sha']=='9d1d5cd037ec84619c945ae490ceedda47aa600f'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602232995/zip" > /tmp/c5h.zip
+          echo "55331b6a8b0e5fb3a72c6a7a2ac05b607dcaedd7d53b48fb5a7d773fa9aed2b4  /tmp/c5h.zip" | sha256sum -c -
+          unzip -q /tmp/c5h.zip -d /tmp/c5h/evidence
+
+      - name: Persist C5H result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5h/evidence/LARE_BC2_C5H_RESULT.json integration/f-rom/LARE_BC2_C5H_RESULT.json
+          python3 - <<'PY'
+          import json,hashlib,pathlib
+          p=pathlib.Path
+          def sha(path): return hashlib.sha256(p(path).read_bytes()).hexdigest()
+          r=json.load(open('integration/f-rom/LARE_BC2_C5H_RESULT.json'))
+          assert r['status']=='T8_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING'
+          assert all(r['baseline_identity_to_C5G'].values())
+          result_sha=sha('integration/f-rom/LARE_BC2_C5H_RESULT.json')
+          r512_sha=sha('/tmp/c5h/evidence/R512_T8_o0.txt')
+          r1024_sha=sha('/tmp/c5h/evidence/R1024_T8_o0.txt')
+          sp=r['spatial']; tp=r['temporal']; inter=r['interaction']
+          closeout={
+            'schema':'swap5.lare.bc2.c5h.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5H',
+            'status':'CLOSED_T8_TEMPORAL_PROGRESS_SPATIAL_GAP_STILL_INCREASING_T16_REQUIRED',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5H_PREREGISTRATION.json',
+              'workflow_run':35501297135,
+              'job_id':106053406937,
+              'execution_head':'9d1d5cd037ec84619c945ae490ceedda47aa600f',
+              'artifact_id':10602232995,
+              'artifact_digest':'sha256:55331b6a8b0e5fb3a72c6a7a2ac05b607dcaedd7d53b48fb5a7d773fa9aed2b4',
+              'result_sha256':result_sha,
+              'R512_T8_sha256':r512_sha,
+              'R1024_T8_sha256':r1024_sha
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5G':r['baseline_identity_to_C5G'],
+            'matched_T8_evidence':{
+              'spatial_T1_RMSE_cm_per_day':sp['T1']['rmse_cm_per_day'],
+              'spatial_T2_RMSE_cm_per_day':sp['T2']['rmse_cm_per_day'],
+              'spatial_T4_RMSE_cm_per_day':sp['T4']['rmse_cm_per_day'],
+              'spatial_T8_RMSE_cm_per_day':sp['T8']['rmse_cm_per_day'],
+              'R512_T4_T8_RMSE_cm_per_day':tp['R512']['T4_T8']['rmse_cm_per_day'],
+              'R1024_T4_T8_RMSE_cm_per_day':tp['R1024']['T4_T8']['rmse_cm_per_day'],
+              'temporal_order_R512_T2_T4_T8':tp['order_R512_T2_T4_T8'],
+              'temporal_order_R1024_T2_T4_T8':tp['order_R1024_T2_T4_T8'],
+              'spatial_T8_over_T4':inter['spatial_T8_over_T4'],
+              'R512_T4_T8_over_spatial_T8':inter['R512_T4_T8_over_spatial_T8'],
+              'R1024_T4_T8_over_spatial_T8':inter['R1024_T4_T8_over_spatial_T8']
+            },
+            'adjudication':{
+              'TEMPORAL_PROGRESS_R512':inter['temporal_progress_R512'],
+              'TEMPORAL_PROGRESS_R1024':inter['temporal_progress_R1024'],
+              'TEMPORAL_SUBDOMINANT_R512':inter['temporal_subdominant_R512'],
+              'TEMPORAL_SUBDOMINANT_R1024':inter['temporal_subdominant_R1024'],
+              'SPATIAL_GAP_CONTINUES_INCREASING_AT_T8':inter['spatial_T8_direction']=='INCREASES',
+              'CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED':False,
+              'R2048_SPATIAL_EXTENSION_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'Temporal convergence continues at both high-resolution grids. T4-T8 bottom-flux RMSE falls to about 0.00271 cm/d at R512 and 0.00340 at R1024.',
+              'Descriptive temporal order strengthens to about 0.791 at R512 and 0.843 at R1024 over T2/T4/T8.',
+              'The temporal shifts are now only about 11.8% and 14.8% of the matched T8 spatial gap, so time error is increasingly subdominant.',
+              'Nevertheless the matched R512-R1024 spatial gap still grows, from 0.02233 cm/d at T4 to 0.02303 at T8, another increase of about 3.14%.',
+              'Because the spatial estimate is still moving systematically as temporal error shrinks, one more matched temporal refinement is warranted before opening R2048.'
+            ],
+            'next_authority':{
+              'state':'FINAL_MATCHED_TEMPORAL_EXTENSION_BEFORE_SPATIAL_EXTENSION',
+              'target':'LARE-BC2-C5I',
+              'question':'At T16, do temporal shifts continue toward first-order behavior and does the R512-R1024 spatial gap finally stabilize or reverse?',
+              'constraints':[
+                'Reference-only; generate matched R512_T16 and R1024_T16',
+                'exact C5A physical history and D13 numerical policy',
+                'aggregate to 0.0008-day windows',
+                'preserve T1-T8 matrix unchanged',
+                'no R2048 until C5I closes',
+                'no LARE, closure, application, speed or production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5H_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5H closeout
+
+          C5H extends both R512 and R1024 to T8 under the unchanged B14 dynamic prescribed-head history and numerical policy.
+
+          Temporal convergence strengthens: T4-T8 bottom-flux RMSE is about 0.00271 cm/d at R512 and 0.00340 at R1024. The descriptive temporal order rises to about 0.79 and 0.84 respectively.
+
+          Temporal error is now strongly subdominant to the matched spatial gap, at about 12% for R512 and 15% for R1024.
+
+          Yet the R512-R1024 spatial gap still increases as time is refined: 0.01928 cm/d at T1, 0.02107 at T2, 0.02233 at T4 and 0.02303 at T8. The T4-T8 increase is smaller than before, about 3.1%, but it is still systematic.
+
+          C5I therefore performs one final matched temporal refinement to T16 at both spatial resolutions before any R2048 extension. No LARE or closure change is authorized.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v13'
+          j['status']='CLOSED_THROUGH_C5H_TEMPORAL_PROGRESS_SPATIAL_GAP_STILL_MOVING_T16_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5H_matched_T8_reference':'integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5H':'At T8, temporal errors shrink with observed order ~0.79-0.84 and are only ~12-15% of the R512-R1024 spatial gap, but that spatial gap still increases to 0.02303 cm/d. One final matched temporal refinement is required before R2048.'
+          })
+          j['decision']='REFINE_BOTH_R512_AND_R1024_TO_T16_BEFORE_R2048_OR_NEW_LARE'
+          j['next_authority']='LARE-BC2-C5I'
+          j['next_family_authority']={
+            'family':'C5I_MATCHED_T16_REFERENCE_EXTENSION',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':['integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json'],
+            'purpose':'Test whether the high-resolution spatial gap stabilizes once temporal error is reduced another factor two.',
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5H closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5H_RESULT.json                   integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5H_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5H matched T8 Reference"
+          git push origin HEAD:work/f-rom-lare-rs1
