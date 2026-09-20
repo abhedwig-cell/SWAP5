@@ -1,0 +1,89 @@
+{
+  "authority": {
+    "R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "R32_reference_sha256": "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9",
+    "R64_reference_sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1",
+    "artifact_digest": "sha256:ef24d9268e6758a6bb0440aa3c8bcc35c2785d0ae79912a526374250069ca86a",
+    "artifact_id": 10602125716,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5C_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "0999938d399ffdfd717f16231797484740b783e7",
+    "job_id": 106049380553,
+    "preregistration": "integration/f-rom/LARE_BC2_C5C_PREREGISTRATION.json",
+    "result_sha256": "2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326",
+    "workflow_run": 35499789756
+  },
+  "baseline_identity_to_C5B": {
+    "cancellation_ratio": true,
+    "pooled_rmse": true,
+    "pooled_signed_mean": true
+  },
+  "diagnostic_adjudication": {
+    "BOTTOM_CELL_SPATIAL_CONVERGENCE_PRESENT": true,
+    "CLOSURE_ALGEBRA_FLOOR_ADJUDICATED": false,
+    "REFERENCE_REFINEMENT_NOT_PROGRESSING": true,
+    "REFERENCE_REFINEMENT_PROGRESSING": false
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "key_evidence": {
+    "LARE_B10_vs_R64_flux_RMSE_cm_per_day": 0.08656851594960316,
+    "LARE_B10_vs_R64_signed_bias_cm_per_day": 0.0023782349270436705,
+    "LARE_B2P5_vs_R64_flux_RMSE_cm_per_day": 0.0006625240631467443,
+    "LARE_B2P5_vs_R64_signed_bias_cm_per_day": -7.958263883065398e-05,
+    "LARE_B5_vs_R64_flux_RMSE_cm_per_day": 0.048844449053286255,
+    "LARE_B5_vs_R64_signed_bias_cm_per_day": 0.0015258109705454839,
+    "Reference_R16_to_R32_flux_RMSE_cm_per_day": 0.043792998749265497,
+    "Reference_R16_to_R64_flux_RMSE_cm_per_day": 0.08658865053077336,
+    "Reference_R32_to_R64_flux_RMSE_cm_per_day": 0.04898430447790572,
+    "bottom_spacing_convergence": {
+      "abs_delta_10_to_5": 0.0008524239564981866,
+      "abs_delta_5_to_2p5": 0.0016053936093761378,
+      "estimated_order": -0.9132840154997163,
+      "extrapolated_h0_signed_mean_cm_per_day": 0.0033432493852422946,
+      "h_cm": [
+        10.0,
+        5.0,
+        2.5
+      ],
+      "signed_bias_cm_per_day": [
+        0.0023782349270436705,
+        0.0015258109705454839,
+        -7.958263883065398e-05
+      ]
+    }
+  },
+  "next_authority": {
+    "constraints": [
+      "Reference-only first; do not run new LARE closure variants",
+      "reuse exact C5A histories, B14 material and D13 integrated-water-depth policy",
+      "preserve R16/R32/R64 evidence unchanged",
+      "require O0/O2 identity and mass gates",
+      "do not reinterpret C5A acceptance",
+      "no application, speed or production claims"
+    ],
+    "question": "Does the B14 dynamic prescribed-head Richards trajectory begin to converge at R128, and if necessary R256, under the unchanged C5A numerical policy?",
+    "state": "REFERENCE_SPATIAL_EXTENSION_REQUIRED",
+    "target": "LARE-BC2-C5D"
+  },
+  "schema": "swap5.lare.bc2.c5c.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5B_current_face_closure_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The old 10-cm R16 Richards trajectory is not a spatially stable authority for the B14 dynamic prescribed-head workload. Its bottom-flux RMSE relative to R64 is about 0.0866 cm/d.",
+    "Refining Richards from 10 cm to 5 cm does not enter a monotone asymptotic regime: the R16-to-R32 shift is about 0.0438 cm/d while the R32-to-R64 shift is about 0.0490 cm/d.",
+    "Consequently the very small C5B LARE-versus-R16 residual cannot be interpreted as a continuum closure error. It is conditioned on a coarse 10-cm Reference discretization.",
+    "LARE bottom-cell refinement has a strong effect relative to R64: pooled flux RMSE falls from about 0.0866 cm/d at a 10-cm bottom cell to 0.0488 at 5 cm and 0.000663 at 2.5 cm.",
+    "The similar magnitudes of Reference-grid shifts and LARE bottom-cell shifts suggest that boundary-adjacent spatial discretization is a first-order mechanism, but R64 itself is not yet sufficiently established as an asymptotic Reference to quantify a closure floor.",
+    "The signed-bias Richardson estimate over B10/B5/B2P5 is not trustworthy because the signed bias changes sign and the fitted order is negative; no h->0 closure claim is admitted.",
+    "No new closure should be formulated until the Richards Reference grid is extended beyond R64."
+  ],
+  "status": "CLOSED_BOTTOM_CELL_REFINEMENT_EFFECT_PRESENT_REFERENCE_GRID_NOT_ASYMPTOTIC",
+  "work_unit": "LARE-BC2-C5C",
+  "workstream": "F-ROM-LARE"
+}
