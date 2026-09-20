@@ -1,0 +1,201 @@
+name: TAB-HYD default MvG SWKIMPL1 consistency
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-mvg-k1-consistency.yml'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Checkout toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Checkout ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel case
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build original and consistency-corrected binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          meson setup swap-src/build-original swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-original
+          cp swap-src/build-original/swap swap-original
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_endpoint_dkdh_zero.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-consistent swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-consistent
+          cp swap-src/build-consistent/swap swap-consistent
+
+      - name: Prepare full-period Hupsel cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-mvg-k1
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, re, shutil
+
+          spec = importlib.util.spec_from_file_location(
+              "prep", "research/tabulated_hydraulics/prepare_hupsel_e2e.py"
+          )
+          prep = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(prep)
+
+          src = Path("swap-testcases/cases/hupselbrook/legacy")
+          root = Path("build/tab-hyd-mvg-k1")
+          configs = [
+              ("analytic_k0", False, 0),
+              ("analytic_k1_original", False, 1),
+              ("analytic_k1_consistent", False, 1),
+              ("table_k0", True, 0),
+              ("table_k1_consistent", True, 1),
+          ]
+          for name, table, kimpl in configs:
+              dst = root / name
+              shutil.copytree(src, dst)
+              prep.edit_case(dst, table=table, swkimpl=kimpl)
+              p = dst / "swap.swp"
+              s = p.read_text()
+              s, n = re.subn(r"(?m)^(\s*SWMONTH\s*=\s*)1\b", r"\g<1>0", s, count=1)
+              if n != 1:
+                  raise RuntimeError(f"SWMONTH edit failed for {name}")
+              p.write_text(s)
+          PY
+
+      - name: Execute all full-period cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'variant\tbinary\treturn_code\truntime_seconds\n' > build/tab-hyd-mvg-k1/status.tsv
+
+          run_case () {
+            variant="$1"
+            binary="$2"
+            label="$3"
+            work="$GITHUB_WORKSPACE/build/tab-hyd-mvg-k1/$variant"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime_seconds.txt timeout 60 "$binary" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime_seconds.txt" 2>/dev/null || echo NA)
+            printf '%s\t%s\t%s\t%s\n' "$variant" "$label" "$rc" "$runtime" \
+              | tee -a build/tab-hyd-mvg-k1/status.tsv
+            test "$rc" -eq 100
+          }
+
+          run_case analytic_k0 "$GITHUB_WORKSPACE/swap-original" original
+          run_case analytic_k1_original "$GITHUB_WORKSPACE/swap-original" original
+          run_case analytic_k1_consistent "$GITHUB_WORKSPACE/swap-consistent" consistent
+          run_case table_k0 "$GITHUB_WORKSPACE/swap-consistent" consistent
+          run_case table_k1_consistent "$GITHUB_WORKSPACE/swap-consistent" consistent
+
+      - name: Compare numerical trajectories
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/tab-hyd-mvg-k1/comparisons.txt
+          compare () {
+            left="$1"
+            right="$2"
+            label="$3"
+            out="$4"
+            python research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/tab-hyd-mvg-k1/$left" "build/tab-hyd-mvg-k1/$right" \
+              "build/tab-hyd-mvg-k1/$out.json" --label "$label" \
+              | tee -a build/tab-hyd-mvg-k1/comparisons.txt
+          }
+
+          compare analytic_k0 analytic_k1_original \
+            analytic-k0-vs-original-k1 analytic-original-k1
+          compare analytic_k0 analytic_k1_consistent \
+            analytic-k0-vs-consistent-k1 analytic-consistent-k1
+          compare table_k0 table_k1_consistent \
+            table-k0-vs-consistent-k1 table-consistent-k1
+          compare analytic_k1_consistent table_k1_consistent \
+            consistent-analytic-k1-vs-table-k1 consistent-analytic-vs-table-k1
+          compare analytic_k0 table_k0 \
+            analytic-k0-vs-table-k0 k0-analytic-vs-table
+
+      - name: Summarize decisive metrics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          root = Path("build/tab-hyd-mvg-k1")
+          names = [
+              "analytic-original-k1",
+              "analytic-consistent-k1",
+              "table-consistent-k1",
+              "consistent-analytic-vs-table-k1",
+              "k0-analytic-vs-table",
+          ]
+          with (root / "summary.tsv").open("w") as fh:
+              fh.write("comparison\tgwl_max_abs\tgwl_rmse\tdrainage_max_abs\tdstor_max_abs\ttact_max_abs\n")
+              for name in names:
+                  d = json.loads((root / f"{name}.json").read_text())
+                  m = d["metrics"]
+                  row = [
+                      name,
+                      m["GWL"]["max_abs"],
+                      m["GWL"]["rmse"],
+                      m["DRAINAGE"]["max_abs"],
+                      m["DSTOR"]["max_abs"],
+                      m["TACT"]["max_abs"],
+                  ]
+                  fh.write("\t".join(map(str, row)) + "\n")
+          print((root / "summary.tsv").read_text())
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-mvg-k1-consistency
+          path: |
+            build/tab-hyd-mvg-k1/status.tsv
+            build/tab-hyd-mvg-k1/comparisons.txt
+            build/tab-hyd-mvg-k1/summary.tsv
+            build/tab-hyd-mvg-k1/*.json
+            build/tab-hyd-mvg-k1/*/run.log
+            build/tab-hyd-mvg-k1/*/runtime_seconds.txt
