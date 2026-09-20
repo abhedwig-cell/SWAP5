@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "b37069e33f9e86d3459e277ccd6e932299e24505",
+  "checkpoint_commit": "bb5cba741933c5663955b72bffbd92e51afee690",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B1HCM_CLOSED_CONTINUOUS_TIME_LADDER_B1HCN_CORICHARDS_TEMPORAL_DECOMPOSITION",
-  "last_reconciled_head": "b37069e33f9e86d3459e277ccd6e932299e24505",
+  "phase": "PHASE_B_FIDELITY_FROZEN_COST1_SHARED_HOST_SCREEN_ACTIVE",
+  "last_reconciled_head": "bb5cba741933c5663955b72bffbd92e51afee690",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -95,7 +95,23 @@
     "tests/rom/materialize_layer_rom_b1hcn_corichards_temporal.py",
     "tests/rom/analyze_layer_rom_b1hcn_corichards_temporal.py",
     "tests/rom/aggregate_layer_rom_b1hcn.py",
-    ".github/workflows/f-rom-layer-b1hcn-corichards-temporal.yml"
+    ".github/workflows/f-rom-layer-b1hcn-corichards-temporal.yml",
+    "integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCMR_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCO_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCO_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCP_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCP_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json",
+    "tests/rom/materialize_layer_rom_cost1_lare.py",
+    "tests/rom/validate_layer_rom_cost1_lare.py",
+    "tests/rom/materialize_layer_rom_cost1_benchmark_mode.py",
+    "tests/rom/run_layer_rom_cost1_timing.py",
+    "tests/rom/aggregate_layer_rom_cost1.py",
+    ".github/workflows/f-rom-layer-cost1.yml"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -150,7 +166,12 @@
     "GitHub Actions run 35505540455 / aggregate artifact 10603109454 (B1HCM continuous-time reduced ladder rebased)",
     "integration/f-rom/LAYER_ROM_B1HCM_RESULT.json",
     "integration/f-rom/LAYER_ROM_B1HCM_CLOSEOUT.json",
-    "GitHub Actions run 35505862660 active for B1HCN same-partition CoRichards temporal-limit decomposition"
+    "GitHub Actions run 35505862660 active for B1HCN same-partition CoRichards temporal-limit decomposition",
+    "GitHub Actions run 35505812730 / aggregate artifact 10603364421 (B1HCMR corrected continuous-time Layer-ROM)",
+    "GitHub Actions run 35506180114 / aggregate artifact 10603856403 plus B05 L6/R8 artifacts 10604095931/10603419858 (B1HCO full CoRichards temporal qualification)",
+    "GitHub Actions run 35506606866 / artifact 10603996508 (B1HCP corrected model-form decomposition)",
+    "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "GitHub Actions run 35507294494 active for COST1 sole authority workflow"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -158,8 +179,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete B1HCN prospective CoRichards temporal ladder on L4/L6/R8 across six materials. Only if all 18 material-member temporal gates pass, interpret continuous-time Layer-ROM versus CoRichards model-form/localization relations.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after b37069e33f9e86d3459e277ccd6e932299e24505. B1HCM is closed. B1HCN preregistration, temporal materializer, analyzer, aggregator and workflow are frozen; workflow run 35505862660 is active.",
+  "next_action": "Complete COST1 compiled-equivalence gates and six-material shared-host timing. Do not expose or interpret cost before all material routes pass the frozen equivalence contract; if any route fails, repair implementation only or fail closed.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after bb5cba741933c5663955b72bffbd92e51afee690. Phase B fidelity is frozen. B1HCMR, B1HCO and B1HCP are closed. COST1 is preregistered and authority workflow run 35507294494 is active; duplicate timing workflow was removed.",
   "blockers": [],
   "scope_guards": [
     "research only",
