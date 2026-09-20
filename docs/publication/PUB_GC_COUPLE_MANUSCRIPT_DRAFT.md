@@ -1,3 +1,5 @@
+> **Submission hold, 2026-09-20.** A coupling-semantics reconciliation has shown that the production `bottom_mode=5` requirement is an internal prescribed-lower-face-head realization that leaked into application-level groundwater authority. Legacy SWAP permits drainage with this lower-boundary option. E7 is therefore retained as `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`, not as a closed physical realistic-component-domain limit. The numerical/transactional evidence is preserved, but claims depending on application-level mode-5 identity, realistic drainage transferability, implicit MODFLOW-node-to-SWAP-bottom head identity, or unresolved SWAP-response-storage versus MODFLOW-STO ownership require re-adjudication before submission.
+
 # COUPLE — manuscript draft
 
 ## Title
