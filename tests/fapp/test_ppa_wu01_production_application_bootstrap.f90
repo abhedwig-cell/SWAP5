@@ -75,11 +75,12 @@ program test_ppa_wu01_production_application_bootstrap
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
 
-  ! Groundwater authority: the same production bootstrap type owns an admitted
-  ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
+  ! CSR-01 groundwater authority is explicit and independent of legacy SWBOTB.
+  ! Deliberately retain standalone bottom_mode=7 in the application parameters;
+  ! CSR-02 maps the coupling iterate to the private Reference mode-5 trial path.
   gw_config = config
   do i = 1, NTILE
-    gw_config%tiles(i)%parameters%bottom_mode = 5
+    gw_config%tiles(i)%groundwater_coupled = .true.
   end do
   call gw_app%initialize(gw_config, status)
   call require(status == FMR_APP_BOOT_OK .and. gw_app%ready(), 'groundwater production bootstrap initialize')
@@ -132,7 +133,7 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED, 'non-WU01 profile fails closed')
   call require(.not. bad_app%ready(), 'failed bootstrap owns no live runtime')
 
-  ! PUB-GC E7 current-canonical boundary: mode-5 groundwater ownership must
+  ! CSR-03 is not admitted here: coupled groundwater ownership must
   ! remain fail-closed for active root extraction and active drainage response.
   ! These checks qualify the owner boundary only; they do not widen it.
   root_bad_config = gw_config
@@ -161,6 +162,8 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_CSR01_EXPLICIT_COUPLED_BOUNDARY_AUTHORITY=PASS'
+  print '(a)', 'F_GC_CSR02_REFERENCE_MODE5_PRIVATE_REALIZATION=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains
