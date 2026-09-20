@@ -51,7 +51,7 @@ contains
     real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64), allocatable :: x(:)
     real(real64) :: xj, hj, tiny_positive, negative_endpoint_head
-    real(real64) :: theta_switch, c1, c2, c25, c26, c27, eps_head
+    real(real64) :: theta_switch, c1, c25, c26, c27, eps_head
     real(real64), allocatable :: knot_head(:)
     integer :: i, j
 
@@ -121,7 +121,6 @@ contains
        if (source%parameters%cofgen(9,i) > B110_H_CRIT) then
           table%branch_a(i) = .true.
           c1 = source%parameters%cofgen(1,i)
-          c2 = source%parameters%cofgen(2,i)
           c25 = source%parameters%cofgen(25,i)
           c26 = source%parameters%cofgen(26,i)
           c27 = source%parameters%cofgen(27,i)
@@ -214,7 +213,9 @@ contains
        water_content(i) = interpolate_field(self%table, pressure_head(i), i, self%table%theta, self%table%theta_slope)
        if (self%table%branch_a(i) .and. pressure_head(i) > self%table%conductivity_switch_head(i)) then
           conductivity(i) = self%table%saturated_conductivity(i)
-       else if (self%table%branch_a(i) .and. pressure_head(i) == self%table%conductivity_switch_head(i)) then
+       else if (self%table%branch_a(i) .and. &
+                abs(pressure_head(i)-self%table%conductivity_switch_head(i)) <= &
+                16.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(self%table%conductivity_switch_head(i)))) then
           conductivity(i) = self%table%conductivity_left_limit(i)
        else
           logk_value = interpolate_field(self%table, pressure_head(i), i, self%table%logk, self%table%logk_slope)
@@ -225,7 +226,8 @@ contains
           capacity(i) = self%table%saturated_capacity(i)
        else if (self%table%branch_a(i) .and. pressure_head(i) > B110_H_CRIT) then
           capacity(i) = self%table%capacity_near_saturation(i)
-       else if (self%table%branch_a(i) .and. pressure_head(i) == B110_H_CRIT) then
+       else if (self%table%branch_a(i) .and. abs(pressure_head(i)-B110_H_CRIT) <= &
+                16.0_real64*epsilon(1.0_real64)) then
           capacity(i) = self%table%capacity_transition(i)
        else
           logc_value = interpolate_field(self%table, pressure_head(i), i, self%table%logc, self%table%logc_slope)
