@@ -23,6 +23,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install frozen state-analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3
       - name: Build and qualify preregistered independent Reference library
         run: bash tests/rom/run_layer_rom_phase_a_reference.sh
       - name: Upload Layer-ROM Phase A Reference evidence
