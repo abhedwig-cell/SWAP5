@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.f-romv2-d30.authority-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D30",
+  "title": "Natural surface-connected-front to groundwater-contact transition authority",
+  "phase": "CLOSED_AUTHORITY_RECONCILIATION_EXTERNAL_IMPLEMENTATION_ORACLE_REQUIRED",
+  "canonical_base": "25062b1bf14271f66bd889f699bcb4e1b15d5fb4",
+  "decision": "NATURAL_SURFACE_GW_CONTACT_EVENT_UPDATE_UNDERSPECIFIED_WITHOUT_IMPLEMENTATION_ORACLE",
+  "purpose": "Determine whether D29 can be followed by a contact-capable long-window FMC experiment without inventing state-transition semantics.",
+  "predecessor": {
+    "D19": "Qualified an exact-contact falling-slug to groundwater-front representation merge followed by 64 zero-top-flux groundwater-relaxation steps.",
+    "D20": "Qualified the separated connected-surface plus fixed-water-table branch for one hour under continued prescribed infiltration.",
+    "D29": "Showed that every frozen one-day separated-branch history reaches surface-groundwater contact at step 927 (2.575 h), before any new R16/R2 exposure.",
+    "D28": "Established that the preferred M2WC70 implementation oracle is identified but currently not retrievable through available execution routes."
+  },
+  "primary_authority": {
+    "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+    "doi": "10.1002/2015WR017126",
+    "explicitly_defined": [
+      "four FMC water-state classes: surface-connected infiltration fronts, falling slugs, groundwater fronts, and gray bins connected simultaneously to land surface and groundwater",
+      "theta_i is the right-most bin connected to both land surface and groundwater; infiltration fronts span from theta_i to the right-most wetted bin",
+      "surface water first satisfies the demand of groundwater-connected gray bins, expressed through K(theta_i)*dt, before advancing infiltration fronts",
+      "falling slugs that encounter groundwater fronts are merged into the groundwater front by raising that front by the slug length",
+      "groundwater-front Eq.21 evolution and capillary relaxation are finite-volume mass conservative when implemented correctly",
+      "the method is intended as a continuous model under arbitrary surface forcing and groundwater effects"
+    ],
+    "not_unambiguously_specified_in_prose_for_D29_transition": [
+      "within-step event localization when an actively surface-connected infiltration front and an actively evolving groundwater front first meet",
+      "the exact finite-volume update when z_j + H_j crosses the column depth during a step rather than beginning at exact contact",
+      "the exact update of the right-most gray index theta_i when one or several new bins become surface-to-groundwater connected",
+      "ordering of remaining surface-water allocation, gray-bin throughflow demand, groundwater-front advance and relaxation over the unused fraction of the contact step",
+      "handling of multiple same-step contacts and any cascading change of theta_i",
+      "whether the authors split the process step at contact, cap the two fronts to exact contact before conversion, or use another mass-conservative event ordering"
+    ],
+    "conclusion": "The paper identifies the physical post-contact state and its subsequent governing ingredients, but does not define the D29 natural within-step transition algorithm tightly enough for a faithful clean-room trajectory implementation."
+  },
+  "repository_authority": {
+    "D19_scope": {
+      "contact_type": "falling slug begins at exact same-bin contact with groundwater front",
+      "contact_time": "t=0 constructed exact-contact state",
+      "top_boundary": "zero prescribed flux after merge",
+      "continued_surface_infiltration_during_contact": false,
+      "natural_within_step_contact_localization": false
+    },
+    "D29_scope": {
+      "contact_type": "surface-connected infiltration front meets same-bin groundwater front during continued prescribed infiltration",
+      "contact_time": "inside the frozen 10-second step that ends at step 927",
+      "overlap_detected_cm": -0.009183385770967334,
+      "common_bin": 101,
+      "continued_surface_infiltration": true
+    },
+    "authority_gap": "D19 does not authorize substituting its falling-slug exact-contact transition for the D29 connected-front natural contact event."
+  },
+  "implementation_oracle": {
+    "preferred": "University of Wyoming DataCorral M2WC70 authors' C implementation for Ogden et al. 2015",
+    "dataset_id": "M2WC70",
+    "resource_url": "https://pathfinder.arcc.uwyo.edu/publications/Computational_Hydrology/M2WC70/M2WC70.zip",
+    "rights": "CC0/public-domain according to DataCorral metadata",
+    "status_from_D28": "IDENTIFIED_BUT_NOT_MATERIALIZED",
+    "intended_use": "Read-only semantic oracle to disambiguate event ordering; no external source code is to be copied into SWAP5."
+  },
+  "authority_boundary": {
+    "D30_contact_capable_trajectory_authorized": false,
+    "D29_stage2_reopened": false,
+    "natural_surface_gw_contact_event_algorithm_authorized": false,
+    "falling_slug_D19_authority_preserved": true,
+    "D20_positive_preserved": true,
+    "D24_positive_preserved": true,
+    "D25_cost_screen_preserved": true,
+    "D28_native_ET_blocker_preserved": true,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "allowed_next_when_oracle_available": [
+    "record immutable M2WC70 archive provenance and digest",
+    "inspect only the surface-infiltration/groundwater-contact state-transition and time-step ordering routines needed to disambiguate the natural contact event",
+    "write a clean-room event/state-transition specification without copying external source into SWAP5",
+    "preregister a microscopic natural contact-event preflight before any long-window R16/R2 trajectory",
+    "only after the microscopic event closes may a contact-capable D29 successor long-window experiment be proposed"
+  ],
+  "prohibited": [
+    "DO_NOT_TREAT_D19_FALLING_SLUG_MERGE_AS_AUTOMATIC_AUTHORITY_FOR_D29_SURFACE_FRONT_CONTACT",
+    "DO_NOT_CLAMP_D29_OVERLAP_TO_ZERO_AND_CONTINUE",
+    "DO_NOT_INCREMENT_THETA_I_BY_ANALOGY_WITHOUT_EVENT_ORDER_AUTHORITY",
+    "DO_NOT_SPLIT_THE_10_SECOND_STEP_AT_CONTACT_WITHOUT_PREREGISTERED_AUTHORITY",
+    "DO_NOT_REOPEN_D29_STAGE2",
+    "DO_NOT_BYPASS_D28_ET_BLOCKER",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "stopping_condition": "Long-window contact-capable FMC research is externally blocked until M2WC70 or an equally authoritative implementation description resolves the natural surface-front/groundwater-contact event update."
+}
