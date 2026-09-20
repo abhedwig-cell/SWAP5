@@ -1,0 +1,90 @@
+{
+  "adjudication": {
+    "ANY_COUNTERFACTUAL_ADMITTED": false,
+    "ARITHMETIC_BOUNDARY_K_ADMITTED": false,
+    "BOUNDARY_DISCRETIZATION_SENSITIVE": true,
+    "HALF_CELL_DISTANCE_REPLACEMENT_SUPPORTED": false,
+    "LOCAL_HALF_CELL_FLUX_THEORY_AUDIT_AUTHORIZED": true,
+    "NEW_LARE_AUTHORIZED": false,
+    "PRODUCTION_REFERENCE_CHANGE_AUTHORIZED": false,
+    "R2048_AUTHORIZED": false,
+    "T32_AUTHORIZED": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:37c750d8c0a98918fc0b94c32899792779f202f6751fbee0c6db8dc373b7b838",
+    "artifact_id": 10603830103,
+    "execution_head": "7875595d1792ac740f2d4ea0f4916af931b43ea2",
+    "preregistration": "integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json",
+    "result_sha256": "d6df503dac63e2224079ccc40249449d7d7a2ac0486da8ced558a353b8829213",
+    "workflow_run": 35504821498
+  },
+  "decision": "C5J_BOUNDARY_SENSITIVITY_WITHOUT_DISCRETIZATION_ADMISSION",
+  "evidence": {
+    "arithmetic_K_gap_ratio_to_current": 0.974013277555595,
+    "arithmetic_K_spatial_gap_rmse_cm_per_day": 0.022788922698737894,
+    "baseline_spatial_gap_rmse_cm_per_day": 0.023396932284054147,
+    "combined_gap_ratio_to_current": 1.301123247273363,
+    "combined_spatial_gap_rmse_cm_per_day": 0.030442292509663512,
+    "conductivity_contrast_over_baseline_gap": 0.29033840358099683,
+    "conductivity_contrast_rmse_cm_per_day": 0.006793027968044967,
+    "conductivity_projection_on_baseline_gap": -0.06779726186968466,
+    "counterfactuals_reducing_spatial_gap": [
+      "conductivity"
+    ],
+    "geometry_contrast_over_baseline_gap": 0.8275033846580245,
+    "geometry_contrast_rmse_cm_per_day": 0.01936104065566941,
+    "geometry_control_spatial_gap_rmse_cm_per_day": 0.030715896284892588,
+    "geometry_gap_ratio_to_current": 1.3128172493719008,
+    "geometry_projection_on_baseline_gap": 0.019363639313958587,
+    "hold_max_abs_gap_by_counterfactual": {
+      "combined": 0.0,
+      "conductivity": 0.0,
+      "geometry": 0.0
+    },
+    "interaction_over_larger_main": 0.30129148863119204,
+    "interaction_rmse_cm_per_day": 0.005833316760595667
+  },
+  "execution_qualification": {
+    "C5I_baseline_reproduced": true,
+    "all_counterfactual_O0_O2_routes_byte_identical": true,
+    "all_slices_qualified": true,
+    "counterfactual_history_slices": 48,
+    "production_reference_source_changed": false
+  },
+  "next_authority": {
+    "constraints": [
+      "instrument or reconstruct Reference state only; do not alter production Reference physics",
+      "retain exact B14 C5I T16 R512/R1024 histories",
+      "derive conductivity diagnostics from the constitutive law without fitted parameters",
+      "verify any instrumented baseline state/flux trajectory reproduces C5I",
+      "no T32/R2048, no LARE rerun, no application/performance/speed claim",
+      "stop before a new production boundary formula unless theory plus evidence uniquely supports it"
+    ],
+    "question": "For the actual C5I prescribed-head state pairs, how do current K_cell, arithmetic center-boundary K, and a theory-derived nonlinear half-cell conductivity/flux representation compare before any new dynamic Reference formulation is considered?",
+    "state": "LOCAL_NONLINEAR_HALF_CELL_FLUX_THEORY_AUDIT_AUTHORIZED",
+    "target": "LARE-BC2-C5K"
+  },
+  "schema": "swap5.lare.bc2.c5j.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_lare_closure": false,
+    "new_lare_run": false,
+    "new_reference_physics_admitted": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The persistent high-resolution discrepancy is strongly sensitive to prescribed-head boundary discretization while HOLD remains exactly unchanged in every counterfactual.",
+    "The distance-semantic control has the larger main-effect norm: about 0.01936 cm/d, approximately 83 percent of the current spatial-gap RMSE. However, doubling the center-to-boundary distance worsens the R512-R1024 gap from about 0.02340 to 0.03072 cm/d, so C5J does not support replacing the physical half-cell distance.",
+    "Extending swkmean=1 arithmetic conductivity averaging to the prescribed boundary has a smaller main-effect norm of about 0.00679 cm/d and reduces the spatial gap only modestly, to about 0.02279 cm/d or 97.4 percent of current.",
+    "The combined counterfactual worsens the gap to about 0.03044 cm/d. The factorial interaction norm is about 0.00583 cm/d, around 30 percent of the larger main-effect norm, so geometry and conductivity localization are not separable as purely additive effects.",
+    "A smaller inter-grid gap is not continuum truth. None of the three counterfactuals is admitted as a new Reference discretization.",
+    "The next question is mathematical rather than empirical tuning: what local nonlinear half-cell flux is implied by the Richards/Darcy operator and the B14 constitutive law for the actual prescribed-head state pairs?"
+  ],
+  "status": "CLOSED_BOUNDARY_FACTORIAL_SENSITIVITY_CHARACTERIZED_NO_COUNTERFACTUAL_ADMITTED_LOCAL_FLUX_THEORY_REQUIRED",
+  "work_unit": "LARE-BC2-C5J",
+  "workstream": "F-ROM-LARE"
+}
