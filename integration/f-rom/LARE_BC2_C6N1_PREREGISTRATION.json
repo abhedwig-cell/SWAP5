@@ -133,17 +133,15 @@
     "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n1.yml",
     "workflow_blob": "71b8bca3973885a288f3599ce3ba17a25c31a959",
-    "prior_C6M2_run": 35532270427,
-    "prior_C6M2_artifact_id": 10612270980,
-    "prior_C6M2_artifact_digest": "sha256:5a6384a5c93aac24e68918f3dfe56ccfe30c6630aa55ba169ea25821643ba5cd",
     "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
     "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
     "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
     "B14_source_harness_blob": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
     "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "prior_C6M2_run": 35532270427,
     "execution_binding_complete": true,
     "response_based_design": false,
-    "binding_note": "T32 routes, three-level convergence formulas, GCI-style safety factor, required metrics and fail-closed rules were frozen before first C6N1 T32 Reference response."
+    "binding_note": "Three-level spatial/temporal ladders, U01-U04 exposed Reference-design histories, GCI-style formulas, all four metrics, exact T32 execution blobs and workflow are frozen before first C6N1 T32 response."
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
