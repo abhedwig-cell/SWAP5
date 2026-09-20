@@ -14,6 +14,7 @@ on:
       - 'tests/fgc/run_fgc38_live_prepared_solve.sh'
       - 'docs/integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md'
       - 'integration/f-gc/F-GC38_STATUS.json'
+      - 'integration/f-gc/F-GC_COUPLING_SEMANTICS_RECONCILIATION_STATUS.json'
       - '.github/workflows/f-gc38-live-prepared-solve.yml'
   workflow_dispatch:
 
