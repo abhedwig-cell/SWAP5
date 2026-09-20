@@ -1,0 +1,147 @@
+name: TAB-HYD K1 scenario matrix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/tabulated-hydraulics-characterization]
+    paths:
+      - '.github/workflows/tabulated-hydraulics-k1-scenario-matrix.yml'
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [coarse_dry_free, loam_mid_free, clay_wet_free, coarse_dry_pulse, loam_capillary]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build K1 routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
+          cp -a swap-src swap-raw-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-raw-src/src/utils/soilhydraulicsutils.f90 swap-raw-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_raw_head_logk_lookup.py swap-raw-src/src/soil/sptabulated.f90 swap-raw-src/src/io/readswap.f90 swap-raw-src/src/utils/soilhydraulicsutils.f90
+          cp -a swap-raw-src swap-rawcap-src
+          meson setup swap-raw-src/build swap-raw-src -Denable_pfunit=false
+          meson compile -C swap-raw-src/build
+          cp swap-raw-src/build/swap swap-table-raw
+          python3 research/tabulated_hydraulics/patch_raw_head_capacity_reuse.py swap-rawcap-src/src/soil/sptabulated.f90 swap-rawcap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-rawcap-src/build swap-rawcap-src -Denable_pfunit=false
+          meson compile -C swap-rawcap-src/build
+          cp swap-rawcap-src/build/swap swap-table-rawcap
+
+      - name: Prepare matrix case
+        env:
+          SCENARIO: ${{ matrix.scenario }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, os, shutil
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",lp)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep; prep.uniform_rows=lambda p: mod.loghead_rows(p,400)
+          scenario=os.environ["SCENARIO"]
+          sc=prep.SCENARIOS[scenario]
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          params=[series[sc["top"]],series[sc["sub"]]]
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/k1")
+          root.mkdir(parents=True)
+          prep.prepare_case(src,root/"analytic",params,sc,False,1)
+          prep.prepare_case(src,root/"raw",params,sc,True,1)
+          shutil.copytree(root/"raw",root/"rawcap")
+          PY
+
+      - name: Run and qualify matrix case
+        env:
+          SCENARIO: ${{ matrix.scenario }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/evidence
+          run_route () {
+            route="$1"; bin="$2"; work="build/k1/$route"
+            echo "K1_MATRIX_START scenario=$SCENARIO route=$route"
+            pushd "$work" >/dev/null
+            set +e
+            timeout 60 "$bin" > "$GITHUB_WORKSPACE/build/evidence/${route}.log" 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            echo "K1_MATRIX_END scenario=$SCENARIO route=$route rc=$rc"
+            echo "$route,$rc" >> build/evidence/route-status.csv
+            test "$rc" -eq 100
+          }
+          echo "route,rc" > build/evidence/route-status.csv
+          run_route analytic "$GITHUB_WORKSPACE/swap-analytic"
+          run_route raw "$GITHUB_WORKSPACE/swap-table-raw"
+          run_route rawcap "$GITHUB_WORKSPACE/swap-table-rawcap"
+
+          python3 research/tabulated_hydraulics/compare_hupsel_e2e.py build/k1/analytic build/k1/raw             build/evidence/raw.json --label "$SCENARIO,K1,raw-head"
+          python3 research/tabulated_hydraulics/compare_hupsel_e2e.py build/k1/analytic build/k1/rawcap             build/evidence/rawcap.json --label "$SCENARIO,K1,raw-head-capacity"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={"GWL":(0.05,0.01),"DSTOR":(0.02,0.005),"DRAINAGE":(0.02,0.005),"DRN":(0.02,0.005),"QBOTTOM":(0.02,0.005),"TACT":(0.02,0.005)}
+          failed=[]; lines=["route\tmetric\tmax_abs\trmse\tpass"]
+          for p in (Path("build/evidence/raw.json"),Path("build/evidence/rawcap.json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]; ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  lines.append(f"{d['label']}\t{metric}\t{m['max_abs']}\t{m['rmse']}\t{ok}")
+                  if not ok: failed.append((d["label"],metric,m))
+          Path("build/evidence/fidelity.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/evidence/fidelity.tsv").read_text(),end="")
+          print(f"K1_MATRIX_FAILURES={len(failed)}")
+          if failed: raise SystemExit(1)
+          PY
+
+      - name: Upload matrix evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-k1-${{ matrix.scenario }}
+          path: build/evidence/
