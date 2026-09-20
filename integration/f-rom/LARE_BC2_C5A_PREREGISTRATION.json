@@ -1,0 +1,399 @@
+{
+  "schema": "swap5.lare.bc2.c5a.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5A",
+  "phase": "PREREGISTERED_BEFORE_C5A_B14_DYNAMIC_RESPONSE",
+  "title": "Matched B14 x dynamic prescribed-head cross-axis representation transfer",
+  "scientific_question": "Does the lower-zone-focused state and placement pattern observed for B01 under dynamic prescribed-head forcing transfer to B14 when material is changed but the dimensionless initial states, boundary-head factors, switching times, closure and numerical authority are held fixed?",
+  "role": "PROSPECTIVE_RESPONSE_BLIND_MATCHED_MATERIAL_BY_BOUNDARY_INTERACTION_TEST_ON_PREVIOUSLY_EXPOSED_B14",
+  "authority": {
+    "frozen_lare_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "c4z_dynamic_head_authority": "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+    "required_c4z_decision": "C4Z_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT",
+    "c4x_B14_authority": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "required_c4x_decision": "C4X_B14_GW_TRANSFER_FRONTIER_PRESENT",
+    "bc1_closure_authority": "integration/f-rom/LARE_BC1_CLOSEOUT.json",
+    "c4u_application_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "b14_parameter_authority": "integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json",
+    "d13_reference_policy_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "d13_reference_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "c4z_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "canonical_backend_matched_to_c4z": true,
+    "scientific_basis_rebased": false
+  },
+  "material": {
+    "id": "B14",
+    "previously_exposed": true,
+    "current_dynamic_Z01_Z04_response_inspected_before_preregistration": false,
+    "homogeneous": true,
+    "theta_r": 0.01,
+    "theta_s": 0.416774,
+    "alpha_per_cm": 0.00541,
+    "n": 1.301528,
+    "Ksat_cm_per_day": 0.895023,
+    "mualem_lambda": -0.334926
+  },
+  "matched_transfer": {
+    "source_dynamic_head_authority": "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+    "source_material": "B01",
+    "target_material": "B14",
+    "invariant": [
+      "effective-saturation anchors",
+      "RISE/FALL/HOLD symbol order",
+      "segment lengths",
+      "head multipliers relative to each material-specific initial h0",
+      "gravity-consistent top qeq",
+      "observation horizon and timestep",
+      "LARE partition ladder and placement controls",
+      "BC1 CURRENT_LAYER_FACE closure",
+      "LARE internal timestep",
+      "Reference numerical policy",
+      "metric vectors and crossing rule"
+    ],
+    "changed_only": [
+      "Mualem-van Genuchten constitutive constants B01 -> frozen B14 constants"
+    ],
+    "rationale": "This matched design isolates the material-by-lower-boundary interaction better than choosing new histories after C4Z.",
+    "response_based": false
+  },
+  "workload": {
+    "column_depth_cm": 160,
+    "top_boundary": "gravity-consistent material-specific qeq only",
+    "lower_boundary": "fixed-domain prescribed pressure head during RISE/FALL; equilibrium mode-2 HOLD",
+    "moving_water_table": false,
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "horizon_day": 0.8192,
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "sinks": false,
+    "ET_root_uptake": false,
+    "histories": {
+      "Z01": {
+        "initial_Se": 0.725,
+        "segments": [
+          [
+            "FALL",
+            256
+          ],
+          [
+            "RISE",
+            320
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z02": {
+        "initial_Se": 0.825,
+        "segments": [
+          [
+            "RISE",
+            256
+          ],
+          [
+            "FALL",
+            320
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z03": {
+        "initial_Se": 0.875,
+        "segments": [
+          [
+            "FALL",
+            320
+          ],
+          [
+            "RISE",
+            256
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z04": {
+        "initial_Se": 0.775,
+        "segments": [
+          [
+            "RISE",
+            320
+          ],
+          [
+            "FALL",
+            256
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      }
+    },
+    "head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125,
+      "HOLD": "equilibrium mode-2"
+    }
+  },
+  "reference_retry_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "no_new_failure_class": true,
+    "no_post_response_relaxation": true
+  },
+  "representations": {
+    "LARE": {
+      "closure": "BC1 CURRENT_LAYER_FACE with B14 constitutive parameters only",
+      "integrator": "iterative Heun",
+      "internal_dt_day": 0.0001,
+      "no_clipping": true,
+      "no_fallback": true,
+      "ladder": [
+        {
+          "id": "R3",
+          "dimension": 3,
+          "boundaries_cm": [
+            0,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R5",
+          "dimension": 5,
+          "boundaries_cm": [
+            0,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R6",
+          "dimension": 6,
+          "boundaries_cm": [
+            0,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R12",
+          "dimension": 12,
+          "boundaries_cm": [
+            0,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R16",
+          "dimension": 16,
+          "boundaries_cm": [
+            0,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ],
+          "role": "operator control"
+        }
+      ],
+      "placement_controls": [
+        {
+          "id": "P4_TOP_LOWER",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            10,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "U4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            40,
+            80,
+            120,
+            160
+          ]
+        },
+        {
+          "id": "U8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160
+          ]
+        }
+      ]
+    },
+    "R2": {
+      "role": "2 x 80 cm current-canonical Richards comparator",
+      "geometry_cm": [
+        80,
+        80
+      ]
+    },
+    "fine_reference": {
+      "id": "R16_REFERENCE",
+      "geometry": "16 x 10 cm",
+      "backend": "current canonical at preregistration"
+    },
+    "FMC_SMVE": {
+      "included": false,
+      "reason": "No pre-existing dynamic prescribed-head FMC boundary authority exists for B14."
+    }
+  },
+  "metrics": {
+    "DYNAMIC_GW_VECTOR": [
+      "pooled total-storage RMSE",
+      "pooled cumulative-bottom-exchange RMSE",
+      "pooled interval-average bottom-flux RMSE",
+      "bottom-flux sign-mismatch count",
+      "absolute pooled mean signed bottom-flux error",
+      "maximum absolute final cumulative-bottom-exchange error across histories",
+      "reversal-sequence mismatch history count",
+      "maximum reversal penalty in steps"
+    ],
+    "PROFILE_VECTOR": "DYNAMIC_GW_VECTOR plus mapped 10-cm theta RMSE",
+    "crossing": "componentwise no worse than R2 within 1e-12 numerical equality tolerance",
+    "interaction_diagnostics": [
+      "minimum R2-relative GW dimension versus C4Z",
+      "minimum R2-relative PROFILE dimension versus C4Z",
+      "R4 versus U4 componentwise placement result",
+      "R8 versus U8 componentwise placement result",
+      "R2 reversal/sign diagnostic strength versus C4Z",
+      "componentwise R3-R16 error progression without scalar collapse"
+    ],
+    "no_scalar_score": true,
+    "no_application_threshold": true
+  },
+  "development_hypotheses": {
+    "H_R3_R2_RELATIVE_GW_TRANSFER": "C4Z's formal R2-relative GW minimum R3 transfers to B14.",
+    "H_R3_R2_RELATIVE_PROFILE_TRANSFER": "C4Z's formal R2-relative PROFILE minimum R3 transfers to B14.",
+    "H_LOWER_ZONE_PLACEMENT_R4": "R4 remains componentwise no worse than U4 on DYNAMIC_GW_VECTOR.",
+    "H_LOWER_ZONE_PLACEMENT_R8": "R8 remains componentwise no worse than U8 on DYNAMIC_GW_VECTOR."
+  },
+  "hard_gates": {
+    "canonical_head_exact": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true,
+    "reference_exact_state_count_per_route": 4096,
+    "reference_hard_mass_gate_cm": 1e-12,
+    "all_lare_members_and_controls_attempted": true,
+    "lare_R16_operator_control_qualified": true,
+    "qualified_lare_water_ledger_cm": 1e-10,
+    "fail_open_count": 0
+  },
+  "decision_logic": {
+    "C5A_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT": "All hard gates pass and at least one reduced lower-zone LARE member crosses R2 on both DYNAMIC_GW_VECTOR and PROFILE_VECTOR.",
+    "C5A_DYNAMIC_HEAD_GW_FRONTIER_ONLY": "All hard gates pass and at least one reduced lower-zone LARE member crosses R2 on DYNAMIC_GW_VECTOR but none crosses PROFILE_VECTOR.",
+    "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED": "All hard gates pass but no reduced lower-zone LARE member crosses R2 on DYNAMIC_GW_VECTOR.",
+    "C5A_REFERENCE_OR_EXECUTION_BLOCKED": "Any Reference, integrity, provenance or fail-closed gate fails."
+  },
+  "interpretation_boundaries": [
+    "C5A is prospectively response-blind for the B14 dynamic Z01-Z04 responses, but B14 itself is previously exposed and this is not an independent blind-material test.",
+    "The matched C4Z workload is intentionally reused to isolate material interaction; this is not post-response tuning.",
+    "R2-relative crossing is not absolute representation sufficiency. R2 comparator diagnostics must be reported alongside the frontier.",
+    "C5A is fixed-domain prescribed-head research, not moving-water-table geometry or groundwater coupling.",
+    "No FMC, application acceptance, performance, speedup or production-ROM claim is authorized."
+  ],
+  "pre_execution_implementation_binding": {
+    "response_based": false,
+    "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "c5a_analyzer_blob": "aec3a22ba50e07fd8d90aa54a92d067952fd397d",
+    "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "reference_source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "d13_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "allowed_new_code": "matched B14 constitutive materialization, B14 LARE constant binding, execution plumbing and frozen-vector aggregation",
+    "scientific_effect": "NO_NEW_LARE_CLOSURE"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
