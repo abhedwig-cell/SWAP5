@@ -303,7 +303,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "reference_materializer": "tests/rom/materialize_lare_bc2_c5n_reference.py",
-    "reference_materializer_blob": "a2a7db1e5c6669b4a2475eea0fe3b1c7481ea61c",
+    "reference_materializer_blob": "88db9aa07507acc6dd95efdee5b38525e48f5e2d",
     "reference_slice_materializer": "tests/rom/materialize_lare_bc2_c5n_reference_slice.py",
     "reference_slice_materializer_blob": "3e294bdc0adb9f824f5119a19c03e7188ab5a97e",
     "analyzer": "tests/rom/analyze_lare_bc2_c5n_fresh_highres.py",
@@ -321,7 +321,9 @@
     "workflow": ".github/workflows/f-rom-lare-bc2-c5n.yml",
     "workflow_blob": "34e706f37bf6da9b8e1a177b61595d5cb131bc15",
     "execution_binding_complete": true,
-    "binding_note": "Workflow binding added after all scientific histories, candidate partitions, metrics, comparator rules, Reference routes, materializer and analyzer blobs were already frozen; no response had been generated."
+    "binding_note": "Workflow binding added after all scientific histories, candidate partitions, metrics, comparator rules, Reference routes, materializer and analyzer blobs were already frozen; no response had been generated.",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json",
+    "repair_note": "Pre-response technical anchor repair after run 35506874250 failed during materialization before solver execution; scientific design and output payload unchanged."
   },
   "model_changed": false
 }
