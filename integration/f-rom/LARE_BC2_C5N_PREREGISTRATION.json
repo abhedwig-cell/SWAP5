@@ -319,9 +319,9 @@
     "duplicate_non_authoritative_analyzer": "tests/rom/analyze_lare_bc2_c5n_blind_highres.py",
     "duplicate_status": "NOT_BOUND_NOT_AUTHORIZED_FOR_EXECUTION",
     "workflow": ".github/workflows/f-rom-lare-bc2-c5n.yml",
-    "workflow_blob": "34e706f37bf6da9b8e1a177b61595d5cb131bc15",
+    "workflow_blob": "808f264d92ea69a3b1220bc42df58a78a8922083",
     "execution_binding_complete": true,
-    "binding_note": "Workflow binding added after all scientific histories, candidate partitions, metrics, comparator rules, Reference routes, materializer and analyzer blobs were already frozen; no response had been generated.",
+    "binding_note": "Scientific design was frozen before response. Workflow binding now includes the pre-response materializer-anchor repair reconciliation; no hydrological response informed the repair.",
     "execution_reconciliation": "integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json",
     "repair_note": "Pre-response technical anchor repair after run 35506874250 failed during materialization before solver execution; scientific design and output payload unchanged."
   },
