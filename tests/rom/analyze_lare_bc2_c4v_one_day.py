@@ -342,9 +342,13 @@ def main():
           "crosses_R2_C4R_GW4":no_worse(v,summaries["R2"]["64"],GW4),
           "crosses_FMC_C4R_GW4":no_worse(v,summaries["FMC"]["64"],GW4)
         }
+    prefix_r2=[m["id"] for m in reduced if prefix[m["id"]]["crosses_R2_C4R_GW4"]]
+    prefix_fmc=[m["id"] for m in reduced if prefix[m["id"]]["crosses_FMC_C4R_GW4"]]
     prefix_min_r2=min([m["dimension"] for m in reduced if prefix[m["id"]]["crosses_R2_C4R_GW4"]],default=None)
     prefix_min_fmc=min([m["dimension"] for m in reduced if prefix[m["id"]]["crosses_FMC_C4R_GW4"]],default=None)
-    prefix_ordering_pass=(prefix_min_r2==4 and prefix_min_fmc==4)
+    expected_r2=list(c4r["frontiers"]["crossing_members"]["R2_GW"])
+    expected_fmc=list(c4r["frontiers"]["crossing_members"]["FMC_GW"])
+    prefix_ordering_pass=(prefix_r2==expected_r2 and prefix_fmc==expected_fmc)
 
     persistent={}
     for m in reduced:
@@ -385,6 +389,10 @@ def main():
         "prefix_C4R_ordering_pass":prefix_ordering_pass,
         "prefix_min_dimension_crossing_R2":prefix_min_r2,
         "prefix_min_dimension_crossing_FMC":prefix_min_fmc,
+        "prefix_crossing_R2":prefix_r2,
+        "prefix_crossing_FMC":prefix_fmc,
+        "expected_C4R_crossing_R2":expected_r2,
+        "expected_C4R_crossing_FMC":expected_fmc,
         "maximum_qualified_lare_water_ledger_cm":max([m["max_abs_water_ledger_cm"] for m in members if m["status"]=="QUALIFIED"] or [0.0])
       },
       "checkpoints_day":{str(cp):cp*OBS_DT for cp in CHECKPOINTS},
