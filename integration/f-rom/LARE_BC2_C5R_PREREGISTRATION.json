@@ -234,7 +234,7 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "reference_materializer": "tests/rom/materialize_lare_bc2_c5r_reference.py",
     "reference_materializer_blob": "6d7d5c3283dfe1a6d8d433f2fc03e0255711dc91",
@@ -250,7 +250,11 @@
     "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
     "c5p_reference_materializer_blob": "f9692ebc302603ce3c590425a37a45b3bdb36d01",
     "allowed_new_code": "fresh R01-R04 Reference materialization, history-sliced execution, prospectively frozen D12/D8 breadth candidates, and preregistered comparator analysis",
-    "prohibited_new_code": "new closure terms, response-driven partition changes, scalar tuning, boundary counterfactuals, production Reference edits"
+    "prohibited_new_code": "new closure terms, response-driven partition changes, scalar tuning, boundary counterfactuals, production Reference edits",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c5r.yml",
+    "workflow_blob": "c8ee5b3c2833d63a19dc9ab23e8c11c6cc9de9b7",
+    "execution_binding_complete": true,
+    "binding_note": "All histories, candidate geometries, metric views, comparator rules, implementation blobs and workflow were bound before authoritative R01-R04 response."
   },
   "model_changed": false
 }
