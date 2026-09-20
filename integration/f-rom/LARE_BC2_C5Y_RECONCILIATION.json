@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.lare.bc2.c5y.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5Y",
+  "status": "CLOSED_FIRST_WATER_CONTENT_MOMENT_IS_MINIMAL_CONSERVATION_DERIVED_SHAPE_STATE_MATHEMATICAL_QUALIFICATION_NEXT",
+  "decision": "DERIVE_MOMENT_ENRICHED_THETA_POLYNOMIAL_HIERARCHY_BEFORE_ANY_HYDROLOGICAL_RESPONSE",
+  "role": "READ_ONLY_MINIMUM_SUBGRID_SHAPE_STATE_DERIVATION",
+  "authority": {
+    "C5X": "integration/f-rom/LARE_BC2_C5X_RECONCILIATION.json",
+    "C5W": "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
+    "C5V": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "C4K": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "state_candidate": {
+    "id": "CENTERED_FIRST_WATER_CONTENT_MOMENT",
+    "per_layer_definition": "M_i = integral_{z_-}^{z_+} (z-z_c,i) * theta(z) dz",
+    "units": "cm^2 water per unit horizontal area under the depth-in-cm convention",
+    "physical_interpretation": "Signed vertical displacement of retained water content within the layer relative to its centroid; distinguishes top-heavy from bottom-heavy subgrid moisture distributions at identical total storage.",
+    "dynamic_state_increment": "one scalar only for each layer selected for moment enrichment",
+    "fitted_parameter": false
+  },
+  "exact_projected_balance": {
+    "continuity_convention": "dtheta/dt = -dq/dz, q positive downward",
+    "storage": "dS_i/dt = q_top - q_bottom",
+    "first_moment": "dM_i/dt = integral_layer q(z) dz - (d_i/2)*(q_top + q_bottom)",
+    "derivation": [
+      "Differentiate M_i under the integral.",
+      "Substitute dtheta/dt=-dq/dz.",
+      "Integrate by parts over centered coordinate z-z_c.",
+      "No empirical coefficient or unresolved source term is introduced; the remaining quantity is the layer integral of the reconstructed Darcy flux."
+    ]
+  },
+  "conservation_native_reconstruction_hierarchy": {
+    "coordinate": "volumetric water content theta, the conserved field itself",
+    "reason_for_coordinate": [
+      "S_i and M_i are moments of theta, so polynomial moment constraints are direct linear functionals of the reconstruction variable.",
+      "This avoids selecting pressure head versus suction versus Kirchhoff potential solely as an arbitrary profile coordinate.",
+      "Hydraulic pressure psi(theta) and K(theta) remain constitutive algebraic functions used in Darcy flux and interface conditions."
+    ],
+    "storage_only_layer": {
+      "profile": "quadratic theta(z)",
+      "coefficients_per_layer": 3,
+      "dynamic_constraints_per_layer": 1
+    },
+    "moment_enriched_layer": {
+      "profile": "cubic theta(z)",
+      "coefficients_per_layer": 4,
+      "dynamic_constraints_per_layer": 2,
+      "extra_constraint": "centered first moment M_i"
+    },
+    "global_constraints": [
+      "one storage constraint for every layer",
+      "one first-moment constraint for every enriched layer",
+      "pressure/suction continuity at every internal interface",
+      "Darcy flux continuity at every internal interface",
+      "two external hydraulic boundary conditions"
+    ],
+    "degree_count": {
+      "N_layers": "N",
+      "M_enriched_layers": "m",
+      "unknown_polynomial_coefficients": "3N + m",
+      "storage_plus_moment_constraints": "N + m",
+      "internal_pressure_continuity": "N-1",
+      "internal_flux_continuity": "N-1",
+      "external_boundary_constraints": 2,
+      "total_constraints": "3N + m",
+      "conclusion": "The mixed quadratic/cubic theta hierarchy is square for any prospectively selected set of moment-enriched layers."
+    }
+  },
+  "minimality_claim": {
+    "claim": "A single centered first moment is the smallest scalar dynamic augmentation beyond S_i that carries within-layer vertical shape information and has an exact balance derivable directly from Richards conservation.",
+    "boundaries": [
+      "This does not prove that one moment per enriched layer is sufficient for hydrological fidelity.",
+      "A square nonlinear algebraic system does not guarantee existence, uniqueness or admissibility.",
+      "The theta-polynomial reconstruction is a new projection hypothesis, although it is conservation-native rather than selected from exposed response error."
+    ]
+  },
+  "C4K_reconciliation": {
+    "prior_result": "CURRENT_STATE_NOT_SHOWN_INSUFFICIENT",
+    "retained_fact": "C4K remains valid for its A2 direction/history near-collision diagnostic.",
+    "why_new_read_only_state_route_is_now_authorized": [
+      "C4K explicitly did not establish universal memoryless sufficiency.",
+      "C5V later proved storage-only subgrid shape underdetermination for the Layer-ROM propagation problem.",
+      "C5W prospectively rejected the minimum-additional-structure P0 algebraic closure on existence/admissibility before any hydrological response.",
+      "The new state is not introduced to encode RISE/FALL history labels; it represents a missing spatial moment of the conserved field."
+    ],
+    "C4K_overturned": false,
+    "new_question_distinct_from_C4K": true
+  },
+  "localization": {
+    "current_authority": "UNRESOLVED",
+    "options": [
+      "moment state in every retained layer",
+      "moment state only in bottom-adjacent/focused layers",
+      "moment state in a prospectively selected subset of interfaces/layers"
+    ],
+    "restriction": "C5Y does not select localization from C5R/C5N/C5P error magnitudes.",
+    "next_step": "First qualify the algebraic mixed quadratic/cubic theta map for existence/uniqueness/admissibility. Only after that may a separate blind experiment test how many moment states are needed."
+  },
+  "independent_theory_context": [
+    {
+      "reference": "Mixed/Galerkin formulations of Richards equation",
+      "relevance": "Richards discretizations naturally separate conserved moisture content from algebraic hydraulic variables and use basis/weighted-residual representations; this supports a projection hierarchy but does not prove the proposed moment basis is uniquely optimal."
+    },
+    {
+      "reference": "Local discontinuous Galerkin Richards formulations",
+      "relevance": "Mass conservation can be enforced together with local polynomial representations and interface flux constraints, supporting the mathematical form of a conservation-native polynomial hierarchy."
+    },
+    {
+      "reference": "Spatial moment analyses in soil-water studies",
+      "relevance": "Water-content moments have established physical interpretations for location/spread of subsurface water, though prior uses do not constitute a reduced Richards closure proof."
+    }
+  ],
+  "adjudication": {
+    "FIRST_MOMENT_IS_PHYSICALLY_INTERPRETABLE": true,
+    "FIRST_MOMENT_HAS_EXACT_PROJECTED_BALANCE": true,
+    "ONE_ADDITIONAL_SCALAR_IS_MINIMAL_DYNAMIC_AUGMENTATION": true,
+    "MIXED_QUADRATIC_CUBIC_THETA_DEGREE_COUNT_CLOSES": true,
+    "ALGEBRAIC_EXISTENCE_UNIQUENESS_PROVEN": false,
+    "MOMENT_STATE_IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "MOMENT_LOCALIZATION_AUTHORIZED": false,
+    "MATHEMATICAL_ADMISSIBILITY_QUALIFICATION_AUTHORIZED": true
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5Z",
+    "state": "MOMENT_ENRICHED_THETA_PROFILE_MATHEMATICAL_ADMISSIBILITY_QUALIFICATION_AUTHORIZED",
+    "question": "Does the conservation-native mixed quadratic/cubic theta reconstruction define an admissible, unique and numerically stable algebraic hydraulic profile map for prescribed state moments and boundary conditions before any hydrological response is attempted?",
+    "constraints": [
+      "No hydrological response data.",
+      "Begin with all layers moment-enriched to qualify the mathematical family before localization.",
+      "Use synthetic B14 state/moment domains fixed prospectively.",
+      "Enforce theta bounds, pressure continuity, flux continuity, storage/moment consistency and external boundaries.",
+      "Do not fit moments, polynomial coefficients, tolerances or branch choices to C5R/C5N/C5P trajectories.",
+      "If the all-layer map is not admissible, stop the moment route rather than retune it.",
+      "No performance, application or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_dynamic_state_implemented": false,
+    "moment_localization_selected": false,
+    "response_based_profile_fit": false,
+    "scalar_tuning_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
