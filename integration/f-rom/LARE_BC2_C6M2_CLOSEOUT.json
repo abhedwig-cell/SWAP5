@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.lare.bc2.c6m2.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M2",
+  "status": "CLOSED_REFERENCE_EXECUTION_COMPLETE_SPACE_TIME_GATE_FAILED_NO_LAYER_ROM_RESPONSE",
+  "decision": "STOP_BEFORE_LAYER_ROM_RESPONSE_DO_NOT_RELAX_REFERENCE_GATE_AFTER_RESPONSE",
+  "role": "REFERENCE_ONLY_UPPER_ZONE_PROFILE_SPACE_TIME_QUALIFICATION_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json",
+    "workflow_run": 35532270427,
+    "execution_head": "92eba276bf350314107b688747eaff2b67e5bb0b",
+    "workflow_conclusion": "success",
+    "artifact_id": 10612270980,
+    "artifact_digest": "sha256:5a6384a5c93aac24e68918f3dfe56ccfe30c6630aa55ba169ea25821643ba5cd",
+    "exact_result_sha256": "8a1514f45938c468f07ac0ec954c370492ced13035d23931314e516ea79f6c6d"
+  },
+  "execution": {
+    "reference_slices_expected": 64,
+    "reference_slices_successful": 64,
+    "compiler_O0_O2_identity_required": true,
+    "compiler_O0_O2_identity_passed": true,
+    "integrity_pass": true,
+    "candidate_response_generated": false
+  },
+  "quality_gate": {
+    "rule": "For each material and each frozen state/profile metric, R2048_T8 vs R2048_T16 must be no worse than R1024_T16 vs R2048_T16.",
+    "B01": {
+      "pass": false,
+      "componentwise": {
+        "total_storage_rmse_cm": true,
+        "surface_0_20_storage_rmse_cm": false,
+        "root_zone_0_40_storage_rmse_cm": false,
+        "upper_0_80_storage_rmse_cm": false,
+        "mapped_10cm_theta_rmse": false
+      },
+      "R1024_T16_vs_R2048_T16": {
+        "total_storage_rmse_cm": 1.1679441370052282e-12,
+        "surface_0_20_storage_rmse_cm": 9.384716136766306e-8,
+        "root_zone_0_40_storage_rmse_cm": 8.888161815896842e-8,
+        "upper_0_80_storage_rmse_cm": 8.216591173896559e-8,
+        "mapped_10cm_theta_rmse": 4.980020407020467e-9
+      },
+      "R2048_T8_vs_R2048_T16": {
+        "total_storage_rmse_cm": 1.0356089913340418e-13,
+        "surface_0_20_storage_rmse_cm": 0.0000033822227623823924,
+        "root_zone_0_40_storage_rmse_cm": 0.000005175797969928221,
+        "upper_0_80_storage_rmse_cm": 0.000007008386236944357,
+        "mapped_10cm_theta_rmse": 2.183257487606768e-7
+      },
+      "max_abs_transaction_mass_cm": 4.372097302252076e-13,
+      "max_profile_state_total_difference_cm": 2.0889956431346945e-12
+    },
+    "B14": {
+      "pass": false,
+      "componentwise": {
+        "total_storage_rmse_cm": true,
+        "surface_0_20_storage_rmse_cm": false,
+        "root_zone_0_40_storage_rmse_cm": false,
+        "upper_0_80_storage_rmse_cm": false,
+        "mapped_10cm_theta_rmse": false
+      },
+      "R1024_T16_vs_R2048_T16": {
+        "total_storage_rmse_cm": 1.9703447156856888e-12,
+        "surface_0_20_storage_rmse_cm": 3.15563128998669e-9,
+        "root_zone_0_40_storage_rmse_cm": 9.236038456528367e-10,
+        "upper_0_80_storage_rmse_cm": 7.761353145875e-12,
+        "mapped_10cm_theta_rmse": 2.4257101120760493e-10
+      },
+      "R2048_T8_vs_R2048_T16": {
+        "total_storage_rmse_cm": 3.3449050161172474e-14,
+        "surface_0_20_storage_rmse_cm": 1.0865655161763055e-8,
+        "root_zone_0_40_storage_rmse_cm": 2.7895216408250316e-9,
+        "upper_0_80_storage_rmse_cm": 2.662038326221557e-11,
+        "mapped_10cm_theta_rmse": 8.024287089411692e-10
+      },
+      "max_abs_transaction_mass_cm": 2.4158453015843406e-13,
+      "max_profile_state_total_difference_cm": 2.4868995751603507e-12
+    }
+  },
+  "interpretation": [
+    "The fixed-bottom-flux Reference route is operationally robust on the frozen C6M2 panel: all 64 slices complete and integrity gates pass.",
+    "The numerical hierarchy is nevertheless not admitted under the prospectively frozen componentwise space-time gate.",
+    "For both materials, total column storage is already essentially invariant, but upper-zone and 10-cm profile metrics are more sensitive to T8->T16 temporal refinement than to R1024->R2048 spatial refinement.",
+    "This does not demonstrate Layer-ROM error because no Layer-ROM candidate was executed.",
+    "The gate may not be relaxed after observing the result. A different Reference-authority design requires a new prospective work unit."
+  ],
+  "scientific_consequence": {
+    "existing_surface_candidate_comparison_authorized": false,
+    "new_representation_search_authorized": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6N0",
+    "state": "READ_ONLY_REFERENCE_AUTHORITY_RECONCILIATION_REQUIRED",
+    "question": "What prospective Reference discretization/observation design can separate temporal and spatial error for surface-driven profile purposes without selecting thresholds from C6M2 response?",
+    "allowed": [
+      "Read-only analysis of the C6M2 error structure.",
+      "Derive a new finer temporal control prospectively from the numerical method/order rather than from a candidate response.",
+      "Preserve the fresh U01-U04 hydrological histories if they are treated as exposed Reference-design data, not blind candidate data."
+    ],
+    "prohibited": [
+      "Do not weaken the C6M2 gate retrospectively.",
+      "Do not execute Layer-ROM candidates against an unqualified Reference.",
+      "Do not infer application tolerance from C6M2 numerical differences.",
+      "No performance or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "bottom_exchange_fidelity_adjudicated": false,
+    "root_uptake_feedback_used": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
