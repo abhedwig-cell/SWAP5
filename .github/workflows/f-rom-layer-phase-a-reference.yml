@@ -7,8 +7,12 @@ on:
     paths:
       - 'tests/rom/test_layer_rom_phase_a_reference.f90'
       - 'tests/rom/analyze_layer_rom_phase_a_reference.py'
+      - 'tests/rom/analyze_layer_rom_phase_a_independent_state.py'
+      - 'tests/rom/freeze_layer_rom_phase_a_pairs.py'
       - 'tests/rom/run_layer_rom_phase_a_reference.sh'
       - 'integration/f-rom/LAYER_ROM_PHASE_A_REFERENCE_*'
+      - 'integration/f-rom/LAYER_ROM_PHASE_A_PREREGISTRATION.json'
+      - 'integration/f-rom/LAYER_ROM_PHASE_A_STATE_RESPONSE_PREREGISTRATION.json'
       - '.github/workflows/f-rom-layer-phase-a-reference.yml'
   workflow_dispatch:
 
