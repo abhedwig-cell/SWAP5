@@ -155,27 +155,25 @@
     "rationale": "Operational numerical freeze after a no-output runtime preflight. No A2B scientific flux result was produced or inspected before this freeze."
   },
   "pre_execution_numerical_amendment": {
-    "date": "2026-09-20",
     "before_first_A2B_result": true,
-    "solve_ivp_method": "DOP853",
-    "rtol": 2e-8,
-    "atol_psi_cm": 1e-8,
-    "atol_storage_integral": 1e-10,
-    "max_step_rule": "max(layer_or_centroid_distance/8, 1 cm)",
-    "least_squares_xtol": 2e-9,
-    "least_squares_ftol": 2e-9,
-    "least_squares_gtol": 2e-9,
-    "least_squares_max_nfev": 30,
-    "flux_parameterization": "q = Ksat*sinh(x)",
-    "interface_head_parameterization": "psi_interface = 0.01 + exp(x)",
-    "numerical_crosscheck": {
-      "subset": "steps 1, 256, 512, 768, 1024 of every primary case and both L3/L4 long interfaces",
-      "tight_rtol": 2e-10,
-      "tight_atol_psi_cm": 1e-10,
-      "tight_atol_storage_integral": 1e-12,
-      "maximum_abs_flux_difference_cm_per_day": 0.00001,
-      "role": "numerical implementation check only, not a hydrological acceptance tolerance"
+    "observation_set": "all 1024 accepted Reference observations for each of the four frozen primary cases",
+    "solve_ivp": {
+      "method": "DOP853",
+      "rtol": 2e-10,
+      "atol_psi": 1e-10,
+      "atol_theta_integral": 1e-11
     },
-    "scientific_effect": "No closure definition, state, partition, case, response metric or adjudication rule changed."
+    "least_squares": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 40
+    },
+    "initialization_order": [
+      "previous-step converged transformed unknowns for the same case/partition/closure",
+      "fresh state-derived initialization from current layer-centroid heads and C_LARE_TAYLOR flux"
+    ],
+    "retry_semantics": "numerical initialization retry only; physical equations, state, partition and acceptance gates remain unchanged",
+    "scientific_effect": "No response selection, threshold, closure formula or state definition changed."
   }
 }
