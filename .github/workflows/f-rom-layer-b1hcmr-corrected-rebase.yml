@@ -49,7 +49,7 @@ jobs:
           a=json.load(open('integration/f-rom/LAYER_ROM_B1HCM_EXECUTION_AUTHORITY.json'))
           assert p['phase']=='PREREGISTERED_BEFORE_SEMANTIC_REPAIR_REBASE_RESPONSE'
           assert p['reference_semantics']['frozen_Richardson_order']==1
-          assert 'endpoint bottom 10-cm theta' in p['reference_semantics']['QEND']
+          assert 'bottom 10-cm theta' in p['reference_semantics']['QEND'] and 'Do not extrapolate persisted finite-step BOTTOM_FLUX/QEND directly' in p['reference_semantics']['QEND']
           assert p['scope']['representations']==['L4','L6','R8','U4','U8','R16_OP']
           assert a['authority']=='NO_B1HCM_EXECUTION_IS_DECISION_AUTHORITY'
           assert p['production_rom_authorized'] is False
