@@ -236,12 +236,20 @@
       "upper and lower half storage errors as non-gating diagnostics",
       "exact sign-change sequence and reversal-step differences without application tolerance"
     ],
-    "reason": "Retains cumulative, instantaneous, direction and systematic-bias information without collapsing to one score."
+    "reason": "Retains cumulative, instantaneous, direction and systematic-bias information without collapsing to one score.",
+    "exact_scalar_aggregation": {
+      "storage_RMSE": "sqrt(mean(error_total_storage^2)) across all four histories and all steps 1..checkpoint",
+      "cumulative_bottom_RMSE": "sqrt(mean(error_cumulative_bottom_exchange^2)) across all four histories and all steps 1..checkpoint",
+      "terminal_bottom_flux_RMSE": "sqrt(mean(error_terminal_bottom_flux^2)) across all four histories and all steps 1..checkpoint",
+      "bottom_flux_sign_error_count": "count across all four histories and all steps 1..checkpoint using exact sign with zero distinct",
+      "abs_mean_signed_terminal_bottom_flux_error": "absolute value of arithmetic mean signed terminal-bottom-flux error across all four histories and all steps 1..checkpoint",
+      "max_abs_final_cumulative_bottom_exchange_error": "maximum across the four histories of absolute cumulative-bottom-exchange error at exactly the checkpoint"
+    }
   },
   "comparator_relative_crossing": {
     "definition": "At a checkpoint, a QUALIFIED reduced LARE member crosses a comparator only when every groundwater-horizon-vector component is no worse than that comparator within 1e-12 numerical equality tolerance.",
     "persistent_crossing": "A reduced member persistently crosses a comparator only if it crosses at every prospective checkpoint 128,256,512,1024.",
-    "exposed_step64_role": "Reported and required to reproduce the C4R ordering, but excluded from prospective persistence adjudication.",
+    "exposed_step64_role": "Hard prefix check uses the original C4R four-component GW vector only: C4V step-64 crossing sets must equal C4R crossing sets R4,R5,R6,R8,R12 against both R2 and FMC. The two added long-horizon bias components are reported at step 64 but do not retroactively redefine C4R.",
     "R16_excluded_from_reduced_crossing": true
   },
   "hard_gates": {
@@ -256,7 +264,8 @@
     "LARE_qualified_member_max_abs_water_ledger_cm": 1e-10,
     "fail_open_count": 0,
     "physical_theta_bounds": true,
-    "FMC_one_day_pre_reference_domain_preflight": true
+    "FMC_one_day_pre_reference_domain_preflight": true,
+    "C4R_step64_original_GW_crossing_sets_exact": true
   },
   "hypotheses": {
     "H_GW_R4_PERSISTS": {
