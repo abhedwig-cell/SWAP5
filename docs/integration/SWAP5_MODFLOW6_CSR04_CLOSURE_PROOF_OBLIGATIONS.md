@@ -2,141 +2,123 @@
 
 Date: 2026-09-20
 
-Status: **SCIENTIFIC PROOF OBLIGATIONS — CONTROLLED QUALIFICATION NEXT**
+Status: **REVISED AFTER STORAGE-STATE AUTHORITY RECONSTRUCTION — PHASE-B EXPERIMENT NEXT**
 
-## 1. Why equal exchange and equal interface head are necessary but not sufficient
+## 1. Scope
 
-The present coupled iteration enforces two powerful interface conditions at convergence:
+Coupling closure has three different questions that must not be collapsed:
+interface mass continuity, hydraulic compatibility, and storage/state authority.
+The first two are unconditional coupling obligations. A combined physical
+storage balance is conditional on the role assigned to native MODFLOW STO.
 
-1. transfer continuity: the water transfer leaving SWAP equals, under the pinned sign convention, the transfer entering MODFLOW;
-2. hydraulic compatibility: in the current identity-transfer realization, the SWAP lower-face trial hydraulic head equals the selected MODFLOW hydraulic head.
-
-These conditions establish a conservative and hydraulically compatible **interface**.
-
-They do not by themselves establish that the union of the two model state spaces is a non-overlapping representation of the physical system.
-
-A coupling can satisfy both interface conditions while the two component models independently store water in the same physical saturated volume. In that case the interface transfer still cancels exactly, yet the combined storage response can be wrong.
-
-## 2. Three distinct conservation/compatibility statements
-
-### P1 — interface mass continuity
+## 2. P1 — accepted interface mass continuity
 
 For accepted window transfer `Q_i`:
 
 `Q_i,SWAP + Q_i,MF = 0`
 
-after sign/unit/area conversion.
+after the pinned sign, unit and area conversions.
 
-This is already the central F-GC coupling residual/ledger property.
+Predictor `q_u` is not accepted mass. P1 applies to the converged/finalized
+MODFLOW package transfer and corresponding accepted SWAP corrector transfer.
 
-### P2 — interface hydraulic compatibility
+## 3. P2 — hydraulic compatibility
 
-For the current identity transfer:
+The general obligation is
 
-`H_b,SWAP = H_i,MF`.
+`H_b,SWAP = T_H(H_MF, topology, datum, ...)`.
 
-For a generalized transfer law:
+The present datum-aligned identity realization is the special case
+`T_H(H)=H`. This does not identify MODFLOW regional head with the diagnostic
+SWAP groundwater level.
 
-`H_b,SWAP = T_H(H_MF,...)`.
+## 4. P3a — component and ledger consistency (always required)
 
-This is a constitutive/interface condition, not a mass-balance proof.
+Each accepted component must close its own authoritative accounting surface:
 
-### P3 — global storage closure
+- SWAP physical column mass/storage ledger closes;
+- MODFLOW accepted component budget closes;
+- the accepted interface ledger agrees with both sides;
+- rejected trials do not enter accepted history.
 
-For non-overlapping component domains:
+P3a does **not** require adding SWAP storage and MODFLOW STO into one physical
+reservoir total.
 
-`Delta S_SWAP + Delta S_MF = E_SWAP + E_MF + residuals`.
+## 5. P3b — storage-state authority/equivalence (conditional)
 
-P3 requires that `S_SWAP` and `S_MF` are additive physical storages. That additivity is not implied by P1 or P2.
+Native MODFLOW STO must first be classified as one of:
 
-Therefore P1 + P2 are necessary for the intended present coupling, but P3 is an independent proof obligation.
+- `PHYSICAL_INDEPENDENT_STORAGE`;
+- `HEAD_STATE_CAPACITANCE`;
+- `MIXED_EFFECTIVE_STORAGE`;
+- `UNRESOLVED`.
 
-## 3. Counterexample showing insufficiency
+Only `PHYSICAL_INDEPENDENT_STORAGE`, with explicit domain/process authority,
+permits its water-volume term to be added to SWAP physical storage in a
+combined physical balance.
 
-Consider a saturated physical layer of storage change `Delta S_x` that is represented in both the lower saturated part of SWAP and in MODFLOW STO.
+For `HEAD_STATE_CAPACITANCE`, STO is part of the groundwater head evolution
+or solve state and must not be counted as a second physical reservoir on top
+of SWAP storage.
 
-Suppose the coupled solver converges perfectly:
+`MIXED_EFFECTIVE_STORAGE` requires an explicit partition/correction law
+before physical additivity can be claimed.
 
-- SWAP exports `Q_i`;
-- MODFLOW imports exactly `Q_i`;
-- both use the same interface head.
+`UNRESOLVED` remains scientifically unadmitted.
 
-The summed model budget still contains:
+## 6. Why the previous unconditional P3 is withdrawn
 
-`Delta S_combined = ... + Delta S_x(SWAP) + Delta S_x(MF)`.
+The earlier proof obligation assumed that geometric overlap implied two
+additive physical reservoirs. Historical shared-state coupling authority and
+the reconstructed F-GC30/F-GC33 algebra show that this assumption is not
+generally valid.
 
-The duplicated storage term is unaffected by cancellation of `Q_i`.
+The assembled head equation contains distinct derivatives
 
-Thus zero interface residual and equal head can coexist with physical double representation.
+`dR/dH = dR_regional/dH + C_g/DeltaT + A J_s`,
 
-This is the exact reason CSR-04 cannot be closed by the existing interface convergence evidence alone.
+where `A J_s` is the condensed finite-window SWAP interface response and
+`C_g/DeltaT` is native MODFLOW head memory. Their simultaneous presence does
+not by itself say whether `C_g Delta H` is independent physical storage.
 
-## 4. What would constitute proof
+Accordingly the old statement
 
-For a declared non-overlap topology, sufficient evidence requires all of:
+`Delta S_SWAP + Delta S_MF = external transfers`
 
-- P1 transfer continuity;
-- P2 hydraulic compatibility under the declared head-transfer operator;
-- component SWAP water-balance closure;
-- component MODFLOW water-balance closure;
-- an explicit storage-domain partition proving additivity of component storages;
-- combined-system water-balance closure using those additive storages;
-- perturbation evidence showing that changing MODFLOW STO changes only the MODFLOW-owned storage response and does not silently create a second booking of a SWAP-owned physical volume.
+is not an unconditional CSR-04 acceptance criterion.
 
-The final item is important: a single zero-residual run can hide a structural overlap. Controlled perturbations make the ownership observable.
+## 7. Discriminating qualification
 
-## 5. Controlled experiment matrix
+Phase A varies native MODFLOW STO with a fixed affine SWAP-side response. It
+tests the MODFLOW state-space effect but does not establish production storage
+authority.
 
-Keep geometry, SWAP hydraulic parameters, coupling window and external forcing fixed.
+Phase B composes the real FMR participant, existing F-GC30/F-GC33 response and
+prepared MODFLOW solve over multiple windows. Use a forcing pulse and recovery
+and continue native specific yield through
 
-### Case A — steady/no MODFLOW storage response
+`0.30, 0.05, 1e-2, 1e-3, 1e-4, 1e-5`.
 
-Suppress transient MODFLOW storage response for the diagnostic fixture while retaining the interface solve. This isolates the SWAP-side finite-window response and verifies F-GC30/F-GC33 as an interface response.
+For every branch/window observe accepted MODFLOW head, SWAP lower-face head,
+SWAP diagnostic groundwater level when available, accepted interface
+transfer, SWAP storage start/end/change and residual, native MODFLOW STO,
+`q_r`, `J_s`, and component/interface residuals.
 
-### Case B — MODFLOW STO response active
+The near-zero-STO trajectory is a diagnostic limit, not reference truth.
 
-Activate a known, nonzero MODFLOW storage response in the declared MODFLOW-owned domain. Verify the incremental groundwater storage term against the imposed head change and the MODFLOW component budget.
+## 8. Decision rule
 
-### Case C — coupled non-overlap
+P1, P2 and P3a must pass for every numerically admitted case.
 
-Run both responses simultaneously with a declared non-overlap partition. Verify P1, P2 and P3 and compare the combined response with A+B accounting.
+Then:
 
-### Case D — invalid/unresolved partition
+- if independent regional physical storage authority is demonstrated, test the
+  corresponding P3b physical combined balance;
+- if STO is head-state/shared-state capacitance, do not add it to SWAP
+  physical storage;
+- if mixed, require an explicit partition/correction before production
+  admission;
+- if unresolved, retain the scientific admission block.
 
-Use identical numerical parameters but mark the physical partition unresolved. Admission must fail before execution. This verifies that a numerically convergent configuration cannot masquerade as scientifically admitted coupling.
-
-## 6. Acceptance quantities
-
-For every case report, in one common volume convention:
-
-- SWAP initial/final storage;
-- MODFLOW initial/final storage;
-- SWAP external transfer;
-- MODFLOW external transfer;
-- SWAP interface transfer;
-- MODFLOW interface transfer;
-- interface mismatch;
-- SWAP component residual;
-- MODFLOW component residual;
-- combined residual;
-- lower-face/interface heads;
-- predictor `u`;
-- `u/DeltaT`.
-
-Pass/fail thresholds must be preregistered from numerical precision and existing component-budget tolerances; they must not be chosen after observing results.
-
-## 7. Scientific decision rule
-
-If P1 and P2 pass but P3 fails, do **not** tune the coupling residual. Diagnose storage-domain ownership.
-
-If all numerical balances pass but the physical partition remains unresolved, classify the case as numerically qualified but scientifically unadmitted.
-
-If an explicit non-overlap partition plus component and combined budgets pass under controlled storage perturbation, CSR-04 may advance from authority blocker to production-topology requalification.
-
-## 8. Consequence for current evidence
-
-Existing evidence that accepted SWAP and MODFLOW exchange agree remains valid and valuable. Existing head compatibility remains valid for the identity-transfer topology.
-
-Neither is superseded.
-
-Their evidentiary scope is now bounded precisely: they prove the interface, not the additivity of the two storage state spaces.
+No coupling-residual tuning or geometry-only declaration may substitute for
+this authority decision.
