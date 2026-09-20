@@ -371,9 +371,14 @@ def run_case(
                         total += float(np.sum(array))
                 budget_rates[label] = total
 
-            require("API_SWAP" in unique, "CSR-04 MODFLOW API coupling budget record missing")
-            require("CHD" in unique, "CSR-04 MODFLOW CHD budget record missing")
-            require("API_SWAP" in budget_rates and "CHD" in budget_rates, "CSR-04 external budget unavailable")
+            api_labels = [label for label in unique if "API" in label]
+            chd_labels = [label for label in unique if "CHD" in label]
+            require(len(api_labels) == 1, f"CSR-04 expected one API budget record, got {api_labels}")
+            require(len(chd_labels) == 1, f"CSR-04 expected one CHD budget record, got {chd_labels}")
+            require(
+                api_labels[0] in budget_rates and chd_labels[0] in budget_rates,
+                "CSR-04 external budget unavailable",
+            )
             component_residual_m3_per_day = float(sum(budget_rates.values()))
             budget_scale = max(1.0, sum(abs(value) for value in budget_rates.values()))
             component_tolerance_m3_per_day = 1.0e-10 * budget_scale
