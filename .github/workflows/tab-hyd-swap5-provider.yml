@@ -64,7 +64,8 @@ jobs:
           import csv
           p=Path("build/tab-hyd-swap5/characterization.csv")
           rows=[]
-          for line in p.read_text().splitlines():
+          for raw in p.read_text().splitlines():
+              line=raw.strip()
               if not line or not (line[0].isdigit() or line[0] in "+-."):
                   continue
               a=line.split(",")
