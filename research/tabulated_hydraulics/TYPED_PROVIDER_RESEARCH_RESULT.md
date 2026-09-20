@@ -288,3 +288,36 @@ architecture**, but production implementation remains held at the explicit
 timestep-context/temporal-owner boundary and whole-application qualification.
 
 No portable whole-SWAP or MultiSWAP speedup percentage is claimed.
+
+
+## Generated-provider preprocessing cost and break-even
+
+Run `35538710173` measured deterministic MvG-to-raw-head400 generation,
+TSPACK preprocessing, and repeated typed vector evaluation for all 30 Staring
+rows.
+
+Median costs:
+
+- analytical provider initialization: `2.875e-6 s`;
+- generated table provider initialization: `5.303125e-3 s`;
+- extra generated-provider startup cost: `5.30025e-3 s`;
+- analytical repeated-evaluation block: `0.1949005 s`;
+- table repeated-evaluation block: `0.1581445 s`;
+- saved time per 30-node vector evaluation: `5.98242e-7 s`.
+
+Measured amortization point:
+
+- **~8,860 typed constitutive vector evaluations**.
+
+Estimated immutable table-provider state for 30 nodes is `673,200 bytes`
+(about 657 KiB) for the seven 400-by-node real arrays plus small per-node
+metadata. This estimate excludes allocator bookkeeping and compiler/runtime
+object overhead.
+
+Interpretation: table generation is a measurable but millisecond-scale startup
+cost. The acceleration case is therefore not restricted to extremely long
+simulations, but production qualification must still measure initialization and
+cache lifetime in the actual application/MultiSWAP ownership model. Rebuilding
+the table provider on every trial would be architecturally wrong and would
+destroy this amortization; preprocessing belongs to immutable parameter/provider
+configuration and must be reused across trials.
