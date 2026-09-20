@@ -1,0 +1,79 @@
+name: F-ROM-LARE BC2-C6M diagnostic-only Reference failure capture
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6M_EXECUTION_RECONCILIATION.json'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B14]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+
+      - name: Resolve material
+        id: cfg
+        run: |
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize unchanged C6M diagnostic case
+        run: |
+          python3 tests/rom/materialize_lare_bc2_c6m_surface_reference.py \
+            --source "${{ steps.cfg.outputs.source }}" \
+            --material "${{ matrix.material }}" \
+            --temporal-factor 16 \
+            --output canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --manifest /tmp/c6m_manifest.json
+
+      - name: Compile unchanged Reference
+        run: |
+          stub="canonical/c6m_diag_${{ matrix.material }}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output "$stub" --nodes 1024 --dz-cm 0.15625
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+            --root canonical \
+            --stub "c6m_diag_${{ matrix.material }}_stubs.f90" \
+            --target tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --external-source src/legacy/b1_10_port/headcalc.f90 \
+            --build /tmp/c6m_diag_build --opt 0
+
+      - name: Capture exact frozen failure
+        env:
+          LARE_DYN0A_CASE_FILTER: S01
+        run: |
+          set +e
+          mkdir -p diag
+          /tmp/c6m_diag_build/rom0_test > "diag/${{ matrix.material }}_R1024_T16_O0_S01.txt" 2>&1
+          rc=$?
+          set -e
+          echo "$rc" > "diag/${{ matrix.material }}_exit_code.txt"
+          test "$rc" -ne 0
+          test -s "diag/${{ matrix.material }}_R1024_T16_O0_S01.txt"
+          tail -n 120 "diag/${{ matrix.material }}_R1024_T16_O0_S01.txt"
+          cp /tmp/c6m_manifest.json diag/
+          sha256sum diag/* > diag/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6m-diag-${{ matrix.material }}
+          path: diag/
+          if-no-files-found: error
