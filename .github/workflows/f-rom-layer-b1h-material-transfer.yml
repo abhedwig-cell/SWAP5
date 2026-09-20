@@ -65,10 +65,18 @@ jobs:
           echo "LAYER_ROM_B1H_C4V_BLOB=$c4v_sha"
           echo "LAYER_ROM_B1H_BC1_BLOB=$bc1_sha"
           echo "LAYER_ROM_B1H_CANONICAL_HEAD=$canonical_sha"
-          test "$d13_sha" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
-          test "$c4v_sha" = "e7d22818d935bedddeb2cdf2cec58e95814f93"
-          test "$bc1_sha" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
-          test "$canonical_sha" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          python3 - "$d13_sha" "$c4v_sha" "$bc1_sha" "$canonical_sha" <<'PY'
+          import sys
+          got=sys.argv[1:]
+          want=[
+            "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+            "e7d22818d935bedddeb2f2cdf2cec58e95814f93",
+            "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+            "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+          ]
+          assert got==want,(got,want)
+          print("LAYER_ROM_B1H_PROVENANCE_VALUES=PASS")
+          PY
           echo "LAYER_ROM_B1H_AUTHORITY_RECOVERY=PASS"
 
       - name: Install analysis dependency
