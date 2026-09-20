@@ -17,6 +17,7 @@
     "C5D": "R128 and R256 qualify and adjacent-grid bottom-flux RMSE decreases twice after R64, but only weakly. Observed orders near 0.06-0.11 do not establish an asymptotic Reference regime.",
     "C5E": "R512 and R1024 qualify. Adjacent-grid RMSE decreases strongly and descriptive order strengthens to about 0.84, but temporal transaction error remains unreconciled; no continuum Reference is yet admitted.",
     "C5F": "At R1024, temporal refinement progresses from T1-T2 RMSE ~0.00975 cm/d to T2-T4 ~0.00610. The T4 temporal shift is ~29% of the matched T2 R512-R1024 spatial gap. Spatial gap changes ~9.3% between T1 and T2, so space-time interaction is non-negligible.",
+    "C5G": "The complete R512/R1024 x T1/T2/T4 matrix shows decreasing temporal shifts at both resolutions but a spatial gap that increases from 0.01928 to 0.02107 to 0.02233 cm/d as time is refined. Temporal T2-T4 shifts are subdominant but non-negligible.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
@@ -32,6 +33,7 @@
     "C5D_reference_extension": "integration/f-rom/LARE_BC2_C5D_CLOSEOUT.json",
     "C5E_high_resolution_reference": "integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json",
     "C5F_spatiotemporal_reference_audit": "integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json",
+    "C5G_matched_spatiotemporal_matrix": "integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -68,19 +70,19 @@
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
     }
   ],
-  "decision": "COMPLETE_R512_R1024_T4_MATCHED_MATRIX_BEFORE_R2048_OR_NEW_LARE",
+  "decision": "REFINE_BOTH_R512_AND_R1024_TO_T8_BEFORE_ANY_R2048_OR_NEW_LARE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-BC2-C5G",
+  "next_authority": "LARE-BC2-C5H",
   "next_family_authority": {
     "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "C5G_MATCHED_SPATIOTEMPORAL_MATRIX_COMPLETION",
+    "family": "C5H_MATCHED_T8_REFERENCE_EXTENSION",
     "new_closure_authorized": false,
     "new_lare_authorized": false,
-    "purpose": "Generate the missing R512 T4 cell and quantify the finest matched spatial gap before any further spatial extension.",
+    "purpose": "Determine whether the matched spatial gap stabilizes as temporal transaction error is reduced another factor two at both high spatial resolutions.",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5E_CLOSEOUT.json"
+      "integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json"
     ],
     "state": "AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION"
   },
@@ -114,7 +116,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v11",
+  "schema": "swap5.lare.representation-selection.closeout.v12",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -125,7 +127,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5F_TEMPORAL_SUBDOMINANT_INTERACTION_NONNEGLIGIBLE_C5G_MATRIX_COMPLETION_NEXT",
+  "status": "CLOSED_THROUGH_C5G_MATCHED_MATRIX_SPATIOTEMPORAL_INTERACTION_PERSISTS_T8_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,

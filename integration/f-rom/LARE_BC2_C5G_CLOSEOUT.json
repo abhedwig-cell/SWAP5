@@ -1,0 +1,77 @@
+{
+  "adjudication": {
+    "CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "NEW_LARE_OR_CLOSURE_AUTHORIZED": false,
+    "SPATIAL_GAP_INCREASES_T1_TO_T2": true,
+    "SPATIAL_GAP_INCREASES_T2_TO_T4": true,
+    "TEMPORAL_PROGRESS_R1024": true,
+    "TEMPORAL_PROGRESS_R512": true,
+    "TEMPORAL_SUBDOMINANT_TO_T4_SPATIAL_AT_R1024": true,
+    "TEMPORAL_SUBDOMINANT_TO_T4_SPATIAL_AT_R512": true
+  },
+  "authority": {
+    "R512_T4_sha256": "3acc08e4a04b8be0d4a095fbc38998fea48d9605e46f231ebf0b9a62354f8105",
+    "artifact_digest": "sha256:3f55f9d5c7b659fa1abf18c11ecb1b5238d38a8a179730bd2013858544071ee7",
+    "artifact_id": 10602317291,
+    "execution_head": "801e310a0100e154147b365752ec52da03956b76",
+    "job_id": 106052939650,
+    "preregistration": "integration/f-rom/LARE_BC2_C5G_PREREGISTRATION.json",
+    "result_sha256": "88f05603f4af17f68f85c95d3f9b7e7e552715082b8323c62e107bc4022b73c3",
+    "workflow_run": 35501118463
+  },
+  "baseline_identity_to_C5F": {
+    "R1024_T2_T4": true,
+    "spatial_T1": true,
+    "spatial_T2": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "matched_matrix": {
+    "R1024_T1_T2_RMSE_cm_per_day": 0.009753442560927738,
+    "R1024_T2_T4_RMSE_cm_per_day": 0.006104129997747862,
+    "R1024_T2_T4_over_spatial_T4": 0.27335530066221125,
+    "R512_T1_T2_RMSE_cm_per_day": 0.007355664220085968,
+    "R512_T2_T4_RMSE_cm_per_day": 0.004691818556970772,
+    "R512_T2_T4_over_spatial_T4": 0.21010913476064275,
+    "spatial_T1_RMSE_cm_per_day": 0.019278087500445875,
+    "spatial_T2_RMSE_cm_per_day": 0.02107178256136268,
+    "spatial_T4_RMSE_cm_per_day": 0.022330388263774027,
+    "spatial_T4_over_T2": 1.0597294366884333,
+    "temporal_order_R1024": 0.6761258331712464,
+    "temporal_order_R512": 0.64870840120376
+  },
+  "next_authority": {
+    "constraints": [
+      "Reference-only; no LARE run and no closure modification",
+      "generate R512_T8 and R1024_T8 under exact C5F/C5G physical history and numerical policy",
+      "aggregate to the original 0.0008-day windows",
+      "preserve T1/T2/T4 matrix unchanged",
+      "no R2048 spatial extension before C5H",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "At T8, do temporal shifts continue to decrease and does the R512-R1024 spatial gap stabilize, continue increasing, or reverse relative to T4?",
+    "state": "MATCHED_TEMPORAL_EXTENSION_REQUIRED",
+    "target": "LARE-BC2-C5H"
+  },
+  "schema": "swap5.lare.bc2.c5g.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "numerical_policy_changed": false,
+    "performance_comparison_authorized": false,
+    "physical_history_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The completed R512/R1024 x T1/T2/T4 matrix shows temporal convergence at both spatial resolutions with similar descriptive order, about 0.65 at R512 and 0.68 at R1024.",
+    "Despite decreasing temporal shifts, the matched spatial gap grows monotonically from about 0.01928 cm/d at T1 to 0.02107 at T2 and 0.02233 at T4.",
+    "The T2-T4 temporal shift remains subdominant to the T4 spatial gap: about 21% at R512 and 27% at R1024.",
+    "The spatial-gap increase therefore is not explained by temporal error simply dominating the comparison. Instead, the matched matrix shows a persistent space-time interaction in which the estimated spatial gap changes as the transaction interval is refined.",
+    "A further spatial extension at T1 or T2 would mix unresolved temporal interaction into the spatial inference. The next clean test is matched T8 at both R512 and R1024."
+  ],
+  "status": "CLOSED_MATCHED_MATRIX_SPATIAL_GAP_INCREASES_WITH_TEMPORAL_REFINEMENT_T8_REQUIRED",
+  "work_unit": "LARE-BC2-C5G",
+  "workstream": "F-ROM-LARE"
+}
