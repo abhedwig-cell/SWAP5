@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "DRAFT_COMPACT_EXECUTION_REPAIR_BEFORE_ANY_T32_RESPONSE",
+  "status": "BOUND_COMPACT_EXECUTION_REPAIR_BEFORE_ANY_T32_RESPONSE",
   "decision": "COMPACT_IDENTICAL_C6N1_MATRIX_TO_24_JOBS_WITH_O0_O2_SEQUENTIAL_IDENTITY",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
@@ -70,8 +70,9 @@
   },
   "compact_workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
-    "blob": null,
-    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+    "blob": "77902cb2bbaadefe3eedbee151452533d33f674f",
+    "state": "BOUND_BEFORE_EXECUTION",
+    "binding_note": "Workflow creation itself did not trigger the compact run. This reconciliation update is the first compact-response-eligible commit."
   },
   "authority_rule": "Only a compact run triggered after this reconciliation is rebound with the exact workflow blob may become C6N1 authority. Earlier queued runs remain superseded even if they later execute.",
   "scientific_firewall": {
