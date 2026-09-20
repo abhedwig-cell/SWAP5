@@ -16,6 +16,8 @@ Artifact: `10611380500`
 
 Result SHA-256: `5c0682fc3fde0318331727d34e7613faa2c70598ed79c3684b3f4a8445dee88d`.
 
+A second aggregation-only recovery, run `35530634510` at head `1f752f91...`, independently re-aggregated the same nine immutable scientific shards and produced the **same result SHA-256**. It is retained as a reproducibility cross-check; the earlier successful aggregate remains the primary authority.
+
 ## Result
 
 All 126 frozen S/M targets remain physically realizable.
