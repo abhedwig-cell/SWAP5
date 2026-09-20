@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.lare.bc2.c6d.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6D",
+  "status": "TECHNICAL_LOGGING_MATERIALIZER_DELEGATION_REPAIR_BEFORE_REFERENCE_RESPONSE",
+  "superseded_run": {
+    "workflow_run": 35524423966,
+    "execution_head": "26199a44ccdb74340eba6272e9eec972d1a6d42f",
+    "authority_lock_passed": true,
+    "c5t_baseline_recovery_passed": true,
+    "failed_step": "Materialize logging-only C6D history slice",
+    "failure": "AttributeError: Namespace object has no attribute c5t_materializer",
+    "reference_execution_reached": false,
+    "hydrological_response_exposed": false,
+    "operator_metrics_exposed": false,
+    "scientific_authority": false
+  },
+  "repair": {
+    "description": "Replace nonexistent argparse namespace lookup with deterministic sibling-path delegation to the already-frozen C5T logging materializer.",
+    "old_materializer_blob": "5b22a72c7f3f51e4bbfaf978953c7ff50a425b29",
+    "new_materializer_blob": "9bb231634a83e333f042438ee9b2e55373c631e2",
+    "frozen_c5t_base_blob": "10926dd5f32b8a7dbad18febe4e1782688ee4ec6",
+    "scientific_design_changed": false,
+    "projected_state_definition_changed": false,
+    "moment_definition_changed": false,
+    "histories_changed": false,
+    "metrics_changed": false,
+    "thresholds_changed": false,
+    "solver_or_physics_changed": false,
+    "response_based_retuning": false
+  },
+  "authoritative_run_rule": "Only a run triggered after the repaired materializer blob and repaired workflow blob are frozen in the C6D preregistration may become C6D scientific authority.",
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "response_based_design": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
