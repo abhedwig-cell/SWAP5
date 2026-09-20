@@ -1,0 +1,41 @@
+name: HYDRO-MEMORY DYN02 live root-active coupling
+
+on:
+  push:
+    branches:
+      - research/hydro-memory-dyn02-r1
+    paths:
+      - 'docs/publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md'
+      - 'docs/publication/HYDRO_MEMORY_STAGE0_INTERFACE_ACCURACY_GOVERNANCE_V1.md'
+      - 'integration/research/HYDRO_MEMORY_ACC01_GOVERNANCE_RESULT.json'
+      - 'integration/research/HYDRO_MEMORY_ACC01_F1_RESULT.json'
+      - 'integration/research/HYDRO_MEMORY_ACC02_PREREGISTRATION.json'
+      - 'integration/research/HYDRO_MEMORY_ACC02_RESULT.json'
+      - 'integration/research/HYDRO_MEMORY_DYN02_PREREGISTRATION.json'
+      - 'tests/research/support/mod_hydro_memory_dyn02_bridge.f90'
+      - 'tests/research/test_hydro_memory_dyn02_live_modflow.py'
+      - 'tests/research/run_hydro_memory_dyn02_live_recomposition.sh'
+      - '.github/workflows/hydro-memory-dyn02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-coupling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+          gfortran --version
+          python3 --version
+      - name: Run governed root-active live MODFLOW6 qualification
+        run: bash tests/research/run_hydro_memory_dyn02_live_recomposition.sh
