@@ -14,6 +14,7 @@ program tabhyd_typed_reference_runtime_benchmark
        fmr_new_b110_committed_state
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_tabhyd_raw_typed_provider_research, only: tabhyd_raw_provider_t, initialize_tabhyd_raw_provider_from_mvg
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
@@ -35,20 +36,22 @@ program tabhyd_typed_reference_runtime_benchmark
   type(fmr_serialized_reference_backend_t) :: backend
   type(fixed_flux_top_boundary_provider_t), target :: top
   class(transaction_state_t), allocatable :: snapshot
-  real(real64) :: k0, h0, t0, t1
+  real(real64) :: k0, h0, t0, t1, water0(numnod)
   logical :: ok, available
   integer :: rep, i
-  character(len=32) :: material
+  character(len=32) :: material, initial_route
 
   material='loam'
+  initial_route='analytic'
   if (command_argument_count()>=1) call get_command_argument(1,material)
+  if (command_argument_count()>=2) call get_command_argument(2,initial_route)
 
   call initialize_parameters(parameters,trim(material),h0)
-  call determine_initial_conductivity(parameters,h0,k0)
+  call evaluate_initial_constitutive(parameters,h0,trim(initial_route),water0,k0)
   call initialize_forcing(forcing,k0,h0)
   call initialize_column_and_template(column,template)
   call initialize_config(config)
-  call initialize_committed(committed,parameters,h0,ok)
+  call initialize_committed(committed,parameters,h0,water0,ok)
   call require(ok,'committed state initialized')
   call fmr_capture_checkpoint(committed,checkpoint,ok)
   call require(ok,'checkpoint captured')
@@ -71,6 +74,7 @@ program tabhyd_typed_reference_runtime_benchmark
   call require(available,'candidate snapshot available')
 
   write(*,'(a,a)') 'MATERIAL=',trim(material)
+  write(*,'(a,a)') 'INITIAL_ROUTE=',trim(initial_route)
   write(*,'(a,i0)') 'ACTIVE_NODES=',numnod
   write(*,'(a,i0)') 'REPEATS=',NREPEAT
   write(*,'(a,es24.16)') 'CPU_SECONDS=',t1-t0
@@ -169,20 +173,32 @@ contains
     p%drainage_response_active=.false.
   end subroutine initialize_parameters
 
-  subroutine determine_initial_conductivity(p,hstart,conductivity0)
+  subroutine evaluate_initial_constitutive(p,hstart,route,water0,conductivity0)
     type(fmr_b110_physical_parameters_t), intent(in) :: p
     real(real64), intent(in) :: hstart
+    character(len=*), intent(in) :: route
+    real(real64), intent(out) :: water0(numnod)
     real(real64), intent(out) :: conductivity0
     type(b110_default_mvg_parameters_t), target :: hp
-    type(b110_default_mvg_provider_t) :: provider
-    real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
-    call bind_b110_default_mvg_provider(provider,hp,duration)
+    type(b110_default_mvg_provider_t) :: aprovider
+    type(tabhyd_raw_provider_t) :: tprovider
+    real(real64) :: heads(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+
     heads=hstart
-    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
+    select case(trim(route))
+    case('analytic')
+      call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+      call bind_b110_default_mvg_provider(aprovider,hp,duration)
+      call aprovider%evaluate(heads,water0,conductivity,capacity,dkdh)
+    case('table')
+      call initialize_tabhyd_raw_provider_from_mvg(tprovider,p%cofgen,duration)
+      call tprovider%evaluate(heads,water0,conductivity,capacity,dkdh)
+    case default
+      error stop 'initial route must be analytic or table'
+    end select
     conductivity0=conductivity(1)
     call require(conductivity0>0.0_real64 .and. ieee_is_finite(conductivity0),'initial conductivity positive')
-  end subroutine determine_initial_conductivity
+  end subroutine evaluate_initial_constitutive
 
   subroutine initialize_forcing(f,qeq,hstart)
     type(fmr_b110_physical_forcing_t), intent(out) :: f
@@ -230,23 +246,19 @@ contains
     c%accepted_trajectory_direction%requested=.false.
   end subroutine initialize_config
 
-  subroutine initialize_committed(c,p,hstart,initialized)
+  subroutine initialize_committed(c,p,hstart,water0,initialized)
     type(kernel_committed_state_t), intent(out) :: c
     type(fmr_b110_physical_parameters_t), intent(in) :: p
     real(real64), intent(in) :: hstart
+    real(real64), intent(in) :: water0(numnod)
     logical, intent(out) :: initialized
     type(fmr_b110_physical_state_t) :: state
-    type(b110_default_mvg_parameters_t), target :: hp
-    type(b110_default_mvg_provider_t) :: provider
-    real(real64) :: heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
+    real(real64) :: heads(numnod)
     heads=hstart
-    call initialize_b110_default_mvg_parameters(hp,p%cofgen)
-    call bind_b110_default_mvg_provider(provider,hp,duration)
-    call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads
-    state%water_content=water
+    state%water_content=water0
     state%ponding_depth=0.0_real64
     state%groundwater_level=-2.0_real64
     call fmr_new_b110_committed_state(c,column_id,state,0.0_real64,initialized)
