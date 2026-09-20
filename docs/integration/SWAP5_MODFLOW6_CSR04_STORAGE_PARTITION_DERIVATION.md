@@ -221,3 +221,40 @@ sufficient. CSR-04 requires both:
 
 The earlier non-overlap geometry remains one sufficient realization, but is no
 longer treated as the only scientifically coherent interpretation.
+
+
+## 13. Historical authority correction: do not assume additive STO
+
+Historical coupling literature changes the burden of proof.
+
+Van Walsum & Veldhuizen (2011), in their shared-state-variable treatment of
+MetaSWAP-MODFLOW, explicitly distinguish an h-link from a q-link. For the
+q-link to approach the h-link, the top MODFLOW layer is made confined and its
+additional storage coefficient is driven close to zero. This is direct evidence
+that adding ordinary MODFLOW storage on top of the vertically represented
+soil/groundwater response can be an unwanted extra state rather than an
+automatically additive physical reservoir.
+
+The later MetaSWAP coupling formulation likewise describes a communal control
+volume and a dynamic storage coefficient relating head change to the combined
+MetaSWAP/MODFLOW flux balance. This reinforces that storage treatment is part
+of the coupling formulation, not merely two independent ledgers to be summed.
+
+Therefore the previous candidate rule
+`Delta S_SWAP + Delta S_MF = total physical storage change`
+is withdrawn as a default CSR-04 acceptance criterion.
+
+The current SWAP5 experiment with two nonzero MODFLOW Sy values remains useful
+only as a diagnostic sensitivity experiment. It must not be interpreted as
+evidence that nonzero Sy is scientifically required or that both storage terms
+are physically additive.
+
+New authority question:
+
+> In the intended full-SWAP q-link formulation, which storage/capacitance term
+> is required in the MODFLOW equation to obtain the shared hydraulic-head
+> solution without introducing an additional physical storage degree of freedom
+> already represented by SWAP?
+
+Until that is reconstructed, production STO magnitude and interpretation remain
+scientifically unadmitted.
