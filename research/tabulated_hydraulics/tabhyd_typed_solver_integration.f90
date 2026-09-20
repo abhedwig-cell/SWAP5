@@ -30,7 +30,8 @@ program tabhyd_typed_solver_integration
   real(real64), target :: drainage(1,numnod), subsurface(numnod), root_sink(numnod)
   real(real64) :: ha(numnod), ht(numnod), tha(numnod), tht(numnod), ka(numnod), kt(numnod)
   real(real64) :: ca(numnod), ct(numnod), da(numnod), dtbl(numnod)
-  real(real64) :: initial_head, step_duration, top_flux, bottom_flux
+  real(real64) :: initial_head, step_duration, top_flux, bottom_flux, bottom_head
+  integer :: bottom_mode
   real(real64) :: max_h, rms_h, max_theta, rms_theta, dtop, dbot, dmass
   real(real64) :: atime(NROUNDS), ttime(NROUNDS), med_a, med_t, checksum_a, checksum_t
   real(real64) :: t0,t1
@@ -43,7 +44,7 @@ program tabhyd_typed_solver_integration
   call get_command_argument(1,path)
   open(newunit=iu,file=trim(path),status='old',action='read',iostat=ios)
   if(ios/=0) error stop 'cannot open integration input'
-  read(iu,*,iostat=ios) i, j, step_duration, initial_head, top_flux, bottom_flux
+  read(iu,*,iostat=ios) i, j, step_duration, initial_head, top_flux, bottom_flux, bottom_mode, bottom_head
   if(ios/=0 .or. i/=numnod .or. j/=TABHYD_RAW_TABLE_N) error stop 'invalid integration header'
 
   allocate(cofgen(24,numnod),headtab(TABHYD_RAW_TABLE_N,numnod), &
@@ -176,11 +177,11 @@ contains
     req%base_state%ponding_depth=0.0_real64
     req%base_state%groundwater_level=-999.0_real64
     req%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
-    req%boundary%bottom_mode=2
+    req%boundary%bottom_mode=bottom_mode
     req%boundary%top_flux=top_flux
     req%boundary%bottom_flux=bottom_flux
     req%boundary%top_head=initial_head
-    req%boundary%bottom_head=-999999.0_real64
+    req%boundary%bottom_head=bottom_head
     req%physical%macropore_active=.false.
     req%numerical%max_iterations=16
     req%numerical%max_backtracking=8
