@@ -66,12 +66,12 @@ jobs:
           set -euo pipefail
           mkdir -p build/breakeven/mod
           F="-O3 -std=f2018 -ffree-line-length-none"
-          gfortran $F -J build/typed-provider/mod             -c research/tabulated_hydraulics/array_dimensions_stub.f90             -o build/typed-provider/arrays.o
-          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c legacy-src/src/soil/sptabulated.f90             -o build/typed-provider/sptabulated.o
-          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c canonical-src/src/solver/mod_soil_water_solver_contract.f90             -o build/typed-provider/contract.o
-          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c canonical-src/src/solver/mod_b110_default_mvg_provider.f90             -o build/typed-provider/mvg.o
-          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90             -o build/typed-provider/table-provider.o
-          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             research/tabulated_hydraulics/tabhyd_generated_provider_break_even.f90             build/typed-provider/arrays.o build/typed-provider/sptabulated.o             build/typed-provider/contract.o build/typed-provider/mvg.o             build/typed-provider/table-provider.o             -o build/typed-provider/benchmark
+          gfortran $F -J build/breakeven/mod             -c research/tabulated_hydraulics/array_dimensions_stub.f90             -o build/breakeven/arrays.o
+          gfortran $F -I build/breakeven/mod -J build/breakeven/mod             -c legacy-src/src/soil/sptabulated.f90             -o build/breakeven/sptabulated.o
+          gfortran $F -I build/breakeven/mod -J build/breakeven/mod             -c canonical-src/src/solver/mod_soil_water_solver_contract.f90             -o build/breakeven/contract.o
+          gfortran $F -I build/breakeven/mod -J build/breakeven/mod             -c canonical-src/src/solver/mod_b110_default_mvg_provider.f90             -o build/breakeven/mvg.o
+          gfortran $F -I build/breakeven/mod -J build/breakeven/mod             -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90             -o build/breakeven/table-provider.o
+          gfortran $F -I build/breakeven/mod -J build/breakeven/mod             research/tabulated_hydraulics/tabhyd_generated_provider_break_even.f90             build/breakeven/arrays.o build/breakeven/sptabulated.o             build/breakeven/contract.o build/breakeven/mvg.o             build/breakeven/table-provider.o             -o build/breakeven/benchmark
 
       - name: Run break-even benchmark
         shell: bash
@@ -86,5 +86,5 @@ jobs:
         with:
           name: tab-hyd-generated-provider-break-even
           path: |
-            build/typed-provider/result.txt
-            build/typed-provider/summary.tsv
+            build/breakeven/result.txt
+            build/breakeven/summary.txt
