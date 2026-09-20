@@ -1,0 +1,184 @@
+name: F-ROM-LARE persist C5T DSE2P diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5t-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5T artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5t
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604099716" > /tmp/c5t/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5t/artifact.json'))
+          assert a['id']==10604099716
+          assert a['digest']=='sha256:41d3f0214ccc75dec32bd1d9dc0a6168536d42ca738654a0bb9d3ed38925e35f'
+          assert a['workflow_run']['id']==35509921623
+          assert a['workflow_run']['head_sha']=='bd4c69f02270e855442a0a364484d45927219d5f'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604099716/zip" > /tmp/c5t.zip
+          echo "41d3f0214ccc75dec32bd1d9dc0a6168536d42ca738654a0bb9d3ed38925e35f  /tmp/c5t.zip" | sha256sum -c -
+          unzip -q /tmp/c5t.zip -d /tmp/c5t/evidence
+          echo "3828b7b2ccfe67f812b0938d582287ae3181a88e7279fef454d1d4e1901f1987  /tmp/c5t/evidence/LARE_BC2_C5T_RESULT.json" | sha256sum -c -
+          echo "61de2533af605eea898a8912d086b11ddbdb43e729595324d27d24f9e64dab01  /tmp/c5t/evidence/C5T_R2048_T16_INSTRUMENTED_o0.txt" | sha256sum -c -
+
+      - name: Persist C5T result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5t/evidence/LARE_BC2_C5T_RESULT.json integration/f-rom/LARE_BC2_C5T_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5T_RESULT.json'))
+          assert r['status']=='C5T_DSE2P_NOT_SUPPORTED_NUMERICAL_QUALIFICATION_FAILED'
+          assert r['instrumentation_identity']['state_lines'] is True
+          assert r['instrumentation_identity']['profile_lines'] is True
+          q=r['numerical_qualification']
+          closeout={
+            'schema':'swap5.lare.bc2.c5t.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5T',
+            'status':'CLOSED_DSE2P_NUMERICAL_QUALIFICATION_FAILED_FREE_RUNNING_NOT_AUTHORIZED_SCAFP_THEORY_NEXT',
+            'decision':'DO_NOT_IMPLEMENT_DSE2P_FREE_RUNNING_RETURN_TO_STORAGE_CONSISTENT_SUBGRID_PROFILE_THEORY',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35509921623,
+              'execution_head':'bd4c69f02270e855442a0a364484d45927219d5f',
+              'artifact_id':10604099716,
+              'artifact_digest':'sha256:41d3f0214ccc75dec32bd1d9dc0a6168536d42ca738654a0bb9d3ed38925e35f',
+              'result_sha256':'3828b7b2ccfe67f812b0938d582287ae3181a88e7279fef454d1d4e1901f1987',
+              'instrumented_route_sha256':'61de2533af605eea898a8912d086b11ddbdb43e729595324d27d24f9e64dab01'
+            },
+            'qualification':{
+              'C5R_state_lines_byte_identical':r['instrumentation_identity']['state_lines'],
+              'C5R_profile_lines_byte_identical':r['instrumentation_identity']['profile_lines'],
+              'state_line_count':r['instrumentation_identity']['state_count'],
+              'profile_line_count':r['instrumentation_identity']['profile_count'],
+              'candidate_feedback':False,
+              'DSE2P_all_points_numerically_qualified':q['pass']
+            },
+            'numerical_blocker':q['failure'],
+            'adjudication':{
+              'DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST':False,
+              'C5U_DSE2P_FREE_RUNNING_TEST_AUTHORIZED':False,
+              'DSE2P_SCALAR_OR_BRANCH_RETUNING_AUTHORIZED':False,
+              'DSE2P_UNIVERSALLY_PHYSICALLY_DISPROVEN':False,
+              'CURRENT_PREREGISTERED_DSE2P_NUMERICAL_ROUTE_QUALIFIED':False,
+              'SCAFP_READ_ONLY_THEORY_DERIVATION_AUTHORIZED':True,
+              'PRODUCTION_REFERENCE_CHANGE_AUTHORIZED':False,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'SPEED_CLAIM_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'C5T preserves the authoritative C5R Reference trajectory exactly: all 65,536 state lines and 65,536 profile lines remain byte-identical under logging-only instrumentation.',
+              'The preregistered zero-fit steady-integral DSE2P route fails its mandatory numerical qualification before interface-error metrics can be fully adjudicated. At the first evaluated 70-cm interface, the deterministic physical-branch bracket cannot be established for 1,891 evaluated states.',
+              'Because all-points numerical qualification was a hard preregistered gate, this is a formal negative result for using this DSE2P numerical route as the basis of a free-running reduced model. Quadrature order, branch logic, bracket rule and tolerances are not retuned after response.',
+              'The result does not prove that every possible Darcian steady-equivalent concept is physically invalid. It establishes that the specific zero-fit monotone steady-integral formulation and numerical qualification contract selected prospectively in C5T does not provide an admissible closure route for this workload.',
+              'No C5U free-running DSE2P test is authorized. The remaining distinct closure family already retained by C5S is the storage-consistent algebraic subgrid face-profile concept, which must be derived read-only before any numerical implementation.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5V',
+              'state':'READ_ONLY_SCAFP_THEORY_DERIVATION_AUTHORIZED',
+              'question':'Can a zero-fit storage-consistent algebraic subgrid face-profile reconstruction be uniquely and conservatively derived from retained layer storages so that transient unequal interface fluxes are allowed and interface pressure/flux continuity is respected without adding dynamic state?',
+              'constraints':[
+                'Read-only theory/documentation/code reconciliation first; no hydrological response in C5V.',
+                'Retain layer-integrated storage as the only dynamic state.',
+                'Do not reopen scalar CURRENT_LAYER_FACE tuning, conductivity-only means or direction switches.',
+                'Do not reuse DSE2P with post-response numerical retuning.',
+                'Require a unique zero-fit profile ansatz and an explicit transient conservation contract before any implementation.',
+                'If uniqueness or admissibility cannot be established from theory, stop at a scientific choice boundary rather than fit to C5R/C5T data.',
+                'No application, performance, speed or production-ROM claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall'],
+            'model_changed':False
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5T_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5T closeout
+
+          C5T is an exposed frozen-state mechanism diagnostic for the zero-fit Darcian steady-equivalent two-point closure DSE2P. It is not blind validation and no candidate flux feeds back into the Reference trajectory.
+
+          The authoritative run is 35509921623 at execution head bd4c69f02270e855442a0a364484d45927219d5f. Artifact 10604099716 has digest sha256:41d3f0214ccc75dec32bd1d9dc0a6168536d42ca738654a0bb9d3ed38925e35f; result SHA-256 is 3828b7b2ccfe67f812b0938d582287ae3181a88e7279fef454d1d4e1901f1987.
+
+          Logging-only instrumentation preserves every authoritative C5R state and profile line byte-for-byte.
+
+          The preregistered steady-integral DSE2P numerical route fails its all-points qualification gate before operator metrics can be completed. At the first evaluated 70-cm internal interface, the deterministic physical-branch bracket cannot be established for 1,891 evaluated states.
+
+          This is a formal negative result for advancing this DSE2P route to a free-running test. No quadrature, bracket, physical branch or tolerance is retuned after response. The result does not claim that every conceivable steady-equivalent Darcian closure is impossible; it says the prospectively selected zero-fit C5T formulation is not an admissible next closure under its own qualification contract.
+
+          C5U free-running DSE2P is therefore not authorized. The next research authority is read-only derivation of the storage-consistent algebraic subgrid face-profile family (C5V).
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v25'
+          j['status']='CLOSED_THROUGH_C5T_DSE2P_NUMERICAL_BLOCKER_SCAFP_THEORY_NEXT'
+          j.setdefault('authorities',{})['C5T_frozen_state_DSE2P']='integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5T']='Logging-only frozen-state instrumentation preserves C5R exactly, but the preregistered steady-integral DSE2P route fails its mandatory numerical qualification at the first 70-cm interface for 1,891 states. No free-running DSE2P test or post-response retuning is authorized.'
+          j.setdefault('closed_routes',[]).append({
+            'id':'DSE2P_FREE_RUNNING_C5U',
+            'disposition':'NOT_AUTHORIZED_C5T_NUMERICAL_QUALIFICATION_FAILED',
+            'evidence':['integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json']
+          })
+          j['decision']='DERIVE_STORAGE_CONSISTENT_ALGEBRAIC_SUBGRID_FACE_PROFILE_CLOSURE_READ_ONLY'
+          j['next_authority']='LARE-BC2-C5V'
+          j['next_family_authority']={
+            'family':'C5V_SCAFP_READ_ONLY_THEORY_DERIVATION',
+            'state':'AUTHORIZED_FOR_READ_ONLY_THEORY_DERIVATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json'
+            ],
+            'purpose':'Determine whether a unique zero-fit storage-consistent algebraic subgrid face-profile closure can be derived before any new model response.',
+            'new_free_running_closure_implementation_authorized':False,
+            'new_dynamic_state_authorized':False,
+            'scalar_tuning_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5T closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5T_RESULT.json                   integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5T_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5T DSE2P numerical qualification"
+          git push origin HEAD:work/f-rom-lare-rs1
