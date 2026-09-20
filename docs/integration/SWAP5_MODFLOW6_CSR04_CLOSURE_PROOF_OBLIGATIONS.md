@@ -2,7 +2,7 @@
 
 Date: 2026-09-20
 
-Status: **REVISED AFTER STORAGE-STATE AUTHORITY RECONSTRUCTION — PHASE-B EXPERIMENT NEXT**
+Status: **PHASE-B EXECUTED — STORAGE ROLE CLASSIFICATION PENDING APPLICATION AUTHORITY**
 
 ## 1. Scope
 
@@ -122,3 +122,24 @@ Then:
 
 No coupling-residual tuning or geometry-only declaration may substitute for
 this authority decision.
+
+
+## 9. Phase-B result (live run 286)
+
+The preregistered six-window by six-Sy experiment executed successfully with the real FMR participant and live MODFLOW 6.8.0 prepared solve. All 36 accepted windows completed. SWAP mass residuals remained at floating-point scale and interface residuals were approximately 1e-18 to 1e-23 in the reported runs.
+
+The experiment separates native MODFLOW head memory from the accepted SWAP column memory. Finite Sy changes the accepted head and exchange trajectories. The low-Sy branches converge: at the final recovery window the accepted-head difference between Sy=1e-4 and Sy=1e-5 was 3.0031832576327133e-10 m.
+
+This establishes the numerical existence of the quasi-steady-MODFLOW / transient-SWAP limiting trajectory for this fixture. It does **not** establish that this limit is the physical production choice.
+
+### P3b disposition
+
+The experiment rules out treating native STO as numerically necessary for SWAP head response: F-GC33 already supplies that response and the coupled calculation remains well-defined toward negligible native Sy. Conversely, the experiment cannot prove that finite native STO is duplicate physical storage; finite Sy is a coherent additional MODFLOW head-memory state.
+
+Therefore the repository evidence supports the following bounded classification:
+
+- coupled/shared top-state use with no separately evidenced regional storage volume: `HEAD_STATE_CAPACITANCE` is the historically supported interpretation and additional native STO should not be counted as a second physical reservoir;
+- an application that explicitly defines independent regional aquifer storage outside the SWAP physical storage authority may use `PHYSICAL_INDEPENDENT_STORAGE`, but that domain/process authority must be supplied by application topology/configuration;
+- the current generic production profile does not yet declare that distinction, so its production P3b state remains `UNRESOLVED` rather than silently choosing either limit.
+
+This is an authority/configuration gap, not a failure of F-GC30/F-GC33 or of the prepared-solve transaction algorithm.
