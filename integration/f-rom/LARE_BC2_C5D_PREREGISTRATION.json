@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.lare.bc2.c5d.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5D",
+  "phase": "PREREGISTERED_BEFORE_C5D_R128_RESPONSE",
+  "title": "Reference-only spatial extension beyond R64",
+  "scientific_question": "Does the B14 dynamic prescribed-head Richards Reference begin to show decreasing adjacent-grid change beyond 2.5-cm vertical resolution, and is that trend sustained at 0.625 cm if R256 remains numerically qualified under unchanged policy?",
+  "role": "PROSPECTIVE_REFERENCE_ONLY_SPATIAL_AUTHORITY_EXTENSION",
+  "authority": {
+    "c5c_closeout": "integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json",
+    "required_c5c_status": "CLOSED_BOTTOM_CELL_REFINEMENT_EFFECT_PRESENT_REFERENCE_GRID_NOT_ASYMPTOTIC",
+    "c5c_result": "integration/f-rom/LARE_BC2_C5C_RESULT.json",
+    "c5c_result_sha256": "2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326",
+    "c5a_R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "c5c_R32_reference_sha256": "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9",
+    "c5c_R64_reference_sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "d13_reference_policy_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "new_lare_or_closure_authorized": false
+  },
+  "workload": {
+    "material": "B14 homogeneous Mualem-van Genuchten",
+    "histories": "exact C5A Z01-Z04",
+    "initial_effective_saturation": {
+      "Z01": 0.725,
+      "Z02": 0.825,
+      "Z03": 0.875,
+      "Z04": 0.775
+    },
+    "top_boundary": "gravity-consistent material-specific qeq only",
+    "lower_boundary": "fixed-domain prescribed pressure head during RISE/FALL; mode-2 equilibrium HOLD",
+    "head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125,
+      "HOLD": "equilibrium mode-2"
+    },
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192,
+    "sinks": false,
+    "ET_root_uptake": false,
+    "moving_water_table": false
+  },
+  "reference_hierarchy": {
+    "preserved_anchors": [
+      {
+        "id": "R16",
+        "nodes": 16,
+        "dz_cm": 10,
+        "source": "C5A artifact",
+        "sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b"
+      },
+      {
+        "id": "R32",
+        "nodes": 32,
+        "dz_cm": 5,
+        "source": "C5C artifact",
+        "sha256": "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9"
+      },
+      {
+        "id": "R64",
+        "nodes": 64,
+        "dz_cm": 2.5,
+        "source": "C5C artifact",
+        "sha256": "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1"
+      }
+    ],
+    "primary_new": {
+      "id": "R128",
+      "nodes": 128,
+      "dz_cm": 1.25,
+      "required": true,
+      "numerical_policy": "unchanged C5A/C5C D13 integrated-water-depth Reference policy"
+    },
+    "secondary_new": {
+      "id": "R256",
+      "nodes": 256,
+      "dz_cm": 0.625,
+      "required_for_C5D_execution": false,
+      "rule": "Attempt after R128 without any policy change. If R256 fails a frozen numerical gate, retain the failure as evidence and close C5D using R128 without retuning."
+    }
+  },
+  "diagnostic_io": {
+    "per_node_text_output": false,
+    "per_step_state_output": true,
+    "history_summary_output": true,
+    "reason": "Node text is not used by C5D metrics and would scale output volume with 128/256 nodes. Suppression changes diagnostic I/O only.",
+    "solver_state_or_physics_changed": false
+  },
+  "numerical_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "O0_O2_identity_required": true,
+    "no_policy_relaxation_for_R128_or_R256": true
+  },
+  "metrics": {
+    "primary": [
+      "R16-R32 pooled bottom-flux timeseries RMSE",
+      "R32-R64 pooled bottom-flux timeseries RMSE",
+      "R64-R128 pooled bottom-flux timeseries RMSE"
+    ],
+    "secondary_if_R256_qualified": [
+      "R128-R256 pooled bottom-flux timeseries RMSE"
+    ],
+    "additional": [
+      "adjacent-grid pooled signed mean",
+      "history-specific signed mean and RMSE",
+      "phase-specific signed mean and RMSE",
+      "adjacent-grid RMSE ratios",
+      "log2 adjacent-error ratio as descriptive observed order where defined"
+    ],
+    "no_application_acceptance_metric": true
+  },
+  "diagnostic_adjudication": {
+    "R128_PROGRESS": "R64-R128 pooled bottom-flux RMSE is smaller than R32-R64 RMSE.",
+    "R128_NO_PROGRESS": "R64-R128 pooled bottom-flux RMSE is not smaller than R32-R64 RMSE.",
+    "R256_TWO_STEP_PROGRESS": "R256 qualifies and both R64-R128 < R32-R64 and R128-R256 < R64-R128.",
+    "interpretation": "One or two decreasing adjacent-grid differences are evidence of refinement progress, not proof of a continuum limit."
+  },
+  "execution_gates": {
+    "R128_required": {
+      "O0_O2_identity": true,
+      "exact_state_count": 4096,
+      "exact_history_pass_count": 4,
+      "max_abs_transaction_mass_cm": 1e-12,
+      "completion_marker": "LAREGW1_C5D_B14_REFERENCE_EXTENSION_GENERATED=TRUE"
+    },
+    "R256_optional": {
+      "attempt_required": true,
+      "if_success_same_gates_as_R128": true,
+      "if_failure": "persist exact failure and continue analysis without R256",
+      "retuning_forbidden": true
+    },
+    "baseline_identity_to_C5C": {
+      "R16_R32_RMSE": true,
+      "R32_R64_RMSE": true
+    }
+  },
+  "next_logic": {
+    "if_R128_and_R256_two_step_progress": "Reference refinement is progressing through 0.625 cm. Only then may a matched fine-bottom-cell LARE comparison against the finest qualified Reference be preregistered.",
+    "if_R128_progress_but_R256_blocked_or_nonprogressing": "Preserve partial progress; do not claim asymptotic convergence and do not open a new closure formulation.",
+    "if_R128_not_progressing": "Reference spatial authority remains unresolved. Diagnose Reference spatial behavior before further LARE closure work.",
+    "no_outcome": "C5D itself never authorizes application acceptance, production ROM or performance claims."
+  },
+  "scientific_firewall": {
+    "new_lare_run": false,
+    "new_closure_fit": false,
+    "existing_closure_changed": false,
+    "C5A_formal_decision_changed": false,
+    "C5B_or_C5C_reinterpreted_as_acceptance": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5d_materializer_blob": "3a43427ae46480d01c430c2299c6cc36e728ed46",
+    "c5d_analyzer_blob": "73730efa988d5ed7a66e32d7f120fc3889127a74",
+    "c5b_analyzer_blob": "b51b4b60fd229786ec566948f400eb69771d0c56",
+    "response_based_design": true,
+    "reason": "C5D is motivated by the C5C discovery of Reference spatial nonconvergence, but R128/R256 grids and adjudication are frozen before their response is generated.",
+    "allowed_new_code": "Reference geometry extension, node-output suppression, state-only Reference aggregation",
+    "prohibited_new_code": "LARE representation changes, closure changes, solver-policy relaxation, fitted extrapolation used as acceptance authority"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
