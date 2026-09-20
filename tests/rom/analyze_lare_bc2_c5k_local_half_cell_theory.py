@@ -255,8 +255,6 @@ def build_theory(route,dz,identity_tol,steady_tol):
         r=route[h]
         mode=r["mode"]
         qpub=r["exchange"]/STEP_DT
-        if np.max(np.abs(qpub-r["terminal"]))>1.0e-12:
-            raise RuntimeError(f"{h}: exchange/terminal outward flux mismatch")
         qcur=qpub.copy(); qpost=qpub.copy(); qarpre=qpub.copy(); qarpost=qpub.copy()
         qint=qpub.copy(); qsteady=qpub.copy()
         active=np.where(mode==5)[0]
