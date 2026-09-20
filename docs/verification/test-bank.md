@@ -85,6 +85,22 @@ This distinction is deliberate. F-TA01 closes the missing test-bank authority an
 
 New or materially changed tests that support an admitted capability should not increase that debt. They should either add a complete catalog record or point from the relevant family record to a versioned local manifest containing the minimum traceability fields above.
 
+## Additive legacy analytical-reference preservation
+
+F-TB13 preserves a bounded analytical/reference suite recovered by F-AR01 as a permanent evidence surface. It is additive to, and does not rewrite, F-TB11 or F-TB12.
+
+The preserved suite contains:
+
+- 12 layered steady-state water cases;
+- 12 documented steady-state metric comparisons;
+- 12 Srivastava-Yeh/Gardner homogeneous transient cases;
+- four coarse-to-fine convergence checks;
+- a byte-identity comparison between preserved outputs from the recovered framework GNU executable and a fresh GNU build from exact B1.11.
+
+The preserved asset archive and every member are hash-pinned. The historical framework executable is not relabelled as official B0, and the suite is not evidence of whole SWAP5 production-solver equivalence.
+
+See [F-TB13 legacy analytical reference preservation](F-TB13_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION.md) and `integration/f-tb/F-TB13_CURRENT_CANONICAL_RECONCILIATION_20260920.json`.
+
 ## Baseline and oracle rules
 
 `docs/verification/reference-baselines.md` remains the authority for the B0 -> B1 -> B2 chain. The test-bank catalog only records which tests consume that authority.
