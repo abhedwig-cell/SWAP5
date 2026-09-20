@@ -1,0 +1,277 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcm.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCM",
+  "decision": "B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+  "evidence_classification": "RETROSPECTIVE_REBASE_USING_PROSPECTIVELY_QUALIFIED_REFERENCE_LIMIT_AND_NEW_CONTINUOUS_TIME_CANDIDATE_INTEGRATION",
+  "execution": {
+    "workflow_run": 35505540455,
+    "executed_head": "4d74d35584e0467ae9af8503144f5f27b9b30ce5",
+    "aggregate_artifact_id": 10603109454,
+    "aggregate_artifact_digest": "sha256:9bfa67a96b325d8d1f6cbb0d69f18ad1df25a05ae6495aa175b4e236473ef4b5",
+    "conclusion": "success"
+  },
+  "oracle_resolution": {
+    "all_six_materials": true,
+    "representations": [
+      "L4",
+      "L6",
+      "R8",
+      "U4",
+      "U8",
+      "R16_OP"
+    ],
+    "integrators": [
+      "DOP853_STRICT",
+      "RADAU_STRICT"
+    ]
+  },
+  "placement_support": {
+    "dimension4": {
+      "supported": [
+        "B02",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "counterexample": [
+        "B05"
+      ],
+      "support_count": 5,
+      "material_count": 6
+    },
+    "dimension8": {
+      "supported": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "counterexample": [],
+      "support_count": 6,
+      "material_count": 6
+    }
+  },
+  "targeted_dimension_monotonicity": {
+    "L4_to_L6": {
+      "componentwise_nonworse": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "tradeoff": []
+    },
+    "L6_to_R8": {
+      "componentwise_nonworse": [
+        "B02",
+        "B05",
+        "B06",
+        "B11",
+        "B12",
+        "B16"
+      ],
+      "tradeoff": []
+    }
+  },
+  "equal_grid_R16_OP": {
+    "within_absolute_identity_floor_all_components": [
+      "B12"
+    ],
+    "residual_above_absolute_floor": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B16"
+    ],
+    "qavg_and_qend_sign_mismatch_zero_all_materials": true,
+    "interpretation": "The equal-grid residual is much smaller than the difficult reduced-member errors but is not zero at the inherited absolute floors on five materials; same-partition CoRichards must be temporally rebased before assigning that residual to Layer-ROM operator/model form."
+  },
+  "selected_continuous_time_fidelity": {
+    "B02": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.20575048246456837,
+        "qavg_rms_cm_per_day": 0.7129063217740831,
+        "qend_rms_cm_per_day": 0.7133279806491835,
+        "mapped_theta_rms": 0.030073344072767117
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.0022420862840324667,
+        "qavg_rms_cm_per_day": 0.012501385908232333,
+        "qend_rms_cm_per_day": 0.012526379899231777,
+        "mapped_theta_rms": 0.009823451094709798
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.0000035561783872696415,
+        "qavg_rms_cm_per_day": 0.00011115867518590942,
+        "qend_rms_cm_per_day": 0.00011791025927773086,
+        "mapped_theta_rms": 0.004515860508769931
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 0.0000035548565417027725,
+        "qavg_rms_cm_per_day": 0.00011114430250146491,
+        "qend_rms_cm_per_day": 0.00011789687712122875,
+        "mapped_theta_rms": 8.112116437643686e-8
+      }
+    },
+    "B05": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 1.2410283409456937,
+        "qavg_rms_cm_per_day": 2.256510386492237,
+        "qend_rms_cm_per_day": 2.257021743041297,
+        "mapped_theta_rms": 0.0237952202255643,
+        "qavg_sign_mismatch": 481,
+        "qend_sign_mismatch": 481
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.16532077580265422,
+        "qavg_rms_cm_per_day": 0.3443927085311063,
+        "qend_rms_cm_per_day": 0.3445182652030613,
+        "mapped_theta_rms": 0.013087377150618343,
+        "qavg_sign_mismatch": 68,
+        "qend_sign_mismatch": 68
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.033134402364880335,
+        "qavg_rms_cm_per_day": 0.08347343327704425,
+        "qend_rms_cm_per_day": 0.08351491402926499,
+        "mapped_theta_rms": 0.008050198450761475,
+        "qavg_sign_mismatch": 0,
+        "qend_sign_mismatch": 1
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 2.0036307377869828e-7,
+        "qavg_rms_cm_per_day": 0.00009500655579510504,
+        "qend_rms_cm_per_day": 0.00005886724961573583,
+        "mapped_theta_rms": 7.973133198776672e-9
+      }
+    },
+    "B06": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.9243354907476372,
+        "qavg_rms_cm_per_day": 2.178342723763505,
+        "qend_rms_cm_per_day": 2.1790419334615287,
+        "mapped_theta_rms": 0.034580647772558995
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.05047954889014417,
+        "qavg_rms_cm_per_day": 0.27146788828698226,
+        "qend_rms_cm_per_day": 0.27178978755901734,
+        "mapped_theta_rms": 0.016481478761795596
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 0.006673505765182431,
+        "qavg_rms_cm_per_day": 0.03153592255783988,
+        "qend_rms_cm_per_day": 0.0315800222426417,
+        "mapped_theta_rms": 0.005386441104505594
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 0.0000058917695980064545,
+        "qavg_rms_cm_per_day": 0.0001228063471074149,
+        "qend_rms_cm_per_day": 0.00013916154066839512,
+        "mapped_theta_rms": 1.0498568408517765e-7
+      }
+    },
+    "B11": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 5.511806462382096e-9,
+        "qavg_rms_cm_per_day": 2.418473567771454e-8,
+        "qend_rms_cm_per_day": 2.4232987721376104e-8,
+        "mapped_theta_rms": 0.008210877473440823
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 1.0270911874892081e-11,
+        "qavg_rms_cm_per_day": 2.4825552151860913e-11,
+        "qend_rms_cm_per_day": 1.3244496574940852e-10,
+        "mapped_theta_rms": 0.00439775510071955
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 1.0316782592486422e-11,
+        "qavg_rms_cm_per_day": 2.489344979042828e-11,
+        "qend_rms_cm_per_day": 1.3243155350992866e-10,
+        "mapped_theta_rms": 0.002229717495860982
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 1.0316782592486422e-11,
+        "qavg_rms_cm_per_day": 2.489344979042828e-11,
+        "qend_rms_cm_per_day": 1.3243155350992866e-10,
+        "mapped_theta_rms": 7.064422207137343e-13
+      }
+    },
+    "B12": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 4.982759946736766e-13,
+        "qavg_rms_cm_per_day": 1.8248371357275832e-11,
+        "qend_rms_cm_per_day": 1.2740245123093473e-10,
+        "mapped_theta_rms": 0.006239018999722135
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 2.1895245328109711e-13,
+        "qavg_rms_cm_per_day": 1.8117248432488487e-11,
+        "qend_rms_cm_per_day": 1.273544982190484e-10,
+        "mapped_theta_rms": 0.0033628804075139145
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 2.1895215759464593e-13,
+        "qavg_rms_cm_per_day": 1.8117249717816582e-11,
+        "qend_rms_cm_per_day": 1.2735449829425855e-10,
+        "mapped_theta_rms": 0.001724679148198796
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 2.1895215759464593e-13,
+        "qavg_rms_cm_per_day": 1.8117249717816582e-11,
+        "qend_rms_cm_per_day": 1.2735449829425855e-10,
+        "mapped_theta_rms": 8.610310572563222e-15
+      }
+    },
+    "B16": {
+      "L4": {
+        "cumulative_bottom_rms_cm": 0.001749330713010281,
+        "qavg_rms_cm_per_day": 0.00828239535508266,
+        "qend_rms_cm_per_day": 0.008296495352025517,
+        "mapped_theta_rms": 0.028769303590443097
+      },
+      "L6": {
+        "cumulative_bottom_rms_cm": 0.000004336399641016395,
+        "qavg_rms_cm_per_day": 0.000026774922389879654,
+        "qend_rms_cm_per_day": 0.000026851246520271465,
+        "mapped_theta_rms": 0.014537886317269884
+      },
+      "R8": {
+        "cumulative_bottom_rms_cm": 1.1850454829690781e-7,
+        "qavg_rms_cm_per_day": 2.8204037283623807e-7,
+        "qend_rms_cm_per_day": 2.8225645416961114e-7,
+        "mapped_theta_rms": 0.00705182077529941
+      },
+      "R16_OP": {
+        "cumulative_bottom_rms_cm": 1.191713915361223e-7,
+        "qavg_rms_cm_per_day": 2.754947510543948e-7,
+        "qend_rms_cm_per_day": 2.753509282386125e-7,
+        "mapped_theta_rms": 1.8561541147560238e-9
+      }
+    }
+  },
+  "adjudication": [
+    "All six materials and all six frozen representations pass the preregistered DOP853-versus-Radau numerical-resolution gate.",
+    "After removing candidate Heun error and finite Reference temporal truncation, targeted placement remains supported on five of six materials at dimension four, with B05 as the persistent counterexample, and on all six materials at dimension eight.",
+    "The targeted L4->L6->R8 ladder is componentwise nonworse at both transitions on all six materials. The prior B02 and B16 dimension tradeoffs were finite-time numerical artifacts and are superseded.",
+    "For B11 and B12, groundwater exchange is already at or near the equal-grid temporal-limit residual by L6/R8 while profile reconstruction continues to improve with dimension; state dimension is therefore strongly purpose-dependent.",
+    "B05 remains the clear hard material: even continuous-time R8 retains material exchange and flux residual plus one QEND sign mismatch.",
+    "B02 and B16 reach the equal-grid exchange floor by R8, while B06 remains above it.",
+    "R16_OP is not inside the inherited absolute identity floor on five materials, so B1HCM alone cannot label the remaining equal-grid residual as Layer-ROM model-form error."
+  ],
+  "next": "Temporally qualify and extrapolate same-partition CoRichards L4/L6/R8 on the same six-material panel, then compare continuous-time Layer-ROM and CoRichards against the same B1HCL Reference limit.",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM",
+    "NO_NEW_CLOSURE_OR_PARTITION"
+  ],
+  "production_rom_authorized": false
+}
