@@ -65,25 +65,27 @@ jobs:
           p=Path("build/tab-hyd-swap5/characterization.csv")
           rows=[]
           for line in p.read_text().splitlines():
-              if not line or not line[0].isdigit():
+              if not line or not (line[0].isdigit() or line[0] in "+-."):
                   continue
               a=line.split(",")
-              if len(a)!=7:
+              if len(a)!=8:
                   continue
               rows.append({
-                  "n":int(a[0]),
-                  "theta":float(a[1]),
-                  "logk":float(a[2]),
-                  "logc":float(a[3]),
-                  "btheta":float(a[4]),
-                  "blogk":float(a[5]),
-                  "blogc":float(a[6]),
+                  "scale":float(a[0]),
+                  "n":int(a[1]),
+                  "theta":float(a[2]),
+                  "logk":float(a[3]),
+                  "logc":float(a[4]),
+                  "btheta":float(a[5]),
+                  "blogk":float(a[6]),
+                  "blogc":float(a[7]),
               })
-          if len(rows)!=4:
-              raise SystemExit(f"expected four resolution rows, got {len(rows)}")
+          if len(rows)!=9:
+              raise SystemExit(f"expected nine scale-resolution rows, got {len(rows)}")
           best=rows[-1]
           summary=(
               f"rows={len(rows)}\n"
+              f"best_scale={best['scale']:.17e}\n"
               f"best_n={best['n']}\n"
               f"best_max_theta_abs={best['theta']:.17e}\n"
               f"best_max_log10K_abs={best['logk']:.17e}\n"
