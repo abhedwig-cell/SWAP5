@@ -222,6 +222,25 @@ This is strong evidence that the approximately 8-11% whole-model penalty of the 
 It is **not yet a speedup**. Within measurement resolution, the best direct-index table route is equal to the analytical route rather than faster.
 
 
+
+### 9. "Current software" requires a branch distinction
+
+A live reconciliation against the public `SWAP-model/SWAP` repository changes the operational interpretation of the earlier typed-path result.
+
+The public `main` branch at `c22bd832ddf3e53e330a552f5e31e74f183362d1` still contains the table implementation in the active source tree. Its typed schema accepts `swsophy=1`, but does not populate the table state, and the bounded executable probe stalls.
+
+The newer public `development` branch at `b39d4d53028a2ffc1da562200db7b9fc63e7a709` has gone further. Since commit `26fa1c0439b099678ef90fd0274e27da013b7792` (2026-05-24), `sptabulated.f90` is under `src/soilwater/dormant/`. The active hydraulic wrappers explicitly classify `swsophy=1` as dormant and call `fatalerr_collected` rather than attempting table evaluation.
+
+Therefore:
+
+- current public **development**: tabulated hydraulics is deliberately non-operational;
+- current public **main**: the switch is still syntactically reachable but table state is not supplied by the typed input route;
+- pre-strangler/legacy-input lineage: the table route is executable and can be characterized, which is where the numerical and performance experiments in this workstream are performed;
+- exact SWAP 4.3.1 B0: remains the controlling historical source authority, but its raw archive cannot currently be materialized through the available Project-file path, so no byte-exact B0 table claim is made here.
+
+This branch distinction supersedes any unqualified wording that calls the table option simply "working in current SWAP".
+
+
 ## Source-authority boundary
 
 The executable end-to-end experiments use the public/transitional SWAP source lineage. They are not yet executions of the immutable supplied SWAP 4.3.1 B0 archive.
