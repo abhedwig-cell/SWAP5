@@ -1,0 +1,127 @@
+name: F-ROM Layer-ROM B1HCE E1 operator localization
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1HCE_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1hce_operator_localization.py'
+      - 'tests/rom/aggregate_layer_rom_b1hce_e1.py'
+      - '.github/workflows/f-rom-layer-b1hce-e1-operator-localization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hce-e1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, artifact_id: 10600214649, digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0'}
+          - {material: B05, artifact_id: 10600409481, digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5'}
+          - {material: B06, artifact_id: 10600414651, digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380'}
+          - {material: B11, artifact_id: 10600034910, digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c'}
+          - {material: B12, artifact_id: 10599789755, digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7'}
+          - {material: B16, artifact_id: 10600289675, digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c'}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Lock E1 authority and recover immutable B1H evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCE_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LAYER_ROM_B1HCD_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_FIXED_HEAD_OPERATOR_LOCALIZATION'
+          assert c['decision']=='B1HCD_FULL_COHORT_HYDROLOGICAL_DECOMPOSITION_COMPLETE'
+          assert p['stage_E1_teacher_forced_operator_localization']['hard_identity_gates']=={
+            'R16_OP_internal_interface_max_abs_cm_per_day':1e-10,
+            'bottom_pointwise_R16_OP_max_abs_cm_per_day':1e-10,
+            'constitutive_psi_vs_logged_head_max_abs_cm':1e-8
+          }
+          print('LAYER_ROM_B1HCE_E1_AUTHORITY_LOCK=PASS')
+          PY
+          mkdir -p /tmp/b1hce
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.artifact_id }}/zip" > /tmp/b1hce/b1h.zip
+          echo "${{ matrix.digest }}  /tmp/b1hce/b1h.zip" | sha256sum -c -
+          unzip -q /tmp/b1hce/b1h.zip -d /tmp/b1hce
+          test -f "/tmp/b1hce/R16_${{ matrix.material }}.txt"
+          test -f "/tmp/b1hce/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+
+      - name: Execute teacher-forced operator localization
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCE_E1_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hce_operator_localization.py             --reference "/tmp/b1hce/R16_${{ matrix.material }}.txt"             --b1h-result "/tmp/b1hce/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"             --prereg integration/f-rom/LAYER_ROM_B1HCE_PREREGISTRATION.json             --material "${{ matrix.material }}"             --output "B1HCE_E1_EVIDENCE/LAYER_ROM_B1HCE_E1_${{ matrix.material }}_RESULT.json"             | tee B1HCE_E1_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open("B1HCE_E1_EVIDENCE/LAYER_ROM_B1HCE_E1_${{ matrix.material }}_RESULT.json"))
+          assert r['reduced_state_propagated'] is False
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCE_E1_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCE_E1_EVIDENCE/* > B1HCE_E1_EVIDENCE/sha256.txt
+
+      - name: Upload E1 material evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hce-e1-${{ matrix.material }}
+          path: B1HCE_E1_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hce-e1-B*
+          path: /tmp/b1hce-e1-results
+          merge-multiple: false
+
+      - name: Aggregate E1 identity gate
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCE_E1_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hce_e1.py             --input-dir /tmp/b1hce-e1-results             --prereg integration/f-rom/LAYER_ROM_B1HCE_PREREGISTRATION.json             --output B1HCE_E1_AGGREGATE/LAYER_ROM_B1HCE_E1_RESULT.json             | tee B1HCE_E1_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('B1HCE_E1_AGGREGATE/LAYER_ROM_B1HCE_E1_RESULT.json'))
+          assert r['decision'] in {
+            'B1HCE_E1_CONSTITUTIVE_IDENTITY_BLOCKED',
+            'B1HCE_E1_INTERNAL_OPERATOR_IDENTITY_BLOCKED',
+            'B1HCE_E1_BOTTOM_TERMINAL_OPERATOR_SEMANTICS_DIFFER_E2_HELD',
+            'B1HCE_E1_EQUAL_GRID_OPERATOR_IDENTITY_E2_AUTHORIZED'
+          }
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCE_E1_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCE_E1_AGGREGATE/* > B1HCE_E1_AGGREGATE/sha256.txt
+
+      - name: Upload E1 aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hce-e1-aggregate
+          path: B1HCE_E1_AGGREGATE/
+          if-no-files-found: error
