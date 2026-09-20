@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C5K_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py'
       - 'tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py'
       - '.github/workflows/f-rom-lare-bc2-c5k.yml'
@@ -47,7 +48,7 @@ jobs:
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py)" = "570722580fce88123f61d8d93240fea93d74abdc"
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "a2ea2726feadaab74e9277c3a85d912070387b98"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "536ee6a0f2c91672a3d7bd4538ec9e665907f35f"
           python3 -m py_compile tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py
           python3 -m py_compile tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py
           python3 - <<'PY'
@@ -175,7 +176,7 @@ jobs:
       - name: Execute prebound local half-cell theory analysis
         run: |
           set -euo pipefail
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "a2ea2726feadaab74e9277c3a85d912070387b98"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py)" = "536ee6a0f2c91672a3d7bd4538ec9e665907f35f"
           python3 -m py_compile tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py
           python3 tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py             --r512 /tmp/c5k/instrument/R512.txt             --r1024 /tmp/c5k/instrument/R1024.txt             --c5i-result integration/f-rom/LARE_BC2_C5I_RESULT.json             --c5k-prereg integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json             --output LARE_BC2_C5K_EVIDENCE/LARE_BC2_C5K_RESULT.json             | tee LARE_BC2_C5K_EVIDENCE/runner.txt
           cp integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json LARE_BC2_C5K_EVIDENCE/
