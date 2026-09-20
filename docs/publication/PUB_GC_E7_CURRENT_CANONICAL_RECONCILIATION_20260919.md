@@ -4,8 +4,8 @@
 > evidence for the observed pre-owner E7 stop. Its interpretation of that stop as a
 > current `REALISTIC_COMPONENT_DOMAIN_LIMIT` is superseded by
 > `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md`.
-> Current disposition is
-> `COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED`: the stop demonstrates
+> Current E7 authority is `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`; its evidence class is
+> `COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED`. The stop demonstrates
 > the boundary of the mode-5-bound production participant implementation, not a
 > proven physical SWAP-MODFLOW coupling-domain limit. Do not rerun E7 before the
 > corrected coupling authority is qualified.
