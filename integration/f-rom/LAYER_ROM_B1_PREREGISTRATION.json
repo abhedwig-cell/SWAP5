@@ -1,0 +1,183 @@
+{
+  "schema": "swap5.layer-rom.phase-b1.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1",
+  "phase": "PREREGISTERED_BEFORE_LAYER_LADDER_FIXED_HEAD_REPLAY",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "scientific_question": "Across the frozen 2/3/4/6-layer active-lower-zone ladder, which representation first preserves groundwater-exchange behavior under a prescribed zero-pressure lower boundary, and how does that differ from full-profile fidelity?",
+  "predecessors": {
+    "A1": "L3 minimum bounded B01 predictive-state candidate; L4/L6 added no demonstrated future-response state information in the A1 common cohort.",
+    "A2_A2B": "Storage-only closure alternatives did not robustly repair L3 long-interface error.",
+    "A3": "One additional global first moment did not have broad support; same-dimension explicit local L4 resolution was more faithful.",
+    "BC1": "Fixed-domain prescribed-head CURRENT_LAYER_FACE closure qualified with resolution dependence.",
+    "C4R": "Blind fixed-water-table validation established comparator-relative frontiers on R3+ and supplies immutable blind Reference/comparator evidence."
+  },
+  "physical_domain": {
+    "material": "B01 homogeneous Mualem-Van Genuchten",
+    "column_depth_cm": 160,
+    "sinks": false,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head at fixed 160 cm boundary",
+    "moving_water_table": false,
+    "observation_dt_day": 0.001,
+    "internal_dt_day": 0.0001,
+    "observation_substeps": 10,
+    "steps": 64
+  },
+  "blind_reference_reuse": {
+    "source_work_unit": "LARE-BC2-C4R",
+    "workflow_run": 35472962909,
+    "artifact_id": 10593626518,
+    "artifact_digest": "sha256:da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9",
+    "R16_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6",
+    "R2_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4",
+    "C4R_result_sha256": "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65",
+    "histories": {
+      "V01": {
+        "lambda": 0.375
+      },
+      "V02": {
+        "lambda": 0.625
+      },
+      "V03": {
+        "lambda": 0.875
+      },
+      "V04": {
+        "lambda": 1.125
+      }
+    },
+    "blind_status": "Histories were frozen before the C4R Reference trajectories existed. B1 reuses them without changing history, forcing, material or response metrics."
+  },
+  "layer_ladder": [
+    {
+      "id": "L2",
+      "dimension": 2,
+      "boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "role": "aggressive two-layer challenge absent from C4R LARE ladder"
+    },
+    {
+      "id": "L3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "role": "A1 minimum bounded predictive-state candidate"
+    },
+    {
+      "id": "L4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "A3 selected explicit-local-resolution candidate"
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "higher-resolution convergence control"
+    }
+  ],
+  "model": {
+    "state": "exact fixed-layer water storage W_i=Delta_i*theta_bar_i",
+    "internal_closure": "standard source-anchored adjacent-layer LARE Taylor/Darcy closure",
+    "bottom_closure": "BC1 CURRENT_LAYER_FACE prescribed-head closure",
+    "integrator": "iterative Heun",
+    "no_clipping": true,
+    "no_fallback": true,
+    "no_fit": true
+  },
+  "comparators": {
+    "Reference_R16": "blind current-canonical 16 x 10 cm accepted-trajectory Reference from C4R",
+    "CoRichards_R2": "blind C4R integrated-mass 2 x 80 cm Richards comparator",
+    "FMC_GW200": "frozen-equation C4R FMC groundwater comparator",
+    "rule": "Comparator metrics are recovered from the immutable C4R artifact and must reproduce its persisted C4R result before B1 interpretation."
+  },
+  "response_vectors": {
+    "GW": [
+      "pooled total-storage RMSE",
+      "pooled cumulative-bottom-exchange RMSE",
+      "pooled terminal-bottom-flux RMSE",
+      "bottom-flux sign-error count"
+    ],
+    "PROFILE": [
+      "all GW components",
+      "pooled mapped 10-cm R16-cell theta RMSE"
+    ],
+    "diagnostics": [
+      "upper 0-80 cm storage RMSE",
+      "lower 80-160 cm storage RMSE",
+      "per-history final cumulative-bottom-exchange error",
+      "per-history flux sign errors",
+      "water-ledger residual"
+    ]
+  },
+  "relative_frontiers": {
+    "numerical_equality_tolerance": 1e-12,
+    "crosses_R2_GW": "candidate is no worse than C4R R2 on every GW component",
+    "crosses_FMC_GW": "candidate is no worse than C4R FMC on every GW component",
+    "crosses_R2_PROFILE": "candidate crosses R2_GW and is no worse on mapped profile RMSE",
+    "crosses_FMC_PROFILE": "candidate crosses FMC_GW and is no worse on mapped profile RMSE",
+    "minimum_rule": "For each purpose/comparator report the smallest dimension in the frozen L2/L3/L4/L6 ladder that crosses componentwise.",
+    "no_crossing_rule": "Report NOT_REACHED_WITHIN_L2_L3_L4_L6, never extrapolate a dimension."
+  },
+  "hypotheses": {
+    "H1": "L2 and L3 will not cross the blind groundwater comparator frontiers.",
+    "H2": "L4 will be the first member to cross both R2_GW and FMC_GW, replicating C4R's dimension-4 groundwater frontier after adding the previously absent L2 challenge.",
+    "H3": "L6 will materially reduce profile error relative to L4 but need not cross the stricter FMC_PROFILE frontier.",
+    "H4": "If L4 and L6 preserve the same qualitative flux-sign pattern while L6 mainly improves continuous errors, the remaining difference is closure/discretization convergence rather than newly demonstrated A1 state information."
+  },
+  "decision_logic": {
+    "B1_DIMENSION4_GW_FRONTIER_REPLICATED": "All integrity gates pass and the minimum dimensions for R2_GW and FMC_GW are both 4.",
+    "B1_LOWER_DIMENSION_GW_FRONTIER": "All integrity gates pass and either groundwater frontier is first crossed below dimension 4.",
+    "B1_HIGHER_DIMENSION_REQUIRED_FOR_GW_FRONTIER": "All integrity gates pass and either groundwater frontier is first crossed only at dimension 6 or is not reached within the ladder.",
+    "B1_EXECUTION_OR_AUTHORITY_BLOCKED": "Any immutable-evidence reproduction, source-freeze, mass, physical-domain or deterministic execution gate fails."
+  },
+  "integrity_gates": {
+    "research_source_freeze": true,
+    "C4R_result_reproduction_abs_tolerance": 1e-12,
+    "all_four_members_attempted": true,
+    "maximum_water_ledger_cm": 1e-10,
+    "physical_theta_bounds": true,
+    "no_fail_open": true,
+    "deterministic_repeat": true
+  },
+  "interpretation_boundaries": [
+    "Comparator-relative frontier is not application acceptance.",
+    "GW and PROFILE frontiers remain separate.",
+    "B1 tests a fixed zero-pressure lower boundary, not moving-water-table geometry and not production groundwater coupling.",
+    "A1 state-information sufficiency and B1 closure-propagation fidelity answer different questions.",
+    "No performance or speed claim is authorized."
+  ],
+  "next_if_dimension4_gw_frontier": "Preregister B2 prospective longer-horizon and reversal-focused fixed-head validation with L3/L4/L6 frozen before any performance measurement.",
+  "next_if_higher_dimension": "Do not tune L4 post hoc; retain L6 or return to representation/closure research according to the component failure pattern.",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_POST_RESULT_LAYER_RETUNING",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_MOVING_WATER_TABLE",
+    "NO_PRODUCTION_COUPLING_CHANGE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
