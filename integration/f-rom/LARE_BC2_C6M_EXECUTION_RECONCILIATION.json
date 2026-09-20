@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.lare.bc2.c6m.execution-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M",
+  "status": "REFERENCE_MATRIX_FAILED_BEFORE_ANALYSIS_DIAGNOSTIC_ONLY_CLASSIFICATION_NEXT",
+  "decision": "C6M_BLOCKED_BEFORE_LAYER_ROM_RESPONSE",
+  "failed_run": {
+    "workflow_run": 35531511964,
+    "execution_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
+    "reference_jobs": 64,
+    "reference_jobs_failed": 64,
+    "failed_step": "Execute frozen Reference slice",
+    "authority_lock_passed": true,
+    "materialization_passed": true,
+    "analysis_job": "SKIPPED",
+    "candidate_response_generated": false
+  },
+  "failure_pattern": {
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T16",
+      "R1024_T16",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "compiler_opts": [
+      0,
+      2
+    ],
+    "histories": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+    ],
+    "common_failure_stage": "Reference executable returned nonzero before slice upload",
+    "systematic": true
+  },
+  "known_harness_constraint": {
+    "source": "tests/rom/test_lare_dyn0a_reference.f90",
+    "observation": "strict_first_sample admits previously qualified fallback only when p%bottom_mode==2. C6M free drainage uses p%bottom_mode==7, so failed first attempts intentionally fail closed.",
+    "interpretation": "This is consistent with the existing DYN0A numerical-authority boundary. It is not authority to change retry/fallback semantics after seeing C6M response."
+  },
+  "diagnostic_authority": {
+    "target": "C6M-DIAG1",
+    "purpose": "Capture exact executable failure text for one frozen B01 and one frozen B14 slice under unchanged C6M forcing/solver authority.",
+    "cases": [
+      "B01|R1024_T16|O0|S01",
+      "B14|R1024_T16|O0|S01"
+    ],
+    "selection_reason": "One case per frozen material at the middle spatial comparator; not used to rescue or retune C6M.",
+    "forcing_changed": false,
+    "solver_policy_changed": false,
+    "fallback_policy_changed": false,
+    "quality_gate_changed": false,
+    "scientific_decision_changed": false
+  },
+  "stop_rules": [
+    "No C6M Layer-ROM response.",
+    "No enabling the fixed-flux-only fallback for free drainage after this failure.",
+    "No change to top-flux histories, material set, numerical gate or Reference solver policy.",
+    "Diagnostic rerun may only expose existing failure messages and step/revision context."
+  ],
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "response_based_retuning": false,
+    "reference_physics_changed": false,
+    "retry_policy_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
