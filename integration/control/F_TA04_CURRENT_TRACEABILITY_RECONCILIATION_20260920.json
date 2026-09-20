@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.f-ta04.current_traceability_reconciliation.v1",
+  "work_unit": "F-TA04R",
+  "date": "2026-09-20",
+  "title": "Current-canonical transaction/restart testbank traceability reconciliation",
+  "canonical_base": "e07cea29725d822cfdb15e956a0c7b7bb0955843",
+  "predecessor": {
+    "pr": 172,
+    "branch": "work/f-ta04-transaction-restart-traceability",
+    "head": "3505a6bf061f38f0dd90aeed2fb9649f3074da4c",
+    "historical_documentation_run": 35186255240,
+    "historical_documentation_conclusion": "success",
+    "historical_vq_reference_run": 35186255232,
+    "historical_vq_reference_conclusion": "success",
+    "historical_fci_run": 35186255187,
+    "historical_fci_conclusion": "failure",
+    "historical_fci_failure": "Adjacent moving preservation drift in src/runtime/mod_fmr_serialized_reference_backend.f90 after FCI57P transaction reference postimage passed."
+  },
+  "current_dependency_reconciliation": {
+    "dependencies": [
+      {
+        "path": "tests/transaction/test_transaction_reference.f90",
+        "blob": "e7959bdce0f217a6600e08dd8e28f284d977f3f2"
+      },
+      {
+        "path": "tests/transaction/run_a23bl_gate.sh",
+        "blob": "de4d7c23e4c3cee47fb160204a5e332bd42763c6"
+      },
+      {
+        "path": "testbank/runners/validate_ftb11_current_canonical_preservation.py",
+        "blob": "8fd28d570e13039fbdc0616df69666e3b2f7d3ae"
+      },
+      {
+        "path": "testbank/runners/run_ftb11_current_source_replays.sh",
+        "blob": "fbfd57f20feae026feeea821043787b83ed35a43"
+      },
+      {
+        "path": ".github/workflows/f-tb11-current-canonical-permanent-preservation.yml",
+        "blob": "54c4d4f007b916e69ad6f4624bb11cb824fb183a"
+      },
+      {
+        "path": "testbank/manifests/F-TB11_CURRENT_CANONICAL_100_PERCENT_CAPABILITY_PRESERVATION.json",
+        "blob": "3f312af9a78b1b2d638ccce242d46af43d4da124"
+      }
+    ],
+    "identical_to_predecessor_branch": true,
+    "current_traceability_already_classifies_historical_suite_labels_as_nonlocators": true,
+    "missing_current_value": [
+      "central complete bounded registration for historical A23BL",
+      "central complete bounded registration for pinned F-TB11 transaction/restart chain",
+      "fail-closed existence validation for repository locators in bounded records marked complete"
+    ]
+  },
+  "implementation": {
+    "files": [
+      "docs/status-a/TRACEABILITY.md",
+      "docs/verification/test-bank-catalog.yaml",
+      "tools/docs/check_docs.py",
+      "integration/control/F_TA04_CURRENT_TRACEABILITY_RECONCILIATION_20260920.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/development/SWAP5_PROJECT_CONTROL.md"
+    ],
+    "production_source_changed": false,
+    "reference_changed": false,
+    "scientific_baseline_changed": false,
+    "test_semantics_changed": false,
+    "immutable_qualification_evidence_changed": false
+  },
+  "claims": [
+    "A23BL is complete bounded historical traceability, not the current mass-completeness oracle.",
+    "F-TB11 transaction/restart preservation is a complete bounded pinned traceability chain, not a moving-current rebind.",
+    "Complete bounded catalog records fail closed when required fields or exact repository test/runner locators are missing."
+  ],
+  "nonclaims": [
+    "No F-TB11 rebind to Status-A or current canonical.",
+    "No A23BL scientific upgrade.",
+    "No claim that the whole tests/transaction family has complete traceability.",
+    "No production/restart/transaction behaviour change."
+  ],
+  "required_qualification": [
+    "Documentation",
+    "VQ reference qualification",
+    "F-CI canonical qualification"
+  ],
+  "decision": "RECOMPOSED_CURRENT_TRACEABILITY_PENDING_EXACT_HEAD_QUALIFICATION",
+  "admission_effect": "If exact-head qualification is green and live canonical remains scope-compatible, admit the traceability/static-process repair and close historical PR #172 as superseded.",
+  "live_reconciled_through": "3a815edda7cf5e155272b68ae49d440fd5db9138",
+  "live_delta_after_branch_base": {
+    "commits": 3,
+    "admitted_change": "F-ROM-CODEMAP-01 via PR #489",
+    "overlap_with_transaction_restart_dependencies": false,
+    "production_or_reference_change": false,
+    "action": "PRESERVE_CURRENT_RECONCILIATION_AND_REQUIRE_EXACT_HEAD_PR_QUALIFICATION"
+  }
+}

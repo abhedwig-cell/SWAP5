@@ -5,9 +5,9 @@
   "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
   "snapshot": {
     "branch": "integration/f-ci-canonical",
-    "head": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-    "head_subject": "GOV-REC01: recompose Status-A to Status-AA quality governance (#490)",
-    "open_pr_count": 20,
+    "head": "3a815edda7cf5e155272b68ae49d440fd5db9138",
+    "head_subject": "F-ROM-CODEMAP-01: reconcile FMC and LARE code frontiers (#489)",
+    "open_pr_count": 18,
     "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
   },
   "status_vocabulary": [
@@ -34,7 +34,7 @@
       "title": "Canonical integration and project control",
       "owner": "central SWAP5 regie",
       "status": "ACTIVE",
-      "canonical_authority": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+      "canonical_authority": "integration/f-ci-canonical@3a815edda7cf5e155272b68ae49d440fd5db9138",
       "open_prs": [
         58,
         72,
@@ -42,7 +42,7 @@
         172
       ],
       "current_blocker": null,
-      "next_gate": "PR #486 remains the shared-authority watch. While it is not admission-ready, F-TB13R supersedes #163 on this admission and #172 remains the next central reconciliation debt.",
+      "next_gate": "F-TA04R resolves the final old central housekeeping item #172 on this admission. PR #486 remains a shared-authority blocker, not an admission-ready candidate.",
       "write_scope": [
         "integration/control/**",
         "docs/development/project-control surfaces",
@@ -105,25 +105,35 @@
       "id": "F-GC",
       "title": "Groundwater coupling and iMOD Coupler product integration",
       "owner": "groundwater-coupling workstream",
-      "status": "ACTIVE",
+      "status": "BLOCKED_INTERNAL_AUTHORITY",
       "canonical_authority": [
         "integration/f-gc/F-GC50_STATUS.json remains the canonical product-integration authority and records external blocker FGC50-B1.",
-        "PR #486 is a noncanonical shared-authority repair candidate for coupling semantics and production application binding."
+        "PR #486 contains a noncanonical bounded CSR-01/CSR-02 repair plus completed semantic audit, but broad production admission is blocked by storage-partition and drainage-ownership authority."
       ],
-      "current_blocker": "Two distinct boundaries coexist: F-GC50 product integration remains externally blocked, while PR #486 is an active noncanonical semantics/application-authority repair that must qualify before admission.",
+      "current_blocker": "CSR-B1-STORAGE-PARTITION requires explicit non-overlapping physical storage ownership between SWAP-derived u and MODFLOW STO or an overlap correction. CSR-B2-DRAINAGE-OWNERSHIP requires one owner per physical drainage path before authentic drainage admission.",
       "resolved_internal_blocker": "PPA-WU01 provides the restricted production-side Fortran/FMR owner required by F-GC49D.",
-      "next_gate": "Allow #486 owner qualification to finish. Central regie must reconcile its shared production/coupling/publication consequences before admission. F-GC50 external product-integration blocker remains separate.",
+      "next_gate": "Do not merge PR #486 yet. Resolve storage partition and drainage ownership authority, then requalify affected F-GC43-F-GC49 / PUB-GC consequences as bounded successors.",
       "open_prs": [
         486
       ],
       "current_candidate": {
         "pr": 486,
         "branch": "work/f-gc-coupling-semantics-reconciliation",
-        "decision": "CSR01_CSR02_IMPLEMENTED_QUALIFICATION_IN_PROGRESS",
-        "canonical_reconciled": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-        "key_correction": "SWBOTB=5 is a private Reference-backend trial realization of an interface head, not application-level coupled-groundwater authority.",
-        "scope_effect": "If admitted, explicit groundwater_coupled application authority replaces the bottom_mode==5 application gate while preserving SWBOTB=5 as internal Reference trial realization.",
-        "publication_effect": "PUB-GC submission is held; E6/E7 coupling-assumption-dependent requalification is required. No Hupsel rerun is authorized by the candidate itself."
+        "state": "BOUNDED_CSR01_CSR02_IMPLEMENTED_STORAGE_AUTHORITY_BLOCKED",
+        "decision": "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED",
+        "key_correction": "SWBOTB=5 is a private Reference lower-face-head realization, not application-level coupled-groundwater authority.",
+        "confirmed_classes": [
+          "interpretation defect",
+          "authority binding defect",
+          "implementation defect bounded to application admission binding",
+          "architecture-design defect requiring head-transfer/drainage/storage authority"
+        ],
+        "blockers": [
+          "CSR-B1-STORAGE-PARTITION",
+          "CSR-B2-DRAINAGE-OWNERSHIP"
+        ],
+        "pub_gc_submission": "HELD",
+        "hupsel_rerun_authorized": false
       }
     },
     {
@@ -134,13 +144,15 @@
       "canonical_authority": [
         "integration/f-rom/F-ROMV2_STATUS.json",
         "integration/f-rom/F-ROMV2_D30_STATUS.json",
-        "integration/f-rom/F-ROMV2_D31_STATUS.json"
+        "integration/f-rom/F-ROMV2_D31_STATUS.json",
+        "integration/f-rom/F-ROM_CODE_FRONTIER_STATUS.json admitted by PR #489 / merge 3a815edda7cf5e155272b68ae49d440fd5db9138"
       ],
-      "latest_checkpoint": "F-ROMV2-D31",
-      "latest_decision": "M2WC70_OFFICIAL_ARCHIVE_CONFIRMED_BUT_RETRIEVAL_BLOCKER_PERSISTS_NO_EQUIVALENT_ORACLE_FOUND",
+      "latest_checkpoint": "F-ROM-CODEMAP-01",
+      "latest_decision": "FMC_AND_LARE_CODE_FRONTIERS_RECONCILED_DISTINCT_EXTERNAL_BLOCKERS",
       "current_blockers": [
-        "M2WC70 or equivalent finite-water-content implementation oracle is not materialized for the natural within-step surface-front/groundwater-front contact event.",
-        "D28 native ET implementation-source authority remains blocked."
+        "FMC: M2WC70/equivalent authority for natural within-step surface-front/groundwater-front contact.",
+        "FMC: implementation authority for native ET/root-withdrawal composite-state updates.",
+        "LARE: real project groundwater head/drawdown accuracy requirement and independently governed temporal error allocation before application acceptance."
       ],
       "nonclaims": [
         "no production ROM",
@@ -151,7 +163,7 @@
       "open_prs": [
         289
       ],
-      "next_gate": "Materialize an acceptable implementation oracle or explicitly close/narrow the affected proposition; no central implementation action."
+      "next_gate": "FMC and LARE continue as distinct research lines. Do not merge the large LARE research branch wholesale; return only bounded evidence successors to central regie."
     },
     {
       "id": "HYDRO-MEMORY",
@@ -242,9 +254,9 @@
     },
     {
       "pr": 486,
-      "class": "SHARED_AUTHORITY_CANDIDATE_QUALIFICATION_IN_PROGRESS",
+      "class": "BLOCKED_SHARED_AUTHORITY_REPAIR",
       "owner": "F-GC",
-      "action": "QUALIFY_UNDER_OWNER_THEN_RETURN_TO_REGIE_FOR_RECONCILIATION"
+      "action": "KEEP_OPEN_UNMERGED_UNTIL_STORAGE_PARTITION_AND_DRAINAGE_OWNERSHIP_AUTHORITY_RESOLVED"
     },
     {
       "pr": 72,
@@ -260,9 +272,9 @@
     },
     {
       "pr": 172,
-      "class": "RECONCILE_REQUIRED",
+      "class": "SUPERSEDED_BY_CURRENT_F_TA04R_ON_ADMISSION",
       "owner": "REGIE",
-      "action": "RECONCILE_WITH_CURRENT_TRANSACTION_RESTART_AUTHORITY"
+      "action": "CLOSE_AFTER_F_TA04R_CANONICAL_ADMISSION_PRESERVE_HISTORY"
     },
     {
       "pr": 361,
@@ -363,9 +375,7 @@
   ],
   "central_admission_queue": {
     "ready_for_regie": [],
-    "reconcile": [
-      172
-    ],
+    "reconcile": [],
     "blocked": [
       361,
       363
@@ -390,7 +400,8 @@
       218,
       219
     ],
-    "shared_authority_watch": [
+    "shared_authority_watch": [],
+    "blocked_shared_authority": [
       486
     ]
   },
@@ -400,7 +411,8 @@
       366,
       378,
       72,
-      163
+      163,
+      172
     ],
     "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
   },
@@ -416,5 +428,5 @@
       "reason": "Retained as immutable reconciliation history; not the current routing map."
     }
   ],
-  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry and the current quality-governance policy for ownership/evidence boundaries, and returns to REGIE for admission, supersession or shared-authority conflict. PR #486 is the current shared-authority watch item."
+  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central housekeeping debt #72/#163/#172 is closed by recomposed successors once F-TA04R is admitted. New central work should come from qualified specialized admission candidates, explicit shared-authority conflicts, preservation drift, or deliberate project-control refresh."
 }
