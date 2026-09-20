@@ -1,0 +1,76 @@
+{
+  "adjudication": {
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "C5U_DSE2P_FREE_RUNNING_TEST_AUTHORIZED": false,
+    "CURRENT_PREREGISTERED_DSE2P_NUMERICAL_ROUTE_QUALIFIED": false,
+    "DSE2P_SCALAR_OR_BRANCH_RETUNING_AUTHORIZED": false,
+    "DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST": false,
+    "DSE2P_UNIVERSALLY_PHYSICALLY_DISPROVEN": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_REFERENCE_CHANGE_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "SCAFP_READ_ONLY_THEORY_DERIVATION_AUTHORIZED": true,
+    "SPEED_CLAIM_AUTHORIZED": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:41d3f0214ccc75dec32bd1d9dc0a6168536d42ca738654a0bb9d3ed38925e35f",
+    "artifact_id": 10604099716,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "bd4c69f02270e855442a0a364484d45927219d5f",
+    "instrumented_route_sha256": "61de2533af605eea898a8912d086b11ddbdb43e729595324d27d24f9e64dab01",
+    "preregistration": "integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json",
+    "result_sha256": "3828b7b2ccfe67f812b0938d582287ae3181a88e7279fef454d1d4e1901f1987",
+    "workflow_run": 35509921623
+  },
+  "decision": "DO_NOT_IMPLEMENT_DSE2P_FREE_RUNNING_RETURN_TO_STORAGE_CONSISTENT_SUBGRID_PROFILE_THEORY",
+  "model_changed": false,
+  "next_authority": {
+    "constraints": [
+      "Read-only theory/documentation/code reconciliation first; no hydrological response in C5V.",
+      "Retain layer-integrated storage as the only dynamic state.",
+      "Do not reopen scalar CURRENT_LAYER_FACE tuning, conductivity-only means or direction switches.",
+      "Do not reuse DSE2P with post-response numerical retuning.",
+      "Require a unique zero-fit profile ansatz and an explicit transient conservation contract before any implementation.",
+      "If uniqueness or admissibility cannot be established from theory, stop at a scientific choice boundary rather than fit to C5R/C5T data.",
+      "No application, performance, speed or production-ROM claim."
+    ],
+    "question": "Can a zero-fit storage-consistent algebraic subgrid face-profile reconstruction be uniquely and conservatively derived from retained layer storages so that transient unequal interface fluxes are allowed and interface pressure/flux continuity is respected without adding dynamic state?",
+    "state": "READ_ONLY_SCAFP_THEORY_DERIVATION_AUTHORIZED",
+    "target": "LARE-BC2-C5V"
+  },
+  "numerical_blocker": {
+    "depth_cm": 70.0,
+    "failure_class": "DSE2P_BRACKET_OR_NUMERICAL_QUALIFICATION_FAILURE",
+    "message": "DSE2P failed to bracket 1891 cases"
+  },
+  "qualification": {
+    "C5R_profile_lines_byte_identical": true,
+    "C5R_state_lines_byte_identical": true,
+    "DSE2P_all_points_numerically_qualified": false,
+    "candidate_feedback": false,
+    "profile_line_count": 65536,
+    "state_line_count": 65536
+  },
+  "schema": "swap5.lare.bc2.c5t.closeout.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "blind_validation": false,
+    "candidate_feedback": false,
+    "free_running_closure_implemented": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "scalar_tuning_reopened": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "C5T preserves the authoritative C5R Reference trajectory exactly: all 65,536 state lines and 65,536 profile lines remain byte-identical under logging-only instrumentation.",
+    "The preregistered zero-fit steady-integral DSE2P route fails its mandatory numerical qualification before interface-error metrics can be fully adjudicated. At the first evaluated 70-cm interface, the deterministic physical-branch bracket cannot be established for 1,891 evaluated states.",
+    "Because all-points numerical qualification was a hard preregistered gate, this is a formal negative result for using this DSE2P numerical route as the basis of a free-running reduced model. Quadrature order, branch logic, bracket rule and tolerances are not retuned after response.",
+    "The result does not prove that every possible Darcian steady-equivalent concept is physically invalid. It establishes that the specific zero-fit monotone steady-integral formulation and numerical qualification contract selected prospectively in C5T does not provide an admissible closure route for this workload.",
+    "No C5U free-running DSE2P test is authorized. The remaining distinct closure family already retained by C5S is the storage-consistent algebraic subgrid face-profile concept, which must be derived read-only before any numerical implementation."
+  ],
+  "status": "CLOSED_DSE2P_NUMERICAL_QUALIFICATION_FAILED_FREE_RUNNING_NOT_AUTHORIZED_SCAFP_THEORY_NEXT",
+  "work_unit": "LARE-BC2-C5T",
+  "workstream": "F-ROM-LARE"
+}

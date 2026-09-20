@@ -1,0 +1,62 @@
+{
+  "adjudication": {
+    "DSE2P_EACH_PRIMARY_MOVING_RMSE_NO_WORSE": false,
+    "DSE2P_HOLD_GUARD_PASS": false,
+    "DSE2P_NUMERICAL_QUALIFICATION_PASS": false,
+    "DSE2P_PRIMARY_MOVING_COMPONENTWISE_NO_WORSE": false,
+    "DSE2P_PRIMARY_MOVING_RMSE_STRICTLY_IMPROVED": false,
+    "DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST": false
+  },
+  "all_interface_secondary": {},
+  "instrumentation_identity": {
+    "profile_count": 65536,
+    "profile_lines": true,
+    "state_count": 65536,
+    "state_lines": true
+  },
+  "interpretation_boundaries": [
+    "The preregistered DSE2P numerical method failed its all-points qualification gate before operator metrics could be fully adjudicated.",
+    "No quadrature order, physical branch, bracket rule, root tolerance or residual tolerance is changed after response.",
+    "This outcome does not authorize a free-running DSE2P implementation or any scalar/branch retuning.",
+    "The R01-R04 workload was exposed in C5R; C5T is mechanism evidence and cannot count as blind validation."
+  ],
+  "numerical_qualification": {
+    "by_interface": [
+      {
+        "all_qualified": false,
+        "depth_cm": 70.0,
+        "failure_class": "DSE2P_BRACKET_OR_NUMERICAL_QUALIFICATION_FAILURE",
+        "message": "DSE2P failed to bracket 1891 cases"
+      }
+    ],
+    "failure": {
+      "depth_cm": 70.0,
+      "failure_class": "DSE2P_BRACKET_OR_NUMERICAL_QUALIFICATION_FAILURE",
+      "message": "DSE2P failed to bracket 1891 cases"
+    },
+    "pass": false
+  },
+  "per_interface_phase": {},
+  "primary": {},
+  "primary_interfaces_cm": [
+    150.0,
+    155.0,
+    157.5
+  ],
+  "role": "EXPOSED_FROZEN_STATE_MECHANISM_DIAGNOSTIC",
+  "schema": "swap5.lare.bc2.c5t.result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "blind_validation": false,
+    "candidate_feedback": false,
+    "free_running_closure_implemented": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "scalar_tuning_reopened": false,
+    "speed_claim_authorized": false
+  },
+  "status": "C5T_DSE2P_NOT_SUPPORTED_NUMERICAL_QUALIFICATION_FAILED",
+  "work_unit": "LARE-BC2-C5T",
+  "workstream": "F-ROM-LARE"
+}

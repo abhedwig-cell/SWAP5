@@ -29,11 +29,12 @@
     "C5P": "Fresh fixed-dimension B14 dynamic-head evidence shows a causal bottom-adjacent placement effect: D8 B10->B5->B2P5 improves componentwise on groundwater and profile views, but no focused member reaches the R1024 high-resolution comparator. D4 overconcentration at B2P5 adds sign/reversal timing errors, demonstrating that boundary support and broader vertical memory must be balanced.",
     "C5Q": "Read-only identifiability reconciliation required one final D12 shared-bottom-support breadth discriminator before any distinct closure implementation.",
     "C5R": "Fresh D12 versus D8 comparison at identical B2P5 bottom support finds groundwater response numerically indistinguishable despite four additional vertically distributed states. Bottom placement remains active, but additional memory breadth is inactive; the residual is now strongly identified with propagation/inter-layer closure.",
+    "C5S": "After C5R isolates propagation as the remaining representation limit, read-only closure reconciliation rejects reopening scalar/current-state gradient tuning and identifies a zero-parameter Darcian steady-equivalent nonlinear two-point flux (DSE2P) as the first structurally distinct closure ready for an offline frozen-state mechanism discriminator. A storage-consistent algebraic subgrid-profile closure remains conceptually admissible but requires more theory before implementation.",
+    "C5T": "Logging-only frozen-state instrumentation preserves C5R exactly, but the preregistered steady-integral DSE2P route fails its mandatory numerical qualification at the first 70-cm interface for 1,891 states. No free-running DSE2P test or post-response retuning is authorized.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
-    "C5S": "After C5R isolates propagation as the remaining representation limit, read-only closure reconciliation rejects reopening scalar/current-state gradient tuning and identifies a zero-parameter Darcian steady-equivalent nonlinear two-point flux (DSE2P) as the first structurally distinct closure ready for an offline frozen-state mechanism discriminator. A storage-consistent algebraic subgrid-profile closure remains conceptually admissible but requires more theory before implementation."
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -58,6 +59,8 @@
     "C5P_fixed_dimension_bottom_placement": "integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json",
     "C5Q_breadth_vs_closure_reconciliation": "integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json",
     "C5R_D12_shared_support_breadth": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "C5S_distinct_interlayer_closure_derivation": "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
+    "C5T_frozen_state_DSE2P": "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -76,8 +79,7 @@
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
-    "C5S_distinct_interlayer_closure_derivation": "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json"
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
   },
   "closed_routes": [
     {
@@ -93,26 +95,32 @@
         "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json"
       ],
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
+    },
+    {
+      "disposition": "NOT_AUTHORIZED_C5T_NUMERICAL_QUALIFICATION_FAILED",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json"
+      ],
+      "id": "DSE2P_FREE_RUNNING_C5U"
     }
   ],
-  "decision": "PREREGISTER_FROZEN_STATE_DSE2P_INTERFACE_FLUX_DIAGNOSTIC_BEFORE_ANY_FREE_RUNNING_CLOSURE",
+  "decision": "DERIVE_STORAGE_CONSISTENT_ALGEBRAIC_SUBGRID_FACE_PROFILE_CLOSURE_READ_ONLY",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-BC2-C5T",
+  "next_authority": "LARE-BC2-C5V",
   "next_family_authority": {
-    "family": "C5T_FROZEN_STATE_DSE2P_INTERFACE_FLUX_DIAGNOSTIC",
-    "state": "AUTHORIZED_FOR_PROSPECTIVE_MECHANISM_PREREGISTRATION",
-    "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
-    ],
-    "purpose": "Compare CURRENT_LAYER_FACE and zero-fit DSE2P interface fluxes on exact Reference-projected D12_B2P5 states without feeding either candidate back into model dynamics.",
-    "new_free_running_closure_implementation_authorized": false,
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "family": "C5V_SCAFP_READ_ONLY_THEORY_DERIVATION",
     "new_dynamic_state_authorized": false,
+    "new_free_running_closure_implementation_authorized": false,
+    "purpose": "Determine whether a unique zero-fit storage-consistent algebraic subgrid face-profile closure can be derived before any new model response.",
+    "repository_basis": [
+      "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json"
+    ],
     "scalar_tuning_authorized": false,
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+    "state": "AUTHORIZED_FOR_READ_ONLY_THEORY_DERIVATION"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -144,7 +152,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v24",
+  "schema": "swap5.lare.representation-selection.closeout.v25",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -155,7 +163,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5S_DISTINCT_DSE2P_FROZEN_STATE_DIAGNOSTIC_NEXT",
+  "status": "CLOSED_THROUGH_C5T_DSE2P_NUMERICAL_BLOCKER_SCAFP_THEORY_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
