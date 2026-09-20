@@ -513,3 +513,61 @@ from application authority, not numerical greenness.
 
 No combined physical storage acceptance test is permitted until that authority
 classification is made.
+
+
+## 18. Phase-B executable binding to the real SWAP participant
+
+The existing F-GC44 real-FMR fixture is the correct SWAP-side substrate for
+the discriminating experiment. It already demonstrates:
+
+- capture of one accepted `kernel_committed_state_t` origin;
+- prescribed lower-face-head trials through
+  `fmr_groundwater_swap_participant_t`;
+- trial non-mutation of the accepted state;
+- candidate discard/retrial from the same origin;
+- publication readiness and exactly one accepted commit;
+- revision and accepted-time advancement after commit;
+- access to the committed physical pressure-head and water-content state.
+
+The current fixture is deliberately only a one-window participant gate. It
+must not be relabelled as the CSR-04 memory experiment.
+
+### Phase-B extension boundary
+
+Build a separate diagnostic harness from these admitted participant semantics,
+rather than changing the F-GC44 acceptance gate. For each native-MODFLOW
+storage branch, the harness shall:
+
+1. clone the same initial accepted SWAP state and groundwater initial head;
+2. execute a sequence of coupling windows;
+3. construct each window's predictor/linear response from the then-current
+   accepted SWAP origin using the existing F-GC30/F-GC33 route;
+4. let MODFLOW solve the end-of-window head;
+5. perform the real FMR prescribed-head corrector from the same SWAP origin;
+6. accept exactly once, then use that committed SWAP state as the next-window
+   origin;
+7. retain MODFLOW native STO separately from the SWAP mass/storage ledger.
+
+Use a bounded forcing pulse followed by a recovery interval so that persistence
+can be observed after the external perturbation is removed.
+
+### Required observations per window and Sy branch
+
+Record the accepted MODFLOW head, transferred SWAP lower-face head, diagnostic
+SWAP groundwater level when available, accepted bottom transfer, SWAP storage
+start/end/change and residual, native MODFLOW STO budget, `q_r`, `J_s`,
+and convergence/interface residuals.
+
+The experiment must compare trajectories, not only terminal states. The
+near-zero-STO branch is a limiting diagnostic, not a reference truth. No
+production parameter default or coupling physics may be changed from this
+experiment alone.
+
+### Implementation decision
+
+Do not extend `test_fgc44_real_fmr_participant.f90` with MODFLOW or storage
+continuation logic. That file remains the qualification gate for the real FMR
+participant contract. CSR-04 Phase B requires a new diagnostic harness that
+composes the already-admitted participant, response and prepared-solve
+services. This prevents a scientific experiment from weakening or redefining
+F-GC44 acceptance semantics.
