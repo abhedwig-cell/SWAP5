@@ -107,6 +107,37 @@ def map_piecewise_theta(layer_storage,bounds):
         out.append(total/10.0)
     return out
 
+def load_reference_n(path:pathlib.Path,expected_nodes:int):
+    states={}
+    nodes={}
+    for line in path.read_text(errors="replace").splitlines():
+        if line.startswith("LAREGW1_STATE|"):
+            r=bc.fields(line.split("|",1)[1])
+            if r["HISTORY"] in HISTS:
+                states[(r["HISTORY"],int(r["STEP"]))]=r
+        elif line.startswith("LAREGW1_NODE|"):
+            r=bc.fields(line.split("|",1)[1])
+            if r["HISTORY"] in HISTS:
+                nodes.setdefault((r["HISTORY"],int(r["STEP"])),[]).append({
+                    "node":int(r["NODE"]),"theta":float(r["THETA"])
+                })
+    out={}
+    for hist in HISTS:
+        hs=[]
+        for step in range(1,NSTEPS+1):
+            key=(hist,step)
+            if key not in states or key not in nodes or len(nodes[key])!=expected_nodes:
+                raise RuntimeError(f"incomplete Reference {key}: expected_nodes={expected_nodes}")
+            r=states[key]
+            hs.append({
+                "step":step,
+                "bottom_exchange_cm":float(r["BOTTOM_OUTWARD_EXCHANGE"]),
+                "bottom_interval_flux_cm_per_day":float(r["BOTTOM_OUTWARD_EXCHANGE"])/OBS_DT,
+                "nodes":sorted(nodes[key],key=lambda x:x["node"]),
+            })
+        out[hist]={"steps":hs}
+    return out
+
 def reference_arrays(ref,hist,dz):
     steps=ref[hist]["steps"]
     total=[];cum=[];q=[];theta=[];x=0.0
@@ -233,8 +264,8 @@ def main():
     assert c4x["decision"]=="C4X_B14_GW_TRANSFER_FRONTIER_PRESENT"
     assert p["representations"]["LARE"]["closure"]=="BC1 CURRENT_LAYER_FACE"
 
-    r16raw=bc.load_reference(a.r16)
-    r2raw=bc.load_reference(a.r2)
+    r16raw=load_reference_n(a.r16,16)
+    r2raw=load_reference_n(a.r2,2)
     r16={h:reference_arrays(r16raw,h,[10.0]*16) for h in HISTS}
     r2={h:reference_arrays(r2raw,h,[80.0,80.0]) for h in HISTS}
     r2metrics=compare_routes(r2,r16)
