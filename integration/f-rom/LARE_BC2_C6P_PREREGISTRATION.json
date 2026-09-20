@@ -1,0 +1,211 @@
+{
+  "schema": "swap5.lare.bc2.c6p.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6P",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Response-free root-uptake state-sufficiency discriminator",
+  "role": "SYNTHETIC_IDENTIFIABILITY_TEST_NO_HYDROLOGICAL_TRAJECTORY_NO_ET_APPLICATION_TOLERANCE",
+  "scientific_question": "Can existing Layer-ROM storage states, or storage plus the conservation-derived geometric first water-content moment, uniquely determine drought-only Feddes root uptake when admissible within-layer hydraulic structure varies?",
+  "authority": {
+    "C6O": "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
+    "required_C6O_decision": "AUTHORIZE_RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_DISCRIMINATOR_BEFORE_ANY_ET_DROUGHT_TRAJECTORY",
+    "root_process": "src/process/mod_root_water_uptake_process.f90",
+    "B01_B14_material_source": "integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json",
+    "hydrological_response_authorized": false
+  },
+  "constitutive_materials": {
+    "B01": {
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737
+    },
+    "B14": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528
+    },
+    "m_rule": "m=1-1/n",
+    "inverse_retention": "psi=(Se^(-1/m)-1)^(1/n)/alpha; pressure head h=-psi"
+  },
+  "synthetic_feddes_contract": {
+    "purpose": "Structural identifiability only; these are not crop/application calibration values.",
+    "h4_anchor_Se": 0.08,
+    "h3L_anchor_Se": 0.35,
+    "h3H_anchor_Se": 0.55,
+    "demand_classes": {
+      "LOW": {
+        "lambda": 0
+      },
+      "MID": {
+        "lambda": 0.5
+      },
+      "HIGH": {
+        "lambda": 1
+      }
+    },
+    "h3_rule": "h3=h3L+lambda*(h3H-h3L)",
+    "uptake_normalization": "Report actual uptake as fraction of potential transpiration; absolute T_p cancels.",
+    "frozen_after_response": false
+  },
+  "root_distributions": {
+    "root_depth_cm": 80,
+    "UNIFORM": "F(u)=u",
+    "SHALLOW": "F(u)=2u-u^2",
+    "DEEP": "F(u)=u^2",
+    "u": "clip(z/root_depth,0,1)",
+    "weights": "Exact increments of cumulative F over each fine cell."
+  },
+  "fine_grid": {
+    "column_depth_cm": 160,
+    "dz_cm": 0.5,
+    "cells": 320,
+    "purpose": "Synthetic evaluation grid only; no Richards solve."
+  },
+  "tested_existing_partitions": {
+    "R4": [
+      0,
+      130,
+      140,
+      150,
+      160
+    ],
+    "R8": [
+      0,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160
+    ],
+    "U4": [
+      0,
+      40,
+      80,
+      120,
+      160
+    ],
+    "U8": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140,
+      160
+    ],
+    "P4_TOP_LOWER": [
+      0,
+      10,
+      140,
+      150,
+      160
+    ],
+    "R16": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160
+    ]
+  },
+  "frozen_coarse_state_profiles": {
+    "UNIFORM_030": "all retained layer mean Se=0.30",
+    "UNIFORM_045": "all retained layer mean Se=0.45",
+    "UNIFORM_060": "all retained layer mean Se=0.60",
+    "TOP_DRY_BOTTOM_WET": "layer mean Se=0.25+0.40*(zc/160)",
+    "TOP_WET_BOTTOM_DRY": "layer mean Se=0.65-0.40*(zc/160)"
+  },
+  "sublayer_profile_family": {
+    "amplitudes_Se": [
+      0.12,
+      0.2
+    ],
+    "P0": "constant at retained-layer mean",
+    "P1_PLUS": "mean + amplitude*x with x centered/scaled to [-1,1] and discrete mean removed",
+    "P1_MINUS": "mean - amplitude*x with discrete mean removed",
+    "P2_PLUS": "mean + amplitude*P2(x), P2=(3x^2-1)/2 with discrete mean removed",
+    "P2_MINUS": "mean - amplitude*P2(x) with discrete mean removed",
+    "construction": "Every pattern exactly preserves each retained layer's integrated storage on the frozen fine grid.",
+    "S_plus_M_pair": "P2_PLUS and P2_MINUS are even about each retained-layer center and therefore preserve the same centered geometric first water-content moment as each other and P0 on the symmetric fine grid."
+  },
+  "exact_uptake": {
+    "fine_formula": "U=sum_n Delta f_n * alpha(h_n), where U is actual/potential transpiration fraction.",
+    "layer_formula": "Equivalent sum over retained layers; no coarse approximation is used for the oracle."
+  },
+  "diagnostics": {
+    "storage_only_ambiguity": "Within each material/partition/coarse-state/amplitude/root-profile/demand-class equivalence set, max(U)-min(U) across P0/P1+/P1-/P2+/P2-.",
+    "S_plus_M_ambiguity": "Absolute U(P2_PLUS)-U(P2_MINUS), after verifying equal retained S and M.",
+    "mean_storage_feedback_approximation": "Also report the error of the simplest existing-state approximation U_bar=sum_I Delta F_I*alpha(h(theta_bar_I)); this is a diagnostic only and is not selected as an accepted ET closure.",
+    "partition_summary": "Report max and median ambiguity/errors separately by material and partition; no rank becomes a new partition authority."
+  },
+  "hard_checks": {
+    "Se_interval": [
+      0.02,
+      0.995
+    ],
+    "root_weight_sum_tolerance": 1e-14,
+    "matched_storage_max_abs_cm": 1e-12,
+    "matched_P2_moment_max_abs_cm2": 1e-12,
+    "uptake_fraction_bounds": [
+      0,
+      1
+    ],
+    "numerical_zero_tolerance": 1e-10
+  },
+  "hypotheses": {
+    "H_STORAGE_NOT_EXACTLY_SUFFICIENT": "At least one frozen equivalence set has storage-only uptake ambiguity > 1e-10 while all matched-storage checks pass.",
+    "H_S_PLUS_M_NOT_EXACTLY_SUFFICIENT": "At least one P2_PLUS/P2_MINUS pair has uptake ambiguity > 1e-10 while both retained storage and centered first moment match <= frozen tolerances.",
+    "H_MEAN_STORAGE_FEEDBACK_NOT_EXACT": "At least one case has nonzero exact-vs-mean-storage uptake-fraction error > 1e-10."
+  },
+  "decision_logic": {
+    "if_all_three_supported": "C6P_EXISTING_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK",
+    "if_storage_only_supported_but_SM_not": "C6P_FIRST_MOMENT_REMOVES_FROZEN_STRUCTURAL_AMBIGUITY",
+    "if_storage_not_supported": "C6P_NO_STRUCTURAL_AMBIGUITY_DEMONSTRATED_ON_FROZEN_DOMAIN",
+    "scientific_meaning": "Exact state identifiability only. No ambiguity magnitude is an application tolerance."
+  },
+  "stop_rules": [
+    "No hydrological time integration.",
+    "No crop/application interpretation of the synthetic Se-anchored Feddes thresholds.",
+    "No state, partition or uptake closure is selected from ambiguity magnitude.",
+    "No ET/drought application tolerance.",
+    "No performance or production-ROM claim."
+  ],
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py",
+    "analyzer_blob": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6p.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "dynamic_root_feedback_implemented": false,
+    "new_representation_selected": false,
+    "new_partition_selected": false,
+    "application_tolerance_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
