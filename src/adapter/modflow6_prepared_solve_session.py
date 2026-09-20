@@ -34,6 +34,18 @@ class PreparedSolveIteration:
     accepted_head_old_m: np.ndarray
 
 
+@dataclass(frozen=True)
+class PreparedSolveAcceptedBudgetObservation:
+    """Read-only accepted-window state needed by CSR-04 qualification.
+
+    This deliberately exposes only state already owned by MODFLOW. It is not a
+    water-budget interpretation and does not alter solve/package state.
+    """
+
+    accepted_head_old_m: np.ndarray
+    accepted_head_new_m: np.ndarray
+
+
 class Modflow6PreparedSolveSession:
     """MODFLOW6 backend for one externally coupled prepared solve.
 
@@ -293,6 +305,25 @@ class Modflow6PreparedSolveSession:
             return PreparedSolveStatus.TIMESTEP_FINALIZE_FAILED
         self.timestep_finalized = True
         return PreparedSolveStatus.OK
+
+    def accepted_budget_observation(self) -> PreparedSolveAcceptedBudgetObservation | None:
+        """Return immutable accepted-window heads after timestep publication.
+
+        CSR-04 budget adapters may use this together with native MODFLOW budget
+        records. Requiring timestep finalization prevents candidate/trial state
+        from being reported as accepted evidence.
+        """
+        if (
+            self.invalid
+            or not self.timestep_finalized
+            or self.accepted_xold is None
+            or self.head is None
+        ):
+            return None
+        return PreparedSolveAcceptedBudgetObservation(
+            accepted_head_old_m=self.accepted_xold.copy(),
+            accepted_head_new_m=self.head.copy(),
+        )
 
     def invalidate_without_finalize(self) -> None:
         """Invalidate an abandoned solve.
