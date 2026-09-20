@@ -1,5 +1,14 @@
 # PUB-GC / COUPLE claim–evidence ledger
 
+> **SEMANTIC HOLD — 2026-09-20.** The SWAP5-MODFLOW6 coupling-semantics audit at
+> `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md` supersedes
+> application-level interpretations that equate groundwater coupling with legacy
+> `bottom_mode=5`. E1-E5 remain bounded numerical evidence requiring semantic
+> reinterpretation; E6 and E7 require coupling-assumption-dependent requalification.
+> PUB-GC submission authority is held. Historical experiment records below are
+> retained as provenance and must not be read as overriding the semantic audit.
+
+
 ## Purpose
 
 This ledger ties manuscript claims to literature boundaries, repository evidence and still-required publication experiments.
