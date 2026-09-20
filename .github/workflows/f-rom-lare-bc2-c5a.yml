@@ -1,0 +1,143 @@
+name: F-ROM-LARE BC2-C5A B14 dynamic cross-axis transfer
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5A_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py'
+      - 'tests/rom/analyze_lare_bc2_c5a_b14_dynamic_head.py'
+      - '.github/workflows/f-rom-lare-bc2-c5a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5a-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout preregistered current canonical backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify frozen C5A authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py)" = "f4f666d3504568d084d1d5ca3f90008ab6af2df9"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5a_b14_dynamic_head.py)" = "aec3a22ba50e07fd8d90aa54a92d067952fd397d"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c4z_dynamic_head.py)" = "105e75b93425780f565c714de1be1cb7ae0ee767"
+          test "$(git hash-object tests/rom/test_lare_rs1_gw_library.f90)" = "98b05fcf13fc470689295d511766f2393a712e46"
+          test "$(git hash-object tests/rom/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5A_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C5A_B14_DYNAMIC_RESPONSE'
+          assert p['authority']['current_canonical_at_preregistration']=='1caa431002d5c128c73cfcfbd31af4cc39ee9f12'
+          assert p['material']['current_dynamic_Z01_Z04_response_inspected_before_preregistration'] is False
+          assert p['matched_transfer']['response_based'] is False
+          assert p['matched_transfer']['changed_only']==['Mualem-van Genuchten constitutive constants B01 -> frozen B14 constants']
+          assert p['reference_retry_policy']['family']=='PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH'
+          assert p['representations']['FMC_SMVE']['included'] is False
+          print('LARE_BC2_C5A_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Materialize matched B14 dynamic-head Reference harness
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5a/reference LARE_BC2_C5A_EVIDENCE
+          python3 tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --output canonical/tests/rom/test_lare_bc2_c5a_reference.f90             --manifest LARE_BC2_C5A_EVIDENCE/materialization.json
+
+      - name: Generate matched B14 current-canonical R16 and R2 trajectories
+        run: |
+          set -euo pipefail
+          for spec in "R16 16 10" "R2 2 80"; do
+            read -r id n dz <<<"$spec"
+            stub="canonical/c5a_${id}_stubs.f90"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              build="/tmp/c5a/build_${id}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "c5a_${id}_stubs.f90"                 --target tests/rom/test_lare_bc2_c5a_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"
+              log="/tmp/c5a/reference/${id}_o${opt}.txt"
+              set +e
+              "$build/rom0_test" > "$log" 2>&1
+              rc=$?
+              set -e
+              if [[ "$rc" -ne 0 ]]; then
+                cp "$log" "LARE_BC2_C5A_EVIDENCE/${id}_o${opt}_FAILED.txt"
+                echo "LARE_BC2_C5A_REFERENCE_EXECUTION_FAILURE|${id}|O${opt}|RC=${rc}"
+                cat "$log"
+                exit "$rc"
+              fi
+              grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+              grep -Fq 'LAREGW1_C5A_B14_DYNAMIC_HEAD_GENERATED=TRUE' "$log"
+              test "$(grep -c 'LAREGW1_STATE|' "$log")" -eq 4096
+              test "$(grep -c 'LAREGW1_HISTORY_PASS|' "$log")" -eq 4
+              python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+            done
+            cmp "/tmp/c5a/reference/${id}_o0.txt" "/tmp/c5a/reference/${id}_o2.txt"
+          done
+          cp /tmp/c5a/reference/R16_o0.txt LARE_BC2_C5A_EVIDENCE/
+          cp /tmp/c5a/reference/R2_o0.txt LARE_BC2_C5A_EVIDENCE/
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C5A_REFERENCE=PASS"
+
+      - name: Execute frozen C5A B14 representation frontier
+        run: |
+          set -euo pipefail
+          python3 tests/rom/analyze_lare_bc2_c5a_b14_dynamic_head.py             --r16 /tmp/c5a/reference/R16_o0.txt             --r2 /tmp/c5a/reference/R2_o0.txt             --prereg integration/f-rom/LARE_BC2_C5A_PREREGISTRATION.json             --bc1-closeout integration/f-rom/LARE_BC1_CLOSEOUT.json             --c4x-closeout integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json             --output LARE_BC2_C5A_EVIDENCE/LARE_BC2_C5A_RESULT.json             | tee LARE_BC2_C5A_EVIDENCE/runner.txt
+
+      - name: Validate C5A firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5A_EVIDENCE/LARE_BC2_C5A_RESULT.json'))
+          assert r['decision'] in (
+            'C5A_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT',
+            'C5A_DYNAMIC_HEAD_GW_FRONTIER_ONLY',
+            'C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED',
+            'C5A_REFERENCE_OR_EXECUTION_BLOCKED'
+          )
+          assert r['response_blind'] is True
+          assert r['material_previously_exposed'] is True
+          assert r['matched_cross_axis_transfer'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C5A_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5A_EVIDENCE/* > LARE_BC2_C5A_EVIDENCE/sha256.txt
+
+      - name: Upload C5A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5a
+          path: LARE_BC2_C5A_EVIDENCE/
+          if-no-files-found: error
