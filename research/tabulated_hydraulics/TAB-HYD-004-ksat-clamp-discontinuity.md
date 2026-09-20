@@ -36,6 +36,17 @@ Largest jumps include:
 
 For B12 the threshold occurs at approximately `h=-4.62e-4 cm` under the implemented near-saturation linearized theta(h) policy. The residual changes from about `5.00 cm/d` immediately below the threshold to `15.46 cm/d` above it.
 
+## Structural limitation of the legacy shared-knot table format
+
+The legacy table reader requires head, theta and K to increase over one shared knot sequence and requires a final point at h=0. That format has no explicit discontinuity or plateau metadata.
+
+For a residual that contains a finite K jump, a single admissible table therefore has only two choices:
+
+- bridge the jump continuously between two distinct head knots; or
+- violate the current strict-increase/shared-knot input contract.
+
+So exact equivalence to this analytical residual is not merely a matter of choosing more table rows. The representation needs explicit branch semantics, or separate conductivity segmentation, if it is to preserve the implemented Ksat switch without smoothing it.
+
 ## Consequence for the first direct-table candidate
 
 The preregistered 250-row table candidate used one smooth log(K) spline from the dry end to the final h=0/Ksat endpoint. A continuous spline cannot reproduce a finite residual jump exactly. It necessarily bridges the jump over an interval.
