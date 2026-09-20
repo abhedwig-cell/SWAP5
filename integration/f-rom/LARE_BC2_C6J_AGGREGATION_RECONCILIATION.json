@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.bc2.c6j.aggregation-reconciliation.v1",
+  "schema": "swap5.lare.bc2.c6j.aggregation-reconciliation.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6J",
-  "status": "DRAFT_AGGREGATION_ONLY_RECOVERY_AFTER_COMPLETE_SCIENTIFIC_SHARDS",
+  "status": "AGGREGATION_ONLY_RECOVERY_REBOUND_AFTER_CONCURRENT_BINDING_DRIFT",
   "decision": "REUSE_IMMUTABLE_COMPLETE_C6J_SHARDS_AND_REPAIR_AGGREGATOR_MISSING_OPERATOR_HANDLING_ONLY",
   "source_execution": {
     "workflow_run": 35530325107,
@@ -64,10 +64,10 @@
   "repair": {
     "old_aggregator_blob": "db89a175d56fca3cd8af92419748db55d9d53fb0",
     "change": [
-      "Remove unconditional assertions that 168 head and 126 flux operators were generated.",
-      "Make G8 true only if exactly 168 head operators exist and all qualify.",
-      "Make G9 true only if exactly 126 flux operators exist and all qualify.",
-      "Record generated operator counts separately from expected counts."
+      "Treat missing boundary operators as failed G8/G9 rather than an aggregation assertion.",
+      "Restore collection of already-computed per-state metric diagnostics before aggregation.",
+      "Record generated and expected boundary-operator counts.",
+      "Reuse exactly the nine immutable scientific shard artifacts from run 35530325107."
     ],
     "scientific_shards_changed": false,
     "FEMO_equations_changed": false,
@@ -89,5 +89,24 @@
     "response_based_design": false,
     "production_rom_authorized": false
   },
-  "model_changed": false
+  "model_changed": false,
+  "recovery_attempts": [
+    {
+      "workflow_run": 35530470652,
+      "execution_head": "c8b581489321d3d124b1e0115b75213e084227e9",
+      "result": "FAILED_IN_RECOVERY_LOCK_BEFORE_SHARD_DOWNLOAD",
+      "scientific_shards_recomputed": false,
+      "scientific_result_generated": false,
+      "authority": false
+    }
+  ],
+  "live_delta_reconciliation": {
+    "reconciled_head": "d4a15e579e4a5deceab7e8519ca51b136ef7208b",
+    "changed_paths": [
+      ".github/workflows/f-rom-lare-bc2-c6j-aggregate-recovery.yml",
+      "integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json"
+    ],
+    "additional_aggregator_issue": "Current aggregator omitted the metrics collection used by metric diagnostics/counts; restoring metrics=[r['metric'] for r in rows if r['metric'] is not None] is aggregation plumbing only.",
+    "scientific_design_changed": false
+  }
 }
