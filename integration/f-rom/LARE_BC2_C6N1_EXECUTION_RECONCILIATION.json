@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v7",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v6",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "BOUND_MICROSHARD_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
-  "decision": "MICROSHARD_IDENTICAL_C6N1_MATRIX_AFTER_REPEATED_HOSTED_RUNNER_SHUTDOWN",
+  "status": "BOUND_SEGMENTED_CHECKPOINT_RECOVERY_NO_SCIENTIFIC_CHANGE",
+  "decision": "QUALIFY_EXACT_PHYSICAL_STATE_CHECKPOINT_RESTART_THEN_RECOVER_R2048_T32_IN_FOUR_SEGMENTS",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
     "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
@@ -32,204 +32,353 @@
     ],
     "qualification_changed": false
   },
-  "superseded_queued_runs": [
-    {
-      "workflow_run": 35532934940,
-      "head": "d8145cd09cab9f514eaf288f216e1060d7ce27d0",
-      "reason": "Older preregistration blob eacae6be... superseded by current d177069d...",
-      "response_started": false,
-      "authority": false
-    },
-    {
-      "workflow_run": 35532939703,
-      "head": "094062911f57efd6741f6d89646511f977c29884",
-      "reason": "Scientifically current but remained queued without any job start; compact execution preserves exact authority while reducing scheduler fan-out.",
-      "response_started": false,
-      "authority": false
-    },
-    {
-      "workflow_run": 35533244564,
-      "head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
-      "reason": "Pre-response compact authority lock failed before materialization/execution.",
-      "response_started": false,
-      "authority": false
-    },
-    {
-      "workflow_run": 35533309791,
-      "head": "035b146b59eb460c5b7423012a1a01368ca1e874",
-      "reason": "Superseded compact v2 regardless of later scheduler state.",
-      "response_started": false,
-      "authority": false
-    },
-    {
-      "workflow_run": 35533578181,
-      "head": "c91b9c8aeb6dd3d27fdd5bbc73eb271e4e1d67f0",
-      "reason": "Scientifically current v3 remained completely queued with zero job start through repeated checks; ultracompact execution preserves exact scientific authority with lower scheduler fan-out.",
-      "response_started": false,
-      "authority": false
-    }
-  ],
-  "repair": {
-    "old_execution": "6 jobs, each material x route with four histories and O0/O2 sequential",
-    "new_execution": "48 jobs, one material x route x optimization x history per job",
-    "histories": [
-      "U01",
-      "U02",
-      "U03",
-      "U04"
-    ],
-    "materials": [
-      "B01",
-      "B14"
-    ],
+  "prior_reconciliation": "integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json@v5",
+  "observed_execution_blocker": {
+    "ultracompact_run": 35534062401,
+    "failed_job_id": 106139807082,
+    "failed_cell": "B14_R2048_T32",
+    "failed_during": "R2048 T32 O0 U01 executable",
+    "exit_code": 143,
+    "external_runner_shutdown": true,
+    "solver_failure_observed": false,
+    "qualification_failure_observed": false,
+    "response_artifact_uploaded": false,
+    "hydrological_response_values_used_for_repair": false,
+    "evidence": "Runner shutdown occurred after executable start; no R2048 T32 route artifact or scientific metric was available."
+  },
+  "route_reuse": {
+    "source_run": 35532934940,
+    "source_execution_head": "d8145cd09cab9f514eaf288f216e1060d7ce27d0",
     "routes": [
-      "R512_T32",
-      "R1024_T32",
-      "R2048_T32"
+      "B01_R512_T32",
+      "B01_R1024_T32",
+      "B14_R512_T32",
+      "B14_R1024_T32"
     ],
-    "compiler_optimizations": [
-      0,
-      2
+    "successful_route_jobs_expected": 32,
+    "old_preregistration_blob": "eacae6be40e127e8453de756355d2e6263e7959f",
+    "current_preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+    "scientific_json_equal_after_removing_implementation_binding": true,
+    "materializer_blob_equal": true,
+    "analyzer_blob_equal": true,
+    "original_workflow_blob_equal": true,
+    "reuse_scope": "Successful R512/R1024 T32 route artifacts only; the superseded run as a whole is not promoted to authority.",
+    "verification_required_in_recovery_workflow": true
+  },
+  "repair": {
+    "segmented_materializer": "tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py",
+    "segmented_materializer_blob": "c08b7fa88f9378d8e827a2f41d4eca1ebd0d1343",
+    "checkpoint_payload": "Exact fmr_b110_physical_state_t (pressure_head, water_content, ponding_depth, groundwater_level, active_nodes) plus committed time.",
+    "numerical_continuation_layout": "FMR_NUMERICAL_CONTINUATION_NONE",
+    "segment_boundaries_transaction_steps": [
+      [
+        1,
+        8192
+      ],
+      [
+        8193,
+        16384
+      ],
+      [
+        16385,
+        24576
+      ],
+      [
+        24577,
+        32768
+      ]
     ],
-    "O0_O2_identity_required": true,
+    "segment_count_per_history": 4,
+    "new_R2048_jobs": "Each material/history segment executes O0 and O2 from the same checkpoint, requires byte-identical logs and byte-identical output checkpoints, and retains O0 scientific output.",
+    "checkpoint_topology_qualification": "Before any R2048 segment is admissible, B01 R512 T32 steps 1-2048 continuous execution must match a 1-1024 + 1025-2048 checkpoint restart in all STATE fields except local REV counters, all PROFILE records, and final checkpoint bytes.",
+    "solver_or_physics_changed": false,
     "transaction_dt_changed": false,
     "forcing_changed": false,
-    "solver_policy_changed": false,
+    "histories_changed": false,
+    "materials_changed": false,
     "metrics_changed": false,
     "GCI_formulas_changed": false,
-    "thresholds_changed": false,
     "qualification_changed": false,
+    "retry_policy_changed": false,
     "response_based_retuning": false,
-    "scientific_effect": "NONE",
-    "rationale": "Reuse the exact C6M2 execution granularity that previously completed a larger 64-slice matrix successfully; only execution packaging changes."
+    "scientific_effect": "NONE"
   },
-  "compact_workflow": {
-    "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
-    "blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
+  "segmented_workflow": {
+    "path": ".github/workflows/f-rom-lare-bc2-c6n1-segmented.yml",
+    "blob": "012c66391169717473461aed1a9ad5bc2b7cf55c",
     "state": "BOUND_BEFORE_EXECUTION",
-    "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
+    "expected_checkpoint_qualification_jobs": 1,
+    "expected_R2048_segment_jobs": 32,
+    "unchanged_analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049"
   },
-  "authority_rule": "Only the microshard run triggered by this v7 reconciliation update may become C6N1 scientific authority. All prior C6N1 runs, including partially completed ultracompact run 35534062401, are superseded regardless of later scheduler completion.",
+  "authority_rule": "Only the segmented recovery run triggered by this v6 reconciliation update with the bound workflow blob may become C6N1 scientific authority. Reused R512/R1024 route artifacts are admissible only after the workflow proves scientific preregistration identity. All prior broad, compact and ultracompact runs remain non-authoritative.",
+  "superseded_execution_topologies": [
+    {
+      "workflow_run": 35532934940,
+      "disposition": "ROUTE_ARTIFACTS_R512_R1024_REUSABLE_ONLY_AFTER_IDENTITY_PROOF_RUN_NOT_AUTHORITY"
+    },
+    {
+      "workflow_run": 35533878028,
+      "disposition": "SUPERSEDED_COMPACT_QUEUED"
+    },
+    {
+      "workflow_run": 35534062401,
+      "disposition": "SUPERSEDED_ULTRACOMPACT_R2048_RUNNER_LIFETIME_BLOCKER"
+    }
+  ],
+  "segmented_authority_run": {
+    "workflow_run": null,
+    "execution_head": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-segmented.yml",
+    "workflow_blob": "012c66391169717473461aed1a9ad5bc2b7cf55c",
+    "state": "AWAITING_V6_TRIGGER",
+    "authority_if_completed": true
+  },
   "scientific_firewall": {
     "candidate_response_generated": false,
-    "T32_reference_response_seen": false,
+    "candidate_response_seen": false,
+    "R2048_T32_scientific_metric_seen": false,
     "response_based_design": false,
     "new_representation_selected": false,
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
     "production_rom_authorized": false
   },
   "model_changed": false,
-  "compact_authority_run": {
-    "workflow_run": null,
-    "execution_head": null,
-    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
-    "workflow_blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
-    "jobs_expected": 24,
-    "state": "AWAITING_V3_TRIGGER",
-    "authority_if_completed": true
-  },
-  "recovery_checkpoint": {
-    "timestamp_context": "2026-09-20 current session",
-    "branch": "work/f-rom-lare-rs1",
-    "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
-    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
-    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
-    "microshard_workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
-    "scientific_response_used_for_repair": false,
-    "candidate_response_seen": false,
-    "next_action": "Use only the microshard run triggered by this v7 update as C6N1 scientific authority."
-  },
-  "pre_response_lock_failures": [
-    {
-      "workflow_run": 35533244564,
-      "execution_head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
-      "failure": "KeyError qualification_changed in authority-lock JSON path",
-      "failed_step": "Verify frozen C6N1 compact authority",
-      "T32_materialization_reached": false,
-      "T32_reference_execution_reached": false,
-      "scientific_response_seen": false,
-      "authority": false
+  "prior_history": {
+    "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v7",
+    "workstream": "F-ROM-LARE",
+    "work_unit": "LARE-BC2-C6N1",
+    "status": "BOUND_MICROSHARD_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
+    "decision": "MICROSHARD_IDENTICAL_C6N1_MATRIX_AFTER_REPEATED_HOSTED_RUNNER_SHUTDOWN",
+    "scientific_authority": {
+      "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
+      "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+      "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
+      "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
+      "histories": [
+        "U01",
+        "U02",
+        "U03",
+        "U04"
+      ],
+      "materials": [
+        "B01",
+        "B14"
+      ],
+      "routes": [
+        "R512_T32",
+        "R1024_T32",
+        "R2048_T32"
+      ],
+      "metrics": [
+        "surface_0_20_storage_rmse_norm",
+        "root_zone_0_40_storage_rmse_norm",
+        "upper_0_80_storage_rmse_norm",
+        "mapped_10cm_theta_rmse_norm"
+      ],
+      "qualification_changed": false
     },
-    {
-      "workflow_run": 35533309791,
-      "execution_head": "035b146b59eb460c5b7423012a1a01368ca1e874",
-      "disposition": "SUPERSEDED_BY_V3_LOCK_FIX_REGARDLESS_OF_LATER_SCHEDULER_STATE",
-      "scientific_authority": false
+    "superseded_queued_runs": [
+      {
+        "workflow_run": 35532934940,
+        "head": "d8145cd09cab9f514eaf288f216e1060d7ce27d0",
+        "reason": "Older preregistration blob eacae6be... superseded by current d177069d...",
+        "response_started": false,
+        "authority": false
+      },
+      {
+        "workflow_run": 35532939703,
+        "head": "094062911f57efd6741f6d89646511f977c29884",
+        "reason": "Scientifically current but remained queued without any job start; compact execution preserves exact authority while reducing scheduler fan-out.",
+        "response_started": false,
+        "authority": false
+      },
+      {
+        "workflow_run": 35533244564,
+        "head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+        "reason": "Pre-response compact authority lock failed before materialization/execution.",
+        "response_started": false,
+        "authority": false
+      },
+      {
+        "workflow_run": 35533309791,
+        "head": "035b146b59eb460c5b7423012a1a01368ca1e874",
+        "reason": "Superseded compact v2 regardless of later scheduler state.",
+        "response_started": false,
+        "authority": false
+      },
+      {
+        "workflow_run": 35533578181,
+        "head": "c91b9c8aeb6dd3d27fdd5bbc73eb271e4e1d67f0",
+        "reason": "Scientifically current v3 remained completely queued with zero job start through repeated checks; ultracompact execution preserves exact scientific authority with lower scheduler fan-out.",
+        "response_started": false,
+        "authority": false
+      }
+    ],
+    "repair": {
+      "old_execution": "6 jobs, each material x route with four histories and O0/O2 sequential",
+      "new_execution": "48 jobs, one material x route x optimization x history per job",
+      "histories": [
+        "U01",
+        "U02",
+        "U03",
+        "U04"
+      ],
+      "materials": [
+        "B01",
+        "B14"
+      ],
+      "routes": [
+        "R512_T32",
+        "R1024_T32",
+        "R2048_T32"
+      ],
+      "compiler_optimizations": [
+        0,
+        2
+      ],
+      "O0_O2_identity_required": true,
+      "transaction_dt_changed": false,
+      "forcing_changed": false,
+      "solver_policy_changed": false,
+      "metrics_changed": false,
+      "GCI_formulas_changed": false,
+      "thresholds_changed": false,
+      "qualification_changed": false,
+      "response_based_retuning": false,
+      "scientific_effect": "NONE",
+      "rationale": "Reuse the exact C6M2 execution granularity that previously completed a larger 64-slice matrix successfully; only execution packaging changes."
     },
-    {
-      "workflow_run": 35533878083,
-      "execution_head": "fc06b51ae9fd3654ffd7d939996126b43de5c832",
-      "job_id": 106139296965,
-      "failure": "Workflow self-hash assertion compared the stored blob to the literal string $(git hash-object ...) inside a single-quoted Python heredoc.",
-      "failed_step": "Verify frozen C6N1 ultracompact authority",
-      "T32_materialization_reached": false,
-      "T32_reference_execution_reached": false,
-      "scientific_response_seen": false,
-      "authority": false
-    }
-  ],
-  "ultracompact_workflow": {
-    "path": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
-    "blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
-    "state": "BOUND_BEFORE_EXECUTION",
-    "jobs_expected": 6,
-    "histories_per_job": 4,
-    "optimization_runs_per_history": 2
-  },
-  "ultracompact_authority_run": {
-    "workflow_run": 35534062401,
-    "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
-    "state": "SUPERSEDED_REPEATED_HOSTED_RUNNER_SHUTDOWN",
-    "authority_if_completed": false
-  },
-  "infrastructure_failures": [
-    {
-      "workflow_run": 35534062401,
-      "job_id": 106139807082,
-      "job": "t32-B14-R2048_T32",
-      "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
-      "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
-      "authority_lock_passed": true,
-      "materialization_or_compile_failure": false,
-      "solver_assertion_failure": false,
-      "scientific_gate_failure": false,
-      "artifact_uploaded": false,
-      "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
-      "rerun_exact_job_authorized": true,
-      "scientific_inputs_changed": false
+    "compact_workflow": {
+      "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
+      "blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
+      "state": "BOUND_BEFORE_EXECUTION",
+      "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
     },
-    {
+    "authority_rule": "Only the microshard run triggered by this v7 reconciliation update may become C6N1 scientific authority. All prior C6N1 runs, including partially completed ultracompact run 35534062401, are superseded regardless of later scheduler completion.",
+    "scientific_firewall": {
+      "candidate_response_generated": false,
+      "T32_reference_response_seen": false,
+      "response_based_design": false,
+      "new_representation_selected": false,
+      "application_acceptance_adjudicated": false,
+      "performance_comparison_authorized": false,
+      "production_rom_authorized": false
+    },
+    "model_changed": false,
+    "compact_authority_run": {
+      "workflow_run": null,
+      "execution_head": null,
+      "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
+      "workflow_blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
+      "jobs_expected": 24,
+      "state": "AWAITING_V3_TRIGGER",
+      "authority_if_completed": true
+    },
+    "recovery_checkpoint": {
+      "timestamp_context": "2026-09-20 current session",
+      "branch": "work/f-rom-lare-rs1",
+      "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+      "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
+      "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
+      "microshard_workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
+      "scientific_response_used_for_repair": false,
+      "candidate_response_seen": false,
+      "next_action": "Use only the microshard run triggered by this v7 update as C6N1 scientific authority."
+    },
+    "pre_response_lock_failures": [
+      {
+        "workflow_run": 35533244564,
+        "execution_head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+        "failure": "KeyError qualification_changed in authority-lock JSON path",
+        "failed_step": "Verify frozen C6N1 compact authority",
+        "T32_materialization_reached": false,
+        "T32_reference_execution_reached": false,
+        "scientific_response_seen": false,
+        "authority": false
+      },
+      {
+        "workflow_run": 35533309791,
+        "execution_head": "035b146b59eb460c5b7423012a1a01368ca1e874",
+        "disposition": "SUPERSEDED_BY_V3_LOCK_FIX_REGARDLESS_OF_LATER_SCHEDULER_STATE",
+        "scientific_authority": false
+      },
+      {
+        "workflow_run": 35533878083,
+        "execution_head": "fc06b51ae9fd3654ffd7d939996126b43de5c832",
+        "job_id": 106139296965,
+        "failure": "Workflow self-hash assertion compared the stored blob to the literal string $(git hash-object ...) inside a single-quoted Python heredoc.",
+        "failed_step": "Verify frozen C6N1 ultracompact authority",
+        "T32_materialization_reached": false,
+        "T32_reference_execution_reached": false,
+        "scientific_response_seen": false,
+        "authority": false
+      }
+    ],
+    "ultracompact_workflow": {
+      "path": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
+      "blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
+      "state": "BOUND_BEFORE_EXECUTION",
+      "jobs_expected": 6,
+      "histories_per_job": 4,
+      "optimization_runs_per_history": 2
+    },
+    "ultracompact_authority_run": {
       "workflow_run": 35534062401,
-      "job_id": 106139807120,
-      "job": "t32-B01-R2048_T32",
       "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
-      "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
-      "authority_lock_passed": true,
-      "materialization_or_compile_failure": false,
-      "solver_assertion_failure": false,
-      "scientific_gate_failure": false,
-      "artifact_uploaded": false,
-      "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
-      "scientific_inputs_changed": false
+      "state": "SUPERSEDED_REPEATED_HOSTED_RUNNER_SHUTDOWN",
+      "authority_if_completed": false
+    },
+    "infrastructure_failures": [
+      {
+        "workflow_run": 35534062401,
+        "job_id": 106139807082,
+        "job": "t32-B14-R2048_T32",
+        "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+        "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
+        "authority_lock_passed": true,
+        "materialization_or_compile_failure": false,
+        "solver_assertion_failure": false,
+        "scientific_gate_failure": false,
+        "artifact_uploaded": false,
+        "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
+        "rerun_exact_job_authorized": true,
+        "scientific_inputs_changed": false
+      },
+      {
+        "workflow_run": 35534062401,
+        "job_id": 106139807120,
+        "job": "t32-B01-R2048_T32",
+        "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+        "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
+        "authority_lock_passed": true,
+        "materialization_or_compile_failure": false,
+        "solver_assertion_failure": false,
+        "scientific_gate_failure": false,
+        "artifact_uploaded": false,
+        "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
+        "scientific_inputs_changed": false
+      }
+    ],
+    "superseded_execution_runs": [
+      {
+        "workflow_run": 35534062401,
+        "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+        "disposition": "SUPERSEDED_BY_MICROSHARD_EXECUTION_REGARDLESS_OF_LATER_JOB_COMPLETION",
+        "reason": "Two independent R2048 ultracompact jobs terminated by hosted-runner shutdown exit 143 before producing artifacts; scientific matrix is unchanged but per-job execution bundle is too large for reliable hosted execution.",
+        "scientific_authority": false
+      }
+    ],
+    "microshard_authority_run": {
+      "workflow_run": null,
+      "execution_head": null,
+      "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-microshard.yml",
+      "workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
+      "jobs_expected": 48,
+      "state": "BOUND_BEFORE_EXECUTION",
+      "authority_if_completed": true
     }
-  ],
-  "superseded_execution_runs": [
-    {
-      "workflow_run": 35534062401,
-      "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
-      "disposition": "SUPERSEDED_BY_MICROSHARD_EXECUTION_REGARDLESS_OF_LATER_JOB_COMPLETION",
-      "reason": "Two independent R2048 ultracompact jobs terminated by hosted-runner shutdown exit 143 before producing artifacts; scientific matrix is unchanged but per-job execution bundle is too large for reliable hosted execution.",
-      "scientific_authority": false
-    }
-  ],
-  "microshard_authority_run": {
-    "workflow_run": null,
-    "execution_head": null,
-    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-microshard.yml",
-    "workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
-    "jobs_expected": 48,
-    "state": "BOUND_BEFORE_EXECUTION",
-    "authority_if_completed": true
   }
 }
