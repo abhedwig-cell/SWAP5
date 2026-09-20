@@ -1,0 +1,254 @@
+name: F-ROM-LARE BC2-C4T prospective cost-fidelity screen
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4T_PREREGISTRATION.json'
+      - 'tests/rom/analyze_lare_bc2_c4t_fidelity.py'
+      - 'tests/rom/test_lare_bc2_c4t_lare_compiled.f90'
+      - 'tests/rom/test_lare_bc2_c4t_fmc_compiled.f90'
+      - 'tests/rom/materialize_lare_bc2_c4t_corichards_benchmark.py'
+      - 'tests/rom/validate_lare_bc2_c4t_compiled.py'
+      - 'tests/rom/run_lare_bc2_c4t_cost_screen.py'
+      - 'tests/rom/aggregate_lare_bc2_c4t.py'
+      - '.github/workflows/f-rom-lare-bc2-c4t.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4t-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
+          path: canonical
+          fetch-depth: 0
+
+      - name: Toolchain identity
+        run: |
+          gfortran --version
+          python3 --version
+          python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable C4R and C4S authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4t/c4r /tmp/c4t/c4s /tmp/c4t/controls
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/c4t/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/c4t/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/c4t/c4r.zip -d /tmp/c4t/c4r
+          echo "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65  /tmp/c4t/c4r/LARE_BC2_C4R_RESULT.json" | sha256sum -c -
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/c4t/c4r/R16_o0.txt" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/c4t/c4r/R2_o0.txt" | sha256sum -c -
+
+          recover() {
+            local member="$1" id="$2" digest="$3"
+            mkdir -p "/tmp/c4t/c4s/${member}"
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" > "/tmp/c4t/${member}.zip"
+            echo "${digest}  /tmp/c4t/${member}.zip" | sha256sum -c -
+            unzip -q "/tmp/c4t/${member}.zip" -d "/tmp/c4t/c4s/${member}"
+          }
+          recover R3 10593941575 a83f82174fcbb24a84ed206cf180c10410b23f28651e9a74a789b15e5cb6a6b4
+          recover R4 10593866721 9df480099f2b696aeb37628b3cc379a7841664d5e602b3a9f4847e38581a3bcd
+          recover R5 10593447204 0cf3a723f39c25b36223e31ba0f96031af2c4acbb539c7b918a431757e1015dd
+          recover R6 10593346387 b3da9c9f0ffc763e3e7fa7b23fb540e9ec6bb2ce85af1af61883afd141152064
+          recover R8 10593657027 ed16ce34c563f99e586d41d7dc4164bb01f0d59a8deecc95aaf3e37d3ad5fe69
+          recover R12 10593236455 ce5b4abb4073093efa2da6a08b76f419d6c9fda8baf17dcad98743e2c5d93c66
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593886536/zip" > /tmp/c4t/controls.zip
+          echo "d3a25e156c5079c57fd22bc60b60ebdf48b1b9a0171daa59b9db593d4d236a3c  /tmp/c4t/controls.zip" | sha256sum -c -
+          unzip -q /tmp/c4t/controls.zip -d /tmp/c4t/controls
+          test -f /tmp/c4t/controls/C4S_REFERENCE.f90
+
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C4T_PREREGISTRATION.json'))
+          c4r=json.load(open('integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json'))
+          c4s=json.load(open('integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_AFTER_C4S_BEFORE_COMPILED_COST_EXPOSURE'
+          assert p['pre_execution_compile_fairness_binding']['before_first_C4T_timing'] is True
+          assert c4r['status']==p['authority']['required_C4R_status']
+          assert c4r['decision']==p['authority']['required_C4R_decision']
+          assert c4s['status']==p['authority']['required_C4S_status']
+          assert c4s['decision']==p['authority']['required_C4S_decision']
+          assert c4s['value_screen_authorized'] is True
+          assert p['rossfast_disposition']['included'] is False
+          assert p['authority']['execution_source_head']=='e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1'
+          print('LARE_BC2_C4T_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Freeze 15-route fidelity table before timing
+        run: |
+          set -euo pipefail
+          mkdir -p C4T_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4t_fidelity.py             --c4r-result /tmp/c4t/c4r/LARE_BC2_C4R_RESULT.json             --c4r-r16 /tmp/c4t/c4r/R16_o0.txt             --c4s-member-dir /tmp/c4t/c4s             --c4s-closeout integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json             --prereg integration/f-rom/LARE_BC2_C4T_PREREGISTRATION.json             --output C4T_EVIDENCE/LARE_BC2_C4T_FIDELITY.json             | tee C4T_EVIDENCE/fidelity.txt
+          python3 - <<'PY'
+          import json
+          f=json.load(open('C4T_EVIDENCE/LARE_BC2_C4T_FIDELITY.json'))
+          assert f['timing_exposed'] is False
+          assert len(f['routes'])==15
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['weighted_score_used'] is False
+          print('LARE_BC2_C4T_FIDELITY_FROZEN=PASS')
+          PY
+          sha256sum C4T_EVIDENCE/LARE_BC2_C4T_FIDELITY.json > C4T_EVIDENCE/fidelity_sha256.txt
+
+      - name: Build and validate compiled LARE and FMC
+        run: |
+          set -euo pipefail
+          COMMON="-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -fopenmp -ffpe-trap=invalid,zero,overflow"
+          for opt in 0 2; do
+            gfortran $COMMON -O$opt tests/rom/test_lare_bc2_c4t_lare_compiled.f90 -o "/tmp/c4t/lare_o$opt"
+            gfortran $COMMON -O$opt tests/rom/test_lare_bc2_c4t_fmc_compiled.f90 -o "/tmp/c4t/fmc_o$opt"
+          done
+
+          mkdir -p /tmp/c4t/equivalence
+          for route in LARE_R3 LARE_R4 LARE_R5 LARE_R6 LARE_R8 LARE_R12; do
+            /tmp/c4t/lare_o0 "$route" validate > "/tmp/c4t/equivalence/${route}_o0.txt"
+            /tmp/c4t/lare_o2 "$route" validate > "/tmp/c4t/equivalence/${route}_o2.txt"
+            python3 tests/rom/validate_lare_bc2_c4t_compiled.py               --kind LARE --route "$route"               --o0 "/tmp/c4t/equivalence/${route}_o0.txt"               --o2 "/tmp/c4t/equivalence/${route}_o2.txt"               --reference /tmp/c4t/c4r/R16_o0.txt               --c4r-result /tmp/c4t/c4r/LARE_BC2_C4R_RESULT.json               --output "/tmp/c4t/equivalence/${route}.json"
+          done
+
+          /tmp/c4t/fmc_o0 validate > /tmp/c4t/equivalence/FMC_o0.txt
+          /tmp/c4t/fmc_o2 validate > /tmp/c4t/equivalence/FMC_o2.txt
+          python3 tests/rom/validate_lare_bc2_c4t_compiled.py             --kind FMC --route FMC             --o0 /tmp/c4t/equivalence/FMC_o0.txt             --o2 /tmp/c4t/equivalence/FMC_o2.txt             --reference /tmp/c4t/c4r/R16_o0.txt             --c4r-result /tmp/c4t/c4r/LARE_BC2_C4R_RESULT.json             --output /tmp/c4t/equivalence/FMC.json
+
+      - name: Materialize benchmark-capable CoRichards harness
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c4t_corichards_benchmark.py             --source /tmp/c4t/controls/C4S_REFERENCE.f90             --output /tmp/c4t/C4T_COR_REFERENCE.f90             --manifest /tmp/c4t/C4T_COR_MATERIALIZATION.json
+          cp /tmp/c4t/C4T_COR_REFERENCE.f90 canonical/tests/rom/test_lare_bc2_c4t_corichards.f90
+
+          build_cor() {
+            local route="$1" thickness="$2"
+            python3 tests/rom/materialize_lare_variable_grid_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c4t_${route}_grid.f90"               --layer-thickness-cm "$thickness"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical               --stub "c4t_${route}_grid.f90"               --target tests/rom/test_lare_bc2_c4t_corichards.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c4t/build_${route}" --opt 2
+          }
+          build_cor COR_R2 "80,80"
+          build_cor COR_R3 "140,10,10"
+          build_cor COR_R4 "130,10,10,10"
+          build_cor COR_R5 "120,10,10,10,10"
+          build_cor COR_R6 "110,10,10,10,10,10"
+          build_cor COR_R8 "90,10,10,10,10,10,10,10"
+          build_cor COR_R12 "50,10,10,10,10,10,10,10,10,10,10,10"
+          build_cor R16 "10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10"
+
+      - name: Prove CoRichards benchmark harness validation identity
+        run: |
+          set -euo pipefail
+          /tmp/c4t/build_COR_R2/rom0_test > /tmp/c4t/equivalence/COR_R2.txt
+          cmp /tmp/c4t/equivalence/COR_R2.txt /tmp/c4t/c4r/R2_o0.txt
+          /tmp/c4t/build_R16/rom0_test > /tmp/c4t/equivalence/R16.txt
+          cmp /tmp/c4t/equivalence/R16.txt /tmp/c4t/c4r/R16_o0.txt
+
+          for member in R3 R4 R5 R6 R8 R12; do
+            route="COR_${member}"
+            for hist in V01 V02 V03 V04; do
+              C4S_HISTORY_FILTER="$hist" "/tmp/c4t/build_${route}/rom0_test" > "/tmp/c4t/equivalence/${route}_${hist}.txt"
+              cmp "/tmp/c4t/equivalence/${route}_${hist}.txt" "/tmp/c4t/c4s/${member}/${member}-${hist}-o2.txt"
+            done
+          done
+
+          python3 - <<'PY'
+          import json,glob
+          vals={}
+          for p in sorted(glob.glob('/tmp/c4t/equivalence/*.json')):
+              r=json.load(open(p)); assert r['pass'] is True; vals[r['route']]=r
+          expected={'LARE_R3','LARE_R4','LARE_R5','LARE_R6','LARE_R8','LARE_R12','FMC'}
+          assert set(vals)==expected
+          mat=json.load(open('/tmp/c4t/C4T_COR_MATERIALIZATION.json'))
+          assert mat['solver_or_physics_changed'] is False
+          assert mat['numerical_policy_changed'] is False
+          out={
+            'schema':'swap5.lare.bc2.c4t.compiled-equivalence-aggregate.v1',
+            'pass':True,
+            'standalone_routes':{k:{'max_abs_difference':v['maximum_checked_abs_difference'],'O0_O2_identity':v['O0_O2_stdout_identity']} for k,v in vals.items()},
+            'corichards_R2_R16_exact_control_reproduction':True,
+            'corichards_R3_R12_all_24_history_traces_byte_identical_to_C4S':True,
+            'corichards_materialization':mat,
+            'timing_authorized':True
+          }
+          json.dump(out,open('C4T_EVIDENCE/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json','w'),indent=2,sort_keys=True)
+          print(json.dumps(out,sort_keys=True))
+          PY
+          cp /tmp/c4t/C4T_COR_MATERIALIZATION.json C4T_EVIDENCE/
+          sha256sum C4T_EVIDENCE/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json > C4T_EVIDENCE/equivalence_sha256.txt
+
+      - name: Build frozen timing route map
+        run: |
+          python3 - <<'PY'
+          import json
+          base=['LARE_R3','LARE_R4','LARE_R5','LARE_R6','LARE_R8','LARE_R12',
+                'COR_R2','COR_R3','COR_R4','COR_R5','COR_R6','COR_R8','COR_R12','FMC','R16']
+          commands={}
+          for r in base:
+              if r.startswith('LARE_'):
+                  commands[r]=['/tmp/c4t/lare_o2',r,'bench','{repeats}']
+              elif r=='FMC':
+                  commands[r]=['/tmp/c4t/fmc_o2','bench','{repeats}']
+              elif r=='R16':
+                  commands[r]=['/tmp/c4t/build_R16/rom0_test','bench','{repeats}','R16']
+              else:
+                  commands[r]=[f'/tmp/c4t/build_{r}/rom0_test','bench','{repeats}',r]
+          json.dump({'base_order':base,'commands':commands},open('/tmp/c4t/routes.json','w'),indent=2,sort_keys=True)
+          PY
+
+      - name: Execute preregistered shared-host timing screen
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          eq=json.load(open('C4T_EVIDENCE/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json'))
+          f=json.load(open('C4T_EVIDENCE/LARE_BC2_C4T_FIDELITY.json'))
+          assert eq['pass'] is True and eq['timing_authorized'] is True
+          assert f['timing_exposed'] is False
+          print('LARE_BC2_C4T_TIMING_GATE=PASS')
+          PY
+          python3 tests/rom/run_lare_bc2_c4t_cost_screen.py             --routes-json /tmp/c4t/routes.json             --output C4T_EVIDENCE/LARE_BC2_C4T_TIMING.json             | tee C4T_EVIDENCE/timing.txt
+
+      - name: Adjudicate purpose-dependent cost-fidelity frontier
+        run: |
+          set -euo pipefail
+          python3 tests/rom/aggregate_lare_bc2_c4t.py             --fidelity C4T_EVIDENCE/LARE_BC2_C4T_FIDELITY.json             --timing C4T_EVIDENCE/LARE_BC2_C4T_TIMING.json             --prereg integration/f-rom/LARE_BC2_C4T_PREREGISTRATION.json             --compiled-equivalence C4T_EVIDENCE/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json             --output C4T_EVIDENCE/LARE_BC2_C4T_RESULT.json             | tee C4T_EVIDENCE/aggregate.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('C4T_EVIDENCE/LARE_BC2_C4T_RESULT.json'))
+          assert r['decision'] in (
+            'C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED',
+            'C4T_LARE_PURPOSE_VALUE_SIGNAL_NEGATIVE',
+            'C4T_LARE_PURPOSE_VALUE_SIGNAL_UNRESOLVED',
+            'C4T_IMPLEMENTATION_OR_TIMING_BLOCKED'
+          )
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['formal_performance_claim'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4T_FIREWALL=PASS')
+          PY
+          sha256sum C4T_EVIDENCE/* > C4T_EVIDENCE/sha256.txt
+
+      - name: Upload C4T evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4t
+          path: C4T_EVIDENCE/
+          if-no-files-found: warn
