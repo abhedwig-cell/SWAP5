@@ -346,3 +346,30 @@ The functional question can now be split cleanly:
 8. **Implicit analytical control:** default MvG contains a near-saturation Ksat-clamp Jacobian mismatch on the tested public lineage. A residual-consistent derivative candidate reduces the Hupsel K0/K1 GWL discrepancy from more than 11 m to 0.626 cm and makes corrected analytical/table K1 trajectories agree within 0.00043 cm maximum GWL difference.
 
 The acceleration hypothesis is now conditionally supported. Direct indexing removes the legacy lookup penalty; under corrected `SWKIMPL=0` this only reaches parity, while under corrected `SWKIMPL=1` a 150-250 row direct TSPACK representation produces a repeatable 5-6% whole-model speedup in Hupsel with near-analytical hydrological output. The next question is whether that gain survives a broader soil/forcing/application-envelope qualification and whether the same representation can be cleanly admitted through the SWAP5 typed constitutive-provider architecture.
+
+
+### 13. Broad-envelope gate failed and the first direct-TSPACK candidate is superseded for transfer testing
+
+The preregistered five-scenario transfer gate did **not** pass. A repaired non-fail-fast diagnostic subsequently completed 16 of 20 scenario/route combinations and preserved the failure without changing acceptance limits.
+
+The decisive new result is that the first 250-row direct-TSPACK conductivity representation is not shape-safe across the selected Staring envelope.
+
+For the generated B12 table, the actual table engine produced:
+
+- maximum sampled `|dK/dh| = 3.87e4`;
+- minimum sampled `dK/dh = -19.85`;
+- maximum relative K error of about `0.71` in the direct analytical/table derivative-shape comparison.
+
+For O13, maximum sampled `|dK/dh|` was about `1.86e3` and maximum relative K error about `0.53`.
+
+This is not an arbitrary spline accident. The implemented analytical default-MvG residual itself switches to Ksat at `Se > 1-1e-6`. Across the 30 StaringSeries1994 parameter rows, 21 have a Ksat/K-below jump factor of at least 1.05 and 9 have a factor of at least 1.25. B12 changes from about `5.00` to `15.46 cm/d` at that branch, a factor `3.09`; O13 changes from about `1.536` to `3.32 cm/d`, factor `2.16`.
+
+A single continuous log(K) spline therefore cannot be a faithful representation of the implemented residual across this branch. It bridges a finite jump, which explains the extreme near-saturation table derivative and the large K0 transfer errors observed for loam-mid and clay-wet cases.
+
+The original direct-TSPACK candidate remains valid evidence for the Hupsel parameterization, but it is **superseded as the transfer candidate**. The next research candidate keeps the Ksat plateau as an explicit branch and interpolates only the continuous sub-threshold conductivity relation. This is a new candidate and cannot retroactively change the failed preregistered gate.
+
+See:
+
+- `ENVELOPE_GATE_RESULT.md`;
+- `ENVELOPE_DIAGNOSTIC_RESULT.md`;
+- `TAB-HYD-004-ksat-clamp-discontinuity.md`.
