@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.lare.bc2.c5k.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5K",
+  "status": "TECHNICAL_INSTRUMENTATION_ANCHOR_REPAIRED_BEFORE_ANY_SOLVER_RESPONSE",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35505566475,
+    "failure_stage": "Materialize logging-only frozen C5I slice",
+    "failure": "post-step instrumentation source anchor matched zero locations",
+    "solver_executed": false,
+    "hydrological_response_exposed": false,
+    "theory_response_exposed": false,
+    "scientific_gate_failure": false
+  },
+  "repair": {
+    "old_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
+    "new_materializer_blob": "570722580fce88123f61d8d93240fea93d74abdc",
+    "change": "Anchor the identical POST logging insertion on the unique LAREGW1_STATE output statement rather than on an overly specific preceding finite-profile assertion.",
+    "logging_payload_changed": false,
+    "pre_step_logging_changed": false,
+    "post_step_logging_changed": false,
+    "solver_input_changed": false,
+    "solver_or_physics_changed": false,
+    "analyzer_changed": false,
+    "theory_formula_changed": false,
+    "numerical_gate_changed": false,
+    "response_based": false
+  },
+  "rerun_required": true,
+  "model_changed": false
+}
