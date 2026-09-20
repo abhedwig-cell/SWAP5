@@ -56,6 +56,21 @@ This is not chosen as a numerical damping trick. It follows from the existing re
 
 The existing `1e8` value instead creates a Jacobian term that is not the derivative of the conductivity used in the residual.
 
+## Cross-check against the analytical SWKIMPL=1 control
+
+A later audit step found an analogous mismatch in the default analytical MvG route (TAB-HYD-003): the residual clamps K to Ksat over a finite near-saturation interval while its `dhconduc` branch continues to use the derivative of the unclamped MvG expression.
+
+This matters for interpreting the table candidate. The previously unmodified analytical `SWKIMPL=1` trajectory was itself inconsistent and differed from analytical `SWKIMPL=0` by more than 11 m in maximum Hupsel GWL.
+
+After applying the same residual/Jacobian rule independently to both representations:
+
+- corrected analytical K1 versus corrected table K1: GWL max abs `0.00043 cm`;
+- GWL RMSE `1.54e-5 cm`;
+- drainage and TACT match at written output precision;
+- DSTOR max abs `1.41e-10 cm`.
+
+This supports, rather than weakens, the zero derivative at the table's constant endpoint branch. The value `1e8` was not reproducing a required analytical reference behavior; it was one of two inconsistent near-saturation Jacobian policies.
+
 ## Qualification boundary
 
 The first three bounded qualification items have now passed on the public/transitional lineage:
@@ -68,7 +83,7 @@ Before any production/B1 admission, the remaining requirements are:
 
 4. exact-B0 source binding, or an explicit authority decision that the correction belongs only to a later/current source lineage;
 5. broader regression evidence that interior table behavior and `SWKIMPL=0` are unchanged;
-6. an explicit numerical acceptance envelope for the non-identical `SWKIMPL=0` and `SWKIMPL=1` trajectories;
+6. an explicit numerical acceptance envelope for the non-identical but now mutually consistent analytical/table `SWKIMPL=1` trajectories relative to `SWKIMPL=0`;
 7. separate handling of the current typed-input reachability gap, which is independent of this derivative defect.
 
 The candidate must not be described as an acceleration result. Its purpose is Jacobian consistency and functional correctness.
