@@ -221,6 +221,14 @@ def main()->None:
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")
             print("FGC44_MODFLOW_THEN_SWAP_THEN_LEDGER_PUBLICATION=PASS")
             print("FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS")
+            t0,t1,origin,candidate=swap.csr04_next_window_lineage(WINDOW_DAY)
+            require(origin==revision and candidate==revision+1,"CSR04 next-window revision lineage mismatch")
+            require(abs(t0-time_day)<=1e-14 and abs(t1-(time_day+WINDOW_DAY))<=1e-14,"CSR04 next-window time lineage mismatch")
+            nhcof,nrhs,nhref=swap.csr04_next_window_predictor(WINDOW_DAY,1.0e-6)
+            require(all(math.isfinite(x) for x in (nhcof,nrhs,nhref)) and abs(nhcof)>0.0,"CSR04 next-window predictor invalid")
+            require(swap.state()==(revision,time_day,ledger_count,ledger_exchange),"CSR04 predictor rebuild mutated accepted state")
+            print(f"CSR04_NEXT_WINDOW_T0={t0:.17g} T1={t1:.17g} ORIGIN={origin} CANDIDATE={candidate}")
+            print("CSR04_NEXT_WINDOW_PREDICTOR_FROM_COMMITTED_STATE=PASS")
         finally:
             if initialized:
                 try: raw.finalize()
