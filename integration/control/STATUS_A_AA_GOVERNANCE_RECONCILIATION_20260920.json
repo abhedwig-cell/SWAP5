@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.governance_reconciliation.v1",
+  "work_unit": "GOV-REC01",
+  "date": "2026-09-20",
+  "canonical_base": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+  "predecessor_pr": 72,
+  "predecessor_branch": "governance/quality-backport-20260908",
+  "predecessor_head": "a6b991b4702e061accd1b16f9450f99e18aba032",
+  "decision": "RECOMPOSE_CURRENT_GOVERNANCE_DO_NOT_MERGE_STALE_BRANCH_AS_IS",
+  "status_context": {
+    "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "rationale": "PR #72 predates the admitted frozen Status-A review baseline. Its governance principles remain useful, but its status wording and navigation cannot be replayed as current authority."
+  },
+  "file_disposition": [
+    {
+      "path": "docs/development/quality-governance-a-aa.md",
+      "disposition": "RECOMPOSE_CURRENT",
+      "reason": "Adopt governance principles while changing premise from pre-Status-A maturation to post-Status-A evidence preservation toward AA."
+    },
+    {
+      "path": "docs/development/status-a-aa-gap-register.md",
+      "disposition": "RECOMPOSE_CURRENT",
+      "reason": "Convert from an A-or-AA readiness register into an AA evidence-planning surface with no formal readiness claim."
+    },
+    {
+      "path": "docs/development/lessons-register.md",
+      "disposition": "RECOMPOSE_CURRENT",
+      "reason": "Retain reusable lessons and add current control/coupling lessons."
+    },
+    {
+      "path": "docs/verification/theory-code-discrepancy-register.md",
+      "disposition": "RECOMPOSE_AND_ACTIVATE",
+      "reason": "Adopt the register and add the live coupling-authority discrepancy as INVESTIGATING without pre-admitting PR #486."
+    },
+    {
+      "path": "docs/development/documentation.md",
+      "disposition": "PATCH_CURRENT",
+      "reason": "Current F-DOC20+ documentation workflow already supersedes old publication/status wording; add only current quality-governance linkage and reconciliation rule."
+    },
+    {
+      "path": "docs/development/workstream-execution-protocol.md",
+      "disposition": "PATCH_CURRENT",
+      "reason": "Current protocol already supersedes old persistence/recovery text; add shared-semantics merge-contract linkage only."
+    },
+    {
+      "path": "mkdocs.yml",
+      "disposition": "PATCH_CURRENT_NAV_ONLY",
+      "reason": "Preserve current review/science/publication navigation and add current governance pages."
+    }
+  ],
+  "preserved_pr72_principles": [
+    "theory-documentation-implementation-evidence reconciliation",
+    "versioned discrepancy handling",
+    "explicit precision policy",
+    "parallel where ownership is disjoint and serial where semantics are shared",
+    "merge contracts for shared integration surfaces",
+    "documentation as qualification evidence",
+    "lessons register and cross-model reuse discipline",
+    "Status-AA evidence planning without retrospective reconstruction"
+  ],
+  "rejected_stale_assumptions": [
+    "Status A is still an unachieved current target",
+    "old mkdocs navigation can replace the current Status-A review/science/publication structure",
+    "historical F-CI18 exit is the current project-control head",
+    "a governance backport can itself authorize production mutation"
+  ],
+  "live_shared_authority_watch": {
+    "pr": 486,
+    "status": "NONCANONICAL_QUALIFICATION_IN_PROGRESS",
+    "discrepancy_id": "TCD-SWAP5-001",
+    "rule": "Record the discrepancy without deciding or admitting the production repair in this governance workunit."
+  },
+  "scope": {
+    "production_source_mutation": false,
+    "reference_mutation": false,
+    "test_semantics_mutation": false,
+    "physics_mutation": false,
+    "solver_mutation": false,
+    "coupling_implementation_mutation": false
+  },
+  "admission_effect": "On canonical admission of GOV-REC01, PR #72 becomes superseded as live governance authority and may be closed while preserving its historical discussion."
+}
