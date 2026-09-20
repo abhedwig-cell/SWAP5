@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hci.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCI",
+  "decision": "B1HCI_INDEPENDENT_ODE_ORACLE_RELATION_MIXED",
+  "execution": {
+    "workflow_run": 35502486907,
+    "executed_head": "df73ac683ee2c4141b8a957da3b57b2c8ee66385",
+    "aggregate_artifact_id": 10602039873,
+    "aggregate_artifact_digest": "sha256:02dfb77dbf4829eb495a6c635a402a462650d59f037fc76a944082746aa86f28",
+    "raw_result_sha256": "2a32ab82c201affe52458c3e2907e6e17f1658812660712616ab4f666646698e",
+    "conclusion": "success"
+  },
+  "panel": {
+    "independent_oracle_agreement_count_of_6": {
+      "storage_rms": 6,
+      "cumulative_bottom_rms": 6,
+      "qavg_rms": 6,
+      "qend_rms": 6,
+      "mapped_theta_rms": 6
+    },
+    "heun_pass_count_of_6": {
+      "storage_rms": 5,
+      "cumulative_bottom_rms": 6,
+      "qavg_rms": 6,
+      "qend_rms": 6,
+      "mapped_theta_rms": 6
+    },
+    "material_decisions": {
+      "B02": "B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED",
+      "B05": "B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED",
+      "B06": "B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED",
+      "B11": "B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED",
+      "B12": "B1HCI_MATERIAL_HEUN_ORACLE_RELATION_MIXED",
+      "B16": "B1HCI_MATERIAL_HEUN_LIMIT_SUPPORTED"
+    }
+  },
+  "B12_diagnosis": {
+    "oracle_pair_storage_rms_cm": 3.3306690738754696e-15,
+    "heun_to_DOP853_storage_rms_cm": {
+      "dt_1e_4": 1.2065917929039516e-13,
+      "dt_5e_5": 3.3982076966222663e-13,
+      "dt_2p5e_5": 1.6710253314589699e-12
+    },
+    "B1HCH_mid_fine_storage_rms_cm": 1.731315570107437e-12,
+    "other_primary_components": "pass as NUMERICALLY_SATURATED",
+    "interpretation": "The independent oracles agree while only total storage drifts away from the oracle as Heun substep count increases. Bottom exchange and profile theta remain at numerical-floor scales. This is a numerical-invariant/floating-accumulation signature, not evidence for a new hydrological state or closure."
+  },
+  "adjudication": [
+    "DOP853 and Radau resolve the same frozen R16_OP Layer-ROM ODE consistently on all six materials under the preregistered numerical gates.",
+    "Five materials pass the complete Heun-to-oracle gate. B11, which failed the previous formal self-convergence label because every component was already saturated, is independently confirmed as numerically resolved.",
+    "B12 is the only remaining exception and only total storage fails. Its independent-oracle storage difference is roughly 3.3e-15 cm, whereas the finest Heun storage error is roughly 1.67e-12 cm.",
+    "No closure or state redesign is justified by B1HCI. The next bounded diagnostic is the B12 linear-invariant/floating-point accumulation mechanism."
+  ],
+  "next": "LAYER-ROM-B1HCJ B12 invariant-drift decomposition on the unchanged R16_OP ODE; no Reference trajectory and no hydrological model change.",
+  "firewalls": [
+    "NO_REFERENCE_IN_PRIMARY_DIAGNOSIS",
+    "NO_CLOSURE_OR_STATE_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
