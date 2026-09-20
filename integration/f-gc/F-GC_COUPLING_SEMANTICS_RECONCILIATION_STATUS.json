@@ -242,6 +242,13 @@
       "primary_discriminant": "memory separation and convergence toward quasi-steady MODFLOW / transient SWAP limit",
       "execution": "PENDING"
     },
-    "code_guard_note": "existing geometric storage-partition fail-closed code is retained temporarily but is not extended; scientific authority may supersede it with state/storage-role authority"
+    "code_guard_note": "existing geometric storage-partition fail-closed code is retained temporarily but is not extended; scientific authority may supersede it with state/storage-role authority",
+    "execution": "PHASE_B_RUN_284_DIAGNOSTIC_HARNESS_FAILURE_REPAIRED_RUN_286_IN_PROGRESS",
+    "latest_execution_evidence": {
+      "run_284": "existing F-GC44 live E2E passed; Phase-B stopped before window 2 with diagnostic next-window predictor status 201",
+      "repair_commit": "6fd5506dacd56692c65b3b7a24b49881970b1607",
+      "run_286": "IN_PROGRESS",
+      "scientific_disposition": "NO_STORAGE_MEMORY_INFERENCE_FROM_RUN_284"
+    }
   }
 }
