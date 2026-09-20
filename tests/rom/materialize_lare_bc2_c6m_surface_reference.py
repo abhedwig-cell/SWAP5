@@ -54,7 +54,7 @@ def bottom_block()->str:
     return """  pure integer function bottom_kind(ih) result(value)
     integer,intent(in) :: ih
     if(ih>=1.and.ih<=4)then
-      value=BOTTOM_FREE_DRAINAGE
+      value=BOTTOM_FIXED_HEAD
     else
       value=-1
     end if
@@ -127,6 +127,38 @@ def forcing_label_block()->str:
 """
 
 
+def configure_case_block()->str:
+    return """  subroutine configure_case(ih,step,h0,k0,qeq,p,forcing)
+    integer,intent(in) :: ih,step
+    real(real64),intent(in) :: h0,k0,qeq
+    type(fmr_b110_physical_parameters_t),intent(inout) :: p
+    type(fmr_b110_physical_forcing_t),intent(inout) :: forcing
+    real(real64) :: multiplier
+    multiplier=top_multiplier(forcing_kind(ih),step)
+    call require(multiplier>0.0_real64,'LAREDYN0R C6M valid top multiplier')
+    p%total_balance_tolerance=original_total_tol
+    p%bottom_mode=5
+    forcing%top_head=0.0_real64
+    forcing%top_flux=-multiplier*k0
+    forcing%bottom_flux=qeq
+    forcing%bottom_head=h0
+  end subroutine configure_case
+"""
+
+
+def bottom_label_block()->str:
+    return """  pure function bottom_label(kind) result(label)
+    integer,intent(in) :: kind
+    character(len=20) :: label
+    select case(kind)
+    case(BOTTOM_FIXED_FLUX); label='FIXED_FLUX'
+    case(BOTTOM_FIXED_HEAD); label='FIXED_HEAD_INITIAL'
+    case default; label='UNKNOWN'
+    end select
+  end function bottom_label
+"""
+
+
 def profile_loop()->str:
     return """      if(mod(step,OUTPUT_FACTOR)==0)then
         call require(mod(numnod,16)==0,'LAREDYN0R C6M geometry divisible by 16')
@@ -164,6 +196,12 @@ def main()->int:
         f"real(real64), parameter :: step_dt={0.0008/factor:.12g}_real64",
         "transaction dt"
     )
+    text=one(
+        text,
+        "integer, parameter :: BOTTOM_FIXED_FLUX=1, BOTTOM_FREE_DRAINAGE=2",
+        "integer, parameter :: BOTTOM_FIXED_FLUX=1, BOTTOM_FIXED_HEAD=2",
+        "C6M lower-boundary labels"
+    )
     text=block(
         text,
         r"^  pure integer function bottom_kind\(ih\) result\(value\).*?^  end function bottom_kind\n",
@@ -199,6 +237,18 @@ def main()->int:
         r"^  pure function forcing_label\(kind\) result\(label\).*?^  end function forcing_label\n",
         forcing_label_block(),
         "forcing label"
+    )
+    text=block(
+        text,
+        r"^  subroutine configure_case\(ih,step,h0,k0,qeq,p,forcing\).*?^  end subroutine configure_case\n",
+        configure_case_block(),
+        "fixed-initial-head surface forcing"
+    )
+    text=block(
+        text,
+        r"^  pure function bottom_label\(kind\) result\(label\).*?^  end function bottom_label\n",
+        bottom_label_block(),
+        "bottom label"
     )
 
     text=one(
@@ -243,7 +293,9 @@ def main()->int:
         "S04":{"Se":0.75,"phase1":"DRY","phase1_observations":320,"phase2":"WET","phase2_observations":192,"hold_observations":512}
       },
       "top_flux_multipliers":{"WET":1.125,"DRY":0.875,"HOLD":1.0},
-      "bottom_boundary":"FREE_DRAINAGE",
+      "bottom_boundary":"FIXED_INITIAL_PRESSURE_HEAD",
+      "bottom_mode":5,
+      "bottom_head_rule":"Hold bottom_head at the initial uniform equilibrium pressure head h0 for all surface-forcing phases.",
       "root_sink_zero":True,
       "profile_output":{"bins":16,"bin_thickness_cm":10.0,"only_observation_windows":True},
       "node_output_suppressed":True,
