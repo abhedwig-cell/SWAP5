@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - work/f-gc38-modflow6-prepared-solve-session-reconciled
+      - work/f-gc-coupling-semantics-reconciliation
     paths:
       - 'src/adapter/modflow6_prepared_solve_session.py'
       - 'src/adapter/modflow6_fgc34_ctypes_publisher.py'
