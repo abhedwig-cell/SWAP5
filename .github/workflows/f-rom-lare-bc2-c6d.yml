@@ -1,0 +1,221 @@
+name: F-ROM-LARE BC2-C6D frozen-state BEMR flux discriminator
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6d-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    strategy:
+      fail-fast: false
+      matrix:
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify frozen C6D authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py)" = "5b22a72c7f3f51e4bbfaf978953c7ff50a425b29"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6d_bemr_flux.py)" = "d4826988daa11cdaa48bcd302b4b3c43809ca34e"
+          test "$(git hash-object tests/rom/aggregate_lare_bc2_c6d_bemr_flux.py)" = "4777b0fad33ff2e293173d69044d777b425dc67e"
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5t_history_slice.py)" = "10983adaf736a0eb4c64a443f78db5ea38e13ae3"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5t_instrumentation.py)" = "10926dd5f32b8a7dbad18febe4e1782688ee4ec6"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c6d_bemr_flux.py
+          python3 -m py_compile tests/rom/aggregate_lare_bc2_c6d_bemr_flux.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6D_INSTRUMENTED_RESPONSE_OR_OPERATOR_METRICS'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert p['scientific_firewall']['candidate_feedback'] is False
+          assert p['scientific_firewall']['moment_fitting'] is False
+          assert c['decision']=='AUTHORIZE_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING'
+          print('LARE_BC2_C6D_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover authoritative C5T logging baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5t
+          gh run download 35509921623 -n lare-bc2-c5t -D /tmp/c5t
+          test -s /tmp/c5t/C5T_R2048_T16_INSTRUMENTED_o0.txt
+          echo "61de2533af605eea898a8912d086b11ddbdb43e729595324d27d24f9e64dab01  /tmp/c5t/C5T_R2048_T16_INSTRUMENTED_o0.txt" | sha256sum -c -
+
+      - name: Materialize logging-only C6D history slice
+        run: |
+          set -euo pipefail
+          h="${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c5t_history_slice.py \
+            --c5t-materializer tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py \
+            --c5r-materializer tests/rom/materialize_lare_bc2_c5r_reference.py \
+            --c5p-materializer tests/rom/materialize_lare_bc2_c5p_reference.py \
+            --c5n-materializer tests/rom/materialize_lare_bc2_c5n_reference.py \
+            --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py \
+            --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py \
+            --source tests/rom/test_lare_rs1_gw_library.f90 \
+            --history-index "$h" \
+            --output canonical/tests/rom/test_lare_bc2_c6d_slice.f90 \
+            --manifest /tmp/c6d_manifest.json
+          python3 - <<'PY'
+          import json
+          m=json.load(open('/tmp/c6d_manifest.json'))
+          assert m['response_based'] is False
+          assert m['solver_or_physics_changed'] is False
+          assert m['diagnostic_partition_only'] is True
+          print('LARE_BC2_C6D_MATERIALIZATION=PASS')
+          PY
+
+      - name: Execute unchanged Reference with moment logging
+        run: |
+          set -euo pipefail
+          h="${{ matrix.history }}"
+          expected=$(printf 'R%02d' "$h")
+          mkdir -p history_evidence
+          stub="canonical/c6d_R2048_h${h}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output "$stub" --nodes 2048 --dz-cm 0.078125
+          build="/tmp/c6d/build_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+            --root canonical \
+            --stub "c6d_R2048_h${h}_stubs.f90" \
+            --target tests/rom/test_lare_bc2_c6d_slice.f90 \
+            --external-source src/legacy/b1_10_port/headcalc.f90 \
+            --build "$build" --opt 0
+          log="history_evidence/C6D_R2048_T16_${expected}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq 'LAREGW1_C6D_MOMENT_INSTRUMENTATION_GENERATED=TRUE' "$log"
+          test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_PROFILE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_C5T_LAYER|' "$log")" -eq 12288
+          test "$(grep -c '^LAREGW1_C5T_FACE|' "$log")" -eq 11264
+          test "$(grep -c '^LAREGW1_C6D_MOMENT|' "$log")" -eq 12288
+          test "$(grep -c '^LAREGW1_C6D_BOUNDARY|' "$log")" -eq 1024
+
+      - name: Analyze frozen-state BEMR history
+        run: |
+          set -euo pipefail
+          h="${{ matrix.history }}"
+          expected=$(printf 'R%02d' "$h")
+          python3 tests/rom/analyze_lare_bc2_c6d_bemr_flux.py \
+            --instrumented "history_evidence/C6D_R2048_T16_${expected}.txt" \
+            --c5t-baseline /tmp/c5t/C5T_R2048_T16_INSTRUMENTED_o0.txt \
+            --history "$expected" \
+            --prereg integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json \
+            --c6c-prereg integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json \
+            --c6c-closeout integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json \
+            --c6c-core tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --c5t-analyzer tests/rom/analyze_lare_bc2_c5t_dse2p.py \
+            --output "history_evidence/LARE_BC2_C6D_HISTORY_${expected}.json" \
+            | tee history_evidence/analyzer.txt
+          python3 - <<'PY'
+          import glob,json
+          p=glob.glob('history_evidence/LARE_BC2_C6D_HISTORY_*.json')
+          assert len(p)==1
+          r=json.load(open(p[0]))
+          assert all(r['identity'][k] for k in ('state','profile','layer','face'))
+          assert r['scientific_firewall']['candidate_feedback'] is False
+          assert r['scientific_firewall']['moment_fitting'] is False
+          print('LARE_BC2_C6D_HISTORY_FIREWALL=PASS')
+          PY
+          rm -f history_evidence/C6D_R2048_T16_*.txt
+          sha256sum history_evidence/* > history_evidence/sha256.txt
+
+      - name: Upload C6D history evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6d-history-${{ matrix.history }}
+          path: history_evidence/
+          if-no-files-found: error
+
+  aggregate:
+    needs: history
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install aggregation dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover C6D history evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c6d-history-*
+          path: /tmp/c6d-histories
+          merge-multiple: false
+
+      - name: Aggregate and adjudicate C6D
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6D_EVIDENCE
+          python3 tests/rom/aggregate_lare_bc2_c6d_bemr_flux.py \
+            --history-dir /tmp/c6d-histories \
+            --prereg integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json \
+            --output LARE_BC2_C6D_EVIDENCE/LARE_BC2_C6D_RESULT.json \
+            | tee LARE_BC2_C6D_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json LARE_BC2_C6D_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json LARE_BC2_C6D_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6D_EVIDENCE/LARE_BC2_C6D_RESULT.json'))
+          assert r['status'] in (
+            'C6D_BEMR_SUPPORTED_FOR_BOUNDARY_EXTENSION_QUALIFICATION',
+            'C6D_BEMR_MIXED_NO_FREE_RUNNING',
+            'C6D_BEMR_NOT_SUPPORTED',
+            'C6D_BEMR_NOT_SUPPORTED_NUMERICAL_QUALIFICATION_FAILED'
+          )
+          assert r['instrumentation_identity_pass'] is True
+          f=r['scientific_firewall']
+          assert f['blind_validation'] is False
+          assert f['candidate_feedback'] is False
+          assert f['production_reference_changed'] is False
+          assert f['free_running_bemr_implemented'] is False
+          assert f['moment_fitting'] is False
+          assert f['moment_localization'] is False
+          assert f['c6c_retuning'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6D_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6D_EVIDENCE/* > LARE_BC2_C6D_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C6D evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6d
+          path: LARE_BC2_C6D_EVIDENCE/
+          if-no-files-found: error
