@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.layer-rom.phase-a2b.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A2B",
+  "status": "CLOSED_STORAGE_ONLY_CLOSURE_SCREEN_NEGATIVE_STATE_AUGMENTATION_AUTHORIZED",
+  "decision": "A2B_NO_STORAGE_ONLY_CLOSURE_SUPPORTED",
+  "authority": {
+    "canonical_reconciled": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "preregistration": "integration/f-rom/LAYER_ROM_A2B_PREREGISTRATION.json",
+    "result": "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
+    "workflow_run": 35494593395,
+    "executed_head": "ed23f162e98b1365e3b4021f228b19486467c383",
+    "artifact_id": 10599628932,
+    "artifact_digest": "sha256:7c34670ea1dea618c014e55bd99959f809a82c77bacd17ce829887f13b5b33d5"
+  },
+  "conclusions": [
+    "Integrated-centroid and storage-constrained quasi-steady closures are numerically well behaved on the frozen cohort but are not broadly superior to the standard LARE closure.",
+    "Their pooled L3 improvement is driven by the high-state S3_B1_F3 case; all three S2 cases worsen on both RMS and maximum long-interface flux error.",
+    "No storage-only closure tested in A2 or A2B satisfies the frozen broad-support rule.",
+    "The preregistered state-augmentation gate is activated. The next experiment may add one physically interpretable gradient or moment coordinate, but may not fit an empirical correction."
+  ],
+  "next_authorized": "LAYER-ROM-A3_MINIMAL_MOMENT_STATE_OPERATOR_AUDIT",
+  "held": [
+    "reduced-state propagation",
+    "application acceptance",
+    "performance qualification",
+    "production ROM",
+    "empirical correction"
+  ],
+  "production_rom_authorized": false
+}
