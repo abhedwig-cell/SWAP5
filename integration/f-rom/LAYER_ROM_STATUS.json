@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+  "checkpoint_commit": "da7469e9603a7fdc3942b5366b4f4c5219e41e3c",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_A3_EXECUTION_IN_PROGRESS",
-  "last_reconciled_head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_A3_CLOSED_A4_RECONCILIATION_NEXT",
+  "last_reconciled_head": "da7469e9603a7fdc3942b5366b4f4c5219e41e3c",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
@@ -22,7 +22,10 @@
     ".github/workflows/f-rom-layer-a3-moment-operator.yml",
     "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
     "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json",
-    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json"
+    "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
+    "integration/f-rom/LAYER_ROM_A3_RESULT.json",
+    "integration/f-rom/LAYER_ROM_A3_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_A3_EXECUTION_AUTHORITY.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -44,7 +47,10 @@
     "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
     "integration/f-rom/LAYER_ROM_A2B_CLOSEOUT.json",
     "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
-    "work/f-rom-lare-rs1 as selective noncanonical provenance only"
+    "work/f-rom-lare-rs1 as selective noncanonical provenance only",
+    "GitHub Actions run 35495220671 / artifact 10599939300 for authoritative A3 rerun",
+    "integration/f-rom/LAYER_ROM_A3_RESULT.json",
+    "integration/f-rom/LAYER_ROM_A3_CLOSEOUT.json"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -52,8 +58,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete A3 first-moment teacher-forced operator audit in workflow run 35495220671. If supported, preregister a continuity-based M1 evolution law before any propagation. If unsupported, do not fit an empirical correction; compare second-moment/front state against explicit L4 resolution under a new preregistration.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f. A2B is closed negative; A3 has one authoritative analyzer/workflow and its numerical authority is reconciled before execution.",
+  "next_action": "Reconcile the explicit-layer fidelity frontier across fixed-flux and fixed-head B01 evidence, separating A1 state-information error, LARE closure error and same-partition CoRichards discretization error. Freeze no application threshold and create no new candidate dynamics.",
+  "recovery_point": "Resume from work/f-rom-layer-a after A3 closeout. A3 authoritative rerun is 35495220671 / artifact 10599939300 and reproduced the earlier operator result. Next phase is evidence-only A4 cross-regime frontier reconciliation.",
   "blockers": [],
   "scope_guards": [
     "research only",
