@@ -168,6 +168,12 @@ def build_model(workdir: Path) -> None:
         k=1.0,
         save_flows=True,
     )
+    flopy.mf6.ModflowGwfoc(
+        gwf,
+        budget_filerecord="fgc38.cbc",
+        head_filerecord="fgc38.hds",
+        saverecord=[("HEAD", "ALL"), ("BUDGET", "ALL")],
+    )
     flopy.mf6.ModflowGwfsto(
         gwf,
         iconvert=1,
@@ -335,6 +341,21 @@ def run_case(
             timestep_prepared = False
             raw_kernel.finalize()
             initialized = False
+
+            # CSR-04 qualification uses MODFLOW's own accepted cell-budget
+            # output rather than reconstructing storage from head changes.
+            budget = flopy.utils.CellBudgetFile(workdir / "fgc38.cbc", precision="double")
+            unique = {str(name).strip() for name in budget.get_unique_record_names(decode=True)}
+            require("STO-SS" in unique or "STO-SY" in unique, "CSR-04 MODFLOW STO budget record missing")
+            sto_terms = []
+            for label in ("STO-SS", "STO-SY"):
+                if label in unique:
+                    sto_terms.extend(budget.get_data(text=label))
+            require(len(sto_terms) > 0, "CSR-04 accepted STO budget data unavailable")
+            sto_rate_m3_per_day = float(sum(np.sum(np.asarray(term)) for term in sto_terms))
+            require(math.isfinite(sto_rate_m3_per_day), "CSR-04 non-finite STO budget")
+            print(f"F_GC_CSR04_MODFLOW_STO_RATE_M3_PER_DAY={sto_rate_m3_per_day:.17g}")
+            print("F_GC_CSR04_NATIVE_MODFLOW_STO_BUDGET=PASS")
 
             return final_head, accepted_xold, heads, kernel
         finally:
