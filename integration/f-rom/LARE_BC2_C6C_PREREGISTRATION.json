@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6c.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6C",
-  "phase": "DRAFT_BEFORE_WORKFLOW_BINDING",
+  "phase": "PREREGISTERED_BEFORE_BEMR_NUMERICAL_RESPONSE",
   "title": "Response-free mathematical qualification of Bounded Entropy-Moment Reconstruction (BEMR)",
   "role": "NO_HYDROLOGICAL_RESPONSE_BEMR_MATHEMATICAL_QUALIFICATION",
   "scientific_question": "Does the all-layer BEMR cubic entropy-dual reconstruction define one realizable, hydraulically continuous and numerically stable profile map over the unchanged C5Z synthetic B14 state/moment domain before any hydrological response is attempted?",
@@ -307,14 +307,15 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_WORKFLOW_BLOB",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "qualifier": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "qualifier_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "derivation_authority": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6c.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "5d10df07a635b49cb7fc7a361362ddf44f219952",
+    "execution_binding_complete": true,
+    "binding_note": "Only the run triggered after this exact preregistration binds the C6C scientific result. The workflow itself is not included in the push path filter so creation of the workflow cannot execute an unbound draft."
   },
   "model_changed": false
 }
