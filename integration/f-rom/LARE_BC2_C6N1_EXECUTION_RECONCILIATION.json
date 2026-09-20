@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v6",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v7",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "V5_AUTHORITY_ACTIVE_ONE_JOB_INFRASTRUCTURE_TERMINATION_RERUN_AUTHORIZED",
-  "decision": "ULTRACOMPACT_IDENTICAL_C6N1_MATRIX_WITH_REPAIRED_SELF_HASH_AUTHORITY_LOCK",
+  "status": "BOUND_MICROSHARD_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
+  "decision": "MICROSHARD_IDENTICAL_C6N1_MATRIX_AFTER_REPEATED_HOSTED_RUNNER_SHUTDOWN",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
     "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
@@ -70,29 +70,38 @@
     }
   ],
   "repair": {
-    "old_matrix_jobs": 24,
-    "ultracompact_matrix_jobs": 6,
-    "change": "For each material-route cell, execute U01-U04 sequentially; for each history execute O0 then O2 sequentially, require byte-identical logs, retain only the O0 scientific log, then analyze the same three-level ladders.",
+    "old_execution": "6 jobs, each material x route with four histories and O0/O2 sequential",
+    "new_execution": "48 jobs, one material x route x optimization x history per job",
+    "histories": [
+      "U01",
+      "U02",
+      "U03",
+      "U04"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
     "compiler_optimizations": [
       0,
       2
     ],
     "O0_O2_identity_required": true,
-    "T32_transaction_dt_changed": false,
-    "routes_changed": false,
-    "histories_changed": false,
-    "materials_changed": false,
+    "transaction_dt_changed": false,
     "forcing_changed": false,
     "solver_policy_changed": false,
     "metrics_changed": false,
     "GCI_formulas_changed": false,
     "thresholds_changed": false,
+    "qualification_changed": false,
     "response_based_retuning": false,
-    "authority_lock_repair": "Compute workflow blob in shell, export C6N1_WORKFLOW_BLOB, and compare Python reconciliation value to os.environ. No scientific input or response is consulted.",
-    "old_ultracompact_workflow_blob": "f98fb8f76c5705386381250193ae7c6ca44733f6",
-    "new_ultracompact_workflow_blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
     "scientific_effect": "NONE",
-    "T32_reference_response_used": false
+    "rationale": "Reuse the exact C6M2 execution granularity that previously completed a larger 64-slice matrix successfully; only execution packaging changes."
   },
   "compact_workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
@@ -100,7 +109,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
   },
-  "authority_rule": "C6N1 scientific authority remains run 35534062401 at head 108734b4e506a46a62785936e135720c7e98b360. Job 106139807082 may be rerun unchanged because the only observed failure was hosted-runner shutdown exit 143; no scientific input, metric, threshold or solver policy changes.",
+  "authority_rule": "Only the microshard run triggered by this v7 reconciliation update may become C6N1 scientific authority. All prior C6N1 runs, including partially completed ultracompact run 35534062401, are superseded regardless of later scheduler completion.",
   "scientific_firewall": {
     "candidate_response_generated": false,
     "T32_reference_response_seen": false,
@@ -123,12 +132,13 @@
   "recovery_checkpoint": {
     "timestamp_context": "2026-09-20 current session",
     "branch": "work/f-rom-lare-rs1",
-    "authority_run": 35534062401,
-    "infrastructure_failed_job": 106139807082,
-    "exact_job_rerun_authorized": true,
+    "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
+    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
+    "microshard_workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
     "scientific_response_used_for_repair": false,
     "candidate_response_seen": false,
-    "next_action": "Rerun only job 106139807082 unchanged; continue the same v5 C6N1 authority run."
+    "next_action": "Use only the microshard run triggered by this v7 update as C6N1 scientific authority."
   },
   "pre_response_lock_failures": [
     {
@@ -170,11 +180,8 @@
   "ultracompact_authority_run": {
     "workflow_run": 35534062401,
     "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
-    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
-    "workflow_blob": "b9a7a5dc5edc1408c56c05d49ab3658e7f20d1d4",
-    "jobs_expected": 6,
-    "state": "ACTIVE_JOB_RERUN_FOR_INFRASTRUCTURE_FAILURE",
-    "authority_if_completed": true
+    "state": "SUPERSEDED_REPEATED_HOSTED_RUNNER_SHUTDOWN",
+    "authority_if_completed": false
   },
   "infrastructure_failures": [
     {
@@ -191,6 +198,38 @@
       "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
       "rerun_exact_job_authorized": true,
       "scientific_inputs_changed": false
+    },
+    {
+      "workflow_run": 35534062401,
+      "job_id": 106139807120,
+      "job": "t32-B01-R2048_T32",
+      "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+      "failure": "Process exit code 143 after runner shutdown signal during U01 O0 execution.",
+      "authority_lock_passed": true,
+      "materialization_or_compile_failure": false,
+      "solver_assertion_failure": false,
+      "scientific_gate_failure": false,
+      "artifact_uploaded": false,
+      "interpretation": "HOSTED_RUNNER_INFRASTRUCTURE_TERMINATION",
+      "scientific_inputs_changed": false
     }
-  ]
+  ],
+  "superseded_execution_runs": [
+    {
+      "workflow_run": 35534062401,
+      "execution_head": "108734b4e506a46a62785936e135720c7e98b360",
+      "disposition": "SUPERSEDED_BY_MICROSHARD_EXECUTION_REGARDLESS_OF_LATER_JOB_COMPLETION",
+      "reason": "Two independent R2048 ultracompact jobs terminated by hosted-runner shutdown exit 143 before producing artifacts; scientific matrix is unchanged but per-job execution bundle is too large for reliable hosted execution.",
+      "scientific_authority": false
+    }
+  ],
+  "microshard_authority_run": {
+    "workflow_run": null,
+    "execution_head": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-microshard.yml",
+    "workflow_blob": "e699f5d894fa4a9532d81d67ae521c925d63802b",
+    "jobs_expected": 48,
+    "state": "BOUND_BEFORE_EXECUTION",
+    "authority_if_completed": true
+  }
 }
