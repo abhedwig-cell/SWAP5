@@ -1,0 +1,116 @@
+name: F-ROM Layer-ROM B1 fixed-head ladder
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1_fixed_head_ladder.py'
+      - '.github/workflows/f-rom-layer-b1-fixed-head-ladder.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-layer-b1-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  fixed-head-ladder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert research-only source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          echo "LAYER_ROM_B1_SOURCE_FREEZE=PASS"
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable blind C4R evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/layer-rom-b1/c4r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/layer-rom-b1/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/layer-rom-b1/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/layer-rom-b1/c4r.zip -d /tmp/layer-rom-b1/c4r
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/layer-rom-b1/c4r/R16_o0.txt" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/layer-rom-b1/c4r/R2_o0.txt" | sha256sum -c -
+          echo "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65  /tmp/layer-rom-b1/c4r/LARE_BC2_C4R_RESULT.json" | sha256sum -c -
+          test -f /tmp/layer-rom-b1/c4r/FMC_C4R_RESULT.json
+
+      - name: Lock B1 design
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_LAYER_LADDER_FIXED_HEAD_REPLAY'
+          assert [r['id'] for r in p['layer_ladder']]==['L2','L3','L4','L6']
+          assert [r['boundaries_cm'] for r in p['layer_ladder']]==[
+              [0,150,160],[0,140,150,160],[0,130,140,150,160],
+              [0,110,120,130,140,150,160]
+          ]
+          assert p['model']['bottom_closure']=='BC1 CURRENT_LAYER_FACE prescribed-head closure'
+          assert p['blind_reference_reuse']['workflow_run']==35472962909
+          assert 'NO_APPLICATION_ACCEPTANCE' in p['firewalls']
+          print('LAYER_ROM_B1_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute deterministic layer ladder twice
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_B1_EVIDENCE
+          for rep in 1 2; do
+            python3 tests/rom/analyze_layer_rom_b1_fixed_head_ladder.py \
+              --r16 /tmp/layer-rom-b1/c4r/R16_o0.txt \
+              --r2 /tmp/layer-rom-b1/c4r/R2_o0.txt \
+              --fmc-result /tmp/layer-rom-b1/c4r/FMC_C4R_RESULT.json \
+              --c4r-result /tmp/layer-rom-b1/c4r/LARE_BC2_C4R_RESULT.json \
+              --prereg integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json \
+              --output LAYER_ROM_B1_EVIDENCE/result-${rep}.json \
+              | tee LAYER_ROM_B1_EVIDENCE/analyzer-${rep}.txt
+          done
+          cmp LAYER_ROM_B1_EVIDENCE/result-1.json LAYER_ROM_B1_EVIDENCE/result-2.json
+          cp LAYER_ROM_B1_EVIDENCE/result-1.json LAYER_ROM_B1_EVIDENCE/LAYER_ROM_B1_RESULT.json
+
+      - name: Validate B1 gates
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LAYER_ROM_B1_EVIDENCE/LAYER_ROM_B1_RESULT.json'))
+          assert r['decision'] in {
+              'B1_DIMENSION4_GW_FRONTIER_REPLICATED',
+              'B1_LOWER_DIMENSION_GW_FRONTIER',
+              'B1_HIGHER_DIMENSION_REQUIRED_FOR_GW_FRONTIER',
+              'B1_EXECUTION_OR_AUTHORITY_BLOCKED'
+          }
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['max_abs_C4R_reproduction_difference'] <= 1e-12
+          assert r['integrity']['maximum_qualified_water_ledger_cm'] <= 1e-10
+          assert r['application_acceptance'] is False
+          assert r['speed_claim'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1_RESULT_GATE=PASS')
+          PY
+          sha256sum LAYER_ROM_B1_EVIDENCE/* > LAYER_ROM_B1_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1_FIXED_HEAD_LADDER=PASS"
+
+      - name: Upload B1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1-fixed-head-ladder
+          path: LAYER_ROM_B1_EVIDENCE/
+          if-no-files-found: error
