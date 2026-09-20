@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.lare.bc2.c6j.aggregation-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6J",
+  "status": "DRAFT_AGGREGATION_ONLY_RECOVERY_AWAITING_WORKFLOW_BINDING",
+  "decision": "AGGREGATE_IMMUTABLE_C6J_SHARDS_WITH_REPAIRED_GATE_HANDLING_ONLY",
+  "source_run": {
+    "workflow_run": 35530325107,
+    "execution_head": "14e333ef35e5dbbb2c71c1da0386f07863b3572e",
+    "qualifier_blob": "d3da358fff311dd7610b8e00fa03512e9c50dba1",
+    "scientific_shards_complete": true,
+    "shard_count": 9
+  },
+  "repaired_aggregator": {
+    "path": "tests/rom/merge_lare_bc2_c6j_femo_shards.py",
+    "blob": "f9dc70c58892bac333cbeb7c652c5e12e8e69e5b"
+  },
+  "aggregation_reconciliation": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json",
+  "workflow": {
+    "path": ".github/workflows/f-rom-lare-bc2-c6j-aggregate-recovery.yml",
+    "blob": null,
+    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+  },
+  "scientific_design_changed": false,
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "response_based_retuning": false,
+    "free_running_FEMO_implemented": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
