@@ -1,0 +1,258 @@
+{
+  "schema": "swap5.lare.repsel.c5m.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-REPSEL-C5M",
+  "status": "CLOSED_ROBUST_PLACEMENT_SIGNAL_DIMENSION_THRESHOLDS_COMPARATOR_DEPENDENT_NEW_BLIND_HIGH_RESOLUTION_TEST_REQUIRED",
+  "decision": "C5M_RETAIN_PLACEMENT_HYPOTHESIS_RETIRE_PORTABLE_MINIMUM_LAYER_COUNTS",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json",
+    "repository_basis": [
+      "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+    ],
+    "read_only": true,
+    "new_model_response_used": false
+  },
+  "reconciled_claims": {
+    "robust": [
+      {
+        "id": "PLACEMENT_IS_INDEPENDENT_REPRESENTATION_AXIS",
+        "support": [
+          "C4X: B14 fixed-zero-head R4/P4 versus U4 and R8 versus U8",
+          "C4Z: B01 dynamic prescribed-head R4 versus U4 and R8 versus U8",
+          "C5A: B14 dynamic prescribed-head R4 versus U4 and R8 versus U8"
+        ],
+        "conclusion": "Nominal state count is insufficient to characterize a vertically aggregated representation; where the retained states/layers are placed materially changes groundwater-response fidelity."
+      },
+      {
+        "id": "LOWER_BOUNDARY_ADJACENT_INFORMATION_MATTERS_FOR_DYNAMIC_HEAD",
+        "support": [
+          "C5C: refining only the bottom-adjacent LARE cells from 10 cm to 5 cm and 2.5 cm produced large bottom-flux changes",
+          "C5J-C5K: Reference prescribed-head response is sensitive to boundary-adjacent discretization, but no alternative boundary formula was admitted",
+          "C5L: unchanged Reference spatial refinement eventually progresses strongly at R2048"
+        ],
+        "conclusion": "For prescribed-head groundwater-response purposes, vertical information near the lower boundary is a physically important placement axis; this does not imply that any particular 2.5, 5 or 10 cm layer thickness is universally optimal."
+      },
+      {
+        "id": "PURPOSE_DEPENDENCE_RETAINS_AUTHORITY",
+        "support": [
+          "C4Q/C4R: groundwater-output and profile-inclusive comparator frontiers required different dimensions",
+          "C4U: application acceptance remains blocked without external H_app and temporal authority"
+        ],
+        "conclusion": "A representation can be adequate for groundwater exchange while inadequate for profile-state fidelity; no single minimum dimension is meaningful without a declared purpose."
+      },
+      {
+        "id": "ADDITIONAL_STATE_HAS_DIMINISHING_RETURNS_WITHIN_FIXED_LOWER_ZONE_FAMILY",
+        "support": [
+          "C4Z: bottom-flux/storage response converged strongly from R3 toward R8, while mapped profile continued to improve through R12/R16",
+          "C5A: R5-R16 were effectively identical on the blocking signed-bias and bottom-flux metrics under the frozen coarse comparator"
+        ],
+        "conclusion": "Within the tested fixed lower-zone-focused family, adding state beyond a moderate count eventually produces little additional groundwater-response change, although the location of that plateau is workload/comparator dependent."
+      }
+    ],
+    "comparator_or_workload_dependent": [
+      {
+        "id": "MINIMUM_LAYER_COUNT",
+        "examples": [
+          "C4R blind D13: R4 groundwater and R12 profile relative to FMC",
+          "C4X B14 fixed: R3 relative to R2 for groundwater, R8 relative to FMC for profile",
+          "C4Z B01 dynamic: R3 relative to weak R2",
+          "C5A B14 dynamic: no reduced member crosses the frozen R2 vector because of one pooled signed-bias component"
+        ],
+        "conclusion": "Values such as 3, 4, 8 or 12 are experiment/comparator-specific frontier locations, not portable minimum layer counts."
+      },
+      {
+        "id": "C5A_NEGATIVE_FRONTIER",
+        "conclusion": "The formal C5A decision remains valid for its preregistered R2-relative vector, but it cannot be generalized to high-resolution Reference sufficiency because C5C-C5L showed the R16 Reference itself had substantial prescribed-head spatial discretization error."
+      },
+      {
+        "id": "R16_FINE_REFERENCE_LABEL",
+        "conclusion": "R16 remains the historical frozen comparator for C4/C5A decisions, but after C5C-C5L it must not be described as a continuum-like fine Reference for B14 dynamic prescribed-head response."
+      }
+    ],
+    "not_established": [
+      "A universal optimal number of hydrological layers.",
+      "A universal optimal layer-boundary placement.",
+      "Application acceptance for groundwater head or drawdown.",
+      "Profile-equivalent reconstruction from a groundwater-purpose representation.",
+      "A production-ready Layer-ROM.",
+      "A speedup claim."
+    ]
+  },
+  "reference_reconciliation": {
+    "historical_C5A_reference": "R16, 16 x 10 cm",
+    "current_finest_available": "R2048 T16 current Reference G0K0",
+    "current_companion": "R1024 T16 current Reference G0K0",
+    "R1024_R2048_bottom_flux_RMSE_cm_per_day": 0.007424461956608447,
+    "R2048_continuum_truth": false,
+    "rule": "Future representation experiments must report candidate error to both R1024 and R2048 and report R1024-R2048 disagreement separately. Intergrid disagreement is numerical context, not an acceptance tolerance."
+  },
+  "retained_candidate_family": {
+    "reason": "Use previously frozen layer partitions first so the next blind experiment tests transfer rather than post-C5L partition fitting.",
+    "lower_zone_ladder": [
+      {
+        "id": "R3",
+        "dimension": 3,
+        "boundaries_cm": [
+          0,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R4",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R5",
+        "dimension": 5,
+        "boundaries_cm": [
+          0,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R6",
+        "dimension": 6,
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R12",
+        "dimension": 12,
+        "boundaries_cm": [
+          0,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      }
+    ],
+    "placement_controls": [
+      {
+        "id": "P4_TOP_LOWER",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          10,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "U4",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          40,
+          80,
+          120,
+          160
+        ]
+      },
+      {
+        "id": "U8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100,
+          120,
+          140,
+          160
+        ]
+      }
+    ],
+    "new_partition_design_in_C5M": false
+  },
+  "necessary_new_blind_experiment": {
+    "target": "LARE-BC2-C5N",
+    "question": "On fresh B14 dynamic prescribed-head histories, how do the already-frozen lower-zone ladder and equal-dimension placement controls compare against paired R1024/R2048 T16 Reference trajectories, and which state-count/placement conclusions remain stable when Reference discretization uncertainty is made explicit?",
+    "why_required": [
+      "Existing B14 dynamic LARE responses were judged against coarse R16 and a weak/cancellation-prone R2 vector.",
+      "C5L supplies a materially stronger Reference ladder but only for already-exposed C5A histories.",
+      "A new blind response set is required to avoid converting the Reference audit into post-hoc candidate tuning.",
+      "Reusing the frozen partitions isolates representation transfer; new optimized layer boundaries should wait until this transfer test is complete."
+    ],
+    "design_constraints": [
+      "Fresh prescribed-head histories must be preregistered before R1024/R2048 or LARE response exposure.",
+      "Use the frozen B14 constitutive model and BC1 CURRENT_LAYER_FACE LARE closure without retuning.",
+      "Run the frozen R3/R4/R5/R6/R8/R12 ladder plus P4_TOP_LOWER/U4/U8; no new partition geometry in C5N.",
+      "Use paired R1024 and R2048 current Reference at the same T16 temporal resolution.",
+      "Report storage, cumulative exchange, interval flux, sign/reversal timing and profile diagnostics to both Reference levels separately.",
+      "Report candidate sensitivity to Reference choice explicitly: error(candidate,R1024) versus error(candidate,R2048).",
+      "Do not use R1024-R2048 disagreement as a pass/fail threshold.",
+      "Do not collapse the result to one scalar score or infer a universal minimum layer count.",
+      "No application acceptance, performance, speed or production claim."
+    ],
+    "authority_state": "FRESH_BLIND_REFERENCE_AWARE_REPRESENTATION_TEST_AUTHORIZED_FOR_PREREGISTRATION"
+  },
+  "application_acceptance": {
+    "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+    "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+  },
+  "scientific_firewall": {
+    "new_reference_run": false,
+    "new_lare_run": false,
+    "new_partition_fit": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
