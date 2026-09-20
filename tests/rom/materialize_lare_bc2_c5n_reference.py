@@ -144,9 +144,9 @@ def main()->int:
     text=one(text,"label='C5A_B14  '","label='C5N_BLIND'","split label")
     text=one(
       text,
-      "    integer :: node\n",
-      "    integer :: bin,lo_node,hi_node,nodes_per_bin\n    real(real64) :: bin_theta\n",
-      "profile output declarations"
+      "    real(real64) :: total,upper,lower\n    integer :: node\n",
+      "    real(real64) :: total,upper,lower\n    integer :: bin,lo_node,hi_node,nodes_per_bin\n    real(real64) :: bin_theta\n",
+      "profile output declarations in emit_state"
     )
     node_pattern=(
       r"\n      do node=1,numnod\n"
