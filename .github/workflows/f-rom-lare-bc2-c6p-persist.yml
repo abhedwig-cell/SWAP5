@@ -1,0 +1,189 @@
+name: F-ROM-LARE persist C6P root state sufficiency
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6p-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C6P artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6p
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10612764170" > /tmp/c6p/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c6p/artifact.json'))
+          assert a['id']==10612764170
+          assert a['digest']=='sha256:70adc36e0a73cc19553cdd8eb060541b2940982a12b0f8019f2432e0e81f982c'
+          assert a['workflow_run']['id']==35538619801
+          assert a['workflow_run']['head_sha']=='ef48033189c0e580e348d4f9ea1d4d992388a7c4'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10612764170/zip" > /tmp/c6p.zip
+          echo "70adc36e0a73cc19553cdd8eb060541b2940982a12b0f8019f2432e0e81f982c  /tmp/c6p.zip" | sha256sum -c -
+          unzip -q /tmp/c6p.zip -d /tmp/c6p/evidence
+          echo "199edc08ef4431354d477f96c42f6c71021769c58088f5643572c4512c380bae  /tmp/c6p/evidence/LARE_BC2_C6P_RESULT.json" | sha256sum -c -
+
+      - name: Persist C6P result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c6p/evidence/LARE_BC2_C6P_RESULT.json integration/f-rom/LARE_BC2_C6P_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C6P_RESULT.json'))
+          assert r['decision']=='C6P_EXISTING_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK'
+          assert r['hard_checks']['pass'] is True
+          assert all(r['hypotheses'].values())
+          s=r['partition_summaries']
+          closeout={
+            'schema':'swap5.lare.bc2.c6p.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C6P',
+            'status':'CLOSED_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK',
+            'decision':'DERIVE_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_CONTRACT_BEFORE_ANY_DYNAMIC_ET_STATE_SELECTION',
+            'role':'RESPONSE_FREE_STRUCTURAL_IDENTIFIABILITY_EVIDENCE_NO_APPLICATION_TOLERANCE',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json',
+              'C6O':'integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json',
+              'workflow_run':35538619801,
+              'execution_head':'ef48033189c0e580e348d4f9ea1d4d992388a7c4',
+              'artifact_id':10612764170,
+              'artifact_digest':'sha256:70adc36e0a73cc19553cdd8eb060541b2940982a12b0f8019f2432e0e81f982c',
+              'result_sha256':'199edc08ef4431354d477f96c42f6c71021769c58088f5643572c4512c380bae',
+              'analyzer_blob':'7b6465c5e4028ee9489b6af18021a3775cfc63f9'
+            },
+            'qualification':r['hard_checks'],
+            'hypotheses':r['hypotheses'],
+            'selected_summary':{
+              'B01_R4_storage_ambiguity_max':s['B01']['R4']['storage_only_ambiguity_fraction']['max'],
+              'B01_R4_S_plus_M_ambiguity_max':s['B01']['R4']['S_plus_M_P2_ambiguity_fraction']['max'],
+              'B01_R16_storage_ambiguity_max':s['B01']['R16']['storage_only_ambiguity_fraction']['max'],
+              'B01_R16_S_plus_M_ambiguity_max':s['B01']['R16']['S_plus_M_P2_ambiguity_fraction']['max'],
+              'B14_R4_storage_ambiguity_max':s['B14']['R4']['storage_only_ambiguity_fraction']['max'],
+              'B14_R4_S_plus_M_ambiguity_max':s['B14']['R4']['S_plus_M_P2_ambiguity_fraction']['max'],
+              'B14_R16_storage_ambiguity_max':s['B14']['R16']['storage_only_ambiguity_fraction']['max'],
+              'B14_R16_S_plus_M_ambiguity_max':s['B14']['R16']['S_plus_M_P2_ambiguity_fraction']['max']
+            },
+            'scientific_interpretation':[
+              'C6P is a structural identifiability laboratory, not a crop calibration or hydrological trajectory.',
+              'Across 1080 prospectively frozen synthetic cases, exact retained-layer storage does not uniquely determine drought-only Feddes uptake.',
+              'The ambiguity survives after also matching the conservation-derived centered geometric first water-content moment. The maximum S+M-matched uptake-fraction separation is about 0.125 for B01 and about 0.041 for B14 in the frozen panel.',
+              'Increasing spatial state count reduces ambiguity in several partitions but does not remove it: even R16 has nonzero S-only and S+M ambiguity for both materials.',
+              'The simplest feedback closure based on alpha evaluated at layer-mean storage-derived head is also not exact.',
+              'These ambiguity magnitudes are not application tolerances and must not be used to accept or reject ET simulations.',
+              'C6O already gives exact instantaneous sufficient statistics for a fixed h3: root-weighted wet-branch occupancy, transition-branch occupancy, and transition-head moment. Because h3 changes with potential transpiration, the next task is to determine a forcing-portable information contract rather than immediately selecting those threshold-dependent diagnostics as dynamic states.'
+            ],
+            'adjudication':{
+              'LAYER_STORAGE_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK':False,
+              'STORAGE_PLUS_GEOMETRIC_FIRST_MOMENT_EXACTLY_SUFFICIENT':False,
+              'LAYER_MEAN_HEAD_FEEDBACK_EXACT':False,
+              'ROOT_WEIGHTED_SUBLAYER_INFORMATION_REQUIRED':True,
+              'NEW_DYNAMIC_ROOT_STATE_SELECTED':False,
+              'FREE_RUNNING_ET_DROUGHT_AUTHORIZED':False,
+              'APPLICATION_TOLERANCE_SELECTED':False,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'next_authority':{
+              'target':'LARE-BC2-C6Q',
+              'state':'READ_ONLY_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_DERIVATION_AUTHORIZED',
+              'question':'What forcing-independent information about the root-weighted pressure-head distribution is sufficient to evaluate the frozen drought-only Feddes uptake for arbitrary h3 within the admitted T_p-dependent h3 interval?',
+              'constraints':[
+                'No hydrological time integration.',
+                'Derive from the exact Feddes functional and C6O branch decomposition before selecting a new dynamic state.',
+                'Do not select threshold-specific branch fractions as forcing-independent state without accounting for changing h3.',
+                'Do not fit a finite moment basis to C6P ambiguity magnitudes.',
+                'No crop/application tolerance, performance or production claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C6P_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C6P closeout
+
+          C6P is a response-free structural identifiability test for the current drought-only Feddes root-uptake functional.
+
+          The authoritative run is 35538619801 at execution head ef48033189c0e580e348d4f9ea1d4d992388a7c4, artifact 10612764170, digest sha256:70adc36e0a73cc19553cdd8eb060541b2940982a12b0f8019f2432e0e81f982c. Result SHA-256 is 199edc08ef4431354d477f96c42f6c71021769c58088f5643572c4512c380bae.
+
+          All hard construction checks pass: matched retained storage differs by at most 1.42e-14 cm, matched P2 first moment by at most 1.71e-13 cm2, root weights sum exactly to one, all effective saturations remain inside the frozen interval and all uptake fractions remain bounded.
+
+          Storage alone is not exactly sufficient. More importantly, the ambiguity survives when the paired fine profiles also have exactly the same centered geometric first water-content moment. The frozen panel reaches S+M-matched uptake-fraction differences of about 0.125 for B01 and 0.041 for B14.
+
+          Even the 16-layer partition retains nonzero ambiguity. The mean-storage/mean-head feedback approximation is also not exact.
+
+          These values are structural probes, not crop-error tolerances. No root state is selected and no free-running ET/drought experiment is authorized.
+
+          C6Q must derive the forcing-portable root-stress information contract. The exact C6O branch statistics are sufficient for a fixed h3, but h3 itself depends on potential transpiration; threshold-dependent branch occupancy therefore cannot simply be promoted to a forcing-independent state.
+          MD
+
+      - name: Advance central representation authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v44'
+          j['status']='CLOSED_THROUGH_C6P_ROOT_FEEDBACK_STATE_IDENTIFIABILITY_FORCING_PORTABLE_INFORMATION_NEXT'
+          j.setdefault('authorities',{})['C6O_root_uptake_contract']='integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json'
+          j.setdefault('authorities',{})['C6P_root_state_sufficiency']='integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C6O']='Prescribed root sinks aggregate exactly into any coarse partition, but predicted drought-only Feddes feedback depends on root-weighted sublayer pressure-head information. Exact fixed-threshold uptake is determined by wet/transition branch occupancy plus the transition head moment.'
+          j.setdefault('additional_reconciled_findings',{})['C6P']='Response-free matched-state construction proves that neither layer storage alone nor storage plus the conservation-derived geometric first water-content moment uniquely determines general Feddes uptake. The mean-storage feedback approximation is also non-exact. No application tolerance follows.'
+          j['decision']='DERIVE_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_BEFORE_DYNAMIC_ET_REPRESENTATION'
+          j['next_authority']={
+            'target':'LARE-BC2-C6Q',
+            'state':'READ_ONLY_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_DERIVATION_AUTHORIZED',
+            'hydrological_response_authorized':False
+          }
+          j['next_family_authority']={
+            'family':'ROOT_FEEDBACK_PURPOSE_STATE',
+            'state':'INFORMATION_CONTRACT_DERIVATION_ONLY',
+            'storage_only_sufficient':False,
+            'storage_plus_geometric_first_moment_sufficient':False,
+            'new_dynamic_state_selected':False,
+            'free_running_ET_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'production_rom_authorized':False,
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json'
+            ]
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C6P closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6P_RESULT.json                   integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C6P_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C6P root state sufficiency"
+          git push origin HEAD:work/f-rom-lare-rs1
