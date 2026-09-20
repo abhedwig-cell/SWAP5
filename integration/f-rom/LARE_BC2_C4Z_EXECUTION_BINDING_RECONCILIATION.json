@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.lare.bc2.c4z.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4Z",
+  "status": "TECHNICAL_ANALYZER_BINDING_REPAIRED_BEFORE_FRONTIER_METRICS",
+  "failed_run": {
+    "run_id": 35495284832,
+    "job_id": 106037028673,
+    "execution_head": "47120075c11f11bd496cb0435ce221b6a7c0ca5a",
+    "reference_gate": "PASS_R16_AND_R2_O0_O2",
+    "analyzer_failure": "BC1 load_reference hard-coded len(nodes)==16 and rejected valid 2-node R2 output.",
+    "frontier_metrics_produced": false,
+    "c4z_decision_produced": false
+  },
+  "repair": {
+    "old_analyzer_blob": "c1635a74e818cfdbfeb9ff8087e461338207605c",
+    "new_analyzer_blob": "9884d7d2faaa37871b45dbdf660a0b51f4f3d074",
+    "change": "Add geometry-aware Reference parser requiring 16 nodes for R16 and 2 nodes for R2; retain identical field parsing, bottom-exchange conversion, ordering and downstream metrics.",
+    "scientific_effect": "NONE",
+    "histories_changed": false,
+    "reference_policy_changed": false,
+    "lare_model_changed": false,
+    "partitions_changed": false,
+    "metrics_changed": false,
+    "crossing_rules_changed": false,
+    "decision_logic_changed": false
+  },
+  "response_use": {
+    "hydrological_values_used_for_repair": false,
+    "only_failure_structure_used": true,
+    "reason": "The traceback identified a hard-coded node-count parser assumption. No comparator-relative or LARE frontier metric had been produced."
+  },
+  "rerun_required": true,
+  "post_hoc_retuning_authorized": false
+}
