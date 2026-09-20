@@ -49,7 +49,10 @@ def rows_uniform_x(p: tuple[float, ...], n: int):
     for i in range(n-1):
         frac=i/(n-2)
         x=x0+frac*(x1-x0)
-        h=1.0-math.exp(-x)
+        # Preserve the bisection-certified wet endpoint exactly.  The
+        # x->h round-trip can move the final negative knot a few ulps to
+        # the wet side and cross the discontinuous Ksat clamp.
+        h=h1 if i == n-2 else 1.0-math.exp(-x)
         th=prep.theta_policy(h,p)
         k=prep.k_policy(h,p)
         rows.append((h,th,k))
