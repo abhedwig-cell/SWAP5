@@ -153,5 +153,34 @@
     "NO_RUNTIME_OR_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_operationalization": {
+    "date": "2026-09-20",
+    "before_first_B1HCH_execution": true,
+    "pooling": {
+      "histories": [
+        "X01",
+        "X02",
+        "X03",
+        "X04"
+      ],
+      "observation_steps": "1..1024 inclusive at 0.001 d common output spacing",
+      "storage": "pool all 4 x 1024 signed candidate-candidate differences before RMS/max-abs",
+      "cumulative_bottom": "pool all 4 x 1024 signed candidate-candidate differences before RMS/max-abs",
+      "QAVG": "pool all 4 x 1024 interval-average candidate-candidate differences before RMS/max-abs",
+      "QEND": "pool all 4 x 1024 terminal-Darcy candidate-candidate differences before RMS/max-abs",
+      "mapped_theta": "pool all 4 x 1024 x 16 mapped 10-cm candidate-candidate differences before RMS/max-abs"
+    },
+    "candidate_generation": {
+      "reference_input_to_analyzer": false,
+      "material_and_initial_condition_source": "immutable B1H per-material result plus frozen B1H preregistration",
+      "basis_code": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215 analyze_lare_bc2_c4v_one_day.py and run_lare_bc1_stage_b.py",
+      "closure": "unchanged standard LARE internal closure plus BC1 CURRENT_LAYER_FACE zero-head bottom closure",
+      "water_ledger_gate_cm": 1e-10
+    },
+    "classification_application": "Apply SATURATED/CONVERGING/FLAT_OR_NONCONVERGENT to the pooled RMS pairwise self-differences. Material SELF_CONVERGENT requires all five R16_OP causal-core components to be CONVERGING or SATURATED and at least one CONVERGING.",
+    "apparent_order": "log2(coarse_mid_RMS/mid_fine_RMS), diagnostic only when both RMS values are positive; it cannot override the frozen component classification.",
+    "R8_role": "Run the identical self-convergence calculation as secondary context only; R8 cannot override the R16_OP primary material or panel decision.",
+    "scientific_effect": "NONE: no material, history, representation, closure, dt, identity tolerance, component classification, material rule or panel rule is changed."
+  }
 }
