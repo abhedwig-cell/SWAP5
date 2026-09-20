@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.layer-rom.phase-a.closure-preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-CLOSURE1",
+  "phase": "FROZEN_BEFORE_FIRST_LAYER_ROM_CLOSURE_EXECUTION",
+  "canonical_basis": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "state_matrix_source": "integration/f-rom/LAYER_ROM_PHASE_A_PREREGISTRATION.json",
+  "execution_gate": "Do not interpret propagated closure fidelity until independent future-response state sufficiency is available. One-step teacher-forced closure diagnostics may execute earlier because they do not select state dimension.",
+  "sign_convention": {
+    "coordinate": "same vertical/downward convention as F-ROM_LARE_CA1_CLOSURE_AUTHORITY",
+    "interface_flux": "q = K_face * (dpsi/dz + 1) under that convention",
+    "requirement": "all candidate closures must reproduce identical zero-gradient and hydrostatic sign/limit tests before trajectory use"
+  },
+  "closures": {
+    "C_LARE_TAYLOR": {
+      "authority": "docs/science/F-ROM_LARE_CA1_CLOSURE_AUTHORITY.md on work/f-rom-lare-rs1",
+      "state": "layer-integrated storage only",
+      "head_reconstruction": "theta_bar_i=W_i/L_i; psi_i=psi(theta_bar_i)",
+      "gradient": "G=2*(psi_j-psi_i)/(L_i+L_j)",
+      "conductivity": "K_face=(L_j*K_i + L_i*K_j)/(L_i+L_j)",
+      "flux": "q=K_face*(G+1)",
+      "empirical_terms": false
+    },
+    "C_DARCY_CENTER_HARMONIC": {
+      "authority": "new research-only finite-volume comparator; equation frozen here before execution",
+      "state": "same layer-integrated storage only",
+      "head_reconstruction": "theta_bar_i=W_i/L_i; psi_i=psi(theta_bar_i)",
+      "center_distance": "D=(L_i+L_j)/2",
+      "gradient": "G=(psi_j-psi_i)/D",
+      "conductivity": "K_face=D/((L_i/2)/K_i + (L_j/2)/K_j)",
+      "flux": "q=K_face*(G+1)",
+      "empirical_terms": false,
+      "distinction_from_standard_lare": "same state and pressure-head gradient; only interface hydraulic resistance/conductivity averaging changes"
+    },
+    "C_QS_STORAGE_RECON": {
+      "authority": "design family only",
+      "state": "same layer-integrated storage only",
+      "requirement_before_execution": [
+        "unique within-layer profile reconstruction for the declared boundary class",
+        "exact storage constraint",
+        "continuous interface head/flux contract",
+        "persisted root/branch choice for any nonlinear solve",
+        "limit identity to C_DARCY_CENTER_HARMONIC for uniform reconstructed profiles"
+      ],
+      "status": "NOT_EXECUTABLE_YET"
+    },
+    "C_REFERENCE_FACE_ORACLE": {
+      "authority": "diagnostic only",
+      "state": "frozen reduced state plus face flux sampled from fine Reference",
+      "purpose": "lower-bound decomposition of closure/propagation error",
+      "candidate_model": false
+    }
+  },
+  "one_step_closure_diagnostics": {
+    "input_states": "independent Reference state library",
+    "compare_on_same_states": true,
+    "quantities": [
+      "interlayer flux at every reduced interface",
+      "bottom flux where the exact boundary class has closure authority",
+      "flux sign",
+      "flux magnitude",
+      "distance from Reference fine-grid face flux"
+    ],
+    "no_time_propagation": true,
+    "purpose": "separate algebraic closure error from accumulated state error"
+  },
+  "propagated_comparison": {
+    "dimensions": [
+      "L2",
+      "L3",
+      "L4",
+      "L6"
+    ],
+    "same_initial_reduced_state": true,
+    "same_forcing": true,
+    "same_integrator_and_time_policy_required": true,
+    "uniform_controls": [
+      "U2",
+      "U3",
+      "U4",
+      "U6"
+    ],
+    "same_partition_corichards": "required where numerically qualified before attributing residual error uniquely to closure"
+  },
+  "falsification": [
+    "A closure that violates exact mass telescoping, finite-state constraints, or sign/limit identities is rejected before fidelity comparison.",
+    "If C_DARCY_CENTER_HARMONIC changes little relative to C_LARE_TAYLOR while both disagree strongly with Reference, conductivity averaging is not the dominant closure deficit.",
+    "If teacher-forced Reference face flux removes most propagated error for the same reduced state, closure/flux law rather than state dimension is implicated.",
+    "If same-partition CoRichards already differs materially from R16, do not classify the corresponding component as Layer-ROM closure error.",
+    "No empirical correction term is admitted in Phase A."
+  ],
+  "application_acceptance": false,
+  "performance_authorized": false,
+  "production_rom_authorized": false
+}
