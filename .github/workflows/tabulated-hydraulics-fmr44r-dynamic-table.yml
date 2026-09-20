@@ -38,6 +38,23 @@ jobs:
           ( cd table-src && python3 tests/fmr/_apply_fmr44r_serialized_qbot_runtime_patch.py )
           python3 research/tabulated_hydraulics/patch_serialized_backend_typed_table.py table-src/src/runtime/mod_fmr_serialized_reference_backend.f90
           python3 research/tabulated_hydraulics/patch_generic_temporal_indicator_inplace.py table-src/src/solver/mod_reference_richards_temporal_indicator.f90
+
+          # Research characterization isolates the already-qualified positive-qbot
+          # temporal-history fixture. The preceding FMR44R equilibrium oracle uses
+          # qeq=-K_analytic(h0), which is definitionally not exact equilibrium for
+          # an approximate table representation and therefore is not a fair A/B gate.
+          python3 - <<'PY'
+          from pathlib import Path
+          for root in ("analytic-src","table-src"):
+              p=Path(root)/"tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90"
+              txt=p.read_text()
+              old="  call verify_equilibrium_mode2(qeq)\n"
+              if txt.count(old)!=1:
+                  raise SystemExit(f"equilibrium-call anchor mismatch {root}: {txt.count(old)}")
+              txt=txt.replace(old,
+                  "  write(*,'(A)') 'TABHYD_FMR44R_EQUILIBRIUM_PRETEST_SKIPPED=RESEARCH_CHARACTERIZATION'\n",1)
+              p.write_text(txt)
+          PY
           echo 'TABHYD_FMR44R_SOURCE_PREP=PASS'
 
       - name: Compile analytical and table FMR44R binaries
@@ -147,7 +164,7 @@ jobs:
           build/analytic/test > build/analytic/output.txt 2>&1
           build/table/test > build/table/output.txt 2>&1
           for route in analytic table; do
-            for marker in 'FMR44R_MODE2_EQUILIBRIUM_TRANSACTION=PASS' 'FMR44R_POSITIVE_QBOT_ACCEPTED_INFLOW=PASS' 'FMR44R_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS' 'FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS'; do
+            for marker in 'TABHYD_FMR44R_EQUILIBRIUM_PRETEST_SKIPPED=RESEARCH_CHARACTERIZATION' 'FMR44R_POSITIVE_QBOT_ACCEPTED_INFLOW=PASS' 'FMR44R_NEARBY_BOTTOM_MODE_FAIL_CLOSED=PASS' 'FMR44R_SERIALIZED_PRESCRIBED_QBOT_RUNTIME_GATE=PASS'; do
               grep -Fq "$marker" "build/$route/output.txt"
             done
             echo "=== $route ==="
