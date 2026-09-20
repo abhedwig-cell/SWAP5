@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "31d9cad813f2aeffb3f066393cd3f24bbc5ca48f"
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "b81c71a5404adfa23f0db344bbc6ea483605795a"
           python3 - <<'PY'
           import json
           b=json.load(open('integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json'))
@@ -40,21 +40,22 @@ jobs:
           assert b['source_run']['workflow_run']==35530325107
           assert b['source_run']['execution_head']=='14e333ef35e5dbbb2c71c1da0386f07863b3572e'
           assert b['source_run']['qualifier_blob']=='d3da358fff311dd7610b8e00fa03512e9c50dba1'
-          assert b['repaired_aggregator']['blob']=='31d9cad813f2aeffb3f066393cd3f24bbc5ca48f'
+          assert b['repaired_aggregator']['blob']=='b81c71a5404adfa23f0db344bbc6ea483605795a'
           assert b['scientific_design_changed'] is False
           assert b['workflow']['state']=='BOUND_BEFORE_AGGREGATION'
           print('C6J_AGGREGATION_RECOVERY_LOCK=PASS')
           PY
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611445050 --jq '.digest')" = "sha256:27e15b0f5bed23372668f0cef9919c6413cfe71f44300ee076146f1eea7b044d"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611117492 --jq '.digest')" = "sha256:a92fcebd5dfe43a2fa34770f94e2b9792c49e24edebd790d5e6623111fadbeb9"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611102536 --jq '.digest')" = "sha256:18f9477de180ac5c25d791a045ca8ae59e1b9c1be394647f7069230e6df14170"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10611092600 --jq '.digest')" = "sha256:87ae95f6dbce7d77d245d74c90320e85fe5e9acacf9ddb30c3e591aa84babbe5"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610808168 --jq '.digest')" = "sha256:81238a13a52d74f7ed3ffcb7ce102b92fc5cfc217101aa621ac9e3ec05d647ce"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610688432 --jq '.digest')" = "sha256:758c577f30be1e6b9eb5aa3ba92f7c0cb540a882b5520d7a9c8746b0d70eb7e2"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610589291 --jq '.digest')" = "sha256:6f3728e263574ef0d05b6eec5d16a2b35ff1596e329931691d27cb3a30acf518"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610464646 --jq '.digest')" = "sha256:33da9d3646328f56f10a0319c4a1f66ecaee8ec9a732a6431bdb67b0484ef073"
-          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10610129978 --jq '.digest')" = "sha256:07d1234ba2df005223c54dfc39dbc631e131b69b5f2d4afd68c4daa46380231e"
-          echo C6J_IMMUTABLE_SHARDS=PASS
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/35530325107 --jq '.head_sha')" = "14e333ef35e5dbbb2c71c1da0386f07863b3572e"
+          gh api repos/$GITHUB_REPOSITORY/actions/runs/35530325107/artifacts > /tmp/c6j-artifacts.json
+          python3 - <<'PY'
+          import json
+          rec=json.load(open('integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json'))
+          live=json.load(open('/tmp/c6j-artifacts.json'))
+          expected={(int(x['id']),x['name'],x['digest']) for x in rec['immutable_shard_artifacts']}
+          actual={(int(x['id']),x['name'],x['digest']) for x in live['artifacts'] if x['name'].startswith('lare-bc2-c6j-shard-')}
+          assert actual==expected, (actual,expected)
+          print('C6J_IMMUTABLE_SHARDS=PASS')
+          PY
 
       - name: Recover immutable scientific shards
         env:
