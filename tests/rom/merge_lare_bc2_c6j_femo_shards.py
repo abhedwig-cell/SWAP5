@@ -44,8 +44,8 @@ def main():
 
     head_ops=[op for r in rows for op in r["head_operators"]]
     flux_ops=[op for r in rows for op in r["flux_operators"]]
-    assert len(head_ops)==168, len(head_ops)
-    assert len(flux_ops)==126, len(flux_ops)
+    expected_head_ops=168
+    expected_flux_ops=126
 
     G1=all(r["gates"]["moment_realizable"] for r in rows)
     G2=all(r["gates"]["all_local_starts_converged"] for r in rows)
@@ -54,8 +54,8 @@ def main():
     G5=all(r["gates"]["all_local_state_recovery"] for r in rows)
     G6=all(r["gates"]["all_local_jacobians_negative_definite"] for r in rows)
     G7=all(r["metric"] is not None and r["metric"]["qualified"] for r in rows)
-    G8=all(op["qualified"] for op in head_ops)
-    G9=all(op["qualified"] for op in flux_ops)
+    G8=(len(head_ops)==expected_head_ops and all(op["qualified"] for op in head_ops))
+    G9=(len(flux_ops)==expected_flux_ops and all(op["qualified"] for op in flux_ops))
     gates={
       "G1_FROZEN_STATE_MOMENT_REALIZABILITY":G1,
       "G2_LOCAL_PROFILE_CONVERGENCE":G2,
@@ -96,7 +96,9 @@ def main():
       "execution":{"mode":"EXACT_STATE_CASE_SHARDED","shard_count":shard_count,"partition":"case_index modulo shard_count"},
       "state_case_count":len(rows),
       "head_operator_case_count":len(head_ops),
+      "expected_head_operator_case_count":expected_head_ops,
       "flux_operator_case_count":len(flux_ops),
+      "expected_flux_operator_case_count":expected_flux_ops,
       "gates":gates,
       "qualification_counts":{
         "state_moment_realizable":count_state("moment_realizable"),
