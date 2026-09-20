@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-RESEARCH-PHASE",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "8d49e42c6011ed97acac53bd0534bcdc159a5ac8",
+  "checkpoint_commit": "09185dc63ac1e1da8ef3b3794fa49d42a8c1334c",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
   "phase": "CORE_RESEARCH_PHASE_CLOSED_COST_FIDELITY_CURVE_COMPLETE_APPLICATION_AUTHORITY_BLOCKED",
-  "last_reconciled_head": "8d49e42c6011ed97acac53bd0534bcdc159a5ac8",
+  "last_reconciled_head": "09185dc63ac1e1da8ef3b3794fa49d42a8c1334c",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -205,7 +205,7 @@
     "project-control governance affecting ROM ownership"
   ],
   "next_action": "Bind an independently sourced purpose-specific acceptance envelope for GW-R, GW-D or SCI-P, then preregister blind validation of the frozen L4/L6/R8 frontier. No representation or closure retuning from validation responses.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 8d49e42c6011ed97acac53bd0534bcdc159a5ac8. Core state/partition/closure/fixed-head transfer/cost research is closed. The next unresolved action is external purpose-acceptance authority, not further cost screening or unconstrained layer search.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 09185dc63ac1e1da8ef3b3794fa49d42a8c1334c; draft research PR #495 is open against integration/f-ci-canonical. Core feasibility is closed. Next scientific action requires independent purpose-specific acceptance authority before blind application-envelope validation.",
   "blockers": [
     {
       "id": "APPLICATION_TOLERANCE_AUTHORITY",
@@ -219,5 +219,11 @@
     "no reference/** mutation",
     "no production ROM",
     "no FMC D28/D30/D31 semantic invention"
-  ]
+  ],
+  "review": {
+    "pull_request": 495,
+    "state": "DRAFT_RESEARCH_EVIDENCE",
+    "base": "integration/f-ci-canonical",
+    "production_admission_requested": false
+  }
 }
