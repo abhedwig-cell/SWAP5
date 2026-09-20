@@ -1,0 +1,201 @@
+{
+  "schema": "swap5.lare.bc2.c6r.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6R",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Root-active high-resolution Reference qualification for minimal Layer-ROM Feddes feedback",
+  "role": "REFERENCE_ONLY_ROOT_FEEDBACK_SPACE_TIME_QUALIFICATION_NO_REDUCED_RESPONSE",
+  "scientific_question": "Can a fresh root-active fixed-flux Reference panel, using the admitted committed-state drought-only Feddes process, support a qualified three-level space-time numerical uncertainty authority before any reduced root-feedback trajectory is generated?",
+  "authority": {
+    "C6Q": "integration/f-rom/LARE_BC2_C6Q_RECONCILIATION.json",
+    "required_C6Q_decision": "PREREGISTER_ROOT_ACTIVE_REFERENCE_ONLY_BEFORE_ANY_REDUCED_DYNAMIC_ROOT_FEEDBACK_RESPONSE",
+    "C6N1_method": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "root_process": "src/process/mod_root_water_uptake_process.f90",
+    "prescribed_root_temporal_authority": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "candidate_response_authorized": false
+  },
+  "physical_domain": {
+    "column_depth_cm": 160,
+    "homogeneous": true,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "top_boundary": "fixed initial gravity-equilibrium flux",
+    "bottom_boundary": "fixed initial gravity-equilibrium flux, bottom_mode 2",
+    "root_depth_cm": 80,
+    "surface_flux_perturbation": false,
+    "drainage_prediction": false,
+    "root_feedback_active": true,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192
+  },
+  "synthetic_root_contract": {
+    "purpose": "Mechanistic root-feedback qualification only; not crop calibration or application acceptance.",
+    "root_profiles": {
+      "SHALLOW": "F(u)=2u-u^2 for u=z/80 clipped to [0,1]",
+      "UNIFORM": "F(u)=u"
+    },
+    "feddes_anchors": {
+      "h4_from_Se": 0.08,
+      "h3L_from_Se": 0.35,
+      "h3H_from_Se": 0.55,
+      "material_specific_pressure_heads": true
+    },
+    "demand_breakpoints_cm_per_day": {
+      "ADCRL": 0.1,
+      "ADCRH": 0.5
+    },
+    "demand_levels_cm_per_day": {
+      "MID": 0.3,
+      "HIGH": 0.6
+    },
+    "fine_process": "Use evaluate_macro_feddes_drought_uptake unchanged. h3 is derived by the production process from T_p and the frozen breakpoints.",
+    "evaluation_timing": "At the start of every Reference transaction, evaluate root uptake from the current committed pressure-head state, then hold the resulting root sink vector fixed during that transaction.",
+    "within_trial_reevaluation": false
+  },
+  "fresh_histories": {
+    "V01": {
+      "initial_Se": 0.6,
+      "root_profile": "SHALLOW",
+      "demand": "HIGH",
+      "potential_transpiration_cm_per_day": 0.6
+    },
+    "V02": {
+      "initial_Se": 0.45,
+      "root_profile": "SHALLOW",
+      "demand": "MID",
+      "potential_transpiration_cm_per_day": 0.3
+    },
+    "V03": {
+      "initial_Se": 0.6,
+      "root_profile": "UNIFORM",
+      "demand": "HIGH",
+      "potential_transpiration_cm_per_day": 0.6
+    },
+    "V04": {
+      "initial_Se": 0.45,
+      "root_profile": "UNIFORM",
+      "demand": "MID",
+      "potential_transpiration_cm_per_day": 0.3
+    }
+  },
+  "numerical_authority": {
+    "routes": {
+      "R512_T32": {
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      },
+      "R1024_T32": {
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      },
+      "R2048_T32": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 32,
+        "transaction_dt_day": 0.000025
+      },
+      "R2048_T16": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R2048_T8": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 8,
+        "transaction_dt_day": 0.0001
+      }
+    },
+    "refinement_ratio": 2,
+    "target": "R2048_T32",
+    "O0_O2_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "root_active_failed_first_attempt_policy": "FAIL_CLOSED_NO_DYN0A_FALLBACK",
+    "reason": "The legacy DYN0A fallback has not been independently admitted for dynamically reevaluated root-active Reference forcing. C6R may not extend that policy after response.",
+    "segmentation": "R2048_T32 may use the already-qualified C6N1 checkpoint topology, because root sink is recomputed from committed hydraulic state and is not persistent checkpoint state."
+  },
+  "reference_outputs": {
+    "state_profile": [
+      "root_zone_0_40_storage_cm",
+      "upper_zone_0_80_storage_cm",
+      "mapped_10cm_theta"
+    ],
+    "root_feedback": [
+      "interval_actual_root_uptake_cm_per_day",
+      "cumulative_actual_root_uptake_cm",
+      "actual_over_potential_transpiration_fraction"
+    ],
+    "integrity": [
+      "total_storage_cm",
+      "mass_residual_cm",
+      "potential_uptake_reconciliation"
+    ]
+  },
+  "convergence_metrics": [
+    "root_zone_0_40_storage_rmse_cm",
+    "upper_0_80_storage_rmse_cm",
+    "mapped_10cm_theta_rmse",
+    "interval_actual_root_uptake_rmse_cm_per_day",
+    "cumulative_actual_root_uptake_rmse_cm"
+  ],
+  "qualification": {
+    "method": "Identical three-level monotone Richardson/GCI-style structure to C6N1, evaluated separately for each material and each frozen metric.",
+    "spatial_ladder": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "axis_rule": [
+      "E_coarse and E_fine must be finite, positive and E_fine<E_coarse.",
+      "p=log2(E_coarse/E_fine) must be finite and positive.",
+      "U_axis=1.25*E_fine/(2^p-1)."
+    ],
+    "combined_uncertainty": "U_combined=U_space+U_time without independence assumption.",
+    "pass_rule": "All five metrics qualify on both axes for both B01 and B14, with integrity and O0/O2 gates green.",
+    "if_passed": "Authorize C6S prospective reduced root-feedback comparison using only U4,U8,R8,R16 and the frozen C6Q LAYER_MEAN_HEAD_FEDDES candidate.",
+    "if_failed": "Stop before any reduced root-feedback response; do not change demand, root profile, retry policy, metric set or convergence formula after response."
+  },
+  "stop_rules": [
+    "No reduced candidate response in C6R.",
+    "No root-active DYN0A fallback extension.",
+    "No change to V01-V04, T_p, root distributions or Feddes anchors after first response.",
+    "No application tolerance or crop-calibration claim.",
+    "No performance or production-ROM claim."
+  ],
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "materializer": "tests/rom/materialize_lare_bc2_c6r_root_active_reference.py",
+    "materializer_blob": null,
+    "segmented_materializer": "tests/rom/materialize_lare_bc2_c6r_segmented_reference.py",
+    "segmented_materializer_blob": null,
+    "analyzer": "tests/rom/analyze_lare_bc2_c6r_reference_uncertainty.py",
+    "analyzer_blob": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6r.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "reduced_root_feedback_implemented": false,
+    "root_active_fallback_extended": false,
+    "application_tolerance_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
