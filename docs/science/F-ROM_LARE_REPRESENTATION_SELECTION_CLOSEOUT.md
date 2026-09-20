@@ -95,6 +95,16 @@ Therefore C6D is not retracted, but general free-running BEMR is not authorized.
 
 The workstream is again at a scientific choice boundary before any new propagation or state family.
 
+## C6F conservative sublayer-memory result
+
+C6F tested the next apparently natural idea without hydrological response: represent each macro-layer by conserved upper- and lower-half water inventories.
+
+That state has attractive properties. Each inventory is directly bounded, and exact sub-control-volume balances exist. However, with ordinary Darcy fluxes between half-cell representative states, the construction is algebraically identical to splitting every macro-layer into two ordinary finite-volume cells. It is therefore fixed grid refinement, not a new reduced propagation family.
+
+Making the internal midpoint transfer different from ordinary Darcy does not follow from conservation alone and would introduce a new closure. Exact steady transfer returns to the already-closed steady-equivalent class.
+
+C6F therefore closes without a D24 or free-running experiment. The next representation must change information content or state geometry rather than relabel ordinary refinement.
+
 ## Application and value boundary
 
 Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
