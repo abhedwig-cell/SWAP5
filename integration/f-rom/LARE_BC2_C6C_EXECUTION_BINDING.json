@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6c.execution-binding.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6C",
-  "status": "DRAFT_EXACT_CASE_SHARDING_EXECUTION_REPAIR_AWAITING_WORKFLOW_BINDING",
+  "status": "BOUND_EXACT_CASE_SHARDING_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
   "decision": "PARTITION_FROZEN_C6C_CASE_SET_FOR_EXECUTION_ONLY_NO_SCIENTIFIC_CHANGE",
   "authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json",
@@ -37,8 +37,9 @@
   },
   "workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6c-sharded.yml",
-    "blob": null,
-    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+    "blob": "1b6b135c87d0348786c23f6adf884a646abe5351",
+    "state": "BOUND_BEFORE_EXECUTION",
+    "binding_note": "The workflow is triggered only by this execution-binding file; workflow creation itself cannot run an unbound scientific design."
   },
   "scientific_firewall": {
     "hydrological_response_used": false,
