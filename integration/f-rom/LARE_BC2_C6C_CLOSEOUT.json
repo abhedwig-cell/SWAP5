@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.lare.bc2.c6c.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6C",
+  "status": "CLOSED_BEMR_MATHEMATICALLY_QUALIFIED_FROZEN_STATE_MECHANISM_DISCRIMINATOR_NEXT",
+  "decision": "AUTHORIZE_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING",
+  "role": "RESPONSE_FREE_BEMR_MATHEMATICAL_QUALIFICATION_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json",
+    "execution_binding": "integration/f-rom/LARE_BC2_C6C_EXECUTION_BINDING.json",
+    "workflow_run": 35523252423,
+    "execution_head": "d956da43a7c0c38aaa7d8fe75da07a0c0cc138fe",
+    "artifact_id": 10609202775,
+    "artifact_digest": "sha256:604382f14ba0fc33cbb92325f3b0e1399782e641b9ec41bde011b982aec08658",
+    "result_sha256": "3903e5666802737c1f8afec1fd4f62e53ff44078afca66e488b9b2bae98c6ada",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6C_RESULT.json",
+    "serial_crosscheck": {
+      "workflow_run": 35522955216,
+      "execution_head": "31937aff44afe3b5d9172a354d5bcc39aa4b8c8e",
+      "artifact_id": 10608303170,
+      "artifact_digest": "sha256:5d05af85fde69943b8d48e0332308ec5b84c3a317f7789e72b0cc9c7d9878007",
+      "result_sha256": "c6f67ad11d2cd8e965bcf8d6c475a34341d981fb807abe3c359fccae0cef088a",
+      "same_status_gates_counts": true,
+      "byte_identical_result": false,
+      "interpretation": "Independent serial and exact-sharded executions reproduce the same scientific adjudication; tiny floating-point nonlinear-solver differences do not alter any gate."
+    }
+  },
+  "qualification": {
+    "case_count": 168,
+    "fixed_start_count": 840,
+    "gates": {
+      "G1_STRICT_STATE_MOMENT_REALIZABILITY": true,
+      "G2_ALL_CASES_CONVERGE": true,
+      "G3_UNIQUE_NUMERICAL_BRANCH": true,
+      "G4_BOUNDED_REALIZABILITY": true,
+      "G5_HYDRAULIC_CONTINUITY": true,
+      "G6_STATE_RECOVERY": true,
+      "G7_QUADRATURE_CONSISTENCY": true,
+      "G8_NO_RESPONSE_DATA": true
+    },
+    "counts": {
+      "moment_bound_pass": 168,
+      "all_starts_converged": 168,
+      "unique_numerical_branch": 168,
+      "theta_admissible": 168,
+      "hydraulic_continuity": 168,
+      "state_recovery": 168,
+      "quadrature_consistency": 168
+    },
+    "conditioning": {
+      "finite_jacobian_condition_count": 840,
+      "median_condition_number": 4294.138827646215,
+      "max_condition_number": 13506.995321991439,
+      "hard_gate": false
+    },
+    "observed_Se_range": [
+      0.3534461928691429,
+      0.9713582653220778
+    ],
+    "worst_residuals": {
+      "max_abs_interface_pressure_jump_cm": 3.431921413721284e-11,
+      "max_abs_interface_flux_jump_cm_per_day": 1.5193402091995267e-13,
+      "max_abs_top_flux_residual_cm_per_day": 1.684468536877759e-13,
+      "max_abs_bottom_pressure_residual_cm": 8.520828487235121e-11,
+      "max_abs_storage_recovery_cm": 4.263256414560601e-13,
+      "max_abs_moment_recovery_cm2": 3.524291969370097e-12,
+      "max_abs_96_192_storage_delta_cm": 1.5987211554602254e-13,
+      "max_abs_96_192_moment_delta_cm2": 3.524291969370097e-12
+    }
+  },
+  "adjudication": {
+    "UNCHANGED_C5Z_STATE_MOMENT_DOMAIN_REALIZABLE_UNDER_FROZEN_SE_INTERVAL": true,
+    "ALL_CASES_CONVERGE": true,
+    "UNIQUE_NUMERICAL_BRANCH": true,
+    "BOUNDED_REALIZABILITY_BY_CONSTRUCTION_CONFIRMED": true,
+    "HYDRAULIC_CONTINUITY": true,
+    "STATE_RECOVERY": true,
+    "QUADRATURE_CONSISTENCY": true,
+    "C5Z_CUBIC_THETA_ROUTE_REOPENED": false,
+    "BEMR_MATHEMATICALLY_QUALIFIED": true,
+    "BEMR_HYDROLOGICAL_FIDELITY_ESTABLISHED": false,
+    "FREE_RUNNING_BEMR_IMPLEMENTATION_AUTHORIZED": false,
+    "FROZEN_STATE_MECHANISM_DISCRIMINATOR_AUTHORIZED": true,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "scientific_interpretation": [
+    "All 168 unchanged C5Z synthetic B14 state/moment cases satisfy the stricter BEMR realizability bound over the frozen Se interval [0.02,0.995].",
+    "All five preregistered starts converge for every case and agree on one numerical branch within the frozen gates.",
+    "The bounded entropy-dual representation removes the specific C5Z upper-saturation overshoot structurally rather than by clipping, moment narrowing, constitutive relaxation or post-result retuning.",
+    "Hydraulic continuity, state recovery and independent quadrature consistency pass for every case. The observed sampled Se range is approximately 0.35345 to 0.97136.",
+    "The Jacobian conditioning diagnostic is larger than in C5Z but was prospectively non-gating; no convergence failure or branch ambiguity results.",
+    "C6C establishes mathematical admissibility only. It does not establish Reference-relative interface-flux fidelity or free-running hydrological response.",
+    "The next authorized step is an exposed frozen-state mechanism discriminator using immutable fine-Reference states and directly projected storage and first moments."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6D",
+    "state": "EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION",
+    "constraints": [
+      "Use immutable exposed Reference states; candidate BEMR flux must not feed back.",
+      "Project both S_i and centered M_i directly from fine Reference water-content state; do not fit moments.",
+      "Retain the qualified BEMR map and frozen B14 constitutive interval without retuning.",
+      "Reuse existing C5T/C5R interface-flux mechanism metrics and phase separation where applicable.",
+      "No moment localization, free-running BEMR, application acceptance, performance or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "free_running_bemr_implemented": false,
+    "response_based_profile_fit": false,
+    "c5z_post_result_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
