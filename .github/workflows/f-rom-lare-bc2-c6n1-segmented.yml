@@ -1,0 +1,424 @@
+name: F-ROM-LARE BC2-C6N1 segmented checkpoint recovery
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6n1-segmented-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  C6N1_OLD_T32_RUN: 35532934940
+  C6M2_RUN: 35532270427
+
+jobs:
+  qualify_checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify segmented recovery authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json)" = "d177069d2ae7daa623cebd5a25f3f89eaf6d9537"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py)" = "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py)" = "c08b7fa88f9378d8e827a2f41d4eca1ebd0d1343"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py)" = "15c4c0bc0c3f7be1df1394a812b509512b2a7049"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py
+          export C6N1_SEGMENTED_WORKFLOW_BLOB="$(git hash-object .github/workflows/f-rom-lare-bc2-c6n1-segmented.yml)"
+          python3 - <<'PY'
+          import json,os
+          r=json.load(open('integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json'))
+          assert r['status']=='BOUND_SEGMENTED_CHECKPOINT_RECOVERY_NO_SCIENTIFIC_CHANGE'
+          assert r['scientific_authority']['qualification_changed'] is False
+          assert r['repair']['scientific_effect']=='NONE'
+          assert r['repair']['segmented_materializer_blob']=='c08b7fa88f9378d8e827a2f41d4eca1ebd0d1343'
+          assert r['segmented_authority_run']['workflow_blob']==os.environ['C6N1_SEGMENTED_WORKFLOW_BLOB']
+          assert r['scientific_firewall']['candidate_response_generated'] is False
+          print('C6N1_SEGMENTED_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Materialize and execute continuous short qualification route
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6n1q
+          python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py             --source tests/rom/test_lare_dyn0a_reference.f90             --material B01 --segment-start 1 --segment-end 2048             --output canonical/tests/rom/test_c6n1q_continuous.f90             --manifest /tmp/c6n1q/continuous_manifest.json
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output canonical/c6n1q_cont_stubs.f90 --nodes 512 --dz-cm 0.3125
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical --stub c6n1q_cont_stubs.f90             --target tests/rom/test_c6n1q_continuous.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build /tmp/c6n1q/cont --opt 2
+          C6N1_CHECKPOINT_OUT=/tmp/c6n1q/continuous.chk           LARE_DYN0A_CASE_FILTER=U01             /tmp/c6n1q/cont/rom0_test > /tmp/c6n1q/continuous.txt 2>&1
+          grep -Fq 'LAREDYN0R_C6N1_SEGMENTED_SURFACE_FIXED_FLUX_REFERENCE_GENERATED=TRUE' /tmp/c6n1q/continuous.txt
+          test "$(grep -c '^LAREDYN0R_STATE|' /tmp/c6n1q/continuous.txt)" -eq 2048
+          test "$(grep -c '^LAREDYN0R_PROFILE|' /tmp/c6n1q/continuous.txt)" -eq 1024
+
+      - name: Execute equivalent two-checkpoint short route
+        run: |
+          set -euo pipefail
+          for spec in "1 1024 a" "1025 2048 b"; do
+            read -r first last id <<<"$spec"
+            python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py               --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py               --source tests/rom/test_lare_dyn0a_reference.f90               --material B01 --segment-start "$first" --segment-end "$last"               --output "canonical/tests/rom/test_c6n1q_${id}.f90"               --manifest "/tmp/c6n1q/${id}_manifest.json"
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c6n1q_${id}_stubs.f90" --nodes 512 --dz-cm 0.3125
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "c6n1q_${id}_stubs.f90"               --target "tests/rom/test_c6n1q_${id}.f90"               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c6n1q/${id}" --opt 2
+            if [[ "$id" == "a" ]]; then
+              C6N1_CHECKPOINT_OUT=/tmp/c6n1q/a.chk               LARE_DYN0A_CASE_FILTER=U01                 "/tmp/c6n1q/${id}/rom0_test" > "/tmp/c6n1q/${id}.txt" 2>&1
+            else
+              C6N1_CHECKPOINT_IN=/tmp/c6n1q/a.chk               C6N1_CHECKPOINT_OUT=/tmp/c6n1q/b.chk               LARE_DYN0A_CASE_FILTER=U01                 "/tmp/c6n1q/${id}/rom0_test" > "/tmp/c6n1q/${id}.txt" 2>&1
+            fi
+          done
+          cat /tmp/c6n1q/a.txt /tmp/c6n1q/b.txt > /tmp/c6n1q/segmented.txt
+          cmp /tmp/c6n1q/continuous.chk /tmp/c6n1q/b.chk
+
+      - name: Prove checkpoint hydrological equivalence
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re,pathlib
+          root=pathlib.Path('/tmp/c6n1q')
+          def canonical_states(path):
+              out=[]
+              for line in path.read_text(errors='replace').splitlines():
+                  if line.startswith('LAREDYN0R_STATE|'):
+                      out.append(re.sub(r'\|REV=[^|]+','',line))
+              return out
+          def profiles(path):
+              return [x for x in path.read_text(errors='replace').splitlines() if x.startswith('LAREDYN0R_PROFILE|')]
+          a=canonical_states(root/'continuous.txt')
+          b=canonical_states(root/'segmented.txt')
+          assert len(a)==len(b)==2048
+          assert a==b
+          pa=profiles(root/'continuous.txt'); pb=profiles(root/'segmented.txt')
+          assert len(pa)==len(pb)==1024
+          assert pa==pb
+          print('C6N1_SEGMENT_CHECKPOINT_HYDROLOGICAL_IDENTITY=PASS')
+          PY
+          mkdir -p qualification
+          cp /tmp/c6n1q/continuous.chk /tmp/c6n1q/b.chk qualification/
+          grep '^LAREDYN0R_STATE|' /tmp/c6n1q/continuous.txt > qualification/continuous_state.txt
+          grep '^LAREDYN0R_STATE|' /tmp/c6n1q/segmented.txt > qualification/segmented_state.txt
+          sha256sum qualification/* > qualification/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n1-segment-checkpoint-qualification
+          path: qualification/
+          if-no-files-found: error
+
+  segment1:
+    needs: qualify_checkpoint
+    name: s1-${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [U01, U02, U03, U04]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+      - name: Execute segment 1
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          if [[ "$material" == B01 ]]; then source=tests/rom/test_lare_dyn0a_reference.f90; else source=tests/rom/test_lare_dyn0a_b14_reference.f90; fi
+          mkdir -p evidence
+          python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py             --source "$source" --material "$material" --segment-start 1 --segment-end 8192             --output canonical/tests/rom/test_c6n1_segment.f90 --manifest evidence/manifest.json
+          for opt in 0 2; do
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c6n1s_o${opt}_stubs.f90" --nodes 2048 --dz-cm 0.078125
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "c6n1s_o${opt}_stubs.f90"               --target tests/rom/test_c6n1_segment.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c6n1s_o${opt}" --opt "$opt"
+            C6N1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"             LARE_DYN0A_CASE_FILTER="$history"               "/tmp/c6n1s_o${opt}/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "evidence/segment_o${opt}.txt"
+            test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/segment_o${opt}.txt")" -eq 4096
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/checkpoint_o2.bin evidence/segment_o2.txt
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n1s1-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment2:
+    needs: segment1
+    name: s2-${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [U01, U02, U03, U04]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: c6n1s1-${{ matrix.material }}-${{ matrix.history }}
+          path: previous
+      - name: Execute segment 2
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          if [[ "$material" == B01 ]]; then source=tests/rom/test_lare_dyn0a_reference.f90; else source=tests/rom/test_lare_dyn0a_b14_reference.f90; fi
+          mkdir -p evidence
+          python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py             --source "$source" --material "$material" --segment-start 8193 --segment-end 16384             --output canonical/tests/rom/test_c6n1_segment.f90 --manifest evidence/manifest.json
+          for opt in 0 2; do
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c6n1s_o${opt}_stubs.f90" --nodes 2048 --dz-cm 0.078125
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "c6n1s_o${opt}_stubs.f90"               --target tests/rom/test_c6n1_segment.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c6n1s_o${opt}" --opt "$opt"
+            C6N1_CHECKPOINT_IN=previous/checkpoint.bin             C6N1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"             LARE_DYN0A_CASE_FILTER="$history"               "/tmp/c6n1s_o${opt}/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "evidence/segment_o${opt}.txt"
+            test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/segment_o${opt}.txt")" -eq 4096
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/checkpoint_o2.bin evidence/segment_o2.txt
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n1s2-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment3:
+    needs: segment2
+    name: s3-${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [U01, U02, U03, U04]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: c6n1s2-${{ matrix.material }}-${{ matrix.history }}
+          path: previous
+      - name: Execute segment 3
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          if [[ "$material" == B01 ]]; then source=tests/rom/test_lare_dyn0a_reference.f90; else source=tests/rom/test_lare_dyn0a_b14_reference.f90; fi
+          mkdir -p evidence
+          python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py             --source "$source" --material "$material" --segment-start 16385 --segment-end 24576             --output canonical/tests/rom/test_c6n1_segment.f90 --manifest evidence/manifest.json
+          for opt in 0 2; do
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c6n1s_o${opt}_stubs.f90" --nodes 2048 --dz-cm 0.078125
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "c6n1s_o${opt}_stubs.f90"               --target tests/rom/test_c6n1_segment.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c6n1s_o${opt}" --opt "$opt"
+            C6N1_CHECKPOINT_IN=previous/checkpoint.bin             C6N1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"             LARE_DYN0A_CASE_FILTER="$history"               "/tmp/c6n1s_o${opt}/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "evidence/segment_o${opt}.txt"
+            test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/segment_o${opt}.txt")" -eq 4096
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/checkpoint_o2.bin evidence/segment_o2.txt
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n1s3-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  segment4:
+    needs: segment3
+    name: s4-${{ matrix.material }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        material: [B01, B14]
+        history: [U01, U02, U03, U04]
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: c6n1s3-${{ matrix.material }}-${{ matrix.history }}
+          path: previous
+      - name: Execute segment 4
+        run: |
+          set -euo pipefail
+          material="${{ matrix.material }}"; history="${{ matrix.history }}"
+          if [[ "$material" == B01 ]]; then source=tests/rom/test_lare_dyn0a_reference.f90; else source=tests/rom/test_lare_dyn0a_b14_reference.f90; fi
+          mkdir -p evidence
+          python3 tests/rom/materialize_lare_bc2_c6n1_segmented_reference.py             --base-materializer tests/rom/materialize_lare_bc2_c6n1_surface_fixed_flux_reference.py             --source "$source" --material "$material" --segment-start 24577 --segment-end 32768             --output canonical/tests/rom/test_c6n1_segment.f90 --manifest evidence/manifest.json
+          for opt in 0 2; do
+            python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "canonical/c6n1s_o${opt}_stubs.f90" --nodes 2048 --dz-cm 0.078125
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical --stub "c6n1s_o${opt}_stubs.f90"               --target tests/rom/test_c6n1_segment.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "/tmp/c6n1s_o${opt}" --opt "$opt"
+            C6N1_CHECKPOINT_IN=previous/checkpoint.bin             C6N1_CHECKPOINT_OUT="evidence/checkpoint_o${opt}.bin"             LARE_DYN0A_CASE_FILTER="$history"               "/tmp/c6n1s_o${opt}/rom0_test" > "evidence/segment_o${opt}.txt" 2>&1
+            grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "evidence/segment_o${opt}.txt"
+            test "$(grep -c '^LAREDYN0R_STATE|' "evidence/segment_o${opt}.txt")" -eq 8192
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "evidence/segment_o${opt}.txt")" -eq 4096
+          done
+          cmp evidence/segment_o0.txt evidence/segment_o2.txt
+          cmp evidence/checkpoint_o0.bin evidence/checkpoint_o2.bin
+          mv evidence/checkpoint_o0.bin evidence/checkpoint.bin
+          rm evidence/checkpoint_o2.bin evidence/segment_o2.txt
+          sha256sum evidence/* > evidence/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6n1s4-${{ matrix.material }}-${{ matrix.history }}
+          path: evidence/
+          if-no-files-found: error
+
+  analyze:
+    needs: segment4
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download segmented R2048 routes
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c6n1s*
+          path: /tmp/c6n1seg
+          merge-multiple: false
+
+      - name: Download reusable R512/R1024 T32 route artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c6n1-*
+          path: /tmp/c6n1old
+          merge-multiple: false
+          repository: abhedwig-cell/SWAP5
+          run-id: ${{ env.C6N1_OLD_T32_RUN }}
+          github-token: ${{ github.token }}
+
+      - name: Download frozen C6M2 T8/T16 authority
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c6m2-*
+          path: /tmp/c6m2
+          merge-multiple: false
+          repository: abhedwig-cell/SWAP5
+          run-id: ${{ env.C6M2_RUN }}
+          github-token: ${{ github.token }}
+
+      - name: Verify route-reuse scientific identity
+        run: |
+          set -euo pipefail
+          git show d8145cd09cab9f514eaf288f216e1060d7ce27d0:integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json > /tmp/old_prereg.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/old_prereg.json'))
+          b=json.load(open('integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json'))
+          ai=a.pop('implementation_binding'); bi=b.pop('implementation_binding')
+          assert a==b
+          assert ai['materializer_blob']==bi['materializer_blob']=='5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a'
+          assert ai['analyzer_blob']==bi['analyzer_blob']=='15c4c0bc0c3f7be1df1394a812b509512b2a7049'
+          assert ai['workflow_blob']==bi['workflow_blob']=='71b8bca3973885a288f3599ce3ba17a25c31a959'
+          print('C6N1_REUSED_ROUTE_SCIENTIFIC_IDENTITY=PASS')
+          PY
+
+      - name: Reconstruct all T32 routes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/routes C6N1_SEGMENTED_EVIDENCE
+          for material in B01 B14; do
+            for route in R512_T32 R1024_T32; do
+              for opt in 0 2; do
+                full="/tmp/routes/${material}_${route}_o${opt}.txt"; : > "$full"
+                for history in U01 U02 U03 U04; do
+                  part="/tmp/c6n1old/c6n1-${material}-${route}-o${opt}-${history}/${material}_${route}_o${opt}_${history}.txt"
+                  test -s "$part"; cat "$part" >> "$full"
+                done
+              done
+              cmp "/tmp/routes/${material}_${route}_o0.txt" "/tmp/routes/${material}_${route}_o2.txt"
+            done
+
+            full="/tmp/routes/${material}_R2048_T32_o0.txt"; : > "$full"
+            for history in U01 U02 U03 U04; do
+              hist="/tmp/${material}_${history}_R2048_T32.txt"; : > "$hist"
+              for seg in 1 2 3 4; do
+                part="/tmp/c6n1seg/c6n1s${seg}-${material}-${history}/segment_o0.txt"
+                test -s "$part"; cat "$part" >> "$hist"
+              done
+              test "$(grep -c '^LAREDYN0R_STATE|' "$hist")" -eq 32768
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "$hist")" -eq 16384
+              cat "$hist" >> "$full"
+            done
+            test "$(grep -c '^LAREDYN0R_STATE|' "$full")" -eq 131072
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "$full")" -eq 65536
+
+            for route in R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                prior="/tmp/routes/${material}_${route}_o${opt}.txt"; : > "$prior"
+                for history in U01 U02 U03 U04; do
+                  part="/tmp/c6m2/c6m2-${material}-${route}-o${opt}-${history}/${material}_${route}_o${opt}_${history}.txt"
+                  test -s "$part"; cat "$part" >> "$prior"
+                done
+              done
+              cmp "/tmp/routes/${material}_${route}_o0.txt" "/tmp/routes/${material}_${route}_o2.txt"
+            done
+          done
+          echo C6N1_SEGMENTED_ROUTE_RECONSTRUCTION=PASS
+
+      - name: Execute unchanged C6N1 uncertainty analysis
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py)" = "15c4c0bc0c3f7be1df1394a812b509512b2a7049"
+          python3 tests/rom/analyze_lare_bc2_c6n1_reference_uncertainty.py             --prereg integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json             --b01-r512-t32 /tmp/routes/B01_R512_T32_o0.txt             --b01-r1024-t32 /tmp/routes/B01_R1024_T32_o0.txt             --b01-r2048-t32 /tmp/routes/B01_R2048_T32_o0.txt             --b01-r2048-t16 /tmp/routes/B01_R2048_T16_o0.txt             --b01-r2048-t8 /tmp/routes/B01_R2048_T8_o0.txt             --b14-r512-t32 /tmp/routes/B14_R512_T32_o0.txt             --b14-r1024-t32 /tmp/routes/B14_R1024_T32_o0.txt             --b14-r2048-t32 /tmp/routes/B14_R2048_T32_o0.txt             --b14-r2048-t16 /tmp/routes/B14_R2048_T16_o0.txt             --b14-r2048-t8 /tmp/routes/B14_R2048_T8_o0.txt             --output C6N1_SEGMENTED_EVIDENCE/LARE_BC2_C6N1_RESULT.json             | tee C6N1_SEGMENTED_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json C6N1_SEGMENTED_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json C6N1_SEGMENTED_EVIDENCE/
+          find /tmp/routes -type f -exec sha256sum {} \; > C6N1_SEGMENTED_EVIDENCE/route_sha256.txt
+          sha256sum C6N1_SEGMENTED_EVIDENCE/* > C6N1_SEGMENTED_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6n1-segmented
+          path: C6N1_SEGMENTED_EVIDENCE/
+          if-no-files-found: error
