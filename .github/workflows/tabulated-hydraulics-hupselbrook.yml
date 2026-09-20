@@ -6,7 +6,8 @@ on:
     branches:
       - research/tabulated-hydraulics-characterization
     paths:
-      - 'research/tabulated_hydraulics/**'
+      - 'research/tabulated_hydraulics/generate_hupselbrook_tables.py'
+      - 'research/tabulated_hydraulics/compare_swap_outputs.py'
       - '.github/workflows/tabulated-hydraulics-hupselbrook.yml'
 
 jobs:
