@@ -1,60 +1,76 @@
 # F-ROM-LARE representation-selection closeout
 
-## Decision
+## Current decision
 
-**NEXT_INDEPENDENT_PHYSICAL_FAMILY_QUASI_STEADY_MANIFOLD_SOURCE_BINDING**
+**STOP_C6A_INTERFACE_VARIABLE_ROUTE_AT_STRUCTURAL_EQUIVALENCE_BOUNDARY**
 
-The fixed-partition branch has reached a scientific boundary. This closeout does not select a production model and does not alter SWAP physics.
+Current repository authority is the machine-readable
+`integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json`.
+This page is the human-readable synthesis through C6A.
 
-## Fixed-partition LARE
+No production ROM is selected. Fine Reference Richards remains the scientific reference. No Reference Richards, RossFast or production groundwater-coupling change follows from this workstream.
 
-Standard LARE remains a valid conservative research representation and is resolution-convergent in the bounded DYN0A laboratory. Its low-dimensional limitation is now mechanistically clearer: internal gradient reconstruction dominates the bounded flux error, and increasing spatial state dimension improves storage fidelity strongly.
+## What is now established
 
-The BC2 sequence then tested whether that limitation could be repaired without changing representation family. State insufficiency due to hidden direction/history was not demonstrated in C4K. A qH-preserving cubic reconstruction was mixed in C4L. Direct central weighting was unsupported where interpretable in C4M. Opposite-distance face interpolation improved FALL but not RISE or HOLD in C4N. Finally, C4O showed that no single zero-fit existing-state conditioner transfers across both tested terminal widths.
+The representation campaign has separated three issues that were initially entangled.
 
-The resulting boundary is narrow but firm: current evidence does not authorize further scalar tuning of the same fixed-partition LARE gradient closure.
+First, vertical placement matters. C5P showed a causal benefit from moving retained support toward the lower boundary at fixed dimension.
 
-## Same-partition CoRichards
+Second, simply adding more ordinary layer states is no longer the active axis once the lower support is held fixed. C5R restored four vertically distributed states above the same B2P5 lower support and obtained essentially the same groundwater response for D8 and D12. The remaining high-resolution discrepancy is therefore much more strongly associated with inter-layer propagation than with missing ordinary state breadth.
 
-CoRichards was defined as conventional Reference-Richards discretisation on exactly the same fixed vertical partition and spatial state count as LARE.
+Third, the propagation problem has not yet yielded a qualified replacement closure. Several prospectively defined routes have failed before free-running adoption:
 
-The existing R3 comparator was already dynamically blocked. Q1 extended the frozen LARE ladder to R4, R5, R6, R8, R12 and R16. R4 through R12 each retain their three equilibrium controls but qualify zero non-equilibrium dynamic histories even at 16 temporal substeps per observation interval. R16 reproduces the fine Reference authority and qualifies all seven expected physically in-domain dynamic histories.
+- C5T: the zero-parameter DSE2P steady-equivalent interface closure failed its mandatory response-free numerical qualification.
+- C5W: the P0 uniform-storage-tendency SCAFP route failed the frozen existence/admissibility contract.
+- C5Z: the conservation-derived first-moment state remained numerically well behaved, but its all-layer cubic-theta reconstruction violated the frozen upper constitutive admissibility domain in 14 of 168 cases.
+- C6A: explicit algebraic interface head and flux unknowns were shown not to constitute a new physical family by themselves.
 
-Thus same-partition conventional Richards does not furnish a reduced dynamic comparator in this bounded B01 fixed-flux laboratory under the frozen strict Reference numerical authority. This is a numerical comparator-availability result. It is not evidence that LARE is hydrologically superior to coarse Richards, and it does not authorize the preregistered Q2 fidelity comparison.
+## C6A structural-equivalence result
 
-## Representation consequence
+C6A tested the theory behind a structure-preserving coarse Richards formulation with one dynamic integrated storage state per layer and explicit algebraic hydraulic traces and fluxes at the interfaces.
 
-Two immediate routes are now closed:
+A single shared face flux is sufficient for exact layer-by-layer conservation. The algebraic degree count can also be made square.
 
-1. Further zero-fit scalar closure tuning inside the current fixed-partition LARE representation is unsupported without new representation authority.
-2. Reduced same-partition CoRichards cannot presently provide the intended equal-dimension dynamic fidelity comparator.
+The important result is that the count closes only after a local center-to-face hydraulic law has been chosen. The interface variables themselves contain no new transient subgrid information.
 
-Fine Reference Richards remains the scientific reference. R16 remains a no-spatial-reduction control. The LARE resolution ladder remains useful as a bounded state-count versus fidelity reference.
+For the natural lowest-order choices:
 
-## Next independent physical family
+1. linear or frozen-(K) half-cell Darcy relations statically condense to a conventional conservative two-point resistance operator;
+2. exact nonlinear steady half-cell relations condense to the DSE2P steady-equivalent closure already closed by C5T;
+3. affine within-layer flux implies uniform storage tendency and is therefore the P0 route already closed by C5W.
 
-F-ROMV2 already lists **QUASI_STEADY_OR_INTEGRATED_MANIFOLD_PHYSICAL_REDUCTION** as a candidate family, and F-ROMV2-V1 explicitly authorizes an independent test of that family for regional or groundwater-coupled use.
+Allowing a non-affine internal flux reintroduces the unresolved within-layer storage-tendency distribution. That requires either an additional physically justified state or a new subgrid closure principle.
 
-That is now the next authorized physical-reduction family because it changes the state-to-profile representation itself rather than adding another scalar correction to the fixed-partition LARE closure.
+Thus mixed/hybrid variable placement is a useful numerical architecture, but it is not by itself the missing Layer-ROM physics.
 
-No manifold model is implemented from this closeout. Before model definition, the workstream must bind an inspectable primary-source formulation covering:
+## Relation to CoRichards
 
-- prognostic state variables;
-- reconstructed profile/manifold variables;
-- water conservation;
-- upper and lower boundary flux semantics;
-- equilibrium versus transient disequilibrium treatment;
-- any memory state, if the source model truly contains one;
-- the application envelope for which reduced deviations from Richards are intended to be acceptable.
+Same-partition CoRichards remains a numerical comparator-availability result. R3 through R12 did not provide a qualified non-equilibrium dynamic common cohort under the frozen strict authority, whereas the fine R16 control recovered viability.
 
-The acceptance criterion remains purpose-dependent hydrological fidelity, not universal numerical equivalence with Richards.
+C6A does not overturn that result. Rewriting coarse Richards in mixed or mixed-hybrid form changes the algebraic formulation and conservation representation, not automatically the reduced physical information content.
 
-## Deferred alternatives
+## Status of the first moment
 
-DYN0A-MECH3B supports a transferable nonlinear hydraulic length-scale mechanism, but it does not establish a universal adaptive-grid rule. Adaptive or moving partitions therefore remain a separate future representation choice.
+C5Z does **not** establish that the centered first water-content moment is a bad physical state.
 
-Output-specific surrogates remain a candidate family under F-ROMV2, but they are not the present priority because this workstream is still testing physically interpretable reduced hydrological models.
+C5Y's exact projected balance remains valid. What failed was the chosen all-layer cubic-(	heta) hydraulic reconstruction over the frozen synthetic domain. The moment range, polynomial order, constitutive admissibility limits, numerical starts and tolerances were not retuned after exposure.
 
-## Firewalls
+The first moment may therefore appear in a future physically distinct family only if the new construction is derived independently and does not reopen the rejected C5Z cubic-theta route under modified tuning.
 
-No production ROM is authorized. No Reference Richards or RossFast change is authorized. No groundwater-coupler architecture change is authorized. No application-acceptance, speed or computational-value claim follows from this closeout.
+## Current scientific choice boundary
+
+The next family is deliberately unselected.
+
+A future read-only derivation may consider, without using exposed response residuals to choose among them:
+
+- a realizability-preserving conservation-derived moment/state closure that is genuinely distinct from the C5Z cubic-theta reconstruction;
+- a conserved interface-local or dual-control-volume state with its own balance law, provided it is shown not to be ordinary layer refinement in disguise;
+- an independently justified adaptive or moving-partition representation.
+
+A dynamic interface flux cannot simply be declared as a new state. Richards-Darcy supplies no independent flux-inertia evolution equation, so such a route would need separate physical authority.
+
+## Application and value boundary
+
+Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
+
+No performance comparison, portable speedup, computational-value claim or production-ROM admission is authorized at this boundary.
