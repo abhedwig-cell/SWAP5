@@ -1,0 +1,148 @@
+{
+  "schema": "swap5.lare.bc2.c6d.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6D",
+  "status": "CLOSED_BEMR_FROZEN_STATE_MECHANISM_SUPPORTED_TRANSITION_TAIL_RISK_PRESERVED_BOUNDARY_QUALIFICATION_NEXT",
+  "decision": "AUTHORIZE_RESPONSE_FREE_PRESCRIBED_FLUX_BOUNDARY_MATHEMATICAL_QUALIFICATION_BEFORE_FRESH_BLIND_FREE_RUNNING",
+  "role": "EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_MECHANISM_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6D_PREREGISTRATION.json",
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C6D_EXECUTION_BINDING_RECONCILIATION.json",
+    "workflow_run": 35524491529,
+    "execution_head": "7176cb5741028a328bc7500097f2ab971e36a8a7",
+    "artifact_id": 10608379760,
+    "artifact_digest": "sha256:9e18ae4154de9d40b61a4088136d6af226f6cc6d9f5fefc6082205a3a317afe0",
+    "result_sha256": "d2558aff10e287d7dd496dd41908916e63f8e4e0a23a4a03d02c132ff095d128",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6D_RESULT.json"
+  },
+  "qualification": {
+    "moving_observation_count": 2304,
+    "strict_state_moment_realizable_count": 2304,
+    "numerically_qualified_observation_count": 2304,
+    "failure_count": 0,
+    "instrumentation_identity_pass": true,
+    "sampled_Se_range": [
+      0.6974826319561689,
+      0.8943979119272624
+    ],
+    "branch_agreement_extrema": {
+      "max_theta": 6.444844657949034e-14,
+      "max_pressure_cm": 1.8354739950154908e-10,
+      "max_flux_cm_per_day": 6.0886851116492835e-12
+    }
+  },
+  "primary_moving": {
+    "CURRENT_LAYER_FACE": {
+      "rmse_cm_per_day": 0.008709064102861076,
+      "mean_abs_interface_history_signed_bias_cm_per_day": 0.0011378689281572954,
+      "mean_abs_cm_per_day": 0.004184876830442388,
+      "sign_mismatch_count": 229,
+      "max_abs_cm_per_day": 0.10265674466756781
+    },
+    "BEMR": {
+      "rmse_cm_per_day": 0.006075234575533471,
+      "mean_abs_interface_history_signed_bias_cm_per_day": 0.00019011808575618413,
+      "mean_abs_cm_per_day": 0.0014035068074318448,
+      "sign_mismatch_count": 190,
+      "max_abs_cm_per_day": 0.18420116268699926
+    },
+    "ratios_BEMR_over_CURRENT": {
+      "rmse": 0.6975760545312386,
+      "mean_abs_interface_history_signed_bias": 0.16708258838218562,
+      "mean_abs_error": 0.3353758937950579,
+      "sign_mismatch_count": 0.8296943231441049,
+      "max_abs_error": 1.7943405792137266
+    }
+  },
+  "primary_interface_rmse_cm_per_day": {
+    "150": {
+      "CURRENT_LAYER_FACE": 0.002153212846914784,
+      "BEMR": 0.0008944516223140453
+    },
+    "155": {
+      "CURRENT_LAYER_FACE": 0.006444800553460307,
+      "BEMR": 0.0016443608426644023
+    },
+    "157.5": {
+      "CURRENT_LAYER_FACE": 0.013467427850381417,
+      "BEMR": 0.01035477953206749
+    }
+  },
+  "adjudication": {
+    "BEMR_ALL_MOVING_POINTS_NUMERICALLY_QUALIFIED": true,
+    "BEMR_PRIMARY_MOVING_COMPONENTWISE_NO_WORSE": true,
+    "BEMR_EACH_PRIMARY_MOVING_RMSE_NO_WORSE": true,
+    "BEMR_PRIMARY_MOVING_RMSE_STRICTLY_IMPROVED": true,
+    "BEMR_SUPPORTED_FOR_BOUNDARY_EXTENSION_QUALIFICATION": true,
+    "BEMR_UNIFORMLY_BETTER_ON_ALL_DIAGNOSTICS": false,
+    "FREE_RUNNING_BEMR_AUTHORIZED": false,
+    "FRESH_BLIND_BEMR_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "preserved_tail_risk": {
+    "max_abs_error_worsened": true,
+    "CURRENT_LAYER_FACE_max_abs_cm_per_day": 0.10265674466756781,
+    "BEMR_max_abs_cm_per_day": 0.18420116268699926,
+    "BEMR_worst_case": {
+      "history": "R02",
+      "observation": 225,
+      "phase": "PHASE2",
+      "depth_cm": 157.5,
+      "context": "first observation immediately after the preregistered RISE-to-FALL phase reversal",
+      "reference_flux_cm_per_day": -0.05286668694655378,
+      "current_layer_face_flux_cm_per_day": -0.017919393575985643,
+      "BEMR_flux_cm_per_day": 0.1313344757404455,
+      "CURRENT_error_cm_per_day": 0.034947293370568136,
+      "BEMR_error_cm_per_day": 0.18420116268699926,
+      "BEMR_sign_wrong": true
+    },
+    "interface_155_sign_mismatches": {
+      "CURRENT_LAYER_FACE": 35,
+      "BEMR": 39
+    },
+    "interpretation": [
+      "The preregistered C6D support decision remains positive because maximum absolute error and per-interface sign count were descriptive, not adjudication gates.",
+      "The exposed transition outlier is retained as mechanism evidence and may not be tuned away.",
+      "Any later fresh blind free-running validation must prospectively include fast-transition/tail behavior in addition to pooled error metrics."
+    ]
+  },
+  "scientific_interpretation": [
+    "Adding the conservation-derived first water-content moment and reconstructing through the mathematically qualified bounded entropy-dual profile materially improves the preregistered primary moving-phase interface-flux vector relative to CURRENT_LAYER_FACE on the same immutable Reference states.",
+    "The improvement is not a scalar-tuned effect: both S and M are projected directly from fine Reference water content and BEMR uses the frozen C6C algebraic map with no candidate feedback.",
+    "The result supports the hypothesis that the post-C5R propagation limit contains missing subgrid-shape information, not merely insufficient bottom-layer placement.",
+    "The result is exposed mechanism evidence, not blind hydrological validation and not evidence of free-running stability.",
+    "A pronounced phase-reversal outlier demonstrates that BEMR is not uniformly superior and creates a mandatory future fast-transition/tail-risk validation obligation."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6E",
+    "state": "RESPONSE_FREE_PRESCRIBED_FLUX_BOUNDARY_MATHEMATICAL_QUALIFICATION_AUTHORIZED",
+    "question": "Can the already-qualified BEMR S/M reconstruction remain realizable, single-branch and hydraulically consistent when the lower external condition is prescribed flux instead of prescribed head, without changing the state, dual order or constitutive interval?",
+    "constraints": [
+      "No hydrological trajectories or C6D response residuals in C6E.",
+      "Retain D12_B2P5 all-layer S/M state and the frozen C6C BEMR logistic P3 dual representation.",
+      "Use a response-independent synthetic prescribed-flux boundary domain derived prospectively from the existing C6C state domain and B14 constitutive law.",
+      "No clipping, regularization, moment localization, dual-order change, constitutive-bound change or response-based tuning.",
+      "If prescribed-flux boundary qualification fails, stop before free-running implementation.",
+      "If it passes, only then preregister a fresh blind free-running BEMR test with an explicit transition-tail guard informed by the exposed C6D mechanism risk."
+    ]
+  },
+  "scientific_firewall": {
+    "blind_validation": false,
+    "candidate_feedback": false,
+    "production_reference_changed": false,
+    "free_running_bemr_implemented": false,
+    "moment_fitting": false,
+    "moment_localization": false,
+    "c6c_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
