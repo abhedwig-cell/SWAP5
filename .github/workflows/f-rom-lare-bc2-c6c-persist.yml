@@ -1,0 +1,285 @@
+name: F-ROM-LARE BC2-C6C persist mathematical qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6c-persist.yml'
+
+concurrency:
+  group: f-rom-lare-bc2-c6c-persist-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AUTH_RUN: "35523252423"
+      AUTH_HEAD: "d956da43a7c0c38aaa7d8fe75da07a0c0cc138fe"
+      AUTH_ARTIFACT_ID: "10609202775"
+      AUTH_ARTIFACT_DIGEST: "sha256:604382f14ba0fc33cbb92325f3b0e1399782e641b9ec41bde011b982aec08658"
+      AUTH_RESULT_SHA256: "3903e5666802737c1f8afec1fd4f62e53ff44078afca66e488b9b2bae98c6ada"
+      SERIAL_RUN: "35522955216"
+      SERIAL_HEAD: "31937aff44afe3b5d9172a354d5bcc39aa4b8c8e"
+      SERIAL_ARTIFACT_ID: "10608303170"
+      SERIAL_ARTIFACT_DIGEST: "sha256:5d05af85fde69943b8d48e0332308ec5b84c3a317f7789e72b0cc9c7d9878007"
+      SERIAL_RESULT_SHA256: "c6f67ad11d2cd8e965bcf8d6c475a34341d981fb807abe3c359fccae0cef088a"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover immutable C6C evidence
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6c-auth /tmp/c6c-serial
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/$AUTH_RUN --jq '.status + ":" + .conclusion + ":" + .head_sha')" = "completed:success:$AUTH_HEAD"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/$SERIAL_RUN --jq '.status + ":" + .conclusion + ":" + .head_sha')" = "completed:success:$SERIAL_HEAD"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/$AUTH_ARTIFACT_ID --jq '.digest')" = "$AUTH_ARTIFACT_DIGEST"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/$SERIAL_ARTIFACT_ID --jq '.digest')" = "$SERIAL_ARTIFACT_DIGEST"
+          gh run download "$AUTH_RUN" -n lare-bc2-c6c-sharded -D /tmp/c6c-auth
+          gh run download "$SERIAL_RUN" -n lare-bc2-c6c -D /tmp/c6c-serial
+          echo "$AUTH_RESULT_SHA256  /tmp/c6c-auth/LARE_BC2_C6C_RESULT.json" | sha256sum -c -
+          echo "$SERIAL_RESULT_SHA256  /tmp/c6c-serial/LARE_BC2_C6C_RESULT.json" | sha256sum -c -
+
+      - name: Validate adjudication and persist files
+        run: |
+          set -euo pipefail
+          cp /tmp/c6c-auth/LARE_BC2_C6C_RESULT.json integration/f-rom/LARE_BC2_C6C_RESULT.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          auth=json.load(open('/tmp/c6c-auth/LARE_BC2_C6C_RESULT.json'))
+          serial=json.load(open('/tmp/c6c-serial/LARE_BC2_C6C_RESULT.json'))
+          expected={
+            'G1_STRICT_STATE_MOMENT_REALIZABILITY':True,
+            'G2_ALL_CASES_CONVERGE':True,
+            'G3_UNIQUE_NUMERICAL_BRANCH':True,
+            'G4_BOUNDED_REALIZABILITY':True,
+            'G5_HYDRAULIC_CONTINUITY':True,
+            'G6_STATE_RECOVERY':True,
+            'G7_QUADRATURE_CONSISTENCY':True,
+            'G8_NO_RESPONSE_DATA':True,
+          }
+          assert auth['status']=='C6C_BEMR_MATHEMATICALLY_QUALIFIED'
+          assert auth['case_count']==168
+          assert auth['gates']==expected
+          assert all(v==168 for v in auth['qualification_counts'].values())
+          assert serial['status']==auth['status']
+          assert serial['gates']==auth['gates']
+          assert serial['qualification_counts']==auth['qualification_counts']
+          assert serial['case_count']==auth['case_count']
+
+          closeout={
+            'schema':'swap5.lare.bc2.c6c.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C6C',
+            'status':'CLOSED_BEMR_MATHEMATICALLY_QUALIFIED_FROZEN_STATE_MECHANISM_DISCRIMINATOR_NEXT',
+            'decision':'AUTHORIZE_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING',
+            'role':'RESPONSE_FREE_BEMR_MATHEMATICAL_QUALIFICATION_CLOSEOUT',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json',
+              'execution_binding':'integration/f-rom/LARE_BC2_C6C_EXECUTION_BINDING.json',
+              'workflow_run':35523252423,
+              'execution_head':'d956da43a7c0c38aaa7d8fe75da07a0c0cc138fe',
+              'artifact_id':10609202775,
+              'artifact_digest':'sha256:604382f14ba0fc33cbb92325f3b0e1399782e641b9ec41bde011b982aec08658',
+              'result_sha256':'3903e5666802737c1f8afec1fd4f62e53ff44078afca66e488b9b2bae98c6ada',
+              'serial_crosscheck':{
+                'workflow_run':35522955216,
+                'execution_head':'31937aff44afe3b5d9172a354d5bcc39aa4b8c8e',
+                'artifact_id':10608303170,
+                'artifact_digest':'sha256:5d05af85fde69943b8d48e0332308ec5b84c3a317f7789e72b0cc9c7d9878007',
+                'result_sha256':'c6f67ad11d2cd8e965bcf8d6c475a34341d981fb807abe3c359fccae0cef088a',
+                'same_status_gates_counts':True,
+                'byte_identical_result':False,
+                'interpretation':'Independent serial and exact-sharded executions reproduce the same scientific adjudication; tiny floating-point solver differences do not alter any gate.'
+              }
+            },
+            'qualification':{
+              'case_count':168,
+              'fixed_start_count':840,
+              'gates':auth['gates'],
+              'counts':auth['qualification_counts'],
+              'conditioning':auth['conditioning'],
+              'observed_Se_range':[0.3534461928691429,0.9713582653220778],
+              'worst_residuals':{
+                'max_abs_interface_pressure_jump_cm':3.431921413721284e-11,
+                'max_abs_interface_flux_jump_cm_per_day':1.5193402091995267e-13,
+                'max_abs_top_flux_residual_cm_per_day':1.684468536877759e-13,
+                'max_abs_bottom_pressure_residual_cm':8.520828487235121e-11,
+                'max_abs_storage_recovery_cm':4.263256414560601e-13,
+                'max_abs_moment_recovery_cm2':3.524291969370097e-12,
+                'max_abs_96_192_storage_delta_cm':1.5987211554602254e-13,
+                'max_abs_96_192_moment_delta_cm2':3.524291969370097e-12
+              }
+            },
+            'adjudication':{
+              'UNCHANGED_C5Z_STATE_MOMENT_DOMAIN_REALIZABLE_UNDER_FROZEN_SE_INTERVAL':True,
+              'ALL_CASES_CONVERGE':True,
+              'UNIQUE_NUMERICAL_BRANCH':True,
+              'BOUNDED_REALIZABILITY_BY_CONSTRUCTION_CONFIRMED':True,
+              'HYDRAULIC_CONTINUITY':True,
+              'STATE_RECOVERY':True,
+              'QUADRATURE_CONSISTENCY':True,
+              'C5Z_CUBIC_THETA_ROUTE_REOPENED':False,
+              'BEMR_MATHEMATICALLY_QUALIFIED':True,
+              'BEMR_HYDROLOGICAL_FIDELITY_ESTABLISHED':False,
+              'FREE_RUNNING_BEMR_IMPLEMENTATION_AUTHORIZED':False,
+              'FROZEN_STATE_MECHANISM_DISCRIMINATOR_AUTHORIZED':True,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'All 168 unchanged C5Z synthetic B14 state/moment cases satisfy the stricter BEMR realizability bound over the frozen Se interval [0.02,0.995].',
+              'All five preregistered starts converge for every case and agree on one numerical branch within the frozen gates.',
+              'The bounded entropy-dual representation removes the specific C5Z upper-saturation overshoot structurally rather than by clipping, moment narrowing, constitutive relaxation or post-result retuning.',
+              'Hydraulic continuity, exact state recovery and independent quadrature consistency pass for every case. The observed sampled Se range is approximately 0.35345 to 0.97136.',
+              'The Jacobian conditioning diagnostic is larger than in C5Z but was prospectively non-gating; no convergence failure or branch ambiguity results.',
+              'C6C establishes mathematical admissibility only. It does not establish Reference-relative interface-flux fidelity or free-running hydrological response.',
+              'The next authorized step is an exposed frozen-state mechanism discriminator using immutable fine-Reference states and directly projected S/M moments.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C6D',
+              'state':'EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION',
+              'constraints':[
+                'Use immutable exposed Reference states; candidate BEMR flux must not feed back.',
+                'Project both S_i and centered M_i directly from fine Reference water-content state; do not fit moments.',
+                'Retain the qualified BEMR map and frozen B14 constitutive interval without retuning.',
+                'Reuse existing C5T/C5R interface-flux mechanism metrics and phase separation where applicable.',
+                'No moment localization, free-running BEMR, application acceptance, performance or production claim.'
+              ]
+            },
+            'scientific_firewall':{
+              'hydrological_response_used':False,
+              'model_run_executed':False,
+              'free_running_bemr_implemented':False,
+              'response_based_profile_fit':False,
+              'c5z_post_result_retuning':False,
+              'reference_changed':False,
+              'rossfast_changed':False,
+              'groundwater_coupling_changed':False,
+              'application_acceptance_adjudicated':False,
+              'performance_comparison_authorized':False,
+              'speed_claim_authorized':False,
+              'production_rom_authorized':False
+            },
+            'model_changed':False
+          }
+          Path('integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+
+          rp=Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          rep=json.loads(rp.read_text())
+          rep['schema']='swap5.lare.representation-selection.closeout.v32'
+          rep['status']='CLOSED_THROUGH_C6C_BEMR_MATHEMATICALLY_QUALIFIED_FROZEN_STATE_MECHANISM_DISCRIMINATOR_NEXT'
+          rep['decision']='PREREGISTER_C6D_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR'
+          rep.setdefault('authorities',{})['C6C_BEMR_mathematical_qualification']='integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json'
+          rep.setdefault('additional_reconciled_findings',{})['C6C']='BEMR passes response-free mathematical qualification on all 168 unchanged C5Z B14 state/moment cases and all 840 fixed starts. Strict moment realizability, convergence, single branch, bounded Se, hydraulic continuity, state recovery and quadrature consistency all pass. This establishes the algebraic map, not hydrological fidelity.'
+          rep['next_authority']={
+            'target':'LARE-BC2-C6D',
+            'state':'EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION',
+            'authority':'integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json',
+            'hydrological_response_authorized':False,
+            'free_running_implementation_authorized':False
+          }
+          nf=rep.setdefault('next_family_authority',{})
+          nf.update({
+            'family':'BOUNDED_ENTROPY_MOMENT_RECONSTRUCTION',
+            'state':'MATHEMATICALLY_QUALIFIED_MECHANISM_DISCRIMINATOR_REQUIRED',
+            'C6C_mathematically_qualified':True,
+            'qualified_replacement_closure_available':False,
+            'hydrological_response_authorized':False,
+            'new_family_implementation_authorized':False,
+            'exposed_frozen_state_diagnostic_authorized':True,
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json'
+            ]
+          })
+          rp.write_text(json.dumps(rep,indent=2)+'\n')
+
+          Path('docs/science/F-ROM_LARE_BC2_C6C_CLOSEOUT.md').write_text("""# F-ROM-LARE BC2-C6C BEMR mathematical qualification closeout
+
+## Decision
+
+**BEMR is mathematically qualified on the unchanged C5Z synthetic domain.**
+
+C6C remains response-free. It does not execute a free-running Layer-ROM and does not change Reference Richards, RossFast or production groundwater coupling.
+
+## Result
+
+The authoritative exact-sharded run is GitHub Actions run 35523252423 at execution head d956da43.... All 168 preregistered B14 cases pass every frozen gate from all five starts, for 840 successful fixed-start solves in total.
+
+The gates cover strict state/moment realizability, convergence, numerical branch agreement, bounded effective saturation, hydraulic pressure/flux continuity, storage and first-moment recovery, independent 96/192-point quadrature consistency, and the no-response firewall.
+
+Sampled effective saturation across the complete authority stays between approximately 0.35345 and 0.97136, inside the frozen [0.02, 0.995] qualification interval.
+
+## Relation to C5Z
+
+C5Z failed because a polynomial written directly in water content overshot the upper admissible saturation bound in 14 of 168 cases.
+
+C6C does not repair that polynomial. BEMR instead writes a cubic algebraic profile in the bounded entropy-dual coordinate and maps it to effective saturation through the fixed logistic inverse. Bounds are therefore structural for every finite coefficient vector. No clipping, narrower moment domain, relaxed constitutive interval, polynomial-order change or response-driven tuning was used.
+
+The exact same C5Z partitions, mean-saturation profiles, moment patterns and HEAD_RISE/HEAD_FALL boundary cases were retained. All 168 also pass the stricter moment-realizability condition associated with the frozen BEMR interval.
+
+## Numerical evidence
+
+The authoritative sharded execution reports median Jacobian condition number about 4294.14 and maximum about 13507.0. Conditioning was prospectively diagnostic rather than a hard gate. It creates neither convergence failure nor branch ambiguity.
+
+Worst hydraulic and state residuals remain far inside the preregistered physical gates. An independent serial execution, run 35522955216, reproduces the same status, gates and 168/168 qualification counts. Small floating-point differences make the detailed JSON non-byte-identical but do not alter any scientific decision.
+
+## What C6C does not establish
+
+Mathematical admissibility is not hydrological fidelity.
+
+C6C has not shown that BEMR improves interface flux relative to CURRENT_LAYER_FACE, has not executed the moment state dynamically, and has not established a free-running ROM, an application envelope or a speedup.
+
+## Next authority
+
+C6D is authorized as an exposed frozen-state mechanism discriminator.
+
+It must project both storage and centered first water-content moment directly from immutable fine-Reference states, solve the already-qualified BEMR algebraic map offline, and compare resulting interface fluxes with the fine Reference and existing CURRENT_LAYER_FACE mechanism baseline.
+
+BEMR candidate flux may not feed back into Reference execution. No moment localization or free-running implementation is authorized by C6C.
+""")
+
+          hp=Path('docs/science/F-ROM_LARE_REPRESENTATION_SELECTION_CLOSEOUT.md')
+          txt=hp.read_text()
+          txt=txt.replace('The next family is deliberately unselected.','The BEMR family has now been selected and mathematically qualified through C6C; free-running use remains unauthorized.')
+          marker='## Application and value boundary'
+          addition="""## C6C BEMR mathematical qualification
+
+C6C qualifies the bounded entropy-moment state-to-profile map mathematically on the complete unchanged 168-case C5Z synthetic B14 domain. All five frozen starts pass for every case, and strict moment realizability, bounded saturation, hydraulic continuity, state recovery and quadrature consistency all close.
+
+This removes the specific C5Z profile-admissibility blocker without reopening the failed cubic-theta route. It does not yet establish hydrological fidelity. The next authorized unit is C6D, an offline frozen-state interface-flux discriminator using directly projected Reference storage and first moments.
+
+"""
+          if '## C6C BEMR mathematical qualification' not in txt:
+              txt=txt.replace(marker,addition+marker)
+          hp.write_text(txt)
+          print('C6C_PERSISTENCE_CONTENT=PASS')
+          PY
+
+      - name: Commit persisted C6C authority
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6C_RESULT.json integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C6C_CLOSEOUT.md docs/science/F-ROM_LARE_REPRESENTATION_SELECTION_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C6C BEMR mathematical qualification"
+          git push origin HEAD:work/f-rom-lare-rs1
