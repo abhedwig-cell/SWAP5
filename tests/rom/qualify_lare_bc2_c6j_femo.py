@@ -261,9 +261,9 @@ def metric_from_profiles(core,case,coeffs,n):
         Bmat[:,2*i+1]=cum[:,1]
         invK=1.0/K
         for a in range(dim):
-            bvec[a]+=float(np.trapz(Bmat[:,a]*invK,z))
+            bvec[a]+=float(np.trapezoid(Bmat[:,a]*invK,z))
         weighted=Bmat[:,:,None]*Bmat[:,None,:]*invK[:,None,None]
-        G+=np.trapz(weighted,z,axis=0)
+        G+=np.trapezoid(weighted,z,axis=0)
     return 0.5*(G+G.T),bvec,C,np.asarray(scales,dtype=float)
 
 
