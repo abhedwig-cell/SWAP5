@@ -1,0 +1,162 @@
+{
+  "schema": "swap5.lare.bc2.c6j.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6J",
+  "status": "CLOSED_FEMO_LOCAL_MANIFOLD_NUMERICAL_QUALIFICATION_FAILED_FREE_RUNNING_NOT_AUTHORIZED_SCIENTIFIC_CHOICE_REQUIRED",
+  "decision": "STOP_CURRENT_FEMO_REALIZATION_WITHOUT_POST_RESULT_SOLVER_OR_ACTIVE_BOUND_EXTENSION",
+  "role": "RESPONSE_FREE_FEMO_MANIFOLD_METRIC_BOUNDARY_OPERATOR_QUALIFICATION_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6J_PREREGISTRATION.json",
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C6J_EXECUTION_BINDING_RECONCILIATION.json",
+    "scientific_shard_run": {
+      "workflow_run": 35530325107,
+      "execution_head": "14e333ef35e5dbbb2c71c1da0386f07863b3572e",
+      "shard_count": 9,
+      "all_scientific_shards_completed_successfully": true
+    },
+    "aggregation_reconciliation": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json",
+    "aggregation_binding": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_BINDING.json",
+    "aggregation_run": 35530564614,
+    "aggregation_head": "b76fb1c4e8f2283e8f86ea749adb2dbecc1e2d32",
+    "artifact_id": 10611380500,
+    "artifact_digest": "sha256:f73990eed27a0e6e7341d263cbf63deb2de4ba3e9531a5296cc107fb9bff12d1",
+    "result_sha256": "5c0682fc3fde0318331727d34e7613faa2c70598ed79c3684b3f4a8445dee88d",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6J_RESULT.json",
+    "superseded_execution_attempts": [
+      {
+        "workflow_run": 35530219380,
+        "disposition": "NUMPY_API_FAILURE_BEFORE_SCIENTIFIC_RESULT",
+        "scientific_authority": false
+      },
+      {
+        "workflow_run": 35530325107,
+        "disposition": "SCIENTIFIC_SHARDS_AUTHORITATIVE_AGGREGATE_JOB_FAILED_ON_MISSING_OPERATOR_ASSERTION",
+        "scientific_authority": "SHARDS_ONLY"
+      },
+      {
+        "workflow_run": 35530470652,
+        "disposition": "AGGREGATION_RECOVERY_LOCK_FAILURE_BEFORE_SHARD_DOWNLOAD",
+        "scientific_authority": false
+      }
+    ]
+  },
+  "qualification": {
+    "state_case_count": 126,
+    "expected_head_operator_case_count": 168,
+    "generated_head_operator_case_count": 4,
+    "expected_flux_operator_case_count": 126,
+    "generated_flux_operator_case_count": 6,
+    "gates": {
+      "G1_FROZEN_STATE_MOMENT_REALIZABILITY": true,
+      "G2_LOCAL_PROFILE_CONVERGENCE": false,
+      "G3_LOCAL_PROFILE_UNIQUENESS": false,
+      "G4_INTERIOR_BOUNDED_PROFILE": false,
+      "G5_STATE_RECOVERY": false,
+      "G6_LOCAL_MOMENT_JACOBIAN": false,
+      "G7_ONSAGER_METRIC": false,
+      "G8_PRESCRIBED_HEAD_OPERATOR": false,
+      "G9_PRESCRIBED_FLUX_OPERATOR": false,
+      "G10_NO_RESPONSE_DATA": true
+    },
+    "counts": {
+      "state_moment_realizable": 126,
+      "local_profile_convergence": 38,
+      "local_profile_uniqueness": 4,
+      "interior_bounded_profile": 38,
+      "state_recovery": 26,
+      "local_jacobian": 38,
+      "onsager_metric": 4,
+      "prescribed_head_operator": 4,
+      "prescribed_flux_operator": 6
+    },
+    "diagnostics": {
+      "sampled_Se_min": 0.4526342091149354,
+      "sampled_Se_max": 0.9764517547674469,
+      "finite_local_jacobian_condition_count": 5384,
+      "median_local_jacobian_condition_number": 8.333333333333515,
+      "max_local_jacobian_condition_number": 2199.60037579959,
+      "finite_metric_condition_count": 4,
+      "median_metric_condition_number": 1000972.8363422882,
+      "max_metric_condition_number": 5673147.2248367,
+      "min_metric_relative_eigenvalue": 1.7626900208442987e-7,
+      "max_metric_grid_relative_frobenius": 0.000005191900105268884,
+      "max_b_grid_relative_l2": 0.000008272632334852275,
+      "max_head_stationarity_residual": 7.628050505950308e-16,
+      "max_flux_stationarity_residual": 2.5962842998458154e-16,
+      "max_flux_constraint_residual_cm_per_day": 6.4853495834161594e-15
+    },
+    "failure_structure": {
+      "all_local_gates_pass_state_cases": 4,
+      "profile_uniqueness_only_failures": 22,
+      "profile_uniqueness_plus_state_recovery_failures": 12,
+      "broad_local_start_or_domain_failures": 88,
+      "zero_moment_state_cases": 21,
+      "zero_moment_unique_profile_passes": 4,
+      "note": "All 126 target moments are realizable. The negative result is caused by the frozen interior affine-suction numerical realization and all-start contract, not by target moment infeasibility."
+    }
+  },
+  "adjudication": {
+    "RICHARDS_ENERGY_DISSIPATION_THEORY_RETRACTED": false,
+    "CAPILLARY_ENERGY_STRICT_CONVEXITY_RETRACTED": false,
+    "S_M_STATE_PHYSICAL_INTERPRETATION_RETRACTED": false,
+    "ALL_TARGET_MOMENTS_REALIZABLE": true,
+    "CURRENT_INTERIOR_AFFINE_SUCTION_NUMERICAL_MANIFOLD_QUALIFIED": false,
+    "CURRENT_ALL_START_PROFILE_MAP_ROBUST": false,
+    "CURRENT_FEMO_ONSAGER_METRIC_BROADLY_QUALIFIED": false,
+    "CURRENT_FEMO_BOUNDARY_OPERATORS_BROADLY_QUALIFIED": false,
+    "ACTIVE_BOUND_OBSTACLE_EXTENSION_AUTHORIZED": false,
+    "SOLVER_START_RETUNING_AUTHORIZED": false,
+    "LOCAL_DUAL_SOLVER_REDESIGN_AUTHORIZED": false,
+    "METRIC_REGULARIZATION_AUTHORIZED": false,
+    "FREE_RUNNING_FEMO_AUTHORIZED": false,
+    "FRESH_BLIND_FEMO_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "SCIENTIFIC_CHOICE_REQUIRED": true
+  },
+  "scientific_interpretation": [
+    "The physical S/M target set itself is not the blocker: all 126 frozen targets satisfy the exact bounded moment realizability condition.",
+    "The preregistered interior affine-suction realization is not numerically robust across the frozen five-start contract. Only 38/126 state cases pass all-start convergence/interiority/local-Jacobian gates and only 4/126 pass the frozen profile-uniqueness requirement.",
+    "Many nonzero-moment cases have at least one high-A start that finds a highly accurate interior affine-suction solution while other frozen starts are outside the admissible suction interval and remain on the deterministic invalid-trial penalty. This is a numerical realization failure under the preregistered contract, not proof that the strictly convex bounded energy problem lacks a unique minimizer.",
+    "Even some zero-moment cases miss the extremely strict frozen coefficient-agreement gate despite nearly identical theta profiles, so C6J must not be interpreted as evidence of physical multi-valuedness of the convex energy minimizer.",
+    "Where the local manifold does qualify, the constructed Onsager metrics are positive definite and the generated head/flux rate solves have tiny stationarity/constraint residuals. Those four-state results are insufficient to qualify the family over the frozen domain.",
+    "The C6J stop rule forbids adding an obstacle solver, changing starts, choosing successful starts, changing state scaling, regularizing the metric or otherwise redesigning the solver after seeing this result.",
+    "Therefore the current FEMO realization is stopped before any hydrological trajectory. The underlying energy-dissipation identity remains useful theory but is not an admitted reduced-model closure."
+  ],
+  "next_authority": {
+    "target": null,
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_AFTER_FEMO_NUMERICAL_QUALIFICATION_FAILURE",
+    "question": "Should future Layer-ROM research invest in a separately justified globally robust convex/obstacle moment solver as a new pre-response family, or stop adding reconstruction machinery and redirect to purpose-dependent sufficiency of already-qualified simpler representations?",
+    "excluded_shortcuts": [
+      "Do not replace the frozen five-start contract with only the successful C6J starts.",
+      "Do not add an active-bound obstacle solver as an automatic C6J repair.",
+      "Do not relax A/B/theta agreement tolerances after observing C6J.",
+      "Do not introduce metric diagonal regularization or alternate state scaling from C6J diagnostics.",
+      "Do not proceed to a blind/free-running FEMO experiment.",
+      "Do not claim that strict convexity alone establishes a numerically usable ROM."
+    ],
+    "admissible_future_read_only_options": [
+      "A new, independently motivated convex-dual or obstacle realization of the physical S/M energy minimization, preregistered as a distinct numerical family before response and without reusing successful-start selection from C6J.",
+      "A synthesis/stop decision that treats repeated closure/reconstruction failures as evidence that the minimum robust Layer-ROM may require accepting a simpler purpose-limited representation rather than a universal low-dimensional replacement."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "free_running_FEMO_implemented": false,
+    "fresh_blind_FEMO_response_generated": false,
+    "BEMR_reopened": false,
+    "post_result_solver_retuning": false,
+    "active_bound_extension_added": false,
+    "response_based_design": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
