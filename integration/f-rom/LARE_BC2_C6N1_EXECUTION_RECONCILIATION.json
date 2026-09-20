@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N1",
+  "status": "DRAFT_COMPACT_EXECUTION_REPAIR_BEFORE_ANY_T32_RESPONSE",
+  "decision": "COMPACT_IDENTICAL_C6N1_MATRIX_TO_24_JOBS_WITH_O0_O2_SEQUENTIAL_IDENTITY",
+  "scientific_authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
+    "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
+    "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
+    "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
+    "histories": [
+      "U01",
+      "U02",
+      "U03",
+      "U04"
+    ],
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "metrics": [
+      "surface_0_20_storage_rmse_norm",
+      "root_zone_0_40_storage_rmse_norm",
+      "upper_0_80_storage_rmse_norm",
+      "mapped_10cm_theta_rmse_norm"
+    ],
+    "qualification_changed": false
+  },
+  "superseded_queued_runs": [
+    {
+      "workflow_run": 35532934940,
+      "head": "d8145cd09cab9f514eaf288f216e1060d7ce27d0",
+      "reason": "Older preregistration blob eacae6be... superseded by current d177069d...",
+      "response_started": false,
+      "authority": false
+    },
+    {
+      "workflow_run": 35532939703,
+      "head": "094062911f57efd6741f6d89646511f977c29884",
+      "reason": "Scientifically current but remained queued without any job start; compact execution preserves exact authority while reducing scheduler fan-out.",
+      "response_started": false,
+      "authority": false
+    }
+  ],
+  "repair": {
+    "old_matrix_jobs": 48,
+    "compact_matrix_jobs": 24,
+    "change": "For each material-route-history cell, compile and execute O0 then O2 sequentially inside one job, require byte-identical logs, and upload the same O0 scientific log after identity passes.",
+    "compiler_optimizations": [
+      0,
+      2
+    ],
+    "O0_O2_identity_required": true,
+    "T32_transaction_dt_changed": false,
+    "routes_changed": false,
+    "histories_changed": false,
+    "material_changed": false,
+    "forcing_changed": false,
+    "solver_policy_changed": false,
+    "metrics_changed": false,
+    "GCI_formulas_changed": false,
+    "thresholds_changed": false,
+    "response_based_retuning": false
+  },
+  "compact_workflow": {
+    "path": ".github/workflows/f-rom-lare-bc2-c6n1-compact.yml",
+    "blob": null,
+    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+  },
+  "authority_rule": "Only a compact run triggered after this reconciliation is rebound with the exact workflow blob may become C6N1 authority. Earlier queued runs remain superseded even if they later execute.",
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "T32_reference_response_seen": false,
+    "response_based_design": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
