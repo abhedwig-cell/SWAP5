@@ -55,8 +55,14 @@ jobs:
             src/runtime/mod_canonical_contracts.f90
             src/runtime/mod_canonical_interval_runtime.f90
             src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_accepted_commit_receipt.f90
+            src/runtime/mod_fmr_owned_commit_receipt.f90
             src/runtime/mod_fmr_runtime_core.f90
             src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
             src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
             src/runtime/mod_fmr_checkpoint_orchestrator.f90
             src/solver/mod_soil_water_solver_contract.f90
@@ -102,7 +108,6 @@ jobs:
             src/solver/mod_rossfast_d3r_soil_water_solver.f90
             src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
             src/runtime/mod_fmr_serialized_reference_backend.f90
-            src/runtime/mod_fmr_accepted_commit_receipt.f90
             src/runtime/mod_fmr_serialized_multiswap_runtime.f90
           )
 
