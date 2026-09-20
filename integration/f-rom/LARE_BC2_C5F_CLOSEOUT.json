@@ -1,0 +1,70 @@
+{
+  "adjudication": {
+    "CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "NEW_LARE_OR_CLOSURE_AUTHORIZED": false,
+    "SPATIOTEMPORAL_INTERACTION_NONNEGLIGIBLE": true,
+    "TEMPORAL_PROGRESS_AT_R1024": true,
+    "TEMPORAL_SUBDOMINANT_TO_SPATIAL_T2": true
+  },
+  "authority": {
+    "R1024_T2_sha256": "d0778a8e9a95984538241b3afeac2b853e63686769ac1570819654ad711076be",
+    "R1024_T4_sha256": "e0e600d44fdc56d849e2b04759971ea5702d3207b4f1b3b827e3a6ca69a9afe3",
+    "R512_T2_sha256": "2b8bd09285177e4347323649f6e53f0baabb3d5b303d32cf407551b3606de88e",
+    "artifact_digest": "sha256:1ba8d90b08c99955d76c8b2ee60bae16bd40f68667ecda889cafc002627f43bb",
+    "artifact_id": 10602317061,
+    "execution_head": "6eca56f21bf7cfa49ff078f0785e4fdefe64b5f7",
+    "job_id": 106052285736,
+    "preregistration": "integration/f-rom/LARE_BC2_C5F_PREREGISTRATION.json",
+    "result_sha256": "ae686248db6b782047b0fce1f3fb01116d3dcda6dd691516aa2cc21b1b3ba180",
+    "workflow_run": 35500870660
+  },
+  "baseline_identity_to_C5E": {
+    "R512_R1024_T1_RMSE": true
+  },
+  "evidence": {
+    "R1024_T1_T2_RMSE_cm_per_day": 0.009753442560927738,
+    "R1024_T2_T4_RMSE_cm_per_day": 0.006104129997747862,
+    "R512_T1_T2_RMSE_cm_per_day": 0.007355664220085968,
+    "finest_temporal_over_spatial_T2": 0.28968265878656246,
+    "spatial_T1_RMSE_cm_per_day": 0.019278087500445875,
+    "spatial_T2_RMSE_cm_per_day": 0.02107178256136268,
+    "spatial_T2_over_T1": 1.0930432057057173,
+    "spatial_interaction_abs_change_fraction": 0.09304320570571736,
+    "temporal_order_R1024": 0.6761258331712464
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "next_authority": {
+    "constraints": [
+      "Reference-only; no LARE run and no closure change",
+      "reuse exact C5F T4 physical history and numerical policy",
+      "generate only the missing R512_T4 cell",
+      "recover exact R512/R1024 T1 and T2 plus R1024 T4 anchors",
+      "no new acceptance threshold or continuum claim",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "At T4, what is the matched R512-R1024 spatial gap, and do temporal convergence and spatial-gap interaction remain consistent when the missing R512_T4 cell is added?",
+    "state": "MATCHED_SPATIOTEMPORAL_MATRIX_COMPLETION_AUTHORIZED",
+    "target": "LARE-BC2-C5G"
+  },
+  "schema": "swap5.lare.bc2.c5f.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "performance_comparison_authorized": false,
+    "physical_history_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "Temporal transaction refinement is progressing at R1024: the matched T1-T2 bottom-flux RMSE is about 0.00975 cm/d and T2-T4 falls to about 0.00610 cm/d, giving a descriptive temporal order near 0.676.",
+    "At T2, the R512-R1024 spatial RMSE is about 0.02107 cm/d. The finest tested temporal shift is therefore about 0.290 of the matched spatial gap: temporal error is subdominant but not negligible.",
+    "The matched spatial gap increases by about 9.3 percent from T1 to T2, from 0.01928 to 0.02107 cm/d. Space and time errors therefore interact enough that the spatial trend should not be extrapolated using T1 alone.",
+    "C5F lacks the R512 T4 cell, so no matched R512-R1024 spatial gap exists at the finest tested temporal resolution. Completing that cell is more informative than immediately extending to R2048.",
+    "No C5F result admits R1024 as continuum truth or changes any LARE representation decision."
+  ],
+  "status": "CLOSED_TEMPORAL_PROGRESS_SUBDOMINANT_BUT_SPATIOTEMPORAL_INTERACTION_NONNEGLIGIBLE_MATCHED_T4_SPATIAL_CELL_REQUIRED",
+  "work_unit": "LARE-BC2-C5F",
+  "workstream": "F-ROM-LARE"
+}
