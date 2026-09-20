@@ -138,11 +138,86 @@ The derivation narrows CSR-04 substantially:
 
 - `u` should be treated as a condensed finite-window interface-response coefficient, not automatically as a physical storage coefficient;
 - MODFLOW STO remains groundwater-volume storage authority;
-- simultaneous use is physically valid only under an explicit non-overlap partition or an explicit overlap correction;
+- simultaneous use requires an explicit state/storage-ownership interpretation; geometric overlap alone neither proves nor disproves dynamic double counting;
 - current SWAP5 topology does not yet establish either.
 
 Disposition remains:
 
-`CSR04_BLOCKED_SCIENTIFIC_STORAGE_PARTITION_AUTHORITY`.
+`CSR04_STATE_SPACE_INTERPRETATION_REFINED_QUALIFICATION_REQUIRED`.
 
 The next admissible implementation step is **not** to alter F-GC30/F-GC33. It is to materialize an explicit vertical storage-domain/topology contract and a controlled nonzero-storage qualification fixture. A realistic Hupsel/E7 rerun remains premature.
+
+
+## 11. Refined state-space interpretation
+
+A further coupling interpretation must be distinguished from the purely geometric
+partition above.
+
+The MODFLOW degree of freedom can represent a regional groundwater hydraulic
+head while SWAP retains the vertically resolved column state, including its
+diagnostic phreatic groundwater level. In that interpretation the coupling
+condition
+
+`H_MF = H_SWAP,bottom`
+
+does not imply
+
+`H_MF = z_GW,SWAP`.
+
+The latter equality would only follow under hydrostatic conditions without the
+vertical gradients/resistances represented inside the SWAP column.
+
+This means geometric overlap of a MODFLOW cell and a SWAP column is not, by
+itself, proof of duplicated storage. The stronger question is whether the two
+sets of state equations contain the same independent dynamic water-storage
+degree of freedom twice.
+
+Under this interpretation:
+
+- MODFLOW STO controls the transient response of the regional groundwater-head
+  degree of freedom to groundwater-system stresses and the interface exchange;
+- SWAP storage controls the transient vertically resolved column state;
+- the SWAP-derived `u/DeltaT = dq_i/dH_b` remains the condensed sensitivity of
+  interface transfer to bottom hydraulic head, not an additional MODFLOW STO
+  volume;
+- the SWAP diagnostic phreatic level remains a SWAP result and is not prescribed
+  by the MODFLOW head.
+
+This is a candidate scientific interpretation, not yet production authority.
+
+## 12. Stronger discriminating experiment
+
+The controlled qualification must therefore test state-space independence in
+addition to bookkeeping closure.
+
+Hold SWAP constitutive physics and the coupling formulation fixed and vary only
+the MODFLOW STO parameterization over at least two nonzero values. For each
+case record:
+
+- accepted MODFLOW head trajectory;
+- accepted SWAP bottom hydraulic head;
+- accepted SWAP diagnostic groundwater level where available;
+- accepted interface transfer;
+- MODFLOW native STO contribution;
+- SWAP storage change;
+- `u` and `u/DeltaT`;
+- both component residuals and the combined residual.
+
+The expected structural result is not invariance of the coupled solution.
+Changing MODFLOW storage should change the temporal response of the MODFLOW
+head and therefore may change SWAP and interface exchange indirectly.
+
+The discriminant is instead that no extra SWAP storage term is introduced into
+the MODFLOW storage ledger and no MODFLOW STO term is introduced into the SWAP
+ledger. The models interact through the shared head/flux interface while each
+retains its own state evolution.
+
+Consequently, a successful mass-balance test alone is necessary but not
+sufficient. CSR-04 requires both:
+
+1. conservative accepted component/combined budgets; and
+2. evidence that the two storage operators have distinct state-space roles
+   under a controlled MODFLOW-STO perturbation.
+
+The earlier non-overlap geometry remains one sufficient realization, but is no
+longer treated as the only scientifically coherent interpretation.
