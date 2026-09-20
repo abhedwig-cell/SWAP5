@@ -6,6 +6,7 @@ on:
       - work/f-rom-lare-rs1
     paths:
       - 'integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json'
+      - 'integration/f-rom/LARE_BC2_C4Z_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c4z_dynamic_head.py'
       - 'tests/rom/analyze_lare_bc2_c4z_dynamic_head.py'
       - '.github/workflows/f-rom-lare-bc2-c4z.yml'
@@ -43,7 +44,7 @@ jobs:
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c4z_dynamic_head.py)" = "105e75b93425780f565c714de1be1cb7ae0ee767"
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c4z_dynamic_head.py)" = "c1635a74e818cfdbfeb9ff8087e461338207605c"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c4z_dynamic_head.py)" = "9884d7d2faaa37871b45dbdf660a0b51f4f3d074"
           test "$(git hash-object tests/rom/test_lare_rs1_gw_library.f90)" = "98b05fcf13fc470689295d511766f2393a712e46"
           test "$(git hash-object tests/rom/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
           python3 - <<'PY'
@@ -55,6 +56,11 @@ jobs:
           assert p['c4y_disposition']['histories_reused'] is False
           assert p['reference_retry_policy']['family']=='PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH'
           assert p['reference_retry_policy']['no_post_response_relaxation'] is True
+          r=json.load(open('integration/f-rom/LARE_BC2_C4Z_EXECUTION_BINDING_RECONCILIATION.json'))
+          assert r['status']=='TECHNICAL_ANALYZER_BINDING_REPAIRED_BEFORE_FRONTIER_METRICS'
+          assert r['repair']['new_analyzer_blob']=='9884d7d2faaa37871b45dbdf660a0b51f4f3d074'
+          assert r['repair']['scientific_effect']=='NONE'
+          assert r['response_use']['hydrological_values_used_for_repair'] is False
           print('LARE_BC2_C4Z_AUTHORITY_LOCK=PASS')
           PY
 
