@@ -1,0 +1,183 @@
+{
+  "schema": "swap5.lare.representation-selection.c5m-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-REPSEL-C5M",
+  "status": "CLOSED_REPRESENTATION_STRUCTURE_RESOLVED_B14_DYNAMIC_HIGH_RES_BLIND_FRONTIER_REMAINS",
+  "decision": "PRESERVE_PLACEMENT_PURPOSE_AND_INTERACTION_FINDINGS_REJECT_UNIVERSAL_LAYER_COUNT_PREREGISTER_FRESH_HIGH_RES_B14_DYNAMIC_TEST",
+  "role": "READ_ONLY_SYNTHESIS_AFTER_REFERENCE_AUDIT",
+  "authorities": {
+    "blind_B01_short": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "B01_fixed_persistence": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "B14_fixed_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "blind_B01_dynamic": "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+    "B14_dynamic_coarse_comparator": "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+    "B14_dynamic_reference_audit": "integration/f-rom/LARE_BC2_C5L_CLOSEOUT.json",
+    "groundwater_application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "closure_tuning_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
+  },
+  "evidence_matrix": {
+    "B01_fixed_short_blind": {
+      "source": "C4R",
+      "purpose": "comparator-relative short groundwater/profile response",
+      "minimum_FMC_GW": 4,
+      "minimum_FMC_PROFILE": 12,
+      "interpretation": "Purpose dependence is reproducible: groundwater output can be represented with fewer states than mapped profile fidelity in this bounded laboratory."
+    },
+    "B01_fixed_one_day": {
+      "source": "C4V",
+      "purpose": "persistent one-day comparator-relative groundwater response",
+      "minimum_both_comparators": 8,
+      "interpretation": "The short-horizon R4 frontier does not persist to one day; horizon and accumulated bias/timing matter."
+    },
+    "B14_fixed_one_day": {
+      "source": "C4X",
+      "purpose": "material-transfer fixed-water-table groundwater response",
+      "minimum_transferred_ladder_both_comparators": 3,
+      "minimum_FMC_profile": 8,
+      "placement": {
+        "lower_zone_R4_crosses_FMC": true,
+        "uniform_U4_crosses_FMC": false,
+        "lower_zone_R8_crosses_FMC": true,
+        "uniform_U8_crosses_FMC": false,
+        "P4_top_lower_retains_GW_frontier": true
+      },
+      "interpretation": "B01's R8 minimum is not material-invariant. State count and vertical placement must be treated separately."
+    },
+    "B01_dynamic_prescribed_head_blind": {
+      "source": "C4Z",
+      "formal_R2_relative_minimum_GW": 3,
+      "formal_R2_relative_minimum_PROFILE": 3,
+      "structural_response": "Strong improvement R3 through R8, then lower-zone response plateau; lower-zone R4/R8 outperform uniform U4/U8.",
+      "comparator_warning": "R2 misses reversal sequence in 3/4 histories and has 93 sign mismatches, so formal R2 crossing is a weak comparator-relative statement."
+    },
+    "B14_dynamic_prescribed_head": {
+      "source": "C5A plus C5B-C5L",
+      "formal_C5A_frontier": "NONE under frozen all-components R2-relative vector",
+      "formal_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+      "placement": {
+        "R4_no_worse_than_U4": true,
+        "R8_no_worse_than_U8": true
+      },
+      "C5A_blocker": "Every lower-zone member fails only pooled absolute mean signed bottom-flux error; R5-R16 plateau.",
+      "comparator_pathology": "R2 pooled signed bias is cancellation-dominated while history-specific errors are much larger.",
+      "reference_audit": [
+        "C5C-C5I show the original 10-cm R16 Reference is strongly spatial-resolution dependent for this prescribed-head workload.",
+        "C5J-C5K establish lower-boundary sensitivity but do not support any tested counterfactual as a justified replacement.",
+        "C5L shows unchanged Reference spatial refinement recovering strongly at R2048: R1024-R2048 RMSE 0.00742446 versus R512-R1024 0.0233969, ratio 0.317, descriptive order 1.656.",
+        "R2048 is not continuum truth and its temporal error is not independently qualified."
+      ],
+      "interpretation": "C5A remains a valid result under its frozen comparator and metric vector, but its absence of a frontier is not portable as an absolute statement about B14 dynamic-head Layer-ROM sufficiency."
+    }
+  },
+  "reconciled_conclusions": {
+    "universal_minimum_layer_count": {
+      "supported": false,
+      "reason": "Minimum comparator-relative state dimension changes with material, boundary semantics, horizon, purpose and comparator strength."
+    },
+    "vertical_placement": {
+      "supported": true,
+      "strength": "REPLICATED_STRUCTURAL_FINDING",
+      "evidence": [
+        "C4X B14 fixed: lower-zone R4/R8 retain groundwater frontier while uniform U4/U8 do not retain the stronger FMC frontier.",
+        "C4Z B01 dynamic: lower-zone R4 and R8 outperform matched uniform controls.",
+        "C5A B14 dynamic: R4 remains componentwise no worse than U4 and R8 no worse than U8 despite no formal overall frontier."
+      ],
+      "conclusion": "Where state is retained is at least as important as nominal state count for groundwater-oriented response."
+    },
+    "purpose_dependence": {
+      "supported": true,
+      "evidence": [
+        "C4R FMC groundwater minimum R4 versus FMC profile minimum R12.",
+        "C4X B14 fixed groundwater minimum R3 versus FMC profile minimum R8.",
+        "C4V mapped profile fidelity continues to improve beyond the one-day GW minimum R8."
+      ],
+      "conclusion": "Groundwater-output fidelity and profile/process fidelity require distinct representation envelopes."
+    },
+    "horizon_dependence": {
+      "supported": true,
+      "evidence": "C4R short B01 fixed minimum R4 becomes C4V one-day persistent minimum R8.",
+      "conclusion": "Memory sufficiency cannot be specified without a prediction horizon."
+    },
+    "material_boundary_interaction": {
+      "supported": true,
+      "evidence": "The complete B01/B14 x fixed/dynamic program shows different frontier behavior across cells; C5A differs qualitatively from C4Z while C4X differs from C4V.",
+      "conclusion": "Material and lower-boundary semantics interact; neither material-only nor boundary-only rules explain required representation."
+    },
+    "fixed_partition_scalar_closure_retuning": {
+      "authorized": false,
+      "authority": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+      "conclusion": "Current evidence does not justify more scalar tuning of the same fixed-partition closure."
+    },
+    "coarse_C5A_dimension_thresholds": {
+      "portable": false,
+      "formal_result_retained": true,
+      "conclusion": "C5A's no-frontier decision is retained exactly but cannot define a high-resolution B14 dynamic-head minimum."
+    }
+  },
+  "representation_implication": {
+    "preferred_research_family": "LOWER_ZONE_FOCUSED_PHYSICALLY_INTERPRETABLE_LAYER_STATE",
+    "not_a_selected_dimension": true,
+    "rationale": [
+      "It is the only tested fixed-layer topology with placement advantages replicated across material/boundary cells.",
+      "Uniform partitions repeatedly waste state relative to lower-zone-focused partitions for groundwater response.",
+      "A single fixed universal dimension is contradicted by material and horizon transfer evidence."
+    ],
+    "candidate_dimension_ladder_for_next_test": [
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ],
+    "retained_controls": [
+      "P4_TOP_LOWER",
+      "U4",
+      "U8",
+      "R16_LARE_CONTROL"
+    ],
+    "note": "The ladder is diagnostic coverage, not an a priori claim that all dimensions remain scientifically viable."
+  },
+  "unresolved_scientific_question": {
+    "id": "B14_DYNAMIC_HIGH_RES_FRONTIER",
+    "question": "On fresh blind B14 dynamic prescribed-head histories, which lower-zone-focused representations remain competitive with high-resolution Richards controls for groundwater response and profile fidelity once Reference numerical resolution is made explicit?",
+    "why_required": [
+      "C5A is the only B14 dynamic cell but its gate is cancellation-sensitive and its R16 Reference was later shown to be coarse.",
+      "Placement transfer is robust, but B14 dynamic state-dimension sufficiency is still unresolved.",
+      "This question is representation science and does not require external application acceptance."
+    ]
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5N",
+    "state": "FRESH_BLIND_HIGH_RES_B14_DYNAMIC_REPRESENTATION_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION",
+    "mandatory_design": [
+      "Use fresh B14 dynamic prescribed-head histories not previously exposed to LARE candidates.",
+      "Generate matched current-Reference R512, R1024 and R2048 controls on the fresh histories under one prospectively frozen temporal route; include an explicit temporal-resolution control sufficient to characterize numerical Reference uncertainty.",
+      "Treat the finest Reference as finest-available numerical control, not continuum truth.",
+      "Evaluate groundwater-response and profile/process views separately.",
+      "Do not reuse C5A pooled signed-bias gate as an acceptance rule; report per-history signed bias and cancellation explicitly.",
+      "Use comparator-relative reference-resolution frontiers rather than application-acceptance thresholds.",
+      "Retain lower-zone ladder and matched placement controls without response-based repartitioning.",
+      "No closure tuning, no boundary counterfactual, no production Reference change.",
+      "Application acceptance remains C4U-blocked; no speed or production claim."
+    ],
+    "stop_condition": "If fresh high-resolution evidence still cannot distinguish a representation frontier without an externally governed purpose threshold, stop at a purpose-dependent candidate set rather than inventing a universal minimum."
+  },
+  "application_boundary": {
+    "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+    "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "implication": "C5M/C5N may establish scientific representation fidelity but cannot declare groundwater application acceptance."
+  },
+  "scientific_firewall": {
+    "read_only_synthesis": true,
+    "new_response_generated": false,
+    "C5A_formal_decision_changed": false,
+    "universal_layer_count_claimed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false,
+    "production_reference_changed": false
+  },
+  "model_changed": false
+}
