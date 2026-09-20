@@ -244,6 +244,13 @@
       "bottom_flux_sign_error_count": "count across all four histories and all steps 1..checkpoint using exact sign with zero distinct",
       "abs_mean_signed_terminal_bottom_flux_error": "absolute value of arithmetic mean signed terminal-bottom-flux error across all four histories and all steps 1..checkpoint",
       "max_abs_final_cumulative_bottom_exchange_error": "maximum across the four histories of absolute cumulative-bottom-exchange error at exactly the checkpoint"
+    },
+    "aggregation_semantics": {
+      "rmse_components": "Pool all four histories and all steps 1..checkpoint before RMSE.",
+      "sign_error_count": "Sum exact nonzero Reference-sign mismatches over all four histories and steps 1..checkpoint.",
+      "absolute_mean_signed_terminal_bottom_flux_error": "Absolute value of the pooled arithmetic mean of candidate-minus-Reference terminal bottom-flux errors over all four histories and steps 1..checkpoint.",
+      "absolute_final_cumulative_bottom_exchange_error": "Maximum across the four histories of the absolute candidate-minus-Reference cumulative bottom-exchange error at the checkpoint.",
+      "comparator_application": "Apply the identical aggregation to LARE, R2 and FMC before componentwise crossing."
     }
   },
   "comparator_relative_crossing": {
