@@ -80,7 +80,7 @@ def materialize_fortran(src:pathlib.Path,dst:pathlib.Path)->None:
     split="""  pure function split_label(ih) result(label)
     integer,intent(in) :: ih
     character(len=10) :: label
-    label='B14BLIND  '
+    label='B14XFER   '
   end function split_label
 """
     text=label_pat.sub(labels,text,count=1)
