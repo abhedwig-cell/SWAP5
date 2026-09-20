@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.execution-reconciliation.v4",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "TECHNICAL_RUNNER_C6N1_CLOSEOUT_LABEL_LOCK_REPAIRED_BEFORE_ANY_CANDIDATE_SOLVE",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35537812426,
+    "execution_head": "197440e21c44875643ee0ef1578deb1a4bcd796b",
+    "authority_lock_pass": true,
+    "numpy_dependency_pass": true,
+    "candidate_jobs_entered_runner": true,
+    "candidate_jobs_entered_solve": false,
+    "candidate_response_generated": false,
+    "analyzer_executed": false,
+    "failure": "Runner still asserted obsolete shortened C6N1 closeout decision label and nonexistent candidate_response_generated closeout firewall key.",
+    "scientific_gate_failure": false
+  },
+  "repair": {
+    "old_runner_blob": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "new_runner_blob": "3573164a3599eeb62d0d430e234f426f07f3a0a0",
+    "change": "Align runner C6N1 authority assertions with immutable closeout decision and next_authority.state; remove assertion on nonexistent closeout firewall field.",
+    "candidate_dynamics_code_changed": false,
+    "material_parameters_changed": false,
+    "partitions_changed": false,
+    "histories_changed": false,
+    "dt_changed": false,
+    "closure_changed": false,
+    "output_payload_changed": false,
+    "metrics_changed": false,
+    "uncertainty_bands_changed": false,
+    "classification_changed": false,
+    "response_based": false,
+    "scientific_effect": "NONE"
+  },
+  "prior_execution_reconciliations": [
+    "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V2.json",
+    "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V3.json"
+  ],
+  "rerun_required": true,
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false
+}
