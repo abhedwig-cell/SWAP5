@@ -28,7 +28,7 @@ contains
     if (.not. available) return
 
     select type (physical => snapshot)
-    type is (fmr_b110_physical_state_t)
+    class is (fmr_b110_physical_state_t)
       n = physical%active_nodes
       if (n <= 0) return
       if (.not. allocated(physical%pressure_head)) return
