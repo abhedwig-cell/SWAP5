@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.lare.bc2.c6o.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6O",
+  "status": "CLOSED_PRESCRIBED_ROOT_SINK_EXACTLY_AGGREGATABLE_DYNAMIC_FEDDES_FEEDBACK_REQUIRES_ROOT_WEIGHTED_SUBLAYER_HYDRAULIC_INFORMATION",
+  "decision": "AUTHORIZE_RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_DISCRIMINATOR_BEFORE_ANY_ET_DROUGHT_TRAJECTORY",
+  "role": "READ_ONLY_ROOT_ET_SOURCE_AND_FEEDBACK_CONTRACT_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json",
+    "root_science": "docs/science/evapotranspiration-root-uptake.md",
+    "root_process": "src/process/mod_root_water_uptake_process.f90",
+    "committed_hydraulic_view": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "solver_sink_provider": "src/solver/mod_b110_root_sink_provider.f90",
+    "prescribed_root_temporal_equivalence": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+    "prescribed_root_directional_equivalence": "integration/audits/PPA_ROOT_HYD02_RESULT.json",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "current_reference_semantics": {
+    "potential_transpiration": "Global T_p supplied by the admitted restricted reference ET chain.",
+    "root_distribution": "For fine rooted compartment n, potential sink is Delta f_n * T_p, where Delta f_n is the increment in cumulative root fraction.",
+    "drought_threshold": "h3 is a deterministic function of T_p and the frozen h3L/h3H/ADCRL/ADCRH parameters.",
+    "drought_factor": "alpha(h)=0 for h<h4; alpha(h)=(h4-h)/(h4-h3) for h4<=h<=h3; alpha(h)=1 for h>h3.",
+    "actual_sink": "S_a,n = Delta f_n * T_p * alpha(h_n).",
+    "process_state": "The root process reads pressure head from the committed hydraulic view.",
+    "trial_semantics": "After root uptake is evaluated, the concrete b110_root_sink_provider_t carries the resulting prescribed finite sink vector through the Richards trial without reevaluating it from trial pressure head/water content.",
+    "water_balance": "Actual root sink is one physical withdrawal. Reported actual uptake/transpiration is attribution of the same withdrawal, not a second mass term."
+  },
+  "prescribed_sink_projection": {
+    "coarse_layer_I": "Any retained layer containing fine rooted compartments n in I.",
+    "exact_sink": "Q_root,I = sum_{n in I} S_a,n.",
+    "coarse_balance": "dS_I/dt = q_top,I - q_bottom,I - Q_root,I plus any other admitted sources/sinks.",
+    "exact_conservation": true,
+    "dependency_on_coarse_hydraulic_state": false,
+    "interpretation": "If the fine/root sink vector is supplied externally, conservative aggregation into any retained partition is exact and adds no new hydrological closure.",
+    "supporting_authority": "PPA-ROOT-HYD01/HYD02 already establish that the admitted prescribed root provider is physically equivalent to the same fixed sink vector carried through a generic source/sink route, and its direct trial/coupling derivative is zero."
+  },
+  "predicted_feedback_contract": {
+    "coarse_potential_fraction": "Delta F_I = sum_{n in I} Delta f_n can be aggregated exactly from the root distribution.",
+    "exact_actual_layer_uptake": "Q_root,I = T_p * sum_{n in I} Delta f_n * alpha(h_n).",
+    "required_quantity": "A_I = [sum Delta f_n * alpha(h_n)] / Delta F_I for Delta F_I>0.",
+    "statement": "A_I is a root-fraction-weighted nonlinear functional of the within-layer pressure-head distribution.",
+    "storage_only_sufficiency": false,
+    "reason": "S_I fixes an integral of theta, not the root-fraction-weighted distribution of h relative to h4 and h3. Distinct fine pressure profiles can share exactly the same layer storage but place different root fractions in dry, transition and unstressed branches.",
+    "layer_mean_head_sufficiency": false,
+    "reason_mean_head": "Unless root weights match the averaging measure and all fine heads lie on one linear branch, alpha(mean h) does not equal the root-weighted mean alpha(h).",
+    "first_water_moment_sufficiency_proven": false,
+    "reason_first_moment": "The centered water-content moment constrains vertical asymmetry under geometric weighting. Feddes uptake uses root-fraction weighting and branch thresholds in pressure head, so S/M do not in general determine the required root-weighted branch occupancy and transition-head moment."
+  },
+  "exact_branch_decomposition": {
+    "define": [
+      "F_wet,I = sum Delta f_n over h_n > h3",
+      "F_trans,I = sum Delta f_n over h4 <= h_n <= h3",
+      "H_trans,I = sum Delta f_n * h_n over h4 <= h_n <= h3"
+    ],
+    "formula": "Q_root,I/T_p = F_wet,I + (h4*F_trans,I - H_trans,I)/(h4-h3).",
+    "implication": "For the frozen drought-only Feddes law, exact feedback is determined by root-weighted branch occupancy plus a root-weighted transition head moment, not by layer storage alone.",
+    "special_cases": {
+      "fully_unstressed": "If all rooted sublocations in I satisfy h>h3, Q_root,I=T_p*Delta F_I and no hydraulic sublayer information is needed.",
+      "fully_wilted": "If all satisfy h<h4, Q_root,I=0 and no additional sublayer information is needed.",
+      "all_transition": "If all satisfy h4<=h<=h3, root-weighted mean pressure head is sufficient for Q_root,I at fixed T_p.",
+      "mixed_branches": "Branch fractions and transition head moment are required for exact uptake."
+    }
+  },
+  "representation_consequence": {
+    "purpose_dependence": "Root-uptake feedback introduces a new purpose-specific information functional that is different from groundwater flux and geometric soil-state profile metrics.",
+    "no_new_state_selected": true,
+    "no_new_partition_selected": true,
+    "implication_for_existing_LARE": "Before free-running ET/drought comparison, quantify whether existing layer-average storage states leave material ambiguity in Q_root under admissible fine states.",
+    "relation_to_C6N2": "C6N2 already shows surface-state fidelity depends strongly on placement. C6O adds that root uptake weights the profile by the root distribution and stress thresholds, so the best state placement for soil-moisture RMSE need not be sufficient for ET feedback."
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6P",
+    "state": "RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_DISCRIMINATOR_AUTHORIZED",
+    "question": "For frozen B01/B14 constitutive laws, root distributions and drought-only Feddes parameters, how much actual uptake ambiguity remains among fine pressure-head profiles that project to the same existing Layer-ROM storage state?",
+    "requirements": [
+      "No hydrological time trajectory.",
+      "Use paired fine profiles with exactly matched coarse layer storages before evaluating uptake.",
+      "Freeze root distributions, T_p levels and Feddes thresholds before evaluating ambiguity.",
+      "Test multiple existing partitions including lower-zone and uniform/top controls; do not create a new partition from the result.",
+      "Report uptake ambiguity separately from profile/state error.",
+      "Optionally diagnose whether adding the already-derived centered first water-content moment removes ambiguity, but do not select a new dynamic family from this test.",
+      "No ET application tolerance, performance screen or production claim."
+    ]
+  },
+  "adjudication": {
+    "PRESCRIBED_ROOT_SINK_CAN_BE_COARSE_AGGREGATED_EXACTLY": true,
+    "PRESCRIBED_ROOT_SINK_REQUIRES_NEW_CLOSURE": false,
+    "STRESS_DEPENDENT_ROOT_UPTAKE_IS_STATE_DEPENDENT": true,
+    "CURRENT_PROCESS_USES_COMMITTED_PRESSURE_HEAD": true,
+    "LAYER_STORAGE_ALONE_EXACTLY_DETERMINES_FEDDES_UPTAKE": false,
+    "ROOT_WEIGHTED_SUBLAYER_INFORMATION_REQUIRED_IN_GENERAL": true,
+    "S_PLUS_M_EXACT_SUFFICIENCY_ESTABLISHED": false,
+    "FREE_RUNNING_ET_DROUGHT_AUTHORIZED": false,
+    "NEW_ROOT_STATE_AUTHORIZED": false,
+    "NEW_PARTITION_AUTHORIZED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "root_feedback_implemented": false,
+    "new_representation_selected": false,
+    "C6N2_errors_used_as_ET_tolerance": false,
+    "reference_changed": false,
+    "production_root_physics_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
