@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.layer-rom.application-validation.status.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "frozen_core_evidence": {
+    "branch": "work/f-rom-layer-a",
+    "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+    "research_checkpoint": "09185dc63ac1e1da8ef3b3794fa49d42a8c1334c",
+    "pull_request": 495,
+    "pull_request_state": "OPEN_DRAFT_NOT_MERGED",
+    "retained_candidate_set": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "mutable_from_application_response": false
+  },
+  "phase": "APPLICATION_AUTHORITY_REVIEW_IN_PROGRESS",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blind_candidate_responses_exposed": false,
+  "application_acceptance_adjudicated": false,
+  "relevant_paths": [
+    "integration/f-rom/LAYER_ROM_APP0_EXTERNAL_AUTHORITY_REVIEW.json",
+    "integration/f-rom/LAYER_ROM_APP0_SOURCE_PROVENANCE.json",
+    "integration/f-rom/LAYER_ROM_APP0_AUTHORITY_CLOSEOUT.json"
+  ],
+  "authority_paths": [
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
+  ],
+  "dependency_surface": [
+    "integration/f-rom application-research evidence",
+    "frozen Layer-ROM frontier provenance",
+    "external fit-for-purpose and tolerance authority"
+  ],
+  "blockers": [
+    {
+      "id": "APPLICATION_TOLERANCE_AUTHORITY",
+      "state": "UNDER_REVIEW",
+      "description": "Independent absolute purpose-specific error tolerances and temporal-allocation semantics have not yet been established for GW-R, GW-D, or SCI-P."
+    }
+  ],
+  "next_action": "Complete independent external authority review without viewing new candidate responses. Freeze an acceptance envelope only if an application-direct threshold with defensible temporal semantics is found.",
+  "recovery_point": "work/f-rom-layer-appval from canonical bcef9deb; frozen core evidence remains on work/f-rom-layer-a@07c89de1."
+}
