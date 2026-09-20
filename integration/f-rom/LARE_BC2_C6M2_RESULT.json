@@ -1,0 +1,279 @@
+{
+  "decision": "STOP_BEFORE_LAYER_ROM_RESPONSE",
+  "integrity_pass": true,
+  "interpretation_boundary": "Bottom flux is prescribed and excluded from fidelity adjudication.",
+  "materials": {
+    "B01": {
+      "R1024_T16_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 2.996229697601806e-09,
+            "root_zone_0_40_storage_rmse_cm": 1.6290403994858075e-08,
+            "surface_0_20_storage_rmse_cm": 5.2399487657550404e-08,
+            "total_storage_rmse_cm": 1.6618158535307317e-12,
+            "upper_0_80_storage_rmse_cm": 1.105515635848808e-09
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 5.2952436675833315e-09,
+            "root_zone_0_40_storage_rmse_cm": 1.197059228173887e-07,
+            "surface_0_20_storage_rmse_cm": 1.273918532838815e-07,
+            "total_storage_rmse_cm": 9.396385670285283e-13,
+            "upper_0_80_storage_rmse_cm": 7.24863078341666e-08
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 6.548104007545494e-09,
+            "root_zone_0_40_storage_rmse_cm": 1.1574297489428737e-07,
+            "surface_0_20_storage_rmse_cm": 8.228626186566359e-08,
+            "total_storage_rmse_cm": 5.546032415652876e-13,
+            "upper_0_80_storage_rmse_cm": 1.4584208229476455e-07
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 4.394058377383654e-09,
+            "root_zone_0_40_storage_rmse_cm": 6.007034816753363e-08,
+            "surface_0_20_storage_rmse_cm": 9.738449211949727e-08,
+            "total_storage_rmse_cm": 1.2264732795341792e-12,
+            "upper_0_80_storage_rmse_cm": 2.1898590165999047e-08
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 4.980020407020467e-09,
+          "root_zone_0_40_storage_rmse_cm": 8.888161815896842e-08,
+          "surface_0_20_storage_rmse_cm": 9.384716136766306e-08,
+          "total_storage_rmse_cm": 1.1679441370052282e-12,
+          "upper_0_80_storage_rmse_cm": 8.216591173896559e-08
+        }
+      },
+      "R2048_T8_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 1.1220588549269004e-08,
+            "root_zone_0_40_storage_rmse_cm": 6.034911981580259e-08,
+            "surface_0_20_storage_rmse_cm": 1.8665849231059225e-07,
+            "total_storage_rmse_cm": 1.2268743060605495e-13,
+            "upper_0_80_storage_rmse_cm": 3.0023889246900385e-09
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 8.188654684311632e-08,
+            "root_zone_0_40_storage_rmse_cm": 2.0577715030397763e-06,
+            "surface_0_20_storage_rmse_cm": 2.0081809143482895e-06,
+            "total_storage_rmse_cm": 9.952082789086255e-14,
+            "upper_0_80_storage_rmse_cm": 1.0429681033704376e-06
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 4.2777255112778383e-07,
+            "root_zone_0_40_storage_rmse_cm": 1.0137771758428594e-05,
+            "surface_0_20_storage_rmse_cm": 6.426675738158093e-06,
+            "total_storage_rmse_cm": 1.0461576833255115e-13,
+            "upper_0_80_storage_rmse_cm": 1.3977783961750047e-05
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 2.9049382574960208e-08,
+            "root_zone_0_40_storage_rmse_cm": 3.7822837158901405e-07,
+            "surface_0_20_storage_rmse_cm": 6.228404583647797e-07,
+            "total_storage_rmse_cm": 8.365631787658483e-14,
+            "upper_0_80_storage_rmse_cm": 6.061868045534759e-08
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 2.183257487606768e-07,
+          "root_zone_0_40_storage_rmse_cm": 5.175797969928221e-06,
+          "surface_0_20_storage_rmse_cm": 3.3822227623823924e-06,
+          "total_storage_rmse_cm": 1.0356089913340418e-13,
+          "upper_0_80_storage_rmse_cm": 7.008386236944357e-06
+        }
+      },
+      "R512_T16_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 1.4978921235319652e-08,
+            "root_zone_0_40_storage_rmse_cm": 8.14380880826592e-08,
+            "surface_0_20_storage_rmse_cm": 2.619659652765601e-07,
+            "total_storage_rmse_cm": 1.47862958592325e-12,
+            "upper_0_80_storage_rmse_cm": 5.527624131170421e-09
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 2.6474954290860674e-08,
+            "root_zone_0_40_storage_rmse_cm": 5.985122916136939e-07,
+            "surface_0_20_storage_rmse_cm": 6.369455873104287e-07,
+            "total_storage_rmse_cm": 4.4942733100830893e-13,
+            "upper_0_80_storage_rmse_cm": 3.624185586279273e-07
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 3.2741072157982773e-08,
+            "root_zone_0_40_storage_rmse_cm": 5.787128388557612e-07,
+            "surface_0_20_storage_rmse_cm": 4.1142873259531e-07,
+            "total_storage_rmse_cm": 3.0060083374709063e-13,
+            "upper_0_80_storage_rmse_cm": 7.292068927069184e-07
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 2.196841620450822e-08,
+            "root_zone_0_40_storage_rmse_cm": 3.003308240061979e-07,
+            "surface_0_20_storage_rmse_cm": 4.868953373541272e-07,
+            "total_storage_rmse_cm": 6.320049860021702e-13,
+            "upper_0_80_storage_rmse_cm": 1.094864862610951e-07
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 2.4899198795673155e-08,
+          "root_zone_0_40_storage_rmse_cm": 4.443974232339704e-07,
+          "surface_0_20_storage_rmse_cm": 4.6921917045760163e-07,
+          "total_storage_rmse_cm": 8.482513692600006e-13,
+          "upper_0_80_storage_rmse_cm": 4.1082470389192763e-07
+        }
+      },
+      "max_abs_transaction_mass_cm": 4.372097302252076e-13,
+      "max_profile_state_total_difference_cm": 2.0889956431346945e-12,
+      "reference_quality_pass": false,
+      "temporal_vs_R1024_componentwise": {
+        "mapped_10cm_theta_rmse": false,
+        "root_zone_0_40_storage_rmse_cm": false,
+        "surface_0_20_storage_rmse_cm": false,
+        "total_storage_rmse_cm": true,
+        "upper_0_80_storage_rmse_cm": false
+      }
+    },
+    "B14": {
+      "R1024_T16_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 8.224594898369966e-12,
+            "root_zone_0_40_storage_rmse_cm": 1.512767991834402e-14,
+            "surface_0_20_storage_rmse_cm": 2.2358095224787766e-12,
+            "total_storage_rmse_cm": 1.2693098804584591e-12,
+            "upper_0_80_storage_rmse_cm": 1.0790316919811193e-14
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 1.8163945691393475e-10,
+            "root_zone_0_40_storage_rmse_cm": 2.1791737861519592e-11,
+            "surface_0_20_storage_rmse_cm": 9.374142878235276e-10,
+            "total_storage_rmse_cm": 2.350114444606179e-12,
+            "upper_0_80_storage_rmse_cm": 4.771660549114358e-14
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 4.465769406793222e-10,
+            "root_zone_0_40_storage_rmse_cm": 1.8470791468403398e-09,
+            "surface_0_20_storage_rmse_cm": 6.238127342688563e-09,
+            "total_storage_rmse_cm": 2.6583684575058353e-12,
+            "upper_0_80_storage_rmse_cm": 1.552262280729101e-11
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 5.358434190494158e-11,
+            "root_zone_0_40_storage_rmse_cm": 7.6502744979507e-15,
+            "surface_0_20_storage_rmse_cm": 1.9761595055473995e-10,
+            "total_storage_rmse_cm": 1.1523562223913393e-12,
+            "upper_0_80_storage_rmse_cm": 1.4088900783107144e-14
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 2.4257101120760493e-10,
+          "root_zone_0_40_storage_rmse_cm": 9.236038456528367e-10,
+          "surface_0_20_storage_rmse_cm": 3.15563128998669e-09,
+          "total_storage_rmse_cm": 1.9703447156856888e-12,
+          "upper_0_80_storage_rmse_cm": 7.761353145875e-12
+        }
+      },
+      "R2048_T8_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 2.0531023142003363e-12,
+            "root_zone_0_40_storage_rmse_cm": 1.4440370041612327e-14,
+            "surface_0_20_storage_rmse_cm": 5.737404447764614e-13,
+            "total_storage_rmse_cm": 1.4870358855614914e-14,
+            "upper_0_80_storage_rmse_cm": 1.469987272980065e-14
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 2.0653869029781307e-10,
+            "root_zone_0_40_storage_rmse_cm": 2.4611987311853495e-11,
+            "surface_0_20_storage_rmse_cm": 1.0567108353937345e-09,
+            "total_storage_rmse_cm": 2.3169373017043393e-14,
+            "upper_0_80_storage_rmse_cm": 1.5415317763386705e-14
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 1.5912721528448996e-09,
+            "root_zone_0_40_storage_rmse_cm": 5.578988993389325e-09,
+            "surface_0_20_storage_rmse_cm": 2.17053672211219e-08,
+            "total_storage_rmse_cm": 6.021872610482423e-14,
+            "upper_0_80_storage_rmse_cm": 5.324076201362359e-11
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 2.7528557776898347e-11,
+            "root_zone_0_40_storage_rmse_cm": 6.124618546557925e-15,
+            "surface_0_20_storage_rmse_cm": 1.0121291826072307e-10,
+            "total_storage_rmse_cm": 9.545335748575158e-15,
+            "upper_0_80_storage_rmse_cm": 5.157460969112708e-15
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 8.024287089411692e-10,
+          "root_zone_0_40_storage_rmse_cm": 2.7895216408250316e-09,
+          "surface_0_20_storage_rmse_cm": 1.0865655161763055e-08,
+          "total_storage_rmse_cm": 3.3449050161172474e-14,
+          "upper_0_80_storage_rmse_cm": 2.662038326221557e-11
+        }
+      },
+      "R512_T16_vs_R2048_T16": {
+        "by_history": {
+          "U01": {
+            "mapped_10cm_theta_rmse": 4.100811920971221e-11,
+            "root_zone_0_40_storage_rmse_cm": 1.0844725335939735e-14,
+            "surface_0_20_storage_rmse_cm": 1.1284923349587595e-11,
+            "total_storage_rmse_cm": 2.0907252017104915e-12,
+            "upper_0_80_storage_rmse_cm": 1.2431027944695876e-14
+          },
+          "U02": {
+            "mapped_10cm_theta_rmse": 9.076964993701162e-10,
+            "root_zone_0_40_storage_rmse_cm": 1.0899713820269105e-10,
+            "surface_0_20_storage_rmse_cm": 4.684053422512075e-09,
+            "total_storage_rmse_cm": 7.993734377100366e-13,
+            "upper_0_80_storage_rmse_cm": 4.242345079560132e-14
+          },
+          "U03": {
+            "mapped_10cm_theta_rmse": 2.232498049522075e-09,
+            "root_zone_0_40_storage_rmse_cm": 9.234565090627961e-09,
+            "surface_0_20_storage_rmse_cm": 3.118588235373858e-08,
+            "total_storage_rmse_cm": 1.3044507492857015e-12,
+            "upper_0_80_storage_rmse_cm": 7.780678495504051e-11
+          },
+          "U04": {
+            "mapped_10cm_theta_rmse": 2.676188992801054e-10,
+            "root_zone_0_40_storage_rmse_cm": 2.45753327272806e-14,
+            "surface_0_20_storage_rmse_cm": 9.875040541046894e-10,
+            "total_storage_rmse_cm": 2.478647324841775e-12,
+            "upper_0_80_storage_rmse_cm": 3.4843142900483204e-14
+          }
+        },
+        "pooled": {
+          "mapped_10cm_theta_rmse": 1.2125656700960206e-09,
+          "root_zone_0_40_storage_rmse_cm": 4.617604162060194e-09,
+          "surface_0_20_storage_rmse_cm": 1.5775573731662968e-08,
+          "total_storage_rmse_cm": 1.79272237673887e-12,
+          "upper_0_80_storage_rmse_cm": 3.8903402657621604e-11
+        }
+      },
+      "max_abs_transaction_mass_cm": 2.4158453015843406e-13,
+      "max_profile_state_total_difference_cm": 2.4868995751603507e-12,
+      "reference_quality_pass": false,
+      "temporal_vs_R1024_componentwise": {
+        "mapped_10cm_theta_rmse": false,
+        "root_zone_0_40_storage_rmse_cm": false,
+        "surface_0_20_storage_rmse_cm": false,
+        "total_storage_rmse_cm": true,
+        "upper_0_80_storage_rmse_cm": false
+      }
+    }
+  },
+  "model_changed": false,
+  "schema": "swap5.lare.bc2.c6m2.result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "bottom_exchange_fidelity_adjudicated": false,
+    "candidate_response_generated": false,
+    "new_representation_selected": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "root_uptake_feedback_used": false
+  },
+  "status": "C6M2_SURFACE_FIXED_FLUX_REFERENCE_NUMERICAL_QUALITY_BLOCKED",
+  "work_unit": "LARE-BC2-C6M2",
+  "workstream": "F-ROM-LARE"
+}
