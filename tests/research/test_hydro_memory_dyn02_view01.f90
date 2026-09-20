@@ -1,6 +1,18 @@
+module mod_hydro_memory_dyn02_view01_test_support
+  use mod_transaction_reference, only: transaction_state_t
+  implicit none
+  type, extends(transaction_state_t) :: unrelated_state_t
+    integer :: marker=17
+  contains
+    procedure :: clone => unrelated_clone
+  end type unrelated_state_t
+contains
+end module mod_hydro_memory_dyn02_view01_test_support
+
 program test_hydro_memory_dyn02_view01
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t
+  use mod_hydro_memory_dyn02_view01_test_support, only: unrelated_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
@@ -10,12 +22,6 @@ program test_hydro_memory_dyn02_view01
 
   integer, parameter :: N=4
   real(real64), parameter :: T0=0.0_real64
-  type, extends(transaction_state_t) :: unrelated_state_t
-    integer :: marker=17
-  contains
-    procedure :: clone => unrelated_clone
-  end type unrelated_state_t
-
   type(fmr_b110_physical_state_t) :: physical
   type(kernel_committed_state_t) :: plain, temporal, unrelated
   type(process_hydraulic_view_t) :: view_plain, view_temporal, view_unrelated
