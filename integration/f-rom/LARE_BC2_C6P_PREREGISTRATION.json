@@ -47,7 +47,7 @@
     },
     "h3_rule": "h3=h3L+lambda*(h3H-h3L)",
     "uptake_normalization": "Report actual uptake as fraction of potential transpiration; absolute T_p cancels.",
-    "frozen_after_response": false
+    "frozen_after_response": true
   },
   "root_distributions": {
     "root_depth_cm": 80,
@@ -190,14 +190,14 @@
     "No performance or production-ROM claim."
   ],
   "implementation_binding": {
-    "state": "BOUND_BEFORE_EXECUTION",
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
     "analyzer": "tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py",
     "analyzer_blob": "7b6465c5e4028ee9489b6af18021a3775cfc63f9",
-    "workflow": ".github/workflows/f-rom-lare-bc2-c6p.yml",
-    "workflow_blob": "c84de6a67d46ce0bb299e3cda6a09bb1a69fbaad",
-    "execution_binding_complete": true,
+    "c6o_authority": "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
     "response_based_design": false,
-    "binding_note": "Materials, synthetic Feddes anchors, root distributions, partitions, coarse states, perturbation family, diagnostics and hard checks are frozen before first C6P numerical evaluation."
+    "execution_binding_complete": false,
+    "allowed_new_code": "response-free synthetic profile construction, exact S/M matching checks, and Feddes uptake ambiguity diagnostics only",
+    "prohibited_new_code": "Richards trajectory, root-state implementation, partition selection, crop calibration, ET tolerance selection"
   },
   "scientific_firewall": {
     "hydrological_response_generated": false,
