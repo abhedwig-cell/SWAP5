@@ -105,6 +105,20 @@ Making the internal midpoint transfer different from ordinary Darcy does not fol
 
 C6F therefore closes without a D24 or free-running experiment. The next representation must change information content or state geometry rather than relabel ordinary refinement.
 
+## C6G-C6J structural closeout
+
+C6G shows that a finite interface-local conserved water state under unchanged Richards physics is either an ordinary positive-measure control volume, an overlapping moment with unresolved flux information, or new singular interface physics.
+
+C6H shows that moving partitions can preserve mass exactly but that mesh velocity is a numerical coordinate choice not selected by Richards. Generic moving geometry therefore does not supply an independently physical low-dimensional memory state.
+
+C6I identifies a genuine Richards energy-dissipation structure and a parameter-free S/M variational reduction (FEMO). C6J then prospectively tests its interior affine-suction realization without hydrological response.
+
+All 126 frozen moment targets are realizable, but the frozen numerical realization does not qualify broadly: only 38 state cases pass all-start convergence/interiority/local-Jacobian gates and only four pass the frozen local uniqueness requirement and reach a qualified Onsager metric.
+
+The Richards energy-dissipation theory is retained; the current FEMO numerical route is not. No free-running FEMO is authorized.
+
+The workstream is therefore again at a scientific choice boundary: either define a genuinely new, independently motivated convex/obstacle moment realization before response, or stop searching for a universal low-dimensional replacement and evaluate purpose-dependent sufficiency of the already-qualified representation frontier.
+
 ## Application and value boundary
 
 Comparator crossing is not application acceptance. C4U remains the purpose-dependent groundwater application-acceptance authority and its external fidelity requirements are still unresolved.
