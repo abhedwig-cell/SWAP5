@@ -1,0 +1,92 @@
+name: F-ROM-LARE BC2-C6E prescribed-flux boundary qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6e-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify frozen C6E authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py)" = "d524fb04251baa45cf5d732de707c2a720eeb788"
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json'))
+          d=json.load(open('integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6E_NUMERICAL_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['qualifier_blob']=='d524fb04251baa45cf5d732de707c2a720eeb788'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          assert p['scientific_firewall']['c6d_response_used_for_design'] is False
+          assert d['decision']=='AUTHORIZE_RESPONSE_FREE_PRESCRIBED_FLUX_BOUNDARY_MATHEMATICAL_QUALIFICATION_BEFORE_FRESH_BLIND_FREE_RUNNING'
+          print('LARE_BC2_C6E_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute response-free prescribed-flux boundary qualification
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6E_EVIDENCE
+          python3 tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py \
+            --prereg integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json \
+            --c6d integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json \
+            --core tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --output LARE_BC2_C6E_EVIDENCE/LARE_BC2_C6E_RESULT.json \
+            | tee LARE_BC2_C6E_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json LARE_BC2_C6E_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json LARE_BC2_C6E_EVIDENCE/
+
+      - name: Validate C6E firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6E_EVIDENCE/LARE_BC2_C6E_RESULT.json'))
+          assert r['case_count']==126
+          assert r['fixed_start_count']==630
+          assert r['status'] in (
+            'C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFIED',
+            'C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_NOT_QUALIFIED'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['c6d_response_used_for_design'] is False
+          assert f['free_running_bemr_implemented'] is False
+          assert f['moment_fitting'] is False
+          assert f['moment_localization'] is False
+          assert f['c6c_retuning'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6E_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6E_EVIDENCE/* > LARE_BC2_C6E_EVIDENCE/sha256.txt
+
+      - name: Upload C6E evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6e
+          path: LARE_BC2_C6E_EVIDENCE/
+          if-no-files-found: error
