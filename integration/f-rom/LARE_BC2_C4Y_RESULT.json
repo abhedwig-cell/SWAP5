@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.lare.bc2.c4y.result.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4Y",
+  "blind_validation": true,
+  "decision": "C4Y_REFERENCE_OR_EXECUTION_BLOCKED",
+  "execution": {
+    "first_run": {
+      "run_id": 35495063024,
+      "execution_head": "c26f2c53008e4a2246ba3db1e94151f94bfe5320",
+      "role": "initial execution; R2 failure hidden by redirected stdout"
+    },
+    "diagnostic_rerun": {
+      "run_id": 35495132330,
+      "job_id": 106036633799,
+      "execution_head": "b0f9b982f9be6f33140ad118e72286b7470e78b9",
+      "artifact_id": 10599399607,
+      "artifact_digest": "sha256:0cd5a00fc7b322fa36d04da2ac54aedc8005653577132fce2e92b8dba347bb30"
+    }
+  },
+  "integrity": {
+    "authority_lock_pass": true,
+    "materialization_pass": true,
+    "R16_O0_O2_route_completed": true,
+    "R2_O0_completed": false,
+    "R2_failure_history": "Y01",
+    "R2_last_accepted_step": 2,
+    "R2_first_failure_marker": "LAREGW1_FAIL ROM1AR1D3 local residual within prior integrated allowance",
+    "R2_failure_class_context": "RETRY_LOCAL_BALANCE",
+    "analyzer_executed": false,
+    "lare_frontier_executed": false,
+    "hydrological_frontier_adjudicated": false,
+    "pass": false
+  },
+  "numerical_blocker": {
+    "inherited_policy": "RS1/BC1 prospective-representation-bound fallback policy",
+    "local_integrated_allowance_cm": 1.6e-15,
+    "observed_step2_retry_local_integrated_cm": 1.3544720900426917e-15,
+    "failure": "A subsequent R2 retry exceeded the inherited local integrated allowance and failed closed before a complete comparator trajectory existed.",
+    "classification": "REFERENCE_COMPARATOR_NUMERICAL_POLICY_DOMAIN_BLOCKER",
+    "not_a_lare_closure_result": true
+  },
+  "interpretation": [
+    "C4Y produced no representation frontier because the preregistered R2 comparator hard gate did not complete.",
+    "The existing BC1/RS1 fallback policy is not automatically portable from its original fine-grid role to the 2x80 cm comparator on the new dynamic-head workload.",
+    "The frozen C4Y histories, head multipliers, partitions, closure, metrics and thresholds are not retuned after this failure.",
+    "R16 response generation and partial R2 states do not authorize a hydrological claim."
+  ],
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
