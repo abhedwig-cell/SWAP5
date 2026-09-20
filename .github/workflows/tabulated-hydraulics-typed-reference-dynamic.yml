@@ -1,0 +1,271 @@
+name: TAB-HYD typed Reference dynamic runtime
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-typed-reference-dynamic.yml'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+      - 'research/tabulated_hydraulics/patch_serialized_backend_typed_table.py'
+      - 'research/tabulated_hydraulics/tabhyd_typed_reference_runtime_benchmark.f90'
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - name: Prepare analytic and research table source trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a canonical-src analytic-src
+          cp -a canonical-src table-src
+          python3 research/tabulated_hydraulics/patch_serialized_backend_typed_table.py             table-src/src/runtime/mod_fmr_serialized_reference_backend.f90
+
+          mkdir -p build
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90")
+          s=p.read_text()
+          n=40
+          z=[-(i+0.5)*0.5 for i in range(n)]
+          dz=[0.5]*n
+          dis=[0.5]*(n+1)
+          def arr(a): return ", ".join(f"{x:.16e}_8" for x in a)
+          s=s.replace("integer, parameter :: macp = 4","integer, parameter :: macp = 64")
+          s=s.replace("integer, parameter :: mabbc = 4","integer, parameter :: mabbc = 64")
+          s=s.replace("integer, parameter :: numnod = 4","integer, parameter :: numnod = 40")
+          s=s.replace("real(8), parameter :: z(numnod) = [-0.25d0, -0.75d0, -1.50d0, -2.50d0]",f"real(8), parameter :: z(numnod) = [{arr(z)}]")
+          s=s.replace("real(8), parameter :: dz(numnod) = [0.50d0, 0.50d0, 1.00d0, 1.00d0]",f"real(8), parameter :: dz(numnod) = [{arr(dz)}]")
+          s=s.replace("real(8), parameter :: disnod(numnod+1) = 1.0d0",f"real(8), parameter :: disnod(numnod+1) = [{arr(dis)}]")
+          s=s.replace("real(8) :: qbotab(2*4) = 0.0d0","real(8) :: qbotab(2*40) = 0.0d0")
+          Path("build/runtime40_stubs.f90").write_text(s)
+          print("TABHYD_RUNTIME_GRID_N=40")
+          PY
+
+      - name: Compile analytic and table Reference runtimes
+        shell: bash
+        run: |
+          set -euo pipefail
+          COMMON=(-std=f2008 -ffree-line-length-none -O3 -march=x86-64 -fopenmp)
+          MODULES=(
+            src/solver/mod_soil_water_accepted_step_direction_contract.f90
+            src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+            src/transaction/mod_accepted_trajectory_directional_publication.f90
+            src/runtime/mod_a23bu_worker_execution_context.f90
+            src/transaction/mod_transaction_reference.f90
+            src/transaction/mod_fkt_temporal_indicator_history.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_runtime_core.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/solver/mod_process_hydraulic_view.f90
+            src/process/mod_drainage_process.f90
+            src/process/mod_drainage_tabulated_response.f90
+            src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+            src/process/mod_drainage_hooghoudt_ipos1_response.f90
+            src/process/mod_drainage_hooghoudt_ipos23_response.f90
+            src/process/mod_drainage_ernst_ipos45_preparation.f90
+            src/process/mod_drainage_ernst_ipos45_response.f90
+            src/process/mod_drainage_empirical_interflow_response.f90
+            src/process/mod_drainage_multilevel_aggregation.f90
+            src/runtime/mod_fmr_drainage_response_binding.f90
+            src/solver/mod_b110_smooth_freatic_projection.f90
+            src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+            src/process/mod_soil_temperature_contract.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_reference_richards_state_binding.f90
+            src/solver/mod_reference_linear_solver.f90
+            src/solver/mod_b110_default_mvg_provider.f90
+            src/solver/mod_b110_default_mvg_directional_provider.f90
+            src/solver/mod_b110_source_sink_provider.f90
+            src/solver/mod_b110_root_sink_provider.f90
+            src/solver/mod_fixed_flux_top_boundary_provider.f90
+            src/process/mod_restricted_surface_evaporation.f90
+            src/solver/mod_b110_dynamic_top_boundary_provider.f90
+            src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+            src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+            src/solver/mod_reference_richards_temporal_indicator.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            src/adapter/mod_b110_serialized_context_binding.f90
+            src/adapter/mod_reference_richards_accepted_step_directional_service.f90
+            src/process/mod_snow_process.f90
+            src/process/mod_restricted_fixed_weir_surface_water.f90
+            src/runtime/mod_fmr_soil_water_application_host.f90
+            src/runtime/mod_rossfast_d3r_execution_policy.f90
+            src/runtime/mod_rossfast_d3r_model_binding.f90
+            src/solver/mod_rossfast_d3r_table_kernel.f90
+            src/solver/mod_rossfast_d3r_table_provider.f90
+            src/solver/mod_rossfast_d3r_soil_water_solver.f90
+            src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+          )
+
+          build_variant () {
+            root="$1"
+            tag="$2"
+            out="build/$tag"
+            mkdir -p "$out"
+            objs=()
+
+            gfortran "${COMMON[@]}" -J "$out" -I "$out" -c build/runtime40_stubs.f90 -o "$out/stubs.o"
+            objs+=("$out/stubs.o")
+            gfortran "${COMMON[@]}" -J "$out" -I "$out" -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o "$out/tabarrays.o"
+            objs+=("$out/tabarrays.o")
+            gfortran "${COMMON[@]}" -J "$out" -I "$out" -c legacy-src/src/soil/sptabulated.f90 -o "$out/sptabulated.o"
+            objs+=("$out/sptabulated.o")
+
+            for source in "${MODULES[@]}"; do
+              obj="$out/$(basename "${source%.*}").o"
+              gfortran "${COMMON[@]}" -J "$out" -I "$out" -c "$root/$source" -o "$obj"
+              objs+=("$obj")
+              if [ "$source" = "src/solver/mod_b110_default_mvg_provider.f90" ]; then
+                gfortran "${COMMON[@]}" -J "$out" -I "$out"                   -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90                   -o "$out/table-provider.o"
+                objs+=("$out/table-provider.o")
+              fi
+            done
+
+            gfortran "${COMMON[@]}" -J "$out" -I "$out"               -c research/tabulated_hydraulics/tabhyd_typed_reference_runtime_benchmark.f90               -o "$out/bench.o"
+            gfortran -O3 -march=x86-64 -fopenmp "${objs[@]}" "$out/bench.o" -o "$out/bench"
+          }
+
+          build_variant analytic-src analytic
+          build_variant table-src table
+
+      - name: Integrated fidelity and solver-semantics comparison
+        shell: bash
+        env:
+          OMP_NUM_THREADS: 1
+          OMP_DYNAMIC: "false"
+        run: |
+          set -euo pipefail
+          mkdir -p build/evidence
+          for mode in drying wetting; do
+            for soil in coarse loam clay; do
+              build/analytic/bench "$soil" analytic "$mode" > "build/evidence/analytic-$soil-$mode.txt"
+              build/table/bench "$soil" table "$mode" > "build/evidence/table-$soil-$mode.txt"
+            done
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+
+          soils=["coarse","loam","clay"]
+          modes=["drying","wetting"]
+          def parse(path):
+              scalars={}; states={}
+              for line in Path(path).read_text().splitlines():
+                  if line.startswith("STATE node="):
+                      parts=line.replace("="," ").split()
+                      node=int(parts[2]); head=float(parts[4]); theta=float(parts[6])
+                      states[node]=(head,theta)
+                  elif "=" in line:
+                      k,v=line.split("=",1)
+                      try: scalars[k]=float(v)
+                      except ValueError: scalars[k]=v
+              return scalars,states
+
+          lines=["soil\tmode\thead_max_abs_cm\ttheta_max_abs\tmass_residual_delta\tretries_equal\titerations_analytic\titerations_table\tretries_analytic\tretries_table"]
+          failures=[]
+          for mode in modes:
+            for soil in soils:
+              a,sa=parse(f"build/evidence/analytic-{soil}-{mode}.txt")
+              t,st=parse(f"build/evidence/table-{soil}-{mode}.txt")
+              if set(sa)!=set(st):
+                  raise SystemExit(f"state shape mismatch {soil} {mode}")
+              hm=max(abs(sa[i][0]-st[i][0]) for i in sa)
+              tm=max(abs(sa[i][1]-st[i][1]) for i in sa)
+              md=abs(float(a["MASS_RESIDUAL"])-float(t["MASS_RESIDUAL"]))
+              re=int(a["INTERNAL_RETRIES"])==int(t["INTERNAL_RETRIES"])
+              lines.append(f"{soil}\t{mode}\t{hm:.17e}\t{tm:.17e}\t{md:.17e}\t{re}\t{int(a['NONLINEAR_ITERATIONS'])}\t{int(t['NONLINEAR_ITERATIONS'])}\t{int(a['INTERNAL_RETRIES'])}\t{int(t['INTERNAL_RETRIES'])}")
+              if hm>0.05 or tm>0.005 or md>1.0e-10 or not re:
+                  failures.append((soil,mode,hm,tm,md,re))
+          Path("build/evidence/fidelity.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/evidence/fidelity.tsv").read_text(),end="")
+          print(f"TYPED_DYNAMIC_FIDELITY_FAILURES={len(failures)}")
+          if failures: raise SystemExit(str(failures))
+          PY
+
+      - name: Order-balanced integrated timing
+        shell: bash
+        env:
+          OMP_NUM_THREADS: 1
+          OMP_DYNAMIC: "false"
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,statistics,subprocess
+
+          routes={"analytic":Path("build/analytic/bench"),"table":Path("build/table/bench")}
+          soils=["coarse","loam","clay"]
+          modes=["drying","wetting"]
+          rows=[]; summary=[]
+
+          def one(route,soil,mode):
+              p=subprocess.run([str(routes[route]),soil,route,mode],capture_output=True,text=True,check=True)
+              vals={}
+              for line in p.stdout.splitlines():
+                  if "=" in line:
+                      k,v=line.split("=",1)
+                      try: vals[k]=float(v)
+                      except ValueError: pass
+              return vals["US_PER_TRIAL"]
+
+          for mode in modes:
+            for soil in soils:
+              one("analytic",soil,mode); one("table",soil,mode)
+              vals={"analytic":[],"table":[]}
+              paired=[]
+              for rnd in range(8):
+                  order=("analytic","table") if rnd%2==0 else ("table","analytic")
+                  obs={}
+                  for route in order:
+                      us=one(route,soil,mode)
+                      vals[route].append(us); obs[route]=us
+                      rows.append((soil,mode,rnd,route,us))
+                  paired.append(100.0*(obs["table"]/obs["analytic"]-1.0))
+              ma=statistics.median(vals["analytic"])
+              mt=statistics.median(vals["table"])
+              summary.append((soil,mode,ma,mt,100.0*(mt/ma-1.0),statistics.median(paired),min(paired),max(paired)))
+
+          with Path("build/evidence/timings.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["soil","mode","round","route","us_per_trial"]); w.writerows(rows)
+          lines=["soil\tmode\tanalytic_us\ttable_us\ttable_delta_pct\tpaired_median_pct\tpaired_min_pct\tpaired_max_pct"]
+          for x in summary: lines.append("\t".join(str(v) for v in x))
+          Path("build/evidence/timing-summary.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/evidence/timing-summary.tsv").read_text(),end="")
+          PY
+
+      - name: Upload integrated evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-typed-reference-dynamic
+          path: |
+            build/evidence/fidelity.tsv
+            build/evidence/timings.csv
+            build/evidence/timing-summary.tsv
+            build/evidence/analytic-*.txt
+            build/evidence/table-*.txt
