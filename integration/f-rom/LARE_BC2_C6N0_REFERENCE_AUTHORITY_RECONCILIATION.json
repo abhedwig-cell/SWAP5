@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.lare.bc2.c6n0.reference-authority-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N0",
+  "status": "CLOSED_THREE_LEVEL_NUMERICAL_UNCERTAINTY_REFERENCE_DESIGN_REQUIRED",
+  "decision": "REPLACE_FUTURE_SPATIAL_DOMINANCE_GATE_WITH_PROSPECTIVE_THREE_LEVEL_SPACE_TIME_UNCERTAINTY_AUTHORITY",
+  "role": "READ_ONLY_POST_C6M2_REFERENCE_VERIFICATION_RECONCILIATION",
+  "authority": {
+    "C6M2": "integration/f-rom/LARE_BC2_C6M2_CLOSEOUT.json",
+    "C5N_pattern": "integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json",
+    "application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "observed_C6M2_structure": {
+    "execution_complete": true,
+    "reference_slices_successful": 64,
+    "integrity_pass": true,
+    "gate_pass": false,
+    "B01_temporal_to_R1024_spatial_ratio": {
+      "surface_0_20_storage_rmse": 36.03969169756695,
+      "root_zone_0_40_storage_rmse": 58.23249032967755,
+      "upper_0_80_storage_rmse": 85.29554517948306,
+      "mapped_10cm_theta_rmse": 43.84033215062677
+    },
+    "B14_temporal_to_R1024_spatial_ratio": {
+      "surface_0_20_storage_rmse": 3.4432587850936427,
+      "root_zone_0_40_storage_rmse": 3.0202577154205072,
+      "upper_0_80_storage_rmse": 3.4298636799388205,
+      "mapped_10cm_theta_rmse": 3.308015681455064
+    },
+    "interpretation": "The frozen dominance gate becomes increasingly stringent as the spatial comparator difference approaches zero. This is useful as a fail-closed C6M2 gate but is not a stable general numerical-uncertainty definition."
+  },
+  "numerical_verification_principle": {
+    "method": "THREE_LEVEL_RICHARDSON_GCI_STYLE_UNCERTAINTY_ESTIMATION",
+    "external_method_context": [
+      {
+        "source": "NASA Glenn Examining Spatial (Grid) Convergence",
+        "url": "https://www.grc.nasa.gov/www/wind/valid/tutorial/spatconv.html",
+        "relevant_principle": "Successive refinement and Richardson extrapolation/GCI can estimate discretization uncertainty; three levels are recommended to estimate observed order and assess asymptotic behavior; refinement may be spatial or temporal."
+      },
+      {
+        "source": "NASA NTRS numerical verification material",
+        "url": "https://ntrs.nasa.gov/api/citations/20000054672/downloads/20000054672.pdf?attachment=true",
+        "relevant_principle": "GCI is derived from generalized Richardson extrapolation and supplies an error-band style discretization uncertainty estimate."
+      }
+    ],
+    "hydrology_transfer_boundary": "These sources motivate numerical verification only. They do not supply a hydrological application tolerance or prove physical model adequacy."
+  },
+  "prospective_reference_design": {
+    "hydrological_histories": "Reuse C6M2 U01-U04 only as exposed Reference-design histories. No Layer-ROM response has been generated on them.",
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "bottom_boundary": "fixed gravity-equilibrium flux, bottom_mode 2",
+    "top_forcing": "unchanged C6M2 U01-U04 prescribed-flux histories",
+    "new_routes": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "retained_routes": [
+      "R512_T16",
+      "R1024_T16",
+      "R2048_T16",
+      "R2048_T8"
+    ],
+    "spatial_ladder_at_common_time": [
+      "R512_T32",
+      "R1024_T32",
+      "R2048_T32"
+    ],
+    "temporal_ladder_at_common_space": [
+      "R2048_T8",
+      "R2048_T16",
+      "R2048_T32"
+    ],
+    "refinement_ratio": 2,
+    "reference_target_if_qualified": "R2048_T32",
+    "compiler_optimization_routes": [
+      0,
+      2
+    ],
+    "O0_O2_bit_identity_required": true,
+    "no_candidate_response": true
+  },
+  "metrics": {
+    "convergence_metrics": [
+      "surface_0_20_storage trajectory L2/RMSE norm",
+      "root_zone_0_40_storage trajectory L2/RMSE norm",
+      "upper_0_80_storage trajectory L2/RMSE norm",
+      "mapped_10cm_theta trajectory L2/RMSE norm"
+    ],
+    "integrity_only": [
+      "total_storage and mass ledger",
+      "finite physical state",
+      "theta bounds",
+      "profile-to-total consistency"
+    ],
+    "rationale": "With prescribed top and bottom flux, total column storage is tightly constrained by the conservation ledger; it is retained as integrity evidence rather than used to infer profile discretization order."
+  },
+  "qualification_logic": {
+    "per_material_per_metric": [
+      "Compute coarse-to-medium and medium-to-fine difference norms independently for space and time.",
+      "Require both differences finite and the medium-to-fine norm strictly smaller than the coarse-to-medium norm.",
+      "Estimate observed order p=log(E_coarse_medium/E_medium_fine)/log(2). Require finite p>0.",
+      "Construct a fine-level GCI-style uncertainty using the observed p and a 1.25 safety factor only because three refinement levels are present.",
+      "Do not compare the resulting numerical uncertainty to an application tolerance in this work unit."
+    ],
+    "if_any_metric_nonconvergent": "Stop Reference qualification for that material/purpose and generate no Layer-ROM response.",
+    "if_all_metrics_convergent": "Admit R2048_T32 with explicit spatial and temporal numerical-uncertainty envelopes for subsequent candidate comparison.",
+    "candidate_rule_for_future_work": "Candidate differences below the admitted Reference uncertainty are numerically unresolved; differences above it may be compared prospectively, but application acceptance still requires an independently justified hydrological envelope."
+  },
+  "governance": {
+    "C6M2_decision_changed": false,
+    "C6M2_gate_relaxed": false,
+    "observed_C6M2_error_used_as_new_application_threshold": false,
+    "candidate_response_used": false,
+    "new_representation_or_closure": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6N1",
+    "state": "REFERENCE_ONLY_T32_SPACE_TIME_LADDER_PREREGISTRATION_AUTHORIZED",
+    "candidate_response_authorized": false
+  },
+  "model_changed": false
+}
