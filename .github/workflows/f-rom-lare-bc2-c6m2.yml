@@ -1,0 +1,157 @@
+name: F-ROM-LARE BC2-C6M2 fresh surface fixed-flux Reference qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6m2-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        material: [B01, B14]
+        route: [R512_T16, R1024_T16, R2048_T16, R2048_T8]
+        opt: [0, 2]
+        history: [U01, U02, U03, U04]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify frozen C6M2 authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6m2_surface_fixed_flux_reference.py)" = "470fbaec82e798fad8f21f975a048550d844f81d"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6m2_surface_fixed_flux_reference.py)" = "bd6202cb1d5ec28997d81cdc68c291b70d20ff20"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c6m2_surface_fixed_flux_reference.py
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c6m2_surface_fixed_flux_reference.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6M2_REFERENCE_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert p['scientific_firewall']['candidate_response_generated'] is False
+          print('C6M2_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Resolve route and material
+        id: cfg
+        run: |
+          case "${{ matrix.route }}" in
+            R512_T16)  echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R1024_T16) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+          esac
+          if [[ "${{ matrix.material }}" == "B01" ]]; then
+            echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize
+        run: |
+          python3 tests/rom/materialize_lare_bc2_c6m2_surface_fixed_flux_reference.py \
+            --source "${{ steps.cfg.outputs.source }}" \
+            --material "${{ matrix.material }}" \
+            --temporal-factor "${{ steps.cfg.outputs.factor }}" \
+            --output canonical/tests/rom/test_lare_bc2_c6m2_surface_fixed_flux_reference.f90 \
+            --manifest /tmp/c6m2_manifest.json
+
+      - name: Execute Reference slice
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          n="${{ steps.cfg.outputs.nodes }}"; dz="${{ steps.cfg.outputs.dz }}"; factor="${{ steps.cfg.outputs.factor }}"
+          material="${{ matrix.material }}"; route="${{ matrix.route }}"; opt="${{ matrix.opt }}"; history="${{ matrix.history }}"
+          mkdir -p slice
+          stub="canonical/c6m2_${material}_${route}_o${opt}_${history}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c6m2_${material}_${route}_o${opt}_${history}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py --root canonical --stub "c6m2_${material}_${route}_o${opt}_${history}_stubs.f90" --target tests/rom/test_lare_bc2_c6m2_surface_fixed_flux_reference.f90 --external-source src/legacy/b1_10_port/headcalc.f90 --build "$build" --opt "$opt"
+          log="slice/${material}_${route}_o${opt}_${history}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREDYN0R_C6M2_SURFACE_FIXED_FLUX_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq '|BOTTOM=FIXED_FLUX' "$log"
+          expected=$((1024*factor))
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq "$expected"
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREDYN0R_HISTORY_PASS|' "$log")" -eq 1
+          test "$(grep -c '^LAREDYN0R_NODE|' "$log")" -eq 0
+          cp /tmp/c6m2_manifest.json slice/
+          sha256sum slice/* > slice/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c6m2-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: slice/
+          if-no-files-found: error
+
+  analyze:
+    needs: reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: c6m2-*
+          path: /tmp/c6m2
+          merge-multiple: false
+      - name: Reconstruct and analyze
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/routes C6M2_EVIDENCE
+          for material in B01 B14; do
+            for route in R512_T16 R1024_T16 R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                full="/tmp/routes/${material}_${route}_o${opt}.txt"; : > "$full"
+                for history in U01 U02 U03 U04; do
+                  part="/tmp/c6m2/c6m2-${material}-${route}-o${opt}-${history}/${material}_${route}_o${opt}_${history}.txt"
+                  test -s "$part"; cat "$part" >> "$full"
+                done
+              done
+              cmp "/tmp/routes/${material}_${route}_o0.txt" "/tmp/routes/${material}_${route}_o2.txt"
+            done
+          done
+          python3 tests/rom/analyze_lare_bc2_c6m2_surface_fixed_flux_reference.py \
+            --prereg integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json \
+            --b01-r512-t16 /tmp/routes/B01_R512_T16_o0.txt \
+            --b01-r1024-t16 /tmp/routes/B01_R1024_T16_o0.txt \
+            --b01-r2048-t16 /tmp/routes/B01_R2048_T16_o0.txt \
+            --b01-r2048-t8 /tmp/routes/B01_R2048_T8_o0.txt \
+            --b14-r512-t16 /tmp/routes/B14_R512_T16_o0.txt \
+            --b14-r1024-t16 /tmp/routes/B14_R1024_T16_o0.txt \
+            --b14-r2048-t16 /tmp/routes/B14_R2048_T16_o0.txt \
+            --b14-r2048-t8 /tmp/routes/B14_R2048_T8_o0.txt \
+            --output C6M2_EVIDENCE/LARE_BC2_C6M2_RESULT.json | tee C6M2_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6M2_PREREGISTRATION.json C6M2_EVIDENCE/
+          sha256sum C6M2_EVIDENCE/* > C6M2_EVIDENCE/sha256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6m2
+          path: C6M2_EVIDENCE/
+          if-no-files-found: error
