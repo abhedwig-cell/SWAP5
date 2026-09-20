@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.lare.bc2.c5p.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5P",
+  "status": "TECHNICAL_PYTHON_SYNTAX_REPAIRED_BEFORE_ANY_REFERENCE_SOLVER_RESPONSE",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C5P_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35507533343,
+    "execution_head": "43fb791dfe2e4a7e264dce926a86e9193f727366",
+    "observed_failure": "SyntaxError: unmatched ')' in symbol_block string construction",
+    "failure_stage": "Verify C5P preregistered implementation / py_compile",
+    "solver_executed": false,
+    "P01_P04_hydrological_response_exposed": false,
+    "reference_response_exposed": false,
+    "lare_response_exposed": false,
+    "scientific_gate_failure": false
+  },
+  "repair": {
+    "old_reference_materializer_blob": "4a0d0b5c346c4c49f0cc33e9bfc5cadbd0c0f834",
+    "new_reference_materializer_blob": "f9692ebc302603ce3c590425a37a45b3bdb36d01",
+    "change": "Remove one unmatched parenthesis in Python string concatenation constructing the already-preregistered Fortran history-symbol block.",
+    "generated_fortran_semantics_changed": false,
+    "histories_changed": false,
+    "partitions_changed": false,
+    "material_changed": false,
+    "boundary_semantics_changed": false,
+    "temporal_routes_changed": false,
+    "metrics_changed": false,
+    "comparator_rules_changed": false,
+    "analyzer_changed": false,
+    "closure_changed": false,
+    "response_based": false,
+    "scientific_effect": "NONE"
+  },
+  "rerun_required": true,
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
