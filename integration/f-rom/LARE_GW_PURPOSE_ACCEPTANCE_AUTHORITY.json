@@ -41,7 +41,7 @@
     "NO_PRODUCTION_ROM"
   ],
   "next_unblocked_work_unit": {
-    "id": "LARE-BC2-C4U",
+    "id": "LARE-BC2-C4V",
     "title": "Prospective one-day groundwater horizon persistence",
     "question": "Does the blind short-horizon LARE groundwater frontier persist prospectively to approximately one day without closure or parameter changes?",
     "role": "FIDELITY_ENVELOPE_EXPANSION_NOT_APPLICATION_ACCEPTANCE"
@@ -50,5 +50,9 @@
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "governance_repair": {
+    "reason": "C4U is already the groundwater application-acceptance authority blocker. The prospective horizon-expansion successor is therefore uniquely identified as C4V.",
+    "scientific_effect": "NONE"
+  }
 }
