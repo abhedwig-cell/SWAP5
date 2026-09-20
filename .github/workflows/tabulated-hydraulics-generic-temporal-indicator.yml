@@ -1,0 +1,197 @@
+name: TAB-HYD generic temporal-indicator characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-generic-temporal-indicator.yml'
+      - 'research/tabulated_hydraulics/tabhyd_temporal_indicator_equivalence.f90'
+      - 'research/tabulated_hydraulics/patch_generic_temporal_indicator.py'
+      - 'research/tabulated_hydraulics/GENERIC_TEMPORAL_INDICATOR_PREREGISTRATION.md'
+      - 'research/tabulated_hydraulics/reference_tridag_external_wrapper.f90'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Generate five bounded solver-seam cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-solver
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          sp=importlib.util.spec_from_file_location("logprep",p)
+          mod=importlib.util.module_from_spec(sp); sp.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          cases={
+            "coarse_dry_free":("b4","o5",-180.0,0.10,2,-999999.0),
+            "loam_mid_free":("b9","o9",-75.0,0.10,2,-999999.0),
+            "clay_wet_free":("b12","o13",-40.0,0.10,2,-999999.0),
+            "coarse_dry_pulse":("b4","o5",-180.0,0.80,2,-999999.0),
+            "loam_capillary":("b9","o9",-120.0,0.10,5,-120.0),
+          }
+          root=Path("build/typed-solver")
+          for name,(top,sub,h0,flux_factor,bmode,bhead) in cases.items():
+              mats=[top,top,sub,sub]
+              k0=prep.k_policy(h0,series[top])
+              qtop=flux_factor*k0
+              qbot=0.0
+              with (root/f"{name}.dat").open("w") as fh:
+                  fh.write(f"4 400 4.0e-2 {h0:.17e} {qtop:.17e} {qbot:.17e} {bmode} {bhead:.17e}\n")
+                  for soil in mats:
+                      par=series[soil]
+                      rows=mod.loghead_rows(par,400)
+                      fh.write(
+                          f"{soil} {par['ores']:.17e} {par['osat']:.17e} {par['alpha']:.17e} "
+                          f"{par['n']:.17e} {par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n"
+                      )
+                      for h,t,k in rows:
+                          fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+              print(name,"h0",h0,"qtop",qtop,"bottom_mode",bmode)
+          PY
+
+      - name: Compile canonical and generic temporal indicators
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-solver/mod build/typed-solver/obj
+          F="-O3 -std=f2008 -ffree-line-length-none -fopenmp"
+          compile () {
+            src="$1"
+            base="$(basename "$src")"
+            obj="build/typed-solver/obj/$base.o"
+            gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod -c "$src" -o "$obj"
+          }
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path("canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90")
+          s=p.read_text()
+          pat=r"(?ms)^subroutine tridag\(n, upper, main, lower, rhs, solution, ierror\).*?^end subroutine tridag\s*"
+          s2,n=re.subn(pat,"",s,count=1)
+          if n!=1:
+              raise SystemExit(f"expected one tridag stub, got {n}")
+          p.write_text(s2)
+          print("TABHYD_REAL_LINEAR_STUB_REMOVED=PASS")
+          PY
+
+          compile research/tabulated_hydraulics/array_dimensions_stub.f90
+          compile legacy-src/src/soil/sptabulated.f90
+          compile canonical-src/tests/fsi/fsi04_real_headcalc_stubs.f90
+          compile canonical-src/src/transaction/mod_transaction_reference.f90
+          compile canonical-src/src/solver/mod_soil_water_accepted_step_direction_contract.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
+          compile canonical-src/src/runtime/mod_a23bu_worker_execution_context.f90
+          compile canonical-src/src/transaction/mod_accepted_trajectory_directional_publication.f90
+          compile canonical-src/src/transaction/mod_fkt_temporal_indicator_history.f90
+          compile canonical-src/src/runtime/mod_canonical_contracts.f90
+          compile canonical-src/src/runtime/mod_canonical_interval_runtime.f90
+          compile canonical-src/src/kernel/mod_kernel_transactions.f90
+          compile canonical-src/src/runtime/mod_fmr_runtime_core.f90
+          compile canonical-src/src/runtime/mod_fmr_checkpoint_orchestrator.f90
+          compile canonical-src/src/solver/mod_soil_water_solver_contract.f90
+          compile canonical-src/src/solver/mod_process_hydraulic_view.f90
+          compile canonical-src/src/process/mod_drainage_process.f90
+          compile canonical-src/src/process/mod_drainage_tabulated_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos1_response.f90
+          compile canonical-src/src/process/mod_drainage_hooghoudt_ipos23_response.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_preparation.f90
+          compile canonical-src/src/process/mod_drainage_ernst_ipos45_response.f90
+          compile canonical-src/src/process/mod_drainage_empirical_interflow_response.f90
+          compile canonical-src/src/process/mod_drainage_multilevel_aggregation.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_response_binding.f90
+          compile canonical-src/src/solver/mod_b110_smooth_freatic_projection.f90
+          compile canonical-src/src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
+          compile canonical-src/src/process/mod_soil_temperature_contract.f90
+          compile canonical-src/src/process/mod_restricted_soil_temperature.f90
+          compile canonical-src/src/solver/mod_reference_richards_workspace.f90
+          compile canonical-src/src/solver/mod_reference_richards_state_binding.f90
+          compile canonical-src/src/solver/mod_reference_linear_solver.f90
+          compile research/tabulated_hydraulics/reference_tridag_external_wrapper.f90
+          compile canonical-src/src/solver/mod_b110_default_mvg_provider.f90
+          compile research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90
+          compile canonical-src/src/solver/mod_b110_source_sink_provider.f90
+          compile canonical-src/src/solver/mod_fixed_flux_top_boundary_provider.f90
+          compile canonical-src/src/process/mod_restricted_surface_evaporation.f90
+          compile canonical-src/src/solver/mod_b110_dynamic_top_boundary_provider.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+          compile canonical-src/src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+          compile canonical-src/src/solver/mod_b110_root_sink_provider.f90
+          compile canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90
+          python3 research/tabulated_hydraulics/patch_generic_temporal_indicator.py \
+            canonical-src/src/solver/mod_reference_richards_temporal_indicator.f90 \
+            build/typed-solver/mod_reference_richards_temporal_indicator_generic_research.f90
+          compile build/typed-solver/mod_reference_richards_temporal_indicator_generic_research.f90
+          compile canonical-src/src/legacy/b1_10_port/headcalc.f90
+          compile canonical-src/src/adapter/mod_reference_richards_legacy_binding.f90
+
+          gfortran $F -J build/typed-solver/mod -I build/typed-solver/mod \
+            -c research/tabulated_hydraulics/tabhyd_temporal_indicator_equivalence.f90 \
+            -o build/typed-solver/obj/temporal_program.o
+
+          gfortran -O3 -fopenmp build/typed-solver/obj/*.o -o build/typed-solver/temporal
+
+      - name: Run Phase A and Phase B matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo -e "scenario\tphase_a\tphase_b\tanalytic_head_bound\ttable_head_bound\ttable_raw_norm\ttable_defect_norm\ttable_bounded_norm\ttable_route" > build/typed-solver/temporal-summary.tsv
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            build/typed-solver/temporal "build/typed-solver/$scenario.dat" | tee "build/typed-solver/temporal-$scenario.txt"
+            grep -Fq 'TABHYD_TEMPORAL_PHASE_A=PASS' "build/typed-solver/temporal-$scenario.txt"
+            grep -Fq 'TABHYD_TEMPORAL_PHASE_B=PASS' "build/typed-solver/temporal-$scenario.txt"
+            python3 - "$scenario" "build/typed-solver/temporal-$scenario.txt" >> build/typed-solver/temporal-summary.tsv <<'PY'
+          import sys
+          name,path=sys.argv[1:]
+          vals={}
+          for line in open(path):
+              if "=" in line:
+                  k,v=line.strip().split("=",1)
+                  vals[k]=v
+          req=["TEMPORAL_ANALYTIC_HEAD_BOUND","TEMPORAL_TABLE_HEAD_BOUND","TEMPORAL_TABLE_RAW_NORM",
+               "TEMPORAL_TABLE_DEFECT_NORM","TEMPORAL_TABLE_BOUNDED_NORM","TEMPORAL_TABLE_ROUTE"]
+          miss=[k for k in req if k not in vals]
+          if miss: raise SystemExit(f"missing {miss}")
+          print("\t".join([name,"PASS","PASS"]+[vals[k] for k in req]))
+          PY
+          done
+          cat build/typed-solver/temporal-summary.tsv
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-generic-temporal-indicator
+          path: |
+            build/typed-solver/temporal-summary.tsv
+            build/typed-solver/temporal-*.txt
