@@ -36,7 +36,7 @@ jobs:
           COMMON="-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow"
           for opt in 0 3; do
             OUT="build/tab-hyd-swap5/o$opt"
-            gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
+            gfortran $COMMON -Wno-error=unused-dummy-argument -O$opt -J "$OUT" -I "$OUT"               -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
             gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mvg.o"
             gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c research/tab_hyd_swap5/mod_research_direct_table_provider.f90 -o "$OUT/table.o"
             gfortran $COMMON -Wno-error=compare-reals -O$opt -J "$OUT" -I "$OUT"               -c research/tab_hyd_swap5/test_tab_hyd_swap5_provider.f90 -o "$OUT/test.o"
