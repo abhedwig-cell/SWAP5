@@ -1,0 +1,196 @@
+name: F-ROM-LARE persist C5K local half-cell theory
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5k-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5K artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5k
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604245410" > /tmp/c5k/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5k/artifact.json'))
+          assert a['id']==10604245410
+          assert a['digest']=='sha256:22f1a4e197cf4068e99da533487efaff736b50adac934ee5359396be9da5eac7'
+          assert a['workflow_run']['id']==35505829870
+          assert a['workflow_run']['head_sha']=='ab2d0f1697d819ab85c49d08c1046bc6c59b9ea6'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604245410/zip" > /tmp/c5k.zip
+          echo "22f1a4e197cf4068e99da533487efaff736b50adac934ee5359396be9da5eac7  /tmp/c5k.zip" | sha256sum -c -
+          unzip -q /tmp/c5k.zip -d /tmp/c5k/evidence
+          echo "aeb315e72d2b4f60cd8e01cac316bbb89d703ed9f3166b0e0f34f064969a1ce9  /tmp/c5k/evidence/LARE_BC2_C5K_RESULT.json" | sha256sum -c -
+          echo "64af1d11ea5d57771c8a48feea5f05ed2e6d49b4e9d6e0fbe26829e7eb6cbd8b  /tmp/c5k/evidence/R512_T16_instrumented.txt" | sha256sum -c -
+          echo "ac055f43b13765e0a243cbb9f30d06ff6ad7914e5e3de67bc6b1fb68ef20c409  /tmp/c5k/evidence/R1024_T16_instrumented.txt" | sha256sum -c -
+
+      - name: Persist C5K result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5k/evidence/LARE_BC2_C5K_RESULT.json integration/f-rom/LARE_BC2_C5K_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5K_RESULT.json'))
+          assert r['status']=='C5K_LOCAL_HALF_CELL_THEORY_CHARACTERIZED'
+          assert r['published_baseline_identity_to_C5I_T16'] is True
+          ratios=r['grid_gap_rmse_ratio_to_current_local_face']
+          q512=r['R512_local_operator_consistency']; q1024=r['R1024_local_operator_consistency']
+          closeout={
+            'schema':'swap5.lare.bc2.c5k.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5K',
+            'status':'CLOSED_LOCAL_HALF_CELL_THEORY_DOES_NOT_SUPPORT_NEW_DYNAMIC_BOUNDARY_OPERATOR_CURRENT_REFERENCE_SPATIAL_EXTENSION_NEXT',
+            'decision':'C5K_NO_THEORY_DERIVED_BOUNDARY_OPERATOR_DIRECTION_FOR_DYNAMIC_TEST',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5K_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35505829870,
+              'execution_head':'ab2d0f1697d819ab85c49d08c1046bc6c59b9ea6',
+              'artifact_id':10604245410,
+              'artifact_digest':'sha256:22f1a4e197cf4068e99da533487efaff736b50adac934ee5359396be9da5eac7',
+              'result_sha256':'aeb315e72d2b4f60cd8e01cac316bbb89d703ed9f3166b0e0f34f064969a1ce9'
+            },
+            'qualification':{
+              'instrumented_state_trajectory_byte_identical_to_C5I':True,
+              'published_baseline_identity_to_C5I_T16':True,
+              'R512_max_abs_current_face_minus_published_cm_per_day':q512['max_abs_current_face_minus_published_cm_per_day'],
+              'R1024_max_abs_current_face_minus_published_cm_per_day':q1024['max_abs_current_face_minus_published_cm_per_day'],
+              'R512_max_steady_distance_residual_cm':q512['max_steady_distance_residual_cm'],
+              'R1024_max_steady_distance_residual_cm':q1024['max_steady_distance_residual_cm']
+            },
+            'evidence':{
+              'current_local_face_grid_gap_rmse_cm_per_day':r['grid_gap_diagnostics']['current_face']['rmse_cm_per_day'],
+              'published_grid_gap_rmse_cm_per_day':r['grid_gap_diagnostics']['published']['rmse_cm_per_day'],
+              'postK_gap_ratio_to_current':ratios['postK'],
+              'arithmetic_pre_gap_ratio_to_current':ratios['arithmetic_pre'],
+              'arithmetic_post_gap_ratio_to_current':ratios['arithmetic_post'],
+              'integrated_gap_ratio_to_current':ratios['integrated'],
+              'steady_gap_ratio_to_current':ratios['steady'],
+              'pre_step_K_lag_over_integrated_spatial_correction':r['continuous_mechanism_ratios']['max_grid_pre_step_K_lag_rmse_over_max_grid_integrated_spatial_correction_rmse'],
+              'R512_postK_minus_current_rmse_cm_per_day':q512['temporal_and_spatial_localization']['postK_minus_current']['rmse_cm_per_day'],
+              'R1024_postK_minus_current_rmse_cm_per_day':q1024['temporal_and_spatial_localization']['postK_minus_current']['rmse_cm_per_day'],
+              'R512_integrated_minus_postK_rmse_cm_per_day':q512['temporal_and_spatial_localization']['integrated_minus_postK']['rmse_cm_per_day'],
+              'R1024_integrated_minus_postK_rmse_cm_per_day':q1024['temporal_and_spatial_localization']['integrated_minus_postK']['rmse_cm_per_day'],
+              'steady_descriptor':r['descriptors']['local_steady_grid_direction']
+            },
+            'adjudication':{
+              'CURRENT_FACE_LOCAL_TERM_RECONSTRUCTED_WITHIN_GATE':True,
+              'PRE_STEP_K_LAG_EXISTS':True,
+              'NONLINEAR_SPATIAL_CONSTITUTIVE_EFFECT_LARGER_THAN_PRE_STEP_K_LAG':r['continuous_mechanism_ratios']['max_grid_pre_step_K_lag_rmse_over_max_grid_integrated_spatial_correction_rmse']<1.0,
+              'POST_STEP_K_REDUCES_GRID_GAP':ratios['postK']<1.0,
+              'INTEGRATED_K_REDUCES_GRID_GAP':ratios['integrated']<1.0,
+              'EXACT_STEADY_OPERATOR_REDUCES_GRID_GAP':ratios['steady']<1.0,
+              'DYNAMIC_THEORY_DERIVED_BOUNDARY_COUNTERFACTUAL_AUTHORIZED':False,
+              'PRODUCTION_REFERENCE_CHANGE_AUTHORIZED':False,
+              'CURRENT_REFERENCE_R2048_T16_EXTENSION_AUTHORIZED':True,
+              'T32_AUTHORIZED':False,
+              'NEW_LARE_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'The frozen current local lower-face term reconstructs the published mass-balance bottom flux to a few 1e-9 cm/d, well within the preregistered equation-residual gate. The boundary discrepancy is therefore not an adapter publication artifact.',
+              'Replacing explicit pre-step cell conductivity by post-step cell conductivity changes the local operator, but its maximum-grid RMSE effect is only about 0.358 of the nonlinear integrated-conductivity correction scale. Explicit K lag is present but is not the dominant local mechanism in this decomposition.',
+              'Every postprocessed theory alternative increases, rather than reduces, the R512-R1024 frozen-state grid-gap RMSE: post-step K by about 1.8 percent, arithmetic means by about 4.5-5.0 percent, and both the Kirchhoff/integrated mean and exact steady half-cell operator by about 6.0 percent.',
+              'The integrated linear-head mean and exact steady nonlinear half-cell operator are nearly indistinguishable in their inter-grid effect for this workload. This is strong evidence that a more nonlinear local conductivity mean is not a mechanism-based rescue of the observed Reference spatial gap.',
+              'C5K therefore fails its preregistered direction requirement for a dynamic theory-derived boundary counterfactual. No alternative lower-boundary operator is authorized or admitted.',
+              'Because C5I already made temporal error subdominant and C5J-C5K have now characterized the local boundary sensitivity without identifying a justified replacement, one further spatial extension of the unchanged current Reference at T16 is the clean remaining test of the spatial convergence trend.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5L',
+              'state':'CURRENT_REFERENCE_R2048_T16_SPATIAL_EXTENSION_AUTHORIZED',
+              'question':'Under the unchanged current Reference G0K0 boundary and T16 temporal authority, is the R1024-R2048 spatial difference smaller than the frozen R512-R1024 difference, and what descriptive spatial order follows?',
+              'constraints':[
+                'Current Reference only; no boundary counterfactual and no production change',
+                'retain exact B14 Z01-Z04 physical histories and T16 transaction interval',
+                'R2048 only; do not extend to T32 or R4096 in C5L',
+                'execute by independent histories to respect runner lifetime',
+                'require O0/O2 byte identity and unchanged mass/retry gates',
+                'compare against immutable C5I R512/R1024 T16 anchors',
+                'no continuum threshold selected after response',
+                'no LARE/application/performance/speed/production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5K_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5K closeout
+
+          C5K evaluates local prescribed-head half-cell flux theory on byte-identical frozen C5I trajectories. Nothing feeds back into the Reference solve.
+
+          Authority is run 35505829870 at execution head ab2d0f1697d819ab85c49d08c1046bc6c59b9ea6, artifact 10604245410, digest sha256:22f1a4e197cf4068e99da533487efaff736b50adac934ee5359396be9da5eac7. Result SHA-256 is aeb315e72d2b4f60cd8e01cac316bbb89d703ed9f3166b0e0f34f064969a1ce9.
+
+          Instrumentation leaves every C5I state line byte-identical. The reconstructed current local-face term differs from published mass-balance bottom flux by at most a few 1e-9 cm/d.
+
+          The current local R512-R1024 gap is about 0.023397 cm/d. Post-step K raises it by about 1.8%. Arithmetic center-boundary means raise it by about 4.5-5.0%. The Kirchhoff/integrated mean and the exact steady nonlinear half-cell operator both raise it by about 6.0%.
+
+          The pre-step K-lag effect is real but smaller than the nonlinear spatial constitutive correction: the preregistered maximum-grid lag/spatial-correction ratio is about 0.358.
+
+          The integrated and exact-steady operators are nearly identical in inter-grid effect. Thus a more theory-rich local half-cell conductivity representation does not move the frozen-state spatial gap in the required direction.
+
+          No dynamic boundary counterfactual is authorized. With temporal error already subdominant and the local boundary mechanism now characterized, C5L is a single unchanged-Reference R2048 T16 spatial extension.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v16'
+          j['status']='CLOSED_THROUGH_C5K_NO_LOCAL_BOUNDARY_RESCUE_CURRENT_REFERENCE_R2048_T16_NEXT'
+          j.setdefault('authorities',{})['C5K_local_half_cell_theory']='integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5K']='On byte-identical C5I states, post-step K and theory-derived arithmetic/integrated/exact-steady half-cell operators all increase the R512-R1024 grid gap; integrated and exact-steady are nearly identical. Pre-step K lag is smaller than the nonlinear spatial correction. No dynamic boundary counterfactual is authorized.'
+          j['decision']='EXTEND_UNCHANGED_CURRENT_REFERENCE_ONCE_TO_R2048_AT_T16_AFTER_BOUNDARY_MECHANISM_CLOSEOUT'
+          j['next_authority']='LARE-BC2-C5L'
+          j['next_family_authority']={
+            'family':'C5L_CURRENT_REFERENCE_R2048_T16',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json'
+            ],
+            'purpose':'Measure one further current-Reference spatial refinement step after temporal and boundary-mechanism reconciliation.',
+            'new_reference_production_physics_authorized':False,
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'T32_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5K closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5K_RESULT.json                   integration/f-rom/LARE_BC2_C5K_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5K_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5K local half-cell theory audit"
+          git push origin HEAD:work/f-rom-lare-rs1
