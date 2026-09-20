@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6j.aggregation-binding.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6J",
-  "status": "DRAFT_AGGREGATION_ONLY_RECOVERY_AWAITING_WORKFLOW_BINDING",
+  "status": "BOUND_AGGREGATION_ONLY_RECOVERY_NO_SCIENTIFIC_CHANGE",
   "decision": "AGGREGATE_IMMUTABLE_C6J_SHARDS_WITH_REPAIRED_GATE_HANDLING_ONLY",
   "source_run": {
     "workflow_run": 35530325107,
@@ -18,8 +18,9 @@
   "aggregation_reconciliation": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json",
   "workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6j-aggregate-recovery.yml",
-    "blob": null,
-    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+    "blob": "136b8053f66206bbe32569019feadc68a662d417",
+    "state": "BOUND_BEFORE_AGGREGATION",
+    "binding_note": "Workflow creation itself is excluded from the push trigger. Only this frozen binding update starts aggregation of the nine immutable scientific shards."
   },
   "scientific_design_changed": false,
   "scientific_firewall": {
