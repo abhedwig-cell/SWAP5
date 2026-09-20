@@ -1,0 +1,64 @@
+name: TAB-HYD Ksat clamp discontinuity scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-ksat-clamp-scan.yml'
+      - 'research/tabulated_hydraulics/ksat_clamp_jump_scan.py'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout Staring parameter authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Scan default-MvG clamp jump across Staring classes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/ksat-clamp
+          python3 research/tabulated_hydraulics/ksat_clamp_jump_scan.py \
+            staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv \
+            | tee build/ksat-clamp/results.csv
+          grep -q '^KSAT_CLAMP_JUMP_SCAN_COMPLETED$' build/ksat-clamp/results.csv
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          lines=[l for l in Path("build/ksat-clamp/results.csv").read_text().splitlines()
+                 if l and not l.startswith("KSAT_")]
+          rows=list(csv.DictReader(lines))
+          severe=[r for r in rows if float(r["ksat_over_k_below"]) >= 1.25]
+          moderate=[r for r in rows if 1.05 <= float(r["ksat_over_k_below"]) < 1.25]
+          with Path("build/ksat-clamp/summary.txt").open("w") as fh:
+              fh.write(f"classes={len(rows)}\n")
+              fh.write(f"factor_ge_1p25={len(severe)}\n")
+              fh.write(f"factor_ge_1p05_lt_1p25={len(moderate)}\n")
+              fh.write("largest_jumps:\n")
+              for r in rows[:12]:
+                  fh.write(
+                      f'{r["soil"]} factor={float(r["ksat_over_k_below"]):.9g} '
+                      f'Kbelow={float(r["k_below"]):.9g} Ksat={float(r["ksat"]):.9g} '
+                      f'hthr={float(r["h_threshold"]):.9g}\n'
+                  )
+          print(Path("build/ksat-clamp/summary.txt").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-ksat-clamp-scan
+          path: |
+            build/ksat-clamp/results.csv
+            build/ksat-clamp/summary.txt
