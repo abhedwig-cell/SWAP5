@@ -1,0 +1,148 @@
+{
+  "adjudication": {
+    "ALL_CASES_CONVERGE": true,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "C5R_PROPAGATION_LIMIT_RETAINED": true,
+    "FAILURE_IS_MULTIBRANCH": false,
+    "FAILURE_IS_PROFILE_ADMISSIBILITY": true,
+    "HYDRAULIC_CONTINUITY": true,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "MOMENT_FREE_RUNNING_IMPLEMENTATION_AUTHORIZED": false,
+    "MOMENT_LOCALIZATION_TEST_AUTHORIZED": false,
+    "MOMENT_ROUTE_POST_RESULT_RETUNING_AUTHORIZED": false,
+    "MOMENT_THETA_PROFILE_MATHEMATICALLY_QUALIFIED": false,
+    "NEW_CLOSURE_OR_STATE_FAMILY_AUTOMATICALLY_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "SCIENTIFIC_CHOICE_REQUIRED": true,
+    "SPEED_CLAIM_AUTHORIZED": false,
+    "STATE_RECOVERY": true,
+    "THETA_ADMISSIBILITY_OVER_FROZEN_DOMAIN": false,
+    "UNIQUE_NUMERICAL_BRANCH": true
+  },
+  "authority": {
+    "artifact_digest": "sha256:254885ed5b674aeac843336628d332f76450e9f44dd68da4790593e13839246a",
+    "artifact_id": 10608450103,
+    "derivation": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "execution_head": "ce5d03beb3f965c9384edf97f6e8c63ac6cf304d",
+    "preregistration": "integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json",
+    "result_sha256": "e6a99daf07ef2f8afe6abb5278ac5a4c25ced46c4b226511d326632336708514",
+    "workflow_run": 35520299549
+  },
+  "decision": "STOP_MOMENT_ENRICHED_CUBIC_THETA_PROFILE_ROUTE_WITHOUT_POST_RESULT_RETUNING",
+  "inadmissibility_evidence": {
+    "boundary_counts": {
+      "HEAD_FALL": 7,
+      "HEAD_RISE": 7
+    },
+    "failed_case_count": 14,
+    "failed_case_ids": [
+      "D8_B2P5|TOP_WET_BOTTOM_DRY|BOTTOM_HEAVY_ALL|HEAD_RISE",
+      "D8_B2P5|TOP_WET_BOTTOM_DRY|BOTTOM_HEAVY_ALL|HEAD_FALL",
+      "D8_B2P5|BOTTOM_WET_PULSE|TOP_HEAVY_ALL|HEAD_RISE",
+      "D8_B2P5|BOTTOM_WET_PULSE|TOP_HEAVY_ALL|HEAD_FALL",
+      "D8_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_ALL|HEAD_RISE",
+      "D8_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_ALL|HEAD_FALL",
+      "D8_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_FOCUSED|HEAD_RISE",
+      "D8_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_FOCUSED|HEAD_FALL",
+      "D12_B2P5|BOTTOM_WET_PULSE|TOP_HEAVY_ALL|HEAD_RISE",
+      "D12_B2P5|BOTTOM_WET_PULSE|TOP_HEAVY_ALL|HEAD_FALL",
+      "D12_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_ALL|HEAD_RISE",
+      "D12_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_ALL|HEAD_FALL",
+      "D12_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_FOCUSED|HEAD_RISE",
+      "D12_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_FOCUSED|HEAD_FALL"
+    ],
+    "failed_run_Se_max": 1.0148673520654772,
+    "failed_run_Se_min": 0.3919978175245502,
+    "frozen_constitutive_Se_domain": [
+      0.02,
+      0.995
+    ],
+    "moment_pattern_counts": {
+      "BOTTOM_HEAVY_ALL": 6,
+      "BOTTOM_HEAVY_FOCUSED": 4,
+      "TOP_HEAVY_ALL": 4
+    },
+    "partition_counts": {
+      "D12_B2P5": 6,
+      "D8_B2P5": 8
+    },
+    "profile_counts": {
+      "BOTTOM_DRY_PULSE": 8,
+      "BOTTOM_WET_PULSE": 4,
+      "TOP_WET_BOTTOM_DRY": 2
+    },
+    "worst_upper_excursion": {
+      "Se_max": 1.0148673520654772,
+      "case_id": "D12_B2P5|BOTTOM_DRY_PULSE|BOTTOM_HEAVY_ALL|HEAD_FALL",
+      "start": "ZERO_HIGHER_MODES"
+    }
+  },
+  "model_changed": false,
+  "next_authority": {
+    "constraints": [
+      "Do not retune or reopen DSE2P, P0 or the C5Z cubic-theta route from exposed failures.",
+      "Do not select a new family by minimizing C5N/C5P/C5R response error.",
+      "Any new family must be physically derived and preregistered before hydrological response.",
+      "Retain the frozen Reference and CURRENT_LAYER_FACE evidence as historical comparator authority; no Reference production change is authorized.",
+      "Do not infer application acceptance from Reference intergrid discrepancy or comparator crossing.",
+      "No performance, speed or production-ROM claim."
+    ],
+    "question": "Given that C5R isolates a residual propagation limit after prospectively adequate bottom support and added state breadth, while the prospectively tested DSE2P, storage-only P0 SCAFP and all-layer moment-enriched cubic-theta routes fail mathematical qualification, which physically distinct conservative propagation or state family should be derived next?",
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_ANY_NEW_PROPAGATION_OR_STATE_FAMILY",
+    "target": null
+  },
+  "qualification": {
+    "case_count": 168,
+    "conditioning": {
+      "finite_jacobian_condition_count": 840,
+      "hard_gate": false,
+      "max_condition_number": 6989.161961184339,
+      "median_condition_number": 59.1303091410455
+    },
+    "counts": {
+      "all_starts_converged": 168,
+      "hydraulic_continuity": 168,
+      "moment_bound_pass": 168,
+      "state_recovery": 168,
+      "theta_admissible": 154,
+      "unique_numerical_branch": 168
+    },
+    "failure_mode": "THETA_ADMISSIBILITY_ONLY",
+    "gates": {
+      "G1_STATE_MOMENT_BOUNDS": true,
+      "G2_ALL_CASES_CONVERGE": true,
+      "G3_UNIQUE_NUMERICAL_BRANCH": true,
+      "G4_THETA_ADMISSIBILITY": false,
+      "G5_HYDRAULIC_CONTINUITY": true,
+      "G6_STATE_RECOVERY": true,
+      "G7_NO_RESPONSE_DATA": true
+    },
+    "multibranch_observed": false
+  },
+  "schema": "swap5.lare.bc2.c5z.closeout.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "moment_localization_selected": false,
+    "moment_state_implemented_in_hydrological_model": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "response_based_profile_fit": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "C5Z is response-free mathematical qualification. It consumes no C5R, C5N or C5P hydrological trajectory and generates no free-running reduced-model response.",
+    "All 168 synthetic cases converge from all five frozen initial starts, all 168 select one numerical branch within the preregistered agreement gates, hydraulic continuity passes in all 168, and storage plus first-moment recovery passes in all 168. The negative result is therefore not a convergence or multibranch failure.",
+    "Theta admissibility passes in 154 of 168 cases and fails in 14. Every failed case violates the frozen upper constitutive effective-saturation limit; the failures occur in both D8_B2P5 and D12_B2P5 and in both HEAD_RISE and HEAD_FALL cases. The all-layer cubic-theta moment reconstruction is therefore not admissible over the prospectively frozen B14 synthetic domain.",
+    "The constitutive domain, moment range, polynomial order, solver starts and numerical tolerances are not changed after observing this result. The C5Y all-layer moment-enriched cubic-theta route stops here.",
+    "This does not invalidate the physical meaning or exact projected balance of the first water-content moment. It rejects this specific algebraic theta-polynomial hydraulic reconstruction as the next reduced propagation route.",
+    "C5R remains authoritative for the original placement-versus-closure question: once the prospectively selected 2.5-cm bottom support is shared, adding D8 to D12 vertical breadth does not change the groundwater response, while neither representation reaches the high-resolution comparator. Bottom-adjacent placement is important but is not the remaining limiting axis under CURRENT_LAYER_FACE.",
+    "Current evidence therefore supports a propagation/inter-layer representation deficiency after local placement is made adequate, but it does not yet identify a qualified replacement closure. DSE2P, storage-only P0 SCAFP and the present moment-enriched cubic-theta route have each failed prospectively before free-running adoption.",
+    "Comparator failure is not application inadequacy. C4U remains externally blocked, so no purpose-dependent application acceptance, performance, speed or production-ROM conclusion follows."
+  ],
+  "status": "CLOSED_MOMENT_THETA_PROFILE_INADMISSIBLE_ON_FROZEN_DOMAIN_ROUTE_STOPPED_SCIENTIFIC_CHOICE_REQUIRED",
+  "work_unit": "LARE-BC2-C5Z",
+  "workstream": "F-ROM-LARE"
+}
