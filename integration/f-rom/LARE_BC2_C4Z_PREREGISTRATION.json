@@ -1,0 +1,365 @@
+{
+  "schema": "swap5.lare.bc2.c4z.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4Z",
+  "phase": "PREREGISTERED_BEFORE_C4Z_REFERENCE_RESPONSE",
+  "title": "Fresh blind dynamic prescribed-head transfer under pre-existing integrated-water-depth Reference policy",
+  "scientific_question": "Does the lower-zone-focused LARE representation frontier remain sufficient under fixed-domain time-varying prescribed-head forcing when comparator availability is governed prospectively by the pre-existing D13 integrated-water-depth retry policy?",
+  "role": "FRESH_RESPONSE_BLIND_LOWER_BOUNDARY_SEMANTICS_TRANSFER_AFTER_C4Y_NUMERICAL_POLICY_BLOCKER",
+  "authority": {
+    "frozen_lare_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "bc1_closeout": "integration/f-rom/LARE_BC1_CLOSEOUT.json",
+    "c4y_closeout": "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
+    "required_c4y_decision": "C4Y_REFERENCE_OR_EXECUTION_BLOCKED",
+    "c4x_closeout": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "c4s_closeout": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+    "d13_policy_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "d13_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "scientific_basis_rebased": false
+  },
+  "c4y_disposition": {
+    "histories_reused": false,
+    "hydrological_response_used_for_threshold_selection": false,
+    "old_RS1_local_allowance_reused": false,
+    "reason_for_new_numerical_policy": "C4Y demonstrated that the inherited RS1 prospective-representation fallback allowance is not geometry-neutral for R2. C4Z prospectively binds the already-existing D13/C4S integrated-water-depth policy instead of relaxing C4Y after outcome."
+  },
+  "reference_retry_policy": {
+    "family": "PRE_EXISTING_D13_INTEGRATED_WATER_DEPTH",
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_classes": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "no_new_failure_class": true,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "no_post_response_relaxation": true
+  },
+  "workload": {
+    "material": "B01 homogeneous Mualem-van Genuchten",
+    "depth_cm": 160,
+    "top_boundary": "gravity-consistent qeq only",
+    "lower_boundary": "fixed-domain prescribed pressure head during RISE/FALL, equilibrium mode-2 HOLD",
+    "moving_water_table": false,
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "horizon_day": 0.8192,
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "sinks": false,
+    "ET_root_uptake": false
+  },
+  "blind_histories": {
+    "response_inspected_before_preregistration": false,
+    "head_multipliers": {
+      "RISE": 0.875,
+      "FALL": 1.125,
+      "HOLD": "equilibrium mode-2"
+    },
+    "histories": {
+      "Z01": {
+        "initial_Se": 0.725,
+        "segments": [
+          [
+            "FALL",
+            256
+          ],
+          [
+            "RISE",
+            320
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z02": {
+        "initial_Se": 0.825,
+        "segments": [
+          [
+            "RISE",
+            256
+          ],
+          [
+            "FALL",
+            320
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z03": {
+        "initial_Se": 0.875,
+        "segments": [
+          [
+            "FALL",
+            320
+          ],
+          [
+            "RISE",
+            256
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      },
+      "Z04": {
+        "initial_Se": 0.775,
+        "segments": [
+          [
+            "RISE",
+            320
+          ],
+          [
+            "FALL",
+            256
+          ],
+          [
+            "HOLD",
+            448
+          ]
+        ]
+      }
+    },
+    "design_rule": "New interior offsets in state and switching time relative to C4Y, while retaining exactly the same head amplitude. No C4Y hydrological error was used.",
+    "no_post_response_history_change": true
+  },
+  "representations": {
+    "LARE": {
+      "closure": "BC1 CURRENT_LAYER_FACE",
+      "integrator": "iterative Heun",
+      "internal_dt_day": 0.0001,
+      "no_clipping": true,
+      "no_fallback": true,
+      "ladder": [
+        {
+          "id": "R3",
+          "dimension": 3,
+          "boundaries_cm": [
+            0,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R5",
+          "dimension": 5,
+          "boundaries_cm": [
+            0,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R6",
+          "dimension": 6,
+          "boundaries_cm": [
+            0,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R12",
+          "dimension": 12,
+          "boundaries_cm": [
+            0,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R16",
+          "dimension": 16,
+          "boundaries_cm": [
+            0,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ],
+          "role": "operator control"
+        }
+      ],
+      "placement_controls": [
+        {
+          "id": "P4_TOP_LOWER",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            10,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "U4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            40,
+            80,
+            120,
+            160
+          ]
+        },
+        {
+          "id": "U8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160
+          ]
+        }
+      ]
+    },
+    "R2": {
+      "role": "2 x 80 cm current-canonical Richards comparator",
+      "geometry_cm": [
+        80,
+        80
+      ]
+    },
+    "fine_reference": {
+      "id": "R16_REFERENCE",
+      "geometry": "16 x 10 cm",
+      "backend": "current canonical at preregistration"
+    },
+    "FMC_SMVE": {
+      "included": false,
+      "reason": "No pre-existing dynamic prescribed-head FMC boundary authority."
+    }
+  },
+  "metrics": {
+    "DYNAMIC_GW_VECTOR": [
+      "pooled total-storage RMSE",
+      "pooled cumulative-bottom-exchange RMSE",
+      "pooled interval-average bottom-flux RMSE",
+      "bottom-flux sign-mismatch count",
+      "absolute pooled mean signed bottom-flux error",
+      "maximum absolute final cumulative-bottom-exchange error across histories",
+      "reversal-sequence mismatch history count",
+      "maximum reversal penalty in steps"
+    ],
+    "PROFILE_VECTOR": "DYNAMIC_GW_VECTOR plus mapped 10-cm theta RMSE",
+    "crossing": "componentwise no worse than R2 within 1e-12 numerical equality tolerance",
+    "no_scalar_score": true,
+    "no_application_threshold": true
+  },
+  "hypotheses": {
+    "H_DYNAMIC_HEAD_MIN_NOT_BELOW_R4": "Minimum reduced lower-zone dimension crossing R2 on DYNAMIC_GW_VECTOR is at least R4.",
+    "H_LOWER_ZONE_PLACEMENT_R4": "R4 is componentwise no worse than U4 on DYNAMIC_GW_VECTOR.",
+    "H_LOWER_ZONE_PLACEMENT_R8": "R8 is componentwise no worse than U8 on DYNAMIC_GW_VECTOR.",
+    "H_PROFILE_REQUIRES_MORE_STATE": "Minimum R2-relative PROFILE dimension exceeds minimum R2-relative GW dimension."
+  },
+  "hard_gates": {
+    "canonical_head_exact": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true,
+    "reference_exact_state_count_per_route": 4096,
+    "reference_hard_mass_gate_cm": 1e-12,
+    "all_lare_members_and_controls_attempted": true,
+    "lare_R16_operator_control_qualified": true,
+    "qualified_lare_water_ledger_cm": 1e-10,
+    "fail_open_count": 0
+  },
+  "decision_logic": {
+    "C4Z_DYNAMIC_HEAD_GW_PROFILE_FRONTIERS_PRESENT": "All hard gates pass and at least one reduced lower-zone LARE member crosses R2 on both DYNAMIC_GW_VECTOR and PROFILE_VECTOR.",
+    "C4Z_DYNAMIC_HEAD_GW_FRONTIER_ONLY": "All hard gates pass and at least one reduced lower-zone LARE member crosses R2 on DYNAMIC_GW_VECTOR but none crosses PROFILE_VECTOR.",
+    "C4Z_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED": "All hard gates pass but no reduced lower-zone LARE member crosses R2 on DYNAMIC_GW_VECTOR.",
+    "C4Z_REFERENCE_OR_EXECUTION_BLOCKED": "Any Reference, integrity, provenance or fail-closed gate fails."
+  },
+  "pre_execution_implementation_binding": {
+    "response_based": false,
+    "materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "analyzer_blob": "c1635a74e818cfdbfeb9ff8087e461338207605c",
+    "reference_source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "d13_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "allowed_new_code": "prospective history materialization, pre-existing D13 retry-policy binding, execution plumbing, frozen-vector aggregation",
+    "scientific_effect": "NO_LARE_MODEL_CHANGE"
+  },
+  "interpretation_boundaries": [
+    "C4Z is fixed-domain prescribed-head research, not moving-water-table geometry.",
+    "C4Z is not groundwater coupling.",
+    "Comparator-relative crossing is not application acceptance.",
+    "No FMC result is inferred.",
+    "No post-response retuning of histories, head amplitude, partitions, closure, numerical policy, metrics or decisions.",
+    "No performance or speedup claim."
+  ],
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
