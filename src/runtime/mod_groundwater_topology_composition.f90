@@ -22,6 +22,11 @@ module mod_groundwater_topology_composition
   integer, parameter, public :: GW_TOPOLOGY_CELL_WITHOUT_TILE = 13
   integer, parameter, public :: GW_TOPOLOGY_FRACTION_SUM = 14
   integer, parameter, public :: GW_TOPOLOGY_INVALID_OUTPUT = 15
+  integer, parameter, public :: GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED = 16
+
+  integer, parameter, public :: GW_STORAGE_PARTITION_UNRESOLVED = 0
+  integer, parameter, public :: GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS = 1
+  integer, parameter, public :: GW_STORAGE_PARTITION_OVERLAPPING_WITH_EXPLICIT_CORRECTION = 2
 
   type, public :: groundwater_topology_tile_t
     integer(int64) :: tile_id = 0_int64
@@ -40,6 +45,9 @@ module mod_groundwater_topology_composition
     integer(int64) :: groundwater_lineage_id = 0_int64
     integer :: package_slot = 0
     integer(int32) :: modflow_node_id = 0_int32
+    ! CSR-04: physical storage-domain authority. Production coupling is
+    ! fail-closed until a non-overlapping partition is explicitly declared.
+    integer :: storage_partition = GW_STORAGE_PARTITION_UNRESOLVED
   contains
     procedure, public :: valid => groundwater_topology_cell_valid
   end type groundwater_topology_cell_t
@@ -86,6 +94,7 @@ contains
     if (self%groundwater_lineage_id <= 0_int64) return
     if (self%package_slot <= 0) return
     if (self%modflow_node_id <= 0_int32) return
+    if (self%storage_partition /= GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS) return
     valid = .true.
   end function groundwater_topology_cell_valid
 
