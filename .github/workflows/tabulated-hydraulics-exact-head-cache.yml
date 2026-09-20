@@ -7,7 +7,8 @@ on:
       - research/tabulated-hydraulics-characterization
     paths:
       - '.github/workflows/tabulated-hydraulics-exact-head-cache.yml'
-      - 'research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py'\n      - 'research/tabulated_hydraulics/patch_exact_head_eval_cache.py'
+      - 'research/tabulated_hydraulics/patch_exact_head_eval_cache.py'
+      - 'research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py'
 
 jobs:
   qualify:
@@ -45,19 +46,24 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
           python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-src/src/utils/soilhydraulicsutils.f90
-          meson setup swap-src/build-a swap-src -Denable_pfunit=false
-          meson compile -C swap-src/build-a
-          cp swap-src/build-a/swap swap-analytic
           python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
           python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-src/src/utils/soilhydraulicsutils.f90
-          meson setup swap-src/build-l swap-src -Denable_pfunit=false
-          meson compile -C swap-src/build-l
-          cp swap-src/build-l/swap swap-table-uncached
           python3 research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py swap-src/src/soil/sptabulated.f90 swap-src/src/io/readswap.f90
-          meson setup swap-src/build-m swap-src -Denable_pfunit=false
-          meson compile -C swap-src/build-m
-          cp swap-src/build-m/swap swap-table-cached
+          meson setup swap-src/build-u swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-u
+          cp swap-src/build-u/swap swap-table-uncached
+
+          python3 research/tabulated_hydraulics/patch_exact_head_eval_cache.py swap-src/src/soil/sptabulated.f90 swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-c swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-c
+          cp swap-src/build-c/swap swap-table-cached
 
       - name: Prepare unchanged log-head400 cases
         shell: bash
@@ -67,12 +73,14 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import importlib.util, shutil
+
           lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
           ls=importlib.util.spec_from_file_location("logprep",lp)
           logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
           prep=logprep.prep
           prep.uniform_rows=lambda p: logprep.loghead_rows(p,400)
-          src=Path("swap-testcases/cases/hupselbrook/uncached")
+
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
           series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
           root=Path("build/cache/envelope")
           for scenario,sc in prep.SCENARIOS.items():
@@ -99,32 +107,35 @@ jobs:
                           fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
           for kval in (0,1):
               a=hroot/f"analytic_k{kval}"; shutil.copytree(src,a); hprep.edit_case(a,False,kval)
-              m=hroot/f"cached_k{kval}"; shutil.copytree(src,m); hprep.edit_case(m,True,kval); overwrite(m)
-              l=hroot/f"uncached_k{kval}"; shutil.copytree(m,l)
+              u=hroot/f"uncached_k{kval}"; shutil.copytree(src,u); hprep.edit_case(u,True,kval); overwrite(u)
+              c=hroot/f"cached_k{kval}"; shutil.copytree(u,c)
           PY
 
-      - name: Transfer fidelity and lookup equivalence
+      - name: Transfer fidelity and cache equivalence
         shell: bash
         run: |
           set -euo pipefail
+          run_case () {
+            work="$1"; bin="$2"
+            pushd "$work" >/dev/null
+            set +e
+            timeout 30 "$bin" >/dev/null 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            test "$rc" -eq 100
+          }
+
           for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
-            for route in analytic table; do
-              work="build/cache/envelope/${scenario}__${route}_k0"
-              if [ "$route" = analytic ]; then bin="$GITHUB_WORKSPACE/swap-analytic"; else bin="$GITHUB_WORKSPACE/swap-table-cached"; fi
-              pushd "$work" >/dev/null; set +e; timeout 30 "$bin" >/dev/null 2>&1; rc=$?; set -e; popd >/dev/null
-              test "$rc" -eq 100
-            done
+            run_case "build/cache/envelope/${scenario}__analytic_k0" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/cache/envelope/${scenario}__table_k0" "$GITHUB_WORKSPACE/swap-table-cached"
             python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
               "build/cache/envelope/${scenario}__analytic_k0" "build/cache/envelope/${scenario}__table_k0" \
               "build/cache/${scenario}__k0.json" --label "${scenario},K0,loghead400-cache"
           done
           for scenario in coarse_dry_free coarse_dry_pulse; do
-            for route in analytic table; do
-              work="build/cache/envelope/${scenario}__${route}_k1"
-              if [ "$route" = analytic ]; then bin="$GITHUB_WORKSPACE/swap-analytic"; else bin="$GITHUB_WORKSPACE/swap-table-cached"; fi
-              pushd "$work" >/dev/null; set +e; timeout 30 "$bin" >/dev/null 2>&1; rc=$?; set -e; popd >/dev/null
-              test "$rc" -eq 100
-            done
+            run_case "build/cache/envelope/${scenario}__analytic_k1" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/cache/envelope/${scenario}__table_k1" "$GITHUB_WORKSPACE/swap-table-cached"
             python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
               "build/cache/envelope/${scenario}__analytic_k1" "build/cache/envelope/${scenario}__table_k1" \
               "build/cache/${scenario}__k1.json" --label "${scenario},K1,loghead400-cache"
@@ -148,15 +159,11 @@ jobs:
           PY
 
           for kval in 0 1; do
-            for route in uncached cached; do
-              if [ "$route" = uncached ]; then work="build/cache/hupsel/uncached_k"$kval; bin="$GITHUB_WORKSPACE/swap-table-uncached";
-              else work="build/cache/hupsel/cached_k"$kval; bin="$GITHUB_WORKSPACE/swap-table-cached"; fi
-              pushd "$work" >/dev/null; set +e; timeout 30 "$bin" >/dev/null 2>&1; rc=$?; set -e; popd >/dev/null
-              test "$rc" -eq 100
-            done
+            run_case "build/cache/hupsel/uncached_k$kval" "$GITHUB_WORKSPACE/swap-table-uncached"
+            run_case "build/cache/hupsel/cached_k$kval" "$GITHUB_WORKSPACE/swap-table-cached"
             python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
-              "build/cache/hupsel/uncached_k"$kval "build/cache/hupsel/cached_k"$kval \
-              "build/cache/lookup-k"$kval".json" --label "uncached-vs-exact-head-cache,K"$kval
+              "build/cache/hupsel/uncached_k$kval" "build/cache/hupsel/cached_k$kval" \
+              "build/cache/cache-equivalence-k$kval.json" --label "uncached-vs-cache,K$kval"
           done
 
       - name: Repeated Hupsel benchmark
@@ -186,7 +193,7 @@ jobs:
               return dt
           for label in routes: one(label)
           vals={x:[] for x in routes}; rows=[]; labels=list(routes)
-          for rnd in range(16):
+          for rnd in range(18):
               order=labels[rnd%6:]+labels[:rnd%6]
               if rnd%2: order=list(reversed(order))
               for label in order:
@@ -197,7 +204,7 @@ jobs:
           lines=[f"{key}_median_s={med[key]:.9g}" for key in labels]
           for kval in (0,1):
               lines.append(f"cached_k{kval}_delta_vs_analytic_pct={100*(med[f'cached_k{kval}']/med[f'analytic_k{kval}']-1):.9g}")
-              lines.append(f"cached-vs-uncached-k{kval}_pct={100*(med[f'cached_k{kval}']/med[f'uncached_k{kval}']-1):.9g}")
+              lines.append(f"cached_vs_uncached_k{kval}_pct={100*(med[f'cached_k{kval}']/med[f'uncached_k{kval}']-1):.9g}")
           (root/"benchmark-summary.txt").write_text("\n".join(lines)+"\n")
           print("\n".join(lines))
           PY
@@ -206,10 +213,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tab-hyd-loghead400-exact-head-cache
+          name: tab-hyd-exact-head-cache
           path: |
             build/cache/fidelity.tsv
             build/cache/*__k*.json
-            build/cache/lookup-k*.json
+            build/cache/cache-equivalence-k*.json
             build/cache/benchmark.csv
             build/cache/benchmark-summary.txt
