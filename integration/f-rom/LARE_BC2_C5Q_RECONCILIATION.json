@@ -1,0 +1,164 @@
+{
+  "schema": "swap5.lare.bc2.c5q.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5Q",
+  "status": "CLOSED_ONE_FINAL_FIXED_D12_BREADTH_DISCRIMINATOR_REQUIRED_BEFORE_DISTINCT_CLOSURE",
+  "decision": "PREREGISTER_D12_SHARED_BOTTOM_SUPPORT_BREADTH_DISCRIMINATOR_BEFORE_CLOSURE_IMPLEMENTATION",
+  "role": "READ_ONLY_VERTICAL_MEMORY_BREADTH_VS_PROPAGATION_IDENTIFIABILITY",
+  "authority": {
+    "C5P": "integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json",
+    "C5O": "integration/f-rom/LARE_BC2_C5O_RECONCILIATION.json",
+    "C5N": "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
+    "C4H": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+    "C4K": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+    "C4O": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "read_only": true
+  },
+  "identifiability": {
+    "facts": [
+      "C5N R5-R16 plateau cannot isolate propagation closure because all lower-zone ladder members shared a 10-cm bottom-adjacent state.",
+      "C5P proves at fixed D4 and D8 that thinning/reallocating bottom-adjacent state materially changes the high-resolution response under unchanged CURRENT_LAYER_FACE.",
+      "C5P D8 B10->B5->B2P5 is componentwise non-worsening on groundwater and profile views and retains correct sign/reversal structure.",
+      "C5P D4_B2P5 substantially reduces continuous errors but introduces 25 sign mismatches and a 25-step reversal penalty.",
+      "C4H-C4O exclude simple conductivity-focused or scalar existing-state gradient retuning as an authorized next remedy, but do not prove that a genuinely different closure is necessary."
+    ],
+    "remaining_confound": "At 2.5-cm bottom support, D4 and D8 differ not only in total dimension but in how much of the 10-150 cm column retains distinct state. The D4 timing failure and D8 clean response imply that broader vertical memory remains a live causal variable.",
+    "why_D12_is_required": "A D12 family can retain the same 5/2.5-cm bottom support while restoring substantially more vertically distributed state above 150 cm. This tests memory breadth without changing closure algebra or Reference physics.",
+    "why_immediate_closure_is_not_identified": "Because placement changes have produced large improvements and D4/D8 differ qualitatively in timing, the residual D8_B2P5 error cannot yet be uniquely attributed to inter-layer propagation. Implementing a new closure now would confound representation breadth with propagation physics.",
+    "why_further_arbitrary_partition_search_is_not_authorized": "C5P already establishes the direction of the placement effect. The next experiment is a bounded identifiability contrast with prospectively fixed D12 geometry, not response-based optimization."
+  },
+  "prospective_D12_geometry": {
+    "D12_B10": {
+      "dimension": 12,
+      "boundaries_cm": [
+        0,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "historical R12-style 10-cm-bottom baseline"
+    },
+    "D12_B5": {
+      "dimension": 12,
+      "boundaries_cm": [
+        0,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        160
+      ],
+      "role": "same D12 budget, one upper state reallocated to split bottom 10 cm into 5+5"
+    },
+    "D12_B2P5": {
+      "dimension": 12,
+      "boundaries_cm": [
+        0,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ],
+      "role": "same D12 budget, 2.5-cm bottom support while retaining distinct state from 70 cm downward"
+    },
+    "D8_B2P5_control": {
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ],
+      "role": "same 2.5-cm bottom support with less broad vertical memory"
+    },
+    "geometry_origin": "D12_B10 is pre-existing R12; 5 and 2.5 cm are pre-existing C5C/C5P diagnostic support levels. The D12 redistribution is defined algebraically before any new response and is not optimized from C5P magnitude patterns."
+  },
+  "prospective_discriminator": {
+    "target": "LARE-BC2-C5R",
+    "primary_question": "With identical 2.5-cm lower-boundary support and unchanged CURRENT_LAYER_FACE, does restoring broader vertical memory from D8 to D12 improve fresh blind B14 dynamic-head groundwater response?",
+    "secondary_questions": [
+      "Does D12 itself retain the D8-style B10->B5->B2P5 componentwise placement progression?",
+      "Does D12_B2P5 cross the independent R1024 high-resolution groundwater comparator?",
+      "Does added breadth primarily improve profile state while groundwater flux remains at the D8_B2P5 level?"
+    ],
+    "outcome_logic": {
+      "BREADTH_ACTIVE": "D12_B2P5 is componentwise no worse than D8_B2P5 on the groundwater vector with strict improvement in at least one continuous groundwater component. Broader vertical memory remains causally active; do not identify a closure floor.",
+      "PROPAGATION_LIMIT_STRENGTHENED": "D12_B2P5 does not improve the D8_B2P5 groundwater vector while D12 retains physical/integrity qualification and its profile representation is at least as informative. This substantially strengthens the case that the remaining groundwater error belongs to propagation/closure rather than missing state breadth.",
+      "MIXED": "D12 and D8 trade different groundwater components. Preserve the mixed result and reconcile the component mechanism before any closure implementation.",
+      "HIGH_RES_FRONTIER": "If D12_B2P5 crosses R1024 on groundwater view, closure replacement is not justified by this workload; representation breadth/placement remains sufficient comparator-relative evidence."
+    },
+    "no_scalar_score": true,
+    "no_application_threshold": true
+  },
+  "closure_boundary": {
+    "current_face_status": "Retained unchanged for C5R.",
+    "scalar_retuning_status": "CLOSED by C4O.",
+    "conductivity_only_status": "Not supported as primary target by C4H.",
+    "extra_history_state_status": "Not supported by C4K in the tested state-space ambiguity diagnostic.",
+    "physically_distinct_closure_implementation_authorized_now": false,
+    "next_if_propagation_limit_strengthened": "Perform a read-only physically distinct closure-family derivation/discriminator before implementing any closure; separate gradient reconstruction, transmissivity/conductivity, and storage-consistent subgrid response."
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5R",
+    "state": "FRESH_BLIND_D12_SHARED_BOTTOM_SUPPORT_BREADTH_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION",
+    "constraints": [
+      "Use fresh B14 prescribed-head histories not used in C5A, C5N or C5P.",
+      "Retain frozen Reference backend 1caa431... and the C5N/C5P high-resolution Reference qualification pattern.",
+      "Use D12_B10, D12_B5, D12_B2P5 and D8_B2P5 exactly as prospectively defined in C5Q.",
+      "Retain BC1 CURRENT_LAYER_FACE, constitutive law and candidate timestep unchanged.",
+      "No response-based partition adjustment.",
+      "Compare groundwater and mapped-profile views separately and report D12_B2P5 versus D8_B2P5 componentwise.",
+      "No scalar score, application acceptance, performance/speed or production-ROM claim."
+    ]
+  },
+  "explicitly_not_authorized": [
+    "New closure implementation before C5R.",
+    "Further scalar tuning of CURRENT_LAYER_FACE.",
+    "Response-based search over layer boundaries.",
+    "Changing Reference boundary physics.",
+    "Treating R2048 as continuum truth.",
+    "Application acceptance or performance claims."
+  ],
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_partition_executed": false,
+    "new_closure_implemented": false,
+    "C5A_formal_decision_changed": false,
+    "C5N_result_changed": false,
+    "C5P_result_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
