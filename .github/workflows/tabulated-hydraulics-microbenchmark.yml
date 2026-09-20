@@ -1,0 +1,133 @@
+name: TAB-HYD constitutive microbenchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-microbenchmark.yml'
+      - 'research/tabulated_hydraulics/tabulated_hydraulics_wrapper_microbenchmark.f90'
+      - 'research/tabulated_hydraulics/patch_direct_uniform_tspack.py'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned SWAP source
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Prepare legacy and direct source copies
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp swap-src/src/soil/sptabulated.f90 legacy-sptabulated.f90
+          cp swap-src/src/soil/sptabulated.f90 direct-sptabulated.f90
+          python3 research/tabulated_hydraulics/patch_direct_uniform_tspack.py direct-sptabulated.f90
+
+      - name: Compile wrapper microbenchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-micro/legacy build/tab-hyd-micro/direct
+          FLAGS="-O3 -march=x86-64 -ffree-line-length-none -std=f2018"
+
+          build_variant () {
+            variant="$1"
+            source="$2"
+            out="build/tab-hyd-micro/$variant"
+            gfortran $FLAGS -J "$out" -c research/tabulated_hydraulics/array_dimensions_stub.f90 -o "$out/arrays.o"
+            gfortran $FLAGS -I "$out" -J "$out" -c research/tabulated_hydraulics/current_wrapper_stubs.f90 -o "$out/stubs.o"
+            gfortran $FLAGS -I "$out" -J "$out" -c "$source" -o "$out/sptabulated.o"
+            gfortran $FLAGS -I "$out" -J "$out" -c swap-src/src/utils/soilhydraulicsutils.f90 -o "$out/wrappers.o"
+            gfortran $FLAGS -I "$out" -J "$out" \
+              research/tabulated_hydraulics/tabulated_hydraulics_wrapper_microbenchmark.f90 \
+              "$out/arrays.o" "$out/stubs.o" "$out/sptabulated.o" "$out/wrappers.o" \
+              -o "$out/bench"
+          }
+          build_variant legacy legacy-sptabulated.f90
+          build_variant direct direct-sptabulated.f90
+
+      - name: Benchmark constitutive evaluation sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          import statistics
+          import subprocess
+
+          root=Path("build/tab-hyd-micro")
+          routes={
+              "analytic":(root/"legacy"/"bench","analytic"),
+              "legacy_table":(root/"legacy"/"bench","table"),
+              "direct_table":(root/"direct"/"bench","table"),
+          }
+
+          def one(label):
+              exe,mode=routes[label]
+              p=subprocess.run([str(exe),mode],capture_output=True,text=True,check=True)
+              vals={}
+              for line in p.stdout.splitlines():
+                  if "=" in line:
+                      k,v=line.split("=",1)
+                      vals[k.strip()]=v.strip()
+              if vals.get("MICROBENCHMARK_COMPLETED") is not None:
+                  pass
+              return float(vals["CPU_SECONDS"]),float(vals["NS_PER_SET"]),float(vals["CHECKSUM"])
+
+          for label in routes:
+              one(label)
+
+          labels=list(routes)
+          rows=[]
+          values={k:[] for k in labels}
+          nsvalues={k:[] for k in labels}
+          sums={k:[] for k in labels}
+          for r in range(9):
+              order=labels[r%3:]+labels[:r%3]
+              if r%2:
+                  order=list(reversed(order))
+              for label in order:
+                  sec,ns,checksum=one(label)
+                  rows.append((r,label,sec,ns,checksum))
+                  values[label].append(sec)
+                  nsvalues[label].append(ns)
+                  sums[label].append(checksum)
+
+          with (root/"timings.csv").open("w",newline="") as fh:
+              w=csv.writer(fh)
+              w.writerow(["round","route","cpu_seconds","ns_per_set","checksum"])
+              w.writerows(rows)
+
+          med={k:statistics.median(nsvalues[k]) for k in labels}
+          lines=[]
+          for k in labels:
+              lines.append(f"{k}_median_ns_per_set={med[k]:.9g}")
+          lines.append(f"legacy_table_over_analytic={med['legacy_table']/med['analytic']:.9g}")
+          lines.append(f"direct_table_over_analytic={med['direct_table']/med['analytic']:.9g}")
+          lines.append(f"direct_table_over_legacy={med['direct_table']/med['legacy_table']:.9g}")
+          for k in labels:
+              rel=(max(sums[k])-min(sums[k]))/max(1.0,abs(statistics.mean(sums[k])))
+              lines.append(f"{k}_checksum_spread_relative={rel:.3e}")
+
+          (root/"summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-constitutive-microbenchmark
+          path: |
+            build/tab-hyd-micro/timings.csv
+            build/tab-hyd-micro/summary.txt
