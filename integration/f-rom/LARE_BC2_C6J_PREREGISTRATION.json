@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6j.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6J",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6J_NUMERICAL_RESPONSE",
   "title": "Response-free mathematical qualification of Free-Energy Moment-Onsager (FEMO)",
   "role": "NO_HYDROLOGICAL_RESPONSE_FEMO_MANIFOLD_METRIC_BOUNDARY_OPERATOR_QUALIFICATION",
   "scientific_question": "Does the parameter-free physical free-energy S/M manifold admit unique interior profiles and a numerically positive-definite Onsager resistance operator with well-posed prescribed-head and prescribed-flux instantaneous boundary maps over the frozen B14 synthetic domains before any FEMO trajectory is generated?",
@@ -171,15 +171,18 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "qualifier": "tests/rom/qualify_lare_bc2_c6j_femo.py",
-    "qualifier_blob": null,
+    "qualifier_blob": "6c12dde9395e2d475d6bb8f3d604a49b8eb57857",
     "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6j.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "cca9fb029190a9d97049ab3f4a7ea8faec643e39",
+    "execution_binding_complete": true,
+    "aggregator": "tests/rom/merge_lare_bc2_c6j_femo_shards.py",
+    "aggregator_blob": "db89a175d56fca3cd8af92419748db55d9d53fb0",
+    "binding_note": "The exact FEMO equations, state domains, starts, metric construction, boundary operators, gates, qualifier/aggregator blobs and workflow are frozen before any C6J numerical result. Workflow creation itself is excluded from the push trigger."
   },
   "model_changed": false
 }
