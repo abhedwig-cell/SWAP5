@@ -100,15 +100,24 @@ jobs:
           PY
           )"
           mkdir -p /tmp/c6n1 /tmp/reference
-          gh run download "$runid" -p 'c6n1u-*' -D /tmp/c6n1
+          gh run download "$runid" -p 'c6n1s*' -D /tmp/c6n1
           for material in B01 B14; do
             full="/tmp/reference/${material}_R2048_T32_o0.txt"
             : > "$full"
             for history in U01 U02 U03 U04; do
-              part="$(find /tmp/c6n1 -type f -path "*c6n1c-${material}-R2048_T32-${history}*" -name "${material}_R2048_T32_o0_${history}.txt" -print -quit)"
-              test -n "$part"
-              cat "$part" >> "$full"
+              hist="/tmp/reference/${material}_${history}_R2048_T32_o0.txt"
+              : > "$hist"
+              for seg in 1 2 3 4; do
+                part="$(find /tmp/c6n1 -type f -path "*c6n1s${seg}-${material}-${history}*" -name 'segment_o0.txt' -print -quit)"
+                test -n "$part"
+                cat "$part" >> "$hist"
+              done
+              test "$(grep -c '^LAREDYN0R_STATE|' "$hist")" -eq 32768
+              test "$(grep -c '^LAREDYN0R_PROFILE|' "$hist")" -eq 16384
+              cat "$hist" >> "$full"
             done
+            test "$(grep -c '^LAREDYN0R_STATE|' "$full")" -eq 131072
+            test "$(grep -c '^LAREDYN0R_PROFILE|' "$full")" -eq 65536
           done
 
       - name: Execute frozen C6N2 classification
