@@ -1,0 +1,211 @@
+{
+  "schema": "swap5.lare.bc2.c6d.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6D",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Exposed frozen-state BEMR interface-flux mechanism discriminator",
+  "role": "EXPOSED_MECHANISM_DIAGNOSTIC_NOT_BLIND_VALIDATION_NOT_FREE_RUNNING",
+  "scientific_question": "On immutable C5R R2048-T16 prescribed-head moving-phase states, with both integrated storage and centered first water-content moment projected exactly to D12_B2P5, does the mathematically qualified BEMR reconstruction reduce internal-interface flux error relative to CURRENT_LAYER_FACE without changing the Reference trajectory or fitting to its residuals?",
+  "authority": {
+    "c6c": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
+    "required_c6c_decision": "AUTHORIZE_EXPOSED_FROZEN_STATE_BEMR_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING",
+    "c6b": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
+    "c5t_metrics": "integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json",
+    "c5r": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "exposed_histories": true,
+    "blind_claim_authorized": false
+  },
+  "workload": {
+    "material": "B14",
+    "histories": [
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "reference_route": "R2048_T16 only",
+    "nodes": 2048,
+    "dz_cm": 0.078125,
+    "observation_dt_day": 0.0008,
+    "observations_per_history": 1024,
+    "moving_observations_per_history": 576,
+    "moving_observation_count_total": 2304,
+    "phase_schedule": "Exactly C5R/C5T PHASE1 and PHASE2; HOLD is excluded because BEMR has so far been mathematically qualified only for prescribed-head lower-boundary closure.",
+    "solver_feedback_from_candidate": false
+  },
+  "retained_representation": {
+    "id": "D12_B2P5",
+    "dimension": 12,
+    "boundaries_cm": [
+      0,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      155,
+      157.5,
+      160
+    ],
+    "widths_cm": [
+      70,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      5,
+      2.5,
+      2.5
+    ],
+    "storage_state": "S_i projected exactly from fine Reference water content.",
+    "moment_state": "M_i=sum_n (z_n-zc_i)*theta_n*dz_n using fine compartment centers z_n=(n-0.5)*0.078125 cm for every fine compartment inside retained layer i.",
+    "moment_fitting": false,
+    "moment_localization": false
+  },
+  "instrumentation": {
+    "base": "C5T logging-only R2048-T16 instrumentation",
+    "new_output": [
+      "one C6D centered water-content moment per retained layer and observation",
+      "one C6D boundary record per observation containing native top flux, native bottom head and bottom mode"
+    ],
+    "identity_requirement": [
+      "All pre-existing LAREGW1_STATE lines byte-identical to authoritative C5T/C5R trajectory.",
+      "All pre-existing LAREGW1_PROFILE lines byte-identical.",
+      "All C5T layer-storage and fine-face lines byte-identical."
+    ],
+    "candidate_feedback": false,
+    "reference_physics_changed": false
+  },
+  "bemr_operator": {
+    "authority": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
+    "Se_interval": [
+      0.02,
+      0.995
+    ],
+    "profile": "Se=L+(U-L)*sigmoid(b0+b1*P1+b2*P2+b3*P3)",
+    "external_conditions": {
+      "top": "positive-downward q_top = - native Reference top_flux",
+      "bottom": "positive suction psi_bottom = - native prescribed bottom_head; all evaluated moving points must have bottom_mode=5"
+    },
+    "state_constraints": [
+      "exact S_i",
+      "exact centered M_i"
+    ],
+    "internal_constraints": [
+      "pressure continuity",
+      "Darcy flux continuity"
+    ],
+    "candidate_flux": "shared BEMR interface flux after solving the global D12 algebraic profile map; no candidate quantity feeds back into Reference."
+  },
+  "numerical_contract": {
+    "core": "unchanged C6C BEMR equations, constitutive interval, 96-point state quadrature and solver tolerances",
+    "per_observation_starts": [
+      "PRIMARY_CONTINUATION: previous qualified primary BEMR solution in the same history; first moving observation uses the affine-dual state start.",
+      "INDEPENDENT_AFFINE: affine-dual start reconstructed independently from current S_i and M_i."
+    ],
+    "solver": "scipy.optimize.least_squares method=trf with C6C xtol=ftol=gtol=1e-12 and max_nfev=8000",
+    "all_points_requirement": "Both starts must converge, satisfy C6C hydraulic/state/quadrature gates and agree within the C6C branch-agreement tolerances at every moving observation.",
+    "no_post_result_retuning": true
+  },
+  "reference_and_baseline_flux": {
+    "fine_reference": "Exact C5T formula using aligned R2048 fine face pair, arithmetic K mean, and fine pressure-head gradient.",
+    "current_layer_face": "Exact C5T CURRENT_LAYER_FACE formula on projected D12 layer storages.",
+    "sign": "positive downward"
+  },
+  "primary_interfaces_cm": [
+    150,
+    155,
+    157.5
+  ],
+  "secondary_interfaces_cm": [
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140
+  ],
+  "phase_views": [
+    "PHASE1",
+    "PHASE2",
+    "MOVING"
+  ],
+  "metrics": {
+    "per_interface_phase": [
+      "flux_error_rmse_cm_per_day",
+      "signed_mean_flux_error_cm_per_day",
+      "mean_abs_flux_error_cm_per_day",
+      "max_abs_flux_error_cm_per_day",
+      "sign_mismatch_count"
+    ],
+    "pooled_primary_moving": [
+      "RMSE over interfaces 150/155/157.5 and PHASE1+PHASE2",
+      "mean absolute interface-history signed bias",
+      "sign mismatch count"
+    ],
+    "all_interface_secondary": "same diagnostics over all 11 internal faces and moving phases",
+    "no_scalar_score": true
+  },
+  "adjudication": {
+    "BEMR_SUPPORTED_FOR_BOUNDARY_EXTENSION_QUALIFICATION": [
+      "All 2304 moving-state BEMR solves pass the frozen two-start numerical qualification.",
+      "On pooled primary moving metrics, BEMR is componentwise no worse than CURRENT_LAYER_FACE for RMSE, mean-absolute interface/history signed bias, and sign-mismatch count.",
+      "BEMR pooled primary moving RMSE is strictly smaller than CURRENT_LAYER_FACE by more than 1e-10 cm/day.",
+      "At each of 150, 155 and 157.5 cm, BEMR moving-phase RMSE is no worse than CURRENT_LAYER_FACE within 1e-10 cm/day."
+    ],
+    "BEMR_MIXED_NO_FREE_RUNNING": "Some primary metric/interface improves while another preregistered component worsens, with all numerical gates passing.",
+    "BEMR_NOT_SUPPORTED": "BEMR fails numerical qualification or CURRENT_LAYER_FACE is componentwise no worse on the primary moving vector.",
+    "next_if_supported": "Authorize response-free mathematical qualification of BEMR lower prescribed-flux/HOLD boundary semantics before any fresh blind free-running BEMR test.",
+    "next_if_mixed_or_not_supported": "Stop BEMR mechanism route without changing dual order, moment state, Se bounds, starts, tolerances, metric vector or interface set."
+  },
+  "stop_rules": [
+    "No use of HOLD response in C6D adjudication because prescribed-flux BEMR external closure has not yet been qualified.",
+    "No free-running BEMR.",
+    "No moment fitting or localization.",
+    "No change to C6C entropy map, P3 dual space, constitutive interval or solver tolerances.",
+    "No new metric or threshold after response.",
+    "No Reference, RossFast or groundwater-coupling change.",
+    "No application, performance, speed or production-ROM claim."
+  ],
+  "scientific_firewall": {
+    "blind_validation": false,
+    "candidate_feedback": false,
+    "production_reference_changed": false,
+    "free_running_bemr_implemented": false,
+    "moment_fitting": false,
+    "moment_localization": false,
+    "c6c_retuning": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "response_based_design": false,
+    "moment_instrumenter": "tests/rom/materialize_lare_bc2_c6d_moment_instrumentation.py",
+    "moment_instrumenter_blob": null,
+    "history_slicer": "tests/rom/materialize_lare_bc2_c5t_history_slice.py",
+    "history_slicer_blob": "10983adaf736a0eb4c64a443f78db5ea38e13ae3",
+    "analyzer": "tests/rom/analyze_lare_bc2_c6d_bemr_flux.py",
+    "analyzer_blob": null,
+    "bemr_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
+    "bemr_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6d.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "model_changed": false
+}
