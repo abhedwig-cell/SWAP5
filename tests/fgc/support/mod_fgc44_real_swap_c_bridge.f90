@@ -74,6 +74,8 @@ module mod_fgc44_real_swap_c_bridge
   logical, save :: ledger_prepared=.false.
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
+  integer(int64), save :: active_origin_revision=0_int64
+  integer(int64), save :: active_candidate_revision=1_int64
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
@@ -131,6 +133,7 @@ contains
     if(participant%has_live_candidate() .or. ledger_prepared)return
 
     revision=committed%current_revision()
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
     call committed%current_time(committed_time,available)
     if(.not.available .or. .not.ieee_is_finite(committed_time))return
 
@@ -138,8 +141,9 @@ contains
     window%t1=committed_time+real(duration_day,real64)
     active_duration_day=real(duration_day,real64)
     t0=window%t0; t1=window%t1
-    origin_revision=int(revision,c_int)
-    candidate_revision=int(revision+1_int64,c_int)
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
+    origin_revision=int(active_origin_revision,c_int)
+    candidate_revision=int(active_candidate_revision,c_int)
     fgc44_csr04_next_window_lineage_c=0_c_int
   end function fgc44_csr04_next_window_lineage_c
 
@@ -198,9 +202,9 @@ contains
     call materialize_origin_face(predictor_parameters,hp,qeq,start_face,status)
     if(status/=MODFLOW6_BOTTOM_FACE_OK .or. .not.start_face%valid)return
     predictor_lineage%coupling_id=COUPLING_ID; predictor_lineage%swap_lineage_id=COLUMN_ID
-    predictor_lineage%swap_origin_revision=revision
+    predictor_lineage%swap_origin_revision=active_origin_revision
     predictor_lineage%groundwater_service_id=GW_SERVICE_ID; predictor_lineage%groundwater_lineage_id=GW_LINEAGE_ID
-    predictor_lineage%groundwater_origin_revision=revision
+    predictor_lineage%groundwater_origin_revision=active_origin_revision
     call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qeq,q_swap,flux_status); if(flux_status/=GW_INTERFACE_OK)return
     call pair_groundwater_flux_from_swap(q_swap,q_groundwater,flux_status); if(flux_status/=GW_INTERFACE_OK)return
     accepted_interface%h_swap_m=start_face%hydraulic_head_m; accepted_interface%h_groundwater_m=start_face%hydraulic_head_m
@@ -276,6 +280,7 @@ contains
     if(.not.ieee_is_finite(predictor_qbot))return
     active_duration_day=duration_day
     active_predictor_qbot=predictor_qbot
+    active_origin_revision=0_int64; active_candidate_revision=1_int64
 
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
@@ -409,9 +414,9 @@ contains
     fgc44_ledger_prepare_c=1_c_int
     if(.not.initialized .or. .not.last_trial%valid)return
     if(ledger_prepared)return
-    lineage%coupling_id=COUPLING_ID; lineage%swap_lineage_id=COLUMN_ID; lineage%swap_origin_revision=0_int64
-    lineage%groundwater_lineage_id=GW_LINEAGE_ID; lineage%groundwater_origin_revision=0_int64
-    lineage%candidate_revision=1_int64
+    lineage%coupling_id=COUPLING_ID; lineage%swap_lineage_id=COLUMN_ID; lineage%swap_origin_revision=active_origin_revision
+    lineage%groundwater_lineage_id=GW_LINEAGE_ID; lineage%groundwater_origin_revision=active_origin_revision
+    lineage%candidate_revision=active_candidate_revision
     call ledger%stage_exchange(window,lineage,last_trial%bottom_outward_exchange_cm*0.01_real64,status)
     if(status/=GW_MASS_LEDGER_OK)return
     call ledger%prepare_trial(prepared_ledger,status); if(status/=GW_MASS_LEDGER_OK)return
