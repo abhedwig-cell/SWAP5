@@ -2,9 +2,11 @@
 """Piecewise-uniform x=-ln(1-h) tables for TAB-HYD acceleration research.
 
 The grid uses 400 rows by default. Rows 1..N-1 cover the continuous branch.
-A fixed breakpoint at h=-1 cm allocates 128 intervals to the wet segment from
-h=-1 cm to the generated K-branch threshold; the remaining intervals cover
--1e7..-1 cm. Row N is the explicit h=0/Ksat plateau endpoint.
+The wet-segment breakpoint is soil-adaptive: h_break = 20*h_Kbranch, where
+h_Kbranch is the generated head immediately below the explicit Ksat plateau.
+This concentrates 128 arithmetic-x intervals in the sharpest constitutive
+region while the remaining intervals cover the dry-to-intermediate range.
+Row N is the explicit h=0/Ksat plateau endpoint.
 """
 from __future__ import annotations
 import math
@@ -17,7 +19,7 @@ prep=importlib.util.module_from_spec(spec)
 assert spec.loader is not None
 spec.loader.exec_module(prep)
 
-HBREAK=-1.0
+BREAK_FACTOR=20.0
 NWET=128
 NROWS=400
 
@@ -27,7 +29,7 @@ def xcoord(h: float) -> float:
 def piecewise_x_rows(p: dict, n: int=NROWS, nwet: int=NWET):
     h0=-1.0e7
     h1=prep.threshold_head(p)
-    hb=HBREAK
+    hb=BREAK_FACTOR*h1
     if not (h0 < hb < h1 < 0.0):
         raise RuntimeError((p["comment"],"unexpected piecewise-x ordering",h0,hb,h1))
     total_intervals=n-2
