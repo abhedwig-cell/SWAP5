@@ -208,3 +208,62 @@ Repeated Hupsel medians:
 - raw-head+capacity K1 vs raw-head: `-3.503%`.
 
 The K1 improvement is promising, but it is not promoted beyond research until the expanded K1 envelope closes.
+
+
+## Typed-provider and Reference-Richards integration result
+
+The legacy-input whole-Hupsel K0 result is **not** the final performance answer for SWAP5, because the current SWAP5 constitutive ABI evaluates water content, capacity and conductivity as one vector provider call.
+
+### Provider-only benchmark
+
+Preregistered workflow run `35535155474` used the existing canonical
+`constitutive_hydraulics_provider_t` ABI and compared the current analytical default-MvG provider with the research raw-head provider over all 30 available Staring parameter rows.
+
+Results:
+
+- maximum theta error: `5.321e-5`;
+- maximum capacity error: `5.172e-5`;
+- maximum log10(K) error: `3.038e-4`;
+- analytical provider median: `0.259178 s`;
+- raw-head table provider median: `0.2090535 s`;
+- table delta: **`-19.34%`**.
+
+This is provider-only evidence, not a whole-solver claim.
+
+### Canonical Reference-Richards provider-seam benchmark
+
+A research integration harness was then built against
+`integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5`.
+
+The harness does not change the production adapter or provider-selection policy. It binds either:
+
+- the admitted analytical `b110_default_mvg_provider_t`; or
+- the research `tabhyd_raw_provider_t`
+
+to the **same** request-level `request%evaluation%constitutive` seam of the canonical Reference-Richards solver.
+
+The benchmark uses 32 nodes, the five preregistered transfer-envelope soil pairings, identical boundary/numerical settings, and K0 (`conductivity_implicit_mode=0`). Each timing block executes 4000 full Reference-Richards solves; eight order-balanced blocks are used per scenario.
+
+Workflow run `35535959193` completed successfully.
+
+| scenario | head max diff (cm) | theta max diff | flux max diff | nonlinear iters analytical/table | analytical median (s) | table median (s) | table delta |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| coarse_dry_free | 2.6703e-5 | 9.63e-9 | 8.53e-12 | 3 / 3 | 0.1215575 | 0.0917380 | **-24.53%** |
+| loam_mid_free | 4.1475e-7 | 1.30e-9 | 2.95e-8 | 3 / 3 | 0.1240330 | 0.0905985 | **-26.96%** |
+| clay_wet_free | 9.8457e-8 | 1.70e-9 | 6.92e-10 | 3 / 3 | 0.1458675 | 0.1044855 | **-28.37%** |
+| coarse_dry_pulse | 2.6703e-5 | 9.63e-9 | 8.53e-12 | 3 / 3 | 0.1210130 | 0.0903600 | **-25.33%** |
+| loam_capillary | 1.3989e-7 | 1.12e-9 | 3.05e-9 | 3 / 3 | 0.1315885 | 0.0915680 | **-30.41%** |
+
+The equal nonlinear-iteration counts are important: the timing difference is not caused by a different stopping trajectory in this benchmark.
+
+### Current interpretation
+
+The acceleration hypothesis is now supported at three increasingly integrated levels:
+
+1. provider-only: about 19% faster;
+2. canonical Reference-Richards solve through the typed constitutive seam: about 25-30% faster in this bounded 32-node integration benchmark;
+3. legacy-input full Hupsel K0: only parity, because that legacy execution path does not exploit the same fused typed-provider structure.
+
+The Reference-Richards benchmark is still a **solver-integration microbenchmark**, not a full production-application timing. It uses research-generated equivalent tables and a synthetic one-step forcing/state setup. It therefore justifies continuing to the serialized Reference/FMR and realistic application timing stages, but it does not justify a portable 25-30% SWAP speedup claim.
+
+No production code was changed or admitted by this benchmark.
