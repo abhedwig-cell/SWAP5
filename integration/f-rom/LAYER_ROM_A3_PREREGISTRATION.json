@@ -14,22 +14,52 @@
   "state_candidates": {
     "L3": {
       "dimension": 3,
-      "boundaries_cm": [0,140,150,160],
-      "state": ["W_0_140","W_140_150","W_150_160"],
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_140",
+        "W_140_150",
+        "W_150_160"
+      ],
       "role": "storage-only baseline"
     },
     "L3_M1": {
       "dimension": 4,
-      "boundaries_cm": [0,140,150,160],
-      "state": ["W_0_140","W_140_150","W_150_160","M1_0_140"],
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_140",
+        "W_140_150",
+        "W_150_160",
+        "M1_0_140"
+      ],
       "M1_definition": "M1_0_140 = (1/L) * integral_0^L [(z-L/2) * theta(z)] dz, L=140 cm, depth z positive downward",
       "physical_interpretation": "first centered vertical water-storage moment; equivalently the displacement of water storage toward the upper or lower part of the long layer",
       "role": "minimal additional internal-profile state"
     },
     "L4": {
       "dimension": 4,
-      "boundaries_cm": [0,130,140,150,160],
-      "state": ["W_0_130","W_130_140","W_140_150","W_150_160"],
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "state": [
+        "W_0_130",
+        "W_130_140",
+        "W_140_150",
+        "W_150_160"
+      ],
       "role": "same-dimension explicit-resolution control"
     }
   },
@@ -37,7 +67,12 @@
     "artifact_id": 10586020583,
     "artifact_digest": "sha256:beb7b2a6209087b5e647521e565a04b7ec9f0d5313a219807db40384d03b59bc",
     "reference": "fine 16 x 10 cm B01 DYN0A fixed-flux Reference",
-    "primary_cases": ["S2_B1_F2","S2_B1_F3","S2_B1_F4","S3_B1_F3"],
+    "primary_cases": [
+      "S2_B1_F2",
+      "S2_B1_F3",
+      "S2_B1_F4",
+      "S3_B1_F3"
+    ],
     "rule": "All storage and moment coordinates are exact projections of the Reference state. No reduced-state propagation occurs in A3."
   },
   "moment_closures": [
@@ -105,5 +140,32 @@
     "NO_SPEED_CLAIM",
     "NO_PRODUCTION_ROM"
   ],
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_numerical_freeze": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "quadrature_orders": [
+      64,
+      128
+    ],
+    "linear_psi_parameterization": "psi_center = 0.01 + exp(x0); slope = [(psi_center-0.01)/(L/2)] * tanh(x1), guaranteeing psi>0.01 at both long-layer endpoints",
+    "least_squares": {
+      "xtol": 1e-12,
+      "ftol": 1e-12,
+      "gtol": 1e-12,
+      "max_nfev": 80
+    },
+    "residual_scaling": {
+      "mean_theta": "divide by theta_s-theta_r",
+      "first_moment": "divide by (theta_s-theta_r)*L"
+    },
+    "reconstruction_gates": {
+      "max_abs_mean_theta_residual": 1e-10,
+      "max_abs_M1_residual_cm": 1e-9,
+      "max_abs_64_vs_128_mean_theta": 1e-10,
+      "max_abs_64_vs_128_M1_cm": 1e-9,
+      "L4_local_140_flux_identity_cm_per_day": 1e-10
+    },
+    "failure_semantics": "Any candidate reconstruction outside the frozen physical domain or beyond the residual/crosscheck gates is counted as a candidate failure; no fallback model or response-derived retuning is allowed."
+  }
 }
