@@ -194,12 +194,19 @@
       "center": "q_bottom",
       "half_span_Ksat": 4,
       "points": 257,
-      "no_adaptive_post_result_expansion": true
+      "no_adaptive_post_result_expansion": true,
+      "purpose": "G2 standalone local-existence stress test across the frozen synthetic Cartesian state box."
     },
     "outer_surface_flux_tolerance_cm_per_day": 1e-10,
     "bracketing_scan_substeps_per_layer": 32,
     "bracket_verification": "Every coarse sign-changing interval must retain opposite signs when re-evaluated on the 256-substep primary integrator before bisection qualification.",
-    "coarse_scan_cannot_qualify": true
+    "coarse_scan_cannot_qualify": true,
+    "column_local_root_bracket": {
+      "interval": "[q_bottom-4*Ksat, q_bottom+4*Ksat]",
+      "justification": "G1 analytical strict monotonicity makes a dense local scan redundant inside nested column shooting.",
+      "primary_integrator_sign_check": true,
+      "adaptive_expansion": false
+    }
   },
   "qualification_gates": {
     "G1_ANALYTIC_LOCAL_UNIQUENESS": "Proof conditions and sign argument encoded and independently checked against constitutive derivatives.",
