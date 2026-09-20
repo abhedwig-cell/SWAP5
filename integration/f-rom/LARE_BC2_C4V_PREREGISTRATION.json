@@ -358,5 +358,17 @@
     "frozen_d13_fmc_analyzer_blob": "803867a2ccdb190142274e9c41aafc3d3ca8d76a",
     "allowed_changes": "C4R history mapping already frozen, NSTEPS 64->1024, horizon aggregation, prefix checks and execution plumbing only.",
     "bound_before_response": true
+  },
+  "pre_execution_metric_binding": {
+    "before_first_step65_response": true,
+    "checkpoint_pooling": {
+      "rms_metrics": "pool all four histories and all steps 1..checkpoint",
+      "sign_error_count": "sum across all four histories and steps 1..checkpoint",
+      "absolute_mean_signed_terminal_bottom_flux_error": "absolute value of the signed mean error pooled across all four histories and steps 1..checkpoint",
+      "absolute_final_cumulative_bottom_exchange_error": "maximum absolute cumulative-bottom-exchange error across the four histories at exactly the checkpoint"
+    },
+    "reversal_diagnostic": "For each history, record steps where the nonzero bottom-flux sign changes relative to the previous nonzero sign; zero values neither create nor erase a reversal.",
+    "response_based": false,
+    "scientific_effect": "AGGREGATION_SEMANTICS_ONLY"
   }
 }
