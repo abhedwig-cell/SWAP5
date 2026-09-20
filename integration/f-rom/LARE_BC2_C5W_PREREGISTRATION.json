@@ -39,6 +39,12 @@
       "Global existence for every possible layer storage.",
       "Full-column uniqueness without numerical qualification.",
       "Hydrological fidelity."
+    ],
+    "bottom_up_symmetric_argument": [
+      "For fixed psi_bottom and q_bottom, integrate upward and treat q_top as the local scalar shooting variable.",
+      "In upward coordinate s, dpsi/ds=1-q(s)/K(psi), and the sensitivity to q_top has strictly negative forcing.",
+      "Hence dpsi/dq_top<0 and, because theta'(psi)<0, the reconstructed storage is strictly increasing in q_top wherever the trajectory remains admissible.",
+      "The bottom-up local storage root is therefore also unique conditional on existence."
     ]
   },
   "synthetic_domain": {
@@ -165,28 +171,32 @@
     "ODE_integrator": "classical RK4 in physical z",
     "primary_substeps_per_layer": 256,
     "refinement_substeps_per_layer": 512,
-    "layer_qbottom_scan": {
-      "center": "q_top",
-      "half_span_Ksat": 4,
-      "points": 257,
-      "no_adaptive_post_result_expansion": true
-    },
     "layer_root": "bisection on the first and only admissible sign-changing interval",
     "layer_storage_residual_tolerance_cm": 1e-10,
     "outer_bottom_flux_scan": {
+      "scalar": "column bottom flux q_bottom",
       "range_Ksat": [
         -4,
         4
       ],
       "points": 257,
+      "residual": "reconstructed surface q_top minus prescribed surface flux",
       "no_adaptive_post_result_expansion": true
     },
-    "outer_root": "bottom-up/column shooting branch chosen only if exactly one admissible sign change exists",
-    "outer_boundary_head_tolerance_cm": 1e-8,
+    "outer_root": "bisection on the single admissible q_bottom interval only if exactly one outer residual sign change exists",
     "refinement_stability": {
       "max_abs_face_head_difference_cm": 0.00001,
       "max_abs_face_flux_difference_cm_per_day": 1e-7
-    }
+    },
+    "local_face_flux_scan": {
+      "orientation": "bottom-up",
+      "scalar": "q_top for a layer given psi_bottom, q_bottom and target storage",
+      "center": "q_bottom",
+      "half_span_Ksat": 4,
+      "points": 257,
+      "no_adaptive_post_result_expansion": true
+    },
+    "outer_surface_flux_tolerance_cm_per_day": 1e-10
   },
   "qualification_gates": {
     "G1_ANALYTIC_LOCAL_UNIQUENESS": "Proof conditions and sign argument encoded and independently checked against constitutive derivatives.",
@@ -225,7 +235,8 @@
   },
   "implementation_binding": {
     "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "response_based_design": false,
+    "pre_execution_orientation_reconciliation": "BOTTOM_UP_SHOOTING_SELECTED_BEFORE_CODE_EXECUTION_OR_NUMERICAL_RESPONSE"
   },
   "model_changed": false
 }
