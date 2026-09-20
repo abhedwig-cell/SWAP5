@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.lare.bc2.c4u.gw-acceptance-authority.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4U",
+  "title": "Groundwater purpose acceptance authority reconciliation after C4T",
+  "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
+  "decision": "GW_APPLICATION_ACCEPTANCE_NOT_ADJUDICABLE_FROM_CURRENT_REPOSITORY_AUTHORITY",
+  "trigger": {
+    "c4t_closeout": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+    "required_decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+    "required_status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED"
+  },
+  "current_canonical": {
+    "head": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+    "application_accuracy_contract": {
+      "path": "src/runtime/mod_coupling_application_accuracy_contract.f90",
+      "blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+      "role": "Carries externally qualified groundwater-head or drawdown application requirement H_app and independently qualified temporal allocation A_temporal; contains no positive numeric default."
+    },
+    "application_accuracy_adapter": {
+      "path": "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+      "blob": "9212d600e89c85287e9280832c7e0a94befb642e",
+      "role": "Transports only already validated and externally source-verified policy into the runtime contract; it does not select policy."
+    },
+    "groundwater_accuracy_binding": {
+      "path": "src/runtime/mod_groundwater_accuracy_binding.f90",
+      "blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "role": "Allocates an externally governed head-domain budget into groundwater interface tolerance while rejecting over-allocation."
+    },
+    "groundwater_response_sensitivity": {
+      "path": "src/runtime/mod_groundwater_response_sensitivity_contract.f90",
+      "blob": "fb8fd6a5447edd4fa4f664cd754c93d7db331969",
+      "role": "Optional provenance-bound local groundwater response derivative dh_groundwater/dq_groundwater for an exact trial/window; unavailable or nonsmooth response fails closed."
+    }
+  },
+  "historical_governance_authority": {
+    "F_GC13": {
+      "commit": "0c776f7c3d910c6727ec5659ae6437ca993fb20d",
+      "closeout": "integration/f-gc/F-GC13_CLOSEOUT.json",
+      "qualified_capability": "Reusable project accuracy evidence ingestion and governance template.",
+      "hard_nonclaims": [
+        "no real project H_app is qualified",
+        "no real project A_temporal is qualified",
+        "no direct real-project temporal head-error budget is qualified",
+        "synthetic fixture values are not project defaults",
+        "no universal application-accuracy rule is established"
+      ],
+      "forbidden_substitutions": [
+        "physical threshold",
+        "calibration metric",
+        "model uncertainty estimate",
+        "monitoring trigger",
+        "SWAP numerical behavior",
+        "model timestep"
+      ]
+    },
+    "F_GC14": {
+      "commit": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+      "closeout": "integration/f-gc/F-GC14_CLOSEOUT.json",
+      "qualified_capability": "Typed external accuracy packet to runtime contract adapter boundary.",
+      "hard_nonclaims": [
+        "no real project H_app is qualified",
+        "no real project A_temporal is qualified",
+        "no real project direct temporal head-error budget is qualified",
+        "adapter does not select or derive project policy"
+      ]
+    },
+    "F_GC29": {
+      "current_canonical_module": true,
+      "role": "Response-sensitivity transport only, not an accuracy policy source."
+    }
+  },
+  "current_evidence": {
+    "c4r": "Blind comparator-relative fixed-water-table fidelity frontier replicated.",
+    "c4s": "Full same-workload CoRichards common cohort available.",
+    "c4t": "Shared-host purpose-dependent relative cost-fidelity signal resolved.",
+    "limitation": "All three are relative scientific/computational evidence. None supplies an externally governed application consequence threshold."
+  },
+  "why_no_route_can_be_selected_yet": [
+    "C4T frontier membership only establishes nondominance in relative cost versus fidelity space.",
+    "LARE R3 through R8 trade cost against different error vectors; a Pareto frontier does not identify which errors are acceptable for an actual groundwater decision.",
+    "C4R/C4T observed errors cannot be reused as acceptance thresholds because that would select the envelope after inspecting the candidate result.",
+    "Reference numerical floors and solver convergence tolerances are numerical-quality controls, not application prediction-accuracy requirements.",
+    "LHM/NHI observational validation or calibration criteria are not automatically eligible substitutes for a coupling prediction-error budget; F-GC13 explicitly rejects calibration-metric substitution unless a project authority separately governs an explicit application prediction-error rule."
+  ],
+  "required_external_evidence_packet": {
+    "application_claim": {
+      "qoi": [
+        "GROUNDWATER_HEAD",
+        "GROUNDWATER_DRAWDOWN"
+      ],
+      "required": "Explicit numerical prediction-error acceptance requirement H_app for the declared real application.",
+      "units": "cm head/drawdown",
+      "scope_required": [
+        "application/project identity",
+        "spatial support",
+        "decision variable or downstream use",
+        "prediction horizon",
+        "whether requirement is absolute head, drawdown, or both"
+      ],
+      "provenance": "Immutable source identity and source-byte digest verified outside the kernel."
+    },
+    "temporal_claim": {
+      "required": "Independent temporal allocation A_temporal in (0,1] or an explicit direct temporal head-error budget <= H_app.",
+      "must_be_distinct_from_application_claim": true,
+      "provenance": "Distinct claim and provenance identity; source-byte digest verified."
+    },
+    "optional_decision_consequence_claim": {
+      "purpose": "Can directly define a stricter application threshold if a decision class/trigger changes below the broader head-error requirement.",
+      "requirement": "Must be explicit external application authority, not inferred from ROM results."
+    }
+  },
+  "authorized_mapping_to_ROM_GW_evidence": {
+    "structural_requirements": [
+      "mass conservation remains absolute",
+      "physical state validity remains absolute",
+      "fail closed outside qualified representation/application domain"
+    ],
+    "GW_D": {
+      "objective": "Dynamic shallow-groundwater response.",
+      "procedure": [
+        "Use the actual coupling window and actual groundwater service/provider.",
+        "For each accepted provenance-matching window where F-GC29 response sensitivity is available and smooth, propagate the ROM-induced bottom-flux perturbation into a local groundwater-head/drawdown consequence using the admitted response derivative.",
+        "Evaluate the head/drawdown consequence against the externally qualified temporal/interface allocation, while separately retaining flux sign and reversal timing diagnostics.",
+        "If response sensitivity is unavailable, nonsmooth or nonfinite, fail closed or execute the actual coupled counterfactual; do not invent a linear response."
+      ],
+      "local_linear_relation": "delta_h approximately (dh_groundwater/dq_groundwater) * delta_q for the exact admitted local trial/window only.",
+      "nonclaim": "The derivative is not a global seasonal transfer function."
+    },
+    "GW_R": {
+      "objective": "Regional groundwater coupling focused on coupling-interval exchange and longer-horizon bias.",
+      "procedure": [
+        "Aggregate recharge/capillary exchange at the real application coupling interval.",
+        "Propagate the ROM-versus-reference exchange perturbation through the admitted downstream groundwater model or another independently qualified response operator over the declared application horizon.",
+        "Compare resulting head/drawdown consequences with the externally qualified application requirement.",
+        "Report systematic signed exchange bias separately so compensating errors cannot create false acceptance."
+      ],
+      "nonclaim": "A single instantaneous dh/dq derivative is insufficient to establish a weekly/seasonal acceptance envelope."
+    }
+  },
+  "explicitly_not_authorized_as_numeric_envelope": [
+    "F-GC10/FCI44 synthetic 12 cm and 0.25 fixtures",
+    "F-GC13 synthetic 8 cm, 10 cm, 0.25, 0.2 or 2 cm fixtures",
+    "C4R or C4T observed error magnitudes",
+    "R16 numerical Reference floor",
+    "Richards nonlinear or mass tolerances",
+    "groundwater predictor/corrector convergence tolerance",
+    "generic LHM/NHI calibration or observation-fit criteria without an explicit project prediction-error acceptance rule and provenance"
+  ],
+  "blocker": {
+    "class": "EXTERNAL_SOURCE_BLOCKER",
+    "missing": [
+      "real externally governed groundwater application accuracy requirement H_app",
+      "independently governed temporal allocation A_temporal or direct temporal budget",
+      "verified immutable source provenance for both claims"
+    ],
+    "repository_code_missing": false,
+    "new_LARE_closure_needed": false,
+    "new_groundwater_coupling_architecture_needed": false,
+    "new_performance_screen_needed": false
+  },
+  "next_when_unblocked": "Instantiate the existing F-GC13/F-GC14 evidence boundary for the target project, then preregister a GW-R and/or GW-D downstream-consequence validation using the frozen C4R/C4T LARE candidates.",
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
