@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "bf80806f245104249d7c57b61f7542b65b894eca",
+  "checkpoint_commit": "a737d446b50084c88ec2de6b9058d9057ead3586",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B0_FROZEN_B1H_EXECUTION_IN_PROGRESS",
-  "last_reconciled_head": "bf80806f245104249d7c57b61f7542b65b894eca",
+  "phase": "PHASE_A_CLOSED_B1H_CLOSED_B1HC_Q_PREREGISTRATION",
+  "last_reconciled_head": "a737d446b50084c88ec2de6b9058d9057ead3586",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -30,7 +30,10 @@
     "tests/rom/materialize_layer_rom_b1h_material.py",
     "tests/rom/analyze_layer_rom_b1h_material.py",
     "tests/rom/aggregate_layer_rom_b1h.py",
-    ".github/workflows/f-rom-layer-b1h-material-transfer.yml"
+    ".github/workflows/f-rom-layer-b1h-material-transfer.yml",
+    "integration/f-rom/LAYER_ROM_B1H_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1H_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1H_REPAIR_RECORD.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -56,7 +59,8 @@
     "integration/f-rom/LAYER_ROM_B1_RESULT.json",
     "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
     "work/f-rom-lare-rs1 as selective noncanonical provenance only",
-    "GitHub Actions run 35495719330 (B1H in progress)"
+    "GitHub Actions run 35495719330 (B1H in progress)",
+    "GitHub Actions run 35495947476 / aggregate artifact 10600374489 (B1H successful)"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -64,8 +68,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete B1H six-material fixed-head transfer run 35495719330. Persist aggregate result before opening same-partition CoRichards transfer qualification.",
-  "recovery_point": "Resume from work/f-rom-layer-a. Phase A closed; B0 transfer panel frozen; B1H official run is 35495719330 at bf80806f245104249d7c57b61f7542b65b894eca.",
+  "next_action": "Preregister and execute B1HC-Q same-partition CoRichards qualification on the exact frozen B1H six-material by L4/L6/R8 by X01-X04 cohort. Do not compare hydrological errors until the qualified cohort is persisted.",
+  "recovery_point": "Resume from work/f-rom-layer-a after B1H closeout. Official B1H run 35495947476 succeeded; next gate is comparator qualification only.",
   "blockers": [],
   "scope_guards": [
     "research only",
