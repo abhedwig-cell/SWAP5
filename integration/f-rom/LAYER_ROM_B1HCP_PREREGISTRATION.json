@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcp.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCP",
+  "phase": "PREREGISTERED_BEFORE_CORRECTED_FULL_PANEL_RELATION_RECOMPUTATION",
+  "title": "Corrected full-panel Layer-ROM versus same-partition CoRichards continuous-time decomposition",
+  "scientific_question": "After both routes are temporally qualified and Layer-ROM QEND semantics are corrected, which fixed-head errors are shared with same-partition Richards spatial discretization and which remain specific to the Layer-ROM closure/localization route?",
+  "trigger": {
+    "B1HCMR_decision": "B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+    "B1HCN_decision": "B1HCN_CORICHARDS_TEMPORAL_LIMIT_UNRESOLVED",
+    "B1HCO_decision": "B1HCO_B05_L6_R8_TEMPORAL_LIMIT_SUPPORTED",
+    "reason": "B1HCO closes the only two CoRichards temporal cells, while its inherited Layer-ROM relation counts still used superseded B1HCM QEND. Recompute relations once, using B1HCMR."
+  },
+  "authority": {
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "controlled_execution_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "B1HCMR": {
+      "result": "integration/f-rom/LAYER_ROM_B1HCMR_RESULT.json",
+      "closeout": "integration/f-rom/LAYER_ROM_B1HCMR_CLOSEOUT.json",
+      "workflow_run": 35505812730,
+      "aggregate_artifact": {
+        "id": 10603364421,
+        "digest": "sha256:d2b2dcba548a75b29b18bc3fb22f8d1996b01db80a8eb92b6004efa255cc8a12"
+      }
+    },
+    "B1HCN": {
+      "result": "integration/f-rom/LAYER_ROM_B1HCN_RESULT.json",
+      "closeout": "integration/f-rom/LAYER_ROM_B1HCN_CLOSEOUT.json",
+      "workflow_run": 35505862660,
+      "material_artifacts": {
+        "B02": {
+          "id": 10603836176,
+          "digest": "sha256:bdb676eef7c1a120738edce4ed36b94764daf97199cb11d781d4b64cdb025a98"
+        },
+        "B05": {
+          "id": 10603304734,
+          "digest": "sha256:e69255eb66e4ba2c8ae8c08a6840de58a8348758490da8bfab7c84e0eaf27510"
+        },
+        "B06": {
+          "id": 10604270319,
+          "digest": "sha256:ee163877dd4deab3108203fe5529f6d5a6685c0a30f0feec64c6732b213b0904"
+        },
+        "B11": {
+          "id": 10603693882,
+          "digest": "sha256:ffa3604eac5ca5efd8d948c12972a2e3ff2f9a4f123c5dcfe4dd73c08cc2aa25"
+        },
+        "B12": {
+          "id": 10603723399,
+          "digest": "sha256:820a761ce8484ef95f3715fedd654c072c4eb3f3fa387d8d55b446bedffaedb5"
+        },
+        "B16": {
+          "id": 10603624076,
+          "digest": "sha256:b8511c3aa238ce4d0499cc1c451880944d9f7129afe61d52db4f2e243121e8ba"
+        }
+      }
+    },
+    "B1HCO": {
+      "result": "integration/f-rom/LAYER_ROM_B1HCO_RESULT.json",
+      "closeout": "integration/f-rom/LAYER_ROM_B1HCO_CLOSEOUT.json",
+      "workflow_run": 35506180114,
+      "replacement_artifacts": {
+        "B05_L6": {
+          "id": 10604095931,
+          "digest": "sha256:f316da4f474cb9a7c57576c243c64c4cf56f313d0e7ef1e813003aa2b1bc1fbb"
+        },
+        "B05_R8": {
+          "id": 10603419858,
+          "digest": "sha256:a9cf48023575fef3fd1ec16c85859a0ff666396bd30d6674a9fb156ea4f4cca1"
+        }
+      }
+    }
+  },
+  "cohort": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "members": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "cell_count": 18,
+    "boundary": "zero top flux; fixed 160 cm bottom with prescribed zero pressure head",
+    "horizon_day": 1.024,
+    "no_cell_selection": true
+  },
+  "vector_authority": {
+    "LayerROM": "B1HCMR selected_Rstar_fidelity_vectors only",
+    "CoRichards": "B1HCN continuous-time CoRichards vectors for 16 qualified cells; B1HCO replaces B05:L6 and B05:R8 only",
+    "common_reference": "B1HCL first-order fine-Reference temporal limit",
+    "corrected_QEND_required": true
+  },
+  "groundwater_components": [
+    "storage_rms_cm",
+    "cumulative_bottom_rms_cm",
+    "qavg_rms_cm_per_day",
+    "qavg_sign_mismatch",
+    "qend_rms_cm_per_day",
+    "qend_sign_mismatch",
+    "max_abs_final_cumulative_bottom_error_cm"
+  ],
+  "relation_rule": {
+    "tolerance": 1e-12,
+    "COR_COMPONENTWISE_NO_WORSE": "CoRichards is no worse on every groundwater component and strictly better on at least one.",
+    "LAYER_ROM_COMPONENTWISE_NO_WORSE": "Layer-ROM is no worse on every groundwater component and strictly better on at least one.",
+    "NUMERICALLY_EQUIVALENT": "All groundwater components agree within the frozen tolerance.",
+    "TRADEOFF": "Neither route is componentwise no-worse.",
+    "sign_mismatch_semantics": "integer count; lower is better; no tolerance"
+  },
+  "profile_rule": {
+    "component": "mapped_theta_rms",
+    "tolerance": 1e-12,
+    "labels": [
+      "CoRichards",
+      "LayerROM",
+      "NUMERICALLY_EQUIVALENT"
+    ],
+    "kept_separate_from_groundwater": true
+  },
+  "requested_diagnostics": [
+    "per-cell corrected groundwater relation",
+    "relation counts by dimension",
+    "per-cell profile lower-error route",
+    "profile counts by dimension",
+    "dimension monotonicity within each route",
+    "componentwise LayerROM/CoRichards error ratios reported individually, never aggregated",
+    "B05 L4/L6/R8 trajectory across dimensions",
+    "R8 residual relation across all six materials"
+  ],
+  "interpretation_contract": [
+    "COR_COMPONENTWISE_NO_WORSE is bounded evidence that Layer-ROM adds closure/localization burden beyond same-partition Richards discretization for that cell.",
+    "LAYER_ROM_COMPONENTWISE_NO_WORSE is not proof of superior physics; it can reflect error compensation and shows only that coarse Richards error is not a universal lower bound.",
+    "TRADEOFF prevents a scalar winner claim.",
+    "Layer-ROM minus CoRichards is not an additive closure-error estimate.",
+    "No application-independent acceptable dimension is inferred."
+  ],
+  "decisions": {
+    "complete": "B1HCP_CORRECTED_MODEL_FORM_DECOMPOSITION_COMPLETE",
+    "integrity_fail": "B1HCP_INPUT_AUTHORITY_OR_SEMANTIC_INTEGRITY_FAIL"
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_LAYER_ROM_TRAJECTORY",
+    "NO_NEW_CORICHARDS_TRAJECTORY",
+    "NO_QEND_SEMANTIC_FALLBACK_TO_B1HCM",
+    "NO_WEIGHTED_SCORE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_MEASUREMENT",
+    "NO_PRODUCTION_ROM"
+  ],
+  "evidence_classification": "POST_QUALIFICATION_RECONCILIATION_OF_PREEXISTING_VECTORS_NOT_BLIND_NEW_RESPONSE",
+  "production_rom_authorized": false
+}
