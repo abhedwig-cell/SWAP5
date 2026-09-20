@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.lare.bc2.c4y.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4Y",
+  "status": "CLOSED_REFERENCE_COMPARATOR_NUMERICAL_POLICY_BLOCKED_NO_REPRESENTATION_ADJUDICATION",
+  "decision": "C4Y_REFERENCE_OR_EXECUTION_BLOCKED",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C4Y_PREREGISTRATION.json",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C4Y_EXECUTION_RECONCILIATION.json",
+    "diagnostic_run": 35495132330,
+    "execution_head": "b0f9b982f9be6f33140ad118e72286b7470e78b9",
+    "artifact_id": 10599399607,
+    "artifact_digest": "sha256:0cd5a00fc7b322fa36d04da2ac54aedc8005653577132fce2e92b8dba347bb30"
+  },
+  "disposition": {
+    "c4y_histories_reusable_for_blind_validation": false,
+    "c4y_threshold_relaxation_authorized": false,
+    "c4y_reference_policy_relaxation_authorized": false,
+    "representation_result_available": false
+  },
+  "next_authority": {
+    "state": "FRESH_PREREGISTRATION_REQUIRED",
+    "target": "C4Z_NEW_BLIND_DYNAMIC_HEAD_TRANSFER_WITH_INDEPENDENT_PREEXISTING_REFERENCE_RETRY_POLICY",
+    "requirements": [
+      "new response-blind histories not reused from C4Y",
+      "pre-bind a pre-existing geometry-neutral integrated-water-depth Reference retry policy before any new response generation",
+      "retain C4Y LARE ladder, placement controls, BC1 CURRENT_LAYER_FACE closure and purpose-separated vectors unless independently justified before response",
+      "do not use C4Y partial response to choose hydrological thresholds or representation members"
+    ]
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
