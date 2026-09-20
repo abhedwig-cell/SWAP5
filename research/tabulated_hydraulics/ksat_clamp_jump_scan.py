@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 
 SE = 1.0 - 1.0e-6
+HCRIT = -1.0e-2
 
 def main() -> int:
     if len(sys.argv) != 2:
@@ -35,7 +36,16 @@ def main() -> int:
             k_below = ksat * ratio_below
             jump = ksat - k_below
             factor = ksat / k_below
-            h_threshold = -((SE ** (-1.0/m) - 1.0) ** (1.0/n)) / alpha
+            # The implemented watcon policy is linearized for h > HCRIT,
+            # so use that actual residual state law rather than the raw MvG
+            # inverse when locating the clamp threshold in h.
+            theta_target = float(r["ORES"]) + (float(r["OSAT"]) - float(r["ORES"])) * SE
+            help0 = abs(alpha * HCRIT) ** n
+            theta_crit = float(r["ORES"]) + (float(r["OSAT"]) - float(r["ORES"])) / ((1.0 + help0) ** m)
+            if theta_target >= theta_crit:
+                h_threshold = HCRIT + (theta_target - theta_crit) * (-HCRIT) / (float(r["OSAT"]) - theta_crit)
+            else:
+                h_threshold = -((SE ** (-1.0/m) - 1.0) ** (1.0/n)) / alpha
             rows.append((spu,n,lam,alpha,ksat,h_threshold,k_below,jump,factor,ratio_below))
 
     rows.sort(key=lambda x: x[8], reverse=True)
