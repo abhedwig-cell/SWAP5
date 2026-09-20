@@ -226,7 +226,7 @@
     "admission": "RECOMPOSITION_REQUIRED"
   },
   "csr04_storage_authority": {
-    "state": "EQUATION_CLOSED_EXPERIMENT_PREREGISTERED_PENDING_EXECUTION",
+    "state": "PHASE_B_EXECUTED_GENERIC_PRODUCTION_AUTHORITY_UNRESOLVED",
     "physical_combined_storage_gate": "HELD_PENDING_INDEPENDENT_MODFLOW_STORAGE_AUTHORITY",
     "working_hypothesis": "F-GC33 SWAP finite-window Jacobian and native MODFLOW STO are algebraically distinct head-response terms; finite native STO adds independent MODFLOW head memory",
     "experiment": {
@@ -243,12 +243,26 @@
       "execution": "PENDING"
     },
     "code_guard_note": "existing geometric storage-partition fail-closed code is retained temporarily but is not extended; scientific authority may supersede it with state/storage-role authority",
-    "execution": "PHASE_B_RUN_284_DIAGNOSTIC_HARNESS_FAILURE_REPAIRED_RUN_286_IN_PROGRESS",
+    "execution": "LIVE_RUN_286_PASS_36_OF_36_WINDOWS",
     "latest_execution_evidence": {
       "run_284": "existing F-GC44 live E2E passed; Phase-B stopped before window 2 with diagnostic next-window predictor status 201",
       "repair_commit": "6fd5506dacd56692c65b3b7a24b49881970b1607",
       "run_286": "IN_PROGRESS",
       "scientific_disposition": "NO_STORAGE_MEMORY_INFERENCE_FROM_RUN_284"
-    }
+    },
+    "phase_b_result": {
+      "run_id": 35533801446,
+      "run_number": 286,
+      "conclusion": "success",
+      "matrix": "6 Sy x 6 windows",
+      "low_sy_terminal_head_difference_m": 3.0031832576327133e-10,
+      "interpretation": "finite native STO adds independent MODFLOW head memory; near-zero Sy converges to quasi-steady-MODFLOW/transient-SWAP limit; neither is production truth without application authority"
+    },
+    "classification": {
+      "shared_top_state": "HEAD_STATE_CAPACITANCE_HISTORICALLY_SUPPORTED",
+      "explicit_independent_regional_storage": "PHYSICAL_INDEPENDENT_STORAGE_IF_APPLICATION_AUTHORITY_DECLARED",
+      "generic_production_profile": "UNRESOLVED"
+    },
+    "next_gate": "DECLARE_STORAGE_STATE_ROLE_IN_COUPLED_GROUNDWATER_APPLICATION_PROFILE_BEFORE_PRODUCTION_ADMISSION"
   }
 }
