@@ -257,7 +257,7 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5t_instrumentation.py",
     "instrumentation_materializer_blob": "10926dd5f32b8a7dbad18febe4e1782688ee4ec6",
@@ -271,7 +271,11 @@
     "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
     "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
     "permitted_new_code": "logging-only C5T outputs plus offline CURRENT_LAYER_FACE/DSE2P operator analysis",
-    "prohibited_new_code": "candidate feedback into Reference, free-running DSE2P, scalar tuning, state augmentation, response-based numerical retuning"
+    "prohibited_new_code": "candidate feedback into Reference, free-running DSE2P, scalar tuning, state augmentation, response-based numerical retuning",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c5t.yml",
+    "workflow_blob": "585508c930b14a5253f0ae83ed82562e3c87e953",
+    "execution_binding_complete": true,
+    "binding_note": "All instrumentation, DSE2P numerical realization, interfaces, metrics, adjudication and workflow are bound before authoritative C5T execution. Any earlier trigger is superseded by concurrency."
   },
   "model_changed": false
 }
