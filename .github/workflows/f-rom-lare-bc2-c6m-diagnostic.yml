@@ -1,0 +1,68 @@
+name: F-ROM-LARE BC2-C6M execution diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6m-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify immutable scientific inputs
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6m_surface_reference.py)" = "9a72f9ab418d1281fd09b0b776ab4be8937b8bfc"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE'
+          assert p['blind_design']['histories']['S01']['initial_Se']==0.70
+          assert p['scientific_firewall']['candidate_response_generated'] is False
+          PY
+
+      - name: Materialize B01 R512 T16 S01 diagnostic
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6m_surface_reference.py \
+            --source tests/rom/test_lare_dyn0a_reference.f90 \
+            --material B01 --temporal-factor 16 \
+            --output canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --manifest /tmp/c6m_manifest.json
+          stub="canonical/c6m_diag_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output "$stub" --nodes 512 --dz-cm 0.3125
+          build="/tmp/c6m_diag"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+            --root canonical --stub c6m_diag_stubs.f90 \
+            --target tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --external-source src/legacy/b1_10_port/headcalc.f90 \
+            --build "$build" --opt 0
+          set +e
+          LARE_DYN0A_CASE_FILTER=S01 "$build/rom0_test" > /tmp/c6m_diag.log 2>&1
+          rc=$?
+          set -e
+          echo "C6M_DIAGNOSTIC_EXIT=$rc"
+          echo "----- C6M DIAGNOSTIC TAIL -----"
+          tail -n 120 /tmp/c6m_diag.log
+          echo "----- C6M DIAGNOSTIC MARKERS -----"
+          grep -E 'LAREDYN0R_(FAIL|FALLBACK|HISTORY_PASS|EXECUTION_COMPLETE|C6M)' /tmp/c6m_diag.log || true
+          test "$rc" -eq 0
