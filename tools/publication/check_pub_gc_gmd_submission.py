@@ -44,6 +44,18 @@ def main() -> int:
 
     errors: list[str] = []
 
+    csr_path = ROOT / "integration/f-gc/F-GC_COUPLING_SEMANTICS_RECONCILIATION_STATUS.json"
+    if csr_path.exists():
+        csr = json.loads(csr_path.read_text(encoding="utf-8"))
+        if csr.get("pub_gc_submission") == "HELD":
+            if args.submission_ready:
+                print("PUB_GC_GMD_SUBMISSION_READY=FAIL")
+                print("ERROR: submission is held by F-GC coupling-semantics reconciliation")
+                return 2
+            print("PUB_GC_GMD_CURRENT_PRESUBMISSION=HELD")
+            print("PUB_GC_GMD_COUPLING_SEMANTICS_HOLD_ENFORCED=PASS")
+            return 0
+
     inv = json.loads(INV.read_text(encoding="utf-8"))
     for item in inv["required_publication_assets"]:
         path = ROOT / item["path"]
