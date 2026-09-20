@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v3",
+  "schema": "swap5.lare.bc2.c6n1.execution-reconciliation.v4",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N1",
-  "status": "BOUND_COMPACT_EXECUTION_REPAIR_AFTER_PRE_RESPONSE_LOCK_FIX",
-  "decision": "COMPACT_IDENTICAL_C6N1_MATRIX_TO_24_JOBS_WITH_O0_O2_SEQUENTIAL_IDENTITY",
+  "status": "BOUND_ULTRACOMPACT_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
+  "decision": "ULTRACOMPACT_IDENTICAL_C6N1_MATRIX_TO_6_JOBS_WITH_ALL_HISTORIES_AND_O0_O2_SEQUENTIAL",
   "scientific_authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
     "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
@@ -46,12 +46,33 @@
       "reason": "Scientifically current but remained queued without any job start; compact execution preserves exact authority while reducing scheduler fan-out.",
       "response_started": false,
       "authority": false
+    },
+    {
+      "workflow_run": 35533244564,
+      "head": "98acb8529c9e52360ff4b7d4589af7c9b006313f",
+      "reason": "Pre-response compact authority lock failed before materialization/execution.",
+      "response_started": false,
+      "authority": false
+    },
+    {
+      "workflow_run": 35533309791,
+      "head": "035b146b59eb460c5b7423012a1a01368ca1e874",
+      "reason": "Superseded compact v2 regardless of later scheduler state.",
+      "response_started": false,
+      "authority": false
+    },
+    {
+      "workflow_run": 35533578181,
+      "head": "c91b9c8aeb6dd3d27fdd5bbc73eb271e4e1d67f0",
+      "reason": "Scientifically current v3 remained completely queued with zero job start through repeated checks; ultracompact execution preserves exact scientific authority with lower scheduler fan-out.",
+      "response_started": false,
+      "authority": false
     }
   ],
   "repair": {
-    "old_matrix_jobs": 48,
-    "compact_matrix_jobs": 24,
-    "change": "For each material-route-history cell, compile and execute O0 then O2 sequentially inside one job, require byte-identical logs, and upload the same O0 scientific log after identity passes.",
+    "old_matrix_jobs": 24,
+    "ultracompact_matrix_jobs": 6,
+    "change": "For each material-route cell, execute U01-U04 sequentially; for each history execute O0 then O2 sequentially, require byte-identical logs, retain only the O0 scientific log, then analyze the same three-level ladders.",
     "compiler_optimizations": [
       0,
       2
@@ -60,7 +81,7 @@
     "T32_transaction_dt_changed": false,
     "routes_changed": false,
     "histories_changed": false,
-    "material_changed": false,
+    "materials_changed": false,
     "forcing_changed": false,
     "solver_policy_changed": false,
     "metrics_changed": false,
@@ -74,7 +95,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "binding_note": "Authority lock now reads scientific_authority.qualification_changed at the exact schema location. No T32 materialization or execution was reached in the failed compact run."
   },
-  "authority_rule": "Only a compact run triggered after this reconciliation is rebound with the exact workflow blob may become C6N1 authority. Earlier queued runs remain superseded even if they later execute.",
+  "authority_rule": "Only the ultracompact run triggered by this v4 reconciliation update with workflow blob f98fb8f76c5705386381250193ae7c6ca44733f6 may become C6N1 scientific authority. All earlier queued runs are superseded regardless of later scheduler execution.",
   "scientific_firewall": {
     "candidate_response_generated": false,
     "T32_reference_response_seen": false,
@@ -100,10 +121,10 @@
     "preregistration_blob": "d177069d2ae7daa623cebd5a25f3f89eaf6d9537",
     "materializer_blob": "5dc33b6d4a1db8bc8e8e3d43f7170c1fcff2e96a",
     "analyzer_blob": "15c4c0bc0c3f7be1df1394a812b509512b2a7049",
-    "compact_workflow_blob": "d94a406a20d6ad17afa22c18cd4d3bb5e647eec6",
+    "ultracompact_workflow_blob": "f98fb8f76c5705386381250193ae7c6ca44733f6",
     "scientific_response_seen": false,
     "candidate_response_seen": false,
-    "next_action": "Use only the compact run triggered by this v3 reconciliation update as C6N1 scientific authority."
+    "next_action": "Use only the ultracompact run triggered by this v4 reconciliation update as C6N1 scientific authority."
   },
   "pre_response_lock_failures": [
     {
@@ -122,5 +143,22 @@
       "disposition": "SUPERSEDED_BY_V3_LOCK_FIX_REGARDLESS_OF_LATER_SCHEDULER_STATE",
       "scientific_authority": false
     }
-  ]
+  ],
+  "ultracompact_workflow": {
+    "path": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
+    "blob": "f98fb8f76c5705386381250193ae7c6ca44733f6",
+    "state": "BOUND_BEFORE_EXECUTION",
+    "jobs_expected": 6,
+    "histories_per_job": 4,
+    "optimization_runs_per_history": 2
+  },
+  "ultracompact_authority_run": {
+    "workflow_run": null,
+    "execution_head": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-ultracompact.yml",
+    "workflow_blob": "f98fb8f76c5705386381250193ae7c6ca44733f6",
+    "jobs_expected": 6,
+    "state": "AWAITING_V4_TRIGGER",
+    "authority_if_completed": true
+  }
 }
