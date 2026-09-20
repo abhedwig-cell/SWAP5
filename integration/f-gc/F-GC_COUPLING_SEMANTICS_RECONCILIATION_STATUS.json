@@ -1,103 +1,96 @@
 {
   "schema_version": 1,
-  "workstream": "F-GC-CSR",
-  "date": "2026-09-20",
-  "canonical_reconciled": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-  "branch": "work/f-gc-coupling-semantics-reconciliation",
-  "decision": "CSR01_CSR02_IMPLEMENTED_QUALIFICATION_IN_PROGRESS",
-  "classification": {
+  "work_unit": "F-GC-COUPLING-SEMANTICS-RECONCILIATION",
+  "title": "SWAP5-MODFLOW6 Coupling Semantics Reconciliation",
+  "protocol": "RECONCILE -> THEORY AUTHORITY -> LEGACY SEMANTICS -> COUPLING OWNERSHIP -> CODE TRACE -> CLASSIFY DEFECT -> DESIGN CONTRACT -> IMPACT AUDIT -> PERSIST -> CLOSE",
+  "phase": "CLOSE_AUDIT",
+  "state": "AUDIT_CLOSED_REPAIR_REQUIRED_STORAGE_AUTHORITY_BLOCKED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "requested_start": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "reconciled_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8"
+  },
+  "scientific_authority": {
+    "legacy_boundary": {
+      "swbotb_1": "prescribed_groundwater_level",
+      "swbotb_2": "prescribed_bottom_flux",
+      "swbotb_5": "prescribed_lower_face_pressure_head",
+      "swbotb_6": "zero_bottom_flux",
+      "drainage_with_swbotb_5": "physically_supported_by_official_SWAP_manual"
+    },
+    "coupling_2024": [
+      "SWAP represents unsaturated plus SWAP-column saturated state while MODFLOW represents regional saturated groundwater",
+      "SWAP diagnostic groundwater level need not equal MODFLOW head",
+      "predictor supplies SWAP bottom flux from regional balance",
+      "SWAP returns q_u plus coupling/storage response u",
+      "MODFLOW head is imposed at SWAP bottom in finalization/corrector"
+    ]
+  },
+  "findings": {
+    "groundwater_state_owner": "MODFLOW6 accepted regional groundwater state/head; SWAP diagnostic phreatic level remains internal derived state",
+    "modflow_to_swap": "trial hydraulic head through explicit head-transfer/datum contract for corrector/finalization; current implementation uses identity node-head to lower-face-head transfer",
+    "swap_to_modflow": "predictor u/q_u response plus realized whole-window bottom exchange used to reanchor/converge the groundwater package response",
+    "accepted_exchange": "only converged/finalized MODFLOW-package and SWAP-corrector transfer is authoritative mass",
+    "mode5": "permitted as internal lower-face Dirichlet realization, not application-level groundwater authority",
+    "root_uptake": "SWAP-owned process; coupled admission/derivative coverage is separate from lower-boundary identity",
+    "drainage": "one explicit process owner per physical path; mode5 itself does not prohibit SWAP drainage",
+    "storage": "u is storage-like finite-window coupling response; physical partition relative to MODFLOW STO is not specified by current production topology"
+  },
+  "defect_classification": {
     "interpretation_defect": true,
     "authority_binding_defect": true,
-    "authority_binding_defect_primary": true,
-    "implementation_defect": "production application/profile gate",
-    "fundamental_core_coupling_design_defect": false,
-    "conditional_design_defect": "present if legacy bottom_mode=5 is treated as coupled application groundwater authority rather than internal trial-boundary realization"
+    "authority_binding_primary": true,
+    "implementation_defect": true,
+    "architecture_contract_defect": true,
+    "demonstrated_prepared_solve_algorithm_failure": false,
+    "summary": "combination of interpretation, authority-binding and implementation defects plus incomplete coupling-contract architecture; no evidence that the prepared-solve partitioned iteration itself must be discarded"
   },
-  "ownership": {
-    "groundwater_state": "MODFLOW6",
-    "groundwater_storage": "MODFLOW6",
-    "swap_column_state": "SWAP",
-    "swap_process_state": "SWAP",
-    "coupling_iteration_acceptance_publication": "coupler/runtime",
-    "trial_modflow_head": "coupling iterate, not accepted groundwater state",
-    "accepted_head": "MODFLOW candidate only after coupled publication"
-  },
-  "interface": {
-    "location": "fixed lower SWAP coupling plane / lower face for current direct coupling",
-    "not_equivalent_to": [
-      "freatic surface",
-      "lowest SWAP node centre",
-      "MODFLOW cell centre as a geometric identity",
-      "groundwater storage"
-    ],
-    "head_condition": "H_SWAP(interface)=H_MF(interface)",
-    "flux_condition": "q_SWAP(interface)=-q_MF(interface)",
-    "reference_backend_realization": "trial H_interface may be mapped through H=z+psi to temporary prescribed lower-face pressure head"
-  },
-  "legacy_reconciliation": {
-    "SWBOTB_5": "prescribed pressure head at bottom boundary",
-    "SWBOTB_6": "prescribed groundwater level",
-    "conclusion": "SWBOTB=5 is not prescribed groundwater level and is not application-level coupled-groundwater authority"
-  },
-  "defect_location": [
-    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90 profile_admitted requires bottom_mode==5",
-    "src/runtime/mod_fmr_production_application_bootstrap.f90 groundwater_profile defined by bottom_mode==5",
-    "src/runtime/mod_fmr_production_application_bootstrap.f90 production_application_groundwater_ready repeats bottom_mode==5",
-    "PUB-GC E6/E7 interpretation promoted this implementation profile into a groundwater-coupling application-domain boundary"
+  "blockers": [
+    {
+      "id": "CSR-B1-STORAGE-PARTITION",
+      "class": "SCIENTIFIC_ARCHITECTURE_AUTHORITY_REQUIRED",
+      "description": "Define non-overlapping physical storage ownership between SWAP-derived coupling coefficient u and MODFLOW STO, or provide an explicit overlap correction, before realistic production admission."
+    },
+    {
+      "id": "CSR-B2-DRAINAGE-OWNERSHIP",
+      "class": "APPLICATION_TOPOLOGY_AUTHORITY_REQUIRED",
+      "description": "Declare one owner per physical drainage path and prohibit duplicate SWAP plus MODFLOW/surface-water booking before authentic drainage is admitted."
+    }
   ],
-  "retained_authority": [
-    "F-GC17 datum/head/sign/unit contract",
-    "F-GC18 exchange transaction ownership",
-    "F-GC19 exact interface ledger",
-    "F-GC21 transactional predictor/corrector ownership except mode-5 application admission",
-    "F-GC30/F-GC33 bounded response mathematics",
-    "F-GC39/F-GC41/F-GC49C/F-GC49D MODFLOW ownership, iteration and ordered publication"
-  ],
-  "mass_contract": {
-    "interface_transfer": "book exactly once with equal and opposite component signs",
-    "swap_storage": "SWAP-owned, not interface flux",
-    "modflow_storage": "MODFLOW-owned, not interface flux",
-    "drainage": "SWAP external sink when represented by SWAP; not automatically MODFLOW recharge",
-    "root_uptake": "SWAP external sink; not separate MODFLOW exchange",
-    "rejected_trials": "zero authoritative interface mass"
-  },
-  "pub_gc_submission": "HELD",
-  "experiment_impact": {
-    "E1_E2": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
-    "E3": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
-    "E4": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
-    "E5": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
-    "E6": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
-    "E7": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
-  },
   "e7": {
-    "historical_observation_preserved": true,
-    "old_interpretation_superseded": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
-    "current_disposition": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
+    "historical_evidence_preserved": true,
+    "prior_interpretation": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "current_authority": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
     "rerun_authorized": false,
-    "rerun_condition": "corrected coupled-boundary authority and required process composition independently qualified"
+    "reason": "the observed stop is real for the current bootstrap, but bottom_mode=5 plus drainage/root rejection is an implementation/admission binding rather than an intrinsic legacy SWAP physical limit"
+  },
+  "pub_gc": {
+    "final_submission_authority": "HELD",
+    "manuscript_invalidated": false,
+    "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
+    "rule": "do not advance final claims until storage/drainage authority and affected application-chain requalification are closed"
+  },
+  "artifacts": {
+    "authority_audit": "docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md",
+    "implementation_trace": "docs/integration/SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md",
+    "legacy_reconciliation": "docs/integration/SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md",
+    "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
+    "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md"
   },
   "repair_slices": [
-    "CSR-01 explicit coupled-boundary application/runtime authority",
-    "CSR-02 Reference backend internal trial-head realization and numerical identity qualification",
-    "CSR-03 process-composition separation from legacy bottom mode",
-    "CSR-04 active-drainage/recharge no-double-counting mass qualification",
-    "CSR-05 root-active corrected coupled-boundary qualification",
-    "CSR-06 PUB-GC targeted requalification and E7 prospective rerun"
+    "CSR-01 explicit coupled-groundwater application profile independent of legacy bottom_mode",
+    "CSR-02 hide mode-5 realization behind internal coupled-interface trial adapter",
+    "CSR-03 explicit head-transfer topology/authority",
+    "CSR-04 storage-partition authority and qualification",
+    "CSR-05 drainage ownership and no-double-booking authority",
+    "CSR-06 root/state-dependent process capability independent of bottom-mode identity",
+    "CSR-07 affected F-GC43 through F-GC49 application requalification with unaffected evidence reused by dependency analysis",
+    "CSR-08 PUB-GC claim supersession and later E7 disposition only after corrected authority"
   ],
-  "production_source_changed": true,
-  "hupsel_rerun_performed": false,
-  "implementation": {
-    "csr_01": "IMPLEMENTED_EXPLICIT_GROUNDWATER_COUPLED_AUTHORITY",
-    "csr_02": "IMPLEMENTED_REFERENCE_MODE5_PRIVATE_TRIAL_REALIZATION",
-    "csr_03": "NOT_ADMITTED_PROCESS_COMPOSITION_REMAINS_FAIL_CLOSED",
-    "pull_request": 486
-  },
-  "qualification": {
-    "state": "IN_PROGRESS",
-    "identity_test": "tests/fgc/test_fgc44_real_fmr_participant.f90 compares mode-5 and mode-7 application selectors from same origin while participant privately realizes mode 5",
-    "production_owner_test": "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 uses explicit groundwater_coupled with bottom_mode=7",
-    "e7_gates": "updated to preserve historical evidence while superseding old application-domain interpretation",
-    "pub_gc_gate": "submission hold explicitly enforced"
-  }
+  "governance_note": "F-GC39/F-GC44 and later F-GC49/F-GC50 wording is ambiguous about internal service versus iMOD Coupler product-level predictor/corrector ownership; future documentation must distinguish outer product lifecycle coordination from bounded per-window coupling-service semantics.",
+  "production_changes": [],
+  "reference_changes": [],
+  "solver_changes": [],
+  "hupsel_rerun": false,
+  "closeout": "AUDIT_COMPLETE; implementation repair intentionally not started because storage/drainage authority is not yet closed"
 }
