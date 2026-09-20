@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.lare.bc2.c5o.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5O",
+  "status": "CLOSED_C5N_PLATEAU_NOT_CLOSURE_IDENTIFYING_BOTTOM_ADJACENT_PLACEMENT_DISCRIMINATOR_REQUIRED",
+  "decision": "TEST_BOTTOM_ADJACENT_STATE_PLACEMENT_AT_FIXED_DIMENSION_BEFORE_NEW_CLOSURE_FAMILY",
+  "role": "READ_ONLY_IDENTIFIABILITY_RECONCILIATION",
+  "authority": {
+    "C5N": "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
+    "C5C": "integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json",
+    "C4H": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+    "C4K": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+    "C4L": "integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json",
+    "C4M": "integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json",
+    "C4N": "integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json",
+    "C4O": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "read_only": true
+  },
+  "identifiability": {
+    "c5n_plateau_fact": {
+      "statement": "R5, R6, R8, R12 and R16 are nearly identical on the major fresh high-resolution B14 dynamic-head groundwater errors.",
+      "bottom_cell_shared_cm": 10,
+      "shared_lower_boundary_cm": [
+        150,
+        160
+      ],
+      "implication": "Increasing total dimension by adding layers above the already-resolved lower cells does not improve the response."
+    },
+    "what_c5n_does_not_test": [
+      "Thinning the bottom-adjacent layer below 10 cm at fixed state dimension.",
+      "Redistributing a fixed state budget from upper/middle zones into the bottom 10-20 cm.",
+      "A physically distinct inter-layer or storage-consistent boundary closure."
+    ],
+    "c5c_prior": {
+      "statement": "On the earlier B14 dynamic-head workload, bottom-only spatial refinement from a 10-cm bottom cell to 5-cm and 2.5-cm cells changed LARE bottom-flux response strongly.",
+      "caveat": "C5C used a then-insufficiently-refined Reference and changed total state dimension, so it is mechanism evidence, not a high-resolution sufficiency result."
+    },
+    "c5j_c5k_boundary_audit": {
+      "statement": "Reference prescribed-head boundary formulation is sensitive, but theory-derived Reference boundary alternatives did not justify replacing current Reference G0K0.",
+      "implication": "This supports retaining Reference physics. It does not prove that a 10-cm aggregated LARE bottom-layer storage can be treated as a point center state."
+    }
+  },
+  "closure_reconciliation": {
+    "C4H": "Internal qi residual was gradient-component dominant; interface conductivity error was smaller.",
+    "C4K": "Existing-state evidence did not justify adding a memory/history state.",
+    "C4L": "qH-preserving cubic storage reconstruction was mixed across width/direction and not propagated.",
+    "C4M": "Parameter-free central interface gradient was not supported where interpretable.",
+    "C4N": "Face-interpolated geometry-only amplitude correction improved FALL but worsened RISE/HOLD; no propagation.",
+    "C4O": "No single existing-state scalar conditioner transferred across widths; further scalar tuning is forbidden.",
+    "conclusion": "Simple scalar/shape retuning of CURRENT_LAYER_FACE-related gradient reconstruction is closed. A genuinely different nonlinear flux closure remains scientifically open, but C5N does not yet prove it is necessary because bottom-adjacent state placement was held fixed at 10 cm."
+  },
+  "representation_conclusion": {
+    "vertical_placement_supported": true,
+    "universal_layer_count_supported": false,
+    "current_10cm_bottom_layer_highres_sufficient": false,
+    "closure_only_explanation_established": false,
+    "extra_memory_state_required": false,
+    "next_discriminator": "Fixed-dimension bottom-focused partition redistribution under unchanged BC1 CURRENT_LAYER_FACE on fresh B14 dynamic-head histories."
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C5P",
+    "state": "FRESH_BLIND_FIXED_DIMENSION_BOTTOM_PLACEMENT_DISCRIMINATOR_AUTHORIZED_FOR_PREREGISTRATION",
+    "question": "At the same total state dimension, does reallocating layers from the upper/middle column into progressively thinner bottom-adjacent layers materially reduce high-resolution B14 dynamic-head error under unchanged CURRENT_LAYER_FACE closure?",
+    "design_principles": [
+      "Use fresh response-blind B14 prescribed-head histories not used in C5A or C5N.",
+      "Keep CURRENT_LAYER_FACE and all constitutive/numerical settings fixed.",
+      "Compare equal-dimension partition pairs so state count is controlled while bottom-cell thickness/placement changes.",
+      "Include at least dimension-4 and dimension-8 pairs because placement effects already replicated at those dimensions.",
+      "Use R1024/R2048 T16 current Reference plus R2048 T8 temporal control under the same high-resolution qualification logic as C5N.",
+      "No response-based boundary optimization; partition coordinates are frozen before execution.",
+      "If bottom-focused redistribution materially improves but still misses comparator frontiers, report continuous improvement and only then reconsider closure.",
+      "If it does not improve, the evidence basis for a physically distinct closure family becomes substantially stronger."
+    ]
+  },
+  "explicitly_closed": [
+    "More scalar tuning of the same fixed-partition gradient closure.",
+    "Selecting a universal minimum layer count from C4/C5A/C5N.",
+    "Treating C5N's R5-R16 plateau as proof that state placement cannot help.",
+    "Changing Reference lower-boundary physics.",
+    "Application acceptance, performance or speed claims."
+  ],
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_partition_executed": false,
+    "new_closure_implemented": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
