@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.lare.gw-purpose-acceptance-authority.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-GW-ACCEPT-1",
+  "phase": "AUTHORITY_RECONCILED_AFTER_C4T",
+  "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "current_canonical_checked": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+  "authorities": {
+    "purpose_framework": "docs/science/F-ROM_LARE_PURPOSE_DEPENDENT_ACCEPTANCE.md",
+    "canonical_application_accuracy_contract": {
+      "path": "src/runtime/mod_coupling_application_accuracy_contract.f90",
+      "blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+    },
+    "canonical_groundwater_accuracy_binding": {
+      "path": "src/runtime/mod_groundwater_accuracy_binding.f90",
+      "blob": "b8ac03e810c73519b433f7851c6fd143ba26676a"
+    },
+    "project_control": "docs/development/SWAP5_PROJECT_CONTROL.md",
+    "c4t_closeout": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json"
+  },
+  "findings": [
+    "The canonical coupling application-accuracy contract contains no built-in numerical groundwater-head acceptance value. h_app is valid only when explicitly available, positive, externally qualified and provenance-bound.",
+    "The temporal allocation a_temporal is likewise valid only when explicitly available, externally qualified and provenance-bound.",
+    "The groundwater accuracy binding allocates externally qualified head budget into temporal/interface budgets; it does not manufacture an application tolerance from solver or model errors.",
+    "No canonical repository authority currently supplies a numeric externally qualified h_app and temporal allocation for the LARE target application.",
+    "Current project control records PR #486 as a noncanonical coupling-semantics/application-authority repair in qualification. The production application interpretation of bottom_mode=5 cannot be used as application-level groundwater authority for LARE acceptance.",
+    "Therefore C4R/C4T error distributions, Reference numerical floors and shared-host cost data cannot be converted post hoc into ACCEPT_FOR_PURPOSE thresholds."
+  ],
+  "decision": "ABSOLUTE_GW_APPLICATION_ACCEPTANCE_BLOCKED_EXTERNAL_REQUIREMENT",
+  "allowed_research_while_blocked": [
+    "Comparator-relative groundwater fidelity frontiers",
+    "Prospective longer-horizon cumulative exchange and bias qualification under already-authorized laboratory boundary semantics",
+    "State-dimension versus GW-output fidelity mapping",
+    "Fail-closed domain mapping"
+  ],
+  "prohibited": [
+    "NO_THRESHOLD_FROM_C4R_OR_C4T_ERROR_DISTRIBUTION",
+    "NO_APPLICATION_LEVEL_AUTHORITY_FROM_BOTTOM_MODE_5",
+    "NO_NUMERICAL_SOLVER_TOLERANCE_AS_APPLICATION_TOLERANCE",
+    "NO_ACCEPT_FOR_PURPOSE_WITHOUT_EXTERNAL_H_APP_PROVENANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "next_unblocked_work_unit": {
+    "id": "LARE-BC2-C4U",
+    "title": "Prospective one-day groundwater horizon persistence",
+    "question": "Does the blind short-horizon LARE groundwater frontier persist prospectively to approximately one day without closure or parameter changes?",
+    "role": "FIDELITY_ENVELOPE_EXPANSION_NOT_APPLICATION_ACCEPTANCE"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
