@@ -1,0 +1,157 @@
+{
+  "schema": "swap5.layer-rom.phase-b1r.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1R",
+  "phase": "PREREGISTERED_BEFORE_B01_FIXED_HEAD_FRONTIER_REPAIR",
+  "title": "B01 fixed-head frontier repair under commensurate QAVG and QEND semantics",
+  "scientific_question": "After superseding the mixed fixed-head flux metric, which B01 low-dimensional Layer-ROM members still cross the bounded R2 development comparator when storage, cumulative exchange, QAVG and QEND are evaluated commensurately?",
+  "authority": {
+    "canonical": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "prior_B1": "integration/f-rom/LAYER_ROM_B1_RESULT.json",
+    "metric_repair": "integration/f-rom/LAYER_ROM_B1HCF_CLOSEOUT.json",
+    "bottom_authority": "integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "comparator_authority": "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
+  },
+  "immutable_evidence": {
+    "C4R_artifact_id": 10593626518,
+    "C4R_zip_sha256": "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9",
+    "files": [
+      "R16_o0.txt",
+      "R2_o0.txt",
+      "LARE_BC2_C4R_RESULT.json",
+      "FMC_C4R_RESULT.json",
+      "FMC_D13_REPRODUCTION.json"
+    ],
+    "no_new_reference_trajectory": true
+  },
+  "scope": {
+    "material": "B01",
+    "column_depth_cm": 160,
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "observation_dt_day": 0.001,
+    "steps": 64,
+    "top_flux": 0,
+    "bottom_head_cm": 0,
+    "sinks": false,
+    "candidates": [
+      {
+        "id": "L2",
+        "boundaries_cm": [
+          0,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L3",
+        "boundaries_cm": [
+          0,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L4",
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L6",
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      }
+    ],
+    "comparator": "R2 raw Richards trajectory from the same immutable C4R artifact"
+  },
+  "corrected_flux_semantics": {
+    "QAVG": {
+      "Reference_and_R2": "BOTTOM_OUTWARD_EXCHANGE / 0.001 d, required to match persisted BOTTOM_FLUX",
+      "LayerROM": "candidate cumulative bottom-exchange increment / 0.001 d"
+    },
+    "QEND": {
+      "Reference_and_R2": "zero-head Darcy half-cell/layer diagnostic reconstructed from committed terminal bottom state",
+      "LayerROM": "same zero-head Darcy half-layer diagnostic from candidate terminal state"
+    },
+    "superseded": [
+      "old bottom_flux_rmse_cm_per_day",
+      "old bottom_flux_sign_errors when candidate instantaneous q was compared to balance-materialized interval-average Reference BOTTOM_FLUX"
+    ]
+  },
+  "response_vectors": {
+    "GW": [
+      "storage_rmse_cm",
+      "cumulative_bottom_rmse_cm",
+      "qavg_rmse_cm_per_day",
+      "qavg_sign_errors",
+      "abs_mean_signed_qavg_error_cm_per_day",
+      "qend_rmse_cm_per_day",
+      "qend_sign_errors",
+      "abs_mean_signed_qend_error_cm_per_day",
+      "max_abs_final_cumulative_bottom_error_cm"
+    ],
+    "PROFILE": [
+      "upper_storage_rmse_cm",
+      "lower_storage_rmse_cm",
+      "mapped_theta_rmse"
+    ]
+  },
+  "comparator_rule": {
+    "primary": "Compare each Layer-ROM member with R2 componentwise on the corrected GW vector.",
+    "crossing": "Candidate crosses R2 only if no corrected GW component is worse than R2 beyond 1e-12 and at least one is strictly better.",
+    "no_weighted_score": true,
+    "no_application_threshold": true,
+    "relation_tolerance": 1e-12
+  },
+  "FMC_handling": {
+    "retained_from_existing_authority": [
+      "total/storage discrepancy",
+      "cumulative bottom exchange discrepancy",
+      "profile/cell-theta discrepancy",
+      "mass/integrity evidence"
+    ],
+    "corrected_flux_frontier": "HELD",
+    "reason": "The immutable C4R/D13 artifacts do not persist raw FMC terminal trajectories sufficient to recompute a QEND error against the corrected Reference diagnostic. Existing FMC terminal-flux errors used the now-superseded Reference flux semantics.",
+    "rule": "Do not infer or reconstruct an FMC corrected flux component from aggregate errors."
+  },
+  "hard_controls": [
+    "Reference and R2 QAVG must equal persisted BOTTOM_FLUX to numerical identity.",
+    "dt=0.0001 Layer-ROM rerun must reproduce retained B1 storage/cumulative/profile components before corrected flux metrics are interpreted.",
+    "Water ledger must satisfy existing research tolerance.",
+    "No new history, layer boundary, timestep or closure is introduced."
+  ],
+  "successor_logic": {
+    "if_crossing_exists": "Persist the smallest corrected R2-crossing dimension as a bounded B01 development frontier only; do not call it application-accepted.",
+    "if_none": "Close the old B1 frontier and retain only componentwise fidelity curves.",
+    "B2_repair": "One-day/reversal B2 authority remains separately held until its QAVG/QEND semantics are rebuilt."
+  },
+  "firewalls": [
+    "NO_NEW_REFERENCE_TRAJECTORY",
+    "NO_NEW_PARTITION_OR_STATE",
+    "NO_CLOSURE_FITTING",
+    "NO_FMC_FLUX_IMPUTATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false
+}
