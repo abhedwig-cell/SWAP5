@@ -1,0 +1,215 @@
+name: F-ROM-LARE BC2-C5D Reference spatial extension
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5D_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c5d_reference_extension.py'
+      - 'tests/rom/analyze_lare_bc2_c5d_reference_extension.py'
+      - '.github/workflows/f-rom-lare-bc2-c5d.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5d-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify C5D authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5d_reference_extension.py)" = "3a43427ae46480d01c430c2299c6cc36e728ed46"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5d_reference_extension.py)" = "73730efa988d5ed7a66e32d7f120fc3889127a74"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5b_signed_flux_mechanism.py)" = "b51b4b60fd229786ec566948f400eb69771d0c56"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5D_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C5D_R128_RESPONSE'
+          assert c['status']=='CLOSED_BOTTOM_CELL_REFINEMENT_EFFECT_PRESENT_REFERENCE_GRID_NOT_ASYMPTOTIC'
+          assert c['authority']['result_sha256']=='2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326'
+          assert p['reference_hierarchy']['primary_new']['id']=='R128'
+          assert p['reference_hierarchy']['secondary_new']['id']=='R256'
+          assert p['reference_hierarchy']['secondary_new']['required_for_C5D_execution'] is False
+          assert p['scientific_firewall']['new_lare_run'] is False
+          print('LARE_BC2_C5D_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover frozen R16 R32 R64 anchors
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5d/anchors /tmp/c5d/reference LARE_BC2_C5D_EVIDENCE
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10600184543/zip" > /tmp/c5d/c5a.zip
+          echo "272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f  /tmp/c5d/c5a.zip" | sha256sum -c -
+          unzip -q /tmp/c5d/c5a.zip -d /tmp/c5d/anchors/c5a
+          echo "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b  /tmp/c5d/anchors/c5a/R16_o0.txt" | sha256sum -c -
+          cp /tmp/c5d/anchors/c5a/R16_o0.txt /tmp/c5d/reference/R16_o0.txt
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602125716/zip" > /tmp/c5d/c5c.zip
+          echo "ef24d9268e6758a6bb0440aa3c8bcc35c2785d0ae79912a526374250069ca86a  /tmp/c5d/c5c.zip" | sha256sum -c -
+          unzip -q /tmp/c5d/c5c.zip -d /tmp/c5d/anchors/c5c
+          echo "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9  /tmp/c5d/anchors/c5c/R32_o0.txt" | sha256sum -c -
+          echo "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1  /tmp/c5d/anchors/c5c/R64_o0.txt" | sha256sum -c -
+          cp /tmp/c5d/anchors/c5c/R32_o0.txt /tmp/c5d/reference/R32_o0.txt
+          cp /tmp/c5d/anchors/c5c/R64_o0.txt /tmp/c5d/reference/R64_o0.txt
+          echo "LARE_BC2_C5D_FROZEN_ANCHORS=PASS"
+
+      - name: Materialize C5D Reference-only harness
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --output canonical/tests/rom/test_lare_bc2_c5d_reference.f90             --manifest LARE_BC2_C5D_EVIDENCE/materialization.json
+
+      - name: Generate required R128 Reference
+        run: |
+          set -euo pipefail
+          id=R128
+          n=128
+          dz=1.25
+          stub="canonical/c5d_${id}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          for opt in 0 2; do
+            build="/tmp/c5d/build_${id}_o${opt}"
+            python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py               --root canonical               --stub "c5d_${id}_stubs.f90"               --target tests/rom/test_lare_bc2_c5d_reference.f90               --external-source src/legacy/b1_10_port/headcalc.f90               --build "$build" --opt "$opt"
+            log="/tmp/c5d/reference/${id}_o${opt}.txt"
+            "$build/rom0_test" > "$log" 2>&1
+            grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+            grep -Fq 'LAREGW1_C5D_B14_REFERENCE_EXTENSION_GENERATED=TRUE' "$log"
+            test "$(grep -c 'LAREGW1_STATE|' "$log")" -eq 4096
+            test "$(grep -c 'LAREGW1_HISTORY_PASS|' "$log")" -eq 4
+            test "$(grep -c 'LAREGW1_NODE|' "$log")" -eq 0
+            python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+          done
+          cmp /tmp/c5d/reference/R128_o0.txt /tmp/c5d/reference/R128_o2.txt
+          cp /tmp/c5d/reference/R128_o0.txt LARE_BC2_C5D_EVIDENCE/
+          echo "LARE_BC2_C5D_R128=PASS"
+
+      - name: Attempt optional R256 without retuning
+        id: r256
+        run: |
+          set -uo pipefail
+          id=R256
+          n=256
+          dz=0.625
+          stub="canonical/c5d_${id}_stubs.f90"
+          status=PASS
+          reason=""
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"             > LARE_BC2_C5D_EVIDENCE/R256_materialize.log 2>&1 || { status=FAIL; reason=MATERIALIZE; }
+
+          if [[ "$status" == "PASS" ]]; then
+            for opt in 0 2; do
+              build="/tmp/c5d/build_${id}_o${opt}"
+              python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "c5d_${id}_stubs.f90"                 --target tests/rom/test_lare_bc2_c5d_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$build" --opt "$opt"                 > "LARE_BC2_C5D_EVIDENCE/R256_compile_o${opt}.log" 2>&1 || { status=FAIL; reason="COMPILE_O${opt}"; break; }
+
+              log="/tmp/c5d/reference/${id}_o${opt}.txt"
+              "$build/rom0_test" > "$log" 2>&1 || { cp "$log" "LARE_BC2_C5D_EVIDENCE/R256_o${opt}_FAILED.txt"; status=FAIL; reason="EXECUTE_O${opt}"; break; }
+              grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log" || { status=FAIL; reason="COMPLETION_O${opt}"; break; }
+              grep -Fq 'LAREGW1_C5D_B14_REFERENCE_EXTENSION_GENERATED=TRUE' "$log" || { status=FAIL; reason="MARKER_O${opt}"; break; }
+              [[ "$(grep -c 'LAREGW1_STATE|' "$log")" -eq 4096 ]] || { status=FAIL; reason="STATE_COUNT_O${opt}"; break; }
+              [[ "$(grep -c 'LAREGW1_HISTORY_PASS|' "$log")" -eq 4 ]] || { status=FAIL; reason="HISTORY_COUNT_O${opt}"; break; }
+              [[ "$(grep -c 'LAREGW1_NODE|' "$log")" -eq 0 ]] || { status=FAIL; reason="NODE_OUTPUT_O${opt}"; break; }
+              python3 - "$log" <<'PY' || { status=FAIL; reason="MASS"; break; }
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+            done
+          fi
+
+          if [[ "$status" == "PASS" ]]; then
+            cmp /tmp/c5d/reference/R256_o0.txt /tmp/c5d/reference/R256_o2.txt || { status=FAIL; reason=O0_O2_IDENTITY; }
+          fi
+
+          if [[ "$status" == "PASS" ]]; then
+            cp /tmp/c5d/reference/R256_o0.txt LARE_BC2_C5D_EVIDENCE/
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "LARE_BC2_C5D_R256=PASS"
+          else
+            cat > LARE_BC2_C5D_EVIDENCE/R256_STATUS.json <<EOF
+          {"available":false,"status":"QUALIFICATION_BLOCKED","reason":"${reason}","retuned":false}
+          EOF
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "LARE_BC2_C5D_R256=QUALIFICATION_BLOCKED|${reason}"
+          fi
+          exit 0
+
+      - name: Execute C5D spatial-extension analysis
+        run: |
+          set -euo pipefail
+          args=(
+            --r16 /tmp/c5d/reference/R16_o0.txt
+            --r32 /tmp/c5d/reference/R32_o0.txt
+            --r64 /tmp/c5d/reference/R64_o0.txt
+            --r128 /tmp/c5d/reference/R128_o0.txt
+            --c5c-result integration/f-rom/LARE_BC2_C5C_RESULT.json
+            --c5c-closeout integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json
+            --prereg integration/f-rom/LARE_BC2_C5D_PREREGISTRATION.json
+            --output LARE_BC2_C5D_EVIDENCE/LARE_BC2_C5D_RESULT.json
+          )
+          if [[ "${{ steps.r256.outputs.available }}" == "true" ]]; then
+            args+=(--r256 /tmp/c5d/reference/R256_o0.txt)
+          fi
+          python3 tests/rom/analyze_lare_bc2_c5d_reference_extension.py "${args[@]}"             | tee LARE_BC2_C5D_EVIDENCE/runner.txt
+
+      - name: Validate C5D firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5D_EVIDENCE/LARE_BC2_C5D_RESULT.json'))
+          assert r['formal_C5A_decision_retained']=='C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED'
+          assert all(r['baseline_identity_to_C5C'].values())
+          f=r['scientific_firewall']
+          assert f['new_lare_run'] is False
+          assert f['new_closure_fit'] is False
+          assert f['C5A_formal_decision_changed'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5D_FIREWALL=PASS')
+          PY
+          git -C canonical diff --quiet -- src reference
+          sha256sum LARE_BC2_C5D_EVIDENCE/* > LARE_BC2_C5D_EVIDENCE/sha256.txt
+
+      - name: Upload C5D evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5d
+          path: LARE_BC2_C5D_EVIDENCE/
+          if-no-files-found: error
