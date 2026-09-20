@@ -1,0 +1,356 @@
+{
+  "schema": "swap5.lare.bc2.c4x.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4X",
+  "phase": "PREREGISTERED_BEFORE_B14_FIXED_WATER_TABLE_RESPONSE",
+  "title": "B14 material and constitutive transfer of the one-day LARE groundwater frontier",
+  "scientific_question": "Does the one-day fixed-water-table groundwater-response state requirement demonstrated on B01 transfer to B14, and does layer placement rather than state count become the controlling representation choice?",
+  "role": "INDEPENDENT_MATERIAL_CONSTITUTIVE_TRANSFER",
+  "authority": {
+    "c4v_closeout": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "c4w_closeout": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
+    "required_c4w_decision": "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED",
+    "choice_selected": "INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER",
+    "choice_rationale": "Material transfer directly tests representation generality while avoiding new groundwater-coupling or lower-boundary semantics.",
+    "b14_parameter_authority": "integration/f-rom/LARE_DYN0A_MECH2B_PREREGISTRATION.json",
+    "b14_mechanism_result": "integration/f-rom/LARE_DYN0A_MECH2B_RESULT.json",
+    "prior_layer_placement_control": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
+    "purpose_framework": "docs/science/F-ROM_LARE_PURPOSE_DEPENDENT_ACCEPTANCE.md",
+    "current_canonical_at_preregistration": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+    "c4v_reference_source": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "canonical_delta_since_c4v_reference": "NO_SRC_OR_REFERENCE_DELTA",
+    "scientific_basis_rebased": false
+  },
+  "materials": {
+    "source_B01": {
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "Ksat_cm_per_day": 31.225016,
+      "mualem_lambda": 0.98087
+    },
+    "blind_transfer_B14": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "mualem_lambda": -0.334926,
+      "homogeneous": true,
+      "response_inspected_for_C4X_before_preregistration": false
+    }
+  },
+  "physical_workload": {
+    "column_depth_cm": 160,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head at fixed 160-cm laboratory lower boundary",
+    "observation_dt_day": 0.001,
+    "steps": 1024,
+    "horizon_day": 1.024,
+    "sinks": false,
+    "ET_root_uptake": false,
+    "moving_water_table": false
+  },
+  "initial_state_transfer": {
+    "family": "FMC_GW200 finite-water-content capillary-front profile",
+    "baseline_bin_i": 100,
+    "active_bins_j": [
+      101,
+      199
+    ],
+    "transfer_invariant": "Preserve the absolute height of the deepest active j=101 front for each C4R/C4V history.",
+    "formula": "lambda_B14=lambda_B01*psi_B01(Se=0.505)/psi_B14(Se=0.505), using the frozen material retention curves.",
+    "psi_B01_Se0p505_cm": 102.93247655038844,
+    "psi_B14_Se0p505_cm": 1709.4733665966178,
+    "lambda_scale_B14_over_B01": 0.06021297468665231,
+    "histories": {
+      "X01": {
+        "source_lambda_B01": 0.375,
+        "lambda_B14": 0.022579865507494613,
+        "deepest_front_cm": 38.599678706395665
+      },
+      "X02": {
+        "source_lambda_B01": 0.625,
+        "lambda_B14": 0.037633109179157694,
+        "deepest_front_cm": 64.33279784399278
+      },
+      "X03": {
+        "source_lambda_B01": 0.875,
+        "lambda_B14": 0.05268635285082077,
+        "deepest_front_cm": 90.0659169815899
+      },
+      "X04": {
+        "source_lambda_B01": 1.125,
+        "lambda_B14": 0.06773959652248385,
+        "deepest_front_cm": 115.79903611918701
+      }
+    },
+    "response_based": false,
+    "no_post_response_rescaling": true
+  },
+  "representations": {
+    "LARE": {
+      "closure": "BC1 CURRENT_LAYER_FACE with B14 constitutive parameters only",
+      "integrator": "iterative Heun",
+      "internal_dt_day": 0.0001,
+      "observation_substeps": 10,
+      "no_clipping": true,
+      "no_fallback": true,
+      "transferred_lower_zone_ladder": [
+        {
+          "id": "R3",
+          "dimension": 3,
+          "boundaries_cm": [
+            0,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R5",
+          "dimension": 5,
+          "boundaries_cm": [
+            0,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R6",
+          "dimension": 6,
+          "boundaries_cm": [
+            0,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R12",
+          "dimension": 12,
+          "boundaries_cm": [
+            0,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ]
+        },
+        {
+          "id": "R16",
+          "dimension": 16,
+          "boundaries_cm": [
+            0,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160
+          ],
+          "role": "operator control"
+        }
+      ],
+      "frozen_placement_controls": [
+        {
+          "id": "P4_TOP_LOWER",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            10,
+            140,
+            150,
+            160
+          ],
+          "authority": "P1 B01_B14_PILOT_R4"
+        },
+        {
+          "id": "U4",
+          "dimension": 4,
+          "boundaries_cm": [
+            0,
+            40,
+            80,
+            120,
+            160
+          ],
+          "authority": "P1 U4"
+        },
+        {
+          "id": "U8",
+          "dimension": 8,
+          "boundaries_cm": [
+            0,
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160
+          ],
+          "authority": "P1 U8_Z8"
+        }
+      ],
+      "initial_projection": "exact conservative integration of the B14 finite-water-content profile onto each fixed partition"
+    },
+    "R2": {
+      "role": "2 x 80 cm current-canonical Richards comparator",
+      "accepted_trajectory_policy": "C4R/C4V D13 mode-5 strict accepted-trajectory policy with B14 constitutive parameters"
+    },
+    "FMC_SMVE": {
+      "candidate": "FMC_GW200_B14_TRANSFER",
+      "equations": "Exact D13 groundwater-front equations with B14 constitutive constants and the prospectively scaled X01-X04 history lambdas.",
+      "moisture_bins": 200,
+      "baseline_bin_i": 100,
+      "active_bins_j": [
+        101,
+        199
+      ],
+      "internal_substeps_per_observation": 9,
+      "no_retuning": true,
+      "pre_reference_domain_preflight_required": true
+    },
+    "fine_reference": {
+      "id": "R16_REFERENCE",
+      "geometry": "16 x 10 cm",
+      "source": "current canonical at preregistration",
+      "role": "bounded scientific reference for C4X only"
+    }
+  },
+  "preregistered_checkpoints": [
+    {
+      "step": 128,
+      "day": 0.128
+    },
+    {
+      "step": 256,
+      "day": 0.256
+    },
+    {
+      "step": 512,
+      "day": 0.512
+    },
+    {
+      "step": 1024,
+      "day": 1.024,
+      "role": "PRIMARY"
+    }
+  ],
+  "groundwater_vector": {
+    "components": [
+      "pooled total-storage RMSE",
+      "pooled cumulative-bottom-exchange RMSE",
+      "pooled terminal-bottom-flux RMSE",
+      "bottom-flux sign-error count",
+      "absolute pooled mean signed terminal-bottom-flux error",
+      "maximum absolute final cumulative-bottom-exchange error across histories"
+    ],
+    "crossing": "componentwise no-worse within 1e-12 numerical equality tolerance",
+    "persistence": "cross at every checkpoint 128,256,512,1024",
+    "profile_diagnostic": "mapped 10-cm R16-cell theta RMSE reported separately and added only for PROFILE frontier at day 1.024"
+  },
+  "hard_gates": {
+    "c4w_closed": true,
+    "current_canonical_exact": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+    "no_src_or_reference_mutation_on_research_branch": true,
+    "B14_reference_R16_O0_O2_identity": true,
+    "B14_reference_R2_O0_O2_identity": true,
+    "reference_max_abs_transaction_mass_cm": 1e-12,
+    "fmc_B14_pre_reference_domain_preflight": true,
+    "fmc_substep_mass_cm": 1e-12,
+    "lare_all_members_and_controls_attempted": true,
+    "lare_R16_operator_control_qualified": true,
+    "lare_qualified_member_max_abs_water_ledger_cm": 1e-10,
+    "fail_open_count": 0,
+    "physical_theta_bounds": true
+  },
+  "hypotheses": {
+    "H_R8_MATERIAL_TRANSFER": {
+      "prior": "B01 C4V minimum persistent transferred-ladder dimension is R8.",
+      "test": "Report whether R8 remains the minimum transferred-ladder member persistently crossing both R2 and FMC on B14."
+    },
+    "H_LAYER_PLACEMENT_MATTERS": {
+      "prior": "Earlier state-information work retained P4_TOP_LOWER and U4/U8 as frozen placement controls.",
+      "test": "At fixed dimension, compare persistence and every vector component for R4 vs P4_TOP_LOWER vs U4, and R8 vs U8. Do not collapse to a scalar ranking."
+    },
+    "H_PROFILE_REQUIRES_MORE_STATE": {
+      "test": "At day 1.024 report the minimum reduced member crossing each comparator when mapped-theta RMSE is added to the groundwater vector."
+    }
+  },
+  "decision_logic": {
+    "C4X_B14_GW_TRANSFER_FRONTIER_PRESENT": "All hard gates pass and at least one reduced LARE representation persistently crosses both R2 and FMC.",
+    "C4X_B14_R2_RELATIVE_FRONTIER_ONLY": "All hard gates pass; at least one reduced LARE representation persistently crosses R2 but none persistently crosses FMC.",
+    "C4X_B14_REDUCED_GW_FRONTIER_NOT_PRESERVED": "All hard gates pass but no reduced LARE representation persistently crosses R2.",
+    "C4X_FMC_B14_DOMAIN_BLOCKED_BEFORE_REFERENCE": "The pre-Reference FMC B14 domain gate fails; no C4X Reference response may be generated.",
+    "C4X_REFERENCE_OR_REPRESENTATION_BLOCKED": "Any other Reference, integrity or fail-closed gate fails."
+  },
+  "interpretation_boundaries": [
+    "Material transfer is not application acceptance.",
+    "B14 is one additional material, not cross-material generality.",
+    "The fixed zero-head bottom boundary remains laboratory semantics, not coupled-groundwater authority.",
+    "Failure of the B01 lower-zone ladder does not authorize post-hoc layer-boundary optimization; only the preregistered P4/U4/U8 controls may be interpreted.",
+    "No timing, speedup or production decision is performed in C4X.",
+    "No threshold is chosen after inspecting B14 responses."
+  ],
+  "next_if_positive": "Preserve material-dependent minimum state and placement evidence; application acceptance remains blocked pending external H_app/A_temporal.",
+  "next_if_negative": "Return to representation selection or restrict material domain without retuning C4X.",
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
