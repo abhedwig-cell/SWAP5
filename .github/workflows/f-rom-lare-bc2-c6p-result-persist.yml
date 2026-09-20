@@ -1,0 +1,54 @@
+name: F-ROM-LARE BC2-C6P result persist
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6p-result-persist.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C6P authority result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6p
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/35538587682 --jq '.status + ":" + .conclusion + ":" + .head_sha')" = "completed:success:c01148ca72a3e0d2fa9d34c93079010363cee61b"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10613836251 --jq '.digest')" = "sha256:4403addbc9d4f1fccbbc85684dd17b81466f005d454c01356b9ec3d0c7ac4d43"
+          gh run download 35538587682 -n lare-bc2-c6p -D /tmp/c6p
+          echo "3dbbec3a0e56539cc14c612bdb1b72fb34e071305047bf5d6d732bcf1c1e1fc5  /tmp/c6p/LARE_BC2_C6P_RESULT.json" | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c6p/LARE_BC2_C6P_RESULT.json'))
+          assert r['status']=='C6P_EXISTING_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK'
+          assert r['hard_checks']['pass'] is True
+          assert all(r['hypotheses'].values())
+          assert r['scientific_firewall']['hydrological_response_generated'] is False
+          assert r['scientific_firewall']['application_tolerance_selected'] is False
+          print('C6P_RESULT_AUTHORITY=PASS')
+          PY
+          cp /tmp/c6p/LARE_BC2_C6P_RESULT.json integration/f-rom/LARE_BC2_C6P_RESULT.json
+
+      - name: Commit exact C6P result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6P_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist exact C6P root state-sufficiency result"
+          git push origin HEAD:work/f-rom-lare-rs1
