@@ -193,8 +193,8 @@ def main():
     close=json.loads(a.c6n1_closeout.read_text())
     assert pre["phase"]=="SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6N1_RESULT_EXECUTION_BLOCKED"
     assert close["status"]=="CLOSED_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED_C6N2_AUTHORIZED"
-    assert close["decision"]=="AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_COMPARISON"
-    assert close["scientific_firewall"]["candidate_response_generated"] is False
+    assert close["decision"]=="AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON"
+    assert close["next_authority"]["state"]=="EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON_AUTHORIZED"
 
     out={
         "schema":"swap5.lare.bc2.c6n2.candidate.v1",
