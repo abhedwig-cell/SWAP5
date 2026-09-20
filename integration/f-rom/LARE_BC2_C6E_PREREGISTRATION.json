@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6e.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6E",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6E_NUMERICAL_RESPONSE",
   "title": "Response-free prescribed-flux/HOLD boundary qualification for BEMR",
   "role": "NO_HYDROLOGICAL_RESPONSE_BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFICATION",
   "scientific_question": "Does the frozen D12_B2P5 BEMR S/M algebraic reconstruction remain realizable, single-branch and hydraulically consistent when both external conditions are prescribed flux, as required by the Reference HOLD boundary mode, before any fresh blind free-running BEMR test?",
@@ -287,15 +287,16 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "qualifier": "tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py",
-    "qualifier_blob": null,
+    "qualifier_blob": "d524fb04251baa45cf5d732de707c2a720eeb788",
     "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6e.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "4b7628ead4466bb46f5c58cdff57596de7358849",
+    "execution_binding_complete": true,
+    "binding_note": "The 126 synthetic D12_B2P5 state/boundary cases, 630 fixed starts, B14 constitutive law, prescribed common-flux anchors, numerical gates, qualifier blob and workflow are frozen before any C6E numerical response."
   },
   "model_changed": false
 }
