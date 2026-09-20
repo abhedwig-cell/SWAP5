@@ -1,0 +1,124 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "aggregate_artifact_digest": "sha256:ed438b348dd48a462d9d1deb1e61920542b34d692aa208c7421e528d1dae77a8",
+    "aggregate_artifact_id": 10593106848,
+    "controls_sha256": "c9a49e4b5a055d756804c3849234cc723293ea2975f9f6360b16c6180cf7b6f7",
+    "execution_head": "99397630dbfca95a49cf6a9e378d9bcd579ee317",
+    "result_sha256": "6a3fee756d86772b38c879e96acd0fa30d73ad6ec84476ff1c8a60b4291265bd",
+    "workflow_run": 35473274398
+  },
+  "availability_curve": [
+    {
+      "dimension": 3,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 8.673617379884035e-19,
+      "member": "R3",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 4,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R4",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 5,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R5",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 6,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R6",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 8,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R8",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 12,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R12",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    }
+  ],
+  "decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
+  "fallback_count_total_by_member": {
+    "R12": 56,
+    "R3": 178,
+    "R4": 145,
+    "R5": 157,
+    "R6": 147,
+    "R8": 101
+  },
+  "hydrological_comparison_performed": false,
+  "model_changed": false,
+  "next_authority": "PREREGISTER_C4T_PROSPECTIVE_COST_FIDELITY_VALUE_SCREEN",
+  "performance_measurement_performed": false,
+  "production_rom_authorized": false,
+  "reference_authority": {
+    "C4R_R16_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6",
+    "C4R_R2_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4",
+    "canonical_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "control_reproduction_exact": true
+  },
+  "schema": "swap5.lare.bc2.c4s.closeout.v1",
+  "scientific_interpretation": [
+    "All reduced same-partition CoRichards members R3,R4,R5,R6,R8,R12 qualify all four blind C4R fixed-water-table histories under the exact frozen D13 mode-5 Reference policy.",
+    "The Q1 fixed-flux result and C4S fixed-water-table result are therefore workload-specific numerical-authority findings: coarse Richards is blocked in the former but fully available in the latter.",
+    "C4S supplies the missing full common cohort required for a fair prospective cost-fidelity comparison on the blind C4R workload.",
+    "Fallback incidence remains substantial and dimension-dependent and must be included in any runtime value screen rather than timing only successful first attempts.",
+    "C4S itself contains no hydrological-error or runtime comparison."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED",
+  "value_screen_authorized": true,
+  "work_unit": "LARE-BC2-C4S",
+  "workstream": "F-ROM-LARE"
+}

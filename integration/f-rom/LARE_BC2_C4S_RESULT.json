@@ -1,0 +1,554 @@
+{
+  "application_acceptance_adjudicated": false,
+  "availability_curve": [
+    {
+      "dimension": 3,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 8.673617379884035e-19,
+      "member": "R3",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 4,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R4",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 5,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R5",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 6,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R6",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 8,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R8",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    },
+    {
+      "dimension": 12,
+      "fail_closed_histories": [],
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R12",
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4
+    }
+  ],
+  "controls": {
+    "D13_harness_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "R16_exact_C4R_reproduction": true,
+    "R16_sha256": "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6",
+    "R2_exact_C4R_reproduction": true,
+    "R2_sha256": "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4",
+    "canonical_head": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "pass": true,
+    "schema": "swap5.lare.bc2.c4s.controls.v1"
+  },
+  "decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
+  "hydrological_comparison_performed": false,
+  "integrity": {
+    "all_status_or_trace_identity": true,
+    "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+    "pass": true,
+    "technical_failures": {}
+  },
+  "interpretation": [
+    "C4S tests numerical comparator availability only on the exact blind C4R workload and current-canonical Reference authority.",
+    "No hydrological-error or runtime comparison is performed.",
+    "A qualified member/history may enter a separately preregistered common-cohort value screen; fail-closed histories may not be extrapolated.",
+    "Fixed-flux Q1 and fixed-water-table C4S are distinct numerical-authority workloads."
+  ],
+  "members": {
+    "R12": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 12,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 20,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.734723475976807e-18,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 17,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 17,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 2,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 0.0,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R12",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        50.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    },
+    "R3": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 3,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 36,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 36,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 0.0,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 48,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 58,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 8.673617379884035e-19,
+      "member": "R3",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        140.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    },
+    "R4": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 4,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 31,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.734723475976807e-18,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 30,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 33,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 51,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 0.0,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R4",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        130.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    },
+    "R5": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 5,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 38,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.734723475976807e-18,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 36,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 34,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 49,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 0.0,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R5",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        120.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    },
+    "R6": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 6,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 38,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.734723475976807e-18,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 33,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 27,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 49,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.0842021724855044e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R6",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        110.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    },
+    "R8": {
+      "all_status_or_trace_identity": true,
+      "application_acceptance_adjudicated": false,
+      "dimension": 8,
+      "fail_closed_histories": [],
+      "histories": {
+        "V01": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 24,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 1.734723475976807e-18,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V02": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 34,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 8.673617379884035e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V03": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 20,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 2.168404344971009e-19,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        },
+        "V04": {
+          "O0_O2_identity": true,
+          "failure_marker": null,
+          "fallback_count": 23,
+          "history_count": 1,
+          "initial_count": 1,
+          "max_abs_mass_cm": 0.0,
+          "state_count": 64,
+          "status": "QUALIFIED"
+        }
+      },
+      "hydrological_comparison_performed": false,
+      "maximum_qualified_mass_residual_cm": 1.734723475976807e-18,
+      "member": "R8",
+      "performance_measurement_performed": false,
+      "production_rom_authorized": false,
+      "qualified_histories": [
+        "V01",
+        "V02",
+        "V03",
+        "V04"
+      ],
+      "qualified_history_count": 4,
+      "schema": "swap5.lare.bc2.c4s.member-result.v1",
+      "technical_failure_histories": [],
+      "thickness_cm": [
+        90.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "work_unit": "LARE-BC2-C4S",
+      "workstream": "F-ROM-LARE"
+    }
+  },
+  "minimum_dimension_with_all_four_qualified_histories": 3,
+  "minimum_dimension_with_any_qualified_history": 3,
+  "minimum_member_with_all_four_qualified_histories": "R3",
+  "minimum_member_with_any_qualified_history": "R3",
+  "performance_measurement_performed": false,
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c4s.result.v1",
+  "speed_claim_authorized": false,
+  "value_screen_authorized": true,
+  "work_unit": "LARE-BC2-C4S",
+  "workstream": "F-ROM-LARE"
+}
