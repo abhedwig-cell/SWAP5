@@ -6,10 +6,9 @@ subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
   real(real64), intent(in) :: upper(*), main(*), lower(*), rhs(*)
   real(real64), intent(out) :: solution(*)
   integer, intent(out) :: ierror
-  real(real64), allocatable :: a(:), b(:), c(:), r(:), u(:), gamma(:)
+  real(real64) :: a(n), b(n), c(n), r(n), u(n), gamma(n)
 
   if (n <= 0) error stop 'TAB-HYD real tridag wrapper requires n > 0'
-  allocate(a(n), b(n), c(n), r(n), u(n), gamma(n))
   a = lower(1:n)
   b = main(1:n)
   c = upper(1:n)
