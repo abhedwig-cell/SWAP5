@@ -41,8 +41,10 @@ for forbidden in [
 assert "tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
 assert "tile%parameters%bottom_mode /= 2" in src
 assert "production_application_groundwater_ready" in src
-assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
-assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
+assert "logical :: groundwater_coupled = .false." in src
+assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%groundwater_coupled" in src
+assert "all(self%parameters%bottom_mode == 5)" not in src
+assert "standalone_profile = standalone_profile .and. (.not. config%tiles(i)%groundwater_coupled)" in src
 assert "if (groundwater_profile) then" in src
 assert "macropore_active" in src
 assert "frost_active" in src
@@ -53,7 +55,7 @@ print("PPA_WU01_FORTRAN_FMR_OWNERSHIP_STATIC=PASS")
 print("PPA_WU01_NO_QUALIFICATION_FIXTURE_PROMOTION_STATIC=PASS")
 print("PPA_WU01_NO_LEGACY_PARSER_STATIC=PASS")
 print("PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS")
-print("PPA_WU01_GROUNDWATER_MODE5_CONTEXT_GUARD_STATIC=PASS")
+print("PPA_WU01_EXPLICIT_COUPLED_BOUNDARY_AUTHORITY_STATIC=PASS")
 print("PPA_WU01_OPTIONAL_GROUNDWATER_OWNERSHIP_STATIC=PASS")
 PY
 
