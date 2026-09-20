@@ -1,0 +1,159 @@
+{
+  "schema": "swap5.lare.bc2.c6b.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6B",
+  "status": "CLOSED_BEMR_SELECTED_AS_DISTINCT_REALIZABILITY_PRESERVING_MOMENT_FAMILY_C6C_MATHEMATICAL_QUALIFICATION_NEXT",
+  "decision": "PREREGISTER_BOUNDED_ENTROPY_MOMENT_RECONSTRUCTION_ON_UNCHANGED_C5Z_DOMAIN_BEFORE_ANY_HYDROLOGICAL_RESPONSE",
+  "role": "READ_ONLY_REALIZABILITY_PRESERVING_MOMENT_CLOSURE_DERIVATION",
+  "authority": {
+    "C5Y": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "C5Z": "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
+    "C6A": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
+    "representation_selection": "integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "scientific_choice": {
+    "selected_family_id": "BEMR",
+    "name": "Bounded Entropy-Moment Reconstruction",
+    "reason": [
+      "C5Y's centered first water-content moment remains the smallest additional scalar shape state with an exact projected conservation balance.",
+      "C5Z rejected the all-layer cubic-theta map because that map is not realizability preserving; it did not reject the first moment itself.",
+      "C6A shows that moving algebraic interface variables without new subgrid information collapses to already-closed routes.",
+      "The next family therefore keeps the conservation-derived S,M state but places the hydraulic profile in a bounded dual variable whose inverse map enforces the constitutive saturation interval by construction.",
+      "The family is selected from a mathematical realizability principle and degree count, not by minimizing C5R/C5N/C5P response error."
+    ],
+    "rejected_as_next": [
+      {
+        "id": "DUAL_CONTROL_VOLUME_STATE",
+        "reason": "Potentially physical, but an interface-local conserved water state is not yet distinguishable from simply adding/refining ordinary layers; no independent minimality argument currently selects it."
+      },
+      {
+        "id": "ADAPTIVE_MOVING_PARTITION",
+        "reason": "Scientifically viable separate representation direction, but DYN0A-MECH3B does not yet supply a unique prospective adaptation law. It remains deferred rather than silently chosen."
+      }
+    ]
+  },
+  "bounded_dual_derivation": {
+    "normalized_coordinate": "xi in [-1,1]",
+    "frozen_constitutive_interval": "Se in [L,U] with L=0.02 and U=0.995 for C6C qualification",
+    "normalized_occupancy": "y=(Se-L)/(U-L), so y in [0,1]",
+    "information_entropy": "eta(y)=y*ln(y)+(1-y)*ln(1-y)",
+    "entropy_dual": "v=d eta/dy=ln(y/(1-y))",
+    "inverse_dual": "y=sigma(v)=1/(1+exp(-v))",
+    "profile": "Se_i(xi)=L+(U-L)*sigma(v_i(xi))",
+    "dual_space": "v_i belongs to the complete polynomial space P3: b0+b1*P1+b2*P2+b3*P3",
+    "important_boundary": "eta is an information-theoretic convex generator used to define a realizability-preserving dual coordinate. C6B makes no claim that it is the thermodynamic entropy of soil water."
+  },
+  "why_cubic_dual_space_is_prospective": {
+    "coefficients_per_layer": 4,
+    "constraints": [
+      "one integrated storage S_i",
+      "one centered first water-content moment M_i",
+      "pressure continuity at internal faces",
+      "Darcy flux continuity at internal faces",
+      "two external hydraulic boundary conditions globally"
+    ],
+    "degree_count": {
+      "unknowns": "4N",
+      "storage_and_moment_constraints": "2N",
+      "internal_pressure_and_flux_constraints": "2(N-1)",
+      "external_boundary_constraints": 2,
+      "total_constraints": "4N"
+    },
+    "basis_independence": "Degree <=3 is the unique four-dimensional polynomial space; Legendre coordinates are numerical conditioning/basis choices, not a fitted physical order.",
+    "no_higher_order_authorized": true
+  },
+  "maximum_entropy_connection": {
+    "statement": "With only mean occupancy and first spatial moment constrained, maximizing binary information entropy yields an affine entropy-dual profile v=a0+a1*xi. This supplies the response-free realizability rationale for the dual coordinate.",
+    "hydraulic_extension": "The P2/P3 dual modes are not claimed to be extra maximum-entropy moments. They are the minimum additional algebraic degrees required by the already-frozen hydraulic interface and boundary constraints while staying inside the same realizability-preserving dual space.",
+    "literature": [
+      {
+        "citation": "Levermore, C.D. (1996), Moment closure hierarchies for kinetic theories, Journal of Statistical Physics 83, 1021-1065.",
+        "doi": "10.1007/BF02179552",
+        "relevance": "Entropy-based moment closures provide a systematic way to reconstruct admissible distributions from a finite moment set."
+      },
+      {
+        "citation": "Cernohorsky, J. and Bludman, S.A. (1994), Maximum Entropy Distribution and Closure for Bose-Einstein and Fermi-Dirac Radiation Transport, Astrophysical Journal 433, 250-255.",
+        "relevance": "For a bounded occupancy field, the maximum-entropy dual has logistic/Fermi-Dirac form and respects lower and upper occupancy bounds. C6B uses only this mathematical bounded-realizability property, not the radiation physics."
+      },
+      {
+        "citation": "Wu, X., Cheng, J., Shu, C.-W. (2026), A high-order bound-preserving finite difference multi-resolution WENO method for high-dimensional Richards equation, Advances in Water Resources 213, 105324.",
+        "doi": "10.1016/j.advwatres.2026.105324",
+        "relevance": "Independent Richards-equation evidence that preserving physical moisture bounds is a structural numerical requirement rather than a cosmetic post-processing step."
+      }
+    ]
+  },
+  "distinction_from_C5Z": {
+    "same_dynamic_state": [
+      "S_i",
+      "M_i"
+    ],
+    "same_number_of_profile_coefficients_per_layer": 4,
+    "same_synthetic_domain_required": true,
+    "moment_domain_narrowed": false,
+    "constitutive_domain_relaxed": false,
+    "post_solution_clipping": false,
+    "response_based_parameter": false,
+    "structural_difference": "C5Z approximates theta directly by a cubic polynomial, which can leave the admissible interval. BEMR approximates the unconstrained entropy-dual v and maps through a fixed sigmoid into the frozen Se interval, so realizability is structural for every finite coefficient vector.",
+    "not_a_C5Z_retune": "No C5Z coefficient, moment amplitude, polynomial order, constitutive limit, solver tolerance or hydrological residual is reused to tune BEMR."
+  },
+  "exact_state_relations": {
+    "storage": "S_i=(d_i/2)*integral_{-1}^{1} theta(Se_i(xi)) dxi",
+    "first_moment": "M_i=(d_i^2/4)*integral_{-1}^{1} xi*theta(Se_i(xi)) dxi",
+    "exact_balance_from_C5Y": "dM_i/dt = integral_layer q(z) dz - (d_i/2)*(q_top+q_bottom)",
+    "note": "C6B changes only the algebraic profile map from (S,M) to hydraulic subgrid structure. It does not change the exact projected moment balance."
+  },
+  "realizability_domain": {
+    "box": "L<=Se<=U",
+    "exact_first_moment_bound": "Let Se_bar be the layer mean. Then |M| <= 0.5*DeltaTheta*d^2*((Se_bar-L)*(U-Se_bar)/(U-L)).",
+    "derivation": "After y=(Se-L)/(U-L), the extremal bounded profile is the edge-filled step and has |(1/2) integral xi*y dxi|=y_bar*(1-y_bar).",
+    "requirement": "C6C must check the unchanged C5Z target S,M states against this stricter BEMR constitutive-domain realizability bound before solving."
+  },
+  "adjudication": {
+    "FIRST_MOMENT_STATE_RETAINED": true,
+    "BEMR_IS_STRUCTURALLY_DISTINCT_FROM_C5Z_CUBIC_THETA": true,
+    "BEMR_REALIZABILITY_IS_BY_CONSTRUCTION": true,
+    "BEMR_PROFILE_EXISTENCE_FOR_GLOBAL_HYDRAULIC_CONSTRAINTS_PROVEN": false,
+    "BEMR_GLOBAL_BRANCH_UNIQUENESS_PROVEN": false,
+    "BEMR_HYDRAULIC_CONTINUITY_PROVEN": false,
+    "MATHEMATICAL_QUALIFICATION_AUTHORIZED": true,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "FREE_RUNNING_IMPLEMENTATION_AUTHORIZED": false,
+    "MOMENT_LOCALIZATION_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "next_authority": {
+    "target": "LARE-BC2-C6C",
+    "state": "BEMR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_AUTHORIZED",
+    "constraints": [
+      "Use exactly the C5Z D8_B2P5 and D12_B2P5 partitions, seven mean-Se profiles, six moment patterns and two boundary cases.",
+      "Do not narrow the moment amplitudes after C5Z.",
+      "Use the same frozen B14 constitutive law and Se qualification interval [0.02,0.995].",
+      "All layers remain moment-enriched; no localization.",
+      "No clipping, limiting, coefficient regularization or response-based parameter.",
+      "Preregister quadrature, starts, solver tolerances, state residual scales and branch-agreement gates before execution.",
+      "No hydrological trajectory may be read or generated.",
+      "If C6C fails existence, uniqueness, state recovery or hydraulic continuity, stop BEMR without tuning the dual order, bounds, starts or state domain."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "response_based_profile_fit": false,
+    "c5z_post_result_retuning": false,
+    "new_dynamic_state_implemented": false,
+    "moment_localization_selected": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
