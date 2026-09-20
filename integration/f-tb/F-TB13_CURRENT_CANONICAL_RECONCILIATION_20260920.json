@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.ftb13.current_canonical_reconciliation.v1",
+  "work_unit": "F-TB13R",
+  "date": "2026-09-20",
+  "purpose": "Rebase the already qualified F-TB13 legacy analytical-reference preservation package onto current canonical without changing the preserved analytical assets or their scientific claims.",
+  "canonical_base": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "predecessor": {
+    "pr": 163,
+    "branch": "work/f-tb13-legacy-analytical-reference-preservation",
+    "head": "f2706f9ffaa79917d46b3fb1db11b19b91b8c237",
+    "decision": "QUALIFIED_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION_CANDIDATE",
+    "dedicated_workflow_run": 35108146575,
+    "documentation_run": 35108146555,
+    "vq_reference_run": 35108146500,
+    "fci_canonical_run": 35108146568,
+    "all_listed_runs": "SUCCESS"
+  },
+  "authority": {
+    "f_ar01": "docs/verification/evidence/F-AR01_LEGACY_ZIP_RECONCILIATION.json",
+    "corrected_reference": "B1.11",
+    "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "recovered_framework_zip_sha256": "199f3d1d607255a813bb023c5741de17eacb173c2537a56bfa214ad2827b0fca",
+    "preserved_asset_archive_sha256": "57a75c64e1b057223fbd32ac3051a2c56938209f19b86912d7236f4f1d5fc069"
+  },
+  "current_reconciliation": {
+    "all_19_predecessor_paths_absent_from_canonical_before_rebase": true,
+    "b1_11_manifest_identity_unchanged": true,
+    "f_ar01_still_classifies_extended_framework_as_selective_import_candidate": true,
+    "production_source_overlap": false,
+    "reference_overlap": false,
+    "existing_f_tb11_f_tb12_rewritten": false,
+    "disposition": "IMPORT_PREDECESSOR_PACKAGE_EXACTLY_AND_REQUIRE_FRESH_CURRENT_HEAD_REPLAY"
+  },
+  "preserved_evidence": {
+    "steady_state_layered_water": "12/12 PASS",
+    "documented_steady_state_metrics": "12/12 PASS",
+    "srivastava_yeh_gardner_transient": "12/12 PASS",
+    "coarse_to_fine_h_rmse_convergence": "4/4 PASS",
+    "recovered_framework_vs_fresh_b1_11_outputs": "BYTE_IDENTICAL_ALL_4_PRESERVED_OUTPUTS"
+  },
+  "hard_nonclaims": [
+    "historical framework GNU executable is not immutable official B0",
+    "historical steady-state-solute RMSE table is not a hard release gate",
+    "Basha 1999 is not completed",
+    "F-TB13 does not establish SWAP5 production-solver equivalence",
+    "F-TB13 does not rebind F-TB11 or F-TB12 to current canonical",
+    "F-TB13 changes no production or corrected-reference source"
+  ],
+  "required_current_qualification": [
+    "F-TB13 legacy analytical reference preservation",
+    "Documentation",
+    "VQ reference qualification",
+    "F-CI canonical qualification"
+  ],
+  "decision": "REBASED_EXACT_PRESERVATION_PACKAGE_PENDING_CURRENT_HEAD_QUALIFICATION",
+  "admission_effect": "If all current-head qualification gates pass and live canonical remains scope-compatible, admit F-TB13R as an additive permanent analytical/reference testbank surface and close historical PR #163 as superseded by the rebase."
+}
