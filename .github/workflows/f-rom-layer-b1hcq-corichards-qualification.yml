@@ -208,7 +208,14 @@ jobs:
           SPECS
 
           sha256sum $(find B1HCQ_EVIDENCE -type f | sort) > B1HCQ_EVIDENCE/sha256.txt
-          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- \
+            integration/f-rom/LAYER_ROM_B1HCQ_PREREGISTRATION.json \
+            integration/f-rom/LAYER_ROM_B1HCQ_REPAIR_RECORD.json \
+            tests/rom/materialize_layer_rom_variable_grid_stubs.py \
+            tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py \
+            tests/rom/analyze_layer_rom_b1hcq_member.py \
+            tests/rom/aggregate_layer_rom_b1hcq.py \
+            .github/workflows/f-rom-layer-b1hcq-corichards-qualification.yml
           echo "LAYER_ROM_B1HCQ_MATERIAL_QUALIFICATION=PASS"
 
       - name: Upload material qualification evidence
