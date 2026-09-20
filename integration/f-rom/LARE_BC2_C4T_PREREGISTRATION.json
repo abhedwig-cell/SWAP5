@@ -434,5 +434,24 @@
   "application_acceptance_adjudicated": false,
   "formal_performance_claim": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_compile_fairness_binding": {
+    "before_first_C4T_timing": true,
+    "reference_compiler_helper": "tests/rom/compile_f_rom0_fortran_closure.py",
+    "common_flags": [
+      "-std=f2008",
+      "-ffree-line-length-none",
+      "-Wall",
+      "-Wextra",
+      "-fcheck=all",
+      "-fbacktrace",
+      "-fopenmp",
+      "-ffpe-trap=invalid,zero,overflow",
+      "-O2"
+    ],
+    "rule": "Standalone LARE and FMC timing executables receive the same applicable GNU Fortran runtime-check and optimization flags as the CoRichards/R16 helper. O0 validation builds use the same flags with -O0.",
+    "response_based": false,
+    "scientific_effect": "NONE",
+    "timing_effect": "Removes an avoidable compiler-check asymmetry before cost exposure."
+  }
 }
