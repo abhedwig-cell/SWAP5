@@ -163,8 +163,8 @@ jobs:
           set -euo pipefail
           mkdir -p build/evidence
           for soil in coarse loam clay; do
-            build/analytic/bench "$soil" > "build/evidence/analytic-$soil.txt"
-            build/table/bench "$soil" > "build/evidence/table-$soil.txt"
+            build/analytic/bench "$soil" analytic > "build/evidence/analytic-$soil.txt"
+            build/table/bench "$soil" table > "build/evidence/table-$soil.txt"
           done
           python3 - <<'PY'
           from pathlib import Path
@@ -220,7 +220,7 @@ jobs:
           rows=[]; summary=[]
 
           def one(route,soil):
-              p=subprocess.run([str(routes[route]),soil],capture_output=True,text=True,check=True)
+              p=subprocess.run([str(routes[route]),soil,route],capture_output=True,text=True,check=True)
               vals={}
               for line in p.stdout.splitlines():
                   if "=" in line:
