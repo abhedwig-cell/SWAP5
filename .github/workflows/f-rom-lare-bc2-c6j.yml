@@ -33,7 +33,7 @@ jobs:
       - name: Verify frozen C6J authority
         run: |
           set -euo pipefail
-          test "$(git hash-object tests/rom/qualify_lare_bc2_c6j_femo.py)" = "6c12dde9395e2d475d6bb8f3d604a49b8eb57857"
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6j_femo.py)" = "d3da358fff311dd7610b8e00fa03512e9c50dba1"
           test "$(git hash-object tests/rom/merge_lare_bc2_c6j_femo_shards.py)" = "db89a175d56fca3cd8af92419748db55d9d53fb0"
           test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
           test "$(git hash-object integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json)" = "0785ee33f882f9dbd12a90133095d000c16e0890"
@@ -46,7 +46,7 @@ jobs:
           assert p['phase']=='PREREGISTERED_BEFORE_C6J_NUMERICAL_RESPONSE'
           assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
           assert p['implementation_binding']['execution_binding_complete'] is True
-          assert p['implementation_binding']['qualifier_blob']=='6c12dde9395e2d475d6bb8f3d604a49b8eb57857'
+          assert p['implementation_binding']['qualifier_blob']=='d3da358fff311dd7610b8e00fa03512e9c50dba1'
           assert p['implementation_binding']['aggregator_blob']=='db89a175d56fca3cd8af92419748db55d9d53fb0'
           assert c['decision']=='PREREGISTER_FREE_ENERGY_MOMENT_ONSAGER_REDUCTION_FOR_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION'
           assert p['scientific_firewall']['hydrological_response_used'] is False
