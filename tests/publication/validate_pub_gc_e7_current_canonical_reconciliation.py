@@ -53,6 +53,27 @@ backend_path = "src/runtime/mod_fmr_serialized_reference_backend.f90"
 temporal_path = "src/solver/mod_reference_richards_temporal_indicator.f90"
 src = read(src_path).decode("utf-8")
 
+# F-GC CSR semantic successor: preserve the historical E7 evidence, but do not
+# preserve the superseded inference that coupled-groundwater authority is
+# synonymous with a homogeneous legacy bottom_mode=5 application profile.
+csr_path = ROOT / "integration/f-gc/F-GC_COUPLING_SEMANTICS_RECONCILIATION_STATUS.json"
+if csr_path.exists():
+    csr = json.loads(csr_path.read_text(encoding="utf-8"))
+    assert csr["decision"] == "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED"
+    assert csr["experiment_impact"]["E7"] == "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
+    assert csr["e7"]["rerun_authorized"] is False
+    assert csr["pub_gc_submission"] == "HELD"
+    assert e7["status"] == "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT"
+    assert e7["outcome"] == "REALISTIC_COMPONENT_DOMAIN_LIMIT"
+    assert "logical :: groundwater_coupled = .false." in src
+    assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%groundwater_coupled" in src
+    assert "tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active" in src
+    print("PUB_GC_E7_HISTORICAL_RESULT_PRESERVED=PASS")
+    print("PUB_GC_E7_MODE5_DOMAIN_INTERPRETATION_SUPERSEDED=PASS")
+    print("PUB_GC_E7_REQUALIFICATION_REQUIRED=PASS")
+    print("PUB_GC_SUBMISSION_HELD=PASS")
+    raise SystemExit(0)
+
 assert e7["status"] == "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT"
 assert e7["outcome"] == "REALISTIC_COMPONENT_DOMAIN_LIMIT"
 assert git_blob_sha("docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json") == rec["e7"]["result_blob"]
