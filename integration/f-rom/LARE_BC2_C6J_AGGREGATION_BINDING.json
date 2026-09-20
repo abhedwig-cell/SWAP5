@@ -13,14 +13,14 @@
   },
   "repaired_aggregator": {
     "path": "tests/rom/merge_lare_bc2_c6j_femo_shards.py",
-    "blob": "31d9cad813f2aeffb3f066393cd3f24bbc5ca48f"
+    "blob": "b81c71a5404adfa23f0db344bbc6ea483605795a"
   },
   "aggregation_reconciliation": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json",
   "workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6j-aggregate-recovery.yml",
-    "blob": "f301f8997c5c5ea695100ccddba4b39071bf4516",
+    "blob": "27bc68ecb1185f158239a0b5dd1e197c2a593ae2",
     "state": "BOUND_BEFORE_AGGREGATION",
-    "binding_note": "Only this binding update triggers aggregation of the immutable nine C6J shard artifacts from run 35530325107. No scientific shard is rerun."
+    "binding_note": "Rebound after live-delta reconciliation. Only this binding update triggers aggregation of the immutable nine C6J shard artifacts from run 35530325107; no scientific shard is rerun."
   },
   "scientific_design_changed": false,
   "scientific_firewall": {
