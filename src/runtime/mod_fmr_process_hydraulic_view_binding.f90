@@ -2,7 +2,7 @@ module mod_fmr_process_hydraulic_view_binding
   use mod_transaction_reference, only: transaction_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t
   implicit none
   private
 
@@ -29,22 +29,58 @@ contains
 
     select type (physical => snapshot)
     type is (fmr_b110_physical_state_t)
-      n = physical%active_nodes
-      if (n <= 0) return
-      if (.not. allocated(physical%pressure_head)) return
-      if (.not. allocated(physical%water_content)) return
-      if (size(physical%pressure_head) /= n) return
-      if (size(physical%water_content) /= n) return
-
-      view%active_nodes = n
-      call move_alloc(physical%pressure_head, view%pressure_head)
-      call move_alloc(physical%water_content, view%water_content)
-      view%ponding_depth = physical%ponding_depth
-      view%groundwater_level = physical%groundwater_level
-      ok = .true.
+      call move_physical_hydraulic_view(physical, view, ok)
+    type is (fmr_b110_temporal_indicator_state_t)
+      call move_temporal_hydraulic_view(physical, view, ok)
     class default
       return
     end select
   end subroutine fmr_build_committed_process_hydraulic_view
+
+  subroutine move_physical_hydraulic_view(physical, view, ok)
+    type(fmr_b110_physical_state_t), intent(inout) :: physical
+    type(process_hydraulic_view_t), intent(out) :: view
+    logical, intent(out) :: ok
+    integer :: n
+
+    view = process_hydraulic_view_t()
+    ok = .false.
+    n = physical%active_nodes
+    if (n <= 0) return
+    if (.not. allocated(physical%pressure_head)) return
+    if (.not. allocated(physical%water_content)) return
+    if (size(physical%pressure_head) /= n) return
+    if (size(physical%water_content) /= n) return
+
+    view%active_nodes = n
+    call move_alloc(physical%pressure_head, view%pressure_head)
+    call move_alloc(physical%water_content, view%water_content)
+    view%ponding_depth = physical%ponding_depth
+    view%groundwater_level = physical%groundwater_level
+    ok = .true.
+  end subroutine move_physical_hydraulic_view
+
+  subroutine move_temporal_hydraulic_view(physical, view, ok)
+    type(fmr_b110_temporal_indicator_state_t), intent(inout) :: physical
+    type(process_hydraulic_view_t), intent(out) :: view
+    logical, intent(out) :: ok
+    integer :: n
+
+    view = process_hydraulic_view_t()
+    ok = .false.
+    n = physical%active_nodes
+    if (n <= 0) return
+    if (.not. allocated(physical%pressure_head)) return
+    if (.not. allocated(physical%water_content)) return
+    if (size(physical%pressure_head) /= n) return
+    if (size(physical%water_content) /= n) return
+
+    view%active_nodes = n
+    call move_alloc(physical%pressure_head, view%pressure_head)
+    call move_alloc(physical%water_content, view%water_content)
+    view%ponding_depth = physical%ponding_depth
+    view%groundwater_level = physical%groundwater_level
+    ok = .true.
+  end subroutine move_temporal_hydraulic_view
 
 end module mod_fmr_process_hydraulic_view_binding
