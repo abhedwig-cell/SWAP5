@@ -2768,6 +2768,75 @@ def validate_romv2_d29_if_present() -> str:
     return "CLOSED_ONE_DAY_SEPARATED_BRANCH_DOMAIN_NO_GO_BEFORE_RICHARDS_EXPOSURE"
 
 
+def validate_romv2_d30_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D30_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D30_AUTHORITY_RECONCILIATION.json")
+            == "6e5b50f4d4f56e4ae27ba2846c29cc06b9089583",
+            "F-ROMV2-D30 authority reconciliation blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D30_STATUS.json")
+            == "97f7b0e55ef2699919997fe5929885bc8338c6d9",
+            "F-ROMV2-D30 status blob drift")
+    require(git("rev-parse", "HEAD:docs/science/F-ROMV2_D30_SURFACE_GW_CONTACT_AUTHORITY.md")
+            == "3005cc44e13c300243c17a0def9a8c235b6ca3f8",
+            "F-ROMV2-D30 adjudication blob drift")
+
+    authority = load_json("integration/f-rom/F-ROMV2_D30_AUTHORITY_RECONCILIATION.json")
+    status = load_json("integration/f-rom/F-ROMV2_D30_STATUS.json")
+    doc = Path("docs/science/F-ROMV2_D30_SURFACE_GW_CONTACT_AUTHORITY.md").read_text(encoding="utf-8")
+
+    require(authority["phase"] == "CLOSED_AUTHORITY_RECONCILIATION_EXTERNAL_IMPLEMENTATION_ORACLE_REQUIRED"
+            and authority["decision"] == "NATURAL_SURFACE_GW_CONTACT_EVENT_UPDATE_UNDERSPECIFIED_WITHOUT_IMPLEMENTATION_ORACLE",
+            "F-ROMV2-D30 decision/phase drift")
+    require(authority["primary_authority"]["conclusion"].startswith(
+            "The paper identifies the physical post-contact state"),
+            "F-ROMV2-D30 primary-authority conclusion drift")
+    require(authority["repository_authority"]["D19_scope"]["contact_type"]
+            == "falling slug begins at exact same-bin contact with groundwater front"
+            and authority["repository_authority"]["D19_scope"]["continued_surface_infiltration_during_contact"] is False,
+            "F-ROMV2-D30 D19 scope drift")
+    require(authority["repository_authority"]["D29_scope"]["contact_type"]
+            == "surface-connected infiltration front meets same-bin groundwater front during continued prescribed infiltration"
+            and authority["repository_authority"]["D29_scope"]["continued_surface_infiltration"] is True,
+            "F-ROMV2-D30 D29 scope drift")
+    require(authority["authority_boundary"]["D30_contact_capable_trajectory_authorized"] is False
+            and authority["authority_boundary"]["D29_stage2_reopened"] is False
+            and authority["authority_boundary"]["natural_surface_gw_contact_event_algorithm_authorized"] is False,
+            "F-ROMV2-D30 prematurely authorizes natural-contact trajectory")
+    require(authority["implementation_oracle"]["dataset_id"] == "M2WC70"
+            and authority["implementation_oracle"]["status_from_D28"] == "IDENTIFIED_BUT_NOT_MATERIALIZED",
+            "F-ROMV2-D30 implementation-oracle identity/status drift")
+    require("DO_NOT_TREAT_D19_FALLING_SLUG_MERGE_AS_AUTOMATIC_AUTHORITY_FOR_D29_SURFACE_FRONT_CONTACT"
+            in authority["prohibited"],
+            "F-ROMV2-D30 anti-analogy firewall missing")
+    require(authority["authority_boundary"]["production_rom_authorized"] is False,
+            "F-ROMV2-D30 authority authorizes production ROM")
+
+    require(status["phase"] == "BLOCKED_EXTERNAL_SURFACE_GW_CONTACT_EVENT_UPDATE_ORACLE"
+            and status["primary_paper_post_contact_state_class_identified"] is True
+            and status["primary_paper_natural_within_step_event_update_sufficient"] is False,
+            "F-ROMV2-D30 status authority boundary drift")
+    require(status["D19_falling_slug_merge_sufficient_for_D29_contact"] is False
+            and status["implementation_oracle_materialized"] is False
+            and status["contact_capable_long_window_trajectory_authorized"] is False
+            and status["D29_stage2_authorized"] is False,
+            "F-ROMV2-D30 blocked-trajectory status drift")
+    require(status["D28_native_ET_blocker_preserved"] is True
+            and status["production_rom_authorized"] is False,
+            "F-ROMV2-D30 predecessor/production boundary drift")
+
+    require("The primary paper identifies the ingredients and intended continuous behavior," in doc,
+            "F-ROMV2-D30 paper sufficiency statement missing")
+    require("D30 therefore closes as an **external implementation-authority blocker**." in doc,
+            "F-ROMV2-D30 blocker classification missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D30 production prohibition missing")
+
+    return "BLOCKED_EXTERNAL_SURFACE_GW_CONTACT_EVENT_UPDATE_ORACLE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2823,6 +2892,7 @@ def main() -> int:
     romv2_d27_phase = validate_romv2_d27_if_present()
     romv2_d28_phase = validate_romv2_d28_if_present()
     romv2_d29_phase = validate_romv2_d29_if_present()
+    romv2_d30_phase = validate_romv2_d30_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2862,6 +2932,7 @@ def main() -> int:
     print(f"F_ROMV2_D27_PHASE={romv2_d27_phase}")
     print(f"F_ROMV2_D28_PHASE={romv2_d28_phase}")
     print(f"F_ROMV2_D29_PHASE={romv2_d29_phase}")
+    print(f"F_ROMV2_D30_PHASE={romv2_d30_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
