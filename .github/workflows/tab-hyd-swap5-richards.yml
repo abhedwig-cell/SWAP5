@@ -1,0 +1,117 @@
+name: TAB-HYD SWAP5 Reference Richards pair
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tab-hyd-swap5-provider
+    paths:
+      - 'research/tab_hyd_swap5/test_tab_hyd_swap5_reference_richards_pair.f90'
+      - 'research/tab_hyd_swap5/mod_research_direct_table_provider.f90'
+      - '.github/workflows/tab-hyd-swap5-richards.yml'
+
+jobs:
+  pair:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build paired Reference Richards harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD=build/tab-hyd-swap5-richards
+          mkdir -p "$BUILD"
+          python3 tests/fsi/fsi18_make_reference_tridag_stubs.py             tests/fsi/fsi04_real_headcalc_stubs.f90 "$BUILD/reference_tridag_stubs.f90"
+          COMMON="-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow"
+          SOURCES=(
+            "$BUILD/reference_tridag_stubs.f90"
+            src/runtime/mod_a23bu_worker_execution_context.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/solver/mod_process_hydraulic_view.f90
+            src/solver/mod_reference_linear_solver.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_reference_richards_state_binding.f90
+            src/solver/mod_b110_default_mvg_provider.f90
+            research/tab_hyd_swap5/mod_research_direct_table_provider.f90
+            src/solver/mod_b110_source_sink_provider.f90
+            src/solver/mod_fixed_flux_top_boundary_provider.f90
+            src/solver/mod_reference_richards_temporal_indicator.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            tests/fmr/mod_fmr04_fixed_top_provider.f90
+          )
+          objects=()
+          for src in "${SOURCES[@]}"; do
+            obj="$BUILD/$(basename "${src%.*}").o"
+            gfortran $COMMON -O2 -J "$BUILD" -I "$BUILD" -c "$src" -o "$obj"
+            objects+=("$obj")
+          done
+          gfortran $COMMON -O2 -J "$BUILD" -I "$BUILD"             -c research/tab_hyd_swap5/test_tab_hyd_swap5_reference_richards_pair.f90             -o "$BUILD/test.o"
+          gfortran -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
+
+      - name: Run 15 qualified hydraulic-state pairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD=build/tab-hyd-swap5-richards
+          python3 - <<'PY'
+          import json
+          d=json.load(open("integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json"))
+          with open("build/tab-hyd-swap5-richards/cases.tsv","w") as f:
+              for r in d["rows"]:
+                  f.write(f"{r['case']}\t{r['h0_cm']:.17e}\t{r['jump_cm']:.17e}\n")
+          PY
+          : > "$BUILD/results.txt"
+          while IFS=$'\t' read -r cid h0 jump; do
+            echo "CASE=$cid" | tee -a "$BUILD/results.txt"
+            timeout 120 "$BUILD/test" "$h0" "$jump" | tee -a "$BUILD/results.txt"
+          done < "$BUILD/cases.tsv"
+          test "$(grep -c '^TAB_HYD_SWAP5_REFERENCE_RICHARDS_PAIR=PASS$' "$BUILD/results.txt")" -eq 15
+
+      - name: Summarize paired solver differences
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text=Path("build/tab-hyd-swap5-richards/results.txt").read_text().splitlines()
+          pat=re.compile(
+              r"TAB_HYD_SWAP5_RICHARDS:H0=\s*([^:]+):JUMP=\s*([^:]+):INIT_THETA_DIFF=\s*([^:]+)"
+              r":HEAD_DIFF=\s*([^:]+):WATER_DIFF=\s*([^:]+):TOP_FLUX_DIFF=\s*([^:]+)"
+              r":BOTTOM_FLUX_DIFF=\s*([^:]+):ITER_MVG=(\d+):ITER_TABLE=(\d+)"
+          )
+          rows=[]
+          for line in text:
+              m=pat.match(line)
+              if m:
+                  vals=[float(m.group(i)) for i in range(1,8)]
+                  rows.append(vals+[int(m.group(8)),int(m.group(9))])
+          if len(rows)!=15:
+              raise SystemExit(f"expected 15 paired rows, got {len(rows)}")
+          summary=(
+              f"cases={len(rows)}\n"
+              f"max_initial_theta_diff={max(r[2] for r in rows):.17e}\n"
+              f"max_head_diff={max(r[3] for r in rows):.17e}\n"
+              f"max_water_diff={max(r[4] for r in rows):.17e}\n"
+              f"max_top_flux_diff={max(r[5] for r in rows):.17e}\n"
+              f"max_bottom_flux_diff={max(r[6] for r in rows):.17e}\n"
+              f"max_iteration_delta={max(abs(r[7]-r[8]) for r in rows)}\n"
+          )
+          Path("build/tab-hyd-swap5-richards/summary.txt").write_text(summary)
+          print(summary,end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-swap5-richards-pair
+          path: |
+            build/tab-hyd-swap5-richards/results.txt
+            build/tab-hyd-swap5-richards/summary.txt
+            build/tab-hyd-swap5-richards/cases.tsv
