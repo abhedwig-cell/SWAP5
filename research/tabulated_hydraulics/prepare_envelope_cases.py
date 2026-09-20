@@ -182,9 +182,9 @@ def replace_mvg_rows(text: str, params: list[dict]) -> str:
         raise RuntimeError(f"expected exactly two Hupsel MvG rows, found {len(data_idx)}")
     for idx, p in zip(data_idx, params):
         lines[idx] = (
-            f" {p['ores']:.8g} {p['osat']:.8g} {p['alpha']:.8g} {p['n']:.8g} "
-            f"{p['ksat']:.8g} {p['lexp']:.8g} {p['alfaw']:.8g} {p['h_enpr']:.8g} "
-            f"{p['ksat']:.8g} 1315.0"
+            f" {p['ores']:.16e} {p['osat']:.16e} {p['alpha']:.16e} {p['n']:.16e} "
+            f"{p['ksat']:.16e} {p['lexp']:.16e} {p['alfaw']:.16e} {p['h_enpr']:.16e} "
+            f"{p['ksat']:.16e} 1.3150000000000000e+03"
         )
     return "\n".join(lines) + "\n"
 
@@ -207,7 +207,7 @@ def replace_groundwater_table(text: str, level: float) -> str:
         raise RuntimeError("expected two DATE1/GWLEVEL rows")
     dates = [lines[i].strip().split()[0] for i in rows]
     for i, date in zip(rows, dates):
-        lines[i] = f" {date} {level:.8g}"
+        lines[i] = f" {date} {level:.16e}"
     return "\n".join(lines) + "\n"
 
 
@@ -221,7 +221,7 @@ def replace_irrigation_depth(text: str, depth: float) -> str:
             continue
         parts = s.split()
         if re.match(r"\d{4}-\d{2}-\d{2}$", parts[0]) and len(parts) >= 4:
-            parts[1] = f"{depth:.8g}"
+            parts[1] = f"{depth:.16e}"
             lines[i] = " " + " ".join(parts)
             return "\n".join(lines) + "\n"
     raise RuntimeError("fixed irrigation event not found")
@@ -234,7 +234,7 @@ def prepare_case(src: Path, dst: Path, params: list[dict], spec: dict, table: bo
     text = replace_scalar(text, "SWSOPHY", "1" if table else "0")
     text = replace_scalar(text, "SWKIMPL", str(kimpl))
     text = replace_scalar(text, "SWMONTH", "0")
-    text = replace_scalar(text, "GWLI", f"{spec['gwli']:.8g}")
+    text = replace_scalar(text, "GWLI", f"{spec['gwli']:.16e}")
     text = replace_scalar(text, "SWBOTB", str(spec["swbotb"]))
     text = replace_mvg_rows(text, params)
     text = replace_irrigation_depth(text, spec["irdepth"])
