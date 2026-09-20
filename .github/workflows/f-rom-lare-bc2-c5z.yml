@@ -1,0 +1,89 @@
+name: F-ROM-LARE BC2-C5Z moment-profile admissibility
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json'
+      - 'integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json'
+      - 'tests/rom/qualify_lare_bc2_c5z_moment_profile.py'
+      - '.github/workflows/f-rom-lare-bc2-c5z.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5z-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify C5Z authority and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c5z_moment_profile.py)" = "73dc4e40bdea73e45d652eaa149d9d01ccfe76ab"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c5z_moment_profile.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json'))
+          y=json.load(open('integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_MOMENT_PROFILE_NUMERICAL_RESPONSE'
+          assert p['implementation_binding']['response_based_design'] is False
+          assert p['implementation_binding']['qualifier_blob']=='73dc4e40bdea73e45d652eaa149d9d01ccfe76ab'
+          assert y['status']=='CLOSED_FIRST_WATER_CONTENT_MOMENT_IS_MINIMAL_CONSERVATION_DERIVED_SHAPE_STATE_MATHEMATICAL_QUALIFICATION_NEXT'
+          assert y['adjudication']['MATHEMATICAL_ADMISSIBILITY_QUALIFICATION_AUTHORIZED'] is True
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          print('LARE_BC2_C5Z_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute response-free moment-profile qualification
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C5Z_EVIDENCE
+          python3 tests/rom/qualify_lare_bc2_c5z_moment_profile.py             --prereg integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json             --c5y integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json             --output LARE_BC2_C5Z_EVIDENCE/LARE_BC2_C5Z_RESULT.json             | tee LARE_BC2_C5Z_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json LARE_BC2_C5Z_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json LARE_BC2_C5Z_EVIDENCE/
+
+      - name: Validate C5Z firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5Z_EVIDENCE/LARE_BC2_C5Z_RESULT.json'))
+          assert r['status'] in (
+            'C5Z_MOMENT_PROFILE_MATHEMATICALLY_QUALIFIED',
+            'C5Z_MOMENT_PROFILE_NUMERICALLY_MULTIBRANCH_OR_INADMISSIBLE',
+            'C5Z_MOMENT_PROFILE_NOT_ADMISSIBLE'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['moment_state_implemented_in_hydrological_model'] is False
+          assert f['moment_localization_selected'] is False
+          assert f['response_based_profile_fit'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5Z_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5Z_EVIDENCE/* > LARE_BC2_C5Z_EVIDENCE/sha256.txt
+
+      - name: Upload C5Z evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5z
+          path: LARE_BC2_C5Z_EVIDENCE/
+          if-no-files-found: error
