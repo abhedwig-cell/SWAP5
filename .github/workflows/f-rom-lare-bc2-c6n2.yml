@@ -97,7 +97,7 @@ jobs:
           PY
           )"
           mkdir -p /tmp/c6n1 /tmp/reference
-          gh run download "$runid" -p 'c6n1c-*' -D /tmp/c6n1
+          gh run download "$runid" -p 'c6n1u-*' -D /tmp/c6n1
           for material in B01 B14; do
             full="/tmp/reference/${material}_R2048_T32_o0.txt"
             : > "$full"
