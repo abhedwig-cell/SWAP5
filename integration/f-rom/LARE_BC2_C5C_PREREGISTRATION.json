@@ -1,0 +1,208 @@
+{
+  "schema": "swap5.lare.bc2.c5c.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5C",
+  "phase": "PREREGISTERED_BEFORE_C5C_R32_R64_RESPONSE",
+  "title": "Bottom-adjacent spatial refinement and Richards reference-grid audit",
+  "scientific_question": "Is the small CURRENT_LAYER_FACE residual localized by C5B caused by the 10-cm bottom-adjacent LARE layer, or does it persist after boundary-cell refinement once the Richards reference grid is independently refined?",
+  "role": "PROSPECTIVE_MECHANISM_TEST_BEFORE_ANY_NEW_CLOSURE_FORMULATION",
+  "authority": {
+    "c5b_closeout": "integration/f-rom/LARE_BC2_C5B_CLOSEOUT.json",
+    "required_c5b_status": "CLOSED_TIME_AND_UPPER_STATE_PLATEAU_PRESCRIBED_HEAD_BOUNDARY_RESPONSE_LOCALIZED",
+    "c5a_closeout": "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+    "c5a_result_sha256": "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc",
+    "exact_c5a_R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical_at_preregistration": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "backend_matched_to_C5A": true,
+    "new_closure_authorized": false
+  },
+  "frozen_workload": {
+    "material": "B14",
+    "histories": "exact C5A Z01-Z04",
+    "forcing": "exact C5A gravity-consistent top qeq and 0.875/1.125 prescribed-head factors",
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "closure": "CURRENT_LAYER_FACE only",
+    "lare_dt_day": 0.000025,
+    "no_forcing_change": true,
+    "no_history_change": true,
+    "no_material_change": true,
+    "no_closure_change": true
+  },
+  "reference_grid_audit": {
+    "existing_anchor": {
+      "id": "R16",
+      "nodes": 16,
+      "dz_cm": 10,
+      "source": "exact C5A artifact; do not regenerate for authority"
+    },
+    "new_response_blind_grids": [
+      {
+        "id": "R32",
+        "nodes": 32,
+        "dz_cm": 5
+      },
+      {
+        "id": "R64",
+        "nodes": 64,
+        "dz_cm": 2.5
+      }
+    ],
+    "numerical_policy": "exact C5A/C4Z pre-existing D13 integrated-water-depth retry policy",
+    "O0_O2_identity_required": true,
+    "transaction_mass_gate_cm": 1e-12,
+    "exact_states_per_route": 4096,
+    "purpose": "Measure Reference spatial-grid shift before attributing the C5A/C5B residual solely to LARE."
+  },
+  "lare_bottom_refinement": {
+    "invariant": "0-150 cm remains the C5B 10-cm uniform grid. Only the bottom 150-160 cm interval is split.",
+    "family": [
+      {
+        "id": "B10",
+        "dimension": 16,
+        "bottom_cell_thickness_cm": 10,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "B5",
+        "dimension": 17,
+        "bottom_cell_thickness_cm": 5,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          155,
+          160
+        ]
+      },
+      {
+        "id": "B2P5",
+        "dimension": 19,
+        "bottom_cell_thickness_cm": 2.5,
+        "boundaries_cm": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          152.5,
+          155,
+          157.5,
+          160
+        ]
+      }
+    ],
+    "comparison_reference": "R64 2.5-cm Richards reference",
+    "baseline_identity": "B10 against exact C5A R16 Reference must reproduce C5B R16 CURRENT_LAYER_FACE dt=2.5e-5 signed-flux diagnostics.",
+    "qualified_water_ledger_cm": 1e-10
+  },
+  "diagnostics": {
+    "reference_refinement": [
+      "R16-to-R32 bottom-flux timeseries distance",
+      "R32-to-R64 bottom-flux timeseries distance",
+      "R16 and R32 signed/phase errors relative to R64"
+    ],
+    "lare_refinement": [
+      "B10, B5 and B2P5 pooled signed mean and bottom-flux RMSE relative to R64",
+      "history- and phase-specific signed error relative to R64",
+      "B10-to-B5 and B5-to-B2P5 bottom-flux timeseries shifts",
+      "three-level bottom-cell-thickness signed-bias convergence order and h->0 extrapolation when defined"
+    ],
+    "no_scalar_acceptance_score": true
+  },
+  "diagnostic_adjudication": {
+    "BOTTOM_CELL_SPATIAL_CONVERGENCE_PRESENT": "Absolute pooled signed bias and pooled flux RMSE both decrease strictly B10 -> B5 -> B2P5 against R64.",
+    "BOTTOM_CELL_SPATIAL_PLATEAU": "The nested B10 -> B5 -> B2P5 sequence does not reduce both diagnostics monotonically.",
+    "REFERENCE_REFINEMENT_PROGRESSING": "R32-to-R64 bottom-flux RMSE is smaller than R16-to-R32 RMSE.",
+    "REFERENCE_REFINEMENT_NOT_PROGRESSING": "R32-to-R64 bottom-flux RMSE is not smaller than R16-to-R32 RMSE.",
+    "interpretation": "These labels diagnose mechanism only. They do not alter C5A acceptance or authorize a new closure."
+  },
+  "next_logic": {
+    "if_bottom_cell_converges_and_reference_progresses": "Quantify whether h->0 extrapolation removes the prescribed-head residual before considering a new closure.",
+    "if_bottom_cell_plateaus_and_reference_progresses": "Closure-algebra investigation may be opened prospectively; no fitted closure is yet authorized.",
+    "if_reference_not_progressing": "Do not attribute residual to LARE closure; Reference spatial authority must be extended first.",
+    "if_R32_or_R64_blocked": "Close C5C as Reference-grid blocker without retuning numerical policy."
+  },
+  "hard_gates": {
+    "exact_C5A_R16_artifact_hash": true,
+    "R32_O0_O2_identity": true,
+    "R64_O0_O2_identity": true,
+    "R32_R64_reference_mass_cm": 1e-12,
+    "exact_reference_state_count_per_route": 4096,
+    "B10_C5B_baseline_identity": true,
+    "all_lare_refinement_members_attempted": true,
+    "qualified_lare_water_ledger_cm": 1e-10,
+    "fail_open_count": 0
+  },
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5B_closure_changed": false,
+    "new_closure_fit": false,
+    "R2_acceptance_recomputed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "pre_execution_implementation_binding": {
+    "c5c_reference_materializer_blob": "b3529057034ee5d964a74048e1d5bcde165275e7",
+    "c5c_analyzer_blob": "82d019ddd3e8505b224ba303bb6fde48bf0b8da6",
+    "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
+    "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
+    "c5b_analyzer_blob": "b51b4b60fd229786ec566948f400eb69771d0c56",
+    "c5a_analyzer_blob": "aec3a22ba50e07fd8d90aa54a92d067952fd397d",
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "response_based_design": true,
+    "reason": "C5C is motivated by C5B localization, but the nested grids and diagnostics are frozen before generating any R32/R64 Reference response.",
+    "allowed_new_code": "Reference geometry materialization and diagnostic bottom-cell partition refinement only",
+    "prohibited_new_code": "new closure law, fitted conductivity law, acceptance threshold changes, production implementation"
+  },
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
