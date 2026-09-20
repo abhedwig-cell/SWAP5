@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.bc2.c5k.execution-binding-reconciliation.v1",
+  "schema": "swap5.lare.bc2.c5k.execution-binding-reconciliation.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C5K",
-  "status": "TECHNICAL_INSTRUMENTATION_ANCHOR_REPAIRED_BEFORE_ANY_SOLVER_RESPONSE",
+  "status": "TECHNICAL_TIME_INCREMENT_ANALYZER_REPAIR_AFTER_EXACT_STATE_IDENTITY",
   "scientific_authority": "integration/f-rom/LARE_BC2_C5K_PREREGISTRATION.json",
   "failed_run": {
     "run_id": 35505566475,
@@ -28,5 +28,25 @@
     "response_based": false
   },
   "rerun_required": true,
-  "model_changed": false
+  "model_changed": false,
+  "instrumentation_run": {
+    "run_id": 35505654292,
+    "state_trajectory_identity_to_C5I": true,
+    "all_8_slices_qualified": true,
+    "theory_analysis_completed": false,
+    "failure_stage": "pre-theory published exchange/terminal identity check",
+    "failure": "Analyzer divided interval exchange by nominal STEP_DT rather than the actual IEEE-double t1-t0 used by the transaction runtime.",
+    "scientific_response_adjudicated": false
+  },
+  "time_increment_repair": {
+    "diagnosis": "Fortran computes t1=seed+step*step_dt and carries t0 from the previous t1. The actual binary interval length therefore differs from nominal 5e-5 day by a few ulps. bottom_outward_exchange_native is bottom_flux*(t1-t0).",
+    "raw_example_max_nominal_dt_mismatch_cm_per_day": 2.303934820702125e-12,
+    "exact_dt_reconstruction_max_exchange_terminal_mismatch_cm_per_day": 2.220446049250313e-16,
+    "repair": "Parse the round-trip-safe printed T value and divide each exchange by T(step)-T(step-1), with seed time 2*0.0016 day for the first interval.",
+    "numerical_threshold_changed": false,
+    "theory_formula_changed": false,
+    "state_data_changed": false,
+    "hydrological_metric_used_for_repair": false,
+    "response_based": false
+  }
 }
