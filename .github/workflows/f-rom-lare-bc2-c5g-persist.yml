@@ -1,0 +1,182 @@
+name: F-ROM-LARE persist C5G matched matrix
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5g-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5G artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5g
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602317291" > /tmp/c5g/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5g/artifact.json'))
+          assert a['id']==10602317291
+          assert a['digest']=='sha256:3f55f9d5c7b659fa1abf18c11ecb1b5238d38a8a179730bd2013858544071ee7'
+          assert a['workflow_run']['id']==35501118463
+          assert a['workflow_run']['head_sha']=='801e310a0100e154147b365752ec52da03956b76'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602317291/zip" > /tmp/c5g.zip
+          echo "3f55f9d5c7b659fa1abf18c11ecb1b5238d38a8a179730bd2013858544071ee7  /tmp/c5g.zip" | sha256sum -c -
+          unzip -q /tmp/c5g.zip -d /tmp/c5g/evidence
+
+      - name: Persist result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5g/evidence/LARE_BC2_C5G_RESULT.json integration/f-rom/LARE_BC2_C5G_RESULT.json
+          python3 - <<'PY'
+          import json,hashlib,pathlib
+          p=pathlib.Path
+          def sha(path):
+            return hashlib.sha256(p(path).read_bytes()).hexdigest()
+          r=json.load(open('integration/f-rom/LARE_BC2_C5G_RESULT.json'))
+          assert r['status']=='MATRIX_COMPLETE_SPATIAL_GAP_INCREASES_AT_T4'
+          assert all(r['baseline_identity_to_C5F'].values())
+          result_sha=sha('integration/f-rom/LARE_BC2_C5G_RESULT.json')
+          r512t4_sha=sha('/tmp/c5g/evidence/R512_T4_o0.txt')
+          sp=r['spatial']; tp=r['temporal']; inter=r['interaction']
+          closeout={
+            'schema':'swap5.lare.bc2.c5g.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5G',
+            'status':'CLOSED_MATCHED_MATRIX_SPATIAL_GAP_INCREASES_WITH_TEMPORAL_REFINEMENT_T8_REQUIRED',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5G_PREREGISTRATION.json',
+              'workflow_run':35501118463,
+              'job_id':106052939650,
+              'execution_head':'801e310a0100e154147b365752ec52da03956b76',
+              'artifact_id':10602317291,
+              'artifact_digest':'sha256:3f55f9d5c7b659fa1abf18c11ecb1b5238d38a8a179730bd2013858544071ee7',
+              'result_sha256':result_sha,
+              'R512_T4_sha256':r512t4_sha
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5F':r['baseline_identity_to_C5F'],
+            'matched_matrix':{
+              'spatial_T1_RMSE_cm_per_day':sp['T1']['rmse_cm_per_day'],
+              'spatial_T2_RMSE_cm_per_day':sp['T2']['rmse_cm_per_day'],
+              'spatial_T4_RMSE_cm_per_day':sp['T4']['rmse_cm_per_day'],
+              'R512_T1_T2_RMSE_cm_per_day':tp['R512']['T1_T2']['rmse_cm_per_day'],
+              'R512_T2_T4_RMSE_cm_per_day':tp['R512']['T2_T4']['rmse_cm_per_day'],
+              'R1024_T1_T2_RMSE_cm_per_day':tp['R1024']['T1_T2']['rmse_cm_per_day'],
+              'R1024_T2_T4_RMSE_cm_per_day':tp['R1024']['T2_T4']['rmse_cm_per_day'],
+              'temporal_order_R512':tp['order_R512'],
+              'temporal_order_R1024':tp['order_R1024'],
+              'spatial_T4_over_T2':inter['spatial_T4_over_T2'],
+              'R512_T2_T4_over_spatial_T4':inter['R512_T2_T4_over_spatial_T4'],
+              'R1024_T2_T4_over_spatial_T4':inter['R1024_T2_T4_over_spatial_T4']
+            },
+            'adjudication':{
+              'TEMPORAL_PROGRESS_R512':True,
+              'TEMPORAL_PROGRESS_R1024':True,
+              'TEMPORAL_SUBDOMINANT_TO_T4_SPATIAL_AT_R512':inter['R512_T2_T4_over_spatial_T4']<1.0,
+              'TEMPORAL_SUBDOMINANT_TO_T4_SPATIAL_AT_R1024':inter['R1024_T2_T4_over_spatial_T4']<1.0,
+              'SPATIAL_GAP_INCREASES_T1_TO_T2':sp['T2']['rmse_cm_per_day']>sp['T1']['rmse_cm_per_day'],
+              'SPATIAL_GAP_INCREASES_T2_TO_T4':sp['T4']['rmse_cm_per_day']>sp['T2']['rmse_cm_per_day'],
+              'CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED':False,
+              'NEW_LARE_OR_CLOSURE_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'The completed R512/R1024 x T1/T2/T4 matrix shows temporal convergence at both spatial resolutions with similar descriptive order, about 0.65 at R512 and 0.68 at R1024.',
+              'Despite decreasing temporal shifts, the matched spatial gap grows monotonically from about 0.01928 cm/d at T1 to 0.02107 at T2 and 0.02233 at T4.',
+              'The T2-T4 temporal shift remains subdominant to the T4 spatial gap: about 21% at R512 and 27% at R1024.',
+              'The spatial-gap increase therefore is not explained by temporal error simply dominating the comparison. Instead, the matched matrix shows a persistent space-time interaction in which the estimated spatial gap changes as the transaction interval is refined.',
+              'A further spatial extension at T1 or T2 would mix unresolved temporal interaction into the spatial inference. The next clean test is matched T8 at both R512 and R1024.'
+            ],
+            'next_authority':{
+              'state':'MATCHED_TEMPORAL_EXTENSION_REQUIRED',
+              'target':'LARE-BC2-C5H',
+              'question':'At T8, do temporal shifts continue to decrease and does the R512-R1024 spatial gap stabilize, continue increasing, or reverse relative to T4?',
+              'constraints':[
+                'Reference-only; no LARE run and no closure modification',
+                'generate R512_T8 and R1024_T8 under exact C5F/C5G physical history and numerical policy',
+                'aggregate to the original 0.0008-day windows',
+                'preserve T1/T2/T4 matrix unchanged',
+                'no R2048 spatial extension before C5H',
+                'no application, performance, speed or production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5G_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5G closeout
+
+          C5G completes the matched R512/R1024 x T1/T2/T4 Reference matrix by generating only the previously missing R512 T4 cell.
+
+          The authoritative run is 35501118463. Temporal refinement progresses similarly at both spatial resolutions: the descriptive T1/T2/T4 temporal order is about 0.65 for R512 and 0.68 for R1024.
+
+          The central result is that the matched spatial gap does not shrink as time is refined. R512-R1024 bottom-flux RMSE is about 0.01928 cm/d at T1, 0.02107 at T2 and 0.02233 at T4. Thus the spatial difference increases another 6.0% from T2 to T4.
+
+          Temporal shifts are nevertheless smaller than the T4 spatial gap. T2-T4 is about 0.00469 cm/d at R512 and 0.00610 at R1024, roughly 21% and 27% of the T4 spatial gap respectively.
+
+          This means the spatial-gap change cannot be dismissed as temporal error simply dominating the comparison. Space and time discretization remain coupled in the Reference estimate. C5H therefore refines both R512 and R1024 to T8 before any R2048 or LARE comparison.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v12'
+          j['status']='CLOSED_THROUGH_C5G_MATCHED_MATRIX_SPATIOTEMPORAL_INTERACTION_PERSISTS_T8_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5G_matched_spatiotemporal_matrix':'integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5G':'The complete R512/R1024 x T1/T2/T4 matrix shows decreasing temporal shifts at both resolutions but a spatial gap that increases from 0.01928 to 0.02107 to 0.02233 cm/d as time is refined. Temporal T2-T4 shifts are subdominant but non-negligible.'
+          })
+          j['decision']='REFINE_BOTH_R512_AND_R1024_TO_T8_BEFORE_ANY_R2048_OR_NEW_LARE'
+          j['next_authority']='LARE-BC2-C5H'
+          j['next_family_authority']={
+            'family':'C5H_MATCHED_T8_REFERENCE_EXTENSION',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5F_CLOSEOUT.json'
+            ],
+            'purpose':'Determine whether the matched spatial gap stabilizes as temporal transaction error is reduced another factor two at both high spatial resolutions.',
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5G closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5G_RESULT.json                   integration/f-rom/LARE_BC2_C5G_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5G_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5G matched space-time matrix"
+          git push origin HEAD:work/f-rom-lare-rs1
