@@ -1,0 +1,94 @@
+{
+  "adjudication": {
+    "BRUTE_FORCE_T32_AUTHORIZED": false,
+    "CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "NEW_LARE_OR_CLOSURE_AUTHORIZED": false,
+    "R2048_SPATIAL_EXTENSION_AUTHORIZED": false,
+    "REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM_AUDIT_AUTHORIZED": true,
+    "SPATIAL_GAP_STILL_INCREASING_AT_T16": true,
+    "TEMPORAL_PROGRESS_R1024": true,
+    "TEMPORAL_PROGRESS_R512": true,
+    "TEMPORAL_SUBDOMINANT_R1024": true,
+    "TEMPORAL_SUBDOMINANT_R512": true
+  },
+  "authority": {
+    "R1024_T16_sha256": "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6",
+    "R512_T16_sha256": "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7",
+    "artifact_digest": "sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664",
+    "artifact_id": 10602539613,
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C5I_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_head": "a8edf922bcd02c10cd591d6f65dd72d38193404b",
+    "frozen_scientific_execution_head": "3d19680bd42c54fff14ea801f01d1b6f81884603",
+    "preregistration": "integration/f-rom/LARE_BC2_C5I_PREREGISTRATION.json",
+    "result_sha256": "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302",
+    "workflow_run": 35502856809
+  },
+  "baseline_identity_to_C5H": {
+    "R1024_T4_T8": true,
+    "R512_T4_T8": true,
+    "spatial_T4": true,
+    "spatial_T8": true
+  },
+  "evidence": {
+    "R1024_T4_T8_RMSE_cm_per_day": 0.003402723734856983,
+    "R1024_T8_T16_RMSE_cm_per_day": 0.0017980003195854515,
+    "R1024_T8_T16_over_spatial_T16": 0.07684769514894282,
+    "R512_T4_T8_RMSE_cm_per_day": 0.002712056754708395,
+    "R512_T8_T16_RMSE_cm_per_day": 0.0014666283839065242,
+    "R512_T8_T16_over_spatial_T16": 0.06268464455513616,
+    "spatial_T16_RMSE_cm_per_day": 0.023396932284054147,
+    "spatial_T16_over_T8": 1.015868879679165,
+    "spatial_T16_relative_change_abs": 0.01586887967916507,
+    "spatial_T4_RMSE_cm_per_day": 0.022330388263774027,
+    "spatial_T8_RMSE_cm_per_day": 0.023031448991176342,
+    "temporal_order_R1024_T4_T8_T16": 0.9202967472097948,
+    "temporal_order_R512_T4_T8_T16": 0.8868840043198307
+  },
+  "execution_qualification": {
+    "all_history_slices_qualified": true,
+    "history_partition_scientific_effect": "NONE",
+    "history_slices": 16,
+    "merged_R1024_O0_O2_byte_identity": true,
+    "merged_R512_O0_O2_byte_identity": true,
+    "prior_external_runner_shutdowns_not_scientific_failures": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "next_authority": {
+    "constraints": [
+      "Reference diagnostic counterfactuals only; no production Reference change",
+      "retain B14 physical workload and matched prescribed-head histories",
+      "use T16 evidence as the temporal-authority anchor; do not extend to T32 by default",
+      "do not run R2048 until the boundary-discretization mechanism is characterized",
+      "pre-register zero-fit counterfactuals before inspecting their responses",
+      "do not fit a closure or tune against C5I residuals",
+      "no LARE, application, performance, speed or production claim"
+    ],
+    "question": "Which discrete ingredient of the prescribed-head lower boundary drives the persistent high-resolution spatial gap: half-cell head-gradient geometry, use of last-cell-center conductivity as boundary-face conductivity, or their interaction?",
+    "state": "REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM_AUDIT_AUTHORIZED",
+    "target": "LARE-BC2-C5J"
+  },
+  "schema": "swap5.lare.bc2.c5i.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "numerical_policy_changed": false,
+    "performance_comparison_authorized": false,
+    "physical_history_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The matched T16 runs finally separate the dominant scales cleanly: temporal error continues to decrease while the R512-R1024 spatial gap still increases.",
+    "The R512-R1024 bottom-flux RMSE grows from about 0.02233 cm/d at T4 to 0.02303 at T8 and 0.02340 at T16. The final increase is about 1.59 percent.",
+    "Temporal T8-T16 shifts are only about 0.00147 cm/d at R512 and 0.00180 at R1024, approximately 6.3 and 7.7 percent of the matched T16 spatial gap. Their descriptive orders rise to about 0.887 and 0.920.",
+    "Therefore unresolved temporal transaction error is no longer a plausible dominant explanation for the continuing R512-R1024 spatial difference.",
+    "The spatial-gap increments are shrinking, but no preregistered threshold permits declaring spatial stability and no continuum extrapolation is admitted.",
+    "The spatial difference remains confined to prescribed-head phases; HOLD differences are zero or machine-level. This is consistent with, but does not yet prove, a lower-boundary discretization mechanism.",
+    "Per the preregistered stop rule, brute-force T32 or R2048 extension is not the next default. Reference boundary/discretization mechanism diagnosis is required first."
+  ],
+  "status": "CLOSED_T16_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING_REFERENCE_BOUNDARY_DISCRETIZATION_AUDIT_REQUIRED",
+  "work_unit": "LARE-BC2-C5I",
+  "workstream": "F-ROM-LARE"
+}
