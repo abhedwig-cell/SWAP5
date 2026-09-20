@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "e12c9cbbdf8600896a1a10322e7ed9aab5b7de74",
+  "checkpoint_commit": "25213b572e659c33a6ed7d9d6eee256bfcb83499",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B1H_CLOSED_B1HCQ_CORICHARDS_QUALIFICATION_IN_PROGRESS",
-  "last_reconciled_head": "e12c9cbbdf8600896a1a10322e7ed9aab5b7de74",
+  "phase": "PHASE_A_CLOSED_B1R_CLOSED_B1HCF_CLOSED_B1HCG_TEMPORAL_DIAGNOSIS_IN_PROGRESS",
+  "last_reconciled_head": "25213b572e659c33a6ed7d9d6eee256bfcb83499",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -39,7 +39,19 @@
     "tests/rom/materialize_layer_rom_b1hcq_corichards_harness.py",
     "tests/rom/analyze_layer_rom_b1hcq_member.py",
     "tests/rom/aggregate_layer_rom_b1hcq.py",
-    ".github/workflows/f-rom-layer-b1hcq-corichards-qualification.yml"
+    ".github/workflows/f-rom-layer-b1hcq-corichards-qualification.yml",
+    "integration/f-rom/LAYER_ROM_B1HCF_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCF_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCG_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_B1HCG_REPAIR_RECORD.json",
+    "tests/rom/analyze_layer_rom_b1hcg_temporal.py",
+    "tests/rom/aggregate_layer_rom_b1hcg.py",
+    ".github/workflows/f-rom-layer-b1hcg-temporal.yml",
+    "integration/f-rom/LAYER_ROM_B1R_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_B1R_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1R_CLOSEOUT.json",
+    "tests/rom/analyze_layer_rom_b1r.py",
+    ".github/workflows/f-rom-layer-b1r-corrected-frontier.yml"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -68,7 +80,10 @@
     "GitHub Actions run 35495719330 (B1H in progress)",
     "GitHub Actions run 35495947476 / aggregate artifact 10600374489 (B1H successful)",
     "GitHub Actions run 35499370033 active for B1HC-Q",
-    "B1H immutable per-material artifacts from run 35495947476"
+    "B1H immutable per-material artifacts from run 35495947476",
+    "GitHub Actions run 35500822057 / aggregate artifact 10602356919 (B1HCF corrected metrics)",
+    "GitHub Actions run 35501337422 / artifact 10602616038 (B1R corrected B01 frontier)",
+    "GitHub Actions run 35501504092 (B1HCG active complete-cohort temporal diagnosis)"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -76,8 +91,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete B1HC-Q strict same-partition CoRichards qualification on the frozen six-material x L4/L6/R8 x X01-X04 cohort. Persist the qualified cell map before any hydrological LARE-versus-CoRichards decomposition.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after e12c9cbbdf8600896a1a10322e7ed9aab5b7de74. B1H is closed. B1HC-Q preregistration and workflow are frozen; active workflow run is 35499370033.",
+  "next_action": "Complete authoritative six-material B1HCG corrected temporal diagnosis. If the frozen all-material temporal signature fails, close the simple temporal-floor hypothesis and preregister candidate self-convergence versus finite Reference before any new closure/state redesign. B2 one-day/reversal frontier remains held pending corrected QAVG/QEND repair.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 25213b572e659c33a6ed7d9d6eee256bfcb83499. Phase A is closed; B1R corrected B01 R2 frontier is closed at dimension 4; B1HCF corrected QAVG/QEND semantics are closed; B1HCG run 35501504092 is the active complete-cohort temporal gate.",
   "blockers": [],
   "scope_guards": [
     "research only",
