@@ -2,9 +2,9 @@
   "schema_version": 1,
   "workstream": "F-GC-CSR",
   "date": "2026-09-20",
-  "canonical_reconciled": "919bbf76370c2136932daa04ad88135e7d1615a8",
+  "canonical_reconciled": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
   "branch": "work/f-gc-coupling-semantics-reconciliation",
-  "decision": "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED",
+  "decision": "CSR01_CSR02_IMPLEMENTED_QUALIFICATION_IN_PROGRESS",
   "classification": {
     "interpretation_defect": true,
     "authority_binding_defect": true,
@@ -85,6 +85,19 @@
     "CSR-05 root-active corrected coupled-boundary qualification",
     "CSR-06 PUB-GC targeted requalification and E7 prospective rerun"
   ],
-  "production_source_changed": false,
-  "hupsel_rerun_performed": false
+  "production_source_changed": true,
+  "hupsel_rerun_performed": false,
+  "implementation": {
+    "csr_01": "IMPLEMENTED_EXPLICIT_GROUNDWATER_COUPLED_AUTHORITY",
+    "csr_02": "IMPLEMENTED_REFERENCE_MODE5_PRIVATE_TRIAL_REALIZATION",
+    "csr_03": "NOT_ADMITTED_PROCESS_COMPOSITION_REMAINS_FAIL_CLOSED",
+    "pull_request": 486
+  },
+  "qualification": {
+    "state": "IN_PROGRESS",
+    "identity_test": "tests/fgc/test_fgc44_real_fmr_participant.f90 compares mode-5 and mode-7 application selectors from same origin while participant privately realizes mode 5",
+    "production_owner_test": "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90 uses explicit groundwater_coupled with bottom_mode=7",
+    "e7_gates": "updated to preserve historical evidence while superseding old application-domain interpretation",
+    "pub_gc_gate": "submission hold explicitly enforced"
+  }
 }
