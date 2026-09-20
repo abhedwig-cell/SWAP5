@@ -2,11 +2,11 @@
 
 ## Current decision
 
-**STOP_C6A_INTERFACE_VARIABLE_ROUTE_AT_STRUCTURAL_EQUIVALENCE_BOUNDARY**
+**QUALIFY_THREE_LEVEL_SPACE_TIME_REFERENCE_UNCERTAINTY_BEFORE_ANY_SURFACE_CANDIDATE_RESPONSE**
 
 Current repository authority is the machine-readable
 `integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json`.
-This page is the human-readable synthesis through C6A.
+This page is the human-readable synthesis through C6N0; C6N1 Reference-only qualification is in progress.
 
 No production ROM is selected. Fine Reference Richards remains the scientific reference. No Reference Richards, RossFast or production groundwater-coupling change follows from this workstream.
 
@@ -130,6 +130,18 @@ C6L binds the next validation order. A fresh B01/B14 free-drainage surface-flux 
 ET/root uptake remains a distinct later claim. Replaying a prescribed distributed sink can test hydraulic response to known extraction, but cannot establish that a reduced model predicts stress-dependent uptake or evapotranspiration.
 
 No new closure, partition or application threshold is authorized by C6K-C6L.
+
+## C6M-C6N0 surface Reference reconciliation
+
+C6M first exposed an execution-authority error rather than a Layer-ROM result: free drainage (bottom mode 7) was not admitted by the frozen Reference-floor sampling route. Before any admitted surface response, the work unit was rebound to the supported fixed-initial-head mode 5. That repaired route then proved insufficiently robust on the complete frozen two-material panel under the unchanged DYN0A numerical policy. No Layer-ROM candidate was executed.
+
+C6M2 therefore moved the surface/profile question onto the already-qualified fixed-bottom-flux DYN0A route. This deliberately removed drainage prediction from scope and retained only upper-zone/profile state as the intended purpose. All 64 B01/B14 Reference slices completed, O0/O2 identity and integrity gates passed, but the prospectively frozen space-time gate did not: for both materials, the R2048 T8-to-T16 shift on four profile/state metrics exceeded the R1024-to-R2048 spatial shift. C6M2 remains formally blocked; that gate is not relaxed after response.
+
+The absolute differences are nevertheless extremely small and the failure exposes a numerical-verification issue: a gate that requires temporal error to be smaller than an already near-zero spatial gap becomes ill-conditioned as spatial refinement converges.
+
+C6N0 therefore replaces that *future* gate, not the C6M2 result, with a three-level Richardson/GCI-style numerical-uncertainty design. Spatial convergence is to be evaluated on R512/R1024/R2048 at a common T32 transaction refinement; temporal convergence on R2048 at T8/T16/T32. Required profile/state norms must decrease monotonically, yield a finite positive observed order, and produce explicit fine-grid spatial and temporal uncertainty estimates. Candidate differences below the combined admitted Reference uncertainty will later be treated as numerically unresolved.
+
+C6N1 is the Reference-only execution of that design. It reuses the exact frozen C6M2 T8/T16 artifacts, adds only the T32 routes, and still authorizes no Layer-ROM response.
 
 ## Application and value boundary
 
