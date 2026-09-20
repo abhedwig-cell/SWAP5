@@ -1,0 +1,160 @@
+{
+  "schema": "swap5.lare.bc2.c5s.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5S",
+  "status": "CLOSED_DISTINCT_DARCIAN_STEADY_EQUIVALENT_CLOSURE_IDENTIFIED_FROZEN_STATE_FLUX_DISCRIMINATOR_NEXT",
+  "decision": "PREREGISTER_FROZEN_STATE_DARCIAN_TWO_POINT_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING_IMPLEMENTATION",
+  "role": "READ_ONLY_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURE_DERIVATION",
+  "authority": {
+    "C5R": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "C4H": "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+    "C4K": "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+    "C4L": "integration/f-rom/LARE_BC2_C4L_CLOSEOUT.json",
+    "C4M": "integration/f-rom/LARE_BC2_C4M_CLOSEOUT.json",
+    "C4N": "integration/f-rom/LARE_BC2_C4N_CLOSEOUT.json",
+    "C4O": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "C4P": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
+    "read_only": true,
+    "new_response_generated": false
+  },
+  "empirical_identifiability": {
+    "placement_fact": "C5P/C5R establish that lower-boundary state placement causally matters.",
+    "breadth_fact": "At identical B2P5 bottom support, C5R D8 and D12 groundwater responses are numerically indistinguishable despite four additional vertically distributed states.",
+    "propagation_conclusion": "After controlling state placement and vertical memory breadth, the remaining high-resolution B14 dynamic-head error is strongly identified with the inter-layer propagation operator.",
+    "caveat": "This is an identifiability conclusion for the tested representation/workload, not proof that one universal closure exists."
+  },
+  "closed_or_deferred_routes": [
+    {
+      "id": "SCALAR_EXISTING_STATE_GRADIENT_CONDITIONERS",
+      "disposition": "CLOSED",
+      "evidence": [
+        "C4L",
+        "C4M",
+        "C4N",
+        "C4O"
+      ],
+      "reason": "Physically motivated cubic, central, geometry-only and existing-state conditioned scalar gradient corrections were mixed/non-transferable."
+    },
+    {
+      "id": "CONDUCTIVITY_ONLY_MEAN_SELECTION",
+      "disposition": "NOT_PRIMARY_CANDIDATE",
+      "evidence": [
+        "C4H"
+      ],
+      "reason": "The bounded interface residual was gradient-component dominated; changing only an arithmetic/geometric/integrated conductivity mean does not address the identified operator error."
+    },
+    {
+      "id": "NEW_DYNAMIC_MEMORY_STATE",
+      "disposition": "DEFERRED_NO_EVIDENCE",
+      "evidence": [
+        "C4K"
+      ],
+      "reason": "Current-state sufficiency was not rejected by the tested ambiguity diagnostic."
+    },
+    {
+      "id": "GLOBAL_TWO_LAYER_OR_QUASI_STEADY_REPRESENTATION",
+      "disposition": "SEPARATE_CLOSED_REPRESENTATION_ROUTE",
+      "evidence": [
+        "C4P"
+      ],
+      "reason": "L2_IMC/QS1/QS2_COMPOSITE/HE2 are whole reduced representations and did not cross their R2 frontiers; they are not to be reinvented as an inter-layer LARE closure."
+    },
+    {
+      "id": "FMC_SMVE",
+      "disposition": "SEPARATE_PHYSICAL_REDUCTION_FAMILY",
+      "evidence": [
+        "C4P"
+      ],
+      "reason": "FMC/SMVE remains a distinct representation comparator, not an inter-layer closure for the retained Layer-ROM state."
+    }
+  ],
+  "retained_closure_families": {
+    "DSE2P": {
+      "name": "Darcian steady-equivalent nonlinear two-point flux",
+      "state": "PROSPECTIVE_DIAGNOSTIC_READY",
+      "dynamic_state_changed": false,
+      "free_parameters": 0,
+      "definition": "For each adjacent layer pair, retain the current storage-to-representative-head map, but obtain the single conservative interface flux from the local one-dimensional steady Richards boundary-value problem connecting the two representative heads over their center-to-center distance. The constant steady flux, not a selected average conductivity multiplied by a linear head gradient, is the closure object.",
+      "conservation": "One algebraic interface flux is used with opposite signs in the two adjacent storage balances.",
+      "why_structurally_distinct": [
+        "It replaces the complete coarse two-point Darcy operator, not a scalar multiplier on the existing reconstructed gradient.",
+        "The effective conductance depends jointly and nonlinearly on both endpoint states, spacing, gravity/capillary balance and the full K(h) relation.",
+        "It requires no direction switch, fitted blending coefficient or extra dynamic memory state."
+      ],
+      "literature_basis": [
+        {
+          "citation": "Szymkiewicz, A. (2009), Approximation of internodal conductivities in numerical simulation of one-dimensional infiltration, drainage, and capillary rise in unsaturated soils, Water Resources Research 45.",
+          "doi": "10.1029/2008WR007654",
+          "relevance": "Darcian means are defined by matching the steady flow between two nodes and are designed for arbitrary conductivity functions and coarse spatial steps."
+        },
+        {
+          "citation": "Romano, N., Brunone, B., Santini, A. (1998), Numerical analysis of one-dimensional unsaturated flow in layered soils, Advances in Water Resources 21, 315-324.",
+          "doi": "10.1016/S0309-1708(96)00059-0",
+          "relevance": "Interlayer conductivity/flux treatment based on flux conservation and pressure-potential continuity provides a physically grounded interface formulation."
+        }
+      ],
+      "relation_to_C5K": "C5K found that an exact-steady half-cell operator did not improve the already-fine Reference lower-boundary grid gap. That does not adjudicate DSE2P for coarse aggregated LARE interfaces, where the target error is a different coarse propagation operator; it is retained as a caution and requires a frozen-state discriminator before free-running use."
+    },
+    "SCAFP": {
+      "name": "Storage-consistent algebraic subgrid face-profile closure",
+      "state": "THEORY_DERIVATION_REQUIRED_BEFORE_NUMERIC_IMPLEMENTATION",
+      "dynamic_state_changed": false,
+      "concept": "Retain each layer's integrated water storage as the only dynamic state, but reconstruct algebraic subgrid pressure/face variables so that the nonlinear theta(h) integral equals stored water and interface pressure/flux continuity is enforced before computing conservative interface fluxes.",
+      "why_distinct": "This changes the state-to-face reconstruction itself rather than correcting a point-gradient or selecting a K mean.",
+      "unresolved_theory": [
+        "A unique zero-fit profile ansatz must be specified without using response data.",
+        "The algebraic system must allow unequal top and bottom fluxes during transient storage change rather than imposing a globally steady layer.",
+        "Physical admissibility and uniqueness must be established before any response experiment."
+      ],
+      "implementation_authorized": false
+    }
+  },
+  "diagnostic_controls": {
+    "CURRENT_LAYER_FACE": "Required baseline.",
+    "arithmetic_geometric_integrated_K_means": "May be reported only as decomposition controls; none is promoted as a closure family by itself.",
+    "Reference_R2048_T16": "Frozen fine numerical trajectory for mechanism diagnosis, not continuum truth."
+  },
+  "prospective_discriminator": {
+    "target": "LARE-BC2-C5T",
+    "state": "EXPOSED_MECHANISM_FROZEN_STATE_INTERFACE_FLUX_DIAGNOSTIC_AUTHORIZED_FOR_PREREGISTRATION",
+    "purpose": "Test whether DSE2P corrects the identified propagation error before allowing any free-running reduced-model response.",
+    "workload": "Reuse exposed C5R R01-R04 B14 histories at R2048_T16; this is mechanism evidence, not blind validation.",
+    "representation": "D12_B2P5 boundaries [0,70,80,90,100,110,120,130,140,150,155,157.5,160] with exact Reference-projected layer storages.",
+    "instrumentation": [
+      "Logging-only Reference rerun; require byte-identical existing state/mass outputs to C5R where comparable.",
+      "At each observation boundary, emit projected storage for every D12_B2P5 layer from the R2048 state.",
+      "Emit or reconstruct the actual fine-Reference flux at each D12_B2P5 internal face. All prospective boundaries align exactly with the R2048 grid.",
+      "No candidate flux feeds back into the Reference solve."
+    ],
+    "candidates": [
+      "CURRENT_LAYER_FACE baseline evaluated on the exact projected Reference layer storage states.",
+      "DSE2P zero-fit local steady-equivalent flux evaluated on the same projected states."
+    ],
+    "metrics": [
+      "interface- and phase-specific flux RMSE",
+      "signed bias and absolute signed bias",
+      "sign mismatch count",
+      "RISE/FALL/HOLD separated residuals",
+      "lower-interface and all-interface summaries",
+      "no aggregate score"
+    ],
+    "adjudication": {
+      "DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST": "DSE2P is componentwise no worse than CURRENT_LAYER_FACE on the preregistered lower-interface moving-phase vector, strictly improves flux RMSE at the bottom-focused interfaces, and does not create nonzero HOLD flux/sign defects.",
+      "DSE2P_MIXED_NO_IMPLEMENTATION": "DSE2P improves some directions/interfaces but worsens others or introduces HOLD/sign problems.",
+      "DSE2P_NOT_SUPPORTED": "CURRENT_LAYER_FACE is componentwise no worse or DSE2P fails physical/numerical admissibility.",
+      "if_supported": "Authorize a separate fresh blind free-running C5U implementation test; no production use.",
+      "if_not_supported": "Do not scalar-tune DSE2P. Return to SCAFP theory derivation or representation-family comparison."
+    }
+  },
+  "scientific_firewall": {
+    "new_response_generated": false,
+    "new_closure_implemented": false,
+    "new_dynamic_state_added": false,
+    "scalar_tuning_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
