@@ -289,3 +289,90 @@ Current K1 disposition:
 - the approximately 9.6-11% raw-head speed reduction and the Hupsel raw-head+capacity improvement are not generalized to loam/clay;
 - the local B12 derivative difference remains a warning, but cannot be adjudicated by trajectory comparison until the analytical K1 reference regime is separately qualified;
 - this does not affect the current production K0 research case because SWAP5 production explicitly does not admit K1.
+
+
+## Typed K0 acceleration evidence
+
+The legacy-wrapper result must not be used as the final performance conclusion for the currently admitted K0 route. SWAP5 already exposes constitutive hydraulics through the vector-valued `constitutive_hydraulics_provider_t` seam, which evaluates theta, C and K together. A raw-head provider behind that seam can therefore share interval and interpolation work that the historical scalar wrappers cannot.
+
+### Provider-only benchmark
+
+Workflow run `35538295603` (successful, reproduced after provider-helper reconciliation) used all 30 Staring parameter rows.
+
+Constitutive differences against the canonical analytical provider remained:
+
+- theta max abs: `5.32098e-5`;
+- C max abs: `5.17194e-5`;
+- log10(K) max abs: `3.03816e-4`.
+
+Repeated provider cost:
+
+- analytical median: `0.260065 s`;
+- raw-head table median: `0.2106475 s`;
+- delta: **-19.002%**.
+
+The earlier successful run `35535155474` independently gave **-19.340%**, so this provider-level reduction is reproduced.
+
+### Direct Reference Richards K0 benchmarks
+
+Two independent research harness families place the raw-head provider behind the canonical `soil_water_solve_request_t%evaluation%constitutive` seam.
+
+Run `35538295638` used dynamic one-step Richards cases and the real Reference Richards solver path. Across the five completed cases:
+
+- maximum head difference: from `9.85e-8` to `2.67e-5 cm`;
+- theta differences: order `1e-9`;
+- flux differences: <= `2.96e-8`;
+- mass-residual differences: order `1e-15`;
+- nonlinear iteration count: identical (3 vs 3);
+- table runtime reductions: **-26.8% to -31.4%**.
+
+The smaller five-profile real-linear seam benchmark, rerun after the research `tridag` bridge was made allocation-free, also remained green and showed material reductions. This is supportive micro-harness evidence, not the primary runtime claim.
+
+### Serialized Reference runtime
+
+Run `35538295619` exercised the 40-node serialized Reference backend with the research provider injected through the typed constitutive seam. It did not restore legacy `SWSOPHY=1` input or alter production selection.
+
+Fidelity:
+
+| material | max head difference (cm) | max theta difference | retries equal | nonlinear iterations analytic/table |
+| --- | ---: | ---: | --- | --- |
+| coarse | 0 | 3.842e-9 | yes | 3 / 3 |
+| loam | 0 | 4.430e-10 | yes | 3 / 3 |
+| clay | 0 | 3.785e-10 | yes | 3 / 3 |
+
+Mass-residual delta was zero for all three cases and `TYPED_RUNTIME_FIDELITY_FAILURES=0`.
+
+Order-balanced runtime medians:
+
+| material | analytical (us/trial) | table (us/trial) | delta |
+| --- | ---: | ---: | ---: |
+| coarse | 42.100 | 30.213 | **-28.24%** |
+| loam | 41.509 | 28.488 | **-31.37%** |
+| clay | 41.506 | 29.681 | **-28.49%** |
+
+Paired-round ranges remained negative in every reported round.
+
+This is the current strongest K0 acceleration evidence: a material reduction survives the typed serialized Reference runtime rather than existing only in a constitutive microbenchmark.
+
+### Dynamic FMR qualification boundary
+
+Workflow `35538295620` prospectively swept drying/wetting forcing perturbations from 0.40 down to 0.0125 before comparing table and analytical runtime trajectories. No perturbation was admitted by the **analytical** Reference runtime for all three materials under that workflow's existing transaction/mass configuration; every analytical sweep entry returned nonzero.
+
+Therefore this workflow does **not** demonstrate a raw-head fidelity failure. It establishes that the selected dynamic runtime harness lacks an analytically admitted denominator. The table route must not be tuned against this response. Dynamic transaction-level qualification remains open until it is bound to an already admitted canonical dynamic trajectory or to restored exact whole-Hupsel authority.
+
+### K0 research conclusion
+
+The table-acceleration hypothesis for the current admitted default-MvG / SWKIMPL=0 constitutive seam is no longer merely feasible:
+
+- historical scalar-wrapper execution: approximately parity;
+- typed constitutive provider: approximately **19% lower provider cost**;
+- direct Reference Richards dynamic one-step cases: approximately **27-31% lower solver-call cost**;
+- 40-node serialized Reference equilibrium runtime: approximately **28-31% lower trial cost**.
+
+These percentages are execution-envelope results, not portable whole-model speed guarantees.
+
+A production-generated table provider is scientifically and computationally justified for a separately governed work unit, but production implementation remains held until that work unit preregisters typed ownership, selection, dynamic trajectory qualification, preservation and rollback/fallback rules.
+
+### K1 disposition
+
+The broad K1 extension remains **not qualified**. The difficult-route diagnostic showed the corrected analytical K1 `loam_mid_free` reference itself exceeded 120 seconds before a paired table comparison could begin. Existing K1 speed evidence therefore remains bounded to the already completed coarse cases. Current canonical production also excludes `SWKIMPL=1`, so no K1 production claim is made.
