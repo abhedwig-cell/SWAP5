@@ -257,9 +257,21 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
     "response_based_design": false,
-    "note": "Numerical DSE2P realization sharpened before any C5T response from an equivalent RK4 shooting statement to the exact monotone steady-length integral with fixed Gauss-Legendre quadrature; scientific operator, endpoints, metrics and adjudication are unchanged."
+    "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5t_instrumentation.py",
+    "instrumentation_materializer_blob": "10926dd5f32b8a7dbad18febe4e1782688ee4ec6",
+    "history_slice_materializer": "tests/rom/materialize_lare_bc2_c5t_history_slice.py",
+    "history_slice_materializer_blob": "10983adaf736a0eb4c64a443f78db5ea38e13ae3",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5t_dse2p.py",
+    "analyzer_blob": "5b3b9e17badb1ecc0f266ea6e824f7b181413be1",
+    "c5r_reference_materializer_blob": "6d7d5c3283dfe1a6d8d433f2fc03e0255711dc91",
+    "c5p_reference_materializer_blob": "f9692ebc302603ce3c590425a37a45b3bdb36d01",
+    "c5n_reference_materializer_blob": "88db9aa07507acc6dd95efdee5b38525e48f5e2d",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
+    "permitted_new_code": "logging-only C5T outputs plus offline CURRENT_LAYER_FACE/DSE2P operator analysis",
+    "prohibited_new_code": "candidate feedback into Reference, free-running DSE2P, scalar tuning, state augmentation, response-based numerical retuning"
   },
   "model_changed": false
 }
