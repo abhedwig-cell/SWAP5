@@ -8,6 +8,7 @@ on:
       - 'integration/f-rom/LARE_BC2_C5I_PREREGISTRATION.json'
       - 'integration/f-rom/LARE_BC2_C5I_EXECUTION_BINDING_RECONCILIATION.json'
       - 'tests/rom/materialize_lare_bc2_c5i_t16.py'
+      - 'tests/rom/materialize_lare_bc2_c5i_history_slice.py'
       - 'tests/rom/analyze_lare_bc2_c5i_t16.py'
       - '.github/workflows/f-rom-lare-bc2-c5i.yml'
   workflow_dispatch:
@@ -21,31 +22,17 @@ permissions:
   actions: read
 
 jobs:
-  route:
-    name: route-${{ matrix.id }}-o${{ matrix.opt }}
+  slice:
+    name: slice-${{ matrix.geometry }}-o${{ matrix.opt }}-h${{ matrix.history }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 12
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 16
       matrix:
-        include:
-          - id: R512
-            nodes: 512
-            dz: 0.3125
-            opt: 0
-          - id: R512
-            nodes: 512
-            dz: 0.3125
-            opt: 2
-          - id: R1024
-            nodes: 1024
-            dz: 0.15625
-            opt: 0
-          - id: R1024
-            nodes: 1024
-            dz: 0.15625
-            opt: 2
+        geometry: [R512, R1024]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,11 +45,12 @@ jobs:
           path: canonical
           fetch-depth: 0
 
-      - name: Verify C5I authority and execution repair
+      - name: Verify frozen C5I science and history-slice binding
         run: |
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5i_t16.py)" = "371af1c7fcca243d04d84fca92a028746ba0ac5c"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5i_history_slice.py)" = "59f1c3f8cb047b13437551db9a49bd096c2ae20c"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c5i_t16.py)" = "9748f03b5659ddc0cee1722380ee0bc683dc3430"
           python3 - <<'PY'
           import json
@@ -72,38 +60,46 @@ jobs:
           assert p['phase']=='PREREGISTERED_BEFORE_C5I_T16_RESPONSE'
           assert c['status']=='CLOSED_T8_TEMPORAL_PROGRESS_SPATIAL_GAP_STILL_INCREASING_T16_REQUIRED'
           assert c['authority']['result_sha256']=='2af0756ec31ec62bd6348404d656a969d5b5005c262c72ed0318cf950723c75e'
-          assert e['status']=='TECHNICAL_EXECUTION_TOPOLOGY_REPAIR_AFTER_REPEATED_EXTERNAL_RUNNER_SHUTDOWN'
-          assert e['repair']['scientific_effect']=='NONE'
-          assert e['repair']['materializer_blob_unchanged']=='371af1c7fcca243d04d84fca92a028746ba0ac5c'
-          assert e['repair']['analyzer_blob_unchanged']=='9748f03b5659ddc0cee1722380ee0bc683dc3430'
+          assert e['status']=='TECHNICAL_EXECUTION_PARTITIONED_BY_HISTORY_AFTER_R1024_ROUTE_RUNNER_LIFETIME_BLOCKER'
+          assert e['current_repair']['scientific_effect']=='NONE'
           assert e['response_use']['T16_hydrological_metrics_used_for_repair'] is False
-          print('LARE_BC2_C5I_EXECUTION_REPAIR_LOCK=PASS')
+          print('LARE_BC2_C5I_HISTORY_SLICE_AUTHORITY_LOCK=PASS')
           PY
 
-      - name: Materialize exact T16 physical history
+      - name: Materialize exact T16 history slice
         run: |
           set -euo pipefail
-          python3 tests/rom/materialize_lare_bc2_c5i_t16.py             --c5e-materializer tests/rom/materialize_lare_bc2_c5e_reference_extension.py             --c5d-materializer tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --output canonical/tests/rom/test_lare_bc2_c5i_t16.f90             --manifest /tmp/c5i_materialization.json
+          h="${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c5i_history_slice.py             --c5i-materializer tests/rom/materialize_lare_bc2_c5i_t16.py             --c5e-materializer tests/rom/materialize_lare_bc2_c5e_reference_extension.py             --c5d-materializer tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --history-index "$h"             --output canonical/tests/rom/test_lare_bc2_c5i_slice.f90             --manifest /tmp/c5i_slice_manifest.json
 
-      - name: Execute frozen T16 route
+      - name: Execute frozen history slice
         run: |
           set -euo pipefail
-          id="${{ matrix.id }}"
-          n="${{ matrix.nodes }}"
-          dz="${{ matrix.dz }}"
+          id="${{ matrix.geometry }}"
           opt="${{ matrix.opt }}"
-          mkdir -p route_evidence
-          stub="canonical/c5i_t16_${id}_o${opt}_stubs.f90"
+          h="${{ matrix.history }}"
+          if [[ "$id" == "R512" ]]; then
+            n=512
+            dz=0.3125
+          else
+            n=1024
+            dz=0.15625
+          fi
+          expected=$(printf 'Z%02d' "$h")
+          mkdir -p slice_evidence
+          stub="canonical/c5i_${id}_o${opt}_h${h}_stubs.f90"
           python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
-          build="/tmp/c5i/build_t16_${id}_o${opt}"
-          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c5i_t16_${id}_o${opt}_stubs.f90"             --target tests/rom/test_lare_bc2_c5i_t16.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
-          log="route_evidence/${id}_o${opt}.txt"
+          build="/tmp/c5i/build_${id}_o${opt}_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c5i_${id}_o${opt}_h${h}_stubs.f90"             --target tests/rom/test_lare_bc2_c5i_slice.f90             --external-source src/legacy/b1_10_port/headcalc.f90             --build "$build" --opt "$opt"
+          log="slice_evidence/${id}_o${opt}_h${h}.txt"
           "$build/rom0_test" > "$log" 2>&1
           grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
           grep -Fq 'LAREGW1_C5I_B14_T16_GENERATED=TRUE' "$log"
-          test "$(grep -c 'LAREGW1_STATE|' "$log")" -eq 65536
-          test "$(grep -c 'LAREGW1_HISTORY_PASS|' "$log")" -eq 4
-          test "$(grep -c 'LAREGW1_NODE|' "$log")" -eq 0
+          test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$log")" -eq 1
+          test "$(grep -c '^LAREGW1_NODE|' "$log")" -eq 0
+          test "$(grep -c "^LAREGW1_STATE|.*|HISTORY=${expected}|" "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_HISTORY_COUNT=1$' "$log")" -eq 1
           python3 - "$log" <<'PY'
           import re,sys
           raw=open(sys.argv[1],errors='replace').read()
@@ -111,22 +107,22 @@ jobs:
           assert m is not None
           assert abs(float(m.group(1))) <= 1e-12
           PY
-          cp /tmp/c5i_materialization.json "route_evidence/materialization_${id}_o${opt}.json"
-          sha256sum route_evidence/* > route_evidence/sha256.txt
+          cp /tmp/c5i_slice_manifest.json "slice_evidence/materialization_${id}_o${opt}_h${h}.json"
+          sha256sum slice_evidence/* > slice_evidence/sha256.txt
           git -C canonical diff --quiet -- src reference
-          echo "LARE_BC2_C5I_ROUTE=PASS|${id}|O${opt}"
+          echo "LARE_BC2_C5I_SLICE=PASS|${id}|O${opt}|H${h}"
 
-      - name: Upload route evidence
+      - name: Upload history slice
         uses: actions/upload-artifact@v4
         with:
-          name: c5i-route-${{ matrix.id }}-o${{ matrix.opt }}
-          path: route_evidence/
+          name: c5i-slice-${{ matrix.geometry }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: slice_evidence/
           if-no-files-found: error
 
   analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: route
+    needs: slice
     steps:
       - uses: actions/checkout@v4
         with:
@@ -158,30 +154,45 @@ jobs:
           echo "aea94e7936317da738d9fb7d17a221cf0d8a3c85852fe82d76f738bad7a16c88  /tmp/c5i/t8/R512_T8_o0.txt" | sha256sum -c -
           echo "8f119c72af9111ad5d5b867a4893d69cf2bf33962baf07a308aa1086f97f43d6  /tmp/c5i/t8/R1024_T8_o0.txt" | sha256sum -c -
 
-      - name: Download split T16 routes
+      - name: Download all T16 history slices
         uses: actions/download-artifact@v4
         with:
-          pattern: c5i-route-*
-          path: /tmp/c5i/t16
-          merge-multiple: true
+          pattern: c5i-slice-*
+          path: /tmp/c5i/slices
+          merge-multiple: false
 
-      - name: Reconcile split-route identity
+      - name: Reconstruct exact full T16 routes
         run: |
           set -euo pipefail
-          for f in R512_o0.txt R512_o2.txt R1024_o0.txt R1024_o2.txt; do
-            test -s "/tmp/c5i/t16/$f"
-            test "$(grep -c 'LAREGW1_STATE|' "/tmp/c5i/t16/$f")" -eq 65536
-            test "$(grep -c 'LAREGW1_HISTORY_PASS|' "/tmp/c5i/t16/$f")" -eq 4
+          for id in R512 R1024; do
+            for opt in 0 2; do
+              full="/tmp/c5i/t16/${id}_o${opt}.txt"
+              : > "$full"
+              for h in 1 2 3 4; do
+                part="/tmp/c5i/slices/c5i-slice-${id}-o${opt}-h${h}/${id}_o${opt}_h${h}.txt"
+                test -s "$part"
+                cat "$part" >> "$full"
+              done
+              test "$(grep -c '^LAREGW1_STATE|' "$full")" -eq 65536
+              test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$full")" -eq 4
+              for h in 1 2 3 4; do
+                expected=$(printf 'Z%02d' "$h")
+                test "$(grep -c "^LAREGW1_STATE|.*|HISTORY=${expected}|" "$full")" -eq 16384
+              done
+            done
+            cmp "/tmp/c5i/t16/${id}_o0.txt" "/tmp/c5i/t16/${id}_o2.txt"
           done
-          cmp /tmp/c5i/t16/R512_o0.txt /tmp/c5i/t16/R512_o2.txt
-          cmp /tmp/c5i/t16/R1024_o0.txt /tmp/c5i/t16/R1024_o2.txt
           cp /tmp/c5i/t16/R512_o0.txt LARE_BC2_C5I_EVIDENCE/R512_T16_o0.txt
+          cp /tmp/c5i/t16/R512_o2.txt LARE_BC2_C5I_EVIDENCE/R512_T16_o2.txt
           cp /tmp/c5i/t16/R1024_o0.txt LARE_BC2_C5I_EVIDENCE/R1024_T16_o0.txt
-          echo "LARE_BC2_C5I_SPLIT_ROUTE_IDENTITY=PASS"
+          cp /tmp/c5i/t16/R1024_o2.txt LARE_BC2_C5I_EVIDENCE/R1024_T16_o2.txt
+          cp integration/f-rom/LARE_BC2_C5I_EXECUTION_BINDING_RECONCILIATION.json LARE_BC2_C5I_EVIDENCE/
+          echo "LARE_BC2_C5I_HISTORY_RECONSTRUCTION=PASS"
 
-      - name: Execute C5I T16 analysis
+      - name: Execute unchanged C5I T16 analysis
         run: |
           set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5i_t16.py)" = "9748f03b5659ddc0cee1722380ee0bc683dc3430"
           python3 tests/rom/analyze_lare_bc2_c5i_t16.py             --r512-t4 /tmp/c5i/t4/c5g/R512_T4_o0.txt             --r512-t8 /tmp/c5i/t8/R512_T8_o0.txt             --r512-t16 /tmp/c5i/t16/R512_o0.txt             --r1024-t4 /tmp/c5i/t4/c5f/R1024_T4_o0.txt             --r1024-t8 /tmp/c5i/t8/R1024_T8_o0.txt             --r1024-t16 /tmp/c5i/t16/R1024_o0.txt             --c5h-result integration/f-rom/LARE_BC2_C5H_RESULT.json             --c5h-closeout integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json             --prereg integration/f-rom/LARE_BC2_C5I_PREREGISTRATION.json             --output LARE_BC2_C5I_EVIDENCE/LARE_BC2_C5I_RESULT.json             | tee LARE_BC2_C5I_EVIDENCE/runner.txt
 
       - name: Validate C5I firewall
@@ -211,7 +222,7 @@ jobs:
           PY
           sha256sum LARE_BC2_C5I_EVIDENCE/* > LARE_BC2_C5I_EVIDENCE/sha256.txt
 
-      - name: Upload C5I evidence
+      - name: Upload authoritative C5I evidence
         uses: actions/upload-artifact@v4
         with:
           name: lare-bc2-c5i
