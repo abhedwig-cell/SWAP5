@@ -109,3 +109,57 @@ A production work unit should not start until the research line closes at least 
 - explicit decision whether K1 itself is being admitted.
 
 Until then the correct disposition is: **research qualified for bounded characterization, production implementation held**.
+
+
+## Updated performance disposition after typed-provider qualification
+
+The earlier statement that K0 performance alone did not justify a production work unit is superseded by the typed-provider research evidence.
+
+Bounds-safe research now shows:
+
+- typed provider-only evaluation over all 30 Staring rows: approximately **19.4% faster** than the canonical analytical provider;
+- direct Reference Richards on 32-node research profiles: approximately **24-30% faster** with the same nonlinear iteration count and very small state/flux differences;
+- serialized Reference/FMR equilibrium runtime: approximately **25-31% faster**, with zero pressure-head difference in the tested equilibrium fixture, equal retries, equal mass residual, and 3/3 nonlinear iterations.
+
+Thus the generated-MvG-equivalent K0 table route now has a material performance case at the current SWAP5 typed provider seam.
+
+This does **not** yet authorize production implementation because capability/admission blockers remain.
+
+### New primary blocker: temporal-indicator provider coupling
+
+Current canonical `mod_reference_richards_temporal_indicator.f90` accepts only concrete `b110_default_mvg_provider_t` and returns:
+
+`constitutive-policy-deferred`
+
+for every other provider behind the common constitutive ABI.
+
+See `TAB-HYD-005-temporal-indicator-provider-coupling.md`.
+
+A dynamic serialized transaction route therefore needs separately qualified provider-agnostic temporal-indicator semantics before a table provider can become a drop-in production alternative.
+
+### Dynamic fixture qualification boundary
+
+The first research dynamic FMR forcing sweep is not usable as table evidence because the analytical reference itself rejected all predefined wetting/drying perturbations from 40% down through 1.25% under that synthetic external-full/half fixture.
+
+No transaction tolerance has been relaxed and this result does not count against table fidelity.
+
+### Application-envelope scope blocker
+
+The current generated table provider deliberately excludes:
+
+- `H_ENPR != 0`;
+- KSATEXM extension.
+
+The canonical M1 Hupsel production profile can activate the KSATEXM extension. Whole-application canonical Hupsel acceleration is therefore not yet demonstrated by the generated provider.
+
+### Revised admission rule
+
+A production-provider work unit may be proposed only after:
+
+1. provider-agnostic temporal-indicator semantics are qualified analytically first;
+2. a valid dynamic Reference/FMR gate exists in which the analytical route itself is admitted;
+3. the intended application scope is explicit — default MvG only versus KSATEXM/H_ENPR extensions;
+4. generated equivalent tables and arbitrary external user tables remain separate capability contracts;
+5. canonical reference preservation and fail-closed provider selection are retained.
+
+Performance feasibility is no longer the blocker. Dynamic temporal-certificate authority and application scope are.
