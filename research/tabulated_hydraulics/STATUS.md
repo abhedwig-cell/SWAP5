@@ -241,6 +241,32 @@ Therefore:
 This branch distinction supersedes any unqualified wording that calls the table option simply "working in current SWAP".
 
 
+
+### 10. Constitutive microbenchmark explains the whole-model parity
+
+The actual public wrapper functions were benchmarked at `-O3` over 256 representative pressure heads. The same source functions were used for analytical MvG, the legacy table lookup and the direct-index TSPACK table route.
+
+Median costs were:
+
+| operation | analytical MvG | legacy table | direct-index table |
+| --- | ---: | ---: | ---: |
+| `watcon` | 41.05 ns/call | 51.73 ns/call | 38.50 ns/call |
+| `moiscap` | 42.92 ns/call | 53.23 ns/call | 41.31 ns/call |
+| `hconduc` | 63.45 ns/call | 55.92 ns/call | 41.98 ns/call |
+| theta + C + K triplet | 148.66 ns/set | 159.83 ns/set | 122.97 ns/set |
+
+Relative to analytical MvG, the direct-index table route is:
+
+- about 6.2% faster for `watcon`;
+- about 3.7% faster for `moiscap`;
+- about 33.8% faster for `hconduc`;
+- about 17.3% faster for an artificial theta+C+K triplet.
+
+This reconciles the local speedup with the full Hupsel runtime parity. In the `SWKIMPL=0` Richards iteration, `moiscap` is evaluated each nonlinear iteration and `watcon` is evaluated after the head update, whereas conductivity is not recomputed inside the nonlinear iteration in the same way. The two frequently repeated functions therefore gain only a few percent from the direct table representation. The much larger local gain in `hconduc` is not exercised often enough in this execution mode to move total runtime measurably.
+
+The original acceleration hypothesis is therefore only partly supported: the direct-index table representation **is locally cheaper than MvG**, but for the tested `SWKIMPL=0` Hupsel workload that local advantage is too small in the dominant call pattern to yield a whole-model speedup.
+
+
 ## Source-authority boundary
 
 The executable end-to-end experiments use the public/transitional SWAP source lineage. They are not yet executions of the immutable supplied SWAP 4.3.1 B0 archive.
