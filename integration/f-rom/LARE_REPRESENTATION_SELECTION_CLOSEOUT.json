@@ -31,11 +31,12 @@
     "C5R": "Fresh D12 versus D8 comparison at identical B2P5 bottom support finds groundwater response numerically indistinguishable despite four additional vertically distributed states. Bottom placement remains active, but additional memory breadth is inactive; the residual is now strongly identified with propagation/inter-layer closure.",
     "C5S": "After C5R isolates propagation as the remaining representation limit, read-only closure reconciliation rejects reopening scalar/current-state gradient tuning and identifies a zero-parameter Darcian steady-equivalent nonlinear two-point flux (DSE2P) as the first structurally distinct closure ready for an offline frozen-state mechanism discriminator. A storage-consistent algebraic subgrid-profile closure remains conceptually admissible but requires more theory before implementation.",
     "C5T": "Logging-only frozen-state instrumentation preserves C5R exactly, but the preregistered steady-integral DSE2P route fails its mandatory numerical qualification at the first 70-cm interface for 1,891 states. No free-running DSE2P test or post-response retuning is authorized.",
+    "C5V": "Read-only SCAFP derivation shows that layer-integrated storage plus Darcy-Buckingham and exact conservation does not uniquely determine transient within-layer structure. A conservative zero-fit algebraic family exists, but an additional subgrid tendency/profile principle is scientifically required. P0 uniform storage tendency is the most conservation-aligned candidate, not an authority-mandated choice.",
+    "C5W": "P0 uniform storage tendency was selected prospectively as the minimum-additional-structure SCAFP hypothesis and failed response-free admissibility qualification: local uniqueness is conditional, but 264/405 local cases and all 28 full-column synthetic cases fail the frozen existence/branch contract. No hydrological P0 test is authorized.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
-    "C5V": "Read-only SCAFP derivation shows that layer-integrated storage plus Darcy-Buckingham and exact conservation does not uniquely determine transient within-layer structure. A conservative zero-fit algebraic family exists, but an additional subgrid tendency/profile principle is scientifically required. P0 uniform storage tendency is the most conservation-aligned candidate, not an authority-mandated choice."
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -62,6 +63,8 @@
     "C5R_D12_shared_support_breadth": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
     "C5S_distinct_interlayer_closure_derivation": "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
     "C5T_frozen_state_DSE2P": "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
+    "C5V_SCAFP_theory": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "C5W_P0_admissibility": "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -80,8 +83,7 @@
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
-    "C5V_SCAFP_theory": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json"
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
   },
   "closed_routes": [
     {
@@ -106,25 +108,26 @@
       "id": "DSE2P_FREE_RUNNING_C5U"
     }
   ],
-  "decision": "STOP_AT_SCAFP_SUBGRID_ANSATZ_SCIENTIFIC_CHOICE_BEFORE_IMPLEMENTATION",
+  "decision": "RECONCILE_REMAINING_STORAGE_ONLY_SCAFP_FAMILIES_AFTER_P0_FAILURE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "SCIENTIFIC_CHOICE_REQUIRED",
+  "next_authority": "LARE-BC2-C5X",
   "next_family_authority": {
-    "family": "SCAFP_SUBGRID_PROFILE_ANSATZ",
-    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_IMPLEMENTATION",
-    "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json"
-    ],
-    "choice": "Select the algebraic within-layer transient profile/tendency principle. Existing authority does not uniquely select one.",
-    "most_conservative_non_authoritative_candidate": "P0_UNIFORM_STORAGE_TENDENCY",
-    "reserved_next_if_selected": "LARE-BC2-C5W",
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "family": "REMAINING_SCAFP_PROFILE_FAMILIES",
+    "hydrological_response_authorized": false,
     "new_closure_implementation_authorized": false,
     "new_dynamic_state_authorized": false,
-    "scalar_tuning_authorized": false,
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+    "remaining_options": [
+      "QUADRATIC_PRESSURE_PROFILE",
+      "TRANSFORMED_POTENTIAL_PROFILE"
+    ],
+    "repository_basis": [
+      "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json"
+    ],
+    "state": "READ_ONLY_THEORY_CHOICE_RECONCILIATION_AUTHORIZED"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -167,7 +170,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5V_SCAFP_NOT_UNIQUE_SCIENTIFIC_CHOICE_REQUIRED",
+  "status": "CLOSED_THROUGH_C5W_P0_NOT_ADMISSIBLE_REMAINING_SCAFP_THEORY_CHOICE_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,

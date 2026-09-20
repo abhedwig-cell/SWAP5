@@ -1,0 +1,78 @@
+{
+  "adjudication": {
+    "P0_COLUMN_EXISTENCE_UNIQUENESS_OVER_FROZEN_DOMAIN_SUPPORTED": false,
+    "P0_CONSERVATION_BY_CONSTRUCTION_SUPPORTED": true,
+    "P0_FREE_RUNNING_IMPLEMENTATION_AUTHORIZED": false,
+    "P0_HYDROLOGICAL_RESPONSE_TEST_AUTHORIZED": false,
+    "P0_LOCAL_EXISTENCE_OVER_FROZEN_DOMAIN_SUPPORTED": false,
+    "P0_LOCAL_UNIQUENESS_CONDITIONAL_ON_EXISTENCE_SUPPORTED": true,
+    "P0_POST_RESULT_BOUND_OR_BRANCH_RETUNING_AUTHORIZED": false,
+    "P0_STORAGE_CONSISTENCY_FOR_SOLVED_CASES_SUPPORTED": true,
+    "P0_UNIVERSALLY_PHYSICALLY_DISPROVEN": false,
+    "REMAINING_SCAFP_FAMILY_RECONCILIATION_AUTHORIZED": true
+  },
+  "authority": {
+    "artifact_digest": "sha256:3879f45668ba9655ffbe076ba354e490e8adfad2776bda2e13896c3ae6f7ab26",
+    "artifact_id": 10607788334,
+    "execution_head": "5b97186f6c42b59f7171c59bb83dd0afdce18b30",
+    "preregistration": "integration/f-rom/LARE_BC2_C5W_PREREGISTRATION.json",
+    "result_sha256": "31a45bf40bd9ce6dc77e7e3eb7365484ebd0c799c9b5b751553161b26e056382",
+    "scientific_choice": "integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json",
+    "workflow_run": 35519658699
+  },
+  "decision": "REJECT_PREREGISTERED_P0_ROUTE_WITHOUT_RETUNING_RECONCILE_REMAINING_SCAFP_FAMILIES",
+  "evidence": {
+    "column_case_count": 28,
+    "column_fail_count": 28,
+    "column_pass_count": 0,
+    "local_case_count": 405,
+    "local_fail_count": 264,
+    "local_pass_count": 141,
+    "max_abs_storage_residual_cm": 9.99751392782855e-11
+  },
+  "gates": {
+    "G1_ANALYTIC_LOCAL_UNIQUENESS": true,
+    "G2_LOCAL_EXISTENCE": false,
+    "G3_COLUMN_EXISTENCE_UNIQUENESS": false,
+    "G4_CONSERVATION": true,
+    "G5_STORAGE_CONSISTENCY": true,
+    "G6_REFINEMENT_STABILITY": true,
+    "G7_NO_RESPONSE_DATA": true
+  },
+  "next_authority": {
+    "constraints": [
+      "Read-only theory/literature/code reconciliation first; no hydrological response.",
+      "Do not retune or reopen the failed P0 contract.",
+      "Do not use C5R/C5T/C5N response magnitudes to select a profile coordinate.",
+      "No new dynamic state without separate authority.",
+      "No scalar CURRENT_LAYER_FACE tuning.",
+      "Any selected remaining family must be prospectively mathematically qualified before hydrological implementation."
+    ],
+    "question": "After prospective P0 failure, does a quadratic profile in native pressure/suction or a profile in a constitutively transformed potential provide the next minimum-assumption storage-consistent algebraic closure family, or does the storage-only program reach a scientific underdetermination boundary?",
+    "state": "READ_ONLY_REMAINING_SCAFP_FAMILY_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C5X"
+  },
+  "schema": "swap5.lare.bc2.c5w.closeout.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "free_running_closure_implemented": false,
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_dynamic_state_added": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "response_based_parameter": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The analytical monotonicity argument is retained: if an admissible local P0 storage root exists, it is unique on the declared unsaturated constitutive branch.",
+    "Existence is the failure mode. Only 141 of 405 prospectively defined local synthetic cases qualify; 264 fail the frozen existence/bracketing contract. The failures span all tested layer widths and are not localized to one flux ratio.",
+    "All 28 prospectively defined full-column cases fail to provide the single admissible outer branch required by the preregistration. Therefore the selected storage-only P0 boundary-value map is not sufficiently admissible over the intended B14 state domain.",
+    "The result is not repaired by widening flux bounds, changing branch logic, changing the state domain, or retuning numerical tolerances after response; those actions are explicitly prohibited by the C5W stop rules.",
+    "C5W does not prove that every conceivable uniform-storage-tendency formulation is physically impossible. It rejects the explicitly selected and preregistered P0 algebraic map as a viable basis for the next hydrological reduced-model test.",
+    "No hydrological response trajectory was used or generated, so this negative result is independent of C5R/C5T/C5N residual fitting."
+  ],
+  "status": "CLOSED_P0_CONDITIONALLY_UNIQUE_BUT_NOT_ADMISSIBLE_UNDER_FROZEN_DOMAIN_NO_HYDROLOGICAL_TEST",
+  "work_unit": "LARE-BC2-C5W",
+  "workstream": "F-ROM-LARE"
+}
