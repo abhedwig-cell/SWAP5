@@ -154,6 +154,43 @@ jobs:
           build_variant analytic-src analytic
           build_variant table-src table
 
+      - name: Select largest analytically admitted perturbation
+        shell: bash
+        env:
+          OMP_NUM_THREADS: 1
+          OMP_DYNAMIC: "false"
+        run: |
+          set -euo pipefail
+          mkdir -p build/evidence
+          : > build/evidence/reference-sweep.tsv
+          echo -e "delta\tsoil\tmode\trc" >> build/evidence/reference-sweep.tsv
+          selected=""
+          for delta in 0.40 0.30 0.20 0.10 0.05 0.025 0.0125; do
+            all_ok=1
+            for mode in drying wetting; do
+              for soil in coarse loam clay; do
+                set +e
+                build/analytic/bench "$soil" analytic "$mode" "$delta" >/dev/null 2>&1
+                rc=$?
+                set -e
+                echo -e "$delta\t$soil\t$mode\t$rc" >> build/evidence/reference-sweep.tsv
+                if [ "$rc" -ne 0 ]; then all_ok=0; fi
+              done
+            done
+            if [ "$all_ok" -eq 1 ]; then
+              selected="$delta"
+              break
+            fi
+          done
+          if [ -z "$selected" ]; then
+            echo "No analytically admitted dynamic perturbation in preregistered sweep" >&2
+            cat build/evidence/reference-sweep.tsv
+            exit 1
+          fi
+          echo "$selected" > build/evidence/selected-delta.txt
+          echo "REFERENCE_SELECTED_DELTA=$selected"
+          cat build/evidence/reference-sweep.tsv
+
       - name: Integrated fidelity and solver-semantics comparison
         shell: bash
         env:
@@ -162,10 +199,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/evidence
+          delta="$(cat build/evidence/selected-delta.txt)"
+          echo "FROZEN_DYNAMIC_DELTA=$delta"
           for mode in drying wetting; do
             for soil in coarse loam clay; do
-              build/analytic/bench "$soil" analytic "$mode" > "build/evidence/analytic-$soil-$mode.txt"
-              build/table/bench "$soil" table "$mode" > "build/evidence/table-$soil-$mode.txt"
+              build/analytic/bench "$soil" analytic "$mode" "$delta" > "build/evidence/analytic-$soil-$mode.txt"
+              build/table/bench "$soil" table "$mode" "$delta" > "build/evidence/table-$soil-$mode.txt"
             done
           done
           python3 - <<'PY'
@@ -221,10 +260,11 @@ jobs:
           routes={"analytic":Path("build/analytic/bench"),"table":Path("build/table/bench")}
           soils=["coarse","loam","clay"]
           modes=["drying","wetting"]
+          delta=Path("build/evidence/selected-delta.txt").read_text().strip()
           rows=[]; summary=[]
 
           def one(route,soil,mode):
-              p=subprocess.run([str(routes[route]),soil,route,mode],capture_output=True,text=True,check=True)
+              p=subprocess.run([str(routes[route]),soil,route,mode,delta],capture_output=True,text=True,check=True)
               vals={}
               for line in p.stdout.splitlines():
                   if "=" in line:
@@ -264,6 +304,8 @@ jobs:
         with:
           name: tab-hyd-typed-reference-dynamic
           path: |
+            build/evidence/reference-sweep.tsv
+            build/evidence/selected-delta.txt
             build/evidence/fidelity.tsv
             build/evidence/timings.csv
             build/evidence/timing-summary.tsv
