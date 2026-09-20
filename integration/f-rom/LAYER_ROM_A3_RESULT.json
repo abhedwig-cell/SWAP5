@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.layer-rom.phase-a3.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A3",
+  "decision": "A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED",
+  "execution": {
+    "workflow_run": 35495160112,
+    "executed_head": "58bae144e40c17628c1cd555b7c2fdd84893c099",
+    "artifact_id": 10600403219,
+    "artifact_digest": "sha256:4205d1c0858fb1da99c53f9b6405ef7c5684fbb50f01d76bd2eb5546261309b6",
+    "conclusion": "success"
+  },
+  "authority": "integration/f-rom/LAYER_ROM_A3_EXECUTION_AUTHORITY.json",
+  "pooled_flux": {
+    "L3_C_LARE_TAYLOR": {
+      "rms_error_cm_per_day": 0.6396881114475617,
+      "max_abs_error_cm_per_day": 2.9219646195368796,
+      "mean_abs_error_cm_per_day": 0.2680193788754191,
+      "sign_mismatch_count": 0
+    },
+    "C_M1_LINEAR_THETA": {
+      "rms_error_cm_per_day": 0.7702408036921932,
+      "max_abs_error_cm_per_day": 2.369093685671478,
+      "mean_abs_error_cm_per_day": 0.5204166563046841,
+      "sign_mismatch_count": 0,
+      "reconstruction_failures": 0
+    },
+    "C_M1_LINEAR_PSI": {
+      "rms_error_cm_per_day": 0.743052487519409,
+      "max_abs_error_cm_per_day": 2.1942098322030414,
+      "mean_abs_error_cm_per_day": 0.5095950646479592,
+      "sign_mismatch_count": 0,
+      "reconstruction_failures": 0
+    }
+  },
+  "same_dimension_L4_control": {
+    "long_interface_130": {
+      "rms_error_cm_per_day": 0.2920398250207365,
+      "max_abs_error_cm_per_day": 1.4147938305151513,
+      "mean_abs_error_cm_per_day": 0.14020351580477294
+    },
+    "local_140_identity_max_abs_error_cm_per_day": 8.881784197001252e-14
+  },
+  "support": {
+    "C_M1_LINEAR_THETA": {
+      "supported": false,
+      "worse_primary_cases": [
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4"
+      ]
+    },
+    "C_M1_LINEAR_PSI": {
+      "supported": false,
+      "worse_primary_cases": [
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4"
+      ]
+    }
+  },
+  "reconstruction": {
+    "C_M1_LINEAR_THETA_theta135_rms": 0.001946501081288612,
+    "C_M1_LINEAR_PSI_theta135_rms": 0.001920364313682543,
+    "C_M1_LINEAR_THETA_psi135_rms_cm": 0.7614660088192147,
+    "C_M1_LINEAR_PSI_psi135_rms_cm": 0.748610233477921
+  },
+  "adjudication": [
+    "A first centered water-storage moment over the 0-140 cm long layer does not provide a broadly supported replacement for explicit local resolution.",
+    "Both moment reconstructions lower the worst flux error but increase pooled RMS and mean-absolute error, and both worsen all three S2 primary cases on RMS and maximum error.",
+    "The same four-scalar budget used as four explicit storages (L4) is substantially more faithful than L3 plus one global first moment in this B01 fixed-flux operator test.",
+    "The evidence therefore favors local placement of the fourth scalar near the active long-to-local interface, not additional global long-layer memory.",
+    "Because W_0_140 plus W_130_140 is algebraically equivalent to the L4 split W_0_130 plus W_130_140, there is no distinct four-state 'L3 plus local-band' family to test."
+  ],
+  "next": "Adopt L4 as the first explicit-resolution four-state control/candidate for cross-boundary-regime evaluation; do not add a second global moment before testing the prescribed-head frontier.",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_PRODUCTION_ROM",
+    "NO_SPEED_CLAIM"
+  ],
+  "production_rom_authorized": false
+}
