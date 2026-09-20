@@ -331,6 +331,13 @@ def main():
     op=pre["pre_execution_operationalization"]
     if not op["before_first_A3_execution"]:
         raise SystemExit("A3 operationalization not frozen")
+    rec=pre.get("pre_execution_authority_reconciliation",{})
+    if not rec.get("before_first_A3_execution"):
+        raise SystemExit("A3 numerical authority reconciliation not frozen")
+    if rec.get("governing_numerics")!="pre_execution_numerical_freeze plus pre_execution_operationalization":
+        raise SystemExit("A3 governing numerical authority drift")
+    if "pre_execution_numerical_amendment" in pre:
+        raise SystemExit("withdrawn A3 endpoint amendment still present")
     if tuple(c["id"] for c in pre["moment_closures"])!=CANDIDATES:
         raise SystemExit("A3 candidate list drift")
     tests=structural_tests()
