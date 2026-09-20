@@ -168,60 +168,6 @@
     },
     "failure_semantics": "Any candidate reconstruction outside the frozen physical domain or beyond the residual/crosscheck gates is counted as a candidate failure; no fallback model or response-derived retuning is allowed."
   },
-  "pre_execution_numerical_amendment": {
-    "before_first_A3_result": true,
-    "quadrature": {
-      "primary_points": 64,
-      "independent_crosscheck_points": 128,
-      "crosscheck_max_abs_mean_theta": 1e-11,
-      "crosscheck_max_abs_M1_cm_theta": 1e-9
-    },
-    "C_M1_LINEAR_PSI": {
-      "variables": [
-        "log(psi_top-0.0100001)",
-        "log(psi_bottom-0.0100001)"
-      ],
-      "least_squares": {
-        "xtol": 1e-12,
-        "ftol": 1e-12,
-        "gtol": 1e-12,
-        "max_nfev": 100
-      },
-      "residual_scaling": {
-        "mean_theta": "divide by theta_s-theta_r",
-        "M1": "divide by 140*(theta_s-theta_r)"
-      },
-      "acceptance": {
-        "max_abs_mean_theta_residual": 1e-10,
-        "max_abs_M1_residual_cm_theta": 1e-8
-      },
-      "initialization": [
-        "first observation: uniform-head endpoint pair from psi(theta_bar)",
-        "later observations: prior accepted endpoint solution for same case",
-        "one fresh uniform-head retry if the warm start fails"
-      ],
-      "variable_bounds": [
-        [
-          -20,
-          -20
-        ],
-        [
-          20,
-          20
-        ]
-      ]
-    },
-    "C_M1_LINEAR_THETA": {
-      "domain_gate": "theta_r < reconstructed theta(z) < theta_s at both long-layer endpoints; affine profile then remains inside the interval everywhere",
-      "no_numerical_solver": true
-    },
-    "equality_tolerance": {
-      "flux_cm_per_day": 1e-12,
-      "theta": 1e-12,
-      "role": "floating-point identity only, never hydrological acceptance"
-    },
-    "scientific_effect": "No state coordinate, case, partition, closure formula, response metric or adjudication rule is changed."
-  },
   "pre_execution_operationalization": {
     "date": "2026-09-20",
     "before_first_A3_execution": true,
@@ -242,5 +188,13 @@
     },
     "comparison_semantics": "L4_LOCAL_140 is an operator identity guard. L4_LONG_130 is the same-scalar-dimension localization control and is reported as a vector, not folded into the A3 support gate.",
     "scientific_effect": "NONE; this freezes deterministic implementation details before any A3 moment result."
+  },
+  "pre_execution_authority_reconciliation": {
+    "date": "2026-09-20",
+    "before_first_A3_execution": true,
+    "governing_numerics": "pre_execution_numerical_freeze plus pre_execution_operationalization",
+    "withdrawn_unexecuted_parallel_amendment": "A later endpoint-parameterized numerical amendment was briefly persisted by a parallel branch action but no A3 workflow/result used it. It is not part of the A3 design.",
+    "reason": "Keep one deterministic implementation contract matching the already-persisted A3 analyzer and workflow before any scientific output exists.",
+    "scientific_effect": "NONE. State coordinates, closures, cases, partitions, response vector and adjudication are unchanged."
   }
 }
