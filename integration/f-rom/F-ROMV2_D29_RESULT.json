@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.f-romv2-d29.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D29",
+  "decision": "D29_FMC_ONE_DAY_SEPARATED_PREFLIGHT_NO_GO",
+  "adjudication": "SEPARATED_BRANCH_REACHES_CONTACT_BOUNDARY_AT_2P575_HOURS_BEFORE_RICHARDS_EXPOSURE",
+  "execution": {
+    "workflow_run": 35491949341,
+    "workflow_job": 106028294032,
+    "executed_head": "14b95943842b200b8d7d015814168ab6da7da838",
+    "execution_pull_request": 482,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10599780693,
+    "artifact_digest": "sha256:c98d86772ab8b96ad955987b124fdd9fef2509e1ee2dc25caee491bf4c059607",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "38d5352549f0a569c3e9203a70e8da7921bd8ce823f81260d22a6609db765c16",
+    "preflight_stdout_sha256": "440461682cbef4b313401ceab78231afa6c2e0ef181e397a6404efd7063df9f6"
+  },
+  "stage1": {
+    "preflight_pass": false,
+    "new_R16_R2_trajectory_evidence_consumed": false,
+    "stage2_R16_R2_trajectory_generation_authorized": false,
+    "post_preflight_scientific_retuning_authorized": false,
+    "all_histories_terminal_reason": "surface_groundwater_contact",
+    "common_terminal_step": 927,
+    "common_elapsed_seconds": 9270,
+    "common_elapsed_hours": 2.575,
+    "common_contact_bin": 101,
+    "common_gap_cm": -0.009183385770967334,
+    "per_history": {
+      "P_UP_24H": {
+        "factor_at_contact": 0.5
+      },
+      "P_DOWN_24H": {
+        "factor_at_contact": 0.25
+      },
+      "P_ALT_A_24H": {
+        "factor_at_contact": 0.25
+      },
+      "P_ALT_B_24H": {
+        "factor_at_contact": 0.5
+      }
+    },
+    "equal_cumulative_top_input": false,
+    "equal_top_interpretation": "Not a scientific inequality result: no history completed the frozen 24-hour window, so cumulative-top equality was not evaluated on four complete histories."
+  },
+  "scientific_interpretation": {
+    "general_FMC_hydrological_no_go": false,
+    "D20_one_hour_reclassified": false,
+    "D24_native_rain_groundwater_reclassified": false,
+    "D25_cost_screen_reclassified": false,
+    "D28_ET_blocker_reclassified": false,
+    "statement": "The D20 separated connected-surface plus groundwater-front state representation reaches its own excluded contact/merge boundary after 2.575 hours under every frozen forcing order. Long-window hydraulic persistence therefore requires an explicitly contact-capable state transition rather than silent continuation of the separated branch."
+  },
+  "next": [
+    "CLOSE_D29_SEPARATED_BRANCH_WITHOUT_STAGE2_RICHARDS_TRAJECTORY",
+    "RECONCILE_D19_CONTACT_MERGE_AND_POST_MERGE_AUTHORITY_BEFORE_D30",
+    "ONLY_IF_COMPOSITE_CONTINUATION_IS_FULLY_SPECIFIED_PREREGISTER_A_DISTINCT_CONTACT_CAPABLE_LONG_WINDOW_FMC_WORKUNIT",
+    "DO_NOT_BYPASS_D28_NATIVE_ET_BLOCKER",
+    "DO_NOT_TREAT_D29_AS_FORMAL_PERFORMANCE_OR_APPLICATION_ACCEPTANCE"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

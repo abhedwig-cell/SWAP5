@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.f-romv2-d29.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D29",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d29-one-day-hydraulic-persistence",
+    "pull_request": 482,
+    "pull_request_merged": false,
+    "head": "14b95943842b200b8d7d015814168ab6da7da838",
+    "workflow_run": 35491949341,
+    "workflow_job": 106028294032,
+    "artifact_id": 10599780693,
+    "artifact_digest": "sha256:c98d86772ab8b96ad955987b124fdd9fef2509e1ee2dc25caee491bf4c059607",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preflight_result_sha256": "38d5352549f0a569c3e9203a70e8da7921bd8ce823f81260d22a6609db765c16",
+    "preflight_stdout_sha256": "440461682cbef4b313401ceab78231afa6c2e0ef181e397a6404efd7063df9f6"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D29_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D29_RESULT.json",
+    "integration/f-rom/F-ROMV2_D29_STATUS.json",
+    "integration/f-rom/F-ROMV2_D29_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D29_ONE_DAY_SEPARATED_PREFLIGHT_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d29_one_day_hydraulic.py",
+    ".github/workflows/f-romv2-d29-one-day-preflight.yml",
+    "raw workflow artifact payload"
+  ],
+  "stage2_R16_R2_trajectory_generated": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_retuning_after_preflight": false,
+  "D20_reclassified": false,
+  "D24_reclassified": false,
+  "D25_reclassified": false,
+  "D28_reclassified": false,
+  "production_rom_authorized": false
+}

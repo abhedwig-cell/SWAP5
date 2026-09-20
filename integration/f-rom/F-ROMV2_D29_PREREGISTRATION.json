@@ -1,0 +1,211 @@
+{
+  "schema": "swap5.f-romv2-d29.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D29",
+  "title": "One-day hydraulic persistence of the admitted FMC separated surface-plus-groundwater branch",
+  "phase": "PREREGISTERED_BEFORE_FMC_ONLY_PREFLIGHT_AND_ANY_NEW_RICHARDS_TRAJECTORY",
+  "canonical_base": "c48c4c936e1e213bbefda8d89f9ed9b890869d0f",
+  "purpose": "Test whether the relative FMC hydraulic advantage admitted at one hour remains physically executable and, only if the FMC-only preflight passes, competitive with R2 over a 24-hour no-ET accumulation window without changing any D12-D27 process law.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_LONG_WINDOW_HYDRAULIC_ACCUMULATION_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "seasonal_ET_claim": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D20": "The separated prescribed-infiltration plus fixed-water-table FMC branch retained candidacy over one hour; relative advantage versus R2 persisted in the last quarter, while absolute bias grew with time.",
+    "D24": "Native rainfall plus active fixed-water-table composition retained candidacy over a short 160-s window.",
+    "D25": "Compiled FMC showed a large shared-host cost advantage, but formal performance remains blocked by MP-8.",
+    "D28": "Native ET/root-active trajectory remains externally blocked; D29 therefore contains zero ET/root withdrawal and does not bypass D28.",
+    "implication": "D29 extends only duration of the already-qualified D20 separated continuous-infiltration branch."
+  },
+  "frozen_identity": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "process_and_observation_step_seconds": 10,
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "HcM_cm": 14.085215420920257,
+    "groundwater_lambda": 0.25
+  },
+  "initial_state": {
+    "authority": "exact D20/D17 initial composite state",
+    "surface_component": "D16 I_DEEP connected fronts: z_101=120 cm linearly to z_199=10 cm",
+    "groundwater_component": "D13 G25: H_j=0.25*abs(psi(theta_j)) above fixed water table at 160 cm",
+    "falling_slugs": "none",
+    "contact": "none",
+    "mapping": "exact finite-volume cell averages to R16/R2 if Stage 2 is authorized"
+  },
+  "temporal_design": {
+    "process_and_observation_step_seconds": 10,
+    "block_steps": 30,
+    "block_duration_seconds": 300,
+    "base_four_block_cycle_duration_seconds": 1200,
+    "cycles_per_history": 72,
+    "blocks_per_history": 288,
+    "total_steps_per_history": 8640,
+    "total_duration_seconds": 86400,
+    "total_duration_hours": 24,
+    "late_window_steps": "6481..8640",
+    "late_window_duration_hours": 6
+  },
+  "forcing_factors_of_Ksat": [
+    0.1,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "histories": [
+    {
+      "id": "P_UP_24H",
+      "cycle_pattern": [
+        0.1,
+        0.25,
+        0.5,
+        0.75
+      ],
+      "repetitions": 72
+    },
+    {
+      "id": "P_DOWN_24H",
+      "cycle_pattern": [
+        0.75,
+        0.5,
+        0.25,
+        0.1
+      ],
+      "repetitions": 72
+    },
+    {
+      "id": "P_ALT_A_24H",
+      "cycle_pattern": [
+        0.1,
+        0.75,
+        0.25,
+        0.5
+      ],
+      "repetitions": 72
+    },
+    {
+      "id": "P_ALT_B_24H",
+      "cycle_pattern": [
+        0.75,
+        0.1,
+        0.5,
+        0.25
+      ],
+      "repetitions": 72
+    }
+  ],
+  "matched_boundaries": {
+    "top": "prescribed infiltrating flux q_in=factor*Ksat; native SWAP top_flux=-q_in",
+    "bottom": "fixed zero pressure head / fixed water table at z=160 cm",
+    "ET_root_sink_drainage_subsurface_irrigation": "zero",
+    "ponding_runoff": "not allowed",
+    "dry_bin_activation": "not allowed",
+    "surface_detachment_or_falling_slug": "not allowed",
+    "surface_groundwater_contact_or_merge": "not allowed in D29; if encountered, preflight closes D29 before any R16/R2 exposure"
+  },
+  "FMC_algorithm": {
+    "authority": "unchanged D20 composition of D13/D14/D15/D17 qualified operations",
+    "per_step": [
+      "reserve K(theta_i)*dt gray-bin direct throughflow from prescribed top supply",
+      "allocate all remaining supply to already connected surface fronts with D15 finite-volume accounting and D14 Eq.18 kinematics",
+      "apply conservative connected-front relaxation",
+      "advance D13 groundwater fronts by Eq.21 and conservative relaxation",
+      "bottom outward exchange = gray direct throughflow - groundwater-front storage change",
+      "require connected surface and groundwater intervals remain strictly separated",
+      "require global finite-volume ledger <=1e-12 cm"
+    ],
+    "no_new_physics": true,
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "stage1_FMC_only_preflight": {
+    "new_R16_R2_trajectory_evidence_consumed": false,
+    "checks": [
+      "all four histories complete all 8640 FMC steps",
+      "every step has surface supply >= gray-bin demand",
+      "all residual surface supply is absorbed by already connected fronts",
+      "no dry-bin activation, ponding or runoff",
+      "no surface-groundwater contact/merge or slug state",
+      "all front states remain finite and physical",
+      "step and global finite-volume ledgers remain <=1e-12 cm",
+      "all four histories have identical cumulative prescribed top input"
+    ],
+    "failure_rule": "Any failure closes D29 before generating new R16/R2 trajectories. Do not change factors, sequence, duration, lambda, bins, process step, equations or state-transition rules."
+  },
+  "stage2_if_preflight_passes": {
+    "authorized": false,
+    "activation_rule": "May be added only after immutable Stage-1 PASS evidence is observed under this exact preregistration.",
+    "comparators": [
+      "R16 16x10cm",
+      "R2 2x80cm"
+    ],
+    "numerical_authority": "D4 integrated-water-depth strict-first research policy; hard accepted transaction mass gate 1e-12 cm",
+    "metrics_full_day": [
+      "total-storage RMSE",
+      "cumulative-bottom-exchange RMSE",
+      "mapped R16-cell theta RMSE",
+      "upper-storage RMSE",
+      "lower-storage RMSE",
+      "terminal bottom-flux RMSE",
+      "bottom-flux sign-error count"
+    ],
+    "metrics_last_six_hours": "same seven metrics over steps 6481..8640",
+    "positive_rule": [
+      "all R16/R2/FMC histories complete with integrity",
+      "full-day FMC total-storage RMSE <= R2",
+      "full-day FMC cumulative-bottom-exchange RMSE <= R2",
+      "full-day FMC mapped-theta RMSE <= R2",
+      "full-day FMC bottom-flux RMSE <= R2 and sign errors <= R2",
+      "last-six-hour FMC total-storage, cumulative-bottom-exchange, mapped-theta and bottom-flux RMSE each <= R2"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true
+  },
+  "purpose_boundary": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "D29 is a one-day hydraulic accumulation discriminator only. Even a positive result does not establish seasonal or application acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "Not tested; ET/root uptake absent.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "Fixed water table only; live coupling absent.",
+    "FAST_EVENT_THRESHOLD": "No rainfall/ponding/runoff boundary.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "Not qualified."
+  },
+  "successor_logic": {
+    "if_stage1_passes": "Persist Stage-1 evidence and separately authorize the already-frozen Stage-2 comparator without changing science.",
+    "if_stage1_contact_or_other_branch_transition": "Close D29 separated-branch persistence. A later contact-capable long-window design must explicitly bind D19 and any additional surface-state transitions; do not silently widen D29.",
+    "if_stage2_positive": "Retain FMC for bounded longer hydraulic balance research, still excluding ET/application acceptance.",
+    "if_stage2_negative": "Do not retune FMC; restrict long-window candidacy and preserve shorter D20/D24 positive evidence."
+  },
+  "firewalls": [
+    "NO_ET_ROOT_UPTAKE",
+    "NO_D28_BYPASS",
+    "NO_FACTOR_VALUE_TUNING",
+    "NO_BLOCK_DURATION_TUNING",
+    "NO_HISTORY_ORDER_RETUNING",
+    "NO_TOTAL_DURATION_RETUNING_AFTER_PREFLIGHT",
+    "NO_LAMBDA_RETUNING",
+    "NO_BIN_OR_PROCESS_STEP_TUNING",
+    "NO_DRY_BIN_ACTIVATION",
+    "NO_PONDING_OR_RUNOFF",
+    "NO_SLUG_OR_MERGE_BRANCH",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

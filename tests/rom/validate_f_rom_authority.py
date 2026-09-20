@@ -2673,6 +2673,101 @@ def validate_romv2_d28_if_present() -> str:
     return "BLOCKED_EXTERNAL_NATIVE_ET_STATE_UPDATE_ORACLE"
 
 
+def validate_romv2_d29_if_present() -> str:
+    status_path = Path("integration/f-rom/F-ROMV2_D29_STATUS.json")
+    if not status_path.exists():
+        return "NOT_PRESENT"
+
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D29_PREREGISTRATION.json")
+            == "d5ac9672502bcc4f58e5ddc74e53e1905d2fb946",
+            "F-ROMV2-D29 preregistration blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D29_RESULT.json")
+            == "f856f171833b6813c8c43e28d301e6446b63413f",
+            "F-ROMV2-D29 result blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D29_STATUS.json")
+            == "d03e32115429893cd38931779112b611f0a6130f",
+            "F-ROMV2-D29 status blob drift")
+    require(git("rev-parse", "HEAD:integration/f-rom/F-ROMV2_D29_CANONICAL_EVIDENCE_MANIFEST.json")
+            == "8c76afc5412a9480908d147d07e82a35ea24ff37",
+            "F-ROMV2-D29 evidence manifest blob drift")
+
+    prereg = load_json("integration/f-rom/F-ROMV2_D29_PREREGISTRATION.json")
+    result = load_json("integration/f-rom/F-ROMV2_D29_RESULT.json")
+    status = load_json("integration/f-rom/F-ROMV2_D29_STATUS.json")
+    manifest = load_json("integration/f-rom/F-ROMV2_D29_CANONICAL_EVIDENCE_MANIFEST.json")
+    doc = Path("docs/science/F-ROMV2_D29_ONE_DAY_SEPARATED_PREFLIGHT_ADJUDICATION.md").read_text(encoding="utf-8")
+
+    require(prereg["phase"] == "PREREGISTERED_BEFORE_FMC_ONLY_PREFLIGHT_AND_ANY_NEW_RICHARDS_TRAJECTORY",
+            "F-ROMV2-D29 preregistration phase drift")
+    require(prereg["temporal_design"]["total_steps_per_history"] == 8640
+            and prereg["temporal_design"]["total_duration_hours"] == 24,
+            "F-ROMV2-D29 frozen duration drift")
+    require("NO_ET_ROOT_UPTAKE" in prereg["firewalls"]
+            and "NO_D28_BYPASS" in prereg["firewalls"]
+            and "NO_SLUG_OR_MERGE_BRANCH" in prereg["firewalls"],
+            "F-ROMV2-D29 domain/firewall drift")
+
+    require(result["decision"] == "D29_FMC_ONE_DAY_SEPARATED_PREFLIGHT_NO_GO",
+            "F-ROMV2-D29 decision drift")
+    require(result["adjudication"]
+            == "SEPARATED_BRANCH_REACHES_CONTACT_BOUNDARY_AT_2P575_HOURS_BEFORE_RICHARDS_EXPOSURE",
+            "F-ROMV2-D29 adjudication drift")
+    require(result["stage1"]["new_R16_R2_trajectory_evidence_consumed"] is False
+            and result["stage1"]["stage2_R16_R2_trajectory_generation_authorized"] is False,
+            "F-ROMV2-D29 wrongly consumes/authorizes Stage-2 evidence")
+    require(result["stage1"]["all_histories_terminal_reason"] == "surface_groundwater_contact"
+            and result["stage1"]["common_terminal_step"] == 927
+            and abs(float(result["stage1"]["common_elapsed_hours"]) - 2.575) < 1e-12
+            and result["stage1"]["common_contact_bin"] == 101,
+            "F-ROMV2-D29 contact-boundary evidence drift")
+    require(result["scientific_interpretation"]["general_FMC_hydrological_no_go"] is False
+            and result["scientific_interpretation"]["D20_one_hour_reclassified"] is False
+            and result["scientific_interpretation"]["D24_native_rain_groundwater_reclassified"] is False
+            and result["scientific_interpretation"]["D25_cost_screen_reclassified"] is False
+            and result["scientific_interpretation"]["D28_ET_blocker_reclassified"] is False,
+            "F-ROMV2-D29 predecessor/nonclaim drift")
+    require(result["production_rom_authorized"] is False,
+            "F-ROMV2-D29 authorizes production ROM")
+
+    require(status["phase"] == "CLOSED_ONE_DAY_SEPARATED_BRANCH_DOMAIN_NO_GO_BEFORE_RICHARDS_EXPOSURE"
+            and status["decision"] == "D29_FMC_ONE_DAY_SEPARATED_PREFLIGHT_NO_GO",
+            "F-ROMV2-D29 terminal status drift")
+    require(status["R16_R2_trajectory_evidence_consumed"] is False
+            and status["stage2_authorized"] is False
+            and status["contact_transition_required_for_longer_window"] is True,
+            "F-ROMV2-D29 Stage-2/contact authority drift")
+    require(status["D20_one_hour_positive_preserved"] is True
+            and status["D24_positive_preserved"] is True
+            and status["D25_cost_screen_preserved"] is True
+            and status["D28_native_ET_blocker_preserved"] is True,
+            "F-ROMV2-D29 predecessor preservation drift")
+    require(status["production_rom_authorized"] is False,
+            "F-ROMV2-D29 status authorizes production ROM")
+
+    require(manifest["canonical_import_scope"] == "EVIDENCE_ONLY"
+            and manifest["source_execution"]["pull_request_merged"] is False
+            and manifest["stage2_R16_R2_trajectory_generated"] is False,
+            "F-ROMV2-D29 evidence-only/Stage-2 manifest drift")
+    require(manifest["production_source_changed"] is False
+            and manifest["reference_source_changed"] is False
+            and manifest["scientific_retuning_after_preflight"] is False,
+            "F-ROMV2-D29 mutation/retuning drift")
+    require(manifest["D20_reclassified"] is False
+            and manifest["D24_reclassified"] is False
+            and manifest["D25_reclassified"] is False
+            and manifest["D28_reclassified"] is False,
+            "F-ROMV2-D29 predecessor manifest drift")
+
+    require("D29 is **not** a general FMC no-go." in doc,
+            "F-ROMV2-D29 general nonclaim missing")
+    require("no R16/R2 D29 trajectory is generated" in doc,
+            "F-ROMV2-D29 Stage-2 hold missing")
+    require("Production ROM remains unauthorized." in doc,
+            "F-ROMV2-D29 production prohibition missing")
+
+    return "CLOSED_ONE_DAY_SEPARATED_BRANCH_DOMAIN_NO_GO_BEFORE_RICHARDS_EXPOSURE"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--candidate-head", required=True)
@@ -2727,6 +2822,7 @@ def main() -> int:
     romv2_d26_phase = validate_romv2_d26_if_present()
     romv2_d27_phase = validate_romv2_d27_if_present()
     romv2_d28_phase = validate_romv2_d28_if_present()
+    romv2_d29_phase = validate_romv2_d29_if_present()
 
     print(f"F_ROM_FOUNDATION_BASELINE={FOUNDATION_BASELINE}")
     print(f"F_ROM_VALIDATION_BASE={base}")
@@ -2765,6 +2861,7 @@ def main() -> int:
     print(f"F_ROMV2_D26_PHASE={romv2_d26_phase}")
     print(f"F_ROMV2_D27_PHASE={romv2_d27_phase}")
     print(f"F_ROMV2_D28_PHASE={romv2_d28_phase}")
+    print(f"F_ROMV2_D29_PHASE={romv2_d29_phase}")
     print("F_ROM_AUTHORITY_GATE=PASS")
     return 0
 
