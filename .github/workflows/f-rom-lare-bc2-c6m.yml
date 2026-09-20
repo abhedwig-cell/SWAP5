@@ -1,0 +1,234 @@
+name: F-ROM-LARE BC2-C6M fresh surface Reference qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6m-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reference:
+    name: ref-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        material: [B01, B14]
+        route: [R512_T16, R1024_T16, R2048_T16, R2048_T8]
+        opt: [0, 2]
+        history: [S01, S02, S03, S04]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify frozen C6M authority
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c6m_surface_reference.py)" = "9a72f9ab418d1281fd09b0b776ab4be8937b8bfc"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6m_surface_reference.py)" = "37cef751f2537e4e22af1a7e01b3090a454f8bf1"
+          test "$(git hash-object tests/rom/test_lare_dyn0a_reference.f90)" = "b2df7793d3f56f5d8d1d121636d2eb1a0952e271"
+          test "$(git hash-object tests/rom/test_lare_dyn0a_b14_reference.f90)" = "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8"
+          python3 -m py_compile tests/rom/materialize_lare_bc2_c6m_surface_reference.py
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c6m_surface_reference.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json'))
+          a=json.load(open('integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert p['scientific_firewall']['candidate_response_generated'] is False
+          assert a['decision']=='SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK'
+          print('LARE_BC2_C6M_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Resolve route and material
+        id: cfg
+        run: |
+          set -euo pipefail
+          case "${{ matrix.route }}" in
+            R512_T16)  echo "nodes=512" >> "$GITHUB_OUTPUT"; echo "dz=0.3125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R1024_T16) echo "nodes=1024" >> "$GITHUB_OUTPUT"; echo "dz=0.15625" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T16) echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=16" >> "$GITHUB_OUTPUT" ;;
+            R2048_T8)  echo "nodes=2048" >> "$GITHUB_OUTPUT"; echo "dz=0.078125" >> "$GITHUB_OUTPUT"; echo "factor=8" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+          case "${{ matrix.material }}" in
+            B01) echo "source=tests/rom/test_lare_dyn0a_reference.f90" >> "$GITHUB_OUTPUT" ;;
+            B14) echo "source=tests/rom/test_lare_dyn0a_b14_reference.f90" >> "$GITHUB_OUTPUT" ;;
+            *) exit 2 ;;
+          esac
+
+      - name: Materialize exact fresh surface Reference history
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c6m_surface_reference.py \
+            --source "${{ steps.cfg.outputs.source }}" \
+            --material "${{ matrix.material }}" \
+            --temporal-factor "${{ steps.cfg.outputs.factor }}" \
+            --output canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --manifest /tmp/c6m_manifest.json
+
+      - name: Execute frozen Reference slice
+        env:
+          LARE_DYN0A_CASE_FILTER: ${{ matrix.history }}
+        run: |
+          set -euo pipefail
+          route="${{ matrix.route }}"
+          material="${{ matrix.material }}"
+          opt="${{ matrix.opt }}"
+          history="${{ matrix.history }}"
+          n="${{ steps.cfg.outputs.nodes }}"
+          dz="${{ steps.cfg.outputs.dz }}"
+          factor="${{ steps.cfg.outputs.factor }}"
+          mkdir -p slice_evidence
+          stub="canonical/c6m_${material}_${route}_o${opt}_${history}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
+            --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c6m/build_${material}_${route}_o${opt}_${history}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py \
+            --root canonical \
+            --stub "c6m_${material}_${route}_o${opt}_${history}_stubs.f90" \
+            --target tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
+            --external-source src/legacy/b1_10_port/headcalc.f90 \
+            --build "$build" --opt "$opt"
+          log="slice_evidence/${material}_${route}_o${opt}_${history}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREDYN0R_C6M_SURFACE_REFERENCE_GENERATED=TRUE' "$log"
+          grep -Fq 'LAREDYN0R_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq '|BOTTOM=FREE_DRAINAGE' "$log"
+          expected_states=$((1024*factor))
+          test "$(grep -c '^LAREDYN0R_STATE|' "$log")" -eq "$expected_states"
+          test "$(grep -c '^LAREDYN0R_PROFILE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREDYN0R_HISTORY_PASS|' "$log")" -eq 1
+          test "$(grep -c '^LAREDYN0R_NODE|' "$log")" -eq 0
+          test "$(grep -c "^LAREDYN0R_STATE|.*|CASE=${history}|" "$log")" -eq "$expected_states"
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREDYN0R_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          assert 'ROOT' not in ''.join(
+              line for line in raw.splitlines()
+              if line.startswith('LAREDYN0R_STATE|')
+          )
+          PY
+          cp /tmp/c6m_manifest.json slice_evidence/
+          sha256sum slice_evidence/* > slice_evidence/sha256.txt
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C6M_REFERENCE_SLICE=PASS|${material}|${route}|O${opt}|${history}"
+
+      - name: Upload surface Reference slice
+        uses: actions/upload-artifact@v4
+        with:
+          name: c6m-ref-${{ matrix.material }}-${{ matrix.route }}-o${{ matrix.opt }}-${{ matrix.history }}
+          path: slice_evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: reference
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Download all surface Reference slices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c6m-ref-*
+          path: /tmp/c6m/slices
+          merge-multiple: false
+
+      - name: Reconstruct routes and require O0 O2 identity
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6m/routes LARE_BC2_C6M_EVIDENCE
+          for material in B01 B14; do
+            for route in R512_T16 R1024_T16 R2048_T16 R2048_T8; do
+              for opt in 0 2; do
+                full="/tmp/c6m/routes/${material}_${route}_o${opt}.txt"
+                : > "$full"
+                for history in S01 S02 S03 S04; do
+                  part="/tmp/c6m/slices/c6m-ref-${material}-${route}-o${opt}-${history}/${material}_${route}_o${opt}_${history}.txt"
+                  test -s "$part"
+                  cat "$part" >> "$full"
+                done
+                if [[ "$route" == "R2048_T8" ]]; then factor=8; else factor=16; fi
+                test "$(grep -c '^LAREDYN0R_STATE|' "$full")" -eq $((4*1024*factor))
+                test "$(grep -c '^LAREDYN0R_PROFILE|' "$full")" -eq $((4*1024*16))
+                test "$(grep -c '^LAREDYN0R_HISTORY_PASS|' "$full")" -eq 4
+              done
+              cmp "/tmp/c6m/routes/${material}_${route}_o0.txt" "/tmp/c6m/routes/${material}_${route}_o2.txt"
+              cp "/tmp/c6m/routes/${material}_${route}_o0.txt" "LARE_BC2_C6M_EVIDENCE/${material}_${route}_o0.txt"
+            done
+          done
+          echo LARE_BC2_C6M_REFERENCE_IDENTITY=PASS
+
+      - name: Execute frozen C6M Reference quality gate
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6m_surface_reference.py)" = "37cef751f2537e4e22af1a7e01b3090a454f8bf1"
+          python3 tests/rom/analyze_lare_bc2_c6m_surface_reference.py \
+            --prereg integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json \
+            --b01-r512-t16 /tmp/c6m/routes/B01_R512_T16_o0.txt \
+            --b01-r1024-t16 /tmp/c6m/routes/B01_R1024_T16_o0.txt \
+            --b01-r2048-t16 /tmp/c6m/routes/B01_R2048_T16_o0.txt \
+            --b01-r2048-t8 /tmp/c6m/routes/B01_R2048_T8_o0.txt \
+            --b14-r512-t16 /tmp/c6m/routes/B14_R512_T16_o0.txt \
+            --b14-r1024-t16 /tmp/c6m/routes/B14_R1024_T16_o0.txt \
+            --b14-r2048-t16 /tmp/c6m/routes/B14_R2048_T16_o0.txt \
+            --b14-r2048-t8 /tmp/c6m/routes/B14_R2048_T8_o0.txt \
+            --output LARE_BC2_C6M_EVIDENCE/LARE_BC2_C6M_RESULT.json \
+            | tee LARE_BC2_C6M_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json LARE_BC2_C6M_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6M_EVIDENCE/LARE_BC2_C6M_RESULT.json'))
+          assert r['status'] in (
+            'C6M_SURFACE_REFERENCE_QUALIFIED',
+            'C6M_SURFACE_REFERENCE_NUMERICAL_QUALITY_BLOCKED'
+          )
+          f=r['scientific_firewall']
+          assert f['candidate_response_generated'] is False
+          assert f['root_uptake_feedback_used'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6M_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6M_EVIDENCE/* > LARE_BC2_C6M_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C6M evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6m
+          path: LARE_BC2_C6M_EVIDENCE/
+          if-no-files-found: error
