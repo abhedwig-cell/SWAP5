@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.lare.bc2.c4x.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4X",
+  "status": "TECHNICAL_BINDING_REPAIRED_BEFORE_OUTCOME_INSPECTION",
+  "scientific_preregistration": "integration/f-rom/LARE_BC2_C4X_PREREGISTRATION.json",
+  "scientific_preregistration_blob": "866a8139d56aa67b094bd388891f770c95f58ac7",
+  "non_authoritative_execution": {
+    "workflow_run": 35494145566,
+    "execution_head": "6c1497a8daf9e820040af88a4fd804170c4787e2",
+    "conclusion": "success",
+    "scientific_outcome_inspected": false,
+    "artifact_downloaded": false,
+    "authority_role": "NON_AUTHORITATIVE_DUE_TO_STALE_IMPLEMENTATION_BLOB_BINDING",
+    "reason": "The scientific preregistration's pre_execution_implementation_binding captured tooling blobs before two later pre-execution technical/governance repairs. The workflow used the repaired tooling, so the frozen scientific formulas were unchanged but exact implementation provenance was stale."
+  },
+  "actual_scientific_tooling_for_reexecution": {
+    "materializer_blob": "c1039e5d38e588c91c20104d395f6d184d895c76",
+    "fmc_preflight_blob": "76773e2592f3f6cb6f30b96dfe4c2b23addb233c",
+    "c4x_analyzer_blob": "8cfed06a892bbefbc256681001b3e16dbc7de5e9",
+    "c4v_analyzer_blob": "e7d22818d935bedddeb2f2cdf2cec58e95814f93",
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "d13_fortran_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "d13_fmc_analyzer_blob": "803867a2ccdb190142274e9c41aafc3d3ca8d76a",
+    "canonical_reference_head": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d"
+  },
+  "technical_deltas_from_original_binding": [
+    {
+      "file": "tests/rom/materialize_lare_bc2_c4x_b14.py",
+      "change": "provenance split label B14BLIND -> B14XFER",
+      "hydrological_effect": false
+    },
+    {
+      "file": "tests/rom/preflight_lare_bc2_c4x_fmc_b14.py",
+      "change": "JSON key binding blind_transfer_B14 -> response_blind_transfer_B14 after governance correction",
+      "hydrological_effect": false
+    },
+    {
+      "file": "tests/rom/analyze_lare_bc2_c4x_b14.py",
+      "change": "same JSON key binding repair",
+      "hydrological_effect": false
+    }
+  ],
+  "frozen_scientific_design_unchanged": [
+    "B14 constitutive parameters",
+    "X01-X04 front scaling and all lambda values",
+    "1024-step horizon and checkpoints",
+    "LARE closure and dt",
+    "all transferred-ladder and placement-control partitions",
+    "R16/R2 Reference policy",
+    "FMC equations, bins and substeps",
+    "groundwater-vector and profile metrics",
+    "hard gates and decision logic"
+  ],
+  "first_run_response_consumed_for_repair": false,
+  "rerun_required": true,
+  "primary_authority_rule": "Only a later run that verifies these exact scientific-tooling blobs before preflight and Reference generation may become C4X scientific authority.",
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
