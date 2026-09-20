@@ -14,14 +14,23 @@ def relsat(h: float, p: tuple[float, ...]) -> float:
     th = prep.theta_policy(h, p)
     return (th-p[0])/(p[1]-p[0])
 
-def threshold_head(p: tuple[float, ...], target: float = prep.RELSAT_KSAT) -> float:
+def threshold_head(p: tuple[float, ...], k_margin: float = 1.0e-8) -> float:
+    """Wettest negative head whose K is still strictly below Ksat.
+
+    The current ReadSwap table contract requires conductab to be strictly
+    increasing.  Using the relative-saturation cut-off directly can already
+    land on the Ksat clamp because the analytical K expression itself reaches
+    the min(K, Ksat) cap slightly before the relsat threshold.  Bind the
+    uniform negative grid to a conductivity target instead.
+    """
     lo = -1.0e7
     hi = -1.0e-12
-    if not (relsat(lo,p) < target < relsat(hi,p)):
-        raise RuntimeError("target relative saturation not bracketed")
-    for _ in range(100):
-        mid = 0.5*(lo+hi)
-        if relsat(mid,p) <= target:
+    target = p[4] * (1.0 - k_margin)
+    if not (prep.k_policy(lo, p) < target < prep.k_policy(hi, p)):
+        raise RuntimeError("strict-K wet endpoint not bracketed")
+    for _ in range(120):
+        mid = 0.5 * (lo + hi)
+        if prep.k_policy(mid, p) <= target:
             lo = mid
         else:
             hi = mid
@@ -32,6 +41,8 @@ def rows_uniform_x(p: tuple[float, ...], n: int):
         raise ValueError("n must be >=4")
     h0 = -1.0e7
     h1 = threshold_head(p)
+    if not prep.k_policy(h1,p) < p[4]:
+        raise RuntimeError("uniform-x negative endpoint is not strictly below Ksat")
     x0 = -math.log(1.0-h0)
     x1 = -math.log(1.0-h1)
     rows=[]
