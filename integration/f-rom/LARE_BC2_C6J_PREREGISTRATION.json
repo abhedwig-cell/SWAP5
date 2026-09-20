@@ -78,7 +78,8 @@
       "max_abs_moment_cm2": 1e-7
     },
     "interior_margin_Se": 1e-8,
-    "active_bound_policy": "If an unconstrained affine-suction minimizer touches the frozen Se bounds within the margin, G4 fails and the obstacle-profile extension is not introduced in C6J."
+    "active_bound_policy": "If an unconstrained affine-suction minimizer touches the frozen Se bounds within the margin, G4 fails and the obstacle-profile extension is not introduced in C6J.",
+    "invalid_trial_penalty": 1000
   },
   "tangent_metric_contract": {
     "tangent_definition": "Use the exact local moment-map Jacobian J=int dtheta/dpsi [[1,x],[x,x^2]] dz and J^{-1} to compute partial theta/partial(S,M).",
@@ -110,13 +111,16 @@
       "top_flux": "q0=K(mean theta top), exactly C6C.",
       "bottom_potential": "mu_b=-psi_bottom-H with psi_bottom equal to the C6C multiplier times suction at bottom-layer mean theta.",
       "reduced_stationarity": "Solve G*y_dot = -(g_y-q0*b-mu_b*C).",
-      "gate": "finite unique solve and scaled stationarity residual <=1e-10"
+      "gate": "finite unique solve and scaled stationarity residual <=1e-10",
+      "gate_stationarity_residual": 1e-10
     },
     "prescribed_flux": {
       "cases": "Use the 126 C6E D12 state x HOLD_Q_SE060/075/090 cases.",
       "boundary_constraint": "C^T*y_dot=q_top-q_bottom=0.",
       "reduced_stationarity": "Solve the equality-constrained quadratic Onsager KKT system [G C; C^T 0][y_dot,lambda]^T = [-(g_y-q0*b),0]^T.",
-      "gate": "finite unique KKT solve, constraint residual <=1e-10 cm/day and scaled stationarity residual <=1e-10"
+      "gate": "finite unique KKT solve, constraint residual <=1e-10 cm/day and scaled stationarity residual <=1e-10",
+      "gate_stationarity_residual": 1e-10,
+      "gate_constraint_residual_cm_per_day": 1e-10
     },
     "reduced_energy_gradient": "For layer affine suction psi=A+B*x, envelope theorem gives dE/dS=-A-zc and dE/dM=-B-1 under z-positive-down convention; transform by the frozen state scales.",
     "no_time_integration": true
