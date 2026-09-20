@@ -42,9 +42,9 @@ def percentile_rank(value,distribution):
     a=np.asarray(distribution,dtype=float)
     return float(100.0*np.count_nonzero(a<=value)/len(a))
 
-def q_at_step(r16,series,hist,step):
+def q_at_step(r16,history_series,hist,step):
     ref=float(r16["states"][(hist,step)]["BOTTOM_FLUX"])
-    cand=ref+float(series[hist]["Q"][step-1])
+    cand=ref+float(history_series["Q"][step-1])
     return ref,cand
 
 def characterize_member(member,r16,c4v_result):
