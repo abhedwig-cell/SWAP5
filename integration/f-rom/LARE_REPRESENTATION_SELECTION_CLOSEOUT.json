@@ -51,7 +51,8 @@
     "C6I": "The frozen Richards retention and Darcy mobility define a capillary/gravitational energy-dissipation structure. Given feasible S/M, strict capillary-energy convexity selects a unique bounded local quasi-equilibrium profile that is affine in suction in the interior. Projecting the Onsager dissipation principle onto this moment manifold defines a distinct parameter-free dynamic ROM family (FEMO), without reopening the C6E BEMR static root.",
     "C6J": "All 126 frozen S/M targets are physically realizable, but the prospectively frozen interior affine-suction FEMO realization is not numerically robust over the domain: 38/126 state cases pass all-start convergence/interiority/local-Jacobian gates, only 4/126 pass frozen profile uniqueness, and only 4 state cases reach a qualified Onsager metric. The physical Richards energy-dissipation theory is retained; this FEMO numerical realization is stopped before response.",
     "C6K": "Post-C6J synthesis rejects a universal minimum state count as current research target and adopts purpose-, material-, boundary-, horizon- and placement-dependent sufficiency. Existing groundwater/profile frontiers are scientific comparator-relative evidence only; ET/root uptake, long-horizon balance and extremes remain direct evidence gaps.",
-    "C6L": "Purpose validation is sequenced surface-first: qualify a fresh high-resolution free-drainage top-flux Reference on B01/B14 before any new LARE response. Prescribed distributed sinks and free-running stress-dependent root uptake are explicitly separate claims; ET/drought cannot inherit from a prescribed-sink replay."
+    "C6L": "Purpose validation is sequenced surface-first: qualify a fresh high-resolution free-drainage top-flux Reference on B01/B14 before any new LARE response. Prescribed distributed sinks and free-running stress-dependent root uptake are explicitly separate claims; ET/drought cannot inherit from a prescribed-sink replay.",
+    "C6M": "The first free-drainage C6M attempt was a pre-solver boundary-admission mismatch and has no scientific authority. The repaired fixed-initial-head route is admitted, but the full two-material high-resolution matrix does not qualify under the frozen DYN0A numerical policy; B01 diagnostic execution fails after admitted response when a mode-5 first attempt fails and no mode-5 fallback authority exists. No Layer-ROM candidate was executed."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -113,7 +114,8 @@
     "C6I_free_energy_moment_onsager": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
     "C6J_FEMO_mathematical_qualification": "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json",
     "C6K_purpose_sufficiency": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
-    "C6L_purpose_validation_architecture": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json"
+    "C6L_purpose_validation_architecture": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
+    "C6M_surface_reference": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json"
   },
   "closed_routes": [
     {
@@ -187,22 +189,24 @@
       ]
     }
   ],
-  "decision": "ADOPT_PURPOSE_DEPENDENT_SUFFICIENCY_AND_PREREGISTER_SURFACE_REFERENCE_BEFORE_NEW_CANDIDATE_RESPONSE",
+  "decision": "PIVOT_PURPOSE_VALIDATION_TO_FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE_BEFORE_CANDIDATE_RESPONSE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
   "next_authority": {
-    "target": "LARE-BC2-C6M",
-    "state": "FRESH_SURFACE_FLUX_HIGH_RES_REFERENCE_PREREGISTRATION_AUTHORIZED",
-    "authority": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
+    "target": "LARE-BC2-C6M2",
+    "state": "FRESH_SURFACE_FIXED_BOTTOM_FLUX_REFERENCE_QUALIFICATION_AUTHORIZED",
+    "authority": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
     "hydrological_candidate_response_authorized": false
   },
   "next_family_authority": {
     "family": "EXISTING_FIXED_PARTITION_LARE_PURPOSE_VALIDATION",
-    "state": "SURFACE_REFERENCE_QUALIFICATION_REQUIRED_BEFORE_CANDIDATE_RESPONSE",
+    "state": "SURFACE_FIXED_FLUX_REFERENCE_QUALIFICATION_REQUIRED_BEFORE_CANDIDATE_RESPONSE",
     "universal_new_closure_search_default": false,
     "existing_representation_set_only": true,
-    "surface_reference_qualified": false,
+    "surface_fixed_head_reference_qualified": false,
+    "surface_fixed_flux_reference_qualified": false,
     "surface_candidate_response_authorized": false,
+    "bottom_exchange_prediction_in_C6M2_scope": false,
     "root_ET_feedback_authorized": false,
     "long_horizon_balance_authorized": false,
     "application_acceptance_adjudicated": false,
@@ -211,8 +215,8 @@
     "repository_basis": [
       "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
       "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
-      "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-      "integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json"
+      "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
+      "integration/f-rom/LARE_DYN0A_CLOSEOUT.json"
     ]
   },
   "performance_comparison_authorized": false,
@@ -245,7 +249,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v39",
+  "schema": "swap5.lare.representation-selection.closeout.v40",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -256,7 +260,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6L_PURPOSE_DEPENDENT_SUFFICIENCY_SELECTED_SURFACE_REFERENCE_VALIDATION_NEXT",
+  "status": "CLOSED_THROUGH_C6M_SURFACE_FIXED_HEAD_REFERENCE_BLOCKED_C6M2_FIXED_FLUX_REFERENCE_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
