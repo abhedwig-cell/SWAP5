@@ -1,0 +1,226 @@
+name: F-ROM-LARE BC2-C5J Reference boundary factorial
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c5j_reference_boundary_variant.py'
+      - 'tests/rom/analyze_lare_bc2_c5j_reference_boundary_factorial.py'
+      - '.github/workflows/f-rom-lare-bc2-c5j.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c5j-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  slice:
+    name: slice-${{ matrix.variant }}-${{ matrix.geometry }}-o${{ matrix.opt }}-h${{ matrix.history }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        variant: [GEOMETRY, CONDUCTIVITY, COMBINED]
+        geometry: [R512, R1024]
+        opt: [0, 2]
+        history: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen Reference backend
+        uses: actions/checkout@v4
+        with:
+          ref: 1caa431002d5c128c73cfcfbd31af4cc39ee9f12
+          path: canonical
+          fetch-depth: 0
+
+      - name: Verify C5J preregistration and implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5j_reference_boundary_variant.py)" = "13832d068b8e2ff897500b5d6e5a4bed26fd7d59"
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5j_reference_boundary_factorial.py)" = "e4ed691d9efd0d38cab2ecd964f5152b60ae91f4"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5i_history_slice.py)" = "59f1c3f8cb047b13437551db9a49bd096c2ae20c"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5i_t16.py)" = "371af1c7fcca243d04d84fca92a028746ba0ac5c"
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json'))
+          c=json.load(open('integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_REFERENCE_BOUNDARY_COUNTERFACTUAL_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['response_based_design'] is False
+          assert c['status']=='CLOSED_T16_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING_REFERENCE_BOUNDARY_DISCRETIZATION_AUDIT_REQUIRED'
+          assert c['authority']['result_sha256']=='865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302'
+          assert c['adjudication']['REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM_AUDIT_AUTHORIZED'] is True
+          assert c['adjudication']['BRUTE_FORCE_T32_AUTHORIZED'] is False
+          assert c['adjudication']['R2048_SPATIAL_EXTENSION_AUTHORIZED'] is False
+          print('LARE_BC2_C5J_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Materialize exact C5I T16 history slice
+        run: |
+          set -euo pipefail
+          h="${{ matrix.history }}"
+          python3 tests/rom/materialize_lare_bc2_c5i_history_slice.py             --c5i-materializer tests/rom/materialize_lare_bc2_c5i_t16.py             --c5e-materializer tests/rom/materialize_lare_bc2_c5e_reference_extension.py             --c5d-materializer tests/rom/materialize_lare_bc2_c5d_reference_extension.py             --c5c-materializer tests/rom/materialize_lare_bc2_c5c_reference_refinement.py             --c5a-materializer tests/rom/materialize_lare_bc2_c5a_b14_dynamic_head.py             --c4z-materializer tests/rom/materialize_lare_bc2_c4z_dynamic_head.py             --source tests/rom/test_lare_rs1_gw_library.f90             --history-index "$h"             --output canonical/tests/rom/test_lare_bc2_c5j_slice.f90             --manifest /tmp/c5j_history_manifest.json
+
+      - name: Materialize diagnostic Reference boundary variant
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c5j_reference_boundary_variant.py             --source canonical/src/legacy/b1_10_port/headcalc.f90             --variant "${{ matrix.variant }}"             --output "canonical/c5j_headcalc_${{ matrix.variant }}.f90"             --manifest /tmp/c5j_boundary_manifest.json
+          python3 - <<'PY'
+          import json
+          m=json.load(open('/tmp/c5j_boundary_manifest.json'))
+          assert m['response_based'] is False
+          assert m['production_reference_changed'] is False
+          assert m['fitted_parameter'] is False
+          assert m['swkmean_required']==1
+          assert m['swkimpl_required']==0
+          PY
+
+      - name: Execute frozen diagnostic slice
+        run: |
+          set -euo pipefail
+          id="${{ matrix.geometry }}"
+          opt="${{ matrix.opt }}"
+          h="${{ matrix.history }}"
+          variant="${{ matrix.variant }}"
+          if [[ "$id" == "R512" ]]; then
+            n=512
+            dz=0.3125
+          else
+            n=1024
+            dz=0.15625
+          fi
+          expected=$(printf 'Z%02d' "$h")
+          mkdir -p slice_evidence
+          stub="canonical/c5j_${variant}_${id}_o${opt}_h${h}_stubs.f90"
+          python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90             --output "$stub" --nodes "$n" --dz-cm "$dz"
+          build="/tmp/c5j/build_${variant}_${id}_o${opt}_h${h}"
+          python3 canonical/tests/rom/compile_f_rom0_fortran_closure.py             --root canonical             --stub "c5j_${variant}_${id}_o${opt}_h${h}_stubs.f90"             --target tests/rom/test_lare_bc2_c5j_slice.f90             --external-source "c5j_headcalc_${variant}.f90"             --build "$build" --opt "$opt"
+          log="slice_evidence/${variant}_${id}_o${opt}_h${h}.txt"
+          "$build/rom0_test" > "$log" 2>&1
+          grep -Fq 'LAREGW1_EXECUTION_COMPLETE=PASS' "$log"
+          grep -Fq 'LAREGW1_C5I_B14_T16_GENERATED=TRUE' "$log"
+          test "$(grep -c '^LAREGW1_STATE|' "$log")" -eq 16384
+          test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$log")" -eq 1
+          test "$(grep -c '^LAREGW1_NODE|' "$log")" -eq 0
+          test "$(grep -c "^LAREGW1_STATE|.*|HISTORY=${expected}|" "$log")" -eq 16384
+          python3 - "$log" <<'PY'
+          import re,sys
+          raw=open(sys.argv[1],errors='replace').read()
+          m=re.search(r'LAREGW1_MAX_ABS_MASS=([^\n]+)',raw)
+          assert m is not None
+          assert abs(float(m.group(1))) <= 1e-12
+          PY
+          cp /tmp/c5j_history_manifest.json "slice_evidence/history_manifest.json"
+          cp /tmp/c5j_boundary_manifest.json "slice_evidence/boundary_manifest.json"
+          sha256sum slice_evidence/* > slice_evidence/sha256.txt
+          git -C canonical diff --quiet -- src reference
+          echo "LARE_BC2_C5J_SLICE=PASS|${variant}|${id}|O${opt}|H${h}"
+
+      - name: Upload diagnostic history slice
+        uses: actions/upload-artifact@v4
+        with:
+          name: c5j-slice-${{ matrix.variant }}-${{ matrix.geometry }}-o${{ matrix.opt }}-h${{ matrix.history }}
+          path: slice_evidence/
+          if-no-files-found: error
+
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: slice
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable C5I G0K0 baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5j/base /tmp/c5j/cf LARE_BC2_C5J_EVIDENCE
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602539613/zip" > /tmp/c5j/c5i.zip
+          echo "8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664  /tmp/c5j/c5i.zip" | sha256sum -c -
+          unzip -q /tmp/c5j/c5i.zip -d /tmp/c5j/base
+          echo "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7  /tmp/c5j/base/R512_T16_o0.txt" | sha256sum -c -
+          echo "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6  /tmp/c5j/base/R1024_T16_o0.txt" | sha256sum -c -
+          echo "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302  /tmp/c5j/base/LARE_BC2_C5I_RESULT.json" | sha256sum -c -
+
+      - name: Download all C5J counterfactual slices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c5j-slice-*
+          path: /tmp/c5j/slices
+          merge-multiple: false
+
+      - name: Reconstruct full counterfactual routes
+        run: |
+          set -euo pipefail
+          for variant in GEOMETRY CONDUCTIVITY COMBINED; do
+            for id in R512 R1024; do
+              for opt in 0 2; do
+                full="/tmp/c5j/cf/${variant}_${id}_o${opt}.txt"
+                : > "$full"
+                for h in 1 2 3 4; do
+                  part="/tmp/c5j/slices/c5j-slice-${variant}-${id}-o${opt}-h${h}/${variant}_${id}_o${opt}_h${h}.txt"
+                  test -s "$part"
+                  cat "$part" >> "$full"
+                done
+                test "$(grep -c '^LAREGW1_STATE|' "$full")" -eq 65536
+                test "$(grep -c '^LAREGW1_HISTORY_PASS|' "$full")" -eq 4
+              done
+              cmp "/tmp/c5j/cf/${variant}_${id}_o0.txt" "/tmp/c5j/cf/${variant}_${id}_o2.txt"
+              cp "/tmp/c5j/cf/${variant}_${id}_o0.txt" "LARE_BC2_C5J_EVIDENCE/${variant}_${id}_T16_o0.txt"
+            done
+          done
+          echo "LARE_BC2_C5J_O0_O2_IDENTITY=PASS"
+
+      - name: Execute prebound C5J factorial analysis
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c5j_reference_boundary_factorial.py)" = "e4ed691d9efd0d38cab2ecd964f5152b60ae91f4"
+          python3 tests/rom/analyze_lare_bc2_c5j_reference_boundary_factorial.py             --base-r512 /tmp/c5j/base/R512_T16_o0.txt             --base-r1024 /tmp/c5j/base/R1024_T16_o0.txt             --geometry-r512 /tmp/c5j/cf/GEOMETRY_R512_o0.txt             --geometry-r1024 /tmp/c5j/cf/GEOMETRY_R1024_o0.txt             --conductivity-r512 /tmp/c5j/cf/CONDUCTIVITY_R512_o0.txt             --conductivity-r1024 /tmp/c5j/cf/CONDUCTIVITY_R1024_o0.txt             --combined-r512 /tmp/c5j/cf/COMBINED_R512_o0.txt             --combined-r1024 /tmp/c5j/cf/COMBINED_R1024_o0.txt             --c5i-result integration/f-rom/LARE_BC2_C5I_RESULT.json             --c5i-closeout integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json             --prereg integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json             --output LARE_BC2_C5J_EVIDENCE/LARE_BC2_C5J_RESULT.json             | tee LARE_BC2_C5J_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C5J_PREREGISTRATION.json LARE_BC2_C5J_EVIDENCE/
+
+      - name: Validate C5J firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C5J_EVIDENCE/LARE_BC2_C5J_RESULT.json'))
+          assert r['status']=='C5J_FACTORIAL_REFERENCE_BOUNDARY_SENSITIVITY_CHARACTERIZED'
+          assert r['baseline_identity_to_C5I_T16'] is True
+          f=r['scientific_firewall']
+          assert f['production_reference_changed'] is False
+          assert f['new_reference_physics_admitted'] is False
+          assert f['new_lare_run'] is False
+          assert f['new_lare_closure'] is False
+          assert f['C5A_formal_decision_changed'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C5J_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C5J_EVIDENCE/* > LARE_BC2_C5J_EVIDENCE/sha256.txt
+
+      - name: Upload authoritative C5J evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c5j
+          path: LARE_BC2_C5J_EVIDENCE/
+          if-no-files-found: error
