@@ -1,0 +1,169 @@
+{
+  "schema": "swap5.lare.bc2.c6n1.result.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N1",
+  "status": "C6N1_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED",
+  "decision": "AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_COMPARISON",
+  "integrity_pass": true,
+  "reference_target": "R2048_T32",
+  "authority": {
+    "workflow_run": 35534785660,
+    "execution_head": "7dba3ffb793d3c1128d335dc3968d09e8aa9babf",
+    "artifact_id": 10613517378,
+    "artifact_digest": "sha256:63d2dc2b9063159fe39119765d6798b06f266df7d9103a74c61a19bfd68dadb1",
+    "exact_artifact_result_sha256": "1faf97367157414c19cf881f1b3e24abbd70e3e2c5254b2326fb21a7c9a783f5",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json",
+    "checkpoint_hydrological_identity_pass": true,
+    "prior_R512_R1024_T32_route_identity_verified": true
+  },
+  "materials": {
+    "B01": {
+      "max_abs_transaction_mass_cm": 4.372097302252076e-13,
+      "max_profile_state_total_difference_cm": 2.0889956431346945e-12,
+      "reference_uncertainty_pass": true,
+      "metrics": {
+        "surface_0_20_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 3.753626508903168e-7,
+            "medium_to_fine": 9.38448149990602e-8,
+            "p": 1.999936164814015,
+            "U": 3.910431320597438e-8
+          },
+          "time": {
+            "coarse_to_medium": 0.0000033822227623823924,
+            "medium_to_fine": 0.000001690455288737886,
+            "p": 1.0005598241484042,
+            "U": 0.0000021114301520008783
+          },
+          "U_combined": 0.0000021505344652068526
+        },
+        "root_zone_0_40_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 3.5548568913544003e-7,
+            "medium_to_fine": 8.88740849280691e-8,
+            "p": 1.9999567765885433,
+            "U": 3.703234802590444e-8
+          },
+          "time": {
+            "coarse_to_medium": 0.000005175797969928221,
+            "medium_to_fine": 0.000002586773027624317,
+            "p": 1.0006278322923876,
+            "U": 0.000003230653839554256
+          },
+          "U_combined": 0.000003267686187580161
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 3.285972441348526e-7,
+            "medium_to_fine": 8.21505238368288e-8,
+            "p": 1.999978701073657,
+            "U": 3.4230058724783794e-8
+          },
+          "time": {
+            "coarse_to_medium": 0.000007008386236944357,
+            "medium_to_fine": 0.000003502717243384308,
+            "p": 1.0006077536579667,
+            "U": 0.000004374709973203437
+          },
+          "U_combined": 0.000004408940031928221
+        },
+        "mapped_10cm_theta_rmse": {
+          "space": {
+            "coarse_to_medium": 1.9919629864730883e-8,
+            "medium_to_fine": 4.980133101491627e-9,
+            "p": 1.9999346342137763,
+            "U": 2.0751808194771964e-9
+          },
+          "time": {
+            "coarse_to_medium": 2.183257487606768e-7,
+            "medium_to_fine": 1.0911908181337387e-7,
+            "p": 1.0005788780816964,
+            "U": 1.362894586547933e-7
+          },
+          "U_combined": 1.383646394742705e-7
+        }
+      }
+    },
+    "B14": {
+      "max_abs_transaction_mass_cm": 2.4158453015843406e-13,
+      "max_profile_state_total_difference_cm": 2.4868995751603507e-12,
+      "reference_uncertainty_pass": true,
+      "metrics": {
+        "surface_0_20_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 1.2621833343808604e-8,
+            "medium_to_fine": 3.156101103299473e-9,
+            "p": 1.9997061527261026,
+            "U": 1.3153993163386247e-9
+          },
+          "time": {
+            "coarse_to_medium": 1.0865655161763055e-8,
+            "medium_to_fine": 5.434248251170452e-9,
+            "p": 0.9996227883151049,
+            "U": 6.796363847679174e-9
+          },
+          "U_combined": 8.111763164017798e-9
+        },
+        "root_zone_0_40_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 3.694328674216937e-9,
+            "medium_to_fine": 9.236893947835781e-10,
+            "p": 1.9998325154215857,
+            "U": 3.8493016050890713e-10
+          },
+          "time": {
+            "coarse_to_medium": 2.7895216408250316e-9,
+            "medium_to_fine": 1.3950008237540407e-9,
+            "p": 0.9997517697383265,
+            "U": 1.7443512445746676e-9
+          },
+          "U_combined": 2.129281405083575e-9
+        },
+        "upper_0_80_storage_rmse_cm": {
+          "space": {
+            "coarse_to_medium": 3.111046986510616e-11,
+            "medium_to_fine": 7.758036328752766e-12,
+            "p": 2.003636747488381,
+            "U": 3.221673213658476e-12
+          },
+          "time": {
+            "coarse_to_medium": 2.662038326221557e-11,
+            "medium_to_fine": 1.3296748189426275e-11,
+            "p": 1.001457874406274,
+            "U": 1.6587394454207048e-11
+          },
+          "U_combined": 1.9809067667865525e-11
+        },
+        "mapped_10cm_theta_rmse": {
+          "space": {
+            "coarse_to_medium": 9.701561264018314e-10,
+            "medium_to_fine": 2.426113947470091e-10,
+            "p": 1.9995696264590233,
+            "U": 1.0112829888687664e-10
+          },
+          "time": {
+            "coarse_to_medium": 8.024287089411692e-10,
+            "medium_to_fine": 4.013508098545636e-10,
+            "p": 0.9995094142720944,
+            "U": 5.020298829035304e-10
+          },
+          "U_combined": 6.03158181790407e-10
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "reference_is_continuum_truth": false,
+    "candidate_response_generated": false,
+    "application_tolerance_selected": false,
+    "future_rule": "Candidate differences at or below the admitted metric-specific U_combined are numerically unresolved; differences above U_combined support comparator-relative representation evidence only until an independent application envelope exists."
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
