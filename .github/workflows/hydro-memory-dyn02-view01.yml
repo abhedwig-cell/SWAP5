@@ -1,0 +1,30 @@
+name: HYDRO-MEMORY DYN02 temporal hydraulic view
+
+on:
+  push:
+    branches:
+      - work/hydro-memory-dyn02-hydraulic-view
+    paths:
+      - 'src/runtime/mod_fmr_process_hydraulic_view_binding.f90'
+      - 'integration/research/HYDRO_MEMORY_DYN02_VIEW01_PREREGISTRATION.json'
+      - 'docs/publication/HYDRO_MEMORY_DYN02_VIEW01_PREREGISTRATION.md'
+      - 'tests/research/test_hydro_memory_dyn02_view01.f90'
+      - 'tests/research/run_hydro_memory_dyn02_view01.sh'
+      - '.github/workflows/hydro-memory-dyn02-view01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: gfortran --version
+      - name: Run temporal hydraulic-view gate
+        run: bash tests/research/run_hydro_memory_dyn02_view01.sh
