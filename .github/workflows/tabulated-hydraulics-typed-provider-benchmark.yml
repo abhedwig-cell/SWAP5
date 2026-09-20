@@ -1,0 +1,126 @@
+name: TAB-HYD typed raw-head provider benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-typed-provider-benchmark.yml'
+      - 'research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90'
+      - 'research/tabulated_hydraulics/tabhyd_typed_provider_benchmark.f90'
+      - 'research/tabulated_hydraulics/TYPED_PROVIDER_BENCHMARK_PREREGISTRATION.md'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/SWAP5
+          ref: bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5
+          path: canonical-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: legacy-src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Generate frozen raw-head400 material input
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-provider
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          p=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          spec=importlib.util.spec_from_file_location("prep_log",p)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          prep=mod.prep
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          names=sorted(series)
+          out=Path("build/typed-provider/input.dat")
+          with out.open("w") as fh:
+              fh.write(f"{len(names)} 400 4.0e-2\n")
+              for soil in names:
+                  par=series[soil]
+                  if par["h_enpr"] != 0.0:
+                      raise SystemExit(f"typed benchmark only admits H_ENPR=0, got {soil}")
+                  rows=mod.loghead_rows(par,400)
+                  fh.write(
+                      f"{soil} {par['ores']:.17e} {par['osat']:.17e} "
+                      f"{par['alpha']:.17e} {par['n']:.17e} "
+                      f"{par['ksat']:.17e} {par['lexp']:.17e} {par['h_enpr']:.17e}\n"
+                  )
+                  for h,t,k in rows:
+                      fh.write(f"{h:.17e} {t:.17e} {k:.17e}\n")
+          print(f"TYPED_PROVIDER_SOILS={len(names)}")
+          PY
+
+      - name: Compile pinned typed analytical and research table providers
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/typed-provider/mod
+          F="-O3 -std=f2018 -ffree-line-length-none"
+          gfortran $F -J build/typed-provider/mod             -c research/tabulated_hydraulics/array_dimensions_stub.f90             -o build/typed-provider/arrays.o
+          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c legacy-src/src/soil/sptabulated.f90             -o build/typed-provider/sptabulated.o
+          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c canonical-src/src/solver/mod_soil_water_solver_contract.f90             -o build/typed-provider/contract.o
+          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c canonical-src/src/solver/mod_b110_default_mvg_provider.f90             -o build/typed-provider/mvg.o
+          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             -c research/tabulated_hydraulics/mod_tabhyd_raw_typed_provider_research.f90             -o build/typed-provider/table-provider.o
+          gfortran $F -I build/typed-provider/mod -J build/typed-provider/mod             research/tabulated_hydraulics/tabhyd_typed_provider_benchmark.f90             build/typed-provider/arrays.o build/typed-provider/sptabulated.o             build/typed-provider/contract.o build/typed-provider/mvg.o             build/typed-provider/table-provider.o             -o build/typed-provider/benchmark
+
+      - name: Run provider benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/typed-provider/benchmark build/typed-provider/input.dat | tee build/typed-provider/result.txt
+
+      - name: Parse research result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          vals={}
+          for line in Path("build/typed-provider/result.txt").read_text().splitlines():
+              if line.startswith("TYPED_") and "=" in line and "BLOCK" not in line:
+                  k,v=line.split("=",1)
+                  try: vals[k]=float(v)
+                  except ValueError: pass
+          required=[
+              "TYPED_ACCURACY_THETA_MAX","TYPED_ACCURACY_C_MAX","TYPED_ACCURACY_LOG10K_MAX",
+              "TYPED_ANALYTIC_MEDIAN_S","TYPED_TABLE_MEDIAN_S","TYPED_TABLE_DELTA_PCT"
+          ]
+          missing=[k for k in required if k not in vals]
+          if missing: raise SystemExit(f"missing metrics: {missing}")
+          # Implementation guard only: provider must remain in the same small-error
+          # regime as the already characterized bounds-safe raw-head representation.
+          if vals["TYPED_ACCURACY_THETA_MAX"] > 1.0e-4: raise SystemExit("theta implementation mismatch")
+          if vals["TYPED_ACCURACY_C_MAX"] > 1.0e-4: raise SystemExit("capacity implementation mismatch")
+          if vals["TYPED_ACCURACY_LOG10K_MAX"] > 5.0e-4: raise SystemExit("K implementation mismatch")
+          lines=["metric\tvalue"]+[f"{k}\t{vals[k]:.17g}" for k in required]
+          Path("build/typed-provider/summary.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/typed-provider/summary.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-typed-provider-benchmark
+          path: |
+            build/typed-provider/result.txt
+            build/typed-provider/summary.tsv
