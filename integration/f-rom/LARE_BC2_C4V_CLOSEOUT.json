@@ -1,0 +1,169 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "R16_one_day_sha256": "e8951a67acac3dc73562f0ae80b1d7ca78bfab4aca6e2ad76115afc9d2fea654",
+    "R2_one_day_sha256": "5edfae08848eb554743fa6832acaf54a3d22bbb77ef33eb6e201817e50934e12",
+    "artifact_digest": "sha256:cd15afd49f198199644895dd783bdf390f86835624f83578cb5fdd610b952365",
+    "artifact_id": 10599921961,
+    "execution_head": "2b9c83a17d6584b1c7aa9d27a3a585f06019d448",
+    "result_sha256": "58453f537bdc3d6b47e2738cd5b3050fed1b18fad0d2734744b3fd9853ec3be3",
+    "workflow_run": 35493542460
+  },
+  "decision": "C4V_HIGHER_DIMENSION_GW_FRONTIER_PERSISTS",
+  "development_hypothesis": {
+    "H_GW_R4_PERSISTS": false,
+    "result": "FALSIFIED_WITHIN_BOUNDED_ONE_DAY_LABORATORY"
+  },
+  "external_application_accuracy_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+  "integrity": {
+    "R16_operator_control_status": "QUALIFIED",
+    "expected_C4R_crossing_FMC": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ],
+    "expected_C4R_crossing_R2": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ],
+    "fmc_D13_reproduction_pass": true,
+    "fmc_one_day_pre_reference_preflight_pass": true,
+    "maximum_qualified_lare_water_ledger_cm": 4.2588155224621005e-13,
+    "pass": true,
+    "prefix_C4R_ordering_pass": true,
+    "prefix_crossing_FMC": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ],
+    "prefix_crossing_R2": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12"
+    ],
+    "prefix_min_dimension_crossing_FMC": 4,
+    "prefix_min_dimension_crossing_R2": 4
+  },
+  "model_changed": false,
+  "next_authority": "INDEPENDENT_MATERIAL_OR_BOUNDARY_TRANSFER_AXIS_WHILE_C4U_EXTERNAL_APPLICATION_ACCURACY_REMAINS_BLOCKED",
+  "one_day_metrics": {
+    "FMC": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.6413442215626088,
+      "bottom_flux_RMSE_cm_per_day": 1.406590779755728,
+      "bottom_flux_sign_errors": 4,
+      "cumulative_bottom_RMSE_cm": 0.7270958355304191,
+      "mapped_theta_RMSE": 0.010514635052467653,
+      "max_abs_final_cumulative_bottom_error_cm": 1.6028373548904966,
+      "storage_RMSE_cm": 0.7270958355304151
+    },
+    "LARE_R12": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.004069357129804122,
+      "bottom_flux_RMSE_cm_per_day": 0.023820847061864207,
+      "bottom_flux_sign_errors": 1,
+      "cumulative_bottom_RMSE_cm": 0.002367883892421166,
+      "mapped_theta_RMSE": 0.001365701272817967,
+      "max_abs_final_cumulative_bottom_error_cm": 0.002914635525705922,
+      "storage_RMSE_cm": 0.00236788389242184
+    },
+    "LARE_R16_control": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.004038761998330157,
+      "bottom_flux_RMSE_cm_per_day": 0.02382077884028677,
+      "bottom_flux_sign_errors": 1,
+      "cumulative_bottom_RMSE_cm": 0.002367703053635703,
+      "mapped_theta_RMSE": 3.439443761456529e-05,
+      "max_abs_final_cumulative_bottom_error_cm": 0.0029145974160487143,
+      "storage_RMSE_cm": 0.0023677030536411133
+    },
+    "LARE_R4": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 1.1235321624480439,
+      "bottom_flux_RMSE_cm_per_day": 1.2352350091888156,
+      "bottom_flux_sign_errors": 914,
+      "cumulative_bottom_RMSE_cm": 0.7115786418844456,
+      "mapped_theta_RMSE": 0.03331833011274519,
+      "max_abs_final_cumulative_bottom_error_cm": 1.5686414949298921,
+      "storage_RMSE_cm": 0.7115786418844366
+    },
+    "LARE_R5": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.6131114006702905,
+      "bottom_flux_RMSE_cm_per_day": 0.7086608786426754,
+      "bottom_flux_sign_errors": 731,
+      "cumulative_bottom_RMSE_cm": 0.32178995962277923,
+      "mapped_theta_RMSE": 0.023881311550946457,
+      "max_abs_final_cumulative_bottom_error_cm": 0.7650583273139135,
+      "storage_RMSE_cm": 0.32178995962286283
+    },
+    "LARE_R6": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.22080729297149637,
+      "bottom_flux_RMSE_cm_per_day": 0.27876174018472655,
+      "bottom_flux_sign_errors": 397,
+      "cumulative_bottom_RMSE_cm": 0.10395962361914092,
+      "mapped_theta_RMSE": 0.01679085697442466,
+      "max_abs_final_cumulative_bottom_error_cm": 0.30640233120131843,
+      "storage_RMSE_cm": 0.10395962361918794
+    },
+    "LARE_R8": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 0.020484706474583635,
+      "bottom_flux_RMSE_cm_per_day": 0.037502122162886835,
+      "bottom_flux_sign_errors": 1,
+      "cumulative_bottom_RMSE_cm": 0.009211216248907072,
+      "mapped_theta_RMSE": 0.008098611378259738,
+      "max_abs_final_cumulative_bottom_error_cm": 0.03269485576759584,
+      "storage_RMSE_cm": 0.009211216248946979
+    },
+    "R2": {
+      "abs_mean_signed_bottom_flux_error_cm_per_day": 1.2836956945965017,
+      "bottom_flux_RMSE_cm_per_day": 2.4607244164008413,
+      "bottom_flux_sign_errors": 4,
+      "cumulative_bottom_RMSE_cm": 1.388129455095371,
+      "mapped_theta_RMSE": 0.0475780904773552,
+      "max_abs_final_cumulative_bottom_error_cm": 3.3333199477673006,
+      "storage_RMSE_cm": 1.3881294550953673
+    }
+  },
+  "performance_comparison_authorized": false,
+  "persistent_crossing": {
+    "FMC": [
+      "R8",
+      "R12"
+    ],
+    "R2": [
+      "R8",
+      "R12"
+    ],
+    "both_comparators": [
+      "R8",
+      "R12"
+    ],
+    "minimum_both_dimension": 8
+  },
+  "production_rom_authorized": false,
+  "prospective_checkpoints_day": {
+    "1024": 1.024,
+    "128": 0.128,
+    "256": 0.256,
+    "512": 0.512
+  },
+  "schema": "swap5.lare.bc2.c4v.closeout.v1",
+  "scientific_interpretation": [
+    "The blind C4R short-horizon minimum R4 does not persist prospectively to the one-day horizon under the preregistered six-component groundwater vector.",
+    "R8 and R12 are the only reduced LARE members that cross both R2 and FMC at every prospective checkpoint 0.128, 0.256, 0.512 and 1.024 day.",
+    "R5 crosses both comparators at 0.128 and 0.256 day but not at 0.512 or 1.024 day; R6 survives through 0.512 day but not 1.024 day.",
+    "The increasing state requirement is driven by accumulated flux-direction and systematic-bias behavior, not by mass-balance failure or loss of numerical qualification.",
+    "R8 therefore becomes the minimum demonstrated reduced LARE state dimension for this bounded one-day fixed-water-table groundwater-response purpose.",
+    "Mapped profile fidelity still improves materially from R8 to R12/R16, preserving the earlier purpose-dependent distinction between groundwater-output and profile/process state requirements.",
+    "This is comparator-relative horizon evidence only. It is not an application acceptance decision, coupled-groundwater authority, portable speedup claim or production ROM admission."
+  ],
+  "speed_claim_authorized": false,
+  "status": "CLOSED_ONE_DAY_GW_FRONTIER_PERSISTS_FROM_R8_APPLICATION_ACCEPTANCE_BLOCKED",
+  "work_unit": "LARE-BC2-C4V",
+  "workstream": "F-ROM-LARE"
+}

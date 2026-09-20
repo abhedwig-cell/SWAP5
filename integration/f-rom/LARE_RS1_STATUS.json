@@ -1,102 +1,209 @@
 {
-  "schema": "swap5.lare.rs1.status.v4",
-  "workstream": "F-ROM-LARE",
-  "work_unit": "LARE-RS1",
+  "application_acceptance_adjudicated": false,
   "branch": "work/f-rom-lare-rs1",
-  "live_reconciliation": {
-    "date": "2026-09-20",
-    "observed_branch_head_before_status_update": "05a0d08ac1037116134dcdf5f2844a21bf1e1639",
-    "observed_current_canonical": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-    "canonical_start_authority": "9bb73821bb78a04c759b763746b50a3f777cd416",
-    "authority_rule": "LARE scientific evidence remains bound to the frozen start authority unless explicitly requalified. Later canonical evidence may be imported as separately identified comparator/governance authority without rebasing historical evidence.",
-    "latest_canonical_delta_role": "F-ROMV2 evidence/governance only relative to the C4T execution source; no src/reference delta requiring C4T re-execution."
-  },
-  "state": "C4T_CLOSED_VALUE_SIGNAL_RESOLVED_C4U_EXTERNAL_APPLICATION_ACCURACY_BLOCKER",
-  "formal_gw_state_evidence": {
-    "p1": {
-      "result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json",
-      "blob_sha": "24ba05a72c1d188c148102f51af7c759c1743f3b",
-      "decision": "LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN"
+  "downstream_dynamics_and_closure": {
+    "bc2_c4d": {
+      "decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
+      "disposition": "H_CANCELLATION_SUPPORTED; H_QH_PHASE_NOT_SUPPORTED; H_REVERSAL_LOCAL_NOT_SUPPORTED",
+      "mechanism_closeout": "integration/f-rom/LARE_BC2_MECHANISM_CLOSEOUT.json",
+      "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json"
     },
-    "p2": {
-      "result": "integration/f-rom/LARE_RS1_GW_P2_RESULT.json",
-      "blob_sha": "84c7b4a6b830859e950ae84d6c86afd1c7089a9d",
-      "decision": "LARE_RS1_GW_P2_PURPOSE_AMBIGUITY_MAPPED"
+    "bc2_c4e": {
+      "aggregate_artifact_digest": "sha256:d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485",
+      "aggregate_artifact_id": 10589773291,
+      "closeout": "integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json",
+      "decision": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED",
+      "execution_head": "80a95f35c278e0985764f7cf730066d5ac4c73a2",
+      "interpretation": "No width-independent QI causal-closure claim is supported. At 5 cm RISE QI removal is uniquely best; at 2.5 cm RISE the same admissible removal worsens pooled shape fidelity by about 3.85x. Other cases have preregistered comparator or QI admissibility failures.",
+      "next_authority": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_CLOSURE_HYPOTHESIS",
+      "result": "integration/f-rom/LARE_BC2_C4E_RESULT.json",
+      "result_sha256": "06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290",
+      "science_reconciliation": "docs/science/F-ROM_LARE_BC2_C4E_CLOSEOUT.md",
+      "status": "CLOSED_DIAGNOSTIC_BLOCKED_NO_MODEL_CHANGE",
+      "unbound_parallel_analyzer": {
+        "note": "Present on later branch head but not used by workflow run 35460239887 and therefore carries no C4E execution authority.",
+        "path": "tests/rom/analyze_lare_bc2_c4e_local_counterfactual.py"
+      },
+      "workflow_run": 35460239887
     },
-    "p2c": {
-      "preregistration": "integration/f-rom/LARE_RS1_GW_P2C_PREREGISTRATION.json",
-      "analyzer": "tests/rom/analyze_lare_rs1_gw_p2c_common_cohort.py",
-      "workflow": ".github/workflows/f-rom-lare-rs1-gw-p2c.yml",
-      "result": "integration/f-rom/LARE_RS1_GW_P2C_RESULT.json",
-      "result_blob_sha": "4ac87662c4df69cf09ce6d620a6312739dd9e3ab",
-      "workflow_run": 35446071978,
-      "workflow_head": "6d0e79cc2515f7f3cf46479a43dac24f4fcb2714",
-      "artifact_id": 10584319433,
-      "artifact_digest": "sha256:7a274847f7a1af22d19d4b6f2b998679937a9e2a840934f4b833ba35c0eeb442",
-      "decision": "LARE_RS1_GW_P2C_COMMON_COHORT_AMBIGUITY_MAPPED",
-      "reproducibility_reconciliation": {
-        "preregistration_blob_unchanged_since_run": true,
-        "analyzer_blob_unchanged_since_run": true,
-        "workflow_blob_unchanged_since_run": true,
-        "p2_selection_blob_unchanged_since_run": true,
-        "p1_result_blob_unchanged_since_run": true,
-        "new_reference_solves_required": false
-      }
+    "bc2_c4q": {
+      "closeout": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+      "decision": "LARE_REDUCED_FRONTIER_CROSSES_FMC",
+      "interpretation": "Exposed D13 matched representation discriminator. R4 is the minimum reduced LARE member crossing R2 on all five frozen views; R12 is the only reduced member crossing FMC when mapped 10-cm profile fidelity is included.",
+      "status": "CLOSED_LARE_R12_CROSSES_FMC_ON_MATCHED_D13_NO_VALUE_CLAIM"
+    },
+    "bc2_c4r": {
+      "closeout": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+      "decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
+      "interpretation": "Blind half-offset fixed-water-table histories reproduce the purpose-dependent dimension separation: R4 for groundwater-vector crossing versus both R2/FMC; R12 for FMC profile-inclusive crossing.",
+      "status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE"
+    },
+    "bc2_c4s": {
+      "closeout": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+      "decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
+      "interpretation": "Same-partition CoRichards R3-R12 is fully available on the blind fixed-water-table workload, unlike the fixed-flux Q1 laboratory. Workload-specific numerical availability is therefore explicit.",
+      "status": "CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED"
+    },
+    "bc2_c4t": {
+      "artifact_digest": "sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833",
+      "artifact_id": 10599940848,
+      "closeout": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+      "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+      "interpretation": "Blind fidelity plus prospective position-balanced timing resolves a shared-host relative cost-fidelity value signal for LARE R3-R8. No portable speedup or application admission follows.",
+      "status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED",
+      "workflow_run": 35492342285
+    },
+    "bc2_c4u": {
+      "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+      "decision": "GW_APPLICATION_ACCEPTANCE_NOT_ADJUDICABLE_FROM_CURRENT_REPOSITORY_AUTHORITY",
+      "interpretation": "Canonical F-GC13/F-GC14 provide the fail-closed evidence transport contract and F-GC29 provides local dh/dq response sensitivity, but no real project H_app or temporal allocation is qualified. Synthetic fixtures, candidate errors, calibration metrics and solver tolerances are forbidden substitutes.",
+      "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED"
+    },
+    "bc2_c4v": {
+      "artifact_digest": "sha256:cd15afd49f198199644895dd783bdf390f86835624f83578cb5fdd610b952365",
+      "artifact_id": 10599921961,
+      "closeout": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+      "decision": "C4V_HIGHER_DIMENSION_GW_FRONTIER_PERSISTS",
+      "interpretation": "Prospective horizon extension falsifies persistence of the R4 groundwater frontier and raises the minimum reduced comparator-relative one-day state dimension to R8; application acceptance remains externally blocked.",
+      "status": "CLOSED_ONE_DAY_GW_FRONTIER_PERSISTS_FROM_R8_APPLICATION_ACCEPTANCE_BLOCKED",
+      "workflow_run": 35493542460
+    },
+    "dyn0a": {
+      "closeout": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+      "decision": "STANDARD_LARE_PHYSICALLY_COHERENT_AND_RESOLUTION_CONVERGENT_BUT_LOW_DIMENSION_NOT_BROADLY_QUALIFIED",
+      "interpretation": "State-information sufficiency and propagation-closure sufficiency are distinct.",
+      "status": "CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION"
     }
   },
+  "firewalls": [
+    "STATE_FIRST",
+    "PURPOSE_BEFORE_EQUIVALENCE",
+    "NO_UNIVERSAL_TOLERANCE",
+    "NO_CANDIDATE_SPECIFIC_P2_RANKING",
+    "NO_CLAIM_BEYOND_TESTED_APPLICATION_ENVELOPE",
+    "NO_PRODUCTION_ROM",
+    "NO_REFERENCE_RICHARDS_CHANGE",
+    "NO_ROSSFAST_CHANGE",
+    "NO_SPEED_CLAIM_BEFORE_FIDELITY"
+  ],
+  "formal_gw_state_evidence": {
+    "p1": {
+      "blob_sha": "24ba05a72c1d188c148102f51af7c759c1743f3b",
+      "decision": "LARE_RS1_GW_P1_RESPONSE_BLIND_PARTITIONS_FROZEN",
+      "result": "integration/f-rom/LARE_RS1_GW_P1_RESULT.json"
+    },
+    "p2": {
+      "blob_sha": "84c7b4a6b830859e950ae84d6c86afd1c7089a9d",
+      "decision": "LARE_RS1_GW_P2_PURPOSE_AMBIGUITY_MAPPED",
+      "result": "integration/f-rom/LARE_RS1_GW_P2_RESULT.json"
+    },
+    "p2c": {
+      "analyzer": "tests/rom/analyze_lare_rs1_gw_p2c_common_cohort.py",
+      "artifact_digest": "sha256:7a274847f7a1af22d19d4b6f2b998679937a9e2a840934f4b833ba35c0eeb442",
+      "artifact_id": 10584319433,
+      "decision": "LARE_RS1_GW_P2C_COMMON_COHORT_AMBIGUITY_MAPPED",
+      "preregistration": "integration/f-rom/LARE_RS1_GW_P2C_PREREGISTRATION.json",
+      "reproducibility_reconciliation": {
+        "analyzer_blob_unchanged_since_run": true,
+        "new_reference_solves_required": false,
+        "p1_result_blob_unchanged_since_run": true,
+        "p2_selection_blob_unchanged_since_run": true,
+        "preregistration_blob_unchanged_since_run": true,
+        "workflow_blob_unchanged_since_run": true
+      },
+      "result": "integration/f-rom/LARE_RS1_GW_P2C_RESULT.json",
+      "result_blob_sha": "4ac87662c4df69cf09ce6d620a6312739dd9e3ab",
+      "workflow": ".github/workflows/f-rom-lare-rs1-gw-p2c.yml",
+      "workflow_head": "6d0e79cc2515f7f3cf46479a43dac24f4fcb2714",
+      "workflow_run": 35446071978
+    }
+  },
+  "historical_hupsel_checkpoint": {
+    "bottom_boundary": "ZERO_FLUX",
+    "drain_depth_cm": 80,
+    "material_boundary_cm": 30,
+    "note": "No B01/B14 or RS1-GW partition is transferred to Hupsel by this research line.",
+    "profile_depth_cm": 200
+  },
+  "live_reconciliation": {
+    "authority_rule": "LARE scientific evidence remains bound to the frozen start authority unless explicitly requalified. Later canonical evidence may be imported as separately identified comparator/governance authority without rebasing historical evidence.",
+    "canonical_start_authority": "9bb73821bb78a04c759b763746b50a3f777cd416",
+    "date": "2026-09-20",
+    "latest_canonical_delta_role": "F-ROMV2 evidence/governance only relative to the C4T execution source; no src/reference delta requiring C4T re-execution.",
+    "observed_branch_head_before_status_update": "05a0d08ac1037116134dcdf5f2844a21bf1e1639",
+    "observed_current_canonical": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae"
+  },
+  "next_authority": {
+    "prohibited": "No post-hoc closure retuning, application acceptance, portable speedup or production ROM claim.",
+    "required_for_application_acceptance": [
+      "externally governed groundwater head/drawdown application prediction-error requirement H_app",
+      "independently governed temporal allocation A_temporal or direct temporal head-error budget",
+      "verified immutable provenance/source digest for both claims"
+    ],
+    "research_allowed_while_blocked": [
+      "independently preregistered material/constitutive transfer",
+      "independently preregistered lower-boundary/coupling-semantics transfer that does not alter production coupling",
+      "additional purpose/horizon characterization without converting comparator-relative errors into application acceptance"
+    ],
+    "state": "EXTERNAL_APPLICATION_BLOCKER_PLUS_OPEN_INDEPENDENT_TRANSFER_AXES"
+  },
   "p2c_common_cohort": {
-    "unique_states": 41,
     "cross_history_pairs": 480,
     "full_state_diagnostic_pairs": 477,
     "full_state_near_identical_pairs": 3,
+    "interpretation": "Common-cohort state comparison only. No population-probability or absolute application-acceptance claim is authorized.",
     "radius_1x_alias_pairs": {
-      "D2": 45,
-      "D3": 0,
-      "D4": 0,
+      "CONTROL_B01_B14_PILOT_R4": 0,
       "CONTROL_U4": 137,
       "CONTROL_U8_Z8": 71,
-      "CONTROL_B01_B14_PILOT_R4": 0,
-      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": 0
+      "CONTROL_Z8_PLUS_G8_INFORMATION_EQUIVALENT": 0,
+      "D2": 45,
+      "D3": 0,
+      "D4": 0
     },
     "radius_2x": {
-      "D3": {
-        "alias_pairs": 58,
-        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
-        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
-        "terminal_flux_sign_mismatch_count": 0,
-        "reversal_sequence_mismatch_count": 0,
-        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436
-      },
-      "D4": {
-        "alias_pairs": 58,
-        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
-        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
-        "terminal_flux_sign_mismatch_count": 0,
-        "reversal_sequence_mismatch_count": 0,
-        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436
-      },
       "CONTROL_U4": {
         "alias_pairs": 201,
         "max_gw_d_cumulative_bottom_exchange_cm": 0.04034696594209142,
         "max_gw_d_terminal_bottom_flux_cm_per_day": 1.9646941384543481,
-        "terminal_flux_sign_mismatch_count": 56,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.044516999819508296,
         "reversal_sequence_mismatch_count": 104,
-        "max_gw_r_one_day_bottom_exchange_cm": 0.044516999819508296
+        "terminal_flux_sign_mismatch_count": 56
       },
       "CONTROL_U8_Z8": {
         "alias_pairs": 139,
         "max_gw_d_cumulative_bottom_exchange_cm": 0.021214725702876025,
         "max_gw_d_terminal_bottom_flux_cm_per_day": 1.506414198368942,
-        "terminal_flux_sign_mismatch_count": 4,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.02257024008610431,
         "reversal_sequence_mismatch_count": 64,
-        "max_gw_r_one_day_bottom_exchange_cm": 0.02257024008610431
+        "terminal_flux_sign_mismatch_count": 4
+      },
+      "D3": {
+        "alias_pairs": 58,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436,
+        "reversal_sequence_mismatch_count": 0,
+        "terminal_flux_sign_mismatch_count": 0
+      },
+      "D4": {
+        "alias_pairs": 58,
+        "max_gw_d_cumulative_bottom_exchange_cm": 0.016802575236511186,
+        "max_gw_d_terminal_bottom_flux_cm_per_day": 0.5512712282751409,
+        "max_gw_r_one_day_bottom_exchange_cm": 0.019483392924883436,
+        "reversal_sequence_mismatch_count": 0,
+        "terminal_flux_sign_mismatch_count": 0
       }
     },
-    "interpretation": "Common-cohort state comparison only. No population-probability or absolute application-acceptance claim is authorized."
+    "unique_states": 41
   },
+  "production_rom_authorized": false,
+  "production_source_changed": false,
+  "schema": "swap5.lare.rs1.status.v5",
+  "speed_claim_authorized": false,
+  "state": "C4V_CLOSED_ONE_DAY_GW_MINIMUM_R8_C4U_EXTERNAL_APPLICATION_ACCURACY_BLOCKER",
   "state_adjudication": {
-    "authority": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
-    "primary_minimum_state": "D3",
+    "D2_role": "AGGRESSIVE_PURPOSE_DEPENDENT_CHALLENGE",
     "D3_partition_cm": [
       [
         0,
@@ -112,104 +219,11 @@
       ]
     ],
     "D4_role": "CLOSURE_RESOLUTION_CONTROL",
-    "D2_role": "AGGRESSIVE_PURPOSE_DEPENDENT_CHALLENGE",
-    "uniform_U4_U8_role": "STATE_PLACEMENT_CONTROLS_NOT_PRIMARY_SURVIVORS",
-    "interpretation": "D3 is the smallest demonstrated state-information survivor in the bounded B01 groundwater laboratory. D4 has no demonstrated predictive-state advantage there. This does not establish application acceptance or Hupsel transferability."
+    "authority": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
+    "interpretation": "D3 is the smallest demonstrated state-information survivor in the bounded B01 groundwater laboratory. D4 has no demonstrated predictive-state advantage there. This does not establish application acceptance or Hupsel transferability.",
+    "primary_minimum_state": "D3",
+    "uniform_U4_U8_role": "STATE_PLACEMENT_CONTROLS_NOT_PRIMARY_SURVIVORS"
   },
-  "downstream_dynamics_and_closure": {
-    "dyn0a": {
-      "closeout": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
-      "status": "CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION",
-      "decision": "STANDARD_LARE_PHYSICALLY_COHERENT_AND_RESOLUTION_CONVERGENT_BUT_LOW_DIMENSION_NOT_BROADLY_QUALIFIED",
-      "interpretation": "State-information sufficiency and propagation-closure sufficiency are distinct."
-    },
-    "bc2_c4d": {
-      "result": "integration/f-rom/LARE_BC2_C4D_RESULT.json",
-      "mechanism_closeout": "integration/f-rom/LARE_BC2_MECHANISM_CLOSEOUT.json",
-      "decision": "BC2_C4D_PHASE_RESOLVED_MECHANISM_MAPPED",
-      "disposition": "H_CANCELLATION_SUPPORTED; H_QH_PHASE_NOT_SUPPORTED; H_REVERSAL_LOCAL_NOT_SUPPORTED"
-    },
-    "bc2_c4e": {
-      "result": "integration/f-rom/LARE_BC2_C4E_RESULT.json",
-      "closeout": "integration/f-rom/LARE_BC2_C4E_CLOSEOUT.json",
-      "science_reconciliation": "docs/science/F-ROM_LARE_BC2_C4E_CLOSEOUT.md",
-      "workflow_run": 35460239887,
-      "execution_head": "80a95f35c278e0985764f7cf730066d5ac4c73a2",
-      "aggregate_artifact_id": 10589773291,
-      "aggregate_artifact_digest": "sha256:d0fd81d19585372565e08765c5cf95e281bb9fbd2fc76d4123170f883f63d485",
-      "result_sha256": "06069d4b43405c81ff05c821f5e601e17ac57fc034947e5ef7ec5d524079d290",
-      "decision": "QI_LOCAL_CAUSAL_DIAGNOSTIC_BLOCKED",
-      "status": "CLOSED_DIAGNOSTIC_BLOCKED_NO_MODEL_CHANGE",
-      "interpretation": "No width-independent QI causal-closure claim is supported. At 5 cm RISE QI removal is uniquely best; at 2.5 cm RISE the same admissible removal worsens pooled shape fidelity by about 3.85x. Other cases have preregistered comparator or QI admissibility failures.",
-      "unbound_parallel_analyzer": {
-        "path": "tests/rom/analyze_lare_bc2_c4e_local_counterfactual.py",
-        "note": "Present on later branch head but not used by workflow run 35460239887 and therefore carries no C4E execution authority."
-      },
-      "next_authority": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_CLOSURE_HYPOTHESIS"
-    },
-    "bc2_c4q": {
-      "closeout": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
-      "decision": "LARE_REDUCED_FRONTIER_CROSSES_FMC",
-      "status": "CLOSED_LARE_R12_CROSSES_FMC_ON_MATCHED_D13_NO_VALUE_CLAIM",
-      "interpretation": "Exposed D13 matched representation discriminator. R4 is the minimum reduced LARE member crossing R2 on all five frozen views; R12 is the only reduced member crossing FMC when mapped 10-cm profile fidelity is included."
-    },
-    "bc2_c4r": {
-      "closeout": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
-      "decision": "C4R_BLIND_PROFILE_FRONTIER_REPLICATED",
-      "status": "CLOSED_BLIND_PROFILE_FRONTIER_REPLICATED_C4S_REQUIRED_BEFORE_VALUE",
-      "interpretation": "Blind half-offset fixed-water-table histories reproduce the purpose-dependent dimension separation: R4 for groundwater-vector crossing versus both R2/FMC; R12 for FMC profile-inclusive crossing."
-    },
-    "bc2_c4s": {
-      "closeout": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
-      "decision": "C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE",
-      "status": "CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED",
-      "interpretation": "Same-partition CoRichards R3-R12 is fully available on the blind fixed-water-table workload, unlike the fixed-flux Q1 laboratory. Workload-specific numerical availability is therefore explicit."
-    },
-    "bc2_c4t": {
-      "closeout": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
-      "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
-      "status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED",
-      "workflow_run": 35492342285,
-      "artifact_id": 10599940848,
-      "artifact_digest": "sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833",
-      "interpretation": "Blind fidelity plus prospective position-balanced timing resolves a shared-host relative cost-fidelity value signal for LARE R3-R8. No portable speedup or application admission follows."
-    },
-    "bc2_c4u": {
-      "authority": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-      "decision": "GW_APPLICATION_ACCEPTANCE_NOT_ADJUDICABLE_FROM_CURRENT_REPOSITORY_AUTHORITY",
-      "status": "BLOCKED_EXTERNAL_PROJECT_ACCURACY_EVIDENCE_REQUIRED",
-      "interpretation": "Canonical F-GC13/F-GC14 provide the fail-closed evidence transport contract and F-GC29 provides local dh/dq response sensitivity, but no real project H_app or temporal allocation is qualified. Synthetic fixtures, candidate errors, calibration metrics and solver tolerances are forbidden substitutes."
-    }
-  },
-  "historical_hupsel_checkpoint": {
-    "profile_depth_cm": 200,
-    "material_boundary_cm": 30,
-    "drain_depth_cm": 80,
-    "bottom_boundary": "ZERO_FLUX",
-    "note": "No B01/B14 or RS1-GW partition is transferred to Hupsel by this research line."
-  },
-  "application_acceptance_adjudicated": false,
-  "speed_claim_authorized": false,
-  "production_source_changed": false,
-  "production_rom_authorized": false,
-  "firewalls": [
-    "STATE_FIRST",
-    "PURPOSE_BEFORE_EQUIVALENCE",
-    "NO_UNIVERSAL_TOLERANCE",
-    "NO_CANDIDATE_SPECIFIC_P2_RANKING",
-    "NO_CLAIM_BEYOND_TESTED_APPLICATION_ENVELOPE",
-    "NO_PRODUCTION_ROM",
-    "NO_REFERENCE_RICHARDS_CHANGE",
-    "NO_ROSSFAST_CHANGE",
-    "NO_SPEED_CLAIM_BEFORE_FIDELITY"
-  ],
-  "next_authority": {
-    "state": "EXTERNAL_SOURCE_BLOCKER",
-    "required": [
-      "externally governed groundwater head/drawdown application prediction-error requirement H_app",
-      "independently governed temporal allocation A_temporal or direct temporal head-error budget",
-      "verified immutable provenance/source digest for both claims"
-    ],
-    "when_available": "Instantiate the existing F-GC13/F-GC14 boundary, then preregister a downstream-consequence GW-R/GW-D validation using frozen C4R/C4T candidates."
-  }
+  "work_unit": "LARE-RS1",
+  "workstream": "F-ROM-LARE"
 }
