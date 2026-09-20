@@ -139,6 +139,10 @@ contains
 
     do i = 1, size(cells)
       status = GW_TOPOLOGY_INVALID_CELL
+      if (cells(i)%storage_partition == GW_STORAGE_PARTITION_UNRESOLVED) then
+        status = GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED
+        return
+      end if
       if (.not. cells(i)%valid()) return
       if (cells(i)%package_slot > size(cells)) return
       do j = 1, i - 1
