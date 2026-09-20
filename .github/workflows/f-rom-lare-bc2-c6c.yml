@@ -1,0 +1,96 @@
+name: F-ROM-LARE BC2-C6C bounded entropy-moment admissibility
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json'
+      - 'integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json'
+      - 'tests/rom/qualify_lare_bc2_c6c_bemr.py'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c6c-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify C6C authority and immutable implementation binding
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6c_bemr.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json'))
+          b=json.load(open('integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_BEMR_NUMERICAL_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['response_based_design'] is False
+          assert p['implementation_binding']['qualifier_blob']=='3f350681bce34e36b72faab84af00366c414671c'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert b['status']=='CLOSED_BEMR_SELECTED_AS_DISTINCT_REALIZABILITY_PRESERVING_MOMENT_FAMILY_C6C_MATHEMATICAL_QUALIFICATION_NEXT'
+          assert b['adjudication']['MATHEMATICAL_QUALIFICATION_AUTHORIZED'] is True
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          assert p['scientific_firewall']['c5z_post_result_retuning'] is False
+          print('LARE_BC2_C6C_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute response-free BEMR mathematical qualification
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6C_EVIDENCE
+          python3 tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --prereg integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json \
+            --c6b integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json \
+            --output LARE_BC2_C6C_EVIDENCE/LARE_BC2_C6C_RESULT.json \
+            | tee LARE_BC2_C6C_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json LARE_BC2_C6C_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json LARE_BC2_C6C_EVIDENCE/
+
+      - name: Validate C6C firewall
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6C_EVIDENCE/LARE_BC2_C6C_RESULT.json'))
+          assert r['status'] in (
+            'C6C_BEMR_MATHEMATICALLY_QUALIFIED',
+            'C6C_BEMR_NUMERICALLY_NONUNIQUE_OR_HYDRAULICALLY_INADMISSIBLE',
+            'C6C_BEMR_STATE_DOMAIN_NOT_REALIZABLE'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['moment_state_implemented_in_hydrological_model'] is False
+          assert f['moment_localization_selected'] is False
+          assert f['response_based_profile_fit'] is False
+          assert f['c5z_post_result_retuning'] is False
+          assert f['application_acceptance_adjudicated'] is False
+          assert f['performance_comparison_authorized'] is False
+          assert f['speed_claim_authorized'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6C_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6C_EVIDENCE/* > LARE_BC2_C6C_EVIDENCE/sha256.txt
+
+      - name: Upload C6C evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6c
+          path: LARE_BC2_C6C_EVIDENCE/
+          if-no-files-found: error
