@@ -15,9 +15,9 @@ program tabulated_hydraulics_wrapper_microbenchmark
   real(real64), parameter :: hcrit=-1.0e-2_real64
   real(real64), parameter :: relsat_ksat=1.0_real64-1.0e-6_real64
 
-  real(real64) :: heads(nhead), headtab(ntab), xtab(ntab), theta_tab(ntab), logk_tab(ntab)
+  real(real64) :: heads(nhead), theta_ref(nhead), headtab(ntab), xtab(ntab), theta_tab(ntab), logk_tab(ntab)
   real(real64) :: dydx(ntab), sigma(ntab)
-  real(real64) :: th, cap, kval, sink, t0, t1, sec
+  real(real64) :: th, cap, kval, sink, t0, t1, sec, sec_watcon, sec_moiscap, sec_hconduc
   real(real64) :: h0,h1,x0,x1,x,frac,k_target
   integer :: i,j,idx
   integer(int64) :: outer
@@ -38,6 +38,7 @@ program tabulated_hydraulics_wrapper_microbenchmark
   do i=1,nhead
     frac=real(i-1,real64)/real(nhead-1,real64)
     heads(i)=-10.0_real64**(6.0_real64-7.5_real64*frac)
+    call constitutive(heads(i),theta_ref(i),kval)
   end do
 
   ! Warm-up.
@@ -53,6 +54,33 @@ program tabulated_hydraulics_wrapper_microbenchmark
   sink=0.0_real64
   do outer=1,nouter
     do i=1,nhead
+      sink=sink+watcon(1,heads(i))
+    end do
+  end do
+  call cpu_time(t1)
+  sec_watcon=t1-t0
+
+  call cpu_time(t0)
+  do outer=1,nouter
+    do i=1,nhead
+      sink=sink+moiscap(1,heads(i))
+    end do
+  end do
+  call cpu_time(t1)
+  sec_moiscap=t1-t0
+
+  call cpu_time(t0)
+  do outer=1,nouter
+    do i=1,nhead
+      sink=sink+hconduc(1,heads(i),theta_ref(i),1.0_real64)
+    end do
+  end do
+  call cpu_time(t1)
+  sec_hconduc=t1-t0
+
+  call cpu_time(t0)
+  do outer=1,nouter
+    do i=1,nhead
       th=watcon(1,heads(i))
       cap=moiscap(1,heads(i))
       kval=hconduc(1,heads(i),th,1.0_real64)
@@ -64,6 +92,9 @@ program tabulated_hydraulics_wrapper_microbenchmark
 
   write(*,'(A,A)') 'MODE=',trim(mode)
   write(*,'(A,I0)') 'EVALUATION_SETS=',nouter*int(nhead,int64)
+  write(*,'(A,ES24.16)') 'WATCON_NS_PER_CALL=',sec_watcon*1.0e9_real64/real(nouter*int(nhead,int64),real64)
+  write(*,'(A,ES24.16)') 'MOISCAP_NS_PER_CALL=',sec_moiscap*1.0e9_real64/real(nouter*int(nhead,int64),real64)
+  write(*,'(A,ES24.16)') 'HCONDUC_NS_PER_CALL=',sec_hconduc*1.0e9_real64/real(nouter*int(nhead,int64),real64)
   write(*,'(A,ES24.16)') 'CPU_SECONDS=',sec
   write(*,'(A,ES24.16)') 'NS_PER_SET=',sec*1.0e9_real64/real(nouter*int(nhead,int64),real64)
   write(*,'(A,ES24.16)') 'CHECKSUM=',sink
