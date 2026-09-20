@@ -239,7 +239,7 @@ def structural_tests():
 
     # Integrated centroid synthetic identity.
     pu=45.0
-    qsyn_centroid=1.02*float(k_from_psi(pu))
+    qsyn_centroid=0.98*float(k_from_psi(pu))
     distance=75.0
     pl=float(propagate(pu,qsyn_centroid,distance,False)[0])
     tu=float(theta_from_psi(pu))
