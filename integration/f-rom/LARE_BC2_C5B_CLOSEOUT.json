@@ -1,0 +1,98 @@
+{
+  "adjudication": {
+    "BOTTOM_ADJACENT_SPATIAL_RESOLUTION_UNRESOLVED": true,
+    "BOUNDARY_FACE_IS_BETTER": false,
+    "CURRENT_LAYER_FACE_REMAINS_ACCEPTED_CLOSURE": true,
+    "PRESCRIBED_HEAD_BOUNDARY_FORMULATION_SENSITIVE": true,
+    "R2_AGGREGATION_CANCELLATION_STRONG": true,
+    "TIME_INTEGRATION_SENSITIVE": false,
+    "UPPER_OR_MID_COLUMN_STATE_RESOLUTION_SENSITIVE": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:09dbf124ff36002ff4310c71af3eba30f51a21c46eea579cbcdf2ad598b14f96",
+    "artifact_id": 10601569696,
+    "execution_head": "e5cba46834e4e7178aaac30d9795fa479aa6681f",
+    "job_id": 106048267545,
+    "preregistration": "integration/f-rom/LARE_BC2_C5B_PREREGISTRATION.json",
+    "result_sha256": "f6710fcf081320ea4aa654a8bf0c3f02a42b251d2cdc8cadfd7096a66bce6668",
+    "source_C5A_result_sha256": "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc",
+    "workflow_run": 35499374653
+  },
+  "baseline_identity_to_C5A_R16": {
+    "abs_mean_signed_bottom_flux_error_cm_per_day": true,
+    "bottom_flux_sign_mismatch_count": true,
+    "cumulative_bottom_rmse_cm": true,
+    "interval_bottom_flux_rmse_cm_per_day": true,
+    "mapped_theta_rmse": true,
+    "max_abs_final_cumulative_bottom_error_cm": true,
+    "reversal_penalty_steps": true,
+    "reversal_sequence_mismatch_history_count": true,
+    "total_storage_rmse_cm": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "mechanism_evidence": {
+    "R2_cancellation_ratio": 0.000735823233542339,
+    "boundary_face_counterfactual_shift_over_residual": 337.36148642789084,
+    "boundary_face_dt25_flux_rmse_cm_per_day": 0.010024144809504771,
+    "boundary_face_dt25_signed_bias_cm_per_day": -0.0071419365839664635,
+    "current_face_dt25_flux_rmse_cm_per_day": 2.9700671211310294e-05,
+    "current_face_dt25_signed_bias_cm_per_day": -4.234479417939554e-06,
+    "integration_shift_over_residual": 4.680373365758326e-06,
+    "labels": {
+      "closure_shift_over_current_residual": "LARGE_GT_RESIDUAL",
+      "integration_shift_over_current_residual": "SMALL_LT_0P1_RESIDUAL",
+      "state_R5_to_R16_shift_over_current_residual": "SMALL_LT_0P1_RESIDUAL",
+      "state_R8_to_R16_shift_over_current_residual": "SMALL_LT_0P1_RESIDUAL"
+    },
+    "max_HOLD_phase_rmse_cm_per_day": 4.8422085012788136e-14,
+    "max_dynamic_phase_rmse_cm_per_day": 9.688521760328385e-05,
+    "state_R5_to_R16_shift_over_residual": 5.864378728925725e-06,
+    "state_R8_to_R16_shift_over_residual": 0.0,
+    "timestep_convergence": {
+      "abs_delta_1e_4_to_5e_5": 1.8404625528170625e-11,
+      "abs_delta_5e_5_to_2p5e_5": 4.6026389851030916e-12,
+      "b_dt_1e_4": -4.234456410675041e-06,
+      "b_dt_2p5e_5": -4.234479417939554e-06,
+      "b_dt_5e_5": -4.234474815300569e-06,
+      "estimated_order": 1.9995352038988106,
+      "extrapolated_dt0_signed_mean_cm_per_day": -4.234480952811767e-06
+    }
+  },
+  "next_authority": {
+    "constraints": [
+      "reuse exact C5A B14 histories and R16 Reference",
+      "retain CURRENT_LAYER_FACE and dt=2.5e-5",
+      "change only bottom-adjacent spatial discretization in a preregistered nested refinement family",
+      "do not reinterpret C5A acceptance",
+      "BOUNDARY_FACE remains counterfactual-only and is not retuned",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "Does the current-face prescribed-head residual converge as the bottom-adjacent layer thickness is reduced below 10 cm while the rest of the C5A workload and closure remain fixed?",
+    "state": "BOUNDARY_ADJACENT_SPATIAL_REFINEMENT_AUTHORIZED",
+    "target": "LARE-BC2-C5C"
+  },
+  "role": "ZERO_FIT_MECHANISTIC_RECONCILIATION",
+  "schema": "swap5.lare.bc2.c5b.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "C5A_metric_vector_changed": false,
+    "C5A_threshold_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "partition_retuning": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "The C5A blocking signed-flux residual is not a timestep-integration floor. The dt=1e-4 to 2.5e-5 bottom-flux shift is about 4.68e-6 of the remaining current-face Reference residual, and the signed bias converges with estimated second order to approximately -4.23448e-6 cm/d.",
+    "Adding lower-zone states upward from R5 to R16 does not affect the mechanism materially. R8 and R16 are exactly identical in the diagnostic bottom-flux series at dt=2.5e-5; R5-to-R16 differences are also about 5.86e-6 of the Reference residual.",
+    "The residual is active only during prescribed-head phases. During HOLD the current-face R16 flux error is effectively machine zero.",
+    "The pre-existing BOUNDARY_FACE counterfactual is highly sensitive but much worse, changing the flux series by more than 337 times the current-face residual and increasing pooled RMSE from about 2.97e-5 to about 1.00e-2 cm/d.",
+    "Therefore C5B does not justify replacing CURRENT_LAYER_FACE. It localizes the remaining discrepancy to the prescribed-head boundary response while leaving one unresolved spatial question: every tested lower-zone ladder retained a 10-cm bottom-adjacent layer.",
+    "A bottom-cell-thickness refinement test is required before attributing the residual to the closure algebra itself."
+  ],
+  "status": "CLOSED_TIME_AND_UPPER_STATE_PLATEAU_PRESCRIBED_HEAD_BOUNDARY_RESPONSE_LOCALIZED",
+  "work_unit": "LARE-BC2-C5B",
+  "workstream": "F-ROM-LARE"
+}
