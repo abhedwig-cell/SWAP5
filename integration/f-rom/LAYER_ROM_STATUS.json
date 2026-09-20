@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-COST1",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "67ca92a0531555c51d997db4cde206bb015fb281",
+  "checkpoint_commit": "a264b7ec078fd8018496a1e74ca8038c4e36433f",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_SHARED_HOST_EXECUTION",
-  "last_reconciled_head": "67ca92a0531555c51d997db4cde206bb015fb281",
+  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_ATOMIC_CALIBRATION_REPAIRED_EXECUTION",
+  "last_reconciled_head": "a264b7ec078fd8018496a1e74ca8038c4e36433f",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -115,7 +115,8 @@
     "integration/f-rom/LAYER_ROM_B1HCN_RESULT.json",
     "integration/f-rom/LAYER_ROM_B1HCN_CLOSEOUT.json",
     "integration/f-rom/LAYER_ROM_B1HCQ_RESULT.json",
-    "integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json"
+    "integration/f-rom/LAYER_ROM_B1HCQ_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_COST1_REPAIR_RECORD.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -175,15 +176,14 @@
     "GitHub Actions run 35506180114 / aggregate artifact 10603856403 plus B05 L6/R8 artifacts 10604095931/10603419858 (B1HCO full CoRichards temporal qualification)",
     "GitHub Actions run 35506606866 / artifact 10603996508 (B1HCP corrected model-form decomposition)",
     "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
-    "GitHub Actions run 35507294494 active for COST1 sole authority workflow",
     "Phase B fidelity freeze: integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
     "Phase B closeout: integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
-    "GitHub Actions run 35507294494 active for COST1 shared-host screen",
     "GitHub Actions run 35505862660 / aggregate artifact 10603609225 (B1HCN CoRichards temporal ladder)",
     "GitHub Actions run 35506180114 / aggregate artifact 10603856403 (B1HCO B05 holdout)",
     "GitHub Actions run 35506606866 (B1HCP corrected model-form decomposition)",
     "integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
-    "GitHub Actions run 35507294494 active for COST1 shared-host screening"
+    "GitHub Actions run 35507294494 superseded after R16-only B16 atomic calibration feasibility exposure; no comparative timing round exposed",
+    "GitHub Actions run 35507539740 active COST1 authority after atomic-workload calibration repair"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -191,8 +191,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete COST1 through implementation-equivalence gates and the preregistered six-material position-balanced shared-host timing screen. Persist cost results without changing the frozen Phase-B fidelity frontier.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 67ca92a0531555c51d997db4cde206bb015fb281. Phase B is closed with fidelity frozen. COST1 is preregistered and workflow run 35507294494 is the active execution authority; earlier COST1 failures exposed no timing result and were implementation-only repairs.",
+  "next_action": "Complete COST1 run 35507539740 using the unchanged six-material L4/L6/R8 fidelity ladder and atomic repeats=1 fallback where one complete R16 workload exceeds the operational calibration window. Persist cost results without changing the frozen Phase-B fidelity frontier.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after a264b7ec078fd8018496a1e74ca8038c4e36433f. Phase B fidelity remains frozen. COST1 run 35507539740 is the execution authority; run 35507294494 exposed only the B16 R16 calibration route and is superseded.",
   "blockers": [],
   "scope_guards": [
     "research only",
