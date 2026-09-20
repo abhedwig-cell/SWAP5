@@ -15,7 +15,6 @@ contains
     type(process_hydraulic_view_t), intent(out) :: view
     logical, intent(out) :: ok
     class(transaction_state_t), allocatable :: snapshot
-    integer :: n
     logical :: available
 
     view = process_hydraulic_view_t()
