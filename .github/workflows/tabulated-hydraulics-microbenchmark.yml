@@ -80,41 +80,48 @@ jobs:
                   if "=" in line:
                       k,v=line.split("=",1)
                       vals[k.strip()]=v.strip()
-              if vals.get("MICROBENCHMARK_COMPLETED") is not None:
-                  pass
-              return float(vals["CPU_SECONDS"]),float(vals["NS_PER_SET"]),float(vals["CHECKSUM"])
+              return {
+                  "sec": float(vals["CPU_SECONDS"]),
+                  "triplet": float(vals["NS_PER_SET"]),
+                  "watcon": float(vals["WATCON_NS_PER_CALL"]),
+                  "moiscap": float(vals["MOISCAP_NS_PER_CALL"]),
+                  "hconduc": float(vals["HCONDUC_NS_PER_CALL"]),
+                  "checksum": float(vals["CHECKSUM"]),
+              }
 
           for label in routes:
               one(label)
 
           labels=list(routes)
           rows=[]
-          values={k:[] for k in labels}
-          nsvalues={k:[] for k in labels}
+          metrics=("triplet","watcon","moiscap","hconduc")
+          values={k:{m:[] for m in metrics} for k in labels}
           sums={k:[] for k in labels}
           for r in range(9):
               order=labels[r%3:]+labels[:r%3]
               if r%2:
                   order=list(reversed(order))
               for label in order:
-                  sec,ns,checksum=one(label)
-                  rows.append((r,label,sec,ns,checksum))
-                  values[label].append(sec)
-                  nsvalues[label].append(ns)
-                  sums[label].append(checksum)
+                  out=one(label)
+                  rows.append((r,label,out["sec"],out["triplet"],out["watcon"],out["moiscap"],out["hconduc"],out["checksum"]))
+                  for m in metrics:
+                      values[label][m].append(out[m])
+                  sums[label].append(out["checksum"])
 
           with (root/"timings.csv").open("w",newline="") as fh:
               w=csv.writer(fh)
-              w.writerow(["round","route","cpu_seconds","ns_per_set","checksum"])
+              w.writerow(["round","route","cpu_seconds","triplet_ns","watcon_ns","moiscap_ns","hconduc_ns","checksum"])
               w.writerows(rows)
 
-          med={k:statistics.median(nsvalues[k]) for k in labels}
+          med={k:{m:statistics.median(values[k][m]) for m in metrics} for k in labels}
           lines=[]
           for k in labels:
-              lines.append(f"{k}_median_ns_per_set={med[k]:.9g}")
-          lines.append(f"legacy_table_over_analytic={med['legacy_table']/med['analytic']:.9g}")
-          lines.append(f"direct_table_over_analytic={med['direct_table']/med['analytic']:.9g}")
-          lines.append(f"direct_table_over_legacy={med['direct_table']/med['legacy_table']:.9g}")
+              for m in metrics:
+                  lines.append(f"{k}_{m}_median_ns={med[k][m]:.9g}")
+          for m in metrics:
+              lines.append(f"legacy_table_{m}_over_analytic={med['legacy_table'][m]/med['analytic'][m]:.9g}")
+              lines.append(f"direct_table_{m}_over_analytic={med['direct_table'][m]/med['analytic'][m]:.9g}")
+              lines.append(f"direct_table_{m}_over_legacy={med['direct_table'][m]/med['legacy_table'][m]:.9g}")
           for k in labels:
               rel=(max(sums[k])-min(sums[k]))/max(1.0,abs(statistics.mean(sums[k])))
               lines.append(f"{k}_checksum_spread_relative={rel:.3e}")
