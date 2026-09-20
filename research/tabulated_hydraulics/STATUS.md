@@ -291,22 +291,6 @@ This finding is recorded as `TAB-HYD-003-default-mvg-ksat-jacobian.md`. It is so
 The current SWAP5 default-MvG provider still contains the residual Ksat clamp, but F-SI09 explicitly does not admit `SWKIMPL=1` and the provider currently reserves `dconductivity_dhead` as zero. This is therefore an admission prerequisite for a future implicit-conductivity route, not a presently admitted SWAP5 production defect.
 
 
-### 11. Correcting the analytical Ksat Jacobian changes the SWKIMPL=1 interpretation
-
-A separate source trace showed that the legacy/public analytical default-MvG route has the same class of residual/Jacobian inconsistency as the table endpoint route.
-
-The residual `hconduc` clamps conductivity to Ksat when relative saturation exceeds `1-1e-6`, but the original `dhconduc` does not differentiate that constant branch as zero. A research-only consistency candidate added `dK/dh=0` over exactly that existing constant residual branch.
-
-Full-period Hupsel evidence changed decisively:
-
-- original analytical `SWKIMPL=1` versus analytical `SWKIMPL=0`: GWL RMSE `1091.57 cm`;
-- consistency-corrected analytical `SWKIMPL=1` versus analytical `SWKIMPL=0`: GWL RMSE `0.04348 cm`;
-- consistency-corrected analytical versus consistency-corrected dense-table `SWKIMPL=1`: GWL max abs `0.00043 cm`, RMSE `1.54e-5 cm`, with drainage and TACT identical at written precision.
-
-This means the earlier huge `SWKIMPL=1` analytical/table discrepancy was not evidence against table hydraulics. It exposed a second derivative-consistency defect in the analytical legacy Jacobian. The finding is recorded as `TAB-HYD-002-default-mvg-ksat-derivative-finding.md`.
-
-Current SWAP5 production is not directly implicated: its default-MvG provider explicitly keeps `SWKIMPL=1` outside the admitted interface and currently reserves the derivative output.
-
 ### 12. Direct-index tables become measurably faster on the corrected SWKIMPL=1 route
 
 After applying both bounded derivative-consistency candidates, the direct-index TSPACK representation was benchmarked against the corrected analytical default-MvG route over the full 2002-2004 Hupsel case.
