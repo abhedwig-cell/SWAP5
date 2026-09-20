@@ -34,7 +34,7 @@ Largest jumps include:
 | O11 | 8.58341 | 13.79 | 1.60659 |
 | O6 | 3.41098 | 5.48 | 1.60658 |
 
-For B12 the threshold occurs at approximately `h=-5.82e-4 cm`. The residual changes from about `5.00 cm/d` immediately below the threshold to `15.46 cm/d` above it.
+For B12 the threshold occurs at approximately `h=-4.62e-4 cm` under the implemented near-saturation linearized theta(h) policy. The residual changes from about `5.00 cm/d` immediately below the threshold to `15.46 cm/d` above it.
 
 ## Consequence for the first direct-table candidate
 
