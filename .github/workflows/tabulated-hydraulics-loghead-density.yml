@@ -1,0 +1,143 @@
+name: TAB-HYD log-head density convergence
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-loghead-density.yml'
+      - 'research/tabulated_hydraulics/prepare_loghead_density_cases.py'
+
+jobs:
+  density:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel application
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical and branch-aware table binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py             swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py             swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          meson setup swap-src/build-table swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table
+          cp swap-src/build-table/swap swap-table
+
+      - name: Prepare density cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          python3 research/tabulated_hydraulics/prepare_loghead_density_cases.py             swap-testcases/cases/hupselbrook/legacy             staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv             build/density --densities 250,500,900
+
+      - name: Run controls and density sweep
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'case\treturn_code\truntime_seconds\trows_out\n' > build/density/status.tsv
+          for scenario in loam_mid_free clay_wet_free; do
+            work="build/density/${scenario}__analytic"
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$GITHUB_WORKSPACE/swap-analytic" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+            rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+            printf '%s\t%s\t%s\t%s\n' "${scenario}__analytic" "$rc" "$runtime" "$rows" | tee -a build/density/status.tsv
+            test "$rc" -eq 100
+            for n in 250 500 900; do
+              work="build/density/${scenario}__n${n}"
+              pushd "$work" >/dev/null
+              set +e
+              /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$GITHUB_WORKSPACE/swap-table" > run.log 2>&1
+              rc=$?
+              set -e
+              popd >/dev/null
+              runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+              rows=$(grep -v '^[[:space:]]*\*' "$work/result_output.csv" 2>/dev/null | grep -c . || true)
+              printf '%s\t%s\t%s\t%s\n' "${scenario}__n${n}" "$rc" "$runtime" "$rows" | tee -a build/density/status.tsv
+              test "$rc" -eq 100
+            done
+          done
+
+      - name: Compare density convergence
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/density/comparisons.txt
+          for scenario in loam_mid_free clay_wet_free; do
+            for n in 250 500 900; do
+              python3 research/tabulated_hydraulics/compare_hupsel_e2e.py                 "build/density/${scenario}__analytic"                 "build/density/${scenario}__n${n}"                 "build/density/${scenario}__n${n}.json"                 --label "${scenario},K0,loghead,n${n}" | tee -a build/density/comparisons.txt
+            done
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          metrics=("GWL","DSTOR","DRAINAGE","QBOTTOM","TACT")
+          lines=["label\tmetric\tmax_abs\trmse"]
+          for p in sorted(Path("build/density").glob("*.json")):
+              d=json.loads(p.read_text())
+              for metric in metrics:
+                  if metric in d["metrics"]:
+                      m=d["metrics"][metric]
+                      lines.append(f"{d['label']}\t{metric}\t{m['max_abs']}\t{m['rmse']}")
+          Path("build/density/convergence.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/density/convergence.tsv").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-loghead-density-convergence
+          path: |
+            build/density/status.tsv
+            build/density/comparisons.txt
+            build/density/convergence.tsv
+            build/density/*.json
