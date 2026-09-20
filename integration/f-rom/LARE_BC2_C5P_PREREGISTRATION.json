@@ -351,7 +351,7 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "reference_materializer": "tests/rom/materialize_lare_bc2_c5p_reference.py",
-    "reference_materializer_blob": "4a0d0b5c346c4c49f0cc33e9bfc5cadbd0c0f834",
+    "reference_materializer_blob": "f9692ebc302603ce3c590425a37a45b3bdb36d01",
     "reference_slice_materializer": "tests/rom/materialize_lare_bc2_c5p_reference_slice.py",
     "reference_slice_materializer_blob": "6b5cee590b9b34d34cad1cfb8a875bec9653c5c4",
     "analyzer": "tests/rom/analyze_lare_bc2_c5p_bottom_placement.py",
@@ -370,7 +370,8 @@
     "workflow": ".github/workflows/f-rom-lare-bc2-c5p.yml",
     "workflow_blob": "da700cfe1028c9a03fecb9cf85ae8493378a3585",
     "execution_binding_complete": true,
-    "binding_note": "Workflow and all scientific implementation blobs bound before the authoritative C5P response run; any workflow-triggered pre-binding run is superseded by concurrency and is not scientific authority."
+    "binding_note": "Pre-response syntax repair after run 35507533343 failed at py_compile before solver execution; scientific design and intended generated Fortran semantics unchanged.",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C5P_EXECUTION_BINDING_RECONCILIATION.json"
   },
   "model_changed": false
 }
