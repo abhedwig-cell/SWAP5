@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
-  "checkpoint_commit": "da7469e9603a7fdc3942b5366b4f4c5219e41e3c",
+  "checkpoint_commit": "7043d5b232563fdaf3fe0b321b1171c3b2a74e4b",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "A1_CLOSED_A2_CLOSED_A2B_CLOSED_A3_CLOSED_A4_RECONCILIATION_NEXT",
-  "last_reconciled_head": "da7469e9603a7fdc3942b5366b4f4c5219e41e3c",
+  "phase": "PHASE_A_CLOSED_PHASE_B_TRANSFER_PANEL_SELECTION",
+  "last_reconciled_head": "7043d5b232563fdaf3fe0b321b1171c3b2a74e4b",
   "last_reconciled_upstream": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A0_AUTHORITY_BINDING.json",
@@ -25,7 +25,10 @@
     "integration/f-rom/LAYER_ROM_CANONICAL_RECONCILIATION_20260920.json",
     "integration/f-rom/LAYER_ROM_A3_RESULT.json",
     "integration/f-rom/LAYER_ROM_A3_CLOSEOUT.json",
-    "integration/f-rom/LAYER_ROM_A3_EXECUTION_AUTHORITY.json"
+    "integration/f-rom/LAYER_ROM_A3_EXECUTION_AUTHORITY.json",
+    "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "integration/f-rom/LAYER_ROM_A4_RESULT.json",
+    "integration/f-rom/LAYER_ROM_PHASE_A_CLOSEOUT.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -58,8 +61,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Reconcile the explicit-layer fidelity frontier across fixed-flux and fixed-head B01 evidence, separating A1 state-information error, LARE closure error and same-partition CoRichards discretization error. Freeze no application threshold and create no new candidate dynamics.",
-  "recovery_point": "Resume from work/f-rom-layer-a after A3 closeout. A3 authoritative rerun is 35495220671 / artifact 10599939300 and reproduced the earlier operator result. Next phase is evidence-only A4 cross-regime frontier reconciliation.",
+  "next_action": "Freeze a prospective Phase-B material/forcing transfer panel for the targeted explicit-layer ladder L4/L6/R8 before exposing any new Reference response. Reuse B14 only as prior transfer evidence, not as the sole generality test.",
+  "recovery_point": "Resume from work/f-rom-layer-a after LAYER_ROM_PHASE_A_CLOSEOUT.json. Phase A is closed. No new closure family is authorized by Phase A; Phase B begins with transfer-panel selection.",
   "blockers": [],
   "scope_guards": [
     "research only",
