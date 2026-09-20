@@ -33,14 +33,17 @@ jobs:
       - name: Verify frozen C6N2 authority
         run: |
           set -euo pipefail
-          test "$(git hash-object integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json)" = "5ffebcbcffff0ac8110746baf0349c9a7f1a43e8"
-          test "$(git hash-object tests/rom/run_lare_bc2_c6n2_surface_candidate.py)" = "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240"
-          test "$(git hash-object tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py)" = "ef552ec75c99177a59f2aaf0ea3961c9ef53892a"
           python3 - <<'PY'
-          import json
+          import json,subprocess
           p=json.load(open('integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json'))
           b=json.load(open('integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json'))
           c=json.load(open('integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json'))
+          def blob(path):
+              return subprocess.check_output(['git','hash-object',path],text=True).strip()
+          assert blob('integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json') == b['scientific_authority']['preregistration_blob']
+          assert blob('tests/rom/run_lare_bc2_c6n2_surface_candidate.py') == b['scientific_authority']['runner_blob']
+          assert blob('tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py') == b['scientific_authority']['analyzer_blob']
+          assert blob('.github/workflows/f-rom-lare-bc2-c6n2.yml') == b['scientific_authority']['workflow_blob']
           assert p['phase']=='SCIENTIFIC_DESIGN_FROZEN_BEFORE_C6N1_RESULT_EXECUTION_BLOCKED'
           assert b['status']=='BOUND_AFTER_C6N1_QUALIFICATION_BEFORE_CANDIDATE_RESPONSE'
           assert b['scientific_authority']['C6N1_qualified'] is True
