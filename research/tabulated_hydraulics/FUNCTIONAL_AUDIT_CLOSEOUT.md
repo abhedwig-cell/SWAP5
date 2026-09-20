@@ -36,10 +36,13 @@ So the constitutive table concept is not the problem. The problems are integrati
 1. **TAB-HYD-001, table endpoint derivative mismatch.**
    The table K residual is constant outside the tabulated theta range, but legacy `dhconduc` returns `1e8` at the wet endpoint and can enter an invalid dry-side table index. A research-only zero derivative over the already-constant endpoint branches removes both failures.
 
-2. **TAB-HYD-002, analytical default-MvG Ksat derivative mismatch.**
+2. **TAB-HYD-002, documentation-code interpolation mismatch.**
+   The current guide describes PCHIP/SLATEC interpolation, while the active current-public table engine uses TSPACK tension splines. The two are behaviorally distinguishable in Hupsel, so documentation cannot be used as executable-algorithm authority.
+
+3. **TAB-HYD-003, analytical default-MvG Ksat derivative mismatch.**
    The legacy/public analytical residual clamps K to Ksat above relative saturation `1-1e-6`, while the original implicit derivative continues differentiating the unclamped MvG branch. A research-only zero derivative over that constant Ksat branch removes the catastrophic Hupsel `SWKIMPL=1` divergence.
 
-Neither finding is yet an exact-B0 correction admission. Exact supplied SWAP 4.3.1 archive execution remains outside this workstream because the byte-authoritative source archive is not materialized here.
+These findings are not yet exact-B0 correction admissions. Exact supplied SWAP 4.3.1 archive execution remains outside this workstream because the byte-authoritative source archive is not materialized here.
 
 ## Performance implication
 
