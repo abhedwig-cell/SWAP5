@@ -235,13 +235,51 @@ def profile_se(profile,nlayers):
         return vals
     raise ValueError(mode)
 
+def safeguarded_secant_local(target_storage,psi_b,q_b,d,lo,hi,nsteps,tol=1e-10,maxiter=40):
+    flo=residual_local(target_storage,psi_b,q_b,lo,d,nsteps)
+    fhi=residual_local(target_storage,psi_b,q_b,hi,d,nsteps)
+    if flo is None or fhi is None or flo*fhi>0.0:
+        return None
+    if abs(flo)<=tol:
+        out=integrate_up(psi_b,q_b,lo,d,nsteps)
+        return lo,out[0],out[1],flo
+    if abs(fhi)<=tol:
+        out=integrate_up(psi_b,q_b,hi,d,nsteps)
+        return hi,out[0],out[1],fhi
+    for _ in range(maxiter):
+        den=fhi-flo
+        if den==0.0 or not math.isfinite(den):
+            x=0.5*(lo+hi)
+        else:
+            x=hi-fhi*(hi-lo)/den
+            if not (lo < x < hi) or min(x-lo,hi-x) < 1.0e-8*max(1.0,abs(lo),abs(hi)):
+                x=0.5*(lo+hi)
+        fx=residual_local(target_storage,psi_b,q_b,x,d,nsteps)
+        if fx is None:
+            x=0.5*(lo+hi)
+            fx=residual_local(target_storage,psi_b,q_b,x,d,nsteps)
+            if fx is None:
+                return None
+        if abs(fx)<=tol or abs(hi-lo)<=1e-12:
+            out=integrate_up(psi_b,q_b,x,d,nsteps)
+            return x,out[0],out[1],fx
+        if flo*fx<=0.0:
+            hi=x;fhi=fx
+        else:
+            lo=x;flo=fx
+    x=0.5*(lo+hi)
+    out=integrate_up(psi_b,q_b,x,d,nsteps)
+    if out is None:
+        return None
+    return x,out[0],out[1],out[1]-target_storage
+
 def solve_layer_bottomup(target_storage,d,psi_b,q_b,nsteps,span=4.0*KS):
     lo=q_b-span;hi=q_b+span
     flo=residual_local(target_storage,psi_b,q_b,lo,d,nsteps)
     fhi=residual_local(target_storage,psi_b,q_b,hi,d,nsteps)
     if flo is None or fhi is None or flo*fhi>0.0:
         return None
-    return bisect_local(target_storage,psi_b,q_b,d,lo,hi,nsteps)
+    return safeguarded_secant_local(target_storage,psi_b,q_b,d,lo,hi,nsteps)
 
 def march_column(q_bottom,bottom_psi,widths,storages,nsteps):
     psi_b=bottom_psi
@@ -269,25 +307,34 @@ def outer_residual(q_bottom,bottom_psi,widths,storages,q_surface_target,nsteps):
     if sol is None:return None
     return sol["q_surface"]-q_surface_target
 
-def bisect_outer(lo,hi,bottom_psi,widths,storages,qtarget,nsteps,tol=1e-10,maxiter=100):
+def solve_outer(lo,hi,bottom_psi,widths,storages,qtarget,nsteps,tol=1e-10,maxiter=40):
     flo=outer_residual(lo,bottom_psi,widths,storages,qtarget,nsteps)
     fhi=outer_residual(hi,bottom_psi,widths,storages,qtarget,nsteps)
     if flo is None or fhi is None or flo*fhi>0.0:return None
     for _ in range(maxiter):
-        mid=0.5*(lo+hi)
-        fm=outer_residual(mid,bottom_psi,widths,storages,qtarget,nsteps)
-        if fm is None:return None
-        if abs(fm)<=tol or abs(hi-lo)<=1e-12:
-            sol=march_column(mid,bottom_psi,widths,storages,nsteps)
-            return mid,sol,fm
-        if flo*fm<=0.0:
-            hi=mid;fhi=fm
+        den=fhi-flo
+        if den==0.0 or not math.isfinite(den):
+            x=0.5*(lo+hi)
         else:
-            lo=mid;flo=fm
-    mid=0.5*(lo+hi)
-    sol=march_column(mid,bottom_psi,widths,storages,nsteps)
+            x=hi-fhi*(hi-lo)/den
+            if not (lo < x < hi) or min(x-lo,hi-x) < 1.0e-8*max(1.0,abs(lo),abs(hi)):
+                x=0.5*(lo+hi)
+        fx=outer_residual(x,bottom_psi,widths,storages,qtarget,nsteps)
+        if fx is None:
+            x=0.5*(lo+hi)
+            fx=outer_residual(x,bottom_psi,widths,storages,qtarget,nsteps)
+            if fx is None:return None
+        if abs(fx)<=tol or abs(hi-lo)<=1e-12:
+            sol=march_column(x,bottom_psi,widths,storages,nsteps)
+            return x,sol,fx
+        if flo*fx<=0.0:
+            hi=x;fhi=fx
+        else:
+            lo=x;flo=fx
+    x=0.5*(lo+hi)
+    sol=march_column(x,bottom_psi,widths,storages,nsteps)
     if sol is None:return None
-    return mid,sol,sol["q_surface"]-qtarget
+    return x,sol,sol["q_surface"]-qtarget
 
 def qualify_columns(prereg):
     dom=prereg["synthetic_domain"]
@@ -325,8 +372,8 @@ def qualify_columns(prereg):
         fphi=outer_residual(hi,psi_bottom,widths,storages,qtarget,primary)
         if fplo is None or fphi is None or fplo*fphi>0.0:
             row["status"]="PRIMARY_OUTER_BRACKET_NOT_RETAINED";fails.append(row);rows.append(row);continue
-        rp=bisect_outer(lo,hi,psi_bottom,widths,storages,qtarget,primary)
-        rr=bisect_outer(lo,hi,psi_bottom,widths,storages,qtarget,refine)
+        rp=solve_outer(lo,hi,psi_bottom,widths,storages,qtarget,primary)
+        rr=solve_outer(lo,hi,psi_bottom,widths,storages,qtarget,refine)
         if rp is None or rr is None:
             row["status"]="OUTER_ROOT_SOLVE_FAILED";fails.append(row);rows.append(row);continue
         qbp,sp,res=rp
