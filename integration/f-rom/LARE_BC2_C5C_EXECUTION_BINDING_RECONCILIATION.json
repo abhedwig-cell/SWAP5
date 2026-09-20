@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.lare.bc2.c5c.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5C",
+  "status": "TECHNICAL_REFERENCE_PARSER_REPAIRED_BEFORE_ANY_LARE_REFINEMENT_METRICS",
+  "failed_run": {
+    "run_id": 35499682306,
+    "job_id": 106049096159,
+    "execution_head": "0e19e3af48a4ff63e614228bb759c3c0480158d2",
+    "artifact_id": 10601183970,
+    "artifact_digest": "sha256:23a24efed151ac3fbe0aaa3fcca6851135800f0e8c13ff125165c04a20e94a87",
+    "reference_refinement_gate": "PASS_R32_AND_R64_O0_O2",
+    "analyzer_failure": "Inherited C5A reference_arrays helper hard-coded only 16- and 2-node geometries and rejected valid R32 before any C5C LARE run.",
+    "lare_refinement_runs_started": false,
+    "c5c_metrics_produced": false
+  },
+  "repair": {
+    "old_analyzer_blob": "82d019ddd3e8505b224ba303bb6fde48bf0b8da6",
+    "new_analyzer_blob": "8a672eea451b2f9e2799b80428e7b01f3824d6f8",
+    "change": "Replace use of the C5A 2/16-node reference_arrays helper by a geometry-neutral parser that retains bottom-flux, cumulative exchange, nodes, node count and dz for any preregistered Reference geometry.",
+    "scientific_effect": "NONE",
+    "reference_grids_changed": false,
+    "lare_partitions_changed": false,
+    "closure_changed": false,
+    "timestep_changed": false,
+    "diagnostics_changed": false,
+    "adjudication_changed": false
+  },
+  "response_use": {
+    "R32_R64_hydrological_values_used_for_repair": false,
+    "only_traceback_structure_used": true,
+    "reason": "The failure was an explicit unsupported-comparator-geometry exception before Reference comparisons or LARE refinement execution."
+  },
+  "rerun_required": true,
+  "post_hoc_retuning_authorized": false
+}
