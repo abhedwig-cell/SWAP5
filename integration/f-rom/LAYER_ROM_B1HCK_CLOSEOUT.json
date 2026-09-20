@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hck.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCK",
+  "status": "CLOSED_TEMPORAL_AXIS_CONVERGING_NOT_BOUNDED_FIRST_ORDER_CONFIRMATION_AUTHORIZED",
+  "decision": "B1HCK_REFERENCE_TEMPORAL_BOUND_MIXED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCK_PREREGISTRATION.json",
+    "workflow_run": 35504899043,
+    "aggregate_artifact_id": 10602634969,
+    "aggregate_artifact_digest": "sha256:d7346060fcc804003f6e9dfe6b09b5634bcb1c210f60c23d2fa78d76aa8c785d",
+    "raw_result_sha256": "c1f554067e4e963d3ba27d358275d1fd705ca2c1826b4eb1f008b889acca4b73"
+  },
+  "scientific_boundary": [
+    "B1HCK is a negative result under its frozen 0.10 temporal-bound criterion.",
+    "It is simultaneously positive convergence evidence: every Reference component converges and every candidate residual decreases.",
+    "The apparent first-order, near one-to-one temporal pattern is a newly discovered hypothesis, not an adjudicated equivalence result."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCL_FOURTH_REFERENCE_LEVEL_RICHARDSON_CONFIRMATION",
+  "production_rom_authorized": false
+}
