@@ -144,8 +144,18 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "state": "BOUND_BEFORE_EXECUTION",
+    "response_based_design": false,
+    "boundary_variant_materializer": "tests/rom/materialize_lare_bc2_c5j_reference_boundary_variant.py",
+    "boundary_variant_materializer_blob": "13832d068b8e2ff897500b5d6e5a4bed26fd7d59",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5j_reference_boundary_factorial.py",
+    "analyzer_blob": "e4ed691d9efd0d38cab2ecd964f5152b60ae91f4",
+    "c5i_history_slice_materializer": "tests/rom/materialize_lare_bc2_c5i_history_slice.py",
+    "c5i_history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
+    "c5i_full_materializer": "tests/rom/materialize_lare_bc2_c5i_t16.py",
+    "c5i_full_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
+    "allowed_new_code": "workflow scratch patching of frozen Reference boundary semantics plus prebound factorial analysis",
+    "prohibited_new_code": "production Reference edits, fitted coefficients, response-driven variant changes, LARE changes, T32/R2048"
   },
   "model_changed": false
 }
