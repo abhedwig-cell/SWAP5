@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.lare.bc2.c5v.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5V",
+  "status": "CLOSED_STORAGE_ONLY_SCAFP_NOT_UNIQUELY_DERIVABLE_SUBGRID_TENDENCY_ANSATZ_CHOICE_REQUIRED",
+  "decision": "STOP_AT_SUBGRID_TENDENCY_ANSATZ_SCIENTIFIC_CHOICE_BEFORE_ANY_SCAFP_IMPLEMENTATION",
+  "role": "READ_ONLY_STORAGE_CONSISTENT_SUBGRID_FACE_PROFILE_THEORY_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
+    "trigger_status": "CLOSED_DSE2P_NUMERICAL_QUALIFICATION_FAILED_FREE_RUNNING_NOT_AUTHORIZED_SCAFP_THEORY_NEXT",
+    "prior_closure_reconciliation": "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
+    "propagation_identifiability": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "soil_water_theory": "docs/science/soil-water-flow.md",
+    "mass_convention": "docs/science/water-balance-and-conventions.md",
+    "richards_discretization": "docs/numerics/richards-solver.md",
+    "boundary_authority": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "representation_convention": {
+    "reduced_coordinate": "depth z positive downward",
+    "reduced_flux": "q positive downward",
+    "suction_head": "psi=-h on the unsaturated branch",
+    "Darcy_relation": "q = K(psi) * (1 + dpsi/dz)",
+    "layer_state": "S_i = integral_layer theta(psi(z)) dz",
+    "exact_layer_balance": "dS_i/dt = q_(i-1/2) - q_(i+1/2)",
+    "note": "This is the existing LARE/BC1 reduced-model sign convention and is explicitly separated from SWAP native upward-positive hydraulic notation."
+  },
+  "necessary_properties": {
+    "dynamic_state": [
+      "one layer-integrated water storage S_i per retained layer only"
+    ],
+    "zero_fit": true,
+    "no_additional_dynamic_shape_state": true,
+    "exact_storage_consistency": "Every reconstructed subgrid profile must integrate through theta(psi) to exactly the retained S_i.",
+    "interface_pressure_continuity": true,
+    "interface_flux_continuity": true,
+    "transient_unequal_face_fluxes": true,
+    "exact_layer_conservation": true,
+    "constitutive_relation": "frozen material theta(psi), K(psi)",
+    "external_boundary_compatibility": [
+      "prescribed flux",
+      "prescribed head"
+    ],
+    "response_based_parameters": false
+  },
+  "derivation": {
+    "underdetermination_from_storage_only": [
+      "For each layer, S_i supplies one scalar integral constraint on an otherwise continuous subgrid hydraulic field.",
+      "Darcy-Buckingham relates flux to the local pressure gradient but does not determine the spatial distribution of transient storage tendency dtheta/dt inside the layer.",
+      "Layer conservation determines only the integral tendency dS_i/dt = q_top - q_bottom; infinitely many subgrid dtheta/dt(z) distributions have the same integral.",
+      "Therefore storage state plus constitutive functions and interface continuity do not uniquely determine a transient subgrid profile without one additional algebraic profile/tendency principle."
+    ],
+    "finite_dimensional_degree_count": [
+      "A piecewise-linear psi profile has only shared face psi values as unknowns. Across N layers, N storage constraints plus N-1 internal flux-continuity constraints and two external boundary constraints overdetermine N+1 face-head unknowns for N>2 in general.",
+      "Adding one algebraic shape degree of freedom per layer can close the count, but theory does not uniquely choose the coordinate or shape family in which that degree of freedom is represented.",
+      "A quadratic psi profile, an affine-flux/uniform-storage-tendency profile, and transformed-potential profile families can all be zero-fit and conservative yet are not algebraically identical."
+    ],
+    "key_missing_quantity": "The unresolved closure variable is not another total-water state; it is the subgrid spatial shape of transient storage tendency or an equivalent algebraic profile-shape principle."
+  },
+  "admissible_zero_fit_choice_families": {
+    "P0_UNIFORM_STORAGE_TENDENCY": {
+      "description": "Project local dtheta/dt as constant inside each retained layer. Then q(z) is affine between the two layer-face fluxes by continuity.",
+      "equations": [
+        "dtheta/dt = (q_top - q_bottom)/d_i within layer i",
+        "q(z) = (1-xi) q_top + xi q_bottom, xi in [0,1]",
+        "dpsi/dz = q(z)/K(psi) - 1",
+        "S_i = integral_0^d theta(psi(z)) dz"
+      ],
+      "algebraic_construction": [
+        "Given top face psi and q_top, choose q_bottom so the integrated Darcy trajectory has exactly storage S_i; the resulting endpoint gives bottom face psi.",
+        "March layer-to-layer with shared psi and q, then use the remaining external boundary condition as one outer scalar root."
+      ],
+      "strengths": [
+        "Directly embeds exact finite-volume conservation.",
+        "Allows unequal top/bottom face flux during transient storage.",
+        "Adds no fitted parameter and no dynamic state.",
+        "Can be interpreted as the lowest-order piecewise-constant projection of storage tendency."
+      ],
+      "unresolved_choice": "Uniform local storage tendency is a modeling/projection assumption; it is not uniquely implied by S_i alone."
+    },
+    "QUADRATIC_PRESSURE_PROFILE": {
+      "description": "Use the minimum polynomial degree in psi that supplies one algebraic shape parameter per layer in addition to shared face heads.",
+      "strengths": [
+        "Zero-fit if the polynomial coordinate is fixed prospectively.",
+        "Can satisfy storage plus interface flux continuity and external boundary constraints by degree count."
+      ],
+      "unresolved_choice": "Why pressure head, rather than suction, hydraulic head, saturation or Kirchhoff potential, should carry the polynomial shape is not fixed by existing authority."
+    },
+    "TRANSFORMED_POTENTIAL_PROFILE": {
+      "description": "Reconstruct an algebraic profile in a constitutive transform such as a Kirchhoff-type hydraulic potential.",
+      "strengths": [
+        "Can encode K nonlinearity more naturally than a polynomial in pressure head."
+      ],
+      "unresolved_choice": "Choice of transform and profile order introduces a structural modeling decision not determined by retained storage alone."
+    }
+  },
+  "non_admissible_shortcuts": [
+    "Reopen scalar multipliers or current-state gradient conditioners closed by C4O.",
+    "Select among profile families by fitting to exposed C5R/C5T residuals.",
+    "Retune DSE2P quadrature, branch logic or brackets after the C5T failure and call it the same preregistered closure.",
+    "Add an unqualified dynamic shape/memory state; C4K did not establish such a need and C5V authority forbids it.",
+    "Assume global constant flux through each layer during a transient; that collapses dS_i/dt to zero and recreates the DSE2P structural limitation."
+  ],
+  "adjudication": {
+    "UNIQUE_SCAFP_DERIVED_FROM_EXISTING_AUTHORITY": false,
+    "STORAGE_ONLY_STATE_IS_SUFFICIENT_TO_SELECT_SUBGRID_SHAPE": false,
+    "CONSERVATIVE_ZERO_FIT_SCAFP_FAMILIES_EXIST": true,
+    "P0_UNIFORM_STORAGE_TENDENCY_IS_THEORY_COMPATIBLE": true,
+    "P0_UNIFORM_STORAGE_TENDENCY_IS_UNIQUELY_MANDATED": false,
+    "IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_TEST_AUTHORIZED": false,
+    "SCIENTIFIC_CHOICE_REQUIRED": true
+  },
+  "scientific_choice_boundary": {
+    "question": "Which zero-fit algebraic subgrid principle should define unresolved within-layer transient structure when layer-integrated storage is the only dynamic state?",
+    "options": [
+      {
+        "id": "P0_UNIFORM_STORAGE_TENDENCY",
+        "defining_principle": "Lowest-order finite-volume projection of dtheta/dt; affine within-layer flux.",
+        "repository_assessment": "Most directly tied to the retained control-volume storage representation and exact conservation, but still a new scientific closure assumption."
+      },
+      {
+        "id": "QUADRATIC_PRESSURE_PROFILE",
+        "defining_principle": "Minimum-degree pressure-profile ansatz with one algebraic shape mode per layer.",
+        "repository_assessment": "Degree-count minimal, but the choice of pressure-head polynomial coordinate is less directly forced by conservation."
+      },
+      {
+        "id": "TRANSFORMED_POTENTIAL_PROFILE",
+        "defining_principle": "Low-order profile in a constitutively transformed potential.",
+        "repository_assessment": "Potentially attractive for nonlinear hydraulics, but requires a separate theory choice of transform and profile order."
+      }
+    ],
+    "evidence_cannot_choose_between_options": "No existing blind or source authority prospectively distinguishes these ansatz families, and using C5R/C5T response to choose would be post-response structural fitting.",
+    "most_conservative_future_candidate_if_explicitly_chosen": "P0_UNIFORM_STORAGE_TENDENCY",
+    "reason_for_non_authoritative_preference": "It is the only listed option whose extra algebraic assumption is directly the lowest-order projection of the conservation equation in the same layer basis as the retained storage state."
+  },
+  "next_authority": {
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_IMPLEMENTATION",
+    "reserved_target_if_P0_is_selected": "LARE-BC2-C5W",
+    "possible_next_work": "Prospectively specify and mathematically qualify the P0 uniform-storage-tendency algebraic boundary-value map before any response data are used.",
+    "no_default_execution_without_choice": true
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_closure_implemented": false,
+    "free_running_closure_implemented": false,
+    "new_dynamic_state_added": false,
+    "scalar_tuning_reopened": false,
+    "C5T_result_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
