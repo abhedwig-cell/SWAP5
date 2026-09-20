@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcj.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCJ",
+  "decision": "B1HCJ_B12_FLOATING_INVARIANT_DRIFT_CONFIRMED",
+  "execution": {
+    "workflow_run": 35502826121,
+    "executed_head": "465596cba5369204d6884e643a262c4b8e412ac9",
+    "artifact_id": 10602958541,
+    "artifact_digest": "sha256:0f93f3f7678300bcd103d7d646ea2e0e6ca151509ebfd948ca3f38bf100a41ab",
+    "raw_result_sha256": "46f1e1d922ea98e0a5d0e34c3b968c4e9db9ef9a92a97a486e427853cc60a6be",
+    "conclusion": "success"
+  },
+  "fine_dt_day": 0.000025,
+  "float64": {
+    "storage_to_DOP853_rms_cm": 1.6709707792857398e-12,
+    "cumulative_to_DOP853_rms_cm": 2.3992487889596843e-16,
+    "mapped_theta_to_DOP853_rms": 3.667036492521582e-14,
+    "invariant_difference_to_DOP853_rms_cm": 1.6710395325122102e-12,
+    "np_sum_minus_fsum_rms_cm": 3.626539728754058e-15
+  },
+  "extended_accumulation": {
+    "storage_to_DOP853_rms_cm": 1.0829086015992349e-14,
+    "cumulative_to_DOP853_rms_cm": 1.5621945607725213e-16,
+    "mapped_theta_to_DOP853_rms": 2.90287311351903e-16,
+    "invariant_difference_to_DOP853_rms_cm": 1.1832800240402831e-14
+  },
+  "reduction_factors": {
+    "storage": 154.3039529668577,
+    "invariant": 141.22097040111294
+  },
+  "gate_components": {
+    "cumulative_floor": true,
+    "mapped_theta_floor": true,
+    "invariant_explains_storage": true,
+    "extended_storage_factor4": true,
+    "extended_invariant_factor4": true,
+    "diagnostic_sum_subdominant": true
+  },
+  "adjudication": [
+    "The B12 storage-only B1HCI exception is caused by floating-point loss of the exact linear water invariant during repeated float64 state accumulation.",
+    "Ordinary final summation order is not the cause: np.sum versus math.fsum is about three orders of magnitude smaller than the invariant drift.",
+    "Increasing only state-accumulation precision, while keeping the same float64 constitutive/RHS evaluation and the same hydrological closure, reduces storage and invariant errors by more than two orders of magnitude.",
+    "The B12 exception therefore does not justify a new hydrological state, partition or closure."
+  ],
+  "next": "Open finite-Reference temporal/discretization diagnosis on the same six-material panel. Candidate ODE integration uncertainty is now bounded separately.",
+  "firewalls": [
+    "NO_HYDROLOGICAL_MODEL_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
