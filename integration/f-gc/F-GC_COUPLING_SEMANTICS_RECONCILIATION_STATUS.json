@@ -164,18 +164,25 @@
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
     "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
     "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
-    "next_gate": "Implement controlled A/B/C/D storage qualification only after topology metadata/fail-closed admission is available; preregister tolerances. E7 remains held.",
+    "next_gate": "Execute CSR-04 topology admission test, then build controlled A/B/C storage-budget fixture only if component storage observability exists. Production vertical partition and E7 remain held.",
     "proof_obligations": {
       "P1": "accepted interface mass continuity",
       "P2": "hydraulic compatibility under declared head-transfer operator",
       "P3": "global storage closure over explicitly non-overlapping component domains",
       "decision": "P1+P2 do not imply P3; existing evidence proves the interface, not storage-state-space additivity."
+    },
+    "schema_qualification": {
+      "state": "IMPLEMENTED_PENDING_EXECUTION",
+      "commit": "67b303c3e92b0a232923ebf8605d22e333a35800",
+      "negative_gate": "UNRESOLVED topology must return GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED before application-plan/context execution",
+      "positive_gate": "explicit NON_OVERLAPPING_VERTICAL_DOMAINS passes existing typed topology/application-context path",
+      "scope": "metadata/admission only; does not prove production vertical non-overlap or modify F-GC30/F-GC33 physics"
     }
   },
   "current_pr_divergence": {
     "live_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
     "merge_base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
-    "ahead": 44,
+    "ahead": 48,
     "behind": 58,
     "admission": "RECOMPOSITION_REQUIRED"
   }
