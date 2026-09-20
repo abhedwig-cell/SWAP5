@@ -1,0 +1,73 @@
+name: F-ROM-LARE BC2-C6P root state sufficiency
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Verify frozen C6P authority
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py)" = "7b6465c5e4028ee9489b6af18021a3775cfc63f9"
+          python3 -m py_compile tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json'))
+          o=json.load(open('integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_C6P_NUMERICAL_EVALUATION'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
+          assert o['decision']=='AUTHORIZE_RESPONSE_FREE_ROOT_UPTAKE_STATE_SUFFICIENCY_DISCRIMINATOR_BEFORE_ANY_ET_DROUGHT_TRAJECTORY'
+          assert p['scientific_firewall']['hydrological_response_generated'] is False
+          print('C6P_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute response-free state-sufficiency discriminator
+        run: |
+          set -euo pipefail
+          mkdir -p C6P_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py \
+            --prereg integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json \
+            --c6o integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json \
+            --output C6P_EVIDENCE/LARE_BC2_C6P_RESULT.json \
+            | tee C6P_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6P_PREREGISTRATION.json C6P_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json C6P_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('C6P_EVIDENCE/LARE_BC2_C6P_RESULT.json'))
+          assert r['hard_checks']['pass'] is True
+          assert r['status'] in (
+            'C6P_EXISTING_STORAGE_AND_GEOMETRIC_FIRST_MOMENT_NOT_EXACTLY_SUFFICIENT_FOR_GENERAL_FEDDES_FEEDBACK',
+            'C6P_FIRST_MOMENT_REMOVES_FROZEN_STRUCTURAL_AMBIGUITY',
+            'C6P_NO_STRUCTURAL_AMBIGUITY_DEMONSTRATED_ON_FROZEN_DOMAIN'
+          )
+          assert r['scientific_firewall']['hydrological_response_generated'] is False
+          assert r['scientific_firewall']['application_tolerance_selected'] is False
+          assert r['scientific_firewall']['production_rom_authorized'] is False
+          print('C6P_FIREWALL=PASS')
+          PY
+          sha256sum C6P_EVIDENCE/* > C6P_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6p
+          path: C6P_EVIDENCE/
+          if-no-files-found: error
