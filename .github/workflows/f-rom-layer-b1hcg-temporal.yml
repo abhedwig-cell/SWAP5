@@ -63,11 +63,11 @@ jobs:
           test "$(git hash-object /tmp/b1hcg/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
 
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcg/b1h.zip
-          echo "${{ matrix.b1h_digest }}  /tmp/b1hcg/b1h.zip" | sha256sum -c -
+          test "$(sha256sum /tmp/b1hcg/b1h.zip | awk '{print $1}')" = "${{ matrix.b1h_digest }}"
           unzip -q /tmp/b1hcg/b1h.zip -d /tmp/b1hcg/b1h
 
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.cf_id }}/zip" > /tmp/b1hcg/cf.zip
-          echo "${{ matrix.cf_digest }}  /tmp/b1hcg/cf.zip" | sha256sum -c -
+          test "$(sha256sum /tmp/b1hcg/cf.zip | awk '{print $1}')" = "${{ matrix.cf_digest }}"
           unzip -q /tmp/b1hcg/cf.zip -d /tmp/b1hcg/cf
 
           test -f "/tmp/b1hcg/b1h/R16_${{ matrix.material }}.txt"
