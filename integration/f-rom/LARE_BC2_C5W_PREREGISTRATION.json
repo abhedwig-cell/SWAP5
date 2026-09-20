@@ -1,0 +1,231 @@
+{
+  "schema": "swap5.lare.bc2.c5w.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5W",
+  "phase": "PREREGISTERED_BEFORE_P0_NUMERICAL_ADMISSIBILITY_RESPONSE",
+  "title": "Mathematical and numerical admissibility qualification of P0 uniform-storage-tendency SCAFP",
+  "role": "NO_HYDROLOGICAL_RESPONSE_MATHEMATICAL_NUMERICAL_QUALIFICATION",
+  "scientific_question": "Does the prospectively selected P0 uniform-storage-tendency closure define a unique, conservative and numerically well-conditioned algebraic layer/column map over a broad synthetic B14 state domain before any hydrological response is tested?",
+  "authority": {
+    "choice": "integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json",
+    "trigger": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "selected_hypothesis": "P0_UNIFORM_STORAGE_TENDENCY",
+    "frozen_material": "B14",
+    "hydrological_response_authorized": false
+  },
+  "equations": {
+    "layer_coordinate": "xi=z/d in [0,1]",
+    "storage_tendency": "dtheta/dt=(q_top-q_bottom)/d",
+    "affine_flux": "q(xi)=(1-xi) q_top + xi q_bottom",
+    "darcy_ode": "dpsi/dz=q(z)/K(psi)-1",
+    "storage_constraint": "S=integral_0^d theta(psi(z)) dz",
+    "column_balance": "dS_i/dt=q_(i-1/2)-q_(i+1/2)"
+  },
+  "analytical_qualification": {
+    "assumptions": [
+      "Unsaturated constitutive branch with K(psi)>0.",
+      "theta(psi) is strictly decreasing in positive suction psi.",
+      "The trial trajectory remains inside the declared constitutive domain."
+    ],
+    "layer_local_uniqueness_proof": [
+      "For fixed psi_top and q_top, q_bottom is the scalar shooting variable.",
+      "The sensitivity y=dpsi/dq_bottom solves y'=a(z)y + xi/K(psi), y(0)=0.",
+      "The forcing xi/K is nonnegative and positive for z>0; the variation-of-constants solution gives y(z)>0 for z>0 regardless of the sign of a(z).",
+      "Since theta'(psi)<0, d/dq_bottom integral theta(psi(z)) dz = integral theta'(psi)y dz < 0.",
+      "Therefore the layer storage residual is strictly decreasing in q_bottom and has at most one admissible root."
+    ],
+    "proof_claim": "LOCAL_UNIQUENESS_CONDITIONAL_ON_EXISTENCE_AND_ADMISSIBILITY",
+    "not_claimed": [
+      "Global existence for every possible layer storage.",
+      "Full-column uniqueness without numerical qualification.",
+      "Hydrological fidelity."
+    ]
+  },
+  "synthetic_domain": {
+    "material": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "mualem_lambda": -0.334926
+    },
+    "constitutive_effective_saturation_domain": [
+      0.55,
+      0.97
+    ],
+    "layer_widths_cm": [
+      2.5,
+      5,
+      10,
+      20,
+      40,
+      80,
+      110,
+      130,
+      150
+    ],
+    "local_test_Se": [
+      0.55,
+      0.65,
+      0.75,
+      0.85,
+      0.95
+    ],
+    "local_top_head_Se": [
+      0.6,
+      0.75,
+      0.9
+    ],
+    "local_qtop_over_K_at_top": [
+      0.5,
+      1,
+      1.5
+    ],
+    "column_partitions": {
+      "D8_B2P5": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ],
+      "D12_B2P5": [
+        0,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        155,
+        157.5,
+        160
+      ]
+    },
+    "column_profiles": [
+      {
+        "id": "UNIFORM_DRY",
+        "mode": "uniform",
+        "Se": 0.6
+      },
+      {
+        "id": "UNIFORM_MID",
+        "mode": "uniform",
+        "Se": 0.75
+      },
+      {
+        "id": "UNIFORM_WET",
+        "mode": "uniform",
+        "Se": 0.9
+      },
+      {
+        "id": "TOP_DRY_BOTTOM_WET",
+        "mode": "linear",
+        "Se_top": 0.6,
+        "Se_bottom": 0.9
+      },
+      {
+        "id": "TOP_WET_BOTTOM_DRY",
+        "mode": "linear",
+        "Se_top": 0.9,
+        "Se_bottom": 0.6
+      },
+      {
+        "id": "BOTTOM_WET_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.7,
+        "Se_bottom": 0.92
+      },
+      {
+        "id": "BOTTOM_DRY_PULSE",
+        "mode": "piecewise",
+        "Se_bulk": 0.88,
+        "Se_bottom": 0.58
+      }
+    ],
+    "prescribed_bottom_head_multiplier": [
+      0.875,
+      1.125
+    ],
+    "top_flux_rule": "K evaluated at the storage-equivalent suction of the top retained layer; no fitted multiplier."
+  },
+  "numerical_contract": {
+    "constitutive_domain_Se": [
+      0.02,
+      0.995
+    ],
+    "ODE_integrator": "classical RK4 in physical z",
+    "primary_substeps_per_layer": 256,
+    "refinement_substeps_per_layer": 512,
+    "layer_qbottom_scan": {
+      "center": "q_top",
+      "half_span_Ksat": 4,
+      "points": 257,
+      "no_adaptive_post_result_expansion": true
+    },
+    "layer_root": "bisection on the first and only admissible sign-changing interval",
+    "layer_storage_residual_tolerance_cm": 1e-10,
+    "outer_bottom_flux_scan": {
+      "range_Ksat": [
+        -4,
+        4
+      ],
+      "points": 257,
+      "no_adaptive_post_result_expansion": true
+    },
+    "outer_root": "bottom-up/column shooting branch chosen only if exactly one admissible sign change exists",
+    "outer_boundary_head_tolerance_cm": 1e-8,
+    "refinement_stability": {
+      "max_abs_face_head_difference_cm": 0.00001,
+      "max_abs_face_flux_difference_cm_per_day": 1e-7
+    }
+  },
+  "qualification_gates": {
+    "G1_ANALYTIC_LOCAL_UNIQUENESS": "Proof conditions and sign argument encoded and independently checked against constitutive derivatives.",
+    "G2_LOCAL_EXISTENCE": "Every synthetic local case has exactly one admissible q_bottom root inside the frozen scan.",
+    "G3_COLUMN_EXISTENCE_UNIQUENESS": "Every synthetic column/boundary case has exactly one admissible outer root inside the frozen scan.",
+    "G4_CONSERVATION": "Layer flux differences equal the implied uniform storage tendency exactly by construction and column interface fluxes are shared.",
+    "G5_STORAGE_CONSISTENCY": "Each solved layer reconstructs its target storage within 1e-10 cm.",
+    "G6_REFINEMENT_STABILITY": "256/512-substep solutions satisfy the frozen face-head/face-flux stability limits.",
+    "G7_NO_RESPONSE_DATA": "No C5R/C5T/C5N/C5P hydrological trajectory is consumed by the qualifier."
+  },
+  "decision_logic": {
+    "C5W_P0_MATHEMATICALLY_NUMERICALLY_QUALIFIED": "All G1-G7 pass.",
+    "C5W_P0_LOCAL_MAP_ONLY_QUALIFIED_COLUMN_BLOCKED": "G1/G2/G4/G5 pass but G3 or G6 fails.",
+    "C5W_P0_NOT_ADMISSIBLE": "Any of G1/G2/G4/G5 fails.",
+    "next_if_qualified": "Prospectively preregister a frozen-state P0 interface-flux discriminator before any free-running reduced model.",
+    "next_if_blocked": "Stop P0 route; do not tune scan bounds, profile family or numerical branch from failed cases."
+  },
+  "stop_rules": [
+    "No hydrological response trajectory may be read or generated in C5W.",
+    "No free-running P0 reduced model.",
+    "No bracket-range, quadrature/substep or tolerance retuning after qualification response.",
+    "No scalar correction or fitted parameter.",
+    "No new dynamic state.",
+    "No application/performance/speed/production claim."
+  ],
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "free_running_closure_implemented": false,
+    "response_based_parameter": false,
+    "new_dynamic_state_added": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
