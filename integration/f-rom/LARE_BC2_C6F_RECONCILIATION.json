@@ -1,0 +1,144 @@
+{
+  "schema": "swap5.lare.bc2.c6f.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6F",
+  "status": "CLOSED_CONSERVATIVE_SUBLAYER_INVENTORIES_COLLAPSE_TO_SIMPLE_REFINEMENT_OR_REQUIRE_NEW_TRANSFER_CLOSURE",
+  "decision": "DO_NOT_IMPLEMENT_FIXED_HALF_LAYER_INVENTORY_FAMILY_AS_NEW_ROM_ROUTE",
+  "role": "READ_ONLY_CONSERVATIVE_SUBLAYER_MEMORY_IDENTIFIABILITY_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "first_moment": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "propagation_reconciliation": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
+    "bemr_mechanism": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
+    "bemr_boundary_failure": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "hydrological_response_used": false,
+    "model_run_executed": false
+  },
+  "question": "Can the missing vertical redistribution memory be represented by two bounded conserved water inventories inside each hydrological macro-layer, with a physically derived internal exchange, without merely recreating a finer Richards/LARE grid or introducing another arbitrary closure?",
+  "candidate_state": {
+    "macro_layer": "i with fixed bounds z_- and z_+, width d_i and midpoint z_m",
+    "upper_inventory": "U_i = integral_{z_-}^{z_m} theta(z) dz",
+    "lower_inventory": "L_i = integral_{z_m}^{z_+} theta(z) dz",
+    "total_storage": "S_i = U_i + L_i",
+    "imbalance": "D_i = L_i - U_i",
+    "units": "cm water per unit horizontal area",
+    "fitted_parameter": false,
+    "physical_interpretation": "Two directly conserved bounded water inventories encode whether water is preferentially stored in the upper or lower half of the macro-layer."
+  },
+  "exact_balance": {
+    "convention": "dtheta/dt = -dq/dz, q positive downward",
+    "upper": "dU_i/dt = q_top,i - q_mid,i",
+    "lower": "dL_i/dt = q_mid,i - q_bottom,i",
+    "total": "dS_i/dt = q_top,i - q_bottom,i",
+    "imbalance": "dD_i/dt = 2*q_mid,i - q_top,i - q_bottom,i",
+    "conclusion": "The sublayer state itself is conservation-native. Its evolution is exact only if the internal midpoint flux q_mid,i is supplied."
+  },
+  "relation_to_first_moment": {
+    "exact_for_arbitrary_profile": false,
+    "statement": "U_i,L_i and the centered first moment M_i are different linear projections of an arbitrary within-layer theta(z) profile.",
+    "piecewise_uniform_special_case": "If theta is uniform separately in the two half-layers, then M_i = (d_i/4)*(L_i-U_i) = (d_i/4)*D_i.",
+    "consequence": "The half-inventory state is related to the C5Y first moment but is not merely a coordinate transform of exact S_i,M_i except under the piecewise-uniform two-cell ansatz."
+  },
+  "realizability": {
+    "physical_interval": "theta_min <= theta <= theta_max",
+    "upper_box": "theta_min*d_i/2 <= U_i <= theta_max*d_i/2",
+    "lower_box": "theta_min*d_i/2 <= L_i <= theta_max*d_i/2",
+    "consequence": "Unlike C5Z/C6E profile inversion, state realizability is a direct box constraint on conserved inventories."
+  },
+  "standard_darcy_reduction": {
+    "half_means": [
+      "theta_U = 2*U_i/d_i",
+      "theta_L = 2*L_i/d_i"
+    ],
+    "representative_states": "Map each half mean through the same frozen retention and conductivity laws.",
+    "internal_flux": "Compute q_mid,i by the ordinary two-point Darcy operator between the upper-half and lower-half representative states, whose centroids are separated by d_i/2.",
+    "external_flux": "Compute q_bottom,i/q_top,i by the ordinary two-point Darcy operator between adjacent half-control-volume centroids across macro-layer interfaces.",
+    "structural_identity": "The resulting state vector, balances, centroid distances and face fluxes are exactly those of a standard finite-volume column obtained by splitting every macro-layer into two ordinary cells.",
+    "dynamic_state_count": "2N ordinary storage states for N macro-layers.",
+    "conclusion": "Under standard Darcy closure, the proposed 'internal memory' family is not a distinct ROM architecture; it is fixed grid refinement with macro-layer labels."
+  },
+  "alternative_internal_transfer": {
+    "requirement": "To remain physically distinct from simple refinement, q_mid,i must differ from the standard two-point half-cell Darcy flux.",
+    "conservation_limit": "The two balance equations determine how any chosen q_mid redistributes water but do not determine q_mid itself.",
+    "steady_integral_choice": "An exact steady Darcian transfer between the two representative half states reduces to the already-closed steady-equivalent/DSE2P class at the internal split.",
+    "transient_choice": "Any non-steady internal transfer law requires an independently justified subgrid hydraulic principle, additional state or memory kernel.",
+    "consequence": "The fixed U/L inventories do not derive a new transient transfer law from conservation alone."
+  },
+  "relation_to_existing_evidence": {
+    "C5Y": "Supports the broader idea that one extra vertical-shape scalar can carry physically meaningful memory.",
+    "C6D": "Shows that added vertical asymmetry information can improve prescribed-head frozen-state interface flux.",
+    "C6E": "Shows that an instantaneous global algebraic BEMR map is not prospectively robust under prescribed flux.",
+    "C5P_C5R": "Already establish that ordinary layer placement/refinement is a representation axis distinct from a new propagation closure; C6F must not relabel ordinary refinement as a new closure family.",
+    "C6A": "Already establishes that conservative variables/interfaces do not by themselves determine missing transient propagation physics."
+  },
+  "minimality_and_novelty_adjudication": {
+    "TWO_CONSERVED_HALF_INVENTORIES_ARE_PHYSICALLY_INTERPRETABLE": true,
+    "EXACT_SUBCONTROL_VOLUME_BALANCES_EXIST": true,
+    "STATE_REALIZABILITY_IS_DIRECT_AND_BOUND_PRESERVING": true,
+    "HALF_INVENTORY_STATE_EQUALS_EXACT_FIRST_MOMENT_STATE": false,
+    "PIECEWISE_UNIFORM_HALF_STATE_RELATES_TO_FIRST_MOMENT": true,
+    "STANDARD_DARCY_HALF_LAYER_MODEL_IS_DISTINCT_FROM_SIMPLE_GRID_REFINEMENT": false,
+    "CONSERVATION_ALONE_DETERMINES_INTERNAL_TRANSFER": false,
+    "EXACT_STEADY_INTERNAL_TRANSFER_IS_NEW_RELATIVE_TO_DSE2P": false,
+    "DISTINCT_TRANSIENT_INTERNAL_TRANSFER_REQUIRES_NEW_AUTHORITY": true,
+    "FIXED_HALF_LAYER_IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "architecture_review": {
+    "affected_invariants": [
+      3,
+      4,
+      13,
+      20,
+      23,
+      25,
+      30
+    ],
+    "assessment": {
+      "3_explicit_data_separation": "A conserved sublayer state would be explicit physical state rather than solver scratch.",
+      "4_compact_persistent_state": "A 2N fixed split doubles persistent water-state count and therefore needs demonstrated scientific value before admission.",
+      "13_mass_conservation": "The exact U/L balances strengthen local conservation if ever adopted.",
+      "20_alternative_soil_water_solvers": "Research representation remains behind an alternative soil-water route and does not alter Reference Richards.",
+      "23_physics_vs_solver_policy": "Internal transfer law would be scientific closure, not numerical execution policy.",
+      "25_reference_mode": "Full Reference Richards remains unchanged.",
+      "30_review_every_architecture_change": "C6F closes before implementation because novelty/minimality is not established."
+    }
+  },
+  "next_authority": {
+    "target": null,
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_AFTER_FIXED_SUBLAYER_REFINEMENT_COLLAPSE",
+    "question": "Which next representation changes information content rather than merely relabeling ordinary refinement or introducing an ungrounded transfer law?",
+    "admissible_read_only_options": [
+      "A genuinely interface-local conserved state whose control volume and balance are not equivalent to a fixed subdivision of every macro-layer, with a pre-response minimality/non-duplication proof.",
+      "An adaptive or moving-partition representation with a prospectively derived state-transfer/remapping conservation law and adaptation trigger independent of exposed response residuals.",
+      "A new variational/stability principle that uniquely selects a BEMR-like branch without being constructed from the C6E failures."
+    ],
+    "excluded_shortcuts": [
+      "Do not run D24 or another uniformly split ladder and call it a new sublayer-memory closure.",
+      "Do not invent or tune q_mid from C6D/C6E residuals.",
+      "Do not use a steady-equivalent internal q_mid under a new name.",
+      "Do not convert the C6E successful-start subset into a branch-selection rule.",
+      "Do not claim computational value from doubling states without a later qualified cost/fidelity screen."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_dynamic_state_implemented": false,
+    "new_transfer_closure_implemented": false,
+    "response_based_design": false,
+    "post_c6e_retuning": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
