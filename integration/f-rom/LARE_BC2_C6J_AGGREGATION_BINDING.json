@@ -13,14 +13,14 @@
   },
   "repaired_aggregator": {
     "path": "tests/rom/merge_lare_bc2_c6j_femo_shards.py",
-    "blob": "f9dc70c58892bac333cbeb7c652c5e12e8e69e5b"
+    "blob": "31d9cad813f2aeffb3f066393cd3f24bbc5ca48f"
   },
   "aggregation_reconciliation": "integration/f-rom/LARE_BC2_C6J_AGGREGATION_RECONCILIATION.json",
   "workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6j-aggregate-recovery.yml",
-    "blob": "136b8053f66206bbe32569019feadc68a662d417",
+    "blob": "f301f8997c5c5ea695100ccddba4b39071bf4516",
     "state": "BOUND_BEFORE_AGGREGATION",
-    "binding_note": "Workflow creation itself is excluded from the push trigger. Only this frozen binding update starts aggregation of the nine immutable scientific shards."
+    "binding_note": "Only this binding update triggers aggregation of the immutable nine C6J shard artifacts from run 35530325107. No scientific shard is rerun."
   },
   "scientific_design_changed": false,
   "scientific_firewall": {
