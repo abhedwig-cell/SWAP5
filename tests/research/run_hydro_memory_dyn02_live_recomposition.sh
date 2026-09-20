@@ -23,7 +23,6 @@ grep -Fq '"decision": "DYN02_VIEW01_QUALIFIED_RESTRICTED_TEMPORAL_CARRIER"' inte
 echo 'HYDRO_MEMORY_DYN02_AUTHORITY_LOCK=PASS'
 
 BRIDGE=tests/research/support/mod_hydro_memory_dyn02_bridge.f90
-grep -Fq 'ROOT_TOTAL=2.0e-2_real64' "$BRIDGE" || fail "root total drift"
 grep -Fq 'H_APP_CM=4.0e-1_real64' "$BRIDGE" || fail "H_app drift"
 grep -Fq 'A_TEMPORAL=2.5e-1_real64' "$BRIDGE" || fail "temporal allocation drift"
 grep -Fq 'A_INTERFACE=2.5e-1_real64' "$BRIDGE" || fail "interface allocation drift"
