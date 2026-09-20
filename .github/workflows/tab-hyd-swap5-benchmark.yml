@@ -1,0 +1,85 @@
+name: TAB-HYD SWAP5-native provider microbenchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tab-hyd-swap5-provider
+    paths:
+      - 'research/tab_hyd_swap5/benchmark_tab_hyd_swap5_provider.f90'
+      - 'research/tab_hyd_swap5/mod_research_direct_table_provider.f90'
+      - '.github/workflows/tab-hyd-swap5-benchmark.yml'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build optimized benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-swap5-bench
+          OUT=build/tab-hyd-swap5-bench
+          COMMON="-std=f2008 -ffree-line-length-none -O3 -march=x86-64 -Wall -Wextra"
+          gfortran $COMMON -Wno-unused-dummy-argument -J "$OUT" -I "$OUT"             -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
+          gfortran $COMMON -J "$OUT" -I "$OUT"             -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mvg.o"
+          gfortran $COMMON -J "$OUT" -I "$OUT"             -c research/tab_hyd_swap5/mod_research_direct_table_provider.f90 -o "$OUT/table.o"
+          gfortran $COMMON -J "$OUT" -I "$OUT"             -c research/tab_hyd_swap5/benchmark_tab_hyd_swap5_provider.f90 -o "$OUT/bench.o"
+          gfortran -O3 "$OUT/contract.o" "$OUT/mvg.o" "$OUT/table.o" "$OUT/bench.o" -o "$OUT/bench"
+
+      - name: Run alternating benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/tab-hyd-swap5-bench/bench | tee build/tab-hyd-swap5-bench/timings.csv
+          grep -q '^TAB_HYD_SWAP5_MICROBENCH_COMPLETED$' build/tab-hyd-swap5-bench/timings.csv
+
+      - name: Summarize benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import statistics
+          rows=[]
+          for line in Path("build/tab-hyd-swap5-bench/timings.csv").read_text().splitlines():
+              p=line.strip().split(",")
+              if len(p)!=4 or not p[0].isdigit():
+                  continue
+              rows.append((int(p[0]),p[1],float(p[2]),float(p[3])))
+          if len(rows)!=14:
+              raise SystemExit(f"expected 14 benchmark rows, got {len(rows)}")
+          mvg=[r[2] for r in rows if r[1]=="mvg"]
+          tab=[r[2] for r in rows if r[1]=="table"]
+          ratios=[]
+          for rnd in range(1,8):
+              a=next(r[2] for r in rows if r[0]==rnd and r[1]=="mvg")
+              t=next(r[2] for r in rows if r[0]==rnd and r[1]=="table")
+              ratios.append(t/a)
+          mvg_checks=[r[3] for r in rows if r[1]=="mvg"]
+          tab_checks=[r[3] for r in rows if r[1]=="table"]
+          summary=(
+              f"mvg_median_s={statistics.median(mvg):.9g}\n"
+              f"table_median_s={statistics.median(tab):.9g}\n"
+              f"median_table_over_mvg={statistics.median(ratios):.9g}\n"
+              f"median_table_delta_pct={100*(statistics.median(ratios)-1):.9g}\n"
+              f"mvg_checksum_span={max(mvg_checks)-min(mvg_checks):.9g}\n"
+              f"table_checksum_span={max(tab_checks)-min(tab_checks):.9g}\n"
+          )
+          Path("build/tab-hyd-swap5-bench/summary.txt").write_text(summary)
+          print(summary,end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-swap5-native-microbenchmark
+          path: |
+            build/tab-hyd-swap5-bench/timings.csv
+            build/tab-hyd-swap5-bench/summary.txt
