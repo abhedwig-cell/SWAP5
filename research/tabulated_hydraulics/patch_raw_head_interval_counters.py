@@ -43,16 +43,12 @@ new="""       ye = 0.d0
 if s.count(old)!=1: raise SystemExit("eval init anchor mismatch")
 s=s.replace(old,new,1)
 
-old="""         if (klast >= 1 .and. klast < n .and. &
-     &       xe_local >= sptab(ind1,node,klast) .and. &
-     &       xe_local <  sptab(ind1,node,klast+1)) then
+old="""         if (hint_ok) then
             klo = klast
             khi = klo + 1
          else
             klo = 1"""
-new="""         if (klast >= 1 .and. klast < n .and. &
-     &       xe_local >= sptab(ind1,node,klast) .and. &
-     &       xe_local <  sptab(ind1,node,klast+1)) then
+new="""         if (hint_ok) then
             hint_hit(family)=hint_hit(family)+1_8
             klo = klast
             khi = klo + 1
