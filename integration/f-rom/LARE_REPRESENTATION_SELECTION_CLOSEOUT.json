@@ -48,7 +48,8 @@
     "C6F": "Two conserved half-layer inventories have exact local balances and direct box realizability, but the natural Darcy implementation is exactly a fixed 2N finite-volume refinement. Any physically distinct internal q_mid requires a new closure not determined by conservation. C6F therefore closes without D24/free-running response.",
     "C6G": "A finite independent interface-local bulk-water inventory requires positive spatial support; non-overlap makes it an ordinary control volume/refinement, overlap makes it a redundant weighted moment with unresolved flux moment, and zero-thickness finite storage would be new interface physics.",
     "C6H": "Moving control volumes preserve mass exactly in ALE relative-flux form, but Richards does not determine mesh velocity. Algebraic monitor-based motion is numerical adaptation without new hydrological memory; retained boundary positions add nearly N extra states plus an unprovided motion law. Generic moving geometry is therefore not selected as the next physical Layer-ROM family.",
-    "C6I": "The frozen Richards retention and Darcy mobility define a capillary/gravitational energy-dissipation structure. Given feasible S/M, strict capillary-energy convexity selects a unique bounded local quasi-equilibrium profile that is affine in suction in the interior. Projecting the Onsager dissipation principle onto this moment manifold defines a distinct parameter-free dynamic ROM family (FEMO), without reopening the C6E BEMR static root."
+    "C6I": "The frozen Richards retention and Darcy mobility define a capillary/gravitational energy-dissipation structure. Given feasible S/M, strict capillary-energy convexity selects a unique bounded local quasi-equilibrium profile that is affine in suction in the interior. Projecting the Onsager dissipation principle onto this moment manifold defines a distinct parameter-free dynamic ROM family (FEMO), without reopening the C6E BEMR static root.",
+    "C6J": "All 126 frozen S/M targets are physically realizable, but the prospectively frozen interior affine-suction FEMO realization is not numerically robust over the domain: 38/126 state cases pass all-start convergence/interiority/local-Jacobian gates, only 4/126 pass frozen profile uniqueness, and only 4 state cases reach a qualified Onsager metric. The physical Richards energy-dissipation theory is retained; this FEMO numerical realization is stopped before response."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -107,7 +108,8 @@
     "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
     "C6G_interface_local_state": "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
     "C6H_moving_partition": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
-    "C6I_free_energy_moment_onsager": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json"
+    "C6I_free_energy_moment_onsager": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
+    "C6J_FEMO_mathematical_qualification": "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json"
   },
   "closed_routes": [
     {
@@ -172,32 +174,47 @@
       "evidence": [
         "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json"
       ]
+    },
+    {
+      "id": "CURRENT_FEMO_INTERIOR_AFFINE_SUCTION_REALIZATION",
+      "disposition": "NOT_AUTHORIZED_C6J_RESPONSE_FREE_LOCAL_MANIFOLD_NUMERICAL_QUALIFICATION_FAILED",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json"
+      ]
     }
   ],
-  "decision": "PREREGISTER_C6J_FREE_ENERGY_MOMENT_ONSAGER_MATHEMATICAL_QUALIFICATION",
+  "decision": "STOP_CURRENT_FEMO_REALIZATION_AT_RESPONSE_FREE_LOCAL_MANIFOLD_QUALIFICATION_FAILURE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": {
-    "target": "LARE-BC2-C6J",
-    "state": "FEMO_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_AUTHORIZED",
-    "authority": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
-    "hydrological_response_authorized": false
-  },
+  "next_authority": null,
   "next_family_authority": {
-    "family": "FREE_ENERGY_MOMENT_ONSAGER",
-    "state": "DERIVED_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_REQUIRED",
-    "FEMO_profile_uniqueness_theoretical": true,
-    "FEMO_reduced_metric_qualified": false,
-    "FEMO_boundary_operators_qualified": false,
+    "family": "UNSELECTED_POST_C6J_REPRESENTATION_OR_PURPOSE_LIMITED_FRONTIER",
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_PREREGISTRATION",
+    "first_moment_physical_state_retained": true,
+    "C6D_prescribed_head_mechanism_support_retained": true,
+    "C6E_BEMR_general_free_running_authorized": false,
+    "C6F_fixed_sublayer_authorized": false,
+    "C6G_interface_storage_authorized": false,
+    "C6H_generic_moving_partition_authorized": false,
+    "C6I_energy_dissipation_theory_retained": true,
+    "C6J_current_FEMO_realization_qualified": false,
     "fresh_blind_free_running_authorized": false,
     "hydrological_response_authorized": false,
     "new_family_implementation_authorized": false,
     "qualified_replacement_closure_available": false,
+    "candidate_read_only_directions": [
+      "INDEPENDENT_CONVEX_DUAL_OR_OBSTACLE_MOMENT_REALIZATION_AS_NEW_FAMILY",
+      "SYNTHESIS_AND_PURPOSE_DEPENDENT_SUFFICIENCY_OF_EXISTING_QUALIFIED_LAYER_ROM_FRONTIER"
+    ],
     "repository_basis": [
       "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
       "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json"
+      "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json"
     ]
   },
   "performance_comparison_authorized": false,
@@ -230,7 +247,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v37",
+  "schema": "swap5.lare.representation-selection.closeout.v38",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -241,7 +258,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6I_FEMO_STRUCTURE_DERIVED_C6J_RESPONSE_FREE_MATHEMATICAL_QUALIFICATION_NEXT",
+  "status": "CLOSED_THROUGH_C6J_FEMO_LOCAL_MANIFOLD_NOT_QUALIFIED_FREE_RUNNING_STOPPED_SCIENTIFIC_CHOICE_REQUIRED",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
