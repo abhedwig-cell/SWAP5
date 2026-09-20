@@ -45,7 +45,9 @@
     "C6C": "BEMR passes response-free mathematical qualification on all 168 unchanged C5Z B14 state/moment cases and all 840 fixed starts. Strict moment realizability, convergence, single branch, bounded Se, hydraulic continuity, state recovery and quadrature consistency all pass. This establishes the algebraic map, not hydrological fidelity.",
     "C6D": "On 2,304 immutable C5R moving states, directly projected S/M plus the C6C-qualified BEMR map passes all numerical gates and prospectively supports boundary-extension qualification: pooled primary RMSE 0.008709->0.006075 cm/d, mean-absolute interface/history signed bias 0.001138->0.000190 cm/d and sign mismatches 229->190, with RMSE improved at each primary face. However max absolute error worsens 0.1027->0.1842 cm/d due a preserved R02 phase-reversal outlier; BEMR is not uniformly superior.",
     "C6E": "Response-free prescribed-flux qualification is negative. All 126 S/M targets are realizable and all 630 starts report convergence, but only 121/126 cases satisfy the frozen unique-branch, hydraulic-continuity and state-recovery contract. Five cases exhibit start-dependent near-upper-bound residual attractors despite a qualified branch existing from other starts. No post-result start selection, regularization, continuation, bound relaxation or free-running BEMR is authorized.",
-    "C6F": "Two conserved half-layer inventories have exact local balances and direct box realizability, but the natural Darcy implementation is exactly a fixed 2N finite-volume refinement. Any physically distinct internal q_mid requires a new closure not determined by conservation. C6F therefore closes without D24/free-running response."
+    "C6F": "Two conserved half-layer inventories have exact local balances and direct box realizability, but the natural Darcy implementation is exactly a fixed 2N finite-volume refinement. Any physically distinct internal q_mid requires a new closure not determined by conservation. C6F therefore closes without D24/free-running response.",
+    "C6G": "A finite independent interface-local bulk-water inventory requires positive spatial support; non-overlap makes it an ordinary control volume/refinement, overlap makes it a redundant weighted moment with unresolved flux moment, and zero-thickness finite storage would be new interface physics.",
+    "C6H": "Moving control volumes preserve mass exactly in ALE relative-flux form, but Richards does not determine mesh velocity. Algebraic monitor-based motion is numerical adaptation without new hydrological memory; retained boundary positions add nearly N extra states plus an unprovided motion law. Generic moving geometry is therefore not selected as the next physical Layer-ROM family."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -101,7 +103,9 @@
     "C6C_BEMR_mathematical_qualification": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
     "C6D_BEMR_frozen_state_mechanism": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
     "C6E_BEMR_prescribed_flux_boundary": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
-    "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
+    "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+    "C6G_interface_local_state": "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
+    "C6H_moving_partition": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json"
   },
   "closed_routes": [
     {
@@ -152,38 +156,49 @@
       "evidence": [
         "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
       ]
+    },
+    {
+      "id": "INTERFACE_LOCAL_CONSERVED_STORAGE_AS_NEW_ROM_FAMILY",
+      "disposition": "NOT_AUTHORIZED_C6G_CONTROL_VOLUME_REFINEMENT_REDUNDANT_MOMENT_OR_NEW_INTERFACE_PHYSICS",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json"
+      ]
+    },
+    {
+      "id": "GENERIC_MOVING_PARTITION_AS_PHYSICAL_LAYER_ROM_MEMORY",
+      "disposition": "NOT_AUTHORIZED_C6H_MESH_VELOCITY_IS_UNDERDETERMINED_NUMERICAL_GAUGE",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json"
+      ]
     }
   ],
-  "decision": "DO_NOT_IMPLEMENT_FIXED_HALF_LAYER_INVENTORY_FAMILY_AS_NEW_ROM_ROUTE",
+  "decision": "PREREGISTER_C6I_RICHARDS_ENERGY_DISSIPATION_BRANCH_SELECTION_DUE_DILIGENCE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": null,
+  "next_authority": {
+    "target": "LARE-BC2-C6I",
+    "state": "RICHARDS_ENERGY_DISSIPATION_BRANCH_SELECTION_READ_ONLY_DUE_DILIGENCE_AUTHORIZED",
+    "authority": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
+    "hydrological_response_authorized": false
+  },
   "next_family_authority": {
-    "family": "UNSELECTED_POST_C6F_INFORMATION_CHANGING_REPRESENTATION_FAMILY",
-    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_PREREGISTRATION",
-    "C6C_mathematically_qualified": true,
-    "C6D_frozen_state_mechanism_supported": true,
-    "C6D_transition_tail_risk_preserved": true,
+    "family": "UNSELECTED_STRUCTURE_PRESERVING_VARIATIONAL_MOMENT_FAMILY",
+    "state": "READ_ONLY_RICHARDS_ENERGY_DISSIPATION_DUE_DILIGENCE_NEXT",
     "C6E_prescribed_flux_boundary_qualified": false,
     "C6F_fixed_half_layer_is_new_rom_family": false,
-    "BEMR_general_free_running_authorized": false,
-    "fixed_half_layer_implementation_authorized": false,
+    "C6G_interface_storage_is_new_rom_family": false,
+    "C6H_generic_moving_partition_is_physical_memory": false,
     "fresh_blind_free_running_authorized": false,
     "hydrological_response_authorized": false,
     "new_family_implementation_authorized": false,
     "qualified_replacement_closure_available": false,
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "candidate_read_only_directions": [
-      "GENUINELY_INTERFACE_LOCAL_CONSERVED_STATE_NOT_EQUIVALENT_TO_FIXED_LAYER_SPLIT",
-      "ADAPTIVE_OR_MOVING_PARTITION_WITH_CONSERVATIVE_REMAP_AND_RESPONSE_INDEPENDENT_TRIGGER",
-      "INDEPENDENT_VARIATIONAL_OR_STABILITY_PRINCIPLE_FOR_BRANCH_SELECTION"
-    ],
     "repository_basis": [
       "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
       "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
+      "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
+      "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json"
     ]
   },
   "performance_comparison_authorized": false,
@@ -216,7 +231,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v35",
+  "schema": "swap5.lare.representation-selection.closeout.v36",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -227,7 +242,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6F_FIXED_SUBLAYER_MEMORY_COLLAPSES_TO_REFINEMENT_OR_NEW_CLOSURE_SCIENTIFIC_CHOICE_REQUIRED",
+  "status": "CLOSED_THROUGH_C6H_MOVING_PARTITION_IS_NUMERICAL_GAUGE_NOT_UNIQUE_HYDROLOGICAL_MEMORY_C6I_ENERGY_DISSIPATION_REVIEW_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
