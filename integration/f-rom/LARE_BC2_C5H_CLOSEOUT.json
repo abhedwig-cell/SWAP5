@@ -1,0 +1,78 @@
+{
+  "adjudication": {
+    "CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED": false,
+    "R2048_SPATIAL_EXTENSION_AUTHORIZED": false,
+    "SPATIAL_GAP_CONTINUES_INCREASING_AT_T8": true,
+    "TEMPORAL_PROGRESS_R1024": true,
+    "TEMPORAL_PROGRESS_R512": true,
+    "TEMPORAL_SUBDOMINANT_R1024": true,
+    "TEMPORAL_SUBDOMINANT_R512": true
+  },
+  "authority": {
+    "R1024_T8_sha256": "8f119c72af9111ad5d5b867a4893d69cf2bf33962baf07a308aa1086f97f43d6",
+    "R512_T8_sha256": "aea94e7936317da738d9fb7d17a221cf0d8a3c85852fe82d76f738bad7a16c88",
+    "artifact_digest": "sha256:55331b6a8b0e5fb3a72c6a7a2ac05b607dcaedd7d53b48fb5a7d773fa9aed2b4",
+    "artifact_id": 10602232995,
+    "execution_head": "9d1d5cd037ec84619c945ae490ceedda47aa600f",
+    "job_id": 106053406937,
+    "preregistration": "integration/f-rom/LARE_BC2_C5H_PREREGISTRATION.json",
+    "result_sha256": "2af0756ec31ec62bd6348404d656a969d5b5005c262c72ed0318cf950723c75e",
+    "workflow_run": 35501297135
+  },
+  "baseline_identity_to_C5G": {
+    "R1024_T2_T4": true,
+    "R512_T2_T4": true,
+    "spatial_T1": true,
+    "spatial_T2": true,
+    "spatial_T4": true
+  },
+  "formal_C5A_decision_retained": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "matched_T8_evidence": {
+    "R1024_T4_T8_RMSE_cm_per_day": 0.003402723734856983,
+    "R1024_T4_T8_over_spatial_T8": 0.14774249488864605,
+    "R512_T4_T8_RMSE_cm_per_day": 0.002712056754708395,
+    "R512_T4_T8_over_spatial_T8": 0.11775449976019402,
+    "spatial_T1_RMSE_cm_per_day": 0.019278087500445875,
+    "spatial_T2_RMSE_cm_per_day": 0.02107178256136268,
+    "spatial_T4_RMSE_cm_per_day": 0.022330388263774027,
+    "spatial_T8_RMSE_cm_per_day": 0.023031448991176342,
+    "spatial_T8_over_T4": 1.0313949188487523,
+    "temporal_order_R1024_T2_T4_T8": 0.8430956626308688,
+    "temporal_order_R512_T2_T4_T8": 0.7907598524267788
+  },
+  "next_authority": {
+    "constraints": [
+      "Reference-only; generate matched R512_T16 and R1024_T16",
+      "exact C5A physical history and D13 numerical policy",
+      "aggregate to 0.0008-day windows",
+      "preserve T1-T8 matrix unchanged",
+      "no R2048 until C5I closes",
+      "no LARE, closure, application, speed or production claim"
+    ],
+    "question": "At T16, do temporal shifts continue toward first-order behavior and does the R512-R1024 spatial gap finally stabilize or reverse?",
+    "state": "FINAL_MATCHED_TEMPORAL_EXTENSION_BEFORE_SPATIAL_EXTENSION",
+    "target": "LARE-BC2-C5I"
+  },
+  "schema": "swap5.lare.bc2.c5h.closeout.v1",
+  "scientific_firewall": {
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "new_closure_fit": false,
+    "new_lare_run": false,
+    "numerical_policy_changed": false,
+    "performance_comparison_authorized": false,
+    "physical_history_changed": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "Temporal convergence continues at both high-resolution grids. T4-T8 bottom-flux RMSE falls to about 0.00271 cm/d at R512 and 0.00340 at R1024.",
+    "Descriptive temporal order strengthens to about 0.791 at R512 and 0.843 at R1024 over T2/T4/T8.",
+    "The temporal shifts are now only about 11.8% and 14.8% of the matched T8 spatial gap, so time error is increasingly subdominant.",
+    "Nevertheless the matched R512-R1024 spatial gap still grows, from 0.02233 cm/d at T4 to 0.02303 at T8, another increase of about 3.14%.",
+    "Because the spatial estimate is still moving systematically as temporal error shrinks, one more matched temporal refinement is warranted before opening R2048."
+  ],
+  "status": "CLOSED_T8_TEMPORAL_PROGRESS_SPATIAL_GAP_STILL_INCREASING_T16_REQUIRED",
+  "work_unit": "LARE-BC2-C5H",
+  "workstream": "F-ROM-LARE"
+}
