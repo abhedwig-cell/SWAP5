@@ -1,5 +1,17 @@
 # SWAP5 post-Status-A current canonical state
 
+> **2026-09-20 coupling-semantics supersession.** The software capabilities
+> through F-GC49D remain admitted for their qualified mechanics, but broad
+> application-level groundwater semantics are under repair. The controlling
+> current authority is
+> `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md`.
+> In particular, legacy `bottom_mode=5` is no longer accepted as the scientific
+> identity of a coupled groundwater application, and realistic production
+> admission now also requires explicit storage-partition and drainage-ownership
+> authority. F-GC50's external product-registration blocker is therefore not the
+> only remaining prerequisite for a realistic product application.
+
+
 Date: 2026-09-18
 
 This page is the current development-state supplement to the frozen Status-A review authority. It does **not** retroactively expand the first colleague-review denominator fixed on 2026-09-16. It records later canonically admitted capabilities that are relevant when deciding what may be developed next.
@@ -49,7 +61,7 @@ The following ownership rules are current and must survive later integration wor
 - the generic F-GC49C service orchestrates one coupling window without owning SWAP physics or raw XMI arrays;
 - publication order is MODFLOW `finalize_time_step`, then SWAP commits, then ledger commits;
 - failure after MODFLOW timestep publication is a durability/restart-class failure, not a rollback-safe smaller-window retry;
-- predictor/corrector product orchestration remains above SWAP5, in the iMOD Coupler layer.
+- iMOD Coupler owns the outer product driver/timestep lifecycle; the admitted F-GC49C service owns bounded per-window coupling iteration semantics while SWAP and MODFLOW retain their component state/solver ownership.
 
 ## Qualified production envelope
 
