@@ -183,7 +183,7 @@
       "residual": "reconstructed surface q_top minus prescribed surface flux",
       "no_adaptive_post_result_expansion": true
     },
-    "outer_root": "bisection on the single admissible q_bottom interval only if exactly one outer residual sign change exists",
+    "outer_root": "safeguarded secant inside the single frozen outer q_bottom sign-changing interval; midpoint fallback only",
     "refinement_stability": {
       "max_abs_face_head_difference_cm": 0.00001,
       "max_abs_face_flux_difference_cm_per_day": 1e-7
@@ -198,15 +198,17 @@
       "purpose": "G2 standalone local-existence stress test across the frozen synthetic Cartesian state box."
     },
     "outer_surface_flux_tolerance_cm_per_day": 1e-10,
-    "bracketing_scan_substeps_per_layer": 32,
-    "bracket_verification": "Every coarse sign-changing interval must retain opposite signs when re-evaluated on the 256-substep primary integrator before bisection qualification.",
+    "bracketing_scan_substeps_per_layer": 8,
+    "bracket_verification": "Every coarse sign-changing outer interval is re-evaluated on the 256-substep primary integrator before final qualification; local standalone G2 brackets are likewise re-evaluated on the primary integrator.",
     "coarse_scan_cannot_qualify": true,
     "column_local_root_bracket": {
       "interval": "[q_bottom-4*Ksat, q_bottom+4*Ksat]",
       "justification": "G1 analytical strict monotonicity makes a dense local scan redundant inside nested column shooting.",
       "primary_integrator_sign_check": true,
       "adaptive_expansion": false
-    }
+    },
+    "column_local_root_solver": "safeguarded secant inside the frozen [q_bottom-4*Ksat,q_bottom+4*Ksat] bracket; midpoint fallback if secant leaves the bracket or becomes numerically degenerate",
+    "root_solver_max_iterations": 40
   },
   "qualification_gates": {
     "G1_ANALYTIC_LOCAL_UNIQUENESS": "Proof conditions and sign argument encoded and independently checked against constitutive derivatives.",
