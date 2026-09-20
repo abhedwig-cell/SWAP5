@@ -1,7 +1,7 @@
 # SWAP5 Project Control
 
 **Work unit:** PROJECT-CONTROL-01  
-**Control snapshot:** `integration/f-ci-canonical@97afc3176395a8548daa686b89ca6fb2f2a4ea09`  
+**Control snapshot:** `integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d`  
 **Date:** 2026-09-20  
 **Machine-readable authority:** `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
 
@@ -33,7 +33,7 @@ Central regie owns canonical admission, cross-workstream supersession, shared-au
 
 | Workstream | State | Current authority / finding | Next gate |
 |---|---|---|---|
-| REGIE | ACTIVE | canonical snapshot `97afc31`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; #163/#172 remain reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #163, then #172 |
+| REGIE | ACTIVE | canonical snapshot `b3dc66c`; PR #58 remains the intentional carrier; #486 is the current shared-authority watch; F-TB13R resolves #163 on this admission; #172 remains reconciliation debt | Reconcile #486 first if owner qualification completes; otherwise #172 after F-TB13R admission |
 | PPA production physics | ACTIVE | WU04-A Black, ROOT-HYD02 prescribed-root tangent and WU04-B Boesten are already merged to canonical; WU05-A/C are review-only authority | Production owner selects the next source-authorized bounded slice; no inference from review authority to production |
 | F-GC groundwater coupling | ACTIVE | F-GC50 remains externally blocked at product integration, while PR #486 is an active noncanonical coupling-semantics/application-authority repair | Let #486 finish owner qualification, then reconcile shared production/coupling/publication consequences before admission |
 | F-ROM / LARE | BLOCKED_EXTERNAL | D31 confirms official M2WC70 archive metadata but cannot materialize the implementation oracle; D28 native-ET blocker also remains | Materialize acceptable FMC implementation authority or narrow/close the affected proposition |
@@ -108,10 +108,15 @@ This is substantial research capability evidence, but **Stage 0 is still not aut
 
 PR #72 has now been recomposed into current governance by GOV-REC01. The stale branch is not a merge target and should be closed after this successor is canonically admitted.
 
+F-TB13R now rebases the unique analytical/reference preservation package from historical PR #163 onto current canonical. On successful current-head qualification and admission, #163 becomes historical evidence rather than a live merge target.
+
 The remaining central reconciliation debt is:
 
-- **#163** F-TB13 analytical reference preservation: reconcile against current F-TB authority.
 - **#172** F-TA04 transaction/restart traceability: reconcile against current transaction/restart authority.
+
+### Testbank preservation
+
+F-TB13R is an additive current-canonical rebase of the qualified analytical/reference package from PR #163. Its preserved archive, member identities, replay receipt and checker are imported unchanged; a new reconciliation record binds them to current B1.11 and requires fresh dedicated F-TB13, Documentation, VQ and F-CI qualification. It does not rewrite F-TB11/F-TB12 or claim SWAP5 production-solver equivalence.
 
 ### Blocked production-authority PRs
 
@@ -194,6 +199,6 @@ Every specialized chat should begin with the same four operations:
 
 ## Default next action for central regie
 
-PR **#486** remains the current shared-authority watch and takes precedence once its owner qualification is complete. GOV-REC01 resolves the former #72 governance debt by recomposition rather than stale-branch replay. While #486 is still qualifying, the next safe central housekeeping task is **#163**, followed by **#172**.
+PR **#486** remains the current shared-authority watch and takes precedence once its owner qualification is complete. GOV-REC01 has resolved #72. F-TB13R now resolves #163 by current-canonical rebase and fresh replay. After that admission, the remaining central housekeeping item is **#172**.
 
 This ordering is a routing decision, not a scientific priority ranking.

@@ -5,9 +5,9 @@
   "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
   "snapshot": {
     "branch": "integration/f-ci-canonical",
-    "head": "97afc3176395a8548daa686b89ca6fb2f2a4ea09",
-    "head_subject": "PROJECT-CONTROL-01: bind F-GC coupling-semantics repair watch (#488)",
-    "open_pr_count": 21,
+    "head": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+    "head_subject": "GOV-REC01: recompose Status-A to Status-AA quality governance (#490)",
+    "open_pr_count": 20,
     "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
   },
   "status_vocabulary": [
@@ -34,7 +34,7 @@
       "title": "Canonical integration and project control",
       "owner": "central SWAP5 regie",
       "status": "ACTIVE",
-      "canonical_authority": "integration/f-ci-canonical@97afc3176395a8548daa686b89ca6fb2f2a4ea09",
+      "canonical_authority": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
       "open_prs": [
         58,
         72,
@@ -42,7 +42,7 @@
         172
       ],
       "current_blocker": null,
-      "next_gate": "PR #486 remains the shared-authority watch. While it is not admission-ready, the next central reconciliation debt is #163 followed by #172.",
+      "next_gate": "PR #486 remains the shared-authority watch. While it is not admission-ready, F-TB13R supersedes #163 on this admission and #172 remains the next central reconciliation debt.",
       "write_scope": [
         "integration/control/**",
         "docs/development/project-control surfaces",
@@ -60,7 +60,13 @@
         "docs/development/status-a-aa-gap-register.md",
         "docs/verification/theory-code-discrepancy-register.md",
         "integration/control/STATUS_A_AA_GOVERNANCE_RECONCILIATION_20260920.json"
-      ]
+      ],
+      "testbank_preservation": {
+        "historical_pr": 163,
+        "successor": "F-TB13R",
+        "authority": "integration/f-tb/F-TB13_CURRENT_CANONICAL_RECONCILIATION_20260920.json",
+        "disposition": "ADDITIVE_ANALYTICAL_REFERENCE_PRESERVATION_PENDING_THIS_ADMISSION"
+      }
     },
     {
       "id": "PPA",
@@ -248,9 +254,9 @@
     },
     {
       "pr": 163,
-      "class": "RECONCILE_REQUIRED",
+      "class": "SUPERSEDED_BY_CURRENT_F_TB13R_ON_ADMISSION",
       "owner": "REGIE",
-      "action": "RECONCILE_WITH_CURRENT_F_TB_AUTHORITY"
+      "action": "CLOSE_AFTER_F_TB13R_CANONICAL_ADMISSION_PRESERVE_HISTORY"
     },
     {
       "pr": 172,
@@ -358,7 +364,6 @@
   "central_admission_queue": {
     "ready_for_regie": [],
     "reconcile": [
-      163,
       172
     ],
     "blocked": [
@@ -394,7 +399,8 @@
       289,
       366,
       378,
-      72
+      72,
+      163
     ],
     "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
   },
