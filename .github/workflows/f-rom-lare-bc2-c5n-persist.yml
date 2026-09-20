@@ -1,0 +1,210 @@
+name: F-ROM-LARE persist C5N blind high-resolution closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5n-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5N artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5n
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604541124" > /tmp/c5n/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5n/artifact.json'))
+          assert a['id']==10604541124
+          assert a['digest']=='sha256:4fdf4c551ab2e5357d911458186b6273c05b39c5a7d3d9807ee38de5e540b1d9'
+          assert a['workflow_run']['id']==35506943959
+          assert a['workflow_run']['head_sha']=='82f36f754cdbb8747e867b1875c325d665d6405d'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604541124/zip" > /tmp/c5n.zip
+          echo "4fdf4c551ab2e5357d911458186b6273c05b39c5a7d3d9807ee38de5e540b1d9  /tmp/c5n.zip" | sha256sum -c -
+          unzip -q /tmp/c5n.zip -d /tmp/c5n/evidence
+          echo "96ea7ca1f59e972d5933b2168c87ec19cea91915e6ebe9aab470c906af7ebfbe  /tmp/c5n/evidence/LARE_BC2_C5N_RESULT.json" | sha256sum -c -
+          echo "8fe23537224ed3458b420ba7bd32599aee4610d6dd326e6b2666a65c70d972f0  /tmp/c5n/evidence/R512_T16_o0.txt" | sha256sum -c -
+          echo "09c73b9d3df2bd4c36eba1f080a77c3c0364674af29a7c305cb1d373f9b363cd  /tmp/c5n/evidence/R1024_T16_o0.txt" | sha256sum -c -
+          echo "c9babdfa61aa18731be313e1c795efc4216d58493ce46198a7953b6aa5d8cdd2  /tmp/c5n/evidence/R2048_T16_o0.txt" | sha256sum -c -
+          echo "21b8b4192acafe4f59b919d4d5c9812395d5c782acac644c874897eb4d5f83e4  /tmp/c5n/evidence/R2048_T8_o0.txt" | sha256sum -c -
+
+      - name: Persist result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5n/evidence/LARE_BC2_C5N_RESULT.json integration/f-rom/LARE_BC2_C5N_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5N_RESULT.json'))
+          assert r['status']=='C5N_NO_REDUCED_HIGH_RES_COMPARATOR_FRONTIER'
+          assert r['integrity']['pass'] is True
+          assert all(r['reference_quality'].values())
+          assert r['placement_tests']['R4_no_worse_than_U4_GW'] is True
+          assert r['placement_tests']['R8_no_worse_than_U8_GW'] is True
+          members={x['id']:x for x in r['members']}
+          ref=r['reference_comparators']
+          closeout={
+            'schema':'swap5.lare.bc2.c5n.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5N',
+            'status':'CLOSED_BLIND_HIGH_RES_NO_REDUCED_FRONTIER_PLACEMENT_REPLICATED_CURRENT_LAYER_FACE_FAMILY_LIMITED',
+            'decision':'PRESERVE_VERTICAL_PLACEMENT_FINDING_REJECT_STATE_COUNT_ONLY_RESCUE_RECONCILE_INTERLAYER_CLOSURE',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5N_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35506943959,
+              'execution_head':'82f36f754cdbb8747e867b1875c325d665d6405d',
+              'artifact_id':10604541124,
+              'artifact_digest':'sha256:4fdf4c551ab2e5357d911458186b6273c05b39c5a7d3d9807ee38de5e540b1d9',
+              'result_sha256':'96ea7ca1f59e972d5933b2168c87ec19cea91915e6ebe9aab470c906af7ebfbe'
+            },
+            'reference_quality':r['reference_quality'],
+            'reference_evidence':{
+              'R512_vs_R2048_flux_RMSE_cm_per_day':ref['R512_vs_R2048']['interval_bottom_flux_rmse_cm_per_day'],
+              'R1024_vs_R2048_flux_RMSE_cm_per_day':ref['R1024_vs_R2048']['interval_bottom_flux_rmse_cm_per_day'],
+              'R2048_T8_vs_T16_flux_RMSE_cm_per_day':ref['R2048_T8_vs_T16']['interval_bottom_flux_rmse_cm_per_day'],
+              'R512_vs_R2048_storage_RMSE_cm':ref['R512_vs_R2048']['total_storage_rmse_cm'],
+              'R1024_vs_R2048_storage_RMSE_cm':ref['R1024_vs_R2048']['total_storage_rmse_cm'],
+              'R2048_T8_vs_T16_storage_RMSE_cm':ref['R2048_T8_vs_T16']['total_storage_rmse_cm'],
+              'R1024_vs_R2048_mapped_theta_RMSE':ref['R1024_vs_R2048']['mapped_theta_rmse'],
+              'R2048_T8_vs_T16_mapped_theta_RMSE':ref['R2048_T8_vs_T16']['mapped_theta_rmse']
+            },
+            'representation_evidence':{
+              'frontiers':r['frontiers'],
+              'minimum_dimensions':r['minimum_dimensions'],
+              'R4_no_worse_than_U4_GW':r['placement_tests']['R4_no_worse_than_U4_GW'],
+              'R8_no_worse_than_U8_GW':r['placement_tests']['R8_no_worse_than_U8_GW'],
+              'R3_flux_RMSE_cm_per_day':members['R3']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R4_flux_RMSE_cm_per_day':members['R4']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R5_flux_RMSE_cm_per_day':members['R5']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R8_flux_RMSE_cm_per_day':members['R8']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R12_flux_RMSE_cm_per_day':members['R12']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R16_flux_RMSE_cm_per_day':members['R16']['metrics']['interval_bottom_flux_rmse_cm_per_day'],
+              'R16_storage_RMSE_cm':members['R16']['metrics']['total_storage_rmse_cm'],
+              'R16_cumulative_bottom_RMSE_cm':members['R16']['metrics']['cumulative_bottom_rmse_cm'],
+              'R16_mean_abs_history_signed_flux_error_cm_per_day':members['R16']['metrics']['mean_abs_history_signed_bottom_flux_error_cm_per_day'],
+              'R16_mapped_theta_RMSE':members['R16']['metrics']['mapped_theta_rmse'],
+              'U4_sign_mismatch_count':members['U4']['metrics']['bottom_flux_sign_mismatch_count'],
+              'U4_reversal_sequence_mismatch_history_count':members['U4']['metrics']['reversal_sequence_mismatch_history_count'],
+              'U4_reversal_penalty_steps':members['U4']['metrics']['reversal_penalty_steps']
+            },
+            'adjudication':{
+              'REFERENCE_TEMPORAL_QUALITY_SUFFICIENT_FOR_R512_FRONTIER':r['reference_quality']['R512_frontier_interpretable'],
+              'REFERENCE_TEMPORAL_QUALITY_SUFFICIENT_FOR_R1024_FRONTIER':r['reference_quality']['R1024_frontier_interpretable'],
+              'ANY_REDUCED_MEMBER_CROSSES_R512_GW':bool(r['frontiers']['R512_GW']),
+              'ANY_REDUCED_MEMBER_CROSSES_R1024_GW':bool(r['frontiers']['R1024_GW']),
+              'ANY_REDUCED_MEMBER_CROSSES_TEMPORAL_FLOOR_GW':bool(r['frontiers']['TEMPORAL_FLOOR_GW']),
+              'PLACEMENT_R4_REPLICATED':r['placement_tests']['R4_no_worse_than_U4_GW'],
+              'PLACEMENT_R8_REPLICATED':r['placement_tests']['R8_no_worse_than_U8_GW'],
+              'STATE_COUNT_ONLY_RESCUE_SUPPORTED':False,
+              'CURRENT_LAYER_FACE_HIGH_RES_SUFFICIENCY_DEMONSTRATED':False,
+              'NEW_LAYER_BOUNDARY_OPTIMIZATION_AUTHORIZED':False,
+              'INTERLAYER_CLOSURE_RECONCILIATION_AUTHORIZED':True,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'SPEED_CLAIM_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'The fresh N01-N04 Reference hierarchy is numerically qualified for the preregistered comparator interpretation: R2048 T8-to-T16 error is componentwise no worse than both R512-to-R2048 and R1024-to-R2048 differences on groundwater and profile views.',
+              'No reduced lower-zone member R3-R12 crosses even the R512 comparator-relative groundwater frontier, and none crosses the R1024 or finest-grid temporal-floor frontier. The failure is therefore not an artifact of an underqualified Reference temporal route.',
+              'Vertical placement remains a replicated structural result. R4 is componentwise no worse than U4 and R8 no worse than U8 on the groundwater view. U4 is substantially worse, with 224 bottom-flux sign mismatches and one full reversal-sequence mismatch.',
+              'Within the lower-zone-focused CURRENT_LAYER_FACE family, increasing state dimension beyond R4/R5 produces essentially no groundwater-response improvement. R5, R6, R8, R12 and R16 have nearly identical storage, cumulative exchange and bottom-flux errors against R2048.',
+              'Even R16, which retains 16 layer states at 10-cm spacing, remains far outside both high-resolution spatial comparator envelopes. This makes ordinary state count an implausible primary remedy inside the existing closure family.',
+              'C5N therefore separates topology from propagation: placement contains real hydrological information, but the current inter-layer propagation/closure does not transmit that information with high-resolution prescribed-head fidelity.',
+              'The next scientific task is not to fit new layer boundaries. It is to reconcile prior closure evidence and identify a genuinely different physically derived inter-layer closure family. C4O remains authoritative that more scalar tuning of the existing fixed-partition closure is not allowed.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5O',
+              'state':'INTERLAYER_CLOSURE_FAMILY_RECONCILIATION_AUTHORIZED',
+              'question':'Given replicated placement sensitivity but a state-count plateau through R16 on fresh high-resolution B14 dynamic-head evidence, which physically distinct inter-layer closure families remain scientifically admissible after C4K-C4O, and what prospective discriminator is needed before implementing one?',
+              'constraints':[
+                'Begin read-only from C4K-C4O, C5N and relevant theory/code; do not immediately fit or implement a closure.',
+                'Preserve the lower-zone placement finding but do not optimize new layer boundaries in C5O.',
+                'Do not reopen scalar tuning of CURRENT_LAYER_FACE or previously rejected scalar gradient corrections.',
+                'Separate inter-layer hydraulic gradient representation, interface conductivity/transmissivity, and any required extra state/history.',
+                'No production Reference change, no application acceptance, no performance/speed claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5N_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5N closeout
+
+          C5N is the fresh blind high-resolution B14 dynamic prescribed-head discriminator.
+
+          Authority is run 35506943959 at execution head 82f36f754cdbb8747e867b1875c325d665d6405d, artifact 10604541124, digest sha256:4fdf4c551ab2e5357d911458186b6273c05b39c5a7d3d9807ee38de5e540b1d9. Result SHA-256 is 96ea7ca1f59e972d5933b2168c87ec19cea91915e6ebe9aab470c906af7ebfbe.
+
+          All 32 Reference slices qualify and all four O0/O2 route pairs are byte-identical. R2048 T8-to-T16 error is componentwise below both R512-to-R2048 and R1024-to-R2048 error on groundwater and profile views, so both spatial comparator frontiers are interpretable.
+
+          No reduced lower-zone LARE member R3-R12 crosses R512, R1024 or the R2048 temporal-floor comparator on either groundwater or profile view. Even R16 does not cross them.
+
+          The key structural finding nevertheless replicates: R4 is no worse than U4 and R8 no worse than U8 on the groundwater metric vector. U4 has 224 flux-sign mismatches and one reversal-sequence failure.
+
+          More state does not rescue the existing closure family. R5 through R16 are effectively identical on the major groundwater-response errors: interval bottom-flux RMSE remains about 0.169883 cm/d and storage/cumulative RMSE about 0.011438 cm against R2048.
+
+          C5N therefore separates vertical information placement from inter-layer propagation. Placement matters, but BC1 CURRENT_LAYER_FACE does not propagate the retained state with high-resolution prescribed-head fidelity. New layer-boundary optimization is not the next step. C5O must first reconcile which physically distinct closure families remain open after C4K-C4O.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v19'
+          j['status']='CLOSED_THROUGH_C5N_PLACEMENT_REPLICATED_CURRENT_LAYER_FACE_HIGH_RES_FRONTIER_ABSENT_CLOSURE_RECONCILIATION_NEXT'
+          j.setdefault('authorities',{})['C5N_fresh_blind_highres']='integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5N']='Fresh blind B14 dynamic-head evidence with qualified R512/R1024/R2048 T16 and R2048 T8 controls finds no reduced R3-R12 high-resolution comparator frontier. Placement R4>U4 and R8>U8 replicates, but R5-R16 response plateaus. State count alone therefore does not rescue BC1 CURRENT_LAYER_FACE; inter-layer closure becomes the next representation axis.'
+          j['decision']='PRESERVE_PLACEMENT_SIGNAL_STOP_LAYER_BOUNDARY_OPTIMIZATION_RECONCILE_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURES'
+          j['next_authority']='LARE-BC2-C5O'
+          j['next_family_authority']={
+            'family':'C5O_INTERLAYER_CLOSURE_FAMILY_RECONCILIATION',
+            'state':'AUTHORIZED_FOR_READ_ONLY_RECONCILIATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json',
+              'integration/f-rom/LARE_REPSEL_C5M_RECONCILIATION.json'
+            ],
+            'purpose':'Identify physically distinct inter-layer closure families still scientifically open after scalar closure tuning failed and fresh high-resolution state-count saturation was observed.',
+            'new_partition_design_authorized':False,
+            'new_closure_implementation_authorized':False,
+            'new_reference_production_physics_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5N closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5N_RESULT.json                   integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5N_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5N fresh blind high-resolution discriminator"
+          git push origin HEAD:work/f-rom-lare-rs1
