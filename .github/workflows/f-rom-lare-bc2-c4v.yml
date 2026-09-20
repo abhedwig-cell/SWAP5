@@ -1,0 +1,202 @@
+name: F-ROM-LARE BC2-C4V one-day GW persistence
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C4V_PREREGISTRATION.json'
+      - 'tests/rom/materialize_lare_bc2_c4v_horizon.py'
+      - 'tests/rom/preflight_lare_bc2_c4v_fmc_domain.py'
+      - 'tests/rom/analyze_lare_bc2_c4v_one_day.py'
+      - '.github/workflows/f-rom-lare-bc2-c4v.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c4v-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  persist-horizon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout frozen C4R execution source
+        uses: actions/checkout@v4
+        with:
+          ref: e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1
+          path: canonical
+          fetch-depth: 0
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover immutable D13 and C4R authorities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4v/d13 /tmp/c4v/c4r /tmp/c4v/reference
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10587057124/zip" > /tmp/c4v/d13.zip
+          echo "03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408  /tmp/c4v/d13.zip" | sha256sum -c -
+          unzip -q /tmp/c4v/d13.zip -d /tmp/c4v/d13
+          echo "498d2c46828055c288524fc8176cf46f5339ea8db0649b450b955b3eb3c86747  /tmp/c4v/d13/R16_o0.txt" | sha256sum -c -
+          echo "8188300a660b2f203b28080399b4a747b6693d617de669f23395876ddaf8c6ec  /tmp/c4v/d13/R2_o0.txt" | sha256sum -c -
+          echo "28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c  /tmp/c4v/d13/F-ROMV2_D13_RESULT.json" | sha256sum -c -
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/c4v/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/c4v/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/c4v/c4r.zip -d /tmp/c4v/c4r
+          C4R_R16="$(find /tmp/c4v/c4r -type f -name R16_o0.txt -print -quit)"
+          C4R_R2="$(find /tmp/c4v/c4r -type f -name R2_o0.txt -print -quit)"
+          test -n "$C4R_R16" -a -n "$C4R_R2"
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  $C4R_R16" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  $C4R_R2" | sha256sum -c -
+          cp "$C4R_R16" /tmp/c4v/C4R_R16_o0.txt
+          cp "$C4R_R2" /tmp/c4v/C4R_R2_o0.txt
+
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90 > /tmp/c4v/d13_base.f90
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/analyze_f_romv2_d13_fmc_groundwater.py > /tmp/c4v/d13_analyzer.py
+          git show 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:integration/f-rom/F-ROMV2_D13_PREREGISTRATION.json > /tmp/c4v/d13_prereg.json
+          test "$(git rev-parse 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/test_f_romv2_d13_groundwater_comparators.f90)" = "23ba278a37e142dc4c21e605af51dbf8f100ce92"
+          test "$(git rev-parse 9d66a3e8a7fda6d1e456188cfc87cf9f884075a4:tests/rom/analyze_f_romv2_d13_fmc_groundwater.py)" = "803867a2ccdb190142274e9c41aafc3d3ca8d76a"
+          test -f /tmp/c4v/d13/F-ROMV2_D13_PREFLIGHT_RESULT.json
+
+      - name: Reproduce D13 FMC before horizon exposure
+        run: |
+          set -euo pipefail
+          python3 /tmp/c4v/d13_analyzer.py             --r16 /tmp/c4v/d13/R16_o0.txt             --r2 /tmp/c4v/d13/R2_o0.txt             --prereg /tmp/c4v/d13_prereg.json             --preflight /tmp/c4v/d13/F-ROMV2_D13_PREFLIGHT_RESULT.json             --output /tmp/c4v/d13_reproduced.json > /tmp/c4v/d13_reproduction_stdout.txt
+          python3 - <<'PY'
+          import json,pathlib
+          a=json.load(open('/tmp/c4v/d13/F-ROMV2_D13_RESULT.json'))
+          b=json.load(open('/tmp/c4v/d13_reproduced.json'))
+          checks=[]
+          assert a['decision']==b['decision']=='FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY'
+          for group,path in [('FMC',('FMC','pooled')),('R2',('R2_comparator',))]:
+              aa=a;bb=b
+              for k in path: aa=aa[k];bb=bb[k]
+              names=['total_storage_error_cm','cumulative_bottom_exchange_error_cm','terminal_bottom_flux_error_cm_per_day']
+              if group=='FMC': names.append('R16_cell_theta_error')
+              for m in names:
+                  for stat in ('mean','mean_abs','rmse','p95_abs','max_abs'):
+                      d=abs(float(aa[m][stat])-float(bb[m][stat]));checks.append(d);assert d<=1e-12
+              assert aa['bottom_flux_sign_error_count']==bb['bottom_flux_sign_error_count']
+          out={'schema':'swap5.lare.bc2.c4v.fmc-reproduction.v1','pass':True,
+               'maximum_abs_scalar_difference':max(checks),'absolute_tolerance':1e-12}
+          pathlib.Path('/tmp/c4v/FMC_D13_REPRODUCTION.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,sort_keys=True))
+          PY
+
+      - name: Materialize one-day horizon assets
+        run: |
+          set -euo pipefail
+          python3 tests/rom/materialize_lare_bc2_c4v_horizon.py             --c4r-materializer tests/rom/materialize_lare_bc2_c4r_d13_assets.py             --fortran-source /tmp/c4v/d13_base.f90             --fortran-output canonical/tests/rom/test_lare_bc2_c4v_reference.f90             --analyzer-source /tmp/c4v/d13_analyzer.py             --analyzer-output /tmp/c4v/analyze_fmc_one_day.py             --manifest /tmp/c4v/materialization.json
+          grep -Fq 'NSTEPS=1024' /tmp/c4v/analyze_fmc_one_day.py
+          grep -Fq 'NSTEPS=1024' canonical/tests/rom/test_lare_bc2_c4v_reference.f90
+
+      - name: Preflight frozen FMC to 1.024 day before Reference response
+        run: |
+          set -euo pipefail
+          python3 tests/rom/preflight_lare_bc2_c4v_fmc_domain.py             --analyzer /tmp/c4v/analyze_fmc_one_day.py             --prereg integration/f-rom/LARE_BC2_C4V_PREREGISTRATION.json             --output /tmp/c4v/FMC_C4V_PREFLIGHT.json             | tee /tmp/c4v/FMC_C4V_PREFLIGHT_RUNNER.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4v/FMC_C4V_PREFLIGHT.json'))
+          assert r['decision']=='C4V_FMC_ONE_DAY_DOMAIN_PREFLIGHT_PASS'
+          assert r['pass'] is True and r['reference_response_used'] is False
+          PY
+
+      - name: Generate one-day R16 and R2 Reference trajectories
+        run: |
+          set -euo pipefail
+          for spec in "R16 16 10" "R2 2 80"; do
+            read -r id n dz <<<"$spec"
+            stub="/tmp/c4v/stubs_n${n}.f90"
+            python3 tests/rom/materialize_f_rom0_headcalc_stubs.py               --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90               --output "$stub" --nodes "$n" --dz-cm "$dz"
+            for opt in 0 2; do
+              outdir="/tmp/c4v/build_${id}_o${opt}"
+              python3 tests/rom/compile_f_rom0_fortran_closure.py                 --root canonical                 --stub "$stub"                 --target tests/rom/test_lare_bc2_c4v_reference.f90                 --external-source src/legacy/b1_10_port/headcalc.f90                 --build "$outdir" --opt "$opt"
+              "$outdir/rom0_test" > "/tmp/c4v/reference/${id}_o${opt}.txt" 2>&1
+              grep -Fq 'F_ROMV2_D13_REF_EXECUTION_COMPLETE=PASS' "/tmp/c4v/reference/${id}_o${opt}.txt"
+              test "$(grep -c 'F_ROMV2_D13_REF_STATE|' "/tmp/c4v/reference/${id}_o${opt}.txt")" -eq 4096
+              test "$(grep -c 'F_ROMV2_D13_REF_INITIAL|' "/tmp/c4v/reference/${id}_o${opt}.txt")" -eq 4
+            done
+            cmp "/tmp/c4v/reference/${id}_o0.txt" "/tmp/c4v/reference/${id}_o2.txt"
+          done
+          python3 - <<'PY'
+          import pathlib
+          for name in ('R16','R2'):
+              mx=0.0;n=0
+              for line in pathlib.Path(f'/tmp/c4v/reference/{name}_o0.txt').read_text().splitlines():
+                  if 'F_ROMV2_D13_REF_STATE|' not in line: continue
+                  n+=1
+                  fields=dict(x.split('=',1) for x in line.split('|')[1:] if '=' in x)
+                  mx=max(mx,abs(float(fields['MASS'])))
+              assert n==4096,(name,n)
+              assert mx<=1e-12,(name,mx)
+              print(f'C4V_{name}_MAX_ABS_MASS_CM={mx:.17g}')
+          PY
+          git -C canonical diff --quiet -- src reference
+
+      - name: Verify exact C4R first-64 prefix
+        run: |
+          python3 - <<'PY'
+          import pathlib,re
+          def filtered(path):
+              out=[]
+              for line in pathlib.Path(path).read_text().splitlines():
+                  if 'F_ROMV2_D13_REF_GEOMETRY|' in line or 'F_ROMV2_D13_REF_INITIAL|' in line:
+                      out.append(line);continue
+                  if 'F_ROMV2_D13_REF_STATE|' in line or 'F_ROMV2_D13_REF_NODE|' in line:
+                      m=re.search(r'\|STEP=([0-9]+)',line)
+                      if m and int(m.group(1))<=64: out.append(line)
+              return out
+          for name in ('R16','R2'):
+              old=filtered(f'/tmp/c4v/C4R_{name}_o0.txt')
+              new=filtered(f'/tmp/c4v/reference/{name}_o0.txt')
+              assert old==new,(name,len(old),len(new))
+              print(f'C4V_C4R_PREFIX_{name}_EXACT=PASS')
+          PY
+
+      - name: Execute one-day LARE/FMC/R2 persistence analysis
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C4V_EVIDENCE
+          python3 tests/rom/analyze_lare_bc2_c4v_one_day.py             --r16 /tmp/c4v/reference/R16_o0.txt             --r2 /tmp/c4v/reference/R2_o0.txt             --fmc-module /tmp/c4v/analyze_fmc_one_day.py             --fmc-reproduction /tmp/c4v/FMC_D13_REPRODUCTION.json             --fmc-preflight /tmp/c4v/FMC_C4V_PREFLIGHT.json             --prereg integration/f-rom/LARE_BC2_C4V_PREREGISTRATION.json             --bc1-closeout integration/f-rom/LARE_BC1_CLOSEOUT.json             --c4r-closeout integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json             --c4u-authority integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json             --output LARE_BC2_C4V_EVIDENCE/LARE_BC2_C4V_RESULT.json             | tee LARE_BC2_C4V_EVIDENCE/runner.txt
+          cp /tmp/c4v/FMC_D13_REPRODUCTION.json LARE_BC2_C4V_EVIDENCE/
+          cp /tmp/c4v/FMC_C4V_PREFLIGHT.json LARE_BC2_C4V_EVIDENCE/
+          cp /tmp/c4v/materialization.json LARE_BC2_C4V_EVIDENCE/
+          cp /tmp/c4v/reference/R16_o0.txt LARE_BC2_C4V_EVIDENCE/
+          cp /tmp/c4v/reference/R2_o0.txt LARE_BC2_C4V_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C4V_EVIDENCE/LARE_BC2_C4V_RESULT.json'))
+          assert r['decision'] in (
+            'C4V_R4_ONE_DAY_GW_FRONTIER_PERSISTS',
+            'C4V_HIGHER_DIMENSION_GW_FRONTIER_PERSISTS',
+            'C4V_ONLY_R2_RELATIVE_GW_FRONTIER_PERSISTS',
+            'C4V_ONE_DAY_REDUCED_GW_FRONTIER_NOT_PRESERVED',
+            'C4V_REFERENCE_OR_REPRESENTATION_DOMAIN_BLOCKED'
+          )
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['performance_comparison_authorized'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4V_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C4V_EVIDENCE/* > LARE_BC2_C4V_EVIDENCE/sha256.txt
+
+      - name: Upload C4V evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c4v
+          path: LARE_BC2_C4V_EVIDENCE/
+          if-no-files-found: warn
