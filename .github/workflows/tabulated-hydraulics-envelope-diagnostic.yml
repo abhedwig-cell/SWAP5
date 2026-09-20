@@ -137,13 +137,35 @@ jobs:
                   "build/tab-hyd-envelope-diagnostic/${scenario}__k${k}-comparison.json" \
                   --label "${scenario},SWKIMPL=${k},diagnostic" \
                   | tee -a build/tab-hyd-envelope-diagnostic/comparisons.txt
-                crc=\${PIPESTATUS[0]}
+                crc=${PIPESTATUS[0]}
                 set -e
                 printf '%s\t%s\t%s\n' "$scenario" "$k" "rc=$crc" \
                   | tee -a build/tab-hyd-envelope-diagnostic/comparison-status.tsv
               else
                 printf '%s\t%s\t%s\n' "$scenario" "$k" "incomplete" \
                   | tee -a build/tab-hyd-envelope-diagnostic/comparison-status.tsv
+              fi
+            done
+          done
+
+      - name: Compare numerical-route controls where both complete
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/tab-hyd-envelope-diagnostic/route-control-comparisons.txt
+          printf 'scenario\troute\tcomparison\n'             > build/tab-hyd-envelope-diagnostic/route-control-status.tsv
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            for route in analytic table; do
+              k0="build/tab-hyd-envelope-diagnostic/${scenario}__${route}_k0"
+              k1="build/tab-hyd-envelope-diagnostic/${scenario}__${route}_k1"
+              if [ -f "$k0/result_output.csv" ] && [ -f "$k1/result_output.csv" ]; then
+                set +e
+                python3 research/tabulated_hydraulics/compare_hupsel_e2e.py                   "$k0" "$k1"                   "build/tab-hyd-envelope-diagnostic/${scenario}__${route}-k0-k1.json"                   --label "${scenario},${route},K0-vs-K1,diagnostic"                   | tee -a build/tab-hyd-envelope-diagnostic/route-control-comparisons.txt
+                crc=${PIPESTATUS[0]}
+                set -e
+                printf '%s\t%s\t%s\n' "$scenario" "$route" "rc=$crc"                   | tee -a build/tab-hyd-envelope-diagnostic/route-control-status.tsv
+              else
+                printf '%s\t%s\t%s\n' "$scenario" "$route" "incomplete"                   | tee -a build/tab-hyd-envelope-diagnostic/route-control-status.tsv
               fi
             done
           done
@@ -239,6 +261,8 @@ jobs:
               (root/"clay-horizon.tsv").read_text(),
               "## Pair comparison availability",
               (root/"comparison-status.tsv").read_text(),
+              "## K0-vs-K1 route controls",
+              (root/"route-control-status.tsv").read_text(),
               "## Interpretation guard",
               "These diagnostics do not alter the failed preregistered envelope gate.",
           ]
@@ -256,6 +280,9 @@ jobs:
             build/tab-hyd-envelope-diagnostic/clay-horizon.tsv
             build/tab-hyd-envelope-diagnostic/comparison-status.tsv
             build/tab-hyd-envelope-diagnostic/comparisons.txt
+            build/tab-hyd-envelope-diagnostic/route-control-status.tsv
+            build/tab-hyd-envelope-diagnostic/route-control-comparisons.txt
+            build/tab-hyd-envelope-diagnostic/*-k0-k1.json
             build/tab-hyd-envelope-diagnostic/*comparison.json
             build/tab-hyd-envelope-diagnostic/diagnostic-summary.md
             build/tab-hyd-envelope-diagnostic/*/diagnostic.log
