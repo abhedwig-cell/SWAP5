@@ -1,5 +1,5 @@
 {
-  "schema": "swap5.lare.bc2.c6n2.execution-binding.v3",
+  "schema": "swap5.lare.bc2.c6n2.execution-binding.v4",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6N2",
   "status": "BOUND_AFTER_C6N1_QUALIFICATION_BEFORE_CANDIDATE_RESPONSE",
@@ -8,7 +8,7 @@
     "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
     "preregistration_blob": "d54d404b466c1c5dc79359f1d0147616b914ab3b",
     "runner": "tests/rom/run_lare_bc2_c6n2_surface_candidate.py",
-    "runner_blob": "ca0278a1c43eb24b8d5eb6698c51ecd7c60b0240",
+    "runner_blob": "3573164a3599eeb62d0d430e234f426f07f3a0a0",
     "analyzer": "tests/rom/analyze_lare_bc2_c6n2_surface_candidates.py",
     "analyzer_blob": "ef552ec75c99177a59f2aaf0ea3961c9ef53892a",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6n2.yml",
@@ -23,7 +23,8 @@
     "C6N1_authority_artifact_id": 10613517378,
     "C6N1_authority_artifact_digest": "sha256:63d2dc2b9063159fe39119765d6798b06f266df7d9103a74c61a19bfd68dadb1",
     "execution_reconciliation_v2": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V2.json",
-    "execution_reconciliation_v3": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V3.json"
+    "execution_reconciliation_v3": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V3.json",
+    "execution_reconciliation_v4": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V4.json"
   },
   "execution": {
     "materials": [
@@ -68,7 +69,10 @@
     "candidate_response_exposed_before_repair": false,
     "pre_response_dependency_repair": true,
     "failed_run_35537768218_used_for_scientific_design": false,
-    "candidate_response_exposed_before_v3_repair": false
+    "candidate_response_exposed_before_v3_repair": false,
+    "pre_response_runner_authority_repair": true,
+    "failed_run_35537812426_used_for_scientific_design": false,
+    "candidate_response_exposed_before_v4_repair": false
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
