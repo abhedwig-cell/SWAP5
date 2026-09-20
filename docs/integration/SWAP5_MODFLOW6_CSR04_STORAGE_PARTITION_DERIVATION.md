@@ -258,3 +258,50 @@ New authority question:
 
 Until that is reconstructed, production STO magnitude and interpretation remain
 scientifically unadmitted.
+
+
+## 14. Reconstructed historical role of MODFLOW storage
+
+The 2011 shared-state-variable formulation resolves the ambiguity more strongly
+than the earlier CSR-04 hypotheses.
+
+In that formulation the combined MetaSWAP control-volume water balance is the
+mass authority. A storage coefficient derived from the MetaSWAP storage
+relationship is supplied to MODFLOW so that MODFLOW can update the shared head
+inside its nonlinear solution. The paper explicitly states that the storage
+change computed by MODFLOW in this equation serves the convergence of the
+MODFLOW head and the MetaSWAP groundwater level; the final MODFLOW flux is then
+used to finalize the MetaSWAP profile.
+
+Therefore, for that historical h-link formulation, the MODFLOW-side storage
+term in the coupling equation is not an independently additive physical
+reservoir. It is the solver-facing representation of the coupled storage-head
+relationship whose water-balance authority remains with the column model.
+
+This does not yet prove that the present full-SWAP F-GC30/F-GC33 formulation is
+mathematically identical to the MetaSWAP h-link. Full SWAP uses a fixed
+lower-face hydraulic head and a finite-window q-to-head response rather than a
+MetaSWAP storage table with groundwater level as the shared state. The relevant
+analogy is therefore structural, not literal.
+
+### Consequence for current qualification
+
+CSR-04 must now separate three questions:
+
+1. **Mass authority:** which component owns the accepted physical water balance?
+2. **Head-solve capacitance/Jacobian:** which coefficient is communicated to
+   MODFLOW to make the coupled head solve represent the column response?
+3. **Independent regional storage:** is any native MODFLOW STO term physically
+   intended in addition to that communicated column response?
+
+The current F-GC38 nonzero-STO experiment answers only question 3
+diagnostically. It cannot establish the answer.
+
+For the full-SWAP formulation, the next derivation must compare the assembled
+MODFLOW equation containing native STO plus the F-GC33 affine response with the
+linearized accepted SWAP finite-window balance. The proof obligation is to
+identify whether native STO is an independent regional term, should vanish/be
+negligible in the shared state, or would duplicate part of the SWAP response.
+
+Until that algebraic equivalence is established, native STO remains a
+qualification variable rather than admitted coupled physics.
