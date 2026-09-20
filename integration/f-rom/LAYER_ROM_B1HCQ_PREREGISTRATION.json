@@ -1,0 +1,195 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hc-q.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HC-Q",
+  "phase": "PREREGISTERED_BEFORE_SAME_PARTITION_CORICHARDS_TRANSFER_QUALIFICATION",
+  "title": "Six-material same-partition CoRichards qualification",
+  "question": "On the exact frozen B1H six-material fixed-head transfer cohort, which conventional Richards discretisations using the L4, L6 and R8 Layer-ROM partitions remain numerically admissible under the frozen current-canonical Reference policy?",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "predecessor": {
+    "B1H_closeout": "integration/f-rom/LAYER_ROM_B1H_CLOSEOUT.json",
+    "B1H_decision": "B1H_TRANSFER_PANEL_CHARACTERIZED_PLACEMENT_TRANSFERS_DIMENSION_ORDER_NOT_UNIVERSAL",
+    "next_authorized": "LAYER-ROM-B1HC_SAME_PARTITION_CORICHARDS_TRANSFER_QUALIFICATION",
+    "panel_blob": "12d1350338f9725e74c9695817b0c939552b1a96",
+    "B1H_prereg_blob": "6f352eeea4b6a2b564bbc4b2a6dce31840c13ad1",
+    "B1H_result_blob": "70442dbb3f34136727c869a4d71a64ac8252696d",
+    "B1H_closeout_blob": "bd52eba10caea2f75564dcdfe8fa4f61b53797a6"
+  },
+  "frozen_cohort": {
+    "materials": [
+      "B02",
+      "B05",
+      "B06",
+      "B11",
+      "B12",
+      "B16"
+    ],
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "steps_per_history": 1024,
+    "observation_dt_day": 0.001,
+    "horizon_day": 1.024,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "mode 5 zero pressure head at fixed 160-cm lower boundary",
+    "sinks": false,
+    "ET_root_uptake": false,
+    "moving_water_table": false,
+    "initial_state_rule": "exact B1H frozen scaled-lambda construction; no new state selection"
+  },
+  "immutable_reference_artifacts": {
+    "workflow_run": 35495947476,
+    "executed_head": "4c68807f392f7458fc0786fa085b487b92dd24d0",
+    "B02": {
+      "artifact_id": 10600214649,
+      "digest": "sha256:fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0"
+    },
+    "B05": {
+      "artifact_id": 10600409481,
+      "digest": "sha256:7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5"
+    },
+    "B06": {
+      "artifact_id": 10600414651,
+      "digest": "sha256:3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380"
+    },
+    "B11": {
+      "artifact_id": 10600034910,
+      "digest": "sha256:b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c"
+    },
+    "B12": {
+      "artifact_id": 10599789755,
+      "digest": "sha256:ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7"
+    },
+    "B16": {
+      "artifact_id": 10600289675,
+      "digest": "sha256:fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c"
+    }
+  },
+  "partitions": [
+    {
+      "id": "L4",
+      "dimension": 4,
+      "thickness_cm": [
+        130,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "thickness_cm": [
+        110,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "thickness_cm": [
+        90,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ]
+    }
+  ],
+  "terminology": {
+    "CoRichards": "Conventional current-canonical Reference-Richards route executed on exactly the same fixed nonuniform partition and spatial state count as the corresponding Layer-ROM member.",
+    "comparator_role_only": true,
+    "not_new_solver": true
+  },
+  "numerical_policy": {
+    "source_semantics": "frozen B1H D13-derived mode-5 Reference route",
+    "D13_harness_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "D13_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "canonical_source_head": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "step_dt_day": 0.001,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "min_step_duration_day": 1e-8,
+    "compartment_balance_tolerance": 1e-12,
+    "original_total_balance_tolerance": 1e-12,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "total_integrated_gate_cm": 1e-12,
+    "local_integrated_gate_formula_cm": "1e-12/numnod",
+    "authorized_failure_retries": [
+      "RETRY_TOTAL_ONLY",
+      "RETRY_LOCAL_BALANCE"
+    ],
+    "fallback_tolerance_rule": "exact D13 integrated-water-depth rule",
+    "optimization_modes": [
+      0,
+      2
+    ],
+    "no_temporal_subdivision": true,
+    "no_tolerance_relaxation": true
+  },
+  "controls": {
+    "R16_exact_B1H_reproduction": "For every material, the generalized B1HC harness on the 16x10-cm grid must reproduce the immutable B1H R16 scientific stdout byte-for-byte at O0 and O2.",
+    "materialization": "Recreate the frozen B1H material/history Fortran from pinned D13 source and current B0/B1H preregistration before generalizing geometry.",
+    "source_freeze": "No src/** or reference/** tree differences from current canonical."
+  },
+  "per_material_history_status": {
+    "QUALIFIED": "O0 and O2 both finish the selected history with exactly 1024 committed states, hard transaction mass residual <=1e-12 cm, completion marker present, and byte-identical scientific stdout.",
+    "FAIL_CLOSED_REFERENCE_POLICY": "O0 and O2 both fail under the frozen policy with the same first F_ROMV2_D13_REF_FAIL marker before completion.",
+    "TECHNICAL_FAILURE": "Build, provenance, control identity, status identity, trace identity or harness failure not classifiable as frozen Reference policy."
+  },
+  "qualification_outputs": [
+    "status for every material x L4/L6/R8 x X01-X04 cell",
+    "qualified-history count per material and partition",
+    "full-common-cohort availability by partition across all 24 material-history cells",
+    "first deterministic fail-closed marker",
+    "maximum qualified hard mass residual",
+    "R16 exact B1H reproduction per material"
+  ],
+  "hard_gates": {
+    "immutable_reference_artifact_digest_exact": true,
+    "B1H_R16_control_reproduction_exact": true,
+    "canonical_head_exact": true,
+    "D13_harness_source_exact": true,
+    "O0_O2_status_identity": true,
+    "qualified_O0_O2_trace_identity": true,
+    "qualified_mass_residual_cm": 1e-12,
+    "technical_failure_count": 0
+  },
+  "decisions": {
+    "B1HCQ_FULL_COMMON_COHORT_AVAILABLE": "Hard gates pass and at least one of L4/L6/R8 qualifies all 24 frozen material-history cells.",
+    "B1HCQ_PARTIAL_COMMON_COHORT_ONLY": "Hard gates pass, no partition qualifies all 24 cells, and at least one partition has one or more qualified cells.",
+    "B1HCQ_REDUCED_COMPARATOR_UNAVAILABLE": "Hard gates pass and no L4/L6/R8 cell qualifies.",
+    "B1HCQ_COMPARATOR_AUTHORITY_BLOCKED": "Any provenance, control or technical hard gate fails."
+  },
+  "successor": {
+    "if_full": "Preregister componentwise LARE-versus-same-partition-CoRichards decomposition on the exact full common cohort; no runtime measurement in that decomposition.",
+    "if_partial": "Preregister the hydrological decomposition only on the exact persisted common qualified cells and report coverage loss; no extrapolation.",
+    "if_unavailable": "Do not relax numerical policy after result. Preserve comparator unavailability as evidence.",
+    "if_blocked": "Repair technical/provenance issues only before any scientific interpretation."
+  },
+  "firewalls": [
+    "NO_HYDROLOGICAL_ERROR_COMPARISON_IN_B1HCQ",
+    "NO_RUNTIME_OR_SPEED_MEASUREMENT_IN_B1HCQ",
+    "NO_TEMPORAL_REFINEMENT",
+    "NO_TOLERANCE_RELAXATION",
+    "NO_NEW_FALLBACK_CLASS",
+    "NO_PARTITION_RETUNING",
+    "NO_CLOSURE_FITTING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PRODUCTION_ROM"
+  ],
+  "hydrological_comparison_authorized": false,
+  "performance_comparison_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
