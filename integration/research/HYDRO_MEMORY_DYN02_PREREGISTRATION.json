@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.hydro_memory.dyn02.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-DYN02",
+  "title": "Live multi-window accepted-state recomposition of Stage-0 forcing and restricted Feddes uptake",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_source_change": false,
+  "reference_source_change": false,
+  "authorities": {
+    "acc01": "ACC01_F1_PASS_GOVERNED_TEMPORAL_ROUTE",
+    "acc02": "ACC02_GOVERNANCE_QUALIFIED",
+    "acc02_f2": "ACC02_F2_PASS_FOUR_CONSECUTIVE_LIVE_ROOT_ACTIVE_WINDOWS",
+    "dyn01": "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION",
+    "forcing": "PPA-WU03 CANONICAL_ADMITTED_CLOSED",
+    "root_uptake": "F-CI31 restricted Reference-ET to Feddes execution",
+    "root_tangent": "PPA-ROOT-HYD02 restricted prescribed-root tangent",
+    "dyn02_view01": "DYN02_VIEW01_QUALIFIED_RESTRICTED_TEMPORAL_CARRIER"
+  },
+  "frozen_sequence": {
+    "windows": 4,
+    "duration_per_window_day": 0.1,
+    "phases": [
+      {
+        "windows": [
+          1,
+          2
+        ],
+        "phase": "drought",
+        "precipitation_cm_per_day": 0,
+        "reference_et_mm_per_day": 4
+      },
+      {
+        "windows": [
+          3,
+          4
+        ],
+        "phase": "recovery",
+        "precipitation_cm_per_day": 0.5,
+        "reference_et_mm_per_day": 3
+      }
+    ],
+    "canopy": {
+      "crop_emerged": true,
+      "vegetation_cover_fraction": 1,
+      "crop_factor": 1,
+      "co2_transpiration_factor": 1
+    },
+    "feddes": {
+      "hlim3l_cm": -800,
+      "hlim3h_cm": -400,
+      "hlim4_cm": -16000,
+      "adcrl": 0.1,
+      "adcrh": 0.5
+    },
+    "root_geometry": {
+      "rooted_nodes": 3,
+      "cumulative_root_fraction": [
+        0,
+        0.1,
+        0.55,
+        1
+      ],
+      "qualification_only": true
+    },
+    "h_app_cm": 0.4,
+    "temporal_budget_cm": 0.1,
+    "interface_tolerance_m": 0.001,
+    "flux_iteration_tolerance_m_per_s": 1e-15,
+    "max_coupling_iterations": 6,
+    "hard_mass_tolerance_cm": 1e-12,
+    "modflow_version": "6.8.0",
+    "modflow_ims_outer_dvclose": 1e-10,
+    "modflow_ims_inner_dvclose": 1e-10
+  },
+  "recomposition_contract": [
+    "At the start of each coupling window, materialize PPA-WU03 forcing for that window from the frozen phase input.",
+    "Evaluate F-CI31 root uptake exactly once from the current accepted committed SWAP state and that window's potential transpiration.",
+    "Write the resulting root_extraction_sink and pure-flux top boundary into one immutable physical forcing object for the complete coupling window.",
+    "All predictor and same-origin corrector trials in that window reuse the same immutable forcing and root sink.",
+    "No root-stress or atmospheric forcing reevaluation occurs inside a coupled fixed-point iteration.",
+    "After exact-once acceptance/commit, the next window recomputes forcing and root uptake from the newly committed state."
+  ],
+  "pass_gates": [
+    "window phase sequence is exactly drought,drought,recovery,recovery",
+    "potential transpiration sequence is exactly [0.4,0.4,0.3,0.3] cm/day within floating-point tolerance",
+    "top-flux sequence is exactly [0,0,-0.5,-0.5] cm/day while the admitted pure-flux regime remains valid",
+    "each window root sink is finite, nonnegative, and actual uptake is <= potential transpiration",
+    "same-origin corrector calls do not change the window root sink or top flux",
+    "next-window root sink is explicitly recomputed after committed revision advances",
+    "if committed root-zone hydraulic state changes, recomposition is allowed to change actual root uptake; no minimum change is required",
+    "all four predictors retain complete prescribed-root tangent coverage and temporal indicators <=1",
+    "all four live coupled fixed points converge within six iterations under unchanged interface/flux criteria",
+    "hard mass, exact-once publication, revision/time/ledger monotonicity and O0/O2 behavior pass",
+    "revision sequence [1,2,3,4], committed time [0.1,0.2,0.3,0.4] day, ledger count [1,2,3,4]"
+  ],
+  "failure_decisions": [
+    "DYN02_BLOCKED_FORCING_MATERIALIZATION",
+    "DYN02_BLOCKED_ROOT_RECOMPOSITION",
+    "DYN02_BLOCKED_PURE_FLUX_TOP_ENVELOPE",
+    "DYN02_BLOCKED_TEMPORAL_OR_INTERFACE_ACCURACY",
+    "DYN02_BLOCKED_MULTIWINDOW_PUBLICATION",
+    "DYN02_BLOCKED_LIVE_MODFLOW"
+  ],
+  "forbidden_after_execution": [
+    "change 0.1-day window duration",
+    "change forcing sequence",
+    "change Feddes parameters or qualification root distribution",
+    "relax H_app, temporal, interface, flux, solver, retry or mass criteria",
+    "reevaluate root uptake inside the same coupling window",
+    "reduce precipitation to keep recovery in flux regime",
+    "reinitialize SWAP or MODFLOW between windows"
+  ],
+  "nonclaims": [
+    "not the 90-day Stage-0 scientific experiment",
+    "qualification root geometry is not final Stage-0 0.60 m discretization",
+    "soil hydraulic sets are not yet frozen",
+    "no production-bootstrap root-active admission",
+    "no drought-memory novelty claim"
+  ],
+  "downstream_if_pass": "Freeze Stage-0 grid/root geometry, three defensible soil hydraulic parameter sets and storage diagnostics, then execute only the preregistered Stage-0 falsification pilot.",
+  "amendments": [
+    {
+      "id": "DYN02-A1",
+      "date": "2026-09-20",
+      "trigger": "First DYN02 run 35460379501 failed during first-window recomposition because F-CI31 process hydraulic view rejected the temporal-history committed carrier.",
+      "disposition": "Rebase unchanged DYN02 experiment onto canonical DYN02-VIEW01 authority.",
+      "scientific_criteria_changed": false,
+      "frozen_sequence_changed": false,
+      "numerical_tolerances_changed": false
+    }
+  ]
+}
