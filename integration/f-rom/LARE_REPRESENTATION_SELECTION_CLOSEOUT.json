@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.lare.representation-selection.closeout.v3",
+  "schema": "swap5.lare.representation-selection.closeout.v4",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-REPSEL-1",
-  "status": "CLOSED_THROUGH_C4X_MATERIAL_AND_PLACEMENT_DEPENDENT_FRONTIER_SCIENTIFIC_CHOICE_OR_EXTERNAL_AUTHORITY_REQUIRED",
+  "status": "C4Y_REFERENCE_POLICY_BLOCKED_C4Z_FRESH_BLIND_DYNAMIC_HEAD_TRANSFER_PREREGISTERED",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "authorities": {
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
@@ -20,7 +20,9 @@
     "groundwater_application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
     "one_day_B01_persistence": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
-    "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json"
+    "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "dynamic_head_first_blind_attempt": "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
+    "dynamic_head_fresh_retry_preregistration": "integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json"
   },
   "reconciled_findings": {
     "fixed_partition_LARE": [
@@ -67,38 +69,25 @@
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
   "next_family_authority": {
-    "family": "SCIENTIFIC_CHOICE_REQUIRED",
+    "family": "C4Z_BLIND_DYNAMIC_HEAD_TRANSFER",
+    "state": "PREREGISTERED_AWAITING_EXECUTION",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-      "integration/f-rom/F-ROMV2_ACCEPTANCE_FRAMEWORK.json"
+      "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json",
+      "integration/f-rom/LARE_BC1_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json"
     ],
-    "reconciled_boundary": "C4X shows that useful state dimension is material-, placement- and purpose-dependent within the tested laboratory. No universal layer count is supported.",
-    "application_acceptance": {
-      "state": "EXTERNAL_SOURCE_BLOCKER",
-      "required": [
-        "externally governed groundwater application requirement H_app",
-        "independent A_temporal or direct temporal head-error budget",
-        "immutable verified provenance for both claims"
-      ],
-      "next_when_unblocked": "Preregister purpose-specific downstream groundwater consequence validation using frozen representation candidates."
-    },
-    "representation_generality": {
-      "state": "CHOICE_NOT_MADE",
-      "admissible_next_studies": [
-        "independent lower-boundary-semantics transfer",
-        "additional material generality transfer"
-      ],
-      "rule": "Whichever axis is selected must be preregistered before response exposure; no C4X post-hoc retuning is authorized."
-    },
-    "implementation_authorized": false
+    "purpose": "Test whether material- and placement-dependent lower-zone representation evidence transfers to an independently forced fixed-domain prescribed-head lower boundary.",
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "implementation_authorized": true,
+    "post_hoc_retuning_authorized": false
   },
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
   },
-  "decision": "PRESERVE_MATERIAL_AND_PLACEMENT_DEPENDENT_FRONTIER_STOP_AT_SCIENTIFIC_CHOICE_OR_EXTERNAL_GW_AUTHORITY",
-  "next_authority": "SCIENTIFIC_CHOICE_REQUIRED",
+  "decision": "EXECUTE_FRESH_C4Z_DYNAMIC_HEAD_TRANSFER_WITHOUT_C4Y_RETUNING",
+  "next_authority": "LARE_BC2_C4Z_BLIND_DYNAMIC_HEAD_TRANSFER",
   "model_changed": false,
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
@@ -120,12 +109,20 @@
     "C4U": "Groundwater application acceptance is blocked on externally governed H_app plus independent A_temporal or a direct temporal head-error budget with immutable provenance.",
     "C4V": "On the 1.024-day B01 fixed-water-table persistence test, the minimum transferred lower-zone member persistently crossing both R2 and FMC moved to R8.",
     "C4W": "The B01 one-day spurious reversal mechanism was characterized without authorizing closure retuning.",
-    "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor."
+    "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor.",
+    "C4Y": "The first response-blind dynamic prescribed-head transfer produced no representation adjudication because the frozen R2 comparator failed closed under the inherited RS1 local fallback allowance before a complete trajectory existed. C4Y remains closed and is not retuned.",
+    "C4Z": "A fresh blind dynamic-head transfer is preregistered on new Z01-Z04 histories. It retains the C4Y head amplitude, LARE ladder, placement controls, closure and metrics while prospectively binding the pre-existing D13/C4S integrated-water-depth Reference retry policy."
   },
   "v3_reconciliation": {
     "reason": "The v2 representation-selection file stopped at C4R preregistration. Live branch authority now includes completed C4R through C4X evidence.",
     "scientific_results_changed": false,
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false
+  },
+  "v4_reconciliation": {
+    "c4y_result_changed": false,
+    "c4y_threshold_relaxed": false,
+    "c4z_histories_fresh": true,
+    "frozen_lare_scientific_basis_rebased": false
   }
 }
