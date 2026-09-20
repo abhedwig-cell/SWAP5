@@ -156,12 +156,14 @@
       "local_problem": "Find constant downward q such that dpsi/dz = q/K(psi)-1 connects psi(0)=psi_i to psi(L)=psi_j over L=(di+dj)/2.",
       "saturation_extension": "For numerical shooting trials only, K(psi<=0)=Ksat; authoritative endpoints are required to remain in the admitted unsaturated B14 constitutive range.",
       "numerical_method": {
-        "root": "deterministic bracketed bisection after a fixed symmetric logarithmic/linear q scan if endpoint residuals do not initially bracket",
-        "primary_integration": "fixed-step RK4 with 128 substeps over center-to-center distance",
-        "verification_integration": "fixed-step RK4 with 256 substeps",
+        "formulation": "For psi_down != psi_up and the monotone steady solution, solve L = integral_{psi_up}^{psi_down} K(psi)/(q-K(psi)) dpsi. For psi_down>psi_up use q>max K on the interval; for psi_down<psi_up use q<min K. Equal endpoints use q=K(psi).",
+        "primary_quadrature": "64-point Gauss-Legendre on the endpoint suction interval",
+        "verification_quadrature": "128-point Gauss-Legendre on the same interval",
+        "root": "deterministic bisection in the physically monotone q branch; expand only the remote bracket endpoint geometrically if a sign bracket is not yet obtained",
         "root_absolute_flux_tolerance_cm_per_day": 1e-10,
-        "endpoint_suction_tolerance_cm": 1e-8,
-        "qualification": "Every evaluated DSE2P flux must agree between 128- and 256-substep integrations within max(1e-8 cm/day, 1e-7*max(1,abs(q))). Otherwise C5T is numerically blocked; no tolerance retuning."
+        "quadrature_flux_agreement_gate": "The independently solved 64- and 128-point roots must differ by <= max(1e-8 cm/day, 1e-7*max(1,abs(q128))).",
+        "length_residual_gate_cm": 1e-8,
+        "no_response_based_numerical_retuning": true
       },
       "dynamic_feedback": false
     }
@@ -256,7 +258,8 @@
   },
   "implementation_binding": {
     "state": "TO_BE_BOUND_BEFORE_EXECUTION",
-    "response_based_design": false
+    "response_based_design": false,
+    "note": "Numerical DSE2P realization sharpened before any C5T response from an equivalent RK4 shooting statement to the exact monotone steady-length integral with fixed Gauss-Legendre quadrature; scientific operator, endpoints, metrics and adjudication are unchanged."
   },
   "model_changed": false
 }
