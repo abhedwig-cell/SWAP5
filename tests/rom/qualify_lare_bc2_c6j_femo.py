@@ -124,7 +124,7 @@ def solve_layer(core,se,S,M,d,prereg):
                 "state_error_M_cm2":abs(M192-M),
                 "Se_min":float(np.min(ss)),"Se_max":float(np.max(ss)),
                 "moment_jacobian_eigenvalues":eig.tolist(),
-                "moment_jacobian_condition_number":float(np.linalg.cond(J)),
+                "moment_jacobian_condition_number":(lambda v: float(v) if math.isfinite(float(v)) else None)(np.linalg.cond(J)),
                 "diagnostic_error":None
             })
             sols.append((sid,res.x.copy(),tt.copy(),row))
@@ -155,7 +155,7 @@ def solve_layer(core,se,S,M,d,prereg):
         r["state_error_M_cm2"]<=float(recovery["max_abs_moment_cm2"]) for r in rows
     )
     jac_neg=all_conv and all(
-        max(r["moment_jacobian_eigenvalues"])<0.0 and math.isfinite(r["moment_jacobian_condition_number"])
+        max(r["moment_jacobian_eigenvalues"])<0.0 and r["moment_jacobian_condition_number"] is not None
         for r in rows
     )
     primary=sols[0][1] if sols and sols[0][0]=="BASE" else None
@@ -290,9 +290,10 @@ def metric_diagnostics(core,case,coeffs,prereg):
     rel=mineig/maxeig if maxeig>0 else -math.inf
     relG=float(np.linalg.norm(G-G2))/normG
     relb=float(np.linalg.norm(b-b2))/normb
-    cond=float(np.linalg.cond(G))
+    cond_raw=float(np.linalg.cond(G))
+    cond=cond_raw if math.isfinite(cond_raw) else None
     gates=mc["gates"]
-    ok=(np.all(np.isfinite(G)) and np.all(np.isfinite(b)) and math.isfinite(cond)
+    ok=(np.all(np.isfinite(G)) and np.all(np.isfinite(b)) and cond is not None
         and sym<=float(gates["G_symmetry_relative"])
         and maxeig>0.0 and rel>=float(gates["G_min_eigenvalue_relative_to_max"])
         and relG<=float(gates["G_primary_independent_relative_frobenius"])
