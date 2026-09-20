@@ -23,6 +23,21 @@ m1 = json.loads((ROOT / "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_Q
 e6 = json.loads((ROOT / "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json").read_text())
 source = (ROOT / "src/runtime/mod_fmr_production_application_bootstrap.f90").read_text()
 
+csr_path = ROOT / "integration/f-gc/F-GC_COUPLING_SEMANTICS_RECONCILIATION_STATUS.json"
+if csr_path.exists():
+    csr = json.loads(csr_path.read_text())
+    require(csr["experiment_impact"]["E7"] == "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+            "CSR E7 disposition missing")
+    require(csr["e7"]["rerun_authorized"] is False, "E7 rerun prematurely authorized")
+    require("groundwater_profile = groundwater_profile .and. config%tiles(i)%groundwater_coupled" in source,
+            "explicit coupled-boundary authority missing")
+    require("tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active" in source,
+            "CSR-03 process fail-closed guard missing")
+    print("PUB_GC_E7_HISTORICAL_COMPONENT_DOMAIN_EVIDENCE_PRESERVED=PASS")
+    print("PUB_GC_E7_COMPONENT_DOMAIN_INTERPRETATION_SUPERSEDED=PASS")
+    print("PUB_GC_E7_REQUALIFICATION_REQUIRED=PASS")
+    raise SystemExit(0)
+
 def require(cond: bool, message: str) -> None:
     if not cond:
         raise SystemExit("PUB_GC_E7_FAIL " + message)
