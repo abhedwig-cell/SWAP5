@@ -46,6 +46,21 @@ jobs:
             --material B01 --temporal-factor 16 \
             --output canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90 \
             --manifest /tmp/c6m_manifest.json
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('canonical/tests/rom/test_lare_bc2_c6m_surface_reference.f90')
+          s=p.read_text()
+          old="        call require(ok,'LAREDYN0R accepted history step')"
+          new="""        if(.not.ok)then
+          write(*,'(*(g0))') 'LAREDYN0R_C6M_DIAG_FAIL|STEP=',step,'|SUBSTEP=',substep, &
+               '|T0=',sub_t0,'|T1=',sub_t1,'|STATUS=',status,'|ROUTE=',trim(route), &
+               '|NL=',nl,'|IR=',ir,'|BACK=',back,'|MASS=',mass,'|BEX=',bex,'|BFLUX=',bflux, &
+               '|TOP_FLUX=',forcing%top_flux,'|BOTTOM_MODE=',p%bottom_mode
+        end if
+        call require(ok,'LAREDYN0R accepted history step')"""
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new,1))
+          PY
           stub="canonical/c6m_diag_stubs.f90"
           python3 canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py \
             --source canonical/tests/fsi/fsi04_real_headcalc_stubs.f90 \
