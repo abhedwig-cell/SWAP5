@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.lare.bc2.c6m.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M",
+  "status": "PRE_RESPONSE_LOWER_BOUNDARY_ADMISSION_REPAIR_REQUIRED",
+  "failed_run": {
+    "workflow_run": 35531511964,
+    "execution_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
+    "reference_jobs": 64,
+    "failed_reference_jobs": 64,
+    "analyze_job": "SKIPPED",
+    "hydrological_surface_response_generated": false,
+    "solver_executed_for_surface_phase": false,
+    "failure_signature": {
+      "solver_status": 0,
+      "route": "not-run",
+      "nonlinear_iterations": 0,
+      "first_surface_step": 1,
+      "bottom_mode": 7
+    }
+  },
+  "diagnosis": {
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "code_path": "src/runtime/mod_fmr_serialized_reference_backend.f90::fmr_serialized_backend_run_reference_floor_sample",
+    "authority_fact": "The Reference-floor sampling API explicitly admits only bottom_mode 2 or 5; mode 7 is rejected before kernel sampling.",
+    "prior_authority_fact": "LARE_DYN0A_CLOSEOUT is CLOSED_BOUNDED_FIXED_FLUX_DYNAMICS_CHARACTERIZATION, so C6L's assumption that free drainage was already available on this Reference-floor route was incorrect.",
+    "classification": "AUTHORITY_RECONCILIATION_AND_EXECUTION_ADMISSION_ERROR_NOT_NUMERICAL_REFERENCE_FAILURE"
+  },
+  "repair_selection": {
+    "old_lower_boundary": "FREE_DRAINAGE bottom_mode 7",
+    "new_lower_boundary": "FIXED_INITIAL_PRESSURE_HEAD bottom_mode 5",
+    "value_rule": "For each history/material, hold bottom_head equal to the initial uniform equilibrium pressure head h0 for all surface-forcing phases.",
+    "rationale": "Mode 5 is admitted by the frozen Reference-floor authority, preserves a responsive bottom exchange, and introduces no lower-boundary perturbation; all forcing changes still originate at the top.",
+    "response_based": false,
+    "hydrological_response_available_when_selected": false
+  },
+  "unchanged_science": [
+    "B01 and B14 materials",
+    "S01-S04 initial Se values",
+    "S01-S04 top-flux phase ordering and durations",
+    "top multipliers 1.125/0.875/1.0",
+    "R512/R1024/R2048 spatial hierarchy",
+    "T8/T16 temporal hierarchy",
+    "1024 observation windows and 0.0008-day observation interval",
+    "all Reference-quality metrics and componentwise gate",
+    "no sinks/root uptake",
+    "no Layer-ROM candidate response in C6M"
+  ],
+  "changed_science": [
+    "lower-boundary semantics changes from unsupported free drainage to admitted fixed initial pressure head",
+    "purpose wording changes from free-drainage surface test to surface-driven fixed-head test",
+    "drainage terminology is narrowed to bottom exchange; regional/free-drainage recharge remains an evidence gap"
+  ],
+  "governance": {
+    "allowed_as_pre_response_repair": true,
+    "reason": "All 64 first-attempt jobs were rejected before solver execution and the analyzer was skipped; no candidate or Reference surface response existed to tune against.",
+    "requires_preregistration_rebind": true,
+    "old_run_authority": false
+  },
+  "scientific_firewall": {
+    "layer_rom_response_generated": false,
+    "reference_surface_response_generated": false,
+    "thresholds_changed": false,
+    "histories_changed": false,
+    "top_forcing_changed": false,
+    "metrics_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
