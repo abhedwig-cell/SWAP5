@@ -1,0 +1,43 @@
+name: F-ROM-LARE BC2-C6C result persist
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6c-result-persist.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact authority result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6c
+          gh run download 35523252423 -n lare-bc2-c6c-sharded -D /tmp/c6c
+          echo "3903e5666802737c1f8afec1fd4f62e53ff44078afca66e488b9b2bae98c6ada  /tmp/c6c/LARE_BC2_C6C_RESULT.json" | sha256sum -c -
+          python3 -c "import json; r=json.load(open('/tmp/c6c/LARE_BC2_C6C_RESULT.json')); assert r['status']=='C6C_BEMR_MATHEMATICALLY_QUALIFIED'; assert all(r['gates'].values()); assert r['case_count']==168"
+          cp /tmp/c6c/LARE_BC2_C6C_RESULT.json integration/f-rom/LARE_BC2_C6C_RESULT.json
+
+      - name: Commit exact result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6C_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist exact C6C BEMR result"
+          git push origin HEAD:work/f-rom-lare-rs1
