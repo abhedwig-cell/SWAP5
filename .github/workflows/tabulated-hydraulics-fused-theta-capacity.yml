@@ -1,0 +1,209 @@
+name: TAB-HYD fused theta-capacity qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-fused-theta-capacity.yml'
+      - 'research/tabulated_hydraulics/patch_watcon_capacity_reuse.py'
+      - 'research/tabulated_hydraulics/patch_exact_head_eval_cache.py'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical, cached baseline and fused theta-C
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py swap-src/src/soil/sptabulated.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_exact_head_eval_cache.py swap-src/src/soil/sptabulated.f90 swap-src/src/utils/soilhydraulicsutils.f90
+          cp -a swap-src swap-fused-src
+
+          meson setup swap-src/build-base swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-base
+          cp swap-src/build-base/swap swap-table-base
+
+          python3 research/tabulated_hydraulics/patch_watcon_capacity_reuse.py swap-fused-src/src/soil/sptabulated.f90 swap-fused-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-fused-src/build swap-fused-src -Denable_pfunit=false
+          meson compile -C swap-fused-src/build
+          cp swap-fused-src/build/swap swap-table-fused
+
+      - name: Prepare unchanged log-head400 cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/fused/envelope
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          ls=importlib.util.spec_from_file_location("logprep",lp)
+          logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
+          prep=logprep.prep; prep.uniform_rows=lambda p: logprep.loghead_rows(p,400)
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          root=Path("build/fused/envelope")
+          for scenario,sc in prep.SCENARIOS.items():
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k0",params,sc,False,0)
+              prep.prepare_case(src,root/f"{scenario}__fused_k0",params,sc,True,0)
+          for scenario in ("coarse_dry_free","coarse_dry_pulse"):
+              sc=prep.SCENARIOS[scenario]; params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k1",params,sc,False,1)
+              prep.prepare_case(src,root/f"{scenario}__fused_k1",params,sc,True,1)
+
+          hp=Path("research/tabulated_hydraulics/prepare_hupsel_e2e.py")
+          hs=importlib.util.spec_from_file_location("hprep",hp)
+          hprep=importlib.util.module_from_spec(hs); hs.loader.exec_module(hprep)
+          hroot=Path("build/fused/hupsel"); hroot.mkdir(parents=True)
+          psets=[dict(ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],h_enpr=0.0,comment=f"hupsel_{i}") for i,p in enumerate(hprep.PARAMS)]
+          def overwrite(dst):
+              for name,p in zip(hprep.TABLE_NAMES,psets):
+                  rows=logprep.loghead_rows(p,400)
+                  with (dst/name).open("w",newline="\n") as fh:
+                      fh.write("* TAB-HYD proven log-head400 table\nheadtab,thetatab,conductab\n")
+                      for h,t,k in rows: fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
+          for kval in (0,1):
+              a=hroot/f"analytic_k{kval}"; shutil.copytree(src,a); hprep.edit_case(a,False,kval)
+              b=hroot/f"base_k{kval}"; shutil.copytree(src,b); hprep.edit_case(b,True,kval); overwrite(b)
+              f=hroot/f"fused_k{kval}"; shutil.copytree(b,f)
+          PY
+
+      - name: Transfer fidelity and exact equivalence
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_case () {
+            work="$1"; bin="$2"
+            pushd "$work" >/dev/null; set +e; timeout 30 "$bin" >/dev/null 2>&1; rc=$?; set -e; popd >/dev/null
+            test "$rc" -eq 100
+          }
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            run_case "build/fused/envelope/${scenario}__analytic_k0" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/fused/envelope/${scenario}__fused_k0" "$GITHUB_WORKSPACE/swap-table-fused"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/fused/envelope/${scenario}__analytic_k0" "build/fused/envelope/${scenario}__fused_k0" \
+              "build/fused/${scenario}__k0.json" --label "${scenario},K0,fused-theta-C"
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            run_case "build/fused/envelope/${scenario}__analytic_k1" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/fused/envelope/${scenario}__fused_k1" "$GITHUB_WORKSPACE/swap-table-fused"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/fused/envelope/${scenario}__analytic_k1" "build/fused/envelope/${scenario}__fused_k1" \
+              "build/fused/${scenario}__k1.json" --label "${scenario},K1,fused-theta-C"
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={"GWL":(0.05,0.01),"DSTOR":(0.02,0.005),"DRAINAGE":(0.02,0.005),"DRN":(0.02,0.005),"QBOTTOM":(0.02,0.005),"TACT":(0.02,0.005)}
+          failed=[]
+          for p in sorted(Path("build/fused").glob("*__k[01].json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]
+                  if not (m["max_abs"]<=ma and m["rmse"]<=rm): failed.append((d["label"],metric,m))
+          print(f"fidelity_failures={len(failed)}")
+          if failed: raise SystemExit(str(failed))
+          PY
+
+          for kval in 0 1; do
+            run_case "build/fused/hupsel/base_k$kval" "$GITHUB_WORKSPACE/swap-table-base"
+            run_case "build/fused/hupsel/fused_k$kval" "$GITHUB_WORKSPACE/swap-table-fused"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/fused/hupsel/base_k$kval" "build/fused/hupsel/fused_k$kval" \
+              "build/fused/base-vs-fused-k$kval.json" --label "base-vs-fused,K$kval"
+          done
+
+      - name: Repeated Hupsel benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,statistics,subprocess,time
+          root=Path("build/fused").resolve()
+          routes={
+            "analytic_k0":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k0"),
+            "base_k0":(Path("swap-table-base").resolve(),root/"hupsel/base_k0"),
+            "fused_k0":(Path("swap-table-fused").resolve(),root/"hupsel/fused_k0"),
+            "analytic_k1":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k1"),
+            "base_k1":(Path("swap-table-base").resolve(),root/"hupsel/base_k1"),
+            "fused_k1":(Path("swap-table-fused").resolve(),root/"hupsel/fused_k1")}
+          def one(label):
+              binary,work=routes[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists(): p.unlink()
+              t=time.perf_counter(); proc=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30); dt=time.perf_counter()-t
+              if proc.returncode!=100: raise RuntimeError((label,proc.returncode))
+              return dt
+          for label in routes: one(label)
+          vals={x:[] for x in routes}; rows=[]; labels=list(routes)
+          for rnd in range(18):
+              order=labels[rnd%6:]+labels[:rnd%6]
+              if rnd%2: order=list(reversed(order))
+              for label in order:
+                  dt=one(label); vals[label].append(dt); rows.append((rnd,label,dt))
+          med={k:statistics.median(v) for k,v in vals.items()}
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["round","route","seconds"]); w.writerows(rows)
+          lines=[f"{key}_median_s={med[key]:.9g}" for key in labels]
+          for kval in (0,1):
+              lines.append(f"fused_k{kval}_delta_vs_analytic_pct={100*(med[f'fused_k{kval}']/med[f'analytic_k{kval}']-1):.9g}")
+              lines.append(f"fused_vs_base_k{kval}_pct={100*(med[f'fused_k{kval}']/med[f'base_k{kval}']-1):.9g}")
+          (root/"benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-fused-theta-capacity
+          path: |
+            build/fused/*__k*.json
+            build/fused/base-vs-fused-k*.json
+            build/fused/benchmark.csv
+            build/fused/benchmark-summary.txt
