@@ -1,0 +1,245 @@
+{
+  "schema": "swap5.layer-rom.phase-a.reference-preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-REF1",
+  "phase": "PREREGISTERED_BEFORE_FIRST_INDEPENDENT_REFERENCE_EXECUTION",
+  "canonical_basis": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "purpose": "Generate an independent fine R16 B01 state/response library for frozen Layer-ROM representation and later closure tests.",
+  "independence": {
+    "prior_rs1_library_reused": false,
+    "new_initial_state_anchors": true,
+    "new_forcing_histories": true,
+    "layer_boundaries_already_frozen_in": "integration/f-rom/LAYER_ROM_PHASE_A_PREREGISTRATION.json",
+    "candidate_outputs_seen_before_this_preregistration": false
+  },
+  "geometry": {
+    "material": "B01",
+    "depth_cm": 160,
+    "nodes": 16,
+    "dz_cm": 10
+  },
+  "physics": {
+    "matrix_water_only": true,
+    "ET": false,
+    "root_uptake": false,
+    "macropores": false,
+    "frost": false,
+    "snow": false,
+    "drainage_response": false,
+    "production_coupling": false
+  },
+  "time": {
+    "seed_dt_day": 0.0016,
+    "seed_intervals": 2,
+    "observation_dt_day": 0.0008,
+    "steps_per_history": 1024,
+    "horizon_day": 0.8192
+  },
+  "forcing_scale": {
+    "equilibrium_bottom_and_top_flux": "qeq = -K(h0) for the selected initial effective saturation",
+    "top_pulse_delta": "0.0125 * K(h0)",
+    "rationale": "dimensionless perturbation frozen before execution; no candidate-result tuning"
+  },
+  "histories": [
+    {
+      "id": "F00",
+      "regime": "FLUX_LAB",
+      "se0": 0.6,
+      "bottom_mode": 2,
+      "bottom_flux": "qeq",
+      "bottom_head": "unused",
+      "segments": [
+        [
+          "TOP_PLUS",
+          192
+        ],
+        [
+          "HOLD",
+          320
+        ],
+        [
+          "TOP_MINUS",
+          192
+        ],
+        [
+          "HOLD",
+          320
+        ]
+      ]
+    },
+    {
+      "id": "F01",
+      "regime": "FLUX_LAB",
+      "se0": 0.75,
+      "bottom_mode": 2,
+      "bottom_flux": "qeq",
+      "bottom_head": "unused",
+      "segments": [
+        [
+          "TOP_MINUS",
+          128
+        ],
+        [
+          "HOLD",
+          128
+        ],
+        [
+          "TOP_PLUS",
+          384
+        ],
+        [
+          "HOLD",
+          384
+        ]
+      ]
+    },
+    {
+      "id": "F02",
+      "regime": "FLUX_LAB",
+      "se0": 0.9,
+      "bottom_mode": 2,
+      "bottom_flux": "qeq",
+      "bottom_head": "unused",
+      "segments": [
+        [
+          "TOP_PLUS",
+          128
+        ],
+        [
+          "TOP_MINUS",
+          256
+        ],
+        [
+          "HOLD",
+          128
+        ],
+        [
+          "TOP_PLUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ]
+    },
+    {
+      "id": "H00",
+      "regime": "HEAD_LAB",
+      "se0": 0.6,
+      "bottom_mode": 5,
+      "bottom_flux": "not prescribed after seed",
+      "bottom_head": "0.75*h0 fixed for all 1024 steps",
+      "segments": [
+        [
+          "TOP_PLUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ],
+        [
+          "TOP_MINUS",
+          256
+        ],
+        [
+          "HOLD",
+          256
+        ]
+      ]
+    },
+    {
+      "id": "H01",
+      "regime": "HEAD_LAB",
+      "se0": 0.75,
+      "bottom_mode": 5,
+      "bottom_flux": "not prescribed after seed",
+      "bottom_head": "1.00*h0 fixed for all 1024 steps",
+      "segments": [
+        [
+          "TOP_MINUS",
+          256
+        ],
+        [
+          "HOLD",
+          128
+        ],
+        [
+          "TOP_PLUS",
+          256
+        ],
+        [
+          "HOLD",
+          384
+        ]
+      ]
+    },
+    {
+      "id": "H02",
+      "regime": "HEAD_LAB",
+      "se0": 0.9,
+      "bottom_mode": 5,
+      "bottom_flux": "not prescribed after seed",
+      "bottom_head": "1.25*h0 fixed for all 1024 steps",
+      "segments": [
+        [
+          "TOP_PLUS",
+          128
+        ],
+        [
+          "HOLD",
+          128
+        ],
+        [
+          "TOP_MINUS",
+          384
+        ],
+        [
+          "HOLD",
+          384
+        ]
+      ]
+    }
+  ],
+  "reference_policy": {
+    "route": "current admitted serialized Reference Richards observation seam",
+    "first_attempt": "unchanged strict Reference numerical policy",
+    "bounded_fallback": "reuse only the already-qualified representation-bound total/local retry classes used by the RS1-GW Reference harness",
+    "forbidden": [
+      "new retry class",
+      "candidate-dependent tolerance",
+      "dt subdivision invented after failure",
+      "forcing amplitude retuning"
+    ],
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "deterministic_replay": "O0 and O2 stdout must be bitwise identical"
+  },
+  "required_outputs": [
+    "fine theta and pressure-head profile every step",
+    "total storage",
+    "0-40 cm storage",
+    "40-120 cm storage",
+    "120-160 cm storage",
+    "top exchange",
+    "bottom outward exchange",
+    "instantaneous bottom flux",
+    "transaction mass residual",
+    "nonlinear iterations/backtracking/fallback indicator"
+  ],
+  "phase_gates": [
+    "all 6144 states accepted under frozen Reference policy",
+    "no nonfinite or physically invalid state",
+    "absolute transaction mass residual <= 1e-12 cm",
+    "O0/O2 stdout bitwise identity",
+    "source/reference diff from canonical basis remains empty"
+  ],
+  "after_reference_generation": {
+    "state_screen": "apply the already frozen L2/L3/L4/L6 and U2/U3/U4/U6 matrix without changing boundaries",
+    "pair_selection": "freeze nearest/adversarial reduced-state pairs before future-response probes",
+    "future_probe_preregistration": "separate commit required before any pair future response is executed",
+    "closure_execution": "not authorized by this Reference preregistration"
+  },
+  "application_acceptance": false,
+  "production_rom_authorized": false
+}
