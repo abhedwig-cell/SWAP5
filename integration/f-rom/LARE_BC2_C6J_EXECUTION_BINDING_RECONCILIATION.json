@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.lare.bc2.c6j.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6J",
+  "status": "TECHNICAL_NUMPY_TRAPEZOID_API_REPAIR_BEFORE_C6J_RESULT",
+  "decision": "REPAIR_EXECUTION_API_ONLY_KEEP_C6J_SCIENTIFIC_PREREGISTRATION_FROZEN",
+  "superseded_run": {
+    "workflow_run": 35530219380,
+    "execution_head": "f67b1fc3cb7e1b78205566efadfa49c997c781a0",
+    "authority_lock_passed": true,
+    "failure_step": "Execute exact C6J state shard",
+    "failure": "AttributeError: numpy 2.5.3 has no attribute trapz",
+    "failure_location": "tests/rom/qualify_lare_bc2_c6j_femo.py metric_from_profiles composite-trapezoid integration",
+    "hydrological_response_generated": false,
+    "aggregate_result_generated": false,
+    "scientific_authority": false
+  },
+  "repair": {
+    "old_qualifier_blob": "6c12dde9395e2d475d6bb8f3d604a49b8eb57857",
+    "change": "Replace deprecated/removed np.trapz API calls with np.trapezoid.",
+    "numerical_rule_changed": false,
+    "quadrature_rule": "composite trapezoidal exactly as preregistered",
+    "state_domains_changed": false,
+    "FEMO_equations_changed": false,
+    "starts_changed": false,
+    "tolerances_changed": false,
+    "state_scaling_changed": false,
+    "metric_definition_changed": false,
+    "boundary_operators_changed": false,
+    "qualification_gates_changed": false,
+    "response_based_retuning": false
+  },
+  "authoritative_run_rule": "Only a run triggered after the repaired qualifier and workflow blobs are rebound in the unchanged C6J preregistration may become C6J scientific authority.",
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "c6d_response_used_for_design": false,
+    "c6e_failures_used_for_penalty_design": false,
+    "BEMR_reopened": false,
+    "response_based_design": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
