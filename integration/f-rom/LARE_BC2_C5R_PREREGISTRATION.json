@@ -234,9 +234,23 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
     "response_based_design": false,
-    "reference_materializer": "tests/rom/materialize_lare_bc2_c5r_reference.py"
+    "reference_materializer": "tests/rom/materialize_lare_bc2_c5r_reference.py",
+    "reference_materializer_blob": "6d7d5c3283dfe1a6d8d433f2fc03e0255711dc91",
+    "reference_slice_materializer": "tests/rom/materialize_lare_bc2_c5r_reference_slice.py",
+    "reference_slice_materializer_blob": "52f5ee43bc85d436d06a0dd4b524a6bf34dde7f4",
+    "analyzer": "tests/rom/analyze_lare_bc2_c5r_breadth.py",
+    "analyzer_blob": "1447a7272fed7369279c8ffa217d024330ae0dbd",
+    "analyzer_base": "tests/rom/analyze_lare_bc2_c5n_fresh_highres.py",
+    "analyzer_base_blob": "c14ff931d0c34fec7989a96e553891468cbd2f56",
+    "lare_runner": "tests/rom/run_lare_bc1_stage_b.py",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "source_harness": "tests/rom/test_lare_rs1_gw_library.f90",
+    "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
+    "c5p_reference_materializer_blob": "f9692ebc302603ce3c590425a37a45b3bdb36d01",
+    "allowed_new_code": "fresh R01-R04 Reference materialization, history-sliced execution, prospectively frozen D12/D8 breadth candidates, and preregistered comparator analysis",
+    "prohibited_new_code": "new closure terms, response-driven partition changes, scalar tuning, boundary counterfactuals, production Reference edits"
   },
   "model_changed": false
 }
