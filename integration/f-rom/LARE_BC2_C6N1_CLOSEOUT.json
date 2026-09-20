@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.lare.bc2.c6n1.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N1",
+  "status": "CLOSED_R2048_T32_THREE_LEVEL_SPACE_TIME_REFERENCE_UNCERTAINTY_QUALIFIED",
+  "decision": "AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON",
+  "role": "REFERENCE_ONLY_THREE_LEVEL_NUMERICAL_UNCERTAINTY_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json",
+    "result": "integration/f-rom/LARE_BC2_C6N1_RESULT.json",
+    "workflow_run": 35534785660,
+    "execution_head": "7dba3ffb793d3c1128d335dc3968d09e8aa9babf",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6n1-segmented.yml",
+    "artifact_id": 10613517378,
+    "artifact_digest": "sha256:63d2dc2b9063159fe39119765d6798b06f266df7d9103a74c61a19bfd68dadb1",
+    "exact_result_sha256": "1faf97367157414c19cf881f1b3e24abbd70e3e2c5254b2326fb21a7c9a783f5",
+    "reference_target": "R2048_T32"
+  },
+  "execution": {
+    "checkpoint_topology_qualification": true,
+    "segmented_R2048_histories": 8,
+    "segments_per_history": 4,
+    "R2048_segment_jobs_successful": 32,
+    "route_reuse_identity_verified": true,
+    "O0_O2_identity_preserved": true,
+    "analyzer_success": true,
+    "integrity_pass": true,
+    "candidate_response_generated": false
+  },
+  "qualification": {
+    "B01": {
+      "pass": true,
+      "spatial_order_range": [
+        1.9999346342137763,
+        1.999978701073657
+      ],
+      "temporal_order_range": [
+        1.0005598241484042,
+        1.0006278322923876
+      ],
+      "combined_uncertainty": {
+        "surface_0_20_storage_rmse_cm": 0.0000021505344652068526,
+        "root_zone_0_40_storage_rmse_cm": 0.000003267686187580161,
+        "upper_0_80_storage_rmse_cm": 0.000004408940031928221,
+        "mapped_10cm_theta_rmse": 1.383646394742705e-7
+      }
+    },
+    "B14": {
+      "pass": true,
+      "spatial_order_range": [
+        1.9995696264590233,
+        2.003636747488381
+      ],
+      "temporal_order_range": [
+        0.9995094142720944,
+        1.001457874406274
+      ],
+      "combined_uncertainty": {
+        "surface_0_20_storage_rmse_cm": 8.111763164017798e-9,
+        "root_zone_0_40_storage_rmse_cm": 2.129281405083575e-9,
+        "upper_0_80_storage_rmse_cm": 1.9809067667865525e-11,
+        "mapped_10cm_theta_rmse": 6.03158181790407e-10
+      }
+    }
+  },
+  "interpretation": [
+    "Both B01 and B14 show monotone three-level spatial and temporal convergence for all four frozen surface/profile metrics.",
+    "Observed spatial order is approximately second order; observed temporal order is approximately first order.",
+    "R2048_T32 is admitted as a numerical Reference with explicit metric-specific uncertainty bands, not as continuum truth.",
+    "Candidate-to-Reference differences at or below U_combined are numerically unresolved; larger differences are comparator-relative representation evidence only.",
+    "No hydrological application threshold, performance claim or production admission follows from C6N1."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6N2",
+    "state": "EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON_AUTHORIZED",
+    "question": "On the exposed Reference-design U01-U04 surface histories, which already-existing fixed-partition LARE representations produce differences above the qualified Reference uncertainty for upper-zone/profile outputs, and how does the required representation depend on material and output?",
+    "constraints": [
+      "Use only the existing frozen representation family; no new partition, closure or state.",
+      "Use R2048_T32 and the C6N1 metric-specific U_combined values as numerical-resolution authority.",
+      "Do not use C6N2 response to redefine the Reference bands or select application tolerances.",
+      "Bottom flux is prescribed and excluded from fidelity adjudication.",
+      "No ET/root-uptake, performance or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
