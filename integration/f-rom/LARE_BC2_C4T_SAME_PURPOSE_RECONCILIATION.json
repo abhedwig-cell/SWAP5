@@ -1,0 +1,182 @@
+{
+  "application_acceptance_adjudicated": false,
+  "cost_rule_changed": false,
+  "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+  "formal_performance_claim": false,
+  "negative_rule_changed": false,
+  "phase": "PREREGISTERED_LOGIC_RECONCILIATION_WRITTEN_BEFORE_TIMING_RESULT_EXPOSURE",
+  "production_rom_authorized": false,
+  "purpose_frontiers": {
+    "GW": {
+      "dominated_by": {
+        "COR_R12": [
+          "R16"
+        ],
+        "COR_R2": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R3": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R4": [
+          "R16"
+        ],
+        "COR_R5": [
+          "COR_R12",
+          "R16"
+        ],
+        "COR_R6": [
+          "COR_R12",
+          "COR_R8",
+          "R16"
+        ],
+        "COR_R8": [
+          "COR_R12",
+          "R16"
+        ],
+        "FMC": [
+          "COR_R12",
+          "COR_R4",
+          "COR_R5",
+          "COR_R6",
+          "COR_R8",
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "LARE_R12": [
+          "R16"
+        ],
+        "LARE_R3": [],
+        "LARE_R4": [],
+        "LARE_R5": [],
+        "LARE_R6": [],
+        "LARE_R8": [],
+        "R16": []
+      },
+      "frontier": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8",
+        "R16"
+      ],
+      "minimum_lare_frontier_member": "LARE_R3",
+      "positive_lare_members": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8"
+      ]
+    },
+    "PROFILE": {
+      "dominated_by": {
+        "COR_R12": [
+          "R16"
+        ],
+        "COR_R2": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R3": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R4": [
+          "R16"
+        ],
+        "COR_R5": [
+          "COR_R12",
+          "R16"
+        ],
+        "COR_R6": [
+          "COR_R12",
+          "COR_R8",
+          "R16"
+        ],
+        "COR_R8": [
+          "COR_R12",
+          "R16"
+        ],
+        "FMC": [
+          "COR_R12",
+          "LARE_R12",
+          "R16"
+        ],
+        "LARE_R12": [
+          "R16"
+        ],
+        "LARE_R3": [],
+        "LARE_R4": [],
+        "LARE_R5": [],
+        "LARE_R6": [],
+        "LARE_R8": [],
+        "R16": []
+      },
+      "frontier": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8",
+        "R16"
+      ],
+      "minimum_lare_frontier_member": "LARE_R3",
+      "positive_lare_members": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8"
+      ]
+    }
+  },
+  "raw_fidelity_changed": false,
+  "raw_timing_changed": false,
+  "reason": "Apply the C4T positive decision clause literally per purpose rather than requiring absence of non-LARE dominance on the other purpose.",
+  "resolved_cheaper_than_R16": {
+    "COR_R12": false,
+    "COR_R2": false,
+    "COR_R3": false,
+    "COR_R4": false,
+    "COR_R5": false,
+    "COR_R6": false,
+    "COR_R8": false,
+    "FMC": false,
+    "LARE_R12": false,
+    "LARE_R3": true,
+    "LARE_R4": true,
+    "LARE_R5": true,
+    "LARE_R6": true,
+    "LARE_R8": true
+  },
+  "schema": "swap5.lare.bc2.c4t.same-purpose-reconciliation.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C4T",
+  "workflow_result_decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+  "workflow_result_differs": false,
+  "workstream": "F-ROM-LARE"
+}

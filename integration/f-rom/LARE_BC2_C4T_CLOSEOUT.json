@@ -1,0 +1,511 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "artifact_digest": "sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833",
+    "artifact_id": 10599940848,
+    "compiled_equivalence_sha256": "03c44855fcb3e282695c66f3cc248b2b7041f259d14aa2cdcbd97e8be55605ea",
+    "execution_head": "4f938b040d92ee46646e3397278c78a46942944c",
+    "fidelity_sha256": "044ce7897ee35f94812d86962c11b6a09da0688bbdd56edbf7b5fba6600c2b45",
+    "raw_result_sha256": "fc83b5229a0b3c0be3fcdfd93a30fe9d564144b32d70f97a4ce8aadc35dac7a6",
+    "timing_sha256": "f525323dad0505bf09fb085e97e50e303314e902525a5e327a9f1295147cf0ff",
+    "workflow_run": 35492342285
+  },
+  "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+  "formal_performance_claim": false,
+  "host_admitted_for_cpu_baseline": false,
+  "model_changed": false,
+  "next_authority": "LARE_PURPOSE_ACCEPTANCE_GW_ENVELOPE_AUTHORITY_BINDING",
+  "performance_comparison_authorized": false,
+  "pre_result_same_purpose_reconciliation": {
+    "application_acceptance_adjudicated": false,
+    "cost_rule_changed": false,
+    "decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+    "formal_performance_claim": false,
+    "negative_rule_changed": false,
+    "phase": "PREREGISTERED_LOGIC_RECONCILIATION_WRITTEN_BEFORE_TIMING_RESULT_EXPOSURE",
+    "production_rom_authorized": false,
+    "purpose_frontiers": {
+      "GW": {
+        "dominated_by": {
+          "COR_R12": [
+            "R16"
+          ],
+          "COR_R2": [
+            "LARE_R12",
+            "LARE_R4",
+            "LARE_R5",
+            "LARE_R6",
+            "LARE_R8",
+            "R16"
+          ],
+          "COR_R3": [
+            "LARE_R12",
+            "LARE_R4",
+            "LARE_R5",
+            "LARE_R6",
+            "LARE_R8",
+            "R16"
+          ],
+          "COR_R4": [
+            "R16"
+          ],
+          "COR_R5": [
+            "COR_R12",
+            "R16"
+          ],
+          "COR_R6": [
+            "COR_R12",
+            "COR_R8",
+            "R16"
+          ],
+          "COR_R8": [
+            "COR_R12",
+            "R16"
+          ],
+          "FMC": [
+            "COR_R12",
+            "COR_R4",
+            "COR_R5",
+            "COR_R6",
+            "COR_R8",
+            "LARE_R12",
+            "LARE_R4",
+            "LARE_R5",
+            "LARE_R6",
+            "LARE_R8",
+            "R16"
+          ],
+          "LARE_R12": [
+            "R16"
+          ],
+          "LARE_R3": [],
+          "LARE_R4": [],
+          "LARE_R5": [],
+          "LARE_R6": [],
+          "LARE_R8": [],
+          "R16": []
+        },
+        "frontier": [
+          "LARE_R3",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "minimum_lare_frontier_member": "LARE_R3",
+        "positive_lare_members": [
+          "LARE_R3",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8"
+        ]
+      },
+      "PROFILE": {
+        "dominated_by": {
+          "COR_R12": [
+            "R16"
+          ],
+          "COR_R2": [
+            "LARE_R12",
+            "LARE_R4",
+            "LARE_R5",
+            "LARE_R6",
+            "LARE_R8",
+            "R16"
+          ],
+          "COR_R3": [
+            "LARE_R12",
+            "LARE_R4",
+            "LARE_R5",
+            "LARE_R6",
+            "LARE_R8",
+            "R16"
+          ],
+          "COR_R4": [
+            "R16"
+          ],
+          "COR_R5": [
+            "COR_R12",
+            "R16"
+          ],
+          "COR_R6": [
+            "COR_R12",
+            "COR_R8",
+            "R16"
+          ],
+          "COR_R8": [
+            "COR_R12",
+            "R16"
+          ],
+          "FMC": [
+            "COR_R12",
+            "LARE_R12",
+            "R16"
+          ],
+          "LARE_R12": [
+            "R16"
+          ],
+          "LARE_R3": [],
+          "LARE_R4": [],
+          "LARE_R5": [],
+          "LARE_R6": [],
+          "LARE_R8": [],
+          "R16": []
+        },
+        "frontier": [
+          "LARE_R3",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "minimum_lare_frontier_member": "LARE_R3",
+        "positive_lare_members": [
+          "LARE_R3",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8"
+        ]
+      }
+    },
+    "raw_fidelity_changed": false,
+    "raw_timing_changed": false,
+    "reason": "Apply the C4T positive decision clause literally per purpose rather than requiring absence of non-LARE dominance on the other purpose.",
+    "resolved_cheaper_than_R16": {
+      "COR_R12": false,
+      "COR_R2": false,
+      "COR_R3": false,
+      "COR_R4": false,
+      "COR_R5": false,
+      "COR_R6": false,
+      "COR_R8": false,
+      "FMC": false,
+      "LARE_R12": false,
+      "LARE_R3": true,
+      "LARE_R4": true,
+      "LARE_R5": true,
+      "LARE_R6": true,
+      "LARE_R8": true
+    },
+    "schema": "swap5.lare.bc2.c4t.same-purpose-reconciliation.v1",
+    "speed_claim_authorized": false,
+    "work_unit": "LARE-BC2-C4T",
+    "workflow_result_decision": "C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED",
+    "workflow_result_differs": false,
+    "workstream": "F-ROM-LARE"
+  },
+  "production_rom_authorized": false,
+  "purpose_frontiers": {
+    "GW": {
+      "dominated_by": {
+        "COR_R12": [
+          "R16"
+        ],
+        "COR_R2": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R3": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R4": [
+          "R16"
+        ],
+        "COR_R5": [
+          "COR_R12",
+          "R16"
+        ],
+        "COR_R6": [
+          "COR_R12",
+          "COR_R8",
+          "R16"
+        ],
+        "COR_R8": [
+          "COR_R12",
+          "R16"
+        ],
+        "FMC": [
+          "COR_R12",
+          "COR_R4",
+          "COR_R5",
+          "COR_R6",
+          "COR_R8",
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "LARE_R12": [
+          "R16"
+        ],
+        "LARE_R3": [],
+        "LARE_R4": [],
+        "LARE_R5": [],
+        "LARE_R6": [],
+        "LARE_R8": [],
+        "R16": []
+      },
+      "frontier": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8",
+        "R16"
+      ],
+      "minimum_lare_frontier_member": "LARE_R3",
+      "positive_lare_members": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8"
+      ]
+    },
+    "PROFILE": {
+      "dominated_by": {
+        "COR_R12": [
+          "R16"
+        ],
+        "COR_R2": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R3": [
+          "LARE_R12",
+          "LARE_R4",
+          "LARE_R5",
+          "LARE_R6",
+          "LARE_R8",
+          "R16"
+        ],
+        "COR_R4": [
+          "R16"
+        ],
+        "COR_R5": [
+          "COR_R12",
+          "R16"
+        ],
+        "COR_R6": [
+          "COR_R12",
+          "COR_R8",
+          "R16"
+        ],
+        "COR_R8": [
+          "COR_R12",
+          "R16"
+        ],
+        "FMC": [
+          "COR_R12",
+          "LARE_R12",
+          "R16"
+        ],
+        "LARE_R12": [
+          "R16"
+        ],
+        "LARE_R3": [],
+        "LARE_R4": [],
+        "LARE_R5": [],
+        "LARE_R6": [],
+        "LARE_R8": [],
+        "R16": []
+      },
+      "frontier": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8",
+        "R16"
+      ],
+      "minimum_lare_frontier_member": "LARE_R3",
+      "positive_lare_members": [
+        "LARE_R3",
+        "LARE_R4",
+        "LARE_R5",
+        "LARE_R6",
+        "LARE_R8"
+      ]
+    }
+  },
+  "resolved_cheaper_than_R16": {
+    "COR_R12": false,
+    "COR_R2": false,
+    "COR_R3": false,
+    "COR_R4": false,
+    "COR_R5": false,
+    "COR_R6": false,
+    "COR_R8": false,
+    "FMC": false,
+    "LARE_R12": false,
+    "LARE_R3": true,
+    "LARE_R4": true,
+    "LARE_R5": true,
+    "LARE_R6": true,
+    "LARE_R8": true
+  },
+  "schema": "swap5.lare.bc2.c4t.closeout.v1",
+  "scientific_interpretation": [
+    "Blind C4R hydrological fidelity plus C4S full common-cohort authority supports a resolved shared-host cost-fidelity signal for LARE R3-R8 on this fixed-water-table B01 workload.",
+    "The result is purpose-frontier evidence, not a claim that every low-dimensional LARE member is hydrologically adequate for a real application.",
+    "R4 is the blind minimum dimension that crossed R2 and FMC on the groundwater fidelity vector in C4R, while R12 was required to cross FMC when mapped 10-cm profile fidelity was included.",
+    "C4T timing shows LARE R3-R8 resolved cheaper than fine R16 on this host; LARE R12 is resolved more expensive than R16.",
+    "Same-partition CoRichards can be much more hydrologically faithful at higher dimension but is resolved more expensive than R16 on this workload because the complete admitted fallback policy is included.",
+    "FMC is also resolved more expensive than R16 in this compiled C4T screen; this does not supersede separately governed F-ROMV2 D25 evidence because workload, implementation path and timing experiment differ.",
+    "Without independently sourced application thresholds, frontier membership alone cannot choose R3, R4, R5, R6 or R8 for a real groundwater application.",
+    "The next scientific requirement is a purpose-dependent application acceptance envelope, beginning with groundwater use, not another closure or timing optimization."
+  ],
+  "screening_only": true,
+  "selected_cost_fidelity_summary": {
+    "COR_R12": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 9.068558285046774e-12,
+        "bottom_flux_sign_errors": 0,
+        "cumulative_bottom_rmse_cm": 7.627482662061554e-15,
+        "mapped_theta_rmse": 0.00032295225654491356,
+        "storage_rmse_cm": 7.627482662061554e-15
+      },
+      "mean_cpu_ratio_to_R16": 2.881030038113602,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.03179254010416666
+    },
+    "COR_R4": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.17268447608224521,
+        "bottom_flux_sign_errors": 0,
+        "cumulative_bottom_rmse_cm": 0.0035730725094454806,
+        "mapped_theta_rmse": 0.02891176942079225,
+        "storage_rmse_cm": 0.0035730725094444736
+      },
+      "mean_cpu_ratio_to_R16": 2.638122456365559,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.029112023437500002
+    },
+    "COR_R8": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 3.308088986277072e-06,
+        "bottom_flux_sign_errors": 0,
+        "cumulative_bottom_rmse_cm": 3.542894577735253e-08,
+        "mapped_theta_rmse": 0.007814540544793247,
+        "storage_rmse_cm": 3.542894621135864e-08
+      },
+      "mean_cpu_ratio_to_R16": 3.4062746770505505,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.0375886828125
+    },
+    "FMC": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 4.503056378794693,
+        "bottom_flux_sign_errors": 4,
+        "cumulative_bottom_rmse_cm": 0.1784194492646324,
+        "mapped_theta_rmse": 0.0028014515401062726,
+        "storage_rmse_cm": 0.1784194492646273
+      },
+      "mean_cpu_ratio_to_R16": 6.795007553764496,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.07498378958333334
+    },
+    "LARE_R12": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.09287249853374263,
+        "bottom_flux_sign_errors": 1,
+        "cumulative_bottom_rmse_cm": 0.003113767520544167,
+        "mapped_theta_rmse": 0.00032788670852877363,
+        "storage_rmse_cm": 0.0031137675205397475
+      },
+      "mean_cpu_ratio_to_R16": 1.4433968903004792,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.015928071874999998
+    },
+    "LARE_R3": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 1.9233891036737358,
+        "bottom_flux_sign_errors": 35,
+        "cumulative_bottom_rmse_cm": 0.04601214158154669,
+        "mapped_theta_rmse": 0.03857070309872652,
+        "storage_rmse_cm": 0.04601214158153579
+      },
+      "mean_cpu_ratio_to_R16": 0.41470037284809513,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.004576272395833333
+    },
+    "LARE_R4": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.28192349905536246,
+        "bottom_flux_sign_errors": 1,
+        "cumulative_bottom_rmse_cm": 0.005734214567883345,
+        "mapped_theta_rmse": 0.028917216263134846,
+        "storage_rmse_cm": 0.0057342145678791045
+      },
+      "mean_cpu_ratio_to_R16": 0.5165215500931707,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.005699882291666666
+    },
+    "LARE_R5": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.09867745837481132,
+        "bottom_flux_sign_errors": 1,
+        "cumulative_bottom_rmse_cm": 0.00312922054705379,
+        "mapped_theta_rmse": 0.0216196844041433,
+        "storage_rmse_cm": 0.003129220547059971
+      },
+      "mean_cpu_ratio_to_R16": 0.634012759157556,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.006996413020833332
+    },
+    "LARE_R6": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.09294109912748069,
+        "bottom_flux_sign_errors": 1,
+        "cumulative_bottom_rmse_cm": 0.0031133801324331354,
+        "mapped_theta_rmse": 0.01584726431670571,
+        "storage_rmse_cm": 0.003113380132422719
+      },
+      "mean_cpu_ratio_to_R16": 0.7485715245851448,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.008260583854166666
+    },
+    "LARE_R8": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.09287249292140921,
+        "bottom_flux_sign_errors": 1,
+        "cumulative_bottom_rmse_cm": 0.0031137677437941412,
+        "mapped_theta_rmse": 0.007815203048742596,
+        "storage_rmse_cm": 0.0031137677438065558
+      },
+      "mean_cpu_ratio_to_R16": 0.9836789223657837,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.010855024479166666
+    },
+    "R16": {
+      "fidelity": {
+        "bottom_flux_rmse_cm_per_day": 0.0,
+        "bottom_flux_sign_errors": 0,
+        "cumulative_bottom_rmse_cm": 0.0,
+        "mapped_theta_rmse": 0.0,
+        "storage_rmse_cm": 0.0
+      },
+      "mean_cpu_ratio_to_R16": 1.0,
+      "mean_cpu_seconds_per_complete_4_history_workload": 0.011035129687499999
+    }
+  },
+  "speed_claim_authorized": false,
+  "status": "CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED",
+  "timing_protocol": {
+    "internal_repetitions": 64,
+    "measured_rounds": 30,
+    "position_balance": "every route every measurement position exactly twice",
+    "warmups_per_route": 3
+  },
+  "work_unit": "LARE-BC2-C4T",
+  "workstream": "F-ROM-LARE"
+}
