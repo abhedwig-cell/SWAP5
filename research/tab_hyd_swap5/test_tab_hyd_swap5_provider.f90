@@ -25,9 +25,10 @@ program test_tab_hyd_swap5_provider
   real(real64) :: theta_tab(nnode), k_tab(nnode), c_tab(nnode), dk_tab(nnode)
   real(real64) :: x_min, x, h, frac
   real(real64) :: max_theta, max_logk, max_logc
+  real(real64) :: max_logk_head, max_logc_head, err_k, err_c
   real(real64) :: branch_theta, branch_logk, branch_logc
   logical :: ok
-  integer :: iscale, ir, q
+  integer :: iscale, ir, q, i, max_logk_node, max_logc_node
 
   call configure_hupsel_like(cof)
   call initialize_b110_default_mvg_parameters(mvg_params,cof)
@@ -43,6 +44,10 @@ program test_tab_hyd_swap5_provider
       max_theta=0.0_real64
       max_logk=0.0_real64
       max_logc=0.0_real64
+      max_logk_head=0.0_real64
+      max_logc_head=0.0_real64
+      max_logk_node=0
+      max_logc_node=0
 
       do q=1,neval
         frac=real(q-1,real64)/real(neval-1,real64)
@@ -56,13 +61,28 @@ program test_tab_hyd_swap5_provider
                      all(ieee_is_finite(c_tab)),101)
         call require(all(k_tab>0.0_real64) .and. all(c_tab>0.0_real64),102)
         max_theta=max(max_theta,maxval(abs(theta_tab-theta_ref)))
-        max_logk=max(max_logk,maxval(abs(log10(k_tab)-log10(k_ref))))
-        max_logc=max(max_logc,maxval(abs(log10(c_tab)-log10(c_ref))))
+        do i=1,nnode
+          err_k=abs(log10(k_tab(i))-log10(k_ref(i)))
+          err_c=abs(log10(c_tab(i))-log10(c_ref(i)))
+          if(err_k>max_logk) then
+            max_logk=err_k
+            max_logk_head=h
+            max_logk_node=i
+          end if
+          if(err_c>max_logc) then
+            max_logc=err_c
+            max_logc_head=h
+            max_logc_node=i
+          end if
+        end do
       end do
 
       call branch_probe(mvg,tab,-1.0e-2_real64,branch_theta,branch_logk,branch_logc)
       write(*,'(ES12.4,",",I0,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10)') &
         scales(iscale),resolutions(ir),max_theta,max_logk,max_logc,branch_theta,branch_logk,branch_logc
+      write(*,'(A,ES12.4,A,I0,A,ES18.10,A,I0,A,ES18.10)') &
+        'DIAG scale=',scales(iscale),' n=',resolutions(ir),' maxK_head=',max_logk_head, &
+        ' maxK_node=',max_logk_node,' maxC_head=',max_logc_head
 
       if(abs(scales(iscale)-0.01_real64)<epsilon(1.0_real64) .and. resolutions(ir)==512) then
         call configure_contract_probe(ps,state,request,tab,ok)
