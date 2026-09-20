@@ -58,9 +58,13 @@ jobs:
           p=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
           q=json.load(open('integration/f-rom/LARE_BC2_C6Q_RECONCILIATION.json'))
           assert p['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
-          assert p['implementation_binding']['state']=='BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
           assert q['decision']=='PREREGISTER_ROOT_ACTIVE_REFERENCE_ONLY_BEFORE_ANY_REDUCED_DYNAMIC_ROOT_FEEDBACK_RESPONSE'
           assert p['scientific_firewall']['reduced_candidate_response_generated'] is False
+          import subprocess
+          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-lare-bc2-c6r.yml'],text=True).strip()
+          assert blob==p['implementation_binding']['workflow_blob']
           PY
 
       - name: Resolve route and source
@@ -155,7 +159,12 @@ jobs:
           import json
           p=json.load(open('integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json'))
           assert p['phase']=='PREREGISTERED_BEFORE_C6R_REFERENCE_RESPONSE'
+          assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['implementation_binding']['execution_binding_complete'] is True
           assert p['implementation_binding']['response_based_design'] is False
+          import subprocess
+          blob=subprocess.check_output(['git','hash-object','.github/workflows/f-rom-lare-bc2-c6r.yml'],text=True).strip()
+          assert blob==p['implementation_binding']['workflow_blob']
           assert p['scientific_firewall']['reduced_candidate_response_generated'] is False
           PY
 
