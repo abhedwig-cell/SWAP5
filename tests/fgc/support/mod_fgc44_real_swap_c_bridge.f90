@@ -181,11 +181,14 @@ contains
     if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
     if(.not.ieee_is_finite(real(predictor_qbot,real64)))return
     revision=committed%current_revision()
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
     call committed%current_time(committed_time,available); if(.not.available)return
     window%t0=committed_time; window%t1=committed_time+real(duration_day,real64)
     active_duration_day=real(duration_day,real64); active_predictor_qbot=real(predictor_qbot,real64)
     qeq=active_predictor_qbot
-    base_forcing%top_flux=qeq; base_forcing%bottom_flux=qeq
+    ! predictor_qbot is the lower-boundary predictor control.  Do not alias it
+    ! onto atmospheric/top forcing when advancing an accepted SWAP state.
+    base_forcing%bottom_flux=qeq
     call materializer%initialize(base_forcing)
     call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)return
     predictor_forcing=base_forcing
