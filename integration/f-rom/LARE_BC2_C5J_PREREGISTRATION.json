@@ -1,0 +1,151 @@
+{
+  "schema": "swap5.lare.bc2.c5j.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5J",
+  "phase": "PREREGISTERED_BEFORE_REFERENCE_BOUNDARY_COUNTERFACTUAL_RESPONSE",
+  "title": "Prospective zero-fit factorial audit of prescribed-head Reference boundary discretization",
+  "scientific_question": "Which discrete ingredient controls the persistent R512-R1024 prescribed-head spatial gap under the C5I B14 T16 workload: half-cell boundary distance semantics, last-cell-center conductivity localization, or their interaction?",
+  "role": "REFERENCE_DIAGNOSTIC_COUNTERFACTUAL_NOT_REFERENCE_REDESIGN",
+  "authority": {
+    "c5i_closeout": "integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json",
+    "c5i_result_sha256": "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302",
+    "c5i_run_id": 35502856809,
+    "c5i_artifact_id": 10602539613,
+    "c5i_artifact_digest": "sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416"
+  },
+  "known_trigger": {
+    "spatial_R512_R1024_T16_rmse_cm_per_day": 0.023396932284054147,
+    "R512_T8_T16_temporal_rmse_cm_per_day": 0.0014666283839065242,
+    "R1024_T8_T16_temporal_rmse_cm_per_day": 0.0017980003195854515,
+    "spatial_gap_confined_to_prescribed_head_phases": true,
+    "hold_gap_zero_or_machine_level": true,
+    "current_reference_bottom_semantics": [
+      "For explicit geometry grid_disnod(NN+1)=0.5*dz(NN).",
+      "For swbotb=5 head_gradient(NN+1)=(h(NN)-hbot)/grid_disnod(NN+1)+1.",
+      "With frozen swkimpl=0 the bottom face conductivity is initialized as kmean(NN+1)=k(NN), i.e. the last cell-center conductivity."
+    ]
+  },
+  "frozen_workload": {
+    "material": "B14",
+    "histories": "exact C5I Z01-Z04",
+    "physical_horizon_day": 0.8192,
+    "output_window_day": 0.0008,
+    "temporal_factor": 16,
+    "transaction_dt_day": 0.00005,
+    "reference_geometries": {
+      "R512": {
+        "nodes": 512,
+        "dz_cm": 0.3125
+      },
+      "R1024": {
+        "nodes": 1024,
+        "dz_cm": 0.15625
+      }
+    },
+    "lower_boundary": "exact C5I dynamic prescribed-head RISE/FALL with mode-2 HOLD",
+    "top_boundary": "exact C5I gravity-consistent qeq",
+    "numerical_policy": "exact C5I/D13 Reference retry policy",
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "no_history_change": true,
+    "no_material_change": true,
+    "no_timestep_change": true,
+    "no_tolerance_change": true
+  },
+  "factorial": {
+    "G0K0": {
+      "label": "CURRENT_REFERENCE",
+      "source": "immutable C5I R512/R1024 T16 artifact",
+      "boundary_distance": "0.5*bottom_cell_thickness",
+      "boundary_face_conductivity": "last_cell_center_K"
+    },
+    "G1K0": {
+      "label": "DISTANCE_DOUBLE_CONTROL",
+      "boundary_distance": "1.0*bottom_cell_thickness",
+      "boundary_face_conductivity": "last_cell_center_K",
+      "interpretation": "Semantic sensitivity control for whether hbot behaves as a face value versus a ghost-node-center value. Not proposed as a correct discretization."
+    },
+    "G0K1": {
+      "label": "CENTER_BOUNDARY_ARITHMETIC_K",
+      "boundary_distance": "0.5*bottom_cell_thickness",
+      "boundary_face_conductivity": "0.5*(K_last_cell_center + K_at_prescribed_boundary_head)",
+      "interpretation": "Extends frozen swkmean=1 arithmetic face averaging to the Dirichlet boundary without fitted parameters."
+    },
+    "G1K1": {
+      "label": "COMBINED_DISTANCE_AND_K_CONTROL",
+      "boundary_distance": "1.0*bottom_cell_thickness",
+      "boundary_face_conductivity": "0.5*(K_last_cell_center + K_at_prescribed_boundary_head)",
+      "interpretation": "Factorial interaction cell only; not a candidate production formulation."
+    }
+  },
+  "implementation_contract": [
+    "Counterfactuals are materialized from frozen Reference headcalc only in workflow scratch; repository production Reference source remains byte-unchanged.",
+    "Geometry toggle changes only explicit-geometry grid_disnod(NN+1) from 0.5*dz to dz.",
+    "Conductivity toggle changes only swbotb=5 bottom-face conductivity for provider-based explicit Reference runs after time-level-t conductivity initialization.",
+    "K_at_prescribed_boundary_head is evaluated with the same constitutive provider and prescribed hbot; no fitted coefficient is introduced.",
+    "With swkmean=1 the K1 face value is the arithmetic mean 0.5*(K_cell+K_boundary).",
+    "Mode-2 HOLD and seed physics remain unchanged.",
+    "All scientific comparisons are aggregated to the original 0.0008-day C5I output window."
+  ],
+  "diagnostics": {
+    "primary": [
+      "R512-R1024 bottom-flux gap RMSE, signed mean and max absolute error for each factorial cell",
+      "history-specific and phase-specific R512-R1024 gap diagnostics",
+      "geometry contrast E_G = gap(G1K0)-gap(G0K0)",
+      "conductivity contrast E_K = gap(G0K1)-gap(G0K0)",
+      "combined shift E_GK = gap(G1K1)-gap(G0K0)",
+      "factorial interaction I = gap(G1K1)-gap(G1K0)-gap(G0K1)+gap(G0K0)",
+      "RMSE norm of each contrast relative to baseline spatial-gap RMSE",
+      "least-squares projection of each contrast onto the baseline spatial-gap vector",
+      "spatial-gap RMSE ratio of each counterfactual to G0K0"
+    ],
+    "controls": [
+      "exact C5I G0K0 result hash and baseline metric reproduction",
+      "O0/O2 byte identity for each newly executed counterfactual geometry",
+      "all history slices complete",
+      "water ledger <= 1e-12 cm per slice",
+      "HOLD response remains unchanged or is reported explicitly if the counterfactual unexpectedly affects it"
+    ]
+  },
+  "adjudication_rules": {
+    "no_universal_threshold": true,
+    "no_acceptance_rescoring": true,
+    "no_causal_winner_forced": true,
+    "report_continuous_effects_first": true,
+    "permitted_descriptors": [
+      "GEOMETRY_CONTRAST_LARGER_THAN_CONDUCTIVITY_CONTRAST",
+      "CONDUCTIVITY_CONTRAST_LARGER_THAN_GEOMETRY_CONTRAST",
+      "CONTRASTS_COMPARABLE",
+      "FACTORIAL_INTERACTION_NONNEGLIGIBLE_RELATIVE_TO_MAIN_EFFECTS",
+      "ONE_OR_MORE_COUNTERFACTUALS_REDUCE_SPATIAL_GAP",
+      "NO_COUNTERFACTUAL_REDUCES_SPATIAL_GAP"
+    ],
+    "descriptor_notes": "Larger/comparable are descriptive pairwise comparisons of continuous RMSE norms; no hydrological acceptance threshold follows from them."
+  },
+  "stop_rules": [
+    "Do not run T32 or R2048 in C5J.",
+    "Do not modify production Reference Richards.",
+    "Do not fit any boundary parameter or select a coefficient using C5I/C5J residuals.",
+    "Do not alter LARE or rerun LARE.",
+    "If sensitivity isolates a promising discrete ingredient, close C5J with a theory-derived follow-up requirement rather than silently admitting the counterfactual.",
+    "If interaction dominates or results are structurally mixed, stop at mechanism characterization and require a new scientific formulation choice."
+  ],
+  "scientific_firewall": {
+    "production_reference_changed": false,
+    "new_reference_physics_admitted": false,
+    "new_lare_run": false,
+    "new_lare_closure": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
