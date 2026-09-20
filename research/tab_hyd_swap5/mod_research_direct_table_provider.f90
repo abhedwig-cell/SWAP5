@@ -7,7 +7,6 @@ module mod_research_direct_table_provider
   private
 
   real(real64), parameter :: B110_H_CRIT = -1.0e-2_real64
-  real(real64), parameter :: B110_SAT_K_SWITCH = 1.0_real64 - 1.0e-6_real64
 
   type, public :: direct_table_storage_t
      integer :: active_nodes = 0
@@ -51,7 +50,7 @@ contains
     real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
     real(real64), allocatable :: x(:)
     real(real64) :: xj, hj, tiny_positive, negative_endpoint_head
-    real(real64) :: theta_switch, c1, c25, c26, c27, eps_head
+    real(real64) :: c25, c27
     real(real64), allocatable :: knot_head(:)
     integer :: i, j
 
@@ -120,9 +119,7 @@ contains
     do i = 1, active_nodes
        if (source%parameters%cofgen(9,i) > B110_H_CRIT) then
           table%branch_a(i) = .true.
-          c1 = source%parameters%cofgen(1,i)
           c25 = source%parameters%cofgen(25,i)
-          c26 = source%parameters%cofgen(26,i)
           c27 = source%parameters%cofgen(27,i)
           if (c25 <= 0.0_real64 .or. c27 <= 0.0_real64) &
                error stop 'TAB-HYD SWAP5 table: invalid Branch-A parameters'
@@ -135,33 +132,26 @@ contains
           call source%evaluate(head,theta,conductivity,capacity,dkdh)
           table%capacity_near_saturation(i) = capacity(i)
 
-          theta_switch = c1 + c25*B110_SAT_K_SWITCH
-          table%conductivity_switch_head(i) = B110_H_CRIT + (theta_switch-c26)/c27
-          if (table%conductivity_switch_head(i) <= B110_H_CRIT .or. &
-              table%conductivity_switch_head(i) >= 0.0_real64) &
-               error stop 'TAB-HYD SWAP5 table: Branch-A K switch outside near-saturation interval'
        end if
     end do
 
-    head = 0.0_real64
+    ! Locate the exact-Ksat guard from executable source behaviour rather than
+    ! assuming it lies inside the linear near-saturation retention branch.
     do i = 1, active_nodes
+       call locate_k_guard(source,i,h_min,table%saturated_conductivity(i), &
+                           table%conductivity_switch_head(i),table%conductivity_left_limit(i))
+       if (table%conductivity_left_limit(i) <= 0.0_real64 .or. table%saturated_conductivity(i) <= 0.0_real64) &
+            error stop 'TAB-HYD SWAP5 table: invalid conductivity guard support'
+       do j = 1, n_points
+          if (knot_head(j) > table%conductivity_switch_head(i)) &
+               table%logk(j,i) = log(table%conductivity_left_limit(i))
+       end do
        if (table%branch_a(i)) then
-          eps_head = max(1.0e-12_real64,abs(table%conductivity_switch_head(i))*1.0e-10_real64)
-          head(i) = table%conductivity_switch_head(i)-eps_head
-       end if
-    end do
-    call source%evaluate(head,theta,conductivity,capacity,dkdh)
-    do i = 1, active_nodes
-       if (table%branch_a(i)) then
-          table%conductivity_left_limit(i) = conductivity(i)
-          if (table%capacity_transition(i) <= 0.0_real64 .or. table%capacity_near_saturation(i) <= 0.0_real64 .or. &
-              table%conductivity_left_limit(i) <= 0.0_real64 .or. table%saturated_conductivity(i) <= 0.0_real64) &
-               error stop 'TAB-HYD SWAP5 table: invalid Branch-A support value'
+          if (table%capacity_transition(i) <= 0.0_real64 .or. table%capacity_near_saturation(i) <= 0.0_real64) &
+               error stop 'TAB-HYD SWAP5 table: invalid Branch-A capacity support'
           do j = 1, n_points
              if (knot_head(j) > B110_H_CRIT) &
                   table%logc(j,i) = log(table%capacity_transition(i))
-             if (knot_head(j) > table%conductivity_switch_head(i)) &
-                  table%logk(j,i) = log(table%conductivity_left_limit(i))
           end do
        end if
     end do
@@ -211,10 +201,9 @@ contains
 
     do i = 1, n
        water_content(i) = interpolate_field(self%table, pressure_head(i), i, self%table%theta, self%table%theta_slope)
-       if (self%table%branch_a(i) .and. pressure_head(i) > self%table%conductivity_switch_head(i)) then
+       if (pressure_head(i) > self%table%conductivity_switch_head(i)) then
           conductivity(i) = self%table%saturated_conductivity(i)
-       else if (self%table%branch_a(i) .and. &
-                abs(pressure_head(i)-self%table%conductivity_switch_head(i)) <= &
+       else if (abs(pressure_head(i)-self%table%conductivity_switch_head(i)) <= &
                 16.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(self%table%conductivity_switch_head(i)))) then
           conductivity(i) = self%table%conductivity_left_limit(i)
        else
@@ -242,6 +231,49 @@ contains
         any(.not. ieee_is_finite(capacity)) .or. any(conductivity <= 0.0_real64) .or. any(capacity <= 0.0_real64)) &
          error stop 'TAB-HYD SWAP5 table: invalid evaluated constitutive value'
   end subroutine direct_table_evaluate
+
+  subroutine locate_k_guard(source,node,h_min,ksat,switch_head,left_limit)
+    type(b110_default_mvg_provider_t), intent(in) :: source
+    integer, intent(in) :: node
+    real(real64), intent(in) :: h_min, ksat
+    real(real64), intent(out) :: switch_head, left_limit
+
+    real(real64), allocatable :: head(:), theta(:), conductivity(:), capacity(:), dkdh(:)
+    real(real64) :: low, high, mid, guard_threshold
+    integer :: iter, n
+
+    n = source%parameters%active_nodes
+    allocate(head(n),theta(n),conductivity(n),capacity(n),dkdh(n))
+    guard_threshold = ksat*(1.0_real64-1.0e-12_real64)
+
+    head = h_min
+    call source%evaluate(head,theta,conductivity,capacity,dkdh)
+    if (conductivity(node) >= guard_threshold) &
+         error stop 'TAB-HYD SWAP5 table: no unsaturated K interval below guard'
+    low = h_min
+    high = 0.0_real64
+
+    do iter = 1, 120
+       mid = 0.5_real64*(low+high)
+       head = mid
+       call source%evaluate(head,theta,conductivity,capacity,dkdh)
+       if (conductivity(node) >= guard_threshold) then
+          high = mid
+       else
+          low = mid
+       end if
+       if (abs(high-low) <= 32.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(high),abs(low))) exit
+    end do
+
+    switch_head = high
+    head = low
+    call source%evaluate(head,theta,conductivity,capacity,dkdh)
+    left_limit = conductivity(node)
+    if (.not. ieee_is_finite(switch_head) .or. switch_head <= h_min .or. switch_head >= 0.0_real64) &
+         error stop 'TAB-HYD SWAP5 table: invalid located K guard'
+    if (.not. ieee_is_finite(left_limit) .or. left_limit <= 0.0_real64 .or. left_limit >= guard_threshold) &
+         error stop 'TAB-HYD SWAP5 table: invalid K guard left limit'
+  end subroutine locate_k_guard
 
   real(real64) function interpolate_field(table, head, node, values, slopes) result(value)
     type(direct_table_storage_t), intent(in) :: table
