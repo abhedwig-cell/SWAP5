@@ -1,0 +1,92 @@
+{
+  "adjudication": {
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "BREADTH_ACTIVE_AT_SHARED_B2P5_SUPPORT": false,
+    "D12_B2P5_CROSSES_R1024_GW": false,
+    "D12_DYADIC_BOTTOM_PROGRESS": true,
+    "NEW_DISTINCT_CLOSURE_IMPLEMENTATION_AUTHORIZED": false,
+    "NEW_SCALAR_CLOSURE_TUNING_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "PROPAGATION_LIMIT_STRENGTHENED": true,
+    "READ_ONLY_DISTINCT_CLOSURE_DERIVATION_AUTHORIZED": true,
+    "REFERENCE_QUALITY_INTERPRETABLE": true,
+    "SPEED_CLAIM_AUTHORIZED": false
+  },
+  "authority": {
+    "artifact_digest": "sha256:bc93a2d01f4805ec7f0c0433fb3e84e6450c80a135e0e3a51ba0c88527d6e703",
+    "artifact_id": 10604483398,
+    "execution_head": "57c0a567666d77532a0b2584543766090e4969b6",
+    "preregistration": "integration/f-rom/LARE_BC2_C5R_PREREGISTRATION.json",
+    "result_sha256": "9add1aa0685f49de5f35d29e7b3b69c85c4b4fbaa6c42f4214cc451e6f2aecc6",
+    "workflow_run": 35508594209
+  },
+  "decision": "AUTHORIZE_READ_ONLY_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURE_FAMILY_DERIVATION",
+  "key_evidence": {
+    "D12_B10_flux_RMSE_cm_per_day": 0.1756739358496202,
+    "D12_B2P5_flux_RMSE_cm_per_day": 0.13180165146187245,
+    "D12_B2P5_mapped_theta_RMSE": 6.627838190908123e-05,
+    "D12_B2P5_storage_RMSE_cm": 0.002559335448885821,
+    "D12_B5_flux_RMSE_cm_per_day": 0.15645514707073993,
+    "D12_vs_D8_shared_support": {
+      "componentwise_no_worse_GW": true,
+      "componentwise_no_worse_PROFILE": true,
+      "cumulative_rmse_ratio": 1.0000000000013574,
+      "flux_rmse_ratio": 0.9999999999999974,
+      "mapped_theta_rmse_ratio": 0.9999997336968833,
+      "reversal_penalty_delta": 0,
+      "reverse_componentwise_no_worse_GW": true,
+      "sign_mismatch_delta": 0,
+      "signed_history_bias_ratio": 1.0000000000112295,
+      "storage_rmse_ratio": 1.0000000000986835,
+      "strict_any_continuous_GW_improvement": false
+    },
+    "D8_B2P5_flux_RMSE_cm_per_day": 0.13180165146187278,
+    "D8_B2P5_mapped_theta_RMSE": 6.62783995592256e-05,
+    "D8_B2P5_storage_RMSE_cm": 0.0025593354486332567,
+    "R1024_vs_R2048_flux_RMSE_cm_per_day": 0.007622851517950881,
+    "R2048_T8_vs_T16_flux_RMSE_cm_per_day": 0.0017782568648253049
+  },
+  "next_authority": {
+    "constraints": [
+      "Read-only theory/code/evidence synthesis first; no model response in C5S.",
+      "Do not reopen scalar multipliers, direction switches, geometry-only amplitude corrections, or conductivity-only fixes closed by C4H-C4O.",
+      "Do not add a dynamic memory state without new evidence; C4K remains authoritative.",
+      "Separate candidate families by mathematical closure object: local nonlinear two-point flux, storage-consistent subgrid reconstruction, or another explicitly derived conservative operator.",
+      "Reconcile against already-tested QS1/QS2/HE2 and FMC/SMVE so no closed family is silently reinvented.",
+      "No application, performance, speed or production-ROM claim."
+    ],
+    "question": "Which conservative inter-layer closure families are structurally distinct from CURRENT_LAYER_FACE and already-rejected scalar gradient corrections, are derivable from Richards physics using the retained layer-storage state, and admit a prospective zero-fit discriminator before implementation?",
+    "state": "READ_ONLY_PHYSICALLY_DISTINCT_INTERLAYER_CLOSURE_DERIVATION_AUTHORIZED",
+    "target": "LARE-BC2-C5S"
+  },
+  "reference_quality": {
+    "R1024_frontier_interpretable": true,
+    "temporal_no_worse_than_R1024_GW": true,
+    "temporal_no_worse_than_R1024_PROFILE": true
+  },
+  "schema": "swap5.lare.bc2.c5r.closeout.v1",
+  "scientific_firewall": {
+    "C5N_result_changed": false,
+    "C5P_result_changed": false,
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": true,
+    "new_closure_fit": false,
+    "performance_comparison_authorized": false,
+    "production_reference_changed": false,
+    "production_rom_authorized": false,
+    "response_based_repartitioning": false,
+    "speed_claim_authorized": false
+  },
+  "scientific_interpretation": [
+    "C5R restores four additional vertically distributed states above 110 cm while keeping exactly the same 5/2.5/2.5-cm lower-boundary support and unchanged CURRENT_LAYER_FACE as D8_B2P5.",
+    "D12_B2P5 and D8_B2P5 are indistinguishable on the groundwater vector to numerical precision: flux-RMSE ratio is essentially 1, storage and cumulative ratios are essentially 1, sign/reversal diagnostics are identical, and per-history signed-bias magnitude is unchanged.",
+    "D12_B2P5 mapped-profile RMSE is only microscopically smaller than D8_B2P5, so the extra state breadth does not provide a meaningful hydrological rescue on this fresh workload.",
+    "Within D12 itself, B10 to B5 to B2P5 remains componentwise non-worsening, independently confirming that bottom-adjacent support matters. Yet no D12 member reaches the R1024 comparator.",
+    "The representation evidence therefore isolates a boundary: state placement matters until lower-boundary support reaches the tested B2P5 structure, but additional state breadth above that support no longer changes the response. The remaining high-resolution error is consequently much more strongly attributable to the propagation/inter-layer closure.",
+    "This does not authorize another scalar gradient correction. C4H-C4O already close conductivity-only and scalar/current-state gradient retuning routes. The next work unit must derive physically distinct conservative inter-layer closure families before any implementation."
+  ],
+  "status": "CLOSED_SHARED_BOTTOM_SUPPORT_ADDED_BREADTH_INACTIVE_PROPAGATION_LIMIT_STRENGTHENED",
+  "work_unit": "LARE-BC2-C5R",
+  "workstream": "F-ROM-LARE"
+}

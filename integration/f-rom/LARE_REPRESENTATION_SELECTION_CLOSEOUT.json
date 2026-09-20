@@ -27,6 +27,8 @@
     "C5N": "Fresh blind B14 dynamic-head evidence with qualified R512/R1024/R2048 T16 and R2048 T8 controls finds no reduced R3-R12 high-resolution comparator frontier. Placement R4>U4 and R8>U8 replicates, but R5-R16 response plateaus. State count alone therefore does not rescue BC1 CURRENT_LAYER_FACE; inter-layer closure becomes the next representation axis.",
     "C5O": "C5N's R5-R16 plateau cannot uniquely identify closure failure because all members retain the same 10-cm bottom layer; extra states were added higher in the profile. Together with C5C bottom-refinement sensitivity and replicated R4/U4, R8/U8 placement effects, the next clean discriminator is fixed-dimension bottom-focused repartitioning under unchanged CURRENT_LAYER_FACE before opening a new closure implementation.",
     "C5P": "Fresh fixed-dimension B14 dynamic-head evidence shows a causal bottom-adjacent placement effect: D8 B10->B5->B2P5 improves componentwise on groundwater and profile views, but no focused member reaches the R1024 high-resolution comparator. D4 overconcentration at B2P5 adds sign/reversal timing errors, demonstrating that boundary support and broader vertical memory must be balanced.",
+    "C5Q": "Read-only identifiability reconciliation required one final D12 shared-bottom-support breadth discriminator before any distinct closure implementation.",
+    "C5R": "Fresh D12 versus D8 comparison at identical B2P5 bottom support finds groundwater response numerically indistinguishable despite four additional vertically distributed states. Bottom placement remains active, but additional memory breadth is inactive; the residual is now strongly identified with propagation/inter-layer closure.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
@@ -53,6 +55,8 @@
     "C5N_fresh_blind_highres": "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
     "C5O_placement_closure_identifiability": "integration/f-rom/LARE_BC2_C5O_RECONCILIATION.json",
     "C5P_fixed_dimension_bottom_placement": "integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json",
+    "C5Q_breadth_vs_closure_reconciliation": "integration/f-rom/LARE_BC2_C5Q_RECONCILIATION.json",
+    "C5R_D12_shared_support_breadth": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -89,24 +93,24 @@
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
     }
   ],
-  "decision": "RECONCILE_VERTICAL_MEMORY_BREADTH_VS_PROPAGATION_CLOSURE_BEFORE_NEW_CLOSURE_OR_PARTITION_OPTIMIZATION",
+  "decision": "DERIVE_PHYSICALLY_DISTINCT_CONSERVATIVE_INTERLAYER_CLOSURE_FAMILIES_BEFORE_IMPLEMENTATION",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-BC2-C5Q",
+  "next_authority": "LARE-BC2-C5S",
   "next_family_authority": {
     "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "C5Q_VERTICAL_MEMORY_BREADTH_VS_CLOSURE_IDENTIFIABILITY",
+    "family": "C5S_DISTINCT_INTERLAYER_CLOSURE_DERIVATION",
     "new_closure_implementation_authorized": false,
-    "new_response_authorized": false,
-    "purpose": "Determine whether one fixed-D12 bottom-focus blind discriminator is required before a physically distinct inter-layer closure family can be identified.",
+    "purpose": "Identify genuinely distinct conservative inter-layer closure families and a prospective zero-fit discriminator without implementing or fitting them.",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5O_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
+      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4H_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4K_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json"
     ],
     "response_based_partition_optimization_authorized": false,
-    "state": "AUTHORIZED_FOR_READ_ONLY_REPOSITORY_SYNTHESIS"
+    "state": "AUTHORIZED_FOR_READ_ONLY_THEORY_CODE_EVIDENCE_SYNTHESIS"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -138,7 +142,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v21",
+  "schema": "swap5.lare.representation-selection.closeout.v23",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -149,7 +153,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5P_BOTTOM_PLACEMENT_CAUSAL_BUT_INSUFFICIENT_BREADTH_VS_CLOSURE_NEXT",
+  "status": "CLOSED_THROUGH_C5R_PLACEMENT_ACTIVE_BREADTH_INACTIVE_PROPAGATION_LIMIT_STRENGTHENED",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
