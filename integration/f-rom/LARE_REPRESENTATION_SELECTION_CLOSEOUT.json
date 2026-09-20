@@ -34,7 +34,8 @@
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
+    "C5V": "Read-only SCAFP derivation shows that layer-integrated storage plus Darcy-Buckingham and exact conservation does not uniquely determine transient within-layer structure. A conservative zero-fit algebraic family exists, but an additional subgrid tendency/profile principle is scientifically required. P0 uniform storage tendency is the most conservation-aligned candidate, not an authority-mandated choice."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -79,7 +80,8 @@
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+    "C5V_SCAFP_theory": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json"
   },
   "closed_routes": [
     {
@@ -104,23 +106,25 @@
       "id": "DSE2P_FREE_RUNNING_C5U"
     }
   ],
-  "decision": "DERIVE_STORAGE_CONSISTENT_ALGEBRAIC_SUBGRID_FACE_PROFILE_CLOSURE_READ_ONLY",
+  "decision": "STOP_AT_SCAFP_SUBGRID_ANSATZ_SCIENTIFIC_CHOICE_BEFORE_IMPLEMENTATION",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "LARE-BC2-C5V",
+  "next_authority": "SCIENTIFIC_CHOICE_REQUIRED",
   "next_family_authority": {
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "C5V_SCAFP_READ_ONLY_THEORY_DERIVATION",
-    "new_dynamic_state_authorized": false,
-    "new_free_running_closure_implementation_authorized": false,
-    "purpose": "Determine whether a unique zero-fit storage-consistent algebraic subgrid face-profile closure can be derived before any new model response.",
+    "family": "SCAFP_SUBGRID_PROFILE_ANSATZ",
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_IMPLEMENTATION",
     "repository_basis": [
+      "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
       "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
-      "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json"
+      "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json"
     ],
+    "choice": "Select the algebraic within-layer transient profile/tendency principle. Existing authority does not uniquely select one.",
+    "most_conservative_non_authoritative_candidate": "P0_UNIFORM_STORAGE_TENDENCY",
+    "reserved_next_if_selected": "LARE-BC2-C5W",
+    "new_closure_implementation_authorized": false,
+    "new_dynamic_state_authorized": false,
     "scalar_tuning_authorized": false,
-    "state": "AUTHORIZED_FOR_READ_ONLY_THEORY_DERIVATION"
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -152,7 +156,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v25",
+  "schema": "swap5.lare.representation-selection.closeout.v26",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -163,7 +167,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C5T_DSE2P_NUMERICAL_BLOCKER_SCAFP_THEORY_NEXT",
+  "status": "CLOSED_THROUGH_C5V_SCAFP_NOT_UNIQUE_SCIENTIFIC_CHOICE_REQUIRED",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
