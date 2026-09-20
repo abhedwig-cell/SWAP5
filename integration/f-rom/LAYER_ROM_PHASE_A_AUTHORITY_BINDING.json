@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.layer-rom.phase-a.authority-binding.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A",
+  "title": "Layer-ROM Phase A authority and provenance binding",
+  "live_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+    "branch_start_matches_live_head": true,
+    "latest_delta_class": "governance_only_GOV_REC01",
+    "hydrology_source_or_reference_drift_from_97afc3": false
+  },
+  "code_frontier_reconciliation": {
+    "canonicalized": false,
+    "source": "PR #489",
+    "head": "5ede106449998f609ffa3400128a7a35269ef2d8",
+    "status": "OPEN_NONCANONICAL_RECONCILIATION_EVIDENCE",
+    "binding_use": "routing_and_provenance_only",
+    "decision": "FMC_AND_LARE_CODE_FRONTIERS_RECONCILED_DISTINCT_EXTERNAL_BLOCKERS"
+  },
+  "canonical_f_romv2": {
+    "status_path": "integration/f-rom/F-ROMV2_STATUS.json",
+    "retained_comparators": [
+      "R16_FINE_REFERENCE",
+      "R8_COARSE_RICHARDS",
+      "R4_COARSE_RICHARDS",
+      "R2_COARSE_RICHARDS"
+    ],
+    "key_evidence": {
+      "D2": "coarse Richards establishes balance-versus-event-fidelity separation; D2 R4/R2 failures are numerical-policy no-go, not hydrological no-go",
+      "D4": "integrated-mass authority makes R8/R4/R2 hydrologically measurable; all remain balance-focused development comparators with weak event fidelity",
+      "D5": "L2_IMC integrity pass but lower-zone error dominates; two-layer instantaneous Darcy closure is not competitive with R2 on exposed B01 histories",
+      "D7": "QS1 total-storage-only state loses dynamic partition/profile memory",
+      "D8": "two dynamic segment storages recover upper-zone memory but lower-zone transient memory remains limiting",
+      "D10": "published HE2 core is not competitive on its supported zero-head envelope; no arbitrary-head extension authorized",
+      "D25": "FMC shared-host cost signal only; no formal portable speedup",
+      "D28": "native ET/root-withdrawal composite-state semantics externally blocked",
+      "D30": "natural surface-groundwater contact transition underspecified without implementation oracle",
+      "D31": "official M2WC70 archive identified but implementation retrieval blocker persists"
+    }
+  },
+  "lare_research_source": {
+    "branch": "work/f-rom-lare-rs1",
+    "inspected_head": "96f902d336a2ed8eb6e4c3a091fe7d290af006a6",
+    "merge_wholesale": false,
+    "role": "evidence_and_selective_code_source_only",
+    "provenance_required_for_reuse": true,
+    "state_evidence": {
+      "pilot_partition_screen": "integration/f-rom/LARE_RS1_PARTITION_SCREEN_RESULT.json",
+      "gw_preregistration": "integration/f-rom/LARE_RS1_GW_PREREGISTRATION.json",
+      "gw_reference_result": "integration/f-rom/LARE_RS1_GW_STAGE_A_RESULT.json",
+      "gw_state_adjudication": "integration/f-rom/LARE_RS1_STATE_ADJUDICATION.json",
+      "reference_workflow_run": 35444243790,
+      "reference_artifact_id": 10585316225,
+      "reference_artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+      "accepted_state_payload_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345"
+    },
+    "closure_evidence": {
+      "standard_lare_authority": "docs/science/F-ROM_LARE_CA1_CLOSURE_AUTHORITY.md",
+      "corichards_q1": "integration/f-rom/LARE_CORICHARDS_Q1_RESULT.json",
+      "terminal_value_signal": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+      "application_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+    }
+  },
+  "evidence_classification": {
+    "historical_design_evidence": [
+      "F-ROMV2 D2-D10 exposed B01 development evidence",
+      "LARE RS1 partition and state-sufficiency evidence",
+      "LARE C4R/C4T fixed-water-table fidelity and shared-host value evidence"
+    ],
+    "immutable_reference_reuse": [
+      {
+        "artifact_id": 10585316225,
+        "allowed_use": "retrospective Layer-ROM state-information replay and regression only",
+        "forbidden_use": "new blind or independent confirmation claim because L2/L3/L4 geometry was influenced by this evidence"
+      }
+    ],
+    "new_independent_reference_required_for": [
+      "prospective representation qualification",
+      "new partition comparison claim",
+      "new closure qualification claim",
+      "dimension-state-information-closure-fidelity curve claimed as independent evidence"
+    ]
+  },
+  "held_fixed": [
+    "src/** production source",
+    "reference/**",
+    "Reference Richards physics and numerical semantics",
+    "RossFast",
+    "production groundwater coupling",
+    "production ROM",
+    "FMC D28 native ET/root-withdrawal semantics",
+    "FMC D30/D31 natural surface-groundwater contact semantics"
+  ],
+  "production_rom_authorized": false
+}
