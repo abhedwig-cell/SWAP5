@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: f-rom-lare-bc2-c5p-${{ github.ref }}
-  cancel-in-progress: true
+  group: f-rom-lare-bc2-c5p-${{ github.sha }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
