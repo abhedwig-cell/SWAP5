@@ -196,14 +196,14 @@
     "analyzer": "tests/rom/analyze_lare_bc2_c6m_surface_reference.py",
     "analyzer_blob": "37cef751f2537e4e22af1a7e01b3090a454f8bf1",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6m.yml",
-    "workflow_blob": "00ee8e61e01ca80ef33613479a0e0b8119696315",
+    "workflow_blob": "5cb171e246faebb2d4f37c14f42498bda6ee4707",
     "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
     "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
     "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
     "B14_source_harness_blob": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
     "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
     "execution_binding_complete": true,
-    "binding_note": "The first C6M run exposed only a pre-solver admission mismatch. After authority reconciliation, mode 5 fixed-initial-head semantics, implementation blobs and the unchanged response-blind histories/metrics are frozen before the first admitted C6M surface response."
+    "binding_note": "The first C6M run exposed only a pre-solver admission mismatch. After authority reconciliation, mode 5 fixed-initial-head semantics and all response-blind histories/metrics are frozen. A stale v1 phase assertion in the workflow was repaired before any admitted solver response; this binding update is the response-eligible authority."
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
