@@ -60,16 +60,12 @@ def main()->int:
 
     text=one(
       text,
-      "      call require(all(ieee_is_finite(physical%pressure_head)).and.all(ieee_is_finite(physical%water_content)), &\n"
-      "           'LAREGW1 finite full profiles')\n"
       "      write(*,'(*(g0))') 'LAREGW1_STATE|SPLIT=',trim(split_label(ih)),'|HISTORY=',trim(history_label(ih)), &",
-      "      call require(all(ieee_is_finite(physical%pressure_head)).and.all(ieee_is_finite(physical%water_content)), &\n"
-      "           'LAREGW1 finite full profiles')\n"
       "      write(*,'(*(g0))') 'LAREGW1_C5K_POST|HISTORY=',trim(history_label(ih)),'|STEP=',step, &\n"
       "           '|SYMBOL=',trim(symbol_label(symbol)),'|H_LAST=',physical%pressure_head(numnod), &\n"
       "           '|H_BOT=',forcing%bottom_head,'|BOTTOM_OUTWARD_EXCHANGE=',bex,'|BOTTOM_FLUX=',bflux\n"
       "      write(*,'(*(g0))') 'LAREGW1_STATE|SPLIT=',trim(split_label(ih)),'|HISTORY=',trim(history_label(ih)), &",
-      "post-step instrumentation"
+      "post-step instrumentation anchored on unique state output"
     )
 
     marker="  subroutine metrics_from_physical(physical,total,upper,lower)\n"
