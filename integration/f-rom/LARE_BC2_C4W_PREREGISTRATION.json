@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.lare.bc2.c4w.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C4W",
+  "phase": "POST_C4V_EXPOSED_DIAGNOSTIC_BOUND_BEFORE_REEXECUTION",
+  "title": "Magnitude characterization of C4V long-horizon sign mismatches",
+  "authority": {
+    "c4v_closeout": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "c4v_workflow_run": 35493542460,
+    "c4v_artifact_id": 10599921961,
+    "c4v_artifact_digest": "sha256:cd15afd49f198199644895dd783bdf390f86835624f83578cb5fdd610b952365",
+    "c4v_result_sha256": "58453f537bdc3d6b47e2738cd5b3050fed1b18fad0d2734744b3fd9853ec3be3",
+    "c4v_execution_head": "2b9c83a17d6584b1c7aa9d27a3a585f06019d448",
+    "external_application_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json"
+  },
+  "known_trigger_from_C4V": {
+    "V03": {
+      "Reference_reversal_steps": [],
+      "R4": {
+        "candidate_reversal_steps": [
+          112
+        ],
+        "sign_mismatch_count": 913
+      },
+      "R5": {
+        "candidate_reversal_steps": [
+          295
+        ],
+        "sign_mismatch_count": 730
+      },
+      "R6": {
+        "candidate_reversal_steps": [
+          629
+        ],
+        "sign_mismatch_count": 396
+      },
+      "R8": {
+        "candidate_reversal_steps": [],
+        "sign_mismatch_count": 0
+      },
+      "R12": {
+        "candidate_reversal_steps": [],
+        "sign_mismatch_count": 0
+      }
+    },
+    "V04": {
+      "Reference_reversal_steps": [
+        5
+      ],
+      "high_resolution_LARE_reversal_steps": [
+        4
+      ],
+      "interpretation": "Known one-step early reversal remains a separate timing diagnostic."
+    }
+  },
+  "scope": {
+    "members": [
+      "R4",
+      "R5",
+      "R6",
+      "R8",
+      "R12",
+      "R16"
+    ],
+    "histories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "source": "Immutable C4V R16 trajectory plus deterministic reexecution of the unchanged frozen C4V LARE members.",
+    "new_reference_solves": false,
+    "closure_change": false,
+    "timestep_change": false,
+    "partition_change": false
+  },
+  "diagnostics_per_member_history": [
+    "exact candidate and Reference reversal steps",
+    "exact contiguous sign-mismatch segments",
+    "first and last mismatch step",
+    "Reference and candidate terminal bottom flux at first mismatch and at each candidate reversal",
+    "minimum, median, p95 and maximum absolute Reference flux over mismatch steps",
+    "minimum, median, p95 and maximum absolute candidate flux over mismatch steps",
+    "minimum, median, p95 and maximum absolute terminal-flux error over mismatch steps",
+    "percentile rank of absolute Reference flux at first mismatch within that history's complete 1024-step absolute Reference-flux distribution",
+    "percentile rank distribution of absolute Reference flux over all mismatch steps",
+    "day-1 terminal Reference and candidate flux"
+  ],
+  "interpretation_rules": [
+    "Do not define or fit a near-zero deadband.",
+    "Do not relabel a sign mismatch acceptable or unacceptable.",
+    "Use percentile ranks only as threshold-free context for where mismatch magnitudes sit inside the same Reference trajectory.",
+    "C4V decision and minimum persistent dimension R8 are immutable.",
+    "C4W cannot authorize closure retuning, a new switch/blend, application acceptance or production use."
+  ],
+  "hard_gates": {
+    "c4v_artifact_digest_exact": true,
+    "c4v_result_sha_exact": true,
+    "reproduced_C4V_sign_counts_exact": true,
+    "reproduced_C4V_reversal_sequences_exact": true,
+    "all_requested_members_complete": true,
+    "maximum_lare_water_ledger_cm": 1e-10
+  },
+  "decision_logic": {
+    "C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED": "All hard gates pass and the exact C4V mismatch/reversal pattern is reproduced with magnitude/rank diagnostics.",
+    "C4W_DIAGNOSTIC_BLOCKED": "Any immutable-authority or reproduction gate fails."
+  },
+  "next_after_close": "Stop at representation-transfer choice: independently preregister material/constitutive transfer or lower-boundary semantics transfer. Absolute GW application acceptance remains blocked on external H_app/A_temporal provenance.",
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
