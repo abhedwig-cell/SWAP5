@@ -5,9 +5,9 @@
   "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
   "snapshot": {
     "branch": "integration/f-ci-canonical",
-    "head": "3a815edda7cf5e155272b68ae49d440fd5db9138",
-    "head_subject": "F-ROM-CODEMAP-01: reconcile FMC and LARE code frontiers (#489)",
-    "open_pr_count": 18,
+    "head": "1b15bbb4b01135a93150d28aad3461890af90542",
+    "head_subject": "F-TA04R: reconcile transaction/restart testbank traceability (#492)",
+    "open_pr_count": 17,
     "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
   },
   "status_vocabulary": [
@@ -34,15 +34,12 @@
       "title": "Canonical integration and project control",
       "owner": "central SWAP5 regie",
       "status": "ACTIVE",
-      "canonical_authority": "integration/f-ci-canonical@3a815edda7cf5e155272b68ae49d440fd5db9138",
+      "canonical_authority": "integration/f-ci-canonical@1b15bbb4b01135a93150d28aad3461890af90542",
       "open_prs": [
-        58,
-        72,
-        163,
-        172
+        58
       ],
       "current_blocker": null,
-      "next_gate": "F-TA04R resolves the final old central housekeeping item #172 on this admission. PR #486 remains a shared-authority blocker, not an admission-ready candidate.",
+      "next_gate": "No old central housekeeping debt remains. Await a qualified specialized admission candidate, explicit preservation drift, shared-authority resolution, or a deliberate project-control refresh.",
       "write_scope": [
         "integration/control/**",
         "docs/development/project-control surfaces",
@@ -65,7 +62,13 @@
         "historical_pr": 163,
         "successor": "F-TB13R",
         "authority": "integration/f-tb/F-TB13_CURRENT_CANONICAL_RECONCILIATION_20260920.json",
-        "disposition": "ADDITIVE_ANALYTICAL_REFERENCE_PRESERVATION_PENDING_THIS_ADMISSION"
+        "disposition": "CANONICALLY_ADMITTED_VIA_PR_491"
+      },
+      "transaction_restart_traceability": {
+        "historical_pr": 172,
+        "successor": "F-TA04R",
+        "authority": "integration/control/F_TA04_CURRENT_TRACEABILITY_RECONCILIATION_20260920.json",
+        "disposition": "CANONICALLY_ADMITTED_VIA_PR_492"
       }
     },
     {
@@ -160,9 +163,7 @@
         "no formal performance claim",
         "no contact-capable long-window trajectory"
       ],
-      "open_prs": [
-        289
-      ],
+      "open_prs": [],
       "next_gate": "FMC and LARE continue as distinct research lines. Do not merge the large LARE research branch wholesale; return only bounded evidence successors to central regie."
     },
     {
@@ -259,24 +260,6 @@
       "action": "KEEP_OPEN_UNMERGED_UNTIL_STORAGE_PARTITION_AND_DRAINAGE_OWNERSHIP_AUTHORITY_RESOLVED"
     },
     {
-      "pr": 72,
-      "class": "SUPERSEDED_BY_RECOMPOSED_CURRENT_GOVERNANCE_ON_ADMISSION",
-      "owner": "REGIE",
-      "action": "CLOSE_AFTER_GOV_REC01_CANONICAL_ADMISSION_PRESERVE_HISTORY"
-    },
-    {
-      "pr": 163,
-      "class": "SUPERSEDED_BY_CURRENT_F_TB13R_ON_ADMISSION",
-      "owner": "REGIE",
-      "action": "CLOSE_AFTER_F_TB13R_CANONICAL_ADMISSION_PRESERVE_HISTORY"
-    },
-    {
-      "pr": 172,
-      "class": "SUPERSEDED_BY_CURRENT_F_TA04R_ON_ADMISSION",
-      "owner": "REGIE",
-      "action": "CLOSE_AFTER_F_TA04R_CANONICAL_ADMISSION_PRESERVE_HISTORY"
-    },
-    {
       "pr": 361,
       "class": "BLOCKED_INTERNAL_AUTHORITY",
       "owner": "PPA",
@@ -323,12 +306,6 @@
       "class": "OWNER_CONTROLLED",
       "owner": "PUBLICATIONS",
       "action": "CONTINUE_DRAFT_UNDER_PUBLICATION_FIREWALL"
-    },
-    {
-      "pr": 289,
-      "class": "SUPERSEDED_AS_LIVE_AUTHORITY",
-      "owner": "F-ROM",
-      "action": "F_ROMV2_IS_CURRENT_OWNER; PRESERVE_OR_CLOSE_OLD_DRAFT_BY_OWNER"
     },
     {
       "pr": 181,
@@ -391,7 +368,6 @@
       371,
       378,
       389,
-      289,
       181,
       187,
       199,
@@ -407,12 +383,8 @@
   },
   "supersession_cleanup_queue": {
     "owner_review_candidates": [
-      289,
       366,
-      378,
-      72,
-      163,
-      172
+      378
     ],
     "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
   },
@@ -428,5 +400,27 @@
       "reason": "Retained as immutable reconciliation history; not the current routing map."
     }
   ],
-  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central housekeeping debt #72/#163/#172 is closed by recomposed successors once F-TA04R is admitted. New central work should come from qualified specialized admission candidates, explicit shared-authority conflicts, preservation drift, or deliberate project-control refresh."
+  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central regie has no residual #72/#163/#172 housekeeping queue. New central work is event-driven: qualified specialized admission, shared-authority resolution, preservation drift, or deliberate control refresh.",
+  "historical_closed_prs": [
+    {
+      "pr": 72,
+      "successor": "GOV-REC01 / PR #490",
+      "disposition": "CLOSED_SUPERSEDED_HISTORICAL"
+    },
+    {
+      "pr": 163,
+      "successor": "F-TB13R / PR #491",
+      "disposition": "CLOSED_SUPERSEDED_HISTORICAL"
+    },
+    {
+      "pr": 172,
+      "successor": "F-TA04R / PR #492",
+      "disposition": "CLOSED_SUPERSEDED_HISTORICAL"
+    },
+    {
+      "pr": 289,
+      "successor": "F-ROMV2 plus F-ROM-CODEMAP-01",
+      "disposition": "CLOSED_SUPERSEDED_HISTORICAL"
+    }
+  ]
 }
