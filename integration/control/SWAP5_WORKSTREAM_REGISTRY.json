@@ -1,0 +1,228 @@
+{
+  "schema": "swap5.project_control.v1",
+  "work_unit": "PROJECT-CONTROL-01",
+  "date": "2026-09-20",
+  "purpose": "Single repository-backed control baseline for SWAP5 workstream routing, canonical admission, blockers, supersession and continuation.",
+  "snapshot": {
+    "branch": "integration/f-ci-canonical",
+    "head": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+    "head_subject": "F-ROMV2 D31: persist M2WC70 retrieval blocker reconciliation (#485)",
+    "open_pr_count": 20,
+    "moving_branch_rule": "This is an exact control snapshot, not a claim that the moving canonical branch remains at this SHA. Before any central admission action, reconcile live delta from this head."
+  },
+  "status_vocabulary": [
+    "ACTIVE",
+    "ADMISSION_READY",
+    "RECONCILE_REQUIRED",
+    "BLOCKED_INTERNAL_AUTHORITY",
+    "BLOCKED_EXTERNAL",
+    "OWNER_CONTROLLED",
+    "SUPERSEDED_AS_LIVE_AUTHORITY",
+    "HISTORICAL_SNAPSHOT",
+    "CLOSED"
+  ],
+  "control_rules": {
+    "canonical_admission_owner": "central SWAP5 regie",
+    "specialized_workstream_rule": "Specialized workstreams may research, implement and qualify within their declared ownership. Canonical admission, cross-workstream supersession and shared-authority reconciliation return to central regie.",
+    "admission_queue": "READY_FOR_REGIE -> RECONCILE -> ADMIT | RETURN | SUPERSEDE",
+    "staleness_rule": "A control snapshot remains historical evidence after canonical moves. It must not be silently rewritten as current authority.",
+    "scope_rule": "PROJECT-CONTROL-01 changes governance/documentation only and does not authorize new physics, solver capability, coupling semantics or ROM production use."
+  },
+  "workstreams": [
+    {
+      "id": "REGIE",
+      "title": "Canonical integration and project control",
+      "owner": "central SWAP5 regie",
+      "status": "ACTIVE",
+      "canonical_authority": "integration/f-ci-canonical@09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+      "open_prs": [58, 72, 163, 172],
+      "current_blocker": null,
+      "next_gate": "Maintain this registry from live canonical delta; reconcile governance/evidence queue #72, #163 and #172 as bounded slices when no specialized admission has priority.",
+      "write_scope": [
+        "integration/control/**",
+        "docs/development/project-control surfaces",
+        "canonical admission/governance evidence",
+        "cross-workstream preservation and supersession metadata"
+      ],
+      "forbidden_scope": [
+        "new hydrological physics",
+        "new solver functionality",
+        "new groundwater coupling method",
+        "production ROM development"
+      ]
+    },
+    {
+      "id": "PPA",
+      "title": "Production physics and application envelope",
+      "owner": "production-physics workstream",
+      "status": "ACTIVE",
+      "canonical_authority": [
+        "PPA-WU01/WU02/WU03 and PPA-LOW02-TIME admitted",
+        "PPA-ROOT-HYD01 admitted",
+        "PPA-ROOT-HYD02 admitted by PR #397 / merge 7ea315285904783225741b350be292974afeec92",
+        "PPA-WU04-A admitted by PR #395 / merge 50e7d1dece5b75d0103459d5c118d03a2665eea3",
+        "PPA-WU04-B admitted by PR #404 / merge 4d40b8d4b6a1df06ff97fab55497542778431290",
+        "PPA-WU05-A and WU05-C review authority canonically closed without production admission"
+      ],
+      "authority_files": [
+        "integration/audits/production_physics_application_envelope_gap_register.json",
+        "integration/audits/PPA_WU04A_STATUS.json",
+        "integration/audits/PPA_WU04B_STATUS.json",
+        "integration/audits/PPA_ROOT_HYD02_RESULT.json",
+        "integration/audits/PPA_WU05A_STATUS.json",
+        "integration/audits/PPA_WU05C_STATUS.json"
+      ],
+      "status_freshness_note": "WU04-A, WU04-B and ROOT-HYD02 status/result files retain pre-admission wording in places even though their owner PRs are merged to canonical. Merge authority governs the current disposition; the wording is evidence-freshness debt, not a rollback of admission.",
+      "open_prs": [361, 363],
+      "current_blockers": [
+        "PPA-WU05-A production macropore implementation remains forbidden pending exact source materialization/census.",
+        "PPA-WU05-B frost authority remains blocked.",
+        "PPA-WU05-D compensated uptake remains blocked and must bind later root-hydraulic authority before any implementation."
+      ],
+      "next_gate": "Production owner selects the next source-authorized bounded migration slice; central regie only admits a qualified successor."
+    },
+    {
+      "id": "F-GC",
+      "title": "Groundwater coupling and iMOD Coupler product integration",
+      "owner": "groundwater-coupling workstream",
+      "status": "BLOCKED_EXTERNAL",
+      "canonical_authority": "integration/f-gc/F-GC50_STATUS.json",
+      "state": "CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED",
+      "current_blocker": "FGC50-B1: actual iMOD Coupler product registration requires an upstream source mutation/extension route not available to the current connection.",
+      "resolved_internal_blocker": "PPA-WU01 provides the restricted production-side Fortran/FMR owner required by F-GC49D.",
+      "next_gate": "Resume product integration only when an authorized upstream iMOD Coupler mutation/extension path exists. Do not create a local product-loop imitation."
+    },
+    {
+      "id": "F-ROM",
+      "title": "Purpose-dependent ROM / LARE research",
+      "owner": "ROM research workstream",
+      "status": "BLOCKED_EXTERNAL",
+      "canonical_authority": [
+        "integration/f-rom/F-ROMV2_STATUS.json",
+        "integration/f-rom/F-ROMV2_D30_STATUS.json",
+        "integration/f-rom/F-ROMV2_D31_STATUS.json"
+      ],
+      "latest_checkpoint": "F-ROMV2-D31",
+      "latest_decision": "M2WC70_OFFICIAL_ARCHIVE_CONFIRMED_BUT_RETRIEVAL_BLOCKER_PERSISTS_NO_EQUIVALENT_ORACLE_FOUND",
+      "current_blockers": [
+        "M2WC70 or equivalent finite-water-content implementation oracle is not materialized for the natural within-step surface-front/groundwater-front contact event.",
+        "D28 native ET implementation-source authority remains blocked."
+      ],
+      "nonclaims": [
+        "no production ROM",
+        "no application acceptance",
+        "no formal performance claim",
+        "no contact-capable long-window trajectory"
+      ],
+      "open_prs": [289],
+      "next_gate": "Materialize an acceptable implementation oracle or explicitly close/narrow the affected proposition; no central implementation action."
+    },
+    {
+      "id": "HYDRO-MEMORY",
+      "title": "Hydrological memory research",
+      "owner": "HYDRO-MEMORY research workstream",
+      "status": "ACTIVE",
+      "canonical_authority": [
+        "integration/research/HYDRO_MEMORY_ACC02_F1_RESULT.json",
+        "integration/research/HYDRO_MEMORY_ACC02_F2_RESULT.json",
+        "integration/research/HYDRO_MEMORY_DYN01_RESULT.json"
+      ],
+      "latest_evidence": [
+        "ACC02-F1: live root-active SWAP-MODFLOW6 single-window coupling passed under governed accuracy.",
+        "ACC02-F2: four consecutive live root-active windows passed without reinitialization.",
+        "DYN01: atmospheric forcing plus accepted-state-dependent restricted Feddes composition passed."
+      ],
+      "stage0_authorized": false,
+      "open_prs": [366, 378],
+      "current_blocker": "Scientific Stage 0 still requires the remaining dynamic coupling/composition and soil/diagnostic freeze; older CAP gate PRs no longer represent the complete live prerequisite state.",
+      "next_gate": "Continue under research owner from current canonical authority; do not widen production application ownership by implication."
+    },
+    {
+      "id": "DIFFICULTY",
+      "title": "Physical predictability of numerical difficulty",
+      "owner": "DIFFICULTY research workstream",
+      "status": "OWNER_CONTROLLED",
+      "open_prs": [365],
+      "current_authority": "PR #365 preregisters the Phase-0 falsification experiment and records that the minimum pilot can proceed with current state/solver diagnostics.",
+      "current_blocker": "A second genuinely independent iterative nonlinear Richards method is still required for the H3/independent-method part; RossFast may not be relabelled as that comparator.",
+      "next_gate": "Research owner continues prospective experiment design/execution without solver-product changes in central regie."
+    },
+    {
+      "id": "TRACE",
+      "title": "Theory-documentation-code-evidence reconciliation research",
+      "owner": "TRACE research workstream",
+      "status": "ACTIVE",
+      "canonical_authority": [
+        "integration/trace/TRACE_PROTOCOL.md",
+        "integration/trace/TRACE_CANDIDATE_REGISTER.csv",
+        "integration/trace/TRACE_EXPOSURE_BATCH_02_CLOSEOUT.md",
+        "integration/trace/TRACE_EXPOSURE_BATCH_03.md"
+      ],
+      "current_blocker": null,
+      "next_gate": "Continue prospectively under TRACE protocol; central regie consumes only shared governance/admission implications."
+    },
+    {
+      "id": "PUBLICATIONS",
+      "title": "Publication portfolio and release tooling",
+      "owner": "publication-specific workstreams",
+      "status": "OWNER_CONTROLLED",
+      "canonical_authority": [
+        "PUB-GC E7 remains closed at REALISTIC_COMPONENT_DOMAIN_LIMIT and current provenance has been hardened through later HYDRO-MEMORY research evidence.",
+        "Publication tooling must consume canonical capability; it does not confer production authority."
+      ],
+      "open_prs": [359, 371, 389, 181, 199, 207, 217, 218, 219, 187],
+      "current_blockers": [
+        "PUB-GC release/archive finalization still depends on explicit release/licence/archive metadata.",
+        "PUB-P2E03 first calibration matrix remains an immutable blocked experiment.",
+        "PUB-ME PR stack is research evidence and requires owner-side consolidation rather than central replay."
+      ],
+      "next_gate": "Publication owners reconcile their branches to current canonical and return only cross-workstream admission/preservation changes to central regie."
+    }
+  ],
+  "open_pr_inventory": [
+    {"pr": 58, "class": "CANONICAL_CARRIER_DRAFT", "owner": "REGIE", "action": "KEEP_OPEN"},
+    {"pr": 72, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECOMPOSE_CURRENT_GOVERNANCE_DO_NOT_MERGE_STALE_BRANCH_AS_IS"},
+    {"pr": 163, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECONCILE_WITH_CURRENT_F_TB_AUTHORITY"},
+    {"pr": 172, "class": "RECONCILE_REQUIRED", "owner": "REGIE", "action": "RECONCILE_WITH_CURRENT_TRANSACTION_RESTART_AUTHORITY"},
+    {"pr": 361, "class": "BLOCKED_INTERNAL_AUTHORITY", "owner": "PPA", "action": "KEEP_BLOCKED"},
+    {"pr": 363, "class": "BLOCKED_INTERNAL_AUTHORITY", "owner": "PPA", "action": "REFRESH_DEPENDENCIES_BEFORE_IMPLEMENTATION"},
+    {"pr": 365, "class": "OWNER_CONTROLLED", "owner": "DIFFICULTY", "action": "OWNER_CONTINUES"},
+    {"pr": 366, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "HYDRO-MEMORY", "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"},
+    {"pr": 378, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "HYDRO-MEMORY", "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"},
+    {"pr": 359, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "RECONCILE_AND_CONTINUE_IF_STILL_REQUIRED"},
+    {"pr": 371, "class": "RECONCILE_REQUIRED", "owner": "PUBLICATIONS", "action": "REBIND_FINALIZATION_CONTRACT_TO_CURRENT_CANONICAL"},
+    {"pr": 389, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "CONTINUE_DRAFT_UNDER_PUBLICATION_FIREWALL"},
+    {"pr": 289, "class": "SUPERSEDED_AS_LIVE_AUTHORITY", "owner": "F-ROM", "action": "F_ROMV2_IS_CURRENT_OWNER; PRESERVE_OR_CLOSE_OLD_DRAFT_BY_OWNER"},
+    {"pr": 181, "class": "OWNER_CONTROLLED", "owner": "PUBLICATIONS", "action": "RECONCILE_PORTFOLIO_DOCUMENTATION_BEFORE_ANY_MERGE"},
+    {"pr": 187, "class": "BLOCKED_HISTORICAL_EXPERIMENT", "owner": "PUBLICATIONS", "action": "DO_NOT_MERGE_AS_POSITIVE_EVIDENCE"},
+    {"pr": 199, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
+    {"pr": 207, "class": "BLOCKED_HISTORICAL_EXPERIMENT", "owner": "PUBLICATIONS", "action": "PRESERVE_NEGATIVE_EVIDENCE_DO_NOT_MERGE_AS_POSITIVE_RESULT"},
+    {"pr": 217, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
+    {"pr": 218, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"},
+    {"pr": 219, "class": "OWNER_CONTROLLED_RESEARCH_STACK", "owner": "PUBLICATIONS", "action": "OWNER_CONSOLIDATION_REQUIRED"}
+  ],
+  "central_admission_queue": {
+    "ready_for_regie": [],
+    "reconcile": [72, 163, 172],
+    "blocked": [361, 363],
+    "external_blockers": ["F-GC50-B1", "F-ROMV2-D31-M2WC70"],
+    "owner_controlled_not_for_central_merge": [359, 365, 366, 371, 378, 389, 289, 181, 187, 199, 207, 217, 218, 219]
+  },
+  "supersession_cleanup_queue": {
+    "owner_review_candidates": [289, 366, 378],
+    "rule": "Do not close solely from age. Close only after the current canonical successor is explicit and no unique evidence would be lost."
+  },
+  "historical_snapshots": [
+    {
+      "path": "integration/f-ci/OPEN_PR_RECONCILIATION_20260919.json",
+      "state": "HISTORICAL_SNAPSHOT",
+      "reason": "Valid for its exact earlier canonical head, but superseded as the live project-control surface by PROJECT-CONTROL-01."
+    },
+    {
+      "path": "docs/development/open-pr-reconciliation-20260919.md",
+      "state": "HISTORICAL_SNAPSHOT",
+      "reason": "Retained as immutable reconciliation history; not the current routing map."
+    }
+  ],
+  "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical, reads this registry for ownership boundaries, and returns to REGIE only for admission, supersession or shared-authority conflict."
+}
