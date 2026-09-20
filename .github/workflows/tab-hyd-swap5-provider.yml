@@ -1,0 +1,108 @@
+name: TAB-HYD SWAP5-native provider characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tab-hyd-swap5-provider
+    paths:
+      - 'research/tab_hyd_swap5/**'
+      - '.github/workflows/tab-hyd-swap5-provider.yml'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact research head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify live-canonical ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical
+          BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
+          echo "merge_base=$BASE"
+          echo "live_canonical=$(git rev-parse origin/integration/f-ci-canonical)"
+          test "$BASE" = "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d"
+
+      - name: Compile SWAP5 contract and providers
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/tab-hyd-swap5/o0 build/tab-hyd-swap5/o3
+          COMMON="-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow"
+          for opt in 0 3; do
+            OUT="build/tab-hyd-swap5/o$opt"
+            gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
+            gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/mvg.o"
+            gfortran $COMMON -O$opt -J "$OUT" -I "$OUT"               -c research/tab_hyd_swap5/mod_research_direct_table_provider.f90 -o "$OUT/table.o"
+            gfortran $COMMON -Wno-error=compare-reals -O$opt -J "$OUT" -I "$OUT"               -c research/tab_hyd_swap5/test_tab_hyd_swap5_provider.f90 -o "$OUT/test.o"
+            gfortran -O$opt "$OUT/contract.o" "$OUT/mvg.o" "$OUT/table.o" "$OUT/test.o" -o "$OUT/test"
+          done
+
+      - name: Run correctness characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in 0 3; do
+            OUT="build/tab-hyd-swap5/o$opt"
+            "$OUT/test" | tee "$OUT/output.txt"
+            grep -q '^TAB_HYD_SWAP5_TYPED_PROVIDER_CONTRACT=PASS$' "$OUT/output.txt"
+            grep -q '^TAB_HYD_SWAP5_PROVIDER_CHARACTERIZATION_COMPLETED$' "$OUT/output.txt"
+          done
+          cp build/tab-hyd-swap5/o3/output.txt build/tab-hyd-swap5/characterization.csv
+
+      - name: Summarize resolution errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          p=Path("build/tab-hyd-swap5/characterization.csv")
+          rows=[]
+          for line in p.read_text().splitlines():
+              if not line or not line[0].isdigit():
+                  continue
+              a=line.split(",")
+              if len(a)!=7:
+                  continue
+              rows.append({
+                  "n":int(a[0]),
+                  "theta":float(a[1]),
+                  "logk":float(a[2]),
+                  "logc":float(a[3]),
+                  "btheta":float(a[4]),
+                  "blogk":float(a[5]),
+                  "blogc":float(a[6]),
+              })
+          if len(rows)!=4:
+              raise SystemExit(f"expected four resolution rows, got {len(rows)}")
+          best=rows[-1]
+          summary=(
+              f"rows={len(rows)}\n"
+              f"best_n={best['n']}\n"
+              f"best_max_theta_abs={best['theta']:.17e}\n"
+              f"best_max_log10K_abs={best['logk']:.17e}\n"
+              f"best_max_log10C_abs={best['logc']:.17e}\n"
+              f"best_hcrit_theta_abs={best['btheta']:.17e}\n"
+              f"best_hcrit_log10K_abs={best['blogk']:.17e}\n"
+              f"best_hcrit_log10C_abs={best['blogc']:.17e}\n"
+          )
+          Path("build/tab-hyd-swap5/summary.txt").write_text(summary)
+          print(summary,end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-swap5-native-provider
+          path: |
+            build/tab-hyd-swap5/o0/output.txt
+            build/tab-hyd-swap5/o3/output.txt
+            build/tab-hyd-swap5/characterization.csv
+            build/tab-hyd-swap5/summary.txt
