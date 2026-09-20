@@ -1,0 +1,87 @@
+{
+  "application_acceptance_adjudicated": false,
+  "authority": {
+    "R16_reference_sha256": "16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b",
+    "R2_reference_sha256": "422981be7232bad79baa42767e295462e8d06212e012d9984947e907d18f406c",
+    "artifact_digest": "sha256:272756bb6942b7bea0cd0b3e058dbe374e9172c28963fae184f0a101c646c46f",
+    "artifact_id": 10600184543,
+    "execution_head": "279ab2e34fc28a81fc3507a835a20b144049fc83",
+    "job_id": 106038449006,
+    "preregistration": "integration/f-rom/LARE_BC2_C5A_PREREGISTRATION.json",
+    "result_sha256": "50ac095f50f47370c6d201a18c11522f765f608ea1970eca50df0ced65a560dc",
+    "workflow_run": 35495825564
+  },
+  "cross_axis_reconciliation": {
+    "B01_dynamic": "C4Z formal R2-relative GW and PROFILE minimum R3, with strong convergence through R8",
+    "B01_fixed": "C4V persistent one-day GW minimum R8 relative to its frozen comparators",
+    "B14_dynamic": "C5A no reduced R2-vector frontier; sole blocker is pooled signed flux bias while lower-zone convergence plateaus by R5-R8",
+    "B14_fixed": "C4X material-transfer frontier present, with material-dependent state/placement behavior",
+    "implication": "Material and lower-boundary semantics interact. State count alone cannot explain transfer behavior; closure response and metric structure now require explicit separation."
+  },
+  "decision": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "formal_hypothesis_adjudication": {
+    "H_LOWER_ZONE_PLACEMENT_R4": "SUPPORTED",
+    "H_LOWER_ZONE_PLACEMENT_R8": "SUPPORTED",
+    "H_R3_R2_RELATIVE_GW_TRANSFER": "NOT_SUPPORTED_FORMALLY",
+    "H_R3_R2_RELATIVE_PROFILE_TRANSFER": "NOT_SUPPORTED_FORMALLY"
+  },
+  "frontiers": {
+    "GW": [],
+    "PROFILE": [],
+    "minimum_dimension_GW": null,
+    "minimum_dimension_PROFILE": null
+  },
+  "integrity": {
+    "R16_operator_control_status": "QUALIFIED",
+    "all_members_and_controls_attempted": true,
+    "maximum_qualified_lare_water_ledger_cm": 1.5741839255734025e-12,
+    "pass": true
+  },
+  "model_changed": false,
+  "next_authority": {
+    "constraints": [
+      "C5A formal decision remains unchanged",
+      "no gate, threshold, partition or closure tuning",
+      "reuse exact C5A workload and reference trajectories",
+      "diagnose signed error by history, boundary phase and resolution",
+      "test resolution/timestep sensitivity only as mechanism diagnosis, not acceptance rescue",
+      "no application, performance, speed or production claim"
+    ],
+    "question": "Is the C5A pooled signed-flux blocker a genuine BC1 dynamic-boundary closure floor, a time-integration floor, or primarily a cross-history aggregation/cancellation property of R2?",
+    "state": "ZERO_FIT_MECHANISTIC_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C5B"
+  },
+  "performance_comparison_authorized": false,
+  "placement_tests": {
+    "R4_no_worse_than_U4_GW": true,
+    "R8_no_worse_than_U8_GW": true
+  },
+  "production_rom_authorized": false,
+  "schema": "swap5.lare.bc2.c5a.closeout.v1",
+  "scientific_interpretation": [
+    "C5A completes the matched material-by-lower-boundary interaction cell. Unlike B01 C4Z, no reduced B14 lower-zone LARE member crosses the full frozen R2-relative dynamic-groundwater vector.",
+    "The negative decision is caused by exactly one frozen component for every lower-zone ladder member: pooled absolute mean signed bottom-flux error.",
+    "On the other seven groundwater-vector components, every lower-zone ladder member is no worse than R2. R2 itself has 832 sign mismatches and reversal-sequence mismatches in three of four histories.",
+    "R2 obtains an unusually small pooled signed-bias magnitude through strong cancellation among history-specific signed errors; its mean absolute history bias is about three orders of magnitude larger than its pooled bias.",
+    "The lower-zone LARE response converges to an apparent floor by R5-R8: R5, R6, R8, R12 and R16 are effectively identical on the blocking signed-bias metric and bottom-flux RMSE.",
+    "Consequently the C5A result does not support the interpretation that simply adding more lower-zone state resolves the B14 dynamic-head discrepancy.",
+    "Placement evidence nevertheless transfers: R4 remains componentwise no worse than U4 and R8 remains componentwise no worse than U8.",
+    "C5A retains its preregistered negative decision. The post-result diagnostic does not change the acceptance vector or create a new frontier."
+  ],
+  "single_component_blocker": {
+    "R16": 4.234456410686175e-06,
+    "R2": 2.7875091774751115e-06,
+    "R2_cancellation_ratio": 0.000735823233542339,
+    "R2_mean_abs_per_history": 0.0037882864394695945,
+    "R3": 6.5080189137075085e-06,
+    "R4": 4.24588989029839e-06,
+    "R5": 4.234485987726516e-06,
+    "R8": 4.234456410686175e-06,
+    "component": "abs_mean_signed_bottom_flux_error_cm_per_day"
+  },
+  "speed_claim_authorized": false,
+  "status": "CLOSED_MATCHED_B14_DYNAMIC_TRANSFER_NO_REDUCED_R2_VECTOR_FRONTIER_SINGLE_COMPONENT_BLOCKER",
+  "work_unit": "LARE-BC2-C5A",
+  "workstream": "F-ROM-LARE",
+  "zero_fit_diagnostic": "integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json"
+}

@@ -11,12 +11,16 @@
     "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor.",
     "C4Y": "The first response-blind dynamic prescribed-head transfer produced no representation adjudication because the frozen R2 comparator failed closed under the inherited RS1 local fallback allowance before a complete trajectory existed. C4Y remains closed and is not retuned.",
     "C4Z": "Fresh blind B01 dynamic prescribed-head validation yields a formal R2-relative minimum R3 for both frozen vectors, but R2 itself misses reversal sequences in 3/4 histories. The lower-zone ladder improves sharply through R8 and lower-zone placement outperforms uniform placement at dimensions 4 and 8.",
+    "C5A": "Matched B14 dynamic-head transfer has no reduced R2-relative GW frontier under the frozen vector. Every lower-zone member fails only pooled absolute mean signed bottom-flux error; R5-R16 plateau on that blocker while placement advantage persists.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
+    "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
     "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
+    "B14_dynamic_interaction": "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+    "B14_dynamic_zero_fit_diagnostic": "integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json",
     "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
@@ -54,22 +58,23 @@
       "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
     }
   ],
-  "decision": "PREREGISTER_B14_DYNAMIC_HEAD_CROSS_AXIS_TRANSFER_WITHOUT_APPLICATION_OR_SPEED_CLAIMS",
+  "decision": "DIAGNOSE_C5A_SINGLE_COMPONENT_BLOCKER_WITH_ZERO_FIT_C5B_BEFORE_ANY_NEW_REPRESENTATION_SELECTION",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
-  "next_authority": "B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER",
+  "next_authority": "LARE-BC2-C5B",
   "next_family_authority": {
     "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "family": "B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER",
+    "family": "C5B_ZERO_FIT_SIGNED_FLUX_MECHANISM",
     "implementation_authorized": true,
-    "post_hoc_retuning_authorized": false,
-    "purpose": "Complete the material-by-lower-boundary 2x2 evidence needed to test whether lower-zone placement and resolution behavior jointly transfer.",
+    "post_hoc_acceptance_retuning_authorized": false,
+    "purpose": "Separate state-resolution, closure/boundary-response and aggregation-cancellation explanations for the sole C5A blocking metric without altering C5A.",
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5A_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C5A_ZERO_FIT_DIAGNOSTIC.json",
       "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC1_CLOSEOUT.json"
+      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json"
     ],
-    "state": "AUTHORIZED_FOR_PROSPECTIVE_PREREGISTRATION"
+    "state": "AUTHORIZED_FOR_PROSPECTIVE_DIAGNOSTIC_PREREGISTRATION"
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -101,7 +106,7 @@
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "schema": "swap5.lare.representation-selection.closeout.v5",
+  "schema": "swap5.lare.representation-selection.closeout.v6",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
@@ -112,7 +117,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C4Z_CROSS_MATERIAL_AND_BOUNDARY_SEMANTICS_EVIDENCE_INTERACTION_CELL_NEXT",
+  "status": "CLOSED_THROUGH_C5A_FULL_MATERIAL_BY_BOUNDARY_INTERACTION_MATRIX_SINGLE_COMPONENT_MECHANISM_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,

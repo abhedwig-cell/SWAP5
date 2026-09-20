@@ -1,0 +1,1203 @@
+{
+  "R2_comparator": {
+    "abs_mean_signed_bottom_flux_error_cm_per_day": 2.7875091774751115e-06,
+    "bottom_flux_sign_mismatch_count": 832,
+    "by_history": {
+      "Z01": {
+        "abs_final_cumulative_bottom_error_cm": 0.002809082446781096,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0034290557211682365,
+        "bottom_flux_sign_mismatch_count": 0,
+        "candidate_reversal_steps": [
+          257,
+          577
+        ],
+        "cumulative_bottom_rmse_cm": 0.0035134838254286347,
+        "interval_bottom_flux_rmse_cm_per_day": 0.02862117778196047,
+        "mapped_theta_rmse": 9.829154825626576e-05,
+        "reference_reversal_steps": [
+          257,
+          577
+        ],
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch": false,
+        "total_storage_rmse_cm": 0.0035134838254293776
+      },
+      "Z02": {
+        "abs_final_cumulative_bottom_error_cm": 0.006202161447390844,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.007570997860584239,
+        "bottom_flux_sign_mismatch_count": 256,
+        "candidate_reversal_steps": [],
+        "cumulative_bottom_rmse_cm": 0.006702278700637556,
+        "interval_bottom_flux_rmse_cm_per_day": 0.053961779971346935,
+        "mapped_theta_rmse": 0.0001846342992534506,
+        "reference_reversal_steps": [
+          257
+        ],
+        "reversal_penalty_steps": 1024,
+        "reversal_sequence_mismatch": true,
+        "total_storage_rmse_cm": 0.006702278700651666
+      },
+      "Z03": {
+        "abs_final_cumulative_bottom_error_cm": 0.0031260797864904426,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.003816015364368,
+        "bottom_flux_sign_mismatch_count": 256,
+        "candidate_reversal_steps": [],
+        "cumulative_bottom_rmse_cm": 0.008040662601123271,
+        "interval_bottom_flux_rmse_cm_per_day": 0.06572957251929663,
+        "mapped_theta_rmse": 0.00021781855090080763,
+        "reference_reversal_steps": [
+          321,
+          577
+        ],
+        "reversal_penalty_steps": 1024,
+        "reversal_sequence_mismatch": true,
+        "total_storage_rmse_cm": 0.008040662601109909
+      },
+      "Z04": {
+        "abs_final_cumulative_bottom_error_cm": 0.00027613332419201397,
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0003370768117579026,
+        "bottom_flux_sign_mismatch_count": 320,
+        "candidate_reversal_steps": [],
+        "cumulative_bottom_rmse_cm": 0.005493053257429579,
+        "interval_bottom_flux_rmse_cm_per_day": 0.040935559553675734,
+        "mapped_theta_rmse": 0.0001484410612819049,
+        "reference_reversal_steps": [
+          321
+        ],
+        "reversal_penalty_steps": 1024,
+        "reversal_sequence_mismatch": true,
+        "total_storage_rmse_cm": 0.005493053257437182
+      }
+    },
+    "cumulative_bottom_rmse_cm": 0.006166258945394457,
+    "interval_bottom_flux_rmse_cm_per_day": 0.04931313784085498,
+    "mapped_theta_rmse": 0.00016824886530854565,
+    "max_abs_final_cumulative_bottom_error_cm": 0.006202161447390844,
+    "reversal_penalty_steps": 1024,
+    "reversal_sequence_mismatch_history_count": 3,
+    "total_storage_rmse_cm": 0.006166258945395735
+  },
+  "application_acceptance_adjudicated": false,
+  "crossing_R2": {
+    "P4_TOP_LOWER": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R12": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R3": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R4": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R5": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R6": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "R8": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "U4": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    },
+    "U8": {
+      "crosses_R2_GW": false,
+      "crosses_R2_PROFILE": false
+    }
+  },
+  "decision": "C5A_DYNAMIC_HEAD_REDUCED_FRONTIER_NOT_PRESERVED",
+  "frontiers": {
+    "GW": [],
+    "PROFILE": [],
+    "minimum_dimension_GW": null,
+    "minimum_dimension_PROFILE": null
+  },
+  "hypotheses": {
+    "H_LOWER_ZONE_PLACEMENT_R4": true,
+    "H_LOWER_ZONE_PLACEMENT_R8": true,
+    "H_R3_R2_RELATIVE_GW_TRANSFER": null,
+    "H_R3_R2_RELATIVE_PROFILE_TRANSFER": null
+  },
+  "integrity": {
+    "R16_operator_control_status": "QUALIFIED",
+    "all_members_and_controls_attempted": true,
+    "maximum_qualified_lare_water_ledger_cm": 1.5741839255734025e-12,
+    "pass": true
+  },
+  "interpretation_boundaries": [
+    "Comparator-relative crossing against R2 is not application acceptance.",
+    "C5A is a matched B14 transfer of the fixed-domain prescribed-head C4Z workload; it is not moving-water-table geometry and not groundwater-coupling authority.",
+    "No FMC comparison is made because no pre-existing B14 dynamic prescribed-head FMC boundary authority exists.",
+    "No post-response partition, closure, history or threshold tuning is authorized."
+  ],
+  "matched_cross_axis_transfer": true,
+  "material": "B14",
+  "material_previously_exposed": true,
+  "members": [
+    {
+      "boundaries_cm": [
+        0.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 3,
+      "failures": {},
+      "id": "R3",
+      "max_abs_water_ledger_cm": 6.003687130773372e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 6.5080189137075085e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.9691281633540557e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.403720902616786e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.463530946882212e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.332673420219398e-06,
+            "mapped_theta_rmse": 7.509559319831579e-07,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4635309500865571e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 3.3047547737877214e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 4.034124479655139e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 3.558926452913498e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.8240299051433923e-05,
+            "mapped_theta_rmse": 4.180366795957217e-06,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 3.5589263859007973e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 2.2156398679959444e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.7046385108034886e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.597733035560582e-05,
+            "interval_bottom_flux_rmse_cm_per_day": 7.042467433361839e-05,
+            "mapped_theta_rmse": 1.3825358730749001e-05,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.5977330366384893e-05
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 5.047043062115716e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 6.160941238335032e-07,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.1276087270488723e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.443367205762221e-05,
+            "mapped_theta_rmse": 3.119695005656382e-06,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.127608835199513e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 8.285675659192e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 3.8791907126568314e-05,
+        "mapped_theta_rmse": 7.397844995718979e-06,
+        "max_abs_final_cumulative_bottom_error_cm": 2.2156398679959444e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 8.285675664276662e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 4,
+      "failures": {},
+      "id": "R4",
+      "max_abs_water_ledger_cm": 2.719127006889366e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.24588989029839e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.9311800943992924e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.3573975762561396e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380386785874097e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264470353958817e-06,
+            "mapped_theta_rmse": 6.776446678038267e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.438038658928198e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2414824810194625e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5154815441470001e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.908788258392065e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.537535960088223e-05,
+            "mapped_theta_rmse": 6.245522720728606e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.908788283864981e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2324245771654085e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5044245327388606e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.288073596930482e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.144873956551904e-05,
+            "mapped_theta_rmse": 2.681532597378478e-06,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.288073651762925e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.989886067962971e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.0973982016958168e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.214949924362199e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.3868536608613401e-05,
+            "mapped_theta_rmse": 2.73180445185705e-07,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.214949857159323e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.042403164233851e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9732097617485244e-05,
+        "mapped_theta_rmse": 1.3838264152292215e-06,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2324245771654085e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.0424031843761e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 5,
+      "failures": {},
+      "id": "R5",
+      "max_abs_water_ledger_cm": 5.731986066348504e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.234485987726516e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.9311656622836336e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.357379958927347e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380291929544584e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264444117738221e-06,
+            "mapped_theta_rmse": 4.488177342731157e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4380293901288726e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2377317679182487e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5109030369433124e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.9080823338779483e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.537114491816788e-05,
+            "mapped_theta_rmse": 1.3442171316964625e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.9080822955947116e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2282835688985638e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.4993695910069032e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.261139744513589e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.137871257204003e-05,
+            "mapped_theta_rmse": 4.801342414679652e-07,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.261139884938864e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.992941005316404e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.0977711188530007e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.2150211401794016e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.3868113785180512e-05,
+            "mapped_theta_rmse": 7.509596076504442e-08,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.2150209369496414e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.029908022003313e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9700857850899844e-05,
+        "mapped_theta_rmse": 2.531066295608862e-07,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2282835688985638e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.029908072826892e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 6,
+      "failures": {},
+      "id": "R6",
+      "max_abs_water_ledger_cm": 1.387983478151611e-12,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.2344564590792946e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.931165659157662e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.357379955111484e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380291909281309e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264444112080881e-06,
+            "mapped_theta_rmse": 4.481787811439227e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4380297945851466e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2377280402611768e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5108984865806386e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.9080816148462767e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.5371140969785766e-05,
+            "mapped_theta_rmse": 1.1824344841126118e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.908081460896929e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2282735071669076e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.499357308619608e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.261075265025215e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.137854855416525e-05,
+            "mapped_theta_rmse": 2.8008119280775983e-07,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.261075328169676e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.992942338460069e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.097771281590256e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.2150211693203512e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.386811360354133e-05,
+            "mapped_theta_rmse": 7.327672289938605e-08,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.2150207239218415e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.029878241010599e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9700786053654086e-05,
+        "mapped_theta_rmse": 1.5795973219016456e-07,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2282735071669076e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.029878241934971e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 8,
+      "failures": {},
+      "id": "R8",
+      "max_abs_water_ledger_cm": 1.5741839255734025e-12,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.234456410686175e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.931165659157662e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.357379955111484e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380291909281309e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264444112080881e-06,
+            "mapped_theta_rmse": 4.481780183131114e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.438029455621111e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2377280380754252e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5108984839125085e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.908081614422205e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.5371140967586455e-05,
+            "mapped_theta_rmse": 1.1813359614511216e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.908081671570023e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.4993572889904664e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.261075163159005e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.137854830106551e-05,
+            "mapped_theta_rmse": 2.762937913562927e-07,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.26107563368776e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.992942338876403e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.0977712816410644e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.2150211693282375e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.3868113603488748e-05,
+            "mapped_theta_rmse": 7.327244326180353e-08,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.215020966581405e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.029878194060834e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9700785943720753e-05,
+        "mapped_theta_rmse": 1.5626203312285743e-07,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.0298784155045894e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 12,
+      "failures": {},
+      "id": "R12",
+      "max_abs_water_ledger_cm": 5.297429161998934e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.234456410686175e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.931165659157662e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.357379955111484e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380291909281309e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264444112080881e-06,
+            "mapped_theta_rmse": 4.481780183131804e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4380292797201174e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2377280380754252e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5108984839125085e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.908081614422205e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.5371140967586455e-05,
+            "mapped_theta_rmse": 1.1813359512313558e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.90808162348848e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.4993572889904664e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.261075163159005e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.137854830106551e-05,
+            "mapped_theta_rmse": 2.76293574963107e-07,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.2610753120148e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.992942338876403e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.0977712816410644e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.2150211693282375e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.3868113603488748e-05,
+            "mapped_theta_rmse": 7.327244325898524e-08,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.2150210822327354e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.029878194060834e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9700785943720753e-05,
+        "mapped_theta_rmse": 1.562619372757994e-07,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.029878260647798e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        60.0,
+        70.0,
+        80.0,
+        90.0,
+        100.0,
+        110.0,
+        120.0,
+        130.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 16,
+      "failures": {},
+      "id": "R16",
+      "max_abs_water_ledger_cm": 3.9407192786722334e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 4.234456410686175e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.931165659157662e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.357379955111484e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4380291909281309e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.264444112080881e-06,
+            "mapped_theta_rmse": 4.481780183131804e-08,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4380292793399144e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 1.2377280380754252e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.5108984839125085e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 2.908081614422205e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.5371140967586455e-05,
+            "mapped_theta_rmse": 1.1813359512313558e-07,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.908081623803097e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.4993572889904664e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 9.261075163159005e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 5.137854830106551e-05,
+            "mapped_theta_rmse": 2.7629357496310705e-07,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 9.261075305148456e-06
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 8.992942338876403e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 1.0977712816410644e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.2150211693282375e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.3868113603488748e-05,
+            "mapped_theta_rmse": 7.327244325898524e-08,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.2150210821301686e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 5.029878194060834e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 2.9700785943720753e-05,
+        "mapped_theta_rmse": 1.5626193727579942e-07,
+        "max_abs_final_cumulative_bottom_error_cm": 1.2282734910867149e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 5.029878257494206e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        10.0,
+        140.0,
+        150.0,
+        160.0
+      ],
+      "dimension": 4,
+      "failures": {},
+      "id": "P4_TOP_LOWER",
+      "max_abs_water_ledger_cm": 4.3555090090130477e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 6.478979500408945e-06,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 1.9686931536437276e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.403189884903952e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.4632386133759482e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 7.331887322020634e-06,
+            "mapped_theta_rmse": 7.461590124401857e-07,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.4632386215022088e-06
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 3.279813780530938e-06,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 4.003678931245813e-06,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 3.5481935999730155e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 2.820175076761559e-05,
+            "mapped_theta_rmse": 4.149098582692666e-06,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 3.548193618563253e-06
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 2.2032128468265494e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 2.6894688072275694e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 1.5891568036685408e-05,
+            "interval_bottom_flux_rmse_cm_per_day": 7.016122588364689e-05,
+            "mapped_theta_rmse": 1.3709455437744847e-05,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 1.5891568072218417e-05
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 5.093121848622623e-07,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 6.217189757019432e-07,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 2.128437683971571e-06,
+            "interval_bottom_flux_rmse_cm_per_day": 1.442675168624544e-05,
+            "mapped_theta_rmse": 3.098797197369745e-06,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 2.128437703904514e-06
+          }
+        },
+        "cumulative_bottom_rmse_cm": 8.243223378959765e-06,
+        "interval_bottom_flux_rmse_cm_per_day": 3.8664661190078404e-05,
+        "mapped_theta_rmse": 7.336952446191238e-06,
+        "max_abs_final_cumulative_bottom_error_cm": 2.2032128468265494e-05,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 8.243223399733e-06
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        40.0,
+        80.0,
+        120.0,
+        160.0
+      ],
+      "dimension": 4,
+      "failures": {},
+      "id": "U4",
+      "max_abs_water_ledger_cm": 2.298161660974074e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.00013630026348498232,
+        "bottom_flux_sign_mismatch_count": 256,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 0.002510493417557338,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.003064567160104087,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 0.0030208937333486043,
+            "interval_bottom_flux_rmse_cm_per_day": 0.024468836556988015,
+            "mapped_theta_rmse": 9.416822146712116e-05,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.0030208937333549976
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 0.0056127122207199984,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.006851455347558653,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 0.0058086386898178735,
+            "interval_bottom_flux_rmse_cm_per_day": 0.04623003913722485,
+            "mapped_theta_rmse": 0.00017702448427583064,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.005808638689793582
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 0.0036212115615417047,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.004420424269459427,
+            "bottom_flux_sign_mismatch_count": 256,
+            "candidate_reversal_steps": [],
+            "cumulative_bottom_rmse_cm": 0.006760016749274091,
+            "interval_bottom_flux_rmse_cm_per_day": 0.055871774304559,
+            "mapped_theta_rmse": 0.00020636680937544477,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 1024,
+            "reversal_sequence_mismatch": true,
+            "total_storage_rmse_cm": 0.0067600167492905885
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 7.236405499075945e-05,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 8.833502806493204e-05,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 0.004613483698007544,
+            "interval_bottom_flux_rmse_cm_per_day": 0.03518578512445607,
+            "mapped_theta_rmse": 0.0001407735955984592,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.004613483698131429
+          }
+        },
+        "cumulative_bottom_rmse_cm": 0.005240423185661669,
+        "interval_bottom_flux_rmse_cm_per_day": 0.04211779647561678,
+        "mapped_theta_rmse": 0.00016016381238978755,
+        "max_abs_final_cumulative_bottom_error_cm": 0.0056127122207199984,
+        "reversal_penalty_steps": 1024,
+        "reversal_sequence_mismatch_history_count": 1,
+        "total_storage_rmse_cm": 0.005240423185688446
+      },
+      "status": "QUALIFIED"
+    },
+    {
+      "boundaries_cm": [
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        80.0,
+        100.0,
+        120.0,
+        140.0,
+        160.0
+      ],
+      "dimension": 8,
+      "failures": {},
+      "id": "U8",
+      "max_abs_water_ledger_cm": 6.951080336325965e-13,
+      "max_corrector_iterations": 2,
+      "metrics": {
+        "abs_mean_signed_bottom_flux_error_cm_per_day": 0.00026344296073616783,
+        "bottom_flux_sign_mismatch_count": 0,
+        "by_history": {
+          "Z01": {
+            "abs_final_cumulative_bottom_error_cm": 0.0018370109665668995,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0022424450275474,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 0.002034241050648865,
+            "interval_bottom_flux_rmse_cm_per_day": 0.016201956210387152,
+            "mapped_theta_rmse": 7.880758669879784e-05,
+            "reference_reversal_steps": [
+              257,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.0020342410505336437
+          },
+          "Z02": {
+            "abs_final_cumulative_bottom_error_cm": 0.004154824853293604,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.005071807682243234,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              257
+            ],
+            "cumulative_bottom_rmse_cm": 0.003973357687951841,
+            "interval_bottom_flux_rmse_cm_per_day": 0.030703261249272272,
+            "mapped_theta_rmse": 0.00014764399831217211,
+            "reference_reversal_steps": [
+              257
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.003973357687805833
+          },
+          "Z03": {
+            "abs_final_cumulative_bottom_error_cm": 0.0037121502168905793,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.004531433370227093,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321,
+              577
+            ],
+            "cumulative_bottom_rmse_cm": 0.004482319561895555,
+            "interval_bottom_flux_rmse_cm_per_day": 0.036396398210744876,
+            "mapped_theta_rmse": 0.00016740292054320707,
+            "reference_reversal_steps": [
+              321,
+              577
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.004482319561814929
+          },
+          "Z04": {
+            "abs_final_cumulative_bottom_error_cm": 0.0005310864364228996,
+            "abs_mean_signed_bottom_flux_error_cm_per_day": 0.0006482988725865879,
+            "bottom_flux_sign_mismatch_count": 0,
+            "candidate_reversal_steps": [
+              321
+            ],
+            "cumulative_bottom_rmse_cm": 0.002951023473339406,
+            "interval_bottom_flux_rmse_cm_per_day": 0.023594167139966284,
+            "mapped_theta_rmse": 0.00011383065935437157,
+            "reference_reversal_steps": [
+              321
+            ],
+            "reversal_penalty_steps": 0,
+            "reversal_sequence_mismatch": false,
+            "total_storage_rmse_cm": 0.002951023473371933
+          }
+        },
+        "cumulative_bottom_rmse_cm": 0.003490180373694987,
+        "interval_bottom_flux_rmse_cm_per_day": 0.027778481609548714,
+        "mapped_theta_rmse": 0.0001313302542965058,
+        "max_abs_final_cumulative_bottom_error_cm": 0.004154824853293604,
+        "reversal_penalty_steps": 0,
+        "reversal_sequence_mismatch_history_count": 0,
+        "total_storage_rmse_cm": 0.0034901803736176328
+      },
+      "status": "QUALIFIED"
+    }
+  ],
+  "performance_comparison_authorized": false,
+  "placement_tests": {
+    "R4_no_worse_than_U4_GW": true,
+    "R8_no_worse_than_U8_GW": true
+  },
+  "production_rom_authorized": false,
+  "reference_workload": {
+    "bottom_head_multipliers": {
+      "FALL": 1.125,
+      "RISE": 0.875
+    },
+    "histories": {
+      "Z01": 0.725,
+      "Z02": 0.825,
+      "Z03": 0.875,
+      "Z04": 0.775
+    },
+    "horizon_day": 0.8192,
+    "observation_dt_day": 0.0008,
+    "steps": 1024,
+    "top_forcing": "gravity-consistent qeq only"
+  },
+  "response_blind": true,
+  "schema": "swap5.lare.bc2.c5a.result.v1",
+  "speed_claim_authorized": false,
+  "work_unit": "LARE-BC2-C5A",
+  "workstream": "F-ROM-LARE"
+}
