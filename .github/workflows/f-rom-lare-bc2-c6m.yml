@@ -55,7 +55,7 @@ jobs:
           import json
           p=json.load(open('integration/f-rom/LARE_BC2_C6M_PREREGISTRATION.json'))
           a=json.load(open('integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json'))
-          assert p['phase']=='PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE'
+          assert p['phase']=='PREREGISTERED_BEFORE_FIRST_ADMITTED_C6M_REFERENCE_RESPONSE'
           assert p['implementation_binding']['state']=='BOUND_BEFORE_EXECUTION'
           assert p['implementation_binding']['execution_binding_complete'] is True
           assert p['scientific_firewall']['candidate_response_generated'] is False
