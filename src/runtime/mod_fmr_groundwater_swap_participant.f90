@@ -82,6 +82,7 @@ contains
     type(kernel_committed_state_t), intent(in) :: committed
     class(groundwater_swap_forcing_materializer_t), intent(in) :: materializer
     type(canonical_numerical_config_t), intent(in) :: numerical
+    type(fmr_b110_physical_parameters_t) :: coupled_trial_parameters
     type(groundwater_head_datum_t), intent(in) :: datum
     type(groundwater_coupling_window_t), intent(in) :: window
     real(real64), intent(in) :: prescribed_head_m
@@ -124,7 +125,11 @@ contains
 
     select type (typed_forcing => forcing)
     type is (fmr_b110_physical_forcing_t)
-      call backend%run_trial(column, template, parameters, committed, typed_forcing, numerical, &
+      ! CSR-02: legacy SWBOTB=5 is a private Reference-backend realization of
+      ! the externally owned coupling head, not application-level authority.
+      coupled_trial_parameters = parameters
+      coupled_trial_parameters%bottom_mode = 5
+      call backend%run_trial(column, template, coupled_trial_parameters, committed, typed_forcing, numerical, &
            window%t0, window%t1, self%origin_checkpoint, self%trial_result, self%candidate, self%diagnostics)
     class default
       status = GW_SWAP_PARTICIPANT_FORCING_FAILED
