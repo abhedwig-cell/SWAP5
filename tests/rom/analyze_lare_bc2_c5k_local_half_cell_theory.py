@@ -214,7 +214,12 @@ def gap_diag(r512,r1024):
     pooled=metrics_vector(d)
     by_history={}; by_phase={}
     for h in HISTS:
-        by_history[h]=metrics_vector({h:d[h]})
+        xh=d[h]
+        by_history[h]={
+          "signed_mean_cm_per_day":float(np.mean(xh)),
+          "rmse_cm_per_day":float(np.sqrt(np.mean(xh*xh))),
+          "max_abs_cm_per_day":float(np.max(np.abs(xh)))
+        }
         phases={}
         for lo,hi,label in phase_blocks(h):
             x=d[h][lo-1:hi]
@@ -240,18 +245,20 @@ def correction_diag(var_gap,current_gap):
 
 def build_theory(route,dz,identity_tol,steady_tol):
     delta=0.5*dz
-    out={k:{} for k in ("published","current_face","postK","arithmetic","integrated","steady")}
+    out={k:{} for k in ("published","current_face","postK","arithmetic_pre","arithmetic_post","integrated","steady")}
     local_identity=[]
     terminal_identity=[]
     steady_residual=[]
-    localization={"postK_minus_current":[],"integrated_minus_postK":[],"steady_minus_postK":[]}
+    localization={"postK_minus_current":[],"arithmetic_pre_minus_current":[],
+                  "arithmetic_post_minus_postK":[],"integrated_minus_postK":[],"steady_minus_postK":[]}
     for h in HISTS:
         r=route[h]
         mode=r["mode"]
         qpub=r["exchange"]/STEP_DT
         if np.max(np.abs(qpub-r["terminal"]))>1.0e-12:
             raise RuntimeError(f"{h}: exchange/terminal outward flux mismatch")
-        qcur=qpub.copy(); qpost=qpub.copy(); qar=qpub.copy(); qint=qpub.copy(); qsteady=qpub.copy()
+        qcur=qpub.copy(); qpost=qpub.copy(); qarpre=qpub.copy(); qarpost=qpub.copy()
+        qint=qpub.copy(); qsteady=qpub.copy()
         active=np.where(mode==5)[0]
         if active.size:
             hp=r["h_pre"][active]; hc=r["h_post"][active]; hb=r["hbot"][active]
@@ -259,20 +266,25 @@ def build_theory(route,dz,identity_tol,steady_tol):
             kp=k_b14(hp); kc=k_b14(hc); kb=k_b14(hb)
             qc=kp*grad
             qp=kc*grad
-            qa=0.5*(kc+kb)*grad
+            qapre=0.5*(kp+kb)*grad
+            qapost=0.5*(kc+kb)*grad
             ki=integrated_k_mean(hc,hb)
             qi=ki*grad
             qs,rr=exact_steady_half_cell(hc,hb,np.full_like(hc,delta))
-            qcur[active]=qc; qpost[active]=qp; qar[active]=qa; qint[active]=qi; qsteady[active]=qs
+            qcur[active]=qc; qpost[active]=qp; qarpre[active]=qapre; qarpost[active]=qapost
+            qint[active]=qi; qsteady[active]=qs
             local_identity.extend((qc-qpub[active]).tolist())
             steady_residual.extend(rr.tolist())
             localization["postK_minus_current"].extend((qp-qc).tolist())
+            localization["arithmetic_pre_minus_current"].extend((qapre-qc).tolist())
+            localization["arithmetic_post_minus_postK"].extend((qapost-qp).tolist())
             localization["integrated_minus_postK"].extend((qi-qp).tolist())
             localization["steady_minus_postK"].extend((qs-qp).tolist())
         out["published"][h]=aggregate(qpub)
         out["current_face"][h]=aggregate(qcur)
         out["postK"][h]=aggregate(qpost)
-        out["arithmetic"][h]=aggregate(qar)
+        out["arithmetic_pre"][h]=aggregate(qarpre)
+        out["arithmetic_post"][h]=aggregate(qarpost)
         out["integrated"][h]=aggregate(qint)
         out["steady"][h]=aggregate(qsteady)
         terminal_identity.extend((qpub-r["terminal"]).tolist())
@@ -323,9 +335,9 @@ def main():
         raise RuntimeError("C5K published baseline does not reproduce C5I T16")
 
     corrections={key:correction_diag(vectors[key],vectors["current_face"])
-                 for key in ("postK","arithmetic","integrated","steady")}
+                 for key in ("postK","arithmetic_pre","arithmetic_post","integrated","steady")}
     ratios={key:gaps[key]["rmse_cm_per_day"]/gaps["current_face"]["rmse_cm_per_day"]
-            for key in ("published","postK","arithmetic","integrated","steady")}
+            for key in ("published","postK","arithmetic_pre","arithmetic_post","integrated","steady")}
 
     lag=max(q512["temporal_and_spatial_localization"]["postK_minus_current"]["rmse_cm_per_day"],
             q1024["temporal_and_spatial_localization"]["postK_minus_current"]["rmse_cm_per_day"])
@@ -387,7 +399,8 @@ def main():
       "published_gap":gaps["published"]["rmse_cm_per_day"],
       "current_local_gap":gaps["current_face"]["rmse_cm_per_day"],
       "postK_gap":gaps["postK"]["rmse_cm_per_day"],
-      "arithmetic_gap":gaps["arithmetic"]["rmse_cm_per_day"],
+      "arithmetic_pre_gap":gaps["arithmetic_pre"]["rmse_cm_per_day"],
+      "arithmetic_post_gap":gaps["arithmetic_post"]["rmse_cm_per_day"],
       "integrated_gap":gaps["integrated"]["rmse_cm_per_day"],
       "steady_gap":gaps["steady"]["rmse_cm_per_day"],
       "ratios":ratios,
