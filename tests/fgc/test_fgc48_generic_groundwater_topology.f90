@@ -6,7 +6,8 @@ program test_fgc48_generic_groundwater_topology
        GW_TOPOLOGY_DUPLICATE_LEDGER_ID, GW_TOPOLOGY_DUPLICATE_CELL_ID, GW_TOPOLOGY_DUPLICATE_COUPLING_ID, &
        GW_TOPOLOGY_DUPLICATE_GROUNDWATER_LINEAGE, GW_TOPOLOGY_DUPLICATE_PACKAGE_SLOT, &
        GW_TOPOLOGY_DUPLICATE_MODFLOW_NODE, GW_TOPOLOGY_TILE_CELL_MISSING, GW_TOPOLOGY_CELL_WITHOUT_TILE, &
-       GW_TOPOLOGY_FRACTION_SUM, GW_TOPOLOGY_INVALID_OUTPUT
+       GW_TOPOLOGY_FRACTION_SUM, GW_TOPOLOGY_INVALID_OUTPUT, GW_TOPOLOGY_STORAGE_STATE_ROLE_UNRESOLVED, &
+       GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE
   use mod_groundwater_multiswap_types, only: groundwater_direct_tile_binding_t
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   implicit none
@@ -175,6 +176,9 @@ contains
     call set_cell(cells(1), 11_int64, 301_int64, 401_int64, 501_int64, 1, 4)
     call set_cell(cells(2), 12_int64, 302_int64, 401_int64, 502_int64, 2, 5)
 
+    bad_cells=cells; bad_cells(1)%storage_state_role=0
+    call expect_status(tiles,bad_cells,GW_TOPOLOGY_STORAGE_STATE_ROLE_UNRESOLVED,'unresolved storage state role')
+
     bad_tiles=tiles; bad_tiles(1)%tile_id=0_int64
     call expect_status(bad_tiles,cells,GW_TOPOLOGY_INVALID_TILE,'invalid tile')
 
@@ -268,6 +272,7 @@ contains
     cell%groundwater_lineage_id=lineage_id
     cell%package_slot=slot
     cell%modflow_node_id=node
+    cell%storage_state_role=GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE
   end subroutine set_cell
 
   pure logical function same(a,b) result(matches)
