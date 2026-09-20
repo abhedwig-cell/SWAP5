@@ -74,6 +74,8 @@ module mod_fgc44_real_swap_c_bridge
   logical, save :: ledger_prepared=.false.
   real(real64), save :: active_duration_day=DEFAULT_DURATION_DAY
   real(real64), save :: active_predictor_qbot=DEFAULT_PREDICTOR_QBOT
+  integer(int64), save :: active_origin_revision=0_int64
+  integer(int64), save :: active_candidate_revision=1_int64
 
   ! PUB-GC E1 publication diagnostics. These values are captured from the same
   ! real predictor trial used by F-GC44. They are test/qualification evidence,
@@ -106,8 +108,132 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_csr04_next_window_lineage_c, fgc44_csr04_next_window_predictor_c
 
 contains
+
+  ! CSR-04 diagnostic-only seam.  This advances the coupling-window identity
+  ! from authoritative committed SWAP state; it deliberately does not rebuild
+  ! the predictor yet.  Keeping this separate prevents a multi-window
+  ! experiment from reusing the one-window 0->1 lineage silently.
+  integer(c_int) function fgc44_csr04_next_window_lineage_c(duration_day,t0,t1,origin_revision,candidate_revision) &
+       bind(C,name="fgc44_csr04_next_window_lineage_c")
+    real(c_double), value, intent(in) :: duration_day
+    real(c_double), intent(out) :: t0,t1
+    integer(c_int), intent(out) :: origin_revision,candidate_revision
+    real(real64) :: committed_time
+    integer(int64) :: revision
+    logical :: available
+
+    fgc44_csr04_next_window_lineage_c=1_c_int
+    t0=0.0_c_double; t1=0.0_c_double
+    origin_revision=-1_c_int; candidate_revision=-1_c_int
+    if(.not.initialized)return
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(participant%has_live_candidate() .or. ledger_prepared)return
+
+    revision=committed%current_revision()
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
+    call committed%current_time(committed_time,available)
+    if(.not.available .or. .not.ieee_is_finite(committed_time))return
+
+    window%t0=committed_time
+    window%t1=committed_time+real(duration_day,real64)
+    active_duration_day=real(duration_day,real64)
+    t0=window%t0; t1=window%t1
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
+    origin_revision=int(active_origin_revision,c_int)
+    candidate_revision=int(active_candidate_revision,c_int)
+    fgc44_csr04_next_window_lineage_c=0_c_int
+  end function fgc44_csr04_next_window_lineage_c
+
+
+  integer(c_int) function fgc44_csr04_next_window_predictor_c(duration_day,predictor_qbot,hcof,rhs,reference_head) &
+       bind(C,name="fgc44_csr04_next_window_predictor_c")
+    real(c_double), value, intent(in) :: duration_day,predictor_qbot
+    real(c_double), intent(out) :: hcof,rhs,reference_head
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    type(fmr_b110_physical_forcing_t) :: predictor_forcing
+    type(soil_water_physical_state_t) :: predictor_state
+    type(soil_water_parameter_set_t) :: solver_parameters
+    type(b110_default_mvg_parameters_t), target :: hp
+    type(b110_default_mvg_provider_t) :: constitutive
+    type(modflow6_swap_predictor_tangent_endpoint_t) :: endpoint
+    type(modflow6_swap_predictor_origin_t) :: origin
+    type(modflow6_swap_predictor_lineage_t) :: predictor_lineage
+    type(modflow6_swap_predictor_response_t) :: response(1)
+    type(modflow6_prescribed_qbot_bottom_face_t) :: start_face
+    type(groundwater_interface_state_t) :: accepted_interface
+    type(groundwater_direct_tile_binding_t) :: binding(1)
+    type(modflow6_multiswap_cell_response_t) :: cell
+    type(modflow6_linear_boundary_term_t) :: term
+    integer :: status,flux_status
+    integer(int64) :: revision
+    real(real64) :: qeq,q_swap,q_groundwater,committed_time
+    logical :: ok,available
+
+    fgc44_csr04_next_window_predictor_c=201_c_int
+    hcof=0.0_c_double; rhs=0.0_c_double; reference_head=0.0_c_double
+    if(.not.initialized .or. participant%has_live_candidate() .or. ledger_prepared)return
+    if(.not.ieee_is_finite(real(duration_day,real64)) .or. duration_day<=0.0_c_double)return
+    if(.not.ieee_is_finite(real(predictor_qbot,real64)))return
+    revision=committed%current_revision()
+    active_origin_revision=revision; active_candidate_revision=revision+1_int64
+    call committed%current_time(committed_time,available); if(.not.available)return
+    window%t0=committed_time; window%t1=committed_time+real(duration_day,real64)
+    active_duration_day=real(duration_day,real64); active_predictor_qbot=real(predictor_qbot,real64)
+    qeq=active_predictor_qbot
+    ! predictor_qbot is the lower-boundary predictor control.  Do not alias it
+    ! onto atmospheric/top forcing when advancing an accepted SWAP state.
+    base_forcing%bottom_flux=qeq
+    call materializer%initialize(base_forcing)
+    call fmr_capture_checkpoint(committed,checkpoint,ok); if(.not.ok)return
+    predictor_forcing=base_forcing
+    call predictor_backend%run_trial(column,template,predictor_parameters,committed,predictor_forcing,predictor_config, &
+         window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    e3d2_predictor_result=result; e3d2_predictor_diagnostics=diagnostics; e3d2_predictor_diagnostics_ready=.true.
+    if(.not.result%completed .or. .not.candidate%ready() .or. .not.result%accepted_trajectory_direction%available)return
+    call initialize_b110_default_mvg_parameters(hp,predictor_parameters%cofgen)
+    call bind_b110_default_mvg_provider(constitutive,hp,active_duration_day)
+    call materialize_solver_view(candidate,predictor_state,solver_parameters,ok); if(.not.ok)return
+    call build_modflow6_swap_predictor_tangent_endpoint(predictor_state,solver_parameters,constitutive, &
+         result%accepted_trajectory_direction,qeq,datum,.false.,.false.,.false.,.false.,endpoint,status)
+    if(status/=MODFLOW6_TANGENT_ENDPOINT_OK .or. .not.endpoint%authoritative)return
+    call materialize_origin_face(predictor_parameters,hp,qeq,start_face,status)
+    if(status/=MODFLOW6_BOTTOM_FACE_OK .or. .not.start_face%valid)return
+    predictor_lineage%coupling_id=COUPLING_ID; predictor_lineage%swap_lineage_id=COLUMN_ID
+    predictor_lineage%swap_origin_revision=active_origin_revision
+    predictor_lineage%groundwater_service_id=GW_SERVICE_ID; predictor_lineage%groundwater_lineage_id=GW_LINEAGE_ID
+    predictor_lineage%groundwater_origin_revision=active_origin_revision
+    call swap_bottom_flux_cm_per_day_to_interface_flux_m_per_s(qeq,q_swap,flux_status); if(flux_status/=GW_INTERFACE_OK)return
+    call pair_groundwater_flux_from_swap(q_swap,q_groundwater,flux_status); if(flux_status/=GW_INTERFACE_OK)return
+    accepted_interface%h_swap_m=start_face%hydraulic_head_m; accepted_interface%h_groundwater_m=start_face%hydraulic_head_m
+    accepted_interface%q_swap_m_per_s=q_swap; accepted_interface%q_groundwater_m_per_s=q_groundwater
+    call capture_modflow6_swap_predictor_origin(accepted_interface,window%t0,predictor_lineage,.true.,origin,status)
+    if(status/=MODFLOW6_PREDICTOR_ORIGIN_OK)return
+    call assemble_modflow6_swap_predictor_response(origin,window,candidate,result,endpoint,response(1),status)
+    if(status/=MODFLOW6_PREDICTOR_ASSEMBLER_OK .or. .not.response(1)%valid)return
+    e1_q_bot_predictor_cm_per_day=response(1)%q_bot_predictor_cm_per_day
+    e1_q_u_cm_per_day=response(1)%q_u_cm_per_day; e1_u=response(1)%coupling_storage_coefficient_u
+    e1_h_start_m=response(1)%h_bot_start_m; e1_h_end_m=response(1)%h_bot_end_m
+    e1_mass_complete=result%mass%complete; e1_storage_start=result%mass%storage_start
+    e1_storage_end=result%mass%storage_end; e1_storage_change=result%mass%storage_change
+    e1_total_in=result%mass%total_in; e1_total_out=result%mass%total_out; e1_mass_residual=result%mass%residual
+    e1_ready=.true.
+    binding(1)%groundwater_cell_id=GW_CELL_ID; binding(1)%tile_id=COLUMN_ID; binding(1)%area_fraction=1.0_real64
+    call compose_modflow6_multiswap_cell_response(binding,response,response(1)%h_bot_end_m,cell,status)
+    if(status/=MODFLOW6_MULTI_CELL_OK .or. .not.cell%valid)return
+    call compose_modflow6_linear_boundary_term(cell,AREA_M2,term,status)
+    if(status/=MODFLOW6_LINEAR_BACKEND_OK .or. .not.term%valid)return
+    hcof=term%hcof_m2_per_day; rhs=term%rhs_m3_per_day; reference_head=term%reference_head_m
+    call predictor_backend%discard_trial_candidate(candidate,diagnostics)
+    call participant%capture_origin(committed,status); if(status/=GW_SWAP_PARTICIPANT_OK)return
+    fgc44_csr04_next_window_predictor_c=0_c_int
+  end function fgc44_csr04_next_window_predictor_c
+
 
   integer(c_int) function fgc44_swap_initialize_c(hcof, rhs, reference_head) bind(C,name="fgc44_swap_initialize_c")
     real(c_double), intent(out) :: hcof, rhs, reference_head
@@ -157,6 +283,7 @@ contains
     if(.not.ieee_is_finite(predictor_qbot))return
     active_duration_day=duration_day
     active_predictor_qbot=predictor_qbot
+    active_origin_revision=0_int64; active_candidate_revision=1_int64
 
     call initialize_parameters(predictor_parameters,SW_STEP_CONTROL_BOTTOM_FLUX)
     call initialize_parameters(corrector_parameters,5)
@@ -290,9 +417,9 @@ contains
     fgc44_ledger_prepare_c=1_c_int
     if(.not.initialized .or. .not.last_trial%valid)return
     if(ledger_prepared)return
-    lineage%coupling_id=COUPLING_ID; lineage%swap_lineage_id=COLUMN_ID; lineage%swap_origin_revision=0_int64
-    lineage%groundwater_lineage_id=GW_LINEAGE_ID; lineage%groundwater_origin_revision=0_int64
-    lineage%candidate_revision=1_int64
+    lineage%coupling_id=COUPLING_ID; lineage%swap_lineage_id=COLUMN_ID; lineage%swap_origin_revision=active_origin_revision
+    lineage%groundwater_lineage_id=GW_LINEAGE_ID; lineage%groundwater_origin_revision=active_origin_revision
+    lineage%candidate_revision=active_candidate_revision
     call ledger%stage_exchange(window,lineage,last_trial%bottom_outward_exchange_cm*0.01_real64,status)
     if(status/=GW_MASS_LEDGER_OK)return
     call ledger%prepare_trial(prepared_ledger,status); if(status/=GW_MASS_LEDGER_OK)return

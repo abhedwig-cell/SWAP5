@@ -40,7 +40,10 @@ contains
     if (.not. self%initialized) return
     select type (typed_parameters => parameters)
     type is (fmr_b110_physical_parameters_t)
-      admitted = typed_parameters%bottom_mode == 5
+      ! CSR-01/02: coupled-groundwater admission is independent of the legacy
+      ! standalone lower-boundary selector. The Reference backend's temporary
+      ! mode-5 realization is private to the participant trial path.
+      admitted = typed_parameters%active_nodes > 0
     class default
       admitted = .false.
     end select

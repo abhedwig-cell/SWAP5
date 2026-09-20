@@ -125,7 +125,7 @@ def require_allclose(
         )
 
 
-def build_model(workdir: Path) -> None:
+def build_model(workdir: Path, specific_yield: float = 0.15) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name="FGC38_PREPARED_SOLVE",
         version="mf6",
@@ -168,11 +168,17 @@ def build_model(workdir: Path) -> None:
         k=1.0,
         save_flows=True,
     )
+    flopy.mf6.ModflowGwfoc(
+        gwf,
+        budget_filerecord="fgc38.cbc",
+        head_filerecord="fgc38.hds",
+        saverecord=[("HEAD", "ALL"), ("BUDGET", "ALL")],
+    )
     flopy.mf6.ModflowGwfsto(
         gwf,
         iconvert=1,
         ss=0.02,
-        sy=0.15,
+        sy=specific_yield,
         transient={0: True},
     )
     flopy.mf6.ModflowGwfchd(
@@ -198,10 +204,11 @@ def run_case(
     libmf6: Path,
     bridge: Path,
     response_sequence: list[Term],
-) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], CountingKernel]:
+    specific_yield: float = 0.15,
+) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], CountingKernel, float]:
     with tempfile.TemporaryDirectory(prefix="fgc38-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir)
+        build_model(workdir, specific_yield=specific_yield)
 
         raw_kernel = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         kernel = CountingKernel(raw_kernel)
@@ -312,6 +319,20 @@ def run_case(
             status = session.finalize_time_step_once()
             require(status == PreparedSolveStatus.OK, session.last_error)
             require(kernel.finalize_time_step_calls == 1, "F-GC41 timestep finalization count mismatch")
+            budget_observation = session.accepted_budget_observation()
+            require(budget_observation is not None, "CSR-04 accepted budget observation unavailable")
+            require_allclose(
+                budget_observation.accepted_head_old_m,
+                accepted_xold,
+                0.0,
+                "CSR-04 observation changed accepted origin",
+            )
+            require_allclose(
+                budget_observation.accepted_head_new_m,
+                session.head,
+                0.0,
+                "CSR-04 observation changed accepted terminal head",
+            )
             require(not session.timestep_ready_for_finalize(), "finalized timestep remained ready")
             require(
                 session.finalize_time_step_once() == PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,
@@ -322,7 +343,58 @@ def run_case(
             raw_kernel.finalize()
             initialized = False
 
-            return final_head, accepted_xold, heads, kernel
+            # CSR-04 qualification uses MODFLOW's own accepted cell-budget
+            # output rather than reconstructing storage from head changes.
+            budget = flopy.utils.CellBudgetFile(workdir / "fgc38.cbc", precision="double")
+            unique = {str(name).strip() for name in budget.get_unique_record_names(decode=True)}
+            require("STO-SS" in unique or "STO-SY" in unique, "CSR-04 MODFLOW STO budget record missing")
+            sto_terms = []
+            for label in ("STO-SS", "STO-SY"):
+                if label in unique:
+                    sto_terms.extend(budget.get_data(text=label))
+            require(len(sto_terms) > 0, "CSR-04 accepted STO budget data unavailable")
+            sto_rate_m3_per_day = float(sum(np.sum(np.asarray(term)) for term in sto_terms))
+            require(math.isfinite(sto_rate_m3_per_day), "CSR-04 non-finite STO budget")
+
+            # Close the MODFLOW component budget from MODFLOW's own accepted
+            # cell-budget records. Do not infer any term from head change.
+            budget_rates: dict[str, float] = {}
+            for label in sorted(unique):
+                records = budget.get_data(text=label)
+                if not records:
+                    continue
+                total = 0.0
+                for record in records:
+                    array = np.asarray(record)
+                    if array.dtype.names and "q" in array.dtype.names:
+                        total += float(np.sum(array["q"]))
+                    else:
+                        total += float(np.sum(array))
+                budget_rates[label] = total
+
+            api_labels = [label for label in unique if "API" in label]
+            chd_labels = [label for label in unique if "CHD" in label]
+            require(len(api_labels) == 1, f"CSR-04 expected one API budget record, got {api_labels}")
+            require(len(chd_labels) == 1, f"CSR-04 expected one CHD budget record, got {chd_labels}")
+            require(
+                api_labels[0] in budget_rates and chd_labels[0] in budget_rates,
+                "CSR-04 external budget unavailable",
+            )
+            component_residual_m3_per_day = float(sum(budget_rates.values()))
+            budget_scale = max(1.0, sum(abs(value) for value in budget_rates.values()))
+            component_tolerance_m3_per_day = 1.0e-10 * budget_scale
+            require(
+                abs(component_residual_m3_per_day) <= component_tolerance_m3_per_day,
+                "CSR-04 MODFLOW component budget does not close: "
+                f"residual={component_residual_m3_per_day:.17g}, "
+                f"tol={component_tolerance_m3_per_day:.17g}, terms={budget_rates}",
+            )
+            print(f"F_GC_CSR04_MODFLOW_STO_RATE_M3_PER_DAY={sto_rate_m3_per_day:.17g}")
+            print(f"F_GC_CSR04_MODFLOW_COMPONENT_RESIDUAL_M3_PER_DAY={component_residual_m3_per_day:.17g}")
+            print("F_GC_CSR04_NATIVE_MODFLOW_STO_BUDGET=PASS")
+            print("F_GC_CSR04_NATIVE_MODFLOW_COMPONENT_BUDGET=PASS")
+
+            return final_head, accepted_xold, heads, kernel, sto_rate_m3_per_day
         finally:
             if initialized:
                 # If the gate itself fails, tear down the kernel.  The test does
@@ -380,12 +452,12 @@ def main() -> None:
     response_b = Term(7001, hcof_m2_per_day=-0.30, rhs_m3_per_day=-0.165)
     response_c = Term(7001, hcof_m2_per_day=-0.12, rhs_m3_per_day=-0.066)
 
-    iterative_head, iterative_xold, heads, iterative_kernel = run_case(
+    iterative_head, iterative_xold, heads, iterative_kernel, iterative_sto = run_case(
         libmf6,
         bridge,
         [response_a, response_b, response_c],
     )
-    clean_head, clean_xold, clean_heads, clean_kernel = run_case(
+    clean_head, clean_xold, clean_heads, clean_kernel, clean_sto = run_case(
         libmf6,
         bridge,
         [response_c],
@@ -444,6 +516,40 @@ def main() -> None:
         "clean reference lifecycle mismatch",
     )
 
+    # CSR-04 state-space discriminant: alter only MODFLOW STO while keeping
+    # coupling response and all other groundwater stresses fixed.
+    sy_sequence = (0.30, 0.05, 1.0e-2, 1.0e-3, 1.0e-4, 1.0e-5)
+    sy_heads: list[np.ndarray] = []
+    sy_sto_rates: list[float] = []
+    for sy_value in sy_sequence:
+        sy_head, _, _, _, sy_sto = run_case(
+            libmf6, bridge, [response_c], specific_yield=sy_value
+        )
+        sy_heads.append(sy_head)
+        sy_sto_rates.append(sy_sto)
+        print(
+            "F_GC_CSR04_STO_CONTINUATION="
+            f"SY:{sy_value:.17g},HEAD:{float(sy_head[1]):.17g},"
+            f"STO_RATE:{sy_sto:.17g}"
+        )
+
+    require(
+        not np.allclose(sy_heads[0], sy_heads[-1], rtol=0.0, atol=1.0e-12),
+        "CSR-04 STO continuation did not change MODFLOW accepted head response",
+    )
+    require(
+        not math.isclose(sy_sto_rates[0], sy_sto_rates[-1], rel_tol=0.0, abs_tol=1.0e-12),
+        "CSR-04 STO continuation did not change native MODFLOW storage response",
+    )
+    tail_head_change = float(np.max(np.abs(sy_heads[-1] - sy_heads[-2])))
+    require(
+        math.isfinite(tail_head_change),
+        "CSR-04 non-finite near-zero-STO continuation response",
+    )
+    print(f"F_GC_CSR04_STO_CONTINUATION_TAIL_HEAD_DIFF={tail_head_change:.17g}")
+    print("F_GC_CSR04_MODFLOW_STO_STATE_SPACE_DISCRIMINANT=PASS")
+
+    print("F_GC_CSR04_ACCEPTED_MODFLOW_STATE_OBSERVATION=PASS")
     print("FGC38_OFFICIAL_MODFLOW680_LOADED=PASS")
     print("FGC38_ONE_PREPARE_SOLVE_PER_WINDOW=PASS")
     print("FGC38_XOLD_ACCEPTED_ORIGIN_FIXED=PASS")

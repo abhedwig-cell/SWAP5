@@ -1,5 +1,14 @@
 # PUB-GC / COUPLE claim–evidence ledger
 
+> **SEMANTIC HOLD — 2026-09-20.** The SWAP5-MODFLOW6 coupling-semantics audit at
+> `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md` supersedes
+> application-level interpretations that equate groundwater coupling with legacy
+> `bottom_mode=5`. E1-E5 remain bounded numerical evidence requiring semantic
+> reinterpretation; E6 and E7 require coupling-assumption-dependent requalification.
+> PUB-GC submission authority is held. Historical experiment records below are
+> retained as provenance and must not be read as overriding the semantic audit.
+
+
 ## Purpose
 
 This ledger ties manuscript claims to literature boundaries, repository evidence and still-required publication experiments.
@@ -20,6 +29,10 @@ PLANNED_EXPERIMENT
 
 HYPOTHESIS
     not yet a result
+
+SEMANTIC_HOLD
+    claim is retained as a historical/provisional formulation but cannot advance
+    until the coupling-semantics prerequisite named in the evidence column closes
 
 EXCLUDED_NOVELTY
     true or useful, but cannot be claimed as new
@@ -43,7 +56,7 @@ EXCLUDED_NOVELTY
 | GC-C12 | The cell-response reduction preserves the weighted sum of tile-local affine responses at a common reference head. | Linear aggregation is not novelty. Physical aggregation validity is outside this paper. | F-GC40 contract | Executable N:1 qualification and deterministic reduction evidence if included in manuscript. | SUPPORTED_ARCHITECTURE |
 | GC-C13 | The same coupling ownership and mass-publication principles can scale to regional execution. | Framework scalability is common in environmental modelling; quantitative evidence required. | Architecture supports composition; F-GC40 gives response reduction | Multi-column live-MODFLOW experiment, scaling curve, deterministic mass closure. | PLANNED_EXPERIMENT |
 | GC-C14 | The integrated coupling contract is a transferable contribution beyond one SWAP5 implementation detail. | HydroCouple, MODFLOW API, SWAT+MODFLOW and ParFlow coupling papers show the publication precedent but raise the generalization burden. | Design documents and current implementation | Discussion must extract principles and demonstrate at least one non-trivial hydrological/operational regime beyond the first restricted case. | HYPOTHESIS |
-| GC-C15 | A prospectively selected authentic Hupsel application can reach the production participant domain before loose/strong coupling convergence is assessable. | Component-envelope limitations are not unique to SWAP5; novelty lies only in the explicit evidence-bound hydrological classification. | E7 frozen Hupsel selection, M1 whole-Hupsel authority, PPA-WU01 mode-5 production owner, E6 active-drainage precedent, E7 qualification run 35375181814 | No further evidence required for the bounded claim; do not reinterpret as outer-coupling divergence or realistic strong-coupling magnitude. | SUPPORTED_RESTRICTED |
+| GC-C15 | Under the historical mode-5-bound production profile, the prospectively selected authentic Hupsel case stops before loose/strong coupling execution. | This is an implementation-envelope observation, not evidence that drainage/root uptake are physically incompatible with SWAP-MODFLOW coupling. | Frozen E7 dates and stop evidence remain diagnostic; current authority is the 2026-09-20 coupling-semantics audit and impact matrix. | Establish corrected head-transfer, storage-partition and drainage ownership authority, requalify the affected production chain, and only then decide whether a new prospective Hupsel experiment is scientifically warranted. | SEMANTIC_HOLD |
 
 ## Explicit non-novelty guard
 

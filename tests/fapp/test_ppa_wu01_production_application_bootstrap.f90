@@ -11,7 +11,8 @@ program test_ppa_wu01_production_application_bootstrap
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK, FMR_APP_BOOT_PROFILE_NOT_ADMITTED
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
-       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK
+       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
+       GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED, GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t
   use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, &
        modflow6_derivative_coverage_t, compose_modflow6_swap_predictor_response, MODFLOW6_PREDICTOR_OK, &
@@ -35,7 +36,7 @@ program test_ppa_wu01_production_application_bootstrap
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
-  type(groundwater_topology_t) :: topology
+  type(groundwater_topology_t) :: topology, unresolved_topology
   type(groundwater_tile_predictor_input_t) :: predictors(NTILE)
   type(groundwater_cell_area_input_t) :: areas(NTILE)
   integer(int64), allocatable :: revisions(:)
@@ -75,11 +76,12 @@ program test_ppa_wu01_production_application_bootstrap
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
 
-  ! Groundwater authority: the same production bootstrap type owns an admitted
-  ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
+  ! CSR-01 groundwater authority is explicit and independent of legacy SWBOTB.
+  ! Deliberately retain standalone bottom_mode=7 in the application parameters;
+  ! CSR-02 maps the coupling iterate to the private Reference mode-5 trial path.
   gw_config = config
   do i = 1, NTILE
-    gw_config%tiles(i)%parameters%bottom_mode = 5
+    gw_config%tiles(i)%groundwater_coupled = .true.
   end do
   call gw_app%initialize(gw_config, status)
   call require(status == FMR_APP_BOOT_OK .and. gw_app%ready(), 'groundwater production bootstrap initialize')
@@ -107,8 +109,18 @@ program test_ppa_wu01_production_application_bootstrap
     areas(i)%cell_area_m2 = 1.0_real64
   end do
 
+  ! CSR-04 negative gate: numerical tile/cell identity is insufficient while
+  ! physical storage ownership remains unresolved.
+  call materialize_groundwater_topology(topology_tiles, topology_cells, unresolved_topology, topology_status)
+  call require(topology_status == GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED .and. .not. unresolved_topology%ready(), &
+       'CSR-04 unresolved storage partition fails closed')
+
+  do i = 1, NTILE
+    topology_cells(i)%storage_partition = GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS
+  end do
   call materialize_groundwater_topology(topology_tiles, topology_cells, topology, topology_status)
-  call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), 'typed topology')
+  call require(topology_status == GW_TOPOLOGY_OK .and. topology%ready(), &
+       'CSR-04 explicit non-overlap topology admitted')
 
   call gw_app%materialize_groundwater_context(topology, predictors, areas, context_handle, status)
   call require(status == FMR_APP_BOOT_OK .and. context_handle > 0_int64, 'owned F-GC49D context materialization')
@@ -132,7 +144,7 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_PROFILE_NOT_ADMITTED, 'non-WU01 profile fails closed')
   call require(.not. bad_app%ready(), 'failed bootstrap owns no live runtime')
 
-  ! PUB-GC E7 current-canonical boundary: mode-5 groundwater ownership must
+  ! CSR-03 is not admitted here: coupled groundwater ownership must
   ! remain fail-closed for active root extraction and active drainage response.
   ! These checks qualify the owner boundary only; they do not widen it.
   root_bad_config = gw_config
@@ -161,6 +173,10 @@ program test_ppa_wu01_production_application_bootstrap
   print '(a)', 'PPA_WU01_GROUNDWATER_ROOT_EXTRACTION_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_DRAINAGE_RESPONSE_FAIL_CLOSED=PASS'
   print '(a)', 'PPA_WU01_GROUNDWATER_ACTIVE_PROCESS_COMPOSITION_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_CSR01_EXPLICIT_COUPLED_BOUNDARY_AUTHORITY=PASS'
+  print '(a)', 'F_GC_CSR02_REFERENCE_MODE5_PRIVATE_REALIZATION=PASS'
+  print '(a)', 'F_GC_CSR04_UNRESOLVED_STORAGE_PARTITION_FAIL_CLOSED=PASS'
+  print '(a)', 'F_GC_CSR04_EXPLICIT_NONOVERLAP_TOPOLOGY=PASS'
   print '(a)', 'PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP GATE PASS'
 
 contains

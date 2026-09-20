@@ -22,6 +22,18 @@ module mod_groundwater_topology_composition
   integer, parameter, public :: GW_TOPOLOGY_CELL_WITHOUT_TILE = 13
   integer, parameter, public :: GW_TOPOLOGY_FRACTION_SUM = 14
   integer, parameter, public :: GW_TOPOLOGY_INVALID_OUTPUT = 15
+  integer, parameter, public :: GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED = 16
+  integer, parameter, public :: GW_TOPOLOGY_STORAGE_STATE_ROLE_UNRESOLVED = 17
+
+  integer, parameter, public :: GW_STORAGE_PARTITION_UNRESOLVED = 0
+  integer, parameter, public :: GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS = 1
+  integer, parameter, public :: GW_STORAGE_PARTITION_OVERLAPPING_WITH_EXPLICIT_CORRECTION = 2
+
+  ! CSR-04B: state-space authority is primary. Geometry alone cannot decide
+  ! whether native MODFLOW STO is an additional physical reservoir.
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_UNRESOLVED = 0
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE = 1
+  integer, parameter, public :: GW_STORAGE_STATE_ROLE_PHYSICAL_INDEPENDENT_STORAGE = 2
 
   type, public :: groundwater_topology_tile_t
     integer(int64) :: tile_id = 0_int64
@@ -40,6 +52,10 @@ module mod_groundwater_topology_composition
     integer(int64) :: groundwater_lineage_id = 0_int64
     integer :: package_slot = 0
     integer(int32) :: modflow_node_id = 0_int32
+    ! CSR-04: physical storage-domain authority. Production coupling is
+    ! fail-closed until a non-overlapping partition is explicitly declared.
+    integer :: storage_partition = GW_STORAGE_PARTITION_UNRESOLVED
+    integer :: storage_state_role = GW_STORAGE_STATE_ROLE_UNRESOLVED
   contains
     procedure, public :: valid => groundwater_topology_cell_valid
   end type groundwater_topology_cell_t
@@ -86,6 +102,13 @@ contains
     if (self%groundwater_lineage_id <= 0_int64) return
     if (self%package_slot <= 0) return
     if (self%modflow_node_id <= 0_int32) return
+    if (self%storage_state_role /= GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE .and. &
+        self%storage_state_role /= GW_STORAGE_STATE_ROLE_PHYSICAL_INDEPENDENT_STORAGE) return
+    ! A physical independent-storage claim additionally needs an explicit
+    ! non-overlapping physical-domain declaration.  Head-state capacitance
+    ! does not acquire physical authority from geometry and needs no such cut.
+    if (self%storage_state_role == GW_STORAGE_STATE_ROLE_PHYSICAL_INDEPENDENT_STORAGE .and. &
+        self%storage_partition /= GW_STORAGE_PARTITION_NON_OVERLAPPING_VERTICAL_DOMAINS) return
     valid = .true.
   end function groundwater_topology_cell_valid
 
@@ -130,6 +153,15 @@ contains
 
     do i = 1, size(cells)
       status = GW_TOPOLOGY_INVALID_CELL
+      if (cells(i)%storage_state_role == GW_STORAGE_STATE_ROLE_UNRESOLVED) then
+        status = GW_TOPOLOGY_STORAGE_STATE_ROLE_UNRESOLVED
+        return
+      end if
+      if (cells(i)%storage_state_role == GW_STORAGE_STATE_ROLE_PHYSICAL_INDEPENDENT_STORAGE .and. &
+          cells(i)%storage_partition == GW_STORAGE_PARTITION_UNRESOLVED) then
+        status = GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED
+        return
+      end if
       if (.not. cells(i)%valid()) return
       if (cells(i)%package_slot > size(cells)) return
       do j = 1, i - 1

@@ -36,6 +36,16 @@ class Fgc44RealSwap:
         self.lib.fgc44_last_trial_diagnostics_c.argtypes=[
             ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
         ]
+        self.lib.fgc44_csr04_next_window_predictor_c.restype=ctypes.c_int
+        self.lib.fgc44_csr04_next_window_predictor_c.argtypes=[
+            ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double)
+        ]
+        self.lib.fgc44_csr04_next_window_lineage_c.restype=ctypes.c_int
+        self.lib.fgc44_csr04_next_window_lineage_c.argtypes=[
+            ctypes.c_double,ctypes.POINTER(ctypes.c_double),ctypes.POINTER(ctypes.c_double),
+            ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int)
+        ]
         self.lib.fgc44_predictor_run_diagnostics_c.restype=ctypes.c_int
         self.lib.fgc44_predictor_run_diagnostics_c.argtypes=[
             *([ctypes.POINTER(ctypes.c_int)]*14),
@@ -99,6 +109,25 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_state_c(ctypes.byref(revision),ctypes.byref(time),ctypes.byref(count),ctypes.byref(exchange))
         if status: raise RuntimeError(f"state query failed: {status}")
         return revision.value,time.value,count.value,exchange.value
+
+    def csr04_next_window_predictor(self, duration_day: float, predictor_qbot_cm_per_day: float) -> tuple[float,float,float]:
+        hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
+        status=self.lib.fgc44_csr04_next_window_predictor_c(
+            float(duration_day),float(predictor_qbot_cm_per_day),
+            ctypes.byref(hcof),ctypes.byref(rhs),ctypes.byref(href)
+        )
+        if status: raise RuntimeError(f"CSR04 next-window predictor failed: {status}")
+        return hcof.value,rhs.value,href.value
+
+    def csr04_next_window_lineage(self, duration_day: float) -> tuple[float,float,int,int]:
+        t0=ctypes.c_double(); t1=ctypes.c_double()
+        origin=ctypes.c_int(); candidate=ctypes.c_int()
+        status=self.lib.fgc44_csr04_next_window_lineage_c(
+            float(duration_day),ctypes.byref(t0),ctypes.byref(t1),
+            ctypes.byref(origin),ctypes.byref(candidate)
+        )
+        if status: raise RuntimeError(f"CSR04 next-window lineage failed: {status}")
+        return t0.value,t1.value,origin.value,candidate.value
 
     def predictor_run_diagnostics(self) -> dict[str,int|float|bool]:
         ints=[ctypes.c_int() for _ in range(14)]

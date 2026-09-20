@@ -1,7 +1,7 @@
 name: F-GC44 real SWAP MODFLOW6 end-to-end
 on:
   push:
-    branches: [work/f-gc44-real-swap-modflow-end-to-end]
+    branches: [work/f-gc44-real-swap-modflow-end-to-end, work/f-gc-coupling-semantics-reconciliation]
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:

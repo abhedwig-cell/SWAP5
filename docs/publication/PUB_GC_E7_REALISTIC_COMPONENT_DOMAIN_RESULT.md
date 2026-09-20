@@ -1,5 +1,16 @@
 # PUB-GC E7 realistic Hupsel result
 
+> **SEMANTIC SUPERSESSION NOTICE — 2026-09-20.** The observations, frozen dates,
+> qualification run and pre-owner stop in this file remain historical evidence.
+> Their former current interpretation as `CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT`
+> is superseded by
+> `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md`.
+> Current E7 authority is `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
+> The stop demonstrates the old mode-5-bound production profile, not an intrinsic
+> physical incompatibility between SWAP-MODFLOW coupling and drainage/root uptake.
+> Do not rerun E7 until corrected head-transfer, storage-partition and drainage
+> ownership authority is established.
+
 ## Status
 
 **CLOSED — REALISTIC_COMPONENT_DOMAIN_LIMIT**
@@ -140,3 +151,21 @@ The decisive production boundary is unchanged:
 The current production-bootstrap blob is `356b3825a8ba13af1fed385ab17ffdb330b1058f`. Canonical work after PPA-WU04-B through the inspected head includes evidence-only F-ROMV2/TRACE/F-DOC work plus HYDRO-MEMORY ACC02-F1/F2 and DYN01 research qualification; the relevant production postimages are unchanged. Therefore the authentic Hupsel root/drainage composition is still outside the admitted prescribed-head participant domain.
 
 E7 remains `REALISTIC_COMPONENT_DOMAIN_LIMIT`. A future process-complete prescribed-head owner would define a new prospective experiment; it does not turn the closed E7 result into unfinished work.
+
+
+## Coupling-semantics supersession note — 2026-09-20
+
+The original preregistered E7 execution history, frozen dates and pre-allocation stop remain immutable evidence.
+
+The interpretation `REALISTIC_COMPONENT_DOMAIN_LIMIT` is superseded for current scientific use by:
+
+`DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
+
+Reason:
+
+- legacy SWBOTB=5 is prescribed lower-face pressure head, not application-level groundwater ownership;
+- legacy SWAP permits lateral drainage together with SWBOTB=5, so the production rejection of drainage is not a mode-5 physical law;
+- the current production bootstrap binds coupled-groundwater admission to a restricted mode-5 profile and therefore confounds an internal corrector realization with application authority;
+- realistic coupled storage ownership between the SWAP-derived response coefficient and MODFLOW STO is not yet explicit.
+
+This supersession does not make E7 a pass, does not authorize a rerun, and does not delete the original stop. A future rerun requires a corrected coupling authority and prospective preregistration.

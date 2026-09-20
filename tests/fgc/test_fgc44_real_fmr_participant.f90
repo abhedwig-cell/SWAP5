@@ -75,10 +75,18 @@ program test_fgc44_real_fmr_participant
   call require(committed%current_revision()==0_int64,'trial does not mutate real FMR committed state')
   call participant%discard_candidate(backend)
 
+  ! CSR-02 identity probe: change only the application-visible legacy selector.
+  ! The coupled participant must produce the same Reference trial because mode 5
+  ! is now private to its trial realization.
+  parameters%bottom_mode=7
   call participant%trial_from_origin(backend,column,template,parameters,committed,materializer,config,datum,window, &
        origin_head_m,trial2,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
+  call require(trial2%bottom_outward_exchange_cm==trial1%bottom_outward_exchange_cm, &
+       'CSR-02 whole-window exchange identity across application selector')
+  call require(trial2%q_swap_m_per_s==trial1%q_swap_m_per_s, &
+       'CSR-02 interface flux identity across application selector')
   call require(participant%publication_ready(committed,window),'real FMR candidate publication ready')
   call require(committed%current_revision()==0_int64,'real FMR preflight nonmutating')
 
@@ -97,7 +105,8 @@ program test_fgc44_real_fmr_participant
     call require(.false.,'real FMR committed state type')
   end select
 
-  write(*,'(A)') 'FGC44_REAL_FMR_MODE5_MATERIALIZER=PASS'
+  write(*,'(A)') 'FGC44_REAL_FMR_REFERENCE_MODE5_PRIVATE_REALIZATION=PASS'
+  write(*,'(A)') 'FGC44_CSR02_APPLICATION_SELECTOR_NUMERICAL_IDENTITY=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_SAME_ORIGIN_CORRECTORS=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_PREFLIGHT_NONMUTATING=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_KERNEL_COMMIT=PASS'

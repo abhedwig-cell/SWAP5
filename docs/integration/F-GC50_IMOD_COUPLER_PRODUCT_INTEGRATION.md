@@ -1,5 +1,14 @@
 # F-GC50 — iMOD Coupler product integration
 
+> **Current-authority note — 2026-09-20.** F-GC50's recorded upstream
+> registration blocker remains real, but its former statement that this is the
+> sole remaining blocker is superseded by the coupling-semantics reconciliation.
+> The restricted PPA-WU01 `bottom_mode=5` profile is no longer sufficient
+> application-level groundwater authority. Storage-partition, drainage ownership
+> and corrected coupled-interface profile semantics must close before realistic
+> product admission. The historical F-GC50 qualification evidence is preserved.
+
+
 ## Purpose
 
 F-GC50 is the first bounded workunit after the canonically closed F-GC49 production application orchestration.

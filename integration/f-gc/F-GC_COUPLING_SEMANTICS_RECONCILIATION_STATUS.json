@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC-COUPLING-SEMANTICS-RECONCILIATION",
+  "title": "SWAP5-MODFLOW6 Coupling Semantics Reconciliation",
+  "protocol": "RECONCILE -> THEORY AUTHORITY -> LEGACY SEMANTICS -> COUPLING OWNERSHIP -> CODE TRACE -> CLASSIFY DEFECT -> DESIGN CONTRACT -> IMPACT AUDIT -> PERSIST -> CLOSE",
+  "phase": "CLOSE_AUDIT_AND_BOUNDED_REPAIR",
+  "state": "CSR04_CONTRACT_PREREGISTERED_PRODUCTION_PARTITION_UNRESOLVED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "requested_start": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "reconciled_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
+    "live_reconciled_head": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "live_delta_note": "Rechecked after CSR04 derivation: owner branch remains diverged (41 ahead/58 behind; merge base 09b6d0415fee3c63c71ecd11b215fe0d206e05ae). No broad recomposition/admission performed."
+  },
+  "scientific_authority": {
+    "legacy_boundary": {
+      "swbotb_1": "prescribed_groundwater_level",
+      "swbotb_2": "prescribed_bottom_flux",
+      "swbotb_5": "prescribed_lower_face_pressure_head",
+      "swbotb_6": "zero_bottom_flux",
+      "drainage_with_swbotb_5": "physically_supported_by_official_SWAP_manual"
+    },
+    "coupling_2024": [
+      "SWAP represents unsaturated plus SWAP-column saturated state while MODFLOW represents regional saturated groundwater",
+      "SWAP diagnostic groundwater level need not equal MODFLOW head",
+      "predictor supplies SWAP bottom flux from regional balance",
+      "SWAP returns q_u plus coupling/storage response u",
+      "MODFLOW head is imposed at SWAP bottom in finalization/corrector"
+    ]
+  },
+  "findings": {
+    "groundwater_state_owner": "MODFLOW6 accepted regional groundwater state/head; SWAP diagnostic phreatic level remains internal derived state",
+    "modflow_to_swap": "trial hydraulic head through explicit head-transfer/datum contract for corrector/finalization; current implementation uses identity node-head to lower-face-head transfer",
+    "swap_to_modflow": "predictor u/q_u response plus realized whole-window bottom exchange used to reanchor/converge the groundwater package response",
+    "accepted_exchange": "only converged/finalized MODFLOW-package and SWAP-corrector transfer is authoritative mass",
+    "mode5": "permitted as internal lower-face Dirichlet realization, not application-level groundwater authority",
+    "root_uptake": "SWAP-owned process; coupled admission/derivative coverage is separate from lower-boundary identity",
+    "drainage": "one explicit process owner per physical path; mode5 itself does not prohibit SWAP drainage",
+    "storage": "u is a condensed finite-window SWAP interface-response coefficient; u/DeltaT is the local interface flux-to-head slope. Simultaneous use with MODFLOW STO requires explicit non-overlap or an explicit overlap correction."
+  },
+  "defect_classification": {
+    "interpretation_defect": "CONFIRMED",
+    "authority_binding_defect": "CONFIRMED",
+    "implementation_defect": "CONFIRMED_BOUNDED_TO_APPLICATION_ADMISSION_BINDING",
+    "architecture_design_defect": "CONFIRMED_HEAD_TRANSFER_DRAINAGE_AND_STORAGE_AUTHORITY"
+  },
+  "blockers": [
+    {
+      "id": "CSR-B1-STORAGE-PARTITION",
+      "class": "SCIENTIFIC_ARCHITECTURE_AUTHORITY_REQUIRED",
+      "description": "Define non-overlapping physical storage ownership between SWAP-derived coupling coefficient u and MODFLOW STO, or provide an explicit overlap correction, before realistic production admission."
+    },
+    {
+      "id": "CSR-B2-DRAINAGE-OWNERSHIP",
+      "class": "APPLICATION_TOPOLOGY_AUTHORITY_REQUIRED",
+      "description": "Declare one owner per physical drainage path and prohibit duplicate SWAP plus MODFLOW/surface-water booking before authentic drainage is admitted."
+    }
+  ],
+  "e7": {
+    "historical_evidence_preserved": true,
+    "prior_interpretation": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "current_authority": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
+    "rerun_authorized": false,
+    "reason": "the observed stop is real for the current bootstrap, but bottom_mode=5 plus drainage/root rejection is an implementation/admission binding rather than an intrinsic legacy SWAP physical limit"
+  },
+  "pub_gc": {
+    "submission_authority": "HELD",
+    "E7": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
+    "history_preserved": true,
+    "rerun_now": false
+  },
+  "artifacts": {
+    "authority_audit": "docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md",
+    "implementation_trace": "docs/integration/SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md",
+    "legacy_reconciliation": "docs/integration/SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md",
+    "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
+    "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
+    "csr03_csr04_checkpoint": "docs/integration/SWAP5_MODFLOW6_CSR03_CSR04_AUTHORITY_CHECKPOINT.md",
+    "csr04_storage_derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
+    "csr04_vertical_storage_topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
+    "csr04_closure_proof_obligations": "docs/integration/SWAP5_MODFLOW6_CSR04_CLOSURE_PROOF_OBLIGATIONS.md"
+  },
+  "repair_slices": [
+    "CSR-01 explicit coupled-groundwater application profile independent of legacy bottom_mode",
+    "CSR-02 hide mode-5 realization behind internal coupled-interface trial adapter",
+    "CSR-03 explicit head-transfer topology/authority",
+    "CSR-04 storage-partition authority and qualification",
+    "CSR-05 drainage ownership and no-double-booking authority",
+    "CSR-06 root/state-dependent process capability independent of bottom-mode identity",
+    "CSR-07 affected F-GC43 through F-GC49 application requalification with unaffected evidence reused by dependency analysis",
+    "CSR-08 PUB-GC claim supersession and later E7 disposition only after corrected authority"
+  ],
+  "governance_note": "F-GC39/F-GC44 and later F-GC49/F-GC50 wording is ambiguous about internal service versus iMOD Coupler product-level predictor/corrector ownership; future documentation must distinguish outer product lifecycle coordination from bounded per-window coupling-service semantics.",
+  "production_changes": [
+    "CSR-01 explicit groundwater_coupled application authority independent of legacy bottom_mode",
+    "CSR-02 Reference participant privately materializes coupled trial head through mode 5"
+  ],
+  "reference_changes": [],
+  "solver_changes": [],
+  "hupsel_rerun": false,
+  "closeout": "SEMANTIC_AUDIT_COMPLETE; CSR-01/CSR-02 bounded repair present on branch; broad production admission remains blocked by storage/drainage authority",
+  "status": "SEMANTIC_CLASSIFICATION_COMPLETE_BLOCKED_STORAGE_PARTITION_AUTHORITY",
+  "canonical_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
+  "updated_at": "2026-09-20",
+  "legacy_semantics": {
+    "SWBOTB_1": "prescribed_groundwater_level",
+    "SWBOTB_5": "prescribed_bottom_compartment_pressure_head",
+    "SWBOTB_6": "zero_bottom_flux",
+    "drainage_with_SWBOTB_5": "legacy_supported_in_principle"
+  },
+  "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
+  "current_trace": "docs/integration/SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md",
+  "legacy_reconciliation": "docs/integration/SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md",
+  "impact_and_repair": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_AND_REPAIR.md",
+  "external_authority_checked": [
+    "official SWAP manual: SWBOTB=1 groundwater level; SWBOTB=5 bottom pressure head; drainage may coexist with option 5",
+    "2024 SWAP-MODFLOW technical design: SWAP and MODFLOW groundwater heads may differ; predictor q_u/u and final head imposition are distinct coupling stages"
+  ],
+  "blocker": {
+    "code": "BLOCKED_STORAGE_PARTITION_AUTHORITY",
+    "reason": "realistic production contract does not yet state the non-overlapping physical storage ownership of SWAP-derived u versus MODFLOW STO",
+    "consequence": "do not perform broad production architecture repair or rerun E7 until authority is explicit"
+  },
+  "decision": "SEMANTIC_RECONCILIATION_CLOSED_REPAIR_REQUIRED",
+  "experiment_impact": {
+    "E1": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E2": "UNAFFECTED",
+    "E3": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+    "E4": "NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED",
+    "E5": "UNAFFECTED",
+    "E6": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED",
+    "E7": "COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED"
+  },
+  "pub_gc_submission": "HELD",
+  "parallel_repair": {
+    "pull_request": 486,
+    "state": "OPEN_SHARED_AUTHORITY_REPAIR",
+    "reviewed_scope": [
+      "CSR-01 explicit groundwater_coupled application authority",
+      "CSR-02 private Reference mode-5 trial realization"
+    ],
+    "scope_assessment": "CONSISTENT_WITH_AUDIT_BOUNDARY",
+    "safeguards": [
+      "active root extraction remains fail-closed",
+      "active drainage response remains fail-closed",
+      "no storage-partition implementation was added",
+      "no Hupsel E7 rerun was authorized"
+    ],
+    "merge_assessment": "DO_NOT_MERGE_YET_FROM_THIS_AUDIT: branch is six canonical commits behind and contains concurrent shared-authority work; project-control watch is active in canonical.",
+    "current_divergence": {
+      "live_canonical": "3a815edda7cf5e155272b68ae49d440fd5db9138",
+      "merge_base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+      "ahead": 37,
+      "behind": 46,
+      "admission": "RECOMPOSITION_REQUIRED"
+    }
+  },
+  "csr03": {
+    "disposition": "CONTRACT_RESOLVED_IMPLEMENTATION_METADATA_PENDING",
+    "authority": "Head transfer is an explicit application-topology operator; current identity_datum_aligned transfer is a named special-case assumption, not a universal physical equality. No new resistance law is authorized."
+  },
+  "csr04": {
+    "disposition": "CONTRACT_PREREGISTERED_PRODUCTION_PARTITION_UNRESOLVED",
+    "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
+    "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
+    "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
+    "next_gate": "Obtain execution evidence for F-GC38 CSR04 gates; then extend the same two-level STO perturbation into a real SWAP participant fixture and require accepted SWAP mass + interface ledger + native MODFLOW component budget to close jointly.",
+    "proof_obligations": {
+      "P1": "accepted interface mass continuity",
+      "P2": "hydraulic compatibility under declared head-transfer operator",
+      "P3": "global storage closure over explicitly non-overlapping component domains",
+      "decision": "P1+P2 do not imply P3; existing evidence proves the interface, not storage-state-space additivity."
+    },
+    "schema_qualification": {
+      "state": "IMPLEMENTED_PENDING_EXECUTION",
+      "commit": "67b303c3e92b0a232923ebf8605d22e333a35800",
+      "negative_gate": "UNRESOLVED topology must return GW_TOPOLOGY_STORAGE_PARTITION_UNRESOLVED before application-plan/context execution",
+      "positive_gate": "explicit NON_OVERLAPPING_VERTICAL_DOMAINS passes existing typed topology/application-context path",
+      "scope": "metadata/admission only; does not prove production vertical non-overlap or modify F-GC30/F-GC33 physics"
+    },
+    "observability": {
+      "swap_component_storage": "AVAILABLE_CANONICAL_MASS_ACCOUNT",
+      "accepted_interface_transfer": "AVAILABLE_INTERFACE_MASS_LEDGER",
+      "modflow_sto_component_budget": "NOT_YET_DEMONSTRATED_ON_REPOSITORY_OWNED_QUALIFICATION_SURFACE",
+      "classification": "QUALIFICATION_OBSERVABILITY_GAP_NOT_PHYSICS_DEFECT",
+      "authorized_next_slice": "READ_ONLY_MODFLOW_ACCEPTED_BUDGET_ADAPTER",
+      "accepted_modflow_state": "IMPLEMENTED_READ_ONLY_AFTER_TIMESTEP_FINALIZATION",
+      "accepted_modflow_state_commit": "f69cd00d9b8cd403c109ad6046dead1d17a74db9",
+      "native_sto_external_budget": "STILL_REQUIRED",
+      "native_sto_budget": "IMPLEMENTED_IN_CONTROLLED_FGC38_FIXTURE_USING_ACCEPTED_MODFLOW_CELL_BUDGET",
+      "native_sto_budget_commit": "b1ed477fcd818dfed381f859b442aa21968282d4",
+      "native_external_budget": "IMPLEMENTED_IN_CONTROLLED_FGC38_FIXTURE",
+      "modflow_component_balance_gate": {
+        "state": "IMPLEMENTED_PENDING_EXECUTION",
+        "commit": "9c0275187428b8a6cae436d5ef2dfc77b1b29d9f",
+        "source": "native accepted MODFLOW cell-budget records",
+        "terms": "STO + API coupling + CHD + any other native accepted records",
+        "acceptance": "absolute sum <= 1e-10 * max(1,sum(abs(terms)))"
+      }
+    },
+    "scientific_interpretation": {
+      "state": "STATE_SPACE_AUTHORITY_REFINED_PENDING_QUALIFICATION",
+      "finding": "MODFLOW head may represent a regional groundwater hydraulic-head DOF while SWAP retains vertically resolved column storage and diagnostic phreatic level; geometric overlap alone is not proof of duplicated dynamic storage.",
+      "interface_condition": "H_MF = H_SWAP_bottom does not imply H_MF = z_GW_SWAP",
+      "response_interpretation": "u/dt is condensed SWAP interface-transfer sensitivity dq_i/dH_bottom, not an additional MODFLOW STO volume",
+      "required_discriminant": "controlled nonzero MODFLOW STO perturbation with fixed SWAP physics and coupling, observing both storage ledgers, heads, interface transfer, u, and component/combined residuals",
+      "commit": "70e0ea18f3fa1c6137baf400c2712d0f84918575"
+    },
+    "state_space_qualification": {
+      "state": "IMPLEMENTED_PENDING_EXECUTION",
+      "commit": "06cd6cb3f6a592828c4513ab9b1f4bb04fea1fd9",
+      "perturbation": "MODFLOW specific yield 0.05 versus 0.30; identical SWAP-side affine coupling response and groundwater stresses",
+      "required_observation": [
+        "accepted MODFLOW head changes",
+        "native MODFLOW STO response changes",
+        "native MODFLOW component budget closes in both cases"
+      ],
+      "non_claim": "This controlled MODFLOW-only fixture does not yet prove SWAP/MODFLOW combined P3 or production storage authority."
+    }
+  },
+  "current_pr_divergence": {
+    "live_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "merge_base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+    "ahead": 48,
+    "behind": 58,
+    "admission": "RECOMPOSITION_REQUIRED"
+  },
+  "csr04_storage_authority": {
+    "state": "PHASE_B_EXECUTED_GENERIC_PRODUCTION_AUTHORITY_UNRESOLVED",
+    "physical_combined_storage_gate": "HELD_PENDING_INDEPENDENT_MODFLOW_STORAGE_AUTHORITY",
+    "working_hypothesis": "F-GC33 SWAP finite-window Jacobian and native MODFLOW STO are algebraically distinct head-response terms; finite native STO adds independent MODFLOW head memory",
+    "experiment": {
+      "design": "multi-window forcing-pulse and recovery continuation",
+      "specific_yield_sequence": [
+        0.3,
+        0.05,
+        0.01,
+        0.001,
+        0.0001,
+        0.00001
+      ],
+      "primary_discriminant": "memory separation and convergence toward quasi-steady MODFLOW / transient SWAP limit",
+      "execution": "PENDING"
+    },
+    "code_guard_note": "existing geometric storage-partition fail-closed code is retained temporarily but is not extended; scientific authority may supersede it with state/storage-role authority",
+    "execution": "LIVE_RUN_286_PASS_36_OF_36_WINDOWS",
+    "latest_execution_evidence": {
+      "run_284": "existing F-GC44 live E2E passed; Phase-B stopped before window 2 with diagnostic next-window predictor status 201",
+      "repair_commit": "6fd5506dacd56692c65b3b7a24b49881970b1607",
+      "run_286": "IN_PROGRESS",
+      "scientific_disposition": "NO_STORAGE_MEMORY_INFERENCE_FROM_RUN_284"
+    },
+    "phase_b_result": {
+      "run_id": 35533801446,
+      "run_number": 286,
+      "conclusion": "success",
+      "matrix": "6 Sy x 6 windows",
+      "low_sy_terminal_head_difference_m": 3.0031832576327133e-10,
+      "interpretation": "finite native STO adds independent MODFLOW head memory; near-zero Sy converges to quasi-steady-MODFLOW/transient-SWAP limit; neither is production truth without application authority"
+    },
+    "classification": {
+      "shared_top_state": "HEAD_STATE_CAPACITANCE_HISTORICALLY_SUPPORTED",
+      "explicit_independent_regional_storage": "PHYSICAL_INDEPENDENT_STORAGE_IF_APPLICATION_AUTHORITY_DECLARED",
+      "generic_production_profile": "UNRESOLVED"
+    },
+    "next_gate": "DECLARE_STORAGE_STATE_ROLE_IN_COUPLED_GROUNDWATER_APPLICATION_PROFILE_BEFORE_PRODUCTION_ADMISSION"
+  }
+}

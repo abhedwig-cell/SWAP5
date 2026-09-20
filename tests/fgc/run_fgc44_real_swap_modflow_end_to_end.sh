@@ -58,6 +58,7 @@ MODULE_SRC=(
   src/solver/mod_b110_default_mvg_directional_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
@@ -68,7 +69,6 @@ MODULE_SRC=(
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -108,8 +108,11 @@ nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fa
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py | tee "$BUILD/e2e.txt"
+LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_csr04_real_swap_storage_memory.py | tee "$BUILD/csr04.txt"
+grep -Fq "CSR04_PHASE_B_REAL_MULTIWINDOW_EXECUTION=PASS" "$BUILD/csr04.txt" || fail "CSR04 multi-window execution"
+grep -Fq "CSR04_PHASE_B_MEMORY_SEPARATION_OBSERVED=PASS" "$BUILD/csr04.txt" || fail "CSR04 memory separation"
 
-for marker in   'FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS'   'FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS'   'FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS'   'FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS'   'FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS'   'FGC44_MODFLOW_THEN_SWAP_THEN_LEDGER_PUBLICATION=PASS'   'FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS'; do
+for marker in   'FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS'   'FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS'   'FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS'   'FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS'   'FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS'   'FGC44_MODFLOW_THEN_SWAP_THEN_LEDGER_PUBLICATION=PASS'   'FGC44_REAL_SWAP_MODFLOW_END_TO_END=PASS'   'CSR04_NEXT_WINDOW_PREDICTOR_FROM_COMMITTED_STATE=PASS'; do
   grep -Fq "$marker" "$BUILD/e2e.txt" || fail "missing marker $marker"
 done
 echo 'F-GC44 REAL SWAP + MODFLOW6 END-TO-END GATE PASS'

@@ -1,3 +1,5 @@
+> **Submission hold, 2026-09-20.** A coupling-semantics reconciliation has shown that the production `bottom_mode=5` requirement is an internal prescribed-lower-face-head realization that leaked into application-level groundwater authority. Legacy SWAP permits drainage with this lower-boundary option. E7 is therefore retained as `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`, not as a closed physical realistic-component-domain limit. The numerical/transactional evidence is preserved, but claims depending on application-level mode-5 identity, realistic drainage transferability, implicit MODFLOW-node-to-SWAP-bottom head identity, or unresolved SWAP-response-storage versus MODFLOW-STO ownership require re-adjudication before submission.
+
 # COUPLE — manuscript draft
 
 ## Title
@@ -5,6 +7,10 @@
 **Hydrologically accountable finite-window coupling of independently time-integrating vadose-zone and groundwater models: SWAP5–MODFLOW6**
 
 ## Repository manuscript status
+
+**SEMANTIC HOLD — 2026-09-20. Final submission authority is suspended.**
+
+The coupling-semantics audit in `docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md` supersedes the current interpretation of legacy `bottom_mode=5`, predictor `q_u`, and the E6/E7 component-domain conclusions. The manuscript body below is retained as a historical draft and is **not** silently rewritten by this governance update. Claim-level revision waits for corrected storage/drainage/head-transfer authority and affected F-GC requalification. E7 is currently `DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
 
 **Consolidated through E1–E7; E7 closed as a preregistered realistic component-domain limit, 2026-09-18.**
 
