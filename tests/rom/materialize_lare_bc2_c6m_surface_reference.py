@@ -53,8 +53,11 @@ def initial_block()->str:
 def bottom_block()->str:
     return """  pure integer function bottom_kind(ih) result(value)
     integer,intent(in) :: ih
-    call require(ih>=1.and.ih<=4,'LAREDYN0R C6M valid history for free drainage')
-    value=BOTTOM_FREE_DRAINAGE
+    if(ih>=1.and.ih<=4)then
+      value=BOTTOM_FREE_DRAINAGE
+    else
+      value=-1
+    end if
   end function bottom_kind
 """
 
@@ -62,8 +65,11 @@ def bottom_block()->str:
 def forcing_kind_block()->str:
     return """  pure integer function forcing_kind(ih) result(value)
     integer,intent(in) :: ih
-    call require(ih>=1.and.ih<=4,'LAREDYN0R C6M valid forcing history')
-    value=ih
+    if(ih>=1.and.ih<=4)then
+      value=ih
+    else
+      value=-1
+    end if
   end function forcing_kind
 """
 
