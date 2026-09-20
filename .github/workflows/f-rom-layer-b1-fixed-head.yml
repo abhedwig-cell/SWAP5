@@ -1,0 +1,122 @@
+name: F-ROM Layer-ROM B1 fixed-head ladder replay
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json'
+      - 'tests/rom/run_layer_rom_b1_fixed_head.py'
+      - '.github/workflows/f-rom-layer-b1-fixed-head.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  fixed-head-ladder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert current research source freeze
+        run: |
+          set -euo pipefail
+          git fetch origin integration/f-ci-canonical work/f-rom-lare-rs1
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          echo "LAYER_ROM_B1_SOURCE_FREEZE=PASS"
+
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Materialize exact inherited research source blobs
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/layer-rom-b1/source
+          git cat-file blob 33a68fc51d5c1905b9f377e2d14626aeebe27f98             > /tmp/layer-rom-b1/source/run_lare_bc1_stage_b.py
+          git cat-file blob 7b2a35a8cf134011247a625ad6e327c4f500baa2             > /tmp/layer-rom-b1/source/analyze_lare_bc2_c4r_blind.py
+          test "$(git hash-object /tmp/layer-rom-b1/source/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+          test "$(git hash-object /tmp/layer-rom-b1/source/analyze_lare_bc2_c4r_blind.py)" = "7b2a35a8cf134011247a625ad6e327c4f500baa2"
+          echo "LAYER_ROM_B1_SOURCE_PROVENANCE=PASS"
+
+      - name: Recover immutable blind C4R evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/layer-rom-b1/c4r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/layer-rom-b1/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/layer-rom-b1/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/layer-rom-b1/c4r.zip -d /tmp/layer-rom-b1/c4r
+          echo "6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6  /tmp/layer-rom-b1/c4r/R16_o0.txt" | sha256sum -c -
+          echo "121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4  /tmp/layer-rom-b1/c4r/R2_o0.txt" | sha256sum -c -
+          echo "d913dfc03d46be25e9ca625a789ca47bc6407fd847406de0696fa39d5a522c65  /tmp/layer-rom-b1/c4r/LARE_BC2_C4R_RESULT.json" | sha256sum -c -
+          echo "4446b964f8e37e1d73b5dbd5e564ef48b9603a32045124c53e46547b148ab535  /tmp/layer-rom-b1/c4r/FMC_C4R_RESULT.json" | sha256sum -c -
+          echo "aed20e871bef0b1d8b6bed54a33afd448f2f0945571c7e40f31b1cbccf0c81f0  /tmp/layer-rom-b1/c4r/FMC_D13_REPRODUCTION.json" | sha256sum -c -
+          echo "LAYER_ROM_B1_IMMUTABLE_EVIDENCE=PASS"
+
+      - name: Lock B1 preregistration
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_LAYER_LADDER_FIXED_HEAD_REPLAY'
+          assert [r['id'] for r in p['layer_ladder']]==['L2','L3','L4','L6']
+          assert p['model']['bottom_closure']=='BC1 CURRENT_LAYER_FACE prescribed-head closure'
+          assert p['model']['no_fit'] is True
+          assert p['relative_frontiers']['numerical_equality_tolerance']==1e-12
+          assert 'NO_POST_RESULT_LAYER_RETUNING' in p['firewalls']
+          print('LAYER_ROM_B1_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute deterministic fixed-head ladder replay twice
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_B1_EVIDENCE
+          COMMON_ARGS=(
+            --source-dir /tmp/layer-rom-b1/source
+            --r16 /tmp/layer-rom-b1/c4r/R16_o0.txt
+            --r2 /tmp/layer-rom-b1/c4r/R2_o0.txt
+            --c4r-result /tmp/layer-rom-b1/c4r/LARE_BC2_C4R_RESULT.json
+            --fmc-result /tmp/layer-rom-b1/c4r/FMC_C4R_RESULT.json
+            --fmc-reproduction /tmp/layer-rom-b1/c4r/FMC_D13_REPRODUCTION.json
+            --prereg integration/f-rom/LAYER_ROM_B1_PREREGISTRATION.json
+          )
+          python3 tests/rom/run_layer_rom_b1_fixed_head.py "${COMMON_ARGS[@]}"             --output LAYER_ROM_B1_EVIDENCE/LAYER_ROM_B1_RESULT.json             | tee LAYER_ROM_B1_EVIDENCE/analyzer.txt
+          python3 tests/rom/run_layer_rom_b1_fixed_head.py "${COMMON_ARGS[@]}"             --output /tmp/layer-rom-b1/repeat.json > /tmp/layer-rom-b1/repeat.txt
+          cmp LAYER_ROM_B1_EVIDENCE/LAYER_ROM_B1_RESULT.json /tmp/layer-rom-b1/repeat.json
+          echo "LAYER_ROM_B1_DETERMINISTIC_REPEAT=PASS"
+
+      - name: Validate result and source freeze
+        run: |
+          python3 - <<'PY'
+          import json
+          p=json.load(open('LAYER_ROM_B1_EVIDENCE/LAYER_ROM_B1_RESULT.json'))
+          assert p['decision'] in {
+            'B1_DIMENSION4_GW_FRONTIER_REPLICATED',
+            'B1_LOWER_DIMENSION_GW_FRONTIER',
+            'B1_HIGHER_DIMENSION_REQUIRED_FOR_GW_FRONTIER',
+          }
+          assert p['integrity']['pass'] is True
+          assert p['integrity']['all_four_members_attempted'] is True
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['performance_measurement_performed'] is False
+          assert p['moving_water_table_authorized'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1_RESULT_GATE=PASS')
+          PY
+          sha256sum LAYER_ROM_B1_EVIDENCE/* > LAYER_ROM_B1_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1_FIXED_HEAD_REPLAY=PASS"
+
+      - name: Upload B1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1-fixed-head
+          path: LAYER_ROM_B1_EVIDENCE/
+          if-no-files-found: error
