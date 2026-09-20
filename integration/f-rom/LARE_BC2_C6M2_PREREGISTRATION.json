@@ -1,0 +1,177 @@
+{
+  "schema": "swap5.lare.bc2.c6m2.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6M2",
+  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "title": "Fresh high-resolution surface-driven fixed-bottom-flux Reference qualification",
+  "role": "REFERENCE_ONLY_UPPER_ZONE_PROFILE_SPACE_TIME_QUALIFICATION_NO_LARE_RESPONSE",
+  "scientific_question": "Do fresh source-free surface-flux histories on the already-qualified fixed-bottom-flux DYN0A route admit a high-resolution Richards hierarchy suitable for blind upper-zone/profile Layer-ROM sufficiency testing on B01 and B14?",
+  "authority": {
+    "C6M": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
+    "DYN0A": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "required_C6M_decision": "STOP_C6M_BEFORE_CANDIDATE_RESPONSE_PIVOT_SURFACE_PROFILE_TEST_TO_ALREADY_QUALIFIED_FIXED_FLUX_REFERENCE_ROUTE",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "candidate_response_authorized": false
+  },
+  "physical_domain": {
+    "column_depth_cm": 160,
+    "homogeneous": true,
+    "top_boundary": "prescribed flux",
+    "bottom_boundary": "prescribed fixed gravity-equilibrium flux, bottom_mode 2",
+    "bottom_flux_prediction": false,
+    "sinks": false,
+    "root_uptake": false,
+    "observation_dt_day": 0.0008,
+    "observations": 1024,
+    "horizon_day": 0.8192
+  },
+  "materials": [
+    "B01",
+    "B14"
+  ],
+  "blind_design": {
+    "response_blind": true,
+    "histories_previously_exposed": false,
+    "initial_states_may_be_previously_exposed": true,
+    "top_multiplier_levels": {
+      "WET": 1.125,
+      "DRY": 0.875,
+      "HOLD": 1
+    },
+    "histories": {
+      "U01": {
+        "initial_Se": 0.65,
+        "phase1": "WET",
+        "phase1_observations": 224,
+        "phase2": "DRY",
+        "phase2_observations": 288,
+        "hold_observations": 512
+      },
+      "U02": {
+        "initial_Se": 0.85,
+        "phase1": "DRY",
+        "phase1_observations": 224,
+        "phase2": "WET",
+        "phase2_observations": 288,
+        "hold_observations": 512
+      },
+      "U03": {
+        "initial_Se": 0.95,
+        "phase1": "WET",
+        "phase1_observations": 288,
+        "phase2": "DRY",
+        "phase2_observations": 224,
+        "hold_observations": 512
+      },
+      "U04": {
+        "initial_Se": 0.75,
+        "phase1": "DRY",
+        "phase1_observations": 288,
+        "phase2": "WET",
+        "phase2_observations": 224,
+        "hold_observations": 512
+      }
+    },
+    "selection_basis": "Symmetric two-phase schedules around the half-horizon, chosen before C6M2 response. They are not selected from any reduced-model error.",
+    "post_response_reselection": false
+  },
+  "reference_design": {
+    "routes": {
+      "R512_T16": {
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R1024_T16": {
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R2048_T16": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 16,
+        "transaction_dt_day": 0.00005
+      },
+      "R2048_T8": {
+        "nodes": 2048,
+        "dz_cm": 0.078125,
+        "temporal_factor": 8,
+        "transaction_dt_day": 0.0001
+      }
+    },
+    "finest_control": "R2048_T16",
+    "compiler_optimization_routes": [
+      0,
+      2
+    ],
+    "O0_O2_bit_identity_required": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "profile_bins": 16,
+    "profile_bin_thickness_cm": 10,
+    "node_output": false
+  },
+  "numerical_quality_metrics": [
+    "pooled_total_storage_rmse_cm",
+    "pooled_surface_0_20_storage_rmse_cm",
+    "pooled_root_zone_0_40_storage_rmse_cm",
+    "pooled_upper_0_80_storage_rmse_cm",
+    "pooled_mapped_10cm_theta_rmse"
+  ],
+  "quality_gate": {
+    "target": "R2048_T16",
+    "spatial_comparator": "R1024_T16",
+    "secondary_spatial_report": "R512_T16",
+    "temporal_control": "R2048_T8",
+    "primary_rule": "For each material separately, every frozen continuous state/profile metric of R2048_T8 relative to R2048_T16 must be no worse than R1024_T16 relative to R2048_T16.",
+    "equality_tolerance_numeric": 1e-12,
+    "if_failed": "Stop before Layer-ROM response.",
+    "if_passed": "Authorize C6N blind comparison of only the existing frozen representation set on these exact histories."
+  },
+  "integrity_gates": {
+    "exact_route_history_count": true,
+    "O0_O2_bit_identity": true,
+    "max_abs_transaction_mass_cm": 1e-12,
+    "finite_physical_state": true,
+    "physical_theta_bounds": true,
+    "bottom_mode_2_fixed_flux": true,
+    "root_sink_zero": true,
+    "profile_state_total_consistency_cm": 1e-9
+  },
+  "interpretation_boundary": [
+    "Bottom exchange is prescribed and is not a fidelity output.",
+    "C6M2 can support upper-zone/profile sufficiency only.",
+    "No ET/root-uptake, drainage/recharge, application-tolerance or performance claim follows."
+  ],
+  "stop_rules": [
+    "No Layer-ROM candidate in C6M2.",
+    "No change to DYN0A fixed-flux retry/fallback authority.",
+    "No history/multiplier change after first C6M2 response.",
+    "No new partition or closure.",
+    "No observed Reference difference becomes an application threshold."
+  ],
+  "next_if_qualified": "LARE-BC2-C6N",
+  "implementation_binding": {
+    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "materializer": "tests/rom/materialize_lare_bc2_c6m2_surface_fixed_flux_reference.py",
+    "materializer_blob": null,
+    "analyzer": "tests/rom/analyze_lare_bc2_c6m2_surface_fixed_flux_reference.py",
+    "analyzer_blob": null,
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6m2.yml",
+    "workflow_blob": null,
+    "execution_binding_complete": false
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": false,
+    "bottom_exchange_fidelity_adjudicated": false,
+    "root_uptake_feedback_used": false,
+    "new_representation_selected": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
