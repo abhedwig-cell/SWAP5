@@ -78,7 +78,6 @@ def main():
     all_local=[layer for r in rows for layer in r["local_layers"]]
     all_runs=[run for layer in all_local for run in layer["runs"]]
     metrics=[r["metric"] for r in rows if r["metric"] is not None]
-    metrics=[r["metric"] for r in rows if r["metric"] is not None]
     # Operators are intentionally absent when an upstream local-manifold gate fails.
     # Missing operators therefore make G7/G8/G9 false but are not an aggregation error.
     def count_state(key):
