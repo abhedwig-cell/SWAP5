@@ -75,7 +75,8 @@
     "legacy_reconciliation": "docs/integration/SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md",
     "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
     "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
-    "csr03_csr04_checkpoint": "docs/integration/SWAP5_MODFLOW6_CSR03_CSR04_AUTHORITY_CHECKPOINT.md"
+    "csr03_csr04_checkpoint": "docs/integration/SWAP5_MODFLOW6_CSR03_CSR04_AUTHORITY_CHECKPOINT.md",
+    "csr04_storage_derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md"
   },
   "repair_slices": [
     "CSR-01 explicit coupled-groundwater application profile independent of legacy bottom_mode",
@@ -165,6 +166,10 @@
       "dimensional/sign audit of u, u/DeltaT, STO and accepted interface flux",
       "proof or correction of storage non-overlap",
       "nonzero-storage-change component and combined balance qualification"
-    ]
+    ],
+    "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
+    "interpretation": "u is a condensed finite-window SWAP interface-response coefficient; u/DeltaT is a local interface flux-to-head slope. It must not be labelled physical aquifer storage without a control-volume derivation.",
+    "candidate_partition": "SWAP owns storage inside the SWAP column to its lower face; MODFLOW STO owns groundwater storage outside/below that control volume; interface Q cancels in the combined balance. This candidate is not yet production authority because current topology does not materialize the vertical non-overlap.",
+    "next_gate": "Materialize explicit vertical storage-domain/topology contract and controlled nonzero-storage component+combined balance qualification. Do not modify F-GC30/F-GC33 or rerun E7 first."
   }
 }
