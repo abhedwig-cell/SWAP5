@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.layer-rom.phase-a.live-reconciliation.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-LIVE-REC1",
+  "reconciled_at_live_head": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "branch_basis": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "live_delta": {
+    "commits_ahead": 41,
+    "source_changed": false,
+    "reference_changed": false,
+    "hydrology_or_reference_reexecution_required": false,
+    "notable_canonical_admissions": [
+      "F-ROM-CODEMAP-01 / PR #489",
+      "F-TB13R preservation / PR #491",
+      "F-TA04R transaction-restart traceability / PR #492",
+      "PROJECT-CONTROL-02 / PR #493"
+    ]
+  },
+  "code_frontier_update": {
+    "previous_phase_a_binding": "PR #489 noncanonical reconciliation evidence",
+    "current_status": "CANONICAL",
+    "canonical_paths": [
+      "docs/science/F-ROM_CODE_FRONTIER_RECONCILIATION.md",
+      "integration/f-rom/F-ROM_CODE_FRONTIER_STATUS.json"
+    ],
+    "decision": "FMC_AND_LARE_CODE_FRONTIERS_RECONCILED_DISTINCT_EXTERNAL_BLOCKERS",
+    "layer_rom_consequence": [
+      "No wholesale LARE branch merge.",
+      "FMC D28/D30/D31 blockers remain authoritative.",
+      "LARE C4T is a bounded shared-host cost-fidelity signal, not application acceptance.",
+      "LARE application acceptance remains blocked on external project accuracy authority.",
+      "Layer-ROM Phase A may continue because no source/reference physics changed."
+    ]
+  },
+  "experiment_disposition": "CONTINUE_EXISTING_FROZEN_PHASE_A_EXPERIMENTS",
+  "rebase_required_before_current_experiment_execution": false,
+  "rebase_or_current_canonical_reconciliation_required_before_admission": true,
+  "production_rom_authorized": false
+}
