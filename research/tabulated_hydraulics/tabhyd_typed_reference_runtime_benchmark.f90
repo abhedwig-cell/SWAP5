@@ -36,19 +36,22 @@ program tabhyd_typed_reference_runtime_benchmark
   type(fmr_serialized_reference_backend_t) :: backend
   type(fixed_flux_top_boundary_provider_t), target :: top
   class(transaction_state_t), allocatable :: snapshot
-  real(real64) :: k0, h0, t0, t1, water0(numnod)
+  real(real64) :: k0, kref, h0, t0, t1, water0(numnod), water_ref(numnod)
   logical :: ok, available
   integer :: rep, i
-  character(len=32) :: material, initial_route
+  character(len=32) :: material, initial_route, forcing_mode
 
   material='loam'
   initial_route='analytic'
+  forcing_mode='equilibrium'
   if (command_argument_count()>=1) call get_command_argument(1,material)
   if (command_argument_count()>=2) call get_command_argument(2,initial_route)
+  if (command_argument_count()>=3) call get_command_argument(3,forcing_mode)
 
   call initialize_parameters(parameters,trim(material),h0)
   call evaluate_initial_constitutive(parameters,h0,trim(initial_route),water0,k0)
-  call initialize_forcing(forcing,k0,h0)
+  call evaluate_initial_constitutive(parameters,h0,'analytic',water_ref,kref)
+  call initialize_forcing(forcing,k0,kref,h0,trim(forcing_mode))
   call initialize_column_and_template(column,template)
   call initialize_config(config)
   call initialize_committed(committed,parameters,h0,water0,ok)
@@ -75,6 +78,7 @@ program tabhyd_typed_reference_runtime_benchmark
 
   write(*,'(a,a)') 'MATERIAL=',trim(material)
   write(*,'(a,a)') 'INITIAL_ROUTE=',trim(initial_route)
+  write(*,'(a,a)') 'FORCING_MODE=',trim(forcing_mode)
   write(*,'(a,i0)') 'ACTIVE_NODES=',numnod
   write(*,'(a,i0)') 'REPEATS=',NREPEAT
   write(*,'(a,es24.16)') 'CPU_SECONDS=',t1-t0
@@ -200,12 +204,27 @@ contains
     call require(conductivity0>0.0_real64 .and. ieee_is_finite(conductivity0),'initial conductivity positive')
   end subroutine evaluate_initial_constitutive
 
-  subroutine initialize_forcing(f,qeq,hstart)
+  subroutine initialize_forcing(f,qactive,qref,hstart,mode)
     type(fmr_b110_physical_forcing_t), intent(out) :: f
-    real(real64), intent(in) :: qeq,hstart
-    f%top_flux=-qeq
+    real(real64), intent(in) :: qactive,qref,hstart
+    character(len=*), intent(in) :: mode
+    select case(trim(mode))
+    case('equilibrium')
+      f%top_flux=-qactive
+      f%bottom_flux=-qactive
+    case('drying')
+      ! Same forcing on analytical and table runs. With uniform h, qref is
+      ! the analytical gravity-flow magnitude; reduced top inflow dries storage.
+      f%top_flux=-0.5_real64*qref
+      f%bottom_flux=-qref
+    case('wetting')
+      ! Increased top inflow relative to the common lower flux wets storage.
+      f%top_flux=-1.5_real64*qref
+      f%bottom_flux=-qref
+    case default
+      error stop 'forcing mode must be equilibrium, drying or wetting'
+    end select
     f%top_head=hstart
-    f%bottom_flux=-qeq
     f%bottom_head=hstart
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0.0_real64
