@@ -1,0 +1,1862 @@
+{
+  "hypotheses": {
+    "H_MATERIAL_TRANSFER": "REPORT_SEPARATELY_NO_MATERIAL_INVARIANT_MINIMUM_PRESUMED",
+    "H_PURPOSE_DIMENSION_SEPARATION": {
+      "B01": {
+        "PROFILE_STATE": null,
+        "ROOT_ZONE_40": null,
+        "SURFACE_20": null,
+        "UPPER_ZONE_80": null
+      },
+      "B14": {
+        "PROFILE_STATE": null,
+        "ROOT_ZONE_40": null,
+        "SURFACE_20": null,
+        "UPPER_ZONE_80": null
+      }
+    },
+    "H_TOP_PLACEMENT_R4": {
+      "B01": false,
+      "B14": true
+    }
+  },
+  "integrity": {
+    "all_candidates_attempted": true,
+    "maximum_qualified_water_ledger_cm": 1.8282140124697976e-12,
+    "pass": true
+  },
+  "interpretation_boundary": [
+    "NUMERICALLY_UNRESOLVED means candidate-to-Reference RMSE is at or below C6N1 numerical uncertainty for the declared metric/view.",
+    "RESOLVED_DIFFERENCE is not hydrological application failure.",
+    "Bottom flux is prescribed and bottom-exchange fidelity is out of scope.",
+    "No ET/root uptake, groundwater, drought, performance or production claim follows."
+  ],
+  "materials": {
+    "B01": {
+      "P4_TOP_LOWER": {
+        "classification": null,
+        "comparison": null,
+        "dimension": 4,
+        "failures": {
+          "U03": "OUTSIDE_QUALIFIED_DOMAIN theta endpoint"
+        },
+        "id": "P4_TOP_LOWER",
+        "max_abs_water_ledger_cm": 2.931543896522726e-13,
+        "max_corrector_iterations": 3,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN"
+      },
+      "R12": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.00034499412227721423,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 2493.3691410468164,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.011088780252337282,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3393.4654724445627,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.013643512528906315,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 6344.242675317455,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.004894215866106747,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1110.0663267507164,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 0.00012219844989212758,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.003002329834272288,
+              "root_zone_0_40_storage_rmse_cm": 0.0014480868276196446,
+              "surface_0_20_storage_max_abs_error_cm": 0.008014600172571384,
+              "surface_0_20_storage_rmse_cm": 0.004032691396265973,
+              "total_storage_rmse_cm": 1.4196939236194944e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.00012178747579483229,
+              "upper_0_80_storage_rmse_cm": 6.379123693884325e-05
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.0004342011218031747,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.020705709417573104,
+              "root_zone_0_40_storage_rmse_cm": 0.011850459767222328,
+              "surface_0_20_storage_max_abs_error_cm": 0.031398819351611706,
+              "surface_0_20_storage_rmse_cm": 0.01665871513706708,
+              "total_storage_rmse_cm": 5.893959789446898e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.004640428690848353,
+              "upper_0_80_storage_rmse_cm": 0.0029591367391485356
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.00045405357824569584,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.038913476789922186,
+              "root_zone_0_40_storage_rmse_cm": 0.018030107354137757,
+              "surface_0_20_storage_max_abs_error_cm": 0.041489132206523394,
+              "surface_0_20_storage_rmse_cm": 0.019092005984623177,
+              "total_storage_rmse_cm": 2.899858335085606e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.02003808766285431,
+              "upper_0_80_storage_rmse_cm": 0.009284910000075502
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.00025779071041138655,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.01084511421906953,
+              "root_zone_0_40_storage_rmse_cm": 0.004922302975426035,
+              "surface_0_20_storage_max_abs_error_cm": 0.02068908732299235,
+              "surface_0_20_storage_rmse_cm": 0.009289868356082427,
+              "total_storage_rmse_cm": 8.740172641045848e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0014530178000669025,
+              "upper_0_80_storage_rmse_cm": 0.0009183041455929253
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 385,
+            "time_day": 0.308,
+            "value_cm": 0.041489132206523394
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.00034499412227721423,
+            "root_zone_0_40_storage_rmse_cm": 0.011088780252337282,
+            "surface_0_20_storage_rmse_cm": 0.013643512528906315,
+            "total_storage_rmse_cm": 8.959515079437617e-13,
+            "upper_0_80_storage_rmse_cm": 0.004894215866106747
+          }
+        },
+        "dimension": 12,
+        "failures": {},
+        "id": "R12",
+        "max_abs_water_ledger_cm": 6.470379787515412e-13,
+        "max_corrector_iterations": 4,
+        "status": "QUALIFIED"
+      },
+      "R16": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 2.5945375823297877e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 187.51449735915028,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.00046972682744845004,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 143.74906294055722,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.00048636431118934803,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 226.15973798986118,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.00044169069928955346,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 100.18070014356329,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 1.3066004172924352e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0001225253213927857,
+              "root_zone_0_40_storage_rmse_cm": 7.273773604403985e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.0004017896226402584,
+              "surface_0_20_storage_rmse_cm": 0.00024182085525786018,
+              "total_storage_rmse_cm": 1.336623444874616e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.6521806930569483e-05,
+              "upper_0_80_storage_rmse_cm": 6.1134945210343115e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 2.7012102553382515e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0012154691391401684,
+              "root_zone_0_40_storage_rmse_cm": 0.0006268611665779138,
+              "surface_0_20_storage_max_abs_error_cm": 0.001348316054860632,
+              "surface_0_20_storage_rmse_cm": 0.0006722233208996292,
+              "total_storage_rmse_cm": 5.955899834427862e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0006382495395627075,
+              "upper_0_80_storage_rmse_cm": 0.00037720933378472326
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 3.668169810338706e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0015996615557405391,
+              "root_zone_0_40_storage_rmse_cm": 0.0006286331012061987,
+              "surface_0_20_storage_max_abs_error_cm": 0.001415929909846625,
+              "surface_0_20_storage_rmse_cm": 0.0004446055270558804,
+              "total_storage_rmse_cm": 2.9093368410601566e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0016888876592418,
+              "upper_0_80_storage_rmse_cm": 0.0007910257614274415
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 2.113596416772416e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0005564682745617944,
+              "root_zone_0_40_storage_rmse_cm": 0.0002985764447487201,
+              "surface_0_20_storage_max_abs_error_cm": 0.0009090029137377442,
+              "surface_0_20_storage_rmse_cm": 0.00048802190412639246,
+              "total_storage_rmse_cm": 8.970606161085509e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.00019316621117937416,
+              "upper_0_80_storage_rmse_cm": 0.00011098055597329611
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 322,
+            "time_day": 0.2576,
+            "value_cm": 0.001415929909846625
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 2.5945375823297877e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.00046972682744845004,
+            "surface_0_20_storage_rmse_cm": 0.00048636431118934803,
+            "total_storage_rmse_cm": 8.704380821296848e-13,
+            "upper_0_80_storage_rmse_cm": 0.00044169069928955346
+          }
+        },
+        "dimension": 16,
+        "failures": {},
+        "id": "R16",
+        "max_abs_water_ledger_cm": 5.866418462119327e-13,
+        "max_corrector_iterations": 4,
+        "status": "QUALIFIED"
+      },
+      "R3": {
+        "classification": null,
+        "comparison": null,
+        "dimension": 3,
+        "failures": {
+          "U03": "OUTSIDE_QUALIFIED_DOMAIN theta endpoint"
+        },
+        "id": "R3",
+        "max_abs_water_ledger_cm": 2.349231920106831e-13,
+        "max_corrector_iterations": 2,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN"
+      },
+      "R4": {
+        "classification": null,
+        "comparison": null,
+        "dimension": 4,
+        "failures": {
+          "U03": "OUTSIDE_QUALIFIED_DOMAIN theta endpoint"
+        },
+        "id": "R4",
+        "max_abs_water_ledger_cm": 4.2904568786639175e-13,
+        "max_corrector_iterations": 2,
+        "status": "OUTSIDE_QUALIFIED_DOMAIN"
+      },
+      "R5": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.0007144828785179592,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 5163.767861736238,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.031208520510593824,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 9550.647987316326,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.022094151879305118,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 10273.795764152032,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.031235741816411765,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 7084.637484341336,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 0.0001326286558060057,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.009181200165222947,
+              "root_zone_0_40_storage_rmse_cm": 0.004193821732840419,
+              "surface_0_20_storage_max_abs_error_cm": 0.011104035338046714,
+              "surface_0_20_storage_rmse_cm": 0.005394990043989306,
+              "total_storage_rmse_cm": 1.3915918214802839e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.004623071448719429,
+              "upper_0_80_storage_rmse_cm": 0.001988070103670712
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.0005980100385860981,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.05361391093453882,
+              "root_zone_0_40_storage_rmse_cm": 0.02884427928722436,
+              "surface_0_20_storage_max_abs_error_cm": 0.045271910182366426,
+              "surface_0_20_storage_rmse_cm": 0.023907368791470655,
+              "total_storage_rmse_cm": 5.999304999045546e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.030813301892386846,
+              "upper_0_80_storage_rmse_cm": 0.01739274816989149
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.0012540927794564406,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.09986665787725357,
+              "root_zone_0_40_storage_rmse_cm": 0.05371391105738473,
+              "surface_0_20_storage_max_abs_error_cm": 0.06445655594691146,
+              "surface_0_20_storage_rmse_cm": 0.0344792790890967,
+              "total_storage_rmse_cm": 2.9783193065557845e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.11697796442058461,
+              "upper_0_80_storage_rmse_cm": 0.059519246924299295
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.00030657473592225477,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0299615171799843,
+              "root_zone_0_40_storage_rmse_cm": 0.012693391210930932,
+              "surface_0_20_storage_max_abs_error_cm": 0.030247288803449734,
+              "surface_0_20_storage_rmse_cm": 0.01277173842721726,
+              "total_storage_rmse_cm": 8.586575693066948e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.015562534443468223,
+              "upper_0_80_storage_rmse_cm": 0.00732703222403544
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 469,
+            "time_day": 0.37520000000000003,
+            "value_cm": 0.06445655594691146
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.0007144828785179592,
+            "root_zone_0_40_storage_rmse_cm": 0.031208520510593824,
+            "surface_0_20_storage_rmse_cm": 0.022094151879305118,
+            "total_storage_rmse_cm": 8.835215167968822e-13,
+            "upper_0_80_storage_rmse_cm": 0.031235741816411765
+          }
+        },
+        "dimension": 5,
+        "failures": {},
+        "id": "R5",
+        "max_abs_water_ledger_cm": 6.616929226765933e-13,
+        "max_corrector_iterations": 3,
+        "status": "QUALIFIED"
+      },
+      "R6": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.0005860211364289949,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 4235.3388745537695,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.02881158582357919,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 8817.121403238298,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.021121526308817074,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 9821.52420737208,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.0245866733150375,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 5576.549723286818,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 0.00013199601966499275,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.008770930785090059,
+              "root_zone_0_40_storage_rmse_cm": 0.004013293412227601,
+              "surface_0_20_storage_max_abs_error_cm": 0.01089890064798027,
+              "surface_0_20_storage_rmse_cm": 0.005306777457862012,
+              "total_storage_rmse_cm": 1.4683279869301874e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0038025326884536526,
+              "upper_0_80_storage_rmse_cm": 0.0016275526179114186
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.0005896427917269321,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.05116256136425967,
+              "root_zone_0_40_storage_rmse_cm": 0.02772282701127543,
+              "surface_0_20_storage_max_abs_error_cm": 0.04404623539722685,
+              "surface_0_20_storage_rmse_cm": 0.023434798434551204,
+              "total_storage_rmse_cm": 5.774967400539345e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.02591060275182855,
+              "upper_0_80_storage_rmse_cm": 0.01514527728589967
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.0009573685440188333,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.09844816482325669,
+              "root_zone_0_40_storage_rmse_cm": 0.04886974841807857,
+              "surface_0_20_storage_max_abs_error_cm": 0.06396655791390238,
+              "surface_0_20_storage_rmse_cm": 0.03240346270183952,
+              "total_storage_rmse_cm": 3.088515142824316e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.08528385327203125,
+              "upper_0_80_storage_rmse_cm": 0.04633961757724196
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.00030335950495484785,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.028642475413823476,
+              "root_zone_0_40_storage_rmse_cm": 0.0121456139705596,
+              "surface_0_20_storage_max_abs_error_cm": 0.029587767920369323,
+              "surface_0_20_storage_rmse_cm": 0.012535526902822502,
+              "total_storage_rmse_cm": 9.248544299268513e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.012924450911146579,
+              "upper_0_80_storage_rmse_cm": 0.006215264274800978
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 464,
+            "time_day": 0.37120000000000003,
+            "value_cm": 0.06396655791390238
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.0005860211364289949,
+            "root_zone_0_40_storage_rmse_cm": 0.02881158582357919,
+            "surface_0_20_storage_rmse_cm": 0.021121526308817074,
+            "total_storage_rmse_cm": 9.27393462399489e-13,
+            "upper_0_80_storage_rmse_cm": 0.0245866733150375
+          }
+        },
+        "dimension": 6,
+        "failures": {},
+        "id": "R6",
+        "max_abs_water_ledger_cm": 6.754596881819452e-13,
+        "max_corrector_iterations": 3,
+        "status": "QUALIFIED"
+      },
+      "R8": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.0005249155068014559,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3793.7113759405715,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.025127118662478156,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 7689.57519788205,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.019605343293123245,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 9116.498066092363,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.016367923257152046,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3712.4395293699745,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 0.00013029923381092828,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.007681998024471781,
+              "root_zone_0_40_storage_rmse_cm": 0.0035321882200681494,
+              "surface_0_20_storage_max_abs_error_cm": 0.010354434267671131,
+              "surface_0_20_storage_rmse_cm": 0.005071269441848595,
+              "total_storage_rmse_cm": 1.4629503286728083e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0016246671672170976,
+              "upper_0_80_storage_rmse_cm": 0.0006771972277376237
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.0005638871438393994,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.044784625266743205,
+              "root_zone_0_40_storage_rmse_cm": 0.024685658238397672,
+              "surface_0_20_storage_max_abs_error_cm": 0.04085726734846862,
+              "surface_0_20_storage_rmse_cm": 0.02215875451103378,
+              "total_storage_rmse_cm": 6.071898128807417e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.013154730556795613,
+              "upper_0_80_storage_rmse_cm": 0.00937557198251522
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.000824737356747846,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.08699001176326604,
+              "root_zone_0_40_storage_rmse_cm": 0.04229471281023638,
+              "surface_0_20_storage_max_abs_error_cm": 0.059970942789073334,
+              "surface_0_20_storage_rmse_cm": 0.029644724440412083,
+              "total_storage_rmse_cm": 3.426855471496767e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.06210949293751611,
+              "upper_0_80_storage_rmse_cm": 0.031164413862845776
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.0002949692326125263,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.025171118264339043,
+              "root_zone_0_40_storage_rmse_cm": 0.010713895702670437,
+              "surface_0_20_storage_max_abs_error_cm": 0.027852089345627107,
+              "surface_0_20_storage_rmse_cm": 0.011913860842934068,
+              "total_storage_rmse_cm": 9.153072382876636e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.005981736612177713,
+              "upper_0_80_storage_rmse_cm": 0.0034720324751881687
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 442,
+            "time_day": 0.3536,
+            "value_cm": 0.059970942789073334
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.0005249155068014559,
+            "root_zone_0_40_storage_rmse_cm": 0.025127118662478156,
+            "surface_0_20_storage_rmse_cm": 0.019605343293123245,
+            "total_storage_rmse_cm": 9.306078467481739e-13,
+            "upper_0_80_storage_rmse_cm": 0.016367923257152046
+          }
+        },
+        "dimension": 8,
+        "failures": {},
+        "id": "R8",
+        "max_abs_water_ledger_cm": 3.9834802123550617e-13,
+        "max_corrector_iterations": 3,
+        "status": "QUALIFIED"
+      },
+      "U4": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.0005223338676795605,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3775.05314699057,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.0053932157832132024,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1650.469314866209,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.010999413560084244,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 5114.734842915548,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.005590827885536698,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1268.0662120712914,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 0.00011629102139582304,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0008227092953596582,
+              "root_zone_0_40_storage_rmse_cm": 0.000500534389446527,
+              "surface_0_20_storage_max_abs_error_cm": 0.006743758769927055,
+              "surface_0_20_storage_rmse_cm": 0.003449563352814151,
+              "total_storage_rmse_cm": 1.490895594887768e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.00012200321241451206,
+              "upper_0_80_storage_rmse_cm": 8.150614182568899e-05
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.0003862530506272041,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.010953183000488309,
+              "root_zone_0_40_storage_rmse_cm": 0.00587297387056401,
+              "surface_0_20_storage_max_abs_error_cm": 0.025990308733685907,
+              "surface_0_20_storage_rmse_cm": 0.013869373348383715,
+              "total_storage_rmse_cm": 5.917120440691087e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0056716442391469,
+              "upper_0_80_storage_rmse_cm": 0.0035801080263852167
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.0009340865109525369,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.019560737340036383,
+              "root_zone_0_40_storage_rmse_cm": 0.00873565151107355,
+              "surface_0_20_storage_max_abs_error_cm": 0.03328578230008539,
+              "surface_0_20_storage_rmse_cm": 0.014747014631456272,
+              "total_storage_rmse_cm": 3.0333243581504675e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.022689632787219693,
+              "upper_0_80_storage_rmse_cm": 0.010539941001837435
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.0002368502619394067,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.004448181909269877,
+              "root_zone_0_40_storage_rmse_cm": 0.002300682910557684,
+              "surface_0_20_storage_max_abs_error_cm": 0.017070118824782377,
+              "surface_0_20_storage_rmse_cm": 0.007887645385077871,
+              "total_storage_rmse_cm": 8.705002096767587e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0015876285424063497,
+              "upper_0_80_storage_rmse_cm": 0.0010560552678822721
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 369,
+            "time_day": 0.2952,
+            "value_cm": 0.03328578230008539
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.0005223338676795605,
+            "root_zone_0_40_storage_rmse_cm": 0.0053932157832132024,
+            "surface_0_20_storage_rmse_cm": 0.010999413560084244,
+            "total_storage_rmse_cm": 9.25023513162904e-13,
+            "upper_0_80_storage_rmse_cm": 0.005590827885536698
+          }
+        },
+        "dimension": 4,
+        "failures": {},
+        "id": "U4",
+        "max_abs_water_ledger_cm": 5.049294315995212e-13,
+        "max_corrector_iterations": 3,
+        "status": "QUALIFIED"
+      },
+      "U8": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 0.00026543521285473705,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1918.3746213142547,
+              "reference_U_combined": 1.383646394742705e-07
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.001717249341932682,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 525.5245587717733,
+              "reference_U_combined": 3.267686187580161e-06
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0016821316533902429,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 782.192371526789,
+              "reference_U_combined": 2.1505344652068526e-06
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.0016869091772074949,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 382.61105049998514,
+              "reference_U_combined": 4.408940031928221e-06
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 8.087571077087463e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0003454802790940903,
+              "root_zone_0_40_storage_rmse_cm": 0.0002074572050474873,
+              "surface_0_20_storage_max_abs_error_cm": 0.001066337677105622,
+              "surface_0_20_storage_rmse_cm": 0.0006766474485266109,
+              "total_storage_rmse_cm": 1.339093557811201e-12,
+              "upper_0_80_storage_max_abs_error_cm": 5.320965298238889e-05,
+              "upper_0_80_storage_rmse_cm": 2.408757151733302e-05
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 0.00020351993540854027,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.004307471425857301,
+              "root_zone_0_40_storage_rmse_cm": 0.0021922590929909684,
+              "surface_0_20_storage_max_abs_error_cm": 0.004492508966494668,
+              "surface_0_20_storage_rmse_cm": 0.0023650908407439634,
+              "total_storage_rmse_cm": 5.844768243223605e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.0021852425829465005,
+              "upper_0_80_storage_rmse_cm": 0.0013169979878952843
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 0.0004617263003481378,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00599549648154607,
+              "root_zone_0_40_storage_rmse_cm": 0.0024607490230349974,
+              "surface_0_20_storage_max_abs_error_cm": 0.004986859729221749,
+              "surface_0_20_storage_rmse_cm": 0.0017170649044210185,
+              "total_storage_rmse_cm": 3.0480440700503166e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.006516355828651399,
+              "upper_0_80_storage_rmse_cm": 0.0030832467208202177
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 0.00014377408583743104,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0017608083899283145,
+              "root_zone_0_40_storage_rmse_cm": 0.000944170023024202,
+              "surface_0_20_storage_max_abs_error_cm": 0.0026250850773177348,
+              "surface_0_20_storage_rmse_cm": 0.0015226454796789196,
+              "total_storage_rmse_cm": 8.856507865172226e-13,
+              "upper_0_80_storage_max_abs_error_cm": 0.000621085324223003,
+              "upper_0_80_storage_rmse_cm": 0.0003757339962220801
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 330,
+            "time_day": 0.264,
+            "value_cm": 0.004986859729221749
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 0.00026543521285473705,
+            "root_zone_0_40_storage_rmse_cm": 0.001717249341932682,
+            "surface_0_20_storage_rmse_cm": 0.0016821316533902429,
+            "total_storage_rmse_cm": 8.677654863109151e-13,
+            "upper_0_80_storage_rmse_cm": 0.0016869091772074949
+          }
+        },
+        "dimension": 8,
+        "failures": {},
+        "id": "U8",
+        "max_abs_water_ledger_cm": 6.687983500341943e-13,
+        "max_corrector_iterations": 3,
+        "status": "QUALIFIED"
+      }
+    },
+    "B14": {
+      "P4_TOP_LOWER": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 5.851932241312757e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 9702.151803598115,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.00010981898385112797,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 51575.60836671916,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 3.7217724262185015e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 4588.117713701948,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 7.346459972506765e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3708634.9017951353,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 9.294572623525408e-09,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.2582751729439678e-07,
+              "root_zone_0_40_storage_rmse_cm": 8.373361137051915e-08,
+              "surface_0_20_storage_max_abs_error_cm": 1.5098296213267304e-07,
+              "surface_0_20_storage_rmse_cm": 1.0041800789601655e-07,
+              "total_storage_rmse_cm": 1.7512468095802986e-12,
+              "upper_0_80_storage_max_abs_error_cm": 7.551662051241692e-08,
+              "upper_0_80_storage_rmse_cm": 5.026452094979241e-08
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 9.152613916424521e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.0004477378089405e-05,
+              "root_zone_0_40_storage_rmse_cm": 6.521530181046365e-06,
+              "surface_0_20_storage_max_abs_error_cm": 1.1344760275200372e-05,
+              "surface_0_20_storage_rmse_cm": 6.7779664968584016e-06,
+              "total_storage_rmse_cm": 1.2617960298274576e-12,
+              "upper_0_80_storage_max_abs_error_cm": 6.010281364154935e-06,
+              "upper_0_80_storage_rmse_cm": 3.9237040797961435e-06
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 1.166610790229979e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00027602176151830804,
+              "root_zone_0_40_storage_rmse_cm": 0.0002195350328775345,
+              "surface_0_20_storage_max_abs_error_cm": 0.0001583287058641858,
+              "surface_0_20_storage_rmse_cm": 7.410267464434373e-05,
+              "total_storage_rmse_cm": 1.9049549982680194e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0001937406515288842,
+              "upper_0_80_storage_rmse_cm": 0.00014687351362559258
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 2.1114079532355083e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 2.4029298515415576e-06,
+              "root_zone_0_40_storage_rmse_cm": 1.633654987169274e-06,
+              "surface_0_20_storage_max_abs_error_cm": 2.450547292198735e-06,
+              "surface_0_20_storage_rmse_cm": 1.8651257249397844e-06,
+              "total_storage_rmse_cm": 2.511082095851939e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.443947411416957e-06,
+              "upper_0_80_storage_rmse_cm": 9.81155493608057e-07
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 351,
+            "time_day": 0.2808,
+            "value_cm": 0.0001583287058641858
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 5.851932241312757e-06,
+            "root_zone_0_40_storage_rmse_cm": 0.00010981898385112797,
+            "surface_0_20_storage_rmse_cm": 3.7217724262185015e-05,
+            "total_storage_rmse_cm": 1.910064229711136e-12,
+            "upper_0_80_storage_rmse_cm": 7.346459972506765e-05
+          }
+        },
+        "dimension": 4,
+        "failures": {},
+        "id": "P4_TOP_LOWER",
+        "max_abs_water_ledger_cm": 3.517186542012496e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R12": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.004725264375576e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 16657.740783572935,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.00013669547430034872,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 64197.93737642835,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0003234391600280079,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 39872.85544315705,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 2.128680006885212e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 107459.87860591635,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.360429238901908e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 6.87947260402666e-06,
+              "root_zone_0_40_storage_rmse_cm": 2.976588020803507e-06,
+              "surface_0_20_storage_max_abs_error_cm": 2.0574556559793677e-05,
+              "surface_0_20_storage_rmse_cm": 8.925490703468183e-06,
+              "total_storage_rmse_cm": 1.7272624317204398e-12,
+              "upper_0_80_storage_max_abs_error_cm": 8.970602038971265e-12,
+              "upper_0_80_storage_rmse_cm": 3.1917950818602904e-12
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 4.725802053816859e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 9.276633431376524e-05,
+              "root_zone_0_40_storage_rmse_cm": 3.976172317723957e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00027422826756140495,
+              "surface_0_20_storage_rmse_cm": 0.0001213862266732933,
+              "total_storage_rmse_cm": 1.0857857670658067e-12,
+              "upper_0_80_storage_max_abs_error_cm": 3.7029476374073056e-08,
+              "upper_0_80_storage_rmse_cm": 1.4113733164736036e-08
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 1.946034765160067e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0005511721416624482,
+              "root_zone_0_40_storage_rmse_cm": 0.00027002752661885486,
+              "surface_0_20_storage_max_abs_error_cm": 0.0015068424734749897,
+              "surface_0_20_storage_rmse_cm": 0.0006337085006652649,
+              "total_storage_rmse_cm": 1.7045275031699629e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.0506645182317698e-05,
+              "upper_0_80_storage_rmse_cm": 4.257336610151404e-06
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.624155820761184e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 3.306636025435239e-05,
+              "root_zone_0_40_storage_rmse_cm": 1.5423713516005263e-05,
+              "surface_0_20_storage_max_abs_error_cm": 9.837706177240335e-05,
+              "surface_0_20_storage_rmse_cm": 4.528594409744976e-05,
+              "total_storage_rmse_cm": 2.2423550940151267e-12,
+              "upper_0_80_storage_max_abs_error_cm": 8.19515122429948e-10,
+              "upper_0_80_storage_rmse_cm": 2.779241252368497e-10
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.0015068424734749897
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.004725264375576e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.00013669547430034872,
+            "surface_0_20_storage_rmse_cm": 0.0003234391600280079,
+            "total_storage_rmse_cm": 1.7389606534302254e-12,
+            "upper_0_80_storage_rmse_cm": 2.128680006885212e-06
+          }
+        },
+        "dimension": 12,
+        "failures": {},
+        "id": "R12",
+        "max_abs_water_ledger_cm": 3.2896884001598625e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R16": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 9.857248265394562e-07,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1634.2724948428013,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 4.460891584911755e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 2095.0220925527046,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 1.4074250440874018e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 1735.0420810243393,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 6.766852193015509e-08,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3416.0376987316604,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 1.8153543080366732e-08,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.2871126386926335e-10,
+              "root_zone_0_40_storage_rmse_cm": 4.5766028523785493e-11,
+              "surface_0_20_storage_max_abs_error_cm": 5.7375865836206685e-08,
+              "surface_0_20_storage_rmse_cm": 3.646766551866821e-08,
+              "total_storage_rmse_cm": 1.7013996409899285e-12,
+              "upper_0_80_storage_max_abs_error_cm": 2.2737367544323206e-13,
+              "upper_0_80_storage_rmse_cm": 1.2696112663754732e-13
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 5.704033285362194e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 3.9469296808647414e-07,
+              "root_zone_0_40_storage_rmse_cm": 1.6584703392663197e-07,
+              "surface_0_20_storage_max_abs_error_cm": 5.673314106502403e-06,
+              "surface_0_20_storage_rmse_cm": 3.2005695684256523e-06,
+              "total_storage_rmse_cm": 1.032867874016631e-12,
+              "upper_0_80_storage_max_abs_error_cm": 3.731059905476286e-11,
+              "upper_0_80_storage_rmse_cm": 9.429326543038502e-12
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 1.8811151526376117e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.4551353970659875e-05,
+              "root_zone_0_40_storage_rmse_cm": 8.92024072882432e-06,
+              "surface_0_20_storage_max_abs_error_cm": 5.738130401855557e-05,
+              "surface_0_20_storage_rmse_cm": 2.795315996308023e-05,
+              "total_storage_rmse_cm": 1.812235675947081e-12,
+              "upper_0_80_storage_max_abs_error_cm": 4.6041733980928257e-07,
+              "upper_0_80_storage_rmse_cm": 1.353370435316685e-07
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.4943228838029082e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.132171689732786e-08,
+              "root_zone_0_40_storage_rmse_cm": 3.876649713138026e-09,
+              "surface_0_20_storage_max_abs_error_cm": 1.4379281809695499e-06,
+              "surface_0_20_storage_rmse_cm": 8.449701268434143e-07,
+              "total_storage_rmse_cm": 2.2505921854877116e-12,
+              "upper_0_80_storage_max_abs_error_cm": 3.126388037344441e-13,
+              "upper_0_80_storage_rmse_cm": 1.626643066566348e-13
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 363,
+            "time_day": 0.2904,
+            "value_cm": 5.738130401855557e-05
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 9.857248265394562e-07,
+            "root_zone_0_40_storage_rmse_cm": 4.460891584911755e-06,
+            "surface_0_20_storage_rmse_cm": 1.4074250440874018e-05,
+            "total_storage_rmse_cm": 1.7543474651626185e-12,
+            "upper_0_80_storage_rmse_cm": 6.766852193015509e-08
+          }
+        },
+        "dimension": 16,
+        "failures": {},
+        "id": "R16",
+        "max_abs_water_ledger_cm": 2.9519312341741433e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R3": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.1353920879653402e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18824.118154130927,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.000423482027523937,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 198884.95081621924,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0004645883855812335,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 57273.41592541275,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.00025842614321963073,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 13045850.897811426,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.615281111895175e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 2.447962103069301e-05,
+              "root_zone_0_40_storage_rmse_cm": 1.0624666049072285e-05,
+              "surface_0_20_storage_max_abs_error_cm": 2.9374630773126853e-05,
+              "surface_0_20_storage_rmse_cm": 1.2749608797101789e-05,
+              "total_storage_rmse_cm": 2.237070721480006e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.4689601545825326e-05,
+              "upper_0_80_storage_rmse_cm": 6.374893015252975e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 5.047096184705439e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0003255832060826691,
+              "root_zone_0_40_storage_rmse_cm": 0.00014128850423590693,
+              "surface_0_20_storage_max_abs_error_cm": 0.0003906367034458569,
+              "surface_0_20_storage_rmse_cm": 0.00017216460697596996,
+              "total_storage_rmse_cm": 1.2249168063293102e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0001954674258861644,
+              "upper_0_80_storage_rmse_cm": 8.477761599424155e-05
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 2.2066942661858198e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0018295347513017646,
+              "root_zone_0_40_storage_rmse_cm": 0.0008332968971708239,
+              "surface_0_20_storage_max_abs_error_cm": 0.002146023778294648,
+              "surface_0_20_storage_rmse_cm": 0.0009107206825535891,
+              "total_storage_rmse_cm": 1.7627825691748089e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0011007138693628349,
+              "upper_0_80_storage_rmse_cm": 0.0005087893370224362
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.7584756043607812e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00011693671771162428,
+              "root_zone_0_40_storage_rmse_cm": 5.3750039541763844e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.0001403122405010393,
+              "surface_0_20_storage_rmse_cm": 6.445235463008872e-05,
+              "total_storage_rmse_cm": 2.3209731800010663e-12,
+              "upper_0_80_storage_max_abs_error_cm": 7.018566771677115e-05,
+              "upper_0_80_storage_rmse_cm": 3.2277129598822e-05
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.002146023778294648
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.1353920879653402e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.000423482027523937,
+            "surface_0_20_storage_rmse_cm": 0.0004645883855812335,
+            "total_storage_rmse_cm": 1.936441677652717e-12,
+            "upper_0_80_storage_rmse_cm": 0.00025842614321963073
+          }
+        },
+        "dimension": 3,
+        "failures": {},
+        "id": "R3",
+        "max_abs_water_ledger_cm": 1.8282140124697976e-12,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R4": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.129994120299776e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18734.623095810723,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.00041063356603002974,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 192850.77352841123,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0004583273578883617,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 56501.570450356914,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.00023274701989754498,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 11749519.149510989,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.604757957643321e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 2.3726758946907012e-05,
+              "root_zone_0_40_storage_rmse_cm": 1.0297772076340218e-05,
+              "surface_0_20_storage_max_abs_error_cm": 2.8998199731233854e-05,
+              "surface_0_20_storage_rmse_cm": 1.258616178449178e-05,
+              "total_storage_rmse_cm": 1.961688497414206e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.3183877378253328e-05,
+              "upper_0_80_storage_rmse_cm": 5.721105581976505e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 5.033771608204415e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0003155881551837325,
+              "root_zone_0_40_storage_rmse_cm": 0.00013694272506893982,
+              "surface_0_20_storage_max_abs_error_cm": 0.0003856391779963886,
+              "surface_0_20_storage_rmse_cm": 0.00016999247504089472,
+              "total_storage_rmse_cm": 1.1921793407055901e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0001754773240882912,
+              "upper_0_80_storage_rmse_cm": 7.608621497023733e-05
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 2.195935059007837e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0017738117998042924,
+              "root_zone_0_40_storage_rmse_cm": 0.0008080258570349854,
+              "surface_0_20_storage_max_abs_error_cm": 0.0021181623025459118,
+              "surface_0_20_storage_rmse_cm": 0.000898416097662811,
+              "total_storage_rmse_cm": 1.8332123743904133e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0009892679663678905,
+              "upper_0_80_storage_rmse_cm": 0.0004582826831733246
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.7529423903693587e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00011334327464318505,
+              "root_zone_0_40_storage_rmse_cm": 5.2101463568589915e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00013851551896681968,
+              "surface_0_20_storage_rmse_cm": 6.362806281065984e-05,
+              "total_storage_rmse_cm": 2.3094244409689933e-12,
+              "upper_0_80_storage_max_abs_error_cm": 6.299878157989269e-05,
+              "upper_0_80_storage_rmse_cm": 2.897999707787578e-05
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.0021181623025459118
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.129994120299776e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.00041063356603002974,
+            "surface_0_20_storage_rmse_cm": 0.0004583273578883617,
+            "total_storage_rmse_cm": 1.8683965183718034e-12,
+            "upper_0_80_storage_rmse_cm": 0.00023274701989754498
+          }
+        },
+        "dimension": 4,
+        "failures": {},
+        "id": "R4",
+        "max_abs_water_ledger_cm": 1.1602969019613996e-12,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R5": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.1236799166185534e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18629.937395245746,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.0003956921788864416,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 185833.6704306637,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.00045104493905075453,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 55603.81016195123,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.00020289787961954168,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 10242676.89027509,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.592442016673505e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 2.28484782898164e-05,
+              "root_zone_0_40_storage_rmse_cm": 9.916399147483042e-06,
+              "surface_0_20_storage_max_abs_error_cm": 2.8559059402688547e-05,
+              "surface_0_20_storage_rmse_cm": 1.2395475273291111e-05,
+              "total_storage_rmse_cm": 1.5097238548657314e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.1427316064072102e-05,
+              "upper_0_80_storage_rmse_cm": 4.958360794862504e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 5.018182429647388e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0003039309998147388,
+              "root_zone_0_40_storage_rmse_cm": 0.00013187296209525915,
+              "surface_0_20_storage_max_abs_error_cm": 0.00037981060031189173,
+              "surface_0_20_storage_rmse_cm": 0.0001674584492707732,
+              "total_storage_rmse_cm": 1.2417960415933775e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0001521630133503038,
+              "upper_0_80_storage_rmse_cm": 6.594701540533116e-05
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 2.1833489658940415e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0017088935407905126,
+              "root_zone_0_40_storage_rmse_cm": 0.000778641418233188,
+              "surface_0_20_storage_max_abs_error_cm": 0.002085703173039022,
+              "surface_0_20_storage_rmse_cm": 0.0008841057844945685,
+              "total_storage_rmse_cm": 1.7549941054533174e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0008594314483403309,
+              "upper_0_80_storage_rmse_cm": 0.000399580820192146
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.7464650079633292e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00010915167869107734,
+              "root_zone_0_40_storage_rmse_cm": 5.017898400305096e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00013641972099076582,
+              "surface_0_20_storage_rmse_cm": 6.266681703274902e-05,
+              "total_storage_rmse_cm": 2.4529546291364582e-12,
+              "upper_0_80_storage_max_abs_error_cm": 5.4615589675677256e-05,
+              "upper_0_80_storage_rmse_cm": 2.5135078443342868e-05
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.002085703173039022
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.1236799166185534e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.0003956921788864416,
+            "surface_0_20_storage_rmse_cm": 0.00045104493905075453,
+            "total_storage_rmse_cm": 1.7971028246629e-12,
+            "upper_0_80_storage_rmse_cm": 0.00020289787961954168
+          }
+        },
+        "dimension": 5,
+        "failures": {},
+        "id": "R5",
+        "max_abs_water_ledger_cm": 1.255548399622941e-12,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R6": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.1161835391440772e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18505.651963980865,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.0003781052549410776,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 177574.11211048305,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.00044247033229356493,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 54546.751840127334,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 0.00016779229720858735,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 8470479.278577141,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.5778322067254516e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 2.1810597319316116e-05,
+              "root_zone_0_40_storage_rmse_cm": 9.46569060532084e-06,
+              "surface_0_20_storage_max_abs_error_cm": 2.8040118917438406e-05,
+              "surface_0_20_storage_rmse_cm": 1.2170120913875241e-05,
+              "total_storage_rmse_cm": 1.7786658931773436e-12,
+              "upper_0_80_storage_max_abs_error_cm": 9.351554123071537e-06,
+              "upper_0_80_storage_rmse_cm": 4.056946236856984e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 4.999697347736883e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.000290159914680288,
+              "root_zone_0_40_storage_rmse_cm": 0.00012588191519457762,
+              "surface_0_20_storage_max_abs_error_cm": 0.00037292505774466633,
+              "surface_0_20_storage_rmse_cm": 0.0001644638890984439,
+              "total_storage_rmse_cm": 1.0356777119459013e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0001246208430814022,
+              "upper_0_80_storage_rmse_cm": 5.396568570630901e-05
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 2.1684048100369978e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0016323079100697413,
+              "root_zone_0_40_storage_rmse_cm": 0.0007440586535939911,
+              "surface_0_20_storage_max_abs_error_cm": 0.0020474103576786362,
+              "surface_0_20_storage_rmse_cm": 0.000867258542587281,
+              "total_storage_rmse_cm": 1.778137299956385e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.0007062601868987883,
+              "upper_0_80_storage_rmse_cm": 0.00033055130635261526
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.7387791122963838e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00010419909579972852,
+              "root_zone_0_40_storage_rmse_cm": 4.790823933767343e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00013394342954509142,
+              "surface_0_20_storage_rmse_cm": 6.153143496500663e-05,
+              "total_storage_rmse_cm": 2.258173196031459e-12,
+              "upper_0_80_storage_max_abs_error_cm": 4.4710423892979634e-05,
+              "upper_0_80_storage_rmse_cm": 2.059368427936767e-05
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.0020474103576786362
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.1161835391440772e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.0003781052549410776,
+            "surface_0_20_storage_rmse_cm": 0.00044247033229356493,
+            "total_storage_rmse_cm": 1.7675830336468618e-12,
+            "upper_0_80_storage_rmse_cm": 0.00016779229720858735
+          }
+        },
+        "dimension": 6,
+        "failures": {},
+        "id": "R6",
+        "max_abs_water_ledger_cm": 4.639719598104053e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "R8": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 1.0960080686498854e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18171.15479386368,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 0.00033161890803850354,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 155742.17069043883,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0004197836254394863,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 51749.98541643385,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 7.55090998234046e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 3811845.2160116676,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.538578172912938e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.90434274749407e-05,
+              "root_zone_0_40_storage_rmse_cm": 8.26383254690499e-06,
+              "surface_0_20_storage_max_abs_error_cm": 2.6656533995250697e-05,
+              "surface_0_20_storage_rmse_cm": 1.1569191310199352e-05,
+              "total_storage_rmse_cm": 1.705334744641115e-12,
+              "upper_0_80_storage_max_abs_error_cm": 3.817214434320704e-06,
+              "upper_0_80_storage_rmse_cm": 1.653268271348364e-06
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 4.950074092468964e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00025346967849770863,
+              "root_zone_0_40_storage_rmse_cm": 0.00010990901361315347,
+              "surface_0_20_storage_max_abs_error_cm": 0.00035457993965337664,
+              "surface_0_20_storage_rmse_cm": 0.00015647965000953852,
+              "total_storage_rmse_cm": 1.0717028574381036e-12,
+              "upper_0_80_storage_max_abs_error_cm": 5.124037071624343e-05,
+              "upper_0_80_storage_rmse_cm": 2.2031243673753087e-05
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 2.1281755061563978e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.0014288737201297863,
+              "root_zone_0_40_storage_rmse_cm": 0.0006526743618426844,
+              "surface_0_20_storage_max_abs_error_cm": 0.0019456932627086587,
+              "surface_0_20_storage_rmse_cm": 0.000822696976997547,
+              "total_storage_rmse_cm": 1.7526780436666297e-12,
+              "upper_0_80_storage_max_abs_error_cm": 0.00029939180701887835,
+              "upper_0_80_storage_rmse_cm": 0.00014915142106934032
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.7181173539855087e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 9.099880909779756e-05,
+              "root_zone_0_40_storage_rmse_cm": 4.186043318054432e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00012734328619412594,
+              "surface_0_20_storage_rmse_cm": 5.850748441775376e-05,
+              "total_storage_rmse_cm": 2.21359055275446e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.8309850489117707e-05,
+              "upper_0_80_storage_rmse_cm": 8.499483735530042e-06
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.0019456932627086587
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 1.0960080686498854e-05,
+            "root_zone_0_40_storage_rmse_cm": 0.00033161890803850354,
+            "surface_0_20_storage_rmse_cm": 0.0004197836254394863,
+            "total_storage_rmse_cm": 1.734111953271476e-12,
+            "upper_0_80_storage_rmse_cm": 7.55090998234046e-05
+          }
+        },
+        "dimension": 8,
+        "failures": {},
+        "id": "R8",
+        "max_abs_water_ledger_cm": 3.80485573603373e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "U4": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 9.502246813204585e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 15754.153885467056,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 3.868624331987046e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 18168.68509136866,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 0.0002699727953455071,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 33281.641720391184,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 3.2384049049260008e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 163480.93505578634,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 3.2559197484846296e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 6.281934616936269e-08,
+              "root_zone_0_40_storage_rmse_cm": 4.185654668823462e-08,
+              "surface_0_20_storage_max_abs_error_cm": 1.715056113127389e-05,
+              "surface_0_20_storage_rmse_cm": 7.438111908799544e-06,
+              "total_storage_rmse_cm": 1.9425825910352725e-12,
+              "upper_0_80_storage_max_abs_error_cm": 3.1162628033598594e-10,
+              "upper_0_80_storage_rmse_cm": 1.8214353150977369e-10
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 4.5944607464301245e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 4.2954716263921e-06,
+              "root_zone_0_40_storage_rmse_cm": 2.829724549506191e-06,
+              "surface_0_20_storage_max_abs_error_cm": 0.00022893046362959524,
+              "surface_0_20_storage_rmse_cm": 0.00010161455653075869,
+              "total_storage_rmse_cm": 1.0447467660225168e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.0649747750335337e-07,
+              "upper_0_80_storage_rmse_cm": 6.333370953750676e-08
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 1.837103196862564e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 0.00010534281939200696,
+              "root_zone_0_40_storage_rmse_cm": 7.731693111047685e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.0012603348892490374,
+              "surface_0_20_storage_rmse_cm": 0.0005288953128847338,
+              "total_storage_rmse_cm": 1.7413984007664597e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.331429881545887e-05,
+              "upper_0_80_storage_rmse_cm": 6.476497662599327e-06
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.5687200895598344e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.1294537536343796e-06,
+              "root_zone_0_40_storage_rmse_cm": 7.646956767789843e-07,
+              "surface_0_20_storage_max_abs_error_cm": 8.205328558119618e-05,
+              "surface_0_20_storage_rmse_cm": 3.781726203094633e-05,
+              "total_storage_rmse_cm": 2.171397374538811e-12,
+              "upper_0_80_storage_max_abs_error_cm": 1.2077880029437438e-08,
+              "upper_0_80_storage_rmse_cm": 5.669867770561164e-09
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 288,
+            "time_day": 0.23040000000000002,
+            "value_cm": 0.0012603348892490374
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 9.502246813204585e-06,
+            "root_zone_0_40_storage_rmse_cm": 3.868624331987046e-05,
+            "surface_0_20_storage_rmse_cm": 0.0002699727953455071,
+            "total_storage_rmse_cm": 1.7757081598938102e-12,
+            "upper_0_80_storage_rmse_cm": 3.2384049049260008e-06
+          }
+        },
+        "dimension": 4,
+        "failures": {},
+        "id": "U4",
+        "max_abs_water_ledger_cm": 1.1389875587825005e-12,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      },
+      "U8": {
+        "classification": {
+          "per_metric": {
+            "mapped_10cm_theta_rmse": {
+              "candidate_rmse": 6.907999963558959e-06,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 11453.048590095124,
+              "reference_U_combined": 6.03158181790407e-10
+            },
+            "root_zone_0_40_storage_rmse_cm": {
+              "candidate_rmse": 1.4262904884298083e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 6698.459325407137,
+              "reference_U_combined": 2.129281405083575e-09
+            },
+            "surface_0_20_storage_rmse_cm": {
+              "candidate_rmse": 3.933051214584365e-05,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 4848.577473305205,
+              "reference_U_combined": 8.111763164017798e-09
+            },
+            "upper_0_80_storage_rmse_cm": {
+              "candidate_rmse": 4.7001782446930503e-07,
+              "classification": "NUMERICALLY_RESOLVED_DIFFERENCE",
+              "exceedance_ratio": 23727.407687731455,
+              "reference_U_combined": 1.9809067667865525e-11
+            }
+          },
+          "views": {
+            "PROFILE_STATE": "RESOLVED_DIFFERENCE_VIEW",
+            "ROOT_ZONE_40": "RESOLVED_DIFFERENCE_VIEW",
+            "SURFACE_20": "RESOLVED_DIFFERENCE_VIEW",
+            "UPPER_ZONE_80": "RESOLVED_DIFFERENCE_VIEW"
+          }
+        },
+        "comparison": {
+          "by_history": {
+            "U01": {
+              "mapped_10cm_theta_rmse": 2.6730984894995413e-07,
+              "root_zone_0_40_storage_max_abs_error_cm": 4.4798156295655644e-09,
+              "root_zone_0_40_storage_rmse_cm": 2.655287466267707e-09,
+              "surface_0_20_storage_max_abs_error_cm": 2.4093544759296037e-07,
+              "surface_0_20_storage_rmse_cm": 1.5916357038358102e-07,
+              "total_storage_rmse_cm": 1.8459402558945386e-12,
+              "upper_0_80_storage_max_abs_error_cm": 7.283063041541027e-13,
+              "upper_0_80_storage_rmse_cm": 3.05388351349255e-13
+            },
+            "U02": {
+              "mapped_10cm_theta_rmse": 3.8342676907321645e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.1415472016551576e-06,
+              "root_zone_0_40_storage_rmse_cm": 7.455642513565875e-07,
+              "surface_0_20_storage_max_abs_error_cm": 1.4521876127382427e-05,
+              "surface_0_20_storage_rmse_cm": 8.41543562986482e-06,
+              "total_storage_rmse_cm": 8.782228203018785e-13,
+              "upper_0_80_storage_max_abs_error_cm": 4.184244062344078e-09,
+              "upper_0_80_storage_rmse_cm": 1.4949387277907755e-09
+            },
+            "U03": {
+              "mapped_10cm_theta_rmse": 1.3210835311629267e-05,
+              "root_zone_0_40_storage_max_abs_error_cm": 4.272989163744967e-05,
+              "root_zone_0_40_storage_rmse_cm": 2.8515959083219023e-05,
+              "surface_0_20_storage_max_abs_error_cm": 0.00016274062850563098,
+              "surface_0_20_storage_rmse_cm": 7.816256737250374e-05,
+              "total_storage_rmse_cm": 1.8183360272863537e-12,
+              "upper_0_80_storage_max_abs_error_cm": 2.5959812646192404e-06,
+              "upper_0_80_storage_rmse_cm": 9.400344599836218e-07
+            },
+            "U04": {
+              "mapped_10cm_theta_rmse": 1.258022684848498e-06,
+              "root_zone_0_40_storage_max_abs_error_cm": 1.6308865546932338e-07,
+              "root_zone_0_40_storage_rmse_cm": 7.763642741931602e-08,
+              "surface_0_20_storage_max_abs_error_cm": 3.5873974937317143e-06,
+              "surface_0_20_storage_rmse_cm": 2.7064579201786135e-06,
+              "total_storage_rmse_cm": 2.12432139160894e-12,
+              "upper_0_80_storage_max_abs_error_cm": 6.587796974599769e-11,
+              "upper_0_80_storage_rmse_cm": 2.1836691002817065e-11
+            }
+          },
+          "maximum_absolute_surface_0_20_error": {
+            "history": "U03",
+            "observation_step": 349,
+            "time_day": 0.2792,
+            "value_cm": 0.00016274062850563098
+          },
+          "pooled": {
+            "mapped_10cm_theta_rmse": 6.907999963558959e-06,
+            "root_zone_0_40_storage_rmse_cm": 1.4262904884298083e-05,
+            "surface_0_20_storage_rmse_cm": 3.933051214584365e-05,
+            "total_storage_rmse_cm": 1.7318962175463807e-12,
+            "upper_0_80_storage_rmse_cm": 4.7001782446930503e-07
+          }
+        },
+        "dimension": 8,
+        "failures": {},
+        "id": "U8",
+        "max_abs_water_ledger_cm": 8.210220697746351e-13,
+        "max_corrector_iterations": 2,
+        "status": "QUALIFIED"
+      }
+    }
+  },
+  "minimum_numerically_unresolved_lower_zone_dimension": {
+    "B01": {
+      "PROFILE_STATE": null,
+      "ROOT_ZONE_40": null,
+      "SURFACE_20": null,
+      "UPPER_ZONE_80": null
+    },
+    "B14": {
+      "PROFILE_STATE": null,
+      "ROOT_ZONE_40": null,
+      "SURFACE_20": null,
+      "UPPER_ZONE_80": null
+    }
+  },
+  "model_changed": false,
+  "placement_tests": {
+    "B01": {
+      "P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40": false,
+      "R4_P4_U4_componentwise": {
+        "P4_TOP_LOWER": null,
+        "R4": null,
+        "U4": {
+          "mapped_10cm_theta_rmse": 0.0005223338676795605,
+          "root_zone_0_40_storage_rmse_cm": 0.0053932157832132024,
+          "surface_0_20_storage_rmse_cm": 0.010999413560084244,
+          "total_storage_rmse_cm": 9.25023513162904e-13,
+          "upper_0_80_storage_rmse_cm": 0.005590827885536698
+        }
+      },
+      "R8_U8_componentwise": {
+        "R8": {
+          "mapped_10cm_theta_rmse": 0.0005249155068014559,
+          "root_zone_0_40_storage_rmse_cm": 0.025127118662478156,
+          "surface_0_20_storage_rmse_cm": 0.019605343293123245,
+          "total_storage_rmse_cm": 9.306078467481739e-13,
+          "upper_0_80_storage_rmse_cm": 0.016367923257152046
+        },
+        "U8": {
+          "mapped_10cm_theta_rmse": 0.00026543521285473705,
+          "root_zone_0_40_storage_rmse_cm": 0.001717249341932682,
+          "surface_0_20_storage_rmse_cm": 0.0016821316533902429,
+          "total_storage_rmse_cm": 8.677654863109151e-13,
+          "upper_0_80_storage_rmse_cm": 0.0016869091772074949
+        }
+      }
+    },
+    "B14": {
+      "P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40": true,
+      "R4_P4_U4_componentwise": {
+        "P4_TOP_LOWER": {
+          "mapped_10cm_theta_rmse": 5.851932241312757e-06,
+          "root_zone_0_40_storage_rmse_cm": 0.00010981898385112797,
+          "surface_0_20_storage_rmse_cm": 3.7217724262185015e-05,
+          "total_storage_rmse_cm": 1.910064229711136e-12,
+          "upper_0_80_storage_rmse_cm": 7.346459972506765e-05
+        },
+        "R4": {
+          "mapped_10cm_theta_rmse": 1.129994120299776e-05,
+          "root_zone_0_40_storage_rmse_cm": 0.00041063356603002974,
+          "surface_0_20_storage_rmse_cm": 0.0004583273578883617,
+          "total_storage_rmse_cm": 1.8683965183718034e-12,
+          "upper_0_80_storage_rmse_cm": 0.00023274701989754498
+        },
+        "U4": {
+          "mapped_10cm_theta_rmse": 9.502246813204585e-06,
+          "root_zone_0_40_storage_rmse_cm": 3.868624331987046e-05,
+          "surface_0_20_storage_rmse_cm": 0.0002699727953455071,
+          "total_storage_rmse_cm": 1.7757081598938102e-12,
+          "upper_0_80_storage_rmse_cm": 3.2384049049260008e-06
+        }
+      },
+      "R8_U8_componentwise": {
+        "R8": {
+          "mapped_10cm_theta_rmse": 1.0960080686498854e-05,
+          "root_zone_0_40_storage_rmse_cm": 0.00033161890803850354,
+          "surface_0_20_storage_rmse_cm": 0.0004197836254394863,
+          "total_storage_rmse_cm": 1.734111953271476e-12,
+          "upper_0_80_storage_rmse_cm": 7.55090998234046e-05
+        },
+        "U8": {
+          "mapped_10cm_theta_rmse": 6.907999963558959e-06,
+          "root_zone_0_40_storage_rmse_cm": 1.4262904884298083e-05,
+          "surface_0_20_storage_rmse_cm": 3.933051214584365e-05,
+          "total_storage_rmse_cm": 1.7318962175463807e-12,
+          "upper_0_80_storage_rmse_cm": 4.7001782446930503e-07
+        }
+      }
+    }
+  },
+  "purpose": "SURFACE_DRIVEN_UPPER_ZONE_PROFILE_STATE_WITH_PRESCRIBED_BOTTOM_FLUX",
+  "reference": "R2048_T32_WITH_C6N1_METRIC_SPECIFIC_NUMERICAL_UNCERTAINTY",
+  "schema": "swap5.lare.bc2.c6n2.result.v1",
+  "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
+    "candidate_response_generated": true,
+    "new_representation_selected": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
+  },
+  "status": "C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY",
+  "work_unit": "LARE-BC2-C6N2",
+  "workstream": "F-ROM-LARE"
+}
