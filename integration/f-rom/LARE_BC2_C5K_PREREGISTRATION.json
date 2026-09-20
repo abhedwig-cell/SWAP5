@@ -1,0 +1,167 @@
+{
+  "schema": "swap5.lare.bc2.c5k.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5K",
+  "phase": "PREREGISTERED_BEFORE_BOTTOM_STATE_INSTRUMENTATION_RESPONSE",
+  "title": "Local nonlinear half-cell flux theory audit on frozen C5I Reference trajectories",
+  "scientific_question": "For the actual C5I prescribed-head bottom-state pairs, what part of the boundary response is explained by explicit time-level conductivity localization versus the nonlinear half-cell constitutive/spatial operator, and does a theory-derived local operator show a grid-consistent direction before any new dynamic Reference formulation is considered?",
+  "role": "INSTRUMENTATION_AND_POSTPROCESSING_THEORY_AUDIT_NOT_DYNAMIC_COUNTERFACTUAL",
+  "authority": {
+    "c5j_closeout": "integration/f-rom/LARE_BC2_C5J_CLOSEOUT.json",
+    "c5j_result_sha256": "d6df503dac63e2224079ccc40249449d7d7a2ac0486da8ced558a353b8829213",
+    "c5j_persisted_head": "56717d4daa8b0d4a524af4f25ffa9d7ed7cdd9ce",
+    "c5i_closeout": "integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json",
+    "c5i_result_sha256": "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302",
+    "c5i_artifact_id": 10602539613,
+    "c5i_artifact_digest": "sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
+  },
+  "frozen_code_facts": {
+    "headcalc_bottom_distance": "explicit grid_disnod(NN+1)=0.5*dz(NN)",
+    "headcalc_swbotb5_gradient": "g=(h_N-hbot)/(0.5*dz_N)+1",
+    "headcalc_swkimpl0_face_conductivity": "K_face at the lower boundary is K_N from time level t; it is not updated during Newton when swkimpl=0",
+    "headcalc_last_cell_residual": "the local lower-face contribution is +K_face*g in the last-cell residual",
+    "legacy_adapter_qbot": "after an accepted swbotb=5 solve, published qbot is materialized from qtop + source/sink terms + total storage change/dt rather than copied from the local face term",
+    "runtime_outward_sign": "bottom_outward_exchange_native=-qbot*dt and terminal_bottom_outward_flux_native=-qbot",
+    "implication": "local discrete face flux and published mass-balance bottom flux must be diagnosed separately; their difference is controlled by the accepted equation residual rather than assumed identically zero"
+  },
+  "frozen_workload": {
+    "material": "B14",
+    "B14": {
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "mualem_lambda": -0.334926
+    },
+    "histories": "exact C5I Z01-Z04",
+    "reference_geometries": {
+      "R512": {
+        "nodes": 512,
+        "dz_cm": 0.3125,
+        "half_cell_cm": 0.15625
+      },
+      "R1024": {
+        "nodes": 1024,
+        "dz_cm": 0.15625,
+        "half_cell_cm": 0.078125
+      }
+    },
+    "temporal_factor": 16,
+    "transaction_dt_day": 0.00005,
+    "output_window_day": 0.0008,
+    "physical_horizon_day": 0.8192,
+    "compiler_route": "O0 only; immutable C5I already established O0/O2 byte identity",
+    "solver_physics": "exact current Reference G0K0 only",
+    "numerical_policy": "exact C5I/D13 retry policy"
+  },
+  "instrumentation": {
+    "pre_step": [
+      "history, step, symbol",
+      "committed pre-step last-cell pressure head h_pre",
+      "prescribed bottom head hbot"
+    ],
+    "post_step": [
+      "accepted post-step last-cell pressure head h_post",
+      "published bottom outward exchange and terminal outward flux already present in LAREGW1_STATE"
+    ],
+    "hard_identity_control": "Every reconstructed LAREGW1_STATE line from the instrumented run must be byte-identical to the corresponding immutable C5I O0 baseline line at the same geometry/history/step.",
+    "production_reference_changed": false,
+    "solver_input_changed": false,
+    "response_based": false
+  },
+  "constitutive_authority": {
+    "source": "src/solver/mod_b110_default_mvg_provider.f90@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "provider_blob": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+    "rule": "Reproduce the exact B1.10 provider water-content and conductivity functions for frozen B14, including the near-zero-head branch and Ksat cap. No fitted coefficient."
+  },
+  "predeclared_local_diagnostics": {
+    "current_discrete_face": {
+      "definition": "Q_current_face = K(h_pre) * [1 + (h_post-hbot)/delta], delta=0.5*dz",
+      "role": "reconstruct the local lower-face term actually present in the frozen swkimpl=0 HeadCalc residual; compare separately with published mass-balance outward flux"
+    },
+    "post_cell_conductivity": {
+      "definition": "Q_postK = K(h_post) * [1 + (h_post-hbot)/delta]",
+      "role": "isolates the effect of using post-step instead of explicit pre-step cell conductivity on the same frozen state pair"
+    },
+    "arithmetic_center_boundary": {
+      "definition": "Q_arith = 0.5*[K(h_post)+K(hbot)] * [1 + (h_post-hbot)/delta]",
+      "role": "frozen-state constitutive diagnostic related to C5J K1, but not a dynamic rerun"
+    },
+    "integrated_linear_head": {
+      "definition": "K_int = integral(K(h) dh)/(h_post-hbot) for h_post != hbot, with the continuous limit K(h_post) when equal; Q_int = K_int * [1 + (h_post-hbot)/delta]",
+      "role": "Kirchhoff/integral conductivity mean under a linear pressure-head reconstruction across the half-cell; zero-fit spatial constitutive diagnostic"
+    },
+    "exact_steady_half_cell": {
+      "definition": "Use downward coordinate s from cell center to the prescribed boundary. Solve dh/ds = 1-Q/K(h), h(0)=h_post, h(delta)=hbot. Equivalently delta = integral from h_post to hbot of K(h)/(K(h)-Q) dh. Select the unique branch Q<min K when hbot>h_post, Q>max K when hbot<h_post, and Q=K(h) when equal.",
+      "role": "local steady nonlinear Darcy/Richards half-cell boundary-value diagnostic only; not assumed valid as a dynamic production closure"
+    }
+  },
+  "aggregation_and_metrics": {
+    "transaction_level": [
+      "observed published mass-balance outward flux",
+      "Q_current_face, Q_postK, Q_arith, Q_int, Q_exact_steady",
+      "Q_current_face minus published outward flux",
+      "each theory diagnostic minus Q_current_face"
+    ],
+    "aggregate_to_C5I_window": "For every 0.0008-day window, average the sixteen T16 flux values, equivalent to summing their exchanges and dividing by 0.0008 day.",
+    "grid_metrics": [
+      "R512-R1024 RMSE, signed mean and max absolute difference for each flux representation",
+      "history-specific and PHASE1/PHASE2/HOLD diagnostics",
+      "RMSE norm and projection of each postprocessed correction relative to the current local-face inter-grid difference",
+      "published mass-balance inter-grid gap identity to C5I",
+      "local-face versus published-flux discrepancy at each grid"
+    ],
+    "temporal_localization": [
+      "RMSE(Q_postK-Q_current_face)",
+      "RMSE(Q_int-Q_postK)",
+      "RMSE(Q_exact_steady-Q_postK)"
+    ]
+  },
+  "numerical_qualification": {
+    "instrumentation_state_identity": "byte exact on LAREGW1_STATE lines against immutable C5I",
+    "max_water_ledger_cm": 1e-12,
+    "local_flux_reconstruction_tolerance_cm_per_day": 1e-8,
+    "exact_steady_half_cell_distance_residual_cm": 1e-10,
+    "note": "These are code/numerical-consistency tolerances only, not hydrological acceptance thresholds."
+  },
+  "adjudication_rules": {
+    "continuous_effect_sizes_first": true,
+    "no_acceptance_threshold": true,
+    "no_causal_winner_forced": true,
+    "descriptors": [
+      "PRE_STEP_K_LAG_SMALL_RELATIVE_TO_SPATIAL_CORRECTION",
+      "PRE_STEP_K_LAG_NONNEGLIGIBLE",
+      "NONLINEAR_SPATIAL_MEAN_CHANGES_GRID_GAP_DIRECTION",
+      "EXACT_STEADY_LOCAL_OPERATOR_GRID_DIRECTION_CONSISTENT",
+      "LOCAL_THEORY_MIXED_OR_NONUNIQUE"
+    ],
+    "dynamic_followup_rule": "A future dynamic Reference counterfactual requires a new preregistration and is authorized only if C5K shows a theory-derived, zero-fit operator with consistent mechanism direction across both grids and prescribed-head phases. C5K itself cannot admit such an operator."
+  },
+  "stop_rules": [
+    "No production Reference source edit.",
+    "No dynamic boundary counterfactual in C5K.",
+    "No fitted conductivity mean or empirical coefficient.",
+    "No T32 or R2048.",
+    "No LARE rerun or LARE closure change.",
+    "No application acceptance, performance, speed or production claim."
+  ],
+  "scientific_firewall": {
+    "production_reference_changed": false,
+    "new_reference_physics_admitted": false,
+    "dynamic_reference_counterfactual_executed": false,
+    "new_lare_run": false,
+    "new_lare_closure": false,
+    "C5A_formal_decision_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
