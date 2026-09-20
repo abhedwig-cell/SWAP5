@@ -164,7 +164,7 @@
     "derivation": "docs/integration/SWAP5_MODFLOW6_CSR04_STORAGE_PARTITION_DERIVATION.md",
     "topology_contract": "docs/integration/SWAP5_MODFLOW6_CSR04_VERTICAL_STORAGE_TOPOLOGY_CONTRACT.md",
     "implementation_boundary": "Metadata/schema, fail-closed validation, and controlled nonzero-storage qualification infrastructure are bounded; authentic production partition and any overlap correction remain unauthorized.",
-    "next_gate": "Execute native MODFLOW component-budget gate and add a controlled two-level nonzero STO perturbation. Require conservative component/combined budgets and distinct storage-ledger roles; do not require solution invariance and do not infer production authority from geometric overlap alone.",
+    "next_gate": "Obtain execution evidence for F-GC38 CSR04 gates; then extend the same two-level STO perturbation into a real SWAP participant fixture and require accepted SWAP mass + interface ledger + native MODFLOW component budget to close jointly.",
     "proof_obligations": {
       "P1": "accepted interface mass continuity",
       "P2": "hydraulic compatibility under declared head-transfer operator",
@@ -205,6 +205,17 @@
       "response_interpretation": "u/dt is condensed SWAP interface-transfer sensitivity dq_i/dH_bottom, not an additional MODFLOW STO volume",
       "required_discriminant": "controlled nonzero MODFLOW STO perturbation with fixed SWAP physics and coupling, observing both storage ledgers, heads, interface transfer, u, and component/combined residuals",
       "commit": "70e0ea18f3fa1c6137baf400c2712d0f84918575"
+    },
+    "state_space_qualification": {
+      "state": "IMPLEMENTED_PENDING_EXECUTION",
+      "commit": "06cd6cb3f6a592828c4513ab9b1f4bb04fea1fd9",
+      "perturbation": "MODFLOW specific yield 0.05 versus 0.30; identical SWAP-side affine coupling response and groundwater stresses",
+      "required_observation": [
+        "accepted MODFLOW head changes",
+        "native MODFLOW STO response changes",
+        "native MODFLOW component budget closes in both cases"
+      ],
+      "non_claim": "This controlled MODFLOW-only fixture does not yet prove SWAP/MODFLOW combined P3 or production storage authority."
     }
   },
   "current_pr_divergence": {
