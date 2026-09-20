@@ -262,10 +262,10 @@ The functional question can now be split cleanly:
 
 1. **Interior table interpolation:** works well for the tested smooth constitutive curve and for all 35 admissible tables in the tested BOFEK2012/Staring set.
 2. **Legacy-input, SWKIMPL=0:** works and reproduces the analytical Hupsel control very closely.
-3. **Existing performance:** not faster. Dense tables are about 11% slower in the repeated Hupsel benchmark, and sparse tables do not remove that disadvantage.
+3. **Performance:** the existing dense lookup route is about 8-11% slower in repeated Hupsel benchmarks. Reducing rows does not remove the penalty. Replacing the legacy interval search with O(1) direct indexing on a uniform transformed-head grid removes essentially all of that penalty while retaining TSPACK fidelity at about 150-250 rows. The best current research route reaches runtime parity with analytical MvG, not a demonstrated whole-model speedup.
 4. **Endpoint derivative implementation:** contains a real Jacobian-consistency defect. A zero-endpoint derivative candidate removes both the dry bounds failure and the wet-side `SWKIMPL=1` stall in the tested lineage.
 5. **Exact B0 authority:** not yet executed for this finding.
-6. **Current typed production route:** cannot currently supply table state and therefore cannot use `SWSOPHY=1` operationally.
+6. **Current public production route:** `main` accepts the typed switch but does not supply table state; the newer `development` branch explicitly marks `SWSOPHY=1` dormant and fatal-errors. There is therefore no operational current-public table route to admit as-is.
 7. **Table library quality:** `starb4_cm.csv` must be corrected or excluded before the complete 36-file public set can be treated as ReadSwap-compatible.
 
-The next acceleration question should therefore not be “how many table rows should we use?” The evidence points instead to: **can a much cheaper lookup/interpolation representation preserve the hydrologically required fidelity while outperforming direct analytical constitutive evaluation?**
+The next acceleration question is no longer “how many table rows should we use?” Direct indexing has already shown that the legacy lookup penalty is removable without sacrificing TSPACK fidelity. The remaining question is narrower: **are the constitutive evaluations themselves cheap enough to matter at whole-model scale, and if a direct-index table is locally faster than MvG, what fraction of runtime can actually be recovered in the solver call pattern?**
