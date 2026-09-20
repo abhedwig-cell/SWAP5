@@ -1,0 +1,114 @@
+name: TAB-HYD corrected MvG Jacobian envelope
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-mvg-jacobian-envelope.yml'
+      - 'research/tabulated_hydraulics/default_mvg_jacobian_envelope.f90'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout current public SWAP wrappers
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: swap-src
+
+      - name: Apply already-preregistered Ksat derivative consistency candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+
+      - name: Compile wrapper-level envelope harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/mvg-jac-envelope
+          FLAGS="-O0 -g -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/mvg-jac-envelope \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/mvg-jac-envelope/arrays.o
+          gfortran $FLAGS -I build/mvg-jac-envelope -J build/mvg-jac-envelope \
+            -c research/tabulated_hydraulics/current_wrapper_stubs.f90 \
+            -o build/mvg-jac-envelope/stubs.o
+          gfortran $FLAGS -I build/mvg-jac-envelope -J build/mvg-jac-envelope \
+            -c swap-src/src/soil/sptabulated.f90 \
+            -o build/mvg-jac-envelope/sptabulated.o
+          gfortran $FLAGS -I build/mvg-jac-envelope -J build/mvg-jac-envelope \
+            -c swap-src/src/utils/soilhydraulicsutils.f90 \
+            -o build/mvg-jac-envelope/wrappers.o
+          gfortran $FLAGS -I build/mvg-jac-envelope -J build/mvg-jac-envelope \
+            research/tabulated_hydraulics/default_mvg_jacobian_envelope.f90 \
+            build/mvg-jac-envelope/arrays.o build/mvg-jac-envelope/stubs.o \
+            build/mvg-jac-envelope/sptabulated.o build/mvg-jac-envelope/wrappers.o \
+            -o build/mvg-jac-envelope/characterize
+
+      - name: Compare corrected code derivative with finite-difference residual derivative
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/mvg-jac-envelope/characterize | tee build/mvg-jac-envelope/results.csv
+          grep -q '^DEFAULT_MVG_JACOBIAN_ENVELOPE_COMPLETED$' build/mvg-jac-envelope/results.csv
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          rows=[]
+          with Path("build/mvg-jac-envelope/results.csv").open() as fh:
+              for row in csv.DictReader(
+                  line for line in fh
+                  if line.strip() and not line.startswith("DEFAULT_")
+              ):
+                  row={k:(v.strip() if isinstance(v,str) else v) for k,v in row.items()}
+                  row["relative_error"]=float(row["relative_error"])
+                  row["h_cm"]=float(row["h_cm"])
+                  row["dKdh_code"]=float(row["dKdh_code"])
+                  row["dKdh_residual_fd"]=float(row["dKdh_residual_fd"])
+                  rows.append(row)
+
+          # Exclude points whose centered stencil straddles a branch kink.
+          # The chosen grid avoids h=-0.01 itself and the Ksat threshold is
+          # checked by the residual finite difference, so remaining large
+          # errors indicate a real interior inconsistency or conditioning issue.
+          bad=[r for r in rows if r["relative_error"] > 5e-4 and
+               max(abs(r["dKdh_code"]),abs(r["dKdh_residual_fd"])) > 1e-8]
+          bysoil={}
+          for r in rows:
+              bysoil.setdefault(r["soil"],[]).append(r)
+          lines=[f"points={len(rows)}",f"mismatch_points={len(bad)}"]
+          for soil, rr in bysoil.items():
+              lines.append(
+                  f"{soil}_max_relative_error={max(x['relative_error'] for x in rr):.17e}"
+              )
+              lines.append(
+                  f"{soil}_max_abs_dKdh={max(abs(x['dKdh_code']) for x in rr):.17e}"
+              )
+          for r in bad:
+              lines.append(
+                  "mismatch soil={} h={:.17e} dcode={:.17e} dfd={:.17e} rel={:.17e}".format(
+                      r["soil"],r["h_cm"],r["dKdh_code"],r["dKdh_residual_fd"],r["relative_error"]
+                  )
+              )
+          Path("build/mvg-jac-envelope/summary.txt").write_text("\n".join(lines)+"\n")
+          print(Path("build/mvg-jac-envelope/summary.txt").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-corrected-mvg-jacobian-envelope
+          path: |
+            build/mvg-jac-envelope/results.csv
+            build/mvg-jac-envelope/summary.txt
