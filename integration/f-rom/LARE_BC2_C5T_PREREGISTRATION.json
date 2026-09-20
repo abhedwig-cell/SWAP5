@@ -1,0 +1,262 @@
+{
+  "schema": "swap5.lare.bc2.c5t.preregistration.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5T",
+  "phase": "PREREGISTERED_BEFORE_C5T_INSTRUMENTED_RESPONSE_OR_OPERATOR_METRICS",
+  "title": "Frozen-state Darcian steady-equivalent two-point interface-flux discriminator",
+  "role": "EXPOSED_MECHANISM_DIAGNOSTIC_NOT_BLIND_VALIDATION_NOT_FREE_RUNNING",
+  "scientific_question": "On exact R2048-T16 C5R states projected to the retained D12_B2P5 storage state, does a zero-fit Darcian steady-equivalent nonlinear two-point flux reduce internal-interface flux error relative to CURRENT_LAYER_FACE without creating direction/HOLD defects?",
+  "authority": {
+    "c5s": "integration/f-rom/LARE_BC2_C5S_RECONCILIATION.json",
+    "required_c5s_decision": "PREREGISTER_FROZEN_STATE_DARCIAN_TWO_POINT_INTERFACE_FLUX_DISCRIMINATOR_BEFORE_FREE_RUNNING_IMPLEMENTATION",
+    "c5r": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "c5r_result_sha256": "9add1aa0685f49de5f35d29e7b3b69c85c4b4fbaa6c42f4214cc451e6f2aecc6",
+    "c5r_reference_R2048_T16_sha256": "0dd97cc457ef85911b0b9fd9095f4723eec9d09662293ca9a5e418042ec19f4b",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "exposed_histories": true,
+    "blind_claim_authorized": false
+  },
+  "workload": {
+    "material": "B14",
+    "histories": [
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "exact_C5R_history_semantics": true,
+    "reference_route": "R2048_T16 only",
+    "nodes": 2048,
+    "dz_cm": 0.078125,
+    "transaction_dt_day": 0.00005,
+    "observation_dt_day": 0.0008,
+    "observations_per_history": 1024,
+    "lower_boundary": "unchanged C5R current Reference G0K0 prescribed-head semantics",
+    "top_boundary": "unchanged C5R gravity-consistent B14 qeq",
+    "numerical_policy": "unchanged C5R/D13 policy",
+    "solver_feedback_from_candidate": false
+  },
+  "retained_representation": {
+    "id": "D12_B2P5",
+    "dimension": 12,
+    "boundaries_cm": [
+      0,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      155,
+      157.5,
+      160
+    ],
+    "widths_cm": [
+      70,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      5,
+      2.5,
+      2.5
+    ],
+    "state_definition": "Integrated water storage in each retained layer, projected exactly from the fine Reference compartments at every observation boundary.",
+    "representative_theta": "layer_storage_cm / layer_width_cm",
+    "representative_suction_head": "B14 inverse retention psi(theta), positive suction convention",
+    "dynamic_state_changed": false
+  },
+  "exact_reference_face_reconstruction": {
+    "fine_flux_sign": "positive downward",
+    "frozen_mean_method": "swkmean=1 arithmetic conductivity mean",
+    "formula": "q_ref = 0.5*(K(h_up)+K(h_down)) * (1 + (h_up-h_down)/0.078125), with h in SWAP negative pressure-head convention.",
+    "constitutive": "exact B14 Mualem-van Genuchten relation already frozen in C5R",
+    "face_boundary_depths_cm": [
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      155,
+      157.5
+    ],
+    "face_index_rule": "For a boundary depth b aligned to R2048, upper fine node index n=b/0.078125 and lower node n+1; the Reference internal flux is headcalc kmean(n+1)*head_gradient(n+1).",
+    "exact_face_pairs": {
+      "70": [
+        896,
+        897
+      ],
+      "80": [
+        1024,
+        1025
+      ],
+      "90": [
+        1152,
+        1153
+      ],
+      "100": [
+        1280,
+        1281
+      ],
+      "110": [
+        1408,
+        1409
+      ],
+      "120": [
+        1536,
+        1537
+      ],
+      "130": [
+        1664,
+        1665
+      ],
+      "140": [
+        1792,
+        1793
+      ],
+      "150": [
+        1920,
+        1921
+      ],
+      "155": [
+        1984,
+        1985
+      ],
+      "157.5": [
+        2016,
+        2017
+      ]
+    },
+    "logging_only": true,
+    "state_identity_requirement": "All pre-existing LAREGW1_STATE and LAREGW1_PROFILE lines must be byte-identical to the authoritative C5R R2048_T16 route after removing new C5T diagnostic lines."
+  },
+  "operators": {
+    "CURRENT_LAYER_FACE": {
+      "role": "baseline",
+      "formula": "For adjacent retained layers i,j, q = Kij*(1 + (psi_j-psi_i)/L), L=(di+dj)/2, Kij=(dj*K_i + di*K_j)/(di+dj), using the frozen BC1 implementation.",
+      "free_parameters": 0
+    },
+    "DSE2P": {
+      "role": "candidate",
+      "name": "Darcian steady-equivalent nonlinear two-point flux",
+      "free_parameters": 0,
+      "endpoint_state": "same representative psi_i, psi_j derived from exact projected layer storages",
+      "local_problem": "Find constant downward q such that dpsi/dz = q/K(psi)-1 connects psi(0)=psi_i to psi(L)=psi_j over L=(di+dj)/2.",
+      "saturation_extension": "For numerical shooting trials only, K(psi<=0)=Ksat; authoritative endpoints are required to remain in the admitted unsaturated B14 constitutive range.",
+      "numerical_method": {
+        "root": "deterministic bracketed bisection after a fixed symmetric logarithmic/linear q scan if endpoint residuals do not initially bracket",
+        "primary_integration": "fixed-step RK4 with 128 substeps over center-to-center distance",
+        "verification_integration": "fixed-step RK4 with 256 substeps",
+        "root_absolute_flux_tolerance_cm_per_day": 1e-10,
+        "endpoint_suction_tolerance_cm": 1e-8,
+        "qualification": "Every evaluated DSE2P flux must agree between 128- and 256-substep integrations within max(1e-8 cm/day, 1e-7*max(1,abs(q))). Otherwise C5T is numerically blocked; no tolerance retuning."
+      },
+      "dynamic_feedback": false
+    }
+  },
+  "primary_interfaces_cm": [
+    150,
+    155,
+    157.5
+  ],
+  "secondary_interfaces_cm": [
+    70,
+    80,
+    90,
+    100,
+    110,
+    120,
+    130,
+    140
+  ],
+  "phase_views": [
+    "PHASE1",
+    "PHASE2",
+    "HOLD"
+  ],
+  "metrics": {
+    "per_interface_phase": [
+      "flux_error_rmse_cm_per_day",
+      "signed_mean_flux_error_cm_per_day",
+      "mean_abs_flux_error_cm_per_day",
+      "max_abs_flux_error_cm_per_day",
+      "sign_mismatch_count"
+    ],
+    "pooled_primary_moving": [
+      "RMSE over interfaces 150/155/157.5 and PHASE1+PHASE2",
+      "mean absolute interface-history signed bias",
+      "sign mismatch count"
+    ],
+    "hold_guard": [
+      "primary-interface HOLD error RMSE",
+      "primary-interface HOLD sign mismatch count",
+      "maximum absolute candidate-minus-Reference HOLD flux error"
+    ],
+    "all_interface_secondary": "same diagnostics reported descriptively over all 11 internal faces",
+    "no_scalar_score": true
+  },
+  "adjudication": {
+    "DSE2P_SUPPORTED_FOR_FREE_RUNNING_TEST": [
+      "On the pooled primary moving-phase vector, DSE2P is componentwise no worse than CURRENT_LAYER_FACE for RMSE, mean-absolute interface/history signed bias, and sign-mismatch count.",
+      "DSE2P primary moving-phase RMSE is strictly smaller than CURRENT_LAYER_FACE by more than 1e-10 cm/day.",
+      "At each of 150, 155 and 157.5 cm, DSE2P moving-phase RMSE is no worse than CURRENT_LAYER_FACE within 1e-10 cm/day.",
+      "DSE2P does not increase primary HOLD sign mismatches and does not increase primary HOLD RMSE by more than 1e-10 cm/day.",
+      "All DSE2P numerical qualification gates pass."
+    ],
+    "DSE2P_MIXED_NO_IMPLEMENTATION": "Some preregistered interfaces/phases improve while others worsen, or HOLD/sign guards fail.",
+    "DSE2P_NOT_SUPPORTED": "CURRENT_LAYER_FACE is componentwise no worse on the primary moving vector, or DSE2P cannot be numerically/physically qualified.",
+    "next_if_supported": "Only then authorize a separate fresh blind free-running C5U test; no production use.",
+    "next_if_mixed_or_not_supported": "Do not fit/tune DSE2P. Return to storage-consistent algebraic subgrid-profile theory or representation-family comparison."
+  },
+  "instrumentation_contract": {
+    "permitted_change": "Logging-only additions to the C5R R2048_T16 harness/materialized source.",
+    "emitted_per_observation": [
+      "12 exact D12_B2P5 layer storages",
+      "for each of 11 aligned internal faces: fine upper/lower pressure head and water content sufficient to reconstruct frozen Reference arithmetic-K face flux"
+    ],
+    "prohibited": [
+      "solver-state modification",
+      "boundary/forcing modification",
+      "numerical tolerance modification",
+      "candidate flux feedback",
+      "history or partition modification"
+    ]
+  },
+  "hard_gates": {
+    "C5R_state_profile_byte_identity": true,
+    "max_abs_mass_cm": 1e-12,
+    "exact_history_count": 4,
+    "exact_observation_count_per_history": 1024,
+    "exact_layer_diagnostic_count": 49152,
+    "exact_face_diagnostic_count": 45056,
+    "all_DSE2P_points_numerically_qualified": true
+  },
+  "scientific_firewall": {
+    "blind_validation": false,
+    "production_reference_changed": false,
+    "free_running_closure_implemented": false,
+    "dynamic_state_changed": false,
+    "scalar_tuning_reopened": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "implementation_binding": {
+    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "response_based_design": false
+  },
+  "model_changed": false
+}
