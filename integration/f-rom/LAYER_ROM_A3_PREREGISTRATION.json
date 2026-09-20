@@ -199,6 +199,16 @@
         "first observation: uniform-head endpoint pair from psi(theta_bar)",
         "later observations: prior accepted endpoint solution for same case",
         "one fresh uniform-head retry if the warm start fails"
+      ],
+      "variable_bounds": [
+        [
+          -20,
+          -20
+        ],
+        [
+          20,
+          20
+        ]
       ]
     },
     "C_M1_LINEAR_THETA": {
