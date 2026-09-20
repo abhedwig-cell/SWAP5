@@ -55,9 +55,18 @@ jobs:
             'C_LARE_TAYLOR','C_INT_CENTROID_LONG_ONLY','C_QS_STORAGE_LONG_ONLY'
           ]
           f=p['pre_execution_numerical_freeze']
+          a=p['pre_execution_numerical_amendment']
           assert f['before_first_official_A2B_result'] is True
-          assert f['ode_rtol']==1e-9
-          assert f['qs_least_squares']['storage_residual_max_theta']==1e-10
+          assert a['before_first_A2B_result'] is True
+          assert a['observation_set']=='all 1024 accepted Reference observations for each of the four frozen primary cases'
+          assert a['solve_ivp']['method']=='DOP853'
+          assert a['solve_ivp']['rtol']==2e-10
+          assert a['solve_ivp']['atol_psi']==1e-10
+          assert a['solve_ivp']['atol_theta_integral']==1e-11
+          assert a['least_squares']['xtol']==1e-12
+          assert a['least_squares']['ftol']==1e-12
+          assert a['least_squares']['gtol']==1e-12
+          assert a['least_squares']['max_nfev']==40
           print('LAYER_ROM_A2B_AUTHORITY_LOCK=PASS')
           PY
 
