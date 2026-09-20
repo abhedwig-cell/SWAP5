@@ -1,0 +1,139 @@
+name: F-ROM-LARE BC2-C6E prescribed-flux sharded qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6E_EXECUTION_BINDING.json'
+
+concurrency:
+  group: f-rom-lare-bc2-c6e-sharded-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify immutable C6E scientific core
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py)" = "d524fb04251baa45cf5d732de707c2a720eeb788"
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          test "$(git hash-object tests/rom/run_lare_bc2_c6e_shard.py)" = "79ea9940751c2d6c134ca5fb0055f4326ebfafd3"
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6e_shards.py)" = "a0b6482f613e5dcfb1ff72f81912e0ac2fbc061c"
+          test "$(git hash-object integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json)" = "da95787a692588e92d654302c7190c35fa1ae228"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6c_bemr.py
+          python3 -m py_compile tests/rom/run_lare_bc2_c6e_shard.py
+          python3 -m py_compile tests/rom/merge_lare_bc2_c6e_shards.py
+          python3 - <<'PY'
+          import json
+          b=json.load(open('integration/f-rom/LARE_BC2_C6E_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_EXACT_CASE_SHARDING_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE'
+          assert b['immutable_scientific_core']['scientific_preregistration_changed'] is False
+          assert b['immutable_scientific_core']['prescribed_flux_anchors_changed'] is False
+          assert b['execution_repair']['shard_count']==9
+          assert b['execution_repair']['partition_rule']=='case_index modulo 9'
+          assert b['workflow']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['phase']=='PREREGISTERED_BEFORE_C6E_NUMERICAL_RESPONSE'
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          assert p['scientific_firewall']['c6d_response_used_for_design'] is False
+          print('LARE_BC2_C6E_SHARDED_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute exact C6E case shard
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6E_SHARD
+          python3 tests/rom/run_lare_bc2_c6e_shard.py \
+            --qualifier tests/rom/qualify_lare_bc2_c6e_prescribed_flux.py \
+            --core tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --prereg integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json \
+            --c6d integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json \
+            --shard-index "${{ matrix.shard }}" \
+            --shard-count 9 \
+            --output "LARE_BC2_C6E_SHARD/LARE_BC2_C6E_SHARD_${{ matrix.shard }}.json" \
+            | tee LARE_BC2_C6E_SHARD/runner.txt
+          sha256sum LARE_BC2_C6E_SHARD/* > LARE_BC2_C6E_SHARD/sha256.txt
+
+      - name: Upload exact C6E shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6e-shard-${{ matrix.shard }}
+          path: LARE_BC2_C6E_SHARD/
+          if-no-files-found: error
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install aggregation dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover exact C6E shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c6e-shard-*
+          path: /tmp/lare-bc2-c6e-shards
+          merge-multiple: false
+
+      - name: Merge and adjudicate C6E
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6e_shards.py)" = "a0b6482f613e5dcfb1ff72f81912e0ac2fbc061c"
+          mkdir -p LARE_BC2_C6E_EVIDENCE
+          python3 tests/rom/merge_lare_bc2_c6e_shards.py \
+            --shard-dir /tmp/lare-bc2-c6e-shards \
+            --output LARE_BC2_C6E_EVIDENCE/LARE_BC2_C6E_RESULT.json \
+            | tee LARE_BC2_C6E_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json LARE_BC2_C6E_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6E_EXECUTION_BINDING.json LARE_BC2_C6E_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json LARE_BC2_C6E_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6E_EVIDENCE/LARE_BC2_C6E_RESULT.json'))
+          assert r['case_count']==126
+          assert r['fixed_start_count']==630
+          assert r['execution']['mode']=='EXACT_CASE_SHARDED'
+          assert r['status'] in (
+            'C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_QUALIFIED',
+            'C6E_BEMR_PRESCRIBED_FLUX_BOUNDARY_NOT_QUALIFIED'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['c6d_response_used_for_design'] is False
+          assert f['free_running_bemr_implemented'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6E_SHARDED_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6E_EVIDENCE/* > LARE_BC2_C6E_EVIDENCE/sha256.txt
+
+      - name: Upload sharded C6E authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6e-sharded
+          path: LARE_BC2_C6E_EVIDENCE/
+          if-no-files-found: error
