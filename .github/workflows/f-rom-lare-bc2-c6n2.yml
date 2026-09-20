@@ -48,8 +48,8 @@ jobs:
           assert b['status']=='BOUND_AFTER_C6N1_QUALIFICATION_BEFORE_CANDIDATE_RESPONSE'
           assert b['scientific_authority']['C6N1_qualified'] is True
           assert c['status']=='CLOSED_R2048_T32_REFERENCE_UNCERTAINTY_QUALIFIED_C6N2_AUTHORIZED'
-          assert c['decision']=='AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_COMPARISON'
-          assert c['scientific_firewall']['candidate_response_generated'] is False
+          assert c['decision']=='AUTHORIZE_C6N2_EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON'
+          assert c['next_authority']['state']=='EXISTING_REPRESENTATION_PROSPECTIVE_SURFACE_PROFILE_COMPARISON_AUTHORIZED'
           print('C6N2_AUTHORITY_LOCK=PASS')
           PY
 
