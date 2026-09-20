@@ -244,9 +244,14 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "TO_BE_BOUND_BEFORE_EXECUTION",
+    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
     "response_based_design": false,
-    "pre_execution_orientation_reconciliation": "BOTTOM_UP_SHOOTING_SELECTED_BEFORE_CODE_EXECUTION_OR_NUMERICAL_RESPONSE"
+    "qualifier": "tests/rom/qualify_lare_bc2_c5w_p0_map.py",
+    "qualifier_blob": "d82e2e78d72d0c361dee08bff3ef014877ef011f",
+    "choice_authority": "integration/f-rom/LARE_BC2_C5W_CHOICE_AUTHORITY.json",
+    "choice_authority_sha256": null,
+    "allowed_new_code": "Synthetic B14 constitutive/map qualification only; no hydrological trajectory, free-running closure, response fit or dynamic state.",
+    "prohibited_new_code": "Hydrological response execution, C5R/C5T residual consumption, bracket retuning after result, production closure implementation."
   },
   "model_changed": false
 }
