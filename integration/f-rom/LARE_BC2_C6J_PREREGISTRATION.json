@@ -174,15 +174,16 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "qualifier": "tests/rom/qualify_lare_bc2_c6j_femo.py",
-    "qualifier_blob": "6c12dde9395e2d475d6bb8f3d604a49b8eb57857",
+    "qualifier_blob": "d3da358fff311dd7610b8e00fa03512e9c50dba1",
     "c6c_core": "tests/rom/qualify_lare_bc2_c6c_bemr.py",
     "c6c_core_blob": "3f350681bce34e36b72faab84af00366c414671c",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6j.yml",
-    "workflow_blob": "cca9fb029190a9d97049ab3f4a7ea8faec643e39",
+    "workflow_blob": "b976a249378df5fb0060bd42427405abd744839b",
     "execution_binding_complete": true,
     "aggregator": "tests/rom/merge_lare_bc2_c6j_femo_shards.py",
     "aggregator_blob": "db89a175d56fca3cd8af92419748db55d9d53fb0",
-    "binding_note": "The exact FEMO equations, state domains, starts, metric construction, boundary operators, gates, qualifier/aggregator blobs and workflow are frozen before any C6J numerical result. Workflow creation itself is excluded from the push trigger."
+    "binding_note": "C6J science remains frozen. Superseded run 35530219380 failed on removed NumPy np.trapz API before any aggregate scientific result. Only the API-compatible np.trapezoid implementation of the already-preregistered composite trapezoidal rule changed; this rebind triggers the first eligible authoritative result.",
+    "execution_binding_reconciliation": "integration/f-rom/LARE_BC2_C6J_EXECUTION_BINDING_RECONCILIATION.json"
   },
   "model_changed": false
 }
