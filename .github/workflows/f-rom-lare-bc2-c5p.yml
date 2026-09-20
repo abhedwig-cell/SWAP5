@@ -48,7 +48,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git -C canonical rev-parse HEAD)" = "1caa431002d5c128c73cfcfbd31af4cc39ee9f12"
-          test "$(git hash-object tests/rom/materialize_lare_bc2_c5p_reference.py)" = "4a0d0b5c346c4c49f0cc33e9bfc5cadbd0c0f834"
+          test "$(git hash-object tests/rom/materialize_lare_bc2_c5p_reference.py)" = "f9692ebc302603ce3c590425a37a45b3bdb36d01"
           test "$(git hash-object tests/rom/materialize_lare_bc2_c5p_reference_slice.py)" = "6b5cee590b9b34d34cad1cfb8a875bec9653c5c4"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c5p_bottom_placement.py)" = "bd720cb776bbf3c93ae4775e89ce1885630e4dca"
           test "$(git hash-object tests/rom/analyze_lare_bc2_c5n_fresh_highres.py)" = "c14ff931d0c34fec7989a96e553891468cbd2f56"
