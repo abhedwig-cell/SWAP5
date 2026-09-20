@@ -1,0 +1,36 @@
+name: F-ROM Layer-ROM Phase A future response
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-phase-a
+    paths:
+      - 'tests/rom/test_layer_rom_phase_a_future_response.f90'
+      - 'tests/rom/analyze_layer_rom_phase_a_future_response.py'
+      - 'tests/rom/prepare_layer_rom_phase_a_future_starts.py'
+      - 'tests/rom/run_layer_rom_phase_a_future_response.sh'
+      - 'integration/f-rom/LAYER_ROM_PHASE_A_STATE_AUTHORITY.json'
+      - 'integration/f-rom/LAYER_ROM_PHASE_A_STATE_RESPONSE_PREREGISTRATION.json'
+      - '.github/workflows/f-rom-layer-phase-a-future-response.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  future-response:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct frozen starts and execute future Reference probes
+        run: bash tests/rom/run_layer_rom_phase_a_future_response.sh
+      - name: Upload Layer-ROM future-response evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-phase-a-future-response
+          path: LAYER_ROM_PHASE_A_RESPONSE_EVIDENCE/
+          if-no-files-found: warn
