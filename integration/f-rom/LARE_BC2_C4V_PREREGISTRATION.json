@@ -291,5 +291,31 @@
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "pre_execution_implementation_binding": {
+    "before_first_step65_response": true,
+    "c4r_materializer_blob": "835c373b5377901796fe6644f392b2bb48d1c3ba",
+    "c4r_blind_analyzer_blob": "7b2a35a8cf134011247a625ad6e327c4f500baa2",
+    "bc1_lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "d13_fortran_harness_blob": "23ba278a37e142dc4c21e605af51dbf8f100ce92",
+    "d13_fmc_analyzer_blob": "803867a2ccdb190142274e9c41aafc3d3ca8d76a",
+    "allowed_code_changes": [
+      "materialize C4R V01-V04 history identity exactly as before",
+      "change horizon constant NSTEPS from 64 to 1024",
+      "change analyzer horizon constant NSTEPS from 64 to 1024",
+      "add preregistered checkpoint aggregation, signed-bias and reversal diagnostics",
+      "add exact C4R first-64 prefix validator"
+    ],
+    "prohibited_code_changes": [
+      "LARE closure",
+      "LARE partition",
+      "LARE internal timestep",
+      "FMC equations or substep count",
+      "Reference numerical policy",
+      "initial-state lambdas",
+      "comparator crossing inequalities"
+    ],
+    "response_based": false,
+    "scientific_effect": "HORIZON_ONLY"
+  }
 }
