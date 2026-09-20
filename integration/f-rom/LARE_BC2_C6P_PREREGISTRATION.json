@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6p.preregistration.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6P",
-  "phase": "DRAFT_BEFORE_IMPLEMENTATION_BINDING",
+  "phase": "PREREGISTERED_BEFORE_C6P_NUMERICAL_EVALUATION",
   "title": "Response-free root-uptake state-sufficiency discriminator",
   "role": "SYNTHETIC_IDENTIFIABILITY_TEST_NO_HYDROLOGICAL_TRAJECTORY_NO_ET_APPLICATION_TOLERANCE",
   "scientific_question": "Can existing Layer-ROM storage states, or storage plus the conservation-derived geometric first water-content moment, uniquely determine drought-only Feddes root uptake when admissible within-layer hydraulic structure varies?",
@@ -190,12 +190,14 @@
     "No performance or production-ROM claim."
   ],
   "implementation_binding": {
-    "state": "DRAFT_AWAITING_IMPLEMENTATION_BLOBS",
+    "state": "BOUND_BEFORE_EXECUTION",
     "analyzer": "tests/rom/analyze_lare_bc2_c6p_root_state_sufficiency.py",
-    "analyzer_blob": null,
+    "analyzer_blob": "7b6465c5e4028ee9489b6af18021a3775cfc63f9",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6p.yml",
-    "workflow_blob": null,
-    "execution_binding_complete": false
+    "workflow_blob": "c84de6a67d46ce0bb299e3cda6a09bb1a69fbaad",
+    "execution_binding_complete": true,
+    "response_based_design": false,
+    "binding_note": "Materials, synthetic Feddes anchors, root distributions, partitions, coarse states, perturbation family, diagnostics and hard checks are frozen before first C6P numerical evaluation."
   },
   "scientific_firewall": {
     "hydrological_response_generated": false,
