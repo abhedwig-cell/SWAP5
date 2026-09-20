@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.layer-rom.phase-a.retrospective-state-summary.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-STATE-R0",
+  "decision": "RETROSPECTIVE_STATE_INFORMATION_REPLAY_COMPLETE",
+  "evidence_class": "EXPOSED_HISTORICAL_DESIGN_AND_REGRESSION_ONLY",
+  "execution": {
+    "source_artifact_id": 10585316225,
+    "source_artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+    "source_stdout_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345",
+    "analyzer_path": "tests/rom/analyze_layer_rom_phase_a_state.py",
+    "analyzer_commit": "5395bb548cca65dcf4d74c0dfc983526c8363573",
+    "replay_environment": "downloaded immutable GitHub Actions artifact; equivalent frozen analyzer calculation",
+    "result_payload_sha256_local_full": "75f17fd1988d4fa82f66f24f5fe4ca8b79187e148b278a276c59fbcf9d4961bb"
+  },
+  "diagnostic": {
+    "state_count": 6144,
+    "histories": 6,
+    "cross_history_full_state_distinguishable_pair_count": 15723387,
+    "theta_floor": 0.0005420462931603476,
+    "theta_floor_role": "inherited Reference-scale diagnostic only, not hydrological/application acceptance"
+  },
+  "collision_counts": {
+    "0.25x": {
+      "L2": 1080,
+      "L3": 0,
+      "L4": 0,
+      "L6": 0,
+      "U2": 58535,
+      "U3": 33794,
+      "U4": 20162,
+      "U6": 1664
+    },
+    "0.5x": {
+      "L2": 1709,
+      "L3": 0,
+      "L4": 0,
+      "L6": 0,
+      "U2": 127352,
+      "U3": 76394,
+      "U4": 57560,
+      "U6": 6708
+    },
+    "1x": {
+      "L2": 7988,
+      "L3": 0,
+      "L4": 0,
+      "L6": 0,
+      "U2": 267493,
+      "U3": 158993,
+      "U4": 122587,
+      "U6": 64455
+    },
+    "2x": {
+      "L2": 44288,
+      "L3": 11624,
+      "L4": 11624,
+      "L6": 11624,
+      "U2": 800756,
+      "U3": 336224,
+      "U4": 259380,
+      "U6": 180075
+    },
+    "4x": {
+      "L2": 97249,
+      "L3": 40951,
+      "L4": 40942,
+      "L6": 40942,
+      "U2": 2343630,
+      "U3": 1889152,
+      "U4": 1594601,
+      "U6": 385533
+    }
+  },
+  "same_dimension_findings": [
+    "L2 is far more state-discriminating than U2 on every frozen diagnostic radius.",
+    "L3 has zero 1x collisions while U3 has 158993; placement dominates simple state count on this exposed library.",
+    "L4 and L6 provide no additional collision reduction over L3 at 1x or 2x; at 4x L4/L6 reduce only nine pairs relative to L3.",
+    "Even U6 retains 64455 1x collisions, whereas L2 retains 7988, so six uniform storages do not compensate for poor placement in this historical B01 library."
+  ],
+  "nearest_adversarial_minimum_distance_over_floor": {
+    "L2": 0.06088035821830102,
+    "L3": 1.0034437192279786,
+    "L4": 1.0034437192279786,
+    "L6": 1.0034437192279786,
+    "U2": 0.0003970542383218946,
+    "U3": 0.0006617338785759615,
+    "U4": 0.0012845763954337048,
+    "U6": 0.01078245704598854
+  },
+  "interpretation": {
+    "representation_signal": "Strong evidence that vertical location of retained storage information matters at least as much as raw dimension in this historical B01 laboratory.",
+    "incremental_dimension_signal": "No retrospective information-case for L4/L6 over L3 on this library at the primary 1x/2x diagnostics.",
+    "closure_implication": "Because L3 already separates the exposed states at 1x while historical low-dimensional propagated models still show groundwater-flux errors, closure/propagation error is a plausible dominant mechanism that must now be tested directly.",
+    "independent_confirmation": "REQUIRED"
+  },
+  "hard_nonclaims": [
+    "not independent validation",
+    "not future-response sufficiency",
+    "not closure qualification",
+    "not application acceptance",
+    "not a universal three-layer result",
+    "not a speedup claim"
+  ],
+  "next": [
+    "persist exact independent Reference forcing preregistration",
+    "generate new B01 FLUX_LAB and HEAD_LAB trajectories without candidate-driven retuning",
+    "repeat frozen representation screen on independent states",
+    "freeze adversarial pairs and common future probes before response exposure",
+    "then compare C_LARE_TAYLOR and C_DARCY_CENTER on identical frozen representations"
+  ],
+  "production_rom_authorized": false
+}
