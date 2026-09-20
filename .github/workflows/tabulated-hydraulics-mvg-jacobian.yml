@@ -1,0 +1,83 @@
+name: TAB-HYD default MvG Jacobian characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-mvg-jacobian.yml'
+      - 'research/tabulated_hydraulics/default_mvg_jacobian_consistency.f90'
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout current public SWAP
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: swap-src
+
+      - name: Compile current public hydraulic wrappers
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/mvg-jac
+          FLAGS="-O0 -g -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/mvg-jac \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/mvg-jac/arrays.o
+          gfortran $FLAGS -I build/mvg-jac -J build/mvg-jac \
+            -c research/tabulated_hydraulics/current_wrapper_stubs.f90 \
+            -o build/mvg-jac/stubs.o
+          gfortran $FLAGS -I build/mvg-jac -J build/mvg-jac \
+            -c swap-src/src/soil/sptabulated.f90 \
+            -o build/mvg-jac/sptabulated.o
+          gfortran $FLAGS -I build/mvg-jac -J build/mvg-jac \
+            -c swap-src/src/utils/soilhydraulicsutils.f90 \
+            -o build/mvg-jac/wrappers.o
+          gfortran $FLAGS -I build/mvg-jac -J build/mvg-jac \
+            research/tabulated_hydraulics/default_mvg_jacobian_consistency.f90 \
+            build/mvg-jac/arrays.o build/mvg-jac/stubs.o \
+            build/mvg-jac/sptabulated.o build/mvg-jac/wrappers.o \
+            -o build/mvg-jac/characterize
+
+      - name: Run residual-Jacobian comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/mvg-jac/characterize | tee build/mvg-jac/results.csv
+          grep -q '^DEFAULT_MVG_JACOBIAN_CHARACTERIZATION_COMPLETED$' build/mvg-jac/results.csv
+          python3 - <<'PY'
+          from pathlib import Path
+          rows=[]
+          for line in Path("build/mvg-jac/results.csv").read_text().splitlines():
+              if not line or line.startswith("h_cm") or line.startswith("DEFAULT_"):
+                  continue
+              h,theta,k,dcode,dfd=map(float,line.split(","))
+              rows.append((h,theta,k,dcode,dfd))
+          mismatch=[r for r in rows if abs(r[3]-r[4]) > max(1e-8,1e-4*max(abs(r[3]),abs(r[4])))]
+          with Path("build/mvg-jac/summary.txt").open("w") as fh:
+              fh.write(f"points={len(rows)}\n")
+              fh.write(f"mismatch_points={len(mismatch)}\n")
+              for r in mismatch:
+                  fh.write("mismatch h={:.17e} K={:.17e} dcode={:.17e} dfd={:.17e}\n".format(
+                      r[0],r[2],r[3],r[4]))
+          print(Path("build/mvg-jac/summary.txt").read_text(),end="")
+          if not mismatch:
+              raise SystemExit("expected near-saturation residual/Jacobian mismatch not observed")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-default-mvg-jacobian-evidence
+          path: |
+            build/mvg-jac/results.csv
+            build/mvg-jac/summary.txt
