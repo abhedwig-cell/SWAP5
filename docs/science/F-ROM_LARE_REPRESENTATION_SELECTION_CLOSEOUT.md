@@ -59,7 +59,7 @@ The first moment may therefore appear in a future physically distinct family onl
 
 ## Current scientific choice boundary
 
-The next family is deliberately unselected.
+The BEMR family has now been selected and mathematically qualified through C6C; free-running use remains unauthorized.
 
 A future read-only derivation may consider, without using exposed response residuals to choose among them:
 
@@ -68,6 +68,12 @@ A future read-only derivation may consider, without using exposed response resid
 - an independently justified adaptive or moving-partition representation.
 
 A dynamic interface flux cannot simply be declared as a new state. Richards-Darcy supplies no independent flux-inertia evolution equation, so such a route would need separate physical authority.
+
+## C6C BEMR mathematical qualification
+
+C6C qualifies the bounded entropy-moment state-to-profile map mathematically on the complete unchanged 168-case C5Z synthetic B14 domain. All five frozen starts pass for every case, and strict moment realizability, bounded saturation, hydraulic continuity, state recovery and quadrature consistency all close.
+
+This removes the specific C5Z profile-admissibility blocker without reopening the failed cubic-theta route. It does not yet establish hydrological fidelity. The next authorized unit is C6D, an offline frozen-state interface-flux discriminator using directly projected Reference storage and first moments.
 
 ## Application and value boundary
 
