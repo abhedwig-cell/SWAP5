@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.lare.bc2.c5t.execution-binding-reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C5T",
+  "status": "TECHNICAL_ANALYZER_FAIL_CLOSED_REPAIR_AFTER_NUMERICAL_QUALIFICATION_EXCEPTION",
+  "scientific_authority": "integration/f-rom/LARE_BC2_C5T_PREREGISTRATION.json",
+  "failed_run": {
+    "run_id": 35509628932,
+    "analyze_job_id": 106075510357,
+    "execution_head": "3d3fa8e0e4ccb292d81439768d6b2a565eb91c16",
+    "instrumentation_O0_O2_identity_passed": true,
+    "C5R_state_profile_identity_reached_before_operator_evaluation": true,
+    "observed_failure": "RuntimeError: DSE2P failed to bracket 1891 cases",
+    "failure_stage": "post-processing DSE2P numerical qualification at first evaluated interface",
+    "candidate_feedback": false,
+    "free_running_closure": false,
+    "production_solver_changed": false,
+    "scientific_metric_result_completed": false
+  },
+  "repair": {
+    "old_analyzer_blob": "5b3b9e17badb1ecc0f266ea6e824f7b181413be1",
+    "new_analyzer_blob": "bd7b3d7fc3cfad95efc418ea1c177797088eefd8",
+    "change": "Catch the existing preregistered DSE2P bracketing/numerical qualification RuntimeError and persist the already-authorized fail-closed status C5T_DSE2P_NOT_SUPPORTED_NUMERICAL_QUALIFICATION_FAILED instead of crashing the workflow.",
+    "numerical_method_changed": false,
+    "quadrature_orders_changed": false,
+    "physical_branch_changed": false,
+    "bracket_rule_changed": false,
+    "root_tolerance_changed": false,
+    "residual_gate_changed": false,
+    "metrics_or_adjudication_changed": false,
+    "response_based_retuning": false,
+    "scientific_effect": "NONE_EXCEPT_PERSISTING_THE_PREEXISTING_NEGATIVE_GATE"
+  },
+  "response_use": {
+    "DSE2P_flux_metrics_used_for_repair": false,
+    "only_exception_class_and_failure_count_used": true,
+    "failure_count_not_used_to_change_method": true
+  },
+  "next_execution": "Rerun exact C5T authority; if the same numerical qualification failure occurs, persist it as the formal negative C5T result.",
+  "model_changed": false,
+  "application_acceptance_adjudicated": false,
+  "performance_comparison_authorized": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false
+}
