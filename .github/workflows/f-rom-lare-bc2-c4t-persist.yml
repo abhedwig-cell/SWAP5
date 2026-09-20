@@ -1,0 +1,184 @@
+name: F-ROM-LARE persist C4T cost-fidelity closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4t-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4T artifact authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4t
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10599940848/zip" > /tmp/c4t.zip
+          echo "99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833  /tmp/c4t.zip" | sha256sum -c -
+          unzip -q /tmp/c4t.zip -d /tmp/c4t
+          echo "fc83b5229a0b3c0be3fcdfd93a30fe9d564144b32d70f97a4ce8aadc35dac7a6  /tmp/c4t/LARE_BC2_C4T_RESULT.json" | sha256sum -c -
+          echo "f525323dad0505bf09fb085e97e50e303314e902525a5e327a9f1295147cf0ff  /tmp/c4t/LARE_BC2_C4T_TIMING.json" | sha256sum -c -
+          echo "044ce7897ee35f94812d86962c11b6a09da0688bbdd56edbf7b5fba6600c2b45  /tmp/c4t/LARE_BC2_C4T_FIDELITY.json" | sha256sum -c -
+          echo "03c44855fcb3e282695c66f3cc248b2b7041f259d14aa2cdcbd97e8be55605ea  /tmp/c4t/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json" | sha256sum -c -
+
+      - name: Reconcile preregistered same-purpose decision
+        run: |
+          set -euo pipefail
+          python3 tests/rom/reconcile_lare_bc2_c4t_same_purpose.py             --fidelity /tmp/c4t/LARE_BC2_C4T_FIDELITY.json             --timing /tmp/c4t/LARE_BC2_C4T_TIMING.json             --prereg integration/f-rom/LARE_BC2_C4T_PREREGISTRATION.json             --compiled-equivalence /tmp/c4t/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json             --workflow-result /tmp/c4t/LARE_BC2_C4T_RESULT.json             --output /tmp/c4t/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json
+          python3 - <<'PY'
+          import json
+          raw=json.load(open('/tmp/c4t/LARE_BC2_C4T_RESULT.json'))
+          rec=json.load(open('/tmp/c4t/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json'))
+          timing=json.load(open('/tmp/c4t/LARE_BC2_C4T_TIMING.json'))
+          eq=json.load(open('/tmp/c4t/LARE_BC2_C4T_COMPILED_EQUIVALENCE.json'))
+          assert raw['decision']=='C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED'
+          assert rec['decision']=='C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED'
+          assert rec['workflow_result_differs'] is False
+          assert eq['pass'] is True
+          assert timing['decision']=='C4T_SHARED_HOST_TIMING_COMPLETE'
+          assert timing['internal_repetitions']==64
+          assert timing['measured_rounds']==30
+          assert raw['formal_performance_claim'] is False
+          assert raw['speed_claim_authorized'] is False
+          assert raw['production_rom_authorized'] is False
+          print('LARE_BC2_C4T_RECONCILIATION=PASS')
+          PY
+
+      - name: Reconcile live canonical delta
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          execution='e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1'
+          current='09b6d0415fee3c63c71ecd11b215fe0d206e05ae'
+          subprocess.run(['git','fetch','--no-tags','origin',current],check=True)
+          names=subprocess.check_output(['git','diff','--name-only',execution,current],text=True).splitlines()
+          changed=[p for p in names if p.startswith('src/') or p.startswith('reference/')]
+          assert changed==[], changed
+          out={
+            'schema':'swap5.lare.bc2.c4t.live-canonical-reconciliation.v1',
+            'execution_source_head':execution,
+            'current_canonical_head':current,
+            'src_or_reference_changed':False,
+            'execution_rebase_required':False,
+            'later_changes_role':'EVIDENCE_GOVERNANCE_ONLY'
+          }
+          open('/tmp/c4t/LARE_BC2_C4T_LIVE_CANONICAL_RECONCILIATION.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Build closeout
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          raw=json.load(open('/tmp/c4t/LARE_BC2_C4T_RESULT.json'))
+          rec=json.load(open('/tmp/c4t/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json'))
+          timing=json.load(open('/tmp/c4t/LARE_BC2_C4T_TIMING.json'))
+          fid=json.load(open('/tmp/c4t/LARE_BC2_C4T_FIDELITY.json'))['compact']
+          means={r:timing['route_stats'][r]['cpu_seconds_per_workload']['mean'] for r in timing['route_stats']}
+          r16=means['R16']
+          ratios={r:means[r]/r16 for r in means}
+          selected=['LARE_R3','LARE_R4','LARE_R5','LARE_R6','LARE_R8','LARE_R12',
+                    'COR_R4','COR_R8','COR_R12','FMC','R16']
+          out={
+            'schema':'swap5.lare.bc2.c4t.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4T',
+            'status':'CLOSED_SHARED_HOST_PURPOSE_VALUE_SIGNAL_RESOLVED_APPLICATION_ENVELOPE_REQUIRED',
+            'decision':rec['decision'],
+            'authority':{
+              'workflow_run':35492342285,
+              'execution_head':'4f938b040d92ee46646e3397278c78a46942944c',
+              'artifact_id':10599940848,
+              'artifact_digest':'sha256:99ebd356c44e965c5e2ab3b2ef2b45dc4d54c0bdfd3fd19bd9f61d384c72a833',
+              'raw_result_sha256':'fc83b5229a0b3c0be3fcdfd93a30fe9d564144b32d70f97a4ce8aadc35dac7a6',
+              'timing_sha256':'f525323dad0505bf09fb085e97e50e303314e902525a5e327a9f1295147cf0ff',
+              'fidelity_sha256':'044ce7897ee35f94812d86962c11b6a09da0688bbdd56edbf7b5fba6600c2b45',
+              'compiled_equivalence_sha256':'03c44855fcb3e282695c66f3cc248b2b7041f259d14aa2cdcbd97e8be55605ea'
+            },
+            'pre_result_same_purpose_reconciliation':rec,
+            'screening_only':True,
+            'host_admitted_for_cpu_baseline':False,
+            'formal_performance_claim':False,
+            'timing_protocol':{
+              'internal_repetitions':timing['internal_repetitions'],
+              'measured_rounds':timing['measured_rounds'],
+              'warmups_per_route':timing['warmups_per_route'],
+              'position_balance':'every route every measurement position exactly twice'
+            },
+            'purpose_frontiers':rec['purpose_frontiers'],
+            'resolved_cheaper_than_R16':rec['resolved_cheaper_than_R16'],
+            'selected_cost_fidelity_summary':{
+              r:{
+                'mean_cpu_seconds_per_complete_4_history_workload':means[r],
+                'mean_cpu_ratio_to_R16':ratios[r],
+                'fidelity':fid[r]['fidelity']
+              } for r in selected
+            },
+            'scientific_interpretation':[
+              'Blind C4R hydrological fidelity plus C4S full common-cohort authority supports a resolved shared-host cost-fidelity signal for LARE R3-R8 on this fixed-water-table B01 workload.',
+              'The result is purpose-frontier evidence, not a claim that every low-dimensional LARE member is hydrologically adequate for a real application.',
+              'R4 is the blind minimum dimension that crossed R2 and FMC on the groundwater fidelity vector in C4R, while R12 was required to cross FMC when mapped 10-cm profile fidelity was included.',
+              'C4T timing shows LARE R3-R8 resolved cheaper than fine R16 on this host; LARE R12 is resolved more expensive than R16.',
+              'Same-partition CoRichards can be much more hydrologically faithful at higher dimension but is resolved more expensive than R16 on this workload because the complete admitted fallback policy is included.',
+              'FMC is also resolved more expensive than R16 in this compiled C4T screen; this does not supersede separately governed F-ROMV2 D25 evidence because workload, implementation path and timing experiment differ.',
+              'Without independently sourced application thresholds, frontier membership alone cannot choose R3, R4, R5, R6 or R8 for a real groundwater application.',
+              'The next scientific requirement is a purpose-dependent application acceptance envelope, beginning with groundwater use, not another closure or timing optimization.'
+            ],
+            'next_authority':'LARE_PURPOSE_ACCEPTANCE_GW_ENVELOPE_AUTHORITY_BINDING',
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          open('integration/f-rom/LARE_BC2_C4T_RESULT.json','w').write(open('/tmp/c4t/LARE_BC2_C4T_RESULT.json').read())
+          open('integration/f-rom/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json','w').write(open('/tmp/c4t/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json').read())
+          open('integration/f-rom/LARE_BC2_C4T_LIVE_CANONICAL_RECONCILIATION.json','w').write(open('/tmp/c4t/LARE_BC2_C4T_LIVE_CANONICAL_RECONCILIATION.json').read())
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4T_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4T closeout
+
+          Formal decision: **C4T_LARE_PURPOSE_VALUE_SIGNAL_RESOLVED**.
+
+          C4T combines the blind C4R fidelity evidence with the full C4S same-workload comparator cohort and a preregistered position-balanced shared-host timing screen. All compiled-equivalence and checksum gates pass. The measurement remains a screening experiment: the host is not admitted for a formal portable CPU baseline.
+
+          The R16 calibration selected 64 complete four-history workload repetitions. Each of the 15 routes then occupied every timing position exactly twice across 30 measured rounds.
+
+          Mean CPU per complete four-history workload was approximately 0.01104 s for R16. LARE R3, R4, R5, R6 and R8 were respectively about 0.415x, 0.517x, 0.634x, 0.749x and 0.984x the R16 mean and each had a resolved paired two-SE cost advantage. LARE R12 was about 1.443x R16 and resolved more expensive.
+
+          This must be read together with fidelity. C4R showed R4 as the blind minimum LARE dimension crossing both R2 and FMC on the groundwater vector. R12, not R4-R8, was required to cross FMC when mapped 10-cm profile fidelity was included. Therefore state reduction is strongly purpose dependent.
+
+          CoRichards R3-R12 is numerically available on this fixed-water-table workload, but its complete admitted route including fallback is resolved more expensive than R16 in C4T. Higher-dimensional CoRichards is nevertheless hydrologically much closer to R16 than corresponding LARE members. FMC is also more expensive than R16 in this C4T screen. These are workload-specific results and do not supersede separately governed performance experiments with different workloads or implementations.
+
+          The C4T result establishes a **relative cost-fidelity value signal**, not application acceptance. There is still no independently sourced numerical envelope saying which storage, recharge, bottom-flux, sign/reversal or profile errors are acceptable for an actual groundwater application.
+
+          The next authority is therefore purpose-dependent groundwater acceptance-envelope binding. No new LARE closure, production ROM, portable speedup claim or application admission is authorized here.
+          MD
+
+      - name: Persist C4T authority
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             integration/f-rom/LARE_BC2_C4T_RESULT.json             integration/f-rom/LARE_BC2_C4T_SAME_PURPOSE_RECONCILIATION.json             integration/f-rom/LARE_BC2_C4T_LIVE_CANONICAL_RECONCILIATION.json             integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json             docs/science/F-ROM_LARE_BC2_C4T_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4T shared-host value screen"
+          git push origin HEAD:work/f-rom-lare-rs1
