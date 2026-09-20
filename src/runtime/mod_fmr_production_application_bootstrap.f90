@@ -58,6 +58,9 @@ module mod_fmr_production_application_bootstrap
     real(real64) :: initial_boesten_spev = 0.0_real64
     real(real64) :: initial_boesten_saev = 0.0_real64
     type(groundwater_head_datum_t) :: groundwater_datum
+    ! CSR-01: explicit application authority for an externally owned
+    ! groundwater lower boundary. This is independent of legacy SWBOTB.
+    logical :: groundwater_coupled = .false.
     real(real64), allocatable :: initial_right_derivative(:)
   end type fmr_production_application_tile_config_t
 
@@ -124,9 +127,11 @@ contains
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
-      groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5
-      standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
-      prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
+      groundwater_profile = groundwater_profile .and. config%tiles(i)%groundwater_coupled
+      standalone_profile = standalone_profile .and. (.not. config%tiles(i)%groundwater_coupled) .and. &
+           config%tiles(i)%parameters%bottom_mode == 7
+      prescribed_qbot_profile = prescribed_qbot_profile .and. (.not. config%tiles(i)%groundwater_coupled) .and. &
+           config%tiles(i)%parameters%bottom_mode == 2
       if (i > 1) then
         if (any(config%tiles(1:i-1)%tile_id == config%tiles(i)%tile_id)) return
       end if
@@ -264,7 +269,7 @@ contains
          size(self%participant_handles) == size(self%columns)
     if (.not. ready) return
     ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64) .and. &
-         all(self%parameters%bottom_mode == 5)
+         all(self%participant_handles > 0_int64)
   end function production_application_groundwater_ready
 
   integer function production_application_tile_count(self) result(count)
@@ -533,7 +538,7 @@ contains
           tile%parameters%black_evaporation%cofred < 0.0_real64) return
       if (.not. ieee_is_finite(tile%initial_black_ldwet) .or. tile%initial_black_ldwet < 0.0_real64) return
       if (tile%initial_boesten_spev /= 0.0_real64 .or. tile%initial_boesten_saev /= 0.0_real64) return
-      if (tile%parameters%bottom_mode == 5) return
+      if (tile%groundwater_coupled) return
     else if (tile%parameters%boesten_evaporation_active) then
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
       if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
@@ -544,7 +549,7 @@ contains
       if (.not. ieee_is_finite(tile%initial_boesten_spev) .or. tile%initial_boesten_spev < 0.0_real64) return
       if (.not. ieee_is_finite(tile%initial_boesten_saev) .or. tile%initial_boesten_saev < 0.0_real64) return
       if (tile%initial_black_ldwet /= 0.0_real64) return
-      if (tile%parameters%bottom_mode == 5) return
+      if (tile%groundwater_coupled) return
     else
       if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
@@ -563,7 +568,7 @@ contains
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
     if (size(tile%initial_state%pressure_head) /= tile%parameters%active_nodes .or. &
         size(tile%initial_state%water_content) /= tile%parameters%active_nodes) return
-    if (tile%parameters%bottom_mode == 5) then
+    if (tile%groundwater_coupled) then
       if (tile%ledger_id <= 0_int64 .or. .not. tile%groundwater_datum%valid()) return
     end if
     if (allocated(tile%initial_right_derivative)) then
