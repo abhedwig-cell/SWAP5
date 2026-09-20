@@ -1,6 +1,6 @@
 # TAB-HYD status: current tabulated soil hydraulics
 
-Date: 2026-09-19
+Date: 2026-09-20
 
 Scope: evidence-only characterization of the existing SWAP tabulated hydraulic-function route. This work does not admit new SWAP5 production physics.
 
@@ -267,6 +267,29 @@ This reconciles the local speedup with the full Hupsel runtime parity. In the `S
 The original acceleration hypothesis is therefore only partly supported: the direct-index table representation **is locally cheaper than MvG**, but for the tested `SWKIMPL=0` Hupsel workload that local advantage is too small in the dominant call pattern to yield a whole-model speedup.
 
 
+### 11. TAB-HYD-003: the analytical default-MvG SWKIMPL=1 control also had a residual/Jacobian mismatch
+
+The large difference previously observed between corrected table `SWKIMPL=1` and analytical `SWKIMPL=1` was traced to a second consistency defect rather than to table interpolation.
+
+The default analytical MvG residual route clamps K to Ksat when `h_enpr > -0.01 cm` and relative saturation exceeds `1-1e-6`. Its `dhconduc` route does not mirror that clamp and continues to return the derivative of the unclamped MvG relation.
+
+A current-public wrapper probe demonstrates the mismatch directly. For the Hupsel topsoil:
+
+- at `h=-0.005 cm`, residual K = `12.52 cm/d`, finite-difference dK/dh of the implemented residual = `0`, but code dK/dh = `23.1396`;
+- at `h=-0.001 cm`, residual K = `12.52 cm/d`, finite-difference dK/dh = `0`, but code dK/dh = `68.5089`.
+
+A research-only derivative-consistency candidate, changing only that already-constant Ksat branch to `dK/dh=0`, radically changes the interpretation of the Hupsel `SWKIMPL=1` comparison:
+
+- unmodified analytical K0 versus analytical K1: GWL max abs `1146.52418 cm`, RMSE `1091.56561 cm`;
+- analytical K0 versus consistency-corrected analytical K1: GWL max abs `0.62579 cm`, RMSE `0.0434817 cm`;
+- corrected analytical K1 versus corrected table K1: GWL max abs `0.00043 cm`, RMSE `1.54e-5 cm`; drainage and TACT match at written precision.
+
+Thus the earlier catastrophic analytical/table `SWKIMPL=1` discrepancy was not evidence that the table representation fails. Both routes contained near-saturation Jacobian-policy issues. Once the residual/Jacobian branch policy is made consistent in both, their implicit trajectories agree closely.
+
+This finding is recorded as `TAB-HYD-003-default-mvg-ksat-jacobian.md`. It is source-bound to the public/transitional lineage until exact B0 execution becomes available.
+
+The current SWAP5 default-MvG provider still contains the residual Ksat clamp, but F-SI09 explicitly does not admit `SWKIMPL=1` and the provider currently reserves `dconductivity_dhead` as zero. This is therefore an admission prerequisite for a future implicit-conductivity route, not a presently admitted SWAP5 production defect.
+
 ## Source-authority boundary
 
 The executable end-to-end experiments use the public/transitional SWAP source lineage. They are not yet executions of the immutable supplied SWAP 4.3.1 B0 archive.
@@ -289,9 +312,10 @@ The functional question can now be split cleanly:
 1. **Interior table interpolation:** works well for the tested smooth constitutive curve and for all 35 admissible tables in the tested BOFEK2012/Staring set.
 2. **Legacy-input, SWKIMPL=0:** works and reproduces the analytical Hupsel control very closely.
 3. **Performance:** the existing dense lookup route is about 8-11% slower in repeated Hupsel benchmarks. Reducing rows does not remove the penalty. Replacing the legacy interval search with O(1) direct indexing on a uniform transformed-head grid removes essentially all of that penalty while retaining TSPACK fidelity at about 150-250 rows. The best current research route reaches runtime parity with analytical MvG, not a demonstrated whole-model speedup.
-4. **Endpoint derivative implementation:** contains a real Jacobian-consistency defect. A zero-endpoint derivative candidate removes both the dry bounds failure and the wet-side `SWKIMPL=1` stall in the tested lineage.
+4. **Endpoint derivative implementation:** contains a real Jacobian-consistency defect. A zero-endpoint derivative candidate removes both the dry bounds failure and the wet-side `SWKIMPL=1` stall in the tested lineage. The independently discovered analytical Ksat-clamp mismatch confirms that the unmodified analytical `SWKIMPL=1` route was not a valid reference for this test.
 5. **Exact B0 authority:** not yet executed for this finding.
 6. **Current public production route:** `main` accepts the typed switch but does not supply table state; the newer `development` branch explicitly marks `SWSOPHY=1` dormant and fatal-errors. There is therefore no operational current-public table route to admit as-is.
 7. **Table library quality:** `starb4_cm.csv` must be corrected or excluded before the complete 36-file public set can be treated as ReadSwap-compatible.
+8. **Implicit analytical control:** default MvG contains a near-saturation Ksat-clamp Jacobian mismatch on the tested public lineage. A residual-consistent derivative candidate reduces the Hupsel K0/K1 GWL discrepancy from more than 11 m to 0.626 cm and makes corrected analytical/table K1 trajectories agree within 0.00043 cm maximum GWL difference.
 
 The next acceleration question is no longer “how many table rows should we use?” Direct indexing has already shown that the legacy lookup penalty is removable without sacrificing TSPACK fidelity. The remaining question is narrower: **are the constitutive evaluations themselves cheap enough to matter at whole-model scale, and if a direct-index table is locally faster than MvG, what fraction of runtime can actually be recovered in the solver call pattern?**
