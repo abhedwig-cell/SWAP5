@@ -304,14 +304,20 @@
     "response_based_design": false,
     "reference_materializer": "tests/rom/materialize_lare_bc2_c5n_reference.py",
     "reference_materializer_blob": "a2a7db1e5c6669b4a2475eea0fe3b1c7481ea61c",
-    "reference_history_slicer": "tests/rom/materialize_lare_bc2_c5n_reference_slice.py",
-    "reference_history_slicer_blob": "3e294bdc0adb9f824f5119a19c03e7188ab5a97e",
+    "reference_slice_materializer": "tests/rom/materialize_lare_bc2_c5n_reference_slice.py",
+    "reference_slice_materializer_blob": "3e294bdc0adb9f824f5119a19c03e7188ab5a97e",
     "analyzer": "tests/rom/analyze_lare_bc2_c5n_fresh_highres.py",
     "analyzer_blob": "c14ff931d0c34fec7989a96e553891468cbd2f56",
+    "lare_runner": "tests/rom/run_lare_bc1_stage_b.py",
+    "lare_runner_blob": "33a68fc51d5c1905b9f377e2d14626aeebe27f98",
+    "source_harness": "tests/rom/test_lare_rs1_gw_library.f90",
+    "source_harness_blob": "98b05fcf13fc470689295d511766f2393a712e46",
     "c5a_materializer_blob": "f4f666d3504568d084d1d5ca3f90008ab6af2df9",
     "c4z_materializer_blob": "105e75b93425780f565c714de1be1cb7ae0ee767",
-    "allowed_new_code": "Fresh Reference/history materialization, fixed 10-cm profile diagnostics, prebound comparator-quality and LARE analysis.",
-    "prohibited_new_code": "response-based history/partition/metric changes, boundary counterfactuals, closure fitting, application thresholds"
+    "allowed_new_code": "fresh-history Reference materialization, 10-cm profile diagnostics, history-sliced execution, and preregistered comparator-relative analysis",
+    "prohibited_new_code": "response-driven history/partition/metric/comparator changes, closure tuning, boundary counterfactuals, production Reference edits",
+    "duplicate_non_authoritative_analyzer": "tests/rom/analyze_lare_bc2_c5n_blind_highres.py",
+    "duplicate_status": "NOT_BOUND_NOT_AUTHORIZED_FOR_EXECUTION"
   },
   "model_changed": false
 }
