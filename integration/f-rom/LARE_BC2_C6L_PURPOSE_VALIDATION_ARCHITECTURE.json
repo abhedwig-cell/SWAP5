@@ -1,9 +1,9 @@
 {
-  "schema": "swap5.lare.bc2.c6l.purpose-validation-architecture.v1",
+  "schema": "swap5.lare.bc2.c6l.purpose-validation-architecture.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6L",
-  "status": "CLOSED_PURPOSE_VALIDATION_ARCHITECTURE_BOUND_SURFACE_REFERENCE_FIRST_ROOT_ET_SEPARATED",
-  "decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
+  "status": "CLOSED_PURPOSE_VALIDATION_ARCHITECTURE_BOUND_SURFACE_FIXED_HEAD_REFERENCE_FIRST_ROOT_ET_SEPARATED",
+  "decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_FIXED_HEAD_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
   "role": "READ_ONLY_PURPOSE_EVIDENCE_GAP_AND_PROSPECTIVE_VALIDATION_ARCHITECTURE",
   "authority": {
     "trigger": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
@@ -13,40 +13,45 @@
     "high_resolution_reference_pattern": "integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json",
     "application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
     "current_branch_at_binding": "work/f-rom-lare-rs1@758220d4d9dcaf9d63674f0b45440147635883c4",
-    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "C6M_pre_response_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_BINDING_RECONCILIATION.json"
   },
   "reconciled_capability": {
     "top_flux_forcing": "Already exercised in DYN0A and supported by serialized Reference forcing.",
     "distributed_prescribed_root_sink": "Serialized Reference forcing contains root_extraction_sink(numnod), but existing purpose evidence keeps it zero and the standard LARE research runner has no distributed sink term.",
     "variable_grid_reference": "Existing research tooling can materialize fixed arbitrary vertical grids; C5N provides an R512/R1024/R2048 plus temporal-control qualification pattern.",
-    "conclusion": "A new surface-flux-only blind discriminator needs no new production physics. Free-running ET/root-uptake prediction would need a separately qualified sink-feedback contract and must not be inferred from a prescribed-sink experiment."
+    "conclusion": "A new surface-flux-only blind discriminator needs no new production physics. Free-running ET/root-uptake prediction would need a separately qualified sink-feedback contract and must not be inferred from a prescribed-sink experiment.",
+    "free_drainage_reference_floor": "NOT_ADMITTED: frozen run_reference_floor_sample admits only bottom modes 2 and 5; C6M run 35531511964 was rejected before solver execution.",
+    "surface_reference_repair": "Use admitted bottom_mode 5 with bottom head held at each history's initial uniform equilibrium pressure head; surface top-flux perturbation remains the only time-varying boundary forcing."
   },
   "validation_program": {
     "SURF": {
       "purpose": [
         "UPPER_ZONE_SOIL_MOISTURE",
         "PROFILE_STATE",
-        "DRAINAGE_RESPONSE",
+        "BOTTOM_EXCHANGE_RESPONSE",
         "FAST_SURFACE_FORCING_RESPONSE"
       ],
       "first_work_unit": "LARE-BC2-C6M",
-      "first_stage": "HIGH_RESOLUTION_REFERENCE_QUALIFICATION_ONLY",
+      "first_stage": "HIGH_RESOLUTION_FIXED_INITIAL_HEAD_REFERENCE_QUALIFICATION_ONLY",
       "second_stage_if_reference_qualified": "FRESH_BLIND_EXISTING_REPRESENTATION_COMPARISON",
       "physical_design": {
         "column_depth_cm": 160,
         "sinks": false,
-        "bottom_boundary": "FREE_DRAINAGE",
+        "bottom_boundary": "FIXED_INITIAL_PRESSURE_HEAD_BOTTOM_MODE_5",
         "top_boundary": "PRESCRIBED_FLUX_AROUND_INITIAL_GRAVITY_EQUILIBRIUM",
         "material_set": [
           "B01",
           "B14"
         ],
         "response_blind_histories": true,
-        "no_groundwater_head_perturbation": true
+        "no_groundwater_head_perturbation": true,
+        "bottom_head_rule": "Hold bottom head at the initial uniform equilibrium pressure head h0 for the full history."
       },
       "rationale": [
-        "Free drainage removes prescribed-head propagation as the primary driver and isolates surface-originating vertical memory.",
-        "A gravity-equilibrium baseline q_top=K(theta_initial) makes dimensionless wet/dry perturbations material-scalable without introducing an application tolerance.",
+        "The frozen Reference-floor API does not admit free drainage; the first C6M attempt exposed this authority boundary before any surface solve executed.",
+        "Holding the initial equilibrium bottom head fixed keeps the lower boundary time-invariant while the only perturbation originates from the surface.",
+        "Bottom exchange remains free to respond, so storage/profile and exchange propagation can be measured without a lower-boundary forcing event.",
         "Using both B01 and B14 prevents a single-material minimum dimension from being treated as general."
       ],
       "representation_set": {
@@ -75,18 +80,18 @@
           "upper_0_80_storage_rmse_cm",
           "mapped_10cm_theta_rmse"
         ],
-        "DRAINAGE": [
-          "cumulative_bottom_exchange_rmse_cm",
-          "interval_bottom_flux_rmse_cm_per_day",
-          "mean_abs_history_signed_bottom_flux_error_cm_per_day"
-        ],
         "FAST_RESPONSE_DIAGNOSTICS": [
           "bottom_flux_sign_mismatch_count",
           "drainage_response_peak_time_difference",
           "root_zone_storage_extremum_time_difference"
+        ],
+        "BOTTOM_EXCHANGE": [
+          "cumulative_bottom_exchange_rmse_cm",
+          "interval_bottom_flux_rmse_cm_per_day",
+          "mean_abs_history_signed_bottom_flux_error_cm_per_day"
         ]
       },
-      "interpretation_boundary": "Comparator-relative evidence only. No observed error becomes an application threshold."
+      "interpretation_boundary": "Comparator-relative surface-driven fixed-head evidence only. It is not free-drainage/recharge acceptance and no observed error becomes an application threshold."
     },
     "ROOT_ET": {
       "purpose": [
@@ -127,7 +132,7 @@
       "B01",
       "B14"
     ],
-    "boundary": "free drainage",
+    "boundary": "fixed initial pressure head, bottom_mode 5",
     "sinks": false,
     "observations": 1024,
     "observation_dt_day": 0.0008,
@@ -163,12 +168,13 @@
     "Do not introduce top-focused partitions after seeing SURF response; any future new partition requires a separate preregistered representation work unit.",
     "Do not select absolute hydrological tolerances from C6M/SURF errors.",
     "Do not reopen C6J/BEMR/FEMO under the purpose-validation label.",
-    "No performance screen before a purpose-specific hydrological gate closes."
+    "No performance screen before a purpose-specific hydrological gate closes.",
+    "Do not interpret the C6M fixed-head surface laboratory as free-drainage or regional recharge validation."
   ],
   "next_authority": {
     "target": "LARE-BC2-C6M",
     "state": "FRESH_SURFACE_FLUX_HIGH_RES_REFERENCE_PREREGISTRATION_AUTHORIZED",
-    "question": "Do fresh source-free, free-drainage, surface-flux histories have a numerically qualified high-resolution Richards hierarchy suitable for later purpose-specific Layer-ROM comparison on B01 and B14?",
+    "question": "Do fresh source-free, fixed-initial-head, surface-flux histories have a numerically qualified high-resolution Richards hierarchy suitable for later purpose-specific Layer-ROM comparison on B01 and B14?",
     "hydrological_candidate_response_authorized": false
   },
   "scientific_firewall": {
