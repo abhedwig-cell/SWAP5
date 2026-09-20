@@ -246,7 +246,7 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "BOUND_CODE_BEFORE_EXECUTION_WORKFLOW_PENDING",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "qualifier": "tests/rom/qualify_lare_bc2_c5w_p0_map.py",
     "qualifier_blob": "e4a5caa9f727da6311c413911b51d96a6a10af85",
@@ -254,7 +254,11 @@
     "choice_authority_sha256": null,
     "allowed_new_code": "Synthetic B14 constitutive/map qualification only; no hydrological trajectory, free-running closure, response fit or dynamic state.",
     "prohibited_new_code": "Hydrological response execution, C5R/C5T residual consumption, bracket retuning after result, production closure implementation.",
-    "pre_execution_solver_reconciliation": "Safeguarded secant/root-performance repair frozen before any numerical qualification response."
+    "pre_execution_solver_reconciliation": "Safeguarded secant/root-performance repair frozen before any numerical qualification response.",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c5w.yml",
+    "workflow_blob": "d9d1cf4e42ceec9a39fe94a43900a60dd5c871a4",
+    "execution_binding_complete": true,
+    "binding_note": "Only the run triggered after this immutable workflow binding is C5W authority; any earlier workflow-triggered run is superseded."
   },
   "model_changed": false
 }
