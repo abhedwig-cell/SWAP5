@@ -88,8 +88,8 @@ jobs:
           for scenario,sc in prep.SCENARIOS.items():
               params=[series[sc["top"]],series[sc["sub"]]]
               for k in (0,1):
-                  prep.prepare_case(src,root/f"${scenario}__analytic_k${k}",params,sc,table=False,kimpl=k)
-                  prep.prepare_case(src,root/f"${scenario}__table_k${k}",params,sc,table=True,kimpl=k)
+                  prep.prepare_case(src,root/f"{scenario}__analytic_k{k}",params,sc,table=False,kimpl=k)
+                  prep.prepare_case(src,root/f"{scenario}__table_k{k}",params,sc,table=True,kimpl=k)
           PY
 
       - name: Run five K0 pairs and two bounded K1 pairs
