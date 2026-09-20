@@ -87,7 +87,7 @@ def pair_counts(
         for hb in EXPECTED_HISTORIES[ia + 1:]:
             b = history_indices[hb]
             fine_distance = np.max(
-                np.abs(fine[a, None, :] - fine[b, :, :]),
+                np.abs(fine[a][:, None, :] - fine[b][None, :, :]),
                 axis=2,
             )
             relevant = fine_distance > DIAGNOSTIC_FLOOR
@@ -97,7 +97,7 @@ def pair_counts(
 
             for name, coord in candidates.items():
                 distance = np.max(
-                    np.abs(coord[a, None, :] - coord[b, :, :]),
+                    np.abs(coord[a][:, None, :] - coord[b][None, :, :]),
                     axis=2,
                 )
                 for mult in MULTIPLIERS:
