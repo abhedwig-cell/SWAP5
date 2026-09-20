@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.layer-rom.phase-a4.explicit-layer-frontier.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A4",
+  "status": "EVIDENCE_ONLY_RECONCILIATION_COMPLETE",
+  "decision": "PURPOSE_DEPENDENT_EXPLICIT_LAYER_FRONTIER_CONFIRMED_NO_UNIVERSAL_MINIMUM",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "no_new_candidate_response_generated": true,
+  "authorities": {
+    "state_information": "integration/f-rom/LAYER_ROM_A1_RESULT.json",
+    "closure_screen": [
+      "integration/f-rom/LAYER_ROM_A2_RESULT.json",
+      "integration/f-rom/LAYER_ROM_A2B_RESULT.json",
+      "integration/f-rom/LAYER_ROM_A3_RESULT.json"
+    ],
+    "cross_regime_curve": "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "fixed_flux_resolution": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "fixed_head_boundary": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_BC1_CLOSEOUT.json",
+    "fixed_head_blind_frontier": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_BC2_C4R_RESULT.json",
+    "fixed_head_comparator": "integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json",
+    "fixed_head_persistence": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_BC2_C4V_RESULT.json",
+    "cost_screen": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_BC2_C4T_RESULT.json",
+    "material_transfer": "work/f-rom-lare-rs1@e3b11802e88316dcd57147569e985153be99e215:integration/f-rom/LARE_BC2_C4X_RESULT.json"
+  },
+  "dimensional_adjudication": {
+    "information_lower_bound_B01": {
+      "representation": "L3",
+      "dimension": 3,
+      "statement": "Smallest frozen storage representation with no reduction-induced aliases through the 1x A1 diagnostic radius in the 41-state common cohort.",
+      "limit": "Bounded B01 development evidence, not universal Markov sufficiency."
+    },
+    "fixed_flux_propagation": {
+      "L3": {
+        "critical_max_common_band_error_mm": 24.52332276685631,
+        "disposition": "NOT_BROADLY_PROPAGATION_QUALIFIED"
+      },
+      "L4": {
+        "critical_max_common_band_error_mm": 6.877291124718212,
+        "disposition": "FIRST_STRONG_LOCAL_RESOLUTION_IMPROVEMENT_NO_APPLICATION_ACCEPTANCE"
+      },
+      "R5": {
+        "critical_max_common_band_error_mm": 1.74283577975757
+      },
+      "R6": {
+        "critical_max_common_band_error_mm": 1.105792169697466
+      },
+      "R8": {
+        "critical_max_common_band_error_mm": 0.8031871185790607
+      },
+      "R12": {
+        "critical_max_common_band_error_mm": 0.28789551084429377
+      },
+      "conclusion": "Fidelity improves mainly by localizing the long-to-local interface; the minimum useful dimension cannot be selected without a purpose tolerance."
+    },
+    "fixed_head_short_horizon_0p064d": {
+      "first_comparator_relative_GW_crossing": "L4/R4",
+      "dimension": 4,
+      "LARE_R4": {
+        "bottom_flux_rmse_cm_per_day": 0.28192349905536246,
+        "cumulative_bottom_rmse_cm": 0.005734214567883345,
+        "bottom_flux_sign_errors": 1
+      },
+      "CoRichards_R4": {
+        "bottom_flux_rmse_cm_per_day": 0.17268447608224521,
+        "cumulative_bottom_rmse_cm": 0.0035730725094454806,
+        "bottom_flux_sign_errors": 0
+      },
+      "interpretation": "Dimension four is a relative frontier, not an absolute GW-D acceptance."
+    },
+    "fixed_head_persistent_through_1p024d": {
+      "first_member_crossing_both_frozen_GW_comparators_at_every_checkpoint": "R8",
+      "dimension": 8,
+      "R4_persistent": false,
+      "R5_persistent": false,
+      "R6_persistent": false,
+      "R8_persistent": true,
+      "R12_persistent": true,
+      "interpretation": "The dimension requirement grows with response horizon under the frozen comparator-relative criterion."
+    },
+    "profile_research": {
+      "short_horizon_minimum_vs_R2": 4,
+      "short_horizon_minimum_vs_FMC": 12,
+      "interpretation": "SCI-P fidelity is comparator/output dependent and cannot inherit the GW dimension."
+    }
+  },
+  "same_dimension_state_choice": {
+    "dimension4": {
+      "global_first_moment": "NOT_BROADLY_SUPPORTED",
+      "localized_fourth_storage": "SUPPORTED_AS_STRONGER_OPERATOR_AND_PROPAGATION_CONTROL",
+      "evidence": [
+        "A3 L3+M1 linear-psi RMS 0.743052 cm/day versus L4 long-interface RMS 0.292040 cm/day.",
+        "A3 L3+M1 linear-theta RMS 0.770241 cm/day versus L4 long-interface RMS 0.292040 cm/day.",
+        "L4 local 140 cm face identity error is 8.88e-14 cm/day."
+      ]
+    },
+    "conclusion": "At equal scalar dimension, state placement near the active interface is more useful than a global first moment in this B01 slice."
+  },
+  "error_attribution": {
+    "state_information": "L3 captures the tested B01 future-response distinctions at the frozen small-radius gate.",
+    "internal_closure_resolution": "Dominant low-dimension limitation. Gradient reconstruction/localization across a long layer adjacent to a local layer drives the critical fixed-flux error.",
+    "Richards_spatial_discretization": "Separated under fixed head by same-partition CoRichards; this error collapses much faster with dimension than LARE exchange error.",
+    "high_dimension_residual": "BC1 R8-R16 reaches an integrated residual plateau. Heun refinement floors are far smaller, and an R16 observation-lagged bottom-K control does not remove the plateau. The residual remains a Reference/operator/integration-semantics floor, not spatial reduction alone."
+  },
+  "purpose_dependent_research_candidacy": {
+    "GW-D": {
+      "structural_candidate": "L4",
+      "evidence_scope": "short fixed-head horizon and fixed-flux local-resolution evidence",
+      "acceptance": "NOT_ADJUDICATED"
+    },
+    "GW-R": {
+      "structural_candidate": "R8",
+      "evidence_scope": "persistent comparator-relative fixed-head crossing through 1.024 day",
+      "acceptance": "NOT_ADJUDICATED"
+    },
+    "SCI-P": {
+      "structural_candidate": "NO_SINGLE_DIMENSION_SELECTED",
+      "evidence_scope": "profile requirement depends on comparator and requested profile fidelity",
+      "acceptance": "NOT_ADJUDICATED"
+    },
+    "AG-WB": {
+      "structural_candidate": "NOT_TESTED",
+      "reason": "ET/root uptake absent from Phase A"
+    },
+    "EVT": {
+      "structural_candidate": "NOT_TESTED",
+      "reason": "ponding/runoff/event surface physics absent from Phase A"
+    }
+  },
+  "shared_host_cost_screen": {
+    "classification": "SCREENING_ONLY_NOT_PORTABLE_SPEEDUP",
+    "Reference_R16_cpu_seconds_per_workload": 0.011035129687499999,
+    "candidates": {
+      "LARE_R3": {
+        "cpu_seconds": 0.004576272395833333,
+        "reference_over_candidate_ratio": 2.411379553705635
+      },
+      "LARE_R4": {
+        "cpu_seconds": 0.005699882291666666,
+        "reference_over_candidate_ratio": 1.9360276445767246
+      },
+      "LARE_R5": {
+        "cpu_seconds": 0.006996413020833332,
+        "reference_over_candidate_ratio": 1.577255324212638
+      },
+      "LARE_R6": {
+        "cpu_seconds": 0.008260583854166666,
+        "reference_over_candidate_ratio": 1.3358776912522765
+      },
+      "LARE_R8": {
+        "cpu_seconds": 0.010855024479166666,
+        "reference_over_candidate_ratio": 1.0165918749127647
+      },
+      "LARE_R12": {
+        "cpu_seconds": 0.015928071874999998,
+        "reference_over_candidate_ratio": 0.692810138860577
+      }
+    },
+    "interpretation": [
+      "The short-horizon L4 research frontier carries a material shared-host cost signal relative to R16.",
+      "The persistent R8 groundwater frontier is approximately cost-neutral relative to R16 in this implementation.",
+      "R12 is slower than R16 in this shared-host screen.",
+      "Therefore dimensional reduction does not automatically produce computational value; closure and implementation cost matter."
+    ]
+  },
+  "material_transfer": {
+    "B14": "Targeted lower-zone placement strongly outperforms uniform placement at dimensions four and eight in the preregistered transfer evidence.",
+    "implication": "The placement principle transfers, but the exact B01 boundaries and minimum dimension are not universalized."
+  },
+  "phase_A_decision": [
+    "A practical Layer-ROM remains scientifically plausible, but not as a universal three-layer model.",
+    "The best-supported low-dimensional fixed-layer route is purpose dependent: L4 is the first serious short-horizon candidate, while persistent groundwater response moves the current frontier to R8.",
+    "No tested extra global moment improves the four-scalar tradeoff over explicit localization.",
+    "For the current fixed-head implementation, moving from L4 toward the persistent R8 frontier consumes nearly all of the shared-host speed signal relative to R16.",
+    "The next research value is therefore transfer and purpose-envelope qualification, not another unconstrained closure search."
+  ],
+  "next_phase_options": {
+    "preferred": "Prospectively test transfer of the L4/L6/R8 targeted ladder across additional soil/forcing regimes and only then open AG-WB/EVT physics.",
+    "alternative": "Investigate a new localized/front state only if explicit-layer transfer shows a persistent cost-fidelity gap that cannot be solved by fixed partitions.",
+    "not_authorized": "No production implementation, empirical fitted closure, moving-water-table semantics, application threshold, or portable performance claim."
+  },
+  "production_rom_authorized": false,
+  "application_acceptance_adjudicated": false,
+  "portable_speedup_authorized": false
+}
