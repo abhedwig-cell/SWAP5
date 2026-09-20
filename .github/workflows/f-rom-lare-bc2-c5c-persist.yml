@@ -1,0 +1,191 @@
+name: F-ROM-LARE persist C5C spatial-refinement audit
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5c-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5C artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5c
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602125716" > /tmp/c5c/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5c/artifact.json'))
+          assert a['id']==10602125716
+          assert a['digest']=='sha256:ef24d9268e6758a6bb0440aa3c8bcc35c2785d0ae79912a526374250069ca86a'
+          assert a['workflow_run']['id']==35499789756
+          assert a['workflow_run']['head_sha']=='0999938d399ffdfd717f16231797484740b783e7'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602125716/zip" > /tmp/c5c.zip
+          echo "ef24d9268e6758a6bb0440aa3c8bcc35c2785d0ae79912a526374250069ca86a  /tmp/c5c.zip" | sha256sum -c -
+          unzip -q /tmp/c5c.zip -d /tmp/c5c/evidence
+          echo "2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326  /tmp/c5c/evidence/LARE_BC2_C5C_RESULT.json" | sha256sum -c -
+          echo "3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9  /tmp/c5c/evidence/R32_o0.txt" | sha256sum -c -
+          echo "dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1  /tmp/c5c/evidence/R64_o0.txt" | sha256sum -c -
+
+      - name: Persist result and build C5C closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5c/evidence/LARE_BC2_C5C_RESULT.json integration/f-rom/LARE_BC2_C5C_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5C_RESULT.json'))
+          e=r['effect_sizes']
+          rr16_32=e['R16ref_vs_R32ref']['rmse_cm_per_day']
+          rr32_64=e['R32ref_vs_R64ref']['rmse_cm_per_day']
+          rows=r['lare_bottom_refinement']
+          b10=rows['B10']['vs_R64']
+          b5=rows['B5']['vs_R64']
+          b25=rows['B2P5']['vs_R64']
+          bottom_monotonic=(
+            abs(b10['pooled_signed_mean_cm_per_day']) > abs(b5['pooled_signed_mean_cm_per_day']) > abs(b25['pooled_signed_mean_cm_per_day'])
+            and b10['pooled_rmse_cm_per_day'] > b5['pooled_rmse_cm_per_day'] > b25['pooled_rmse_cm_per_day']
+          )
+          ref_progressing=rr32_64 < rr16_32
+          closeout={
+            'schema':'swap5.lare.bc2.c5c.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5C',
+            'status':'CLOSED_BOTTOM_CELL_REFINEMENT_EFFECT_PRESENT_REFERENCE_GRID_NOT_ASYMPTOTIC',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5C_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5C_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35499789756,
+              'job_id':106049380553,
+              'execution_head':'0999938d399ffdfd717f16231797484740b783e7',
+              'artifact_id':10602125716,
+              'artifact_digest':'sha256:ef24d9268e6758a6bb0440aa3c8bcc35c2785d0ae79912a526374250069ca86a',
+              'result_sha256':'2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326',
+              'R32_reference_sha256':'3117f9e74b56f20e1706d78b05bb4c8c6a71eb04fccfe3981fea668eef48feb9',
+              'R64_reference_sha256':'dc358f0862c01b8953c29b4a3f17cccdba99b1b8713dfd0f9d8fe359e3f844c1',
+              'R16_reference_sha256':'16c641a0f7d306ce423f9127e6769c0d76ba117da3d61d6d8e6651d53c99bd8b'
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5B':r['baseline_identity_to_C5B'],
+            'diagnostic_adjudication':{
+              'BOTTOM_CELL_SPATIAL_CONVERGENCE_PRESENT':bottom_monotonic,
+              'REFERENCE_REFINEMENT_PROGRESSING':ref_progressing,
+              'REFERENCE_REFINEMENT_NOT_PROGRESSING':not ref_progressing,
+              'CLOSURE_ALGEBRA_FLOOR_ADJUDICATED':False
+            },
+            'key_evidence':{
+              'Reference_R16_to_R32_flux_RMSE_cm_per_day':rr16_32,
+              'Reference_R32_to_R64_flux_RMSE_cm_per_day':rr32_64,
+              'Reference_R16_to_R64_flux_RMSE_cm_per_day':e['R16ref_vs_R64ref']['rmse_cm_per_day'],
+              'LARE_B10_vs_R64_flux_RMSE_cm_per_day':b10['pooled_rmse_cm_per_day'],
+              'LARE_B5_vs_R64_flux_RMSE_cm_per_day':b5['pooled_rmse_cm_per_day'],
+              'LARE_B2P5_vs_R64_flux_RMSE_cm_per_day':b25['pooled_rmse_cm_per_day'],
+              'LARE_B10_vs_R64_signed_bias_cm_per_day':b10['pooled_signed_mean_cm_per_day'],
+              'LARE_B5_vs_R64_signed_bias_cm_per_day':b5['pooled_signed_mean_cm_per_day'],
+              'LARE_B2P5_vs_R64_signed_bias_cm_per_day':b25['pooled_signed_mean_cm_per_day'],
+              'bottom_spacing_convergence':r['bottom_spacing_signed_bias_convergence_vs_R64']
+            },
+            'scientific_interpretation':[
+              'The old 10-cm R16 Richards trajectory is not a spatially stable authority for the B14 dynamic prescribed-head workload. Its bottom-flux RMSE relative to R64 is about 0.0866 cm/d.',
+              'Refining Richards from 10 cm to 5 cm does not enter a monotone asymptotic regime: the R16-to-R32 shift is about 0.0438 cm/d while the R32-to-R64 shift is about 0.0490 cm/d.',
+              'Consequently the very small C5B LARE-versus-R16 residual cannot be interpreted as a continuum closure error. It is conditioned on a coarse 10-cm Reference discretization.',
+              'LARE bottom-cell refinement has a strong effect relative to R64: pooled flux RMSE falls from about 0.0866 cm/d at a 10-cm bottom cell to 0.0488 at 5 cm and 0.000663 at 2.5 cm.',
+              'The similar magnitudes of Reference-grid shifts and LARE bottom-cell shifts suggest that boundary-adjacent spatial discretization is a first-order mechanism, but R64 itself is not yet sufficiently established as an asymptotic Reference to quantify a closure floor.',
+              'The signed-bias Richardson estimate over B10/B5/B2P5 is not trustworthy because the signed bias changes sign and the fitted order is negative; no h->0 closure claim is admitted.',
+              'No new closure should be formulated until the Richards Reference grid is extended beyond R64.'
+            ],
+            'next_authority':{
+              'state':'REFERENCE_SPATIAL_EXTENSION_REQUIRED',
+              'target':'LARE-BC2-C5D',
+              'question':'Does the B14 dynamic prescribed-head Richards trajectory begin to converge at R128, and if necessary R256, under the unchanged C5A numerical policy?',
+              'constraints':[
+                'Reference-only first; do not run new LARE closure variants',
+                'reuse exact C5A histories, B14 material and D13 integrated-water-depth policy',
+                'preserve R16/R32/R64 evidence unchanged',
+                'require O0/O2 identity and mass gates',
+                'do not reinterpret C5A acceptance',
+                'no application, speed or production claims'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5C_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5C closeout
+
+          C5C tested the spatial mechanism left unresolved by C5B. It first refined the Richards Reference from 10-cm cells to 5-cm and 2.5-cm cells, then refined only the bottom 10 cm of CURRENT_LAYER_FACE LARE.
+
+          The authoritative run is 35499789756 at execution head 0999938d399ffdfd717f16231797484740b783e7. The exact result SHA-256 is 2fe5b04dc70f31a580da5e632a26b094cb0b274cc5a45722155a948a39f5d326.
+
+          The main result is that the old R16 Reference is not spatially stable for this B14 dynamic prescribed-head workload. Bottom-flux RMSE is about 0.0438 cm/d between R16 and R32 and about 0.0490 cm/d between R32 and R64. The second refinement step is not smaller than the first, so the Richards sequence has not yet entered an evident asymptotic regime.
+
+          This changes the interpretation of C5B. The roughly 2.97e-5 cm/d LARE-versus-R16 residual was real relative to that frozen 10-cm comparator, but it cannot be treated as a continuum closure floor because the Reference itself moves by orders of magnitude more under spatial refinement.
+
+          Bottom-cell refinement in LARE is nevertheless strongly consequential. Relative to R64, pooled bottom-flux RMSE drops from about 0.0866 cm/d for B10 to 0.0488 for B5 and 0.000663 for B2P5. The signed bias also shrinks strongly, but crosses zero at B2P5, so a Richardson extrapolation from these three values is not physically reliable.
+
+          The striking similarity between the Reference-grid shifts and the LARE bottom-cell shifts points toward boundary-adjacent spatial discretization as a major mechanism. But R64 is not yet a defensible continuum-like Reference. No new closure law is authorized.
+
+          The next step is C5D: extend the Richards spatial Reference beyond R64 under the exact same workload and numerical policy, before any additional LARE or closure experiment.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v8'
+          j['status']='CLOSED_THROUGH_C5C_REFERENCE_SPATIAL_NONCONVERGENCE_REFERENCE_EXTENSION_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5C_bottom_and_reference_refinement':'integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5C':'The B14 dynamic prescribed-head R16/R32/R64 Richards sequence is not yet spatially asymptotic. LARE bottom-cell refinement strongly reduces error relative to R64, but no closure-floor claim is valid until Reference spatial authority is extended.'
+          })
+          j['decision']='EXTEND_REFERENCE_SPATIAL_AUTHORITY_BEYOND_R64_BEFORE_ANY_NEW_CLOSURE'
+          j['next_authority']='LARE-BC2-C5D'
+          j['next_family_authority']={
+            'family':'C5D_REFERENCE_SPATIAL_EXTENSION',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_REFERENCE_ONLY_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5B_CLOSEOUT.json'
+            ],
+            'purpose':'Establish whether the B14 dynamic prescribed-head Reference trajectory converges beyond 2.5-cm vertical resolution.',
+            'new_closure_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5C closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5C_RESULT.json                   integration/f-rom/LARE_BC2_C5C_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5C_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5C spatial-refinement audit"
+          git push origin HEAD:work/f-rom-lare-rs1
