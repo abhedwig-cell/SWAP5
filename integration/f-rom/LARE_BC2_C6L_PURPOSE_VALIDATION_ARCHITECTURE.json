@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.lare.bc2.c6l.purpose-validation-architecture.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6L",
+  "status": "CLOSED_PURPOSE_VALIDATION_ARCHITECTURE_BOUND_SURFACE_REFERENCE_FIRST_ROOT_ET_SEPARATED",
+  "decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
+  "role": "READ_ONLY_PURPOSE_EVIDENCE_GAP_AND_PROSPECTIVE_VALIDATION_ARCHITECTURE",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
+    "standard_lare": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "resolution_ladder": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
+    "fixed_domain_closure": "integration/f-rom/LARE_BC1_CLOSEOUT.json",
+    "high_resolution_reference_pattern": "integration/f-rom/LARE_BC2_C5N_PREREGISTRATION.json",
+    "application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "current_branch_at_binding": "work/f-rom-lare-rs1@758220d4d9dcaf9d63674f0b45440147635883c4",
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "reconciled_capability": {
+    "top_flux_forcing": "Already exercised in DYN0A and supported by serialized Reference forcing.",
+    "distributed_prescribed_root_sink": "Serialized Reference forcing contains root_extraction_sink(numnod), but existing purpose evidence keeps it zero and the standard LARE research runner has no distributed sink term.",
+    "variable_grid_reference": "Existing research tooling can materialize fixed arbitrary vertical grids; C5N provides an R512/R1024/R2048 plus temporal-control qualification pattern.",
+    "conclusion": "A new surface-flux-only blind discriminator needs no new production physics. Free-running ET/root-uptake prediction would need a separately qualified sink-feedback contract and must not be inferred from a prescribed-sink experiment."
+  },
+  "validation_program": {
+    "SURF": {
+      "purpose": [
+        "UPPER_ZONE_SOIL_MOISTURE",
+        "PROFILE_STATE",
+        "DRAINAGE_RESPONSE",
+        "FAST_SURFACE_FORCING_RESPONSE"
+      ],
+      "first_work_unit": "LARE-BC2-C6M",
+      "first_stage": "HIGH_RESOLUTION_REFERENCE_QUALIFICATION_ONLY",
+      "second_stage_if_reference_qualified": "FRESH_BLIND_EXISTING_REPRESENTATION_COMPARISON",
+      "physical_design": {
+        "column_depth_cm": 160,
+        "sinks": false,
+        "bottom_boundary": "FREE_DRAINAGE",
+        "top_boundary": "PRESCRIBED_FLUX_AROUND_INITIAL_GRAVITY_EQUILIBRIUM",
+        "material_set": [
+          "B01",
+          "B14"
+        ],
+        "response_blind_histories": true,
+        "no_groundwater_head_perturbation": true
+      },
+      "rationale": [
+        "Free drainage removes prescribed-head propagation as the primary driver and isolates surface-originating vertical memory.",
+        "A gravity-equilibrium baseline q_top=K(theta_initial) makes dimensionless wet/dry perturbations material-scalable without introducing an application tolerance.",
+        "Using both B01 and B14 prevents a single-material minimum dimension from being treated as general."
+      ],
+      "representation_set": {
+        "existing_only": true,
+        "lower_zone_ladder": [
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R8",
+          "R12",
+          "R16"
+        ],
+        "placement_controls": [
+          "P4_TOP_LOWER",
+          "U4",
+          "U8"
+        ],
+        "new_partition_authorized": false,
+        "new_closure_authorized": false
+      },
+      "scientific_views": {
+        "PROFILE_STATE": [
+          "total_storage_rmse_cm",
+          "root_zone_0_40_storage_rmse_cm",
+          "upper_0_80_storage_rmse_cm",
+          "mapped_10cm_theta_rmse"
+        ],
+        "DRAINAGE": [
+          "cumulative_bottom_exchange_rmse_cm",
+          "interval_bottom_flux_rmse_cm_per_day",
+          "mean_abs_history_signed_bottom_flux_error_cm_per_day"
+        ],
+        "FAST_RESPONSE_DIAGNOSTICS": [
+          "bottom_flux_sign_mismatch_count",
+          "drainage_response_peak_time_difference",
+          "root_zone_storage_extremum_time_difference"
+        ]
+      },
+      "interpretation_boundary": "Comparator-relative evidence only. No observed error becomes an application threshold."
+    },
+    "ROOT_ET": {
+      "purpose": [
+        "EVAPOTRANSPIRATION",
+        "ROOT_UPTAKE",
+        "OPERATIONAL_DROUGHT"
+      ],
+      "authorization_state": "NOT_YET_RESPONSE_AUTHORIZED",
+      "prerequisite": "After SURF architecture is exercised, derive and qualify a conservative distributed-source mapping plus a free-running root-uptake feedback contract.",
+      "prescribed_sink_limit": "A prescribed Reference sink replay can isolate hydraulic propagation under identical extraction, but cannot establish that the ROM predicts stress-dependent root uptake or ET.",
+      "required_separation": [
+        "HYDRAULIC_RESPONSE_TO_GIVEN_SINK",
+        "ROOT_UPTAKE_FEEDBACK_PREDICTION"
+      ],
+      "no_claim_before_feedback_qualification": true
+    },
+    "LONG_HORIZON": {
+      "purpose": [
+        "LONG_TERM_REGIONAL_WATER_BALANCE",
+        "REGIONAL_RECHARGE"
+      ],
+      "authorization_state": "DESIGN_ONLY",
+      "prerequisite": "Surface/reference and source/sink semantics must first be stable.",
+      "minimum_metrics": [
+        "cumulative_precipitation_or_top_input",
+        "cumulative_root_extraction_or_ET",
+        "cumulative_bottom_drainage_or_recharge",
+        "storage_change",
+        "signed partition bias"
+      ],
+      "minimum_horizon_requirement": "Longer than the current sub-day/one-day laboratories; exact duration must be selected independently of candidate response.",
+      "caveat": "Mass ledger closure is an integrity gate, not a water-partition fidelity criterion."
+    }
+  },
+  "C6M_preregistration_basis": {
+    "reference_before_candidate": true,
+    "materials": [
+      "B01",
+      "B14"
+    ],
+    "boundary": "free drainage",
+    "sinks": false,
+    "observations": 1024,
+    "observation_dt_day": 0.0008,
+    "horizon_day": 0.8192,
+    "reference_grids": [
+      {
+        "id": "R512_T16",
+        "nodes": 512,
+        "temporal_factor": 16
+      },
+      {
+        "id": "R1024_T16",
+        "nodes": 1024,
+        "temporal_factor": 16
+      },
+      {
+        "id": "R2048_T16",
+        "nodes": 2048,
+        "temporal_factor": 16
+      },
+      {
+        "id": "R2048_T8",
+        "nodes": 2048,
+        "temporal_factor": 8
+      }
+    ],
+    "fresh_history_rule": "History schedules and top-flux multipliers must be frozen before any C6M Reference generation and must not reuse C4-C6 responses for selection.",
+    "candidate_response_in_C6M": false
+  },
+  "stop_rules": [
+    "Do not infer ET/root-uptake predictive fidelity from prescribed sink replay.",
+    "Do not use the 16x10-cm control as continuum authority for the new surface-driven purpose.",
+    "Do not introduce top-focused partitions after seeing SURF response; any future new partition requires a separate preregistered representation work unit.",
+    "Do not select absolute hydrological tolerances from C6M/SURF errors.",
+    "Do not reopen C6J/BEMR/FEMO under the purpose-validation label.",
+    "No performance screen before a purpose-specific hydrological gate closes."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6M",
+    "state": "FRESH_SURFACE_FLUX_HIGH_RES_REFERENCE_PREREGISTRATION_AUTHORIZED",
+    "question": "Do fresh source-free, free-drainage, surface-flux histories have a numerically qualified high-resolution Richards hierarchy suitable for later purpose-specific Layer-ROM comparison on B01 and B14?",
+    "hydrological_candidate_response_authorized": false
+  },
+  "scientific_firewall": {
+    "hydrological_response_generated": false,
+    "new_representation_implemented": false,
+    "new_closure_implemented": false,
+    "root_uptake_feedback_implemented": false,
+    "application_threshold_selected": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
