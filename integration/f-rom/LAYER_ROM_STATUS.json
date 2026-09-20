@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "823d951bc525b8fa0088ced34ecd052cca023210",
+  "checkpoint_commit": "50399872c59daa3dbab092087b8507c972175873",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B1R_CLOSED_B1HCF_CLOSED_B1HCG_CLOSED_B1HCH_CLOSED_MIXED_B1HCI_PREREGISTERED",
-  "last_reconciled_head": "823d951bc525b8fa0088ced34ecd052cca023210",
+  "phase": "PHASE_A_CLOSED_B1R_CLOSED_B1HCF_CLOSED_B1HCG_CLOSED_B1HCH_CLOSED_B1HCI_CLOSED_MIXED_B1HCJ_PREREGISTERED",
+  "last_reconciled_head": "50399872c59daa3dbab092087b8507c972175873",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -64,7 +64,11 @@
     "integration/f-rom/LAYER_ROM_B1HCH_REPAIR_RECORD.json",
     "integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json",
     "tests/rom/analyze_layer_rom_b1hci_oracle.py",
-    "tests/rom/aggregate_layer_rom_b1hci.py"
+    "tests/rom/aggregate_layer_rom_b1hci.py",
+    "integration/f-rom/LAYER_ROM_B1HCI_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCI_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json",
+    "tests/rom/analyze_layer_rom_b1hcj_invariant.py"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -101,7 +105,10 @@
     "GitHub Actions run 35502001117 (B1HCH active)",
     "GitHub Actions run 35502200612 / artifact 10602199199 (B1HCH repaired aggregate)",
     "integration/f-rom/LAYER_ROM_B1HCH_RESULT.json",
-    "integration/f-rom/LAYER_ROM_B1HCH_CLOSEOUT.json"
+    "integration/f-rom/LAYER_ROM_B1HCH_CLOSEOUT.json",
+    "GitHub Actions run 35502486907 / aggregate artifact 10602039873 (B1HCI)",
+    "integration/f-rom/LAYER_ROM_B1HCI_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCI_CLOSEOUT.json"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -109,8 +116,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Persist and execute B1HCI independent DOP853/Radau numerical-oracle workflow on all six frozen materials. Do not use Reference trajectories in the primary oracle decision and do not redesign closure/state before this gate closes.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 823d951bc525b8fa0088ced34ecd052cca023210. B1HCH is closed mixed with repaired aggregate artifact 10602199199; B1HCI preregistration, material analyzer and aggregate analyzer are persisted. Next incomplete action: workflow execution.",
+  "next_action": "Execute B1HCJ B12 R16_OP linear-invariant/floating-accumulation diagnosis. Do not generate new Reference evidence or redesign closure/state until B1HCJ closes.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 50399872c59daa3dbab092087b8507c972175873. B1HCI run 35502486907 is closed mixed solely because of B12 storage; both independent oracles agree on all six materials. B1HCJ preregistration and analyzer are persisted; workflow execution is next.",
   "blockers": [],
   "scope_guards": [
     "research only",
