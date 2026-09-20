@@ -138,13 +138,13 @@
     "no_acceptance_threshold": true,
     "no_causal_winner_forced": true,
     "descriptors": [
-      "PRE_STEP_K_LAG_SMALL_RELATIVE_TO_SPATIAL_CORRECTION",
-      "PRE_STEP_K_LAG_NONNEGLIGIBLE",
+      "PRE_STEP_K_LAG_REPORTED_CONTINUOUSLY_NO_THRESHOLD",
       "NONLINEAR_SPATIAL_MEAN_CHANGES_GRID_GAP_DIRECTION",
       "EXACT_STEADY_LOCAL_OPERATOR_GRID_DIRECTION_CONSISTENT",
       "LOCAL_THEORY_MIXED_OR_NONUNIQUE"
     ],
-    "dynamic_followup_rule": "A future dynamic Reference counterfactual requires a new preregistration and is authorized only if C5K shows a theory-derived, zero-fit operator with consistent mechanism direction across both grids and prescribed-head phases. C5K itself cannot admit such an operator."
+    "dynamic_followup_rule": "A future dynamic Reference counterfactual requires a new preregistration and is authorized only if C5K shows a theory-derived, zero-fit operator with consistent mechanism direction across both grids and prescribed-head phases. C5K itself cannot admit such an operator.",
+    "K_lag_rule": "Report the ratio of the maximum-grid RMSE(Q_postK-Q_current_face) to the maximum-grid RMSE(Q_int-Q_postK) continuously; do not discretize it with a percentage threshold."
   },
   "stop_rules": [
     "No production Reference source edit.",
@@ -167,17 +167,17 @@
     "production_rom_authorized": false
   },
   "implementation_binding": {
-    "state": "IMPLEMENTATION_REPAIR_BEFORE_EXECUTION_PENDING_REBIND",
+    "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "instrumentation_materializer": "tests/rom/materialize_lare_bc2_c5k_bottom_state_instrumentation.py",
     "instrumentation_materializer_blob": "c8bb4cd7805d140d3b6fd64c2617fe419e751564",
     "analyzer": "tests/rom/analyze_lare_bc2_c5k_local_half_cell_theory.py",
-    "analyzer_blob": "a1d3f90e747ab5a7668bf3bb60ada0a085206f04",
+    "analyzer_blob": "a2ea2726feadaab74e9277c3a85d912070387b98",
     "c5i_history_slice_materializer_blob": "59f1c3f8cb047b13437551db9a49bd096c2ae20c",
     "c5i_full_materializer_blob": "371af1c7fcca243d04d84fca92a028746ba0ac5c",
     "allowed_new_code": "logging-only C5I harness instrumentation and postprocessing theory diagnostics on frozen states",
     "prohibited_new_code": "Reference solver/boundary changes, fitted conductivity means, response-driven formula changes, T32/R2048, LARE changes",
-    "repair_reason": "Pre-execution analyzer review found a history-summary KeyError and separated C5J-matching pre-step arithmetic K from post-step arithmetic K. No C5K response existed."
+    "repair_reason": "Pre-execution review only: repaired history summary, separated pre/post arithmetic conductivity diagnostics, and removed an arbitrary mechanism-label threshold. No C5K response existed."
   },
   "model_changed": false
 }
