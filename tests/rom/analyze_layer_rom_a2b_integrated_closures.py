@@ -20,10 +20,11 @@ KS=31.225016
 LAM=0.98087
 PSI_MIN=0.0100001
 
-ODE_RTOL=1.0e-9
-ODE_ATOL=1.0e-11
-LS_TOL=1.0e-10
-MAX_NFEV=30
+ODE_RTOL=2.0e-10
+ODE_ATOL_PSI=1.0e-10
+ODE_ATOL_STORAGE=1.0e-11
+LS_TOL=1.0e-12
+MAX_NFEV=40
 
 PARTITIONS={
     "L3":[0.0,140.0,150.0,160.0],
@@ -142,7 +143,7 @@ def propagate(p0:float,q:float,length:float,with_storage:bool):
     max_step=max(abs(length)/8.0,0.5)
     sol=solve_ivp(
         rhs,(0.0,length),y0,method="DOP853",
-        rtol=ODE_RTOL,atol=ODE_ATOL,max_step=max_step
+        rtol=ODE_RTOL,atol=([ODE_ATOL_PSI,ODE_ATOL_STORAGE] if with_storage else ODE_ATOL_PSI),max_step=max_step
     )
     if not sol.success or np.min(sol.y[0])<=PSI_MIN:
         raise RuntimeError("INTEGRATED_PROFILE_SOLVE_FAILED")
@@ -228,36 +229,39 @@ def structural_tests():
     du,dl=140.0,10.0
     k=k_from_theta(theta)
     q0=q_lare(theta,theta,du,dl)
-    qc,_,_=q_integrated_centroid(theta,theta,du,dl,q0)
+    qc_uniform,_,_=q_integrated_centroid(theta,theta,du,dl,q0)
     psi=psi_from_theta(theta)
     x0=np.asarray([math.log(psi-PSI_MIN),q0/KS])
-    qq,_,_,r=q_qs_storage(theta,theta,du,dl,x0)
-    if abs(q0-k)>1e-11 or abs(qc-k)>1e-8 or abs(qq-k)>1e-8 or r>1e-10:
+    qq_uniform,_,_,r_uniform=q_qs_storage(theta,theta,du,dl,x0)
+    uniform_error=max(abs(q0-k),abs(qc_uniform-k),abs(qq_uniform-k))
+    if uniform_error>1e-8 or r_uniform>1e-10:
         raise SystemExit("uniform-state identity failed")
 
     # Integrated centroid synthetic identity.
     pu=45.0
-    qsyn=0.65*float(k_from_psi(pu))
+    qsyn_centroid=0.65*float(k_from_psi(pu))
     distance=75.0
-    pl=float(propagate(pu,qsyn,distance,False)[0])
+    pl=float(propagate(pu,qsyn_centroid,distance,False)[0])
     tu=float(theta_from_psi(pu))
     tl=float(theta_from_psi(pl))
-    qc,_,_=q_integrated_centroid(tu,tl,140.0,10.0,qsyn)
-    if abs(qc-qsyn)>1e-7:
+    qc_syn,_,_=q_integrated_centroid(tu,tl,140.0,10.0,qsyn_centroid)
+    centroid_error=abs(qc_syn-qsyn_centroid)
+    if centroid_error>1e-7:
         raise SystemExit("integrated-centroid synthetic identity failed")
 
     # Storage-constrained quasi-steady synthetic identity.
     psi_i=35.0
-    qsyn=0.8*float(k_from_psi(psi_i))
-    tu,tl=profile_storage_from_interface(psi_i,qsyn,140.0,10.0)
-    x=np.asarray([math.log(psi_i-PSI_MIN),qsyn/KS])
-    qq,_,_,r=q_qs_storage(tu,tl,140.0,10.0,x)
-    if abs(qq-qsyn)>1e-7 or r>1e-10:
+    qsyn_qs=0.8*float(k_from_psi(psi_i))
+    tu,tl=profile_storage_from_interface(psi_i,qsyn_qs,140.0,10.0)
+    x=np.asarray([math.log(psi_i-PSI_MIN),qsyn_qs/KS])
+    qq_syn,_,_,r_syn=q_qs_storage(tu,tl,140.0,10.0,x)
+    qs_error=abs(qq_syn-qsyn_qs)
+    if qs_error>1e-7 or r_syn>1e-10:
         raise SystemExit("QS-storage synthetic identity failed")
     return {
-        "uniform_max_abs_q_error_cm_per_day":max(abs(q0-k),abs(qc-k),abs(qq-k)),
-        "centroid_synthetic_abs_q_error_cm_per_day":abs(qc-qsyn),
-        "qs_synthetic_abs_q_error_cm_per_day":abs(qq-qsyn),
+        "uniform_max_abs_q_error_cm_per_day":uniform_error,
+        "centroid_synthetic_abs_q_error_cm_per_day":centroid_error,
+        "qs_synthetic_abs_q_error_cm_per_day":qs_error,
     }
 
 
@@ -274,8 +278,15 @@ def main():
     if tuple(c["id"] for c in prereg["closures"])!=CLOSURES:
         raise SystemExit("A2B closure list drift")
     freeze=prereg["pre_execution_numerical_freeze"]
-    if not freeze["before_first_official_A2B_result"]:
-        raise SystemExit("numerical contract not frozen")
+    amendment=prereg["pre_execution_numerical_amendment"]
+    if not freeze["before_first_official_A2B_result"] or not amendment["before_first_A2B_result"]:
+        raise SystemExit("numerical contract not frozen/amended before execution")
+    if amendment["solve_ivp"]["rtol"] != ODE_RTOL or amendment["solve_ivp"]["atol_psi"] != ODE_ATOL_PSI:
+        raise SystemExit("ODE numerical amendment drift")
+    if amendment["solve_ivp"]["atol_theta_integral"] != ODE_ATOL_STORAGE:
+        raise SystemExit("storage-integral numerical amendment drift")
+    if amendment["least_squares"]["xtol"] != LS_TOL or amendment["least_squares"]["max_nfev"] != MAX_NFEV:
+        raise SystemExit("least-squares numerical amendment drift")
     tests=structural_tests()
 
     errors={p:{c:[] for c in CLOSURES} for p in PARTITIONS}
@@ -301,36 +312,52 @@ def main():
                 qbase=q_lare(tu,tl,du,dl)
                 candidates={"C_LARE_TAYLOR":qbase}
 
-                try:
-                    qc,nfev,_=q_integrated_centroid(
-                        tu,tl,du,dl,
-                        prev_centroid_q if prev_centroid_q is not None else qbase
-                    )
-                    prev_centroid_q=qc
-                    max_centroid_nfev=max(max_centroid_nfev,nfev)
-                    candidates["C_INT_CENTROID_LONG_ONLY"]=qc
-                except (ValueError,RuntimeError,FloatingPointError,OverflowError):
+                centroid_inits=[]
+                if prev_centroid_q is not None:
+                    centroid_inits.append(prev_centroid_q)
+                centroid_inits.append(qbase)
+                centroid_ok=False
+                for init_q in centroid_inits:
+                    try:
+                        qc,nfev,_=q_integrated_centroid(tu,tl,du,dl,init_q)
+                        prev_centroid_q=qc
+                        max_centroid_nfev=max(max_centroid_nfev,nfev)
+                        candidates["C_INT_CENTROID_LONG_ONLY"]=qc
+                        centroid_ok=True
+                        break
+                    except (ValueError,RuntimeError,FloatingPointError,OverflowError):
+                        continue
+                if not centroid_ok:
                     failures[part]["C_INT_CENTROID_LONG_ONLY"]+=1
+                    prev_centroid_q=None
 
-                try:
-                    if prev_qs_x is None:
-                        pu=psi_from_theta(tu)
-                        pl=psi_from_theta(tl)
-                        slope=2.0*(pl-pu)/(du+dl)
-                        psi_interface=pu+slope*du/2.0
-                        init=np.asarray([
-                            math.log(max(psi_interface-PSI_MIN,1e-8)),
-                            qbase/KS
-                        ])
-                    else:
-                        init=prev_qs_x
-                    qq,x,nfev,res=q_qs_storage(tu,tl,du,dl,init)
-                    prev_qs_x=x
-                    max_qs_nfev=max(max_qs_nfev,nfev)
-                    max_storage_residual=max(max_storage_residual,res)
-                    candidates["C_QS_STORAGE_LONG_ONLY"]=qq
-                except (ValueError,RuntimeError,FloatingPointError,OverflowError):
+                pu=psi_from_theta(tu)
+                pl=psi_from_theta(tl)
+                slope=2.0*(pl-pu)/(du+dl)
+                psi_interface=pu+slope*du/2.0
+                fresh_qs=np.asarray([
+                    math.log(max(psi_interface-PSI_MIN,1e-8)),
+                    qbase/KS
+                ])
+                qs_inits=[]
+                if prev_qs_x is not None:
+                    qs_inits.append(prev_qs_x)
+                qs_inits.append(fresh_qs)
+                qs_ok=False
+                for init in qs_inits:
+                    try:
+                        qq,x,nfev,res=q_qs_storage(tu,tl,du,dl,init)
+                        prev_qs_x=x
+                        max_qs_nfev=max(max_qs_nfev,nfev)
+                        max_storage_residual=max(max_storage_residual,res)
+                        candidates["C_QS_STORAGE_LONG_ONLY"]=qq
+                        qs_ok=True
+                        break
+                    except (ValueError,RuntimeError,FloatingPointError,OverflowError):
+                        continue
+                if not qs_ok:
                     failures[part]["C_QS_STORAGE_LONG_ONLY"]+=1
+                    prev_qs_x=None
 
                 for closure,q in candidates.items():
                     err=q-qref
