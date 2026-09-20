@@ -1,0 +1,136 @@
+name: F-ROM-LARE BC2-C6C bounded entropy-moment sharded qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - 'integration/f-rom/LARE_BC2_C6C_EXECUTION_BINDING.json'
+  workflow_dispatch:
+
+concurrency:
+  group: f-rom-lare-bc2-c6c-sharded-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install numerical dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Verify immutable C6C scientific core
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/qualify_lare_bc2_c6c_bemr.py)" = "3f350681bce34e36b72faab84af00366c414671c"
+          test "$(git hash-object tests/rom/run_lare_bc2_c6c_bemr_shard.py)" = "061f12b0390a541331cdef6ecacdc6e2984ca10e"
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6c_bemr_shards.py)" = "198400ab4257b9557794c78eb1c450eea87aaee8"
+          test "$(git hash-object integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json)" = "e3793cc014b01fab957510c965f3323cd1313627"
+          python3 -m py_compile tests/rom/qualify_lare_bc2_c6c_bemr.py
+          python3 -m py_compile tests/rom/run_lare_bc2_c6c_bemr_shard.py
+          python3 -m py_compile tests/rom/merge_lare_bc2_c6c_bemr_shards.py
+          python3 - <<'PY'
+          import json
+          b=json.load(open('integration/f-rom/LARE_BC2_C6C_EXECUTION_BINDING.json'))
+          p=json.load(open('integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json'))
+          assert b['status']=='BOUND_EXACT_CASE_SHARDING_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE'
+          assert b['immutable_scientific_core']['scientific_preregistration_changed'] is False
+          assert b['immutable_scientific_core']['qualifier_blob']=='3f350681bce34e36b72faab84af00366c414671c'
+          assert b['execution_repair']['shard_count']==12
+          assert b['execution_repair']['partition_rule']=='case_index modulo 12'
+          assert b['workflow']['state']=='BOUND_BEFORE_EXECUTION'
+          assert p['phase']=='PREREGISTERED_BEFORE_BEMR_NUMERICAL_RESPONSE'
+          assert p['scientific_firewall']['hydrological_response_used'] is False
+          print('LARE_BC2_C6C_SHARDED_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Execute exact C6C case shard
+        run: |
+          set -euo pipefail
+          mkdir -p LARE_BC2_C6C_SHARD
+          python3 tests/rom/run_lare_bc2_c6c_bemr_shard.py \
+            --core tests/rom/qualify_lare_bc2_c6c_bemr.py \
+            --prereg integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json \
+            --c6b integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json \
+            --shard-index "${{ matrix.shard }}" \
+            --shard-count 12 \
+            --output "LARE_BC2_C6C_SHARD/LARE_BC2_C6C_SHARD_${{ matrix.shard }}.json" \
+            | tee LARE_BC2_C6C_SHARD/runner.txt
+          sha256sum LARE_BC2_C6C_SHARD/* > LARE_BC2_C6C_SHARD/sha256.txt
+
+      - name: Upload exact C6C shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6c-shard-${{ matrix.shard }}
+          path: LARE_BC2_C6C_SHARD/
+          if-no-files-found: error
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install aggregation dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Recover exact C6C shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lare-bc2-c6c-shard-*
+          path: /tmp/lare-bc2-c6c-shards
+          merge-multiple: false
+
+      - name: Merge and adjudicate C6C
+        run: |
+          set -euo pipefail
+          test "$(git hash-object tests/rom/merge_lare_bc2_c6c_bemr_shards.py)" = "198400ab4257b9557794c78eb1c450eea87aaee8"
+          mkdir -p LARE_BC2_C6C_EVIDENCE
+          python3 tests/rom/merge_lare_bc2_c6c_bemr_shards.py \
+            --shard-dir /tmp/lare-bc2-c6c-shards \
+            --output LARE_BC2_C6C_EVIDENCE/LARE_BC2_C6C_RESULT.json \
+            | tee LARE_BC2_C6C_EVIDENCE/runner.txt
+          cp integration/f-rom/LARE_BC2_C6C_PREREGISTRATION.json LARE_BC2_C6C_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json LARE_BC2_C6C_EVIDENCE/
+          cp integration/f-rom/LARE_BC2_C6C_EXECUTION_BINDING.json LARE_BC2_C6C_EVIDENCE/
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LARE_BC2_C6C_EVIDENCE/LARE_BC2_C6C_RESULT.json'))
+          assert r['case_count']==168
+          assert r['execution']['mode']=='EXACT_CASE_SHARDED'
+          assert r['status'] in (
+            'C6C_BEMR_MATHEMATICALLY_QUALIFIED',
+            'C6C_BEMR_NUMERICALLY_NONUNIQUE_OR_HYDRAULICALLY_INADMISSIBLE',
+            'C6C_BEMR_STATE_DOMAIN_NOT_REALIZABLE'
+          )
+          f=r['scientific_firewall']
+          assert f['hydrological_response_used'] is False
+          assert f['model_run_executed'] is False
+          assert f['response_based_profile_fit'] is False
+          assert f['c5z_post_result_retuning'] is False
+          assert f['production_rom_authorized'] is False
+          print('LARE_BC2_C6C_SHARDED_FIREWALL=PASS')
+          PY
+          sha256sum LARE_BC2_C6C_EVIDENCE/* > LARE_BC2_C6C_EVIDENCE/sha256.txt
+
+      - name: Upload sharded C6C authority
+        uses: actions/upload-artifact@v4
+        with:
+          name: lare-bc2-c6c-sharded
+          path: LARE_BC2_C6C_EVIDENCE/
+          if-no-files-found: error
