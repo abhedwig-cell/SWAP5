@@ -58,7 +58,13 @@ At 512 points with the same transform:
 
 The largest remaining K error is localized immediately below the exact-Ksat transition. The largest remaining C error is localized just below the Hcrit transition. These are now small residual interpolation errors rather than branch-smearing errors.
 
-A Branch-B retention characterization is also included. Its current 512-point result is less accurate than Branch A and remains under characterization before any general provider-envelope claim is made.
+A Branch-B retention characterization is also included. The residual error is strongly localized at the Branch-B transition surfaces `h105 = 1.05*H_ENPR` for theta/C and `H_ENPR` for K, rather than being a broad table-resolution failure:
+
+- 512 points: max theta `3.03e-5`, max log10(K) `1.50e-3`, max log10(C) `8.53e-2`;
+- 1024 points: max theta `2.95e-6`, max log10(K) `7.92e-4`, max log10(C) `4.74e-2`;
+- 2048 points: max theta `3.23e-6`, max log10(K) `2.77e-4`, max log10(C) `1.55e-2`.
+
+Increasing global table density helps but is an inefficient response because the maxima remain pinned to known branch surfaces. The correct next experiment is explicit Branch-B segmentation, not an indiscriminate increase in table size. Until that is qualified, the strongest native-provider evidence is bounded to Branch-A retention semantics, which includes the Hupsel/Staring-style cases exercised here.
 
 ## Reference Richards insertion test
 
@@ -105,13 +111,14 @@ The evidence now supports the following bounded statements:
 6. The native table provider is locally faster in the constitutive microbenchmark by about 12.6%.
 7. No whole-model SWAP5 speedup has yet been established.
 8. No claim is made for `SWKIMPL=1`, which is outside the current ordinary provider admission.
-9. Branch-B and broader parameter/model coverage remain open before the candidate can be called generally valid.
+9. Branch-B remains outside the current candidate envelope. Its residual errors are localized at known branch surfaces and call for explicit segmentation rather than denser global tables.
+10. Broader parameter/model coverage remains open before the candidate can be called generally valid.
 
 ## Next gates
 
 The next useful gates are:
 
-1. close Branch-B fidelity and identify whether its residual error is resolution-only or requires another explicit branch surface;
+1. add an explicit Branch-B segment at `h105` and `H_ENPR`; the density experiment already shows that global refinement alone is the wrong architecture;
 2. expand provider-level qualification across representative soil hydraulic parameter families;
 3. run a current-SWAP5 application/runtime A/B benchmark with the same forcing and physics if and when the provider seam is reachable in that production slice;
 4. only after those gates, decide whether a production admission proposal is warranted.
