@@ -266,7 +266,7 @@
     "analyzer": "tests/rom/analyze_lare_bc2_c5t_dse2p.py",
     "analyzer_blob": "bd7b3d7fc3cfad95efc418ea1c177797088eefd8",
     "workflow": ".github/workflows/f-rom-lare-bc2-c5t.yml",
-    "workflow_blob": "585508c930b14a5253f0ae83ed82562e3c87e953",
+    "workflow_blob": "3eb72e4c1e0166539630a61d6a8949256b76c229",
     "c5r_reference_materializer_blob": "6d7d5c3283dfe1a6d8d433f2fc03e0255711dc91",
     "c5r_reference_slice_materializer_blob": "52f5ee43bc85d436d06a0dd4b524a6bf34dde7f4",
     "numerical_binding": {
@@ -291,7 +291,9 @@
       "tests/rom/aggregate_lare_bc2_c5t_dse2p.py"
     ],
     "binding_note": "The scientific DSE2P method remains the preregistered steady-integral 64/128-point Gauss-Legendre formulation. After run 35509628932 raised on a valid numerical-qualification failure, only analyzer control flow was repaired to persist the preregistered negative status without altering method, tolerances, branches, metrics or adjudication.",
-    "execution_reconciliation": "integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json"
+    "execution_reconciliation": "integration/f-rom/LARE_BC2_C5T_EXECUTION_BINDING_RECONCILIATION.json",
+    "execution_binding_complete": true,
+    "authoritative_run_rule": "Only a run triggered after this exact workflow binding may be scientific authority."
   },
   "model_changed": false
 }
