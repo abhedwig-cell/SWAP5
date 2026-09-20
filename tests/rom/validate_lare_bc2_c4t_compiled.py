@@ -13,10 +13,15 @@ def fields(line):
             k,v=p.split("=",1);out[k]=v
     return out
 
-def qstats(xs):
+def qstats(xs,kind):
     a=np.asarray(xs,float);aa=np.abs(a)
+    if kind=="FMC":
+        ordered=sorted(float(x) for x in aa)
+        p95=ordered[min(len(ordered)-1,math.ceil(.95*len(ordered))-1)]
+    else:
+        p95=float(np.percentile(aa,95))
     return {"count":int(len(a)),"mean":float(np.mean(a)),"mean_abs":float(np.mean(aa)),
-            "rmse":float(np.sqrt(np.mean(a*a))),"p95_abs":float(np.percentile(aa,95)),
+            "rmse":float(np.sqrt(np.mean(a*a))),"p95_abs":p95,
             "max_abs":float(np.max(aa))}
 
 def sign(x):return 1 if x>0 else -1 if x<0 else 0
@@ -59,18 +64,18 @@ def compute(path,kind,refstates,refnodes):
             for cell in range(1,17):
                 et.append(float(cells[(h,st,cell)]["THETA"])-float(refnodes[(h,st,cell)]["THETA"]))
         by[h]={
-          "total_storage_error_cm":qstats(es),
-          "cumulative_bottom_exchange_error_cm":qstats(ec),
-          "terminal_bottom_flux_error_cm_per_day":qstats(eq),
-          "mapped_R16_cell_theta_error":qstats(et),
+          "total_storage_error_cm":qstats(es,kind),
+          "cumulative_bottom_exchange_error_cm":qstats(ec,kind),
+          "terminal_bottom_flux_error_cm_per_day":qstats(eq,kind),
+          "mapped_R16_cell_theta_error":qstats(et,kind),
           "bottom_flux_sign_error_count":hsign
         }
         allS+=es;allC+=ec;allQ+=eq;allT+=et;signerr+=hsign
     return {"pooled":{
-      "total_storage_error_cm":qstats(allS),
-      "cumulative_bottom_exchange_error_cm":qstats(allC),
-      "terminal_bottom_flux_error_cm_per_day":qstats(allQ),
-      "mapped_R16_cell_theta_error":qstats(allT),
+      "total_storage_error_cm":qstats(allS,kind),
+      "cumulative_bottom_exchange_error_cm":qstats(allC,kind),
+      "terminal_bottom_flux_error_cm_per_day":qstats(allQ,kind),
+      "mapped_R16_cell_theta_error":qstats(allT,kind),
       "bottom_flux_sign_error_count":signerr
     },"by_history":by}
 
