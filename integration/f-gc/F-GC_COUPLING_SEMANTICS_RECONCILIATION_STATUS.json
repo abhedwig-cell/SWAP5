@@ -37,13 +37,10 @@
     "storage": "u is storage-like finite-window coupling response; physical partition relative to MODFLOW STO is not specified by current production topology"
   },
   "defect_classification": {
-    "interpretation_defect": true,
-    "authority_binding_defect": true,
-    "authority_binding_primary": true,
-    "implementation_defect": true,
-    "architecture_contract_defect": true,
-    "demonstrated_prepared_solve_algorithm_failure": false,
-    "summary": "combination of interpretation, authority-binding and implementation defects plus incomplete coupling-contract architecture; no evidence that the prepared-solve partitioned iteration itself must be discarded"
+    "interpretation_defect": "CONFIRMED",
+    "authority_binding_defect": "CONFIRMED",
+    "implementation_defect": "CONFIRMED_BOUNDED_TO_APPLICATION_ADMISSION_BINDING",
+    "architecture_design_defect": "CONFIRMED_HEAD_TRANSFER_DRAINAGE_AND_STORAGE_AUTHORITY"
   },
   "blockers": [
     {
@@ -65,10 +62,10 @@
     "reason": "the observed stop is real for the current bootstrap, but bottom_mode=5 plus drainage/root rejection is an implementation/admission binding rather than an intrinsic legacy SWAP physical limit"
   },
   "pub_gc": {
-    "final_submission_authority": "HELD",
-    "manuscript_invalidated": false,
-    "impact_matrix": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md",
-    "rule": "do not advance final claims until storage/drainage authority and affected application-chain requalification are closed"
+    "submission_authority": "HELD",
+    "E7": "DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW",
+    "history_preserved": true,
+    "rerun_now": false
   },
   "artifacts": {
     "authority_audit": "docs/integration/SWAP5_MODFLOW6_COUPLING_SEMANTICS_AUTHORITY_AUDIT.md",
@@ -92,5 +89,27 @@
   "reference_changes": [],
   "solver_changes": [],
   "hupsel_rerun": false,
-  "closeout": "AUDIT_COMPLETE; implementation repair intentionally not started because storage/drainage authority is not yet closed"
+  "closeout": "AUDIT_COMPLETE; implementation repair intentionally not started because storage/drainage authority is not yet closed",
+  "status": "SEMANTIC_CLASSIFICATION_COMPLETE_BLOCKED_STORAGE_PARTITION_AUTHORITY",
+  "canonical_preimage": "919bbf76370c2136932daa04ad88135e7d1615a8",
+  "updated_at": "2026-09-20",
+  "legacy_semantics": {
+    "SWBOTB_1": "prescribed_groundwater_level",
+    "SWBOTB_5": "prescribed_bottom_compartment_pressure_head",
+    "SWBOTB_6": "zero_bottom_flux",
+    "drainage_with_SWBOTB_5": "legacy_supported_in_principle"
+  },
+  "corrected_contract": "docs/integration/SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md",
+  "current_trace": "docs/integration/SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md",
+  "legacy_reconciliation": "docs/integration/SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md",
+  "impact_and_repair": "docs/integration/SWAP5_MODFLOW6_COUPLING_IMPACT_AND_REPAIR.md",
+  "external_authority_checked": [
+    "official SWAP manual: SWBOTB=1 groundwater level; SWBOTB=5 bottom pressure head; drainage may coexist with option 5",
+    "2024 SWAP-MODFLOW technical design: SWAP and MODFLOW groundwater heads may differ; predictor q_u/u and final head imposition are distinct coupling stages"
+  ],
+  "blocker": {
+    "code": "BLOCKED_STORAGE_PARTITION_AUTHORITY",
+    "reason": "realistic production contract does not yet state the non-overlapping physical storage ownership of SWAP-derived u versus MODFLOW STO",
+    "consequence": "do not perform broad production architecture repair or rerun E7 until authority is explicit"
+  }
 }
