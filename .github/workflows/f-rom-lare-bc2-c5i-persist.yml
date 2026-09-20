@@ -1,0 +1,206 @@
+name: F-ROM-LARE persist C5I T16 closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5i-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5I artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5i
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602539613" > /tmp/c5i/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5i/artifact.json'))
+          assert a['id']==10602539613
+          assert a['digest']=='sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664'
+          assert a['workflow_run']['id']==35502856809
+          assert a['workflow_run']['head_sha']=='a8edf922bcd02c10cd591d6f65dd72d38193404b'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10602539613/zip" > /tmp/c5i.zip
+          echo "8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664  /tmp/c5i.zip" | sha256sum -c -
+          unzip -q /tmp/c5i.zip -d /tmp/c5i/evidence
+          echo "865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302  /tmp/c5i/evidence/LARE_BC2_C5I_RESULT.json" | sha256sum -c -
+          echo "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7  /tmp/c5i/evidence/R512_T16_o0.txt" | sha256sum -c -
+          echo "bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7  /tmp/c5i/evidence/R512_T16_o2.txt" | sha256sum -c -
+          echo "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6  /tmp/c5i/evidence/R1024_T16_o0.txt" | sha256sum -c -
+          echo "1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6  /tmp/c5i/evidence/R1024_T16_o2.txt" | sha256sum -c -
+
+      - name: Persist result and build C5I closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5i/evidence/LARE_BC2_C5I_RESULT.json integration/f-rom/LARE_BC2_C5I_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5I_RESULT.json'))
+          assert r['status']=='T16_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING'
+          assert all(r['baseline_identity_to_C5H'].values())
+          s=r['spatial']; t=r['temporal']; i=r['interaction']
+          closeout={
+            'schema':'swap5.lare.bc2.c5i.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5I',
+            'status':'CLOSED_T16_TEMPORAL_PROGRESS_SPATIAL_GAP_CONTINUES_INCREASING_REFERENCE_BOUNDARY_DISCRETIZATION_AUDIT_REQUIRED',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5I_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5I_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35502856809,
+              'execution_head':'a8edf922bcd02c10cd591d6f65dd72d38193404b',
+              'frozen_scientific_execution_head':'3d19680bd42c54fff14ea801f01d1b6f81884603',
+              'artifact_id':10602539613,
+              'artifact_digest':'sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664',
+              'result_sha256':'865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302',
+              'R512_T16_sha256':'bd60f230d1123d97ab5a0599d9dd6eeaf89a654f4d899e82e22d2b124fe2b8c7',
+              'R1024_T16_sha256':'1f643b43ea4ea1f7972601a586b9cb2bc51773f4a2473859e3965b78d54fe6c6'
+            },
+            'execution_qualification':{
+              'history_slices':16,
+              'all_history_slices_qualified':True,
+              'merged_R512_O0_O2_byte_identity':True,
+              'merged_R1024_O0_O2_byte_identity':True,
+              'history_partition_scientific_effect':'NONE',
+              'prior_external_runner_shutdowns_not_scientific_failures':True
+            },
+            'formal_C5A_decision_retained':r['formal_C5A_decision_retained'],
+            'baseline_identity_to_C5H':r['baseline_identity_to_C5H'],
+            'evidence':{
+              'spatial_T4_RMSE_cm_per_day':s['T4']['rmse_cm_per_day'],
+              'spatial_T8_RMSE_cm_per_day':s['T8']['rmse_cm_per_day'],
+              'spatial_T16_RMSE_cm_per_day':s['T16']['rmse_cm_per_day'],
+              'spatial_T16_over_T8':i['spatial_T16_over_T8'],
+              'spatial_T16_relative_change_abs':i['spatial_T16_relative_change_abs'],
+              'R512_T4_T8_RMSE_cm_per_day':t['R512']['T4_T8']['rmse_cm_per_day'],
+              'R512_T8_T16_RMSE_cm_per_day':t['R512']['T8_T16']['rmse_cm_per_day'],
+              'R1024_T4_T8_RMSE_cm_per_day':t['R1024']['T4_T8']['rmse_cm_per_day'],
+              'R1024_T8_T16_RMSE_cm_per_day':t['R1024']['T8_T16']['rmse_cm_per_day'],
+              'temporal_order_R512_T4_T8_T16':t['order_R512_T4_T8_T16'],
+              'temporal_order_R1024_T4_T8_T16':t['order_R1024_T4_T8_T16'],
+              'R512_T8_T16_over_spatial_T16':i['R512_T8_T16_over_spatial_T16'],
+              'R1024_T8_T16_over_spatial_T16':i['R1024_T8_T16_over_spatial_T16']
+            },
+            'adjudication':{
+              'TEMPORAL_PROGRESS_R512':i['temporal_progress_R512'],
+              'TEMPORAL_PROGRESS_R1024':i['temporal_progress_R1024'],
+              'TEMPORAL_SUBDOMINANT_R512':i['temporal_subdominant_R512'],
+              'TEMPORAL_SUBDOMINANT_R1024':i['temporal_subdominant_R1024'],
+              'SPATIAL_GAP_STILL_INCREASING_AT_T16':i['spatial_T16_direction']=='INCREASES',
+              'BRUTE_FORCE_T32_AUTHORIZED':False,
+              'R2048_SPATIAL_EXTENSION_AUTHORIZED':False,
+              'REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM_AUDIT_AUTHORIZED':True,
+              'CONTINUUM_REFERENCE_AUTHORITY_ESTABLISHED':False,
+              'NEW_LARE_OR_CLOSURE_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'The matched T16 runs finally separate the dominant scales cleanly: temporal error continues to decrease while the R512-R1024 spatial gap still increases.',
+              'The R512-R1024 bottom-flux RMSE grows from about 0.02233 cm/d at T4 to 0.02303 at T8 and 0.02340 at T16. The final increase is about 1.59 percent.',
+              'Temporal T8-T16 shifts are only about 0.00147 cm/d at R512 and 0.00180 at R1024, approximately 6.3 and 7.7 percent of the matched T16 spatial gap. Their descriptive orders rise to about 0.887 and 0.920.',
+              'Therefore unresolved temporal transaction error is no longer a plausible dominant explanation for the continuing R512-R1024 spatial difference.',
+              'The spatial-gap increments are shrinking, but no preregistered threshold permits declaring spatial stability and no continuum extrapolation is admitted.',
+              'The spatial difference remains confined to prescribed-head phases; HOLD differences are zero or machine-level. This is consistent with, but does not yet prove, a lower-boundary discretization mechanism.',
+              'Per the preregistered stop rule, brute-force T32 or R2048 extension is not the next default. Reference boundary/discretization mechanism diagnosis is required first.'
+            ],
+            'next_authority':{
+              'state':'REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM_AUDIT_AUTHORIZED',
+              'target':'LARE-BC2-C5J',
+              'question':'Which discrete ingredient of the prescribed-head lower boundary drives the persistent high-resolution spatial gap: half-cell head-gradient geometry, use of last-cell-center conductivity as boundary-face conductivity, or their interaction?',
+              'constraints':[
+                'Reference diagnostic counterfactuals only; no production Reference change',
+                'retain B14 physical workload and matched prescribed-head histories',
+                'use T16 evidence as the temporal-authority anchor; do not extend to T32 by default',
+                'do not run R2048 until the boundary-discretization mechanism is characterized',
+                'pre-register zero-fit counterfactuals before inspecting their responses',
+                'do not fit a closure or tune against C5I residuals',
+                'no LARE, application, performance, speed or production claim'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5I_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5I closeout
+
+          C5I is the preregistered final matched temporal refinement before either a new spatial Reference level or a mechanism audit.
+
+          The authoritative scientific evidence is run 35502856809, execution head a8edf922bcd02c10cd591d6f65dd72d38193404b, artifact 10602539613, digest sha256:8d7d4be3b428bbc30a7c48c2e81a448318c252d80b053caa748b7df7580a1664. The exact result SHA-256 is 865339e6bd85eb86d5b905de1af9a7e87321878d3ae47e6f2e7ee9b70a08b302.
+
+          Because long R1024 T16 processes repeatedly received external runner SIGTERM, execution was partitioned by history. All 16 geometry x optimization x history slices qualified, then Z01-Z04 were concatenated in fixed order. Reconstructed O0 and O2 trajectories are byte-identical at both R512 and R1024. This changed execution topology only, not science.
+
+          The matched R512-R1024 bottom-flux RMSE is about 0.02233 cm/d at T4, 0.02303 at T8 and 0.02340 at T16. Thus it continues to increase, although the increment shrinks to about 1.59% from T8 to T16.
+
+          Temporal error continues to decrease. T8-T16 RMSE is about 0.00147 cm/d at R512 and 0.00180 at R1024, only about 6.3% and 7.7% of the matched T16 spatial gap. Descriptive temporal orders are about 0.887 and 0.920.
+
+          The remaining high-resolution disagreement is therefore spatial/boundary dominated rather than temporal dominated under this frozen workload. As in earlier diagnostics, HOLD is zero or machine-level and differences occur during prescribed-head phases.
+
+          C5I activates the preregistered stop rule: no default T32 and no R2048. C5J must first diagnose the discrete prescribed-head boundary formulation without changing production Reference Richards.
+          MD
+
+      - name: Advance representation-selection authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v14'
+          j['status']='CLOSED_THROUGH_C5I_TEMPORAL_SUBDOMINANT_SPATIAL_GAP_PERSISTS_REFERENCE_BOUNDARY_MECHANISM_AUDIT_NEXT'
+          j.setdefault('authorities',{}).update({
+            'C5I_matched_T16_reference':'integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json'
+          })
+          j.setdefault('additional_reconciled_findings',{}).update({
+            'C5I':'At T16 the R512-R1024 spatial bottom-flux RMSE still increases to ~0.02340 cm/d while T8-T16 temporal shifts fall to ~0.00147/0.00180 cm/d (6.3/7.7% of the spatial gap). Temporal error is subdominant; brute-force T32/R2048 is stopped pending prescribed-head boundary-discretization diagnosis.'
+          })
+          j['decision']='DIAGNOSE_REFERENCE_PRESCRIBED_HEAD_BOUNDARY_DISCRETIZATION_BEFORE_T32_R2048_OR_NEW_LARE'
+          j['next_authority']='LARE-BC2-C5J'
+          j['next_family_authority']={
+            'family':'C5J_REFERENCE_BOUNDARY_DISCRETIZATION_MECHANISM',
+            'state':'AUTHORIZED_FOR_PROSPECTIVE_ZERO_FIT_DIAGNOSTIC_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5H_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5B_CLOSEOUT.json'
+            ],
+            'purpose':'Separate lower-boundary head-gradient geometry and boundary-face conductivity localization as causes of the persistent prescribed-head spatial gap.',
+            'new_reference_production_physics_authorized':False,
+            'new_lare_authorized':False,
+            'new_closure_authorized':False,
+            'R2048_authorized':False,
+            'T32_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5I closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5I_RESULT.json                   integration/f-rom/LARE_BC2_C5I_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5I_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5I matched T16 Reference audit"
+          git push origin HEAD:work/f-rom-lare-rs1
