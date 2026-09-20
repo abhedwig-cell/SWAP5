@@ -1,0 +1,57 @@
+name: F-ROM-LARE BC2-C6N2 result persist
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6n2-result-persist.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C6N2 authority result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6n2
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/35538003359 --jq '.status + ":" + .conclusion + ":" + .head_sha')" = "completed:success:23c74fc0093119341a1da209817f4cc54349c543"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/10612868344 --jq '.digest')" = "sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af"
+          gh run download 35538003359 -n lare-bc2-c6n2-recovered -D /tmp/c6n2
+          echo "4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944  /tmp/c6n2/LARE_BC2_C6N2_RESULT.json" | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c6n2/LARE_BC2_C6N2_RESULT.json'))
+          assert r['status']=='C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY'
+          assert r['integrity']['all_candidates_attempted'] is True
+          assert r['integrity']['pass'] is True
+          assert all(r['minimum_numerically_unresolved_lower_zone_dimension'][m][v] is None
+                     for m in ('B01','B14')
+                     for v in ('SURFACE_20','ROOT_ZONE_40','UPPER_ZONE_80','PROFILE_STATE'))
+          assert r['scientific_firewall']['application_acceptance_adjudicated'] is False
+          assert r['scientific_firewall']['performance_comparison_authorized'] is False
+          print('C6N2_RESULT_AUTHORITY=PASS')
+          PY
+          cp /tmp/c6n2/LARE_BC2_C6N2_RESULT.json integration/f-rom/LARE_BC2_C6N2_RESULT.json
+
+      - name: Commit exact C6N2 result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6N2_RESULT.json
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: persist exact C6N2 surface comparison result"
+          git push origin HEAD:work/f-rom-lare-rs1
