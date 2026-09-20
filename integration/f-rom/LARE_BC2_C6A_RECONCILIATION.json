@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.lare.bc2.c6a.reconciliation.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6A",
+  "status": "CLOSED_EXPLICIT_INTERFACE_UNKNOWNS_ALONE_DO_NOT_DEFINE_A_NEW_PHYSICAL_CLOSURE_LOWEST_ORDER_FORMS_COLLAPSE_TO_CLOSED_ROUTES",
+  "decision": "DO_NOT_IMPLEMENT_INTERFACE_VARIABLES_ALONE_AS_A_NEW_ROM_FAMILY_REQUIRE_NEW_PHYSICAL_SUBGRID_STATE_OR_CLOSURE_PRINCIPLE",
+  "role": "READ_ONLY_STRUCTURE_PRESERVING_COARSE_RICHARDS_DERIVATION",
+  "authority": {
+    "trigger": "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
+    "propagation_limit": "integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json",
+    "dse2p": "integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json",
+    "storage_only_scafp": "integration/f-rom/LARE_BC2_C5V_RECONCILIATION.json",
+    "p0_admissibility": "integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json",
+    "state_sufficiency": "integration/f-rom/LARE_BC2_C5X_RECONCILIATION.json",
+    "first_moment": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
+    "moment_profile_failure": "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
+    "coarse_richards_comparator": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+    "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+    "live_canonical_reconciled": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "response_data_used": false,
+    "model_run_executed": false
+  },
+  "question": "Can a conservative coarse Richards system with dynamic layer storage but algebraic interface hydraulic potentials and fluxes supply a physically distinct propagation closure without prescribing an arbitrary within-layer transient profile?",
+  "conventions": {
+    "depth": "z positive downward",
+    "flux": "q positive downward",
+    "suction": "psi=-h on the unsaturated branch",
+    "darcy": "q = K(psi) * (1 + dpsi/dz)",
+    "layer_storage": "S_i = integral_layer theta(psi(z)) dz",
+    "exact_layer_balance": "dS_i/dt = q_(i-1/2) - q_(i+1/2)"
+  },
+  "candidate_system": {
+    "dynamic_state": "one retained integrated storage S_i per coarse layer",
+    "representative_hydraulic_state": "If no additional shape state is admitted, a representative psi_i can only be obtained from the retained layer storage and the frozen retention relation.",
+    "algebraic_face_variables": "one hydraulic trace lambda_j and one conservative flux q_j per layer face",
+    "interface_contract": "Each internal face has one shared q_j used with opposite signs in the two neighboring storage balances.",
+    "intended_property": "local and global water conservation without making the face trace or flux a new dynamic memory state"
+  },
+  "degree_count": {
+    "N_layers": "N",
+    "face_count": "N+1",
+    "algebraic_face_unknowns": "2(N+1): lambda_j and q_j",
+    "local_half_cell_relations": "2N",
+    "external_boundary_relations": 2,
+    "total_relations": "2N+2",
+    "conclusion": "The algebraic count is square only after a local half-cell hydraulic relation has been selected. Hybridization itself does not provide that relation."
+  },
+  "structural_reduction": {
+    "linear_or_frozen_half_cell": {
+      "derivation": "Using a representative K_i(S_i) and a one-sided Darcy drop over d_i/2 on both sides of an internal face, elimination of lambda_j gives q_j = Delta H / [d_i/(2 K_i) + d_(i+1)/(2 K_(i+1))] up to the frozen sign convention.",
+      "consequence": "This is a standard conservative two-point resistance/flux operator. The explicit trace is a numerical hybridization variable, not new hydrological information.",
+      "repository_relation": "It remains in the existing-state coarse Darcy/two-point operator class already interrogated by CURRENT_LAYER_FACE, C4H-C4O and the same-partition coarse-Richards comparator; it is not a new physical reduction family."
+    },
+    "nonlinear_steady_half_cell": {
+      "derivation": "If each center-to-face relation is replaced by the exact local steady Darcian integral, the shared interface q_j connects the two representative layer states by one constant steady center-to-center flux.",
+      "consequence": "Static condensation is the DSE2P closure object.",
+      "repository_relation": "DSE2P failed prospective response-free numerical qualification in C5T; reopening its branch, quadrature or bracket after exposure is not authorized."
+    },
+    "affine_within_layer_flux": {
+      "derivation": "If transient storage is represented by an affine q(z), continuity gives a spatially uniform dtheta/dt in the layer.",
+      "consequence": "This is the P0 uniform-storage-tendency SCAFP choice derived in C5V.",
+      "repository_relation": "P0 failed its prospective response-free admissibility/existence contract in C5W; interface traces do not change that closure identity."
+    },
+    "higher_order_flux_or_nonuniform_storage_tendency": {
+      "derivation": "Any non-affine q(z) introduces additional unresolved divergence/tendency structure. Storage conservation fixes only the integral q_top-q_bottom, not its within-layer distribution.",
+      "consequence": "A new subgrid profile/tendency principle or an additional state is required.",
+      "repository_relation": "This is exactly the underdetermination identified in C5V/C5X. C5Y supplied the first conservation-derived shape state; C5Z rejected only its all-layer cubic-theta reconstruction, not the first moment itself."
+    },
+    "dynamic_flux_state": {
+      "derivation": "Richards-Darcy treats q as algebraically related to hydraulic state and gradient; it supplies no independent flux-inertia evolution equation.",
+      "consequence": "Promoting q_j to a dynamic memory state would require additional physics or a separately derived reduced-memory law.",
+      "repository_relation": "No such authority presently exists."
+    }
+  },
+  "conservation_and_dissipation": {
+    "conservation": "A single shared face flux is sufficient to make the coarse storage balances exactly conservative.",
+    "insufficiency": "Conservation does not identify how the unresolved hydraulic drop or storage tendency is distributed inside a coarse layer.",
+    "dissipation": "A minimum-resistance or steady dissipation construction with fixed endpoint hydraulic states collapses to the steady Darcian route; it does not create a transient subgrid storage law from S_i alone.",
+    "conclusion": "Conservation plus algebraic interface unknowns is necessary but not sufficient for a physically distinct transient Layer-ROM closure."
+  },
+  "corichards_reconciliation": {
+    "fact": "Mixed and mixed-hybrid Richards formulations in the literature use flux and/or trace unknowns to obtain locally conservative discretizations; those variables are numerical unknowns of the Richards discretization rather than additional hydrological state.",
+    "repository_boundary": "LARE-CORICHARDS-Q1 already shows that reduced same-partition conventional Richards has no qualified non-equilibrium dynamic common cohort through R12 under the frozen strict numerical authority.",
+    "consequence": "Rewriting a coarse Richards discretization in hybrid form does not by itself create a new reduced physical family or bypass Q1."
+  },
+  "independent_theory_context": [
+    {
+      "citation": "Radu, F.A., Pop, I.S., Knabner, P. (2004), Order of Convergence Estimates for an Euler Implicit, Mixed Finite Element Discretization of Richards' Equation, SIAM Journal on Numerical Analysis 42, 1452-1478.",
+      "doi": "10.1137/S0036142902405229",
+      "relevance": "Lowest-order Raviart-Thomas mixed formulations treat flux as an explicit numerical unknown and provide a convergent conservative Richards discretization."
+    },
+    {
+      "citation": "Belfort, B. et al. (2009), An Efficient Lumped Mixed Hybrid Finite Element Formulation for Variably Saturated Groundwater Flow, Vadose Zone Journal.",
+      "doi": "10.2136/vzj2008.0108",
+      "relevance": "Mixed-hybrid formulation exposes face/flux variables while preserving the underlying Richards physics; hybridization is a discretization construction, not a new hydrological closure."
+    },
+    {
+      "citation": "Belfort/Younes et al. (2009), An easy and efficient combination of the Mixed Finite Element Method and the Method of Lines for the resolution of Richards' Equation, Environmental Modelling & Software 24, 1122-1126.",
+      "doi": "10.1016/j.envsoft.2009.02.010",
+      "relevance": "The method uses mixed-hybrid finite elements with explicit flux degrees of freedom, supporting the distinction between conservative numerical variables and added dynamic physical state."
+    }
+  ],
+  "adjudication": {
+    "EXPLICIT_INTERFACE_VARIABLES_GUARANTEE_EXACT_COARSE_CONSERVATION": true,
+    "EXPLICIT_INTERFACE_VARIABLES_ALONE_SUPPLY_NEW_TRANSIENT_PHYSICAL_INFORMATION": false,
+    "DEGREE_COUNT_CLOSES_ONLY_AFTER_LOCAL_HYDRAULIC_LAW_IS_SELECTED": true,
+    "LOWEST_ORDER_LINEAR_HYBRID_IS_STRUCTURALLY_NEW_ROM_FAMILY": false,
+    "NONLINEAR_STEADY_HYBRID_IS_DISTINCT_FROM_DSE2P": false,
+    "AFFINE_FLUX_HYBRID_IS_DISTINCT_FROM_P0": false,
+    "DYNAMIC_INTERFACE_FLUX_IS_DERIVABLE_FROM_RICHARDS_WITHOUT_NEW_PHYSICS": false,
+    "CORICHARDS_Q1_IS_OVERTURNED": false,
+    "C5Z_FIRST_MOMENT_PHYSICAL_STATE_IS_INVALIDATED": false,
+    "NEW_INTERFACE_HYBRID_IMPLEMENTATION_AUTHORIZED": false,
+    "HYDROLOGICAL_RESPONSE_AUTHORIZED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "SCIENTIFIC_CHOICE_REQUIRED": true
+  },
+  "next_authority": {
+    "target": null,
+    "state": "SCIENTIFIC_CHOICE_REQUIRED_BEFORE_NEW_BOUND_PRESERVING_TRANSIENT_SUBGRID_FAMILY",
+    "question": "Which physically derived mechanism should carry the missing transient subgrid information now that algebraic interface variables alone reduce to already-closed two-point, DSE2P or P0 closures?",
+    "admissible_classes_for_future_read_only_choice": [
+      "A realizability-preserving moment/state closure that does not reopen the rejected C5Z cubic-theta reconstruction.",
+      "A genuinely conserved interface-local or dual-control-volume state with its own balance law, provided dimensional value and non-duplication with simple layer refinement are established before response.",
+      "A separately justified adaptive/moving-partition representation, kept distinct from fixed-partition closure repair."
+    ],
+    "excluded_shortcuts": [
+      "Do not retune C5Z polynomial order, moment range, constitutive domain or numerical tolerances after observing C5Z.",
+      "Do not reopen DSE2P or P0 under hybrid-variable terminology.",
+      "Do not call a conventional mixed-hybrid coarse Richards discretization a new physical ROM family.",
+      "Do not add dynamic flux inertia without a physical governing equation.",
+      "Do not choose the next family by minimizing exposed C5N/C5P/C5R response error."
+    ]
+  },
+  "scientific_firewall": {
+    "hydrological_response_used": false,
+    "model_run_executed": false,
+    "new_dynamic_state_implemented": false,
+    "new_closure_implemented": false,
+    "reference_changed": false,
+    "rossfast_changed": false,
+    "groundwater_coupling_changed": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
