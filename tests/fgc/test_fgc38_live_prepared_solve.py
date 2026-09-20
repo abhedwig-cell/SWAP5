@@ -518,28 +518,35 @@ def main() -> None:
 
     # CSR-04 state-space discriminant: alter only MODFLOW STO while keeping
     # coupling response and all other groundwater stresses fixed.
-    low_sy_head, _, _, _, low_sy_sto = run_case(
-        libmf6, bridge, [response_c], specific_yield=0.05
-    )
-    high_sy_head, _, _, _, high_sy_sto = run_case(
-        libmf6, bridge, [response_c], specific_yield=0.30
+    sy_sequence = (0.30, 0.05, 1.0e-2, 1.0e-3, 1.0e-4, 1.0e-5)
+    sy_heads: list[np.ndarray] = []
+    sy_sto_rates: list[float] = []
+    for sy_value in sy_sequence:
+        sy_head, _, _, _, sy_sto = run_case(
+            libmf6, bridge, [response_c], specific_yield=sy_value
+        )
+        sy_heads.append(sy_head)
+        sy_sto_rates.append(sy_sto)
+        print(
+            "F_GC_CSR04_STO_CONTINUATION="
+            f"SY:{sy_value:.17g},HEAD:{float(sy_head[1]):.17g},"
+            f"STO_RATE:{sy_sto:.17g}"
+        )
+
+    require(
+        not np.allclose(sy_heads[0], sy_heads[-1], rtol=0.0, atol=1.0e-12),
+        "CSR-04 STO continuation did not change MODFLOW accepted head response",
     )
     require(
-        not np.allclose(low_sy_head, high_sy_head, rtol=0.0, atol=1.0e-12),
-        "CSR-04 STO perturbation did not change MODFLOW accepted head response",
+        not math.isclose(sy_sto_rates[0], sy_sto_rates[-1], rel_tol=0.0, abs_tol=1.0e-12),
+        "CSR-04 STO continuation did not change native MODFLOW storage response",
     )
+    tail_head_change = float(np.max(np.abs(sy_heads[-1] - sy_heads[-2])))
     require(
-        not math.isclose(low_sy_sto, high_sy_sto, rel_tol=0.0, abs_tol=1.0e-12),
-        "CSR-04 STO perturbation did not change native MODFLOW storage response",
+        math.isfinite(tail_head_change),
+        "CSR-04 non-finite near-zero-STO continuation response",
     )
-    print(
-        "F_GC_CSR04_STO_PERTURBATION_HEAD_MAX_ABS_DIFF="
-        f"{float(np.max(np.abs(low_sy_head-high_sy_head))):.17g}"
-    )
-    print(
-        "F_GC_CSR04_STO_PERTURBATION_STORAGE_RATE_DIFF="
-        f"{abs(low_sy_sto-high_sy_sto):.17g}"
-    )
+    print(f"F_GC_CSR04_STO_CONTINUATION_TAIL_HEAD_DIFF={tail_head_change:.17g}")
     print("F_GC_CSR04_MODFLOW_STO_STATE_SPACE_DISCRIMINANT=PASS")
 
     print("F_GC_CSR04_ACCEPTED_MODFLOW_STATE_OBSERVATION=PASS")
