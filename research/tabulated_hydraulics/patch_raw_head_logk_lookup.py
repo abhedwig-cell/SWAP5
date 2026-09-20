@@ -46,7 +46,7 @@ reader.write_text(r)
 
 s=tab.read_text()
 old_int="integer k, klo, khi, n, inverse, maxtry, ntry, ind1, ind2, ind3, iWhat"
-new_int="integer k, klo, khi, n, inverse, maxtry, ntry, ind1, ind2, ind3, iWhat, family, klast"
+new_int="integer k, klo, khi, n, inverse, maxtry, ntry, ind1, ind2, ind3, iWhat, family, klast\n      logical hint_ok"
 if s.count(old_int)!=1: raise SystemExit(f"Eval integer declaration mismatch: {s.count(old_int)}")
 s=s.replace(old_int,new_int,1)
 
@@ -85,9 +85,12 @@ new_lookup="""      if(inverse .eq. 0)then
          ! Last-interval hint: h usually moves only locally between nonlinear
          ! iterations. Fall back to a bounded binary search on raw h.
          klast = raw_last_klo(family,node)
-         if (klast >= 1 .and. klast < n .and. &
-     &       xe_local >= sptab(ind1,node,klast) .and. &
-     &       xe_local <  sptab(ind1,node,klast+1)) then
+         hint_ok = .false.
+         if (klast >= 1 .and. klast < n) then
+            if (xe_local >= sptab(ind1,node,klast) .and. &
+     &          xe_local <  sptab(ind1,node,klast+1)) hint_ok = .true.
+         end if
+         if (hint_ok) then
             klo = klast
             khi = klo + 1
          else
