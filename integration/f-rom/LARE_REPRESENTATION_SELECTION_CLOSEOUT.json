@@ -34,12 +34,8 @@
     "C5V": "Read-only SCAFP derivation shows that layer-integrated storage plus Darcy-Buckingham and exact conservation does not uniquely determine transient within-layer structure. A conservative zero-fit algebraic family exists, but an additional subgrid tendency/profile principle is scientifically required. P0 uniform storage tendency is the most conservation-aligned candidate, not an authority-mandated choice.",
     "C5W": "P0 uniform storage tendency was selected prospectively as the minimum-additional-structure SCAFP hypothesis and failed response-free admissibility qualification: local uniqueness is conditional, but 264/405 local cases and all 28 full-column synthetic cases fail the frozen existence/branch contract. No hydrological P0 test is authorized.",
     "C5X": "After prospective P0 failure, choosing quadratic-head or transformed-potential storage-only reconstructions would remain an unselected ansatz choice. C4K's bounded ambiguity result is not universal memoryless sufficiency; state sufficiency is therefore reopened read-only.",
-    "C5Y": "The centered first water-content moment M_i=∫(z-zc)theta dz is the smallest additional scalar shape state with an exact balance from continuity. A conservation-native mixed quadratic/cubic theta hierarchy closes the global degree count for any selected enriched-layer subset, but existence/uniqueness/admissibility remain unqualified.",
+    "C5Y": "The centered first water-content moment M_i=\u222b(z-zc)theta dz is the smallest additional scalar shape state with an exact balance from continuity. A conservation-native mixed quadratic/cubic theta hierarchy closes the global degree count for any selected enriched-layer subset, but existence/uniqueness/admissibility remain unqualified.",
     "C5Z": "Response-free mathematical qualification finds one stable numerical branch and full hydraulic/state consistency in all 168 cases, but 14 cases violate the prospectively frozen upper theta/Se admissibility domain. The all-layer moment-enriched cubic-theta reconstruction is therefore stopped without retuning.",
-    "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
-    "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
-    "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
     "C6A": "Response-free derivation shows that explicit algebraic interface head/flux unknowns guarantee conservation but do not supply missing transient subgrid information. Lowest-order linear hybridization condenses to a standard two-point Darcy operator; exact steady nonlinear half-cells condense to DSE2P; affine within-layer flux is P0. A genuinely new family therefore requires a new physically justified transient subgrid state or closure principle.",
     "C6B": "The centered first water-content moment is retained, but the failed cubic-theta map is not reopened. BEMR represents the frozen bounded effective-saturation interval through a logistic entropy-dual variable and uses the minimum four-dimensional polynomial dual space required by the existing S/M plus hydraulic degree count. The family is selected response-free and must be qualified on the unchanged C5Z synthetic domain before any hydrological response.",
     "C6C": "BEMR passes response-free mathematical qualification on all 168 unchanged C5Z B14 state/moment cases and all 840 fixed starts. Strict moment realizability, convergence, single branch, bounded Se, hydraulic continuity, state recovery and quadrature consistency all pass. This establishes the algebraic map, not hydrological fidelity.",
@@ -55,8 +51,12 @@
     "C6M": "The first free-drainage C6M attempt was a pre-solver boundary-admission mismatch and has no scientific authority. The repaired fixed-initial-head route is admitted, but the full two-material high-resolution matrix does not qualify under the frozen DYN0A numerical policy; B01 diagnostic execution fails after admitted response when a mode-5 first attempt fails and no mode-5 fallback authority exists. No Layer-ROM candidate was executed.",
     "C6M2": "Fresh fixed-bottom-flux surface Reference execution is robust (64/64 slices, integrity pass), but the prospectively frozen R2048_T8-vs-T16 <= R1024-vs-R2048 componentwise gate fails for upper-zone/profile metrics on both B01 and B14. No Layer-ROM candidate was executed and the gate is not relaxed.",
     "C6N0": "The C6M2 dominance gate is retained as a failed work-unit gate but is not adopted as a universal Reference-uncertainty definition because it becomes ill-conditioned when the spatial comparator gap approaches zero. A three-level Richardson/GCI-style space-time uncertainty authority is selected prospectively, with no application tolerance inferred.",
-    "C6N1": "Prospective three-level space-time qualification admits R2048_T32 as the surface/profile Reference target with metric-specific numerical uncertainty U_combined for B01 and B14. These bands are numerical uncertainty only, not application tolerances.",
-    "C6N2": "All 20 frozen candidate combinations were executed successfully. No tested reduced lower-zone member is within the C6N1 numerical Reference uncertainty on any declared surface/profile view, and even R16 remains numerically resolved. This is not an application-failure result. Same-dimension placement evidence strongly reverses the groundwater pattern: U8 is substantially closer than lower-zone R8 on both materials and all state/profile views, demonstrating purpose-dependent vertical information placement."
+    "C6N1": "Three-level space-time verification qualifies R2048_T32 for B01/B14 surface/profile work with metric-specific numerical uncertainty bands; spatial order is ~2 and temporal order ~1. These bands are numerical uncertainty only.",
+    "C6N2": "All 20 frozen existing-representation payloads were classified against C6N1 uncertainty. No reduced member is numerically unresolved on any declared surface/profile view for B01 or B14. Placement remains strongly purpose/material dependent: U8 outperforms lower-zone R8 on the surface-driven workload, while sparse R3/R4/P4 leave the B01 qualified domain on U03.",
+    "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
+    "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
+    "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
   },
   "application_acceptance_adjudicated": false,
   "authorities": {
@@ -88,6 +88,25 @@
     "C5X_state_sufficiency_reopened": "integration/f-rom/LARE_BC2_C5X_RECONCILIATION.json",
     "C5Y_first_moment_shape_state": "integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json",
     "C5Z_moment_theta_profile_admissibility": "integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json",
+    "C6A_structure_preserving_coarse_richards": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
+    "C6B_bounded_entropy_moment": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
+    "C6C_BEMR_mathematical_qualification": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
+    "C6D_BEMR_frozen_state_mechanism": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
+    "C6E_BEMR_prescribed_flux_boundary": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
+    "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
+    "C6G_interface_local_state": "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
+    "C6H_moving_partition": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
+    "C6I_free_energy_moment_onsager": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
+    "C6J_FEMO_mathematical_qualification": "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json",
+    "C6K_purpose_sufficiency": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
+    "C6L_purpose_validation_architecture": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
+    "C6M2_surface_fixed_flux_reference": "integration/f-rom/LARE_BC2_C6M2_CLOSEOUT.json",
+    "C6M_surface_reference": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
+    "C6N0_reference_uncertainty_reconciliation": "integration/f-rom/LARE_BC2_C6N0_REFERENCE_AUTHORITY_RECONCILIATION.json",
+    "C6N1_reference_uncertainty": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "C6N1_reference_uncertainty_preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
+    "C6N2_surface_existing_family": "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json",
+    "C6N2_surface_profile_comparison": "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json",
     "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
     "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
     "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
@@ -106,25 +125,7 @@
     "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
     "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
     "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
-    "C6A_structure_preserving_coarse_richards": "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json",
-    "C6B_bounded_entropy_moment": "integration/f-rom/LARE_BC2_C6B_RECONCILIATION.json",
-    "C6C_BEMR_mathematical_qualification": "integration/f-rom/LARE_BC2_C6C_CLOSEOUT.json",
-    "C6D_BEMR_frozen_state_mechanism": "integration/f-rom/LARE_BC2_C6D_CLOSEOUT.json",
-    "C6E_BEMR_prescribed_flux_boundary": "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json",
-    "C6F_conservative_sublayer_memory": "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json",
-    "C6G_interface_local_state": "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json",
-    "C6H_moving_partition": "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json",
-    "C6I_free_energy_moment_onsager": "integration/f-rom/LARE_BC2_C6I_RECONCILIATION.json",
-    "C6J_FEMO_mathematical_qualification": "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json",
-    "C6K_purpose_sufficiency": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
-    "C6L_purpose_validation_architecture": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
-    "C6M_surface_reference": "integration/f-rom/LARE_BC2_C6M_CLOSEOUT.json",
-    "C6M2_surface_fixed_flux_reference": "integration/f-rom/LARE_BC2_C6M2_CLOSEOUT.json",
-    "C6N0_reference_uncertainty_reconciliation": "integration/f-rom/LARE_BC2_C6N0_REFERENCE_AUTHORITY_RECONCILIATION.json",
-    "C6N1_reference_uncertainty_preregistration": "integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json",
-    "C6N1_reference_uncertainty": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
-    "C6N2_surface_profile_comparison": "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json"
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
   },
   "closed_routes": [
     {
@@ -156,77 +157,72 @@
       "id": "ALL_LAYER_MOMENT_ENRICHED_CUBIC_THETA_PROFILE"
     },
     {
-      "id": "INTERFACE_VARIABLES_ALONE_AS_NEW_PHYSICAL_ROM_FAMILY",
       "disposition": "NOT_AUTHORIZED_C6A_LOWEST_ORDER_FORMS_STATICALLY_CONDENSE_TO_EXISTING_OR_CLOSED_ROUTES",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6A_RECONCILIATION.json"
-      ]
+      ],
+      "id": "INTERFACE_VARIABLES_ALONE_AS_NEW_PHYSICAL_ROM_FAMILY"
     },
     {
-      "id": "BEMR_GENERAL_FREE_RUNNING_AFTER_C6E",
       "disposition": "NOT_AUTHORIZED_C6E_PRESCRIBED_FLUX_BRANCH_ROBUSTNESS_FAILED",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6E_CLOSEOUT.json"
-      ]
+      ],
+      "id": "BEMR_GENERAL_FREE_RUNNING_AFTER_C6E"
     },
     {
-      "id": "FIXED_HALF_LAYER_INVENTORY_AS_NEW_ROM_FAMILY",
       "disposition": "NOT_AUTHORIZED_C6F_STANDARD_DARCY_IS_SIMPLE_2N_REFINEMENT_ALTERNATIVE_QMID_REQUIRES_NEW_CLOSURE",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6F_RECONCILIATION.json"
-      ]
+      ],
+      "id": "FIXED_HALF_LAYER_INVENTORY_AS_NEW_ROM_FAMILY"
     },
     {
-      "id": "INTERFACE_LOCAL_CONSERVED_STORAGE_AS_NEW_ROM_FAMILY",
       "disposition": "NOT_AUTHORIZED_C6G_CONTROL_VOLUME_REFINEMENT_REDUNDANT_MOMENT_OR_NEW_INTERFACE_PHYSICS",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6G_RECONCILIATION.json"
-      ]
+      ],
+      "id": "INTERFACE_LOCAL_CONSERVED_STORAGE_AS_NEW_ROM_FAMILY"
     },
     {
-      "id": "GENERIC_MOVING_PARTITION_AS_PHYSICAL_LAYER_ROM_MEMORY",
       "disposition": "NOT_AUTHORIZED_C6H_MESH_VELOCITY_IS_UNDERDETERMINED_NUMERICAL_GAUGE",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6H_RECONCILIATION.json"
-      ]
+      ],
+      "id": "GENERIC_MOVING_PARTITION_AS_PHYSICAL_LAYER_ROM_MEMORY"
     },
     {
-      "id": "CURRENT_FEMO_INTERIOR_AFFINE_SUCTION_REALIZATION",
       "disposition": "NOT_AUTHORIZED_C6J_RESPONSE_FREE_LOCAL_MANIFOLD_NUMERICAL_QUALIFICATION_FAILED",
       "evidence": [
         "integration/f-rom/LARE_BC2_C6J_CLOSEOUT.json"
-      ]
+      ],
+      "id": "CURRENT_FEMO_INTERIOR_AFFINE_SUCTION_REALIZATION"
     }
   ],
-  "decision": "RETAIN_C6N2_RESOLVED_SURFACE_DIFFERENCES_AS_COMPARATOR_RELATIVE_EVIDENCE_AND_ADVANCE_TO_ROOT_ET_SOURCE_FEEDBACK_CONTRACT",
+  "decision": "DERIVE_PURPOSE_ALIGNED_SURFACE_PARTITION_FAMILY_PROSPECTIVELY_BEFORE_ANY_NEW_RESPONSE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
   "next_authority": {
-    "target": "LARE-BC2-C6O",
-    "state": "ROOT_ET_SOURCE_FEEDBACK_CONTRACT_READ_ONLY_DERIVATION_AUTHORIZED",
-    "authority": "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json",
-    "hydrological_response_authorized": false
+    "hydrological_candidate_response_authorized": false,
+    "state": "READ_ONLY_PURPOSE_ALIGNED_PARTITION_DESIGN_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C6O"
   },
   "next_family_authority": {
-    "family": "EXISTING_FIXED_PARTITION_LARE_PURPOSE_VALIDATION",
-    "state": "ROOT_ET_SOURCE_AND_FEEDBACK_CONTRACT_DERIVATION_NEXT",
-    "universal_new_closure_search_default": false,
-    "existing_representation_set_only": true,
-    "surface_reference_uncertainty_qualified": true,
-    "surface_candidate_response_completed": true,
-    "surface_numerical_equivalence_frontier_found": false,
-    "purpose_dependent_placement_supported": true,
-    "root_ET_feedback_authorized": false,
-    "long_horizon_balance_authorized": false,
     "application_acceptance_adjudicated": false,
+    "existing_family_numerically_unresolved_frontier": false,
+    "family": "PURPOSE_ALIGNED_SURFACE_LAYER_REPRESENTATION",
+    "long_horizon_balance_authorized": false,
+    "new_closure_authorized": false,
+    "new_partition_response_authorized": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false,
     "repository_basis": [
-      "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
-      "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
       "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
       "integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json"
-    ]
+    ],
+    "root_ET_feedback_authorized": false,
+    "state": "DESIGN_RECONCILIATION_ONLY",
+    "surface_reference_uncertainty_qualified": true
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -269,7 +265,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6N2_NO_NUMERICALLY_UNRESOLVED_SURFACE_FRONTIER_PURPOSE_PLACEMENT_DEPENDENCE_CONFIRMED_ROOT_ET_CONTRACT_NEXT",
+  "status": "CLOSED_THROUGH_C6N2_EXISTING_SURFACE_FAMILY_NUMERICALLY_RESOLVED_PURPOSE_ALIGNED_DESIGN_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,

@@ -1,159 +1,164 @@
 {
-  "schema": "swap5.lare.bc2.c6n2.closeout.v1",
-  "workstream": "F-ROM-LARE",
-  "work_unit": "LARE-BC2-C6N2",
-  "status": "CLOSED_NO_NUMERICALLY_UNRESOLVED_SURFACE_PROFILE_FRONTIER_PURPOSE_PLACEMENT_TRANSFER_ESTABLISHED_APPLICATION_SUFFICIENCY_UNADJUDICATED",
-  "decision": "RETAIN_RESOLVED_SURFACE_PROFILE_DIFFERENCES_AS_PURPOSE_PLACEMENT_EVIDENCE_DO_NOT_INFER_APPLICATION_FAILURE_PROCEED_TO_ROOT_ET_CONTRACT",
-  "role": "PROSPECTIVE_EXISTING_REPRESENTATION_SURFACE_PROFILE_COMPARISON_CLOSEOUT",
-  "authority": {
-    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
-    "execution_binding": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json",
-    "execution_reconciliations": [
-      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V2.json",
-      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V3.json",
-      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V4.json",
-      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V5.json"
-    ],
-    "candidate_execution_run": 35537872450,
-    "candidate_execution_head": "540c0e4e5a70a197ffbdcf017f2bebd60269e182",
-    "candidate_jobs_successful": 20,
-    "aggregation_recovery_run": 35538003359,
-    "aggregation_head": "23c74fc0093119341a1da209817f4cc54349c543",
-    "artifact_id": 10612868344,
-    "artifact_digest": "sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af",
-    "result_sha256": "4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944",
-    "persisted_result": "integration/f-rom/LARE_BC2_C6N2_RESULT.json",
-    "reference_authority": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
-    "reference_target": "R2048_T32"
-  },
-  "result": {
-    "status": "C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY",
-    "integrity_pass": true,
-    "all_candidates_attempted": true,
-    "maximum_qualified_water_ledger_cm": 1.8282140124697976e-12,
-    "minimum_numerically_unresolved_lower_zone_dimension": {
-      "B01": {
-        "SURFACE_20": null,
-        "ROOT_ZONE_40": null,
-        "UPPER_ZONE_80": null,
-        "PROFILE_STATE": null
-      },
-      "B14": {
-        "SURFACE_20": null,
-        "ROOT_ZONE_40": null,
-        "UPPER_ZONE_80": null,
-        "PROFILE_STATE": null
-      }
-    },
-    "interpretation": "No tested reduced lower-zone member is within the C6N1 metric-specific numerical Reference uncertainty on any declared surface/profile view. The no-spatial-reduction R16 LARE control is also numerically resolved from R2048_T32. This establishes resolved model/discretization differences, not hydrological application failure."
-  },
-  "domain_admissibility": {
-    "B01": {
-      "outside_qualified_domain": [
-        "R3",
-        "R4",
-        "P4_TOP_LOWER"
-      ],
-      "common_failure": "U03 OUTSIDE_QUALIFIED_DOMAIN theta endpoint",
-      "qualified": [
-        "R5",
-        "R6",
-        "R8",
-        "R12",
-        "R16",
-        "U4",
-        "U8"
-      ]
-    },
-    "B14": {
-      "outside_qualified_domain": [],
-      "qualified": [
-        "R3",
-        "R4",
-        "R5",
-        "R6",
-        "R8",
-        "R12",
-        "R16",
-        "P4_TOP_LOWER",
-        "U4",
-        "U8"
-      ]
-    }
-  },
-  "purpose_placement_evidence": {
-    "U8_vs_R8": {
-      "B01": {
-        "surface20_rmse_ratio_R8_over_U8": 11.655058778312485,
-        "root40_rmse_ratio_R8_over_U8": 14.632190008120071,
-        "upper80_rmse_ratio_R8_over_U8": 9.702907233125297,
-        "profile_rmse_ratio_R8_over_U8": 1.9775654524357433,
-        "conclusion": "At the same eight-state dimension, uniform vertical coverage is substantially closer to the surface-driven Reference than the inherited lower-zone-focused R8 on every declared view."
-      },
-      "B14": {
-        "surface20_rmse_ratio_R8_over_U8": 10.673230592138323,
-        "root40_rmse_ratio_R8_over_U8": 23.250446576530152,
-        "upper80_rmse_ratio_R8_over_U8": 160.65156658401537,
-        "profile_rmse_ratio_R8_over_U8": 1.5865779884648823,
-        "conclusion": "The same purpose-dependent placement reversal is stronger on B14."
-      }
-    },
-    "dimension4": {
-      "B01": "R4 and P4_TOP_LOWER are outside the frozen qualified domain on U03; H_TOP_PLACEMENT_R4 is therefore not established for B01. U4 remains qualified.",
-      "B14": {
-        "P4_TOP_LOWER_no_worse_than_R4_surface20_root40": true,
-        "R4_over_P4_surface20_rmse_ratio": 12.314760425963073,
-        "R4_over_P4_root40_rmse_ratio": 3.739185627383786,
-        "conclusion": "Top-plus-lower placement materially improves surface/root-zone response relative to lower-zone R4, while U4 and P4 trade advantages across views; no single four-state placement dominates all state/profile outputs."
-      }
-    },
-    "synthesis": "Placement that was advantageous for groundwater/lower-boundary objectives does not transfer as a generally advantageous placement for surface-driven soil-state objectives. Vertical information allocation is itself purpose dependent."
-  },
   "adjudication": {
-    "NUMERICALLY_UNRESOLVED_REDUCED_SURFACE_FRONTIER_FOUND": false,
-    "NO_SPATIAL_REDUCTION_R16_NUMERICALLY_UNRESOLVED": false,
-    "PURPOSE_DEPENDENT_PLACEMENT_SUPPORTED": true,
-    "LOWER_ZONE_PLACEMENT_TRANSFERS_TO_SURFACE_PURPOSE": false,
-    "MATERIAL_INVARIANT_MINIMUM_DIMENSION_ESTABLISHED": false,
-    "HYDROLOGICAL_APPLICATION_FAILURE_ESTABLISHED": false,
-    "HYDROLOGICAL_APPLICATION_SUFFICIENCY_ESTABLISHED": false,
-    "BOTTOM_EXCHANGE_FIDELITY_ADJUDICATED": false,
-    "ET_ROOT_UPTAKE_FIDELITY_ADJUDICATED": false,
     "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
-    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
-    "PRODUCTION_ROM_AUTHORIZED": false
+    "EXISTING_REDUCED_NUMERICALLY_UNRESOLVED_FRONTIER": false,
+    "NEW_CLOSURE_AUTHORIZED_FROM_C6N2": false,
+    "NEW_PARTITION_SELECTED": false,
+    "PERFORMANCE_SCREEN_AUTHORIZED": false,
+    "PLACEMENT_IS_MATERIAL_DEPENDENT": true,
+    "PLACEMENT_IS_PURPOSE_DEPENDENT": true,
+    "PRODUCTION_ROM_AUTHORIZED": false,
+    "UNIVERSAL_MINIMUM_DIMENSION_ESTABLISHED": false
   },
-  "scientific_interpretation": [
-    "C6N2 deliberately compares candidate differences against numerical Reference uncertainty, not against an application tolerance. A resolved difference only means it is larger than numerical uncertainty.",
-    "The strict C6N1 uncertainty bands are far below candidate differences even for R16, so C6N2 cannot by itself answer whether those differences matter for a hydrological application.",
-    "The same-dimension placement comparisons do answer a representation question: surface-driven soil-state fidelity benefits strongly from distributing states through the upper and full profile rather than concentrating them near the lower boundary.",
-    "This directly reinforces the C6K hypothesis that minimum useful representation depends on purpose rather than state count alone.",
-    "No new top-focused partition is selected from C6N2 response. Existing P4/U4/U8 controls are evidence only."
-  ],
+  "authority": {
+    "aggregation_binding": "integration/f-rom/LARE_BC2_C6N2_AGGREGATION_BINDING.json",
+    "aggregation_recovery_head": "23c74fc0093119341a1da209817f4cc54349c543",
+    "aggregation_recovery_run": 35538003359,
+    "artifact_digest": "sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af",
+    "artifact_id": 10612868344,
+    "exact_result_sha256": "4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944",
+    "execution_binding": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json",
+    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+    "reference_authority": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "reference_target": "R2048_T32",
+    "source_candidate_head": "540c0e4e5a70a197ffbdcf017f2bebd60269e182",
+    "source_candidate_jobs_successful": 20,
+    "source_candidate_run": 35537872450
+  },
+  "classification": {
+    "bottom_exchange_fidelity_in_scope": false,
+    "minimum_dimensions": {
+      "B01": {
+        "PROFILE_STATE": null,
+        "ROOT_ZONE_40": null,
+        "SURFACE_20": null,
+        "UPPER_ZONE_80": null
+      },
+      "B14": {
+        "PROFILE_STATE": null,
+        "ROOT_ZONE_40": null,
+        "SURFACE_20": null,
+        "UPPER_ZONE_80": null
+      }
+    },
+    "reduced_unresolved_frontier_present": false,
+    "status": "C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY",
+    "uncertainty_interpretation": "C6N1 metric-specific U_combined is numerical Reference uncertainty only, not an application tolerance."
+  },
+  "decision": "NO_EXISTING_REDUCED_MEMBER_WITHIN_C6N1_NUMERICAL_UNCERTAINTY_PURPOSE_SPECIFIC_PLACEMENT_RECONCILIATION_REQUIRED",
+  "execution": {
+    "B01_outside_domain_reason": "U03 theta endpoint",
+    "B01_outside_qualified_domain_members": [
+      "R3",
+      "R4",
+      "P4_TOP_LOWER"
+    ],
+    "B01_qualified_members": 7,
+    "B14_qualified_members": 10,
+    "all_candidates_attempted": true,
+    "candidate_jobs_successful": 20,
+    "candidate_payloads": 20,
+    "candidate_payloads_rerun_for_recovery": false,
+    "integrity_pass": true,
+    "maximum_qualified_water_ledger_cm": 1.8282140124697976e-12
+  },
+  "finest_existing_member_evidence": {
+    "B01_R16": {
+      "mapped_10cm_theta_rmse": 2.5945375823297877e-05,
+      "root_zone_0_40_storage_rmse_cm": 0.00046972682744845004,
+      "surface_0_20_storage_rmse_cm": 0.00048636431118934803,
+      "total_storage_rmse_cm": 8.704380821296848e-13,
+      "upper_0_80_storage_rmse_cm": 0.00044169069928955346
+    },
+    "B14_R16": {
+      "mapped_10cm_theta_rmse": 9.857248265394562e-07,
+      "root_zone_0_40_storage_rmse_cm": 4.460891584911755e-06,
+      "surface_0_20_storage_rmse_cm": 1.4074250440874018e-05,
+      "total_storage_rmse_cm": 1.7543474651626185e-12,
+      "upper_0_80_storage_rmse_cm": 6.766852193015509e-08
+    },
+    "interpretation": "Even R16 remains numerically resolved from the qualified R2048_T32 Reference on every declared state/profile metric."
+  },
   "next_authority": {
-    "target": "LARE-BC2-C6O",
-    "state": "ROOT_ET_SOURCE_FEEDBACK_CONTRACT_READ_ONLY_DERIVATION_AUTHORIZED",
-    "question": "How must distributed root extraction be projected conservatively to existing Layer-ROM states, and which parts of SWAP root-water-uptake feedback require within-layer hydraulic information beyond layer-average storage before any ET/drought response is generated?",
     "constraints": [
-      "Read-only theory/code reconciliation first.",
-      "Separate response to an externally prescribed sink from prediction of stress-dependent root uptake.",
-      "Derive exact conservative sink aggregation over retained layers before designing feedback.",
-      "Do not select root/ET tolerances from C6N2 state/profile errors.",
-      "Do not create a new surface partition or closure from C6N2 response.",
-      "Reference Richards remains the scientific reference; no performance or production claim."
-    ]
+      "Use C6N2 only to establish that placement matters and existing fixed partitions are numerically resolved; do not optimize boundaries against C6N2 errors.",
+      "Derive any new boundaries from hydrological purpose regions and forcing support, not candidate residual minima.",
+      "Keep CURRENT_LAYER_FACE and the existing integrator unchanged in the first placement discriminator.",
+      "Require fresh histories for any subsequent hydrological candidate response.",
+      "Do not reinterpret C6N1 uncertainty as application tolerance.",
+      "No ET/root uptake, groundwater, performance, speed or production claim."
+    ],
+    "question": "Can a new surface-purpose representation family be derived prospectively from the declared 0-20, 0-40 and 0-80 hydrological support scales, without fitting C6N2 residuals, before any fresh blind response test?",
+    "state": "READ_ONLY_PURPOSE_ALIGNED_PARTITION_DESIGN_RECONCILIATION_AUTHORIZED",
+    "target": "LARE-BC2-C6O"
   },
+  "placement_evidence": {
+    "B01_P4_no_worse_than_R4_surface20_root40": false,
+    "B01_R8": {
+      "mapped_10cm_theta_rmse": 0.0005249155068014559,
+      "root_zone_0_40_storage_rmse_cm": 0.025127118662478156,
+      "surface_0_20_storage_rmse_cm": 0.019605343293123245,
+      "total_storage_rmse_cm": 9.306078467481739e-13,
+      "upper_0_80_storage_rmse_cm": 0.016367923257152046
+    },
+    "B01_U8": {
+      "mapped_10cm_theta_rmse": 0.00026543521285473705,
+      "root_zone_0_40_storage_rmse_cm": 0.001717249341932682,
+      "surface_0_20_storage_rmse_cm": 0.0016821316533902429,
+      "total_storage_rmse_cm": 8.677654863109151e-13,
+      "upper_0_80_storage_rmse_cm": 0.0016869091772074949
+    },
+    "B14_P4_TOP_LOWER": {
+      "mapped_10cm_theta_rmse": 5.851932241312757e-06,
+      "root_zone_0_40_storage_rmse_cm": 0.00010981898385112797,
+      "surface_0_20_storage_rmse_cm": 3.7217724262185015e-05,
+      "total_storage_rmse_cm": 1.910064229711136e-12,
+      "upper_0_80_storage_rmse_cm": 7.346459972506765e-05
+    },
+    "B14_P4_no_worse_than_R4_surface20_root40": true,
+    "B14_R4": {
+      "mapped_10cm_theta_rmse": 1.129994120299776e-05,
+      "root_zone_0_40_storage_rmse_cm": 0.00041063356603002974,
+      "surface_0_20_storage_rmse_cm": 0.0004583273578883617,
+      "total_storage_rmse_cm": 1.8683965183718034e-12,
+      "upper_0_80_storage_rmse_cm": 0.00023274701989754498
+    },
+    "B14_R8": {
+      "mapped_10cm_theta_rmse": 1.0960080686498854e-05,
+      "root_zone_0_40_storage_rmse_cm": 0.00033161890803850354,
+      "surface_0_20_storage_rmse_cm": 0.0004197836254394863,
+      "total_storage_rmse_cm": 1.734111953271476e-12,
+      "upper_0_80_storage_rmse_cm": 7.55090998234046e-05
+    },
+    "B14_U8": {
+      "mapped_10cm_theta_rmse": 6.907999963558959e-06,
+      "root_zone_0_40_storage_rmse_cm": 1.4262904884298083e-05,
+      "surface_0_20_storage_rmse_cm": 3.933051214584365e-05,
+      "total_storage_rmse_cm": 1.7318962175463807e-12,
+      "upper_0_80_storage_rmse_cm": 4.7001782446930503e-07
+    },
+    "interpretation": "Placement materially changes surface/profile fidelity and the useful direction is material- and purpose-dependent; no scalar winner or material-invariant placement is admitted."
+  },
+  "role": "PURPOSE_SPECIFIC_SURFACE_PROFILE_REPRESENTATION_EVIDENCE_NOT_APPLICATION_ACCEPTANCE",
+  "schema": "swap5.lare.bc2.c6n2.closeout.v1",
   "scientific_firewall": {
+    "application_acceptance_adjudicated": false,
     "candidate_response_generated": true,
     "new_representation_selected": false,
-    "new_closure_selected": false,
-    "application_tolerance_selected": false,
-    "bottom_exchange_fidelity_adjudicated": false,
-    "ET_root_uptake_feedback_used": false,
-    "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
-    "speed_claim_authorized": false,
-    "production_rom_authorized": false
+    "production_rom_authorized": false,
+    "speed_claim_authorized": false
   },
-  "model_changed": false
+  "scientific_interpretation": [
+    "C6N2 answers a numerical distinguishability question, not a hydrological application-acceptance question.",
+    "No reduced member of the existing frozen fixed-partition family is numerically unresolved from the qualified R2048_T32 Reference on SURFACE_20, ROOT_ZONE_40, UPPER_ZONE_80 or PROFILE_STATE for either B01 or B14.",
+    "The absence of an unresolved reduced frontier does not imply that every reduced member is hydrologically unusable. C6N1 uncertainty is a numerical resolution floor, not an application tolerance.",
+    "Placement remains an active structural axis but reverses relative to earlier groundwater-boundary work: for surface-driven fixed-bottom-flux response, distributed/upper-zone support can strongly outperform lower-zone-focused members at the same state count.",
+    "B01 demonstrates a domain-robustness constraint: R3, R4 and P4_TOP_LOWER leave the qualified domain on U03, while U4/U8 and higher-dimensional members remain executable.",
+    "B14 retains all candidates in-domain; P4 improves the declared surface/root-zone relation versus R4, while U8 strongly improves over R8 across the surface/profile metrics.",
+    "Because C6N2 used an existing frozen family only, it does not establish an optimal surface-purpose partition. A new partition family, if studied, must be derived prospectively from purpose/physics and validated on fresh histories rather than fitted to C6N2 residuals."
+  ],
+  "status": "CLOSED_EXISTING_FIXED_PARTITION_SURFACE_PROFILE_DIFFERENCES_NUMERICALLY_RESOLVED_NO_REDUCED_UNRESOLVED_FRONTIER",
+  "work_unit": "LARE-BC2-C6N2",
+  "workstream": "F-ROM-LARE"
 }
