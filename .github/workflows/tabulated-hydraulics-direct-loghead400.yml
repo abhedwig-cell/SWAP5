@@ -1,0 +1,318 @@
+name: TAB-HYD direct log-head 400 qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-direct-loghead400.yml'
+      - 'research/tabulated_hydraulics/patch_direct_loghead_tspack.py'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout pre-strangler SWAP runtime
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+
+      - name: Materialize toml-f
+        uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+
+      - name: Materialize ttutil
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+
+      - name: Checkout Hupsel application
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Checkout Staring authority
+        uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical, legacy-lookup and direct-lookup binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-analytic swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-analytic
+          cp swap-src/build-analytic/swap swap-analytic
+
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py \
+            swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-src/build-table-legacy swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table-legacy
+          cp swap-src/build-table-legacy/swap swap-table-legacy
+
+          python3 research/tabulated_hydraulics/patch_direct_loghead_tspack.py \
+            swap-src/src/soil/sptabulated.f90 swap-src/src/io/readswap.f90
+          meson setup swap-src/build-table-direct swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build-table-direct
+          cp swap-src/build-table-direct/swap swap-table-direct
+
+      - name: Prepare 400-row transfer cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/direct400/envelope
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          spec=importlib.util.spec_from_file_location("logprep",lp)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          prep=mod.prep
+          prep.uniform_rows=lambda p: mod.loghead_rows(p,400)
+
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          root=Path("build/direct400/envelope")
+          for scenario,sc in prep.SCENARIOS.items():
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k0",params,sc,table=False,kimpl=0)
+              prep.prepare_case(src,root/f"{scenario}__table_k0",params,sc,table=True,kimpl=0)
+          for scenario in ("coarse_dry_free","coarse_dry_pulse"):
+              sc=prep.SCENARIOS[scenario]
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k1",params,sc,table=False,kimpl=1)
+              prep.prepare_case(src,root/f"{scenario}__table_k1",params,sc,table=True,kimpl=1)
+          PY
+
+      - name: Run direct transfer envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'case\troute\tswkimpl\treturn_code\truntime_seconds\n' > build/direct400/envelope-status.tsv
+          run_one () {
+            scenario="$1"; route="$2"; k="$3"
+            work="build/direct400/envelope/${scenario}__${route}_k${k}"
+            if [ "$route" = analytic ]; then bin="$GITHUB_WORKSPACE/swap-analytic"; else bin="$GITHUB_WORKSPACE/swap-table-direct"; fi
+            pushd "$work" >/dev/null
+            set +e
+            /usr/bin/time -f '%e' -o runtime.txt timeout 30 "$bin" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            runtime=$(tail -1 "$work/runtime.txt" 2>/dev/null || echo NA)
+            printf '%s\t%s\t%s\t%s\t%s\n' "$scenario" "$route" "$k" "$rc" "$runtime" | tee -a build/direct400/envelope-status.tsv
+            test "$rc" -eq 100
+          }
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            run_one "$scenario" analytic 0
+            run_one "$scenario" table 0
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            run_one "$scenario" analytic 1
+            run_one "$scenario" table 1
+          done
+
+      - name: Gate direct transfer fidelity
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/direct400/envelope-comparisons.txt
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/direct400/envelope/${scenario}__analytic_k0" \
+              "build/direct400/envelope/${scenario}__table_k0" \
+              "build/direct400/${scenario}__k0.json" \
+              --label "${scenario},K0,direct-loghead400" | tee -a build/direct400/envelope-comparisons.txt
+          done
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/direct400/envelope/${scenario}__analytic_k1" \
+              "build/direct400/envelope/${scenario}__table_k1" \
+              "build/direct400/${scenario}__k1.json" \
+              --label "${scenario},K1,direct-loghead400" | tee -a build/direct400/envelope-comparisons.txt
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={"GWL":(0.05,0.01),"DSTOR":(0.02,0.005),"DRAINAGE":(0.02,0.005),"DRN":(0.02,0.005),"QBOTTOM":(0.02,0.005),"TACT":(0.02,0.005)}
+          failed=[]
+          lines=["label\tmetric\tmax_abs\trmse\tpass"]
+          for p in sorted(Path("build/direct400").glob("*__k[01].json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]
+                  ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  lines.append(f"{d['label']}\t{metric}\t{m['max_abs']}\t{m['rmse']}\t{ok}")
+                  if not ok: failed.append((d["label"],metric,m["max_abs"],m["rmse"]))
+          Path("build/direct400/envelope-fidelity.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/direct400/envelope-fidelity.tsv").read_text(),end="")
+          print(f"fidelity_failures={len(failed)}")
+          if failed:
+              raise SystemExit("direct loghead400 exceeds transfer limits")
+          PY
+
+      - name: Prepare Hupsel 400-row benchmark cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+
+          hp=Path("research/tabulated_hydraulics/prepare_hupsel_e2e.py")
+          hs=importlib.util.spec_from_file_location("hprep",hp)
+          hprep=importlib.util.module_from_spec(hs); hs.loader.exec_module(hprep)
+
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          ls=importlib.util.spec_from_file_location("logprep",lp)
+          logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
+
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/direct400/hupsel")
+          root.mkdir(parents=True,exist_ok=True)
+
+          psets=[]
+          for idx,p in enumerate(hprep.PARAMS):
+              psets.append(dict(
+                  ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],
+                  comment=f"hupsel_{idx}"
+              ))
+
+          def overwrite_tables(dst):
+              for name,p in zip(hprep.TABLE_NAMES,psets):
+                  rows=logprep.loghead_rows(p,400)
+                  with (dst/name).open("w",newline="\n") as fh:
+                      fh.write("* TAB-HYD 400-row log-head branch-aware Hupsel table\n")
+                      fh.write("headtab,thetatab,conductab\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
+
+          for k in (0,1):
+              a=root/f"analytic_k{k}"
+              shutil.copytree(src,a)
+              hprep.edit_case(a,table=False,swkimpl=k)
+              t=root/f"table_k{k}"
+              shutil.copytree(src,t)
+              hprep.edit_case(t,table=True,swkimpl=k)
+              overwrite_tables(t)
+          PY
+
+      - name: Qualify Hupsel legacy and direct lookup equivalence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/direct400/hupsel-legacy-k0 build/direct400/hupsel-legacy-k1
+          cp -a build/direct400/hupsel/table_k0/. build/direct400/hupsel-legacy-k0/
+          cp -a build/direct400/hupsel/table_k1/. build/direct400/hupsel-legacy-k1/
+          for k in 0 1; do
+            for route in analytic direct legacy; do
+              if [ "$route" = analytic ]; then work="build/direct400/hupsel/analytic_k${k}"; bin="$GITHUB_WORKSPACE/swap-analytic";
+              elif [ "$route" = direct ]; then work="build/direct400/hupsel/table_k${k}"; bin="$GITHUB_WORKSPACE/swap-table-direct";
+              else work="build/direct400/hupsel-legacy-k${k}"; bin="$GITHUB_WORKSPACE/swap-table-legacy"; fi
+              pushd "$work" >/dev/null
+              set +e
+              timeout 30 "$bin" > qualification.log 2>&1
+              rc=$?
+              set -e
+              popd >/dev/null
+              test "$rc" -eq 100
+            done
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/direct400/hupsel/analytic_k${k}" "build/direct400/hupsel/table_k${k}" \
+              "build/direct400/hupsel-direct-k${k}.json" --label "Hupsel,K${k},direct-loghead400"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/direct400/hupsel-legacy-k${k}" "build/direct400/hupsel/table_k${k}" \
+              "build/direct400/lookup-equivalence-k${k}.json" --label "legacy-vs-direct,K${k}"
+          done
+
+      - name: Repeated Hupsel benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, statistics, subprocess, time
+
+          root=Path("build/direct400").resolve()
+          routes={
+              "analytic_k0":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k0"),
+              "legacy400_k0":(Path("swap-table-legacy").resolve(),root/"hupsel-legacy-k0"),
+              "direct400_k0":(Path("swap-table-direct").resolve(),root/"hupsel/table_k0"),
+              "analytic_k1":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k1"),
+              "legacy400_k1":(Path("swap-table-legacy").resolve(),root/"hupsel-legacy-k1"),
+              "direct400_k1":(Path("swap-table-direct").resolve(),root/"hupsel/table_k1"),
+          }
+
+          def one(label):
+              binary,work=routes[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists(): p.unlink()
+              t0=time.perf_counter()
+              proc=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30)
+              dt=time.perf_counter()-t0
+              if proc.returncode!=100: raise RuntimeError((label,proc.returncode))
+              return dt
+
+          for label in routes: one(label)
+          vals={k:[] for k in routes}; rows=[]
+          labels=list(routes)
+          for rnd in range(12):
+              order=labels[rnd%len(labels):]+labels[:rnd%len(labels)]
+              if rnd%2: order=list(reversed(order))
+              for label in order:
+                  dt=one(label); vals[label].append(dt); rows.append((rnd,label,dt))
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["round","route","seconds"]); w.writerows(rows)
+          med={k:statistics.median(v) for k,v in vals.items()}
+          lines=[]
+          for k in labels:
+              lines.append(f"{k}_median_s={med[k]:.9g}")
+          for k in ("legacy400_k0","direct400_k0"):
+              lines.append(f"{k}_delta_vs_analytic_pct={100*(med[k]/med['analytic_k0']-1):.9g}")
+          for k in ("legacy400_k1","direct400_k1"):
+              lines.append(f"{k}_delta_vs_analytic_pct={100*(med[k]/med['analytic_k1']-1):.9g}")
+          lines.append(f"direct_vs_legacy_k0_pct={100*(med['direct400_k0']/med['legacy400_k0']-1):.9g}")
+          lines.append(f"direct_vs_legacy_k1_pct={100*(med['direct400_k1']/med['legacy400_k1']-1):.9g}")
+          (root/"benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-direct-loghead400
+          path: |
+            build/direct400/envelope-status.tsv
+            build/direct400/envelope-comparisons.txt
+            build/direct400/envelope-fidelity.tsv
+            build/direct400/*__k*.json
+            build/direct400/hupsel-direct-k*.json
+            build/direct400/lookup-equivalence-k*.json
+            build/direct400/benchmark.csv
+            build/direct400/benchmark-summary.txt
