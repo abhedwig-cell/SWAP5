@@ -1,15 +1,15 @@
 {
   "schema": "swap5.layer-rom.status.v1",
   "workstream": "F-ROM-LAYER",
-  "work_unit": "LAYER-ROM-COST1",
-  "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "506ae0343c3d980717088bcc45be041c310b85f8",
+  "work_unit": "LAYER-ROM-RESEARCH-PHASE",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "checkpoint_commit": "8d49e42c6011ed97acac53bd0534bcdc159a5ac8",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_B_CLOSED_FIDELITY_FROZEN_COST1_EXECUTION_CF1_SYNTHESIS_PREBOUND",
-  "last_reconciled_head": "506ae0343c3d980717088bcc45be041c310b85f8",
+  "phase": "CORE_RESEARCH_PHASE_CLOSED_COST_FIDELITY_CURVE_COMPLETE_APPLICATION_AUTHORITY_BLOCKED",
+  "last_reconciled_head": "8d49e42c6011ed97acac53bd0534bcdc159a5ac8",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -119,7 +119,11 @@
     "integration/f-rom/LAYER_ROM_COST1_REPAIR_RECORD.json",
     "integration/f-rom/LAYER_ROM_CF1_PREREGISTRATION.json",
     "tests/rom/synthesize_layer_rom_cf1.py",
-    ".github/workflows/f-rom-layer-cf1.yml"
+    ".github/workflows/f-rom-layer-cf1.yml",
+    "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+    "integration/f-rom/LAYER_ROM_COST1_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+    "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -186,7 +190,13 @@
     "GitHub Actions run 35506606866 (B1HCP corrected model-form decomposition)",
     "integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
     "GitHub Actions run 35507294494 superseded after R16-only B16 atomic calibration feasibility exposure; no comparative timing round exposed",
-    "GitHub Actions run 35507539740 active COST1 authority after atomic-workload calibration repair"
+    "GitHub Actions run 35507539740 active COST1 authority after atomic-workload calibration repair",
+    "GitHub Actions run 35507539740 / aggregate artifact 10603918398 (COST1 six-material shared-host screen)",
+    "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+    "integration/f-rom/LAYER_ROM_COST1_CLOSEOUT.json",
+    "GitHub Actions run 35508569250 / artifact 10604583217 (CF1 frozen cost-fidelity synthesis)",
+    "integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+    "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -194,9 +204,15 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete authoritative COST1 run 35507539740. Persist its aggregate result without fidelity retuning, then execute the already-frozen CF1 cost-fidelity synthesis.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 506ae0343c3d980717088bcc45be041c310b85f8. Phase B fidelity is frozen; COST1 run 35507539740 remains execution authority. CF1 synthesis criteria and tooling are already persisted and must not be changed from timing results.",
-  "blockers": [],
+  "next_action": "Bind an independently sourced purpose-specific acceptance envelope for GW-R, GW-D or SCI-P, then preregister blind validation of the frozen L4/L6/R8 frontier. No representation or closure retuning from validation responses.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 8d49e42c6011ed97acac53bd0534bcdc159a5ac8. Core state/partition/closure/fixed-head transfer/cost research is closed. The next unresolved action is external purpose-acceptance authority, not further cost screening or unconstrained layer search.",
+  "blockers": [
+    {
+      "id": "APPLICATION_TOLERANCE_AUTHORITY",
+      "type": "SCIENTIFIC_APPLICATION_AUTHORITY",
+      "description": "No independent absolute application tolerances and temporal allocation semantics are bound for GW-R, GW-D or SCI-P."
+    }
+  ],
   "scope_guards": [
     "research only",
     "no src/** mutation",
