@@ -34,7 +34,7 @@
     "C5V": "Read-only SCAFP derivation shows that layer-integrated storage plus Darcy-Buckingham and exact conservation does not uniquely determine transient within-layer structure. A conservative zero-fit algebraic family exists, but an additional subgrid tendency/profile principle is scientifically required. P0 uniform storage tendency is the most conservation-aligned candidate, not an authority-mandated choice.",
     "C5W": "P0 uniform storage tendency was selected prospectively as the minimum-additional-structure SCAFP hypothesis and failed response-free admissibility qualification: local uniqueness is conditional, but 264/405 local cases and all 28 full-column synthetic cases fail the frozen existence/branch contract. No hydrological P0 test is authorized.",
     "C5X": "After prospective P0 failure, choosing quadratic-head or transformed-potential storage-only reconstructions would remain an unselected ansatz choice. C4K's bounded ambiguity result is not universal memoryless sufficiency; state sufficiency is therefore reopened read-only.",
-    "C5Y": "The centered first water-content moment M_i=\u222b(z-zc)theta dz is the smallest additional scalar shape state with an exact balance from continuity. A conservation-native mixed quadratic/cubic theta hierarchy closes the global degree count for any selected enriched-layer subset, but existence/uniqueness/admissibility remain unqualified.",
+    "C5Y": "The centered first water-content moment M_i=∫(z-zc)theta dz is the smallest additional scalar shape state with an exact balance from continuity. A conservation-native mixed quadratic/cubic theta hierarchy closes the global degree count for any selected enriched-layer subset, but existence/uniqueness/admissibility remain unqualified.",
     "C5Z": "Response-free mathematical qualification finds one stable numerical branch and full hydraulic/state consistency in all 168 cases, but 14 cases violate the prospectively frozen upper theta/Se admissibility domain. The all-layer moment-enriched cubic-theta reconstruction is therefore stopped without retuning.",
     "C6A": "Response-free derivation shows that explicit algebraic interface head/flux unknowns guarantee conservation but do not supply missing transient subgrid information. Lowest-order linear hybridization condenses to a standard two-point Darcy operator; exact steady nonlinear half-cells condense to DSE2P; affine within-layer flux is P0. A genuinely new family therefore requires a new physically justified transient subgrid state or closure principle.",
     "C6B": "The centered first water-content moment is retained, but the failed cubic-theta map is not reopened. BEMR represents the frozen bounded effective-saturation interval through a logistic entropy-dual variable and uses the minimum four-dimensional polynomial dual space required by the existing S/M plus hydraulic degree count. The family is selected response-free and must be qualified on the unchanged C5Z synthetic domain before any hydrological response.",
@@ -54,7 +54,7 @@
     "C6N1": "Three-level space-time verification qualifies R2048_T32 for B01/B14 surface/profile work with metric-specific numerical uncertainty bands; spatial order is ~2 and temporal order ~1. These bands are numerical uncertainty only.",
     "C6N2": "All 20 frozen existing-representation payloads were classified against C6N1 uncertainty. No reduced member is numerically unresolved on any declared surface/profile view for B01 or B14. Placement remains strongly purpose/material dependent: U8 outperforms lower-zone R8 on the surface-driven workload, while sparse R3/R4/P4 leave the B01 qualified domain on U03.",
     "C6O": "Prescribed root sinks aggregate exactly into any coarse partition, but predicted drought-only Feddes feedback depends on root-weighted sublayer pressure-head information. Exact fixed-threshold uptake is determined by wet/transition branch occupancy plus the transition head moment.",
-    "C6P": "Response-free matched-state construction proves that neither layer storage alone nor storage plus the conservation-derived geometric first water-content moment uniquely determines general Feddes uptake. The mean-storage feedback approximation is also non-exact. No application tolerance follows.",
+    "C6P": "Response-free synthetic identifiability confirms that equal coarse storage can produce different drought-only Feddes uptake, and even equal storage plus centered geometric first water-content moment can remain uptake-ambiguous. This rejects exact root-feedback sufficiency of S and S+M, not application usefulness. No new root-specific state is selected.",
     "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
     "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
     "interaction_matrix": "The B01/B14 x fixed/dynamic matrix is now complete. Material and lower-boundary semantics interact; neither a universal state count nor boundary-only explanation is supported.",
@@ -203,28 +203,31 @@
       "id": "CURRENT_FEMO_INTERIOR_AFFINE_SUCTION_REALIZATION"
     }
   ],
-  "decision": "DERIVE_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_BEFORE_DYNAMIC_ET_REPRESENTATION",
+  "decision": "SELECT_MINIMAL_EXISTING_STATE_ROOT_FEEDBACK_FOR_PROSPECTIVE_FALSIFICATION_WITHOUT_NEW_ROOT_STATE",
   "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
   "model_changed": false,
   "next_authority": {
-    "hydrological_response_authorized": false,
-    "state": "READ_ONLY_FORCING_PORTABLE_ROOT_STRESS_INFORMATION_DERIVATION_AUTHORIZED",
-    "target": "LARE-BC2-C6Q"
+    "target": "LARE-BC2-C6Q",
+    "state": "MINIMAL_EXISTING_STATE_ROOT_FEEDBACK_PROSPECTIVE_ARCHITECTURE_AUTHORIZED",
+    "authority": "integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json",
+    "hydrological_response_authorized": false
   },
   "next_family_authority": {
+    "family": "EXISTING_FIXED_PARTITION_LARE_PURPOSE_VALIDATION",
+    "state": "MINIMAL_LAYER_MEAN_HEAD_ROOT_FEEDBACK_ARCHITECTURE_REQUIRED_BEFORE_ROOT_ACTIVE_REFERENCE",
+    "prescribed_root_sink_projection_exact": true,
+    "storage_exact_root_feedback_sufficient": false,
+    "storage_plus_first_moment_exact_root_feedback_sufficient": false,
+    "new_root_state_selected": false,
+    "minimal_existing_state_feedback_selected_for_testing": true,
+    "root_ET_feedback_response_authorized": false,
     "application_acceptance_adjudicated": false,
-    "family": "ROOT_FEEDBACK_PURPOSE_STATE",
-    "free_running_ET_authorized": false,
-    "new_dynamic_state_selected": false,
     "performance_comparison_authorized": false,
     "production_rom_authorized": false,
     "repository_basis": [
       "integration/f-rom/LARE_BC2_C6O_RECONCILIATION.json",
       "integration/f-rom/LARE_BC2_C6P_CLOSEOUT.json"
-    ],
-    "state": "INFORMATION_CONTRACT_DERIVATION_ONLY",
-    "storage_only_sufficient": false,
-    "storage_plus_geometric_first_moment_sufficient": false
+    ]
   },
   "performance_comparison_authorized": false,
   "production_rom_authorized": false,
@@ -267,7 +270,7 @@
     "repaired": true,
     "scientific_results_changed": false
   },
-  "status": "CLOSED_THROUGH_C6P_ROOT_FEEDBACK_STATE_IDENTIFIABILITY_FORCING_PORTABLE_INFORMATION_NEXT",
+  "status": "CLOSED_THROUGH_C6P_ROOT_FEEDBACK_EXACT_STATE_SUFFICIENCY_REJECTED_MINIMAL_APPROXIMATE_FEEDBACK_ARCHITECTURE_NEXT",
   "v3_reconciliation": {
     "frozen_lare_scientific_basis_rebased": false,
     "post_hoc_retuning_authorized": false,
