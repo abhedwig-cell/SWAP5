@@ -1,0 +1,237 @@
+name: TAB-HYD raw-head log-K qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-raw-head-logk.yml'
+      - 'research/tabulated_hydraulics/patch_raw_head_logk_lookup.py'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+      - uses: actions/checkout@v4
+        with:
+          repository: Murilodsv/SWAP-SAMUCA
+          ref: main
+          path: staring-source
+
+      - name: Build analytical, transformed baseline and raw-head candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+
+          cp -a swap-src swap-analytic-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-analytic-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-analytic-src/build swap-analytic-src -Denable_pfunit=false
+          meson compile -C swap-analytic-src/build
+          cp swap-analytic-src/build/swap swap-analytic
+
+          cp -a swap-src swap-base-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-base-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-base-src/src/utils/soilhydraulicsutils.f90 swap-base-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-base-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py swap-base-src/src/soil/sptabulated.f90 swap-base-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_exact_head_eval_cache.py swap-base-src/src/soil/sptabulated.f90 swap-base-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_watcon_capacity_reuse.py swap-base-src/src/soil/sptabulated.f90 swap-base-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-base-src/build swap-base-src -Denable_pfunit=false
+          meson compile -C swap-base-src/build
+          cp swap-base-src/build/swap swap-table-base
+
+          cp -a swap-src swap-raw-src
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-raw-src/src/utils/soilhydraulicsutils.f90 swap-raw-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-raw-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_raw_head_logk_lookup.py swap-raw-src/src/soil/sptabulated.f90 swap-raw-src/src/io/readswap.f90 swap-raw-src/src/utils/soilhydraulicsutils.f90
+          meson setup swap-raw-src/build swap-raw-src -Denable_pfunit=false
+          meson compile -C swap-raw-src/build
+          cp swap-raw-src/build/swap swap-table-raw
+
+      - name: Prepare log-head400 cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/raw/envelope
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          ls=importlib.util.spec_from_file_location("logprep",lp)
+          logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
+          prep=logprep.prep; prep.uniform_rows=lambda p: logprep.loghead_rows(p,400)
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          series=prep.read_staring(Path("staring-source/xdata/soils/StaringSeries1994/staringreeks1994.csv"))
+          root=Path("build/raw/envelope")
+          for scenario,sc in prep.SCENARIOS.items():
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k0",params,sc,False,0)
+              prep.prepare_case(src,root/f"{scenario}__raw_k0",params,sc,True,0)
+          for scenario in ("coarse_dry_free","coarse_dry_pulse"):
+              sc=prep.SCENARIOS[scenario]
+              params=[series[sc["top"]],series[sc["sub"]]]
+              prep.prepare_case(src,root/f"{scenario}__analytic_k1",params,sc,False,1)
+              prep.prepare_case(src,root/f"{scenario}__raw_k1",params,sc,True,1)
+
+          hp=Path("research/tabulated_hydraulics/prepare_hupsel_e2e.py")
+          hs=importlib.util.spec_from_file_location("hprep",hp)
+          hprep=importlib.util.module_from_spec(hs); hs.loader.exec_module(hprep)
+          hroot=Path("build/raw/hupsel"); hroot.mkdir(parents=True)
+          psets=[dict(ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],h_enpr=0.0,comment=f"hupsel_{i}") for i,p in enumerate(hprep.PARAMS)]
+          def overwrite(dst):
+              for name,p in zip(hprep.TABLE_NAMES,psets):
+                  rows=logprep.loghead_rows(p,400)
+                  with (dst/name).open("w",newline="\n") as fh:
+                      fh.write("* TAB-HYD proven log-head400 table\nheadtab,thetatab,conductab\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
+          for kval in (0,1):
+              a=hroot/f"analytic_k{kval}"; shutil.copytree(src,a); hprep.edit_case(a,False,kval)
+              b=hroot/f"base_k{kval}"; shutil.copytree(src,b); hprep.edit_case(b,True,kval); overwrite(b)
+              rr=hroot/f"raw_k{kval}"; shutil.copytree(b,rr)
+          PY
+
+      - name: Qualify raw-head fidelity
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_case () {
+            work="$1"; bin="$2"
+            pushd "$work" >/dev/null
+            set +e
+            timeout 30 "$bin" >/dev/null 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            test "$rc" -eq 100
+          }
+
+          for scenario in coarse_dry_free loam_mid_free clay_wet_free coarse_dry_pulse loam_capillary; do
+            run_case "build/raw/envelope/${scenario}__analytic_k0" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/raw/envelope/${scenario}__raw_k0" "$GITHUB_WORKSPACE/swap-table-raw"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/raw/envelope/${scenario}__analytic_k0" "build/raw/envelope/${scenario}__raw_k0" \
+              "build/raw/${scenario}__k0.json" --label "${scenario},K0,raw-head-logK"
+          done
+
+          for scenario in coarse_dry_free coarse_dry_pulse; do
+            run_case "build/raw/envelope/${scenario}__analytic_k1" "$GITHUB_WORKSPACE/swap-analytic"
+            run_case "build/raw/envelope/${scenario}__raw_k1" "$GITHUB_WORKSPACE/swap-table-raw"
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/raw/envelope/${scenario}__analytic_k1" "build/raw/envelope/${scenario}__raw_k1" \
+              "build/raw/${scenario}__k1.json" --label "${scenario},K1,raw-head-logK"
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          limits={"GWL":(0.05,0.01),"DSTOR":(0.02,0.005),"DRAINAGE":(0.02,0.005),"DRN":(0.02,0.005),"QBOTTOM":(0.02,0.005),"TACT":(0.02,0.005)}
+          failed=[]; lines=["label\tmetric\tmax_abs\trmse\tpass"]
+          for p in sorted(Path("build/raw").glob("*__k[01].json")):
+              d=json.loads(p.read_text())
+              for metric,(ma,rm) in limits.items():
+                  if metric not in d["metrics"]: continue
+                  m=d["metrics"][metric]
+                  ok=m["max_abs"]<=ma and m["rmse"]<=rm
+                  lines.append(f"{d['label']}\t{metric}\t{m['max_abs']}\t{m['rmse']}\t{ok}")
+                  if not ok: failed.append((d["label"],metric,m))
+          Path("build/raw/fidelity.tsv").write_text("\n".join(lines)+"\n")
+          print(Path("build/raw/fidelity.tsv").read_text(),end="")
+          print(f"fidelity_failures={len(failed)}")
+          PY
+
+      - name: Hupsel outputs and repeated benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          for kval in 0 1; do
+            for route in base raw; do
+              work="build/raw/hupsel/${route}_k${kval}"
+              if [ "$route" = base ]; then bin="$GITHUB_WORKSPACE/swap-table-base"; else bin="$GITHUB_WORKSPACE/swap-table-raw"; fi
+              pushd "$work" >/dev/null
+              set +e
+              timeout 30 "$bin" >/dev/null 2>&1
+              rc=$?
+              set -e
+              popd >/dev/null
+              test "$rc" -eq 100
+            done
+            python3 research/tabulated_hydraulics/compare_hupsel_e2e.py \
+              "build/raw/hupsel/base_k${kval}" "build/raw/hupsel/raw_k${kval}" \
+              "build/raw/base-vs-raw-k${kval}.json" --label "base-vs-raw,K${kval}"
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,statistics,subprocess,time
+          root=Path("build/raw").resolve()
+          routes={
+            "analytic_k0":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k0"),
+            "base_k0":(Path("swap-table-base").resolve(),root/"hupsel/base_k0"),
+            "raw_k0":(Path("swap-table-raw").resolve(),root/"hupsel/raw_k0"),
+            "analytic_k1":(Path("swap-analytic").resolve(),root/"hupsel/analytic_k1"),
+            "base_k1":(Path("swap-table-base").resolve(),root/"hupsel/base_k1"),
+            "raw_k1":(Path("swap-table-raw").resolve(),root/"hupsel/raw_k1")}
+          def one(label):
+              binary,work=routes[label]
+              for fn in ("result_output.csv","swap.log"):
+                  p=work/fn
+                  if p.exists(): p.unlink()
+              t=time.perf_counter()
+              proc=subprocess.run([str(binary)],cwd=work,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=30)
+              dt=time.perf_counter()-t
+              if proc.returncode!=100: raise RuntimeError((label,proc.returncode))
+              return dt
+          for label in routes: one(label)
+          vals={x:[] for x in routes}; rows=[]; labels=list(routes)
+          for rnd in range(16):
+              order=labels[rnd%6:]+labels[:rnd%6]
+              if rnd%2: order=list(reversed(order))
+              for label in order:
+                  dt=one(label); vals[label].append(dt); rows.append((rnd,label,dt))
+          med={k:statistics.median(v) for k,v in vals.items()}
+          with (root/"benchmark.csv").open("w",newline="") as fh:
+              w=csv.writer(fh); w.writerow(["round","route","seconds"]); w.writerows(rows)
+          lines=[f"{key}_median_s={med[key]:.9g}" for key in labels]
+          for kval in (0,1):
+              lines.append(f"raw_k{kval}_delta_vs_analytic_pct={100*(med[f'raw_k{kval}']/med[f'analytic_k{kval}']-1):.9g}")
+              lines.append(f"raw_vs_base_k{kval}_pct={100*(med[f'raw_k{kval}']/med[f'base_k{kval}']-1):.9g}")
+          Path("build/raw/benchmark-summary.txt").write_text("\n".join(lines)+"\n")
+          print("\n".join(lines))
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-raw-head-logk
+          path: |
+            build/raw/fidelity.tsv
+            build/raw/*__k*.json
+            build/raw/base-vs-raw-k*.json
+            build/raw/benchmark.csv
+            build/raw/benchmark-summary.txt
