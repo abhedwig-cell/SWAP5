@@ -52,8 +52,10 @@ program test_difficulty_p0c_replay
 
   ! A then B.
   call difficulty_replay_one(rs,rw,req,tmpl_r,rr1,r1)
+  write(*,'(A,I0,1X,A)') 'DIFFICULTY_P0C_REFERENCE_AB_STATUS=',r1%status,trim(r1%diagnostics%route)
   call require(r1%status==SW_SOLVE_CONVERGED,'reference A-B converged')
   call difficulty_replay_one(as,aw,req,tmpl_a,aa1,a1)
+  write(*,'(A,I0,1X,A)') 'DIFFICULTY_P0C_ALTERNATIVE_AB_STATUS=',a1%status,trim(a1%diagnostics%route)
   call require(a1%status==SW_SOLVE_CONVERGED,'alternative A-B converged')
   call require(all(req%base_state%pressure_head==source_h).and.all(req%base_state%water_content==source_t),'source immutable A-B')
 
