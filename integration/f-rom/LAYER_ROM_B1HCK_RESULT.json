@@ -1,0 +1,307 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hck.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCK",
+  "decision": "B1HCK_REFERENCE_TEMPORAL_BOUND_MIXED",
+  "execution": {
+    "workflow_run": 35504899043,
+    "executed_head": "b396b29f91e2925a09bbf17c63b9e7116ecd4921",
+    "aggregate_artifact_id": 10602634969,
+    "aggregate_artifact_digest": "sha256:d7346060fcc804003f6e9dfe6b09b5634bcb1c210f60c23d2fa78d76aa8c785d",
+    "raw_result_sha256": "c1f554067e4e963d3ba27d358275d1fd705ca2c1826b4eb1f008b889acca4b73",
+    "conclusion": "success"
+  },
+  "material_decisions": {
+    "B02": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "B05": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "B06": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "B11": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "B12": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED",
+    "B16": "REFERENCE_TEMPORAL_NOT_YET_BOUNDED"
+  },
+  "component_counts": {
+    "storage": {
+      "CONVERGING": 6,
+      "SATURATED": 0,
+      "NONCONVERGENT": 0,
+      "TEMPORAL_BOUNDED": 0
+    },
+    "cumulative": {
+      "CONVERGING": 6,
+      "SATURATED": 0,
+      "NONCONVERGENT": 0,
+      "TEMPORAL_BOUNDED": 0
+    },
+    "qavg": {
+      "CONVERGING": 6,
+      "SATURATED": 0,
+      "NONCONVERGENT": 0,
+      "TEMPORAL_BOUNDED": 0
+    },
+    "qend": {
+      "CONVERGING": 6,
+      "SATURATED": 0,
+      "NONCONVERGENT": 0,
+      "TEMPORAL_BOUNDED": 0
+    },
+    "theta": {
+      "CONVERGING": 6,
+      "SATURATED": 0,
+      "NONCONVERGENT": 0,
+      "TEMPORAL_BOUNDED": 0
+    }
+  },
+  "material_components": {
+    "B02": {
+      "storage": {
+        "coarse_mid": 0.00454355479458733,
+        "mid_fine": 0.00228700868037116,
+        "order": 0.990359636117,
+        "candidate_fine": 0.00229742726797067,
+        "ratio": 0.995465106667
+      },
+      "cumulative": {
+        "coarse_mid": 0.00454355479458733,
+        "mid_fine": 0.00228700868037116,
+        "order": 0.990359636117,
+        "candidate_fine": 0.0022974272679765,
+        "ratio": 0.995465106665
+      },
+      "qavg": {
+        "coarse_mid": 0.0360329321155446,
+        "mid_fine": 0.0184506756202354,
+        "order": 0.965642407932,
+        "candidate_fine": 0.0187558798231727,
+        "ratio": 0.983727545398
+      },
+      "qend": {
+        "coarse_mid": 0.0384823379495594,
+        "mid_fine": 0.0196075067202309,
+        "order": 0.97279035614,
+        "candidate_fine": 0.0198590564203718,
+        "ratio": 0.98733325014
+      },
+      "theta": {
+        "coarse_mid": 0.000078528944002601,
+        "mid_fine": 0.0000395193841761888,
+        "order": 0.990664031141,
+        "candidate_fine": 0.0000396937039895801,
+        "ratio": 0.995608376244
+      }
+    },
+    "B05": {
+      "storage": {
+        "coarse_mid": 0.000279008320718295,
+        "mid_fine": 0.000139673614161859,
+        "order": 0.998248641452,
+        "candidate_fine": 0.000139799699132196,
+        "ratio": 0.999098102706
+      },
+      "cumulative": {
+        "coarse_mid": 0.000279008320718295,
+        "mid_fine": 0.000139673614161859,
+        "order": 0.998248641452,
+        "candidate_fine": 0.000139799699124989,
+        "ratio": 0.999098102758
+      },
+      "qavg": {
+        "coarse_mid": 0.00736654876939186,
+        "mid_fine": 0.00398206456008048,
+        "order": 0.887472263231,
+        "candidate_fine": 0.00423754100009245,
+        "ratio": 0.939711157955
+      },
+      "qend": {
+        "coarse_mid": 0.0116226069521026,
+        "mid_fine": 0.00592030538663003,
+        "order": 0.973190200399,
+        "candidate_fine": 0.00602151542322793,
+        "ratio": 0.983191932681
+      },
+      "theta": {
+        "coarse_mid": 0.00000483086007538086,
+        "mid_fine": 0.00000242865977336018,
+        "order": 0.992119666545,
+        "candidate_fine": 0.00000243848922728124,
+        "ratio": 0.995969039432
+      }
+    },
+    "B06": {
+      "storage": {
+        "coarse_mid": 0.00812189195195317,
+        "mid_fine": 0.00408754270706204,
+        "order": 0.990582030656,
+        "candidate_fine": 0.00410570913639822,
+        "ratio": 0.995575324814
+      },
+      "cumulative": {
+        "coarse_mid": 0.00812189195195317,
+        "mid_fine": 0.00408754270706204,
+        "order": 0.990582030656,
+        "candidate_fine": 0.00410570913640168,
+        "ratio": 0.995575324813
+      },
+      "qavg": {
+        "coarse_mid": 0.0492081412128921,
+        "mid_fine": 0.0251095721927865,
+        "order": 0.970659572434,
+        "candidate_fine": 0.0254602035342519,
+        "ratio": 0.986228258506
+      },
+      "qend": {
+        "coarse_mid": 0.0520575420168718,
+        "mid_fine": 0.0265216860178416,
+        "order": 0.972934701759,
+        "candidate_fine": 0.0268622524272951,
+        "ratio": 0.987321747855
+      },
+      "theta": {
+        "coarse_mid": 0.000103812533998756,
+        "mid_fine": 0.0000522502423722872,
+        "order": 0.990471006146,
+        "candidate_fine": 0.0000524853533702205,
+        "ratio": 0.995520445556
+      }
+    },
+    "B11": {
+      "storage": {
+        "coarse_mid": 8.20417903870199e-7,
+        "mid_fine": 4.1014907619434e-7,
+        "order": 1.00021059691,
+        "candidate_fine": 4.10109249363656e-7,
+        "ratio": 1.00009711273
+      },
+      "cumulative": {
+        "coarse_mid": 8.20417903870199e-7,
+        "mid_fine": 4.1014907619434e-7,
+        "order": 1.00021059691,
+        "candidate_fine": 4.10109241509768e-7,
+        "ratio": 1.00009713189
+      },
+      "qavg": {
+        "coarse_mid": 0.00000147048102139281,
+        "mid_fine": 7.3515972836658e-7,
+        "order": 1.00015852047,
+        "candidate_fine": 7.35106077734207e-7,
+        "ratio": 1.00007298352
+      },
+      "qend": {
+        "coarse_mid": 0.00000182504015482663,
+        "mid_fine": 9.12567210662113e-7,
+        "order": 0.999925484217,
+        "candidate_fine": 9.12600904434529e-7,
+        "ratio": 0.999963079401
+      },
+      "theta": {
+        "coarse_mid": 4.39477151394267e-8,
+        "mid_fine": 2.19774496142979e-8,
+        "order": 0.999764183354,
+        "candidate_fine": 2.19798448868992e-8,
+        "ratio": 0.999891024135
+      }
+    },
+    "B12": {
+      "storage": {
+        "coarse_mid": 8.10046221594313e-9,
+        "mid_fine": 4.05012530343552e-9,
+        "order": 1.00003768814,
+        "candidate_fine": 4.04996679922402e-9,
+        "ratio": 1.00003913716
+      },
+      "cumulative": {
+        "coarse_mid": 8.10046221594313e-9,
+        "mid_fine": 4.05012530343552e-9,
+        "order": 1.00003768814,
+        "candidate_fine": 4.04996593384707e-9,
+        "ratio": 1.00003935085
+      },
+      "qavg": {
+        "coarse_mid": 1.38169870297388e-8,
+        "mid_fine": 6.90833811740097e-9,
+        "order": 1.00003245189,
+        "candidate_fine": 6.90804672328761e-9,
+        "ratio": 1.00004218184
+      },
+      "qend": {
+        "coarse_mid": 1.76915934072987e-8,
+        "mid_fine": 8.8464660695552e-9,
+        "order": 0.999890834668,
+        "candidate_fine": 8.84568906003783e-9,
+        "ratio": 1.00008784047
+      },
+      "theta": {
+        "coarse_mid": 6.39424429921513e-10,
+        "mid_fine": 3.19719738829293e-10,
+        "order": 0.999966049092,
+        "candidate_fine": 3.19725206678423e-10,
+        "ratio": 0.999982898286
+      }
+    },
+    "B16": {
+      "storage": {
+        "coarse_mid": 0.000974024243954553,
+        "mid_fine": 0.000487694258913166,
+        "order": 0.997980692946,
+        "candidate_fine": 0.000488150038416395,
+        "ratio": 0.999066312676
+      },
+      "cumulative": {
+        "coarse_mid": 0.000974024243954553,
+        "mid_fine": 0.000487694258913166,
+        "order": 0.997980692946,
+        "candidate_fine": 0.000488150038425026,
+        "ratio": 0.999066312658
+      },
+      "qavg": {
+        "coarse_mid": 0.00163949508703223,
+        "mid_fine": 0.000821088108545169,
+        "order": 0.997642631732,
+        "candidate_fine": 0.000821984568931159,
+        "ratio": 0.998909395115
+      },
+      "qend": {
+        "coarse_mid": 0.00162502557393719,
+        "mid_fine": 0.000813631232709437,
+        "order": 0.998015456984,
+        "candidate_fine": 0.000814378470809592,
+        "ratio": 0.999082443695
+      },
+      "theta": {
+        "coarse_mid": 0.0000143251756171794,
+        "mid_fine": 0.00000717265699281253,
+        "order": 0.99797327988,
+        "candidate_fine": 0.0000071793850756726,
+        "ratio": 0.999062860845
+      }
+    }
+  },
+  "discovery_pattern": {
+    "all_30_reference_components_converging": true,
+    "all_30_candidate_residuals_decrease_under_reference_refinement": true,
+    "apparent_order_range": [
+      0.887472263231,
+      1.00021059691
+    ],
+    "mid_fine_over_candidate_fine_range": [
+      0.939711157955,
+      1.00009713189
+    ],
+    "interpretation": "The finite Reference sequence is consistently close to first-order temporal convergence, and the finest Reference self-difference is approximately the same scale as the DOP853 Layer-ROM-to-finest-Reference residual. This is discovery evidence only because the B1HCK frozen gate required the Reference temporal uncertainty to be <= 0.10 of the candidate residual."
+  },
+  "adjudication": [
+    "No material satisfies the preregistered finest Reference temporal-bound rule at dt=2.5e-4 d, so the remaining equal-grid residual may not yet be attributed to Layer-ROM closure/model form.",
+    "All 30 material-component Reference sequences are nevertheless converging; no Reference temporal nonconvergence was observed.",
+    "The candidate-versus-Reference residual decreases under every Reference refinement on all 30 material-component combinations.",
+    "The newly exposed relation between Reference mid-fine self-difference and candidate-to-fine residual is approximately one-to-one across the full panel and is consistent with a first-order finite-Reference truncation hypothesis.",
+    "Because that first-order/extrapolation interpretation was not the frozen B1HCK decision rule, it must be tested prospectively with an additional Reference level before it can support a continuous-time-limit conclusion."
+  ],
+  "next": "LAYER-ROM-B1HCL prospective fourth-level Reference refinement and frozen first-order Richardson-limit confirmation.",
+  "firewalls": [
+    "NO_CLOSURE_ATTRIBUTION_FROM_B1HCK_ALONE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_CLOSURE_OR_STATE_CHANGE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
