@@ -5,7 +5,7 @@
   "phase": "PREREGISTERED_BEFORE_B14_FIXED_WATER_TABLE_RESPONSE",
   "title": "B14 material and constitutive transfer of the one-day LARE groundwater frontier",
   "scientific_question": "Does the one-day fixed-water-table groundwater-response state requirement demonstrated on B01 transfer to B14, and does layer placement rather than state count become the controlling representation choice?",
-  "role": "INDEPENDENT_MATERIAL_CONSTITUTIVE_TRANSFER",
+  "role": "PROSPECTIVE_RESPONSE_BLIND_B14_TRANSFER_CHARACTERIZATION_ON_PREVIOUSLY_EXPOSED_MATERIAL",
   "authority": {
     "c4v_closeout": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
     "c4w_closeout": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
@@ -19,7 +19,19 @@
     "current_canonical_at_preregistration": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
     "c4v_reference_source": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
     "canonical_delta_since_c4v_reference": "NO_SRC_OR_REFERENCE_DELTA",
-    "scientific_basis_rebased": false
+    "scientific_basis_rebased": false,
+    "prior_B14_exposure": {
+      "rom1x1": {
+        "authority": "integration/f-rom/F-ROM1_CANONICAL_EVIDENCE_MANIFEST.json -> historical ROM1X1",
+        "decision": "ROM1X1_B14_MATERIAL_TRANSFER_STATE_SEPARATION_NO_GO",
+        "implication": "B14 cannot be described as a new blind material."
+      },
+      "dyn0a_mech2b": {
+        "authority": "integration/f-rom/LARE_DYN0A_MECH2B_RESULT.json",
+        "implication": "B14 constitutive/dynamic behavior has already been exposed in an earlier fixed-flux LARE mechanism study."
+      },
+      "current_C4X_response_status": "The fixed-water-table one-day X01-X04 responses, scaled histories, transferred ladder and placement-control outcomes have not been generated or inspected before this corrected preregistration."
+    }
   },
   "materials": {
     "source_B01": {
@@ -30,7 +42,7 @@
       "Ksat_cm_per_day": 31.225016,
       "mualem_lambda": 0.98087
     },
-    "blind_transfer_B14": {
+    "response_blind_transfer_B14": {
       "theta_r": 0.01,
       "theta_s": 0.416774,
       "alpha_per_cm": 0.00541,
@@ -339,6 +351,7 @@
     "C4X_REFERENCE_OR_REPRESENTATION_BLOCKED": "Any other Reference, integrity or fail-closed gate fails."
   },
   "interpretation_boundaries": [
+    "C4X is prospective and response-blind for the new fixed-water-table X01-X04 workload, but B14 itself is previously exposed and C4X must not be called an independent blind-material confirmation.",
     "Material transfer is not application acceptance.",
     "B14 is one additional material, not cross-material generality.",
     "The fixed zero-head bottom boundary remains laboratory semantics, not coupled-groundwater authority.",
@@ -352,5 +365,11 @@
   "application_acceptance_adjudicated": false,
   "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false
+  "production_rom_authorized": false,
+  "governance_correction": {
+    "before_any_C4X_execution": true,
+    "reason": "B14 was previously exposed by ROM1X and DYN0A-MECH2B. The original label 'blind_transfer_B14' overstated independence. This correction changes only the evidentiary label, not histories, material parameters, state scaling, partitions, comparators, metrics, hard gates or decision logic.",
+    "response_seen": false,
+    "scientific_design_changed": false
+  }
 }
