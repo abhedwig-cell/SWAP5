@@ -1,0 +1,219 @@
+name: F-ROM-LARE persist C5P fixed-dimension placement closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5p-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5P artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5p
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604607315" > /tmp/c5p/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5p/artifact.json'))
+          assert a['id']==10604607315
+          assert a['digest']=='sha256:44837e7386c1a4f275bdd88135c2ce5ed1fb385907ee671248933faed7300928'
+          assert a['workflow_run']['id']==35507762232
+          assert a['workflow_run']['head_sha']=='c6f5ef73106edc64ce91e4d1a074a881e41225e3'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10604607315/zip" > /tmp/c5p.zip
+          echo "44837e7386c1a4f275bdd88135c2ce5ed1fb385907ee671248933faed7300928  /tmp/c5p.zip" | sha256sum -c -
+          unzip -q /tmp/c5p.zip -d /tmp/c5p/evidence
+          echo "abdfc5f978c530881342bb61ddb60d6f9136b90445ec4c11d3215abd39a81fc0  /tmp/c5p/evidence/LARE_BC2_C5P_RESULT.json" | sha256sum -c -
+          echo "3247a6cbc2f3ea65f778a1472958ce4278e263f5f717e9a8f4bcf8ee36035854  /tmp/c5p/evidence/R1024_T16_o0.txt" | sha256sum -c -
+          echo "d1aaa781602c86881e85397abb16c9edae6b5e2eccc633f5b250ae95c8d6f18d  /tmp/c5p/evidence/R2048_T16_o0.txt" | sha256sum -c -
+          echo "69fc15b31142d76bf60fba37673e1eb548cae2136133dab8778d74e837d4b62e  /tmp/c5p/evidence/R2048_T8_o0.txt" | sha256sum -c -
+
+      - name: Persist C5P result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5p/evidence/LARE_BC2_C5P_RESULT.json integration/f-rom/LARE_BC2_C5P_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C5P_RESULT.json'))
+          assert r['status']=='C5P_BOTTOM_FOCUS_IMPROVES_BUT_NO_HIGH_RES_FRONTIER'
+          assert r['integrity']['pass'] is True
+          assert r['reference_quality']['R1024_frontier_interpretable'] is True
+          assert r['hypotheses']['H_D4_BOTTOM_FOCUS_IMPROVES'] is True
+          assert r['hypotheses']['H_D8_BOTTOM_FOCUS_IMPROVES'] is True
+          assert r['hypotheses']['H_D8_DYADIC_PROGRESS'] is True
+          assert r['hypotheses']['H_ANY_FOCUSED_MEMBER_CROSSES_R1024_GW'] is False
+          m={x['id']:x['metrics'] for x in r['members']}
+          ref=r['reference_comparators']['R1024_vs_R2048']
+          d8=m['D8_B2P5']
+          closeout={
+            'schema':'swap5.lare.bc2.c5p.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5P',
+            'status':'CLOSED_BOTTOM_FOCUS_CAUSALLY_IMPROVES_FIXED_DIMENSION_NO_HIGH_RES_FRONTIER_BREADTH_VS_CLOSURE_NEXT',
+            'decision':'PRESERVE_BOTTOM_ADJACENT_PLACEMENT_EFFECT_NO_FRONTIER_RECONCILE_VERTICAL_MEMORY_BREADTH_BEFORE_NEW_CLOSURE',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C5P_PREREGISTRATION.json',
+              'execution_binding_reconciliation':'integration/f-rom/LARE_BC2_C5P_EXECUTION_BINDING_RECONCILIATION.json',
+              'workflow_run':35507762232,
+              'execution_head':'c6f5ef73106edc64ce91e4d1a074a881e41225e3',
+              'artifact_id':10604607315,
+              'artifact_digest':'sha256:44837e7386c1a4f275bdd88135c2ce5ed1fb385907ee671248933faed7300928',
+              'result_sha256':'abdfc5f978c530881342bb61ddb60d6f9136b90445ec4c11d3215abd39a81fc0'
+            },
+            'reference_quality':r['reference_quality'],
+            'reference_evidence':{
+              'R1024_vs_R2048_storage_RMSE_cm':ref['total_storage_rmse_cm'],
+              'R1024_vs_R2048_cumulative_RMSE_cm':ref['cumulative_bottom_rmse_cm'],
+              'R1024_vs_R2048_flux_RMSE_cm_per_day':ref['interval_bottom_flux_rmse_cm_per_day'],
+              'R1024_vs_R2048_history_bias_cm_per_day':ref['mean_abs_history_signed_bottom_flux_error_cm_per_day'],
+              'R1024_vs_R2048_mapped_theta_RMSE':ref['mapped_theta_rmse'],
+              'R2048_T8_vs_T16_flux_RMSE_cm_per_day':r['reference_comparators']['R2048_T8_vs_T16']['interval_bottom_flux_rmse_cm_per_day']
+            },
+            'fixed_dimension_adjudication':{
+              'D4_B5_componentwise_improves_B10_GW':r['fixed_dimension_comparisons']['D4_B5_vs_B10']['componentwise_no_worse_GW'],
+              'D4_B2P5_componentwise_improves_B5_GW':r['fixed_dimension_comparisons']['D4_B2P5_vs_B5']['componentwise_no_worse_GW'],
+              'D4_B2P5_sign_mismatches':m['D4_B2P5']['bottom_flux_sign_mismatch_count'],
+              'D4_B2P5_reversal_penalty_steps':m['D4_B2P5']['reversal_penalty_steps'],
+              'D8_B5_componentwise_improves_B10_GW':r['fixed_dimension_comparisons']['D8_B5_vs_B10']['componentwise_no_worse_GW'],
+              'D8_B2P5_componentwise_improves_B5_GW':r['fixed_dimension_comparisons']['D8_B2P5_vs_B5']['componentwise_no_worse_GW'],
+              'D8_dyadic_progression':r['hypotheses']['H_D8_DYADIC_PROGRESS'],
+              'focused_R1024_GW_frontier':r['frontiers']['focused_R1024_GW']
+            },
+            'D8_B2P5_evidence':{
+              'storage_RMSE_cm':d8['total_storage_rmse_cm'],
+              'cumulative_RMSE_cm':d8['cumulative_bottom_rmse_cm'],
+              'flux_RMSE_cm_per_day':d8['interval_bottom_flux_rmse_cm_per_day'],
+              'history_bias_cm_per_day':d8['mean_abs_history_signed_bottom_flux_error_cm_per_day'],
+              'mapped_theta_RMSE':d8['mapped_theta_rmse'],
+              'sign_mismatch_count':d8['bottom_flux_sign_mismatch_count'],
+              'reversal_sequence_mismatch_history_count':d8['reversal_sequence_mismatch_history_count'],
+              'reversal_penalty_steps':d8['reversal_penalty_steps'],
+              'relative_to_D8_B10':r['fixed_dimension_comparisons']['D8_B2P5_vs_B10'],
+              'ratio_to_R1024_R2048_reference_gap':{
+                'storage':d8['total_storage_rmse_cm']/ref['total_storage_rmse_cm'],
+                'cumulative':d8['cumulative_bottom_rmse_cm']/ref['cumulative_bottom_rmse_cm'],
+                'flux':d8['interval_bottom_flux_rmse_cm_per_day']/ref['interval_bottom_flux_rmse_cm_per_day'],
+                'history_bias':d8['mean_abs_history_signed_bottom_flux_error_cm_per_day']/ref['mean_abs_history_signed_bottom_flux_error_cm_per_day'],
+                'mapped_theta':d8['mapped_theta_rmse']/ref['mapped_theta_rmse']
+              }
+            },
+            'adjudication':{
+              'BOTTOM_ADJACENT_STATE_PLACEMENT_CAUSALLY_MATTERS_AT_FIXED_DIMENSION':True,
+              'D8_MONOTONE_COMPONENTWISE_BOTTOM_FOCUS_PROGRESS':True,
+              'D4_OVERCONCENTRATION_CAN_DEGRADE_SIGN_OR_REVERSAL_TIMING':True,
+              'ANY_FOCUSED_MEMBER_CROSSES_R1024_GW':False,
+              'PLACEMENT_ALONE_SUFFICIENT_FOR_HIGH_RES_FIDELITY':False,
+              'CLOSURE_FAILURE_UNIQUELY_IDENTIFIED':False,
+              'RESPONSE_BASED_PARTITION_OPTIMIZATION_AUTHORIZED':False,
+              'NEW_CLOSURE_IMPLEMENTATION_AUTHORIZED':False,
+              'VERTICAL_MEMORY_BREADTH_VS_PROPAGATION_RECONCILIATION_AUTHORIZED':True,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'SPEED_CLAIM_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'C5P prospectively isolates state placement from state count. At both D4 and D8, moving retained state toward the lower boundary materially improves high-resolution B14 prescribed-head response under unchanged CURRENT_LAYER_FACE closure.',
+              'The D8 family is the cleanest result: B10 to B5 to B2P5 is componentwise non-worsening on both groundwater and mapped-profile views. D8_B2P5 reduces storage and cumulative error to about 23% of D8_B10, mapped-profile error to about 24%, history-specific signed-bias magnitude to about 12%, and bottom-flux RMSE to about 74%.',
+              'The D4 family shows the complementary information needed for representation design. D4_B5 improves cleanly, but concentrating D4 further to 2.5-cm bottom support introduces 25 sign mismatches and a 25-step reversal penalty despite substantially smaller continuous error magnitudes. The minimum representation therefore cannot be described by bottom-cell thickness alone; enough vertical memory must remain outside the immediate boundary layer.',
+              'No focused member crosses the independent R1024 high-resolution comparator. D8_B2P5 remains about 14.8 times the R1024-R2048 flux gap, about 152 times the storage/cumulative gap, about 180 times the per-history signed-bias gap, and about 159 times the mapped-profile gap.',
+              'C5P therefore rejects both extreme interpretations: placement is not a minor detail, but placement alone is not a high-resolution solution. Because D4 loses dynamic timing when too much state is moved downward while D8 does not, the remaining error cannot yet be uniquely assigned to the propagation closure.',
+              'A simple three-point Richardson or power-law extrapolation across B10/B5/B2P5 is not scientifically valid here because the fixed-dimension variants redistribute state elsewhere in the profile and do not form an h-only asymptotic family. No closure floor is inferred from those three points.'
+            ],
+            'next_authority':{
+              'target':'LARE-BC2-C5Q',
+              'state':'READ_ONLY_VERTICAL_MEMORY_BREADTH_VS_CLOSURE_IDENTIFIABILITY_RECONCILIATION_AUTHORIZED',
+              'question':'Does current evidence justify a fresh fixed-D12 bottom-focus discriminator that preserves broader vertical memory while sharing the D8_B2P5 2.5-cm lower-boundary support, or is a physically distinct inter-layer closure discriminator already identifiable without that test?',
+              'constraints':[
+                'Read-only first; no new response in C5Q.',
+                'Do not optimize layer boundaries from C5P response magnitudes.',
+                'Use C5P D4 timing degradation and D8 monotone improvement as identifiability evidence, not as application thresholds.',
+                'Retain CURRENT_LAYER_FACE and Reference physics until a separate prospective authority changes the research comparator.',
+                'No scalar closure tuning; C4O remains closed.',
+                'No application, performance, speed or production-ROM claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall'],
+            'model_changed':False
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C5P_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5P closeout
+
+          C5P is a fresh blind fixed-dimension discriminator of bottom-adjacent state placement under unchanged BC1 CURRENT_LAYER_FACE closure.
+
+          Authority is workflow run 35507762232 at execution head c6f5ef73106edc64ce91e4d1a074a881e41225e3, artifact 10604607315, digest sha256:44837e7386c1a4f275bdd88135c2ce5ed1fb385907ee671248933faed7300928. The exact result SHA-256 is abdfc5f978c530881342bb61ddb60d6f9136b90445ec4c11d3215abd39a81fc0.
+
+          Reference temporal quality passes prospectively. R1024-to-R2048 bottom-flux RMSE is 0.00844673 cm/d, while R2048 T8-to-T16 is 0.00171915 cm/d.
+
+          Bottom-focused placement materially improves the same-dimension representation. D8 is especially clean: B10 -> B5 -> B2P5 is componentwise non-worsening for both groundwater and mapped-profile views. At B2P5, storage/cumulative error is about 23% of D8_B10, mapped-profile error about 24%, per-history signed-bias error about 12%, and flux RMSE about 74%.
+
+          D4 shows why boundary focus alone is not the answer. D4_B5 improves cleanly, but D4_B2P5 introduces 25 sign mismatches and a 25-observation-step reversal penalty even while its continuous error magnitudes decrease. Sufficient vertical memory away from the immediate lower boundary still matters.
+
+          No focused member reaches the R1024 high-resolution comparator. D8_B2P5 remains roughly 14.8x the R1024-R2048 flux gap and much farther away on storage, signed bias and profile state.
+
+          C5P therefore establishes bottom-adjacent placement as a causal representation variable, but not as a sufficient remedy. It also does not uniquely identify a closure floor. C5Q must first distinguish missing broader vertical memory from missing propagation physics before any new closure implementation is authorized.
+          MD
+
+      - name: Advance representation selection
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v21'
+          j['status']='CLOSED_THROUGH_C5P_BOTTOM_PLACEMENT_CAUSAL_BUT_INSUFFICIENT_BREADTH_VS_CLOSURE_NEXT'
+          j.setdefault('authorities',{})['C5P_fixed_dimension_bottom_placement']='integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5P']='Fresh fixed-dimension B14 dynamic-head evidence shows a causal bottom-adjacent placement effect: D8 B10->B5->B2P5 improves componentwise on groundwater and profile views, but no focused member reaches the R1024 high-resolution comparator. D4 overconcentration at B2P5 adds sign/reversal timing errors, demonstrating that boundary support and broader vertical memory must be balanced.'
+          j['decision']='RECONCILE_VERTICAL_MEMORY_BREADTH_VS_PROPAGATION_CLOSURE_BEFORE_NEW_CLOSURE_OR_PARTITION_OPTIMIZATION'
+          j['next_authority']='LARE-BC2-C5Q'
+          j['next_family_authority']={
+            'family':'C5Q_VERTICAL_MEMORY_BREADTH_VS_CLOSURE_IDENTIFIABILITY',
+            'state':'AUTHORIZED_FOR_READ_ONLY_REPOSITORY_SYNTHESIS',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5O_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5N_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json'
+            ],
+            'purpose':'Determine whether one fixed-D12 bottom-focus blind discriminator is required before a physically distinct inter-layer closure family can be identified.',
+            'new_response_authorized':False,
+            'new_closure_implementation_authorized':False,
+            'response_based_partition_optimization_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5P closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5P_RESULT.json                   integration/f-rom/LARE_BC2_C5P_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C5P_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5P fixed-dimension placement"
+          git push origin HEAD:work/f-rom-lare-rs1
