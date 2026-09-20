@@ -3,13 +3,13 @@
   "workstream": "F-ROM-LAYER",
   "work_unit": "LAYER-ROM-A",
   "baseline": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
-  "checkpoint_commit": "63d5739e6e4254fa8b733571452b35c550636a55",
+  "checkpoint_commit": "4d74d35584e0467ae9af8503144f5f27b9b30ce5",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
-  "phase": "PHASE_A_CLOSED_B1HCK_CLOSED_TEMPORAL_CONVERGENCE_B1HCL_RICHARDSON_HOLDOUT_EXECUTION",
-  "last_reconciled_head": "63d5739e6e4254fa8b733571452b35c550636a55",
+  "phase": "PHASE_A_CLOSED_B1HCL_CLOSED_REFERENCE_LIMIT_B1HCM_CONTINUOUS_TIME_REBASE_EXECUTION",
+  "last_reconciled_head": "4d74d35584e0467ae9af8503144f5f27b9b30ce5",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "relevant_paths": [
     "integration/f-rom/LAYER_ROM_A1_RESULT.json",
@@ -82,7 +82,13 @@
     "tests/rom/materialize_layer_rom_b1hcl_reference.py",
     "tests/rom/analyze_layer_rom_b1hcl_richardson.py",
     "tests/rom/aggregate_layer_rom_b1hcl.py",
-    ".github/workflows/f-rom-layer-b1hcl-richardson.yml"
+    ".github/workflows/f-rom-layer-b1hcl-richardson.yml",
+    "integration/f-rom/LAYER_ROM_B1HCL_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCL_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_B1HCM_PREREGISTRATION.json",
+    "tests/rom/analyze_layer_rom_b1hcm_continuous_rebase.py",
+    "tests/rom/aggregate_layer_rom_b1hcm.py",
+    ".github/workflows/f-rom-layer-b1hcm-continuous-rebase.yml"
   ],
   "authority_paths": [
     "integration/f-rom/F-ROMV2_D2_RESULT.json",
@@ -129,7 +135,11 @@
     "GitHub Actions run 35504899043 active for B1HCK finite Reference temporal refinement",
     "GitHub Actions run 35504899043 / aggregate artifact 10602634969 (B1HCK closed temporal-axis converging, none bounded)",
     "integration/f-rom/LAYER_ROM_B1HCK_RESULT.json",
-    "integration/f-rom/LAYER_ROM_B1HCK_CLOSEOUT.json"
+    "integration/f-rom/LAYER_ROM_B1HCK_CLOSEOUT.json",
+    "GitHub Actions run 35505239620 / aggregate artifact 10603104252 (B1HCL first-order Reference limit supported all six materials)",
+    "integration/f-rom/LAYER_ROM_B1HCL_RESULT.json",
+    "integration/f-rom/LAYER_ROM_B1HCL_CLOSEOUT.json",
+    "GitHub Actions run 35505540455 active for B1HCM continuous-time reduced-ladder rebase"
   ],
   "dependency_surface": [
     "integration/f-rom/**",
@@ -137,8 +147,8 @@
     "Reference observation seam used by immutable source artifacts",
     "project-control governance affecting ROM ownership"
   ],
-  "next_action": "Complete B1HCL prospective fourth-level Reference holdout at dt=1.25e-4 d. If the frozen first-order prediction and Richardson-limit gates pass on all six materials, rebase reduced L4/L6/R8 fixed-head fidelity against the temporally qualified Reference; if mixed, remain strictly on the failing Reference temporal/operator axis.",
-  "recovery_point": "Resume from work/f-rom-layer-a at or after 63d5739e6e4254fa8b733571452b35c550636a55. B1HCK run 35504899043 is closed and persisted. B1HCL preregistration, materializer, analyzer, aggregator and workflow are persisted before any fourth-level Reference response.",
+  "next_action": "Complete B1HCM continuous-time DOP853/Radau rebase for L4/L6/R8, U4/U8 and R16_OP against the B1HCL Richardson Reference limit. If all candidate oracles resolve, persist the corrected placement/dimension fidelity vectors before any same-partition CoRichards model-form decomposition.",
+  "recovery_point": "Resume from work/f-rom-layer-a at or after 4d74d35584e0467ae9af8503144f5f27b9b30ce5. B1HCL is closed positive. B1HCM preregistration, analyzer, aggregator and workflow are frozen; workflow run 35505540455 is the active gate.",
   "blockers": [],
   "scope_guards": [
     "research only",
