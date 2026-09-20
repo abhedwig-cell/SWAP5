@@ -51,8 +51,8 @@ jobs:
           p=json.load(open('integration/f-rom/LARE_BC2_C6N1_PREREGISTRATION.json'))
           r=json.load(open('integration/f-rom/LARE_BC2_C6N1_EXECUTION_RECONCILIATION.json'))
           assert p['phase']=='PREREGISTERED_BEFORE_C6N1_T32_REFERENCE_RESPONSE'
-          assert r['status']=='BOUND_COMPACT_EXECUTION_REPAIR_BEFORE_ANY_T32_RESPONSE'
-          assert r['repair']['qualification_changed'] is False
+          assert r['status']=='BOUND_COMPACT_EXECUTION_REPAIR_AFTER_PRE_RESPONSE_LOCK_FIX'
+          assert r['scientific_authority']['qualification_changed'] is False
           assert r['scientific_firewall']['T32_reference_response_seen'] is False
           print('C6N1_COMPACT_AUTHORITY_LOCK=PASS')
           PY
