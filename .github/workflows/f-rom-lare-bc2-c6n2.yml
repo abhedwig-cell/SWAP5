@@ -53,6 +53,9 @@ jobs:
           print('C6N2_AUTHORITY_LOCK=PASS')
           PY
 
+      - name: Install numerical dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
       - name: Execute frozen existing representation
         run: |
           set -euo pipefail
