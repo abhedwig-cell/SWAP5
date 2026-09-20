@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hch.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCH",
+  "decision": "B1HCH_R16_SELF_CONVERGENCE_MIXED",
+  "execution": {
+    "material_run": 35502001117,
+    "material_executed_head": "b6e02ea763fc381860e761c6423a822e935b05fd",
+    "aggregate_repair_run": 35502200612,
+    "aggregate_repair_head": "3c028aca0279a2134be4b2f08f8c29b3e1071120",
+    "repaired_aggregate_artifact_id": 10602199199,
+    "repaired_aggregate_artifact_digest": "sha256:151834b72480a4906f9f8171a30189a91baaa656fbd072cf6ea59d79201eab3f",
+    "raw_result_sha256": "f86679614840e6795811fab677835fae39108b6065515cb54c8fea508a87b6db",
+    "conclusion": "success"
+  },
+  "primary_R16_OP": {
+    "self_convergent": {
+      "B02": true,
+      "B05": true,
+      "B06": true,
+      "B11": false,
+      "B12": false,
+      "B16": true
+    },
+    "component_classification_counts": {
+      "cumulative_bottom_rms": {
+        "CONVERGING": 4,
+        "SATURATED": 2
+      },
+      "mapped_theta_rms": {
+        "CONVERGING": 4,
+        "SATURATED": 2
+      },
+      "qavg_rms": {
+        "CONVERGING": 4,
+        "SATURATED": 2
+      },
+      "qend_rms": {
+        "CONVERGING": 4,
+        "SATURATED": 2
+      },
+      "storage_rms": {
+        "CONVERGING": 4,
+        "SATURATED": 1,
+        "FLAT_OR_NONCONVERGENT": 1
+      }
+    }
+  },
+  "material_diagnosis": {
+    "B02": {
+      "pattern": "ALL_FIVE_CONVERGING",
+      "apparent_order_approximately": 2
+    },
+    "B05": {
+      "pattern": "ALL_FIVE_CONVERGING",
+      "apparent_order_approximately": 2
+    },
+    "B06": {
+      "pattern": "ALL_FIVE_CONVERGING",
+      "apparent_order_approximately": 2
+    },
+    "B16": {
+      "pattern": "ALL_FIVE_CONVERGING",
+      "apparent_order_approximately": 2
+    },
+    "B11": {
+      "pattern": "ALL_FIVE_SATURATED_BELOW_1E_MINUS_12",
+      "formal_SELF_CONVERGENT": false,
+      "reason": "Frozen material rule requires at least one CONVERGING component in addition to all components being CONVERGING or SATURATED.",
+      "coarse_mid_storage_rms_cm": 2.5078962546128594e-13,
+      "mid_fine_storage_rms_cm": 1.75072772203924e-13
+    },
+    "B12": {
+      "pattern": "FOUR_SATURATED_ONE_STORAGE_RIPPLE",
+      "formal_SELF_CONVERGENT": false,
+      "storage_coarse_mid_rms_cm": 2.814233828061453e-13,
+      "storage_mid_fine_rms_cm": 1.731315570107437e-12,
+      "other_four_components": "SATURATED under frozen 1e-12 identity tolerance"
+    }
+  },
+  "adjudication": [
+    "The preregistered panel decision is mixed and is retained without threshold relaxation.",
+    "The mixed label does not support a broad claim of candidate-integrator divergence: four materials exhibit approximately second-order convergence in every primary component.",
+    "B11 is formally negative only because all five components are already SATURATED and the frozen rule requires at least one CONVERGING component.",
+    "B12 contains the only FLAT_OR_NONCONVERGENT primary component, and its mid-fine storage self-difference is approximately 1.73e-12 cm, near the frozen numerical-identity scale.",
+    "The evidence is therefore insufficient to motivate a new hydrological state or closure. An independent integration oracle for the unchanged Layer-ROM ODE is the next causal test."
+  ],
+  "next": "LAYER-ROM-B1HCI independent high-order ODE integration oracle on the same six-material R16_OP panel; no Reference trajectory in the primary numerical-oracle decision.",
+  "firewalls": [
+    "NO_THRESHOLD_RELAXATION_AFTER_RESULT",
+    "NO_CLOSURE_OR_STATE_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_RUNTIME_OR_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}
