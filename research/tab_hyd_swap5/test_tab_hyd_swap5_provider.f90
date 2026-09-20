@@ -9,8 +9,9 @@ program test_tab_hyd_swap5_provider
        build_direct_table_from_provider, bind_direct_table_provider
   implicit none
 
-  integer, parameter :: nnode=4, nres=4, neval=6001
-  integer, parameter :: resolutions(nres)=[128,256,512,1024]
+  integer, parameter :: nnode=4, nres=3, nscale=3, neval=6001
+  integer, parameter :: resolutions(nres)=[256,512,1024]
+  real(real64), parameter :: scales(nscale)=[1.0_real64,0.1_real64,0.01_real64]
   real(real64), parameter :: dt=0.04_real64, hmin=-1.0e7_real64
   real(real64) :: cof(24,nnode)
   type(b110_default_mvg_parameters_t), target :: mvg_params
@@ -26,47 +27,49 @@ program test_tab_hyd_swap5_provider
   real(real64) :: max_theta, max_logk, max_logc
   real(real64) :: branch_theta, branch_logk, branch_logc
   logical :: ok
-  integer :: ir, q
+  integer :: iscale, ir, q
 
   call configure_hupsel_like(cof)
   call initialize_b110_default_mvg_parameters(mvg_params,cof)
   call bind_b110_default_mvg_provider(mvg,mvg_params,dt)
 
-  x_min=-log(1.0_real64-hmin)
-  write(*,'(A)') 'resolution,max_theta_abs,max_log10K_abs,max_log10C_abs,branch_theta_abs,branch_log10K_abs,branch_log10C_abs'
+  write(*,'(A)') 'h_scale,resolution,max_theta_abs,max_log10K_abs,max_log10C_abs,branch_theta_abs,branch_log10K_abs,branch_log10C_abs'
 
-  do ir=1,nres
-    call build_direct_table_from_provider(table,mvg,nnode,resolutions(ir),hmin)
-    call bind_direct_table_provider(tab,table)
-    max_theta=0.0_real64
-    max_logk=0.0_real64
-    max_logc=0.0_real64
+  do iscale=1,nscale
+    x_min=-log(1.0_real64-hmin/scales(iscale))
+    do ir=1,nres
+      call build_direct_table_from_provider(table,mvg,nnode,resolutions(ir),hmin,scales(iscale))
+      call bind_direct_table_provider(tab,table)
+      max_theta=0.0_real64
+      max_logk=0.0_real64
+      max_logc=0.0_real64
 
-    do q=1,neval
-      frac=real(q-1,real64)/real(neval-1,real64)
-      x=x_min*(1.0_real64-frac)
-      h=1.0_real64-exp(-x)
-      if(q==neval) h=0.0_real64
-      heads=h
-      call mvg%evaluate(heads,theta_ref,k_ref,c_ref,dk_ref)
-      call tab%evaluate(heads,theta_tab,k_tab,c_tab,dk_tab)
-      call require(all(ieee_is_finite(theta_tab)) .and. all(ieee_is_finite(k_tab)) .and. &
-                   all(ieee_is_finite(c_tab)),101)
-      call require(all(k_tab>0.0_real64) .and. all(c_tab>0.0_real64),102)
-      max_theta=max(max_theta,maxval(abs(theta_tab-theta_ref)))
-      max_logk=max(max_logk,maxval(abs(log10(k_tab)-log10(k_ref))))
-      max_logc=max(max_logc,maxval(abs(log10(c_tab)-log10(c_ref))))
+      do q=1,neval
+        frac=real(q-1,real64)/real(neval-1,real64)
+        x=x_min*(1.0_real64-frac)
+        h=scales(iscale)*(1.0_real64-exp(-x))
+        if(q==neval) h=0.0_real64
+        heads=h
+        call mvg%evaluate(heads,theta_ref,k_ref,c_ref,dk_ref)
+        call tab%evaluate(heads,theta_tab,k_tab,c_tab,dk_tab)
+        call require(all(ieee_is_finite(theta_tab)) .and. all(ieee_is_finite(k_tab)) .and. &
+                     all(ieee_is_finite(c_tab)),101)
+        call require(all(k_tab>0.0_real64) .and. all(c_tab>0.0_real64),102)
+        max_theta=max(max_theta,maxval(abs(theta_tab-theta_ref)))
+        max_logk=max(max_logk,maxval(abs(log10(k_tab)-log10(k_ref))))
+        max_logc=max(max_logc,maxval(abs(log10(c_tab)-log10(c_ref))))
+      end do
+
+      call branch_probe(mvg,tab,-1.0e-2_real64,branch_theta,branch_logk,branch_logc)
+      write(*,'(ES12.4,",",I0,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10)') &
+        scales(iscale),resolutions(ir),max_theta,max_logk,max_logc,branch_theta,branch_logk,branch_logc
+
+      if(abs(scales(iscale)-0.01_real64)<epsilon(1.0_real64) .and. resolutions(ir)==512) then
+        call configure_contract_probe(ps,state,request,tab,ok)
+        call require(ok,103)
+        write(*,'(A)') 'TAB_HYD_SWAP5_TYPED_PROVIDER_CONTRACT=PASS'
+      end if
     end do
-
-    call branch_probe(mvg,tab,-1.0e-2_real64,branch_theta,branch_logk,branch_logc)
-    write(*,'(I0,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10,",",ES18.10)') &
-      resolutions(ir),max_theta,max_logk,max_logc,branch_theta,branch_logk,branch_logc
-
-    if(resolutions(ir)==512) then
-      call configure_contract_probe(ps,state,request,tab,ok)
-      call require(ok,103)
-      write(*,'(A)') 'TAB_HYD_SWAP5_TYPED_PROVIDER_CONTRACT=PASS'
-    end if
   end do
 
   ! The candidate is deliberately bounded to the ordinary SWKIMPL=0 value-provider contract.
