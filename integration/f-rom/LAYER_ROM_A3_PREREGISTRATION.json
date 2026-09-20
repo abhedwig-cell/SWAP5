@@ -167,5 +167,49 @@
       "L4_local_140_flux_identity_cm_per_day": 1e-10
     },
     "failure_semantics": "Any candidate reconstruction outside the frozen physical domain or beyond the residual/crosscheck gates is counted as a candidate failure; no fallback model or response-derived retuning is allowed."
+  },
+  "pre_execution_numerical_amendment": {
+    "before_first_A3_result": true,
+    "quadrature": {
+      "primary_points": 64,
+      "independent_crosscheck_points": 128,
+      "crosscheck_max_abs_mean_theta": 1e-11,
+      "crosscheck_max_abs_M1_cm_theta": 1e-9
+    },
+    "C_M1_LINEAR_PSI": {
+      "variables": [
+        "log(psi_top-0.0100001)",
+        "log(psi_bottom-0.0100001)"
+      ],
+      "least_squares": {
+        "xtol": 1e-12,
+        "ftol": 1e-12,
+        "gtol": 1e-12,
+        "max_nfev": 100
+      },
+      "residual_scaling": {
+        "mean_theta": "divide by theta_s-theta_r",
+        "M1": "divide by 140*(theta_s-theta_r)"
+      },
+      "acceptance": {
+        "max_abs_mean_theta_residual": 1e-10,
+        "max_abs_M1_residual_cm_theta": 1e-8
+      },
+      "initialization": [
+        "first observation: uniform-head endpoint pair from psi(theta_bar)",
+        "later observations: prior accepted endpoint solution for same case",
+        "one fresh uniform-head retry if the warm start fails"
+      ]
+    },
+    "C_M1_LINEAR_THETA": {
+      "domain_gate": "theta_r < reconstructed theta(z) < theta_s at both long-layer endpoints; affine profile then remains inside the interval everywhere",
+      "no_numerical_solver": true
+    },
+    "equality_tolerance": {
+      "flux_cm_per_day": 1e-12,
+      "theta": 1e-12,
+      "role": "floating-point identity only, never hydrological acceptance"
+    },
+    "scientific_effect": "No state coordinate, case, partition, closure formula, response metric or adjudication rule is changed."
   }
 }
