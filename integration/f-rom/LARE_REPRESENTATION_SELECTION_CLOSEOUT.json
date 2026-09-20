@@ -1,29 +1,78 @@
 {
-  "schema": "swap5.lare.representation-selection.closeout.v4",
-  "workstream": "F-ROM-LARE",
-  "work_unit": "LARE-REPSEL-1",
-  "status": "C4Y_REFERENCE_POLICY_BLOCKED_C4Z_FRESH_BLIND_DYNAMIC_HEAD_TRANSFER_PREREGISTERED",
-  "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
-  "authorities": {
-    "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
-    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json",
-    "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
-    "moving_lower_zone_closure_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
-    "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
-    "purpose_dependent_rom": "integration/f-rom/F-ROMV2_STATUS.json",
-    "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
-    "cross_family_reconciliation": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
-    "matched_D13_discriminator": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
-    "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
-    "same_partition_CoRichards_full_cohort": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
-    "cost_fidelity_screen": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
-    "groundwater_application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "one_day_B01_persistence": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
-    "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
-    "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
-    "dynamic_head_first_blind_attempt": "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
-    "dynamic_head_fresh_retry_preregistration": "integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json"
+  "additional_reconciled_findings": {
+    "C4P": "Later canonical evidence shows L2/QS1/QS2/HE2 did not cross R2 on their preregistered views; FMC/SMVE is the distinct physical reduction family with repeated bounded frontier-crossing evidence.",
+    "C4Q": "On exposed D13 fixed-water-table relaxation, all frozen LARE members R3-R16 qualify. R4 is minimum reduced LARE crossing R2 on all five frozen views; R12 is the only reduced LARE member crossing FMC on all five.",
+    "C4R": "Blind B01 validation replicated the comparator-relative separation: minimum R4 for the frozen GW vector and R12 for FMC-relative PROFILE crossing on the 64-step validation workload.",
+    "C4S": "A full same-workload CoRichards common cohort became available for the subsequent value screen; this comparator availability does not establish hydrological superiority.",
+    "C4T": "Shared-host purpose-dependent relative cost-fidelity evidence was resolved, but it supplies neither application acceptance nor a portable speedup claim.",
+    "C4U": "Groundwater application acceptance is blocked on externally governed H_app plus independent A_temporal or a direct temporal head-error budget with immutable provenance.",
+    "C4V": "On the 1.024-day B01 fixed-water-table persistence test, the minimum transferred lower-zone member persistently crossing both R2 and FMC moved to R8.",
+    "C4W": "The B01 one-day spurious reversal mechanism was characterized without authorizing closure retuning.",
+    "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor.",
+    "C4Y": "The first response-blind dynamic prescribed-head transfer produced no representation adjudication because the frozen R2 comparator failed closed under the inherited RS1 local fallback allowance before a complete trajectory existed. C4Y remains closed and is not retuned.",
+    "C4Z": "Fresh blind B01 dynamic prescribed-head validation yields a formal R2-relative minimum R3 for both frozen vectors, but R2 itself misses reversal sequences in 3/4 histories. The lower-zone ladder improves sharply through R8 and lower-zone placement outperforms uniform placement at dimensions 4 and 8.",
+    "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
+    "cross_axis_gap": "C4V, C4X and C4Z cover B01/fixed, B14/fixed and B01/dynamic. The missing B14/dynamic cell is the direct test of material-by-boundary interaction in the current representation hypothesis.",
+    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value."
   },
+  "application_acceptance_adjudicated": false,
+  "authorities": {
+    "B14_material_transfer": "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+    "blind_D13_validation": "integration/f-rom/LARE_BC2_C4R_CLOSEOUT.json",
+    "blind_local_reduction": "integration/f-rom/F-ROMV2_V1_RESULT.json",
+    "corichards_viability": "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+    "cost_fidelity_screen": "integration/f-rom/LARE_BC2_C4T_CLOSEOUT.json",
+    "cross_family_reconciliation": "integration/f-rom/LARE_BC2_C4P_REPRESENTATION_RECONCILIATION.json",
+    "dynamic_head_C4Y_blocker": "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
+    "dynamic_head_C4Z_blind_validation": "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+    "dynamic_head_first_blind_attempt": "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
+    "dynamic_head_fresh_retry_preregistration": "integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json",
+    "groundwater_application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "matched_D13_discriminator": "integration/f-rom/LARE_BC2_C4Q_CLOSEOUT.json",
+    "moving_lower_zone_closure_boundary": "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json",
+    "one_day_B01_persistence": "integration/f-rom/LARE_BC2_C4V_CLOSEOUT.json",
+    "purpose_dependent_rom": "integration/f-rom/F-ROMV2_STATUS.json",
+    "same_partition_CoRichards_full_cohort": "integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json",
+    "spurious_reversal_characterization": "integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json",
+    "standard_lare_dynamics": "integration/f-rom/LARE_DYN0A_CLOSEOUT.json",
+    "standard_lare_mechanism_transfer": "integration/f-rom/LARE_DYN0A_MECH3B_RESULT.json",
+    "standard_lare_resolution": "integration/f-rom/LARE_DYN0A_RL1_RESULT.json"
+  },
+  "closed_routes": [
+    {
+      "disposition": "NO_FURTHER_ZERO_FIT_SCALAR_TUNING_WITHOUT_NEW_REPRESENTATION_AUTHORITY",
+      "evidence": [
+        "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
+      ],
+      "id": "FIXED_PARTITION_SCALAR_LARE_CLOSURE_TUNING"
+    },
+    {
+      "disposition": "NOT_AUTHORIZED_NO_REDUCED_DYNAMIC_COMMON_COHORT",
+      "evidence": [
+        "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json"
+      ],
+      "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2"
+    }
+  ],
+  "decision": "PREREGISTER_B14_DYNAMIC_HEAD_CROSS_AXIS_TRANSFER_WITHOUT_APPLICATION_OR_SPEED_CLAIMS",
+  "frozen_scientific_base": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
+  "model_changed": false,
+  "next_authority": "B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER",
+  "next_family_authority": {
+    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
+    "family": "B14_DYNAMIC_PRESCRIBED_HEAD_CROSS_AXIS_TRANSFER",
+    "implementation_authorized": true,
+    "post_hoc_retuning_authorized": false,
+    "purpose": "Complete the material-by-lower-boundary 2x2 evidence needed to test whether lower-zone placement and resolution behavior jointly transfer.",
+    "repository_basis": [
+      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC2_C4Z_CLOSEOUT.json",
+      "integration/f-rom/LARE_BC1_CLOSEOUT.json"
+    ],
+    "state": "AUTHORIZED_FOR_PROSPECTIVE_PREREGISTRATION"
+  },
+  "performance_comparison_authorized": false,
+  "production_rom_authorized": false,
   "reconciled_findings": {
     "fixed_partition_LARE": [
       "Conservative standard LARE is physically coherent and resolution-convergent in the bounded DYN0A laboratory.",
@@ -33,96 +82,49 @@
       "C4L, C4M, C4N and C4O did not establish a transferable zero-fit scalar internal-gradient correction across width and regime.",
       "Further scalar tuning of the same fixed-partition closure is therefore not authorized by current evidence."
     ],
+    "purpose_and_value": [
+      "F-ROMV2 does not require numerical equivalence to fine Richards for a deliberately reduced model.",
+      "Application acceptance remains purpose-dependent and has not been adjudicated for this representation boundary.",
+      "No speed or production-ROM claim is authorized."
+    ],
     "same_partition_CoRichards": [
       "R3 was already dynamically blocked under frozen strict Reference numerical authority.",
       "Q1 extended the same comparator to R4, R5, R6, R8 and R12 and found zero qualified non-equilibrium dynamic histories at every reduced dimension through 16 temporal substeps.",
       "R16 exactly reproduces the fine Reference status map and qualifies all seven expected physically in-domain dynamic histories.",
       "Reduced same-partition CoRichards is therefore unavailable as a dynamic equal-dimension comparator in this bounded laboratory under current authority.",
       "This numerical availability result does not imply hydrological superiority of LARE."
-    ],
-    "purpose_and_value": [
-      "F-ROMV2 does not require numerical equivalence to fine Richards for a deliberately reduced model.",
-      "Application acceptance remains purpose-dependent and has not been adjudicated for this representation boundary.",
-      "No speed or production-ROM claim is authorized."
     ]
   },
-  "closed_routes": [
-    {
-      "id": "FIXED_PARTITION_SCALAR_LARE_CLOSURE_TUNING",
-      "disposition": "NO_FURTHER_ZERO_FIT_SCALAR_TUNING_WITHOUT_NEW_REPRESENTATION_AUTHORITY",
-      "evidence": [
-        "integration/f-rom/LARE_BC2_C4O_CLOSEOUT.json"
-      ]
-    },
-    {
-      "id": "REDUCED_SAME_PARTITION_CORICHARDS_Q2",
-      "disposition": "NOT_AUTHORIZED_NO_REDUCED_DYNAMIC_COMMON_COHORT",
-      "evidence": [
-        "integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json"
-      ]
-    }
-  ],
   "retained_controls": [
     "Fine Reference Richards remains scientific reference.",
     "R16 remains no-spatial-reduction control, not a ROM.",
     "Standard LARE resolution ladder remains a bounded state-count versus fidelity reference.",
     "CoRichards R3-R12 blocked results remain numerical-availability evidence only."
   ],
-  "next_family_authority": {
-    "family": "C4Z_BLIND_DYNAMIC_HEAD_TRANSFER",
-    "state": "PREREGISTERED_AWAITING_EXECUTION",
-    "repository_basis": [
-      "integration/f-rom/LARE_BC2_C4Y_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4Z_PREREGISTRATION.json",
-      "integration/f-rom/LARE_BC1_CLOSEOUT.json",
-      "integration/f-rom/LARE_BC2_C4X_CLOSEOUT.json"
-    ],
-    "purpose": "Test whether material- and placement-dependent lower-zone representation evidence transfers to an independently forced fixed-domain prescribed-head lower boundary.",
-    "application_acceptance_blocker": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "implementation_authorized": true,
-    "post_hoc_retuning_authorized": false
-  },
+  "schema": "swap5.lare.representation-selection.closeout.v5",
   "secondary_representation_note": {
     "adaptive_resolution": "DYN0A MECH3B supports a nonlinear hydraulic scale transfer mechanism, but current authority does not provide a universal adaptive-grid rule. Adaptive/moving partition design therefore remains a separate future representation choice rather than an inferred next implementation.",
     "output_specific_surrogate": "Retained in F-ROMV2 as a candidate family but outside the present physically reduced hydrological-model priority."
   },
-  "decision": "EXECUTE_FRESH_C4Z_DYNAMIC_HEAD_TRANSFER_WITHOUT_C4Y_RETUNING",
-  "next_authority": "LARE_BC2_C4Z_BLIND_DYNAMIC_HEAD_TRANSFER",
-  "model_changed": false,
-  "application_acceptance_adjudicated": false,
-  "performance_comparison_authorized": false,
   "speed_claim_authorized": false,
-  "production_rom_authorized": false,
   "stale_v1_repair": {
-    "repaired": true,
     "reason": "The v1 next-family statement was written without reconciling the already-live C4P/C4Q evidence. C4P had bound later canonical F-ROMV2 quasi-steady, integrated-manifold and FMC/SMVE families, and C4Q had already executed a matched D13 discriminator. The v1 source-binding next step is therefore superseded.",
+    "repaired": true,
     "scientific_results_changed": false
   },
-  "additional_reconciled_findings": {
-    "C4P": "Later canonical evidence shows L2/QS1/QS2/HE2 did not cross R2 on their preregistered views; FMC/SMVE is the distinct physical reduction family with repeated bounded frontier-crossing evidence.",
-    "C4Q": "On exposed D13 fixed-water-table relaxation, all frozen LARE members R3-R16 qualify. R4 is minimum reduced LARE crossing R2 on all five frozen views; R12 is the only reduced LARE member crossing FMC on all five.",
-    "CoRichards_Q1": "R3-R12 same-partition conventional Richards provide no dynamically qualified reduced common cohort under strict DYN0A authority; R16 alone restores dynamic viability. Q2 is not authorized.",
-    "value_boundary": "C4Q is exposed development evidence. R12 retains 12/16 water states, so hydrological frontier success does not establish computational value.",
-    "C4R": "Blind B01 validation replicated the comparator-relative separation: minimum R4 for the frozen GW vector and R12 for FMC-relative PROFILE crossing on the 64-step validation workload.",
-    "C4S": "A full same-workload CoRichards common cohort became available for the subsequent value screen; this comparator availability does not establish hydrological superiority.",
-    "C4T": "Shared-host purpose-dependent relative cost-fidelity evidence was resolved, but it supplies neither application acceptance nor a portable speedup claim.",
-    "C4U": "Groundwater application acceptance is blocked on externally governed H_app plus independent A_temporal or a direct temporal head-error budget with immutable provenance.",
-    "C4V": "On the 1.024-day B01 fixed-water-table persistence test, the minimum transferred lower-zone member persistently crossing both R2 and FMC moved to R8.",
-    "C4W": "The B01 one-day spurious reversal mechanism was characterized without authorizing closure retuning.",
-    "C4X": "Prospective fixed-water-table response transfer to B14 preserved a reduced GW frontier but shifted the minimum transferred-ladder dimension to R3. FMC-relative PROFILE crossing begins at R8. Uniform U4/U8 fail to reproduce the lower-zone-focused groundwater frontier, so state count alone is not a sufficient representation descriptor.",
-    "C4Y": "The first response-blind dynamic prescribed-head transfer produced no representation adjudication because the frozen R2 comparator failed closed under the inherited RS1 local fallback allowance before a complete trajectory existed. C4Y remains closed and is not retuned.",
-    "C4Z": "A fresh blind dynamic-head transfer is preregistered on new Z01-Z04 histories. It retains the C4Y head amplitude, LARE ladder, placement controls, closure and metrics while prospectively binding the pre-existing D13/C4S integrated-water-depth Reference retry policy."
-  },
+  "status": "CLOSED_THROUGH_C4Z_CROSS_MATERIAL_AND_BOUNDARY_SEMANTICS_EVIDENCE_INTERACTION_CELL_NEXT",
   "v3_reconciliation": {
-    "reason": "The v2 representation-selection file stopped at C4R preregistration. Live branch authority now includes completed C4R through C4X evidence.",
-    "scientific_results_changed": false,
     "frozen_lare_scientific_basis_rebased": false,
-    "post_hoc_retuning_authorized": false
+    "post_hoc_retuning_authorized": false,
+    "reason": "The v2 representation-selection file stopped at C4R preregistration. Live branch authority now includes completed C4R through C4X evidence.",
+    "scientific_results_changed": false
   },
   "v4_reconciliation": {
     "c4y_result_changed": false,
     "c4y_threshold_relaxed": false,
     "c4z_histories_fresh": true,
     "frozen_lare_scientific_basis_rebased": false
-  }
+  },
+  "work_unit": "LARE-REPSEL-1",
+  "workstream": "F-ROM-LARE"
 }
