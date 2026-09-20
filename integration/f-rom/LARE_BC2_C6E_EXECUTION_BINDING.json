@@ -2,7 +2,7 @@
   "schema": "swap5.lare.bc2.c6e.execution-binding.v1",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6E",
-  "status": "DRAFT_EXACT_CASE_SHARDING_EXECUTION_REPAIR_AWAITING_WORKFLOW_BINDING",
+  "status": "BOUND_EXACT_CASE_SHARDING_EXECUTION_REPAIR_NO_SCIENTIFIC_CHANGE",
   "decision": "PARTITION_FROZEN_C6E_CASE_SET_FOR_EXECUTION_ONLY_NO_SCIENTIFIC_CHANGE",
   "authority": {
     "preregistration": "integration/f-rom/LARE_BC2_C6E_PREREGISTRATION.json",
@@ -38,8 +38,9 @@
   },
   "workflow": {
     "path": ".github/workflows/f-rom-lare-bc2-c6e-sharded.yml",
-    "blob": null,
-    "state": "DRAFT_AWAITING_WORKFLOW_BLOB"
+    "blob": "06c8de08e8c39576ccd15dd4916bdb6f71d928c6",
+    "state": "BOUND_BEFORE_EXECUTION",
+    "binding_note": "Workflow creation itself is excluded from its push trigger. Only this frozen execution-binding update starts the exact sharded run."
   },
   "scientific_firewall": {
     "hydrological_response_used": false,
