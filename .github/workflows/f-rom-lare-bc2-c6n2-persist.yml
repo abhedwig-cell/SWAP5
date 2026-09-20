@@ -1,0 +1,225 @@
+name: F-ROM-LARE persist C6N2 recovered classification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c6n2-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C6N2 classification artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c6n2
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10612868344" > /tmp/c6n2/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c6n2/artifact.json'))
+          assert a['id']==10612868344
+          assert a['digest']=='sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af'
+          assert a['workflow_run']['id']==35538003359
+          assert a['workflow_run']['head_sha']=='23c74fc0093119341a1da209817f4cc54349c543'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10612868344/zip" > /tmp/c6n2.zip
+          echo "7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af  /tmp/c6n2.zip" | sha256sum -c -
+          unzip -q /tmp/c6n2.zip -d /tmp/c6n2/evidence
+          echo "4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944  /tmp/c6n2/evidence/LARE_BC2_C6N2_RESULT.json" | sha256sum -c -
+
+      - name: Persist exact result and C6N2 closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c6n2/evidence/LARE_BC2_C6N2_RESULT.json integration/f-rom/LARE_BC2_C6N2_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.load(open('integration/f-rom/LARE_BC2_C6N2_RESULT.json'))
+          assert r['status']=='C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY'
+          assert r['integrity']['all_candidates_attempted'] is True
+          assert r['integrity']['pass'] is True
+          mats=r['materials']
+          assert sum(x['status']=='QUALIFIED' for x in mats['B01'].values())==7
+          assert sum(x['status']=='OUTSIDE_QUALIFIED_DOMAIN' for x in mats['B01'].values())==3
+          assert sum(x['status']=='QUALIFIED' for x in mats['B14'].values())==10
+          assert all(v is None for v in r['minimum_dimensions']['B01'].values())
+          assert all(v is None for v in r['minimum_dimensions']['B14'].values())
+
+          def pooled(material,member):
+              return mats[material][member]['comparison']['pooled']
+          closeout={
+            'schema':'swap5.lare.bc2.c6n2.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C6N2',
+            'status':'CLOSED_EXISTING_FIXED_PARTITION_SURFACE_PROFILE_DIFFERENCES_NUMERICALLY_RESOLVED_NO_REDUCED_UNRESOLVED_FRONTIER',
+            'decision':'NO_EXISTING_REDUCED_MEMBER_WITHIN_C6N1_NUMERICAL_UNCERTAINTY_PURPOSE_SPECIFIC_PLACEMENT_RECONCILIATION_REQUIRED',
+            'role':'PURPOSE_SPECIFIC_SURFACE_PROFILE_REPRESENTATION_EVIDENCE_NOT_APPLICATION_ACCEPTANCE',
+            'authority':{
+              'preregistration':'integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json',
+              'execution_binding':'integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json',
+              'aggregation_binding':'integration/f-rom/LARE_BC2_C6N2_AGGREGATION_BINDING.json',
+              'source_candidate_run':35537872450,
+              'source_candidate_head':'540c0e4e5a70a197ffbdcf017f2bebd60269e182',
+              'source_candidate_jobs_successful':20,
+              'aggregation_recovery_run':35538003359,
+              'aggregation_recovery_head':'23c74fc0093119341a1da209817f4cc54349c543',
+              'artifact_id':10612868344,
+              'artifact_digest':'sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af',
+              'exact_result_sha256':'4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944',
+              'reference_authority':'integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json',
+              'reference_target':'R2048_T32'
+            },
+            'execution':{
+              'candidate_payloads':20,
+              'candidate_jobs_successful':20,
+              'all_candidates_attempted':True,
+              'integrity_pass':True,
+              'maximum_qualified_water_ledger_cm':r['integrity']['maximum_qualified_water_ledger_cm'],
+              'B01_qualified_members':7,
+              'B01_outside_qualified_domain_members':['R3','R4','P4_TOP_LOWER'],
+              'B01_outside_domain_reason':'U03 theta endpoint',
+              'B14_qualified_members':10,
+              'candidate_payloads_rerun_for_recovery':False
+            },
+            'classification':{
+              'status':r['status'],
+              'minimum_dimensions':r['minimum_dimensions'],
+              'reduced_unresolved_frontier_present':False,
+              'uncertainty_interpretation':'C6N1 metric-specific U_combined is numerical Reference uncertainty only, not an application tolerance.',
+              'bottom_exchange_fidelity_in_scope':False
+            },
+            'placement_evidence':{
+              'B01_P4_no_worse_than_R4_surface20_root40':r['placement']['B01']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
+              'B14_P4_no_worse_than_R4_surface20_root40':r['placement']['B14']['P4_TOP_LOWER_no_worse_than_R4_SURFACE20_ROOT40'],
+              'B01_R8':pooled('B01','R8'),
+              'B01_U8':pooled('B01','U8'),
+              'B14_R8':pooled('B14','R8'),
+              'B14_U8':pooled('B14','U8'),
+              'B14_R4':pooled('B14','R4'),
+              'B14_P4_TOP_LOWER':pooled('B14','P4_TOP_LOWER'),
+              'interpretation':'Placement materially changes surface/profile fidelity and the useful direction is material- and purpose-dependent; no scalar winner or material-invariant placement is admitted.'
+            },
+            'finest_existing_member_evidence':{
+              'B01_R16':pooled('B01','R16'),
+              'B14_R16':pooled('B14','R16'),
+              'interpretation':'Even R16 remains numerically resolved from the qualified R2048_T32 Reference on every declared state/profile metric.'
+            },
+            'scientific_interpretation':[
+              'C6N2 answers a numerical distinguishability question, not a hydrological application-acceptance question.',
+              'No reduced member of the existing frozen fixed-partition family is numerically unresolved from the qualified R2048_T32 Reference on SURFACE_20, ROOT_ZONE_40, UPPER_ZONE_80 or PROFILE_STATE for either B01 or B14.',
+              'The absence of an unresolved reduced frontier does not imply that every reduced member is hydrologically unusable. C6N1 uncertainty is a numerical resolution floor, not an application tolerance.',
+              'Placement remains an active structural axis but reverses relative to earlier groundwater-boundary work: for surface-driven fixed-bottom-flux response, distributed/upper-zone support can strongly outperform lower-zone-focused members at the same state count.',
+              'B01 demonstrates a domain-robustness constraint: R3, R4 and P4_TOP_LOWER leave the qualified domain on U03, while U4/U8 and higher-dimensional members remain executable.',
+              'B14 retains all candidates in-domain; P4 improves the declared surface/root-zone relation versus R4, while U8 strongly improves over R8 across the surface/profile metrics.',
+              'Because C6N2 used an existing frozen family only, it does not establish an optimal surface-purpose partition. A new partition family, if studied, must be derived prospectively from purpose/physics and validated on fresh histories rather than fitted to C6N2 residuals.'
+            ],
+            'adjudication':{
+              'EXISTING_REDUCED_NUMERICALLY_UNRESOLVED_FRONTIER':False,
+              'PLACEMENT_IS_PURPOSE_DEPENDENT':True,
+              'PLACEMENT_IS_MATERIAL_DEPENDENT':True,
+              'UNIVERSAL_MINIMUM_DIMENSION_ESTABLISHED':False,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'NEW_PARTITION_SELECTED':False,
+              'NEW_CLOSURE_AUTHORIZED_FROM_C6N2':False,
+              'PERFORMANCE_SCREEN_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'next_authority':{
+              'target':'LARE-BC2-C6O',
+              'state':'READ_ONLY_PURPOSE_ALIGNED_PARTITION_DESIGN_RECONCILIATION_AUTHORIZED',
+              'question':'Can a new surface-purpose representation family be derived prospectively from the declared 0-20, 0-40 and 0-80 hydrological support scales, without fitting C6N2 residuals, before any fresh blind response test?',
+              'constraints':[
+                'Use C6N2 only to establish that placement matters and existing fixed partitions are numerically resolved; do not optimize boundaries against C6N2 errors.',
+                'Derive any new boundaries from hydrological purpose regions and forcing support, not candidate residual minima.',
+                'Keep CURRENT_LAYER_FACE and the existing integrator unchanged in the first placement discriminator.',
+                'Require fresh histories for any subsequent hydrological candidate response.',
+                'Do not reinterpret C6N1 uncertainty as application tolerance.',
+                'No ET/root uptake, groundwater, performance, speed or production claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall']
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json').write_text(json.dumps(closeout,indent=2,sort_keys=True)+'\n')
+          PY
+          cat > docs/science/F-ROM_LARE_BC2_C6N2_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C6N2 closeout
+
+          C6N2 classifies the already-existing fixed-partition Layer-ROM family against the C6N1-qualified R2048_T32 numerical Reference uncertainty for surface-driven, fixed-bottom-flux state/profile purposes.
+
+          All 20 candidate payloads were generated successfully in source run 35537872450. A later analyzer schema-key error did not alter those payloads; aggregation-only recovery run 35538003359 reused them without rerunning candidates and produced the authoritative classification artifact 10612868344 (digest sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af).
+
+          The formal result is C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY. No reduced member is numerically unresolved from R2048_T32 on any declared surface/profile view for B01 or B14, so all minimum-dimension fields remain null.
+
+          This is not an application rejection. The C6N1 U_combined values are numerical discretization uncertainty bands, not hydrological tolerances.
+
+          Placement remains scientifically active and purpose-dependent. In the surface-driven workload U8 strongly improves over the lower-zone-focused R8 for both materials. For B14, P4_TOP_LOWER is also no worse than R4 on the declared surface/root-zone relation. For B01, R3, R4 and P4_TOP_LOWER leave the qualified domain on U03, demonstrating that overly sparse/nonuniform support can sacrifice domain robustness.
+
+          Even R16 remains numerically resolved from the high-resolution Reference on every declared metric. The next step is therefore not to claim a universal minimum dimension or retune CURRENT_LAYER_FACE. C6O is a read-only design reconciliation for a purpose-aligned surface representation whose coordinates must come from declared hydrological support regions, not from fitting C6N2 residuals.
+          MD
+
+      - name: Advance central representation authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v42'
+          j['status']='CLOSED_THROUGH_C6N2_EXISTING_SURFACE_FAMILY_NUMERICALLY_RESOLVED_PURPOSE_ALIGNED_DESIGN_NEXT'
+          j.setdefault('authorities',{})['C6N1_reference_uncertainty']='integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json'
+          j.setdefault('authorities',{})['C6N2_surface_existing_family']='integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C6N1']='Three-level space-time verification qualifies R2048_T32 for B01/B14 surface/profile work with metric-specific numerical uncertainty bands; spatial order is ~2 and temporal order ~1. These bands are numerical uncertainty only.'
+          j.setdefault('additional_reconciled_findings',{})['C6N2']='All 20 frozen existing-representation payloads were classified against C6N1 uncertainty. No reduced member is numerically unresolved on any declared surface/profile view for B01 or B14. Placement remains strongly purpose/material dependent: U8 outperforms lower-zone R8 on the surface-driven workload, while sparse R3/R4/P4 leave the B01 qualified domain on U03.'
+          j['decision']='DERIVE_PURPOSE_ALIGNED_SURFACE_PARTITION_FAMILY_PROSPECTIVELY_BEFORE_ANY_NEW_RESPONSE'
+          j['next_authority']={
+            'target':'LARE-BC2-C6O',
+            'state':'READ_ONLY_PURPOSE_ALIGNED_PARTITION_DESIGN_RECONCILIATION_AUTHORIZED',
+            'hydrological_candidate_response_authorized':False
+          }
+          j['next_family_authority']={
+            'family':'PURPOSE_ALIGNED_SURFACE_LAYER_REPRESENTATION',
+            'state':'DESIGN_RECONCILIATION_ONLY',
+            'existing_family_numerically_unresolved_frontier':False,
+            'new_partition_response_authorized':False,
+            'new_closure_authorized':False,
+            'surface_reference_uncertainty_qualified':True,
+            'root_ET_feedback_authorized':False,
+            'long_horizon_balance_authorized':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'production_rom_authorized':False,
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json'
+            ]
+          }
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C6N2 closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C6N2_RESULT.json                   integration/f-rom/LARE_BC2_C6N2_CLOSEOUT.json                   integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json                   docs/science/F-ROM_LARE_BC2_C6N2_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C6N2 surface representation classification"
+          git push origin HEAD:work/f-rom-lare-rs1
