@@ -1,219 +1,356 @@
-# SWAP5-MODFLOW6 coupling semantics authority audit
+# SWAP5-MODFLOW6 Coupling Semantics Authority Audit
 
-## Status
+Date: 2026-09-20
 
-**SEMANTIC_RECONCILIATION_CLOSED — REPAIR_REQUIRED**
+Audit authority preimage: `integration/f-ci-canonical@919bbf76370c2136932daa04ad88135e7d1615a8`.
 
-Date: 2026-09-20  
-Reconciled canonical: `integration/f-ci-canonical@919bbf76370c2136932daa04ad88135e7d1615a8`
+Status: **AUDIT CLOSED, REPAIR REQUIRED, STORAGE-PARTITION AUTHORITY BLOCKER OPEN**
 
-This audit is authority/evidence only. It does not change production physics or coupling implementation. Existing PUB-GC E7 evidence is preserved, but its former interpretation as a closed realistic component-domain limit is superseded by this audit.
+## 1. Question
 
-## Decision
+This audit re-examines the ownership and exchange contract between SWAP5 and MODFLOW6 independently of legacy SWAP lower-boundary option semantics.
 
-The current coupling contains a **sound core interface contract plus an incorrect application-authority binding**.
+The triggering observation was that the production route accepts MODFLOW cell heads, materializes them through the SWAP mode-5 prescribed-pressure-head adapter, and defines the production groundwater profile by `bottom_mode==5`. Authentic Hupsel drainage/root processes were then rejected by that profile.
 
-Classification:
+The audit asks whether that is correct coupling semantics, an interpretation error, an authority-binding error, an implementation defect, or a deeper coupling-design defect.
 
-- interpretation defect: **YES**;
-- authority-binding defect: **YES, primary defect**;
-- implementation defect: **YES, at the production application/profile gate**;
-- fundamental coupling-design defect: **NO for the typed head/flux, transaction and MODFLOW ownership design; YES only if `bottom_mode=5` is treated as the coupled application's groundwater authority rather than an internal trial-boundary realization**.
+## 2. Sources and precedence
 
-A MODFLOW trial hydraulic head can correctly define the hydraulic Dirichlet value at a direct hydraulic interface during a SWAP trial. The defect is promoting the concrete legacy realization used to impose that trial value, `bottom_mode=5`, into the application-level definition and admission envelope of coupled groundwater operation.
+The audit used, in descending relevance:
 
-## Theory and ownership authority
+1. current SWAP5 canonical code, tests, qualification and governance;
+2. frozen SWAP4.3.1 B1.11 source-bound lower-boundary audit;
+3. official public SWAP 4.3.030 theory/manual;
+4. the 2024 technical SWAP-MODFLOW coupling design;
+5. official/current MODFLOW6 prepared-solve and storage semantics already pinned by the F-GC38 chain.
 
-For a direct hydraulic SWAP-MODFLOW interface the coupled conditions are:
+External sources checked on 2026-09-20:
 
-```text
-H_SWAP(interface) = H_MF(interface)
-q_SWAP(interface) = -q_MF(interface)
-```
+- SWAP soil-water-flow manual:
+  https://www.swap.alterra.nl/manual/02_soil_water_flow.html
+- SWAP drainage manual:
+  https://www.swap.alterra.nl/manual/04_surface_runoff_interflow_and_drainage.html
+- SWAP-MODFLOW technical presentation:
+  https://www.stowa.nl/sites/default/files/2024-01/3.%20Ab%20Veldhuizen.pdf
 
-The groundwater component owns groundwater state and groundwater storage. SWAP owns the soil-column state and all SWAP process state. The coupler owns iteration, residual evaluation, acceptance and ordered publication.
+Earlier SWAP5 documentation was treated as evidence, not as controlling authority where its interpretation was under review.
 
-A MODFLOW trial head is a coupling iterate, not accepted groundwater state. It becomes accepted groundwater state only when the coupled candidate is accepted and published. A SWAP trial evaluated at that head likewise remains disposable until publication.
+## 3. Live canonical reconciliation
 
-The current F-GC17 contract already contains the correct datum transformation `psi_bottom = H_interface - z_bottom`, with unit conversion. This is a mapping from hydraulic head on the coupling plane to pressure head on the same plane. It is not a mapping from groundwater-table elevation to a legacy application option.
+The requested starting SHA `e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1` was no longer canonical.
 
-## Where the interface is
+At audit start:
 
-The interface is a **fixed lower coupling plane / lower face of the SWAP column** for the current direct-coupling contract. It is not, in general, the centre of the lowest SWAP node, the freatic surface, a MODFLOW cell centre, or groundwater storage.
+`integration/f-ci-canonical = 919bbf76370c2136932daa04ad88135e7d1615a8`.
 
-The MODFLOW cell head is used as the groundwater-side hydraulic-head representation supplied to the coupling interface. That identification is a modelling/discretization contract and requires a common datum. The SWAP lower-face pressure head follows from `H=z+psi`.
+The existing work branch `work/f-gc-coupling-semantics-reconciliation` was found to be based exactly on that head with no canonical lag. Its prior audit text was treated as a checkpoint, not as authority. One factual error in that checkpoint, SWBOTB=6 labelled as prescribed groundwater level, is corrected by this audit.
 
-If a deep vadose transfer component is active, the SWAP bottom plane and the groundwater exchange plane are not the same interface. Existing architecture invariant 18 already keeps that transfer zone outside SWAP.
+## 4. Legacy boundary semantics
 
-## Legacy SWAP boundary reconciliation
+The frozen source-bound PPA-WU02 audit and the public SWAP manual agree:
 
-The frozen SWAP4.3.1 source authority, as captured by PPA-WU02, classifies:
+- SWBOTB=1: prescribed groundwater level;
+- SWBOTB=2: prescribed lower-boundary flux;
+- SWBOTB=5: prescribed pressure head at the lower boundary/bottom compartment;
+- SWBOTB=6: zero lower-boundary flux.
 
-```text
-SWBOTB=5 -> prescribed pressure head at the bottom boundary
-SWBOTB=6 -> prescribed groundwater level
-```
+Mode 5 is therefore a lower-face Dirichlet pressure-head condition. It is not the legacy prescribed-groundwater-level option.
 
-Therefore `SWBOTB=5` is **not prescribed groundwater level**.
+The manual also states that drainage can coexist with options 1, 2, 3, 5 and 6. The production rejection of mode 5 plus active drainage is therefore not an intrinsic legacy SWAP physics rule.
 
-Mode 5 can be a legitimate numerical mechanism for imposing a trial hydraulic head at the fixed lower coupling face after datum conversion. It does not make a coupled application semantically a standalone mode-5 groundwater application.
+See `SWAP5_MODFLOW6_LEGACY_BOUNDARY_RECONCILIATION.md`.
 
-## Current implementation trace
+## 5. Original coupling concept
 
-```text
-MODFLOW accepted state
-  -> one prepared MODFLOW solve
-  -> MODFLOW nonlinear trial cell heads
-  -> F-GC49C generic service
-  -> F-GC49D FMR application context
-  -> participant trial_from_origin(cell_head)
-  -> FMR groundwater head forcing materializer
-  -> H_interface -> psi_bottom
-  -> typed forcing.bottom_head
-  -> Reference SWAP trial
-  -> accepted whole-window bottom exchange
-  -> area aggregation / response reanchoring
-  -> MODFLOW boundary update
-  -> conjunctive convergence
-  -> MODFLOW publication
-  -> SWAP publication
-  -> interface-ledger publication
-```
+The 2024 SWAP-MODFLOW design does not define two-way coupling as a persistent standalone mode-5 SWAP application.
 
-The live MODFLOW service does not give SWAP ownership of groundwater state. MODFLOW remains the groundwater-state owner. F-GC49D keeps SWAP state in Fortran and the coupling service owns iteration/publication.
+It distinguishes:
 
-The problematic binding occurs lower in the stack:
+- SWAP as an unsaturated plus saturated column model;
+- MODFLOW6 as the regional saturated-flow model;
+- SWAP diagnostic groundwater level from MODFLOW hydraulic head;
+- a predictor bottom flux from the regional groundwater balance;
+- a SWAP-derived exchange/recharge quantity `q_u`;
+- a response/storage coefficient `u`;
+- a finalization step in which the MODFLOW head is imposed at the SWAP bottom.
 
-1. `mod_fmr_groundwater_head_forcing_adapter` declares the profile admitted only when `bottom_mode == 5`;
-2. `mod_fmr_production_application_bootstrap` defines `groundwater_profile` as all tiles having `bottom_mode == 5`;
-3. `production_application_groundwater_ready` repeats the same condition;
-4. process-composition guards in `tile_config_valid` are consequently interpreted as restrictions of the groundwater coupling application;
-5. E6/E7 then treated failure to compose drainage/root uptake with this mode-5 profile as a groundwater-coupling application-domain result.
+The same source explicitly notes that the groundwater level calculated by SWAP need not equal the MODFLOW head because resistance in the phreatic layer can produce a difference.
 
-This is the point where an implementation mechanism became application authority.
+The F-GC30/F-GC33 production algebra is recognizably derived from this predictor/response formulation.
 
-## Correct exchange contract
+## 6. Current implementation trace
 
-MODFLOW supplies per groundwater cell and trial iterate a hydraulic head on the common vertical datum plus lineage/revision/window provenance. The coupling adapter maps that trial head to the hydraulic state required at the SWAP lower coupling plane. In the current Reference backend this may be realized as a temporary prescribed lower-face pressure head. That realization is solver/runtime internal.
+The present production implementation does the following.
 
-SWAP returns the accepted-sign whole-window exchange through the coupling plane, or an exactly equivalent mean interface rate, plus any qualified local response information used for iteration. MODFLOW recharge/exchange must be derived from this interface transfer and not from a terminal `qbot` sample.
+### Predictor
 
-Drainage remains a SWAP process when the drainage system is represented by SWAP. It is an external sink from the SWAP column to the drainage network. It is not automatically MODFLOW recharge and must not also be booked as groundwater-interface transfer. A drainage formulation intended to exchange directly with MODFLOW requires a separate explicit component/topology contract.
+A same-origin SWAP trial with prescribed `qbot` produces lower-face head response and the F-GC30 `u/q_u` predictor relation.
 
-Root uptake, evaporation, precipitation, irrigation and other surface/process fluxes remain SWAP-owned balance terms. They affect bottom exchange through SWAP state and balance, but are not separate MODFLOW exchange terms.
+### Groundwater solve
 
-SWAP storage change belongs to the SWAP column. MODFLOW storage change belongs to MODFLOW. Neither storage term is an interface flux. Conservation books the common interface transfer once with equal and opposite signs while each component closes its own balance.
+F-GC40 aggregates tile responses and F-GC33 creates an affine MODFLOW API-package term. MODFLOW runs one prepared solve with fixed accepted `XOLD` and evolving `X`.
 
-## Mass-conservation invariant
+### Corrector
 
-For one accepted coupling window:
+The current MODFLOW cell head `X` is routed to each SWAP participant. The concrete FMR forcing adapter converts it through the datum to lower-face pressure head and executes a mode-5 same-origin corrector trial.
 
-```text
-SWAP:
-Delta S_swap = surface/process inflows - surface/process outflows
-               - drainage - root uptake - q_interface_out + other admitted terms
+### Residual
 
-MODFLOW:
-Delta S_gw = groundwater external inflows - groundwater external outflows
-             + q_interface_out + other MODFLOW terms
-```
+The service compares the realized SWAP whole-window bottom rate against the current MODFLOW API-package rate. When not converged, the SWAP candidate is discarded and the affine term is re-anchored at the current head and realized SWAP rate while retaining the slope.
 
-Rejected SWAP or MODFLOW candidates contribute zero authoritative interface mass. The existing F-GC19/F-GC41/F-GC49 publication and ledger architecture remains valid under this interpretation.
+### Acceptance
 
-## Defect classification and E7
+On coupled convergence, MODFLOW solve and timestep, SWAP candidate and interface ledger are published under the admitted ordered transaction contract.
 
-E7 observed a real stop: authentic Hupsel requires drainage/root processes, while the production owner rejected those processes before a mode-5 participant could be allocated. That observation remains valid.
+The exact trace is persisted in `SWAP5_MODFLOW6_CURRENT_IMPLEMENTATION_SEMANTIC_TRACE.md`.
 
-The former inference does not. The stop does not establish that authentic Hupsel lies outside the physically admissible SWAP-MODFLOW coupling domain. It establishes that Hupsel lies outside the current **mode-5-bound production participant implementation profile**.
+## 7. Answers to the requested semantic questions
 
-E7 is therefore reclassified as:
+### 7.1 Who owns groundwater head?
 
-```text
-COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED
-```
+MODFLOW6 owns the accepted regional groundwater state/head and the current nonlinear groundwater iterate.
 
-Do not rerun E7 until the corrected application/coupling authority is implemented and independently qualified.
+SWAP may calculate a diagnostic phreatic level internally. That diagnostic is not the coupled groundwater authority and need not equal the MODFLOW head.
 
-## PUB-GC experiment impact
+### 7.2 What should MODFLOW deliver to SWAP?
 
-| Evidence | Disposition | Reason |
-| --- | --- | --- |
-| E1/E2 | NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED | sign/unit, rollback and exactly-once transfer evidence remains useful; prescribed-head application wording must be recast as a trial-boundary realization |
-| E3/E3-R/E3-D | NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED | outer iteration evidence remains numerical evidence for the restricted realization; no application-level mode-5 authority may be inferred |
-| E4 | NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED | response identities remain bounded numerical identities; prescribed-head derivatives describe a trial realization |
-| E5 | NUMERICALLY_VALID_SEMANTIC_REINTERPRETATION_REQUIRED | algorithm/information-value comparison remains bounded to the same response realization |
-| E6 | COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED | its drainage incompatibility is caused by the mode-5-bound corrector/profile intersection |
-| E7 | COUPLING_ASSUMPTION_DEPENDENT_REQUALIFICATION_REQUIRED | the pre-owner stop is an implementation-profile boundary, not established physical coupling-domain evidence |
+For the currently intended finalization/corrector method, MODFLOW supplies a hydraulic head iterate associated with the mapped groundwater cell/node.
 
-No experiment is globally invalidated by this audit. Claims depending on “groundwater coupling equals standalone mode 5” are superseded.
+The coupling layer must then apply an explicit head-transfer/datum contract to obtain the SWAP lower-face trial hydraulic head.
 
-## F-GC authority impact
+The current implementation uses the identity transfer `H_bottom=H_MF,node`. This is an application coupling assumption and must be made explicit. It is not a statement that the MODFLOW head equals SWAP groundwater level.
 
-- F-GC17 head datum/sign/unit contract: **retain**, but reinterpret mode 5 as one Reference-backend realization.
-- F-GC18/F-GC19 transaction and ledger contracts: **retain**.
-- F-GC21 predictor/corrector ownership and publication contract: **retain**, but remove application-level dependence on a mode-5 profile.
-- F-GC30/F-GC33 response contracts: **retain within their qualified numerical envelope**.
-- F-GC39/F-GC41/F-GC49C/F-GC49D MODFLOW ownership, iteration and publication architecture: **retain**.
-- FMR head forcing materializer and production bootstrap profile authority: **repair required**.
-- Tests asserting `bottom_mode==5` as a coupling prerequisite: **supersede as application-authority tests**. Retain only tests proving the Reference backend's internal trial-head realization.
+### 7.3 What should SWAP deliver to MODFLOW?
 
-## Corrected design contract
+Not one undifferentiated “recharge” scalar in all stages.
 
-```text
-application physics configuration
-  + accepted MODFLOW groundwater state
-        |
-        v
-explicit coupled-groundwater interface
-        |
-        +-- coupling trial hydraulic head / provenance
-        v
-SWAP coupled-interface trial
-        |
-        +-- Reference implementation may internally impose psi_bottom
-        |   using the legacy mode-5 numerical route
-        |
-        +-- SWAP processes remain configured independently
-        v
-whole-window SWAP interface transfer + optional response
-        |
-        v
-MODFLOW boundary / nonlinear iterate
-        |
-        v
-joint acceptance and ordered publication
-```
+The predictor supplies response information:
 
-Application configuration must state that the lower boundary is externally owned by the groundwater coupler, not that the application itself is `SWBOTB=5`.
+- `q_u`;
+- `u`;
+- reference lower-face head and derivative provenance.
 
-## Required repair slices
+The head-driven corrector supplies the realized whole-window SWAP bottom transfer at the current groundwater iterate.
 
-**CSR-01, explicit coupled-boundary authority type.** Introduce an application/runtime distinction between standalone lower-boundary selection and externally coupled groundwater ownership. No new physics.
+The accepted transfer is the converged MODFLOW-package/SWAP-corrector exchange, published once. Predictor `q_u` is not authoritative accepted mass merely because it was used in the groundwater solve.
 
-**CSR-02, Reference backend trial realization.** Move `H_interface -> psi_bottom -> bottom_head` behind the coupled-interface adapter. Permit the Reference backend to use the legacy mode-5 computational branch internally, but remove `bottom_mode==5` from the public/application coupling admission test. Prove numerical identity with the old restricted route where other physics are identical.
+### 7.4 Where is the interface?
 
-**CSR-03, process-composition separation.** Rework the production bootstrap so root uptake, drainage and other admitted processes are governed by their own composition authorities, not rejected merely because coupled groundwater is active. Do not silently admit unqualified combinations.
+The computational SWAP condition is the fixed lower face of the SWAP column.
 
-**CSR-04, drainage/recharge accounting qualification.** Add executable active-drainage balances proving drainage is booked once as a SWAP external sink, bottom interface transfer once in the groundwater ledger, MODFLOW receives only intended interface exchange, no double counting occurs, and rejected trials publish neither history nor interface mass.
+That is distinct from:
 
-**CSR-05, root-active coupled qualification.** Qualify root extraction under corrected coupled-boundary authority, including accepted-state dependence and rollback. Research-only root-active live-MODFLOW fixtures may inform this but are not production authority.
+- the lowest SWAP node;
+- the diagnostic phreatic surface inside SWAP;
+- the MODFLOW cell centre/node;
+- groundwater storage.
 
-**CSR-06, PUB-GC requalification.** After required repair slices are admitted, rerun the minimal E1-E5 identity set, reconsider E6 under the corrected contract, and execute E7 prospectively with the frozen Hupsel dates and unchanged hydrological configuration.
+The current topology maps tiles to MODFLOW cells but does not encode a vertical transfer geometry or resistance. Thus an identity mapping between MODFLOW node head and SWAP bottom head is currently implicit.
 
-## Governance disposition
+### 7.5 May a coupled SWAP application possess a legacy bottom_mode as groundwater authority?
 
-PUB-GC submission authority is **HELD** pending corrected coupling-authority implementation and requalification. Historical E6/E7 files must not be deleted or rewritten.
+Not as the application-level groundwater authority.
 
-Superseded current interpretations include:
+A concrete participant may internally use mode 5 to realize a temporary lower-face Dirichlet trial. The coupled application should instead be admitted under an explicit groundwater-coupling profile/contract.
 
-- groundwater coupling requires the application to be `bottom_mode=5`;
-- failure to compose authentic Hupsel with mode 5 demonstrates a realistic groundwater-coupling component-domain limit;
-- a future process-complete prescribed-head owner is necessarily a new physical groundwater-coupling capability.
+Standalone SWBOTB selection and external groundwater ownership are different layers.
 
-Replacement authority:
+### 7.6 Is mode 5 internally usable?
 
-> The current Reference implementation uses a prescribed lower-face pressure-head realization for coupled trial heads. Coupled groundwater authority itself is defined by hydraulic-head continuity, interface-flux conservation, component state ownership and transactional publication, independently of legacy standalone SWAP lower-boundary option semantics.
+Yes.
 
-## Closure
+The existing datum conversion and mode-5 materialization are suitable as an internal corrector/finalization realization, subject to application-specific head-transfer authority and process-envelope qualification.
 
-The semantic reconstruction is sufficiently determined by existing repository authority to close this audit without a new physics decision. Next action is implementation repair, starting with CSR-01/CSR-02. No Hupsel tuning, solver change or E7 rerun is authorized before that repair is qualified.
+The implementation defect is that `bottom_mode==5` is also used as the gateway for the production groundwater profile.
+
+### 7.7 Drainage and root uptake
+
+Root uptake remains a SWAP process. It affects column storage and the coupled response but is not a separate MODFLOW exchange.
+
+Drainage must have one explicit owner per physical drainage path.
+
+SWAP can physically combine mode 5 with drainage. But the 2024 coupling concept also allows regional/local groundwater drainage to influence the groundwater-to-SWAP predictor flux. A coupled application must therefore declare whether a drainage path is SWAP-owned, MODFLOW/surface-water-owned, or explicitly partitioned.
+
+The same drainage discharge must never be represented on both sides.
+
+### 7.8 Mass conservation
+
+Mass conservation requires separate component balances and one accepted interface transfer.
+
+SWAP balance includes:
+
+- atmospheric/surface fluxes;
+- root uptake;
+- SWAP-owned drainage;
+- SWAP storage change;
+- lower-face transfer.
+
+MODFLOW balance includes:
+
+- regional groundwater flows;
+- MODFLOW-owned sinks/sources;
+- MODFLOW storage;
+- the coupling-package transfer.
+
+At accepted convergence the coupling-package transfer and realized SWAP lower-face transfer must agree under one sign convention. In the combined-system balance the pair is internal and cancels.
+
+Rejected predictor/corrector work must contribute zero accepted interface history.
+
+## 8. Storage ownership finding
+
+This is the one material semantic issue that cannot be closed from current authority.
+
+The SWAP-derived coefficient `u` is a finite-window lower-face head response. F-GC33 injects `u/DeltaT` into the MODFLOW API-package slope. The 2024 design calls `u` an exchange/storage coefficient controlling how quickly MODFLOW head responds.
+
+MODFLOW STO independently owns cell storage through specific storage/specific yield.
+
+The current production topology and application configuration do not state which physical storage volume represented by `u` lies outside, supplements, or overlaps the MODFLOW STO volume.
+
+The live F-GC44/F-GC46/F-GC47 qualification fixtures use nonzero STO together with the SWAP-derived affine response. Those tests prove numerical composition, not absence of realistic hydrogeological storage overlap.
+
+Therefore:
+
+**STORAGE_PARTITION_AUTHORITY_REQUIRED**
+
+Before broad realistic production admission, the coupled application must define a non-overlapping storage partition or a justified overlap correction.
+
+This audit does not assert that present tests double-count storage. It finds that the repository does not yet contain enough scientific authority to prove that a realistic configuration does not.
+
+## 9. Defect classification
+
+### Interpretation defect: YES
+
+Examples:
+
+- treating mode 5 as prescribed groundwater level;
+- treating a MODFLOW trial head as application-level SWAP groundwater authority;
+- treating the E7 mode-5 process guard as a physical SWAP drainage limitation;
+- treating predictor `q_u` as if it were automatically accepted interface mass.
+
+### Authority-binding defect: YES, PRIMARY
+
+F-GC17 introduced a lower-face hydraulic-head conversion. F-GC21 then admitted one concrete FMR materializer restricted to `bottom_mode==5`. Later bootstrap/application authority elevated that implementation restriction into the production groundwater profile.
+
+This is the main provenance error.
+
+### Implementation defect: YES
+
+`mod_fmr_groundwater_head_forcing_adapter` and `mod_fmr_production_application_bootstrap` use the legacy mode selector as a production coupling-admission key.
+
+The bootstrap additionally couples process admission, including drainage/root rejection, to that profile.
+
+### Architecture/design defect: YES AT CONTRACT LAYER, NOT A DEMONSTRATED FAILURE OF THE NUMERICAL ITERATION
+
+The current production coupling contract lacks:
+
+- an application-level coupled-groundwater profile independent of legacy SWBOTB;
+- explicit head-transfer geometry/operator authority;
+- explicit drainage ownership;
+- explicit storage partition between SWAP-derived `u` and MODFLOW STO.
+
+No evidence from this audit shows that the prepared-solve iterative algorithm itself is fundamentally numerically wrong.
+
+Therefore the overall answer is a **combination of interpretation, authority-binding and implementation defects plus an incomplete coupling-contract architecture**. It is not evidence that the complete partitioned coupling method must be discarded.
+
+## 10. E7 disposition
+
+The historical E7 evidence is preserved.
+
+Current authority is changed from:
+
+`CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT`
+
+to:
+
+`DIAGNOSTIC_EVIDENCE_UNDER_SEMANTIC_REVIEW`.
+
+The observed stop remains real: the current production bootstrap cannot instantiate authentic Hupsel drainage/root composition through its restricted groundwater profile.
+
+What is superseded is the scientific interpretation that this stop establishes a realistic physical/component-domain limit of SWAP-MODFLOW coupling.
+
+E7 must not be rerun merely by deleting guards. First establish corrected coupled-groundwater, storage and drainage authority.
+
+## 11. PUB-GC hold
+
+PUB-GC must not move to final submission authority while this semantic repair is open.
+
+The audit does not invalidate the full paper. Transaction, replay, response-algebra and controlled numerical evidence remain useful subject to the impact matrix.
+
+See `SWAP5_MODFLOW6_COUPLING_IMPACT_MATRIX.md`.
+
+## 12. Corrected contract
+
+The proposed corrected contract is persisted in:
+
+`SWAP5_MODFLOW6_CORRECTED_COUPLING_CONTRACT.md`.
+
+Core form:
+
+`MODFLOW accepted/trial groundwater state`
+→ explicit head-transfer/coupling interface
+→ same-origin SWAP coupled trial
+→ realized SWAP exchange/response
+→ MODFLOW groundwater equation
+→ coupled convergence
+→ accepted joint publication.
+
+Legacy mode 5 may occur inside the SWAP trial adapter, never as the external application authority.
+
+## 13. Repair slices
+
+### CSR-01: semantic application profile
+
+Introduce an explicit coupled-groundwater application/profile authority independent of `bottom_mode`.
+
+No physics change.
+
+### CSR-02: hide legacy lower-boundary realization
+
+Retain the current head-to-pressure-head conversion behind a coupled-interface adapter. Remove `bottom_mode==5` as the public groundwater identity.
+
+### CSR-03: head-transfer topology
+
+Add explicit authority for the MODFLOW-node to SWAP-lower-face head transfer. Identity may be one admitted option.
+
+### CSR-04: storage partition
+
+Before realistic application admission, define and qualify the physical partition between SWAP-derived `u` and MODFLOW STO. This is a scientific/architectural prerequisite, not a code-cleanup task.
+
+### CSR-05: drainage ownership
+
+Add one-owner drainage topology and no-double-booking invariant. Then qualify the chosen authentic Hupsel drainage representation without changing physics solely to rescue E7.
+
+### CSR-06: process capability
+
+Admit root uptake and other state-dependent SWAP processes according to their real coupled response requirements. Keep derivative coverage separate from semantic application identity.
+
+### CSR-07: requalification
+
+Requalify the affected F-GC43/F-GC44-F-GC49 application chain under the corrected contract. Reuse unaffected transaction/backend evidence by dependency analysis.
+
+### CSR-08: PUB-GC supersession
+
+Update manuscript/claim authority only after CSR-04/05 and relevant requalification. E7 remains frozen until then.
+
+## 14. Governance inconsistency found
+
+Current documents disagree about whether predictor/corrector iteration is “below iMOD Coupler” or “product-level orchestration”.
+
+F-GC39/F-GC44 place the internal coupling service below iMOD Coupler. F-GC49/F-GC50 also say the product driver coordinates the lifecycle and calls the admitted service, while some status wording says predictor/corrector ownership remains “under/in the iMOD Coupler layer”.
+
+This is not the physical defect that triggered the audit, but the wording is ambiguous. Future documentation should distinguish:
+
+- iMOD Coupler owning the outer product timestep/driver lifecycle;
+- the admitted SWAP5 coupling service owning the bounded per-window iteration semantics and calling both participants.
+
+## 15. Closeout
+
+Audit closure means the semantic reconstruction and defect classification are complete.
+
+It does **not** mean the production coupling is ready for broad realistic application.
+
+Current disposition:
+
+`AUDIT_CLOSED_REPAIR_REQUIRED_STORAGE_AUTHORITY_BLOCKED`.
+
+No production physics, solver, tolerance, Hupsel configuration or coupling implementation was changed by this audit.
