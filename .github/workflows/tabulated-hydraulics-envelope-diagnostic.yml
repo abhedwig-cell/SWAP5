@@ -239,6 +239,8 @@ jobs:
               (root/"clay-horizon.tsv").read_text(),
               "## Pair comparison availability",
               (root/"comparison-status.tsv").read_text(),
+              "## Interpretation guard",
+              "These diagnostics do not alter the failed preregistered envelope gate.",
           ]
           (root/"diagnostic-summary.md").write_text("\n".join(lines)+"\n")
           print((root/"diagnostic-summary.md").read_text(),end="")
