@@ -268,8 +268,7 @@ contains
     ready = size(self%materializers) == size(self%columns) .and. size(self%ledgers) == size(self%columns) .and. &
          size(self%participant_handles) == size(self%columns)
     if (.not. ready) return
-    ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64) .and. &
-         all(self%participant_handles > 0_int64)
+    ready = self%registry%active_count() == size(self%columns) .and. all(self%participant_handles > 0_int64)
   end function production_application_groundwater_ready
 
   integer function production_application_tile_count(self) result(count)
