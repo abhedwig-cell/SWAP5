@@ -1,7 +1,7 @@
 # SWAP5 Project Control
 
 **Work unit:** PROJECT-CONTROL-01  
-**Control snapshot:** `integration/f-ci-canonical@3a815edda7cf5e155272b68ae49d440fd5db9138`  
+**Control snapshot:** `integration/f-ci-canonical@1b15bbb4b01135a93150d28aad3461890af90542`  
 **Date:** 2026-09-20  
 **Machine-readable authority:** `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
 
@@ -33,7 +33,7 @@ Central regie owns canonical admission, cross-workstream supersession, shared-au
 
 | Workstream | State | Current authority / finding | Next gate |
 |---|---|---|---|
-| REGIE | ACTIVE | canonical snapshot `3a815ed`; PR #58 remains the intentional carrier; F-TA04R resolves the last old housekeeping item #172 on this admission; #486 is blocked shared-authority repair rather than admission-ready work | After F-TA04R, wait for qualified specialized admission candidates or explicit preservation/shared-authority work |
+| REGIE | ACTIVE | canonical snapshot `1b15bbb`; PR #58 remains the intentional carrier; the old #72/#163/#172 housekeeping queue is closed; #486 is blocked shared-authority repair, not admission-ready work | Event-driven only: qualified specialized admission, preservation drift, shared-authority resolution, or deliberate control refresh |
 | PPA production physics | ACTIVE | WU04-A Black, ROOT-HYD02 prescribed-root tangent and WU04-B Boesten are already merged to canonical; WU05-A/C are review-only authority | Production owner selects the next source-authorized bounded slice; no inference from review authority to production |
 | F-GC groundwater coupling | BLOCKED_INTERNAL_AUTHORITY | F-GC50 remains externally blocked at product integration; PR #486 completed the semantic audit and bounded CSR-01/02 repair but broad admission is blocked by storage-partition and drainage-ownership authority | Resolve CSR-B1 storage partition and CSR-B2 drainage ownership before production admission or Hupsel rerun |
 | F-ROM / LARE | BLOCKED_EXTERNAL | F-ROM-CODEMAP-01 is canonical: FMC remains source-authority blocked for contact/native ET; LARE has a bounded relative cost-fidelity signal but lacks external groundwater application-accuracy authority | Continue FMC and LARE as distinct research lines; return only bounded evidence successors, never the large LARE branch wholesale |
@@ -108,7 +108,7 @@ PR #72 has now been recomposed into current governance by GOV-REC01. The stale b
 
 F-TB13R is now canonically admitted and historical PR #163 is closed.
 
-F-TA04R is the final recomposed successor for the old central housekeeping queue. It registers bounded A23BL and pinned F-TB11 transaction/restart traceability and adds a fail-closed catalog-locator check. On successful exact-head qualification and admission, historical PR #172 becomes superseded and the old #72/#163/#172 queue is empty.
+F-TA04R is canonically admitted through PR #492 and historical PR #172 is closed. The old central #72/#163/#172 housekeeping queue is now empty. No new generic cleanup queue should be invented merely to keep central regie busy.
 
 ### Testbank preservation
 
@@ -116,7 +116,7 @@ F-TB13R is an additive current-canonical rebase of the qualified analytical/refe
 
 ### Transaction/restart traceability
 
-F-TA04R recomposes historical PR #172 against current canonical. It does not change transaction or restart behaviour. It records two complete bounded catalog entries:
+F-TA04R, admitted through PR #492, recomposes historical PR #172 against current canonical without changing transaction or restart behaviour. It records two complete bounded catalog entries:
 
 - historical A23BL as a real executable regression/contract chain, explicitly not the current mass-completeness oracle;
 - pinned F-TB11 transaction/mass/rejected-publication/Restart preservation through its real manifest, validator, replay runner and workflow.
@@ -159,6 +159,16 @@ Current governance surfaces:
 - `integration/control/STATUS_A_AA_GOVERNANCE_RECONCILIATION_20260920.json`.
 
 The new discrepancy register immediately records the live coupling-authority question as `TCD-SWAP5-001 / INVESTIGATING`. This does not pre-admit PR #486.
+
+## Closed central housekeeping lineage
+
+The former central reconciliation debt is now resolved by current-canonical successors:
+
+- historical PR #72 -> GOV-REC01 / PR #490;
+- historical PR #163 -> F-TB13R / PR #491;
+- historical PR #172 -> F-TA04R / PR #492.
+
+These historical PRs remain provenance but are no longer open routing items.
 
 ## Historical control records
 
@@ -204,6 +214,6 @@ Every specialized chat should begin with the same four operations:
 
 ## Default next action for central regie
 
-F-TA04R is the final item from the old #72/#163/#172 housekeeping queue. After its admission, central regie should not invent a new generic cleanup task. The next central action should be triggered by a genuinely qualified specialized admission candidate, explicit preservation drift, project-control refresh, or a shared-authority conflict. PR #486 remains blocked until its storage/drainage authority is resolved.
+The old #72/#163/#172 housekeeping queue is closed. Central regie should not invent a replacement cleanup queue. The next central action is event-driven: a genuinely qualified specialized admission candidate, explicit preservation drift, a deliberate project-control refresh, or a resolved shared-authority conflict. PR #486 remains blocked until its storage/drainage authority is resolved.
 
 This ordering is a routing decision, not a scientific priority ranking.

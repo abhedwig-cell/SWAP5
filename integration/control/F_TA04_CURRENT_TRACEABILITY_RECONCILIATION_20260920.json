@@ -82,8 +82,8 @@
     "VQ reference qualification",
     "F-CI canonical qualification"
   ],
-  "decision": "RECOMPOSED_CURRENT_TRACEABILITY_PENDING_EXACT_HEAD_QUALIFICATION",
-  "admission_effect": "If exact-head qualification is green and live canonical remains scope-compatible, admit the traceability/static-process repair and close historical PR #172 as superseded.",
+  "decision": "CANONICALLY_ADMITTED_CURRENT_TRANSACTION_RESTART_TRACEABILITY",
+  "admission_effect": "F-TA04R is canonical. Historical PR #172 is closed as superseded; the old central #72/#163/#172 housekeeping queue is empty.",
   "live_reconciled_through": "3a815edda7cf5e155272b68ae49d440fd5db9138",
   "live_delta_after_branch_base": {
     "commits": 3,
@@ -91,5 +91,30 @@
     "overlap_with_transaction_restart_dependencies": false,
     "production_or_reference_change": false,
     "action": "PRESERVE_CURRENT_RECONCILIATION_AND_REQUIRE_EXACT_HEAD_PR_QUALIFICATION"
+  },
+  "qualification": {
+    "qualified_head": "2ac48513247649ced46cc0fabb8f176ca979098f",
+    "documentation": {
+      "run": 35494198337,
+      "conclusion": "success"
+    },
+    "vq_reference": {
+      "run": 35494198343,
+      "conclusion": "success"
+    },
+    "f_gc42": {
+      "run": 35494198325,
+      "conclusion": "success"
+    },
+    "f_ci_canonical": {
+      "run": 35494198347,
+      "conclusion": "success"
+    }
+  },
+  "admission": {
+    "pr": 492,
+    "merge_commit": "1b15bbb4b01135a93150d28aad3461890af90542",
+    "canonical_admitted": true,
+    "predecessor_pr_172_closed": true
   }
 }
