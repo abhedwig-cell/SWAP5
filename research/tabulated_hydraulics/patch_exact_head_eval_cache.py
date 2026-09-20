@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
 """Research-only exact-head cache for the direct x-map table evaluator.
 
-This patch is applied after patch_piecewise_xmap_lookup.py.
+Apply after:
+- patch_table_ksat_plateau_split.py
+- patch_table_theta_wet_linear.py
+- patch_piecewise_xmap_lookup.py
 
-It makes two changes without changing interpolation mathematics:
-1. EvalTabulatedFunction caches transformed x and the resolved interval for the
-   last exact pressure head per node/function family.
-2. watcon/moiscap stop computing a duplicate log transform solely for the dry
-   endpoint test. The evaluator now owns that endpoint test and returns the
-   same endpoint values.
-
-No tolerance is used: cache reuse requires exact floating-point equality.
+The interpolation itself is unchanged. Reuse requires exact floating-point
+head equality; there is no tolerance or approximate state reuse.
 """
 from pathlib import Path
 import sys
+
 if len(sys.argv)!=3:
     raise SystemExit("usage: patch_exact_head_eval_cache.py sptabulated.f90 soilhydraulicsutils.f90")
 
-tab=Path(sys.argv[1]); util=Path(sys.argv[2])
+tab=Path(sys.argv[1])
+util=Path(sys.argv[2])
 s=tab.read_text()
 
 old_int="integer k, klo, khi, n, inverse, maxtry, ntry, ind1, ind2, ind3, iWhat, ndry, nwet, ntotal"
@@ -33,7 +32,7 @@ new_decl="""integer ientrytab(macp,0:matabentries), node
       real(8), save :: cache_x(macp) = 0.0d0
       real(8), save :: cache_interval_head(2,macp) = 1.0d300
       integer, save :: cache_klo(2,macp) = 0
-      ! Research-only exact-key cache. No tolerance or approximate reuse."""
+      ! TAB-HYD research-only exact-key cache."""
 if s.count(old_decl)!=1:
     raise SystemExit(f"cache declaration anchor mismatch: {s.count(old_decl)}")
 s=s.replace(old_decl,new_decl,1)
@@ -84,8 +83,7 @@ old_block="""         if (do_ln_trans) then
          x1 = sptab(ind1,node,klo)
          x2 = sptab(ind1,node,khi)
 """
-new_block="""         ! Exact-head transformed-coordinate cache.
-         if (xe == cache_head(node)) then
+new_block="""         if (xe == cache_head(node)) then
             xe_local = cache_x(node)
          else
             if (do_ln_trans) then
@@ -97,8 +95,8 @@ new_block="""         ! Exact-head transformed-coordinate cache.
             cache_x(node) = xe_local
          end if
 
-         ! Own the dry endpoint semantics here so callers do not need a
-         ! duplicate logarithmic transform just to test the first knot.
+         ! Own dry endpoint handling here, removing the caller-side duplicate
+         ! transformed-head calculation.
          if (xe_local < sptab(ind1,node,1)) then
             if (iWhat == 1) then
                ye = sptab(2,node,1)
@@ -116,12 +114,10 @@ new_block="""         ! Exact-head transformed-coordinate cache.
          family = 1
          if (ind2 == 3) family = 2
 
-         ! Reuse interval only for the same exact head and same function family.
          if (xe == cache_interval_head(family,node) .and. cache_klo(family,node) > 0) then
             klo = cache_klo(family,node)
             khi = klo + 1
          else
-            ! Theta/C alone owns the final wet interval to h=0.
             if (family == 1 .and. xe_local >= tab_xend) then
                klo = ntotal-1
                khi = ntotal
@@ -162,11 +158,19 @@ s=s.replace(old_block,new_block,1)
 tab.write_text(s)
 
 u=util.read_text()
+
 old_w="""      else if (swsophy == 1) then
          dum = head
          if (do_ln_trans .and. head < 0.0_real64) dum = -dlog(-head + 1.0_real64)
          if (head >= -1.0d-9) then
             watcon = sptab(2,node,numtab(node))
+         else if (head > h_crit) then
+            ! TAB-HYD research candidate: preserve the analytical default-MvG
+            ! linear wet theta branch instead of accepting the spline endpoint slope.
+            dum = h_crit
+            call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, dum, help, moiscap, 1)
+            watcon = help + (sptab(2,node,numtab(node)) - help) / (-h_crit) * (head - h_crit)
+            watcon = min(watcon, sptab(2,node,numtab(node)))
          else if (dum < sptab(1,node,1)) then
             watcon = sptab(2,node,1)
          else
@@ -176,12 +180,19 @@ old_w="""      else if (swsophy == 1) then
 new_w="""      else if (swsophy == 1) then
          if (head >= -1.0d-9) then
             watcon = sptab(2,node,numtab(node))
+         else if (head > h_crit) then
+            ! TAB-HYD research candidate: preserve the analytical default-MvG
+            ! linear wet theta branch instead of accepting the spline endpoint slope.
+            dum = h_crit
+            call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, dum, help, moiscap, 1)
+            watcon = help + (sptab(2,node,numtab(node)) - help) / (-h_crit) * (head - h_crit)
+            watcon = min(watcon, sptab(2,node,numtab(node)))
          else
             call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, head, watcon, moiscap, 1)
          end if
       end if"""
 if u.count(old_w)!=1:
-    raise SystemExit(f"watcon table block mismatch: {u.count(old_w)}")
+    raise SystemExit(f"post-wet-linear watcon block mismatch: {u.count(old_w)}")
 u=u.replace(old_w,new_w,1)
 
 old_c="""      else if (swsophy == 1) then
@@ -189,6 +200,13 @@ old_c="""      else if (swsophy == 1) then
          if (do_ln_trans .and. head < 0.0_real64) dum = -dlog(-head + 1.0_real64)
          if (head >= -1.0d-9) then
             moiscap = dt*1.0d-7
+         else if (head > h_crit) then
+            ! TAB-HYD research candidate: derivative of the same explicit
+            ! linear wet theta branch used by the table watcon candidate.
+            dum = h_crit
+            call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, dum, term1, dummy, 1)
+            moiscap = (sptab(2,node,numtab(node)) - term1) / (-h_crit)
+            if (head > -1.0_real64 .and. moiscap < (dt * 1.0d-7)) moiscap = dt * 1.0d-7
          else if (dum < sptab(1,node,1)) then
             moiscap = 0.0_real64
          else
@@ -198,12 +216,20 @@ old_c="""      else if (swsophy == 1) then
 new_c="""      else if (swsophy == 1) then
          if (head >= -1.0d-9) then
             moiscap = dt*1.0d-7
+         else if (head > h_crit) then
+            ! TAB-HYD research candidate: derivative of the same explicit
+            ! linear wet theta branch used by the table watcon candidate.
+            dum = h_crit
+            call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, dum, term1, dummy, 1)
+            moiscap = (sptab(2,node,numtab(node)) - term1) / (-h_crit)
+            if (head > -1.0_real64 .and. moiscap < (dt * 1.0d-7)) moiscap = dt * 1.0d-7
          else
             call EvalTabulatedFunction(0, numtab(node), 1, 2, 4, node, sptab, ientrytab, head, dummy, moiscap, 3)
          end if
       end if"""
 if u.count(old_c)!=1:
-    raise SystemExit(f"moiscap table block mismatch: {u.count(old_c)}")
+    raise SystemExit(f"post-wet-linear moiscap block mismatch: {u.count(old_c)}")
 u=u.replace(old_c,new_c,1)
 util.write_text(u)
+
 print(f"EXACT_HEAD_EVAL_CACHE_PATCH_APPLIED {tab} {util}")
