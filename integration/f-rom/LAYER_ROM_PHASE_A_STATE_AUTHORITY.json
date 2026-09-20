@@ -1,0 +1,215 @@
+{
+  "schema": "swap5.layer-rom.phase-a.state-authority.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-PHASE-A-STATE1",
+  "decision": "INDEPENDENT_STATE_INFORMATION_SCREEN_AND_PAIR_FREEZE_QUALIFIED",
+  "execution": {
+    "workflow_run": 35494306128,
+    "execution_head": "723430d13ee796dee0c896529ad65393617c2dd2",
+    "artifact_id": 10599513478,
+    "artifact_digest": "sha256:d86f63ed7f00a8e6de447569b79fcd44e4f88950d87e98725927c0a9fd8975f3",
+    "reference_stdout_sha256": "063ce66fbd30b710e7653a19647e93002671a6e937012ff1dba49959c0a1479d",
+    "reference_result_sha256": "ce79e797624b2dbdf883331a1f6917f70a80a282c1dbe617462bd7d5caa4f2ef",
+    "state_result_sha256": "0c8fa74a506e862687160ce3fb5c513d7d85e167a8bb9c86bed666467cd40914",
+    "pair_manifest_sha256": "cb356cae959c4039389de98673157f4d04b9dacd9fba3162e3df05c8ce7a6d63"
+  },
+  "reference_integrity": {
+    "decision": "INDEPENDENT_REFERENCE_LIBRARY_QUALIFIED",
+    "state_count": 6144,
+    "node_record_count": 98304,
+    "o0_o2_bitwise_identity": true,
+    "max_abs_transaction_mass_residual_cm": 3.247922764071376e-14,
+    "fallback_count": 314,
+    "theta_range": [
+      0.26442160744569215,
+      0.38718408176515223
+    ],
+    "pressure_head_range_cm": [
+      -75.42126069328435,
+      -22.11099621295239
+    ],
+    "head_lab_H00_bottom_flux_reversal_step": 628
+  },
+  "state_diagnostic": {
+    "cross_history_full_state_distinguishable_pair_count": 14674988,
+    "theta_floor": 0.0005420462931603476,
+    "theta_floor_is_application_tolerance": false,
+    "collision_counts": {
+      "L2": {
+        "0.25": 0,
+        "0.5": 0,
+        "1.0": 0,
+        "2.0": 6188,
+        "4.0": 19500
+      },
+      "L3": {
+        "0.25": 0,
+        "0.5": 0,
+        "1.0": 0,
+        "2.0": 6188,
+        "4.0": 19500
+      },
+      "L4": {
+        "0.25": 0,
+        "0.5": 0,
+        "1.0": 0,
+        "2.0": 6188,
+        "4.0": 19500
+      },
+      "L6": {
+        "0.25": 0,
+        "0.5": 0,
+        "1.0": 0,
+        "2.0": 6188,
+        "4.0": 19500
+      },
+      "U2": {
+        "0.25": 5820,
+        "0.5": 18468,
+        "1.0": 45811,
+        "2.0": 109448,
+        "4.0": 379342
+      },
+      "U3": {
+        "0.25": 2092,
+        "0.5": 9260,
+        "1.0": 24620,
+        "2.0": 59719,
+        "4.0": 150436
+      },
+      "U4": {
+        "0.25": 0,
+        "0.5": 6048,
+        "1.0": 18476,
+        "2.0": 46058,
+        "4.0": 109525
+      },
+      "U6": {
+        "0.25": 0,
+        "0.5": 3116,
+        "1.0": 12332,
+        "2.0": 31722,
+        "4.0": 75734
+      }
+    }
+  },
+  "pair_freeze": {
+    "unique_physical_pair_count": 28,
+    "smart_selection_class": "ALIAS_2X",
+    "uniform_selection_class": "ALIAS_1X",
+    "common_smart_pairs": [
+      [
+        "F02",
+        981,
+        "H02",
+        1
+      ],
+      [
+        "F02",
+        982,
+        "H02",
+        1
+      ],
+      [
+        "F02",
+        983,
+        "H02",
+        1
+      ],
+      [
+        "F02",
+        984,
+        "H02",
+        1
+      ],
+      [
+        "F02",
+        985,
+        "H02",
+        1
+      ],
+      [
+        "F02",
+        986,
+        "H02",
+        1
+      ]
+    ],
+    "representation_pairs": {
+      "L2": [
+        "F02:981|H02:1",
+        "F02:982|H02:1",
+        "F02:983|H02:1",
+        "F02:984|H02:1",
+        "F02:985|H02:1",
+        "F02:986|H02:1"
+      ],
+      "L3": [
+        "F02:981|H02:1",
+        "F02:982|H02:1",
+        "F02:983|H02:1",
+        "F02:984|H02:1",
+        "F02:985|H02:1",
+        "F02:986|H02:1"
+      ],
+      "L4": [
+        "F02:981|H02:1",
+        "F02:982|H02:1",
+        "F02:983|H02:1",
+        "F02:984|H02:1",
+        "F02:985|H02:1",
+        "F02:986|H02:1"
+      ],
+      "L6": [
+        "F02:981|H02:1",
+        "F02:982|H02:1",
+        "F02:983|H02:1",
+        "F02:984|H02:1",
+        "F02:985|H02:1",
+        "F02:986|H02:1"
+      ],
+      "U2": [
+        "F00:5|H00:5",
+        "F00:8|H00:5",
+        "F00:36|H00:5",
+        "F00:41|H00:5",
+        "F00:44|H00:5",
+        "F00:46|H00:5"
+      ],
+      "U3": [
+        "F00:18|H00:5",
+        "F00:49|H00:5",
+        "F00:171|H00:5",
+        "F00:178|H00:5",
+        "F00:182|H00:5",
+        "F00:185|H00:5"
+      ],
+      "U4": [
+        "F00:20|H00:5",
+        "F00:44|H00:5",
+        "F00:49|H00:5",
+        "F00:78|H00:5",
+        "F00:101|H00:5",
+        "F00:140|H00:5"
+      ],
+      "U6": [
+        "F00:197|H00:5",
+        "F00:213|H00:5",
+        "F00:254|H00:5",
+        "F00:284|H00:5",
+        "F00:315|H00:5",
+        "F00:323|H00:5"
+      ]
+    }
+  },
+  "scientific_interpretation": [
+    "On the independent B01 state library, lower-focused L2-L6 are indistinguishable by the frozen collision diagnostic at every radius; adding storage coordinates beyond L2 provides no additional state separation on this library.",
+    "All same-dimension uniform controls lose materially more state information, so placement matters more than raw storage-state dimension on this bounded experiment.",
+    "This does not establish L2 future-response sufficiency because the collision diagnostic is a current-state information test rather than a future-response test.",
+    "The next adjudication is therefore the preregistered common-future-forcing response of the frozen adversarial pairs, followed by closure decomposition."
+  ],
+  "future_response_executed": false,
+  "closure_executed": false,
+  "application_acceptance_adjudicated": false,
+  "production_rom_authorized": false
+}
