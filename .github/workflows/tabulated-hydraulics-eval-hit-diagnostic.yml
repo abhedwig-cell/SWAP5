@@ -1,0 +1,125 @@
+name: TAB-HYD evaluation hit diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-eval-hit-diagnostic.yml'
+      - 'research/tabulated_hydraulics/patch_table_eval_counters.py'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: 2a5ace1c06be7a257b64e9ac1896b489533f16e9
+          path: swap-src
+      - uses: actions/checkout@v4
+        with:
+          repository: toml-f/toml-f
+          ref: f9ff54793b2d1a3edca7d6890548d18d48c98e36
+          path: swap-src/subprojects/toml-f
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/ttutil
+          ref: v4.2.7
+          path: swap-src/subprojects/ttutil
+      - uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/swap-testcases
+          ref: a839e2e905f34dd264ad0c739f638454b3023def
+          path: swap-testcases
+
+      - name: Build instrumented fused table binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check meson==1.7.0 ninja
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_ksat_plateau_split.py swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_table_theta_wet_linear.py swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_piecewise_xmap_lookup.py swap-src/src/soil/sptabulated.f90 swap-src/src/io/readswap.f90
+          python3 research/tabulated_hydraulics/patch_exact_head_eval_cache.py swap-src/src/soil/sptabulated.f90 swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_watcon_capacity_reuse.py swap-src/src/soil/sptabulated.f90 swap-src/src/utils/soilhydraulicsutils.f90
+          python3 research/tabulated_hydraulics/patch_table_eval_counters.py swap-src/src/soil/sptabulated.f90 swap-src/src/utils/soilhydraulicsutils.f90 swap-src/src/core/swap_main.f90
+          meson setup swap-src/build swap-src -Denable_pfunit=false
+          meson compile -C swap-src/build
+          cp swap-src/build/swap swap-diag
+
+      - name: Prepare Hupsel log-head400 K0 and K1
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util, shutil
+          lp=Path("research/tabulated_hydraulics/prepare_envelope_cases_loghead.py")
+          ls=importlib.util.spec_from_file_location("logprep",lp)
+          logprep=importlib.util.module_from_spec(ls); ls.loader.exec_module(logprep)
+          hp=Path("research/tabulated_hydraulics/prepare_hupsel_e2e.py")
+          hs=importlib.util.spec_from_file_location("hprep",hp)
+          hprep=importlib.util.module_from_spec(hs); hs.loader.exec_module(hprep)
+          src=Path("swap-testcases/cases/hupselbrook/legacy")
+          root=Path("build/diag"); root.mkdir(parents=True)
+          psets=[dict(ores=p[0],osat=p[1],alpha=p[2],n=p[3],ksat=p[4],lexp=p[5],h_enpr=0.0,comment=f"hupsel_{i}") for i,p in enumerate(hprep.PARAMS)]
+          def overwrite(dst):
+              for name,p in zip(hprep.TABLE_NAMES,psets):
+                  rows=logprep.loghead_rows(p,400)
+                  with (dst/name).open("w",newline="\n") as fh:
+                      fh.write("* TAB-HYD proven log-head400 table\nheadtab,thetatab,conductab\n")
+                      for h,t,k in rows:
+                          fh.write(f"{h:.16e},{t:.16e},{k:.16e}\n")
+          for kval in (0,1):
+              d=root/f"k{kval}"; shutil.copytree(src,d); hprep.edit_case(d,True,kval); overwrite(d)
+          PY
+
+      - name: Run diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > build/diag/stats.txt
+          for kval in 0 1; do
+            pushd "build/diag/k$kval" >/dev/null
+            set +e
+            "$GITHUB_WORKSPACE/swap-diag" > run.log 2>&1
+            rc=$?
+            set -e
+            popd >/dev/null
+            test "$rc" -eq 100
+            echo "K$kval" | tee -a build/diag/stats.txt
+            grep 'TABHYD_DIAG_' "build/diag/k$kval/run.log" | tee -a build/diag/stats.txt
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          lines=Path("build/diag/stats.txt").read_text().splitlines()
+          out=[]; cur=None
+          for line in lines:
+              if line in ("K0","K1"):
+                  cur=line; continue
+              p=line.split()
+              if not p: continue
+              if p[0]=="TABHYD_DIAG_EVAL":
+                  vals=list(map(int,p[1:])); out.append(f"{cur} eval_theta={vals[0]} eval_K={vals[1]} eval_C={vals[2]} eval_dK={vals[3]}")
+              elif p[0]=="TABHYD_DIAG_X":
+                  h,m=map(int,p[1:]); out.append(f"{cur} x_hit={h} x_miss={m} x_hit_rate={h/(h+m):.6f}")
+              elif p[0]=="TABHYD_DIAG_INTERVAL":
+                  th,tm,kh,km=map(int,p[1:])
+                  out.append(f"{cur} theta_interval_hit_rate={th/(th+tm):.6f} K_interval_hit_rate={kh/(kh+km):.6f}")
+              elif p[0]=="TABHYD_DIAG_CAP":
+                  h,m=map(int,p[1:]); out.append(f"{cur} capacity_reuse_hit={h} miss={m} hit_rate={h/(h+m):.6f}")
+          Path("build/diag/summary.txt").write_text("\n".join(out)+"\n")
+          print("\n".join(out))
+          PY
+
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-eval-hit-diagnostic
+          path: |
+            build/diag/stats.txt
+            build/diag/summary.txt
