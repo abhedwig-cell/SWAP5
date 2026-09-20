@@ -1,0 +1,159 @@
+{
+  "schema": "swap5.lare.bc2.c6n2.closeout.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6N2",
+  "status": "CLOSED_NO_NUMERICALLY_UNRESOLVED_SURFACE_PROFILE_FRONTIER_PURPOSE_PLACEMENT_TRANSFER_ESTABLISHED_APPLICATION_SUFFICIENCY_UNADJUDICATED",
+  "decision": "RETAIN_RESOLVED_SURFACE_PROFILE_DIFFERENCES_AS_PURPOSE_PLACEMENT_EVIDENCE_DO_NOT_INFER_APPLICATION_FAILURE_PROCEED_TO_ROOT_ET_CONTRACT",
+  "role": "PROSPECTIVE_EXISTING_REPRESENTATION_SURFACE_PROFILE_COMPARISON_CLOSEOUT",
+  "authority": {
+    "preregistration": "integration/f-rom/LARE_BC2_C6N2_PREREGISTRATION.json",
+    "execution_binding": "integration/f-rom/LARE_BC2_C6N2_EXECUTION_BINDING.json",
+    "execution_reconciliations": [
+      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V2.json",
+      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V3.json",
+      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V4.json",
+      "integration/f-rom/LARE_BC2_C6N2_EXECUTION_RECONCILIATION_V5.json"
+    ],
+    "candidate_execution_run": 35537872450,
+    "candidate_execution_head": "540c0e4e5a70a197ffbdcf017f2bebd60269e182",
+    "candidate_jobs_successful": 20,
+    "aggregation_recovery_run": 35538003359,
+    "aggregation_head": "23c74fc0093119341a1da209817f4cc54349c543",
+    "artifact_id": 10612868344,
+    "artifact_digest": "sha256:7c091b8933ce60c7e2d62229cbeb6de0a9bc68962627f6829493a796f97b08af",
+    "result_sha256": "4d83163fba56b1556ffa558b37be45a2626b86c24aef7182bd294e2c9e9bf944",
+    "persisted_result": "integration/f-rom/LARE_BC2_C6N2_RESULT.json",
+    "reference_authority": "integration/f-rom/LARE_BC2_C6N1_CLOSEOUT.json",
+    "reference_target": "R2048_T32"
+  },
+  "result": {
+    "status": "C6N2_RESOLVED_REDUCED_DIFFERENCES_ONLY",
+    "integrity_pass": true,
+    "all_candidates_attempted": true,
+    "maximum_qualified_water_ledger_cm": 1.8282140124697976e-12,
+    "minimum_numerically_unresolved_lower_zone_dimension": {
+      "B01": {
+        "SURFACE_20": null,
+        "ROOT_ZONE_40": null,
+        "UPPER_ZONE_80": null,
+        "PROFILE_STATE": null
+      },
+      "B14": {
+        "SURFACE_20": null,
+        "ROOT_ZONE_40": null,
+        "UPPER_ZONE_80": null,
+        "PROFILE_STATE": null
+      }
+    },
+    "interpretation": "No tested reduced lower-zone member is within the C6N1 metric-specific numerical Reference uncertainty on any declared surface/profile view. The no-spatial-reduction R16 LARE control is also numerically resolved from R2048_T32. This establishes resolved model/discretization differences, not hydrological application failure."
+  },
+  "domain_admissibility": {
+    "B01": {
+      "outside_qualified_domain": [
+        "R3",
+        "R4",
+        "P4_TOP_LOWER"
+      ],
+      "common_failure": "U03 OUTSIDE_QUALIFIED_DOMAIN theta endpoint",
+      "qualified": [
+        "R5",
+        "R6",
+        "R8",
+        "R12",
+        "R16",
+        "U4",
+        "U8"
+      ]
+    },
+    "B14": {
+      "outside_qualified_domain": [],
+      "qualified": [
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R12",
+        "R16",
+        "P4_TOP_LOWER",
+        "U4",
+        "U8"
+      ]
+    }
+  },
+  "purpose_placement_evidence": {
+    "U8_vs_R8": {
+      "B01": {
+        "surface20_rmse_ratio_R8_over_U8": 11.655058778312485,
+        "root40_rmse_ratio_R8_over_U8": 14.632190008120071,
+        "upper80_rmse_ratio_R8_over_U8": 9.702907233125297,
+        "profile_rmse_ratio_R8_over_U8": 1.9775654524357433,
+        "conclusion": "At the same eight-state dimension, uniform vertical coverage is substantially closer to the surface-driven Reference than the inherited lower-zone-focused R8 on every declared view."
+      },
+      "B14": {
+        "surface20_rmse_ratio_R8_over_U8": 10.673230592138323,
+        "root40_rmse_ratio_R8_over_U8": 23.250446576530152,
+        "upper80_rmse_ratio_R8_over_U8": 160.65156658401537,
+        "profile_rmse_ratio_R8_over_U8": 1.5865779884648823,
+        "conclusion": "The same purpose-dependent placement reversal is stronger on B14."
+      }
+    },
+    "dimension4": {
+      "B01": "R4 and P4_TOP_LOWER are outside the frozen qualified domain on U03; H_TOP_PLACEMENT_R4 is therefore not established for B01. U4 remains qualified.",
+      "B14": {
+        "P4_TOP_LOWER_no_worse_than_R4_surface20_root40": true,
+        "R4_over_P4_surface20_rmse_ratio": 12.314760425963073,
+        "R4_over_P4_root40_rmse_ratio": 3.739185627383786,
+        "conclusion": "Top-plus-lower placement materially improves surface/root-zone response relative to lower-zone R4, while U4 and P4 trade advantages across views; no single four-state placement dominates all state/profile outputs."
+      }
+    },
+    "synthesis": "Placement that was advantageous for groundwater/lower-boundary objectives does not transfer as a generally advantageous placement for surface-driven soil-state objectives. Vertical information allocation is itself purpose dependent."
+  },
+  "adjudication": {
+    "NUMERICALLY_UNRESOLVED_REDUCED_SURFACE_FRONTIER_FOUND": false,
+    "NO_SPATIAL_REDUCTION_R16_NUMERICALLY_UNRESOLVED": false,
+    "PURPOSE_DEPENDENT_PLACEMENT_SUPPORTED": true,
+    "LOWER_ZONE_PLACEMENT_TRANSFERS_TO_SURFACE_PURPOSE": false,
+    "MATERIAL_INVARIANT_MINIMUM_DIMENSION_ESTABLISHED": false,
+    "HYDROLOGICAL_APPLICATION_FAILURE_ESTABLISHED": false,
+    "HYDROLOGICAL_APPLICATION_SUFFICIENCY_ESTABLISHED": false,
+    "BOTTOM_EXCHANGE_FIDELITY_ADJUDICATED": false,
+    "ET_ROOT_UPTAKE_FIDELITY_ADJUDICATED": false,
+    "APPLICATION_ACCEPTANCE_ADJUDICATED": false,
+    "PERFORMANCE_COMPARISON_AUTHORIZED": false,
+    "PRODUCTION_ROM_AUTHORIZED": false
+  },
+  "scientific_interpretation": [
+    "C6N2 deliberately compares candidate differences against numerical Reference uncertainty, not against an application tolerance. A resolved difference only means it is larger than numerical uncertainty.",
+    "The strict C6N1 uncertainty bands are far below candidate differences even for R16, so C6N2 cannot by itself answer whether those differences matter for a hydrological application.",
+    "The same-dimension placement comparisons do answer a representation question: surface-driven soil-state fidelity benefits strongly from distributing states through the upper and full profile rather than concentrating them near the lower boundary.",
+    "This directly reinforces the C6K hypothesis that minimum useful representation depends on purpose rather than state count alone.",
+    "No new top-focused partition is selected from C6N2 response. Existing P4/U4/U8 controls are evidence only."
+  ],
+  "next_authority": {
+    "target": "LARE-BC2-C6O",
+    "state": "ROOT_ET_SOURCE_FEEDBACK_CONTRACT_READ_ONLY_DERIVATION_AUTHORIZED",
+    "question": "How must distributed root extraction be projected conservatively to existing Layer-ROM states, and which parts of SWAP root-water-uptake feedback require within-layer hydraulic information beyond layer-average storage before any ET/drought response is generated?",
+    "constraints": [
+      "Read-only theory/code reconciliation first.",
+      "Separate response to an externally prescribed sink from prediction of stress-dependent root uptake.",
+      "Derive exact conservative sink aggregation over retained layers before designing feedback.",
+      "Do not select root/ET tolerances from C6N2 state/profile errors.",
+      "Do not create a new surface partition or closure from C6N2 response.",
+      "Reference Richards remains the scientific reference; no performance or production claim."
+    ]
+  },
+  "scientific_firewall": {
+    "candidate_response_generated": true,
+    "new_representation_selected": false,
+    "new_closure_selected": false,
+    "application_tolerance_selected": false,
+    "bottom_exchange_fidelity_adjudicated": false,
+    "ET_root_uptake_feedback_used": false,
+    "application_acceptance_adjudicated": false,
+    "performance_comparison_authorized": false,
+    "speed_claim_authorized": false,
+    "production_rom_authorized": false
+  },
+  "model_changed": false
+}
