@@ -7,6 +7,15 @@ module mod_hydro_memory_dyn02_view01_test_support
     procedure :: clone => unrelated_clone
   end type unrelated_state_t
 contains
+  subroutine unrelated_clone(self,copy)
+    class(unrelated_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(unrelated_state_t :: copy)
+    select type(typed=>copy)
+    type is(unrelated_state_t)
+      typed%marker=self%marker
+    end select
+  end subroutine unrelated_clone
 end module mod_hydro_memory_dyn02_view01_test_support
 
 program test_hydro_memory_dyn02_view01
