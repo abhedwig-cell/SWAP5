@@ -1,0 +1,126 @@
+name: F-ROM-LARE persist C4W reversal diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4w-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4W authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4w
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/10599418376/zip" > /tmp/c4w.zip
+          echo "f8a7e03d8c6ecac6fee1af0457b3f106bc7881f8d873abfdcbdced0103ba8648  /tmp/c4w.zip" | sha256sum -c -
+          unzip -q /tmp/c4w.zip -d /tmp/c4w
+          echo "57083e95228c96b6ec1c66474c315cfb0a7acd90266d838625984f29ee70cac2  /tmp/c4w/LARE_BC2_C4W_RESULT.json" | sha256sum -c -
+
+      - name: Validate C4W
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4w/LARE_BC2_C4W_RESULT.json'))
+          assert r['decision']=='C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED'
+          assert r['integrity']['pass'] is True
+          assert r['integrity']['c4v_sign_and_reversal_reproduction']=='PASS'
+          m=r['mechanism_summary']
+          assert m['R4']['V03_mismatch_count']==913
+          assert m['R5']['V03_mismatch_count']==730
+          assert m['R6']['V03_mismatch_count']==396
+          assert m['R8']['V03_mismatch_count']==0
+          assert m['R12']['V03_mismatch_count']==0
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4W_VALIDATION=PASS')
+          PY
+
+      - name: Build C4W closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4w/LARE_BC2_C4W_RESULT.json'))
+          m=r['mechanism_summary']
+          out={
+            'schema':'swap5.lare.bc2.c4w.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4W',
+            'status':'CLOSED_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED_TRANSFER_AXIS_NEXT',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35493886557,
+              'execution_head':'6369fbf71ebb05e57c76ce902ea6a28c471db148',
+              'artifact_id':10599418376,
+              'artifact_digest':'sha256:f8a7e03d8c6ecac6fee1af0457b3f106bc7881f8d873abfdcbdced0103ba8648',
+              'result_sha256':'57083e95228c96b6ec1c66474c315cfb0a7acd90266d838625984f29ee70cac2',
+              'superseded_technical_run':35493851517,
+              'superseded_reason':'history-series indexing bug fixed without scientific change'
+            },
+            'V03_reversal_magnitude':{
+              k:{
+                'mismatch_count':m[k]['V03_mismatch_count'],
+                'candidate_reversal_steps':m[k]['V03_candidate_reversal_steps'],
+                'first_mismatch':m[k]['V03_first_mismatch'],
+                'reference_abs_q_over_mismatch':m[k]['V03_mismatch_reference_abs_q'],
+                'reference_abs_q_percentile_rank_over_mismatch':m[k]['V03_mismatch_reference_abs_q_percentile_rank']
+              } for k in ('R4','R5','R6','R8','R12','R16')
+            },
+            'scientific_interpretation':[
+              'The long-horizon V03 sign failures of R4, R5 and R6 are not confined to an arbitrary near-zero-flux neighborhood.',
+              'At first mismatch the Reference bottom flux is about -0.992, -0.596 and -0.373 cm/d for R4, R5 and R6 respectively; the wrong-sign segments then persist to step 1024.',
+              'R8, R12 and the R16 LARE control have no V03 sign mismatch, supporting C4V minimum R8 without introducing a deadband.',
+              'The V04 one-step early reversal remains distinct: it occurs where the Reference flux is near zero and is retained only as timing context, not reclassified.',
+              'C4W is descriptive mechanism context. It does not alter C4V, authorize closure retuning, set application tolerance, or admit production use.'
+            ],
+            'next_authority':'INDEPENDENT_MATERIAL_OR_CONSTITUTIVE_TRANSFER',
+            'model_changed':False,
+            'application_acceptance_adjudicated':False,
+            'performance_comparison_authorized':False,
+            'speed_claim_authorized':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4W_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4W closeout
+
+          Formal decision: **C4W_SPURIOUS_REVERSAL_MAGNITUDE_CHARACTERIZED**.
+
+          C4W reexecutes the frozen C4V LARE members against the immutable C4V Reference trajectory only to characterize the magnitude of the long-horizon sign mismatches. It defines no near-zero deadband and cannot change the C4V decision.
+
+          The V03 failures of R4, R5 and R6 are not near-zero artifacts. Their first wrong-sign steps occur at 0.112, 0.295 and 0.629 day while the Reference bottom flux is about -0.992, -0.596 and -0.373 cm/d, respectively. The mismatch then persists through the 1.024-day endpoint. R8, R12 and R16 have no V03 sign mismatch.
+
+          V04 is different: the one-step early reversal occurs where the Reference flux magnitude is only about 0.0029 cm/d. C4W reports that contrast but does not convert it into an acceptance threshold.
+
+          Therefore the C4V one-day minimum R8 remains robust to the hypothesis that the lower-dimensional sign failures were merely an arbitrary zero-crossing classification artifact. The next open scientific axis is independently preregistered material/constitutive transfer or lower-boundary transfer.
+          MD
+
+      - name: Persist C4W authority
+        run: |
+          set -euo pipefail
+          cp /tmp/c4w/LARE_BC2_C4W_RESULT.json integration/f-rom/LARE_BC2_C4W_RESULT.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4W_RESULT.json integration/f-rom/LARE_BC2_C4W_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4W_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4W reversal magnitude diagnostic"
+          git push origin HEAD:work/f-rom-lare-rs1
