@@ -1,0 +1,128 @@
+name: F-ROM-LARE persist C4S CoRichards qualification
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c4s-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-rom-lare-rs1
+
+      - name: Recover exact C4S authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c4s
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593106848/zip" > /tmp/c4s.zip
+          echo "ed438b348dd48a462d9d1deb1e61920542b34d692aa208c7421e528d1dae77a8  /tmp/c4s.zip" | sha256sum -c -
+          unzip -q /tmp/c4s.zip -d /tmp/c4s
+          echo "6a3fee756d86772b38c879e96acd0fa30d73ad6ec84476ff1c8a60b4291265bd  /tmp/c4s/LARE_BC2_C4S_RESULT.json" | sha256sum -c -
+          echo "c9a49e4b5a055d756804c3849234cc723293ea2975f9f6360b16c6180cf7b6f7  /tmp/c4s/C4S_CONTROLS.json" | sha256sum -c -
+
+      - name: Validate C4S
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4s/LARE_BC2_C4S_RESULT.json'))
+          assert r['decision']=='C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE'
+          assert r['integrity']['pass'] is True
+          assert r['controls']['pass'] is True
+          assert r['controls']['R2_exact_C4R_reproduction'] is True
+          assert r['controls']['R16_exact_C4R_reproduction'] is True
+          assert r['minimum_member_with_all_four_qualified_histories']=='R3'
+          assert r['minimum_dimension_with_all_four_qualified_histories']==3
+          assert r['value_screen_authorized'] is True
+          assert all(x['qualified_history_count']==4 for x in r['availability_curve'])
+          assert r['hydrological_comparison_performed'] is False
+          assert r['performance_measurement_performed'] is False
+          assert r['speed_claim_authorized'] is False
+          assert r['production_rom_authorized'] is False
+          print('LARE_BC2_C4S_VALIDATION=PASS')
+          PY
+
+      - name: Build C4S closeout
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/c4s/LARE_BC2_C4S_RESULT.json'))
+          fallbacks={m:sum(h['fallback_count'] for h in d['histories'].values()) for m,d in r['members'].items()}
+          out={
+            'schema':'swap5.lare.bc2.c4s.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C4S',
+            'status':'CLOSED_FULL_CORICHARDS_COMMON_COHORT_VALUE_SCREEN_AUTHORIZED',
+            'decision':r['decision'],
+            'authority':{
+              'workflow_run':35473274398,
+              'execution_head':'99397630dbfca95a49cf6a9e378d9bcd579ee317',
+              'aggregate_artifact_id':10593106848,
+              'aggregate_artifact_digest':'sha256:ed438b348dd48a462d9d1deb1e61920542b34d692aa208c7421e528d1dae77a8',
+              'result_sha256':'6a3fee756d86772b38c879e96acd0fa30d73ad6ec84476ff1c8a60b4291265bd',
+              'controls_sha256':'c9a49e4b5a055d756804c3849234cc723293ea2975f9f6360b16c6180cf7b6f7'
+            },
+            'reference_authority':{
+              'canonical_head':'e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1',
+              'C4R_R16_sha256':'6f608677bf2ae1cf28cf7dc06cb6f47510a4e3931fe176cc04adffeb5d1674e6',
+              'C4R_R2_sha256':'121fcd6a91f8b7c335e5a695c3232b1aa8acf957131693d4ce76e07a4c1be8a4',
+              'control_reproduction_exact':True
+            },
+            'availability_curve':r['availability_curve'],
+            'fallback_count_total_by_member':fallbacks,
+            'scientific_interpretation':[
+              'All reduced same-partition CoRichards members R3,R4,R5,R6,R8,R12 qualify all four blind C4R fixed-water-table histories under the exact frozen D13 mode-5 Reference policy.',
+              'The Q1 fixed-flux result and C4S fixed-water-table result are therefore workload-specific numerical-authority findings: coarse Richards is blocked in the former but fully available in the latter.',
+              'C4S supplies the missing full common cohort required for a fair prospective cost-fidelity comparison on the blind C4R workload.',
+              'Fallback incidence remains substantial and dimension-dependent and must be included in any runtime value screen rather than timing only successful first attempts.',
+              'C4S itself contains no hydrological-error or runtime comparison.'
+            ],
+            'next_authority':'PREREGISTER_C4T_PROSPECTIVE_COST_FIDELITY_VALUE_SCREEN',
+            'value_screen_authorized':True,
+            'hydrological_comparison_performed':False,
+            'performance_measurement_performed':False,
+            'application_acceptance_adjudicated':False,
+            'speed_claim_authorized':False,
+            'model_changed':False,
+            'production_rom_authorized':False
+          }
+          open('integration/f-rom/LARE_BC2_C4S_RESULT.json','w').write(open('/tmp/c4s/LARE_BC2_C4S_RESULT.json').read())
+          open('integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C4S_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C4S closeout
+
+          Formal decision: **C4S_CORICHARDS_FULL_COMMON_COHORT_AVAILABLE**.
+
+          C4S qualifies conventional current-canonical Reference-Richards on the exact same R3, R4, R5, R6, R8 and R12 partitions used by the frozen LARE ladder, using the blind C4R fixed-water-table histories and the frozen D13 mode-5 numerical policy.
+
+          Every reduced member qualifies all four blind histories. R2 and R16 reproduce the C4R controls exactly, O0/O2 scientific traces agree, no technical failure occurs, and the maximum transaction mass residual is about 1.73e-18 cm.
+
+          This sharply differs from Q1. Under fixed-flux DYN0A, R3-R12 had no dynamically qualified reduced common cohort; under the fixed-water-table C4R workload, all reduced dimensions are numerically available. The difference is therefore a boundary/workload property, not a contradiction.
+
+          C4S now authorizes one prospective cost-fidelity value screen on the full blind C4R common cohort. That screen must retain the already-frozen C4R hydrological vectors, include complete fallback/retry cost, and compare against the appropriate current direct route. C4S itself makes no runtime, speedup, application-acceptance or production claim.
+          MD
+
+      - name: Persist C4S authority
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C4S_RESULT.json integration/f-rom/LARE_BC2_C4S_CLOSEOUT.json docs/science/F-ROM_LARE_BC2_C4S_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C4S CoRichards qualification"
+          git push origin HEAD:work/f-rom-lare-rs1
