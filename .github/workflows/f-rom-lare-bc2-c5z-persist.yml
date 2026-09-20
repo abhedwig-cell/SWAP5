@@ -1,0 +1,255 @@
+name: F-ROM-LARE persist C5Z moment-profile closeout
+
+on:
+  push:
+    branches:
+      - work/f-rom-lare-rs1
+    paths:
+      - '.github/workflows/f-rom-lare-bc2-c5z-persist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/f-rom-lare-rs1
+          fetch-depth: 0
+
+      - name: Recover authoritative C5Z artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c5z
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10608450103" > /tmp/c5z/artifact.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('/tmp/c5z/artifact.json'))
+          assert a['id']==10608450103
+          assert a['digest']=='sha256:254885ed5b674aeac843336628d332f76450e9f44dd68da4790593e13839246a'
+          assert a['workflow_run']['id']==35520299549
+          assert a['workflow_run']['head_sha']=='ce5d03beb3f965c9384edf97f6e8c63ac6cf304d'
+          PY
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10608450103/zip" > /tmp/c5z.zip
+          echo "254885ed5b674aeac843336628d332f76450e9f44dd68da4790593e13839246a  /tmp/c5z.zip" | sha256sum -c -
+          unzip -q /tmp/c5z.zip -d /tmp/c5z/evidence
+          echo "e6a99daf07ef2f8afe6abb5278ac5a4c25ced46c4b226511d326632336708514  /tmp/c5z/evidence/LARE_BC2_C5Z_RESULT.json" | sha256sum -c -
+
+      - name: Persist exact C5Z result and closeout
+        run: |
+          set -euo pipefail
+          cp /tmp/c5z/evidence/LARE_BC2_C5Z_RESULT.json integration/f-rom/LARE_BC2_C5Z_RESULT.json
+          python3 - <<'PY'
+          import json,pathlib
+          from collections import Counter
+
+          rp=pathlib.Path('integration/f-rom/LARE_BC2_C5Z_RESULT.json')
+          r=json.loads(rp.read_text())
+          assert r['status']=='C5Z_MOMENT_PROFILE_NUMERICALLY_MULTIBRANCH_OR_INADMISSIBLE'
+          assert r['case_count']==168
+          assert r['qualification_counts']=={
+              'all_starts_converged':168,
+              'hydraulic_continuity':168,
+              'moment_bound_pass':168,
+              'state_recovery':168,
+              'theta_admissible':154,
+              'unique_numerical_branch':168
+          }
+          assert r['gates']['G1_STATE_MOMENT_BOUNDS'] is True
+          assert r['gates']['G2_ALL_CASES_CONVERGE'] is True
+          assert r['gates']['G3_UNIQUE_NUMERICAL_BRANCH'] is True
+          assert r['gates']['G4_THETA_ADMISSIBILITY'] is False
+          assert r['gates']['G5_HYDRAULIC_CONTINUITY'] is True
+          assert r['gates']['G6_STATE_RECOVERY'] is True
+          assert r['gates']['G7_NO_RESPONSE_DATA'] is True
+
+          fails=[c for c in r['cases'] if not c['theta_admissible']]
+          assert len(fails)==14
+          fail_ids=[c['id'] for c in fails]
+          all_fail_run_diags=[run['diagnostics'] for c in fails for run in c['runs']]
+          fail_Se_min=min(d['Se_min'] for d in all_fail_run_diags)
+          fail_Se_max=max(d['Se_max'] for d in all_fail_run_diags)
+          assert fail_Se_min >= 0.02
+          assert fail_Se_max > 0.995
+          worst=max(
+              ((run['diagnostics']['Se_max'],c['id'],run['start'])
+               for c in fails for run in c['runs']),
+              key=lambda x:x[0]
+          )
+
+          closeout={
+            'schema':'swap5.lare.bc2.c5z.closeout.v1',
+            'workstream':'F-ROM-LARE',
+            'work_unit':'LARE-BC2-C5Z',
+            'status':'CLOSED_MOMENT_THETA_PROFILE_INADMISSIBLE_ON_FROZEN_DOMAIN_ROUTE_STOPPED_SCIENTIFIC_CHOICE_REQUIRED',
+            'decision':'STOP_MOMENT_ENRICHED_CUBIC_THETA_PROFILE_ROUTE_WITHOUT_POST_RESULT_RETUNING',
+            'authority':{
+              'derivation':'integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json',
+              'preregistration':'integration/f-rom/LARE_BC2_C5Z_PREREGISTRATION.json',
+              'workflow_run':35520299549,
+              'execution_head':'ce5d03beb3f965c9384edf97f6e8c63ac6cf304d',
+              'artifact_id':10608450103,
+              'artifact_digest':'sha256:254885ed5b674aeac843336628d332f76450e9f44dd68da4790593e13839246a',
+              'result_sha256':'e6a99daf07ef2f8afe6abb5278ac5a4c25ced46c4b226511d326632336708514'
+            },
+            'qualification':{
+              'case_count':r['case_count'],
+              'counts':r['qualification_counts'],
+              'gates':r['gates'],
+              'conditioning':r['conditioning'],
+              'failure_mode':'THETA_ADMISSIBILITY_ONLY',
+              'multibranch_observed':False
+            },
+            'inadmissibility_evidence':{
+              'failed_case_count':len(fails),
+              'failed_case_ids':fail_ids,
+              'partition_counts':dict(sorted(Counter(c['partition'] for c in fails).items())),
+              'profile_counts':dict(sorted(Counter(c['profile'] for c in fails).items())),
+              'moment_pattern_counts':dict(sorted(Counter(c['moment_pattern'] for c in fails).items())),
+              'boundary_counts':dict(sorted(Counter(c['boundary'] for c in fails).items())),
+              'failed_run_Se_min':fail_Se_min,
+              'failed_run_Se_max':fail_Se_max,
+              'frozen_constitutive_Se_domain':[0.02,0.995],
+              'worst_upper_excursion':{
+                'Se_max':worst[0],
+                'case_id':worst[1],
+                'start':worst[2]
+              }
+            },
+            'adjudication':{
+              'MOMENT_THETA_PROFILE_MATHEMATICALLY_QUALIFIED':False,
+              'ALL_CASES_CONVERGE':True,
+              'UNIQUE_NUMERICAL_BRANCH':True,
+              'THETA_ADMISSIBILITY_OVER_FROZEN_DOMAIN':False,
+              'HYDRAULIC_CONTINUITY':True,
+              'STATE_RECOVERY':True,
+              'FAILURE_IS_MULTIBRANCH':False,
+              'FAILURE_IS_PROFILE_ADMISSIBILITY':True,
+              'MOMENT_ROUTE_POST_RESULT_RETUNING_AUTHORIZED':False,
+              'MOMENT_FREE_RUNNING_IMPLEMENTATION_AUTHORIZED':False,
+              'MOMENT_LOCALIZATION_TEST_AUTHORIZED':False,
+              'HYDROLOGICAL_RESPONSE_AUTHORIZED':False,
+              'C5R_PROPAGATION_LIMIT_RETAINED':True,
+              'NEW_CLOSURE_OR_STATE_FAMILY_AUTOMATICALLY_AUTHORIZED':False,
+              'SCIENTIFIC_CHOICE_REQUIRED':True,
+              'APPLICATION_ACCEPTANCE_ADJUDICATED':False,
+              'PERFORMANCE_COMPARISON_AUTHORIZED':False,
+              'SPEED_CLAIM_AUTHORIZED':False,
+              'PRODUCTION_ROM_AUTHORIZED':False
+            },
+            'scientific_interpretation':[
+              'C5Z is response-free mathematical qualification. It consumes no C5R, C5N or C5P hydrological trajectory and generates no free-running reduced-model response.',
+              'All 168 synthetic cases converge from all five frozen initial starts, all 168 select one numerical branch within the preregistered agreement gates, hydraulic continuity passes in all 168, and storage plus first-moment recovery passes in all 168. The negative result is therefore not a convergence or multibranch failure.',
+              'Theta admissibility passes in 154 of 168 cases and fails in 14. Every failed case violates the frozen upper constitutive effective-saturation limit; the failures occur in both D8_B2P5 and D12_B2P5 and in both HEAD_RISE and HEAD_FALL cases. The all-layer cubic-theta moment reconstruction is therefore not admissible over the prospectively frozen B14 synthetic domain.',
+              'The constitutive domain, moment range, polynomial order, solver starts and numerical tolerances are not changed after observing this result. The C5Y all-layer moment-enriched cubic-theta route stops here.',
+              'This does not invalidate the physical meaning or exact projected balance of the first water-content moment. It rejects this specific algebraic theta-polynomial hydraulic reconstruction as the next reduced propagation route.',
+              'C5R remains authoritative for the original placement-versus-closure question: once the prospectively selected 2.5-cm bottom support is shared, adding D8 to D12 vertical breadth does not change the groundwater response, while neither representation reaches the high-resolution comparator. Bottom-adjacent placement is important but is not the remaining limiting axis under CURRENT_LAYER_FACE.',
+              'Current evidence therefore supports a propagation/inter-layer representation deficiency after local placement is made adequate, but it does not yet identify a qualified replacement closure. DSE2P, storage-only P0 SCAFP and the present moment-enriched cubic-theta route have each failed prospectively before free-running adoption.',
+              'Comparator failure is not application inadequacy. C4U remains externally blocked, so no purpose-dependent application acceptance, performance, speed or production-ROM conclusion follows.'
+            ],
+            'next_authority':{
+              'target':None,
+              'state':'SCIENTIFIC_CHOICE_REQUIRED_BEFORE_ANY_NEW_PROPAGATION_OR_STATE_FAMILY',
+              'question':'Given that C5R isolates a residual propagation limit after prospectively adequate bottom support and added state breadth, while the prospectively tested DSE2P, storage-only P0 SCAFP and all-layer moment-enriched cubic-theta routes fail mathematical qualification, which physically distinct conservative propagation or state family should be derived next?',
+              'constraints':[
+                'Do not retune or reopen DSE2P, P0 or the C5Z cubic-theta route from exposed failures.',
+                'Do not select a new family by minimizing C5N/C5P/C5R response error.',
+                'Any new family must be physically derived and preregistered before hydrological response.',
+                'Retain the frozen Reference and CURRENT_LAYER_FACE evidence as historical comparator authority; no Reference production change is authorized.',
+                'Do not infer application acceptance from Reference intergrid discrepancy or comparator crossing.',
+                'No performance, speed or production-ROM claim.'
+              ]
+            },
+            'scientific_firewall':r['scientific_firewall'],
+            'model_changed':False
+          }
+          pathlib.Path('integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json').write_text(
+              json.dumps(closeout,indent=2,sort_keys=True)+'\n'
+          )
+          PY
+
+          cat > docs/science/F-ROM_LARE_BC2_C5Z_CLOSEOUT.md <<'MD'
+          # F-ROM-LARE BC2-C5Z closeout
+
+          C5Z qualified the C5Y all-layer moment-enriched cubic-theta reconstruction without hydrological response. The test was deliberately mathematical: fixed synthetic B14 storage/moment states, five frozen solver starts, hydraulic continuity, exact state recovery and theta admissibility.
+
+          The algebraic solve itself is well behaved on the preregistered domain. All 168 cases converge from all five starts, all 168 collapse to the same numerical branch, hydraulic continuity passes throughout, and storage plus centered first-moment recovery is exact to the declared gates.
+
+          The route nevertheless fails its physical admissibility gate. Only 154 of 168 cases remain inside the frozen constitutive effective-saturation domain [0.02, 0.995]. Fourteen cases exceed the upper bound. The failures occur in both D8_B2P5 and D12_B2P5 and in both prescribed-head directions, so the result is not a single-partition or single-direction artifact.
+
+          This distinction matters. C5Z is not a solver-convergence failure and not a multibranch result despite the broad preregistered status label. It is a profile-admissibility failure of the specific cubic-theta reconstruction.
+
+          No post-result repair is permitted. The moment range is not narrowed, the constitutive domain is not relaxed, polynomial order is not changed, and starts or tolerances are not retuned. The all-layer C5Y cubic-theta moment route therefore stops before any free-running moment-ROM or localization experiment.
+
+          The first water-content moment itself remains a physically interpretable state with an exact projected conservation balance. What fails is the chosen algebraic reconstruction from that state to a hydraulic profile.
+
+          For the original representation question, C5R remains the decisive placement-versus-propagation discriminator. Bottom-focused placement improves response strongly, but once D8 and D12 share the same 2.5-cm lower-boundary support, four additional states above that support do not change the groundwater response. The remaining high-resolution discrepancy is therefore no longer explained by insufficient bottom-adjacent placement or simple missing vertical breadth under CURRENT_LAYER_FACE.
+
+          There is still no qualified replacement closure. DSE2P, storage-only P0 SCAFP and the C5Z moment-enriched cubic-theta route each fail prospectively before free-running adoption. Selecting another propagation or state family is now a genuine scientific choice and is not made from exposed response error.
+
+          Application acceptance remains unresolved under C4U. No performance, speed or production-ROM claim is authorized.
+          MD
+
+      - name: Advance representation-selection authority to scientific choice boundary
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json')
+          j=json.loads(p.read_text())
+          j['schema']='swap5.lare.representation-selection.closeout.v29'
+          j['status']='CLOSED_THROUGH_C5Z_MOMENT_THETA_PROFILE_INADMISSIBLE_NEW_FAMILY_SCIENTIFIC_CHOICE_REQUIRED'
+          j.setdefault('authorities',{})['C5Z_moment_theta_profile_admissibility']='integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json'
+          j.setdefault('additional_reconciled_findings',{})['C5Z']='Response-free mathematical qualification finds one stable numerical branch and full hydraulic/state consistency in all 168 cases, but 14 cases violate the prospectively frozen upper theta/Se admissibility domain. The all-layer moment-enriched cubic-theta reconstruction is therefore stopped without retuning.'
+          j['decision']='STOP_C5Z_MOMENT_THETA_PROFILE_ROUTE_AT_SCIENTIFIC_CHOICE_BOUNDARY'
+          j['next_authority']=None
+          j['next_family_authority']={
+            'family':'UNSELECTED_PHYSICALLY_DISTINCT_PROPAGATION_OR_STATE_FAMILY',
+            'state':'SCIENTIFIC_CHOICE_REQUIRED_BEFORE_PREREGISTRATION',
+            'repository_basis':[
+              'integration/f-rom/LARE_BC2_C5R_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5T_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5W_CLOSEOUT.json',
+              'integration/f-rom/LARE_BC2_C5X_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5Y_RECONCILIATION.json',
+              'integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json'
+            ],
+            'bottom_placement_is_material':True,
+            'additional_D8_to_D12_breadth_at_shared_B2P5_support_is_active':False,
+            'current_layer_face_high_resolution_frontier_preserved':False,
+            'qualified_replacement_closure_available':False,
+            'new_family_implementation_authorized':False,
+            'hydrological_response_authorized':False,
+            'application_acceptance_blocker':'integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json'
+          }
+          j.setdefault('closed_routes',[]).append({
+            'id':'ALL_LAYER_MOMENT_ENRICHED_CUBIC_THETA_PROFILE',
+            'disposition':'NOT_AUTHORIZED_C5Z_THETA_ADMISSIBILITY_FAILED_ON_FROZEN_DOMAIN',
+            'evidence':['integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json']
+          })
+          j['application_acceptance_adjudicated']=False
+          j['performance_comparison_authorized']=False
+          j['speed_claim_authorized']=False
+          j['production_rom_authorized']=False
+          p.write_text(json.dumps(j,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Commit C5Z closeout
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integration/f-rom/LARE_BC2_C5Z_RESULT.json \
+                  integration/f-rom/LARE_BC2_C5Z_CLOSEOUT.json \
+                  integration/f-rom/LARE_REPRESENTATION_SELECTION_CLOSEOUT.json \
+                  docs/science/F-ROM_LARE_BC2_C5Z_CLOSEOUT.md
+          git diff --cached --check
+          git commit -m "F-ROM-LARE: close C5Z moment-profile qualification"
+          git push origin HEAD:work/f-rom-lare-rs1
