@@ -1,32 +1,34 @@
 {
-  "schema": "swap5.lare.bc2.c6m.preregistration.v1",
+  "schema": "swap5.lare.bc2.c6m.preregistration.v2",
   "workstream": "F-ROM-LARE",
   "work_unit": "LARE-BC2-C6M",
-  "phase": "PREREGISTERED_BEFORE_C6M_REFERENCE_RESPONSE",
-  "title": "Fresh high-resolution surface-flux Reference qualification for purpose-dependent Layer-ROM validation",
+  "phase": "PREREGISTERED_BEFORE_FIRST_ADMITTED_C6M_REFERENCE_RESPONSE",
+  "title": "Fresh high-resolution surface-flux fixed-head Reference qualification for purpose-dependent Layer-ROM validation",
   "role": "REFERENCE_ONLY_SURFACE_DRIVEN_SPACE_TIME_QUALIFICATION_NO_LARE_RESPONSE",
-  "scientific_question": "Do fresh source-free free-drainage surface-flux histories on B01 and B14 admit a numerically qualified high-resolution Richards hierarchy suitable for a later blind comparison of the already-frozen Layer-ROM representations?",
+  "scientific_question": "Do fresh source-free, fixed-initial-head surface-flux histories on B01 and B14 admit a numerically qualified high-resolution Richards hierarchy suitable for a later blind comparison of the already-frozen Layer-ROM representations?",
   "authority": {
     "C6K": "integration/f-rom/LARE_BC2_C6K_PURPOSE_SUFFICIENCY_SYNTHESIS.json",
     "C6L": "integration/f-rom/LARE_BC2_C6L_PURPOSE_VALIDATION_ARCHITECTURE.json",
-    "required_C6L_decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
+    "required_C6L_decision": "SEQUENCE_PURPOSE_VALIDATION_AS_SURFACE_FIXED_HEAD_REFERENCE_THEN_SURFACE_LARE_THEN_ROOT_ET_FEEDBACK",
     "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
     "frozen_lare_scientific_basis": "integration/f-ci-canonical@9bb73821bb78a04c759b763746b50a3f777cd416",
     "application_acceptance": "integration/f-rom/LARE_BC2_C4U_GW_ACCEPTANCE_AUTHORITY.json",
-    "candidate_response_authorized": false
+    "candidate_response_authorized": false,
+    "C6M_pre_response_reconciliation": "integration/f-rom/LARE_BC2_C6M_EXECUTION_BINDING_RECONCILIATION.json"
   },
   "physical_domain": {
     "column_depth_cm": 160,
     "homogeneous": true,
     "top_boundary": "prescribed flux",
-    "bottom_boundary": "free drainage",
+    "bottom_boundary": "fixed initial pressure head, bottom_mode 5",
     "sinks": false,
     "root_uptake": false,
     "drainage_system": false,
     "moving_water_table": false,
     "observation_dt_day": 0.0008,
     "observations": 1024,
-    "horizon_day": 0.8192
+    "horizon_day": 0.8192,
+    "bottom_head_rule": "For each material/history, hold bottom_head equal to the initial uniform equilibrium pressure head h0 throughout all top-flux phases."
   },
   "materials": {
     "B01": {
@@ -57,7 +59,7 @@
       "DRY": 0.875,
       "HOLD": 1
     },
-    "definition": "At initialization q_eq is the material/state gravity-equilibrium top flux used by the existing DYN0A harness. Each phase prescribes multiplier*q_eq; free drainage remains unchanged.",
+    "definition": "At initialization q_eq is the material/state gravity-equilibrium top flux used by the existing DYN0A harness. Each phase prescribes multiplier*q_eq. The bottom boundary is time-invariant mode 5 at the initial equilibrium pressure head h0; therefore only the top boundary is perturbed.",
     "histories": {
       "S01": {
         "initial_Se": 0.7,
@@ -171,8 +173,9 @@
     "finite_physical_state": true,
     "physical_theta_bounds": true,
     "root_sink_zero": true,
-    "free_drainage_only": true,
-    "profile_state_total_consistency_cm": 1e-9
+    "profile_state_total_consistency_cm": 1e-9,
+    "fixed_initial_head_bottom_mode_5": true,
+    "bottom_head_time_invariant": true
   },
   "stop_rules": [
     "No Layer-ROM candidate is executed in C6M.",
@@ -180,7 +183,8 @@
     "No history, multiplier or schedule changes after first Reference response.",
     "No weakening of the R1024-vs-temporal quality gate after response.",
     "No application tolerance is inferred from numerical Reference differences.",
-    "No performance or production claim."
+    "No performance or production claim.",
+    "Do not interpret this fixed-head surface laboratory as free-drainage or regional recharge validation."
   ],
   "next_if_qualified": "PREREGISTER_C6N_FRESH_BLIND_SURFACE_PURPOSE_EXISTING_REPRESENTATION_COMPARISON",
   "next_if_blocked": "STOP_SURFACE_PURPOSE_RESPONSE_AND_RECONCILE_REFERENCE_NUMERICAL_QUALITY_WITHOUT_LARE_DATA",
@@ -188,20 +192,18 @@
     "state": "BOUND_BEFORE_EXECUTION",
     "response_based_design": false,
     "materializer": "tests/rom/materialize_lare_bc2_c6m_surface_reference.py",
-    "materializer_blob": "9a72f9ab418d1281fd09b0b776ab4be8937b8bfc",
+    "materializer_blob": "c11d44c8e0d177340f47dcf4ca51ef140aca8cd8",
     "analyzer": "tests/rom/analyze_lare_bc2_c6m_surface_reference.py",
     "analyzer_blob": "37cef751f2537e4e22af1a7e01b3090a454f8bf1",
     "workflow": ".github/workflows/f-rom-lare-bc2-c6m.yml",
-    "workflow_blob": "537fd6808fff6fab9ed4a81b1fd59664cdad5862",
+    "workflow_blob": "00ee8e61e01ca80ef33613479a0e0b8119696315",
     "B01_source_harness": "tests/rom/test_lare_dyn0a_reference.f90",
     "B01_source_harness_blob": "b2df7793d3f56f5d8d1d121636d2eb1a0952e271",
     "B14_source_harness": "tests/rom/test_lare_dyn0a_b14_reference.f90",
     "B14_source_harness_blob": "5c28b0b17af63d78ee6c51ae8c1fee4eadd2c9e8",
-    "variable_grid_tool": "canonical/tests/rom/materialize_f_rom0_headcalc_stubs.py",
-    "compile_tool": "canonical/tests/rom/compile_f_rom0_fortran_closure.py",
     "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
     "execution_binding_complete": true,
-    "binding_note": "Scientific histories, materials, metrics and space-time gate were frozen before first C6M Reference response. Workflow creation did not trigger C6M; this final preregistration update is the first response-eligible commit."
+    "binding_note": "The first C6M run exposed only a pre-solver admission mismatch. After authority reconciliation, mode 5 fixed-initial-head semantics, implementation blobs and the unchanged response-blind histories/metrics are frozen before the first admitted C6M surface response."
   },
   "scientific_firewall": {
     "candidate_response_generated": false,
@@ -211,7 +213,24 @@
     "application_acceptance_adjudicated": false,
     "performance_comparison_authorized": false,
     "speed_claim_authorized": false,
-    "production_rom_authorized": false
+    "production_rom_authorized": false,
+    "reference_surface_response_generated": false
   },
-  "model_changed": false
+  "model_changed": false,
+  "pre_response_execution_reconciliation": {
+    "failed_workflow_run": 35531511964,
+    "failed_execution_head": "2ee0d7a5d71ff5dba4998a18d0db434008575e2c",
+    "reference_jobs_failed": 64,
+    "analyzer_skipped": true,
+    "failure": "bottom_mode 7 rejected by run_reference_floor_sample before solver execution",
+    "solver_executed_for_surface_phase": false,
+    "hydrological_surface_response_generated": false,
+    "repair": "replace unsupported free drainage with admitted fixed initial pressure head bottom_mode 5",
+    "histories_changed": false,
+    "top_forcing_changed": false,
+    "grids_changed": false,
+    "metrics_changed": false,
+    "thresholds_changed": false,
+    "response_based": false
+  }
 }
