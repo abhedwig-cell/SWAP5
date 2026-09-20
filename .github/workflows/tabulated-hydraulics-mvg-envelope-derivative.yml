@@ -1,0 +1,92 @@
+name: TAB-HYD MvG envelope derivative scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/tabulated-hydraulics-characterization
+    paths:
+      - '.github/workflows/tabulated-hydraulics-mvg-envelope-derivative.yml'
+      - 'research/tabulated_hydraulics/mvg_envelope_derivative_scan.f90'
+      - 'research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Checkout current public hydraulic wrappers
+        uses: actions/checkout@v4
+        with:
+          repository: SWAP-model/SWAP
+          ref: c22bd832ddf3e53e330a552f5e31e74f183362d1
+          path: swap-src
+
+      - name: Apply bounded Ksat derivative-consistency candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 research/tabulated_hydraulics/patch_mvg_ksat_dkdh_consistency.py \
+            swap-src/src/utils/soilhydraulicsutils.f90
+
+      - name: Compile wrapper scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/mvg-envelope
+          FLAGS="-O2 -std=f2018 -ffree-line-length-none -fcheck=all -fbacktrace"
+          gfortran $FLAGS -J build/mvg-envelope \
+            -c research/tabulated_hydraulics/array_dimensions_stub.f90 \
+            -o build/mvg-envelope/arrays.o
+          gfortran $FLAGS -I build/mvg-envelope -J build/mvg-envelope \
+            -c research/tabulated_hydraulics/current_wrapper_stubs.f90 \
+            -o build/mvg-envelope/stubs.o
+          gfortran $FLAGS -I build/mvg-envelope -J build/mvg-envelope \
+            -c swap-src/src/soil/sptabulated.f90 \
+            -o build/mvg-envelope/sptabulated.o
+          gfortran $FLAGS -I build/mvg-envelope -J build/mvg-envelope \
+            -c swap-src/src/utils/soilhydraulicsutils.f90 \
+            -o build/mvg-envelope/wrappers.o
+          gfortran $FLAGS -I build/mvg-envelope -J build/mvg-envelope \
+            research/tabulated_hydraulics/mvg_envelope_derivative_scan.f90 \
+            build/mvg-envelope/arrays.o build/mvg-envelope/stubs.o \
+            build/mvg-envelope/sptabulated.o build/mvg-envelope/wrappers.o \
+            -o build/mvg-envelope/scan
+
+      - name: Run derivative-scale scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          build/mvg-envelope/scan | tee build/mvg-envelope/results.csv
+          grep -q '^MVG_ENVELOPE_DERIVATIVE_SCAN_COMPLETED$' build/mvg-envelope/results.csv
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv
+          rows=[]
+          for row in csv.DictReader(
+              [l for l in Path("build/mvg-envelope/results.csv").read_text().splitlines()
+               if l and not l.startswith("MVG_")]
+          ):
+              rows.append(row)
+          ranked=sorted(rows,key=lambda r:float(r["max_abs_dKdh"]),reverse=True)
+          with Path("build/mvg-envelope/summary.txt").open("w") as fh:
+              for r in ranked:
+                  fh.write(
+                      f'{r["soil"]} max_abs_dKdh={float(r["max_abs_dKdh"]):.12g} '
+                      f'h={float(r["h_at_max"]):.12g} relsat={float(r["relsat_at_max"]):.12g} '
+                      f'K={float(r["K_at_max"]):.12g} fd={float(r["fd_at_max"]):.12g} '
+                      f'max_rel_fd_mismatch={float(r["max_rel_fd_mismatch"]):.12g}\n'
+                  )
+          print(Path("build/mvg-envelope/summary.txt").read_text(),end="")
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-hyd-mvg-envelope-derivative-scan
+          path: |
+            build/mvg-envelope/results.csv
+            build/mvg-envelope/summary.txt
