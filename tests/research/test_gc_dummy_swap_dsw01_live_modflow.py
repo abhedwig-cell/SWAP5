@@ -89,7 +89,7 @@ def require(value: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def build_model(workdir: Path, name: str) -> None:
+def build_model(workdir: Path, name: str, sy: float = SY) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
         version="mf6",
@@ -132,7 +132,7 @@ def build_model(workdir: Path, name: str) -> None:
         gwf,
         iconvert=1,
         ss=0.0,
-        sy=SY,
+        sy=float(sy),
         transient={0: True},
         save_flows=True,
     )
@@ -150,10 +150,11 @@ def run_case(
     case_name: str,
     hcof_m2_per_day: float,
     rhs_m3_per_day: float,
+    sy: float = SY,
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir, case_name)
+        build_model(workdir, case_name, sy=sy)
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         initialized = False
