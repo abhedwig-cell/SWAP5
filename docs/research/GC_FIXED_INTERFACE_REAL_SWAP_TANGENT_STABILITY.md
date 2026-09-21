@@ -43,3 +43,48 @@ Not yet qualified:
 - that an explicit relaxation rule is the preferred production repair.
 
 The architecture therefore needs an explicit distinction between physical response derivative and numerical surrogate/preconditioner. Any retained +u/dt surrogate requires a documented stability/admission envelope or an explicit globalization mechanism. It must not be documented as the physical outward exchange derivative.
+
+
+## G03/G05/G06 live globalization qualification
+
+Run `35618874403` closes the first live phase-map placement and finite-start
+qualification without a production-source change.
+
+The intrinsic F-GC44 groundwater response was measured with fresh, converged
+constant-flux MODFLOW probes:
+
+[
+a = dq_{gw}/dH = 2.03654572547\times10^{-2} mathrm{s^{-1}}.
+]
+
+Together with the previously qualified real-SWAP
+(p=-3.93858171386\times10^{-6} mathrm{s^{-1}}), this gives
+
+[
+r=a/|p|=5170.7591.
+]
+
+F-GC44 is therefore far inside the G02 (r>3) region. The current positive
+surrogate has (ho=-3.86865303\times10^{-4}), Picard has
+(ho=-1.93395202\times10^{-4}), and physical Newton has (ho=0) for the
+local affine problem. Measured finite-start factors at
+(-1,-0.5,+0.5,+1,+2) micrometre match those predictions. P0 and P2 close in
+two outer updates; P1 closes in one. The derived relaxation
+(alpha^*=1/(1-ho_{P0})=0.9996132843) makes P3 one-step to numerical
+precision. This is a response-derived parameter, not an empirically tuned
+constant, and it is not universal across regimes.
+
+The corrected cold-process G06 scan also establishes actual trial failures:
+status 6 occurs at the sampled -5 micrometre point and more negative points,
+while -2 micrometre is accepted; on the positive side +5 micrometre is
+accepted and +10 micrometre fails. This is sampled asymmetry, not yet a
+continuous boundary. Applying the preregistered factor-1/2 safeguard to the
+nearest negative failure, -5 micrometre, produces -2.5 micrometre and an
+accepted status 0 in one contraction.
+
+Consequently, the real F-GC44 evidence now distinguishes three questions:
+physical tangent sign, outer-map contraction, and corrector trial
+admissibility. They are not interchangeable. The positive surrogate is
+nonphysical as a derivative but is highly contractive in this particular
+groundwater-response regime; PB01 remains the counterexample showing that it
+can diverge in another valid regime.

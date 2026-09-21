@@ -929,3 +929,38 @@ Accordingly, the positive production-facing slope must be treated as a numerical
 The successful ordinary F-GC44 run does not contradict that result because its natural first iterate is already essentially at the coupled root (successive heads differ by about 5.9e-14 m). It is transaction/near-root evidence, not a finite-basin stability qualification.
 
 Production disposition remains conservative: do not globally flip HCOF in this research commit. First make the physical-derivative versus numerical-surrogate distinction explicit in the architecture and qualify any retained positive surrogate over a prospective stability envelope or with an explicit globalization mechanism.
+
+
+## 15. F-GC44 phase-map placement and globalization result
+
+The live G03/G05/G06 qualification at run `35618874403` places the concrete
+F-GC44 MODFLOW configuration on the G02 phase map. A clean constant-flux
+groundwater scan gives (a=0.0203654572547 mathrm{s^{-1}}). With the frozen
+real-SWAP (p=-3.93858171386\times10^{-6} mathrm{s^{-1}}), the ratio is
+(r=5170.7591).
+
+This resolves the apparent tension between PB01 and ordinary F-GC44. PB01 is
+in a regime where the reanchored positive surrogate has (ho=-4) and
+diverges. F-GC44 is instead deep inside the (r>3) contractive region, where
+the same surrogate has only (ho=-3.86865\times10^{-4}). The sign error in
+the surrogate's interpretation as a physical derivative is therefore real,
+but its numerical stability is regime-dependent.
+
+Prospective finite-start measurements match the local theory: P0 converges in
+two outer updates, P1 physical Newton in one, P2 Picard in two, P3 in one with
+the response-derived (alpha^*=0.9996132843), and P4 matches P1 for the tested
+starts. No accepted SWAP state or interface ledger is mutated by these
+diagnostic trials.
+
+G06 also corrects a prior evidence error. The old -2 micrometre status 4 was
+CANDIDATE_BUSY caused by a still-live preceding trial, not a head rejection.
+Fresh-process probes show true status-6 failures at sampled -5 micrometre and
++10 micrometre points, with accepted samples at -2 and +5 micrometre. A single
+factor-1/2 contraction from -5 to -2.5 micrometre restores admissibility.
+Continuous admissibility boundaries are not claimed from this discrete scan.
+
+The production implication remains bounded: do not flip HCOF globally from
+this evidence. The next production-admission question must account for both
+the local response ratio (r) and trial safeguarding, and must be tested
+across nonlinear SWAP response and materially different groundwater
+storage/lateral-conductance regimes.

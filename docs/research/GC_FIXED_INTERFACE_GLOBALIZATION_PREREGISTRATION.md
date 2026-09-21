@@ -120,3 +120,16 @@ trials are discarded and have zero mass/state authority.
 All G03-LIVE/G05/G06 runs are diagnostic. They must leave SWAP revision, time,
 ledger count and committed interface exchange at the immutable accepted origin.
 No production HCOF/RHS source is changed by these experiments.
+
+
+## Execution checkpoint: G03-LIVE/G05/G06
+
+Tested commit: `81f7e00ad7d6fc9509800c4cb9ecc03d99faef4e`  
+Workflow run: `35618874403`  
+Result: PASS
+
+The result is persisted in
+`integration/research/GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_G03_RESULT.json`.
+The status-4 historical point is classified as CANDIDATE_BUSY and is not used
+as admissibility evidence. The replacement cold-process scan and safeguard
+test passed under the protocol above.

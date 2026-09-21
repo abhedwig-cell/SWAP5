@@ -1,0 +1,343 @@
+{
+  "schema": "swap5.gc_fixed_interface.fgc44_globalization_g03.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "tested_commit": "81f7e00ad7d6fc9509800c4cb9ecc03d99faef4e",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow": {
+    "name": "GC real-SWAP FGC44 semantic scan",
+    "run_id": 35618874403,
+    "job_id": 106396572326,
+    "conclusion": "success"
+  },
+  "production_changes": false,
+  "groundwater_response": {
+    "method": "fresh MODFLOW 6.8.0 model and prepared solve per constant-flux HCOF=0 probe, solved to MODFLOW convergence",
+    "q_probe_m_per_s": [
+      -4e-8,
+      -2e-8,
+      -1e-8,
+      1e-8,
+      2e-8,
+      4e-8
+    ],
+    "a_per_s": 0.020365457254700035,
+    "affine_intercept": 0.014561301279880253,
+    "max_fit_error_m_per_s": 1.7109681722732642e-17,
+    "modflow_iterations_per_probe": 2
+  },
+  "swap_response": {
+    "p_physical_outward_per_s": -0.000003938581713855724,
+    "s0_positive_surrogate_per_s": 0.000003938583376480432,
+    "reference_root_m": -0.7149999677344252,
+    "reference_root_residual_m_per_s": 1.3196139012712378e-18
+  },
+  "phase_map": {
+    "r_a_over_abs_p": 5170.759104236792,
+    "classification": "R_GT_3__P0_AND_P2_LOCALLY_CONTRACTIVE",
+    "rho_P0": -0.00038686530300070777,
+    "rho_P1": 0,
+    "rho_P2": -0.00019339520171818189,
+    "alpha_star_P3": 0.9996132843038842,
+    "rho_P3": 5.876375774871434e-17
+  },
+  "finite_perturbation": {
+    "starts_dh_m": [
+      -0.000001,
+      -5e-7,
+      5e-7,
+      0.000001,
+      0.000002
+    ],
+    "policies": {
+      "P0": {
+        "rho_expected": -0.00038686530300070777,
+        "starts": [
+          {
+            "start_dh_m": -0.000001,
+            "rho_measured": -0.00038686533947928276,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": -5e-7,
+            "rho_measured": -0.00038686525094145985,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 5e-7,
+            "rho_measured": -0.0003868656083422893,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000001,
+            "rho_measured": -0.0003868654068321244,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000002,
+            "rho_measured": -0.00038686541773818466,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          }
+        ],
+        "max_abs_rho_error": 3.053415815546315e-10
+      },
+      "P1": {
+        "rho_expected": 0,
+        "starts": [
+          {
+            "start_dh_m": -0.000001,
+            "rho_measured": -1.1070356414407883e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": -5e-7,
+            "rho_measured": -2.2077330151728075e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 5e-7,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000001,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000002,
+            "rho_measured": -5.559118045012687e-11,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          }
+        ],
+        "max_abs_rho_error": 2.2077330151728075e-10
+      },
+      "P2": {
+        "rho_expected": -0.00019339520171818189,
+        "starts": [
+          {
+            "start_dh_m": -0.000001,
+            "rho_measured": -0.0001933953626385248,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": -5e-7,
+            "rho_measured": -0.00019339520439612276,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 5e-7,
+            "rho_measured": -0.00019339517295922397,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000001,
+            "rho_measured": -0.00019339512519355573,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000002,
+            "rho_measured": -0.00019339526820905917,
+            "outer_iterations": 2,
+            "classification": "CONVERGED"
+          }
+        ],
+        "max_abs_rho_error": 1.6092034291464302e-10
+      },
+      "P3": {
+        "rho_expected": 5.876375774871434e-17,
+        "starts": [
+          {
+            "start_dh_m": -0.000001,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": -5e-7,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 5e-7,
+            "rho_measured": -2.2333063454415736e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000001,
+            "rho_measured": -1.1134288150064264e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000002,
+            "rho_measured": -1.1118236090025374e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          }
+        ],
+        "max_abs_rho_error": 2.233306933079151e-10
+      },
+      "P4": {
+        "rho_expected": 0,
+        "starts": [
+          {
+            "start_dh_m": -0.000001,
+            "rho_measured": -1.1070356414407883e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": -5e-7,
+            "rho_measured": -2.2077330151728075e-10,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 5e-7,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000001,
+            "rho_measured": 0,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          },
+          {
+            "start_dh_m": 0.000002,
+            "rho_measured": -5.559118045012687e-11,
+            "outer_iterations": 1,
+            "classification": "CONVERGED"
+          }
+        ],
+        "max_abs_rho_error": 2.2077330151728075e-10
+      }
+    }
+  },
+  "g06": {
+    "historical_status4_correction": {
+      "dh_m": -0.000002,
+      "status": 4,
+      "status_meaning": "CANDIDATE_BUSY",
+      "mechanism": "A live trial(href) candidate preceded the first historical scan point; the corrector was not executed.",
+      "admissibility_authority": false
+    },
+    "cold_process_scan": [
+      {
+        "dh_m": -0.0001,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": -0.00005,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": -0.00002,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": -0.00001,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": -0.000005,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": -0.000002,
+        "status": 0,
+        "q_swap_m_per_s": 7.761426284915695e-12
+      },
+      {
+        "dh_m": -0.000001,
+        "status": 0,
+        "q_swap_m_per_s": 3.8228427720874776e-12
+      },
+      {
+        "dh_m": 0.000001,
+        "status": 0,
+        "q_swap_m_per_s": -4.054323739576817e-12
+      },
+      {
+        "dh_m": 0.000002,
+        "status": 0,
+        "q_swap_m_per_s": -7.992907252405035e-12
+      },
+      {
+        "dh_m": 0.000005,
+        "status": 0,
+        "q_swap_m_per_s": -1.9974637675047572e-11
+      },
+      {
+        "dh_m": 0.00001,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": 0.00002,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": 0.00005,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      },
+      {
+        "dh_m": 0.0001,
+        "status": 6,
+        "q_swap_m_per_s": 0
+      }
+    ],
+    "sampled_nearest_negative": {
+      "accepted_dh_m": -0.000002,
+      "failed_dh_m": -0.000005
+    },
+    "sampled_nearest_positive": {
+      "accepted_dh_m": 0.000005,
+      "failed_dh_m": 0.00001
+    },
+    "continuous_boundary_claim": false,
+    "safeguard": {
+      "selection_rule": "nearest-to-zero status-6 point from preregistered grid, tie negative",
+      "selected_failed_dh_m": -0.000005,
+      "contracted_dh_m": -0.0000025,
+      "contraction_factor": 0.5,
+      "contractions": 1,
+      "final_status": 0,
+      "result": "RECOVERED_ADMISSIBILITY"
+    }
+  },
+  "interpretation": [
+    "F-GC44 lies deep in the G02 r>3 region, so the current +u/dt surrogate is locally strongly contractive here despite not being the physical outward tangent.",
+    "P1 physical Newton closes the locally affine real-SWAP/MODFLOW problem in one outer update for every preregistered finite start.",
+    "P2 Picard is also strongly contractive in this regime and its measured factor matches p/a.",
+    "P3 uses alpha*=1/(1-rho_P0), derived from the measured local response rather than trajectory tuning, and cancels the local linear error to numerical precision.",
+    "P4 matches P1 for the preregistered finite starts; the separate G06 failure probe demonstrates that fixed factor-1/2 contraction can restore trial admissibility.",
+    "The real cold-process admissibility scan is asymmetric on the sampled grid, but no continuous head boundary is inferred without further bracketing."
+  ],
+  "production_disposition": "NO_PRODUCTION_HCOF_SIGN_CHANGE; G03/G05/G06 are research qualification evidence only."
+}

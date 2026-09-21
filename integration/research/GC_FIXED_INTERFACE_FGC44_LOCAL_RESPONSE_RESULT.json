@@ -17,6 +17,12 @@
     "corrected_classification": "INVALID_AS_HEAD_ADMISSIBILITY_EVIDENCE",
     "mechanism": "The historical test called trial(href) and left that candidate live before the first local-scan point. The -2e-6 m call therefore returned CANDIDATE_BUSY before the corrector executed. The finally-discard then cleared the candidate, so later scan points were independent.",
     "effect_on_tangent_claim": "NONE. The physical tangent estimate used accepted clean points after the candidate was discarded.",
-    "replacement_qualification": "G06 fresh-process fixed-grid scan preregistered in docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_PREREGISTRATION.md"
+    "replacement_qualification": {
+      "workflow_run_id": 35618874403,
+      "result": "PASS",
+      "result_file": "integration/research/GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_G03_RESULT.json",
+      "clean_status_4_points": 0,
+      "cold_scan_summary": "status 6 at -5e-6 m and more negative sampled points; status 0 at -2e-6 m through +5e-6 m sampled points; status 6 at +1e-5 m and larger positive sampled points"
+    }
   }
 }
