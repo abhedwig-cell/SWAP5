@@ -4,15 +4,46 @@
   "work_unit": "RIBASIM-DUMMY-19D",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "5b2ff72b6a310461d2bcc00631cf459a5dfe7b59",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
-  "blocker": "DUMMY-19C run 35600995386 is still in progress.",
+  "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation with common source Basin but unequal UserDemand min_level values, testing heterogeneous physical realization factors.",
-  "next_action": "After DUMMY-19C qualification, rebind DUMMY-19D implementation baseline before any executable files are created.",
+  "next_action": "Execute frozen DUMMY-19D pinned real Ribasim heterogeneous-realization qualification; no preregistered expected values or tolerances may change.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
+  "authority_binding": {
+    "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+    "workflow_run": 35610267609,
+    "main_closeout_head": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "recovery_point": "DUMMY-19D rebound after qualified DUMMY-19C and executable gate persisted; qualification remains open.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19D_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19D_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19D_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19D_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_heterogeneous_realization.py",
+    "tests/research/real_ribasim_heterogeneous_realization_bridge.jl",
+    "tests/research/run_ribasim_dummy_19d.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_BRIDGE_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "implementation changes only external UserDemand min_level from the qualified 19C common-factor case while retaining source Basin, forcing, allocation hold, demands, horizon and pinned Ribasim source",
+      "both UserDemand claims remain fully allocated in both priority cases",
+      "physical authority is direct Basin-to-UserDemand interval-mean linkflow integrated over the one-day horizon",
+      "final Basin endpoint uses basin_state_data while basin_data is used only for interval trajectory comparison",
+      "root and external physical reduction factors are asserted to differ in the preregistered direction",
+      "integrated root, external and total physical supplies plus final Basin level/storage are compared against the frozen independent continuous reference",
+      "priority reversal must leave allocations, heterogeneous physical supplies and Basin trajectory unchanged"
+    ]
+  }
 }
