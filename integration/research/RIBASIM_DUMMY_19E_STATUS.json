@@ -4,18 +4,59 @@
   "work_unit": "RIBASIM-DUMMY-19E",
   "branch": "work/ribasim-dummy-01",
   "preregistration_baseline": "8f2607d79adb0bcbf6ef0e7972cae87b56f9264f",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced behind active DUMMY-19D qualification. Scientific expectations are already frozen.",
+  "blocked": false,
+  "blocker": null,
   "required_authorities": [
     "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
     "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
   ],
   "prepared_scope": "Pinned real Ribasim 32 m3/day priority allocation followed by common-factor physical UserDemand min_level reduction within one one-day allocation window.",
-  "next_action": "After DUMMY-19D closes, rebind the implementation baseline and create the frozen DUMMY-19E executable gate without changing preregistered expectations or tolerances.",
+  "next_action": "Execute frozen DUMMY-19E pinned real Ribasim qualification; model, references and tolerances are immutable.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287",
+  "authority_binding": {
+    "DUMMY_19B": {
+      "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+      "run": 35598766437
+    },
+    "DUMMY_19C": {
+      "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+      "run": 35610267609
+    },
+    "DUMMY_19D": {
+      "decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+      "run": 35613373608
+    },
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "recovery_point": "DUMMY-19E executable gate persisted from post-DUMMY-19D baseline; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19E_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19E_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19E_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19E_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_mixed_allocation_realization.py",
+    "tests/research/real_ribasim_mixed_allocation_realization_bridge.jl",
+    "tests/research/run_ribasim_dummy_19e.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_BRIDGE_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "32 m3/day management scarcity exactly reproduces the qualified DUMMY-19B priority allocation setup except for the deliberate common min_level physical reduction from DUMMY-19C",
+      "root-first expected allocation is 32/0 m3/day and external-first is 12/20 m3/day",
+      "both active allocated links share source Basin and min_level=0.99 m",
+      "direct physical Basin-to-UserDemand interval-mean linkflow is the supplied authority",
+      "no physical water may appear on an unallocated lower-priority path",
+      "allocated-but-unsupplied volume is independently required to equal Basin storage gain",
+      "both priority cases must have the same total physical supply and Basin trajectory because total allocation and physical factor are common",
+      "all integrated references and tolerances remain exactly those frozen before implementation"
+    ]
+  }
 }
