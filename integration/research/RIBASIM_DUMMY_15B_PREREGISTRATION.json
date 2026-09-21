@@ -56,40 +56,6 @@
       "h_s1": 0.4,
       "h_g1": 0.28
     },
-    "root_priority": {
-      "allocated": {
-        "root": 40,
-        "external": 20
-      },
-      "supplied": {
-        "root": 32,
-        "external": 0
-      },
-      "allocation_realization_shortfall": {
-        "root": 8,
-        "external": 20
-      },
-      "root_end": 72,
-      "next_root_request": 8,
-      "combined_three_store_change": 0
-    },
-    "external_priority": {
-      "allocated": {
-        "external": 20,
-        "root": 40
-      },
-      "supplied": {
-        "external": 20,
-        "root": 12
-      },
-      "allocation_realization_shortfall": {
-        "external": 0,
-        "root": 28
-      },
-      "root_end": 52,
-      "next_root_request": 28,
-      "combined_three_store_change": -20
-    },
     "priority_preserving": {
       "root_priority": {
         "allocated": {
@@ -171,14 +137,6 @@
       "root": 25
     },
     "actual_total_realization": 32,
-    "root_priority_supplied": {
-      "root": 32,
-      "external": 0
-    },
-    "external_priority_supplied": {
-      "external": 20,
-      "root": 12
-    },
     "physical_realization": {
       "allocated_total_m3": 45,
       "supplied_total_m3": 32,
@@ -196,6 +154,16 @@
       "external_priority": {
         "supplied_external": 14.222222222222223,
         "supplied_root": 17.77777777777778
+      }
+    },
+    "priority_preserving": {
+      "root_priority": {
+        "supplied_root": 32,
+        "supplied_external": 0
+      },
+      "external_priority": {
+        "supplied_external": 20,
+        "supplied_root": 12
       }
     }
   },
@@ -256,5 +224,6 @@
       "The supplied output is lagged one allocation recording period in parse_allocations!."
     ],
     "validation_design_implication": "For a later pinned real-Ribasim bridge, represent the two competing claims as two separate UserDemand nodes connected to the same source Basin, or inspect per-link physical flows directly. Do not infer a per-priority supplied split from a single UserDemand's demand-result row without first validating the output semantics."
-  }
+  },
+  "policy_label_cleanup_note": "Before implementation, legacy unlabeled supplied-split fields from the original priority-preserving-only concept were removed or relabeled. Numerical expectations are unchanged; all policy-specific supplied values are now explicitly nested under their realization policy."
 }
