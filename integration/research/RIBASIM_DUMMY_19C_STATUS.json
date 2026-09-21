@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_realization_conflict.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19C",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "8ec78571d82299cb28bc7558bb0e501fa6b9a44e",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+  "blocker": "DUMMY-19B repaired real-Ribasim qualification is still running.",
+  "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
+  "next_action": "After DUMMY-19B qualification, rebind the implementation baseline before creating any DUMMY-19C generator, verifier or workflow gate.",
+  "production_delta": [],
+  "reference_delta": []
+}
