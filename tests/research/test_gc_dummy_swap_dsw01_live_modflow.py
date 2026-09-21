@@ -171,6 +171,7 @@ def run_case(
             initialized = True
             require("6.8.0" in raw.get_version(), "wrong MODFLOW6 version")
             raw.prepare_time_step(0.0)
+            result["model_dt_day"] = float(raw.get_time_step())
 
             session = Modflow6PreparedSolveSession(
                 raw,
@@ -280,6 +281,7 @@ def main() -> None:
 
     print(f"GC_DSW01_CONTROL_HEAD_M={float(control['head_m']):.17g}")
     print(f"GC_DSW01_CONTROL_ITERATIONS={int(control['iterations'])}")
+    print(f"GC_DSW01_CONTROL_MODEL_DT_DAY={float(control.get('model_dt_day', float('nan'))):.17g}")
     print(f"GC_DSW01_CONTROL_ERROR_M={control_error_m:.17g}")
     print(f"GC_DSW01_CONTROL_ORACLE_PASS={1 if control_oracle_pass else 0}")
     print(f"GC_DSW01_CURRENT_U_STATUS={current['status']}")
