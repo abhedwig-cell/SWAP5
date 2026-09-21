@@ -36,6 +36,11 @@ on:
       - 'tests/research/dummy_active_set_picard.py'
       - 'tests/research/test_dummy_active_set_picard.py'
       - 'tests/research/run_ribasim_dummy_06.sh'
+      - 'integration/research/RIBASIM_DUMMY_07_*.json'
+      - 'integration/research/RIBASIM_DUMMY_07_CONCEPT.md'
+      - 'tests/research/dummy_active_set_stabilization.py'
+      - 'tests/research/test_dummy_active_set_stabilization.py'
+      - 'tests/research/run_ribasim_dummy_07.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -119,3 +124,16 @@ jobs:
         run: python3 --version
       - name: Run active-set Picard mechanism gate
         run: bash tests/research/run_ribasim_dummy_06.sh
+
+  stabilization-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-07-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run active-set stabilization gate
+        run: bash tests/research/run_ribasim_dummy_07.sh
