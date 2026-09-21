@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Execute repaired DUMMY-19C pinned real Ribasim gate; only the post-repair run may qualify the work unit.",
+  "next_action": "Execute repaired DUMMY-19C gate against frozen qualification base.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -48,7 +48,7 @@
     ]
   },
   "recovery_point": "DUMMY-19C observability integration repaired after run 35600995386; scientific qualification remains open.",
-  "qualification_attempt": "PINNED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+  "qualification_attempt": "frozen_repaired_base_status_only_pr",
   "qualification_attempts": [
     {
       "run": 35600995386,
@@ -68,5 +68,6 @@
     "changed_tolerances": [],
     "changed_expected_values": [],
     "hypothesis_change": false
-  }
+  },
+  "qualification_base": "work/ribasim-dummy-19c-base-v2@989a46b8c5b8c60fdd883f462d81398617a8790f"
 }
