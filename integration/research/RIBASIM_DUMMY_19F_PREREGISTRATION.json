@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.coupling.real_ribasim_temporal_reallocation_after_realization_shortfall.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19F",
+  "title": "Pinned real Ribasim next-window reallocation of physically unrealized water",
+  "preregistration_baseline": "658e0235f614beda1b4a139b40358abead276393",
+  "sequencing": {
+    "state": "WAIT_FOR_DUMMY_19E_CLOSEOUT",
+    "scientific_dependency": "DUMMY-19E must establish fixed-within-window allocation followed by physical realization shortfall before DUMMY-19F is executed."
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Test the temporal handoff between hydrology and management. Water allocated but not physically realized in day 1 remains in the Basin; at the day-2 allocation event that real stored residual should become part of the new management availability rather than being retroactively reallocated inside day 1.",
+  "model": {
+    "horizon_seconds": 172800,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 3600,
+    "basin": {
+      "initial_level_m": 1,
+      "target_level_m": 1,
+      "profile_area_m2": 1000000
+    },
+    "fixed_supply_m3_per_day": 32,
+    "common_user_demand_min_level_m": 0.99,
+    "level_difference_threshold_m": 0.02,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_hybrid_reference": {
+    "day1": {
+      "allocated_total_m3_per_day": 32,
+      "final_level_m": 1.0000159808153588,
+      "physical_total_supplied_m3": 16.01918464119298,
+      "storage_gain_m3": 15.980815358807021,
+      "final_reduction_factor": 0.5011985601315903
+    },
+    "day2_allocation_event": {
+      "opening_excess_storage_m3": 15.980815358807021,
+      "fixed_inflow_forecast_m3": 32,
+      "expected_total_available_for_allocation_m3": 47.98081535880702,
+      "expected_total_allocated_m3_per_day": 47.98081535880702,
+      "root_first": {
+        "root_allocated_m3_per_day": 40,
+        "external_allocated_m3_per_day": 7.98081535880702
+      },
+      "external_first": {
+        "external_allocated_m3_per_day": 20,
+        "root_allocated_m3_per_day": 27.98081535880702
+      }
+    },
+    "day2_physical": {
+      "ode": "A dh/dtau = 32 - 47.98081535880702 * phi(h-0.99), tau measured over day 2.",
+      "final_level_m": 1.0000239186089535,
+      "physical_total_supplied_m3": 24.062206405352143,
+      "day2_storage_gain_m3": 7.937793594647857,
+      "final_excess_storage_m3": 23.91860895345488,
+      "final_reduction_factor": 0.5017938922505516,
+      "root_first": {
+        "root_supplied_m3": 20.059856194949344,
+        "external_supplied_m3": 4.002350210402798
+      },
+      "external_first": {
+        "root_supplied_m3": 14.032278307877469,
+        "external_supplied_m3": 10.029928097474672
+      }
+    },
+    "cumulative_two_day_ledger": "64 m3 fixed inflow = cumulative physical UserDemand supply + final Basin excess storage, with initial and target Basin level both 1.0 m."
+  },
+  "source_semantics": {
+    "physical": "Pinned solve.jl uses frozen per-link inflow_link_allocated targets multiplied by physical source-state factors during a given allocation window.",
+    "next_management_event": "Pinned allocation code reconstructs level-demand constraints from the current Basin level/storage at an allocation event, so stored residual from the prior physical window is expected to affect the next forecast.",
+    "observability": "Use allocation_data for time-resolved allocated values and direct flow_data interval means for physical transfer. Do not use allocation_data.supplied as primary physical authority because DUMMY-19A established its lagged reporting semantics."
+  },
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "allocation_rate_equivalent_m3_per_day": 0.05,
+    "endpoint_level_m": 5e-8,
+    "reduction_factor": 0.000005
+  },
+  "hypotheses": [
+    "Day 1 reproduces DUMMY-19E: 32 m3/day is allocated, about 16.0192 m3 is physically supplied, and about 15.9808 m3 remains in Basin storage.",
+    "There is no within-day-1 reallocation of the physically unrealized portion.",
+    "At the day-2 allocation event, the stored day-1 residual becomes legitimate current-state availability. With another 32 m3 fixed inflow forecast and a priority-1 target level of 1.0 m, total day-2 allocation rises to about 47.9808 m3/day.",
+    "Priority is re-applied at the new management event: root-first allocates 40 plus about 7.9808 external, while external-first allocates 20 external plus about 27.9808 root.",
+    "Day-2 physical realization then acts on this newly allocated map using the common source-state factor; priority changes recipient identity but total physical supply and Basin trajectory remain common between the two cases.",
+    "The coupling semantics are therefore temporal: hydrology determines the accepted physical state inside a window, and management may respond to that accepted state only at a subsequent management event."
+  ],
+  "measurements": [
+    "allocation_data allocated series around both daily allocation events",
+    "direct Basin-to-UserDemand flow_data integrated separately for day 1 and day 2",
+    "Basin interval trajectory and basin_state_data endpoint",
+    "fixed boundary inflow",
+    "recipient splits for both priority orders"
+  ],
+  "forbidden": [
+    "no changing the one-day allocation clock after observing output",
+    "no retroactive reinterpretation of day-1 shortfall as a day-1 allocation",
+    "no using lagged allocation_data supplied as primary physical-transfer authority",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
+  "fail_decision": "RIBASIM_DUMMY_19F_BLOCKED"
+}
