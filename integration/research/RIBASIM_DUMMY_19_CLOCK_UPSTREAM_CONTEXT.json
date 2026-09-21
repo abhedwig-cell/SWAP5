@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.coupling.ribasim_allocation_clock_upstream_context.v1",
+  "date": "2026-09-21",
+  "scope": "Supporting upstream context for DUMMY-19E falsification and DUMMY-19G clock-sensitivity qualification.",
+  "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+  "evidence": [
+    {
+      "upstream": "Deltares/Ribasim#3218",
+      "title": "Refactor to single main loop and allocation call",
+      "merged_at": "2026-08-27T14:01:21Z",
+      "merge_commit": "6d8566ae4eb3aed2f47cd579481861cc8acef9a8",
+      "pin_relation": {
+        "status": "ANCESTOR_OF_PIN",
+        "compare_to_pin": "ahead",
+        "commits_after_merge_to_pin": 25
+      },
+      "maintainer_statement_summary": [
+        "Coupler/allocation synchronization requires care.",
+        "The only timing guarantee identified in the PR discussion is allocation at multiples of saveat.",
+        "The PR characterizes reliance on saveat for this purpose as brittle and not what saveat was meant for.",
+        "Alternative explicit allocation/update_until synchronization is discussed but not established as the contract."
+      ]
+    },
+    {
+      "upstream": "Deltares/Ribasim#3163",
+      "title": "Set up the irrigation module coupling with Ribasim",
+      "state_observed": "open",
+      "created_at": "2026-07-22T08:56:55Z",
+      "context_summary": [
+        "The issue calls for a robust time-stepping plan covering allocation timestep, irrigation/coupling timestep and output saveat.",
+        "It treats output saveat as a distinct concern that still has to be reconciled with coupling callbacks and integrator tstops."
+      ]
+    }
+  ],
+  "interpretation_boundaries": [
+    "This upstream context supports that saveat-coupled allocation timing is a known synchronization limitation/design concern.",
+    "It does not by itself quantify the hydrological effect; DUMMY-19E/19G provide the controlled evidence.",
+    "Do not label the behavior an upstream defect unless the upstream project itself makes that disposition."
+  ]
+}
