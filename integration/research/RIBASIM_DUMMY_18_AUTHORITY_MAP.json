@@ -1,0 +1,596 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_real_model_authority_map.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-18",
+  "meaning_of_qualification": "Qualification validates the authority classification and substitution-readiness logic. It does not resolve rows marked UNRESOLVED and is not production admission.",
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "imod_coupler_inspected": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "live_csr_candidate": "work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45"
+  },
+  "allowed_statuses": [
+    "BOUND",
+    "NON_EQUIVALENT",
+    "UNRESOLVED"
+  ],
+  "allowed_classes": [
+    "STATE",
+    "TRANSFER",
+    "MANAGEMENT_DECISION",
+    "CLOCK",
+    "TRANSACTION",
+    "DIAGNOSTIC"
+  ],
+  "research_authorities": {
+    "DUMMY_15C": {
+      "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "run": 35593011851,
+      "production_effect": "none; establishes analytical transaction requirements only"
+    },
+    "DUMMY_15D": {
+      "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+      "run": 35593604887,
+      "production_effect": "none; establishes gross/canopy/net ledger requirements only"
+    }
+  },
+  "rows": [
+    {
+      "id": "ribasim.basin.storage",
+      "component": "RIBASIM",
+      "class": "STATE",
+      "analytical": "surface storage S_s",
+      "real": "Basin storage",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Pinned Ribasim Basin state; bridge model must pin the area-level-storage relation.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      ],
+      "time_support": "instantaneous Basin state at matched solver/output time",
+      "comparison_rule": "Compare storage at identical timestamps; do not infer storage from level without the pinned Basin relation."
+    },
+    {
+      "id": "ribasim.basin.level",
+      "component": "RIBASIM",
+      "class": "STATE",
+      "analytical": "surface head h_s",
+      "real": "Basin level",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Pinned Basin level state.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      ],
+      "time_support": "instantaneous Basin state at matched solver/output time",
+      "comparison_rule": "Compare level directly only after datum and unit alignment."
+    },
+    {
+      "id": "ribasim.user_demand.demand",
+      "component": "RIBASIM",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "managed demand R",
+      "real": "UserDemand demand",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Use separate UserDemand nodes when claim-specific supplied flow is needed.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/solve.jl"
+      ],
+      "time_support": "allocation-period demand",
+      "comparison_rule": "Demand is a management request and must never be treated as supplied water."
+    },
+    {
+      "id": "ribasim.user_demand.allocated",
+      "component": "RIBASIM",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "allocated U_alloc",
+      "real": "UserDemand allocated state/allocation result",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Pinned allocation semantics.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/allocation_optim.jl"
+      ],
+      "time_support": "allocation-period decision",
+      "comparison_rule": "Allocated flow remains nonphysical until realized by the physical layer."
+    },
+    {
+      "id": "ribasim.user_demand.supplied",
+      "component": "RIBASIM",
+      "class": "TRANSFER",
+      "analytical": "supplied managed water U",
+      "real": "physical UserDemand inflow-link flow or correctly lag-aligned supplied result",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Prefer direct per-link physical flow or separate UserDemand nodes for claim-specific comparison.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/solve.jl",
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/allocation_optim.jl"
+      ],
+      "time_support": "physical flow integrated over the realization interval; allocation supplied output is recorded with one allocation-period lag",
+      "comparison_rule": "Only supplied flow enters water ledgers; align the lag before comparing allocation output rows."
+    },
+    {
+      "id": "ribasim.user_demand.min_level",
+      "component": "RIBASIM",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "dummy hard management threshold hmin",
+      "real": "UserDemand smooth source-state reduction around min_level",
+      "status": "NON_EQUIVALENT",
+      "substitution_allowed": false,
+      "scope": "Structural analogue only.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/solve.jl"
+      ],
+      "time_support": "physical solver state",
+      "comparison_rule": "Do not compare active-set regime labels numerically as if they were the same law.",
+      "adaptation_required": "Use a dedicated bridge case based on actual Ribasim smooth reduction functions."
+    },
+    {
+      "id": "ribasim.allocation.priority",
+      "component": "RIBASIM",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "lexicographic managed priority",
+      "real": "UserDemand demand_priority / allocation objective ordering",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted priority semantics; not full network fairness equivalence.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a: core/src/allocation_optim.jl"
+      ],
+      "time_support": "allocation decision time",
+      "comparison_rule": "Compare allocation ordering separately from later physical supply reduction."
+    },
+    {
+      "id": "ribasim.allocation.clock",
+      "component": "RIBASIM",
+      "class": "CLOCK",
+      "analytical": "management allocation clock",
+      "real": "Ribasim allocation timestep",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Pinned allocation scheduling.",
+      "authority": [
+        "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      ],
+      "time_support": "allocation interval",
+      "comparison_rule": "Align allocation decision times before comparing demand or allocated values."
+    },
+    {
+      "id": "ribasim.routing.linear_surrogate",
+      "component": "RIBASIM",
+      "class": "DIAGNOSTIC",
+      "analytical": "linear route Q_r=K_r(h1-h2)",
+      "real": "Ribasim routing/network flow",
+      "status": "NON_EQUIVALENT",
+      "substitution_allowed": false,
+      "scope": "DUMMY-17 route is an exact analytical path oracle only.",
+      "authority": [
+        "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER"
+      ],
+      "time_support": "continuous analytical flow versus Ribasim solver flow",
+      "comparison_rule": "Bind a specific real routing element before numerical equality is tested.",
+      "adaptation_required": "Create a route-specific real-Ribasim bridge."
+    },
+    {
+      "id": "modflow.head",
+      "component": "MODFLOW",
+      "class": "STATE",
+      "analytical": "groundwater head h_g",
+      "real": "selected/aggregated MODFLOW head",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted F-GC prepared-solve profile only.",
+      "authority": [
+        "integration/f-gc/F-GC39_CANONICAL_ADMISSION.json",
+        "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md"
+      ],
+      "time_support": "prepared-solve candidate/end state for the coupling window",
+      "comparison_rule": "Pin exact cells/aggregation and compare head at the same candidate/accepted time."
+    },
+    {
+      "id": "modflow.interface.riv_drn_exchange",
+      "component": "MODFLOW",
+      "class": "TRANSFER",
+      "analytical": "surface-groundwater transfer V",
+      "real": "accepted integrated RIV/DRN exchange budget",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted admitted groundwater coupling profile; sign convention must be normalized.",
+      "authority": [
+        "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md",
+        "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md"
+      ],
+      "time_support": "integrated over one accepted coupling window",
+      "comparison_rule": "Use one accepted integrated transfer with opposite signs in the two component ledgers."
+    },
+    {
+      "id": "modflow.storage.aggregate",
+      "component": "MODFLOW",
+      "class": "STATE",
+      "analytical": "groundwater storage S_g=A_g h_g",
+      "real": "MODFLOW STO/component storage aggregate",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "Full storage-ledger substitution is blocked.",
+      "authority": [
+        "work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45"
+      ],
+      "time_support": "must become accepted per-window integrated storage change",
+      "comparison_rule": "No full groundwater storage equality claim until accepted STO/component-budget observability is qualified.",
+      "blocker": "CSR04 storage partition and accepted per-window MODFLOW STO/component-budget observability remain unresolved."
+    },
+    {
+      "id": "modflow.conductance",
+      "component": "MODFLOW",
+      "class": "DIAGNOSTIC",
+      "analytical": "dummy conductance C",
+      "real": "RIV/DRN/package conductance or effective interface response",
+      "status": "NON_EQUIVALENT",
+      "substitution_allowed": false,
+      "scope": "No one-to-one parameter mapping admitted.",
+      "authority": [
+        "RIBASIM-DUMMY analytical surrogate"
+      ],
+      "time_support": "parameter/effective response",
+      "comparison_rule": "Compare realized transfer response, not raw conductance parameter, unless a package-specific derivation is separately qualified.",
+      "adaptation_required": "Pin package formulation and derive an effective analytical mapping."
+    },
+    {
+      "id": "modflow.prepared_solve.clock",
+      "component": "MODFLOW",
+      "class": "CLOCK",
+      "analytical": "groundwater coupling-window solve",
+      "real": "one prepared solve session per coupling window",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted F-GC39 service contract.",
+      "authority": [
+        "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md"
+      ],
+      "time_support": "one coupling window; accepted XOLD fixed during prepared solve",
+      "comparison_rule": "Do not invent per-iteration groundwater rollback when the admitted service contract does not provide it."
+    },
+    {
+      "id": "modflow.prepared_solve.transaction",
+      "component": "MODFLOW",
+      "class": "TRANSACTION",
+      "analytical": "groundwater candidate/finalize lifecycle",
+      "real": "Modflow6PreparedSolveSession lifecycle",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Local prepared-solve transaction only; not by itself a whole-product atomic commit.",
+      "authority": [
+        "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md"
+      ],
+      "time_support": "prepared solve begin -> candidate -> finalization",
+      "comparison_rule": "Distinguish local solve finalization from product-level coupled acceptance."
+    },
+    {
+      "id": "swap.root_storage.bucket",
+      "component": "SWAP",
+      "class": "STATE",
+      "analytical": "root storage W_r",
+      "real": "production SWAP irrigation-relevant hydrologic/crop state",
+      "status": "NON_EQUIVALENT",
+      "substitution_allowed": false,
+      "scope": "The analytical bucket is not the production SWAP irrigation state.",
+      "authority": [
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "integration/f-app/F-APP07_ADMISSION_READY.json"
+      ],
+      "time_support": "accepted hydrologic/crop state used for irrigation selection",
+      "comparison_rule": "Do not equate one aggregate root-water volume with production stress/event logic.",
+      "adaptation_required": "Define a production irrigation-state adapter using actual stress, crop and continuation state."
+    },
+    {
+      "id": "swap.irrigation.selection",
+      "component": "SWAP",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "root irrigation demand R_root",
+      "real": "restricted F-APP07 TCS1+DCS2 event selection",
+      "status": "NON_EQUIVALENT",
+      "substitution_allowed": false,
+      "scope": "Production decision authority is identified, but its law differs from the analytical deficit request.",
+      "authority": [
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "integration/f-app/F-APP07_PROCESS_OWNER_QUALIFICATION.json"
+      ],
+      "time_support": "selection opportunity / event interval",
+      "comparison_rule": "Compare selected event request and timing as a separate management object; do not require equality to max(0,W_target-W).",
+      "adaptation_required": "Use the qualified F-APP07 event law in real-SWAP bridge."
+    },
+    {
+      "id": "swap.irrigation.management_state",
+      "component": "SWAP",
+      "class": "STATE",
+      "analytical": "explicit irrigation event continuation state",
+      "real": "F-APP07 dayfix + active_event + event start/end",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "State definition is known; product transaction ownership is a separate unresolved row.",
+      "authority": [
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/adapter/mod_b1_10_process_checkpoint.f90"
+      ],
+      "time_support": "persistent management continuation across accepted intervals",
+      "comparison_rule": "Track management continuation separately from hydrologic state and allocation shortfall."
+    },
+    {
+      "id": "swap.irrigation.partial_supply_policy",
+      "component": "SWAP",
+      "class": "MANAGEMENT_DECISION",
+      "analytical": "DUMMY-15C event-realization policy under external scarcity",
+      "real": "production behavior when a selected F-APP07 event cannot be fully supplied externally",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "DUMMY-15C qualifies contrast policies but does not choose production policy.",
+      "authority": [
+        "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+        "integration/f-app/F-APP07_ADMISSION_READY.json"
+      ],
+      "time_support": "selected irrigation event / coupled realization window",
+      "comparison_rule": "No production partial supply may be applied until event-state transition policy is explicitly admitted.",
+      "blocker": "Current F-APP07 authority has no external partial-supply realization contract."
+    },
+    {
+      "id": "swap.irrigation.gross_source_withdrawal",
+      "component": "SWAP",
+      "class": "TRANSFER",
+      "analytical": "gross supplied irrigation G",
+      "real": "externally supplied gross sprinkling entering Rutter path",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "Gross scheduled irrigation exists, but externally curtailed supplied gross amount lacks admitted production policy.",
+      "authority": [
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER"
+      ],
+      "time_support": "integrated accepted irrigation event/window",
+      "comparison_rule": "Source withdrawal must equal accepted gross supplied irrigation, not net soil irrigation.",
+      "blocker": "Depends on unresolved production external partial-supply policy and atomic irrigation transaction."
+    },
+    {
+      "id": "swap.rutter.canopy_storage",
+      "component": "SWAP",
+      "class": "STATE",
+      "analytical": "canopy storage C",
+      "real": "Rutter canopy_storage_cm / candidate canopy storage",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted F-APP05 stateful Rutter process.",
+      "authority": [
+        "integration/f-app/F-APP05_OWNER_QUALIFICATION.json",
+        "src/process/mod_rutter_interception_process.f90"
+      ],
+      "time_support": "accepted and candidate canopy state",
+      "comparison_rule": "Include canopy storage in represented ledger or expose its delta as a boundary term."
+    },
+    {
+      "id": "swap.rutter.interception_evaporation",
+      "component": "SWAP",
+      "class": "TRANSFER",
+      "analytical": "interception evaporation E_i",
+      "real": "Rutter reservoir outflow attributable to irrigation",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Irrigation-only/no-rain bridge; attribution becomes more complex with simultaneous rainfall.",
+      "authority": [
+        "integration/f-app/F-APP05_OWNER_QUALIFICATION.json"
+      ],
+      "time_support": "integrated accepted window",
+      "comparison_rule": "For the first real bridge exclude rainfall so irrigation attribution is unambiguous."
+    },
+    {
+      "id": "swap.rutter.net_soil_irrigation",
+      "component": "SWAP",
+      "class": "TRANSFER",
+      "analytical": "net soil irrigation N",
+      "real": "Rutter net_surface_irrigation bound to dynamic top",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted F-APP08 binding.",
+      "authority": [
+        "integration/f-app/F-APP08_ADMISSION_READY.json",
+        "src/runtime/mod_fmr_rutter_output_application_binding.f90"
+      ],
+      "time_support": "accepted physical interval",
+      "comparison_rule": "Net soil input is distinct from gross source withdrawal."
+    },
+    {
+      "id": "swap.irrigation.atomic_transaction",
+      "component": "SWAP",
+      "class": "TRANSACTION",
+      "analytical": "event management state + gross supply + canopy candidate + kernel irrigation candidate accepted together",
+      "real": "production coupled commit/rollback ownership",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "Legacy transaction captured dayfix/nirri, current restricted FMR/application authorities do not yet prove atomic ownership of F-APP07 + Rutter + kernel state.",
+      "authority": [
+        "src/adapter/mod_b1_10_process_checkpoint.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "integration/f-app/F-APP05_ADMISSION_READY.json",
+        "integration/f-app/F-APP07_ADMISSION_READY.json",
+        "integration/f-app/F-APP08_ADMISSION_READY.json"
+      ],
+      "time_support": "candidate/rollback/commit boundary",
+      "comparison_rule": "Do not mutate irrigation continuation, canopy state or supplied irrigation independently.",
+      "blocker": "No inspected admitted production authority proves atomic commit/rollback of irrigation management continuation, canopy candidate and kernel physical state."
+    },
+    {
+      "id": "swap.drainage.ownership",
+      "component": "SWAP",
+      "class": "TRANSFER",
+      "analytical": "root drainage D",
+      "real": "production SWAP/MODFLOW/surface drainage ownership",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "General production drainage outside explicitly admitted restricted profiles.",
+      "authority": [
+        "work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45"
+      ],
+      "time_support": "accepted coupling window",
+      "comparison_rule": "No analytical capacity-drainage term may be mapped onto production drainage until ownership is closed.",
+      "blocker": "CSR-B2 drainage ownership remains unresolved."
+    },
+    {
+      "id": "swap_modflow.storage_partition",
+      "component": "SYSTEM",
+      "class": "STATE",
+      "analytical": "sum of disjoint root/unsaturated and groundwater stores",
+      "real": "combined SWAP finite-window storage response + MODFLOW STO",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "Blocks full real SWAP-MODFLOW storage ledger.",
+      "authority": [
+        "work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45"
+      ],
+      "time_support": "accepted coupling window",
+      "comparison_rule": "Do not sum real SWAP and MODFLOW storage diagnostics as disjoint stores without a qualified partition or overlap correction.",
+      "blocker": "CSR-B1/CSR04 storage partition remains scientifically unresolved."
+    },
+    {
+      "id": "coupler.swap.transaction",
+      "component": "COUPLER",
+      "class": "TRANSACTION",
+      "analytical": "SWAP candidate/rollback/commit",
+      "real": "F-GC43 production SWAP participant kernel candidate/rollback/commit",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Restricted production SWAP participant.",
+      "authority": [
+        "docs/integration/F-GC43_PRODUCTION_SWAP_PARTICIPANT.md"
+      ],
+      "time_support": "one coupling-window candidate lifecycle",
+      "comparison_rule": "Kernel commit remains sole committed-state mutation for the state actually owned by the kernel participant."
+    },
+    {
+      "id": "coupler.outer_window",
+      "component": "COUPLER",
+      "class": "CLOCK",
+      "analytical": "outer coupled transaction window",
+      "real": "restricted F-GC product-level coupling window",
+      "status": "BOUND",
+      "substitution_allowed": true,
+      "scope": "Internal restricted coupling profile.",
+      "authority": [
+        "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md",
+        "docs/integration/F-GC43_PRODUCTION_SWAP_PARTICIPANT.md"
+      ],
+      "time_support": "one product-level coupling window",
+      "comparison_rule": "All compared candidate states and integrated transfers must refer to the same outer window."
+    },
+    {
+      "id": "coupler.product_registration",
+      "component": "COUPLER",
+      "class": "TRANSACTION",
+      "analytical": "full product-level orchestrator registration",
+      "real": "actual upstream iMOD Coupler SWAP5 product lifecycle",
+      "status": "UNRESOLVED",
+      "substitution_allowed": false,
+      "scope": "Repository-internal restricted profile is not external product admission.",
+      "authority": [
+        "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md"
+      ],
+      "time_support": "product lifecycle",
+      "comparison_rule": "Do not claim full product integration from SWAP5 repository-internal evidence.",
+      "blocker": "F-GC50 remains externally blocked on actual upstream iMOD Coupler product registration."
+    }
+  ],
+  "required_unresolved_ids": [
+    "modflow.storage.aggregate",
+    "swap.irrigation.partial_supply_policy",
+    "swap.irrigation.gross_source_withdrawal",
+    "swap.irrigation.atomic_transaction",
+    "swap.drainage.ownership",
+    "swap_modflow.storage_partition",
+    "coupler.product_registration"
+  ],
+  "substitution_stages": [
+    {
+      "id": "stage1.real_ribasim_allocation_supply",
+      "state": "READY_RESTRICTED",
+      "requirements": [
+        "ribasim.basin.storage",
+        "ribasim.basin.level",
+        "ribasim.user_demand.demand",
+        "ribasim.user_demand.allocated",
+        "ribasim.user_demand.supplied",
+        "ribasim.allocation.priority",
+        "ribasim.allocation.clock"
+      ],
+      "note": "Use separate UserDemand nodes/direct link flows and respect supplied-output lag."
+    },
+    {
+      "id": "stage2.modflow_head_flux_only",
+      "state": "READY_RESTRICTED",
+      "requirements": [
+        "modflow.head",
+        "modflow.interface.riv_drn_exchange",
+        "modflow.prepared_solve.clock",
+        "modflow.prepared_solve.transaction"
+      ],
+      "note": "Head/flux bridge only; no full storage-ledger claim."
+    },
+    {
+      "id": "stage2.modflow_full_storage",
+      "state": "BLOCKED",
+      "requirements": [
+        "modflow.head",
+        "modflow.interface.riv_drn_exchange",
+        "modflow.storage.aggregate"
+      ],
+      "blockers": [
+        "modflow.storage.aggregate"
+      ]
+    },
+    {
+      "id": "stage3.real_ribasim_modflow_full_ledger",
+      "state": "BLOCKED",
+      "requirements": [
+        "ribasim.basin.storage",
+        "modflow.storage.aggregate",
+        "swap_modflow.storage_partition"
+      ],
+      "blockers": [
+        "modflow.storage.aggregate",
+        "swap_modflow.storage_partition"
+      ]
+    },
+    {
+      "id": "stage4.real_swap_external_irrigation",
+      "state": "BLOCKED",
+      "requirements": [
+        "swap.irrigation.selection",
+        "swap.irrigation.management_state",
+        "swap.irrigation.partial_supply_policy",
+        "swap.irrigation.gross_source_withdrawal",
+        "swap.rutter.canopy_storage",
+        "swap.rutter.net_soil_irrigation",
+        "swap.irrigation.atomic_transaction"
+      ],
+      "blockers": [
+        "swap.irrigation.partial_supply_policy",
+        "swap.irrigation.gross_source_withdrawal",
+        "swap.irrigation.atomic_transaction"
+      ]
+    },
+    {
+      "id": "stage5.full_product",
+      "state": "BLOCKED",
+      "requirements": [
+        "coupler.swap.transaction",
+        "coupler.outer_window",
+        "coupler.product_registration",
+        "swap_modflow.storage_partition",
+        "swap.drainage.ownership"
+      ],
+      "blockers": [
+        "coupler.product_registration",
+        "swap_modflow.storage_partition",
+        "swap.drainage.ownership"
+      ]
+    }
+  ]
+}
