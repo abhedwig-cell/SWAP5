@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-15C",
   "title": "Discrete irrigation-event realization under partial external supply",
-  "baseline": "e8efdb8d233def31b3853d92d314bbf18a82bfb5",
+  "baseline": "a84405a24373818e3ca1f3851391300ed73e7240",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-    "current": "BLOCKED_PENDING_DUMMY_15_AND_DUMMY_15B",
-    "implementation_rule": "No DUMMY-15C implementation or tests before DUMMY-15B closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-15C implementation or tests before DUMMY-15B closes and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+      "workflow_run": 35590242964,
+      "main_closeout_head": "a84405a24373818e3ca1f3851391300ed73e7240"
+    }
   },
   "production_authority_basis": {
     "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -31,7 +36,12 @@
       "event candidate may require interval split at event end",
       "gross irrigation is routed through Rutter; net irrigation reaches dynamic top"
     ],
-    "unresolved_gap": "No admitted contract currently defines how a selected fixed-depth/rate irrigation event reacts when an external allocator can physically supply only part of that event."
+    "unresolved_gap": "No admitted contract currently defines how a selected fixed-depth/rate irrigation event reacts when an external allocator can physically supply only part of that event.",
+    "transaction_reconciliation": {
+      "legacy_b1_10": "src/adapter/mod_b1_10_process_checkpoint.f90 captures/restores irrigation dayfix and nirri as transaction state.",
+      "current_fmr": "src/runtime/mod_fmr_serialized_reference_backend.f90 fmr_b110_physical_state_t carries hydraulic/snow/temperature fields and accepted forcing rates but does not contain F-APP07 dayfix/active-event continuation state.",
+      "implication": "External irrigation realization must not advance or roll back F-APP07 management continuation independently from the accepted irrigation water transfer; DUMMY-15C qualifies that atomicity requirement analytically."
+    }
   },
   "purpose": "Separate water-allocation shortfall from irrigation-event state transition. Determine which management state is committed when a selected SWAP-like irrigation event is only partly externally supplied.",
   "first_stage_abstraction": {
@@ -111,5 +121,6 @@
     "no use of allocation shortfall as implicit water storage"
   ],
   "pass_decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
-  "fail_decision": "RIBASIM_DUMMY_15C_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_15C_BLOCKED",
+  "authority_rebind_note": "DUMMY-15C was preregistered while DUMMY-15B was blocked. No executable DUMMY-15C implementation existed. Baseline rebound to the current post-DUMMY-15B authority before creating DUMMY-15C code/tests."
 }
