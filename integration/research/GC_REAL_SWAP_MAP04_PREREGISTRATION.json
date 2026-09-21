@@ -1,0 +1,85 @@
+{
+  "schema": "swap5.gc_real_swap.map04.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP04",
+  "title": "Affine slope-policy invariance of the accepted real-SWAP/MODFLOW solution",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "map02": "integration/research/GC_REAL_SWAP_MAP02_RESULT.json",
+    "map03": "integration/research/GC_REAL_SWAP_MAP03_RESULT.json",
+    "fixture": "F-GC45 real MultiSWAP + live MODFLOW6"
+  },
+  "fixed_physics": {
+    "tiles": 2,
+    "area_fractions": [
+      0.35,
+      0.65
+    ],
+    "window_day": 0.0001,
+    "same_initial_committed_swap_state": true,
+    "same_modflow_model": true,
+    "same_corrector": true,
+    "same_coupled_flux_tolerance_m_per_s": 1e-15,
+    "same_exactly_once_ledger_publication": true
+  },
+  "common_initial_affine_point": {
+    "rule": "Every variant passes through the production predictor point (H_ref,q_ref) before the first MODFLOW solve.",
+    "production_hcof_m2_per_day": 0.3402936037279093,
+    "production_href_m": -0.7149999706136307,
+    "production_qref_m_per_s": -1.1179226975717078e-13
+  },
+  "slope_policies": [
+    {
+      "name": "CURRENT_PLUS_U",
+      "hcof_rule": "production HCOF = +A*u_A/dt_day",
+      "expected_hcof_m2_per_day": 0.3402936037279093
+    },
+    {
+      "name": "INTERCEPT_ONLY",
+      "hcof_rule": "zero retained slope; reanchor only the intercept after each real corrector",
+      "expected_hcof_m2_per_day": 0
+    },
+    {
+      "name": "LOCAL_CORRECTOR_FD",
+      "hcof_rule": "A*86400*dq_corrector/dH from qualified MAP02 radius_0_25",
+      "expected_hcof_m2_per_day": -0.34029136831718865,
+      "authority_slope_per_s": -0.000003938557503671165
+    }
+  ],
+  "iteration_contract": [
+    "Solve one MODFLOW prepared-solve iteration with the current affine term.",
+    "Run the unchanged real F-GC45 SWAP corrector at the returned head.",
+    "Evaluate residual q_swap-q_groundwater.",
+    "If not jointly converged, discard the SWAP candidate and reanchor only RHS so the same variant slope passes through the measured (H,q_swap) pair.",
+    "On joint convergence, finalize MODFLOW once, publish the accepted SWAP candidates once, then publish each ledger once."
+  ],
+  "gates": [
+    "all three variants converge within the unchanged F-GC45 iteration budget",
+    "the CURRENT_PLUS_U result reproduces the admitted F-GC45 final head within 1e-10 m",
+    "pairwise final accepted head spread across policies <=1e-10 m",
+    "pairwise final real corrector flux spread across policies <=1e-15 m/s",
+    "each variant closes its coupled residual <=1e-15 m/s",
+    "each variant's tile ledgers equal area_fraction*q_tile*duration_s within 1e-12 m",
+    "pairwise total accepted ledger spread across policies <=1e-14 m",
+    "each variant commits exactly one SWAP candidate and one ledger entry per tile"
+  ],
+  "characterization_only": [
+    "number of coupling iterations per policy",
+    "head path per policy",
+    "residual path per policy",
+    "MODFLOW convergence path per policy"
+  ],
+  "interpretation_rules": [
+    "If final physical state and ledgers are invariant while paths differ, classify slope as iteration policy rather than published physical mass.",
+    "If a slope policy changes the accepted physical state beyond the fixed gates, do not dismiss that as solver behavior; treat it as a coupling-algorithm dependency.",
+    "Do not rank policies by speed from this single very-short-window fixture.",
+    "Do not change production F-GC33/F-GC40/F-GC49D from MAP04 alone."
+  ],
+  "forbidden": [
+    "no production source change",
+    "no post-observation tolerance adjustment",
+    "no retuning of the local-corrector slope",
+    "no new physical process activation"
+  ]
+}
