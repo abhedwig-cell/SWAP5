@@ -12,12 +12,22 @@
   "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
   "blocker": null,
   "prepared_scope": "Pinned state/transfer/management/clock/transaction mapping matrix for staged Ribasim -> MODFLOW -> SWAP substitution.",
-  "next_action": "Create and qualify the DUMMY-18 machine-readable real-model authority map. Qualification of the map must not close mapped UNRESOLVED authorities.",
+  "next_action": "Create machine-readable DUMMY-18 authority map and validate that BOUND/NON_EQUIVALENT/UNRESOLVED classifications cannot be silently promoted.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
-    "baseline": "ba059143d1835369f7e88a65a478062b738b6720",
-    "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-    "workflow_run": 35591084550
+    "baseline": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106",
+    "DUMMY_17": {
+      "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+      "run": 35591084550
+    },
+    "DUMMY_15C": {
+      "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "run": 35593011851
+    },
+    "DUMMY_15D": {
+      "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+      "run": 35593604887
+    }
   }
 }
