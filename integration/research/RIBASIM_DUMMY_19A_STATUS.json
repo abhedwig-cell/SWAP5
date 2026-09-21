@@ -6,8 +6,8 @@
   "baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "authority": {
     "DUMMY_18": {
@@ -17,7 +17,7 @@
     "stage": "stage1.real_ribasim_allocation_supply",
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "next_action": "Trigger DUMMY-19A v2 qualification with Pixi bound to pinned Ribasim workspace.",
+  "next_action": "Preregister DUMMY-19B custom pinned real-Ribasim two-recipient priority-conflict bridge.",
   "production_delta": [],
   "reference_delta": [],
   "scope": "Pinned real Ribasim allocation/supply observability bridge using official fair_distribution, level_demand and two_basin_user_demand fixtures.",
@@ -58,7 +58,7 @@
       "no SWAP or MODFLOW component is substituted"
     ]
   },
-  "recovery_point": "DUMMY-19A implementation, external pin checkout, bridge script and gate are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-19A closed qualified; pinned real Ribasim demand/allocated/supplied observability authority is available.",
   "qualification_attempts": [
     {
       "run": 35596052149,
@@ -66,10 +66,28 @@
       "state": "INFRA_FAILED_BEFORE_MODEL_EXECUTION",
       "failure": "setup-pixi defaulted to nonexistent SWAP5-root pixi.toml",
       "scientific_effect": "none; pinned Ribasim checkout succeeded but no generated model or solver was executed"
+    },
+    {
+      "run": 35596174158,
+      "job": 106321377376,
+      "state": "PASS",
+      "qualification_head": "6e7cf321d6db98c59f076add6585fab38006a0bc",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "authority_use": "qualified"
     }
   ],
   "prequalification_infra_repair": {
     "correction": "Bind setup-pixi working-directory to .ribasim-pin, the exact checked-out Ribasim repository.",
     "scientific_effect": "none; source pin, fixtures, assertions and preregistered expectations unchanged"
+  },
+  "blocker": null,
+  "checkpoint_commit": "acde3eb7aef1589a09e78aa9021abc99d2eb6fa1",
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+    "workflow_run": 35596174158,
+    "workflow_job": 106321377376,
+    "qualification_head": "6e7cf321d6db98c59f076add6585fab38006a0bc",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "gate": "PASS"
   }
 }
