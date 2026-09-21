@@ -1,9 +1,11 @@
 # RIBASIM-DUMMY-18 blocked concept: real-model authority binding
 
-> Status: IMPLEMENTATION AUTHORIZED after DUMMY-17 qualification.
+> Status: IMPLEMENTED after DUMMY-17 qualification and post-DUMMY-15C/D
+> irrigation/canopy reconciliation.
 >
-> This work unit is mapping/governance preparation only. It performs no
-> production-model substitution.
+> This work unit is mapping/governance only. It performs no production-model
+> substitution. A green gate validates the authority map; it does not resolve
+> rows intentionally marked UNRESOLVED.
 
 ## Why a binding stage is necessary
 
@@ -318,3 +320,34 @@ DUMMY-18 is not a production admission work unit.
 
 It is the authority map required to make later production-facing experiments
 scientifically interpretable.
+
+
+## Executable authority-map semantics
+
+The machine-readable map classifies every binding row as exactly one of:
+
+~~~text
+BOUND
+NON_EQUIVALENT
+UNRESOLVED.
+~~~
+
+A row marked BOUND may enter a restricted substitution experiment only with its
+declared scope, time support and comparison rule.
+
+A row marked NON_EQUIVALENT cannot be compared directly and requires an
+explicit adapter or a different experiment.
+
+A row marked UNRESOLVED must remain blocked until its owning production
+workstream supplies authority.
+
+The qualification validator deliberately fails if:
+
+- a required UNRESOLVED row is silently promoted;
+- a READY stage depends on a non-BOUND row;
+- a NON_EQUIVALENT row lacks an adaptation requirement;
+- an UNRESOLVED row lacks a concrete blocker;
+- a BOUND row lacks pinned authority or time support.
+
+Thus DUMMY-18 qualification is a proof of disciplined uncertainty, not a claim
+that the full product coupling is already admitted.
