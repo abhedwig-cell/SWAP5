@@ -1,7 +1,7 @@
 name: GC real-SWAP MAP08 raw corrector failure
 on:
   push:
-    branches: [work/f-gc-dummy-swap-shared-storage]
+    branches: [work/f-gc-dummy-swap-shared-storage, work/f-gc-coupling-concepts-next]
     paths:
       - 'integration/research/GC_REAL_SWAP_MAP08*.json'
       - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
