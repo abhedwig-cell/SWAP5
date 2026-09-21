@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_fixed_interface.nh03.result.v1",
+  "date": "2026-09-21",
+  "status": "MATHEMATICAL_ORACLE_IMPLEMENTED_AWAITING_EXECUTION_EVIDENCE",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_NH03_PREREGISTRATION.json",
+  "derivation": "docs/research/GC_FIXED_INTERFACE_NH03_DERIVATION.md",
+  "implementation": "tests/research/test_gc_fixed_interface_nh03.py",
+  "exact_root": {
+    "z_p_increment_m": 0.05191461747673335,
+    "H_c_increment_m": 0.0346097449844889,
+    "z_p1_m": 8.051914617476733,
+    "H_c1_m": 8.034609744984489,
+    "interface_transfer_m": 0.00346097449844889
+  },
+  "response_objects": {
+    "accepted_storage_tangent": 0.15191461747673335,
+    "finite_window_storage_secant": 0.12595730873836668,
+    "accepted_local_condensed_u": 0.08633606558657775,
+    "accepted_physical_dE_dH": -0.08633606558657775
+  },
+  "new_result": "Under nonlinear storage, predictor-derived u is trajectory-local because the predictor reaches a different storage tangent. Therefore storage tangent, storage secant, predictor u and accepted corrector derivative are distinct quantities.",
+  "workflow_evidence": {
+    "commit": "c63fc5124dce93cbbb8110098c28f26af4eb7434",
+    "pull_request_triggered_runs_found": 0,
+    "qualification": "No execution claim."
+  },
+  "next": "Derive NH04 with one explicit state-dependent external sink and decompose the condensed derivative into storage/hydraulic and process contributions before implementation."
+}
