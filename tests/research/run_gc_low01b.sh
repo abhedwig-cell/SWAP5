@@ -9,7 +9,12 @@ cd "$ROOT"
 
 fail(){ echo "GC_LOW01B_RUNNER_FAIL $*" >&2; exit 1; }
 
-# Dependency gates are executable prerequisites, not documentary assumptions.
+# Activation authority must already be persisted before any inside-profile solve.
+test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json || fail 'candidate carrier authority missing'
+test -f integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json || fail 'constitutive bridge authority missing'
+test -f integration/research/GC_LOW01A2_RESULT.json || fail 'LOW01-A2 authority missing'
+
+# Dependency gates are then replayed as preservation checks.
 bash tests/research/run_gc_low01_constitutive_bridge.sh | tee "$BUILD/constitutive.txt"
 grep -Fq 'GC_LOW01_CONSTITUTIVE_BRIDGE_QUALIFICATION=PASS' "$BUILD/constitutive.txt" || fail 'constitutive prerequisite'
 
@@ -28,6 +33,7 @@ SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   tests/research/support/mod_gc_low01_constitutive_bridge.f90
+  tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
@@ -82,6 +88,9 @@ git diff --check -- \
   integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json \
   integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json \
   integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json \
+  integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json \
+  integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json \
+  integration/research/GC_LOW01A2_RESULT.json \
   integration/research/GC_LOW01_RESULT_CONTRACT_V1.json \
   tests/research/support/gc_low01_headcalc_nonconstitutive_stubs.f90 \
   tests/research/support/mod_gc_low01_constitutive_bridge.f90 \
