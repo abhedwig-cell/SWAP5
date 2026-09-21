@@ -562,6 +562,7 @@
       "id": "stage4.real_swap_external_irrigation",
       "state": "BLOCKED",
       "requirements": [
+        "swap.root_storage.bucket",
         "swap.irrigation.selection",
         "swap.irrigation.management_state",
         "swap.irrigation.partial_supply_policy",
@@ -571,10 +572,13 @@
         "swap.irrigation.atomic_transaction"
       ],
       "blockers": [
+        "swap.root_storage.bucket",
+        "swap.irrigation.selection",
         "swap.irrigation.partial_supply_policy",
         "swap.irrigation.gross_source_withdrawal",
         "swap.irrigation.atomic_transaction"
-      ]
+      ],
+      "note": "Real SWAP substitution requires explicit adapters for NON_EQUIVALENT root-state/demand semantics plus production decisions for unresolved external-supply and transaction ownership."
     },
     {
       "id": "stage5.full_product",
