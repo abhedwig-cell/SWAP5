@@ -135,11 +135,12 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19E",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19D",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
       "scientific_dependencies": "qualified DUMMY-19B and DUMMY-19C",
       "execution_sequence": "after DUMMY-19D closeout",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287"
     },
     {
       "work_unit": "RIBASIM-DUMMY-19F",
@@ -150,7 +151,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind DUMMY-19E to the post-DUMMY-19D closeout head, then implement the frozen 32 m3/day priority-allocation plus physical-shortfall gate.",
+  "next_authority_action": "Execute frozen DUMMY-19E pinned real Ribasim mixed allocation-realization gate; no scientific inputs, references or tolerances may change.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
