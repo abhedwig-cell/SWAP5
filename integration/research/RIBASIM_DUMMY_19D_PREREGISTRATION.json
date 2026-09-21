@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.coupling.real_ribasim_heterogeneous_realization.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19D",
+  "title": "Pinned real Ribasim heterogeneous physical realization factors",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+    "current": "BLOCKED_PENDING_DUMMY_19C",
+    "implementation_rule": "No DUMMY-19D generator, verifier or workflow gate before DUMMY-19C closes and the implementation baseline is rebound."
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Test the pinned real Ribasim physical UserDemand layer when two fully allocated demands share one source Basin but have different min_level values, so physical reduction factors are unequal and the common-factor proportional result from DUMMY-19C no longer applies.",
+  "model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 3600,
+    "basin": {
+      "initial_level_m": 1,
+      "profile_area_m2": 1000000
+    },
+    "fixed_supply_m3_per_day": 60,
+    "level_hold": {
+      "min_level_m": 1,
+      "max_level_m": 1,
+      "demand_priority": 1
+    },
+    "root_proxy": {
+      "demand_m3_per_day": 40,
+      "min_level_m": 0.99
+    },
+    "external_demand": {
+      "demand_m3_per_day": 20,
+      "min_level_m": 0.995
+    },
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_continuous_reference": {
+    "threshold_m": 0.02,
+    "initial_root_factor": 0.5,
+    "initial_external_factor": 0.15625,
+    "ode": "A dh/dtau = 60 - 40*phi(h-0.99) - 20*phi(h-0.995), tau in days.",
+    "final_level_m": 1.0000367990161128,
+    "integrated_root_supplied_m3": 20.055236373645673,
+    "integrated_external_supplied_m3": 3.145747513661483,
+    "integrated_total_supplied_m3": 23.200983887307157,
+    "integrated_storage_gain_m3": 36.799016112754046,
+    "final_root_factor": 0.5027599137504485,
+    "final_external_factor": 0.1583250103267847,
+    "ledger": "60 m3 fixed inflow = root supplied + external supplied + Basin storage gain."
+  },
+  "hypotheses": [
+    "Both priority cases fully allocate 40 m3/day root and 20 m3/day external demand, as in DUMMY-19C.",
+    "Physical supplied flows are not proportional to allocation because the two UserDemand nodes have different min_level values and therefore different source-state reduction factors.",
+    "Initial physical factors are exactly 0.5 for root and 0.15625 for external demand.",
+    "Integrated one-day physical supplies are approximately 20.0552364 m3 root and 3.1457475 m3 external, with a preregistered 0.05 m3 tolerance on each integrated volume.",
+    "Final Basin level is approximately 1.000036799016 m and storage gain approximately 36.7990161 m3.",
+    "Reversing demand_priority does not change the physical supplies or Basin trajectory when both demands remain fully allocated.",
+    "The common-factor proportional realization structure qualified by DUMMY-19C is therefore not general: current pinned Ribasim physical realization is source-state/link specific.",
+    "Allocated-but-unsupplied volumes remain diagnostic only and do not enter the physical ledger."
+  ],
+  "measurements": [
+    "per-UserDemand allocated rates",
+    "direct Basin-to-root and Basin-to-external physical linkflow time series",
+    "integrated supplied volumes",
+    "per-link normalized physical reduction factors",
+    "Basin level/storage trajectory",
+    "fixed source inflow",
+    "priority-order comparison"
+  ],
+  "boundaries": [
+    "single common source Basin only",
+    "different min_level values but identical source Basin",
+    "both demands fully allocated",
+    "no network reallocation after physical shortfall",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+  "fail_decision": "RIBASIM_DUMMY_19D_BLOCKED"
+}
