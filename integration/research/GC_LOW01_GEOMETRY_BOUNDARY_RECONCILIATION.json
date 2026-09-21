@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.gc_low01.geometry_boundary_reconciliation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-GEOM01",
+  "title": "Reconciliation of lower-node, bottom-face and legacy z(NN+1) branch semantics",
+  "status": "SOURCE_BOUND_AMBIGUITY_RESOLVED_FOR_TYPED_RESEARCH_POLICY",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "legacy_headcalc": "src/legacy/b1_10_port/headcalc.f90",
+    "typed_state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "candidate_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "explicit_test_geometry": "tests/fsi/fsi04_real_headcalc_stubs.f90"
+  },
+  "fixed_geometry_cm": {
+    "node_centres": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "cell_thickness": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "bottom_face": -300
+  },
+  "source_findings": [
+    "Legacy mode-1 counts nodes while grid_z(NN+1)>gwlinp and then reads grid_z(NN+1) again to decide inside-profile versus below-profile behavior.",
+    "The modern explicit geometry contract and FSI04 test stubs expose z with exactly n node centres; they do not expose an n+1 z sentinel.",
+    "Therefore the historical value and ownership of grid_z(numnod+1) are not recoverable from the admitted typed geometry surface.",
+    "The legacy source alone does not provide sufficient typed authority to classify a groundwater level between the last node centre and the declared bottom face."
+  ],
+  "contract_inconsistency": {
+    "candidate_contract": "classifies below-profile using declared bottom-face geometry",
+    "state_contract": "uses BELOW_BOTTOM_NODE when all node centres are above H_phreatic, including the -275 cm example",
+    "consequence": "LOW01-C cannot use both policies as if they were the same source fact."
+  },
+  "typed_research_policy": {
+    "below_profile_live_slice": "For LOW01-A/A2/D, require H_phreatic < declared bottom_face and use the exact derived mode-5 hbot mapping. This slice is already source-safe without any z(n+1) assumption.",
+    "inside_profile_live_slice": "For LOW01-B, restrict H_phreatic to cases that leave at least one declared node centre below the groundwater level (the preregistered -60/-120/-200 cm cases).",
+    "unresolved_half_cell": "The interval bottom_face < H_phreatic <= bottom_node_center is a distinct geometry-policy gap. Do not classify it as source-equivalent inside-profile or below-profile behavior until an explicit typed policy is derived.",
+    "low01c_rule": "LOW01-C must characterize internal-node snap boundaries independently from the lower-half-cell/bottom-face policy. The latter remains a separate unresolved boundary-policy slice."
+  },
+  "effects": [
+    "LOW01-A, LOW01-A2 and LOW01-D are unaffected because their H_phreatic is below -300 cm.",
+    "LOW01-B preregistered cases are unaffected because all lie above the bottom node centre and strictly inside the declared node domain.",
+    "The existing STATE01 -275 cm BELOW_BOTTOM_NODE case is retained only as a typed branch-classifier experiment, not as source-equivalent legacy mode-1 evidence.",
+    "HLINK04 remains blocked until the lower-half-cell policy is explicitly resolved or excluded from its admitted envelope."
+  ],
+  "forbidden": [
+    "do not invent a historical z(numnod+1) value",
+    "do not silently equate bottom node centre and bottom face",
+    "do not use the -275 cm STATE01 case as proof of legacy source semantics",
+    "no production mode-1 admission from this reconciliation"
+  ],
+  "next": [
+    "Preregister LOW01-C1 for internal-node snap boundaries using only source-safe inside-profile cases.",
+    "Preregister LOW01-C2 separately for bottom-node/bottom-face policy after an explicit geometric semantics decision.",
+    "Keep LOW01-A/A2/B/D execution rules unchanged."
+  ]
+}
