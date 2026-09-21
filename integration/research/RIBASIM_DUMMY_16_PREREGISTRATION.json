@@ -1,0 +1,152 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_clock_semantics.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-16",
+  "title": "Management-clock synchronization with invariant shared-state hydrology",
+  "baseline": "679dba49211c2dd015f6e6df37b3cc0c3b26872e",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+    "current": "BLOCKED_PENDING_DUMMY_15_AND_DUMMY_15B",
+    "implementation_rule": "No DUMMY-16 model or tests before DUMMY-15B closes and the implementation baseline is rebound."
+  },
+  "purpose": "Isolate management-clock/event-synchronization effects from physical timestep effects by holding the two-window physical trajectory and total realized managed withdrawal identical while changing only whether a mid-horizon priority event is observed.",
+  "canonical_setup": {
+    "stores": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50
+    },
+    "physical_windows": [
+      0.5,
+      0.5
+    ],
+    "management_min_surface_head_m": 0.2,
+    "surface_datum_m": 0,
+    "start": {
+      "h_s": 1,
+      "h_g": 0,
+      "W_root": 40
+    },
+    "root": {
+      "target": 80,
+      "capacity": 100
+    },
+    "external_request_per_window_m3": 20,
+    "priority_schedule": [
+      {
+        "interval": "[0,0.5)",
+        "priority": "ROOT_FIRST"
+      },
+      {
+        "interval": "[0.5,1.0]",
+        "priority": "EXTERNAL_FIRST"
+      }
+    ],
+    "physical_clock": "always resolves both 0.5-time windows",
+    "fast_management_clock": "samples/updates priority at t=0 and t=0.5",
+    "stale_management_clock": "samples priority at t=0 and holds ROOT_FIRST through t=1"
+  },
+  "exact_window_1": {
+    "requests": {
+      "root": 40,
+      "external": 20
+    },
+    "note": "To keep the first physical window from exhausting the root request, DUMMY-16 does not submit the full root deficit as one 0.5-window claim. It caps the scheduled root claim at 20 m3 for this clock experiment while retaining root-state bookkeeping.",
+    "submitted_requests": {
+      "root": 20,
+      "external": 20,
+      "total": 40
+    },
+    "regime": "FULL",
+    "total_realized_m3": 40,
+    "exchange_m3": 16,
+    "end": {
+      "h_s": 0.44,
+      "h_g": 0.16,
+      "W_root": 60
+    },
+    "split": {
+      "root": 20,
+      "external": 20
+    },
+    "next_physical_root_deficit_m3": 20
+  },
+  "exact_window_2_shared_physics": {
+    "start": {
+      "h_s": 0.44,
+      "h_g": 0.16,
+      "W_root": 60
+    },
+    "requests": {
+      "root": 20,
+      "external": 20,
+      "total": 40
+    },
+    "regime": "CURTAILED",
+    "total_realized_m3": 20.444444444444443,
+    "exchange_m3": 3.555555555555556,
+    "end_water": {
+      "h_s": 0.2,
+      "h_g": 0.19555555555555557
+    }
+  },
+  "fast_management_clock_expected": {
+    "second_window_priority": "EXTERNAL_FIRST",
+    "second_window_split": {
+      "external": 20,
+      "root": 0.44444444444444287
+    },
+    "final_root_storage_m3": 60.44444444444444,
+    "next_root_request_m3": 19.555555555555557,
+    "cumulative_external_delivery_m3": 40,
+    "final_water": {
+      "h_s": 0.2,
+      "h_g": 0.19555555555555557
+    }
+  },
+  "stale_management_clock_expected": {
+    "second_window_priority": "ROOT_FIRST",
+    "second_window_split": {
+      "root": 20,
+      "external": 0.44444444444444287
+    },
+    "final_root_storage_m3": 80,
+    "next_root_request_m3": 0,
+    "cumulative_external_delivery_m3": 20.444444444444443,
+    "final_water": {
+      "h_s": 0.2,
+      "h_g": 0.19555555555555557
+    }
+  },
+  "invariants": [
+    "Both schedules use identical physical window boundaries and the same requested total 40 m3 in each physical window.",
+    "Both schedules therefore have identical total realized managed withdrawal, V, surface head and groundwater head in each physical window.",
+    "The only difference is which managed recipient receives the scarce second-window water after the priority event.",
+    "Combined root+surface+groundwater storage loss equals cumulative supplied external demand, so the two schedules can have different represented-system storage despite identical surface/groundwater physical trajectories.",
+    "Root future demand differs because accepted root delivery differs, not because prior shortage is stored separately.",
+    "This first clock experiment does not compare physical timestep sizes and therefore does not reuse DUMMY-08 temporal-partition error as an explanation."
+  ],
+  "hypotheses": [
+    "Fast event-synchronized priority sampling yields final root storage 60.4444444444 m3 and next root request 19.5555555556 m3.",
+    "Stale priority sampling yields final root storage 80 m3 and next root request 0.",
+    "Both schedules end with identical h_s=0.2 m and h_g=0.1955555556 m.",
+    "The difference in combined represented-system storage equals the difference in cumulative external supplied demand.",
+    "Exact conservation alone cannot distinguish the two management-clock semantics because each schedule closes its own correct ledger.",
+    "A priority event can therefore materially alter future hydrological demand without altering the shared surface/groundwater trajectory when total managed withdrawal is invariant."
+  ],
+  "interpretation_boundary": [
+    "The 20 m3 scheduled root claim in window 1 is a controlled clock-experiment cap, not a production SWAP scheduling rule.",
+    "This work unit does not decide which management clock production Ribasim/SWAP coupling should use.",
+    "No physical timestep comparison is made in the first stage.",
+    "No network routing or real Ribasim allocation optimizer is represented.",
+    "No production coupling change."
+  ],
+  "future_extensions": [
+    "move the priority event off the physical-window boundary and test event subdivision",
+    "separate root-demand refresh clock from allocation-priority clock",
+    "compare Ribasim allocation timestep, physical solver timestep, SWAP state timestep and outer commit window",
+    "introduce one exogenous demand event and one hydrological threshold event in the same outer window"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+  "fail_decision": "RIBASIM_DUMMY_16_BLOCKED"
+}
