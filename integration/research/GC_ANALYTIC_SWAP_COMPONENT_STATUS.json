@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.gc_analytic_swap.component_status.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "status": "IMPLEMENTED_AWAITING_INTEGRAL_EXECUTION_EVIDENCE",
+  "production_changes": false,
+  "implementation": "tests/research/support/gc_analytic_swap.py",
+  "focused_test": "tests/research/test_gc_analytic_swap_component.py",
+  "runner": "tests/research/run_gc_dummy_swap_dsw01.sh",
+  "implementation_commits": [
+    "dca644ed1b45f6fa15602e889eaef661cf934014",
+    "472307072472efe60edef815b1681483426af409",
+    "709a13fc0e818661163a7ebcc3600b06bff1030b",
+    "80cc8190c5290c69bf19d80095fda6546ec99c96"
+  ],
+  "mechanisms": [
+    "linear storage",
+    "affine/depth-dependent storage with analytically integrated volume",
+    "internal delayed-release memory storage",
+    "head-dependent external sinks for ET/drainage",
+    "atmospheric and lateral external inputs",
+    "optional fixed-head resistance boundary",
+    "exact two-storage finite-resistance q-link",
+    "exact shared-head storage partition helper"
+  ],
+  "bound_oracles": [
+    "original 10 mm / S=0.20 -> 8.05 m bucket",
+    "DSW02 storage partition invariance",
+    "DSW10 depth-varying storage",
+    "DSW12 head-dependent ET",
+    "DSW13 drainage",
+    "DSW15 memory forcing-order dependence",
+    "DSW08 finite-resistance q-link"
+  ],
+  "qualification_rule": "Do not call the component qualified until GC_ANALYTIC_SWAP_COMPONENT_GATE=PASS is observed from execution. Existing DSW tests remain the independent authority and are not replaced by this component.",
+  "note": "A static review corrected the new ET test to the pre-existing DSW12 oracle before qualification; no old oracle was changed."
+}
