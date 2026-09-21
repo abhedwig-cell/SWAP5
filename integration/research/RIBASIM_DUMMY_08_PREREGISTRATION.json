@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_temporal_partition.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-08",
+  "title": "Multi-window state propagation and management-event timing",
+  "baseline": "664a6bedca83feeda989ecdbe339bbe2f43e52c5",
+  "purpose": "Propagate the qualified per-window direct active-set solution through multiple coupling windows and quantify timestep-partition effects against an independent continuous-time event reference.",
+  "discrete_contract": {
+    "state": "committed Basin level h_n",
+    "per_window_request": "R_n = request_rate * dt_n",
+    "per_window_solver": "DUMMY-07 direct active-set solve",
+    "commit": "h_(n+1) = solved end level; no tentative state leaks across windows",
+    "shortage_feedback": "none; request rate is exogenous and does not carry backlog",
+    "cumulative_balance": "A*(h_0-h_N) = sum(U_n) + sum(V_n), positive V is Basin-to-groundwater exchange"
+  },
+  "continuous_reference": {
+    "domain": "constant A,C,hgw, request rate r; hgw<hmin<h0; no external inflow; one irreversible management shutoff event",
+    "full_demand_ode": "A dh/dt = -r - C(h-hgw)",
+    "full_equilibrium": "h_eq = hgw - r/C",
+    "full_solution": "h(t)=h_eq+(h0-h_eq)*exp(-(C/A)t)",
+    "hit_time": "t_hit=-(A/C)*ln((hmin-h_eq)/(h0-h_eq)) when full solution reaches hmin",
+    "post_hit_ode": "A dh/dt = -C(h-hgw), with U=0",
+    "post_hit_solution": "h(t)=hgw+(hmin-hgw)*exp(-(C/A)(t-t_hit))",
+    "cumulative_delivery": "U=r*min(T,t_hit) in the event case",
+    "cumulative_exchange": "V=A*(h0-h(T))-U"
+  },
+  "canonical_event_case": {
+    "A": 100,
+    "C": 50,
+    "h0": 1,
+    "hgw": 0,
+    "hmin": 0.4,
+    "request_rate": 40,
+    "horizon": 1,
+    "coarse_one_window": {
+      "delivery_m3": 25,
+      "exchange_m3": 35,
+      "end_level_m": 0.4,
+      "regime": "CURTAILED"
+    },
+    "two_half_windows": {
+      "delivery_m3": 27.5,
+      "exchange_m3": 32.5,
+      "end_level_m": 0.4,
+      "regimes": [
+        "FULL",
+        "CURTAILED"
+      ]
+    },
+    "continuous": {
+      "hit_time": "2*ln(1.5)",
+      "delivery_m3": "80*ln(1.5)",
+      "end_level_m": "0.4*exp(-0.5*(1-2*ln(1.5)))"
+    }
+  },
+  "experiments": {
+    "P1": "multi-window propagation uses each accepted end level as the next start level and closes every window plus the cumulative water balance",
+    "P2": "in a nonbinding FULL regime, N equal discrete windows reproduce the independently derived trapezoidal recurrence h_N=h_eq+g^N(h0-h_eq), g=(1-k/2)/(1+k/2)",
+    "P3": "canonical event case reproduces the preregistered one-window and two-half-window allocations exactly",
+    "P4": "for N=16,32,64,128 equal windows, final-level and cumulative-delivery errors decrease monotonically toward the independent continuous event solution",
+    "P5": "the coarse one-window solution underdelivers management water and ends artificially at hmin relative to the continuous event reference",
+    "P6": "with sufficiently fine partitioning, a later ZERO-demand window can physically move Basin level below hmin, confirming hmin is a management threshold rather than a physical floor",
+    "P7": "per-window requested volume remains request_rate*dt after prior shortage; no hidden shortage backlog is introduced",
+    "P8": "cumulative mass balance remains closed for all tested partitions even though cumulative delivery and exchange are partition dependent"
+  },
+  "interpretation_rules": [
+    "partition dependence is a temporal-discretization/decision-timing effect, not automatically a water-balance error",
+    "continuous reference is restricted to the preregistered constant-parameter one-event domain",
+    "management threshold may be crossed by physical hydrology after managed delivery reaches zero",
+    "no demand carryover or behavioral SWAP feedback is introduced in DUMMY-08",
+    "no production coupling timestep is prescribed"
+  ],
+  "forbidden": [
+    "no production SWAP/Ribasim/MODFLOW changes",
+    "no backlog or adaptive demand rule",
+    "no claim that the continuous one-event reference covers networks or varying groundwater heads",
+    "no empirical acceptance tolerance used to tune timestep"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_08_QUALIFIED_TEMPORAL_PARTITION_EFFECT",
+  "fail_decision": "RIBASIM_DUMMY_08_BLOCKED"
+}
