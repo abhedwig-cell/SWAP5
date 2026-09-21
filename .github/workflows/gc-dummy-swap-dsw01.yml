@@ -16,6 +16,7 @@ on:
   pull_request:
     branches:
       - integration/f-ci-canonical
+      - work/f-gc-dummy-swap-shared-storage
     paths:
       - 'docs/research/GC_*.md'
       - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
