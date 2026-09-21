@@ -5,11 +5,11 @@
   "work_unit": "GC-REAL-SWAP-MAP03",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-dummy-swap-shared-storage",
-  "checkpoint_commit": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
+  "checkpoint_commit": "eeefdcd15e2752a9904098d72344e9702c9f52de",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_changes": false,
   "authority_paths": [
     "AGENTS.md",
@@ -37,10 +37,10 @@
     "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
     "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
   ],
-  "next_action": "Rerun the unchanged preregistered MAP03 five-head transaction diagnostic after observability-only bridge repair.",
-  "recovery_point": "Resume at 9524f7092e98435ce0ab3c10bddcd682f0b8de38. The first MAP03 run never reached a physical trial, so no scientific gate was observed or retuned.",
+  "next_action": "Audit the complete historical q_u = u*dH/dt - qbot semantics and derivative before extending the decomposition to active drainage.",
+  "recovery_point": "MAP03 is qualified. Resume from GC_REAL_SWAP_MAP03_RESULT.json and the historical q_u semantic audit; rerun MAP03 only if its recorded dependency surface changes.",
   "blockers": [],
-  "last_reconciled_head": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
+  "last_reconciled_head": "eeefdcd15e2752a9904098d72344e9702c9f52de",
   "instrumentation_history": [
     {
       "workflow_run": 35566311361,
@@ -51,6 +51,18 @@
       "repair_commit": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
       "change": "Read storage/total-in/total-out/residual from result%mass, bottom exchange from result%bottom_outward_exchange_native, and accepted duration from completed_t-requested_t0.",
       "production_change": false
+    }
+  ],
+  "qualification_evidence": [
+    {
+      "workflow_run": 35566369303,
+      "workflow_job": 106228868985,
+      "role": "first qualified MAP03 result authority"
+    },
+    {
+      "workflow_run": 35566604668,
+      "workflow_job": 106229590120,
+      "role": "independent preservation rerun after observability repair"
     }
   ]
 }
