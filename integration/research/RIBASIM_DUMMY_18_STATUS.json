@@ -6,13 +6,13 @@
   "preregistration_commit": "4d378e7afa2ee8b4e1acbb5685a4e4c208b38620",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
   "blocker": null,
   "prepared_scope": "Pinned state/transfer/management/clock/transaction mapping matrix for staged Ribasim -> MODFLOW -> SWAP substitution.",
-  "next_action": "Execute DUMMY-18 real-model-authority-map gate.",
+  "next_action": "Begin only READY_RESTRICTED stage1 real Ribasim allocation/supply bridge and/or stage2 MODFLOW head/flux-only bridge.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -43,5 +43,15 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "14 tests",
-  "recovery_point": "DUMMY-18 authority map, validator, tests, concept and workflow gate are persisted; qualification remains open."
+  "recovery_point": "DUMMY-18 closed qualified; real-model substitution authority map is available.",
+  "checkpoint_commit": "55730530a386e75ff76d9bdd969b04a12d352cc8",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+    "workflow_run": 35595081892,
+    "workflow_job": 106317927455,
+    "qualification_head": "cceceb1ced43de08d973a7d4216f5dd7b975a0e3",
+    "tests": "14/14 PASS",
+    "gate": "PASS"
+  }
 }
