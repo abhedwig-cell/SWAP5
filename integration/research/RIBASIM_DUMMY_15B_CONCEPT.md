@@ -310,3 +310,143 @@ against a pinned real Ribasim model.
 No DUMMY-15B code or tests may be created before DUMMY-15 qualification.
 
 After DUMMY-15 closeout, the implementation baseline must be rebound.
+
+
+## Preregistration revision before implementation
+
+After the blocked concept above was written, current Ribasim UserDemand and
+allocation documentation was checked more deeply.
+
+The documented physical UserDemand abstraction is not simply a
+lower-priority-first realization of allocated water.
+
+Instead, the physical abstraction is reduced by smooth source-state factors
+(low storage and minimum level) applied to the allocated abstraction.
+
+Therefore DUMMY-15B will not assume that priority-preserving curtailment is
+current Ribasim behavior.
+
+The qualification will compare two explicit realization policies against the
+same allocation and the same exact coupled physical capacity.
+
+### Policy A: priority-preserving curtailment
+
+This remains useful as a management-intent oracle.
+
+Given actual coupled managed capacity `M_actual`:
+
+```text
+walk the allocated claims in priority order
+supplied_i = min(allocated_i, remaining capacity)
+```
+
+For the canonical fully allocated 60 m3 case with only 32 m3 physically
+realizable:
+
+Root priority:
+
+```text
+supplied_root = 32
+supplied_external = 0.
+```
+
+External priority:
+
+```text
+supplied_external = 20
+supplied_root = 12.
+```
+
+### Policy B: proportional aggregate reduction
+
+Define
+
+```text
+rho = M_actual / sum(allocated)
+```
+
+when allocated total is nonzero.
+
+Then
+
+```text
+supplied_i = rho * allocated_i.
+```
+
+For the canonical 60 -> 32 realization:
+
+```text
+rho = 32/60.
+```
+
+Because the forecast allocated both claims fully,
+
+```text
+supplied_root =
+  40 * 32/60
+  = 21.3333333333
+
+supplied_external =
+  20 * 32/60
+  = 10.6666666667.
+```
+
+Root endpoint:
+
+```text
+W_root1 = 61.3333333333
+```
+
+and
+
+```text
+next root request = 18.6666666667.
+```
+
+Combined represented-system loss is
+
+```text
+10.6666666667
+```
+
+because only supplied external demand leaves the three-store system.
+
+### What remains invariant
+
+Both policies use the same exact total physical realization:
+
+```text
+M_actual = 32
+V = 28
+h_s1 = 0.4
+h_g1 = 0.28.
+```
+
+Thus the realization-policy comparison isolates management distribution and
+root-state memory from the physical surface-groundwater solution.
+
+### Why policy B is only a structural reference
+
+Current Ribasim UserDemand documentation uses explicit smooth functions of
+source storage and source level.
+
+DUMMY-15B does not reproduce those exact functions.
+
+Its proportional reduction is only a controlled structural analogue for the
+case in which already allocated abstractions experience a common physical
+reduction factor.
+
+Before any production claim, the exact same forecast-realization conflict must
+be run against a pinned Ribasim executable and its demand/allocated/supplied
+outputs.
+
+### Revised scientific question
+
+DUMMY-15B therefore asks:
+
+> When allocation overestimates what shared-state hydrology can physically
+> realize, how strongly do alternative realization semantics change supplied
+> demand, root-zone memory and system-boundary water loss even though the
+> underlying physical capacity is identical?
+
+It does not yet decide which policy should be used in production.
