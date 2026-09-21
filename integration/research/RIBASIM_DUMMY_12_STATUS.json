@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-12",
   "branch": "work/ribasim-dummy-01",
   "baseline": "3a82ed3c79db1b4ff6c54ad68724067e95072e94",
-  "checkpoint_commit": "077c759e8fc6c0f8c020828adb6023a039c97204",
+  "checkpoint_commit": "4d68e652c52ed30ee988bbff319a67485727c7e5",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "parallelism": "Independent of DUMMY-11 qualification; consumes no DUMMY-11 result.",
   "scope": "Analytical persistent root-zone bucket deriving each window request from committed storage, with shortage diagnostic only and exact rainfall/loss/drainage ledger.",
   "relevant_paths": [
@@ -22,11 +22,9 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Use run 35571231402 as the DUMMY-12 qualification authority when it completes.",
-  "recovery_point": "DUMMY-12 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": [
-    "Frozen-scope GitHub Actions rootzone-demand-gate is queued in run 35571231402."
-  ],
+  "next_action": "Rebind DUMMY-13 implementation baseline to combined qualified DUMMY-11 and DUMMY-12 authority.",
+  "recovery_point": "DUMMY-12 closed qualified; root-zone demand-state authority is available.",
+  "blockers": [],
   "prequalification_review": {
     "date": "2026-09-21",
     "state": "STATIC_CONTRACT_REVIEW_PASS_CI_STILL_REQUIRED",
@@ -56,5 +54,13 @@
       "state": "QUEUED_FROZEN_SCOPE",
       "authority_use": "preferred qualification route"
     }
-  ]
+  ],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+    "workflow_run": 35570012761,
+    "workflow_job": 106239470382,
+    "qualification_head": "06f72519ecc037ce2517986e0a74296d9c63b7b8",
+    "tests": "10/10 PASS",
+    "gate": "PASS"
+  }
 }
