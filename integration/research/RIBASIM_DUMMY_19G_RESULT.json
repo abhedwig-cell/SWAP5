@@ -1,0 +1,133 @@
+{
+  "schema": "swap5.coupling.real_ribasim_saveat_allocation_clock_sensitivity.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19G",
+  "decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+  "authority": {
+    "qualification_head": "19ec736d352474eb1ec685705fbb80bf1ba79b68",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35620973325,
+    "workflow_job": 106403635734,
+    "conclusion": "success",
+    "source_scope": "PASS"
+  },
+  "fixed_across_sweep": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99
+  },
+  "observations": {
+    "3600": {
+      "allocation_records": 24,
+      "root_first": {
+        "final_root_alloc_m3_per_day": 40,
+        "final_external_alloc_m3_per_day": 20,
+        "root_supplied_m3": 19.83909752937718,
+        "external_supplied_m3": 9.252711038241413,
+        "total_supplied_m3": 29.091808567618592,
+        "final_level_m": 1.0000029081914323,
+        "storage_gain_m3": 2.908191432338114
+      },
+      "external_first": {
+        "final_root_alloc_m3_per_day": 40,
+        "final_external_alloc_m3_per_day": 20,
+        "root_supplied_m3": 19.088922018207214,
+        "external_supplied_m3": 10.00288658461548,
+        "total_supplied_m3": 29.091808602822695,
+        "final_level_m": 1.0000029081913973,
+        "storage_gain_m3": 2.9081913972550666
+      }
+    },
+    "21600": {
+      "allocation_records": 4,
+      "root_first": {
+        "final_root_alloc_m3_per_day": 40,
+        "final_external_alloc_m3_per_day": 20,
+        "root_supplied_m3": 19.015566901854644,
+        "external_supplied_m3": 5.5022859019900325,
+        "total_supplied_m3": 24.517852803844676,
+        "final_level_m": 1.0000074821471963,
+        "storage_gain_m3": 7.482147196258282
+      },
+      "external_first": {
+        "final_root_alloc_m3_per_day": 40,
+        "final_external_alloc_m3_per_day": 20,
+        "root_supplied_m3": 14.50992377167344,
+        "external_supplied_m3": 10.007936972049215,
+        "total_supplied_m3": 24.517860743722657,
+        "final_level_m": 1.0000074821392564,
+        "storage_gain_m3": 7.482139256387299
+      }
+    },
+    "43200": {
+      "allocation_records": 2,
+      "root_first": {
+        "final_root_alloc_m3_per_day": 40,
+        "final_external_alloc_m3_per_day": 7.990388881182293,
+        "root_supplied_m3": 18.02006071854419,
+        "external_supplied_m3": 2.000644586638224,
+        "total_supplied_m3": 20.020705305182414,
+        "final_level_m": 1.0000119792946949,
+        "storage_gain_m3": 11.979294694874909
+      },
+      "external_first": {
+        "final_root_alloc_m3_per_day": 27.990387915633615,
+        "final_external_alloc_m3_per_day": 20,
+        "root_supplied_m3": 10.010082305861083,
+        "external_supplied_m3": 10.01063715475508,
+        "total_supplied_m3": 20.020719460616164,
+        "final_level_m": 1.0000119792805395,
+        "storage_gain_m3": 11.979280539531345
+      }
+    },
+    "86400": {
+      "allocation_records": 1,
+      "root_first": {
+        "final_root_alloc_m3_per_day": 32,
+        "final_external_alloc_m3_per_day": 0,
+        "root_supplied_m3": 16.01919428633843,
+        "external_supplied_m3": 0,
+        "total_supplied_m3": 16.01919428633843,
+        "final_level_m": 1.0000159808057136,
+        "storage_gain_m3": 15.980805713633472
+      },
+      "external_first": {
+        "final_root_alloc_m3_per_day": 11.999999999999998,
+        "final_external_alloc_m3_per_day": 20.000000000000004,
+        "root_supplied_m3": 6.007197941660057,
+        "external_supplied_m3": 10.011996569433427,
+        "total_supplied_m3": 16.019194511093485,
+        "final_level_m": 1.000015980805489,
+        "storage_gain_m3": 15.980805488924332
+      }
+    }
+  },
+  "evidence": [
+    "Allocation record count is exactly 24, 4, 2 and 1 for saveat 1h, 6h, 12h and 24h respectively.",
+    "Allocation record times lie on the saveat grid in every tested case.",
+    "Shorter saveat exposes retained Basin storage to management reoptimization earlier within the same one-day horizon.",
+    "Total physical UserDemand supply rises monotonically as saveat decreases: approximately 16.0192, 20.0207, 24.5179 and 29.0918 m3 for 24h, 12h, 6h and 1h clocks.",
+    "Retained Basin storage falls correspondingly while the 32 m3 physical ledger closes.",
+    "For a fixed saveat, priority order changes recipient allocation/delivery but not total physical supply or Basin endpoint within tolerance.",
+    "RIBASIM_REAL_19G_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY=PASS",
+    "RIBASIM_DUMMY_19G_GATE=PASS"
+  ],
+  "interpretation": "In the pinned real Ribasim allocation configuration, solver.saveat is not an observationally neutral output setting. It participates in allocation timing. More frequent save boundaries cause state-dependent management reoptimization of physically retained Basin water within the nominal allocation.dt=86400 s interval.",
+  "upstream_context": "Deltares/Ribasim PR #3218 explicitly notes that a coupler can rely on allocation calls at multiples of saveat and characterizes that synchronization as brittle/not what saveat was meant for; the same loop structure was observed on current upstream main.",
+  "duplicate_attempt": {
+    "run": 35622122103,
+    "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
+    "reason": "A later trigger commit inherited preregistered DUMMY-19I files, which the frozen DUMMY-19G runner correctly rejected as unexpected branch delta.",
+    "scientific_effect": "none"
+  },
+  "boundaries": [
+    "Do not call the upstream behavior a defect; upstream itself frames it as a brittle synchronization/design concern.",
+    "DUMMY-19G quantifies the tested pinned implementation only.",
+    "DUMMY-19H is required to isolate repeated management reoptimization from purely physical/output numerical effects.",
+    "No SWAP/MODFLOW substitution or production prescription."
+  ],
+  "downstream": "Execute preregistered DUMMY-19H no-scarcity negative control, then preregistered DUMMY-19I BMI-owned management clock."
+}
