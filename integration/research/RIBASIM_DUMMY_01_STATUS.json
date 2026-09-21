@@ -25,7 +25,8 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Run the focused RIBASIM-DUMMY-01 gate on the persisted branch and record the result.",
+  "next_action": "Run the focused RIBASIM-DUMMY-01 gate on this pull-request head.",
   "recovery_point": "Re-run tests/research/run_ribasim_dummy_01.sh from work/ribasim-dummy-01.",
-  "blockers": []
+  "blockers": [],
+  "qualification_attempt": "nested_pull_request_ci"
 }
