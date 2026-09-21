@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
   "blocker": null,
   "prepared_scope": "Pinned state/transfer/management/clock/transaction mapping matrix for staged Ribasim -> MODFLOW -> SWAP substitution.",
-  "next_action": "Execute DUMMY-18 real-model-authority-map gate.",
+  "next_action": "Execute DUMMY-18 real-model-authority-map-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -43,5 +43,6 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "14 tests",
-  "recovery_point": "DUMMY-18 authority map, validator, tests, concept and workflow gate are persisted; qualification remains open."
+  "recovery_point": "DUMMY-18 authority map, validator, tests, concept and workflow gate are persisted; qualification remains open.",
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
