@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_real_swap.map11.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP11",
+  "status": "RETROSPECTIVE_SOURCE_BOUND_DOMAIN_OWNERSHIP_AUDIT",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "sources": [
+      "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90",
+      "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+      "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+      "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py",
+      "tests/fsi/fsi04_real_headcalc_stubs.f90"
+    ]
+  },
+  "governance": {
+    "prospective": false,
+    "blind": false,
+    "note": "The ownership conclusions had already been incorporated into research synthesis text before this formal result record was created. This file is a source-bound reconciliation record, not prospective validation."
+  },
+  "findings": {
+    "current_fgc_head_object": {
+      "identity": "lower coupling-plane hydraulic head",
+      "source_statement": "mod_modflow6_swap_prescribed_qbot_bottom_face.f90 explicitly states that the derived head is the coupling-plane head and is not the freatic groundwater level",
+      "predictor_mapping": "bottom-node state plus Darcy half-cell extrapolation -> bottom-face pressure head -> interface hydraulic head",
+      "corrector_mapping": "interface hydraulic head -> SWAP bottom pressure head -> forcing.bottom_head"
+    },
+    "swap_state_separation": {
+      "committed_fixture_groundwater_level": -2,
+      "predictor_reference_interface_head_approx_m": -0.7149999706136307,
+      "implication": "The fixture stores a groundwater_level state separately from the coupling-plane interface head. The head-forcing adapter writes bottom_head and does not establish equality with the groundwater_level field."
+    },
+    "modflow_fixture_storage": {
+      "grid": "1 layer x 1 row x 3 columns; top=0 m, bottom=-2 m; cell area 1 m2",
+      "sto": {
+        "iconvert": 1,
+        "ss_per_m": 0.02,
+        "sy": 0.15
+      },
+      "note": "These are explicit MODFLOW fixture parameters."
+    },
+    "swap_fixture_storage_domain": {
+      "grid_nodes": 4,
+      "z_native": [
+        -0.25,
+        -0.75,
+        -1.5,
+        -2.5
+      ],
+      "dz_native": [
+        0.5,
+        0.5,
+        1,
+        1
+      ],
+      "physical_state": "pressure_head and water_content are SWAP/FMR-owned state; groundwater_level is separately initialized",
+      "note": "No source authority declares this FMR storage domain to be geometrically or constitutively identical to the MODFLOW STO cell volume."
+    },
+    "coupling_storage_ownership": {
+      "api_role": "F-GC33/API supplies an affine HCOF/RHS response; it does not itself configure or replace the MODFLOW STO package",
+      "fixture_role": "F-GC45 and F-GC49D qualification fixtures intentionally allow MODFLOW STO and nonzero SWAP response u to coexist",
+      "conclusion": "Coexistence in these synthetic qualification fixtures does not establish duplicate physical storage and does not establish a valid shared-storage partition."
+    }
+  },
+  "bounded_conclusions": [
+    "The current F-GC route is not demonstrated to be a phreatic shared-state h-link. Its explicit exchanged state is a lower coupling-plane hydraulic head.",
+    "The current F-GC fixture therefore cannot be used as direct evidence that SWAP finite-window storage response and MODFLOW STO describe the same physical volume.",
+    "MAP03/MAP10 establish that u_A can be a finite-window whole-column SWAP storage sensitivity in drainage-free cases, but MAP11 prevents reinterpreting that fact as a MODFLOW-STO double-counting result without a separate domain-equivalence authority.",
+    "A future true phreatic h-link design would need an explicit common-state and storage-ownership contract rather than inheriting it from the present lower-boundary interface formulation."
+  ],
+  "forbidden_inference": [
+    "Do not call F-GC45 a duplicate-storage proof.",
+    "Do not call the present lower coupling-plane head a freatic water-table state.",
+    "Do not infer that MODFLOW STO is correct, incorrect, complementary or duplicated for a real deployment until the real coupled-domain ownership is specified.",
+    "Do not change production F-GC code from this audit."
+  ],
+  "next": [
+    "Close MAP08 raw corrector-domain diagnosis.",
+    "Close MAP09 active-drainage prescribed-head feasibility and MAP09A only if its activation rule is satisfied.",
+    "For any real deployment architecture, define the geometric and constitutive ownership of MODFLOW storage relative to the SWAP column before judging storage overlap."
+  ]
+}
