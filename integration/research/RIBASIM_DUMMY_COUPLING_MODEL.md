@@ -772,3 +772,115 @@ It does not yet establish:
 Its value is that these real components can be substituted one at a time
 against explicit conservation, state, management, timing and transaction
 invariants rather than being introduced simultaneously.
+
+
+## 19. Production irrigation adds management state and canopy state
+
+The current canonical restricted Hupsel irrigation route adds two state classes
+that do not exist in the analytical root-bucket dummy.
+
+### Irrigation management state
+
+The qualified TCS1/DCS2 process carries:
+
+~~~text
+dayfix
+active_event
+active_event_start
+active_event_end.
+~~~
+
+Its event selection depends on hydrologic/crop diagnostics, but the state is not
+itself reducible to soil-water storage.
+
+Therefore the earlier DUMMY-12 statement
+
+~~~text
+shortage is not persistent physical state
+~~~
+
+must not be overgeneralized into
+
+~~~text
+production irrigation has no management memory.
+~~~
+
+Production irrigation does have explicit management/event memory.
+
+### Canopy interception state
+
+For intercepted sprinkling, gross irrigation first enters the stateful Rutter
+canopy reservoir.
+
+The relevant path is:
+
+~~~text
+surface-water source withdrawal
+  -> gross irrigation
+  -> canopy reservoir / interception evaporation
+  -> net irrigation
+  -> dynamic soil top.
+~~~
+
+The Rutter process owns accepted canopy storage and returns an explicit
+candidate canopy storage.
+
+Hence:
+
+~~~text
+gross source withdrawal != net soil irrigation.
+~~~
+
+A complete coupled water ledger must either include canopy storage explicitly
+or place canopy storage change and interception evaporation on the declared
+system boundary.
+
+### Exact canopy balance identity
+
+Over one interval:
+
+~~~text
+gross intercepted input
+=
+net throughfall / net irrigation
++ canopy storage change
++ interception evaporation.
+~~~
+
+For irrigation coupling this means a Ribasim supplied withdrawal should be
+compared first with gross irrigation entering the SWAP interception path, not
+directly with the net dynamic-top irrigation rate.
+
+### Transaction gap
+
+F-APP05, F-APP07 and F-APP08 qualify process and application composition but
+explicitly exclude transaction changes.
+
+Kernel publication separately commits kernel physical state.
+
+The inspected authorities therefore do not yet establish one atomic commit for:
+
+~~~text
+irrigation management state
++ canopy candidate state
++ soil-water/kernel candidate state
++ externally supplied irrigation transfer.
+~~~
+
+That atomic ownership remains a real coupling authority question.
+
+### Partial supply consequence
+
+A selected fixed-depth/rate irrigation event can be only partly supplied by an
+external allocator.
+
+The current restricted irrigation process does not define whether that should:
+
+- reject the event;
+- complete the event with reduced water;
+- retain an explicit residual event;
+- change rate;
+- change duration;
+- defer the event.
+
+DUMMY-15C isolates those semantics before real-model substitution.
