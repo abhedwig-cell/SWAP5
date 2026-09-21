@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.gc_low01.candidate_contract.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-DESIGN01",
+  "title": "Candidate typed prescribed-groundwater-level trial contract",
+  "status": "RESEARCH_DESIGN_NOT_PRODUCTION_AUTHORITY",
+  "basis": [
+    "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json",
+    "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json"
+  ],
+  "control": {
+    "coordinate": "H_phreatic_cm",
+    "meaning": "prescribed groundwater-level elevation for one trial window",
+    "distinct_from": [
+      "mode-5 lower-face pressure head hbot",
+      "current F-GC lower coupling-plane interface head"
+    ],
+    "time_semantics": "constant trial coordinate over the coupling window for the first research slice; legacy DATE1 interpolation is not part of LOW01-A/B/D"
+  },
+  "geometry": {
+    "required": [
+      "active node center elevations z(1:n)",
+      "cell thickness dz(1:n)",
+      "inter-node distances",
+      "explicit lower-face elevation z_face_bottom = z(n)-0.5*dz(n)"
+    ],
+    "branch_rule": {
+      "above_or_at_top": "H_phreatic >= z(1)-1e-4 cm",
+      "inside_profile": "z_face_bottom < H_phreatic < z(1)-1e-4 cm, with active Richards nodes determined from declared centers and branch tolerance",
+      "below_profile": "H_phreatic <= z_face_bottom, mapped to hbot = H_phreatic-z(n)+0.5*dz(n)"
+    },
+    "note": "The typed branch rule must not read an undeclared z(n+1) sentinel."
+  },
+  "state": {
+    "immutable_origin": [
+      "pressure_head(1:n)",
+      "water_content(1:n)",
+      "ponding_depth",
+      "accepted groundwater_level",
+      "all process and numerical continuation state owned by the enclosing FMR trial"
+    ],
+    "candidate_outputs": [
+      "pressure_head(1:n)",
+      "water_content(1:n)",
+      "groundwater_level = H_phreatic",
+      "qbot",
+      "fllowgwl/below-profile branch diagnostic or typed equivalent",
+      "active_richards_nodes",
+      "complete-profile storage change",
+      "solver diagnostics and mass diagnostics"
+    ]
+  },
+  "constitutive_ownership": {
+    "rule": "All hydraulic state created by the typed route must come from one declared constitutive authority.",
+    "below_profile": "The ordinary provider-owned HeadCalc path is reusable after the geometry branch is typed.",
+    "inside_profile": "Saturated continuation theta_s and interface conductivity must come from the explicit constitutive parameter/provider authority or an independently qualified source-exact adapter; direct legacy-global cofgen/watcon/hconduc use is not acceptable typed ownership.",
+    "above_top": "Same ownership rule applies to the special fully saturated/top branch."
+  },
+  "qbot": {
+    "role": "diagnosed output of the prescribed-groundwater-level trial",
+    "inside_profile": "Use the source-declared vertical flux-chain reconstruction after candidate storage/process state is known.",
+    "below_profile": "Use the accepted prescribed-head equivalent lower-face flux materialization, with the mode-1 derived hbot and identical arithmetic authority as the qualified mode-5 accepted-step qbot path.",
+    "not_input": true
+  },
+  "transaction": {
+    "trial_origin": "Every H_phreatic trial begins from one immutable accepted origin.",
+    "reject": "Restore all hydraulic, groundwater-level, active-domain, process and numerical continuation state.",
+    "accept": "Publish exactly one candidate and exactly one mass authority after conjunctive coupled acceptance.",
+    "cross_route_isolation": "No LOW01 state or selector may leak into current production mode-5 F-GC."
+  },
+  "qualification_slices": {
+    "LOW01_A": {
+      "title": "Below-profile source-equivalent reduction",
+      "gate": "Typed H_phreatic below the profile derives hbot from declared bottom-face geometry and reproduces a mode-5 trial from the same origin in candidate state, qbot, storage and solver path within declared floating-point bounds.",
+      "dependencies": [
+        "explicit bottom-face geometry rule",
+        "mode-5 accepted qbot authority"
+      ],
+      "production_change": false
+    },
+    "LOW01_B": {
+      "title": "Inside-profile active-domain and saturated continuation",
+      "gate": "Typed H_phreatic inside the profile reproduces source-declared active-node truncation, provider-owned saturated continuation, qbot and hard mass closure.",
+      "dependencies": [
+        "provider-owned saturated theta/K continuation"
+      ],
+      "production_change": false
+    },
+    "LOW01_C": {
+      "title": "Branch-boundary sweep",
+      "gate": "Prospective sweep across an internal node and bottom face records branch identity and continuity/discontinuity behavior without retuning.",
+      "dependencies": [
+        "LOW01_A",
+        "LOW01_B"
+      ],
+      "production_change": false
+    },
+    "LOW01_D": {
+      "title": "Immutable-origin replay and rejection",
+      "gate": "A-B-A prescribed H_phreatic trials from one accepted origin reproduce A bitwise or within source-declared deterministic bounds; rejected B leaves no state or mass authority.",
+      "dependencies": [
+        "typed complete candidate state",
+        "LOW01_A or LOW01_B admitted research slice"
+      ],
+      "production_change": false
+    }
+  },
+  "activation": {
+    "immediate": "LOW01-A design and source-level implementation may proceed once the explicit geometry rule is implemented in research-only support.",
+    "blocked": "LOW01-B live qualification is blocked by unresolved explicit constitutive ownership in the current mode-1 special branch.",
+    "hlink04": "Remain blocked until LOW01-A, LOW01-B and LOW01-D are qualified and LOW01-C is at least characterized."
+  },
+  "forbidden": [
+    "do not add bottom_mode=1 to production validate_legacy_request from this contract",
+    "do not overload boundary.bottom_head as both H_phreatic and hbot in a future production API",
+    "do not synthesize z(n+1) by undocumented convention",
+    "do not use FSI04 constant legacy constitutive stubs as evidence of real typed saturated continuation",
+    "do not infer current mode-5 F-GC becomes obsolete"
+  ]
+}
