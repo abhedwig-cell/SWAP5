@@ -29,7 +29,7 @@ SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
-  tests/research/test_gc_low01d_replay_isolation.f90
+  tests/research/test_gc_low01d_below_profile_transaction.f90
 )
 
 for opt in 0 2; do
@@ -55,6 +55,6 @@ echo 'GC_LOW01D_O0_O2_IDENTITY=PASS'
 git diff --check -- \
   integration/research/GC_LOW01D_PREREGISTRATION.json \
   integration/research/GC_LOW01A2_RESULT.json \
-  tests/research/test_gc_low01d_replay_isolation.f90 \
+  tests/research/test_gc_low01d_below_profile_transaction.f90 \
   tests/research/run_gc_low01d.sh
 echo 'GC_LOW01D_QUALIFICATION=PASS'
