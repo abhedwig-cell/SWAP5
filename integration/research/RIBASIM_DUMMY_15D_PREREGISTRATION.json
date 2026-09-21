@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-15D",
   "title": "Gross-to-net irrigation through an explicit canopy store",
-  "baseline": "bb1790d71e6b3d53ca1930b5aca852d4d7dd1d87",
+  "baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
-    "current": "BLOCKED_PENDING_DUMMY_15_15B_15C",
-    "implementation_rule": "No DUMMY-15D model or tests before DUMMY-15C closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-15D model or tests before DUMMY-15C closes and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "workflow_run": 35593011851,
+      "main_closeout_head": "a6bdd05e8df3493625b99c78ba500af111dfd86e"
+    }
   },
   "purpose": "Insert the minimum canopy/interception state between externally supplied gross irrigation and net soil irrigation so that source withdrawal, canopy storage change, interception evaporation and soil input have distinct ledger ownership before real Rutter substitution.",
   "production_authority_basis": {
@@ -114,5 +119,6 @@
     "no production coupling change"
   ],
   "pass_decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
-  "fail_decision": "RIBASIM_DUMMY_15D_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_15D_BLOCKED",
+  "authority_rebind_note": "DUMMY-15D was preregistered while DUMMY-15C was blocked. No executable DUMMY-15D implementation existed. Baseline rebound to the post-DUMMY-15C closeout head before creating DUMMY-15D model/tests."
 }
