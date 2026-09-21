@@ -154,7 +154,9 @@ program test_fmr18_accepted_commit_receipt
   type(kernel_diagnostics_t) :: diagnostics, stale_diagnostics, winner_diagnostics, probe_diagnostics, other_diagnostics
   type(fmr_accepted_commit_receipt_t) :: receipt
   type(fmr_vonhhbraden_source_window_progress_t) :: interception_progress
-  logical :: ok, did_commit, interval_available
+  type(fmr_vonhhbraden_source_window_progress_t) :: restored_interception_progress
+  type(fmr_vonhhbraden_source_window_restart_t) :: interception_restart
+  logical :: ok, did_commit, interval_available, restart_exported, restart_restored
   integer :: receipt_status, commit_status
   real(real64) :: t0, t1, committed_time
   integer(int64) :: revision_before
@@ -187,7 +189,15 @@ program test_fmr18_accepted_commit_receipt
   call require(receipt_status == PPA_WU04C_PUBLICATION_OK .and. &
        abs(interception_progress%remaining_interception()-0.1_real64) < 1.e-14_real64, &
        'accepted receipt advances interception progress exactly once')
+  call interception_progress%export_restart(interception_restart, restart_exported)
+  call require(restart_exported, 'export mid-window interception restart')
+  call fmr_restore_vonhhbraden_source_window_progress(interception_restart, restored_interception_progress, &
+       restart_restored, receipt_status)
+  call require(restart_restored .and. receipt_status == FMR_VONHHBRADEN_PROGRESS_OK .and. &
+       abs(restored_interception_progress%remaining_interception()-0.1_real64) < 1.e-14_real64, &
+       'mid-window restart preserves remaining interception exactly')
   print '(a)', 'PPA_WU04C_REAL_FKT_RECEIPT_PROGRESS=PASS'
+  print '(a)', 'PPA_WU04C_MID_WINDOW_RESTART_PROGRESS=PASS'
   call committed%current_time(committed_time, ok)
   call require(ok .and. bitwise_equal(committed_time, 0.5_real64), 'committed time after receipt')
   call require(.not. candidate%ready(), 'successful commit consumes candidate')
