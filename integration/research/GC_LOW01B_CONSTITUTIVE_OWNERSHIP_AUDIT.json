@@ -33,5 +33,17 @@
     "Construct an independently testable research-only constitutive bridge for the KSATEXM-disabled LOW01-B slice using the same B110 parameter authority.",
     "Qualify the bridge against the typed provider before any mode-1 HeadCalc trial.",
     "Only then execute LOW01-B inside-profile hydrostatic and mass/replay gates."
-  ]
+  ],
+  "build_hygiene": {
+    "source_failure_run": 35580562537,
+    "source_failure_job": 106272216187,
+    "classification": "DEPENDENCY_UNUSED_DUMMY_WARNING_BLOCKER_NOT_CONSTITUTIVE_FAILURE",
+    "repair": [
+      "Compile production dependency modules with -Wall/-Wextra without research-owned -Werror promotion, consistent with existing qualified F-GC runners.",
+      "Compile the research-owned LOW01 constitutive bridge and its test with -Werror.",
+      "No constitutive formula, parameter authority, KSATEXM bound or comparison gate is changed."
+    ],
+    "production_source_changes": false,
+    "decision": "RERUN_OWNER_WORKFLOW_UNCHANGED_SCIENTIFIC_GATES"
+  }
 }

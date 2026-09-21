@@ -4,7 +4,7 @@
   "work_unit": "GC-LOW01-A2",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_QUEUED_FOR_LIVE_QUALIFICATION",
+  "state": "BUILD_HYGIENE_REPAIRED_QUEUED_FOR_LIVE_QUALIFICATION",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01A2_PREREGISTRATION.json",
   "test": "tests/research/test_gc_low01a2_live_below_profile.f90",
@@ -32,5 +32,16 @@
     "The runner executes LOW01-A first and requires its qualification marker before A2."
   ],
   "decision": "WAIT_FOR_OWNER_RUN; DO_NOT_ACTIVATE_MODE1",
-  "next_action": "When the newest queued run starts, persist result only if LOW01-A prerequisite, mode-5 solve, mass ledger, immutable-origin replay and O0/O2 identity all pass."
+  "next_action": "Use the newest non-superseded GC LOW01-A2 owner run after this build-hygiene repair; persist result only if all preregistered physics, mass, replay and O0/O2 gates pass.",
+  "build_hygiene": {
+    "source_failure_run": 35580562537,
+    "source_failure_job": 106272216084,
+    "classification": "DEPENDENCY_WARNING_POLICY_BLOCKER_NOT_PHYSICAL_FAILURE",
+    "repair": [
+      "Production dependency modules compile with -Wall/-Wextra but are no longer promoted to -Werror by this research-only runner, matching established F-GC44/F-GC45 runner precedent.",
+      "The LOW01-A2 research-owned test remains compiled with -Werror.",
+      "The research-owned immutable-origin REAL equality assertion is replaced by the existing bitwise replay helper, preserving a stricter deterministic assertion."
+    ],
+    "production_source_changes": false
+  }
 }

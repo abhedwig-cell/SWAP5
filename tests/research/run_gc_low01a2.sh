@@ -12,7 +12,8 @@ fail(){ echo "GC_LOW01A2_RUNNER_FAIL $*" >&2; exit 1; }
 bash tests/research/run_gc_low01a.sh | tee "$BUILD/low01a-prerequisite.txt"
 grep -Fq 'GC_LOW01A_QUALIFICATION=PASS' "$BUILD/low01a-prerequisite.txt" || fail 'LOW01-A prerequisite'
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+OWNED=("${COMMON[@]}" -Werror)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
@@ -40,7 +41,7 @@ for opt in 0 2; do
     objects+=("$obj")
   done
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/research/test_gc_low01a2_live_below_profile.f90 -o "$OUT/low01a2.o"
+  gfortran "${OWNED[@]}" -O"$opt" -J "$OUT" -I "$OUT"     -c tests/research/test_gc_low01a2_live_below_profile.f90 -o "$OUT/low01a2.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/low01a2.o" -o "$OUT/low01a2"
 
   "$OUT/low01a2" > "$OUT/low01a2.txt" 2>&1 || {

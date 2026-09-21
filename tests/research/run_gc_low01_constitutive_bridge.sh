@@ -8,7 +8,27 @@ cd "$ROOT"
 
 fail(){ echo "LOW01-CONST FAIL: $*" >&2; exit 1; }
 
-gfortran -std=f2008 -Wall -Wextra -Werror -O0 -g   -J "$BUILD" -I "$BUILD"   src/solver/mod_soil_water_solver_contract.f90   src/solver/mod_b110_default_mvg_provider.f90   tests/research/support/mod_gc_low01_constitutive_bridge.f90   tests/research/test_gc_low01_constitutive_bridge.f90   -o "$BUILD/test_gc_low01_constitutive_bridge"
+COMMON=(-std=f2008 -Wall -Wextra -O0 -g)
+OWNED=("${COMMON[@]}" -Werror)
+
+gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" \
+  -c src/solver/mod_soil_water_solver_contract.f90 \
+  -o "$BUILD/mod_soil_water_solver_contract.o"
+gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" \
+  -c src/solver/mod_b110_default_mvg_provider.f90 \
+  -o "$BUILD/mod_b110_default_mvg_provider.o"
+gfortran "${OWNED[@]}" -J "$BUILD" -I "$BUILD" \
+  -c tests/research/support/mod_gc_low01_constitutive_bridge.f90 \
+  -o "$BUILD/mod_gc_low01_constitutive_bridge.o"
+gfortran "${OWNED[@]}" -J "$BUILD" -I "$BUILD" \
+  -c tests/research/test_gc_low01_constitutive_bridge.f90 \
+  -o "$BUILD/test_gc_low01_constitutive_bridge.o"
+gfortran -O0 \
+  "$BUILD/mod_soil_water_solver_contract.o" \
+  "$BUILD/mod_b110_default_mvg_provider.o" \
+  "$BUILD/mod_gc_low01_constitutive_bridge.o" \
+  "$BUILD/test_gc_low01_constitutive_bridge.o" \
+  -o "$BUILD/test_gc_low01_constitutive_bridge"
 
 "$BUILD/test_gc_low01_constitutive_bridge" | tee "$BUILD/output.txt"
 

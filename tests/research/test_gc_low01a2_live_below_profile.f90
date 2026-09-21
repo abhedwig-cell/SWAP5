@@ -126,7 +126,7 @@ program test_gc_low01a2_live_below_profile
        .not. same_real_bits_array(result(1)%candidate_state%pressure_head, result(2)%candidate_state%pressure_head), &
        'B differs from A physical output')
 
-  call require(all(origin_head == origin_hphi-z), 'immutable origin head retained')
+  call require(same_real_bits_array(origin_head, origin_hphi-z), 'immutable origin head retained')
   call require(all(ieee_is_finite(origin_water)), 'immutable origin water retained')
 
   write(*,'(A)') 'GC_LOW01A2_LIVE_MODE5_REDUCTION=PASS'
