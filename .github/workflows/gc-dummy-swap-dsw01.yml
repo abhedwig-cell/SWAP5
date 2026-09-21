@@ -13,8 +13,24 @@ on:
       - 'integration/research/GC_REAL_SWAP_MAP09*.json'
       - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
       - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
+      - 'tests/research/run_gc_low01a2.sh'
+      - 'tests/research/test_gc_low01a2_live_below_profile.f90'
+      - 'tests/research/run_gc_low01_constitutive_bridge.sh'
+      - 'tests/research/test_gc_low01_constitutive_bridge.f90'
+      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
+      - 'integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json'
+      - 'integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json'
+      - 'integration/research/GC_LOW01A2_PREREGISTRATION.json'
       - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
       - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
+      - 'tests/research/run_gc_low01a2.sh'
+      - 'tests/research/test_gc_low01a2_live_below_profile.f90'
+      - 'tests/research/run_gc_low01_constitutive_bridge.sh'
+      - 'tests/research/test_gc_low01_constitutive_bridge.f90'
+      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
+      - 'integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json'
+      - 'integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json'
+      - 'integration/research/GC_LOW01A2_PREREGISTRATION.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
       - 'tests/research/test_gc_real_swap_map01_fgc45.py'
@@ -150,3 +166,28 @@ jobs:
           sudo apt-get install -y gfortran
       - name: Run LOW01-A and STATE01 qualification
         run: bash tests/research/run_gc_low01a.sh
+
+
+  low01-constitutive-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01 constitutive bridge qualification
+        run: bash tests/research/run_gc_low01_constitutive_bridge.sh
+
+  low01a2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-A2 live below-profile qualification
+        run: bash tests/research/run_gc_low01a2.sh
