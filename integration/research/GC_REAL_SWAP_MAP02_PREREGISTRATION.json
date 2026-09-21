@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.gc_real_swap.map02.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP02",
+  "title": "Real-SWAP local corrector response inside empirically admitted F-GC45 head band",
+  "status": "PREREGISTERED_BEFORE_MAP02_LIVE_RUN",
+  "authority": {
+    "source_fixture": "unchanged F-GC45 real MultiSWAP + MODFLOW6",
+    "map01_observation": "integration/research/GC_REAL_SWAP_MAP01_OBSERVATION.json",
+    "admitted_path": "integration/research/GC_REAL_SWAP_MAP01A_RESULT.json"
+  },
+  "fixed_geometry": {
+    "predictor_reference_head_m": -0.7149999706136307,
+    "center_head_m": -0.7149999677331765,
+    "live_shift_scale_m": 2.8804542084870377e-9,
+    "multipliers": [
+      -0.5,
+      -0.25,
+      0,
+      0.25,
+      0.5
+    ],
+    "probe_heads_m": [
+      -0.7149999691734036,
+      -0.7149999684532901,
+      -0.7149999677331765,
+      -0.7149999670130629,
+      -0.7149999662929494
+    ]
+  },
+  "measurements": [
+    "real q_swap for both tiles and area-weighted q at every fixed head",
+    "repeat center trial determinism",
+    "central corrector finite-difference slopes using +/-0.25 and +/-0.5 live-shift scale",
+    "production affine slope u/dt from the unchanged predictor response",
+    "ratio and difference between corrector FD slope and production affine slope",
+    "production affine q and corrector q at the center",
+    "existing F-GC45 live coupled result and committed tile ledgers"
+  ],
+  "gates": [
+    "all five fixed-head real SWAP trials are accepted whole-window trials",
+    "all probes are discarded back to the immutable origin",
+    "area weighting closes at every probe",
+    "center repeat is deterministic",
+    "FD slopes are finite; no preregistered equality to production u/dt is required",
+    "the unchanged F-GC45 live coupling converges",
+    "committed ledgers equal integrated accepted corrector flux per tile within 1e-12 m"
+  ],
+  "decision_rules": [
+    "If corrector slope approximately matches production affine slope, classify this only as local tangent agreement, not proof that u is physical storage.",
+    "If slopes differ, classify whether the mismatch is intercept/nonlinearity/numerical-resolution before any production conclusion.",
+    "The accepted ledger remains physical whole-window exchange authority."
+  ],
+  "forbidden": [
+    "no adaptive probe resizing after observing MAP02 results",
+    "no production code change",
+    "do not reopen MAP01 as passed"
+  ]
+}
