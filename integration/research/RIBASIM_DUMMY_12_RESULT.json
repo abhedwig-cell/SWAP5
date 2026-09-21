@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_rootzone_demand.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-12",
+  "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+  "authority": {
+    "baseline": "3a82ed3c79db1b4ff6c54ad68724067e95072e94",
+    "qualified_main_pre_result_head": "a104baba9a8e7d778174249162f8f2da21d8c778",
+    "qualification_head": "06f72519ecc037ce2517986e0a74296d9c63b7b8",
+    "workflow_run": 35570012761,
+    "workflow_job": 106239470382,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_12_SOURCE_SCOPE=PASS",
+    "10/10 RootZoneDemandTests PASS",
+    "full supply fills committed deficit exactly",
+    "same-window physical loss creates next-window request rather than a second current-window request",
+    "rainfall can eliminate next demand despite current management shortage",
+    "capacity excess becomes exact drainage",
+    "multi-window root-zone water balance closes",
+    "identical committed root storage gives identical next request despite different shortage histories",
+    "available supply above request cannot overdeliver",
+    "request remains frozen from committed start state within the window",
+    "infeasible prescribed loss fails closed",
+    "RIBASIM_DUMMY_12_GATE=PASS"
+  ],
+  "canonical_cases": {
+    "full_fill": {
+      "W0": 60,
+      "R": 20,
+      "U": 20,
+      "W1": 80,
+      "R_next": 0
+    },
+    "loss_after_fill": {
+      "W0": 60,
+      "R": 20,
+      "U": 20,
+      "loss": 10,
+      "W1": 70,
+      "R_next": 10
+    },
+    "shortage_erased_by_rain": {
+      "W0": 60,
+      "R": 20,
+      "U": 5,
+      "shortage": 15,
+      "rain": 20,
+      "W1": 85,
+      "R_next": 0
+    },
+    "drainage": {
+      "W0": 90,
+      "rain": 25,
+      "loss": 5,
+      "drainage": 10,
+      "W1": 100
+    }
+  },
+  "interpretation": "Physical root-zone storage is the memory state. Management shortage is a diagnostic outcome and has no independent persistence in this analytical demand oracle.",
+  "nonclaims": [
+    "no Richards-equation representation",
+    "no production SWAP irrigation algorithm equivalence",
+    "no stress-limited ET physics",
+    "no groundwater/root-zone coupling",
+    "no production coupling admission"
+  ],
+  "downstream": "Together with qualified DUMMY-11, this authority unblocks DUMMY-13 three-store internal-transfer accounting."
+}
