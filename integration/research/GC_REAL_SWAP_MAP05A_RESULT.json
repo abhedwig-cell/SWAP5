@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.gc_real_swap.map05a.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP05A",
+  "workflow_run": 35568250145,
+  "workflow_job": 106234270745,
+  "decision": "QUALIFIED_E4_B3_CORRECTOR_JR_ADMISSIBLE_AND_PHYSICALLY_EQUIVALENT_TO_CURRENT_CONTROL",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "case": "E3-R B3 K=0.1",
+    "current_control_source": "GC_REAL_SWAP_MAP05_OBSERVATION.json"
+  },
+  "current_control": {
+    "iterations": 3,
+    "final_head_m": -0.7149962561412444,
+    "final_q_swap_m_per_s": -1.2492277961483046e-11,
+    "ledger_m": -1.079332815872135e-9
+  },
+  "e4_b3_corrector_jr": {
+    "hcof_m2_per_day": -0.288217671950983,
+    "iterations": 3,
+    "history": [
+      {
+        "iteration": 1,
+        "head_m": -0.7149962543011835,
+        "q_groundwater_m_per_s": -8.75656602430067e-12,
+        "q_swap_m_per_s": -1.2498416107030441e-11,
+        "residual_m_per_s": -3.741850082729771e-12,
+        "modflow_converged": false
+      },
+      {
+        "iteration": 2,
+        "head_m": -0.7149962561355337,
+        "q_groundwater_m_per_s": -1.249229698498625e-11,
+        "q_swap_m_per_s": -1.2492297030591477e-11,
+        "residual_m_per_s": -4.5605226592873104e-20,
+        "modflow_converged": false
+      },
+      {
+        "iteration": 3,
+        "head_m": -0.7149962561355337,
+        "q_groundwater_m_per_s": -1.2492297030603052e-11,
+        "q_swap_m_per_s": -1.2492297030591477e-11,
+        "residual_m_per_s": 1.157568181434071e-23,
+        "modflow_converged": true
+      }
+    ],
+    "final_head_m": -0.7149962561355337,
+    "final_q_swap_m_per_s": -1.2492297030591477e-11,
+    "final_residual_m_per_s": 1.157568181434071e-23,
+    "ledger_m": -1.0793344634431036e-9
+  },
+  "differences_from_current": {
+    "head_m": 5.710654171764418e-12,
+    "q_swap_m_per_s": -1.9069108430830916e-17,
+    "ledger_m": -1.6475709685271887e-15,
+    "iteration_count": 0
+  },
+  "gates": {
+    "converged_within_40": "PASS",
+    "coupled_residual_le_1e_15": "PASS",
+    "accepted_head_control_equivalence": "PASS",
+    "accepted_q_swap_control_equivalence": "PASS",
+    "accepted_ledger_control_equivalence": "PASS",
+    "exactly_once_publication": "PASS"
+  },
+  "bounded_conclusions": [
+    "The independently qualified negative E4 B3 corrector slope is admissible in the same strong-response B3/K=0.1 live-MODFLOW case.",
+    "It converges to the same accepted physical state and ledger as CURRENT_PLUS_U within the preregistered gates.",
+    "It uses the same three coupling outer iterations as CURRENT_PLUS_U in this case, so MAP05A provides no performance advantage claim.",
+    "MAP05 remains falsified independently because INTERCEPT_ONLY encountered a structured corrector trial failure.",
+    "Together MAP05 and MAP05A show that accepted physics can be invariant between two nonzero slope policies while path robustness still depends on slope policy."
+  ],
+  "forbidden_inference": [
+    "Do not infer that J_R should replace u_A in production from this one case.",
+    "Do not retroactively pass MAP05.",
+    "Do not generalize performance equivalence beyond the qualified B3/K=0.1 case."
+  ],
+  "next": [
+    "Complete MAP06 fixed-grid fresh-origin corrector admissibility topology around the MAP05 failure head.",
+    "Use MAP06 to distinguish deterministic head-domain structure from repeated-trial history effects.",
+    "Keep production coupling read-only pending that diagnosis."
+  ]
+}
