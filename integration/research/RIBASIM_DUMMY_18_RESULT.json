@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_real_model_binding.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-18",
+  "decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+  "authority": {
+    "implementation_baseline": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106",
+    "qualification_head": "cceceb1ced43de08d973a7d4216f5dd7b975a0e3",
+    "workflow_run": 35595081892,
+    "workflow_job": 106317927455,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_18_SOURCE_SCOPE=PASS",
+    "14/14 RealModelAuthorityMapTests PASS",
+    "required unresolved authorities remain explicitly UNRESOLVED and substitution-forbidden",
+    "READY_RESTRICTED stages depend only on BOUND rows",
+    "blocked stages retain non-BOUND blocker rows",
+    "Ribasim demand / allocated / supplied remain distinct authorities",
+    "Ribasim min_level and linear routing surrogate remain explicit NON_EQUIVALENT mappings",
+    "MODFLOW head and RIV/DRN exchange are BOUND for restricted bridge work while aggregate storage remains UNRESOLVED",
+    "SWAP irrigation management state is known but partial external-supply policy and atomic transaction remain UNRESOLVED",
+    "canopy storage and net soil irrigation are BOUND while gross external supply remains UNRESOLVED",
+    "CSR-B1 storage partition, CSR-B2 drainage ownership and product registration remain open",
+    "source pins are exact and immutable for this authority map",
+    "RIBASIM_DUMMY_18_AUTHORITY_TESTS=PASS",
+    "RIBASIM_DUMMY_18_GATE=PASS"
+  ],
+  "ready_restricted_stages": [
+    {
+      "id": "stage1.real_ribasim_allocation_supply",
+      "meaning": "Pinned real Ribasim demand/allocation/supplied bridge using separate UserDemand nodes or direct link flows with correct supplied-output lag."
+    },
+    {
+      "id": "stage2.modflow_head_flux_only",
+      "meaning": "Restricted MODFLOW bridge for head and accepted RIV/DRN exchange only; no storage-ledger claim."
+    }
+  ],
+  "blocked_stages": [
+    "stage2.modflow_full_storage",
+    "stage3.real_ribasim_modflow_full_ledger",
+    "stage4.real_swap_external_irrigation",
+    "stage5.full_product"
+  ],
+  "unresolved_authorities": [
+    "modflow.storage.aggregate",
+    "swap.irrigation.partial_supply_policy",
+    "swap.irrigation.gross_source_withdrawal",
+    "swap.irrigation.atomic_transaction",
+    "swap.drainage.ownership",
+    "swap_modflow.storage_partition",
+    "coupler.product_registration"
+  ],
+  "interpretation": "The authority map qualifies what may be compared next and, equally importantly, what may not. A green DUMMY-18 gate is not production admission; it is permission to run only the READY_RESTRICTED real-model bridge stages under the pinned mappings.",
+  "downstream": "Begin stage1 real Ribasim allocation/supply bridge and keep stage2 MODFLOW work head/flux-only until aggregate storage authority is separately closed."
+}
