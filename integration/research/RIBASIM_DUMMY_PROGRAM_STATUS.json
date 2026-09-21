@@ -86,22 +86,20 @@
       "work_unit": "RIBASIM-DUMMY-16",
       "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
       "run": 35590642324
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-17",
+      "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+      "run": 35591084550
     }
   ],
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-18",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "state": "AUTHORITY_READY_MAPPING_NOT_YET_QUALIFIED",
       "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
       "implementation": false,
       "purpose": "bind analytical state/transfer/management/clock/transaction objects to pinned real Ribasim, MODFLOW, SWAP and coupler authorities before substitution"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-15C",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-      "implementation": false,
-      "purpose": "qualify irrigation-event management-state transition under partial external supply before real SWAP substitution"
     },
     {
       "work_unit": "RIBASIM-DUMMY-15D",
@@ -111,16 +109,16 @@
       "purpose": "explicit canopy store separating gross source withdrawal from net soil irrigation and interception evaporation"
     },
     {
-      "work_unit": "RIBASIM-DUMMY-17",
+      "work_unit": "RIBASIM-DUMMY-15C",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-      "implementation_baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
-      "dependency": "qualified DUMMY-16",
-      "boundary": "pure physical network only; no management, real Ribasim routing or MODFLOW package equivalence"
+      "intended_decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "implementation_baseline": "a84405a24373818e3ca1f3851391300ed73e7240",
+      "dependency": "qualified DUMMY-15B",
+      "boundary": "research policy contrast only; no claim of current production SWAP partial-supply behavior"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-17 physical network gate. If PASS, close DUMMY-17 before DUMMY-18 executable binding/substitution work.",
+  "next_authority_action": "Execute DUMMY-15C event-realization gate; if PASS, close DUMMY-15C and rebind DUMMY-15D before final DUMMY-18 authority-map qualification.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
