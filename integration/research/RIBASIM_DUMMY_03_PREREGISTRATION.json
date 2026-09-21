@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_head_exchange.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-03",
+  "title": "Head-dependent groundwater exchange and one-pass endpoint consistency",
+  "baseline": "fe05668d943121bc30358a7c52eed43aa7f60afb",
+  "purpose": "Replace prescribed forecast/actual groundwater exchange with a deterministic linear head-difference surrogate and measure whether a one-pass realized exchange remains consistent with the Ribasim level produced by that same window.",
+  "physical_surrogate": {
+    "relation": "signed_exchange_volume = conductance * dt * (basin_level - groundwater_head)",
+    "sign": "positive is Basin infiltration to groundwater; negative is groundwater drainage to Basin",
+    "interpretation": "GHB-like linear head-dependent research surrogate only; not MODFLOW package equivalence"
+  },
+  "scope": [
+    "derive forecast Basin exchange from committed Basin level and forecast groundwater head",
+    "derive one-pass actual Basin exchange from the same committed Basin level and actual groundwater head",
+    "reuse qualified DUMMY-02 allocation/realization semantics",
+    "re-evaluate the head-dependent exchange at realized Basin end level without mutating state",
+    "report endpoint exchange residual between one-pass exchange and realized-end-level exchange"
+  ],
+  "experiments": {
+    "H1": "sign and zero-crossing: Basin above groundwater gives infiltration, below gives drainage, equal heads give zero exchange",
+    "H2": "groundwater-head drop creates the canonical late conflict from physical state rather than prescribed infiltration",
+    "H3": "nonzero realized Basin-level change produces a measurable endpoint exchange residual under one-pass coupling",
+    "H4": "zero state change gives zero endpoint exchange residual",
+    "H5": "one-pass physical exchange at a fixed start state is independent of SWAP management request",
+    "H6": "physically excessive head-driven infiltration still fails closed through the qualified Ribasim balance"
+  },
+  "interpretation_rules": [
+    "endpoint residual is a consistency diagnostic, not yet an error tolerance or convergence criterion",
+    "nonzero endpoint residual motivates a separately preregistered iterative/fixed-point experiment; it does not by itself prove a production iteration requirement",
+    "no exchange flux is clipped to preserve management delivery",
+    "same-window SWAP demand remains frozen as in DUMMY-02"
+  ],
+  "forbidden": [
+    "no claim of MODFLOW RIV/GHB package equivalence",
+    "no nonlinear or iterative coupling solver in this work unit",
+    "no production SWAP, MODFLOW, Ribasim or iMOD Coupler change",
+    "no arbitrary convergence tolerance",
+    "no production admission"
+  ],
+  "external_basis": [
+    "MODFLOW 6 documentation: head-dependent boundary flow is proportional to head difference through conductance",
+    "Ribasim Basin coupling surface: level/storage plus infiltration/drainage variables"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_03_QUALIFIED_HEAD_EXCHANGE_DIAGNOSTIC",
+  "fail_decision": "RIBASIM_DUMMY_03_BLOCKED"
+}
