@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.coupling.real_ribasim_priority_conflict.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19B",
+  "title": "Pinned real Ribasim two-recipient priority-conflict bridge",
+  "baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+    "state": "SATISFIED",
+    "workflow_run": 35596174158
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Reproduce the DUMMY-15 same-source competing-claims priority split in the pinned real Ribasim allocator while deliberately disabling physical UserDemand reduction as a confounding mechanism.",
+  "model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "basin": {
+      "node_id": 2,
+      "initial_level_m": 1,
+      "profile_area_m2": 1000,
+      "storage_at_start_m3": 1000,
+      "physical_reduction_control": "storage remains far above Ribasim low-storage threshold"
+    },
+    "fixed_supply": {
+      "node_id": 1,
+      "flow_m3_per_day": 32,
+      "flow_m3_per_s": 0.00037037037037037035
+    },
+    "level_hold": {
+      "node_id": 7,
+      "min_level_m": 1,
+      "max_level_m": 1,
+      "demand_priority": 1,
+      "meaning": "highest-priority storage objective forces zero Basin storage change, so UserDemand allocation is limited by the 32 m3/day inflow rather than initial Basin storage"
+    },
+    "root_proxy": {
+      "node_id": 3,
+      "demand_m3_per_day": 40,
+      "demand_m3_per_s": 0.000462962962962963,
+      "return_factor": 0,
+      "min_level_m": 0
+    },
+    "external_demand": {
+      "node_id": 4,
+      "demand_m3_per_day": 20,
+      "demand_m3_per_s": 0.0002314814814814815,
+      "return_factor": 0,
+      "min_level_m": 0
+    },
+    "physical_control": "Basin level is held at 1 m and both UserDemand min_level values are 0 m, so source low-storage/min-level reduction factors must remain effectively 1; D19B tests allocation priority, not physical curtailment."
+  },
+  "cases": {
+    "root_first": {
+      "demand_priorities": {
+        "level_hold": 1,
+        "root_proxy": 2,
+        "external": 3
+      },
+      "expected": {
+        "allocated_root_m3_per_day": 32,
+        "allocated_external_m3_per_day": 0,
+        "supplied_root_m3_per_day": 32,
+        "supplied_external_m3_per_day": 0,
+        "total_supplied_m3_per_day": 32,
+        "basin_level_m": 1
+      }
+    },
+    "external_first": {
+      "demand_priorities": {
+        "level_hold": 1,
+        "external": 2,
+        "root_proxy": 3
+      },
+      "expected": {
+        "allocated_external_m3_per_day": 20,
+        "allocated_root_m3_per_day": 12,
+        "supplied_external_m3_per_day": 20,
+        "supplied_root_m3_per_day": 12,
+        "total_supplied_m3_per_day": 32,
+        "basin_level_m": 1
+      }
+    }
+  },
+  "authority_basis": {
+    "priority_order": "Pinned Ribasim get_all_demand_priorities sorts priorities ascending; allocation objectives are executed lexicographically and earlier optimums are constrained before later objectives.",
+    "observability": "Qualified DUMMY-19A binds demand, allocated and physical supplied/linkflow observability and one-record supplied-output lag.",
+    "supply_measurement": "Use direct Basin->UserDemand physical link flows as primary supplied authority; allocation result supplied may be used only with D19A-qualified lag alignment."
+  },
+  "hypotheses": [
+    "Both pinned real Ribasim models execute successfully.",
+    "ROOT_FIRST real allocation supplies 32 m3/day to root proxy and 0 to external demand.",
+    "EXTERNAL_FIRST real allocation supplies 20 m3/day to external demand and 12 m3/day to root proxy.",
+    "In both cases the sum of allocated UserDemand is 32 m3/day and no UserDemand allocation exceeds its demand.",
+    "Direct physical Basin->UserDemand linkflow matches allocated flow because low-storage and min-level reduction are inactive by construction.",
+    "The Basin remains at 1 m within numerical tolerance, demonstrating that the scarcity is the 32 m3/day source inflow rather than depletion of initial storage.",
+    "Priority reversal changes recipient split but not total supplied managed water or Basin physical trajectory, matching the structural DUMMY-15 invariant.",
+    "D19B establishes only the same-state allocation-priority bridge; it does not yet test allocation-versus-physical-realization conflict."
+  ],
+  "forbidden": [
+    "no modification of pinned Ribasim source",
+    "no use of initial Basin storage as hidden extra supply",
+    "no physical min-level reduction in this work unit",
+    "no SWAP or MODFLOW substitution",
+    "no claim that this one-Basin model represents full Ribasim network allocation",
+    "no tuning after observing D19B results"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+  "fail_decision": "RIBASIM_DUMMY_19B_BLOCKED"
+}
