@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Execute the exact DUMMY-15 competing-claims-gate.",
+  "next_action": "Trigger DUMMY-15 qualification from a status-only child branch against the frozen corrected base.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -65,5 +65,13 @@
     "no CSR-B1 or CSR-B2 closure"
   ],
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action."
+  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action.",
+  "prequalification_repair": {
+    "state": "APPLIED_BEFORE_VALID_QUALIFICATION",
+    "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity, causing valid two-recipient cases to raise an unexplained-capacity error.",
+    "correction": "Subtract the second assigned claim from remaining capacity in both priority branches.",
+    "scientific_effect": "none; equations, preregistered expected values and priority semantics unchanged",
+    "superseded_run": 35577982472
+  },
+  "qualification_route": "FROZEN_CORRECTED_BASE"
 }
