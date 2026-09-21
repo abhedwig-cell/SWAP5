@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-13",
+  "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+  "authority": {
+    "implementation_baseline": "51bbc6d3375028b6604351b19f8806babac82721",
+    "qualified_main_pre_result_head": "1b71363f5b30d67740af87f5f3aba5c2cc3380c5",
+    "qualification_head": "31dd1b061a5c0d2e6f09c3f1ff77a4f274013588",
+    "workflow_run": 35571925509,
+    "workflow_job": 106245164223,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_13_SOURCE_SCOPE=PASS",
+    "12/12 ThreeStoreInternalLedgerTests PASS",
+    "canonical CURTAILED case matches preregistration: R=40,U=32,V=28,root=72,hs=0.4,hg=0.28,next request=8",
+    "preregistered FULL and ZERO cases match exactly",
+    "negative V groundwater-to-surface case closes with the same signed exchange convention",
+    "canonical second window has ZERO management while reciprocal physical exchange continues",
+    "irrigation U cancels between surface and root ledgers",
+    "exchange V cancels between surface and groundwater ledgers",
+    "combined three-store water is invariant with no external forcing",
+    "next root deficit equals current shortage only in the no-external-forcing first-stage problem",
+    "identical committed three-store states produce identical next coupling problem",
+    "underlying physical infeasibility fails without state mutation",
+    "24-case dense state grid preserves the internal-transfer identity",
+    "RIBASIM_DUMMY_13_LEDGER_TESTS=PASS",
+    "RIBASIM_DUMMY_13_GATE=PASS"
+  ],
+  "canonical_case": {
+    "start": {
+      "root_m3": 40,
+      "surface_head_m": 1,
+      "groundwater_head_m": 0
+    },
+    "request_m3": 40,
+    "regime": "CURTAILED",
+    "delivered_m3": 32,
+    "shortage_m3": 8,
+    "exchange_m3": 28,
+    "end": {
+      "root_m3": 72,
+      "surface_head_m": 0.4,
+      "groundwater_head_m": 0.28
+    },
+    "next_request_m3": 8,
+    "total_three_store_change_m3": 0
+  },
+  "reverse_exchange_case": {
+    "request_m3": 0,
+    "exchange_m3": -20,
+    "start": {
+      "root_m3": 80,
+      "surface_head_m": 0.2,
+      "groundwater_head_m": 0.8
+    },
+    "end": {
+      "root_m3": 80,
+      "surface_head_m": 0.4,
+      "groundwater_head_m": 0.6
+    },
+    "total_three_store_change_m3": 0
+  },
+  "interpretation": "Once the irrigation recipient root store is inside the represented system boundary, irrigation U becomes an internal surface-to-root transfer and no longer appears in the combined water loss. The same applies to reciprocal surface-groundwater exchange V.",
+  "authority_boundary": [
+    "the three stores are disjoint by construction",
+    "this does not prove real SWAP/MODFLOW storage non-overlap and cannot close CSR-B1",
+    "first-stage DUMMY-13 contains no drainage path and cannot close CSR-B2",
+    "root-zone request remains an analytical surrogate rather than production SWAP irrigation authority"
+  ],
+  "downstream": "DUMMY-14 may now add external root forcing while preserving the qualified U/V internal-transfer ledger."
+}
