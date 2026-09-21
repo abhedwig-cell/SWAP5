@@ -8,8 +8,8 @@
   "checkpoint_commit": "737e80226f90860f61fb2c204cc1818f139cc292",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_changes": false,
   "authority_paths": [
     "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
@@ -27,7 +27,20 @@
     "component tolerances and transaction semantics",
     "production coupling code"
   ],
-  "next_action": "Execute fixed picometre-grid corrector admissibility map and preserve status topology without adaptive refinement.",
-  "recovery_point": "Resume from MAP06 preregistration; do not alter grid or repeat policy after observation.",
-  "blockers": []
+  "next_action": "Complete MAP07 q_u partial-versus-total derivative audit, then reconcile MAP05A+MAP06+MAP07 into the coupling-response taxonomy. Keep production coupling read-only.",
+  "recovery_point": "MAP06 qualified by workflow 35568529617 / job 106235070871. Resume from GC_REAL_SWAP_MAP06_RESULT.json; do not adaptively refine the preregistered grid.",
+  "blockers": [],
+  "execution": {
+    "workflow_run": 35568529617,
+    "workflow_job": 106235070871,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "qualification": {
+    "workflow_run": 35568529617,
+    "workflow_job": 106235070871,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_REAL_SWAP_MAP06_RESULT.json",
+    "decision": "QUALIFIED_DETERMINISTIC_NONMONOTONE_B3_CORRECTOR_ADMISSIBILITY_TOPOLOGY"
+  }
 }
