@@ -5,9 +5,11 @@ on:
     paths:
       - 'tests/research/test_gc_real_swap_map01_fgc45.py'
       - 'tests/research/test_gc_real_swap_map02_fgc45.py'
+      - 'tests/research/test_gc_real_swap_map03_storage_response.py'
       - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
       - 'integration/research/GC_REAL_SWAP_MAP01*.json'
       - 'integration/research/GC_REAL_SWAP_MAP02*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP03*.json'
       - '.github/workflows/gc-real-swap-map01.yml'
   workflow_dispatch:
 permissions: {contents: read}
