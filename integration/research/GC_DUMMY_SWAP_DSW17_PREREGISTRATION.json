@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw17.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW17",
+  "title": "Equal-and-opposite internal transfer conservation",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "fixed_physics": {
+    "groundwater_storage": 0.2,
+    "dt_day": 1,
+    "reference_head_m": 8
+  },
+  "cases": [
+    {
+      "name": "MEMORY_TO_GROUNDWATER",
+      "initial_head_m": 8,
+      "initial_memory_m": 0.02,
+      "transfer_to_groundwater_m": 0.006,
+      "expected_head_m": 8.03,
+      "expected_memory_m": 0.014
+    },
+    {
+      "name": "GROUNDWATER_TO_MEMORY",
+      "initial_head_m": 8.05,
+      "initial_memory_m": 0.01,
+      "transfer_to_groundwater_m": -0.004,
+      "expected_head_m": 8.03,
+      "expected_memory_m": 0.014
+    }
+  ],
+  "contract": "transfer_to_groundwater is positive into MODFLOW storage and is applied with the exact opposite sign to the internal memory ledger; it is not an external source.",
+  "gates": [
+    "both live MODFLOW solves converge",
+    "groundwater storage change equals transfer within 1e-12 m",
+    "memory change equals minus transfer within 1e-12 m",
+    "combined groundwater-plus-memory state change is zero within 1e-12 m in both directions"
+  ],
+  "forbidden": [
+    "no production code change",
+    "do not reinterpret an internal transfer as net system recharge or loss"
+  ]
+}
