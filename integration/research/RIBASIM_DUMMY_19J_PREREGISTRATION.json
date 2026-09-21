@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_saveat_clock_conflict.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19J",
+  "title": "Pinned real Ribasim conflict between 6-hour BMI management calls and 1-hour saveat allocation boundaries",
+  "baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
+  "sequencing": {
+    "state": "PREREGISTERED_BEFORE_19H_AND_19I_CLOSEOUT",
+    "execute_after": "DUMMY-19I closeout",
+    "rationale": "Freeze the clock-conflict hypothesis before observing the no-scarcity negative control or BMI-owned-clock experiment."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "source_binding": {
+    "allocation_time": "AllocationTime seeds allocation tstops from solver.saveat.",
+    "bmi_update_until": "BMI.update_until adds its requested endpoint as an allocation tstop but does not remove existing saveat-derived tstops.",
+    "expected_precedence": "The union of boundaries governs allocation; therefore a finer saveat grid remains active inside coarser BMI coupling windows."
+  },
+  "purpose": "Test whether a coupler can impose a 6-hour management clock when solver.saveat remains finer at 1 hour. This is the conflict counterpart to DUMMY-19I.",
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 3600,
+    "bmi_update_until_endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_hybrid_reference": {
+    "expected_effective_clock_seconds": 3600,
+    "expected_allocation_record_count": 24,
+    "root_first": {
+      "initial_root_alloc_m3_per_day": 32,
+      "initial_external_alloc_m3_per_day": 0,
+      "final_root_alloc_m3_per_day": 40,
+      "final_external_alloc_m3_per_day": 20,
+      "root_supplied_m3": 19.838956206388705,
+      "external_supplied_m3": 9.25253227394069
+    },
+    "external_first": {
+      "initial_root_alloc_m3_per_day": 12,
+      "initial_external_alloc_m3_per_day": 20,
+      "final_root_alloc_m3_per_day": 40,
+      "final_external_alloc_m3_per_day": 20,
+      "root_supplied_m3": 19.088672877273925,
+      "external_supplied_m3": 10.002815603055462
+    },
+    "total_supplied_m3": 29.091488480329396,
+    "final_level_m": 1.0000029085115192,
+    "storage_gain_m3": 2.9085115191840316,
+    "contrast_6h_total_supplied_m3": 24.512820430148427
+  },
+  "hypotheses": [
+    "Calling BMI.update_until at 6-hour endpoints does not suppress the pre-existing 1-hour saveat-derived allocation tstops.",
+    "allocation_data contains 24 hourly allocation records, not four 6-hour records.",
+    "Both priority cases reach full 40/20 allocation after repeated hourly state-feedback optimization.",
+    "One-day physical recipient volumes and Basin endpoint match the independently frozen 1-hour hybrid reference from the preregistered DUMMY-19G sweep.",
+    "The result is materially distinct from the 6-hour reference that DUMMY-19I is designed to test with daily saveat.",
+    "A coupler therefore cannot claim exclusive ownership of a coarser management clock while solver.saveat introduces finer allocation boundaries in this pinned implementation."
+  ],
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "allocation_m3_per_day": 0.05,
+    "endpoint_level_m": 5e-8,
+    "separation_from_6h_total_m3": 1
+  },
+  "forbidden": [
+    "no changing saveat or BMI endpoints after execution",
+    "no replacing the 1-hour preregistered hybrid reference with observed DUMMY-19G values",
+    "no claim that saveat is semantically intended as a management clock",
+    "no SWAP or MODFLOW substitution",
+    "no production prescription before the clock contract is explicitly resolved"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
+  "fail_decision": "RIBASIM_DUMMY_19J_BLOCKED"
+}
