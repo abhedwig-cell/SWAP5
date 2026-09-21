@@ -425,6 +425,7 @@ jobs:
         uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
         with:
           pixi-version: latest
+          working-directory: .ribasim-pin
       - name: Run pinned real Ribasim allocation/supply bridge
         env:
           RIBASIM_ROOT: ${{ github.workspace }}/.ribasim-pin
