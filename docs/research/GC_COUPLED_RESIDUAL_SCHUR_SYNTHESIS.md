@@ -5,12 +5,17 @@ Status: RESEARCH MATHEMATICAL SYNTHESIS, production read-only
 
 ## 1. Coupled unknowns
 
-Use two interface unknowns:
+For the current F-GC route, use two interface unknowns:
 
 ```
-H  shared groundwater / phreatic head
+H  hydraulic head on the lower coupling plane
 q  exchange flux, positive outward from SWAP and into groundwater
 ```
+
+MAP11 shows that this `H` must not automatically be identified with a shared
+freatic groundwater level. The same algebra can also be used for a true
+phreatic h-link, but only after that model defines a common phreatic state and
+its storage ownership explicitly.
 
 The physical coupled problem may be written as:
 
