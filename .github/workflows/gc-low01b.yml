@@ -1,25 +1,6 @@
 name: GC LOW01-B inside-profile typed research slice
 
 on:
-  push:
-    branches:
-      - work/f-gc-dummy-swap-shared-storage
-    paths:
-      - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
-      - 'integration/research/GC_LOW01A2_PREREGISTRATION.json'
-      - 'integration/research/GC_LOW01B_PREREGISTRATION*.json'
-      - 'integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json'
-      - 'integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json'
-      - 'tests/research/support/gc_low01_headcalc_nonconstitutive_stubs.f90'
-      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
-      - 'tests/research/test_gc_low01_constitutive_bridge.f90'
-      - 'tests/research/run_gc_low01_constitutive_bridge.sh'
-      - 'tests/research/test_gc_low01a2_live_below_profile.f90'
-      - 'tests/research/run_gc_low01a.sh'
-      - 'tests/research/run_gc_low01a2.sh'
-      - 'tests/research/test_gc_low01b_inside_profile.f90'
-      - 'tests/research/run_gc_low01b.sh'
-      - '.github/workflows/gc-low01b.yml'
   workflow_dispatch:
 
 permissions:
@@ -31,9 +12,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Guard qualification prerequisites
+        run: |
+          test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json
+          test -f integration/research/GC_LOW01A2_RESULT.json
+          test -f integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json
       - name: Install compiler
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
-      - name: Run constitutive, LOW01-A/A2 and inside-profile gates
+      - name: Run prerequisite-bound LOW01-B qualification
         run: bash tests/research/run_gc_low01b.sh
