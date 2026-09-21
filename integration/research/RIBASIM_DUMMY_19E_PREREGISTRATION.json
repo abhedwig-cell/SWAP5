@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.coupling.real_ribasim_mixed_allocation_realization_conflict.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E",
+  "title": "Pinned real Ribasim priority allocation followed by physical realization shortfall",
+  "preregistration_baseline": "8f2607d79adb0bcbf6ef0e7972cae87b56f9264f",
+  "scientific_authorities": [
+    {
+      "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+      "workflow_run": 35598766437
+    },
+    {
+      "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+      "workflow_run": 35610267609
+    }
+  ],
+  "sequencing": {
+    "state": "WAIT_FOR_DUMMY_19D_CLOSEOUT",
+    "meaning": "No scientific dependency on the DUMMY-19D result. Execution is sequenced after DUMMY-19D to keep one pinned-real-Ribasim qualification active at a time."
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Combine the qualified DUMMY-19B management scarcity mechanism with the qualified DUMMY-19C common-factor physical reduction mechanism. Test whether Ribasim first fixes priority-based allocation and then physically reduces only those allocated paths, without automatically reallocating allocated-but-unsupplied water within the same one-day allocation window.",
+  "model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 3600,
+    "basin": {
+      "initial_level_m": 1,
+      "profile_area_m2": 1000000
+    },
+    "fixed_supply_m3_per_day": 32,
+    "level_hold": {
+      "min_level_m": 1,
+      "max_level_m": 1,
+      "demand_priority": 1
+    },
+    "common_physical_reduction": {
+      "root_min_level_m": 0.99,
+      "external_min_level_m": 0.99,
+      "level_difference_threshold_m": 0.02,
+      "initial_factor": 0.5
+    },
+    "root_proxy": {
+      "demand_m3_per_day": 40
+    },
+    "external_demand": {
+      "demand_m3_per_day": 20
+    },
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3,
+        "expected_allocated_root_m3_per_day": 32,
+        "expected_allocated_external_m3_per_day": 0
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2,
+        "expected_allocated_root_m3_per_day": 12,
+        "expected_allocated_external_m3_per_day": 20
+      }
+    }
+  },
+  "independent_continuous_reference": {
+    "ode": "A dh/dtau = 32 * (1 - phi(h-0.99)), tau in days, because total allocated target is 32 m3/day in both priority cases and all active allocated links share one physical reduction factor.",
+    "final_level_m": 1.000015980815359,
+    "final_reduction_factor": 0.5011985601316069,
+    "integrated_total_supplied_m3": 16.019184640970934,
+    "integrated_storage_gain_m3": 15.980815359029066,
+    "root_first": {
+      "integrated_root_supplied_m3": 16.019184640970934,
+      "integrated_external_supplied_m3": 0
+    },
+    "external_first": {
+      "integrated_root_supplied_m3": 6.0071942403641,
+      "integrated_external_supplied_m3": 10.011990400606834
+    },
+    "ledger": "32 m3 fixed inflow = total physical UserDemand supply + Basin storage gain."
+  },
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "final_reduction_factor": 0.000005
+  },
+  "hypotheses": [
+    "Management scarcity is resolved first: root-first allocates 32/0 m3/day and external-first allocates 12/20 m3/day, reproducing DUMMY-19B.",
+    "The common physical min_level factor then acts only on the already allocated Basin-to-UserDemand targets.",
+    "Total physical supply and Basin trajectory are identical in both priority cases because total allocation is 32 m3/day and all active recipient links share the same physical reduction factor.",
+    "Recipient physical supply follows the allocated split within each case: 100/0 percent in root-first and 37.5/62.5 percent in external-first.",
+    "Allocated-but-unsupplied water remains in the source Basin and is not automatically reallocated to an unsatisfied lower-priority claim during the same one-day allocation window.",
+    "Priority therefore controls the management allocation map, while source-state physics controls how much of each allocated transfer is actually realized."
+  ],
+  "measurements": [
+    "per-UserDemand demand and allocated rates",
+    "direct Basin-to-root and Basin-to-external physical interval-mean linkflows",
+    "integrated recipient and total physical supplied volumes",
+    "Basin interval trajectory and final basin_state_data endpoint",
+    "fixed source inflow",
+    "priority-order comparison"
+  ],
+  "forbidden": [
+    "no change of the pinned Ribasim source",
+    "no changing supply, demands, min_level values, allocation interval, reference values or tolerances after observing DUMMY-19E output",
+    "no interpreting allocated-but-unsupplied volume as a physical transfer",
+    "no claim about reallocation across a shorter allocation interval",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
+  "fail_decision": "RIBASIM_DUMMY_19E_BLOCKED"
+}
