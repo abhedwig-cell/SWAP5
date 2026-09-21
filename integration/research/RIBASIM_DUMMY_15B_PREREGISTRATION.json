@@ -196,7 +196,8 @@
     "no claim that priority-preserving curtailment is current Ribasim supplied-flow behavior without executable evidence",
     "no network routing or allocation fairness in DUMMY-15B",
     "no production SWAP irrigation authority claim",
-    "no production coupling change"
+    "no production coupling change",
+    "no interpretation of current Ribasim per-priority supplied output as a unique priority-specific physical split without source/executable validation"
   ],
   "pass_decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
   "fail_decision": "RIBASIM_DUMMY_15B_BLOCKED",
@@ -211,5 +212,19 @@
       "rule": "rho=M_actual/sum(allocated) when allocated total > 0; supplied_i=rho*allocated_i.",
       "ribasim_boundary": "Current UserDemand documentation multiplies allocated abstraction by smooth low-storage and min-level reduction factors. DUMMY-15B uses rho only to isolate split semantics; it does not reproduce the exact phi functions or assert identical scaling across arbitrary distinct real nodes."
     }
+  },
+  "pinned_ribasim_source_authority": {
+    "repository": "Deltares/Ribasim",
+    "commit": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "solve_file": "core/src/solve.jl",
+    "allocation_file": "core/src/allocation_optim.jl",
+    "observed_behavior": [
+      "UserDemand effective demand sums min(allocated,demand) across demand priorities.",
+      "Physical UserDemand inflow is applied per inflow link as allocated link target times source low-storage factor times min-level reduction factor.",
+      "Allocated amounts are written into user_demand.allocated for use by the physical layer.",
+      "Allocation demand output records supplied volume from cumulative physical inflow, not from the allocation decision.",
+      "The supplied output is lagged one allocation recording period in parse_allocations!."
+    ],
+    "validation_design_implication": "For a later pinned real-Ribasim bridge, represent the two competing claims as two separate UserDemand nodes connected to the same source Basin, or inspect per-link physical flows directly. Do not infer a per-priority supplied split from a single UserDemand's demand-result row without first validating the output semantics."
   }
 }
