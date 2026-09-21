@@ -134,23 +134,24 @@
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19F",
-      "state": "PREREGISTERED_BLOCKED_BY_19E",
-      "intended_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
-      "dependency": "qualified DUMMY-19E",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-19E2",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
       "implementation_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
       "relation": "new clock-aligned work unit after failed DUMMY-19E",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19G",
+      "state": "PREREGISTERED_SEQUENCED_AFTER_19E2",
+      "intended_decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+      "scientific_baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
+      "dependency": "DUMMY-19E2 closeout",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19E2 clock-aligned gate, then quantify saveat-driven allocation sensitivity separately.",
+  "next_authority_action": "Close DUMMY-19E2 from its frozen run. Then rebind and execute preregistered DUMMY-19G saveat-clock sensitivity.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -190,5 +191,15 @@
       "classification": "SCIENTIFIC_CLOCK_SEMANTICS_FALSIFICATION",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
-  ]
+  ],
+  "superseded": [
+    {
+      "work_unit": "RIBASIM-DUMMY-19F",
+      "state": "SUPERSEDED_UNEXECUTED",
+      "cause": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+      "evidence_run": 35616065964,
+      "meaning": "Original two-window preregistration assumed one management solve per day despite hourly saveat and is not executable authority."
+    }
+  ],
+  "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json"
 }
