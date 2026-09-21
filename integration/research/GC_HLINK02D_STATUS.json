@@ -4,7 +4,7 @@
   "work_unit": "GC-HLINK02D",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_QUEUED_IN_RESEARCH_TESTBANK",
+  "state": "PREEXECUTION_REVIEWED_QUEUED_IN_RESEARCH_TESTBANK",
   "production_changes": false,
   "parent": "GC-HLINK02",
   "preregistration": "integration/research/GC_HLINK02D_PREREGISTRATION.json",
@@ -21,5 +21,15 @@
     "HLINK02D crosses write_sy={false,true} with rclose={1e-15,1e-13}; all other physical and solver inputs are fixed."
   ],
   "decision": "KEEP_PARENT_HLINK02_FAILED_UNCHANGED_UNTIL_HLINK02D_LIVE_EVIDENCE",
-  "next_action": "Read HLINK02D markers from the next central research testbank run; classify same-value STO write versus IMS certification before modifying HLINK02 execution."
+  "next_action": "When run 35583474773 or a newer non-superseded central owner carrier executes, persist HLINK02D result from its markers. Then classify same-value STO write versus IMS certification before changing HLINK02 execution.",
+  "preexecution_review": "integration/research/GC_HLINK02D_PREEXECUTION_REVIEW.json",
+  "runner_governance_repair_commit": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d",
+  "latest_owner_carrier": {
+    "workflow": "GC dummy-SWAP concept testbank",
+    "run_id": 35583474773,
+    "run_number": 638,
+    "status": "queued",
+    "head_sha": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d"
+  },
+  "blocker": "GitHub Actions carrier is queued before checkout; source and lifecycle review are complete."
 }
