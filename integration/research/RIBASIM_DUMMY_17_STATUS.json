@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-17",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "d339bc2304015132f33cc2a369f1d96d13c0631b",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -12,12 +12,31 @@
   "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
   "blocker": null,
   "prepared_scope": "Pure physical two-Basin + shared-groundwater linear oracle with exact mode decomposition and dual surface/groundwater downstream pathways.",
-  "next_action": "Implement DUMMY-17 exact two-Basin shared-groundwater oracle.",
+  "next_action": "Execute DUMMY-17 two-basin-shared-groundwater-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
     "baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
     "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
     "workflow_run": 35590642324
-  }
+  },
+  "scope": "Pure physical two-Basin routed surface system plus one shared groundwater store, with exact analytical mode decomposition and no management.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_17_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_17_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_17_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_two_basin_shared_groundwater.py",
+    "tests/research/test_dummy_two_basin_shared_groundwater.py",
+    "tests/research/run_ribasim_dummy_17.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_16": {
+      "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+      "run": 35590642324
+    }
+  },
+  "expected_tests": "12 tests",
+  "recovery_point": "DUMMY-17 implementation, exact tests and focused runner are persisted; qualification remains open."
 }
