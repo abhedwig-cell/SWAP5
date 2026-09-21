@@ -554,3 +554,17 @@ This prevents a future downstream-demand result from conflating:
 
 Only after the physical two-path network closes should managed demand be added
 to that network.
+
+
+## DUMMY-18 authority-binding rule
+
+DUMMY-18 is now prospectively preregistered as a mapping stage, not a physics
+or production-admission stage.
+
+Before a real component can replace an analytical component, every compared
+quantity must be classified as STATE, TRANSFER, MANAGEMENT_DECISION, CLOCK,
+TRANSACTION or DIAGNOSTIC and must be marked BOUND, NON_EQUIVALENT or
+UNRESOLVED.
+
+No executable real-model substitution is authorized while any quantity that
+controls the comparison remains UNRESOLVED.
