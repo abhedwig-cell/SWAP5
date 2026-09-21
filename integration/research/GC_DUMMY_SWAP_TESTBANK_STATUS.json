@@ -4,7 +4,7 @@
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "production_changes": false,
-  "current_scope": "Research-only analytic/manufactured dummy-SWAP coupling oracles plus concept synthesis against current real-SWAP response evidence; no production changes.",
+  "current_scope": "Research-only analytical/manufactured proof programme for the fixed geometric SWAP-MODFLOW interface: theory and exact balances first, numerical implementation second; no production changes.",
   "states": {
     "DSW01": "QUALIFIED_LINEAR_SHARED_STORAGE_ORACLE",
     "DSW02": "QUALIFIED_STORAGE_OWNERSHIP_PARTITION",
@@ -84,9 +84,10 @@
     "A five-window manufactured trajectory with unequal timesteps, explicit memory, lateral input, ET and drainage closes both window and cumulative mass ledgers to machine precision when state continuation is explicit."
   ],
   "unresolved_scientific_questions": [
-    "What physical spatial/domain ownership is intended for a deployed SWAP-MODFLOW coupling: which water volumes belong to SWAP, which to MODFLOW, whether any volume is coextensive, and which physical state controls each volume?",
-    "If a true shared-phreatic family is intended, what is the real-SWAP complete-profile storage response to that shared phreatic coordinate under an explicitly non-overlapping storage ownership contract?",
-    "Which real SWAP internal states beyond the coupling head materially control the next-window groundwater response, while preserving the full committed-state transaction contract?"
+    "For the fixed coupling plane z_c, derive the exact top-system response and complete coupled residual while keeping interface hydraulic head H_c distinct from SWAP phreatic elevation.",
+    "Construct the minimal nonhydrostatic analytical oracle in which H_c != z_phreatic and both are independently known.",
+    "Determine algebraically whether the current production u/q_u condensation follows from the derived fixed-interface residual, and under which finite-window assumptions.",
+    "Which real SWAP internal states beyond H_c materially control the next-window interface response while preserving committed-state transaction semantics?"
   ],
   "unresolved_numerical_questions": [
     "What production tolerance envelope should jointly govern MODFLOW subsystem convergence, coupling residual and mass conservation without demanding unattainable floating-point residuals?",
@@ -95,10 +96,10 @@
   ],
   "next_safe_steps": [
     "Keep all production F-GC code unchanged.",
-    "Define and compare explicit physical domain/state/storage ownership alternatives before selecting h-link, q-link, or boundary-exchange semantics.",
-    "Consolidate DSW01-DSW20 into a small reusable analytic-SWAP research component only if it preserves the existing independent oracles and does not become a mini-Richards model.",
-    "Use existing MAP02-MAP12 rather than creating a duplicate generic q_u/u response experiment.",
-    "Activate any shared-phreatic HLINK/LOW01 experiment only after the physical-domain definition requires that family; readiness alone is not a scientific activation criterion."
+    "Use docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md as the primary conceptual/mathematical research contract.",
+    "Treat HLINK/shared-phreatic and finite-resistance q-link work as comparison/limit evidence, not the main proof path.",
+    "Derive and preregister a nonhydrostatic fixed-interface analytical oracle before writing its numerical implementation.",
+    "Only after the independent derivation, map u/q_u and HCOF/RHS onto the exact residual and test numerical correctness separately from numerical quality."
   ],
   "latest_integral_research_run": {
     "workflow_run": 35563873238,
@@ -107,17 +108,18 @@
     "qualified_through": "DSW20"
   },
   "concept_synthesis": {
-    "state": "PERSISTED_RECONCILED_THROUGH_EXISTING_REAL_SWAP_MAP12",
+    "state": "FIXED_INTERFACE_REFRAMING_PERSISTED_THEORY_FIRST",
     "document": "docs/research/GC_COUPLING_CONCEPT_SYNTHESIS.md",
     "initial_commit": "60f7c6f0d71000757c1c70b503cf52dc610f45c6",
     "reconciled_commit": "0961138fa6913fa21d44fe31596049dbf5ea8f71",
     "conclusions": [
-      "DSW01-DSW20 are sufficient for the basic coupling taxonomy; no new dummy mechanism test is currently required.",
-      "Existing MAP02-MAP12 already separate production affine response, real corrector response, whole-column storage response, mass-ledger acceptance, partial versus total q_u derivatives, and lower-interface versus phreatic semantics.",
-      "Production u is a finite-window inverse head sensitivity and u/dt is used as a partial affine response slope. It is not a universal static specific yield and is not automatically the total corrector derivative.",
-      "In drainage-free local real-SWAP fixtures u approximately equals whole-column storage sensitivity while bottom-outward exchange sensitivity is approximately -u; this does not establish storage overlap with MODFLOW STO.",
-      "The current F-GC mode-5 route is not demonstrated to be a one-state shared-phreatic h-link and the qualification fixtures do not declare coextensive SWAP/MODFLOW storage.",
-      "HLINK/LOW01 remains supporting research rather than architecture authority."
-    ]
+      "The intended coupling variable is hydraulic head at a fixed geometric plane at the bottom of the SWAP profile, not phreatic groundwater elevation by definition.",
+      "Hydrostatic equality between interface head and SWAP phreatic elevation is a limiting result, not state identity.",
+      "The primary physical interface conditions are head continuity at the plane and equal/opposite interface flux.",
+      "Physical/conceptual correctness, mathematical correctness, numerical correctness and numerical quality are separate evidence layers.",
+      "u/q_u and HCOF/RHS must be derived/interpreted after the exact fixed-interface residual is established, not used to define the physics.",
+      "HLINK and finite-resistance q-link evidence is retained as comparison/limit evidence but removed from the main proof path."
+    ],
+    "fixed_interface_theory": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md"
   }
 }
