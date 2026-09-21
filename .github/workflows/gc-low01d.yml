@@ -1,0 +1,19 @@
+name: GC LOW01-D below-profile replay isolation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  low01d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guard LOW01-A2 authority
+        run: test -f integration/research/GC_LOW01A2_RESULT.json
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-D qualification
+        run: bash tests/research/run_gc_low01d.sh
