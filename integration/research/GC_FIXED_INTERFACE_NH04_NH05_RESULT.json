@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.nh04_nh05.result.v1",
+  "date": "2026-09-21",
+  "status": "ANALYTIC_IMPLEMENTATIONS_AWAITING_EXECUTION_EVIDENCE",
+  "production_changes": false,
+  "NH04": {
+    "implementation": "tests/research/test_gc_fixed_interface_nh04.py",
+    "predictions": {
+      "z_p1_m": 8.042857142857143,
+      "H_c1_m": 8.028571428571429,
+      "ET_m": 0.002857142857142857,
+      "interface_transfer_m": 0.002857142857142857,
+      "physical_storage_derivative": 0.10,
+      "process_derivative": 0.020,
+      "condensed_response_magnitude": 0.075
+    },
+    "scientific_result": "A state-dependent external process changes the condensed interface response without changing physical storage. Condensed tangent must not be labelled storage by default."
+  },
+  "NH05": {
+    "preregistration": "docs/research/GC_FIXED_INTERFACE_NH05_PREREGISTRATION.md",
+    "implementation": "tests/research/test_gc_fixed_interface_nh05.py",
+    "case_A": {"memory_m": 0.0, "interface_transfer_m": 0.0},
+    "case_B": {"memory_m": 0.006, "release_m": 0.003, "z_p_increment_m": 0.018, "H_c_increment_m": 0.012, "interface_transfer_m": 0.0012},
+    "scientific_result": "Equal initial interface head and phreatic elevation do not determine future response when committed internal memory differs. Same tangent can coexist with different response intercept."
+  },
+  "api_synthesis": "docs/research/GC_FIXED_INTERFACE_MINIMUM_COUPLING_INFORMATION.md",
+  "qualification": "No PASS claim until execution evidence exists."
+}
