@@ -24,6 +24,7 @@ program test_gc_low01c1_internal_node_snap
   logical, parameter :: expected_snap(4) = [.false., .false., .true., .false.]
   real(real64), parameter :: dt_day = 0.01_real64
   real(real64), parameter :: tol = 1.0e-10_real64
+  real(real64), parameter :: origin_h_phreatic_cm = -120.0_real64
 
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
@@ -114,14 +115,13 @@ contains
     end do
   end subroutine configure_parameters
 
-  subroutine initialize_origin(state, h_phreatic_cm)
+  subroutine initialize_origin(state)
     type(reference_richards_state_binding_t), intent(out) :: state
-    real(real64), intent(in) :: h_phreatic_cm
     real(real64) :: heads(n), water(n), conductivity(n), capacity(n), dkdh(n)
     integer :: k
 
     do k = 1, n
-      heads(k) = h_phreatic_cm - z_cm(k)
+      heads(k) = origin_h_phreatic_cm - z_cm(k)
     end do
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
 
@@ -137,9 +137,9 @@ contains
     state%dimoca = capacity
     state%pond = 0.0_real64
     state%pondm1 = 0.0_real64
-    state%gwl = h_phreatic_cm
-    state%gwlm1 = h_phreatic_cm
-    state%gwlinp = h_phreatic_cm
+    state%gwl = origin_h_phreatic_cm
+    state%gwlm1 = origin_h_phreatic_cm
+    state%gwlinp = origin_h_phreatic_cm
     state%dtold = dt_day
     state%qtop = 0.0_real64
     state%qbot = 0.0_real64
@@ -167,9 +167,11 @@ contains
     real(real64) :: storage0, storage1, residual1, residual2, max_head_delta
     integer :: observed_nn
 
-    call initialize_origin(origin, control_cm(index))
+    call initialize_origin(origin)
     first = origin
     second = origin
+    first%gwlinp = control_cm(index)
+    second%gwlinp = control_cm(index)
 
     boundary = soil_water_boundary_conditions_t()
     boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
