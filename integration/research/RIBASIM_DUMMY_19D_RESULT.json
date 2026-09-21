@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.coupling.real_ribasim_heterogeneous_realization.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19D",
+  "decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+  "authority": {
+    "implementation_baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "qualification_head": "326ae1e4441cc8fd5e0a71dc3f942f7a9c52d11f",
+    "workflow_run": 35613373608,
+    "workflow_job": 106377811175,
+    "conclusion": "success"
+  },
+  "observed": {
+    "root_first": {
+      "allocated_root_m3_per_day": 40,
+      "allocated_external_m3_per_day": 20,
+      "supplied_root_m3": 20.0571173597997,
+      "supplied_external_m3": 3.1464549301141544,
+      "supplied_total_m3": 23.203572289913854,
+      "final_level_m": 1.0000367964277102,
+      "storage_gain_m3": 36.79642771015068,
+      "final_root_factor": 0.5027597196228819,
+      "final_external_factor": 0.15832486401741203
+    },
+    "external_first": {
+      "allocated_root_m3_per_day": 40,
+      "allocated_external_m3_per_day": 20,
+      "supplied_root_m3": 20.0571173597997,
+      "supplied_external_m3": 3.1464549301141544,
+      "supplied_total_m3": 23.203572289913854,
+      "final_level_m": 1.0000367964277102,
+      "storage_gain_m3": 36.79642771015068,
+      "final_root_factor": 0.5027597196228819,
+      "final_external_factor": 0.15832486401741203
+    }
+  },
+  "preregistered_reference": {
+    "supplied_root_m3": 20.055236373645673,
+    "supplied_external_m3": 3.145747513661483,
+    "supplied_total_m3": 23.200983887307157,
+    "final_level_m": 1.0000367990161128,
+    "storage_gain_m3": 36.799016112754046,
+    "final_root_factor": 0.5027599137504485,
+    "final_external_factor": 0.1583250103267847,
+    "volume_tolerance_m3": 0.05
+  },
+  "evidence": [
+    "both priority cases fully allocate 40 m3/day root and 20 m3/day external demand",
+    "unequal UserDemand min_level values produce unequal physical realization factors from the same source Basin",
+    "observed root physical supply is approximately 20.0571 m3 while external physical supply is approximately 3.14645 m3, so the allocated 2:1 ratio is not preserved",
+    "priority reversal does not change allocation, physical recipient supplies or Basin trajectory because both demands are fully allocated",
+    "the physical one-day ledger closes to the 60 m3 fixed inflow within the preregistered tolerance",
+    "RIBASIM_REAL_19D_HETEROGENEOUS_REALIZATION=PASS",
+    "RIBASIM_DUMMY_19D_REAL_RIBASIM_TESTS=PASS",
+    "RIBASIM_DUMMY_19D_GATE=PASS"
+  ],
+  "interpretation": "DUMMY-19C proportional realization is a special common-factor case, not a general post-allocation rule. In pinned real Ribasim, physical UserDemand realization is path-specific through source state and each UserDemand min_level. Allocation priority does not reappear during realization when all demands are fully allocated, but actual supplied transfer must be measured per managed path rather than reconstructed from one aggregate reduction factor.",
+  "boundaries": [
+    "single common source Basin",
+    "different min_level values only; no different source Basins",
+    "both managed claims fully allocated",
+    "no network reallocation after physical shortfall",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "downstream": "DUMMY-19E may now combine priority-based partial allocation with physical realization shortfall in one frozen allocation window."
+}
