@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_real_swap.map01a.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP01A",
+  "title": "Characterize admitted real-SWAP corrector head path from existing F-GC45 live coupling",
+  "status": "POST_MAP01_FAILURE_DIAGNOSTIC",
+  "source_failure": {
+    "work_unit": "GC-REAL-SWAP-MAP01",
+    "symptom": "First fixed-head corrector probe at H_ref-1e-5 m returned GW_SWAP_PARTICIPANT_TRIAL_FAILED (status 6).",
+    "production_predictor_reference_head_m": -0.7149999706136307
+  },
+  "method": "Run the unchanged existing F-GC45 real MultiSWAP + MODFLOW6 end-to-end test on the same bridge and pinned MODFLOW6 6.8.0 build. Record every head for which its real SWAP corrector returns an accepted trial.",
+  "outputs": [
+    "FGC45_ITER head sequence",
+    "per-iteration corrector q1, q2, weighted q",
+    "final accepted head and ledger exchange"
+  ],
+  "gate": "The existing F-GC45 end-to-end test must pass unchanged.",
+  "interpretation": "This diagnostic defines an empirically admitted corrector-head path. It does not validate MAP01 fixed-head offsets and does not change MAP01's failed status.",
+  "forbidden": [
+    "no production code change",
+    "do not retrofit MAP01 offsets",
+    "do not infer a derivative from the live iteration path itself"
+  ]
+}
