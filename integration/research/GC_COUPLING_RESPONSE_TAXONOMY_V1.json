@@ -1,0 +1,167 @@
+{
+  "schema": "swap5.gc_coupling_response_taxonomy.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-COUPLING-RESPONSE-TAXONOMY-V1",
+  "decision": "QUALIFIED_RESEARCH_TAXONOMY_V1",
+  "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "terms": [
+    {
+      "symbol": "H",
+      "name": "shared interface / phreatic head",
+      "class": "PHYSICAL_SHARED_STATE",
+      "definition": "One physical groundwater/interface head when SWAP and MODFLOW represent the same phreatic state rather than two states separated by a finite resistance.",
+      "evidence": [
+        "DSW01-DSW06",
+        "MAP01A/MAP02"
+      ],
+      "caution": "A shared head is not a complete SWAP state when internal unsaturated memory exists (DSW11/DSW15)."
+    },
+    {
+      "symbol": "DeltaS(H)",
+      "name": "whole-column physical storage change",
+      "class": "PHYSICAL_VOLUME",
+      "definition": "Change in water stored in the SWAP control volume over the coupling window.",
+      "derivative": "J_S=d(DeltaS)/dH",
+      "evidence": [
+        "DSW02",
+        "DSW10",
+        "MAP03"
+      ],
+      "caution": "MAP03 identifies J_S≈u only in the simple drainage-free fixture; this is not a universal definition of u."
+    },
+    {
+      "symbol": "E_bottom(H), q_swap(H)",
+      "name": "accepted physical bottom outward exchange",
+      "class": "PHYSICAL_INTERFACE_EXCHANGE",
+      "definition": "Signed whole-window bottom exchange from the real SWAP corrector; q_swap is its rate representation used by the coupling residual and the committed interface ledger.",
+      "derivative": "J_R=dE_bottom/dH or the corresponding rate derivative",
+      "evidence": [
+        "MAP02",
+        "MAP03",
+        "MAP05A"
+      ],
+      "caution": "In the simple fixture J_R≈-J_S because all other balance terms are head-independent; this sign relation is process-specific."
+    },
+    {
+      "symbol": "B_nonbottom(H)",
+      "name": "non-bottom process remainder",
+      "class": "PHYSICAL_PROCESS_RESPONSE",
+      "definition": "Atmospheric, root, drainage and other non-bottom terms required to close the SWAP water balance.",
+      "evidence": [
+        "DSW12-DSW15",
+        "E6 component-domain evidence"
+      ],
+      "caution": "A head-dependent B_nonbottom breaks the simple J_S≈-J_R alias and is the target of MAP09+ follow-up."
+    },
+    {
+      "symbol": "u",
+      "name": "accepted-trajectory predictor response coefficient",
+      "class": "FINITE_WINDOW_PREDICTOR_RESPONSE",
+      "production_definition": "u=dt/(dH_bot/dq_bot) along the accepted qbot-controlled predictor trajectory",
+      "evidence": [
+        "production mod_modflow6_swap_predictor_response",
+        "PUB-GC E4",
+        "MAP03",
+        "MAP07"
+      ],
+      "caution": "u can coincide with storage sensitivity in a restricted fixture, but its production authority is the inverse finite-window qbot-to-head response, not a universal physical-storage declaration."
+    },
+    {
+      "symbol": "q_u",
+      "name": "historical predictor response quantity",
+      "class": "DERIVED_PREDICTOR_QUANTITY",
+      "production_definition": "q_u=u*(H_end-H_start)/dt-q_bot",
+      "evidence": [
+        "production mod_modflow6_swap_predictor_response",
+        "MAP07"
+      ],
+      "caution": "Its total derivative across neighboring predictor trajectories is not +u/dt because q_bot and potentially u change with the trajectory."
+    },
+    {
+      "symbol": "partial q_u / partial H | predictor frozen",
+      "name": "production affine response slope",
+      "class": "ITERATION_RESPONSE_POLICY",
+      "production_definition": "+u/dt with predictor u and q_bot held fixed; cell response is reanchored by changing the intercept after real-SWAP corrector observations.",
+      "evidence": [
+        "F-GC33/F-GC49D source",
+        "MAP04",
+        "MAP05",
+        "MAP05A",
+        "MAP07"
+      ],
+      "caution": "Do not call this the total physical derivative of q_u, bottom exchange, or a physical interface conductance."
+    },
+    {
+      "symbol": "q_aff(H)",
+      "name": "reanchored affine groundwater-facing response",
+      "class": "NUMERICAL_COUPLING_SURROGATE",
+      "definition": "q_ref+slope*(H-H_ref); after a rejected coupling iterate, the line is reanchored through the measured real-SWAP corrector point while the chosen slope policy is retained.",
+      "evidence": [
+        "modflow6_groundwater_application_service.py",
+        "MAP04",
+        "MAP05A"
+      ],
+      "caution": "Different slopes may share the same accepted physical fixed point but take different paths through the corrector admissibility domain."
+    },
+    {
+      "symbol": "HCOF,RHS",
+      "name": "MODFLOW API affine representation",
+      "class": "NUMERICAL_MATRIX_REPRESENTATION",
+      "definition": "Q=HCOF*H-RHS after area/time/unit transformation of the selected affine response.",
+      "evidence": [
+        "DSW07",
+        "F-GC33"
+      ],
+      "caution": "Dimensional similarity to storage/time or conductance does not establish physical ownership."
+    },
+    {
+      "symbol": "C_link",
+      "name": "finite-resistance interface conductance",
+      "class": "PHYSICAL_Q_LINK_PARAMETER",
+      "definition": "q=C_link*(h_1-h_2) for two physically distinct states separated by a represented resistance.",
+      "evidence": [
+        "DSW08",
+        "DSW18"
+      ],
+      "caution": "Not interchangeable with u, HCOF, or a shared-state storage response."
+    },
+    {
+      "symbol": "J_solver",
+      "name": "solver/Jacobian derivative",
+      "class": "NUMERICAL_SOLVER_OBJECT",
+      "definition": "Derivative used to solve the currently assembled residual; may include storage, process tangents and/or affine coupling terms.",
+      "evidence": [
+        "DSW07",
+        "DSW09 family"
+      ],
+      "caution": "Solver convergence and physical correctness/mass closure are separate acceptance objects (DSW05, DSW19)."
+    }
+  ],
+  "synthesis": [
+    "DSW01-DSW20 establish the transparent algebraic signatures of shared storage, duplicate storage, finite resistance, sinks, internal memory, aggregation and converged-but-wrong coupling.",
+    "MAP03 shows that in a simple real-Richards fixture u matches whole-column storage sensitivity while the physical bottom exchange has the opposite head sensitivity.",
+    "MAP07 shows that +u/dt is a partial affine-extension derivative; along the E4 predictor family the total historical q_u derivative is about one millionth of that slope on the fixed B3 plateau points.",
+    "MAP04 shows slope policy is practically irrelevant to accepted physics in an easy short-window case.",
+    "MAP05 falsifies universal slope-policy invariance: intercept-only changes the path enough to hit a corrector-domain failure in B3.",
+    "MAP05A shows the independently measured negative corrector slope J_R is nevertheless admissible and reaches essentially the same B3 accepted head, flux and ledger as current +u in the same three outer iterations.",
+    "MAP06 shows why path matters: the B3 prescribed-head corrector admissibility set is deterministic but fragmented on the preregistered picometre grid."
+  ],
+  "current_contract_interpretation": [
+    "Accepted physical exchange authority is the real-SWAP corrector plus committed whole-window interface ledger.",
+    "The production +u/dt line is best described, on current evidence, as an iteration-response surrogate constructed from accepted predictor sensitivity and reanchored to physical corrector observations.",
+    "Current evidence does not justify describing +u/dt as a physical exchange conductance or as the total derivative of historical q_u.",
+    "Current evidence also does not justify declaring the production coupling defective: the accepted physical state is separately certified by corrector residual and ledger, and both +u and J_R policies can reach the same fixed point in B3."
+  ],
+  "unresolved": [
+    "How does the decomposition change when a head/state-dependent non-bottom process contributes materially to the real-SWAP window balance?",
+    "Which slope policy is most robust across a prospectively defined family of admitted corrector domains without compromising accepted physics?",
+    "What precise historical/SIMGRO contract motivated freezing q_bot in the affine extension, and should that semantic intent be documented explicitly?"
+  ],
+  "forbidden_inference": [
+    "No production source change is authorized by this taxonomy.",
+    "No universal ranking of +u, zero slope or J_R is supported.",
+    "Do not infer a physical q-link unless two physical heads and a resistance law exist.",
+    "Do not infer that shared head eliminates internal SWAP memory/state."
+  ]
+}
