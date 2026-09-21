@@ -5,7 +5,7 @@ on:
     branches:
       - work/f-gc-dummy-swap-shared-storage
     paths:
-      - 'integration/research/GC_LOW01C2*.json'
+      - 'integration/research/GC_LOW01C2_PREREGISTRATION.json'
       - 'tests/research/test_gc_low01c2_lower_half_cell_policy.py'
       - 'tests/research/run_gc_low01c2.sh'
       - '.github/workflows/gc-low01c2.yml'
