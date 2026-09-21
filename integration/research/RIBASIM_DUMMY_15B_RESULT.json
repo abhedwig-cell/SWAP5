@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_forecast_realization.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15B",
+  "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+  "authority": {
+    "implementation_baseline": "800897d22d4eea54b5f00ba6d8dda69630958617",
+    "qualification_head": "ed731f56fff1df6f627d8f7f1fdc3a67ffef9782",
+    "workflow_run": 35590242964,
+    "workflow_job": 106302757427,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_15B_SOURCE_SCOPE=PASS",
+    "15/15 ForecastRealizationTests PASS",
+    "canonical forecast capacity 60 allocates 60 while shared-state physical realization supplies 32 with V=28, hs=0.4, hg=0.28",
+    "priority-preserving root-first supplies root32/external0",
+    "priority-preserving external-first supplies external20/root12",
+    "proportional canonical realization supplies root21.3333333333/external10.6666666667",
+    "realization policy changes recipient state/root memory without changing physical total, V, surface endpoint or groundwater endpoint",
+    "forecast=20 under-allocation supplies exactly allocated20 with V=30, hs=0.5, hg=0.3",
+    "forecast=45 partial scarcity matches preregistered policy splits",
+    "canonical forecast sweep satisfies supplied_total=min(min(M_pred,60),32)",
+    "ROOT_FIRST policy divergence begins only after M_pred>40",
+    "EXTERNAL_FIRST policy divergence begins after M_pred>32",
+    "allocated-but-unsupplied water never enters root state or combined ledger",
+    "dense bounds/ledger matrix passes for both priorities and both realization policies",
+    "zero forecast still allows physical surface-groundwater exchange while no managed water is allocated or supplied",
+    "RIBASIM_DUMMY_15B_POLICY_TESTS=PASS",
+    "RIBASIM_DUMMY_15B_GATE=PASS"
+  ],
+  "interpretation": "Demand, allocated and supplied water are distinct authorities. Only supplied water changes physical state. Realization policy can alter recipient supply, root memory and represented-system loss while the shared-state physical capacity and surface-groundwater endpoint remain identical.",
+  "ribasim_boundary": "The two analytical realization policies are contrast oracles. Neither is claimed to reproduce current Ribasim supplied-flow semantics without the planned pinned real-Ribasim bridge.",
+  "downstream": "DUMMY-16 may now isolate management-clock event semantics using the qualified allocation/realization distinction."
+}
