@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
+
+BASE="94eb5a6cef6d3a9a8389d35595bbd5d9baabe885"
+RIBASIM_PIN="f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+RIBASIM_ROOT="${RIBASIM_ROOT:-$ROOT/.ribasim-pin}"
+
+fail() {
+  echo "RIBASIM_DUMMY_19C_FAIL $*" >&2
+  exit 73
+}
+
+git merge-base --is-ancestor "$BASE" HEAD ||
+  fail "branch is not descended from qualified DUMMY-19B closeout base"
+
+git diff --quiet "$BASE"..HEAD -- src ||
+  fail "production src delta is forbidden"
+git diff --quiet "$BASE"..HEAD -- reference ||
+  fail "reference delta is forbidden"
+
+while IFS= read -r path; do
+  case "$path" in
+    .github/workflows/ribasim-dummy-01.yml) ;;
+    integration/research/RIBASIM_DUMMY_19C_PREREGISTRATION.json) ;;
+    integration/research/RIBASIM_DUMMY_19C_CONCEPT.md) ;;
+    integration/research/RIBASIM_DUMMY_19C_STATUS.json) ;;
+    integration/research/RIBASIM_DUMMY_19C_RESULT.json) ;;
+    integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json) ;;
+    tests/research/generate_real_ribasim_realization_conflict.py) ;;
+    tests/research/real_ribasim_realization_conflict_bridge.jl) ;;
+    tests/research/run_ribasim_dummy_19c.sh) ;;
+    "") ;;
+    *) fail "unexpected DUMMY-19C branch delta: $path" ;;
+  esac
+done < <(git diff --name-only "$BASE"..HEAD | sort)
+
+echo "RIBASIM_DUMMY_19C_SOURCE_SCOPE=PASS"
+
+test -d "$RIBASIM_ROOT/.git" ||
+  fail "pinned Ribasim checkout is missing at $RIBASIM_ROOT"
+
+ACTUAL_PIN="$(git -C "$RIBASIM_ROOT" rev-parse HEAD)"
+test "$ACTUAL_PIN" = "$RIBASIM_PIN" ||
+  fail "Ribasim checkout mismatch: expected $RIBASIM_PIN, got $ACTUAL_PIN"
+
+echo "RIBASIM_DUMMY_19C_RIBASIM_PIN=PASS sha=$ACTUAL_PIN"
+pixi --version
+
+(
+  cd "$RIBASIM_ROOT"
+
+  pixi run python     "$ROOT/tests/research/generate_real_ribasim_realization_conflict.py"     "$RIBASIM_ROOT/generated_testmodels"
+
+  pixi run instantiate-julia
+  pixi run julia --startup-file=no --project=. --version
+
+  JULIA_NUM_THREADS=2 pixi run julia     --startup-file=no     --project=.     "$ROOT/tests/research/real_ribasim_realization_conflict_bridge.jl"     "$RIBASIM_ROOT"
+)
+
+echo "RIBASIM_DUMMY_19C_REAL_RIBASIM_TESTS=PASS"
+echo "RIBASIM_DUMMY_19C_GATE=PASS"
