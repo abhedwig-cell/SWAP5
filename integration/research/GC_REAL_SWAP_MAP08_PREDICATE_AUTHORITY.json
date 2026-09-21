@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_real_swap.map08.predicate_authority.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP08",
+  "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "source": "src/runtime/mod_groundwater_swap_transaction_participant.f90:accepted_whole_window",
+  "ordered_predicates": [
+    "result.completed",
+    "candidate.ready()",
+    "result.bottom_interface_exchange_available",
+    "finite(result.bottom_outward_exchange_native)",
+    "finite(result.terminal_bottom_outward_flux_native)",
+    "requested_t0 == window.t0",
+    "requested_t1 == window.t1",
+    "completed_t == window.t1",
+    "candidate origin interval available and exactly [window.t0, window.t1]"
+  ],
+  "participant_failure_mapping": {
+    "status_6": "GW_SWAP_PARTICIPANT_TRIAL_FAILED",
+    "meaning": "At least one accepted_whole_window predicate is false after backend run_trial returns."
+  },
+  "diagnostic_interpretation": [
+    "A raw backend solver rejection or retry explains why a whole-window candidate may never be produced, but is not itself one of the wrapper acceptance predicates.",
+    "If result.completed=false, later bottom-exchange/time/candidate predicates may be consequences rather than independent primary failures.",
+    "If raw backend completes with a ready full-window candidate while participant status remains 6, investigate provenance/wrapper mismatch rather than hydrological solve failure.",
+    "Finite bottom exchange is necessary for participant admission but not sufficient for physical correctness; mass and transaction evidence remain separate."
+  ],
+  "production_changes": false
+}
