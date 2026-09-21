@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-16",
   "title": "Management-clock synchronization with invariant shared-state hydrology",
-  "baseline": "679dba49211c2dd015f6e6df37b3cc0c3b26872e",
+  "baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-    "current": "BLOCKED_PENDING_DUMMY_15_AND_DUMMY_15B",
-    "implementation_rule": "No DUMMY-16 model or tests before DUMMY-15B closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-16 model or tests before DUMMY-15B closes and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+      "workflow_run": 35590242964,
+      "main_closeout_head": "ab2f44e0c40a2980432165fd60d4958ef60a96fe"
+    }
   },
   "purpose": "Isolate management-clock/event-synchronization effects from physical timestep effects by holding the two-window physical trajectory and total realized managed withdrawal identical while changing only whether a mid-horizon priority event is observed.",
   "canonical_setup": {
@@ -148,5 +153,6 @@
     "introduce one exogenous demand event and one hydrological threshold event in the same outer window"
   ],
   "pass_decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
-  "fail_decision": "RIBASIM_DUMMY_16_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_16_BLOCKED",
+  "authority_rebind_note": "DUMMY-16 preregistration/concept were prepared while DUMMY-15B was blocked. No DUMMY-16 implementation existed. Baseline rebound to this post-DUMMY-15B closeout head before any DUMMY-16 code/tests."
 }
