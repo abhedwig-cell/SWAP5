@@ -96,6 +96,12 @@ on:
       - 'tests/research/dummy_management_clock.py'
       - 'tests/research/test_dummy_management_clock.py'
       - 'tests/research/run_ribasim_dummy_16.sh'
+      - 'integration/research/RIBASIM_DUMMY_17_*.json'
+      - 'integration/research/RIBASIM_DUMMY_17_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/dummy_two_basin_shared_groundwater.py'
+      - 'tests/research/test_dummy_two_basin_shared_groundwater.py'
+      - 'tests/research/run_ribasim_dummy_17.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -322,3 +328,16 @@ jobs:
         run: python3 --version
       - name: Run management-clock event gate
         run: bash tests/research/run_ribasim_dummy_16.sh
+
+  two-basin-shared-groundwater-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-17-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run two-Basin shared-groundwater gate
+        run: bash tests/research/run_ribasim_dummy_17.sh
