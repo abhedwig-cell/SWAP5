@@ -106,7 +106,7 @@
     {
       "work_unit": "RIBASIM-DUMMY-16",
       "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "required_authority": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
       "implementation": false,
       "purpose": "management-clock event synchronization with invariant shared-state hydrology"
     },
@@ -130,10 +130,17 @@
       "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
       "implementation": false,
       "purpose": "qualify irrigation-event management-state transition under partial external supply before real SWAP substitution"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-15D",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "implementation": false,
+      "purpose": "explicit canopy store separating gross source withdrawal from net soil irrigation and interception evaporation"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. After DUMMY-15 and DUMMY-15B, qualify DUMMY-15C before any executable clock experiment.",
+  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. Downstream executable order: 15B -> 15C -> 15D -> 16 -> 17 -> 18.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
