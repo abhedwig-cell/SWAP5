@@ -146,6 +146,7 @@ def solve_case(
 
             final_head = float("nan")
             iterations = 0
+            converged = False
             for _ in range(max(1, session.max_solve_iterations)):
                 status, iterate = session.publish_and_solve_iteration(
                     (Binding(),),
@@ -158,15 +159,20 @@ def solve_case(
                 final_head = float(iterate.head_m[0])
                 iterations = int(iterate.iteration)
                 if bool(iterate.modflow_converged):
+                    converged = True
                     break
 
             require(
-                session.timestep_ready_for_finalize(),
+                converged,
                 f"{name} MODFLOW did not certify convergence",
             )
             require(
                 session.finalize_prepared_solve() == PreparedSolveStatus.OK,
                 session.last_error,
+            )
+            require(
+                session.timestep_ready_for_finalize(),
+                f"{name} finalized solve but timestep not ready",
             )
             require(
                 session.finalize_time_step_once() == PreparedSolveStatus.OK,
