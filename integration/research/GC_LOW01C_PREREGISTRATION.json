@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.gc_low01.c.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-C",
+  "title": "Prospective prescribed-groundwater-level branch-boundary characterization",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "production_changes": false,
+  "dependencies": {
+    "classifier": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "state01": "integration/research/GC_LOW01_STATE01_PREREGISTRATION.json",
+    "live_inside_profile": "GC-LOW01-B qualification required only for solver-response part, not classifier-only characterization"
+  },
+  "geometry_cm": {
+    "z": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "dz": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "bottom_face": -300
+  },
+  "frozen_source_tolerances_cm": {
+    "top_and_node_snap": 0.0001,
+    "note": "No tolerance is invented for the physical bottom face; BELOW_BOTTOM_NODE is a node-center state-machine classification and is deliberately distinguished from below the actual profile face."
+  },
+  "classifier_cases": [
+    {
+      "label": "Z2_ABOVE_EPS",
+      "H_phreatic_cm": -74.99989
+    },
+    {
+      "label": "Z2_ABOVE_WITHIN_SNAP",
+      "H_phreatic_cm": -74.99995
+    },
+    {
+      "label": "Z2_BELOW_WITHIN_SNAP",
+      "H_phreatic_cm": -75.00005
+    },
+    {
+      "label": "Z2_BELOW_EPS",
+      "H_phreatic_cm": -75.00011
+    },
+    {
+      "label": "Z4_ABOVE_EPS",
+      "H_phreatic_cm": -249.99989
+    },
+    {
+      "label": "Z4_BELOW_WITHIN_SNAP",
+      "H_phreatic_cm": -250.00005
+    },
+    {
+      "label": "Z4_BELOW_EPS",
+      "H_phreatic_cm": -250.00011
+    },
+    {
+      "label": "BOTTOM_FACE_ABOVE",
+      "H_phreatic_cm": -299.9999
+    },
+    {
+      "label": "BOTTOM_FACE_EXACT",
+      "H_phreatic_cm": -300
+    },
+    {
+      "label": "BOTTOM_FACE_BELOW",
+      "H_phreatic_cm": -300.0001
+    }
+  ],
+  "required_outputs": [
+    "requested H_phreatic",
+    "effective H_phreatic after source snap",
+    "branch id",
+    "active Richards node count",
+    "fllowgwl equivalent",
+    "derived hbot when BELOW_BOTTOM_NODE",
+    "lower-distance denominator when INSIDE_PROFILE"
+  ],
+  "solver_extension_if_low01b_passes": [
+    "Repeat a bounded subset immediately on either side of one internal node using the qualified OUTPUT01/LOW01-B carrier.",
+    "Record qbot, storage change and candidate-state norm without requiring continuity.",
+    "Treat retry/nonconvergence as evidence of the branch envelope, not as a reason to retune the controls."
+  ],
+  "gates": [
+    "Classifier outputs exactly follow the frozen source state-machine rules for every predeclared control.",
+    "Node-snap cases demonstrate the 1e-4 cm source tolerance without post-hoc movement.",
+    "The report explicitly distinguishes BELOW_BOTTOM_NODE from H_phreatic below the physical bottom face.",
+    "Any solver-response discontinuity is reported descriptively; LOW01-C has no continuity acceptance requirement."
+  ],
+  "interpretation": [
+    "LOW01-C is a characterization gate, not an admission gate.",
+    "A discontinuity can be historically correct and still be a design concern for a future h-link; the test must not smooth it away.",
+    "The physical bottom face at -300 cm is not the legacy mode-1 branch-switch point. The state machine switches when all node centers are above H_phreatic, which occurs below z4=-250 cm."
+  ],
+  "forbidden": [
+    "no retuning of test points",
+    "no invented smoothing",
+    "no production mode1 changes",
+    "no claim of continuity unless directly observed"
+  ]
+}
