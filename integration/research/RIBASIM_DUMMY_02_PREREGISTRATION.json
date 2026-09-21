@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_threeway.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-02",
+  "title": "Controlled dummy SWAP - Ribasim - MODFLOW conflict triangle",
+  "baseline": "0bfb2a38efff430b159b6b21c1d3eca9395aba3d",
+  "purpose": "Compose the qualified-shape one-Basin oracle with minimal transactional dummy SWAP demand and dummy MODFLOW forecast/realization participants, so water-allocation conflicts can be isolated without production physics.",
+  "participant_contracts": {
+    "swap": [
+      "publishes irrigation demand from committed state only",
+      "does not recalculate same-window demand from tentative Ribasim or MODFLOW state",
+      "records realized delivery and shortage only on explicit coupled commit"
+    ],
+    "modflow": [
+      "publishes forecast Basin infiltration/drainage for allocation",
+      "publishes actual Basin infiltration/drainage for physical realization",
+      "does not clip actual physical exchange to satisfy UserDemand",
+      "records the realized exchange only on explicit coupled commit"
+    ],
+    "ribasim": [
+      "allocates from committed Basin state and MODFLOW forecast",
+      "realizes actual physical exchange before managed delivery",
+      "curtails managed UserDemand when actual hydrology leaves less allocatable water",
+      "fails closed if actual mandatory infiltration would require negative Basin storage"
+    ]
+  },
+  "transaction_contract": [
+    "prepare_window mutates no participant",
+    "commit preflights all participant revisions before mutating any participant",
+    "stale candidates fail closed with zero participant mutation",
+    "one successful coupled commit advances all three participant revisions exactly once"
+  ],
+  "experiments": {
+    "C1": "forecast equals actual: requested irrigation is fully allocated and delivered; all participants commit once",
+    "C2": "late conflict: SWAP requests 50 m3, MODFLOW forecast permits 50 m3 allocation, actual infiltration leaves only 40 m3, Ribasim delivers 40 m3 and SWAP records 10 m3 shortage",
+    "C3": "forecast already reveals shortage: allocation shortage is distinguished from later realization shortage",
+    "C4": "actual hydrology infeasible: coupled prepare fails with zero mutation of SWAP, Ribasim and MODFLOW",
+    "C5": "stale coupled candidate after independent participant advancement fails before any coupled mutation",
+    "C6": "same-window SWAP request is invariant to tentative allocation/realization; no hidden feedback from candidate delivery into demand"
+  },
+  "forbidden": [
+    "no SWAP production hydrology or irrigation physics",
+    "no MODFLOW production backend change",
+    "no Ribasim network-routing or allocation-equivalence claim",
+    "no Reference Richards change",
+    "no RossFast change",
+    "no production groundwater-coupling change",
+    "no iMOD Coupler product integration",
+    "no same-window demand iteration unless separately preregistered"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_02_QUALIFIED_CONTROLLED_THREEWAY_TRIANGLE",
+  "fail_decision": "RIBASIM_DUMMY_02_BLOCKED"
+}
