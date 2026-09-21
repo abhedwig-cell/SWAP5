@@ -15,6 +15,7 @@ One coupling window follows:
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 
 from dummy_ribasim_reservoir import (
     AllocationCandidate,
@@ -28,8 +29,8 @@ from dummy_ribasim_reservoir import (
 
 def _nonnegative(name: str, value: float) -> float:
     value = float(value)
-    if value < 0.0:
-        raise ValueError(f"{name} must be non-negative")
+    if not math.isfinite(value) or value < 0.0:
+        raise ValueError(f"{name} must be finite and non-negative")
     return value
 
 
