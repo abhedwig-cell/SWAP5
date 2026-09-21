@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-02",
   "branch": "work/ribasim-dummy-01",
   "baseline": "0bfb2a38efff430b159b6b21c1d3eca9395aba3d",
-  "checkpoint_commit": "f26d268c9dabeb1bf334ea26e464ce1fc760866b",
+  "checkpoint_commit": "ecefca938400f801dfe7f47e3fbb0cb84b40e5a4",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Controlled dummy SWAP - Ribasim - MODFLOW triangle with forecast allocation, physical realization, shortage decomposition and explicit coupled commit.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_02_PREREGISTRATION.json",
@@ -31,7 +31,16 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Trigger DUMMY-02 through the already registered ribasim-dummy-01 workflow dispatcher and record Actions evidence.",
-  "recovery_point": "Resume from work/ribasim-dummy-01; DUMMY-02 implementation and concept are persisted, focused test/qualification still open.",
-  "blockers": []
+  "next_action": "Start separately preregistered head-dependent groundwater-exchange research slice.",
+  "recovery_point": "RIBASIM-DUMMY-02 closed qualified; resume next work unit from current work/ribasim-dummy-01 head.",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_02_QUALIFIED_CONTROLLED_THREEWAY_TRIANGLE",
+    "workflow_run": 35565066706,
+    "workflow_job": 106225134413,
+    "qualification_head": "012d19e9c42eeec8a032ea33e0e7d38017757e55",
+    "qualification_merge_commit": "3b421ab08f0c7da107dc207e518c80ec69955fac",
+    "tests": "6/6 PASS",
+    "gate": "PASS"
+  }
 }
