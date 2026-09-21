@@ -26,7 +26,14 @@ jobs:
         name: Check LOW01-B authority
         shell: bash
         run: |
-          if test -f integration/research/GC_LOW01B_RESULT.json; then
+          if test -f integration/research/GC_LOW01B_RESULT.json && \
+             python3 - <<'PY'
+import json
+from pathlib import Path
+d = json.loads(Path("integration/research/GC_LOW01B_RESULT.json").read_text())
+raise SystemExit(0 if d.get("conclusion") == "success" and str(d.get("decision", "")).startswith("QUALIFIED") else 1)
+PY
+          then
             echo "ready=true" >> "$GITHUB_OUTPUT"
             echo 'GC_LOW01C1_PREREQUISITE_LOW01B=READY'
           else
