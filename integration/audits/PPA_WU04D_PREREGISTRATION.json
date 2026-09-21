@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-D",
+  "title": "Gash source-window interception",
+  "status": "PROCESS_QUALIFIED_RUNTIME_COMPOSITION_OPEN",
+  "authority": {
+    "scientific_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "legacy_source": "SWAP 4.3.1 B1.11 MOD_meteo.f90:Gash",
+    "shared_progress_contract": "integration/audits/PPA_WU04C_RUNTIME_RECEIPT_RESTART_CONTRACT.json"
+  },
+  "implemented": [
+    "exact pre-saturation and post-saturation Gash aggregate equations",
+    "source-window rain/sprinkling partition through the shared apportionment routine",
+    "dynamic-top request adapter without a second mass owner"
+  ],
+  "required_before_runtime_admission": [
+    "Gash aggregate plus F-KT receipt publication integration test",
+    "rejected-trial and changed-dt replay",
+    "mid-window restart replay with a Gash aggregate",
+    "production hard-mass closure"
+  ],
+  "nonclaims": ["general weather-table ingestion", "canopy-loss mass-ledger redesign", "WU04C admission"]
+}
