@@ -116,10 +116,17 @@
       "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
       "implementation": false,
       "purpose": "pure physical two-Basin routing plus shared-groundwater redistribution with exact path decomposition"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-18",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+      "implementation": false,
+      "purpose": "bind analytical state/transfer/management/clock/transaction objects to pinned real Ribasim, MODFLOW, SWAP and coupler authorities before substitution"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. No DUMMY-15B/16/17 implementation is authorized before their dependency gates close.",
+  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. No downstream executable work is authorized before dependency gates close.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
