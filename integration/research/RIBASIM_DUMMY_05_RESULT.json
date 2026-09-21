@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_management_complementarity.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-05",
+  "decision": "RIBASIM_DUMMY_05_QUALIFIED_EXACT_MANAGEMENT_COMPLEMENTARITY",
+  "authority": {
+    "baseline": "1c38b4216df576570a62c11800b17af5ab77df91",
+    "qualified_main_pre_result_head": "89631f65e722d04c0f3da4b2be6c24240e051204",
+    "qualification_head": "b1a64133f92746c93dd76e5db5b6b6cc468c7893",
+    "workflow_run": 35565906395,
+    "workflow_job": 106227555433,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_05_SOURCE_SCOPE=PASS",
+    "9/9 HeadManagementComplementarityTests PASS",
+    "FULL regime reproduces fixed-delivery coupled solution",
+    "CURTAILED regime pins h1=hmin and closes exchange plus water balance",
+    "ZERO regime preserves physical exchange without management clipping",
+    "curtailment increases infiltration relative to unconstrained full-demand coupled solution",
+    "FULL/CURTAILED boundary continuous",
+    "CURTAILED/ZERO boundary continuous",
+    "physical-floor violation fails closed",
+    "dense independent request sweep matches exact regime formula",
+    "RIBASIM_DUMMY_05_GATE=PASS"
+  ],
+  "exact_regime_oracle": {
+    "fixed_delivery_end_level": "h1(U)=[(1-lambda)h0+2lambda*hgw-U/A]/(1+lambda)",
+    "full": "h1(R) >= hmin => U=R",
+    "zero": "h1(0) <= hmin and h1(0)>=datum => U=0",
+    "curtailed": "h1(0)>hmin>h1(R) => h1=hmin and U=A(h0-hmin)-V(hmin)",
+    "infeasible": "h1(0)<datum => fail closed"
+  },
+  "qualified_example": {
+    "basin_area_m2": 100,
+    "exchange_scale_m2": 50,
+    "start_level_m": 1,
+    "groundwater_head_m": 0,
+    "management_min_level_m": 0.4,
+    "request_m3": 40,
+    "unconstrained_full": {
+      "delivery_m3": 40,
+      "exchange_m3": 32,
+      "end_level_m": 0.28
+    },
+    "constrained": {
+      "delivery_m3": 25,
+      "exchange_m3": 35,
+      "end_level_m": 0.4,
+      "shortage_m3": 15
+    },
+    "accounting": "15 m3 management saving = 3 m3 extra infiltration + 12 m3 extra end storage"
+  },
+  "interpretation": "Hydrology-before-management means managed delivery is the adjustable quantity. Because exchange depends on Basin level, management curtailment can change the physical exchange; the rule is coupled rather than a fixed-flux sequential subtraction.",
+  "non_claims": [
+    "no Ribasim allocation optimizer equivalence",
+    "no production dry-boundary physics",
+    "no iterative active-set algorithm",
+    "no production coupling admission"
+  ],
+  "downstream": "Use this exact piecewise solution as the oracle for iterative active-set coupling methods, including regime switching near the FULL/CURTAILED/ZERO boundaries."
+}
