@@ -22,10 +22,10 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-12 rootzone-demand-gate.",
+  "next_action": "Use run 35571231402 as the DUMMY-12 qualification authority when it completes.",
   "recovery_point": "DUMMY-12 full research postimage and workflow gate are persisted; qualification is the next action.",
   "blockers": [
-    "GitHub Actions rootzone-demand-gate is queued in run 35570012761."
+    "Frozen-scope GitHub Actions rootzone-demand-gate is queued in run 35571231402."
   ],
   "prequalification_review": {
     "date": "2026-09-21",
@@ -40,5 +40,21 @@
       "same committed storage yields same next request regardless of prior shortage history"
     ],
     "qualification_effect": "none; Actions evidence remains mandatory"
-  }
+  },
+  "qualification_attempts": [
+    {
+      "run": 35570012761,
+      "base": "work/ribasim-dummy-01",
+      "state": "QUEUED_LEGACY_MOVING_BASE",
+      "authority_use": "withheld"
+    },
+    {
+      "run": 35571231402,
+      "pr": 514,
+      "base": "work/ribasim-dummy-12-base@97d313f50508cae1eebc59ab01f6b49bc002e1d1",
+      "scientific_postimage": "a104baba9a8e7d778174249162f8f2da21d8c778",
+      "state": "QUEUED_FROZEN_SCOPE",
+      "authority_use": "preferred qualification route"
+    }
+  ]
 }
