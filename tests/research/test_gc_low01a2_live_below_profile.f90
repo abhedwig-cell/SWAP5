@@ -36,7 +36,7 @@ program test_gc_low01a2_live_below_profile
   real(real64) :: cofgen(24,n)
   real(real64) :: origin_head(n), origin_water(n), conductivity(n), capacity(n), dkdh(n)
   real(real64) :: storage0, storage1, hbot, ledger_residual(3)
-  integer :: i, k
+  integer :: i
 
   call configure_parameters(parameters, cofgen)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, cofgen)
