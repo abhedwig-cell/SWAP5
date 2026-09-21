@@ -61,11 +61,12 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-12",
-      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
-      "qualification_run": 35570012761,
-      "pr": 513,
+      "state": "IMPLEMENTED_PERSISTED_FROZEN_SCOPE_CI_QUEUED",
+      "qualification_run": 35571231402,
+      "pr": 514,
       "intended_decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
-      "parallelism": "independent of DUMMY-11 result"
+      "parallelism": "independent of DUMMY-11 result",
+      "qualification_note": "Frozen-base trigger used so later DUMMY-13/documentation commits cannot enter the DUMMY-12 source-scope gate."
     },
     {
       "work_unit": "RIBASIM-DUMMY-13",
@@ -79,7 +80,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Await DUMMY-12 run 35570012761; if PASS, close DUMMY-12, then rebind DUMMY-13 baseline to the combined post-qualification research head.",
+  "next_authority_action": "Await frozen-scope DUMMY-12 run 35571231402; if PASS, close DUMMY-12 and rebind DUMMY-13 to the combined post-DUMMY-11/DUMMY-12 authority.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
