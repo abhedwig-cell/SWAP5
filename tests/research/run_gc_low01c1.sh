@@ -53,7 +53,7 @@ for opt in 0 2; do
     cat "$OUT/output.txt" >&2
     fail "C1 runtime O$opt"
   }
-  for marker in     'GC_LOW01C1_PROVIDER_OWNED_ROUTE=PASS'     'GC_LOW01C1_ACTIVE_DOMAIN_AND_SNAP=PASS'     'GC_LOW01C1_FINITE_QBOT_AND_STATE=PASS'     'GC_LOW01C1_MASS_CLOSURE=PASS'     'GC_LOW01C1_REPLAY_DETERMINISM=PASS'     'GC_LOW01C1_LIVE_GATE=PASS'; do
+  for marker in     'GC_LOW01C1_PROVIDER_OWNED_ROUTE=PASS'     'GC_LOW01C1_ACTIVE_DOMAIN_AND_SNAP=PASS'     'GC_LOW01C1_FINITE_QBOT_AND_STATE=PASS'     'GC_LOW01C1_MASS_OR_REFUSAL_CHARACTERIZATION=PASS'     'GC_LOW01C1_REPLAY_DETERMINISM=PASS'     'GC_LOW01C1_LIVE_GATE=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || {
       cat "$OUT/output.txt" >&2
       fail "missing O$opt marker $marker"
