@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.gc_low01a.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-A",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "qualified_head": "634251adc495b296da005eed1f6dd7604be47f3a",
+  "workflow_run": 35579159711,
+  "workflow_job": 106267759136,
+  "conclusion": "success",
+  "decision": "QUALIFIED_BELOW_PROFILE_SOURCE_DATUM_EQUIVALENCE",
+  "geometry": {
+    "bottom_node_m": -2.5,
+    "bottom_dz_m": 1,
+    "bottom_face_m": -3
+  },
+  "cases": [
+    {
+      "gwl_m": -3.1,
+      "legacy_hbot_cm": -10.000000000000009,
+      "typed_hbot_cm": -10.000000000000009,
+      "hbot_error_cm": 0,
+      "roundtrip_error_m": 0
+    },
+    {
+      "gwl_m": -3.5,
+      "legacy_hbot_cm": -50,
+      "typed_hbot_cm": -50,
+      "hbot_error_cm": 0,
+      "roundtrip_error_m": 0
+    },
+    {
+      "gwl_m": -5,
+      "legacy_hbot_cm": -200,
+      "typed_hbot_cm": -200,
+      "hbot_error_cm": 0,
+      "roundtrip_error_m": 0
+    },
+    {
+      "gwl_m": -10,
+      "legacy_hbot_cm": -700,
+      "typed_hbot_cm": -700,
+      "hbot_error_cm": 0,
+      "roundtrip_error_m": 0
+    }
+  ],
+  "gates": {
+    "below_profile_levels": "PASS",
+    "legacy_typed_hbot_equivalence": "PASS",
+    "head_roundtrip": "PASS",
+    "source_hbot_relation": "PASS",
+    "source_fllowgwl_activation": "PASS",
+    "source_residual_branch_identity": "PASS",
+    "source_jacobian_branch_identity": "PASS"
+  },
+  "bounded_conclusions": [
+    "For H_phreatic below the declared bottom face, legacy mode-1 hbot mapping is exactly equivalent to the explicit bottom-face datum mapping used by the research contract.",
+    "The below-profile mode-1 residual/Jacobian branch is source-identical to the mode-5 prescribed-head branch once hbot is derived.",
+    "This result is source/datum equivalence only; it does not admit production bottom_mode=1 or qualify inside-profile active-domain semantics."
+  ],
+  "next": "Use LOW01-A2 to exercise the same below-profile reduction through the admitted mode-5 Reference-Richards solve."
+}
