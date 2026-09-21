@@ -35,14 +35,20 @@ ARCHIVE="$BUILD/downloads/modflow6-6.8.0-linux.zip"
 echo "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e  $ARCHIVE" | sha256sum -c - || fail "MODFLOW asset hash"
 test -f "$BUILD/modflow-bin/libmf6.so" || fail "missing libmf6.so"
 
-LIBMF6="$BUILD/modflow-bin/libmf6.so"   python3 tests/research/test_gc_dummy_swap_dsw01_live_modflow.py | tee "$BUILD/live.txt"
-
-grep -Fq 'GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS' "$BUILD/live.txt" || fail "live control"
-grep -Fq 'GC_DSW01_LIVE_PROBE_COMPLETED=PASS' "$BUILD/live.txt" || fail "live probe completion"
+set +e
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw01_live_modflow.py | tee "$BUILD/live.txt"
+DSW01_STATUS=${PIPESTATUS[0]}
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw02_live_partition.py | tee "$BUILD/dsw02-live.txt"
+DSW02_STATUS=${PIPESTATUS[0]}
+set -e
 
-grep -Fq 'GC_DSW02_LIVE_GATE=PASS' "$BUILD/dsw02-live.txt" || fail "DSW-02 live gate"
+grep -Fq 'GC_DSW01_LIVE_PROBE_COMPLETED=PASS' "$BUILD/live.txt" || fail "DSW-01 live probe did not complete"
+test "$DSW01_STATUS" -eq 0 || fail "DSW-01 preregistered live control gate"
+test "$DSW02_STATUS" -eq 0 || fail "DSW-02 preregistered live gate"
+grep -Fq 'GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS' "$BUILD/live.txt" || fail "DSW-01 live control marker"
+grep -Fq 'GC_DSW02_LIVE_GATE=PASS' "$BUILD/dsw02-live.txt" || fail "DSW-02 live gate marker"
 
 echo 'GC_DSW01_DSW02_QUALIFICATION=PASS'
