@@ -41,7 +41,8 @@
     "Partial delivery leaves a physical root deficit equal to the undelivered start deficit in the no-forcing first-stage problem.",
     "If the surface/groundwater system can deliver the full root request, the accepted root storage reaches W_target exactly.",
     "Two multi-window histories that reach the same three committed states have identical next requests and physical exchange problem regardless of their prior shortage diagnostics.",
-    "No same-window second irrigation request is created after U changes root storage."
+    "No same-window second irrigation request is created after U changes root storage.",
+    "Because DUMMY-13 declares the three stores disjoint by construction, its combined-ledger proof is conditional on that declared partition and must not be used as evidence that real SWAP and MODFLOW storage domains are non-overlapping."
   ],
   "canonical_case": {
     "root": {
@@ -75,14 +76,23 @@
     "irrigation is an external sink only when the root-zone recipient lies outside the modeled system boundary; once root storage is included, it is an internal transfer",
     "system-boundary choice changes the combined ledger but must not change component flux identity",
     "shortage remains diagnostic; root-zone state carries the physical consequence",
-    "environmental root forcing is deferred to a later work unit so the internal-transfer ledger is qualified first"
+    "environmental root forcing is deferred to a later work unit so the internal-transfer ledger is qualified first",
+    "The three-store dummy is a conditional control-volume oracle. Real production storage-partition authority remains owned by the F-GC coupling-semantics workstream."
   ],
   "forbidden": [
     "no implementation before DUMMY-11 and DUMMY-12 qualification",
     "no rainfall, ET, root drainage, recharge or capillary rise in first-stage DUMMY-13",
     "no Richards-equation claim",
-    "no production SWAP/Ribasim/MODFLOW coupling change"
+    "no production SWAP/Ribasim/MODFLOW coupling change",
+    "no use of DUMMY-13 as proof of CSR-B1 real SWAP/MODFLOW storage non-overlap or CSR-B2 drainage ownership"
   ],
   "pass_decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
-  "fail_decision": "RIBASIM_DUMMY_13_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_13_BLOCKED",
+  "preregistration_revision_note": "Before DUMMY-13 implementation, current canonical F-GC project control and noncanonical CSR-04 authority were reconciled. DUMMY-13's three stores are explicitly non-overlapping by construction. This makes it a ledger oracle under declared disjoint ownership, not evidence that real SWAP storage and MODFLOW STO are physically non-overlapping.",
+  "real_coupling_authority_boundary": {
+    "canonical_product_state": "F-GC50 is internally ready for the restricted admitted profile but actual iMOD Coupler product registration remains externally blocked.",
+    "live_shared_authority_blocker": "CSR-B1-STORAGE-PARTITION: real SWAP-derived finite-window response and MODFLOW STO require explicit independent storage-role authority/non-overlap or overlap correction.",
+    "drainage_blocker": "CSR-B2-DRAINAGE-OWNERSHIP: one owner per physical drainage path is required.",
+    "dummy_nonclaim": "Passing DUMMY-13 cannot close CSR-B1 or CSR-B2 because the dummy chooses disjoint stores and has no authentic SWAP/MODFLOW storage-domain mapping."
+  }
 }
