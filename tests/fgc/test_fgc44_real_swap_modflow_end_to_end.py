@@ -98,6 +98,7 @@ def main()->None:
     # not accepted hydrological history and not authoritative interface mass.
     probe_q=swap.trial(href)
     probe_diag=swap.last_trial_diagnostics()
+    # PB01 follow-up: prospectively sample the immutable-origin real-SWAP corrector\n    # around the predictor reference head. These are rejected diagnostic trials only.\n    scan=[]\n    for dh in (-2e-4,-1e-4,-5e-5,5e-5,1e-4,2e-4):\n        qscan=swap.trial(href+dh); scan.append((dh,qscan)); swap.discard()\n    for dh,qscan in scan: print(f"FGC44_LOCAL_SCAN_DH_M={dh:.17g} QSWAP={qscan:.17g}")
     require(math.isfinite(probe_q) and all(math.isfinite(v) for v in probe_diag),"nonfinite rejected-trial probe")
     require(swap.state()==origin_state,"rejected trial mutated committed state or ledger before discard")
     swap.discard()
