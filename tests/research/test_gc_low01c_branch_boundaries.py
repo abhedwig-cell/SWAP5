@@ -38,7 +38,7 @@ def close(actual: float | None, expected: float | None, tol: float, message: str
 
 def main() -> None:
     source_gate()
-    print("GC_LOW01C_SOURCE_AUTHORITY=PASS")
+    print("GC_LOW01C_LEGACY_TEXT_MARKERS=PASS")
 
     forward = {}
     for name, gwl, branch, active, effective, hbot, distance in CASES:
@@ -80,7 +80,7 @@ def main() -> None:
     )
 
     print("GC_LOW01C_NODE_SNAP_ASYMMETRY=PASS")
-    print("GC_LOW01C_BOTTOM_NODE_SWITCH=PASS")
+    print("GC_LOW01C_TYPED_BOTTOM_NODE_POLICY=PASS")
     print("GC_LOW01C_PHYSICAL_BOTTOM_FACE_DISTINCTION=PASS")
     print("GC_LOW01C_REVERSE_REPLAY=PASS")
     print("GC_LOW01C_CLASSIFIER_GATE=PASS")
