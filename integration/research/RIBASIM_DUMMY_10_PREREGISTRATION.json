@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_management.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-10",
+  "title": "Management complementarity with dynamic groundwater storage",
+  "baseline": "95b225986f02680c209e7df6b9af75bae2222f84",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+    "current": "BLOCKED_PENDING_DUMMY_09_QUALIFICATION",
+    "implementation_rule": "Do not implement DUMMY-10 until DUMMY-09 qualification is recorded on work/ribasim-dummy-01."
+  },
+  "purpose": "After DUMMY-09 qualifies reciprocal finite groundwater storage, reintroduce UserDemand and solve the surface-management / shared-exchange / groundwater-head response as one exact piecewise linear problem.",
+  "frozen_equations": {
+    "surface_balance": "h_s1=h_s0-(U+V)/A_s",
+    "groundwater_balance": "h_g1=h_g0+V/A_g",
+    "trapezoid_exchange": "V=C*dt*[(h_s0-h_g0)+(h_s1-h_g1)]/2",
+    "request": "0<=U<=R",
+    "management_priority": "U is curtailed before physical exchange is clipped; hmin constrains management, not groundwater exchange"
+  },
+  "fixed_delivery_solution": {
+    "mu": "0.5*C*dt*(1/A_s+1/A_g)",
+    "B": "C*dt/(1+mu)",
+    "exchange": "V(U)=B*[(h_s0-h_g0)-U/(2*A_s)]",
+    "surface_end": "h_s1(U)=h_s0-[U+V(U)]/A_s",
+    "groundwater_end": "h_g1(U)=h_g0+V(U)/A_g"
+  },
+  "curtailed_solution": {
+    "alpha": "B/(2*A_s)",
+    "delivery": "U=[A_s*(h_s0-hmin)-B*(h_s0-h_g0)]/(1-alpha)",
+    "exchange": "V=B*[(h_s0-h_g0)-U/(2*A_s)]",
+    "constraint": "h_s1=hmin"
+  },
+  "canonical_case": {
+    "A_s": 100,
+    "A_g": 100,
+    "C": 50,
+    "dt": 1,
+    "h_s0": 1,
+    "h_g0": 0,
+    "hmin": 0.4,
+    "R": 40,
+    "expected": {
+      "regime": "CURTAILED",
+      "U": 32,
+      "V": 28,
+      "h_s1": 0.4,
+      "h_g1": 0.28
+    },
+    "shared_storage_ledger": "initial total storage 100 m3; final total 68 m3; 32 m3 loss equals managed delivery"
+  },
+  "fixed_head_limit": {
+    "statement": "as A_g -> infinity, groundwater-head response vanishes and the solution must approach the DUMMY-05 fixed-head oracle",
+    "canonical_limit": {
+      "U": 25,
+      "V": 35,
+      "h_s1": 0.4,
+      "h_g_change": 0
+    }
+  },
+  "hypotheses": [
+    "The fixed-U closed form satisfies reciprocal two-store balance and trapezoidal exchange simultaneously.",
+    "The FULL/CURTAILED/ZERO management active set remains exactly solvable because h_s1(U) is affine and monotone in U.",
+    "For the canonical finite-groundwater case the exact constrained solution is U=32 m3 and V=28 m3, not the DUMMY-05 fixed-head U=25,V=35 result.",
+    "Total surface-plus-groundwater storage loss equals managed delivery; internal exchange cancels from the combined ledger.",
+    "For the canonical parameter family, increasing A_g reduces groundwater-head response and moves delivery/exchange monotonically toward the fixed-head DUMMY-05 limit.",
+    "The A_g -> infinity numerical limit reproduces DUMMY-05 within floating-point precision without special-casing the fixed-head equations."
+  ],
+  "interpretation_rules": [
+    "finite groundwater storage makes management and physical exchange mutually state-dependent through both heads",
+    "DUMMY-05 is interpretable as the infinite-groundwater-storage/fixed-head limit of this frozen two-store family",
+    "A_g remains an equivalent research storage coefficient, not a MODFLOW package mapping"
+  ],
+  "forbidden": [
+    "no implementation before DUMMY-09 qualification",
+    "no production coupling change",
+    "no MODFLOW storage-package equivalence claim",
+    "no network routing or multiple-demand allocation"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+  "fail_decision": "RIBASIM_DUMMY_10_BLOCKED"
+}
