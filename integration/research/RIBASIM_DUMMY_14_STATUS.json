@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
   "blocker": null,
   "prepared_scope": "Add rainfall, prescribed root-zone loss and root capacity drainage to the three-store ledger after the internal U/V cancellation authority closes.",
-  "next_action": "Execute the exact DUMMY-14 three-store-forcing-gate.",
+  "next_action": "Execute DUMMY-14 three-store-forcing-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -56,5 +56,6 @@
     "irrigation": "root request remains an analytical surrogate until real SWAP demand authority is bound"
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-14 full research postimage and workflow gate are persisted; qualification is the next action."
+  "recovery_point": "DUMMY-14 full research postimage and workflow gate are persisted; qualification is the next action.",
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
