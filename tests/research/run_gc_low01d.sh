@@ -8,6 +8,7 @@ cd "$ROOT"
 fail(){ echo "GC_LOW01D_RUNNER_FAIL $*" >&2; exit 1; }
 
 test -f integration/research/GC_LOW01A2_RESULT.json || fail 'LOW01-A2 authority missing'
+python3 -c 'import json,pathlib,sys; d=json.loads(pathlib.Path("integration/research/GC_LOW01A2_RESULT.json").read_text()); sys.exit(0 if d.get("conclusion")=="success" and str(d.get("decision","")).startswith("QUALIFIED") else 1)' || fail 'LOW01-A2 authority not qualified'
 
 # Preserve the live below-profile substrate in the same execution.
 bash tests/research/run_gc_low01a2.sh | tee "$BUILD/a2.txt"
@@ -29,6 +30,7 @@ SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
+  tests/research/support/mod_gc_low01_trial_transaction.f90
   tests/research/test_gc_low01d_below_profile_transaction.f90
 )
 
@@ -41,7 +43,7 @@ for opt in 0 2; do
   done
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/low01d" || fail "link O$opt"
   "$OUT/low01d" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
-  grep -Fq 'GC_LOW01D_GATE=PASS' "$OUT/output.txt" || fail "missing D gate O$opt"
+  grep -Fq 'GC_LOW01D_LIVE_GATE=PASS' "$OUT/output.txt" || fail "missing D live gate O$opt"
   cat "$OUT/output.txt"
   echo "GC_LOW01D_O${opt}=PASS"
 done
