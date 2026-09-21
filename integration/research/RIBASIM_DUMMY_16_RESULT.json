@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_management_clock.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-16",
+  "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+  "authority": {
+    "implementation_baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
+    "qualification_head": "141f713fd69b67f6c26a984bb577123f561793a6",
+    "workflow_run": 35590642324,
+    "workflow_job": 106303997817,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_16_SOURCE_SCOPE=PASS",
+    "12/12 ManagementClockTests PASS",
+    "window1 FULL: request40, realized40, V=16, hs=0.44, hg=0.16, root=60",
+    "window2 shared physics CURTAILED: request40, realized20.4444444444, V=3.5555555556, hs=0.2, hg=0.1955555556",
+    "event-synchronized clock second split external20/root0.4444444444",
+    "stale clock second split root20/external0.4444444444",
+    "fast and stale schedules have identical physical water trajectory",
+    "fast final root=60.4444444444,next root request=19.5555555556",
+    "stale final root=80,next root request=0",
+    "both schedules close exact ledgers and differ in represented-system loss only through supplied external demand",
+    "RIBASIM_DUMMY_16_CLOCK_TESTS=PASS",
+    "RIBASIM_DUMMY_16_GATE=PASS"
+  ],
+  "interpretation": "Management event-clock semantics can change recipient supply, root memory and future hydrological demand even when physical window partition, total managed withdrawal, exchange, surface head and groundwater head are identical. Conservation alone cannot choose the intended management clock.",
+  "nonclaims": [
+    "no production Ribasim allocation clock policy",
+    "no production SWAP demand-refresh clock",
+    "no physical timestep comparison in first-stage DUMMY-16",
+    "no network routing",
+    "no production coupling admission"
+  ],
+  "downstream": "DUMMY-17 may now introduce the first pure physical two-Basin plus shared-groundwater spatial oracle."
+}
