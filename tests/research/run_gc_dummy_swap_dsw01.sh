@@ -160,6 +160,11 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live gate"
 
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw15v_mass_resolution.py | tee "$BUILD/dsw15v-live.txt"
+
+grep -Fq 'GC_DSW15V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw15v-live.txt" || fail "DSW-15V diagnostic gate"
+
 test "$DSW09U_STATUS" -eq 0 || fail "DSW-09U diagnostic gate"
 grep -Fq 'GC_DSW09U_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09u-live.txt" || fail "DSW-09U marker"
 test "$DSW09V_STATUS" -eq 0 || fail "DSW-09V diagnostic gate"
