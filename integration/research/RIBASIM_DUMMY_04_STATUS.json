@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_iteration.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-04",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "ad76b2c46530a40d9fb60973270d1f69708a695f",
+  "checkpoint_commit": "59b400cc5bd2f3ef8916633e1b969bedd4e9dbc4",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Exact linear trapezoidal Basin-groundwater exchange fixed-point problem with explicit, one-corrector and Picard error propagation diagnostics.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_04_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_04_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_04_STATUS.json",
+    "tests/research/dummy_trapezoid_exchange_iteration.py",
+    "tests/research/test_dummy_trapezoid_exchange_iteration.py",
+    "tests/research/run_ribasim_dummy_04.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_trapezoid_exchange_iteration.py",
+    "tests/research/test_dummy_trapezoid_exchange_iteration.py",
+    "tests/research/run_ribasim_dummy_04.sh",
+    "integration/research/RIBASIM_DUMMY_04_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_03": "RIBASIM_DUMMY_03_QUALIFIED_HEAD_EXCHANGE_DIAGNOSTIC",
+    "DUMMY_03_run": 35565340442
+  },
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-04 to the registered research workflow, execute the focused gate and record result evidence.",
+  "recovery_point": "DUMMY-04 analytical implementation, tests, concept and runner are persisted; qualification not yet run.",
+  "blockers": []
+}
