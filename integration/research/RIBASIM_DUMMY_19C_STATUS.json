@@ -8,11 +8,17 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
-  "blocker": "DUMMY-19B repaired real-Ribasim qualification is still running.",
+  "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "After DUMMY-19B qualification, rebind the implementation baseline before creating any DUMMY-19C generator, verifier or workflow gate.",
+  "next_action": "Implement the preregistered pinned real-Ribasim full-allocation/physical-reduction conflict without changing parameters or tolerances.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885",
+    "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+    "workflow_run": 35598766437,
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  }
 }
