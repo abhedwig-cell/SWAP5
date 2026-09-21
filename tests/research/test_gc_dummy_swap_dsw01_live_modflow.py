@@ -1,0 +1,297 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+import math
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+import flopy
+import numpy as np
+from xmipy import XmiWrapper
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src" / "adapter"))
+
+from modflow6_prepared_solve_session import (
+    Modflow6PreparedSolveSession,
+    PreparedSolveStatus,
+)
+
+
+H0_M = 8.0
+TOP_M = 10.0
+BOT_M = 0.0
+AREA_M2 = 1.0
+SY = 0.20
+DT_DAY = 1.0
+PRECIP_M = 0.010
+EXPECTED_CONTROL_HEAD_M = 8.050
+CONTROL_TOL_M = 1.0e-8
+
+
+@dataclass(frozen=True)
+class Binding:
+    groundwater_cell_id: int = 1
+    package_slot: int = 1
+    modflow_node_id: int = 1
+
+
+@dataclass(frozen=True)
+class Term:
+    groundwater_cell_id: int
+    hcof_m2_per_day: float
+    rhs_m3_per_day: float
+    valid: bool = True
+
+
+class DirectApiPublisher:
+    """Minimal publisher with the same package-array semantics as F-GC34."""
+
+    def __call__(
+        self,
+        bindings,
+        terms,
+        maxbound,
+        nodelist,
+        hcof,
+        rhs,
+        nbound,
+    ) -> int:
+        if len(bindings) != 1 or len(terms) != 1 or maxbound < 1:
+            return 1
+        binding = bindings[0]
+        term = terms[0]
+        if (
+            int(binding.package_slot) != 1
+            or int(binding.modflow_node_id) != 1
+            or int(binding.groundwater_cell_id) != int(term.groundwater_cell_id)
+        ):
+            return 2
+        if not math.isfinite(float(term.hcof_m2_per_day)) or not math.isfinite(
+            float(term.rhs_m3_per_day)
+        ):
+            return 3
+
+        nodelist[:] = 0
+        hcof[:] = 0.0
+        rhs[:] = 0.0
+        nodelist[0] = 1
+        hcof[0] = float(term.hcof_m2_per_day)
+        rhs[0] = float(term.rhs_m3_per_day)
+        nbound[0] = 1
+        return 0
+
+
+def require(value: bool, message: str) -> None:
+    if not value:
+        raise AssertionError(message)
+
+
+def build_model(workdir: Path, name: str) -> None:
+    sim = flopy.mf6.MFSimulation(
+        sim_name=name,
+        version="mf6",
+        sim_ws=str(workdir),
+    )
+    flopy.mf6.ModflowTdis(
+        sim,
+        time_units="DAYS",
+        nper=1,
+        perioddata=[(DT_DAY, 1, 1.0)],
+    )
+    flopy.mf6.ModflowIms(
+        sim,
+        complexity="MODERATE",
+        outer_dvclose=1.0e-12,
+        inner_dvclose=1.0e-13,
+        outer_maximum=100,
+        inner_maximum=100,
+    )
+    gwf = flopy.mf6.ModflowGwf(
+        sim,
+        modelname="GWF_1",
+        save_flows=True,
+        newtonoptions="NEWTON",
+    )
+    flopy.mf6.ModflowGwfdis(
+        gwf,
+        nlay=1,
+        nrow=1,
+        ncol=1,
+        delr=1.0,
+        delc=1.0,
+        top=TOP_M,
+        botm=BOT_M,
+    )
+    flopy.mf6.ModflowGwfic(gwf, strt=np.array([[[H0_M]]], dtype=float))
+    flopy.mf6.ModflowGwfnpf(gwf, icelltype=1, k=1.0, save_flows=True)
+    flopy.mf6.ModflowGwfsto(
+        gwf,
+        iconvert=1,
+        ss=0.0,
+        sy=SY,
+        transient={0: True},
+        save_flows=True,
+    )
+    flopy.mf6.ModflowGwfapi(
+        gwf,
+        maxbound=1,
+        pname="API_SWAP",
+        filename="api_swap.api",
+    )
+    sim.write_simulation(silent=True)
+
+
+def run_case(
+    libmf6: Path,
+    case_name: str,
+    hcof_m2_per_day: float,
+    rhs_m3_per_day: float,
+) -> dict[str, object]:
+    with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
+        workdir = Path(tmp)
+        build_model(workdir, case_name)
+
+        raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
+        initialized = False
+        result: dict[str, object] = {
+            "case": case_name,
+            "converged": False,
+            "head_m": float("nan"),
+            "iterations": 0,
+            "status": "not-run",
+            "error": "",
+        }
+        try:
+            raw.initialize()
+            initialized = True
+            require("6.8.0" in raw.get_version(), "wrong MODFLOW6 version")
+            raw.prepare_time_step(0.0)
+
+            session = Modflow6PreparedSolveSession(
+                raw,
+                "GWF_1",
+                "API_SWAP",
+                DirectApiPublisher(),
+                solution_id=1,
+            )
+            acquire = session.acquire_after_prepare_time_step()
+            if acquire != PreparedSolveStatus.OK:
+                result["status"] = f"acquire:{acquire.name}"
+                result["error"] = session.last_error
+                return result
+            opened = session.open_prepared_solve()
+            if opened != PreparedSolveStatus.OK:
+                result["status"] = f"open:{opened.name}"
+                result["error"] = session.last_error
+                return result
+
+            binding = Binding()
+            term = Term(
+                groundwater_cell_id=1,
+                hcof_m2_per_day=hcof_m2_per_day,
+                rhs_m3_per_day=rhs_m3_per_day,
+            )
+
+            for _ in range(max(1, session.max_solve_iterations)):
+                status, iterate = session.publish_and_solve_iteration(
+                    (binding,), (term,)
+                )
+                if status != PreparedSolveStatus.OK or iterate is None:
+                    result["status"] = f"solve:{status.name}"
+                    result["error"] = session.last_error
+                    break
+                result["iterations"] = int(iterate.iteration)
+                result["head_m"] = float(iterate.head_m[0])
+                result["status"] = "iterating"
+                if bool(iterate.modflow_converged):
+                    result["converged"] = True
+                    result["status"] = "converged"
+                    break
+
+            if bool(result["converged"]):
+                finalized = session.finalize_prepared_solve()
+                if finalized != PreparedSolveStatus.OK:
+                    result["status"] = f"finalize-solve:{finalized.name}"
+                    result["error"] = session.last_error
+                    result["converged"] = False
+                    return result
+                if not session.timestep_ready_for_finalize():
+                    result["status"] = "timestep-not-ready"
+                    result["converged"] = False
+                    return result
+                final_ts = session.finalize_time_step_once()
+                if final_ts != PreparedSolveStatus.OK:
+                    result["status"] = f"finalize-timestep:{final_ts.name}"
+                    result["error"] = session.last_error
+                    result["converged"] = False
+                    return result
+            else:
+                session.invalidate_without_finalize()
+
+            return result
+        except Exception as exc:
+            result["status"] = "exception"
+            result["error"] = f"{type(exc).__name__}: {exc}"
+            return result
+        finally:
+            if initialized:
+                try:
+                    raw.finalize()
+                except Exception:
+                    pass
+
+
+def main() -> None:
+    libmf6 = Path(os.environ["LIBMF6"]).resolve()
+    require(libmf6.is_file(), "missing libmf6")
+
+    # Control: fixed +10 mm/day into a 1 m2 cell. F-GC33 convention is
+    # Q(H)=HCOF*H-RHS, hence RHS=-0.010 m3/day for a constant positive inflow.
+    control = run_case(
+        libmf6,
+        "flux_only",
+        hcof_m2_per_day=0.0,
+        rhs_m3_per_day=-(PRECIP_M * AREA_M2 / DT_DAY),
+    )
+    require(bool(control["converged"]), f"control did not converge: {control}")
+    require(
+        math.isclose(
+            float(control["head_m"]),
+            EXPECTED_CONTROL_HEAD_M,
+            rel_tol=0.0,
+            abs_tol=CONTROL_TOL_M,
+        ),
+        f"control head {control['head_m']} != {EXPECTED_CONTROL_HEAD_M}",
+    )
+
+    # Current coupling transform for the transparent qbot=0 dummy:
+    # u=0.20, Href=8.05, qref=0.01 m/day.
+    # HCOF=A*u/dt = 0.20 m2/day
+    # RHS=HCOF*Href-A*qref = 1.60 m3/day.
+    current = run_case(
+        libmf6,
+        "current_u",
+        hcof_m2_per_day=0.20,
+        rhs_m3_per_day=1.60,
+    )
+
+    print(f"GC_DSW01_CONTROL_HEAD_M={float(control['head_m']):.17g}")
+    print(f"GC_DSW01_CONTROL_ITERATIONS={int(control['iterations'])}")
+    print("GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS")
+    print(f"GC_DSW01_CURRENT_U_STATUS={current['status']}")
+    print(f"GC_DSW01_CURRENT_U_CONVERGED={1 if current['converged'] else 0}")
+    if math.isfinite(float(current["head_m"])):
+        print(f"GC_DSW01_CURRENT_U_HEAD_M={float(current['head_m']):.17g}")
+    else:
+        print("GC_DSW01_CURRENT_U_HEAD_M=NONFINITE_OR_UNAVAILABLE")
+    print(f"GC_DSW01_CURRENT_U_ITERATIONS={int(current['iterations'])}")
+    if current["error"]:
+        print(f"GC_DSW01_CURRENT_U_ERROR={current['error']}")
+    print("GC_DSW01_LIVE_PROBE_COMPLETED=PASS")
+
+
+if __name__ == "__main__":
+    main()
