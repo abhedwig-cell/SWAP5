@@ -124,8 +124,22 @@ for marker in \
   grep -Fq "$marker" "$BUILD/map02.txt" || fail "missing marker $marker"
 done
 
-git diff --check -- tests/research/test_gc_real_swap_map02_fgc45.py \
-  tests/research/run_gc_real_swap_map01_fgc45.sh \
-  integration/research/GC_REAL_SWAP_MAP02_PREREGISTRATION.json
+FGC45_MULTISWAP_LIB="$BUILD/bridge/libfgc45_multiswap.so" \
+  python3 tests/research/test_gc_real_swap_map03_storage_response.py | tee "$BUILD/map03.txt"
 
-echo 'GC REAL SWAP MAP02 FGC45 GATE PASS'
+for marker in \
+  'GC_MAP03_TRANSACTION_MASS_COMPLETE=PASS' \
+  'GC_MAP03_STORAGE_DERIVATIVE_EQUALS_U=PASS' \
+  'GC_MAP03_BOTTOM_DERIVATIVE_EQUALS_MINUS_U=PASS' \
+  'GC_MAP03_STORAGE_BOTTOM_SENSITIVITY_CANCELS=PASS' \
+  'GC_MAP03_LIVE_GATE=PASS'; do
+  grep -Fq "$marker" "$BUILD/map03.txt" || fail "missing marker $marker"
+done
+
+git diff --check -- tests/research/test_gc_real_swap_map02_fgc45.py \
+  tests/research/test_gc_real_swap_map03_storage_response.py \
+  tests/research/run_gc_real_swap_map01_fgc45.sh \
+  integration/research/GC_REAL_SWAP_MAP02_PREREGISTRATION.json \
+  integration/research/GC_REAL_SWAP_MAP03_PREREGISTRATION.json
+
+echo 'GC REAL SWAP MAP02 MAP03 FGC45 GATE PASS'
