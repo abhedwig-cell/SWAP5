@@ -73,7 +73,7 @@ def main() -> None:
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         initialized = False
-        history: list[tuple[int, float, float, float, float]] = []
+        history: list[tuple[int, float, float, float, float, bool]] = []
         try:
             raw.initialize()
             initialized = True
@@ -119,16 +119,70 @@ def main() -> None:
                 head = float(iterate.head_m[0])
                 nonlinear_residual = q_residual_m_per_day(head)
                 history.append(
-                    (external_iteration, href, hcof, head, nonlinear_residual)
+                    (
+                        external_iteration,
+                        href,
+                        hcof,
+                        head,
+                        nonlinear_residual,
+                        bool(iterate.modflow_converged),
+                    )
                 )
 
-                if bool(iterate.modflow_converged) and abs(nonlinear_residual) <= RESIDUAL_TOL:
-                    accepted_head = head
+                # External nonlinear convergence and MODFLOW's internal linear
+                # solve convergence are separate concepts. Once the exact
+                # nonlinear residual is closed, freeze the final tangent and
+                # give MODFLOW one or more unchanged matrix iterations to
+                # certify its own convergence.
+                if abs(nonlinear_residual) <= RESIDUAL_TOL:
+                    href = head
                     break
                 href = head
 
             require(len(history) > 1, "nonlinear test did not exercise reanchoring")
-            require(math.isfinite(accepted_head), "nonlinear coupled solve did not converge")
+            require(
+                abs(q_residual_m_per_day(href)) <= RESIDUAL_TOL,
+                "external nonlinear reanchor did not reach the exact residual gate",
+            )
+
+            frozen_q_ref = q_residual_m_per_day(href)
+            frozen_hcof = dq_dh_per_day(href)
+            frozen_rhs = frozen_hcof * href - frozen_q_ref
+            for _ in range(5):
+                status, iterate = session.publish_and_solve_iteration(
+                    (Binding(),),
+                    (
+                        Term(
+                            groundwater_cell_id=1,
+                            hcof_m2_per_day=frozen_hcof,
+                            rhs_m3_per_day=frozen_rhs,
+                        ),
+                    ),
+                )
+                require(
+                    status == PreparedSolveStatus.OK and iterate is not None,
+                    f"frozen-tangent MODFLOW iteration failed: {status} {session.last_error}",
+                )
+                head = float(iterate.head_m[0])
+                nonlinear_residual = q_residual_m_per_day(head)
+                history.append(
+                    (
+                        len(history) + 1,
+                        href,
+                        frozen_hcof,
+                        head,
+                        nonlinear_residual,
+                        bool(iterate.modflow_converged),
+                    )
+                )
+                if bool(iterate.modflow_converged):
+                    accepted_head = head
+                    break
+
+            require(
+                math.isfinite(accepted_head),
+                "MODFLOW did not certify convergence after the nonlinear root was frozen",
+            )
 
             require(
                 session.finalize_prepared_solve() == PreparedSolveStatus.OK,
@@ -140,11 +194,12 @@ def main() -> None:
                 f"finalize timestep failed: {session.last_error}",
             )
 
-            for iteration, href, hcof, head, residual in history:
+            for iteration, href, hcof, head, residual, mf_converged in history:
                 print(
                     f"GC_DSW09_ITER_{iteration}_HREF_M={href:.17g} "
                     f"HCOF={hcof:.17g} HEAD_M={head:.17g} "
-                    f"Q_RESIDUAL_M_PER_DAY={residual:.17g}"
+                    f"Q_RESIDUAL_M_PER_DAY={residual:.17g} "
+                    f"MF_CONVERGED={1 if mf_converged else 0}"
                 )
 
             print(f"GC_DSW09_EXPECTED_HEAD_M={expected:.17g}")
