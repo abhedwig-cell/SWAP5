@@ -38,6 +38,12 @@ module mod_gc_low01_mode1_trial_carrier
     real(real64) :: storage_change_cm = 0.0_real64
     real(real64) :: complete_profile_storage_change_cm = 0.0_real64
     real(real64) :: mass_residual_cm = 0.0_real64
+    logical :: lower_jacobian_diagnostic_available = .false.
+    real(real64) :: lower_distance_cm = 0.0_real64
+    real(real64) :: lower_gradient_observed = 0.0_real64
+    real(real64) :: lower_gradient_formula = 0.0_real64
+    real(real64) :: lower_jacobian_increment_observed_per_day = 0.0_real64
+    real(real64) :: lower_jacobian_formula_per_day = 0.0_real64
     real(real64), allocatable :: pressure_head_cm(:)
     real(real64), allocatable :: water_content(:)
     integer :: nonlinear_iterations = 0
@@ -140,6 +146,7 @@ contains
     type(soil_water_boundary_conditions_t) :: boundary
     real(real64) :: classified_effective
     real(real64) :: storage0, storage1, mass_gate
+    real(real64) :: jacobian_without_lower_boundary
     integer :: branch, active_nodes, n, k
     logical :: branch_boundary
 
@@ -217,6 +224,22 @@ contains
     result%mass_residual_cm = result%storage_change_cm - &
          step_duration_day*(-result%candidate%qtop + result%candidate%qbot)
 
+    result%lower_distance_cm = parameter_set%z(active_nodes) - result%effective_h_phreatic_cm
+    if (result%lower_distance_cm > 0.0_real64 .and. numerical%conductivity_implicit_mode == 0) then
+      result%lower_gradient_observed = workspace%head_gradient(active_nodes+1)
+      result%lower_gradient_formula = result%candidate%h(active_nodes)/result%lower_distance_cm + 1.0_real64
+      result%lower_jacobian_formula_per_day = result%candidate%kmean(active_nodes+1)/result%lower_distance_cm
+      if (active_nodes == 1) then
+        jacobian_without_lower_boundary = result%candidate%dimoca(1)*parameter_set%dz(1)/step_duration_day - &
+             workspace%dfdh_lower(1)
+      else
+        jacobian_without_lower_boundary = result%candidate%dimoca(active_nodes)*parameter_set%dz(active_nodes)/step_duration_day - &
+             workspace%dfdh_upper(active_nodes)
+      end if
+      result%lower_jacobian_increment_observed_per_day = workspace%dfdh_main(active_nodes) - jacobian_without_lower_boundary
+      result%lower_jacobian_diagnostic_available = .true.
+    end if
+
     allocate(result%pressure_head_cm(n), result%water_content(n))
     result%pressure_head_cm = result%candidate%h
     result%water_content = result%candidate%theta
@@ -230,6 +253,12 @@ contains
          ieee_is_finite(result%ponding_depth_cm) .and. &
          all(ieee_is_finite(result%pressure_head_cm)) .and. all(ieee_is_finite(result%water_content)) .and. &
          ieee_is_finite(result%storage_change_cm) .and. ieee_is_finite(result%mass_residual_cm) .and. &
+         result%lower_jacobian_diagnostic_available .and. result%lower_distance_cm > 0.0_real64 .and. &
+         ieee_is_finite(result%lower_gradient_observed) .and. ieee_is_finite(result%lower_gradient_formula) .and. &
+         ieee_is_finite(result%lower_jacobian_increment_observed_per_day) .and. &
+         ieee_is_finite(result%lower_jacobian_formula_per_day) .and. &
+         abs(result%lower_gradient_observed-result%lower_gradient_formula) <= 1.0e-12_real64 .and. &
+         abs(result%lower_jacobian_increment_observed_per_day-result%lower_jacobian_formula_per_day) <= 1.0e-12_real64 .and. &
          abs(result%mass_residual_cm) <= mass_gate
   end subroutine gc_low01_run_inside_profile_trial
 
