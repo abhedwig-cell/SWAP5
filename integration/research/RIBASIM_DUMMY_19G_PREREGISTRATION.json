@@ -1,0 +1,147 @@
+{
+  "schema": "swap5.coupling.real_ribasim_saveat_allocation_clock_sensitivity.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19G",
+  "title": "Pinned real Ribasim saveat-driven allocation-clock sensitivity",
+  "baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_19E2_ACTIVE",
+    "execute_after": "DUMMY-19E2 closeout",
+    "scientific_dependency": "DUMMY-19E run 35616065964 established that hourly saveat invalidates the one-day frozen-allocation assumption."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "purpose": "Quantify whether solver output frequency changes management allocation and physical hydrology when allocation.dt is held fixed at one day. This isolates output-clock coupling as a first-class model semantic rather than treating the DUMMY-19E failure as a one-off configuration accident.",
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    },
+    "saveat_sweep_seconds": [
+      3600,
+      21600,
+      43200,
+      86400
+    ]
+  },
+  "independent_hybrid_reference": {
+    "derivation": "At every saveat-capped allocation solve, current excess Basin storage above the priority-1 1.0 m level target is available to the LP over the next represented interval. The resulting allocation is then physically realized with the common min_level reduction until the next solve.",
+    "cases": {
+      "3600": {
+        "saveat_seconds": 3600,
+        "root_first": {
+          "final_allocation_root_m3_per_day": 40,
+          "final_allocation_external_m3_per_day": 20,
+          "root_supplied_m3": 19.838956206388705,
+          "external_supplied_m3": 9.25253227394069
+        },
+        "external_first": {
+          "final_allocation_root_m3_per_day": 40,
+          "final_allocation_external_m3_per_day": 20,
+          "root_supplied_m3": 19.088672877273925,
+          "external_supplied_m3": 10.002815603055462
+        },
+        "total_supplied_m3": 29.091488480329396,
+        "final_level_m": 1.0000029085115192,
+        "storage_gain_m3": 2.9085115191840316
+      },
+      "21600": {
+        "saveat_seconds": 21600,
+        "root_first": {
+          "final_allocation_root_m3_per_day": 40,
+          "final_allocation_external_m3_per_day": 19.96254646941776,
+          "root_supplied_m3": 19.015246367867107,
+          "external_supplied_m3": 5.49757406228132
+        },
+        "external_first": {
+          "final_allocation_root_m3_per_day": 39.96254646941776,
+          "final_allocation_external_m3_per_day": 20,
+          "root_supplied_m3": 14.50504727621437,
+          "external_supplied_m3": 10.007773153934059
+        },
+        "total_supplied_m3": 24.512820430148427,
+        "final_level_m": 1.0000074871795697,
+        "storage_gain_m3": 7.487179569665159
+      },
+      "43200": {
+        "saveat_seconds": 43200,
+        "root_first": {
+          "final_allocation_root_m3_per_day": 40,
+          "final_allocation_external_m3_per_day": 7.990403839705181,
+          "root_supplied_m3": 18.01978009224423,
+          "external_supplied_m3": 2.0005937681174317
+        },
+        "external_first": {
+          "final_allocation_root_m3_per_day": 27.99040383970518,
+          "final_allocation_external_m3_per_day": 20,
+          "root_supplied_m3": 10.009884054231453,
+          "external_supplied_m3": 10.010489806130208
+        },
+        "total_supplied_m3": 20.020373860361662,
+        "final_level_m": 1.0000119796261395,
+        "storage_gain_m3": 11.979626139524413
+      },
+      "86400": {
+        "saveat_seconds": 86400,
+        "root_first": {
+          "final_allocation_root_m3_per_day": 32,
+          "final_allocation_external_m3_per_day": 0,
+          "root_supplied_m3": 16.019184641047147,
+          "external_supplied_m3": 0
+        },
+        "external_first": {
+          "final_allocation_root_m3_per_day": 12,
+          "final_allocation_external_m3_per_day": 20,
+          "root_supplied_m3": 6.00719424039268,
+          "external_supplied_m3": 10.011990400654467
+        },
+        "total_supplied_m3": 16.019184641047147,
+        "final_level_m": 1.000015980815359,
+        "storage_gain_m3": 15.980815359029066
+      }
+    }
+  },
+  "hypotheses": [
+    "With allocation.dt fixed at 86400 s, changing solver.saveat changes how often allocation is re-solved in the pinned implementation.",
+    "Shorter saveat therefore makes physically retained water available to management sooner within the same one-day horizon.",
+    "Total physical UserDemand supply increases monotonically as saveat decreases from 86400 to 3600 s.",
+    "Final Basin storage gain decreases correspondingly, while the 32 m3 external fixed-inflow ledger remains closed.",
+    "Priority changes recipient identity but not total physical supply or Basin trajectory for a given saveat because total managed availability and common physical reduction are shared.",
+    "At saveat=3600 s, both priority cases end with full 40/20 allocation after repeated within-day re-optimization.",
+    "At saveat=86400 s, the original 32/0 versus 12/20 priority allocation remains frozen for the day.",
+    "An output-frequency setting is therefore not observationally neutral in this pinned allocation configuration."
+  ],
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "final_allocation_m3_per_day": 0.05,
+    "endpoint_level_m": 5e-8
+  },
+  "forbidden": [
+    "no changing allocation.dt across sweep cases",
+    "no changing solver.saveat for any reason other than the preregistered sweep",
+    "no post-output tuning of hybrid references",
+    "no claim yet whether the observed coupling is intended behavior or a Ribasim defect",
+    "no SWAP or MODFLOW substitution",
+    "no production prescription"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+  "fail_decision": "RIBASIM_DUMMY_19G_BLOCKED"
+}
