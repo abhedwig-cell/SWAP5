@@ -11,18 +11,24 @@
     "The API term contains process remainder only and excludes the shared storage coefficient, matching the preregistered ownership contract.",
     "Both accepted heads lie above the ET and drain thresholds, so the fixed active-branch affine sink used by the test is self-consistent.",
     "The test restores X and XOLD to the immutable H0 before prepare_time_step and does not introduce rejected-trial state.",
-    "HLINK03 performs the same pre-prepare_time_step XMI STO/SY replacement mechanism whose numerical certification is under HLINK02D diagnosis."
+    "HLINK03 performs the same pre-prepare_time_step XMI STO/SY replacement mechanism whose numerical certification is under HLINK02D diagnosis.",
+    "Prepared-solve lifecycle audit found the test harness had inherited the same structurally impossible pre-finalize readiness check as the original HLINK02 harness."
   ],
   "dependency_interpretation": [
     "HLINK01 is already qualified and is no longer a live blocker.",
     "HLINK02 remains the sole synthetic parent blocker.",
     "HLINK02D must classify the same-value/runtime STO mutation and IMS certification behavior before HLINK03 execution can be interpreted safely."
   ],
-  "decision": "PREEXECUTION_REVIEW_PASS_BLOCKED_ON_HLINK02",
+  "decision": "PREEXECUTION_REVIEW_PASS_LIFECYCLE_REPAIRED_BLOCKED_ON_HLINK02",
   "forbidden": [
     "do not execute HLINK03 before HLINK02 is qualified",
     "do not alter HLINK03 physical constants or gates from this review",
     "do not count internal memory transfer as external recharge",
     "no production changes"
-  ]
+  ],
+  "lifecycle_repair": {
+    "commit": "c584c404bab87f2e2d4a1732b9650213f27f451b",
+    "repair": "Require the explicit MODFLOW convergence flag, then finalize_prepared_solve(), then evaluate timestep_ready_for_finalize(), then finalize_time_step_once().",
+    "scientific_changes": false
+  }
 }
