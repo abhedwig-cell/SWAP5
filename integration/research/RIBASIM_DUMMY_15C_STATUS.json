@@ -6,14 +6,14 @@
   "preregistration_commit": "dca829130326456d2334b87cbdb7037bc81c99fa",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
   "blocker": null,
   "prepared_scope": "Policy contrast for committing SWAP-like irrigation event management state under partial external supply, including atomic reject, partial complete, and explicit residual-active semantics.",
   "production_authority_note": "F-APP07 identifies restricted Hupsel event-selection state and gross irrigation; F-APP05/F-APP08 identify stateful Rutter and net-irrigation application. None currently qualifies external partial-supply event semantics.",
-  "next_action": "Execute exact DUMMY-15C irrigation-event-realization gate.",
+  "next_action": "Rebind DUMMY-15D implementation baseline to post-DUMMY-15C closeout authority.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -33,7 +33,7 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "13 tests",
-  "recovery_point": "DUMMY-15C model, tests, concept and workflow gate are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-15C closed qualified; irrigation event realization policy authority is available.",
   "source_scope_verification": {
     "base": "a84405a24373818e3ca1f3851391300ed73e7240",
     "changed_files": [
@@ -63,5 +63,14 @@
       "full supply collapses all policies to the same completed event",
       "allocation/realization shortfall is diagnostic unless explicitly promoted to residual state"
     ]
+  },
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+    "workflow_run": 35593011851,
+    "workflow_job": 106311417436,
+    "qualification_head": "f1a3916e2294f596a355da613fe6a0126b8055a9",
+    "tests": "13/13 PASS",
+    "gate": "PASS"
   }
 }
