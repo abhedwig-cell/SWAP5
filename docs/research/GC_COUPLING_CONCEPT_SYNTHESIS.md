@@ -60,6 +60,8 @@ First, **software ownership is not automatically physical volume ownership**. Cu
 
 Second, **a shared head is not a complete shared state**. DSW11, DSW15 and DSW20 demonstrate this directly: equal phreatic head can coexist with different internal memory and therefore different future response.
 
+Third, **computational representation is not physical storage ownership**. A SWAP predictor may simulate water and pressure throughout a saturated part of its one-dimensional profile in order to calculate a response, while the coupled residual may assign accepted regional groundwater storage to MODFLOW. Numerical overlap of state representation is therefore not by itself proof of physical storage double counting. Double counting occurs only when the same physical inventory change is included twice in the coupled mass residual.
+
 ## 3. Three coupling families
 
 ### 3.1 Shared-state h-link
@@ -245,6 +247,66 @@ It does not yet establish one unique **physical decomposition**. In real SWAP th
 Therefore `u/dt` should first be described as the **production affine response slope**. Existing real-SWAP evidence below makes that wording more precise: it is the partial slope of the historical affine `q_u(H)` extension when predictor `u` and `q_bot` are held fixed. It is not, in general, the total derivative across neighbouring predictor trajectories and it is not automatically the derivative of the accepted corrector flux.
 
 The fact that the field name contains `storage_coefficient` is historical/structural evidence, not sufficient proof of physical storage ownership.
+
+### 6.1 Algebraic meaning of `q_u`
+
+The historical equation can be rearranged without interpretation:
+
+```text
+q_u = u * Delta H / dt - q_bot
+
+u * Delta H / dt = q_u + q_bot
+```
+
+Here native `q_bot` is positive **into** the SWAP profile. Therefore `-q_bot` has the sign of a bottom-outward flux.
+
+If, for a bounded regime, `u * Delta H` approximates the accepted SWAP storage change, then
+
+```text
+q_u
+~= storage-change rate + bottom-outward rate
+```
+
+and the SWAP water balance says that this sum is the **net contribution of the non-bottom processes** over the same window.
+
+That statement explains MAP03 directly. In its storage-dominated fixture:
+
+```text
+d(storage change)/dH        ~= +u
+d(bottom-outward amount)/dH ~= -u
+d(their sum)/dH              = 0
+```
+
+so a head-independent non-bottom forcing produces almost no **total** variation of reconstructed `q_u` across neighbouring predictor trajectories. MAP07 measures exactly that cancellation.
+
+Thus `q_u` should not be described as though it were simply the physical lower-boundary exchange returned by SWAP. It is a response-condensed balance term constructed from storage/head response and the predictor bottom flux.
+
+### 6.2 Historical design evidence for the balance-condensation interpretation
+
+A 2024 SWAP-MODFLOW proof-of-concept presentation provides useful historical design evidence, although it is not current production authority.
+
+The presentation distinguishes:
+
+- a MODFLOW-to-SWAP net flux representing regional flow and local drainage;
+- a SWAP-to-MODFLOW recharge-like flux between unsaturated and saturated water;
+- a coefficient `u` controlling how the MODFLOW head responds;
+- a SWAP groundwater level that is not assumed equal to the MODFLOW head because of resistance within the phreatic layer.
+
+Its predictor diagram explicitly says: determine the bottom flux from MODFLOW, run SWAP, hold `u` fixed and calculate recharge `Q_u` once, then iterate MODFLOW. The coefficient is estimated from two SWAP simulations with perturbed lower-boundary flux:
+
+```text
+u = (q2-q1) * dt / (H2-H1)
+```
+
+where `H` is described as the hydraulic head at the bottom of the SWAP column.
+
+Combined with the production equation, this supports the bounded interpretation:
+
+> `u` and `q_u` are a local finite-window condensation of the SWAP column into a groundwater-balance response pair. `u` carries the head response; `q_u` is the matching recharge/balance intercept. Neither object is, by definition alone, the real SWAP bottom-exchange flux.
+
+This also explains why the current production affine line can have a positive partial slope `+u/dt` while the actual prescribed-head corrector bottom-outward flux has a negative local slope. They are derivatives of different objects.
+
+The historical presentation is consistent with this interpretation but does not settle current physical domain ownership. The current mode-5 implementation has since made the exchanged state a typed lower coupling-plane head, and MAP11/MAP12 remain the controlling evidence for that current contract.
 
 ## 7. Reconciliation with existing real-SWAP evidence
 
@@ -636,6 +698,17 @@ even though their dimensions can coincide.
 
 The current algorithm can still be physically accepted because the affine term is reanchored to a real SWAP corrector flux and the accepted whole-window exchange ledger is authoritative. MAP04/MAP05A show bounded cases where different affine slope policies reach essentially the same accepted physics while following different iteration paths.
 
+A useful way to read the affine predictor is therefore:
+
+```text
+given the predictor bottom flux q_bot*,
+what recharge/balance term q_u(H) would make
+u * (H-H_start) / dt = q_u(H) + q_bot*
+hold at another trial H?
+```
+
+Holding `q_bot*` fixed gives the partial slope `+u/dt`. Re-running SWAP at the new head changes the physical bottom flux itself; that is the different corrector response measured by MAP02/MAP03. This distinction removes the apparent sign paradox without asserting that either derivative is a universal physical coefficient.
+
 #### Shared-phreatic representation
 
 For Contract S there is no need to invent a physical transfer between two coextensive copies of the same groundwater volume. The complete residual can be written directly:
@@ -734,7 +807,17 @@ That is a concrete operational continuation of the same ownership idea: the vado
 
 It does not imply that SWAP5 should copy this mechanism. The physical state representation and internal memory of real SWAP differ materially from MetaSWAP, so any transfer of the shared-state idea must be re-derived from the SWAP water balance and tested prospectively.
 
-### 11.5 Literature conclusion
+### 11.5 Historical SWAP-MODFLOW proof-of-concept evidence
+
+A Wageningen University & Research presentation from 18 January 2024, *Koppeling SWAP-MODFLOW*, is useful as historical design context.
+
+It explicitly distinguishes the SWAP-computed groundwater level from the MODFLOW head because of resistance in the phreatic layer, labels the exchanged pair `u, q_u`, describes the SWAP-to-MODFLOW quantity as recharge plus a storage-response coefficient, and derives `u` from perturbed lower-boundary-flux SWAP simulations.
+
+This historical material strongly supports reading `q_u/u` as a reduced groundwater-equation response representation rather than as a literal copy of the current accepted bottom exchange.
+
+It remains secondary evidence. Current semantics are controlled by current source, typed contracts and qualified MAP results.
+
+### 11.6 Literature conclusion
 
 The literature supports the distinction that the dummy testbank already forced mathematically:
 
