@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.coupling.real_ribasim_priority_conflict.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19B",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
+  "preregistration_commit": "d758ef09642b67197aee7fa5dd70b0a561eece5e",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": false,
+  "authority": {
+    "DUMMY_19A": {
+      "decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+      "run": 35596174158
+    },
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "scope": "Custom pinned real-Ribasim one-Basin/two-UserDemand priority conflict with 32 m3/day fixed supply and physically inactive UserDemand reduction.",
+  "next_action": "Implement two preregistered models and independent Julia measurement bridge.",
+  "production_delta": [],
+  "reference_delta": []
+}
