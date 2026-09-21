@@ -1,0 +1,28 @@
+name: GC fixed-interface live MODFLOW PB01
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/research/test_gc_fixed_interface_pb01_live_modflow.py'
+      - '.github/workflows/gc-fixed-interface-pb01-live.yml'
+permissions: {contents: read}
+jobs:
+  pb01-live:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned MODFLOW coupling dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Fetch pinned MODFLOW 6.8.0
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from flopy.utils.get_modflow import run_main
+          run_main(Path("/tmp/pb01-mf6"),owner="MODFLOW-ORG",repo="modflow6",release_id="6.8.0",subset={"libmf6.so"},downloads_dir=Path("/tmp/pb01-downloads"),force=True,quiet=False)
+          PY
+      - name: Execute PB01 live one-cell discriminator
+        env:
+          LIBMF6: /tmp/pb01-mf6/libmf6.so
+        run: python3 tests/research/test_gc_fixed_interface_pb01_live_modflow.py
