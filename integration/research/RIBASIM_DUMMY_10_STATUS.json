@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_management.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-10",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "269fbe65f7f8febf0baa1df73a6c749abf43534b",
+  "checkpoint_commit": "97a0d6f85aebc8c7c1ce4d583beb1d380ff7b0f8",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Exact FULL/CURTAILED/ZERO management complementarity on the qualified DUMMY-09 reciprocal finite surface/groundwater storage system.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_10_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_10_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_10_STATUS.json",
+    "tests/research/dummy_two_store_management.py",
+    "tests/research/test_dummy_two_store_management.py",
+    "tests/research/run_ribasim_dummy_10.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_head_management_complementarity.py",
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/dummy_two_store_management.py",
+    "tests/research/test_dummy_two_store_management.py",
+    "tests/research/run_ribasim_dummy_10.sh",
+    "integration/research/RIBASIM_DUMMY_10_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_09": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+    "DUMMY_09_run": 35568233819
+  },
+  "authority_binding": "Implementation began only after DUMMY-09 qualification and preregistration rebinding to post-qualification baseline.",
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-10 to the registered research workflow and execute the dynamic-groundwater management gate.",
+  "recovery_point": "DUMMY-10 implementation, tests, concept and focused runner are persisted; qualification remains open.",
+  "blockers": []
+}
