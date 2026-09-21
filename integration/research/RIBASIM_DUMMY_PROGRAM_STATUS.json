@@ -134,15 +134,6 @@
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19E",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
-      "scientific_dependencies": "qualified DUMMY-19B and DUMMY-19C",
-      "execution_sequence": "after DUMMY-19D closeout",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
-      "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-19F",
       "state": "PREREGISTERED_BLOCKED_BY_19E",
       "intended_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
@@ -151,7 +142,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-19E pinned real Ribasim mixed allocation-realization gate; no scientific inputs, references or tolerances may change.",
+  "next_authority_action": "Preserve failed DUMMY-19E evidence. Qualify the intended mechanism only in a new clock-aligned work unit, and separately quantify saveat-driven allocation clock sensitivity.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -182,5 +173,14 @@
       "runtime/coupler system-composition ownership",
       "no silent dependencies"
     ]
-  }
+  },
+  "blocked": [
+    {
+      "work_unit": "RIBASIM-DUMMY-19E",
+      "decision": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+      "run": 35616065964,
+      "classification": "SCIENTIFIC_CLOCK_SEMANTICS_FALSIFICATION",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    }
+  ]
 }
