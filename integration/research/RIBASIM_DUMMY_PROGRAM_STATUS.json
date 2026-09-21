@@ -76,16 +76,14 @@
       "work_unit": "RIBASIM-DUMMY-15",
       "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
       "run": 35581711814
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-15B",
+      "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+      "run": 35590242964
     }
   ],
   "pending": [
-    {
-      "work_unit": "RIBASIM-DUMMY-16",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
-      "implementation": false,
-      "purpose": "management-clock event synchronization with invariant shared-state hydrology"
-    },
     {
       "work_unit": "RIBASIM-DUMMY-17",
       "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
@@ -115,17 +113,16 @@
       "purpose": "explicit canopy store separating gross source withdrawal from net soil irrigation and interception evaporation"
     },
     {
-      "work_unit": "RIBASIM-DUMMY-15B",
+      "work_unit": "RIBASIM-DUMMY-16",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-      "implementation_baseline": "800897d22d4eea54b5f00ba6d8dda69630958617",
-      "dependency": "qualified DUMMY-15",
-      "pinned_ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
-      "boundary": "analytical policy contrast only; no claim that either supplied split is current Ribasim behavior"
+      "intended_decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+      "implementation_baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
+      "dependency": "qualified DUMMY-15B",
+      "boundary": "same physical windows and total managed withdrawal; only sampled management priority differs"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-15B forecast-realization gate. If PASS, close DUMMY-15B before DUMMY-16 implementation.",
+  "next_authority_action": "Execute DUMMY-16 management-clock gate. If PASS, close DUMMY-16 before DUMMY-17 implementation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
