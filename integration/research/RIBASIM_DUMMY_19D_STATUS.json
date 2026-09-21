@@ -6,13 +6,13 @@
   "preregistration_commit": "5b2ff72b6a310461d2bcc00631cf459a5dfe7b59",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation with common source Basin but unequal UserDemand min_level values, testing heterogeneous physical realization factors.",
-  "next_action": "Execute frozen DUMMY-19D pinned real Ribasim heterogeneous-realization qualification; no preregistered expected values or tolerances may change.",
+  "next_action": "Rebind and implement preregistered DUMMY-19E mixed allocation-realization conflict.",
   "production_delta": [],
   "reference_delta": [],
   "baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
@@ -22,7 +22,7 @@
     "main_closeout_head": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "recovery_point": "DUMMY-19D rebound after qualified DUMMY-19C and executable gate persisted; qualification remains open.",
+  "recovery_point": "DUMMY-19D closed qualified by v1 run 35613373608; heterogeneous per-path real Ribasim physical realization authority is available.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19D_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19D_CONCEPT.md",
@@ -45,5 +45,23 @@
       "integrated root, external and total physical supplies plus final Basin level/storage are compared against the frozen independent continuous reference",
       "priority reversal must leave allocations, heterogeneous physical supplies and Basin trajectory unchanged"
     ]
+  },
+  "qualification_attempts": [
+    {
+      "run": 35613373608,
+      "job": 106377811175,
+      "state": "PASS",
+      "qualification_head": "326ae1e4441cc8fd5e0a71dc3f942f7a9c52d11f",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "authority_use": "admitted"
+    }
+  ],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+    "workflow_run": 35613373608,
+    "workflow_job": 106377811175,
+    "qualification_head": "326ae1e4441cc8fd5e0a71dc3f942f7a9c52d11f",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "gate": "PASS"
   }
 }
