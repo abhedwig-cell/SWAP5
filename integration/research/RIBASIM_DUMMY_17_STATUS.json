@@ -6,13 +6,13 @@
   "preregistration_commit": "d339bc2304015132f33cc2a369f1d96d13c0631b",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
   "blocker": null,
   "prepared_scope": "Pure physical two-Basin + shared-groundwater linear oracle with exact mode decomposition and dual surface/groundwater downstream pathways.",
-  "next_action": "Freeze this DUMMY-17 postimage and execute two-basin-shared-groundwater-gate.",
+  "next_action": "Rebind DUMMY-18 authority-binding implementation baseline to post-DUMMY-17 closeout.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -38,7 +38,7 @@
     }
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-17 implementation, exact tests and focused runner are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-17 closed qualified; exact two-Basin shared-groundwater authority is available.",
   "source_scope_verification": {
     "base": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
     "changed_files": [
@@ -66,5 +66,15 @@
       "weighted total storage remains 140 m3",
       "routing conductance changes difference mode but not common mode"
     ]
+  },
+  "checkpoint_commit": "7bbda83869b465bd7a147ae266884e1bf82643c6",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+    "workflow_run": 35591084550,
+    "workflow_job": 106305393689,
+    "qualification_head": "0abe6158dc6f3275db4b67f8202d3cfaf11061ae",
+    "tests": "12/12 PASS",
+    "gate": "PASS"
   }
 }
