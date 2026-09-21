@@ -134,6 +134,14 @@
       "dependency": "qualified DUMMY-19C",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
       "implementation_baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19E",
+      "state": "PREREGISTERED_SEQUENCED_BEHIND_19D",
+      "intended_decision": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
+      "scientific_dependencies": "qualified DUMMY-19B and DUMMY-19C",
+      "execution_sequence": "after DUMMY-19D closeout",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
