@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.gc_low01.output01.preregistration_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-OUTPUT01",
+  "status": "PRE_EXECUTION_TYPED_GEOMETRY_SCOPE_CORRECTION",
+  "original": "integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION.json",
+  "authority": [
+    "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "reason": "Legacy mode-1 source can reference grid_z(NN+1) after the NN scan. The legacy grid carries implicit lower-face geometry, whereas explicit soil_water_parameter_set_t exposes only n node-center z values. A direct typed HeadCalc trial with active_nodes==n would therefore cross the unresolved LOW01-G2 z(n+1) seam.",
+  "corrected_live_scope": {
+    "allowed": "INSIDE_PROFILE with 1 <= active_richards_nodes < n, away from node-snap and branch boundaries",
+    "refused": "ABOVE_OR_AT_TOP, BELOW_PROFILE, branch boundaries, node-snap cases, and INSIDE_PROFILE cases with active_richards_nodes==n",
+    "fixed_LOW01B_controls_unchanged_cm": [
+      -60,
+      -120,
+      -200
+    ],
+    "fixed_LOW01B_expected_active_nodes": [
+      1,
+      2,
+      3
+    ]
+  },
+  "classification_scope": "The pure source-derived classifier may still characterize the NN=n lower-half-cell regime. This amendment only forbids executing that regime through direct explicit-geometry HeadCalc until G2 has a typed lower-face geometry owner.",
+  "added_gate": "OUTPUT01 refuses a representative lower-half-cell control (H_phreatic=-275 cm for the frozen four-node geometry) before HeadCalc is called.",
+  "nonclaims": [
+    "does not change legacy mode-1 physics",
+    "does not resolve G2",
+    "does not narrow the eventual LOW01 design; it narrows only the current research execution envelope"
+  ],
+  "forbidden": [
+    "do not synthesize z(n+1) inside HeadCalc",
+    "do not execute active_nodes==n through the direct typed carrier",
+    "do not alter the frozen LOW01-B NN=1/2/3 controls"
+  ]
+}
