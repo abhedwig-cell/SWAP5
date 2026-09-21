@@ -11,6 +11,10 @@ on:
       - '.github/workflows/gc-low01c2.yml'
   workflow_dispatch:
 
+concurrency:
+  group: gc-low01c2-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
