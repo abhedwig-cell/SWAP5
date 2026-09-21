@@ -7,12 +7,12 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authorities": [
     "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
     "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE"
   ],
-  "blocker": "Only DUMMY-12 remains unresolved. DUMMY-13 implementation stays forbidden until DUMMY-12 qualifies and the implementation baseline is rebound.",
+  "blocker": null,
   "prepared_scope": "First-stage three-store ledger with root-zone irrigation request, surface-to-root irrigation transfer, reciprocal surface-groundwater exchange, and no external root forcing.",
   "canonical_expectation": {
     "request_m3": 40,
@@ -25,7 +25,7 @@
     "next_root_request_m3": 8,
     "combined_three_store_change_m3": 0
   },
-  "next_action": "After both dependencies qualify, rebind DUMMY-13 implementation baseline before creating any model or tests.",
+  "next_action": "Implement first-stage DUMMY-13 three-store internal-transfer ledger.",
   "production_delta": [],
   "reference_delta": [],
   "concept": "integration/research/RIBASIM_DUMMY_13_CONCEPT.md",
@@ -37,6 +37,17 @@
   },
   "dependency_state": {
     "DUMMY_11": "QUALIFIED",
-    "DUMMY_12": "PENDING_CI_QUEUED"
+    "DUMMY_12": "QUALIFIED"
+  },
+  "authority_binding": {
+    "baseline": "51bbc6d3375028b6604351b19f8806babac82721",
+    "DUMMY_11": {
+      "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+      "run": 35569720082
+    },
+    "DUMMY_12": {
+      "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+      "run": 35570012761
+    }
   }
 }
