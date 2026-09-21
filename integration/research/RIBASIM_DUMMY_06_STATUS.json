@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-06",
   "branch": "work/ribasim-dummy-01",
   "baseline": "9947713ddc3d526e7e0f184948c928eba6519dcb",
-  "checkpoint_commit": "2aad88e4ee068e49db6fcd79cf124fdb652ce0e5",
+  "checkpoint_commit": "dc85128c3919669566b0515b354e8101a3660fa8",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Naive undamped active-set Picard iteration tested against the exact DUMMY-05 management complementarity oracle.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_06_PREREGISTRATION.json",
@@ -34,10 +34,18 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute DUMMY-06 active-set-iteration-gate from repaired prequalification postimage.",
-  "recovery_point": "DUMMY-06 scientific postimage persisted at 2aad88e4...; only a floating-point assertion repair was made before qualification.",
+  "next_action": "Preregister active-set stabilization/direct-solve comparison.",
+  "recovery_point": "DUMMY-06 closed qualified; exact DUMMY-05 oracle plus a qualified nonconvergent active-set Picard counterexample are available.",
   "blockers": [],
   "prequalification_repairs": [
     "Replaced exact tuple equality for the preregistered floating-point cycle values with assertAlmostEqual at 11 decimal places. Expected values and scientific hypothesis are unchanged."
-  ]
+  ],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_06_QUALIFIED_ACTIVE_SET_ITERATION_FAILURE_MECHANISM",
+    "workflow_run": 35567139197,
+    "workflow_job": 106231108154,
+    "qualification_head": "ae5fa2ecc0257a385af5b9d4bd843af47e0363c3",
+    "tests": "9/9 PASS",
+    "gate": "PASS"
+  }
 }
