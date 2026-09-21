@@ -163,3 +163,14 @@ Prospective questions are:
    exact physical derivative is available;
 5. whether P4 prevents the large Newton excursion from the difficult -0.23 m
    start without changing the accepted root.
+
+
+### G04 P3 admissibility clarification after first execution
+
+The first G04 execution exposed a prospective policy-boundary case rather than a
+numerical implementation failure: at the fixed difficult start y=-0.23 m the
+derived alpha(y)=1/(1-rho(y)) is greater than 1. The frozen P3 definition
+requires 0<alpha<=1. Therefore the rerun classifies such a point as
+RELAXATION_NOT_ADMISSIBLE. It does not clip alpha to 1, tune alpha, remove the
+start, or convert the case into convergence evidence. P3/Newton equivalence is
+tested only at starts where the preregistered P3 relaxation range is satisfied.
