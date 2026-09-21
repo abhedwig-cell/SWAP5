@@ -56,31 +56,28 @@
       "work_unit": "RIBASIM-DUMMY-11",
       "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
       "run": 35569720082
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-12",
+      "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+      "run": 35570012761
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-12",
-      "state": "IMPLEMENTED_PERSISTED_FROZEN_SCOPE_CI_QUEUED",
-      "qualification_run": 35571231402,
-      "pr": 514,
-      "intended_decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
-      "parallelism": "independent of DUMMY-11 result",
-      "qualification_note": "Frozen-base trigger used so later DUMMY-13/documentation commits cannot enter the DUMMY-12 source-scope gate."
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-13",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "state": "AUTHORITY_SATISFIED_IMPLEMENTATION_START",
       "required": [
         "RIBASIM-DUMMY-11",
         "RIBASIM-DUMMY-12"
       ],
       "implementation": false,
-      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2"
+      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2",
+      "baseline": "51bbc6d3375028b6604351b19f8806babac82721"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Await frozen-scope DUMMY-12 run 35571231402; if PASS, close DUMMY-12 and rebind DUMMY-13 to the combined post-DUMMY-11/DUMMY-12 authority.",
+  "next_authority_action": "Implement and qualify DUMMY-13 first-stage three-store ledger against the combined DUMMY-11/DUMMY-12 authority.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
