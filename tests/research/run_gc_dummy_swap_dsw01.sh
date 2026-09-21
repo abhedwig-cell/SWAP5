@@ -208,6 +208,10 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 grep -Fq 'GC_DSW21_LIVE_GATE=PASS' "$BUILD/dsw21-live.txt" || fail "DSW-21 live gate"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw23_coextensive_storage.py | tee "$BUILD/dsw23-live.txt"
+grep -Fq 'GC_DSW23_LIVE_GATE=PASS' "$BUILD/dsw23-live.txt" || fail "DSW-23 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw23_coextensive_ownership.py | tee "$BUILD/dsw23-live.txt"
 grep -Fq 'GC_DSW23_LIVE_GATE=PASS' "$BUILD/dsw23-live.txt" || fail "DSW-23 live gate"
 
