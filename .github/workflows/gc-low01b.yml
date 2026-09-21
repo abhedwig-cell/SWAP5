@@ -9,18 +9,6 @@ on:
       - 'integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json'
       - 'integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json'
       - 'integration/research/GC_LOW01_OUTPUT01_RESULT.json'
-      - 'integration/research/GC_LOW01B_PREREGISTRATION.json'
-      - 'integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json'
-      - 'integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json'
-      - 'integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json'
-      - 'integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json'
-      - 'tests/research/support/gc_low01_headcalc_nonconstitutive_stubs.f90'
-      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
-      - 'tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90'
-      - 'tests/research/support/mod_gc_low01_mode1_trial_carrier.f90'
-      - 'tests/research/test_gc_low01b_inside_profile.f90'
-      - 'tests/research/run_gc_low01b.sh'
-      - '.github/workflows/gc-low01b.yml'
   workflow_dispatch:
 
 concurrency:
@@ -38,34 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: gate
-        name: Check qualified LOW01-B prerequisites
+        name: Check qualified prerequisite results
         shell: bash
         run: |
-          python3 - <<'PY' > /tmp/gc-low01b-ready
-          import json
-          from pathlib import Path
-
-          paths = [
-              Path("integration/research/GC_LOW01A2_RESULT.json"),
-              Path("integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json"),
-              Path("integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json"),
-              Path("integration/research/GC_LOW01_OUTPUT01_RESULT.json"),
-          ]
-          ready = True
-          for path in paths:
-              if not path.is_file():
-                  ready = False
-                  continue
-              data = json.loads(path.read_text())
-              if data.get("conclusion") != "success":
-                  ready = False
-              if not str(data.get("decision", "")).startswith("QUALIFIED"):
-                  ready = False
-          print("true" if ready else "false")
-          PY
-          ready="$(cat /tmp/gc-low01b-ready)"
-          echo "ready=$ready" >> "$GITHUB_OUTPUT"
-          echo "GC_LOW01B_PREREQUISITES_READY=$ready"
+          python3 -c 'import json,pathlib,sys; paths=["integration/research/GC_LOW01A2_RESULT.json","integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json","integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json","integration/research/GC_LOW01_OUTPUT01_RESULT.json"]; ok=all(pathlib.Path(p).is_file() and (lambda d: d.get("conclusion")=="success" and str(d.get("decision","")).startswith("QUALIFIED"))(json.loads(pathlib.Path(p).read_text())) for p in paths); print("ready=true" if ok else "ready=false")' >> "$GITHUB_OUTPUT"
 
   low01b:
     needs: prerequisite
