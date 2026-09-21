@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-18",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "4d378e7afa2ee8b4e1acbb5685a4e4c208b38620",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
   "blocker": null,
   "prepared_scope": "Pinned state/transfer/management/clock/transaction mapping matrix for staged Ribasim -> MODFLOW -> SWAP substitution.",
-  "next_action": "Create machine-readable DUMMY-18 authority map and validate that BOUND/NON_EQUIVALENT/UNRESOLVED classifications cannot be silently promoted.",
+  "next_action": "Execute DUMMY-18 real-model-authority-map gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -29,5 +29,19 @@
       "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
       "run": 35593604887
     }
-  }
+  },
+  "scope": "Machine-readable mapping of analytical state/transfer/management/clock/transaction objects to pinned real-model authority, with explicit BOUND/NON_EQUIVALENT/UNRESOLVED status and substitution-stage readiness.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_18_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_18_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_18_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_18_AUTHORITY_MAP.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_real_model_authority_map.py",
+    "tests/research/test_dummy_real_model_authority_map.py",
+    "tests/research/run_ribasim_dummy_18.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "expected_tests": "14 tests",
+  "recovery_point": "DUMMY-18 authority map, validator, tests, concept and workflow gate are persisted; qualification remains open."
 }
