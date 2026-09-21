@@ -4,22 +4,22 @@
   "work_unit": "RIBASIM-DUMMY-01",
   "title": "Analytically controlled single-reservoir Ribasim surrogate",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "purpose": "Create a deterministic research and verification harness for surface-water storage, level, hydrologically forced groundwater exchange, irrigation allocation and shortage before coupling to real Ribasim.",
+  "purpose": "Create a deterministic research and verification harness for Ribasim-like Basin storage/level, forecast allocation, physical realization of MODFLOW-derived infiltration/drainage, UserDemand delivery and shortage before coupling to real Ribasim.",
   "scope": [
-    "one surface-water reservoir with linear volume-stage relation",
-    "explicit committed and candidate state",
-    "external surface-water inflow",
-    "groundwater exfiltration into surface water",
-    "groundwater infiltration out of surface water as a mandatory physical flux",
-    "irrigation request as a management withdrawal that may be curtailed",
-    "explicit reserve/dead-storage constraint for management allocation",
-    "closed per-step water balance"
+    "one Basin with a linear volume-stage relation",
+    "explicit committed, allocation-candidate and physical-realization state",
+    "forecast Basin external inflow, drainage and infiltration",
+    "actual Basin external inflow, drainage and infiltration",
+    "UserDemand request, allocated volume, realized delivery and split shortage accounting",
+    "UserDemand min_level represented exactly through the linear Basin profile",
+    "closed realized per-window water balance"
   ],
   "priority_contract": [
-    "mandatory hydrological exchange is evaluated before discretionary irrigation allocation",
-    "irrigation delivery may be reduced to protect the configured management reserve",
-    "mandatory groundwater infiltration is not silently reduced to satisfy irrigation",
-    "if mandatory hydrological outflow exceeds physically available water, the candidate step fails closed"
+    "allocation is a prediction from committed Basin state and forecast forcing",
+    "physical realization applies actual Basin drainage and infiltration before determining realizable UserDemand delivery",
+    "actual infiltration is not silently reduced to satisfy a previously allocated UserDemand",
+    "if actual mandatory infiltration exceeds physically available Basin water, realization fails closed",
+    "realized UserDemand may be lower than allocation when actual hydrology is less favorable than forecast"
   ],
   "transaction_contract": [
     "planning a step does not mutate committed state",
@@ -28,12 +28,12 @@
     "stale candidates fail closed"
   ],
   "experiments": {
-    "E1": "no-conflict full irrigation delivery with exact mass closure",
-    "E2": "late conflict: start-of-step volume appears sufficient for irrigation, but mandatory infiltration creates shortage",
-    "E3": "management reserve curtails irrigation while hydrological flux remains uncurtailed",
-    "E4": "physically infeasible mandatory infiltration fails closed with zero committed-state mutation",
-    "E5": "candidate/reject/commit and stale-candidate transaction semantics",
-    "E6": "linear stage-volume mapping is exactly invertible"
+    "E1": "forecast equals realization: full UserDemand delivery with exact mass closure",
+    "E2": "late conflict: allocation sees enough water, but larger realized Basin infiltration creates realization shortage",
+    "E3": "UserDemand min_level constrains allocation while mandatory physical infiltration remains uncurtailed",
+    "E4": "physically infeasible realized infiltration fails closed with zero committed-state mutation",
+    "E5": "allocation/realization/commit and stale-candidate transaction semantics",
+    "E6": "linear Basin stage-volume mapping is exactly invertible within numerical precision"
   },
   "forbidden": [
     "no production SWAP physics change",
@@ -45,5 +45,23 @@
     "no silent hydrological-flux curtailment to make the balance feasible"
   ],
   "pass_decision": "RIBASIM_DUMMY_01_QUALIFIED_ANALYTIC_SINGLE_RESERVOIR",
-  "fail_decision": "RIBASIM_DUMMY_01_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_01_BLOCKED",
+  "ribasim_alignment": {
+    "checked_on": "2026-09-21",
+    "sources": [
+      "https://ribasim.org/reference/node/basin.html",
+      "https://ribasim.org/reference/node/user-demand.html",
+      "https://ribasim.org/concept/allocation.html",
+      "https://ribasim.org/dev/bmi.html"
+    ],
+    "mapped_concepts": [
+      "Basin storage and level",
+      "Basin infiltration as physical outflow",
+      "Basin drainage as physical inflow",
+      "UserDemand demand and min_level",
+      "allocation prediction followed by attempted physical realization",
+      "BMI-facing writable infiltration, drainage and demand variables"
+    ],
+    "non_claim": "The dummy does not reproduce Ribasim network optimization, routing, adaptive timestepping or solver behavior."
+  }
 }
