@@ -122,7 +122,7 @@ for marker in \
 done
 
 git diff --check -- tests/research/test_gc_real_swap_map09_active_drainage.py \
-  tests/research/run_gc_real_swap_map09_b3.sh \
+  tests/research/run_gc_real_swap_map09.sh \
   integration/research/GC_REAL_SWAP_MAP09_PREREGISTRATION.json
 
 echo 'GC REAL SWAP MAP09 ACTIVE DRAINAGE CORRECTOR FEASIBILITY PASS'
