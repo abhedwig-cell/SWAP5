@@ -6,11 +6,11 @@
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "checkpoint_commit": "2f8acad64bf8139eba6185d09186ea5fa31aa76a",
-  "last_reconciled_head": "2f8acad64bf8139eba6185d09186ea5fa31aa76a",
+  "last_reconciled_head": "9429e7cedab37f5e833f0b06a47b9542a874c9a5",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_changes": false,
   "authority_paths": [
     "AGENTS.md",
@@ -39,7 +39,14 @@
     "tests/fgc/support/fgc45_real_multiswap_ctypes.py",
     "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
   ],
-  "next_action": "Run the preregistered three-policy live MODFLOW comparison and persist exact paths, work counts, final physical state and ledger evidence.",
-  "recovery_point": "Resume from 2f8acad64bf8139eba6185d09186ea5fa31aa76a; do not change MAP04 HCOF policies, tolerances or iteration budget after observation.",
-  "blockers": []
+  "next_action": "Use a stronger qualified real-SWAP response regime where u_A and local corrector response differ materially, and repeat the same immutable-physics slope-policy comparison.",
+  "recovery_point": "MAP04 qualified by workflow 35567251749 / job 106231422040. Resume from GC_REAL_SWAP_MAP04_RESULT.json; do not rerun unless its dependency surface changes.",
+  "blockers": [],
+  "qualification": {
+    "workflow_run": 35567251749,
+    "workflow_job": 106231422040,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_REAL_SWAP_MAP04_RESULT.json",
+    "decision": "QUALIFIED_ACCEPTED_PHYSICS_INVARIANT_TO_AFFINE_SLOPE_POLICY_IN_FGC45_FIXTURE"
+  }
 }
