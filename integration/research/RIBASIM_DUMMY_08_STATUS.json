@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_temporal_partition.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-08",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "664a6bedca83feeda989ecdbe339bbe2f43e52c5",
+  "checkpoint_commit": "472e07a85df07ead91f30085ef9cc4dfd0b44a29",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Multi-window propagation using the qualified direct per-window active-set solve, plus an independent continuous one-event reference for temporal-partition diagnostics.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_08_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_08_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_08_STATUS.json",
+    "tests/research/dummy_temporal_partition.py",
+    "tests/research/test_dummy_temporal_partition.py",
+    "tests/research/run_ribasim_dummy_08.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_trapezoid_exchange_iteration.py",
+    "tests/research/dummy_head_management_complementarity.py",
+    "tests/research/dummy_active_set_stabilization.py",
+    "tests/research/dummy_temporal_partition.py",
+    "tests/research/test_dummy_temporal_partition.py",
+    "tests/research/run_ribasim_dummy_08.sh",
+    "integration/research/RIBASIM_DUMMY_08_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_07": "RIBASIM_DUMMY_07_QUALIFIED_STABILIZATION_MECHANISMS",
+    "DUMMY_07_run": 35567469467
+  },
+  "preregistration_revision": "Original monotonic-refinement hypothesis was superseded before tests/qualification after prequalification analysis identified active-set event-grid jitter.",
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-08 to the registered research workflow and execute the temporal partition gate.",
+  "recovery_point": "DUMMY-08 revised preregistration, implementation, tests, concept and focused runner are persisted; qualification remains open.",
+  "blockers": []
+}
