@@ -25,7 +25,7 @@
     "next_root_request_m3": 8,
     "combined_three_store_change_m3": 0
   },
-  "next_action": "Add DUMMY-13 to the registered research workflow and execute the three-store ledger gate.",
+  "next_action": "Execute the exact DUMMY-13 three-store-ledger-gate.",
   "production_delta": [],
   "reference_delta": [],
   "concept": "integration/research/RIBASIM_DUMMY_13_CONCEPT.md",
@@ -50,7 +50,7 @@
       "run": 35570012761
     }
   },
-  "checkpoint_commit": "cffae3358cf240c3e61f10cf3d7db6ba6c4bc234",
+  "checkpoint_commit": "3033ee7035b8873bc67d56e7deef534a2fb1c657",
   "scope": "First-stage three-store composition: qualified root-zone request state + qualified dynamic surface/groundwater management, with irrigation and surface-groundwater exchange treated as internal transfers.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_13_PREREGISTRATION.json",
@@ -84,5 +84,9 @@
     }
   },
   "conditional_authority_boundary": "Three stores are disjoint by construction. DUMMY-13 cannot close real F-GC CSR-B1 storage-partition or CSR-B2 drainage-ownership blockers.",
-  "recovery_point": "DUMMY-13 implementation, tests, concept and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-13 full scientific postimage is persisted; qualification is the next action.",
+  "prequalification_strengthening": [
+    "Added a dense 24-case state grid before qualification to exercise the already-preregistered internal-transfer conservation identity across multiple root deficits, surface heads and groundwater heads. No hypothesis, equation or expected regime value was changed."
+  ],
+  "expected_tests": "12 tests"
 }
