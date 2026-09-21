@@ -89,7 +89,7 @@ def require(value: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def build_model(workdir: Path, name: str, sy: float = SY) -> None:
+def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
         version="mf6",
@@ -114,7 +114,7 @@ def build_model(workdir: Path, name: str, sy: float = SY) -> None:
         sim,
         modelname="GWF_1",
         save_flows=True,
-        newtonoptions="NEWTON",
+        newtonoptions="NEWTON" if newton else None,
     )
     flopy.mf6.ModflowGwfdis(
         gwf,
@@ -151,10 +151,11 @@ def run_case(
     hcof_m2_per_day: float,
     rhs_m3_per_day: float,
     sy: float = SY,
+    newton: bool = True,
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir, case_name, sy=sy)
+        build_model(workdir, case_name, sy=sy, newton=newton)
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         initialized = False
@@ -258,6 +259,7 @@ def main() -> None:
         "flux_only",
         hcof_m2_per_day=0.0,
         rhs_m3_per_day=-(PRECIP_M * AREA_M2 / DT_DAY),
+        newton=False,
     )
     require(bool(control["converged"]), f"control did not converge: {control}")
     control_error_m = float(control["head_m"]) - EXPECTED_CONTROL_HEAD_M
@@ -277,13 +279,28 @@ def main() -> None:
         "current_u",
         hcof_m2_per_day=0.20,
         rhs_m3_per_day=1.60,
+        newton=False,
     )
+
+    # Separate source-derived MODFLOW Newton regularization oracle.
+    smoothed_control = run_case(
+        libmf6,
+        "flux_only_newton",
+        hcof_m2_per_day=0.0,
+        rhs_m3_per_day=-(PRECIP_M * AREA_M2 / DT_DAY),
+        newton=True,
+    )
+    expected_smoothed_head_m = H0_M + (PRECIP_M / SY) * (1.0 - 1.0e-6)
+    smoothed_error_m = float(smoothed_control["head_m"]) - expected_smoothed_head_m
 
     print(f"GC_DSW01_CONTROL_HEAD_M={float(control['head_m']):.17g}")
     print(f"GC_DSW01_CONTROL_ITERATIONS={int(control['iterations'])}")
     print(f"GC_DSW01_CONTROL_MODEL_DT_DAY={float(control.get('model_dt_day', float('nan'))):.17g}")
     print(f"GC_DSW01_CONTROL_ERROR_M={control_error_m:.17g}")
     print(f"GC_DSW01_CONTROL_ORACLE_PASS={1 if control_oracle_pass else 0}")
+    print(f"GC_DSW01_NEWTON_CONTROL_HEAD_M={float(smoothed_control['head_m']):.17g}")
+    print(f"GC_DSW01_NEWTON_CONTROL_EXPECTED_M={expected_smoothed_head_m:.17g}")
+    print(f"GC_DSW01_NEWTON_CONTROL_ERROR_M={smoothed_error_m:.17g}")
     print(f"GC_DSW01_CURRENT_U_STATUS={current['status']}")
     print(f"GC_DSW01_CURRENT_U_CONVERGED={1 if current['converged'] else 0}")
     if math.isfinite(float(current["head_m"])):
@@ -294,6 +311,18 @@ def main() -> None:
     if current["error"]:
         print(f"GC_DSW01_CURRENT_U_ERROR={current['error']}")
     print("GC_DSW01_LIVE_PROBE_COMPLETED=PASS")
+
+    require(bool(smoothed_control["converged"]), f"Newton smoothing control did not converge: {smoothed_control}")
+    require(
+        math.isclose(
+            float(smoothed_control["head_m"]),
+            expected_smoothed_head_m,
+            rel_tol=0.0,
+            abs_tol=CONTROL_TOL_M,
+        ),
+        f"Newton smoothing source oracle mismatch: {smoothed_control['head_m']} != {expected_smoothed_head_m}",
+    )
+    print("GC_DSW01_MODFLOW_NEWTON_SMOOTHING_ORACLE=PASS")
 
     # Preserve the preregistered 1e-8 m control gate, but only after all
     # diagnostic observations have been emitted.
