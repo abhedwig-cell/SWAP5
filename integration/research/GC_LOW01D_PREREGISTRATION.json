@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.gc_low01d.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-D",
+  "title": "Immutable-origin replay and rejected-trial isolation on qualified below-profile H_phreatic reduction",
+  "status": "PREREGISTERED_PENDING_LOW01A2_PASS",
+  "production_changes": false,
+  "activation_dependency": "GC-LOW01-A2 must qualify before LOW01-D execution is treated as evidence.",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "typed_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "seam_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "low01a2": "integration/research/GC_LOW01A2_PREREGISTRATION.json",
+    "mode5_solver": "src/adapter/mod_reference_richards_legacy_binding.f90"
+  },
+  "scope": "Below-profile reduction only. No bottom_mode=1 call and no inside-profile state-machine claim.",
+  "immutable_origin": {
+    "H_phreatic_cm": -350,
+    "pressure_head_relation": "h_i=H_phreatic-z_i",
+    "groundwater_level_cm": -350,
+    "optional_processes": false,
+    "accepted_revision": 0,
+    "accepted_interface_mass_cm": 0
+  },
+  "sequence": [
+    {
+      "label": "A1",
+      "H_phreatic_cm": -350,
+      "disposition": "REJECT_AFTER_OBSERVATION"
+    },
+    {
+      "label": "B",
+      "H_phreatic_cm": -349.9,
+      "disposition": "REJECT_AFTER_OBSERVATION"
+    },
+    {
+      "label": "A2",
+      "H_phreatic_cm": -350,
+      "disposition": "ACCEPT"
+    }
+  ],
+  "trial_rule": "Every trial is reconstructed from the same accepted origin; H_phreatic is mapped to mode-5 hbot only for the isolated solve and never overwrites the accepted origin.",
+  "publication_rule": "Rejected A1/B publish no accepted revision and no accepted mass. Only final A2 may advance the research wrapper revision and publish its independently integrated qbot exchange once.",
+  "gates": [
+    "LOW01-A2 prerequisite PASS is recorded.",
+    "A1, B and A2 all converge through bottom_mode=5 without retry or alternative solver.",
+    "Before final acceptance, accepted pressure head, water content, groundwater level, revision and accepted mass remain bitwise identical to the immutable origin after both A1 and B rejection.",
+    "A1 and A2 candidate pressure heads, water contents, qbot, independent mass residual and solver diagnostics are bitwise identical.",
+    "B differs from A1 in qbot or candidate hydraulic state, proving rejection isolation is non-vacuous.",
+    "Final A2 acceptance advances revision exactly once.",
+    "Final published accepted interface mass equals A2 qbot*dt under the native mode-5 sign convention exactly once within 1e-12 cm.",
+    "No rejected-trial mass is included in the accepted publication ledger."
+  ],
+  "forbidden": [
+    "do not execute if LOW01-A2 is not qualified",
+    "no bottom_mode=1 production admission",
+    "no inside-profile saturated-continuation claim",
+    "no current F-GC production change",
+    "do not infer HLINK04 readiness because LOW01-B remains blocked"
+  ],
+  "next_if_pass": [
+    "Record LOW01-D as below-profile transactional substrate.",
+    "Keep LOW01-B and LOW01-C blocked on typed constitutive ownership.",
+    "Keep HLINK04 blocked until the candidate contract activation rule is satisfied."
+  ]
+}
