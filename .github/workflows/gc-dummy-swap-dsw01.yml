@@ -8,14 +8,20 @@ on:
       - 'docs/research/GC_*.md'
       - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
       - 'integration/research/GC_REAL_SWAP_MAP01*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP08*.json'
       - 'integration/research/GC_REAL_SWAP_MAP05*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP08*.json'
       - 'integration/research/GC_REAL_SWAP_MAP05*.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
       - 'tests/research/test_gc_real_swap_map01_fgc45.py'
       - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
+      - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
+      - 'tests/research/run_gc_real_swap_map08.sh'
       - 'tests/research/test_gc_real_swap_map05_b3_slope_policy.py'
       - 'tests/research/run_gc_real_swap_map05_b3.sh'
+      - 'tests/research/test_gc_real_swap_map08_raw_corrector_failure.py'
+      - 'tests/research/run_gc_real_swap_map08.sh'
       - 'tests/research/test_gc_real_swap_map05_b3_slope_policy.py'
       - 'tests/research/run_gc_real_swap_map05_b3.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
@@ -81,3 +87,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: bash tests/research/run_gc_real_swap_map05_b3.sh
+
+  real-swap-map08:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install flopy numpy
+      - name: Run raw B3 corrector-domain diagnostic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map08.sh
