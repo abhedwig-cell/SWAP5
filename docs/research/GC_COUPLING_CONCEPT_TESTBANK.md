@@ -484,7 +484,7 @@ A green nonlinear solve cannot compensate for failure at levels 1-5.
 ## Current executed frontier
 
 The live MODFLOW6 testbank has now executed through DSW-16, with DSW-09
-numerical diagnostics extended through DSW-09Y.
+numerical diagnostics extended through DSW-09X.
 
 The main established distinctions are:
 
@@ -504,7 +504,7 @@ Two deliberately falsified strict controls remain preserved as evidence:
   substep. DSW-05W shows that the same head certifies at `1e-14` and
   `1e-13`.
 - DSW-09 under the original MODERATE/strict research solver settings does not
-  meet the combined preregistered gate. DSW-09V/X/Y separate nonlinear
+  meet the combined preregistered gate. DSW-09V/X separate nonlinear
   under-relaxation history from near-root strict residual certification.
 
 These red controls are not to be rewritten into green historical tests.
