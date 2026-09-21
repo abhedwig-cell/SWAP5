@@ -37,6 +37,7 @@ def main() -> None:
     require(libmf6.is_file(), "missing libmf6")
 
     heads: list[float] = []
+    partition_errors: list[float] = []
     for alpha in (0.0, 0.25, 0.5, 0.75, 1.0):
         sy, hcof, rhs = correct_partition_term(alpha)
         result = run_case(
@@ -48,12 +49,11 @@ def main() -> None:
         )
         require(bool(result["converged"]), f"partition alpha={alpha} did not converge: {result}")
         h = float(result["head_m"])
-        require(
-            math.isclose(h, EXPECTED_H_M, rel_tol=0.0, abs_tol=TOL_M),
-            f"partition alpha={alpha} head {h} != {EXPECTED_H_M}",
-        )
+        error = h - EXPECTED_H_M
         heads.append(h)
+        partition_errors.append(error)
         print(f"GC_DSW02_ALPHA_{alpha:.2f}_HEAD_M={h:.17g}")
+        print(f"GC_DSW02_ALPHA_{alpha:.2f}_ERROR_M={error:.17g}")
 
     require(
         max(heads) - min(heads) <= TOL_M,
@@ -74,12 +74,24 @@ def main() -> None:
     )
     require(bool(doubled["converged"]), f"double-storage case did not converge: {doubled}")
     expected_double = H0_M + RAIN_M_PER_DAY * DT_DAY / (2.0 * S_TOTAL)
-    require(
-        math.isclose(float(doubled["head_m"]), expected_double, rel_tol=0.0, abs_tol=TOL_M),
-        f"double-storage signature {doubled['head_m']} != {expected_double}",
-    )
+    double_error = float(doubled["head_m"]) - expected_double
 
     print(f"GC_DSW02_DOUBLE_STORAGE_HEAD_M={float(doubled['head_m']):.17g}")
+    print(f"GC_DSW02_DOUBLE_STORAGE_ERROR_M={double_error:.17g}")
+
+    # Emit all observations before enforcing the preregistered numerical gates.
+    require(
+        max(abs(value) for value in partition_errors) <= TOL_M,
+        f"partition oracle error exceeds {TOL_M}: {partition_errors}",
+    )
+    require(
+        partition_spread <= TOL_M,
+        f"storage partition changed final head: {heads}",
+    )
+    require(
+        abs(double_error) <= TOL_M,
+        f"double-storage signature {doubled['head_m']} != {expected_double}",
+    )
     print("GC_DSW02_LIVE_PARTITION_INVARIANCE=PASS")
     print("GC_DSW02_LIVE_DOUBLE_STORAGE_SIGNATURE=PASS")
     print("GC_DSW02_LIVE_GATE=PASS")
