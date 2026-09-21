@@ -4,7 +4,7 @@
   "work_unit": "GC-LOW01-C1",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_ARMED_EVIDENCE_BLOCKED_ON_LOW01B",
+  "state": "IMPLEMENTED_PREREQUISITE_GATED_PENDING_LOW01B",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01C1_PREREGISTRATION.json",
   "distinction": [
@@ -13,7 +13,7 @@
     "OUTPUT01 intentionally refuses node-snap/boundary controls and therefore is not the C1 execution carrier."
   ],
   "activation_dependency": "GC_LOW01B_RESULT.json must exist and record qualified bounded inside-profile research before C1 execution is authoritative.",
-  "next_action": "Await a qualified GC_LOW01B_RESULT.json. The C1 workflow is armed to run only when that result is persisted; do not count implementation alone as characterization evidence.",
+  "next_action": "Wait for a persisted qualified GC_LOW01B_RESULT.json. The C1 workflow then activates automatically; do not count skipped prerequisite runs as characterization evidence.",
   "latest_amendment": "integration/research/GC_LOW01C1_PREREGISTRATION_AMENDMENT.json",
   "test": "tests/research/test_gc_low01c1_internal_node_snap.f90",
   "runner": "tests/research/run_gc_low01c1.sh",
@@ -22,5 +22,11 @@
     "Only requested gwlinp changes across the four direct-HeadCalc trials.",
     "The harness records candidate-state and qbot/storage differences relative to AT_NODE.",
     "Replay remains bitwise checked at O0 and O2 through the runner."
-  ]
+  ],
+  "implemented": true,
+  "tested": false,
+  "characterized": false,
+  "test_path": "tests/research/test_gc_low01c1_internal_node_snap.f90",
+  "workflow": ".github/workflows/gc-low01c1.yml",
+  "execution_mode": "EVENT_DRIVEN_QUALIFIED_LOW01B_GATE"
 }
