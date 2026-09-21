@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.gc_hlink.hlink04.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK04",
+  "title": "Real-SWAP shared-phreatic response characterization from immutable origins",
+  "status": "PREREGISTERED_BLOCKED_ON_LOW01_READINESS",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "readiness_audit": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json",
+    "readiness_matrix": "integration/research/GC_HLINK04_LOW01_READINESS_MATRIX.json",
+    "hlink01": "integration/research/GC_HLINK01_RESULT.json",
+    "low01_inside": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+    "low01_below": "integration/research/GC_LOW01A2_PREREGISTRATION.json",
+    "candidate_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json"
+  },
+  "activation_rule": [
+    "Do not execute until every predicate in GC_HLINK04_LOW01_READINESS_MATRIX.json is true.",
+    "In particular LOW01-A2, CONST, CARRIER01, OUTPUT01, B and D must be QUALIFIED, C1 must be characterization-complete and C2 must preserve the declared lower-half-cell exclusion.",
+    "Execution remains research-only and does not admit production bottom_mode=1."
+  ],
+  "purpose": [
+    "Measure the real SWAP complete-profile response to a prescribed shared phreatic coordinate before introducing any MODFLOW storage mapping.",
+    "Keep physical storage change, diagnosed qbot and local response derivatives as separate observables.",
+    "Provide the real-SWAP evidence needed to decide later whether a secant, tangent or other discrete response is appropriate for an h-link."
+  ],
+  "experiments": [
+    {
+      "id": "INSIDE_SAFE",
+      "branch": "INSIDE_PROFILE",
+      "immutable_origin": {
+        "reference_H_phreatic_cm": -120,
+        "pressure_head_cm": [
+          -95,
+          -45,
+          30,
+          130
+        ],
+        "water_content": "provider-owned B110 values frozen exactly as LOW01-B",
+        "accepted_groundwater_level_cm": -120,
+        "dt_day": 0.01
+      },
+      "controls_cm": [
+        -120.1,
+        -120.01,
+        -120,
+        -119.99,
+        -119.9
+      ],
+      "safety_rule": "All controls remain far from internal-node snap boundaries and outside the C2 unadmitted lower-half-cell gap.",
+      "expected_branch": "INSIDE_PROFILE",
+      "expected_active_nodes": 2
+    },
+    {
+      "id": "BELOW_SAFE",
+      "branch": "BELOW_PROFILE",
+      "immutable_origin": {
+        "reference_H_phreatic_cm": -350,
+        "pressure_head_cm": [
+          -325,
+          -275,
+          -200,
+          -100
+        ],
+        "water_content": "same immutable hydrostatic origin as LOW01-A2",
+        "accepted_groundwater_level_cm": -350,
+        "dt_day": 0.0001
+      },
+      "controls_cm": [
+        -350.1,
+        -350.01,
+        -350,
+        -349.99,
+        -349.9
+      ],
+      "mapping": "hbot_cm=H_phreatic_cm-(-300 cm bottom face)",
+      "safety_rule": "All controls remain below the declared -300 cm bottom face.",
+      "expected_branch": "BELOW_PROFILE"
+    }
+  ],
+  "required_outputs_per_trial": [
+    "requested_H_phreatic_cm",
+    "effective_H_phreatic_cm",
+    "branch identity",
+    "active Richards node count where applicable",
+    "complete candidate pressure-head array",
+    "complete candidate water-content array",
+    "diagnosed qbot_cm_per_day",
+    "complete-profile storage_change_cm",
+    "independent mass_residual_cm",
+    "solver/retry diagnostics",
+    "candidate provenance sufficient to prove immutable-origin execution"
+  ],
+  "derived_characterization": [
+    "central finite-difference d(storage_change)/dH_phreatic at delta=0.01 cm and delta=0.1 cm",
+    "central finite-difference dqbot/dH_phreatic at delta=0.01 cm and delta=0.1 cm",
+    "secant storage response storage_change/(H-H_ref) for every nonzero control offset",
+    "repeatability of the H_ref trial from the same immutable origin",
+    "branch-local comparison only; no continuity requirement across branch boundaries"
+  ],
+  "gates": [
+    "Every trial is reconstructed from its branch-specific immutable accepted origin; no candidate becomes the origin of another trial.",
+    "All trials stay inside the preregistered admitted LOW01 envelope and use the branch predicted above.",
+    "Every trial is valid, finite and converges without alternative solver or dt retuning.",
+    "Independent complete-profile mass residual closes within the already-qualified LOW01 branch tolerance.",
+    "Repeating the central H_ref trial is bitwise deterministic in physical candidate outputs and qbot.",
+    "Both finite-difference scales produce finite storage and qbot response estimates; no equality between those derivatives is required.",
+    "The result reports storage response and qbot response separately and does not relabel either one as an exchange coefficient."
+  ],
+  "interpretation_rules": [
+    "Complete-profile storage change is a physical volume response of the SWAP column over the trial window.",
+    "qbot is the diagnosed physical bottom/interface flux under the prescribed H_phreatic trial.",
+    "A derivative of storage with respect to H_phreatic is not automatically the same object as dqbot/dH_phreatic.",
+    "Neither derivative is automatically the production F-GC q_u/u response.",
+    "A later MODFLOW h-link experiment must derive its time-discrete residual from these measured physical quantities before mapping to STO/API arrays."
+  ],
+  "forbidden": [
+    "no execution before LOW01 readiness is complete",
+    "no production bottom_mode=1 admission",
+    "no interpolation across the C2 geometry gap",
+    "no node-boundary or snap-point controls in HLINK04",
+    "no continuity claim between inside-profile and below-profile branches",
+    "no secant-versus-tangent production choice from HLINK04 alone",
+    "no retuning of controls or dt after observation"
+  ],
+  "next_if_characterized": [
+    "Construct HLINK05 as a separately preregistered one-cell MODFLOW coupling experiment using one explicit time-discrete physical residual.",
+    "Keep HLINK02 numerical-certification findings as independent solver-representation evidence.",
+    "Only compare real-SWAP storage response with production q_u/u after both are evaluated from the same immutable origin and control coordinate."
+  ]
+}
