@@ -4,7 +4,7 @@
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "production_changes": false,
-  "current_scope": "Research-only analytic/manufactured dummy-SWAP coupling oracles against live MODFLOW6 6.8.0.",
+  "current_scope": "Research-only analytic/manufactured dummy-SWAP coupling oracles plus concept synthesis against current real-SWAP response evidence; no production changes.",
   "states": {
     "DSW01": "QUALIFIED_LINEAR_SHARED_STORAGE_ORACLE",
     "DSW02": "QUALIFIED_STORAGE_OWNERSHIP_PARTITION",
@@ -84,9 +84,9 @@
     "A five-window manufactured trajectory with unequal timesteps, explicit memory, lateral input, ET and drainage closes both window and cumulative mass ledgers to machine precision when state continuation is explicit."
   ],
   "unresolved_scientific_questions": [
-    "How does real SWAP q_u/u decompose into physical storage change, external/sink flux response and numerical tangent under the intended shared-domain ownership?",
-    "Which real SWAP internal states beyond phreatic head are required to predict the next corrector response over a coupling window?",
-    "Under which real hydrological regimes should the SWAP-MODFLOW connection be treated as shared-state h-link, explicit q-link, or another boundary-exchange formulation?"
+    "What physical spatial/domain ownership is intended for a deployed SWAP-MODFLOW coupling: which water volumes belong to SWAP, which to MODFLOW, whether any volume is coextensive, and which physical state controls each volume?",
+    "If a true shared-phreatic family is intended, what is the real-SWAP complete-profile storage response to that shared phreatic coordinate under an explicitly non-overlapping storage ownership contract?",
+    "Which real SWAP internal states beyond the coupling head materially control the next-window groundwater response, while preserving the full committed-state transaction contract?"
   ],
   "unresolved_numerical_questions": [
     "What production tolerance envelope should jointly govern MODFLOW subsystem convergence, coupling residual and mass conservation without demanding unattainable floating-point residuals?",
@@ -95,15 +95,29 @@
   ],
   "next_safe_steps": [
     "Keep all production F-GC code unchanged.",
-    "Reconcile the exact F-GC33/F-GC49 response contract against the closed dummy taxonomy: identify what q_ref, u/HCOF and RHS represent mathematically and which terms are physical storage, physical sinks/boundaries, or numerical tangent only.",
-    "Select controlled real-SWAP/FMR fixtures with independently auditable water ledgers and capture committed origin state, trial head, q_u/u or equivalent response terms, corrector flux and accepted mass change over one coupling window.",
-    "For those fixtures, test whether the real response is consistent with a shared-state h-link, a finite-resistance q-link, or neither; do not choose a coupling family by analogy alone.",
-    "Then extend the same audit to multiple SWAP tiles mapped N:1 while keeping heterogeneous-transferability claims separate from the algebraic aggregation proof."
+    "Define and compare explicit physical domain/state/storage ownership alternatives before selecting h-link, q-link, or boundary-exchange semantics.",
+    "Consolidate DSW01-DSW20 into a small reusable analytic-SWAP research component only if it preserves the existing independent oracles and does not become a mini-Richards model.",
+    "Use existing MAP02-MAP12 rather than creating a duplicate generic q_u/u response experiment.",
+    "Activate any shared-phreatic HLINK/LOW01 experiment only after the physical-domain definition requires that family; readiness alone is not a scientific activation criterion."
   ],
   "latest_integral_research_run": {
     "workflow_run": 35563873238,
     "workflow_job": 106221736326,
     "conclusion": "success",
     "qualified_through": "DSW20"
+  },
+  "concept_synthesis": {
+    "state": "PERSISTED_RECONCILED_THROUGH_EXISTING_REAL_SWAP_MAP12",
+    "document": "docs/research/GC_COUPLING_CONCEPT_SYNTHESIS.md",
+    "initial_commit": "60f7c6f0d71000757c1c70b503cf52dc610f45c6",
+    "reconciled_commit": "0961138fa6913fa21d44fe31596049dbf5ea8f71",
+    "conclusions": [
+      "DSW01-DSW20 are sufficient for the basic coupling taxonomy; no new dummy mechanism test is currently required.",
+      "Existing MAP02-MAP12 already separate production affine response, real corrector response, whole-column storage response, mass-ledger acceptance, partial versus total q_u derivatives, and lower-interface versus phreatic semantics.",
+      "Production u is a finite-window inverse head sensitivity and u/dt is used as a partial affine response slope. It is not a universal static specific yield and is not automatically the total corrector derivative.",
+      "In drainage-free local real-SWAP fixtures u approximately equals whole-column storage sensitivity while bottom-outward exchange sensitivity is approximately -u; this does not establish storage overlap with MODFLOW STO.",
+      "The current F-GC mode-5 route is not demonstrated to be a one-state shared-phreatic h-link and the qualification fixtures do not declare coextensive SWAP/MODFLOW storage.",
+      "HLINK/LOW01 remains supporting research rather than architecture authority."
+    ]
   }
 }
