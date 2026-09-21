@@ -1,0 +1,154 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_competing_claims_forecast_realization.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15B",
+  "title": "Forecast allocation versus hydrologic realization under competing claims",
+  "baseline": "53d8a60fec0398132f24f20a3612e9ac36f0c85f",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+    "current": "BLOCKED_PENDING_DUMMY_15",
+    "implementation_rule": "No DUMMY-15B model or tests before DUMMY-15 qualification and baseline rebinding."
+  },
+  "purpose": "Reproduce the original conflict where management allocation sees enough predicted surface-water capacity, but later shared-state hydrology reduces the physically realizable managed withdrawal.",
+  "stage_contract": {
+    "forecast_capacity": "M_pred is an explicit allocation-stage capacity estimate; first canonical forecast ignores surface-groundwater exchange and uses A_s*(h_s0-hmin).",
+    "allocation": "Split min(R_root+R_ext,M_pred) lexicographically by the declared managed priority. Record allocated_root and allocated_ext.",
+    "realization": "Submit only the allocated total to the qualified shared-state physical management oracle. It returns supplied total M_actual and physical exchange V.",
+    "realization_split": "Split M_actual lexicographically using the same declared priority, with each supplied claim additionally capped by its allocated amount.",
+    "commit": "Only supplied flows and physical exchange enter the water ledger and accepted states. Allocated-but-unsupplied water is diagnostic only."
+  },
+  "invariants": [
+    "0 <= supplied_i <= allocated_i <= demand_i",
+    "sum supplied_i equals the exact coupled realized managed total for the allocated request",
+    "allocated-but-unsupplied volumes do not enter any physical storage balance",
+    "physical exchange V is not clipped to protect allocation",
+    "root state changes by supplied root irrigation, not allocated root irrigation",
+    "combined three-store storage change equals minus supplied external demand when root external forcing is zero"
+  ],
+  "canonical_case": {
+    "state": {
+      "W_root0": 40,
+      "W_target": 80,
+      "W_capacity": 100,
+      "h_s0": 1,
+      "h_g0": 0
+    },
+    "coupling": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50,
+      "dt": 1,
+      "hmin": 0.4
+    },
+    "demands": {
+      "R_root": 40,
+      "R_ext": 20,
+      "R_total": 60
+    },
+    "forecast": {
+      "exchange_assumption": "ignored",
+      "M_pred": 60,
+      "interpretation": "surface-only storage above hmin appears sufficient for both managed claims"
+    },
+    "actual_physics": {
+      "M_actual": 32,
+      "V": 28,
+      "h_s1": 0.4,
+      "h_g1": 0.28
+    },
+    "root_priority": {
+      "allocated": {
+        "root": 40,
+        "external": 20
+      },
+      "supplied": {
+        "root": 32,
+        "external": 0
+      },
+      "allocation_realization_shortfall": {
+        "root": 8,
+        "external": 20
+      },
+      "root_end": 72,
+      "next_root_request": 8,
+      "combined_three_store_change": 0
+    },
+    "external_priority": {
+      "allocated": {
+        "external": 20,
+        "root": 40
+      },
+      "supplied": {
+        "external": 20,
+        "root": 12
+      },
+      "allocation_realization_shortfall": {
+        "external": 0,
+        "root": 28
+      },
+      "root_end": 52,
+      "next_root_request": 28,
+      "combined_three_store_change": -20
+    }
+  },
+  "underallocation_control": {
+    "M_pred": 20,
+    "purpose": "Show that actual physical capacity may exceed the allocated total; realization must not create unallocated managed delivery.",
+    "root_priority_expected": {
+      "allocated_root": 20,
+      "allocated_external": 0,
+      "supplied_root": 20,
+      "supplied_external": 0
+    },
+    "external_priority_expected": {
+      "allocated_external": 20,
+      "allocated_root": 0,
+      "supplied_external": 20,
+      "supplied_root": 0
+    }
+  },
+  "partial_forecast_scarcity_control": {
+    "M_pred": 45,
+    "root_priority_allocated": {
+      "root": 40,
+      "external": 5
+    },
+    "external_priority_allocated": {
+      "external": 20,
+      "root": 25
+    },
+    "actual_total_realization": 32,
+    "root_priority_supplied": {
+      "root": 32,
+      "external": 0
+    },
+    "external_priority_supplied": {
+      "external": 20,
+      "root": 12
+    }
+  },
+  "hypotheses": [
+    "The canonical surface-only forecast allocates the full 60 m3, but exact shared-state realization supplies only 32 m3 because physical exchange consumes 28 m3 while satisfying the management threshold.",
+    "Priority-preserving realization curtails lower-priority allocated claims before higher-priority allocated claims.",
+    "Root-first and external-first canonical cases have the same actual total managed withdrawal, V, surface endpoint and groundwater endpoint, but different supplied splits and root memory.",
+    "Allocated-but-unsupplied water never appears in the combined ledger or root endpoint.",
+    "When forecast allocation is below what the physical system could realize, supplied flow cannot exceed allocated flow.",
+    "Changing M_pred changes allocation and may change the realized physical endpoint because the physical layer only attempts the allocated managed flow, but it cannot cause supplied_i > allocated_i.",
+    "A forecast error is a management-information error, not a license to alter the physical exchange law."
+  ],
+  "public_authority_binding": {
+    "ribasim_results": "https://ribasim.org/reference/usage.html",
+    "ribasim_user_demand": "https://ribasim.org/reference/node/user-demand.html",
+    "ribasim_allocation": "https://ribasim.org/concept/allocation.html",
+    "note": "Current public documentation distinguishes demand, allocated and supplied. DUMMY-15B remains a one-Basin analytical realization oracle and does not claim exact Ribasim physical-layer curtailment semantics."
+  },
+  "forbidden": [
+    "no implementation before DUMMY-15 qualification",
+    "no claim that priority-preserving realization is current Ribasim supplied-flow behavior until executable Ribasim evidence is obtained",
+    "no network routing or allocation fairness",
+    "no production SWAP irrigation authority claim",
+    "no production coupling change"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_15B_QUALIFIED_FORECAST_REALIZATION_CONFLICT",
+  "fail_decision": "RIBASIM_DUMMY_15B_BLOCKED"
+}
