@@ -21,7 +21,7 @@
     "surface_groundwater_exchange_m3": 4,
     "full_four_store_change_m3": -2
   },
-  "next_action": "Execute DUMMY-15D canopy-irrigation-ledger gate.",
+  "next_action": "Execute exact DUMMY-15D canopy-irrigation-ledger gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -41,5 +41,34 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "13 tests",
-  "recovery_point": "DUMMY-15D model, tests, concept and workflow gate are persisted; qualification remains open."
+  "recovery_point": "DUMMY-15D model, tests, concept and workflow gate are persisted; qualification remains open.",
+  "source_scope_verification": {
+    "base": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_15D_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_15D_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_15D_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_canopy_irrigation_ledger.py",
+      "tests/research/run_ribasim_dummy_15d.sh",
+      "tests/research/test_dummy_canopy_irrigation_ledger.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_LEDGER_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "canonical four-store endpoint 76/3/55/54 and total change -2",
+      "G=N+I exactly",
+      "surface-groundwater exchange cancels from full ledger",
+      "canopy-excluded boundary requires E_i + Delta C",
+      "omitting canopy storage yields apparent -3 defect",
+      "gross-as-soil-input produces +5 water residual",
+      "net-as-source-withdrawal produces +5 water residual",
+      "correct gross/net binding has zero full-system residual"
+    ]
+  }
 }
