@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Verify exact DUMMY-19C source scope and execute pinned real Ribasim realization-conflict gate.",
+  "next_action": "Execute DUMMY-19C pinned real Ribasim realization-conflict gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -47,5 +47,6 @@
       "priority reversal must leave allocation, physical supply split and Basin trajectory unchanged because both demands are fully allocated"
     ]
   },
-  "recovery_point": "DUMMY-19C generator, verifier, runner and workflow gate are persisted; executable qualification remains open."
+  "recovery_point": "DUMMY-19C generator, verifier, runner and workflow gate are persisted; executable qualification remains open.",
+  "qualification_attempt": "PINNED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
 }
