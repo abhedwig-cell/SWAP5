@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Add DUMMY-15 to the registered research workflow and execute the competing-claims gate.",
+  "next_action": "Execute the exact DUMMY-15 competing-claims-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -39,7 +39,7 @@
     "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
     "workflow_run": 35577358733
   },
-  "checkpoint_commit": "7bfeed03cbdd23c99b5ad081c75bd61e887a36ae",
+  "checkpoint_commit": "8cee9c31c79f1e2d973121277c1b8a0513bdfe39",
   "scope": "Exact one-Basin lexicographic split of the qualified coupled managed-withdrawal capacity between root irrigation and one external managed demand.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_15_PREREGISTRATION.json",
@@ -65,5 +65,5 @@
     "no CSR-B1 or CSR-B2 closure"
   ],
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-15 implementation, tests, concept and runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action."
 }
