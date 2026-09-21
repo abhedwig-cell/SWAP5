@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_realization_conflict.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19C",
+  "title": "Pinned real Ribasim full-allocation / physical-reduction conflict",
+  "baseline": "406732783d20c29dd26ede375253fab02cfc3849",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+    "current": "BLOCKED_PENDING_DUMMY_19B",
+    "implementation_rule": "No DUMMY-19C generator/verifier or workflow gate before DUMMY-19B closes and the implementation baseline is rebound."
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Use the pinned real Ribasim allocator and physical UserDemand solver in one custom case where management allocates the full two-recipient demand but physical min_level reduction supplies only about half, thereby directly testing the DUMMY-15B allocation-versus-realization distinction.",
+  "source_semantics": {
+    "allocation": "Pinned allocation_optim.jl does not use UserDemand.min_level in the UserDemand demand/priority objective or flow upper bound; a higher-priority LevelDemand holds forecast Basin storage so the 60 m3/day fixed inflow is fully assigned to the two UserDemand claims.",
+    "physical": "Pinned solve.jl multiplies each UserDemand inflow-link allocated target by the source Basin low-storage factor and reduction_factor(source_level-min_level, level_difference_threshold).",
+    "reduction_function": "phi(x)=0 for x<0; phi(x)=(-2*x/t+3)*(x/t)^2 for 0<=x<t; phi(x)=1 for x>=t; pinned t=0.02 m.",
+    "supplied_authority": "Direct Basin->UserDemand physical linkflow integrated over the horizon is the primary supplied authority. Allocation-output supplied remains lagged as qualified by DUMMY-19A."
+  },
+  "model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 3600,
+    "basin": {
+      "node_id": 2,
+      "initial_level_m": 1,
+      "profile_area_m2": 1000000,
+      "profile_bottom_m": 0,
+      "profile_top_m": 2,
+      "initial_storage_m3": 1000000,
+      "depth_threshold_control": "Initial and final depth remain approximately 1 m, so the pinned low-storage factor is exactly 1 throughout this experiment."
+    },
+    "fixed_supply": {
+      "node_id": 1,
+      "flow_m3_per_day": 60,
+      "flow_m3_per_s": 0.0006944444444444445
+    },
+    "level_hold": {
+      "node_id": 7,
+      "min_level_m": 1,
+      "max_level_m": 1,
+      "demand_priority": 1,
+      "meaning": "Allocation forecast is constrained to zero Basin storage change, so the allocator must use the 60 m3/day inflow rather than initial Basin storage."
+    },
+    "root_proxy": {
+      "node_id": 3,
+      "demand_m3_per_day": 40,
+      "min_level_m": 0.99,
+      "return_factor": 0
+    },
+    "external_demand": {
+      "node_id": 4,
+      "demand_m3_per_day": 20,
+      "min_level_m": 0.99,
+      "return_factor": 0
+    },
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "external_priority": 2,
+        "root_priority": 3
+      }
+    }
+  },
+  "independent_continuous_reference": {
+    "initial_level_difference_m": 0.01,
+    "level_difference_threshold_m": 0.02,
+    "initial_reduction_factor": 0.5,
+    "basin_area_m2": 1000000,
+    "inflow_m3_per_day": 60,
+    "ode": "A dh/dtau = 60 * (1 - phi(h-0.99)), with tau in days and common physical reduction on both allocated UserDemand links.",
+    "endpoint_level_m": 1.0000299326012367,
+    "endpoint_reduction_factor": 0.502244938388153,
+    "integrated_total_supplied_m3": 30.067398763262645,
+    "integrated_root_supplied_m3": 20.044932508841764,
+    "integrated_external_supplied_m3": 10.022466254420882,
+    "integrated_storage_gain_m3": 29.932601236737355,
+    "ledger": "60 m3 fixed inflow = total supplied + Basin storage gain."
+  },
+  "hypotheses": [
+    "Both real Ribasim priority cases allocate the full 40 m3/day root demand and full 20 m3/day external demand because forecast supply is 60 m3/day and the priority-1 LevelDemand prevents planned storage drawdown.",
+    "Despite full allocation, direct physical UserDemand linkflows are reduced because source_level-min_level starts at 0.01 m, giving the pinned smooth reduction factor exactly 0.5.",
+    "Because both recipients share the same source Basin and min_level, their physical supplied linkflows have an exact 2:1 ratio at every physical sample, independent of allocation priority.",
+    "Integrated physical supply over one day is approximately 30.0674 m3, with root approximately 20.0449 m3 and external approximately 10.0225 m3; a predeclared tolerance of 0.05 m3 on each integrated quantity is allowed for solver discretization/output integration.",
+    "Final Basin level is approximately 1.00002993 m and the Basin storage gain equals 60 m3 minus integrated physical UserDemand supply within 0.05 m3.",
+    "Reversing root/external demand_priority does not change allocation, supplied split, Basin trajectory or total supplied water in this full-allocation case.",
+    "The pinned real Ribasim behavior in this controlled common-factor case matches the structural proportional-reduction oracle from DUMMY-15B and differs from the DUMMY-15B priority-preserving curtailment oracle.",
+    "Allocated-but-unsupplied volume is a management/realization discrepancy only and never enters a physical water ledger as if transferred.",
+    "DUMMY-19C does not establish proportional reduction for arbitrary different sources/min_level values; it establishes it only for this deliberately common-factor controlled case."
+  ],
+  "measurements": [
+    "per-UserDemand demand and allocated rates from the real allocation state/result",
+    "direct Basin2->UserDemand3 and Basin2->UserDemand4 physical flow time series",
+    "integrated physical supplied volumes from direct linkflow",
+    "Basin level/storage trajectory",
+    "FlowBoundary1->Basin2 physical inflow",
+    "priority-order comparison across otherwise identical models"
+  ],
+  "forbidden": [
+    "no implementation before DUMMY-19B qualification",
+    "no modification of pinned Ribasim source",
+    "no use of allocation result as physical supply authority",
+    "no tuning min_level, area or tolerances after observing DUMMY-19C output",
+    "no claim that the common-factor proportional result generalizes to multiple source Basins or unequal physical reduction factors",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+  "fail_decision": "RIBASIM_DUMMY_19C_BLOCKED"
+}
