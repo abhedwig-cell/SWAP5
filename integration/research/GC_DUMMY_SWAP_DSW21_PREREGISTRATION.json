@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw21.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW21",
+  "title": "Iteration-slope stability for a known physical corrector response",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "purpose": "Separate fixed-point physics from affine iteration-slope policy in the simplest live MODFLOW system.",
+  "physical_system": {
+    "area_m2": 1,
+    "initial_head_m": 8,
+    "modflow_storage_jacobian_A_per_day": 0.2,
+    "duration_day": 1,
+    "physical_input_at_origin_m_per_day": 0.003,
+    "physical_corrector_slope_j_per_day": -0.1,
+    "q_swap_law": "q_swap(H)=0.003-0.10*(H-8.0)",
+    "exact_coupled_head_m": 8.01,
+    "exact_equation": "0.20*(H-8.0)=q_swap(H)"
+  },
+  "coupling_iteration": {
+    "policy": "At iteration k, evaluate exact q_swap(H_k), publish q_iter(H)=q_swap(H_k)+s*(H-H_k), solve the same MODFLOW time step from immutable H0, repeat.",
+    "analytic_error_factor": "rho=(j-s)/(A-s)",
+    "note": "This is a scalar Schur-complement/quasi-Newton oracle. The fixed point is independent of s whenever the iteration converges and A-s is nonsingular."
+  },
+  "policies": [
+    {
+      "name": "PHYSICAL_J",
+      "s_per_day": -0.1,
+      "expected_rho": 0,
+      "expected": "one-step exact root"
+    },
+    {
+      "name": "INTERCEPT_ONLY",
+      "s_per_day": 0,
+      "expected_rho": -0.5,
+      "expected": "alternating linear convergence"
+    },
+    {
+      "name": "POSITIVE_HALF",
+      "s_per_day": 0.05,
+      "expected_rho": -1,
+      "expected": "neutral two-cycle around the root"
+    },
+    {
+      "name": "POSITIVE_U",
+      "s_per_day": 0.1,
+      "expected_rho": -2,
+      "expected": "alternating divergence with error magnitude doubling while heads remain inside the one-cell domain for the fixed observation horizon"
+    },
+    {
+      "name": "SINGULAR_OVERLAP",
+      "s_per_day": 0.2,
+      "expected": "A-s=0; no unique affine groundwater solve"
+    }
+  ],
+  "live_route": {
+    "modflow_version": "6.8.0",
+    "newton": false,
+    "storage_package": "STO",
+    "coupling_package": "API",
+    "accepted_origin_head_m": 8,
+    "observation_iterations": 6
+  },
+  "gates": [
+    "PHYSICAL_J reaches 8.01 m within 1e-10 m in the first live solve.",
+    "INTERCEPT_ONLY observed successive nonzero error ratios equal -0.5 within 1e-8.",
+    "POSITIVE_HALF alternates between equal-magnitude opposite-sign errors with ratio -1 within 1e-8.",
+    "POSITIVE_U observed error ratios equal -2 within 1e-8 for the fixed six-iteration horizon.",
+    "All nonsingular policies share the same analytically defined fixed point even though some do not converge to it.",
+    "SINGULAR_OVERLAP is recorded as nonconvergent or otherwise unable to certify a unique solve; no tolerance is changed."
+  ],
+  "interpretation_rules": [
+    "s is an iteration-response slope, not automatically a physical coefficient.",
+    "Changing s can alter convergence without altering the physical fixed point.",
+    "A good iteration slope approximates the derivative relevant to the eliminated coupled residual; exact equality is sufficient for one-step convergence in this linear scalar case.",
+    "The singularity at s=A is an algebraic cancellation between groundwater Jacobian and published boundary response, not evidence of zero physical storage."
+  ],
+  "forbidden": [
+    "no production coupling change",
+    "no tolerance retuning",
+    "do not infer that the scalar A or j values represent a real SWAP/MODFLOW field case",
+    "do not use convergence speed alone as evidence of physical correctness"
+  ]
+}
