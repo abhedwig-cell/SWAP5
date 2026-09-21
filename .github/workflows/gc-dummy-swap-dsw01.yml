@@ -33,4 +33,6 @@ jobs:
       - name: Python dependencies
         run: python3 -m pip install --upgrade pip flopy xmipy numpy
       - name: Run dummy-SWAP coupling concept testbank
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash tests/research/run_gc_dummy_swap_dsw01.sh
