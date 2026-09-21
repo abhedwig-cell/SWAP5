@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_hlink.hlink02d.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02D",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_QUEUED_IN_RESEARCH_TESTBANK",
+  "production_changes": false,
+  "parent": "GC-HLINK02",
+  "preregistration": "integration/research/GC_HLINK02D_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_hlink02d_first_solve.py",
+  "parent_failure": {
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624906,
+    "last_pass_marker": "GC_HLINK02_ANALYTIC_STORAGE_ORACLE=PASS",
+    "failure": "first secant solve failed MODFLOW convergence certification before any nonlinear outer update"
+  },
+  "factor_isolation": [
+    "HLINK01 control: configured SY=0.15, no same-value SY write, rclose=1e-15.",
+    "HLINK02 first secant solve: same physical SY=0.15 written through XMI, rclose=1e-13, zero API correction.",
+    "HLINK02D crosses write_sy={false,true} with rclose={1e-15,1e-13}; all other physical and solver inputs are fixed."
+  ],
+  "decision": "KEEP_PARENT_HLINK02_FAILED_UNCHANGED_UNTIL_HLINK02D_LIVE_EVIDENCE",
+  "next_action": "Read HLINK02D markers from the next central research testbank run; classify same-value STO write versus IMS certification before modifying HLINK02 execution."
+}
