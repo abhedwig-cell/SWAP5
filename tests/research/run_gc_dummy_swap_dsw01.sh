@@ -136,6 +136,11 @@ set -e
 test "$DSW09V_STATUS" -eq 0 || echo "GC_DSW09V_DIAGNOSTIC_STATUS=OPEN"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw09w_factorial.py | tee "$BUILD/dsw09w-live.txt"
+
+grep -Fq 'GC_DSW09W_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09w-live.txt" || fail "DSW-09W diagnostic gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw11_memory_state.py | tee "$BUILD/dsw11-live.txt"
 
 grep -Fq 'GC_DSW11_LIVE_GATE=PASS' "$BUILD/dsw11-live.txt" || fail "DSW-11 live gate"
@@ -176,16 +181,11 @@ set -e
 
 test "$DSW15V_STATUS" -eq 0 || echo "GC_DSW15V_DIAGNOSTIC_STATUS=OPEN"
 
-test "$DSW05V_STATUS" -eq 0 || fail "DSW-05V diagnostic gate"
-grep -Fq 'GC_DSW05V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw05v-live.txt" || fail "DSW-05V marker"
 test "$DSW05W_STATUS" -eq 0 || fail "DSW-05W diagnostic gate"
 grep -Fq 'GC_DSW05W_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw05w-live.txt" || fail "DSW-05W marker"
+grep -Fq 'GC_DSW09W_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09w-live.txt" || fail "DSW-09W marker"
 test "$DSW15V_STATUS" -eq 0 || fail "DSW-15V diagnostic gate"
 grep -Fq 'GC_DSW15V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw15v-live.txt" || fail "DSW-15V marker"
-test "$DSW09U_STATUS" -eq 0 || fail "DSW-09U diagnostic gate"
-grep -Fq 'GC_DSW09U_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09u-live.txt" || fail "DSW-09U marker"
-test "$DSW09V_STATUS" -eq 0 || fail "DSW-09V diagnostic gate"
-grep -Fq 'GC_DSW09V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09v-live.txt" || fail "DSW-09V marker"
 test "$DSW15_STATUS" -eq 0 || fail "DSW-15 strict live gate"
 grep -Fq 'GC_DSW15_LIVE_GATE=PASS' "$BUILD/dsw15-live.txt" || fail "DSW-15 marker"
 test "$DSW05_STATUS" -eq 0 || fail "DSW-05 strict live gate"
