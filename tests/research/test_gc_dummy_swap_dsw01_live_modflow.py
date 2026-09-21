@@ -99,6 +99,7 @@ def build_model(
     dt_day: float = DT_DAY,
     ims_complexity: str = "MODERATE",
     ims_under_relaxation: str | None = None,
+    ims_rclose: float = 1.0e-15,
 ) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
@@ -117,7 +118,7 @@ def build_model(
         under_relaxation=ims_under_relaxation,
         outer_dvclose=1.0e-12,
         inner_dvclose=1.0e-14,
-        rcloserecord=[1.0e-15, "strict"],
+        rcloserecord=[float(ims_rclose), "strict"],
         outer_maximum=100,
         inner_maximum=200,
     )
@@ -175,6 +176,7 @@ def run_case(
     dt_day: float = DT_DAY,
     ims_complexity: str = "MODERATE",
     ims_under_relaxation: str | None = None,
+    ims_rclose: float = 1.0e-15,
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
@@ -188,6 +190,7 @@ def run_case(
             dt_day=dt_day,
             ims_complexity=ims_complexity,
             ims_under_relaxation=ims_under_relaxation,
+            ims_rclose=ims_rclose,
         )
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
