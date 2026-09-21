@@ -8,9 +8,9 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
-  "blocker": "DUMMY-15 v3 remains queued; DUMMY-15B and DUMMY-15C therefore remain blocked.",
+  "blocker": null,
   "prepared_scope": "Explicit canopy/interception store separating gross source withdrawal from net soil irrigation and interception evaporation.",
   "canonical_expectation": {
     "gross_m3": 20,
@@ -21,7 +21,12 @@
     "surface_groundwater_exchange_m3": 4,
     "full_four_store_change_m3": -2
   },
-  "next_action": "After DUMMY-15C qualification, rebind DUMMY-15D before any model or tests.",
+  "next_action": "Implement explicit canopy irrigation ledger and gross/net misbinding falsification tests.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
+    "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+    "workflow_run": 35593011851
+  }
 }
