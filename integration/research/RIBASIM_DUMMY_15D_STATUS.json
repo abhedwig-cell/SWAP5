@@ -6,8 +6,8 @@
   "preregistration_commit": "d6d86a490893aa7882312494484833a53ffd435c",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
   "blocker": null,
@@ -21,7 +21,7 @@
     "surface_groundwater_exchange_m3": 4,
     "full_four_store_change_m3": -2
   },
-  "next_action": "Execute exact DUMMY-15D canopy-irrigation-ledger gate.",
+  "next_action": "Update and qualify DUMMY-18 real-model authority map using DUMMY-15C/D findings.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -41,7 +41,7 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "13 tests",
-  "recovery_point": "DUMMY-15D model, tests, concept and workflow gate are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-15D closed qualified; gross/canopy/net irrigation ledger authority is available.",
   "source_scope_verification": {
     "base": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
     "changed_files": [
@@ -70,5 +70,14 @@
       "net-as-source-withdrawal produces +5 water residual",
       "correct gross/net binding has zero full-system residual"
     ]
+  },
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+    "workflow_run": 35593604887,
+    "workflow_job": 106313294405,
+    "qualification_head": "5f07b4cffddeac7e3e9f39830bddec662806bf5b",
+    "tests": "13/13 PASS",
+    "gate": "PASS"
   }
 }
