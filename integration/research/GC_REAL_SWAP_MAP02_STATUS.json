@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.gc_real_swap.map02.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP02",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "b34c54943a306307016be925d83367ae464462e0",
+  "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_changes": false,
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/research/GC_REAL_SWAP_MAP01_OBSERVATION.json",
+    "integration/research/GC_REAL_SWAP_MAP01A_RESULT.json",
+    "integration/research/GC_REAL_SWAP_MAP02_PREREGISTRATION.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map02_fgc45.py",
+    "tests/research/run_gc_real_swap_map02_fgc45.sh",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py",
+    "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  ],
+  "interfaces_held_fixed": [
+    "F-GC33 response mathematics",
+    "F-GC40 aggregation",
+    "F-GC45 fixture physics and transaction semantics",
+    "F-GC49D production ownership",
+    "Reference Richards production path"
+  ],
+  "next_expensive_action": "Run MAP02 against the unchanged F-GC45 fixture and pinned MODFLOW6 6.8.0.",
+  "next_action": "Execute the preregistered five-head admitted-band probe, preserve pass/fail without adaptive resizing, then persist exact response and ledger evidence.",
+  "recovery_point": "Resume at this checkpoint. MAP01 remains falsified for the original micrometre sweep; MAP01A supplies the admitted nanometre head scale used by MAP02.",
+  "blockers": []
+}
