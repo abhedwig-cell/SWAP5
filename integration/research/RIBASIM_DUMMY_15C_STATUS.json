@@ -8,12 +8,17 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-  "blocker": "DUMMY-15 v3 remains queued; DUMMY-15B therefore remains implementation-blocked.",
+  "blocker": null,
   "prepared_scope": "Policy contrast for committing SWAP-like irrigation event management state under partial external supply, including atomic reject, partial complete, and explicit residual-active semantics.",
   "production_authority_note": "F-APP07 identifies restricted Hupsel event-selection state and gross irrigation; F-APP05/F-APP08 identify stateful Rutter and net-irrigation application. None currently qualifies external partial-supply event semantics.",
-  "next_action": "After DUMMY-15B qualification, rebind DUMMY-15C before any model or tests.",
+  "next_action": "Implement DUMMY-15C irrigation-event realization policy oracle and atomic finalize semantics.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "a84405a24373818e3ca1f3851391300ed73e7240",
+    "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+    "workflow_run": 35590242964
+  }
 }
