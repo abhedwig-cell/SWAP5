@@ -22,6 +22,9 @@ grep -Fq 'GC_DSW07_ANALYTIC_GATE=PASS' "$BUILD/dsw07.txt" || fail "DSW-07 analyt
 python3 tests/research/test_gc_dummy_swap_dsw25_interface_phreatic_darcy.py | tee "$BUILD/dsw25.txt"
 grep -Fq 'GC_DSW25_ANALYTIC_GATE=PASS' "$BUILD/dsw25.txt" || fail "DSW-25 analytic gate"
 
+python3 tests/research/test_gc_low01a_below_profile_equivalence.py | tee "$BUILD/low01a.txt"
+grep -Fq 'GC_LOW01A_GATE=PASS' "$BUILD/low01a.txt" || fail "LOW01-A source-bound equivalence gate"
+
 python3 - <<PY
 from pathlib import Path
 from flopy.utils.get_modflow import run_main
