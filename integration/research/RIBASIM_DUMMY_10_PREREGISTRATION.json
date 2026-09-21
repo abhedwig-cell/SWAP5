@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-10",
   "title": "Management complementarity with dynamic groundwater storage",
-  "baseline": "95b225986f02680c209e7df6b9af75bae2222f84",
+  "baseline": "269fbe65f7f8febf0baa1df73a6c749abf43534b",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
-    "current": "BLOCKED_PENDING_DUMMY_09_QUALIFICATION",
-    "implementation_rule": "Do not implement DUMMY-10 until DUMMY-09 qualification is recorded on work/ribasim-dummy-01."
+    "current": "SATISFIED",
+    "implementation_rule": "Do not implement DUMMY-10 until DUMMY-09 qualification is recorded on work/ribasim-dummy-01.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+      "workflow_run": 35568233819,
+      "main_closeout_head": "269fbe65f7f8febf0baa1df73a6c749abf43534b"
+    }
   },
   "purpose": "After DUMMY-09 qualifies reciprocal finite groundwater storage, reintroduce UserDemand and solve the surface-management / shared-exchange / groundwater-head response as one exact piecewise linear problem.",
   "frozen_equations": {
@@ -77,5 +82,6 @@
     "no network routing or multiple-demand allocation"
   ],
   "pass_decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
-  "fail_decision": "RIBASIM_DUMMY_10_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_10_BLOCKED",
+  "authority_rebind_note": "The DUMMY-10 hypotheses were prepared while DUMMY-09 qualification was pending. No DUMMY-10 implementation occurred then. After DUMMY-09 qualified, the implementation baseline was rebound to the current post-qualification branch head before any DUMMY-10 code or tests were created."
 }
