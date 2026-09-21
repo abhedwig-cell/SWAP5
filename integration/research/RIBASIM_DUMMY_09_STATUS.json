@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_exchange.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-09",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "7484b2d614ad752baaf7c2811471949748ab87f3",
+  "checkpoint_commit": "2c3152f95df2a493b07ea018e29537ef7feb44b8",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Reciprocal finite surface-water and groundwater linear storages connected by one head-dependent exchange, with exact continuous and trapezoidal research solutions.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_09_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_09_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_09_STATUS.json",
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/test_dummy_two_store_exchange.py",
+    "tests/research/run_ribasim_dummy_09.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/test_dummy_two_store_exchange.py",
+    "tests/research/run_ribasim_dummy_09.sh",
+    "integration/research/RIBASIM_DUMMY_09_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_08": "RIBASIM_DUMMY_08_QUALIFIED_TEMPORAL_PARTITION_EFFECT",
+    "DUMMY_08_run": 35567878236
+  },
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-09 to the registered research workflow and execute the reciprocal two-store gate.",
+  "recovery_point": "DUMMY-09 preregistration, model, tests, concept and focused runner are persisted; qualification remains open.",
+  "blockers": []
+}
