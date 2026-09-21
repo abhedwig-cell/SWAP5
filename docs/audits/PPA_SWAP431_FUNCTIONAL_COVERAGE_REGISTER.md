@@ -49,8 +49,8 @@ confirmed B0 defects are not migration targets.
 No candidate is currently `READY`. PPA-WU04-C/D require the exact B1.11
 `MOD_meteo.f90` equation oracle has been reconstructed and verified from the
 byte-exact B0 distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
-`24ce2768…`. Implementation remains blocked because no Fortran compiler is
-available for the required O0/O2 transaction, restart and mass qualification.
+`24ce2768…`. GNU Fortran 16.2.0 is available through an explicit MSYS2 path,
+so PPA-WU04-C is the current ready capability.
 
 No item above authorizes a change to Reference Richards, mass accounting,
 transaction ownership, restart ownership, or shared groundwater interfaces.
