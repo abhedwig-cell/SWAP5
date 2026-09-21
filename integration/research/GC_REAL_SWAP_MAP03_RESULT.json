@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_real_swap.map03.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP03",
+  "workflow_run": 35566369303,
+  "workflow_job": 106228868985,
+  "decision": "QUALIFIED_REAL_SWAP_STORAGE_AND_BOTTOM_EXCHANGE_DECOMPOSITION",
+  "production_u": 0.00003402936037279093,
+  "samples": {
+    "heads_m": [
+      -0.7149999691734037,
+      -0.7149999684532901,
+      -0.7149999677331765,
+      -0.714999967013063,
+      -0.7149999662929494
+    ],
+    "storage_change_cm": [
+      4.900746475300366e-12,
+      7.351452779857937e-12,
+      9.801937039810582e-12,
+      1.2252421299763228e-11,
+      1.4702905559715873e-11
+    ],
+    "bottom_outward_exchange_cm": [
+      -1.0490074647530037e-10,
+      -1.0735145277985794e-10,
+      -1.0980193703981059e-10,
+      -1.1225242129976323e-10,
+      -1.1470290555971588e-10
+    ],
+    "total_out_cm": [
+      1e-10,
+      1e-10,
+      1e-10,
+      1e-10,
+      1e-10
+    ],
+    "mass_residual_cm": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "finite_difference": {
+    "radius_0_25": {
+      "delta_h_m": 7.201135521217594e-10,
+      "d_storage_dh": 0.00003402913683171885,
+      "d_bottom_outward_dh": -0.00003402913683171885,
+      "d_storage_plus_bottom_dh": 0,
+      "storage_to_u_ratio": 0.9999934309352385,
+      "minus_bottom_to_u_ratio": 0.9999934309352385
+    },
+    "radius_0_5": {
+      "delta_h_m": 1.4402271042435189e-9,
+      "d_storage_dh": 0.00003402990769835603,
+      "d_bottom_outward_dh": -0.00003402990769835603,
+      "d_storage_plus_bottom_dh": 0,
+      "storage_to_u_ratio": 1.0000160839216226,
+      "minus_bottom_to_u_ratio": 1.0000160839216226
+    }
+  },
+  "gates": {
+    "transaction_mass_complete": "PASS",
+    "storage_derivative_equals_u": "PASS",
+    "bottom_derivative_equals_minus_u": "PASS",
+    "storage_bottom_sensitivity_cancels": "PASS"
+  },
+  "bounded_conclusions": [
+    "For the drainage-free F-GC45 real-Richards fixture, production u is locally the whole-column storage sensitivity dS/dH within about 2e-5 relative over the preregistered admitted head band.",
+    "The accepted physical bottom-outward exchange has the opposite sensitivity: dE_bottom_out/dH = -u to the same accuracy.",
+    "The head sensitivity of storage change plus bottom-outward exchange cancels exactly in the observed transaction mass ledger because the remaining external forcing is head-independent in this fixture.",
+    "MAP02's sign inversion is therefore physically explained at the storage-versus-bottom-exchange level; it is not numerical noise.",
+    "This does not yet establish whether production q_u's full affine derivative is wrong, because q_u contains both a storage-change term and qbot. That full historical derivative must be audited explicitly."
+  ],
+  "next": [
+    "Audit the derivative of the complete historical q_u = u*dH/dt - qbot relation under the qbot-to-head inverse response.",
+    "Search SWAP4/SIMGRO historical authority for whether qbot is held fixed or varies with H in the intended MODFLOW response.",
+    "Only then decide whether F-GC40/F-GC33's dq_u/dH = +u/dt is a semantic mismatch or an intended decomposition."
+  ]
+}
