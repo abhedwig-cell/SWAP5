@@ -136,6 +136,8 @@ program test_fmr18_accepted_commit_receipt
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
   use mod_kernel_transactions
   use mod_fmr_accepted_commit_receipt
+  use mod_fmr_vonhhbraden_source_window_progress
+  use mod_ppa_wu04c_runtime_publication
   use mod_fmr18_test_model
   implicit none
 
@@ -151,6 +153,7 @@ program test_fmr18_accepted_commit_receipt
   type(kernel_candidate_state_t) :: other_candidate
   type(kernel_diagnostics_t) :: diagnostics, stale_diagnostics, winner_diagnostics, probe_diagnostics, other_diagnostics
   type(fmr_accepted_commit_receipt_t) :: receipt
+  type(fmr_vonhhbraden_source_window_progress_t) :: interception_progress
   logical :: ok, did_commit, interval_available
   integer :: receipt_status, commit_status
   real(real64) :: t0, t1, committed_time
@@ -177,6 +180,14 @@ program test_fmr18_accepted_commit_receipt
   call require(interval_available .and. bitwise_equal(t0, 0.0_real64) .and. bitwise_equal(t1, 0.5_real64), &
        'receipt interval identity')
   call require(committed%current_revision() == 1_int64, 'committed revision after receipt')
+  call fmr_initialize_vonhhbraden_source_window_progress(1802_int64, 0.0_real64, 1.0_real64, &
+       0.2_real64, interception_progress, receipt_status)
+  call require(receipt_status == FMR_VONHHBRADEN_PROGRESS_OK, 'initialize interception progress')
+  call publish_ppa_wu04c_accepted_progress(interception_progress, receipt, 0.1_real64, receipt_status)
+  call require(receipt_status == PPA_WU04C_PUBLICATION_OK .and. &
+       abs(interception_progress%remaining_interception()-0.1_real64) < 1.e-14_real64, &
+       'accepted receipt advances interception progress exactly once')
+  print '(a)', 'PPA_WU04C_REAL_FKT_RECEIPT_PROGRESS=PASS'
   call committed%current_time(committed_time, ok)
   call require(ok .and. bitwise_equal(committed_time, 0.5_real64), 'committed time after receipt')
   call require(.not. candidate%ready(), 'successful commit consumes candidate')
