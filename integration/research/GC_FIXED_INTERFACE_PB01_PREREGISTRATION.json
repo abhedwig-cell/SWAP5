@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.gc_fixed_interface.pb01.preregistration.v1",
+  "date": "2026-09-21",
+  "status": "PREREGISTERED_AFTER_SOURCE_SIGN_RECONCILIATION",
+  "production_changes": false,
+  "source_sign_chain": {
+    "public_q_u": "positive outward from SWAP and into groundwater",
+    "backend": "Q(H)=HCOF*H-RHS",
+    "api_binding": "publishes backend HCOF and RHS unchanged to MODFLOW API package",
+    "live_e2e": "computes q_gw=(HCOF*H-RHS)/(A*86400) and converges q_swap-q_gw=0",
+    "external_pinned_semantics": "F-GC33 pins MODFLOW API-package flux sign as positive infiltration into MODFLOW"
+  },
+  "nh01_target": {
+    "area_m2": 1.0,
+    "dt_day": 1.0,
+    "H0_m": 8.0,
+    "S_M": 0.10,
+    "u": 0.06666666666666667,
+    "q_u_intercept_m_per_day": 0.006666666666666667,
+    "expected_root_H_m": 8.04,
+    "expected_physical_interface_amount_m": 0.004
+  },
+  "independent_groundwater_equation": "S_M*(H-H0)/dt = q_u(H), with q_u(H)=q_u0-(u/dt)*(H-H0) when q_u is the physical groundwater-directed exchange law after eliminating the top state.",
+  "critical_mapping_question": "The current production affine q_u has positive +u/dt slope. PB01 must not force the NH01 physical exchange law into that sign. It must determine whether production q_u represents the residual-side balance contribution rather than physical accepted exchange, and then include groundwater storage with the same residual convention used by MODFLOW.",
+  "falsification": [
+    "Any derivation that equates production q_u directly to accepted physical interface flux solely from dimensions fails.",
+    "Any live-route test that reaches a different root from the independently derived coupled equations fails.",
+    "Any root match without accepted-ledger closure is insufficient.",
+    "Changing production signs to make the oracle pass is forbidden."
+  ]
+}
