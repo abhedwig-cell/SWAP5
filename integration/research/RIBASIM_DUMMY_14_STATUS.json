@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-14",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "332a249f680473647cb05850eff9fa5c1193e733",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -12,12 +12,49 @@
   "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
   "blocker": null,
   "prepared_scope": "Add rainfall, prescribed root-zone loss and root capacity drainage to the three-store ledger after the internal U/V cancellation authority closes.",
-  "next_action": "Implement DUMMY-14 three-store root-forcing memory and exact combined ledger.",
+  "next_action": "Add DUMMY-14 to the registered research workflow and execute the forcing-memory gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
     "baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
     "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
     "workflow_run": 35571925509
-  }
+  },
+  "checkpoint_commit": "749d8e93665a6c95c6868607e74eeeb4b84f969d",
+  "scope": "Three-store external root forcing layered on qualified DUMMY-13 without changing the same-window surface/groundwater management solution.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_14_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_14_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_14_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_three_store_forcing.py",
+    "tests/research/test_dummy_three_store_forcing.py",
+    "tests/research/run_ribasim_dummy_14.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_rootzone_demand.py",
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/dummy_two_store_management.py",
+    "tests/research/dummy_three_store_internal_ledger.py",
+    "tests/research/dummy_three_store_forcing.py",
+    "tests/research/test_dummy_three_store_forcing.py",
+    "tests/research/run_ribasim_dummy_14.sh",
+    "integration/research/RIBASIM_DUMMY_14_*",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_13": {
+      "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+      "run": 35571925509
+    }
+  },
+  "conditional_authority_boundary": {
+    "storage": "dummy stores remain disjoint by construction; no CSR-B1 claim",
+    "drainage": "capacity drainage is an explicitly owned analytical root-bucket sink; no CSR-B2 claim",
+    "irrigation": "root request remains an analytical surrogate until real SWAP demand authority is bound"
+  },
+  "expected_tests": "12 tests",
+  "recovery_point": "DUMMY-14 implementation, tests, concept and focused runner are persisted; qualification remains open."
 }
