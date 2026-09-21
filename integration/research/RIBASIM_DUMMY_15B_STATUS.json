@@ -6,8 +6,8 @@
   "preregistration_commit": "e592e1243eda92b9d55723cb84d6e001bec5c895",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
   "blocker": null,
@@ -30,7 +30,7 @@
       "supplied_root": 12
     }
   },
-  "next_action": "Freeze this DUMMY-15B postimage on a single qualification branch and execute forecast-realization-gate.",
+  "next_action": "Rebind DUMMY-16 implementation baseline to the post-DUMMY-15B closeout authority.",
   "production_delta": [],
   "reference_delta": [],
   "title": "Forecast allocation versus physical realization policy contrast",
@@ -59,7 +59,7 @@
     }
   },
   "expected_tests": "15 tests",
-  "recovery_point": "DUMMY-15B implementation, tests and focused runner are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-15B closed qualified; forecast-allocation-realization policy contrast authority is available.",
   "source_scope_verification": {
     "base": "800897d22d4eea54b5f00ba6d8dda69630958617",
     "changed_files": [
@@ -88,5 +88,15 @@
       "forecast sweep transition is continuous at allocated_total=32",
       "allocated-but-unsupplied water is excluded from root state and combined ledger"
     ]
+  },
+  "checkpoint_commit": "ff7ecf116c8129e316dc9c409074b9e0ab7692f7",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+    "workflow_run": 35590242964,
+    "workflow_job": 106302757427,
+    "qualification_head": "ed731f56fff1df6f627d8f7f1fdc3a67ffef9782",
+    "tests": "15/15 PASS",
+    "gate": "PASS"
   }
 }
