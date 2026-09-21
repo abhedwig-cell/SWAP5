@@ -89,7 +89,15 @@ def require(value: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True, well_rate_m3_per_day: float = 0.0) -> None:
+def build_model(
+    workdir: Path,
+    name: str,
+    sy: float = SY,
+    newton: bool = True,
+    well_rate_m3_per_day: float = 0.0,
+    initial_head_m: float = H0_M,
+    dt_day: float = DT_DAY,
+) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
         version="mf6",
@@ -99,7 +107,7 @@ def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True, w
         sim,
         time_units="DAYS",
         nper=1,
-        perioddata=[(DT_DAY, 1, 1.0)],
+        perioddata=[(float(dt_day), 1, 1.0)],
     )
     flopy.mf6.ModflowIms(
         sim,
@@ -126,7 +134,7 @@ def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True, w
         top=TOP_M,
         botm=BOT_M,
     )
-    flopy.mf6.ModflowGwfic(gwf, strt=np.array([[[H0_M]]], dtype=float))
+    flopy.mf6.ModflowGwfic(gwf, strt=np.array([[[float(initial_head_m)]]], dtype=float))
     flopy.mf6.ModflowGwfnpf(gwf, icelltype=1, k=1.0, save_flows=True)
     flopy.mf6.ModflowGwfsto(
         gwf,
@@ -160,10 +168,20 @@ def run_case(
     sy: float = SY,
     newton: bool = True,
     well_rate_m3_per_day: float = 0.0,
+    initial_head_m: float = H0_M,
+    dt_day: float = DT_DAY,
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir, case_name, sy=sy, newton=newton, well_rate_m3_per_day=well_rate_m3_per_day)
+        build_model(
+            workdir,
+            case_name,
+            sy=sy,
+            newton=newton,
+            well_rate_m3_per_day=well_rate_m3_per_day,
+            initial_head_m=initial_head_m,
+            dt_day=dt_day,
+        )
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         initialized = False
