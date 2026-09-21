@@ -11,7 +11,7 @@
   "blocked": true,
   "required_authority": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
   "blocker": "DUMMY-15 qualification run 35577982472 is pending.",
-  "prepared_scope": "Forecast capacity -> lexicographic allocation -> exact shared-state realization -> priority-preserving supplied split, with only supplied flows entering physical ledgers.",
+  "prepared_scope": "Forecast capacity -> lexicographic allocation -> exact shared-state total realization -> compare priority-preserving versus proportional aggregate-reduction supplied-flow policies. Only supplied flows enter physical ledgers.",
   "canonical_expectation": {
     "predicted_capacity_m3": 60,
     "allocated_total_m3": 60,
@@ -32,5 +32,8 @@
   },
   "next_action": "After DUMMY-15 qualification, rebind DUMMY-15B baseline before creating any model or tests.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "title": "Forecast allocation versus physical realization policy contrast",
+  "intended_decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+  "revision_note": "Blocked preregistration revised before implementation after current Ribasim documentation showed aggregate smooth physical reduction of allocated UserDemand abstraction rather than an inherently priority-preserving realization rule."
 }
