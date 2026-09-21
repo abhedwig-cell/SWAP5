@@ -1,16 +1,18 @@
-name: GC real-SWAP MAP01 response mapping
+name: GC real-SWAP response mapping
 on:
   push:
     branches: [work/f-gc-dummy-swap-shared-storage]
     paths:
       - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/test_gc_real_swap_map02_fgc45.py'
       - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
-      - 'integration/research/GC_REAL_SWAP_MAP01_PREREGISTRATION.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP02*.json'
       - '.github/workflows/gc-real-swap-map01.yml'
   workflow_dispatch:
 permissions: {contents: read}
 jobs:
-  map01:
+  mapping:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
