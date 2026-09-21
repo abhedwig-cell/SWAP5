@@ -4,16 +4,38 @@
   "work_unit": "RIBASIM-DUMMY-19H",
   "branch": "work/ribasim-dummy-01",
   "baseline": "5b16a6ee52b61aa25ca21e88efd0b516a5dfe1be",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "1h/6h/12h/24h saveat negative control at fixed allocation.dt=24h and non-scarce 60 m3/day supply.",
-  "next_action": "Implement and execute the frozen no-scarcity 1h/6h/12h/24h saveat negative control.",
+  "next_action": "Execute frozen DUMMY-19H no-scarcity saveat negative-control qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "da45c00c6194eb25185104e7816178ed333fcd8b",
-  "recovery_point": "DUMMY-19H frozen before 19G output; sequencing dependency now satisfied."
+  "recovery_point": "DUMMY-19H executable gate persisted after qualified DUMMY-19G; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19H_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19H_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19H_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19H_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_saveat_negative_control.py",
+    "tests/research/real_ribasim_saveat_negative_control_bridge.jl",
+    "tests/research/run_ribasim_dummy_19h.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "allocation.dt remains 86400 s for all four saveat cases",
+      "source supply is exactly 60 m3/day, equal to total 40+20 managed demand",
+      "allocation must remain demand-capped at 40/20 in every allocation record",
+      "only solver.saveat varies across 3600/21600/43200/86400 s",
+      "physical volumes and Basin endpoint are checked against one continuous reference common to all cases",
+      "cross-saveat invariance is asserted explicitly"
+    ]
+  }
 }
