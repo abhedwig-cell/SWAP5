@@ -702,7 +702,11 @@ q = Delta h / c_bot
 
 and then explains the zero-distance/zero-resistance limiting problem: as the artificial boundary approaches the phreatic surface, the resistance tends to zero and iterative flux-link convergence becomes difficult. Their h-link removes that artificial split by using the phreatic level itself as a shared state variable.
 
-The storage treatment is equally relevant. MetaSWAP constructs a storage relationship for the **complete vertical profile** as a function of phreatic level. During coupled updating, the unsaturated and saturated contributions both affect the same shared phreatic level. This is conceptually much closer to the original 10 m bucket than the current SWAP5 mode-5 lower-face-head contract.
+The storage treatment is equally relevant. MetaSWAP constructs a storage relationship for the **complete vertical profile** as a function of phreatic level. The paper states explicitly that the balance control volume comprises both the saturated and unsaturated zone. MetaSWAP supplies MODFLOW with the storage coefficient derived from that complete-profile storage table; the MODFLOW storage calculation then serves the numerical role of making the MODFLOW head converge to the same shared phreatic level while the overall water-balance integrity is administered by MetaSWAP.
+
+That is conceptually much closer to the original 10 m bucket than the current SWAP5 mode-5 lower-face-head contract.
+
+Their q-link verification provides an especially useful limiting control. To make the q-link approach the h-link, they reduce the bottom resistance toward zero **and** require that there be no additional storage in the MODFLOW model. In their numerical approximation that extra MODFLOW storage is made very small. This directly supports the dummy-test conclusion that head collapse alone is insufficient: storage ownership must converge to the same one-volume contract as well.
 
 The important limit on the analogy is that MetaSWAP is a reduced storage/flux model specifically designed around this shared-state formulation. Real SWAP has a full Richards profile and internal memory. A shared phreatic coordinate would therefore not make the rest of the SWAP state disappear.
 
@@ -726,7 +730,7 @@ This is directly relevant to SWAP5: even after state and flux ownership are conc
 
 The current iMOD Coupler technical documentation states that MODFLOW sends head to MetaSWAP, while MetaSWAP sends recharge and **sets storage in the coupled MODFLOW cells**. For multiple SVATs mapped to one MODFLOW cell, those storages are summed.
 
-That is a concrete operational example of avoiding an uncontrolled independent MODFLOW-storage plus MetaSWAP-storage sum. It strengthens the case that storage ownership must be an explicit part of the coupling contract.
+That is a concrete operational continuation of the same ownership idea: the vadose component does not merely add another storage-shaped response on top of an untouched independent groundwater storage term; the coupled storage is explicitly set as part of the exchange contract. It strengthens the case that storage ownership must be an explicit part of the coupling contract.
 
 It does not imply that SWAP5 should copy this mechanism. The physical state representation and internal memory of real SWAP differ materially from MetaSWAP, so any transfer of the shared-state idea must be re-derived from the SWAP water balance and tested prospectively.
 
