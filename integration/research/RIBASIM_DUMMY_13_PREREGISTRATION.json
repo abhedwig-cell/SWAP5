@@ -1,0 +1,88 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-13",
+  "title": "Three dynamic stores with irrigation as an internal transfer",
+  "baseline": "a104baba9a8e7d778174249162f8f2da21d8c778",
+  "dependency_gate": {
+    "required": [
+      "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+      "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE"
+    ],
+    "current": "BLOCKED_PENDING_DUMMY_11_AND_DUMMY_12",
+    "implementation_rule": "No DUMMY-13 model or tests before both dependencies are formally qualified and the implementation baseline is rebound."
+  },
+  "purpose": "Join the qualified analytical root-zone demand state to the dynamic surface-water/groundwater system while treating irrigation and surface-groundwater exchange as internal transfers in one three-store ledger.",
+  "frozen_first_stage_scope": {
+    "root_state": "W_r",
+    "surface_state": "S_s=A_s*h_s",
+    "groundwater_state": "S_g=A_g*h_g",
+    "root_request": "R=max(0,W_target-W_r,start), frozen within the window",
+    "irrigation_delivery": "U determined by the surface-water management complementarity and transferred into root storage",
+    "surface_groundwater_exchange": "V reciprocal between surface and groundwater as in DUMMY-10",
+    "excluded_first_stage": [
+      "rainfall",
+      "ET",
+      "root drainage/recharge",
+      "capillary rise"
+    ]
+  },
+  "component_ledgers": {
+    "root": "Delta W_r = +U",
+    "surface": "Delta S_s = -U - V",
+    "groundwater": "Delta S_g = +V",
+    "combined": "Delta(W_r+S_s+S_g) = 0"
+  },
+  "hypotheses": [
+    "The exact DUMMY-10 management solution can be reinterpreted as an internal surface-to-root transfer without changing its surface/groundwater algebra for a request frozen from root start state.",
+    "For every accepted window, irrigation U cancels between surface and root ledgers and exchange V cancels between surface and groundwater ledgers.",
+    "With no external forcing, total three-store water is invariant exactly.",
+    "A current-window shortage is not carried separately; the next request follows only from the accepted root storage W_r,end.",
+    "Partial delivery leaves a physical root deficit equal to the undelivered start deficit in the no-forcing first-stage problem.",
+    "If the surface/groundwater system can deliver the full root request, the accepted root storage reaches W_target exactly.",
+    "Two multi-window histories that reach the same three committed states have identical next requests and physical exchange problem regardless of their prior shortage diagnostics.",
+    "No same-window second irrigation request is created after U changes root storage."
+  ],
+  "canonical_case": {
+    "root": {
+      "W0": 40,
+      "target": 80,
+      "capacity": 100,
+      "request": 40
+    },
+    "surface_groundwater": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50,
+      "dt": 1,
+      "h_s0": 1,
+      "h_g0": 0,
+      "hmin": 0.4
+    },
+    "expected": {
+      "regime": "CURTAILED",
+      "U_m3": 32,
+      "shortage_m3": 8,
+      "V_m3": 28,
+      "W_r1_m3": 72,
+      "h_s1_m": 0.4,
+      "h_g1_m": 0.28,
+      "next_root_request_m3": 8,
+      "total_three_store_change_m3": 0
+    }
+  },
+  "interpretation_rules": [
+    "irrigation is an external sink only when the root-zone recipient lies outside the modeled system boundary; once root storage is included, it is an internal transfer",
+    "system-boundary choice changes the combined ledger but must not change component flux identity",
+    "shortage remains diagnostic; root-zone state carries the physical consequence",
+    "environmental root forcing is deferred to a later work unit so the internal-transfer ledger is qualified first"
+  ],
+  "forbidden": [
+    "no implementation before DUMMY-11 and DUMMY-12 qualification",
+    "no rainfall, ET, root drainage, recharge or capillary rise in first-stage DUMMY-13",
+    "no Richards-equation claim",
+    "no production SWAP/Ribasim/MODFLOW coupling change"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+  "fail_decision": "RIBASIM_DUMMY_13_BLOCKED"
+}
