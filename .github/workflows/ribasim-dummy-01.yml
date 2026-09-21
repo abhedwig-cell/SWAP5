@@ -1,16 +1,6 @@
-name: RIBASIM-DUMMY-01 analytic reservoir
+name: RIBASIM dummy research qualification
 
 on:
-  push:
-    branches:
-      - work/ribasim-dummy-01
-    paths:
-      - 'integration/research/RIBASIM_DUMMY_01_*.json'
-      - 'integration/research/RIBASIM_DUMMY_01_CONCEPT.md'
-      - 'tests/research/dummy_ribasim_reservoir.py'
-      - 'tests/research/test_dummy_ribasim_01.py'
-      - 'tests/research/run_ribasim_dummy_01.sh'
-      - '.github/workflows/ribasim-dummy-01.yml'
   pull_request:
     branches:
       - integration/f-ci-canonical
@@ -21,14 +11,19 @@ on:
       - 'tests/research/dummy_ribasim_reservoir.py'
       - 'tests/research/test_dummy_ribasim_01.py'
       - 'tests/research/run_ribasim_dummy_01.sh'
+      - 'integration/research/RIBASIM_DUMMY_02_*.json'
+      - 'integration/research/RIBASIM_DUMMY_02_CONCEPT.md'
+      - 'tests/research/dummy_threeway_water_coupling.py'
+      - 'tests/research/test_dummy_threeway_water_coupling.py'
+      - 'tests/research/run_ribasim_dummy_02.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   analytic-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-01-ci')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -39,3 +34,16 @@ jobs:
         run: python3 --version
       - name: Run analytic dummy Ribasim gate
         run: bash tests/research/run_ribasim_dummy_01.sh
+
+  three-way-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-02-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run controlled three-way conflict gate
+        run: bash tests/research/run_ribasim_dummy_02.sh
