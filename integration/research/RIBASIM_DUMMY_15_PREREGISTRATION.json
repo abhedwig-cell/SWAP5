@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-15",
   "title": "Competing managed claims under mandatory shared-state hydrology",
-  "baseline": "0d83fe25155de983199cfa9dce47ab033a05fa3e",
+  "baseline": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
-    "current": "BLOCKED_PENDING_DUMMY_14",
-    "implementation_rule": "No DUMMY-15 model or tests before DUMMY-14 qualification and implementation-baseline rebinding."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-15 model or tests before DUMMY-14 qualification and implementation-baseline rebinding.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+      "workflow_run": 35577358733,
+      "main_closeout_head": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86"
+    }
   },
   "public_authority_binding": {
     "user_demand": "https://ribasim.org/reference/node/user-demand.html",
@@ -244,5 +249,6 @@
       },
       "interpretation": "Priority bookkeeping is unchanged when physical exchange reverses sign; groundwater drainage can increase the total managed capacity but does not become a managed allocation."
     }
-  }
+  },
+  "authority_rebind_note": "DUMMY-15 preregistration and concept were prepared while DUMMY-14 was pending. No DUMMY-15 implementation occurred then. After DUMMY-14 qualified, the implementation baseline was rebound to this post-qualification head before any DUMMY-15 model or tests were created."
 }
