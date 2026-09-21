@@ -10,6 +10,15 @@ cd "$ROOT"
 fail(){ echo "GC_LOW01C1_RUNNER_FAIL $*" >&2; exit 1; }
 
 test -f integration/research/GC_LOW01B_RESULT.json || fail 'LOW01-B authority missing'
+python3 - <<'PY' || exit 1
+import json
+from pathlib import Path
+p = Path("integration/research/GC_LOW01B_RESULT.json")
+d = json.loads(p.read_text())
+assert d.get("conclusion") == "success", d
+assert str(d.get("decision", "")).startswith("QUALIFIED"), d
+print("GC_LOW01C1_LOW01B_PREREQUISITE=PASS")
+PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
