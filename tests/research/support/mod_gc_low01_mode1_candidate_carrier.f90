@@ -11,8 +11,9 @@ module mod_gc_low01_mode1_candidate_carrier
   type, public :: low01_mode1_candidate_t
     real(real64) :: requested_h_phreatic_cm = 0.0_real64
     real(real64) :: effective_h_phreatic_cm = 0.0_real64
-    real(real64) :: groundwater_level_cm = 0.0_real64
     real(real64) :: raw_legacy_groundwater_level_cm = 0.0_real64
+    logical :: derived_profile_gwl_available = .false.
+    real(real64) :: derived_profile_gwl_cm = 0.0_real64
     real(real64) :: bottom_face_cm = 0.0_real64
     integer :: branch = 0
     integer :: active_richards_nodes = 0
@@ -90,8 +91,9 @@ contains
                                    candidate%bottom_face_cm, hbot)
 
     candidate%requested_h_phreatic_cm = requested
-    candidate%groundwater_level_cm = requested
     candidate%raw_legacy_groundwater_level_cm = raw_legacy_gwl
+    candidate%derived_profile_gwl_available = .false.
+    candidate%derived_profile_gwl_cm = 0.0_real64
     candidate%branch = branch
     candidate%active_richards_nodes = nn
     candidate%fllowgwl = (branch == LOW01_BRANCH_BELOW_PROFILE)
