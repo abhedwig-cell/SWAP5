@@ -1,0 +1,27 @@
+name: GC dummy-SWAP DSW-01 shared storage
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'docs/research/GC_DUMMY_SWAP_SHARED_STORAGE.md'
+      - 'integration/research/GC_DUMMY_SWAP_DSW01_*.json'
+      - 'tests/research/test_gc_dummy_swap_dsw01_*.py'
+      - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - '.github/workflows/gc-dummy-swap-dsw01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dsw01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python dependencies
+        run: python3 -m pip install --upgrade pip flopy xmipy numpy
+      - name: Run analytic and live MODFLOW6 probe
+        run: bash tests/research/run_gc_dummy_swap_dsw01.sh
