@@ -228,9 +228,17 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_hlink01_storage_replacement.py | tee "$BUILD/hlink01-live.txt"
 grep -Fq 'GC_HLINK01_LIVE_GATE=PASS' "$BUILD/hlink01-live.txt" || fail "HLINK01 live gate"
 
+set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_hlink02_nonlinear_storage.py | tee "$BUILD/hlink02-live.txt"
-grep -Fq 'GC_HLINK02_LIVE_GATE=PASS' "$BUILD/hlink02-live.txt" || fail "HLINK02 live gate"
+HLINK02_STATUS=${PIPESTATUS[0]}
+set -e
+
+test "$HLINK02_STATUS" -eq 0 || echo "GC_HLINK02_ORIGINAL_LIVE_GATE=FAILED_PRESERVED"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_hlink02d_first_solve.py | tee "$BUILD/hlink02d-live.txt"
+grep -Fq 'GC_HLINK02D_LIVE_GATE=PASS' "$BUILD/hlink02d-live.txt" || fail "HLINK02D live gate"
 
 set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
@@ -268,6 +276,7 @@ else
 fi
 
 echo 'GC_HLINK01_STORAGE_REPLACEMENT_EXECUTION=PASS'
+test "$HLINK02_STATUS" -eq 0 || fail "HLINK02 original live gate remains failed"
 echo 'GC_HLINK02_NONLINEAR_STORAGE_EXECUTION=PASS'
 echo 'GC_DUMMY_SWAP_TESTBANK_EXECUTION=PASS'
 echo 'GC_DUMMY_SWAP_QUALIFIED_BLOCKS=DSW01,DSW02,DSW03,DSW04,DSW06,DSW07,DSW08,DSW10,DSW11,DSW12,DSW13,DSW14,DSW15,DSW16,DSW17,DSW18,DSW19,DSW20,DSW21,DSW23,DSW24'
