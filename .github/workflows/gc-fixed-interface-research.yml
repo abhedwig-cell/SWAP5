@@ -36,6 +36,7 @@ jobs:
             tests/research/test_gc_fixed_interface_pb01_reanchoring.py
             tests/research/test_gc_fixed_interface_globalization_g01.py
             tests/research/test_gc_fixed_interface_globalization_g02.py
+            tests/research/test_gc_fixed_interface_globalization_g04.py
           )
           for test_file in "${tests[@]}"; do
             echo "GC_FIXED_INTERFACE_EXECUTING=${test_file}"

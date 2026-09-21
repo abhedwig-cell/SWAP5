@@ -133,3 +133,33 @@ The result is persisted in
 The status-4 historical point is classified as CANDIDATE_BUSY and is not used
 as admissibility evidence. The replacement cold-process scan and safeguard
 test passed under the protocol above.
+
+
+## G04 concrete nonlinear protocol
+
+G04 uses the already derived NH03 nonlinear-storage oracle without changing its
+physical parameters. The coupled scalar is y=Hc1-Hc0 and the exact root remains
+y*=0.03460974498448890 m.
+
+The positive-surrogate policy P0 freezes the production-style predictor
+magnitude at the preregistered qb=0 predictor,
+s=+0.09282032302755092. P1 recomputes the exact physical response derivative
+p(y) at each iterate. P2 uses s=0. P3 retains the frozen positive surrogate but
+computes alpha(y)=1/(1-rho(y)) from the exact local NH03 physical derivative,
+without trajectory tuning. P4 uses P1 with factor-1/2 step contraction until
+the proposed point is on the physical branch and does not increase the absolute
+coupled residual.
+
+The fixed starts are
+{-0.23,-0.10,-0.02,0.0,+0.02,+0.06,+0.10,+0.30} m in y.
+The convergence tolerance is 1e-12 m and the outer budget is 250. P4 has a
+maximum of 20 factor-1/2 contractions per outer update.
+
+Prospective questions are:
+1. whether frozen positive P0 remains robust under deliberate nonlinearity;
+2. whether physical Newton converges from all starts;
+3. whether Picard remains a slower but contractive baseline;
+4. whether response-derived P3 is algebraically equivalent to Newton when the
+   exact physical derivative is available;
+5. whether P4 prevents the large Newton excursion from the difficult -0.23 m
+   start without changing the accepted root.
