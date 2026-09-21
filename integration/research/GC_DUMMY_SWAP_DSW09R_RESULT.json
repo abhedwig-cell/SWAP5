@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09r.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09R",
+  "workflow_run": 35561954101,
+  "decision": "DIAGNOSTIC_QUALIFIED_FRESH_SOLVE_PER_REANCHOR",
+  "exact_head_m": 8.056155281280883,
+  "final_head_m": 8.056155281280942,
+  "final_error_m": 5.861977570020827e-14,
+  "final_residual_m_per_day": -1.2167350460501325e-14,
+  "reanchors": 4,
+  "per_reanchor_modflow_iterations": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "gates": {
+    "strict_residual_below_1e_12": "PASS",
+    "head_within_1e_10": "PASS",
+    "multiple_reanchors": "PASS",
+    "each_fresh_affine_solve_converged": "PASS"
+  },
+  "bounded_conclusion": "The DSW-09 nonlinear storage law closes its original strict physics gates when each external reanchor is solved in a fresh MODFLOW prepared-solve history. Combined with DSW-09N, this localizes the earlier stall to within-prepared-solve history/state semantics rather than the affine tangent algebra or coefficient resolution."
+}
