@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_iteration.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-04",
+  "title": "Trapezoidal head-exchange iteration and coupling stiffness",
+  "baseline": "ad76b2c46530a40d9fb60973270d1f69708a695f",
+  "purpose": "Freeze a discrete temporal exchange closure and compare explicit, one-corrector and fixed-point behavior without management clipping, so iteration behavior can be derived and tested independently of shortage policy.",
+  "frozen_temporal_contract": {
+    "exchange": "V = C * dt * (((h_start + h_end) / 2) - h_gw)",
+    "end_level": "h_end = h_start - (U + V) / A",
+    "managed_delivery": "U is frozen within the numerical sub-experiment",
+    "groundwater_head": "h_gw is fixed within one coupling window"
+  },
+  "derived_hypothesis": {
+    "stiffness": "lambda = C * dt / (2 * A)",
+    "fixed_point": "V_star = (C*dt*(h_start-h_gw) - lambda*U) / (1 + lambda)",
+    "picard_error": "e_(n+1) = -lambda * e_n",
+    "implication": "simple Picard exchange iteration converges for lambda < 1, is neutral/oscillatory at lambda = 1, and diverges for lambda > 1"
+  },
+  "experiments": {
+    "T1": "closed-form fixed point satisfies both trapezoidal exchange equation and water-balance end-level equation",
+    "T2": "lambda < 1 gives alternating geometric Picard convergence with error ratio -lambda",
+    "T3": "lambda = 1 gives equal-magnitude alternating error from a non-exact initial guess",
+    "T4": "lambda > 1 gives growing error magnitude with ratio lambda",
+    "T5": "one corrector improves the explicit start-level estimate when lambda < 1 but is not exact in general",
+    "T6": "parameter sets with equal lambda have the same normalized Picard error propagation",
+    "T7": "managed delivery U shifts the fixed point but does not change the Picard error factor",
+    "T8": "reducing dt enough to move lambda from above one to below one restores Picard convergence"
+  },
+  "interpretation_rules": [
+    "lambda is a property of this frozen linear trapezoidal surrogate, not a universal MODFLOW-Ribasim stability theorem",
+    "no convergence tolerance is introduced; tests use the exact analytic error relation",
+    "management clipping and shortage feedback are deliberately excluded from DUMMY-04",
+    "a later work unit may reintroduce DUMMY-02 management priority after the numerical mechanism is qualified"
+  ],
+  "forbidden": [
+    "no production solver or coupling change",
+    "no claim that trapezoidal exchange is the unique correct temporal discretization",
+    "no arbitrary convergence threshold",
+    "no management-demand iteration",
+    "no MODFLOW package-equivalence claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_04_QUALIFIED_LINEAR_ITERATION_MECHANISM",
+  "fail_decision": "RIBASIM_DUMMY_04_BLOCKED"
+}
