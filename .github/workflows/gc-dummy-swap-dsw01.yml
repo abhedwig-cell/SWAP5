@@ -8,13 +8,10 @@ on:
       - 'docs/research/GC_*.md'
       - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
       - 'integration/research/GC_REAL_SWAP_MAP01*.json'
-      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
-      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
-      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
-      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
-      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
   pull_request:
     branches:
@@ -22,8 +19,11 @@ on:
     paths:
       - 'docs/research/GC_*.md'
       - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
   workflow_dispatch:
 
