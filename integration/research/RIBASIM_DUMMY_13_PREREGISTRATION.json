@@ -42,7 +42,8 @@
     "If the surface/groundwater system can deliver the full root request, the accepted root storage reaches W_target exactly.",
     "Two multi-window histories that reach the same three committed states have identical next requests and physical exchange problem regardless of their prior shortage diagnostics.",
     "No same-window second irrigation request is created after U changes root storage.",
-    "Because DUMMY-13 declares the three stores disjoint by construction, its combined-ledger proof is conditional on that declared partition and must not be used as evidence that real SWAP and MODFLOW storage domains are non-overlapping."
+    "Because DUMMY-13 declares the three stores disjoint by construction, its combined-ledger proof is conditional on that declared partition and must not be used as evidence that real SWAP and MODFLOW storage domains are non-overlapping.",
+    "In the preregistered canonical two-window sequence, the first window is CURTAILED and the second is ZERO: root storage remains 72 m3 while surface-groundwater exchange continues and lowers surface head from 0.4 to 0.36 m."
   ],
   "canonical_case": {
     "root": {
@@ -94,5 +95,84 @@
     "live_shared_authority_blocker": "CSR-B1-STORAGE-PARTITION: real SWAP-derived finite-window response and MODFLOW STO require explicit independent storage-role authority/non-overlap or overlap correction.",
     "drainage_blocker": "CSR-B2-DRAINAGE-OWNERSHIP: one owner per physical drainage path is required.",
     "dummy_nonclaim": "Passing DUMMY-13 cannot close CSR-B1 or CSR-B2 because the dummy chooses disjoint stores and has no authentic SWAP/MODFLOW storage-domain mapping."
+  },
+  "preregistered_regime_matrix": {
+    "full": {
+      "root": {
+        "W0": 70,
+        "target": 80,
+        "capacity": 100,
+        "request": 10
+      },
+      "surface_groundwater": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "h_s0": 1,
+        "h_g0": 0,
+        "hmin": 0.4
+      },
+      "expected": {
+        "regime": "FULL",
+        "U_m3": 10,
+        "shortage_m3": 0,
+        "V_m3": 31.666666666666668,
+        "W_r1_m3": 80,
+        "h_s1_m": 0.5833333333333333,
+        "h_g1_m": 0.31666666666666665,
+        "next_root_request_m3": 0,
+        "total_three_store_change_m3": 0
+      }
+    },
+    "curtailed": "canonical_case",
+    "zero": {
+      "root": {
+        "W0": 60,
+        "target": 80,
+        "capacity": 100,
+        "request": 20
+      },
+      "surface_groundwater": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "h_s0": 0.5,
+        "h_g0": 0,
+        "hmin": 0.4
+      },
+      "expected": {
+        "regime": "ZERO",
+        "U_m3": 0,
+        "shortage_m3": 20,
+        "V_m3": 16.666666666666668,
+        "W_r1_m3": 60,
+        "h_s1_m": 0.3333333333333333,
+        "h_g1_m": 0.16666666666666669,
+        "next_root_request_m3": 20,
+        "total_three_store_change_m3": 0
+      }
+    },
+    "canonical_second_window": {
+      "start": {
+        "W_r_m3": 72,
+        "h_s_m": 0.4,
+        "h_g_m": 0.28,
+        "request_m3": 8
+      },
+      "expected": {
+        "regime": "ZERO",
+        "U_m3": 0,
+        "shortage_m3": 8,
+        "V_m3": 4,
+        "W_r1_m3": 72,
+        "h_s1_m": 0.36,
+        "h_g1_m": 0.32,
+        "next_root_request_m3": 8,
+        "total_three_store_change_m3": 0
+      },
+      "interpretation": "After the first curtailed window lands exactly on the management threshold, reciprocal physical exchange may continue in the next window while management remains off; the root deficit persists because no irrigation is delivered."
+    }
   }
 }
