@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.coupling.real_ribasim_clock_aligned_mixed_conflict.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E2",
+  "title": "Pinned real Ribasim clock-aligned priority allocation followed by physical realization shortfall",
+  "baseline": "feecf6b0634d1a488b886611ac0d84ca3a21bbbe",
+  "relation_to_19e": {
+    "state": "NEW_WORK_UNIT_NOT_REPAIR",
+    "failed_authority": {
+      "decision": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+      "workflow_run": 35616065964
+    },
+    "controlled_change": "solver.saveat changes from 3600 s to 86400 s so the output/save boundary is aligned with allocation.dt=86400 s.",
+    "unchanged": [
+      "Ribasim pin",
+      "one-day horizon",
+      "32 m3/day fixed source",
+      "40/20 m3/day managed demands",
+      "priority orders",
+      "priority-1 LevelDemand at 1.0 m",
+      "1,000,000 m2 Basin",
+      "both UserDemand min_level=0.99 m",
+      "independent continuous physical reference",
+      "all scientific tolerances"
+    ]
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Recover the originally intended scientific mechanism under configuration semantics that actually provide one allocation solve for the one-day physical window. This isolates management priority allocation followed by physical source-state realization from the saveat-driven reallocation discovered by DUMMY-19E.",
+  "model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin": {
+      "initial_level_m": 1,
+      "profile_area_m2": 1000000
+    },
+    "fixed_supply_m3_per_day": 32,
+    "level_hold": {
+      "min_level_m": 1,
+      "max_level_m": 1,
+      "demand_priority": 1
+    },
+    "common_physical_reduction": {
+      "root_min_level_m": 0.99,
+      "external_min_level_m": 0.99,
+      "level_difference_threshold_m": 0.02,
+      "initial_factor": 0.5
+    },
+    "root_proxy": {
+      "demand_m3_per_day": 40
+    },
+    "external_demand": {
+      "demand_m3_per_day": 20
+    },
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3,
+        "expected_allocated_root_m3_per_day": 32,
+        "expected_allocated_external_m3_per_day": 0
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2,
+        "expected_allocated_root_m3_per_day": 12,
+        "expected_allocated_external_m3_per_day": 20
+      }
+    }
+  },
+  "independent_continuous_reference": {
+    "ode": "A dh/dtau = 32 * (1 - phi(h-0.99)), tau in days, with a single allocation target fixed for the one-day window.",
+    "final_level_m": 1.000015980815359,
+    "final_reduction_factor": 0.5011985601316069,
+    "integrated_total_supplied_m3": 16.019184640970934,
+    "integrated_storage_gain_m3": 15.980815359029066,
+    "root_first": {
+      "integrated_root_supplied_m3": 16.019184640970934,
+      "integrated_external_supplied_m3": 0
+    },
+    "external_first": {
+      "integrated_root_supplied_m3": 6.0071942403641,
+      "integrated_external_supplied_m3": 10.011990400606834
+    },
+    "ledger": "32 m3 fixed inflow = physical UserDemand supply + Basin storage gain."
+  },
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "final_reduction_factor": 0.000005
+  },
+  "hypotheses": [
+    "Clock alignment produces one effective allocation solve for the one-day window.",
+    "Root-first allocation stays 32/0 m3/day throughout the physical window; external-first stays 12/20 m3/day.",
+    "The common physical factor reduces only already allocated links.",
+    "Root-first therefore physically supplies approximately 16.0192 m3 to root and zero to external demand.",
+    "External-first physically supplies approximately 6.00719 m3 root and 10.01199 m3 external.",
+    "Both priority cases have the same total physical supply, final Basin level and storage gain because their total allocated target is identical.",
+    "Allocated-but-unsupplied water remains in Basin storage.",
+    "The difference between DUMMY-19E and DUMMY-19E2 is clock configuration, not a change to the management-versus-realization hypothesis."
+  ],
+  "forbidden": [
+    "no changing any expected physical value or tolerance after execution",
+    "no interpreting DUMMY-19E2 as repairing or qualifying the failed DUMMY-19E configuration",
+    "no claim that solver.saveat should be a management clock",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
+  "fail_decision": "RIBASIM_DUMMY_19E2_BLOCKED"
+}
