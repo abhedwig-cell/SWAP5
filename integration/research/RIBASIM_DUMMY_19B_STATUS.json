@@ -18,7 +18,7 @@
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
   "scope": "Custom pinned real-Ribasim one-Basin/two-UserDemand priority conflict with 32 m3/day fixed supply and physically inactive UserDemand reduction.",
-  "next_action": "Execute repaired DUMMY-19B pinned real Ribasim priority-conflict gate.",
+  "next_action": "Execute repaired DUMMY-19B real Ribasim priority-conflict gate.",
   "production_delta": [],
   "reference_delta": [],
   "checkpoint_commit": "14c0c438c39120ccbf5a199a70024446f487a3bb",
@@ -47,11 +47,7 @@
     ]
   },
   "recovery_point": "DUMMY-19B model generator, real-Ribasim verifier, concept and qualification gate are persisted; executable qualification remains open.",
-  "qualification_attempt": {
-    "state": "TRIGGERED",
-    "head": "work/ribasim-dummy-19b-ci",
-    "authority_use": "candidate"
-  },
+  "qualification_attempt": "repaired_pinned_api_pr_synchronize",
   "qualification_attempts": [
     {
       "run": 35598437021,
