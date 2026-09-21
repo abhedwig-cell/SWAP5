@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_realization_conflict.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19C",
+  "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+  "authority": {
+    "implementation_baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885",
+    "preregistration_commit": "8ec78571d82299cb28bc7558bb0e501fa6b9a44e",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "qualification_head": "8b3b4024ad5b3c721dd1860fb4f236b6ac4a54bd",
+    "workflow_run": 35610267609,
+    "workflow_job": 106367333459,
+    "conclusion": "success",
+    "main_branch_head_at_evidence_review": "9f0e53f57242c2c9fd45ae0bc2e6e449ca42c3c5",
+    "scientific_content_identity": {
+      "bridge_blob": "79dd84aaa4f77ffe0538017a7321cae41fcc6d3c",
+      "generator_blob": "c77b787f20edf098bb06fb7ca99716456420dd03",
+      "runner_blob": "dcba33d47811045631af119015ebaa4efdbf04de",
+      "preregistration_blob": "6bf4fb0509ea2da8563c0112b90662a83d44330c",
+      "meaning": "The v4 qualification branch and work/ribasim-dummy-01 contain identical scientific DUMMY-19C executable/preregistered content."
+    }
+  },
+  "attempts": [
+    {
+      "run": 35600995386,
+      "job": 106336801332,
+      "state": "OBSERVABILITY_TIME_SUPPORT_FAILED_BEFORE_SCIENTIFIC_COMPARISON",
+      "scientific_effect": "none"
+    },
+    {
+      "run": 35604865080,
+      "job": 106349372161,
+      "state": "BASIN_ENDPOINT_OBSERVABILITY_FAILED_AFTER_SUPPLY_CHECKS",
+      "scientific_effect": "none"
+    },
+    {
+      "run": 35610267609,
+      "job": 106367333459,
+      "state": "PASS",
+      "qualification_head": "8b3b4024ad5b3c721dd1860fb4f236b6ac4a54bd"
+    }
+  ],
+  "observed": {
+    "root_first": {
+      "allocated_root_m3_per_day": 40,
+      "allocated_external_m3_per_day": 20,
+      "supplied_root_m3": 20.046621646239593,
+      "supplied_external_m3": 10.023310823119797,
+      "supplied_total_m3": 30.06993246935939,
+      "final_basin_level_m": 1.0000299300675306,
+      "storage_gain_m3": 29.930067530603566
+    },
+    "external_first": {
+      "allocated_root_m3_per_day": 40,
+      "allocated_external_m3_per_day": 20,
+      "supplied_root_m3": 20.046621646239593,
+      "supplied_external_m3": 10.023310823119797,
+      "supplied_total_m3": 30.06993246935939,
+      "final_basin_level_m": 1.0000299300675306,
+      "storage_gain_m3": 29.930067530603566
+    }
+  },
+  "evidence": [
+    "Both priority cases allocate the full 40 m3/day root demand and 20 m3/day external demand.",
+    "Direct physical Basin-to-UserDemand supply is reduced to approximately half of allocation by the pinned min_level reduction law.",
+    "Root and external physical supplied volumes remain in an exact 2:1 common-factor ratio within preregistered tolerances.",
+    "Priority reversal leaves allocation, physical supplied split and Basin trajectory unchanged in this fully allocated common-factor case.",
+    "60 m3 fixed inflow closes as physical UserDemand supply plus Basin storage gain within the preregistered 0.05 m3 tolerance.",
+    "RIBASIM_REAL_19C_PROPORTIONAL_REALIZATION=PASS",
+    "RIBASIM_DUMMY_19C_REAL_RIBASIM_TESTS=PASS",
+    "RIBASIM_DUMMY_19C_GATE=PASS"
+  ],
+  "interpretation": "Pinned real Ribasim distinguishes management allocation from physical realization. In the deliberately controlled common-source/common-min_level case, both demands are fully allocated but physical supply is reduced by the same source-state factor, so the realized split remains proportional and is independent of priority order. Allocated-but-unsupplied volume is not a physical transfer.",
+  "boundaries": [
+    "result applies only to one common source Basin with equal UserDemand min_level values",
+    "no claim that proportional physical reduction generalizes to unequal min_level values or different source Basins",
+    "no network reallocation after physical shortfall",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling claim"
+  ],
+  "downstream": "DUMMY-19D may now be rebound and implemented to falsify common-factor proportionality using unequal UserDemand min_level values under the same pinned real Ribasim authority."
+}
