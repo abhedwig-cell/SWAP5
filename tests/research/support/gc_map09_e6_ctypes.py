@@ -30,6 +30,12 @@ class Map09ActiveDrainageSwap:
             *([ctypes.POINTER(ctypes.c_int)]*14),
             *([ctypes.POINTER(ctypes.c_double)]*4),
         ]
+        self.lib.pub_gc_e6_corrector_mass_diagnostics_c.restype=ctypes.c_int
+        self.lib.pub_gc_e6_corrector_mass_diagnostics_c.argtypes=[
+            ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*4),
+            *([ctypes.POINTER(ctypes.c_double)]*5),
+        ]
 
     def initialize(self)->tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -76,6 +82,25 @@ class Map09ActiveDrainageSwap:
         ]
         d={k:v.value for k,v in zip(keys,vals)}
         d["mass_complete"]=bool(complete.value)
+        return d
+
+    def corrector_mass_diagnostics(self,head_m:float)->dict[str,float|int|bool]:
+        ints=[ctypes.c_int() for _ in range(4)]
+        vals=[ctypes.c_double() for _ in range(5)]
+        status=self.lib.pub_gc_e6_corrector_mass_diagnostics_c(
+            float(head_m),*[ctypes.byref(x) for x in ints],*[ctypes.byref(x) for x in vals]
+        )
+        if status: raise RuntimeError(f"E6 corrector mass diagnostics failed: {status}")
+        ikeys=["result_status","completed","candidate_ready","mass_complete"]
+        d={k:int(v.value) for k,v in zip(ikeys,ints)}
+        d["completed"]=bool(d["completed"])
+        d["candidate_ready"]=bool(d["candidate_ready"])
+        d["mass_complete"]=bool(d["mass_complete"])
+        for k,v in zip(
+            ["storage_change_native","total_in_native","total_out_native","bottom_outward_exchange_native","mass_residual_native"],
+            vals,
+        ):
+            d[k]=v.value
         return d
 
     def corrector_diagnostics(self,head_m:float)->dict[str,float|int|bool]:
