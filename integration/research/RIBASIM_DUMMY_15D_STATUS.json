@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-15D",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "d6d86a490893aa7882312494484833a53ffd435c",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -21,12 +21,25 @@
     "surface_groundwater_exchange_m3": 4,
     "full_four_store_change_m3": -2
   },
-  "next_action": "Implement explicit canopy irrigation ledger and gross/net misbinding falsification tests.",
+  "next_action": "Execute DUMMY-15D canopy-irrigation-ledger gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
     "baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
     "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
     "workflow_run": 35593011851
-  }
+  },
+  "scope": "Explicit canopy/interception store separating gross source withdrawal, canopy storage, interception evaporation, net soil irrigation and reciprocal groundwater exchange.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_15D_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_15D_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_15D_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_canopy_irrigation_ledger.py",
+    "tests/research/test_dummy_canopy_irrigation_ledger.py",
+    "tests/research/run_ribasim_dummy_15d.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "expected_tests": "13 tests",
+  "recovery_point": "DUMMY-15D model, tests, concept and workflow gate are persisted; qualification remains open."
 }
