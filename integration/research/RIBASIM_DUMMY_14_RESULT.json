@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store_forcing.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-14",
+  "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+  "authority": {
+    "implementation_baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
+    "qualified_main_pre_result_head": "0d83fe25155de983199cfa9dce47ab033a05fa3e",
+    "qualification_head": "bd1e259330525f741aca750c18e9e7c63382fd4f",
+    "workflow_run": 35577358733,
+    "workflow_job": 106262119247,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_14_SOURCE_SCOPE=PASS",
+    "12/12 ThreeStoreForcingMemoryTests PASS",
+    "rain can eliminate next root demand despite current management shortage",
+    "prescribed root loss can make next root demand exceed current management shortage",
+    "capacity excess is removed as an explicit external root drainage sink",
+    "zero root forcing reproduces qualified DUMMY-13 exactly",
+    "same-window surface/groundwater solution is invariant to postdecision root forcing",
+    "same current shortage 8 m3 maps to next request 0, 8 or 18 m3 under rain/neutral/loss cases",
+    "multiwindow combined ledger retains only cumulative external root terms P-E-D",
+    "identical committed state plus forcing produces identical next coupling problem",
+    "dense forcing grid preserves the combined ledger",
+    "negative surface-groundwater exchange uses the same transfer sign convention under root forcing",
+    "infeasible prescribed root loss fails closed without borrowing from surface or groundwater",
+    "RIBASIM_DUMMY_14_FORCING_TESTS=PASS",
+    "RIBASIM_DUMMY_14_GATE=PASS"
+  ],
+  "canonical_triptych": {
+    "common_current": {
+      "request_m3": 40,
+      "delivered_m3": 32,
+      "shortage_m3": 8,
+      "exchange_m3": 28,
+      "h_s1_m": 0.4,
+      "h_g1_m": 0.28
+    },
+    "rain20": {
+      "root_end_m3": 92,
+      "next_request_m3": 0,
+      "combined_change_m3": 20
+    },
+    "neutral": {
+      "root_end_m3": 72,
+      "next_request_m3": 8,
+      "combined_change_m3": 0
+    },
+    "loss10": {
+      "root_end_m3": 62,
+      "next_request_m3": 18,
+      "combined_change_m3": -10
+    }
+  },
+  "interpretation": "Current management shortage is not a persistent physical demand state. Future irrigation demand follows the accepted root-zone state after irrigation and external forcing. Internal transfers U and V continue to cancel from the combined three-store ledger; only P, E and explicitly owned root drainage remain.",
+  "authority_boundary": [
+    "root forcing remains an analytical bucket surrogate",
+    "capacity drainage does not establish production drainage ownership and cannot close CSR-B2",
+    "dummy stores remain disjoint by construction and cannot close CSR-B1",
+    "no production SWAP irrigation-demand equivalence claim"
+  ],
+  "downstream": "DUMMY-15 may now introduce competing managed claims and explicit priority semantics on top of the qualified shared-state/forcing ledger."
+}
