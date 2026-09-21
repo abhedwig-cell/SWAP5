@@ -1,6 +1,6 @@
 # RIBASIM-DUMMY-18 blocked concept: real-model authority binding
 
-> Status: BLOCKED pending DUMMY-17 qualification.
+> Status: IMPLEMENTATION AUTHORIZED after DUMMY-17 qualification.
 >
 > This work unit is mapping/governance preparation only. It performs no
 > production-model substitution.
