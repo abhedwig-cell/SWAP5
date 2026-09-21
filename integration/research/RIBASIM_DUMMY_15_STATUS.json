@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Use run 35578647184 as the only DUMMY-15 qualification authority if it passes.",
+  "next_action": "Observe run 35578647184. If PASS, persist DUMMY-15 result and close PR #518; then rebind DUMMY-15B implementation baseline.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -122,5 +122,15 @@
     "production_delta": [],
     "reference_delta": [],
     "conclusion": "SCOPE_CLEAN"
+  },
+  "external_ci_blocker": {
+    "state": "QUEUED_RUNNER_CAPACITY_OR_ACTIONS_DELAY",
+    "valid_run": 35578647184,
+    "valid_job": 106266143633,
+    "superseded_run": 35577982472,
+    "repository_runner_visibility": "not available through current connector surface",
+    "scientific_blocker": false,
+    "governance_blocker": true,
+    "rule": "Do not qualify DUMMY-15 and do not implement DUMMY-15B until the valid corrected run completes successfully."
   }
 }
