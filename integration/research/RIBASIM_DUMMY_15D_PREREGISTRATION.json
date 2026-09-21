@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_canopy_interception.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15D",
+  "title": "Gross-to-net irrigation through an explicit canopy store",
+  "baseline": "bb1790d71e6b3d53ca1930b5aca852d4d7dd1d87",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+    "current": "BLOCKED_PENDING_DUMMY_15_15B_15C",
+    "implementation_rule": "No DUMMY-15D model or tests before DUMMY-15C closes and the implementation baseline is rebound."
+  },
+  "purpose": "Insert the minimum canopy/interception state between externally supplied gross irrigation and net soil irrigation so that source withdrawal, canopy storage change, interception evaporation and soil input have distinct ledger ownership before real Rutter substitution.",
+  "production_authority_basis": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "workunits": [
+      "F-APP05",
+      "F-APP07",
+      "F-APP08"
+    ],
+    "rutter_state": "canopy_storage_cm",
+    "rutter_outputs": [
+      "reservoir_inflow_cm_per_day",
+      "reservoir_outflow_cm_per_day",
+      "net_surface_irrigation_cm_per_day",
+      "candidate canopy storage"
+    ],
+    "restricted_irrigation_binding": "F-APP07 binds gross scheduled irrigation into Rutter and F-APP08 binds Rutter net irrigation into dynamic top."
+  },
+  "analytical_transfers": {
+    "G": "gross supplied irrigation withdrawn from the surface-water source",
+    "I": "intercepted part of gross irrigation entering canopy storage",
+    "N": "net irrigation bypassing/reaching the soil top",
+    "E_i": "interception evaporation leaving the represented water system",
+    "V": "optional reciprocal surface-groundwater exchange retained from the qualified shared-state ledger"
+  },
+  "equations": [
+    "G = N + I",
+    "Delta C = I - E_i",
+    "Delta S_surface = -G - V",
+    "Delta W_root = +N",
+    "Delta S_groundwater = +V",
+    "Delta(S_surface + C + W_root + S_groundwater) = -E_i"
+  ],
+  "system_boundary_variants": {
+    "canopy_inside": {
+      "combined_ledger": "Delta total = -E_i",
+      "interpretation": "Gross irrigation and surface-groundwater exchange are internal transfers; only interception evaporation leaves."
+    },
+    "canopy_outside": {
+      "represented_stores": [
+        "surface",
+        "root",
+        "groundwater"
+      ],
+      "combined_ledger": "Delta represented total = -(E_i + Delta C)",
+      "interpretation": "Canopy storage change becomes a boundary term when canopy state is excluded."
+    }
+  },
+  "canonical_case": {
+    "start": {
+      "surface_storage_m3": 100,
+      "canopy_storage_m3": 0,
+      "root_storage_m3": 40,
+      "groundwater_storage_m3": 50
+    },
+    "gross_supplied_irrigation_m3": 20,
+    "intercepted_m3": 5,
+    "net_soil_irrigation_m3": 15,
+    "interception_evaporation_m3": 2,
+    "surface_groundwater_exchange_m3": 4,
+    "end": {
+      "surface_storage_m3": 76,
+      "canopy_storage_m3": 3,
+      "root_storage_m3": 55,
+      "groundwater_storage_m3": 54
+    },
+    "full_system_initial_m3": 190,
+    "full_system_final_m3": 188,
+    "full_system_change_m3": -2,
+    "canopy_excluded_initial_m3": 190,
+    "canopy_excluded_final_m3": 185,
+    "canopy_excluded_change_m3": -5
+  },
+  "falsification_cases": [
+    {
+      "name": "gross_mistaken_for_net",
+      "error": "Apply G=20 directly to root instead of N=15 while also storing intercepted water.",
+      "expected_failure": "creates +5 m3 duplicate water in root+canopy representation"
+    },
+    {
+      "name": "net_mistaken_for_source_withdrawal",
+      "error": "Withdraw only N=15 from surface source while canopy still receives I=5.",
+      "expected_failure": "creates +5 m3 water because intercepted water has no source withdrawal"
+    },
+    {
+      "name": "canopy_omitted_without_boundary_term",
+      "error": "Exclude canopy store but compare represented balance only against E_i.",
+      "expected_failure": "apparent 3 m3 mass defect equal to Delta C"
+    }
+  ],
+  "hypotheses": [
+    "The canonical four-store ledger closes exactly to -2 m3, equal only to interception evaporation.",
+    "Surface-groundwater exchange V cancels exactly from the full ledger even when canopy interception is active.",
+    "When canopy is excluded from the represented system, the correct boundary loss is E_i + Delta C = 5 m3, not E_i alone.",
+    "Using gross irrigation as soil-top input double-counts the intercepted amount.",
+    "Using net irrigation as Ribasim/source withdrawal creates the intercepted amount from nowhere.",
+    "A later real Rutter substitution must compare gross supplied source withdrawal to gross irrigation and compare net soil input separately; one number cannot serve both roles."
+  ],
+  "boundaries": [
+    "first-stage DUMMY-15D uses prescribed G/I/N/E_i amounts rather than reproducing Rutter nonlinear/event branching",
+    "no rainfall in first stage",
+    "no crop-energy feedback",
+    "no production Rutter mutation",
+    "no production coupling change"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+  "fail_decision": "RIBASIM_DUMMY_15D_BLOCKED"
+}
