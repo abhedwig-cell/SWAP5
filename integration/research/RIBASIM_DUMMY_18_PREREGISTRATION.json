@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-18",
   "title": "Real-model variable, transfer and transaction authority binding",
-  "baseline": "2e0c568551d39a253de34274356ed33b86c05bce",
+  "baseline": "ba059143d1835369f7e88a65a478062b738b6720",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-    "current": "BLOCKED_PENDING_DUMMY_15B_16_17",
-    "implementation_rule": "No real-model substitution experiment before DUMMY-17 closes. Authority/document mapping may be prepared prospectively."
+    "current": "SATISFIED",
+    "implementation_rule": "No real-model substitution experiment before DUMMY-17 closes. Authority/document mapping may be prepared prospectively.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+      "workflow_run": 35591084550,
+      "main_closeout_head": "ba059143d1835369f7e88a65a478062b738b6720"
+    }
   },
   "purpose": "Bind every analytical state, transfer, decision and commit object to a pinned real-model observable or explicitly mark it non-equivalent before any component is substituted.",
   "binding_classes": [
@@ -278,6 +283,31 @@
     "no production claim from dummy agreement alone",
     "no closing CSR-B1/CSR-B2 from DUMMY-18 mapping work"
   ],
-  "pass_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_BINDING",
-  "fail_decision": "RIBASIM_DUMMY_18_BLOCKED"
+  "pass_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+  "fail_decision": "RIBASIM_DUMMY_18_BLOCKED",
+  "authority_rebind_note": "DUMMY-18 mapping was preregistered prospectively. After DUMMY-17 qualification, authority was reconciled again before creating any executable DUMMY-18 binding manifest/tests.",
+  "current_authority_reconciliation": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "live_csr_candidate": "PR #486 work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45",
+    "ribasim_pin": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "imod_coupler_inspected_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "findings": [
+      "F-GC39 canonically qualifies one prepared MODFLOW solve session per coupling window, fixed accepted XOLD, no per-iteration groundwater rollback, one finalization on success.",
+      "F-GC43 canonically binds real SWAP kernel candidate/rollback/commit and keeps kernel commit as sole SWAP committed-state mutation.",
+      "F-GC50 is internally ready for the restricted profile but actual iMOD Coupler SWAP5 driver/product registration remains externally blocked.",
+      "CSR-04 production storage partition remains scientifically unresolved: current topology does not establish non-overlap/correction between SWAP finite-window storage response and MODFLOW STO.",
+      "CSR-04 also identifies missing accepted per-window MODFLOW STO/component-budget observability for independent storage qualification.",
+      "F-APP07 typed irrigation process owns dayfix plus active-event state and exact event-end timing semantics.",
+      "Legacy B1.10 transaction capture includes irrigation continuation dayfix and nirri.",
+      "Current FMR production physical state exposes irrigation forcing rates but does not contain the F-APP07 management continuation state.",
+      "Therefore production ownership of irrigation management continuation across coupled candidate/rollback/commit is unresolved."
+    ]
+  },
+  "unresolved_authorities": [
+    "CSR04 production SWAP/MODFLOW storage partition",
+    "accepted per-window MODFLOW STO/component-budget observability for storage qualification",
+    "production transaction ownership of F-APP07 irrigation management continuation state",
+    "production SWAP5 registration in actual upstream iMOD Coupler product lifecycle",
+    "general production drainage ownership outside explicitly admitted restricted profiles"
+  ]
 }
