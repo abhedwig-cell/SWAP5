@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.gc_real_swap.map09.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP09",
+  "title": "Research-only active-drainage prescribed-head corrector feasibility without smooth qbot projection",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "e6_result": "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json",
+    "historical_e6_bridge": {
+      "path": "tests/publication/mod_pub_gc_e6_active_drainage_bridge.f90",
+      "source_commit": "191f1d8ac0ab0b84eff438023f1d32e00c09b925"
+    },
+    "serialized_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "head_materializer": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90"
+  },
+  "purpose": "Test whether the existing serialized real-SWAP research backend can execute an active lagged-drainage prescribed-head corrector when the qbot-only smooth-freatic projection is removed from the corrector, without changing production code or the E6 predictor physics.",
+  "fixed_predictor": {
+    "duration_day": 0.01,
+    "qbot_cm_per_day": 0.002,
+    "top_flux_cm_per_day": 0,
+    "initial_pressure_head_cm": [
+      -2.2,
+      -1.2,
+      -0.2,
+      0.8
+    ],
+    "drainage_levels": [
+      {
+        "groundwater_depth": [
+          0.5,
+          2.5
+        ],
+        "signed_exchange_rate": [
+          0.004,
+          0.001
+        ]
+      },
+      {
+        "groundwater_depth": [
+          0.5,
+          2.5
+        ],
+        "signed_exchange_rate": [
+          0.002,
+          -0.001
+        ]
+      }
+    ],
+    "drainage_qbot_smooth_freatic_projection": true,
+    "expected_reference_head_m": 0.012932896258566275,
+    "expected_u_A": 0.0005760442426568357,
+    "expected_q_u_cm_per_day": -0.0023986744863501285
+  },
+  "only_research_delta": {
+    "predictor": "unchanged E6/F-GC31 prescribed-qbot active-drainage predictor",
+    "corrector_bottom_mode": 5,
+    "corrector_drainage_response_active": true,
+    "corrector_drainage_qbot_smooth_freatic_projection": false,
+    "production_source_change": false
+  },
+  "fixed_probe_offsets_m": [
+    0,
+    -1e-8,
+    1e-8,
+    -1e-7,
+    1e-7,
+    -0.000001,
+    0.000001
+  ],
+  "execution_contract": [
+    "Reference corrector is evaluated first from the immutable E6 origin.",
+    "If reference status is nonzero, stop and close as bounded component-envelope evidence.",
+    "If reference succeeds, evaluate every fixed nonzero offset in fresh process/origin state without adaptive refinement.",
+    "Discard every diagnostic candidate; do not commit SWAP state or interface ledger."
+  ],
+  "gates": [
+    "Predictor reproduces E6 reference head, u_A and q_u within floating-point tolerance.",
+    "Reference prescribed-head corrector returns participant status 0 and a valid mass-complete whole-window candidate.",
+    "Reference mass residual absolute value <=1e-10 cm.",
+    "Committed authority remains revision/time zero and ledger count zero after diagnostic execution."
+  ],
+  "characterization_only": [
+    "admissibility of each fixed nonzero offset",
+    "q_swap at valid offsets",
+    "accepted substeps, retries and rejection counters",
+    "whether any symmetric valid head pair exists for downstream derivative decomposition"
+  ],
+  "stop_rule": "If the reference corrector is not admitted, do not alter drainage tables, corrector flags, tolerances, retry budget or production admission. Record the first failing contract/status and stop.",
+  "downstream_if_pass": "MAP09A may preregister direct mass decomposition of dStorage/dH, dBottomOut/dH and the non-bottom remainder attributable to active drainage over only the fixed valid MAP09 offsets.",
+  "interpretation_rules": [
+    "This is research-backend capability evidence, not production-owner admission.",
+    "Drainage remains lagged per accepted substep; no fully implicit drainage Jacobian is claimed.",
+    "A nonzero non-bottom derivative would demonstrate that the MAP03 storage/bottom cancellation was process-specific rather than universal."
+  ],
+  "forbidden": [
+    "no production changes",
+    "no production-bootstrap widening",
+    "no adaptive head search",
+    "no tolerance or retry relaxation",
+    "no change to E6 drainage tables or predictor state"
+  ]
+}
