@@ -1,0 +1,114 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_rootzone_demand.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-12",
+  "title": "Analytical root-zone demand state without shortage backlog",
+  "baseline": "3a82ed3c79db1b4ff6c54ad68724067e95072e94",
+  "parallelism": "Independent of pending DUMMY-11 qualification. DUMMY-12 does not consume DUMMY-11 equations or results; later three-store integration must require both authorities.",
+  "purpose": "Replace the externally frozen SWAP-like request with a persistent analytical root-zone water-storage state and distinguish physical deficit from administrative shortage carryover.",
+  "state": {
+    "storage": "W [m3]",
+    "bounds": "0 <= W <= W_capacity",
+    "target": "0 <= W_target <= W_capacity",
+    "request_at_window_start": "R=max(0,W_target-W_committed)"
+  },
+  "window_contract": {
+    "supply": "0 <= U <= min(R, available_supply)",
+    "shortage": "R-U; diagnostic only, not persistent state",
+    "forcing": [
+      "rainfall P >= 0",
+      "atmospheric/root-zone loss E >= 0"
+    ],
+    "pre_drainage_storage": "W_raw=W_start+U+P-E",
+    "infeasible_loss": "W_raw<0 => fail closed; water-stress/ET reduction physics is outside DUMMY-12",
+    "drainage": "D=max(0,W_raw-W_capacity)",
+    "end_storage": "W_end=W_raw-D",
+    "balance": "W_end-W_start=U+P-E-D",
+    "next_request": "R_next=max(0,W_target-W_end)"
+  },
+  "hypotheses": [
+    "The request is a function of committed root-zone state only and does not change within the same coupling window.",
+    "With full supply and no other forcing, delivered irrigation exactly fills the committed deficit to W_target.",
+    "Atmospheric loss during the window can create a next-window request even when current shortage is zero.",
+    "Previous shortage is not a state variable: subsequent rainfall can reduce or eliminate the next request without repaying an administrative backlog.",
+    "When W_raw exceeds capacity, exact drainage removes only the excess and the root-zone balance closes.",
+    "For any feasible multi-window forcing sequence, cumulative storage change equals cumulative delivered irrigation plus rainfall minus atmospheric loss minus drainage.",
+    "Two histories with the same committed W have the same next request even if their prior shortage histories differ.",
+    "A physical loss larger than available root-zone water fails closed instead of silently creating negative storage or inventing stress-reduction physics."
+  ],
+  "canonical_cases": {
+    "full_fill": {
+      "W0": 60,
+      "target": 80,
+      "capacity": 100,
+      "supply": 20,
+      "P": 0,
+      "E": 0,
+      "expected": {
+        "R": 20,
+        "U": 20,
+        "W1": 80,
+        "R_next": 0
+      }
+    },
+    "loss_after_full_fill": {
+      "W0": 60,
+      "target": 80,
+      "capacity": 100,
+      "supply": 20,
+      "P": 0,
+      "E": 10,
+      "expected": {
+        "R": 20,
+        "U": 20,
+        "shortage": 0,
+        "W1": 70,
+        "R_next": 10
+      }
+    },
+    "shortage_erased_by_rain": {
+      "W0": 60,
+      "target": 80,
+      "capacity": 100,
+      "supply": 5,
+      "P": 20,
+      "E": 0,
+      "expected": {
+        "R": 20,
+        "U": 5,
+        "shortage": 15,
+        "W1": 85,
+        "R_next": 0
+      }
+    },
+    "drainage": {
+      "W0": 90,
+      "target": 90,
+      "capacity": 100,
+      "supply": 0,
+      "P": 25,
+      "E": 5,
+      "expected": {
+        "R": 0,
+        "U": 0,
+        "D": 10,
+        "W1": 100
+      }
+    }
+  },
+  "interpretation_rules": [
+    "shortage is a diagnostic difference between request and realized supply, not a conserved substance",
+    "root-zone deficit is physical state and can reflect prior shortage only through its effect on W",
+    "rainfall, loss and drainage are intentionally simple analytical bucket terms, not SWAP Richards physics",
+    "same-window demand feedback is excluded; request is frozen from committed start state"
+  ],
+  "forbidden": [
+    "no Richards-equation or production SWAP change",
+    "no stress-limited ET physics",
+    "no capillary rise or groundwater interaction in DUMMY-12",
+    "no shortage backlog state",
+    "no coupling to DUMMY-11 before both work units are separately qualified"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+  "fail_decision": "RIBASIM_DUMMY_12_BLOCKED"
+}
