@@ -180,7 +180,9 @@
     "The under-allocation M_pred=20 control must realize exactly the allocated 20 m3 with V=30 m3, hs1=0.5 m and hg1=0.3 m; unused physical capacity cannot create unallocated supplied demand.",
     "For M_pred=45 the physical layer is curtailed to 32 m3 with V=28 m3 and the same hs1=0.4,hg1=0.28 endpoint as the fully allocated 60 m3 conflict case; realization-policy differences affect only the supplied split.",
     "Across the preregistered canonical forecast-capacity grid, supplied_total=min(min(M_pred,60),32); for allocated_total<=32 both realization policies reproduce allocation exactly, while policy-specific supplied splits can diverge only for allocated_total>32.",
-    "For the canonical FULL branch, V=100/3-allocated_total/6 exactly; at allocated_total=32 this joins continuously to the CURTAILED branch V=28, hs1=0.4, hg1=0.28."
+    "For the canonical FULL branch, V=100/3-allocated_total/6 exactly; at allocated_total=32 this joins continuously to the CURTAILED branch V=28, hs1=0.4, hg1=0.28.",
+    "For ROOT_FIRST, priority-preserving and proportional realization remain identical through M_pred=40 despite physical curtailment above 32, because only the root claim is allocated; policy divergence begins only when M_pred>40 allocates the external claim.",
+    "For EXTERNAL_FIRST, both claims are allocated by the time M_pred exceeds the 32 m3 physical capacity, so realization-policy divergence begins immediately for M_pred>32."
   ],
   "public_authority_binding": {
     "ribasim_results": "https://ribasim.org/reference/usage.html",
@@ -295,5 +297,106 @@
       45,
       60
     ]
+  },
+  "canonical_priority_piecewise_forecast": {
+    "shared": {
+      "demands": {
+        "root": 40,
+        "external": 20,
+        "total": 60
+      },
+      "physical_capacity_m3": 32,
+      "allocated_total": "min(M_pred,60)",
+      "supplied_total": "min(allocated_total,32)"
+    },
+    "root_first": {
+      "allocation": [
+        {
+          "domain": "0 <= M_pred <= 40",
+          "allocated_root": "M_pred",
+          "allocated_external": 0
+        },
+        {
+          "domain": "40 < M_pred <= 60",
+          "allocated_root": 40,
+          "allocated_external": "M_pred-40"
+        }
+      ],
+      "priority_preserving_supply": [
+        {
+          "domain": "0 <= M_pred <= 32",
+          "supplied_root": "M_pred",
+          "supplied_external": 0
+        },
+        {
+          "domain": "32 < M_pred <= 60",
+          "supplied_root": 32,
+          "supplied_external": 0
+        }
+      ],
+      "proportional_supply": [
+        {
+          "domain": "0 <= M_pred <= 32",
+          "supplied_root": "M_pred",
+          "supplied_external": 0
+        },
+        {
+          "domain": "32 < M_pred <= 40",
+          "supplied_root": 32,
+          "supplied_external": 0
+        },
+        {
+          "domain": "40 < M_pred <= 60",
+          "rho": "32/M_pred",
+          "supplied_root": "40*(32/M_pred)",
+          "supplied_external": "(M_pred-40)*(32/M_pred)"
+        }
+      ],
+      "policy_divergence_onset": "M_pred > 40, because physical curtailment begins at 32 but the external claim is not allocated until forecast capacity exceeds the 40 m3 root request."
+    },
+    "external_first": {
+      "allocation": [
+        {
+          "domain": "0 <= M_pred <= 20",
+          "allocated_external": "M_pred",
+          "allocated_root": 0
+        },
+        {
+          "domain": "20 < M_pred <= 60",
+          "allocated_external": 20,
+          "allocated_root": "M_pred-20"
+        }
+      ],
+      "priority_preserving_supply": [
+        {
+          "domain": "0 <= M_pred <= 20",
+          "supplied_external": "M_pred",
+          "supplied_root": 0
+        },
+        {
+          "domain": "20 < M_pred <= 32",
+          "supplied_external": 20,
+          "supplied_root": "M_pred-20"
+        },
+        {
+          "domain": "32 < M_pred <= 60",
+          "supplied_external": 20,
+          "supplied_root": 12
+        }
+      ],
+      "proportional_supply": [
+        {
+          "domain": "0 <= M_pred <= 32",
+          "note": "No physical curtailment, so supplied equals allocated."
+        },
+        {
+          "domain": "32 < M_pred <= 60",
+          "rho": "32/M_pred",
+          "supplied_external": "20*(32/M_pred)",
+          "supplied_root": "(M_pred-20)*(32/M_pred)"
+        }
+      ],
+      "policy_divergence_onset": "M_pred > 32, because both claims are already allocated when physical curtailment begins."
+    }
   }
 }
