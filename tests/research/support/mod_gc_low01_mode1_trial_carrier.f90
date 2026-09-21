@@ -41,7 +41,7 @@ module mod_gc_low01_mode1_trial_carrier
                         numerical_config, physical_config, explicit_step_duration, parameter_set)
       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
       use mod_reference_richards_workspace, only: reference_richards_workspace_t
-      use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+      use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, FSI_TOP_MODE_EXPLICIT_FLUX
       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
            soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
       type(a23bu_worker_context_t), intent(inout), optional :: worker
