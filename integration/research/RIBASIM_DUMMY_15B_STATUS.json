@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-15B",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "e592e1243eda92b9d55723cb84d6e001bec5c895",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -30,7 +30,7 @@
       "supplied_root": 12
     }
   },
-  "next_action": "Implement DUMMY-15B forecast-allocation-realization policy contrast.",
+  "next_action": "Execute DUMMY-15B forecast-realization-gate against the post-DUMMY-15 authority.",
   "production_delta": [],
   "reference_delta": [],
   "title": "Forecast allocation versus physical realization policy contrast",
@@ -40,5 +40,24 @@
     "baseline": "800897d22d4eea54b5f00ba6d8dda69630958617",
     "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
     "workflow_run": 35581711814
-  }
+  },
+  "scope": "Forecast capacity -> lexicographic allocation -> exact shared-state physical realization -> compare priority-preserving and proportional supplied-flow policies.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_15B_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_15B_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_15B_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_forecast_realization.py",
+    "tests/research/test_dummy_forecast_realization.py",
+    "tests/research/run_ribasim_dummy_15b.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_15": {
+      "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+      "run": 35581711814
+    }
+  },
+  "expected_tests": "15 tests",
+  "recovery_point": "DUMMY-15B implementation, tests and focused runner are persisted; qualification remains open."
 }
