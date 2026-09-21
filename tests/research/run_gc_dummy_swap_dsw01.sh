@@ -11,7 +11,10 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "GC_DSW01_FAIL $*" >&2; exit 1; }
 
 python3 tests/research/test_gc_dummy_swap_dsw01_analytic.py | tee "$BUILD/analytic.txt"
-grep -Fq 'GC_DSW01_ANALYTIC_GATE=PASS' "$BUILD/analytic.txt" || fail "analytic gate"
+grep -Fq 'GC_DSW01_ANALYTIC_GATE=PASS' "$BUILD/analytic.txt" || fail "DSW-01 analytic gate"
+
+python3 tests/research/test_gc_dummy_swap_dsw02_partition.py | tee "$BUILD/dsw02.txt"
+grep -Fq 'GC_DSW02_ANALYTIC_GATE=PASS' "$BUILD/dsw02.txt" || fail "DSW-02 analytic gate"
 
 python3 - <<PY
 from pathlib import Path
