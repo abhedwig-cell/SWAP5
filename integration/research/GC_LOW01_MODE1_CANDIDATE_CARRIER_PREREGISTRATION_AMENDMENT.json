@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.gc_low01.mode1_candidate_carrier.preregistration_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-CARRIER01",
+  "status": "PRE_EXECUTION_SEMANTIC_CORRECTION",
+  "original": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json",
+  "superseding_authority": "integration/research/GC_LOW01_RESULT_CONTRACT_V1.json",
+  "reason": "The original preregistration incorrectly proposed a typed candidate groundwater_level_cm equal to requested H_phreatic. Source reconciliation subsequently established that prescribed H_phreatic/gwlinp is a control coordinate, while legacy gwl is a derived profile diagnostic materialized later by SoilWater task 3.",
+  "corrected_outputs": [
+    "requested_H_phreatic_cm",
+    "effective_H_phreatic_cm after source snap",
+    "branch identity",
+    "active_richards_nodes",
+    "raw_legacy_groundwater_level_cm retained as provenance",
+    "derived_profile_GWL_available=false unless a source-equivalent task-3 diagnostic has explicitly run",
+    "derived_profile_GWL_cm only authoritative when derived_profile_GWL_available=true",
+    "fllowgwl typed branch diagnostic",
+    "diagnosed qbot_cm_per_day",
+    "complete candidate pressure_head and water_content arrays",
+    "complete-profile storage_change_cm"
+  ],
+  "removed_alias": "candidate groundwater_level_cm = requested H_phreatic",
+  "corrected_gates": [
+    "carrier never aliases requested/effective H_phreatic to derived profile GWL",
+    "without task-3 materialization derived_profile_GWL_available is false",
+    "raw legacy gwl remains independently observable and is copied without alteration",
+    "all other original geometry, qbot, array-copy, deterministic replay and O0/O2 gates remain unchanged"
+  ],
+  "forbidden": [
+    "do not populate derived_profile_GWL from requested H_phreatic",
+    "do not rename control H_phreatic as groundwater_level merely for API convenience",
+    "do not claim task-3 equivalence until calcgwl-equivalent materialization is separately qualified"
+  ]
+}
