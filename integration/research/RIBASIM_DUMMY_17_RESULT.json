@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_basin_shared_groundwater.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-17",
+  "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+  "authority": {
+    "implementation_baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
+    "qualification_head": "0abe6158dc6f3275db4b67f8202d3cfaf11061ae",
+    "workflow_run": 35591084550,
+    "workflow_job": 106305393689,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_17_SOURCE_SCOPE=PASS",
+    "12/12 TwoBasinSharedGroundwaterTests PASS",
+    "initial route=20, Basin1->GW=30, Basin2->GW=-20 m3/time",
+    "initial component storage rates=-50,+40,+10 and total rate=0",
+    "downstream Basin initially receives equal 20 m3/time direct surface routing and 20 m3/time groundwater drainage",
+    "weighted total storage remains exactly 140 m3",
+    "surface-difference mode follows exp(-0.9 t)",
+    "surface-mean/groundwater contrast follows 0.1 exp(-1.5 t)",
+    "t=1 heads match preregistered exact solution",
+    "routing conductance changes the inter-Basin difference mode but not the common surface-groundwater mode",
+    "zero exchange decouples groundwater while surface routing remains",
+    "long-time state approaches common weighted equilibrium",
+    "RIBASIM_DUMMY_17_NETWORK_TESTS=PASS",
+    "RIBASIM_DUMMY_17_GATE=PASS"
+  ],
+  "interpretation": "Total conservation and transfer-path correctness are independent qualification axes. The exact two-Basin oracle separates direct surface routing from shared-groundwater redistribution while preserving one system-wide ledger.",
+  "nonclaims": [
+    "no Ribasim routing equivalence",
+    "no MODFLOW package/storage mapping",
+    "no management/allocation in DUMMY-17",
+    "no production coupling admission"
+  ],
+  "downstream": "DUMMY-18 may now execute the real-model authority-binding stage before any component substitution."
+}
