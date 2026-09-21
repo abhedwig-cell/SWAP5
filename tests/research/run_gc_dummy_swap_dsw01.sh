@@ -65,10 +65,13 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW04_LIVE_GATE=PASS' "$BUILD/dsw04-live.txt" || fail "DSW-04 live gate"
 
+set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw05_timestep_invariance.py | tee "$BUILD/dsw05-live.txt"
+DSW05_STATUS=${PIPESTATUS[0]}
+set -e
 
-grep -Fq 'GC_DSW05_LIVE_GATE=PASS' "$BUILD/dsw05-live.txt" || fail "DSW-05 live gate"
+test "$DSW05_STATUS" -eq 0 || echo "GC_DSW05_DIAGNOSTIC_STATUS=OPEN_NUMERICAL_GATE"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw06_reference_invariance.py | tee "$BUILD/dsw06-live.txt"
@@ -128,6 +131,8 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live gate"
 
+test "$DSW05_STATUS" -eq 0 || fail "DSW-05 strict live gate"
+grep -Fq 'GC_DSW05_LIVE_GATE=PASS' "$BUILD/dsw05-live.txt" || fail "DSW-05 live gate marker"
 test "$DSW09_STATUS" -eq 0 || fail "DSW-09 strict live gate"
 grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live gate marker"
 test "$DSW10_STATUS" -eq 0 || fail "DSW-10 strict live gate"
