@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-06",
   "branch": "work/ribasim-dummy-01",
   "baseline": "9947713ddc3d526e7e0f184948c928eba6519dcb",
-  "checkpoint_commit": "331385324ceecf980102a6b85c4c3461ed1a2b38",
+  "checkpoint_commit": "2aad88e4ee068e49db6fcd79cf124fdb652ce0e5",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -34,7 +34,10 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-06 active-set-iteration-gate.",
-  "recovery_point": "DUMMY-06 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "next_action": "Execute DUMMY-06 active-set-iteration-gate from repaired prequalification postimage.",
+  "recovery_point": "DUMMY-06 scientific postimage persisted at 2aad88e4...; only a floating-point assertion repair was made before qualification.",
+  "blockers": [],
+  "prequalification_repairs": [
+    "Replaced exact tuple equality for the preregistered floating-point cycle values with assertAlmostEqual at 11 decimal places. Expected values and scientific hypothesis are unchanged."
+  ]
 }
