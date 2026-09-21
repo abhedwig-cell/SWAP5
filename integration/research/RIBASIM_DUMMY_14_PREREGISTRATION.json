@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-14",
   "title": "Three-store external forcing and physical demand memory",
-  "baseline": "1b71363f5b30d67740af87f5f3aba5c2cc3380c5",
+  "baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
-    "current": "BLOCKED_PENDING_DUMMY_13",
-    "implementation_rule": "No DUMMY-14 model or tests before DUMMY-13 is formally qualified and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-14 model or tests before DUMMY-13 is formally qualified and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+      "workflow_run": 35571925509,
+      "main_closeout_head": "e46bc9c08769426e282df7f97213db2d50cb4c63"
+    }
   },
   "purpose": "Add DUMMY-12 rainfall, prescribed root-zone loss and capacity drainage to the DUMMY-13 three-store system while preserving the distinction between internal transfers and external system-boundary terms.",
   "window_order": [
@@ -149,5 +154,6 @@
     "no production coupling change"
   ],
   "pass_decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
-  "fail_decision": "RIBASIM_DUMMY_14_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_14_BLOCKED",
+  "authority_rebind_note": "DUMMY-14 preregistration and concept were prepared while DUMMY-13 was pending. No DUMMY-14 implementation occurred then. After DUMMY-13 qualified, the implementation baseline was rebound to this post-qualification head before any DUMMY-14 model or tests were created."
 }
