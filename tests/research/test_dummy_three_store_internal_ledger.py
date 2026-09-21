@@ -265,7 +265,28 @@ class ThreeStoreInternalLedgerTests(unittest.TestCase):
 
         self.assertEqual(start, snapshot)
 
-    def test_t11_invalid_inputs_and_sequence_length_are_rejected(self) -> None:
+    def test_t11_dense_state_grid_preserves_internal_transfer_identity(self) -> None:
+        for root_storage in (40.0, 60.0, 70.0, 80.0):
+            for surface_head in (0.6, 1.0):
+                for groundwater_head in (0.0, 0.4, 0.8):
+                    c = self.config(hmin=0.2)
+                    start = self.state(
+                        root=root_storage,
+                        hs=surface_head,
+                        hg=groundwater_head,
+                    )
+                    result = solve_three_store_window(c, start)
+
+                    self.assertGreaterEqual(result.delivered_m3, 0.0)
+                    self.assertLessEqual(result.delivered_m3, result.request_m3)
+                    self.assertAlmostEqual(
+                        total_three_store_water_m3(c, result.end),
+                        total_three_store_water_m3(c, start),
+                        places=9,
+                    )
+                    self.assert_closed(result)
+
+    def test_t12_invalid_inputs_and_sequence_length_are_rejected(self) -> None:
         with self.assertRaises(ValueError):
             ThreeStoreConfig(
                 root=RootZoneConfig(100.0, 80.0),
