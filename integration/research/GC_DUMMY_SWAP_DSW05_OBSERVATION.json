@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05",
+  "workflow_run": 35561901895,
+  "decision": "OPEN_NUMERICAL_CONVERGENCE_FLAG",
+  "physical_case": {
+    "initial_head_m": 8,
+    "total_storage": 0.2,
+    "recharge_rate_m_per_day": 0.01,
+    "exact_one_day_head_m": 8.05
+  },
+  "passed_schedules": [
+    {
+      "dt_day": [
+        1
+      ],
+      "final_head_m": 8.049999999999999
+    },
+    {
+      "dt_day": [
+        0.5,
+        0.5
+      ],
+      "final_head_m": 8.049999999999999
+    },
+    {
+      "dt_day": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "final_head_m": 8.049999999999999
+    }
+  ],
+  "open_schedule": {
+    "dt_day": [
+      0.07,
+      0.13,
+      0.2,
+      0.15,
+      0.45
+    ],
+    "step_1_head_m": 8.0035,
+    "step_2_candidate_head_m": 8.010000000000002,
+    "step_2_exact_head_m": 8.01,
+    "step_2_modflow_converged": false,
+    "step_2_iterations": 100
+  },
+  "interpretation": [
+    "The physical linear storage balance remains exact at the observed failing substep.",
+    "The preregistered requirement that each substep also receive a MODFLOW convergence certificate remains open.",
+    "Do not classify this as timestep-dependent hydrological error until the solver/convergence mechanism is isolated."
+  ],
+  "next": "GC-DUMMY-SWAP-DSW05V compares the same affine substep with and without IMS nonlinear under-relaxation."
+}
