@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-19A",
   "branch": "work/ribasim-dummy-01",
   "baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -17,7 +17,46 @@
     "stage": "stage1.real_ribasim_allocation_supply",
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "next_action": "Implement exact upstream-fixture bridge and qualify against the pinned Ribasim source.",
+  "next_action": "Execute DUMMY-19A pinned real Ribasim gate.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "scope": "Pinned real Ribasim allocation/supply observability bridge using official fair_distribution, level_demand and two_basin_user_demand fixtures.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19A_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19A_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19A_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19A_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/real_ribasim_allocation_supply_bridge.jl",
+    "tests/research/run_ribasim_dummy_19a.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "source_scope_verification": {
+    "base": "eff2f9334bc86e649747df2f60872f83f8d08214",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_19A_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_19A_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_19A_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/real_ribasim_allocation_supply_bridge.jl",
+      "tests/research/run_ribasim_dummy_19a.sh"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_BRIDGE_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "external Ribasim checkout SHA is verified at runtime before any model execution",
+      "only official pinned testmodel constructors are used",
+      "fair_distribution assertion reproduces upstream allocated/demand=0.5 contract",
+      "level_demand assertion reproduces upstream lag-aligned supplied-versus-integrated-linkflow contract",
+      "two_basin_user_demand assertion reproduces upstream fallback-route physical-flow ramp",
+      "no allocated value is used as a physical ledger transfer",
+      "no SWAP or MODFLOW component is substituted"
+    ]
+  },
+  "recovery_point": "DUMMY-19A implementation, external pin checkout, bridge script and gate are persisted; qualification remains open."
 }
