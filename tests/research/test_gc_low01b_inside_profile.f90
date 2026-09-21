@@ -87,8 +87,8 @@ program test_gc_low01b_inside_profile
 
   call require(abs(first(2)%qbot_cm_per_day) <= strict_tol, 'LOW01-B hydrostatic identity qbot')
   call require(abs(first(2)%storage_change_cm) <= strict_tol, 'LOW01-B hydrostatic identity storage')
-  call require(.not. results_bitwise_identical(first(1), first(2)) .or. &
-       .not. results_bitwise_identical(first(3), first(2)), 'LOW01-B nonvacuous control response')
+  call require(.not. physical_outputs_bitwise_identical(first(1), first(2)) .or. &
+       .not. physical_outputs_bitwise_identical(first(3), first(2)), 'LOW01-B nonvacuous physical response')
 
   write(*,'(A)') 'GC_LOW01B_SINGLE_CONSTITUTIVE_OWNER=PASS'
   write(*,'(A)') 'GC_LOW01B_IMMUTABLE_ORIGIN=PASS'
@@ -214,6 +214,20 @@ contains
     call require(all(ieee_is_finite(result%candidate%theta)), 'LOW01-B finite candidate theta')
     call require(parameter_set%active_nodes == n, 'LOW01-B parameter shape')
   end subroutine verify_result
+
+  logical function physical_outputs_bitwise_identical(a,b) result(same)
+    type(gc_low01_mode1_trial_result_t), intent(in) :: a,b
+    integer :: k
+
+    same = .false.
+    if (transfer(a%qbot_cm_per_day,0_int64) /= transfer(b%qbot_cm_per_day,0_int64)) return
+    if (a%candidate%active_nodes /= b%candidate%active_nodes) return
+    do k = 1, a%candidate%active_nodes
+      if (transfer(a%candidate%h(k),0_int64) /= transfer(b%candidate%h(k),0_int64)) return
+      if (transfer(a%candidate%theta(k),0_int64) /= transfer(b%candidate%theta(k),0_int64)) return
+    end do
+    same = .true.
+  end function physical_outputs_bitwise_identical
 
   logical function results_bitwise_identical(a,b) result(same)
     type(gc_low01_mode1_trial_result_t), intent(in) :: a,b
