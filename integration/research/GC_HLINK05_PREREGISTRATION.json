@@ -1,0 +1,87 @@
+{
+  "schema": "swap5.gc_hlink.hlink05.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK05",
+  "title": "Prospective comparison of real-SWAP phreatic storage response and current mode-5 finite-window u",
+  "status": "PREREGISTERED_BLOCKED_ON_HLINK04",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "candidate_contract": "integration/research/GC_HLINK_CANDIDATE_CONTRACT_V1.json",
+    "hlink04": "integration/research/GC_HLINK04_PREREGISTRATION.json",
+    "low01_below": "integration/research/GC_LOW01A2_PREREGISTRATION.json",
+    "map10": "integration/research/GC_REAL_SWAP_MAP10_RESULT.json",
+    "production_mode5_response": "src/runtime/mod_modflow6_swap_predictor_response.f90"
+  },
+  "activation_rule": [
+    "Execute only after GC_HLINK04_RESULT.json exists and records qualified INSIDE_SAFE and BELOW_SAFE characterization under the preregistered immutable-origin gates.",
+    "Do not change HLINK04 controls, dt or finite-difference scales in response to HLINK04 observations."
+  ],
+  "comparison_scope": {
+    "primary": "BELOW_SAFE only, because H_phreatic maps exactly to mode-5 hbot through declared bottom-face geometry and therefore both response families can be evaluated at the same immutable origin and control coordinate.",
+    "secondary": "INSIDE_SAFE is retained only as phreatic-response characterization; no current mode-5 u equality test is defined there because the control coordinates are not the same physical boundary state."
+  },
+  "exact_objects": {
+    "J_S": {
+      "definition": "central finite-difference d(complete_profile_storage_change)/dH_phreatic from HLINK04 BELOW_SAFE",
+      "units": "cm water per cm head",
+      "interpretation": "finite-window physical complete-profile storage response"
+    },
+    "J_Q": {
+      "definition": "dt * central finite-difference d(qbot)/dH_phreatic from HLINK04 BELOW_SAFE",
+      "units": "cm water per cm head",
+      "interpretation": "finite-window bottom-outward exchange response"
+    },
+    "u_mode5": {
+      "definition": "dt / (dHbot/dqbot) from the current accepted-trajectory mode-5 response machinery evaluated from the same immutable origin, same dt and same constitutive/process configuration",
+      "units": "cm water per cm head",
+      "interpretation": "current production finite-window response coefficient; not assumed a priori to be storage"
+    }
+  },
+  "preregistered_identities_to_test": [
+    {
+      "id": "MASS_DERIVATIVE_IDENTITY",
+      "statement": "For the process-free BELOW_SAFE window, J_S + J_Q = 0 within the independently declared finite-difference/numerical error envelope.",
+      "rationale": "Window mass balance gives DeltaS = qbot*dt when qtop=0 under the LOW01-A2 sign convention; differentiating with respect to H_phreatic yields equal-and-opposite storage and bottom-exchange sensitivities."
+    },
+    {
+      "id": "MODE5_RECIPROCITY",
+      "statement": "Compare u_mode5 with J_S and -J_Q at delta=0.01 cm and delta=0.1 cm without assuming equality.",
+      "decision_rule": "Report relative and absolute differences at both scales. Equality is supported only if both scales agree within 1e-4 relative and the sign conventions are independently consistent."
+    }
+  ],
+  "required_outputs": [
+    "HLINK04 BELOW_SAFE J_S at delta=0.01 and 0.1 cm",
+    "HLINK04 BELOW_SAFE J_Q at delta=0.01 and 0.1 cm",
+    "independent mode-5 u_mode5 from the same origin/window",
+    "J_S/u_mode5 and (-J_Q)/u_mode5 ratios",
+    "J_S+J_Q closure at both scales",
+    "repeatability and provenance of all three objects"
+  ],
+  "gates": [
+    "same immutable origin, constitutive provider, dt and process configuration are proven for HLINK04 BELOW_SAFE and the mode-5 u evaluation",
+    "H_phreatic-to-hbot mapping is exactly one-to-one with derivative dhbot/dH_phreatic=1 in the BELOW_SAFE branch",
+    "J_S+J_Q mass-derivative identity closes at both preregistered scales within the declared error envelope",
+    "u_mode5 is finite and positive",
+    "all comparisons are reported without retuning finite-difference deltas or solver tolerances",
+    "no equality claim is extended to INSIDE_SAFE"
+  ],
+  "interpretation_rules": [
+    "If u_mode5 approximately equals J_S and -J_Q in BELOW_SAFE, this supports a bounded local equivalence of the finite-window response objects under the below-profile mode-5/H_phreatic coordinate mapping.",
+    "Such a match does not make u_mode5 a universal static Sy; MAP10 already establishes strong window dependence.",
+    "Such a match does not establish shared-volume ownership with MODFLOW STO; geometric storage ownership remains a separate contract.",
+    "If u_mode5 differs materially from J_S while mass-derivative closure J_S+J_Q holds, investigate accepted-trajectory sensitivity construction before changing any coupling physics."
+  ],
+  "forbidden": [
+    "no production source change",
+    "no MODFLOW STO modification",
+    "no comparison across different immutable origins or coupling windows",
+    "no use of INSIDE_SAFE to claim mode-5 equivalence",
+    "no retuning after HLINK04 observation",
+    "no relabeling of u_mode5 as static specific yield"
+  ],
+  "next_if_qualified": [
+    "Use the result to define HLINK06 N:1 aggregation of separately measured storage and process responses.",
+    "Only after explicit geometric ownership is declared may a later HLINK experiment map the real-SWAP storage response into MODFLOW STO/API representation."
+  ]
+}
