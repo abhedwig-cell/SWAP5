@@ -117,7 +117,7 @@ def main() -> None:
         print(f"GC_DSW08_C_{conductance:g}_Q_EX_M_PER_DAY={q_ex_live:.17g}")
         print(f"GC_DSW08_C_{conductance:g}_HEAD_GAP_M={dh_link:.17g}")
 
-    for previous, current in zip(head_differences, head_differences[1:], strict=True):
+    for previous, current in zip(head_differences[:-1], head_differences[1:], strict=True):
         require(
             current < previous,
             f"head gap not decreasing with conductance: {head_differences}",
