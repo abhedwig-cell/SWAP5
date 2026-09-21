@@ -232,3 +232,18 @@ Prospective class expectations follow G02 exactly:
 Measured one-step amplification must match the analytical rho to absolute
 tolerance 2e-3. Candidate corrector status is recorded separately from outer-map
 contraction so that head inadmissibility is never relabelled as divergence.
+
+
+## Execution checkpoint: G07A live phase transitions
+
+Tested commit: `7f228f5ed2093d942e1312e7c522638e12b3a029`  
+Workflow run: `35620324752`  
+Result: PASS
+
+Realized response ratios were 0.5000007, 1.2000017, 2.0000028 and 4.0000057.
+The measured one-step factors matched G02 in every policy/regime combination.
+The machine-readable result is
+`integration/research/GC_FIXED_INTERFACE_FGC44_G07A_RESULT.json`.
+
+G07 production admission remains negative at this checkpoint. P4 is retained
+as the leading research candidate; no production source is changed.

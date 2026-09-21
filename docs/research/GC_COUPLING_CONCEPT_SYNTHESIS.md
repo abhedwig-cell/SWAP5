@@ -997,3 +997,24 @@ Together with G03-G06, this makes safeguarded physical-tangent iteration the
 leading research family, not yet a production-admitted algorithm. Live
 groundwater-response sweeps near the G02 singular/contraction boundaries and
 real-SWAP nonlinear/window variation remain necessary before G07 can close.
+
+
+## 16. G07A live transition sweep and policy disposition
+
+A prospective live sweep now varies the MODFLOW storage response while keeping
+the already qualified real F-GC44 SWAP tangent fixed. The realized ratios are
+approximately `r=0.5, 1.2, 2.0, 4.0`, and the measured one-step amplification
+factors reproduce the analytical G02 boundaries.
+
+The result removes any remaining basis for treating the current positive
+surrogate as a generally stable coupling rule. It is live-divergent at
+`r≈0.5, 1.2, 2.0` and live-contractive at `r≈4`; the ordinary F-GC44
+fixture at `r≈5170.76` is simply much farther into that contractive regime.
+Picard likewise changes from divergent below `r=1` to contractive above it.
+
+Physical Newton remains locally exact in every tested live regime, but G04
+shows why that is not sufficient for production: unsafeguarded Newton can make
+large nonlinear excursions. Combining G04, G06 and G07A therefore leaves
+safeguarded physical Newton as the leading research candidate. This is a
+research disposition only. Production HCOF/RHS and the current admitted
+coupling path remain unchanged.

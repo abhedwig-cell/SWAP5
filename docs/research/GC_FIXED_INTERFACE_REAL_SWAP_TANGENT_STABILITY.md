@@ -104,3 +104,21 @@ requires `alpha=3.8650`, outside an under-relaxation contract. Where the
 derived alpha is admissible and exact p is known, the resulting P3 step is
 algebraically Newton. Relaxation is therefore not a substitute for a
 safeguard against nonlinear finite-step behavior.
+
+
+## G07A live phase-transition confirmation
+
+Run `35620324752` varies the groundwater storage response so that realized
+`r=a/|p|` spans both sides of the G02 thresholds while retaining the same
+real F-GC44 corrector.
+
+Measured P0 factors are approximately +4.0 at `r=0.5`, -10.0 at `r=1.2`,
+-2.0 at `r=2.0`, and -0.667 at `r=4.0`. Picard gives approximately -2.0,
+-0.833, -0.5 and -0.25 respectively. Physical Newton remains zero to numerical
+precision. These live factors match the analytical map.
+
+Thus the positive surrogate's stability is conclusively regime-dependent.
+Its successful ordinary F-GC44 behavior cannot be generalized, while PB01 is
+not an isolated numerical curiosity. The combined evidence favors a
+physical-tangent method with safeguarding, but does not yet qualify a production
+implementation.

@@ -1,0 +1,169 @@
+{
+  "schema": "swap5.gc_fixed_interface.fgc44_g07a_live_phase_transitions.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "tested_commit": "7f228f5ed2093d942e1312e7c522638e12b3a029",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow": {
+    "name": "GC real-SWAP FGC44 semantic scan",
+    "run_id": 35620324752,
+    "job_id": 106401463950,
+    "conclusion": "success"
+  },
+  "production_changes": false,
+  "setup": {
+    "window_day": 0.0001,
+    "k_m_per_day": 1e-10,
+    "ss_per_m": 0,
+    "target_r": [
+      0.5,
+      1.2,
+      2,
+      4
+    ],
+    "start_error_m": 1e-7,
+    "sy_rule": "sy = r_target * u",
+    "groundwater_response_method": "fresh converged constant-flux MODFLOW probes"
+  },
+  "regimes": [
+    {
+      "target_r": 0.5,
+      "realized_r": 0.5000007122262325,
+      "sy": 0.000017014680186395465,
+      "a_per_s": 0.000001969293662089078,
+      "policies": {
+        "P0": {
+          "rho": 4.000003164984154,
+          "class": "DIVERGENT",
+          "rho_measured": 4.000002853273175,
+          "candidate_status": 0
+        },
+        "P1": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "rho_measured": 1.0436096436969571e-7,
+          "candidate_status": 0
+        },
+        "P2": {
+          "rho": -1.999997151099128,
+          "class": "DIVERGENT",
+          "rho_measured": -1.9999968414154934,
+          "candidate_status": 0
+        },
+        "P3": {
+          "class": "RELAXATION_NOT_ADMISSIBLE",
+          "alpha": -0.3333329816687984
+        }
+      }
+    },
+    {
+      "target_r": 1.2,
+      "realized_r": 1.2000017059347932,
+      "sy": 0.000040835232447349114,
+      "a_per_s": 0.000004726304775590451,
+      "policies": {
+        "P0": {
+          "rho": -9.999937921244634,
+          "class": "DIVERGENT",
+          "rho_measured": -9.999938332662065,
+          "candidate_status": 0
+        },
+        "P1": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "rho_measured": -3.663735983191445e-8,
+          "candidate_status": 0
+        },
+        "P2": {
+          "rho": -0.8333321486580778,
+          "class": "CONTRACTIVE",
+          "rho_measured": -0.8333322170040814,
+          "candidate_status": 0
+        },
+        "P3": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "alpha": 0.09090960395955133,
+          "rho_measured": -3.774758285712398e-8,
+          "candidate_status": 0
+        }
+      }
+    },
+    {
+      "target_r": 2,
+      "realized_r": 2.0000028436799586,
+      "sy": 0.00006805872074558186,
+      "a_per_s": 0.000007877174627777334,
+      "policies": {
+        "P0": {
+          "rho": -1.9999955790645594,
+          "class": "DIVERGENT",
+          "rho_measured": -1.9999963751218226,
+          "candidate_status": 0
+        },
+        "P1": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "rho_measured": -2.6756374907549646e-7,
+          "candidate_status": 0
+        },
+        "P2": {
+          "rho": -0.49999928908102115,
+          "class": "CONTRACTIVE",
+          "rho_measured": -0.4999996885824414,
+          "candidate_status": 0
+        },
+        "P3": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "alpha": 0.3333338245491062,
+          "rho_measured": -2.653433030250774e-7,
+          "candidate_status": 0
+        }
+      }
+    },
+    {
+      "target_r": 4,
+      "realized_r": 4.000005674892706,
+      "sy": 0.00013611744149116372,
+      "a_per_s": 0.000015754349206451538,
+      "policies": {
+        "P0": {
+          "rho": -0.6666656401022649,
+          "class": "CONTRACTIVE",
+          "rho_measured": -0.6666659550137075,
+          "candidate_status": 0
+        },
+        "P1": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "rho_measured": -1.9095836033603898e-7,
+          "candidate_status": 0
+        },
+        "P2": {
+          "rho": -0.24999964531970906,
+          "class": "CONTRACTIVE",
+          "rho_measured": -0.2499998831490266,
+          "candidate_status": 0
+        },
+        "P3": {
+          "rho": 0,
+          "class": "CONTRACTIVE",
+          "alpha": 0.6000003695634122,
+          "rho_measured": -1.8873791428561992e-7,
+          "candidate_status": 0
+        }
+      }
+    }
+  ],
+  "conclusions": [
+    "The live real-SWAP/MODFLOW system reproduces the analytical G02 transition structure across r<1, 1<r<3 and r>3.",
+    "P0 is not a generally admissible production policy: it diverges live for r≈0.5, 1.2 and 2.0 and is contractive at r≈4.",
+    "Picard is not universal either: it diverges for r<1 and is contractive for r>1.",
+    "Positive under-relaxation cannot rescue P0 for r<1 because the response-derived cancellation alpha is negative.",
+    "For 1<r, response-derived P3 can cancel the local linear error but this does not provide nonlinear robustness independent of physical-tangent information.",
+    "P1 remains locally exact in every live regime tested; G04 separately shows unsafeguarded Newton can make unacceptable nonlinear excursions.",
+    "Combined G04/G06/G07A evidence therefore leaves safeguarded physical Newton P4 as the leading research candidate, not yet a production-admitted algorithm."
+  ],
+  "production_disposition": "NO_PRODUCTION_CHANGE; P4_RESEARCH_CANDIDATE; PRODUCTION_ADMISSION_DEFERRED"
+}
