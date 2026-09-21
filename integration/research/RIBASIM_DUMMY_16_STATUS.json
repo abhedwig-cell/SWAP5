@@ -6,8 +6,8 @@
   "preregistration_commit": "817470dcde729821190587154a193936aeb2abcf",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
   "blocker": null,
@@ -28,7 +28,7 @@
       "external_total_m3": 20.444444444444443
     }
   },
-  "next_action": "Freeze this DUMMY-16 postimage on a single qualification branch and execute management-clock-gate.",
+  "next_action": "Rebind DUMMY-17 implementation baseline to post-DUMMY-16 closeout authority.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -54,7 +54,7 @@
     }
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-16 implementation, tests and focused runner are persisted; qualification remains open.",
+  "recovery_point": "DUMMY-16 closed qualified; management-clock event semantics authority is available.",
   "source_scope_verification": {
     "base": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
     "changed_files": [
@@ -81,5 +81,15 @@
       "fast and stale schedules have identical physical water trajectory",
       "combined storage loss equals cumulative supplied external demand in both schedules"
     ]
+  },
+  "checkpoint_commit": "7ac19f5d62a78438045cd04d85f9f750fbcec15d",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+    "workflow_run": 35590642324,
+    "workflow_job": 106303997817,
+    "qualification_head": "141f713fd69b67f6c26a984bb577123f561793a6",
+    "tests": "12/12 PASS",
+    "gate": "PASS"
   }
 }
