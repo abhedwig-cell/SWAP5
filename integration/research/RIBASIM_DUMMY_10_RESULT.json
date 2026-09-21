@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_management.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-10",
+  "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+  "authority": {
+    "baseline": "269fbe65f7f8febf0baa1df73a6c749abf43534b",
+    "qualified_main_pre_result_head": "4a5acf3c929a384becc1ee8bb96728e0818c8655",
+    "qualification_head": "17ea641ce22d2245db23dbeec5185db3f8a21430",
+    "workflow_runs": [
+      35568794175,
+      35568804086
+    ],
+    "workflow_job": 106235842146,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_10_SOURCE_SCOPE=PASS",
+    "10/10 TwoStoreManagementTests PASS",
+    "fixed-delivery reciprocal equations close",
+    "canonical finite-groundwater curtailed solution U=32,V=28,hs1=0.4,hg1=0.28",
+    "combined storage loss equals management delivery",
+    "finite groundwater response changes management outcome relative to DUMMY-05 fixed-head case",
+    "groundwater-storage family moves monotonically toward fixed-head limit",
+    "A_g=1e12 recovers DUMMY-05 within preregistered precision",
+    "FULL and ZERO dynamic-groundwater regimes close",
+    "active-set boundaries are continuous",
+    "zero-withdrawal surface-floor violation fails closed",
+    "RIBASIM_DUMMY_10_GATE=PASS"
+  ],
+  "canonical_case": {
+    "parameters": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50,
+      "dt": 1,
+      "h_s0": 1,
+      "h_g0": 0,
+      "hmin": 0.4,
+      "R": 40
+    },
+    "exact": {
+      "regime": "CURTAILED",
+      "U_m3": 32,
+      "V_m3": 28,
+      "h_s1_m": 0.4,
+      "h_g1_m": 0.28,
+      "shortage_m3": 8
+    },
+    "combined_ledger": "initial 100 m3; final 68 m3; 32 m3 external loss equals managed delivery"
+  },
+  "fixed_head_limit": {
+    "DUMMY_05": {
+      "U_m3": 25,
+      "V_m3": 35,
+      "h_s1_m": 0.4
+    },
+    "interpretation": "finite groundwater storage raises groundwater head, reduces the exchange gradient, and can leave more surface water available for management"
+  },
+  "interpretation": "Management and physical exchange are mutually state-dependent through both dynamic heads. Internal exchange cancels exactly from the combined two-store ledger; only managed withdrawal changes combined storage in the frozen problem.",
+  "non_claims": [
+    "no MODFLOW storage-package mapping",
+    "no Ribasim network allocation equivalence",
+    "no dynamic SWAP/root-zone demand",
+    "no production coupling change"
+  ],
+  "downstream": "Unblock DUMMY-11 multi-window propagation of both accepted heads and compare with the independent continuous two-store event reference."
+}
