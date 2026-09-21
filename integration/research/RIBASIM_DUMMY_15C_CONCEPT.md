@@ -1,8 +1,10 @@
 # RIBASIM-DUMMY-15C blocked concept: partial irrigation-event realization
 
-> Status: BLOCKED pending DUMMY-15B qualification.
+> Status: IMPLEMENTED after DUMMY-15B qualification.
 >
-> No implementation or tests are authorized yet.
+> This concept was fixed while implementation was blocked. The executable
+> oracle was created only after the implementation baseline was rebound to the
+> qualified DUMMY-15B authority.
 
 ## Why this work unit is needed
 
@@ -298,7 +300,7 @@ None may be introduced merely as a numerical convenience.
 
 ## Qualification target
 
-A future DUMMY-15C implementation must prove for every policy:
+The DUMMY-15C implementation tests for every policy:
 
 1. physical water supplied equals the policy's declared supplied amount;
 2. allocated-but-unsupplied water never enters a water ledger;
