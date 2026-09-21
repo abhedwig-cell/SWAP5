@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Execute DUMMY-19C pinned real Ribasim realization-conflict gate.",
+  "next_action": "Execute repaired DUMMY-19C pinned real Ribasim gate; only the post-repair run may qualify the work unit.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -47,6 +47,26 @@
       "priority reversal must leave allocation, physical supply split and Basin trajectory unchanged because both demands are fully allocated"
     ]
   },
-  "recovery_point": "DUMMY-19C generator, verifier, runner and workflow gate are persisted; executable qualification remains open.",
-  "qualification_attempt": "PINNED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
+  "recovery_point": "DUMMY-19C observability integration repaired after run 35600995386; scientific qualification remains open.",
+  "qualification_attempt": "PINNED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+  "qualification_attempts": [
+    {
+      "run": 35600995386,
+      "job": 106336801332,
+      "state": "OBSERVABILITY_TIME_SUPPORT_FAILED_BEFORE_SCIENTIFIC_COMPARISON",
+      "failure": "Verifier treated flow_data timestamps as point samples and required an endpoint timestamp at 86400 s. Pinned Ribasim flow_data reports interval-mean flows timestamped at interval start.",
+      "scientific_effect": "none; model, allocation, min_level, independent reference and all preregistered tolerances unchanged",
+      "authority_use": "forbidden"
+    }
+  ],
+  "prequalification_repair": {
+    "classification": "OUTPUT_TIME_SUPPORT_INTEGRATION_REPAIR",
+    "pinned_source": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a core/src/write.jl::flow_data",
+    "source_semantics": "flow_rate values are means over saveat intervals; output timestamps denote interval starts",
+    "correction": "Integrate as sum(mean_flow_i * represented_interval_duration_i), with final interval extending from its start timestamp to the preregistered one-day horizon.",
+    "changed_parameters": [],
+    "changed_tolerances": [],
+    "changed_expected_values": [],
+    "hypothesis_change": false
+  }
 }
