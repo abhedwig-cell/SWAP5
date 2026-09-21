@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_temporal.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-11",
+  "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+  "authority": {
+    "implementation_baseline": "be1af9f93eb444d676f2df77b0260f3e56f7870a",
+    "qualified_main_pre_result_head": "cf97bd5cb0aee5d487b124475f7861fdbf3a20e6",
+    "qualification_head": "9f61fa5abe337fe77227291ab613d4cc77035499",
+    "workflow_run": 35569720082,
+    "workflow_job": 106238602717,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_11_SOURCE_SCOPE=PASS",
+    "11/11 TwoStoreTemporalMemoryTests PASS",
+    "accepted surface and groundwater heads chain exactly across windows",
+    "component and combined ledgers close over multiple partitions",
+    "nonbinding FULL-demand discrete recurrence matches independent mean/difference derivation",
+    "continuous canonical event reference matches preregistered event time, heads, delivery and exchange",
+    "N=8192 discrete partition is closer than N=16 to the continuous reference",
+    "finite groundwater storage delays management shutoff and increases delivery relative to fixed-head DUMMY-08",
+    "ZERO-management windows continue reciprocal physical exchange and can move surface head below hmin",
+    "request remains exogenous after shortage; no backlog state appears",
+    "large groundwater storage approaches the fixed-head multiwindow family",
+    "coarse and two-window values match prequalification expectations",
+    "RIBASIM_DUMMY_11_GATE=PASS"
+  ],
+  "canonical_continuous_case": {
+    "A_s": 100,
+    "A_g": 100,
+    "C": 50,
+    "h_s0": 1,
+    "h_g0": 0,
+    "hmin": 0.4,
+    "request_rate": 40,
+    "horizon": 1,
+    "event_time": 0.909516342472789,
+    "cumulative_delivery_m3": 36.38065369891156,
+    "final_surface_head_m": 0.3929144878349753,
+    "final_groundwater_head_m": 0.243278975175909,
+    "cumulative_exchange_m3": 24.32789751759091
+  },
+  "temporal_memory_result": {
+    "fixed_head_DUMMY_08_event_time": "~0.8109302162",
+    "dynamic_groundwater_event_time": 0.909516342472789,
+    "interpretation": "Accepted groundwater head carries memory into subsequent windows, weakens the later exchange gradient, delays management shutoff and increases cumulative managed delivery in the frozen analytical system."
+  },
+  "current_branch_evidence_reconciliation": {
+    "workflow_change_after_qualification": "DUMMY-12 path/job append only",
+    "d11_job_contract": "qualified DUMMY-11 terminal workflow block remains present verbatim in the current dispatcher",
+    "scientific_dependency_change": "none to DUMMY-11 model, runner, tests or inherited DUMMY-10 equations before result closeout"
+  },
+  "nonclaims": [
+    "no MODFLOW storage-package mapping",
+    "no real SWAP root-zone demand feedback",
+    "no production timestep criterion",
+    "no proof of real SWAP/MODFLOW storage non-overlap",
+    "no production coupling admission"
+  ],
+  "downstream": "DUMMY-11 may now satisfy one of the two required authorities for DUMMY-13. DUMMY-13 remains blocked until DUMMY-12 also qualifies."
+}
