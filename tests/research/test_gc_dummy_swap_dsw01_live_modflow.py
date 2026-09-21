@@ -89,7 +89,7 @@ def require(value: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True) -> None:
+def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True, well_rate_m3_per_day: float = 0.0) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
         version="mf6",
@@ -136,6 +136,13 @@ def build_model(workdir: Path, name: str, sy: float = SY, newton: bool = True) -
         transient={0: True},
         save_flows=True,
     )
+    if well_rate_m3_per_day != 0.0:
+        flopy.mf6.ModflowGwfwel(
+            gwf,
+            stress_period_data={0: [((0, 0, 0), float(well_rate_m3_per_day))]},
+            pname="KNOWN_SOURCE",
+            save_flows=True,
+        )
     flopy.mf6.ModflowGwfapi(
         gwf,
         maxbound=1,
@@ -152,10 +159,11 @@ def run_case(
     rhs_m3_per_day: float,
     sy: float = SY,
     newton: bool = True,
+    well_rate_m3_per_day: float = 0.0,
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
-        build_model(workdir, case_name, sy=sy, newton=newton)
+        build_model(workdir, case_name, sy=sy, newton=newton, well_rate_m3_per_day=well_rate_m3_per_day)
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
         initialized = False
