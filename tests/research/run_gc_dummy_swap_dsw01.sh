@@ -106,10 +106,13 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW09R_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09r-live.txt" || fail "DSW-09R diagnostic gate"
 
+set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw09u_ims_history.py | tee "$BUILD/dsw09u-live.txt"
+DSW09U_STATUS=${PIPESTATUS[0]}
+set -e
 
-grep -Fq 'GC_DSW09U_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09u-live.txt" || fail "DSW-09U diagnostic gate"
+test "$DSW09U_STATUS" -eq 0 || echo "GC_DSW09U_DIAGNOSTIC_STATUS=OPEN"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw11_memory_state.py | tee "$BUILD/dsw11-live.txt"
@@ -131,16 +134,23 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW14_LIVE_GATE=PASS' "$BUILD/dsw14-live.txt" || fail "DSW-14 live gate"
 
+set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw15_forcing_order.py | tee "$BUILD/dsw15-live.txt"
+DSW15_STATUS=${PIPESTATUS[0]}
+set -e
 
-grep -Fq 'GC_DSW15_LIVE_GATE=PASS' "$BUILD/dsw15-live.txt" || fail "DSW-15 live gate"
+test "$DSW15_STATUS" -eq 0 || echo "GC_DSW15_DIAGNOSTIC_STATUS=OPEN"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw16_n_to_1_aggregation.py | tee "$BUILD/dsw16-live.txt"
 
 grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live gate"
 
+test "$DSW09U_STATUS" -eq 0 || fail "DSW-09U diagnostic gate"
+grep -Fq 'GC_DSW09U_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09u-live.txt" || fail "DSW-09U marker"
+test "$DSW15_STATUS" -eq 0 || fail "DSW-15 strict live gate"
+grep -Fq 'GC_DSW15_LIVE_GATE=PASS' "$BUILD/dsw15-live.txt" || fail "DSW-15 marker"
 test "$DSW05_STATUS" -eq 0 || fail "DSW-05 strict live gate"
 grep -Fq 'GC_DSW05_LIVE_GATE=PASS' "$BUILD/dsw05-live.txt" || fail "DSW-05 live gate marker"
 test "$DSW09_STATUS" -eq 0 || fail "DSW-09 strict live gate"
