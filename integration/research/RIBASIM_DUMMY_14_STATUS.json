@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store_forcing.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-14",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "332a249f680473647cb05850eff9fa5c1193e733",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+  "blocker": "DUMMY-13 qualification run 35571925509 is pending.",
+  "prepared_scope": "Add rainfall, prescribed root-zone loss and root capacity drainage to the three-store ledger after the internal U/V cancellation authority closes.",
+  "next_action": "After DUMMY-13 qualification, rebind DUMMY-14 implementation baseline before creating any DUMMY-14 model or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
