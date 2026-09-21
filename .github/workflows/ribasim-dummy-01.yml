@@ -132,6 +132,12 @@ on:
       - 'tests/research/generate_real_ribasim_priority_conflict.py'
       - 'tests/research/real_ribasim_priority_conflict_bridge.jl'
       - 'tests/research/run_ribasim_dummy_19b.sh'
+      - 'integration/research/RIBASIM_DUMMY_19C_*.json'
+      - 'integration/research/RIBASIM_DUMMY_19C_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/generate_real_ribasim_realization_conflict.py'
+      - 'tests/research/real_ribasim_realization_conflict_bridge.jl'
+      - 'tests/research/run_ribasim_dummy_19c.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -462,3 +468,26 @@ jobs:
         env:
           RIBASIM_ROOT: ${{ github.workspace }}/.ribasim-pin
         run: bash tests/research/run_ribasim_dummy_19b.sh
+
+  real-ribasim-realization-conflict-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-19c-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned Ribasim
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: f965a3266a4685bf10f3458aaa1855d09fa45a7a
+          path: .ribasim-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-pin
+      - name: Run pinned real Ribasim realization conflict
+        run: bash tests/research/run_ribasim_dummy_19c.sh
