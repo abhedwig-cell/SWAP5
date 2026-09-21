@@ -138,7 +138,7 @@ def main()->None:
             session=Modflow6PreparedSolveSession(kernel,"GWF_1","API_SWAP",publisher,solution_id=1)
             require(session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,session.last_error)
             require(session.open_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
-            accepted_xold=session.accepted_xold.copy()
+            accepted_xold=session.accepted_xold.copy()\n            # G03: map the prepared MODFLOW subsystem response q_gw(H) by varying\n            # only the affine API intercept at fixed predictor HCOF. This is a\n            # numerical groundwater-response diagnostic; SWAP state is untouched.\n            gwscan=[]\n            for dh in (-2e-6,-1e-6,-5e-7,5e-7,1e-6,2e-6):\n                target=href+dh\n                # Anchor the API line so q=0 at the requested target; solve and\n                # record the resulting middle-cell head and API flux.\n                trhs=hcof*target\n                st,it=session.publish_and_solve_iteration([Binding(7001,1,2)],[Term(7001,hcof,trhs)])\n                require(st==PreparedSolveStatus.OK and it is not None,session.last_error)\n                hh=float(it.head_m[1]); qq=(hcof*hh-trhs)/(AREA_M2*DAY_TO_S)\n                gwscan.append((dh,hh,qq))\n            for dh,hh,qq in gwscan:\n                print(f"FGC44_GW_SCAN_TARGET_DH_M={dh:.17g} H={hh:.17g} QGW={qq:.17g}")
             binding=[Binding(7001,1,2)]
             current_hcof=hcof; current_rhs=rhs
             final_head=None; final_q_swap=None; final_q_gw=None; converged=False
