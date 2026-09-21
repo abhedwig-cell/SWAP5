@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw18.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW18",
+  "title": "Storage-sensitivity limits versus finite-resistance q-link limits",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "storage_family": {
+    "initial_head_m": 8,
+    "input_m": 0.01,
+    "dt_day": 1,
+    "storage_values": [
+      0.02,
+      0.2,
+      0.8
+    ],
+    "law": "S*(H1-H0)=I"
+  },
+  "q_link_family": {
+    "initial_head_m": 8,
+    "dummy_storage": 0.1,
+    "modflow_storage": 0.1,
+    "input_to_dummy_m": 0.01,
+    "dt_day": 1,
+    "conductances_per_day": [
+      0.001,
+      0.1,
+      1000
+    ],
+    "law": "q=C*(H_dummy-H_mf)"
+  },
+  "gates": [
+    "storage-family head rise decreases monotonically with increasing S and each case closes mass within 1e-12 m",
+    "q-link head gap decreases monotonically with increasing C and total two-reservoir mass closes within 1e-12 m",
+    "large-C q-link approaches the combined-storage shared-head limit 8.05 m",
+    "the two parameter families retain distinct limiting signatures"
+  ],
+  "forbidden": [
+    "do not identify storage sensitivity with physical interface conductance",
+    "do not infer a real SWAP interface resistance"
+  ]
+}
