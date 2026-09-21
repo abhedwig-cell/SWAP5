@@ -1,0 +1,20 @@
+{
+  "schema": "swap5.gc_fixed_interface.g08.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-FIXED-INTERFACE-G08",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py",
+  "runner": "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+  "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+  "state": "IMPLEMENTED_AWAITING_POSTIMAGE_EXECUTION",
+  "production_changes": false,
+  "invariants": [
+    "diagnostic trials discarded",
+    "accepted SWAP revision/time/ledger immutable",
+    "status 4 is lifecycle misuse, status 6 is trial failure",
+    "production HCOF/RHS untouched"
+  ],
+  "next_action": "Execute the latest persisted postimage once through the live semantic scan, persist the machine-readable observation, then decide whether real-SWAP nonlinearity and the P4 safeguard were actually exercised."
+}
