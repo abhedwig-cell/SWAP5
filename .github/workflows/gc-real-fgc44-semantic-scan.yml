@@ -13,7 +13,7 @@ on:
       - '.github/workflows/gc-real-fgc44-semantic-scan.yml'
   workflow_dispatch:
 
-# CI trigger marker: admissibility-map-20260921
+# CI trigger marker: groundwater-response-g03-20260921
 permissions: {contents: read}
 jobs:
   semantic-scan:
