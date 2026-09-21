@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_stabilization.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-07",
+  "decision": "RIBASIM_DUMMY_07_QUALIFIED_STABILIZATION_MECHANISMS",
+  "authority": {
+    "baseline": "5614799ff6930f2d049f2e04e8dd95a50647be3b",
+    "qualified_main_pre_result_head": "4dd9f0e15228202499ce8324dce9bba037a80209",
+    "qualification_head": "73ec82dde87187d4311c408a2d2a7e78733f1047",
+    "workflow_run": 35567469467,
+    "workflow_job": 106232061301,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_07_SOURCE_SCOPE=PASS",
+    "9/9 ActiveSetStabilizationTests PASS",
+    "fixed FULL/ZERO relaxed error ratio equals q=1-omega(1+lambda)",
+    "interior CURTAILED relaxed error ratio equals 1-omega",
+    "stiff lambda=1.5 case with omega_star=0.4 reaches exact V=-6 after active-set identification and one fixed-regime update",
+    "omega=0.8 reproduces the strict-boundary -36/24 two-cycle",
+    "omega=0.5 converges after regime identification",
+    "direct active-set solve matches DUMMY-05 over dense feasible grid",
+    "monkeypatch confirms direct solver does not call HeadDependentManagementProblem.solve()",
+    "direct active-set physical infeasibility agrees with DUMMY-05 fail-closed classification",
+    "omega_star=1/(1+lambda) annihilates fixed-regime error for multiple lambda values",
+    "RIBASIM_DUMMY_07_GATE=PASS"
+  ],
+  "bounded_results": {
+    "fixed_full_zero_error_factor": "q=1-omega(1+lambda)",
+    "local_contraction": "0<omega<2/(1+lambda)",
+    "local_zero_derivative": "omega_star=1/(1+lambda)",
+    "curtailed_error_factor": "1-omega"
+  },
+  "stiff_case": {
+    "lambda": 1.5,
+    "exact_exchange_m3": -6,
+    "undamped": "qualified DUMMY-06 nonconvergent active-set cycle",
+    "omega_star": 0.4,
+    "sequence_m3": [
+      60,
+      12,
+      -6,
+      -6
+    ],
+    "strict_boundary_omega": 0.8,
+    "boundary_cycle_m3": [
+      -36,
+      24,
+      -36,
+      24
+    ]
+  },
+  "interpretation": "DUMMY-06 failure is an iteration-map failure, not absence of a coupled solution. Under-relaxation can repair the frozen counterexample without changing equations, while direct active-set solving bypasses iterative exchange convergence for this small piecewise-linear problem.",
+  "non_claims": [
+    "no global convergence claim",
+    "no production relaxation-factor prescription",
+    "no claim that direct active-set solving generalizes to Ribasim networks",
+    "no production coupling change"
+  ],
+  "downstream": "Move from single-window algebra to multi-window state propagation and timestep-partition experiments."
+}
