@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.gc_hlink.low01b.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK-LOW01-B",
+  "title": "Typed prescribed-groundwater-level inside-profile active-domain truncation",
+  "status": "CONDITIONAL_PREREGISTRATION_BLOCKED_PARENT_LOW01A",
+  "branch": "work/f-gc-hlink-low01-research",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "parent": "integration/research/GC_HLINK_LOW01A_PREREGISTRATION.json",
+  "activation_rule": "Execute only after LOW01-A live gate passes without modification to its source mapping or tolerances.",
+  "source_authority": {
+    "headcalc": "src/legacy/b1_10_port/headcalc.f90",
+    "lower_boundary_audit": "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "selector_classification": "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
+  },
+  "fixture": {
+    "geometry_native": {
+      "z": [
+        -0.25,
+        -0.75,
+        -1.5,
+        -2.5
+      ],
+      "dz": [
+        0.5,
+        0.5,
+        1,
+        1
+      ]
+    },
+    "cases": [
+      {
+        "groundwater_level_native": -1,
+        "expected_active_richards_nodes": 2,
+        "saturated_continuation_nodes": [
+          3,
+          4
+        ]
+      },
+      {
+        "groundwater_level_native": -2,
+        "expected_active_richards_nodes": 3,
+        "saturated_continuation_nodes": [
+          4
+        ]
+      }
+    ],
+    "node_snap_tolerance_avoidance": "Both controls are deliberately away from node elevations and the 1e-4 source snap guard.",
+    "forcing": "One hydrostatic/zero-flux control plus one fixed small top-flux perturbation per groundwater level; forcing values are fixed before execution in the implementation record and are not tuned to outcomes."
+  },
+  "research_route": {
+    "method": "research-only direct HeadCalc invocation with explicit reference_richards_state_binding, typed constitutive/top/source providers and immutable-origin replay; production request validator remains unchanged",
+    "boundary_mode": 1,
+    "control_field": "state_binding.gwlinp",
+    "expected_fllowgwl": false,
+    "production_changes": false
+  },
+  "gates": [
+    "The independently derived NN equals the preregistered active Richards node count for each groundwater level.",
+    "HeadCalc completes without timestep reduction for the fixed controls.",
+    "For all nodes below NN, candidate water content equals cofgen(2,i) saturated water content within machine-scale bounds.",
+    "The bottom active-node gradient uses h(NN)/(z(NN)-gwlinp)+1 and the source-declared Jacobian stiffness Kmean(NN+1)/(z(NN)-gwlinp) is finite and positive.",
+    "The reconstructed saturated continuation heads below NN are finite and deterministic.",
+    "qbot is output from the complete vertical flux chain, finite, and whole-profile storage change closes against top, bottom and internal source/sink amounts within 1e-10 native length.",
+    "Repeating the same prescribed groundwater-level trial from an immutable origin reproduces NN, full pressure/water state and qbot within machine-scale bounds."
+  ],
+  "characterization_only": [
+    "Magnitude/sign of qbot under the fixed top-flux perturbation.",
+    "Numerical iteration count and any difference between NN=2 and NN=3.",
+    "Profile shape in the saturated continuation."
+  ],
+  "forbidden": [
+    "no production request-validator change",
+    "no production SWBOTB=1 admission",
+    "no alias of gwlinp to mode-5 bottom_head inside the profile",
+    "no branch-boundary claims before LOW01-C",
+    "no HLINK04 activation from LOW01-B alone"
+  ],
+  "next_if_pass": [
+    "Execute LOW01-D transactional replay/rejection across accepted origin.",
+    "Characterize LOW01-C across node/profile-bottom branch boundaries.",
+    "Only after A/B/D pass and C is characterized reconsider HLINK04 activation."
+  ]
+}
