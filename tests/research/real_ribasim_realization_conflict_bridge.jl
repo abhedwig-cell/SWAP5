@@ -181,10 +181,27 @@ function check_case(
 
     basin = DataFrame(Ribasim.basin_data(model))
     basin2 = basin[basin.node_id .== 2, :]
-    require(!isempty(basin2), "$model_name Basin 2 output is absent")
+    require(!isempty(basin2), "$model_name Basin 2 interval output is absent")
     sort!(basin2, :time)
-    final_level = Float64(last(basin2.level))
+
+    # basin_data intentionally excludes the final state because its rows carry
+    # interval-flow context. Use the pinned endpoint-state surface for the
+    # actual model-end level.
+    basin_state = DataFrame(Ribasim.basin_state_data(model))
+    basin_state2 = basin_state[basin_state.node_id .== 2, :]
+    require(
+        nrow(basin_state2) == 1,
+        "$model_name final Basin state is absent or ambiguous",
+    )
+    final_level = Float64(only(basin_state2.level))
     storage_gain = AREA * (final_level - 1.0)
+
+    println(
+        "RIBASIM_REAL_19C_OBS model=$model_name " *
+        "root_supplied_m3=$root_volume external_supplied_m3=$ext_volume " *
+        "total_supplied_m3=$total_volume final_level=$final_level " *
+        "storage_gain_m3=$storage_gain",
+    )
 
     require(
         isapprox(final_level, EXPECTED_FINAL_LEVEL; atol = LEVEL_TOL, rtol = 0.0),
