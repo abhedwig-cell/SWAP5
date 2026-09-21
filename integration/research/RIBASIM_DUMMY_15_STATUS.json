@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Trigger DUMMY-15 qualification from a status-only child branch against the frozen corrected base.",
+  "next_action": "Execute corrected DUMMY-15 competing-claims-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -73,5 +73,7 @@
     "scientific_effect": "none; equations, preregistered expected values and priority semantics unchanged",
     "superseded_run": 35577982472
   },
-  "qualification_route": "FROZEN_CORRECTED_BASE"
+  "qualification_route": "FROZEN_CORRECTED_BASE",
+  "qualification_attempt": "frozen_corrected_base_status_only_pr",
+  "qualification_base": "work/ribasim-dummy-15-base@a306217b847e67c2cd28429a08e70e6b95c9cca1"
 }
