@@ -4,7 +4,7 @@
   "work_unit": "GC-REAL-SWAP-MAP09A",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "ACTIVATED_AWAITING_LIVE_EXECUTION",
+  "state": "QUALIFIED",
   "preregistration": "integration/research/GC_REAL_SWAP_MAP09A_PREREGISTRATION.json",
   "parent_result": "integration/research/GC_REAL_SWAP_MAP09_RESULT.json",
   "selected_delta_m": 1e-8,
@@ -12,6 +12,12 @@
   "test": "tests/research/test_gc_real_swap_map09a_decomposition.py",
   "runner": "tests/research/run_gc_real_swap_map09.sh",
   "production_changes": false,
-  "next_action": "Execute unchanged MAP09A decomposition after the MAP09 parent gate in the same research bridge build; record J_S, J_R and J_nonbottom without requiring equality to production u.",
-  "blockers": []
+  "next_action": "Treat the local J_nonbottom=0 result as bounded to this frozen active-drainage window. Reconcile drainage staging before designing any broader head-sensitivity claim; do not identify production u with exact storage.",
+  "blockers": [],
+  "result": "integration/research/GC_REAL_SWAP_MAP09A_RESULT.json",
+  "qualification": {
+    "workflow_run": 35578161179,
+    "workflow_job": 106264624573,
+    "live_gate": "PASS"
+  }
 }
