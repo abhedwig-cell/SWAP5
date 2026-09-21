@@ -1,11 +1,11 @@
 # RIBASIM-DUMMY-13 blocked concept: three-store internal ledger
 
-> Status: BLOCKED pending formal qualification of both RIBASIM-DUMMY-11 and
+> Status: IMPLEMENTED after formal qualification of both RIBASIM-DUMMY-11 and
 > RIBASIM-DUMMY-12.
 >
-> This note derives the intended first-stage three-store accounting contract.
-> No DUMMY-13 implementation or qualification tests are authorized until both
-> dependencies close and the implementation baseline is rebound.
+> This note was derived while implementation was blocked. The DUMMY-13
+> implementation baseline was rebound to the combined qualified authority
+> before any DUMMY-13 model or tests were created.
 
 ## Purpose
 
@@ -382,9 +382,9 @@ later:
 The simplest ledger is therefore not meant as a realistic hydrological model.
 It is the conservation oracle for the more realistic compositions.
 
-## Intended qualification after dependencies close
+## Qualification matrix
 
-DUMMY-13 may test at least:
+After both dependencies closed, DUMMY-13 implemented tests for:
 
 1. exact canonical three-store ledger;
 2. FULL, CURTAILED and ZERO surface-management regimes;
@@ -396,8 +396,8 @@ DUMMY-13 may test at least:
 8. fail-closed propagation of physical infeasibility from the underlying
    DUMMY-10 solve.
 
-The implementation baseline must be rebound only after both DUMMY-11 and
-DUMMY-12 are formally qualified.
+The implementation baseline was rebound only after both DUMMY-11 and
+DUMMY-12 were formally qualified.
 
 ## Boundaries
 
@@ -409,3 +409,38 @@ DUMMY-13 first stage will not establish:
 - capillary rise/recharge exchange;
 - Ribasim multi-demand allocation;
 - production coupling admission.
+
+
+## Preregistered reverse-exchange case
+
+The qualification matrix also includes one groundwater-to-surface case:
+
+```text
+W_r0 = 80
+W_target = 80
+h_s0 = 0.2
+h_g0 = 0.8
+hmin = 0
+```
+
+There is no management request.
+
+The reciprocal two-store solve gives
+
+```text
+U = 0
+V = -20
+h_s1 = 0.4
+h_g1 = 0.6.
+```
+
+The negative exchange uses the same signed transfer variable and the same
+component ledgers:
+
+```text
+Delta S_s = -V = +20
+Delta S_g = +V = -20.
+```
+
+Total three-store water remains unchanged. No second accounting convention is
+introduced for drainage-direction exchange.
