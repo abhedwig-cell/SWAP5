@@ -26,4 +26,6 @@ jobs:
           python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
       - name: Run preregistered DSW22 semantic scan
         run: bash tests/research/run_gc_real_fgc44_response_storage_scan.sh
+      - name: Run bounded F-GC44 local head-response experiment
+        run: bash tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh
  
