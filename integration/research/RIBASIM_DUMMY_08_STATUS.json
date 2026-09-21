@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-08",
   "branch": "work/ribasim-dummy-01",
   "baseline": "664a6bedca83feeda989ecdbe339bbe2f43e52c5",
-  "checkpoint_commit": "d8ee12a12d1e15b0c8787d51c4c6ad1526a571f0",
+  "checkpoint_commit": "6acc42d8ab1c5b43c1d6ffe739180d674a3d62c0",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Multi-window propagation using the qualified direct per-window active-set solve, plus an independent continuous one-event reference for temporal-partition diagnostics.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_08_PREREGISTRATION.json",
@@ -36,7 +36,15 @@
   "preregistration_revision": "Original monotonic-refinement hypothesis was superseded before tests/qualification after prequalification analysis identified active-set event-grid jitter.",
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-08 temporal-partition-gate.",
-  "recovery_point": "DUMMY-08 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "next_action": "Preregister finite groundwater storage and reciprocal surface-groundwater exchange.",
+  "recovery_point": "DUMMY-08 closed qualified; multi-window partition effects are established before introducing a dynamic groundwater state.",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_08_QUALIFIED_TEMPORAL_PARTITION_EFFECT",
+    "workflow_run": 35567878236,
+    "workflow_job": 106233218792,
+    "qualification_head": "d4ac807fa47cc9b1e28b7e4cc5f34077613ca531",
+    "tests": "11/11 PASS",
+    "gate": "PASS"
+  }
 }
