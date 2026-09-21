@@ -1,6 +1,6 @@
 # RIBASIM-DUMMY-15B blocked concept: forecast allocation versus physical realization
 
-> Status: BLOCKED pending formal qualification of RIBASIM-DUMMY-15.
+> Status: IMPLEMENTATION AUTHORIZED after formal qualification of RIBASIM-DUMMY-15.
 >
 > No DUMMY-15B implementation or tests may be created before DUMMY-15 closes
 > and the implementation baseline is rebound.
