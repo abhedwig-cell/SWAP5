@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-15",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "1b436662f30e5580bc061440787d37cbbc5e2eed",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -31,12 +31,39 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Implement the first-stage exact one-Basin competing-claims priority oracle.",
+  "next_action": "Add DUMMY-15 to the registered research workflow and execute the competing-claims gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
     "baseline": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
     "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
     "workflow_run": 35577358733
-  }
+  },
+  "checkpoint_commit": "7bfeed03cbdd23c99b5ad081c75bd61e887a36ae",
+  "scope": "Exact one-Basin lexicographic split of the qualified coupled managed-withdrawal capacity between root irrigation and one external managed demand.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_15_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_15_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_15_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_competing_claims.py",
+    "tests/research/test_dummy_competing_claims.py",
+    "tests/research/run_ribasim_dummy_15.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_14": {
+      "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+      "run": 35577358733
+    }
+  },
+  "boundaries": [
+    "one Basin only",
+    "no forecast/allocation mismatch",
+    "no route priority or fairness objective",
+    "no production SWAP irrigation authority claim",
+    "no CSR-B1 or CSR-B2 closure"
+  ],
+  "expected_tests": "12 tests",
+  "recovery_point": "DUMMY-15 implementation, tests, concept and runner are persisted; qualification remains open."
 }
