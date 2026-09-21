@@ -41,6 +41,12 @@ class Fgc44RealSwap:
             *([ctypes.POINTER(ctypes.c_int)]*14),
             *([ctypes.POINTER(ctypes.c_double)]*3),
         ]
+        self.lib.fgc44_raw_corrector_diagnostics_c.restype=ctypes.c_int
+        self.lib.fgc44_raw_corrector_diagnostics_c.argtypes=[
+            ctypes.c_double,
+            *([ctypes.POINTER(ctypes.c_int)]*20),
+            *([ctypes.POINTER(ctypes.c_double)]*5),
+        ]
 
     def initialize(self) -> tuple[float,float,float]:
         hcof=ctypes.c_double(); rhs=ctypes.c_double(); href=ctypes.c_double()
@@ -62,11 +68,15 @@ class Fgc44RealSwap:
             raise RuntimeError(f"configured SWAP initialize failed: {status}")
         return hcof,rhs,href
 
-    def trial(self, head_m: float) -> float:
+    def try_trial(self, head_m: float) -> tuple[int,float]:
         q=ctypes.c_double()
         status=self.lib.fgc44_swap_trial_c(float(head_m),ctypes.byref(q))
+        return int(status),q.value
+
+    def trial(self, head_m: float) -> float:
+        status,q=self.try_trial(head_m)
         if status: raise RuntimeError(f"SWAP corrector trial failed: {status}")
-        return q.value
+        return q
 
     def discard(self) -> None:
         status=self.lib.fgc44_swap_discard_c()
@@ -147,3 +157,34 @@ class Fgc44RealSwap:
         status=self.lib.fgc44_last_trial_diagnostics_c(ctypes.byref(q),ctypes.byref(exchange))
         if status: raise RuntimeError(f"last-trial diagnostics query failed: {status}")
         return q.value,exchange.value
+
+    def raw_corrector_diagnostics(self, head_m: float) -> dict[str,int|float|bool]:
+        ints=[ctypes.c_int() for _ in range(20)]
+        reals=[ctypes.c_double() for _ in range(5)]
+        status=self.lib.fgc44_raw_corrector_diagnostics_c(
+            float(head_m),
+            *[ctypes.byref(v) for v in ints],
+            *[ctypes.byref(v) for v in reals],
+        )
+        if status:
+            raise RuntimeError(f"raw corrector diagnostics failed: {status}")
+        names=[
+            "forcing_status","result_status","completed","candidate_ready",
+            "bottom_available","bottom_finite","terminal_finite",
+            "requested_match","completed_match","interval_match",
+            "transaction_calls","accepted_substeps","attempts","retries",
+            "trial_rollbacks","solver_rejections","temporal_rejections",
+            "temporal_unavailable_rejections","mass_rejections","internal_retries",
+        ]
+        result={k:v.value for k,v in zip(names,ints)}
+        for key in [
+            "completed","candidate_ready","bottom_available","bottom_finite",
+            "terminal_finite","requested_match","completed_match","interval_match",
+        ]:
+            result[key]=bool(result[key])
+        result["min_substep"]=reals[0].value
+        result["max_substep"]=reals[1].value
+        result["completed_t"]=reals[2].value
+        result["candidate_t0"]=reals[3].value
+        result["candidate_t1"]=reals[4].value
+        return result
