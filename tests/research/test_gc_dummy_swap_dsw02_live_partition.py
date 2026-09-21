@@ -46,6 +46,7 @@ def main() -> None:
             hcof_m2_per_day=hcof,
             rhs_m3_per_day=rhs,
             sy=sy,
+            newton=False,
         )
         require(bool(result["converged"]), f"partition alpha={alpha} did not converge: {result}")
         h = float(result["head_m"])
@@ -69,6 +70,7 @@ def main() -> None:
         hcof_m2_per_day=hcof_double,
         rhs_m3_per_day=rhs_double,
         sy=sy_double,
+        newton=False,
     )
     require(bool(doubled["converged"]), f"double-storage case did not converge: {doubled}")
     expected_double = H0_M + RAIN_M_PER_DAY * DT_DAY / (2.0 * S_TOTAL)
