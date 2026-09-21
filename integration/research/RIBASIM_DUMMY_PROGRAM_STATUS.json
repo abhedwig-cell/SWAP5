@@ -141,7 +141,7 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19G",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
       "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
@@ -156,7 +156,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Implement and execute frozen DUMMY-19G saveat-clock sensitivity; DUMMY-19H remains frozen as the sequenced negative control.",
+  "next_authority_action": "Execute frozen DUMMY-19G saveat sensitivity. If it closes, advance directly to preregistered DUMMY-19H negative control.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
