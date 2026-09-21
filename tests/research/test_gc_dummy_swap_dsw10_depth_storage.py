@@ -104,13 +104,12 @@ def main() -> None:
 
             href = H0
             accepted_head = float("nan")
-            reanchor_count = 0
+            max_coupling_iterations = min(80, session.max_solve_iterations)
 
-            # Two nested iteration levels are required:
-            # 1. solve MODFLOW to convergence for one frozen affine tangent;
-            # 2. evaluate the exact nonlinear residual and reanchor only then.
-            for external_iteration in range(1, 21):
-                reanchor_count += 1
+            # Match the admitted application-service semantics: one MODFLOW
+            # solve iteration, then evaluate the coupled nonlinear residual,
+            # then reanchor for the next coupling iteration if needed.
+            for external_iteration in range(1, max_coupling_iterations + 1):
                 q_ref = q_residual_m_per_day(href)
                 hcof = dq_dh_per_day(href)
                 rhs = hcof * href - q_ref
@@ -125,55 +124,51 @@ def main() -> None:
                     "tangent does not equal local storage profile",
                 )
 
-                linear_converged = False
-                latest_head = float("nan")
-                latest_residual = float("nan")
-                while session.iteration_count < session.max_solve_iterations:
-                    status, iterate = session.publish_and_solve_iteration(
-                        (Binding(),),
-                        (
-                            Term(
-                                groundwater_cell_id=1,
-                                hcof_m2_per_day=hcof,
-                                rhs_m3_per_day=rhs,
-                            ),
+                status, iterate = session.publish_and_solve_iteration(
+                    (Binding(),),
+                    (
+                        Term(
+                            groundwater_cell_id=1,
+                            hcof_m2_per_day=hcof,
+                            rhs_m3_per_day=rhs,
                         ),
-                    )
-                    require(
-                        status == PreparedSolveStatus.OK and iterate is not None,
-                        f"MODFLOW iteration failed: {status} {session.last_error}",
-                    )
-                    latest_head = float(iterate.head_m[0])
-                    latest_residual = q_residual_m_per_day(latest_head)
-                    history.append(
-                        (
-                            external_iteration,
-                            href,
-                            hcof,
-                            latest_head,
-                            latest_residual,
-                            bool(iterate.modflow_converged),
-                        )
-                    )
-                    if bool(iterate.modflow_converged):
-                        linear_converged = True
-                        break
-
+                    ),
+                )
                 require(
-                    linear_converged,
-                    "MODFLOW did not converge for the frozen local tangent",
+                    status == PreparedSolveStatus.OK and iterate is not None,
+                    f"MODFLOW iteration failed: {status} {session.last_error}",
                 )
 
-                if abs(latest_residual) <= RESIDUAL_TOL:
-                    accepted_head = latest_head
+                head = float(iterate.head_m[0])
+                residual = q_residual_m_per_day(head)
+                mf_converged = bool(iterate.modflow_converged)
+                history.append(
+                    (
+                        external_iteration,
+                        href,
+                        hcof,
+                        head,
+                        residual,
+                        mf_converged,
+                    )
+                )
+                print(
+                    f"GC_DSW10_TRACE_ITER={external_iteration} "
+                    f"HREF_M={href:.17g} HCOF={hcof:.17g} "
+                    f"HEAD_M={head:.17g} Q_RESIDUAL={residual:.17g} "
+                    f"MF_CONVERGED={1 if mf_converged else 0}"
+                )
+
+                if mf_converged and abs(residual) <= RESIDUAL_TOL:
+                    accepted_head = head
                     break
 
-                href = latest_head
+                href = head
 
-            require(reanchor_count > 1, "depth-profile test did not reanchor")
+            require(len(history) > 1, "coupling test did not exercise reanchoring")
             require(
                 math.isfinite(accepted_head),
-                "nested nonlinear/MODFLOW solve did not converge",
+                "production-semantics coupling iteration did not converge",
             )
 
             require(
