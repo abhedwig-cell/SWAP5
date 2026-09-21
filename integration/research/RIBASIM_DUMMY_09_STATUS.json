@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-09",
   "branch": "work/ribasim-dummy-01",
   "baseline": "7484b2d614ad752baaf7c2811471949748ab87f3",
-  "checkpoint_commit": "34cbd19c5e5dbff303de75138fd9a6c4961afe85",
+  "checkpoint_commit": "c0ac8203669ba9998f9c61a3d2d10d272ad0d883",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Reciprocal finite surface-water and groundwater linear storages connected by one head-dependent exchange, with exact continuous and trapezoidal research solutions.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_09_PREREGISTRATION.json",
@@ -32,10 +32,18 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-09 two-store-exchange-gate.",
-  "recovery_point": "DUMMY-09 full research postimage is persisted; continuous monotonicity test was strengthened before qualification.",
+  "next_action": "Unblock and rebind DUMMY-10 to the post-qualification DUMMY-09 authority.",
+  "recovery_point": "DUMMY-09 closed qualified; reciprocal finite groundwater storage is now authority for the next management work unit.",
   "blockers": [],
   "prequalification_repairs": [
     "Strengthened the continuous oracle test so head-difference decay is checked sequentially across increasing times, not only against the initial difference. Scientific expectation is unchanged."
-  ]
+  ],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+    "workflow_run": 35568233819,
+    "workflow_job": 106234226280,
+    "qualification_head": "abd81e07b43e91aa098994984c2e819c4d8c8858",
+    "tests": "9/9 PASS",
+    "gate": "PASS"
+  }
 }
