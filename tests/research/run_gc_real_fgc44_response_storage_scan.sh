@@ -46,3 +46,16 @@ grep -Fq 'GC_DSW22D_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw22-diagnostic.txt" || {
 
 echo 'GC_DSW22_PREREGISTERED_GATE=FALSIFIED_PRESERVED'
 echo 'GC_DSW22D_REAL_SWAP_MATRIX_DIAGNOSTIC=PASS'
+
+# G03/G05/G06 fixed-interface globalization qualification. This reuses the
+# built real F-GC44 bridge, but every groundwater probe uses a fresh MODFLOW
+# prepared solve and every SWAP trial is discarded.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_globalization_g03.py \
+  | tee "$BUILD/fgc44-globalization-g03.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_GATE=PASS' "$BUILD/fgc44-globalization-g03.txt" || {
+  echo "GC_FGC44_GLOBALIZATION_FAIL missing G03/G05/G06 gate" >&2
+  exit 1
+}

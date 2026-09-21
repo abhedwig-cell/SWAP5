@@ -73,3 +73,32 @@ A production algorithm must separately satisfy:
 4. finite perturbation robustness within declared envelope;
 5. behavior at/near singular response ratios;
 6. no dependence on undocumented MODFLOW solver stabilization.
+
+
+## G03-LIVE / G05 / G06 concrete protocol (2026-09-21)
+
+This section freezes the live F-GC44 instantiation before reading its result.
+
+G03-LIVE identifies the effective local MODFLOW response with constant-flux API
+probes, not with a moving affine intercept. Each probe uses HCOF=0, prescribes
+q_gw in {-4e-8,-2e-8,-1e-8,+1e-8,+2e-8,+4e-8} m/s, starts from a fresh copy of
+the F-GC44 MODFLOW model and the same accepted XOLD, and iterates MODFLOW to its
+own convergence before recording (H,q_gw). The fitted a=dq_gw/dH is therefore
+an intrinsic groundwater response over the sampled local head range.
+
+Finite real-SWAP starts are fixed prospectively at
+{-1e-6,-5e-7,+5e-7,+1e-6,+2e-6} m relative to href. The separately observed
+-2e-6 m point remains a G06 inadmissibility probe and must never be relabelled
+as coupling divergence.
+
+P3 does not tune alpha from finite-start trajectories. It uses
+alpha*=1/(1-rho_P0), computed once from frozen real-SWAP p and the prospectively
+measured G03-LIVE a, provided 0<alpha*<=1.
+
+P4 uses physical-tangent reanchoring plus a fixed factor-1/2 head-step
+contraction whenever a proposed SWAP corrector head is inadmissible. Rejected
+trials are discarded and have zero mass/state authority.
+
+All G03-LIVE/G05/G06 runs are diagnostic. They must leave SWAP revision, time,
+ledger count and committed interface exchange at the immutable accepted origin.
+No production HCOF/RHS source is changed by these experiments.
