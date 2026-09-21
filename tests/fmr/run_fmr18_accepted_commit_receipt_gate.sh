@@ -41,6 +41,8 @@ BASE_MODULES=(
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90
   src/runtime/mod_ppa_wu04c_runtime_publication.f90
+  src/process/mod_vonhhbraden_interception.f90
+  src/process/mod_gash_interception.f90
 )
 
 for opt in 0 2; do
@@ -60,6 +62,7 @@ for opt in 0 2; do
     'FMR18_REAL_FKT_COMMIT_CREATES_EXACT_RECEIPT=PASS' \
     'PPA_WU04C_REAL_FKT_RECEIPT_PROGRESS=PASS' \
     'PPA_WU04C_MID_WINDOW_RESTART_PROGRESS=PASS' \
+    'PPA_WU04D_GASH_FKT_RECEIPT_PROGRESS=PASS' \
     'FMR18_COMMIT_REJECTION_EMITS_NO_RECEIPT=PASS' \
     'FMR18_EXPECTED_RECEIPT_FAILURES_PRECEDE_PHYSICAL_COMMIT=PASS' \
     'FMR18_PREVALIDATION_REJECTION_IS_NONMUTATING_AND_REPLAYABLE=PASS' \

@@ -138,6 +138,8 @@ program test_fmr18_accepted_commit_receipt
   use mod_fmr_accepted_commit_receipt
   use mod_fmr_vonhhbraden_source_window_progress
   use mod_ppa_wu04c_runtime_publication
+  use mod_gash_interception
+  use mod_vonhhbraden_interception, only: vonhhbraden_source_window_t, VONHHBRADEN_AVAILABLE
   use mod_fmr18_test_model
   implicit none
 
@@ -156,9 +158,11 @@ program test_fmr18_accepted_commit_receipt
   type(fmr_vonhhbraden_source_window_progress_t) :: interception_progress
   type(fmr_vonhhbraden_source_window_progress_t) :: restored_interception_progress
   type(fmr_vonhhbraden_source_window_restart_t) :: interception_restart
+  type(gash_parameters_t) :: gash_parameters
+  type(vonhhbraden_source_window_t) :: gash_source
   logical :: ok, did_commit, interval_available, restart_exported, restart_restored
   integer :: receipt_status, commit_status
-  real(real64) :: t0, t1, committed_time
+  real(real64) :: t0, t1, committed_time, gash_aggregate
   integer(int64) :: revision_before
 
   call setup_solver(parameters, forcing, config)
@@ -182,22 +186,29 @@ program test_fmr18_accepted_commit_receipt
   call require(interval_available .and. bitwise_equal(t0, 0.0_real64) .and. bitwise_equal(t1, 0.5_real64), &
        'receipt interval identity')
   call require(committed%current_revision() == 1_int64, 'committed revision after receipt')
+  gash_parameters%free_throughfall=0.2_real64; gash_parameters%stemflow=0.1_real64
+  gash_parameters%canopy_storage_cm=0.07_real64; gash_parameters%average_evaporation=0.15_real64
+  gash_parameters%average_precipitation=0.5_real64
+  gash_source%leaf_area_index=2.0_real64; gash_source%gross_rain_cm_per_day=0.5_real64
+  call evaluate_gash_source_window(gash_parameters,gash_source,gash_aggregate,receipt_status)
+  call require(receipt_status==VONHHBRADEN_AVAILABLE .and. gash_aggregate>0.0_real64, 'Gash aggregate available')
   call fmr_initialize_vonhhbraden_source_window_progress(1802_int64, 0.0_real64, 1.0_real64, &
-       0.2_real64, interception_progress, receipt_status)
+       gash_aggregate, interception_progress, receipt_status)
   call require(receipt_status == FMR_VONHHBRADEN_PROGRESS_OK, 'initialize interception progress')
-  call publish_ppa_wu04c_accepted_progress(interception_progress, receipt, 0.1_real64, receipt_status)
+  call publish_ppa_wu04c_accepted_progress(interception_progress, receipt, 0.5_real64*gash_aggregate, receipt_status)
   call require(receipt_status == PPA_WU04C_PUBLICATION_OK .and. &
-       abs(interception_progress%remaining_interception()-0.1_real64) < 1.e-14_real64, &
+       abs(interception_progress%remaining_interception()-0.5_real64*gash_aggregate) < 1.e-14_real64, &
        'accepted receipt advances interception progress exactly once')
   call interception_progress%export_restart(interception_restart, restart_exported)
   call require(restart_exported, 'export mid-window interception restart')
   call fmr_restore_vonhhbraden_source_window_progress(interception_restart, restored_interception_progress, &
        restart_restored, receipt_status)
   call require(restart_restored .and. receipt_status == FMR_VONHHBRADEN_PROGRESS_OK .and. &
-       abs(restored_interception_progress%remaining_interception()-0.1_real64) < 1.e-14_real64, &
+       abs(restored_interception_progress%remaining_interception()-0.5_real64*gash_aggregate) < 1.e-14_real64, &
        'mid-window restart preserves remaining interception exactly')
   print '(a)', 'PPA_WU04C_REAL_FKT_RECEIPT_PROGRESS=PASS'
   print '(a)', 'PPA_WU04C_MID_WINDOW_RESTART_PROGRESS=PASS'
+  print '(a)', 'PPA_WU04D_GASH_FKT_RECEIPT_PROGRESS=PASS'
   call committed%current_time(committed_time, ok)
   call require(ok .and. bitwise_equal(committed_time, 0.5_real64), 'committed time after receipt')
   call require(.not. candidate%ready(), 'successful commit consumes candidate')
