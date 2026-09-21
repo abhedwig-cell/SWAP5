@@ -12,6 +12,8 @@ on:
       - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
       - '.github/workflows/gc-real-fgc44-semantic-scan.yml'
   workflow_dispatch:
+
+# CI trigger marker: bounded-head-response-20260921
 permissions: {contents: read}
 jobs:
   semantic-scan:
