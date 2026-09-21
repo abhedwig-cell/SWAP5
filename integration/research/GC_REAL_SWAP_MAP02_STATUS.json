@@ -5,12 +5,12 @@
   "work_unit": "GC-REAL-SWAP-MAP02",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-dummy-swap-shared-storage",
-  "checkpoint_commit": "b34c54943a306307016be925d83367ae464462e0",
+  "checkpoint_commit": "884424e861e941b97987673addd63946cce191a3",
   "last_reconciled_upstream": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_changes": false,
   "authority_paths": [
     "AGENTS.md",
@@ -43,8 +43,9 @@
     "F-GC49D production ownership",
     "Reference Richards production path"
   ],
-  "next_expensive_action": "Run MAP02 against the unchanged F-GC45 fixture and pinned MODFLOW6 6.8.0.",
-  "next_action": "Execute the preregistered five-head admitted-band probe, preserve pass/fail without adaptive resizing, then persist exact response and ledger evidence.",
-  "recovery_point": "Resume at this checkpoint. MAP01 remains falsified for the original micrometre sweep; MAP01A supplies the admitted nanometre head scale used by MAP02.",
-  "blockers": []
+  "next_expensive_action": null,
+  "next_action": "Proceed to preregistered MAP03 transaction-level storage and bottom-exchange decomposition.",
+  "recovery_point": "MAP02 is qualified by workflow run 35565666655 / job 106226862130. Resume at MAP03; do not repeat MAP02 unless its dependency surface changes.",
+  "blockers": [],
+  "last_reconciled_head": "884424e861e941b97987673addd63946cce191a3"
 }
