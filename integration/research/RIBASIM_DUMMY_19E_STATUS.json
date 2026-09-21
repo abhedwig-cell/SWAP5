@@ -15,7 +15,7 @@
     "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
   ],
   "prepared_scope": "Pinned real Ribasim 32 m3/day priority allocation followed by common-factor physical UserDemand min_level reduction within one one-day allocation window.",
-  "next_action": "Execute frozen DUMMY-19E pinned real Ribasim qualification; model, references and tolerances are immutable.",
+  "next_action": "Execute DUMMY-19E v1 frozen qualification; this is the first admissible run.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287",
@@ -58,5 +58,7 @@
       "both priority cases must have the same total physical supply and Basin trajectory because total allocation and physical factor are common",
       "all integrated references and tolerances remain exactly those frozen before implementation"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_mixed_allocation_then_realization",
+  "qualification_base": "work/ribasim-dummy-01@ee7c4208568ccc41407096916bc37465c34fa526"
 }
