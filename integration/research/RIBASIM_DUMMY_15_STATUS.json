@@ -149,5 +149,25 @@
       "correction": "Canonicalize only already-admitted endpoint heads within DUMMY-10's datum tolerance to exact datum before ThreeStoreState validation.",
       "scientific_effect": "none; materially sub-datum states remain rejected"
     }
-  ]
+  ],
+  "v3_independent_algebra_review": {
+    "date": "2026-09-21",
+    "state": "PASS_CI_STILL_REQUIRED",
+    "reverse_exchange_exact": {
+      "requested_total_m3": 60,
+      "realized_total_m3": 48.00000000000001,
+      "exchange_m3": -28.000000000000004,
+      "raw_surface_end_m": -2.7755575615628914e-17,
+      "exact_surface_end_m": 0,
+      "groundwater_end_m": 0.52,
+      "interpretation": "raw negative surface endpoint is floating-point representation of the exact datum boundary"
+    },
+    "checked_regimes": [
+      "canonical CURTAILED: M=32,V=28,hs=0.4,hg=0.28",
+      "capacity-between CURTAILED: M=32,V=28,hs=0.4,hg=0.28",
+      "fully realizable FULL: M=15,V=30.833333333333336,hs=0.5416666666666666,hg=0.30833333333333335",
+      "reverse-exchange CURTAILED: M=48,V=-28,exact hs=0,hg=0.52"
+    ],
+    "qualification_effect": "none; Actions run 35581711814 remains mandatory"
+  }
 }
