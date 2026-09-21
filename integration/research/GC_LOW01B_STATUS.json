@@ -4,25 +4,29 @@
   "work_unit": "GC-LOW01-B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_PENDING_PREREQUISITE_QUALIFICATION",
+  "state": "BLOCKED_BEFORE_TYPED_MODE1_EXECUTION_OUTPUT_CONTRACT_REQUIRED",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01B_PREREGISTRATION.json",
   "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
   "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
   "blockers": [
-    "Live qualification evidence not yet available.",
-    "KSATEXM-enabled prescribed-GWL saturated continuation remains a separate blocked semantic slice."
+    "The production Reference adapter still rejects bottom_mode=1; no typed mode-1 trial is reachable through the admitted soil-water solver ABI.",
+    "The typed result contract still lacks an explicit rule and publication surface that candidate groundwater_level equals the prescribed H_phreatic/gwlinp coordinate.",
+    "There is still no branch-independent typed mode-1 qbot publication rule analogous to the admitted mode-5 accepted-step qbot materialization.",
+    "LOW01-A and LOW01-A2 owner runs remain queued, so below-profile live reduction is not yet qualified evidence."
   ],
   "preserved_value": [
     "The original preregistration remains a useful source-behavior specification.",
     "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
   ],
-  "decision": "DO_NOT_EXECUTE_LOW01B_AS_TYPED_QUALIFICATION",
-  "activation_rule": "Run only after LOW01-A, LOW01 constitutive bridge and LOW01-STATE01 prerequisites pass in the same qualification runner. KSATEXM-enabled mode1 remains blocked.",
+  "decision": "DO_NOT_EXECUTE_LOW01B_AS_TYPED_QUALIFICATION_YET",
+  "activation_rule": "Resume LOW01-B typed qualification only after LOW01-A/A2 qualify and a research-only complete mode-1 candidate output contract exists for H_phreatic, branch identity, active nodes and qbot; production bottom_mode=1 admission remains forbidden.",
   "next": [
-    "Execute bounded KSATEXM-disabled LOW01-B qualification.",
-    "If PASS, persist source-bound inside-profile result and open LOW01-C boundary sweep plus LOW01-D transaction replay.",
-    "Keep HLINK04 blocked until LOW01-D and LOW01-C characterization are also available."
+    "Qualify LOW01-A and LOW01-A2 owner runs.",
+    "Preserve STATE01 branch classifier as source/state authority.",
+    "Define the research-only complete mode-1 candidate output carrier without changing production solver admission.",
+    "Then execute the already-preregistered inside-profile hydrostatic/replay slice with the qualified constitutive bridge.",
+    "Keep HLINK04 blocked."
   ],
   "constitutive_scope": {
     "ksatexm_extension_enabled": false,
@@ -34,5 +38,16 @@
   "tested": false,
   "qualified": false,
   "test_path": "tests/research/test_gc_low01b_inside_profile.f90",
-  "runner": "tests/research/run_gc_low01b.sh"
+  "runner": "tests/research/run_gc_low01b.sh",
+  "constitutive_bridge": {
+    "scope": "research-only KSATEXM-disabled slice",
+    "runner": "tests/research/run_gc_low01_constitutive_bridge.sh",
+    "bridge": "tests/research/support/mod_gc_low01_constitutive_bridge.f90",
+    "test": "tests/research/test_gc_low01_constitutive_bridge.f90",
+    "status": "IMPLEMENTED_PENDING_OWNER_RUN",
+    "resolved_blocker": "LOW01-G3-CONSTITUTIVE-OWNERSHIP for the bounded default-MVG/KSATEXM-disabled research slice"
+  },
+  "deferred_semantics": [
+    "KSATEXM-enabled mode-1 continuation remains a separate unresolved semantics question because preserved legacy mode-1 uses cofgen(3) while the opt-in typed provider may use cofgen(10)."
+  ]
 }
