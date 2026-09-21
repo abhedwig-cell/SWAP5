@@ -1,16 +1,16 @@
 program test_gc_low01b_inside_profile
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
-  use mod_reference_richards_workspace, only: reference_richards_workspace_t
-  use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, FSI_TOP_MODE_EXPLICIT_FLUX
-  use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-       soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
+  use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+  use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_numerical_config_t, &
+       soil_water_physical_config_t, soil_water_parameter_set_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use MOD_MvG, only: gc_low01_bind_mvg
+  use mod_gc_low01_mode1_trial_carrier, only: gc_low01_mode1_trial_result_t, &
+       gc_low01_run_inside_profile_trial, GC_LOW01_BRANCH_INSIDE_PROFILE
   implicit none
 
   integer, parameter :: n = 4
@@ -19,10 +19,9 @@ program test_gc_low01b_inside_profile
   real(real64), parameter :: dist_cm(n) = [25.0_real64, 50.0_real64, 75.0_real64, 100.0_real64]
   real(real64), parameter :: gwl_cases(3) = [-60.0_real64, -120.0_real64, -200.0_real64]
   integer, parameter :: expected_nn(3) = [1, 2, 3]
-  real(real64), parameter :: dt_day = 0.25_real64
   real(real64), parameter :: origin_gwl_cm = -120.0_real64
-  real(real64), parameter :: tol = 1.0e-12_real64
-  real(real64), parameter :: mass_tol = 1.0e-10_real64
+  real(real64), parameter :: dt_day = 0.01_real64
+  real(real64), parameter :: strict_tol = 1.0e-10_real64
 
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
@@ -30,31 +29,13 @@ program test_gc_low01b_inside_profile
   type(b110_source_sink_provider_t), target :: source_sink
   type(fixed_flux_top_boundary_provider_t), target :: top
   type(hydraulic_evaluation_context_t) :: evaluation
+  type(soil_water_numerical_config_t) :: numerical
+  type(soil_water_physical_config_t) :: physical
+  type(reference_richards_state_binding_t) :: origin, origin_snapshot
+  type(gc_low01_mode1_trial_result_t) :: first(3), second(3)
   real(real64), target :: drainage(1,n), irrigation(n), root_sink(n)
   real(real64) :: raw(24,n)
-  type(reference_richards_state_binding_t) :: origin
   integer :: i
-
-  interface
-    subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                        numerical_config, physical_config, explicit_step_duration, parameter_set)
-      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
-      use mod_reference_richards_workspace, only: reference_richards_workspace_t
-      use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
-      use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-           soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
-      type(a23bu_worker_context_t), intent(inout), optional :: worker
-      type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
-      type(a23bu_solver_history_t), target, intent(inout), optional :: history
-      type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
-      type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
-      type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
-      type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
-      type(soil_water_physical_config_t), intent(in), optional :: physical_config
-      real(8), intent(in), optional :: explicit_step_duration
-      type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
-    end subroutine headcalc
-  end interface
 
   call configure_parameters(parameters, raw)
   call initialize_b110_default_mvg_parameters(hydraulic_parameters, raw)
@@ -71,15 +52,47 @@ program test_gc_low01b_inside_profile
   evaluation%source_sink => source_sink
   evaluation%top_boundary => top
 
-  call initialize_origin(origin, origin_gwl_cm, parameters, constitutive)
+  numerical%max_iterations = 24
+  numerical%max_backtracking = 8
+  numerical%conductivity_implicit_mode = 0
+  numerical%conductivity_mean_method = 1
+  numerical%min_step_duration = 1.0e-10_real64
+  numerical%compartment_balance_tolerance = strict_tol
+  numerical%total_balance_tolerance = strict_tol
+  numerical%head_abs_tolerance = strict_tol
+  numerical%head_rel_tolerance = strict_tol
+  numerical%ponding_tolerance = strict_tol
+  physical%macropore_active = .false.
+
+  call initialize_origin(origin, parameters, constitutive)
+  origin_snapshot = origin
 
   do i = 1, size(gwl_cases)
-    call run_case(gwl_cases(i), expected_nn(i), origin, parameters, hydraulic_parameters, constitutive, evaluation)
+    call gc_low01_run_inside_profile_trial(origin, gwl_cases(i), parameters, evaluation, numerical, physical, dt_day, first(i))
+    call verify_result(first(i), gwl_cases(i), expected_nn(i), parameters, hydraulic_parameters, constitutive, 'first')
+
+    call gc_low01_run_inside_profile_trial(origin, gwl_cases(i), parameters, evaluation, numerical, physical, dt_day, second(i))
+    call verify_result(second(i), gwl_cases(i), expected_nn(i), parameters, hydraulic_parameters, constitutive, 'second')
+
+    call require(results_bitwise_identical(first(i), second(i)), 'LOW01-B repeated trial bitwise identity')
+    call require(states_bitwise_identical(origin, origin_snapshot), 'LOW01-B immutable origin retained')
+
+    write(*,'(A,F0.8)') 'GC_LOW01B_GWL_CM=', gwl_cases(i)
+    write(*,'(A,I0)') 'GC_LOW01B_ACTIVE_NN=', first(i)%active_richards_nodes
+    write(*,'(A,ES24.16E3)') 'GC_LOW01B_QBOT_CM_PER_DAY=', first(i)%qbot_cm_per_day
+    write(*,'(A,ES24.16E3)') 'GC_LOW01B_STORAGE_CHANGE_CM=', first(i)%storage_change_cm
+    write(*,'(A,ES24.16E3)') 'GC_LOW01B_MASS_RESIDUAL_CM=', first(i)%mass_residual_cm
+    write(*,'(A,I0)') 'GC_LOW01B_NONLINEAR_ITERATIONS=', first(i)%nonlinear_iterations
   end do
 
-  write(*,'(A,F0.8)') 'GC_LOW01B_IMMUTABLE_ORIGIN_GWL_CM=', origin_gwl_cm
+  call require(abs(first(2)%qbot_cm_per_day) <= strict_tol, 'LOW01-B hydrostatic identity qbot')
+  call require(abs(first(2)%storage_change_cm) <= strict_tol, 'LOW01-B hydrostatic identity storage')
+  call require(.not. results_bitwise_identical(first(1), first(2)) .or. &
+       .not. results_bitwise_identical(first(3), first(2)), 'LOW01-B nonvacuous control response')
+
   write(*,'(A)') 'GC_LOW01B_SINGLE_CONSTITUTIVE_OWNER=PASS'
   write(*,'(A)') 'GC_LOW01B_IMMUTABLE_ORIGIN=PASS'
+  write(*,'(A)') 'GC_LOW01B_COMPLETE_TRIAL_CARRIER=PASS'
   write(*,'(A)') 'GC_LOW01B_INSIDE_PROFILE_CASES=PASS'
   write(*,'(A)') 'GC_LOW01B_SATURATED_CONTINUATION=PASS'
   write(*,'(A)') 'GC_LOW01B_QBOT_DIAGNOSED=PASS'
@@ -120,71 +133,15 @@ contains
     end do
   end subroutine configure_parameters
 
-  subroutine run_case(gwl_cm, expected_active_nn, origin_state, parameter_set, hp, provider, eval)
-    real(real64), intent(in) :: gwl_cm
-    integer, intent(in) :: expected_active_nn
-    type(reference_richards_state_binding_t), intent(in) :: origin_state
-    type(soil_water_parameter_set_t), target, intent(in) :: parameter_set
-    type(b110_default_mvg_parameters_t), intent(in) :: hp
-    type(b110_default_mvg_provider_t), intent(in) :: provider
-    type(hydraulic_evaluation_context_t), intent(in) :: eval
-
-    type(reference_richards_state_binding_t) :: first, second
-    type(a23bu_worker_context_t) :: worker1, worker2
-    type(reference_richards_workspace_t), target :: workspace1, workspace2
-    type(a23bu_solver_history_t), target :: history1, history2
-    type(soil_water_boundary_conditions_t) :: boundary
-    type(soil_water_numerical_config_t) :: numerical
-    type(soil_water_physical_config_t) :: physical
-    integer :: nn
-
-    nn = classify_nn(gwl_cm, parameter_set%z)
-    call require(nn == expected_active_nn, 'LOW01-B active NN classification')
-
-    boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
-    boundary%bottom_mode = 1
-    boundary%top_flux = 0.0_real64
-    boundary%top_head = 0.0_real64
-    boundary%bottom_flux = 0.0_real64
-    boundary%bottom_head = gwl_cm
-
-    numerical%max_iterations = 16
-    numerical%max_backtracking = 8
-    numerical%conductivity_implicit_mode = 0
-    numerical%conductivity_mean_method = 1
-    numerical%min_step_duration = 1.0e-8_real64
-    numerical%compartment_balance_tolerance = tol
-    numerical%total_balance_tolerance = tol
-    numerical%head_abs_tolerance = tol
-    numerical%head_rel_tolerance = tol
-    numerical%ponding_tolerance = tol
-    physical%macropore_active = .false.
-
-    first = origin_state
-    call headcalc(worker1, workspace1, history1, first, eval, boundary, numerical, physical, dt_day, parameter_set)
-    call verify_candidate(first, origin_state, gwl_cm, nn, parameter_set, hp, provider, worker1, 'first')
-
-    second = origin_state
-    call headcalc(worker2, workspace2, history2, second, eval, boundary, numerical, physical, dt_day, parameter_set)
-    call verify_candidate(second, origin_state, gwl_cm, nn, parameter_set, hp, provider, worker2, 'second')
-    call require(states_bitwise_identical(first, second), 'LOW01-B repeated trial bitwise identity')
-
-    write(*,'(A,F0.8)') 'GC_LOW01B_GWL_CM=', gwl_cm
-    write(*,'(A,I0)') 'GC_LOW01B_ACTIVE_NN=', nn
-    write(*,'(A,ES24.16E3)') 'GC_LOW01B_QBOT_CM_PER_DAY=', first%qbot
-    write(*,'(A,I0)') 'GC_LOW01B_NONLINEAR_ITERATIONS=', worker1%diagnostics%nonlinear_iterations
-  end subroutine run_case
-
-  subroutine initialize_origin(state, gwl_cm, parameter_set, provider)
+  subroutine initialize_origin(state, parameter_set, provider)
     type(reference_richards_state_binding_t), intent(out) :: state
-    real(real64), intent(in) :: gwl_cm
     type(soil_water_parameter_set_t), intent(in) :: parameter_set
     type(b110_default_mvg_provider_t), intent(in) :: provider
     real(real64) :: heads(n), water(n), conductivity(n), capacity(n), dkdh(n)
     integer :: k
 
     do k = 1, n
-      heads(k) = gwl_cm - parameter_set%z(k)
+      heads(k) = origin_gwl_cm - parameter_set%z(k)
     end do
     call provider%evaluate(heads, water, conductivity, capacity, dkdh)
 
@@ -200,9 +157,9 @@ contains
     state%dimoca = capacity
     state%pond = 0.0_real64
     state%pondm1 = 0.0_real64
-    state%gwl = gwl_cm
-    state%gwlm1 = gwl_cm
-    state%gwlinp = gwl_cm
+    state%gwl = origin_gwl_cm
+    state%gwlm1 = origin_gwl_cm
+    state%gwlinp = origin_gwl_cm
     state%dtold = dt_day
     state%qtop = 0.0_real64
     state%qbot = 0.0_real64
@@ -218,60 +175,61 @@ contains
     state%ftoph = .false.
   end subroutine initialize_origin
 
-  subroutine verify_candidate(state, origin_state, gwl_cm, nn, parameter_set, hp, provider, worker, label_text)
-    type(reference_richards_state_binding_t), intent(in) :: state
-    type(reference_richards_state_binding_t), intent(in) :: origin_state
+  subroutine verify_result(result, gwl_cm, nn, parameter_set, hp, provider, label_text)
+    type(gc_low01_mode1_trial_result_t), intent(in) :: result
     real(real64), intent(in) :: gwl_cm
     integer, intent(in) :: nn
     type(soil_water_parameter_set_t), intent(in) :: parameter_set
     type(b110_default_mvg_parameters_t), intent(in) :: hp
     type(b110_default_mvg_provider_t), intent(in) :: provider
-    type(a23bu_worker_context_t), intent(in) :: worker
     character(len=*), intent(in) :: label_text
     real(real64) :: saturated_head(n), saturated_water(n), saturated_k(n), saturated_c(n), saturated_d(n)
-    real(real64) :: storage_change, mass_residual
     integer :: k
 
-    call require(.not. hp%ksatexm_extension_enabled, 'LOW01-B '//trim(label_text)//' KSATEXM disabled')
-    call require(.not. state%fllowgwl, 'LOW01-B '//trim(label_text)//' fllowgwl false')
-    call require(.not. state%fldecdt, 'LOW01-B '//trim(label_text)//' no dt reduction')
-    call require(.not. worker%control%request_dt_reduction, 'LOW01-B '//trim(label_text)//' worker no dt reduction')
-    call require(worker%diagnostics%alternative_solver_calls == 0, 'LOW01-B '//trim(label_text)//' no alternative solver')
-    call require(abs(state%gwlinp - gwl_cm) <= tol, 'LOW01-B '//trim(label_text)//' gwlinp retained')
-    call require(ieee_is_finite(state%qbot), 'LOW01-B '//trim(label_text)//' finite diagnosed qbot')
-    call require(transfer(state%gwl,0_int64) == transfer(origin_state%gwl,0_int64), &
-         'LOW01-B '//trim(label_text)//' raw accepted gwl remains origin state')
+    call require(result%valid, 'LOW01-B '//trim(label_text)//' valid carrier result')
+    call require(result%branch == GC_LOW01_BRANCH_INSIDE_PROFILE, 'LOW01-B '//trim(label_text)//' inside branch')
+    call require(result%active_richards_nodes == nn, 'LOW01-B '//trim(label_text)//' active NN')
+    call require(.not. result%fllowgwl, 'LOW01-B '//trim(label_text)//' fllowgwl false')
+    call require(.not. result%retry_advised, 'LOW01-B '//trim(label_text)//' no retry')
+    call require(result%alternative_solver_calls == 0, 'LOW01-B '//trim(label_text)//' no alternative solver')
+    call require(abs(result%requested_h_phreatic_cm-gwl_cm) <= strict_tol, 'LOW01-B requested Hphi')
+    call require(abs(result%effective_h_phreatic_cm-gwl_cm) <= strict_tol, 'LOW01-B effective Hphi')
+    call require(transfer(result%qbot_cm_per_day,0_int64) == transfer(result%candidate%qbot,0_int64), &
+         'LOW01-B carrier qbot authority')
+    call require(ieee_is_finite(result%qbot_cm_per_day), 'LOW01-B finite qbot')
+    call require(abs(result%mass_residual_cm) <= strict_tol, 'LOW01-B independent mass closure')
+    call require(.not. hp%ksatexm_extension_enabled, 'LOW01-B KSATEXM disabled result')
 
     saturated_head = 0.0_real64
     call provider%evaluate(saturated_head, saturated_water, saturated_k, saturated_c, saturated_d)
     do k = nn+1, n
-      call require(transfer(state%theta(k),0_int64) == transfer(saturated_water(k),0_int64), &
-           'LOW01-B '//trim(label_text)//' provider-owned saturated theta')
+      call require(transfer(result%candidate%theta(k),0_int64) == transfer(saturated_water(k),0_int64), &
+           'LOW01-B provider-owned saturated theta')
       call require(transfer(saturated_water(k),0_int64) == transfer(hp%cofgen(2,k),0_int64), &
-           'LOW01-B '//trim(label_text)//' source-equivalent theta_s')
+           'LOW01-B source-equivalent theta_s')
       call require(transfer(saturated_k(k),0_int64) == transfer(hp%cofgen(3,k),0_int64), &
-           'LOW01-B '//trim(label_text)//' source-equivalent K_s')
+           'LOW01-B source-equivalent K_s')
     end do
+    call require(all(ieee_is_finite(result%candidate%h)), 'LOW01-B finite candidate heads')
+    call require(all(ieee_is_finite(result%candidate%theta)), 'LOW01-B finite candidate theta')
+    call require(parameter_set%active_nodes == n, 'LOW01-B parameter shape')
+  end subroutine verify_result
 
-    storage_change = sum((state%theta - origin_state%theta) * parameter_set%dz) + &
-         (state%pond - origin_state%pond)
-    mass_residual = storage_change - dt_day * (-state%qtop + state%qbot)
-    call require(abs(mass_residual) <= mass_tol, 'LOW01-B '//trim(label_text)//' mass closure')
-    write(*,'(A,A,A,ES24.16E3)') 'GC_LOW01B_',trim(label_text),'_STORAGE_CHANGE_CM=',storage_change
-    write(*,'(A,A,A,ES24.16E3)') 'GC_LOW01B_',trim(label_text),'_MASS_RESIDUAL_CM=',mass_residual
-  end subroutine verify_candidate
-
-  integer function classify_nn(gwl_cm, z) result(nn)
-    real(real64), intent(in) :: gwl_cm
-    real(real64), intent(in) :: z(:)
-
-    nn = 0
-    do while (nn < size(z))
-      if (.not. (z(nn+1) > gwl_cm)) exit
-      nn = nn + 1
-    end do
-    if (nn <= 0 .or. nn >= size(z)) error stop 'LOW01-B prescribed GWL not strictly inside profile'
-  end function classify_nn
+  logical function results_bitwise_identical(a,b) result(same)
+    type(gc_low01_mode1_trial_result_t), intent(in) :: a,b
+    same = .false.
+    if (a%valid .neqv. b%valid) return
+    if (a%branch /= b%branch .or. a%active_richards_nodes /= b%active_richards_nodes) return
+    if (a%fllowgwl .neqv. b%fllowgwl .or. a%retry_advised .neqv. b%retry_advised) return
+    if (transfer(a%requested_h_phreatic_cm,0_int64) /= transfer(b%requested_h_phreatic_cm,0_int64)) return
+    if (transfer(a%effective_h_phreatic_cm,0_int64) /= transfer(b%effective_h_phreatic_cm,0_int64)) return
+    if (transfer(a%qbot_cm_per_day,0_int64) /= transfer(b%qbot_cm_per_day,0_int64)) return
+    if (transfer(a%storage_change_cm,0_int64) /= transfer(b%storage_change_cm,0_int64)) return
+    if (transfer(a%mass_residual_cm,0_int64) /= transfer(b%mass_residual_cm,0_int64)) return
+    if (a%nonlinear_iterations /= b%nonlinear_iterations .or. a%linear_solves /= b%linear_solves) return
+    if (.not. states_bitwise_identical(a%candidate,b%candidate)) return
+    same = .true.
+  end function results_bitwise_identical
 
   logical function states_bitwise_identical(a, b) result(same)
     type(reference_richards_state_binding_t), intent(in) :: a, b
@@ -280,15 +238,17 @@ contains
     same = .false.
     if (a%active_nodes /= b%active_nodes) return
     do k = 1, a%active_nodes
-      if (transfer(a%h(k), 0_int64) /= transfer(b%h(k), 0_int64)) return
-      if (transfer(a%theta(k), 0_int64) /= transfer(b%theta(k), 0_int64)) return
-      if (transfer(a%hm1(k), 0_int64) /= transfer(b%hm1(k), 0_int64)) return
-      if (transfer(a%thetm1(k), 0_int64) /= transfer(b%thetm1(k), 0_int64)) return
+      if (transfer(a%h(k),0_int64) /= transfer(b%h(k),0_int64)) return
+      if (transfer(a%theta(k),0_int64) /= transfer(b%theta(k),0_int64)) return
+      if (transfer(a%hm1(k),0_int64) /= transfer(b%hm1(k),0_int64)) return
+      if (transfer(a%thetm1(k),0_int64) /= transfer(b%thetm1(k),0_int64)) return
     end do
-    if (transfer(a%qbot, 0_int64) /= transfer(b%qbot, 0_int64)) return
-    if (transfer(a%gwl, 0_int64) /= transfer(b%gwl, 0_int64)) return
-    if (transfer(a%gwlinp, 0_int64) /= transfer(b%gwlinp, 0_int64)) return
+    if (transfer(a%qtop,0_int64) /= transfer(b%qtop,0_int64)) return
+    if (transfer(a%qbot,0_int64) /= transfer(b%qbot,0_int64)) return
+    if (transfer(a%gwl,0_int64) /= transfer(b%gwl,0_int64)) return
+    if (transfer(a%gwlinp,0_int64) /= transfer(b%gwlinp,0_int64)) return
     if (a%fllowgwl .neqv. b%fllowgwl) return
+    if (a%fldecdt .neqv. b%fldecdt) return
     same = .true.
   end function states_bitwise_identical
 
