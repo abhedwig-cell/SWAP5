@@ -6,8 +6,10 @@ on:
       - work/f-gc-dummy-swap-shared-storage
     paths:
       - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
       - 'tests/research/test_gc_low01a_below_profile_equivalence.f90'
       - 'tests/research/test_gc_low01a_source_branch.py'
+      - 'tests/research/test_gc_low01_state_machine.py'
       - 'tests/research/run_gc_low01a.sh'
       - '.github/workflows/gc-low01a.yml'
   workflow_dispatch:
