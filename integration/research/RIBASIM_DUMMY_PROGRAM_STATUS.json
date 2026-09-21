@@ -106,20 +106,26 @@
       "work_unit": "RIBASIM-DUMMY-18",
       "decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
       "run": 35595081892
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19A",
+      "decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+      "run": 35596174158,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19A",
-      "state": "PREREGISTRATION_START",
-      "intended_decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
-      "implementation_baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
-      "dependency": "qualified DUMMY-18 stage1.real_ribasim_allocation_supply READY_RESTRICTED",
-      "boundary": "pinned real Ribasim only; no SWAP or MODFLOW substitution"
+      "work_unit": "RIBASIM-DUMMY-19B",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+      "baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "purpose": "custom real Ribasim one-Basin/two-UserDemand reproduction of DUMMY-15 priority split with physical reduction inactive"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Preregister and execute DUMMY-19A pinned real-Ribasim allocation/supply observability bridge.",
+  "next_authority_action": "Qualify DUMMY-19B real Ribasim priority conflict. Do not introduce physical allocation-realization reduction until DUMMY-19B closes.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
