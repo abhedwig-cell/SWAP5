@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_threeway.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-02",
+  "decision": "RIBASIM_DUMMY_02_QUALIFIED_CONTROLLED_THREEWAY_TRIANGLE",
+  "authority": {
+    "baseline": "0bfb2a38efff430b159b6b21c1d3eca9395aba3d",
+    "qualified_main_pre_result_head": "21456420e66f1c6e96f4b63d0b17e9eb236c462a",
+    "qualification_head": "012d19e9c42eeec8a032ea33e0e7d38017757e55",
+    "qualification_merge_commit": "3b421ab08f0c7da107dc207e518c80ec69955fac",
+    "workflow_run": 35565066706,
+    "workflow_job": 106225134413,
+    "workflow_name": "RIBASIM dummy research qualification",
+    "conclusion": "success"
+  },
+  "identity_note": "Qualification head differs from the main pre-result head only in RIBASIM_DUMMY_02_STATUS.json metadata; production, reference, model, test and runner postimages are identical.",
+  "evidence": [
+    "RIBASIM_DUMMY_02_SOURCE_SCOPE=PASS",
+    "6/6 DummyThreeWayCouplingTests PASS",
+    "forecast=actual full-delivery commit PASS",
+    "late hydrology conflict curtails managed delivery PASS",
+    "allocation shortage and realization shortage remain distinct PASS",
+    "physically infeasible actual infiltration fails with zero mutation PASS",
+    "stale participant blocks coupled commit before mutation PASS",
+    "same-window SWAP demand remains invariant PASS",
+    "RIBASIM_DUMMY_02_ANALYTIC_TESTS=PASS",
+    "RIBASIM_DUMMY_02_GATE=PASS"
+  ],
+  "admitted_scope": "Research-only controlled dummy SWAP-Ribasim-MODFLOW triangle with committed SWAP demand, forecast versus actual Basin exchange, shortage decomposition, fail-closed physical infeasibility and explicit coupled commit.",
+  "non_claims": [
+    "no Ribasim network routing or optimization equivalence",
+    "no MODFLOW production package equivalence",
+    "no SWAP irrigation physics",
+    "no distributed atomicity claim",
+    "no production coupling admission"
+  ],
+  "downstream": "Proceed to a separately preregistered head-dependent groundwater-exchange experiment to test whether one forecast/realization pass is sufficient or iterative coupling becomes necessary."
+}
