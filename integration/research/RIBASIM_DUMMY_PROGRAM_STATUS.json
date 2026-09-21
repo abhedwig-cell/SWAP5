@@ -61,28 +61,25 @@
       "work_unit": "RIBASIM-DUMMY-12",
       "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
       "run": 35570012761
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-13",
+      "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+      "run": 35571925509
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-13",
-      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
-      "intended_decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
-      "qualification_run": 35571925509,
-      "pr": 515,
-      "implementation_baseline": "51bbc6d3375028b6604351b19f8806babac82721",
-      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-14",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
-      "implementation": false,
-      "purpose": "external root forcing and demand-memory separation on top of the qualified three-store internal ledger"
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+      "implementation_baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
+      "dependency": "qualified DUMMY-13",
+      "authority_boundary": "P/E/root-capacity-drainage analytical forcing only; no real SWAP irrigation or production drainage ownership claim"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe DUMMY-13 run 35571925509. If PASS, close DUMMY-13 and rebind DUMMY-14 before any DUMMY-14 implementation.",
+  "next_authority_action": "Execute DUMMY-14 forcing-memory gate; if PASS, close DUMMY-14 before beginning competing managed-claims work.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
