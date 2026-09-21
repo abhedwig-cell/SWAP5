@@ -568,3 +568,41 @@ UNRESOLVED.
 
 No executable real-model substitution is authorized while any quantity that
 controls the comparison remains UNRESOLVED.
+
+
+## DUMMY-15C insertion after production SWAP irrigation authority audit
+
+The production authority audit identified a coupling question that must be
+resolved before clock/network substitution is allowed.
+
+The forward sequence is therefore refined to:
+
+~~~text
+DUMMY-15
+  same-state competing managed claims
+
+DUMMY-15B
+  forecast allocation versus physical supplied flow
+
+DUMMY-15C
+  selected SWAP-like irrigation event under partial external supply
+  management-state transaction policy
+
+DUMMY-16
+  management-clock event synchronization
+
+DUMMY-17
+  pure physical two-Basin + shared-groundwater network
+
+DUMMY-18
+  real-model authority binding and staged substitution preparation
+~~~
+
+DUMMY-15C is required because current canonical contains a restricted
+production irrigation route with persistent management state (dayfix and active
+event) and a fixed-depth/rate selected event, but no admitted external
+partial-supply realization contract.
+
+This is distinct from DUMMY-15B. DUMMY-15B asks how allocated managed water is
+split into supplied water. DUMMY-15C asks what management state is committed
+when a discrete irrigation event is not fully supplied.
