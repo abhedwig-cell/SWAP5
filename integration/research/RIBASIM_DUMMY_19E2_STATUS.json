@@ -16,7 +16,7 @@
     "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION"
   ],
   "prepared_scope": "Clock-aligned repeat of the intended one-window management-allocation then physical-realization mechanism, with saveat=allocation.dt=one day.",
-  "next_action": "Execute frozen DUMMY-19E2 clock-aligned qualification.",
+  "next_action": "Execute DUMMY-19E2 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
@@ -42,5 +42,7 @@
       "direct physical linkflow remains supplied authority",
       "allocated-but-unsupplied volume must remain in Basin storage"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_clock_aligned",
+  "qualification_base": "work/ribasim-dummy-01@70140daef7c80ffab4110e5b90938bb98f1a4311"
 }
