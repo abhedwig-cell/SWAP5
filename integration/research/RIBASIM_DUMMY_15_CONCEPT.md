@@ -1,10 +1,10 @@
 # RIBASIM-DUMMY-15 blocked concept: competing managed claims
 
-> Status: BLOCKED pending formal qualification of RIBASIM-DUMMY-14.
+> Status: IMPLEMENTED after formal qualification of RIBASIM-DUMMY-14.
 >
-> This note fixes the first-stage priority semantics only. No DUMMY-15 model or
-> tests may be created before DUMMY-14 qualifies and the implementation
-> baseline is rebound.
+> This note fixed the first-stage priority semantics while implementation was
+> blocked. The implementation baseline was rebound to the qualified DUMMY-14
+> closeout before any DUMMY-15 model or tests were created.
 
 ## Why this work unit exists
 
@@ -393,9 +393,9 @@ DUMMY-15 still cannot determine:
 
 Those remain separate authority questions.
 
-## Implementation gate
+## Implementation authority
 
-No DUMMY-15 implementation may be created until DUMMY-14 qualifies.
+DUMMY-14 qualified before DUMMY-15 implementation began.
 
-After DUMMY-14 closeout, the implementation baseline must be rebound before any
-DUMMY-15 code or tests are added.
+The DUMMY-15 implementation baseline was rebound to the post-DUMMY-14
+qualification head before code or tests were added.
