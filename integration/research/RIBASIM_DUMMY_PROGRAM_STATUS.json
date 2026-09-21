@@ -129,14 +129,15 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19D",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
       "dependency": "qualified DUMMY-19C",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind DUMMY-19D to the post-DUMMY-19C closeout head, then implement the preregistered unequal-min_level real Ribasim realization gate without changing expectations or tolerances.",
+  "next_authority_action": "Execute the frozen DUMMY-19D pinned real Ribasim heterogeneous-realization gate; no model parameter, independent reference value or tolerance may change after observing output.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
