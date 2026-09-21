@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
   "blocker": null,
   "prepared_scope": "Add rainfall, prescribed root-zone loss and root capacity drainage to the three-store ledger after the internal U/V cancellation authority closes.",
-  "next_action": "Add DUMMY-14 to the registered research workflow and execute the forcing-memory gate.",
+  "next_action": "Execute the exact DUMMY-14 three-store-forcing-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -20,7 +20,7 @@
     "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
     "workflow_run": 35571925509
   },
-  "checkpoint_commit": "749d8e93665a6c95c6868607e74eeeb4b84f969d",
+  "checkpoint_commit": "206267d2ecf14b42e97d8290f9c4454dacf6e264",
   "scope": "Three-store external root forcing layered on qualified DUMMY-13 without changing the same-window surface/groundwater management solution.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_14_PREREGISTRATION.json",
@@ -56,5 +56,5 @@
     "irrigation": "root request remains an analytical surrogate until real SWAP demand authority is bound"
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-14 implementation, tests, concept and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-14 full research postimage and workflow gate are persisted; qualification is the next action."
 }
