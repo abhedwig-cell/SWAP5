@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_low01b.preregistration_amendment.v3",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "status": "PRE_EXECUTION_IMMUTABLE_ORIGIN_CLARIFICATION",
+  "original": "integration/research/GC_LOW01B_PREREGISTRATION.json",
+  "prior_amendments": [
+    "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
+    "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json"
+  ],
+  "reason": "The first unexecuted test draft incorrectly constructed a separate hydrostatic origin for each prescribed groundwater level. That would violate the original preregistration's immutable-origin rule and make qbot response largely vacuous.",
+  "frozen_origin": {
+    "reference_H_phreatic_cm": -120,
+    "geometry_cm": {
+      "z": [
+        -25,
+        -75,
+        -150,
+        -250
+      ],
+      "dz": [
+        50,
+        50,
+        100,
+        100
+      ],
+      "node_distance": [
+        25,
+        50,
+        75,
+        100
+      ]
+    },
+    "pressure_head_rule": "h_i = -120 - z_i",
+    "pressure_head_cm": [
+      -95,
+      -45,
+      30,
+      130
+    ],
+    "water_content": "evaluated once from the same KSATEXM-disabled typed B110 provider and then held immutable for all trials",
+    "ponding_depth_cm": 0,
+    "accepted_groundwater_level_cm": -120
+  },
+  "fixed_trial_controls_cm": [
+    -60,
+    -120,
+    -200
+  ],
+  "expected_active_nodes": [
+    1,
+    2,
+    3
+  ],
+  "step_duration_day": 0.01,
+  "rationale_for_step_duration": "Frozen before first live inside-profile execution. A short window limits unrelated transient numerical difficulty while preserving the finite storage/qbot response caused by the different prescribed phreatic controls.",
+  "amended_gates": [
+    "Every -60/-120/-200 cm trial starts from bitwise identical frozen origin pressure-head and water-content arrays.",
+    "The -120 cm control is the hydrostatic identity control and must return near-zero qbot and near-zero storage change.",
+    "At least one of the -60 and -200 cm controls must produce a nonzero qbot or candidate-state change, so the test is non-vacuous.",
+    "Independent complete-profile storage change equals (-qtop+qbot)*dt within 1e-10 cm water.",
+    "Repeated execution of each control from the frozen origin is bitwise deterministic."
+  ],
+  "unchanged": [
+    "fixed GWL controls and NN expectations",
+    "inside-profile fllowgwl=false",
+    "provider-owned saturated continuation in the KSATEXM-disabled bounded slice",
+    "no production mode1 admission"
+  ],
+  "forbidden": [
+    "do not construct a control-dependent initial hydrostatic state",
+    "do not retune the frozen origin or dt after observing live LOW01-B results"
+  ]
+}
