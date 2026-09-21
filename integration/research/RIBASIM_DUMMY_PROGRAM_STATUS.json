@@ -139,10 +139,18 @@
       "intended_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
       "dependency": "qualified DUMMY-19E",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19E2",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
+      "implementation_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
+      "relation": "new clock-aligned work unit after failed DUMMY-19E",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Preserve failed DUMMY-19E evidence. Qualify the intended mechanism only in a new clock-aligned work unit, and separately quantify saveat-driven allocation clock sensitivity.",
+  "next_authority_action": "Execute frozen DUMMY-19E2 clock-aligned gate, then quantify saveat-driven allocation sensitivity separately.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
