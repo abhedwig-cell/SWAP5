@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation with common source Basin but unequal UserDemand min_level values, testing heterogeneous physical realization factors.",
-  "next_action": "Execute frozen DUMMY-19D pinned real Ribasim heterogeneous-realization qualification; no preregistered expected values or tolerances may change.",
+  "next_action": "Execute DUMMY-19D v1 frozen qualification; this is the first admissible run against the rebound implementation.",
   "production_delta": [],
   "reference_delta": [],
   "baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
@@ -45,5 +45,7 @@
       "integrated root, external and total physical supplies plus final Basin level/storage are compared against the frozen independent continuous reference",
       "priority reversal must leave allocations, heterogeneous physical supplies and Basin trajectory unchanged"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_preregistered_heterogeneous_realization",
+  "qualification_base": "work/ribasim-dummy-01@8f2607d79adb0bcbf6ef0e7972cae87b56f9264f"
 }
