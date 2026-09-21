@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.gc_fixed_interface.nonhydrostatic_oracle.preregistration.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "production_changes": false,
+  "purpose": "First direct analytical falsification test of the fixed geometric SWAP-MODFLOW interface with interface hydraulic head deliberately different from SWAP phreatic elevation.",
+  "proof_layer": "MATHEMATICAL_AND_INDEPENDENT_ORACLE_BEFORE_NUMERICAL_IMPLEMENTATION",
+  "geometry": {
+    "unit_horizontal_area_m2": 1.0,
+    "coupling_plane_elevation_m": 0.0,
+    "top_system": "lumped phreatic storage above z_c connected hydraulically to the fixed interface plane",
+    "groundwater_system": "MODFLOW-like storage below the interface plane",
+    "physical_ownership": "top and groundwater inventories are disjoint; interface transfer is internal and must cancel"
+  },
+  "states": {
+    "H_c": "hydraulic head at fixed coupling plane z_c and the MODFLOW-side unknown",
+    "z_p": "SWAP/top-system phreatic elevation, separately prognostic",
+    "semantic_requirement": "H_c and z_p are not aliases"
+  },
+  "sign_convention": {
+    "E_c": "positive from top/SWAP control volume into groundwater/MODFLOW control volume",
+    "W_S": "positive external volume into top/SWAP control volume",
+    "W_M": "positive external volume into groundwater/MODFLOW control volume"
+  },
+  "parameters": {
+    "initial_H_c_m": 8.0,
+    "initial_z_p_m": 8.0,
+    "top_storage_coefficient": 0.10,
+    "groundwater_storage_coefficient": 0.10,
+    "vertical_conductance_per_day": 0.20,
+    "top_external_input_m": 0.010,
+    "groundwater_external_input_m": 0.0,
+    "dt_day": 1.0
+  },
+  "equations": {
+    "interface_transfer": "E_c = C_v * dt * (z_p1 - H_c1)",
+    "top_balance": "S_S*(z_p1-z_p0) = W_S - E_c",
+    "groundwater_balance": "S_M*(H_c1-H_c0) = W_M + E_c",
+    "complete_balance": "S_S*(z_p1-z_p0)+S_M*(H_c1-H_c0) = W_S+W_M"
+  },
+  "closed_form": {
+    "matrix": "[[S_S+Cdt,-Cdt],[-Cdt,S_M+Cdt]] * [z_p1,H_c1]^T = [S_S*z_p0+W_S,S_M*H_c0+W_M]^T",
+    "expected_z_p1_m": 8.03,
+    "expected_H_c1_m": 8.02,
+    "expected_head_gap_m": 0.01,
+    "expected_E_c_m": 0.002,
+    "expected_top_storage_change_m": 0.003,
+    "expected_groundwater_storage_change_m": 0.002,
+    "expected_complete_mass_change_m": 0.005,
+    "note": "Expected values are to be recomputed exactly from the equations before implementation; these decimal fields are human-readable preregistration targets."
+  },
+  "critical_semantic_observation": "The imposed vertical conductance belongs inside the SWAP/top-system surrogate between its phreatic state and the fixed coupling plane. It is not a q-link resistance between a SWAP interface head and a MODFLOW interface head: those interface heads remain one and the same H_c.",
+  "hypotheses": {
+    "H1": "A physically consistent solution exists with H_c != z_p while head continuity at the geometric interface is exact.",
+    "H2": "Interface transfer enters the two component ledgers with equal magnitude and opposite sign.",
+    "H3": "The complete-system balance is independent of the internal interface transfer.",
+    "H4": "For C_v -> infinity, z_p-H_c -> 0 while total storage remains S_S+S_M; this is a hydrostatic limit, not a change in state semantics.",
+    "H5": "For finite C_v, replacing H_c by z_p as the MODFLOW coupling state changes the equations and must not reproduce the preregistered nonhydrostatic oracle except accidentally."
+  },
+  "falsification": [
+    "The independently solved equations cannot produce a finite H_c and z_p with the stated balances.",
+    "The implementation requires separate SWAP-side and MODFLOW-side interface heads to close the declared zero-thickness interface.",
+    "The component interface transfers fail equal-and-opposite cancellation.",
+    "The complete mass error exceeds 1e-12 m in the analytic implementation.",
+    "A numerical implementation converges to values inconsistent with the preregistered closed-form equations."
+  ],
+  "numerical_nonclaims": [
+    "This preregistration does not qualify u/q_u.",
+    "This preregistration does not qualify HCOF/RHS.",
+    "This preregistration does not select an IMS tolerance or acceleration policy.",
+    "This preregistration is not a finite-resistance two-model q-link test."
+  ],
+  "next_after_oracle": "Implement an independent small analytic solver/test, verify the preregistered equations, then derive the eliminated groundwater residual and only then compare its tangent/intercept with production response condensation."
+}
