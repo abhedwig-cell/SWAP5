@@ -78,9 +78,41 @@ The MODFLOW API package adds supplied HCOF directly to the solution matrix
 diagonal and supplied RHS to the solution right-hand side. It does not by
 definition replace the STO package.
 
-The current F-GC49D live qualification fixture contains a MODFLOW STO package
-while the F-GC33 affine API term is active. Both mechanisms can therefore
-coexist in the admitted implementation.
+The current F-GC49D/F-GC45 qualification fixtures contain a MODFLOW STO package while the F-GC33 affine API term is active. Both mechanisms can therefore coexist in the admitted implementation. MAP11 shows, however, that coexistence in these synthetic fixtures is not evidence that both mechanisms own the same physical storage volume.
+
+## Current F-GC state/domain distinction
+
+MAP11 adds a source-bound distinction that is required before applying the
+literature h-link analogy to the current F-GC route.
+
+The canonical coupling contract maps SWAP mode-5 lower-boundary pressure head
+to hydraulic head using
+
+```
+H_interface = z_bottom_face + psi_bottom_face.
+```
+
+The prescribed-qbot bottom-face implementation explicitly documents this as a
+coupling-plane head and states that it is not the freatic groundwater level.
+
+The head-driven FMR corrector performs the inverse mapping and writes the result
+to `bottom_head`. It does not, through that adapter, overwrite the SWAP
+physical state's stored groundwater-level field.
+
+The F-GC45 qualification fixture also does not construct a geometrically
+coextensive storage domain:
+
+- MODFLOW uses a 1 m by 1 m cell, 2 m thick, with `Sy=0.15` and
+  `Ss=0.02 1/m`;
+- the FMR fixture uses the four-node legacy test grid
+  `dz=[0.5,0.5,1.0,1.0]`, which is passed into the coupling-face routines in
+  centimetre units;
+- no authority file declares those two storages to be the same physical
+  volume.
+
+Therefore F-GC45 can qualify the numerical interface coupling and its accepted
+mass ledger, but it cannot prove either storage duplication or storage
+partition equivalence between SWAP and MODFLOW STO.
 
 ## Why equivalence cannot be assumed
 
