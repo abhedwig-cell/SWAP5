@@ -6,16 +6,16 @@
   "baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
-  "next_action": "Execute frozen DUMMY-19G saveat sensitivity sweep; all four saveat cases, hybrid references and tolerances are immutable.",
+  "next_action": "Rebind and execute preregistered DUMMY-19H saveat negative control.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
-  "recovery_point": "DUMMY-19G executable gate persisted after qualified DUMMY-19E2; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19G qualified by clean frozen run 35620973325; duplicate run 35622122103 is a technical source-scope failure with no scientific effect.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19G_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19G_CONCEPT.md",
@@ -39,5 +39,23 @@
       "fixed source ledger closes to 32 m3 in every case",
       "monotonic supply/storage sensitivity is checked across the sweep"
     ]
-  }
+  },
+  "decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+  "workflow_run": 35620973325,
+  "workflow_job": 106403635734,
+  "qualification_head": "19ec736d352474eb1ec685705fbb80bf1ba79b68",
+  "qualification_attempts": [
+    {
+      "run": 35620973325,
+      "state": "PASS",
+      "qualification_head": "19ec736d352474eb1ec685705fbb80bf1ba79b68",
+      "authority_use": "admitted"
+    },
+    {
+      "run": 35622122103,
+      "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
+      "authority_use": "forbidden",
+      "scientific_effect": "none"
+    }
+  ]
 }
