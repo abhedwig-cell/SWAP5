@@ -150,10 +150,12 @@ contains
     boundary = soil_water_boundary_conditions_t()
     boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
     boundary%bottom_mode = 1
-    boundary%top_flux = 0.0_real64
-    boundary%top_head = origin%h(1)
+    boundary%top_flux = origin%qtop
+    boundary%top_head = origin%hsurf
     boundary%bottom_flux = 0.0_real64
-    boundary%bottom_head = requested_h_phreatic_cm
+    ! H_phreatic is carried only by candidate%gwlinp for mode 1.  Keep the
+    ! mode-5 lower-face head field semantically neutral in this research route.
+    boundary%bottom_head = 0.0_real64
 
     storage0 = sum(origin%theta*parameter_set%dz) + origin%pond
 
