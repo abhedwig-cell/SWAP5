@@ -517,8 +517,11 @@ head directly to X and XOLD through XMI before the new substep is prepared.
 
 ## Immediate next actions
 
-1. Run DSW-17, an equal-and-opposite internal-transfer experiment with zero
-   external forcing. The complete coupled storage must remain invariant.
+1. Run DSW-17 as an equal-and-opposite internal-transfer experiment between
+   groundwater storage and an **independent internal memory state**, with zero
+   external forcing. Do not model this as transfer between two storage
+   partitions that are both functions only of the same shared head. The
+   complete coupled storage must remain invariant.
 2. Run DSW-18 storage limits separately from q-link limits. In particular,
    distinguish `S -> 0` and large `S` from `C -> infinity` in a physical
    exchange law.
