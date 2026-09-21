@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw05w.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW05W",
+  "workflow_run": 35562694437,
+  "decision": "DIAGNOSTIC_QUALIFIED_INNER_RESIDUAL_CERTIFICATION",
+  "fixed_physical_head_m": 8.01,
+  "variants": [
+    {
+      "rclose": 1e-15,
+      "converged": false,
+      "iterations": 100,
+      "head_m": 8.010000000000002,
+      "head_error_m": 1.7763568394002505e-15
+    },
+    {
+      "rclose": 1e-14,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.010000000000002,
+      "head_error_m": 1.7763568394002505e-15
+    },
+    {
+      "rclose": 1e-13,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.010000000000002,
+      "head_error_m": 1.7763568394002505e-15
+    }
+  ],
+  "bounded_conclusions": [
+    "The DSW-05 irregular-step failure is not a hydrological timestep-invariance failure: all tested residual-closure variants reach the same analytic head to machine precision.",
+    "The false convergence flag at rclose=1e-15 is caused by the linear/IMS residual certification layer, not by nonlinear under-relaxation.",
+    "A convergence certificate and a physically adequate state error are distinct acceptance objects."
+  ],
+  "forbidden_inference": [
+    "Do not infer that 1e-14 or 1e-13 is the correct production rclose from this one-cell diagnostic.",
+    "Do not retroactively mark the original preregistered DSW-05 strict gate as passed."
+  ]
+}
