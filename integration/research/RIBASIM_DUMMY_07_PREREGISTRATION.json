@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_stabilization.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-07",
+  "title": "Under-relaxed active-set coupling and direct active-set solve",
+  "baseline": "5614799ff6930f2d049f2e04e8dd95a50647be3b",
+  "purpose": "Compare two bounded repairs of the qualified DUMMY-06 failure mechanism against the exact DUMMY-05 oracle: under-relaxation of the same active-set Picard map and a non-iterative direct active-set solve.",
+  "relaxed_map": {
+    "definition": "G_omega(V)=(1-omega)*V+omega*F_active(V)",
+    "omega_domain": "0 < omega <= 1 for this work unit",
+    "fixed_full_zero_error_factor": "q = 1 - omega*(1+lambda)",
+    "interior_curtailed_error_factor": "q = 1 - omega",
+    "fixed_regime_convergence": "|q|<1 => 0 < omega < 2/(1+lambda)",
+    "locally_annihilating_relaxation": "omega_star = 1/(1+lambda)"
+  },
+  "direct_active_set": {
+    "algorithm": [
+      "solve coupled FULL trial with U=R",
+      "if FULL trial h1>=hmin, accept FULL",
+      "otherwise solve coupled ZERO trial with U=0",
+      "if ZERO trial h1<=hmin and h1>=datum, accept ZERO",
+      "otherwise activate h1=hmin and solve U from balance plus exchange",
+      "if ZERO trial h1<datum, fail closed"
+    ],
+    "constraint": "implementation must not call HeadDependentManagementProblem.solve()"
+  },
+  "stiff_case": {
+    "A": 100,
+    "C": 300,
+    "dt": 1,
+    "h0": 1,
+    "hgw": 0.8,
+    "hmin": 0.2,
+    "R": 50,
+    "lambda": 1.5,
+    "exact": {
+      "regime": "FULL",
+      "U": 50,
+      "V": -6,
+      "h1": 0.56
+    },
+    "explicit_start_exchange": 60,
+    "omega_star": 0.4,
+    "expected_omega_star_sequence": [
+      60,
+      12,
+      -6,
+      -6
+    ],
+    "omega_boundary": 0.8,
+    "expected_boundary_sequence": [
+      60,
+      -36,
+      24,
+      -36,
+      24
+    ]
+  },
+  "experiments": {
+    "S1": "within non-switching FULL and ZERO regimes, observed relaxed error ratio equals q=1-omega(1+lambda)",
+    "S2": "within interior CURTAILED, observed relaxed error ratio equals 1-omega relative to the curtailed fixed exchange",
+    "S3": "preregistered stiff case with omega_star=0.4 transitions CURTAILED -> FULL and reaches exact oracle exchange -6 m3 on the second relaxed update",
+    "S4": "same stiff case at omega=0.8 reproduces the preregistered -36/24 two-cycle, confirming strict rather than inclusive fixed-regime stability bound",
+    "S5": "omega=0.5 converges to the exact stiff-case oracle after regime identification without changing management or physical equations",
+    "S6": "direct active-set solve matches DUMMY-05 FULL, CURTAILED and ZERO oracle solutions across a dense parameter/request grid while never calling oracle.solve() internally",
+    "S7": "direct active-set physical infeasibility agrees with DUMMY-05 fail-closed classification",
+    "S8": "omega_star=1/(1+lambda) removes fixed-regime linear error in one relaxed update for multiple lambda values once initialized inside the correct active set"
+  },
+  "interpretation_rules": [
+    "under-relaxation changes only the coupling iteration, not the physical or management equations",
+    "the bound 0<omega<2/(1+lambda) is local to fixed FULL/ZERO regimes of this surrogate",
+    "omega_star is not claimed globally optimal across active-set switches",
+    "direct active-set solve is a research oracle-like algorithm, not a Ribasim allocation implementation",
+    "no empirical convergence tolerance is used for the analytic ratio tests"
+  ],
+  "forbidden": [
+    "no production coupling or solver change",
+    "no claim of global convergence for arbitrary nonlinear models",
+    "no claim that direct active-set solve is appropriate for real Ribasim networks",
+    "no change to DUMMY-05 exact physics or management priority"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_07_QUALIFIED_STABILIZATION_MECHANISMS",
+  "fail_decision": "RIBASIM_DUMMY_07_BLOCKED"
+}
