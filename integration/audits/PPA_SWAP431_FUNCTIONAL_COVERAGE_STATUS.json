@@ -18,9 +18,9 @@
   "implementation_status": "REGISTER_ESTABLISHED; no production mutation",
   "test_status": "NOT_APPLICABLE_DOCUMENTATION_AND_RECOVERY_RECORD_ONLY",
   "qualification_status": "NOT_A_QUALIFICATION_CLAIM",
-  "blockers": ["B2 integrated reference-mode comparison remains fail-closed", "PPA-WU04-C/D require an exact B1.11 MOD_meteo source-equation oracle, but the checkout contains only its identity manifest and Python is unavailable for the repository reconstruction tool", "macropore exact mutable-state/mass census requires B1.11 source materialization", "frost and compensated-root authority remain blocked"],
+  "blockers": ["B2 integrated reference-mode comparison remains fail-closed", "PPA-WU04-C/D require an exact B1.11 MOD_meteo source-equation oracle; Python is available, but the required byte-exact B0 SWAP.ZIP archive (SHA-256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151) is not present in this checkout", "macropore exact mutable-state/mass census requires B1.11 source materialization", "frost and compensated-root authority remain blocked"],
   "candidate_queue": ["PPA-WU04-C: SWINTER=1 source-window aggregate", "PPA-WU04-D: SWINTER=2 source-window aggregate", "PPA-WU02-B: SWBOTB=2 sinus/table forcing and dry continuation"],
   "ready_queue": [],
-  "next_safe_step": "Restore a runnable Python/reconstruction environment and materialize the exact B1.11 source before selecting the first candidate; then bind its source oracle and re-evaluate readiness.",
+  "next_safe_step": "Supply the exact B0 SWAP.ZIP archive, verify its SHA-256 with reference/swap-4.3.1/b0/verify_source_archive.py, reconstruct B1.11 in a temporary directory, then bind the candidate source oracle and re-evaluate readiness.",
   "recovery_point": "Checkpoint 378d2c23025ab989f4aad5e59b33836b85b116da establishes the register; persist this blocked-state correction before any source-changing work."
 }
