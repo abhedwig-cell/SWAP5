@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
-  "next_action": "Execute frozen DUMMY-19G saveat sensitivity sweep; all four saveat cases, hybrid references and tolerances are immutable.",
+  "next_action": "Execute DUMMY-19G v1 frozen saveat sensitivity qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
@@ -39,5 +39,7 @@
       "fixed source ledger closes to 32 m3 in every case",
       "monotonic supply/storage sensitivity is checked across the sweep"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_saveat_sensitivity",
+  "qualification_base": "work/ribasim-dummy-01@6eaa87c7a0f09a63f31fef83b358448cad5cef03"
 }
