@@ -4,7 +4,7 @@
   "work_unit": "GC-HLINK03",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_BLOCKED_PARENT_HLINK02",
+  "state": "IMPLEMENTED_PREEXECUTION_REVIEWED_BLOCKED_PARENT_HLINK02",
   "preregistration": "integration/research/GC_HLINK03_PREREGISTRATION.json",
   "test": "tests/research/test_gc_hlink03_process_memory.py",
   "production_changes": false,
@@ -15,8 +15,14 @@
     "MODFLOW WEL owns the lateral groundwater input.",
     "Internal memory transfer is equal-and-opposite between W and shared storage and is excluded from the whole-system external source ledger."
   ],
-  "next_action": "Hold test unexecuted until HLINK02 is qualified; then wire unchanged test into the research testbank.",
+  "next_action": "Qualify HLINK02 through unchanged HLINK02D diagnosis first. If HLINK02 is repaired and passes its original preregistered gates, execute HLINK03 unchanged.",
   "blockers": [
-    "HLINK01 live qualification pending; HLINK02 consequently not yet activated."
-  ]
+    "HLINK02 original preregistered live gate is not yet qualified.",
+    "HLINK02D numerical certification diagnosis is awaiting live Actions evidence."
+  ],
+  "preexecution_review": "integration/research/GC_HLINK03_PREEXECUTION_REVIEW.json",
+  "parent_state": {
+    "HLINK01": "QUALIFIED",
+    "HLINK02": "LIVE_GATE_FAILED_NUMERICAL_CERTIFICATION_DIAGNOSTIC_ACTIVE"
+  }
 }
