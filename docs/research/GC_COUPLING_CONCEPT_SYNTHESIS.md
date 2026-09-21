@@ -162,6 +162,55 @@ The HYDRUS-MODFLOW literature provides a clear example: the groundwater table is
 
 Sequential exchange can be useful and correct. It simply has different semantics from declaring one common physical unknown.
 
+### 3.4 Keep physical topology separate from numerical coupling form
+
+The coupling problem has at least three orthogonal questions.
+
+**Physical topology**
+
+```text
+S: one shared phreatic state and one non-duplicated physical inventory
+I: disjoint domains meeting at a hydraulic interface
+Q: two physical lumped states separated by a real resistance
+```
+
+**Exchanged numerical representation**
+
+```text
+head
+flux
+integrated volume
+storage response
+process response
+affine intercept + tangent
+full internal state
+```
+
+**Solution algorithm**
+
+```text
+monolithic solve
+iterated partitioned solve
+Dirichlet-Neumann / head-flux iteration
+response condensation
+sequential one-pass exchange
+predictor-corrector
+```
+
+These axes must not be collapsed.
+
+For example, an affine pair `HCOF/RHS` says only that one contribution to a residual has been represented locally as
+
+```text
+Q(H) = HCOF * H - RHS
+```
+
+It does **not** say whether the underlying physics is a shared-state storage balance, a real two-state resistance, an interface Dirichlet-Neumann exchange, or a purely numerical local condensation.
+
+Likewise, the current `q_u/u` response pair is best classified as a **numerical response condensation**. That classification is compatible with the source algebra and the historical predictor design. It does not by itself select S, I or Q as the physical topology.
+
+This separation is the main reason HLINK, q-link and current HCOF experiments must remain evidence about specific hypotheses rather than architecture labels.
+
 ## 4. DSW01-DSW20 concept matrix
 
 The matrix below uses only the qualified testbank and its diagnosed strict-gate exceptions. DSW05 and DSW09 preserve their original failed numerical certification gates; their physical questions are nevertheless resolved by the explicitly qualified diagnostics.
@@ -470,6 +519,8 @@ This decision explicitly prevents HLINK/LOW01 readiness from becoming an acciden
 ## 10. Physical-domain contracts that must be distinguished
 
 The next architecture discussion needs a declared physical control volume before any coefficient is assigned. At least three physically different contracts are plausible.
+
+These contracts describe **physics**, not the solver algorithm. Any surviving contract may later be implemented through a monolithic solve, an iterated head/flux exchange or a local affine response representation if that representation reproduces the correct residual.
 
 ### 10.1 Contract S: one shared phreatic state with combined storage
 
