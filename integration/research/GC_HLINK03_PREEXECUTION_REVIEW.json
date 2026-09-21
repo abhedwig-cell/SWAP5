@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_hlink.hlink03.preexecution_review.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK03-PREEXEC-REVIEW",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "findings": [
+    "The DRY_MEMORY and WET_MEMORY analytical heads follow exactly from one shared Sy=0.20 storage balance plus atmospheric input, MODFLOW lateral input, ET, drainage and the declared internal-memory transfer.",
+    "Whole-system mass treats the memory transfer with equal-and-opposite signs in memory and shared storage; it is excluded from the external source ledger.",
+    "The API term contains process remainder only and excludes the shared storage coefficient, matching the preregistered ownership contract.",
+    "Both accepted heads lie above the ET and drain thresholds, so the fixed active-branch affine sink used by the test is self-consistent.",
+    "The test restores X and XOLD to the immutable H0 before prepare_time_step and does not introduce rejected-trial state.",
+    "HLINK03 performs the same pre-prepare_time_step XMI STO/SY replacement mechanism whose numerical certification is under HLINK02D diagnosis."
+  ],
+  "dependency_interpretation": [
+    "HLINK01 is already qualified and is no longer a live blocker.",
+    "HLINK02 remains the sole synthetic parent blocker.",
+    "HLINK02D must classify the same-value/runtime STO mutation and IMS certification behavior before HLINK03 execution can be interpreted safely."
+  ],
+  "decision": "PREEXECUTION_REVIEW_PASS_BLOCKED_ON_HLINK02",
+  "forbidden": [
+    "do not execute HLINK03 before HLINK02 is qualified",
+    "do not alter HLINK03 physical constants or gates from this review",
+    "do not count internal memory transfer as external recharge",
+    "no production changes"
+  ]
+}
