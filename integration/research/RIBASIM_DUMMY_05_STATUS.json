@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_management_complementarity.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-05",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "1c38b4216df576570a62c11800b17af5ab77df91",
+  "checkpoint_commit": "feb69953e41b4f18aba34f88b44d9b28ce9647ad",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Exact piecewise active-set solution combining DUMMY-04 head-dependent trapezoidal exchange with the DUMMY-02 hydrology-before-management UserDemand rule.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_05_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_05_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_05_STATUS.json",
+    "tests/research/dummy_head_management_complementarity.py",
+    "tests/research/test_dummy_head_management_complementarity.py",
+    "tests/research/run_ribasim_dummy_05.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_trapezoid_exchange_iteration.py",
+    "tests/research/dummy_head_management_complementarity.py",
+    "tests/research/test_dummy_head_management_complementarity.py",
+    "tests/research/run_ribasim_dummy_05.sh",
+    "integration/research/RIBASIM_DUMMY_05_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_04": "RIBASIM_DUMMY_04_QUALIFIED_LINEAR_ITERATION_MECHANISM",
+    "DUMMY_04_run": 35565642510
+  },
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-05 to the registered research workflow, execute the exact active-set gate and record result evidence.",
+  "recovery_point": "DUMMY-05 exact oracle, tests, concept and runner are persisted; qualification not yet run.",
+  "blockers": []
+}
