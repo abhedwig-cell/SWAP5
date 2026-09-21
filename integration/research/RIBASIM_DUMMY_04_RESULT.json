@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_iteration.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-04",
+  "decision": "RIBASIM_DUMMY_04_QUALIFIED_LINEAR_ITERATION_MECHANISM",
+  "authority": {
+    "baseline": "ad76b2c46530a40d9fb60973270d1f69708a695f",
+    "qualified_main_pre_result_head": "4adb9615471fa216f6f93543c6db8852fc993512",
+    "qualification_head": "fa900be8032b39d8ed4c2debcaab42ab3afabccb",
+    "workflow_run": 35565642510,
+    "workflow_job": 106226792934,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_04_SOURCE_SCOPE=PASS",
+    "9/9 TrapezoidExchangeIterationTests PASS",
+    "closed-form fixed point satisfies exchange and Basin balance equations",
+    "lambda < 1 gives exact alternating geometric error ratio -lambda",
+    "lambda = 1 gives equal-magnitude alternating error",
+    "lambda > 1 gives growing alternating error",
+    "one corrector improves the explicit estimate for lambda < 1 but is not generally exact",
+    "equal lambda gives equal normalized error propagation",
+    "managed withdrawal shifts fixed point but does not change error factor",
+    "reducing dt across lambda=1 restores simple Picard convergence",
+    "RIBASIM_DUMMY_04_GATE=PASS"
+  ],
+  "bounded_result": {
+    "stiffness": "lambda = C*dt/(2*A)",
+    "picard_error": "e_(n+1) = -lambda*e_n",
+    "fixed_point": "V* = [C*dt*(h0-hgw) - lambda*U] / (1+lambda)"
+  },
+  "interpretation": "The lambda threshold characterizes the unrelaxed Picard map of the frozen constant-area linear trapezoidal surrogate. It is not a universal stability theorem for Ribasim-MODFLOW coupling and does not imply absence of a coupled solution for lambda >= 1.",
+  "non_claims": [
+    "no production timestep criterion",
+    "no preferred production iteration algorithm",
+    "no MODFLOW package equivalence",
+    "no management-shortage coupling result",
+    "no production code change"
+  ],
+  "downstream": "Reintroduce the qualified hydrology-before-management clipping rule as a piecewise coupled problem and test regime switching separately from the linear iteration mechanism."
+}
