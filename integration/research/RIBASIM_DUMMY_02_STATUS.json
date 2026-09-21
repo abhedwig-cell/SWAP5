@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_threeway.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-02",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "0bfb2a38efff430b159b6b21c1d3eca9395aba3d",
+  "checkpoint_commit": "607c67a75c372600a773a6ac3d0598ec215633ef",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Controlled dummy SWAP - Ribasim - MODFLOW triangle with forecast allocation, physical realization, shortage decomposition and explicit coupled commit.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_02_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_02_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_02_STATUS.json",
+    "tests/research/dummy_threeway_water_coupling.py",
+    "tests/research/test_dummy_threeway_water_coupling.py",
+    "tests/research/run_ribasim_dummy_02.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_ribasim_reservoir.py",
+    "tests/research/dummy_threeway_water_coupling.py",
+    "tests/research/test_dummy_threeway_water_coupling.py",
+    "tests/research/run_ribasim_dummy_02.sh",
+    "integration/research/RIBASIM_DUMMY_02_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Run the exact DUMMY-02 focused gate in GitHub Actions and record result evidence.",
+  "recovery_point": "Resume from work/ribasim-dummy-01; DUMMY-02 implementation and concept are persisted, focused test/qualification still open.",
+  "blockers": []
+}
