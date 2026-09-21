@@ -12,28 +12,39 @@ The aim is not to change production code. The aim is to prevent one symbol or
 coefficient from silently changing meaning between physical storage,
 bottom-interface mass, predictor sensitivity and numerical iteration policy.
 
-## 1. Shared state does not mean shared complete state
+## 1. Interface head, phreatic state and internal state are distinct
 
-For the current shared-head formulation:
+MAP11 source reconciliation sharpens the state definition for the current
+F-GC route.
+
+The exchanged production coordinate is:
 
 ```
-H = shared phreatic / groundwater head
+H_interface = hydraulic head on the SWAP lower coupling plane
 ```
 
-but a SWAP column still owns internal memory:
+The canonical predictor source explicitly states that this coupling-plane head
+is **not** the freatic groundwater level. The head-driven corrector maps
+`H_interface` back to SWAP `bottom_head`.
+
+A true phreatic shared-state h-link would instead impose:
+
+```
+H_phreatic,SWAP = H_phreatic,MODFLOW
+```
+
+together with an explicit common storage-ownership relation. That is a
+different model contract and is not established by the current F-GC45
+qualification fixture.
+
+A SWAP column also owns internal memory:
 
 ```
 xi = pressure-head profile, unsaturated storage, process state, ...
 ```
 
-Therefore the coupled physical state is at least:
-
-```
-(H, xi_swap, state_modflow_elsewhere)
-```
-
-DSW11 and DSW15 demonstrate why equal H does not imply equal future column
-response.
+so even in a future shared-phreatic-state formulation equal head would not
+imply equal complete SWAP state. DSW11 and DSW15 demonstrate this point.
 
 ## 2. Physical storage
 
@@ -329,8 +340,11 @@ These gates are not interchangeable.
 Use these names consistently:
 
 ```
-H
-  shared physical head state
+H_interface
+  lower coupling-plane hydraulic head in the current F-GC route
+
+H_phreatic
+  shared water-table state only in an explicitly defined phreatic h-link
 
 xi_swap
   SWAP-owned internal memory
