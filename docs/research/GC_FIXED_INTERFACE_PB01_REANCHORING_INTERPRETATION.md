@@ -1,7 +1,7 @@
 # PB01 reanchoring interpretation
 
 Date: 2026-09-21
-Status: ANALYTICAL INTERPRETATION AFTER EXECUTED PB01; PRODUCTION INTENT NOT YET CLOSED
+Status: ANALYTICAL + LIVE MODFLOW QUALIFIED; PRODUCTION INTENT NOT YET CLOSED
 
 ## Observation
 
@@ -40,7 +40,7 @@ PB01 plus MAP03 imply that, in the fixed-interface interpretation, +u/dt cannot 
 Two interpretations remain:
 
 1. production defect: the positive slope is used as a frozen physical response without sufficient reanchoring;
-2. numerical quasi-Newton/preconditioning term: the positive slope is intentionally/non-intentionally used only to stabilize/accelerate an outer iteration whose accepted flux is supplied by a corrector.
+2. numerical surrogate/preconditioning term: the positive slope is used inside an outer iteration whose accepted flux is supplied by a corrector. It must not be called stabilizing without an independently qualified stability mechanism; NH01 shows that the undamped positive-slope iteration is unstable.
 
 The second interpretation explains why earlier slope-policy experiments could converge to the same accepted physics despite different nonzero slopes.
 
@@ -56,4 +56,4 @@ Close the following evidence chain first:
 - compare frozen-affine and reanchored iterations separately.
 
 A frozen current-orientation affine law is expected to fail the NH01 physical root.
-A reanchored outer iteration may still converge to H=8.04 m. If it does, u is qualified as an iteration slope for that algorithm, not as the outward physical flux derivative.
+The preregistered live MODFLOW 6.8.0 one-cell fixture has now executed. The physical negative tangent closes at H=8.039999999999965 m. The frozen positive law closes at 8.199999999999967 m and therefore fails as physical condensation. The reanchored positive-slope iteration has absolute errors 0.64, 2.56, 10.24, ... m: exactly a factor 4 growth, matching the analytical |rho|=4 prediction. Thus MODFLOW prepared-solve behavior supplies no hidden stabilization in this isolated fixture. Reanchoring proves fixed-point consistency only; it does not qualify +u/dt as a stable iteration slope.
