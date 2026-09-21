@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09r.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09R",
+  "title": "Fresh prepared-solve per reanchor replay of DSW-09",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_observation": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+  "source_resolution_result": "integration/research/GC_DUMMY_SWAP_DSW09N_RESULT.json",
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "initial_head_m": 8,
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883
+  },
+  "method": "Replay the exact tangent/reanchor sequence, but instantiate a fresh MODFLOW6 prepared solve for every tangent. Carry only the newly solved head into the next reanchor.",
+  "max_reanchors": 20,
+  "gates": [
+    "exact nonlinear residual below 1e-12 m/day",
+    "head within 1e-10 m of closed-form root",
+    "at least two reanchors exercised",
+    "each fresh affine solve reports MODFLOW converged"
+  ],
+  "comparison": "If this closes while the same one-iteration reanchor sequence inside one prepared solve stalls, the failure is history/state retention within the prepared solve rather than coupling algebra or API coefficient resolution.",
+  "forbidden": [
+    "no production change",
+    "no relaxation of DSW-09 gates",
+    "do not claim which internal MODFLOW/IMS state causes the history effect until separately traced"
+  ]
+}
