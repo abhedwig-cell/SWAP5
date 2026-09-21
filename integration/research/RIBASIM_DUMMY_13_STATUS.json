@@ -3,7 +3,7 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-13",
   "branch": "work/ribasim-dummy-01",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -25,7 +25,7 @@
     "next_root_request_m3": 8,
     "combined_three_store_change_m3": 0
   },
-  "next_action": "Implement first-stage DUMMY-13 three-store internal-transfer ledger.",
+  "next_action": "Add DUMMY-13 to the registered research workflow and execute the three-store ledger gate.",
   "production_delta": [],
   "reference_delta": [],
   "concept": "integration/research/RIBASIM_DUMMY_13_CONCEPT.md",
@@ -49,5 +49,40 @@
       "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
       "run": 35570012761
     }
-  }
+  },
+  "checkpoint_commit": "cffae3358cf240c3e61f10cf3d7db6ba6c4bc234",
+  "scope": "First-stage three-store composition: qualified root-zone request state + qualified dynamic surface/groundwater management, with irrigation and surface-groundwater exchange treated as internal transfers.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_13_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_13_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_13_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_three_store_internal_ledger.py",
+    "tests/research/test_dummy_three_store_internal_ledger.py",
+    "tests/research/run_ribasim_dummy_13.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_rootzone_demand.py",
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/dummy_two_store_management.py",
+    "tests/research/dummy_three_store_internal_ledger.py",
+    "tests/research/test_dummy_three_store_internal_ledger.py",
+    "tests/research/run_ribasim_dummy_13.sh",
+    "integration/research/RIBASIM_DUMMY_13_*",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_11": {
+      "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+      "run": 35569720082
+    },
+    "DUMMY_12": {
+      "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+      "run": 35570012761
+    }
+  },
+  "conditional_authority_boundary": "Three stores are disjoint by construction. DUMMY-13 cannot close real F-GC CSR-B1 storage-partition or CSR-B2 drainage-ownership blockers.",
+  "recovery_point": "DUMMY-13 implementation, tests, concept and focused runner are persisted; qualification remains open."
 }
