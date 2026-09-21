@@ -113,5 +113,11 @@
     "no production coupling claim"
   ],
   "pass_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
-  "fail_decision": "RIBASIM_DUMMY_19F_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19F_BLOCKED",
+  "disposition": {
+    "state": "SUPERSEDED_BEFORE_EXECUTION",
+    "date": "2026-09-21",
+    "reason": "The preregistration assumed solver.saveat was observational only. DUMMY-19E showed pinned Ribasim uses saveat boundaries as allocation solve boundaries, so the proposed two-day clock semantics are not the configured model semantics.",
+    "frozen_reference_modified": false
+  }
 }
