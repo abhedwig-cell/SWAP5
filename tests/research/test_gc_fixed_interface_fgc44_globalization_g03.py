@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -212,6 +213,28 @@ def run_policy(
     }
 
 
+def run_cold_g06_only() -> None:
+    swaplib = Path(os.environ["FGC44_SWAP_LIB"]).resolve()
+    require(swaplib.is_file(), "missing real SWAP bridge library")
+    swap = Fgc44RealSwap(swaplib)
+    _, _, href = swap.initialize()
+    origin = swap.state()
+    require(origin == (0, 0.0, 0, 0.0), "cold G06 process not at accepted origin")
+    cold_status, _ = trial_and_discard(swap, origin, href + KNOWN_REJECTED_DH_M)
+    require(cold_status != 0, "fresh-process -2e-6 probe unexpectedly accepted")
+    contracted_status, _ = trial_and_discard(
+        swap, origin, href + 0.5 * KNOWN_REJECTED_DH_M
+    )
+    require(contracted_status == 0, "fresh-process factor-1/2 contraction not admissible")
+    require(swap.state() == origin, "cold G06 trials mutated accepted authority")
+    print(
+        f"FGC44_G06_COLD_REJECTED_DH_M={KNOWN_REJECTED_DH_M:.17g} "
+        f"STATUS={cold_status} CONTRACTED_DH_M={0.5*KNOWN_REJECTED_DH_M:.17g} "
+        f"CONTRACTED_STATUS={contracted_status}"
+    )
+    print("FGC44_G06_COLD_PROCESS=PASS")
+
+
 def main() -> None:
     libmf6 = Path(os.environ["LIBMF6"]).resolve()
     swaplib = Path(os.environ["FGC44_SWAP_LIB"]).resolve()
@@ -298,27 +321,21 @@ def main() -> None:
         f"STATUS={warm_status}"
     )
 
-    # Reinitialize the diagnostic participant before asserting the previously
-    # observed cold-start asymmetry.  This is the envelope to which the
-    # preregistered -2e-6 observation belongs.
-    _, _, href_cold = swap.initialize()
-    cold_origin = swap.state()
-    require(cold_origin == (0, 0.0, 0, 0.0), "G06 cold reset did not restore origin")
-    require(abs(href_cold-href) <= 64*np.finfo(float).eps*max(1.0,abs(href)),
-            "G06 cold reset changed reference head")
-    cold_status, _ = trial_and_discard(swap, cold_origin, href_cold + KNOWN_REJECTED_DH_M)
-    require(cold_status != 0, "cold-start -2e-6 probe unexpectedly accepted")
-    contracted_status, _ = trial_and_discard(
-        swap, cold_origin, href_cold + 0.5*KNOWN_REJECTED_DH_M
+    # A true cold numerical start requires a fresh process.  Recalling
+    # initialize() inside this process resets accepted physical authority but
+    # deliberately does not promise to erase worker-local numerical warm starts.
+    cold = subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--g06-cold"],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=os.environ.copy(),
     )
-    require(contracted_status == 0, "factor-1/2 safeguard did not recover cold-start admissibility")
-    print(
-        f"FGC44_G06_COLD_REJECTED_DH_M={KNOWN_REJECTED_DH_M:.17g} "
-        f"STATUS={cold_status} CONTRACTED_DH_M={0.5*KNOWN_REJECTED_DH_M:.17g} "
-        f"CONTRACTED_STATUS={contracted_status}"
-    )
+    print(cold.stdout.strip())
+    require("FGC44_G06_COLD_PROCESS=PASS" in cold.stdout,
+            "cold-process G06 safeguard marker missing")
 
-    require(swap.state() == cold_origin, "G06 diagnostic trials mutated SWAP authority")
+    require(swap.state() == origin_state, "G06 warm-history diagnostics mutated SWAP authority")
     print("FGC44_G03_GROUNDWATER_RESPONSE=PASS")
     print("FGC44_G05_FINITE_PERTURBATION=PASS")
     print("FGC44_G06_ASYMMETRIC_SAFEGUARD=PASS")
@@ -326,4 +343,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 2 and sys.argv[1] == "--g06-cold":
+        run_cold_g06_only()
+    else:
+        main()
