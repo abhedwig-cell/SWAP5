@@ -28,7 +28,7 @@
       "external_total_m3": 20.444444444444443
     }
   },
-  "next_action": "Execute DUMMY-16 management-clock-gate.",
+  "next_action": "Freeze this DUMMY-16 postimage on a single qualification branch and execute management-clock-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -54,5 +54,32 @@
     }
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-16 implementation, tests and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-16 implementation, tests and focused runner are persisted; qualification remains open.",
+  "source_scope_verification": {
+    "base": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_16_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_16_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_16_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_management_clock.py",
+      "tests/research/run_ribasim_dummy_16.sh",
+      "tests/research/test_dummy_management_clock.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_AND_ALGEBRA_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "window1 FULL: request40, realized40, V=16, hs=0.44, hg=0.16, root=60",
+      "window2 CURTAILED: request40, realized20.4444444444, V=3.5555555556, hs=0.2, hg=0.1955555556",
+      "fast clock second split external20/root0.4444444444",
+      "stale clock second split root20/external0.4444444444",
+      "fast and stale schedules have identical physical water trajectory",
+      "combined storage loss equals cumulative supplied external demand in both schedules"
+    ]
+  }
 }
