@@ -4,27 +4,35 @@
   "work_unit": "GC-LOW01-B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "BLOCKED_BEFORE_EXECUTION_TYPED_CONSTITUTIVE_OWNERSHIP_REQUIRED",
+  "state": "IMPLEMENTED_PENDING_PREREQUISITE_QUALIFICATION",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01B_PREREGISTRATION.json",
   "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
   "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
   "blockers": [
-    "Inside-profile saturated continuation in legacy HeadCalc assigns theta(NN+1:n)=cofgen(2,i) directly rather than through the explicit constitutive provider.",
-    "Mode-1 special branches also retain direct legacy watcon/hconduc use.",
-    "The current typed solver result has no branch-independent mode-1 qbot publication and no typed rule that candidate groundwater_level equals prescribed gwlinp.",
-    "Executing the current test-only direct-HeadCalc plan would therefore demonstrate legacy source behavior, but would not qualify the typed provider-owned HLINK04 route promised by LOW01-B."
+    "Live qualification evidence not yet available.",
+    "KSATEXM-enabled prescribed-GWL saturated continuation remains a separate blocked semantic slice."
   ],
   "preserved_value": [
     "The original preregistration remains a useful source-behavior specification.",
     "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
   ],
   "decision": "DO_NOT_EXECUTE_LOW01B_AS_TYPED_QUALIFICATION",
-  "activation_rule": "Resume LOW01-B only after a research-only explicit constitutive owner for saturated continuation and a complete typed mode-1 candidate output contract exist.",
+  "activation_rule": "Run only after LOW01-A, LOW01 constitutive bridge and LOW01-STATE01 prerequisites pass in the same qualification runner. KSATEXM-enabled mode1 remains blocked.",
   "next": [
-    "Qualify LOW01-A source/datum equivalence.",
-    "Add LOW01-A2 live below-profile reduction through the already admitted mode-5 Reference solve.",
-    "Use LOW01-A2 as the first solver-level substrate for LOW01-D immutable-origin replay.",
-    "Keep HLINK04 blocked."
-  ]
+    "Execute bounded KSATEXM-disabled LOW01-B qualification.",
+    "If PASS, persist source-bound inside-profile result and open LOW01-C boundary sweep plus LOW01-D transaction replay.",
+    "Keep HLINK04 blocked until LOW01-D and LOW01-C characterization are also available."
+  ],
+  "constitutive_scope": {
+    "ksatexm_extension_enabled": false,
+    "authority": "integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json",
+    "bridge": "tests/research/support/mod_gc_low01_constitutive_bridge.f90",
+    "ownership": "explicit B110 default provider is the sole constitutive authority; legacy HeadCalc scalar/saturated calls are rebound to that same provider parameters"
+  },
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "test_path": "tests/research/test_gc_low01b_inside_profile.f90",
+  "runner": "tests/research/run_gc_low01b.sh"
 }
