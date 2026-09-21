@@ -8,6 +8,8 @@ on:
       - 'tests/research/run_gc_real_fgc44_response_storage_scan.sh'
       - 'tests/research/test_gc_fixed_interface_fgc44_globalization_g03.py'
       - 'tests/research/test_gc_fixed_interface_fgc44_regime_sweep_g07a.py'
+      - 'tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py'
+      - 'integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json'
       - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
       - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
       - 'tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py'
