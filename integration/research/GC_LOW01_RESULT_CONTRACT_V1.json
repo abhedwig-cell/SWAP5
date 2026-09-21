@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.gc_low01.result_contract.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-RESULT01",
+  "title": "Research-only typed prescribed-groundwater-level control and candidate-output contract",
+  "status": "SOURCE_BOUND_RESEARCH_DESIGN_NOT_PRODUCTION_AUTHORITY",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "headcalc": "src/legacy/b1_10_port/headcalc.f90",
+    "soilwater": "src/legacy/b1_10_port/soilwater.f90",
+    "solver_adapter": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "seam_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json"
+  },
+  "semantic_objects": {
+    "requested_H_phreatic": {
+      "source_owner": "trial request",
+      "legacy_analogue": "gwlinp before HeadCalc source snap",
+      "meaning": "The groundwater-level control requested by the coupling trial."
+    },
+    "effective_H_phreatic": {
+      "source_owner": "mode-1 branch state",
+      "legacy_analogue": "state%gwlinp after the 1e-4 cm node-snap rule",
+      "meaning": "The actual control coordinate used by the source state machine for the trial."
+    },
+    "derived_profile_GWL": {
+      "source_owner": "profile diagnostic",
+      "legacy_analogue": "gwl as produced by calcgwl() in SoilWater task 3",
+      "meaning": "A groundwater-level diagnostic derived from the candidate hydraulic profile; it is not the same typed object as the prescribed control merely because they may coincide in a hydrostatic case."
+    },
+    "lower_face_pressure_head": {
+      "source_owner": "below-profile branch only",
+      "legacy_analogue": "hbot",
+      "meaning": "Derived lower-face pressure head used when fllowgwl=true; hbot=effective_H_phreatic-z_bottom_face."
+    },
+    "bottom_flux": {
+      "source_owner": "candidate hydraulic solution",
+      "legacy_analogue": "qbot",
+      "meaning": "Diagnosed outward/downward lower-boundary flux. It is an output of prescribed-GWL semantics and is never an independently prescribed input in LOW01."
+    }
+  },
+  "branch_output_rules": {
+    "ABOVE_OR_AT_TOP": {
+      "requested_and_effective_head": "preserve separately even when equal",
+      "derived_profile_GWL": "not available from focused HeadCalc alone unless an explicit profile-GWL diagnostic is executed after the candidate is formed",
+      "qbot": "HeadCalc source branch directly reconstructs the vertical flux chain and assigns qbot before returning",
+      "hbot": "not authoritative"
+    },
+    "INSIDE_PROFILE": {
+      "requested_and_effective_head": "preserve both because source node-snap may mutate gwlinp",
+      "derived_profile_GWL": "not available from focused HeadCalc alone; legacy SoilWater calls calcgwl() later in task 3",
+      "qbot": "HeadCalc success branch reconstructs whole-profile vertical fluxes after saturated continuation and assigns qbot=vertical_flux(n+1)",
+      "hbot": "not authoritative",
+      "active_domain": "branch id and active NN belong to candidate provenance even if NN is reconstructed rather than instrumented"
+    },
+    "BELOW_BOTTOM_NODE": {
+      "requested_and_effective_head": "preserve both",
+      "derived_profile_GWL": "not available from focused HeadCalc alone unless separately diagnosed",
+      "hbot": "derive from explicit bottom-face geometry and effective_H_phreatic",
+      "qbot": "HeadCalc uses the same lower-head residual/Jacobian family as mode 5 but does not independently provide the focused adapter's accepted-step whole-profile qbot materialization. Research LOW01 must apply the same explicit provider/state arithmetic as materialize_prescribed_head_bottom_flux after successful solve."
+    }
+  },
+  "typed_candidate_minimum": [
+    "requested_H_phreatic",
+    "effective_H_phreatic",
+    "branch_id",
+    "active_nodes",
+    "fllowgwl_equivalent",
+    "candidate pressure_head profile",
+    "candidate water_content profile",
+    "candidate ponding/process state required for mass closure",
+    "bottom_flux qbot",
+    "bottom_flux_materialization_route",
+    "derived_profile_GWL_available flag",
+    "derived_profile_GWL only when an explicit source-equivalent diagnostic has run",
+    "integrated whole-profile mass residual",
+    "retry/solver diagnostics"
+  ],
+  "explicit_non_aliases": [
+    "requested_H_phreatic != existing boundary.bottom_head semantic type",
+    "effective_H_phreatic != derived_profile_GWL by definition",
+    "H_phreatic != hbot",
+    "qbot is output, not a second groundwater control",
+    "current soil_water_solve_result_t.candidate_state.groundwater_level cannot alone carry both control and derived-profile semantics"
+  ],
+  "g4_resolution": {
+    "finding": "Current focused HeadCalc success does not visibly execute calcgwl(); SoilWater task 3 does. Therefore mapping state%gwl directly to a prescribed-H_phreatic result would conflate a derived diagnostic with the control coordinate.",
+    "decision": "Research LOW01 candidate objects must expose requested/effective H_phreatic independently. derived_profile_GWL remains unavailable unless separately materialized from the candidate profile with source-equivalent calcgwl semantics.",
+    "production_change_authorized": false
+  },
+  "g5_resolution": {
+    "finding": "Mode-1 qbot has branch-specific source authority: direct flux-chain assignment for ABOVE/INSIDE branches, and lower-head residual plus explicit accepted-step materialization for BELOW_BOTTOM_NODE.",
+    "decision": "Define one typed qbot output with provenance field bottom_flux_materialization_route. For below-profile research, reuse the already-qualified mode-5 materialization arithmetic; for inside-profile, preserve the source vertical-flux-chain qbot.",
+    "production_change_authorized": false
+  },
+  "qualification_dependencies": {
+    "LOW01_A": "below-profile geometry/control equivalence",
+    "LOW01_A2": "live below-profile solve and qbot/mass materialization",
+    "LOW01_STATE01": "branch/effective-head deterministic mapping",
+    "LOW01_B": "provider-owned constitutive continuation plus typed candidate object satisfying this result contract",
+    "LOW01_D": "immutable-origin transaction wrapper must snapshot all typed candidate-control/provenance fields"
+  },
+  "forbidden": [
+    "do not set candidate_state.groundwater_level=gwlinp merely to make a test pass",
+    "do not infer calcgwl output from the prescribed control without executing or independently proving the source-equivalent profile diagnostic",
+    "do not prescribe qbot in LOW01",
+    "do not expose bottom_mode=1 through the production solver adapter from this design",
+    "do not change current mode-5 F-GC semantics"
+  ],
+  "next": [
+    "Qualify LOW01-A/STATE01 and LOW01-A2.",
+    "Qualify the bounded KSATEXM-off constitutive bridge.",
+    "Build a research-only LOW01 candidate wrapper carrying the fields in this contract; do not reuse soil_water_solve_result_t groundwater_level as the control field.",
+    "Use that wrapper for LOW01-D below-profile transaction replay before returning to inside-profile LOW01-B."
+  ]
+}
