@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_competing_claims.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "1b436662f30e5580bc061440787d37cbbc5e2eed",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authority": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+  "blocker": "DUMMY-14 qualification run 35577358733 is pending.",
+  "prepared_scope": "One-Basin exact priority oracle for root irrigation versus one external managed demand under mandatory shared-state surface-groundwater exchange.",
+  "canonical_expectation": {
+    "total_requested_m3": 60,
+    "exact_realized_total_m3": 32,
+    "exchange_m3": 28,
+    "surface_end_head_m": 0.4,
+    "groundwater_end_head_m": 0.28,
+    "root_priority": {
+      "U_root_m3": 32,
+      "U_ext_m3": 0,
+      "root_end_m3": 72,
+      "next_root_request_m3": 8
+    },
+    "external_priority": {
+      "U_root_m3": 12,
+      "U_ext_m3": 20,
+      "root_end_m3": 52,
+      "next_root_request_m3": 28
+    }
+  },
+  "next_action": "After DUMMY-14 qualification, rebind DUMMY-15 implementation baseline before creating any DUMMY-15 model or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
