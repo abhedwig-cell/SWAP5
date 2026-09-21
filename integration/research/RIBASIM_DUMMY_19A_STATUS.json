@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_supply.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19A",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": false,
+  "authority": {
+    "DUMMY_18": {
+      "decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+      "run": 35595081892
+    },
+    "stage": "stage1.real_ribasim_allocation_supply",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "next_action": "Implement exact upstream-fixture bridge and qualify against the pinned Ribasim source.",
+  "production_delta": [],
+  "reference_delta": []
+}
