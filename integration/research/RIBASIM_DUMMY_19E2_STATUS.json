@@ -6,8 +6,8 @@
   "baseline": "feecf6b0634d1a488b886611ac0d84ca3a21bbbe",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "required_authorities": [
@@ -16,11 +16,11 @@
     "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION"
   ],
   "prepared_scope": "Clock-aligned repeat of the intended one-window management-allocation then physical-realization mechanism, with saveat=allocation.dt=one day.",
-  "next_action": "Execute frozen DUMMY-19E2 clock-aligned qualification.",
+  "next_action": "Use DUMMY-19E2 as clock-aligned mechanism authority; proceed to DUMMY-19G saveat sensitivity without changing its preregistered references.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
-  "recovery_point": "Executable clock-aligned gate persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19E2 qualified by frozen run 35618561311.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19E2_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19E2_CONCEPT.md",
@@ -42,5 +42,9 @@
       "direct physical linkflow remains supplied authority",
       "allocated-but-unsupplied volume must remain in Basin storage"
     ]
-  }
+  },
+  "decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
+  "workflow_run": 35618561311,
+  "workflow_job": 106395527859,
+  "qualification_head": "7bee959e824090e62b88b43ddefe503edc3fe809"
 }
