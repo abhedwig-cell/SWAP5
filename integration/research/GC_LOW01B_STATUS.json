@@ -4,29 +4,26 @@
   "work_unit": "GC-LOW01-B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "BLOCKED_BEFORE_TYPED_MODE1_EXECUTION_OUTPUT_CONTRACT_REQUIRED",
+  "state": "IMPLEMENTED_PREREQUISITE_GATED_QUEUED",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01B_PREREGISTRATION.json",
   "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
   "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
   "blockers": [
-    "The production Reference adapter still rejects bottom_mode=1; no typed mode-1 trial is reachable through the admitted soil-water solver ABI.",
-    "The typed result contract still lacks an explicit rule and publication surface that candidate groundwater_level equals the prescribed H_phreatic/gwlinp coordinate.",
-    "There is still no branch-independent typed mode-1 qbot publication rule analogous to the admitted mode-5 accepted-step qbot materialization.",
-    "LOW01-A and LOW01-A2 owner runs remain queued, so below-profile live reduction is not yet qualified evidence."
+    "LOW01-A/A2 executable prerequisite runs are queued and not yet qualified.",
+    "The bounded constitutive bridge owner run is queued and not yet qualified.",
+    "Production Reference adapter still rejects bottom_mode=1 by design; LOW01-B remains a research-only direct-HeadCalc slice and is not production admission."
   ],
   "preserved_value": [
     "The original preregistration remains a useful source-behavior specification.",
     "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
   ],
-  "decision": "DO_NOT_EXECUTE_LOW01B_AS_TYPED_QUALIFICATION_YET",
-  "activation_rule": "Resume LOW01-B typed qualification only after LOW01-A/A2 qualify and a research-only complete mode-1 candidate output contract exists for H_phreatic, branch identity, active nodes and qbot; production bottom_mode=1 admission remains forbidden.",
+  "decision": "EXECUTE_ONLY_AS_BOUNDED_RESEARCH_QUALIFICATION_AFTER_PREREQUISITES; DO_NOT_ADMIT_PRODUCTION_MODE1",
+  "activation_rule": "The runner itself executes constitutive bridge and LOW01-A/A2 as hard prerequisites. LOW01-B may be qualified only if all prerequisite markers plus inside-profile mass, replay, qbot and O0/O2 gates pass unchanged.",
   "next": [
-    "Qualify LOW01-A and LOW01-A2 owner runs.",
-    "Preserve STATE01 branch classifier as source/state authority.",
-    "Define the research-only complete mode-1 candidate output carrier without changing production solver admission.",
-    "Then execute the already-preregistered inside-profile hydrostatic/replay slice with the qualified constitutive bridge.",
-    "Keep HLINK04 blocked."
+    "Await the newest LOW01-B owner run; it will execute bridge, LOW01-A/A2 and LOW01-B in dependency order.",
+    "Persist LOW01-A, A2 and B results separately from the same owner evidence.",
+    "If B passes, preregister LOW01-C branch-boundary characterization and LOW01-D transaction replay; HLINK04 remains blocked until D qualifies and C is characterized."
   ],
   "constitutive_scope": {
     "ksatexm_extension_enabled": false,
@@ -49,5 +46,31 @@
   },
   "deferred_semantics": [
     "KSATEXM-enabled mode-1 continuation remains a separate unresolved semantics question because preserved legacy mode-1 uses cofgen(3) while the opt-in typed provider may use cofgen(10)."
+  ],
+  "result_contract": "integration/research/GC_LOW01_RESULT_CONTRACT_V1.json",
+  "latest_amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+  "resolved_research_gaps": {
+    "LOW01-G3-CONSTITUTIVE-OWNERSHIP": "Resolved for the bounded KSATEXM-disabled research slice by rebinding legacy scalar/saturated constitutive calls to the same typed B110 default-provider parameter authority.",
+    "LOW01-G4-TYPED-OUTPUT-STATE": "Resolved at research-contract level by separating requested_H_phreatic, effective_H_phreatic and derived_profile_GWL. No forced alias candidate_state.groundwater_level=gwlinp.",
+    "LOW01-G5-QBOT-MATERIALIZATION": "Resolved at research-contract level by one qbot output with branch-specific provenance: inside-profile HeadCalc flux-chain qbot; below-profile mode-5-equivalent accepted-step materialization."
+  },
+  "immutable_origin": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+  "execution_runs": [
+    {
+      "run_id": 35580400611,
+      "run_number": 4,
+      "status": "queued"
+    },
+    {
+      "run_id": 35580433783,
+      "run_number": 5,
+      "status": "queued"
+    },
+    {
+      "run_id": 35580447736,
+      "run_number": 6,
+      "status": "queued",
+      "preferred": true
+    }
   ]
 }
