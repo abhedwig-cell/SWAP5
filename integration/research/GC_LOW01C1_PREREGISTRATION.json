@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.gc_low01c1.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-C1",
+  "title": "Internal-node prescribed-GWL branch/snap boundary characterization",
+  "status": "PREREGISTERED_PENDING_LOW01B_PASS",
+  "production_changes": false,
+  "activation_dependency": "GC-LOW01-B bounded KSATEXM-disabled inside-profile qualification must PASS before C1 execution is treated as evidence.",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "legacy_headcalc": "src/legacy/b1_10_port/headcalc.f90",
+    "state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "geometry_reconciliation": "integration/research/GC_LOW01_GEOMETRY_BOUNDARY_RECONCILIATION.json",
+    "low01b": "integration/research/GC_LOW01B_PREREGISTRATION.json"
+  },
+  "frozen_geometry_cm": {
+    "node_centres": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "bottom_face": -300,
+    "selected_boundary_node": -150,
+    "source_snap_tolerance": 0.0001
+  },
+  "immutable_origin": {
+    "rule": "Each trial starts from the same provider-owned hydrostatic origin appropriate to its requested H_phreatic; no candidate is used as the origin of another trial.",
+    "constitutive_scope": "B110 default provider, KSATEXM disabled, identical to bounded LOW01-B."
+  },
+  "sweep": [
+    {
+      "label": "ABOVE_NEAR",
+      "H_phreatic_cm": -149.99995,
+      "expected_active_nodes": 2,
+      "expected_snap": false,
+      "expected_effective_H_cm": -149.99995
+    },
+    {
+      "label": "AT_NODE",
+      "H_phreatic_cm": -150,
+      "expected_active_nodes": 2,
+      "expected_snap": false,
+      "expected_effective_H_cm": -150
+    },
+    {
+      "label": "BELOW_WITHIN_SNAP",
+      "H_phreatic_cm": -150.00005,
+      "expected_active_nodes": 2,
+      "expected_snap": true,
+      "expected_effective_H_cm": -150
+    },
+    {
+      "label": "BELOW_OUTSIDE_SNAP",
+      "H_phreatic_cm": -150.0002,
+      "expected_active_nodes": 3,
+      "expected_snap": false,
+      "expected_effective_H_cm": -150.0002
+    }
+  ],
+  "gates": [
+    "LOW01-B prerequisite PASS is recorded.",
+    "Every trial uses the same provider-owned constitutive route and no optional processes.",
+    "Observed/reconstructed active-node count and effective groundwater level match the frozen source algorithm exactly.",
+    "All trials return finite candidate pressure head, water content and diagnosed qbot without dt reduction or alternative solver.",
+    "Complete-profile mass residual closes within the LOW01-B 1e-10 cm gate for every trial.",
+    "Repeating every sweep point from its immutable origin is deterministic within the same O0/O2 and replay bounds as LOW01-B.",
+    "The test records qbot, storage, candidate-state and solver changes across the boundary; no continuity requirement is imposed prospectively."
+  ],
+  "required_outputs": [
+    "requested H_phreatic",
+    "effective H_phreatic after source snap rule",
+    "active Richards node count",
+    "snap flag",
+    "qbot",
+    "complete-profile storage change",
+    "mass residual",
+    "nonlinear iterations",
+    "candidate hydraulic-state difference relative to AT_NODE"
+  ],
+  "interpretation": [
+    "A discontinuity at the source snap threshold is an observed property to characterize, not a test failure by itself.",
+    "C1 qualifies only internal-node branch/snap behavior.",
+    "The interval between bottom node centre and bottom face is explicitly excluded and remains LOW01-C2 policy work."
+  ],
+  "forbidden": [
+    "do not execute before LOW01-B PASS",
+    "do not retune the four sweep points after observation",
+    "do not infer bottom-face branch semantics from C1",
+    "no production bottom_mode=1 admission"
+  ],
+  "next_if_pass": [
+    "Persist C1 branch-boundary characterization.",
+    "Proceed with LOW01-D once A2 is qualified.",
+    "Resolve LOW01-C2 lower-half-cell policy separately before declaring HLINK04 envelope complete."
+  ]
+}
