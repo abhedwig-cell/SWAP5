@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.gc_hlink.low01a.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK-LOW01-A",
+  "title": "Typed prescribed-groundwater-level below-profile equivalence to lower-face head",
+  "status": "PREREGISTERED_RESEARCH_ONLY",
+  "branch": "work/f-gc-hlink-low01-research",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authority": [
+    "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json"
+  ],
+  "source_identity": {
+    "branch": "prescribed groundwater level below soil profile",
+    "legacy_state": "fllowgwl=true",
+    "mapping": "hbot = H_phreatic - z_N + 0.5*dz_N",
+    "residual_identity": "after mapping, legacy mode 1 uses the same lower-face Darcy gradient row as mode 5",
+    "jacobian_identity": "after mapping, legacy mode 1 uses the same Kmean/distance lower-row Jacobian contribution as mode 5"
+  },
+  "research_typed_control": {
+    "coordinate": "prescribed phreatic elevation in native profile coordinates",
+    "branches": [
+      "BELOW_PROFILE",
+      "INSIDE_PROFILE",
+      "ABOVE_OR_AT_TOP"
+    ],
+    "implemented_slice": "BELOW_PROFILE only; other branches fail closed",
+    "output": "existing typed mode-5 fmr_b110_physical_forcing_t with derived bottom_head; no production route is changed"
+  },
+  "fixture": {
+    "geometry_source": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "z_native": [
+      -0.25,
+      -0.75,
+      -1.5,
+      -2.5
+    ],
+    "dz_native": [
+      0.5,
+      0.5,
+      1,
+      1
+    ],
+    "bottom_face_native": -3,
+    "prescribed_groundwater_levels_native": [
+      -3.25,
+      -4,
+      -5
+    ],
+    "expected_hbot_native": [
+      -0.25,
+      -1,
+      -2
+    ]
+  },
+  "gates": [
+    "All prescribed groundwater levels classify as BELOW_PROFILE and map to the preregistered hbot exactly within 16 ulp.",
+    "The mode-1 below-profile lower-gradient algebra equals the mode-5 lower-gradient algebra for the mapped hbot.",
+    "For every case, a live Reference-Richards mode-5 solve driven through the LOW01-A typed materializer is identical to a direct mode-5 solve from the same immutable origin for pressure head, water content, ponding, groundwater-level state, qtop, qbot and mass residual within machine-scale bounds.",
+    "Repeating a LOW01-A trial from the same immutable origin produces the same candidate and mass ledger; no accepted/committed state is mutated by the research materializer.",
+    "INSIDE_PROFILE and ABOVE_OR_AT_TOP controls are rejected by this LOW01-A adapter rather than silently mapped to mode 5."
+  ],
+  "forbidden": [
+    "no production source change",
+    "do not expose legacy SWBOTB=1 as a production selector",
+    "do not alias inside-profile prescribed groundwater level to bottom_head",
+    "do not claim HLINK04 readiness from LOW01-A alone",
+    "do not infer branch continuity before LOW01-C"
+  ],
+  "next_if_pass": [
+    "Implement LOW01-B research-only active-domain truncation and saturated continuation.",
+    "Add LOW01-D transactional replay/rejection across the typed GWL control.",
+    "Characterize LOW01-C branch boundaries before HLINK04 activation."
+  ]
+}
