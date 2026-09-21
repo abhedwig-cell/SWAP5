@@ -189,6 +189,22 @@ grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live 
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw17_internal_transfer.py | tee "$BUILD/dsw17-live.txt"
+grep -Fq 'GC_DSW17_LIVE_GATE=PASS' "$BUILD/dsw17-live.txt" || fail "DSW-17 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw18_storage_qlink_limits.py | tee "$BUILD/dsw18-live.txt"
+grep -Fq 'GC_DSW18_LIVE_GATE=PASS' "$BUILD/dsw18-live.txt" || fail "DSW-18 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw19_converged_wrong.py | tee "$BUILD/dsw19-live.txt"
+grep -Fq 'GC_DSW19_LIVE_GATE=PASS' "$BUILD/dsw19-live.txt" || fail "DSW-19 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw20_manufactured_trajectory.py | tee "$BUILD/dsw20-live.txt"
+grep -Fq 'GC_DSW20_LIVE_GATE=PASS' "$BUILD/dsw20-live.txt" || fail "DSW-20 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw17_internal_transfer.py | tee "$BUILD/dsw17-live.txt"
 
 grep -Fq 'GC_DSW17_LIVE_GATE=PASS' "$BUILD/dsw17-live.txt" || fail "DSW-17 live gate"
 
