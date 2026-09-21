@@ -118,20 +118,25 @@
       "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
       "run": 35598766437,
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19C",
+      "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+      "run": 35610267609,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19C",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
-      "implementation_baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885",
-      "dependency": "qualified DUMMY-19B",
+      "work_unit": "RIBASIM-DUMMY-19D",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY",
+      "intended_decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+      "dependency": "qualified DUMMY-19C",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-19C pinned real Ribasim allocation-realization conflict gate; no parameters or tolerances may be changed after observing output.",
+  "next_authority_action": "Rebind DUMMY-19D to the post-DUMMY-19C closeout head, then implement the preregistered unequal-min_level real Ribasim realization gate without changing expectations or tolerances.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
