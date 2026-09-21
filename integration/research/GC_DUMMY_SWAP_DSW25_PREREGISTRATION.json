@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw25.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW25",
+  "title": "Hydrostatic identity and vertical-gradient separation of lower-interface and phreatic head",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "map12": "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json",
+    "current_bottom_face": "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90",
+    "dsw24": "integration/research/GC_DUMMY_SWAP_DSW24_PREREGISTRATION.json"
+  },
+  "geometry": {
+    "area_m2": 1,
+    "bottom_elevation_m": 0,
+    "phreatic_elevation_m": 8,
+    "saturated_path_length_m": 8,
+    "saturated_conductivity_m_per_day": 1
+  },
+  "sign_convention": "q_bot > 0 is upward into the SWAP profile",
+  "steady_saturated_darcy": {
+    "law": "q_bot = K*(H_interface-H_phreatic)/L",
+    "equivalent": "H_interface = H_phreatic + q_bot*L/K",
+    "conductance_m2_per_day": "C=K*A/L=0.125"
+  },
+  "fixed_cases": [
+    {
+      "name": "HYDROSTATIC",
+      "q_bot_m_per_day": 0,
+      "expected_interface_head_m": 8,
+      "expected_head_difference_m": 0
+    },
+    {
+      "name": "UPWARD",
+      "q_bot_m_per_day": 0.01,
+      "expected_interface_head_m": 8.08,
+      "expected_head_difference_m": 0.08
+    },
+    {
+      "name": "DOWNWARD",
+      "q_bot_m_per_day": -0.01,
+      "expected_interface_head_m": 7.92,
+      "expected_head_difference_m": -0.08
+    }
+  ],
+  "resistance_limit": {
+    "fixed_q_bot_m_per_day": 0.01,
+    "conductivity_m_per_day": [
+      1,
+      10,
+      100,
+      1000000
+    ],
+    "expected": "|H_interface-H_phreatic| decreases as 1/K and tends to zero as K tends to infinity"
+  },
+  "gates": [
+    "All fixed cases satisfy Darcy flux and head identities to machine-scale arithmetic.",
+    "Hydrostatic q_bot=0 gives exact numerical equality H_interface=H_phreatic.",
+    "Nonzero upward and downward fluxes produce opposite signed interface/phreatic head differences.",
+    "At fixed q_bot, absolute head difference decreases monotonically with conductivity.",
+    "The physical conductance C=K*A/L is explicitly distinct from a storage response or numerical affine slope even if units can coincide after division by time."
+  ],
+  "interpretation_rules": [
+    "Numerical equality of lower-interface hydraulic head and phreatic elevation is expected in hydrostatic conditions but does not make the two model-state semantics identical.",
+    "Vertical flow creates a physical head difference whose magnitude is q_bot*L/K in this transparent saturated path.",
+    "A lower-interface boundary approaches a phreatic shared-head state only when the relevant vertical resistance/lag vanishes and storage ownership is separately consistent as required by DSW24."
+  ],
+  "forbidden": [
+    "no production coupling change",
+    "do not infer a real SWAP saturated-path conductivity from this toy value",
+    "do not identify C with u_A/dt",
+    "do not claim SWBOTB=5 and SWBOTB=1 are generally equivalent"
+  ]
+}
