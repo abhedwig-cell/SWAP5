@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_exchange.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-09",
+  "decision": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+  "authority": {
+    "baseline": "7484b2d614ad752baaf7c2811471949748ab87f3",
+    "qualified_main_pre_result_head": "95b225986f02680c209e7df6b9af75bae2222f84",
+    "qualification_head": "abd81e07b43e91aa098994984c2e819c4d8c8858",
+    "workflow_run": 35568233819,
+    "workflow_job": 106234226280,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_09_SOURCE_SCOPE=PASS",
+    "9/9 TwoStoreExchangeTests PASS",
+    "surface storage loss equals groundwater storage gain for reciprocal exchange",
+    "total two-store storage invariant for continuous oracle and every discrete accepted step",
+    "continuous weighted equilibrium invariant and head difference decays without sign reversal",
+    "trapezoid closed form satisfies both storage equations and exchange equation",
+    "unequal-store amplification matches g=(1-mu)/(1+mu)",
+    "mu<1 preserves ordering, mu=1 equalizes in one discrete step, mu>1 reverses ordering",
+    "canonical mu=1.5 repeated steps alternate head ordering with decaying magnitude",
+    "fine partition removes reversal and approaches continuous endpoint",
+    "RIBASIM_DUMMY_09_GATE=PASS"
+  ],
+  "canonical_stiff_case": {
+    "parameters": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 150,
+      "dt": 1,
+      "h_s0": 1,
+      "h_g0": 0
+    },
+    "mu": 1.5,
+    "trapezoid": {
+      "V_m3": 60,
+      "h_s1": 0.4,
+      "h_g1": 0.6,
+      "difference": -0.2
+    },
+    "continuous": {
+      "difference": "exp(-3)>0",
+      "surface_head": "~0.5249",
+      "groundwater_head": "~0.4751"
+    }
+  },
+  "interpretation": "Reciprocal mass conservation does not prevent temporally implausible shared-state oscillation under a coarse stiff trapezoidal step. Both sides of the exchange must therefore be treated as dynamic shared state, not as one fixed boundary plus one responding store.",
+  "non_claims": [
+    "A_g is not a MODFLOW package-storage mapping",
+    "no claim about MODFLOW/Ribasim production integrators",
+    "no management coupling is included",
+    "no production code change"
+  ],
+  "downstream": "Activate the preregistered DUMMY-10 exact management complementarity with finite groundwater storage."
+}
