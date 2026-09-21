@@ -122,7 +122,7 @@ for marker in \
 done
 
 git diff --check -- tests/research/test_gc_real_swap_map08_raw_corrector_failure.py \
-  tests/research/run_gc_real_swap_map08_b3.sh \
+  tests/research/run_gc_real_swap_map08.sh \
   integration/research/GC_REAL_SWAP_MAP08_PREREGISTRATION.json
 
 echo 'GC REAL SWAP MAP08 RAW CORRECTOR FAILURE DIAGNOSTIC PASS'
