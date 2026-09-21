@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.coupling.real_ribasim_clock_aligned_mixed_conflict.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E2",
+  "decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
+  "authority": {
+    "scientific_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
+    "qualification_head": "7bee959e824090e62b88b43ddefe503edc3fe809",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "workflow_run": 35618561311,
+    "workflow_job": 106395527859,
+    "conclusion": "success"
+  },
+  "controlled_change_from_failed_19e": {
+    "failed_run": 35616065964,
+    "changed": "solver.saveat 3600 s -> 86400 s",
+    "unchanged": "allocation.dt=86400 s, topology, source, demands, priorities, min_level physics, independent references and tolerances"
+  },
+  "observations": {
+    "root_first": {
+      "allocated_root_m3_per_day": 32,
+      "allocated_external_m3_per_day": 0,
+      "root_supplied_m3": 16.01919428633843,
+      "external_supplied_m3": 0,
+      "total_supplied_m3": 16.01919428633843,
+      "final_level_m": 1.0000159808057136,
+      "storage_gain_m3": 15.980805713633472,
+      "final_reduction_factor": 0.501198559408204,
+      "physical_flow_samples": 1
+    },
+    "external_first": {
+      "allocated_root_m3_per_day": 11.999999999999998,
+      "allocated_external_m3_per_day": 20.000000000000004,
+      "root_supplied_m3": 6.007197941660057,
+      "external_supplied_m3": 10.011996569433427,
+      "total_supplied_m3": 16.019194511093485,
+      "final_level_m": 1.000015980805489,
+      "storage_gain_m3": 15.980805488924332,
+      "final_reduction_factor": 0.5011985593913509,
+      "physical_flow_samples": 1
+    }
+  },
+  "qualified_claims": [
+    "When solver.saveat and allocation.dt are both 86400 s, the initial one-day priority allocation remains the physical target for the one-day horizon in the tested pinned Ribasim configuration.",
+    "Root-first remains 32/0 m3/day and external-first remains 12/20 m3/day.",
+    "Common min_level physics reduces already allocated paths without same-window management reallocation.",
+    "Allocated-but-unrealized volume remains in Basin storage over the clock-aligned window.",
+    "Priority changes recipient split but not total physical supply or Basin endpoint when total allocation and physical reduction are common."
+  ],
+  "boundaries": [
+    "This qualifies the clock-aligned configuration only.",
+    "It does not rehabilitate failed DUMMY-19E with hourly saveat.",
+    "It does not establish that saveat should own the management clock.",
+    "No SWAP/MODFLOW or production-coupling claim."
+  ]
+}
