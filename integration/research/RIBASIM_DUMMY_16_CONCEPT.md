@@ -1,6 +1,6 @@
 # RIBASIM-DUMMY-16 blocked concept: management-clock event semantics
 
-> Status: IMPLEMENTATION AUTHORIZED after DUMMY-15B qualification.
+> Status: IMPLEMENTED after DUMMY-15B qualification.
 >
 > This work unit has no implementation or tests. It exists to isolate one
 > specific question before asynchronous production clocks are discussed.
