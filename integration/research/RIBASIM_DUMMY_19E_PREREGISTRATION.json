@@ -15,8 +15,8 @@
     }
   ],
   "sequencing": {
-    "state": "WAIT_FOR_DUMMY_19D_CLOSEOUT",
-    "meaning": "No scientific dependency on the DUMMY-19D result. Execution is sequenced after DUMMY-19D to keep one pinned-real-Ribasim qualification active at a time."
+    "state": "SATISFIED_AFTER_DUMMY_19D_CLOSEOUT",
+    "meaning": "DUMMY-19D is closed. DUMMY-19E executable implementation is bound to this post-DUMMY-19D repository head; scientific expectations remain those frozen before DUMMY-19D completed."
   },
   "pins": {
     "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -120,5 +120,14 @@
       "the physical UserDemand formulation contains no recipient reallocation step after those multiplicative reductions"
     ],
     "research_consequence": "Within one frozen allocation window, allocated-but-unrealized transfer is expected to remain physical source storage rather than be silently redirected to another UserDemand link."
+  },
+  "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287",
+  "authority_rebind": {
+    "repository_head": "62b74ca453b0a365f1f16512843b61be15375287",
+    "qualified_19d": {
+      "decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
+      "workflow_run": 35613373608
+    },
+    "scientific_change": false
   }
 }
