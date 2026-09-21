@@ -51,4 +51,10 @@ test "$DSW02_STATUS" -eq 0 || fail "DSW-02 preregistered live gate"
 grep -Fq 'GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS' "$BUILD/live.txt" || fail "DSW-01 live control marker"
 grep -Fq 'GC_DSW02_LIVE_GATE=PASS' "$BUILD/dsw02-live.txt" || fail "DSW-02 live gate marker"
 
-echo 'GC_DSW01_DSW02_QUALIFICATION=PASS'
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw03_modflow_source.py | tee "$BUILD/dsw03-live.txt"
+
+grep -Fq 'GC_DSW03_POSITIVE_SLOPE_PROBE_RECORDED=PASS' "$BUILD/dsw03-live.txt" || fail "DSW-03 diagnostic probe"
+grep -Fq 'GC_DSW03_LIVE_GATE=PASS' "$BUILD/dsw03-live.txt" || fail "DSW-03 live gate"
+
+echo 'GC_DSW01_DSW02_DSW03_QUALIFICATION=PASS'
