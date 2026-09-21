@@ -102,7 +102,9 @@
     "No managed claim may receive more than its request and the sum of realized claims equals the exact coupled managed total M.",
     "Current shortages remain diagnostics; only accepted root storage affects the next root irrigation request.",
     "If total physical managed capacity exceeds the higher-priority request, residual capacity is transferred to the next priority without changing physical exchange beyond the effect of total managed withdrawal.",
-    "Reversing the sign of V must not change priority bookkeeping semantics."
+    "Reversing the sign of V must not change priority bookkeeping semantics.",
+    "If all managed claims are fully realizable, reversing priority changes neither deliveries nor the physical endpoint.",
+    "In the preregistered reverse-exchange scarcity case, total managed realization is 48 m3 with V=-28 m3 regardless of priority; only the managed split and resulting root memory/system loss change."
   ],
   "future_forecast_realization_extension": {
     "deferred": true,
@@ -119,5 +121,128 @@
     "no production coupling change"
   ],
   "pass_decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
-  "fail_decision": "RIBASIM_DUMMY_15_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_15_BLOCKED",
+  "preregistered_matrix": {
+    "canonical_capacity_below_high_root_request": "canonical_case",
+    "capacity_between_high_request_and_total": {
+      "state": {
+        "W_root0": 60,
+        "W_target": 80,
+        "W_capacity": 100,
+        "h_s0": 1,
+        "h_g0": 0
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0.4
+      },
+      "demands": {
+        "R_root": 20,
+        "R_ext": 30,
+        "R_total": 50
+      },
+      "exact_total_realization": {
+        "M": 32,
+        "V": 28,
+        "h_s1": 0.4,
+        "h_g1": 0.28
+      },
+      "root_priority_expected": {
+        "U_root": 20,
+        "U_ext": 12,
+        "shortage_root": 0,
+        "shortage_ext": 18,
+        "W_root1": 80,
+        "next_root_request": 0,
+        "combined_three_store_change": -12
+      },
+      "external_priority_expected": {
+        "U_ext": 30,
+        "U_root": 2,
+        "shortage_ext": 0,
+        "shortage_root": 18,
+        "W_root1": 62,
+        "next_root_request": 18,
+        "combined_three_store_change": -30
+      }
+    },
+    "all_claims_fully_realizable": {
+      "state": {
+        "W_root0": 70,
+        "W_target": 80,
+        "W_capacity": 100,
+        "h_s0": 1,
+        "h_g0": 0
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0.4
+      },
+      "demands": {
+        "R_root": 10,
+        "R_ext": 5,
+        "R_total": 15
+      },
+      "expected": {
+        "M": 15,
+        "U_root": 10,
+        "U_ext": 5,
+        "shortage_root": 0,
+        "shortage_ext": 0,
+        "priority_invariant": true
+      }
+    },
+    "reverse_exchange_scarcity": {
+      "state": {
+        "W_root0": 40,
+        "W_target": 80,
+        "W_capacity": 100,
+        "h_s0": 0.2,
+        "h_g0": 0.8
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0
+      },
+      "demands": {
+        "R_root": 40,
+        "R_ext": 20,
+        "R_total": 60
+      },
+      "exact_total_realization": {
+        "M": 48,
+        "V": -28,
+        "h_s1": 0,
+        "h_g1": 0.52
+      },
+      "root_priority_expected": {
+        "U_root": 40,
+        "U_ext": 8,
+        "shortage_root": 0,
+        "shortage_ext": 12,
+        "W_root1": 80,
+        "next_root_request": 0,
+        "combined_three_store_change": -8
+      },
+      "external_priority_expected": {
+        "U_ext": 20,
+        "U_root": 28,
+        "shortage_ext": 0,
+        "shortage_root": 12,
+        "W_root1": 68,
+        "next_root_request": 12,
+        "combined_three_store_change": -20
+      },
+      "interpretation": "Priority bookkeeping is unchanged when physical exchange reverses sign; groundwater drainage can increase the total managed capacity but does not become a managed allocation."
+    }
+  }
 }
