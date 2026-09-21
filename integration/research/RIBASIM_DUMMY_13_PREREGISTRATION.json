@@ -3,14 +3,24 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-13",
   "title": "Three dynamic stores with irrigation as an internal transfer",
-  "baseline": "a104baba9a8e7d778174249162f8f2da21d8c778",
+  "baseline": "51bbc6d3375028b6604351b19f8806babac82721",
   "dependency_gate": {
     "required": [
       "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
       "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE"
     ],
-    "current": "BLOCKED_PENDING_DUMMY_11_AND_DUMMY_12",
-    "implementation_rule": "No DUMMY-13 model or tests before both dependencies are formally qualified and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-13 model or tests before both dependencies are formally qualified and the implementation baseline is rebound.",
+    "qualified_authorities": [
+      {
+        "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+        "workflow_run": 35569720082
+      },
+      {
+        "decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+        "workflow_run": 35570012761
+      }
+    ]
   },
   "purpose": "Join the qualified analytical root-zone demand state to the dynamic surface-water/groundwater system while treating irrigation and surface-groundwater exchange as internal transfers in one three-store ledger.",
   "frozen_first_stage_scope": {
@@ -204,5 +214,6 @@
       },
       "interpretation": "Groundwater-to-surface exchange must cancel internally with the same ledger identity; sign reversal must not require a separate accounting convention."
     }
-  }
+  },
+  "authority_rebind_note": "DUMMY-13 preregistration and blocked concept were prepared before both dependencies closed. No DUMMY-13 model/tests existed then. Implementation baseline was rebound to this post-DUMMY-11/DUMMY-12 closeout head before any DUMMY-13 code was created."
 }
