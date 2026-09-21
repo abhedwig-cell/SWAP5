@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.coupling.real_ribasim_saveat_allocation_clock_sensitivity.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19G",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-19E2 closeout. Scientific references are frozen now.",
+  "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
+  "next_action": "After DUMMY-19E2 closes, rebind and implement the frozen saveat sensitivity sweep.",
+  "production_delta": [],
+  "reference_delta": []
+}
