@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-01",
+  "title": "Analytically controlled single-reservoir Ribasim surrogate",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "purpose": "Create a deterministic research and verification harness for surface-water storage, level, hydrologically forced groundwater exchange, irrigation allocation and shortage before coupling to real Ribasim.",
+  "scope": [
+    "one surface-water reservoir with linear volume-stage relation",
+    "explicit committed and candidate state",
+    "external surface-water inflow",
+    "groundwater exfiltration into surface water",
+    "groundwater infiltration out of surface water as a mandatory physical flux",
+    "irrigation request as a management withdrawal that may be curtailed",
+    "explicit reserve/dead-storage constraint for management allocation",
+    "closed per-step water balance"
+  ],
+  "priority_contract": [
+    "mandatory hydrological exchange is evaluated before discretionary irrigation allocation",
+    "irrigation delivery may be reduced to protect the configured management reserve",
+    "mandatory groundwater infiltration is not silently reduced to satisfy irrigation",
+    "if mandatory hydrological outflow exceeds physically available water, the candidate step fails closed"
+  ],
+  "transaction_contract": [
+    "planning a step does not mutate committed state",
+    "candidate publication requires explicit commit",
+    "a candidate is bound to the committed revision from which it was prepared",
+    "stale candidates fail closed"
+  ],
+  "experiments": {
+    "E1": "no-conflict full irrigation delivery with exact mass closure",
+    "E2": "late conflict: start-of-step volume appears sufficient for irrigation, but mandatory infiltration creates shortage",
+    "E3": "management reserve curtails irrigation while hydrological flux remains uncurtailed",
+    "E4": "physically infeasible mandatory infiltration fails closed with zero committed-state mutation",
+    "E5": "candidate/reject/commit and stale-candidate transaction semantics",
+    "E6": "linear stage-volume mapping is exactly invertible"
+  },
+  "forbidden": [
+    "no production SWAP physics change",
+    "no Reference Richards change",
+    "no RossFast change",
+    "no production groundwater-coupling change",
+    "no iMOD Coupler product integration",
+    "no claim that the surrogate reproduces Ribasim network routing or allocation semantics",
+    "no silent hydrological-flux curtailment to make the balance feasible"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_01_QUALIFIED_ANALYTIC_SINGLE_RESERVOIR",
+  "fail_decision": "RIBASIM_DUMMY_01_BLOCKED"
+}
