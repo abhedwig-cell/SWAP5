@@ -87,5 +87,23 @@
       "state": "QUEUED_FROZEN_CORRECTED_SCOPE",
       "authority_use": "preferred"
     }
+  ],
+  "prequalification_review": {
+    "date": "2026-09-21",
+    "state": "CORRECTED_STATIC_REVIEW_PASS_CI_STILL_REQUIRED",
+    "checked": [
+      "canonical ROOT_FIRST split M=32 -> root32/external0",
+      "canonical EXTERNAL_FIRST split M=32 -> external20/root12",
+      "capacity-between case M=32 -> root20/external12 or external30/root2",
+      "fully realizable case M=15 supplies both claims fully under either priority",
+      "reverse-exchange scarcity case M=48,V=-28 closes under both priorities",
+      "zero-external-demand case reduces to qualified DUMMY-13",
+      "combined represented-system loss equals supplied external demand only",
+      "corrected split decrements both first and second assignments from remaining realized capacity"
+    ],
+    "qualification_effect": "none; corrected Actions run 35578647184 remains mandatory"
+  },
+  "blockers": [
+    "Corrected frozen-scope GitHub Actions competing-claims-gate is queued in run 35578647184."
   ]
 }
