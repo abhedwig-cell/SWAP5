@@ -36,5 +36,19 @@
     "This upstream context supports that saveat-coupled allocation timing is a known synchronization limitation/design concern.",
     "It does not by itself quantify the hydrological effect; DUMMY-19E/19G provide the controlled evidence.",
     "Do not label the behavior an upstream defect unless the upstream project itself makes that disposition."
-  ]
+  ],
+  "current_upstream_observation": {
+    "date": "2026-09-21",
+    "main_head": "2aa23364ba708cb3c48630d1067293d900bf3ee5",
+    "relation_to_pin": {
+      "pinned": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "status": "same allocation/saveat loop structure observed"
+    },
+    "code_observation": [
+      "core/src/model.jl still calls allocation at allocation.time.tstops",
+      "compute_next_allocation_tstop still caps the fixed allocation step at first(allocation.time.tstops)",
+      "AllocationTime is still initialized on the solver.saveat grid"
+    ],
+    "interpretation": "The saveat-coupled allocation clock is not only historical to the research pin; the same mechanism is present on the observed upstream main head."
+  }
 }
