@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.gc_low01.preexecution_review.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-PREEXEC-REVIEW",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "reviewed_head": "0bc6fce4d987228b96f5d8c3ca3ebca2e59709ed",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_changes": false,
+  "actions_state": {
+    "repository_active_runs_observed": {
+      "queued": 72,
+      "pending": 1,
+      "in_progress": 0
+    },
+    "classification": "EXTERNAL_ACTIONS_CAPACITY_BLOCKER",
+    "rule": "Do not convert source review into owner qualification while no owner run has executed."
+  },
+  "reviewed_units": {
+    "A2": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Uses admitted bottom_mode=5 Reference Richards only.",
+        "Maps H_phreatic to hbot strictly from the declared bottom face for H_phreatic below -300 cm.",
+        "A1/B/A2 are reconstructed from the same hydrostatic origin.",
+        "Mass balance, no-retry/no-alternative-solver, bitwise A1/A2 replay and O0/O2 identity are hard gates."
+      ]
+    },
+    "CONSTITUTIVE": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Legacy MOD_MvG scalar calls are rebound to the same B110 default-MVG provider authority.",
+        "KSATEXM and frost are explicitly rejected outside the bounded slice.",
+        "Saturated theta/K are checked against cofgen(2)/cofgen(3) under the KSATEXM-disabled authority."
+      ]
+    },
+    "CARRIER01": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Requested H_phreatic, effective H_phreatic, raw legacy GWL and qbot provenance remain separate typed fields.",
+        "No derived-profile-GWL authority is invented."
+      ]
+    },
+    "OUTPUT01": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Removes the old MOD_MvG test stub before binding the provider-owned constitutive bridge.",
+        "Uses source-safe inside-profile controls and explicitly refuses node-snap, lower-half-cell and below-profile controls.",
+        "Checks immutable-origin A-B-A replay, qbot/storage mass closure and lower-gradient/Jacobian formulas."
+      ]
+    },
+    "B": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Execution remains hard-gated on persisted qualified A2/constitutive/carrier/OUTPUT01 authorities.",
+        "The prerequisite marker mismatch was corrected to GC_LOW01_CARRIER_QUALIFICATION=PASS.",
+        "The -60/-120/-200 cm controls remain outside the unresolved lower-half-cell geometry gap.",
+        "Complete-profile storage, diagnosed qbot and saturated continuation are checked independently."
+      ]
+    },
+    "C1": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Frozen controls reproduce the asymmetric 1e-4 cm node-snap policy around -150 cm.",
+        "C1 characterizes both accepted mass closure and retry/refusal behavior without a continuity acceptance requirement.",
+        "Repeated trials start from the same immutable -120 cm origin and require bitwise deterministic replay."
+      ]
+    },
+    "C2": {
+      "outcome": "PREEXECUTION_REVIEW_PASS_POLICY_ONLY",
+      "findings": [
+        "The unadmitted interval -300 < H_phreatic < -250 cm remains excluded.",
+        "Exactly -250 cm is inside-profile research policy; exactly -300 cm is below-profile hbot=0 policy.",
+        "No historical z(n+1) sentinel is invented."
+      ]
+    },
+    "D": {
+      "outcome": "PREEXECUTION_REVIEW_PASS",
+      "findings": [
+        "Uses only the qualified below-profile mode-5 substrate.",
+        "A1 and B rejection preserve accepted state and accepted mass; only A2 may advance revision and publish qbot*dt once.",
+        "No inside-profile or production mode-1 claim is made."
+      ]
+    }
+  },
+  "decision": "WAIT_FOR_OWNER_ACTIONS_WITH_PREREGISTRATIONS_UNCHANGED",
+  "next_when_actions_resume": [
+    "Persist A2/constitutive/CARRIER01/OUTPUT01 owner results only from their newest non-superseded successful runs.",
+    "Allow B to activate only after all four prerequisite result files are qualified.",
+    "Persist C2 as QUALIFIED_POLICY only from its owner run.",
+    "After B, characterize C1 unchanged; after A2, qualify D unchanged.",
+    "Re-evaluate HLINK04 readiness matrix only after all persisted predicates are true."
+  ]
+}
