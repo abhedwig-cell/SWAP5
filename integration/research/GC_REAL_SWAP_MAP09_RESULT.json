@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.gc_real_swap.map09.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP09",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35572899763,
+  "workflow_job": 106248160169,
+  "decision": "QUALIFIED_RESEARCH_ACTIVE_DRAINAGE_CORRECTOR_FEASIBILITY",
+  "predictor": {
+    "reference_head_m": 0.012932896258566275,
+    "u": 0.0005760442426568357,
+    "q_u_cm_per_day": -0.0023986744863501285,
+    "q_bot_predictor_cm_per_day": 0.002,
+    "mass_residual_native": 1.736282016599755e-16
+  },
+  "reference_corrector": {
+    "participant_status": 0,
+    "raw_result_status": 0,
+    "q_swap_m_per_s": -6.459199925803855e-10,
+    "accepted_substeps": 1,
+    "retries": 0,
+    "solver_rejections": 0,
+    "temporal_rejections": 0,
+    "mass_residual_native": 6.776263578034403e-21
+  },
+  "characterized_offsets_m": [
+    -0.000001,
+    -1e-7,
+    -1e-8,
+    0,
+    1e-8,
+    1e-7,
+    0.000001
+  ],
+  "gates": {
+    "reference_corrector_admitted": "PASS",
+    "reference_mass_closure": "PASS",
+    "zero_authority_mutation": "PASS",
+    "characterization_recorded": "PASS",
+    "live_gate": "PASS"
+  },
+  "bounded_conclusions": [
+    "The research-only active-drainage prescribed-head corrector is feasible at the frozen E6 reference state when the qbot-only smooth-freatic projection is disabled in the corrector.",
+    "All fixed offsets through plus/minus 1e-6 m are admitted in this fixture and remain mass-complete.",
+    "This activates the separately preregistered MAP09A decomposition path; it does not alter production drainage ownership or admission."
+  ]
+}
