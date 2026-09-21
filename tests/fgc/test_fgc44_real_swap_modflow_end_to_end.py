@@ -101,9 +101,15 @@ def main()->None:
     # PB01 follow-up: prospectively sample the immutable-origin real-SWAP corrector
     # around the predictor reference head. These are rejected diagnostic trials only.
     scan=[]
-    for dh in (-2e-6,-1e-6,-5e-7,5e-7,1e-6,2e-6):
-        qscan=swap.trial(href+dh); scan.append((dh,qscan)); swap.discard()
-    for dh,qscan in scan: print(f"FGC44_LOCAL_SCAN_DH_M={dh:.17g} QSWAP={qscan:.17g}")
+    for dh in (-2e-6,-1e-6,-5e-7,-2e-7,-1e-7,1e-7,2e-7,5e-7,1e-6,2e-6):
+        try:
+            qscan=swap.trial(href+dh); scan.append((dh,qscan,"OK"))
+        except RuntimeError as exc:
+            scan.append((dh,float("nan"),str(exc)))
+        finally:
+            swap.discard()
+    for dh,qscan,status in scan:
+        print(f"FGC44_LOCAL_SCAN_DH_M={dh:.17g} QSWAP={qscan:.17g} STATUS={status}")
     require(math.isfinite(probe_q) and all(math.isfinite(v) for v in probe_diag),"nonfinite rejected-trial probe")
     require(swap.state()==origin_state,"rejected trial mutated committed state or ledger before discard")
     swap.discard()
