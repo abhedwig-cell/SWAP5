@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.gc.storage_ownership.audit.observation.v1",
+  "date": "2026-09-21",
+  "title": "Production coupling storage-ownership contract audit",
+  "status": "BOUNDED_ARCHITECTURE_GAP_IDENTIFIED",
+  "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "audited_surface": [
+    "docs/integration/F-GC40_MULTISWAP_MODFLOW6_CELL_RESPONSE.md",
+    "docs/integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md",
+    "docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md",
+    "docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md",
+    "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/runtime/mod_modflow6_api_binding.f90",
+    "src/runtime/mod_groundwater_application_plan.f90",
+    "src/adapter/modflow6_groundwater_application_service.py",
+    "src/runtime/mod_fmr_groundwater_application_context.f90"
+  ],
+  "positive_findings": [
+    "F-GC40 explicitly calls u a coupling/storage response coefficient and constructs q_u(H)=q_ref+(u/dt)*(H-H_ref).",
+    "F-GC33 maps the response algebraically to MODFLOW API HCOF/RHS with HCOF=A*u/dt_day.",
+    "The application service owns coupled iteration, residual evaluation, reanchoring and transaction ordering, not MODFLOW model construction.",
+    "The API binding publishes NODELIST/HCOF/RHS only; it does not own MODFLOW STO package configuration."
+  ],
+  "absent_from_audited_contract": [
+    "no declared physical partition of shared groundwater storage between SWAP and MODFLOW",
+    "no specific-yield or specific-storage field in the coupling response/application contract",
+    "no check that MODFLOW STO Sy/Ss excludes storage already represented by the SWAP response",
+    "no check that MODFLOW STO Sy/Ss deliberately includes or matches a declared shared combined-storage relation",
+    "no production invariant that relates u to MODFLOW Sy/Ss for the same physical volume"
+  ],
+  "supporting_research": [
+    "DSW02 shows that one physical storage can be partitioned consistently and that duplicate counting has a predictable signature.",
+    "MAP03/E4 show that, in a simple real-Richards family, u locally matches finite-window whole-column dS/dH and bottom-outward exchange has sensitivity -u.",
+    "MAP10 shows that this real-SWAP u is strongly window-dependent and therefore is not a universal static specific yield.",
+    "The F-GC45 fixture independently configures MODFLOW STO with Sy=0.15 and Ss=0.02 1/m; those fixture values are not bound by the coupling contract to the SWAP u response."
+  ],
+  "decision": "MISSING_EXPLICIT_STORAGE_OWNERSHIP_CONTRACT",
+  "bounded_conclusion": "The current production coupling contract specifies how a SWAP response is represented in MODFLOW but does not explicitly specify or enforce physical storage ownership relative to MODFLOW STO. This is an architecture/contract gap. It is not by itself evidence that the current production model double-counts storage, because u is a finite-window response and physical overlap between the configured SWAP and MODFLOW storage volumes has not yet been established equation by equation.",
+  "required_next_questions": [
+    "What physical control volume is represented by MODFLOW Sy/Ss in a coupled cell?",
+    "What part of that same control volume, if any, is included in the SWAP finite-window dS/dH response?",
+    "Should the accepted shared-state equation use S_MODFLOW + S_SWAP, S_MODFLOW only with SWAP flux excluding storage, or another explicitly derived partition?",
+    "How should this ownership be configured and validated in the eventual product driver?"
+  ],
+  "forbidden_inference": [
+    "do not call current production coupling double-counted solely from the coexistence of u and MODFLOW STO",
+    "do not set MODFLOW Sy/Ss to zero without a physical-domain derivation",
+    "do not treat u_A as a static Sy",
+    "do not modify production coupling until a shared-volume ownership experiment is prospectively defined and qualified"
+  ]
+}
