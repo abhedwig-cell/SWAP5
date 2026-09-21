@@ -5,9 +5,13 @@
   "title": "Pinned real Ribasim saveat-driven allocation-clock sensitivity",
   "baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_19E2_ACTIVE",
-    "execute_after": "DUMMY-19E2 closeout",
-    "scientific_dependency": "DUMMY-19E run 35616065964 established that hourly saveat invalidates the one-day frozen-allocation assumption."
+    "state": "SATISFIED_AFTER_DUMMY_19E2_CLOSEOUT",
+    "execute_after": "DUMMY-19E2 qualified",
+    "scientific_dependency": "DUMMY-19E run 35616065964 established that hourly saveat invalidates the one-day frozen-allocation assumption.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
+      "workflow_run": 35618561311
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -143,5 +147,11 @@
     "no production prescription"
   ],
   "pass_decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
-  "fail_decision": "RIBASIM_DUMMY_19G_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19G_BLOCKED",
+  "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
+  "authority_rebind": {
+    "repository_head": "4b1c81287cecc65ca94da101905366540b756284",
+    "scientific_change": false,
+    "meaning": "Executable implementation is rebound after DUMMY-19E2 closeout; frozen sweep cases, references and tolerances are unchanged."
+  }
 }
