@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw24.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW24",
+  "title": "Lower-interface-head to shared-phreatic h-link equivalence and nonequivalence",
+  "status": "PREREGISTERED_BEFORE_LIVE_RUN",
+  "authority": {
+    "map12": "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json",
+    "finite_resistance_oracle": "integration/research/GC_DUMMY_SWAP_DSW08_RESULT.json",
+    "coextensive_storage_oracle": "integration/research/GC_DUMMY_SWAP_DSW23_PREREGISTRATION.json"
+  },
+  "target_h_link": {
+    "physical_state": "one phreatic head H",
+    "total_storage": 0.2,
+    "initial_head_m": 8,
+    "input_m": 0.01,
+    "dt_day": 1,
+    "exact_final_head_m": 8.05
+  },
+  "lower_interface_model": {
+    "states": [
+      "H_phreatic_like",
+      "H_interface"
+    ],
+    "exchange_law": "q=C*(H_phreatic_like-H_interface)",
+    "input_location": "upper/SWAP-side state",
+    "time_discretization": "implicit end-of-window exchange",
+    "conductance_sweep_per_day": [
+      0.01,
+      0.1,
+      1,
+      10,
+      1000
+    ]
+  },
+  "ownership_cases": [
+    {
+      "name": "CONSISTENT_TOTAL_STORAGE",
+      "swap_storage": 0.1,
+      "modflow_storage": 0.1,
+      "physical_total_storage": 0.2,
+      "high_conductance_limit_head_m": 8.05,
+      "interpretation": "The two numerical storage shares sum to the one target h-link storage."
+    },
+    {
+      "name": "DUPLICATE_COEXTENSIVE_STORAGE",
+      "swap_storage": 0.2,
+      "modflow_storage": 0.2,
+      "physical_total_storage": 0.2,
+      "high_conductance_numerical_limit_head_m": 8.025,
+      "target_h_link_head_m": 8.05,
+      "interpretation": "The two states can collapse to nearly equal heads while the common-head response remains wrong because one physical storage volume is counted twice."
+    }
+  ],
+  "gates": [
+    "For the consistent case, |H_phreatic_like-H_interface| decreases monotonically with C.",
+    "For the consistent case, the C=1000/day live solution approaches the 8.05 m h-link target within 1e-5 m.",
+    "At finite C the two heads remain distinct, so the lower-interface model is not yet a one-state h-link.",
+    "For duplicate coextensive storage at C=1000/day, both heads approach 8.025 m within 1e-5 m and remain at least 0.02 m away from the 8.05 m target.",
+    "Both ownership cases close their own numerical two-reservoir bookkeeping.",
+    "The duplicate case fails the one-volume geometric h-link storage law even though the two heads nearly coincide."
+  ],
+  "equivalence_conditions": [
+    "H_interface and H_phreatic must collapse to the same physical head state.",
+    "Vertical resistance/lag between the two state locations must be negligible on the coupling window.",
+    "The sum of subsystem-owned storage responses must equal the one physical h-link storage response with no overlap or gap.",
+    "SWAP internal memory may remain distinct but must be continued consistently."
+  ],
+  "forbidden": [
+    "no production coupling change",
+    "do not infer current F-GC mode 5 is equivalent to SWBOTB=1",
+    "do not use head equality alone as proof of h-link equivalence",
+    "do not apply coextensive duplicate-storage conclusions to MAP11 noncoextensive qualification fixtures"
+  ]
+}
