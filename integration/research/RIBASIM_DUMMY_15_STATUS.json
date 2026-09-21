@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Observe run 35578647184. If PASS, persist DUMMY-15 result and close PR #518; then rebind DUMMY-15B implementation baseline.",
+  "next_action": "Use run 35581711814 as the only valid DUMMY-15 qualification authority if it passes.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -78,13 +78,18 @@
   "qualification_attempts": [
     {
       "run": 35577982472,
-      "state": "SUPERSEDED_PREQUALIFICATION_DEFECT",
+      "state": "SUPERSEDED_SPLIT_BOOKKEEPING_DEFECT",
       "authority_use": "forbidden"
     },
     {
       "run": 35578647184,
-      "pr": 518,
-      "state": "QUEUED_FROZEN_CORRECTED_SCOPE",
+      "state": "SUPERSEDED_DATUM_ROUNDOFF_REPRESENTATION_DEFECT",
+      "authority_use": "forbidden"
+    },
+    {
+      "run": 35581711814,
+      "pr": 519,
+      "state": "QUEUED_FROZEN_CORRECTED_SCOPE_V3",
       "authority_use": "preferred"
     }
   ],
@@ -104,7 +109,7 @@
     "qualification_effect": "none; corrected Actions run 35578647184 remains mandatory"
   },
   "blockers": [
-    "Corrected frozen-scope GitHub Actions competing-claims-gate is queued in run 35578647184."
+    "DUMMY-15 v3 GitHub Actions competing-claims-gate is queued in run 35581711814."
   ],
   "frozen_scope_verification": {
     "base_authority": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
@@ -132,5 +137,17 @@
     "scientific_blocker": false,
     "governance_blocker": true,
     "rule": "Do not qualify DUMMY-15 and do not implement DUMMY-15B until the valid corrected run completes successfully."
-  }
+  },
+  "prequalification_repairs": [
+    {
+      "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity.",
+      "correction": "Subtract the second assigned claim in both priority branches.",
+      "scientific_effect": "none; preregistered equations and expected values unchanged"
+    },
+    {
+      "defect": "An exact h_s=datum endpoint could round to a tiny negative value and be rejected by the stricter ThreeStoreState representation even though qualified DUMMY-10 already admitted it within head tolerance.",
+      "correction": "Canonicalize only already-admitted endpoint heads within DUMMY-10's datum tolerance to exact datum before ThreeStoreState validation.",
+      "scientific_effect": "none; materially sub-datum states remain rejected"
+    }
+  ]
 }
