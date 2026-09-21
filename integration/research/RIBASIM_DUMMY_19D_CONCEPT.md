@@ -1,8 +1,8 @@
 # RIBASIM-DUMMY-19D blocked concept: heterogeneous real Ribasim realization
 
-> Status: BLOCKED pending DUMMY-19C qualification.
+> Status: IMPLEMENTATION READY after qualified DUMMY-19C v4 authority.
 >
-> No DUMMY-19D executable model or verifier exists yet.
+> Numerical expectations remain those fixed before DUMMY-19C closed. Executable files are bound to the post-DUMMY-19C closeout baseline.
 
 ## Question
 
