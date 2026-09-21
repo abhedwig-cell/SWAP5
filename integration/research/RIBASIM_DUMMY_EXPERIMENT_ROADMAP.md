@@ -512,3 +512,45 @@ variables and explicitly record missing/non-equivalent concepts.
 DUMMY-19 may then replace one analytical component at a time.
 
 Neither stage should be treated as a physics development work unit.
+
+
+## Roadmap refinement after DUMMY-15B source binding
+
+The downstream sequence is now frozen prospectively as:
+
+```text
+DUMMY-15
+  exact same-state competing managed claims
+
+DUMMY-15B
+  forecast allocation versus physical supply
+  realization-policy contrast
+  pinned real-Ribasim bridge plan
+
+DUMMY-16
+  management-clock synchronization
+  same physical trajectory, different priority-event observation
+
+DUMMY-17
+  pure physical two-Basin routed system
+  + shared groundwater redistribution
+  + exact path decomposition
+
+DUMMY-18
+  controlled real-model variable/interface binding
+
+DUMMY-19
+  one-component-at-a-time real-model substitution
+```
+
+The important ordering decision is that DUMMY-17 first remains management-free.
+This prevents a future downstream-demand result from conflating:
+
+- routing;
+- groundwater redistribution;
+- allocation;
+- realization policy;
+- management clock.
+
+Only after the physical two-path network closes should managed demand be added
+to that network.
