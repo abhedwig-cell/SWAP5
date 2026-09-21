@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Execute the exact DUMMY-15 competing-claims-gate.",
+  "next_action": "Execute DUMMY-15 competing-claims-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -65,5 +65,6 @@
     "no CSR-B1 or CSR-B2 closure"
   ],
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action."
+  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action.",
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
