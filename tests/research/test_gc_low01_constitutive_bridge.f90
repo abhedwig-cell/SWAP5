@@ -1,5 +1,5 @@
 program test_gc_low01_constitutive_bridge
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, &
        b110_default_mvg_provider_t, initialize_b110_default_mvg_parameters, &
        bind_b110_default_mvg_provider
@@ -77,8 +77,8 @@ contains
 
   logical function bits_equal(a,b)
     real(real64), intent(in) :: a,b
-    integer(8) :: ia,ib
-    ia=transfer(a,ia); ib=transfer(b,ib)
+    integer(int64) :: ia,ib
+    ia=transfer(a,0_int64); ib=transfer(b,0_int64)
     bits_equal=ia==ib
   end function bits_equal
 
