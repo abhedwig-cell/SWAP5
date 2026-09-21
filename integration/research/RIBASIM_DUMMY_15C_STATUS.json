@@ -13,7 +13,7 @@
   "blocker": null,
   "prepared_scope": "Policy contrast for committing SWAP-like irrigation event management state under partial external supply, including atomic reject, partial complete, and explicit residual-active semantics.",
   "production_authority_note": "F-APP07 identifies restricted Hupsel event-selection state and gross irrigation; F-APP05/F-APP08 identify stateful Rutter and net-irrigation application. None currently qualifies external partial-supply event semantics.",
-  "next_action": "Execute DUMMY-15C irrigation-event-realization gate.",
+  "next_action": "Execute exact DUMMY-15C irrigation-event-realization gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -33,5 +33,35 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "expected_tests": "13 tests",
-  "recovery_point": "DUMMY-15C model, tests, concept and workflow gate are persisted; qualification remains open."
+  "recovery_point": "DUMMY-15C model, tests, concept and workflow gate are persisted; qualification remains open.",
+  "source_scope_verification": {
+    "base": "a84405a24373818e3ca1f3851391300ed73e7240",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_15C_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_15C_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_15C_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_irrigation_event_realization.py",
+      "tests/research/run_ribasim_dummy_15c.sh",
+      "tests/research/test_dummy_irrigation_event_realization.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_POLICY_AND_TRANSACTION_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "atomic reject supplies 0 and preserves pre-event management state",
+      "partial complete supplies 12, resets interval state, persists no residual backlog",
+      "partial residual-active supplies 12 and persists residual 8 as explicit management state",
+      "partial complete and residual-active have identical current water but different future event demand",
+      "accepted finalize commits supplied water and management candidate together",
+      "rollback rejects both water and management candidate together",
+      "half-commit is rejected",
+      "full supply collapses all policies to the same completed event",
+      "allocation/realization shortfall is diagnostic unless explicitly promoted to residual state"
+    ]
+  }
 }
