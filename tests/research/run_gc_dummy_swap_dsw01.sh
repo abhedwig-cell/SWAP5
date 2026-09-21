@@ -74,6 +74,11 @@ set -e
 test "$DSW05_STATUS" -eq 0 || echo "GC_DSW05_DIAGNOSTIC_STATUS=OPEN_NUMERICAL_GATE"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw05v_under_relaxation.py | tee "$BUILD/dsw05v-live.txt"
+
+grep -Fq 'GC_DSW05V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw05v-live.txt" || fail "DSW-05V diagnostic gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw06_reference_invariance.py | tee "$BUILD/dsw06-live.txt"
 
 grep -Fq 'GC_DSW06_LIVE_GATE=PASS' "$BUILD/dsw06-live.txt" || fail "DSW-06 live gate"
