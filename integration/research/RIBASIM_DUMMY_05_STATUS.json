@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-05",
   "branch": "work/ribasim-dummy-01",
   "baseline": "1c38b4216df576570a62c11800b17af5ab77df91",
-  "checkpoint_commit": "78fcf836f44dc75893d4c1f0143a7c575fc00ba5",
+  "checkpoint_commit": "3c1808c21c2c8da063755a60647fd047dd16738b",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Exact piecewise active-set solution combining DUMMY-04 head-dependent trapezoidal exchange with the DUMMY-02 hydrology-before-management UserDemand rule.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_05_PREREGISTRATION.json",
@@ -33,7 +33,15 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-05 management-complementarity gate.",
-  "recovery_point": "DUMMY-05 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "next_action": "Preregister iterative active-set algorithms against the exact DUMMY-05 oracle.",
+  "recovery_point": "DUMMY-05 closed qualified; exact piecewise oracle is available for the next numerical work unit.",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_05_QUALIFIED_EXACT_MANAGEMENT_COMPLEMENTARITY",
+    "workflow_run": 35565906395,
+    "workflow_job": 106227555433,
+    "qualification_head": "b1a64133f92746c93dd76e5db5b6b6cc468c7893",
+    "tests": "9/9 PASS",
+    "gate": "PASS"
+  }
 }
