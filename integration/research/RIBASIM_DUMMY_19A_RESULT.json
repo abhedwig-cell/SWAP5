@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_supply.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19A",
+  "decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+  "authority": {
+    "implementation_baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
+    "qualification_head": "6e7cf321d6db98c59f076add6585fab38006a0bc",
+    "workflow_run": 35596174158,
+    "workflow_job": 106321377376,
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "conclusion": "success"
+  },
+  "infrastructure_history": [
+    {
+      "run": 35596052149,
+      "state": "INFRA_FAILED_BEFORE_MODEL_EXECUTION",
+      "failure": "setup-pixi resolved workspace at SWAP5 root instead of pinned Ribasim checkout",
+      "scientific_effect": "none"
+    },
+    {
+      "repair": "setup-pixi working-directory=.ribasim-pin",
+      "scientific_effect": "none; pin, fixtures and preregistered assertions unchanged"
+    }
+  ],
+  "evidence": [
+    "RIBASIM_DUMMY_19A_SOURCE_SCOPE=PASS",
+    "RIBASIM_DUMMY_19A_RIBASIM_PIN=PASS sha=f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "RIBASIM_REAL_19A_FAIR_DISTRIBUTION=PASS count=25",
+    "RIBASIM_REAL_19A_SUPPLIED_LINKFLOW=PASS records=31 lag_records=1",
+    "RIBASIM_REAL_19A_ROUTE_PRIORITY=PASS samples=91 first=0.0010000000000000005 last=0.001989010989010993",
+    "RIBASIM_REAL_19A_BRIDGE=PASS",
+    "RIBASIM_DUMMY_19A_REAL_RIBASIM_TESTS=PASS",
+    "RIBASIM_DUMMY_19A_GATE=PASS"
+  ],
+  "qualified_observability": {
+    "fair_distribution": "Pinned real Ribasim executes a scarcity allocation in which 25 same-priority UserDemand nodes receive allocated/demand=0.5.",
+    "supplied_flow": "Pinned real Ribasim UserDemand supplied output is independently reproduced from integrated physical inflow-link flow when aligned with the documented one-allocation-record lag.",
+    "route_priority": "Pinned real Ribasim two-source UserDemand fallback flow follows the upstream route-priority reference as preferred-source supply decays."
+  },
+  "interpretation": "Demand, allocated and supplied are now executable pinned-Ribasim observables rather than source-code-only assumptions. Physical supplied flow must be compared with correct time alignment and may not be replaced by allocated flow in a water ledger.",
+  "nonclaims": [
+    "no custom DUMMY-15 two-recipient priority conflict has yet been run in real Ribasim",
+    "no equivalence between dummy hard active-set hmin and Ribasim smooth UserDemand physical reduction",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling admission"
+  ],
+  "downstream": "A custom pinned real-Ribasim priority-conflict bridge may now test the DUMMY-15 same-source competing-claims allocation split while keeping physical reduction inactive."
+}
