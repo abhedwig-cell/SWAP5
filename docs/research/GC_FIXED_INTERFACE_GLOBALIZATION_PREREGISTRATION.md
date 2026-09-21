@@ -247,3 +247,58 @@ The machine-readable result is
 
 G07 production admission remains negative at this checkpoint. P4 is retained
 as the leading research candidate; no production source is changed.
+
+
+## G08 real-SWAP safeguarded physical-Newton protocol
+
+G08 is preregistered in machine-readable form at
+`integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json`.
+It is a production-candidate research qualification, not a production mutation.
+
+The frozen real-SWAP cases are the F-GC44 control plus low-forcing,
+high-forcing and long-window/high-forcing READY points already identified by
+the independent DSW22D predictor-envelope diagnostic. The known 5e-5 day
+predictor failure remains excluded as a preserved upstream falsification; G08
+does not retune it into a corrector case.
+
+For each selected SWAP configuration G08:
+
+1. scans the fixed head offsets declared in the JSON preregistration and records
+   status-0 versus status-6 corrector outcomes;
+2. re-estimates the physical `dq_swap/dH` by a central secant from the immutable
+   accepted origin, with a fixed 2.5e-7 m half-width and at most six halvings;
+3. classifies material real-SWAP nonlinearity only if the maximum admissible
+   secant-slope change from the href tangent reaches the prospectively frozen
+   5% threshold;
+4. measures each groundwater response independently with fresh converged
+   constant-flux MODFLOW6 probes;
+5. compares raw physical Newton (P1) against P4, which uses the same reanchored
+   physical tangent but contracts the head proposal by exactly 1/2 until the
+   SWAP corrector is admissible and the independently measured coupled-residual
+   magnitude does not increase.
+
+The three groundwater classes are a storage-dominated `r≈0.75` construction,
+a storage-dominated `r≈2` construction, and the ordinary mixed
+storage/lateral-conductance model. Before execution, the two storage-dominated
+cases were amended with fixed accepted-groundwater head mismatches of +4e-6 m
+and -1.5e-6 m respectively. This forces the Newton proposal to traverse a
+nontrivial fraction of the real-SWAP head envelope without changing SWAP
+physics, solver tolerances or acceptance rules.
+
+Every diagnostic SWAP candidate is discarded. Revision, committed time and
+interface ledger must remain at the accepted origin. Status 4 remains a
+lifecycle error rather than admissibility evidence. No production HCOF/RHS
+source is changed.
+
+The interpretation rules are deliberately asymmetric:
+
+- a completed G08 workflow proves execution of the frozen experiment, not
+  production admission;
+- if no real-SWAP case reaches the 5% nonlinearity threshold, genuinely
+  nonlinear real-SWAP qualification remains open;
+- if P4 performs no backtracking, the live safeguard remains unexercised;
+- the strongest G08 evidence is a preregistered case where raw P1 is
+  inadmissible or merit-increasing and P4 contracts to an admissible,
+  non-increasing step;
+- any production algorithm or HCOF/RHS mutation requires a separate admission
+  work unit after G08.
