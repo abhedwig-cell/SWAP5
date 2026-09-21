@@ -17,7 +17,8 @@
     "tests/research/dummy_threeway_water_coupling.py",
     "tests/research/test_dummy_threeway_water_coupling.py",
     "tests/research/run_ribasim_dummy_02.sh",
-    ".github/workflows/ribasim-dummy-02.yml"
+    ".github/workflows/ribasim-dummy-02.yml",
+    ".github/workflows/ribasim-dummy-01.yml"
   ],
   "dependency_surface": [
     "tests/research/dummy_ribasim_reservoir.py",
@@ -25,11 +26,12 @@
     "tests/research/test_dummy_threeway_water_coupling.py",
     "tests/research/run_ribasim_dummy_02.sh",
     "integration/research/RIBASIM_DUMMY_02_*",
-    ".github/workflows/ribasim-dummy-02.yml"
+    ".github/workflows/ribasim-dummy-02.yml",
+    ".github/workflows/ribasim-dummy-01.yml"
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Run the exact DUMMY-02 focused gate in GitHub Actions and record result evidence.",
+  "next_action": "Trigger DUMMY-02 through the already registered ribasim-dummy-01 workflow dispatcher and record Actions evidence.",
   "recovery_point": "Resume from work/ribasim-dummy-01; DUMMY-02 implementation and concept are persisted, focused test/qualification still open.",
   "blockers": []
 }
