@@ -6,8 +6,8 @@
   "preregistration_commit": "1b436662f30e5580bc061440787d37cbbc5e2eed",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
   "blocker": null,
@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Use run 35581711814 as the only valid DUMMY-15 qualification authority if it passes.",
+  "next_action": "Rebind DUMMY-15B implementation baseline to post-DUMMY-15 closeout authority.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -39,7 +39,7 @@
     "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
     "workflow_run": 35577358733
   },
-  "checkpoint_commit": "8cee9c31c79f1e2d973121277c1b8a0513bdfe39",
+  "checkpoint_commit": "a00496a3f9ef1ae5e7b66b6dddc44abff514dcec",
   "scope": "Exact one-Basin lexicographic split of the qualified coupled managed-withdrawal capacity between root irrigation and one external managed demand.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_15_PREREGISTRATION.json",
@@ -65,7 +65,7 @@
     "no CSR-B1 or CSR-B2 closure"
   ],
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action.",
+  "recovery_point": "DUMMY-15 closed qualified; same-state competing-claims priority oracle is available.",
   "prequalification_repair": {
     "state": "APPLIED_BEFORE_VALID_QUALIFICATION",
     "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity.",
@@ -108,9 +108,7 @@
     ],
     "qualification_effect": "none; corrected Actions run 35578647184 remains mandatory"
   },
-  "blockers": [
-    "DUMMY-15 v3 GitHub Actions competing-claims-gate is queued in run 35581711814."
-  ],
+  "blockers": [],
   "frozen_scope_verification": {
     "base_authority": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
     "frozen_base": "work/ribasim-dummy-15-base@a306217b847e67c2cd28429a08e70e6b95c9cca1",
@@ -169,5 +167,13 @@
       "reverse-exchange CURTAILED: M=48,V=-28,exact hs=0,hg=0.52"
     ],
     "qualification_effect": "none; Actions run 35581711814 remains mandatory"
+  },
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+    "workflow_run": 35581711814,
+    "workflow_job": 106275860968,
+    "qualification_head": "f2473fd31edcc226adc52451e385d4e13a11d247",
+    "tests": "12/12 PASS",
+    "gate": "PASS"
   }
 }
