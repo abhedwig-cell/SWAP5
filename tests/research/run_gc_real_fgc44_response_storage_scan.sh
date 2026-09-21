@@ -33,12 +33,16 @@ test -f "$BUILD/bridge/libfgc44_swap.so" || {
   exit 1
 }
 
+# The original DSW22 all-nine-success gate is immutable and was falsified
+# in workflow 35564514215 at its first matrix point. Do not rerun it as a
+# moving acceptance gate. Characterize the unchanged matrix instead.
 FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
-  python3 tests/research/test_gc_real_fgc44_response_storage_scan.py | tee "$BUILD/dsw22-semantic-scan.txt"
+  python3 tests/research/test_gc_real_fgc44_response_storage_diagnostic.py | tee "$BUILD/dsw22-diagnostic.txt"
 
-grep -Fq 'GC_DSW22_LIVE_GATE=PASS' "$BUILD/dsw22-semantic-scan.txt" || {
-  echo "GC_DSW22_FAIL missing live gate" >&2
+grep -Fq 'GC_DSW22D_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw22-diagnostic.txt" || {
+  echo "GC_DSW22D_FAIL missing diagnostic gate" >&2
   exit 1
 }
 
-echo 'GC_DSW22_REAL_SWAP_SEMANTIC_SCAN=PASS'
+echo 'GC_DSW22_PREREGISTERED_GATE=FALSIFIED_PRESERVED'
+echo 'GC_DSW22D_REAL_SWAP_MATRIX_DIAGNOSTIC=PASS'
