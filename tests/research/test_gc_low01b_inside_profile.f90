@@ -186,6 +186,7 @@ contains
     type(b110_default_mvg_provider_t), intent(in) :: provider
     character(len=*), intent(in) :: label_text
     real(real64) :: saturated_head(n), saturated_water(n), saturated_k(n), saturated_c(n), saturated_d(n)
+    type(low01_mode1_candidate_t) :: typed_a, typed_b
     integer :: k
 
     call require(result%valid, 'LOW01-B '//trim(label_text)//' valid carrier result')
@@ -200,6 +201,50 @@ contains
          'LOW01-B carrier qbot authority')
     call require(ieee_is_finite(result%qbot_cm_per_day), 'LOW01-B finite qbot')
     call require(abs(result%mass_residual_cm) <= strict_tol, 'LOW01-B independent mass closure')
+    call require(trim(result%qbot_materialization_route) == 'headcalc-complete-flux-chain', &
+         'LOW01-B qbot provenance route')
+    call require(.not. result%derived_profile_gwl_available, &
+         'LOW01-B derived profile GWL remains unavailable without task-3 materialization')
+
+    call materialize_low01_mode1_candidate(parameter_set%z, parameter_set%dz, gwl_cm, &
+         result%raw_legacy_gwl_cm, result%fllowgwl, result%qbot_cm_per_day, result%storage_change_cm, &
+         result%pressure_head_cm, result%water_content, typed_a)
+    call materialize_low01_mode1_candidate(parameter_set%z, parameter_set%dz, gwl_cm, &
+         result%raw_legacy_gwl_cm, result%fllowgwl, result%qbot_cm_per_day, result%storage_change_cm, &
+         result%pressure_head_cm, result%water_content, typed_b)
+
+    call require(candidates_bitwise_identical(typed_a,typed_b), &
+         'LOW01-B pure carrier repeated materialization')
+    call require(typed_a%branch == LOW01_BRANCH_INSIDE_PROFILE, &
+         'LOW01-B pure carrier branch agrees')
+    call require(typed_a%active_richards_nodes == nn, &
+         'LOW01-B pure carrier active NN agrees')
+    call require(transfer(typed_a%requested_h_phreatic_cm,0_int64) == &
+         transfer(result%requested_h_phreatic_cm,0_int64), &
+         'LOW01-B pure carrier requested Hphi agrees')
+    call require(transfer(typed_a%effective_h_phreatic_cm,0_int64) == &
+         transfer(result%effective_h_phreatic_cm,0_int64), &
+         'LOW01-B pure carrier effective Hphi agrees')
+    call require(.not. typed_a%derived_profile_gwl_available, &
+         'LOW01-B pure carrier derived GWL unavailable')
+    call require(transfer(typed_a%raw_legacy_groundwater_level_cm,0_int64) == &
+         transfer(result%raw_legacy_gwl_cm,0_int64), &
+         'LOW01-B pure carrier raw legacy GWL agrees')
+    call require(transfer(typed_a%qbot_cm_per_day,0_int64) == &
+         transfer(result%qbot_cm_per_day,0_int64), &
+         'LOW01-B pure carrier qbot agrees')
+    call require(transfer(typed_a%storage_change_cm,0_int64) == &
+         transfer(result%storage_change_cm,0_int64), &
+         'LOW01-B pure carrier storage agrees')
+    do k = 1, n
+      call require(transfer(typed_a%pressure_head_cm(k),0_int64) == &
+           transfer(result%pressure_head_cm(k),0_int64), &
+           'LOW01-B pure carrier head agrees')
+      call require(transfer(typed_a%water_content(k),0_int64) == &
+           transfer(result%water_content(k),0_int64), &
+           'LOW01-B pure carrier water agrees')
+    end do
+
     call require(.not. hp%ksatexm_extension_enabled, 'LOW01-B KSATEXM disabled result')
 
     saturated_head = 0.0_real64
