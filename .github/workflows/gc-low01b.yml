@@ -1,23 +1,75 @@
 name: GC LOW01-B inside-profile typed research slice
 
 on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01A2_RESULT.json'
+      - 'integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json'
+      - 'integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json'
+      - 'integration/research/GC_LOW01_OUTPUT01_RESULT.json'
+      - 'integration/research/GC_LOW01B*.json'
+      - 'tests/research/support/gc_low01_headcalc_nonconstitutive_stubs.f90'
+      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
+      - 'tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90'
+      - 'tests/research/support/mod_gc_low01_mode1_trial_carrier.f90'
+      - 'tests/research/test_gc_low01b_inside_profile.f90'
+      - 'tests/research/run_gc_low01b.sh'
+      - '.github/workflows/gc-low01b.yml'
   workflow_dispatch:
+
+concurrency:
+  group: gc-low01b-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
+  prerequisite:
+    runs-on: ubuntu-24.04
+    outputs:
+      ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        name: Check qualified LOW01-B prerequisites
+        shell: bash
+        run: |
+          python3 - <<'PY' > /tmp/gc-low01b-ready
+          import json
+          from pathlib import Path
+
+          paths = [
+              Path("integration/research/GC_LOW01A2_RESULT.json"),
+              Path("integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json"),
+              Path("integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json"),
+              Path("integration/research/GC_LOW01_OUTPUT01_RESULT.json"),
+          ]
+          ready = True
+          for path in paths:
+              if not path.is_file():
+                  ready = False
+                  continue
+              data = json.loads(path.read_text())
+              if data.get("conclusion") != "success":
+                  ready = False
+              if not str(data.get("decision", "")).startswith("QUALIFIED"):
+                  ready = False
+          print("true" if ready else "false")
+          PY
+          ready="$(cat /tmp/gc-low01b-ready)"
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          echo "GC_LOW01B_PREREQUISITES_READY=$ready"
+
   low01b:
+    needs: prerequisite
+    if: needs.prerequisite.outputs.ready == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Guard qualification prerequisites
-        run: |
-          test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json
-          test -f integration/research/GC_LOW01_OUTPUT01_RESULT.json
-          test -f integration/research/GC_LOW01A2_RESULT.json
-          test -f integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json
       - name: Install compiler
         run: |
           sudo apt-get update
