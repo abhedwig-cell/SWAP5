@@ -10,6 +10,9 @@ trap 'rm -rf "$BUILD"' EXIT
 
 fail(){ echo "GC_DSW01_FAIL $*" >&2; exit 1; }
 
+python3 tests/research/test_gc_analytic_swap_component.py | tee "$BUILD/analytic-component.txt"
+grep -Fq 'GC_ANALYTIC_SWAP_COMPONENT_GATE=PASS' "$BUILD/analytic-component.txt" || fail "analytic SWAP component gate"
+
 python3 tests/research/test_gc_dummy_swap_dsw01_analytic.py | tee "$BUILD/analytic.txt"
 grep -Fq 'GC_DSW01_ANALYTIC_GATE=PASS' "$BUILD/analytic.txt" || fail "DSW-01 analytic gate"
 
