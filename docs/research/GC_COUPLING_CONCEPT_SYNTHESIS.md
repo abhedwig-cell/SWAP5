@@ -919,3 +919,13 @@ Primary repository evidence:
 - DSW23/DSW24/DSW25 and HLINK01 only as supporting shared-phreatic/limit evidence, with their recorded qualification bounds
 
 The current synthesis changes no production source and claims no production requalification.
+
+## 14. Fixed-interface sign result after live PB01 and F-GC44
+
+Subsequent fixed-interface work closes one ambiguity left open above. For the declared fixed geometric interface, the local **outward physical** SWAP exchange derivative is not +u/dt. NH01 derives -u/dt analytically; PB01 reproduces the consequence with live MODFLOW 6.8.0; and the real F-GC44 Richards corrector measures dq_out/dH = -3.9385817e-6 s^-1 against +u/dt = +3.9385834e-6 s^-1 (ratio -0.9999996).
+
+Accordingly, the positive production-facing slope must be treated as a numerical surrogate unless a different contract is explicitly declared. Reanchoring makes such a surrogate pass through the current physical corrector value, so a converged fixed point can remain physically correct, but PB01 proves that reanchoring alone does not guarantee convergence: its isolated storage case diverges with |rho|=4 exactly as preregistered.
+
+The successful ordinary F-GC44 run does not contradict that result because its natural first iterate is already essentially at the coupled root (successive heads differ by about 5.9e-14 m). It is transaction/near-root evidence, not a finite-basin stability qualification.
+
+Production disposition remains conservative: do not globally flip HCOF in this research commit. First make the physical-derivative versus numerical-surrogate distinction explicit in the architecture and qualify any retained positive surrogate over a prospective stability envelope or with an explicit globalization mechanism.
