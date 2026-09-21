@@ -218,6 +218,10 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw24_interface_phreatic_limit.py | tee "$BUILD/dsw24-live.txt"
 grep -Fq 'GC_DSW24_LIVE_GATE=PASS' "$BUILD/dsw24-live.txt" || fail "DSW-24 live gate"
 
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_hlink01_storage_replacement.py | tee "$BUILD/hlink01-live.txt"
+grep -Fq 'GC_HLINK01_LIVE_GATE=PASS' "$BUILD/hlink01-live.txt" || fail "HLINK01 live gate"
+
 set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw15v_mass_resolution.py | tee "$BUILD/dsw15v-live.txt"
@@ -253,6 +257,7 @@ else
   echo "GC_DSW09_ORIGINAL_STRICT_GATE=NOT_MET_DIAGNOSED_NUMERICS"
 fi
 
+echo 'GC_HLINK01_STORAGE_REPLACEMENT_EXECUTION=PASS'
 echo 'GC_DUMMY_SWAP_TESTBANK_EXECUTION=PASS'
 echo 'GC_DUMMY_SWAP_QUALIFIED_BLOCKS=DSW01,DSW02,DSW03,DSW04,DSW06,DSW07,DSW08,DSW10,DSW11,DSW12,DSW13,DSW14,DSW15,DSW16,DSW17,DSW18,DSW19,DSW20,DSW21,DSW23,DSW24'
 echo 'GC_DUMMY_SWAP_DIAGNOSTIC_QUALIFIED=DSW05V,DSW05W,DSW09N,DSW09R,DSW09V,DSW09X,DSW09Y,DSW15V'
