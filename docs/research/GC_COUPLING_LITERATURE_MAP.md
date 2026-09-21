@@ -41,11 +41,11 @@ studies time-step sensitivity.
 
 ### Relevance to SWAP5
 
-This is the closest literature analogue to the research question behind
-DSW-01/02:
+This is the closest literature analogue to the **dummy h-link** research
+question behind DSW-01/02:
 
 ```
-one physical head
+one phreatic physical head
 one combined storage response
 different process contributions to one balance
 ```
@@ -53,8 +53,18 @@ different process contributions to one balance
 It supports treating storage ownership as part of the coupling definition, not
 as an implementation detail.
 
-It does **not** prove that the current SWAP5 `q_u/u` formulation has the same
-mathematical meaning. That equivalence must be derived.
+MAP11 now establishes a necessary boundary on the analogy. The current
+canonical F-GC route exchanges hydraulic head at the SWAP lower coupling plane,
+and the source explicitly distinguishes that head from the freatic groundwater
+level. The F-GC45 head-driven corrector applies it as a lower-boundary pressure
+head.
+
+Therefore the SIMGRO shared-phreatic h-link and the current SWAP5 F-GC
+interface-head route are distinct coupling families unless a future authority
+explicitly maps them onto the same phreatic state and storage volume.
+
+The literature does **not** prove that the current SWAP5 `q_u/u` formulation
+has the same mathematical meaning as SIMGRO complete-profile storage.
 
 ## 2. Sequential head/recharge exchange
 
@@ -213,7 +223,8 @@ Use the following terms consistently:
 
 | Term | Physical meaning | Typical mathematical form |
 |---|---|---|
-| shared state | one physical degree of freedom used by both models | `h_swap=h_mf` |
+| shared phreatic state | one water-table degree of freedom and combined storage used by both models | `h_phreatic,swap=h_phreatic,mf` |
+| shared interface head | one hydraulic head imposed/matched at a declared coupling plane | `H_interface,swap=H_interface,mf` |
 | combined storage | change of total physical water volume with shared state | `dV_total/dh` |
 | physical q-link | flux between two distinct physical states | `C(h_a-h_b)` |
 | atmospheric/recharge contribution | external water entering the coupled control volume | prescribed or process-computed `R` |
