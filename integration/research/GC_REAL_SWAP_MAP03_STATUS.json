@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.gc_real_swap.map03.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP03",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "58fb70a3158c0e3456b5a10c878feb6039320565",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_changes": false,
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/research/GC_REAL_SWAP_MAP02_RESULT.json",
+    "integration/research/GC_REAL_SWAP_MAP03_PREREGISTRATION.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map03_storage_decomposition.py",
+    "tests/research/run_gc_real_swap_map03_fgc45.sh",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
+  ],
+  "interfaces_held_fixed": [
+    "F-GC33 response mathematics",
+    "F-GC40 aggregation",
+    "F-GC45 physical fixture",
+    "F-GC49D production ownership",
+    "Reference Richards production path"
+  ],
+  "dependency_surface": [
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
+    "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
+  ],
+  "next_action": "Run the preregistered MAP03 fixed-head transaction diagnostics against the unchanged F-GC45 fixture and persist exact derivative evidence.",
+  "recovery_point": "Resume from this checkpoint if interrupted; do not alter the five MAP02-derived fixed heads or 5e-4 relative gates.",
+  "blockers": []
+}
