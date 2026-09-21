@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-09",
   "branch": "work/ribasim-dummy-01",
   "baseline": "7484b2d614ad752baaf7c2811471949748ab87f3",
-  "checkpoint_commit": "2c3152f95df2a493b07ea018e29537ef7feb44b8",
+  "checkpoint_commit": "34cbd19c5e5dbff303de75138fd9a6c4961afe85",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,7 +32,10 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Add DUMMY-09 to the registered research workflow and execute the reciprocal two-store gate.",
-  "recovery_point": "DUMMY-09 preregistration, model, tests, concept and focused runner are persisted; qualification remains open.",
-  "blockers": []
+  "next_action": "Execute the exact DUMMY-09 two-store-exchange-gate.",
+  "recovery_point": "DUMMY-09 full research postimage is persisted; continuous monotonicity test was strengthened before qualification.",
+  "blockers": [],
+  "prequalification_repairs": [
+    "Strengthened the continuous oracle test so head-difference decay is checked sequentially across increasing times, not only against the initial difference. Scientific expectation is unchanged."
+  ]
 }
