@@ -14,7 +14,9 @@
       "integration/research/GC_REAL_SWAP_MAP11_RESULT.json does not establish coextensive SWAP/MODFLOW storage.",
       "integration/research/GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json distinguishes mode-5 lower-face head from legacy mode-1 prescribed groundwater level."
     ],
-    "nonclaim": "This classification describes the current bounded route. It is not a recommendation that the final architecture remain in this family."
+    "nonclaim": "This classification describes the current bounded route. It is not a recommendation that the final architecture remain in this family.",
+    "closest_candidate_contract": "INTERFACE_SPLIT",
+    "limit_to_shared_phreatic": "Only in a separately demonstrated hydrostatic/vanishing vertical-resistance state limit with consistent storage ownership; head equality alone is insufficient."
   },
   "candidate_contracts": {
     "SHARED_PHREATIC": {
@@ -55,5 +57,11 @@
     "Which derivative is needed for the nonlinear algorithm, separately from the physical quantity it linearizes?"
   ],
   "architecture_gate": "No STO replacement/partition, q-link conductance, shared-phreatic state machine, or production HCOF semantic reinterpretation is authorized until the relevant physical contract is explicitly selected and tested.",
-  "next_scientific_step": "Use the intended deployment geometry and hydrological meaning to answer the ten required questions. Only then preregister a discriminating experiment for the surviving coupling families."
+  "next_scientific_step": "Use the intended deployment geometry and hydrological meaning to answer the ten required questions. Only then preregister a discriminating experiment for the surviving coupling families.",
+  "original_thought_experiment": {
+    "classification": "SHARED_PHREATIC",
+    "reason": "The 10 m / 10 mm / S=0.20 construction declares one groundwater system and one groundwater level represented by both coupled models; it therefore defines one physical shared state and one physical storage volume.",
+    "exact_oracle": "0.010 m / 0.20 = 0.050 m head rise, final shared head 8.05 m from an 8.00 m origin.",
+    "nonclaim": "This oracle is not a direct acceptance test for the current bottom_mode=5 lower-interface-head route unless state-equivalence and storage-ownership conditions are independently established."
+  }
 }
