@@ -1,6 +1,6 @@
 # RIBASIM-DUMMY-17 blocked concept: two Basins with shared groundwater
 
-> Status: BLOCKED pending qualification of DUMMY-16.
+> Status: IMPLEMENTATION AUTHORIZED after qualification of DUMMY-16.
 >
 > No DUMMY-17 implementation or tests are authorized yet.
 
