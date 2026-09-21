@@ -84,6 +84,12 @@ on:
       - 'tests/research/dummy_competing_claims.py'
       - 'tests/research/test_dummy_competing_claims.py'
       - 'tests/research/run_ribasim_dummy_15.sh'
+      - 'integration/research/RIBASIM_DUMMY_15B_*.json'
+      - 'integration/research/RIBASIM_DUMMY_15B_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/dummy_forecast_realization.py'
+      - 'tests/research/test_dummy_forecast_realization.py'
+      - 'tests/research/run_ribasim_dummy_15b.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -284,3 +290,16 @@ jobs:
         run: python3 --version
       - name: Run competing-claims priority gate
         run: bash tests/research/run_ribasim_dummy_15.sh
+
+  forecast-realization-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-15b-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run forecast-realization policy gate
+        run: bash tests/research/run_ribasim_dummy_15b.sh
