@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_active_set_iteration.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-06",
+  "title": "Active-set Picard iteration against the exact management oracle",
+  "baseline": "9947713ddc3d526e7e0f184948c928eba6519dcb",
+  "purpose": "Test a naive hydrology-management active-set Picard iteration against the exact DUMMY-05 piecewise oracle, separating correctness of the priority rule from convergence of a coupling algorithm.",
+  "iteration_map": {
+    "exchange_guess": "V_n",
+    "management_capacity": "U_cap = A*(h0-hmin) - V_n",
+    "delivery": "U_n = min(R,max(0,U_cap))",
+    "provisional_level": "h1_n = h0-(U_n+V_n)/A",
+    "update": "V_(n+1)=C*dt*(((h0+h1_n)/2)-hgw)",
+    "provisional_regimes": [
+      "FULL if U_cap >= R",
+      "CURTAILED if 0 < U_cap < R",
+      "ZERO if U_cap <= 0"
+    ]
+  },
+  "hypotheses": [
+    "Every admissible DUMMY-05 exact solution is a fixed point of this active-set map.",
+    "Inside the CURTAILED regime the provisional end level is exactly hmin, so one map evaluation returns the exact curtailed exchange independent of lambda.",
+    "Inside fixed FULL or ZERO regimes the local exchange error factor remains -lambda from DUMMY-04.",
+    "Management clipping keeps U within [0,R] but does not guarantee convergence of the coupled iteration.",
+    "A preregistered lambda=1.5 case has an exact FULL solution but the explicit-start active-set Picard sequence enters a two-cycle spanning FULL and CURTAILED regimes.",
+    "Reducing dt in the same physical parameter set to lambda<1 removes that preregistered cycle and yields convergence to the exact oracle."
+  ],
+  "stiff_cycle_case": {
+    "A": 100,
+    "C": 300,
+    "dt": 1,
+    "h0": 1,
+    "hgw": 0.8,
+    "hmin": 0.2,
+    "R": 50,
+    "lambda": 1.5,
+    "exact_solution": {
+      "regime": "FULL",
+      "U": 50,
+      "V": -6,
+      "h1": 0.56
+    },
+    "explicit_start_exchange": 60,
+    "expected_sequence_prefix": [
+      {
+        "V": 60,
+        "provisional_regime": "CURTAILED"
+      },
+      {
+        "V": -60,
+        "provisional_regime": "FULL"
+      },
+      {
+        "V": 75,
+        "provisional_regime": "CURTAILED"
+      },
+      {
+        "V": -60,
+        "provisional_regime": "FULL"
+      }
+    ]
+  },
+  "experiments": {
+    "A1": "DUMMY-05 FULL, CURTAILED and ZERO oracle solutions are fixed points of the active-set map",
+    "A2": "any interior CURTAILED exchange guess maps in one evaluation to the exact curtailed exchange",
+    "A3": "within a non-switching subcritical FULL regime the error ratio is -lambda",
+    "A4": "the preregistered lambda=1.5 case reproduces the FULL/CURTAILED two-cycle despite an admissible exact FULL solution",
+    "A5": "all iterates respect 0<=U<=R even in the nonconvergent cycle",
+    "A6": "same physical parameters with dt=0.2, lambda=0.3 converge toward the exact DUMMY-05 solution",
+    "A7": "cycle states satisfy their own provisional balance and management clipping rules, showing that local rule compliance is insufficient for coupled convergence",
+    "A8": "physical-datum crossing by a provisional iterate fails closed rather than being hidden by management clipping"
+  },
+  "forbidden": [
+    "no damping or Newton repair in DUMMY-06",
+    "no empirical convergence tolerance as an admission criterion",
+    "no production coupling change",
+    "no claim that this naive active-set Picard map represents Ribasim or iMOD Coupler implementation"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_06_QUALIFIED_ACTIVE_SET_ITERATION_FAILURE_MECHANISM",
+  "fail_decision": "RIBASIM_DUMMY_06_BLOCKED"
+}
