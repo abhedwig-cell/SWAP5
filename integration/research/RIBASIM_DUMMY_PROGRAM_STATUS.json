@@ -66,18 +66,23 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-13",
-      "state": "AUTHORITY_SATISFIED_IMPLEMENTATION_START",
-      "required": [
-        "RIBASIM-DUMMY-11",
-        "RIBASIM-DUMMY-12"
-      ],
+      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
+      "intended_decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+      "qualification_run": 35571925509,
+      "pr": 515,
+      "implementation_baseline": "51bbc6d3375028b6604351b19f8806babac82721",
+      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-14",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
       "implementation": false,
-      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2",
-      "baseline": "51bbc6d3375028b6604351b19f8806babac82721"
+      "purpose": "external root forcing and demand-memory separation on top of the qualified three-store internal ledger"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Implement and qualify DUMMY-13 first-stage three-store ledger against the combined DUMMY-11/DUMMY-12 authority.",
+  "next_authority_action": "Observe DUMMY-13 run 35571925509. If PASS, close DUMMY-13 and rebind DUMMY-14 before any DUMMY-14 implementation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
