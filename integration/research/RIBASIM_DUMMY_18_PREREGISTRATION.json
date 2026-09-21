@@ -1,0 +1,210 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_real_model_binding.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-18",
+  "title": "Real-model variable, transfer and transaction authority binding",
+  "baseline": "2e0c568551d39a253de34274356ed33b86c05bce",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+    "current": "BLOCKED_PENDING_DUMMY_15B_16_17",
+    "implementation_rule": "No real-model substitution experiment before DUMMY-17 closes. Authority/document mapping may be prepared prospectively."
+  },
+  "purpose": "Bind every analytical state, transfer, decision and commit object to a pinned real-model observable or explicitly mark it non-equivalent before any component is substituted.",
+  "binding_classes": [
+    "STATE",
+    "TRANSFER",
+    "MANAGEMENT_DECISION",
+    "CLOCK",
+    "TRANSACTION",
+    "DIAGNOSTIC"
+  ],
+  "ribasim": {
+    "pin": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "required_bindings": [
+      {
+        "analytical": "surface storage S_s",
+        "real": "Basin storage",
+        "class": "STATE"
+      },
+      {
+        "analytical": "surface head h_s",
+        "real": "Basin level",
+        "class": "STATE"
+      },
+      {
+        "analytical": "managed demand R",
+        "real": "UserDemand demand",
+        "class": "MANAGEMENT_DECISION"
+      },
+      {
+        "analytical": "allocated U_alloc",
+        "real": "allocation result / allocated state",
+        "class": "MANAGEMENT_DECISION"
+      },
+      {
+        "analytical": "supplied U",
+        "real": "physical UserDemand inflow/link flow and aligned supplied result",
+        "class": "TRANSFER"
+      },
+      {
+        "analytical": "management min level",
+        "real": "UserDemand min_level physical reduction surface",
+        "class": "MANAGEMENT_DECISION"
+      },
+      {
+        "analytical": "allocation priority",
+        "real": "UserDemand demand_priority / allocation objective ordering",
+        "class": "MANAGEMENT_DECISION"
+      },
+      {
+        "analytical": "allocation clock",
+        "real": "allocation timestep",
+        "class": "CLOCK"
+      },
+      {
+        "analytical": "physical Basin clock",
+        "real": "Ribasim solver/output interval semantics",
+        "class": "CLOCK"
+      }
+    ],
+    "known_non_equivalences": [
+      "dummy hard active-set hmin is not identical to current smooth UserDemand physical reduction",
+      "linear constant-area Basin is not arbitrary Ribasim area-level-storage relation",
+      "dummy one-Basin priority split is not full JuMP/network allocation"
+    ]
+  },
+  "modflow": {
+    "required_bindings": [
+      {
+        "analytical": "groundwater head h_g",
+        "real": "selected/aggregated MODFLOW cell head",
+        "class": "STATE"
+      },
+      {
+        "analytical": "groundwater storage S_g=A_g h_g",
+        "real": "explicitly qualified STO/storage aggregate",
+        "class": "STATE"
+      },
+      {
+        "analytical": "surface-groundwater V",
+        "real": "accepted integrated RIV/DRN exchange budget",
+        "class": "TRANSFER"
+      },
+      {
+        "analytical": "conductance C",
+        "real": "package conductance/effective interface parameter only after package mapping is pinned",
+        "class": "DIAGNOSTIC"
+      },
+      {
+        "analytical": "groundwater clock",
+        "real": "stress-period/time-step/substep and prepared-solve lifecycle",
+        "class": "CLOCK"
+      },
+      {
+        "analytical": "candidate versus accepted groundwater state",
+        "real": "Modflow6PreparedSolveSession lifecycle plus product-level orchestration",
+        "class": "TRANSACTION"
+      }
+    ],
+    "unresolved_authorities": [
+      "CSR-B1 real SWAP/MODFLOW storage partition",
+      "CSR-B2 production drainage ownership",
+      "mapping from dummy A_g to actual MODFLOW storage response"
+    ]
+  },
+  "swap": {
+    "required_bindings": [
+      {
+        "analytical": "root storage W_r",
+        "real": "production SWAP state/aggregate that physically owns irrigation memory",
+        "class": "STATE"
+      },
+      {
+        "analytical": "root irrigation demand R_root",
+        "real": "production irrigation-demand derivation and scheduling state",
+        "class": "MANAGEMENT_DECISION"
+      },
+      {
+        "analytical": "supplied irrigation U_root",
+        "real": "production realized-irrigation application to accepted SWAP state",
+        "class": "TRANSFER"
+      },
+      {
+        "analytical": "root external loss E / rain P",
+        "real": "pinned precipitation, ET/root uptake and other owned flux terms",
+        "class": "TRANSFER"
+      },
+      {
+        "analytical": "root drainage D",
+        "real": "only after production drainage ownership is resolved",
+        "class": "TRANSFER"
+      },
+      {
+        "analytical": "root demand-refresh clock",
+        "real": "actual SWAP evaluation/commit timing",
+        "class": "CLOCK"
+      },
+      {
+        "analytical": "root accepted state",
+        "real": "SWAP committed/candidate transactional authority",
+        "class": "TRANSACTION"
+      }
+    ],
+    "current_blocker": "Current central architecture/control documents do not yet bind an explicit production irrigation-demand owner/timing contract."
+  },
+  "coupler": {
+    "required_bindings": [
+      {
+        "analytical": "forecast/predict stage",
+        "real": "product-level predictor/orchestration stage",
+        "class": "TRANSACTION"
+      },
+      {
+        "analytical": "realization/corrector",
+        "real": "product-level corrector semantics",
+        "class": "TRANSACTION"
+      },
+      {
+        "analytical": "revision/preflight",
+        "real": "actual stale-state/revision authority if exposed",
+        "class": "TRANSACTION"
+      },
+      {
+        "analytical": "atomic accepted endpoint",
+        "real": "documented orchestration commit/rollback boundary",
+        "class": "TRANSACTION"
+      },
+      {
+        "analytical": "outer coupling window",
+        "real": "iMOD Coupler scheduling interval",
+        "class": "CLOCK"
+      }
+    ]
+  },
+  "pass_rules": [
+    "Every analytical quantity used in a substitution experiment has exactly one pinned real authority or is explicitly declared non-equivalent.",
+    "Every accepted physical transfer has one integrated volume and opposite component-ledger signs where both endpoints lie inside the represented system.",
+    "No real-model diagnostic is silently promoted to state authority.",
+    "No allocated management amount is treated as supplied physical water without physical evidence.",
+    "Time alignment is explicit for every compared quantity.",
+    "Real-model output lag, averaging or integration semantics are recorded before numerical comparison.",
+    "Storage and drainage ownership blockers remain open unless separately closed by their owning workstreams."
+  ],
+  "planned_substitution_order": [
+    "analytical all components",
+    "real Ribasim physical/allocation layer with analytical groundwater/root",
+    "controlled real MODFLOW replacing analytical groundwater while root remains analytical",
+    "real Ribasim + real MODFLOW + analytical root proxy",
+    "production SWAP irrigation/root state replacing analytical root only after SWAP demand authority binding",
+    "full product-level orchestration comparison"
+  ],
+  "forbidden": [
+    "no component substitution before its authority row is pinned",
+    "no calibration of analytical parameters to hide semantic non-equivalence",
+    "no aggregate mass-balance-only admission",
+    "no production claim from dummy agreement alone",
+    "no closing CSR-B1/CSR-B2 from DUMMY-18 mapping work"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_BINDING",
+  "fail_decision": "RIBASIM_DUMMY_18_BLOCKED"
+}
