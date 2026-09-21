@@ -3,7 +3,7 @@ module mod_fgc45_real_multiswap_c_bridge
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE, TX_STATUS_ACCEPTED
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
@@ -191,28 +191,29 @@ contains
       return
     end select
 
-    if(result%status/=TX_STATUS_ACCEPTED .or. .not.candidate%ready())then
+    if(.not.result%completed .or. .not.candidate%ready())then
       if(candidate%ready())call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
       return
     end if
-    if(.not.result%accepted_mass_complete .or. .not.result%bottom_interface_exchange_available)then
+    if(.not.result%mass%complete .or. .not.result%bottom_interface_exchange_available)then
       call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
       return
     end if
-    if(.not.ieee_is_finite(result%accepted_storage_change) .or. &
-       .not.ieee_is_finite(result%accepted_total_in) .or. .not.ieee_is_finite(result%accepted_total_out) .or. &
-       .not.ieee_is_finite(result%accepted_bottom_outward_exchange_native) .or. &
-       .not.ieee_is_finite(result%accepted_mass_residual) .or. .not.ieee_is_finite(result%accepted_dt))then
+    if(.not.ieee_is_finite(result%mass%storage_change) .or. &
+       .not.ieee_is_finite(result%mass%total_in) .or. .not.ieee_is_finite(result%mass%total_out) .or. &
+       .not.ieee_is_finite(result%bottom_outward_exchange_native) .or. &
+       .not.ieee_is_finite(result%mass%residual) .or. .not.ieee_is_finite(result%completed_t) .or. &
+       .not.ieee_is_finite(result%requested_t0))then
       call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
       return
     end if
 
-    storage_change_cm=result%accepted_storage_change
-    total_in_cm=result%accepted_total_in
-    total_out_cm=result%accepted_total_out
-    bottom_outward_cm=result%accepted_bottom_outward_exchange_native
-    mass_residual_cm=result%accepted_mass_residual
-    accepted_dt_day=result%accepted_dt
+    storage_change_cm=result%mass%storage_change
+    total_in_cm=result%mass%total_in
+    total_out_cm=result%mass%total_out
+    bottom_outward_cm=result%bottom_outward_exchange_native
+    mass_residual_cm=result%mass%residual
+    accepted_dt_day=result%completed_t-result%requested_t0
     call corrector_backend(i)%discard_trial_candidate(candidate,diagnostics)
     fgc45_direct_trial_diagnostics_c=0_c_int
   end function fgc45_direct_trial_diagnostics_c
