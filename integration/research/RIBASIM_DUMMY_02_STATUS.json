@@ -31,7 +31,8 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Trigger DUMMY-02 through the already registered ribasim-dummy-01 workflow dispatcher and record Actions evidence.",
+  "next_action": "Execute the DUMMY-02 three-way-gate through the registered workflow dispatcher.",
   "recovery_point": "Resume from work/ribasim-dummy-01; DUMMY-02 implementation and concept are persisted, focused test/qualification still open.",
-  "blockers": []
+  "blockers": [],
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
