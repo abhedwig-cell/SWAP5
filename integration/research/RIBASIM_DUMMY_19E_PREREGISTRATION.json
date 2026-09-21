@@ -110,5 +110,15 @@
     "no production coupling claim"
   ],
   "pass_decision": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
-  "fail_decision": "RIBASIM_DUMMY_19E_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19E_BLOCKED",
+  "pinned_source_binding": {
+    "source": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a core/src/solve.jl::formulate_flow!(::UserDemand)",
+    "semantics": [
+      "physical UserDemand total demand is bounded by already allocated demand",
+      "each inflow link uses user_demand.inflow_link_allocated as q_k_target when allocation is enabled",
+      "physical q_k is q_k_target multiplied by source low-storage factor and source_level-minus-min_level reduction_factor",
+      "the physical UserDemand formulation contains no recipient reallocation step after those multiplicative reductions"
+    ],
+    "research_consequence": "Within one frozen allocation window, allocated-but-unrealized transfer is expected to remain physical source storage rather than be silently redirected to another UserDemand link."
+  }
 }
