@@ -71,3 +71,18 @@ grep -Fq 'GC_FIXED_INTERFACE_FGC44_G07A=PASS' "$BUILD/fgc44-globalization-g07a.t
   echo "GC_FGC44_G07A_FAIL missing live phase-transition gate" >&2
   exit 1
 }
+
+
+# G08 production-candidate research qualification. This is still diagnostic:
+# every SWAP trial is discarded and the accepted origin/ledger must remain
+# unchanged. The test re-estimates the physical tangent at each accepted trial
+# and compares raw Newton (P1) with factor-1/2 safeguarded Newton (P4).
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_safeguarded_newton_g08.py \
+  | tee "$BUILD/fgc44-globalization-g08.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G08_EXECUTION=PASS' "$BUILD/fgc44-globalization-g08.txt" || {
+  echo "GC_FGC44_G08_FAIL missing safeguarded-Newton execution gate" >&2
+  exit 1
+}
