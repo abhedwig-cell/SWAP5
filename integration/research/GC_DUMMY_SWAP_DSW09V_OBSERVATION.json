@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09v.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09V",
+  "workflow_run": 35562694437,
+  "decision": "UNDER_RELAXATION_EXPLAINS_HEAD_STALL_NOT_FINAL_CERTIFICATION",
+  "moderate_default": {
+    "last_head_m": 8.05615528129362,
+    "last_residual_m_per_day": -2.62577459775315e-12,
+    "iterations": 80,
+    "modflow_converged": false
+  },
+  "moderate_no_under_relaxation": {
+    "physical_root_reached_by_iteration": 4,
+    "last_head_m": 8.056155281280944,
+    "last_residual_m_per_day": -1.2533377113932431e-14,
+    "iterations": 80,
+    "modflow_converged": false
+  },
+  "bounded_conclusions": [
+    "Removing MODERATE nonlinear under-relaxation removes the DSW-09 head stall and reaches the physical nonlinear root.",
+    "MODFLOW still withholds convergence at strict rclose=1e-15, demonstrating a second numerical certification effect.",
+    "The original DSW-09 gate remains open; DSW-09W tests the two effects factorially."
+  ]
+}
