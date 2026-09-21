@@ -149,6 +149,15 @@
       "allocated_root": 0,
       "supplied_external": 20,
       "supplied_root": 0
+    },
+    "physical_realization": {
+      "allocated_total_m3": 20,
+      "supplied_total_m3": 20,
+      "exchange_m3": 30,
+      "surface_end_head_m": 0.5,
+      "groundwater_end_head_m": 0.3,
+      "regime": "FULL",
+      "interpretation": "The physical layer attempts only the allocated 20 m3. It must not use unused physical capacity to create unallocated management delivery."
     }
   },
   "partial_forecast_scarcity_control": {
@@ -169,6 +178,25 @@
     "external_priority_supplied": {
       "external": 20,
       "root": 12
+    },
+    "physical_realization": {
+      "allocated_total_m3": 45,
+      "supplied_total_m3": 32,
+      "exchange_m3": 28,
+      "surface_end_head_m": 0.4,
+      "groundwater_end_head_m": 0.28,
+      "regime": "CURTAILED"
+    },
+    "proportional_reduction": {
+      "rho": 0.7111111111111111,
+      "root_priority": {
+        "supplied_root": 28.444444444444446,
+        "supplied_external": 3.555555555555556
+      },
+      "external_priority": {
+        "supplied_external": 14.222222222222223,
+        "supplied_root": 17.77777777777778
+      }
     }
   },
   "hypotheses": [
@@ -180,7 +208,9 @@
     "When forecast allocation is below what the physical system can realize, supplied flow cannot exceed allocated flow under either policy.",
     "Changing forecast capacity can change allocation and thereby the physical attempted managed total; it cannot change the rule that physical exchange is solved from the actually attempted/supplied coupling problem.",
     "A forecast error is a management-information error, not a license to alter the physical exchange law.",
-    "DUMMY-15B does not decide which realization policy production coupling should use; it creates exact contrasting oracles for later pinned Ribasim evidence."
+    "DUMMY-15B does not decide which realization policy production coupling should use; it creates exact contrasting oracles for later pinned Ribasim evidence.",
+    "The under-allocation M_pred=20 control must realize exactly the allocated 20 m3 with V=30 m3, hs1=0.5 m and hg1=0.3 m; unused physical capacity cannot create unallocated supplied demand.",
+    "For M_pred=45 the physical layer is curtailed to 32 m3 with V=28 m3 and the same hs1=0.4,hg1=0.28 endpoint as the fully allocated 60 m3 conflict case; realization-policy differences affect only the supplied split."
   ],
   "public_authority_binding": {
     "ribasim_results": "https://ribasim.org/reference/usage.html",
