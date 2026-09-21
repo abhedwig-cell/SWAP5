@@ -40,4 +40,9 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so"   python3 tests/research/test_gc_dummy_swa
 grep -Fq 'GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS' "$BUILD/live.txt" || fail "live control"
 grep -Fq 'GC_DSW01_LIVE_PROBE_COMPLETED=PASS' "$BUILD/live.txt" || fail "live probe completion"
 
-echo 'GC_DSW01_QUALIFICATION=PASS'
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw02_live_partition.py | tee "$BUILD/dsw02-live.txt"
+
+grep -Fq 'GC_DSW02_LIVE_GATE=PASS' "$BUILD/dsw02-live.txt" || fail "DSW-02 live gate"
+
+echo 'GC_DSW01_DSW02_QUALIFICATION=PASS'
