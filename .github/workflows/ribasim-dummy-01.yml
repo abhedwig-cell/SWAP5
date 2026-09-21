@@ -16,6 +16,11 @@ on:
       - 'tests/research/dummy_threeway_water_coupling.py'
       - 'tests/research/test_dummy_threeway_water_coupling.py'
       - 'tests/research/run_ribasim_dummy_02.sh'
+      - 'integration/research/RIBASIM_DUMMY_03_*.json'
+      - 'integration/research/RIBASIM_DUMMY_03_CONCEPT.md'
+      - 'tests/research/dummy_head_exchange_diagnostic.py'
+      - 'tests/research/test_dummy_head_exchange_diagnostic.py'
+      - 'tests/research/run_ribasim_dummy_03.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -47,3 +52,16 @@ jobs:
         run: python3 --version
       - name: Run controlled three-way conflict gate
         run: bash tests/research/run_ribasim_dummy_02.sh
+
+  head-exchange-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-03-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run head-dependent exchange diagnostic gate
+        run: bash tests/research/run_ribasim_dummy_03.sh
