@@ -529,6 +529,154 @@ For every intended production configuration, answer these questions explicitly:
 
 Only after these ten items are declared should the code decide whether MODFLOW STO is retained, replaced, partitioned or supplemented by an API term.
 
+### 10.6 Derive the residual from the water balance before choosing HCOF
+
+This is the central sign and ownership check.
+
+Use unit horizontal area and define `E_bottom` as the accepted whole-window water amount **outward from SWAP and into groundwater**.
+
+For an interface-split SWAP control volume:
+
+```text
+Delta V_swap = W_swap,net - E_bottom
+```
+
+where `W_swap,net` contains only external SWAP-side input minus external sinks over the same window.
+
+Therefore
+
+```text
+E_bottom(H) = W_swap,net(H) - Delta V_swap(H)
+```
+
+and the physical response is
+
+```text
+dE_bottom/dH =
+    dW_swap,net/dH
+  - d(Delta V_swap)/dH
+```
+
+For a storage-only perturbation with head-independent forcing:
+
+```text
+dE_bottom/dH = -d(Delta V_swap)/dH
+```
+
+This is exactly the sign structure observed in MAP03:
+
+```text
+J_S ~= +u
+J_R = dE_bottom/dH ~= -u
+```
+
+over its bounded drainage-free fixture.
+
+The groundwater component balance can then be written schematically as
+
+```text
+Delta V_mf = W_mf,external + E_bottom
+```
+
+or as the residual
+
+```text
+F(H) =
+    Delta V_mf(H)
+  - W_mf,external(H)
+  - E_bottom(H)
+  = 0
+```
+
+with
+
+```text
+dF/dH =
+    d(Delta V_mf)/dH
+  - dW_mf,external/dH
+  - dE_bottom/dH
+```
+
+In the storage-only case this becomes
+
+```text
+dF/dH = S_mf + S_swap
+```
+
+when `S_mf` and `S_swap` are disjoint storage responses.
+
+That derivation explains why **the same storage response can appear with an opposite sign in a physical exchange-flux tangent**.
+
+#### Current production affine slope
+
+Current F-GC40/F-GC33 instead publishes the local affine extension
+
+```text
+q_u,affine(H) = q_ref + (u/dt)(H-H_ref)
+```
+
+so its API flux slope is
+
+```text
+dq_u,affine/dH = +u/dt
+```
+
+MAP02/MAP03 show that the true corrector bottom-outward flux has the opposite local slope in the inspected storage-dominated fixture. MAP07 further shows that `+u/dt` is a partial derivative of the historical affine extension with predictor `u` and `q_bot` held fixed, not the total derivative across neighbouring predictor trajectories.
+
+Therefore:
+
+```text
+production affine HCOF
+!= automatically physical dQ_corrector/dH
+!= automatically storage dV/dH divided by dt
+!= physical q-link conductance
+```
+
+even though their dimensions can coincide.
+
+The current algorithm can still be physically accepted because the affine term is reanchored to a real SWAP corrector flux and the accepted whole-window exchange ledger is authoritative. MAP04/MAP05A show bounded cases where different affine slope policies reach essentially the same accepted physics while following different iteration paths.
+
+#### Shared-phreatic representation
+
+For Contract S there is no need to invent a physical transfer between two coextensive copies of the same groundwater volume. The complete residual can be written directly:
+
+```text
+F_shared(H,m) =
+    Delta V_swap(H,m)
+  + Delta V_mf(H)
+  - W_external,total(H,m)
+  = 0
+```
+
+Its Jacobian follows immediately:
+
+```text
+dF_shared/dH =
+    d(Delta V_swap)/dH
+  + d(Delta V_mf)/dH
+  - dW_external,total/dH
+```
+
+A numerical implementation may represent this balance in several algebraically equivalent ways:
+
+1. put the combined storage response into MODFLOW STO and pass only true external source/sink fluxes;
+2. retain a non-overlapping MODFLOW storage share and represent the complementary SWAP balance as an equivalent head-dependent API source;
+3. use another monolithic/partitioned representation that reproduces exactly the same residual and derivative.
+
+What is **not** equivalent is retaining the complete physical storage in MODFLOW and then adding the same SWAP storage response again as though it were an independent volume.
+
+In a shared-state implementation, an API term derived from
+
+```text
+W_equiv,swap(H) =
+    W_swap,external(H)
+  - Delta V_swap(H)
+```
+
+is an **algebraic contribution to the combined residual**. It should not be mislabeled as a real finite-resistance exchange flux merely because it enters MODFLOW through a flux-shaped package.
+
+This is the route by which the final HCOF/RHS semantics must be derived: first choose the physical balance, then derive the residual, then differentiate that residual, and only then map its affine pieces into MODFLOW coefficients.
+
 ## 11. Relation to literature
 
 Three existing coupling traditions clarify the taxonomy without deciding SWAP5 semantics for us.
