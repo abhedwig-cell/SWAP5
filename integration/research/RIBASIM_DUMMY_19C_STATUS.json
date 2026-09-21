@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Execute repaired DUMMY-19C pinned real Ribasim gate; only the post-repair run may qualify the work unit.",
+  "next_action": "Execute DUMMY-19C v4 frozen repaired qualification; only a post-second-observability-repair run may qualify the work unit.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -47,7 +47,7 @@
       "priority reversal must leave allocation, physical supply split and Basin trajectory unchanged because both demands are fully allocated"
     ]
   },
-  "recovery_point": "DUMMY-19C observability integration repaired after run 35600995386; scientific qualification remains open.",
+  "recovery_point": "DUMMY-19C verifier now uses pinned flow interval semantics and pinned final Basin state semantics; scientific qualification remains open.",
   "qualification_attempts": [
     {
       "run": 35600995386,
@@ -55,6 +55,15 @@
       "state": "OBSERVABILITY_TIME_SUPPORT_FAILED_BEFORE_SCIENTIFIC_COMPARISON",
       "failure": "Verifier treated flow_data timestamps as point samples and required an endpoint timestamp at 86400 s. Pinned Ribasim flow_data reports interval-mean flows timestamped at interval start.",
       "scientific_effect": "none; model, allocation, min_level, independent reference and all preregistered tolerances unchanged",
+      "authority_use": "forbidden"
+    },
+    {
+      "run": 35604865080,
+      "job": 106349372161,
+      "state": "BASIN_ENDPOINT_OBSERVABILITY_FAILED_AFTER_SUPPLY_CHECKS",
+      "failure": "Verifier used basin_data last row as final Basin endpoint, but pinned Ribasim basin_data intentionally excludes the final state because rows represent flow intervals.",
+      "evidence_before_failure": "allocation, common-factor recipient ratio and integrated root/external/total physical supply all passed the preregistered checks before the endpoint assertion",
+      "scientific_effect": "none; model, allocation, physical reduction law, independent continuous reference and tolerances unchanged",
       "authority_use": "forbidden"
     }
   ],
@@ -67,5 +76,21 @@
     "changed_tolerances": [],
     "changed_expected_values": [],
     "hypothesis_change": false
-  }
+  },
+  "prequalification_repairs": [
+    {
+      "classification": "FLOW_TIME_SUPPORT_INTEGRATION_REPAIR",
+      "pinned_source": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a core/src/write.jl::flow_data",
+      "source_semantics": "flow_rate values are interval means timestamped at interval starts",
+      "correction": "integrate sum(mean_flow_i * represented_interval_duration_i) through the one-day horizon",
+      "scientific_effect": "none"
+    },
+    {
+      "classification": "BASIN_ENDPOINT_OBSERVABILITY_REPAIR",
+      "pinned_source": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a core/src/write.jl::basin_data and basin_state_data",
+      "source_semantics": "basin_data deliberately excludes the final state; basin_state_data exposes the current model-end Basin level",
+      "correction": "use basin_state_data for final endpoint level/storage gain while retaining basin_data only for interval trajectory comparison",
+      "scientific_effect": "none"
+    }
+  ]
 }
