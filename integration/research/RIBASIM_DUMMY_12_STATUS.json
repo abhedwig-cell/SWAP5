@@ -22,8 +22,9 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute DUMMY-12 rootzone-demand-gate from synchronized PR head.",
+  "next_action": "Execute DUMMY-12 rootzone-demand-gate against frozen qualification base.",
   "recovery_point": "DUMMY-12 full research postimage and workflow gate are persisted; qualification is the next action.",
   "blockers": [],
-  "qualification_attempt": "registered_workflow_dispatcher_pr_synchronize"
+  "qualification_attempt": "frozen_base_pr_synchronize",
+  "qualification_base": "work/ribasim-dummy-12-base@a104baba9a8e7d778174249162f8f2da21d8c778"
 }
