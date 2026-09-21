@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.gc_real_swap.map09.component_authority.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP09",
+  "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "bridge": "tests/research/support/mod_gc_map09_active_drainage_bridge.f90",
+  "predictor": {
+    "bottom_mode": "SW_STEP_CONTROL_BOTTOM_FLUX",
+    "predictor_qbot_cm_per_day": 0.002,
+    "drainage_response_active": true,
+    "drainage_qbot_smooth_freatic_projection": true,
+    "drainage_tables": "unchanged PUB-GC E6 two-level tabulated response",
+    "expected_reference_head_m": 0.012932896258566275,
+    "expected_u": 0.0005760442426568357,
+    "expected_q_u_cm_per_day": -0.0023986744863501285
+  },
+  "corrector": {
+    "bottom_mode": 5,
+    "forcing": "prescribed groundwater head through mod_fmr_groundwater_head_forcing_adapter",
+    "drainage_response_active": true,
+    "drainage_qbot_smooth_freatic_projection": false,
+    "drainage_tables": "identical to predictor",
+    "transaction_mass_tolerance_cm": 1e-10,
+    "retry_scale": 0.5,
+    "max_retries": 12
+  },
+  "only_research_semantic_delta": [
+    "Corrector is head-controlled rather than qbot-controlled.",
+    "The qbot-only smooth-freatic drainage projection is disabled for the head-controlled corrector.",
+    "Drainage response itself remains active and uses the same fixed tabulated levels."
+  ],
+  "interpretation_if_reference_fails": [
+    "This falsifies admission of this research-only active-drainage prescribed-head corrector route for the frozen E6 origin/window.",
+    "It does not falsify E6 predictor drainage, because the unchanged E6 predictor identity is a separate hard gate.",
+    "It does not establish that active drainage is incompatible with coupling in general.",
+    "Do not modify drainage tables, retry budget, mass tolerance, or production owner surface after the failure."
+  ],
+  "interpretation_if_reference_passes": [
+    "Only then may the fixed nonzero offset characterization be interpreted.",
+    "A downstream derivative decomposition still requires a separately preregistered MAP09A and symmetric valid points."
+  ],
+  "production_changes": false
+}
