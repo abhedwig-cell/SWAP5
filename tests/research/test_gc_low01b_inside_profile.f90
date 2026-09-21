@@ -260,13 +260,16 @@ contains
 
   logical function states_bitwise_identical(a, b) result(same)
     type(reference_richards_state_binding_t), intent(in) :: a, b
+    integer :: k
 
     same = .false.
     if (a%active_nodes /= b%active_nodes) return
-    if (.not. all(transfer(a%h, 0_int64) == transfer(b%h, 0_int64))) return
-    if (.not. all(transfer(a%theta, 0_int64) == transfer(b%theta, 0_int64))) return
-    if (.not. all(transfer(a%hm1, 0_int64) == transfer(b%hm1, 0_int64))) return
-    if (.not. all(transfer(a%thetm1, 0_int64) == transfer(b%thetm1, 0_int64))) return
+    do k = 1, a%active_nodes
+      if (transfer(a%h(k), 0_int64) /= transfer(b%h(k), 0_int64)) return
+      if (transfer(a%theta(k), 0_int64) /= transfer(b%theta(k), 0_int64)) return
+      if (transfer(a%hm1(k), 0_int64) /= transfer(b%hm1(k), 0_int64)) return
+      if (transfer(a%thetm1(k), 0_int64) /= transfer(b%thetm1(k), 0_int64)) return
+    end do
     if (transfer(a%qbot, 0_int64) /= transfer(b%qbot, 0_int64)) return
     if (transfer(a%gwl, 0_int64) /= transfer(b%gwl, 0_int64)) return
     if (transfer(a%gwlinp, 0_int64) /= transfer(b%gwlinp, 0_int64)) return
