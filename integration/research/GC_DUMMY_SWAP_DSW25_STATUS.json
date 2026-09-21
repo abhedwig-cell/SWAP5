@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw25.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW25",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_CI_PRESERVATION",
+  "preregistration": "integration/research/GC_DUMMY_SWAP_DSW25_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_dummy_swap_dsw25_interface_phreatic_darcy.py",
+  "runner": "tests/research/run_gc_dummy_swap_dsw01.sh",
+  "runner_commit": "988a373b7ef2c551351d1ac0b9ff989036b9f9a6",
+  "production_changes": false,
+  "analytic_oracle": {
+    "conductance_m2_per_day": 0.125,
+    "hydrostatic": {
+      "q_bot_m_per_day": 0,
+      "h_interface_m": 8,
+      "h_phreatic_m": 8
+    },
+    "upward": {
+      "q_bot_m_per_day": 0.01,
+      "h_interface_m": 8.08,
+      "h_phreatic_m": 8
+    },
+    "downward": {
+      "q_bot_m_per_day": -0.01,
+      "h_interface_m": 7.92,
+      "h_phreatic_m": 8
+    },
+    "high_K_control": {
+      "K_m_per_day": 1000000,
+      "q_bot_m_per_day": 0.01,
+      "head_gap_m": 8e-8
+    }
+  },
+  "decision": "LOWER_INTERFACE_HEAD_EQUALS_PHREATIC_HEAD_ONLY_IN_ZERO_VERTICAL_GRADIENT_OR_ZERO_RESISTANCE_LIMIT",
+  "next_action": "Preserve in CI; combine with DSW24 live evidence before any real-SWAP interface-to-phreatic equivalence claim."
+}
