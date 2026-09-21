@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09v.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09V",
+  "title": "Isolate MODERATE delta-bar-delta under-relaxation",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC",
+  "source_observation": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+  "source_semantics": "docs/research/GC_PREPARED_SOLVE_REANCHOR_SEMANTICS.md",
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883,
+    "residual_gate_m_per_day": 1e-12
+  },
+  "variants": [
+    {
+      "name": "MODERATE_DEFAULT",
+      "complexity": "MODERATE",
+      "under_relaxation": "MODFLOW complexity default"
+    },
+    {
+      "name": "MODERATE_NO_UR",
+      "complexity": "MODERATE",
+      "under_relaxation": "NONE"
+    }
+  ],
+  "method": "Replay the same in-place prepared-solve exact-tangent reanchor sequence. Keep MODERATE complexity and all explicitly set closure/iteration parameters fixed; in the second variant only disable nonlinear under-relaxation.",
+  "causal_test": "If MODERATE_NO_UR closes while MODERATE_DEFAULT reproduces the stall, delta-bar-delta history is directly implicated rather than the broader MODERATE solver configuration.",
+  "forbidden": [
+    "no production solver change",
+    "do not alter DSW-09 gates",
+    "do not infer that disabling under-relaxation is generally safe for real coupled problems"
+  ]
+}
