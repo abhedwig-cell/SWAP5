@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.gc_hlink.low01b.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK-LOW01-B",
+  "branch": "work/f-gc-hlink-low01-research",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_BLOCKED_PARENT_LOW01A",
+  "preregistration": "integration/research/GC_HLINK_LOW01B_PREREGISTRATION.json",
+  "implementation": "tests/research/test_gc_hlink_low01b_inside_profile.f90",
+  "runner": "tests/research/run_gc_hlink_low01b.sh",
+  "execution_wired": false,
+  "production_changes": false,
+  "fixed_dynamic_control": {
+    "dt_day": 0.01,
+    "qtop_native_per_day": [
+      0,
+      -0.0001
+    ]
+  },
+  "fixed_groundwater_levels_native": [
+    -1,
+    -2
+  ],
+  "expected_active_nodes": [
+    2,
+    3
+  ],
+  "parent_gate": "GC_LOW01A_LIVE_GATE=PASS",
+  "next_action": "Do not execute until LOW01-A qualifies. After parent PASS, wire this unchanged runner to a dedicated research workflow and classify any failure before modifying formulas or tolerances.",
+  "blockers": [
+    "LOW01-A live qualification pending"
+  ]
+}
