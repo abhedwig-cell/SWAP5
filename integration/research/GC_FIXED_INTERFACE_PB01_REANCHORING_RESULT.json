@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.gc_fixed_interface.pb01_reanchoring_execution.v1",
+  "date": "2026-09-21",
+  "commit": "1318955e1bc5aaa1ec31e6403eae09d831cbc0e1",
+  "workflow_run_id": 35603868846,
+  "conclusion": "success",
+  "results": {
+    "positive_u_amplification": -4.0,
+    "zero_slope_amplification": -0.666666666666667,
+    "physical_negative_u_amplification": 0.0,
+    "positive_u_fixed_point_preserved": true,
+    "positive_u_stable": false,
+    "physical_negative_u_tangent": "PASS"
+  },
+  "scientific_conclusion": "For NH01, reanchoring makes the +u/dt surrogate fixed-point consistent but not stable. The exact outward physical tangent -u/dt has zero linear error amplification; a zero surrogate slope is convergent. Physical derivative, fixed-point consistency and iteration stability are distinct properties.",
+  "production_disposition": "NO_CHANGE_YET",
+  "remaining_gate": "Trace actual production outer-iteration reanchoring and damping/relaxation, then execute the preregistered live MODFLOW one-cell fixture."
+}
