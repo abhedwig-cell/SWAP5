@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_real_swap.map05a.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC coupling concepts / real-SWAP mapping",
+  "work_unit": "GC-REAL-SWAP-MAP05A",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "9950ab474588dc86187026564ae711520b22c12b",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_changes": false,
+  "authority_paths": [
+    "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "integration/research/GC_REAL_SWAP_MAP05A_PREREGISTRATION.json",
+    "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json"
+  ],
+  "relevant_paths": [
+    "tests/research/test_gc_real_swap_map05a_oracle_policy.py",
+    "tests/research/run_gc_real_swap_map05a_b3.sh",
+    "tests/research/test_gc_real_swap_map05_b3_slope_policy.py"
+  ],
+  "interfaces_held_fixed": [
+    "F-GC44 real SWAP B3 physics",
+    "MODFLOW6 6.8.0 model and solver settings",
+    "coupled residual tolerance",
+    "corrector domain",
+    "ledger publication contract",
+    "production coupling code"
+  ],
+  "next_action": "Execute preregistered E4_B3_CORRECTOR_JR policy and compare accepted state/ledger with fixed CURRENT_PLUS_U control.",
+  "recovery_point": "Resume from MAP05A preregistration and checkpoint; MAP05 remains falsified independently.",
+  "blockers": []
+}
