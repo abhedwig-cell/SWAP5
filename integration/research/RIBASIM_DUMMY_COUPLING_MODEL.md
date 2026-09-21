@@ -245,39 +245,327 @@ A coupling test that checks only total water balance is insufficient.
 
 ## 9. The shared ledger
 
-For the two-store plus management system prepared in DUMMY-10, the component
-balances are
+The ledger depends on the declared system boundary.
+
+### Surface + groundwater only
+
+For DUMMY-10:
 
 ```text
 Delta S_s = -U - V
-Delta S_g = +V.
+Delta S_g = +V
 ```
 
-The combined balance is therefore
+so
 
 ```text
 Delta(S_s+S_g) = -U.
 ```
 
-If additional external terms are later introduced, they belong explicitly in
-the combined ledger.
+Here the irrigation recipient lies outside the represented system.
 
-For example, with external surface inflow `I_s`, groundwater recharge from an
-external source `I_g`, and an external groundwater sink `Q_g`:
+### Root + surface + groundwater
+
+DUMMY-13 places the root recipient inside the system:
 
 ```text
-Delta(S_s+S_g)
-  = I_s + I_g - U - Q_g.
+Delta W_r = +U
+Delta S_s = -U - V
+Delta S_g = +V.
 ```
 
-The internal surface-groundwater exchange should still cancel.
+Therefore
 
-This provides a simple audit rule for later real-model experiments.
+```text
+Delta(W_r+S_s+S_g) = 0
+```
 
-## 10. What must eventually be shared between real models
+when no external forcing is present.
 
-The dummy sequence suggests that a real coupling contract should make at least
-the following explicit.
+The same physical irrigation transfer changed classification from an external
+sink to an internal transfer solely because the represented system boundary
+changed.
+
+### External root forcing
+
+DUMMY-14 adds:
+
+```text
+P = rainfall/root input
+E = prescribed root-zone external loss
+D = explicitly owned root capacity drainage.
+```
+
+Then
+
+```text
+Delta W_r = U + P - E - D
+Delta S_s = -U - V
+Delta S_g = +V
+```
+
+and
+
+```text
+Delta(W_r+S_s+S_g) = P-E-D.
+```
+
+The internal transfers `U` and `V` still cancel.
+
+### Competing managed recipients
+
+DUMMY-15 adds an external managed recipient:
+
+```text
+U_root
+U_ext.
+```
+
+With no external root forcing:
+
+```text
+Delta W_r = +U_root
+Delta S_s = -U_root-U_ext-V
+Delta S_g = +V
+```
+
+hence
+
+```text
+Delta(W_r+S_s+S_g) = -U_ext.
+```
+
+This gives a general audit rule:
+
+> an accepted transfer appears in the combined ledger only when its other
+> endpoint lies outside the declared system boundary.
+
+## 10. Demand, allocation and supply are different objects
+
+The later dummy work makes a second three-level distinction explicit:
+
+```text
+demand
+allocated
+supplied.
+```
+
+### Demand
+
+Demand states what management would like to receive.
+
+For the analytical root bucket:
+
+```text
+R_root = max(0,W_target-W_root).
+```
+
+DUMMY-12 established that historical shortage is not an additional demand
+state.
+
+### Allocated
+
+Allocation is a management decision made from the information available at an
+allocation time.
+
+It can later turn out to be physically unrealizable.
+
+Allocated water is therefore not yet a physical water transfer.
+
+### Supplied
+
+Supplied water is the realized physical managed transfer.
+
+Only supplied water may:
+
+- enter the component ledgers;
+- change root storage;
+- leave the represented system through an external demand;
+- become part of the accepted endpoint.
+
+This distinction is central to DUMMY-15B.
+
+An allocation-realization difference is a diagnostic management discrepancy,
+not a hidden water reservoir.
+
+## 11. Root-zone memory versus shortage memory
+
+DUMMY-12 through DUMMY-14 establish a particularly useful result.
+
+For a simple no-forcing window, current root shortage and next physical root
+request can happen to be numerically equal.
+
+That equality disappears as soon as physical forcing acts.
+
+The qualified canonical DUMMY-14 cases have the same current management
+shortage:
+
+```text
+shortage = 8 m3.
+```
+
+Yet:
+
+```text
+rainfall +20
+  -> next request 0
+
+no external root forcing
+  -> next request 8
+
+prescribed root loss 10
+  -> next request 18.
+```
+
+Therefore:
+
+```text
+shortage != physical demand memory.
+```
+
+The memory state is accepted root-zone water storage.
+
+## 12. Management priority and physical capacity are separate layers
+
+DUMMY-15 is designed around two managed claims:
+
+- root irrigation;
+- an external managed demand.
+
+The exact shared-state physical problem sees their **total** requested surface
+withdrawal.
+
+For the one-Basin oracle, after exact total realizable managed withdrawal `M`
+has been found, management priority determines the split of `M` among the
+claims.
+
+In the canonical case:
+
+```text
+R_root = 40
+R_ext = 20
+R_total = 60
+
+M = 32
+V = 28
+h_s1 = 0.4
+h_g1 = 0.28.
+```
+
+With ROOT_FIRST:
+
+```text
+U_root = 32
+U_ext = 0.
+```
+
+With EXTERNAL_FIRST:
+
+```text
+U_ext = 20
+U_root = 12.
+```
+
+The physical surface/groundwater endpoint is unchanged because total managed
+withdrawal is unchanged.
+
+The root state and represented-system loss differ because recipient identity
+differs.
+
+This is a deliberately small analytical priority oracle, not the full Ribasim
+allocation optimizer.
+
+## 13. Allocation-realization policy is itself part of the contract
+
+Current Ribasim source/documentation distinguishes allocated flow from
+physically supplied abstraction.
+
+The pinned source study shows that physical UserDemand abstraction can be
+reduced by source-state factors after allocation.
+
+Therefore a coupled system must not leave the realization split implicit.
+
+DUMMY-15B preregisters two contrasting analytical policies:
+
+### Priority-preserving curtailment
+
+When physical capacity is below allocated total:
+
+```text
+retain the declared management priority while reducing supply.
+```
+
+### Proportional aggregate reduction
+
+With
+
+```text
+rho = M_actual / M_allocated
+```
+
+use
+
+```text
+supplied_i = rho * allocated_i.
+```
+
+This is a structural reference for aggregate physical reduction, not a claim
+that it is the exact current Ribasim implementation for arbitrary networks.
+
+The two policies can have:
+
+- identical total physical withdrawal;
+- identical V;
+- identical surface and groundwater endpoint;
+
+while producing different:
+
+- recipient supply;
+- root memory;
+- future root demand;
+- external system loss.
+
+Hence realization policy is not bookkeeping trivia. It can change future
+hydrology.
+
+## 14. Clock authority is a separate coupling choice
+
+State, physics, management priority and realization policy still do not define
+a complete coupling contract.
+
+A real system has several clocks:
+
+- root/SWAP state-update clock;
+- management demand-refresh clock;
+- Ribasim allocation clock;
+- physical Ribasim solver clock;
+- MODFLOW timestep;
+- outer coupled transaction/commit window.
+
+DUMMY-16 is preregistered to isolate one clock question without changing the
+physical window partition.
+
+The canonical design keeps both physical half-windows and their total managed
+withdrawal identical while changing only whether a priority event at `t=0.5`
+is observed.
+
+The event-synchronized and stale schedules therefore end with the same
+surface/groundwater state but different root storage and future root demand.
+
+This establishes the distinction:
+
+```text
+physical trajectory authority
+!=
+management event-clock authority.
+```
+
+Conservation cannot decide between clock semantics because each schedule can
+close its own correct ledger.
+
+## 15. What must eventually be shared between real models
+
+The real coupling contract should make the following explicit.
 
 ### State authority
 
@@ -288,111 +576,199 @@ Which model owns, proposes and commits:
 - SWAP/root-zone state;
 - management-demand state.
 
-### Flux authority
+### Transfer authority
 
-Which model evaluates each physical transfer, and with which source states:
+For every physical transfer:
 
-- surface-water to groundwater exchange;
-- groundwater to surface-water exchange;
-- irrigation withdrawal;
-- recharge from unsaturated zone;
-- drainage and other external sinks/sources.
+- which component evaluates it?
+- which source states are authoritative?
+- what is the accepted integrated volume?
+- where does the opposite side of the transfer enter the ledger?
 
-A single physical transfer needs one accepted volume in the coupled ledger,
-even if both participants calculate diagnostics around it.
+A physical transfer needs one accepted coupled volume even when both models
+emit diagnostics around it.
+
+### Management authority
+
+For every managed claim:
+
+- how is demand generated?
+- which allocation priority applies?
+- when is allocation frozen?
+- what distinguishes allocated from supplied?
+- how is physical curtailment distributed among allocated claims?
+- can unmet allocation create future management state, or does only physical
+  model state carry memory?
 
 ### Temporal authority
 
-For every flux and control:
+For every flux and decision:
 
-- what time interval does it represent?
-- start-state, end-state, average-state or integrated value?
-- when can a management decision change within the interval?
-- which events require window subdivision?
+- what interval does it represent?
+- start-state, end-state, averaged or integrated?
+- at which clock can it change?
+- which exogenous and threshold events require subdivision?
 
 ### Numerical authority
 
-The contract must distinguish:
+Distinguish:
 
-- the physical equations;
-- the management complementarity or allocation rule;
-- the iterative method used to solve them;
-- the acceptance/convergence criterion.
+- physical equations;
+- management/allocation equations;
+- coupling iteration;
+- relaxation/acceleration;
+- convergence criteria;
+- physical acceptance criteria.
 
-Changing an iteration method should not silently change the physical or
-management contract.
+A numerical repair must not silently redefine management or hydrology.
 
 ### Commit authority
 
 The coupled transaction must define:
 
-- which candidate states are provisional;
+- which states and transfers are provisional;
 - which revisions they depend on;
-- when a candidate is accepted;
-- whether all participants can be committed consistently;
-- what happens on rejection or retry.
+- when all participants become authoritative;
+- how partial failure is rejected;
+- how retry restores the accepted authority.
 
-## 11. Current evidence ladder
+## 16. Current evidence ladder
 
-The research sequence has progressively removed simplifications:
+The qualified research sequence currently runs through DUMMY-14:
 
 ```text
 DUMMY-02
-  prescribed forecast/actual exchange
-  + SWAP-like demand
-  + transactional realization
+  transaction / forecast / realization skeleton
 
 DUMMY-03
-  exchange depends on surface level and prescribed groundwater head
+  head-dependent exchange
 
 DUMMY-04
-  frozen temporal closure and exact iteration mechanism
+  exact fixed-point mechanism
 
 DUMMY-05
-  exact management complementarity with state-dependent exchange
+  exact management complementarity
 
 DUMMY-06
-  nonconvergent active-set Picard counterexample
+  active-set iteration failure
 
 DUMMY-07
-  bounded relaxation and independent direct active-set solve
+  bounded stabilization
 
 DUMMY-08
-  multi-window surface state and management-event timing
+  temporal partition and management event timing
 
 DUMMY-09
-  reciprocal finite surface and groundwater storage
+  reciprocal finite surface + groundwater storage
 
 DUMMY-10
-  prepared: management complementarity with both heads dynamic
+  management with both heads dynamic
 
 DUMMY-11
-  preregistered and blocked:
-  multi-window memory with both heads dynamic
+  multi-window shared-state groundwater memory
+
+DUMMY-12
+  persistent analytical root demand state
+  shortage explicitly nonpersistent
+
+DUMMY-13
+  root + surface + groundwater internal-transfer ledger
+
+DUMMY-14
+  external root forcing and physical demand memory
 ```
 
-DUMMY-10 and DUMMY-11 must not be described as qualified until their explicit
-gates close.
+### Active qualification
 
-## 12. Boundary of the entire dummy programme
+```text
+DUMMY-15
+  competing managed claims and exact same-state priority oracle
+```
 
-The analytical harness is deliberately smaller than the real coupling.
+DUMMY-15 is not qualified until its explicit corrected gate closes.
 
-It does not yet represent:
+### Preregistered downstream research
 
-- Ribasim network routing and allocation optimization;
-- nonlinear Basin area-level-storage relations;
-- actual MODFLOW package storage or conductance definitions;
-- spatial groundwater gradients;
-- a Richards unsaturated-zone column;
-- SWAP irrigation-demand feedback;
-- multiple competing UserDemand nodes;
-- delayed or accumulated demand;
-- asynchronous internal model timesteps;
-- dry/disconnected boundary physics.
+```text
+DUMMY-15B
+  forecast allocation versus physical supply
+  realization-policy contrast
 
-Those are later experiments.
+DUMMY-16
+  management-clock event synchronization with invariant physical trajectory
+```
 
-The value of the dummy is that each of those complexities can now be added
-against a set of already explicit invariants rather than being introduced all
-at once.
+Neither work unit may be described as implemented or qualified while its
+dependency gate remains closed.
+
+## 17. Current real-model authority boundaries
+
+The analytical sequence must remain distinguishable from production-model
+authority.
+
+### Ribasim
+
+Current public and pinned-source work establishes useful semantics around:
+
+- Basin storage/level;
+- UserDemand allocation;
+- demand priorities;
+- allocated versus supplied abstraction;
+- physical low-storage/min-level reduction.
+
+The dummy does not reproduce the full network optimizer or its physical
+solver.
+
+### MODFLOW
+
+The abstract groundwater coefficient
+
+```text
+A_g = dS_g/dh_g
+```
+
+is not yet a MODFLOW STO mapping.
+
+Current RibaMod coupling uses RIV/DRN surfaces rather than the early
+GHB-like analytical relation.
+
+### SWAP
+
+The analytical root bucket is not the production SWAP irrigation algorithm.
+
+Before substitution, production authority must identify:
+
+- the actual SWAP state from which irrigation need is derived;
+- when that need is evaluated;
+- how realized irrigation is applied;
+- units and represented area;
+- any scheduling state beyond physical soil-water state.
+
+### Storage and drainage ownership
+
+The dummy stores are non-overlapping by construction.
+
+That cannot close the live F-GC storage-partition question for real SWAP and
+MODFLOW.
+
+Likewise, analytical capacity drainage does not establish production drainage
+ownership.
+
+## 18. Boundary of the dummy programme
+
+The harness intentionally remains smaller than the real coupled system.
+
+It does not yet establish:
+
+- production SWAP irrigation behavior;
+- exact Ribasim network-allocation behavior;
+- exact RIV/DRN package response;
+- actual MODFLOW storage aggregation;
+- real SWAP/MODFLOW storage non-overlap;
+- production drainage ownership;
+- real asynchronous coupling-clock policy;
+- product-level iMOD Coupler admission.
+
+Its value is that these real components can be substituted one at a time
+against explicit conservation, state, management, timing and transaction
+invariants rather than being introduced simultaneously.
