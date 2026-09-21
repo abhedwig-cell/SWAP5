@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.gc_low01b.constitutive_ownership_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B-CONST01",
+  "title": "Constitutive ownership of saturated continuation for prescribed-GWL mode 1",
+  "status": "SOURCE_AND_QUALIFICATION_BOUND",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "mode1_source": "src/legacy/b1_10_port/headcalc.f90",
+    "typed_provider": "src/solver/mod_b110_default_mvg_provider.f90",
+    "ksatexm_qualification": "integration/f-si/F-SI39_QUALIFICATION.json"
+  },
+  "source_semantics": {
+    "inside_profile_saturated_water_content": "legacy HeadCalc sets theta(i)=cofgen(2,i) for i=NN+1:numnod",
+    "saturated_continuation_conductivity": "legacy HeadCalc lower-interface mean uses cofgen(3,NN+1) as the saturated lower-side conductivity",
+    "typed_default_provider": "for head>=0, water content is cofgen(2); with KSATEXM disabled, saturated conductivity resolves to cofgen(3)",
+    "typed_ksatexm_provider": "when opt-in KSATEXM is active and cofgen(10)>cofgen(3), fully saturated conductivity can be cofgen(10), as independently qualified by F-SI39"
+  },
+  "fsi39_exact_example": {
+    "theta_s": 0.3870640000000001,
+    "legacy_k_sat_cofgen3_cm_per_day": 22.76176,
+    "ksatexm_k_sat_cofgen10_cm_per_day": 227.61759999999998,
+    "ratio": 10
+  },
+  "decisions": [
+    "LOW01-B first live research slice is restricted to the canonical default constitutive route with KSATEXM disabled.",
+    "In that bounded slice, provider-owned saturated theta and K are source-equivalent to legacy cofgen(2) and cofgen(3), so a research adapter can have one explicit constitutive owner without changing mode-1 physics.",
+    "KSATEXM-enabled LOW01-B is a separate unresolved semantics question: blindly replacing legacy cofgen(3) continuation by provider saturated K would change the preserved mode-1 source behavior.",
+    "Do not call a KSATEXM-enabled mode-1 trial typed/source-equivalent until that choice is independently derived and qualified."
+  ],
+  "next": [
+    "Construct an independently testable research-only constitutive bridge for the KSATEXM-disabled LOW01-B slice using the same B110 parameter authority.",
+    "Qualify the bridge against the typed provider before any mode-1 HeadCalc trial.",
+    "Only then execute LOW01-B inside-profile hydrostatic and mass/replay gates."
+  ]
+}
