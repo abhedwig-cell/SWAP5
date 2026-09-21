@@ -24,5 +24,21 @@
   "reference_delta": [],
   "next_action": "Execute the exact DUMMY-12 rootzone-demand-gate.",
   "recovery_point": "DUMMY-12 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "blockers": [
+    "GitHub Actions rootzone-demand-gate is queued in run 35570012761."
+  ],
+  "prequalification_review": {
+    "date": "2026-09-21",
+    "state": "STATIC_CONTRACT_REVIEW_PASS_CI_STILL_REQUIRED",
+    "checked": [
+      "request derives only from committed root-zone storage",
+      "realized supply is capped by request and available supply",
+      "shortage is diagnostic and is not persisted",
+      "rainfall/loss/drainage ledger closes algebraically",
+      "capacity drainage removes only raw storage above capacity",
+      "infeasible prescribed loss fails closed instead of introducing stress-reduction physics",
+      "same committed storage yields same next request regardless of prior shortage history"
+    ],
+    "qualification_effect": "none; Actions evidence remains mandatory"
+  }
 }
