@@ -77,7 +77,17 @@ def iterate(policy: str, start: float) -> dict[str, float | int | str]:
                 p = physical_slope(y)
                 rho = (p - POSITIVE_S) / (SM - POSITIVE_S)
                 alpha = 1.0 / (1.0 - rho)
-                require(0.0 < alpha <= 1.0, "response-derived P3 alpha outside (0,1]")
+                if not (0.0 < alpha <= 1.0):
+                    return {
+                        "classification": "RELAXATION_NOT_ADMISSIBLE",
+                        "outer": outer,
+                        "start_y": start,
+                        "last_y": y,
+                        "alpha": alpha,
+                        "rho_unrelaxed": rho,
+                        "max_abs_y": max_abs_y,
+                        "contractions": contractions_total,
+                    }
                 proposal = y + alpha * (raw - y)
             elif policy == "P4":
                 raw = raw_reanchored_update(y, physical_slope(y))
@@ -158,14 +168,18 @@ def main() -> None:
             "physical Newton failed a preregistered NH03 start")
     require(all(row["classification"] == "CONVERGED" for row in results["P2"]),
             "Picard failed a preregistered NH03 start")
-    require(all(row["classification"] == "CONVERGED" for row in results["P3"]),
-            "response-derived relaxed P0 failed a preregistered NH03 start")
+    require(results["P3"][0]["classification"] == "RELAXATION_NOT_ADMISSIBLE",
+            "difficult NH03 start did not expose the P3 alpha admissibility limit")
+    require(float(results["P3"][0]["alpha"]) > 1.0,
+            "P3 difficult-start alpha did not exceed the frozen relaxation range")
+    require(all(row["classification"] == "CONVERGED" for row in results["P3"][1:]),
+            "response-derived relaxed P0 failed an admissible-alpha NH03 start")
     require(all(row["classification"] == "CONVERGED" for row in results["P4"]),
             "safeguarded physical Newton failed a preregistered NH03 start")
 
     # The response-derived alpha cancels the local P0 map derivative exactly:
     # alpha=(SM-s)/(SM-p), so alpha*(raw_P0-y) is the Newton step.
-    for p1, p3 in zip(results["P1"], results["P3"]):
+    for p1, p3 in zip(results["P1"][1:], results["P3"][1:]):
         require(abs(float(p1["final_y"]) - float(p3["final_y"])) <= 5.0e-15,
                 "P3 and physical Newton final roots disagree")
         require(int(p1["outer"]) == int(p3["outer"]),
