@@ -240,108 +240,168 @@ It does not yet establish one unique **physical decomposition**. In real SWAP th
 - effects of internal profile memory;
 - the finite-window trajectory itself.
 
-Therefore `u/dt` is currently safest to call the **production corrector-response tangent carrier** until an independent real-SWAP mass/response audit shows a narrower physical identity.
+Therefore `u/dt` should first be described as the **production affine response slope**. Existing real-SWAP evidence below makes that wording more precise: it is the partial slope of the historical affine `q_u(H)` extension when predictor `u` and `q_bot` are held fixed. It is not, in general, the total derivative across neighbouring predictor trajectories and it is not automatically the derivative of the accepted corrector flux.
 
 The fact that the field name contains `storage_coefficient` is historical/structural evidence, not sufficient proof of physical storage ownership.
 
-## 7. Remaining conceptual gaps
+## 7. Reconciliation with existing real-SWAP evidence
 
-### Gap A: real-SWAP decomposition of the production response
+The branch already contains a substantial real-SWAP response campaign. It must be reconciled before any new response experiment is proposed.
 
-For one fixed accepted origin and coupling window, independently observe:
+The results are mutually consistent once **state change**, **state sensitivity**, **corrector flux sensitivity** and **affine iteration slope** are kept separate.
 
-```text
-Delta V_swap(H)
-external process volumes(H)
-bottom/corrector exchange(H)
-internal state change(H)
-production q_u(H), u
-```
+### 7.1 Production `u` is not a static storage amount
 
-and test the identity implied by the complete SWAP water balance.
+DSW21 retrospectively showed that the F-GC44 predictor can have zero net whole-window storage change while `u` is nonzero. That is not a contradiction with the later storage-sensitivity results. A state can return to the same net inventory over one trajectory while the inventory remains sensitive to a perturbation of the terminal/boundary head.
 
-The required comparison is between three different objects:
+MAP10 provides the stronger limitation: in the drainage-free B1/B2/B4 family, `u` changes strongly with coupling-window duration. The corresponding `u/dt` also changes. Production `u` therefore cannot be treated as a universal time-independent specific yield.
 
-1. the production affine response `q_u + (u/dt) Delta H`;
-2. the true SWAP corrector response around the same accepted origin;
-3. the committed whole-window mass ledger.
+### 7.2 In the drainage-free local corrector, `u` tracks storage sensitivity
 
-Equality between any pair is a hypothesis, not an assumption.
+MAP02 measured the real prescribed-head corrector response around one immutable origin. The real corrector flux derivative had approximately the same magnitude as the production affine slope but the opposite sign. The accepted whole-window ledger matched the integrated corrector flux.
 
-### Gap B: physical domain overlap with MODFLOW storage
-
-Even if `u` is shown to contain a storage-related component, the physical question remains whether that component belongs to:
-
-- water volume already represented by MODFLOW STO;
-- water volume represented only by SWAP;
-- a declared partition across the phreatic interface;
-- or a mixed finite-window response that should not be interpreted as either storage volume.
-
-This requires an explicit spatial/domain ownership map, not dimensional reasoning.
-
-### Gap C: regime classification
-
-Real hydrological regimes may support different coupling abstractions. A shallow phreatic surface with continuous vertical profile may favour a shared-state description, while a deliberately separated lower reservoir with real resistance may justify a q-link. A boundary-exchange algorithm may also be a valid numerical approximation without implying either physical topology.
-
-Regime classification must follow the real balance and state definition.
-
-## 8. Do we need another dummy experiment now?
-
-**Decision: no.**
-
-DSW01-DSW20 already separate the concepts needed for the next scientific question:
-
-- storage partition versus duplication;
-- one state versus two states;
-- storage response versus process response;
-- internal versus external flux;
-- memoryless versus memory-bearing state;
-- affine tangent versus physical mass ledger;
-- convergence versus correctness;
-- 1:1 versus N:1 algebra.
-
-A new dummy case would currently add mechanism variety without resolving the open semantic question, because the remaining ambiguity is about what **real SWAP** contributes to the production response.
-
-The next scientifically necessary step is therefore a bounded real-SWAP semantic audit, not DSW21+ architecture growth and not HLINK expansion.
-
-## 9. Real-SWAP audit design
-
-Select the simplest existing FMR fixture for which the accepted-origin state and complete water balance can be audited without changing production code.
-
-For one origin/window and a small prospective set of prescribed groundwater heads `H_k`, capture separately:
+MAP03 then decomposed the same local response:
 
 ```text
-production predictor:
-  H_start
-  H_end,predictor
-  q_bot,predictor
-  dH_end/dq_bot
-  u
-  q_u
-  dq_u/dH = u/dt
+J_S = d(whole-column storage change)/dH
+J_R = d(bottom-outward exchange)/dH
 
-real correctors from the same immutable origin:
-  H_k
-  q_corrector(H_k)
-  accepted/candidate storage change Delta V_swap(H_k)
-  ET volume
-  drainage volume
-  top-boundary volume
-  other external sink/source volumes
-  internal-memory inventory change where observable
-
-ledger:
-  complete window mass residual
+J_S  ~= +u
+J_R  ~= -u
+J_S + J_R ~= 0
 ```
 
-Pre-register at least these competing interpretations:
+for the drainage-free fixture.
 
-- **H1 storage identity:** `u` is, within the fixture, equal to the physical derivative of the SWAP-owned storage volume relevant to the shared groundwater state.
-- **H2 complete corrector tangent:** `u/dt` matches the derivative of the returned corrector/exchange flux but is not equal to storage response alone because process/memory responses contribute.
-- **H3 narrower historical transform:** the affine production response is a useful predictor/corrector linearization but does not equal either a physical storage derivative or a standalone interface conductance.
-- **H4 finite-resistance interpretation:** only admissible if two independently meaningful physical heads and a head-difference-controlled exchange law can be identified. It must not be inferred from the presence of a slope.
+This is a physical mass-balance result. It says that, locally in that fixture, the finite-window SWAP storage sensitivity and bottom-exchange sensitivity are equal and opposite.
 
-No tolerance may be selected after seeing which hypothesis is favoured.
+It does **not** say that MODFLOW owns the same storage volume.
+
+### 7.3 The production affine slope is a partial derivative, not the total historical `q_u` derivative
+
+MAP07 audited the full historical transform across neighbouring flux-driven predictor trajectories.
+
+Production F-GC40/F-GC33 uses
+
+```text
+(dq_u/dH)_affine = +u/dt
+```
+
+with predictor `u` and `q_bot` held fixed while the affine term is evaluated or reanchored.
+
+Across neighbouring predictor trajectories, however, `q_bot` itself changes with `H`. MAP07 found that this variation cancels the `+u/dt` contribution to first order in the inspected E4 plateau. The observed **total** derivative of historical `q_u` across those predictor trajectories is therefore near zero, not `+u/dt`.
+
+Hence three different derivatives must remain distinct:
+
+```text
+physical storage response:        d(Delta S)/dH
+real corrector exchange response: dq_corrector/dH
+production affine partial slope:  (partial q_u/partial H)_(u,qbot fixed)
+```
+
+They can be related by the water balance without being the same mathematical object.
+
+### 7.4 The affine slope can act as iteration policy
+
+MAP04 compared the current `+u/dt` slope, a zero-slope intercept-only policy and the independently measured local corrector slope in the weak F-GC45 fixture. Accepted physics and ledger were effectively invariant, while the coupling paths differed.
+
+MAP05/MAP05A/MAP06 show why this does not make slope choice irrelevant. In the stronger B3 regime, the path taken by the outer coupling iteration can cross a fragmented prescribed-head corrector admissibility set. Two nonzero slope policies reached the same accepted physics, while intercept-only encountered a deterministic corrector-domain failure.
+
+The current affine slope therefore has evidence as a **numerical iteration-response policy**. Its physical acceptability is still checked by the real corrector and accepted mass ledger.
+
+### 7.5 Active drainage does not restore a universal `u=storage` identity
+
+MAP09A repeated the storage/bottom-exchange decomposition in a frozen active-drainage fixture.
+
+At the preregistered local pair:
+
+```text
+J_S / u       = 0.994178...
+(-J_R) / u   = 0.994178...
+J_nonbottom  = J_S + J_R = 0
+```
+
+The local storage and bottom-exchange derivatives still cancel, but production `u` is about 0.58% larger than the accepted-corrector storage derivative. The result explicitly forbids identifying production `u` with exact physical storage under active drainage.
+
+This one local result also does not prove that drainage is generally head-insensitive.
+
+### 7.6 Current production mode 5 is not a proven shared-phreatic h-link
+
+MAP11 is the controlling domain-ownership correction.
+
+The F-GC45 qualification fixture does not declare the MODFLOW STO volume and SWAP/FMR column to be one geometrically coextensive physical storage volume. The explicit exchanged state in the current F-GC route is a lower coupling-plane hydraulic head.
+
+MAP12 additionally shows that legacy prescribed groundwater-level semantics and current mode-5 prescribed lower-boundary-head semantics are different contracts. They can coincide in special hydrostatic/zero-resistance limits, but equality must be demonstrated rather than assumed.
+
+Therefore the existing real-SWAP evidence supports this bounded description:
+
+> Current F-GC is a head-matched, iterated boundary coupling with a finite-window SWAP response linearization and real-corrector/mass-ledger acceptance. It is not currently proven to be either a one-state phreatic h-link or a two-reservoir finite-resistance q-link.
+
+That statement is descriptive, not a recommendation for the final architecture.
+
+## 8. What remains genuinely open
+
+The broad question "what is `u`?" is now too coarse. Several parts are already answered.
+
+The remaining scientific questions are narrower.
+
+### Gap A: intended physical domain ownership for a future coupled product
+
+Before changing storage representation, define the intended physical partition:
+
+```text
+What saturated and unsaturated water volumes belong to SWAP?
+What volume belongs to MODFLOW?
+Is any volume geometrically coextensive?
+Which physical state controls each volume?
+```
+
+Without this declaration, comparing `u` with MODFLOW `Sy` cannot establish either valid partitioning or double counting.
+
+### Gap B: true phreatic shared-state response, only if that family is to be investigated
+
+A true h-link requires a typed common phreatic coordinate and a complete-profile storage law. Existing HLINK/LOW01 work may support that research, but it is not architecture authority.
+
+The already existing DSW23/DSW24/DSW25 and HLINK01 evidence is useful only as supporting limit evidence:
+
+- coextensive storage duplication has the predicted wrong-volume signature;
+- head collapse alone does not establish h-link equivalence;
+- lower-interface head equals phreatic head only in the hydrostatic/zero-gradient or zero-resistance limit.
+
+The real-SWAP shared-phreatic response remains a separate question and should be pursued only if the physical-domain definition says this is the coupling family we actually need to evaluate.
+
+### Gap C: real SWAP internal state required across coupling windows
+
+DSW11/15/20 prove generically that head can be an incomplete state. The current real-SWAP transaction architecture preserves the full committed SWAP state, so production execution is not head-only.
+
+What remains scientifically useful is to identify which parts of that internal state materially control the next groundwater response. That is a model-reduction/interpretation question, not a prerequisite for preserving the current full-state transaction semantics.
+
+## 9. Decision on the next experiment
+
+**No new dummy experiment is scientifically required now, and no new generic real-SWAP `u/q_u` response experiment is required either.**
+
+DSW01-DSW20 already close the basic coupling taxonomy. MAP02-MAP12 already perform the first real-SWAP separation requested by this workstream:
+
+- production affine response;
+- true prescribed-head corrector response;
+- whole-window physical storage response;
+- accepted mass ledger;
+- partial versus total `q_u` derivative;
+- lower-interface versus phreatic state semantics;
+- domain ownership limits.
+
+The next step is therefore not "collect more response slopes". It is to make the **physical domain and state definition** explicit for the coupling we intend to study.
+
+Only after that definition exists can one choose a genuinely discriminating next experiment.
+
+Two possible future branches must remain conditional:
+
+1. If the intended physical system has one coextensive phreatic state, use a true shared-phreatic experiment and derive combined storage ownership from the complete water balance.
+2. If the intended physical system has distinct states separated by a real resistance, identify those states and derive the physical exchange law before fitting or publishing any conductance.
+
+If neither physical statement applies and the desired implementation remains a head/flux boundary exchange, then the research question is instead how accurately and robustly the partitioned algorithm reproduces the desired coupled water balance over its timestep envelope.
+
+This decision explicitly prevents HLINK/LOW01 readiness from becoming an accidental architecture-selection mechanism.
 
 ## 10. Relation to literature
 
@@ -365,7 +425,7 @@ In particular:
 - do not infer that bottom-mode-5 prescribed head proves a shared-state physical topology;
 - do not infer that an affine coupling flux proves a finite-resistance interface.
 
-The architecture decision must be derived from the real-SWAP balance audit and an explicit declaration of physical domain/storage ownership.
+The architecture decision must be derived from an explicit declaration of physical domain/state/storage ownership and then tested against the already separated real-SWAP response objects. Existing HLINK/LOW01 work remains supporting research, not a prior architecture choice.
 
 ## 12. Evidence authority
 
@@ -380,5 +440,8 @@ Primary repository evidence:
 - `docs/integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md`
 - `docs/integration/F-GC40_MULTISWAP_MODFLOW6_CELL_RESPONSE.md`
 - `docs/status-a/POST_STATUS_A_CURRENT_STATE.md`
+- `integration/research/GC_DUMMY_SWAP_DSW21_SEMANTIC_AUDIT.json`
+- `integration/research/GC_REAL_SWAP_MAP02_RESULT.json` through `GC_REAL_SWAP_MAP12_LEGACY_HEAD_SEMANTICS_AUDIT.json`
+- DSW23/DSW24/DSW25 and HLINK01 only as supporting shared-phreatic/limit evidence, with their recorded qualification bounds
 
 The current synthesis changes no production source and claims no production requalification.
