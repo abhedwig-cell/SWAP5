@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_competing_claims.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15",
+  "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+  "authority": {
+    "implementation_baseline": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
+    "frozen_corrected_base": "c19951dc49c297eab19fef936ea512972bd07d1d",
+    "qualification_head": "f2473fd31edcc226adc52451e385d4e13a11d247",
+    "workflow_run": 35581711814,
+    "workflow_job": 106275860968,
+    "conclusion": "success"
+  },
+  "prequalification_repairs": [
+    {
+      "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity.",
+      "effect": "bookkeeping only; preregistered equations/values unchanged"
+    },
+    {
+      "defect": "Exact h_s=datum endpoint could round to a tiny negative number and fail the stricter three-store representation check.",
+      "effect": "representation only; values within qualified DUMMY-10 head tolerance are canonicalized to exact datum; materially sub-datum states remain rejected"
+    }
+  ],
+  "evidence": [
+    "RIBASIM_DUMMY_15_SOURCE_SCOPE=PASS",
+    "12/12 CompetingClaimsTests PASS",
+    "canonical ROOT_FIRST: M=32,U_root=32,U_ext=0,V=28,hs=0.4,hg=0.28,next root request=8",
+    "canonical EXTERNAL_FIRST: M=32,U_ext=20,U_root=12,V=28,hs=0.4,hg=0.28,next root request=28",
+    "priority reversal changes recipient split and root memory but not the one-Basin physical endpoint for fixed total managed withdrawal",
+    "represented-system loss equals supplied external demand only",
+    "capacity-between, fully-realizable, reverse-exchange and zero-external controls pass",
+    "all realized claims remain bounded by their requests and sum to exact coupled managed capacity",
+    "RIBASIM_DUMMY_15_PRIORITY_TESTS=PASS",
+    "RIBASIM_DUMMY_15_GATE=PASS"
+  ],
+  "interpretation": "For the one-Basin exact same-state oracle, management priority can change who receives physically realizable managed water and therefore future root memory/system loss without changing the shared surface-groundwater physical endpoint when total managed withdrawal is unchanged.",
+  "nonclaims": [
+    "no forecast/allocation mismatch in DUMMY-15",
+    "no full Ribasim network optimizer equivalence",
+    "no production Ribasim realization-policy claim",
+    "no production SWAP irrigation-demand equivalence",
+    "no CSR-B1 or CSR-B2 closure"
+  ],
+  "downstream": "DUMMY-15B may now implement forecast allocation versus physical realization policy contrast."
+}
