@@ -1,0 +1,24 @@
+{
+  "schema": "swap5.gc_fixed_interface.pb01.execution_evidence.v1",
+  "date": "2026-09-21",
+  "pr": 528,
+  "workflow_run_id": 35597675150,
+  "job_id": 106326167585,
+  "job_name": "concept-testbank",
+  "job_conclusion": "success",
+  "evidence_scope": {
+    "existing_dummy_testbank": "EXECUTED_PASS",
+    "nh01_nh05_new_tests": "NOT_EXECUTED_BY_CURRENT_WORKFLOW",
+    "pb01_new_tests": "NOT_EXECUTED_BY_CURRENT_WORKFLOW"
+  },
+  "observed_markers": [
+    "GC_DUMMY_SWAP_TESTBANK_EXECUTION=PASS",
+    "GC_HLINK02_TANGENT_ONLY_CONVERGED_WRONG=PASS",
+    "GC_HLINK02_NUMERICAL_CORRECTION_NOT_PHYSICAL_INPUT=PASS",
+    "GC_HLINK02_LIVE_GATE=PASS"
+  ],
+  "important_existing_evidence": "HLINK02 already demonstrates a numerically converged state with nonzero physical residual and explicitly distinguishes numerical correction from physical input. This is qualitatively consistent with PB01's requirement to distinguish numerical response terms from accepted physical exchange.",
+  "pb01_qualification": "OPEN",
+  "reason": "No NH01-NH05 or PB01 log markers were emitted. The current concept-testbank runner does not execute the newly added standalone Python oracle files.",
+  "next_action": "Add a research-only workflow/runner step that executes NH01-NH05 and PB01 scripts, then use PR-triggered CI to capture immutable execution evidence. Do not modify production code."
+}
