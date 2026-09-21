@@ -2,36 +2,24 @@
   "schema": "swap5.gc_dummy_swap.dsw15.observation.v1",
   "date": "2026-09-21",
   "work_unit": "GC-DUMMY-SWAP-DSW15",
-  "workflow_run": 35562694437,
-  "decision": "OPEN_NUMERICAL_MASS_CERTIFICATION",
-  "memoryless_control": {
-    "early_final_head_m": 8.1,
-    "late_final_head_m": 8.1,
-    "order_invariance": "PASS"
+  "original_workflow_run": 35562694437,
+  "superseding_workflow_run": 35563369096,
+  "decision": "SUPERSEDED_HARNESS_SERIALIZATION_ARTIFACT",
+  "original_observation": {
+    "requested_restart_head_m": 8.033333333333333,
+    "observed_second_step_head_m": 8.055555552222222,
+    "analytic_second_step_head_m": 8.055555555555555,
+    "head_error_m": -3.33333360913457e-9,
+    "mass_error_m": -6.666667374394253e-10
   },
-  "early_memory": {
-    "step1": {
-      "head_before_m": 8,
-      "head_after_m": 8.033333333333331,
-      "storage_gain_m": 0.006666666666666288,
-      "expected_transfer_m": 0.006666666666666667
-    },
-    "step2": {
-      "head_before_m": 8.033333333333331,
-      "head_after_m": 8.055555552222222,
-      "storage_gain_m": 0.004444443777778063,
-      "expected_transfer_m": 0.004444444444444444,
-      "mass_error_m": -6.666663818e-10
-    },
-    "analytic_final_head_m": 8.055555555555555,
-    "observed_head_error_m": -3.33333360913457e-9
+  "diagnosis": "The fresh-simulation IC path serialized the accepted restart head through formatted input. That rounded the previous state before the next substep and contaminated a mass gate much tighter than the input formatting precision.",
+  "repair": "The research harness now sets MODFLOW X and XOLD exactly through XMI after initialize and before prepare_time_step.",
+  "superseding_result": "integration/research/GC_DUMMY_SWAP_DSW15_RESULT.json",
+  "verification": {
+    "early_final_head_m": 8.055555555555552,
+    "late_final_head_m": 8.033333333333331,
+    "fixed_substep_mass_error_m": -1.5612511283791264e-17,
+    "original_1e_12_mass_gate": "PASS"
   },
-  "classification": "PHYSICAL_MEMORY_ALGEBRA_FIXED_BUT_STRICT_1E12_M_MASS_GATE_NOT_CERTIFIED_BY_DEFAULT_IMS",
-  "observations": [
-    "The first memory substep closes the strict mass gate.",
-    "The second substep is reported converged by MODFLOW after two iterations but is about 3.33e-9 m below the analytic head.",
-    "That head error maps to about 6.67e-10 m storage error, much larger than the pre-registered 1e-12 m mass tolerance.",
-    "The failure therefore demonstrates that subsystem solver convergence can be insufficient for a stricter coupled mass-conservation requirement."
-  ],
-  "next": "Sweep inner/outer solver closure for this fixed affine substep without changing the physical oracle."
+  "bounded_conclusion": "The original DSW-15 red result was not hydrological or solver-closure evidence. It was a test-harness restart-state precision artifact and must not be used as coupling evidence."
 }
