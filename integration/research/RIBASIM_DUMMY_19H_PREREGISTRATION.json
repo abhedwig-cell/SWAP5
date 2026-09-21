@@ -5,9 +5,13 @@
   "title": "Pinned real Ribasim saveat negative control without management scarcity",
   "baseline": "5b16a6ee52b61aa25ca21e88efd0b516a5dfe1be",
   "sequencing": {
-    "state": "PREREGISTERED_BEFORE_19G_EXECUTION",
-    "execute_after": "DUMMY-19G closeout",
-    "rationale": "Freeze the causal negative control before observing the saveat sweep."
+    "state": "SATISFIED_AFTER_DUMMY_19G_CLOSEOUT",
+    "execute_after": "DUMMY-19G qualified",
+    "rationale": "Freeze the causal negative control before observing the saveat sweep.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+      "workflow_run": 35620973325
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -64,5 +68,11 @@
     "no production prescription"
   ],
   "pass_decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
-  "fail_decision": "RIBASIM_DUMMY_19H_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19H_BLOCKED",
+  "implementation_baseline": "da45c00c6194eb25185104e7816178ed333fcd8b",
+  "authority_rebind": {
+    "repository_head": "da45c00c6194eb25185104e7816178ed333fcd8b",
+    "scientific_change": false,
+    "meaning": "Executable implementation is rebound after 19G closeout; the frozen no-scarcity model, saveat sweep, references and tolerances are unchanged."
+  }
 }
