@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.gc_fixed_interface.nh01.result.v1",
+  "date": "2026-09-21",
+  "status": "IMPLEMENTED_AWAITING_EXECUTION_EVIDENCE",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_NH01_PREREGISTRATION.json",
+  "implementation": "tests/research/test_gc_fixed_interface_nh01.py",
+  "mathematical_result": {
+    "phreatic_head_m": 8.06,
+    "interface_head_m": 8.04,
+    "head_gap_m": 0.02,
+    "interface_transfer_to_groundwater_m": 0.004,
+    "top_storage_change_m": 0.006,
+    "groundwater_storage_change_m": 0.004,
+    "complete_mass_change_m": 0.010
+  },
+  "interpretation": [
+    "The fixed-interface formulation admits a nonhydrostatic state with one common hydraulic head at the coupling plane while SWAP phreatic elevation is different.",
+    "The vertical conductance is internal to the top-system reduction and must not be confused with resistance between two interface heads.",
+    "Interface transfer cancels from the complete-system balance.",
+    "The infinite-conductance limit collapses the phreatic/interface head gap toward the 8.05 m common-head result while retaining the two disjoint storage contributions."
+  ],
+  "qualification": {
+    "executed": false,
+    "reason": "Repository connector write path does not itself execute the new Python test. Do not label PASS until postimage execution evidence is available."
+  },
+  "next_derivation": "Eliminate the top-system phreatic state analytically to obtain E_c(H_c), derive dE_c/dH_c and the exact groundwater residual. Compare that mathematical response with production u/q_u only after the derivation is persisted."
+}
