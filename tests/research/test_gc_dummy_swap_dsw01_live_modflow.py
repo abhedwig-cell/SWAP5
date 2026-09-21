@@ -207,6 +207,27 @@ def run_case(
             raw.initialize()
             initialized = True
             require("6.8.0" in raw.get_version(), "wrong MODFLOW6 version")
+
+            # FloPy writes IC heads through formatted MODFLOW input. For
+            # substep/restart oracles that formatting can round an accepted
+            # floating-point state before the next fresh simulation starts.
+            # Reset both the current and previous model state through XMI so
+            # the requested coupling state is carried bit-for-bit.
+            x = raw.get_value_ptr(raw.get_var_address("X", "GWF_1"))
+            xold = raw.get_value_ptr(raw.get_var_address("XOLD", "GWF_1"))
+            x[:] = float(initial_head_m)
+            xold[:] = float(initial_head_m)
+            result["initialized_x_m"] = float(x[0])
+            result["initialized_xold_m"] = float(xold[0])
+            require(
+                float(x[0]) == float(initial_head_m),
+                "XMI current-head initialization lost precision",
+            )
+            require(
+                float(xold[0]) == float(initial_head_m),
+                "XMI previous-head initialization lost precision",
+            )
+
             raw.prepare_time_step(0.0)
             result["model_dt_day"] = float(raw.get_time_step())
 
