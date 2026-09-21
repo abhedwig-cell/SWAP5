@@ -117,15 +117,25 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19B",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "state": "IMPLEMENTED_PERSISTED_REPAIRED_REAL_RIBASIM_GATE_RUNNING",
       "intended_decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
-      "baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
-      "purpose": "custom real Ribasim one-Basin/two-UserDemand reproduction of DUMMY-15 priority split with physical reduction inactive"
+      "implementation_baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
+      "qualification_run": 35598766437,
+      "pr": 529,
+      "first_run": 35598437021,
+      "first_run_disposition": "infra/API import failure before model generation; scientific effect none",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19C",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+      "implementation": false,
+      "purpose": "full real-Ribasim allocation followed by controlled common-factor physical UserDemand reduction"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Qualify DUMMY-19B real Ribasim priority conflict. Do not introduce physical allocation-realization reduction until DUMMY-19B closes.",
+  "next_authority_action": "Observe repaired DUMMY-19B run 35598766437. If PASS, close DUMMY-19B, rebind DUMMY-19C, then implement the preregistered allocation-realization conflict without changing its parameters or tolerances.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
