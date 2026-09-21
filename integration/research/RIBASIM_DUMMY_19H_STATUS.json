@@ -8,10 +8,12 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-19G closeout. Scientific expectations are frozen before DUMMY-19G execution.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "1h/6h/12h/24h saveat negative control at fixed allocation.dt=24h and non-scarce 60 m3/day supply.",
-  "next_action": "After DUMMY-19G closes, rebind and execute without changing frozen references.",
+  "next_action": "Implement and execute the frozen no-scarcity 1h/6h/12h/24h saveat negative control.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "da45c00c6194eb25185104e7816178ed333fcd8b",
+  "recovery_point": "DUMMY-19H frozen before 19G output; sequencing dependency now satisfied."
 }
