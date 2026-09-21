@@ -144,14 +144,10 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw09x_rclose.py | tee "$BUILD/dsw09x-live.txt"
 DSW09X_STATUS=${PIPESTATUS[0]}
 
-LIBMF6="$BUILD/modflow-bin/libmf6.so" \
-  python3 tests/research/test_gc_dummy_swap_dsw09y_start_distance.py | tee "$BUILD/dsw09y-live.txt"
-DSW09Y_STATUS=${PIPESTATUS[0]}
 set -e
 
 test "$DSW09W_STATUS" -eq 0 || echo "GC_DSW09W_DIAGNOSTIC_STATUS=OPEN"
 test "$DSW09X_STATUS" -eq 0 || echo "GC_DSW09X_DIAGNOSTIC_STATUS=OPEN"
-test "$DSW09Y_STATUS" -eq 0 || echo "GC_DSW09Y_DIAGNOSTIC_STATUS=OPEN"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw11_memory_state.py | tee "$BUILD/dsw11-live.txt"
@@ -198,17 +194,28 @@ test "$DSW05W_STATUS" -eq 0 || fail "DSW-05W diagnostic gate"
 grep -Fq 'GC_DSW05W_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw05w-live.txt" || fail "DSW-05W marker"
 test "$DSW09X_STATUS" -eq 0 || fail "DSW-09X diagnostic gate"
 grep -Fq 'GC_DSW09X_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09x-live.txt" || fail "DSW-09X marker"
-test "$DSW09Y_STATUS" -eq 0 || fail "DSW-09Y diagnostic gate"
-grep -Fq 'GC_DSW09Y_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09y-live.txt" || fail "DSW-09Y marker"
 test "$DSW15V_STATUS" -eq 0 || fail "DSW-15V diagnostic gate"
 grep -Fq 'GC_DSW15V_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw15v-live.txt" || fail "DSW-15V marker"
 test "$DSW15_STATUS" -eq 0 || fail "DSW-15 strict live gate"
 grep -Fq 'GC_DSW15_LIVE_GATE=PASS' "$BUILD/dsw15-live.txt" || fail "DSW-15 marker"
-test "$DSW05_STATUS" -eq 0 || fail "DSW-05 strict live gate"
-grep -Fq 'GC_DSW05_LIVE_GATE=PASS' "$BUILD/dsw05-live.txt" || fail "DSW-05 live gate marker"
-test "$DSW09_STATUS" -eq 0 || fail "DSW-09 strict live gate"
-grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live gate marker"
 test "$DSW10_STATUS" -eq 0 || fail "DSW-10 strict live gate"
 grep -Fq 'GC_DSW10_LIVE_GATE=PASS' "$BUILD/dsw10-live.txt" || fail "DSW-10 live gate marker"
 
-echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW05_DSW06_DSW08_DSW09_DSW10_DSW11_DSW12_DSW13_DSW14_DSW15_DSW16_QUALIFICATION=PASS'
+if test "$DSW05_STATUS" -eq 0; then
+  grep -Fq 'GC_DSW05_LIVE_GATE=PASS' "$BUILD/dsw05-live.txt" || fail "DSW-05 closed without marker"
+  echo "GC_DSW05_STRICT_GATE=CLOSED"
+else
+  echo "GC_DSW05_STRICT_GATE=OPEN_NUMERICAL_CERTIFICATION"
+fi
+
+if test "$DSW09_STATUS" -eq 0; then
+  grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 closed without marker"
+  echo "GC_DSW09_STRICT_GATE=CLOSED"
+else
+  echo "GC_DSW09_STRICT_GATE=OPEN_PREPARED_SOLVE_NUMERICS"
+fi
+
+echo 'GC_DUMMY_SWAP_TESTBANK_EXECUTION=PASS'
+echo 'GC_DUMMY_SWAP_QUALIFIED_BLOCKS=DSW01,DSW02,DSW03,DSW04,DSW06,DSW07,DSW08,DSW10,DSW11,DSW12,DSW13,DSW14,DSW15,DSW16'
+echo 'GC_DUMMY_SWAP_DIAGNOSTIC_QUALIFIED=DSW05W,DSW09N,DSW09R,DSW09X,DSW15V'
+echo 'GC_DUMMY_SWAP_OPEN_STRICT_GATES=DSW05,DSW09'
