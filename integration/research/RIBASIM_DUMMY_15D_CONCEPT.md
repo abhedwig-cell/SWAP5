@@ -1,8 +1,10 @@
 # RIBASIM-DUMMY-15D blocked concept: canopy interception ledger
 
-> Status: BLOCKED pending DUMMY-15C qualification.
+> Status: IMPLEMENTED after DUMMY-15C qualification.
 >
-> No implementation or tests are authorized yet.
+> This concept was fixed while implementation was blocked. The executable
+> canopy-ledger oracle was created only after rebinding to the qualified
+> DUMMY-15C authority.
 
 ## Why this work unit exists
 
@@ -258,7 +260,7 @@ transaction.
 
 ## Qualification target
 
-A future DUMMY-15D implementation must independently prove:
+The DUMMY-15D implementation independently proves:
 
 1. G=N+I;
 2. canopy storage balance;
