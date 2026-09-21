@@ -142,6 +142,13 @@
       "scientific_dependencies": "qualified DUMMY-19B and DUMMY-19C",
       "execution_sequence": "after DUMMY-19D closeout",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19F",
+      "state": "PREREGISTERED_BLOCKED_BY_19E",
+      "intended_decision": "RIBASIM_DUMMY_19F_QUALIFIED_NEXT_WINDOW_STATE_FEEDBACK",
+      "dependency": "qualified DUMMY-19E",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
