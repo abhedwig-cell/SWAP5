@@ -66,6 +66,12 @@ on:
       - 'tests/research/dummy_rootzone_demand.py'
       - 'tests/research/test_dummy_rootzone_demand.py'
       - 'tests/research/run_ribasim_dummy_12.sh'
+      - 'integration/research/RIBASIM_DUMMY_13_*.json'
+      - 'integration/research/RIBASIM_DUMMY_13_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/dummy_three_store_internal_ledger.py'
+      - 'tests/research/test_dummy_three_store_internal_ledger.py'
+      - 'tests/research/run_ribasim_dummy_13.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -227,3 +233,16 @@ jobs:
         run: python3 --version
       - name: Run root-zone demand state gate
         run: bash tests/research/run_ribasim_dummy_12.sh
+
+  three-store-ledger-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-13-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run three-store internal-ledger gate
+        run: bash tests/research/run_ribasim_dummy_13.sh
