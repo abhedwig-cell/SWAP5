@@ -333,6 +333,54 @@ contains
     pub_gc_e6_corrector_diagnostics_c=0_c_int
   end function pub_gc_e6_corrector_diagnostics_c
 
+
+  integer(c_int) function pub_gc_e6_corrector_mass_diagnostics_c(head_m,result_status,completed,candidate_ready, &
+       mass_complete,storage_change,total_in,total_out,bottom_outward_exchange,mass_residual) &
+       bind(C,name="pub_gc_e6_corrector_mass_diagnostics_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: result_status,completed,candidate_ready,mass_complete
+    real(c_double), intent(out) :: storage_change,total_in,total_out,bottom_outward_exchange,mass_residual
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: diagnostics
+    logical :: ok
+    integer :: forcing_status
+
+    pub_gc_e6_corrector_mass_diagnostics_c=1_c_int
+    result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int; mass_complete=0_c_int
+    storage_change=0.0_c_double; total_in=0.0_c_double; total_out=0.0_c_double
+    bottom_outward_exchange=0.0_c_double; mass_residual=0.0_c_double
+    if(.not.initialized)return
+
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok)return
+    call materializer%materialize(real(head_m,real64),datum,forcing,forcing_status)
+    if(forcing_status/=0 .or. .not.allocated(forcing))return
+
+    select type(typed_forcing=>forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,result,candidate,diagnostics)
+    class default
+      return
+    end select
+
+    result_status=int(result%status,c_int)
+    if(result%completed)completed=1_c_int
+    if(candidate%ready())candidate_ready=1_c_int
+    if(result%mass%complete)mass_complete=1_c_int
+    storage_change=result%mass%storage_change
+    total_in=result%mass%total_in
+    total_out=result%mass%total_out
+    bottom_outward_exchange=result%bottom_outward_exchange_native
+    mass_residual=result%mass%residual
+
+    if(candidate%ready())call corrector_backend%discard_trial_candidate(candidate,diagnostics)
+    pub_gc_e6_corrector_mass_diagnostics_c=0_c_int
+  end function pub_gc_e6_corrector_mass_diagnostics_c
+
   integer(c_int) function pub_gc_e6_swap_discard_c() bind(C,name="pub_gc_e6_swap_discard_c")
     pub_gc_e6_swap_discard_c=1_c_int
     if(.not.initialized)return
