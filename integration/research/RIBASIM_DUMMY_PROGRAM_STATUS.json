@@ -136,22 +136,20 @@
       "decision": "RIBASIM_DUMMY_19E2_QUALIFIED_CLOCK_ALIGNED_PRIORITY_THEN_REALIZATION",
       "run": 35618561311,
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-19G",
+      "decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
+      "run": 35620973325,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-19G",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_19G_QUALIFIED_SAVEAT_ALLOCATION_CLOCK_SENSITIVITY",
-      "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-19H",
-      "state": "PREREGISTERED_SEQUENCED_AFTER_19G",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19G",
       "intended_decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
-      "scientific_baseline": "5b16a6ee52b61aa25ca21e88efd0b516a5dfe1be",
-      "dependency": "DUMMY-19G closeout",
+      "dependency": "qualified DUMMY-19G",
       "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
     },
     {
@@ -164,7 +162,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close DUMMY-19G from frozen evidence; execute DUMMY-19H negative control; then execute preregistered DUMMY-19I BMI-owned management-clock test.",
+  "next_authority_action": "Rebind and execute frozen DUMMY-19H no-scarcity saveat negative control; then proceed to preregistered DUMMY-19I BMI management clock.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
