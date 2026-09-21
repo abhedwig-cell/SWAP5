@@ -43,7 +43,8 @@
     "Two multi-window histories that reach the same three committed states have identical next requests and physical exchange problem regardless of their prior shortage diagnostics.",
     "No same-window second irrigation request is created after U changes root storage.",
     "Because DUMMY-13 declares the three stores disjoint by construction, its combined-ledger proof is conditional on that declared partition and must not be used as evidence that real SWAP and MODFLOW storage domains are non-overlapping.",
-    "In the preregistered canonical two-window sequence, the first window is CURTAILED and the second is ZERO: root storage remains 72 m3 while surface-groundwater exchange continues and lowers surface head from 0.4 to 0.36 m."
+    "In the preregistered canonical two-window sequence, the first window is CURTAILED and the second is ZERO: root storage remains 72 m3 while surface-groundwater exchange continues and lowers surface head from 0.4 to 0.36 m.",
+    "The combined three-store ledger remains invariant for negative V (groundwater-to-surface transfer), with the same single signed exchange variable entering surface and groundwater component ledgers oppositely."
   ],
   "canonical_case": {
     "root": {
@@ -173,6 +174,35 @@
         "total_three_store_change_m3": 0
       },
       "interpretation": "After the first curtailed window lands exactly on the management threshold, reciprocal physical exchange may continue in the next window while management remains off; the root deficit persists because no irrigation is delivered."
+    },
+    "negative_exchange": {
+      "root": {
+        "W0": 80,
+        "target": 80,
+        "capacity": 100,
+        "request": 0
+      },
+      "surface_groundwater": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "h_s0": 0.2,
+        "h_g0": 0.8,
+        "hmin": 0
+      },
+      "expected": {
+        "regime": "FULL",
+        "U_m3": 0,
+        "shortage_m3": 0,
+        "V_m3": -20,
+        "W_r1_m3": 80,
+        "h_s1_m": 0.4,
+        "h_g1_m": 0.6,
+        "next_root_request_m3": 0,
+        "total_three_store_change_m3": 0
+      },
+      "interpretation": "Groundwater-to-surface exchange must cancel internally with the same ledger identity; sign reversal must not require a separate accounting convention."
     }
   }
 }
