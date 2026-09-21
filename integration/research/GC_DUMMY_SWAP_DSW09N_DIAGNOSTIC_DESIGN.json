@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09n.diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09N",
+  "title": "Fresh-session affine correction resolution around DSW-09 root",
+  "status": "POST_OBSERVATION_NUMERICAL_DIAGNOSTIC_NOT_PROSPECTIVE_PHYSICS_GATE",
+  "source_observation": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
+  "fixed_physics": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "input_m": 0.01,
+    "exact_head_m": 8.056155281280883
+  },
+  "fresh_session_offsets_m": [
+    0.000001,
+    1e-8,
+    1e-10,
+    1e-11,
+    1e-12
+  ],
+  "observed_stall_replay": {
+    "head_m": 8.05615528129362,
+    "offset_from_exact_m": 1.2736478538499796e-11
+  },
+  "method": "For each Href, compute exact q_ref and exact tangent, form API HCOF/RHS, start a new MODFLOW6 6.8.0 one-cell prepared solve with Sy=0 and record convergence and affine root.",
+  "required_controls": [
+    "fresh-session 1e-6 and 1e-8 offsets must solve and reproduce the exact affine root",
+    "smaller offsets and observed-stall replay are diagnostic and are not retuned if MODFLOW declines convergence"
+  ],
+  "purpose": "Discriminate per-solve API/IMS resolution from history-dependent reanchoring behavior.",
+  "forbidden": [
+    "do not weaken DSW-09 residual gate",
+    "do not treat this post-observation diagnostic as blind validation",
+    "no production source change"
+  ]
+}
