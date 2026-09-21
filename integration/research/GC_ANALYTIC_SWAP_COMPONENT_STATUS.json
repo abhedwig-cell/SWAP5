@@ -12,7 +12,9 @@
     "dca644ed1b45f6fa15602e889eaef661cf934014",
     "472307072472efe60edef815b1681483426af409",
     "709a13fc0e818661163a7ebcc3600b06bff1030b",
-    "80cc8190c5290c69bf19d80095fda6546ec99c96"
+    "80cc8190c5290c69bf19d80095fda6546ec99c96",
+    "41cc10c8b3ff648000f38d260f66fcbe69663d30",
+    "c87f5df88e6348dfb354cff73015ae632fea34ff"
   ],
   "mechanisms": [
     "linear storage",
@@ -28,11 +30,29 @@
     "original 10 mm / S=0.20 -> 8.05 m bucket",
     "DSW02 storage partition invariance",
     "DSW10 depth-varying storage",
+    "DSW11 head-coupled internal-memory response",
     "DSW12 head-dependent ET",
     "DSW13 drainage",
     "DSW15 memory forcing-order dependence",
+    "DSW20 five-window composed state-continuation and mass-ledger trajectory",
     "DSW08 finite-resistance q-link"
   ],
   "qualification_rule": "Do not call the component qualified until GC_ANALYTIC_SWAP_COMPONENT_GATE=PASS is observed from execution. Existing DSW tests remain the independent authority and are not replaced by this component.",
-  "note": "A static review corrected the new ET test to the pre-existing DSW12 oracle before qualification; no old oracle was changed."
+  "note": "A static review corrected the new ET test to the pre-existing DSW12 oracle before qualification; no old oracle was changed.",
+  "ci_path_binding": {
+    "workflow": ".github/workflows/gc-dummy-swap-dsw01.yml",
+    "direct_paths": [
+      "tests/research/test_gc_analytic_swap_component.py",
+      "tests/research/support/gc_analytic_swap.py"
+    ],
+    "binding_commit": "41cc10c8b3ff648000f38d260f66fcbe69663d30",
+    "note": "Future edits to either reusable component file now directly trigger the concept-testbank workflow."
+  },
+  "latest_test_extension": {
+    "commit": "c87f5df88e6348dfb354cff73015ae632fea34ff",
+    "adds": [
+      "DSW11 head-coupled memory regression",
+      "DSW20 unequal-window composed trajectory regression"
+    ]
+  }
 }
