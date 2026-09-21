@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_canopy_interception.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15D",
+  "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+  "authority": {
+    "implementation_baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
+    "qualification_head": "5f07b4cffddeac7e3e9f39830bddec662806bf5b",
+    "workflow_run": 35593604887,
+    "workflow_job": 106313294405,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_15D_SOURCE_SCOPE=PASS",
+    "13/13 CanopyIrrigationLedgerTests PASS",
+    "canonical four-store endpoint surface76,canopy3,root55,groundwater54",
+    "full-system change -2 equals interception evaporation only",
+    "surface-groundwater exchange cancels exactly from full ledger",
+    "canopy-excluded boundary requires interception evaporation plus canopy storage change",
+    "omitting canopy storage creates apparent 3 m3 defect",
+    "using gross irrigation as soil input creates +5 m3 water residual",
+    "using net irrigation as source withdrawal creates +5 m3 water residual",
+    "correct gross-source / net-soil binding closes exactly",
+    "RIBASIM_DUMMY_15D_CANOPY_TESTS=PASS",
+    "RIBASIM_DUMMY_15D_GATE=PASS"
+  ],
+  "interpretation": "Gross source withdrawal and net soil irrigation are distinct coupling transfers whenever canopy interception is represented. Canopy storage change is a state term, not a numerical mass error, and must be inside the system ledger or appear explicitly at its boundary.",
+  "production_boundary": [
+    "no claim of nonlinear Rutter equivalence",
+    "real substitution must bind gross supplied irrigation to source withdrawal and net_surface_irrigation separately to the soil top",
+    "canopy candidate state must share the accepted irrigation transaction boundary"
+  ],
+  "downstream": "DUMMY-18 may now include explicit gross irrigation, canopy storage, interception evaporation and net soil irrigation authority rows."
+}
