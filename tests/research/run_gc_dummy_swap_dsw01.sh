@@ -57,4 +57,9 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 grep -Fq 'GC_DSW03_POSITIVE_SLOPE_PROBE_RECORDED=PASS' "$BUILD/dsw03-live.txt" || fail "DSW-03 diagnostic probe"
 grep -Fq 'GC_DSW03_LIVE_GATE=PASS' "$BUILD/dsw03-live.txt" || fail "DSW-03 live gate"
 
-echo 'GC_DSW01_DSW02_DSW03_QUALIFICATION=PASS'
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw04_superposition.py | tee "$BUILD/dsw04-live.txt"
+
+grep -Fq 'GC_DSW04_LIVE_GATE=PASS' "$BUILD/dsw04-live.txt" || fail "DSW-04 live gate"
+
+echo 'GC_DSW01_DSW02_DSW03_DSW04_QUALIFICATION=PASS'
