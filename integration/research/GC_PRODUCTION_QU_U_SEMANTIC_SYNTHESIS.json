@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.gc_production_qu_u.semantic_synthesis.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-PRODUCTION-QU-U-SEMANTIC-SYNTHESIS",
+  "status": "RESEARCH_SEMANTIC_CLASSIFICATION_NO_PRODUCTION_CHANGE",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "production_formula_authority": {
+    "source": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "equations": [
+      "u = dt / (dH_bot_end/dq_bot)",
+      "q_u = u * (H_bot_end-H_bot_start) / dt - q_bot"
+    ],
+    "native_qbot_sign": "positive_into_SWAP",
+    "public_q_u_sign": "positive_toward_groundwater / MODFLOW infiltration convention"
+  },
+  "exact_algebra": {
+    "rearranged": "u * DeltaH / dt = q_u + q_bot",
+    "affine_extension": "q_u_affine(H) = q_u_star + (u/dt) * (H-H_star), with predictor u and q_bot_star held fixed",
+    "production_partial_derivative": "partial q_u_affine / partial H = +u/dt"
+  },
+  "best_supported_bounded_classification": {
+    "u": "finite-window inverse bottom-head sensitivity to predictor bottom flux, used as the tangent carrier of a condensed groundwater-balance response",
+    "q_u": "matching recharge/balance intercept of that condensed response; not identical by definition to the accepted physical SWAP bottom-exchange flux",
+    "pair": "local response condensation of the SWAP column for the groundwater equation",
+    "hcof_rhs": "numerical affine representation of this condensed q_u(H) law after area and time-unit conversion"
+  },
+  "physical_balance_connection": {
+    "conditional_statement": "Where u*DeltaH approximates accepted SWAP storage change over the same window, q_u approximates storage-change rate plus bottom-outward rate, hence the net non-bottom contribution from the SWAP water balance.",
+    "storage_dominated_map03": [
+      "d(storage change)/dH ~= +u",
+      "d(bottom-outward exchange)/dH ~= -u",
+      "d(storage + bottom-outward)/dH = 0"
+    ],
+    "implication": "The total q_u variation across neighbouring complete predictor trajectories can be near zero even while the production affine partial slope +u/dt is nonzero."
+  },
+  "real_swap_evidence": {
+    "MAP02": "Real prescribed-head corrector bottom-outward slope has approximately the opposite sign of the production affine partial slope in the inspected local band.",
+    "MAP03": "Production u locally matches whole-column storage sensitivity in the drainage-free fixture; bottom-outward sensitivity is -u.",
+    "MAP04_MAP05A": "Different affine slope policies can reach essentially the same accepted physics while following different coupling paths; slope can function as numerical iteration policy.",
+    "MAP07": "Across neighbouring predictor trajectories q_bot variation cancels +u/dt to first order; production +u/dt is a partial, not total, q_u derivative.",
+    "MAP09A": "Under active drainage production u is close to but not exactly the accepted-corrector storage sensitivity.",
+    "MAP10": "u is window dependent and must not be treated as a universal static specific yield."
+  },
+  "historical_design_support": {
+    "source": "Wageningen University & Research presentation 'Koppeling SWAP-MODFLOW', 18-01-2024",
+    "observations": [
+      "u is described as an exchange/storage coefficient and Q_u as recharge.",
+      "u is derived from two SWAP predictor simulations with perturbed lower-boundary flux: u=(q2-q1)*dt/(H2-H1).",
+      "H in that derivation is the hydraulic head at the bottom of the SWAP column.",
+      "The predictor flow fixes u, calculates recharge Q_u once, then iterates MODFLOW.",
+      "The presentation distinguishes SWAP groundwater level from MODFLOW head because of resistance in the phreatic layer."
+    ],
+    "authority_limit": "Historical design evidence supports interpretation but does not override current typed source/contracts or establish present physical domain ownership."
+  },
+  "forbidden_equivalences": [
+    "q_u == accepted physical bottom-outward SWAP exchange",
+    "u == universal static specific yield",
+    "u/dt == physical finite-resistance conductance",
+    "+u/dt == total derivative of historical q_u across neighbouring predictor trajectories",
+    "+u/dt == real prescribed-head corrector bottom-flux derivative",
+    "HCOF == physical storage merely because its dimensions contain area/time"
+  ],
+  "accepted_physics_authority": [
+    "real SWAP corrector response at the trial head",
+    "accepted whole-window interface exchange ledger",
+    "complete component and coupled mass balances"
+  ],
+  "unresolved": [
+    "Which physical control-volume/storage ownership contract should a future SWAP-MODFLOW product adopt?",
+    "Under which deployment geometry should the condensed q_u/u representation be interpreted as shared-phreatic storage/recharge, interface coupling, or only numerical response policy?"
+  ],
+  "production_changes": false
+}
