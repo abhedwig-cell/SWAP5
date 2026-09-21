@@ -105,9 +105,10 @@ def build_model(workdir: Path, name: str) -> None:
         sim,
         complexity="MODERATE",
         outer_dvclose=1.0e-12,
-        inner_dvclose=1.0e-13,
+        inner_dvclose=1.0e-14,
+        rcloserecord=[1.0e-15, "strict"],
         outer_maximum=100,
-        inner_maximum=100,
+        inner_maximum=200,
     )
     gwf = flopy.mf6.ModflowGwf(
         sim,
