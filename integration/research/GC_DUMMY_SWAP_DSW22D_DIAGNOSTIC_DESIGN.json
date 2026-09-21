@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw22.matrix_diagnostic_design.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW22D",
+  "title": "Post-falsification full 3x3 real-SWAP predictor envelope diagnostic",
+  "status": "POST_FALSIFICATION_DIAGNOSTIC",
+  "source_preregistration": "integration/research/GC_DUMMY_SWAP_DSW22_PREREGISTRATION.json",
+  "source_result": "integration/research/GC_DUMMY_SWAP_DSW22_RESULT.json",
+  "fixed_matrix": {
+    "duration_day": [
+      0.00005,
+      0.0001,
+      0.0002
+    ],
+    "predictor_qbot_cm_per_day": [
+      5e-7,
+      0.000001,
+      0.000002
+    ],
+    "adaptive_search": false
+  },
+  "method": [
+    "Call Fgc44RealSwap.try_initialize_configured for every unchanged Cartesian-product point.",
+    "Immediately query predictor_run_diagnostics after every call.",
+    "For status 0, additionally query e1_diagnostics and verify production q_u, HCOF/RHS and physical mass identities.",
+    "For nonzero status, record the configured stage and predictor diagnostics without retry/tolerance/physics changes."
+  ],
+  "hard_controls": [
+    "The original first matrix point duration=5e-5, qbot=5e-7 remains nonzero status; do not erase the DSW22 falsification.",
+    "The admitted F-GC44 default point duration=1e-4, qbot=1e-6 returns status 0.",
+    "All status-0 cases satisfy q_u reconstruction, HCOF/RHS algebra and SWAP mass closure.",
+    "All nine points are attempted exactly once in the declared matrix."
+  ],
+  "characterization": [
+    "status topology over duration and qbot",
+    "result.completed and accepted-trajectory-direction availability",
+    "accepted substeps, attempts, retries and solver/temporal/mass rejection counters",
+    "u and q_u only at successful points"
+  ],
+  "forbidden": [
+    "no retuning matrix",
+    "no tolerance changes",
+    "no retry-budget changes",
+    "no production changes",
+    "do not relabel the original DSW22 all-nine gate as passed"
+  ]
+}
