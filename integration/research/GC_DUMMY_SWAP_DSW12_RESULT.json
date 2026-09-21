@@ -1,0 +1,23 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw12.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW12",
+  "workflow_run": 35561509372,
+  "workflow_job": 106215118034,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_HEAD_DEPENDENT_ET_SINK",
+  "inactive": {
+    "head_m": 8.01,
+    "et_m_per_day": 0
+  },
+  "active": {
+    "head_m": 8.073333333333332,
+    "et_m_per_day": 0.005333333333333279,
+    "storage_gain_m": 0.014666666666666474
+  },
+  "gates": {
+    "inactive_branch": "PASS",
+    "active_branch": "PASS",
+    "mass": "PASS"
+  },
+  "bounded_conclusion": "A negative dq/dH can arise from a physical head-dependent sink. Its dimensions can resemble a storage/time or conductance term, but its physical ownership is different."
+}
