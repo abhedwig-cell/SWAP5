@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.gc_hlink04.low01_readiness_matrix.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK04-LOW01-MATRIX01",
+  "title": "Executable readiness matrix for real-SWAP shared-phreatic HLINK04 research",
+  "status": "RESEARCH_GOVERNANCE_GATE",
+  "production_changes": false,
+  "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "principle": "Implementation existence, queued workflows, and source-level reconciliation are not qualification. Only persisted owner results plus declared characterization gates may advance HLINK04.",
+  "gates": [
+    {
+      "id": "LOW01-A",
+      "role": "below-profile datum/source equivalence",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01A_RESULT.json",
+      "current_state": "QUALIFIED"
+    },
+    {
+      "id": "LOW01-A2",
+      "role": "live below-profile reduction through admitted mode-5 Reference solve",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01A2_RESULT.json",
+      "current_state": "PENDING_OWNER_RUN"
+    },
+    {
+      "id": "LOW01-CONST",
+      "role": "single constitutive owner for bounded KSATEXM-disabled inside-profile slice",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json",
+      "current_state": "PENDING_OWNER_RUN"
+    },
+    {
+      "id": "LOW01-CARRIER01",
+      "role": "pure typed output/provenance carrier with H_phreatic distinct from derived profile GWL",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json",
+      "current_state": "PENDING_OWNER_RUN"
+    },
+    {
+      "id": "LOW01-OUTPUT01",
+      "role": "live direct-HeadCalc inside-profile trial carrier from immutable origin",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01_OUTPUT01_RESULT.json",
+      "current_state": "PENDING_OWNER_RUN"
+    },
+    {
+      "id": "LOW01-B",
+      "role": "bounded inside-profile active-domain, saturated continuation, qbot and mass qualification",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01B_RESULT.json",
+      "current_state": "BLOCKED_ON_A2_CONST_CARRIER_OUTPUT01"
+    },
+    {
+      "id": "LOW01-C1",
+      "role": "internal-node snap/branch response characterization",
+      "required_state": "CHARACTERIZED",
+      "evidence": "integration/research/GC_LOW01C1_RESULT.json",
+      "current_state": "BLOCKED_ON_B"
+    },
+    {
+      "id": "LOW01-C2",
+      "role": "lower-half-cell geometry policy",
+      "required_state": "QUALIFIED_POLICY",
+      "evidence": "integration/research/GC_LOW01C2_RESULT.json",
+      "current_state": "PENDING_POLICY_OWNER_RUN"
+    },
+    {
+      "id": "LOW01-D",
+      "role": "immutable-origin A-B-A rejection/replay and exactly-once mass publication",
+      "required_state": "QUALIFIED",
+      "evidence": "integration/research/GC_LOW01D_RESULT.json",
+      "current_state": "BLOCKED_ON_A2"
+    }
+  ],
+  "hlink04_initial_envelope": {
+    "inside_profile": "Only source-safe/qualified controls at or above the bottom node centre and outside branch-boundary exclusions established by B/C1.",
+    "below_profile": "Only H_phreatic at or below the declared bottom face, using A/A2/D authority.",
+    "excluded": "bottom_face < H_phreatic < bottom_node_center remains UNADMITTED_GEOMETRY_GAP under C2 policy.",
+    "ksatexm": "disabled only for the first bounded inside-profile research slice."
+  },
+  "activation_predicate": [
+    "LOW01-A result exists and is qualified.",
+    "LOW01-A2 result exists and is qualified.",
+    "LOW01-CONST result exists and is qualified.",
+    "LOW01-CARRIER01 result exists and is qualified.",
+    "LOW01-OUTPUT01 result exists and is qualified.",
+    "LOW01-B result exists and is qualified.",
+    "LOW01-C1 result exists and is characterization-complete without post-hoc retuning.",
+    "LOW01-C2 result exists and preserves the unadmitted lower-half-cell gap.",
+    "LOW01-D result exists and is qualified.",
+    "No gate has widened production bottom_mode=1 admission or changed current mode-5 F-GC semantics."
+  ],
+  "activation_decision": "HLINK04_REMAINS_BLOCKED_UNTIL_ALL_PREDICATES_TRUE",
+  "forbidden": [
+    "do not count a queued or successful prerequisite run until its owner result is persisted",
+    "do not count classifier-only evidence as inside-profile solver qualification",
+    "do not treat the C2 gap exclusion as a complete production boundary policy",
+    "do not infer current mode-5 H_interface equals H_phreatic",
+    "do not modify production Reference-Richards or F-GC admission from this matrix"
+  ]
+}
