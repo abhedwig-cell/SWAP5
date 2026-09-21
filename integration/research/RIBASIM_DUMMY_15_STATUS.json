@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Trigger DUMMY-15 qualification from a status-only child branch against the frozen corrected base.",
+  "next_action": "Trigger DUMMY-15 v3 qualification from a status-only child branch against the twice-corrected frozen base.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -73,5 +73,18 @@
     "scientific_effect": "none; equations, preregistered expected values and priority semantics unchanged",
     "superseded_run": 35577982472
   },
-  "qualification_route": "FROZEN_CORRECTED_BASE"
+  "qualification_route": "FROZEN_CORRECTED_BASE_V3",
+  "prequalification_repairs": [
+    {
+      "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity.",
+      "correction": "Subtract the second assigned claim in both priority branches.",
+      "scientific_effect": "none"
+    },
+    {
+      "defect": "An exact surface-datum endpoint h_s=0 could be represented as a tiny negative floating-point value and then rejected by the stricter ThreeStoreState representation check, even though qualified DUMMY-10 had already admitted it within head tolerance.",
+      "correction": "Canonicalize only already-admitted endpoint heads in [datum-head_tol, datum) to exact datum before ThreeStoreState validation.",
+      "scientific_effect": "none; exact boundary remains h_s=datum and no materially sub-datum state is accepted",
+      "superseded_run": 35578647184
+    }
+  ]
 }
