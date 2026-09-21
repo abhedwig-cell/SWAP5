@@ -8,8 +8,8 @@
   "checkpoint_commit": "9950ab474588dc86187026564ae711520b22c12b",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_changes": false,
   "authority_paths": [
     "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
@@ -29,13 +29,20 @@
     "ledger publication contract",
     "production coupling code"
   ],
-  "next_action": "Await/execute the already-preregistered MAP05A E4_B3_CORRECTOR_JR policy; do not alter slope, B3 case, solver settings, tolerances or publication contract.",
-  "recovery_point": "Resume from MAP05A preregistration and checkpoint; MAP05 remains falsified independently.",
+  "next_action": "Complete MAP06 fresh-origin B3 corrector admissibility topology around the MAP05 INTERCEPT_ONLY failure head.",
+  "recovery_point": "MAP05A qualified by workflow 35568250145 / job 106234270745. Resume from GC_REAL_SWAP_MAP05A_RESULT.json; MAP05 remains independently falsified.",
   "blockers": [],
-  "last_reconciled_head": "3d8e77fc7213eecd762a281925171f7b1872ad2c",
+  "last_reconciled_head": "dc346a9e599c11b44b1c2c469b7d1a4249bdb7f9",
   "execution": {
     "workflow_run": 35568250145,
     "workflow_job": 106234270745,
     "status": "queued"
+  },
+  "qualification": {
+    "workflow_run": 35568250145,
+    "workflow_job": 106234270745,
+    "conclusion": "success",
+    "result_path": "integration/research/GC_REAL_SWAP_MAP05A_RESULT.json",
+    "decision": "QUALIFIED_E4_B3_CORRECTOR_JR_ADMISSIBLE_AND_PHYSICALLY_EQUIVALENT_TO_CURRENT_CONTROL"
   }
 }
