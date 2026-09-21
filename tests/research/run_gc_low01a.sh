@@ -20,6 +20,7 @@ gfortran -std=f2008 -Wall -Wextra -Werror -O0 -g \
 
 "$BUILD/test_gc_low01a_below_profile_equivalence" | tee "$BUILD/low01a-numeric.txt"
 python3 tests/research/test_gc_low01a_source_branch.py | tee "$BUILD/low01a-source.txt"
+python3 tests/research/test_gc_low01_state_machine.py | tee "$BUILD/low01-state01.txt"
 
 for marker in \
   'GC_LOW01A_BELOW_PROFILE_LEVELS=PASS' \
@@ -27,6 +28,17 @@ for marker in \
   'GC_LOW01A_HEAD_ROUNDTRIP=PASS' \
   'GC_LOW01A_NUMERIC_GATE=PASS'; do
   grep -Fq "$marker" "$BUILD/low01a-numeric.txt" || fail "missing numeric marker $marker"
+done
+
+for marker in \
+  'GC_LOW01_STATE01_SOURCE_AUTHORITY=PASS' \
+  'GC_LOW01_STATE01_BRANCHES=PASS' \
+  'GC_LOW01_STATE01_ACTIVE_DOMAIN=PASS' \
+  'GC_LOW01_STATE01_NODE_SNAP=PASS' \
+  'GC_LOW01_STATE01_BELOW_NODE_HBOT=PASS' \
+  'GC_LOW01_STATE01_REPLAY_DETERMINISM=PASS' \
+  'GC_LOW01_STATE01_GATE=PASS'; do
+  grep -Fq "$marker" "$BUILD/low01-state01.txt" || fail "missing STATE01 marker $marker"
 done
 
 for marker in \
@@ -40,8 +52,11 @@ done
 
 git diff --check -- \
   integration/research/GC_LOW01A_PREREGISTRATION.json \
+  integration/research/GC_LOW01_STATE01_PREREGISTRATION.json \
+  tests/research/test_gc_low01_state_machine.py \
   tests/research/test_gc_low01a_below_profile_equivalence.f90 \
   tests/research/test_gc_low01a_source_branch.py \
   tests/research/run_gc_low01a.sh
 
+echo 'GC_LOW01_STATE01_QUALIFICATION=PASS'
 echo 'GC_LOW01A_QUALIFICATION=PASS'
