@@ -16,6 +16,9 @@ grep -Fq 'GC_DSW01_ANALYTIC_GATE=PASS' "$BUILD/analytic.txt" || fail "DSW-01 ana
 python3 tests/research/test_gc_dummy_swap_dsw02_partition.py | tee "$BUILD/dsw02.txt"
 grep -Fq 'GC_DSW02_ANALYTIC_GATE=PASS' "$BUILD/dsw02.txt" || fail "DSW-02 analytic gate"
 
+python3 tests/research/test_gc_dummy_swap_dsw07_jacobian.py | tee "$BUILD/dsw07.txt"
+grep -Fq 'GC_DSW07_ANALYTIC_GATE=PASS' "$BUILD/dsw07.txt" || fail "DSW-07 analytic gate"
+
 python3 - <<PY
 from pathlib import Path
 from flopy.utils.get_modflow import run_main
