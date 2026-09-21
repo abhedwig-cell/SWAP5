@@ -22,6 +22,7 @@ while IFS= read -r path; do
   case "$path" in
     .github/workflows/ribasim-dummy-01.yml) ;;
     integration/research/RIBASIM_DUMMY_01_PREREGISTRATION.json) ;;
+    integration/research/RIBASIM_DUMMY_01_CONCEPT.md) ;;
     integration/research/RIBASIM_DUMMY_01_STATUS.json) ;;
     integration/research/RIBASIM_DUMMY_01_RESULT.json) ;;
     tests/research/dummy_ribasim_reservoir.py) ;;
