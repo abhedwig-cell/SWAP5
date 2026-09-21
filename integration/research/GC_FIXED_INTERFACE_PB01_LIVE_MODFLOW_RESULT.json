@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.gc_fixed_interface.pb01_live_modflow.v1",
+  "date": "2026-09-21",
+  "workflow_run_id": 35604695537,
+  "workflow_conclusion": "success",
+  "modflow_version": "6.8.0",
+  "fixture": "isolated one-cell transient storage, API HCOF/RHS, prepared solve",
+  "analytic_root_head_m": 8.04,
+  "cases": {
+    "physical_negative_tangent": {
+      "slope": "-u/dt",
+      "final_head_m": 8.039999999999965,
+      "status": "PASS"
+    },
+    "frozen_positive_current_orientation": {
+      "slope": "+u/dt",
+      "final_head_m": 8.199999999999967,
+      "status": "FAIL_AS_PHYSICAL_CONDENSATION"
+    },
+    "reanchored_positive_current_orientation": {
+      "slope": "+u/dt",
+      "absolute_head_errors_m": [0.64,2.56,10.24,40.96,163.84,655.36,2621.44,10485.76,41943.04,167772.16,671088.64,2684354.56],
+      "observed_error_factor": 4.0,
+      "status": "NONCONVERGENT_UNSTABLE"
+    }
+  },
+  "qualification": {
+    "analytic_rho_positive": -4.0,
+    "live_absolute_error_factor": 4.0,
+    "matches_analytic_linear_prediction": true
+  },
+  "scientific_conclusion": "Live MODFLOW 6.8.0 reproduces the PB01 discriminator. In the isolated storage problem the current positive +u/dt orientation is neither the exact physical condensation nor stabilized by the prepared MODFLOW solve. Reanchoring preserves the mathematical fixed point but yields the predicted magnitude-4 divergent outer iteration. The negative outward physical tangent closes at the exact 8.04 m root.",
+  "production_disposition": "DO_NOT_CHANGE_YET",
+  "reason_for_hold": "PB01 establishes semantics and instability for the isolated fixed-interface problem, but production modification requires reconciling the intended numerical contract and existing coupled-system qualification before changing signs."
+}
