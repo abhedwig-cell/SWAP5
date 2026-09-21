@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
   "blocker": null,
   "prepared_scope": "Pure physical two-Basin + shared-groundwater linear oracle with exact mode decomposition and dual surface/groundwater downstream pathways.",
-  "next_action": "Execute DUMMY-17 two-basin-shared-groundwater-gate.",
+  "next_action": "Freeze this DUMMY-17 postimage and execute two-basin-shared-groundwater-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -38,5 +38,33 @@
     }
   },
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-17 implementation, exact tests and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-17 implementation, exact tests and focused runner are persisted; qualification remains open.",
+  "source_scope_verification": {
+    "base": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_17_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_17_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_17_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_two_basin_shared_groundwater.py",
+      "tests/research/run_ribasim_dummy_17.sh",
+      "tests/research/test_dummy_two_basin_shared_groundwater.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_AND_ANALYTIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "initial path flows: route20, Basin1->GW30, Basin2->GW=-20",
+      "initial storage rates: -50,+40,+10 and total0",
+      "surface difference mode exp(-0.9 t)",
+      "surface-mean/groundwater contrast 0.1 exp(-1.5 t)",
+      "exact t=1 heads match preregistration",
+      "weighted total storage remains 140 m3",
+      "routing conductance changes difference mode but not common mode"
+    ]
+  }
 }
