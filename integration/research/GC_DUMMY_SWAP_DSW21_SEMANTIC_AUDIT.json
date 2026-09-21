@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw21.semantic_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW21",
+  "title": "Authority-bound semantic audit of real F-GC30/F-GC33 coupling coefficient u",
+  "status": "RETROSPECTIVE_REANALYSIS_OF_IMMUTABLE_QUALIFIED_EVIDENCE",
+  "authority": {
+    "f_gc30": "integration/f-gc/F-GC30_CANONICAL_ADMISSION.json",
+    "f_gc40": "integration/f-gc/F-GC40_STATUS.json",
+    "f_gc33": "integration/f-gc/F-GC33_CANONICAL_ADMISSION.json",
+    "real_swap_fixture": "tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py",
+    "evidence_commit": "0022e854000afe5a050303d9a0709f72b7dae518",
+    "workflow_run": 35342313248,
+    "workflow_job": 105590798008
+  },
+  "equations": {
+    "u": "dt_day / (dH_bot_cm / dq_bot_cm_per_day)",
+    "q_u": "u*(H_bot_end_cm-H_bot_start_cm)/dt_day - q_bot",
+    "f_gc40_tile": "q_i(H)=q_i_star+(u_i/dt_s)*(H-H_i_star)",
+    "f_gc33_modflow": "HCOF=A*86400*(u/dt_s); RHS=HCOF*H_ref-A*86400*q_ref"
+  },
+  "observed_real_swap_predictor": {
+    "duration_day": 0.0001,
+    "q_bot_predictor_cm_per_day": 0.000001,
+    "q_u_cm_per_day": -9.658852120479678e-7,
+    "u": 0.00003402936037279093,
+    "storage_start_native": 1.0430631535459627,
+    "storage_end_native": 1.0430631535459627,
+    "storage_change_native": 0,
+    "total_in_native": 1e-10,
+    "total_out_native": 1e-10,
+    "mass_residual_native": 0,
+    "implied_delta_h_bot_cm": 1.00251040802135e-7,
+    "implied_delta_h_bot_m": 1.00251040802135e-9
+  },
+  "conclusions": [
+    "The production authority defines u as an inverse accepted-trajectory sensitivity, not from the accepted storage-change ledger.",
+    "In the qualified real-Richards F-GC44 predictor, total physical storage change is zero while u is nonzero.",
+    "Therefore u cannot generally be identified with physical water storage, even though it has the algebraic role and dimension of a coupling storage coefficient.",
+    "The nonzero u with zero net storage change is consistent with a through-flow response: equal total input and output can leave inventory unchanged while the lower-face head remains sensitive to q_bot.",
+    "F-GC33 is an exact affine unit/area transformation and does not add a new physical interpretation to u."
+  ],
+  "limits": [
+    "This is a retrospective semantic reanalysis of one already-qualified near-equilibrium real-SWAP fixture, not a broad hydrological-envelope qualification.",
+    "It does not show that u contains no storage information; it shows only that u is not identical to net physical storage change.",
+    "No production coupling change follows from this evidence alone."
+  ],
+  "next": "Prospectively scan real F-GC44 predictor responses over predeclared duration and q_bot values, comparing u, q_u, head response, total storage change and independent mass ledgers."
+}
