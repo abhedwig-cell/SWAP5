@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw24.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW24",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_ANALYTIC_LIMIT_CLOSED_AWAITING_LIVE_MODFLOW",
+  "preregistration": "integration/research/GC_DUMMY_SWAP_DSW24_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_dummy_swap_dsw24_interface_phreatic_limit.py",
+  "runner": "tests/research/run_gc_dummy_swap_dsw01.sh",
+  "execution_commit": "cac1559177189d0b12b35e030e26eb05c22f16ee",
+  "production_changes": false,
+  "analytic_expectations": {
+    "consistent_storage_high_C": {
+      "swap_storage": 0.1,
+      "modflow_storage": 0.1,
+      "C_per_day": 1000,
+      "h_upper_m": 8.050002499875006,
+      "h_interface_m": 8.049997500124993,
+      "head_gap_m": 0.000004999750013112703,
+      "h_link_target_m": 8.05
+    },
+    "duplicate_storage_high_C": {
+      "swap_storage": 0.2,
+      "modflow_storage": 0.2,
+      "C_per_day": 1000,
+      "h_upper_m": 8.025002499750025,
+      "h_interface_m": 8.024997500249976,
+      "head_gap_m": 0.000004999500049507333,
+      "h_link_target_m": 8.05
+    }
+  },
+  "decision_boundary": [
+    "Head collapse alone is not a sufficient equivalence criterion.",
+    "A lower-interface model approaches the target one-state h-link only when hydraulic resistance/lag vanishes and total owned storage equals the target physical storage.",
+    "Do not mark qualified until live MODFLOW6 execution passes the preregistered gates."
+  ],
+  "blockers": [
+    "GitHub Actions runner queue currently delays live execution."
+  ]
+}
