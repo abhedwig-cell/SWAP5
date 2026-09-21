@@ -6,7 +6,8 @@ on:
       - work/f-gc-dummy-swap-shared-storage
     paths:
       - 'integration/research/GC_LOW01B_RESULT.json'
-      - 'integration/research/GC_LOW01C1*.json'
+      - 'integration/research/GC_LOW01C1_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01C1_PREREGISTRATION_AMENDMENT.json'
       - 'tests/research/test_gc_low01c1_internal_node_snap.f90'
       - 'tests/research/run_gc_low01c1.sh'
       - '.github/workflows/gc-low01c1.yml'
