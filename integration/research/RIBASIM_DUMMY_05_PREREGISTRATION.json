@@ -30,7 +30,7 @@
     "M1": "full-demand regime reproduces the DUMMY-04 fixed-U solution",
     "M2": "curtailed regime pins the end level at hmin and satisfies exchange plus water balance exactly",
     "M3": "zero-delivery regime leaves physical exchange uncurtailed when hydrology alone reaches/breaches hmin",
-    "M4": "a case where curtailment raises Basin level also increases infiltration relative to a frozen-exchange sequential clipping approximation",
+    "M4": "In a curtailed case, the exact constrained solution has higher end level and larger infiltration than the unconstrained full-demand coupled solution; the management volume saved by curtailment is therefore partly offset by additional physical infiltration.",
     "M5": "FULL-to-CURTAILED boundary is continuous in U, V and h1",
     "M6": "CURTAILED-to-ZERO boundary is continuous in U, V and h1",
     "M7": "physical-floor violation fails closed rather than using management clipping to repair hydrological infeasibility",
@@ -50,5 +50,6 @@
     "no empirical convergence tolerance"
   ],
   "pass_decision": "RIBASIM_DUMMY_05_QUALIFIED_EXACT_MANAGEMENT_COMPLEMENTARITY",
-  "fail_decision": "RIBASIM_DUMMY_05_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_05_BLOCKED",
+  "preregistration_revision_note": "Before implementation or result inspection, M4 was sharpened to compare the exact curtailed solution against the unconstrained full-demand coupled solution. This removes ambiguity about which frozen-exchange sequential approximation would be used."
 }
