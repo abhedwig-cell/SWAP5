@@ -606,3 +606,37 @@ partial-supply realization contract.
 This is distinct from DUMMY-15B. DUMMY-15B asks how allocated managed water is
 split into supplied water. DUMMY-15C asks what management state is committed
 when a discrete irrigation event is not fully supplied.
+
+
+## DUMMY-15D insertion: gross/net irrigation and canopy state
+
+The restricted production sprinkling audit showed that DUMMY-15C is still not
+sufficient for real SWAP substitution.
+
+External supply corresponds to gross irrigation, while only net irrigation
+reaches the soil after stateful Rutter interception.
+
+The forward sequence is therefore:
+
+~~~text
+DUMMY-15B
+  allocation -> supplied policy contrast
+
+DUMMY-15C
+  selected irrigation-event management state under partial supply
+
+DUMMY-15D
+  gross source withdrawal -> canopy state/evaporation -> net soil irrigation
+
+DUMMY-16
+  management-clock synchronization
+
+DUMMY-17
+  two-Basin + shared-groundwater network
+
+DUMMY-18
+  real-model authority binding / staged substitution
+~~~
+
+DUMMY-16 is deliberately downstream of DUMMY-15D so a later clock experiment
+cannot confuse event timing with an unresolved canopy/system-boundary ledger.
