@@ -97,6 +97,7 @@ def build_model(
     well_rate_m3_per_day: float = 0.0,
     initial_head_m: float = H0_M,
     dt_day: float = DT_DAY,
+    ims_complexity: str = "MODERATE",
 ) -> None:
     sim = flopy.mf6.MFSimulation(
         sim_name=name,
@@ -111,7 +112,7 @@ def build_model(
     )
     flopy.mf6.ModflowIms(
         sim,
-        complexity="MODERATE",
+        complexity=str(ims_complexity),
         outer_dvclose=1.0e-12,
         inner_dvclose=1.0e-14,
         rcloserecord=[1.0e-15, "strict"],
@@ -170,6 +171,7 @@ def run_case(
     well_rate_m3_per_day: float = 0.0,
     initial_head_m: float = H0_M,
     dt_day: float = DT_DAY,
+    ims_complexity: str = "MODERATE",
 ) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix=f"gc-dsw01-{case_name}-") as tmp:
         workdir = Path(tmp)
@@ -181,6 +183,7 @@ def run_case(
             well_rate_m3_per_day=well_rate_m3_per_day,
             initial_head_m=initial_head_m,
             dt_day=dt_day,
+            ims_complexity=ims_complexity,
         )
 
         raw = XmiWrapper(lib_path=libmf6, working_directory=workdir)
