@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_real_swap.map03.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP03",
+  "title": "Real-SWAP storage-response and bottom-exchange decomposition",
+  "status": "PREREGISTERED_BEFORE_MAP03_LIVE_RUN",
+  "authority": {
+    "fixture": "unchanged F-GC45 physical setup and FMR serialized Reference Richards backend",
+    "map02": "integration/research/GC_REAL_SWAP_MAP02_RESULT.json",
+    "transaction_fields": [
+      "accepted_storage_change",
+      "accepted_total_in",
+      "accepted_total_out",
+      "accepted_bottom_outward_exchange_native",
+      "accepted_mass_residual"
+    ]
+  },
+  "fixed_heads_m": [
+    -0.7149999691734037,
+    -0.7149999684532901,
+    -0.7149999677331765,
+    -0.714999967013063,
+    -0.7149999662929494
+  ],
+  "predictor_u": 0.00003402936037279093,
+  "measurements": [
+    "accepted storage change in cm and m for each fixed-head whole-window trial",
+    "accepted total in, total out and mass residual",
+    "accepted bottom outward exchange in cm and m",
+    "central finite-difference d(storage_change_m)/dH at the two MAP02 radii",
+    "central finite-difference d(bottom_outward_exchange_m)/dH at the same radii",
+    "central finite-difference d(storage+bottom_outward)/dH",
+    "ratio of storage derivative to production u",
+    "ratio of bottom-exchange derivative to -production u"
+  ],
+  "hypotheses": [
+    "d(storage_change_m)/dH is approximately +u within the local admitted band",
+    "d(bottom_outward_exchange_m)/dH is approximately -u",
+    "d(storage_change_m + bottom_outward_exchange_m)/dH is approximately zero because all other active external forcing is head-independent in this fixture"
+  ],
+  "gates": [
+    "all direct corrector trials are accepted and mass-complete",
+    "accepted_storage_change equals accepted_total_in-accepted_total_out within the transaction mass tolerance",
+    "all fixed-head mass residuals are finite and within 1e-12 cm",
+    "both storage and bottom-exchange finite-difference derivatives are finite",
+    "storage derivative and minus bottom-exchange derivative agree within 5e-4 relative",
+    "storage derivative agrees with production u within 5e-4 relative",
+    "the derivative of storage plus bottom-outward exchange is no more than 5e-4 times the production-u scale"
+  ],
+  "interpretation_rules": [
+    "If the hypotheses close, u is locally a storage sensitivity dS/dH for this simple fixture, while q_swap has derivative -u/dt.",
+    "That result does not imply q_u itself equals physical bottom exchange.",
+    "Any conclusion about the application-service reanchor must distinguish a storage/balance response from the corrector bottom-interface flux."
+  ],
+  "forbidden": [
+    "no production runtime change",
+    "no adaptive head band",
+    "do not generalize the storage identity to active drains/root uptake until separately tested"
+  ]
+}
