@@ -259,14 +259,12 @@ def main() -> None:
         rhs_m3_per_day=-(PRECIP_M * AREA_M2 / DT_DAY),
     )
     require(bool(control["converged"]), f"control did not converge: {control}")
-    require(
-        math.isclose(
-            float(control["head_m"]),
-            EXPECTED_CONTROL_HEAD_M,
-            rel_tol=0.0,
-            abs_tol=CONTROL_TOL_M,
-        ),
-        f"control head {control['head_m']} != {EXPECTED_CONTROL_HEAD_M}",
+    control_error_m = float(control["head_m"]) - EXPECTED_CONTROL_HEAD_M
+    control_oracle_pass = math.isclose(
+        float(control["head_m"]),
+        EXPECTED_CONTROL_HEAD_M,
+        rel_tol=0.0,
+        abs_tol=CONTROL_TOL_M,
     )
 
     # Current coupling transform for the transparent qbot=0 dummy:
@@ -282,7 +280,8 @@ def main() -> None:
 
     print(f"GC_DSW01_CONTROL_HEAD_M={float(control['head_m']):.17g}")
     print(f"GC_DSW01_CONTROL_ITERATIONS={int(control['iterations'])}")
-    print("GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS")
+    print(f"GC_DSW01_CONTROL_ERROR_M={control_error_m:.17g}")
+    print(f"GC_DSW01_CONTROL_ORACLE_PASS={1 if control_oracle_pass else 0}")
     print(f"GC_DSW01_CURRENT_U_STATUS={current['status']}")
     print(f"GC_DSW01_CURRENT_U_CONVERGED={1 if current['converged'] else 0}")
     if math.isfinite(float(current["head_m"])):
@@ -293,6 +292,15 @@ def main() -> None:
     if current["error"]:
         print(f"GC_DSW01_CURRENT_U_ERROR={current['error']}")
     print("GC_DSW01_LIVE_PROBE_COMPLETED=PASS")
+
+    # Preserve the preregistered 1e-8 m control gate, but only after all
+    # diagnostic observations have been emitted.
+    require(
+        control_oracle_pass,
+        f"control head {control['head_m']} != {EXPECTED_CONTROL_HEAD_M} "
+        f"within {CONTROL_TOL_M}",
+    )
+    print("GC_DSW01_LIVE_FLUX_ONLY_CONTROL=PASS")
 
 
 if __name__ == "__main__":
