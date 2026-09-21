@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09x.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09X",
+  "workflow_run": 35563369096,
+  "decision": "DIAGNOSTIC_QUALIFIED_TWO_NUMERICAL_EFFECTS_SEPARATED",
+  "exact_head_m": 8.056155281280883,
+  "variants": [
+    {
+      "rclose": 1e-15,
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": false,
+      "iterations": 80
+    },
+    {
+      "rclose": 1e-14,
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": false,
+      "iterations": 80
+    },
+    {
+      "rclose": 1e-13,
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": true,
+      "iterations": 5
+    },
+    {
+      "rclose": 1e-12,
+      "head_m": 8.056155281280944,
+      "residual_m_per_day": -1.2533377113932431e-14,
+      "modflow_converged": true,
+      "iterations": 5
+    }
+  ],
+  "gates": {
+    "rclose_1e_13_modflow_certificate": "PASS",
+    "original_external_residual_1e_12": "PASS",
+    "original_head_1e_10": "PASS"
+  },
+  "bounded_conclusions": [
+    "Within one prepared solve, MODERATE nonlinear under-relaxation history causes the DSW-09 head stall when the external coupler changes the affine tangent between outer iterations.",
+    "After disabling that nonlinear-history mechanism, a distinct inner residual certification floor remains: 1e-15 and 1e-14 do not certify, while 1e-13 and 1e-12 certify the same already reached physical root.",
+    "The original DSW-09 physics gate is not relaxed; this diagnostic only separates MODFLOW solver-state behavior from the external nonlinear residual.",
+    "These oracle values do not define a production IMS tolerance."
+  ]
+}
