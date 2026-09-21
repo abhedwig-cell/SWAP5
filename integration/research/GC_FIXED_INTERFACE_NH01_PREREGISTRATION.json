@@ -7,8 +7,8 @@
   "purpose": "First direct analytical falsification test of the fixed geometric SWAP-MODFLOW interface with interface hydraulic head deliberately different from SWAP phreatic elevation.",
   "proof_layer": "MATHEMATICAL_AND_INDEPENDENT_ORACLE_BEFORE_NUMERICAL_IMPLEMENTATION",
   "geometry": {
-    "unit_horizontal_area_m2": 1.0,
-    "coupling_plane_elevation_m": 0.0,
+    "unit_horizontal_area_m2": 1,
+    "coupling_plane_elevation_m": 0,
     "top_system": "lumped phreatic storage above z_c connected hydraulically to the fixed interface plane",
     "groundwater_system": "MODFLOW-like storage below the interface plane",
     "physical_ownership": "top and groundwater inventories are disjoint; interface transfer is internal and must cancel"
@@ -24,14 +24,14 @@
     "W_M": "positive external volume into groundwater/MODFLOW control volume"
   },
   "parameters": {
-    "initial_H_c_m": 8.0,
-    "initial_z_p_m": 8.0,
-    "top_storage_coefficient": 0.10,
-    "groundwater_storage_coefficient": 0.10,
-    "vertical_conductance_per_day": 0.20,
-    "top_external_input_m": 0.010,
-    "groundwater_external_input_m": 0.0,
-    "dt_day": 1.0
+    "initial_H_c_m": 8,
+    "initial_z_p_m": 8,
+    "top_storage_coefficient": 0.1,
+    "groundwater_storage_coefficient": 0.1,
+    "vertical_conductance_per_day": 0.2,
+    "top_external_input_m": 0.01,
+    "groundwater_external_input_m": 0,
+    "dt_day": 1
   },
   "equations": {
     "interface_transfer": "E_c = C_v * dt * (z_p1 - H_c1)",
@@ -41,14 +41,14 @@
   },
   "closed_form": {
     "matrix": "[[S_S+Cdt,-Cdt],[-Cdt,S_M+Cdt]] * [z_p1,H_c1]^T = [S_S*z_p0+W_S,S_M*H_c0+W_M]^T",
-    "expected_z_p1_m": 8.03,
-    "expected_H_c1_m": 8.02,
-    "expected_head_gap_m": 0.01,
-    "expected_E_c_m": 0.002,
-    "expected_top_storage_change_m": 0.003,
-    "expected_groundwater_storage_change_m": 0.002,
-    "expected_complete_mass_change_m": 0.005,
-    "note": "Expected values are to be recomputed exactly from the equations before implementation; these decimal fields are human-readable preregistration targets."
+    "expected_z_p1_m": 8.06,
+    "expected_H_c1_m": 8.04,
+    "expected_head_gap_m": 0.02,
+    "expected_E_c_m": 0.004,
+    "expected_top_storage_change_m": 0.006,
+    "expected_groundwater_storage_change_m": 0.004,
+    "expected_complete_mass_change_m": 0.01,
+    "note": "Targets are the exact decimal solution of the stated linear equations: dz_p=0.06 m, dH_c=0.04 m, E_c=0.004 m."
   },
   "critical_semantic_observation": "The imposed vertical conductance belongs inside the SWAP/top-system surrogate between its phreatic state and the fixed coupling plane. It is not a q-link resistance between a SWAP interface head and a MODFLOW interface head: those interface heads remain one and the same H_c.",
   "hypotheses": {
