@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_irrigation_event_realization.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15C",
+  "title": "Discrete irrigation-event realization under partial external supply",
+  "baseline": "e8efdb8d233def31b3853d92d314bbf18a82bfb5",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+    "current": "BLOCKED_PENDING_DUMMY_15_AND_DUMMY_15B",
+    "implementation_rule": "No DUMMY-15C implementation or tests before DUMMY-15B closes and the implementation baseline is rebound."
+  },
+  "production_authority_basis": {
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "workunits": [
+      "F-APP05",
+      "F-APP07",
+      "F-APP08"
+    ],
+    "admitted_restricted_route": "Hupsel TCS1+DCS2, TCSFIX=1, surface sprinkling with Rutter interception and dynamic-top binding",
+    "key_state": [
+      "dayfix",
+      "active_event",
+      "active_event_start",
+      "active_event_end",
+      "Rutter canopy_storage_cm"
+    ],
+    "key_behavior": [
+      "stress trigger based on Tred versus DVS-dependent threshold",
+      "minimum-interval gate uses committed dayfix",
+      "selected event has fixed depth and rate in the restricted Hupsel route",
+      "event candidate may require interval split at event end",
+      "gross irrigation is routed through Rutter; net irrigation reaches dynamic top"
+    ],
+    "unresolved_gap": "No admitted contract currently defines how a selected fixed-depth/rate irrigation event reacts when an external allocator can physically supply only part of that event."
+  },
+  "purpose": "Separate water-allocation shortfall from irrigation-event state transition. Determine which management state is committed when a selected SWAP-like irrigation event is only partly externally supplied.",
+  "first_stage_abstraction": {
+    "selected_event_request_m3": 20,
+    "actual_external_supply_capacity_m3": 12,
+    "allocation_shortfall_m3": 8,
+    "pre_event_management_state": {
+      "interval_gate_ready": true,
+      "active_event": false,
+      "synthetic_dayfix": 7
+    },
+    "note": "Volumes are normalized analytical amounts after area conversion. They are not a claim that the Hupsel 2 cm event itself equals 20 m3."
+  },
+  "policies": {
+    "atomic_event_reject": {
+      "rule": "If full selected-event supply is unavailable, reject the event candidate and transfer no irrigation water.",
+      "supplied_m3": 0,
+      "committed_management_state": "unchanged pre-event state",
+      "residual_backlog_state": false,
+      "interpretation": "The selected event is treated as transactionally indivisible."
+    },
+    "partial_complete": {
+      "rule": "Supply the available 12 m3, commit the event as completed, reset the scheduling interval state, and discard the unsupplied 8 m3 as an allocation-realization shortfall diagnostic.",
+      "supplied_m3": 12,
+      "committed_management_state": "event completed; scheduling interval reset",
+      "residual_backlog_state": false,
+      "interpretation": "Management behaves as if the event occurred even though only part of the requested water was delivered."
+    },
+    "partial_residual_active": {
+      "rule": "Supply 12 m3 and persist the unsupplied 8 m3 as explicit active-event residual management state for later completion.",
+      "supplied_m3": 12,
+      "committed_management_state": "active residual event",
+      "residual_backlog_state": true,
+      "interpretation": "Future demand contains explicit management memory independent of the hydrologic soil state."
+    }
+  },
+  "invariants": [
+    "Allocated-but-unsupplied water never enters a physical water ledger.",
+    "Any water applied to the SWAP side is based on supplied, not merely allocated, irrigation.",
+    "The event-management state transition and the physical water transfer are one coupled transaction: neither may be committed independently.",
+    "Atomic rejection may transfer zero water even when 12 m3 physical supply capacity exists; this is a management-policy choice, not a hydrological limitation.",
+    "Partial-complete and partial-residual-active can have identical current supplied water but different future management demand because their event state differs.",
+    "No policy may silently represent the unsupplied 8 m3 simultaneously as both future event backlog and new hydrologic root deficit.",
+    "Production sprinkling substitution must account for gross source withdrawal before Rutter and net soil-top irrigation after Rutter as distinct transfers."
+  ],
+  "canonical_followup": {
+    "purpose": "Expose future-state divergence after identical current partial supply.",
+    "partial_complete": {
+      "current_supplied_m3": 12,
+      "future_event_residual_m3": 0,
+      "scheduling_state": "minimum-interval clock restarted"
+    },
+    "partial_residual_active": {
+      "current_supplied_m3": 12,
+      "future_event_residual_m3": 8,
+      "scheduling_state": "event continuation owns the residual"
+    },
+    "interpretation": "The two policies can have identical current hydrologic input and still issue different future management requests."
+  },
+  "canopy_boundary": {
+    "rule": "DUMMY-15C first qualifies event-state semantics before detailed Rutter ledger substitution.",
+    "real_mapping_requirement": "When real sprinkling is substituted, surface-source supplied irrigation maps to gross irrigation entering Rutter. Net soil irrigation, canopy storage change and interception evaporation must then be reconciled separately."
+  },
+  "hypotheses": [
+    "The three preregistered policies yield different committed management states under the same selected event and same external capacity.",
+    "Partial-complete and partial-residual-active have the same current supplied volume but diverge in future management demand.",
+    "Treating allocation shortfall as both hydrologic deficit and event residual double-counts demand memory and must fail a state-ownership gate.",
+    "A correct coupled transaction must reject any state in which SWAP irrigation management state advances while the corresponding supplied-water transfer is rolled back, or vice versa.",
+    "The existing restricted F-APP07 process is insufficient by itself to choose among these external-supply policies; a new coupling contract is required."
+  ],
+  "forbidden": [
+    "no claim that any preregistered policy is current production SWAP behavior under external scarcity",
+    "no partial-rate or stretched-duration SWAP physics implementation before policy qualification",
+    "no mutation of F-APP07 production irrigation process",
+    "no mutation of Rutter physics",
+    "no production coupling change",
+    "no use of allocation shortfall as implicit water storage"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+  "fail_decision": "RIBASIM_DUMMY_15C_BLOCKED"
+}
