@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-15B",
   "title": "Forecast allocation versus physical realization policy contrast",
-  "baseline": "53d8a60fec0398132f24f20a3612e9ac36f0c85f",
+  "baseline": "800897d22d4eea54b5f00ba6d8dda69630958617",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
-    "current": "BLOCKED_PENDING_DUMMY_15",
-    "implementation_rule": "No DUMMY-15B model or tests before DUMMY-15 qualification and baseline rebinding."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-15B model or tests before DUMMY-15 qualification and baseline rebinding.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+      "workflow_run": 35581711814,
+      "main_closeout_head": "800897d22d4eea54b5f00ba6d8dda69630958617"
+    }
   },
   "purpose": "Reproduce the original conflict where management allocation sees enough predicted surface-water capacity, but later shared-state hydrology reduces the physically realizable managed withdrawal.",
   "stage_contract": {
@@ -398,5 +403,6 @@
       ],
       "policy_divergence_onset": "M_pred > 32, because both claims are already allocated when physical curtailment begins."
     }
-  }
+  },
+  "authority_rebind_note": "DUMMY-15B preregistration/concept were prepared and revised while DUMMY-15 was pending. No DUMMY-15B executable implementation existed then. After DUMMY-15 qualified, implementation baseline was rebound to this post-closeout head before any DUMMY-15B model/tests were created."
 }
