@@ -101,24 +101,25 @@
       "work_unit": "RIBASIM-DUMMY-15D",
       "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
       "run": 35593604887
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-18",
+      "decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+      "run": 35595081892
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-18",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
-      "implementation_baseline": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106",
-      "dependencies": [
-        "qualified DUMMY-17",
-        "qualified DUMMY-15C",
-        "qualified DUMMY-15D"
-      ],
-      "boundary": "green gate validates the map and preserves unresolved production authorities; it is not production admission"
+      "work_unit": "RIBASIM-DUMMY-19A",
+      "state": "PREREGISTRATION_START",
+      "intended_decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+      "implementation_baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
+      "dependency": "qualified DUMMY-18 stage1.real_ribasim_allocation_supply READY_RESTRICTED",
+      "boundary": "pinned real Ribasim only; no SWAP or MODFLOW substitution"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-18 authority-map gate; if PASS, use only READY_RESTRICTED stages for subsequent real-model bridge work.",
+  "next_authority_action": "Preregister and execute DUMMY-19A pinned real-Ribasim allocation/supply observability bridge.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
