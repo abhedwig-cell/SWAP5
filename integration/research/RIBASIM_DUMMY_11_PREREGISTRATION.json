@@ -3,11 +3,19 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-11",
   "title": "Multi-window shared-state memory with dynamic groundwater",
-  "baseline": "4a5acf3c929a384becc1ee8bb96728e0818c8655",
+  "baseline": "be1af9f93eb444d676f2df77b0260f3e56f7870a",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
-    "current": "BLOCKED_PENDING_DUMMY_10_QUALIFICATION",
-    "implementation_rule": "Do not implement DUMMY-11 before DUMMY-10 qualification is recorded."
+    "current": "SATISFIED",
+    "implementation_rule": "Do not implement DUMMY-11 before DUMMY-10 qualification is recorded.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+      "workflow_runs": [
+        35568794175,
+        35568804086
+      ],
+      "main_closeout_head": "be1af9f93eb444d676f2df77b0260f3e56f7870a"
+    }
   },
   "purpose": "Propagate the DUMMY-10 coupled surface and groundwater heads through multiple windows and compare discrete partition behavior with an independent continuous two-store event reference.",
   "continuous_full_demand": {
@@ -72,5 +80,6 @@
     "no claim that the linear two-store continuous reference represents a real MODFLOW aquifer"
   ],
   "pass_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
-  "fail_decision": "RIBASIM_DUMMY_11_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_11_BLOCKED",
+  "authority_rebind_note": "DUMMY-11 preregistration and concept were prepared while DUMMY-10 was pending, with implementation explicitly blocked. After DUMMY-10 qualified, the implementation baseline was rebound to this post-qualification head before any DUMMY-11 model or tests were created."
 }
