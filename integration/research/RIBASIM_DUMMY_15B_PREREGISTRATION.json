@@ -2,7 +2,7 @@
   "schema": "swap5.coupling.ribasim_dummy_competing_claims_forecast_realization.preregistration.v1",
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-15B",
-  "title": "Forecast allocation versus hydrologic realization under competing claims",
+  "title": "Forecast allocation versus physical realization policy contrast",
   "baseline": "53d8a60fec0398132f24f20a3612e9ac36f0c85f",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
@@ -13,8 +13,8 @@
   "stage_contract": {
     "forecast_capacity": "M_pred is an explicit allocation-stage capacity estimate; first canonical forecast ignores surface-groundwater exchange and uses A_s*(h_s0-hmin).",
     "allocation": "Split min(R_root+R_ext,M_pred) lexicographically by the declared managed priority. Record allocated_root and allocated_ext.",
-    "realization": "Submit only the allocated total to the qualified shared-state physical management oracle. It returns supplied total M_actual and physical exchange V.",
-    "realization_split": "Split M_actual lexicographically using the same declared priority, with each supplied claim additionally capped by its allocated amount.",
+    "realization": "Submit the allocated total to the qualified shared-state physical management oracle to obtain the exact total physically supplied M_actual and physical exchange V.",
+    "realization_split": "Evaluate at least two explicit supplied-flow policies against the same allocated vector and same M_actual: (A) priority-preserving curtailment oracle; (B) proportional aggregate-reduction oracle with rho=M_actual/sum(allocated), supplied_i=rho*allocated_i. Policy B is a structural analogue of documented aggregate UserDemand reduction, not an exact reproduction of Ribasim's smooth phi functions.",
     "commit": "Only supplied flows and physical exchange enter the water ledger and accepted states. Allocated-but-unsupplied water is diagnostic only."
   },
   "invariants": [
@@ -89,6 +89,50 @@
       "root_end": 52,
       "next_root_request": 28,
       "combined_three_store_change": -20
+    },
+    "priority_preserving": {
+      "root_priority": {
+        "allocated": {
+          "root": 40,
+          "external": 20
+        },
+        "supplied": {
+          "root": 32,
+          "external": 0
+        },
+        "root_end": 72,
+        "next_root_request": 8,
+        "combined_three_store_change": 0
+      },
+      "external_priority": {
+        "allocated": {
+          "external": 20,
+          "root": 40
+        },
+        "supplied": {
+          "external": 20,
+          "root": 12
+        },
+        "root_end": 52,
+        "next_root_request": 28,
+        "combined_three_store_change": -20
+      }
+    },
+    "proportional_reduction": {
+      "rho": 0.5333333333333333,
+      "supplied": {
+        "root": 21.333333333333332,
+        "external": 10.666666666666666
+      },
+      "root_end": 61.33333333333333,
+      "next_root_request": 18.66666666666667,
+      "combined_three_store_change": -10.666666666666666,
+      "physical_endpoint_invariant": {
+        "M_actual": 32,
+        "V": 28,
+        "h_s1": 0.4,
+        "h_g1": 0.28
+      }
     }
   },
   "underallocation_control": {
@@ -128,27 +172,44 @@
     }
   },
   "hypotheses": [
-    "The canonical surface-only forecast allocates the full 60 m3, but exact shared-state realization supplies only 32 m3 because physical exchange consumes 28 m3 while satisfying the management threshold.",
-    "Priority-preserving realization curtails lower-priority allocated claims before higher-priority allocated claims.",
-    "Root-first and external-first canonical cases have the same actual total managed withdrawal, V, surface endpoint and groundwater endpoint, but different supplied splits and root memory.",
-    "Allocated-but-unsupplied water never appears in the combined ledger or root endpoint.",
-    "When forecast allocation is below what the physical system could realize, supplied flow cannot exceed allocated flow.",
-    "Changing M_pred changes allocation and may change the realized physical endpoint because the physical layer only attempts the allocated managed flow, but it cannot cause supplied_i > allocated_i.",
-    "A forecast error is a management-information error, not a license to alter the physical exchange law."
+    "The canonical surface-only forecast allocates the full 60 m3, but exact shared-state realization supplies only 32 m3 because the mandatory physical exchange is 28 m3 at the accepted endpoint.",
+    "Both realization policies preserve 0 <= supplied_i <= allocated_i <= demand_i and sum supplied_i=M_actual.",
+    "Priority-preserving curtailment and proportional aggregate reduction can produce different supplied splits, root memory and represented-system loss despite identical allocation, identical M_actual, identical V and identical surface/groundwater endpoint.",
+    "Under full canonical allocation, priority-preserving root-first gives supplied_root=32 and supplied_external=0, while proportional reduction gives supplied_root=21.3333333333 and supplied_external=10.6666666667.",
+    "Allocated-but-unsupplied water never appears in any physical storage balance under either policy.",
+    "When forecast allocation is below what the physical system can realize, supplied flow cannot exceed allocated flow under either policy.",
+    "Changing forecast capacity can change allocation and thereby the physical attempted managed total; it cannot change the rule that physical exchange is solved from the actually attempted/supplied coupling problem.",
+    "A forecast error is a management-information error, not a license to alter the physical exchange law.",
+    "DUMMY-15B does not decide which realization policy production coupling should use; it creates exact contrasting oracles for later pinned Ribasim evidence."
   ],
   "public_authority_binding": {
     "ribasim_results": "https://ribasim.org/reference/usage.html",
     "ribasim_user_demand": "https://ribasim.org/reference/node/user-demand.html",
     "ribasim_allocation": "https://ribasim.org/concept/allocation.html",
-    "note": "Current public documentation distinguishes demand, allocated and supplied. DUMMY-15B remains a one-Basin analytical realization oracle and does not claim exact Ribasim physical-layer curtailment semantics."
+    "note": "Current public documentation distinguishes demand, allocated and supplied. DUMMY-15B remains a one-Basin analytical realization oracle and does not claim exact Ribasim physical-layer curtailment semantics.",
+    "documented_physical_behavior": "Current UserDemand abstraction equals smooth low-storage and min-level reduction factors times the sum of allocated flows (capped by current demand), so actual supplied abstraction can be lower than allocated abstraction.",
+    "policy_consequence": "This documentation invalidates any unqualified claim that current Ribasim necessarily preserves demand priority during physical curtailment after allocation."
   },
   "forbidden": [
     "no implementation before DUMMY-15 qualification",
-    "no claim that priority-preserving realization is current Ribasim supplied-flow behavior until executable Ribasim evidence is obtained",
-    "no network routing or allocation fairness",
+    "no claim that either analytical realization policy exactly reproduces current Ribasim across arbitrary networks/nodes",
+    "no claim that priority-preserving curtailment is current Ribasim supplied-flow behavior without executable evidence",
+    "no network routing or allocation fairness in DUMMY-15B",
     "no production SWAP irrigation authority claim",
     "no production coupling change"
   ],
-  "pass_decision": "RIBASIM_DUMMY_15B_QUALIFIED_FORECAST_REALIZATION_CONFLICT",
-  "fail_decision": "RIBASIM_DUMMY_15B_BLOCKED"
+  "pass_decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+  "fail_decision": "RIBASIM_DUMMY_15B_BLOCKED",
+  "preregistration_revision_note": "Revised before any DUMMY-15B implementation after checking current Ribasim UserDemand/allocation documentation. Current UserDemand physical abstraction applies smooth reduction factors to the allocated amount; this is not inherently equivalent to lower-priority-first curtailment. DUMMY-15B therefore compares realization policies instead of assuming priority-preserving realization is current Ribasim behavior.",
+  "realization_policies": {
+    "priority_preserving": {
+      "purpose": "Management-intent oracle: retain the declared demand priority during physical curtailment.",
+      "rule": "Walk the allocation vector in priority order; supplied_i=min(allocated_i, remaining_actual_capacity)."
+    },
+    "proportional_aggregate_reduction": {
+      "purpose": "Structural reference for a physical layer that reduces already-allocated abstractions with a common source-state factor.",
+      "rule": "rho=M_actual/sum(allocated) when allocated total > 0; supplied_i=rho*allocated_i.",
+      "ribasim_boundary": "Current UserDemand documentation multiplies allocated abstraction by smooth low-storage and min-level reduction factors. DUMMY-15B uses rho only to isolate split semantics; it does not reproduce the exact phi functions or assert identical scaling across arbitrary distinct real nodes."
+    }
+  }
 }
