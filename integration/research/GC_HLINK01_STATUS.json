@@ -4,7 +4,7 @@
   "work_unit": "GC-HLINK01",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_MODFLOW",
+  "state": "QUALIFIED",
   "preregistration": "integration/research/GC_HLINK01_PREREGISTRATION.json",
   "candidate_contract": "integration/research/GC_HLINK_CANDIDATE_CONTRACT_V1.json",
   "test": "tests/research/test_gc_hlink01_storage_replacement.py",
@@ -31,8 +31,12 @@
     "A PASS will also establish that retaining the same storage again through an API response reproduces the duplicate-storage signature.",
     "This is a synthetic mechanism qualification, not a production decision and not authority to set real SWAP5 MODFLOW storage globally."
   ],
-  "next_action": "Await the integrated MODFLOW6 6.8.0 testbank run without retuning; if qualified, proceed to HLINK02 nonlinear shared storage.",
-  "blockers": [
-    "GitHub Actions runner congestion."
-  ]
+  "next_action": "Activate HLINK02 exactly as preregistered. Keep HLINK01 synthetic-only; do not use it to assign real SWAP/MODFLOW storage ownership.",
+  "blockers": [],
+  "result": "integration/research/GC_HLINK01_RESULT.json",
+  "qualification": {
+    "workflow_run": 35572899763,
+    "workflow_job": 106248159927,
+    "live_gate": "PASS"
+  }
 }
