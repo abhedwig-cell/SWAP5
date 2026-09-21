@@ -8,7 +8,7 @@
   "checkpoint_commit": "6d532d412fd4b50acef534f7a7822f8325b9b72a",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "production_changes": false,
   "authority_paths": [
@@ -30,7 +30,16 @@
     "tests/fgc/support/fgc44_real_swap_ctypes.py",
     "tests/publication/test_pub_gc_e3_case.py"
   ],
-  "next_action": "Run the preregistered B3/K=0.1 three-policy live MODFLOW comparison and persist physical-state, ledger and work evidence.",
-  "recovery_point": "Resume from 6d532d412fd4b50acef534f7a7822f8325b9b72a; retain fixed B3 case, slopes, 40-outer budget and preregistered gates.",
-  "blockers": []
+  "next_action": "Run preregistered MAP05A for E4_B3_CORRECTOR_JR only, preserving MAP05 as a falsified all-policy invariance test.",
+  "recovery_point": "MAP05 original preregistration is closed as FAIL on INTERCEPT_ONLY corrector-domain admissibility in workflow 35567971147 / job 106233482950. Resume with MAP05A; do not modify MAP05 gates.",
+  "blockers": [
+    "MAP05 all-three-policy invariance gate failed because INTERCEPT_ONLY corrector iteration 3 returned GW_SWAP_PARTICIPANT_TRIAL_FAILED at head -0.71499625613852269 m."
+  ],
+  "last_reconciled_head": "142937168433ad96a04176d2858adcd6173c27d9",
+  "observation": {
+    "workflow_run": 35567971147,
+    "workflow_job": 106233482950,
+    "result_path": "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "decision": "PREREGISTERED_SLOPE_POLICY_INVARIANCE_FALSIFIED_BY_INTERCEPT_ONLY_CORRECTOR_DOMAIN_FAILURE"
+  }
 }
