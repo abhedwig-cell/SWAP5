@@ -4,16 +4,40 @@
   "work_unit": "RIBASIM-DUMMY-19G",
   "branch": "work/ribasim-dummy-01",
   "baseline": "70140daef7c80ffab4110e5b90938bb98f1a4311",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
-  "next_action": "Implement and execute the frozen 1h/6h/12h/24h saveat sensitivity sweep against pinned Ribasim; do not change references or tolerances.",
+  "next_action": "Execute frozen DUMMY-19G saveat sensitivity sweep; all four saveat cases, hybrid references and tolerances are immutable.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
-  "recovery_point": "DUMMY-19G scientific expectations frozen before DUMMY-19E2 completion; sequencing dependency now satisfied."
+  "recovery_point": "DUMMY-19G executable gate persisted after qualified DUMMY-19E2; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19G_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19G_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19G_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19G_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_saveat_sensitivity.py",
+    "tests/research/real_ribasim_saveat_sensitivity_bridge.jl",
+    "tests/research/run_ribasim_dummy_19g.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "allocation.dt fixed at 86400 s for every case",
+      "only solver.saveat varies across 3600/21600/43200/86400 s",
+      "both priority orders executed for every saveat",
+      "frozen hybrid final allocations, physical volumes and endpoints are checked",
+      "allocation record times are checked against the saveat-capped solve clock",
+      "fixed source ledger closes to 32 m3 in every case",
+      "monotonic supply/storage sensitivity is checked across the sweep"
+    ]
+  }
 }
