@@ -481,18 +481,57 @@ A coupling case is classified in this order:
 
 A green nonlinear solve cannot compensate for failure at levels 1-5.
 
+## Current executed frontier
+
+The live MODFLOW6 testbank has now executed through DSW-16, with DSW-09
+numerical diagnostics extended through DSW-09Y.
+
+The main established distinctions are:
+
+- shared-state storage versus finite-resistance q-link physics;
+- physical storage volume versus local response tangent;
+- storage response versus ET/drain sink response;
+- shared groundwater head versus additional internal column memory;
+- physical/coupled residual closure versus subsystem solver certification;
+- physical path dependence versus numerical/restart path dependence;
+- linear N:1 area aggregation versus the separate scientific question of
+  heterogeneous Richards transferability.
+
+Two deliberately falsified strict controls remain preserved as evidence:
+
+- DSW-05 at IMS strict `rclose=1e-15` reaches the analytic linear head but
+  does not receive a MODFLOW convergence certificate for one irregular
+  substep. DSW-05W shows that the same head certifies at `1e-14` and
+  `1e-13`.
+- DSW-09 under the original MODERATE/strict research solver settings does not
+  meet the combined preregistered gate. DSW-09V/X/Y separate nonlinear
+  under-relaxation history from near-root strict residual certification.
+
+These red controls are not to be rewritten into green historical tests.
+Their explanatory diagnostics are the current authority for interpretation.
+
+DSW-15 also established a harness rule: accepted transient state used by a
+strict conservation oracle must be transferred without unintended formatted
+restart rounding. The live fixture therefore writes the requested previous
+head directly to X and XOLD through XMI before the new substep is prepared.
+
 ## Immediate next actions
 
-1. Classify the first DSW-01 live failure. The analytic gate passed; the
-   live flux-only control missed the preregistered 8.05 m target by about
-   5e-8 m, so the current failure occurs before the scientific `u` probe.
-   Keep the 1e-8 m preregistered oracle and improve/characterize numerical
-   control accuracy rather than silently loosening it.
-2. Add DSW-02 storage-partition algebraic oracle.
-3. Add DSW-03 MODFLOW-only lateral forcing control.
-4. Add a literature/repository reconciliation specifically comparing:
-   - the Van Walsum/Veldhuizen h-link storage substitution;
-   - current iMOD Coupler storage setting;
-   - SWAP5 F-GC33/F-GC40 affine API term plus MODFLOW STO.
-5. Do not propose a production change until this comparison has a closed
-   mathematical and live-MODFLOW result.
+1. Run DSW-17, an equal-and-opposite internal-transfer experiment with zero
+   external forcing. The complete coupled storage must remain invariant.
+2. Run DSW-18 storage limits separately from q-link limits. In particular,
+   distinguish `S -> 0` and large `S` from `C -> infinity` in a physical
+   exchange law.
+3. Run DSW-19 adversarial converged-but-wrong cases for duplicate storage and
+   sign errors. This makes solver convergence versus scientific correctness
+   explicit.
+4. Run DSW-20 manufactured coupled trajectories with independently derived
+   forcing and state evolution.
+5. After those dummy oracles close, map real SWAP F-GC33 responses onto the
+   established taxonomy. Decompose the real response into storage-volume
+   change, physical external/sink contributions and numerical tangent using an
+   independent mass ledger.
+6. Keep production F-GC code unchanged until the real-SWAP mapping and
+   production-envelope qualification identify a specific equation-level or
+   solver-policy change that is independently justified.
+
