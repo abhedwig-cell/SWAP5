@@ -57,6 +57,7 @@ def main() -> None:
     require(libmf6.is_file(), "missing libmf6")
 
     expected = exact_head_m()
+    print(f"GC_DSW09_EXPECTED_HEAD_M={expected:.17g}")
     require(
         math.isclose(storage_change_m(expected), INPUT, rel_tol=0.0, abs_tol=1.0e-14),
         "closed-form mass oracle",
@@ -160,6 +161,11 @@ def main() -> None:
                 href = head
 
             require(len(history) > 1, "coupling test did not exercise reanchoring")
+            latest_candidate = float(history[-1][3])
+            latest_residual = float(history[-1][4])
+            print(f"GC_DSW09_LATEST_CANDIDATE_HEAD_M={latest_candidate:.17g}")
+            print(f"GC_DSW09_LATEST_CANDIDATE_ERROR_M={latest_candidate - expected:.17g}")
+            print(f"GC_DSW09_LATEST_RESIDUAL={latest_residual:.17g}")
             require(
                 math.isfinite(accepted_head),
                 "production-semantics coupling iteration did not converge",
