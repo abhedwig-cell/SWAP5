@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_clock_semantics.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-16",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "817470dcde729821190587154a193936aeb2abcf",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+  "blocker": "DUMMY-15 v3 is still unqualified; DUMMY-15B therefore remains implementation-blocked.",
+  "prepared_scope": "Two identical physical half-windows with a priority event at t=0.5; compare event-synchronized versus stale management clocks while holding total physical withdrawal and shared-state trajectory invariant.",
+  "canonical_expectation": {
+    "shared_final_water": {
+      "h_s": 0.2,
+      "h_g": 0.19555555555555557
+    },
+    "fast_clock": {
+      "root_final_m3": 60.44444444444444,
+      "next_root_request_m3": 19.555555555555557,
+      "external_total_m3": 40
+    },
+    "stale_clock": {
+      "root_final_m3": 80,
+      "next_root_request_m3": 0,
+      "external_total_m3": 20.444444444444443
+    }
+  },
+  "next_action": "After DUMMY-15B qualification, rebind DUMMY-16 before any implementation or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
