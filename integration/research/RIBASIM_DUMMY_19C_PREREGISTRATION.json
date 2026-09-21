@@ -3,11 +3,17 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-19C",
   "title": "Pinned real Ribasim full-allocation / physical-reduction conflict",
-  "baseline": "406732783d20c29dd26ede375253fab02cfc3849",
+  "baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
-    "current": "BLOCKED_PENDING_DUMMY_19B",
-    "implementation_rule": "No DUMMY-19C generator/verifier or workflow gate before DUMMY-19B closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-19C generator/verifier or workflow gate before DUMMY-19B closes and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+      "workflow_run": 35598766437,
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "main_closeout_head": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885"
+    }
   },
   "pins": {
     "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -112,5 +118,6 @@
     "no production coupling claim"
   ],
   "pass_decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
-  "fail_decision": "RIBASIM_DUMMY_19C_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19C_BLOCKED",
+  "authority_rebind_note": "DUMMY-19C preregistration/concept were prepared while DUMMY-19B was pending. No DUMMY-19C executable code existed then. Implementation baseline was rebound after DUMMY-19B qualified; model parameters, independent reference values and tolerances were not changed."
 }
