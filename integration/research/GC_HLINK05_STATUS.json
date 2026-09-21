@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.gc_hlink.hlink05.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK05",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "PREREGISTERED_BLOCKED_PARENT_HLINK04",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_HLINK05_PREREGISTRATION.json",
+  "blockers": [
+    "HLINK04 cannot execute until LOW01 readiness matrix is complete.",
+    "No GC_HLINK04_RESULT.json exists yet."
+  ],
+  "decision": "PRESERVE_PROSPECTIVE_COMPARISON_BEFORE_HLINK04_OBSERVATION",
+  "next_action": "Wait for LOW01 owner qualification, then HLINK04 execution. Do not implement or execute HLINK05 before a qualified HLINK04 result exists."
+}
