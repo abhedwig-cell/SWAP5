@@ -76,6 +76,9 @@ program test_gc_low01_output01
     write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_QBOT_CM_PER_DAY=', results(i)%qbot_cm_per_day
     write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_STORAGE_CHANGE_CM=', results(i)%storage_change_cm
     write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_MASS_RESIDUAL_CM=', results(i)%mass_residual_cm
+    write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_LOWER_DISTANCE_CM=', results(i)%lower_distance_cm
+    write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_LOWER_GRADIENT=', results(i)%lower_gradient_observed
+    write(*,'(A,ES24.16E3)') 'GC_LOW01_OUTPUT01_LOWER_JACOBIAN_PER_DAY=', results(i)%lower_jacobian_increment_observed_per_day
   end do
 
   call require(abs(results(2)%qbot_cm_per_day) <= mass_tol, 'OUTPUT01 hydrostatic qbot control')
@@ -201,6 +204,12 @@ contains
     call require(transfer(result%qbot_cm_per_day,0_int64) == transfer(result%candidate%qbot,0_int64), &
          'OUTPUT01 '//trim(label_text)//' qbot carrier identity')
     call require(abs(result%mass_residual_cm) <= mass_tol, 'OUTPUT01 '//trim(label_text)//' mass closure')
+    call require(result%lower_jacobian_diagnostic_available, 'OUTPUT01 '//trim(label_text)//' lower Jacobian diagnostic')
+    call require(result%lower_distance_cm > 0.0_real64, 'OUTPUT01 '//trim(label_text)//' positive lower distance')
+    call require(abs(result%lower_gradient_observed-result%lower_gradient_formula) <= 1.0e-12_real64, &
+         'OUTPUT01 '//trim(label_text)//' lower gradient formula')
+    call require(abs(result%lower_jacobian_increment_observed_per_day-result%lower_jacobian_formula_per_day) <= 1.0e-12_real64, &
+         'OUTPUT01 '//trim(label_text)//' lower Jacobian formula')
     call require(result%alternative_solver_calls == 0, 'OUTPUT01 '//trim(label_text)//' no alternative solver')
   end subroutine verify_result
 
@@ -249,6 +258,13 @@ contains
     if (transfer(a%qbot_cm_per_day,0_int64) /= transfer(b%qbot_cm_per_day,0_int64)) return
     if (transfer(a%storage_change_cm,0_int64) /= transfer(b%storage_change_cm,0_int64)) return
     if (transfer(a%mass_residual_cm,0_int64) /= transfer(b%mass_residual_cm,0_int64)) return
+    if (a%lower_jacobian_diagnostic_available .neqv. b%lower_jacobian_diagnostic_available) return
+    if (transfer(a%lower_distance_cm,0_int64) /= transfer(b%lower_distance_cm,0_int64)) return
+    if (transfer(a%lower_gradient_observed,0_int64) /= transfer(b%lower_gradient_observed,0_int64)) return
+    if (transfer(a%lower_gradient_formula,0_int64) /= transfer(b%lower_gradient_formula,0_int64)) return
+    if (transfer(a%lower_jacobian_increment_observed_per_day,0_int64) /= &
+        transfer(b%lower_jacobian_increment_observed_per_day,0_int64)) return
+    if (transfer(a%lower_jacobian_formula_per_day,0_int64) /= transfer(b%lower_jacobian_formula_per_day,0_int64)) return
     if (.not. states_bitwise_identical(a%candidate,b%candidate)) return
     same = .true.
   end function results_bitwise_identical
