@@ -7,6 +7,8 @@ on:
       - 'tests/research/test_gc_real_swap_map02_fgc45.py'
       - 'tests/research/test_gc_real_swap_map03_storage_response.py'
       - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
+      - 'tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90'
+      - 'tests/fgc/support/fgc45_real_multiswap_ctypes.py'
       - 'integration/research/GC_REAL_SWAP_MAP01*.json'
       - 'integration/research/GC_REAL_SWAP_MAP02*.json'
       - 'integration/research/GC_REAL_SWAP_MAP03*.json'
