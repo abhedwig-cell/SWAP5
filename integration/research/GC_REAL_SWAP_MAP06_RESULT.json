@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.gc_real_swap.map06.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP06",
+  "workflow_run": 35568529617,
+  "workflow_job": 106235070871,
+  "decision": "QUALIFIED_DETERMINISTIC_NONMONOTONE_B3_CORRECTOR_ADMISSIBILITY_TOPOLOGY",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "current_plus_u_accepted_head_m": -0.7149962561412444,
+    "current_plus_u_corrector_q_m_per_s": -1.2492277961483046e-11,
+    "intercept_only_failed_head_m": -0.7149962561385227
+  },
+  "valid_offsets_picometres": [
+    -8,
+    -6,
+    -3,
+    -2,
+    -1.5,
+    -1,
+    0,
+    0.5,
+    1,
+    1.5,
+    2,
+    3,
+    3.5,
+    4,
+    5,
+    6,
+    8,
+    10
+  ],
+  "invalid_offsets_picometres": [
+    -4,
+    -0.5,
+    2.5,
+    2.721711744868128
+  ],
+  "nearest_invalid_distance_picometres": 0.5,
+  "validity_transitions": 6,
+  "exact_map05_failure_reproduced": {
+    "offset_picometres": 2.721711744868128,
+    "status": 6,
+    "status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED"
+  },
+  "repeatability": {
+    "repeated_offsets_picometres": [
+      0,
+      2.5,
+      2.721711744868128,
+      3,
+      4
+    ],
+    "status_deterministic": true
+  },
+  "gates": {
+    "center_admissible": "PASS",
+    "map05_failed_head_reproduced": "PASS",
+    "mixed_validity_grid": "PASS",
+    "repeat_status_determinism": "PASS",
+    "every_valid_q_finite": "PASS"
+  },
+  "bounded_conclusions": [
+    "The B3 prescribed-head corrector admissibility set is deterministic on the preregistered grid but is not a simple monotone interval around the accepted head.",
+    "Valid and invalid heads alternate at picometre-scale offsets; the nearest sampled invalid head is 0.5 pm from the CURRENT_PLUS_U accepted head.",
+    "The MAP05 INTERCEPT_ONLY failed head reproduces status 6 in fresh-process trials, so the failure is not caused by accumulated outer-coupling history.",
+    "The fragmented topology is numerical/component-domain evidence, not evidence of discontinuous physical hydrology.",
+    "Slope policy can affect robustness by steering the coupling path through this structured admissibility set even when alternative nonzero slopes converge to essentially the same accepted physics."
+  ],
+  "forbidden_inference": [
+    "Do not infer a physical head tolerance from picometre grid spacing.",
+    "Do not adaptively expand or shrink the corrector envelope from MAP06.",
+    "Do not retroactively pass MAP05.",
+    "No production coupling change follows from MAP06 alone."
+  ],
+  "next": [
+    "Complete MAP07 q_u partial-versus-total derivative audit.",
+    "Use MAP05A+MAP06+MAP07 to write the coupling-response taxonomy before selecting any production reformulation.",
+    "Investigate a research-only real-SWAP prescribed-head case with a non-bottom response contribution only if it is admitted without production-owner widening."
+  ]
+}
