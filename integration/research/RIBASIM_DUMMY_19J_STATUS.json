@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_saveat_clock_conflict.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19J",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-19I. Scientific clock-conflict expectations are frozen prospectively.",
+  "prepared_scope": "6-hour BMI.update_until calls with 1-hour solver.saveat and 24-hour allocation.dt under the scarce 32 versus 60 m3/day demand case.",
+  "next_action": "After DUMMY-19I closes, rebind and implement without changing the frozen 1-hour versus 6-hour contrast.",
+  "production_delta": [],
+  "reference_delta": []
+}
