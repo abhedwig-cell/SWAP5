@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.coupling.real_ribasim_saveat_negative_control.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19H",
+  "title": "Pinned real Ribasim saveat negative control without management scarcity",
+  "baseline": "5b16a6ee52b61aa25ca21e88efd0b516a5dfe1be",
+  "sequencing": {
+    "state": "PREREGISTERED_BEFORE_19G_EXECUTION",
+    "execute_after": "DUMMY-19G closeout",
+    "rationale": "Freeze the causal negative control before observing the saveat sweep."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "purpose": "Test whether saveat sensitivity requires state-dependent management reallocation. Remove management scarcity while retaining the same physical min_level reduction and saveat sweep.",
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 60,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "root_priority": 2,
+    "external_priority": 3,
+    "saveat_sweep_seconds": [
+      3600,
+      21600,
+      43200,
+      86400
+    ]
+  },
+  "independent_continuous_reference": {
+    "ode": "A dh/dtau = 60 * (1 - phi(h-0.99)), tau in days. Allocation is demand-capped at 40/20 m3/day at every solve, so repeated optimization cannot change the physical target.",
+    "allocated_root_m3_per_day": 40,
+    "allocated_external_m3_per_day": 20,
+    "final_level_m": 1.0000299326012365,
+    "final_reduction_factor": 0.5022449383881314,
+    "integrated_root_supplied_m3": 20.04493250879216,
+    "integrated_external_supplied_m3": 10.02246625439608,
+    "integrated_total_supplied_m3": 30.067398763188237,
+    "integrated_storage_gain_m3": 29.93260123651531,
+    "ledger": "60 m3 fixed inflow = total physical UserDemand supply + Basin storage gain."
+  },
+  "hypotheses": [
+    "All saveat cases allocate the full 40/20 m3/day demand from the first management solve onward.",
+    "Repeated saveat-synchronized allocation solves therefore do not alter allocated targets.",
+    "Physical supplied volumes, Basin trajectory and final level are invariant across 1h, 6h, 12h and 24h saveat within tolerance.",
+    "If DUMMY-19G shows saveat sensitivity while DUMMY-19H does not, the causal mechanism is management reoptimization of retained storage rather than the physical output-saving operation itself."
+  ],
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "final_allocation_m3_per_day": 0.05,
+    "endpoint_level_m": 5e-8
+  },
+  "forbidden": [
+    "no post-output change to source supply, demands, saveat sweep, references or tolerances",
+    "no claim that this resolves the upstream clock-design limitation",
+    "no SWAP or MODFLOW substitution",
+    "no production prescription"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19H_QUALIFIED_SAVEAT_NEGATIVE_CONTROL",
+  "fail_decision": "RIBASIM_DUMMY_19H_BLOCKED"
+}
