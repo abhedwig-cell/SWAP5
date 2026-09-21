@@ -1,0 +1,34 @@
+name: GC LOW01-B inside-profile state machine
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01B*.json'
+      - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_STATE_CONTRACT_V1.json'
+      - 'tests/research/support/mod_gc_low01_constitutive_bridge.f90'
+      - 'tests/research/test_gc_low01_constitutive_bridge.f90'
+      - 'tests/research/test_gc_low01_state_machine.py'
+      - 'tests/research/test_gc_low01b_inside_profile.f90'
+      - 'tests/research/run_gc_low01_constitutive_bridge.sh'
+      - 'tests/research/run_gc_low01b.sh'
+      - '.github/workflows/gc-low01b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  low01b:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-B qualification
+        run: bash tests/research/run_gc_low01b.sh
