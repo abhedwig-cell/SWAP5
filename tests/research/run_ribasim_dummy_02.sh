@@ -20,7 +20,7 @@ git diff --quiet "$BASE"..HEAD -- reference ||
 
 while IFS= read -r path; do
   case "$path" in
-    .github/workflows/ribasim-dummy-01.yml) ;;
+    .github/workflows/ribasim-dummy-02.yml) ;;
     integration/research/RIBASIM_DUMMY_02_PREREGISTRATION.json) ;;
     integration/research/RIBASIM_DUMMY_02_STATUS.json) ;;
     integration/research/RIBASIM_DUMMY_02_RESULT.json) ;;
