@@ -12,6 +12,10 @@ on:
       - 'tests/research/run_gc_low01_candidate_carrier.sh'
       - '.github/workflows/gc-low01-candidate-carrier.yml'
   workflow_dispatch:
+concurrency:
+  group: gc-low01-carrier-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 jobs:
