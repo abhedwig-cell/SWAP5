@@ -187,6 +187,16 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live gate"
 
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw17_internal_transfer.py | tee "$BUILD/dsw17-live.txt"
+
+grep -Fq 'GC_DSW17_LIVE_GATE=PASS' "$BUILD/dsw17-live.txt" || fail "DSW-17 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw18_storage_limits.py | tee "$BUILD/dsw18-live.txt"
+
+grep -Fq 'GC_DSW18_LIVE_GATE=PASS' "$BUILD/dsw18-live.txt" || fail "DSW-18 live gate"
+
 set +e
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw15v_mass_resolution.py | tee "$BUILD/dsw15v-live.txt"
@@ -223,6 +233,6 @@ else
 fi
 
 echo 'GC_DUMMY_SWAP_TESTBANK_EXECUTION=PASS'
-echo 'GC_DUMMY_SWAP_QUALIFIED_BLOCKS=DSW01,DSW02,DSW03,DSW04,DSW06,DSW07,DSW08,DSW10,DSW11,DSW12,DSW13,DSW14,DSW15,DSW16'
+echo 'GC_DUMMY_SWAP_QUALIFIED_BLOCKS=DSW01,DSW02,DSW03,DSW04,DSW06,DSW07,DSW08,DSW10,DSW11,DSW12,DSW13,DSW14,DSW15,DSW16,DSW17,DSW18'
 echo 'GC_DUMMY_SWAP_DIAGNOSTIC_QUALIFIED=DSW05V,DSW05W,DSW09N,DSW09R,DSW09V,DSW09X,DSW09Y,DSW15V'
 echo 'GC_DUMMY_SWAP_ORIGINAL_STRICT_GATES_NOT_MET=DSW05,DSW09'
