@@ -7,7 +7,8 @@
   "fixed_physics": {
     "groundwater_storage": 0.2,
     "dt_day": 1,
-    "reference_head_m": 8
+    "reference_head_m": 8,
+    "independent_memory_state": true
   },
   "cases": [
     {
@@ -27,7 +28,7 @@
       "expected_memory_m": 0.014
     }
   ],
-  "contract": "transfer_to_groundwater is positive into MODFLOW storage and is applied with the exact opposite sign to the internal memory ledger; it is not an external source.",
+  "contract": "transfer_to_groundwater is positive into MODFLOW storage and is applied with the exact opposite sign to the internal memory ledger; it is not an external source. The memory reservoir is an independent state; the experiment is not a transfer between two storage partitions that are both functions only of the same shared groundwater head.",
   "gates": [
     "both live MODFLOW solves converge",
     "groundwater storage change equals transfer within 1e-12 m",
@@ -36,6 +37,7 @@
   ],
   "forbidden": [
     "no production code change",
-    "do not reinterpret an internal transfer as net system recharge or loss"
+    "do not reinterpret an internal transfer as net system recharge or loss",
+    "do not model the two sides as independently transferable head-only storage partitions constrained to the same head"
   ]
 }
