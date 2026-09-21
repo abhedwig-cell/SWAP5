@@ -144,6 +144,12 @@ on:
       - 'tests/research/generate_real_ribasim_heterogeneous_realization.py'
       - 'tests/research/real_ribasim_heterogeneous_realization_bridge.jl'
       - 'tests/research/run_ribasim_dummy_19d.sh'
+      - 'integration/research/RIBASIM_DUMMY_19E_*.json'
+      - 'integration/research/RIBASIM_DUMMY_19E_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/generate_real_ribasim_mixed_allocation_realization.py'
+      - 'tests/research/real_ribasim_mixed_allocation_realization_bridge.jl'
+      - 'tests/research/run_ribasim_dummy_19e.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -520,4 +526,27 @@ jobs:
           working-directory: .ribasim-pin
       - name: Run pinned real Ribasim heterogeneous realization
         run: bash tests/research/run_ribasim_dummy_19d.sh
+
+  real-ribasim-mixed-allocation-realization-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-19e-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout pinned Ribasim
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: f965a3266a4685bf10f3458aaa1855d09fa45a7a
+          path: .ribasim-pin
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-pin
+      - name: Run pinned real Ribasim mixed allocation-realization conflict
+        run: bash tests/research/run_ribasim_dummy_19e.sh
 
