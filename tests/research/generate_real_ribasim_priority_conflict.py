@@ -8,7 +8,7 @@ import sys
 from ribasim import Model
 from ribasim.config import Allocation, Experimental, Solver
 from ribasim.geometry.node import Node
-from ribasim.nodes import basin, flow_boundary, level_demand, terminal, user_demand
+from ribasim.nodes import basin, flow_boundary, level_demand, user_demand
 from shapely.geometry import Point
 
 DAY = 86400.0
