@@ -6,16 +6,16 @@
   "preregistration_baseline": "8f2607d79adb0bcbf6ef0e7972cae87b56f9264f",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "blocked": false,
-  "blocker": null,
+  "blocked": true,
+  "blocker": "Pinned Ribasim re-solves allocation at solver.saveat boundaries. With saveat=3600 s, the preregistered one-day frozen 32/0 root-first allocation does not persist.",
   "required_authorities": [
     "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
     "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
   ],
   "prepared_scope": "Pinned real Ribasim 32 m3/day priority allocation followed by common-factor physical UserDemand min_level reduction within one one-day allocation window.",
-  "next_action": "Execute frozen DUMMY-19E pinned real Ribasim qualification; model, references and tolerances are immutable.",
+  "next_action": "Do not repair DUMMY-19E. Execute a new clock-aligned work unit and a separate saveat-sensitivity work unit.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287",
@@ -34,7 +34,7 @@
     },
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "recovery_point": "DUMMY-19E executable gate persisted from post-DUMMY-19D baseline; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19E v1 scientifically falsified by run 35616065964 before physical-volume comparison.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19E_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19E_CONCEPT.md",
@@ -58,5 +58,22 @@
       "both priority cases must have the same total physical supply and Basin trajectory because total allocation and physical factor are common",
       "all integrated references and tolerances remain exactly those frozen before implementation"
     ]
+  },
+  "qualification_attempts": [
+    {
+      "run": 35616065964,
+      "job": 106386962623,
+      "state": "SCIENTIFIC_CLOCK_SEMANTICS_FALSIFICATION",
+      "qualification_head": "3e50767506d06943382a3c4de1c3bfb253b168eb",
+      "failure": "swap5_mixed_root_first root allocation differs from preregistered priority split",
+      "authority_use": "forbidden"
+    }
+  ],
+  "disposition": {
+    "decision": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+    "workflow_run": 35616065964,
+    "workflow_job": 106386962623,
+    "gate": "FAIL",
+    "classification": "scientific, not technical"
   }
 }
