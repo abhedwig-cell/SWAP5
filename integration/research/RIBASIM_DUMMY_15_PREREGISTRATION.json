@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_competing_claims.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15",
+  "title": "Competing managed claims under mandatory shared-state hydrology",
+  "baseline": "0d83fe25155de983199cfa9dce47ab033a05fa3e",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+    "current": "BLOCKED_PENDING_DUMMY_14",
+    "implementation_rule": "No DUMMY-15 model or tests before DUMMY-14 qualification and implementation-baseline rebinding."
+  },
+  "public_authority_binding": {
+    "user_demand": "https://ribasim.org/reference/node/user-demand.html",
+    "allocation_concept": "https://ribasim.org/concept/allocation.html",
+    "allocation_technical": "https://ribasim.org/dev/allocation.html",
+    "documented_points": [
+      "UserDemand allocation can use demand_priority when allocation is active.",
+      "Allocated flows are bounded by demand.",
+      "Allocation uses sequential/lexicographic objectives by demand priority.",
+      "Allocation results distinguish demand, allocated flow and supplied flow.",
+      "The physical layer attempts realization after allocation."
+    ],
+    "non_equivalence": "DUMMY-15 will be a one-Basin analytical priority oracle, not a reproduction of the Ribasim JuMP allocation model or its physical supplied-flow implementation."
+  },
+  "purpose": "Reintroduce the original water-conflict question with two managed claims competing for one surface store while a mandatory state-dependent surface-groundwater transfer is realized.",
+  "claims": {
+    "root_irrigation": {
+      "symbol": "R_root / U_root",
+      "recipient": "root store inside represented three-store boundary",
+      "accounting": "surface loss and root gain; internal transfer"
+    },
+    "external_demand": {
+      "symbol": "R_ext / U_ext",
+      "recipient": "outside represented three-store boundary",
+      "accounting": "surface loss only; external system sink"
+    },
+    "physical_exchange": {
+      "symbol": "V",
+      "accounting": "surface-groundwater internal transfer",
+      "management_status": "not a managed claim and not clipped merely to preserve either demand"
+    }
+  },
+  "exact_single_basin_oracle": {
+    "total_requested": "R_total=R_root+R_ext",
+    "physical_capacity_step": "Use the qualified DUMMY-10/DUMMY-13 shared-state management solve with R_total to obtain the exact realizable total managed withdrawal M=U_root+U_ext and physical exchange V.",
+    "priority_step": "Allocate the exact realized total M lexicographically: satisfy the higher-priority managed claim up to its request, then allocate any remainder to the lower-priority claim.",
+    "invariant": "For fixed R_total and physical state, changing only priority order changes the split (U_root,U_ext) but not M, V, h_s1 or h_g1.",
+    "combined_ledger": "Delta(W_root+S_surface+S_groundwater)=-U_ext when no external root forcing is active."
+  },
+  "canonical_case": {
+    "state": {
+      "W_root0": 40,
+      "W_target": 80,
+      "W_capacity": 100,
+      "h_s0": 1,
+      "h_g0": 0
+    },
+    "coupling": {
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50,
+      "dt": 1,
+      "hmin": 0.4
+    },
+    "demands": {
+      "R_root": 40,
+      "R_ext": 20,
+      "R_total": 60
+    },
+    "exact_total_realization": {
+      "M": 32,
+      "V": 28,
+      "h_s1": 0.4,
+      "h_g1": 0.28
+    },
+    "root_priority_expected": {
+      "U_root": 32,
+      "U_ext": 0,
+      "shortage_root": 8,
+      "shortage_ext": 20,
+      "W_root1": 72,
+      "next_root_request": 8,
+      "combined_three_store_change": 0
+    },
+    "external_priority_expected": {
+      "U_ext": 20,
+      "U_root": 12,
+      "shortage_ext": 0,
+      "shortage_root": 28,
+      "W_root1": 52,
+      "next_root_request": 28,
+      "combined_three_store_change": -20
+    }
+  },
+  "hypotheses": [
+    "For the canonical state, total realizable managed withdrawal is 32 m3 regardless of which of the two managed claims has higher priority.",
+    "Priority order changes only the split of the fixed realizable total in the one-Basin oracle; it does not change V, surface endpoint or groundwater endpoint.",
+    "When root irrigation has priority, the canonical realized split is U_root=32,U_ext=0.",
+    "When external demand has priority, the canonical realized split is U_ext=20,U_root=12.",
+    "Because root irrigation is internal but external demand leaves the represented system, changing priority changes combined three-store storage loss even though the surface/groundwater physical endpoint is unchanged.",
+    "Physical exchange V is never reduced solely to protect either managed claim.",
+    "No managed claim may receive more than its request and the sum of realized claims equals the exact coupled managed total M.",
+    "Current shortages remain diagnostics; only accepted root storage affects the next root irrigation request.",
+    "If total physical managed capacity exceeds the higher-priority request, residual capacity is transferred to the next priority without changing physical exchange beyond the effect of total managed withdrawal.",
+    "Reversing the sign of V must not change priority bookkeeping semantics."
+  ],
+  "future_forecast_realization_extension": {
+    "deferred": true,
+    "question": "After the exact same-state priority oracle qualifies, add a separate forecast-allocation versus actual-realization experiment where predicted availability is larger than physically realizable availability.",
+    "reason": "Do not mix priority semantics and forecast-error semantics in the first DUMMY-15 qualification."
+  },
+  "boundaries": [
+    "no claim that this is Ribasim's full allocation optimizer",
+    "no network routing, route priorities or fairness objective",
+    "no time-varying priority",
+    "no forecast/allocation mismatch in first-stage DUMMY-15",
+    "no production SWAP irrigation authority claim",
+    "no CSR-B1 or CSR-B2 closure",
+    "no production coupling change"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+  "fail_decision": "RIBASIM_DUMMY_15_BLOCKED"
+}
