@@ -30,7 +30,7 @@
       "supplied_root": 12
     }
   },
-  "next_action": "Execute DUMMY-15B forecast-realization-gate against the post-DUMMY-15 authority.",
+  "next_action": "Freeze this DUMMY-15B postimage on a single qualification branch and execute forecast-realization-gate.",
   "production_delta": [],
   "reference_delta": [],
   "title": "Forecast allocation versus physical realization policy contrast",
@@ -59,5 +59,34 @@
     }
   },
   "expected_tests": "15 tests",
-  "recovery_point": "DUMMY-15B implementation, tests and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-15B implementation, tests and focused runner are persisted; qualification remains open.",
+  "source_scope_verification": {
+    "base": "800897d22d4eea54b5f00ba6d8dda69630958617",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_15B_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_15B_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_15B_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_forecast_realization.py",
+      "tests/research/run_ribasim_dummy_15b.sh",
+      "tests/research/test_dummy_forecast_realization.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  },
+  "prequalification_review": {
+    "state": "STATIC_AND_ALGEBRA_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "canonical forecast 60 allocates 60 but shared-state physics supplies 32 with V=28, hs=0.4, hg=0.28",
+      "priority-preserving canonical root-first supplies root32/external0",
+      "priority-preserving canonical external-first supplies external20/root12",
+      "proportional canonical policy supplies root 21.3333333333 and external 10.6666666667",
+      "forecast=20 control supplies exactly allocated20 with V=30, hs=0.5, hg=0.3",
+      "forecast=45 physical realization remains 32 with V=28 and both policy splits are preregistered",
+      "forecast sweep transition is continuous at allocated_total=32",
+      "allocated-but-unsupplied water is excluded from root state and combined ledger"
+    ]
+  }
 }
