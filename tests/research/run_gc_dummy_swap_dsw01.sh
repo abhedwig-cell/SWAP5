@@ -107,6 +107,11 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 grep -Fq 'GC_DSW09R_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09r-live.txt" || fail "DSW-09R diagnostic gate"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw09u_ims_history.py | tee "$BUILD/dsw09u-live.txt"
+
+grep -Fq 'GC_DSW09U_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09u-live.txt" || fail "DSW-09U diagnostic gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw11_memory_state.py | tee "$BUILD/dsw11-live.txt"
 
 grep -Fq 'GC_DSW11_LIVE_GATE=PASS' "$BUILD/dsw11-live.txt" || fail "DSW-11 live gate"
