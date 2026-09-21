@@ -1,9 +1,9 @@
 # RIBASIM-DUMMY-11 blocked concept: shared-state temporal memory
 
-> Status: BLOCKED pending formal qualification of RIBASIM-DUMMY-10.
-> This file derives the independent temporal reference only. No DUMMY-11
-> discrete implementation or qualification test may be created before the
-> dependency gate is satisfied and the implementation baseline is rebound.
+> Status: IMPLEMENTED after formal qualification of RIBASIM-DUMMY-10.
+> The independent temporal reference below was derived while implementation was
+> blocked. The DUMMY-11 implementation baseline was rebound to the qualified
+> DUMMY-10 closeout before any DUMMY-11 model or tests were created.
 
 ## Question
 
@@ -309,7 +309,7 @@ improve monotonically.
 
 ## Intended DUMMY-11 acceptance structure
 
-After DUMMY-10 closes, DUMMY-11 may implement tests for:
+After DUMMY-10 closed, DUMMY-11 implemented tests for:
 
 1. exact two-head accepted-state chaining;
 2. combined and component water ledgers;
@@ -321,5 +321,5 @@ After DUMMY-10 closes, DUMMY-11 may implement tests for:
 8. no shortage backlog;
 9. approach to the fixed-head family as `A_g` grows.
 
-The implementation baseline must be rebound after DUMMY-10 qualification
-before any such code or tests are created.
+The implementation baseline was rebound after DUMMY-10 qualification before
+any DUMMY-11 code or tests were created.
