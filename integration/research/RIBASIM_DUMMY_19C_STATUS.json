@@ -6,13 +6,13 @@
   "preregistration_commit": "8ec78571d82299cb28bc7558bb0e501fa6b9a44e",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Execute DUMMY-19C v4 frozen repaired qualification; only a post-second-observability-repair run may qualify the work unit.",
+  "next_action": "Rebind and implement DUMMY-19D against the post-DUMMY-19C closeout authority.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -47,7 +47,7 @@
       "priority reversal must leave allocation, physical supply split and Basin trajectory unchanged because both demands are fully allocated"
     ]
   },
-  "recovery_point": "DUMMY-19C verifier now uses pinned flow interval semantics and pinned final Basin state semantics; scientific qualification remains open.",
+  "recovery_point": "DUMMY-19C closed qualified by v4 run 35610267609; real Ribasim allocation-versus-realization conflict authority is available.",
   "qualification_attempts": [
     {
       "run": 35600995386,
@@ -65,6 +65,14 @@
       "evidence_before_failure": "allocation, common-factor recipient ratio and integrated root/external/total physical supply all passed the preregistered checks before the endpoint assertion",
       "scientific_effect": "none; model, allocation, physical reduction law, independent continuous reference and tolerances unchanged",
       "authority_use": "forbidden"
+    },
+    {
+      "run": 35610267609,
+      "job": 106367333459,
+      "state": "PASS",
+      "qualification_head": "8b3b4024ad5b3c721dd1860fb4f236b6ac4a54bd",
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "authority_use": "admitted"
     }
   ],
   "prequalification_repair": {
@@ -92,5 +100,18 @@
       "correction": "use basin_state_data for final endpoint level/storage gain while retaining basin_data only for interval trajectory comparison",
       "scientific_effect": "none"
     }
-  ]
+  ],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+    "workflow_run": 35610267609,
+    "workflow_job": 106367333459,
+    "qualification_head": "8b3b4024ad5b3c721dd1860fb4f236b6ac4a54bd",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "gate": "PASS",
+    "observed_root_supplied_m3": 20.046621646239593,
+    "observed_external_supplied_m3": 10.023310823119797,
+    "observed_total_supplied_m3": 30.06993246935939,
+    "observed_final_level_m": 1.0000299300675306,
+    "observed_storage_gain_m3": 29.930067530603566
+  }
 }
