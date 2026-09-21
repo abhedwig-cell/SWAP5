@@ -111,6 +111,20 @@ nm -D "$BUILD/bridge/libgc_map09_swap.so" | grep -q 'fgc34_publish_c' || fail "m
 MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
   python3 tests/research/test_gc_real_swap_map09_active_drainage.py | tee "$BUILD/map09.txt"
 
+MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
+  python3 tests/research/test_gc_real_swap_map09a_decomposition.py | tee "$BUILD/map09a.txt"
+
+for marker in \
+  'GC_MAP09A_PARENT_ACTIVATION=PASS' \
+  'GC_MAP09A_SYMMETRIC_PAIR_FIXED=PASS' \
+  'GC_MAP09A_BOTH_TRIALS_MASS_COMPLETE=PASS' \
+  'GC_MAP09A_STORAGE_LEDGER_IDENTITY=PASS' \
+  'GC_MAP09A_DERIVATIVES_FINITE=PASS' \
+  'GC_MAP09A_ZERO_AUTHORITY_MUTATION=PASS' \
+  'GC_MAP09A_LIVE_GATE=PASS'; do
+  grep -Fq "$marker" "$BUILD/map09a.txt" || fail "missing MAP09A marker $marker"
+done
+
 for marker in \
   'GC_MAP09_E6_PREDICTOR_IDENTITY=PASS' \
   'GC_MAP09_REFERENCE_CORRECTOR_ADMITTED=PASS' \
@@ -123,6 +137,9 @@ done
 
 git diff --check -- tests/research/test_gc_real_swap_map09_active_drainage.py \
   tests/research/run_gc_real_swap_map09.sh \
-  integration/research/GC_REAL_SWAP_MAP09_PREREGISTRATION.json
+  integration/research/GC_REAL_SWAP_MAP09_PREREGISTRATION.json \
+  integration/research/GC_REAL_SWAP_MAP09A_PREREGISTRATION.json \
+  integration/research/GC_REAL_SWAP_MAP09_RESULT.json \
+  tests/research/test_gc_real_swap_map09a_decomposition.py
 
-echo 'GC REAL SWAP MAP09 ACTIVE DRAINAGE CORRECTOR FEASIBILITY PASS'
+echo 'GC REAL SWAP MAP09 MAP09A ACTIVE DRAINAGE DECOMPOSITION PASS'
