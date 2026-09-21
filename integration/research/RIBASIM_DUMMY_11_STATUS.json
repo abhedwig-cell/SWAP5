@@ -19,7 +19,7 @@
     "final_groundwater_head_m": 0.243278975175909,
     "cumulative_exchange_m3": 24.32789751759091
   },
-  "next_action": "Add DUMMY-11 to the registered research workflow and execute the shared-state temporal-memory gate.",
+  "next_action": "Execute the exact DUMMY-11 two-store-temporal-gate.",
   "production_delta": [],
   "reference_delta": [],
   "concept_path": "integration/research/RIBASIM_DUMMY_11_CONCEPT.md",
@@ -33,7 +33,7 @@
       35568804086
     ]
   },
-  "checkpoint_commit": "c199bd75e0905509d61f6a0242f622b674e78efc",
+  "checkpoint_commit": "73236ec390826e516e27b27af04d60e5c1e7e3be",
   "scope": "Multi-window propagation of accepted surface and groundwater heads through qualified DUMMY-10 windows, plus independent continuous two-store event reference.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_11_PREREGISTRATION.json",
@@ -61,5 +61,5 @@
       35568804086
     ]
   },
-  "recovery_point": "DUMMY-11 implementation, tests, concept and focused runner are persisted; qualification remains open."
+  "recovery_point": "DUMMY-11 full research postimage and workflow gate are persisted; qualification is the next action."
 }
