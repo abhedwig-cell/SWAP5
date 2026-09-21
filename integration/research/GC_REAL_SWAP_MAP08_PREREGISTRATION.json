@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.gc_real_swap.map08.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP08",
+  "title": "Raw FMR diagnosis of fragmented B3 prescribed-head corrector admissibility",
+  "status": "POST_MAP06_DIAGNOSTIC_PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "map05": "integration/research/GC_REAL_SWAP_MAP05_OBSERVATION.json",
+    "map06": "integration/research/GC_REAL_SWAP_MAP06_RESULT.json",
+    "participant_contract": "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+    "fixture": "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90"
+  },
+  "fixed_case": {
+    "window_day": 0.001,
+    "predictor_qbot_cm_per_day": 0.0001,
+    "center_head_m": -0.7149962561412444,
+    "offsets_picometres": [
+      -4,
+      -3,
+      -0.5,
+      0,
+      2,
+      2.5,
+      2.721711744868128,
+      3
+    ]
+  },
+  "selection_reason": {
+    "invalid": [
+      -4,
+      -0.5,
+      2.5,
+      2.721711744868128
+    ],
+    "valid_controls": [
+      -3,
+      0,
+      2,
+      3
+    ],
+    "note": "All points are frozen from MAP06; no adaptive refinement is permitted."
+  },
+  "method": [
+    "For each fixed head, initialize the unchanged F-GC44 B3 fixture in a fresh process.",
+    "Materialize the same prescribed-head forcing used by the participant.",
+    "Capture a fresh checkpoint from the unchanged committed origin.",
+    "Call the same corrector backend run_trial directly with the same corrector parameters/config/window.",
+    "Record result status, completed flag, candidate readiness, bottom-interface availability, requested/completed time, candidate interval, and kernel diagnostics.",
+    "Rollback any ready candidate; do not commit or publish interface mass.",
+    "Also record the participant-level status for the same head so raw-backend and wrapper classification can be paired."
+  ],
+  "outputs": [
+    "participant_status",
+    "raw_result_status",
+    "result_completed",
+    "candidate_ready",
+    "bottom_interface_exchange_available",
+    "bottom_exchange_finite",
+    "terminal_flux_finite",
+    "requested_t0_t1_match",
+    "completed_t_matches_window_end",
+    "candidate_interval_matches_window",
+    "transaction_calls",
+    "accepted_substeps",
+    "attempts",
+    "retries",
+    "trial_rollbacks",
+    "solver_rejections",
+    "temporal_rejections",
+    "temporal_certificate_unavailable_rejections",
+    "mass_rejections",
+    "internal_retries",
+    "min_accepted_substep_duration",
+    "max_accepted_substep_duration"
+  ],
+  "gates": [
+    "Fresh-process participant statuses reproduce MAP06 for all eight fixed offsets.",
+    "Valid participant points satisfy every accepted_whole_window predicate in the raw backend diagnostic.",
+    "Each invalid participant point has at least one explicit raw accepted_whole_window predicate failure or nonzero rejection diagnostic.",
+    "Diagnostic execution leaves the committed origin unchanged and publishes no ledger mass."
+  ],
+  "interpretation_rules": [
+    "Classify the first failed raw predicate and rejection counters; do not infer physical discontinuity.",
+    "If invalid and valid points differ only through solver/retry diagnostics at machine-scale head differences, classify this as numerical corrector-domain topology.",
+    "If raw backend succeeds while participant fails, investigate wrapper/provenance semantics instead.",
+    "No production tolerance or retry change follows from MAP08 alone."
+  ],
+  "forbidden": [
+    "no production module changes",
+    "no adaptive head refinement",
+    "no tolerance relaxation",
+    "no retry-budget changes",
+    "do not use MAP08 to retroactively alter MAP05 or MAP06 conclusions"
+  ]
+}
