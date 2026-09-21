@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.gc_low01b.preregistration_amendment.v2",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-B",
+  "status": "PRE_EXECUTION_SCOPE_REFINEMENT",
+  "original": "integration/research/GC_LOW01B_PREREGISTRATION.json",
+  "prior_amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
+  "constitutive_audit": "integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json",
+  "bounded_primary_slice": {
+    "ksatexm_extension_enabled": false,
+    "constitutive_authority": "B1.10/default typed MVG provider, for which saturated theta=cofgen(2) and saturated K=cofgen(3)",
+    "reason": "This is the only currently source-equivalent provider-owned saturated continuation for the preserved mode-1 special branch without changing legacy physics."
+  },
+  "deferred_slice": {
+    "ksatexm_extension_enabled": true,
+    "state": "BLOCKED_SEPARATE_SEMANTIC_DECISION",
+    "reason": "F-SI39 proves the typed saturated provider K may be cofgen(10), whereas preserved mode-1 continuation explicitly uses cofgen(3)."
+  },
+  "unchanged_primary_gates": [
+    "fixed groundwater levels and expected NN values",
+    "inside-profile fllowgwl=false",
+    "saturated continuation below NN",
+    "diagnosed qbot and complete-profile mass closure",
+    "immutable-origin deterministic replay"
+  ],
+  "additional_gate": "Before HeadCalc execution, the research constitutive bridge must independently reproduce the typed default-provider saturated water content and conductivity for every frozen node.",
+  "forbidden": [
+    "do not silently enable KSATEXM in LOW01-B primary qualification",
+    "do not modify production provider or mode-1 source behavior to force equivalence"
+  ]
+}
