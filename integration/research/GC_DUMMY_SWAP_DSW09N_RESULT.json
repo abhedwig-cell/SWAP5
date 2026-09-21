@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09n.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09N",
+  "workflow_run": 35561509372,
+  "workflow_job": 106215118034,
+  "decision": "DIAGNOSED_HISTORY_DEPENDENT_PREPARED_SOLVE_STALL",
+  "exact_nonlinear_head_m": 8.056155281280883,
+  "fresh_session_cases": [
+    {
+      "offset_m": 0.000001,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281283308,
+      "affine_root_m": 8.056155281283308
+    },
+    {
+      "offset_m": 1e-8,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281280883,
+      "affine_root_m": 8.056155281280883
+    },
+    {
+      "offset_m": 1e-10,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281280883,
+      "affine_root_m": 8.056155281280883
+    },
+    {
+      "offset_m": 1e-11,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281280882,
+      "affine_root_m": 8.056155281280883
+    },
+    {
+      "offset_m": 1e-12,
+      "converged": true,
+      "iterations": 2,
+      "head_m": 8.056155281280882,
+      "affine_root_m": 8.056155281280883
+    }
+  ],
+  "observed_stall_replay": {
+    "href_m": 8.05615528129362,
+    "q_ref_m_per_day": -2.62577459775315e-12,
+    "affine_root_m": 8.056155281280883,
+    "converged": true,
+    "iterations": 2,
+    "head_m": 8.056155281280883
+  },
+  "bounded_conclusion": "The DSW-09 stall is not a per-term floating-point/API resolution floor. The same near-root affine term converges from a fresh MODFLOW prepared solve. The remaining suspect is prepared-solve iteration history under repeated term reanchoring.",
+  "next": [
+    "Compare same nonlinear tangent sequence in one prepared solve versus fresh solve per reanchor.",
+    "Inspect MODFLOW/XMI solve-state reset semantics and IMS convergence history.",
+    "Do not relax DSW-09 residual gate."
+  ]
+}
