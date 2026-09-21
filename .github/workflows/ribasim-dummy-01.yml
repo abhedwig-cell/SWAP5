@@ -1,6 +1,15 @@
 name: RIBASIM-DUMMY-01 analytic reservoir
 
 on:
+  push:
+    branches:
+      - work/ribasim-dummy-01
+    paths:
+      - 'integration/research/RIBASIM_DUMMY_01_*.json'
+      - 'tests/research/dummy_ribasim_reservoir.py'
+      - 'tests/research/test_dummy_ribasim_01.py'
+      - 'tests/research/run_ribasim_dummy_01.sh'
+      - '.github/workflows/ribasim-dummy-01.yml'
   pull_request:
     branches:
       - integration/f-ci-canonical
