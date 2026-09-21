@@ -47,10 +47,10 @@ confirmed B0 defects are not migration targets.
 3. **PPA-WU02-B** follows as a separate lower-boundary adapter/state slice.
 
 No candidate is currently `READY`. PPA-WU04-C/D require the exact B1.11
-`MOD_meteo.f90` equation oracle; Python is available, but this checkout contains
-only its pinned identity/source-trace records and not the required byte-exact B0
-`SWAP.ZIP` archive. This is an external-artifact blocker, not permission to
-infer equations from historical prose or existing Rutter code.
+`MOD_meteo.f90` equation oracle has been reconstructed and verified from the
+byte-exact B0 distribution: B1.11 has 63 members, 1,886,519 bytes and manifest
+`24ce2768…`. Implementation remains blocked because no Fortran compiler is
+available for the required O0/O2 transaction, restart and mass qualification.
 
 No item above authorizes a change to Reference Richards, mass accounting,
 transaction ownership, restart ownership, or shared groundwater interfaces.
