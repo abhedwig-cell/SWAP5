@@ -45,6 +45,8 @@ for opt in 0 2; do
   compile src/solver/mod_b110_default_mvg_provider.f90 "$OUT/mvg_provider.o"
   compile tests/research/support/mod_gc_low01_constitutive_bridge.f90 "$OUT/mvg_bridge.o"
   compile "$BUILD/low01_headcalc_stubs.f90" "$OUT/stubs.o"
+  compile src/solver/mod_soil_water_accepted_step_direction_contract.f90 "$OUT/accepted_direction_contract.o"
+  compile src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 "$OUT/accepted_trajectory.o"
   compile src/runtime/mod_a23bu_worker_execution_context.f90 "$OUT/worker.o"
   compile src/solver/mod_reference_richards_workspace.f90 "$OUT/workspace.o"
   compile src/solver/mod_reference_richards_state_binding.f90 "$OUT/state_binding.o"
@@ -55,7 +57,7 @@ for opt in 0 2; do
   compile tests/research/support/mod_gc_low01_mode1_trial_carrier.f90 "$OUT/carrier.o"
   compile tests/research/test_gc_low01_output01.f90 "$OUT/test.o"
 
-  gfortran -O"$opt"     "$OUT/contract.o" "$OUT/mvg_provider.o" "$OUT/mvg_bridge.o" "$OUT/stubs.o"     "$OUT/worker.o" "$OUT/workspace.o" "$OUT/state_binding.o" "$OUT/linear.o"     "$OUT/source_sink.o" "$OUT/top.o" "$OUT/headcalc.o" "$OUT/carrier.o" "$OUT/test.o"     -o "$OUT/low01-output01"
+  gfortran -O"$opt"     "$OUT/contract.o" "$OUT/mvg_provider.o" "$OUT/mvg_bridge.o" "$OUT/stubs.o"     "$OUT/accepted_direction_contract.o" "$OUT/accepted_trajectory.o" "$OUT/worker.o" "$OUT/workspace.o" "$OUT/state_binding.o" "$OUT/linear.o"     "$OUT/source_sink.o" "$OUT/top.o" "$OUT/headcalc.o" "$OUT/carrier.o" "$OUT/test.o"     -o "$OUT/low01-output01"
 
   "$OUT/low01-output01" > "$OUT/output.txt" 2>&1 || {
     cat "$OUT/output.txt" >&2
