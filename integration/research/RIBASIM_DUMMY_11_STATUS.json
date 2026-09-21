@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_temporal.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-11",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "187c255983566d449ea79e99bf85c9d56d145d2b",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "RIBASIM-DUMMY-10 qualification is still queued in GitHub Actions; shared management semantics may not be consumed before that authority closes.",
+  "required_authority": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+  "prepared_scope": "Multi-window propagation of both surface and groundwater heads plus an independent continuous two-store management-event reference.",
+  "canonical_continuous_expectation": {
+    "event_time": 0.909516342472789,
+    "cumulative_delivery_m3": 36.38065369891156,
+    "final_surface_head_m": 0.3929144878349753,
+    "final_groundwater_head_m": 0.243278975175909,
+    "cumulative_exchange_m3": 24.32789751759091
+  },
+  "next_action": "After DUMMY-10 qualification, rebind DUMMY-11 implementation baseline to the post-qualification head before creating any DUMMY-11 model or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
