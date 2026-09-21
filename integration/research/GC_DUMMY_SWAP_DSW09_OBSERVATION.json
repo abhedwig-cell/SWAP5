@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw09.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW09",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35561244651,
+  "workflow_job": 106214393747,
+  "decision": "OPEN_NUMERICAL_CERTIFICATION_FLOOR",
+  "physical_law": {
+    "storage_change": "V(x)=0.15*x+0.5*x^2",
+    "initial_head_m": 8,
+    "input_m": 0.01
+  },
+  "exact_head_m": 8.056155281280883,
+  "latest_candidate_head_m": 8.05615528129362,
+  "head_error_m": 1.2736478538499796e-11,
+  "latest_exact_residual_m_per_day": -2.62577459775315e-12,
+  "fixed_residual_gate_m_per_day": 1e-12,
+  "modflow_converged": false,
+  "classification": "PHYSICAL_ROOT_NEARLY_REACHED_BUT_STRICT_COUPLED_GATE_OPEN",
+  "observations": [
+    "Head error is well inside the pre-registered 1e-10 m head tolerance.",
+    "Exact nonlinear residual remains above the pre-registered 1e-12 m/day residual tolerance.",
+    "From iteration 10 onward the reported head is unchanged while MODFLOW continues to return converged=false.",
+    "The strict gate is not relaxed post hoc."
+  ],
+  "next": [
+    "Run fresh-session tangent resolution sweep around the exact nonlinear root.",
+    "Separate API/IMS correction resolution from prepared-solve reanchor-history effects.",
+    "Retain DSW-09 as open until the pre-registered gate is met or the numerical limitation is explicitly qualified."
+  ]
+}
