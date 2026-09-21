@@ -140,13 +140,27 @@ objects.
 
 ### A. Shared physical state
 
-Example:
+Two cases must be distinguished.
+
+A true shared-phreatic h-link uses:
 
 ```
-H = phreatic / groundwater head
+H_phreatic,swap = H_phreatic,mf
 ```
 
-One physical value is represented by more than one subsystem.
+with a combined storage relation for that same water-table state.
+
+The current canonical F-GC route instead matches a lower-boundary interface
+hydraulic head:
+
+```
+H_interface,swap = H_interface,mf
+```
+
+MAP11 shows that the production bottom-face source explicitly says this is not
+the freatic groundwater level. Equal interface head is therefore a physical
+interface condition, but not by itself a shared complete-profile phreatic
+state.
 
 ### B. Physical state response / storage
 
@@ -208,7 +222,7 @@ MAP03 and MAP07.
 The current evidence is most consistent with the following bounded
 interpretation:
 
-1. groundwater head can be a physically shared state;
+1. a groundwater-related head may be shared, but current F-GC evidence proves a shared lower-interface hydraulic head, not yet a shared phreatic water-table state;
 2. SWAP retains independent internal unsaturated-zone memory;
 3. accepted prescribed-head corrector exchange is physical interface-mass
    authority;
