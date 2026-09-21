@@ -60,25 +60,42 @@ function physical_link_flow(model, from_id::Int, to_id::Int)
 end
 
 
-function integrate_link_flow(model, rows, initial_rate::Float64)::Float64
+function integrate_link_flow(model, rows)::Float64
+    # Pinned Ribasim flow_data reports interval-mean flows. The timestamp is
+    # the START of the represented saveat interval (core/src/write.jl).
     times = Float64.(Ribasim.seconds_since.(rows.time, model.config.starttime))
     rates = Float64.(rows.flow_rate)
 
-    require(all(diff(times) .> 0.0), "physical linkflow timestamps are not strictly increasing")
-
-    if first(times) > 1.0e-9
-        times = vcat(0.0, times)
-        rates = vcat(initial_rate, rates)
-    else
-        require(abs(first(times)) <= 1.0e-9, "unexpected negative initial linkflow time")
-    end
-
+    require(!isempty(times), "physical linkflow contains no intervals")
     require(
-        isapprox(last(times), DAY; atol = 1.0e-6, rtol = 0.0),
-        "physical linkflow does not span the full one-day horizon",
+        length(times) == length(rates),
+        "physical linkflow time/rate lengths differ",
+    )
+    require(
+        all(diff(times) .> 0.0),
+        "physical linkflow interval starts are not strictly increasing",
+    )
+    require(
+        abs(first(times)) <= 1.0e-9,
+        "physical linkflow does not start at the model horizon",
+    )
+    require(
+        last(times) < DAY,
+        "physical linkflow interval start is not before the model end",
     )
 
-    return sum(0.5 .* (rates[1:(end - 1)] .+ rates[2:end]) .* diff(times))
+    interval_edges = vcat(times, DAY)
+    durations = diff(interval_edges)
+    require(
+        all(durations .> 0.0),
+        "physical linkflow contains a non-positive represented interval",
+    )
+    require(
+        isapprox(sum(durations), DAY; atol = 1.0e-6, rtol = 0.0),
+        "physical linkflow intervals do not cover the full one-day horizon",
+    )
+
+    return sum(rates .* durations)
 end
 
 
@@ -145,8 +162,8 @@ function check_case(
         "$model_name physical reduction factor left the preregistered narrow range",
     )
 
-    root_volume = integrate_link_flow(model, root_flow, 0.5 * ROOT_DEMAND)
-    ext_volume = integrate_link_flow(model, ext_flow, 0.5 * EXTERNAL_DEMAND)
+    root_volume = integrate_link_flow(model, root_flow)
+    ext_volume = integrate_link_flow(model, ext_flow)
     total_volume = root_volume + ext_volume
 
     require(
