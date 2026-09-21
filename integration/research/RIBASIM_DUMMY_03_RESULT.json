@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_head_exchange.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-03",
+  "decision": "RIBASIM_DUMMY_03_QUALIFIED_HEAD_EXCHANGE_DIAGNOSTIC",
+  "authority": {
+    "baseline": "fe05668d943121bc30358a7c52eed43aa7f60afb",
+    "qualified_main_pre_result_head": "16b1173cd269cc553e765f62c68491d3168c5f91",
+    "qualification_head": "20380a030792e93914af5baeca756d847b76ac8e",
+    "qualification_merge_commit": "80bcfb6396ff2717b4fc2184b84975cf0a4b5c22",
+    "workflow_run": 35565340442,
+    "workflow_job": 106225925422,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_03_SOURCE_SCOPE=PASS",
+    "7/7 HeadExchangeDiagnosticTests PASS",
+    "linear exchange sign and zero crossing PASS",
+    "groundwater-head drop creates state-derived late conflict PASS",
+    "level change produces nonzero endpoint exchange residual PASS",
+    "zero-state-change control produces zero endpoint residual PASS",
+    "start-state exchange is management-request independent PASS",
+    "excessive head-driven infiltration fails closed PASS",
+    "invalid/nonfinite exchange configuration rejected PASS",
+    "RIBASIM_DUMMY_03_GATE=PASS"
+  ],
+  "admitted_scope": "Research-only linear head-difference exchange diagnostic layered on DUMMY-02, including start-state forecast/actual exchange and realized-end-level consistency residual.",
+  "interpretation": "A nonzero endpoint residual establishes state dependence under the frozen diagnostic only. It does not itself establish a production iteration requirement or a correct time-integrated exchange.",
+  "downstream": "Freeze a temporal exchange closure and compare explicit, predictor-corrector and fixed-point behavior, including the dimensionless coupling stiffness."
+}
