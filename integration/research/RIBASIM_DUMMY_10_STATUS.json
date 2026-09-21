@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-10",
   "branch": "work/ribasim-dummy-01",
   "baseline": "269fbe65f7f8febf0baa1df73a6c749abf43534b",
-  "checkpoint_commit": "7d453b7a225a49295647226d9b0b037a860944b5",
+  "checkpoint_commit": "8e1e58265ad96aecfcb32e1d9856784cbf745b04",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Exact FULL/CURTAILED/ZERO management complementarity on the qualified DUMMY-09 reciprocal finite surface/groundwater storage system.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_10_PREREGISTRATION.json",
@@ -35,11 +35,9 @@
   "authority_binding": "Implementation began only after DUMMY-09 qualification and preregistration rebinding to post-qualification baseline.",
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-10 two-store-management-gate.",
-  "recovery_point": "DUMMY-10 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": [
-    "GitHub Actions two-store-management-gate is queued in runs 35568794175 and 35568804086."
-  ],
+  "next_action": "Rebind DUMMY-11 implementation baseline to the post-qualification research head and begin shared-state temporal-memory implementation.",
+  "recovery_point": "DUMMY-10 closed qualified; DUMMY-11 dependency gate may now be satisfied.",
+  "blockers": [],
   "prequalification_review": {
     "date": "2026-09-21",
     "state": "ANALYTIC_STATIC_REVIEW_PASS_CI_STILL_REQUIRED",
@@ -52,5 +50,16 @@
       "zero-withdrawal physical-floor fail-closed case"
     ],
     "qualification_effect": "none; Actions evidence remains mandatory"
+  },
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+    "workflow_runs": [
+      35568794175,
+      35568804086
+    ],
+    "workflow_job": 106235842146,
+    "qualification_head": "17ea641ce22d2245db23dbeec5185db3f8a21430",
+    "tests": "10/10 PASS",
+    "gate": "PASS"
   }
 }
