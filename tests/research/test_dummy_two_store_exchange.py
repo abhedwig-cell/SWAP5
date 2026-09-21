@@ -83,6 +83,7 @@ class TwoStoreExchangeTests(unittest.TestCase):
                 math.exp(-3.0 * dt),
                 places=12,
             )
+            previous_difference = end.head_difference_m
 
     def test_g4_trapezoid_closed_form_satisfies_both_storage_and_exchange_equations(self) -> None:
         step = trapezoid_step(self.canonical(), self.start(), dt=1.0)
