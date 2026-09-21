@@ -90,6 +90,12 @@ on:
       - 'tests/research/dummy_forecast_realization.py'
       - 'tests/research/test_dummy_forecast_realization.py'
       - 'tests/research/run_ribasim_dummy_15b.sh'
+      - 'integration/research/RIBASIM_DUMMY_15C_*.json'
+      - 'integration/research/RIBASIM_DUMMY_15C_CONCEPT.md'
+      - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
+      - 'tests/research/dummy_irrigation_event_realization.py'
+      - 'tests/research/test_dummy_irrigation_event_realization.py'
+      - 'tests/research/run_ribasim_dummy_15c.sh'
       - 'integration/research/RIBASIM_DUMMY_16_*.json'
       - 'integration/research/RIBASIM_DUMMY_16_CONCEPT.md'
       - 'integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json'
@@ -341,3 +347,16 @@ jobs:
         run: python3 --version
       - name: Run two-Basin shared-groundwater gate
         run: bash tests/research/run_ribasim_dummy_17.sh
+
+  irrigation-event-realization-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-15c-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run irrigation-event realization gate
+        run: bash tests/research/run_ribasim_dummy_15c.sh
