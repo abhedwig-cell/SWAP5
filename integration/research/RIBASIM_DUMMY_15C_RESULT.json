@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_irrigation_event_realization.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15C",
+  "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+  "authority": {
+    "implementation_baseline": "a84405a24373818e3ca1f3851391300ed73e7240",
+    "qualification_head": "f1a3916e2294f596a355da613fe6a0126b8055a9",
+    "workflow_run": 35593011851,
+    "workflow_job": 106311417436,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_15C_SOURCE_SCOPE=PASS",
+    "13/13 IrrigationEventRealizationTests PASS",
+    "atomic reject supplies 0 and leaves management state unchanged",
+    "partial complete supplies 12, resets interval state and stores no residual event",
+    "partial residual-active supplies 12 and stores residual 8 as explicit management memory",
+    "partial complete and partial residual-active can have identical current water but different future event demand",
+    "accepted finalize commits water and management state together",
+    "rollback rejects water and management state together",
+    "half-commit is rejected",
+    "full supply collapses all policies to one completed-event state",
+    "allocation shortfall remains diagnostic unless explicitly promoted to residual event state",
+    "RIBASIM_DUMMY_15C_EVENT_POLICY_TESTS=PASS",
+    "RIBASIM_DUMMY_15C_GATE=PASS"
+  ],
+  "interpretation": "External scarcity cannot be mapped onto a discrete SWAP-like irrigation event by changing only a volume. The coupled contract must also define event-state transition. Water realization and event management state must commit or roll back atomically.",
+  "production_boundary": [
+    "no policy is claimed as current production SWAP behavior under external scarcity",
+    "legacy B1.10 captures irrigation continuation, while current FMR physical state does not yet expose F-APP07 continuation state",
+    "production selection of atomic/partial-complete/residual-active semantics remains a separate design decision"
+  ],
+  "downstream": "DUMMY-15D may now qualify gross source withdrawal, canopy storage, interception evaporation and net soil irrigation as distinct ledger terms."
+}
