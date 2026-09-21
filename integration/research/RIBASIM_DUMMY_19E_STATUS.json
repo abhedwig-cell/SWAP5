@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.coupling.real_ribasim_mixed_allocation_realization_conflict.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_baseline": "8f2607d79adb0bcbf6ef0e7972cae87b56f9264f",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced behind active DUMMY-19D qualification. Scientific expectations are already frozen.",
+  "required_authorities": [
+    "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+    "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT"
+  ],
+  "prepared_scope": "Pinned real Ribasim 32 m3/day priority allocation followed by common-factor physical UserDemand min_level reduction within one one-day allocation window.",
+  "next_action": "After DUMMY-19D closes, rebind the implementation baseline and create the frozen DUMMY-19E executable gate without changing preregistered expectations or tolerances.",
+  "production_delta": [],
+  "reference_delta": []
+}
