@@ -597,3 +597,34 @@ Those are analytical oracles.
 The production F-GC workstream remains responsible for deciding whether real
 SWAP and MODFLOW state spaces satisfy the assumptions needed to use those
 oracles physically.
+
+
+## 16. Production SWAP irrigation-demand authority is not yet bound by this research
+
+A focused readback on 2026-09-21 of the current central project-control and
+post-Status-A authority documents did not identify an explicit production
+contract that says which SWAP5 state variable owns an irrigation request or
+how such a request is frozen, revised and committed for Ribasim supply.
+
+This is an absence in the inspected authority surface, not proof that no
+irrigation logic exists elsewhere in the repository or legacy model.
+
+Therefore DUMMY-12 must remain an analytical demand-state oracle only.
+
+Before replacing DUMMY-12 with real SWAP5, a dedicated authority-binding step
+must identify at least:
+
+- the actual SWAP/legacy state from which irrigation need is derived;
+- whether request is calculated from start-of-window committed state or can be
+  revised within the same coupling window;
+- how realized irrigation is applied back to the SWAP state;
+- whether unmet request is represented physically through state deficit,
+  diagnostically as shortage, or additionally through an explicit scheduling
+  state;
+- the units and represented area used to translate SWAP water depth/state into
+  Ribasim UserDemand volume/rate;
+- the transaction boundary at which the request and realized supply become
+  authoritative.
+
+Until that authority is bound, no DUMMY-12 equation may be described as the
+production SWAP irrigation algorithm.
