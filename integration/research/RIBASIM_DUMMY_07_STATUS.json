@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-07",
   "branch": "work/ribasim-dummy-01",
   "baseline": "5614799ff6930f2d049f2e04e8dd95a50647be3b",
-  "checkpoint_commit": "a041add811b2aae30cb7b73fa43c87601b6892e2",
+  "checkpoint_commit": "f278cf5220bf5292241e946ee04169cdd82f0a59",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Bounded under-relaxation of the DUMMY-06 active-set Picard map plus an independent direct active-set solve, both judged against the exact DUMMY-05 oracle.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_07_PREREGISTRATION.json",
@@ -36,7 +36,15 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-07 stabilization-gate.",
-  "recovery_point": "DUMMY-07 full research postimage and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "next_action": "Preregister multi-window state propagation and timestep-partition experiments.",
+  "recovery_point": "DUMMY-07 closed qualified; stabilized and direct per-window algorithms are available as research references.",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_07_QUALIFIED_STABILIZATION_MECHANISMS",
+    "workflow_run": 35567469467,
+    "workflow_job": 106232061301,
+    "qualification_head": "73ec82dde87187d4311c408a2d2a7e78733f1047",
+    "tests": "9/9 PASS",
+    "gate": "PASS"
+  }
 }
