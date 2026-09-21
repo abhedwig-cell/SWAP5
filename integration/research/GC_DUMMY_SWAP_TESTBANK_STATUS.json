@@ -32,10 +32,10 @@
     "DSW15": "QUALIFIED_FORCING_ORDER_MEMORY",
     "DSW15V": "DIAGNOSTIC_QUALIFIED_RESTART_PRECISION_ARTIFACT",
     "DSW16": "QUALIFIED_N_TO_1_LINEAR_AGGREGATION",
-    "DSW17": "PLANNED_EQUAL_OPPOSITE_INTERNAL_TRANSFER",
-    "DSW18": "PLANNED_STORAGE_LIMITS",
-    "DSW19": "PLANNED_CONVERGENCE_VERSUS_CORRECTNESS_ADVERSARIAL",
-    "DSW20": "PLANNED_MANUFACTURED_COUPLED_TRAJECTORY"
+    "DSW17": "QUALIFIED_EQUAL_OPPOSITE_INTERNAL_TRANSFER",
+    "DSW18": "QUALIFIED_DISTINCT_STORAGE_AND_QLINK_LIMITS",
+    "DSW19": "QUALIFIED_ADVERSARIAL_CONVERGENCE_NOT_CORRECTNESS",
+    "DSW20": "QUALIFIED_MANUFACTURED_MULTIWINDOW_TRAJECTORY"
   },
   "evidence": {
     "DSW01_DSW02": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
@@ -58,7 +58,11 @@
     "DSW14": "integration/research/GC_DUMMY_SWAP_DSW14_RESULT.json",
     "DSW15": "integration/research/GC_DUMMY_SWAP_DSW15_RESULT.json",
     "DSW15V": "integration/research/GC_DUMMY_SWAP_DSW15V_RESULT.json",
-    "DSW16": "integration/research/GC_DUMMY_SWAP_DSW16_RESULT.json"
+    "DSW16": "integration/research/GC_DUMMY_SWAP_DSW16_RESULT.json",
+    "DSW17": "integration/research/GC_DUMMY_SWAP_DSW17_RESULT.json",
+    "DSW18": "integration/research/GC_DUMMY_SWAP_DSW18_RESULT.json",
+    "DSW19": "integration/research/GC_DUMMY_SWAP_DSW19_RESULT.json",
+    "DSW20": "integration/research/GC_DUMMY_SWAP_DSW20_RESULT.json"
   },
   "current_bounded_findings": [
     "A shared phreatic head and a true finite-resistance q-link are different physical coupling families.",
@@ -73,7 +77,11 @@
     "DSW05 shows that an extremely strict IMS inner residual certificate can remain false even when the analytic head is reached to machine precision.",
     "DSW09 separates two numerical effects. MODERATE delta-bar-delta under-relaxation changes the reanchor trajectory; after removing it, near-root strict residual certification can still fail when the remaining affine residual exceeds rclose but no useful floating-point head correction is available.",
     "Fresh-solve success can depend on starting distance from the affine root. It must not be interpreted automatically as proof of hidden prepared-solve linear-solver state.",
-    "Bit-exact transfer of accepted state matters for substep/restart oracles. Text-formatted initial-head serialization produced a false DSW15 mass defect that disappeared when X and XOLD were set exactly through XMI."
+    "Bit-exact transfer of accepted state matters for substep/restart oracles. Text-formatted initial-head serialization produced a false DSW15 mass defect that disappeared when X and XOLD were set exactly through XMI.",
+    "Equal-and-opposite internal transfers conserve the complete coupled inventory in both directions; a transfer into groundwater is not automatically net recharge to the complete system.",
+    "Storage sensitivity and finite-resistance q-link conductance have different limiting signatures. Storage controls head response to net volume, whereas q-link conductance controls head separation and internal exchange between distinct storages.",
+    "Numerical convergence is not scientific acceptance: duplicate storage, a wrong storage-response sign and a reversed forcing sign all converge to deterministic but physically wrong states.",
+    "A five-window manufactured trajectory with unequal timesteps, explicit memory, lateral input, ET and drainage closes both window and cumulative mass ledgers to machine precision when state continuation is explicit."
   ],
   "unresolved_scientific_questions": [
     "How does real SWAP q_u/u decompose into physical storage change, external/sink flux response and numerical tangent under the intended shared-domain ownership?",
@@ -87,10 +95,15 @@
   ],
   "next_safe_steps": [
     "Keep all production F-GC code unchanged.",
-    "Run DSW17 equal-and-opposite internal-transfer conservation.",
-    "Run DSW18 vanishing/high-storage limits to separate storage sensitivity from q-link conductance limits.",
-    "Run DSW19 adversarial converged-but-wrong storage/sign cases.",
-    "Run DSW20 manufactured coupled trajectory.",
-    "Then map the closed dummy taxonomy onto real SWAP F-GC33 q_u/u responses with independently computed mass/storage ledgers before proposing any production change."
-  ]
+    "Reconcile the exact F-GC33/F-GC49 response contract against the closed dummy taxonomy: identify what q_ref, u/HCOF and RHS represent mathematically and which terms are physical storage, physical sinks/boundaries, or numerical tangent only.",
+    "Select controlled real-SWAP/FMR fixtures with independently auditable water ledgers and capture committed origin state, trial head, q_u/u or equivalent response terms, corrector flux and accepted mass change over one coupling window.",
+    "For those fixtures, test whether the real response is consistent with a shared-state h-link, a finite-resistance q-link, or neither; do not choose a coupling family by analogy alone.",
+    "Then extend the same audit to multiple SWAP tiles mapped N:1 while keeping heterogeneous-transferability claims separate from the algebraic aggregation proof."
+  ],
+  "latest_integral_research_run": {
+    "workflow_run": 35563873238,
+    "workflow_job": 106221736326,
+    "conclusion": "success",
+    "qualified_through": "DSW20"
+  }
 }
