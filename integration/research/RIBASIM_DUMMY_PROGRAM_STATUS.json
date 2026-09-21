@@ -96,27 +96,29 @@
       "work_unit": "RIBASIM-DUMMY-15C",
       "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
       "run": 35593011851
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-15D",
+      "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+      "run": 35593604887
     }
   ],
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-18",
-      "state": "AUTHORITY_READY_MAPPING_NOT_YET_QUALIFIED",
-      "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-      "implementation": false,
-      "purpose": "bind analytical state/transfer/management/clock/transaction objects to pinned real Ribasim, MODFLOW, SWAP and coupler authorities before substitution"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-15D",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
-      "implementation_baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
-      "dependency": "qualified DUMMY-15C",
-      "boundary": "prescribed canopy/interception ledger only; no claim of nonlinear Rutter equivalence"
+      "intended_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+      "implementation_baseline": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106",
+      "dependencies": [
+        "qualified DUMMY-17",
+        "qualified DUMMY-15C",
+        "qualified DUMMY-15D"
+      ],
+      "boundary": "green gate validates the map and preserves unresolved production authorities; it is not production admission"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-15D canopy-ledger gate; if PASS, close DUMMY-15D and then qualify the DUMMY-18 real-model authority map.",
+  "next_authority_action": "Execute DUMMY-18 authority-map gate; if PASS, use only READY_RESTRICTED stages for subsequent real-model bridge work.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
