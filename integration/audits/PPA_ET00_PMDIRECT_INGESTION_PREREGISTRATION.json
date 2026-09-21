@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-ET-00",
+  "title": "PMdirect normal meteorological ingestion",
+  "status": "ARCHITECTURE_CONTRACT_REQUIRED",
+  "existing_qualified_components": [
+    "src/process/mod_pmdirect_swetr0_process.f90",
+    "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90",
+    "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90"
+  ],
+  "missing_application_surface": [
+    "typed weather source identity and interval coverage",
+    "legacy calendar/date preprocessing outside the kernel",
+    "ordinary normal-input config mapping into PMdirect weather/site/canopy types",
+    "production composition of dynamic-top and root-demand outputs"
+  ],
+  "ownership": {
+    "kernel": "no files, paths or calendar parsing",
+    "adapter": "decoded immutable weather/calendar records and typed interval provenance",
+    "runtime": "accepted dynamic-top/root composition only"
+  },
+  "blocker": "No accepted typed ingestion/provenance contract currently binds legacy meteorological calendar records to generic-time PMdirect intervals."
+}
