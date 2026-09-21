@@ -11,6 +11,10 @@ on:
       - 'integration/research/GC_REAL_SWAP_MAP05*.json'
       - 'integration/research/GC_REAL_SWAP_MAP08*.json'
       - 'integration/research/GC_REAL_SWAP_MAP09*.json'
+      - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01A_PREREGISTRATION.json'
+      - 'integration/research/GC_LOW01_STATE01_PREREGISTRATION.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
       - 'tests/research/test_gc_real_swap_map01_fgc45.py'
@@ -21,6 +25,14 @@ on:
       - 'tests/research/run_gc_real_swap_map08.sh'
       - 'tests/research/test_gc_real_swap_map09_active_drainage.py'
       - 'tests/research/run_gc_real_swap_map09.sh'
+      - 'tests/research/test_gc_low01_state_machine.py'
+      - 'tests/research/test_gc_low01a_below_profile_equivalence.f90'
+      - 'tests/research/test_gc_low01a_source_branch.py'
+      - 'tests/research/run_gc_low01a.sh'
+      - 'tests/research/test_gc_low01_state_machine.py'
+      - 'tests/research/test_gc_low01a_below_profile_equivalence.f90'
+      - 'tests/research/test_gc_low01a_source_branch.py'
+      - 'tests/research/run_gc_low01a.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
   pull_request:
     branches:
@@ -125,3 +137,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: bash tests/research/run_gc_real_swap_map09.sh
+
+
+  low01a-state01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-A and STATE01 qualification
+        run: bash tests/research/run_gc_low01a.sh
