@@ -20,6 +20,8 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           from flopy.utils.get_modflow import run_main
+          Path("/tmp/pb01-mf6").mkdir(parents=True,exist_ok=True)
+          Path("/tmp/pb01-downloads").mkdir(parents=True,exist_ok=True)
           run_main(Path("/tmp/pb01-mf6"),owner="MODFLOW-ORG",repo="modflow6",release_id="6.8.0",subset={"libmf6.so"},downloads_dir=Path("/tmp/pb01-downloads"),force=True,quiet=False)
           PY
       - name: Execute PB01 live one-cell discriminator
