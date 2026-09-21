@@ -10,6 +10,11 @@ on:
       - 'tests/research/dummy_ribasim_reservoir.py'
       - 'tests/research/test_dummy_ribasim_01.py'
       - 'tests/research/run_ribasim_dummy_01.sh'
+      - 'integration/research/RIBASIM_DUMMY_02_*.json'
+      - 'integration/research/RIBASIM_DUMMY_02_CONCEPT.md'
+      - 'tests/research/dummy_threeway_water_coupling.py'
+      - 'tests/research/test_dummy_threeway_water_coupling.py'
+      - 'tests/research/run_ribasim_dummy_02.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
   pull_request:
     branches:
@@ -39,3 +44,5 @@ jobs:
         run: python3 --version
       - name: Run analytic dummy Ribasim gate
         run: bash tests/research/run_ribasim_dummy_01.sh
+      - name: Run controlled three-way conflict gate
+        run: bash tests/research/run_ribasim_dummy_02.sh
