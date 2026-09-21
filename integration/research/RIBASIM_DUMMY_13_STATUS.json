@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-13",
+  "branch": "work/ribasim-dummy-01",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authorities": [
+    "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+    "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE"
+  ],
+  "blocker": "DUMMY-11 and DUMMY-12 qualification runs are still queued.",
+  "prepared_scope": "First-stage three-store ledger with root-zone irrigation request, surface-to-root irrigation transfer, reciprocal surface-groundwater exchange, and no external root forcing.",
+  "canonical_expectation": {
+    "request_m3": 40,
+    "delivered_m3": 32,
+    "shortage_m3": 8,
+    "exchange_m3": 28,
+    "root_end_m3": 72,
+    "surface_end_head_m": 0.4,
+    "groundwater_end_head_m": 0.28,
+    "next_root_request_m3": 8,
+    "combined_three_store_change_m3": 0
+  },
+  "next_action": "After both dependencies qualify, rebind DUMMY-13 implementation baseline before creating any model or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
