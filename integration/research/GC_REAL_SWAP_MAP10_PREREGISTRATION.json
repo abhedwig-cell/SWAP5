@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_real_swap.map10.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP10",
+  "title": "Finite-window dependence of real-SWAP storage sensitivity versus MODFLOW storage ownership",
+  "status": "FROZEN_EVIDENCE_DIAGNOSTIC_PREREGISTERED_BEFORE_RECALCULATION",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "frozen_e4": "docs/publication/evidence/PUB_GC_E4_FULL_RESULT.json",
+    "fgc45_modflow_fixture": "tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py"
+  },
+  "selection": {
+    "baselines": [
+      "B1",
+      "B2",
+      "B4"
+    ],
+    "reason": "same qbot=1e-6 cm/day and READY head response, while window_day spans 1e-4, 1e-3, 1e-2",
+    "excluded": [
+      "B3 because qbot differs by 100x",
+      "B5 because qbot differs and no symmetric derivative plateau"
+    ]
+  },
+  "fixed_modflow_fixture": {
+    "sy": 0.15,
+    "ss_per_m": 0.02,
+    "cell_area_m2": 1,
+    "cell_thickness_m": 2,
+    "note": "These are F-GC45 numerical-fixture storage parameters. No claim of physical equivalence to the SWAP column is made a priori."
+  },
+  "calculations": [
+    "For each selected baseline record dt, u_A, J_S, J_R and u_A/dt.",
+    "Compute u_A/Sy only as a scale ratio, not as a storage-partition claim.",
+    "Compute successive window ratios of u_A and u_A/dt.",
+    "Check J_S/u_A and (-J_R)/u_A where frozen derivatives exist."
+  ],
+  "gates": [
+    "All selected frozen baselines have the same qbot and READY response.",
+    "J_S/u_A and -J_R/u_A are within 1e-4 relative of unity for B1/B2/B4.",
+    "u_A is not invariant across the three windows.",
+    "u_A/dt is not invariant across the three windows.",
+    "No storage-overlap conclusion is drawn from the numerical ratio to MODFLOW Sy alone."
+  ],
+  "interpretation_rules": [
+    "Call u_A a finite-window storage sensitivity where MAP03/E4 establishes dS/dH equivalence.",
+    "Do not call u_A a universal static specific yield.",
+    "Do not infer double counting merely because both SWAP and MODFLOW expose storage-like coefficients.",
+    "A double-counting claim requires a declared common physical volume/state and an equation-level ownership audit.",
+    "Window dependence is expected for transient propagation of a terminal-head perturbation through an unsaturated column."
+  ],
+  "forbidden": [
+    "no production changes",
+    "no calibration or new E4 runs",
+    "do not compare u_A and Sy as if they were automatically the same constitutive property",
+    "do not infer equilibrium storage from these short windows"
+  ]
+}
