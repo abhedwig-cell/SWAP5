@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw04.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW04",
+  "title": "Linear superposition across SWAP-owned and MODFLOW-owned forcing",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "dsw01_dsw02": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
+    "dsw03": "integration/research/GC_DUMMY_SWAP_DSW03_RESULT.json"
+  },
+  "fixed_case": {
+    "total_storage": 0.2,
+    "alpha_swap": 0.5,
+    "s_swap": 0.1,
+    "s_modflow": 0.1,
+    "initial_head_m": 8,
+    "duration_day": 1,
+    "swap_owned_rain_m_per_day": 0.006,
+    "modflow_owned_source_m3_per_day": 0.004,
+    "area_m2": 1
+  },
+  "oracles": {
+    "rain_only_final_head_m": 8.03,
+    "modflow_only_final_head_m": 8.02,
+    "combined_final_head_m": 8.05,
+    "superposition_identity": "(H_both-H0)=(H_rain-H0)+(H_mf-H0)"
+  },
+  "dummy_api_law": "Q_dummy(H)=R_swap-(S_swap/dt)*(H-H0)",
+  "numerical_route": {
+    "modflow_version": "6.8.0",
+    "newton": false,
+    "tolerance_m": 1e-8
+  },
+  "forbidden": [
+    "no coefficient tuning",
+    "no production source change",
+    "no nonlinear mechanism in DSW-04"
+  ]
+}
