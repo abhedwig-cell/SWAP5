@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.gc_real_swap.map08.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP08",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow_run": 35572899763,
+  "workflow_job": 106248160164,
+  "decision": "QUALIFIED_FRAGMENTED_CORRECTOR_DOMAIN_NUMERICAL_TOPOLOGY",
+  "valid_offsets_pm": [
+    -3,
+    0,
+    2,
+    3
+  ],
+  "invalid_offsets_pm": [
+    -4,
+    -0.5,
+    2.5,
+    2.721711744868128
+  ],
+  "invalid_signature": {
+    "participant_status": 6,
+    "raw_result_status": 2,
+    "completed": false,
+    "candidate_ready": false,
+    "bottom_available": false,
+    "solver_rejections": 5,
+    "temporal_rejections": 4,
+    "internal_retries": 5,
+    "retries": 8
+  },
+  "valid_signature": {
+    "participant_status": 0,
+    "raw_result_status": 0,
+    "completed": true,
+    "candidate_ready": true,
+    "bottom_available": true,
+    "accepted_substeps": 4,
+    "solver_rejections": 0,
+    "temporal_rejections": 7
+  },
+  "gates": {
+    "map06_participant_status_reproduced": "PASS",
+    "valid_raw_acceptance": "PASS",
+    "invalid_raw_failure_identified": "PASS",
+    "zero_committed_state_mutation": "PASS",
+    "live_gate": "PASS"
+  },
+  "bounded_conclusions": [
+    "MAP06's machine-scale fragmented prescribed-head admissibility is reproduced exactly.",
+    "Invalid points fail inside the raw backend before a complete ready whole-window candidate exists.",
+    "The invalid pattern carries solver and temporal rejection diagnostics; it is not evidence of a physical discontinuity in q(H).",
+    "Wrapper/provenance semantics are not the cause because raw-backend failure and participant status agree.",
+    "No tolerance, retry-budget or production change is authorized by this result."
+  ]
+}
