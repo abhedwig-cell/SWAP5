@@ -1,0 +1,18 @@
+{
+  "schema": "swap5.coupling.real_ribasim_temporal_reallocation_after_realization_shortfall.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19F",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_baseline": "658e0235f614beda1b4a139b40358abead276393",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution requires DUMMY-19E closeout. Numerical expectations are frozen prospectively.",
+  "required_authority": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
+  "prepared_scope": "Two one-day allocation windows testing whether physically retained day-1 water enters day-2 allocation as accepted Basin state.",
+  "next_action": "After DUMMY-19E qualification, rebind implementation baseline and implement without changing the frozen hybrid reference.",
+  "production_delta": [],
+  "reference_delta": []
+}
