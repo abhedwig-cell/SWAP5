@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw11.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW11",
+  "workflow_run": 35561509372,
+  "workflow_job": 106215118034,
+  "decision": "QUALIFIED_RESEARCH_ORACLE_SHARED_HEAD_WITH_MEMORY",
+  "dry": {
+    "initial_head_m": 8,
+    "w0_m": 0,
+    "final_head_m": 8,
+    "final_memory_m": 0,
+    "transfer_m": 0
+  },
+  "wet": {
+    "initial_head_m": 8,
+    "w0_m": 0.02,
+    "final_head_m": 8.04,
+    "final_memory_m": 0.012,
+    "transfer_m": 0.008
+  },
+  "gates": {
+    "same_head_different_response": "PASS",
+    "memory_groundwater_mass_transfer": "PASS",
+    "total_mass": "PASS"
+  },
+  "bounded_conclusions": [
+    "A shared groundwater head can be a valid shared state without being a complete state descriptor of the unsaturated column.",
+    "Two columns with identical initial head can respond differently because of hidden/internal storage memory.",
+    "A coupling contract must preserve any internal state needed to predict the next response; head equality alone does not eliminate SWAP state."
+  ]
+}
