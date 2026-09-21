@@ -34,6 +34,34 @@ PRIORITY_EXTERNAL_FIRST = "EXTERNAL_FIRST"
 _VALID_PRIORITIES = {PRIORITY_ROOT_FIRST, PRIORITY_EXTERNAL_FIRST}
 
 
+def _canonicalize_surface_datum_roundoff(
+    config: ThreeStoreConfig,
+    water,
+):
+    """Snap only already-admitted sub-datum roundoff to the exact datum.
+
+    The qualified DUMMY-10 management solve accepts endpoint heads down to
+    datum-head_tol. ThreeStoreState has a stricter representational invariant
+    (surface_head >= datum), so an exact boundary solution such as h=0 can
+    otherwise be rejected after floating-point roundoff.
+    """
+    head = water.surface_head_m
+    datum = config.surface_datum_m
+    scale = max(1.0, abs(head), abs(datum))
+    head_tol = 1.0e-12 * scale
+
+    if head < datum:
+        if head < datum - head_tol:
+            raise ValueError(
+                "physical endpoint lies materially below surface datum"
+            )
+        return type(water)(
+            surface_head_m=datum,
+            groundwater_head_m=water.groundwater_head_m,
+        )
+    return water
+
+
 @dataclass(frozen=True)
 class CompetingClaimsResult:
     start: ThreeStoreState
@@ -147,9 +175,13 @@ def solve_competing_claims(
     root_end = RootZoneState(
         start.root.storage_m3 + root_delivered
     ).validated(config.root)
+    physical_end = _canonicalize_surface_datum_roundoff(
+        config,
+        physical.end,
+    )
     end = ThreeStoreState(
         root=root_end,
-        water=physical.end,
+        water=physical_end,
     ).validated(config)
 
     next_root_request = request_from_committed_state(config.root, root_end)
