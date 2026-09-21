@@ -1,0 +1,134 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_management_clock.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19I",
+  "title": "Pinned real Ribasim BMI-driven management clock with daily output",
+  "baseline": "6eaa87c7a0f09a63f31fef83b358448cad5cef03",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_19G_ACTIVE",
+    "execute_after": "DUMMY-19H closeout",
+    "rationale": "Freeze the coupler-clock hypothesis and numerical references before observing DUMMY-19G and DUMMY-19H."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "source_binding": {
+    "bmi_update_until": "core/src/bmi.jl::BMI.update_until adds the requested endpoint to allocation.time.tstops before stepping.",
+    "allocation_loop": "core/src/model.jl::loopheader! solves allocation whenever current model time equals the first allocation tstop.",
+    "consequence": "Repeated coupler update_until calls can introduce allocation boundaries finer than solver.saveat; saveat remains a separate additional source of tstop boundaries."
+  },
+  "purpose": "Test whether the coupler can own a 6-hour management clock through BMI.update_until while solver output remains daily, and whether that reproduces the same physical and allocation trajectory as the analytically preregistered 6-hour clock case.",
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "bmi_update_until_endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_hybrid_reference": {
+    "clock_seconds": 21600,
+    "expected_internal_allocation_after_each_bmi_call": {
+      "root_first": [
+        {
+          "represented_solve_time_s": 0,
+          "root_m3_per_day": 32,
+          "external_m3_per_day": 0
+        },
+        {
+          "represented_solve_time_s": 21600,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 7.995200961071983
+        },
+        {
+          "represented_solve_time_s": 43200,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 15.979613076541273
+        },
+        {
+          "represented_solve_time_s": 64800,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 19.962546470305938
+        }
+      ],
+      "external_first": [
+        {
+          "represented_solve_time_s": 0,
+          "root_m3_per_day": 12,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 21600,
+          "root_m3_per_day": 27.995200960183805,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 43200,
+          "root_m3_per_day": 35.979613075653106,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 64800,
+          "root_m3_per_day": 39.96254646941776,
+          "external_m3_per_day": 20
+        }
+      ]
+    },
+    "root_first": {
+      "root_supplied_m3": 19.015246367867107,
+      "external_supplied_m3": 5.49757406228132
+    },
+    "external_first": {
+      "root_supplied_m3": 14.50504727621437,
+      "external_supplied_m3": 10.007773153934059
+    },
+    "total_supplied_m3": 24.512820430148427,
+    "final_level_m": 1.0000074871795697,
+    "storage_gain_m3": 7.487179569665159
+  },
+  "hypotheses": [
+    "With solver.saveat=86400 s, BMI.update_until endpoints at 6-hour intervals introduce 6-hour allocation solves without 6-hour output.",
+    "The internal allocation sequence after each BMI call matches the preregistered 6-hour state-feedback allocation sequence.",
+    "The one-day physical recipient volumes and Basin endpoint match the DUMMY-19G 21600-second hybrid reference.",
+    "Both priority orders preserve identical total physical supply and Basin endpoint while differing in recipient delivery.",
+    "This establishes that a coupler can introduce an explicit management clock finer than output saveat in the pinned implementation.",
+    "It does not establish that saveat is neutral when saveat itself is finer than the coupler clock."
+  ],
+  "tolerances": {
+    "integrated_volume_m3": 0.05,
+    "internal_allocation_m3_per_day": 0.05,
+    "endpoint_level_m": 5e-8
+  },
+  "forbidden": [
+    "no changing solver.saveat from 86400 s",
+    "no changing BMI call endpoints after execution",
+    "no post-output tuning to DUMMY-19G observations",
+    "no claim that BMI removes saveat-triggered allocation boundaries",
+    "no SWAP or MODFLOW substitution",
+    "no production coupling prescription"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19I_QUALIFIED_BMI_MANAGEMENT_CLOCK",
+  "fail_decision": "RIBASIM_DUMMY_19I_BLOCKED"
+}
