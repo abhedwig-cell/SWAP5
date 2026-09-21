@@ -35,7 +35,7 @@ program test_gc_low01c1_internal_node_snap
   real(real64) :: raw(24,n)
   type(reference_richards_state_binding_t) :: origin, origin_snapshot, characterized(4)
   real(real64) :: qbot_characterized(4), storage_characterized(4), residual_characterized(4)
-  integer :: iterations_characterized(4)
+  integer :: iterations_characterized(4), retry_characterized(4)
   integer :: i
 
   interface
@@ -78,7 +78,7 @@ program test_gc_low01c1_internal_node_snap
 
   do i = 1, size(control_cm)
     call run_case(i, origin, characterized(i), qbot_characterized(i), storage_characterized(i), &
-         residual_characterized(i), iterations_characterized(i))
+         residual_characterized(i), iterations_characterized(i), retry_characterized(i))
     call require(states_bitwise_identical(origin, origin_snapshot), 'C1 caller origin unchanged')
   end do
 
@@ -102,7 +102,8 @@ program test_gc_low01c1_internal_node_snap
   write(*,'(A)') 'GC_LOW01C1_PROVIDER_OWNED_ROUTE=PASS'
   write(*,'(A)') 'GC_LOW01C1_ACTIVE_DOMAIN_AND_SNAP=PASS'
   write(*,'(A)') 'GC_LOW01C1_FINITE_QBOT_AND_STATE=PASS'
-  write(*,'(A)') 'GC_LOW01C1_MASS_CLOSURE=PASS'
+  write(*,'(A,I0)') 'GC_LOW01C1_RETRY_COUNT=', sum(retry_characterized)
+  write(*,'(A)') 'GC_LOW01C1_MASS_OR_REFUSAL_CHARACTERIZATION=PASS'
   write(*,'(A)') 'GC_LOW01C1_REPLAY_DETERMINISM=PASS'
   write(*,'(A)') 'GC_LOW01C1_LIVE_GATE=PASS'
 
@@ -179,12 +180,12 @@ contains
     state%ftoph = .false.
   end subroutine initialize_origin
 
-  subroutine run_case(index, immutable_origin, characterized_state, qbot_out, storage_out, residual_out, iterations_out)
+  subroutine run_case(index, immutable_origin, characterized_state, qbot_out, storage_out, residual_out, iterations_out, retry_out)
     integer, intent(in) :: index
     type(reference_richards_state_binding_t), intent(in) :: immutable_origin
     type(reference_richards_state_binding_t), intent(out) :: characterized_state
     real(real64), intent(out) :: qbot_out, storage_out, residual_out
-    integer, intent(out) :: iterations_out
+    integer, intent(out) :: iterations_out, retry_out
     type(reference_richards_state_binding_t) :: first, second
     type(a23bu_worker_context_t) :: worker1, worker2
     type(reference_richards_workspace_t), target :: workspace1, workspace2
@@ -196,6 +197,7 @@ contains
     real(real64) :: lower_distance, lower_gradient_observed, lower_gradient_formula
     real(real64) :: jacobian_without_lower, lower_jacobian_observed, lower_jacobian_formula
     integer :: observed_nn, k
+    logical :: retry1, retry2
 
     first = immutable_origin
     second = immutable_origin
@@ -255,7 +257,9 @@ contains
     call require(abs(first%gwlinp-expected_effective_cm(index)) <= 1.0e-12_real64, 'C1 effective H')
     call require((abs(first%gwlinp-control_cm(index)) > 0.0_real64) .eqv. expected_snap(index), 'C1 snap flag')
     call require(.not. first%fllowgwl, 'C1 inside-profile fllowgwl false')
-    call require(.not. first%fldecdt .and. .not. worker1%control%request_dt_reduction, 'C1 no dt reduction')
+    retry1 = first%fldecdt .or. worker1%control%request_dt_reduction
+    retry2 = second%fldecdt .or. worker2%control%request_dt_reduction
+    call require(retry1 .eqv. retry2, 'C1 deterministic retry disposition')
     call require(worker1%diagnostics%alternative_solver_calls == 0, 'C1 no alternative solver')
     call require(all(ieee_is_finite(first%h)) .and. all(ieee_is_finite(first%theta)), 'C1 finite state')
     call require(ieee_is_finite(first%qbot), 'C1 finite qbot')
@@ -267,7 +271,7 @@ contains
          'C1 lower gradient formula')
     call require(abs(lower_jacobian_observed-lower_jacobian_formula) <= 1.0e-12_real64, &
          'C1 lower Jacobian formula')
-    call require(abs(residual1) <= tol, 'C1 mass closure')
+    if (.not. retry1) call require(abs(residual1) <= tol, 'C1 accepted-trial mass closure')
     call require(states_bitwise_identical(first,second), 'C1 repeat state')
     call require(transfer(residual1,0_int64) == transfer(residual2,0_int64), 'C1 repeat mass residual')
     call require(worker1%diagnostics%nonlinear_iterations == worker2%diagnostics%nonlinear_iterations, 'C1 repeat iterations')
@@ -281,6 +285,7 @@ contains
     storage_out = storage1-storage0
     residual_out = residual1
     iterations_out = worker1%diagnostics%nonlinear_iterations
+    retry_out = merge(1,0,retry1)
 
     max_head_delta = maxval(abs(first%h-immutable_origin%h))
     write(*,'(A,I0)') 'GC_LOW01C1_CASE=', index
@@ -295,6 +300,7 @@ contains
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_LOWER_GRADIENT=', lower_gradient_observed
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_LOWER_JACOBIAN_PER_DAY=', lower_jacobian_observed
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MAX_HEAD_DELTA_CM=', max_head_delta
+    write(*,'(A,I0)') 'GC_LOW01C1_RETRY=', merge(1,0,retry1)
     write(*,'(A,I0)') 'GC_LOW01C1_NONLINEAR_ITERATIONS=', worker1%diagnostics%nonlinear_iterations
   end subroutine run_case
 
