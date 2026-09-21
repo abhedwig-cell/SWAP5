@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.gc_low01.carrier01.branch_authority_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-CARRIER01",
+  "status": "PRE_EXECUTION_SCOPE_CLARIFICATION",
+  "production_changes": false,
+  "reason": "The candidate carrier uses an explicit bottom-face geometry rule to replace the unavailable/undeclared legacy z(n+1) sentinel, while GC_LOW01_STATE_CONTRACT_V1 freezes the directly observable source-state classification in terms of hydraulic nodes. These authorities are identical for the LOW01-B controls -60/-120/-200 cm but differ in the lower half-cell between the bottom node and bottom face.",
+  "authorities": {
+    "source_state": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json",
+    "typed_design": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "seam_gap": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "legacy_source": "src/legacy/b1_10_port/headcalc.f90"
+  },
+  "observed_gap": {
+    "explicit_geometry": "Current HeadCalc grid_z(node) indexes parameter_set%z(node) directly and the explicit parameter contract contains exactly active_nodes entries.",
+    "legacy_logic": "Mode-1 source evaluates grid_z(NN+1) after the active-node scan.",
+    "consequence": "The historical lower-half-cell branch cannot be claimed source-equivalent on the current explicit geometry surface without a separately qualified z(n+1)/bottom-face mapping.",
+    "example": "H_phreatic=-275 cm for z_bottom_node=-250 cm and bottom_face=-300 cm is INSIDE_PROFILE under the prospective bottom-face typed design but is not admitted as source-equivalent branch evidence by CARRIER01/OUTPUT01."
+  },
+  "qualification_scope": {
+    "carrier01": "May qualify deterministic typed materialization and explicit bottom-face design semantics, but not legacy branch equivalence in the lower half-cell.",
+    "output01": "Uses only -60, -120 and -200 cm, where source-state and typed-design branch classifications agree.",
+    "low01b": "May rely on carrier/output qualification only for its frozen -60/-120/-200 cm controls.",
+    "low01c": "Owns the lower-half-cell, bottom-face and node-boundary branch reconciliation."
+  },
+  "forbidden": [
+    "do not use CARRIER01 -275 cm classification as proof of legacy source branch identity",
+    "do not change STATE01 source authority post hoc from a carrier materialization test",
+    "do not activate HLINK04 before LOW01-C characterizes this boundary region",
+    "do not add a synthetic z(n+1) sentinel to production geometry"
+  ],
+  "next": "Qualify CARRIER01/OUTPUT01 on their bounded common-domain evidence, then preregister LOW01-C with an explicit lower-half-cell/bottom-face authority question."
+}
