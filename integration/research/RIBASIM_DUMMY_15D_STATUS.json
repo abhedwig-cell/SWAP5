@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_canopy_interception.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-15D",
+  "branch": "work/ribasim-dummy-01",
+  "preregistration_commit": "d6d86a490893aa7882312494484833a53ffd435c",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+  "blocker": "DUMMY-15 v3 remains queued; DUMMY-15B and DUMMY-15C therefore remain blocked.",
+  "prepared_scope": "Explicit canopy/interception store separating gross source withdrawal from net soil irrigation and interception evaporation.",
+  "canonical_expectation": {
+    "gross_m3": 20,
+    "intercepted_m3": 5,
+    "net_soil_m3": 15,
+    "interception_evaporation_m3": 2,
+    "canopy_storage_change_m3": 3,
+    "surface_groundwater_exchange_m3": 4,
+    "full_four_store_change_m3": -2
+  },
+  "next_action": "After DUMMY-15C qualification, rebind DUMMY-15D before any model or tests.",
+  "production_delta": [],
+  "reference_delta": []
+}
