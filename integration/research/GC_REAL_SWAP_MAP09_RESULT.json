@@ -43,5 +43,21 @@
     "The research-only active-drainage prescribed-head corrector is feasible at the frozen E6 reference state when the qbot-only smooth-freatic projection is disabled in the corrector.",
     "All fixed offsets through plus/minus 1e-6 m are admitted in this fixture and remain mass-complete.",
     "This activates the separately preregistered MAP09A decomposition path; it does not alter production drainage ownership or admission."
-  ]
+  ],
+  "valid_offsets_m": [
+    -0.000001,
+    -1e-7,
+    -1e-8,
+    0,
+    1e-8,
+    1e-7,
+    0.000001
+  ],
+  "symmetric_valid_deltas_m": [
+    1e-8,
+    1e-7,
+    0.000001
+  ],
+  "map09a_selected_delta_m": 1e-8,
+  "map09a_activation": "PASS_SMALLEST_PREREGISTERED_SYMMETRIC_PAIR"
 }
