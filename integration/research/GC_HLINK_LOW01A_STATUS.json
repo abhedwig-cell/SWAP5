@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.gc_hlink.low01a.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK-LOW01-A",
+  "branch": "work/f-gc-hlink-low01-research",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "preregistration": "integration/research/GC_HLINK_LOW01A_PREREGISTRATION.json",
+  "adapter": "tests/research/support/mod_gc_hlink_low01_groundwater_level_adapter.f90",
+  "test": "tests/research/test_gc_hlink_low01a_below_profile.f90",
+  "runner": "tests/research/run_gc_hlink_low01a.sh",
+  "production_changes": false,
+  "implemented_scope": "typed prescribed-groundwater-level BELOW_PROFILE branch only",
+  "held_fixed": [
+    "Reference Richards production source",
+    "mode-5 solver semantics",
+    "constitutive hydraulics",
+    "mass tolerances",
+    "inside-profile and above-top branches"
+  ],
+  "gates": [
+    "source mapping identity",
+    "live Reference-Richards equivalence to direct mode 5",
+    "candidate qbot and mass equivalence",
+    "immutable-origin replay determinism",
+    "unsupported branch fail-closed behavior"
+  ],
+  "next_if_pass": "Persist LOW01-A result and begin LOW01-B active-domain truncation as a separate preregistered research slice; do not activate HLINK04 yet.",
+  "blockers": []
+}
