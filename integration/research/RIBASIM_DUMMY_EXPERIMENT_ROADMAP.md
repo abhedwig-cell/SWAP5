@@ -392,3 +392,123 @@ A future work unit should stop rather than silently repair itself when:
 - a real-model behavior cannot be mapped unambiguously to the dummy contract.
 
 Those are new research decisions, not implementation details.
+
+
+## Roadmap revision 2026-09-21: insert external root forcing before competing claims
+
+The original planning sequence jumped directly from the first three-store
+composition to competing management claims.
+
+The qualified DUMMY-12 semantics make an intermediate stage scientifically
+useful: once the root store is inside the coupled system, external root forcing
+should be added before multiple allocation priorities. Otherwise a later
+difference between current shortage and next physical demand could be confused
+with multi-demand allocation behavior.
+
+Therefore the forward numbering is revised prospectively, before any of the
+affected future work units is implemented:
+
+```text
+DUMMY-13
+  three disjoint dynamic stores
+  U and V internal transfers
+  no external root forcing
+  [currently in qualification]
+
+DUMMY-14
+  external root forcing on three-store system
+  rainfall / prescribed root loss / explicitly owned capacity drainage
+  demand memory != shortage backlog
+  [preregistered, blocked on DUMMY-13]
+
+DUMMY-15
+  competing managed claims plus mandatory physical exchange
+
+DUMMY-16
+  asynchronous / multirate clocks and event synchronization
+
+DUMMY-17
+  minimal two-Basin routed surface-water network
+
+DUMMY-18
+  binding analytical variables to real SWAP, Ribasim and MODFLOW surfaces
+
+DUMMY-19
+  controlled real-model substitution ladder
+```
+
+### DUMMY-15 focus after the revision
+
+The future competing-claims experiment should explicitly separate three types
+of scarcity claim:
+
+1. **physical transfer**
+   - e.g. surface-groundwater exchange resulting from the accepted shared
+     physical state;
+
+2. **managed irrigation demand**
+   - generated from the accepted root-zone state;
+
+3. **another managed demand or release**
+   - with an explicit Ribasim-style priority supplied as experiment input.
+
+The important question is not merely which request wins.
+
+It is:
+
+> Can an allocation made from predicted availability be reconciled with the
+> later physically realized shared state without clipping a mandatory
+> hydrological transfer, double-booking water, or implicitly changing the
+> declared management priority?
+
+This should be bound directly to documented Ribasim allocation semantics
+before implementation.
+
+### DUMMY-16 focus after the revision
+
+Only after demand/state/ledger semantics are closed should the research vary
+internal clocks.
+
+Candidate clocks include:
+
+- SWAP/root-zone state update;
+- Ribasim allocation timestep;
+- Ribasim physical solver timestep;
+- MODFLOW timestep;
+- outer coupled transaction/commit window.
+
+The main falsification question is whether two schedules can conserve the same
+integrated water while producing different management decisions because state
+or threshold events are observed at different times.
+
+### DUMMY-17 bridge topology
+
+The current public Ribasim test-model documentation includes a two-Basin model
+intended for groundwater-coupling tests.
+
+That makes a two-Basin analytical / real-Ribasim bridge preferable to jumping
+directly from one Basin to a large network.
+
+A useful controlled topology is:
+
+```text
+upstream Basin
+  -> routing
+downstream Basin
+
+with:
+  one or two groundwater exchange locations
+  one root-zone irrigation demand
+```
+
+The test can then distinguish routing delay, groundwater redistribution and
+management allocation without introducing a realistic network all at once.
+
+### DUMMY-18 and DUMMY-19 remain authority-binding stages
+
+DUMMY-18 must map each analytical state and transfer to pinned real-model
+variables and explicitly record missing/non-equivalent concepts.
+
+DUMMY-19 may then replace one analytical component at a time.
+
+Neither stage should be treated as a physics development work unit.
