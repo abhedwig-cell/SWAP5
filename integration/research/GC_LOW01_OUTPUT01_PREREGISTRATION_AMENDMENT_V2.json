@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.gc_low01.output01.preregistration_amendment.v2",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-OUTPUT01",
+  "status": "PRE_EXECUTION_OBSERVABILITY_COMPLETION",
+  "original": "integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION.json",
+  "prior_amendment": "integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT.json",
+  "reason": "LOW01-B was preregistered to verify the source-bound inside-profile lower gradient and the added Kmean(NN+1)/(z(NN)-H_phreatic) Jacobian term. The first OUTPUT01 result object did not expose the local workspace values needed to preserve that gate.",
+  "bounded_scope": {
+    "conductivity_implicit_mode": 0,
+    "controls_cm": [
+      -60,
+      -120,
+      -200
+    ],
+    "active_nodes": [
+      1,
+      2,
+      3
+    ],
+    "branch": "INSIDE_PROFILE"
+  },
+  "added_outputs": [
+    "lower_distance_cm = z(NN)-effective_H_phreatic",
+    "lower_gradient_observed from HeadCalc workspace",
+    "lower_gradient_formula = h(NN)/lower_distance+1",
+    "lower_jacobian_increment_observed = dfdh_main(NN) minus the source baseline without the prescribed-GWL lower-boundary increment",
+    "lower_jacobian_formula = Kmean(NN+1)/lower_distance",
+    "lower_jacobian_diagnostic_available flag"
+  ],
+  "added_gates": [
+    "lower_distance is positive",
+    "observed lower gradient equals the source formula within 1e-12",
+    "observed lower Jacobian increment equals Kmean(NN+1)/lower_distance within 1e-12",
+    "diagnostic is available only for the preregistered SwKimpl=0 slice"
+  ],
+  "nonclaims": [
+    "does not qualify SwKimpl=1 Jacobian behavior",
+    "does not add production instrumentation",
+    "does not widen OUTPUT01 to NN=n or branch-boundary cases"
+  ]
+}
