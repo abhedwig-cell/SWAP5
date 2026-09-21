@@ -57,19 +57,60 @@
     {
       "work_unit": "RIBASIM-DUMMY-11",
       "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
-      "intended_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
       "qualification_run": 35569720082,
-      "branch_checkpoint": "cf97bd5cb0aee5d487b124475f7861fdbf3a20e6",
-      "dependency": "DUMMY-10 satisfied and implementation baseline rebound after qualification"
+      "pr": 512,
+      "intended_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-12",
+      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
+      "qualification_run": 35570012761,
+      "pr": 513,
+      "intended_decision": "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE",
+      "parallelism": "independent of DUMMY-11 result"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-13",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required": [
+        "RIBASIM-DUMMY-11",
+        "RIBASIM-DUMMY-12"
+      ],
+      "implementation": false,
+      "authority_boundary": "conditional disjoint-store ledger only; cannot close CSR-B1 or CSR-B2"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe DUMMY-11 qualification run 35569720082, record result/closeout, then decide whether to begin the preregistered dynamic analytical root-zone demand stage.",
+  "next_authority_action": "Close DUMMY-11 and DUMMY-12 only after their exact gates complete; when both are qualified, rebind DUMMY-13 baseline and then implement the first-stage three-store ledger.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
     "no claim about actual iMOD Coupler iteration",
     "no production SWAP5 groundwater-coupling change",
     "no production timestep or relaxation-factor prescription"
-  ]
+  ],
+  "current_repository_authority_reconciliation": {
+    "date": "2026-09-21",
+    "canonical_head_observed": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "status_a_note": "Frozen Status-A remains historical denominator; post-Status-A coupling authority must be used for current development decisions.",
+    "f_gc50": {
+      "state": "CANONICAL_INTERNAL_READY_EXTERNAL_B1_BLOCKED",
+      "meaning": "Restricted SWAP5 production-side chain exists, but actual upstream iMOD Coupler SWAP5 driver registration/product integration is not admitted."
+    },
+    "live_f_gc_shared_authority": {
+      "source": "noncanonical PR #486 / work/f-gc-coupling-semantics-reconciliation",
+      "storage_blocker": "CSR-B1-STORAGE-PARTITION",
+      "drainage_blocker": "CSR-B2-DRAINAGE-OWNERSHIP",
+      "research_implication": "Dummy stores may be declared disjoint for analytical ledgers, but dummy evidence cannot establish real SWAP/MODFLOW storage non-overlap or drainage ownership."
+    },
+    "relevant_invariants": [
+      "transactional accepted-state semantics",
+      "generic coupling windows",
+      "coupling as core functionality",
+      "explicit groundwater interface contract",
+      "absolute mass conservation",
+      "runtime/coupler system-composition ownership",
+      "no silent dependencies"
+    ]
+  }
 }
