@@ -679,14 +679,75 @@ This is the route by which the final HCOF/RHS semantics must be derived: first c
 
 ## 11. Relation to literature
 
-Three existing coupling traditions clarify the taxonomy without deciding SWAP5 semantics for us.
+The literature is useful here because it contains examples of all three conceptual patterns. It should be used to classify coupling semantics, not to retrofit authority onto the current SWAP5 implementation.
 
-1. **Shared-state coupling.** Van Walsum and Veldhuizen (2011), *Integration of models using shared state variables: Implementation in the regional hydrologic modelling system SIMGRO*, Journal of Hydrology 409, 363-370, DOI 10.1016/j.jhydrol.2011.08.036. The paper uses phreatic level as a shared state and a combined storage relationship. It explicitly motivates avoiding an artificial resistance where the saturated/unsaturated domains meet naturally.
-2. **SWAP-MODFLOW exchange coupling.** Xu et al. (2012), *Integration of SWAP and MODFLOW-2000 for modeling groundwater dynamics in shallow water table areas*, Journal of Hydrology, DOI 10.1016/j.jhydrol.2011.07.002. The coupled models exchange water-table depth and net recharge. This is useful evidence that state/flux exchange is a distinct coupling pattern.
-3. **Sequential vadose-MODFLOW coupling.** Beegum et al. (2018), *Updating the Coupling Algorithm between HYDRUS and MODFLOW in the HYDRUS Package for MODFLOW*, Vadose Zone Journal 17, DOI 10.2136/vzj2018.02.0034. Groundwater table is supplied as a vadose boundary and bottom flux is returned to MODFLOW; the paper documents temporal-boundary artifacts and explicitly distinguishes the separate mass balances from fully integrated saturated-unsaturated flow.
-4. **Current MetaSWAP-MODFLOW6 implementation reference.** The iMOD Coupler technical documentation states that MODFLOW sends heads to MetaSWAP, while MetaSWAP sends recharge and sets storage in the coupled MODFLOW cells. This is a concrete modern implementation of shared storage ownership, but it is an external reference architecture rather than authority for SWAP5 semantics.
+| Reference | Exchanged/common state | Flux/storage treatment | Closest family here | What it contributes |
+| --- | --- | --- | --- | --- |
+| Van Walsum & Veldhuizen (2011), SIMGRO/MetaSWAP-MODFLOW | Phreatic level is explicitly a shared state in the h-link. The paper contrasts this with a q-link in which the MODFLOW head differs from the SVAT phreatic level. | The shared-state method derives the complete vertical-profile storage relation from MetaSWAP and lets both model contributions update the same phreatic state. The paper also shows the q-link limit as resistance and interface distance approach zero. | Contract S, with Contract Q shown as a different construction | Strong support for the distinction between one shared phreatic state and a finite-resistance flux link. It also shows why forcing an artificial resistance at a naturally continuous saturated-unsaturated transition is a modelling choice, not a necessity. |
+| Xu et al. (2012), SWAP-MODFLOW-2000 | MODFLOW provides averaged water-table depth for the SWAP bottom-boundary condition. | SWAP provides net groundwater recharge back to MODFLOW. | Boundary/sequential or iterated head-flux exchange | Demonstrates a SWAP-specific coupling tradition in which water-table information and recharge are exchanged rather than declaring the two solvers to share one complete state vector. |
+| Beegum et al. (2018), HYDRUS-MODFLOW | MODFLOW water-table depth becomes the lower boundary of the HYDRUS profile. | Bottom-profile flux is returned to MODFLOW as recharge. The paper specifically diagnoses spurious interface fluxes caused by discontinuous time-step updates of the boundary state. | Boundary/sequential exchange | Shows that temporal semantics of a head/flux boundary exchange are physically consequential; a mass-conserving interface can still be dynamically poor when boundary state is updated inconsistently in time. |
+| Current iMOD Coupler MetaSWAP-MODFLOW6 technical reference | MODFLOW sends heads to MetaSWAP. | MetaSWAP provides recharge and explicitly sets storage in coupled MODFLOW cells; multiple SVAT storages are summed for an N:1 cell. | Operational shared-storage implementation related to Contract S | A modern implementation reference showing that storage ownership can be actively transferred/controlled by the vadose component rather than simply added to an independent MODFLOW storage term. It is an external architecture reference, not SWAP5 authority. |
 
-The literature therefore supports the conceptual distinction between shared-state, real q-link and boundary/sequential exchange. It does not determine which family the current SWAP5 production transform actually represents.
+### 11.1 Van Walsum and Veldhuizen: the strongest shared-state reference
+
+Van Walsum and Veldhuizen (2011), *Integration of models using shared state variables: Implementation in the regional hydrologic modelling system SIMGRO*, Journal of Hydrology 409, 363-370, DOI 10.1016/j.jhydrol.2011.08.036.
+
+Their Fig. 1 makes the taxonomy unusually explicit: several MetaSWAP columns can share the phreatic state of one MODFLOW cell through h-links, while a q-link keeps a different MODFLOW head and SVAT phreatic level connected by a finite-resistance relation.
+
+The paper first describes a q-link
+
+```text
+q = Delta h / c_bot
+```
+
+and then explains the zero-distance/zero-resistance limiting problem: as the artificial boundary approaches the phreatic surface, the resistance tends to zero and iterative flux-link convergence becomes difficult. Their h-link removes that artificial split by using the phreatic level itself as a shared state variable.
+
+The storage treatment is equally relevant. MetaSWAP constructs a storage relationship for the **complete vertical profile** as a function of phreatic level. During coupled updating, the unsaturated and saturated contributions both affect the same shared phreatic level. This is conceptually much closer to the original 10 m bucket than the current SWAP5 mode-5 lower-face-head contract.
+
+The important limit on the analogy is that MetaSWAP is a reduced storage/flux model specifically designed around this shared-state formulation. Real SWAP has a full Richards profile and internal memory. A shared phreatic coordinate would therefore not make the rest of the SWAP state disappear.
+
+### 11.2 Xu et al.: SWAP-specific head/recharge exchange
+
+Xu et al. (2012), *Integration of SWAP and MODFLOW-2000 for modeling groundwater dynamics in shallow water table areas*, Journal of Hydrology 412-413, 170-181, DOI 10.1016/j.jhydrol.2011.07.002.
+
+The reported coupling sends averaged MODFLOW water-table depth to SWAP to define its lower-boundary condition, while SWAP returns net groundwater recharge to MODFLOW.
+
+That pattern is valuable precisely because it should **not** automatically be called a shared-state h-link. It is an exchange of a groundwater state descriptor and a resulting flux between two models. Its physical and numerical correctness depends on the timing, spatial aggregation and ownership of those exchanged quantities.
+
+### 11.3 Beegum et al.: temporal boundary exchange is part of the physics
+
+Beegum et al. (2018), *Updating the Coupling Algorithm between HYDRUS and MODFLOW in the HYDRUS Package for MODFLOW*, Vadose Zone Journal 17, DOI 10.2136/vzj2018.02.0034.
+
+In the original HPM scheme, the bottom flux of the HYDRUS profile is passed to MODFLOW as recharge and the MODFLOW water-table depth at the end of the groundwater timestep becomes the lower boundary for the profile. Holding that groundwater table fixed throughout the MODFLOW timestep and then changing it abruptly produced unrealistic bottom inflow/outflow spikes.
+
+This is directly relevant to SWAP5: even after state and flux ownership are conceptually correct, the coupling window and state-update chronology are part of the physical approximation. "Head goes one way and flux comes back" is not a complete coupling definition.
+
+### 11.4 Current MetaSWAP-MODFLOW6 as an implementation reference
+
+The current iMOD Coupler technical documentation states that MODFLOW sends head to MetaSWAP, while MetaSWAP sends recharge and **sets storage in the coupled MODFLOW cells**. For multiple SVATs mapped to one MODFLOW cell, those storages are summed.
+
+That is a concrete operational example of avoiding an uncontrolled independent MODFLOW-storage plus MetaSWAP-storage sum. It strengthens the case that storage ownership must be an explicit part of the coupling contract.
+
+It does not imply that SWAP5 should copy this mechanism. The physical state representation and internal memory of real SWAP differ materially from MetaSWAP, so any transfer of the shared-state idea must be re-derived from the SWAP water balance and tested prospectively.
+
+### 11.5 Literature conclusion
+
+The literature supports the distinction that the dummy testbank already forced mathematically:
+
+```text
+shared phreatic state
+!= finite-resistance two-state link
+!= boundary head/flux exchange
+```
+
+It also reinforces two additional points:
+
+```text
+storage ownership is part of the coupling physics
+temporal exchange semantics are part of the coupling approximation
+```
+
+None of these references determines the meaning of the current SWAP5 production `u`, HCOF or RHS. That meaning remains source- and evidence-bound to the current implementation and the MAP audits above.
 
 ## 12. Architectural implication, deliberately deferred
 
