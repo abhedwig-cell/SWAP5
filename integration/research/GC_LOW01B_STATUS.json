@@ -79,7 +79,7 @@
     "LOW01-G1-BOUNDARY-ADMISSION": "Production bottom_mode=1 remains forbidden. The bounded LOW01-B research slice uses direct HeadCalc only and must not be cited as production solver-ABI admission.",
     "LOW01-G2-EXPLICIT-GEOMETRY-SENTINEL": "The fixed inside-profile controls -60/-120/-200 cm terminate with NN=1/2/3 and do not enter the undeclared lower-sentinel branch. Bottom-face behavior is owned separately by LOW01-A/A2.",
     "LOW01-G3-CONSTITUTIVE-OWNERSHIP": "Implemented for the bounded KSATEXM-disabled slice by tests/research/support/mod_gc_low01_constitutive_bridge.f90; pending owner qualification.",
-    "LOW01-G4-TYPED-OUTPUT-STATE": "Implemented research-only by tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90, which publishes typed groundwater_level=H_phreatic while retaining raw legacy gwl as provenance; pending owner qualification.",
+    "LOW01-G4-TYPED-OUTPUT-STATE": "Implemented research-only by the candidate/trial carrier contracts, which keep requested_H_phreatic and effective_H_phreatic distinct from raw legacy gwl and do not claim derived_profile_GWL authority unless a source-equivalent task-3 diagnostic has run; pending owner qualification.",
     "LOW01-G5-QBOT-MATERIALIZATION": "The same research carrier publishes diagnosed HeadCalc qbot as an explicit candidate output for the inside-profile slice; pending owner qualification."
   },
   "candidate_carrier": {
@@ -87,6 +87,7 @@
     "source": "tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90",
     "test": "tests/research/test_gc_low01_mode1_candidate_carrier.f90",
     "runner": "tests/research/run_gc_low01_candidate_carrier.sh",
-    "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json"
+    "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json",
+    "preregistration_amendment": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION_AMENDMENT.json"
   }
 }
