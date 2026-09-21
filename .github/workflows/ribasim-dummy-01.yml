@@ -13,6 +13,7 @@ on:
   pull_request:
     branches:
       - integration/f-ci-canonical
+      - work/ribasim-dummy-01
     paths:
       - 'integration/research/RIBASIM_DUMMY_01_*.json'
       - 'tests/research/dummy_ribasim_reservoir.py'
