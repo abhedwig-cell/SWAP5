@@ -5,8 +5,8 @@
   "branch": "work/ribasim-dummy-01",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "required_authorities": [
     "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
@@ -25,7 +25,7 @@
     "next_root_request_m3": 8,
     "combined_three_store_change_m3": 0
   },
-  "next_action": "Execute the exact DUMMY-13 three-store-ledger-gate.",
+  "next_action": "Rebind DUMMY-14 implementation baseline to the post-DUMMY-13 qualification head and begin three-store forcing-memory implementation.",
   "production_delta": [],
   "reference_delta": [],
   "concept": "integration/research/RIBASIM_DUMMY_13_CONCEPT.md",
@@ -50,7 +50,7 @@
       "run": 35570012761
     }
   },
-  "checkpoint_commit": "3033ee7035b8873bc67d56e7deef534a2fb1c657",
+  "checkpoint_commit": "11e56d376afbc1131660fdae61a5df175eb6a803",
   "scope": "First-stage three-store composition: qualified root-zone request state + qualified dynamic surface/groundwater management, with irrigation and surface-groundwater exchange treated as internal transfers.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_13_PREREGISTRATION.json",
@@ -84,9 +84,18 @@
     }
   },
   "conditional_authority_boundary": "Three stores are disjoint by construction. DUMMY-13 cannot close real F-GC CSR-B1 storage-partition or CSR-B2 drainage-ownership blockers.",
-  "recovery_point": "DUMMY-13 full scientific postimage is persisted; qualification is the next action.",
+  "recovery_point": "DUMMY-13 closed qualified; conditional three-store internal-transfer ledger authority is available.",
   "prequalification_strengthening": [
     "Added a dense 24-case state grid before qualification to exercise the already-preregistered internal-transfer conservation identity across multiple root deficits, surface heads and groundwater heads. No hypothesis, equation or expected regime value was changed."
   ],
-  "expected_tests": "12 tests"
+  "expected_tests": "12 tests",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+    "workflow_run": 35571925509,
+    "workflow_job": 106245164223,
+    "qualification_head": "31dd1b061a5c0d2e6f09c3f1ff77a4f274013588",
+    "tests": "12/12 PASS",
+    "gate": "PASS"
+  }
 }
