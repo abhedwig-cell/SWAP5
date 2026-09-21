@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.gc_real_swap.map09a.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP09A",
+  "title": "Active-drainage prescribed-head storage / bottom / non-bottom derivative decomposition",
+  "status": "CONDITIONAL_PREREGISTRATION_BEFORE_MAP09_OUTCOME",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "parent": "integration/research/GC_REAL_SWAP_MAP09_PREREGISTRATION.json",
+    "map03": "integration/research/GC_REAL_SWAP_MAP03_RESULT.json",
+    "research_bridge": "tests/research/support/mod_gc_map09_active_drainage_bridge.f90"
+  },
+  "activation_rule": {
+    "required_parent_outcome": "MAP09 reference prescribed-head corrector admitted with mass-complete whole-window candidate",
+    "candidate_symmetric_deltas_m": [
+      1e-8,
+      1e-7,
+      0.000001
+    ],
+    "selection": "Choose the smallest delta for which both -delta and +delta are participant-status 0 in the unchanged MAP09 fixed-offset characterization.",
+    "no_valid_pair": "Close MAP09A as BLOCKED_NO_PREREGISTERED_SYMMETRIC_PAIR. Do not search additional heads."
+  },
+  "fixed_physics": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.002,
+    "top_flux_cm_per_day": 0,
+    "root_extraction_active": false,
+    "macropore_active": false,
+    "snow_active": false,
+    "soil_temperature_active": false,
+    "drainage_response_active": true,
+    "drainage_tables": "same frozen two-level tabulated PUB-GC E6 tables",
+    "corrector_bottom_mode": 5,
+    "corrector_drainage_qbot_smooth_freatic_projection": false
+  },
+  "measured_at_each_selected_head": [
+    "storage_change_native",
+    "total_in_native",
+    "total_out_native",
+    "bottom_outward_exchange_native",
+    "mass_residual_native",
+    "accepted_window_duration"
+  ],
+  "derivatives": {
+    "units": "dimensionless metre-water per metre-head after native cm-to-m conversion",
+    "J_S": "d(storage_change)/dH by centered finite difference",
+    "J_R": "d(bottom_outward_exchange)/dH by centered finite difference",
+    "J_nonbottom": "J_S + J_R",
+    "interpretation": "From DeltaS = B_nonbottom_net_in - E_bottom_out, so dB_nonbottom_net_in/dH = J_S + J_R."
+  },
+  "comparison": {
+    "production_u": "0.0005760442426568357 from frozen E6 predictor",
+    "report": [
+      "J_S/u",
+      "-J_R/u",
+      "J_nonbottom/u",
+      "J_S+J_R numerical closure identity"
+    ],
+    "no_required_identity": [
+      "Do not require J_S=u.",
+      "Do not require J_R=-u.",
+      "Do not require J_nonbottom to be nonzero."
+    ]
+  },
+  "gates": [
+    "Activation rule is satisfied without adaptive head search.",
+    "Both selected prescribed-head corrector trials are valid from immutable origin and discarded afterward.",
+    "Both mass ledgers are complete and |mass_residual| <= 1e-10 cm.",
+    "storage_change = total_in - total_out within 1e-10 cm at both heads.",
+    "All three centered derivatives J_S, J_R and J_nonbottom are finite.",
+    "Committed authority remains revision/time zero and interface ledger count zero."
+  ],
+  "characterization_only": [
+    "Magnitude and sign of J_nonbottom.",
+    "Whether J_S+J_R differs materially from the MAP03 drainage-free zero response.",
+    "Relative relation of J_S and J_R to production u."
+  ],
+  "interpretation_rules": [
+    "A nonzero J_nonbottom in this fixture is evidence that the MAP03 storage/bottom cancellation is process-specific; because other optional head-dependent processes are disabled, active lagged drainage is the intended non-bottom mechanism.",
+    "A near-zero J_nonbottom would show that active drainage is present but does not materially change the local finite-window head derivative at the selected pair.",
+    "Neither result changes production ownership or slope policy without a separate coupling-level qualification."
+  ],
+  "forbidden": [
+    "no adaptive offset search",
+    "no drainage-table changes",
+    "no tolerance/retry changes",
+    "no production module changes",
+    "do not infer a universal drainage Jacobian from one fixture"
+  ]
+}
