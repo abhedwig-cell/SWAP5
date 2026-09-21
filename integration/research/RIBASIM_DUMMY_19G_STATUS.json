@@ -8,10 +8,12 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "Execution sequenced after DUMMY-19E2 closeout. Scientific references are frozen now.",
+  "blocked": false,
+  "blocker": null,
   "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
-  "next_action": "After DUMMY-19E2 closes, rebind and implement the frozen saveat sensitivity sweep.",
+  "next_action": "Implement and execute the frozen 1h/6h/12h/24h saveat sensitivity sweep against pinned Ribasim; do not change references or tolerances.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
+  "recovery_point": "DUMMY-19G scientific expectations frozen before DUMMY-19E2 completion; sequencing dependency now satisfied."
 }
