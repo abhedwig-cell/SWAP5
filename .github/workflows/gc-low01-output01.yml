@@ -1,0 +1,29 @@
+name: GC LOW01-OUTPUT01 typed trial carrier
+
+on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01_OUTPUT01*.json'
+      - 'tests/research/support/mod_gc_low01_mode1_trial_carrier.f90'
+      - 'tests/research/test_gc_low01_output01.f90'
+      - 'tests/research/run_gc_low01_output01.sh'
+      - '.github/workflows/gc-low01-output01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  output01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run LOW01-OUTPUT01 qualification
+        run: bash tests/research/run_gc_low01_output01.sh
