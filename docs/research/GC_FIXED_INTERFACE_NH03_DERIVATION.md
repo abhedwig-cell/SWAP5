@@ -118,7 +118,7 @@ C\Delta t\frac{S_{tan}}{S_{tan}+C\Delta t}.
 At the NH03 root,
 
 \[
-u_{loc}=0.086335\ldots
+u_{loc}=0.086336065586578\ldots
 \]
 
 and
