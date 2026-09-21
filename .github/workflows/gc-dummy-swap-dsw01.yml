@@ -10,6 +10,15 @@ on:
       - 'tests/research/test_gc_dummy_swap_dsw01_*.py'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/research/GC_DUMMY_SWAP_SHARED_STORAGE.md'
+      - 'integration/research/GC_DUMMY_SWAP_DSW01_*.json'
+      - 'tests/research/test_gc_dummy_swap_dsw01_*.py'
+      - 'tests/research/run_gc_dummy_swap_dsw01.sh'
+      - '.github/workflows/gc-dummy-swap-dsw01.yml'
   workflow_dispatch:
 
 permissions:
