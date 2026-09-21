@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.gc_hlink.hlink03.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK03",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_BLOCKED_PARENT_HLINK02",
+  "preregistration": "integration/research/GC_HLINK03_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_hlink03_process_memory.py",
+  "production_changes": false,
+  "activation_rule": "Execute only after HLINK01 and HLINK02 both pass their preregistered live gates.",
+  "physical_separation": [
+    "MODFLOW STO owns the shared phreatic storage once.",
+    "API term contains SWAP atmospheric/process remainder and internal-memory transfer, but no shared storage term.",
+    "MODFLOW WEL owns the lateral groundwater input.",
+    "Internal memory transfer is equal-and-opposite between W and shared storage and is excluded from the whole-system external source ledger."
+  ],
+  "next_action": "Hold test unexecuted until HLINK02 is qualified; then wire unchanged test into the research testbank.",
+  "blockers": [
+    "HLINK01 live qualification pending; HLINK02 consequently not yet activated."
+  ]
+}
