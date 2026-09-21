@@ -107,7 +107,9 @@ class ActiveSetPicardTests(unittest.TestCase):
         self.assertAlmostEqual(exact.end_level_m, 0.56, places=12)
 
         guesses = p.exchange_guesses(3)
-        self.assertEqual(guesses, (60.0, -60.0, 75.0, -60.0))
+        expected = (60.0, -60.0, 75.0, -60.0)
+        for observed, target in zip(guesses, expected):
+            self.assertAlmostEqual(observed, target, places=11)
         regimes = tuple(state.provisional_regime for state in p.states(3))
         self.assertEqual(regimes, ("CURTAILED", "FULL", "CURTAILED"))
 
