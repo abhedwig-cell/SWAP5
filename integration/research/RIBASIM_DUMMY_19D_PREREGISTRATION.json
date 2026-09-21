@@ -5,8 +5,13 @@
   "title": "Pinned real Ribasim heterogeneous physical realization factors",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
-    "current": "BLOCKED_PENDING_DUMMY_19C",
-    "implementation_rule": "No DUMMY-19D generator, verifier or workflow gate before DUMMY-19C closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "Executable DUMMY-19D files may be created only from this rebound post-DUMMY-19C closeout baseline; preregistered model, expectations and tolerances remain frozen.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+      "workflow_run": 35610267609,
+      "main_closeout_head": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f"
+    }
   },
   "pins": {
     "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
@@ -88,5 +93,7 @@
     "no production coupling claim"
   ],
   "pass_decision": "RIBASIM_DUMMY_19D_QUALIFIED_REAL_RIBASIM_HETEROGENEOUS_REALIZATION",
-  "fail_decision": "RIBASIM_DUMMY_19D_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19D_BLOCKED",
+  "baseline": "dafdeb0079eeb8c83830f71bfdc90a9046e5c03f",
+  "authority_rebind_note": "DUMMY-19D numerical expectations and concept were fixed while DUMMY-19C was pending. The executable implementation is now rebound to the qualified DUMMY-19C closeout head before any DUMMY-19D executable files are created."
 }
