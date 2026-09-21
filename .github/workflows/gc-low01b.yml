@@ -15,6 +15,7 @@ jobs:
       - name: Guard qualification prerequisites
         run: |
           test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json
+          test -f integration/research/GC_LOW01_OUTPUT01_RESULT.json
           test -f integration/research/GC_LOW01A2_RESULT.json
           test -f integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json
       - name: Install compiler
