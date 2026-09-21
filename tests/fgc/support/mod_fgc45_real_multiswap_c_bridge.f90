@@ -1,6 +1,7 @@
 module mod_fgc45_real_multiswap_c_bridge
   use, intrinsic :: iso_c_binding, only: c_double, c_int
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE, TX_STATUS_ACCEPTED
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
