@@ -76,15 +76,26 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-15",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "state": "IMPLEMENTED_PERSISTED_CORRECTED_CI_QUEUED",
       "intended_decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
       "implementation_baseline": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
       "dependency": "qualified DUMMY-14",
-      "boundary": "one-Basin exact priority oracle; no forecast mismatch, routing, fairness or product-allocation equivalence"
+      "boundary": "one-Basin exact priority oracle; no forecast mismatch, routing, fairness or product-allocation equivalence",
+      "qualification_run": 35578647184,
+      "pr": 518,
+      "superseded_run": 35577982472,
+      "qualification_note": "Prequalification bookkeeping repair only; frozen corrected base excludes later DUMMY-15B work."
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-15B",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+      "implementation": false,
+      "purpose": "Forecast allocation versus exact physical realization policy contrast"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-15 competing-claims gate. If PASS, close the same-state priority oracle before adding forecast-versus-realization mismatch.",
+  "next_authority_action": "Observe corrected DUMMY-15 run 35578647184; if PASS, close DUMMY-15 and rebind revised DUMMY-15B.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
