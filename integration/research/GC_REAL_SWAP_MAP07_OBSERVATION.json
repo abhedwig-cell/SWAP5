@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.gc_real_swap.map07.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP07",
+  "status": "FROZEN_EVIDENCE_RECALCULATION_PENDING_CI_PRESERVATION",
+  "authority": {
+    "production_formula": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "production_cell_slope": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "frozen_flux_points": "docs/publication/evidence/PUB_GC_E4_RAW_FLUX_POINTS.json",
+    "frozen_head_scans": "docs/publication/evidence/PUB_GC_E4_RAW_HEAD_SCANS.json",
+    "preregistration": "integration/research/GC_REAL_SWAP_MAP07_DIAGNOSTIC_DESIGN.json"
+  },
+  "baseline": {
+    "id": "B3",
+    "window_day": 0.001,
+    "u_A": 0.0002665743709457589,
+    "production_partial_slope_per_day": 0.2665743709457589
+  },
+  "rows": [
+    {
+      "fraction": 0.001,
+      "u_fd": 0.00026657436127347695,
+      "relative_u_match": 3.6283615449440356e-8,
+      "frozen_total_slope_per_day": 9.672287852144799e-9,
+      "frozen_total_to_partial_ratio": 3.6283637537356745e-8,
+      "pointwise_total_slope_per_day": 2.6041498649415057e-7,
+      "pointwise_total_to_partial_ratio": 9.768943112207077e-7
+    },
+    {
+      "fraction": 0.003,
+      "u_fd": 0.00026657438099712106,
+      "relative_u_match": 3.770565687149893e-8,
+      "frozen_total_slope_per_day": -1.0051363068756196e-8,
+      "frozen_total_to_partial_ratio": -3.770566177497007e-8,
+      "pointwise_total_slope_per_day": 2.406913240192103e-7,
+      "pointwise_total_to_partial_ratio": 9.029049685657322e-7
+    },
+    {
+      "fraction": 0.01,
+      "u_fd": 0.00026657437310767025,
+      "relative_u_match": 8.109974353526223e-9,
+      "frozen_total_slope_per_day": -2.1619113820457136e-9,
+      "frozen_total_to_partial_ratio": -8.109974617498422e-9,
+      "pointwise_total_slope_per_day": 2.485807965849406e-7,
+      "pointwise_total_to_partial_ratio": 9.325007340466367e-7
+    }
+  ],
+  "bounded_conclusions": [
+    "The production +u_A/dt slope is the partial derivative of the affine q_u extension with qbot and u held fixed.",
+    "Along the frozen E4 B3 predictor family, dqbot/dH approximately cancels +u_A/dt; the frozen-u total derivative is approximately zero to O(1e-8) relative to the production partial slope.",
+    "Allowing the pointwise u_A value to vary leaves the total q_u derivative only O(1e-6) of the production partial slope over the preregistered plateau points.",
+    "Therefore production dq_u/dH=+u/dt must not be described as the total derivative of historical q_u across neighboring predictor states.",
+    "This distinction does not by itself imply the production iteration slope is invalid, because an iteration-response policy may intentionally be a partial affine extension rather than a physical total derivative."
+  ],
+  "links_to_prior_evidence": [
+    "MAP03: in the simple corrector fixture, u locally matches physical storage sensitivity while bottom-outward exchange sensitivity is -u.",
+    "MAP04/MAP05A: nonzero iteration slope policies can converge to physically equivalent accepted states when their corrector path remains admissible.",
+    "MAP05: removing slope entirely can alter the path enough to hit a narrow corrector-domain failure in the stronger B3 case."
+  ],
+  "forbidden_inference": [
+    "Do not relabel +u/dt as a physical interface-exchange Jacobian.",
+    "Do not call the partial-versus-total distinction a production defect without an explicit coupling-contract requirement.",
+    "Do not change production code from this retrospective calculation alone."
+  ],
+  "pending": "CI workflow 35568628419 preservation run"
+}
