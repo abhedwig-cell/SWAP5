@@ -433,8 +433,14 @@ contains
       return
     end if
 
-    call corrector_backend%run_trial(column,template,corrector_parameters,committed,forcing,corrector_config, &
-         window%t0,window%t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    select type(typed_forcing => forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call corrector_backend%run_trial(column,template,corrector_parameters,committed,typed_forcing,corrector_config, &
+           window%t0,window%t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+    class default
+      fgc44_raw_corrector_diagnostics_c=4_c_int
+      return
+    end select
 
     result_status=int(raw_result%status,c_int)
     if(raw_result%completed)completed=1_c_int
