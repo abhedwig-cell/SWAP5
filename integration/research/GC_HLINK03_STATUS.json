@@ -4,7 +4,7 @@
   "work_unit": "GC-HLINK03",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_PREEXECUTION_REVIEWED_BLOCKED_PARENT_HLINK02_RERUN",
+  "state": "IMPLEMENTED_PREEXECUTION_LIFECYCLE_REPAIRED_BLOCKED_PARENT_HLINK02_RERUN",
   "preregistration": "integration/research/GC_HLINK03_PREREGISTRATION.json",
   "test": "tests/research/test_gc_hlink03_process_memory.py",
   "production_changes": false,
@@ -15,14 +15,27 @@
     "MODFLOW WEL owns the lateral groundwater input.",
     "Internal memory transfer is equal-and-opposite between W and shared storage and is excluded from the whole-system external source ledger."
   ],
-  "next_action": "Wait for the repaired HLINK02 rerun with its original scientific gates unchanged. If HLINK02 qualifies, execute HLINK03 unchanged.",
+  "next_action": "Wait for the repaired HLINK02 rerun with its original scientific gates unchanged. If HLINK02 qualifies, execute HLINK03 with the repaired prepared-solve lifecycle and otherwise unchanged preregistered physics.",
   "blockers": [
-    "HLINK02 preregistered scientific gate awaits rerun after a research-harness finalize/readiness ordering repair.",
+    "HLINK02 preregistered scientific gate awaits rerun after its research-harness finalize/readiness ordering repair.",
     "HLINK02D write_sy/rclose characterization awaits live Actions evidence."
   ],
   "preexecution_review": "integration/research/GC_HLINK03_PREEXECUTION_REVIEW.json",
   "parent_state": {
     "HLINK01": "QUALIFIED",
     "HLINK02": "HARNESS_LIFECYCLE_REPAIR_QUEUED"
+  },
+  "lifecycle_repair": {
+    "commit": "c584c404bab87f2e2d4a1732b9650213f27f451b",
+    "finding": "Preexecution audit found HLINK03 had inherited the same impossible pre-finalize timestep_ready_for_finalize() check as the original HLINK02 harness.",
+    "change": "Track iterate.modflow_converged explicitly, finalize_prepared_solve(), then evaluate timestep readiness and finalize the timestep.",
+    "unchanged": [
+      "shared Sy=0.20 ownership",
+      "atmospheric input",
+      "lateral input",
+      "ET and drain laws",
+      "internal-memory law",
+      "head and mass gates"
+    ]
   }
 }
