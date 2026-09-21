@@ -87,9 +87,27 @@ own convergence before recording (H,q_gw). The fitted a=dq_gw/dH is therefore
 an intrinsic groundwater response over the sampled local head range.
 
 Finite real-SWAP starts are fixed prospectively at
-{-1e-6,-5e-7,+5e-7,+1e-6,+2e-6} m relative to href. The separately observed
--2e-6 m point remains a G06 inadmissibility probe and must never be relabelled
-as coupling divergence.
+{-1e-6,-5e-7,+5e-7,+1e-6,+2e-6} m relative to href.
+
+The earlier interpretation of the first -2e-6 m local-scan result is withdrawn
+before the replacement G06 run. Source inspection shows participant status 4 is
+CANDIDATE_BUSY. The historical test left trial(href) live before the first scan
+point, so that point did not execute the corrector and cannot define a head
+admissibility boundary.
+
+Replacement G06 first reproduces that status-4 ordering artifact explicitly.
+It then evaluates the cold-process head grid
+{-1e-4,-5e-5,-2e-5,-1e-5,-5e-6,-2e-6,-1e-6,
+ +1e-6,+2e-6,+5e-6,+1e-5,+2e-5,+5e-5,+1e-4} m relative to href.
+Every point runs in a fresh process from the same accepted physical origin.
+Only participant status 6 (TRIAL_FAILED) counts as a corrector failure.
+Status 4 is forbidden in the clean scan.
+
+If one or more status-6 points occur, G06 selects the failure with the smallest
+absolute head perturbation, breaking ties toward the negative perturbation, and
+applies fixed factor-1/2 contractions toward href for at most 12 contractions.
+If no status-6 point occurs in the fixed grid, G06 records that the safeguard
+trigger was not exercised and makes no broader envelope claim.
 
 P3 does not tune alpha from finite-start trajectories. It uses
 alpha*=1/(1-rho_P0), computed once from frozen real-SWAP p and the prospectively

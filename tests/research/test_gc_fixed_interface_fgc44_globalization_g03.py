@@ -31,7 +31,13 @@ from test_fgc44_real_swap_modflow_end_to_end import (
 QUALIFIED_RESPONSE = ROOT / "integration" / "research" / "GC_FIXED_INTERFACE_FGC44_LOCAL_RESPONSE_RESULT.json"
 GW_Q_PROBES_M_PER_S = (-4.0e-8, -2.0e-8, -1.0e-8, 1.0e-8, 2.0e-8, 4.0e-8)
 FINITE_START_DH_M = (-1.0e-6, -5.0e-7, 5.0e-7, 1.0e-6, 2.0e-6)
-KNOWN_REJECTED_DH_M = -2.0e-6
+CANDIDATE_BUSY_STATUS = 4
+TRIAL_FAILED_STATUS = 6
+ARTIFACT_DH_M = -2.0e-6
+ADMISSIBILITY_SCAN_DH_M = (
+    -1.0e-4, -5.0e-5, -2.0e-5, -1.0e-5, -5.0e-6, -2.0e-6, -1.0e-6,
+     1.0e-6,  2.0e-6,  5.0e-6,  1.0e-5,  2.0e-5,  5.0e-5,  1.0e-4,
+)
 MAX_OUTER = 8
 HEAD_ROOT_TOL_M = 5.0e-11
 RHO_ABS_TOL = 5.0e-4
@@ -213,26 +219,35 @@ def run_policy(
     }
 
 
-def run_cold_g06_only() -> None:
+def run_cold_g06_probe(dh: float) -> None:
     swaplib = Path(os.environ["FGC44_SWAP_LIB"]).resolve()
     require(swaplib.is_file(), "missing real SWAP bridge library")
     swap = Fgc44RealSwap(swaplib)
     _, _, href = swap.initialize()
     origin = swap.state()
-    require(origin == (0, 0.0, 0, 0.0), "cold G06 process not at accepted origin")
-    cold_status, _ = trial_and_discard(swap, origin, href + KNOWN_REJECTED_DH_M)
-    require(cold_status != 0, "fresh-process -2e-6 probe unexpectedly accepted")
-    contracted_status, _ = trial_and_discard(
-        swap, origin, href + 0.5 * KNOWN_REJECTED_DH_M
+    require(origin == (0, 0.0, 0, 0.0), "cold G06 probe not at accepted origin")
+    status, q = swap.try_trial(href + dh)
+    swap.discard()
+    require(swap.state() == origin, "cold G06 probe mutated accepted authority")
+    print("FGC44_G06_COLD_PROBE_JSON=" + json.dumps(
+        {"dh_m": dh, "status": int(status), "q_swap_m_per_s": float(q)},
+        sort_keys=True, separators=(",", ":")
+    ))
+
+
+def cold_probe_status(swaplib: Path, dh: float) -> tuple[int, float]:
+    child = subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--g06-probe", repr(float(dh))],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=os.environ.copy(),
     )
-    require(contracted_status == 0, "fresh-process factor-1/2 contraction not admissible")
-    require(swap.state() == origin, "cold G06 trials mutated accepted authority")
-    print(
-        f"FGC44_G06_COLD_REJECTED_DH_M={KNOWN_REJECTED_DH_M:.17g} "
-        f"STATUS={cold_status} CONTRACTED_DH_M={0.5*KNOWN_REJECTED_DH_M:.17g} "
-        f"CONTRACTED_STATUS={contracted_status}"
-    )
-    print("FGC44_G06_COLD_PROCESS=PASS")
+    marker = "FGC44_G06_COLD_PROBE_JSON="
+    lines = [line for line in child.stdout.splitlines() if line.startswith(marker)]
+    require(len(lines) == 1, f"cold G06 probe marker missing for dh={dh}: {child.stdout}")
+    payload = json.loads(lines[0][len(marker):])
+    return int(payload["status"]), float(payload["q_swap_m_per_s"])
 
 
 def main() -> None:
@@ -312,38 +327,81 @@ def main() -> None:
                     f"{policy} measured rho disagrees with theory at {start_dh}: "
                     f"{rho_measured} versus {rho_expected}")
 
-    # G06 separates accepted physical authority from numerical warm-start
-    # history.  The kernel contract permits worker-local numerical warm starts,
-    # so trial admissibility need not be a static function of (origin,H).
-    warm_status, _ = trial_and_discard(swap, origin_state, href + KNOWN_REJECTED_DH_M)
+    # G06-A: explicitly reproduce the historical status-4 artifact.  Status 4
+    # is CANDIDATE_BUSY, not a corrector failure, and therefore has no head-
+    # admissibility meaning.
+    artifact_swap = Fgc44RealSwap(swaplib)
+    _, _, artifact_href = artifact_swap.initialize()
+    artifact_origin = artifact_swap.state()
+    _ = artifact_swap.trial(artifact_href)
+    busy_status, _ = artifact_swap.try_trial(artifact_href + ARTIFACT_DH_M)
+    require(busy_status == CANDIDATE_BUSY_STATUS,
+            f"historical candidate-busy artifact did not reproduce: {busy_status}")
+    artifact_swap.discard()
+    require(artifact_swap.state() == artifact_origin,
+            "candidate-busy regression probe mutated accepted authority")
     print(
-        f"FGC44_G06_WARM_HISTORY_DH_M={KNOWN_REJECTED_DH_M:.17g} "
-        f"STATUS={warm_status}"
+        f"FGC44_G06_STATUS4_ARTIFACT_DH_M={ARTIFACT_DH_M:.17g} "
+        f"STATUS={busy_status} CLASS=CANDIDATE_BUSY"
     )
 
-    # A true cold numerical start requires a fresh process.  Recalling
-    # initialize() inside this process resets accepted physical authority but
-    # deliberately does not promise to erase worker-local numerical warm starts.
-    cold = subprocess.run(
-        [sys.executable, str(Path(__file__).resolve()), "--g06-cold"],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=os.environ.copy(),
-    )
-    print(cold.stdout.strip())
-    require("FGC44_G06_COLD_PROCESS=PASS" in cold.stdout,
-            "cold-process G06 safeguard marker missing")
+    # G06-B: true head-admissibility characterization.  Every point runs in a
+    # fresh Python process, so no live candidate or worker-local numerical warm
+    # start can leak from one head to another.
+    cold_scan: list[tuple[float, int, float]] = []
+    for dh in ADMISSIBILITY_SCAN_DH_M:
+        status, q = cold_probe_status(swaplib, dh)
+        require(status != CANDIDATE_BUSY_STATUS,
+                f"fresh-process head probe unexpectedly candidate-busy at dh={dh}")
+        cold_scan.append((dh, status, q))
+        print(
+            f"FGC44_G06_COLD_SCAN_DH_M={dh:.17g} STATUS={status} "
+            f"QSWAP={q:.17g}"
+        )
 
-    require(swap.state() == origin_state, "G06 warm-history diagnostics mutated SWAP authority")
+    trial_failures = [(dh, status) for dh, status, _ in cold_scan
+                      if status == TRIAL_FAILED_STATUS]
+    unexpected = [(dh, status) for dh, status, _ in cold_scan
+                  if status not in (0, TRIAL_FAILED_STATUS)]
+    require(not unexpected, f"unexpected G06 participant statuses: {unexpected}")
+
+    # G06-C: if the preregistered grid exposes a true trial failure, choose the
+    # nearest-to-zero failure by the frozen rule and halve the head step toward
+    # href until a fresh-process corrector accepts it.  If the grid contains no
+    # true failure, record that the safeguard trigger is not qualified here.
+    if trial_failures:
+        selected_dh, _ = min(trial_failures, key=lambda item: (abs(item[0]), item[0]))
+        contracted_dh = selected_dh
+        recovered = False
+        contractions = 0
+        recovered_status = TRIAL_FAILED_STATUS
+        for contractions in range(1, 13):
+            contracted_dh *= 0.5
+            recovered_status, _ = cold_probe_status(swaplib, contracted_dh)
+            require(recovered_status != CANDIDATE_BUSY_STATUS,
+                    "fresh-process safeguard probe became candidate-busy")
+            if recovered_status == 0:
+                recovered = True
+                break
+        require(recovered,
+                f"factor-1/2 safeguard did not recover from dh={selected_dh}")
+        print(
+            f"FGC44_G06_SAFEGUARD_TRIGGER=TRIAL_FAILED "
+            f"START_DH_M={selected_dh:.17g} CONTRACTED_DH_M={contracted_dh:.17g} "
+            f"CONTRACTIONS={contractions} FINAL_STATUS={recovered_status}"
+        )
+    else:
+        print("FGC44_G06_SAFEGUARD_TRIGGER=NO_TRIAL_FAILURE_IN_PREREGISTERED_GRID")
+
+    require(swap.state() == origin_state, "G06 diagnostics mutated SWAP authority")
     print("FGC44_G03_GROUNDWATER_RESPONSE=PASS")
     print("FGC44_G05_FINITE_PERTURBATION=PASS")
-    print("FGC44_G06_ASYMMETRIC_SAFEGUARD=PASS")
+    print("FGC44_G06_CLEAN_ADMISSIBILITY=PASS")
     print("GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_GATE=PASS")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "--g06-cold":
-        run_cold_g06_only()
+    if len(sys.argv) == 3 and sys.argv[1] == "--g06-probe":
+        run_cold_g06_probe(float(sys.argv[2]))
     else:
         main()

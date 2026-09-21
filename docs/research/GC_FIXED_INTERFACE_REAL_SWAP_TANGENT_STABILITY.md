@@ -18,7 +18,7 @@ Therefore +u/dt is not the outward physical SWAP derivative in the qualified fix
 
 The ordinary F-GC44 live coupling closes in two iterations, but its two reported heads differ by only about 5.9e-14 m. It starts essentially at its coupled root. That run proves transaction semantics and near-root closure, not a finite basin of attraction.
 
-The corrector admissibility scan is asymmetric for this short 1e-4 day window: -2e-6 m is rejected with status 4, whereas -1e-6 through +2e-6 m are accepted in the sampled set. A stability experiment must not cross this physical/numerical trial envelope and then interpret rejection as divergence.
+The earlier claim of an asymmetric corrector-admissibility envelope was invalid. Participant status 4 means CANDIDATE_BUSY. In the historical local scan, an initial trial at href was still live when the first -2e-6 m point was called, so that point never executed the corrector. The scan's subsequent points ran only after the finally-discard cleared that candidate. The physical tangent result remains valid, but the status-4 point supplies no head-envelope evidence. A clean fresh-process G06 scan is preregistered separately.
 
 ## Linearized coupling criterion
 
@@ -34,7 +34,8 @@ Qualified:
 - physical outward local tangent has sign -u/dt in both analytical and real-Richards evidence;
 - current production-facing affine slope has sign +u/dt;
 - reanchoring preserves a fixed point but does not itself guarantee stability;
-- PB01 demonstrates an admissible system where the positive reanchored slope is unstable.
+- PB01 demonstrates an admissible system where the positive reanchored slope is unstable;
+- the previously reported F-GC44 -2e-6 m status-4 rejection was a candidate-lifecycle artifact, not a corrector failure.
 
 Not yet qualified:
 - that every production groundwater regime is unstable;

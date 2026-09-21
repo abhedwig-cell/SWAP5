@@ -98,6 +98,11 @@ def main()->None:
     # not accepted hydrological history and not authoritative interface mass.
     probe_q=swap.trial(href)
     probe_diag=swap.last_trial_diagnostics()
+    # Close the probe candidate before any independent head-response sample.
+    # Leaving it live makes the next trial return participant status 4
+    # (CANDIDATE_BUSY) without executing the corrector.
+    swap.discard()
+    require(swap.state()==origin_state,"discarded isolation probe mutated committed authority")
     # PB01 follow-up: prospectively sample the immutable-origin real-SWAP corrector
     # around the predictor reference head. These are rejected diagnostic trials only.
     scan=[]
@@ -111,9 +116,7 @@ def main()->None:
     for dh,qscan,status in scan:
         print(f"FGC44_LOCAL_SCAN_DH_M={dh:.17g} QSWAP={qscan:.17g} STATUS={status}")
     require(math.isfinite(probe_q) and all(math.isfinite(v) for v in probe_diag),"nonfinite rejected-trial probe")
-    require(swap.state()==origin_state,"rejected trial mutated committed state or ledger before discard")
-    swap.discard()
-    require(swap.state()==origin_state,"discarded trial mutated committed state or ledger")
+    require(swap.state()==origin_state,"diagnostic local scan mutated committed state or ledger")
 
     # A prepared publication that is abandoned before the publication point must
     # likewise leave committed state and mass unchanged.
