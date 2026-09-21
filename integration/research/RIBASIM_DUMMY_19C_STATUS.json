@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-19C",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "8ec78571d82299cb28bc7558bb0e501fa6b9a44e",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -12,7 +12,7 @@
   "required_authority": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
   "blocker": null,
   "prepared_scope": "Pinned real Ribasim full allocation followed by smooth physical UserDemand min_level reduction with two common-factor recipients.",
-  "next_action": "Implement the preregistered pinned real-Ribasim full-allocation / physical-reduction conflict without changing model parameters or tolerances.",
+  "next_action": "Verify exact DUMMY-19C source scope and execute pinned real Ribasim realization-conflict gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -20,5 +20,32 @@
     "workflow_run": 35598766437,
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885"
+  "baseline": "94eb5a6cef6d3a9a8389d35595bbd5d9baabe885",
+  "scope": "Pinned real Ribasim full-allocation versus physical UserDemand min_level reduction using two common-factor recipients and independent integrated-linkflow/Basin-ledger verification.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19C_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19C_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19C_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19C_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_realization_conflict.py",
+    "tests/research/real_ribasim_realization_conflict_bridge.jl",
+    "tests/research/run_ribasim_dummy_19c.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_BRIDGE_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "generator uses pinned Ribasim API already exercised by qualified DUMMY-19B",
+      "allocation-stage LevelDemand holds forecast Basin storage while fixed inflow exactly equals total 60 m3/day demand",
+      "both UserDemand nodes share source Basin and min_level=0.99 m",
+      "physical supplied authority is integrated direct Basin-to-UserDemand linkflow, not allocated output",
+      "initial physical reduction factor is independently fixed at 0.5 from the pinned cubic reduction law",
+      "root/external physical supplied ratio is asserted 2:1 at every output sample",
+      "Basin storage gain closes the 60 m3 one-day external inflow ledger",
+      "integrated supplies and final level are compared to preregistered independent continuous reference with unchanged 0.05 m3 tolerance",
+      "priority reversal must leave allocation, physical supply split and Basin trajectory unchanged because both demands are fully allocated"
+    ]
+  },
+  "recovery_point": "DUMMY-19C generator, verifier, runner and workflow gate are persisted; executable qualification remains open."
 }
