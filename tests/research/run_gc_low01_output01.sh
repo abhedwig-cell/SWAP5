@@ -80,6 +80,6 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 }
 echo 'GC_LOW01_OUTPUT01_O0_O2_IDENTITY=PASS'
 
-git diff --check --   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION.json   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT.json   tests/research/support/mod_gc_low01_mode1_trial_carrier.f90   tests/research/test_gc_low01_output01.f90   tests/research/run_gc_low01_output01.sh
+git diff --check --   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION.json   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT.json   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT_V2.json   tests/research/support/mod_gc_low01_mode1_trial_carrier.f90   tests/research/test_gc_low01_output01.f90   tests/research/run_gc_low01_output01.sh
 
 echo 'GC_LOW01_OUTPUT01_QUALIFICATION=PASS'
