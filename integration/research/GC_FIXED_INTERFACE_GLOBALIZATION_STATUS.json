@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.gc_fixed_interface.globalization_status.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "current_research_head_before_status_commit": "4fc42812abdd893785ca408b6bc5803d56f724a1",
+  "production_changes": false,
+  "question": "Which linearization/globalization closes the fixed-interface SWAP-MODFLOW equation robustly while preserving the exact physical fixed point, accepted mass semantics and immutable-origin corrector contract?",
+  "work_units": {
+    "G01": {
+      "status": "PASS",
+      "claim": "NH01 policy factors and relaxation interval reproduced"
+    },
+    "G02": {
+      "status": "PASS",
+      "claim": "phase map: P0 contractive r>3, singular r=1; P2 contractive r>1; P1 affine rho=0"
+    },
+    "G03": {
+      "status": "PASS",
+      "claim": "real F-GC44 a measured cleanly; r=5170.7591 places current configuration deep in P0/P2 contractive region",
+      "evidence_run": 35618874403
+    },
+    "G04": {
+      "status": "PASS",
+      "claim": "nonlinear NH03 distinguishes frozen P0 failure, slow Picard, unsafeguarded Newton excursion, P3 alpha boundary and P4 safeguard",
+      "evidence_run": 35619773763
+    },
+    "G05": {
+      "status": "PASS",
+      "claim": "real F-GC44 finite starts match local rho for P0/P1/P2/P3/P4",
+      "evidence_run": 35618874403
+    },
+    "G06": {
+      "status": "PASS_WITH_CORRECTION",
+      "claim": "historical status 4 was CANDIDATE_BUSY artifact; fresh-process scan finds true status-6 bounds and factor-half safeguard recovery",
+      "evidence_run": 35618874403
+    },
+    "G07": {
+      "status": "NOT_ADMITTED",
+      "claim": "evidence supports safeguarded physical-tangent family as leading research candidate, but not a general production algorithm"
+    }
+  },
+  "qualified_now": [
+    "+u/dt is not the physical outward SWAP derivative under fixed-interface semantics.",
+    "P0 stability depends on groundwater-to-SWAP response ratio; PB01 supplies a divergent valid regime and F-GC44 a strongly contractive valid regime.",
+    "Physical Newton gives the best local affine factor but requires safeguarding under nonlinear finite perturbations.",
+    "Picard is a viable fallback only in r>1 regimes and can be very slow near |p|/a close to one.",
+    "A response-derived relaxation parameter can be principled, but is regime-local and may fall outside 0<alpha<=1; with exact p its linear-cancellation step is Newton algebraically.",
+    "Corrector admissibility is a separate gate from coupling contraction and must use actual TRIAL_FAILED evidence, not candidate lifecycle statuses."
+  ],
+  "not_qualified": [
+    "global replacement of production +u/dt by -u/dt",
+    "one universal relaxation alpha",
+    "unsafeguarded physical Newton as a general production policy",
+    "a universal fixed head-admissibility envelope",
+    "production admission before real-SWAP nonlinear/window and groundwater-regime sweeps"
+  ],
+  "next_research": [
+    "vary groundwater storage and lateral conductance in live MODFLOW around G02 r=1 and r=3 boundaries",
+    "vary coupling-window duration and real-SWAP forcing so p and predictor/corrector nonlinearity materially change",
+    "exercise safeguarded physical tangent on real-SWAP cases where a proposed corrector actually returns TRIAL_FAILED",
+    "only then evaluate G07 production algorithm admission"
+  ]
+}

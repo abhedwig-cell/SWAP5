@@ -174,3 +174,21 @@ requires 0<alpha<=1. Therefore the rerun classifies such a point as
 RELAXATION_NOT_ADMISSIBLE. It does not clip alpha to 1, tune alpha, remove the
 start, or convert the case into convergence evidence. P3/Newton equivalence is
 tested only at starts where the preregistered P3 relaxation range is satisfied.
+
+
+## Execution checkpoint: G04 nonlinear NH03
+
+Tested commit: `4fc42812abdd893785ca408b6bc5803d56f724a1`  
+Workflow run: `35619773763`  
+Result: PASS
+
+P0 is inadmissible from all eight frozen starts. P1 converges from all starts
+but reaches `|y|=19.0598 m` from the difficult `y=-0.23 m` start. P2 converges
+from all starts in 160 to 173 outer iterations. P3 is not an admissible
+under-relaxation at `y=-0.23 m` because its derived alpha is 3.8650; for the
+other seven starts it is algebraically equivalent to P1 and converges. P4
+converges from all starts and uses six half-step contractions at the difficult
+start, keeping `max|y|=0.23 m`.
+
+The result is persisted in
+`integration/research/GC_FIXED_INTERFACE_GLOBALIZATION_G04_RESULT.json`.

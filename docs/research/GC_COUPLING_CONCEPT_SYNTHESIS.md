@@ -964,3 +964,36 @@ this evidence. The next production-admission question must account for both
 the local response ratio (r) and trial safeguarding, and must be tested
 across nonlinear SWAP response and materially different groundwater
 storage/lateral-conductance regimes.
+
+
+## 16. Nonlinear globalization discriminator G04
+
+G04 uses NH03 to remove the local-affine advantage present in F-GC44. Its
+result is decisive for interpreting the candidate policies.
+
+The frozen positive predictor surrogate P0 fails the physical branch from all
+eight preregistered starts. Physical Newton P1 reaches the exact root from all
+starts, but from `y=-0.23 m` its unsafeguarded trajectory jumps to
+`|y|=19.0598 m` before returning. Root convergence therefore does not by
+itself qualify a coupling algorithm.
+
+Picard P2 is robust in the same tested starts but needs 160 to 173 outer
+iterations. At the root its local factor is `-0.86336`, consistent with that
+slow alternating convergence.
+
+The response-derived P3 relaxation exposes an additional limit. At the
+difficult start its formal cancellation value is `alpha=3.8650`, outside the
+declared under-relaxation range. At all starts where `0<alpha<=1`, the
+response-derived P3 update is algebraically the physical Newton update when the
+exact physical derivative is used. It is therefore not an independent
+globalization mechanism in that limit.
+
+P4, physical Newton plus factor-1/2 safeguarding, converges from every frozen
+start. At `y=-0.23 m` six contractions prevent the Newton excursion and keep
+the trajectory inside `max|y|=0.23 m`, while reaching the same physical root
+in four outer iterations.
+
+Together with G03-G06, this makes safeguarded physical-tangent iteration the
+leading research family, not yet a production-admitted algorithm. Live
+groundwater-response sweeps near the G02 singular/contraction boundaries and
+real-SWAP nonlinear/window variation remain necessary before G07 can close.

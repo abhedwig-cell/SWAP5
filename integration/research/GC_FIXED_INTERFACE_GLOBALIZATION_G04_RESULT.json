@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.gc_fixed_interface.globalization_g04.v1",
+  "date": "2026-09-21",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "tested_commit": "4fc42812abdd893785ca408b6bc5803d56f724a1",
+  "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "workflow": {
+    "name": "GC fixed-interface research oracles",
+    "run_id": 35619773763,
+    "job_id": 106399624569,
+    "conclusion": "success"
+  },
+  "production_changes": false,
+  "oracle": "NH03_NONLINEAR_STORAGE",
+  "root_y_m": 0.0346097449844889,
+  "frozen_positive_predictor_slope": 0.09282032302755092,
+  "root_physical_slope": -0.08633606558657773,
+  "root_picard_rho": -0.8633606558657773,
+  "starts_y_m": [
+    -0.23,
+    -0.1,
+    -0.02,
+    0,
+    0.02,
+    0.06,
+    0.1,
+    0.3
+  ],
+  "policies": {
+    "P0": {
+      "definition": "frozen positive predictor slope, exact reanchor",
+      "result": "INADMISSIBLE_ALL_STARTS",
+      "first_or_second_outer_failure": true,
+      "interpretation": "fixed-point consistency does not provide nonlinear robustness"
+    },
+    "P1": {
+      "definition": "exact physical derivative p(y), Newton relinearized every iterate",
+      "result": "CONVERGED_ALL_STARTS",
+      "outer_iterations": [
+        6,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "difficult_start_y_m": -0.23,
+      "difficult_start_max_abs_y_m": 19.059813662798458,
+      "interpretation": "root convergence alone hides an unacceptable unsafeguarded excursion"
+    },
+    "P2": {
+      "definition": "Picard s=0",
+      "result": "CONVERGED_ALL_STARTS",
+      "outer_iterations": [
+        173,
+        173,
+        168,
+        165,
+        160,
+        164,
+        170,
+        173
+      ],
+      "interpretation": "robust in the tested NH03 starts but slow because root |rho| is about 0.863"
+    },
+    "P3": {
+      "definition": "frozen positive P0 raw update plus alpha(y)=1/(1-rho(y)), constrained to 0<alpha<=1",
+      "result": "SEVEN_CONVERGED_ONE_RELAXATION_NOT_ADMISSIBLE",
+      "difficult_start": {
+        "start_y_m": -0.23,
+        "classification": "RELAXATION_NOT_ADMISSIBLE",
+        "alpha": 3.865022274587453,
+        "rho_unrelaxed": 0.7412692789443914
+      },
+      "admissible_start_outer_iterations": [
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "interpretation": "where alpha is admissible and exact p is known, the relaxed P0 step is algebraically the Newton step; it is not an independent robustness mechanism"
+    },
+    "P4": {
+      "definition": "physical Newton plus factor-1/2 contraction until physical branch and non-increasing absolute residual",
+      "result": "CONVERGED_ALL_STARTS",
+      "outer_iterations": [
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "difficult_start": {
+        "start_y_m": -0.23,
+        "contractions": 6,
+        "max_abs_y_m": 0.23,
+        "outer_iterations": 4
+      },
+      "interpretation": "safeguarding removes the large Newton excursion while preserving the exact root"
+    }
+  },
+  "conclusions": [
+    "A frozen positive surrogate can fail badly in a nonlinear response even though exact reanchoring preserves the coupled fixed point.",
+    "Physical Newton is locally fast but root convergence is insufficient as a robustness criterion because an unsafeguarded step can leave the hydrologically meaningful neighborhood by orders of magnitude.",
+    "Picard provides a robust baseline in this NH03 case but is too slow to be the preferred general policy.",
+    "Response-derived relaxation is principled in the local affine sense, but when exact p is used it collapses algebraically to Newton and can require alpha>1 outside the allowed relaxation range.",
+    "Safeguarded physical Newton is the only tested G04 policy combining fast convergence with bounded difficult-start behavior."
+  ],
+  "production_disposition": "NO_PRODUCTION_ADMISSION. G04 is analytical nonlinear evidence; real-SWAP nonlinear/window/regime qualification remains required."
+}

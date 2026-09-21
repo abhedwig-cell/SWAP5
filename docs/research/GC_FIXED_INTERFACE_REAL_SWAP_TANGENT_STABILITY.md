@@ -88,3 +88,19 @@ admissibility. They are not interchangeable. The positive surrogate is
 nonphysical as a derivative but is highly contractive in this particular
 groundwater-response regime; PB01 remains the counterexample showing that it
 can diverge in another valid regime.
+
+
+## Nonlinear caveat from G04
+
+NH03 shows why the F-GC44 local one-step Newton result cannot be generalized
+without safeguarding. Exact physical Newton converges from every tested NH03
+start, but one difficult start makes an excursion to `|y|=19.0598 m`.
+Safeguarded Newton reaches the same root while bounding that case to the
+initial `|y|=0.23 m` envelope through six factor-1/2 contractions.
+
+This also narrows the role of relaxation. A locally derived alpha can cancel a
+linear P0 error without empirical tuning, but in NH03 the difficult start
+requires `alpha=3.8650`, outside an under-relaxation contract. Where the
+derived alpha is admissible and exact p is known, the resulting P3 step is
+algebraically Newton. Relaxation is therefore not a substitute for a
+safeguard against nonlinear finite-step behavior.
