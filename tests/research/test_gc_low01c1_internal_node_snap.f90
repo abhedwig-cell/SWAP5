@@ -22,6 +22,7 @@ program test_gc_low01c1_internal_node_snap
   integer, parameter :: expected_nn(4) = [2, 2, 2, 3]
   real(real64), parameter :: expected_effective_cm(4) = [-149.99995_real64, -150.0_real64, -150.0_real64, -150.0002_real64]
   logical, parameter :: expected_snap(4) = [.false., .false., .true., .false.]
+  real(real64), parameter :: origin_gwl_cm = -120.0_real64
   real(real64), parameter :: dt_day = 0.01_real64
   real(real64), parameter :: tol = 1.0e-10_real64
   real(real64), parameter :: origin_h_phreatic_cm = -120.0_real64
@@ -34,6 +35,9 @@ program test_gc_low01c1_internal_node_snap
   type(hydraulic_evaluation_context_t) :: evaluation
   real(real64), target :: drainage(1,n), irrigation(n), root_sink(n)
   real(real64) :: raw(24,n)
+  type(reference_richards_state_binding_t) :: characterized(4)
+  real(real64) :: qbot_characterized(4), storage_characterized(4), residual_characterized(4)
+  integer :: iterations_characterized(4)
   integer :: i
 
   interface
@@ -72,9 +76,21 @@ program test_gc_low01c1_internal_node_snap
   evaluation%top_boundary => top
 
   do i = 1, size(control_cm)
-    call run_case(i)
+    call run_case(i, characterized(i), qbot_characterized(i), storage_characterized(i), &
+         residual_characterized(i), iterations_characterized(i))
   end do
 
+  do i = 1, size(control_cm)
+    write(*,'(A,I0)') 'GC_LOW01C1_DELTA_CASE=', i
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MAX_HEAD_DELTA_FROM_AT_NODE_CM=', &
+         maxval(abs(characterized(i)%h-characterized(2)%h))
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_QBOT_DELTA_FROM_AT_NODE_CM_PER_DAY=', &
+         qbot_characterized(i)-qbot_characterized(2)
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_STORAGE_DELTA_FROM_AT_NODE_CM=', &
+         storage_characterized(i)-storage_characterized(2)
+  end do
+
+  write(*,'(A)') 'GC_LOW01C1_IMMUTABLE_ORIGIN=PASS'
   write(*,'(A)') 'GC_LOW01C1_PROVIDER_OWNED_ROUTE=PASS'
   write(*,'(A)') 'GC_LOW01C1_ACTIVE_DOMAIN_AND_SNAP=PASS'
   write(*,'(A)') 'GC_LOW01C1_FINITE_QBOT_AND_STATE=PASS'
@@ -155,8 +171,11 @@ contains
     state%ftoph = .false.
   end subroutine initialize_origin
 
-  subroutine run_case(index)
+  subroutine run_case(index, characterized_state, qbot_out, storage_out, residual_out, iterations_out)
     integer, intent(in) :: index
+    type(reference_richards_state_binding_t), intent(out) :: characterized_state
+    real(real64), intent(out) :: qbot_out, storage_out, residual_out
+    integer, intent(out) :: iterations_out
     type(reference_richards_state_binding_t) :: origin, first, second
     type(a23bu_worker_context_t) :: worker1, worker2
     type(reference_richards_workspace_t), target :: workspace1, workspace2
@@ -221,6 +240,16 @@ contains
     call require(states_bitwise_identical(first,second), 'C1 repeat state')
     call require(transfer(residual1,0_int64) == transfer(residual2,0_int64), 'C1 repeat mass residual')
     call require(worker1%diagnostics%nonlinear_iterations == worker2%diagnostics%nonlinear_iterations, 'C1 repeat iterations')
+    call require(transfer(origin%gwl,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin accepted GWL')
+    call require(transfer(origin%gwlinp,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin requested GWL')
+    call require(all([(transfer(origin%h(k),0_int64) == &
+         transfer(origin_gwl_cm-z_cm(k),0_int64), k=1,n)]), 'C1 fixed hydrostatic origin heads')
+
+    characterized_state = first
+    qbot_out = first%qbot
+    storage_out = storage1-storage0
+    residual_out = residual1
+    iterations_out = worker1%diagnostics%nonlinear_iterations
 
     max_head_delta = maxval(abs(first%h-origin%h))
     write(*,'(A,I0)') 'GC_LOW01C1_CASE=', index
