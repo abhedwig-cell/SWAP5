@@ -9,9 +9,14 @@ cd "$ROOT"
 
 fail(){ echo "GC_LOW01A2_RUNNER_FAIL $*" >&2; exit 1; }
 
+bash tests/research/run_gc_low01a.sh | tee "$BUILD/low01a-prerequisite.txt"
+grep -Fq 'GC_LOW01A_QUALIFICATION=PASS' "$BUILD/low01a-prerequisite.txt" || fail 'LOW01-A prerequisite'
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
+  src/solver/mod_soil_water_accepted_step_direction_contract.f90
+  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_reference_richards_workspace.f90
