@@ -210,11 +210,16 @@ contains
     type(hydraulic_evaluation_context_t), intent(in) :: eval
     type(soil_water_numerical_config_t), intent(in) :: num
     type(soil_water_physical_config_t), intent(in) :: phys
-    type(gc_low01_mode1_trial_result_t) :: above, below
+    type(gc_low01_mode1_trial_result_t) :: above, lower_half, below
 
     call gc_low01_run_inside_profile_trial(origin_state, -10.0_real64, parameter_set, eval, num, phys, dt_day, above)
     call require(.not. above%valid, 'OUTPUT01 above-top refused')
     call require(above%branch /= GC_LOW01_BRANCH_INSIDE_PROFILE, 'OUTPUT01 above-top branch')
+
+    call gc_low01_run_inside_profile_trial(origin_state, -275.0_real64, parameter_set, eval, num, phys, dt_day, lower_half)
+    call require(.not. lower_half%valid, 'OUTPUT01 lower-half-cell NN=n refused')
+    call require(lower_half%branch == GC_LOW01_BRANCH_INSIDE_PROFILE, 'OUTPUT01 lower-half-cell remains classified inside')
+    call require(lower_half%active_richards_nodes == parameter_set%active_nodes, 'OUTPUT01 lower-half-cell NN=n diagnostic')
 
     call gc_low01_run_inside_profile_trial(origin_state, -350.0_real64, parameter_set, eval, num, phys, dt_day, below)
     call require(.not. below%valid, 'OUTPUT01 below-profile refused')
