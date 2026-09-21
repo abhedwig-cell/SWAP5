@@ -80,4 +80,9 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live gate"
 
-echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_DSW09_QUALIFICATION=PASS'
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw10_depth_storage.py | tee "$BUILD/dsw10-live.txt"
+
+grep -Fq 'GC_DSW10_LIVE_GATE=PASS' "$BUILD/dsw10-live.txt" || fail "DSW-10 live gate"
+
+echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_DSW09_DSW10_QUALIFICATION=PASS'
