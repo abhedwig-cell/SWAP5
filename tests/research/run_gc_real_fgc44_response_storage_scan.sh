@@ -59,3 +59,15 @@ grep -Fq 'GC_FIXED_INTERFACE_FGC44_GLOBALIZATION_GATE=PASS' "$BUILD/fgc44-global
   echo "GC_FGC44_GLOBALIZATION_FAIL missing G03/G05/G06 gate" >&2
   exit 1
 }
+
+# G07A live groundwater-regime sweep around the analytical r=1 and r=3
+# transition structure. The real-SWAP response remains diagnostic-only.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_regime_sweep_g07a.py \
+  | tee "$BUILD/fgc44-globalization-g07a.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_FGC44_G07A=PASS' "$BUILD/fgc44-globalization-g07a.txt" || {
+  echo "GC_FGC44_G07A_FAIL missing live phase-transition gate" >&2
+  exit 1
+}

@@ -192,3 +192,43 @@ start, keeping `max|y|=0.23 m`.
 
 The result is persisted in
 `integration/research/GC_FIXED_INTERFACE_GLOBALIZATION_G04_RESULT.json`.
+
+
+## G07A live groundwater-regime transition protocol
+
+G07A is preregistered before execution as a live bridge from the analytical G02
+phase map to the concrete F-GC44 Richards corrector. It does not change SWAP,
+MODFLOW production source, or the frozen real-SWAP local derivative.
+
+The SWAP window remains 1e-4 day and uses the already qualified F-GC44
+`p=dq_swap/dH` and `s0=+u/dt`. MODFLOW uses the same 1x1x3 geometry and CHD
+heads but suppresses lateral response with `K=1e-10 m/day`, sets `ss=0`,
+and varies unconfined `sy` prospectively as
+
+```text
+sy = r_target * u
+r_target in {0.5, 1.2, 2.0, 4.0}.
+```
+
+This construction is chosen from the storage-dominated relation
+`a approximately sy/dt`; the realized `a=dq_gw/dH` is nevertheless measured
+independently with fresh, converged constant-flux MODFLOW probes before any
+policy result is interpreted. Realized `r=a/|p|` must remain within 0.2% of
+the target.
+
+For each realized regime a physical-tangent P1 solve defines the diagnostic
+reference root. P0, P1 and P2 then receive one fixed `+1e-7 m` root-relative
+perturbation. P3 uses only
+`alpha*=1/(1-rho_P0)`; if that value is outside `0<alpha<=1`, the policy is
+classified `RELAXATION_NOT_ADMISSIBLE` rather than clipped or tuned.
+
+Prospective class expectations follow G02 exactly:
+
+- `r<1`: P0 divergent, P2 divergent, P1 locally exact, no admissible positive
+  P3 cancellation;
+- `1<r<3`: P0 divergent, P2 contractive, P1 locally exact, P3 contractive;
+- `r>3`: P0, P2 and P3 contractive; P1 locally exact.
+
+Measured one-step amplification must match the analytical rho to absolute
+tolerance 2e-3. Candidate corrector status is recorded separately from outer-map
+contraction so that head inadmissibility is never relabelled as divergence.
