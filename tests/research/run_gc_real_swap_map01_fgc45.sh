@@ -106,6 +106,11 @@ nm -D "$BUILD/bridge/libfgc45_multiswap.so" | grep -q 'fgc45_initialize_c' || fa
 nm -D "$BUILD/bridge/libfgc45_multiswap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/bridge/libfgc45_multiswap.so" \
+  python3 tests/fgc/test_fgc45_real_multiswap_modflow_end_to_end.py | tee "$BUILD/fgc45-baseline.txt"
+
+grep -Fq 'FGC45_REAL_MULTISWAP_MODFLOW_END_TO_END=PASS' "$BUILD/fgc45-baseline.txt" || fail "existing F-GC45 baseline"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/bridge/libfgc45_multiswap.so" \
   python3 tests/research/test_gc_real_swap_map01_fgc45.py | tee "$BUILD/map01.txt"
 
 for marker in \
