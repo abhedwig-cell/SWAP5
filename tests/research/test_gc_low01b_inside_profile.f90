@@ -9,6 +9,8 @@ program test_gc_low01b_inside_profile
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use MOD_MvG, only: gc_low01_bind_mvg
+  use mod_gc_low01_mode1_candidate_carrier, only: low01_mode1_candidate_t, materialize_low01_mode1_candidate, &
+       LOW01_BRANCH_INSIDE_PROFILE
   use mod_gc_low01_mode1_trial_carrier, only: gc_low01_mode1_trial_result_t, &
        gc_low01_run_inside_profile_trial, GC_LOW01_BRANCH_INSIDE_PROFILE
   implicit none
@@ -265,6 +267,25 @@ contains
     if (a%fldecdt .neqv. b%fldecdt) return
     same = .true.
   end function states_bitwise_identical
+
+  logical function candidates_bitwise_identical(a,b) result(same)
+    type(low01_mode1_candidate_t), intent(in) :: a,b
+    integer :: k
+    same = .false.
+    if (a%branch /= b%branch .or. a%active_richards_nodes /= b%active_richards_nodes) return
+    if (a%fllowgwl .neqv. b%fllowgwl) return
+    if (transfer(a%requested_h_phreatic_cm,0_int64) /= transfer(b%requested_h_phreatic_cm,0_int64)) return
+    if (transfer(a%effective_h_phreatic_cm,0_int64) /= transfer(b%effective_h_phreatic_cm,0_int64)) return
+    if (transfer(a%groundwater_level_cm,0_int64) /= transfer(b%groundwater_level_cm,0_int64)) return
+    if (transfer(a%raw_legacy_groundwater_level_cm,0_int64) /= transfer(b%raw_legacy_groundwater_level_cm,0_int64)) return
+    if (transfer(a%qbot_cm_per_day,0_int64) /= transfer(b%qbot_cm_per_day,0_int64)) return
+    if (transfer(a%storage_change_cm,0_int64) /= transfer(b%storage_change_cm,0_int64)) return
+    do k=1,size(a%pressure_head_cm)
+      if (transfer(a%pressure_head_cm(k),0_int64) /= transfer(b%pressure_head_cm(k),0_int64)) return
+      if (transfer(a%water_content(k),0_int64) /= transfer(b%water_content(k),0_int64)) return
+    end do
+    same = .true.
+  end function candidates_bitwise_identical
 
   subroutine require(value, message)
     logical, intent(in) :: value
