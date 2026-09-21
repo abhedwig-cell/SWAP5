@@ -8,11 +8,16 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
-  "blocker": "DUMMY-15 v3 is still unqualified; DUMMY-15B and DUMMY-16 therefore remain blocked.",
+  "blocker": null,
   "prepared_scope": "Pure physical two-Basin + shared-groundwater linear oracle with exact mode decomposition and dual surface/groundwater downstream pathways.",
-  "next_action": "After DUMMY-16 qualification, rebind DUMMY-17 before any model or tests.",
+  "next_action": "Implement DUMMY-17 exact two-Basin shared-groundwater oracle.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
+    "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+    "workflow_run": 35590642324
+  }
 }
