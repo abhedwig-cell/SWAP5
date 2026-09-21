@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.gc_fixed_interface.production_bridge_gate.v1",
+  "date": "2026-09-21",
+  "status": "THEORY_TO_SOURCE_RECONCILED_TARGETED_QUALIFICATION_REQUIRED",
+  "production_changes": false,
+  "source_files": [
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90"
+  ],
+  "confirmed": [
+    "The coupled hydraulic state is lower-interface hydraulic head, not phreatic elevation.",
+    "Predictor u is finite-window inverse dH/dq sensitivity.",
+    "q_u and u are reanchored as a local affine response at an explicit reference head.",
+    "MultiSWAP area aggregation preserves intercept and tangent.",
+    "The linear backend HCOF/RHS exactly reconstructs the public affine response Q(H).",
+    "Derivative coverage explicitly includes active process sensitivities.",
+    "Lineage/provenance exists for SWAP and groundwater origins."
+  ],
+  "not_yet_confirmed": [
+    "Sign with which Q(H) is inserted into the live MODFLOW residual/package.",
+    "End-to-end equality of live MODFLOW root and independently derived NH01/NH04 residual.",
+    "Accepted physical interface ledger closes after using the predictor response.",
+    "Response invalidation/relinearization is sufficient under NH03-like curvature.",
+    "A response cannot be reused across an invalid committed SWAP memory origin.",
+    "N:1 accepted physical ledgers aggregate consistently with affine predictor aggregation."
+  ],
+  "next_experiments": [
+    {
+      "id": "PB01",
+      "purpose": "Backend sign/root proof using NH01 exact affine response through the same linear-response insertion route as live MODFLOW.",
+      "prerequisite": "Freeze live package sign convention from source before execution."
+    },
+    {
+      "id": "PB02",
+      "purpose": "Nonlinear local-tangent/relinearization proof using NH03.",
+      "prerequisite": "PB01 sign/root closed."
+    },
+    {
+      "id": "PB03",
+      "purpose": "Committed-memory stale-origin rejection using NH05 semantics and real SWAP lineage.",
+      "prerequisite": "Identify production response-cache/reuse boundary."
+    },
+    {
+      "id": "PB04",
+      "purpose": "N:1 accepted-ledger aggregation against MultiSWAP affine aggregation.",
+      "prerequisite": "Single-column accepted-ledger semantics closed."
+    }
+  ],
+  "architecture_decision": "KEEP_CURRENT_PRODUCTION_UNCHANGED_WHILE_TARGETED_GATES_RUN",
+  "reason": "No source-level conceptual contradiction with fixed-interface theory has been found. Remaining uncertainty is now localized to qualification of residual insertion, nonlinear validity, memory provenance and accepted ledger aggregation."
+}
