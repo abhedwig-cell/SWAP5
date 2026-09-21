@@ -18,7 +18,7 @@
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
   "scope": "Custom pinned real-Ribasim one-Basin/two-UserDemand priority conflict with 32 m3/day fixed supply and physically inactive UserDemand reduction.",
-  "next_action": "Execute DUMMY-19B pinned real Ribasim priority-conflict gate.",
+  "next_action": "Execute repaired DUMMY-19B pinned real Ribasim priority-conflict gate.",
   "production_delta": [],
   "reference_delta": [],
   "checkpoint_commit": "14c0c438c39120ccbf5a199a70024446f487a3bb",
@@ -51,5 +51,19 @@
     "state": "TRIGGERED",
     "head": "work/ribasim-dummy-19b-ci",
     "authority_use": "candidate"
+  },
+  "qualification_attempts": [
+    {
+      "run": 35598437021,
+      "job": 106328559316,
+      "state": "INFRA_API_FAILED_BEFORE_MODEL_GENERATION",
+      "failure": "generator imported nonexistent ribasim.nodes.terminal; pinned upstream API uses model.terminal without a terminal module import",
+      "scientific_effect": "none; no custom model was generated or solved"
+    }
+  ],
+  "prequalification_infra_repair": {
+    "correction": "Remove only the nonexistent terminal module import; retain model.terminal.add calls exactly as upstream pinned testmodels use them.",
+    "pinned_evidence": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a python/ribasim_testmodels/ribasim_testmodels/allocation.py",
+    "scientific_effect": "none; topology, priorities, capacities, demands and expected allocations unchanged"
   }
 }
