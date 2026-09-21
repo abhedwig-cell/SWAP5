@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_management_complementarity.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-05",
+  "title": "Exact head-dependent exchange with hydrology-before-management clipping",
+  "baseline": "1c38b4216df576570a62c11800b17af5ab77df91",
+  "purpose": "Reintroduce the qualified UserDemand priority rule into the DUMMY-04 trapezoidal head-dependent exchange as an exact piecewise coupled problem, before testing any iterative algorithm.",
+  "frozen_problem": {
+    "exchange": "V = C*dt*(((h0+h1)/2)-hgw)",
+    "balance": "h1 = h0 - (U+V)/A",
+    "request": "0 <= U <= R",
+    "management_min_level": "managed withdrawal may not drive h1 below hmin",
+    "hydrology_priority": "if the zero-withdrawal coupled hydrology yields h1 <= hmin, U=0; hmin does not clip the physical exchange",
+    "physical_floor": "if the zero-withdrawal coupled solution lies below datum, fail closed rather than invent a dry-boundary law"
+  },
+  "exact_regimes": [
+    "FULL: fixed-U solution at U=R has h1 >= hmin, so U=R",
+    "CURTAILED: h1(U=0) > hmin > h1(U=R), so h1=hmin and 0<U<R",
+    "ZERO: h1(U=0) <= hmin but remains at or above datum, so U=0",
+    "INFEASIBLE: h1(U=0) < datum, so the frozen physical surrogate itself is outside its admissible water-storage domain"
+  ],
+  "derived_hypotheses": [
+    "For fixed U, h1(U)=[(1-lambda)h0+2lambda*hgw-U/A]/(1+lambda).",
+    "The FULL/CURTAILED/ZERO regime can therefore be selected without numerical iteration.",
+    "In CURTAILED, h1=hmin, V=C*dt*(((h0+hmin)/2)-hgw), and U=A*(h0-hmin)-V.",
+    "Curtailing management can change the physical exchange because V depends on the resulting Basin level; saved management water is therefore not generally one-for-one retained storage.",
+    "The exact regime solution is continuous at the FULL-CURTAILED and CURTAILED-ZERO boundaries."
+  ],
+  "experiments": {
+    "M1": "full-demand regime reproduces the DUMMY-04 fixed-U solution",
+    "M2": "curtailed regime pins the end level at hmin and satisfies exchange plus water balance exactly",
+    "M3": "zero-delivery regime leaves physical exchange uncurtailed when hydrology alone reaches/breaches hmin",
+    "M4": "a case where curtailment raises Basin level also increases infiltration relative to a frozen-exchange sequential clipping approximation",
+    "M5": "FULL-to-CURTAILED boundary is continuous in U, V and h1",
+    "M6": "CURTAILED-to-ZERO boundary is continuous in U, V and h1",
+    "M7": "physical-floor violation fails closed rather than using management clipping to repair hydrological infeasibility",
+    "M8": "regime classification agrees with a dense independent request sweep against the exact fixed-U end-level function"
+  },
+  "interpretation_rules": [
+    "This is an exact complementarity-style solution of the frozen linear trapezoidal surrogate, not a Ribasim allocation solver.",
+    "Hydrology-before-management means management is the adjustable quantity; it does not mean groundwater exchange is independent of the management-induced level.",
+    "No iterative coupling method is qualified in DUMMY-05.",
+    "A later work unit may test active-set/Picard/Newton-like algorithms against this exact piecewise oracle."
+  ],
+  "forbidden": [
+    "no production coupling change",
+    "no dry-boundary physics invention",
+    "no claim of real Ribasim allocation equivalence",
+    "no MODFLOW package equivalence",
+    "no empirical convergence tolerance"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_05_QUALIFIED_EXACT_MANAGEMENT_COMPLEMENTARITY",
+  "fail_decision": "RIBASIM_DUMMY_05_BLOCKED"
+}
