@@ -91,6 +91,11 @@
       "work_unit": "RIBASIM-DUMMY-17",
       "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
       "run": 35591084550
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-15C",
+      "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "run": 35593011851
     }
   ],
   "pending": [
@@ -103,22 +108,15 @@
     },
     {
       "work_unit": "RIBASIM-DUMMY-15D",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
-      "implementation": false,
-      "purpose": "explicit canopy store separating gross source withdrawal from net soil irrigation and interception evaporation"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-15C",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
-      "implementation_baseline": "a84405a24373818e3ca1f3851391300ed73e7240",
-      "dependency": "qualified DUMMY-15B",
-      "boundary": "research policy contrast only; no claim of current production SWAP partial-supply behavior"
+      "intended_decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+      "implementation_baseline": "a6bdd05e8df3493625b99c78ba500af111dfd86e",
+      "dependency": "qualified DUMMY-15C",
+      "boundary": "prescribed canopy/interception ledger only; no claim of nonlinear Rutter equivalence"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-15C event-realization gate; if PASS, close DUMMY-15C and rebind DUMMY-15D before final DUMMY-18 authority-map qualification.",
+  "next_authority_action": "Execute DUMMY-15D canopy-ledger gate; if PASS, close DUMMY-15D and then qualify the DUMMY-18 real-model authority map.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
