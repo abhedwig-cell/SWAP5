@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw12.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW12",
+  "title": "Piecewise-linear head-dependent evapotranspiration sink",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "shared_storage": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_system": {
+    "initial_head_m": 8,
+    "storage_coefficient": 0.2,
+    "duration_day": 1,
+    "et_threshold_head_m": 8.02,
+    "et_slope_per_day": 0.1,
+    "et_law": "ET(H)=a*max(0,H-H_et)",
+    "no_other_sinks": true
+  },
+  "cases": [
+    {
+      "name": "inactive_et",
+      "recharge_m_per_day": 0.002,
+      "exact_final_head_m": 8.01,
+      "exact_et_m_per_day": 0
+    },
+    {
+      "name": "active_et",
+      "recharge_m_per_day": 0.02,
+      "exact_final_head_m": 8.073333333333334,
+      "exact_et_m_per_day": 0.005333333333333414
+    }
+  ],
+  "api_mapping": {
+    "inactive": "Q(H)=R",
+    "active": "Q(H)=R-a*(H-H_et)",
+    "active_hcof": "-a",
+    "active_rhs": "HCOF*H_ref-Q(H_ref)"
+  },
+  "gates": [
+    "inactive branch reproduces storage-only oracle",
+    "active branch reproduces exact piecewise-linear balance",
+    "ET sink volume plus storage gain equals recharge volume",
+    "negative ET tangent is classified as sink response, not storage or interface conductance"
+  ],
+  "forbidden": [
+    "do not interpret this ET law as a SWAP root-water-uptake formulation",
+    "no production source change"
+  ]
+}
