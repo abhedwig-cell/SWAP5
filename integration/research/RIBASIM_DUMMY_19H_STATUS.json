@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "1h/6h/12h/24h saveat negative control at fixed allocation.dt=24h and non-scarce 60 m3/day supply.",
-  "next_action": "Execute frozen DUMMY-19H no-scarcity saveat negative-control qualification.",
+  "next_action": "Execute DUMMY-19H v1 frozen qualification; no model value, sweep case, reference or tolerance may change.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "da45c00c6194eb25185104e7816178ed333fcd8b",
@@ -37,5 +37,7 @@
       "physical volumes and Basin endpoint are checked against one continuous reference common to all cases",
       "cross-saveat invariance is asserted explicitly"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_no_scarcity_negative_control",
+  "qualification_base": "work/ribasim-dummy-01@40c93b3f29511c4a8cf317500463025f8aa7b002"
 }
