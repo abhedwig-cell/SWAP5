@@ -13,7 +13,7 @@
   "blocker": null,
   "prepared_scope": "Policy contrast for committing SWAP-like irrigation event management state under partial external supply, including atomic reject, partial complete, and explicit residual-active semantics.",
   "production_authority_note": "F-APP07 identifies restricted Hupsel event-selection state and gross irrigation; F-APP05/F-APP08 identify stateful Rutter and net-irrigation application. None currently qualifies external partial-supply event semantics.",
-  "next_action": "Execute exact DUMMY-15C irrigation-event-realization gate.",
+  "next_action": "Execute DUMMY-15C irrigation-event-realization-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -63,5 +63,6 @@
       "full supply collapses all policies to the same completed event",
       "allocation/realization shortfall is diagnostic unless explicitly promoted to residual state"
     ]
-  }
+  },
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
