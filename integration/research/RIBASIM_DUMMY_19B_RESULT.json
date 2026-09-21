@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.coupling.real_ribasim_priority_conflict.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19B",
+  "decision": "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+  "authority": {
+    "implementation_baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "qualification_head": "562f96afbe64bc1d099df1e617b6a0ffc7fcf895",
+    "workflow_run": 35598766437,
+    "workflow_job": 106329604688,
+    "conclusion": "success"
+  },
+  "attempts": [
+    {
+      "run": 35598437021,
+      "job": 106328559316,
+      "state": "INFRA_API_FAILED_BEFORE_MODEL_GENERATION",
+      "failure": "nonexistent ribasim.nodes.terminal import",
+      "scientific_effect": "none"
+    },
+    {
+      "run": 35598766437,
+      "job": 106329604688,
+      "state": "PASS"
+    }
+  ],
+  "evidence": [
+    "RIBASIM_DUMMY_19B_SOURCE_SCOPE=PASS",
+    "RIBASIM_DUMMY_19B_RIBASIM_PIN=PASS",
+    "real Ribasim ROOT_FIRST: root=32 m3/day, external=0 m3/day",
+    "real Ribasim EXTERNAL_FIRST: root=12 m3/day, external=20 m3/day",
+    "both priority cases supply exactly 32 m3/day total",
+    "direct physical Basin->UserDemand linkflow matches real allocated flow because physical reductions are inactive by construction",
+    "priority reversal changes recipient split but not Basin physical trajectory",
+    "RIBASIM_REAL_19B_PRIORITY_CONFLICT=PASS",
+    "RIBASIM_DUMMY_19B_REAL_RIBASIM_TESTS=PASS",
+    "RIBASIM_DUMMY_19B_GATE=PASS"
+  ],
+  "interpretation": "Pinned real Ribasim reproduces the DUMMY-15 structural priority invariant in the controlled one-Basin scarcity case: lexicographic priority changes recipient identity but not total managed supply or Basin trajectory when both claims draw from the same constrained source and physical UserDemand reductions are inactive.",
+  "boundaries": [
+    "no physical UserDemand min_level reduction in this work unit",
+    "no allocation-versus-realization shortfall",
+    "no SWAP or MODFLOW substitution",
+    "no claim of full network optimizer equivalence"
+  ],
+  "downstream": "DUMMY-19C may now implement the preregistered full-allocation/physical-reduction conflict at the same pinned Ribasim source authority."
+}
