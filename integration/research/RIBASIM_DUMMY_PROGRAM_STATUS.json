@@ -45,31 +45,26 @@
       "work_unit": "RIBASIM-DUMMY-09",
       "decision": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
       "run": 35568233819
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-10",
+      "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+      "run": 35568794175,
+      "duplicate_confirming_run": 35568804086
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-10",
-      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
-      "intended_decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
-      "qualification_runs": [
-        35568794175,
-        35568804086
-      ],
-      "branch_checkpoint": "4a5acf3c929a384becc1ee8bb96728e0818c8655",
-      "note": "Independent algebra review is consistent; formal qualification remains withheld until Actions completes."
-    },
-    {
       "work_unit": "RIBASIM-DUMMY-11",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
-      "preregistration": "integration/research/RIBASIM_DUMMY_11_PREREGISTRATION.json",
-      "concept": "integration/research/RIBASIM_DUMMY_11_CONCEPT.md",
-      "implementation": false
+      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
+      "intended_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+      "qualification_run": 35569720082,
+      "branch_checkpoint": "cf97bd5cb0aee5d487b124475f7861fdbf3a20e6",
+      "dependency": "DUMMY-10 satisfied and implementation baseline rebound after qualification"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe a successful DUMMY-10 qualification gate, record result/closeout on the main research branch, then rebind DUMMY-11 implementation baseline before any DUMMY-11 code or tests.",
+  "next_authority_action": "Observe DUMMY-11 qualification run 35569720082, record result/closeout, then decide whether to begin the preregistered dynamic analytical root-zone demand stage.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
