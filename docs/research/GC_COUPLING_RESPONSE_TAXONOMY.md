@@ -2,7 +2,7 @@
 
 Date: 2026-09-21  
 Status: RESEARCH SYNTHESIS  
-Authority: GC dummy-SWAP DSW01-20 and real-SWAP MAP01-07  
+Authority: GC dummy-SWAP DSW01-20, real-SWAP MAP01-10 and MAP11 domain-ownership audit  
 Production code: read-only
 
 ## Purpose
@@ -14,26 +14,51 @@ provide enough evidence to keep these meanings separate.
 This note does not propose a production change. It fixes the vocabulary and the
 equation-level interpretation that later coupling decisions must preserve.
 
-## 1. Shared physical state
+## 1. Interface head versus phreatic shared state
 
-For a phreatic SWAP-MODFLOW coupling, the groundwater head can be one shared
-physical state even though the two model components retain different internal
-state.
+Two different head concepts must be kept separate.
 
-The dummy-SWAP evidence shows two simultaneous facts:
+The current canonical F-GC contract exchanges a hydraulic head on the SWAP
+lower coupling plane:
+
+```
+H_interface = z_bottom_face + psi_bottom_face
+```
+
+The predictor bottom-face source states explicitly that this coupling-plane
+head is not the freatic groundwater level. The head-driven corrector converts
+the same interface head back to SWAP bottom pressure head and applies it as a
+mode-5 lower boundary.
+
+A true phreatic shared-state h-link is a different model concept:
+
+```
+H_phreatic,SWAP = H_phreatic,MODFLOW
+```
+
+with an explicitly defined combined storage relation for the same physical
+water-table state.
+
+The dummy-SWAP evidence remains useful for that h-link concept and shows two
+facts:
 
 1. one physical groundwater storage may be partitioned algebraically between
-   model components without changing the shared head if the storage response is
-   represented consistently;
-2. identical groundwater head does not imply identical complete SWAP state,
-   because unsaturated-zone memory can remain different and affect later
-   response.
+   model components without changing the common phreatic head if storage
+   ownership is consistent;
+2. identical head does not imply identical complete SWAP state, because
+   unsaturated-zone memory can remain different and affect later response.
 
 Therefore:
 
 ```
-shared groundwater head != complete shared model state
+shared interface head != automatically shared phreatic state
+shared phreatic head   != complete shared model state
 ```
+
+MAP11 shows that the synthetic F-GC45 SWAP and MODFLOW domains are not proven
+to be the same physical storage volume, so F-GC45 cannot be used as evidence
+for duplicate phreatic storage merely because MODFLOW STO and nonzero SWAP
+`u` coexist.
 
 ## 2. Physical storage response
 
@@ -254,7 +279,8 @@ The evidence supports the following taxonomy.
 
 | Quantity | Current interpretation | Physical authority? |
 | --- | --- | --- |
-| groundwater head H | shared phreatic state | yes |
+| interface head H_interface | shared lower-boundary hydraulic head in current F-GC route | yes, as interface state |
+| phreatic head H_phreatic | common water-table state in a true h-link | yes in that model family, not established by F-GC45 |
 | SWAP internal state | unsaturated/process memory | yes |
 | whole-column storage S | physical stored water | yes |
 | dS/dH | physical local storage sensitivity | yes, when directly established |
