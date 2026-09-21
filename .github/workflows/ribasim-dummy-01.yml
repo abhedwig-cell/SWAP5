@@ -46,6 +46,11 @@ on:
       - 'tests/research/dummy_temporal_partition.py'
       - 'tests/research/test_dummy_temporal_partition.py'
       - 'tests/research/run_ribasim_dummy_08.sh'
+      - 'integration/research/RIBASIM_DUMMY_09_*.json'
+      - 'integration/research/RIBASIM_DUMMY_09_CONCEPT.md'
+      - 'tests/research/dummy_two_store_exchange.py'
+      - 'tests/research/test_dummy_two_store_exchange.py'
+      - 'tests/research/run_ribasim_dummy_09.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -155,3 +160,16 @@ jobs:
         run: python3 --version
       - name: Run temporal partition gate
         run: bash tests/research/run_ribasim_dummy_08.sh
+
+  two-store-exchange-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-09-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run reciprocal two-store exchange gate
+        run: bash tests/research/run_ribasim_dummy_09.sh
