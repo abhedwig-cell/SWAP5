@@ -34,10 +34,11 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute DUMMY-06 active-set-iteration-gate from repaired prequalification postimage.",
+  "next_action": "Execute DUMMY-06 active-set-iteration-gate.",
   "recovery_point": "DUMMY-06 scientific postimage persisted at 2aad88e4...; only a floating-point assertion repair was made before qualification.",
   "blockers": [],
   "prequalification_repairs": [
     "Replaced exact tuple equality for the preregistered floating-point cycle values with assertAlmostEqual at 11 decimal places. Expected values and scientific hypothesis are unchanged."
-  ]
+  ],
+  "qualification_attempt": "registered_workflow_dispatcher_pr_after_numeric_assertion_repair"
 }
