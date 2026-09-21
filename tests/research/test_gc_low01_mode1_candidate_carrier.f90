@@ -29,7 +29,10 @@ program test_gc_low01_mode1_candidate_carrier
 
   call require(a%branch==LOW01_BRANCH_INSIDE_PROFILE,'materialized inside branch')
   call require(a%active_richards_nodes==1,'materialized NN')
-  call require(bits(a%groundwater_level_cm)==bits(-60.0_real64),'typed groundwater level is requested control')
+  call require(bits(a%requested_h_phreatic_cm)==bits(-60.0_real64),'requested H_phreatic preserved')
+  call require(bits(a%effective_h_phreatic_cm)==bits(-60.0_real64),'effective H_phreatic preserved')
+  call require(.not. a%derived_profile_gwl_available,'derived profile GWL unavailable without task-3 materialization')
+  call require(bits(a%derived_profile_gwl_cm)==bits(0.0_real64),'unavailable derived profile GWL neutral')
   call require(bits(a%raw_legacy_groundwater_level_cm)==bits(-120.0_real64),'raw legacy gwl preserved separately')
   call require(bits(a%qbot_cm_per_day)==bits(1.25_real64),'qbot preserved')
   call require(bits(a%storage_change_cm)==bits(0.30_real64),'storage preserved')
@@ -43,7 +46,8 @@ program test_gc_low01_mode1_candidate_carrier
   call materialize_low01_mode1_candidate(z,dz,-350.0_real64,-350.0_real64,.true.,-0.2_real64,0.0_real64,h,theta,a)
   call require(a%branch==LOW01_BRANCH_BELOW_PROFILE,'below materialized branch')
   call require(a%fllowgwl,'below typed fllowgwl')
-  call require(bits(a%groundwater_level_cm)==bits(-350.0_real64),'below typed groundwater level')
+  call require(bits(a%requested_h_phreatic_cm)==bits(-350.0_real64),'below requested H_phreatic')
+  call require(.not. a%derived_profile_gwl_available,'below derived profile GWL unavailable')
 
   print '(A)','GC_LOW01_CARRIER_EXPLICIT_BOTTOM_FACE=PASS'
   print '(A)','GC_LOW01_CARRIER_BRANCH_CLASSIFICATION=PASS'
@@ -82,7 +86,8 @@ contains
     if(x%fllowgwl .neqv. y%fllowgwl) return
     if(bits(x%requested_h_phreatic_cm)/=bits(y%requested_h_phreatic_cm)) return
     if(bits(x%effective_h_phreatic_cm)/=bits(y%effective_h_phreatic_cm)) return
-    if(bits(x%groundwater_level_cm)/=bits(y%groundwater_level_cm)) return
+    if(x%derived_profile_gwl_available .neqv. y%derived_profile_gwl_available) return
+    if(bits(x%derived_profile_gwl_cm)/=bits(y%derived_profile_gwl_cm)) return
     if(bits(x%raw_legacy_groundwater_level_cm)/=bits(y%raw_legacy_groundwater_level_cm)) return
     if(bits(x%qbot_cm_per_day)/=bits(y%qbot_cm_per_day)) return
     if(bits(x%storage_change_cm)/=bits(y%storage_change_cm)) return
