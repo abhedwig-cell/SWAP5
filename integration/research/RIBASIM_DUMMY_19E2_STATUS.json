@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-19E2",
   "branch": "work/ribasim-dummy-01",
   "baseline": "feecf6b0634d1a488b886611ac0d84ca3a21bbbe",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -16,7 +16,31 @@
     "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION"
   ],
   "prepared_scope": "Clock-aligned repeat of the intended one-window management-allocation then physical-realization mechanism, with saveat=allocation.dt=one day.",
-  "next_action": "Implement exactly this frozen clock-aligned configuration and qualify without changing references or tolerances.",
+  "next_action": "Execute frozen DUMMY-19E2 clock-aligned qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "9a180434b47124eab4eae10707523587ac2d9851",
+  "recovery_point": "Executable clock-aligned gate persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19E2_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19E2_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19E2_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19E2_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_clock_aligned_conflict.py",
+    "tests/research/real_ribasim_clock_aligned_conflict_bridge.jl",
+    "tests/research/run_ribasim_dummy_19e2.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "only clock change relative to failed 19E is solver.saveat 3600 -> 86400 s",
+      "allocation.dt remains 86400 s",
+      "all hydrological, management and priority parameters unchanged",
+      "all frozen continuous physical references and tolerances unchanged",
+      "direct physical linkflow remains supplied authority",
+      "allocated-but-unsupplied volume must remain in Basin storage"
+    ]
+  }
 }
