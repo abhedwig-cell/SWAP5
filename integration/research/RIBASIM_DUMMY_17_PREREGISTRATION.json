@@ -3,11 +3,16 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-17",
   "title": "Two-Basin routed surface system with shared groundwater redistribution",
-  "baseline": "4bcb9084f5270f9b78a1f12c405f0ce2b5060a9a",
+  "baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
-    "current": "BLOCKED_PENDING_DUMMY_15B_AND_DUMMY_16",
-    "implementation_rule": "No DUMMY-17 model or tests before DUMMY-16 closes and the implementation baseline is rebound."
+    "current": "SATISFIED",
+    "implementation_rule": "No DUMMY-17 model or tests before DUMMY-16 closes and the implementation baseline is rebound.",
+    "qualified_authority": {
+      "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+      "workflow_run": 35590642324,
+      "main_closeout_head": "c0c5e32834582b4dc5e8534de6102374bfcdd77e"
+    }
   },
   "purpose": "Introduce the minimum spatial topology in which water can move from an upstream Basin to a downstream Basin simultaneously through explicit surface routing and through a shared groundwater store, while every path remains analytically separable and exactly conservative.",
   "first_stage_boundary": {
@@ -100,5 +105,6 @@
     "no production coupling change"
   ],
   "pass_decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-  "fail_decision": "RIBASIM_DUMMY_17_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_17_BLOCKED",
+  "authority_rebind_note": "DUMMY-17 preregistration/concept were prepared while upstream dependencies were blocked. No DUMMY-17 implementation existed. Baseline rebound to this post-DUMMY-16 closeout head before any DUMMY-17 code/tests."
 }
