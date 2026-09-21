@@ -1,0 +1,40 @@
+name: GC fixed-interface research oracles
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/research/test_gc_fixed_interface_*.py'
+      - 'docs/research/GC_FIXED_INTERFACE_*'
+      - 'integration/research/GC_FIXED_INTERFACE_*'
+      - '.github/workflows/gc-fixed-interface-research.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  analytical-oracles:
+    name: fixed-interface-analytical-oracles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run fixed-interface analytical oracle suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          tests=(
+            tests/research/test_gc_fixed_interface_nh01.py
+            tests/research/test_gc_fixed_interface_nh02.py
+            tests/research/test_gc_fixed_interface_nh03.py
+            tests/research/test_gc_fixed_interface_nh04.py
+            tests/research/test_gc_fixed_interface_nh05.py
+            tests/research/test_gc_fixed_interface_pb01.py
+            tests/research/test_gc_fixed_interface_pb01_orientation_ab.py
+            tests/research/test_gc_fixed_interface_pb01_onecell_storage.py
+          )
+          for test_file in "${tests[@]}"; do
+            echo "GC_FIXED_INTERFACE_EXECUTING=${test_file}"
+            python3 "${test_file}"
+          done
+          echo "GC_FIXED_INTERFACE_ANALYTICAL_ORACLE_SUITE=PASS"
