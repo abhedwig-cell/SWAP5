@@ -39,13 +39,19 @@ confirmed B0 defects are not migration targets.
 | iMOD Coupler product lifecycle | Post-Status-A | ABSENT | F-GC50 blocked external/shared authority | Do not implement locally |
 | ROSS/RossFast, EB and broad APIs | Future scope | INTENTIONALLY_SUPERSEDED | Explicit Status-A exclusions | Do not treat as migration gaps |
 
-## Ready ordering
+## Candidate ordering and current block
 
-1. **PPA-WU04-C** is the first ready bounded capability: its state, retry and
-   restart contract is already frozen, it is high-value application breadth, and
-   its production surface can remain PPA-owned.
+1. **PPA-WU04-C** is the first candidate: its state, retry and restart contract
+   is frozen, and its production surface can remain PPA-owned.
 2. **PPA-WU04-D** follows under the same source-window ownership discipline.
 3. **PPA-WU02-B** follows as a separate lower-boundary adapter/state slice.
+
+No candidate is currently `READY`. PPA-WU04-C/D require the exact B1.11
+`MOD_meteo.f90` equation oracle; this checkout contains its pinned identity and
+source-trace records but not the materialized member/archive, while the supplied
+`tools/vq/b1_11_reconstruct.py` cannot run because Python is unavailable. This
+is an external-artifact/tool blocker, not permission to infer equations from
+historical prose or existing Rutter code.
 
 No item above authorizes a change to Reference Richards, mass accounting,
 transaction ownership, restart ownership, or shared groundwater interfaces.
