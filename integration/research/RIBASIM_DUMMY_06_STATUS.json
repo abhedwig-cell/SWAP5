@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_active_set_iteration.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-06",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "9947713ddc3d526e7e0f184948c928eba6519dcb",
+  "checkpoint_commit": "a81ddb907bb8769d6677aa9183e2714e5f853f97",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Naive undamped active-set Picard iteration tested against the exact DUMMY-05 management complementarity oracle.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_06_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_06_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_06_STATUS.json",
+    "tests/research/dummy_active_set_picard.py",
+    "tests/research/test_dummy_active_set_picard.py",
+    "tests/research/run_ribasim_dummy_06.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_trapezoid_exchange_iteration.py",
+    "tests/research/dummy_head_management_complementarity.py",
+    "tests/research/dummy_active_set_picard.py",
+    "tests/research/test_dummy_active_set_picard.py",
+    "tests/research/run_ribasim_dummy_06.sh",
+    "integration/research/RIBASIM_DUMMY_06_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_05": "RIBASIM_DUMMY_05_QUALIFIED_EXACT_MANAGEMENT_COMPLEMENTARITY",
+    "DUMMY_05_run": 35565906395
+  },
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-06 to the registered research workflow and execute the active-set iteration gate.",
+  "recovery_point": "DUMMY-06 map, preregistration, tests, concept and runner are persisted; qualification remains open.",
+  "blockers": []
+}
