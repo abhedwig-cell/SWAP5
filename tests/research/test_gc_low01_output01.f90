@@ -210,11 +210,19 @@ contains
     type(hydraulic_evaluation_context_t), intent(in) :: eval
     type(soil_water_numerical_config_t), intent(in) :: num
     type(soil_water_physical_config_t), intent(in) :: phys
-    type(gc_low01_mode1_trial_result_t) :: above, lower_half, below
+    type(gc_low01_mode1_trial_result_t) :: above, snap_below, snap_above, lower_half, below
 
     call gc_low01_run_inside_profile_trial(origin_state, -10.0_real64, parameter_set, eval, num, phys, dt_day, above)
     call require(.not. above%valid, 'OUTPUT01 above-top refused')
     call require(above%branch /= GC_LOW01_BRANCH_INSIDE_PROFILE, 'OUTPUT01 above-top branch')
+
+    call gc_low01_run_inside_profile_trial(origin_state, -150.00005_real64, parameter_set, eval, num, phys, dt_day, snap_below)
+    call require(.not. snap_below%valid, 'OUTPUT01 node-snap-below control refused')
+    call require(snap_below%branch == GC_LOW01_BRANCH_INSIDE_PROFILE, 'OUTPUT01 node-snap-below branch diagnostic retained')
+
+    call gc_low01_run_inside_profile_trial(origin_state, -149.99995_real64, parameter_set, eval, num, phys, dt_day, snap_above)
+    call require(.not. snap_above%valid, 'OUTPUT01 node-snap-above control refused')
+    call require(snap_above%branch == GC_LOW01_BRANCH_INSIDE_PROFILE, 'OUTPUT01 node-snap-above branch diagnostic retained')
 
     call gc_low01_run_inside_profile_trial(origin_state, -275.0_real64, parameter_set, eval, num, phys, dt_day, lower_half)
     call require(.not. lower_half%valid, 'OUTPUT01 lower-half-cell NN=n refused')
