@@ -57,18 +57,20 @@
     "P1": "multi-window propagation uses each accepted end level as the next start level and closes every window plus the cumulative water balance",
     "P2": "in a nonbinding FULL regime, N equal discrete windows reproduce the independently derived trapezoidal recurrence h_N=h_eq+g^N(h0-h_eq), g=(1-k/2)/(1+k/2)",
     "P3": "canonical event case reproduces the preregistered one-window and two-half-window allocations exactly",
-    "P4": "for N=16,32,64,128 equal windows, final-level and cumulative-delivery errors decrease monotonically toward the independent continuous event solution",
+    "P4": "uniform refinement exhibits event-grid jitter: the canonical N=128 endpoint-level error is slightly larger than N=64, while a much finer N=8192 partition is closer to the independent continuous event reference than N=16 in both final level and cumulative delivery",
     "P5": "the coarse one-window solution underdelivers management water and ends artificially at hmin relative to the continuous event reference",
     "P6": "with sufficiently fine partitioning, a later ZERO-demand window can physically move Basin level below hmin, confirming hmin is a management threshold rather than a physical floor",
     "P7": "per-window requested volume remains request_rate*dt after prior shortage; no hidden shortage backlog is introduced",
-    "P8": "cumulative mass balance remains closed for all tested partitions even though cumulative delivery and exchange are partition dependent"
+    "P8": "cumulative mass balance remains closed for all tested partitions even though cumulative delivery and exchange are partition dependent",
+    "P9": "the tested uniform-refinement sequence preserves exact cumulative balance despite non-monotone event-timing error, separating conservation from temporal decision accuracy"
   },
   "interpretation_rules": [
     "partition dependence is a temporal-discretization/decision-timing effect, not automatically a water-balance error",
     "continuous reference is restricted to the preregistered constant-parameter one-event domain",
     "management threshold may be crossed by physical hydrology after managed delivery reaches zero",
     "no demand carryover or behavioral SWAP feedback is introduced in DUMMY-08",
-    "no production coupling timestep is prescribed"
+    "no production coupling timestep is prescribed",
+    "event-grid alignment can make refinement error non-monotone even when the method approaches the continuous event reference overall"
   ],
   "forbidden": [
     "no production SWAP/Ribasim/MODFLOW changes",
@@ -77,5 +79,7 @@
     "no empirical acceptance tolerance used to tune timestep"
   ],
   "pass_decision": "RIBASIM_DUMMY_08_QUALIFIED_TEMPORAL_PARTITION_EFFECT",
-  "fail_decision": "RIBASIM_DUMMY_08_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_08_BLOCKED",
+  "preregistration_revision_note": "Before DUMMY-08 tests, status, or qualification existed, prequalification analysis showed that uniform refinement around an active-set event need not reduce endpoint error monotonically because the event can shift relative to the discrete grid. Original P4 monotonic-refinement hypothesis is superseded rather than silently weakened.",
+  "superseded_hypothesis": "for N=16,32,64,128 equal windows, final-level and cumulative-delivery errors decrease monotonically toward the independent continuous event solution"
 }
