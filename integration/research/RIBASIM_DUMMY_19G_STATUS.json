@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Saveat sweep 1h/6h/12h/24h at fixed allocation.dt=24h under the DUMMY-19E topology.",
-  "next_action": "Execute DUMMY-19G v1 frozen saveat sensitivity qualification.",
+  "next_action": "Execute DUMMY-19G v1 frozen qualification; no sweep case, hybrid reference or tolerance may change.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "4b1c81287cecc65ca94da101905366540b756284",
@@ -40,6 +40,6 @@
       "monotonic supply/storage sensitivity is checked across the sweep"
     ]
   },
-  "qualification_attempt": "v1_frozen_saveat_sensitivity",
+  "qualification_attempt": "v1_frozen_saveat_sweep",
   "qualification_base": "work/ribasim-dummy-01@6eaa87c7a0f09a63f31fef83b358448cad5cef03"
 }
