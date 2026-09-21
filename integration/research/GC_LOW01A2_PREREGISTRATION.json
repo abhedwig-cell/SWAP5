@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.gc_low01.a2.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-A2",
+  "title": "Live below-profile H_phreatic reduction through qualified mode-5 Reference Richards",
+  "status": "PREREGISTERED_BEFORE_LIVE_EXECUTION",
+  "production_changes": false,
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "low01a": "integration/research/GC_LOW01A_PREREGISTRATION.json",
+    "seam_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "typed_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "mode5_solver": "src/adapter/mod_reference_richards_legacy_binding.f90"
+  },
+  "purpose": "Test the source-declared below-profile mode-1 reduction without admitting bottom_mode=1: derive mode-5 hbot from a typed H_phreatic coordinate, then solve through the already qualified explicit Reference-Richards mode-5 route.",
+  "geometry_cm": {
+    "z": [
+      -25,
+      -75,
+      -150,
+      -250
+    ],
+    "dz": [
+      50,
+      50,
+      100,
+      100
+    ],
+    "node_distance": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "bottom_face": -300
+  },
+  "immutable_origin": {
+    "H_phreatic_cm": -350,
+    "pressure_head_cm": [
+      -325,
+      -275,
+      -200,
+      -100
+    ],
+    "relation": "h_i=H_phreatic-z_i, hydrostatic zero-gradient origin",
+    "top_flux_cm_per_day": 0,
+    "step_duration_day": 0.0001,
+    "optional_processes": false
+  },
+  "trials": [
+    {
+      "label": "A1",
+      "H_phreatic_cm": -350,
+      "derived_hbot_cm": -50
+    },
+    {
+      "label": "B",
+      "H_phreatic_cm": -349.9,
+      "derived_hbot_cm": -49.9
+    },
+    {
+      "label": "A2",
+      "H_phreatic_cm": -350,
+      "derived_hbot_cm": -50
+    }
+  ],
+  "mapping": "hbot_cm = H_phreatic_cm - z_bottom_face_cm",
+  "gates": [
+    "All prescribed H_phreatic values are below the declared -300 cm bottom face.",
+    "The mapping to hbot is exact to floating-point arithmetic and H_phreatic is retained as a distinct research coordinate.",
+    "Every trial is reconstructed from the same immutable origin and solved with bottom_mode=5 through reference_richards_legacy_solver_t.",
+    "Every solve converges without retry or alternative solver.",
+    "Candidate pressure head, water content and diagnosed qbot are finite.",
+    "Independent complete-profile storage change minus (-qtop+qbot)*dt closes within 1e-10 cm water for every trial.",
+    "A1 and A2 pressure heads, water contents, qbot, integrated mass residual and solver diagnostics are bitwise identical.",
+    "B differs from A1 in qbot or candidate hydraulic state, proving the replay test is non-vacuous."
+  ],
+  "interpretation": [
+    "PASS qualifies a research-only live below-profile H_phreatic-to-mode5 reduction and immutable-origin replay substrate.",
+    "PASS does not qualify inside-profile mode-1 active-domain truncation or saturated continuation.",
+    "PASS does not reclassify the current F-GC lower interface head as H_phreatic."
+  ],
+  "forbidden": [
+    "no bottom_mode=1 production admission",
+    "no implicit z(n+1) geometry",
+    "no use of legacy-global mode-1 special constitutive branches",
+    "no production F-GC changes"
+  ]
+}
