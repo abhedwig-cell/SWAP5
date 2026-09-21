@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-04",
   "branch": "work/ribasim-dummy-01",
   "baseline": "ad76b2c46530a40d9fb60973270d1f69708a695f",
-  "checkpoint_commit": "59b400cc5bd2f3ef8916633e1b969bedd4e9dbc4",
+  "checkpoint_commit": "9ddd0b6d4d77e9cc1da2c4b06ee59627c0c2d938",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -32,7 +32,7 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Add DUMMY-04 to the registered research workflow, execute the focused gate and record result evidence.",
-  "recovery_point": "DUMMY-04 analytical implementation, tests, concept and runner are persisted; qualification not yet run.",
+  "next_action": "Execute the exact DUMMY-04 iteration-gate from the persisted postimage.",
+  "recovery_point": "DUMMY-04 implementation, concept, focused runner and workflow gate are persisted; qualification is the next action.",
   "blockers": []
 }
