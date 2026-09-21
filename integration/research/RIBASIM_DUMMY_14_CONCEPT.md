@@ -1,9 +1,10 @@
 # RIBASIM-DUMMY-14 blocked concept: three-store forcing and demand memory
 
-> Status: BLOCKED pending formal qualification of RIBASIM-DUMMY-13.
+> Status: IMPLEMENTED after formal qualification of RIBASIM-DUMMY-13.
 >
-> DUMMY-14 has no model or tests yet. This document fixes the intended physical
-> and accounting interpretation before implementation authority exists.
+> This concept was fixed while implementation was blocked. The implementation
+> baseline was rebound to the qualified DUMMY-13 closeout before any DUMMY-14
+> model or tests were created.
 
 ## Why DUMMY-14 is needed
 
@@ -371,9 +372,9 @@ sink.
 It is not mapped onto SWAP, MODFLOW or surface-water drainage and cannot close
 CSR-B2.
 
-## Implementation gate
+## Implementation authority
 
-No DUMMY-14 implementation may be created until DUMMY-13 qualifies.
+DUMMY-13 qualified before DUMMY-14 implementation began.
 
-After that closeout, the implementation baseline must be rebound before code
-or tests are added.
+The DUMMY-14 implementation baseline was rebound to the post-DUMMY-13
+qualification head before code or tests were added.
