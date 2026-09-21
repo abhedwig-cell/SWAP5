@@ -495,3 +495,105 @@ This note records public documentation, not repository production authority.
 
 Actual software behavior must still be qualified against pinned versions,
 source code and executable evidence before any SWAP5 coupling admission.
+
+
+## 15. Current SWAP5 repository coupling authority beyond the public product docs
+
+Repository authority was additionally reconciled on 2026-09-21 against the
+live `integration/f-ci-canonical` line and the bounded noncanonical
+coupling-semantics repair branch.
+
+### F-GC50 product-integration boundary
+
+Current canonical contains F-GC50 authority for iMOD Coupler product
+integration.
+
+Its current disposition is not "product integrated".
+
+The admitted internal SWAP5 side is ready for the restricted production
+profile, including the PPA-WU01 Fortran/FMR owner and the F-GC49 production
+services, but actual registration in the upstream `Deltares/imod_coupler`
+product remains externally blocked because the inspected upstream driver
+registry has no external/plugin route and the available repository authority
+cannot mutate that upstream product.
+
+Therefore the analytical dummy programme must not:
+
+- create a SWAP5-local imitation of the iMOD Coupler product registry;
+- duplicate the product-level timestep loop and call that product integration;
+- move SWAP/FMR state or mass-ledger ownership to Python;
+- describe F-GC50 as already fully product-integrated.
+
+### Live storage-partition and drainage-ownership authority
+
+Project control currently holds the broader F-GC production line on two
+shared scientific/architectural authority blockers:
+
+```text
+CSR-B1-STORAGE-PARTITION
+CSR-B2-DRAINAGE-OWNERSHIP
+```
+
+The bounded coupling-semantics reconciliation distinguishes:
+
+- SWAP column storage and finite-window interface response;
+- native MODFLOW STO and regional groundwater head memory;
+- accepted interface transfer;
+- drainage processes owned by one declared component.
+
+The current noncanonical CSR-04 derivation states that SWAP's condensed
+finite-window interface Jacobian and native MODFLOW STO are algebraically
+distinct response terms.
+
+It also states that this algebra does not by itself prove that the associated
+physical storage domains are non-overlapping.
+
+That production/application authority is still unresolved.
+
+### Consequence for DUMMY-09 through DUMMY-13
+
+The dummy coefficient
+
+```text
+A_g = dS_g/dh_g
+```
+
+is an explicitly independent second store by construction.
+
+This is useful for testing:
+
+- reciprocal exchange;
+- groundwater memory;
+- conservation under declared non-overlapping control volumes;
+- management feedback through both heads.
+
+It is **not** evidence that a real MODFLOW STO term represents a physically
+independent storage volume relative to SWAP's column storage.
+
+Likewise, DUMMY-13's proposed root/surface/groundwater stores are disjoint by
+definition. A successful three-store ledger can establish the accounting
+identity under that declared partition, but cannot close CSR-B1 for the real
+production application.
+
+Drainage is deliberately absent from first-stage DUMMY-13. Therefore DUMMY-13
+also cannot close CSR-B2.
+
+### Useful research link without authority leakage
+
+The dummy programme can still help the production research indirectly.
+
+It can provide controlled falsification examples for questions such as:
+
+- what combined ledger must hold when storage domains are truly disjoint?
+- what observable memory appears when an independent regional storage is
+  added?
+- how does the zero-regional-storage limit differ from finite independent
+  groundwater memory?
+- which internal transfers must cancel regardless of numerical coupling
+  algorithm?
+
+Those are analytical oracles.
+
+The production F-GC workstream remains responsible for deciding whether real
+SWAP and MODFLOW state spaces satisfy the assumptions needed to use those
+oracles physically.
