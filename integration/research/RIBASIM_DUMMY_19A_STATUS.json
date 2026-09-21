@@ -17,7 +17,7 @@
     "stage": "stage1.real_ribasim_allocation_supply",
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
-  "next_action": "Execute DUMMY-19A pinned real Ribasim gate.",
+  "next_action": "Execute pinned real Ribasim allocation/supply gate.",
   "production_delta": [],
   "reference_delta": [],
   "scope": "Pinned real Ribasim allocation/supply observability bridge using official fair_distribution, level_demand and two_basin_user_demand fixtures.",
@@ -58,5 +58,6 @@
       "no SWAP or MODFLOW component is substituted"
     ]
   },
-  "recovery_point": "DUMMY-19A implementation, external pin checkout, bridge script and gate are persisted; qualification remains open."
+  "recovery_point": "DUMMY-19A implementation, external pin checkout, bridge script and gate are persisted; qualification remains open.",
+  "qualification_attempt": "pinned_external_ribasim_pr"
 }
