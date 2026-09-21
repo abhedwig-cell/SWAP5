@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.gc_real_swap.map12.legacy_head_semantics_audit.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP12",
+  "title": "Legacy SWAP groundwater-level versus lower-face-head semantics and current F-GC mapping",
+  "status": "SOURCE_BOUND_RESEARCH_AUDIT",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "lower_boundary_audit": "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "classification": "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "interface_contract": "src/runtime/mod_groundwater_coupling_contract.f90",
+    "current_head_adapter": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+    "current_bottom_face": "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90"
+  },
+  "legacy_semantics": {
+    "SWBOTB1": {
+      "meaning": "prescribed groundwater level / phreatic-state boundary",
+      "behavior": [
+        "BoundBottom interpolates prescribed groundwater level.",
+        "If groundwater level lies in or above the soil profile, the Richards domain is truncated/continued saturated relative to the groundwater level.",
+        "If groundwater level lies below the profile, the groundwater-level state is converted to a lower-face pressure head.",
+        "qbot is an output, not a prescribed forcing."
+      ],
+      "typed_status": "PRESERVED_NOT_TYPED_AS_LEGACY_MODE"
+    },
+    "SWBOTB5": {
+      "meaning": "prescribed lower-face pressure head as a function of time",
+      "behavior": [
+        "Lower-face pressure head hbot enters the Darcy bottom gradient.",
+        "The lower-face K/d term enters the Jacobian.",
+        "Accepted qbot is materialized from the accepted trajectory."
+      ],
+      "typed_status": "RESTRICTED_PRODUCTION through groundwater-owned route, not a generic DATE5 application adapter"
+    }
+  },
+  "current_f_gc": {
+    "corrector_mapping": "MODFLOW/interface hydraulic head -> datum transform -> SWAP bottom_head under bottom_mode=5",
+    "coupled_state": "lower coupling-plane hydraulic head",
+    "explicit_nonidentity": "canonical bottom-face source states this coupling-plane head is not the freatic groundwater level",
+    "classification": "ITERATED_INTERFACE_HEAD_AND_BOTTOM_EXCHANGE"
+  },
+  "architectural_conclusion": [
+    "A current F-GC mode-5 corrector and a legacy mode-1 prescribed-groundwater-level state machine are not the same physical coupling contract.",
+    "A true shared-phreatic h-link would require an explicit typed water-table/shared-storage contract, not merely reuse of the existing mode-5 lower-boundary head adapter.",
+    "The two contracts can approach equivalent behavior in special limits, for example a hydrostatic profile with negligible vertical resistance and consistent storage ownership, but that equivalence must be proven rather than assumed."
+  ],
+  "implications": [
+    "Current F-GC MODFLOW STO and SWAP finite-window response need not be duplicate storage because current coupling is boundary based and the synthetic domains are not coextensive.",
+    "If SWAP5 later wants a SIMGRO-style complete-profile h-link, storage ownership and the phreatic state machine must be designed explicitly.",
+    "Legacy SWBOTB=1 is scientific lineage relevant to that future design, but its full state/timing semantics are currently not typed/admitted."
+  ],
+  "forbidden_inference": [
+    "Do not replace current F-GC mode 5 by legacy mode 1 from this audit.",
+    "Do not claim mode 5 is physically wrong; it represents a different coupling family.",
+    "Do not claim mode 1 is production ready."
+  ],
+  "next": [
+    "Preregister a transparent equivalence/nonequivalence test between shared-phreatic and lower-boundary-head models.",
+    "If future h-link development is desired, define a typed phreatic-state and complete-profile storage contract before implementation."
+  ],
+  "production_changes": false
+}
