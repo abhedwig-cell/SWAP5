@@ -1,6 +1,6 @@
 # RIBASIM-DUMMY-19E preregistered concept: priority allocation, then physical shortfall
 
-> Status: PREREGISTERED while DUMMY-19D qualification is active.
+> Status: IMPLEMENTATION READY after qualified DUMMY-19D closeout.
 >
 > This work unit combines two mechanisms that are already independently qualified:
 > DUMMY-19B priority allocation under management scarcity and DUMMY-19C
