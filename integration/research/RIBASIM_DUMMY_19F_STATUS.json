@@ -9,10 +9,16 @@
   "tested": false,
   "qualified": false,
   "blocked": true,
-  "blocker": "Execution requires DUMMY-19E closeout. Numerical expectations are frozen prospectively.",
+  "blocker": "Superseded before execution: DUMMY-19E run 35616065964 established that solver.saveat=3600 s triggers allocation re-solves inside nominal allocation.dt=86400 s. DUMMY-19F assumed one management allocation per day while retaining hourly saveat.",
   "required_authority": "RIBASIM_DUMMY_19E_QUALIFIED_PRIORITY_ALLOCATION_THEN_PHYSICAL_REALIZATION",
   "prepared_scope": "Two one-day allocation windows testing whether physically retained day-1 water enters day-2 allocation as accepted Basin state.",
-  "next_action": "After DUMMY-19E qualification, rebind implementation baseline and implement without changing the frozen hybrid reference.",
+  "next_action": "Do not execute this preregistration. Replace it only after clock-aligned one-window semantics and explicit saveat sensitivity are qualified.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "disposition": {
+    "state": "SUPERSEDED_UNEXECUTED",
+    "cause": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+    "evidence_run": 35616065964,
+    "scientific_data_use": "Original frozen numerical expectations remain historical preregistration only and are not authority."
+  }
 }
