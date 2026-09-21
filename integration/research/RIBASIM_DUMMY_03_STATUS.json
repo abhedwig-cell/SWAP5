@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_head_exchange.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-03",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "fe05668d943121bc30358a7c52eed43aa7f60afb",
+  "checkpoint_commit": "274c9513a4227b0879d73b0bb8f0afe8712f2958",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Linear head-difference groundwater exchange diagnostic layered on qualified DUMMY-02, including one-pass versus realized-end-level exchange residual.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_03_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_03_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_03_STATUS.json",
+    "tests/research/dummy_head_exchange_diagnostic.py",
+    "tests/research/test_dummy_head_exchange_diagnostic.py",
+    "tests/research/run_ribasim_dummy_03.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_ribasim_reservoir.py",
+    "tests/research/dummy_threeway_water_coupling.py",
+    "tests/research/dummy_head_exchange_diagnostic.py",
+    "tests/research/test_dummy_head_exchange_diagnostic.py",
+    "tests/research/run_ribasim_dummy_03.sh",
+    "integration/research/RIBASIM_DUMMY_03_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_02": "RIBASIM_DUMMY_02_QUALIFIED_CONTROLLED_THREEWAY_TRIANGLE",
+    "DUMMY_02_run": 35565066706
+  },
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-03 to the registered workflow dispatcher, run the focused gate and record result evidence.",
+  "recovery_point": "DUMMY-03 implementation, tests, concept and runner are persisted; qualification not yet run.",
+  "blockers": []
+}
