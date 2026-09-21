@@ -132,6 +132,7 @@ def solve_replaced_sto(
 
             accepted_head = float("nan")
             iterations = 0
+            converged = False
             for _ in range(max(1, session.max_solve_iterations)):
                 status, iterate = session.publish_and_solve_iteration(
                     (Binding(),),
@@ -144,6 +145,7 @@ def solve_replaced_sto(
                 iterations = int(iterate.iteration)
                 accepted_head = float(iterate.head_m[0])
                 if bool(iterate.modflow_converged):
+                    converged = True
                     break
 
             require(
@@ -151,12 +153,16 @@ def solve_replaced_sto(
                 "MODFLOW returned no finite head",
             )
             require(
-                session.timestep_ready_for_finalize(),
+                converged,
                 "MODFLOW did not certify convergence",
             )
             require(
                 session.finalize_prepared_solve() == PreparedSolveStatus.OK,
                 session.last_error,
+            )
+            require(
+                session.timestep_ready_for_finalize(),
+                "MODFLOW solve finalized but timestep not ready",
             )
             require(
                 session.finalize_time_step_once() == PreparedSolveStatus.OK,
@@ -165,6 +171,7 @@ def solve_replaced_sto(
             return {
                 "head_m": accepted_head,
                 "iterations": iterations,
+                "modflow_converged": converged,
                 "runtime_sy": float(sy_ptr[0]),
                 "numerical_correction": numerical_correction_m3_per_day,
             }

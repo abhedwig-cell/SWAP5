@@ -121,13 +121,15 @@ def run_variant(
                     converged = True
                     break
 
-            ready = session.timestep_ready_for_finalize()
+            ready_before_finalize = session.timestep_ready_for_finalize()
+            ready = False
             if converged:
                 require(
                     session.finalize_prepared_solve() == PreparedSolveStatus.OK,
                     f"{label} finalize solve: {session.last_error}",
                 )
-                require(ready, f"{label} converged but timestep not ready")
+                ready = session.timestep_ready_for_finalize()
+                require(ready, f"{label} finalized solve but timestep not ready")
                 require(
                     session.finalize_time_step_once() == PreparedSolveStatus.OK,
                     f"{label} finalize timestep: {session.last_error}",
@@ -142,6 +144,7 @@ def run_variant(
                 "configured_sy": configured_sy,
                 "runtime_sy": runtime_sy,
                 "converged": converged,
+                "ready_before_finalize": ready_before_finalize,
                 "ready": ready,
                 "head": head,
                 "head_error": head - EXPECTED,
@@ -174,6 +177,10 @@ def main() -> None:
         print(f"GC_HLINK02D_{label}_HEAD_M={float(result['head']):.17g}")
         print(f"GC_HLINK02D_{label}_HEAD_ERROR_M={float(result['head_error']):.17g}")
         print(f"GC_HLINK02D_{label}_CONVERGED={1 if result['converged'] else 0}")
+        print(
+            f"GC_HLINK02D_{label}_READY_BEFORE_FINALIZE="
+            f"{1 if result['ready_before_finalize'] else 0}"
+        )
         print(f"GC_HLINK02D_{label}_READY={1 if result['ready'] else 0}")
         print(f"GC_HLINK02D_{label}_ITERATIONS={int(result['iterations'])}")
         require(
