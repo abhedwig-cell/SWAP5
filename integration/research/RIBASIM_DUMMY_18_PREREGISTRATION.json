@@ -150,7 +150,78 @@
         "class": "TRANSACTION"
       }
     ],
-    "current_blocker": "Current central architecture/control documents do not yet bind an explicit production irrigation-demand owner/timing contract."
+    "current_blocker": "Restricted production irrigation selection/application authority is now identified, but atomic ownership of irrigation management state + Rutter canopy state + kernel hydrologic state under external partial supply remains unresolved.",
+    "production_irrigation_authority": {
+      "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+      "restricted_route": "F-APP07 / F-APP08 Hupsel restricted TCS1+DCS2, TCSFIX=1, surface sprinkling route",
+      "production_files": [
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "src/process/mod_rutter_interception_process.f90",
+        "src/runtime/mod_fmr_rutter_output_application_binding.f90"
+      ],
+      "decision_inputs": [
+        "DVS",
+        "potential transpiration",
+        "dry-reduction amount",
+        "salinity-reduction amount",
+        "selection opportunity",
+        "irrigation enabled",
+        "schedule enabled",
+        "crop emerged",
+        "irrigation window open",
+        "fixed-event precedence"
+      ],
+      "selection_law": [
+        "Tred = 1 - (dry_reduction + salinity_reduction) / potential_transpiration when potential transpiration > 1e-10, else 1",
+        "stress trigger when Tred < DVS-dependent threshold",
+        "event only passes when committed dayfix >= minimum_interval_days",
+        "accepted event depth is DVS-dependent and event duration = depth / fixed rate"
+      ],
+      "management_state": [
+        "dayfix",
+        "active_event",
+        "active_event_start",
+        "active_event_end"
+      ],
+      "selected_event_outputs": [
+        "gross_surface_rate_cm_per_day",
+        "external_inflow_amount_cm",
+        "event_depth_cm",
+        "event_duration_day"
+      ],
+      "canopy_path": [
+        "gross scheduled irrigation enters Rutter when interception is active",
+        "Rutter accepted state is canopy_storage_cm",
+        "Rutter returns explicit candidate canopy storage",
+        "only net_surface_irrigation_cm_per_day is bound to dynamic-top irrigation"
+      ],
+      "qualification_evidence": {
+        "F_APP07": {
+          "process_owner_run": 35344081322,
+          "owner_composition_run": 35344875759,
+          "independent_run": 35350203747,
+          "exact_active_intervals": 110,
+          "SWINTER0": 18,
+          "SWINTER3": 92,
+          "max_composition_error": 0
+        },
+        "F_APP05": "stateful Rutter process qualified with accepted-state immutability and explicit candidate canopy state",
+        "F_APP08": "qualified typed Rutter net-irrigation -> dynamic-top binding"
+      },
+      "transaction_gap": [
+        "F-APP05, F-APP07 and F-APP08 explicitly exclude transaction changes.",
+        "Kernel commit authority moves only the kernel physical_state candidate into committed state.",
+        "No inspected admitted application authority yet proves that irrigation management state and Rutter canopy candidate state commit/rollback atomically with the kernel physical state."
+      ],
+      "coupling_implications": [
+        "Analytical W_root deficit is not production SWAP demand law.",
+        "Production irrigation demand has management memory (dayfix/active event) in addition to hydrologic stress state.",
+        "Ribasim source withdrawal should be compared to gross supplied irrigation, not automatically to net soil-top irrigation.",
+        "The gross-minus-net difference is partitioned into canopy storage change and interception evaporation and must appear explicitly in the coupled ledger.",
+        "Partial external supply of a selected fixed-depth/rate irrigation event has no admitted F-APP07 realization contract and requires separate policy qualification."
+      ]
+    }
   },
   "coupler": {
     "required_bindings": [
@@ -188,7 +259,9 @@
     "No allocated management amount is treated as supplied physical water without physical evidence.",
     "Time alignment is explicit for every compared quantity.",
     "Real-model output lag, averaging or integration semantics are recorded before numerical comparison.",
-    "Storage and drainage ownership blockers remain open unless separately closed by their owning workstreams."
+    "Storage and drainage ownership blockers remain open unless separately closed by their owning workstreams.",
+    "For production sprinkling substitution, gross source withdrawal, canopy storage change/interception evaporation, and net soil irrigation must be reconciled as distinct ledger terms.",
+    "No partial Ribasim supply may mutate SWAP irrigation dayfix/active-event state until an explicit event-realization transaction policy is qualified."
   ],
   "planned_substitution_order": [
     "analytical all components",
