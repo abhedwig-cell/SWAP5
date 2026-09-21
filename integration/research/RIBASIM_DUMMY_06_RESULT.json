@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_active_set_iteration.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-06",
+  "decision": "RIBASIM_DUMMY_06_QUALIFIED_ACTIVE_SET_ITERATION_FAILURE_MECHANISM",
+  "authority": {
+    "baseline": "9947713ddc3d526e7e0f184948c928eba6519dcb",
+    "qualified_main_pre_result_head": "3e9de12237560aec53c906ef24be168a9219641f",
+    "qualification_head": "ae5fa2ecc0257a385af5b9d4bd843af47e0363c3",
+    "workflow_run": 35567139197,
+    "workflow_job": 106231108154,
+    "conclusion": "success"
+  },
+  "prequalification_repair": {
+    "commit": "2aad88e4ee068e49db6fcd79cf124fdb652ce0e5",
+    "description": "Exact tuple equality for analytically exact cycle values was replaced by 11-decimal assertAlmostEqual because binary floating-point representation produced values such as 59.999999999999986. Scientific expectations were unchanged."
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_06_SOURCE_SCOPE=PASS",
+    "9/9 ActiveSetPicardTests PASS",
+    "DUMMY-05 FULL/CURTAILED/ZERO oracle solutions are fixed points of the active-set map",
+    "interior CURTAILED guesses map in one evaluation to the exact curtailed exchange",
+    "subcritical non-switching FULL regime retains error factor -lambda",
+    "preregistered lambda=1.5 case forms the predicted FULL/CURTAILED cycle",
+    "cycle iterates keep managed delivery within [0,R]",
+    "dt reduction to lambda=0.3 restores convergence to the exact oracle",
+    "cycle states satisfy provisional balance and local management clipping while not being coupled fixed points",
+    "provisional physical-floor crossing fails closed",
+    "RIBASIM_DUMMY_06_GATE=PASS"
+  ],
+  "stiff_counterexample": {
+    "parameters": {
+      "A": 100,
+      "C": 300,
+      "dt": 1,
+      "h0": 1,
+      "hgw": 0.8,
+      "hmin": 0.2,
+      "R": 50,
+      "lambda": 1.5
+    },
+    "exact": {
+      "regime": "FULL",
+      "U": 50,
+      "V": -6,
+      "h1": 0.56
+    },
+    "explicit_start_exchange_m3": 60,
+    "active_set_picard_cycle_m3": [
+      -60,
+      75,
+      -60,
+      75
+    ]
+  },
+  "interpretation": "Correct local hydrology-before-management clipping and exact provisional mass balance do not guarantee convergence of an undamped coupled iteration. The failure is algorithmic and can include active-set switching.",
+  "non_claims": [
+    "no claim about Ribasim's actual allocation iteration",
+    "no claim about iMOD Coupler's actual numerical algorithm",
+    "no production solver or coupling change"
+  ],
+  "downstream": "Compare analytically bounded under-relaxation and a direct active-set solve against the exact DUMMY-05 oracle."
+}
