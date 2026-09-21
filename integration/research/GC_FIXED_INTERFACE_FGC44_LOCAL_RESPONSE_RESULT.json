@@ -1,0 +1,17 @@
+{
+  "schema":"swap5.gc_fixed_interface.fgc44_local_response.v1",
+  "date":"2026-09-21",
+  "workflow_run_id":35611202121,
+  "workflow_conclusion":"success",
+  "window_day":0.0001,
+  "u":3.402936037279093e-05,
+  "positive_surrogate_slope_per_s":3.9385833764804317e-06,
+  "central_real_swap_physical_slope_per_s":-3.938581713855724e-06,
+  "ratio_physical_to_positive_surrogate":-0.9999995778618,
+  "admissibility":{
+    "negative_2e-6_m":"REJECTED_STATUS_4",
+    "negative_1e-6_through_positive_2e-6_m":"ACCEPTED"
+  },
+  "interpretation":"Within the admissible local real-SWAP corrector envelope, the physical outward exchange derivative is equal in magnitude and opposite in sign to +u/dt to numerical precision. This independently reproduces the MAP03/PB01 sign result with the real Richards corrector. F-GC44's ordinary two-iteration closure starts essentially at the fixed point and therefore does not qualify finite-perturbation stability of the positive surrogate.",
+  "production_disposition":"NO_SIGN_CHANGE_IN_THIS_COMMIT"
+}
