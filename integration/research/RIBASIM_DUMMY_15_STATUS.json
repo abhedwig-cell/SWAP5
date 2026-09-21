@@ -105,5 +105,22 @@
   },
   "blockers": [
     "Corrected frozen-scope GitHub Actions competing-claims-gate is queued in run 35578647184."
-  ]
+  ],
+  "frozen_scope_verification": {
+    "base_authority": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
+    "frozen_base": "work/ribasim-dummy-15-base@a306217b847e67c2cd28429a08e70e6b95c9cca1",
+    "changed_files": [
+      ".github/workflows/ribasim-dummy-01.yml",
+      "integration/research/RIBASIM_DUMMY_15_CONCEPT.md",
+      "integration/research/RIBASIM_DUMMY_15_PREREGISTRATION.json",
+      "integration/research/RIBASIM_DUMMY_15_STATUS.json",
+      "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+      "tests/research/dummy_competing_claims.py",
+      "tests/research/run_ribasim_dummy_15.sh",
+      "tests/research/test_dummy_competing_claims.py"
+    ],
+    "production_delta": [],
+    "reference_delta": [],
+    "conclusion": "SCOPE_CLEAN"
+  }
 }
