@@ -8,11 +8,16 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
-  "blocker": "DUMMY-13 qualification run 35571925509 is pending.",
+  "blocker": null,
   "prepared_scope": "Add rainfall, prescribed root-zone loss and root capacity drainage to the three-store ledger after the internal U/V cancellation authority closes.",
-  "next_action": "After DUMMY-13 qualification, rebind DUMMY-14 implementation baseline before creating any DUMMY-14 model or tests.",
+  "next_action": "Implement DUMMY-14 three-store root-forcing memory and exact combined ledger.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
+    "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+    "workflow_run": 35571925509
+  }
 }
