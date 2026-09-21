@@ -4,10 +4,10 @@
   "work_unit": "RIBASIM-DUMMY-01",
   "branch": "work/ribasim-dummy-01",
   "baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "fd023ff14f081c3041bec5de6dca1e9c28c67e90",
+  "checkpoint_commit": "d3623f1143c8da200e807a4bbedd365f0f98a6cd",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "scope": "Research-only analytically controlled one-Basin Ribasim surrogate with explicit allocation prediction, physical realization, shortage decomposition and commit semantics.",
   "relevant_paths": [
@@ -25,9 +25,17 @@
   ],
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Run the focused gate after the Ribasim-aligned allocation/realization refinement and record evidence.",
-  "recovery_point": "Re-run tests/research/run_ribasim_dummy_01.sh from work/ribasim-dummy-01.",
+  "next_action": "Obtain formal repository-gate/CI evidence, then extend the harness with a three-part dummy SWAP UserDemand -> dummy Ribasim Basin -> dummy MODFLOW infiltration/drainage experiment.",
+  "recovery_point": "Resume from work/ribasim-dummy-01; model and tests are exact-blob locally tested, formal qualification still open.",
   "blockers": [
-    "Formal GitHub Actions qualification evidence is not yet observable through the connector for the newly introduced workflow."
-  ]
+    "The GitHub connector has not exposed a formal Actions run for the newly introduced workflow, so qualification remains open."
+  ],
+  "test_evidence": {
+    "method": "exact Git blob reconstruction and local Python unittest execution",
+    "model_blob_sha": "93d7a678558aa560a5b6bbde3a89a5d4e1cf23f9",
+    "test_blob_sha": "ded29e15b5931d9c7d690b5cc04346882f05767d",
+    "tests_run": 8,
+    "tests_passed": 8,
+    "branch_scope_compare": "PASS: only six preregistered research/workflow paths differ from canonical; no src or reference delta"
+  }
 }
