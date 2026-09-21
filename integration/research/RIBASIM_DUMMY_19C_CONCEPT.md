@@ -1,8 +1,10 @@
 # RIBASIM-DUMMY-19C blocked concept: full allocation, reduced physical supply
 
-> Status: BLOCKED pending formal qualification of DUMMY-19B.
+> Status: IMPLEMENTED after formal qualification of DUMMY-19B.
 >
-> No DUMMY-19C executable model, verifier or workflow gate is authorized yet.
+> This concept and all numerical expectations were fixed before implementation.
+> The implementation baseline was rebound to the post-DUMMY-19B closeout before
+> any DUMMY-19C executable model or verifier was created.
 
 ## Question
 
