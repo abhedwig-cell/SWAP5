@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw06.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW06",
+  "title": "Affine reference-point invariance",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "qualified_shared_storage": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json"
+  },
+  "physical_case": {
+    "initial_head_m": 8,
+    "total_storage": 0.2,
+    "alpha_swap": 0.5,
+    "rain_m_per_day": 0.01,
+    "duration_day": 1,
+    "expected_head_m": 8.05
+  },
+  "reference_heads_m": [
+    7,
+    8,
+    8.05,
+    9,
+    10
+  ],
+  "response_law": "Q_dummy(H)=R-(S_swap/dt)*(H-H0)",
+  "reanchor_rule": {
+    "q_ref": "Q_dummy(H_ref)",
+    "hcof": "-S_swap/dt",
+    "rhs": "HCOF*H_ref-q_ref"
+  },
+  "required_invariance": [
+    "all H_ref values produce identical HCOF/RHS for the same affine law to floating-point precision",
+    "all live MODFLOW solutions reproduce H=8.05",
+    "reference point is numerical representation/provenance, not physical state ownership"
+  ],
+  "numerical_route": {
+    "modflow_version": "6.8.0",
+    "newton": false,
+    "tolerance_m": 1e-8
+  },
+  "forbidden": [
+    "no production source change",
+    "no retuning by reference-head result"
+  ]
+}
