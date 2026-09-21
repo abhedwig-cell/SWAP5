@@ -115,6 +115,40 @@ HYDRUS-MODFLOW is an example of this broader family: MODFLOW supplies water
 table position to the vadose model, and the vadose model provides recharge to
 MODFLOW.
 
+## Where the current SWAP5 F-GC route sits
+
+The current canonical F-GC implementation must not be described as if it had
+already implemented coupling family A.
+
+Its exchanged head is the hydraulic head on the SWAP lower coupling plane.
+Canonical source explicitly distinguishes this from the freatic groundwater
+level. The head-driven corrector applies that value as a mode-5 lower boundary.
+
+So the current real-SWAP route is best described as an iterated lower-boundary
+head/exchange coupling with one agreed interface head:
+
+```
+MODFLOW interface head
+        |
+        v
+SWAP bottom-head corrector
+        |
+        v
+accepted bottom exchange
+        |
+        +----> MODFLOW
+```
+
+That interface-head equality is physically meaningful, but it does not by
+itself prove that SWAP and MODFLOW share one complete-profile phreatic storage
+state.
+
+This distinction matters for the double-storage question. The dummy h-link
+experiments show exactly what duplicate storage would do if both model
+components represented the same physical storage volume. MAP11 shows that the
+synthetic F-GC45 fixture is not constructed as that coextensive volume, so it
+cannot be used as a direct duplicate-storage proof.
+
 ## Four quantities that must not be given the same name
 
 ### 1. Physical boundary flux
