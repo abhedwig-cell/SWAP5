@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.gc_fixed_interface.analytical_execution.v1",
+  "date": "2026-09-21",
+  "commit": "c1afc8aaf95b4421fbc97794d9439e4f5c9c30ba",
+  "workflow_run_id": 35601483589,
+  "job_id": 106338368782,
+  "conclusion": "success",
+  "qualified_analytical_oracles": ["NH01","NH02","NH03","NH04","NH05","NH06"],
+  "nh06": {
+    "head_m": 8.0,
+    "interface_transfer_m": 0.00666666666666667,
+    "groundwater_storage_change_m": 0.0,
+    "nonzero_transfer_zero_groundwater_storage": "PASS",
+    "under_over_abstraction_direction": "PASS",
+    "combined_ledger": "PASS"
+  },
+  "pb01": {
+    "physical_root": "PASS",
+    "native_qbot_positive_tangent": "CONSISTENT",
+    "outward_qbot_negative_tangent": "CONSISTENT",
+    "outward_qu_positive_tangent": "INCONSISTENT_WITH_NH01",
+    "onecell_current_orientation_as_physical_condensation": "FAIL_AS_PREDICTED",
+    "onecell_outward_negative_tangent": "PASS",
+    "physical_root_m": 8.04,
+    "status": "ANALYTICAL_FALSIFICATION_CONFIRMED_LIVE_MODFLOW_EXECUTION_STILL_REQUIRED"
+  },
+  "interpretation": "The historical/public outward-q_u plus positive-u/dt affine law is not the exact physical fixed-interface flux condensation for NH01. This does not yet establish a production defect because a reanchored outer iteration may use u as a numerical iteration slope rather than as the physical derivative.",
+  "next_gate": "Audit actual production reanchoring and execute the preregistered live MODFLOW one-cell fixture before any production change."
+}
