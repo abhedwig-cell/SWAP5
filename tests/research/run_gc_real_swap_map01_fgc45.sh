@@ -111,21 +111,21 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/bridge/libfgc4
 grep -Fq 'FGC45_REAL_MULTISWAP_MODFLOW_END_TO_END=PASS' "$BUILD/fgc45-baseline.txt" || fail "existing F-GC45 baseline"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC45_MULTISWAP_LIB="$BUILD/bridge/libfgc45_multiswap.so" \
-  python3 tests/research/test_gc_real_swap_map01_fgc45.py | tee "$BUILD/map01.txt"
+  python3 tests/research/test_gc_real_swap_map02_fgc45.py | tee "$BUILD/map02.txt"
 
 for marker in \
-  'GC_MAP01_FIXED_HEAD_PROBES_FROM_IMMUTABLE_ORIGIN=PASS' \
-  'GC_MAP01_AREA_WEIGHTED_CORRECTOR_CLOSURE=PASS' \
-  'GC_MAP01_CORRECTOR_REPEAT_DETERMINISM=PASS' \
-  'GC_MAP01_FD_RESPONSE_CHARACTERIZED=PASS' \
-  'GC_MAP01_LIVE_COUPLED_WINDOW=PASS' \
-  'GC_MAP01_LEDGER_FLUX_INTEGRAL_CLOSURE=PASS' \
-  'GC_MAP01_LIVE_GATE=PASS'; do
-  grep -Fq "$marker" "$BUILD/map01.txt" || fail "missing marker $marker"
+  'GC_MAP02_ADMITTED_BAND_PROBES=PASS' \
+  'GC_MAP02_AREA_WEIGHTED_CORRECTOR_CLOSURE=PASS' \
+  'GC_MAP02_CENTER_REPEAT_DETERMINISM=PASS' \
+  'GC_MAP02_FD_RESPONSE_CHARACTERIZED=PASS' \
+  'GC_MAP02_LIVE_COUPLED_WINDOW=PASS' \
+  'GC_MAP02_LEDGER_FLUX_INTEGRAL_CLOSURE=PASS' \
+  'GC_MAP02_LIVE_GATE=PASS'; do
+  grep -Fq "$marker" "$BUILD/map02.txt" || fail "missing marker $marker"
 done
 
-git diff --check -- tests/research/test_gc_real_swap_map01_fgc45.py \
+git diff --check -- tests/research/test_gc_real_swap_map02_fgc45.py \
   tests/research/run_gc_real_swap_map01_fgc45.sh \
-  integration/research/GC_REAL_SWAP_MAP01_PREREGISTRATION.json
+  integration/research/GC_REAL_SWAP_MAP02_PREREGISTRATION.json
 
-echo 'GC REAL SWAP MAP01 FGC45 GATE PASS'
+echo 'GC REAL SWAP MAP02 FGC45 GATE PASS'
