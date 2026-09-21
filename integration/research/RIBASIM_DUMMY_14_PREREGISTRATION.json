@@ -1,0 +1,153 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_three_store_forcing.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-14",
+  "title": "Three-store external forcing and physical demand memory",
+  "baseline": "1b71363f5b30d67740af87f5f3aba5c2cc3380c5",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
+    "current": "BLOCKED_PENDING_DUMMY_13",
+    "implementation_rule": "No DUMMY-14 model or tests before DUMMY-13 is formally qualified and the implementation baseline is rebound."
+  },
+  "purpose": "Add DUMMY-12 rainfall, prescribed root-zone loss and capacity drainage to the DUMMY-13 three-store system while preserving the distinction between internal transfers and external system-boundary terms.",
+  "window_order": [
+    "derive root request R=max(0,W_target-W_root,start) from committed start state",
+    "solve surface/groundwater management complementarity for realized irrigation U and reciprocal exchange V",
+    "apply the same U to root storage together with prescribed rainfall P and prescribed root loss E",
+    "apply root capacity drainage D=max(0,W_raw-W_capacity)",
+    "commit root, surface and groundwater endpoint together",
+    "derive next request from committed root endpoint only"
+  ],
+  "component_ledgers": {
+    "root": "Delta W_r = +U + P - E - D",
+    "surface": "Delta S_s = -U - V",
+    "groundwater": "Delta S_g = +V",
+    "combined": "Delta(W_r+S_s+S_g) = P - E - D"
+  },
+  "hypotheses": [
+    "Irrigation U and surface-groundwater exchange V remain internal transfers and cancel from the combined ledger even after root external forcing is added.",
+    "Current management shortage remains diagnostic: rainfall in the same accepted window can eliminate the next request without repaying a backlog state.",
+    "Prescribed root-zone loss can make the next physical demand larger than the current management shortage.",
+    "Request remains frozen from committed start state; same-window rainfall/loss changes only the next request, not the already issued current request.",
+    "Capacity drainage is an explicit external sink from the represented three-store system and therefore remains in the combined ledger rather than cancelling.",
+    "For any feasible multi-window forcing sequence, total three-store storage change equals cumulative rainfall minus prescribed root loss minus root capacity drainage.",
+    "Two histories with identical committed (W_r,h_s,h_g) have identical next coupling problem regardless of prior shortage diagnostics or prior forcing decomposition.",
+    "An infeasible prescribed root loss fails closed before commit and cannot be repaired by silently borrowing water from surface or groundwater."
+  ],
+  "canonical_cases": {
+    "rain_erases_shortage": {
+      "start": {
+        "W_r": 40,
+        "h_s": 1,
+        "h_g": 0
+      },
+      "root": {
+        "target": 80,
+        "capacity": 100
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0.4
+      },
+      "forcing": {
+        "P": 20,
+        "E": 0
+      },
+      "expected": {
+        "R": 40,
+        "U": 32,
+        "shortage": 8,
+        "V": 28,
+        "W_r1": 92,
+        "h_s1": 0.4,
+        "h_g1": 0.28,
+        "D": 0,
+        "R_next": 0,
+        "combined_storage_change": 20
+      }
+    },
+    "loss_amplifies_next_deficit": {
+      "start": {
+        "W_r": 40,
+        "h_s": 1,
+        "h_g": 0
+      },
+      "root": {
+        "target": 80,
+        "capacity": 100
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0.4
+      },
+      "forcing": {
+        "P": 0,
+        "E": 10
+      },
+      "expected": {
+        "R": 40,
+        "U": 32,
+        "shortage": 8,
+        "V": 28,
+        "W_r1": 62,
+        "h_s1": 0.4,
+        "h_g1": 0.28,
+        "D": 0,
+        "R_next": 18,
+        "combined_storage_change": -10
+      }
+    },
+    "root_capacity_spill": {
+      "start": {
+        "W_r": 90,
+        "h_s": 1,
+        "h_g": 0
+      },
+      "root": {
+        "target": 90,
+        "capacity": 100
+      },
+      "coupling": {
+        "A_s": 100,
+        "A_g": 100,
+        "C": 50,
+        "dt": 1,
+        "hmin": 0
+      },
+      "forcing": {
+        "P": 25,
+        "E": 5
+      },
+      "expected": {
+        "R": 0,
+        "U": 0,
+        "shortage": 0,
+        "W_r1": 100,
+        "D": 10,
+        "R_next": 0,
+        "combined_storage_change": 10
+      }
+    }
+  },
+  "real_authority_boundary": {
+    "storage": "DUMMY-14 still assumes disjoint dummy stores and cannot close real CSR-B1 storage partition.",
+    "drainage": "DUMMY-14 capacity drainage is a deliberately owned analytical root-bucket external sink. It must not be mapped onto production drainage or used to close CSR-B2 drainage ownership.",
+    "irrigation": "DUMMY-12/14 request equations remain analytical surrogates until actual SWAP irrigation-demand authority is bound."
+  },
+  "forbidden": [
+    "no implementation before DUMMY-13 qualification",
+    "no capillary rise or root-groundwater transfer",
+    "no stress-limited ET physics",
+    "no production SWAP irrigation equivalence claim",
+    "no use of root capacity drainage as production drainage authority",
+    "no production coupling change"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+  "fail_decision": "RIBASIM_DUMMY_14_BLOCKED"
+}
