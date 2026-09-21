@@ -29,7 +29,13 @@
     "ledger publication contract",
     "production coupling code"
   ],
-  "next_action": "Execute preregistered E4_B3_CORRECTOR_JR policy and compare accepted state/ledger with fixed CURRENT_PLUS_U control.",
+  "next_action": "Await/execute the already-preregistered MAP05A E4_B3_CORRECTOR_JR policy; do not alter slope, B3 case, solver settings, tolerances or publication contract.",
   "recovery_point": "Resume from MAP05A preregistration and checkpoint; MAP05 remains falsified independently.",
-  "blockers": []
+  "blockers": [],
+  "last_reconciled_head": "3d8e77fc7213eecd762a281925171f7b1872ad2c",
+  "execution": {
+    "workflow_run": 35568250145,
+    "workflow_job": 106234270745,
+    "status": "queued"
+  }
 }
