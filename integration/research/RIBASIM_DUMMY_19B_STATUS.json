@@ -5,7 +5,7 @@
   "branch": "work/ribasim-dummy-01",
   "baseline": "2daa76b1ba179982de2e90f8dd79c98a2e8f6829",
   "preregistration_commit": "d758ef09642b67197aee7fa5dd70b0a561eece5e",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -18,7 +18,33 @@
     "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
   },
   "scope": "Custom pinned real-Ribasim one-Basin/two-UserDemand priority conflict with 32 m3/day fixed supply and physically inactive UserDemand reduction.",
-  "next_action": "Implement two preregistered models and independent Julia measurement bridge.",
+  "next_action": "Execute DUMMY-19B pinned real Ribasim priority-conflict gate.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "checkpoint_commit": "14c0c438c39120ccbf5a199a70024446f487a3bb",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19B_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19B_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19B_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19B_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_priority_conflict.py",
+    "tests/research/real_ribasim_priority_conflict_bridge.jl",
+    "tests/research/run_ribasim_dummy_19b.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_BRIDGE_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "real Ribasim priority order is pinned as ascending demand_priority with lexicographic objective locking",
+      "LevelDemand priority 1 prevents initial Basin storage from becoming hidden UserDemand supply",
+      "fixed FlowBoundary capacity is exactly 32 m3/day",
+      "root/external demands are exactly 40/20 m3/day",
+      "UserDemand physical min-level and low-storage reduction are inactive by construction",
+      "allocated and physical linkflow are measured independently",
+      "Basin level trajectory is asserted independently in both priority cases",
+      "no SWAP or MODFLOW component is substituted"
+    ]
+  },
+  "recovery_point": "DUMMY-19B model generator, real-Ribasim verifier, concept and qualification gate are persisted; executable qualification remains open."
 }
