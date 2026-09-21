@@ -72,10 +72,12 @@ def _split_realized_total(
         root = min(root_request_m3, remaining)
         remaining -= root
         external = min(external_request_m3, remaining)
+        remaining -= external
     else:
         external = min(external_request_m3, remaining)
         remaining -= external
         root = min(root_request_m3, remaining)
+        remaining -= root
 
     volume_tol = 1.0e-12 * max(
         1.0,
