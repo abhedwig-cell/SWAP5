@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.gc_real_swap.map05.observation.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-REAL-SWAP-MAP05",
+  "workflow_run": 35567971147,
+  "workflow_job": 106233482950,
+  "decision": "PREREGISTERED_SLOPE_POLICY_INVARIANCE_FALSIFIED_BY_INTERCEPT_ONLY_CORRECTOR_DOMAIN_FAILURE",
+  "baseline": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "fixture": "F-GC44 configured real SWAP + live MODFLOW6 E3-R B3 K=0.1",
+    "window_day": 0.001,
+    "predictor_qbot_cm_per_day": 0.0001,
+    "k_m_per_day": 0.1
+  },
+  "current_plus_u": {
+    "hcof_m2_per_day": 0.2665743709457589,
+    "iterations": 3,
+    "final_head_m": -0.7149962561412444,
+    "final_q_swap_m_per_s": -1.2492277961483046e-11,
+    "final_q_groundwater_m_per_s": -1.2492277592062769e-11,
+    "final_residual_m_per_s": -3.6942027682051145e-19,
+    "ledger_m": -1.079332815872135e-9,
+    "verdict": "PASS_PRESERVES_QUALIFIED_E3R_BASELINE"
+  },
+  "intercept_only": {
+    "hcof_m2_per_day": 0,
+    "valid_iterations": [
+      {
+        "iteration": 1,
+        "head_m": -0.714996254305808,
+        "q_groundwater_m_per_s": -8.765983991928146e-12,
+        "q_swap_m_per_s": -1.249840068726621e-11,
+        "residual_m_per_s": -3.732416695338064e-12,
+        "modflow_converged": false
+      },
+      {
+        "iteration": 2,
+        "head_m": -0.7149962561385302,
+        "q_groundwater_m_per_s": -1.249840068726621e-11,
+        "q_swap_m_per_s": -1.2492287007744728e-11,
+        "residual_m_per_s": 6.113679521482281e-15,
+        "modflow_converged": false
+      }
+    ],
+    "failed_iteration": 3,
+    "failed_head_m": -0.7149962561385227,
+    "participant_status": 6,
+    "participant_status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED",
+    "failed_head_minus_current_accepted_head_m": 2.721711744868128e-12,
+    "verdict": "FAILS_PREREGISTERED_CORRECTOR_DOMAIN_GATE"
+  },
+  "unexecuted_policy": {
+    "name": "E4_B3_CORRECTOR_JR",
+    "hcof_m2_per_day": -0.288217671950983,
+    "reason": "Parent harness stopped after the preregistered INTERCEPT_ONLY policy failure; no MAP05 conclusion is inferred for this third policy."
+  },
+  "gates": {
+    "current_policy_reproduces_e3r": "PASS",
+    "all_three_policies_converge": "FAIL",
+    "accepted_state_invariance": "NOT_EVALUABLE_ALL_POLICIES",
+    "ledger_invariance": "NOT_EVALUABLE_ALL_POLICIES"
+  },
+  "bounded_conclusions": [
+    "The short-window MAP04 slope-policy invariance does not generalize automatically to the stronger B3 response regime.",
+    "Removing the affine slope entirely changes the coupling path enough to encounter the real-SWAP corrector domain boundary before the conjunctive coupled gate closes.",
+    "The failed INTERCEPT_ONLY head is only about 2.72e-12 m from the valid CURRENT_PLUS_U accepted head, consistent with the already documented nonmonotonic/very narrow B3 corrector validity region.",
+    "This is evidence about coupling-path robustness and corrector-domain interaction, not evidence that the INTERCEPT_ONLY physical fixed point would differ if it were admissible.",
+    "The E4_B3_CORRECTOR_JR policy remains uncharacterized by MAP05 because it was not executed after the required failure stop."
+  ],
+  "forbidden_inference": [
+    "Do not relax the corrector envelope or retry budget post hoc to make INTERCEPT_ONLY pass.",
+    "Do not call CURRENT_PLUS_U physically superior from this single path-domain result.",
+    "Do not infer the E4_B3_CORRECTOR_JR outcome until it is executed in a separately preregistered diagnostic.",
+    "No production coupling change follows from MAP05 alone."
+  ],
+  "next": [
+    "Run MAP05A: E4_B3_CORRECTOR_JR alone from the same immutable B3 origins and unchanged gates.",
+    "If MAP05A converges, compare its accepted physical state and work only against the qualified CURRENT_PLUS_U control.",
+    "Characterize the B3 corrector validity boundary separately before making general slope-policy robustness claims."
+  ]
+}
