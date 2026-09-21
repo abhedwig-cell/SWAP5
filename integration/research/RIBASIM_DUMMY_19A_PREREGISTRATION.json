@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.coupling.real_ribasim_allocation_supply.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19A",
+  "title": "Pinned real Ribasim allocation/supply observability bridge",
+  "baseline": "eff2f9334bc86e649747df2f60872f83f8d08214",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
+    "stage": "stage1.real_ribasim_allocation_supply",
+    "state": "SATISFIED_READY_RESTRICTED",
+    "workflow_run": 35595081892
+  },
+  "pins": {
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+  },
+  "purpose": "Execute the pinned real Ribasim solver on existing upstream test fixtures and independently verify the demand/allocated/supplied observability contract before introducing a custom SWAP-Ribasim conflict model.",
+  "upstream_execution": {
+    "toolchain": "Use pinned Ribasim repository pixi environment and official generated-testmodel route.",
+    "generation": "python utils/generate-testmodels.py level_demand fair_distribution two_basin_user_demand",
+    "julia_project": "Ribasim repository root Project.toml with local core source"
+  },
+  "fixtures": {
+    "fair_distribution": {
+      "model": "fair_distribution",
+      "upstream_definition": "python/ribasim_testmodels/ribasim_testmodels/allocation.py::fair_distribution_model",
+      "upstream_test": "core/test/allocation_test.jl::Equal fraction allocation",
+      "preregistered_expectation": "For 25 same-priority UserDemand nodes whose total demand is twice available initial Basin storage over the one-day horizon, every allocated/demand ratio is 0.5 within upstream numerical tolerance.",
+      "authority_class": "MANAGEMENT_DECISION"
+    },
+    "level_demand": {
+      "model": "level_demand",
+      "upstream_test": "core/test/allocation_test.jl::Allocation level control",
+      "preregistered_expectation": "For UserDemand node 3 priority 2, allocation result supplied values shifted by the documented one allocation record equal the interval-average integrated physical flow on link 2 within atol 1e-3.",
+      "authority_class": "TRANSFER"
+    },
+    "two_basin_user_demand": {
+      "model": "two_basin_user_demand",
+      "upstream_definition": "python/ribasim_testmodels/ribasim_testmodels/allocation.py::two_basin_user_demand_model",
+      "upstream_test": "core/test/allocation_test.jl::UserDemand with multiple inflow links",
+      "preregistered_expectation": "Physical flow from fallback Basin 4 to UserDemand 5 ramps linearly from 1e-3 to 2e-3 as preferred Basin 3 supply decays, within atol 5e-6.",
+      "authority_class": "TRANSFER"
+    }
+  },
+  "hypotheses": [
+    "The pinned Ribasim source executes successfully for all three selected upstream fixtures.",
+    "Real Ribasim exposes demand, allocated and supplied as distinct allocation-result concepts; supplied is independently reproducible from physical linkflow with its documented one-allocation-period lag.",
+    "In the fair-distribution scarcity fixture, real allocated/demand equals 0.5 for every UserDemand, demonstrating executable allocation under scarcity rather than merely source-code structure.",
+    "In the two-source UserDemand fixture, route priority changes which source link supplies water while physical total demand remains supported; the fallback link follows the upstream preregistered ramp.",
+    "No comparison in DUMMY-19A treats allocated flow as physical supplied water.",
+    "No DUMMY-19A result may be interpreted as equivalence between Ribasim smooth physical reduction and the dummy hard active-set hmin.",
+    "A successful bridge binds stage1 observability only; it does not yet reproduce the DUMMY-15 two-recipient demand-priority conflict."
+  ],
+  "source_scope": [
+    "research preregistration/concept/status/result",
+    "real-Ribasim Julia bridge script",
+    "focused shell gate",
+    "registered research workflow",
+    "program status"
+  ],
+  "forbidden": [
+    "no modification of pinned Ribasim source",
+    "no SWAP production source change",
+    "no MODFLOW substitution",
+    "no claim of full Ribasim network-optimizer equivalence",
+    "no claim that supplied output is same-row aligned with allocation",
+    "no tuning after observing real-Ribasim output"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19A_QUALIFIED_REAL_RIBASIM_ALLOCATION_SUPPLY_OBSERVABILITY",
+  "fail_decision": "RIBASIM_DUMMY_19A_BLOCKED"
+}
