@@ -475,7 +475,7 @@ contains
     max_substep=raw_diagnostics%max_accepted_substep_duration
     completed_t=raw_result%completed_t
 
-    if(raw_candidate%ready())call corrector_backend%rollback_trial_candidate(raw_candidate,raw_diagnostics)
+    if(raw_candidate%ready())call corrector_backend%discard_trial_candidate(raw_candidate,raw_diagnostics)
     fgc44_raw_corrector_diagnostics_c=0_c_int
   end function fgc44_raw_corrector_diagnostics_c
 
