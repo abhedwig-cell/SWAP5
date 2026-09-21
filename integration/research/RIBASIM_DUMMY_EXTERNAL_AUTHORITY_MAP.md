@@ -628,3 +628,92 @@ must identify at least:
 
 Until that authority is bound, no DUMMY-12 equation may be described as the
 production SWAP irrigation algorithm.
+
+
+## 17. Pinned Ribasim allocation-to-physical source authority
+
+Pinned source inspected:
+
+```text
+Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a
+```
+
+Relevant files:
+
+- `core/src/solve.jl`
+- `core/src/allocation_optim.jl`
+
+### UserDemand physical abstraction
+
+The pinned `formulate_flow!` implementation for `UserDemand` first forms an
+effective total demand by summing
+
+```text
+min(allocated_priority, current_demand_priority)
+```
+
+over the active demand priorities.
+
+For each UserDemand inflow link, the physical target is then multiplied by:
+
+- the source Basin low-storage factor;
+- the smooth reduction factor associated with source level relative to
+  `min_level`.
+
+Thus an allocation does not itself guarantee the corresponding physical
+abstraction.
+
+The physical supplied flow can be lower than allocated flow.
+
+### Multiple source links
+
+When allocation is active, the optimized per-inflow-link flow is stored in the
+UserDemand's `inflow_link_allocated` state.
+
+The physical layer applies the source-specific reduction factors to each
+inflow-link target separately.
+
+This matters for future coupling tests: a single UserDemand with multiple
+sources can realize a different total than its allocation when one source
+becomes physically constrained.
+
+### Supplied result semantics
+
+In the pinned `parse_allocations!` implementation:
+
+- per-priority allocated values come from the allocation decision variables;
+- UserDemand supplied volume is reconstructed from cumulative physical inflow
+  over all UserDemand inflow links;
+- the supplied value is recorded with a one-allocation-period lag.
+
+The current source path uses that node-level supplied volume while iterating
+the demand-priority output records.
+
+Therefore a future SWAP5 research test must not assume, without additional
+validation, that one UserDemand's `supplied` result provides a unique physical
+split by demand priority.
+
+### Consequence for DUMMY-15B
+
+The planned real-Ribasim bridge should preferably use:
+
+- two distinct UserDemand nodes for the two competing managed claims; or
+- direct per-link physical flow diagnostics.
+
+That avoids inferring priority-specific supplied quantities from an output
+surface whose current source implementation is node-total based.
+
+### Realization-policy consequence
+
+The pinned source also reinforces an important distinction.
+
+A management allocation can encode lexicographic demand priority, while the
+later physical UserDemand abstraction is controlled by smooth physical
+reduction factors.
+
+Priority-preserving curtailment after allocation is therefore not something
+the analytical dummy may attribute to current Ribasim without executable
+evidence.
+
+DUMMY-15B will consequently compare realization-policy oracles rather than
+silently choosing one as "the Ribasim rule".
