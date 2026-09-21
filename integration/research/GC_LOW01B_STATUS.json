@@ -4,26 +4,28 @@
   "work_unit": "GC-LOW01-B",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_PREREQUISITE_GATED_QUEUED",
+  "state": "BLOCKED_PENDING_PREREQUISITE_OWNER_RUNS",
   "production_changes": false,
   "preregistration": "integration/research/GC_LOW01B_PREREGISTRATION.json",
   "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
   "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
   "blockers": [
-    "LOW01-A/A2 executable prerequisite runs are queued and not yet qualified.",
-    "The bounded constitutive bridge owner run is queued and not yet qualified.",
-    "Production Reference adapter still rejects bottom_mode=1 by design; LOW01-B remains a research-only direct-HeadCalc slice and is not production admission."
+    "LOW01-A/A2 owner qualification has not yet been persisted.",
+    "The KSATEXM-disabled constitutive bridge is implemented but its owner qualification has not yet been persisted.",
+    "The research-only complete mode-1 candidate output carrier is implemented but its owner qualification has not yet been persisted."
   ],
   "preserved_value": [
     "The original preregistration remains a useful source-behavior specification.",
     "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
   ],
-  "decision": "EXECUTE_ONLY_AS_BOUNDED_RESEARCH_QUALIFICATION_AFTER_PREREQUISITES; DO_NOT_ADMIT_PRODUCTION_MODE1",
-  "activation_rule": "The runner itself executes constitutive bridge and LOW01-A/A2 as hard prerequisites. LOW01-B may be qualified only if all prerequisite markers plus inside-profile mass, replay, qbot and O0/O2 gates pass unchanged.",
+  "decision": "DO_NOT_EXECUTE_LOW01B_QUALIFICATION_UNTIL_PREREQUISITE_RESULTS_EXIST",
+  "activation_rule": "LOW01-B may be dispatched only after GC_LOW01A2_RESULT.json, GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json and GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json exist from successful owner runs.",
   "next": [
-    "Await the newest LOW01-B owner run; it will execute bridge, LOW01-A/A2 and LOW01-B in dependency order.",
-    "Persist LOW01-A, A2 and B results separately from the same owner evidence.",
-    "If B passes, preregister LOW01-C branch-boundary characterization and LOW01-D transaction replay; HLINK04 remains blocked until D qualifies and C is characterized."
+    "Persist LOW01-A/A2 owner results when Actions completes.",
+    "Persist constitutive-bridge result when its owner run completes.",
+    "Persist candidate-carrier result when its owner run completes.",
+    "Only then dispatch tests/research/run_gc_low01b.sh.",
+    "Keep HLINK04 blocked regardless of LOW01-B implementation state."
   ],
   "constitutive_scope": {
     "ksatexm_extension_enabled": false,
@@ -72,5 +74,19 @@
       "status": "queued",
       "preferred": true
     }
-  ]
+  ],
+  "dependency_resolution": {
+    "LOW01-G1-BOUNDARY-ADMISSION": "Production bottom_mode=1 remains forbidden. The bounded LOW01-B research slice uses direct HeadCalc only and must not be cited as production solver-ABI admission.",
+    "LOW01-G2-EXPLICIT-GEOMETRY-SENTINEL": "The fixed inside-profile controls -60/-120/-200 cm terminate with NN=1/2/3 and do not enter the undeclared lower-sentinel branch. Bottom-face behavior is owned separately by LOW01-A/A2.",
+    "LOW01-G3-CONSTITUTIVE-OWNERSHIP": "Implemented for the bounded KSATEXM-disabled slice by tests/research/support/mod_gc_low01_constitutive_bridge.f90; pending owner qualification.",
+    "LOW01-G4-TYPED-OUTPUT-STATE": "Implemented research-only by tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90, which publishes typed groundwater_level=H_phreatic while retaining raw legacy gwl as provenance; pending owner qualification.",
+    "LOW01-G5-QBOT-MATERIALIZATION": "The same research carrier publishes diagnosed HeadCalc qbot as an explicit candidate output for the inside-profile slice; pending owner qualification."
+  },
+  "candidate_carrier": {
+    "status": "IMPLEMENTED_PENDING_OWNER_RUN",
+    "source": "tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90",
+    "test": "tests/research/test_gc_low01_mode1_candidate_carrier.f90",
+    "runner": "tests/research/run_gc_low01_candidate_carrier.sh",
+    "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json"
+  }
 }
