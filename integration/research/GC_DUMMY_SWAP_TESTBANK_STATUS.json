@@ -4,59 +4,86 @@
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_start": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "production_changes": false,
+  "workflow_semantics": {
+    "execution_success": "all qualified blocks and explanatory diagnostics execute as expected",
+    "scientific_gate_status": "reported separately; DSW05 and DSW09 remain OPEN under their original strict preregistered conditions"
+  },
   "states": {
     "DSW01": "QUALIFIED",
     "DSW02": "QUALIFIED",
     "DSW03": "QUALIFIED",
     "DSW04": "QUALIFIED",
-    "DSW05": "DIAGNOSTIC_OPEN_IRREGULAR_TIMESTEP_CONVERGENCE_FLAG",
+    "DSW05": "STRICT_GATE_OPEN_EXPLAINED_INNER_RESIDUAL_CERTIFICATION",
+    "DSW05V": "HYPOTHESIS_NOT_SUPPORTED_UNDER_RELAXATION_NOT_CAUSE",
+    "DSW05W": "DIAGNOSTIC_QUALIFIED_RESIDUAL_CERTIFICATION_BOUNDARY",
     "DSW06": "QUALIFIED",
     "DSW07": "QUALIFIED_ANALYTIC",
     "DSW08": "QUALIFIED",
-    "DSW09": "DIAGNOSTIC_OPEN_STRICT_RESIDUAL_AND_PREPARED_SOLVE_HISTORY",
+    "DSW09": "STRICT_GATE_OPEN_EXPLAINED_PREPARED_SOLVE_NUMERICS",
     "DSW09N": "DIAGNOSTIC_QUALIFIED_FRESH_TANGENT_RESOLUTION",
-    "DSW09R": "IMPLEMENTED_AWAITING_LIVE_RESULT",
-    "DSW09U": "IMPLEMENTED_AWAITING_LIVE_RESULT",
+    "DSW09R": "DIAGNOSTIC_QUALIFIED_FRESH_SOLVE_PER_REANCHOR",
+    "DSW09U": "HYPOTHESIS_NOT_SUPPORTED_SIMPLE_COMPLEXITY_NOT_SUFFICIENT",
+    "DSW09V": "DIAGNOSTIC_PARTIAL_UNDER_RELAXATION_EXPLAINS_HEAD_STALL",
+    "DSW09W": "HYPOTHESIS_NOT_SUPPORTED_R1E14_STILL_TOO_STRICT",
+    "DSW09X": "DIAGNOSTIC_QUALIFIED_POST_ROOT_RESIDUAL_CERTIFICATION",
     "DSW10": "QUALIFIED",
     "DSW11": "QUALIFIED",
     "DSW12": "QUALIFIED",
     "DSW13": "QUALIFIED",
-    "DSW14": "IMPLEMENTED_AWAITING_LIVE_RESULT",
-    "DSW15": "IMPLEMENTED_AWAITING_LIVE_RESULT",
-    "DSW16": "IMPLEMENTED_AWAITING_LIVE_RESULT"
+    "DSW14": "QUALIFIED",
+    "DSW15": "QUALIFIED_AFTER_HARNESS_PRECISION_REPAIR",
+    "DSW15V": "DIAGNOSTIC_QUALIFIED_RESTART_STATE_PRECISION",
+    "DSW16": "QUALIFIED"
   },
   "qualified_evidence": {
     "DSW01_DSW02": "integration/research/GC_DUMMY_SWAP_DSW01_DSW02_RESULT.json",
     "DSW03": "integration/research/GC_DUMMY_SWAP_DSW03_RESULT.json",
     "DSW08": "integration/research/GC_DUMMY_SWAP_DSW08_RESULT.json",
+    "DSW09N": "integration/research/GC_DUMMY_SWAP_DSW09N_RESULT.json",
+    "DSW09R": "integration/research/GC_DUMMY_SWAP_DSW09R_RESULT.json",
+    "DSW09X": "integration/research/GC_DUMMY_SWAP_DSW09X_RESULT.json",
     "DSW10": "integration/research/GC_DUMMY_SWAP_DSW10_RESULT.json",
     "DSW11": "integration/research/GC_DUMMY_SWAP_DSW11_RESULT.json",
     "DSW12": "integration/research/GC_DUMMY_SWAP_DSW12_RESULT.json",
-    "DSW13": "integration/research/GC_DUMMY_SWAP_DSW13_RESULT.json"
+    "DSW13": "integration/research/GC_DUMMY_SWAP_DSW13_RESULT.json",
+    "DSW14": "integration/research/GC_DUMMY_SWAP_DSW14_RESULT.json",
+    "DSW15": "integration/research/GC_DUMMY_SWAP_DSW15_RESULT.json",
+    "DSW15V": "integration/research/GC_DUMMY_SWAP_DSW15V_RESULT.json",
+    "DSW16": "integration/research/GC_DUMMY_SWAP_DSW16_RESULT.json",
+    "DSW05W": "integration/research/GC_DUMMY_SWAP_DSW05W_RESULT.json"
   },
-  "open_evidence": {
+  "open_and_falsified_evidence": {
+    "DSW05": "integration/research/GC_DUMMY_SWAP_DSW05_OBSERVATION.json",
     "DSW09": "integration/research/GC_DUMMY_SWAP_DSW09_OBSERVATION.json",
-    "DSW09N": "integration/research/GC_DUMMY_SWAP_DSW09N_RESULT.json"
+    "DSW09U": "integration/research/GC_DUMMY_SWAP_DSW09U_OBSERVATION.json",
+    "DSW09V": "integration/research/GC_DUMMY_SWAP_DSW09V_OBSERVATION.json",
+    "DSW09W": "integration/research/GC_DUMMY_SWAP_DSW09W_OBSERVATION.json",
+    "DSW15_harness_artifact": "integration/research/GC_DUMMY_SWAP_DSW15_OBSERVATION.json"
   },
   "current_bounded_findings": [
     "Storage ownership must be explicit for a shared groundwater state.",
     "Correct repartition of one physical storage is invariant; duplicate storage has a predictable signature.",
-    "A true finite-resistance q-link is physically distinct from a shared-state h-link and from a storage tangent.",
-    "A shared groundwater head is not necessarily a complete unsaturated-column state.",
-    "Head-dependent ET and drain slopes are sink responses, not storage coefficients.",
-    "A local tangent can reproduce nonlinear integrated storage without itself being the physical storage volume.",
-    "Repeated external reanchoring inside one MODFLOW prepared solve can exhibit history-dependent convergence behavior even when the same affine term converges from a fresh prepared solve."
+    "A finite-resistance q-link is physically distinct from a shared-state h-link and from a storage tangent.",
+    "A shared groundwater head can be a valid shared variable without being a complete state descriptor of the unsaturated column.",
+    "Head-dependent ET and drain slopes are physical sink responses, not storage coefficients or interface conductances.",
+    "A local tangent can reproduce nonlinear integrated storage while remaining numerically distinct from the physical storage volume.",
+    "N:1 linear dummy-column aggregation is exactly area-weighted and permutation invariant.",
+    "Forcing order is irrelevant in the memoryless linear control but matters when an internal storage memory is retained, while total water remains conserved.",
+    "Fresh-simulation restart states must be transferred through exact model state rather than formatted text when conservation gates are tighter than input formatting precision.",
+    "Repeated external reanchoring inside one MODFLOW prepared solve is not equivalent to repeatedly solving fresh affine systems: nonlinear under-relaxation history can stall the head response.",
+    "After that history effect is removed, MODFLOW inner residual certification remains a separate acceptance layer; the physical root, external coupled residual and MODFLOW convergence certificate can close at different numerical thresholds."
   ],
   "open_questions": [
-    "Does IMS SIMPLE close DSW09 under the same within-prepared-solve reanchor sequence, implicating MODERATE delta-bar-delta history?",
-    "Why does DSW05 dt=0.13 reach the exact head but fail the strict MODFLOW convergence flag?",
-    "How should coupling reanchor events interact with solver acceleration history in the production contract?",
-    "How does the real SWAP q_u/u response decompose into storage, sinks, boundary flux and numerical tangent under actual shared-domain ownership?"
+    "What production coupling formulation should define the boundary between external SWAP reanchoring and MODFLOW nonlinear-solver history?",
+    "Can invalidated solver acceleration state be reset safely without violating MODFLOW prepare/finalize lifecycle semantics, or should reanchoring use a different solve formulation?",
+    "What numerical tolerance envelope is justified for real coupled SWAP-MODFLOW applications rather than the one-cell oracle?",
+    "How does the real SWAP q_u/u response decompose into storage, sinks, boundary flux and numerical tangent under actual shared-domain ownership?",
+    "Which real SWAP internal states are required to preserve hydrological memory when groundwater head is shared?"
   ],
-  "next_after_live_results": [
-    "persist DSW09R/U, DSW14/15/16 results",
-    "classify DSW05 numerical behavior",
-    "reconcile findings against live canonical and current F-GC production route",
-    "only then formulate any production coupling change proposal"
+  "next": [
+    "run the revised testbank with execution status separated from open strict research gates",
+    "reconcile the qualified dummy mechanisms against the current F-GC production service without changing production code",
+    "design the first real-SWAP decomposition experiment using the dummy testbank as oracle",
+    "only after that formulate a production coupling change proposal"
   ]
 }
