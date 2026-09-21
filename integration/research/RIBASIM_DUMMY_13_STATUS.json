@@ -12,7 +12,7 @@
     "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
     "RIBASIM_DUMMY_12_QUALIFIED_ROOTZONE_DEMAND_STATE"
   ],
-  "blocker": "DUMMY-11 and DUMMY-12 qualification runs are still queued; after both qualify, implementation baseline must be rebound before model/tests are created.",
+  "blocker": "Only DUMMY-12 remains unresolved. DUMMY-13 implementation stays forbidden until DUMMY-12 qualifies and the implementation baseline is rebound.",
   "prepared_scope": "First-stage three-store ledger with root-zone irrigation request, surface-to-root irrigation transfer, reciprocal surface-groundwater exchange, and no external root forcing.",
   "canonical_expectation": {
     "request_m3": 40,
@@ -34,5 +34,9 @@
     "storage": "CSR-B1-STORAGE-PARTITION remains owned/unresolved in the F-GC coupling-semantics workstream; DUMMY-13 assumes disjoint storage domains by construction and cannot close it.",
     "drainage": "CSR-B2-DRAINAGE-OWNERSHIP remains outside first-stage DUMMY-13; no drainage path is present.",
     "product": "F-GC50 internal restricted profile is ready, but actual iMOD Coupler product registration remains externally blocked."
+  },
+  "dependency_state": {
+    "DUMMY_11": "QUALIFIED",
+    "DUMMY_12": "PENDING_CI_QUEUED"
   }
 }
