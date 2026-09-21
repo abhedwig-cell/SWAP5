@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-01",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "checkpoint_commit": "62bf96f2213110fb4a2b271a4605889c1ad7d82b",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Research-only analytically controlled one-reservoir Ribasim surrogate with physical-before-management allocation semantics.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_01_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_01_STATUS.json",
+    "tests/research/dummy_ribasim_reservoir.py",
+    "tests/research/test_dummy_ribasim_01.py",
+    "tests/research/run_ribasim_dummy_01.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research",
+    "integration/research",
+    ".github/workflows"
+  ],
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Run the focused RIBASIM-DUMMY-01 gate on the persisted branch and record the result.",
+  "recovery_point": "Re-run tests/research/run_ribasim_dummy_01.sh from work/ribasim-dummy-01.",
+  "blockers": []
+}
