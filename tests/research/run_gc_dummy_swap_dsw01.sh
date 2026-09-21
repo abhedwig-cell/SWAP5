@@ -89,6 +89,11 @@ test "$DSW09_STATUS" -eq 0 || echo "GC_DSW09_DIAGNOSTIC_STATUS=OPEN_NUMERICAL_GA
 test "$DSW10_STATUS" -eq 0 || echo "GC_DSW10_DIAGNOSTIC_STATUS=OPEN_NUMERICAL_GATE"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw09n_fresh_tangent.py | tee "$BUILD/dsw09n-live.txt"
+
+grep -Fq 'GC_DSW09N_DIAGNOSTIC_GATE=PASS' "$BUILD/dsw09n-live.txt" || fail "DSW-09N diagnostic gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw11_memory_state.py | tee "$BUILD/dsw11-live.txt"
 
 grep -Fq 'GC_DSW11_LIVE_GATE=PASS' "$BUILD/dsw11-live.txt" || fail "DSW-11 live gate"
