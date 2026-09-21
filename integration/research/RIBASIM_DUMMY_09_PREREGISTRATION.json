@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_exchange.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-09",
+  "title": "Finite groundwater storage and reciprocal two-store exchange",
+  "baseline": "7484b2d614ad752baaf7c2811471949748ab87f3",
+  "purpose": "Replace the externally fixed groundwater head with a finite linear groundwater storage and qualify reciprocal exchange, shared-state conservation, and stiff temporal behavior before management is reintroduced.",
+  "physical_system": {
+    "surface_storage": "S_s = A_s * h_s",
+    "groundwater_storage": "S_g = A_g * h_g",
+    "exchange_rate": "q = C*(h_s-h_g), positive surface -> groundwater",
+    "surface_ode": "A_s dh_s/dt = -q",
+    "groundwater_ode": "A_g dh_g/dt = +q",
+    "exclusions": "no management, recharge, routing, external drainage, or physical datum crossing in DUMMY-09"
+  },
+  "continuous_oracle": {
+    "total_storage": "A_s*h_s + A_g*h_g is constant",
+    "weighted_equilibrium": "H=(A_s*h_s0+A_g*h_g0)/(A_s+A_g)",
+    "difference_decay": "d(t)=d0*exp(-kappa*t)",
+    "kappa": "C*(1/A_s+1/A_g)",
+    "surface_head": "h_s=H+[A_g/(A_s+A_g)]*d",
+    "groundwater_head": "h_g=H-[A_s/(A_s+A_g)]*d"
+  },
+  "trapezoid_step": {
+    "mu": "0.5*C*dt*(1/A_s+1/A_g)",
+    "difference_amplification": "g=(1-mu)/(1+mu)",
+    "exchange_volume": "V=C*dt*(h_s0-h_g0)/(1+mu)",
+    "updates": [
+      "h_s1=h_s0-V/A_s",
+      "h_g1=h_g0+V/A_g"
+    ]
+  },
+  "canonical_stiff_case": {
+    "A_s": 100,
+    "A_g": 100,
+    "C": 150,
+    "dt": 1,
+    "h_s0": 1,
+    "h_g0": 0,
+    "mu": 1.5,
+    "trapezoid_g": -0.2,
+    "trapezoid": {
+      "exchange_m3": 60,
+      "h_s1": 0.4,
+      "h_g1": 0.6
+    },
+    "continuous": {
+      "difference": "exp(-3)>0",
+      "interpretation": "heads approach but do not cross"
+    }
+  },
+  "experiments": {
+    "G1": "one trapezoid exchange volume is exactly reciprocal: surface storage loss equals groundwater storage gain",
+    "G2": "total two-store water is invariant for continuous oracle and every discrete accepted step",
+    "G3": "continuous oracle preserves weighted equilibrium and decays head difference monotonically without sign reversal",
+    "G4": "trapezoid closed-form V and updated heads satisfy both discrete storage equations and trapezoidal exchange equation",
+    "G5": "observed discrete head-difference amplification equals g=(1-mu)/(1+mu) for unequal as well as equal storage coefficients",
+    "G6": "mu<1 preserves head ordering, mu=1 lands at equal heads in one discrete step, and mu>1 reverses head ordering",
+    "G7": "canonical mu=1.5 repeated trapezoid steps alternate head ordering with geometrically decaying difference while conserving total storage",
+    "G8": "partitioning the canonical horizon into sufficiently fine substeps removes sign reversal and approaches the exact continuous end heads"
+  },
+  "interpretation_rules": [
+    "A_g is an equivalent linear groundwater storage coefficient, not a claim of MODFLOW cell storage formulation",
+    "head-order reversal at mu>1 is a temporal-discretization artifact of the frozen trapezoidal two-store model, not a mass-balance failure",
+    "mu is distinct from the DUMMY-04 one-sided lambda because both storage responses now enter the shared exchange mode",
+    "no management priority is present in DUMMY-09"
+  ],
+  "forbidden": [
+    "no MODFLOW package-equivalence claim",
+    "no production groundwater coupling change",
+    "no management or SWAP demand",
+    "no inference that trapezoidal integration is the production scheme"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_09_QUALIFIED_RECIPROCAL_TWO_STORE_EXCHANGE",
+  "fail_decision": "RIBASIM_DUMMY_09_BLOCKED"
+}
