@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_two_store_temporal.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-11",
+  "title": "Multi-window shared-state memory with dynamic groundwater",
+  "baseline": "4a5acf3c929a384becc1ee8bb96728e0818c8655",
+  "dependency_gate": {
+    "required": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+    "current": "BLOCKED_PENDING_DUMMY_10_QUALIFICATION",
+    "implementation_rule": "Do not implement DUMMY-11 before DUMMY-10 qualification is recorded."
+  },
+  "purpose": "Propagate the DUMMY-10 coupled surface and groundwater heads through multiple windows and compare discrete partition behavior with an independent continuous two-store event reference.",
+  "continuous_full_demand": {
+    "total_mean_head": "m=(A_s*h_s+A_g*h_g)/(A_s+A_g)",
+    "mean_ode": "dm/dt=-r/(A_s+A_g)",
+    "difference": "d=h_s-h_g",
+    "difference_ode": "dd/dt=-r/A_s-C*(1/A_s+1/A_g)*d",
+    "kappa": "C*(1/A_s+1/A_g)",
+    "difference_equilibrium": "d_eq=-r/(A_s*kappa)",
+    "solution": "d(t)=d_eq+(d0-d_eq)*exp(-kappa*t)",
+    "surface_head": "h_s(t)=m(t)+A_g/(A_s+A_g)*d(t)",
+    "groundwater_head": "h_g(t)=m(t)-A_s/(A_s+A_g)*d(t)"
+  },
+  "event_rule": {
+    "trigger": "first t in [0,T] where h_s(t)=hmin under full demand",
+    "post_event": "set management rate to zero; total two-store storage remains constant and d decays exponentially with rate kappa",
+    "solution_method": "independent monotone bracketed root solve of analytic h_s(t)-hmin; no reuse of discrete DUMMY-10 solver"
+  },
+  "canonical_case": {
+    "A_s": 100,
+    "A_g": 100,
+    "C": 50,
+    "h_s0": 1,
+    "h_g0": 0,
+    "hmin": 0.4,
+    "request_rate": 40,
+    "horizon": 1,
+    "continuous_expected": {
+      "event_time": 0.909516342472789,
+      "cumulative_delivery_m3": 36.38065369891156,
+      "final_surface_head_m": 0.3929144878349753,
+      "final_groundwater_head_m": 0.243278975175909,
+      "cumulative_exchange_m3": 24.32789751759091
+    },
+    "contrast_fixed_groundwater_DUMMY_08": {
+      "event_time": "2*ln(1.5) ~= 0.8109302162",
+      "cumulative_delivery_m3": "~32.4372",
+      "interpretation": "finite groundwater storage delays management shutoff by reducing the exchange gradient as groundwater head rises"
+    }
+  },
+  "experiments": {
+    "M1": "multi-window accepted state propagates both h_s and h_g, with each window starting exactly from the previous accepted pair",
+    "M2": "combined two-store storage loss over every window and over the full run equals cumulative managed delivery; internal exchange cancels exactly",
+    "M3": "in nonbinding FULL-demand cases, discrete equal-step propagation matches the independently derived trapezoidal recurrence for mean and difference modes",
+    "M4": "canonical continuous event reference matches the preregistered event time, final heads, cumulative delivery and cumulative exchange",
+    "M5": "uniform discrete refinement approaches the continuous two-store event reference overall while retaining possible event-grid jitter near active-set switching",
+    "M6": "finite groundwater storage yields later management shutoff and greater cumulative delivery than the otherwise matched fixed-groundwater DUMMY-08 reference",
+    "M7": "after management reaches ZERO, reciprocal physical exchange continues to update both heads and can move surface head below hmin",
+    "M8": "no shortage backlog is carried; per-window request remains request_rate*dt regardless of prior shortage",
+    "M9": "as A_g increases, multi-window behavior approaches the fixed-groundwater DUMMY-08 family over the same horizon"
+  },
+  "interpretation_rules": [
+    "groundwater memory is represented only by the finite linear storage state qualified in DUMMY-09/DUMMY-10",
+    "temporal partition error and conservation are assessed separately",
+    "the continuous event reference is independent of the discrete active-set implementation",
+    "no real MODFLOW storage mapping is inferred"
+  ],
+  "forbidden": [
+    "no DUMMY-11 implementation before DUMMY-10 qualification",
+    "no shortage carryover or adaptive SWAP demand",
+    "no production coupling changes",
+    "no claim that the linear two-store continuous reference represents a real MODFLOW aquifer"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+  "fail_decision": "RIBASIM_DUMMY_11_BLOCKED"
+}
