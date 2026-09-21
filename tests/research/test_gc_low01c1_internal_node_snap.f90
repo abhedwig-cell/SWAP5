@@ -199,7 +199,15 @@ contains
     call headcalc(worker2, workspace2, history2, second, evaluation, boundary, numerical, physical, dt_day, parameters)
     residual2 = (sum(second%theta*dz_cm)+second%pond)-storage0 - dt_day*(-second%qtop+second%qbot)
 
-    observed_nn = expected_nn(index)
+    observed_nn = 0
+    do while (observed_nn < n)
+      if (.not. (z_cm(observed_nn+1) > control_cm(index))) exit
+      observed_nn = observed_nn + 1
+    end do
+    call require(observed_nn > 0 .and. observed_nn < n, 'C1 source-safe inside-profile control')
+    if ((z_cm(observed_nn)-control_cm(index)) < 1.0e-4_real64) observed_nn = observed_nn - 1
+
+    call require(observed_nn == expected_nn(index), 'C1 reconstructed active NN')
     call require(abs(first%gwlinp-expected_effective_cm(index)) <= 1.0e-12_real64, 'C1 effective H')
     call require((abs(first%gwlinp-control_cm(index)) > 0.0_real64) .eqv. expected_snap(index), 'C1 snap flag')
     call require(.not. first%fllowgwl, 'C1 inside-profile fllowgwl false')
@@ -216,7 +224,7 @@ contains
     write(*,'(A,I0)') 'GC_LOW01C1_CASE=', index
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_REQUESTED_H_CM=', control_cm(index)
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_EFFECTIVE_H_CM=', first%gwlinp
-    write(*,'(A,I0)') 'GC_LOW01C1_EXPECTED_ACTIVE_NN=', observed_nn
+    write(*,'(A,I0)') 'GC_LOW01C1_ACTIVE_NN=', observed_nn
     write(*,'(A,I0)') 'GC_LOW01C1_SNAP=', merge(1,0,expected_snap(index))
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_QBOT_CM_PER_DAY=', first%qbot
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_STORAGE_CHANGE_CM=', storage1-storage0
