@@ -4,7 +4,7 @@ module mod_fgc44_real_swap_c_bridge
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_forcing_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
@@ -106,6 +106,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_state_c
   public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
   public :: fgc44_predictor_run_diagnostics_c
+  public :: fgc44_raw_corrector_diagnostics_c
 
 contains
 
@@ -386,6 +387,97 @@ contains
     min_substep=e3d2_predictor_diagnostics%min_accepted_substep_duration
     max_substep=e3d2_predictor_diagnostics%max_accepted_substep_duration
   end function fgc44_predictor_run_diagnostics_c
+
+  integer(c_int) function fgc44_raw_corrector_diagnostics_c(head_m,forcing_status,result_status,completed, &
+       candidate_ready,bottom_available,bottom_finite,terminal_finite,requested_match,completed_match,interval_match, &
+       transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections,temporal_rejections, &
+       temporal_unavailable_rejections,mass_rejections,internal_retries,min_substep,max_substep,completed_t, &
+       candidate_t0,candidate_t1) bind(C,name="fgc44_raw_corrector_diagnostics_c")
+    real(c_double), value, intent(in) :: head_m
+    integer(c_int), intent(out) :: forcing_status,result_status,completed,candidate_ready,bottom_available
+    integer(c_int), intent(out) :: bottom_finite,terminal_finite,requested_match,completed_match,interval_match
+    integer(c_int), intent(out) :: transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks
+    integer(c_int), intent(out) :: solver_rejections,temporal_rejections,temporal_unavailable_rejections
+    integer(c_int), intent(out) :: mass_rejections,internal_retries
+    real(c_double), intent(out) :: min_substep,max_substep,completed_t,candidate_t0,candidate_t1
+    class(canonical_forcing_t), allocatable :: forcing
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: raw_result
+    type(kernel_candidate_state_t) :: raw_candidate
+    type(kernel_diagnostics_t) :: raw_diagnostics
+    integer :: raw_forcing_status
+    logical :: ok, interval_available
+    real(real64) :: ct0,ct1,scale
+
+    fgc44_raw_corrector_diagnostics_c=1_c_int
+    forcing_status=-1_c_int; result_status=-1_c_int; completed=0_c_int; candidate_ready=0_c_int
+    bottom_available=0_c_int; bottom_finite=0_c_int; terminal_finite=0_c_int
+    requested_match=0_c_int; completed_match=0_c_int; interval_match=0_c_int
+    transaction_calls=0_c_int; accepted_substeps=0_c_int; attempts=0_c_int; retries=0_c_int
+    trial_rollbacks=0_c_int; solver_rejections=0_c_int; temporal_rejections=0_c_int
+    temporal_unavailable_rejections=0_c_int; mass_rejections=0_c_int; internal_retries=0_c_int
+    min_substep=0.0_c_double; max_substep=0.0_c_double; completed_t=0.0_c_double
+    candidate_t0=0.0_c_double; candidate_t1=0.0_c_double
+    if(.not.initialized)return
+
+    call materializer%materialize(real(head_m,real64),datum,forcing,raw_forcing_status)
+    forcing_status=int(raw_forcing_status,c_int)
+    if(raw_forcing_status/=0 .or. .not.allocated(forcing))then
+      fgc44_raw_corrector_diagnostics_c=2_c_int
+      return
+    end if
+
+    call fmr_capture_checkpoint(committed,checkpoint,ok)
+    if(.not.ok .or. .not.checkpoint%ready())then
+      fgc44_raw_corrector_diagnostics_c=3_c_int
+      return
+    end if
+
+    call corrector_backend%run_trial(column,template,corrector_parameters,committed,forcing,corrector_config, &
+         window%t0,window%t1,checkpoint,raw_result,raw_candidate,raw_diagnostics)
+
+    result_status=int(raw_result%status,c_int)
+    if(raw_result%completed)completed=1_c_int
+    if(raw_candidate%ready())candidate_ready=1_c_int
+    if(raw_result%bottom_interface_exchange_available)bottom_available=1_c_int
+    if(ieee_is_finite(raw_result%bottom_outward_exchange_native))bottom_finite=1_c_int
+    if(ieee_is_finite(raw_result%terminal_bottom_outward_flux_native))terminal_finite=1_c_int
+
+    scale=max(1.0_real64,abs(raw_result%requested_t0),abs(window%t0))
+    if(abs(raw_result%requested_t0-window%t0)<=64.0_real64*epsilon(1.0_real64)*scale)then
+      scale=max(1.0_real64,abs(raw_result%requested_t1),abs(window%t1))
+      if(abs(raw_result%requested_t1-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)requested_match=1_c_int
+    end if
+    scale=max(1.0_real64,abs(raw_result%completed_t),abs(window%t1))
+    if(abs(raw_result%completed_t-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)completed_match=1_c_int
+
+    call raw_candidate%origin_interval(ct0,ct1,interval_available)
+    if(interval_available)then
+      candidate_t0=ct0; candidate_t1=ct1
+      scale=max(1.0_real64,abs(ct0),abs(window%t0))
+      if(abs(ct0-window%t0)<=64.0_real64*epsilon(1.0_real64)*scale)then
+        scale=max(1.0_real64,abs(ct1),abs(window%t1))
+        if(abs(ct1-window%t1)<=64.0_real64*epsilon(1.0_real64)*scale)interval_match=1_c_int
+      end if
+    end if
+
+    transaction_calls=int(raw_diagnostics%transaction_calls,c_int)
+    accepted_substeps=int(raw_diagnostics%accepted_substeps,c_int)
+    attempts=int(raw_diagnostics%attempts,c_int)
+    retries=int(raw_diagnostics%retries,c_int)
+    trial_rollbacks=int(raw_diagnostics%trial_rollbacks,c_int)
+    solver_rejections=int(raw_diagnostics%solver_rejections,c_int)
+    temporal_rejections=int(raw_diagnostics%temporal_rejections,c_int)
+    temporal_unavailable_rejections=int(raw_diagnostics%temporal_certificate_unavailable_rejections,c_int)
+    mass_rejections=int(raw_diagnostics%mass_rejections,c_int)
+    internal_retries=int(raw_diagnostics%internal_retries,c_int)
+    min_substep=raw_diagnostics%min_accepted_substep_duration
+    max_substep=raw_diagnostics%max_accepted_substep_duration
+    completed_t=raw_result%completed_t
+
+    if(raw_candidate%ready())call corrector_backend%rollback_trial_candidate(raw_candidate,raw_diagnostics)
+    fgc44_raw_corrector_diagnostics_c=0_c_int
+  end function fgc44_raw_corrector_diagnostics_c
 
   integer(c_int) function fgc44_e1_diagnostics_c(mass_complete,q_bot,q_u,u,h_start,h_end, &
        bottom_exchange,terminal_flux,storage_start,storage_end,storage_change,total_in,total_out,residual) &
