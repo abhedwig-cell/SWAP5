@@ -276,7 +276,8 @@ contains
     if (a%fllowgwl .neqv. b%fllowgwl) return
     if (transfer(a%requested_h_phreatic_cm,0_int64) /= transfer(b%requested_h_phreatic_cm,0_int64)) return
     if (transfer(a%effective_h_phreatic_cm,0_int64) /= transfer(b%effective_h_phreatic_cm,0_int64)) return
-    if (transfer(a%groundwater_level_cm,0_int64) /= transfer(b%groundwater_level_cm,0_int64)) return
+    if (a%derived_profile_gwl_available .neqv. b%derived_profile_gwl_available) return
+    if (transfer(a%derived_profile_gwl_cm,0_int64) /= transfer(b%derived_profile_gwl_cm,0_int64)) return
     if (transfer(a%raw_legacy_groundwater_level_cm,0_int64) /= transfer(b%raw_legacy_groundwater_level_cm,0_int64)) return
     if (transfer(a%qbot_cm_per_day,0_int64) /= transfer(b%qbot_cm_per_day,0_int64)) return
     if (transfer(a%storage_change_cm,0_int64) /= transfer(b%storage_change_cm,0_int64)) return
