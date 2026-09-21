@@ -8,9 +8,9 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
-  "blocker": "DUMMY-15 v3 is still unqualified; DUMMY-15B therefore remains implementation-blocked.",
+  "blocker": null,
   "prepared_scope": "Two identical physical half-windows with a priority event at t=0.5; compare event-synchronized versus stale management clocks while holding total physical withdrawal and shared-state trajectory invariant.",
   "canonical_expectation": {
     "shared_final_water": {
@@ -28,7 +28,12 @@
       "external_total_m3": 20.444444444444443
     }
   },
-  "next_action": "After DUMMY-15B qualification, rebind DUMMY-16 before any implementation or tests.",
+  "next_action": "Implement DUMMY-16 management-clock event semantics.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
+    "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+    "workflow_run": 35590242964
+  }
 }
