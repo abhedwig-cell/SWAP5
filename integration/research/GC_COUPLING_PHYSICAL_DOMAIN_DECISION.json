@@ -3,9 +3,9 @@
   "date": "2026-09-21",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_authority": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "status": "CONCEPTUAL_ALTERNATIVES_BOUND_NO_ARCHITECTURE_SELECTED",
+  "status": "FIXED_GEOMETRIC_INTERFACE_PRIMARY_RESEARCH_CONTRACT",
   "production_changes": false,
-  "purpose": "Declare the physical control-volume and state questions that must be answered before selecting or reinterpreting SWAP5-MODFLOW6 coupling architecture.",
+  "purpose": "Bind the primary research hypothesis to a fixed geometric coupling plane at the bottom of the SWAP profile, separating interface hydraulic head from SWAP phreatic elevation and separating physical/mathematical proof from numerical proof.",
   "current_production_observation": {
     "classification": "ITERATED_INTERFACE_HEAD_AND_BOTTOM_EXCHANGE",
     "evidence": [
@@ -23,19 +23,22 @@
       "physical_state": "one phreatic elevation H plus SWAP internal state",
       "physical_storage": "combined non-overlapping V_swap(H,m)+V_mf(H)",
       "exchange": "no physical resistance between duplicate phreatic heads; internal bookkeeping transfers cancel from the complete system",
-      "discriminant": "requires explicit coextensive/shared-state geometry and one combined storage law"
+      "discriminant": "requires explicit coextensive/shared-state geometry and one combined storage law",
+      "role": "COMPARISON_AND_LIMIT_CASE_NOT_PRIMARY_ARCHITECTURE"
     },
     "INTERFACE_SPLIT": {
       "physical_state": "shared/interface hydraulic head at a geometric coupling plane; phreatic elevation may be a different SWAP state under vertical gradient",
       "physical_storage": "SWAP and MODFLOW own disjoint geometric control volumes",
       "exchange": "physical interface flux with equal and opposite component accounting; may be solved by iterated head/flux boundary exchange",
-      "discriminant": "requires a declared coupling plane and a justified mapping from MODFLOW representative head to interface head"
+      "discriminant": "requires a declared coupling plane and a justified mapping from MODFLOW representative head to interface head",
+      "role": "PRIMARY_FAMILY_REFINED_AS_FIXED_GEOMETRIC_INTERFACE"
     },
     "FINITE_RESISTANCE_QLINK": {
       "physical_state": "two independently meaningful physical heads",
       "physical_storage": "two distinct physical storages",
       "exchange": "q=C*(h_swap-h_gw) with independently meaningful resistance/conductance",
-      "discriminant": "requires physical evidence for both states and the resistance; coefficient dimensions alone are insufficient"
+      "discriminant": "requires physical evidence for both states and the resistance; coefficient dimensions alone are insufficient",
+      "role": "COMPARISON_ONLY_UNLESS_TWO_PHYSICAL_HEADS_AND_REAL_RESISTANCE_ARE_INTRODUCED"
     }
   },
   "invalid_shortcut": {
@@ -56,12 +59,33 @@
     "Which SWAP internal states must persist even if one head is shared?",
     "Which derivative is needed for the nonlinear algorithm, separately from the physical quantity it linearizes?"
   ],
-  "architecture_gate": "No STO replacement/partition, q-link conductance, shared-phreatic state machine, or production HCOF semantic reinterpretation is authorized until the relevant physical contract is explicitly selected and tested.",
-  "next_scientific_step": "Use the intended deployment geometry and hydrological meaning to answer the ten required questions. Only then preregister a discriminating experiment for the surviving coupling families.",
+  "architecture_gate": "No production change is authorized. First derive the fixed-interface equations independently of u/q_u and HCOF/RHS; then test whether the current response condensation is algebraically and numerically consistent with those equations.",
+  "next_scientific_step": "Derive and preregister a minimal nonhydrostatic analytical fixed-interface case in which interface head H_c and SWAP phreatic elevation are deliberately different, before implementing the numerical test.",
   "original_thought_experiment": {
-    "classification": "SHARED_PHREATIC",
-    "reason": "The 10 m / 10 mm / S=0.20 construction declares one groundwater system and one groundwater level represented by both coupled models; it therefore defines one physical shared state and one physical storage volume.",
+    "classification": "HYDROSTATIC_FIXED_INTERFACE_CONTROL",
+    "reason": "The simple control can make interface hydraulic head and SWAP phreatic elevation numerically equal. That equality is a hydrostatic limiting result and must not be promoted to semantic identity.",
     "exact_oracle": "0.010 m / 0.20 = 0.050 m head rise, final shared head 8.05 m from an 8.00 m origin.",
-    "nonclaim": "This oracle is not a direct acceptance test for the current bottom_mode=5 lower-interface-head route unless state-equivalence and storage-ownership conditions are independently established."
-  }
+    "nonclaim": "The control does not establish that MODFLOW computes the SWAP phreatic elevation; the next discriminating oracle must impose vertical resistance/gradient so H_c and z_phreatic differ."
+  },
+  "primary_contract": {
+    "id": "FIXED_GEOMETRIC_INTERFACE",
+    "coupling_plane": "fixed elevation z_c at the lower boundary of the SWAP profile",
+    "coupled_state": "hydraulic head H_c at z_c",
+    "state_semantics": "H_c is interface hydraulic head, not a MODFLOW-computed phreatic groundwater elevation",
+    "swap_role": "given H_c and committed SWAP state/forcing, resolve the top-system state, phreatic elevation, storage/process response and bottom-interface exchange",
+    "modflow_role": "solve groundwater hydraulic head including H_c at the declared coupling plane/cell representation; do not reinterpret H_c as phreatic elevation by definition",
+    "interface_conditions": [
+      "H_c^SWAP = H_c^MODFLOW",
+      "q_c^SWAP,out + q_c^MODFLOW,out = 0"
+    ],
+    "hydrostatic_limit": "H_c may numerically equal the SWAP phreatic elevation in a hydrostatic/high-conductivity control, but this is a limiting result rather than state identity",
+    "nonhydrostatic_requirement": "The proof programme must include a regime with H_c != z_phreatic while interface head and flux continuity and complete mass closure remain correct."
+  },
+  "proof_layers": [
+    "PHYSICAL_CONCEPTUAL: define geometry, control volumes, states, storage ownership and flux ownership",
+    "MATHEMATICAL: derive component balances, complete balance, interface conditions and coupled residual",
+    "NUMERICAL_CORRECTNESS: show the implemented u/q_u, HCOF/RHS and iteration solve the derived equations",
+    "NUMERICAL_QUALITY: separately assess convergence, robustness, timestep and tolerance envelope"
+  ],
+  "theory_document": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md"
 }
