@@ -61,6 +61,11 @@ on:
       - 'tests/research/dummy_two_store_temporal.py'
       - 'tests/research/test_dummy_two_store_temporal.py'
       - 'tests/research/run_ribasim_dummy_11.sh'
+      - 'integration/research/RIBASIM_DUMMY_12_*.json'
+      - 'integration/research/RIBASIM_DUMMY_12_CONCEPT.md'
+      - 'tests/research/dummy_rootzone_demand.py'
+      - 'tests/research/test_dummy_rootzone_demand.py'
+      - 'tests/research/run_ribasim_dummy_12.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -209,3 +214,16 @@ jobs:
         run: python3 --version
       - name: Run shared-state temporal-memory gate
         run: bash tests/research/run_ribasim_dummy_11.sh
+
+  rootzone-demand-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-12-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run root-zone demand state gate
+        run: bash tests/research/run_ribasim_dummy_12.sh
