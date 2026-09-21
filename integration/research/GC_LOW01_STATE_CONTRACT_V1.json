@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.gc_low01.state_contract.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-STATE01",
+  "title": "Research-only typed prescribed-groundwater-level branch/state contract",
+  "status": "RESEARCH_DESIGN_NOT_PRODUCTION_AUTHORITY",
+  "authority": {
+    "canonical": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "legacy_source": "src/legacy/b1_10_port/headcalc.f90",
+    "lower_boundary_audit": "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "hlink04_readiness": "integration/research/GC_HLINK04_LOW01_READINESS_AUDIT.json"
+  },
+  "native_units": "cm",
+  "source_tolerances": {
+    "top_or_node_snap_cm": 0.0001,
+    "nihil_cm": "source MOD_params nihil"
+  },
+  "branches": {
+    "ABOVE_OR_AT_TOP": {
+      "predicate": "gwl >= z(1)-1e-4 cm",
+      "semantics": "special direct groundwater-level reconstruction branch; no generic reduced Richards solve",
+      "qbot": "diagnosed from whole-profile vertical-flux chain"
+    },
+    "INSIDE_PROFILE": {
+      "predicate": "at least one node below prescribed gwl and not ABOVE_OR_AT_TOP",
+      "active_nodes": "count of nodes whose z is above the effective prescribed groundwater level, after source snap rule",
+      "snap_rule": "if z(active_nodes)-gwl < 1e-4 cm and active_nodes>0, set effective gwl to that node and decrement active_nodes",
+      "fllowgwl": false,
+      "lower_gradient": "h(active_nodes)/(z(active_nodes)-gwl_effective)+1",
+      "lower_jacobian": "Kmean/(z(active_nodes)-gwl_effective)",
+      "saturated_continuation": "nodes below active domain are set to saturated water content; accepted lower profile heads are reconstructed from the vertical-flux chain",
+      "qbot": "diagnosed after convergence from whole-profile mass/flux reconstruction"
+    },
+    "BELOW_BOTTOM_NODE": {
+      "predicate": "all hydraulic nodes lie above prescribed gwl",
+      "active_nodes": "numnod",
+      "fllowgwl": true,
+      "hbot": "gwl-z_bottom_node+0.5*dz_bottom",
+      "solver_semantics": "same lower-head residual/Jacobian branch as mode 5"
+    }
+  },
+  "immutable_trial_state": [
+    "requested groundwater level",
+    "effective/snap-adjusted groundwater level",
+    "branch id",
+    "active node count",
+    "fllowgwl equivalent",
+    "derived hbot for below-node branch",
+    "accepted-origin full hydraulic/process state"
+  ],
+  "transaction_rule": "Every H_phreatic research trial reconstructs this branch state from the same immutable accepted origin; rejected trials may not leave branch, active-domain, head, water-content or continuation state behind.",
+  "nonclaims": [
+    "does not yet implement or qualify the inside-profile Richards solve",
+    "does not expose SWBOTB=1 in production",
+    "does not assert continuity across node/profile branch boundaries",
+    "does not alias current mode-5 interface head to H_phreatic"
+  ]
+}
