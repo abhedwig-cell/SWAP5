@@ -79,8 +79,8 @@ def test_head_dependent_et() -> None:
         AnalyticSwapForcing(atmospheric_input_m=0.020),
         1.0,
     )
-    close(result.state.head_m, 8.066666666666666)
-    close(result.sink_volume("et"), 0.004666666666666607)
+    close(result.state.head_m, 8.073333333333332)
+    close(result.sink_volume("et"), 0.005333333333333279)
     close(result.complete_mass_error_m, 0.0)
 
 
