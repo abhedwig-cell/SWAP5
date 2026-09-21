@@ -7,7 +7,13 @@ on:
     paths:
       - 'docs/research/GC_*.md'
       - 'integration/research/GC_DUMMY_SWAP_DSW*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
+      - 'integration/research/GC_REAL_SWAP_MAP01*.json'
       - 'tests/research/test_gc_dummy_swap_dsw*.py'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
+      - 'tests/research/test_gc_real_swap_map01_fgc45.py'
+      - 'tests/research/run_gc_real_swap_map01_fgc45.sh'
       - 'tests/research/run_gc_dummy_swap_dsw01.sh'
       - '.github/workflows/gc-dummy-swap-dsw01.yml'
   pull_request:
@@ -36,3 +42,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: bash tests/research/run_gc_dummy_swap_dsw01.sh
+
+  real-swap-map01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run real-SWAP response mapping probe
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash tests/research/run_gc_real_swap_map01_fgc45.sh
