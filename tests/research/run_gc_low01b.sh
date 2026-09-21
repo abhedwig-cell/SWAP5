@@ -10,7 +10,8 @@ cd "$ROOT"
 fail(){ echo "GC_LOW01B_RUNNER_FAIL $*" >&2; exit 1; }
 
 # Activation authority must already be persisted before any inside-profile solve.
-test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json || fail 'candidate carrier authority missing'
+test -f integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json || fail 'pure candidate carrier authority missing'
+test -f integration/research/GC_LOW01_OUTPUT01_RESULT.json || fail 'live OUTPUT01 carrier authority missing'
 test -f integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json || fail 'constitutive bridge authority missing'
 test -f integration/research/GC_LOW01A2_RESULT.json || fail 'LOW01-A2 authority missing'
 
@@ -90,6 +91,8 @@ git diff --check -- \
   integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json \
   integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json \
   integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json \
+  integration/research/GC_LOW01_OUTPUT01_RESULT.json \
+  integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT_V2.json \
   integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json \
   integration/research/GC_LOW01A2_RESULT.json \
   integration/research/GC_LOW01_RESULT_CONTRACT_V1.json \
