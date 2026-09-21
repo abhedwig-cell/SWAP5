@@ -4,11 +4,11 @@
   "work_unit": "RIBASIM-DUMMY-04",
   "branch": "work/ribasim-dummy-01",
   "baseline": "ad76b2c46530a40d9fb60973270d1f69708a695f",
-  "checkpoint_commit": "9ddd0b6d4d77e9cc1da2c4b06ee59627c0c2d938",
+  "checkpoint_commit": "e92fbf29cdf9a452be4865e77ea38b8ed23a082d",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": "Exact linear trapezoidal Basin-groundwater exchange fixed-point problem with explicit, one-corrector and Picard error propagation diagnostics.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_04_PREREGISTRATION.json",
@@ -32,7 +32,15 @@
   },
   "production_delta": [],
   "reference_delta": [],
-  "next_action": "Execute the exact DUMMY-04 iteration-gate from the persisted postimage.",
-  "recovery_point": "DUMMY-04 implementation, concept, focused runner and workflow gate are persisted; qualification is the next action.",
-  "blockers": []
+  "next_action": "Preregister and analyze the piecewise coupled management-clipping problem.",
+  "recovery_point": "DUMMY-04 closed qualified; resume from current work/ribasim-dummy-01 head.",
+  "blockers": [],
+  "qualification": {
+    "decision": "RIBASIM_DUMMY_04_QUALIFIED_LINEAR_ITERATION_MECHANISM",
+    "workflow_run": 35565642510,
+    "workflow_job": 106226792934,
+    "qualification_head": "fa900be8032b39d8ed4c2debcaab42ab3afabccb",
+    "tests": "9/9 PASS",
+    "gate": "PASS"
+  }
 }
