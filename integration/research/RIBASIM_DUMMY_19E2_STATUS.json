@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.coupling.real_ribasim_clock_aligned_mixed_conflict.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E2",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "feecf6b0634d1a488b886611ac0d84ca3a21bbbe",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": false,
+  "blocker": null,
+  "required_authorities": [
+    "RIBASIM_DUMMY_19B_QUALIFIED_REAL_RIBASIM_PRIORITY_CONFLICT",
+    "RIBASIM_DUMMY_19C_QUALIFIED_REAL_RIBASIM_ALLOCATION_REALIZATION_CONFLICT",
+    "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION"
+  ],
+  "prepared_scope": "Clock-aligned repeat of the intended one-window management-allocation then physical-realization mechanism, with saveat=allocation.dt=one day.",
+  "next_action": "Implement exactly this frozen clock-aligned configuration and qualify without changing references or tolerances.",
+  "production_delta": [],
+  "reference_delta": []
+}
