@@ -81,16 +81,14 @@
       "work_unit": "RIBASIM-DUMMY-15B",
       "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
       "run": 35590242964
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-16",
+      "decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+      "run": 35590642324
     }
   ],
   "pending": [
-    {
-      "work_unit": "RIBASIM-DUMMY-17",
-      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
-      "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
-      "implementation": false,
-      "purpose": "pure physical two-Basin routing plus shared-groundwater redistribution with exact path decomposition"
-    },
     {
       "work_unit": "RIBASIM-DUMMY-18",
       "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
@@ -113,16 +111,16 @@
       "purpose": "explicit canopy store separating gross source withdrawal from net soil irrigation and interception evaporation"
     },
     {
-      "work_unit": "RIBASIM-DUMMY-16",
+      "work_unit": "RIBASIM-DUMMY-17",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
-      "implementation_baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
-      "dependency": "qualified DUMMY-15B",
-      "boundary": "same physical windows and total managed withdrawal; only sampled management priority differs"
+      "intended_decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+      "implementation_baseline": "c0c5e32834582b4dc5e8534de6102374bfcdd77e",
+      "dependency": "qualified DUMMY-16",
+      "boundary": "pure physical network only; no management, real Ribasim routing or MODFLOW package equivalence"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-16 management-clock gate. If PASS, close DUMMY-16 before DUMMY-17 implementation.",
+  "next_authority_action": "Execute DUMMY-17 physical network gate. If PASS, close DUMMY-17 before DUMMY-18 executable binding/substitution work.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
