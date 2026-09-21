@@ -8,11 +8,16 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
+  "blocked": false,
   "required_authority": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
-  "blocker": "DUMMY-15 v3 remains unqualified; downstream DUMMY-15B/16/17 therefore remain blocked.",
+  "blocker": null,
   "prepared_scope": "Pinned state/transfer/management/clock/transaction mapping matrix for staged Ribasim -> MODFLOW -> SWAP substitution.",
-  "next_action": "After DUMMY-17 qualification, reconcile each binding against then-current pinned real-model source before executable substitution.",
+  "next_action": "Create and qualify the DUMMY-18 machine-readable real-model authority map. Qualification of the map must not close mapped UNRESOLVED authorities.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "authority_binding": {
+    "baseline": "ba059143d1835369f7e88a65a478062b738b6720",
+    "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
+    "workflow_run": 35591084550
+  }
 }
