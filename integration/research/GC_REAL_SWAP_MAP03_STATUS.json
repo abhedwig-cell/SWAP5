@@ -5,7 +5,7 @@
   "work_unit": "GC-REAL-SWAP-MAP03",
   "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "branch": "work/f-gc-dummy-swap-shared-storage",
-  "checkpoint_commit": "58fb70a3158c0e3456b5a10c878feb6039320565",
+  "checkpoint_commit": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -37,7 +37,20 @@
     "tests/fgc/support/mod_fgc45_real_multiswap_c_bridge.f90",
     "tests/fgc/support/fgc45_real_multiswap_ctypes.py"
   ],
-  "next_action": "Run the preregistered MAP03 fixed-head transaction diagnostics against the unchanged F-GC45 fixture and persist exact derivative evidence.",
-  "recovery_point": "Resume from this checkpoint if interrupted; do not alter the five MAP02-derived fixed heads or 5e-4 relative gates.",
-  "blockers": []
+  "next_action": "Rerun the unchanged preregistered MAP03 five-head transaction diagnostic after observability-only bridge repair.",
+  "recovery_point": "Resume at 9524f7092e98435ce0ab3c10bddcd682f0b8de38. The first MAP03 run never reached a physical trial, so no scientific gate was observed or retuned.",
+  "blockers": [],
+  "last_reconciled_head": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
+  "instrumentation_history": [
+    {
+      "workflow_run": 35566311361,
+      "conclusion": "BLOCKED_BEFORE_SCIENTIFIC_EXECUTION",
+      "cause": "Research bridge referenced transaction-result fields directly on kernel_result_t instead of kernel_result_t%mass; no MAP03 trial executed."
+    },
+    {
+      "repair_commit": "9524f7092e98435ce0ab3c10bddcd682f0b8de38",
+      "change": "Read storage/total-in/total-out/residual from result%mass, bottom exchange from result%bottom_outward_exchange_native, and accepted duration from completed_t-requested_t0.",
+      "production_change": false
+    }
+  ]
 }
