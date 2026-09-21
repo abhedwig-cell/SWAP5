@@ -8,6 +8,7 @@ on:
       - 'tests/research/run_gc_real_fgc44_response_storage_scan.sh'
       - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
       - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
+      - 'tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py'
       - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
       - '.github/workflows/gc-real-fgc44-semantic-scan.yml'
   workflow_dispatch:
