@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.gc_low01.a2.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-A2",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "state": "IMPLEMENTED_QUEUED_FOR_LIVE_QUALIFICATION",
+  "production_changes": false,
+  "preregistration": "integration/research/GC_LOW01A2_PREREGISTRATION.json",
+  "test": "tests/research/test_gc_low01a2_live_below_profile.f90",
+  "runner": "tests/research/run_gc_low01a2.sh",
+  "workflow": ".github/workflows/gc-low01a2.yml",
+  "prerequisite_runner": "tests/research/run_gc_low01a.sh",
+  "execution_runs": [
+    {
+      "run_id": 35579981196,
+      "run_number": 1,
+      "head_sha": "f0c21e2cd95606e84bc8e11b753e8cc692634eed",
+      "status": "queued"
+    },
+    {
+      "run_id": 35579991199,
+      "run_number": 2,
+      "head_sha": "f73ca90fddaeedfee0d14bee57876135904ab74d",
+      "status": "queued"
+    }
+  ],
+  "pre_execution_reconciliation": [
+    "All A/B/A trials rebuild the same hydrostatic origin.",
+    "H_phreatic is mapped to mode-5 hbot only through the declared bottom-face relation.",
+    "The independent ledger uses source-consistent storage_change=(qbot-qtop)*dt for the process-free slice.",
+    "The runner executes LOW01-A first and requires its qualification marker before A2."
+  ],
+  "decision": "WAIT_FOR_OWNER_RUN; DO_NOT_ACTIVATE_MODE1",
+  "next_action": "When the newest queued run starts, persist result only if LOW01-A prerequisite, mode-5 solve, mass ledger, immutable-origin replay and O0/O2 identity all pass."
+}
