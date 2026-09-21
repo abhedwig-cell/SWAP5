@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw01.status.v1",
+  "date": "2026-09-21",
+  "workstream": "GC-DUMMY-SWAP",
+  "work_unit": "GC-DUMMY-SWAP-DSW01",
+  "baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "checkpoint_commit": "9467dee6fa10358341947b15e4e6a1f16aeef6e8",
+  "last_reconciled_head": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "Analytic and live MODFLOW6 one-cell diagnosis of zero-resistance dummy-SWAP storage/flux semantics.",
+  "read_only_authorities": [
+    "AGENTS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/f-gc/F-GC33_STATUS.json",
+    "integration/f-gc/F-GC39_STATUS.json",
+    "integration/f-gc/F-GC40_STATUS.json",
+    "integration/f-gc/F-GC41_STATUS.json",
+    "integration/f-gc/F-GC49_STATUS.json",
+    "src/runtime/mod_modflow6_swap_predictor_response.f90",
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+    "src/runtime/mod_modflow6_linear_response_backend.f90",
+    "src/adapter/modflow6_prepared_solve_session.py"
+  ],
+  "relevant_paths": [
+    "docs/research/GC_DUMMY_SWAP_SHARED_STORAGE.md",
+    "integration/research/GC_DUMMY_SWAP_DSW01_PREREGISTRATION.json",
+    "tests/research/test_gc_dummy_swap_dsw01_analytic.py",
+    "tests/research/test_gc_dummy_swap_dsw01_live_modflow.py",
+    "tests/research/run_gc_dummy_swap_dsw01.sh"
+  ],
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "no production semantics changed",
+    "transaction/coupling ownership remains read-only",
+    "mass and storage claims require an independent oracle"
+  ],
+  "next_action": "Run DSW-01 analytic plus live MODFLOW6 6.8.0 workflow without retuning the preregistered coefficients.",
+  "recovery_point": "Resume from branch head; if workflow fails, classify tooling/model assembly separately from the scientific probe before repair.",
+  "blockers": []
+}
