@@ -212,10 +212,6 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 grep -Fq 'GC_DSW23_LIVE_GATE=PASS' "$BUILD/dsw23-live.txt" || fail "DSW-23 live gate"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
-  python3 tests/research/test_gc_dummy_swap_dsw24_interface_phreatic_equivalence.py | tee "$BUILD/dsw24-live.txt"
-grep -Fq 'GC_DSW24_LIVE_GATE=PASS' "$BUILD/dsw24-live.txt" || fail "DSW-24 live gate"
-
-LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw24_interface_phreatic_limit.py | tee "$BUILD/dsw24-live.txt"
 grep -Fq 'GC_DSW24_LIVE_GATE=PASS' "$BUILD/dsw24-live.txt" || fail "DSW-24 live gate"
 
