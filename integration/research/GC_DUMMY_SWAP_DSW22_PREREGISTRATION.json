@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.gc_dummy_swap.dsw22.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-DUMMY-SWAP-DSW22",
+  "title": "Prospective real-SWAP F-GC30 response-versus-storage scan",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "authority": {
+    "production_response": "F-GC30",
+    "cell_response": "F-GC40",
+    "modflow_transform": "F-GC33",
+    "real_fixture": "F-GC44 qualification-only bridge"
+  },
+  "fixed_fixture": {
+    "soil": "F-GC44 real FMR B1.10/MVG fixture",
+    "top_flux_rule": "top_flux equals configured predictor q_bot",
+    "bottom_flux_rule": "predictor bottom flux equals configured q_bot",
+    "drainage": false,
+    "root_uptake": false,
+    "macropores": false,
+    "snow": false,
+    "soil_temperature": false,
+    "area_m2": 1
+  },
+  "matrix": {
+    "duration_day": [
+      0.00005,
+      0.0001,
+      0.0002
+    ],
+    "predictor_qbot_cm_per_day": [
+      5e-7,
+      0.000001,
+      0.000002
+    ],
+    "Cartesian_product": true
+  },
+  "preregistered_relations": [
+    "u = duration_day / (dH_bot_cm/dq_bot_cm_per_day)",
+    "q_u = u*(H_end_cm-H_start_cm)/duration_day - q_bot",
+    "for one 1 m2 tile, HCOF = u/duration_day in m2/day",
+    "RHS = HCOF*H_ref - 0.01*q_u_cm_per_day for the 1 m2 single-tile reference-head representation",
+    "predictor physical mass identity: storage_change = total_in-total_out+mass_residual"
+  ],
+  "gates": [
+    "all nine configured real-SWAP predictors initialize successfully and publish complete mass diagnostics",
+    "all nine satisfy the q_u reconstruction to 256 machine eps on an appropriate scale",
+    "all nine satisfy HCOF=u/duration_day and the F-GC33 RHS transform to 256 machine eps on an appropriate scale",
+    "all nine satisfy the independent SWAP mass identity within 1e-12 native storage units",
+    "because top and bottom forcing are equal in this fixture, all nine have |storage_change| <= 1e-12 native units",
+    "all nine have finite nonzero u with |u| > 1e-12, demonstrating nonzero coupling response with zero net inventory change"
+  ],
+  "characterization_only": [
+    "variation of u with duration",
+    "variation of u with q_bot",
+    "variation of q_u and lower-face head response"
+  ],
+  "forbidden": [
+    "no production source mutation",
+    "do not retune matrix after observation",
+    "do not infer monotonicity unless separately justified",
+    "do not generalize from this drainage-free near-equilibrium family to all SWAP regimes",
+    "do not infer a production MODFLOW tolerance"
+  ]
+}
