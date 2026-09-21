@@ -20,9 +20,6 @@ module mod_gc_low01_mode1_trial_carrier
     logical :: valid = .false.
     real(real64) :: requested_h_phreatic_cm = 0.0_real64
     real(real64) :: effective_h_phreatic_cm = 0.0_real64
-    real(real64) :: requested_groundwater_level_cm = 0.0_real64
-    real(real64) :: effective_groundwater_level_cm = 0.0_real64
-    real(real64) :: groundwater_level_cm = 0.0_real64
     real(real64) :: raw_legacy_gwl_cm = 0.0_real64
     real(real64) :: raw_gwlinp_cm = 0.0_real64
     integer :: branch = GC_LOW01_BRANCH_INVALID
@@ -148,8 +145,6 @@ contains
 
     result = gc_low01_mode1_trial_result_t()
     result%requested_h_phreatic_cm = requested_h_phreatic_cm
-    result%requested_groundwater_level_cm = requested_h_phreatic_cm
-    result%groundwater_level_cm = requested_h_phreatic_cm
 
     call gc_low01_classify_control(parameter_set, requested_h_phreatic_cm, branch, active_nodes, classified_effective)
     result%branch = branch
@@ -157,7 +152,6 @@ contains
     result%active_richards_nodes = active_nodes
     result%active_nodes = active_nodes
     result%effective_h_phreatic_cm = classified_effective
-    result%effective_groundwater_level_cm = classified_effective
     if (branch /= GC_LOW01_BRANCH_INSIDE_PROFILE) return
     if (step_duration_day <= 0.0_real64) return
 
@@ -197,7 +191,6 @@ contains
                   step_duration_day, parameter_set)
 
     result%effective_h_phreatic_cm = result%candidate%gwlinp
-    result%effective_groundwater_level_cm = result%candidate%gwlinp
     result%raw_legacy_gwl_cm = result%candidate%gwl
     result%raw_gwlinp_cm = result%candidate%gwlinp
     result%fllowgwl = result%candidate%fllowgwl
