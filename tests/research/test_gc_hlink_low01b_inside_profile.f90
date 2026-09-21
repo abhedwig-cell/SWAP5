@@ -95,7 +95,7 @@ contains
     call require(.not.replay%fllowgwl,'replay inside-profile fllowgwl false')
 
     do i=nn+1,numnod
-      call require(close_fp(first%theta(i),parameters%cofgen(2,i)),'saturated theta continuation')
+      call require(close_fp(first%theta(i),cofgen(2,i)),'saturated theta continuation')
       call require(ieee_is_finite(first%h(i)),'finite saturated continuation head')
     end do
 
@@ -187,7 +187,7 @@ contains
     call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt_day)
     call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
     do i=nn+1,numnod
-      water(i)=parameters%cofgen(2,i)
+      water(i)=cofgen(2,i)
     end do
 
     state%active_nodes=numnod
@@ -214,21 +214,22 @@ contains
     integer :: k
     parameters%parameter_set_id=910102_int64
     parameters%active_nodes=numnod
-    allocate(parameters%z(numnod),parameters%dz(numnod),parameters%node_distance(numnod),parameters%cofgen(24,numnod))
+    allocate(parameters%z(numnod),parameters%dz(numnod),parameters%node_distance(numnod))
     parameters%z=z
     parameters%dz=dz
     parameters%node_distance=disnod(1:numnod)
-    parameters%cofgen=0.0_real64
+    allocate(cofgen(24,numnod))
+    cofgen=0.0_real64
     do k=1,numnod
-      parameters%cofgen(1,k)=0.032_real64; parameters%cofgen(2,k)=0.423_real64; parameters%cofgen(3,k)=4.75_real64
-      parameters%cofgen(4,k)=0.0135_real64; parameters%cofgen(5,k)=0.365_real64; parameters%cofgen(6,k)=1.455_real64
-      parameters%cofgen(7,k)=1.0_real64-1.0_real64/parameters%cofgen(6,k)
-      parameters%cofgen(8,k)=parameters%cofgen(4,k)
-      parameters%cofgen(9,k)=0.0_real64; parameters%cofgen(10,k)=parameters%cofgen(3,k)
-      parameters%cofgen(11,k)=0.999_real64; parameters%cofgen(12,k)=0.99_real64*parameters%cofgen(3,k)
-      parameters%cofgen(22,k)=-1.0e6_real64; parameters%cofgen(23,k)=1.0e-12_real64
+      cofgen(1,k)=0.032_real64; cofgen(2,k)=0.423_real64; cofgen(3,k)=4.75_real64
+      cofgen(4,k)=0.0135_real64; cofgen(5,k)=0.365_real64; cofgen(6,k)=1.455_real64
+      cofgen(7,k)=1.0_real64-1.0_real64/cofgen(6,k)
+      cofgen(8,k)=cofgen(4,k)
+      cofgen(9,k)=0.0_real64; cofgen(10,k)=cofgen(3,k)
+      cofgen(11,k)=0.999_real64; cofgen(12,k)=0.99_real64*cofgen(3,k)
+      cofgen(22,k)=-1.0e6_real64; cofgen(23,k)=1.0e-12_real64
     end do
-    call initialize_b110_default_mvg_parameters(hydraulic_parameters,parameters%cofgen)
+    call initialize_b110_default_mvg_parameters(hydraulic_parameters,cofgen)
     call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,dt_day)
 
     allocate(drainage(1,numnod),subsurface(numnod),root_sink(numnod))
