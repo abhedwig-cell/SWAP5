@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-11",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "187c255983566d449ea79e99bf85c9d56d145d2b",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -19,7 +19,7 @@
     "final_groundwater_head_m": 0.243278975175909,
     "cumulative_exchange_m3": 24.32789751759091
   },
-  "next_action": "Implement DUMMY-11 multi-window two-head propagation and independent continuous event reference.",
+  "next_action": "Add DUMMY-11 to the registered research workflow and execute the shared-state temporal-memory gate.",
   "production_delta": [],
   "reference_delta": [],
   "concept_path": "integration/research/RIBASIM_DUMMY_11_CONCEPT.md",
@@ -32,5 +32,34 @@
       35568794175,
       35568804086
     ]
-  }
+  },
+  "checkpoint_commit": "c199bd75e0905509d61f6a0242f622b674e78efc",
+  "scope": "Multi-window propagation of accepted surface and groundwater heads through qualified DUMMY-10 windows, plus independent continuous two-store event reference.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_11_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_11_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_11_STATUS.json",
+    "tests/research/dummy_two_store_temporal.py",
+    "tests/research/test_dummy_two_store_temporal.py",
+    "tests/research/run_ribasim_dummy_11.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "dependency_surface": [
+    "tests/research/dummy_temporal_partition.py",
+    "tests/research/dummy_two_store_exchange.py",
+    "tests/research/dummy_two_store_management.py",
+    "tests/research/dummy_two_store_temporal.py",
+    "tests/research/test_dummy_two_store_temporal.py",
+    "tests/research/run_ribasim_dummy_11.sh",
+    "integration/research/RIBASIM_DUMMY_11_*",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_10": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+    "DUMMY_10_runs": [
+      35568794175,
+      35568804086
+    ]
+  },
+  "recovery_point": "DUMMY-11 implementation, tests, concept and focused runner are persisted; qualification remains open."
 }
