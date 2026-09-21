@@ -8,8 +8,8 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "RIBASIM-DUMMY-10 qualification is still queued in GitHub Actions; shared management semantics may not be consumed before that authority closes.",
+  "blocked": false,
+  "blocker": null,
   "required_authority": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
   "prepared_scope": "Multi-window propagation of both surface and groundwater heads plus an independent continuous two-store management-event reference.",
   "canonical_continuous_expectation": {
@@ -19,10 +19,18 @@
     "final_groundwater_head_m": 0.243278975175909,
     "cumulative_exchange_m3": 24.32789751759091
   },
-  "next_action": "After DUMMY-10 qualification, rebind DUMMY-11 implementation baseline to the post-qualification head before creating any DUMMY-11 model or tests.",
+  "next_action": "Implement DUMMY-11 multi-window two-head propagation and independent continuous event reference.",
   "production_delta": [],
   "reference_delta": [],
   "concept_path": "integration/research/RIBASIM_DUMMY_11_CONCEPT.md",
   "concept_commit": "c67b5a512542f230db896992b10430d16ccae9b4",
-  "prequalification_note": "Continuous two-store event reference and discrete partition expectations are documented, but no DUMMY-11 model/tests exist while DUMMY-10 remains unqualified."
+  "prequalification_note": "Continuous two-store event reference and discrete partition expectations are documented, but no DUMMY-11 model/tests exist while DUMMY-10 remains unqualified.",
+  "authority_binding": {
+    "baseline": "be1af9f93eb444d676f2df77b0260f3e56f7870a",
+    "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
+    "qualification_runs": [
+      35568794175,
+      35568804086
+    ]
+  }
 }
