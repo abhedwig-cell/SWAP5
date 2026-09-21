@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_temporal_partition.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-08",
+  "decision": "RIBASIM_DUMMY_08_QUALIFIED_TEMPORAL_PARTITION_EFFECT",
+  "authority": {
+    "baseline": "664a6bedca83feeda989ecdbe339bbe2f43e52c5",
+    "qualified_main_pre_result_head": "a8f14a689b987a56c5539f252b990638ad31cc4e",
+    "qualification_head": "d4ac807fa47cc9b1e28b7e4cc5f34077613ca531",
+    "workflow_run": 35567878236,
+    "workflow_job": 106233218792,
+    "conclusion": "success"
+  },
+  "preregistration_revision": {
+    "commit": "76624be239f85722191835236c125c949a6aa791",
+    "superseded": "monotonic error decrease under every uniform refinement",
+    "replacement": "event-grid jitter can make endpoint error locally non-monotone while finer partitions approach the independent continuous event reference overall",
+    "timing": "revision occurred before DUMMY-08 tests, status, or qualification"
+  },
+  "evidence": [
+    "RIBASIM_DUMMY_08_SOURCE_SCOPE=PASS",
+    "11/11 TemporalPartitionTests PASS",
+    "multi-window accepted-state chain and per-window/cumulative balance close",
+    "nonbinding FULL regime matches independent closed trapezoidal recurrence",
+    "canonical one-window result U=25,V=35,h=0.4 PASS",
+    "canonical two-half-window result U=27.5,V=32.5,h=0.4 PASS",
+    "continuous event reference matches closed-form hit time and state",
+    "uniform refinement exhibits preregistered event-grid jitter",
+    "N=8192 is closer than N=16 to continuous reference in final level and cumulative delivery",
+    "later ZERO-demand window moves level below hmin while remaining above datum",
+    "request remains exogenous after shortage; no hidden backlog",
+    "all tested partitions preserve cumulative mass balance",
+    "RIBASIM_DUMMY_08_GATE=PASS"
+  ],
+  "canonical_case": {
+    "coarse_one_window": {
+      "delivery_m3": 25,
+      "exchange_m3": 35,
+      "end_level_m": 0.4
+    },
+    "two_half_windows": {
+      "delivery_m3": 27.5,
+      "exchange_m3": 32.5,
+      "end_level_m": 0.4
+    },
+    "continuous": {
+      "hit_time": "2*ln(1.5)",
+      "delivery_m3": "80*ln(1.5) ~= 32.4372",
+      "end_level_m": "~0.3639184",
+      "interpretation": "management stops at hmin, then physical infiltration continues below the management threshold"
+    }
+  },
+  "interpretation": "Mass conservation does not guarantee temporal decision accuracy. Coupling-window partition changes when management curtailment occurs and therefore changes cumulative management delivery and physical exchange even when every window is individually mass-conservative.",
+  "non_claims": [
+    "no production timestep criterion",
+    "no shortage backlog or SWAP behavioral feedback",
+    "no varying groundwater-head dynamics",
+    "no Ribasim network routing or production change"
+  ],
+  "downstream": "Introduce a finite groundwater storage/head state so the common surface-groundwater exchange dynamically updates both sides of the coupling."
+}
