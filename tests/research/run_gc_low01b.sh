@@ -93,6 +93,8 @@ git diff --check -- \
   integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json \
   integration/research/GC_LOW01_OUTPUT01_RESULT.json \
   integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT_V2.json \
+  integration/research/GC_LOW01_OUTPUT01_RESULT.json \
+  integration/research/GC_LOW01_OUTPUT01_PREREGISTRATION_AMENDMENT_V2.json \
   integration/research/GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json \
   integration/research/GC_LOW01A2_RESULT.json \
   integration/research/GC_LOW01_RESULT_CONTRACT_V1.json \
