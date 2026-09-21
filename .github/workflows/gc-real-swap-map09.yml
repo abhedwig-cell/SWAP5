@@ -1,7 +1,7 @@
 name: GC real-SWAP MAP09 active drainage corrector
 on:
   push:
-    branches: [work/f-gc-dummy-swap-shared-storage]
+    branches: [work/f-gc-dummy-swap-shared-storage, work/f-gc-coupling-concepts-next]
     paths:
       - 'integration/research/GC_REAL_SWAP_MAP09*.json'
       - 'tests/research/support/mod_gc_map09_active_drainage_bridge.f90'
