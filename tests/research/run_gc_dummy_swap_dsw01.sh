@@ -103,9 +103,14 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW12_LIVE_GATE=PASS' "$BUILD/dsw12-live.txt" || fail "DSW-12 live gate"
 
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw13_drain_sink.py | tee "$BUILD/dsw13-live.txt"
+
+grep -Fq 'GC_DSW13_LIVE_GATE=PASS' "$BUILD/dsw13-live.txt" || fail "DSW-13 live gate"
+
 test "$DSW09_STATUS" -eq 0 || fail "DSW-09 strict live gate"
 grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live gate marker"
 test "$DSW10_STATUS" -eq 0 || fail "DSW-10 strict live gate"
 grep -Fq 'GC_DSW10_LIVE_GATE=PASS' "$BUILD/dsw10-live.txt" || fail "DSW-10 live gate marker"
 
-echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_DSW09_DSW10_DSW11_DSW12_QUALIFICATION=PASS'
+echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_DSW09_DSW10_DSW11_DSW12_DSW13_QUALIFICATION=PASS'
