@@ -29,14 +29,15 @@
     "ledger publication contract",
     "production coupling code"
   ],
-  "next_action": "Complete MAP06 fresh-origin B3 corrector admissibility topology around the MAP05 INTERCEPT_ONLY failure head.",
-  "recovery_point": "MAP05A qualified by workflow 35568250145 / job 106234270745. Resume from GC_REAL_SWAP_MAP05A_RESULT.json; MAP05 remains independently falsified.",
+  "next_action": "Complete MAP06 corrector-admissibility topology and MAP07 q_u partial-versus-total derivative audit; keep production coupling read-only.",
+  "recovery_point": "MAP05A qualified by workflow 35568250145 / job 106234270745. Resume from GC_REAL_SWAP_MAP05A_RESULT.json; MAP05 remains falsified independently.",
   "blockers": [],
-  "last_reconciled_head": "dc346a9e599c11b44b1c2c469b7d1a4249bdb7f9",
+  "last_reconciled_head": "work/f-gc-dummy-swap-shared-storage",
   "execution": {
     "workflow_run": 35568250145,
     "workflow_job": 106234270745,
-    "status": "queued"
+    "status": "completed",
+    "conclusion": "success"
   },
   "qualification": {
     "workflow_run": 35568250145,
