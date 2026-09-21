@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.gc_low01.mode1_candidate_carrier.preregistration.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-CARRIER01",
+  "title": "Research-only complete prescribed-groundwater-level candidate output carrier",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "production_changes": false,
+  "authority": {
+    "candidate_contract": "integration/research/GC_LOW01_CANDIDATE_CONTRACT_V1.json",
+    "seam_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
+    "state_contract": "integration/research/GC_LOW01_STATE_CONTRACT_V1.json"
+  },
+  "purpose": "Resolve LOW01-G4/G5 for research qualification without admitting bottom_mode=1 through the production solver ABI.",
+  "typed_outputs": [
+    "requested_H_phreatic_cm",
+    "effective_H_phreatic_cm after declared node-snap rule",
+    "branch identity ABOVE_OR_AT_TOP / INSIDE_PROFILE / BELOW_PROFILE",
+    "active_richards_nodes",
+    "typed candidate groundwater_level_cm = requested_H_phreatic_cm",
+    "raw legacy groundwater_level_cm retained separately as provenance",
+    "fllowgwl typed branch diagnostic",
+    "diagnosed qbot_cm_per_day",
+    "complete candidate pressure_head and water_content arrays",
+    "complete-profile storage_change_cm"
+  ],
+  "geometry_rule": {
+    "bottom_face": "z(n)-0.5*dz(n)",
+    "above_top": "H_phreatic >= z(1)-1e-4 cm",
+    "below_profile": "H_phreatic <= bottom_face",
+    "inside_profile": "bottom_face < H_phreatic < z(1)-1e-4 cm",
+    "active_nodes": "count of hydraulic node centers above effective H_phreatic; may equal n in the lower half-cell",
+    "snap": "if z(active_nodes)-H_phreatic < 1e-4 cm, snap effective H to that node and decrement active_nodes"
+  },
+  "gates": [
+    "frozen geometry classifies above-top, inside-profile NN=1/2/3/4, and below-profile cases deterministically",
+    "bottom-face branch rule uses declared geometry and never z(n+1)",
+    "materialized typed candidate groundwater_level equals requested H_phreatic exactly while raw legacy gwl remains separately observable",
+    "qbot and complete candidate hydraulic arrays are copied without numerical alteration",
+    "repeated materialization is bitwise deterministic",
+    "O0/O2 output is identical"
+  ],
+  "nonclaims": [
+    "carrier does not solve Richards equations",
+    "carrier does not prove LOW01-B physics",
+    "carrier does not change production soil_water_solve_result_t",
+    "carrier does not admit bottom_mode=1 in production"
+  ],
+  "activation_effect": "After this carrier qualifies, LOW01-B still requires LOW01-A/A2 and the constitutive bridge before live execution can become authoritative."
+}
