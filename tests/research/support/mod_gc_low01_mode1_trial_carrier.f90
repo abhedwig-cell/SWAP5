@@ -153,6 +153,9 @@ contains
     result%active_nodes = active_nodes
     result%effective_h_phreatic_cm = classified_effective
     if (branch /= GC_LOW01_BRANCH_INSIDE_PROFILE) return
+    ! Explicit typed geometry does not own legacy grid_z(n+1).  The lower
+    ! half-cell NN=n regime is classification-only until LOW01-G2 is resolved.
+    if (active_nodes >= parameter_set%active_nodes) return
     if (step_duration_day <= 0.0_real64) return
 
     ! OUTPUT01 deliberately excludes node-snap and branch-boundary cases.
