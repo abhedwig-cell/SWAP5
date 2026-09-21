@@ -10,21 +10,23 @@
   "amendment": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json",
   "blocking_audit": "integration/research/GC_LOW01_TYPED_SEAM_GAP_AUDIT.json",
   "blockers": [
-    "LOW01-A/A2 owner qualification has not yet been persisted.",
+    "LOW01-A2 owner qualification has not yet been persisted.",
     "The KSATEXM-disabled constitutive bridge is implemented but its owner qualification has not yet been persisted.",
-    "The research-only complete mode-1 candidate output carrier is implemented but its owner qualification has not yet been persisted."
+    "The research-only complete mode-1 candidate output carrier is implemented but its owner qualification has not yet been persisted.",
+    "The live OUTPUT01 direct-HeadCalc carrier is implemented but its owner qualification has not yet been persisted."
   ],
   "preserved_value": [
     "The original preregistration remains a useful source-behavior specification.",
     "GC-LOW01-STATE01 may still qualify deterministic branch classification independently because it makes no solver-level or provider-ownership claim."
   ],
   "decision": "DO_NOT_EXECUTE_LOW01B_QUALIFICATION_UNTIL_PREREQUISITE_RESULTS_EXIST",
-  "activation_rule": "LOW01-B may be dispatched only after GC_LOW01A2_RESULT.json, GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json and GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json exist from successful owner runs.",
+  "activation_rule": "LOW01-B may execute only after GC_LOW01A2_RESULT.json, GC_LOW01_CONSTITUTIVE_BRIDGE_RESULT.json, GC_LOW01_MODE1_CANDIDATE_CARRIER_RESULT.json and GC_LOW01_OUTPUT01_RESULT.json all exist with conclusion=success and a QUALIFIED decision.",
   "next": [
-    "Persist LOW01-A/A2 owner results when Actions completes.",
+    "Persist LOW01-A2 owner result when Actions completes.",
     "Persist constitutive-bridge result when its owner run completes.",
     "Persist candidate-carrier result when its owner run completes.",
-    "Only then dispatch tests/research/run_gc_low01b.sh.",
+    "Persist OUTPUT01 result when its owner run completes.",
+    "The event-driven LOW01-B workflow will activate only when all four prerequisite results are qualified.",
     "Keep HLINK04 blocked regardless of LOW01-B implementation state."
   ],
   "constitutive_scope": {
@@ -89,5 +91,7 @@
     "runner": "tests/research/run_gc_low01_candidate_carrier.sh",
     "preregistration": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json",
     "preregistration_amendment": "integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION_AMENDMENT.json"
-  }
+  },
+  "execution_workflow": ".github/workflows/gc-low01b.yml",
+  "execution_mode": "EVENT_DRIVEN_PREREQUISITE_GATED"
 }
