@@ -25,6 +25,7 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 echo 'GC_LOW01_CARRIER_O0_O2_IDENTITY=PASS'
 git diff --check -- \
   integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION.json \
+  integration/research/GC_LOW01_MODE1_CANDIDATE_CARRIER_PREREGISTRATION_AMENDMENT.json \
   tests/research/support/mod_gc_low01_mode1_candidate_carrier.f90 \
   tests/research/test_gc_low01_mode1_candidate_carrier.f90 \
   tests/research/run_gc_low01_candidate_carrier.sh
