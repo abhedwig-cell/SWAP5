@@ -24,7 +24,6 @@ program test_gc_low01c1_internal_node_snap
   real(real64), parameter :: origin_gwl_cm = -120.0_real64
   real(real64), parameter :: dt_day = 0.01_real64
   real(real64), parameter :: tol = 1.0e-10_real64
-  real(real64), parameter :: origin_h_phreatic_cm = -120.0_real64
 
   type(soil_water_parameter_set_t), target :: parameters
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
@@ -87,10 +86,16 @@ program test_gc_low01c1_internal_node_snap
     write(*,'(A,I0)') 'GC_LOW01C1_DELTA_CASE=', i
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MAX_HEAD_DELTA_FROM_AT_NODE_CM=', &
          maxval(abs(characterized(i)%h-characterized(2)%h))
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MAX_THETA_DELTA_FROM_AT_NODE=', &
+         maxval(abs(characterized(i)%theta-characterized(2)%theta))
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_QBOT_DELTA_FROM_AT_NODE_CM_PER_DAY=', &
          qbot_characterized(i)-qbot_characterized(2)
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_STORAGE_DELTA_FROM_AT_NODE_CM=', &
          storage_characterized(i)-storage_characterized(2)
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_RESIDUAL_DELTA_FROM_AT_NODE_CM=', &
+         residual_characterized(i)-residual_characterized(2)
+    write(*,'(A,I0)') 'GC_LOW01C1_ITERATION_DELTA_FROM_AT_NODE=', &
+         iterations_characterized(i)-iterations_characterized(2)
   end do
 
   write(*,'(A)') 'GC_LOW01C1_IMMUTABLE_ORIGIN=PASS'
@@ -140,7 +145,7 @@ contains
     integer :: k
 
     do k = 1, n
-      heads(k) = origin_h_phreatic_cm - z_cm(k)
+      heads(k) = origin_gwl_cm - z_cm(k)
     end do
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
 
@@ -156,9 +161,9 @@ contains
     state%dimoca = capacity
     state%pond = 0.0_real64
     state%pondm1 = 0.0_real64
-    state%gwl = origin_h_phreatic_cm
-    state%gwlm1 = origin_h_phreatic_cm
-    state%gwlinp = origin_h_phreatic_cm
+    state%gwl = origin_gwl_cm
+    state%gwlm1 = origin_gwl_cm
+    state%gwlinp = origin_gwl_cm
     state%dtold = dt_day
     state%qtop = 0.0_real64
     state%qbot = 0.0_real64
