@@ -15,14 +15,14 @@
   "interfaces_allowed_to_change": ["new PPA-owned typed adapters and option-discriminated state behind explicit contracts"],
   "interfaces_held_fixed": ["Reference Richards availability", "committed/trial/scratch ownership", "mass conservation", "restart semantics", "shared groundwater and iMOD Coupler contracts"],
   "invariants_affected": [2, 3, 7, 13, 21, 23, 25, 29],
-  "implementation_status": "PPA-WU04-C source-window aggregate process implemented; runtime receipt/restart composition remains incomplete",
-  "test_status": "PASS: exact B1.11 VonHHBraden oracle and partition conservation at GNU Fortran 16.2.0 O0 and O2 with identical output",
+  "implementation_status": "PPA-WU04-C source-window aggregate process implemented; runtime receipt/restart composition remains held by an explicit WU04C preregistration contract",
+  "test_status": "PASS: direct GNU Fortran 16.2.0 O0 and O2 runs cover exact B1.11 oracle, partition conservation, snow gate and invalid input; both completed with no compiler or test error",
   "qualification_status": "INCOMPLETE: no transaction/rejected-trial, mid-window restart, or production-runtime qualification yet",
   "reference_reconstruction": {"status": "PASS", "input_distribution": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/SWAP_4.3.1.zip", "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360", "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151", "b1_11_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2", "member_count": 63, "source_bytes": 1886519, "method": "raw canonical Git blobs plus tools/vq/b1_11_reconstruct.py; required because local core.autocrlf changes patch bytes"},
   "toolchain": {"fortran_compiler": "C:/msys64/ucrt64/bin/gfortran.exe", "version": "GNU Fortran 16.2.0", "status": "AVAILABLE_BY_EXPLICIT_PATH; Codex PATH refresh pending"},
   "blockers": ["B2 integrated reference-mode comparison remains fail-closed", "macropore exact mutable-state/mass census is source-ready but remains a separate blocked authority workunit", "frost and compensated-root authority remain blocked"],
   "candidate_queue": ["PPA-WU04-C: SWINTER=1 source-window aggregate", "PPA-WU04-D: SWINTER=2 source-window aggregate", "PPA-WU02-B: SWBOTB=2 sinus/table forcing and dry continuation"],
   "ready_queue": ["PPA-WU04-C: SWINTER=1 source-window aggregate processor"],
-  "next_safe_step": "Implement PPA-WU04-C against the verified B1.11 source oracle and run its preregistered O0/O2 qualification surface using the explicit gfortran path.",
+  "next_safe_step": "Run the bounded PPA-WU04-C process qualification; then design the separately authorized source-window accepted-progress receipt and restart contract before any production runtime composition.",
   "recovery_point": "Checkpoint 378d2c23025ab989f4aad5e59b33836b85b116da establishes the register; persist this blocked-state correction before any source-changing work."
 }

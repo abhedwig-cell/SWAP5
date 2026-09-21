@@ -15,6 +15,13 @@ program test_ppa_wu04c_vonhhbraden_process
   call apportion_vonhhbraden_interception(s,r%source_window_interception_cm_per_day,0.20_real64,0.10_real64,a,nr,ni,status)
   if(status/=VONHHBRADEN_AVAILABLE .or. abs(a-0.5_real64*r%source_window_interception_cm_per_day)>1.e-14_real64) error stop 2
   if(abs((nr+ni+a)-0.30_real64)>1.e-14_real64) error stop 3
+  s%snow_present=.true.
+  call evaluate_vonhhbraden_source_window(p,s,0.10_real64,r)
+  if(r%status/=VONHHBRADEN_AVAILABLE .or. r%source_window_interception_cm_per_day/=0.0_real64) error stop 4
+  s%snow_present=.false.; p%cofab_cm=0.0_real64
+  call evaluate_vonhhbraden_source_window(p,s,0.10_real64,r)
+  if(r%status/=VONHHBRADEN_INVALID_INPUT) error stop 5
   print '(a)', 'PPA_WU04C_VONHHBRADEN_SOURCE_ORACLE=PASS'
   print '(a)', 'PPA_WU04C_PARTITION_CONSERVATION=PASS'
+  print '(a)', 'PPA_WU04C_GATES_AND_INVALID_INPUT=PASS'
 end program
