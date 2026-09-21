@@ -127,6 +127,11 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 grep -Fq 'GC_DSW14_LIVE_GATE=PASS' "$BUILD/dsw14-live.txt" || fail "DSW-14 live gate"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw15_forcing_order.py | tee "$BUILD/dsw15-live.txt"
+
+grep -Fq 'GC_DSW15_LIVE_GATE=PASS' "$BUILD/dsw15-live.txt" || fail "DSW-15 live gate"
+
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
   python3 tests/research/test_gc_dummy_swap_dsw16_n_to_1_aggregation.py | tee "$BUILD/dsw16-live.txt"
 
 grep -Fq 'GC_DSW16_LIVE_GATE=PASS' "$BUILD/dsw16-live.txt" || fail "DSW-16 live gate"
@@ -138,4 +143,4 @@ grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live 
 test "$DSW10_STATUS" -eq 0 || fail "DSW-10 strict live gate"
 grep -Fq 'GC_DSW10_LIVE_GATE=PASS' "$BUILD/dsw10-live.txt" || fail "DSW-10 live gate marker"
 
-echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW05_DSW06_DSW08_DSW09_DSW10_DSW11_DSW12_DSW13_DSW14_DSW16_QUALIFICATION=PASS'
+echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW05_DSW06_DSW08_DSW09_DSW10_DSW11_DSW12_DSW13_DSW14_DSW15_DSW16_QUALIFICATION=PASS'
