@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.gc_low01c1.preregistration_amendment.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-LOW01-C1",
+  "status": "PRE_EXECUTION_IMMUTABLE_ORIGIN_ALIGNMENT",
+  "original": "integration/research/GC_LOW01C1_PREREGISTRATION.json",
+  "low01b_origin": "integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json",
+  "reason": "The original C1 text allowed a control-specific hydrostatic origin. That would mix branch/snap response with a changed initial hydraulic state. Before any C1 live execution, align C1 with the qualified LOW01-B experimental design: one immutable provider-owned origin and only H_phreatic changes between trials.",
+  "frozen_origin": {
+    "reference_H_phreatic_cm": -120,
+    "pressure_head_cm": [
+      -95,
+      -45,
+      30,
+      130
+    ],
+    "water_content": "evaluated once from the same KSATEXM-disabled B110 provider and then held bitwise fixed",
+    "ponding_depth_cm": 0,
+    "accepted_groundwater_level_cm": -120
+  },
+  "step_duration_day": 0.01,
+  "sweep": [
+    {
+      "label": "ABOVE_NEAR",
+      "H_phreatic_cm": -149.99995,
+      "expected_active_nodes": 2,
+      "expected_snap": false,
+      "expected_effective_H_cm": -149.99995
+    },
+    {
+      "label": "AT_NODE",
+      "H_phreatic_cm": -150,
+      "expected_active_nodes": 2,
+      "expected_snap": false,
+      "expected_effective_H_cm": -150
+    },
+    {
+      "label": "BELOW_WITHIN_SNAP",
+      "H_phreatic_cm": -150.00005,
+      "expected_active_nodes": 2,
+      "expected_snap": true,
+      "expected_effective_H_cm": -150
+    },
+    {
+      "label": "BELOW_OUTSIDE_SNAP",
+      "H_phreatic_cm": -150.0002,
+      "expected_active_nodes": 3,
+      "expected_snap": false,
+      "expected_effective_H_cm": -150.0002
+    }
+  ],
+  "amended_gates": [
+    "Every sweep point starts from the same bitwise immutable -120 cm origin used by LOW01-B.",
+    "Only the requested H_phreatic control differs among sweep points.",
+    "The source-derived active-node/effective-head classification remains exactly the original preregistered expectation.",
+    "qbot, storage change, lower gradient/Jacobian diagnostics, candidate-state difference from AT_NODE, solver diagnostics and mass residual are recorded prospectively.",
+    "No continuity requirement is imposed; any jump or solver refusal is characterization evidence.",
+    "Repeated execution from the frozen origin is deterministic within the same O0/O2 and replay bounds as LOW01-B."
+  ],
+  "execution_rule": "Do not execute C1 as qualified evidence before LOW01-B PASS. A C1-specific boundary-characterization harness may be implemented beforehand but must not widen OUTPUT01's deliberate branch-boundary refusal.",
+  "forbidden": [
+    "do not reuse a candidate from one sweep point as the origin of another",
+    "do not create a control-specific hydrostatic origin",
+    "do not relax OUTPUT01 scope to make C1 pass",
+    "do not retune the four sweep points after observation"
+  ]
+}
