@@ -1,19 +1,62 @@
 name: GC LOW01-D below-profile replay isolation
+
 on:
+  push:
+    branches:
+      - work/f-gc-dummy-swap-shared-storage
+    paths:
+      - 'integration/research/GC_LOW01A2_RESULT.json'
+      - 'integration/research/GC_LOW01D*.json'
+      - 'tests/research/test_gc_low01d_below_profile_transaction.f90'
+      - 'tests/research/run_gc_low01d.sh'
+      - '.github/workflows/gc-low01d.yml'
   workflow_dispatch:
+
+concurrency:
+  group: gc-low01d-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+
 jobs:
+  prerequisite:
+    runs-on: ubuntu-24.04
+    outputs:
+      ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        name: Check qualified LOW01-A2 authority
+        shell: bash
+        run: |
+          python3 - <<'PY' > /tmp/gc-low01d-ready
+          import json
+          from pathlib import Path
+          path = Path("integration/research/GC_LOW01A2_RESULT.json")
+          ready = False
+          if path.is_file():
+              data = json.loads(path.read_text())
+              ready = (
+                  data.get("conclusion") == "success"
+                  and str(data.get("decision", "")).startswith("QUALIFIED")
+              )
+          print("true" if ready else "false")
+          PY
+          ready="$(cat /tmp/gc-low01d-ready)"
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          echo "GC_LOW01D_PREREQUISITE_A2_READY=$ready"
+
   low01d:
+    needs: prerequisite
+    if: needs.prerequisite.outputs.ready == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Guard LOW01-A2 authority
-        run: test -f integration/research/GC_LOW01A2_RESULT.json
       - name: Install compiler
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
-      - name: Run LOW01-D qualification
+      - name: Run prerequisite-bound LOW01-D qualification
         run: bash tests/research/run_gc_low01d.sh
