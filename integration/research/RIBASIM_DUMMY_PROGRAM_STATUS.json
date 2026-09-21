@@ -66,20 +66,25 @@
       "work_unit": "RIBASIM-DUMMY-13",
       "decision": "RIBASIM_DUMMY_13_QUALIFIED_THREE_STORE_INTERNAL_LEDGER",
       "run": 35571925509
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-14",
+      "decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
+      "run": 35577358733
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-14",
+      "work_unit": "RIBASIM-DUMMY-15",
       "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_14_QUALIFIED_THREE_STORE_FORCING_MEMORY",
-      "implementation_baseline": "e46bc9c08769426e282df7f97213db2d50cb4c63",
-      "dependency": "qualified DUMMY-13",
-      "authority_boundary": "P/E/root-capacity-drainage analytical forcing only; no real SWAP irrigation or production drainage ownership claim"
+      "intended_decision": "RIBASIM_DUMMY_15_QUALIFIED_COMPETING_CLAIMS_ORACLE",
+      "implementation_baseline": "8f5cbc493e4f94cb1edf5833e115c60cc8594f86",
+      "dependency": "qualified DUMMY-14",
+      "boundary": "one-Basin exact priority oracle; no forecast mismatch, routing, fairness or product-allocation equivalence"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute DUMMY-14 forcing-memory gate; if PASS, close DUMMY-14 before beginning competing managed-claims work.",
+  "next_authority_action": "Execute DUMMY-15 competing-claims gate. If PASS, close the same-state priority oracle before adding forecast-versus-realization mismatch.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
