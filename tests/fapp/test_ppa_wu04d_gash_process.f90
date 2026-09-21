@@ -18,5 +18,15 @@ program test_ppa_wu04d_gash_process
   expected=c*(psat+avevap*c/p%average_precipitation*(s%gross_rain_cm_per_day-psat))
   call evaluate_gash_source_window(p,s,a,status)
   if(status/=VONHHBRADEN_AVAILABLE .or. abs(a-expected)>1.e-14_real64) error stop 2
+  p%average_evaporation=.49998_real64; p%average_precipitation=.5_real64
+  scanopy=p%canopy_storage_cm/c; avevap=p%average_evaporation/c
+  psat=p%average_precipitation*scanopy/avevap
+  expected=c*(psat+avevap*c/p%average_precipitation*(s%gross_rain_cm_per_day-psat))
+  call evaluate_gash_source_window(p,s,a,status)
+  if(status/=VONHHBRADEN_AVAILABLE .or. abs(a-expected)>1.e-14_real64) error stop 3
+  p%free_throughfall=1._real64
+  call evaluate_gash_source_window(p,s,a,status)
+  if(status/=VONHHBRADEN_INVALID_INPUT) error stop 4
   print '(a)', 'PPA_WU04D_GASH_SOURCE_ORACLE=PASS'
+  print '(a)', 'PPA_WU04D_GASH_FALLBACK_AND_INVALID_INPUT=PASS'
 end program
