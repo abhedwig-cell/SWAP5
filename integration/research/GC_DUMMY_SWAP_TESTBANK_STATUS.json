@@ -121,5 +121,29 @@
       "HLINK and finite-resistance q-link evidence is retained as comparison/limit evidence but removed from the main proof path."
     ],
     "fixed_interface_theory": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md"
+  },
+  "fixed_interface_program": {
+    "state": "THEORY_CHAIN_ACTIVE_NH01_NH03",
+    "theory": "docs/research/GC_FIXED_INTERFACE_COUPLING_THEORY.md",
+    "proof_plan": "docs/research/GC_FIXED_INTERFACE_PROOF_PLAN.md",
+    "NH01": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH01_PREREGISTRATION.json",
+      "implementation": "tests/research/test_gc_fixed_interface_nh01.py",
+      "result": "integration/research/GC_FIXED_INTERFACE_NH01_RESULT.json",
+      "elimination": "docs/research/GC_FIXED_INTERFACE_NH01_ELIMINATION.md",
+      "production_mapping": "docs/research/GC_FIXED_INTERFACE_NH01_PRODUCTION_MAPPING.md",
+      "state": "MATHEMATICS_PERSISTED_IMPLEMENTED_AWAITING_EXECUTION"
+    },
+    "NH02": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH02_PREREGISTRATION.json",
+      "implementation": "tests/research/test_gc_fixed_interface_nh02.py",
+      "state": "ANALYTIC_RESPONSE_IMPLEMENTED_AWAITING_EXECUTION_AND_BACKEND_SIGN_RECONCILIATION"
+    },
+    "NH03": {
+      "preregistration": "integration/research/GC_FIXED_INTERFACE_NH03_PREREGISTRATION.json",
+      "state": "NONLINEAR_STORAGE_THEORY_PREREGISTERED_NOT_IMPLEMENTED"
+    },
+    "key_mathematical_result": "For the linear nonhydrostatic fixed-interface oracle, u = S_S*C*dt/(S_S+C*dt) exactly. Thus u is a finite-window condensed top-system response coefficient; physical corrector dq_c/dH_c = -u/dt while the historical production affine partial slope is +u/dt.",
+    "architecture_implication": "This result supports fixed-interface response condensation without requiring MODFLOW head to equal SWAP phreatic elevation and without interpreting u as a finite-resistance q-link conductance."
   }
 }
