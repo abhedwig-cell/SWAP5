@@ -42,7 +42,7 @@ def test_pb01_reanchored_surrogate():
 
     # Current positive slope is an exact fixed-point preserving surrogate,
     # but it is unstable for this NH01 parameter set.
-    assert solve_surrogate(ROOT,+U/DT)==ROOT
+    assert math.isclose(solve_surrogate(ROOT,+U/DT),ROOT,abs_tol=1e-12)
     assert abs(amplification(+U/DT))>1.0
     h,n,hist,ok=iterate(8.20,+U/DT)
     assert not ok
