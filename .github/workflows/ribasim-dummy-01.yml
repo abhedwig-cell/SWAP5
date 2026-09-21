@@ -26,6 +26,11 @@ on:
       - 'tests/research/dummy_trapezoid_exchange_iteration.py'
       - 'tests/research/test_dummy_trapezoid_exchange_iteration.py'
       - 'tests/research/run_ribasim_dummy_04.sh'
+      - 'integration/research/RIBASIM_DUMMY_05_*.json'
+      - 'integration/research/RIBASIM_DUMMY_05_CONCEPT.md'
+      - 'tests/research/dummy_head_management_complementarity.py'
+      - 'tests/research/test_dummy_head_management_complementarity.py'
+      - 'tests/research/run_ribasim_dummy_05.sh'
       - '.github/workflows/ribasim-dummy-01.yml'
 
 permissions:
@@ -83,3 +88,16 @@ jobs:
         run: python3 --version
       - name: Run linear iteration mechanism gate
         run: bash tests/research/run_ribasim_dummy_04.sh
+
+  management-complementarity-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-05-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python
+        run: python3 --version
+      - name: Run exact management complementarity gate
+        run: bash tests/research/run_ribasim_dummy_05.sh
