@@ -178,7 +178,9 @@
     "A forecast error is a management-information error, not a license to alter the physical exchange law.",
     "DUMMY-15B does not decide which realization policy production coupling should use; it creates exact contrasting oracles for later pinned Ribasim evidence.",
     "The under-allocation M_pred=20 control must realize exactly the allocated 20 m3 with V=30 m3, hs1=0.5 m and hg1=0.3 m; unused physical capacity cannot create unallocated supplied demand.",
-    "For M_pred=45 the physical layer is curtailed to 32 m3 with V=28 m3 and the same hs1=0.4,hg1=0.28 endpoint as the fully allocated 60 m3 conflict case; realization-policy differences affect only the supplied split."
+    "For M_pred=45 the physical layer is curtailed to 32 m3 with V=28 m3 and the same hs1=0.4,hg1=0.28 endpoint as the fully allocated 60 m3 conflict case; realization-policy differences affect only the supplied split.",
+    "Across the preregistered canonical forecast-capacity grid, supplied_total=min(min(M_pred,60),32); for allocated_total<=32 both realization policies reproduce allocation exactly, while policy-specific supplied splits can diverge only for allocated_total>32.",
+    "For the canonical FULL branch, V=100/3-allocated_total/6 exactly; at allocated_total=32 this joins continuously to the CURTAILED branch V=28, hs1=0.4, hg1=0.28."
   ],
   "public_authority_binding": {
     "ribasim_results": "https://ribasim.org/reference/usage.html",
@@ -225,5 +227,73 @@
     ],
     "validation_design_implication": "For a later pinned real-Ribasim bridge, represent the two competing claims as two separate UserDemand nodes connected to the same source Basin, or inspect per-link physical flows directly. Do not infer a per-priority supplied split from a single UserDemand's demand-result row without first validating the output semantics."
   },
-  "policy_label_cleanup_note": "Before implementation, legacy unlabeled supplied-split fields from the original priority-preserving-only concept were removed or relabeled. Numerical expectations are unchanged; all policy-specific supplied values are now explicitly nested under their realization policy."
+  "policy_label_cleanup_note": "Before implementation, legacy unlabeled supplied-split fields from the original priority-preserving-only concept were removed or relabeled. Numerical expectations are unchanged; all policy-specific supplied values are now explicitly nested under their realization policy.",
+  "canonical_forecast_capacity_sweep": {
+    "fixed_state": {
+      "W_root0": 40,
+      "W_target": 80,
+      "h_s0": 1,
+      "h_g0": 0,
+      "A_s": 100,
+      "A_g": 100,
+      "C": 50,
+      "dt": 1,
+      "hmin": 0.4,
+      "R_root": 40,
+      "R_ext": 20
+    },
+    "total_demand_m3": 60,
+    "exact_physical_capacity_m3": 32,
+    "piecewise_actual_total": {
+      "statement": "For this canonical state, allocated_total=min(M_pred,60) and supplied_total=min(allocated_total,32).",
+      "below_or_at_capacity": "0 <= allocated_total <= 32: regime FULL, supplied_total=allocated_total.",
+      "above_capacity": "32 < allocated_total <= 60: regime CURTAILED, supplied_total=32."
+    },
+    "full_regime_exchange": {
+      "formula": "V = 100/3 - allocated_total/6",
+      "domain": "0 <= allocated_total <= 32",
+      "controls": [
+        {
+          "allocated_total": 0,
+          "V": 33.333333333333336,
+          "h_s1": 0.6666666666666666,
+          "h_g1": 0.3333333333333333
+        },
+        {
+          "allocated_total": 20,
+          "V": 30,
+          "h_s1": 0.5,
+          "h_g1": 0.3
+        },
+        {
+          "allocated_total": 32,
+          "V": 28,
+          "h_s1": 0.4,
+          "h_g1": 0.28
+        }
+      ]
+    },
+    "curtailed_regime": {
+      "domain": "32 < allocated_total <= 60",
+      "supplied_total": 32,
+      "V": 28,
+      "h_s1": 0.4,
+      "h_g1": 0.28
+    },
+    "realization_policy_onset": {
+      "statement": "Priority-preserving and proportional policies are identical whenever supplied_total=allocated_total. They can diverge only after physical realization curtails the allocation.",
+      "canonical_threshold_m3": 32
+    },
+    "preregistered_grid_m3": [
+      0,
+      5,
+      20,
+      31,
+      32,
+      33,
+      40,
+      45,
+      60
+    ]
+  }
 }
