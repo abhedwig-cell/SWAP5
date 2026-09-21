@@ -34,7 +34,7 @@ bash tests/research/run_gc_low01_constitutive_bridge.sh | tee "$BUILD/constituti
 grep -Fq 'GC_LOW01_CONSTITUTIVE_BRIDGE_QUALIFICATION=PASS' "$BUILD/constitutive.txt" || fail 'constitutive prerequisite'
 
 bash tests/research/run_gc_low01_candidate_carrier.sh | tee "$BUILD/carrier.txt"
-grep -Fq 'GC_LOW01_CANDIDATE_CARRIER_QUALIFICATION=PASS' "$BUILD/carrier.txt" || fail 'candidate-carrier prerequisite'
+grep -Fq 'GC_LOW01_CARRIER_QUALIFICATION=PASS' "$BUILD/carrier.txt" || fail 'candidate-carrier prerequisite'
 
 bash tests/research/run_gc_low01_output01.sh | tee "$BUILD/output01.txt"
 grep -Fq 'GC_LOW01_OUTPUT01_QUALIFICATION=PASS' "$BUILD/output01.txt" || fail 'OUTPUT01 prerequisite'
