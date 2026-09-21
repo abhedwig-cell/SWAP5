@@ -3,7 +3,7 @@
   "date": "2026-09-21",
   "work_unit": "RIBASIM-DUMMY-18",
   "title": "Real-model variable, transfer and transaction authority binding",
-  "baseline": "ba059143d1835369f7e88a65a478062b738b6720",
+  "baseline": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106",
   "dependency_gate": {
     "required": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
     "current": "SATISFIED",
@@ -11,7 +11,7 @@
     "qualified_authority": {
       "decision": "RIBASIM_DUMMY_17_QUALIFIED_TWO_BASIN_SHARED_GROUNDWATER",
       "workflow_run": 35591084550,
-      "main_closeout_head": "ba059143d1835369f7e88a65a478062b738b6720"
+      "main_closeout_head": "3a25ae6f03c7f4324b49468e0c01e1d0dd442106"
     }
   },
   "purpose": "Bind every analytical state, transfer, decision and commit object to a pinned real-model observable or explicitly mark it non-equivalent before any component is substituted.",
@@ -266,7 +266,8 @@
     "Real-model output lag, averaging or integration semantics are recorded before numerical comparison.",
     "Storage and drainage ownership blockers remain open unless separately closed by their owning workstreams.",
     "For production sprinkling substitution, gross source withdrawal, canopy storage change/interception evaporation, and net soil irrigation must be reconciled as distinct ledger terms.",
-    "No partial Ribasim supply may mutate SWAP irrigation dayfix/active-event state until an explicit event-realization transaction policy is qualified."
+    "No partial Ribasim supply may mutate SWAP irrigation dayfix/active-event state until an explicit event-realization transaction policy is qualified.",
+    "A green DUMMY-18 result means the authority map is internally complete and conservative about unresolved items; it does not convert UNRESOLVED rows into production admission."
   ],
   "planned_substitution_order": [
     "analytical all components",
@@ -285,7 +286,7 @@
   ],
   "pass_decision": "RIBASIM_DUMMY_18_QUALIFIED_REAL_MODEL_AUTHORITY_MAP",
   "fail_decision": "RIBASIM_DUMMY_18_BLOCKED",
-  "authority_rebind_note": "DUMMY-18 mapping was preregistered prospectively. After DUMMY-17 qualification, authority was reconciled again before creating any executable DUMMY-18 binding manifest/tests.",
+  "authority_rebind_note": "DUMMY-18 was preregistered prospectively after DUMMY-17. The executable authority map is rebound to the current post-DUMMY-15C/D closeout head so that irrigation-event transaction and canopy-ledger findings are included before the map is created.",
   "current_authority_reconciliation": {
     "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
     "live_csr_candidate": "PR #486 work/f-gc-coupling-semantics-reconciliation@2f919cb095c0b581664d8c261fb10586670caa45",
@@ -309,5 +310,17 @@
     "production transaction ownership of F-APP07 irrigation management continuation state",
     "production SWAP5 registration in actual upstream iMOD Coupler product lifecycle",
     "general production drainage ownership outside explicitly admitted restricted profiles"
-  ]
+  ],
+  "additional_qualified_research_authorities": {
+    "DUMMY_15C": {
+      "decision": "RIBASIM_DUMMY_15C_QUALIFIED_IRRIGATION_EVENT_REALIZATION_POLICIES",
+      "workflow_run": 35593011851,
+      "use": "analytical transaction requirement for partial external irrigation supply"
+    },
+    "DUMMY_15D": {
+      "decision": "RIBASIM_DUMMY_15D_QUALIFIED_CANOPY_IRRIGATION_LEDGER",
+      "workflow_run": 35593604887,
+      "use": "gross source withdrawal / canopy state / interception evaporation / net soil irrigation ledger separation"
+    }
+  }
 }
