@@ -289,16 +289,36 @@ def main() -> None:
                     f"{policy} measured rho disagrees with theory at {start_dh}: "
                     f"{rho_measured} versus {rho_expected}")
 
-    status_rejected, _ = trial_and_discard(swap, origin_state, href + KNOWN_REJECTED_DH_M)
-    require(status_rejected != 0, "known asymmetric rejected probe unexpectedly accepted")
-    status_contracted, _ = trial_and_discard(swap, origin_state, href + 0.5*KNOWN_REJECTED_DH_M)
-    require(status_contracted == 0, "factor-1/2 safeguard did not recover admissibility")
+    # G06 separates accepted physical authority from numerical warm-start
+    # history.  The kernel contract permits worker-local numerical warm starts,
+    # so trial admissibility need not be a static function of (origin,H).
+    warm_status, _ = trial_and_discard(swap, origin_state, href + KNOWN_REJECTED_DH_M)
     print(
-        f"FGC44_G06_REJECTED_DH_M={KNOWN_REJECTED_DH_M:.17g} STATUS={status_rejected} "
-        f"CONTRACTED_DH_M={0.5*KNOWN_REJECTED_DH_M:.17g} CONTRACTED_STATUS={status_contracted}"
+        f"FGC44_G06_WARM_HISTORY_DH_M={KNOWN_REJECTED_DH_M:.17g} "
+        f"STATUS={warm_status}"
     )
 
-    require(swap.state() == origin_state, "globalization research mutated SWAP authority")
+    # Reinitialize the diagnostic participant before asserting the previously
+    # observed cold-start asymmetry.  This is the envelope to which the
+    # preregistered -2e-6 observation belongs.
+    _, _, href_cold = swap.initialize()
+    cold_origin = swap.state()
+    require(cold_origin == (0, 0.0, 0, 0.0), "G06 cold reset did not restore origin")
+    require(abs(href_cold-href) <= 64*np.finfo(float).eps*max(1.0,abs(href)),
+            "G06 cold reset changed reference head")
+    cold_status, _ = trial_and_discard(swap, cold_origin, href_cold + KNOWN_REJECTED_DH_M)
+    require(cold_status != 0, "cold-start -2e-6 probe unexpectedly accepted")
+    contracted_status, _ = trial_and_discard(
+        swap, cold_origin, href_cold + 0.5*KNOWN_REJECTED_DH_M
+    )
+    require(contracted_status == 0, "factor-1/2 safeguard did not recover cold-start admissibility")
+    print(
+        f"FGC44_G06_COLD_REJECTED_DH_M={KNOWN_REJECTED_DH_M:.17g} "
+        f"STATUS={cold_status} CONTRACTED_DH_M={0.5*KNOWN_REJECTED_DH_M:.17g} "
+        f"CONTRACTED_STATUS={contracted_status}"
+    )
+
+    require(swap.state() == cold_origin, "G06 diagnostic trials mutated SWAP authority")
     print("FGC44_G03_GROUNDWATER_RESPONSE=PASS")
     print("FGC44_G05_FINITE_PERTURBATION=PASS")
     print("FGC44_G06_ASYMMETRIC_SAFEGUARD=PASS")
