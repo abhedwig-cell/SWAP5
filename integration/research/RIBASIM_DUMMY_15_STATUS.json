@@ -31,7 +31,7 @@
       "next_root_request_m3": 28
     }
   },
-  "next_action": "Execute the exact DUMMY-15 competing-claims-gate.",
+  "next_action": "Use run 35578647184 as the only DUMMY-15 qualification authority if it passes.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -65,5 +65,27 @@
     "no CSR-B1 or CSR-B2 closure"
   ],
   "expected_tests": "12 tests",
-  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action."
+  "recovery_point": "DUMMY-15 full research postimage and workflow gate are persisted; qualification is the next action.",
+  "prequalification_repair": {
+    "state": "APPLIED_BEFORE_VALID_QUALIFICATION",
+    "defect": "Second lexicographic claim was assigned but not subtracted from remaining realized capacity.",
+    "correction": "Subtract the second assigned claim in both priority branches.",
+    "scientific_effect": "none; preregistered equations, expected values and priority semantics unchanged",
+    "superseded_run": 35577982472,
+    "valid_candidate_run": 35578647184,
+    "frozen_base": "work/ribasim-dummy-15-base@a306217b847e67c2cd28429a08e70e6b95c9cca1"
+  },
+  "qualification_attempts": [
+    {
+      "run": 35577982472,
+      "state": "SUPERSEDED_PREQUALIFICATION_DEFECT",
+      "authority_use": "forbidden"
+    },
+    {
+      "run": 35578647184,
+      "pr": 518,
+      "state": "QUEUED_FROZEN_CORRECTED_SCOPE",
+      "authority_use": "preferred"
+    }
+  ]
 }
