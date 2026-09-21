@@ -51,16 +51,14 @@
       "decision": "RIBASIM_DUMMY_10_QUALIFIED_DYNAMIC_GROUNDWATER_MANAGEMENT",
       "run": 35568794175,
       "duplicate_confirming_run": 35568804086
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-11",
+      "decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY",
+      "run": 35569720082
     }
   ],
   "pending": [
-    {
-      "work_unit": "RIBASIM-DUMMY-11",
-      "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
-      "qualification_run": 35569720082,
-      "pr": 512,
-      "intended_decision": "RIBASIM_DUMMY_11_QUALIFIED_SHARED_STATE_TEMPORAL_MEMORY"
-    },
     {
       "work_unit": "RIBASIM-DUMMY-12",
       "state": "IMPLEMENTED_PERSISTED_CI_QUEUED",
@@ -81,7 +79,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Close DUMMY-11 and DUMMY-12 only after their exact gates complete; when both are qualified, rebind DUMMY-13 baseline and then implement the first-stage three-store ledger.",
+  "next_authority_action": "Await DUMMY-12 run 35570012761; if PASS, close DUMMY-12, then rebind DUMMY-13 baseline to the combined post-qualification research head.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
