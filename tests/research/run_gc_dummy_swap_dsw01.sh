@@ -75,4 +75,9 @@ LIBMF6="$BUILD/modflow-bin/libmf6.so" \
 
 grep -Fq 'GC_DSW08_LIVE_GATE=PASS' "$BUILD/dsw08-live.txt" || fail "DSW-08 live gate"
 
-echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_QUALIFICATION=PASS'
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+  python3 tests/research/test_gc_dummy_swap_dsw09_nonlinear_storage.py | tee "$BUILD/dsw09-live.txt"
+
+grep -Fq 'GC_DSW09_LIVE_GATE=PASS' "$BUILD/dsw09-live.txt" || fail "DSW-09 live gate"
+
+echo 'GC_DSW01_DSW02_DSW03_DSW04_DSW06_DSW08_DSW09_QUALIFICATION=PASS'
