@@ -21,7 +21,7 @@
     "surface_groundwater_exchange_m3": 4,
     "full_four_store_change_m3": -2
   },
-  "next_action": "Execute exact DUMMY-15D canopy-irrigation-ledger gate.",
+  "next_action": "Execute DUMMY-15D canopy-irrigation-ledger-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
@@ -70,5 +70,6 @@
       "net-as-source-withdrawal produces +5 water residual",
       "correct gross/net binding has zero full-system residual"
     ]
-  }
+  },
+  "qualification_attempt": "registered_workflow_dispatcher_pr"
 }
