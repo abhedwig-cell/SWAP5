@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.gc_hlink.hlink02d.preexecution_review.v1",
+  "date": "2026-09-21",
+  "work_unit": "GC-HLINK02D-PREEXEC-REVIEW",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "reviewed_head": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d",
+  "production_changes": false,
+  "source_comparison": {
+    "hlink01_control": "tests/research/test_gc_hlink01_storage_replacement.py",
+    "hlink02_parent": "tests/research/test_gc_hlink02_nonlinear_storage.py",
+    "hlink02d": "tests/research/test_gc_hlink02d_first_solve.py",
+    "invariant_inputs": [
+      "one-cell unconfined MODFLOW6 6.8.0 model",
+      "H0=8.0 m",
+      "configured Sy=0.15",
+      "1-day window",
+      "0.01 m3/day WEL input",
+      "zero API HCOF/RHS for the first secant solve",
+      "Newton disabled",
+      "X and XOLD restored to H0 before prepare_time_step"
+    ],
+    "isolated_factors": [
+      "write_sy=false versus write_sy=true with the same exact Sy value",
+      "IMS rclose=1e-15 versus 1e-13"
+    ]
+  },
+  "findings": [
+    "HLINK02D changes no physical equation relative to the HLINK01 unreplaced control.",
+    "The same-value SY write occurs before prepare_time_step, matching the first HLINK02 secant solve lifecycle.",
+    "All variants are hard-gated on the independent analytic head even when MODFLOW convergence certification differs.",
+    "The NO_WRITE_R1E15 case is a direct preservation control for the already-qualified HLINK01 unreplaced case.",
+    "The original HLINK02 failure must remain preserved while HLINK02D characterizes certification behavior."
+  ],
+  "runner_governance_repair": {
+    "commit": "7042f5a93a97a06d151e37c81fd8e9ac47a2a77d",
+    "change": "The central research runner no longer turns the intentionally preserved HLINK02 parent failure into an unconditional final workflow failure after HLINK02D has executed.",
+    "unchanged": [
+      "HLINK02 formulas",
+      "HLINK02 RCLOSE",
+      "HLINK02 head and mass gates",
+      "HLINK02D variants and gates"
+    ]
+  },
+  "decision": "PREEXECUTION_REVIEW_PASS_AWAIT_LIVE_EVIDENCE",
+  "qualification_rule": "Do not change HLINK02 from FAILED until HLINK02D live markers are observed. HLINK02D may classify the cause; it does not retroactively pass the parent.",
+  "blocker": "GitHub Actions owner carrier is queued before checkout due external runner/capacity state."
+}
