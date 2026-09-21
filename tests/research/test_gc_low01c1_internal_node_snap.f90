@@ -184,7 +184,7 @@ contains
     type(soil_water_numerical_config_t) :: numerical
     type(soil_water_physical_config_t) :: physical
     real(real64) :: storage0, storage1, residual1, residual2, max_head_delta
-    integer :: observed_nn
+    integer :: observed_nn, k
 
     call initialize_origin(origin)
     first = origin
