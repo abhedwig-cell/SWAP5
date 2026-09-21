@@ -102,10 +102,24 @@
       "purpose": "Forecast allocation versus exact physical realization policy contrast",
       "pinned_ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
       "bridge_plan": "integration/research/RIBASIM_DUMMY_15B_REAL_RIBASIM_BRIDGE_PLAN.md"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-16",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+      "implementation": false,
+      "purpose": "management-clock event synchronization with invariant shared-state hydrology"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-17",
+      "state": "PREREGISTERED_CONCEPT_ONLY_BLOCKED",
+      "required_authority": "RIBASIM_DUMMY_16_QUALIFIED_MANAGEMENT_CLOCK_EVENT_SEMANTICS",
+      "implementation": false,
+      "purpose": "pure physical two-Basin routing plus shared-groundwater redistribution with exact path decomposition"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. If PASS, close DUMMY-15 and rebind revised DUMMY-15B.",
+  "next_authority_action": "Observe DUMMY-15 v3 run 35581711814. No DUMMY-15B/16/17 implementation is authorized before their dependency gates close.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
