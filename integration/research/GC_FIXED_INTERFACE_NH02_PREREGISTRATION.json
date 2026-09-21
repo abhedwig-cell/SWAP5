@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.gc_fixed_interface.nh02.preregistration.v1",
+  "date": "2026-09-21",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "production_changes": false,
+  "parent_oracle": "NH01",
+  "purpose": "Numerically test the already-derived fixed-interface response condensation without changing the physical model.",
+  "parameters": {
+    "z_p0_m": 8.0,
+    "H_c0_m": 8.0,
+    "S_S": 0.10,
+    "S_M": 0.10,
+    "C_per_day": 0.20,
+    "W_S_m": 0.010,
+    "W_M_m": 0.0,
+    "dt_day": 1.0
+  },
+  "exact_predictions": {
+    "beta": 0.6666666666666666,
+    "u": 0.06666666666666667,
+    "u_over_dt_per_day": 0.06666666666666667,
+    "q_u_m_per_day": 0.006666666666666667,
+    "H_c1_m": 8.04,
+    "z_p1_m": 8.06,
+    "physical_interface_transfer_m": 0.004,
+    "physical_interface_flux_derivative_per_day": -0.06666666666666667,
+    "production_affine_partial_slope_per_day": 0.06666666666666667
+  },
+  "predictor_invariance": {
+    "q_b_sign": "positive into top/SWAP system",
+    "test_values_m_per_day": [-0.002, 0.0, 0.003, 0.008],
+    "prediction": "Every predictor gives dH_c/dq_b = dt/S_S + 1/C = 15 day, u = 1/15 = 0.0666666666667, and q_u = 0.00666666666667 m/day."
+  },
+  "gates": [
+    "Independent predictor calculations recover the exact dH_c/dq_b.",
+    "Derived u is invariant over the preregistered linear predictor set.",
+    "Derived q_u is invariant over the predictor set.",
+    "The production-style affine groundwater solve recovers H_c=8.04 m.",
+    "Reconstructed z_p=8.06 m and physical transfer=0.004 m.",
+    "Complete mass error <= 1e-12 m.",
+    "Measured physical corrector derivative equals -u/dt while affine partial slope equals +u/dt."
+  ],
+  "falsification": "Any gate failure after checking sign/unit implementation falsifies the proposed NH01-to-production algebra for this oracle.",
+  "nonclaim": "Passing NH02 would qualify the algebra for this transparent linear fixed-interface oracle only; it would not yet prove the same identity for nonlinear real SWAP."
+}
