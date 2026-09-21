@@ -32,6 +32,7 @@ SRC=(
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
+  tests/research/support/mod_gc_low01_mode1_trial_carrier.f90
   tests/research/test_gc_low01b_inside_profile.f90
 )
 
@@ -79,9 +80,12 @@ git diff --check -- \
   integration/research/GC_LOW01B_PREREGISTRATION.json \
   integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT.json \
   integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V2.json \
+  integration/research/GC_LOW01B_PREREGISTRATION_AMENDMENT_V3.json \
   integration/research/GC_LOW01B_CONSTITUTIVE_OWNERSHIP_AUDIT.json \
+  integration/research/GC_LOW01_RESULT_CONTRACT_V1.json \
   tests/research/support/gc_low01_headcalc_nonconstitutive_stubs.f90 \
   tests/research/support/mod_gc_low01_constitutive_bridge.f90 \
+  tests/research/support/mod_gc_low01_mode1_trial_carrier.f90 \
   tests/research/test_gc_low01b_inside_profile.f90 \
   tests/research/run_gc_low01b.sh
 
