@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-16",
   "branch": "work/ribasim-dummy-01",
   "preregistration_commit": "817470dcde729821190587154a193936aeb2abcf",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -28,12 +28,31 @@
       "external_total_m3": 20.444444444444443
     }
   },
-  "next_action": "Implement DUMMY-16 management-clock event semantics.",
+  "next_action": "Execute DUMMY-16 management-clock-gate.",
   "production_delta": [],
   "reference_delta": [],
   "authority_binding": {
     "baseline": "ab2f44e0c40a2980432165fd60d4958ef60a96fe",
     "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
     "workflow_run": 35590242964
-  }
+  },
+  "scope": "Two identical physical half-windows with a priority event at t=0.5; compare event-synchronized versus stale management clocks while total requested/realized managed water and shared-state water trajectory remain identical.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_16_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_16_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_16_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/dummy_management_clock.py",
+    "tests/research/test_dummy_management_clock.py",
+    "tests/research/run_ribasim_dummy_16.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "inherited_authority": {
+    "DUMMY_15B": {
+      "decision": "RIBASIM_DUMMY_15B_QUALIFIED_REALIZATION_POLICY_CONTRAST",
+      "run": 35590242964
+    }
+  },
+  "expected_tests": "12 tests",
+  "recovery_point": "DUMMY-16 implementation, tests and focused runner are persisted; qualification remains open."
 }
