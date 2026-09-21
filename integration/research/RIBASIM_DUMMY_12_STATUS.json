@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.coupling.ribasim_dummy_rootzone_demand.status.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-12",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "3a82ed3c79db1b4ff6c54ad68724067e95072e94",
+  "checkpoint_commit": "6458b88859cd781348750920402b6de450c71898",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "parallelism": "Independent of DUMMY-11 qualification; consumes no DUMMY-11 result.",
+  "scope": "Analytical persistent root-zone bucket deriving each window request from committed storage, with shortage diagnostic only and exact rainfall/loss/drainage ledger.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_12_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_12_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_12_STATUS.json",
+    "tests/research/dummy_rootzone_demand.py",
+    "tests/research/test_dummy_rootzone_demand.py",
+    "tests/research/run_ribasim_dummy_12.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "production_delta": [],
+  "reference_delta": [],
+  "next_action": "Add DUMMY-12 to the registered research workflow and execute the root-zone demand gate.",
+  "recovery_point": "DUMMY-12 preregistration, implementation, tests, concept and focused runner are persisted; qualification remains open.",
+  "blockers": []
+}
