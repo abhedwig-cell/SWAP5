@@ -4,7 +4,7 @@
   "work_unit": "RIBASIM-DUMMY-01",
   "branch": "work/ribasim-dummy-01",
   "baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "checkpoint_commit": "d3623f1143c8da200e807a4bbedd365f0f98a6cd",
+  "checkpoint_commit": "75a48f5a662129793df085b285e7beab52142f74",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -12,6 +12,7 @@
   "scope": "Research-only analytically controlled one-Basin Ribasim surrogate with explicit allocation prediction, physical realization, shortage decomposition and commit semantics.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_01_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_01_CONCEPT.md",
     "integration/research/RIBASIM_DUMMY_01_STATUS.json",
     "tests/research/dummy_ribasim_reservoir.py",
     "tests/research/test_dummy_ribasim_01.py",
@@ -26,7 +27,7 @@
   "production_delta": [],
   "reference_delta": [],
   "next_action": "Obtain formal repository-gate/CI evidence, then extend the harness with a three-part dummy SWAP UserDemand -> dummy Ribasim Basin -> dummy MODFLOW infiltration/drainage experiment.",
-  "recovery_point": "Resume from work/ribasim-dummy-01; model and tests are exact-blob locally tested, formal qualification still open.",
+  "recovery_point": "Resume from work/ribasim-dummy-01. Exact model/test blobs passed 8 local tests; the analytical concept is persisted; formal repository qualification remains open.",
   "blockers": [
     "The GitHub connector has not exposed a formal Actions run for the newly introduced workflow, so qualification remains open."
   ],
