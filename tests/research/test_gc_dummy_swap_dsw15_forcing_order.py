@@ -62,14 +62,23 @@ def run_memory(libmf6: Path, name: str, inputs: tuple[float, float]) -> tuple[fl
         )
         require(bool(result["converged"]), f"memory {name} step {step}: {result}")
         new_head = float(result["head_m"])
+        storage_gain = S * (new_head - head)
+        print(
+            f"GC_DSW15_MEMORY_{name.upper()}_STEP_{step}_"
+            f"HEAD_BEFORE_M={head:.17g} HEAD_AFTER_M={new_head:.17g} "
+            f"STORAGE_GAIN_M={storage_gain:.17g} "
+            f"EXPECTED_TRANSFER_M={transfer:.17g} "
+            f"MODEL_DT_DAY={float(result['model_dt_day']):.17g}"
+        )
         require(
             math.isclose(
-                S * (new_head - head),
+                storage_gain,
                 transfer,
                 rel_tol=0.0,
                 abs_tol=1.0e-12,
             ),
-            f"memory transfer mismatch {name} step {step}",
+            f"memory transfer mismatch {name} step {step}: "
+            f"storage_gain={storage_gain:.17g}, transfer={transfer:.17g}",
         )
         head = new_head
         w = w_new
