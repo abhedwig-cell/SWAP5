@@ -34,7 +34,7 @@ program test_gc_low01c1_internal_node_snap
   type(hydraulic_evaluation_context_t) :: evaluation
   real(real64), target :: drainage(1,n), irrigation(n), root_sink(n)
   real(real64) :: raw(24,n)
-  type(reference_richards_state_binding_t) :: characterized(4)
+  type(reference_richards_state_binding_t) :: origin, origin_snapshot, characterized(4)
   real(real64) :: qbot_characterized(4), storage_characterized(4), residual_characterized(4)
   integer :: iterations_characterized(4)
   integer :: i
@@ -74,9 +74,13 @@ program test_gc_low01c1_internal_node_snap
   evaluation%source_sink => source_sink
   evaluation%top_boundary => top
 
+  call initialize_origin(origin)
+  origin_snapshot = origin
+
   do i = 1, size(control_cm)
-    call run_case(i, characterized(i), qbot_characterized(i), storage_characterized(i), &
+    call run_case(i, origin, characterized(i), qbot_characterized(i), storage_characterized(i), &
          residual_characterized(i), iterations_characterized(i))
+    call require(states_bitwise_identical(origin, origin_snapshot), 'C1 caller origin unchanged')
   end do
 
   do i = 1, size(control_cm)
@@ -170,12 +174,13 @@ contains
     state%ftoph = .false.
   end subroutine initialize_origin
 
-  subroutine run_case(index, characterized_state, qbot_out, storage_out, residual_out, iterations_out)
+  subroutine run_case(index, immutable_origin, characterized_state, qbot_out, storage_out, residual_out, iterations_out)
     integer, intent(in) :: index
+    type(reference_richards_state_binding_t), intent(in) :: immutable_origin
     type(reference_richards_state_binding_t), intent(out) :: characterized_state
     real(real64), intent(out) :: qbot_out, storage_out, residual_out
     integer, intent(out) :: iterations_out
-    type(reference_richards_state_binding_t) :: origin, first, second
+    type(reference_richards_state_binding_t) :: first, second
     type(a23bu_worker_context_t) :: worker1, worker2
     type(reference_richards_workspace_t), target :: workspace1, workspace2
     type(a23bu_solver_history_t), target :: history1, history2
@@ -183,11 +188,12 @@ contains
     type(soil_water_numerical_config_t) :: numerical
     type(soil_water_physical_config_t) :: physical
     real(real64) :: storage0, storage1, residual1, residual2, max_head_delta
+    real(real64) :: lower_distance, lower_gradient_observed, lower_gradient_formula
+    real(real64) :: jacobian_without_lower, lower_jacobian_observed, lower_jacobian_formula
     integer :: observed_nn, k
 
-    call initialize_origin(origin)
-    first = origin
-    second = origin
+    first = immutable_origin
+    second = immutable_origin
     first%gwlinp = control_cm(index)
     second%gwlinp = control_cm(index)
 
@@ -195,7 +201,7 @@ contains
     boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
     boundary%bottom_mode = 1
     boundary%top_flux = 0.0_real64
-    boundary%top_head = origin%hsurf
+    boundary%top_head = immutable_origin%hsurf
     boundary%bottom_flux = 0.0_real64
     boundary%bottom_head = 0.0_real64
 
@@ -211,7 +217,7 @@ contains
     numerical%ponding_tolerance = tol
     physical%macropore_active = .false.
 
-    storage0 = sum(origin%theta*dz_cm) + origin%pond
+    storage0 = sum(immutable_origin%theta*dz_cm) + immutable_origin%pond
     call headcalc(worker1, workspace1, history1, first, evaluation, boundary, numerical, physical, dt_day, parameters)
     storage1 = sum(first%theta*dz_cm) + first%pond
     residual1 = storage1-storage0 - dt_day*(-first%qtop+first%qbot)
@@ -227,6 +233,19 @@ contains
     call require(observed_nn > 0 .and. observed_nn < n, 'C1 source-safe inside-profile control')
     if ((z_cm(observed_nn)-control_cm(index)) < 1.0e-4_real64) observed_nn = observed_nn - 1
 
+    lower_distance = z_cm(observed_nn) - first%gwlinp
+    call require(lower_distance > 0.0_real64, 'C1 positive lower distance')
+    lower_gradient_observed = workspace1%head_gradient(observed_nn+1)
+    lower_gradient_formula = first%h(observed_nn)/lower_distance + 1.0_real64
+    lower_jacobian_formula = first%kmean(observed_nn+1)/lower_distance
+    if (observed_nn == 1) then
+      jacobian_without_lower = first%dimoca(1)*dz_cm(1)/dt_day - workspace1%dfdh_lower(1)
+    else
+      jacobian_without_lower = first%dimoca(observed_nn)*dz_cm(observed_nn)/dt_day - &
+           workspace1%dfdh_upper(observed_nn)
+    end if
+    lower_jacobian_observed = workspace1%dfdh_main(observed_nn) - jacobian_without_lower
+
     call require(observed_nn == expected_nn(index), 'C1 reconstructed active NN')
     call require(abs(first%gwlinp-expected_effective_cm(index)) <= 1.0e-12_real64, 'C1 effective H')
     call require((abs(first%gwlinp-control_cm(index)) > 0.0_real64) .eqv. expected_snap(index), 'C1 snap flag')
@@ -235,13 +254,21 @@ contains
     call require(worker1%diagnostics%alternative_solver_calls == 0, 'C1 no alternative solver')
     call require(all(ieee_is_finite(first%h)) .and. all(ieee_is_finite(first%theta)), 'C1 finite state')
     call require(ieee_is_finite(first%qbot), 'C1 finite qbot')
+    call require(ieee_is_finite(lower_gradient_observed) .and. ieee_is_finite(lower_gradient_formula), &
+         'C1 finite lower gradient diagnostic')
+    call require(ieee_is_finite(lower_jacobian_observed) .and. ieee_is_finite(lower_jacobian_formula), &
+         'C1 finite lower Jacobian diagnostic')
+    call require(abs(lower_gradient_observed-lower_gradient_formula) <= 1.0e-12_real64, &
+         'C1 lower gradient formula')
+    call require(abs(lower_jacobian_observed-lower_jacobian_formula) <= 1.0e-12_real64, &
+         'C1 lower Jacobian formula')
     call require(abs(residual1) <= tol, 'C1 mass closure')
     call require(states_bitwise_identical(first,second), 'C1 repeat state')
     call require(transfer(residual1,0_int64) == transfer(residual2,0_int64), 'C1 repeat mass residual')
     call require(worker1%diagnostics%nonlinear_iterations == worker2%diagnostics%nonlinear_iterations, 'C1 repeat iterations')
-    call require(transfer(origin%gwl,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin accepted GWL')
-    call require(transfer(origin%gwlinp,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin requested GWL')
-    call require(all([(transfer(origin%h(k),0_int64) == &
+    call require(transfer(immutable_origin%gwl,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin accepted GWL')
+    call require(transfer(immutable_origin%gwlinp,0_int64) == transfer(origin_gwl_cm,0_int64), 'C1 origin requested GWL')
+    call require(all([(transfer(immutable_origin%h(k),0_int64) == &
          transfer(origin_gwl_cm-z_cm(k),0_int64), k=1,n)]), 'C1 fixed hydrostatic origin heads')
 
     characterized_state = first
@@ -250,7 +277,7 @@ contains
     residual_out = residual1
     iterations_out = worker1%diagnostics%nonlinear_iterations
 
-    max_head_delta = maxval(abs(first%h-origin%h))
+    max_head_delta = maxval(abs(first%h-immutable_origin%h))
     write(*,'(A,I0)') 'GC_LOW01C1_CASE=', index
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_REQUESTED_H_CM=', control_cm(index)
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_EFFECTIVE_H_CM=', first%gwlinp
@@ -259,6 +286,9 @@ contains
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_QBOT_CM_PER_DAY=', first%qbot
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_STORAGE_CHANGE_CM=', storage1-storage0
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MASS_RESIDUAL_CM=', residual1
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_LOWER_DISTANCE_CM=', lower_distance
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_LOWER_GRADIENT=', lower_gradient_observed
+    write(*,'(A,ES24.16E3)') 'GC_LOW01C1_LOWER_JACOBIAN_PER_DAY=', lower_jacobian_observed
     write(*,'(A,ES24.16E3)') 'GC_LOW01C1_MAX_HEAD_DELTA_CM=', max_head_delta
     write(*,'(A,I0)') 'GC_LOW01C1_NONLINEAR_ITERATIONS=', worker1%diagnostics%nonlinear_iterations
   end subroutine run_case
