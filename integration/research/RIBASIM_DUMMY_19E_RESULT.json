@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.coupling.real_ribasim_mixed_allocation_realization_conflict.result.v1",
+  "date": "2026-09-21",
+  "work_unit": "RIBASIM-DUMMY-19E",
+  "decision": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
+  "authority": {
+    "implementation_baseline": "62b74ca453b0a365f1f16512843b61be15375287",
+    "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "qualification_head": "3e50767506d06943382a3c4de1c3bfb253b168eb",
+    "workflow_run": 35616065964,
+    "workflow_job": 106386962623,
+    "conclusion": "failure"
+  },
+  "preregistered_hypothesis": "With allocation.dt=86400 s and solver.saveat=3600 s, the initial 32 m3/day priority allocation would remain frozen for the one-day physical realization window.",
+  "observed_failure": {
+    "gate": "root allocation differs from preregistered priority split",
+    "first_failed_case": "swap5_mixed_root_first",
+    "stage": "after Ribasim.run, before physical-volume comparison",
+    "implication": "The management allocation present after the run is not the preregistered 32/0 m3/day root-first split."
+  },
+  "pinned_source_reconciliation": {
+    "allocation_time_initialization": "core/src/read.jl::AllocationTime initializes allocation.time.tstops on the solver.saveat grid.",
+    "fixed_dt_cap": "core/src/model.jl::compute_next_allocation_tstop uses allocation.dt for fixed timestepping but caps the next solve at first(allocation.time.tstops), which includes saveat boundaries.",
+    "repeated_solve": "core/src/model.jl::loopheader! calls update_allocation! whenever the integrator reaches an allocation.time.tstop.",
+    "state_feedback": "core/src/allocation_optim.jl::set_simulation_data!(::Basin) rebuilds the optimization from current_storage at every solve.",
+    "user_documentation_tension": "docs/reference/usage.qmd describes allocation.dt as the fixed allocation update interval and solver.saveat as output frequency, while the pinned implementation couples allocation solves to saveat boundaries."
+  },
+  "classification": "SCIENTIFIC_CLOCK_SEMANTICS_FALSIFICATION",
+  "scientific_effect": "The intended one-day frozen management allocation was not actually the model execution semantics at solver.saveat=3600 s. Hourly output boundaries can expose newly retained Basin storage to repeated allocation optimization within the nominal one-day allocation.dt.",
+  "forbidden_inference": [
+    "do not treat this as a verifier defect",
+    "do not tune expected allocations or physical volumes to make the original 19E pass",
+    "do not use this failed work unit as authority for one-day frozen allocation semantics"
+  ],
+  "downstream": [
+    "supersede DUMMY-19F as currently preregistered because it assumes one allocation solve per day while retaining hourly saveat",
+    "create a new aligned-clock work unit with solver.saveat=allocation.dt=86400 s to test the intended frozen-window mechanism",
+    "create a separate clock-sensitivity work unit to quantify how saveat changes allocation and physical realization under fixed allocation.dt"
+  ]
+}
