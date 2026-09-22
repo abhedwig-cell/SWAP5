@@ -1,0 +1,69 @@
+name: GC rootzone memory RZM06D03 cross-time origin selection
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06D03_PREREGISTRATION.json'
+      - 'tests/research/test_gc_rootzone_memory_rzm06d03_select.py'
+      - '.github/workflows/gc-rootzone-memory-rzm06d03.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06d03-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify preregistration and D02R1 authority
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor c1f96aa01d07564c2166f1346ef383ec2357406a HEAD
+          python3 - <<'PY'
+          import json
+          d=json.load(open("integration/research/GC_ROOTZONE_MEMORY_RZM06D02R1_RESULT.json"))
+          assert d["decision"]=="QUALIFIED_COMMON_TIME_RESEED_FOR_C01_PURE_HYDRAULICS"
+          assert d["execution"]["workflow_run"]==35739047845
+          assert d["observed_identity"]["max_abs_pressure_head_difference_cm"]==0.0
+          assert d["observed_identity"]["max_abs_water_content_difference"]==0.0
+          assert d["observed_identity"]["bottom_outward_exchange_difference_native"]==0.0
+          assert d["observed_identity"]["terminal_bottom_flux_difference_native"]==0.0
+          print("GC_RZM06D03_D02R1_AUTHORITY=PASS")
+          PY
+
+      - name: Verify ROM1AR2 artifact authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          meta="$(gh api repos/${GITHUB_REPOSITORY}/actions/runs/35379176697/artifacts --jq '.artifacts[] | select(.id == 10561841507) | [.id,.name,.digest,.expired] | @tsv')"
+          expected=$'10561841507\trom1ar2-35379176697\tsha256:2b04e188b7ce1593e073031fc43580550513e857dfb74b9993844a3230a1a67f\tfalse'
+          test "$meta" = "$expected"
+          echo 'GC_RZM06D03_ARTIFACT_AUTHORITY=PASS'
+
+      - name: Download exact ROM1AR2 authority artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rom1ar2-35379176697
+          path: ROM1AR2-AUTHORITY
+          github-token: ${{ github.token }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 35379176697
+
+      - name: Select cross-time H2 origins without response access
+        run: |
+          set -euo pipefail
+          python3 tests/research/test_gc_rootzone_memory_rzm06d03_select.py             --artifact-dir ROM1AR2-AUTHORITY | tee rzm06d03.txt
+          grep -Fq 'GC_RZM06D03_RESPONSE_BLIND_SELECTION=PASS' rzm06d03.txt
