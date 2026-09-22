@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.coupling.ribasim_release_next_boundary_memory_forecast_separation.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H6",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20H5 qualification. Scientific references are frozen prospectively.",
+  "prepared_scope": "Exact-release t=24 accepted-state LP oracle separating accepted storage memory from current active-River forcing.",
+  "next_action": "After DUMMY-20H5 closes, rebind and implement without changing frozen references.",
+  "production_delta": [],
+  "reference_delta": []
+}
