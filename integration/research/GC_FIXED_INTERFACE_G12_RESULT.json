@@ -7,7 +7,7 @@
   "workflow_run": 35706515049,
   "workflow_job": 106676639155,
   "workflow_conclusion": "failure",
-  "decision": "PREREGISTERED_GROUNDWATER_HREF_CALIBRATION_GATE_FALSIFIED_AFTER_BOUNDED_R05_POLICY_REPLAY",
+  "decision": "PREREGISTERED_ALL_REGIME_GROUNDWATER_CALIBRATION_GATE_FALSIFIED",
   "technical_predecessors": [
     {
       "workflow_run": 35705747725,
@@ -43,43 +43,36 @@
       "J_R": -0.0005726907048586583,
       "J_nonbottom": 0
     },
-    "groundwater_R05": {
+    "gw_r05_storage": {
       "calibration": "PASS",
-      "a_per_s": 3.3141856588372257e-7,
-      "fit_error_m_per_s": 1.0339757656912846e-24,
       "href_residual_m_per_s": -5.386160429037465e-16,
-      "P1_NEG": "CONVERGED_1_OUTER",
-      "P4_NEG": "CONVERGED_1_OUTER",
-      "P1_POS": "CONVERGED_1_OUTER",
-      "P4_POS": "CONVERGED_1_OUTER",
+      "affine_fit_error_m_per_s": 1.0339757656912846e-24,
+      "p1_converged_starts": 2,
+      "p4_converged_starts": 2,
       "p4_total_contractions": 0
     },
     "transaction_authority": "PASS_TO_FAILURE_POINT"
   },
   "failure": {
-    "phase": "second groundwater regime calibration (GW_R2_STORAGE), after complete bounded R05 policy replay",
-    "regime_id": "GW_R2_STORAGE",
-    "gate": "|q_swap(href)-q_gw_fit(href)| <= 1e-15 m/s",
+    "phase": "GW_R2_STORAGE calibration before its policy replay",
+    "gate": "|q_swap(href)-q_gw_fit(href)| <= 1e-15 m/s for every regime",
     "observed_residual_m_per_s": -7.559605422099638e-15,
     "tolerance_m_per_s": 1e-15,
     "ratio_to_tolerance": 7.559605422099638,
-    "interpretation": "The frozen one-shot groundwater translation calibration is not sufficiently root-accurate in GW_R2_STORAGE. G12 remains failed; do not relax the tolerance or retune within G12."
+    "interpretation": "The repaired harness now reaches and qualifies the full GW_R05 policy block, but the prospectively frozen one-shot translation calibration still fails its own href-root gate in GW_R2_STORAGE. Do not relax the tolerance or retune bias inside G12."
   },
   "policy_evidence": {
-    "completed_regime": "GW_R05_STORAGE",
-    "completed_cases": 4,
-    "p1_converged": 2,
-    "p4_converged": 2,
-    "p4_contractions": 0,
-    "later_regimes": "NOT_QUALIFIED"
+    "GW_R05_STORAGE": "P1 and P4 converged from both frozen starts; zero P4 contractions.",
+    "GW_R2_STORAGE": "NOT_REACHED_AFTER_CALIBRATION_FAILURE",
+    "GW_MIXED": "NOT_REACHED"
   },
   "bounded_conclusions": [
-    "E3_MAP remains stable and physically signed on the active-drainage MAP09 carrier at href and both frozen +/-1e-6 m starts.",
-    "The href E3_MAP slope agrees with the independently qualified MAP09A whole-window J_R/dt response; the selected-scale mass decomposition gives J_nonbottom=0.",
-    "The first storage-dominated groundwater regime (GW_R05_STORAGE) provides bounded positive P1/P4 evidence from both frozen starts, with one Newton update and zero P4 contractions.",
-    "G12 is nevertheless formally falsified because the second groundwater regime misses the frozen href-root calibration gate by about 7.56 times the tolerance.",
-    "The remaining G12 groundwater regimes and full process-diverse gate are not qualified.",
-    "A separate diagnostic may characterize the groundwater calibration map and exact href flux without changing G12."
+    "E3_MAP is stable and physically signed on the active-drainage MAP09 carrier at href and both frozen +/-1e-6 m starts.",
+    "The href E3_MAP slope agrees with the independently qualified MAP09A whole-window J_R/dt response and the selected-scale mass decomposition again gives J_nonbottom=0 to reported precision.",
+    "The complete GW_R05_STORAGE policy block converges for P1 and P4 from both frozen starts.",
+    "G12 remains formally falsified because GW_R2_STORAGE misses the unchanged 1e-15 m/s one-shot groundwater href-calibration gate by about 7.56e-15 m/s.",
+    "No P1/P4 qualification follows yet for GW_R2_STORAGE or GW_MIXED.",
+    "A separate G12A diagnostic must characterize the one-shot bias, local affine response and direct q(href) inversion without changing G12."
   ],
   "production_admission": "NO",
   "supersedes_definitive_execution": {
