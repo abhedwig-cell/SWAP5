@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.coupling.real_ribamod_two_cell_next_boundary_memory.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20F2",
+  "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+  "authority": {
+    "qualification_head": "80f242625ccf3f5714bb521707f1136a1e4f779d",
+    "workflow_run": 35729300651,
+    "workflow_job": 106750599934,
+    "conclusion": "success",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "observations": [
+    {
+      "endpoint_s": 21600,
+      "level_m": 1.0000039987293805,
+      "root_m3": 4.001270619481194,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 0,
+      "drainage_m3_day": 0,
+      "storage_gain_m3": 3.9987293805054946,
+      "ledger_residual_m3": 1.3311129976045777e-11
+    },
+    {
+      "endpoint_s": 43200,
+      "level_m": 1.0000099943718745,
+      "root_m3": 8.005596125858313,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 1.9999680005119933,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 9.994371874544328,
+      "ledger_residual_m3": 1.0935430339031882e-10
+    },
+    {
+      "endpoint_s": 64800,
+      "level_m": 1.0000159863657703,
+      "root_m3": 12.013570230756775,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 3.9999360010239866,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 15.986365770270794,
+      "ledger_residual_m3": -3.582911745070305e-12
+    },
+    {
+      "endpoint_s": 86400,
+      "level_m": 1.0000219748888743,
+      "root_m3": 16.02501512716806,
+      "external_m3": 0,
+      "groundwater_cumulative_m3": 5.99990400153598,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 21.97488887434318,
+      "ledger_residual_m3": 2.474109805916669e-11
+    },
+    {
+      "endpoint_s": 108000,
+      "level_m": 1.000024448561855,
+      "root_m3": 21.0425451404563,
+      "external_m3": 2.5087650066441327,
+      "groundwater_cumulative_m3": 7.999872002047974,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 24.448561855017203,
+      "ledger_residual_m3": -6.966516252759902e-11
+    },
+    {
+      "endpoint_s": 129600,
+      "level_m": 1.0000269196230271,
+      "root_m3": 26.061816359307887,
+      "external_m3": 5.0184006160699255,
+      "groundwater_cumulative_m3": 9.999840002559967,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 26.919623027144013,
+      "ledger_residual_m3": 3.813838134192338e-11
+    },
+    {
+      "endpoint_s": 151200,
+      "level_m": 1.000029387921009,
+      "root_m3": 31.082929705129118,
+      "external_m3": 7.528957288980544,
+      "groundwater_cumulative_m3": 11.99980800307196,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 29.38792100892762,
+      "ledger_residual_m3": 3.468159093245049e-11
+    },
+    {
+      "endpoint_s": 172800,
+      "level_m": 1.0000318534416883,
+      "root_m3": 36.10589458586072,
+      "external_m3": 10.040439729346344,
+      "groundwater_cumulative_m3": 13.999776003583953,
+      "drainage_m3_day": 7.999872002047973,
+      "storage_gain_m3": 31.85344168832316,
+      "ledger_residual_m3": 5.3724136250821175e-11
+    }
+  ],
+  "qualified_claims": [
+    "The qualified DUMMY-20E3 day-1 trajectory is reproduced as the first four accepted boundaries.",
+    "External UserDemand remains exactly unsupplied through t=24 h despite approximately 6 m3 of physically realized groundwater transfer entering during day 1.",
+    "At the first accepted interval after the t=24 h fixed allocation boundary, external physical supply becomes positive: 2.5087650066 m3 by t=30 h.",
+    "Day-2 root and external delivery increments follow the preregistered common-factor 2:1 realization within tolerance, consistent with full 40/20 allocation at the t=24 h management boundary.",
+    "Groundwater transfer remains physically active at approximately 7.999872 m3/day throughout day 2.",
+    "The two-day source + groundwater = UserDemand + Basin-storage ledger closes at every accepted 6-hour boundary.",
+    "Physical groundwater memory is therefore admitted prospectively at the next allocation boundary, not retrospectively into the already accepted day-1 management decision."
+  ],
+  "time_direction_contract": [
+    "physical transfer occurs and changes accepted state during the current allocation window",
+    "current allocation remains authoritative until its next scheduled boundary",
+    "accepted physical memory is visible to the next allocation solve",
+    "new management allocation governs only subsequent physical realization"
+  ],
+  "boundaries": [
+    "The release XMI does not expose UserDemand.allocated directly; admission is qualified from the preregistered causal delivery signature and trajectory, not from an invented pointer.",
+    "No production SWAP5 admission.",
+    "No inference yet to active-river bidirectional feedback."
+  ],
+  "downstream": "Proceed to prospectively frozen DUMMY-20G active-river reciprocal stage-feedback bridge."
+}
