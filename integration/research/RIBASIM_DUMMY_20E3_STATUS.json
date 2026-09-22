@@ -6,15 +6,15 @@
   "baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20E3 two-cell groundwater-intervention product qualification.",
+  "next_action": "Use qualified nonzero groundwater intervention as day-1 authority; proceed to frozen DUMMY-20F2 next-boundary memory admission.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "07e9f1ba6762e03a5b43b3e4e310fff153539d77",
-  "recovery_point": "Two-cell CHD-source / active-DRN fixture and intervention-first verifier persisted; first qualification pending.",
+  "recovery_point": "DUMMY-20E3 qualified by run 35728008237.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20E3_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20E3_CONCEPT.md",
@@ -36,5 +36,9 @@
       "Ribasim allocation.dt/saveat/demand/priorities are unchanged from the blocked DUMMY-20E2 hypothesis",
       "frozen idealized 8 m3/day response references and tolerances are unchanged"
     ]
-  }
+  },
+  "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
+  "workflow_run": 35728008237,
+  "workflow_job": 106746318318,
+  "qualification_head": "64813e01f3817794f457f467be2f0724797a72c5"
 }
