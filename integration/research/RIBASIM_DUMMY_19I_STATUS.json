@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Daily output plus 6-hour BMI.update_until coupling boundaries for both priority orders.",
-  "next_action": "Execute frozen DUMMY-19I BMI management-clock qualification.",
+  "next_action": "Execute DUMMY-19I v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "11b6b39c94341ce5ed4726daa00f2ce43759bd6f",
@@ -26,5 +26,7 @@
     "tests/research/real_ribasim_bmi_management_clock_bridge.jl",
     "tests/research/run_ribasim_dummy_19i.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_bmi_management_clock",
+  "qualification_base": "work/ribasim-dummy-01@68fe4ca26dfac309651a000b1ba3040a1e7a44de"
 }
