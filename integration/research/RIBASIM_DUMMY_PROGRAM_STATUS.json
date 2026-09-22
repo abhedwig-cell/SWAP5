@@ -255,10 +255,19 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H4",
+      "state": "PREREGISTERED_BLOCKED_BY_20H3",
+      "intended_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+      "dependency": "DUMMY-20H3 closeout and qualification",
+      "scientific_baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
+      "ribasim_release": "v2026.1.1",
+      "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H3 exact-release allocation low-storage-factor mechanism diagnostic.",
+  "next_authority_action": "Execute frozen DUMMY-20H3 low-storage-factor LP mechanism diagnostic; DUMMY-20H4 physical-versus-LP factor comparison is prospectively frozen behind it.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
