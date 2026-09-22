@@ -60,7 +60,14 @@ if "RZM06A_CHILD_SPEC" in os.environ:
 # profile; positive top flux is out of the profile, as audited from the real
 # serialized-reference mass accounting.
 durations=[1.0e-2,1.0e-3,1.0e-4]
-top_fluxes=[-1.0e-1,1.0e-1,-1.0e-2,1.0e-2,0.0]
+# Amendment after infrastructure run 35724013765: the first non-zero grid
+# (1e-1,1e-2 cm/day) was entirely rejected and was 4-5 orders above the
+# carrier's existing 1e-6 cm/day top-flux scale.  No scientific probe response
+# was used.  Extend characterization downward around that existing scale.
+top_fluxes=[
+    -1.0e-1,1.0e-1,-1.0e-2,1.0e-2,
+    -1.0e-4,1.0e-4,-1.0e-5,1.0e-5,-1.0e-6,1.0e-6,0.0,
+]
 characterization=[]
 for duration in durations:
     for top_flux in top_fluxes:
@@ -154,7 +161,6 @@ amp=abs(chosen["top_flux_cm_per_day"])
 neg=run_fresh({"ops":[{"top_flux_cm_per_day":-amp,"duration_day":chosen["duration_day"],"head_m":None,"commit":False}]})
 pos=run_fresh({"ops":[{"top_flux_cm_per_day": amp,"duration_day":chosen["duration_day"],"head_m":None,"commit":False}]})
 nd=neg["records"][0]["diag"]; pd=pos["records"][0]["diag"]
-assert nd["status"] if False else True
 assert nd["materialized_top_flux_cm_per_day"]==-amp
 assert pd["materialized_top_flux_cm_per_day"]== amp
 assert nd["materialized_bottom_head_cm"]==pd["materialized_bottom_head_cm"]
