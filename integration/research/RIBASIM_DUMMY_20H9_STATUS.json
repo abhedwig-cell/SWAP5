@@ -4,13 +4,13 @@
   "work_unit": "RIBASIM-DUMMY-20H9",
   "branch": "work/ribasim-dummy-01",
   "baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": true,
-  "blocker": "DUMMY-20H8 must qualify before H9 execution is released.",
-  "next_action": "Keep execution blocked; prepare verifier only. Release runner/workflow only after H8 qualification.",
+  "blocked": false,
+  "blocker": null,
+  "next_action": "Execute the frozen actual positive-groundwater t=24 allocation bridge; do not retune references or tolerances.",
   "production_delta": [],
   "reference_delta": [],
   "relevant_paths": [
@@ -29,5 +29,7 @@
     "scientific_change": false,
     "note": "No runner, workflow gate or qualification branch before DUMMY-20H8 closeout."
   },
-  "recovery_point": "DUMMY-20H9 frozen prospectively while H8 qualification is active; product verifier prepared but execution remains blocked."
+  "recovery_point": "DUMMY-20H8 qualified by run 35747089993; H9 released exactly as prospectively preregistered.",
+  "execution_baseline": "f9973c9a3732c0063854233d701e5c0ac8d1972f",
+  "implementation_baseline": "f82008026e57297ba88c828ce976f94c2a289d72"
 }
