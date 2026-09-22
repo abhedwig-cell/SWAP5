@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03.rootmatched_deep_memory_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03",
+  "authority": "preregistered response-blind strict-Reference state-sufficiency experiment",
+  "production_changes": false,
+  "parent_program_commit": "1091537d3617f7c38971eeefb55163a89647f239",
+  "scientific_question": "Can two strict accepted 16-node real-HeadCalc origins be constructed with the same total profile water and the same upper-30-cm water, but materially different deeper vertical distribution, without using any interface-response quantity for construction or selection?",
+  "rationale": [
+    "E02 supports vertical-distribution memory at equal total profile water, but its selected pair differs in upper-30-cm water.",
+    "The next state-sufficiency rung must therefore control both total storage and an explicit root-zone storage surrogate before any fixed-Hc response probe.",
+    "A zero-divergence two-stage throughflow reversal is used because every interval has identical top and bottom boundary flux, so total profile water is constrained while fast upper-profile recovery can precede deeper redistribution recovery."
+  ],
+  "carrier": {
+    "authority": "GC-RZM06C01",
+    "geometry": "16 x 10 cm homogeneous 160 cm",
+    "material": "B01",
+    "constitutive": "B110 default MvG",
+    "backend": "serialized strict Reference HeadCalc",
+    "optional_state_layout": "BASE",
+    "numerical_continuation": "NONE",
+    "initial_effective_saturation": 0.85,
+    "hard_mass_gate_cm": 1e-12
+  },
+  "time_design": {
+    "dt_expression": "3435974 / 2^32 day",
+    "dt_day_approx": 0.000800000037997961,
+    "first_stage_steps": 10,
+    "recovery_stage_max_steps": 24,
+    "fail_closed": true
+  },
+  "forcing_design": {
+    "derive_K0_from_fresh_B01_seed": true,
+    "equilibrium_flux_rule": "q_eq = -K0",
+    "families": [
+      {
+        "id": "BASE_EQ",
+        "stages": [
+          {
+            "steps": 1,
+            "top_flux": "q_eq",
+            "bottom_flux": "q_eq"
+          }
+        ],
+        "selection_role": "baseline control"
+      },
+      {
+        "id": "DRY_RECOVER",
+        "stages": [
+          {
+            "phase": "PERTURB",
+            "steps": 10,
+            "top_flux": "0",
+            "bottom_flux": "0"
+          },
+          {
+            "phase": "RECOVER",
+            "steps": 24,
+            "top_flux": "-2*K0",
+            "bottom_flux": "-2*K0"
+          }
+        ],
+        "selection_role": "candidate history"
+      },
+      {
+        "id": "WET_RECOVER",
+        "stages": [
+          {
+            "phase": "PERTURB",
+            "steps": 10,
+            "top_flux": "-2*K0",
+            "bottom_flux": "-2*K0"
+          },
+          {
+            "phase": "RECOVER",
+            "steps": 24,
+            "top_flux": "0",
+            "bottom_flux": "0"
+          }
+        ],
+        "selection_role": "candidate history"
+      }
+    ],
+    "integrated_boundary_divergence": "zero in every interval because q_top == q_bottom"
+  },
+  "execution_contract": [
+    "each family starts from the same freshly constructed B01 Se=0.85 physical origin",
+    "every interval uses Reference-floor sample semantics with one physical advance and no automatic temporal subdivision",
+    "only strict samples with complete mass accounting and |residual|<=1e-12 cm may commit",
+    "a failed sample terminates that family and must leave the latest committed origin bit-identical",
+    "emit only family/phase/step/time plus committed pressure-head and water-content vectors for selection",
+    "do not emit or parse bottom exchange, terminal flux, tangent or future-response quantities"
+  ],
+  "response_blind_selection": {
+    "reconstruct_profile_water_cm": "sum(theta_i*10 cm), i=1..16",
+    "reconstruct_root30_water_cm": "sum(theta_i*10 cm), i=1..3",
+    "reconstruct_distribution_moment_cm": "sum(theta_i*10 cm*z_i)/W_profile, z=[-5,-15,...,-155] cm",
+    "eligible_pairs": [
+      "BASE_EQ versus any RECOVER state from DRY_RECOVER or WET_RECOVER",
+      "RECOVER state from DRY_RECOVER versus RECOVER state from WET_RECOVER"
+    ],
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_distribution_moment_difference_cm": 0.01,
+    "ranking": [
+      "largest abs(delta M1)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "smallest total accepted step count"
+    ],
+    "no_match": "Close E03 NO_MATCH without changing amplitudes, dt, stage lengths, tolerances or state thresholds."
+  },
+  "qualification_gates": [
+    "16x10 cm geometry exact",
+    "BASE_EQ strict sample accepted",
+    "accepted candidate prefixes consist only of strict mass-complete commits",
+    "failed interval, if any, leaves latest committed origin unchanged",
+    "O0/O2 complete observable output byte-identical",
+    "selector parses no response fields",
+    "selected pair, if any, is persisted with all 16 H/theta values before any response experiment"
+  ],
+  "next_if_selected": "GC-RZM06E04 must preregister exact common-time reconstruction of the immutable E03 pair and only then run an identical forcing-free fixed-Hc response probe with both W_profile and W_root30 gates enforced.",
+  "controls": [
+    "no threshold relaxation",
+    "no response-guided selection",
+    "no HELD_OUT or FALLBACK state access",
+    "no direct mutation of live committed state",
+    "no production source or coupling API change",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "E03 selection alone does not prove an additional state variable is required",
+    "upper-30-cm water is a bounded root-zone storage surrogate for this carrier, not a universal SWAP root-state definition",
+    "no production coupling admission follows from E03"
+  ]
+}
