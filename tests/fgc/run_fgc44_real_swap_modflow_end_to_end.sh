@@ -106,6 +106,7 @@ done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc44_swap.so" || fail "link F-GC44 shared library"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fail "missing SWAP C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_research_interval_c' || fail "missing RZM06A research interval C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_committed_profile_nodes_c' || fail "missing RZM06A6 committed node-profile C ABI"
 nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py | tee "$BUILD/e2e.txt"
@@ -127,4 +128,6 @@ FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test
 grep -Fq 'GC_RZM06A4_STRONG_TOP_FORCING_H2_EXPERIMENT=PASS' "$BUILD/rzm06a4-h2.txt" || fail "RZM06A4 stronger top-forcing H2 experiment"
 FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a5_h2.py | tee "$BUILD/rzm06a5-h2.txt"
 grep -Fq 'GC_RZM06A5_TIMING_REDISTRIBUTION_H2_EXPERIMENT=PASS' "$BUILD/rzm06a5-h2.txt" || fail "RZM06A5 timing redistribution H2 experiment"
+FGC44_REAL_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/research/test_gc_rootzone_memory_rzm06a6_profile.py | tee "$BUILD/rzm06a6-profile.txt"
+grep -Fq 'GC_RZM06A6_NODE_PROFILE_AUDIT=PASS' "$BUILD/rzm06a6-profile.txt" || fail "RZM06A6 node-profile audit"
 echo 'F-GC44 REAL SWAP + MODFLOW6 END-TO-END GATE PASS'
