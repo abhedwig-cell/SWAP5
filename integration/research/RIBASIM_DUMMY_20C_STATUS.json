@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20C actual RibaMod versus direct Ribasim v2026.1.1 runtime differential on Windows with real kernels.",
+  "next_action": "Execute frozen DUMMY-20C actual RibaMod runtime versus direct Ribasim v2026.1.1 differential.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "DUMMY-20C real-product Windows runner persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-20C verifier, Windows runner and workflow gate are persisted; first qualification attempt pending.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -41,5 +41,6 @@
       "product route and fresh direct RibasimWrapper route use the same frozen Ribasim model",
       "Basin level and cumulative root/external UserDemand delivery are compared after every 6-hour accepted endpoint"
     ]
-  }
+  },
+  "execution_baseline": "74b71366fc16e1105fc0038938c606f63f59d937"
 }
