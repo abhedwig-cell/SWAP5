@@ -438,3 +438,16 @@ grep -Fq 'GC_FIXED_INTERFACE_G21J_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21J_FAIL missing convergence-criterion isolation gate" >&2
   exit 1
 }
+
+
+# G21K path-preserving balance-threshold tomography. Bracket the B2 total
+# balance and B1 compartment-balance predicate using copied numerical
+# parameters only; no diagnostic tolerance becomes a runtime proposal.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21k_balance_thresholds.py \
+  | tee "$BUILD/fgc44-globalization-g21k.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21K_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21k.txt" || {
+  echo "GC_FGC44_G21K_FAIL missing balance-threshold tomography gate" >&2
+  exit 1
+}
