@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21h.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21H",
+  "title": "Isolated retry-level physical-solver forensics across deterministic G21G status islands",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21H_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21G_RESULT.json",
+  "tested_commit": "7bb698693cdc51c8378697101fe19bade952fbe1",
+  "workflow_run": 35740488540,
+  "workflow_job": 106788659599,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_ISOLATED_FINAL_RETRY_SOLVER_BIFURCATION_CONFIRMED",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "frozen_retry_ladder_day": [
+    0.01,
+    0.005,
+    0.0025,
+    0.00125,
+    0.000625,
+    0.0003125,
+    0.00015625,
+    0.000078125,
+    0.0000390625
+  ],
+  "boundary_results": [
+    {
+      "id": "B1_6_TO_0",
+      "status6_head_m": -0.7150100297648301,
+      "status0_head_m": -0.715010029764824,
+      "status6_levels_0_7_solver_converged": true,
+      "status6_levels_0_7_temporal_rejected": true,
+      "status6_level8_solver_failed": true,
+      "status0_level8_solver_converged": true,
+      "status6_level8_nonlinear_iterations": 16,
+      "status6_level8_jacobian_builds": 16,
+      "status6_level8_linear_solves": 16,
+      "status6_level8_backtracking_attempts": 104,
+      "status6_level8_internal_retries": 1,
+      "exact_retry_sequence": true
+    },
+    {
+      "id": "B2_0_TO_6",
+      "status0_head_m": -0.715010029764793,
+      "status6_head_m": -0.7150100297647868,
+      "status6_levels_0_7_solver_converged": true,
+      "status6_levels_0_7_temporal_rejected": true,
+      "status6_level8_solver_failed": true,
+      "status0_level8_solver_converged": true,
+      "status6_level8_nonlinear_iterations": 16,
+      "status6_level8_jacobian_builds": 16,
+      "status6_level8_linear_solves": 16,
+      "status6_level8_backtracking_attempts": 39,
+      "status6_level8_internal_retries": 1,
+      "exact_retry_sequence": true
+    }
+  ],
+  "temporal_pattern": {
+    "status6_levels_0_7_solver_status": "CONVERGED",
+    "status6_levels_0_7_temporal_certificate_available": true,
+    "status6_levels_0_7_temporal_rejections_each": 1,
+    "level7_normalized_indicator_approx": 1.93090743,
+    "status0_level8_normalized_indicator_approx": 0.98507815,
+    "status6_level8_temporal_certificate_available": false,
+    "status6_level8_solver_status": "NONCONVERGED",
+    "status6_level8_solver_rejections": 1,
+    "status6_level8_temporal_rejections": 0
+  },
+  "authority_checks": {
+    "all_four_heads_exact_binary64_match": "PASS",
+    "nine_isolated_durations_per_head": "PASS",
+    "copied_corrector_config_max_retries_zero_only_in_probe": "PASS",
+    "saved_corrector_config_functional_postcondition": "PASS",
+    "postprobe_parent_status_vector": [
+      6,
+      0,
+      0,
+      6
+    ],
+    "postprobe_g16_counts": [
+      4,
+      4,
+      0,
+      4
+    ],
+    "accepted_revision_time_ledger_mutation": 0,
+    "participant_candidate_leakage": 0,
+    "publication_preflight_authority": "NONE",
+    "raw_backend_candidates_discarded": "PASS"
+  },
+  "gates": {
+    "exact_boundaries": "PASS_2_OF_2",
+    "status6_levels_0_7_solver_converged_and_temporally_rejected": "PASS",
+    "status6_level8_physical_solver_failure": "PASS_2_OF_2",
+    "adjacent_status0_level8_physical_solver_convergence": "PASS_2_OF_2",
+    "saved_config_unchanged": "PASS",
+    "diagnostic_non_authority": "PASS",
+    "production_change": "NONE"
+  },
+  "bounded_conclusions": [
+    "The deterministic G21G status islands are reproduced at retry level: for both representative boundaries, the status-6 head has physical-solver convergence at retry levels 0 through 7 followed by temporal rejection at each level, then physical-solver nonconvergence at retry level 8.",
+    "The immediately adjacent status-0 head converges physically at retry level 8, after the same earlier temporal-rejection ladder.",
+    "This confirms that the full-transaction status-6 versus status-0 split is caused by a physical-solver bifurcation at the smallest retry duration in these frozen boundaries, not by hidden transaction-history dependence.",
+    "The larger-duration attempts are not physical-solver failures. They are solver-converged attempts rejected by the temporal model certificate, with normalized indicator still above one through retry level 7.",
+    "At the status-6 final retry the solver consumes 16 nonlinear iterations, 16 Jacobian builds and 16 linear solves; the two frozen failing heads show different backtracking counts (104 and 39), so the next causal question lies inside the physical nonlinear-solver trajectory rather than in the transaction ladder.",
+    "The isolated diagnostic does not mutate saved corrector configuration, accepted SWAP state, ledger authority, participant candidate state or G16 publication authority.",
+    "This is diagnostic mechanism evidence only. It does not justify smoothing the binary64 status islands, changing retry depth, temporal tolerances, physical-solver tolerances, solver configuration, or production globalization policy."
+  ],
+  "next_natural_unit": "Preregister a G21I final-retry physical-solver trajectory forensic across the same adjacent 6->0 and 0->6 heads. Capture read-only per-Newton-iteration residual, update, backtracking and convergence diagnostics at duration 3.90625e-5 day to identify the numerical branch that causes the 16-iteration failure only on the status-6 side."
+}
