@@ -237,23 +237,24 @@ def write_case(
 
 
 def find_allocation_output(case_root: Path) -> Path:
-    candidates = sorted(case_root.rglob("allocation.arrow"))
-    require(len(candidates) == 1, f"expected one allocation.arrow under {case_root}, got {candidates}")
+    # Ribasim v2026.1.1 writes allocation results as NetCDF, not Arrow.
+    candidates = sorted(case_root.rglob("allocation.nc"))
+    require(len(candidates) == 1, f"expected one allocation.nc under {case_root}, got {candidates}")
     return candidates[0]
 
 
 def read_t0_allocations(case_root: Path) -> tuple[float, float]:
     path = find_allocation_output(case_root)
-    df = pd.read_feather(path)
-    required = {"node_id", "demand_priority", "allocated"}
-    require(required.issubset(df.columns), f"allocation output columns changed: {list(df.columns)}")
-
-    root_rows = df[(df["node_id"] == 3) & (df["demand_priority"] == 2)]
-    ext_rows = df[(df["node_id"] == 4) & (df["demand_priority"] == 3)]
-    require(len(root_rows) >= 1, "root allocation record missing")
-    require(len(ext_rows) >= 1, "external allocation record missing")
-    root_alloc = float(root_rows.iloc[0]["allocated"]) * DAY
-    ext_alloc = float(ext_rows.iloc[0]["allocated"]) * DAY
+    with xr.open_dataset(path) as ds:
+        required = {"allocated", "node_id", "demand_priority", "time"}
+        available = set(ds.variables) | set(ds.coords)
+        require(required.issubset(available), f"allocation NetCDF schema changed: {sorted(available)}")
+        root_alloc = float(
+            ds["allocated"].sel(node_id=3, demand_priority=2).isel(time=0).item()
+        ) * DAY
+        ext_alloc = float(
+            ds["allocated"].sel(node_id=4, demand_priority=3).isel(time=0).item()
+        ) * DAY
     return root_alloc, ext_alloc
 
 
