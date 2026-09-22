@@ -729,3 +729,76 @@ CRASH-ATOMIC MULTI-PARTICIPANT PUBLICATION = MISSING.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: PUBLICATION / TRANSACTION ARCHITECTURE.
 ```
+## G17 disposition: G16-backed safeguarded orchestration qualified as research integration
+
+G17 composes the previously separate G16 tangent-observation service, the
+qualified research E3/P4 logic and the existing FMR/groundwater-interface
+publication seam on the frozen G11 live-overshoot stress. No runtime coupling
+policy was added.
+
+The fully preregistration-bound live run, workflow `35724160855`, reproduced
+the G11 path exactly:
+
+```text
+first raw Newton dh                  -1.1162302297473836e-5 m
+first raw participant status         6
+P4 factor-1/2 contractions           2
+outer updates                        3
+final dh                            -9.999346805233955e-6 m
+final residual                      -1.0640987109201395e-20 m/s
+```
+
+All SWAP-side current-head, tangent-stencil, raw-Newton and safeguard diagnostic
+evaluations were obtained through G16. The complete solve used 67 logical
+observation requests, served by 34 physical participant trials and 33 exact-head
+cache hits. Ten logical observations returned participant status 6. No ordinary
+publication-path participant trial was used during this diagnostic phase.
+
+After every diagnostic observation the participant had no live candidate,
+FMR preflight was false, ledger preflight was false and accepted revision/time
+plus committed ledger state remained exactly at the immutable origin. This
+qualifies the intended non-authority boundary for rejected and diagnostic
+Newton/P4 work in this frozen stress.
+
+After convergence, G16 was explicitly closed. The converged head still had no
+publication authority. Exactly one ordinary participant trial then reacquired
+that final head. Its q matched the cached diagnostic q with zero difference.
+Only that reacquired candidate entered FMR preflight and interface-ledger
+prepare/preflight.
+
+The nominal publication sequence produced:
+
+```text
+before publication                 [revision 0, time 0.00 d, ledger 0]
+after SWAP commit                  [revision 1, time 0.01 d, ledger 0]
+after ledger commit                [revision 1, time 0.01 d, ledger 1]
+committed exchange                 1.3878293167404843e-8 m
+```
+
+A fresh-process direct-publication control at the exact final head produced the
+same final state and exchange.
+
+That intermediate state after SWAP commit is also important negative evidence:
+the current FMR-plus-ledger publication sequence is not crash-atomic. G17 does
+not contain a persistent MODFLOW timestep participant at all; its live MODFLOW
+calculations remain proposal/merit solves. Therefore G17 qualifies research
+orchestration and final-candidate handoff only.
+
+Repository reconciliation after G17 also points to the already-qualified
+F-GC38/F-GC39 prepared-solve architecture. There MODFLOW owns one prepared
+timestep with fixed accepted `XOLD` and evolving nonlinear `X`; non-converged
+coupling iterations explicitly do not rollback `X`. This means the next unit
+must first reconcile the head-space P4 safeguard with that continuous
+prepared-solve ownership model before final multi-participant publication can
+be meaningfully admitted.
+
+```text
+G17 G16-BACKED SAFEGUARDED ORCHESTRATION = QUALIFIED RESEARCH EVIDENCE.
+DIAGNOSTIC TRIAL NON-AUTHORITY = QUALIFIED IN THE FROZEN G11 STRESS.
+FINAL FMR + LEDGER HANDOFF = QUALIFIED ON THE NOMINAL PATH.
+E3/P4 = NOT PRODUCTION-ADMITTED.
+PERSISTENT MODFLOW TIMESTEP PUBLICATION = NOT PRESENT IN G17.
+CRASH-ATOMIC MULTI-PARTICIPANT PUBLICATION = NOT QUALIFIED.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: RECONCILE P4 GLOBALIZATION WITH F-GC38/F-GC39 PREPARED-SOLVE SEMANTICS.
+```
