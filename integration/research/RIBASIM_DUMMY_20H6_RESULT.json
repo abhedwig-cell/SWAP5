@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.coupling.ribasim_release_next_boundary_memory_forecast_separation.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H6",
+  "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+  "authority": {
+    "qualification_head": "a6d44fd01f644b02eb162aa0ac664906f98e725d",
+    "workflow_run": 35743163688,
+    "workflow_job": 106797852425,
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "conclusion": "success"
+  },
+  "frozen_inputs": {
+    "accepted_level_m": 1.000007990372381,
+    "accepted_storage_excess_m3": 7.990372381083688,
+    "fixed_supply_m3_per_day": 32,
+    "current_river_forcing_m3_per_day": 8.000042512171305
+  },
+  "observations": {
+    "elevated_control_no_river": {
+      "implicit_negative_forcing_m3": 0,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_free_alpha": {
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 0,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 39.99037238105666,
+      "external_allocation_m3_per_day": 0
+    },
+    "elevated_with_river_alpha_fixed_one": {
+      "implicit_negative_forcing_m3": 8.000042512171305,
+      "low_storage_factor": 1,
+      "storage_change_m3": -7.990372381056659,
+      "root_allocation_m3_per_day": 31.99032986888535,
+      "external_allocation_m3_per_day": 0
+    }
+  },
+  "qualified_claims": [
+    "Accepted physical Basin storage from the previous window is visible at the next fixed allocation boundary and contributes approximately 7.9903723811 m3 to the priority-2 root allocation.",
+    "With current River forcing absent, the next-boundary root allocation is approximately 32 + 7.9903723811 = 39.9903723811 m3/day.",
+    "With the same accepted state and approximately 8.0000425122 m3/day current River forcing, a free allocation-LP low_storage_factor collapses to zero while the accepted storage draw and root allocation remain unchanged.",
+    "Fixing the LP factor diagnostically to one exposes nearly the full current River forcing and reduces root allocation to approximately 31.9903298689 m3/day.",
+    "Accepted physical memory and current physical forcing therefore have asymmetric allocation semantics in the tested Ribasim v2026.1.1 topology: accepted storage remains admitted to the next-boundary budget while current implicit negative forcing can be forecast-attenuated."
+  ],
+  "mathematical_contract": {
+    "next_boundary_memory_m3": "M_k = S_k - S_target = 7.9903723811",
+    "tested_priority_budget": "Q_root = min(D_root, Q_source + M_k - alpha_k * F_k) before lower-priority external allocation",
+    "control": "F_k=0, alpha_k=1 gives Q_root=39.9903723811 m3/day",
+    "free_alpha": "F_k=8.0000425122, alpha_k=0 gives the same Q_root=39.9903723811 m3/day",
+    "alpha_one": "F_k=8.0000425122, alpha_k=1 gives Q_root=31.9903298689 m3/day"
+  },
+  "boundaries": [
+    "This is an exact-release allocation oracle seeded with an accepted state from actual RibaMod evidence; it is not yet an end-to-end two-day RibaMod allocation observation.",
+    "The alpha=1 intervention is diagnostic only.",
+    "No claim of arbitrary Ribasim network or priority-topology equivalence.",
+    "No production prescription, production admission or upstream defect classification."
+  ],
+  "downstream": "Bridge the qualified exact-release t=24 oracle back to an actual two-day RibaMod active-River runtime without changing the H6 numerical semantics."
+}
