@@ -12,7 +12,15 @@
     {
       "id": "DATASET_BINDING",
       "requirement": "Bind immutable identities/hashes and licenses for the exact groundwater observation datasets and spatial classifications used in the application panel.",
-      "state": "UNRESOLVED"
+      "state": "BLOCKED_EXTERNAL_VALIDATION_DATA_ARCHIVE_UNAVAILABLE",
+      "evidence": {
+        "nhi_lhm_page": "https://nhi.nu/modellen/lhm/",
+        "page_statement": "The LHM 4.1 page states that groundwater levels used for validation are downloadable.",
+        "linked_archive": "https://www.dropbox.com/scl/fi/zi1up41kyvnl5t2x6e3qm/validatiedata.zip?dl=0&rlkey=pgtfh1ndf5ueisc3ou0umqyr8",
+        "observed_state_2026_09_22": "DROPBOX_FILE_DELETED",
+        "additional_source_boundary": "The NHI page also states that the full regional and DINO datasets are not available."
+      },
+      "resolution_requires": "Recover the exact processed LHM 4.1 validation groundwater dataset/population from NHI/Rijkswaterstaat/data owner, or an authoritative replacement manifest that reproduces the same validation population and classifications. Do not substitute a newly assembled DINO/regional sample without new purpose authority."
     },
     {
       "id": "POPULATION_BINDING",
@@ -84,5 +92,15 @@
     "Do not substitute synthetic ROM-PURPOSE metrics for the external application criteria."
   ],
   "handoff_target": "A future dedicated observation-bound application-validation work unit, not ROM-PURPOSE P1 and not ROM-ROOT.",
-  "candidate_responses_viewed": false
+  "candidate_responses_viewed": false,
+  "external_blockers": [
+    {
+      "id": "LHM41_GW_VALIDATION_DATASET_AUTHORITY",
+      "class": "EXTERNAL_SOURCE_BLOCKER",
+      "state": "BLOCKED",
+      "description": "The formal quantitative envelope is source-verified, but the exact observation dataset/population needed to execute the direct end-to-end route cannot currently be bound from the public archive because the NHI-linked validation-data file is deleted.",
+      "consequence": "No reduced-model end-to-end application run is authorized."
+    }
+  ],
+  "next_safe_step": "Obtain authoritative access to the exact LHM 4.1 groundwater validation dataset/population and freeze its file identities and spatial-classification manifest. If that cannot be recovered, this direct route remains a valid frozen envelope but non-executable."
 }
