@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor qualification.",
+  "next_action": "Execute DUMMY-20H4 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -31,5 +31,7 @@
     "tests/research/real_ribasim_20h4_physical_lp_factor.jl",
     "tests/research/run_ribasim_dummy_20h4.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_physical_lp_factor_separation",
+  "qualification_base": "work/ribasim-dummy-01@bfd32e350419ebe712c4761e667f034769db1246"
 }
