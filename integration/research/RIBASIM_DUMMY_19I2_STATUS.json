@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Direct simultaneous observation of LP shadow allocations, applied UserDemand allocations, and physical cumulative delivery under 6-hour BMI calls with daily saveat.",
-  "next_action": "Execute frozen DUMMY-19I2 shadow-LP versus applied-UserDemand qualification.",
+  "next_action": "Execute DUMMY-19I2 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "128e5c179686377e577c4626df936e3695d57b51",
@@ -26,5 +26,7 @@
     "tests/research/real_ribasim_bmi_shadow_applied_bridge.jl",
     "tests/research/run_ribasim_dummy_19i2.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_shadow_applied_diagnostic",
+  "qualification_base": "work/ribasim-dummy-01@726c348c834bbb856ed424aa8c11938ece4a84a9"
 }
