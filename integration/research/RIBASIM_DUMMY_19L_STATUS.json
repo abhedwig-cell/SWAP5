@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Native 6h-saveat versus daily-saveat explicit-apply comparison at all 6h accepted-state boundaries.",
-  "next_action": "Execute frozen DUMMY-19L accepted-state trajectory-equivalence qualification.",
+  "next_action": "Execute DUMMY-19L v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -43,5 +43,7 @@
       "Basin level and cumulative recipient delivery are checked at all four accepted 6-hour boundaries",
       "route equivalence is asserted independently of final-only reference checks"
     ]
-  }
+  },
+  "qualification_attempt": "v1_frozen_accepted_state_trajectory_equivalence",
+  "qualification_base": "work/ribasim-dummy-01@86a681ecd8cfab1b064e5523dd24446a8119cb61"
 }
