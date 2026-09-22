@@ -1,0 +1,45 @@
+name: GC rootzone memory RZM06E09 near-interface local redistribution
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E09_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E09_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e09_expand.f90'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e09_select.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e09.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e09.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e09-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run near-interface local state construction
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E09-EVIDENCE
+          RZM06E09_EVIDENCE_DIR="$PWD/RZM06E09-EVIDENCE" bash tests/research/run_gc_rootzone_memory_rzm06e09.sh
+      - name: Preserve E09 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e09-${{ github.run_id }}
+          path: RZM06E09-EVIDENCE
+          if-no-files-found: warn
