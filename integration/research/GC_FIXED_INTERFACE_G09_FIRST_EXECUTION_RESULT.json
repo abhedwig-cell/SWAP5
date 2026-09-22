@@ -1,0 +1,409 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G09_PREREGISTRATION.json",
+  "tested_commit": "ac35addc81162d7bc723cd85a0d619921b5130cc",
+  "workflow_run": 35699061533,
+  "workflow_job": 106652483320,
+  "workflow_conclusion": "failure",
+  "decision": "PREREGISTERED_ESTIMATOR_CONSISTENCY_GATE_FALSIFIED",
+  "completed_estimator_rows": [
+    {
+      "case_id": "C0_CONTROL",
+      "dh_m": -0.000002,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039385829988360785
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039385829988360785
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "CENTRAL",
+        "half_step_slope_per_s": -0.000003938582998836084,
+        "pass": true,
+        "relative_difference": 1.2903619614027875e-15
+      },
+      "qbot_cm_per_day": 0.000001,
+      "side": "NEG"
+    },
+    {
+      "case_id": "C0_CONTROL",
+      "dh_m": 0.000005,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 2,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 6
+          },
+          {
+            "d_m": 1.25e-7,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 6.25e-8,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 6.25e-8,
+        "slope_per_s": -0.000003971584378243066
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 2,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 6,
+            "second_status": 6,
+            "selected_direction": "NEGATIVE"
+          },
+          {
+            "d_m": 1.25e-7,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 6.25e-8,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 6.25e-8,
+        "slope_per_s": -0.000003971584378243066
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "CENTRAL",
+        "half_step_slope_per_s": -0.000003971584378243041,
+        "pass": true,
+        "relative_difference": 6.3981993072674496e-15
+      },
+      "qbot_cm_per_day": 0.000001,
+      "side": "POS"
+    },
+    {
+      "case_id": "C1_LOW_FORCING",
+      "dh_m": -0.000005,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 1,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 1.25e-7,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 1.25e-7,
+        "slope_per_s": -0.000003971583350258776
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 1,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 1.25e-7,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 1.25e-7,
+        "slope_per_s": -0.000003971583350258776
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "CENTRAL",
+        "half_step_slope_per_s": -0.000003971584378243066,
+        "pass": true,
+        "relative_difference": 2.5883481051763483e-7
+      },
+      "qbot_cm_per_day": 5e-7,
+      "side": "NEG"
+    },
+    {
+      "case_id": "C1_LOW_FORCING",
+      "dh_m": 0.000005,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039715859202194815
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039715859202194815
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "ONE_SIDED_NEGATIVE",
+        "half_step_slope_per_s": -0.000003971583350258815,
+        "pass": true,
+        "relative_difference": 6.470867602387268e-7
+      },
+      "qbot_cm_per_day": 5e-7,
+      "side": "POS"
+    },
+    {
+      "case_id": "C2_HIGH_FORCING",
+      "dh_m": -0.000005,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "TANGENT_UNAVAILABLE",
+        "halvings": 7,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 6
+          },
+          {
+            "d_m": 1.25e-7,
+            "minus_status": 0,
+            "plus_status": 6
+          },
+          {
+            "d_m": 6.25e-8,
+            "minus_status": 0,
+            "plus_status": 6
+          },
+          {
+            "d_m": 3.125e-8,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 1.5625e-8,
+            "minus_status": 6,
+            "plus_status": 0
+          },
+          {
+            "d_m": 7.8125e-9,
+            "minus_status": 6,
+            "plus_status": 6
+          },
+          {
+            "d_m": 3.90625e-9,
+            "minus_status": 0,
+            "plus_status": 6
+          }
+        ]
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "ONE_SIDED_NEGATIVE",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 6,
+            "second_status": 0,
+            "selected_direction": "NEGATIVE"
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.0000039715828362666386
+      },
+      "e1_e0_pass": null,
+      "e1_e0_relative_difference": null,
+      "e1_half_step_consistency": {
+        "half_step_mode": "ONE_SIDED_NEGATIVE",
+        "half_step_slope_per_s": -0.000003971581294290262,
+        "pass": true,
+        "relative_difference": 3.8825235190706567e-7
+      },
+      "qbot_cm_per_day": 0.000002,
+      "side": "NEG"
+    },
+    {
+      "case_id": "C2_HIGH_FORCING",
+      "dh_m": 0.000002,
+      "duration_day": 0.0001,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.000003938583512828217
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.000003938583512828217
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "CENTRAL",
+        "half_step_slope_per_s": -0.000003938582998836077,
+        "pass": true,
+        "relative_difference": 1.305017752361693e-7
+      },
+      "qbot_cm_per_day": 0.000002,
+      "side": "POS"
+    },
+    {
+      "case_id": "C3_LONG_HIGH",
+      "dh_m": -0.000005,
+      "duration_day": 0.0002,
+      "e0": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.000003857614587847805
+      },
+      "e1": {
+        "classification": "AVAILABLE",
+        "halvings": 0,
+        "mode": "CENTRAL",
+        "probes": [
+          {
+            "d_m": 2.5e-7,
+            "minus_status": 0,
+            "plus_status": 0,
+            "selected": "CENTRAL"
+          }
+        ],
+        "selected_d_m": 2.5e-7,
+        "slope_per_s": -0.000003857614587847805
+      },
+      "e1_e0_pass": true,
+      "e1_e0_relative_difference": 0,
+      "e1_half_step_consistency": {
+        "half_step_mode": "CENTRAL",
+        "half_step_slope_per_s": -0.000003857614844843884,
+        "pass": true,
+        "relative_difference": 6.662046082278726e-8
+      },
+      "qbot_cm_per_day": 0.000002,
+      "side": "NEG"
+    }
+  ],
+  "failure": {
+    "case_id": "C3_LONG_HIGH",
+    "side": "POS",
+    "gate": "E1_HALF_STEP_RELATIVE_DIFFERENCE_LE_0.05",
+    "assertion": "G09 E1 half-step inconsistency C3_LONG_HIGH POS",
+    "log_excerpt": [
+      "Traceback (most recent call last):",
+      "AssertionError: G09 E1 half-step inconsistency C3_LONG_HIGH POS"
+    ]
+  },
+  "important_partial_evidence": {
+    "c2_negative": {
+      "e0_classification": "TANGENT_UNAVAILABLE",
+      "e1_classification": "AVAILABLE",
+      "e1_mode": "ONE_SIDED_NEGATIVE",
+      "e1_slope_per_s": -0.0000039715828362666386,
+      "half_step_slope_per_s": -0.000003971581294290262,
+      "half_step_relative_difference": 3.8825235190706567e-7,
+      "interpretation": "The specific G08 C2-negative central-tangent gap is recoverable by the preregistered status-driven one-sided construction."
+    }
+  },
+  "bounded_conclusion": [
+    "Do not relabel G09 as PASS: the frozen all-boundary 5% E1 scale-consistency gate failed at C3_LONG_HIGH positive edge.",
+    "Do not relax the 5% tolerance post hoc.",
+    "The C2-negative success is retained as bounded partial evidence, not broad estimator qualification.",
+    "The next diagnostic must characterize fixed probe scales and raw corrector status topology at the failing C3 positive state before any replacement estimator is proposed."
+  ]
+}
