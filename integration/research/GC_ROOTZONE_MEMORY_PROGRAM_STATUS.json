@@ -61,6 +61,15 @@
       "workflow_job": 106742998316,
       "implementation_head": "dac3b3c1cb399c1ca5f379e4f1b3396a27b47957",
       "evidence_commit": "7af96cdbb4dd39c43494a24237bd180030620094"
+    },
+    {
+      "work_unit": "GC-RZM06A3",
+      "decision": "QUALIFIED_TRANSITION_ADMISSIBILITY_FALSIFICATION__H2_NOT_PROBED",
+      "preregistration_commit": "c41b702dd2a87b6c94a482f0d384454b745a0f44",
+      "workflow_run": 35727742747,
+      "workflow_job": 106745456506,
+      "implementation_head": "5b3a69d84c344d8805ad22f6734c3af4ddbd06a3",
+      "evidence_commit": "2ae1837d706e87310b70c54cf86966141807fc97"
     }
   ],
   "current_findings": [
@@ -92,17 +101,21 @@
     "RZM06A does not require a second MODFLOW hydraulic state: the evidence remains compatible with one physical fixed-plane H_c plus SWAP-internal memory used to construct the interface response.",
     "RZM06A2 falsifies the frozen long-window symmetric H_c pulse construction as an admissible state-preparation route: 0/56 trajectories completed their first interval; representative failures exhausted the temporal retry budget with zero accepted substeps and zero solver rejections.",
     "RZM06A2 failures are transaction-safe: failed head-pulse trials leave committed revision, time, ledger and profile observables unchanged.",
-    "RZM06A2 does not test H2 itself; no endpoint pair was constructed and no E_c probe was opened."
+    "RZM06A2 does not test H2 itself; no endpoint pair was constructed and no E_c probe was opened.",
+    "RZM06A3 maps 29/56 short-window H_c perturbation points as two-sided admissible from the fresh baseline, but the preregistered selected point (deltaH=1e-5 m, dt=0.005 d) fails at the first sign reversal after 10 to 200 accepted same-sign commits.",
+    "RZM06A3 establishes that baseline local perturbation admissibility does not imply transition admissibility from an evolved committed real-SWAP state.",
+    "RZM06A3 sign-reversal failures are transaction-safe and leave the latest accepted committed origin unchanged; H2 remains unprobed."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06A3",
-    "scope": "Response-blind short-window H_c admissibility mapping followed by micro-stepped symmetric head-history state construction for H2, retaining the unchanged profile-water and M1 thresholds.",
-    "prerequisite": "GC-RZM06A2 qualified as construction-inadmissible",
+    "id": "GC-RZM06A4",
+    "scope": "Transition-aware response-blind H2 state construction using BASE/ramp bridges between opposite-sign H_c blocks; qualify complete trajectory admissibility before endpoint pair selection.",
+    "prerequisite": "GC-RZM06A3 qualified as transition-admissibility falsification",
     "constraints": [
-      "map head-pulse admissibility using status/retry/mass evidence before endpoint-pair search",
-      "build longer histories only from admitted micro-intervals; do not increase retry budgets or loosen temporal/mass gates",
+      "use only microsteps already admitted by RZM06A3 baseline characterization",
+      "characterize complete trajectory admissibility before using endpoint W_profile or M1",
+      "insert explicit BASE/ramp transitions rather than changing retry/temporal/solver policy",
       "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4",
-      "do not inspect E_c before endpoint-pair selection",
+      "do not inspect E_c before endpoint pair selection",
       "keep RZM06B/H5 separate"
     ]
   },
