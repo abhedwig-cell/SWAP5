@@ -263,6 +263,10 @@ on:
       - 'tests/research/real_ribasim_20h6_next_boundary_memory.jl'
       - 'tests/research/run_ribasim_dummy_20h6.sh'
       - 'integration/research/RIBASIM_DUMMY_20H7_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H8_*.json'
+      - 'integration/research/RIBASIM_DUMMY_20H8_CONCEPT.md'
+      - 'tests/research/real_ribasim_20h8_forcing_sign_asymmetry.jl'
+      - 'tests/research/run_ribasim_dummy_20h8.sh'
       - 'integration/research/RIBASIM_DUMMY_20H7_CONCEPT.md'
       - 'tests/research/test_ribasim_dummy_20h7_active_river_next_boundary.py'
       - 'tests/research/run_ribasim_dummy_20h7.ps1'
@@ -1215,3 +1219,26 @@ jobs:
       - name: Run actual t24 accepted-memory versus current-forcing product bridge
         shell: pwsh
         run: .\tests\research\run_ribasim_dummy_20h7.ps1
+
+  ribasim-release-forcing-sign-asymmetry-gate:
+    if: contains(github.head_ref, 'ribasim-dummy-20h8-ci')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout exact product Ribasim release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Deltares/Ribasim
+          ref: e7fc8ade52a4bedeec10e508d2065577f33eb76a
+          path: .ribasim-product-release
+          fetch-depth: 1
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e
+        with:
+          pixi-version: latest
+          working-directory: .ribasim-product-release
+      - name: Run current groundwater forcing-sign asymmetry diagnostic
+        run: bash tests/research/run_ribasim_dummy_20h8.sh
