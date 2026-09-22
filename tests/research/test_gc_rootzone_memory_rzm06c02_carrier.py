@@ -53,13 +53,13 @@ def baseline():
     init_status,hcof,rhs,href=s.try_initialize_configured(1e-4,1e-6)
     if init_status != 0:
         diag=s.predictor_run_diagnostics()
-        print("RZM06C02_INIT_FAILURE_JSON",json.dumps({
-            "status":init_status,
-            "duration_day":1e-4,
-            "predictor_qbot_cm_per_day":1e-6,
+        return {
+            "initialized":False,
+            "initialize_status":init_status,
+            "requested_duration_day":1e-4,
+            "requested_predictor_qbot_cm_per_day":1e-6,
             "predictor_diagnostics":diag,
-        },sort_keys=True,separators=(",",":")))
-        raise RuntimeError(f"RZM06C02 frozen initialize failed: {init_status}")
+        }
     state0=s.state(); obs0=s.committed_profile_observables(); nodes0=s.committed_profile_nodes()
     state1=s.state(); obs1=s.committed_profile_observables(); nodes1=s.committed_profile_nodes()
     assert state0==state1 and obs0==obs1 and nodes0==nodes1
@@ -89,6 +89,7 @@ def baseline():
              and pre_state==post_state and pre_obs==post_obs and pre_nodes==post_nodes)
     assert zero_ok,(status,d)
     return {
+        "initialized":True,"initialize_status":0,
         "hcof":hcof,"rhs":rhs,"reference_head_m":href,
         "state":state0,"aggregate_obs":obs0,"nodes":nodes0,
         "hydrostatic_total_head_native":total_heads,
@@ -128,27 +129,30 @@ def fresh(spec):
 base=baseline()
 mapping=[]
 two_sided=[]
-for amp in AMPLITUDES:
-    for dt in DURATIONS:
-        neg=fresh({"top_flux":-amp,"duration_day":dt})
-        pos=fresh({"top_flux": amp,"duration_day":dt})
-        both=neg["accepted"] and pos["accepted"]
-        rec={
-            "amplitude_abs_cm_per_day":amp,"duration_day":dt,
-            "negative_into_profile":neg,"positive_outward":pos,
-            "both_signs_admitted":both,
-        }
-        mapping.append(rec)
-        if both:
-            two_sided.append({"amplitude_abs_cm_per_day":amp,"duration_day":dt,
-                              "impulse_abs_cm":amp*dt})
-
-if two_sided:
-    disposition="QUALIFIED_NATIVE_CM_CARRIER_WITH_NONZERO_TWO_SIDED_ENVELOPE"
-    strongest=max(two_sided,key=lambda x:(x["impulse_abs_cm"],x["amplitude_abs_cm_per_day"],x["duration_day"]))
+strongest=None
+if not base["initialized"]:
+    disposition="CARRIER_INITIALIZATION_NOT_ADMITTED"
 else:
-    disposition="QUALIFIED_CARRIER_BUT_NO_NONZERO_FORCING_ENVELOPE"
-    strongest=None
+    for amp in AMPLITUDES:
+        for dt in DURATIONS:
+            neg=fresh({"top_flux":-amp,"duration_day":dt})
+            pos=fresh({"top_flux": amp,"duration_day":dt})
+            both=neg["accepted"] and pos["accepted"]
+            rec={
+                "amplitude_abs_cm_per_day":amp,"duration_day":dt,
+                "negative_into_profile":neg,"positive_outward":pos,
+                "both_signs_admitted":both,
+            }
+            mapping.append(rec)
+            if both:
+                two_sided.append({"amplitude_abs_cm_per_day":amp,"duration_day":dt,
+                                  "impulse_abs_cm":amp*dt})
+
+    if two_sided:
+        disposition="QUALIFIED_NATIVE_CM_CARRIER_WITH_NONZERO_TWO_SIDED_ENVELOPE"
+        strongest=max(two_sided,key=lambda x:(x["impulse_abs_cm"],x["amplitude_abs_cm_per_day"],x["duration_day"]))
+    else:
+        disposition="QUALIFIED_CARRIER_BUT_NO_NONZERO_FORCING_ENVELOPE"
 
 evidence={
     "schema":"swap5.gc_rootzone_memory.rzm06c02.native_cm_resolution_bridge.v1",
