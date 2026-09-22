@@ -4,18 +4,18 @@
   "work_unit": "RIBASIM-DUMMY-20H3",
   "branch": "work/ribasim-dummy-01",
   "baseline": "026f2f0bd4df82fd139f02ce31cde47ae4bd4684",
-  "implemented": true,
+  "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "blocked": false,
-  "blocker": null,
+  "blocked": true,
+  "blocker": "Preexecution scientific falsification: exact v2026.1.1 allocation source area-scales the qualified volumetric infiltration pointer, so the frozen ~8 m3 implicit-forcing expectation is invalid at A=1e6.",
   "prepared_scope": "Exact v2026.1.1 source-runtime LP observation and fixed-alpha counterfactual.",
-  "next_action": "Execute frozen DUMMY-20H3 exact-release LP mechanism qualification.",
+  "next_action": "Do not implement 20H3. Preregister DUMMY-20H4 area-scaling/low-storage diagnostic with corrected source-derived quantities.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
-  "recovery_point": "Exact-release generator, LP diagnostic and runner persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-20H3 falsified before execution by exact pinned-source algebra; no CI run is scientific authority.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H3_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H3_CONCEPT.md",
@@ -26,5 +26,6 @@
     "tests/research/real_ribasim_20h3_low_storage_mechanism.jl",
     "tests/research/run_ribasim_dummy_20h3.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_20H3_FALSIFIED_PREEXECUTION_BY_ALLOCATION_AREA_SCALING"
 }
