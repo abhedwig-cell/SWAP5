@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.coupling.ribasim_release_zero_storage_factor_causality.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H5",
+  "title": "Zero-storage constraint causality for allocation low-storage-factor collapse",
+  "baseline": "bfd32e350419ebe712c4761e667f034769db1246",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20H4_ACTIVE",
+    "execute_after": "DUMMY-20H4 closeout",
+    "rationale": "Freeze the minimal LP-causality control before observing the direct physical-versus-LP factor comparison."
+  },
+  "authorities": {
+    "mechanism": {
+      "work_unit": "RIBASIM-DUMMY-20H3",
+      "decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM"
+    },
+    "release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "model_change_from_20h3": [
+    "remove LevelDemand node and its link",
+    "keep Basin, 32 m3/day source, root40 priority2, external20 priority3 and 7.9999146676 m3/day BMI infiltration",
+    "compare free Basin storage-change variable against a diagnostic hard storage_change=0 constraint"
+  ],
+  "cases": {
+    "storage_free": {
+      "expected_low_storage_factor": 1,
+      "expected_root_allocation_m3_per_day": 40,
+      "expected_external_allocation_m3_per_day": 20,
+      "expected_storage_change_m3": -35.99991466757688,
+      "rationale": "With no storage-preservation demand, both managed demands can be served by drawing accepted Basin storage; the final low-storage objective can maximize alpha to one."
+    },
+    "storage_fixed_zero": {
+      "expected_low_storage_factor": 0,
+      "expected_root_allocation_m3_per_day": 32,
+      "expected_external_allocation_m3_per_day": 0,
+      "expected_storage_change_m3": 0,
+      "rationale": "With zero storage change enforced, lexicographic root-demand maximization can retain 32 only by attenuating the 7.9999147 m3 negative forcing to zero through alpha."
+    }
+  },
+  "hypotheses": [
+    "Removing LevelDemand while leaving storage change free eliminates the alpha collapse: alpha becomes one and both UserDemands are fully allocated from source plus Basin storage draw.",
+    "Imposing only storage_change=0, still without LevelDemand, restores the alpha=0 and 32/0 allocation pattern.",
+    "Therefore the 20H3 factor collapse is not specific to LevelDemand bookkeeping; it is caused by lexicographic allocation under a storage-preservation requirement with alpha available as a forecast degree of freedom."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "low_storage_factor": 0.000001,
+    "storage_change_m3": 0.05
+  },
+  "forbidden": [
+    "no production prescription",
+    "hard storage_change=0 is diagnostic only",
+    "no source modification",
+    "do not execute as authority if DUMMY-20H4 does not qualify"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
+  "fail_decision": "RIBASIM_DUMMY_20H5_BLOCKED"
+}
