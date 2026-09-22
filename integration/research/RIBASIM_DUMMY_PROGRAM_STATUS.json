@@ -171,14 +171,15 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19L",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19K",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
       "dependency": "qualified DUMMY-19K",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "9f4c95cb69b6b5b61fb953e2477d85018cd9f72f"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-19L accepted-state trajectory equivalence.",
+  "next_authority_action": "Execute frozen DUMMY-19L accepted-state trajectory-equivalence gate.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
