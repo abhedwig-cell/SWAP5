@@ -97,6 +97,15 @@
       "workflow_job": 106765051719,
       "implementation_head": "79414aac4aecde52f6979fff59b00eaa18de0fb5",
       "evidence_commit": "0c7222ebd766ef56f8cf230487e320019a334b2e"
+    },
+    {
+      "work_unit": "GC-RZM06C01",
+      "decision": "QUALIFIED_EXISTING_16NODE_FIXED_HEAD_REFERENCE_CARRIER",
+      "preregistration_commit": "11ae66fb732e404cf9f51391c693a1db21e2470a",
+      "workflow_run": 35735461762,
+      "workflow_job": 106771442057,
+      "implementation_head": "0e90165c07dc159f7e7e836effc5ecdfa88d3254",
+      "evidence_commit": "3b670e6be7ce405917f61b51bb233f4be2e4b4b1"
     }
   ],
   "current_findings": [
@@ -142,20 +151,21 @@
     "RZM06A6 reconstructs W_profile, root-water and M1 exactly from committed node state and shows no aggregate masking: all four R0 node-storage differences have the same sign and L1 storage difference equals |ΔW_profile| to roundoff.",
     "The focused four-node carrier therefore produces genuinely tiny H2 state separation; its upper-0.30 m root-zone observable overlaps only node 1 and is not a resolved multi-node root-zone distribution diagnostic.",
     "The historical _cm suffixes on geometry-derived profile observables are semantically misleading because z/dz are explicitly metre-scale in the research bridge.",
-    "A2-A6 jointly establish a four-node-carrier H2 ceiling. Further forcing tuning on this carrier is not justified; preserve thresholds and move to a richer real-SWAP vertical profile."
+    "A2-A6 jointly establish a four-node-carrier H2 ceiling. Further forcing tuning on this carrier is not justified; preserve thresholds and move to a richer real-SWAP vertical profile.",
+    "C01 supersedes the earlier incomplete carrier reconciliation: F-ROM1A-I0 provides a current-branch-qualified 16x10 cm B01 real-HeadCalc Reference carrier with three nodes in the upper 30 cm, strict mode-5 fixed-head sampling, hard mass gate and immutable sample/discard semantics.",
+    "The retained ROM1AR2 artifact provides 768 accepted 16-node B01 states, including 711 strict no-fallback states, with full pressure-head/water-content profiles and O0/O2 byte identity.",
+    "For future native-centimetre H2 selection the frozen physical A-series thresholds convert to |ΔW_profile|<=1e-4 cm and |ΔM1|>=1e-2 cm; the old numeric values must not be copied across units."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06C01",
-    "scope": "Reconcile and select an existing richer real-SWAP profile/discretization carrier that can reuse the transactional fixed-H_c research protocol without production changes. Establish exact geometry, hydraulic provider, process scope, state capture and qualification authority before any H2 experiment.",
-    "prerequisite": "RZM06A6 qualified four-node H2 ceiling",
+    "id": "GC-RZM06C02",
+    "scope": "Complete the already-preregistered 17-node native-cm F-GC-compatible carrier qualification as an independent research cross-check, then adjudicate primary versus secondary carrier roles before H2 pair selection.",
+    "prerequisite": "C01 qualified existing 16-node carrier",
     "constraints": [
-      "reuse existing admitted or qualified real-SWAP infrastructure where possible",
-      "no post-hoc relaxation of H2 thresholds",
-      "no production physics or coupling API change",
-      "separate carrier qualification from H2 scientific probing",
-      "preserve transaction-safe checkpoint/commit/discard semantics and failed-trial evidence",
-      "require a root-zone representation spanning more than one node before H2 re-probing",
-      "keep H5/RZM06B separate"
+      "do not inspect H2 responses during carrier qualification",
+      "keep C02 synthetic geometry explicitly non-Hupsel",
+      "preserve the successful A-series regression gate after shared bridge changes",
+      "do not alter H2 physical thresholds",
+      "do not use research unit heuristics as production contracts"
     ]
   },
   "blocked": [],
