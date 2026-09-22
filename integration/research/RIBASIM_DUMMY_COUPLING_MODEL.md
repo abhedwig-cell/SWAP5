@@ -986,6 +986,12 @@ DUMMY-20H9
   qualified actual-product positive-groundwater bridge:
   the real pinned RibaMod passive-Drainage route records 40/20 m3/day at t=24,
   not the preregistered memory-only alternative 40/13.9748888743 m3/day
+
+DUMMY-20H10
+  qualified noncommensurate fixed-allocation clock aliasing:
+  with 6 h RibaMod/MF6 steps, allocation.dt=5 h records only t=0 through day 1
+  and follows the stale A24 trajectory; aligned allocation.dt=6 h records
+  t=0,6,12,18 h and supplies 8.4937483729 m3 more UserDemand by day end
 ```
 
 Together these work units establish both one-way passive groundwater arrival and
@@ -1212,6 +1218,14 @@ current negative River/infiltration loss G-_k
   -> applied allocation
   -> subsequent physical realization
 ```
+
+DUMMY-20H10 adds a separate temporal constraint: noncommensurate
+fixed-allocation timing requires an explicit orchestration rule. In the tested
+v2026.1.1 BMI route, crossing a nominal allocation boundary inside
+`update_until` is not sufficient to execute it. The allocation solve is
+call-start gated. Therefore a coupled architecture must not assume that
+`allocation.dt` alone guarantees management decisions at all nominal
+boundaries when the coupler clock is different.
 
 This does not establish an implicit same-window RIV/Ribasim fixed point, a
 general STO aggregation contract, or arbitrary package/topology equivalence.
