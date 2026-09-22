@@ -4,14 +4,14 @@
   "work_unit": "RIBASIM-DUMMY-19K",
   "branch": "work/ribasim-dummy-01",
   "baseline": "a670a31f87bfe27c7840f6e8080d247e7d01726f",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Test-only 6-hour solve→apply UserDemand seam with daily saveat and no allocation output-record coupling.",
-  "next_action": "Implement and execute frozen test-only explicit UserDemand solve→apply seam.",
+  "next_action": "Execute frozen DUMMY-19K explicit UserDemand apply-seam qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,5 +20,27 @@
     "scientific_change": false
   },
   "implementation_baseline": "6c5999b086a58641b1c6a84ae96c6d63b83c5e45",
-  "recovery_point": "DUMMY-19K frozen before 19J output; sequencing dependency now satisfied."
+  "recovery_point": "DUMMY-19K executable gate persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19K_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19K_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19K_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19K_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_bmi_management_clock.py",
+    "tests/research/real_ribasim_explicit_userdemand_apply_bridge.jl",
+    "tests/research/run_ribasim_dummy_19k.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "daily saveat remains unchanged",
+      "6-hour coupling boundaries remain unchanged",
+      "no pinned Ribasim source modification",
+      "test helper copies only optimized UserDemand and per-link allocation state",
+      "no allocation output record or cumulative supplied-volume reset is performed by the helper",
+      "physical endpoint is checked against the frozen 6-hour reference"
+    ]
+  }
 }
