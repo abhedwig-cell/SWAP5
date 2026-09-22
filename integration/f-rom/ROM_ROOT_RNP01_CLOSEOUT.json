@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.rom_root.rnp01.closeout.v1",
+  "workstream": "ROM-ROOT",
+  "work_unit": "ROM-ROOT-RNP01",
+  "date": "2026-09-22",
+  "status": "CLOSED_NUMERICAL_CHARACTERIZATION_MIXED_ITERATION_CAP_AND_PERSISTENT_CASE",
+  "authority": {
+    "preregistration": "integration/f-rom/ROM_ROOT_RNP01_PREREGISTRATION.json",
+    "binding": "integration/f-rom/ROM_ROOT_RNP01_BINDING.json",
+    "analyzer_repair": "integration/f-rom/ROM_ROOT_RNP01_ANALYZER_REPAIR.json",
+    "result": "integration/f-rom/ROM_ROOT_RNP01_RESULT.json",
+    "raw_run": 35749824809
+  },
+  "conclusions": [
+    "No summation-order sensitivity was observed in any of the six primary failed residual vectors.",
+    "Five of six exact failed intervals converge with unchanged tolerances when the diagnostic iteration ceiling is raised above 16.",
+    "B01 R1024_T32 V02 remains retry-advised through max_iterations=64.",
+    "No monotone grid-size accumulation pattern was established.",
+    "C6R remains closed and Reference remains not qualified under the frozen C6R contract."
+  ],
+  "next": {
+    "work_unit": "ROM-ROOT-RNP02",
+    "question": "Does the persistent B01 R1024_T32 V02 total-residual-only rejection arise from an iterative cycle/stagnation in the unchanged Reference Newton/backtracking path?",
+    "constraint": "Diagnose iteration dynamics only. Do not change tolerances, physics, production code, or C6R admission."
+  },
+  "model_changed": false
+}
