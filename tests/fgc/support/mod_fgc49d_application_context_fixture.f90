@@ -17,7 +17,8 @@ module mod_fgc49d_application_context_fixture
        groundwater_interface_mass_snapshot_t, GW_MASS_LEDGER_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
   use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t, &
-       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK
+       groundwater_topology_t, materialize_groundwater_topology, GW_TOPOLOGY_OK, &
+       GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_tile_predictor_input_t, groundwater_cell_area_input_t, &
        groundwater_application_plan_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
   use mod_modflow6_swap_predictor_response, only: modflow6_swap_predictor_lineage_t, &
@@ -388,6 +389,8 @@ contains
     cell%groundwater_lineage_id = lineage_id
     cell%package_slot = slot
     cell%modflow_node_id = node
+    cell%storage_state_role = GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE
+    cell%drainage_owner = GW_DRAINAGE_OWNER_NONE
   end subroutine set_cell
 
 end module mod_fgc49d_application_context_fixture

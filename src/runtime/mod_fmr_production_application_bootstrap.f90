@@ -20,7 +20,8 @@ module mod_fmr_production_application_bootstrap
        FMR_GW_REGISTRY_OK
   use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, GW_MASS_LEDGER_OK
   use mod_groundwater_coupling_contract, only: groundwater_head_datum_t
-  use mod_groundwater_topology_composition, only: groundwater_topology_t
+  use mod_groundwater_topology_composition, only: groundwater_topology_t, groundwater_topology_cell_t, &
+       GW_TOPOLOGY_OK, GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_tile_predictor_input_t, &
        groundwater_cell_area_input_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, &
@@ -336,6 +337,7 @@ contains
     integer(int64), intent(out) :: context_handle
     integer, intent(out) :: status
 
+    type(groundwater_topology_cell_t), allocatable :: authority_cells(:)
     integer :: local_status
 
     context_handle = 0_int64
@@ -344,6 +346,18 @@ contains
 
     status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if (.not. production_application_groundwater_ready(self)) return
+
+    ! Fixed-interface closeout application authority:
+    ! * native MODFLOW STO is head-state capacitance, not an independently
+    !   additive physical storage reservoir in the accepted water balance;
+    ! * active physical drainage is outside this admitted application profile.
+    ! Research topologies may carry other or unresolved labels, but production
+    ! materialization fails closed on them.
+    call topology%copy_cells(authority_cells, local_status)
+    if (local_status /= GW_TOPOLOGY_OK .or. .not. allocated(authority_cells)) return
+    if (size(authority_cells) <= 0) return
+    if (any(authority_cells%storage_state_role /= GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE)) return
+    if (any(authority_cells%drainage_owner /= GW_DRAINAGE_OWNER_NONE)) return
 
     if (associated(self%active_context)) then
       call retire_active_context(self, local_status)
