@@ -283,8 +283,8 @@ def main()->None:
     g21n=json.loads(G21N.read_text())
     require(g21n["decision"]=="QUALIFIED_MIXED_PATH_AND_WITHIN_PATH_NUMERICAL_MICROSTRUCTURE","G23 G21N authority drift")
     require(g21["decision"]=="FALSIFIED_FULL_G17_PATH_EQUIVALENCE_IN_CONTINUOUS_DYNAMIC_RESPONSE_SPACE_LOOP","G23 G21 falsification authority drift")
-    require(g21e["comparison_classification"]=="BOTH_PHYSICALLY_CONVERGED","G23 inherited hard stress not physically qualified")
-    require(bool(g21e["standard"]["physical_reference_qualified"]),"G23 G21E STANDARD control drift")
+    require(g21e["comparison"]["classification"]=="BOTH_PHYSICALLY_CONVERGED","G23 inherited hard stress not physically qualified")
+    require(bool(g21e["standard_dbd"]["physical_reference_qualified"]),"G23 G21E STANDARD control drift")
     require(float(p["physical_gates"]["external_interface_residual_abs_m_per_s"])==FLUX_TOL,"G23 flux gate drift")
     require(float(p["physical_gates"]["independent_reference_head_abs_m"])==HEAD_TOL,"G23 head gate drift")
 
@@ -340,10 +340,10 @@ def main()->None:
     )
 
     hard_stress=(
-        bool(g21e["standard"]["physical_reference_qualified"])
-        and bool(g21e["standard"]["residual_gate"])
-        and bool(g21e["standard"]["endpoint_gate_5e_10"])
-        and str(g21e["standard"]["diagnostic_non_authority"])=="PASS"
+        bool(g21e["standard_dbd"]["physical_reference_qualified"])
+        and abs(float(g21e["standard_dbd"]["final_residual_m_per_s"]))<=FLUX_TOL
+        and bool(g21e["standard_dbd"]["endpoint_gate_5e_10"])
+        and str(g21e["gates"]["diagnostic_non_authority_both_arms"])=="PASS"
     )
     all_gate=all_physical and all_transaction and all_diag and pair_gate and replay_gate and hard_stress
     classification="QUALIFIED_ENDPOINT_MATRIX" if all_gate else "PARTIAL_ENDPOINT_ENVELOPE"
