@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.gc_rootzone_memory.program_status.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "production_changes": false,
+  "authority": {
+    "branch_origin": "work/f-gc-dummy-swap-shared-storage@dbf877e9815a57f1d5047d008dcc69b92d65dfa2",
+    "canonical_denominator": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "ribasim_reconciliation_snapshot": "work/ribasim-dummy-01@89415abb40bc4305154c32782b2e86a54ba13474"
+  },
+  "qualified": [
+    {
+      "work_unit": "GC-RZM01",
+      "decision": "QUALIFIED_LINEAR_TWO_STATE_FIXED_INTERFACE_ORACLE",
+      "workflow_run": 35700927693,
+      "workflow_job": 106658497688,
+      "implementation_head": "39008496c7ed3303957595e547198cd09aa9968f"
+    }
+  ],
+  "current_findings": [
+    "H_c remains one fixed-plane physical interface head and is not the root or phreatic state.",
+    "The linear analytical SWAP surrogate requires at least root-zone storage and lower-SWAP state to retain the tested hydrological memory.",
+    "Same H_c can produce different next response when root storage differs.",
+    "Same H_c and same total water can produce different next response when vertical distribution differs.",
+    "For the first linear model, a scalar affine whole-window response is exactly sufficient when bound to one committed origin state and window.",
+    "Accepted interface exchange is a mass-ledger quantity distinct from predictor response coefficients.",
+    "Internal vertical exchange is booked once per component and cancels from total SWAP mass.",
+    "Management shortage has not been introduced as physical state; later management binding must derive demand from committed root storage."
+  ],
+  "next_work_unit": {
+    "id": "GC-RZM02",
+    "scope": "forcing-order memory and internal-timescale versus coupling-window response condensation",
+    "prerequisite": "GC-RZM01 qualified"
+  },
+  "blocked": [],
+  "nonclaims": [
+    "no production coupling admission",
+    "no Richards-equation representation",
+    "no real-SWAP state sufficiency claim yet",
+    "no real storage-partition or drainage-ownership closure"
+  ]
+}

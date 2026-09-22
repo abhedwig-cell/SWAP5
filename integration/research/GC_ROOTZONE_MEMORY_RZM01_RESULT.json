@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm01.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM01",
+  "decision": "QUALIFIED_LINEAR_TWO_STATE_FIXED_INTERFACE_ORACLE",
+  "production_changes": false,
+  "authority": {
+    "preregistration": "integration/research/GC_ROOTZONE_MEMORY_RZM01_PREREGISTRATION.json",
+    "implementation_head": "39008496c7ed3303957595e547198cd09aa9968f",
+    "workflow_run": 35700927693,
+    "workflow_job": 106658497688,
+    "conclusion": "success"
+  },
+  "evidence": [
+    "GC_RZM01_TESTS=12/12",
+    "GC_RZM01_GATE=PASS",
+    "canonical closed-form endpoint reproduced within preregistered tolerance",
+    "root, lower-SWAP and combined SWAP mass ledgers close",
+    "independent integrated-interface-flux route agrees with the storage ledger",
+    "steady-state and zero-flux controls pass",
+    "exact finite-window E_c(H_c) is affine for the linear two-state model",
+    "whole-window and exact subpartition solutions agree under identical piecewise-constant H_c and forcing",
+    "restart from accepted intermediate state reproduces uninterrupted solution",
+    "same H_c with different committed root storage gives different next-window interface exchange",
+    "same H_c and same total SWAP water with different vertical distribution gives different next-window interface exchange",
+    "upper forcing is delayed before appearing at the fixed interface",
+    "a bottom-head perturbation propagates first to lower SWAP and later to the root state",
+    "fast and slow internal-response controls show different interface visibility",
+    "exact scalar MODFLOW-storage coupling closes complete mass and is invariant to affine-response reanchoring",
+    "duplicate-storage and reversed-interface-sign negative controls are detected by physical gates",
+    "capacity-crossing trial fails closed",
+    "trial response evaluation leaves committed origin state unchanged"
+  ],
+  "canonical": {
+    "root_head_end_m": 8.029873061510365,
+    "lower_head_end_m": 8.017945898366513,
+    "root_storage_end_m": 0.10597461230207317,
+    "vertical_exchange_m": 0.0040253876979268275,
+    "interface_exchange_m": 0.002230797861275541,
+    "root_storage_change_m": 0.005974612302073167,
+    "lower_storage_change_m": 0.0017945898366512909,
+    "response_tangent_dEc_dHc": -0.14936530755182922,
+    "lambda_slow_per_day": -0.6698729810778064,
+    "lambda_fast_per_day": -9.330127018922193,
+    "tau_slow_day": 1.492820323027551,
+    "tau_fast_day": 0.1071796769724491
+  },
+  "bounded_conclusions": [
+    "A single fixed-interface hydraulic head H_c can remain the physical interface state while being an incomplete descriptor of the internal SWAP state.",
+    "Root-zone storage and lower-SWAP state are genuine hydrological memory in this surrogate: equal H_c does not imply equal next-window response.",
+    "Even equal total SWAP water does not determine the next response when its vertical distribution differs.",
+    "For the linear time-invariant two-state model and one immutable committed origin, the exact whole-window interface response is affine in trial H_c. One scalar tangent plus one intercept is therefore sufficient for this bounded window response, although H_c alone is not full-state sufficient.",
+    "The affine intercept carries committed-state and forcing information. The tangent is a finite-window condensed response coefficient and is not a physical storage coefficient or a conductance.",
+    "Internal root-to-lower transfer cancels from the SWAP-total ledger. Fixed-plane transfer cancels only after adding the MODFLOW ledger.",
+    "Hydrological signals propagate with two explicit decay timescales, so upper forcing and lower-boundary forcing are not instantaneously visible throughout the column.",
+    "Exact semigroup/restart invariance holds when the same physical boundary trajectory and forcing are preserved."
+  ],
+  "nonclaims": [
+    "no production SWAP physics equivalence",
+    "no production u/q_u or HCOF/RHS admission",
+    "no claim that one scalar affine response is sufficient for nonlinear or real-SWAP regimes",
+    "no production storage-partition or drainage-ownership conclusion",
+    "no production irrigation scheduling conclusion",
+    "the exact continuous-time top-system oracle with constant trial H_c is not yet the same temporal discretization as every existing dummy or production coupling implementation"
+  ],
+  "next": "GC-RZM02 preregisters forcing-order memory and systematic internal-timescale versus coupling-window condensation."
+}
