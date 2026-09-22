@@ -228,3 +228,54 @@ DO NOT WEAKEN ITS SIGNATURE RULE RETROSPECTIVELY.
 NO PRODUCTION HCOF/RHS OR COUPLING CHANGE.
 NEXT: IDENTIFY THE MINIMUM EXECUTION-CLASS CONTRACT FROM G09C EVIDENCE.
 ```
+
+
+## G10/G10A disposition: nonlinear carrier qualified, broad groundwater merit falsified
+
+G10 bound the live configured real-SWAP carrier exactly to frozen E4 baseline
+B4: `dt=0.01 d`, `qbot=1e-6 cm/d`,
+`href=-0.7149999311459918 m`, and
+`u_A=0.00119027208545508`. That binding passed.
+
+The B4 carrier also passed the prospectively frozen real-SWAP nonlinearity
+gate. E3 changed from about `-1.37763e-6 s^-1` at the reference head to
+about `-1.61834e-6 s^-1` at `dh=+1e-5 m`, a relative change of about
+17.47%.
+
+G10 itself nevertheless remains **falsified**. In the mixed groundwater regime
+the negative-start raw Newton path reached a status-0 candidate, but the broad
+affine groundwater merit classified the second Newton proposal as worse.
+P1 then exhausted its outer budget and P4 exhausted all 12 factor-1/2
+contractions.
+
+G10A diagnosed that failure without changing E3, P4, tolerances or starts. The
+broad mixed-groundwater response had a maximum fit error of
+`2.54919e-13 m/s`, about 255 times the G10 coupled-residual tolerance.
+Locally, fixed near-zero-flux fits reduced that error to approximately
+`1e-19 m/s`.
+
+Most importantly, direct MODFLOW inversion gives:
+
+- at the G10 outer-1 accepted head, direct coupled residual about
+  `5.06e-14 m/s`;
+- at the raw outer-2 Newton proposal, direct coupled residual about
+  `2.17e-16 m/s`;
+- direct coupled root head `-0.7149997332230622 m`.
+
+The broad-affine reference root was displaced by about `1.808e-9 m`.
+The broad merit therefore rejected a raw Newton proposal that was already
+essentially at the direct physical coupled root.
+
+The interpretation is intentionally asymmetric:
+
+- G10 stays failed under its preregistered broad-affine merit contract;
+- the G10 failure is **not** evidence that E3 physical Newton or P4 is
+  intrinsically unstable on B4;
+- the broad affine groundwater response is not an adequate merit/root oracle at
+  a `1e-15 m/s` convergence scale for this mixed regime;
+- a direct-groundwater-merit replay may be qualified separately, but may not
+  retroactively turn G10 into PASS;
+- genuine live safeguard recovery from a physically bad Newton proposal remains
+  open.
+
+No production HCOF/RHS or coupling policy change is authorized.
