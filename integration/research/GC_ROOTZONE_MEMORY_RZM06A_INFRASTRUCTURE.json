@@ -1,0 +1,795 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a.infrastructure.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A",
+  "authority": "qualified research infrastructure only",
+  "production_changes": false,
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "reconciled_start_head": "fc616853ef0ca8efe5afbf176812d4e6ca66456f",
+  "implementation_commits": [
+    "0f233166fe0d4142b27d185667fd7e68a293864b",
+    "7c54cc0003cd777d56e10b05d71547ef0364820e",
+    "a76da939de3607d155c6fba47b670fa94efbd072",
+    "18e38487de7d0f2910fc2b1a28ea3cd4808d956b",
+    "8609e0effe6a59e1b8d189464426b31874ab138a",
+    "9ea80fdf61253b4a5b26afce68d661f378aa8e8b",
+    "924a6f10e49eeeeeeefc12dcdec7e9bebfc33c4d",
+    "35e050f5bfaa11b226ac4c810dc98f67cd06943d"
+  ],
+  "qualification": {
+    "initial_large_grid_failure": {
+      "workflow_run": 35724013765,
+      "job": 106733222845,
+      "meaning": "all nonzero 1e-1 and 1e-2 values rejected; zero forcing accepted; no scientific probe response inspected"
+    },
+    "carrier_scale_grid_pass": {
+      "workflow_run": 35724287627,
+      "job": 106734116515
+    },
+    "sequential_final_pass": {
+      "workflow_run": 35724746750,
+      "job": 106735623011,
+      "head": "35e050f5bfaa11b226ac4c810dc98f67cd06943d"
+    }
+  },
+  "forcing_contract": {
+    "sign": "negative top_flux is external input to the profile; positive top_flux is external output",
+    "source_semantics": "serialized-reference account_external_fluxes",
+    "top_bottom_independent": true,
+    "common_interface_head_m": -0.7149999706136307,
+    "common_materialized_bottom_head_native": -71.49999706136308,
+    "unit_caution": "field suffixes retain historical cm/day naming; geometry-based storage observables are metre-scale and are not relabelled as SI here without a separate unit reconciliation"
+  },
+  "transactional_gates": {
+    "accepted_commit_advances_revision_and_time": true,
+    "diagnostics_read_only": true,
+    "accepted_discard_exactly_preserves_committed_state": true,
+    "invalid_trial_exactly_preserves_committed_state": true,
+    "deterministic_replay": "exact JSON equality",
+    "research_state_preparation_publishes_interface_ledger": false,
+    "mass_gate_abs_residual": 1e-12
+  },
+  "characterization": {
+    "enumeration": {
+      "durations_day": [
+        0.01,
+        0.001,
+        0.0001
+      ],
+      "top_flux_cm_per_day": [
+        -0.1,
+        0.1,
+        -0.01,
+        0.01,
+        -0.0001,
+        0.0001,
+        -0.00001,
+        0.00001,
+        -0.000001,
+        0.000001,
+        0
+      ]
+    },
+    "cases": [
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": -0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 1,
+        "temporal_rejections": 8,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 1,
+        "temporal_rejections": 8,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": -0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 0,
+        "temporal_rejections": 9,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 1,
+        "temporal_rejections": 8,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": -0.0001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 12,
+        "retries": 38,
+        "solver_rejections": 0,
+        "temporal_rejections": 38,
+        "mass_complete": true,
+        "mass_residual_native": 2.117582368135751e-22
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0.0001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 12,
+        "retries": 38,
+        "solver_rejections": 0,
+        "temporal_rejections": 38,
+        "mass_complete": true,
+        "mass_residual_native": 1.0587911840678754e-22
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": -0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 4,
+        "retries": 7,
+        "solver_rejections": 0,
+        "temporal_rejections": 7,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 4,
+        "retries": 7,
+        "solver_rejections": 0,
+        "temporal_rejections": 7,
+        "mass_complete": true,
+        "mass_residual_native": 1.3234889800848443e-23
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": -0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 8.271806125530277e-25
+      },
+      {
+        "duration_day": 0.01,
+        "top_flux_native_per_day": 0,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": -0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": -0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 4,
+        "temporal_rejections": 5,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 3,
+        "temporal_rejections": 6,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": -0.0001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 3,
+        "retries": 5,
+        "solver_rejections": 0,
+        "temporal_rejections": 5,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0.0001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 3,
+        "retries": 6,
+        "solver_rejections": 1,
+        "temporal_rejections": 5,
+        "mass_complete": true,
+        "mass_residual_native": -1.3234889800848443e-23
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": -0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": -0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 1.0339757656912846e-25
+      },
+      {
+        "duration_day": 0.001,
+        "top_flux_native_per_day": 0,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": -0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 8,
+        "temporal_rejections": 1,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0.1,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 7,
+        "temporal_rejections": 2,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": -0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 7,
+        "temporal_rejections": 2,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0.01,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 7,
+        "temporal_rejections": 2,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": -0.0001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 2,
+        "retries": 1,
+        "solver_rejections": 0,
+        "temporal_rejections": 1,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0.0001,
+        "status": 7,
+        "completed": false,
+        "accepted_substeps": 0,
+        "retries": 8,
+        "solver_rejections": 8,
+        "temporal_rejections": 1,
+        "mass_complete": false,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": -0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0.00001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": -0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0.000001,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      },
+      {
+        "duration_day": 0.0001,
+        "top_flux_native_per_day": 0,
+        "status": 0,
+        "completed": true,
+        "accepted_substeps": 1,
+        "retries": 0,
+        "solver_rejections": 0,
+        "temporal_rejections": 0,
+        "mass_complete": true,
+        "mass_residual_native": 0
+      }
+    ]
+  },
+  "sequential_characterization": [
+    {
+      "duration_day": 0.01,
+      "magnitude_native_per_day": 0.0001,
+      "accepted_both_orders": false,
+      "wet_then_dry_statuses": [
+        0,
+        0
+      ],
+      "dry_then_wet_statuses": [
+        0,
+        7
+      ],
+      "wet_then_dry_endpoint": {
+        "diag": {
+          "accepted_substeps": 16,
+          "attempts": 74,
+          "available": true,
+          "bottom_outward_exchange_native": 1.9117759456166533e-7,
+          "call_status": 0,
+          "candidate_ready": true,
+          "committed": true,
+          "completed": true,
+          "duration_day": 0.01,
+          "forcing_status": 0,
+          "internal_retries": 0,
+          "mass_complete": true,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": 0.0001,
+          "q_swap_m_per_s": 2.2127036407600155e-12,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": 0.0001,
+          "result_status": 0,
+          "retries": 58,
+          "solver_rejections": 0,
+          "t0_day": 0.01,
+          "t1_day": 0.02,
+          "temporal_rejections": 58,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": 0.000010059983340911105,
+          "transaction_calls": 16,
+          "trial_rollbacks": 58
+        },
+        "obs": {
+          "distribution_moment_cm": -1.5024453499026824,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430628953072407,
+          "root_water_cm": 0.1037733184458962
+        },
+        "state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "status": 0
+      },
+      "dry_then_wet_endpoint": {
+        "diag": {
+          "accepted_substeps": 0,
+          "attempts": 9,
+          "available": true,
+          "bottom_outward_exchange_native": 0,
+          "call_status": 7,
+          "candidate_ready": false,
+          "committed": false,
+          "completed": false,
+          "duration_day": 0.01,
+          "forcing_status": 0,
+          "internal_retries": 1,
+          "mass_complete": false,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": -0.0001,
+          "q_swap_m_per_s": 0,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": -0.0001,
+          "result_status": 2,
+          "retries": 8,
+          "solver_rejections": 1,
+          "t0_day": 0.01,
+          "t1_day": 0.02,
+          "temporal_rejections": 8,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": 0,
+          "transaction_calls": 1,
+          "trial_rollbacks": 9
+        },
+        "obs": {
+          "distribution_moment_cm": -1.502445635074545,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430622287744868,
+          "root_water_cm": 0.10377319935941269
+        },
+        "state": [
+          1,
+          0.01,
+          0,
+          0
+        ],
+        "status": 7
+      }
+    },
+    {
+      "duration_day": 0.01,
+      "magnitude_native_per_day": 0.00001,
+      "accepted_both_orders": true,
+      "wet_then_dry_statuses": [
+        0,
+        0
+      ],
+      "dry_then_wet_statuses": [
+        0,
+        0
+      ],
+      "wet_then_dry_endpoint": {
+        "diag": {
+          "accepted_substeps": 5,
+          "attempts": 16,
+          "available": true,
+          "bottom_outward_exchange_native": 1.39163867680537e-8,
+          "call_status": 0,
+          "candidate_ready": true,
+          "committed": true,
+          "completed": true,
+          "duration_day": 0.01,
+          "forcing_status": 0,
+          "internal_retries": 0,
+          "mass_complete": true,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": 0.00001,
+          "q_swap_m_per_s": 1.6106929129691783e-13,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": 0.00001,
+          "result_status": 0,
+          "retries": 11,
+          "solver_rejections": 0,
+          "t0_day": 0.01,
+          "t1_day": 0.02,
+          "temporal_rejections": 11,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+          "transaction_calls": 5,
+          "trial_rollbacks": 11
+        },
+        "obs": {
+          "distribution_moment_cm": -1.5024450029396634,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.0430631336699183,
+          "root_water_cm": 0.1037734552350075
+        },
+        "state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "status": 0
+      },
+      "dry_then_wet_endpoint": {
+        "diag": {
+          "accepted_substeps": 5,
+          "attempts": 16,
+          "available": true,
+          "bottom_outward_exchange_native": -1.7335251070826976e-8,
+          "call_status": 0,
+          "candidate_ready": true,
+          "committed": true,
+          "completed": true,
+          "duration_day": 0.01,
+          "forcing_status": 0,
+          "internal_retries": 0,
+          "mass_complete": true,
+          "mass_rejections": 0,
+          "mass_residual_native": 0,
+          "materialized_bottom_head_cm": -71.49999706136308,
+          "materialized_top_flux_cm_per_day": -0.00001,
+          "q_swap_m_per_s": -2.0063947998642332e-13,
+          "requested_head_m": -0.7149999706136307,
+          "requested_top_flux_cm_per_day": -0.00001,
+          "result_status": 0,
+          "retries": 11,
+          "solver_rejections": 0,
+          "t0_day": 0.01,
+          "t1_day": 0.02,
+          "temporal_rejections": 11,
+          "temporal_unavailable_rejections": 0,
+          "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+          "transaction_calls": 5,
+          "trial_rollbacks": 11
+        },
+        "obs": {
+          "distribution_moment_cm": -1.5024449323768638,
+          "groundwater_level_cm": -2,
+          "profile_water_cm": 1.043063184727175,
+          "root_water_cm": 0.10377348348932945
+        },
+        "state": [
+          2,
+          0.02,
+          0,
+          0
+        ],
+        "status": 0
+      }
+    }
+  ],
+  "frozen_candidate_for_preregistration": {
+    "interface_head_m": -0.7149999706136307,
+    "antecedent_duration_day": 0.01,
+    "top_flux_magnitude_native_per_day": 0.00001,
+    "wet_top_flux_native_per_day": -0.00001,
+    "dry_top_flux_native_per_day": 0.00001,
+    "wet_then_dry_endpoint": {
+      "diag": {
+        "accepted_substeps": 5,
+        "attempts": 16,
+        "available": true,
+        "bottom_outward_exchange_native": 1.39163867680537e-8,
+        "call_status": 0,
+        "candidate_ready": true,
+        "committed": true,
+        "completed": true,
+        "duration_day": 0.01,
+        "forcing_status": 0,
+        "internal_retries": 0,
+        "mass_complete": true,
+        "mass_rejections": 0,
+        "mass_residual_native": 0,
+        "materialized_bottom_head_cm": -71.49999706136308,
+        "materialized_top_flux_cm_per_day": 0.00001,
+        "q_swap_m_per_s": 1.6106929129691783e-13,
+        "requested_head_m": -0.7149999706136307,
+        "requested_top_flux_cm_per_day": 0.00001,
+        "result_status": 0,
+        "retries": 11,
+        "solver_rejections": 0,
+        "t0_day": 0.01,
+        "t1_day": 0.02,
+        "temporal_rejections": 11,
+        "temporal_unavailable_rejections": 0,
+        "terminal_bottom_outward_flux_native": 6.70246885887016e-7,
+        "transaction_calls": 5,
+        "trial_rollbacks": 11
+      },
+      "obs": {
+        "distribution_moment_cm": -1.5024450029396634,
+        "groundwater_level_cm": -2,
+        "profile_water_cm": 1.0430631336699183,
+        "root_water_cm": 0.1037734552350075
+      },
+      "state": [
+        2,
+        0.02,
+        0,
+        0
+      ],
+      "status": 0
+    },
+    "dry_then_wet_endpoint": {
+      "diag": {
+        "accepted_substeps": 5,
+        "attempts": 16,
+        "available": true,
+        "bottom_outward_exchange_native": -1.7335251070826976e-8,
+        "call_status": 0,
+        "candidate_ready": true,
+        "committed": true,
+        "completed": true,
+        "duration_day": 0.01,
+        "forcing_status": 0,
+        "internal_retries": 0,
+        "mass_complete": true,
+        "mass_rejections": 0,
+        "mass_residual_native": 0,
+        "materialized_bottom_head_cm": -71.49999706136308,
+        "materialized_top_flux_cm_per_day": -0.00001,
+        "q_swap_m_per_s": -2.0063947998642332e-13,
+        "requested_head_m": -0.7149999706136307,
+        "requested_top_flux_cm_per_day": -0.00001,
+        "result_status": 0,
+        "retries": 11,
+        "solver_rejections": 0,
+        "t0_day": 0.01,
+        "t1_day": 0.02,
+        "temporal_rejections": 11,
+        "temporal_unavailable_rejections": 0,
+        "terminal_bottom_outward_flux_native": -9.46356344856496e-7,
+        "transaction_calls": 5,
+        "trial_rollbacks": 11
+      },
+      "obs": {
+        "distribution_moment_cm": -1.5024449323768638,
+        "groundwater_level_cm": -2,
+        "profile_water_cm": 1.043063184727175,
+        "root_water_cm": 0.10377348348932945
+      },
+      "state": [
+        2,
+        0.02,
+        0,
+        0
+      ],
+      "status": 0
+    },
+    "endpoint_differences": {
+      "profile_water_native": 5.1057256644782e-8,
+      "root_water_native": 2.825432195152633e-8,
+      "distribution_moment_native": 7.056279960337974e-8
+    },
+    "replay": "exact_json_equality"
+  },
+  "nonclaims": [
+    "no H1-H4 scientific response has been inspected in this infrastructure qualification",
+    "no production coupling admission",
+    "no production API change",
+    "no claim that the historical _CM diagnostic suffixes resolve the mixed geometry and hydraulic unit conventions"
+  ]
+}
