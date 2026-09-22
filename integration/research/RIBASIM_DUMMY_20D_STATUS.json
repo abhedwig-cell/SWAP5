@@ -15,10 +15,9 @@
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
-    "state": "INDEPENDENT_CASE_AND_MATRIX_VERIFIERS_PREPARED_EXECUTION_BLOCKED",
-    "case_runner": "tests/research/test_ribasim_dummy_20d_real_ribamod_case.py",
-    "matrix_verifier": "tests/research/verify_ribasim_dummy_20d_clock_matrix.py",
+    "state": "RUNTIME_MATRIX_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/test_ribasim_dummy_20d_runtime_clock_matrix.py",
     "scientific_change": false,
-    "note": "Each product case is designed for a separate Python process to avoid DLL lifecycle contamination. No runner/workflow gate or execution before DUMMY-20C closeout."
+    "note": "Four-case actual-product matrix verifier prepared while DUMMY-20C runs; no runner/workflow/execution until 20C closeout."
   }
 }
