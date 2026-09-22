@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.coupling.real_ribamod_positive_groundwater_next_boundary.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H9",
+  "title": "Actual RibaMod positive-groundwater forcing next-boundary allocation bridge",
+  "baseline": "9220b8bf49138a0cf2b723aa7d6d460583338029",
+  "sequencing": {
+    "state": "PREREGISTERED_BLOCKED_ON_DUMMY_20H8",
+    "execute_after": "DUMMY-20H8 qualifies the exact-release forcing-sign asymmetry",
+    "rationale": "Freeze the actual-product positive-forcing bridge before observing H8 output."
+  },
+  "authorities": {
+    "product_memory": {
+      "work_unit": "RIBASIM-DUMMY-20F2",
+      "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+      "workflow_run": 35729300651
+    },
+    "negative_product_bridge": {
+      "work_unit": "RIBASIM-DUMMY-20H7",
+      "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+      "workflow_run": 35745915889
+    },
+    "pending_sign_oracle": {
+      "work_unit": "RIBASIM-DUMMY-20H8",
+      "intended_decision": "RIBASIM_DUMMY_20H8_QUALIFIED_CURRENT_FORCING_SIGN_ASYMMETRY"
+    },
+    "product": {
+      "imod_coupler_commit": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "ribasim_release": "v2026.1.1",
+      "ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "modflow_release": "6.7.0"
+    }
+  },
+  "frozen_topology": {
+    "horizon_for_observation_seconds": 108000,
+    "product_timestep_seconds": 21600,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "level_hold_m": 1,
+    "user_demand_min_level_m": 0.99,
+    "groundwater_exchange": "DUMMY-20F2 two-cell passive MF6 Drainage",
+    "hydraulic_conductivity_m_per_day": 1000000,
+    "chd_head_m": 0.5,
+    "drain_conductance_m2_per_day": 16,
+    "drain_elevation_first_6h_m": 0.5,
+    "drain_elevation_after_6h_m": 0
+  },
+  "frozen_references": {
+    "t0_allocation": {
+      "root_m3_per_day": 32,
+      "external_m3_per_day": 0
+    },
+    "accepted_t24": {
+      "level_m": 1.0000219748888743,
+      "storage_excess_m3": 21.97488887434318,
+      "cumulative_groundwater_m3": 5.99990400153598
+    },
+    "current_positive_groundwater_forcing_m3_per_day": 7.999872002047973,
+    "t24_allocation": {
+      "root_m3_per_day": 40,
+      "external_m3_per_day": 20
+    },
+    "discriminating_memory_only_alternative": {
+      "root_m3_per_day": 40,
+      "external_m3_per_day": 13.97488887434318,
+      "derivation": "32 m3/day fixed source + 21.97488887434318 m3 accepted storage memory, with current positive drainage omitted from the forecast."
+    }
+  },
+  "hypotheses": [
+    "The first four 6-hour accepted states reproduce the qualified DUMMY-20F2 day-1 physical prefix.",
+    "The fifth product step carries the active approximately 7.999872 m3/day passive groundwater drainage into Ribasim before the t=24 fixed allocation solve is advanced.",
+    "The actual allocation output contains distinct t=0 and t=24 records.",
+    "The actual t=24 allocation is root=40 and external=20 m3/day.",
+    "The actual t=24 external allocation is materially above the preregistered memory-only alternative 13.9748888743 m3/day, demonstrating current positive groundwater forcing admission in addition to accepted memory.",
+    "External physical supply is zero through t=24 and becomes positive in the first post-boundary segment.",
+    "The source + groundwater = UserDemand + Basin-storage ledger closes at every observed boundary."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "accepted_level_m": 5e-8,
+    "groundwater_rate_m3_per_day": 0.01,
+    "cumulative_volume_m3": 0.05,
+    "ledger_m3": 0.05,
+    "zero_external_m3": 0.001,
+    "memory_only_separation_m3_per_day": 5,
+    "time_seconds": 0.000001
+  },
+  "forbidden": [
+    "no execution if DUMMY-20H8 does not qualify",
+    "no retuning from H8 or H9 observed output",
+    "no substitution of physical supplied volume for direct allocation output",
+    "no production SWAP5 admission",
+    "no generalization from Drainage to all positive forcing processes"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H9_QUALIFIED_ACTUAL_POSITIVE_GROUNDWATER_FORECAST_ADMISSION",
+  "fail_decision": "RIBASIM_DUMMY_20H9_FALSIFIED_OR_BLOCKED"
+}
