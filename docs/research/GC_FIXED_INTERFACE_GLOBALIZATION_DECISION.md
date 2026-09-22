@@ -1733,3 +1733,20 @@ G21K B1 PATH OCCLUSION = STILL MATERIAL.
 PRODUCTION SOURCE / TOLERANCES = UNCHANGED.
 NEXT: RESIDUAL-ARITHMETIC AND CANCELLATION QUALIFICATION.
 ```
+
+## G21M disposition: final aggregation is not the threshold-flip mechanism
+
+G21M tested the arithmetic of the already-computed final residuals without changing their values. Workflow `35746989392`, job `106811046874`, passed the full semantic scan and the ordinary F-GC44 end-to-end follow-up on commit `48338432a339ea61afa089cab687e915731810a9`.
+
+For B2, all 24 permutations of the four residual components, reverse ordering, magnitude ordering, `math.fsum` and exact-decimal recombination remain on the same side of the frozen `1e-12` total-balance criterion. The passing state remains `-9.755467635457958e-13`; the failing state remains `-1.1858268037760853e-12`. Final summation order therefore does not explain B2.
+
+B1 has a different numerical character. Node 4 is formed by cancellation of terms whose absolute sum is about `6.97e-4`, leaving a residual near `1e-12`. The cancellation ratio is about `6.13e8` on the failing side and `7.43e8` on the passing side. Even so, every permitted regrouping of the already-rounded terms preserves the criterion classification. The difference between ordinary binary64 grouping and high-accuracy recombination is only order `1e-21`, far too small to cross the gate in these frozen states.
+
+```text
+G21M B2 FINAL REDUCTION ORDER = NOT CAUSAL AT CAPTURED COMPONENT LEVEL.
+G21M B1 FINAL TERM ORDER      = NOT CAUSAL AT CAPTURED TERM LEVEL.
+B1 LARGE CANCELLATION         = QUALIFIED SENSITIVITY AMPLIFIER.
+UPSTREAM TERM FORMATION / NONLINEAR PATH = STILL OPEN.
+PRODUCTION ARITHMETIC / TOLERANCES / POLICY = UNCHANGED.
+NEXT: ADJACENT-HEAD TERM-DELTA ATTRIBUTION, THEN FORENSIC CLOSEOUT DECISION.
+```

@@ -1,0 +1,159 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21m.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21M",
+  "title": "Residual arithmetic and cancellation qualification at G21L balance boundaries",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G21M_PREREGISTRATION.json",
+  "parent_result": "integration/research/GC_FIXED_INTERFACE_G21L_RESULT.json",
+  "tested_commit": "48338432a339ea61afa089cab687e915731810a9",
+  "workflow_run": 35746989392,
+  "workflow_job": 106811046874,
+  "workflow_conclusion": "success",
+  "decision": "QUALIFIED_FINAL_AGGREGATION_NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL",
+  "production_admission": "NO_DIAGNOSTIC_ONLY",
+  "runtime_change": "NONE",
+  "production_source_change": "NONE",
+  "production_arithmetic_change": "NONE",
+  "production_tolerance_change": "NONE",
+  "production_hcof_rhs_change": false,
+  "ci_notes": {
+    "first_implementation_run": 35746518339,
+    "first_failure": "TECHNICAL_HEAD_CALC_INSTRUMENTATION_ANCHOR_DRIFT",
+    "second_run": 35746747298,
+    "second_failure": "EXTERNAL_MODFLOW_RELEASE_DOWNLOAD_HTTP_403_RATE_LIMIT",
+    "qualified_run": 35746989392,
+    "research_workflow_download_hardening_commit": "955c60e41a87ca60bfe7343dc805692ec72f6aa4",
+    "interpretation": "The first two failures occurred before scientific evidence or outside the experiment and are not scientific falsifications."
+  },
+  "cases": [
+    {
+      "id": "B1_STATUS6",
+      "head_m": -0.7150100297648301,
+      "solver_status": 2,
+      "backtracking": 8,
+      "residual": [
+        3.230993493484266e-13,
+        -1.8511693774506253e-13,
+        -9.445964810611952e-13,
+        1.1378075673480759e-12
+      ],
+      "native_sum": 3.3119349789024467e-13,
+      "native_fmax": 1.1378075673480759e-12,
+      "node4_terms": [
+        -0.00034612218371421477,
+        0,
+        0,
+        0,
+        -0.000002380711792140984,
+        0.0003485028966441633
+      ],
+      "node4_exact_sum": "1.1378075597247793403210547324988510808907449245452880859375E-12",
+      "node4_binary64_forward": 1.1378075673480759e-12,
+      "node4_binary64_fsum": 1.1378075597247793e-12,
+      "node4_permutation_min": 1.1378075597247793e-12,
+      "node4_permutation_max": 1.1378075673480759e-12,
+      "node4_cancellation_ratio": 612586712.219697,
+      "node4_criterion_invariant": true,
+      "vector_cancellation_ratio": 7.822074865616096,
+      "vector_criterion_invariant": true
+    },
+    {
+      "id": "B1_STATUS0",
+      "head_m": -0.715010029764824,
+      "solver_status": 1,
+      "backtracking": 8,
+      "residual": [
+        3.230993493484266e-13,
+        -1.8511693774506253e-13,
+        -9.495369239693498e-13,
+        9.374745988180444e-13
+      ],
+      "native_sum": 1.2592008645205868e-13,
+      "native_fmax": 9.495369239693498e-13,
+      "node4_terms": [
+        -0.00034612218371421477,
+        0,
+        0,
+        0,
+        -0.000002380711787200541,
+        0.0003485028964388899
+      ],
+      "node4_exact_sum": "9.3747459585342908690297480944764174637384712696075439453125E-13",
+      "node4_binary64_forward": 9.374745988180444e-13,
+      "node4_binary64_fsum": 9.37474595853429e-13,
+      "node4_permutation_min": 9.37474595853429e-13,
+      "node4_permutation_max": 9.374745988180444e-13,
+      "node4_cancellation_ratio": 743492991.7282577,
+      "node4_criterion_invariant": true,
+      "vector_cancellation_ratio": 19.021808810406224,
+      "vector_criterion_invariant": true
+    },
+    {
+      "id": "B2_STATUS0",
+      "head_m": -0.715010029764793,
+      "solver_status": 1,
+      "backtracking": 3,
+      "residual": [
+        3.301258753752326e-13,
+        -1.8011791942156731e-13,
+        -9.66502911317141e-13,
+        -1.5905180818232e-13
+      ],
+      "native_sum": -9.755467635457958e-13,
+      "native_fmax": 9.66502911317141e-13,
+      "vector_exact_sum": "-9.75546763545795772134606484160546102657463052310049533843994140625E-13",
+      "vector_permutation_min": -9.755467635457958e-13,
+      "vector_permutation_max": -9.755467635457958e-13,
+      "vector_cancellation_ratio": 1.6768017438248315,
+      "vector_criterion_invariant": true
+    },
+    {
+      "id": "B2_STATUS6",
+      "head_m": -0.7150100297647868,
+      "solver_status": 2,
+      "backtracking": 3,
+      "residual": [
+        3.301258753752326e-13,
+        -1.8011791942156731e-13,
+        -9.714433542252956e-13,
+        -3.6439140550445503e-13
+      ],
+      "native_sum": -1.1858268037760853e-12,
+      "native_fmax": 9.714433542252956e-13,
+      "vector_exact_sum": "-1.185826803776085330055013213057524268378983833827078342437744140625E-12",
+      "vector_permutation_min": -1.1858268037760853e-12,
+      "vector_permutation_max": -1.1858268037760853e-12,
+      "vector_cancellation_ratio": 1.5567859898663057,
+      "vector_criterion_invariant": true
+    }
+  ],
+  "classifications": {
+    "b2": "AGGREGATION_ORDER_NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL",
+    "b1_node4": "AGGREGATION_ORDER_NOT_CAUSAL_AT_CAPTURED_TERM_LEVEL"
+  },
+  "postconditions": {
+    "saved_config_status_vector": [
+      6,
+      0,
+      0,
+      6
+    ],
+    "g16_counts": [
+      4,
+      4,
+      0,
+      4
+    ],
+    "accepted_state_ledger_mutation": 0,
+    "participant_candidate_leakage": 0
+  },
+  "bounded_conclusions": [
+    "For B2, the total-balance pass/fail split is invariant to every permutation of the four already-computed binary64 residual components, reverse order, magnitude ordering, math.fsum and exact-decimal recombination of the binary64 inputs.",
+    "Therefore final residual-vector summation order is not sufficient to explain the B2 status split. Any remaining floating-point mechanism must be upstream in residual-component formation or in the nonlinear trajectory.",
+    "For B1 node 4, the final residual is the difference of terms with a cancellation ratio of roughly 6.1e8 on the failing side and 7.4e8 on the adjacent passing side. This makes the local residual highly sensitive to small upstream changes in the already-rounded storage/flux terms.",
+    "Despite the large B1 cancellation, all permitted recombinations remain on the same side of the 1e-12 criterion. Final term aggregation order is therefore not itself causal at the captured-term level.",
+    "The B1 status-6 and status-0 pair share identical storage term at displayed binary64 precision; the changing upper- and lower-flux terms dominate the observed node-4 residual difference. This is a target for the next bounded attribution experiment, not yet a causal conclusion.",
+    "No production arithmetic, tolerance, retry policy, status smoothing, coupling policy or HCOF/RHS behavior is changed or admitted."
+  ],
+  "next_natural_unit": "Open G21N as adjacent-head node-4 term-delta attribution on the untouched B1 path and corresponding B2 residual-component delta attribution. Quantify which already-computed terms account for the pass/fail delta, test local finite-difference smoothness across the adjacent binary64 head pair, and decide whether further solver forensics are scientifically useful or the G21 line should close and return to endpoint-based coupling qualification."
+}
