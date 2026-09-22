@@ -900,8 +900,48 @@ DUMMY-20B
   later DUMMY-19 allocation-tstop architecture is absent
 ```
 
-DUMMY-20C is the first dynamic real-product differential: actual RibaMod plus
-real MODFLOW/Ribasim kernels versus a fresh direct Ribasim v2026.1.1 route.
+DUMMY-20C through DUMMY-20G extend that source authority into actual product
+runtime:
+
+```text
+DUMMY-20C
+  actual upstream RibaMod + real MF6 6.7.0 + real Ribasim v2026.1.1;
+  product route equals direct Ribasim route at every 6-hour accepted boundary
+
+DUMMY-20D
+  product clock-ownership matrix:
+  fixed allocation.dt owns UserDemand management cadence;
+  saveat and MF6/RibaMod step cadence do not replace it
+
+DUMMY-20E
+  FALSIFIED PREEXECUTION:
+  t=0-active groundwater forcing could not represent post-allocation arrival
+
+DUMMY-20E2
+  BLOCKED TECHNICALLY:
+  one-cell CHD+DRN fixture realized zero groundwater transfer
+
+DUMMY-20E3
+  qualified two-cell post-allocation groundwater transfer:
+  about 7.999872 m3/day MF6 drainage is transferred reciprocally to Ribasim;
+  current daily allocation remains frozen
+
+DUMMY-20F
+  SUPERSEDED UNEXECUTED after DUMMY-20E2 intervention failure
+
+DUMMY-20F2
+  qualified two-day management-memory admission:
+  day-1 groundwater changes accepted physical state but not current allocation;
+  external demand becomes supplied only after the t=24 h allocation boundary
+
+DUMMY-20G
+  qualified active-River reciprocal stage feedback:
+  accepted Ribasim stage -> MF6 River solve -> reciprocal Ribasim infiltration
+  -> next accepted Basin state
+```
+
+Together these work units establish both one-way passive groundwater arrival and
+active stage-driven reciprocal exchange in the actual pinned product route.
 
 ## 17. Current real-model authority boundaries
 
@@ -961,10 +1001,29 @@ The abstract groundwater coefficient
 A_g = dS_g/dh_g
 ```
 
-is not yet a MODFLOW STO mapping.
+is still not a general MODFLOW STO mapping.
 
-Current RibaMod coupling uses RIV/DRN surfaces rather than the early
-GHB-like analytical relation.
+However, the actual pinned RibaMod product path now has qualified runtime
+evidence for the tested two-cell exchange fixtures:
+
+- DUMMY-20E3 qualifies a nonzero passive MF6 DRN transfer into Ribasim;
+- DUMMY-20F2 qualifies its accepted-state and next-allocation-boundary memory
+  over two days;
+- DUMMY-20G qualifies active MF6 RIV stage feedback and reciprocal Ribasim
+  infiltration.
+
+The active-River result is explicitly staggered/sample-and-hold:
+
+```text
+accepted Ribasim stage
+-> MF6 River stage and groundwater solve
+-> exchange flux
+-> Ribasim physical advance
+-> next accepted state
+```
+
+This does not establish an implicit same-window RIV/Ribasim fixed point, a
+general STO aggregation contract, or arbitrary package/topology equivalence.
 
 ### SWAP
 
@@ -1003,12 +1062,14 @@ It still does not establish:
 - arbitrary/full Ribasim network-allocation equivalence beyond the tested
   UserDemand topology;
 - a supported production Ribasim API for explicit UserDemand apply;
-- exact RIV/DRN package response;
-- actual MODFLOW storage aggregation;
+- arbitrary RIV/DRN package and topology equivalence beyond the qualified
+  two-cell product fixtures;
+- implicit same-window convergence for active RIV feedback;
+- actual general MODFLOW storage aggregation;
 - real SWAP/MODFLOW storage non-overlap;
 - production drainage ownership;
-- the final product-level asynchronous clock policy;
-- product-level iMOD Coupler admission.
+- the final SWAP-facing asynchronous clock policy;
+- product-level SWAP driver admission.
 
 The next substitution step should therefore preserve the qualified semantic
 contract rather than re-open it implicitly:
