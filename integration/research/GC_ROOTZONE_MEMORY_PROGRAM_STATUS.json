@@ -142,6 +142,15 @@
       "workflow_job": 106784863436,
       "implementation_head": "455a0112591301c27ee8e40b00a37d70589873ae",
       "evidence_commit": "87394744797ba76a5f81704369d09e89688fb14f"
+    },
+    {
+      "work_unit": "GC-RZM06D04",
+      "decision": "QUALIFIED_LOCAL_STRICT_CONTINUATION_NO_MATCH__H2_NOT_PROBED",
+      "preregistration_commit": "8de97e12dc9cc50caab3d8808e88caf3db1599c3",
+      "workflow_run": 35740262904,
+      "workflow_job": 106787866351,
+      "implementation_head": "64b9f95804e2f815d591daf51841c31968e6deaf",
+      "evidence_commit": "6f1bbc067ce29ab81f604eb67cef79f7a2d44f22"
     }
   ],
   "current_findings": [
@@ -200,7 +209,9 @@
     "D02R1 removes the D02 floating-time confound: with a binary-identical dyadic duration, the same accepted 16-node physical state reseeded 7 days apart gives bit-identical candidate state, bottom exchange, terminal flux and mass result for the C01 pure-hydraulics carrier.",
     "D03 removed only the same-library-time control and still found 0 qualifying H2 origin pairs among 98,693 different-history pairs from 475 eligible DISCOVERY records.",
     "The strongest D03 water-matched pair reaches |ΔM1|=0.007836912353482717 cm, 78.37% of the unchanged 0.01 cm requirement, with |ΔW_profile|=6.094551292790129e-05 cm.",
-    "D03 therefore motivates prospective state-space expansion rather than threshold relaxation, HELD_OUT access or response-guided selection."
+    "D03 therefore motivates prospective state-space expansion rather than threshold relaxation, HELD_OUT access or response-guided selection.",
+    "D04 mapped strict local continuations from the immutable D03 pair: 15 admitted endpoints per origin, 225 cross-origin endpoint pairs and 39 water-matched pairs, but zero H2-qualified pairs.",
+    "D04's best water-matched pair reaches |ΔM1|=0.007872748347196534 cm, 78.73% of the unchanged 0.01 cm requirement, with |ΔW_profile|=9.233749912596068e-05 cm."
   ],
   "next_work_unit": {
     "id": "GC-RZM06E01",
