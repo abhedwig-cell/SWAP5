@@ -101,6 +101,16 @@
         "lower_head_end_m": 7.986437466631127,
         "interface_exchange_m": 0.0014699769222885038
       }
+    },
+    "one_state_fast_vertical_limit": {
+      "combined_storage_coefficient": 0.3,
+      "interface_conductance_per_day": 0.25,
+      "dt_day": 1,
+      "exact_continuous_u_m_per_m": 0.16962053744787653,
+      "implicit_euler_u_m_per_m": 0.13636363636363635,
+      "finite_vertical_conductance_probe_per_day": 500,
+      "finite_probe_u_m_per_m": 0.16959639676987978,
+      "finite_probe_abs_distance_to_continuous_limit": 0.000024140677996747906
     }
   },
   "hypotheses": {
@@ -119,7 +129,9 @@
     "long_window_u_within_m_per_m_of_total_storage": 0.001,
     "short_window_u_less_than_m_per_m": 0.003,
     "order_gap_intermediate_greater_than_both_extreme_points": true,
-    "mean_head_control_must_differ_from_piecewise_paths": true
+    "mean_head_control_must_differ_from_piecewise_paths": true,
+    "fast_vertical_limit_abs_m_per_m": 0.00003,
+    "continuous_vs_implicit_euler_difference_greater_than": 0.03
   },
   "forbidden": [
     "do not change target values after execution",
@@ -128,5 +140,9 @@
     "do not equate a constant mean H_c with an exact head trajectory",
     "do not claim NH01 implicit-Euler and RZM exact-continuous finite-window formulas are identical",
     "no production code change"
-  ]
+  ],
+  "preregistration_amendment": {
+    "phase": "BEFORE_RZM02_IMPLEMENTATION",
+    "reason": "Freeze numeric one-state fast-vertical-limit targets needed to execute already-preregistered hypothesis H6; no earlier target or gate relaxed."
+  }
 }
