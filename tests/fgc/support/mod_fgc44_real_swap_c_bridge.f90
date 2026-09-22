@@ -489,9 +489,9 @@ contains
     fgc44_raw_corrector_diagnostics_c=0_c_int
   end function fgc44_raw_corrector_diagnostics_c
 
-  integer(c_int) function fgc44_g14_fused_observation_c(head_m,participant_status,q_swap_m_per_s, &
-       result_status,completed,candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks, &
-       solver_rejections,temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries, &
+  integer(c_int) function fgc44_g14_fused_observation_c(head_m,participant_status,result_status,completed, &
+       candidate_ready,transaction_calls,accepted_substeps,attempts,retries,trial_rollbacks,solver_rejections, &
+       temporal_rejections,temporal_unavailable_rejections,mass_rejections,internal_retries,q_swap_m_per_s, &
        min_substep,max_substep) bind(C,name="fgc44_g14_fused_observation_c")
     real(c_double), value, intent(in) :: head_m
     integer(c_int), intent(out) :: participant_status,result_status,completed,candidate_ready,transaction_calls
