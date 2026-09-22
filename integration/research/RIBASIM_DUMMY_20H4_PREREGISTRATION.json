@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.coupling.ribasim_release_physical_vs_lp_low_storage_factor.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H4",
+  "title": "Ribasim v2026.1.1 physical versus allocation low-storage factor on the same accepted state",
+  "baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20H3_ACTIVE",
+    "execute_after": "DUMMY-20H3 closeout",
+    "rationale": "Freeze the direct forecast-versus-realization state-factor comparison before observing DUMMY-20H3."
+  },
+  "authorities": {
+    "visibility": {
+      "work_unit": "RIBASIM-DUMMY-20H2",
+      "decision": "RIBASIM_DUMMY_20H2_QUALIFIED_INFILTRATION_ALLOCATION_VISIBILITY_CLASSIFICATION"
+    },
+    "release": {
+      "tag": "v2026.1.1",
+      "commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    }
+  },
+  "frozen_model": {
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "source_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "root_priority": 2,
+    "external_priority": 3,
+    "infiltration_m3_per_day": 7.999914667576883
+  },
+  "observed_states": [
+    "physical state-derived current_low_storage_factor before allocation",
+    "physical infiltration derivative after water_balance! on the same t=0 state",
+    "LP low_storage_factor after allocation optimization",
+    "implicit_negative_forcing_volume passed to the LP",
+    "root and external allocation"
+  ],
+  "hypotheses": [
+    "At initial Basin level 1.0 m and area 1e6 m2, the physical state-derived low-storage factor is approximately 1 because storage is far above the configured low-storage threshold.",
+    "The physical water-balance formulation therefore represents approximately the full 7.9999147 m3/day infiltration on that same t=0 state.",
+    "If DUMMY-20H3 qualifies, the allocation LP factor for the identical state and forcing is approximately 0 while root allocation remains 32 m3/day.",
+    "The physical and allocation factors are therefore distinct state semantics, not two observations of one common reduction factor.",
+    "The mismatch is a forecast-realization seam for externally imposed Basin infiltration under this topology and priority configuration."
+  ],
+  "tolerances": {
+    "physical_factor": 0.000001,
+    "lp_factor": 0.000001,
+    "infiltration_rate_m3_per_day": 0.01,
+    "allocation_m3_per_day": 0.05
+  },
+  "forbidden": [
+    "no source modification in Ribasim",
+    "no claim that LP alpha should universally equal the physical factor",
+    "no defect classification",
+    "no production prescription",
+    "do not execute as authority if DUMMY-20H3 does not qualify"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+  "fail_decision": "RIBASIM_DUMMY_20H4_BLOCKED"
+}
