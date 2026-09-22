@@ -5,7 +5,7 @@
   "title": "FMR immutable-origin tangent observation service ownership and cache contract",
   "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
   "branch": "work/f-gc-dummy-swap-shared-storage",
-  "baseline_head": "9c7d510a7b53170d507d10ad5b65a39c8c50bc81",
+  "baseline_head": "aff45edc5f2ce9438dfb1119884fa2d4f4036a6f",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
   "authorities": [
     "integration/research/GC_FIXED_INTERFACE_G15_RESULT.json",
@@ -99,5 +99,12 @@
   ],
   "pass_interpretation": "PASS may qualify only the FMR-specific immutable-origin tangent-observation service mechanics/cache as a production-facing building block. It does not admit E3, P4, or coupling orchestration.",
   "fail_interpretation": "FAIL is preserved as G16 falsification or technical failure according to evidence. Do not weaken the frozen E3 rules, cache/accounting gates or transaction boundaries retrospectively.",
-  "production_admission": "NO_COUPLING_POLICY_ADMISSION"
+  "production_admission": "NO_COUPLING_POLICY_ADMISSION",
+  "baseline_reconciliation": {
+    "reason": "A concurrent technical FGC44 current-source compile-order repair landed after the baseline head was read but before this preregistration commit was created.",
+    "intervening_commit": "aff45edc5f2ce9438dfb1119884fa2d4f4036a6f",
+    "diff_scope": "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh module compile ordering only",
+    "semantic_effect": "No G15 runtime/API, G16 hypothesis, E3 rule, coupling policy, ledger or HCOF/RHS semantics changed.",
+    "timing": "Corrected before any G16 implementation or execution."
+  }
 }
