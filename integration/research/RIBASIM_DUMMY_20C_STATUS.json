@@ -10,7 +10,7 @@
   "qualified": false,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute DUMMY-20C v3 from a source-scope denominator that already contains the prospectively frozen DUMMY-20D preparation; DUMMY-20C science unchanged.",
+  "next_action": "Execute DUMMY-20C v4 after dx/dy-only one-cell grid metadata repair; scientific contract unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
   },
   "implementation_baseline": "d0b7dc44ac415d9730fd01d293f4d6b4359615ad",
-  "recovery_point": "v1 missing MF6 STO; v2 source-scope denominator stale after 20D preregistration; neither reached a scientific DUMMY-20C comparison.",
+  "recovery_point": "v1 missing STO; v2 stale source-scope denominator; v3 missing one-cell dx/dy metadata. No attempt has yet reached product initialization.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20C_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20C_CONCEPT.md",
@@ -72,6 +72,14 @@
       "run": 35721769070,
       "state": "TECHNICAL_SOURCE_SCOPE_FAIL",
       "reason": "Qualification branch inherited prospectively preregistered DUMMY-20D files after the old DUMMY-20C source-scope base; gate rejected them before product runtime.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden"
+    },
+    {
+      "attempt": "v3",
+      "run": 35722163398,
+      "state": "TECHNICAL_MODEL_WRITE_FAIL",
+      "reason": "One-cell MF6 StructuredDiscretization omitted explicit dx/dy coordinates; imod-python rejected DIS writing before product initialization.",
       "scientific_effect": "none",
       "authority_use": "forbidden"
     }
