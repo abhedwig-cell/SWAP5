@@ -6,12 +6,12 @@
   "baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "6-hour BMI.update_until calls with 1-hour solver.saveat and 24-hour allocation.dt under the scarce 32 versus 60 m3/day demand case.",
-  "next_action": "Execute frozen DUMMY-19J BMI versus 1-hour saveat clock-conflict qualification.",
+  "next_action": "Use fine-saveat precedence as clock-conflict authority; proceed to DUMMY-19K explicit UserDemand apply-seam experiment.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -21,7 +21,7 @@
     "note": "Verifier prepared while DUMMY-19I2 runs; no execution or authority rebind occurs before DUMMY-19I2 closeout."
   },
   "implementation_baseline": "225d52997b9a92d40df0dfd081109582e1e8ed76",
-  "recovery_point": "DUMMY-19J verifier and runner persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-19J qualified by frozen run 35702468555.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_19J_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_19J_CONCEPT.md",
@@ -32,5 +32,9 @@
     "tests/research/real_ribasim_bmi_saveat_conflict_bridge.jl",
     "tests/research/run_ribasim_dummy_19j.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
+  "workflow_run": 35702468555,
+  "workflow_job": 106663493752,
+  "qualification_head": "3bdc7b0b7fd4087579c78046c41a6d84a4d49115"
 }
