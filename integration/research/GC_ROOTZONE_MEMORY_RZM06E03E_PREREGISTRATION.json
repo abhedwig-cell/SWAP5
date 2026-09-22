@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06e03e.interface_adjacent_state_census_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06E03E",
+  "authority": "preregistered response-blind immutable state-library interface census",
+  "production_changes": false,
+  "parent_result_commit": "04caa711b3a7a32d0afef2d393484e897cb02fcb",
+  "scientific_question": "Within the same immutable 16-node state library, do any states with matched total profile water and matched upper-30-cm water retain a materially different pressure head at the bottom SWAP node adjacent to the fixed groundwater interface?",
+  "rationale": [
+    "E03D found 59 pairs satisfying both storage controls but no materially separated deep centroid.",
+    "A direct response census over tolerance-matched aggregates would be ambiguous because any small response difference could still be caused by the residual storage mismatch.",
+    "Bottom-node pressure head is mechanistically closer to fixed-Hc exchange than a whole-deep-profile centroid because it directly contributes to the near-interface hydraulic gradient.",
+    "A state-only interface census therefore provides a sharper prerequisite for the next response probe."
+  ],
+  "source_authority": {
+    "inherited_from": "GC-RZM06E03D",
+    "source_artifacts": "exact five immutable D04/E01/E03/E03B/E03C artifacts frozen by E03D",
+    "state_input": "node-level committed H/theta plus provenance only",
+    "artifact_reverification_required": true,
+    "o0_o2_reverification_required": true
+  },
+  "observables": {
+    "profile_water_cm": "sum(theta_i*10), i=1..16",
+    "root30_water_cm": "sum(theta_i*10), i=1..3",
+    "bottom_node_pressure_head_cm": "H_16 at z=-155 cm",
+    "bottom_node_water_content": "theta_16, diagnostic only",
+    "root_distribution_centroid_cm": "diagnostic only"
+  },
+  "frozen_pair_gate": {
+    "max_abs_profile_water_difference_cm": 0.0001,
+    "max_abs_root30_water_difference_cm": 0.0001,
+    "min_abs_bottom_node_pressure_head_difference_cm": 0.01,
+    "distinct_state_requirement": "different immutable provenance and non-bit-identical H/theta vectors"
+  },
+  "threshold_basis": [
+    "0.01 cm is fixed prospectively and is ten orders of magnitude above the 1e-12 cm head convergence tolerance used by the carrier.",
+    "The threshold is a state-separation screen, not a response-effect threshold."
+  ],
+  "selection": {
+    "candidate_pool": "same deduplicated immutable state union as E03D",
+    "pair_scope": "all distinct pairs passing both storage controls",
+    "ranking": [
+      "largest abs(delta H16)",
+      "smallest abs(delta W_root30)",
+      "smallest abs(delta W_profile)",
+      "largest abs(delta theta16) as diagnostic tie-breaker",
+      "lexicographic provenance"
+    ],
+    "no_match": "Close E03E NO_MATCH without changing source set, storage tolerances or the 0.01 cm H16 threshold."
+  },
+  "response_firewall": [
+    "no fixed-Hc response, exchange, terminal flux or tangent information may be parsed",
+    "selected pair, if any, must be persisted with all 16 H/theta values before E04",
+    "no response threshold is defined or inspected in E03E"
+  ],
+  "next_if_selected": "GC-RZM06E04 common-time reconstruction and the frozen E02 fixed-Hc probe applied to the immutable E03E pair, with both storage controls rechecked before response.",
+  "controls": [
+    "no new state generation",
+    "no direct state mutation",
+    "no threshold relaxation",
+    "no production changes",
+    "no H5/RZM06B work"
+  ],
+  "nonclaims": [
+    "H16 is not proposed as a production reduced-state variable.",
+    "Selection alone does not establish response causality.",
+    "A NO_MATCH would be evidence about the attained state library only, not a universal hydraulic identity."
+  ]
+}
