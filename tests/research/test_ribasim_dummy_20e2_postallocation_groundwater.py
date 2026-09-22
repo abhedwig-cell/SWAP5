@@ -271,28 +271,42 @@ def main() -> None:
             expected_rate_day = 0.0 if i == 0 else 8.0
 
             source_cumulative = 32.0 * endpoint / DAY
-            ledger_error = source_cumulative + cumulative_gw - root - external - storage_gain
-            states.append((level, root, external, cumulative_gw, mf6_flux_day))
+            ledger_residual = source_cumulative + cumulative_gw - root - external - storage_gain
+
+            state = {
+                "endpoint": endpoint,
+                "level": level,
+                "root": root,
+                "external": external,
+                "cumulative_gw": cumulative_gw,
+                "current_drainage_m3_day": current_drainage_rate * DAY,
+                "mf6_flux_day": mf6_flux_day,
+                "storage_gain": storage_gain,
+                "ledger_residual": ledger_residual,
+            }
+            states.append(state)
             print(
                 "RIBASIM_REAL_20E2_STATE "
                 f"endpoint_s={endpoint} level={level} root_m3={root} external_m3={external} "
                 f"gw_cumulative_m3={cumulative_gw} ribasim_drainage_m3_day={current_drainage_rate*DAY} "
                 f"mf6_drain_flux_m3_day={mf6_flux_day} storage_gain_m3={storage_gain} "
-                f"ledger_error_m3={ledger_error}"
+                f"ledger_residual_m3={ledger_residual}"
             )
-
-            require(abs(level - REF_LEVEL[i]) <= LEVEL_TOL, f"Basin level reference mismatch at {endpoint}: observed={level} expected={REF_LEVEL[i]}")
-            require(abs(root - REF_ROOT[i]) <= VOLUME_TOL, f"root volume reference mismatch at {endpoint}: observed={root} expected={REF_ROOT[i]}")
-            require(abs(external - REF_EXT[i]) <= ZERO_TOL, f"external demand supplied at {endpoint}: observed={external}")
-            require(abs(cumulative_gw - REF_GW[i]) <= VOLUME_TOL, f"groundwater cumulative mismatch at {endpoint}: observed={cumulative_gw} expected={REF_GW[i]}")
-            require(abs(current_drainage_rate * DAY - expected_rate_day) <= VOLUME_TOL, f"Ribasim drainage rate mismatch at {endpoint}: observed={current_drainage_rate*DAY} expected={expected_rate_day}")
-            require(abs(mf6_flux_day + expected_rate_day) <= VOLUME_TOL, f"MF6 reciprocal drain flux mismatch at {endpoint}: observed={mf6_flux_day} expected={-expected_rate_day}")
-            require(abs(ledger_error) <= VOLUME_TOL, f"coupled ledger mismatch at {endpoint}: error={ledger_error}")
     finally:
         driver.finalize()
         os.chdir(original_cwd)
 
     require(len(states) == 4, "unexpected state trajectory length")
+    for i, state in enumerate(states):
+        endpoint = ENDPOINTS[i]
+        expected_rate_day = 0.0 if i == 0 else 8.0
+        require(abs(state["level"] - REF_LEVEL[i]) <= LEVEL_TOL, f"Basin level reference mismatch at {endpoint}")
+        require(abs(state["root"] - REF_ROOT[i]) <= VOLUME_TOL, f"root volume reference mismatch at {endpoint}")
+        require(abs(state["external"] - REF_EXT[i]) <= ZERO_TOL, f"external demand supplied at {endpoint}")
+        require(abs(state["cumulative_gw"] - REF_GW[i]) <= VOLUME_TOL, f"groundwater cumulative mismatch at {endpoint}")
+        require(abs(state["current_drainage_m3_day"] - expected_rate_day) <= VOLUME_TOL, f"Ribasim drainage rate mismatch at {endpoint}")
+        require(abs(state["mf6_flux_day"] + expected_rate_day) <= VOLUME_TOL, f"MF6 reciprocal drain flux mismatch at {endpoint}")
+        require(abs(state["ledger_residual"]) <= VOLUME_TOL, f"coupled ledger mismatch at {endpoint}")
     print("RIBASIM_REAL_20E2_POSTALLOCATION_GROUNDWATER_TRANSFER=PASS")
 
 
