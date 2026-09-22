@@ -50,7 +50,16 @@ def redact_diag(d):
 
 def baseline():
     s=Fgc44RealSwap(LIB)
-    hcof,rhs,href=s.initialize()
+    init_status,hcof,rhs,href=s.try_initialize_configured(1e-4,1e-6)
+    if init_status != 0:
+        diag=s.predictor_run_diagnostics()
+        print("RZM06C02_INIT_FAILURE_JSON",json.dumps({
+            "status":init_status,
+            "duration_day":1e-4,
+            "predictor_qbot_cm_per_day":1e-6,
+            "predictor_diagnostics":diag,
+        },sort_keys=True,separators=(",",":")))
+        raise RuntimeError(f"RZM06C02 frozen initialize failed: {init_status}")
     state0=s.state(); obs0=s.committed_profile_observables(); nodes0=s.committed_profile_nodes()
     state1=s.state(); obs1=s.committed_profile_observables(); nodes1=s.committed_profile_nodes()
     assert state0==state1 and obs0==obs1 and nodes0==nodes1
