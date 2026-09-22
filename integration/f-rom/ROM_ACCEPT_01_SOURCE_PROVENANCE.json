@@ -140,7 +140,11 @@
         "Correlation must be at least 0.6 in each distinguished regional area type.",
         "For field-sensor locations, monthly observed-calculated soil-moisture correlation during the growing season must be at least 0.6 for 80% of locations."
       ],
-      "boundary": "This is a monthly temporal-pattern criterion for LHM validation. It does not prescribe absolute volumetric-water-content error, depth-interval storage error, wetting/drying-front timing error, or profile-extreme fidelity."
+      "boundary": "This is a monthly temporal-pattern criterion for LHM validation. It does not prescribe absolute volumetric-water-content error, depth-interval storage error, wetting/drying-front timing error, or profile-extreme fidelity.",
+      "source_page_binding": {
+        "criteria_table_pdf_page_index": 11,
+        "printed_page": 8
+      }
     },
     {
       "id": "RWS_LHM41_GW",
@@ -150,11 +154,22 @@
       "class": "FORMAL_DOWNSTREAM_GROUNDWATER_APPLICATION_CRITERION",
       "purpose_relevance": "GW-D downstream consequence",
       "extracted_authority": [
-        "For freatic groundwater recession during prolonged drought, the recession course may deviate by less than 25% in 80% of areas/measurement locations under the report's criterion.",
-        "Groundwater-head dynamics criteria are expressed as allowed deviation relative to measured dynamics, including 35% for the first aquifer and 50% for deeper head in the report text.",
-        "Timing of the lowest groundwater level was investigated but was not established as a current criterion."
+        "Freatic GHG: in 80% of measurement points, absolute deviation <20 cm in Holoceen, <35 cm in Pleistoceen and <50 cm in Sterk hellend; median deviation <15 cm.",
+        "Freatic GLG: in 80% of measurement points, absolute deviation <30 cm in Holoceen, <50 cm in Pleistoceen and <100 cm in Sterk hellend; median deviation <15 cm.",
+        "Freatic dynamics (GHG-GLG): in 80% of measurement points, deviation <25% of measured dynamics; median deviation <15 cm.",
+        "Drought recession gradient: in 80% of measurement points, deviation <25% of measured recession.",
+        "First aquifer: mean head in 80% of measurement points within 50 cm with median deviation <15 cm; dynamics deviation <35% in 80% of points.",
+        "Deep aquifers: mean head in 80% of measurement points within 100 cm with median deviation <15 cm; dynamics deviation <50% in 80% of points.",
+        "The report defines GHG/GLG sampling and drought-recession temporal construction; lowest-head timing is investigated but not assigned a formal criterion."
       ],
-      "boundary": "These are downstream LHM groundwater validation endpoints. They do not directly define an allowable SWAP-MODFLOW interface-flux error or a Layer-ROM structural-error budget."
+      "boundary": "These criteria can directly govern a matching LHM-like end-to-end groundwater application. They do not define a portable interface-flux tolerance and do not establish component-level Layer-ROM equivalence.",
+      "source_page_binding": {
+        "criteria_explanation_pdf_page_index": 17,
+        "criteria_table_pdf_page_index": 18,
+        "temporal_definition_pdf_page_index": 21,
+        "additional_dynamics_definition_pdf_page_index": 22
+      },
+      "direct_end_to_end_envelope": "integration/f-rom/ROM_ACCEPT_01_GWD_LHM_END2END_ENVELOPE.json"
     },
     {
       "id": "RWS_LHM41_PROGRAM",
@@ -197,6 +212,44 @@
       "reason": "The flux-to-head/recession mapping is system-, state-, and timescale-dependent; no portable authorized inversion is established here."
     }
   ],
-  "source_review_decision": "NEW_PARTIAL_AUTHORITY_FOUND_AFTER_APP0: bounded GW-D consequence/numerical governance and formal LHM downstream/product criteria exist, but no direct independent Layer-ROM structural-error tolerance is established for GW-R, GW-D, or the requested SCI-P profile vector.",
-  "blindness_preserved": true
+  "source_review_decision": "NEW_BOUNDED_DIRECT_APPLICATION_ROUTE_FOUND_AFTER_APP0: a formal LHM-like GW-D end-to-end groundwater-output envelope can be frozen directly from Rijkswaterstaat LHM 4.1 validation criteria. Component-level Layer-ROM structural-error allocation remains unresolved; GW-R remains without quantitative authority; requested SCI-P profile fidelity remains unresolved.",
+  "blindness_preserved": true,
+  "external_source_verification": {
+    "date": "2026-09-22",
+    "method": "Direct verification against the formal Rijkswaterstaat/NHI LHM 4.1 PDF sources before any reduced-model candidate response.",
+    "groundwater_report": {
+      "source_locator": "https://nhi.nu/documents/230/Rapportage_Validatie_LHM_grondwater_def_met_bijlage.pdf",
+      "verified_pdf_page_indices": [
+        17,
+        18,
+        21,
+        22
+      ],
+      "verified_printed_pages": [
+        13,
+        14,
+        17,
+        18
+      ],
+      "findings": [
+        "The groundwater criteria are explicitly presented as toetsingscriteria.",
+        "Freatic GHG/GLG absolute-error limits are area-type specific and require compliance at 80% of measurement points, with a separate median-error criterion.",
+        "Freatic dynamics and drought recession use 25% relative-deviation criteria at 80% of measurement points.",
+        "First-aquifer dynamics use 35% and deep-aquifer dynamics 50% relative deviation at 80% of measurement points.",
+        "Timing of the lowest groundwater level is defined diagnostically but is not a formal acceptance criterion.",
+        "GHG/GLG temporal construction and drought-recession construction are explicitly defined in the report."
+      ]
+    },
+    "unsaturated_report": {
+      "source_locator": "https://open.rijkswaterstaat.nl/publish/pages/33254/rapportage_validatie_lhm_deelrapport_2_onverzadigde_zone.pdf",
+      "verified_pdf_page_index": 11,
+      "verified_printed_page": 8,
+      "findings": [
+        "Monthly growing-season soil-moisture correlation must be at least 0.6 nationally.",
+        "Correlation must be at least 0.6 in each stated area type.",
+        "For field-sensor locations, the monthly growing-season correlation must be at least 0.6 for 80% of measurement points.",
+        "The source criterion is a temporal soil-moisture validation statistic, not an absolute vertical-profile fidelity requirement."
+      ]
+    }
+  }
 }
