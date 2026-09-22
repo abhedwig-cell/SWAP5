@@ -70,7 +70,9 @@ Consequences:
 - u and u/dt remain response quantities, not stored water.
 - PHYSICAL_INDEPENDENT_STORAGE and MIXED_EFFECTIVE_STORAGE remain outside this admission and require separate domain authority.
 
-This disposition uses the existing CSR04/MAP11 evidence without repeating the Sy × window matrix.
+This disposition uses the existing CSR04/MAP11 evidence without repeating the Sy × window matrix. CSR04 Phase B executed all 36 preregistered real-FMR/live-MODFLOW windows. It showed a coherent low-Sy limiting trajectory and separated native MODFLOW head memory from accepted SWAP column memory. Its bounded conclusion supports `HEAD_STATE_CAPACITANCE` when no independently evidenced regional storage volume is declared; it does not authorize treating native STO as an additional physical reservoir.
+
+The machine-readable authority is `integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json`.
 
 ## Drainage ownership
 
@@ -80,7 +82,7 @@ No physical drainage route is represented inside this profile. Active SWAP drain
 
 The interface ledger is accounting only. It is never a physical drainage owner.
 
-Future admission of drainage must assign each physical route to exactly one of SWAP, MODFLOW or the surface-water model and demonstrate that the same route is not represented elsewhere.
+Future admission of drainage must assign each physical route to exactly one of SWAP, MODFLOW or the surface-water model and demonstrate that the same route is not represented elsewhere. The separate ownership contract is `docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md`.
 
 ## Endpoint and numerical qualification
 

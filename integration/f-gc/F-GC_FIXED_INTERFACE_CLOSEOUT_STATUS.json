@@ -28,7 +28,7 @@
     "g23": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
     "g24": "TOLERANCE_CAUSAL_DIAGNOSTIC_PRESERVED",
     "pb01": "PHYSICAL_OUTWARD_TANGENT_NEGATIVE",
-    "csr04": "USED_WITHOUT_MATRIX_REPEAT",
+    "csr04": "PHASE_B_36_ACCEPTED_WINDOWS_HEAD_MEMORY_SEPARATION_USED_WITHOUT_REPEAT",
     "fgc24": "COMMITTED_ONLY_RESTART_AUTHORITY",
     "fgc44": "REAL_SWAP_LIVE_MODFLOW_TRANSACTION_EVIDENCE",
     "fgc49d": "PRODUCTION_APPLICATION_ABI_EVIDENCE"
@@ -45,5 +45,7 @@
     "field-scale heterogeneous transferability",
     "finite-resistance q-link semantics",
     "fixed-interface head equals phreatic elevation"
-  ]
+  ],
+  "authoritative_contract": "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json",
+  "drainage_ownership_contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md"
 }
