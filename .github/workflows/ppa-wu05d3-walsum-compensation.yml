@@ -1,0 +1,21 @@
+name: PPA-WU05-D3 pure Walsum compensation
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ppa-wu05d3-walsum-compensation.yml'
+      - 'src/process/mod_ppa_wu05d3_walsum_compensation.f90'
+      - 'tests/fapp/test_ppa_wu05d3_walsum_compensation.f90'
+      - 'tests/fapp/run_ppa_wu05d3_walsum_compensation.sh'
+      - 'integration/audits/PPA_WU05D1_SOURCE_CENSUS.json'
+      - 'integration/audits/PPA_WU05D3_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU05D3_STATUS.json'
+  workflow_dispatch:
+
+jobs:
+  walsum-source-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify B1.11 Walsum compositor at O0/O2
+        run: bash tests/fapp/run_ppa_wu05d3_walsum_compensation.sh
