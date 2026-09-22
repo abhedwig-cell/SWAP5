@@ -6,11 +6,11 @@
   "baseline": "2e6e57bb5723c30757e0b0a247b0736216cb0acf",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "blocked": false,
   "blocker": null,
-  "next_action": "Execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor qualification.",
+  "next_action": "Use qualified physical-versus-LP factor separation as authority; rebind and execute DUMMY-20H5 zero-storage causality control.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -20,7 +20,7 @@
     "note": "Prepared while DUMMY-20H3 is active. No runner, workflow gate or execution before DUMMY-20H3 closeout and qualification."
   },
   "implementation_baseline": "f51de02dd50b2d385eca9833f1b141ccdd672ef4",
-  "recovery_point": "DUMMY-20H4 executable gate persisted; first qualification attempt pending.",
+  "recovery_point": "DUMMY-20H4 qualified by frozen run 35737697708.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H4_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H4_CONCEPT.md",
@@ -31,5 +31,9 @@
     "tests/research/real_ribasim_20h4_physical_lp_factor.jl",
     "tests/research/run_ribasim_dummy_20h4.sh",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
+  "workflow_run": 35737697708,
+  "workflow_job": 106779091247,
+  "qualification_head": "e8d08860289629d5491bf2a6780727cea9d9c4cd"
 }
