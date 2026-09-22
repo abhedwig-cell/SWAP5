@@ -46,6 +46,7 @@ program test_gc_rootzone_memory_rzm06d02_reseed
   call require(result_a%internal_retries==0 .and. result_b%internal_retries==0,'zero automatic retries')
   call require(result_a%mass%complete .and. result_b%mass%complete,'mass complete')
   call require(abs(result_a%mass%residual)<=mass_gate .and. abs(result_b%mass%residual)<=mass_gate,'mass gate')
+  call emit_time_alias_diagnostic(result_a,result_b,candidate_a,candidate_b)
   call require(state_bits_equal(candidate_a,candidate_b),'candidate physical state time neutral')
   call require(same_bits(result_a%accepted_dt,result_b%accepted_dt),'accepted dt')
   call require(result_a%physical_advances==result_b%physical_advances,'advance count')
@@ -69,6 +70,28 @@ program test_gc_rootzone_memory_rzm06d02_reseed
   write(*,'(A)') 'GC_RZM06D02_COMMON_TIME_RESEED=PASS'
 
 contains
+
+  subroutine emit_time_alias_diagnostic(a,b,sa,sb)
+    type(kernel_reference_floor_result_t),intent(in) :: a,b
+    class(transaction_state_t),allocatable,intent(in) :: sa,sb
+    real(real64) :: dh,dtheta,dpond,dgwl
+    dh=huge(0.0_real64);dtheta=huge(0.0_real64);dpond=huge(0.0_real64);dgwl=huge(0.0_real64)
+    select type(x=>sa)
+    class is(fmr_b110_physical_state_t)
+      select type(y=>sb)
+      class is(fmr_b110_physical_state_t)
+        dh=maxval(abs(x%pressure_head-y%pressure_head))
+        dtheta=maxval(abs(x%water_content-y%water_content))
+        dpond=abs(x%ponding_depth-y%ponding_depth)
+        dgwl=abs(x%groundwater_level-y%groundwater_level)
+      end select
+    end select
+    write(*,'(*(g0))') 'RZM06D02_ALIAS_DIAG|DT_A=',a%accepted_dt,'|DT_B=',b%accepted_dt, &
+         '|DT_BITS_A=',transfer(a%accepted_dt,0_int64),'|DT_BITS_B=',transfer(b%accepted_dt,0_int64), &
+         '|MAX_DH=',dh,'|MAX_DTHETA=',dtheta,'|DPOND=',dpond,'|DGWL=',dgwl, &
+         '|DEX=',b%bottom_outward_exchange_native-a%bottom_outward_exchange_native, &
+         '|DFLUX=',b%terminal_bottom_outward_flux_native-a%terminal_bottom_outward_flux_native
+  end subroutine emit_time_alias_diagnostic
 
   subroutine run_probe(t0,p,f,physical,col,tmpl,result,diag,candidate_snapshot)
     real(real64),intent(in) :: t0
