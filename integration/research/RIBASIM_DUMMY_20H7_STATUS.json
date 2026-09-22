@@ -24,5 +24,10 @@
     ".github/workflows/ribasim-dummy-01.yml"
   ],
   "implementation_baseline": "1f5279656c9078951581cfa3bda8c284da4fb3a3",
-  "recovery_point": "DUMMY-20H7 preregistered from post-H6 synthesis authority; product verifier and gate implemented without production/reference changes."
+  "recovery_point": "DUMMY-20H7 preregistered and implemented from post-H6 authority; allocation-record timestamps are now explicitly verified before qualification.",
+  "technical_observability_repair": {
+    "commit": "8aefb6a5dbc1478f3ee75edacb49f930e6e567d9",
+    "scientific_change": false,
+    "change": "Verifier now requires allocation.nc record 1 to be t=0 and record 2 to be exactly t=24 h, as already required by the preregistered observability contract."
+  }
 }
