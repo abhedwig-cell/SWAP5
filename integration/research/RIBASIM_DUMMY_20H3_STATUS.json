@@ -4,14 +4,27 @@
   "work_unit": "RIBASIM-DUMMY-20H3",
   "branch": "work/ribasim-dummy-01",
   "baseline": "026f2f0bd4df82fd139f02ce31cde47ae4bd4684",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Exact v2026.1.1 source-runtime LP observation and fixed-alpha counterfactual.",
-  "next_action": "Implement and execute the frozen exact-release LP mechanism diagnostic.",
+  "next_action": "Execute frozen DUMMY-20H3 exact-release LP mechanism qualification.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
+  "recovery_point": "Exact-release generator, LP diagnostic and runner persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_20H3_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_20H3_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_20H3_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_20H3_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_ribasim_dummy_20h3_release_lp.py",
+    "tests/research/real_ribasim_20h3_low_storage_mechanism.jl",
+    "tests/research/run_ribasim_dummy_20h3.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ]
 }
