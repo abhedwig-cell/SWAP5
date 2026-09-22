@@ -1,0 +1,16 @@
+{
+  "schema": "swap5.coupling.ribasim_release_zero_storage_factor_causality.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20H5",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "bfd32e350419ebe712c4761e667f034769db1246",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20H4 closeout; causal expectations are frozen prospectively.",
+  "next_action": "After DUMMY-20H4 qualification, rebind and implement without changing frozen LP outcomes.",
+  "production_delta": [],
+  "reference_delta": []
+}
