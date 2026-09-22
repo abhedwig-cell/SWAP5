@@ -49,6 +49,9 @@ $ActualPin = (git -C $ImodRoot rev-parse HEAD).Trim()
 if ($ActualPin -ne $ImodPin) { Fail "iMOD Coupler checkout mismatch: $ActualPin" }
 Write-Output "RIBASIM_DUMMY_20C_IMOD_COUPLER_PIN=PASS sha=$ActualPin"
 
+$CollectorParent = Join-Path $ImodRoot ".imod_collector/develop"
+New-Item -ItemType Directory -Force -Path $CollectorParent | Out-Null
+
 Set-Location $ImodRoot
 pixi run -e dev fetch-ribasim
 if ($LASTEXITCODE -ne 0) { Fail "fetch-ribasim failed" }
