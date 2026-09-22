@@ -12,7 +12,7 @@
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
   "production_changes": false,
   "recovery_point": "b1370babace6ae90fa77ef90058c0d9e371fa104",
-  "next_action": "Preregister G10B direct-groundwater-merit replay of the exact frozen B4/GW_MIXED starts. Use direct H(q) inversion for merit/root only; keep E3, Newton proposal generation, 12-contraction budget and 1e-15 residual tolerance unchanged.",
+  "next_action": "Preregister G10B local-groundwater-response replay. Freeze the largest G10A local q-neighborhood whose affine fit error is far below 1e-15, then re-evaluate the frozen G10 mixed-negative path without changing E3, starts, P4 contraction rule, or production coupling.",
   "result": "integration/research/GC_FIXED_INTERFACE_G10A_RESULT.json",
   "execution": {
     "tested_commit": "b1370babace6ae90fa77ef90058c0d9e371fa104",
@@ -21,11 +21,10 @@
     "conclusion": "success"
   },
   "disposition": {
-    "broad_affine_groundwater_merit": "INSUFFICIENT_AT_G10_CONVERGENCE_SCALE",
-    "direct_physical_newton_proposal": "NEAR_DIRECT_COUPLED_ROOT_AT_G10_FAILED_STEP",
-    "g10_formal_status": "FALSIFIED_PRESERVED",
-    "p4_intrinsic_failure": "NOT_ESTABLISHED",
-    "live_true_safeguard_activation": "OPEN",
+    "broad_affine_groundwater_merit": "INSUFFICIENT_AT_1E_15_SCALE",
+    "raw_newton_direct_merit": "ALREADY_BELOW_G10_RESIDUAL_TOLERANCE",
+    "direct_root": "ESSENTIALLY_COINCIDENT_WITH_G10_RAW_NEWTON_HEAD",
+    "g10_formal_result": "REMAINS_FALSIFIED",
     "production_admission": "NO"
   }
 }
