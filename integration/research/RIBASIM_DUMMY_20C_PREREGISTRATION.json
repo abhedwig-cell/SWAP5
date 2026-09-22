@@ -5,9 +5,16 @@
   "title": "Actual RibaMod runtime versus direct Ribasim v2026.1.1 clock equivalence",
   "baseline": "e6db55ecc43336961d242bbd3e53700959bec5aa",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_20B_PENDING",
-    "execute_after": "DUMMY-20B closeout",
-    "rationale": "Freeze the dynamic product differential before observing DUMMY-20B qualification."
+    "state": "SATISFIED_AFTER_DUMMY_20B_CLOSEOUT",
+    "execute_after": "DUMMY-20B qualified",
+    "rationale": "Freeze the dynamic product differential before observing DUMMY-20B qualification.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_20B_QUALIFIED_PRODUCT_RELEASE_CLOCK_CONTRACT",
+      "workflow_run": 35720653416,
+      "duplicate_confirming_run": 35720663734,
+      "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6"
+    }
   },
   "authorities": {
     "imod_coupler": "Deltares/imod_coupler@8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
@@ -71,5 +78,11 @@
     "no modification of upstream product or kernels"
   ],
   "pass_decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
-  "fail_decision": "RIBASIM_DUMMY_20C_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_20C_BLOCKED",
+  "implementation_baseline": "61db4cb3aad9c9753f4d51273bdf98cd3bdc21ce",
+  "authority_rebind": {
+    "repository_head": "61db4cb3aad9c9753f4d51273bdf98cd3bdc21ce",
+    "scientific_change": false,
+    "meaning": "Dynamic product differential rebound after qualified DUMMY-20B; model, routes, endpoints and tolerances remain frozen."
+  }
 }
