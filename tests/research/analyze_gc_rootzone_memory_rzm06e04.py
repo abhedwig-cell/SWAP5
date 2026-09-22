@@ -45,6 +45,7 @@ def main()->int:
     result={
       "schema":"swap5.gc_rootzone_memory.rzm06e04.rootmatched_interface_memory_probe.v1",
       "preregistration_commit":"dc08a9699e2257299aad4dc1b91fbd3d78aa9f8e",
+      "interpretation_amendment_commit":"964e35b40f5988fbd917ca9bb050bdebaa9d1401",
       "production_changes":False,
       "reconstruction":{
         "profile_water_a_cm":float(r["WA"]),
@@ -90,7 +91,7 @@ def main()->int:
           "support":support
         })
         result["decision"]=(
-          "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_FOR_SELECTED_REAL_SWAP_PAIR"
+          "SUPPORTED_ROOTMATCHED_INTERFACE_ADJACENT_MEMORY_AT_FROZEN_AGGREGATE_RESOLUTION"
           if support else "NO_SUPPORT_AT_SELECTED_ROOTMATCHED_PAIR"
         )
     else:
@@ -105,7 +106,8 @@ def main()->int:
         result["decision"]="PROBE_NOT_ADMITTED"
 
     result["interpretation_boundary"]=[
-      "Support falsifies H_c plus total-profile-water plus upper-30-cm-water sufficiency for this selected C01 pair/window.",
+      "Support means H_c plus W_profile and W_root30 do not determine a unique next interface exchange at the frozen 1e-4 cm aggregate-storage resolution for this selected C01 pair/window.",
+      "Because W_root30 is tolerance-matched rather than mathematically identical, support is not a proof that exact-valued H_c + W_profile + W_root30 are globally insufficient.",
       "Support does not establish H16 as the unique or minimal missing state coordinate.",
       "No production coupling admission follows."
     ]
