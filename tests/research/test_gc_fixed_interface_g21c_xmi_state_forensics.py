@@ -20,7 +20,7 @@ sys.path.insert(0,str(ROOT/"src"/"adapter"))
 from fgc44_real_swap_ctypes import Fgc44RealSwap
 from modflow6_fgc34_ctypes_publisher import Fgc34CtypesPublisher
 from modflow6_prepared_solve_session import Modflow6PreparedSolveSession, PreparedSolveStatus
-from test_fgc44_real_swap_modflow_end_to_end import Binding
+from test_fgc44_real_swap_modflow_end_to_end import Binding, Term
 from test_gc_fixed_interface_fgc44_safeguarded_newton_g08 import build_model, initialize_case
 from test_gc_fixed_interface_g21b_prepared_solve_convergence import (
     LifecycleCountingKernel, response_term, solve_once, settle_first,
@@ -43,6 +43,11 @@ PROBES={
         ("BIGCH","SLN_1",""),("BIGCHOLD","SLN_1",""),("RELAXOLD","SLN_1",""),
         ("RES_PREV","SLN_1",""),("RES_NEW","SLN_1",""),
         ("XTEMP","SLN_1",""),("DXOLD","SLN_1",""),
+        ("WSAVE","SLN_1",""),("HCHOLD","SLN_1",""),("DEOLD","SLN_1",""),
+    ],
+    "solution_config":[
+        ("NONMETH","SLN_1",""),("THETA","SLN_1",""),("AKAPPA","SLN_1",""),
+        ("GAMMA","SLN_1",""),("AMOMENTUM","SLN_1",""),
     ],
     "solution_bookkeeping":[
         ("ITERTOT_TIMESTEP","SLN_1",""),("IOUTTOT_TIMESTEP","SLN_1",""),
@@ -58,8 +63,10 @@ PROBES={
         ("ICONVERT","GWF_1","STO"),
     ],
 }
-STATIC_NAMES={"MXITER","DVCLOSE","NODELIST","NBOUND","MAXBOUND","K11","ICELLTYPE","SS","SY","ICONVERT"}
-SOLVER_HISTORY_NAMES={"BIGCH","BIGCHOLD","RELAXOLD","RES_PREV","RES_NEW","DXOLD"}
+STATIC_NAMES={"MXITER","DVCLOSE","NODELIST","NBOUND","MAXBOUND","K11","ICELLTYPE","SS","SY","ICONVERT",
+              "NONMETH","THETA","AKAPPA","GAMMA","AMOMENTUM"}
+SOLVER_HISTORY_NAMES={"BIGCH","BIGCHOLD","RELAXOLD","RES_PREV","RES_NEW","DXOLD","WSAVE","HCHOLD","DEOLD"}
+DBD_HISTORY_NAMES={"WSAVE","HCHOLD","DEOLD"}
 PACKAGE_DYNAMIC_NAMES={"SAT","CONDSAT","STRGSS","STRGSY"}
 
 
@@ -173,8 +180,15 @@ def run_arm(label:str,libmf6:Path,swaplib:Path,case:dict[str,float],
                     err=hh-expected[index]
                     require(abs(err)<=HEAD_GATE,f"G21C history lambda {lam} replay drift {err}")
                     history_rows.append({"lambda":lam,"head_m":hh,"calls":calls,"error_m":err})
-            entry=snapshot(kernel,f"{label}_TAIL_ENTRY")
             hcof,rhs=response_term(float(outer2["anchor_head_m"]),float(outer2["qref_m_per_s"]),float(outer2["tangent_per_s"]))
+            require(session.nodelist is not None and session.hcof is not None and session.rhs is not None and session.nbound is not None,
+                    "G21C missing API package views before outer-2 staging")
+            stage_status=int(publisher(binding,[Term(7001,hcof,rhs)],session.maxbound,
+                                       session.nodelist,session.hcof,session.rhs,session.nbound))
+            require(stage_status==0,"G21C failed to stage outer-2 response before tail-entry snapshot")
+            require(float(session.hcof[0])==hcof and float(session.rhs[0])==rhs,
+                    "G21C staged outer-2 response drift")
+            entry=snapshot(kernel,f"{label}_TAIL_ENTRY")
             rows=[]
             first_convergence=None
             first_snapshot=None
@@ -219,11 +233,14 @@ def main()->None:
     prereg=json.loads(PREREG.read_text())
     g21b=json.loads(G21B.read_text())
     require(prereg["work_unit"]=="GC-FIXED-INTERFACE-G21C","wrong G21C preregistration")
-    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION","G21C preregistration not frozen")
+    require(prereg["status"]=="PREREGISTERED_BEFORE_EXECUTION_AMENDED","G21C amended preregistration not frozen")
     require(g21b["decision"]=="QUALIFIED_DIAGNOSTIC_PERSISTENT_PREPARED_SOLVE_PATH_MEMORY","G21C parent G21B drift")
     inv=prereg["source_backed_probe_inventory"]
     require(inv["model_GWF_1_required"]==["X","XOLD"],"G21C model probe inventory drift")
-    require(inv["solution_SLN_1_required"]==["ICNVG","MXITER","DVCLOSE","BIGCH","BIGCHOLD","RELAXOLD","RES_PREV","RES_NEW","XTEMP","DXOLD"],"G21C solution probe inventory drift")
+    require(inv["solution_SLN_1_required"]==["ICNVG","MXITER","DVCLOSE","BIGCH","BIGCHOLD","RELAXOLD","RES_PREV","RES_NEW","XTEMP","DXOLD","WSAVE","HCHOLD","DEOLD"],
+            "G21C solution probe inventory drift")
+    require(inv["solution_SLN_1_configuration"]==["NONMETH","THETA","AKAPPA","GAMMA","AMOMENTUM"],
+            "G21C solution configuration inventory drift")
     require(TAIL_CALLS==int(prereg["frozen_case"]["tail_calls"]),"G21C tail length drift")
 
     parent_prereg=json.loads((ROOT/"integration"/"research"/"GC_FIXED_INTERFACE_G21B_PREREGISTRATION.json").read_text())
@@ -271,9 +288,12 @@ def main()->None:
     for stage in comparisons.values():
         rows={x["var"]:x for x in stage["probes"] if x["group"]=="model"}
         require(rows["XOLD"]["bitwise_equal"],f"G21C XOLD differs between arms at {stage['stage']}")
-    for stage_name in ("FIRST_CONVERGENCE","CALL12"):
+    for stage_name in ("TAIL_ENTRY","FIRST_CONVERGENCE","CALL12"):
         api={x["var"]:x for x in comparisons[stage_name]["probes"] if x["group"]=="api"}
         require(api["HCOF"]["bitwise_equal"] and api["RHS"]["bitwise_equal"],f"G21C API response differs at {stage_name}")
+        config={x["var"]:x for x in comparisons[stage_name]["probes"] if x["group"]=="solution_config"}
+        require(config["NONMETH"]["fresh_values"]==[3] and config["NONMETH"]["history_values"]==[3],
+                f"G21C expected MODERATE delta-bar-delta NONMETH=3 at {stage_name}")
 
     for stage in comparisons.values():
         for row in stage["probes"]:
@@ -282,6 +302,7 @@ def main()->None:
 
     call12=comparisons["CALL12"]["probes"]
     solver_different=[x["var"] for x in call12 if x["group"]=="solution_state" and x["var"] in SOLVER_HISTORY_NAMES and not x["bitwise_equal"]]
+    dbd_different=[x["var"] for x in call12 if x["group"]=="solution_state" and x["var"] in DBD_HISTORY_NAMES and not x["bitwise_equal"]]
     package_different=[x["var"] for x in call12 if x["group"] in ("npf","sto") and x["var"] in PACKAGE_DYNAMIC_NAMES and not x["bitwise_equal"]]
     xtemp_different=any(x["group"]=="solution_state" and x["var"]=="XTEMP" and not x["bitwise_equal"] for x in call12)
 
@@ -314,14 +335,17 @@ def main()->None:
         "observed_call12_history_minus_fresh_m":observed,
         "persisted_g21b_offset_m":expected,
         "solver_history_fields_different_call12":solver_different,
+        "delta_bar_delta_history_fields_different_call12":dbd_different,
         "package_dynamic_fields_different_call12":package_different,
         "xtemp_different_call12":xtemp_different,
         "fresh_first_convergence_call":fresh["first_convergence_call"],
         "history_first_convergence_call":history["first_convergence_call"],
         "xold_equal_all_stages":True,
-        "api_response_equal_first_convergence_and_call12":True,
+        "api_response_equal_all_forensic_stages":True,
+        "nonmeth_fresh_history":3,
         "bookkeeping_reported_separately":True,
-        "state_mutation_performed":False,
+        "diagnostic_pointer_state_mutation_performed":False,
+        "normal_api_response_publication_performed":True,
         "causal_claim":"NONE_READ_ONLY_FORENSICS",
     }
     print("FGC44_G21C_SUMMARY_JSON="+json.dumps(summary,sort_keys=True,separators=(",",":")))
