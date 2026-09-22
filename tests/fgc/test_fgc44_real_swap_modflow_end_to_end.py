@@ -115,9 +115,10 @@ def read_modflow_component_balance(
     require(all(math.isfinite(v) for v in (
         total_in,total_out,residual,percent_discrepancy,scale
     )),"nonfinite MODFLOW6 native GWF model balance")
-    require(abs((total_in-total_out)-residual)
-            <=256*np.finfo(float).eps*max(1.0,abs(total_in),abs(total_out)),
-            "MODFLOW6 native GWF budget total identity mismatch")
+    # Mf6ListBudget parses the formatted native listing; TOTAL_IN/TOTAL_OUT
+    # are presentation-rounded and must not be re-checked at binary epsilon.
+    # IN-OUT is the MODFLOW-reported model budget residual and is the authority
+    # for this acceptance gate.
     # Preserve the pre-existing closeout balance gate. This is the same absolute
     # and relative residual criterion used before the listing reader replaced
     # the invalid raw-CBC aggregate; no tolerance is changed after observing a failure.
