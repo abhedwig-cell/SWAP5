@@ -5,9 +5,13 @@
   "title": "Native 6-hour saveat versus explicit UserDemand apply accepted-state trajectory equivalence",
   "baseline": "9701e987fb98e6607c4af904788e175765a080e6",
   "sequencing": {
-    "state": "PREREGISTERED_WHILE_19K_ACTIVE",
-    "execute_after": "DUMMY-19K closeout",
-    "rationale": "Freeze segment-state equivalence expectations before observing the explicit-apply qualification."
+    "state": "SATISFIED_AFTER_DUMMY_19K_CLOSEOUT",
+    "execute_after": "DUMMY-19K qualified",
+    "rationale": "Freeze segment-state equivalence expectations before observing the explicit-apply qualification.",
+    "authority": {
+      "decision": "RIBASIM_DUMMY_19K_QUALIFIED_EXPLICIT_USERDEMAND_APPLY_SEAM",
+      "workflow_run": 35705332781
+    }
   },
   "pins": {
     "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
@@ -130,5 +134,11 @@
     "no claim that arbitrary output cadence is already neutral in current Ribasim"
   ],
   "pass_decision": "RIBASIM_DUMMY_19L_QUALIFIED_ACCEPTED_STATE_TRAJECTORY_EQUIVALENCE",
-  "fail_decision": "RIBASIM_DUMMY_19L_BLOCKED"
+  "fail_decision": "RIBASIM_DUMMY_19L_BLOCKED",
+  "implementation_baseline": "703f4d8ec605e42124970a9fe7cecc355959f633",
+  "authority_rebind": {
+    "repository_head": "703f4d8ec605e42124970a9fe7cecc355959f633",
+    "scientific_change": false,
+    "meaning": "Executable trajectory-equivalence experiment rebound after 19K closeout; frozen segment references and tolerances are unchanged."
+  }
 }
