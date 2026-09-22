@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.coupling.real_ribamod_runtime_clock_ownership_matrix.status.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20D",
+  "branch": "work/ribasim-dummy-01",
+  "baseline": "2898e2ecf78ad342052cc7653fd8de8ef5b03233",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blocked": true,
+  "blocker": "Execution sequenced after DUMMY-20C closeout. Clock matrix and continuous references are frozen now.",
+  "prepared_scope": "Four actual-product RibaMod runtime cases at fixed 6-hour MF6 cadence: allocation.dt 24h/6h crossed with saveat 24h/1h.",
+  "next_action": "After DUMMY-20C closes, rebind and implement the frozen product clock-ownership matrix.",
+  "production_delta": [],
+  "reference_delta": []
+}
