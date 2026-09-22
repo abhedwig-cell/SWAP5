@@ -6,6 +6,8 @@ on:
       - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
       - 'tests/fgc/support/fgc44_real_swap_ctypes.py'
       - 'tests/research/test_gc_rootzone_memory_rzm06a_observables.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06a_sequential.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06a_experiment.py'
       - 'tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh'
       - '.github/workflows/gc-rootzone-memory-rzm06a.yml'
 permissions: {contents: read}
