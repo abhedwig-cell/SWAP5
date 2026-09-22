@@ -247,11 +247,12 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20H4",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20H3",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20H4_QUALIFIED_PHYSICAL_LP_LOW_STORAGE_FACTOR_SEPARATION",
       "dependency": "qualified DUMMY-20H3",
       "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+      "implementation_baseline": "920aa38549be2e376917711ad721c6598ba9ec84"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
@@ -264,7 +265,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor separation.",
+  "next_authority_action": "Execute frozen DUMMY-20H4 physical-versus-LP low-storage-factor separation.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
