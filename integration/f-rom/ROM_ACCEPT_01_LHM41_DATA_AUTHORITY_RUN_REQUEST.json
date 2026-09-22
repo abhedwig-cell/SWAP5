@@ -1,0 +1,28 @@
+{
+  "schema": "swap5.rom-accept.lhm41-data-authority-run-request.v1",
+  "workstream": "ROM-ACCEPT",
+  "work_unit": "ROM-ACCEPT-LHM41-DATA-AUTHORITY",
+  "date": "2026-09-22",
+  "purpose": "Trigger provenance-only retrieval and inventory of the official NHI LHM 4.1 validation archive.",
+  "source": {
+    "catalog": "https://thredds.data.nhi.nu/thredds/catalog/opendap/Modellen/lhm411/validatiedata/catalog.html",
+    "dataset": "validatiedata.zip",
+    "http_server": "https://thredds.data.nhi.nu/thredds/fileServer/opendap/Modellen/lhm411/validatiedata/validatiedata.zip",
+    "published_byte_size": 155954643,
+    "published_modified_utc": "2021-05-17T12:50:45Z"
+  },
+  "guards": {
+    "hydrological_model_execution": false,
+    "layer_rom_candidate_execution": false,
+    "candidate_response_exposure": false,
+    "archive_content_execution": false,
+    "threshold_selection": false
+  },
+  "requested_evidence": [
+    "exact downloaded byte size",
+    "SHA-256 of archive bytes",
+    "ZIP CRC validation",
+    "complete member inventory",
+    "candidate groundwater-validation member names"
+  ]
+}
