@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.gc_fixed_interface.g09a.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G09A",
+  "title": "Fixed-scale real-SWAP tangent and corrector-status topology diagnostic",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_first_execution": "integration/research/GC_FIXED_INTERFACE_G09_FIRST_EXECUTION_RESULT.json",
+  "production_changes": false,
+  "purpose": "Explain why the preregistered G09 E1 scale-consistency gate failed at C3_LONG_HIGH positive edge before proposing any replacement estimator.",
+  "frozen_states": [
+    {
+      "id": "TARGET_C3_POS",
+      "case_id": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "dh_m": 0.000002,
+      "role": "failed G09 half-step consistency state"
+    },
+    {
+      "id": "CONTROL_C2_NEG",
+      "case_id": "C2_HIGH_FORCING",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "dh_m": -0.000005,
+      "role": "G09 E0-unavailable/E1-success one-sided control"
+    }
+  ],
+  "scale_ladder_m": [
+    2.5e-7,
+    1.25e-7,
+    6.25e-8,
+    3.125e-8,
+    1.5625e-8,
+    7.8125e-9,
+    3.90625e-9,
+    1.953125e-9,
+    9.765625e-10
+  ],
+  "sample_rule": "For each state and each d, evaluate h0, h0-d, h0+d, h0-2d and h0+2d from the same immutable accepted origin. Record participant status/q where available and raw corrector diagnostics for every unique head. No adaptive deletion or scale selection.",
+  "derived_diagnostics": [
+    "central slope when h0-d and h0+d are both participant-status 0",
+    "second-order backward slope when h0-d and h0-2d are both status 0",
+    "second-order forward slope when h0+d and h0+2d are both status 0",
+    "least-squares slope over all status-0 samples in the five-point stencil when at least three distinct points are available",
+    "status topology across nested scales",
+    "raw result/completion/candidate/retry/solver/temporal/mass diagnostics at every unique sample head"
+  ],
+  "diagnostic_questions": [
+    "Is the C3-positive G09 inconsistency caused by genuine q(H) curvature, by scale-dependent/fragmented corrector admissibility, or by both?",
+    "Do participant status-6 points correspond to raw corrector solver/retry failures rather than a smooth one-sided physical domain boundary?",
+    "Does the C2-negative control show the same fragmented status topology despite a stable one-sided derivative?"
+  ],
+  "hard_rules": [
+    "No tolerance change.",
+    "No post-hoc removal of a scale.",
+    "No production mutation.",
+    "Every participant trial is discarded and accepted revision/time/ledger must remain unchanged.",
+    "G09A is diagnostic-only: completion does not qualify a replacement tangent estimator."
+  ],
+  "decision_after_execution": "Only after G09A may a replacement estimator (e.g. status-aware local regression) be preregistered."
+}
