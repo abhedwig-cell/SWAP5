@@ -12,5 +12,11 @@
   "blocker": "Execution sequenced after DUMMY-20B closeout. Runtime differential is frozen now.",
   "next_action": "After DUMMY-20B closeout, rebind and implement the actual Windows RibaMod/runtime differential without changing the frozen model or route-equivalence criteria.",
   "production_delta": [],
-  "reference_delta": []
+  "reference_delta": [],
+  "implementation_preparation": {
+    "state": "RUNTIME_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "prepared_path": "tests/research/test_ribasim_dummy_20c_real_ribamod_runtime.py",
+    "scientific_change": false,
+    "note": "Actual upstream get_driver/RibaMod plus real MF6/Ribasim differential prepared. No runner, workflow gate or execution before DUMMY-20B closeout."
+  }
 }
