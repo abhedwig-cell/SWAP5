@@ -241,6 +241,15 @@
       "workflow_job": 106814775185,
       "implementation_head": "ac1b4f3f547e1c21e26a5917b0b0579be2b7c9d1",
       "evidence_commit": "8f1f2fdcb2a089b017de876c4ecb4e714bb85b60"
+    },
+    {
+      "work_unit": "GC-RZM06E07",
+      "decision": "SELECTED_TIGHT_DEEP_REDISTRIBUTION_PAIR",
+      "preregistration_commit": "0127e46ceee2bb35d6eb739d67b26c3e101c9169",
+      "workflow_run": 35748744856,
+      "workflow_job": 106817000793,
+      "implementation_head": "b1531aed4041e9c8582bac09bbde70916c4890c1",
+      "evidence_commit": "4e103502f6d00df8adf27630e891050bbb791c28"
     }
   ],
   "current_findings": [
@@ -322,21 +331,23 @@
     "E03E therefore authorizes an immutable fixed-Hc response probe, but because W_root30 is tolerance-matched rather than mathematically identical, any positive E04 conclusion must be stated at the frozen aggregate-storage resolution rather than as exact global state-sufficiency falsification.",
     "RZM06E04 supports non-unique next fixed-Hc exchange at the preregistered 1e-4 cm aggregate-storage resolution: |ΔE|=5.883852035282189e-05 cm with ΔW_profile=0 and |ΔW_root30|=4.3428876926654425e-05 cm; the claim is resolution-bounded, not exact-valued.",
     "RZM06E05 tightened the response-blind storage match: 14 H16-separated pairs exist at 1e-4 cm, 3 at 1e-5 cm, exactly 1 at 1e-6 cm, and none at 1e-7 cm or tighter; no exact pair exists in the current library.",
-    "RZM06E06 supports non-unique next fixed-Hc exchange at the tighter 1e-6 cm aggregate-storage resolution: |ΔE|=1.0814909231271486e-05 cm with |ΔW_profile|=7.105427357601002e-15 cm and |ΔW_root30|=5.002116250096833e-07 cm."
+    "RZM06E06 supports non-unique next fixed-Hc exchange at the tighter 1e-6 cm aggregate-storage resolution: |ΔE|=1.0814909231271486e-05 cm with |ΔW_profile|=7.105427357601002e-15 cm and |ΔW_root30|=5.002116250096833e-07 cm.",
+    "RZM06E07 prospectively constructed a deep internal redistribution pair using equal qssdi/qdra below 30 cm. The selected one-step 0.0625*K0 direction twin has ΔW_profile=0, |ΔW_root30|=5.560298887985482e-10 cm and |ΔH16|=0.01425320747482317 cm.",
+    "RZM06E07 moves the storage-matching state-space boundary from 1e-6 cm to 1e-9 cm. No H16-separated twin was found at 1e-10 cm or exact root30 equality under the frozen grid."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06E07",
-    "status": "PREREGISTERED_EXECUTING",
-    "preregistration_commit": "0127e46ceee2bb35d6eb739d67b26c3e101c9169",
-    "workflow_run": 35748744856,
-    "scope": "Construct opposite net-zero internal deep redistributions between nodes 6 and 16 under equal equilibrium top/bottom flux, then response-blindly seek an H16-separated pair at 1e-7 cm or tighter joint W_profile/W_root30 resolution.",
+    "id": "GC-RZM06E08",
+    "status": "PREREGISTERED_QUEUED_EXTERNAL_RUNNER",
+    "preregistration_commit": "91d00f62a1150a8310296ba0ee877b9c1842cfa4",
+    "workflow_run": 35749131548,
+    "scope": "Common-time reconstruct the immutable E07 1e-9 pair and run the unchanged forcing-free fixed-Hc strict Reference response probe.",
     "constraints": [
-      "only preregistered fractions 1/64 through 1/2 of K0 and 1,2,4,8 accepted steps",
-      "only same-rate same-duration UPSHIFT/DOWNSHIFT twins are compared",
-      "no direct forcing in nodes 1..3",
-      "no response fields in selection",
-      "no fallback, retry, temporal subdivision, threshold relaxation or post-hoc grid extension",
-      "persist selected H/theta pair before any E08 response work",
+      "no origin reselection",
+      "retain |ΔW_profile|<=1e-9 cm, |ΔW_root30|<=1e-9 cm and |ΔH16|>=0.01 cm",
+      "retain H_c=-1.8979370901690651 m and dt=3435974/2^32 day",
+      "retain response threshold 1e-18 cm",
+      "E07 qssdi/qdra are provenance only and are absent from E08 response forcing",
+      "same-origin order independence and O0/O2 identity required",
       "no production source changes and no H5/RZM06B work"
     ]
   },
@@ -350,6 +361,6 @@
     "no exact global sufficiency falsification from tolerance-matched W_root30 alone",
     "no exact-valued H_c + W_profile + W_root30 sufficiency falsification",
     "H16 is not admitted as a unique or minimal reduced-state coordinate",
-    "no E07 qualification claim before workflow 35748744856 completes"
+    "no E08 response conclusion before workflow 35749131548 completes"
   ]
 }
