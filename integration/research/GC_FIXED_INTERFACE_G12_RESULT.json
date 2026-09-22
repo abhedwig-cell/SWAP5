@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.gc_fixed_interface.g12.result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G12",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G12_PREREGISTRATION.json",
+  "tested_commit": "425b6d2d56ccd0dcd60bf49d24ff4a4be98163be",
+  "workflow_run": 35706474622,
+  "workflow_job": 106676504365,
+  "workflow_conclusion": "failure",
+  "decision": "PREREGISTERED_GROUNDWATER_HREF_CALIBRATION_GATE_FALSIFIED",
+  "technical_predecessors": [
+    {
+      "workflow_run": 35705747725,
+      "classification": "TECHNICAL_GROUNDWATER_DATUM_HARNESS_FAILURE"
+    },
+    {
+      "workflow_run": 35706282031,
+      "classification": "TECHNICAL_NAMEERROR_BEFORE_GROUNDWATER_POLICY"
+    }
+  ],
+  "qualified_before_failure": {
+    "map09_active_drainage_binding": "PASS",
+    "e3_map_href_and_both_frozen_starts": "PASS",
+    "href_e3": {
+      "mode": "CENTRAL_PAIR_CLASS",
+      "slope_per_s": -6.628364639568004e-7,
+      "selected_d_m": 0.000001,
+      "confirming_d_m": 5e-7,
+      "relative_difference": 5.8157936272754e-9
+    },
+    "map09a_crosscheck": "PASS",
+    "mass_decomposition": {
+      "selected_d_m": 0.000001,
+      "J_S": 0.0005726907048586583,
+      "J_R": -0.0005726907048586583,
+      "J_nonbottom": 0
+    },
+    "transaction_authority": "PASS_TO_FAILURE_POINT"
+  },
+  "failure": {
+    "phase": "first groundwater regime calibration, before any P1/P4 replay",
+    "gate": "|q_swap(href)-q_gw_fit(href)| <= 1e-15 m/s",
+    "observed_residual_m_per_s": -1.5752280308290933e-15,
+    "tolerance_m_per_s": 1e-15,
+    "ratio_to_tolerance": 1.5752280308290934,
+    "interpretation": "The prospectively frozen one-shot translation calibration does not meet its own href-root gate. Do not relax the tolerance or iteratively retune the bias inside G12."
+  },
+  "policy_evidence": "NOT_REACHED",
+  "bounded_conclusions": [
+    "E3_MAP is stable and physically signed on the active-drainage MAP09 carrier at href and both frozen +/-1e-6 m starts.",
+    "The href E3_MAP slope agrees with the independently qualified MAP09A whole-window J_R/dt response and the selected-scale mass decomposition again gives J_nonbottom=0 to reported precision.",
+    "G12 is nevertheless formally falsified because the first groundwater translation calibration misses the frozen href residual gate.",
+    "No P1/P4 process-diverse policy qualification follows from G12 because policy replay was not reached.",
+    "A separate diagnostic may characterize the calibrated groundwater response and exact/local href flux without changing G12."
+  ],
+  "production_admission": "NO"
+}
