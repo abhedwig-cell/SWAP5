@@ -369,3 +369,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G21E_EXECUTION=PASS' "$BUILD/fgc44-globalization-g2
   echo "GC_FGC44_G21E_FAIL missing dynamic solver-configuration comparison gate" >&2
   exit 1
 }
+
+
+# G21F local participant-admissibility boundary diagnostic. Resolve the
+# outer-2 status-6/status-0 transition in binary64 head space using only G16
+# immutable-origin diagnostic observations. No acceptance smoothing or production
+# policy/configuration change is permitted.
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21f_admissibility_boundary.py \
+  | tee "$BUILD/fgc44-globalization-g21f.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21F_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21f.txt" || {
+  echo "GC_FGC44_G21F_FAIL missing admissibility-boundary diagnostic gate" >&2
+  exit 1
+}
