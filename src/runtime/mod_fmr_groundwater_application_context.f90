@@ -38,7 +38,9 @@ module mod_fmr_groundwater_application_context
     type(fmr_groundwater_participant_registry_t), pointer :: registry => null()
     type(groundwater_interface_mass_ledger_t), pointer :: ledgers(:) => null()
     integer(int64), allocatable :: participant_handles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: current_terms(:)
@@ -103,6 +105,11 @@ contains
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
     end if
+    call plan%copy_tile_swap_origin_revisions(expected_swap_origin_revisions, local_status)
+    if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(expected_swap_origin_revisions)) then
+      status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+      return
+    end if
     call plan%copy_cells(cells, local_status)
     if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(cells)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
@@ -124,7 +131,8 @@ contains
       return
     end if
 
-    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles)) return
+    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles) .or. &
+        size(expected_swap_origin_revisions) /= size(tiles)) return
     if (size(cells) /= size(bindings) .or. size(cells) /= size(terms)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
@@ -144,7 +152,9 @@ contains
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
-      if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. has_candidate) then
+      if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. &
+          lineage_id /= tiles(i)%swap_lineage_id .or. revision /= expected_swap_origin_revisions(i) .or. &
+          has_candidate) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
       end if
@@ -173,6 +183,7 @@ contains
     end do
 
     allocate(self%participant_handles(size(participant_handles)))
+    allocate(self%expected_swap_origin_revisions(size(expected_swap_origin_revisions)))
     allocate(self%tiles(size(tiles)))
     allocate(self%cells(size(cells)))
     allocate(self%bindings(size(bindings)))
@@ -183,6 +194,7 @@ contains
     allocate(self%ledger_prepared(size(tiles)))
 
     self%participant_handles = participant_handles
+    self%expected_swap_origin_revisions = expected_swap_origin_revisions
     self%tiles = tiles
     self%cells = cells
     self%bindings = bindings
@@ -202,14 +214,17 @@ contains
 
     ready = self%bound .and. associated(self%plan) .and. associated(self%registry) .and. associated(self%ledgers)
     if (.not. ready) return
-    ready = allocated(self%participant_handles) .and. allocated(self%tiles) .and. allocated(self%cells) .and. &
+    ready = allocated(self%participant_handles) .and. allocated(self%expected_swap_origin_revisions) .and. &
+         allocated(self%tiles) .and. allocated(self%cells) .and. &
          allocated(self%bindings) .and. allocated(self%current_terms) .and. allocated(self%trials) .and. &
          allocated(self%trial_valid) .and. allocated(self%prepared_ledgers) .and. allocated(self%ledger_prepared)
     if (.not. ready) return
     ready = self%plan%ready() .and. self%window%valid()
     if (.not. ready) return
-    ready = size(self%participant_handles) == size(self%tiles) .and. size(self%ledgers) == size(self%tiles) .and. &
-         size(self%trials) == size(self%tiles) .and. size(self%trial_valid) == size(self%tiles) .and. &
+    ready = size(self%participant_handles) == size(self%tiles) .and. &
+         size(self%expected_swap_origin_revisions) == size(self%tiles) .and. &
+         size(self%ledgers) == size(self%tiles) .and. size(self%trials) == size(self%tiles) .and. &
+         size(self%trial_valid) == size(self%tiles) .and. &
          size(self%prepared_ledgers) == size(self%tiles) .and. size(self%ledger_prepared) == size(self%tiles) .and. &
          size(self%bindings) == size(self%cells) .and. size(self%current_terms) == size(self%cells)
   end function application_context_ready
@@ -307,7 +322,8 @@ contains
       call self%registry%identity(self%participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
       if (local_status /= FMR_GW_REGISTRY_OK .or. .not. has_origin .or. has_candidate .or. &
-          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. revision < 0_int64) then
+          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. &
+          revision /= self%expected_swap_origin_revisions(i)) then
         status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
         return
       end if

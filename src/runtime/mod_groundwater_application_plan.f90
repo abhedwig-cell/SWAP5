@@ -62,6 +62,7 @@ module mod_groundwater_application_plan
     private
     type(groundwater_coupling_window_t) :: window_value
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
+    integer(int64), allocatable :: tile_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: api(:)
     logical :: materialized = .false.
@@ -71,6 +72,7 @@ module mod_groundwater_application_plan
     procedure, public :: cell_count => application_plan_cell_count
     procedure, public :: window => application_plan_window
     procedure, public :: copy_tiles => application_plan_copy_tiles
+    procedure, public :: copy_tile_swap_origin_revisions => application_plan_copy_tile_swap_origin_revisions
     procedure, public :: copy_cells => application_plan_copy_cells
     procedure, public :: copy_linear_terms => application_plan_copy_linear_terms
     procedure, public :: copy_api_bindings => application_plan_copy_api_bindings
@@ -226,9 +228,18 @@ contains
     end do
 
     allocate(plan%tiles(size(tiles)))
+    allocate(plan%tile_swap_origin_revisions(size(tiles)))
     allocate(plan%cells(size(cells)))
     allocate(plan%api(size(api)))
     plan%tiles = tiles
+    do i = 1, size(tiles)
+      predictor_index = find_predictor_index(predictors, tiles(i)%tile_id)
+      if (predictor_index <= 0) then
+        status = GW_APP_PLAN_MISSING_PREDICTOR_TILE
+        return
+      end if
+      plan%tile_swap_origin_revisions(i) = predictors(predictor_index)%response%lineage%swap_origin_revision
+    end do
     plan%api = api
     plan%window_value = common_window
 
@@ -325,9 +336,12 @@ contains
     class(groundwater_application_plan_t), intent(in) :: self
     integer :: i
 
-    ready = self%materialized .and. allocated(self%tiles) .and. allocated(self%cells) .and. allocated(self%api)
+    ready = self%materialized .and. allocated(self%tiles) .and. allocated(self%tile_swap_origin_revisions) .and. &
+         allocated(self%cells) .and. allocated(self%api)
     if (.not. ready) return
-    if (size(self%tiles) <= 0 .or. size(self%cells) <= 0 .or. size(self%api) /= size(self%cells)) then
+    if (size(self%tiles) <= 0 .or. size(self%tile_swap_origin_revisions) /= size(self%tiles) .or. &
+        any(self%tile_swap_origin_revisions < 0_int64) .or. size(self%cells) <= 0 .or. &
+        size(self%api) /= size(self%cells)) then
       ready = .false.
       return
     end if
@@ -378,6 +392,18 @@ contains
     tiles = self%tiles
     status = GW_APP_PLAN_OK
   end subroutine application_plan_copy_tiles
+
+  subroutine application_plan_copy_tile_swap_origin_revisions(self, revisions, status)
+    class(groundwater_application_plan_t), intent(in) :: self
+    integer(int64), allocatable, intent(out) :: revisions(:)
+    integer, intent(out) :: status
+
+    status = GW_APP_PLAN_INVALID_TOPOLOGY
+    if (.not. self%ready()) return
+    allocate(revisions(size(self%tile_swap_origin_revisions)))
+    revisions = self%tile_swap_origin_revisions
+    status = GW_APP_PLAN_OK
+  end subroutine application_plan_copy_tile_swap_origin_revisions
 
   subroutine application_plan_copy_cells(self, cells, status)
     class(groundwater_application_plan_t), intent(in) :: self
