@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.coupling.real_ribamod_passive_groundwater_transfer.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20E",
+  "title": "Actual RibaMod passive groundwater transfer under frozen daily UserDemand allocation",
+  "baseline": "54a49151128ec961d0daf52e1ae389810578af53",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20C_ACTIVE_AND_20D_BLOCKED",
+    "execute_after": "DUMMY-20D qualified",
+    "rationale": "Freeze the first active physical-transfer experiment before the preceding product clock qualifications are observed."
+  },
+  "authorities": {
+    "product_driver": "DUMMY-20A qualified actual RibaMod driver",
+    "product_release": "DUMMY-20B qualified Ribasim v2026.1.1 clock contract",
+    "required_runtime_control": "DUMMY-20C",
+    "required_clock_matrix": "DUMMY-20D",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "frozen_topology": {
+    "horizon_seconds": 86400,
+    "product_timestep_seconds": 21600,
+    "ribasim_allocation_dt_seconds": 86400,
+    "ribasim_saveat_seconds": 86400,
+    "basin_area_m2": 1000000,
+    "initial_basin_level_m": 1,
+    "source_flow_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "root_priority": 2,
+    "external_priority": 3,
+    "level_hold_priority": 1,
+    "user_demand_min_level_m": 0.99,
+    "modflow": {
+      "cells": 1,
+      "fixed_head_m": 0.5,
+      "passive_drain_elevation_m": 0,
+      "passive_drain_conductance_m2_per_day": 16,
+      "expected_drain_flux_m3_per_day": -8,
+      "mapping": "single passive Drainage bound index 0 -> Ribasim Basin index 0"
+    },
+    "expected_ribasim_groundwater_input_m3_per_day": 8
+  },
+  "independent_continuous_reference": {
+    "equation": "A dh/dt = 32 + 8 - 32*phi(h-0.99), with phi(x)=(-2z+3)z^2 for z=x/0.02 in [0,1]",
+    "endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "basin_level_m": [
+      1.00000599820036,
+      1.0000119928028808,
+      1.0000179838097243,
+      1.0000239712230536
+    ],
+    "root_cumulative_supplied_m3": [
+      4.001799640042094,
+      8.007197119221914,
+      12.016190275713186,
+      16.028776946357368
+    ],
+    "external_cumulative_supplied_m3": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "groundwater_cumulative_transfer_m3": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "final_storage_gain_m3": 23.9712230536,
+    "final_total_external_input_m3": 40,
+    "final_ledger": "32 m3 fixed surface supply + 8 m3 groundwater drainage = root supplied + Basin storage gain"
+  },
+  "hypotheses": [
+    "The real MF6 passive drain exports approximately 8 m3/day from the fixed-head cell and RibaMod presents the reciprocal positive drainage input to the Ribasim Basin.",
+    "The physical groundwater transfer acts immediately on Basin storage during each 6-hour product step.",
+    "The daily UserDemand allocation is not recomputed merely because extra physical groundwater water arrives after the t=0 allocation.",
+    "External-demand cumulative supply remains zero throughout day 1.",
+    "Root cumulative supply and Basin level follow the frozen continuous reference within tolerance.",
+    "The reciprocal one-day ledger closes: 32 m3 fixed source + 8 m3 groundwater transfer = root physical supply + Basin storage gain.",
+    "Thus physical hydrology can alter accepted state without being retrospectively converted into a different management allocation inside the current allocation window."
+  ],
+  "tolerances": {
+    "endpoint_level_m": 5e-8,
+    "cumulative_volume_m3": 0.05,
+    "groundwater_transfer_m3": 0.05,
+    "external_zero_m3": 0.001,
+    "ledger_m3": 0.05
+  },
+  "forbidden": [
+    "no reallocation within day to force use of the groundwater transfer",
+    "no inference to SWAP irrigation production semantics",
+    "no active river-stage feedback in this first transfer test",
+    "no later f965 clock semantics as product-release truth",
+    "no production admission claim",
+    "no changing references or transfer magnitude after upstream runtime output"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20E_QUALIFIED_PASSIVE_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
+  "fail_decision": "RIBASIM_DUMMY_20E_BLOCKED"
+}
