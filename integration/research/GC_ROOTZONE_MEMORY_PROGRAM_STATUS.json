@@ -43,6 +43,15 @@
       "workflow_run": 35706500324,
       "workflow_job": 106676593944,
       "implementation_head": "6693032ef6fdfa95eba82ee78bfa97cb8724d4a7"
+    },
+    {
+      "work_unit": "GC-RZM06A",
+      "decision": "QUALIFIED_REAL_SWAP_MEMORY_FALSIFICATION_H1_H3_H4__H2_NO_MATCH",
+      "preregistration_commit": "562853f7dd1a53c8301b0d4648f474084cfd2734",
+      "workflow_run": 35725440992,
+      "workflow_job": 106737853660,
+      "implementation_head": "199868ff91ebf5faeb0169484f7dadf99585d7f3",
+      "evidence_commit": "f4faa5d25e475201018bd84a6bc17c5b35f7a2ec"
     }
   ],
   "current_findings": [
@@ -66,18 +75,30 @@
     "H_c can remain the sole physical fixed-plane interface head even though exact affine response sufficiency fails.",
     "Irrigation demand can be bound to committed root storage without introducing shortage as persistent physical state.",
     "Managed irrigation is an external root-zone input booked once; E_c remains the sole hydraulic SWAP-MODFLOW transfer.",
-    "Future irrigation demand follows accepted W_r after hydraulic redistribution and external forcing, not current-window shortage."
+    "Future irrigation demand follows accepted W_r after hydraulic redistribution and external forcing, not current-window shortage.",
+    "Real-SWAP RZM06A supports H1: at the same fixed-plane H_c, same committed time and equal integrated antecedent top forcing, two accepted internal states produce different next forcing-free whole-window bottom exchange; H_c is therefore not a complete real-SWAP state descriptor.",
+    "RZM06A H2 is NO_MATCH rather than falsified: 23/25 frozen two-interval trajectories were accepted and 171 endpoint pairs met the total-profile-water tolerance, but the largest M1 separation among those pairs was about 7.04e-7 versus the frozen 1e-4 requirement, so no H2 response probe was opened.",
+    "RZM06A H3 supports committed-origin and coupling-window dependence of the local real-SWAP response tangent. The state effect is deterministic but small relative to tangent magnitude; the window effect remains substantial after conversion to an interface-rate derivative.",
+    "RZM06A H4 confirms that accepted whole-window bottom exchange, terminal bottom flux, physical local derivative, baseline predictor u and production-facing affine coefficients have distinct semantics and provenance.",
+    "RZM06A does not require a second MODFLOW hydraulic state: the evidence remains compatible with one physical fixed-plane H_c plus SWAP-internal memory used to construct the interface response."
   ],
   "next_work_unit": {
-    "id": "GC-RZM06",
-    "scope": "Phase H real-SWAP falsification bridge: map analytical state/interface claims to observable real SWAP quantities and preregister paired-state experiments before changing production coupling",
-    "prerequisite": "GC-RZM05 qualified"
+    "id": "GC-RZM06A2",
+    "scope": "Response-blind real-SWAP H2 state-pair construction: create stronger vertical-distribution separation at fixed endpoint time and H_c without direct state mutation, then apply the unchanged H2 water and M1 thresholds before any E_c probe.",
+    "prerequisite": "GC-RZM06A qualified with H2=NO_MATCH",
+    "constraints": [
+      "do not relax |ΔW_profile| <= 1e-6 or |ΔM1| >= 1e-4 post hoc",
+      "preserve immutable origins, mass gates and failed trajectories as evidence",
+      "keep RZM06B/H5 separate until a qualified management-forcing route exists"
+    ]
   },
   "blocked": [],
   "nonclaims": [
     "no production coupling admission",
-    "no Richards-equation representation",
-    "no real-SWAP state sufficiency claim yet",
-    "no real storage-partition or drainage-ownership closure"
+    "no second MODFLOW hydraulic state variable admission",
+    "no production sign-flip admission",
+    "no H2 vertical-distribution causality result yet",
+    "no RZM06B/H5 management conclusion",
+    "no global real-SWAP state sufficiency claim outside the qualified carrier and frozen experiment windows"
   ]
 }
