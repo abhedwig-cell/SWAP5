@@ -512,3 +512,78 @@ G12B ACTIVE-DRAINAGE E3/P4 COVERAGE = QUALIFIED RESEARCH EVIDENCE.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: TANGENT-ACQUISITION COST AND INTEGRATION.
 ```
+
+
+## G15 disposition: FMR same-trial observation building block qualified
+
+G15 moves one narrowly defined part of the G14 research integration shape into
+the FMR runtime participant without changing coupling policy. The participant
+now retains a read-only observation of the exact trial it already executed:
+participant status, q when available, and the execution diagnostics needed to
+classify the trial's numerical execution route.
+
+The accessor is deliberately weak. It takes only the participant as
+`intent(in)`, copies participant-owned state, has no backend, executor or
+materializer collaborator, and performs no procedure call. The normal
+`trial_from_origin` path still contains one physical backend run site. Reading
+the observation therefore cannot create a second physical SWAP trial, publish a
+candidate, stage mass, or commit state.
+
+The first G15 live execution is preserved as a technical test-harness failure.
+All eight frozen FGC44 states and 62 streaming heads had already matched the G14
+reference, including failed-trial recovery, but the test then executed its
+baseline and observed commit paths in one Fortran process. The first legitimate
+ledger commit contaminated the second fixture baseline. The repair isolated
+those two commit paths in fresh subprocesses and changed no runtime semantics,
+numerical thresholds, ledger behavior or coupling rule.
+
+The repaired live qualification, workflow `35720172440`, passed. Its bounded
+results are:
+
+```text
+FGC44 frozen states                 8
+streaming unique heads            62
+participant trial calls           62
+max q difference vs G14            0 m/s
+states containing status 6         5
+status-6 -> status-0 recovery       PASS
+repeated observation reads          PASS
+observation/discard authority       PASS
+isolated commit equivalence         PASS
+accessor additional backend runs    0
+source/ownership contract           PASS
+```
+
+The regression also executed 62 independent G14 fused research-oracle runs, one
+per head, solely to verify exact status/q/execution-diagnostic equivalence. Those
+reference runs are qualification cost, not part of the G15 access path and not
+part of the production-facing cost claim.
+
+The G15 lifecycle contract is therefore qualified for this FMR-specific
+building block: a new trial attempt resets the previous observation; status-0
+leaves a live candidate and readable q; status-6 leaves diagnostic information
+with q unavailable and no live candidate; discard leaves historical diagnostic
+information but no publication authority; commit remains governed only by the
+existing publication/preflight/commit path and resets the observation.
+
+This is intentionally not E3 or P4 production admission. G09D E3 remains a
+qualified research estimator, P4 remains the leading research coupling-policy
+candidate, and production HCOF/RHS remains unchanged. G15 only removes the
+otherwise unnecessary duplicate physical trial from the participant-side data
+acquisition boundary.
+
+The next bounded work unit is therefore the tangent-service ownership contract:
+it must define how a service consumes these read-only same-trial observations
+across a prospectively frozen probe ladder, who owns probe scheduling and cache
+lifetime, how failed/diagnostic trials retain zero accepted-state and ledger
+authority, and how the service exposes a qualified tangent to coupling
+orchestration. That work must be qualified before any real production coupling
+policy consumes E3/P4.
+
+```text
+G15 FMR SAME-TRIAL OBSERVATION = QUALIFIED PRODUCTION-FACING BUILDING BLOCK.
+E3 = QUALIFIED RESEARCH ONLY.
+P4 = RESEARCH POLICY CANDIDATE, NOT PRODUCTION AUTHORITY.
+NO PRODUCTION HCOF/RHS CHANGE.
+NEXT: EXPLICIT TANGENT-OBSERVATION / TANGENT-SERVICE OWNERSHIP CONTRACT.
+```
