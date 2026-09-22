@@ -1,0 +1,126 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21l.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21L",
+  "title": "Direct final-residual observation on unchanged G21K solver paths",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "ff1eca86002246995d4d642430b981a507e5c910",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21K_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21J_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21I_RESULT.json",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "frozen_source_blobs": {
+    "headcalc": "3ff8d5cfd6963dfb7dafb33ec454fbc0df938a55",
+    "serialized_reference_backend": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+    "standard_fgc44_test_bridge": "2151e99953fa3f8f12ebf21cc123e4c03a47e855"
+  },
+  "question": "What are the untouched final HeadCalc residual sum and maximum absolute compartment residual at the G21I B1 and B2 adjacent status boundaries, and do those direct values confirm the G21J/G21K criterion diagnosis without changing any solver tolerance or execution path?",
+  "rationale": [
+    "G21K measured the B2 total-balance threshold on an unchanged three-backtracking path.",
+    "G21K could not measure the B1 final compartment residual because CritDevBalCp also changes the HeadCalc Fmax backtracking acceptance branch.",
+    "The reference Richards workspace retains the final residual vector after HeadCalc, including on a nonconverged solve, but the production backend intentionally does not publish that scratch through its ordinary observation surface."
+  ],
+  "research_build_observer": {
+    "rule": "Do not modify committed production/runtime/solver source files. Generate temporary research-build copies of the serialized reference backend and FGC44 C bridge from the pinned source blobs, adding only a read-only residual snapshot method and C entry point. Compile the semantic research library against those temporary copies, then delete the temporary source files.",
+    "observed_fields": [
+      "sum(residual)",
+      "max(abs(residual))",
+      "signed residual at max-absolute node",
+      "max-absolute node index",
+      "0.5*dot_product(residual,residual)",
+      "count(nonconverged_balance)",
+      "count(nonconverged_head)"
+    ],
+    "forbidden_behavior": [
+      "write to residual, state, solver parameters or corrector configuration",
+      "alter HeadCalc arithmetic or branch conditions",
+      "alter retry depth, max iterations except the already-qualified G21I prefix control",
+      "publish candidate, accepted state, ledger or coupling policy"
+    ]
+  },
+  "frozen_cases": [
+    {
+      "id": "B1_STATUS6",
+      "head_m": -0.7150100297648301,
+      "max_iterations": 4,
+      "expected_solver_status": 2,
+      "expected_backtracking": 8,
+      "expected_participant_status": 6
+    },
+    {
+      "id": "B1_STATUS0",
+      "head_m": -0.715010029764824,
+      "max_iterations": 4,
+      "expected_solver_status": 1,
+      "expected_backtracking": 8,
+      "expected_participant_status": 0
+    },
+    {
+      "id": "B2_STATUS0",
+      "head_m": -0.715010029764793,
+      "max_iterations": 3,
+      "expected_solver_status": 1,
+      "expected_backtracking": 3,
+      "expected_participant_status": 0
+    },
+    {
+      "id": "B2_STATUS6",
+      "head_m": -0.7150100297647868,
+      "max_iterations": 3,
+      "expected_solver_status": 2,
+      "expected_backtracking": 3,
+      "expected_participant_status": 6
+    }
+  ],
+  "frozen_thresholds": {
+    "production_balance_tolerance": 1e-12,
+    "b2_total_largest_fail": 1.1858268037760851e-12,
+    "b2_total_smallest_pass": 1.1858268037760853e-12,
+    "b1_compartment_first_event_low": 1.1378075673480757e-12,
+    "b1_compartment_first_event_high": 1.1378075673480759e-12
+  },
+  "execution_contract": [
+    "For every frozen head execute one fresh immutable-origin G21I-style raw backend solve with max_retries=0, frozen production tolerances and the preregistered max-iteration prefix.",
+    "Immediately after that solve read the residual snapshot from the temporary research-build observer before any subsequent backend solve.",
+    "Require the solver status and backtracking count to reproduce G21I/G21K exactly.",
+    "For B2_STATUS6 require abs(sum(residual)) to lie above the G21K largest-fail tolerance and at or below the smallest-pass tolerance; require B2_STATUS0 abs(sum(residual)) <= 1e-12.",
+    "For B1_STATUS6 require max(abs(residual)) > 1e-12 and at least one nonconverged-balance compartment. For B1_STATUS0 require max(abs(residual)) <= 1e-12 and zero nonconverged-balance compartments.",
+    "Do not require the B1 untouched max residual to equal the G21K first-event tolerance because G21K already established that the tolerance intervention changes the path.",
+    "After all raw probes, reproduce the normal G16 participant status vector [6,0,0,6], counts [4,4,0,4], unchanged accepted revision/time/ledger and no live candidate."
+  ],
+  "gates": [
+    "Pinned production HeadCalc, backend and standard bridge blobs match before generating temporary observer copies.",
+    "The generated observer patch contains no assignments to production workspace/state beyond local output variables.",
+    "Standard FGC44 end-to-end gate still passes when compiled from the research-build copies with the read-only observer added.",
+    "All four frozen solver status/backtracking tuples reproduce exactly.",
+    "B2 direct residual sum validates the G21K path-preserving total-balance threshold bracket.",
+    "B1 direct max compartment residual explains the production compartment-balance failure on the untouched eight-backtracking path.",
+    "The adjacent B1 status-0 residual is below/equal to the production compartment criterion on the same eight-backtracking prefix.",
+    "No committed file under src/** is changed.",
+    "Diagnostic non-authority postconditions pass."
+  ],
+  "pass_interpretation": "PASS converts the G21K B1 occlusion from an indirect threshold statement into direct residual-state evidence and cross-validates the B2 threshold measurement. It remains numerical mechanism evidence only and does not justify changing tolerances or coupling policy.",
+  "fail_interpretation": "Preserve any mismatch. Do not tune the temporary observer, tolerance, head, prefix length or production source to force agreement with G21J/G21K.",
+  "allowed_mutation": [
+    "tests/research/prepare_gc_g21l_residual_observer.py",
+    "tests/research/test_gc_fixed_interface_g21l_residual_state.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    "integration/research/GC_FIXED_INTERFACE_G21L_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/**",
+    "tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90",
+    "saved corrector parameters/configuration",
+    "participant acceptance/retry semantics",
+    "production solver tolerances",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
