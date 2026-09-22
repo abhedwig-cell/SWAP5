@@ -1,0 +1,46 @@
+name: GC rootzone memory RZM06E02 fixed-Hc H2 probe
+
+on:
+  push:
+    branches:
+      - work/gc-dummy-swap-rootzone-memory
+    paths:
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E01_RESULT.json'
+      - 'integration/research/GC_ROOTZONE_MEMORY_RZM06E02_PREREGISTRATION.json'
+      - 'docs/research/GC_ROOTZONE_MEMORY_RZM06E02_PREREGISTRATION.md'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e02_extract.py'
+      - 'tests/research/test_gc_rootzone_memory_rzm06e02_probe.f90'
+      - 'tests/research/analyze_gc_rootzone_memory_rzm06e02.py'
+      - 'tests/research/run_gc_rootzone_memory_rzm06e02.sh'
+      - '.github/workflows/gc-rootzone-memory-rzm06e02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gc-rootzone-memory-rzm06e02-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconstruct immutable pair and run fixed-Hc probes
+        run: |
+          set -euo pipefail
+          mkdir -p RZM06E02-EVIDENCE
+          RZM06E02_EVIDENCE_DIR="$PWD/RZM06E02-EVIDENCE"             bash tests/research/run_gc_rootzone_memory_rzm06e02.sh
+      - name: Preserve E02 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rzm06e02-${{ github.run_id }}
+          path: RZM06E02-EVIDENCE
+          if-no-files-found: warn
