@@ -271,3 +271,17 @@ grep -Fq 'GC_FIXED_INTERFACE_G20_EXECUTION=PASS' "$BUILD/fgc44-globalization-g20
   echo "GC_FGC44_G20_FAIL missing continuous prepared-solve response gate" >&2
   exit 1
 }
+
+
+# G21 full dynamic response-space globalization. E3 is recomputed at each
+# accepted coupling head and P4's unchanged factor-1/2 status/merit logic is
+# applied to affine-response residual damping inside one continuous prepared solve.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g21_dynamic_response_globalization.py \
+  | tee "$BUILD/fgc44-globalization-g21.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G21_EXECUTION=PASS' "$BUILD/fgc44-globalization-g21.txt" || {
+  echo "GC_FGC44_G21_FAIL missing dynamic response-globalization gate" >&2
+  exit 1
+}
