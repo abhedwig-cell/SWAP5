@@ -69,5 +69,5 @@
       "repair": "checkout github.event.pull_request.head.sha explicitly before source-scope verification"
     }
   ],
-  "trigger_refresh": "synchronize_after_base_exact_head_checkout_repair"
+  "trigger_refresh": "synchronize_after_base_exact_head_and_path_filter_repairs"
 }
