@@ -159,15 +159,16 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-19J",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_19I2",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_19J_QUALIFIED_BMI_SAVEAT_CLOCK_CONFLICT",
       "dependency": "qualified DUMMY-19I2",
       "scientific_baseline": "40c93b3f29511c4a8cf317500463025f8aa7b002",
-      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a"
+      "ribasim_pin": "f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+      "implementation_baseline": "225d52997b9a92d40df0dfd081109582e1e8ed76"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Rebind and execute frozen DUMMY-19J BMI versus finer-saveat clock conflict.",
+  "next_authority_action": "Execute frozen DUMMY-19J fine-saveat clock-conflict gate.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
