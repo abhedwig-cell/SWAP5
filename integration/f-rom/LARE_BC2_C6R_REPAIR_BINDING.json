@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.lare.bc2.c6r.repair-binding.v1",
+  "workstream": "F-ROM-LARE",
+  "work_unit": "LARE-BC2-C6R-R1",
+  "date": "2026-09-22",
+  "state": "BOUND_BEFORE_REPAIRED_REFERENCE_EXECUTION",
+  "inherits_scientific_authority": "integration/f-rom/LARE_BC2_C6R_PREREGISTRATION.json",
+  "failure_classification": "integration/f-rom/LARE_BC2_C6R_FAILURE_CLASSIFICATION.json",
+  "scientific_semantics_changed": false,
+  "candidate_response_generated": false,
+  "repair": {
+    "class": "RESEARCH_LOCAL_REFERENCE_FLOOR_ADMISSION_WIRING",
+    "frozen_reference_backend": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "frozen_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "frozen_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+    "change": "Within a workflow-local frozen checkout only, remove parameters%root_extraction_active from the public run_reference_floor_sample pre-admission rejection.",
+    "reason": "The frozen wrapper rejected the root-active case before the already-bound Reference model and prescribed root-sink provider could execute.",
+    "production_source_persisted": false,
+    "reference_richards_changed": false,
+    "headcalc_changed": false,
+    "feddes_process_changed": false,
+    "root_sink_provider_changed": false,
+    "mass_accounting_changed": false,
+    "retry_policy_changed": false,
+    "transaction_dt_changed": false,
+    "within_trial_root_reevaluation_changed": false
+  },
+  "independent_authority": {
+    "prescribed_root_result": "integration/audits/PPA_ROOT_HYD01_R1_RESULT.json",
+    "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_SINK_TEMPORAL_CERTIFICATE",
+    "qualified_head": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+    "qualification_run": 35429605183,
+    "provider_scope": "concrete b110_root_sink_provider_t with bound finite prescribed root-extraction vector and matching node count"
+  },
+  "preserved_c6r_contract": {
+    "materials": ["B01", "B14"],
+    "histories": ["V01", "V02", "V03", "V04"],
+    "root_depth_cm": 80,
+    "root_distributions": ["SHALLOW", "UNIFORM"],
+    "reference_routes": ["R512_T32", "R1024_T32", "R2048_T32", "R2048_T16", "R2048_T8"],
+    "reference_target": "R2048_T32",
+    "max_abs_transaction_mass_cm": 1e-12,
+    "failed_first_attempt_policy": "FAIL_CLOSED_NO_DYN0A_FALLBACK",
+    "root_evaluation_timing": "committed state at transaction start; prescribed sink fixed inside the hydraulic trial",
+    "qualification_formula_changed": false,
+    "metrics_changed": false,
+    "O0_O2_identity_required": true
+  },
+  "implementation": {
+    "repair_materializer": "tests/rom/materialize_lare_bc2_c6r_reference_floor_repair.py",
+    "repair_materializer_blob": "b20f451c597aa0d24ad4be44e561f58ddb1e7f34",
+    "workflow": ".github/workflows/f-rom-lare-bc2-c6r-r1.yml",
+    "workflow_blob": "daa50067ee89051dc83a93097cffafde79a1f9c4",
+    "original_root_materializer_blob": "4f1d330a51cf0829816c64e140b0a5fd806b09d1",
+    "original_segmented_materializer_blob": "7b0654958b19a071649405da87f300c1fe86a0c7",
+    "original_analyzer_blob": "bf17f616240d4830ea9ef7bed21b3f57ad9b404a",
+    "response_based_design": false
+  },
+  "qualification_rule": {
+    "first_repaired_response": "rerun the complete preregistered C6R reference-only matrix and analyzer through the repaired research-local admission surface",
+    "pass": "Original C6R integrity, O0/O2 and all five three-level space-time convergence metrics pass for both materials.",
+    "fail": "Stop before any reduced candidate response. Classify numerical or scientific failure without changing histories, roots, demand, routes, gates or repair semantics."
+  },
+  "scientific_firewall": {
+    "reduced_candidate_response_generated": false,
+    "reduced_root_feedback_implemented": false,
+    "application_tolerance_selected": false,
+    "performance_comparison_authorized": false,
+    "production_rom_authorized": false
+  }
+}
