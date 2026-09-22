@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.gc_fixed_interface.g21e.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G21E",
+  "title": "Full dynamic response-space coupling under standard DBD versus no-under-relaxation",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "32486620f762c0ecc00821cb620437e0b65b1659",
+  "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G21D_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G21A_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G20_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G16_RESULT.json"
+  ],
+  "question": "For the frozen real-FGC44 G11 stress, how do the complete dynamic G16/E3 response-space safeguarded coupling loop and its physical endpoint differ between the standard MODERATE delta-bar-delta solver configuration and the matched UNDER_RELAXATION NONE research intervention?",
+  "purpose": "Separate physical coupled correctness from exact reference-trajectory reproduction and solver cost. G21E is a research solver-configuration comparison, not a production policy selection.",
+  "configurations": {
+    "STANDARD_DBD": {
+      "ims_complexity": "MODERATE",
+      "under_relaxation": "default",
+      "expected_nonmeth": 3
+    },
+    "NOUR": {
+      "ims_complexity": "MODERATE",
+      "under_relaxation": "NONE",
+      "expected_nonmeth": 0
+    }
+  },
+  "fixed_between_configurations": [
+    "official MODFLOW6 6.8.0 library and pinned Python dependencies",
+    "real FGC44 SWAP carrier and immutable origin",
+    "duration, K, SS, SY, CHD forcing and groundwater accepted origin",
+    "G16 tangent-observation service",
+    "G09D/G13 E3 scale ladder, execution-class rules and 5% adjacent-scale gate",
+    "response-space lambda sequence starting at 1 and halving by factor 1/2",
+    "participant-status and merit acceptance rule",
+    "external coupling residual tolerance 1e-15 m/s",
+    "merit absolute tolerance 1e-18 m/s",
+    "outer and safeguard budgets",
+    "one prepare_time_step and one prepare_solve per arm",
+    "no direct X/XOLD/state mutation"
+  ],
+  "frozen_case": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "initial_head_m": -0.7149999311459918,
+    "groundwater_a_per_s": 6.888155563779977e-7,
+    "groundwater_intercept": 4.925260259275142e-7,
+    "groundwater_k_m_per_day": 1e-10,
+    "groundwater_ss_per_m": 0,
+    "groundwater_initial_head_bias_m": -0.00003332218778007957
+  },
+  "independent_reference": {
+    "source": "integration/research/GC_FIXED_INTERFACE_G17_RESULT.json",
+    "final_head_m": -0.715009930492797,
+    "final_residual_m_per_s": -1.0640987109201395e-20,
+    "physical_head_comparison_guard_m": 5e-10,
+    "strict_trajectory_reference_guard_m": 1e-12,
+    "note": "The 5e-10 head guard is an endpoint/reference comparison guard inherited from the earlier live fixed-interface research scale; physical acceptance remains the coupling residual gate. The 1e-12 guard is reported separately for strict trajectory fidelity and must not be used as the sole correctness criterion."
+  },
+  "experiment_contract": [
+    "Run two independent complete dynamic response-space coupling arms from the same accepted origin: STANDARD_DBD and NOUR.",
+    "Each arm uses one prepared MODFLOW solve with fixed XOLD and evolving X.",
+    "At every accepted coupling head, recompute the real-SWAP E3 tangent through G16 with unchanged E3 rules.",
+    "For each outer update, begin response damping at lambda=1 and halve lambda only when the settled candidate is participant-inadmissible or fails the unchanged merit rule.",
+    "Settle every published affine response to a MODFLOW convergence report before evaluating the SWAP candidate.",
+    "Do not require intermediate heads to equal G17 in order to continue. Record their distance from the G17 accepted trace separately.",
+    "Convergence of an arm requires a settled MODFLOW response state and absolute real-SWAP versus frozen-groundwater residual <=1e-15 m/s.",
+    "Stop before finalize_time_step; finalize_solve exactly once on a converged arm.",
+    "All G16 observations remain diagnostic-only and may not mutate accepted SWAP/ledger authority.",
+    "Record participant status topology, accepted heads, E3 modes/scales/slopes, contractions, MODFLOW solve-call counts and final residual."
+  ],
+  "quantitative_gates": [
+    "Both configurations report their preregistered NONMETH values (3 for STANDARD, 0 for NOUR).",
+    "Each arm uses exactly one prepare_time_step and one prepare_solve and keeps XOLD bitwise fixed.",
+    "No direct X/XOLD setter, rollback, reconstruction or mid-solve state mutation is used.",
+    "Each arm either converges within the unchanged MAX_OUTER/MAX_BACKTRACK/MXITER budgets or is preserved as a bounded failure; no tolerance or safeguard retuning follows observed results.",
+    "For every converged arm, final |coupling residual| <=1e-15 m/s.",
+    "For every converged arm, report final-head error to the independent G17 head and whether it is <=5e-10 m.",
+    "Separately report strict <=1e-12 m trajectory fidelity for every accepted outer head that has a corresponding G17 trace entry; failure of this reporting metric alone does not redefine physical convergence.",
+    "Report total MODFLOW solve calls, accepted outer updates, total response contractions, G16 logical requests, physical SWAP diagnostic trials and cache hits for each arm.",
+    "No ordinary FMR publication-path trial, FMR preflight, ledger preflight or accepted-state mutation occurs during either arm.",
+    "Exactly one finalize_solve and zero finalize_time_step calls occur for each converged arm.",
+    "No production/runtime/adapter/configuration source is changed."
+  ],
+  "comparison_interpretation": {
+    "BOTH_PHYSICALLY_CONVERGED": "Both arms meet external residual and endpoint reference gates. Solver configuration affects path and/or cost but this frozen experiment alone cannot select a production configuration.",
+    "NOUR_ONLY_PHYSICALLY_CONVERGED": "NOUR meets the physical gates while STANDARD does not under unchanged budgets. This supports a separately bounded production-configuration study but is not itself admission.",
+    "STANDARD_ONLY_PHYSICALLY_CONVERGED": "STANDARD meets the physical gates while NOUR does not. The G21D path-memory removal is not sufficient justification for NOUR.",
+    "NEITHER_PHYSICALLY_CONVERGED": "Neither configuration closes the physical coupling loop under the frozen algorithm; response-space policy remains unresolved.",
+    "MIXED_OR_UNRESOLVED": "Lifecycle, authority or comparability gates prevent a matched comparison."
+  },
+  "pass_interpretation": "PASS means the matched solver-configuration comparison was executed and classified without moving any physical/numerical gate. It may establish bounded evidence about path fidelity and cost, but does not production-admit NOUR, E3, response-space damping, P4, HCOF/RHS policy or solver defaults.",
+  "fail_interpretation": "Preserve technical and scientific failures separately. Do not retune E3, response damping, IMS tolerances, coupling tolerances, budgets or physical forcing after seeing the comparison.",
+  "allowed_mutation": [
+    "tests/research/test_gc_fixed_interface_g21e_dynamic_solver_configuration.py",
+    "tests/research/run_gc_real_fgc44_response_storage_scan.sh",
+    ".github/workflows/gc-real-fgc44-semantic-scan.yml",
+    "integration/research/GC_FIXED_INTERFACE_G21E_*",
+    "docs/research/GC_FIXED_INTERFACE_GLOBALIZATION_DECISION.md after evidence"
+  ],
+  "forbidden_mutation": [
+    "src/runtime/**",
+    "src/adapter/**",
+    "production IMS configuration",
+    "G16/E3/P4 semantics",
+    "G19/G20/G21/G21A/G21B/G21C/G21D evidence or gates",
+    "F-GC38/F-GC39/F-GC41 contracts",
+    "production HCOF/RHS"
+  ],
+  "production_admission": "NO"
+}
