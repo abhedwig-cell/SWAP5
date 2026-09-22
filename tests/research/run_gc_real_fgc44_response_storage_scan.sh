@@ -119,3 +119,15 @@ grep -Fq 'GC_FIXED_INTERFACE_G09C_DIAGNOSTIC=PASS' "$BUILD/fgc44-globalization-g
   echo "GC_FGC44_G09C_FAIL missing execution-signature diagnostic gate" >&2
   exit 1
 }
+
+
+# G09D stencil-internal execution-class tangent qualification.
+LIBMF6="$BUILD/modflow-bin/libmf6.so" \
+FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_fgc44_stencil_class_tangent_g09d.py \
+  | tee "$BUILD/fgc44-globalization-g09d.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G09D_EXECUTION=PASS' "$BUILD/fgc44-globalization-g09d.txt" || {
+  echo "GC_FGC44_G09D_FAIL missing stencil-class tangent gate" >&2
+  exit 1
+}
