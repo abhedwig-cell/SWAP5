@@ -4,12 +4,22 @@
   "work_unit": "GC-FIXED-INTERFACE-G15",
   "branch": "work/f-gc-dummy-swap-shared-storage",
   "canonical_base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
-  "state": "IMPLEMENTED_AWAITING_LIVE_EXECUTION",
+  "state": "TECHNICAL_HARNESS_REPAIRED_AWAITING_RERUN",
   "preregistration": "integration/research/GC_FIXED_INTERFACE_G15_PREREGISTRATION.json",
   "parent_reference": "integration/research/GC_FIXED_INTERFACE_G14_RESULT.json",
   "runtime_change": "read-only FMR participant observation snapshot/accessor only",
   "production_hcof_rhs_change": false,
   "test": "tests/research/test_gc_fixed_interface_g15_participant_observation.py",
   "workflow": ".github/workflows/gc-real-fgc44-semantic-scan.yml",
-  "next_action": "Execute live FGC44 regression on all 62 G14 streaming heads, including failed-trial recovery and commit/discard lifecycle equivalence; preserve G14 as independent same-physics reference."
+  "next_action": "Qualify semantic scan 35720172440 on repaired_test_commit; require all 62 G14 heads, one participant trial per head, exact G14 observation equivalence, failure recovery, isolated commit equivalence, and transaction/source-contract gates.",
+  "first_execution_result": "integration/research/GC_FIXED_INTERFACE_G15_FIRST_EXECUTION_RESULT.json",
+  "first_execution": {
+    "tested_commit": "bfea235dd30168812e1e7af19205fb4dc11b5fa5",
+    "workflow_run": 35719665899,
+    "workflow_job": 106719335800,
+    "conclusion": "failure",
+    "classification": "TECHNICAL_TEST_HARNESS_FAILURE"
+  },
+  "repaired_test_commit": "2b75808135a74bcae474ffb8793ee7252348b709",
+  "repair": "Baseline and observed commit-equivalence paths now execute in isolated subprocesses; no runtime, threshold, ledger or coupling-policy change."
 }
