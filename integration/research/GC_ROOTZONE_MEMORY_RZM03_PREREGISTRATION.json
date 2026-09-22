@@ -1,0 +1,79 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm03.preregistration.v1",
+  "date": "2026-09-22",
+  "branch": "work/gc-dummy-swap-rootzone-memory",
+  "work_unit": "GC-RZM03",
+  "title": "Bidirectional signed root/lower and fixed-interface exchange",
+  "status": "PREREGISTERED_MATHEMATICS_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_changes": false,
+  "prerequisite": {
+    "rzm01": "QUALIFIED",
+    "rzm02": "QUALIFIED",
+    "rzm02_closeout_regression_run": 35701911212
+  },
+  "experiments": {
+    "downward": {
+      "state": {
+        "root_storage_m": 0.12,
+        "lower_head_m": 8
+      },
+      "H_c_m": 8,
+      "dt_day": 0.5
+    },
+    "root_capillary": {
+      "state": {
+        "root_storage_m": 0.08,
+        "lower_head_m": 8.05
+      },
+      "H_c_m": 8.05,
+      "dt_day": 0.5
+    },
+    "modflow_capillary": {
+      "state": {
+        "root_storage_m": 0.1,
+        "lower_head_m": 8
+      },
+      "H_c_m": 8.1,
+      "dt_day": 0.5
+    },
+    "zero": {
+      "state": {
+        "root_storage_m": 0.1,
+        "lower_head_m": 8
+      },
+      "H_c_m": 8,
+      "dt_day": 2
+    },
+    "coupled_capillary": {
+      "state": {
+        "root_storage_m": 0.09,
+        "lower_head_m": 7.95
+      },
+      "groundwater_head0_m": 8.1,
+      "groundwater_storage_coefficient": 0.2,
+      "dt_day": 0.5
+    }
+  },
+  "hypotheses": {
+    "H1": "Downward and upward root/lower exchange use the same signed q_v law.",
+    "H2": "MODFLOW-to-SWAP exchange is represented solely by negative q_c/E_c and closes the same component and complete ledgers.",
+    "H3": "Zero gradients give zero transfer without tolerance-based direction logic.",
+    "H4": "Both sides approach equilibrium continuously; no constitutive direction switch is required.",
+    "H5": "Bidirectionality adds no new persistent physical state to the linear surrogate."
+  },
+  "gates": {
+    "mass_abs_m": 2e-12,
+    "zero_flux_abs_m": 2e-15,
+    "sign_contract": true,
+    "coupled_complete_mass_abs_m": 3e-12,
+    "same_law_both_directions": true,
+    "no_direction_branch": true
+  },
+  "forbidden": [
+    "no clipping negative q_v or q_c",
+    "no separate capillary conductance",
+    "no direction-specific state variable",
+    "no production code change",
+    "no real-SWAP symmetry claim"
+  ]
+}
