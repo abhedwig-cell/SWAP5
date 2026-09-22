@@ -151,6 +151,12 @@ def build_modflow() -> mf6.Modflow6Simulation:
     gwf["dis"] = mf6.StructuredDiscretization(idomain=idomain, top=1.0, bottom=bottom)
     gwf["npf"] = mf6.NodePropertyFlow(icelltype=0, k=1.0, k33=1.0, save_flows=True)
     gwf["ic"] = mf6.InitialConditions(start=0.5)
+    gwf["sto"] = mf6.SpecificStorage(
+        specific_storage=1.0e-3,
+        specific_yield=0.1,
+        transient=True,
+        convertible=0,
+    )
     head = xr.full_like(idomain, 0.5, dtype=np.float64)
     gwf["chd"] = mf6.ConstantHead(head=head, save_flows=True)
     gwf["oc"] = mf6.OutputControl(save_head="last", save_budget="last")
