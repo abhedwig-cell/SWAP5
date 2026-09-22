@@ -37,5 +37,5 @@
     "numerical_authority": "reference/swap-4.3.1/patches/SWAP-007; robustness correction only, no authorization to change physical equations or solver policy."
   },
   "unknowns_and_guards": {"restart_payload": "No production restart or transaction rollback test of O2_pars/cache/profile-buffer state was performed.", "multi_simulation_lifecycle": "No source-local invalidation of ini/cache was found; caller process lifecycle and cross-run behavior remain unqualified.", "production_admission": "NONE_REVIEW_ONLY", "physics_or_solver_policy_changed": false, "root_sink_owner_changed": false, "parallel_and_coupling_admitted": false},
-  "next_safe_slice": "PPA-WU05-C3A pure exact derived-cache algebra from explicit sampled source inputs; do not model cache lifecycle or bind runtime"
+  "next_safe_slice": "PPA-WU05-C3A pure derived-cache algebra is implemented; next isolate the existing SWAP-007 representability/restart decision without runtime binding"
 }

@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.ppa_wu05c3a.status.v1",
+  "work_unit": "PPA-WU05-C3A",
+  "parent_work_unit": "PPA-WU05-C3",
+  "status": "PURE_DERIVED_CACHE_ALGEBRA_IMPLEMENTED_AND_TESTED_LIFECYCLE_HELD",
+  "baseline": "47e58ce08",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_admission": "NONE; no cache, state owner, OxygenStress or root runtime binding changed",
+  "source_census": "integration/audits/PPA_WU05C3_SOURCE_CENSUS.json",
+  "preregistration": "integration/audits/PPA_WU05C3A_PREREGISTRATION.json",
+  "implementation": "src/process/mod_ppa_wu05c3a_oxygen_cache_algebra.f90",
+  "test": "tests/fapp/test_ppa_wu05c3a_oxygen_cache_algebra.f90",
+  "gate": "tests/fapp/run_ppa_wu05c3a_oxygen_cache_algebra.sh",
+  "test_result": {
+    "direct_compiler": "gfortran 13.3.0 on Windows UCRT64; equivalent commands executed directly because Git Bash cannot create its signal pipe in this host",
+    "flags": "-std=f2008 -Wall -Wextra -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "optimization_levels": ["-O0", "-O2"],
+    "markers": [
+      "PPA_WU05C3A_SOURCE_FORMULA_ORACLE_100000=PASS",
+      "PPA_WU05C3A_ALL_DERIVED_FIELDS_BITWISE=PASS",
+      "PPA_WU05C3A_STATELESS_A_B_A_REPLAY=PASS",
+      "PPA_WU05C3A_NONFINITE_AND_SINGULAR_FAIL_CLOSED=PASS"
+    ],
+    "o0_o2_transcript_identity": true,
+    "declared_bash_gate_executed": false,
+    "gate_tool_blocker": "C:\\Program Files\\Git\\bin\\bash.exe exits before script execution: couldn't create signal pipe, Win32 error 5"
+  },
+  "evidence_claim": "Exact pure arithmetic for the B1.11 one-time oxygen derived-cache fields from explicit sampled watcon/cofgen inputs. No cache lifecycle, construction-key, watcon or physical OxygenStress qualification claim.",
+  "next_action": "Implement a separate pure SWAP-007 Newton-quotient representability/restart-decision oracle; do not bind either helper to runtime or infer cache reset semantics.",
+  "recovery_point": "this status record and the C3 source census"
+}
