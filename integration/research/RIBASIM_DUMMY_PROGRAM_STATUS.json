@@ -239,6 +239,15 @@
   ],
   "pending": [
     {
+      "work_unit": "RIBASIM-DUMMY-20H3",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
+      "intended_decision": "RIBASIM_DUMMY_20H3_QUALIFIED_LOW_STORAGE_FACTOR_FORECAST_MECHANISM",
+      "dependency": "qualified DUMMY-20H2",
+      "implementation_baseline": "929bfd0c45022b2e01772a53fd38dc3e283bc3c6",
+      "ribasim_release": "v2026.1.1",
+      "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    },
+    {
       "work_unit": "RIBASIM-DUMMY-20F",
       "state": "PREREGISTERED_BLOCKED_DEPENDENCY_NOT_QUALIFIED",
       "intended_decision": "RIBASIM_DUMMY_20F_QUALIFIED_NEXT_BOUNDARY_GROUNDWATER_MEMORY_ADMISSION",
@@ -249,7 +258,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Preregister and execute DUMMY-20H3 release-native allocation-ledger/objective diagnostic; do not revive invalidated DUMMY-20I.",
+  "next_authority_action": "Execute frozen DUMMY-20H3 exact-release allocation low-storage-factor mechanism diagnostic.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
