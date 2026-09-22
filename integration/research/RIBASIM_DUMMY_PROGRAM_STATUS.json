@@ -208,9 +208,9 @@
       "implementation_baseline": "888c879fb8b5590f4821e2dc2ffaba2419c2cf20"
     },
     {
-      "work_unit": "RIBASIM-DUMMY-20E",
+      "work_unit": "RIBASIM-DUMMY-20E2",
       "state": "PREREGISTERED_BLOCKED_BY_20D",
-      "intended_decision": "RIBASIM_DUMMY_20E_QUALIFIED_PASSIVE_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
+      "intended_decision": "RIBASIM_DUMMY_20E2_QUALIFIED_POSTALLOCATION_GROUNDWATER_TRANSFER_WITH_FROZEN_MANAGEMENT",
       "dependency": "DUMMY-20D qualification",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
@@ -273,6 +273,12 @@
       "cause": "RIBASIM_DUMMY_19E_FALSIFIED_BY_SAVEAT_SYNCHRONIZED_REALLOCATION",
       "evidence_run": 35616065964,
       "meaning": "Original two-window preregistration assumed one management solve per day despite hourly saveat and is not executable authority."
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20E",
+      "state": "FALSIFIED_PREEXECUTION",
+      "cause": "RIBASIM_DUMMY_20E_FALSIFIED_PREEXECUTION_BY_PRODUCT_CLOCK_ORDER",
+      "meaning": "A t=0-active MF6 drainage flux is written to Ribasim before the t=0 fixed allocation solve and therefore cannot represent post-allocation physical arrival."
     }
   ],
   "supporting_context": "integration/research/RIBASIM_DUMMY_19_CLOCK_UPSTREAM_CONTEXT.json",
