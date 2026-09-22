@@ -267,11 +267,15 @@
     {
       "work_unit": "RIBASIM-DUMMY-20H7",
       "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
-      "run": 35745769522,
+      "run": 35745915889,
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "modflow_release": "6.7.0"
+      "modflow_release": "6.7.0",
+      "workflow_job": 106807390064,
+      "qualification_head": "84f05671bafcd0cd8fe22d115980889bc5491a00",
+      "confirming_run": 35745769522,
+      "confirming_run_disposition": "supporting duplicate; v2 carries explicit allocation-time observability guard"
     }
   ],
   "pending": [
@@ -286,7 +290,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "H5-H7 causality/next-boundary product bridge closed. Preregister a new work unit only for a distinct falsification dimension such as priority structure, forcing sign/direction, multi-Basin topology or asynchronous boundary timing.",
+  "next_authority_action": "H5-H7 causality/next-boundary product bridge closed. Extend only along a distinct falsification dimension such as priority structure, forcing sign/direction, multi-Basin topology or asynchronous boundary timing.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -424,9 +428,11 @@
     "meaning": "In the tested exact-release LP, low_storage_factor collapse does not require LevelDemand bookkeeping itself: a zero-storage-change requirement is sufficient for lexicographic allocation to attenuate current implicit negative forcing."
   },
   "product_next_boundary_memory_forecast_authority": {
-    "latest": "RIBASIM-DUMMY-20H6",
-    "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
-    "meaning": "At the tested next fixed allocation boundary, accepted Basin-storage memory remains available to management while current active-River forcing can be independently attenuated by the allocation-LP low_storage_factor."
+    "latest": "RIBASIM-DUMMY-20H7",
+    "decision": "RIBASIM_DUMMY_20H7_QUALIFIED_ACTUAL_RIBAMOD_NEXT_BOUNDARY_MEMORY_FORECAST_BRIDGE",
+    "run": 35745915889,
+    "confirming_run": 35745769522,
+    "meaning": "Actual pinned RibaMod reproduces the H6 next-boundary separation end to end: accepted day-1 Basin storage raises the t=24 root allocation to 39.9903723811 m3/day while the newly computed approximately 8.0000425122 m3/day River forcing does not subtract from that allocation under the tested free-alpha forecast semantics."
   },
   "product_memory_forecast_bridge_authority": {
     "latest": "RIBASIM-DUMMY-20H7",
