@@ -27,7 +27,8 @@ def main()->None:
          Fmax = maxval(dabs(fsi_ws%residual(1:NN)))
 """
     require(text.count(calc_anchor)==1,"G21M HeadCalc residual-calculation anchor drift")
-    insert=calc_anchor+"""         call g21m_record_residual_snapshot(fsi_ws%residual(1:NN), sum1, Fmax, solver_numbit, iBackTr, &
+    insert=calc_anchor+"""         call g21m_record_residual_snapshot(fsi_ws%residual(1:NN), sum1, Fmax, solver_numbit, &
+              ctx%diagnostics%backtracking_attempts, &
               NN == 4 .and. swbotb == 5 .and. swmacro == 0, &
               (state%theta(4)-state%thetm1(4))*matrix_fraction(4)*grid_dz(4)/dt, &
               fsi_ws%sink(4), -fsi_ws%source(4), root_sink_term(4), &
