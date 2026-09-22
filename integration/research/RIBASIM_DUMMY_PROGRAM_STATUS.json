@@ -247,10 +247,20 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20I",
+      "state": "PREREGISTERED_BLOCKED_BY_20H",
+      "intended_decision": "RIBASIM_DUMMY_20I_QUALIFIED_ACTIVE_RIVER_NEXT_BOUNDARY_MEMORY",
+      "dependency": "DUMMY-20H closeout",
+      "scientific_baseline": "45eddecf8e62c4eaa4945b599627641c97d68a7d",
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "modflow_release": "6.7.0"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H current-boundary active-exchange admission gate.",
+  "next_authority_action": "Close DUMMY-20H v2. If qualified, rebind and execute prospectively frozen DUMMY-20I two-day active-River management memory.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
