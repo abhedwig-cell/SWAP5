@@ -1,0 +1,112 @@
+{
+  "schema": "swap5.gc_fixed_interface.g10a.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G10A",
+  "title": "Direct mixed-groundwater merit-oracle diagnosis after G10 safeguard exhaustion",
+  "status": "PREREGISTERED_BEFORE_EXECUTION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "parent_falsification": "integration/research/GC_FIXED_INTERFACE_G10_FIRST_EXECUTION_RESULT.json",
+  "production_changes": false,
+  "question": "Did G10 P4 exhaust because the frozen broad affine GW_MIXED q_gw(H) approximation is not accurate enough in the near-zero-flux coupled neighborhood, or does the direct SWAP-MODFLOW residual itself fail to decrease along the same backtracking line?",
+  "carrier": {
+    "duration_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "reference_head_m": -0.7149999311459918,
+    "predictor_u": 0.00119027208545508,
+    "binding_abs_tolerance": 1e-14
+  },
+  "groundwater_regime": {
+    "id": "GW_MIXED",
+    "k_m_per_day": 1,
+    "ss_per_m": 0.02,
+    "sy": 0.15,
+    "initial_head_bias_m": 0,
+    "broad_affine_probes_m_per_s": [
+      -4e-8,
+      -2e-8,
+      2e-8,
+      4e-8
+    ],
+    "broad_affine_observed_from_g10": {
+      "slope_per_s": 0.0002331483228518438,
+      "intercept": 0.0001667009886758551,
+      "max_fit_error_m_per_s": 2.54919007508863e-13
+    }
+  },
+  "local_flux_ladder_m_per_s": [
+    -2e-9,
+    -1e-9,
+    -5e-10,
+    -2e-10,
+    -1e-10,
+    -5e-11,
+    0,
+    5e-11,
+    1e-10,
+    2e-10,
+    5e-10,
+    1e-9,
+    2e-9
+  ],
+  "frozen_failure_heads_m": {
+    "outer1_accepted": -0.7149997334398905,
+    "outer2_raw": -0.7149997332233566,
+    "broad_affine_reference_root": -0.7149997350308794
+  },
+  "direct_qgw_inversion": {
+    "bracket_q_m_per_s": [
+      -2e-9,
+      2e-9
+    ],
+    "head_tolerance_m": 1e-12,
+    "max_bisections": 60,
+    "method": "Fresh constant-flux MODFLOW solve at each bisection point; exploit monotone H(q). Returned imposed q is the direct q_gw at the target H within the frozen head tolerance."
+  },
+  "direct_coupled_root": {
+    "method": "On the frozen local flux ladder evaluate F(q)=q_swap(H_gw(q))-q using real-SWAP trial->discard. Select the first adjacent sign-changing status-0 pair in ascending q and bisect in q; do not invent a bracket outside the ladder.",
+    "q_tolerance_m_per_s": 1e-16,
+    "max_bisections": 80
+  },
+  "line_search_replay": {
+    "current_head_m": -0.7149997334398905,
+    "raw_head_m": -0.7149997332233566,
+    "contractions": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "head_formula": "h_k = h_current + 0.5^k * (h_raw-h_current)",
+    "evaluate": [
+      "real-SWAP q_swap at h_k from immutable origin",
+      "broad affine q_gw and merit",
+      "direct inverted q_gw and merit"
+    ],
+    "no_policy_acceptance": true
+  },
+  "diagnostic_outputs": [
+    "broad affine fit reproduced from its frozen probes",
+    "local fixed-ladder H(q) points and local affine fits over predefined nested probe subsets",
+    "direct q_gw at the three frozen G10 heads",
+    "direct coupled root in q-space if a frozen-ladder bracket exists",
+    "broad-affine versus direct residual/merit along all 13 frozen P4 backtracking heads",
+    "accepted SWAP revision/time/ledger invariance"
+  ],
+  "interpretation_rules": [
+    "G10 remains falsified regardless of G10A outcome.",
+    "If broad-affine and direct merit orderings differ, classify the G10 merit oracle as insufficient at the requested convergence scale; do not retroactively pass P4.",
+    "If direct merit also has no non-increasing contracted step, retain a genuine P4/globalization failure even after removing the affine-oracle approximation.",
+    "Do not relax the G10 1e-15 residual tolerance or 12-contraction budget.",
+    "Do not mutate production coupling or production HCOF/RHS."
+  ],
+  "production_admission": "FORBIDDEN_BY_THIS_WORK_UNIT"
+}
