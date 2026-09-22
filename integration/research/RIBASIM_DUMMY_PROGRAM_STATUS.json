@@ -191,17 +191,18 @@
   "pending": [
     {
       "work_unit": "RIBASIM-DUMMY-20C",
-      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20B",
+      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
       "intended_decision": "RIBASIM_DUMMY_20C_QUALIFIED_REAL_RIBAMOD_RUNTIME_CLOCK_EQUIVALENCE",
       "dependency": "qualified DUMMY-20B",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "modflow_release": "6.7.0"
+      "modflow_release": "6.7.0",
+      "implementation_scope_base": "9cd3e409125529889a36937b51f884211d109ac7"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Implement and execute frozen DUMMY-20C actual RibaMod runtime differential.",
+  "next_authority_action": "Execute frozen DUMMY-20C actual RibaMod runtime differential with real product kernels.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
