@@ -940,3 +940,70 @@ E3 / RESPONSE-DAMPING PRODUCTION POLICY = NOT ADMITTED.
 NO PRODUCTION HCOF/RHS CHANGE.
 NEXT: FULL MULTI-OUTER-UPDATE CONTINUOUS PREPARED-SOLVE COUPLING.
 ```
+## G21A disposition: G21 outer-2 divergence is prepared-solve-path dominated
+
+G21A decomposed the first failing G21 outer-2 head into response-parameter
+sensitivity and continuous prepared-solve path dependence without changing any
+G21 gate or coupling policy.
+
+The first G21A workflow attempt did not execute G21A: the general research
+runner stopped on the already-preserved G21 falsification. That infrastructure
+failure is retained separately. The repaired authority run, workflow
+`35730386461`, first reproduced the exact persisted G21 outer-2 assertion and
+then executed the preregistered G21A decomposition successfully.
+
+At the two outer-1 anchors, separated by only
+`4.440892098500626e-16 m`, E3 selected the same
+`BACKWARD_CENTER_CLASS` stencil and `6.25e-8 m` scale. The slope changed
+from `-1.5956003185379992e-6 s^-1` to
+`-1.5956002568589343e-6 s^-1`, a difference of
+`6.167906494690411e-14 s^-1`.
+
+Fresh-origin live MODFLOW solves show that this response change is not the
+material G21 error. The G21-native response differs from the frozen G17 outer-2
+head by only `-1.978417429882029e-13 m`. Cross-evaluation attributes almost
+all of even that small difference to the E3 tangent change; retaining the G17
+tangent at the G21 anchor changes the fresh root by less than `1e-15 m`.
+
+The dominant component appears only when the exact same G21-native outer-2
+response is applied after the continuous outer-1 lambda history in one prepared
+solve:
+
+```text
+observed G21 outer-2 divergence       7.215394948190124e-11 m
+fresh response-parameter effect      -1.978417429882029e-13 m
+continuous-path effect                7.235179122488944e-11 m
+reconstructed divergence              7.215394948190124e-11 m
+reconstruction error                  0.0 m
+classification                        PREPARED_SOLVE_PATH_DOMINATED
+```
+
+The continuous outer-2 response required six MODFLOW solve calls, compared with
+two for the corresponding fresh solve. All SWAP observations remained
+diagnostic through G16: 61 logical observations, 31 physical participant
+trials, 30 cache hits, zero ordinary publication-path trials and no accepted
+state or ledger mutation.
+
+This result preserves both sides of the earlier evidence. G19 remains a valid
+affine response-space bridge, and G20 remains a valid bounded first-update
+continuous prepared-solve bridge. G21 remains falsified at its deliberately
+strict `1e-12 m` G17 trajectory-equivalence gate. The measured
+`7.24e-11 m` path effect is still well inside the much looser inherited
+F-GC38 path-equivalence envelope, so G21A does not falsify F-GC38/F-GC39.
+
+The next unit is therefore not another tangent or damping redesign. It is a
+prepared-solve convergence/path diagnostic: hold the exact outer-2 response
+fixed and determine what the MODFLOW convergence report means at this strict
+trajectory scale, including whether additional same-response solve calls move
+the state toward the fresh-origin solution.
+
+```text
+G21A DIVERGENCE DECOMPOSITION = QUALIFIED DIAGNOSTIC.
+CAUSE = PREPARED-SOLVE PATH DOMINATED.
+RESPONSE-PARAMETER EFFECT = SUBTHRESHOLD.
+G21 = REMAINS FALSIFIED.
+G19/G20 = REMAIN QUALIFIED BOUNDED RESEARCH.
+F-GC38/F-GC39 = UNCHANGED.
+NO PRODUCTION HCOF/RHS OR COUPLING-POLICY ADMISSION.
+NEXT: G21B PREPARED-SOLVE CONVERGENCE/PATH DIAGNOSIS.
+```
