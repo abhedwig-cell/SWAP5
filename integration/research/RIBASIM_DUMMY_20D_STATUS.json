@@ -11,14 +11,21 @@
   "blocked": true,
   "blocker": "Execution sequenced after DUMMY-20C closeout. Clock matrix and continuous references are frozen now.",
   "prepared_scope": "Four actual-product RibaMod runtime cases at fixed 6-hour MF6 cadence: allocation.dt 24h/6h crossed with saveat 24h/1h.",
-  "next_action": "After DUMMY-20C closes, rebind and implement the frozen product clock-ownership matrix.",
+  "next_action": "After DUMMY-20C closeout, rebind DUMMY-20D and build a Windows runner around the canonical per-case worker plus frozen matrix verifier.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
-    "state": "RUNTIME_MATRIX_VERIFIER_PREPARED_EXECUTION_BLOCKED",
-    "prepared_path": "tests/research/test_ribasim_dummy_20d_runtime_clock_matrix.py",
+    "state": "PER_CASE_WORKER_AND_MATRIX_VERIFIER_PREPARED_EXECUTION_BLOCKED",
+    "canonical_worker": "tests/research/test_ribasim_dummy_20d_real_ribamod_case.py",
+    "canonical_verifier": "tests/research/verify_ribasim_dummy_20d_clock_matrix.py",
+    "non_authoritative_legacy_helper": "tests/research/test_ribasim_dummy_20d_runtime_clock_matrix.py",
+    "technical_repairs": [
+      "minimal Ribasim Basin subgrid state already present for actual RibaMod.couple()",
+      "required one-cell MF6 dx/dy coordinates now present",
+      "MF6 STO package already present"
+    ],
     "scientific_change": false,
-    "note": "Four-case actual-product matrix verifier prepared while DUMMY-20C runs; no runner/workflow/execution until 20C closeout."
+    "note": "Separate process per matrix case is intended execution route; no DUMMY-20D execution before DUMMY-20C closeout."
   },
   "technical_fixture_repair": {
     "state": "APPLIED_PROSPECTIVELY",
