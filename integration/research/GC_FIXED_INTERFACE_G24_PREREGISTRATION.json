@@ -1,0 +1,131 @@
+{
+  "schema": "swap5.gc_fixed_interface.g24.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G24",
+  "title": "Causal MODFLOW head-tolerance compatibility at the G23 stiff-groundwater residual floors",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-gc-dummy-swap-shared-storage",
+  "baseline_head": "83ef8bdfa4e70467344dc16ed6089176c5697e1e",
+  "authorities": [
+    "integration/research/GC_FIXED_INTERFACE_G23_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G23_PREREGISTRATION.json",
+    "integration/research/GC_FIXED_INTERFACE_G08_RESULT.json",
+    "integration/research/GC_FIXED_INTERFACE_G08_PREREGISTRATION.json"
+  ],
+  "question": "Are the two G23 GW_MIXED endpoint failures caused by the fixed STANDARD MODFLOW head-convergence scale being coarser than the head correction required to satisfy the independently frozen 1e-15 m/s external interface residual criterion?",
+  "preserved_g23_disposition": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21_REMAINS_FINAL_REGARDLESS_OF_G24",
+  "frozen_algorithm": {
+    "coupling": "G23 continuous prepared-solve response-space loop",
+    "solver_family": "MODERATE delta-bar-delta / NONMETH=3",
+    "external_residual_gate_m_per_s": 1e-15,
+    "independent_head_gate_m": 5e-10,
+    "max_outer_updates": 12,
+    "max_response_contractions_per_outer": 12,
+    "merit_slack_m_per_s": 1e-18,
+    "tangent": "unchanged G17 E3 estimator",
+    "response_globalization": "unchanged factor-1/2 rule",
+    "diagnostic_authority": "G16 non-authoritative",
+    "publication": "same nominal SWAP+ledger handoff only after physical convergence"
+  },
+  "cases": [
+    {
+      "id": "C0_MIXED_POS",
+      "role": "FAILURE",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "start_dh_m": 0.000005,
+      "g23_last_residual_m_per_s": 1.0690489807569464e-15,
+      "g23_head_error_m": -4.668487818548783e-13,
+      "groundwater_a_per_s": 0.020365457254069737,
+      "final_swap_tangent_per_s": -0.000003938582998836077,
+      "residual_equivalent_head_correction_m": 5.248309715752457e-14
+    },
+    {
+      "id": "C0_MIXED_NEG",
+      "role": "MATCHED_PASS_CONTROL",
+      "swap_case": "C0_CONTROL",
+      "duration_day": 0.0001,
+      "predictor_qbot_cm_per_day": 0.000001,
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "start_dh_m": -0.000002
+    },
+    {
+      "id": "C3_MIXED_NEG",
+      "role": "FAILURE",
+      "swap_case": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "regime": "GW_MIXED",
+      "start_side": "NEG",
+      "start_dh_m": -0.000005,
+      "g23_last_residual_m_per_s": 2.8454475210978113e-15,
+      "g23_head_error_m": -1.375566327510569e-13,
+      "groundwater_a_per_s": 0.010197624497748336,
+      "final_swap_tangent_per_s": -0.0000038127482138572835,
+      "residual_equivalent_head_correction_m": 2.7892614074786974e-13
+    },
+    {
+      "id": "C3_MIXED_POS",
+      "role": "MATCHED_PASS_CONTROL",
+      "swap_case": "C3_LONG_HIGH",
+      "duration_day": 0.0002,
+      "predictor_qbot_cm_per_day": 0.000002,
+      "regime": "GW_MIXED",
+      "start_side": "POS",
+      "start_dh_m": 0.000002
+    }
+  ],
+  "tolerance_ladder": [
+    {
+      "id": "STANDARD",
+      "outer_dvclose_m": 1e-12,
+      "inner_dvclose_m": 1e-13
+    },
+    {
+      "id": "TIGHT_1",
+      "outer_dvclose_m": 1e-13,
+      "inner_dvclose_m": 1e-14
+    },
+    {
+      "id": "TIGHT_2",
+      "outer_dvclose_m": 1e-14,
+      "inner_dvclose_m": 1e-15
+    }
+  ],
+  "preregistered_prediction": {
+    "derivation": "For local external residual F=q_swap-q_gw with slopes p=dq_swap/dH<0 and a=dq_gw/dH>0, the first-order head correction scale is |F|/|p-a|. G23 gives approximately 5.25e-14 m for C0_MIXED_POS and 2.79e-13 m for C3_MIXED_NEG.",
+    "c3_mixed_neg": "STANDARD should reproduce failure; TIGHT_1 should be fine enough to permit the required correction and should physically converge.",
+    "c0_mixed_pos": "STANDARD should reproduce failure; TIGHT_1 may remain below resolution because 5.25e-14 < 1e-13; TIGHT_2 should permit the required correction and should physically converge.",
+    "matched_controls": "C0_MIXED_NEG and C3_MIXED_POS should remain physically qualified at every tolerance level.",
+    "note": "These are falsifiable predictions, not acceptance retuning. G23 stays partial even if all predictions are met."
+  },
+  "execution_contract": [
+    "Run all 12 case-by-tolerance combinations from fresh SWAP and MODFLOW initialization.",
+    "Change only MODFLOW outer_dvclose and inner_dvclose according to the frozen ladder; preserve all other G23 model, solver, coupling, tangent, globalization and transaction settings.",
+    "Record NONMETH and require 3 for every arm.",
+    "Record every accepted head, external residual, response status, MODFLOW response solve-call count and prepared-response minus independent-oracle diagnostic.",
+    "For every arm classify physical convergence only by the unchanged G23 external residual and independent head criteria.",
+    "For every physically converged arm perform the same final ordinary-candidate reacquisition and nominal SWAP+ledger handoff.",
+    "Do not change the external residual gate, outer budget, tangent scales, merit rule or start heads after observing results."
+  ],
+  "decision_rules": {
+    "STRONG_DVCLOSE_CAUSAL_SUPPORT": "STANDARD reproduces both G23 failures; C3_MIXED_NEG passes at TIGHT_1; C0_MIXED_POS remains failed at TIGHT_1 but passes at TIGHT_2; both matched controls pass all three tolerance levels; all converged handoffs pass.",
+    "DVCLOSE_CAUSAL_SUPPORT_DIFFERENT_THRESHOLD": "STANDARD reproduces both failures and both failures pass by TIGHT_2, but the exact predicted transition ordering differs; matched controls and handoffs remain qualified.",
+    "DVCLOSE_NOT_SUFFICIENT": "At least one G23 failure remains physically unqualified at TIGHT_2 under unchanged budgets and coupling rules.",
+    "MIXED_OR_UNRESOLVED": "Baseline reproduction, matched-control or transaction/provenance gates fail in a way that prevents causal interpretation."
+  },
+  "gates": [
+    "STANDARD exactly reproduces G23 pass/fail classification for all four frozen cases.",
+    "No participant status outside 0 occurs in these four G23 mixed-regime cases unless preserved as new scientific evidence.",
+    "Diagnostic G16 authority remains non-mutating in all 12 arms.",
+    "Every converged arm retains fixed XOLD, one prepare_time_step, one prepare_solve, exactly one finalize_solve and zero finalize_time_step.",
+    "Every converged arm passes the existing nominal final SWAP+ledger handoff.",
+    "No committed src/**, production MODFLOW configuration or production coupling policy changes."
+  ],
+  "production_admission": "NO_RESEARCH_CAUSAL_TEST_ONLY",
+  "next_if_supported": "Translate the measured compatibility into a dimensionally explicit solver-versus-coupling stopping-criterion contract before considering any production configuration experiment. Do not select a tighter production dvclose directly from G24."
+}
