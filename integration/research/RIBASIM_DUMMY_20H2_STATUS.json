@@ -11,7 +11,7 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual RibaMod pre-update pointer observation plus direct bundled-Ribasim control/injection differential.",
-  "next_action": "Execute frozen DUMMY-20H2 three-route pointer-to-allocation visibility qualification.",
+  "next_action": "Execute DUMMY-20H2 v1 frozen qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "b5c355179442368863b17d41afe9cfa6065eeb58",
@@ -25,5 +25,7 @@
     "tests/research/test_ribasim_dummy_20h2_infiltration_allocation_visibility.py",
     "tests/research/run_ribasim_dummy_20h2.ps1",
     ".github/workflows/ribasim-dummy-01.yml"
-  ]
+  ],
+  "qualification_attempt": "v1_frozen_visibility_decision_matrix",
+  "qualification_base": "work/ribasim-dummy-01@c14244a4b10cdca8b632fa76e789164de14dc684"
 }
