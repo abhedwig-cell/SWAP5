@@ -162,3 +162,14 @@ grep -Fq 'GC_FIXED_INTERFACE_G12B_EXECUTION=PASS' "$BUILD/g12b-active-drainage-l
   echo "GC_G12B_FAIL missing canonical active-drainage local-groundwater replay gate" >&2
   exit 1
 }
+
+
+# G14 research-only fused trial observation for the active-drainage carrier.
+MAP09_SWAP_LIB="$BUILD/bridge/libgc_map09_swap.so" \
+  python3 tests/research/test_gc_fixed_interface_g14_fused_map09.py \
+  | tee "$BUILD/map09-g14-fused.txt"
+
+grep -Fq 'GC_FIXED_INTERFACE_G14_MAP09_FUSED_EQUIVALENCE=PASS' "$BUILD/map09-g14-fused.txt" || {
+  echo "GC_MAP09_G14_FAIL missing fused-observation equivalence gate" >&2
+  exit 1
+}
