@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.gc_fixed_interface.g18.first_execution_result.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-FIXED-INTERFACE-G18",
+  "preregistration": "integration/research/GC_FIXED_INTERFACE_G18_PREREGISTRATION.json",
+  "tested_commit": "91bfd6011b9cafd3c45a87b6af92758514146521",
+  "workflow_run": 35725033543,
+  "workflow_job": 106736541339,
+  "workflow_conclusion": "failure",
+  "classification": "TECHNICAL_FLOATING_POINT_ASSERTION_FAILURE_BEFORE_COMPATIBILITY_CLASSIFICATION",
+  "failure": {
+    "assertion": "G18 first accepted head is not the frozen factor-1/2 twice contraction",
+    "derived_alpha": 0.25000000000248657,
+    "intended_fraction": 0.25,
+    "mechanism": "The harness inferred the contraction fraction by subtracting two nearly equal heads and dividing by the small raw-current increment, then applied an unnecessarily tight dimensionless 1e-12 tolerance. The frozen P4 implementation itself performs two sequential factor-1/2 head updates.",
+    "scientific_interpretation": "NO_G18_COMPATIBILITY_VERDICT_FROM_THIS_RUN"
+  },
+  "repair_contract": [
+    "Preserve the frozen G11 current, raw and accepted heads and contraction count.",
+    "Reconstruct the accepted head by the exact sequential factor-1/2 arithmetic used by P4.",
+    "Compare the reconstructed head with the persisted accepted head at floating-point head precision rather than using the ill-conditioned derived alpha as the authority gate.",
+    "Do not change the G18 compatibility hypothesis, F-GC38/F-GC39 contract audit, or any production/runtime source."
+  ],
+  "disposition": "PRESERVED_NOT_RELABELLED"
+}
