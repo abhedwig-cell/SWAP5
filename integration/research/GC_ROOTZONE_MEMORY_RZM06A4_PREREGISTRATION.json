@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.gc_rootzone_memory.rzm06a4.strong_top_forcing_h2_preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "GC-RZM06A4",
+  "authority": "preregistered research experiment",
+  "production_changes": false,
+  "parent_program_commit": "a9d7e8b77bd1c158cdba8c32682ba545b0738e6a",
+  "scientific_response_seen": false,
+  "sign_convention": {
+    "evidence": "fixed-flux provider passes requested top_flux directly to qtop; legacy special rainfall route uses q1=-q0 for positive rainfall input; therefore negative qtop is downward into the SWAP profile and positive qtop is outward/upward at the top boundary.",
+    "negative_top_flux": "into-profile/infiltration direction",
+    "positive_top_flux": "outward/extraction direction"
+  },
+  "fixed_interface_head_m": -0.7149999706136307,
+  "unchanged_h2": {
+    "profile_water_abs_tolerance_native": 0.000001,
+    "distribution_moment_abs_separation_native": 0.0001,
+    "response_difference_abs_threshold_native": 1e-18,
+    "mass_residual_abs_gate_native": 1e-12
+  },
+  "stage1_forcing_admissibility": {
+    "amplitudes_cm_per_day": [
+      0.1,
+      0.05,
+      0.02,
+      0.01,
+      0.005,
+      0.002,
+      0.001
+    ],
+    "durations_day": [
+      0.01,
+      0.005,
+      0.002
+    ],
+    "signs": [
+      "negative_into_profile",
+      "positive_outward"
+    ],
+    "head_m": -0.7149999706136307,
+    "mode": "fresh-baseline read-only/discarded trials",
+    "selection_rule": "Select the two-sided accepted amplitude-duration point maximizing amplitude*duration. Ties: larger amplitude, then longer duration. Selector sees only transactional/mass/retry evidence, not endpoint observables or E_c.",
+    "no_admissible_rule": "Stop as NO_SYMMETRIC_TOP_FORCING if no point is accepted in both directions."
+  },
+  "stage2_order_histories": {
+    "selected_forcing_only": true,
+    "pair": [
+      "NEG repeated N -> POS repeated N -> ZERO repeated R",
+      "POS repeated N -> NEG repeated N -> ZERO repeated R"
+    ],
+    "repeat_count_order": [
+      10,
+      5,
+      2,
+      1
+    ],
+    "zero_relax_count_order": [
+      0,
+      1,
+      5,
+      20
+    ],
+    "configuration_order": "outer N in listed order, inner R in listed order",
+    "equality_controls": [
+      "same H_c=H_star throughout",
+      "same committed endpoint time within each pair",
+      "same zero net prescribed top forcing within each pair",
+      "no direct state mutation"
+    ],
+    "pair_selection": "For each fully accepted pair in frozen configuration order, compare endpoint W_profile and M1. Select first pair satisfying unchanged H2 criteria. Do not inspect E_c while searching.",
+    "no_match_rule": "If no fully accepted pair satisfies both endpoint criteria, close NO_MATCH and do not open E_c."
+  },
+  "probe": {
+    "opened_only_after_pair_selection": true,
+    "top_flux_cm_per_day": 0,
+    "head_m": -0.7149999706136307,
+    "duration_day": 0.0001,
+    "commit": false,
+    "response_quantity": "accepted whole-window bottom_outward_exchange_native",
+    "support_rule": "Selected origins and probes must replay exactly, be mass-complete and read-only; abs(delta E_c)>1e-18 supports H2."
+  },
+  "controls": [
+    "no retry-budget, temporal-budget, solver-tolerance or mass-gate changes",
+    "failed intervals preserve latest committed origin exactly",
+    "Stage 1 cannot see endpoint W_profile, M1 or E_c",
+    "Stage 2 cannot see E_c before pair selection",
+    "H2 thresholds are unchanged",
+    "production interface ledger remains unpublished during research state preparation"
+  ],
+  "nonclaims": [
+    "no production coupling admission",
+    "no second MODFLOW hydraulic state variable admission",
+    "no production recommendation for the characterized top forcing",
+    "no H5 management conclusion"
+  ]
+}
