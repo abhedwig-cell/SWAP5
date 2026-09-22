@@ -4,14 +4,14 @@
   "work_unit": "RIBASIM-DUMMY-19L",
   "branch": "work/ribasim-dummy-01",
   "baseline": "9701e987fb98e6607c4af904788e175765a080e6",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Native 6h-saveat versus daily-saveat explicit-apply comparison at all 6h accepted-state boundaries.",
-  "next_action": "Implement and execute frozen native-6h versus explicit-apply accepted-state trajectory comparison.",
+  "next_action": "Execute frozen DUMMY-19L accepted-state trajectory-equivalence qualification.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_preparation": {
@@ -21,5 +21,27 @@
     "note": "Verifier prepared while DUMMY-19K runs; no runner, workflow gate or execution until DUMMY-19K closeout."
   },
   "implementation_baseline": "703f4d8ec605e42124970a9fe7cecc355959f633",
-  "recovery_point": "DUMMY-19L segment references frozen before 19K output; sequencing dependency now satisfied."
+  "recovery_point": "DUMMY-19L executable gate persisted; first qualification attempt pending.",
+  "relevant_paths": [
+    "integration/research/RIBASIM_DUMMY_19L_PREREGISTRATION.json",
+    "integration/research/RIBASIM_DUMMY_19L_CONCEPT.md",
+    "integration/research/RIBASIM_DUMMY_19L_STATUS.json",
+    "integration/research/RIBASIM_DUMMY_19L_RESULT.json",
+    "integration/research/RIBASIM_DUMMY_PROGRAM_STATUS.json",
+    "tests/research/generate_real_ribasim_saveat_sensitivity.py",
+    "tests/research/generate_real_ribasim_bmi_management_clock.py",
+    "tests/research/real_ribasim_explicit_apply_trajectory_bridge.jl",
+    "tests/research/run_ribasim_dummy_19l.sh",
+    ".github/workflows/ribasim-dummy-01.yml"
+  ],
+  "prequalification_review": {
+    "state": "STATIC_REVIEW_PASS_CI_REQUIRED",
+    "checked": [
+      "native route uses saveat=21600 s and normal saveat-aligned UserDemand application",
+      "explicit route uses saveat=86400 s with 21600 s BMI boundaries plus test-only explicit UserDemand apply",
+      "both routes use identical physical and management parameters",
+      "Basin level and cumulative recipient delivery are checked at all four accepted 6-hour boundaries",
+      "route equivalence is asserted independently of final-only reference checks"
+    ]
+  }
 }
