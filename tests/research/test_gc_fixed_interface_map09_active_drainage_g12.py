@@ -35,6 +35,8 @@ MAX_OUTER=12
 MAX_BACKTRACK=12
 MASS_TOL_CM=1.0e-10
 MAP09A_JR=-0.0005726906726621905
+FGC44_MF_REFERENCE_HREF=-0.7149999706136307
+MAP09_DATUM_SHIFT=HREF_EXPECTED-FGC44_MF_REFERENCE_HREF
 
 
 def require(cond:bool,msg:str)->None:
@@ -54,6 +56,26 @@ def load_prereg()->dict[str,object]:
     require(tuple(float(x) for x in c["start_offsets_m"])==STARTS,"G12 starts drift")
     require(tuple(float(x) for x in p["tangent_E3_MAP"]["scale_ladder_m"])==SCALES,"G12 scales drift")
     return p
+
+
+def solve_term_map09(
+    libmf6:Path,
+    swaplib:Path,
+    href:float,
+    k:float,
+    ss:float,
+    sy:float,
+    head_bias:float,
+    hcof:float,
+    rhs_swap:float,
+)->tuple[float,float,int]:
+    """Run unchanged F-GC44 MODFLOW geometry under a pure vertical datum translation."""
+    href_mf=href-MAP09_DATUM_SHIFT
+    rhs_mf=rhs_swap-hcof*MAP09_DATUM_SHIFT
+    h_mf,q,iters=solve_term(
+        libmf6,swaplib,DURATION_DAY,href_mf,k,ss,sy,head_bias,hcof,rhs_mf
+    )
+    return h_mf+MAP09_DATUM_SHIFT,q,iters
 
 
 def initialize_checked(swap:Map09ActiveDrainageSwap)->tuple[float,dict[str,object],tuple[int,float,int,float]]:
@@ -221,8 +243,8 @@ def calibrate_groundwater(
         raise AssertionError(f"unknown G12 sy rule {rule}")
 
     k=float(regime["k_m_per_day"]); ss=float(regime["ss_per_m"])
-    h0,q0,_=solve_term(
-        libmf6,swaplib,DURATION_DAY,href,k,ss,sy,0.0,
+    h0,q0,_=solve_term_map09(
+        libmf6,swaplib,href,k,ss,sy,0.0,
         0.0,-qref*AREA_M2*DAY_TO_S,
     )
     require(abs(q0-qref)<=64*np.finfo(float).eps*max(1.0,abs(qref)),"G12 calibration flux drift")
@@ -232,8 +254,8 @@ def calibrate_groundwater(
     points=[]
     for dq in offsets:
         q=qref+dq
-        h,qgw,iters=solve_term(
-            libmf6,swaplib,DURATION_DAY,href,k,ss,sy,bias,
+        h,qgw,iters=solve_term_map09(
+            libmf6,swaplib,href,k,ss,sy,bias,
             0.0,-q*AREA_M2*DAY_TO_S,
         )
         require(abs(qgw-q)<=64*np.finfo(float).eps*max(1.0,abs(q)),"G12 groundwater probe flux drift")
@@ -292,8 +314,8 @@ def run_policy(
         p=float(est["slope_per_s"]); modes.append(str(est["mode"]))
         slope_day=p*AREA_M2*DAY_TO_S
         rhs=slope_day*head-q*AREA_M2*DAY_TO_S
-        raw_head,_,mf_iters=solve_term(
-            libmf6,swaplib,DURATION_DAY,href,
+        raw_head,_,mf_iters=solve_term_map09(
+            libmf6,swaplib,href,
             float(gw["k_m_per_day"]),float(gw["ss_per_m"]),float(gw["sy"]),
             float(gw["head_bias_m"]),slope_day,rhs,
         )
