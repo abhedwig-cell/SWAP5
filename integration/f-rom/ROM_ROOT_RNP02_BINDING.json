@@ -32,5 +32,11 @@
     "root_sink_provider_changed": false,
     "candidate_response_generated": false,
     "policy_decision_authorized": false
+  },
+  "execution_trigger": {
+    "purpose": "Trigger the already-bound RNP02 trace workflow.",
+    "scientific_semantics_changed": false,
+    "reduced_candidate_response_generated": false,
+    "action": "PUSH_PATH_TRIGGER_ONLY"
   }
 }
