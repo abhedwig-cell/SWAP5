@@ -1,0 +1,115 @@
+{
+  "schema": "swap5.coupling.real_ribamod_active_river_reciprocity.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-20G",
+  "title": "Actual RibaMod active-river reciprocal stage-feedback bridge",
+  "baseline": "cab227dadf7600bdaa2162cf9612cb0283662bbb",
+  "sequencing": {
+    "state": "PREREGISTERED_WHILE_20F2_ACTIVE",
+    "execute_after": "DUMMY-20F2 closeout",
+    "rationale": "Freeze the first bidirectional physical RibaMod experiment before observing the two-day management-memory result."
+  },
+  "authorities": {
+    "product_driver": "DUMMY-20A",
+    "product_release": "DUMMY-20B",
+    "product_runtime_clock": "DUMMY-20C/DUMMY-20D",
+    "passive_groundwater_transfer": "DUMMY-20E3",
+    "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+    "ribasim_release": "v2026.1.1",
+    "ribasim_release_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
+    "modflow_release": "6.7.0"
+  },
+  "purpose": "Qualify the active RibaMod river path as a reciprocal physical bridge: accepted Ribasim Basin/subgrid level is applied as MF6 river stage, MF6 computes river exchange, and the reciprocal positive flux is applied back to Ribasim as infiltration.",
+  "frozen_topology": {
+    "horizon_seconds": 86400,
+    "product_timestep_seconds": 21600,
+    "ribasim": {
+      "basin_area_m2": 1000000,
+      "initial_level_m": 1,
+      "source_flow_m3_per_day": 0,
+      "managed_demand": "none",
+      "saveat_seconds": 86400,
+      "subgrid_mapping": "single Basin/subgrid index 0"
+    },
+    "modflow": {
+      "grid": "1 layer x 1 row x 2 columns",
+      "hydraulic_conductivity_m_per_day": 1000000,
+      "cell_0": {
+        "role": "CHD source/sink",
+        "head_m": 0.5
+      },
+      "cell_1": {
+        "role": "active RIV cell",
+        "initial_head_m": 0.5,
+        "river_conductance_m2_per_day": 16,
+        "river_bottom_m": 0
+      },
+      "active_mapping": "Basin index 0 / RIV bound index 0 / subgrid index 0"
+    }
+  },
+  "independent_discrete_reference": {
+    "derivation": [
+      "For each 6 h product interval, RibaMod samples the accepted Ribasim subgrid level at the interval start and writes it to the MF6 active river stage.",
+      "With intercell conductance K=1e6 and river conductance C=16, the near-steady active-cell river flux is q = C*K/(K+C)*(stage-0.5).",
+      "That MF6 flux is held as Ribasim infiltration over the subsequent 6 h Ribasim physical step.",
+      "Basin area is constant at 1e6 m2, so h_next = h_start - q*(0.25 day)/A."
+    ],
+    "effective_exchange_conductance_m2_per_day": 15.999744004095934,
+    "endpoints": [
+      {
+        "endpoint_s": 21600,
+        "stage_used_m": 1,
+        "mf6_river_flux_m3_per_day": 7.999872002047967,
+        "cumulative_infiltration_m3": 1.9999680005119918,
+        "basin_level_m": 0.9999980000319995
+      },
+      {
+        "endpoint_s": 43200,
+        "stage_used_m": 0.9999980000319995,
+        "mf6_river_flux_m3_per_day": 7.999840003071942,
+        "cumulative_infiltration_m3": 3.999928001279977,
+        "basin_level_m": 0.9999960000719987
+      },
+      {
+        "endpoint_s": 64800,
+        "stage_used_m": 0.9999960000719987,
+        "mf6_river_flux_m3_per_day": 7.999808004223912,
+        "cumulative_infiltration_m3": 5.999880002335955,
+        "basin_level_m": 0.9999940001199977
+      },
+      {
+        "endpoint_s": 86400,
+        "stage_used_m": 0.9999940001199977,
+        "mf6_river_flux_m3_per_day": 7.999776005503875,
+        "cumulative_infiltration_m3": 7.9998240037119235,
+        "basin_level_m": 0.9999920001759963
+      }
+    ]
+  },
+  "hypotheses": [
+    "At each product-step start, the active MF6 river stage equals the accepted Ribasim subgrid level from the preceding boundary.",
+    "MF6 river flux is positive into the aquifer and approximately follows the frozen conductance relation.",
+    "RibaMod maps that positive active-river flux to positive Ribasim Basin infiltration and zero drainage.",
+    "The Basin level decreases monotonically according to the frozen 6-hour sample-and-hold reference.",
+    "Cumulative Ribasim infiltration equals Basin storage loss within tolerance because no other source, sink or managed demand is active.",
+    "The active-river exchange is reciprocal at every accepted boundary: integrated MF6 river transfer equals cumulative Ribasim infiltration within tolerance.",
+    "The experiment exposes the product's staggered time direction explicitly: accepted Ribasim stage -> MF6 solve -> reciprocal flux -> next Ribasim state."
+  ],
+  "tolerances": {
+    "river_rate_m3_per_day": 0.01,
+    "cumulative_transfer_m3": 0.05,
+    "endpoint_level_m": 5e-8,
+    "stage_m": 5e-8,
+    "drainage_zero_m3_per_day": 0.001,
+    "ledger_m3": 0.05
+  },
+  "forbidden": [
+    "no UserDemand or management allocation in this physical reciprocity work unit",
+    "no passive river substitution",
+    "no post-output tuning of the discrete reference",
+    "no inference yet to simultaneous/implicit convergence",
+    "no production SWAP5 admission"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+  "fail_decision": "RIBASIM_DUMMY_20G_BLOCKED"
+}
