@@ -1,0 +1,147 @@
+{
+  "schema": "swap5.coupling.real_ribasim_bmi_shadow_applied_diagnostic.preregistration.v1",
+  "date": "2026-09-22",
+  "work_unit": "RIBASIM-DUMMY-19I2",
+  "title": "Pinned real Ribasim BMI shadow LP versus applied UserDemand allocation",
+  "baseline": "89415abb40bc4305154c32782b2e86a54ba13474",
+  "relation_to_19i": {
+    "state": "NEW_EXPLANATORY_WORK_UNIT_NOT_REPAIR",
+    "failed_authority": {
+      "decision": "RIBASIM_DUMMY_19I_FALSIFIED_BMI_SUBSAVEAT_USERDEMAND_NOT_APPLIED",
+      "workflow_run": 35698326881
+    },
+    "purpose": "Directly distinguish the optimized allocation problem state from the UserDemand allocation state consumed by physical realization at non-saveat BMI tstops."
+  },
+  "pins": {
+    "ribasim": "Deltares/Ribasim@f965a3266a4685bf10f3458aaa1855d09fa45a7a",
+    "swap5_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5"
+  },
+  "frozen_model": {
+    "horizon_seconds": 86400,
+    "allocation_dt_seconds": 86400,
+    "solver_saveat_seconds": 86400,
+    "bmi_update_until_endpoints_seconds": [
+      21600,
+      43200,
+      64800,
+      86400
+    ],
+    "basin_area_m2": 1000000,
+    "initial_level_m": 1,
+    "fixed_supply_m3_per_day": 32,
+    "root_demand_m3_per_day": 40,
+    "external_demand_m3_per_day": 20,
+    "common_user_demand_min_level_m": 0.99,
+    "level_hold_m": 1,
+    "level_hold_priority": 1,
+    "priority_cases": {
+      "root_first": {
+        "root_priority": 2,
+        "external_priority": 3
+      },
+      "external_first": {
+        "root_priority": 3,
+        "external_priority": 2
+      }
+    }
+  },
+  "independent_reference": {
+    "physical_applied_allocation": {
+      "root_first": {
+        "root_m3_per_day": 32,
+        "external_m3_per_day": 0
+      },
+      "external_first": {
+        "root_m3_per_day": 12,
+        "external_m3_per_day": 20
+      }
+    },
+    "shadow_lp_after_each_bmi_segment": {
+      "root_first": [
+        {
+          "represented_solve_time_s": 0,
+          "root_m3_per_day": 32,
+          "external_m3_per_day": 0
+        },
+        {
+          "represented_solve_time_s": 21600,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 7.99520096018381
+        },
+        {
+          "represented_solve_time_s": 43200,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 64800,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 20
+        }
+      ],
+      "external_first": [
+        {
+          "represented_solve_time_s": 0,
+          "root_m3_per_day": 12,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 21600,
+          "root_m3_per_day": 27.99520096018381,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 43200,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 20
+        },
+        {
+          "represented_solve_time_s": 64800,
+          "root_m3_per_day": 40,
+          "external_m3_per_day": 20
+        }
+      ]
+    },
+    "physical_state_under_unmodified_applied_total_32": {
+      "excess_storage_m3_at_s": {
+        "21600": 3.998800240045952,
+        "43200": 7.99520191985259,
+        "64800": 11.989206479601222,
+        "86400": 15.980815359029066
+      },
+      "final_level_m": 1.000015980815359,
+      "root_first": {
+        "root_supplied_m3": 16.019184640970934,
+        "external_supplied_m3": 0
+      },
+      "external_first": {
+        "root_supplied_m3": 6.0071942403641,
+        "external_supplied_m3": 10.011990400606834
+      },
+      "total_supplied_m3": 16.019184640970934,
+      "storage_gain_m3": 15.980815359029066
+    }
+  },
+  "hypotheses": [
+    "The LP shadow solution is recomputed at 6-hour BMI boundaries.",
+    "At the first sub-saveat solve the shadow LP changes according to retained storage.",
+    "The applied UserDemand.allocated and inflow_link_allocated states do not change at sub-saveat solves because parse_allocations! is skipped when record=false.",
+    "The physical UserDemand target therefore remains the initial scarce split for the full day.",
+    "The final physical supply and Basin endpoint match the daily clock-aligned DUMMY-19E2 reference rather than the 6-hour DUMMY-19G reference.",
+    "By 12 hours the shadow LP can reach full 40/20 while the applied physical allocation remains at the initial scarce split."
+  ],
+  "tolerances": {
+    "allocation_m3_per_day": 0.05,
+    "integrated_volume_m3": 0.05,
+    "endpoint_level_m": 5e-8
+  },
+  "forbidden": [
+    "no changing failed DUMMY-19I evidence",
+    "no treating shadow LP allocation as physically applied allocation",
+    "no post-output tuning of references",
+    "no upstream defect classification",
+    "no production prescription"
+  ],
+  "pass_decision": "RIBASIM_DUMMY_19I2_QUALIFIED_SHADOW_APPLIED_SEPARATION",
+  "fail_decision": "RIBASIM_DUMMY_19I2_BLOCKED"
+}
