@@ -11,11 +11,11 @@
   "blocked": false,
   "blocker": null,
   "prepared_scope": "Actual product A/B comparison of no-exchange versus active-River forcing at t=0 allocation, with allocation.arrow and physical ledgers observed separately.",
-  "next_action": "Execute frozen DUMMY-20H current-boundary active-exchange admission qualification.",
+  "next_action": "Execute DUMMY-20H v2 after NetCDF-only allocation observability repair; frozen allocation references, product topology and tolerances unchanged.",
   "production_delta": [],
   "reference_delta": [],
   "implementation_baseline": "c710308b473485a95b400f1389ca78b9c8effc56",
-  "recovery_point": "A/B allocation-output and physical-ledger verifier persisted; first qualification pending.",
+  "recovery_point": "20H v1 failed only in post-runtime allocation-output lookup; v2026.1.1 NetCDF reader persisted.",
   "relevant_paths": [
     "integration/research/RIBASIM_DUMMY_20H_PREREGISTRATION.json",
     "integration/research/RIBASIM_DUMMY_20H_CONCEPT.md",
@@ -37,5 +37,16 @@
       "physical supply is observed separately from allocation",
       "active River MF6 flux must equal Ribasim infiltration and full source ledger must close at all four boundaries"
     ]
-  }
+  },
+  "qualification_attempts": [
+    {
+      "attempt": "v1",
+      "run": 35731486671,
+      "job": 106757893091,
+      "state": "TECHNICAL_OBSERVABILITY_FAIL",
+      "reason": "Harness searched for allocation.arrow, but product Ribasim v2026.1.1 writes allocation.nc NetCDF. Control physical product run completed and matched qualified no-exchange behavior before the reader failed.",
+      "scientific_effect": "none",
+      "authority_use": "forbidden"
+    }
+  ]
 }
