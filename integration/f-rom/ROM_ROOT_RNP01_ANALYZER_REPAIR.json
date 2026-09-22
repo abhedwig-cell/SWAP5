@@ -15,12 +15,17 @@
       "SW_SOLVE_CONVERGED": 1,
       "SW_SOLVE_RETRY_ADVISED": 2,
       "SW_SOLVE_FAILED": 3
+    },
+    "residual_parser": {
+      "incorrect_assumption": "Residual regex used ^/$ anchors without multiline mode, so the full residual vector was not parsed from multi-line logs.",
+      "effect": "Postprocessing failure only; raw artifacts contain complete RNP01_RESIDUAL records."
     }
   },
   "repair": {
     "change": "Use status == 1 for convergence in ITERATION_CAP_LIMITED and status != 1 for persistent-retry classification.",
     "no_other_classification_change": true,
-    "no_execution_rerun_required_for_raw_evidence": true
+    "no_execution_rerun_required_for_raw_evidence": true,
+    "residual_parser_change": "Compile the residual regex with re.MULTILINE. No experiment or threshold changes."
   },
   "firewall": {
     "tolerance_changed": false,
