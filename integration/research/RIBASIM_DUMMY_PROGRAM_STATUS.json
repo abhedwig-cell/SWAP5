@@ -256,6 +256,13 @@
       "run": 35741211340,
       "product_ribasim_release": "v2026.1.1",
       "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20H6",
+      "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+      "run": 35743163688,
+      "product_ribasim_release": "v2026.1.1",
+      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a"
     }
   ],
   "pending": [
@@ -267,20 +274,10 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
-    },
-    {
-      "work_unit": "RIBASIM-DUMMY-20H6",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
-      "dependency": "DUMMY-20H5 qualified by run 35741211340.",
-      "scientific_baseline": "acd0eefa123a51e23c3b39b29266c122f4e25e97",
-      "product_ribasim_release": "v2026.1.1",
-      "product_ribasim_commit": "e7fc8ade52a4bedeec10e508d2065577f33eb76a",
-      "implementation_baseline": "149283d6047d43fae742915d6ff127a2d34381a9"
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20H6 next-boundary memory/forecast separation qualification.",
+  "next_authority_action": "Preregister an actual two-day RibaMod active-River bridge from realized day-1 accepted state to the t=24 fixed allocation boundary.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -416,5 +413,10 @@
     "latest": "RIBASIM-DUMMY-20H5",
     "decision": "RIBASIM_DUMMY_20H5_QUALIFIED_ZERO_STORAGE_FACTOR_CAUSALITY",
     "meaning": "In the tested exact-release LP, low_storage_factor collapse does not require LevelDemand bookkeeping itself: a zero-storage-change requirement is sufficient for lexicographic allocation to attenuate current implicit negative forcing."
+  },
+  "product_next_boundary_memory_forecast_authority": {
+    "latest": "RIBASIM-DUMMY-20H6",
+    "decision": "RIBASIM_DUMMY_20H6_QUALIFIED_NEXT_BOUNDARY_MEMORY_FORECAST_SEPARATION",
+    "meaning": "At the tested next fixed allocation boundary, accepted Basin-storage memory remains available to management while current active-River forcing can be independently attenuated by the allocation-LP low_storage_factor."
   }
 }
