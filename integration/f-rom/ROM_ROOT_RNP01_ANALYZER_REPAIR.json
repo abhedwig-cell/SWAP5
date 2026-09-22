@@ -18,14 +18,16 @@
     },
     "residual_parser": {
       "incorrect_assumption": "Residual regex used ^/$ anchors without multiline mode, so the full residual vector was not parsed from multi-line logs.",
-      "effect": "Postprocessing failure only; raw artifacts contain complete RNP01_RESIDUAL records."
+      "effect": "Postprocessing failure only; raw artifacts contain complete RNP01_RESIDUAL records.",
+      "double_escape_defect": "The raw-string pattern contained doubled backslashes, so it searched for literal backslashes before separators/digits instead of matching the RNP01_RESIDUAL records."
     }
   },
   "repair": {
     "change": "Use status == 1 for convergence in ITERATION_CAP_LIMITED and status != 1 for persistent-retry classification.",
     "no_other_classification_change": true,
     "no_execution_rerun_required_for_raw_evidence": true,
-    "residual_parser_change": "Compile the residual regex with re.MULTILINE. No experiment or threshold changes."
+    "residual_parser_change": "Use one regex escape for literal pipe and digit class, and retain re.MULTILINE. No experiment, threshold or case changes.",
+    "corrected_analyzer_blob": "f5bedda5296c1b9653960f3052175d42fb5c8c28"
   },
   "firewall": {
     "tolerance_changed": false,
