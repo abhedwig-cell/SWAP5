@@ -210,18 +210,25 @@
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
       "modflow_release": "6.7.0"
+    },
+    {
+      "work_unit": "RIBASIM-DUMMY-20F2",
+      "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+      "run": 35729300651,
+      "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
+      "product_ribasim_release": "v2026.1.1",
+      "modflow_release": "6.7.0"
     }
   ],
   "pending": [
     {
-      "work_unit": "RIBASIM-DUMMY-20F2",
-      "state": "IMPLEMENTED_PERSISTED_QUALIFICATION_PENDING",
-      "intended_decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
-      "dependency": "qualified DUMMY-20E3",
+      "work_unit": "RIBASIM-DUMMY-20G",
+      "state": "PREREGISTERED_IMPLEMENTATION_READY_AFTER_20F2",
+      "intended_decision": "RIBASIM_DUMMY_20G_QUALIFIED_ACTIVE_RIVER_RECIPROCAL_STAGE_FEEDBACK",
+      "dependency": "qualified DUMMY-20F2",
       "imod_coupler_pin": "8907fb13f8301ba1e0f32dd90a64ea475d4896d6",
       "product_ribasim_release": "v2026.1.1",
-      "modflow_release": "6.7.0",
-      "implementation_baseline": "d8a0bb90c4053dee73c2c9b18c6148088b6bc871"
+      "modflow_release": "6.7.0"
     },
     {
       "work_unit": "RIBASIM-DUMMY-20F",
@@ -234,7 +241,7 @@
     }
   ],
   "synthesis": "integration/research/RIBASIM_DUMMY_COUPLING_MODEL.md",
-  "next_authority_action": "Execute frozen DUMMY-20F2 two-day next-boundary memory-admission gate.",
+  "next_authority_action": "Rebind and implement prospectively frozen DUMMY-20G active-river reciprocal stage-feedback bridge.",
   "boundaries": [
     "no claim of Ribasim network-optimizer equivalence",
     "no claim of MODFLOW package equivalence",
@@ -331,5 +338,10 @@
     "latest": "RIBASIM-DUMMY-20E3",
     "decision": "RIBASIM_DUMMY_20E3_QUALIFIED_TWO_CELL_POSTALLOCATION_GROUNDWATER_TRANSFER",
     "meaning": "Actual RibaMod with real MF6/Ribasim kernels realizes nonzero post-allocation groundwater transfer while the current daily UserDemand allocation remains frozen."
+  },
+  "product_management_memory_authority": {
+    "latest": "RIBASIM-DUMMY-20F2",
+    "decision": "RIBASIM_DUMMY_20F2_QUALIFIED_TWO_CELL_NEXT_BOUNDARY_MEMORY_ADMISSION",
+    "meaning": "Realized physical groundwater transfer changes accepted state during a daily allocation window without retroactive reallocation and becomes management-visible at the next fixed allocation boundary."
   }
 }
